@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<mosinstall type="mambot" group="search">
+	<name>ProductSearchBot</name>
+	<author>soeren</author>
+	<creationDate>August 2004</creationDate>
+	<copyright>soeren 2004</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>soeren@mambo-phpshop.net</authorEmail>
+	<authorUrl>www.mamboserver.com</authorUrl>
+	<version>1.0</version>
+	<description>Performs a Product Search</description>
+	<files>
+		<filename mambot="phpshop.searchbot">phpshop.searchbot.php</filename>
+	</files>
+</mosinstall>

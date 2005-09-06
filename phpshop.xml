@@ -1,0 +1,133 @@
+<?xml version="1.0" ?>
+<mosinstall type="component">
+	<name>phpShop</name>
+	<creationDate>23.06.2004</creationDate>
+	<author>Soeren Eberhardt; Base System: Edikon Corp.</author>
+	<copyright>released under GNU General Public License</copyright>
+	<authorEmail>soeren@mambo-phpshop.net</authorEmail>
+	<authorUrl>www.mambo-phpshop.net</authorUrl>
+	<version>1.2-pl3</version>
+	<description>Online-Shop / E-Commerce Component</description>
+  <files>
+      <filename>frontend_files.tar.gz</filename>
+  </files>
+  <install>
+      <queries>
+          <query>SELECT id FROM #__components</query>
+      </queries>
+  </install>
+  <uninstall>
+    <queries>
+      <query>DROP TABLE `#__pshop_affiliate`;</query>
+      <query>DROP TABLE `#__pshop_affiliate_sale`;</query>
+      <query>DROP TABLE `#__pshop_auth_user_vendor`;</query>
+      <query>DROP TABLE `#__pshop_category`;</query>
+      <query>DROP TABLE `#__pshop_category_xref`;</query>
+      <query>DROP TABLE `#__pshop_country`;</query>
+      <query>DROP TABLE `#__pshop_coupons`;</query>
+      <query>DROP TABLE `#__pshop_creditcard`;</query>
+      <query>DROP TABLE `#__pshop_csv`;</query>
+      <query>DROP TABLE `#__pshop_currency`;</query>
+      <query>DROP TABLE `#__pshop_function`;</query>
+      <query>DROP TABLE `#__pshop_manufacturer`;</query>
+      <query>DROP TABLE `#__pshop_manufacturer_category`;</query>
+      <query>DROP TABLE `#__pshop_module`;</query>
+      <query>DROP TABLE `#__pshop_order_history`;</query>
+      <query>DROP TABLE `#__pshop_order_item`;</query>
+      <query>DROP TABLE `#__pshop_order_payment`;</query>
+      <query>DROP TABLE `#__pshop_order_status`;</query>
+      <query>DROP TABLE `#__pshop_order_user_info`;</query>
+      <query>DROP TABLE `#__pshop_orders`;</query>
+      <query>DROP TABLE `#__pshop_payment_method`;</query>
+      <query>DROP TABLE `#__pshop_product`;</query>
+      <query>DROP TABLE `#__pshop_product_attribute`;</query>
+      <query>DROP TABLE `#__pshop_product_attribute_sku`;</query>
+      <query>DROP TABLE `#__pshop_product_category_xref`;</query>
+      <query>DROP TABLE `#__pshop_product_discount`;</query>
+      <query>DROP TABLE `#__pshop_product_download`;</query>
+      <query>DROP TABLE `#__pshop_product_files`;</query>   
+      <query>DROP TABLE `#__pshop_product_mf_xref`;</query>   
+      <query>DROP TABLE `#__pshop_product_price`;</query>
+      <query>DROP TABLE `#__pshop_product_relations`;</query>
+      <query>DROP TABLE `#__pshop_product_reviews`;</query>
+      <query>DROP TABLE `#__pshop_product_type`;</query>
+      <query>DROP TABLE `#__pshop_product_type_parameter`;</query>
+      <query>DROP TABLE `#__pshop_product_product_type_xref`;</query>
+      <query>DROP TABLE `#__pshop_product_votes`;</query>
+      <query>DROP TABLE `#__pshop_shipping_carrier`;</query>
+      <query>DROP TABLE `#__pshop_shipping_rate`;</query>
+      <query>DROP TABLE `#__pshop_shopper_group`;</query>
+      <query>DROP TABLE `#__pshop_shopper_vendor_xref`;</query>
+      <query>DROP TABLE `#__pshop_state`;</query>
+      <query>DROP TABLE `#__pshop_tax_rate`;</query>
+      <query>DROP TABLE `#__pshop_user_info`;</query>
+      <query>DROP TABLE `#__pshop_vendor`;</query>
+      <query>DROP TABLE `#__pshop_vendor_category`;</query>
+      <query>DROP TABLE `#__pshop_visit`;</query>
+      <query>DROP TABLE `#__pshop_waiting_list`;</query>
+      <query>DROP TABLE `#__pshop_zone_shipping`;</query>
+      <query>ALTER TABLE `#__users` DROP `user_info_id`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_type`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_type_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `company`;</query>
+      <query>ALTER TABLE `#__users` DROP `title`;</query>
+      <query>ALTER TABLE `#__users` DROP `last_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `first_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `middle_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `phone_1`;</query>
+      <query>ALTER TABLE `#__users` DROP `phone_2`;</query>
+      <query>ALTER TABLE `#__users` DROP `fax`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_1`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_2`;</query>
+      <query>ALTER TABLE `#__users` DROP `city`;</query>
+      <query>ALTER TABLE `#__users` DROP `state`;</query>
+      <query>ALTER TABLE `#__users` DROP `country`;</query>
+      <query>ALTER TABLE `#__users` DROP `zip`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_1`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_2`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_3`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_4`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_5`;</query>
+      <query>ALTER TABLE `#__users` DROP `perms`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_account_nr`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_account_type`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_sort_code`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_iban`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_account_holder`;</query>
+    </queries>
+  </uninstall>
+  <installfile>install.phpshop.php</installfile>
+  <uninstallfile>uninstall.phpshop.php</uninstallfile>
+	<administration>
+    <menu>mambo-phpShop</menu>
+      <files>
+        <filename>2checkout_notify.php</filename>
+        <filename>admin_files.tar.gz</filename>
+        <filename>admin.phpshop.php</filename>
+        <filename>AUTHORIZENET.txt</filename>
+        <filename>cart.gif</filename>
+        <filename>CHANGELOG.txt</filename>
+        <filename>global.php</filename>
+        <filename>header.php</filename>
+        <filename>index.html</filename>
+        <filename>install.css</filename>
+        <filename>install.php</filename>
+        <filename>LICENSE.txt</filename>
+        <filename>mos_4.6_code.php</filename>
+        <filename>notify.php</filename>
+        <filename>PEAR.php</filename>
+        <filename>phpshop.cfg-dist.php</filename>
+        <filename>README.Dankort.txt</filename>
+        <filename>README_ZONE_SHIPPING.txt</filename>
+        <filename>Tar.php</filename>
+        <filename>TODO.txt</filename>
+        <filename>toolbar.phpshop.html.php</filename>
+        <filename>toolbar.phpshop.php</filename>
+        <filename>UPGRADING_1.2RC2_to_1.2stable.txt</filename>
+        <filename>version.php</filename>
+        <filename>worldpay_notify.php</filename>
+        <filename>x-click-but21.gif</filename>
+      </files>
+    </administration>
+</mosinstall>

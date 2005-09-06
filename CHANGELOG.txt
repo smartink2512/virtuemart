@@ -1,0 +1,1383 @@
+/*
+* $Id: CHANGELOG.txt,v 1.103 2005/09/06 19:28:35 soeren_nb Exp $
+*/
+Changelog for mambo-phpShop
+
+Legend:
+
+# -> Bug Fix
++ -> Addition
+^ -> Change
+- -> Removed
+! -> Note
+
+--------------------------------------------------------------------------------------------------------------
+
+
+
+last mambo-phpShop version (1.2 stable)
+*************************************
+06-09-2005 soeren
+^ mod_phpshop: changed the default value for "Pre-Text" to "" (empty!)
+# product search not handling keywords as separate search words, but as one (normal search)
+
+01-09-2005 soeren
+
++ added a CSS file called shop.css to /css: will control all shop specific layout in the future
+^ moved some program logic from phpshop_parser.php to their appropriate classes
+
+
+31-08-2005 soeren
+# products with a single quote (') didn't have a visible product image
+^ upated the CSV documentation
+^ product form: moved the discount drop-down list to product information tab
+	added a check to test if the IMAGEPATH is writable (see Tab "product images")
+# Custom Attribute Values would allow the customer to alter the product price (thanks to "Ary Group" <AryGroup@ua.fm> for reporting that)
+
+=======
+26-08-2005 Zdenek Dvorak
++ Now is possible use EXTRA FIELDS in user_info. Just set variable _PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_X (where X is from 1 to 5)
+  in language file and new input field will be shown in user's billing and shipping address form and in order details. Size of 
+  extra field 1, 2 and 3 is 255 chars. Size of extra field 4 and 5 is one char and they are shown as input select field.
+  For reasonable using extra field 4 and 5 is needed change items of input select in functions list_extra_field_4 
+  and list_extra_field_5 in file classes/ps_html.php.
+  You can change position of this fields in form in files: account.shipto.php account.billing.php account.order_details.php 
+  admin.users.html.php admin.user_address_form.php
++ User info in order includes EXTRA FIELDS. ## REQUIRES a DATABASE UPDATE! ##
+^ ## Database structure changed ##
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_1` varchar(255) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_2` varchar(255) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_3` varchar(255) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_4` char(1) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_5` char(1) default NULL;
++ New input field in user's shipping and billing address: phone_2
+# wrong address_type in file account.shipto.php
+# wrong $missing comparision for address_type_name in files account.shipto.php and admin.user_address_form.php
+# showing $missing_style in file admin.user_address_form.php
+# URL for editing shipping address in file admin.users.html.php
++ New variables in language file
+
+12-08-2005 Zdenek Dvorak
++ New feature in backend: You can search products by:
+  - modified date of product (You can search products which are very old and need update or which are new and need be checked)
+  - modified date of product's price (Very usefull if you use price synchronizing with other system - e.g. company accountancy)
+  - products with no price
++ New features: unit & packaging ## REQUIRES a DATABASE UPDATE! ##
+  You can set unit of product, number units in packaging and number units in box. For showing packaging in product_details is
+  needed use in flypage {product_packaging} - see html/templates/product_details/flypage.php
+^ ## Database structure changed ##
+  ALTER TABLE `mos_pshop_product` ADD `product_unit` varchar(32);
+  ALTER TABLE `mos_pshop_product` ADD `product_packaging` int(11);
+^ Now is possible set default product weight unit (pounds) and default product length unit (inches) in language file:
+  var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM and var $_PHPSHOP_PRODUCT_FORM_LENGTH_UOM
++ New language file for Czech translation (czechiso.php with ISO-8859-2 and czech1250.php with CP1250 codepage)
++ New parameter for modul phpshop: moduleclass_sfx
+
+09-08-2005 Zdenek Dvorak
+# bad showing last_page in cart and show error message if no product_id (no redirecting) (ps_cart.php)
+# error message befor login to show account.order_details (ps_main.php)
+# error message in no tax_rate (before show Shipping Address) (ps_product_attribute.php)
+# bad redirecting if URL == SECUREURL (ps_session.php)
+# vertical aligning button "Add to Cart" (shop.product_details.php)
+
+02-08-2005 soeren
+# categories from the category list were not shown in the list under some circumstances
+# Slashes were stripped out of text when saving a payment method (extrainfo)
+^ moved the SQL Queries out of the file shop.browse.php into shop_browse_queries.php
+
+01-08-2005 Zdenek Dvorak
+# Product Type: File mod_phpshop.php, variable _PHPSHOP_PARAMETER_SEARCH was changed to _PHPSHOP_ADVANCED_PARAMETER_SEARCH 
+
+26-07-2005
+# Tax Total wasn't calculated correctly when MULTIPLE_TAXRATES_ENABLE was set to 1 and a disount was applied
+# Product Discounts weren't calculated correctly when PAYMENT_DISCOUNT_BEFORE was enabled (ps_product::get_advanced_attribute_price())
+# basket.php didn't calculate the correct Tax Amount when a Coupont has been redeemed
+# Coupon Discount wasn't calculated correctly (when Percentage) - ps_coupon::process_coupon_code()
+# Quantity Discounts didn't show the correct price in the basket (ps_product::get_price())
+# Related Products couldn't be changed in Product Form
+^ more changes for Mambelfish compatiblity (added product_id / category_id to various SQL queries)
+
+19-07-2005 soeren
+# Tax Rate for other states didn't return 0 when no tax rate was specified
+# Report Basic Module doing an endless loop when showing single products
+# Product Form always displaying the name of the first Shopper Group, not saving the price to the correct shopper group
++ CSV: Added the "Skip the first line" feature by Christian Lehmann (thanks!)
+  so you can just keep the column names in the first line of the CSV file
+
+01-07-2005 Zdenek Dvorak
+! changed ToolTip in files ps_product_type.php, shop.parameter_search_form.php, product.product_form.php and
+  product.product_type_parameter_form.php
+  Now is used function mm_ToolTip.
+  
+^ changed the PNG Fix to this solution: http://www.skyzyx.com/scripts/sleight.php
+  (this doesn't let images disappear)
+
+27-06-2005 soeren
+# Checkout not working (Minimum Purchase Order Value not reached)
+
+---- patch level 3 released ----
+
+^ you can open the Full Image from the Browse Page now (you browse Template should be changed, see browse_1.php!)
+^ Language Files: only english.php is included by default now (like in Mambo).
+  Other Language Files will be available in a separate Language Pack.
+^ MOVED Templates! 
+  Order Emails (e.g. email_english.html): New Folder is /html/templates/order_emails
+  Browse Templates (e.g. browse_1.php): New folder is /html/templates/browse
+  Product Details Templates (e.g. flypage.php): /html/templates/product_details
+  Basket Templates (e.g. basket_b2b.php): /html/templates/basket
+  
+  Please move all your modified Templates to their correspondig folders after having updated!
+
++ added CSS class "sublevel" to Categories Listing (for Display Type: "Link List")
+# minor issues on the Product Types Extension (Thanks to Zdenek Dvorak!)
+# Standard Shipping Module printing out Table Header even when no Rate is returned
+# UPS Module not listing rates when no cURL is available and fsockopen is used instead
+^ PayPal IPN: Completely debugged notify.php again,
+  * Added Test Mode for Debugging Purposes
+  * Works in Test Mode with www.eliteweaver.co.uk/testing/ipntest.php
+  * Works with www.sandbox.paypal.com (NO need to switch to Test Mode!, as the Sandbox is a Live System)
+  * Checks if the Remote IP Address is a valid PayPal IP Address
+# Download-ID not sent when product has more attributes than only "download"
+# standard_shipping: Change behaviour when Shipping Rate ZIP-Range Start/End Fields are empty
+# USPS Module not returning correct Rate
+# various fixes for XHTML compliance & accessibility
+# Couldn't checkout when Minimum Purchase Order Value was more than Cart Total minus Discount
++ added Table to ps_product::show_price to display available Quantity Discounts on Product Details Page
+
+- bug fix: wrong product price calculation (when discounted, show_price_including_tax=1 and subtract_tax_before=1 )
+- States: Change the States Drop-Down List to a dynamical List:
+  Only those states are listed, which are available for the selected country
+- Remote Product Images: can be auto-thumbnailed now (Thumbnails are stored on your server!).
+
+- PayPal: made the Code a little bit more "talky" and added some path checks + Debug Mails
+- Clone Products: Added the ability to clone Child Items & Attributes
+- bug fix: Shipping Object not being initialized properly (+ ps_checkout::validate_shipping_method not returning true).
+- bug fix: State Codes with a length of 3 were used (changed back to 2)
+- Updated HTML2PDF Library to the latest Version 3.0.2 (http://html2fpdf.sourceforge.net/index.php?index=pdf)
+- bug fix: PDF Generation won't work
+- bug fix: Javascript Error on Order Confirmation Page (last step)
+- introduced new global variable $mm_action_url for easier switching between http and https (so we can keep https...)
+- bug Fix: Shared SSL support not working
+
+- CSV Import/Export: added the ability to Import and Export all Attributes for Parent Products and Attribute Values for the Child Products
+- added Debug Output to the Standard Shipping & UPS Shipping Module (Shop Debug must be on!)
+- bug fix: mod_productscroller didn't change align according to the MOdule Parameters (removed the HTML Table, change to div)
+- bug fix: Product form didn't show the correct Retail Price (ps_product.php)
+- bug fix: The page for "...More Images.." did not show the first Product Image in Full Size (shop.view_images.php)
+- bug fix: Itemid from Menu Items in the Trash could be fetched (ps_session.php)
+- adapted the optimized setQuery Replacement Function from http://forum.mamboserver.com/showthread.php?t=45647 (ps_database.php)
+
+- more optimizations on SQL Queries and reduced the number of Queries
+- adapted the InputFiler Class (that Mambo now uses too, called it "mm_InputFilter" to avoid namespace problems)
+- Shipping Address Form now shows missing Fields (when there is a missing Field)
+- re-structured Registration / BillTo / ShipTo Forms 
+  * no tables left
+  * use of the <fieldset>, <legend> and <label> Tag
+
+- bug fix: Manufacturer Search returning no results
+- made the dTree & JSCook Modules work with Javascript disabled.
+- made the Frontend work with Javascript disabled
+- changed the Add-to-Cart Button on the Product Details page to an Input (type="button") Element,
+  styled to look like the Add-to-Cart image (so this works without JavaScript now!)
+- Performance Improvement: massively reduced the Number of Queries on Product Listing & Details Pages 
+  by re-using Product & Category Information with Global Variables
+  
+---- patch level 2 ----
+
+- bug fix: addslashes missing in JSCook(_Tree) Module Files
+- bug fixes: When Caching is enabled, Product Listing wouldn't be updated when moving in Page Navigation
+- bug fix: Product Discount not calculated correctly under some circumstances (ps_product.php)
+- bug fix: First Item in Cart not taxed (basket.php)
+- bug fix: Flex Shipping Module not using Fixed Handling Charge (flex.php)
+- bug fix: Thumbnails being displayed too big and pixelated (ps_product.php)
+- bug fix: Changed Tax Rate Display from 0.xx00% to xx% on Product Form (ps_tax.php)
+- bug fix: "Fatal Error: Cannot redeclare class {payment_method}" (ps_checkout.php)
+- bug fix: Installer doesn't update correctly when the table "mos_pshop_order_user_info"
+  doesn't exist (install.php)
+- removed Tables from Product Listing (shop.browse.php)
+- bug fix: Product List doesn't work correctly. (shop.browse.php)
+
+---------- 1.2 stable released ----------------------
+
+- bug fix: form in ro_basket_b2c(b).html.php not closed
+- change: Unpublished Products are shown to admins and storeadmins now
+- added a new Configuration Constant "PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS" (default: "1" = On)
+  to be able to show or hide Products that are Out Of Stock (when CHECK_STOCK is "1" = On)
+- bug fix: shop.browse - $offset changed to $limitstart
+- bug fix: new CSV Import not working correctly
+- bug fix: Shopper Email not including a Link to the Order Details
+- bug fix: Installation of mod_phpshop: phpshop_JSCook.php does not exist
+
+- added a very useful "Category Select" Drop-Down List to the Product List
+- updated User Manager for Mambo 4.5.3 compatibility
+- Shop Tabs correctly displaying on Mambo 4.5.3 now
+- bug fix: Doubled Editor Window (TinyMCE)
+- copied the mosCommonHTML class for the case of Mambo 4.5 (we need "loadOverlib")
+- repaired the utime function to get the Script Timing
+- moved the "Pay Now" Link to the top of the Order Details page
+- updated the Installation Script to switch between "New Installation"- and "Update"- Mode.
+- Main Module: rewrote the Link List Display Code
+  * displays an unlimited number of category levels when needed (not restricted to 2 Levels anymore)
+  * a selected category is highlighted. The Highlight-Style can be passed to the function as an argument
+- Main Module: moved Category Link List Output from the Shop Main Module to the function ps_product_category::get_category_tree()
+
+- fixed a small typo in the Mini Basket (shop.basket_short.php)
+- Payment Method API Change: support for a new function called "get_payment_rate"
+    float get_payment_rate( float $subtotal )
+  * This can be used to calculate discounts that depend on the Order Amount
+    e.g. Payment Fee: 1% of the Subtotal
+- bug fix: Product List Fatal Error on line 175
+- Major Update on CVS Import / Export   ## REQUIRES a DATABASE UPDATE! ##
+  * Table structure completely changed
+  * Fields can be added (fields from the table mos_pshop_products only!), renamed, re-ordered
+  * Product Parent <-> Child Relationship can be exported and re-imported
+  * quotes are escaped now, so re-importing will work
+  
+- bug fix: Shared SSL redirect not working
+- bug fix: Short Basket now showing prices when "Show prices including tax?" is set to >no<.
+- moved "Permissions" and "Shopper Group" select lists to the first Tab on User Form
+- Changed the Discount Label to "Fee:" when the Discount is negative (applies to the basket, confirmation email and Order Details Pages)
+- Eway Fix: implemented the changes by Matthew Horoschun
+- Changed the check "is_registered_customer" to check the auth array, not the database again and again
+- New: Clone-a-Product; You can now Copy existing products to use existing information and just modify some data
+
+- New: States Management for Countries
+  * States are managed dynamically for each country now
+  ## REQUIRES a DATABASE UPDATE! ##
+  
+- Caching Integration [Performance Improvement]
+  * when Caching is enabled in the Mambo configuration, you can really save page loading time now, 
+    because calls to the page shop.browse and shop.product_details are cached
+  * uses Mambo's mosCache class (so only usable in Mambo >= 4.5.1)
+
+- complete Integration of "Product Types & Parameters" Extension by Zdenek Dvorak (Thanks - it rocks!)
+  ## REQUIRES a DATABASE UPDATE! ##
+  
+- changed Dynamic Page titles
+- bug fix for Shared SSL
+- bug fix: CSV Export wouldn't escape slashes in the Product Short Description / Product Name
+- bug fix: corrected Calculations of various sums (tax, shipping, sub total)
+- bug fix: all other checkout processes than the default one didn't work well
+- bug fix: agree to TOS on Order Confirmation didn't work
+- security fix: avoid that Admins can edit Superadministrators
+- bug fix: Coupon Amount wasn't displayed in the Cart
+- performance improvements by storing product related values (often needed ones like the product tax or the discount) 
+  in the Session
+- added the "Shop is offline" Feature. You can turn off the Shop by checking "Shop is offline?" in the Shop configuration
+  Uses two new configuration constants: PSHOP_IS_OFFLINE, PSHOP_OFFLINE_MESSAGE
+- added Payment & Shipping Information to the Order Confirmation Email Temlates
+- integrated some small Waiting List Fixes
+- integrated Mambelfish Adjustments for mambo-phpShop 
+  (see http://mambo-phpshop.net/index.php?option=com_smf&Itemid=74&expv=0&?topic=9247.0)
+  * Changed the Fields that hold category IDs from VARCHAR(32) to INT(11)
+- improved Browse Page Navigation: Customers can change the List Length now.
+- added Page Navigation to the Top of the Frontend Product Listing - Browse Page
+  (can be switched on or off using the configuration constant PSHOP_SHOW_TOP_PAGENAV)
+- changed mambo-phpShop to support multiple Shipping Methods
+  You can select multiple Shipping Modules in the Configuration now (Changed the Shipping Rate API: $shipping_rate_id = "modulename|CarrierName|RateName|ShippingCosts|RateID")
+  All selected modules list their rates on checkout
+
+## DATABASE STRUCTURE CHANGED !! ##
+New Table: mos_pshop_order_history
+
+## DATABASE STRUCTURE CHANGED !! ##
+ALTER TABLE `mos_pshop_product_price` CHANGE `product_price` `product_price` DECIMAL( 10, 5 ) DEFAULT NULL 
+
+- new feature: Order History
+  All Order Status changes are logged now
+  You can add comments to Order Status Changes or just send an email with a message to your customer
+- new feature: (or bug fix?) FULL SUPPORT FOR SHARED SSL!
+  This means that the Session and Cookies are transported to the new domain by
+  hidden Redirection and providing the Cookie Values via URL...but it works!
+- New Language: Brazilian Portuguese (thanks to Alexandre Câmara, www.oarquiteto.arq.br!)
+- bug fix: Manufacturers were not added (when not available) when using CSV Upload
+- bug fix: SQL Error in the order_list when no vendor_id was available
+- changed the Frontend Shop Administration to be run within the index2.php, so the Template isn't loaded
+
+- changed the way product images are deleted. You can now select an Image Action "Delete current image"
+  without having to type in "none" into the file field (that caused IE error messages!)
+- new: Price Input Fields for both - "price including tax" and "price excluding tax"
+  with automatic calculation of Net / Gross Price.
+- updated the Paymate JS Code
+- changed the Waiting List Code when Check Stock is enabled
+- changed Product Details Page behaviour when no category_id is provided:
+  the first category_id of the product is fetched from the database
+- new Configuration Parameter: PSHOP_SHOW_PRODUCTS_IN_CATEGORY
+  * switch on or off Display of the number of Products in a category
+- added Category Image Resizing
+- added Category Image Display on Frontpage (shop.index.php)
+- Updated ALL Modules:
+  * added parameters for switching on / off Price & Add-To-Cart Link Display
+  * added parameters to switch betwenn vertical / horizontal / Table Display Style
+  * bug fix for the All-In-One Module
+- fixes to the Checkout Procedure for better Handling of  "Including Tax" & "Exluding Tax"
+  * fixes to the email_receipt
+  * added a new field for storing the final item price including tax (Another step towards Data Consistence)
+- bug fix: Stock wasn't updated correctly
+
+## DATABASE STRUCTURE CHANGED !! ##
+
+# 23.03.2005
+ALTER TABLE `mos_pshop_order_item` ADD `product_final_price` DECIMAL( 10, 2 ) NOT NULL AFTER `product_item_price` ;
+
+# 22.03.2005
+ALTER TABLE `mos_pshop_product` CHANGE `product_in_stock` `product_in_stock` INT( 11 ) UNSIGNED DEFAULT NULL 
+
+## DATABASE STRUCTURE CHANGED !! ##
+
+- New Feature: Auto-resize for Product Images
+
+- New Feature: Category Image Upload
+- New Mambot: mosproductsnap_xtd with some enhancements
+- Bug Fix: Mambot productsnapshop cutting prices with Dollar Signs
+- Bug Fix: Advanced Attributes only showing as Integer (rounded)
+- Bug Fix: Order List loosing "Show only Order Status XX" on multi-pages
+
+- "Related Products" - basic implementation added for cross-selling purposes
+  "If you want to buy this Notebook, you might also be interested in this Notebook Case..."
+  - You can add related products to a product in the product form
+  - New Flypage placeholder: {related_products}
+## DATABASE STRUCTURE CHANGED !! ## New Table mos_pshop_product_relations added
+
+- CSV Upload: Added "Load CSV File from directory" + Redesign of Upload Form
+- PayPal: added an Order Status for Pending Payments: PAYPAL_PENDING_STATUS. So you can catch Pending Transactions as well (were cancelled before).
+- Changes for Products with NO price:
+  the "Add to Cart" button is hidden now, when no price is available (Browse Page & Product Details Page)
+  "Call for Pricing" (ps_product::show_price) now is a mailto Link, pointing to the vendor_mail (set in the Store Form).
+  
+- added nice Features using Mambo 4.5.x API (works on Mambo >= 4.5.1 only!): 
+  Dynamic Page Titles on most customer pages
+  Dynamic Meta Description prepended on Browse Page and Product Details
+  Dynamic Pathway for Categories on Browse Page and Product Details Page
+  
+- re-arranged SQL queries in the Product List (product.product_list.php) to not to sort a "COUNT(*)" query
+- fixed the Zone Shipping module (also supports Tax Rate selection now)
+## DATABASE STRUCTURE CHANGED !! ##
+- implemented automatic Order Status updates for Payment Methods that use payment/CreditCard processors like
+  authorize.net, eprocessingNetwork, PayMeNow and eWay. Be sure to set an Order Status for successful transactions.
+  When a payment transaction was successful, the Order Status is autmatically set to whatever Order Status you
+  set in the Payment Method Configuration.
+  Set to "Pending" by default.
+  
+- Implemented Shipping Taxes. This is a BIG change on mambo-phpShop! Be aware that you can set Tax Rates for each
+  Shipping Rate and this Tax Rate now is REALLY calculated and put on top of the Order Total. This wasn't done before!
+  The Shipping Rate API was extended by one new function called "get_tax_rate()"
+  
+- Moved the setting SHOW_PRICE_WITH_TAX from configuration to the Shopper Group Form. Can be set for each Shopper Group
+  separately now. As this setting is now dynamically assigned according to what Shipper Group the User is in,
+  it's assigned to the global array $auth ($_SESSION['auth']['show_price_including_tax']).
+## DATABASE STRUCTURE CHANGED !! ##
+
+- Templating for the Cart: moved all html Code from basket.php and ro_basket.php to /templates/(ro_)basket_(b2b|b2c).html.php
+  The B2B (Business to Business) Templates are used for Users who's Shopper Group has set "Show Prices including tax" to NO.
+  The B2C (Business to Customer) Templates are used for Users who's Shopper Group has set "Show Prices including tax" to YES.
+- changed show_image_in_img_tag.php to work with filenames (without directory!!) only
+- integrated the iTransact Payment Gateway (www.intransact.com). Thanks to  <mike@mjrsolutions.com>!
+- integrated the iKobo code for an Ikobo Payment Method from 
+  http://mambo-phpshop.net/index.php?option=com_simpleboard&Itemid=46&func=view&id=3612&catid=13
+- eWay - automated XML Payment integration finished
+- 2Checkout re-integration. Works for v1 and v2 of 2Checkout Gateway
+- integrated new Shipping Module: "Flex" by Micah Shaw. Can be configured through Shipping Module List
+- changed Configuration Form to automatically read all available Shipping Modules from /classes/shipping/
+- changed "You're not authorized..." behaviour to show a Login Form.
+- bug fix: Image Upload / Deletion being buggy
+
+- Changes to enhance Data consistence:
+  New Table mos_pshop_order_user_info to permanently store the user information
+    and prevent changes on user_info <=> order cross-reference
+  Changes on Table mos_pshop_order_item to retrieve the Product Information on Order Items
+  from otder_item, not from product (Resolves problems like: What to do if the Product with ID XY is deleted?)  
+  - changed account.order_details, order.order_printdetails, order.order_print to fetch no live data, but only data
+    which was stored in mos_pshop_order_user_info and mos_pshop_order_item
+## DATABASE STRUCTURE CHANGED !! ##
+
+- bug fix: Coupon Field shows up again when a product is added
+- changed the basket (Cart) to use CSS classes "sectiontableentry1" and "sectiontableentry2" for row coloring
+- bug fix: Fixed image name in shop.browse.php / shop.product_details.php
+- bug fix: Random Product Module showing doubles
+- bug fix: CSV-Export only exported one category per product (now exports all)
+- bug fix: Categories not being re-orderable after CSV-Import
+- Added code to delete all products from a category when the cagtegory is being deleted
+- bug fix: "Function not registered: cartadd" on case-sensitive MySQL Servers
+  using lower case now to fetch the function from the table mos_pshop_function
+
+- New Language: Farsi
+- french language file: completion and correction! Thanks to Didier Carloz.
+- bug fix: Couldn't check out with a coupon that made total $0,00
+- bug fix: "Long Page generation bug" by feeding getimagesize with a File, not a URL
+- hack by bitb0y: Attributes with price adjustments are shown including Tax now
+  and with formatted price.
+- Changed all File Headers to contain correct Copyright/Version Info,
+  comply to phpdocumentor Tags
+- bug fix: Product Full/Thumb Images not deleted when deleting a product
+
+---------- RC2b released --------------------
+- bug fixes in germani, germanf, dutch
+- new language: romanian.php
+- new feature: "Print View" of an Order (see Order List !)
+Major Bug Fixes on Discount Handling:
+  - bug fix: Coupon Discount Type "Percentage" not being rounded
+  - bug fix: Coupon Discount not being shown in confirmation email
+  - bug fix: Gift Coupon not being removed after checkout
+  - bug fix: Coupon Discount not being updated on Cart Update
+CSV
+  - multiple categories support: separate Categories with |
+    Example: category/level1/level2|category2/level1/level2
+  - added more accepted Mime Types in CSV Class
+- bug fix: $category_id not included in Page Navigation in product.product_list
+- bug fix: $manufacturer_id not included in Page Navigation in shop.browse
+- Installer Bug Fix: 
+  * chmod( xxx, 0777 ); for better file access
+  * Now is PHP5 compatible
+  * Uses Archive_Tar (PEAR Package) to unpack the tar.gz files
+- New Feature: Multiple Categories for Products
+  You can now choose as many categories per product as you have categories 
+  (formerly limited to two categories)
+
+---------- RC2a released --------------------
+
+- bug fix: Fatal Error when Adding a Shopper Group
+- bug fix: Items shown without Tax although "Show Price with Tax" is enabled
+- bug fix: Changed Coupon Discout Calculation to act like "Payment Discount" 
+  (switch: subtract before or after Tax)
+- bug fix: missing "$item_weight =" in ps_checkout.php
+- bug fix: Call by reference bug in ps_checkout.php
+- bug fix: Img2Thumb Class resizing images with black background
+
+---------- RC2 released ----------------------
+
+- Changed Product Form & Class to support simple Download "File Names" AND "Uploads"
+- UPS and InterShipper switch to show "Standard Shipping" rates on Processing Error
+- Intershipper fixes, should be bug free now
+- authorize.net Certification Procedure begins (with eCheck.net):
+  * now using cURL for establishing HTTPS connections
+  * now storing the Tansaction Key in the Database (column payment_passkey)
+  * Transaction Key can only be shown/changed when re-typing your User Password
+## DATABASE STRUCTURE CHANGED ## 
+  ALTER TABLE `mos_pshop_order_payment` ADD `order_payment_trans_id` TEXT NOT NULL ;
+  ALTER TABLE `mos_users` ADD `bank_account_type` ENUM( 'Checking', 'Business Checking', 'Savings' ) DEFAULT 'Checking' NOT NULL ;
+  ALTER TABLE `mos_pshop_payment_method` ADD `payment_passkey` BLOB NOT NULL ;
+## END ##
+
+- CURRENCY CONVERTER: new function added: modified version of "convertECB" from Currency Converter Live (thanks to http://mamboforge.net/projects/cucolive/ !!)
+- XML PARSER: full DOMIT! adaption (DOMIT version pre 1f) 
+- UPS Online_TM Tools Rates and Service Selection: Full Integration
+- bug fix: "ship the product to the wrong address": thanks to Erich!
+
+- FedEX integration started
+- bug fixes for compatibility with Mambo 4.5 <= 1.0.9 platform
+- Redesign of Tabs' CSS
+- bug fix: missing round() for order_tax lead to amounts that were cut of after 2nd decimal
+- Added new Configuration Setting "PSHOP_AGREE_TO_TOS_ONORDER" 
+  to require the customer to agree to your terms of service on *every order*
+  default: empty (==disabled); new function: ps_checkout::agree_to_tos()
+- Coupon Code now supports two different types of Coupons:
+  * Gift Coupon (which will be deleted after Checkout)
+  * Permanenet Coupon (which will not be deleted after Checkout and can be applied to multiple orders)
+
+## DATABASE STRUCTURE CHANGED ##  
+ALTER TABLE `mos_pshop_coupons` ADD `coupon_type` ENUM( 'gift', 'permanent' ) DEFAULT 'gift' NOT NULL AFTER `percent_or_total` ;
+## END ##
+
+- Shopper Group Update:
+  * Assign Shopper Group to different vendors (as admin)
+  * create a new Shopper Group for your vendor_id (as storeadmin)
+  * ser a Shopper Group to be "default" for your vendor_id
+- completed Vendor Form, divided into Tabs
+- Changed Look and Feel of Store Administration Homepage (store.index)
+- Added new Configuration Setting "PSHOP_PDF_BUTTON_ENABLE" to easily switch ON or OFF
+  the PDF-Button (default: 1 (==enabled))
+- Orders Table changed for Coupon Discount Feature:
+  ## DATABASE STRUCTURE CHANGED ##
+  ALTER TABLE `mos_pshop_orders` ADD `coupon_discount` DECIMAL( 10, 2 ) NOT NULL AFTER `order_shipping_tax` ;
+  ## END ##
+
+- Integration of Free Shipping (the "Free Shipping from $ XX.." amount can be set up in Store Form)
+- Integration of a basic Gift Coupon Hack (thanks a lot to Erich Vinson!!)
+
+## DATABASE STRUCTURE CHANGED ##
+ALTER TABLE `mos_pshop_vendor` ADD `vendor_freeshipping` DECIMAL( 10, 2 ) NOT NULL AFTER `vendor_min_pov` ;
+INSERT INTO `mos_pshop_function` VALUES ('', 12843, 'couponAdd', 'ps_coupon', 'add_coupon_code', 'Adds a Coupon.', 'admin,storeadmin');
+INSERT INTO `mos_pshop_function` VALUES ('', 12843, 'couponUpdate', 'ps_coupon', 'update_coupon', 'Updates a Coupon.', 'admin,storeadmin');
+INSERT INTO `mos_pshop_function` VALUES ('', 12843, 'couponDelete', 'ps_coupon', 'remove_coupon_code', 'Deletes a Coupon.', 'admin,storeadmin');
+INSERT INTO `mos_pshop_function` VALUES ('', 12843, 'couponProcess', 'ps_coupon', 'process_coupon_code', 'Processes a Coupon.', 'admin,storeadmin,shopper,demo');
+DROP TABLE IF EXISTS `mos_pshop_coupons`;
+CREATE TABLE IF NOT EXISTS `mos_pshop_coupons` (
+  `coupon_id` int(16) NOT NULL auto_increment,
+  `coupon_code` varchar(32) NOT NULL default '',
+  `percent_or_total` enum('percent','total') NOT NULL default 'percent',
+  `coupon_value` decimal(10,2) NOT NULL default '0.00',
+  PRIMARY KEY  (`coupon_id`)
+) TYPE=MyISAM AUTO_INCREMENT=6 ;
+## END ##
+
+- FileManager translation (enlish,germanf,germani done..)
+- added eWay Payment Method ( Shared Payment - Quick & easy solution )
+- changed Discount Table, column "amount", Type to "DECIMAL(5,2)"
+- changed Product Details Form to support additional Files; Flypage Template Tag: {file_list}
+  new file: shop.getfile.php (send the file to the browser)
+- changed Product Details Form to support multiple images; Flypage Template Tag: {more_images}
+  new file: shop.view_images.php
+- bug fix: Wromg Product Discount Calculation on Tax when using a total discount amount
+- fixed some Checkout Style bugs
+- Integration of Product FileManager, Status: alpha
+
+## DATABASE STRUCTURE CHANGED ##
+CREATE TABLE `mos_pshop_product_files` (
+  `file_id` int(19) NOT NULL auto_increment,
+  `file_product_id` int(11) NOT NULL default '0',
+  `file_name` varchar(128) NOT NULL default '',
+  `file_title` varchar(128) NOT NULL default '',
+  `file_description` mediumtext NOT NULL,
+  `file_extension` varchar(128) NOT NULL default '',
+  `file_mimetype` varchar(64) NOT NULL default '',
+  `file_url` varchar(254) NOT NULL default '',
+  `file_published` tinyint(1) NOT NULL default '0',
+  `file_is_image` tinyint(1) NOT NULL default '0',
+  `file_image_height` int NOT NULL default '0',
+  `file_image_width` int NOT NULL default '0',
+  `file_image_thumb_height` int NOT NULL default '50',
+  `file_image_thumb_width` int NOT NULL default '0',
+  PRIMARY KEY  (`file_id`)
+) TYPE=MyISAM;
+## END ##
+
+- Mambo 4.5 (<= 1.0.9) compatibility reached:
+  * own Tab class, own phpmailer class, added missing 4.5.1 functions
+  * changed Installer to extract frontend files and admin directory structure after installation.
+  * changed Mailer references in ps_order and ps_checkout class
+  * Added Mailer configuration to ps_config and Config Page
+- File Movements:
+  * new folder for JavaScripts: /components/com_phpshop/js
+    - /ThemeXP (formerly in in /shop_image
+    - JSCookTree.js => /js/ThemeXP
+    - /Tab *new*
+    - pngbehaviour.htc => /js
+    
+- bug fix: doubled product display on browse page, when products were assigned to two categories
+- begin of product-filemanager implementation: new table `mos_pshop_product_files` created
+- added Swedish & Simplified Chinese Language (thanks to the translators!)
+
+---------- RC1 released ----------------------
+- bug fix: Fatal Error: Call to a member function on a non-object (shop.basket_short.php)
+- bug fix: Adding a Product does not work: SQL Error/ This Shopper group already has a price...
+- added PayMeNow (Credit Card Processor) support, contributed by Ryan Coulombe. Thanks!!
+- added query counter to ps_database. We've got to pay attention to performance!
+  Query count can be seen on DEBUGPAGE. (too much queries ;-))
+- bug fix: Checkout with "No Shipping" caused SQL Error
+
+- added custom attribute hack, contributed by Denie van Kleef (denievk@in2sports). Thanks!!
+## DATABASE STRUCTURE CHANGED ##
+ALTER TABLE `mos_pshop_product` ADD `custom_attribute` TEXT NOT NULL;
+## END ##
+
+- bug fix: document.adminForm.task is null or not an object (Product Price Form)
+- added basic PDF Output support for Product Details and Browse page; using HTML2FPDF from http://html2fpdf.sourceforge.net/
+  Will change in future...?!
+  Supports local and remote PNG, JPG & local GIF images, even with dynamic thumbnailing ON.
+  
+- bug fix: ps_checkout::add(); Column count doesn't match...
+- bug fix: ps_order::mail_download_id(); call to a function on a non-object
+- added Polish Language files. Thanks to Peter £ukañko!
+- bug fix: tax only calculated when product is discounted
+
+---------- pre-RC1 released --------------
+
+- updated the Product Search Mambot
+- central flypage processor: html/shop.product_details.php
+- moved shop.(garden_)flypage.php to html/templates/(garden_)flypage.php
+- changes in browse&flypages to make Flypages Templatable
+
+## DATABASE STRUCTURE CHANGED ##
+ALTER TABLE `mos_pshop_vendor` ADD `vendor_currency_display_style` VARCHAR( 64 ) NOT NULL ;
+## END ##
+
+- changed Store Form to tab, added Currency/Number Formatting Fields
+- integrated Number Formatting class "CurrencyDisplay" by S. Mouton
+  found on phpclasses.org to provide store-wide unique Number/Price formatting
+- changed the Flypages: Selecting an Item from the Item Listing now
+  redirects to the Details page of the specific item (So please upload images for all items too!).
+  
+- implemented Product Discount Feature (ps_product_discount.php, product.product_discount_list.php, product.product_discount_form.php)
+  * First: add and edit global discounts via "Product" -> "Add/Edit Discounts"
+  * Second: assign discounts to products via the product form (Discount Type: ...)
+  * Discounts can be a percentage or a total amount
+  * Discounts can be temporarily limited by Start and End Date
+  * added two new functions to the class ps_product: show_price() and get_discount()
+  * !!Browse Page and Flypages now have to use function show_price() to display prices!!
+  
+## DATABASE STRUCTURE CHANGED ##
+CREATE TABLE `mos_pshop_product_discount` (
+      `discount_id` int(11) NOT NULL auto_increment,
+      `amount` decimal(3,2) NOT NULL default '0.00',
+      `is_percent` tinyint(1) NOT NULL default '0',
+      `start_date` int(11) NOT NULL default '0',
+      `end_date` int(11) NOT NULL default '0',
+	  PRIMARY KEY  (`discount_id`)
+    ) TYPE=MyISAM;
+INSERT INTO `mos_pshop_function` VALUES ('', 2, 'discountAdd', 'ps_product_discount', 'add', 'Adds a discount.', 'admin,storeadmin');
+INSERT INTO `mos_pshop_function` VALUES ('', 2, 'discountUpdate', 'ps_product_discount', 'update', 'Updates a discount.', 'admin,storeadmin');
+INSERT INTO `mos_pshop_function` VALUES ('', 2, 'discountDelete', 'ps_product_discount', 'delete', 'Deletes a discount.', 'admin,storeadmin');
+## END ##
+
+- added Payment Class "ps_nochex" for NoChex Payment System
+- renamed function validate_email() to mShop_validateEmail()
+  to provide basic compatibility with com_phpBB
+  
+COMPLETE REWORK OF SHIPPING INTEGRATION:
+  - moved all Shipping Module Code into separate classes for each Shipping Module
+  - each Shipping Module provides a class with an API for
+    * Shipping costs calculation 
+    * Shipping rates list
+    * Shipping Method validation
+    
+  - removed old Intershipper files + Table
+  - added new Intershipper Code
+  - added new pages "store.shipping_module_form" and "store.shipping_module_list"
+    which are used to configure configurable Shipping methods like Intershipper or UPS
+  - more to come...
+  - changed Configuration Parameters in phpshop.cfg.php!!
+    * moved IS_PASSWORD, IS_USER, IS_EMAIL, UPS_blabla into Shipping module's own configuration file under classes/shipping
+    * changed "STANDARD_SHIPPING", "ZONE_ENABLE", "IS_ENABLE"
+      to global "PSHOP_SHIPPING_MODULE".
+      Can have the values "standard_shipping","zone_shipping","intershipper","no_shipping","ups".
+      
+## DATABASE STRUCTURE CHANGED ##
+  ALTER TABLE `mos_pshop_orders` CHANGE `ship_method_id` `ship_method_id` VARCHAR( 255 ) DEFAULT NULL;
+  DROP TABLE IF EXISTS `mos_pshop_isshipping`;
+## END ##
+
+
+- For European Shops (vendor based tax rate calculation): 
+  * taxrate is shown on each page now
+  * zero weight products are only taxed when "Virtual Tax" is activated
+  
+- added "Easy Category Sort" Feature. You can change the list order with a click now
+- fixed a bug which prevented the payment methods of the default
+  Shopper Group from being displayed to a customer from a special Shopper Group
+  when this shopper group has no payment methods assigned to it.
+- added a new functionality: Notify Customer of Order Status Change:
+  new function notify_customer() in class ps_order.
+  You can now specify wether the customer gets a notification email
+  when the order status has been changed.
+- moved the Download-ID mail sending code from order_status_change() 
+  into a new function mail_download_id (class ps_order)
+- changed class ps_product to support shopper group discount (get_price())
+- added Shopper Group Discount to Shopper Group Form
+  The Shopper group Discount is only for products that have
+  no price for that shopper group. So the price from the default
+  Shopper group (default price) is taken and discounted.
+## DATABASE STRUCTURE CHANGED ##
+ALTER TABLE `mos_pshop_shopper_group` ADD `shopper_group_discount` DECIMAL( 3,2 ) DEFAULT '0' NOT NULL AFTER `shopper_group_desc` ;
+## END ##
+
+- Featured Products Module: 
+  * Bug Fix: double displaying the same product
+  * 2 new parameters: max_items and category_id
+- Random Products Module: 2 new parameters: max_items and category_id
+- Bug fix: When an order is cancelled (order_status_code must be X or x !!!)
+  or deleted and "Check Stock?" is enabled, the product/item quantity is re-updated. 
+  Note that if you set the order back to another status than "Cancelled" 
+  the quantities are NOT updated again!!
+  
+- added turkish language and email file
+- started Documentation Project
+  * Documentation will be based on DocBook standard
+  * the XML in DocBook standard is being parsed on-the-fly using JSCookTree to display ToC
+  * There will be a User Manual and a Developer Documentation
+- bug fix: Thumbnail Generation w/o imagegif support 
+- bug fix: PayMate/WorldPay Fatal Error
+- bug fix: [#2757] phpshop.xml
+- bug fix: [#2738] rollover.js
+- bug fix: [#2737] popupWindow
+- added new Module Parameters to Main Module:
+  *class_sfx (can be used for applying individual css styles to the module)
+  *pretext (this is the text/html that will be displayed right above the category listing)
+- Itemid fix. Itemid is provided through whole checkout & when adding something to cart.
+- SECUREURL fix. Checkout wasn't safe even if a SECUREURL with https was provided
+
+---------- beta 3 released --------------
+
+- added PNG Transparency Fix for IE5.5+
+  by Erik Arvidsson (http://webfx.eae.net/contact.html#erik) for WebFX
+- added Class "mShopTabs", a modified version of the mosTabs class by Phil Taylor
+  to have Panel-in-Panel functionality.
+- added Dynamic Thumbnail Resizing (using class Image2Thumbnail)
+  (by Andreas Martens <heyn@plautdietsch.de> & Patrick Teague <webdude@veslach.com>;Found on phpclasses.org)
+  Can be enabled/disabled + width & height can be configured.
+- re-design of the Account Maintenance Section (more nice icons!)
+- changed Credit Card Number validation code to use
+  Credit Card Class by Daniel Fróz Costa (Copyright (C) 2002);Found on phpclasses.org
+  -> integrated in ps_payment_method
+  
+- A prices is added to a Product even if the "Price" field is left empty
+- added ok sign (on success, red X on failure) to checkout.result page when returning from PayPal IPN
+- added fwd/backward images to bottom of Basket
+- Changed checkout.thankyou page to display NO order details,
+  but just a message that the order has been placed successfully.
+  The user can follow a link to the new order details page: "account.order_details"
+  
+- added portuguese language file
+- bug fix: no redirect from index2.php to index.php on download error
+- installer bug fix: PHP5/Win compatibility
+- added an animated Image to the Downloads Page
+
+- Cart is being emptied on logout now
+
+- added "Final Information" to the Confirmation Page
+  *class ps_checkout, function final_info()*
+  So a customer can review all the Data he/she selected
+  during the Checkout Steps: Ship-To-Address, Shipping Rate, Payment Method.
+- added dynamic Credit Card List using JS for the case someone
+  has two different Credit Card Payment Methods with different
+  accepted Credit Cards.
+  *class ps_creditcard, function creditcard_lists( &$db_cc )*
+- BIG bug fix: "Please select another Shipping Method."
+  This was caused by Shipping rates with empty Country List (means: Ships everywhere),
+  which where fetched out of the database, but not allowed in method validate_shipping_method()
+  in ps_checkout.php. ZIP feature remains in the script.
+- another bug fix to checkout_register_form.php: 
+  Form was submitted even though Form Validation returned false
+  
+- parameter limitstart is provided to the Form and back to the List when editing an item
+  So you are automatically redirected to page 3 after Saving an edited item from page 3
+- complete rename of $offset to $limitstart in each List
+- bug fix: [ #1370 ] product categories not sorting by list order 
+- Product Form corrections, mosToolTip usage
+- bug fix: empty Browse Page (when a user was logged in without having
+  registered to the shop)
+- bug fix: when deleting a product, its votes & reviews weren't deleted 
+- added "Continue Shopping" link to Cart
+
+---------- beta 2 released --------------
+
+- bug fix: paymate class name (payment->paymate)
+- bug fix: When deleting a category from the category tree, all products where wiped out
+- bug fix: when creating a new vendor, the Shopper Group query was not valid.
+- removed Mambo 4.6 code: $_CONFIG, $_LANG
+- new feature: Product Image URL
+  You can now provide a full qualified Image URL (e.g. http://www.images.com/myimage.jpg) 
+  in the Product Form (or in a CSV File), so you don't need to upload images. 
+  Note that you can only provide EITHER an Image File for Upload OR an Image URL.
+- changed Order-link in Confirmation email (to admin) to point to the frontend
+- bug fix: language files contained double 
+  var $_PHPSHOP_REVIEW_COMMENT
+  which lead to a Fatal Error on PHP5 and could be the cause
+  for a lot of installation blank screens!
+- bug fix: ToolBar Cancel Link (offset)
+- PayPal fixes: 
+  no_shipping="1" (so the buyer doesn't need to fill in shipping address again)
+  
+- new configuration parameter: Add-To-Cart Button Style (PSHOP_ADD_TO_CART_STYLE)
+  You'll have to go to Admin -> Configuration -> Site 
+  and select a cart button style, then Save.
+  To include your own Add-To-Cart images, just call them
+  add-to-cart_XXXXXX.gif (where the XXXXX stands for something like color)
+  and put them into the directory shop_image/ps_image.
+  Then you will be able to select your own images in Configuration.
+  Default size I chose is: 141 x 36 px
+- SEF mode fixes. But I'm still getting "Redirection Limit for this URL exceeded" error.
+- bug fix: wrong Manufacturer/Vendor Info - Link on flypage
+- bug fix: no currency was filled in while importing
+- bug fix: "NO IMAGE" image wasn't displayed in browse page
+
+---------- beta1 d released --------------
+- changed Product Folders Script to dTree instead
+  -> Products -> Product Folders 
+  (this feature gives you a good tree overview of your
+  products & categories)
+- removed old Product Folders script + ClassTree class
+- all files: refreshed Header & Copyright notices
+- bug fix: All-in-One module: Images fixed, changed Parameters
+- bug fix: Customer Registration fix!!
+- bug fix: Search Mambot adjusted to newest API 
+- bug fix: Download-Email notifications weren't sent
+- bug fix: PayPal was only selectable when Cash On Delivery was activated
+
+- switched to Mambo's mosPageNav Class to do the
+  page navigation (works for Frontend and Backend)
+
+---------- beta1 c released --------------
+
+- updated the PayPal IPN file notify.php
+  to use the new database class, ps_database.php
+- changed email_LANG.html:
+  added {phpShopCustomerNote}
+- added state drop-down list to several Forms
+- new configuration setting:
+  PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS
+  So you can allow non-Backenders to access the shop-admin
+  (when they have the permissions "admin" or "storeadmin")
+  default: not set.
+- fixed File Download:
+  * is binary safe now
+  * no pop-up on download (removed target="_blank")
+  * basically browser-independent
+- one more step forward towards X/HTML compliance.
+- "One-Click-Publish/Unpublish":
+  added short links to the product list to publish / unpublish a product.
+  Just click on the icon "publish" or "unpublished" in the "Publish"-column of the list
+- new language added: hungarian (thanks to Székely Dénes ( webGóbé, http://www.webgobe.ro/ ))
+
+*Payment*
+- Each Payment Method has a Class File (default: ps_payment.php)
+  which provides a small API of functions
+- Payment processors now can be included by simply adding
+  a payment processing class file: e.g. ps_authorize.php, ps_cybercash, 
+  ps_paypal and ps_paymate
+  with a function called "payment_process" which contains the
+  payment processing code (or nothing except: return true)
+- Credit Card Types now can be added / modified.
+  So a payment method can be called "Credit Card",
+  having assigned several Credit Card Types to it.
+  
+- fixed a bug: When calculating the shipping fee, the product quantity
+  now is included.  Shipping handling and fee are calculated seperated.
+- mail sending in mambo-phpShop is done via the sending method,
+  which was set in Mambo configuration: mail, sendmail or smtp
+- integrated UPS shipping costs calculation script for original phpShop from
+  http://forums.phpshop.org/index.php?showtopic=4197
+- reworked the CSV file handling: 
+  * fixed a bug: 
+    no product <-> manufacturer entry was created when importing a csv file
+  * CSV export is now possible (product parent <-> item references get lost then!)
+  * now using fgets() + fgetcsvfromline() instead of buggy fgetcsv()
+     Thanks to dawa at did-it dot com, function was posted at www.php.net
+  * you can now choose the delimiter (, or ;) and the string enclosure char (", ' or none)
+  * csv messages are printed out in content pane, not in toolbar ;-)
+- integrated dTree module into phpshop module.
+- added parameter control for phpshop module
+- created a search bot for Mambo-phpShop
+- rewrote the mosproductsnapshot MamBot
+- fixed a bug which caused the 'delete' images not to show a rollover effect
+- improved navigation on product lists/forms: 
+  The actual page no. (offset) and keyword is passed from page to page
+- completely redesigned & improved functionality: category form + list pages
+- prices in the cart are shown including tax, if the config option "SHOW_PRICE_WITH_TAX" is set to "1".
+- New: Review / Rating system for customers to share their thoughts and meanings
+  about products. Comes with a new class file ps_reviews.php, a new configuration
+  parameter: PSHOP_ALLOW_REVIEWS, two new tables: 
+  mos_pshop_product_reviews and mos_pshop_product_votes.
+- removed phpmailer class files. Mambo 4.5.1 now contains them
+- completely translated french language file (thanks to Aissa!!).
+- completely translated configuration panel  (thanks to Aissa!!).
+- A shopper group can now be set to be the default shopper
+  group - it's not required to be called "-default-" anymore. 
+  Therefore a field called `default` has been added to the table
+  'mos_pshop_shopper_group'. Please be sure to set a shopper group
+  to "default". You can do this by clicking on a shopper group
+  and checking "Default?:" in the shopper group form.
+  Unless you've done that, you won't be able to run the shop properly.
+- now using the calendar script which mambo uses for 
+  changing / selecting the availability date of a product/item
+- Itemid parameter is appended to the url now, so you can
+  have the mambo-phpShop module displayed on shop pages only.
+- search words can be complicated and have special characters now: They are urlencoded
+  So you can navigate through search result pages without having errors or loosing the search word
+- integrated the Avanced Search Add-On from www.webme.co.nz. Thanks to John Syben!
+- Redirect to the flypage on error "Please select a special item from the flypage"
+- redesigned browse page (Thanks to graywolvepress for inspiration)
+- "Cancel" on user_address_form redirects to user_list now
+
+version 1.1a
+******************
+
+- shipping-address maintenance now completely works (from frontend and in admin)
+
+- fixed the bug which was causing that products with adavanced attributes couldn't
+be added to the cart, telling to select a special item.
+
+- fixed a bug in the PayPal IPN integration (notify.php)
+
+- fixed a bug, where the filename parameter of a downloadable product wasn't updated.
+
+- enhanced the phpShop configuration, fixing the bug, when phpShop couldn't connect
+  to the smtp server. You can now configure:
+  - your mail/smtp server hostname
+  - whether to authenticate to the smtp server
+  - your smtp username / password
+
+version 1.1
+*******************
+- pagination is made using a drop-down list now
+
+- Statistic/summary page as an overview for your shop's details
+  shows as the admin "shop-homepage": 
+  # of customers
+  # number of active/inactive/special products
+  # number of orders of each status
+  # new orders
+  # new customers
+  
+- full RTE support  
+
+- help files are shipped with the package now (module: help)
+  They are also available in german for download on mambo-phpshop.net
+
+- new module "phpShop dTree" using the dtree javascript
+  gives the SAME functionality as the main phpshop module
+
+- nice icons for each list in the shop
+
+- when being redirected to the last page on error, the values you
+  have filled in will be still filled in and NOT EMPTY! ( ;-) this really sucked!)
+  
+- product names for downloadable products can be different from filename now
+  (means you have to re-adjust your downloadable products and fill in the
+  field "Filename"!)
+
+- new: manufacturer module (+ 3 new DB tables!)
+  This module will allow you to assign products to their manufacturers.
+  Now you will also be able to assign products to specific vendors. Those
+  vendors shall then be able to maintain only their products.
+  
+- mambo package & mambo-phpShop subpackage headers added
+
+- added the feature to set the availability for products (24h, 48h, 2-3 days etc.)
+  which shows up on the flypage.
+  You can set pictures for the availability. Sample images reside in
+  shop_image/availability. You can upload more images in there
+  and use them online.
+  Products which have an "availability date" in the future have
+  a text "The product is available on.. ##.##.200#".
+  Products which are out of stock will have
+  a text "the product is currently not available". (when check_stock is enabled)
+  Products which are available will have a text beneath "In Stock: 43" (e.g.) - when check_stock is enabled
+  
+- added the affiliate module for phpshop (Written by S P Bridgewater)
+  comes with 3 new DB tables!
+
+- redesigned the product detail page (shop.flypage.php) and added some features
+
+- category description is printed out on category browse page.
+
+- support for different product oriented taxes. In a lot of european countries
+  there are different tax rates for different kinds of products. You can now assign
+  products to a specific tax rate. To have full support of product tax rates, you must
+  enable multiple product tax rates by checking "Enable multiple tax rates?" in configuration
+
+- added PayMate support
+
+- changed error displaying from "display error on ERRORPAGE" to
+  "Redirect to Frontpage, display error as mos message"
+  --> why show this ugly error page to a customer?
+
+- improvements in customer registration:
+    - when a new customer registers and forgets to fill in required fields,
+      he's sent back to the registration form, with all data (which was already filled in)
+      filled in. The required fields, which were left blank, are highlighted.
+    - state/region is not mandatory -> you can choose in config if it can be provided or not
+    - states are shown as a drop-down list.
+    - bank account data -> decide whether customers can put in their bank account
+      details or not. If not, the fields are not shown
+      
+- changed user management to a modified Mambo - user management.
+  That gives you the possibility to add a new user to Mambo and to the shop with one click
+  
+- added the "checkout bar feature". It's an image displayed to the customer which shows
+  him/her where he actually is in the checkout process and how many and what steps it takes
+  to complete the order.
+  
+  function show_checkout_bar() can be found in ps_checkout.php
+  
+  The images for the checkout bar reside in the directory 
+    MAMBO/administrator/components/com_phpshop/shop_image/ps_image
+  naming: 
+    checkout{NUMBER OF STEPS TO DO}_{NUMBER OF THE ACTUAL STEP}.png
+
+- you can now use (nearly) the complete Administration panel in the frontend.
+  Please note that the user management cannot be done from the frontend.
+
+##removed until further testing ((- now using PEAR's DB class. makes phpShop-for-Mambo database-type independent))
+
+- now using centralized parser code (phpshop_parser.php) for modules, component and admin backend
+
+- added Bonus pricing Mod for AdvancedAttributeMod
+
+- build in Advanced Product Attribute Mod for phpShop (by Nathan Hyde <nhyde@bigDrift.com>,mod by SeanTobin <byrdhuntr@hotmail.com>,thanks to MaurceW)
+
+- PayPal IPN integration
+
+
+08.04.2004
+version 1.0a stable
+*****************
+- fixed an error when adding a product: a new product was not assigned to the selected category
+
+- download links in the download-info mail are made clickable;
+  they lead to the download page, the download-ID already filled in
+
+
+07.04.2004
+version 1.0 stable
+*******************
+
+- added a "download selling" extension
+  * make your changes in the configuration
+  * in product form: check "downloadable?"
+  * you MUST give the product the same name
+      as the file has: template_XXXX.zip is such an example for a product name
+  *phpShop download extension is currently not combined with
+    an IPN (Instant Payment Notification System) like PayPal or Authorize.net.
+    Maybe future versions will be.
+  * so you must set orders on downloads to a status, at which the notification
+      email - including the download-IDs - is sent.
+    
+- IMPORTANT: more restrictive permissions for modules and functions
+  Please change manually for yourself if you update!
+  Take out DEMO permissions in tax, store, product, shopper, order, isshipping!
+
+- IP Address of a customer is recorded with the order confirmation
+
+- shipping module accepts non-numeric ZIPs now
+- "including % tax" is in the language files now
+- flypage link in admin product form works
+- the customer can leave a note / comment on every order he makes
+  the admin can see the comments in the backend
+- done some table optimizations
+
+- better "cancel" navigation in admin -> not javascript document.history(-1), but
+  leads forward to the list, offset, keyword where you came from
+
+- errors are given out as mambo messages. The most important variables are
+  stored in $_SESSION and are restored in case of an error, so navigation and display
+  isn't disturbed
+
+- FIXED THE DAMN "empty cart" bug, we get $cart, $auth, $ps_vendor_id by $_SESSION now
+  must have had something to do with Server configuration
+
+- switched searches from POST to GET mode for easier navigation
+
+- fixed offset validation (patch for phpShop 0.7.0 patch) in MODULE and COMPONENT
+- fixed an error in REQUEST array validation in phpshop.php (component)
+
+- if a user is registering himself to Mambo/phpshop on the checkout.index.php
+  he's autmatically logged in after successful registration
+
+- login redirect from checkout.index.php doesn't lead the shopper
+  to the frontpage anymore. A user logs in and stays in checkout
+
+- added "Add to Cart" button to the browse page
+
+- products which are assigned to two different categories 
+  won't show up twice in search result list
+
+- Payment discount support was corrected so you can use
+  posivitve and negative values - they are now displayed correctly
+  on all order related pages
+
+- fixed the link to admin.function_form.php in header.php
+
+- Payment options: if you have no Credit card payment methods or no "other payment methods"
+  then there will be no longer  "Credit Card: (empty)" or "Other Payment Methods (empty)"
+
+- phpshop account management updates the user's email address in mos_users now
+
+- vendor list shows only vendors with id>1 (id 1 == you!), so you don't won't have the idea to
+  delete yourself...
+
+- new module: Vendor (shows a drop-down-list and a link list of all vendors -> links lead
+  to shop.browse.php and display all products of the specific vendor)
+
+
+12.03.2004
+version 1.0 RC3
+*******************
+
+- bug fixes ;-)
+
+- html mail is being displayed as html mail now (changed the mail building / sending class)
+
+- phpShop-for-MOS now is capable of Mambo's Search Engine Friendly Links Mode (SEF)
+
+- Shipping:
+
+    - new shipping module which allows individual carriers and rates 
+    - create rates for different countries, zips and weight 
+    - customers can select a shipping method while checking out
+    
+- Payment
+
+    - you can decide, whether a payment method is "Credit card only", 
+      "CC with processor enabled", "COD" (Nachnahme) or "Bank debit" (Bankeinzug). 
+    - customers can fill in their bank details (bank account number, holder name, sort code number and IBAN) 
+      for enabling bank debit payment 
+    - you can give discount on some payment methods to affect your customer's payment behaviour...
+    - the discount can be subtracted before ore after shipping/tax (config!)
+    
+  - you can establish a minimum purchase order value (Mindestbestellwert) for your store, customers won't be able to order less than this value. 
+  - Error messages will be given out as javascript:alerts now. 
+  - phpShop module will display all subcategories of the actual top-category....
+
+
+
+
+
+27.02.2004
+version 1.0 RC2c
+*******************
+
+- products can be assigned to two categories now
+- page navigation: "End >>" now really directs you to the last page
+- corrected the javascript menu in admin: you can add items to a product now
+
+
+
+25.02.2004
+version 1.0 RC2
+*******************
+
+- added authorize.net integration!
+
+- based on phpshop-0.7.0 distro now
+
+- phpShop-for-MOS now comes with its own mambo user
+  registration form. For you don't need it anymore, you can
+  delete the patch for com_registration and unbackup your old files.
+  
+- order email can be sent as HTML email (adjust that
+  in phpShop configuration panel!)
+  
+  The email template is located here:
+  administrator/components/com_phpshop/email.html
+
+  Mail building and sending is taken over by htmlMimeMail
+  It's distributed with this package under its original license (GPL).
+  
+- complete visual integration of phpShop administration 
+  into Mambo Backend
+
+- reworked configuration form
+
+- reworked product form
+
+- you can add a price in product form now.
+
+- before data is inserted into the DB:
+  the symbols ', " and / are escaped now, so some DB problems with
+  adding and updating should be gone now.
+
+- it's getting more international:
+    finish language added (thanks to Palle Ram)
+    greek language added ( thanks to Michael Noone)
+    
+    finished internationalization of the frontend
+    
+    
+12.02.2004
+version 1.0 RC1
+*******************
+
+- Added the capability to change the phpShop configuration file
+  by a simple HTML form
+
+NEW CONFIGURATION SWITCHES
+
+    - you can use phpShop as a catalogue only (no order buttons and "show cart" links)
+    - you can choose whether users have to register to your
+      Mambo site first before ordering or not
+    - you can choose whether users have to agree to your terms of service
+      before being able to order / register
+    - you can switch tax calculation between vendor address based
+      or shopper address based
+    - you can choose whether to include taxes in the prices, shown to a shopper or not. 
+
+- Fixed Error notices in language files / module file / com file
+
+- fixed an error with not being able to add shoppers
+
+- new module available: Best Selling Products
+  
+- removed advanced cart (makes updating cart NOT more effective)
+
+- added Waiting List capability by Zephware.com
+  To use this, activate Stock checking
+  by checking "CHECK_STOCK" in the phpShop configuration;
+  If a shopper wants more items than you have in stock, he can
+  add himself to a waiting list and is notified, when the desired item
+  is available in this quantity.
+
+- added the Zone Shipping Module from Zephware.com
+  Please check "ZONE_ENABLE" at the phpShop configuration page.
+
+
+
+25 Jan 2004
+version 1.0.2a beta
+*******************
+
+- rewrote the SQL inject detection script. 
+  (I had problems with Simpleboard messages)
+
+- table "mos_users" will not be touched any longer:
+  I've moved the field 'perms' to table 'mos_pshop_user_info'.
+  
+- fixed an error (and hopefully the last with an old phpShop sql query) 
+  in ps_intershipper.php
+
+24 Jan 2004
+version 1.0.2 beta
+******************
+Installation hint: 
+Please don't use a link to your phpShop component as a 1 line menu item
+in the main menu, but publish the while phpShop menu. It's developed to be used
+in that way, otherwise I can't guarantee full functionality.
+
+Security Fixes:
+    - added some basic SQL inject detection.
+      The module and frontend component will check
+      the REQUEST array for basic SQL commands
+      Please report any issues and hints to 
+      improve this functionality
+    - offset value is tested if it's integer
+    - shipto site can't be used to gain customer
+      information any longer
+
+- nearly all links now have the document name (index.php) integrated
+
+- Updating and adding shipping adresses will not cause
+  any sql errors (renamed table user_info to #__pshop_user_info in ps_user_address.php)
+  
+- changed product form: 
+    * better availability date handling,
+    * checkbox for featuring a product ("on special?")
+
+- individual shipping methods can be added and deleted now.
+  Upgrade your older versions with the sql script: 
+  2 functions have been added (shipAdd, shipDelete)
+  
+- country update brings no sql error
+
+- changed the phpshop-admin header (better looking submit buttons). 
+  I you don't like it, keep your old header.php
+
+- added "special products management" by MrPHP, 
+  including a new module: "mod_featureprod.php" to display
+  featured products on the frontpage.
+
+- added "advanced cart" by MrPHP, you now can update all product quantities with one click
+
+
+15 Jan 2004
+version 1.0.1 beta
+******************
+
+-   Okay. The installer file sucked.
+    Try this one for the component instead.
+    The install process was completely reworked.
+    
+    the directories
+    /classes
+    /html
+    /languages
+    /shop_image/*
+    
+    and their files are packed into a tar archive now.
+    
+    Installing the component now takes 2 steps:
+        - MOS component install
+        - tar unpacking and sql querying
+        
+    !! You don't need to download any tar-unpacking programs 
+       when using M$ Windows !!
+       
+    You'll be taken through the installation process step by step.
+
+- the shop.index file now doesn't display "Washupito's Tiendita" anymore,
+  but just the store name you gave it.
+  
+- vendor image now displayed correctly in store form
+
+- a change has come to the field 'perms' in table mos_users: 
+  it's now 'shopper' by default
+  
+- slightly changed the aauthentication process in phpshop.php and mod_phpshop.php
+  so the module has to be updated to version 1.0.1 beta too
+  
+- you can assign products to different vendors when adding them to the DB
+
+14 Jan 2004
+version 1.0 beta
+******************
+
+NOTE: There haven't been ANY changes to the phpshop tables,
+      so you can import your mos_pshop_XXXXX tables from
+      your version 0.9-dev. 
+---------------------------------------------------------------------
+!!!!! Remember to backup your mos_pshop_XXXXX tables before     !!!!!
+!!!!! deleting the 0.9-dev component, if you want to keep       !!!!!
+!!!!! the stored data.                                          !!!!!
+---------------------------------------------------------------------
+
+- better error handling (no longer empty error pages);
+  when form-validation errors occur, you are redirected 
+  to the page you came from
+
+- extensive Help Data (english and german version) available
+  as extra download
+
+- when no product image is available (because you saved none)
+  the picture "noimage.gif" will be shown. Change it to
+  fit your needs or language.
+  
+- you can order something now without having to give away
+  your credit card information
+
+- Paying by PayPal now is possible (on the order-view page
+  in your account maintenance; checkout.thankyou.php)
+
+- phpshop-admin gives out the module description now
+
+- you cannot longer access modules without permission 
+  (from public backend and administrator interface) e.g. by
+  changing the page parameter
+  
+- you get an error message now, when no user can be added from
+  the MOS user DB to the phpshop user DB
+  
+- slightly changed phpshop-admin header, which better fits into MOS admin style
+
+- Product images are uploaded and saved now
+
+- table "mos_pshop_ISshipping" completely renamed to mos_pshop_isshipping 
+  (all files now call 'mos_pshop_isshipping')
+
+- removed sql error at account maintenance (in ps_order.php)
+
+- you can add vendors now
+
+
+10 Jan 2004
+Version 0.9 dev
+******************
+- removed table 'mos_pshop_language' and it's sample data (that was much!)
+
+- added csv_upload component (Created by John Syben (webme.co.nz), Version 0.3 13 Sept 2002)
+
+- Lost Shopper Fix by Mr.PHP
+
+- Flypage Admin Link by Mr. PHP
+
+- Product Folders by Mr. PHP
+
+- Added "Report Basic" to administration
+
+- New: Module "latest products" to show the two latest products from the DB
+  on your portal. file: 'mod_phpshop_latestprod.php'
+  
+- New: Module "random products" to show 2 random products
+  from your portfolio. file: 'mod_phpshop_randomprod.php'
+  
+- added ability to have a position for the module
+  that it is loaded after the component
+  
+- added the ability to add, update and remove countries
+  and currencies
+  
+- fixed a problem when a click on an inner category would lead to nowhere
+
+
+05 Jan 2004
+Version 0.8 dev
+*****************
+- Initial release

@@ -1,0 +1,60 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  mambo-phpShop To-Do List
+  $Id: TODO.txt,v 1.5 2005/07/19 20:18:10 soeren_nb Exp $
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ Know Bugs
+##################
+
+* FedEX Module not ported to mambo-phpShop Shipping API (will it ever work?)
+
+ FEATURES
+##################
+* add a field "product_packing_unit" to mos_pshop_product
+
+* XML - Product Data Import/Export
+* XML - Order Data Import/Export
+
+* Allow unregistered Users to place an Order
+* make Orders changeable afterwards
+* Multiple-Currency Support 
+  * changeable by the Customer in the Frontend
+  * fetches Exchange Rates from the Federal Bank of Germany
+* Order Reports per Customer
+* Shipping Rate per Product
+* "Compare Products"
+* Tool to Remove all Products
+* Add Discount on *all* Products
+* Discount for Cart Total (> $100 = 1% discount...)
+* Tool to Remove Orphan Images
+
+* Gift- / Wish - List
+* allow "Send as Gift" with individual Text on Order
+
+* Modular Checkout
+* Changeable Registration Form
+  - allow Declaration of new Fields
+  - make Fields reorderable
+  - make Fields required / not required
+  - switch Shopper Group including / excluding tax
+
+ General to-do 
+##################
+
+* Move Customer Information from mos_users to mos_pshop_user_info
+* Move Email Templates to /html/templates
+
+* Change $func to $mm_func
+* Change $page to $mm_page
+
+* improve performance
+  - Reduce Numbers of SQL Queries
+  - Remove doubled function calls
+  
+* XHTML - Compliance, make it Barrier-free
+* clean up checkout
+
+ Open Payment Gateways
+######################
+
+* Payfuse

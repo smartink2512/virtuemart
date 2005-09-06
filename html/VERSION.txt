@@ -1,0 +1,26 @@
+<?php
+/* $Id: VERSION.txt,v 1.2 2005/06/23 18:59:16 soeren_nb Exp $
+* 
+* @package Mambo Open Source
+* @Copyright (C) 2000 - 2003 Miro International Pty Ltd
+* @ All rights reserved
+* @ Mambo Open Source is Free Software
+* @ Released under GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
+* @version $Revision: 1.2 $
+*
+* @sub-package mambo-phpShop
+* mostly contains code from PHPShop:
+* Copyright (c) Edikon Corporation ( www.phpshop.org ).
+* Distributed under the GNU Public License (GPL)
+* 
+* www.mambo-phpshop.net
+*
+**/
+?>
+<br />
+<br />
+<div align="center">
+  <a href="http://www.mambo-phpshop.net" target="_blank">
+    <img src="<? echo IMAGEURL ?>ps_image/com_phpshop_poweredby.gif" border="0" alt="Powered by mambo-phpShop" />
+  </a>
+</div>

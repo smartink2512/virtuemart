@@ -1,0 +1,292 @@
+<?php
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+/*
+* @version $Id: ps_zone.php,v 1.5 2005/02/22 18:57:20 soeren_nb Exp $
+* @package mambo-phpShop
+*
+* @copyright (C) 2000 - 2004 devcompany.com  All rights reserved.
+* @author Mike Wattier - geek@devcompany.com
+* Conversion to Mambo and the rest:
+* 	@copyright (C) 2004-2005 Soeren Eberhardt
+*
+* @license phpShop Public License (pSPL) Version 1.0
+*
+* mambo-phpShop is Free Software.
+* mambo-phpShop comes with absolute no warranty.
+*
+* www.mambo-phpshop.net
+* 
+* Welcome To The Shipping Zone =]
+*/
+
+
+class ps_zone {
+  var $classname = "ps_zone";
+  
+  /*
+  ** VALIDATION FUNCTIONS
+  **
+  */
+
+  function validate_add(&$d) {
+    
+    $db = new ps_DB;
+   
+    $q = "SELECT * from #__pshop_zone_shipping WHERE zone_name='" . $d["zone_name"] . "'";
+    $db->query($q);
+    if ($db->next_record()) {
+      $d["error"] = "ERROR:  This Zone Name already exists. Please select another name.";
+      return False;
+    } 
+    if (!$d["zone_cost"]) {
+      $d["error"] = "ERROR:  You must enter a per item zone cost. For Free shipping enter 0.00";
+      return False;
+    }
+    if (!$d["zone_limit"]) {
+      $d["error"] = "ERROR:  You must either enter a zone limit OR a 0.00 for no limit ";
+      return False;
+    }
+
+    if ($d["zone_limit"] > "0") {
+      if($d["zone_cost"] > $d["zone_limit"]) {
+      $d["error"] = "ERROR:  The cost can not be higher than the limit.\n";
+      $d["error"] .= "If you wish to have no limit, enter 0.00 as your limit.";
+      return False;
+    }
+   }
+    if (!$d["zone_name"]) {
+      $d["error"] = "ERROR:  You must enter a Zone Name.";
+      return False;
+    }
+    return True;    
+  }
+  
+  function validate_delete($d) {
+    
+    if (!$d["zone_id"]) {
+      $d["error"] = "ERROR:  Please select a zone to delete.";
+      return False;
+    }
+    else {
+      return True;
+    }
+  }
+  
+  function validate_update(&$d) {
+    $db = new ps_DB;
+
+    if (!$d["zone_id"]) {
+      $d["error"] = "ERROR:  You must select a zone to update.";
+      return False;
+    }
+    if (!$d["zone_cost"]) {
+      $d["error"] = "ERROR:  You must enter a per item zone cost.\n";
+      $d["error"] .= "For free shipping, enter 0.00.";
+      return False;
+    }
+
+    if (!$d["zone_limit"]) {
+      $d["error"] = "ERROR:  You must either enter a zone limit OR a 0.00 for no limit ";
+      return False;
+    }
+
+    if ($d["zone_limit"] > "0") {
+      if($d["zone_cost"] > $d["zone_limit"]) {
+      $d["error"] = "ERROR:  The cost can not be higher than the limit.\n";
+      $d["error"] .= "If you wish to have no limit, enter 0 as your limit.";
+      return False;
+    }
+   }
+
+    if (!$d["zone_name"]) {
+      $d["error"] = "ERROR:  You must enter a Zone Name.";
+      return False;
+    }
+    return True;
+  }
+    function validate_assign(&$d) {
+
+    if (!$d["zone_id"]) {
+      $d["error"] = "ERROR:  You must select a zone.";
+      return False;
+    }
+    if (!$d["country_id"]) {
+      $d["error"] = "ERROR:  You must select a country.";
+      return False;
+    }
+    return True;
+  }
+  
+  /**************************************************************************
+   * name: add()
+   * created by: mike
+   * description: creates a new zone rate record
+   * parameters:
+   * returns:
+   **************************************************************************/
+  function add(&$d) {
+    $db = new ps_DB; 
+    $ps_vendor_id = $_SESSION["ps_vendor_id"];
+    $timestamp = time();
+    
+    if (!$this->validate_add($d)) {
+      return False;
+    }
+    
+    foreach ($d as $key => $value)
+        $d[$key] = addslashes($value);
+        
+    $q = "INSERT INTO #__pshop_zone_shipping (zone_name, zone_cost, ";
+    $q .= "zone_limit, zone_description, zone_tax_rate) VALUES ('";
+    $q .= $d["zone_name"] . "','";
+    $q .= $d["zone_cost"] . "','";
+    $q .= $d["zone_limit"] . "','";
+    $q .= $d["zone_description"] . "','";
+    $q .= $d["zone_tax_rate"] . "')";
+    $db->query($q);
+    $db->next_record();
+    return True;
+
+  }
+  
+  /**************************************************************************
+   * name: update()
+   * created by: mike
+   * description: updates function information
+   * parameters:
+   * returns:
+   **************************************************************************/
+  function update(&$d) {
+    $db = new ps_DB; 
+    $ps_vendor_id = $_SESSION["ps_vendor_id"];
+    $timestamp = time();
+
+    if (!$this->validate_update($d)) {
+      return False;	
+    }
+    
+    foreach ($d as $key => $value)
+        if( !is_array($value))
+          $d[$key] = addslashes($value);
+        
+        
+    $q = "UPDATE #__pshop_zone_shipping SET ";
+    $q .= "zone_name='" . $d["zone_name"];
+    $q .= "',zone_cost='" . $d["zone_cost"];
+    $q .= "',zone_limit='" . $d["zone_limit"];
+    $q .= "',zone_description='" . $d["zone_description"];
+    $q .= "',zone_tax_rate='" . $d["zone_tax_rate"];
+    $q .= "' WHERE zone_id='" . $d["zone_id"] . "'";
+    $db->query($q);
+    $db->next_record();
+    return True;
+  }
+
+  /**************************************************************************
+   * name: delete()
+   * created by: mike
+   * description: Should delete a category and and categories under it.
+   * parameters: 
+   * returns:
+   **************************************************************************/
+  function delete(&$d) {
+    $db = new ps_DB;
+    $ps_vendor_id = $_SESSION["ps_vendor_id"];
+    
+    if (!$this->validate_delete($d)) {
+      return False;
+    }
+    $q = "DELETE FROM #__pshop_zone_shipping WHERE zone_id='" . $d["zone_id"] . "'";
+    $db->query($q);
+    $db->next_record();
+    return True;
+  }
+  /**************************************************************************
+   * name: assign()
+   * created by: mike
+   * description: Assigns a zone to a country
+   * parameters:
+   * returns:
+   **************************************************************************/
+  function assign(&$d) {
+    $db = new ps_DB; 
+    $timestamp = time();
+
+    if (!$this->validate_assign($d)) {
+      return False;	
+    }
+    $q = "UPDATE #__pshop_country SET ";
+    $q .= "zone_id='" . $d["zone_id"];
+    $q .= "' WHERE country_id='" . $d["country_id"] . "'";
+    $db->query($q);
+    $db->next_record();
+    return True;
+  }
+  /**************************************************************************
+  ** name: list_zones($list_name,$value)
+  ** created by: pfmartin/mwattier
+  ** description:  Print an HTML dropdown box for the countries
+  ** parameters: $name - name of the HTML dropdown element
+  **             $value - Drop down item to make selected
+  **             $arr - array used to build the HTML drop down element
+  ** returns: prints HTML drop down element to standard output
+  ***************************************************************************/
+   function list_zones($list_name,$value) {
+     $db = new ps_DB;
+
+
+     $q = "SELECT * from #__pshop_zone_shipping ORDER BY zone_name ASC";
+     $db->query($q);
+
+       echo "<select class=\"inputbox\" name=$list_name>\n";
+      while ($db->next_record()) {
+       echo "<option value=\"" . $db->f("zone_id");
+       if ($value == $db->f("zone_id")) {
+	 echo "\" selected=\"selected\"";
+       }
+       echo "\">" . $db->f("zone_name") . "</option>\n";
+     }
+     echo "</select>\n";
+     return True;
+   }
+ /**************************************************************************
+  ** name: per_item($zone_id)
+  ** created by: mwattier <geek@devcompany.com>
+  ** description:  get the per item limit
+  ** parameters: 
+  **             
+  **             
+  ** returns: the cost limit for this zone
+  ***************************************************************************/
+   function per_item($zone_id) {
+      $db = new ps_DB;
+
+      $q = "SELECT zone_cost FROM #__pshop_zone_shipping WHERE zone_id ='$zone_id' ";
+      $db->query($q);
+      $db->next_record(); 
+
+      return $db->f("zone_cost");
+        
+   }
+
+  /**************************************************************************
+  ** name: zone_limit($zone_id)
+  ** created by: mwattier <geek@devcompany.com>
+  ** description:  get the per item limit
+  ** parameters: 
+  **             
+  **             
+  ** returns: the cost limit for this zone
+  ***************************************************************************/
+   function zone_limit($zone_id) {
+       $db = new ps_DB;
+
+     $q = "SELECT zone_limit FROM #__pshop_zone_shipping WHERE zone_id ='$zone_id' ";
+      $db->query($q);
+      $db->next_record(); 
+
+         return $db->f("zone_limit");
+        
+   }
+}
+?>

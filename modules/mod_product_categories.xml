@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<mosinstall type="module">
+    <name>mambo-phpShop Module</name>
+    <creationDate>05.04.2005</creationDate>
+    <author>Soeren Eberhardt</author>
+    <copyright>mambo-phpShop is released under GNU/GPLicense</copyright>
+    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
+    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <version>1.2</version>
+    <description>Shows mambo-phpShop Product Categories. !!!Requires the installation of the mambo-phpShop Main Module!!!</description>
+    <files>
+         <filename module="mod_product_categories">mod_product_categories.php</filename>
+    </files>
+    <params>
+      <param name="menutype" type="list" default="jscook" label="Category display type"
+      description="You can set the display type to *links* to have the default display type: a link list. If you set it to *dTree*, the categories will be displayed in a dTree structure.">
+        <option value="links">Link List</option>
+        <option value="jscook">JSCook</option>
+        <option value="dtree">dTree</option>
+      </param>
+      <param name="jscook_type" type="list" default="menu" label="JSCook Type" description="The Style for Displaying the categories: Menu or Tree">
+          <option value="menu">Menu</option>
+          <option value="tree">Tree</option>
+      </param>
+      <param name="jscookMenu_style" type="text" default="ThemeOffice" label="JSCookMenu Style" description="The Style for the JSCookMenu. Only fill in when you have selected JSCookMenu as Display Style" />
+      <param name="menu_orientation" type="list" default="hbr" label="JSCookMenu Orientation" description="If you choose JSCookMenu: Either let it display horizontal or vertical!">
+          <option value="hbr">Horizontal</option>
+          <option value="vbr">Vertical</option>
+      </param>
+      <param name="jscookTree_style" type="text" default="ThemeXP" label="JSCookTree Style" description="The Style for the JSCookTree. Only fill in when you have selected JSCookTree as Display Style" />
+      <param name="root_label" type="text" default="Shop" label="Label of the dTree Root" description="Whatever you fill in here: it will be displayed in the root of the dTree." />
+    </params>
+</mosinstall>

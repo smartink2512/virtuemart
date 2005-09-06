@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<mosinstall type="module">
+    <name>phpShop Search Module</name>
+    <creationDate>01.06.2004</creationDate>
+    <author>Edikon / Soeren Eberhardt</author>
+    <copyright>phpShop is released under GNU/GPLicense</copyright>
+    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
+    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <version>1.0</version>
+    <description>Shows the product search field</description>
+     <files>
+         <filename module="mod_phpshop_search">mod_phpshop_search.php</filename>
+     </files>
+</mosinstall>

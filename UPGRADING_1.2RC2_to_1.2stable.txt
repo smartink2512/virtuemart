@@ -1,0 +1,130 @@
+/*
+* $Id: UPGRADING_1.2RC2_to_1.2stable.txt,v 1.2 2005/05/25 19:04:48 soeren_nb Exp $
+*/
+
+UPGRADING 
+mambo-phpShop 1.2 RC2 TO mambo-phpShop 1.2 stable
+
+MANUAL INSTALLATION
+mambo-phpShop 1.2 stable
+
+
+ABOUT THIS FILE
+-----------------
+This file is meant to provide hints on the Upgrading and Manual Installation Procedure
+for mambo-phpShop 1.2 stable.
+
+
+ABOUT mambo-phpShop 1.2 stable
+------------------------------
+mambo-phpShop 1.2 stable comes with some important new features.
+
+For European Users the most important will be the Basket showing all Prices including tax 
+(when the Shopper Group has set its Flag "Show Prices including Tax" to >Yes<). 
+The Tax then is shown as (...including x.xx € Tax)
+
+There have been some changes to the database and a lot of bugs have been fixed.
+The bugs which have been found & fixed and the new features let me strongly recommend 
+everyone to upgrade to this new version immediately!
+
+
+INSTALLATION (for Upgraders & new Installations)
+--------------------------------------------------
+1. The same words everytime:
+   * BACKUP YOUR EXISTING FILES 
+	  AND 
+	 YOUR DATABASE FIRST. 
+	 (How do you want to recover your working version when something goes wrong?)
+  
+  You can use this component for Backing up your Mambo site:
+  http://mamboforge.net/projects/bigapebackup/
+  
+2. Unpack the archive file (the one which contains this file):
+
+	com_phpshop_x.x_UPDATE_and_MANUAL_INSTALLATION_PACKAGE.tar.gz
+	
+	You should now see two directories:
+	  * administrator
+	  and
+	  * components
+	
+	The directory structure in those directories is the
+	same as in your Mambo site.
+	Open up an FTP Connection to your site and upload
+	both directories to your Mambo site.
+	
+	/components
+	to
+	  /path-to-mambo-root/components/
+
+	/administrator
+	to
+	  /path-to-mambo-root/administrator/
+	  
+	This will overwrite existing files in the directories
+	  * /components/com_phpshop
+	and
+	  * /administrator/components/com_phpshop
+	
+	Your configuration file will not be overwritten.
+
+
+3a. NEW manual INSTALLATION 
+	
+	* Login in to the Mambo Administration (the so-called Backend).
+	  http://www.xxxxxx.com/administrator/
+	
+	* When having logged in, you see this URL in the address bar:
+	  http://www.xxxxxx.com/administrator/index2.php
+	
+	* Now just add "?option=com_phpshop" after index2.php, so it looks like this
+	  in your browser's address bar:
+	  
+		http://www.xxxxxx.com/administrator/index2.php?option=com_phpshop
+	
+	  and submit (press Enter).
+	
+	* You should now see the "Installation was successful..." Screen.
+	  There you can click on 
+		"GO TO THE SHOP >>" 
+	  or on
+		"INSTALL SAMPLE DATA" (when you want to have some sample products and categories in your Shop).
+
+	* That's it.
+	
+	
+3b. For UPGRADERS
+	
+	* Login in to the Mambo Administration
+	* Select "mambo-phpShop" from the Components Menu
+	* You should now see the "Installation was successful..." Screen.
+	  
+	  There you can click "UPGRADE FROM 1.2 RC2 >>"
+	  
+
+UPGRADING
+-----------
+4. Please update your mambo-phpShop Modules and Mambots too!!
+
+5. IMPORTANT!
+   Go to "mambo-phpShop" -> "Admin" -> "Configuration" and rewrite your Configuration File!
+
+6. Go to
+   Shopper -> List Shopper Groups
+   Go through each Shoper Group and decide
+   wether Shoppers in that Group should see the 
+   prices including Tax or not.
+   
+7. Go through each Shipping Method you use
+   and look wether the Tax Rate ID is ok or not!
+   Shipping Rates are taxed now...
+   
+FOR authorize.net/eWAy/eProcessingNetwork/PayMeNow USERS:
+  8. Go to
+	 Store -> List Payment Methods
+	 Click on your Payment Method (one of the 4 mentioned above)
+	 Edit the payment method
+	 and decide wether The Order Status should be
+	 updated to something else than "Pending" after
+	 a successful payment.
+

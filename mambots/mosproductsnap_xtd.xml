@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<mosinstall version="4.5.1" type="mambot" group="pat">
+    <name>mambo-phpShop Product Snapshot xtd</name>
+    <version>1.27</version>
+    <creationDate>March 2005</creationDate>
+    <author>mambo-phpShop Project</author>
+    <authorEmail>N/A</authorEmail>
+    <authorUrl>http://mambo-phpShop.net</authorUrl>
+    <copyright>nobody</copyright>
+    <license>GNU / GPL</license>
+    <description>Let's you add/edit snapshots of products in your mambo-phpShop. Enter multiple products by separating them with a |.</description>
+    <files>
+        <filename mambot="mosproductsnap_xtd">mosproductsnap_xtd.php</filename>
+	</files>
+	<params>
+		<param name="showname" type="radio" default="n" label="Show product name?" description="Defines whether or not to show the name of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="showimage" type="radio" default="n" label="Show product thumbnail?" description="Defines whether or not to show the thumbnail of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="showdesc" type="radio" default="n" label="Show product short description?" description="Defines whether or not to show the short description of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="showprice" type="radio" default="n" label="Show product price?" description="Defines whether or not to show the price of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="quantity" type="text" default="1" label="How many to add to cart?" description="Used when showaddtocart equals y" />
+		<param name="showaddtocart" type="radio" default="n" label="Show 'add to cart' link?" description="Defines whether or not to show the price of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="displayeach" type="radio" default="h" label="Display orientation for product info" description="Defines the orientation of the display of product name, image etc for each product">
+			<option value="h">Horizontal</option>
+			<option value="v">Vertical</option>
+		</param>
+		<param name="displaylist" type="radio" default="v" label="Display orientation for each product" description="Defines the orientation of the display each product. Only applies if there is more than one product in the snapshot (for multiple products enter the ids separated by |)">
+			<option value="h">Horizontal</option>
+			<option value="v">Vertical</option>
+		</param>
+	</params>
+</mosinstall>
