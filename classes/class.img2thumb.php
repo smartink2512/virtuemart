@@ -65,17 +65,9 @@ class Img2Thumb	{
 */
 	function Img2Thumb($filename, $newxsize=60, $newysize=60, $fileout='',
 		$thumbMaxSize=0, $bgred=0, $bggreen=0, $bgblue=0)
-	{
-		global $HTTP_POST_VARS, $HTTP_GET_VARS, $HTTP_COOKIE_VARS;
+	{		
 		
-		if (isset($HTTP_COOKIE_VARS))
-			$httpvars = $HTTP_COOKIE_VARS;
-		else if (isset($HTTP_POST_VARS))
-			$httpvars =  $HTTP_POST_VARS;
-   		else if (isset($HTTP_GET_VARS))
-   			$httpvars =  $HTTP_GET_VARS;
-		
-//	New modification - checks color int to be sure within range
+		//	New modification - checks color int to be sure within range
 		if($thumbMaxSize)
 		{
 			$this->maxSize = true;
@@ -110,7 +102,7 @@ class Img2Thumb	{
 		}
 		
 		
-		$this -> NewImgCreate($filename,$newxsize,$newysize,$fileout);
+		$this->NewImgCreate($filename,$newxsize,$newysize,$fileout);
 	}
 	
 /**
@@ -122,16 +114,9 @@ class Img2Thumb	{
 	{
 		$type = $this->GetImgType($filename);
 		
-		/* Original code removed in favor of 'switch' statement
-		if ($type=="png")
-		{
-			 $orig_img = imagecreatefrompng($filename);
-		}
-		if ($type=="jpg")
-		{
-			 $orig_img = imagecreatefromjpeg($filename);
-		}
-		*/
+		// free some memory
+		clearstatcache();
+		
 		switch($type)
 		{
 			case "gif":

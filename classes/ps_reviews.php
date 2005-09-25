@@ -216,17 +216,19 @@ class ps_reviews {
             $sql="INSERT INTO #__pshop_product_votes (product_id) VALUES (".$d["product_id"].")";
             $database->setQuery( $sql );
             $database->query();
-            $votes = '';
+            $votes = $d["user_rating"];
             $lastip = '';
             $allvotes = 0;
           }
+		  else {
+			$allvotes=intval( $votesdb->allvotes );
+			$votes=$d["user_rating"].','.$votesdb->votes;
+		  }
           $currip = getenv("REMOTE_ADDR");
 
-          $allvotes=intval( $votesdb->allvotes );
-          $votes=$d["user_rating"].','.$votesdb->votes;
           $votes_arr=explode(",", $votes);
           $votes_count=array_sum($votes_arr);
-          $newrating=$votes_count / ( ( $votesdb->allvotes )+1 );
+          $newrating=$votes_count / ( ( $allvotes )+1 );
           $newrating = round( $newrating );
           $sql="UPDATE #__pshop_product_votes SET allvotes=allvotes+1, rating=$newrating, votes='$votes', lastip='$currip' WHERE product_id='".$d["product_id"]."'";
           $database->setQuery( $sql );
@@ -283,12 +285,33 @@ class ps_reviews {
       return true;
   }
   
-  
-  function delete_review( &$d ) {
+  	/**
+	* Controller for Deleting Records.
+	*/
+	function delete_review( &$d ) {
+	
+		$record_id = $d["userid"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !ps_reviews::delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return ps_reviews::delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+	
       global $database, $my;
       
       $database->setQuery("SELECT user_rating FROM #__pshop_product_reviews "
-                                        ."WHERE product_id='".$d["product_id"]."' AND userid='".$d["userid"]."'");
+                                        ."WHERE product_id='".$d["product_id"]."' AND userid='$record_id'");
       $row  = $database->loadObjectList();
       $user_rating = $row[0]->user_rating;
       
@@ -307,14 +330,17 @@ class ps_reviews {
       }
       $votes_arr=explode(",", $votes);
       $votes_count=array_sum($votes_arr);
-      $newrating=$votes_count / ( ( $allvotes )-1 );
+	  if( ( $allvotes )-1 < 1 )
+		$newrating=0;
+	  else 
+		$newrating=$votes_count / ( ( $allvotes )-1 );
       $newrating = round( $newrating );
       $database->setQuery("UPDATE #__pshop_product_votes SET allvotes=allvotes-1, votes = '$votes', rating='$newrating'"
                                         ." WHERE product_id='".$d["product_id"]."'");
       $database->query();
       
       /** Now delete the review ***/
-      $database->setQuery("DELETE FROM #__pshop_product_reviews WHERE userid='".$d["userid"]."' AND product_id='".$d["product_id"]."'");
+      $database->setQuery("DELETE FROM #__pshop_product_reviews WHERE userid='$record_id' AND product_id='".$d["product_id"]."'");
       $database->query();
       
       return true;

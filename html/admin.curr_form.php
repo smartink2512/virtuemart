@@ -13,44 +13,47 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.mambo-phpshop.net
 */
 mm_showMyFileName( __FILE__ );
-?>
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_ADD ?></h2>
-<?php 
-  $limitstart = mosgetparam( $_REQUEST, 'limitstart');
-  $currency_id = mosgetparam( $_REQUEST, 'currency_id');
-  if ($currency_id) {
-    $q = "SELECT * from #__pshop_currency where currency_id='$currency_id'";
+
+$currency_id = mosgetparam( $_REQUEST, 'currency_id');
+if ($currency_id) {
+    $q = "SELECT * from #__pshop_currency WHERE currency_id='$currency_id'";
     $db->query($q);
     $db->next_record();
-  }
+}
+  
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_ADD );
+//Then Start the form
+$formObj->startForm();
+
 ?> 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table class="adminform">
     <tr> 
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" ALIGN="RIGHT"><?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_NAME ?>:</td>
+      <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_NAME ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="currency_name" value="<?php $db->sp("currency_name") ?>" />
-        <? if ($currency_id) { ?>
-          <input type="hidden" name="currency_id" value="<?php echo $currency_id ?>" />
-        <? } ?>
-        <input type="hidden" name="func" value="<?php if (isset($currency_id)) echo "currencyUpdate"; else echo "currencyAdd"; ?>" />
-        <input type="hidden" name="page" value="admin.curr_list" />
-        <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
       </td>
     </tr>
     <tr> 
       <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_CODE ?>:</td>
       <td width="76%"> 
-        <input type="text" class="inputbox" name="currency_code" value="<?php $db->sp("currency_code") ?>">
+        <input type="text" class="inputbox" name="currency_code" value="<?php $db->sp("currency_code") ?>" />
       </td>
     </tr>
-    
-    
+    <tr> 
+      <td colspan="2">&nbsp;</td>
+    </tr>
   </table>
-</form>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'currency_id', $currency_id );
 
+$funcname = !empty($currency_id) ? "currencyUpdate" : "currencyAdd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, 'admin.curr_list', $option );
+?>

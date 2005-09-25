@@ -583,18 +583,18 @@ class ps_order {
   ** returns:  True - validation passed
   **          False - validation failed
   ********************************************************************/
-  function validate_delete($d) {
+  function validate_delete($order_id) {
     
     $db = new ps_DB;
     
-    if(!$d["order_id"]) {
+    if(empty( $order_id )) {
        $this->error = "Unable to delete without the order id.";
        return False;
     }
     if( CHECK_STOCK == '1' ) {
       // Get the order items and update the stock level
       // to the number before the order was placed
-      $q = "SELECT product_id, product_quantity FROM #__pshop_order_item WHERE order_id='".$d["order_id"]."'";
+      $q = "SELECT product_id, product_quantity FROM #__pshop_order_item WHERE order_id='$order_id'";
       $db->query( $q );
       $dbu = new ps_DB;
       // Now update each ordered product
@@ -607,39 +607,52 @@ class ps_order {
     return True;
   }
 
- /***********************************************************************
-  ** name: delete()
-  ** created by: gday
-  ** description:  Delete the order in the database
-  ** parameters: $d
-  ** returns:  True - delete succeeded
-  **          False - delete failed
-  **********************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["order_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
   
-    if ($this->validate_delete($d)) {
-      $q = "DELETE from #__pshop_orders where order_id=" . $d["order_id"];
-      $db->query($q);
-      $db->next_record();
-
-      $q = "DELETE from #__pshop_order_item where order_id=" . $d["order_id"];
-      $db->query($q);
-      $db->next_record();
-
-      $q = "DELETE from #__pshop_order_payment where order_id=" . $d["order_id"];
-      $db->query($q);
-      $db->next_record();
-      
-      $q = "DELETE from #__pshop_product_download where order_id=" . $d["order_id"];
-      $db->query($q);
-      $db->next_record();
-      
-      return True;
-    }
-    else {
-      return False;
-    }
+		if ($this->validate_delete($record_id)) {
+			$q = "DELETE from #__pshop_orders where order_id='$record_id'";
+			$db->query($q);
+			$db->next_record();
+	
+			$q = "DELETE from #__pshop_order_item where order_id='$record_id'";
+			$db->query($q);
+			$db->next_record();
+	
+			$q = "DELETE from #__pshop_order_payment where order_id='$record_id'";
+			$db->query($q);
+			$db->next_record();
+		  
+			$q = "DELETE from #__pshop_product_download where order_id='$record_id'";
+			$db->query($q);
+			$db->next_record();
+		  
+			return True;
+		}
+		else {
+		  return False;
+		}
   }
   
   function order_print_navigation( $order_id=1 ) {

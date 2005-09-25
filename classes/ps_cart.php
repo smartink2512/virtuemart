@@ -45,7 +45,9 @@ class ps_cart {
   ***************************************************************************/  
   function add(&$d) {
     global $sess, $PHPSHOP_LANG;
-
+	
+	include_class("product");
+	
     $Itemid = mosgetparam($_REQUEST, "Itemid", null);
     $db = new ps_DB;
     $product_id = $d["product_id"];
@@ -107,66 +109,10 @@ class ps_cart {
     // Check to see if we already have it
     $updated = 0;
     
-    // added for the advanced attributes modification
-    //get listing of titles for attributes (Sean Tobin) 
-    $attributes=array(); 
-    $q = "SELECT attribute, custom_attribute FROM #__pshop_product WHERE product_id=$product_id"; 
-    $db->query($q); 
-    $db->next_record();  
-    $advanced_attribute_list=$db->f("attribute"); 
-    if ($advanced_attribute_list) {
-      $fields=explode(";",$advanced_attribute_list); 
-      foreach($fields as $field) { 
-        $base=explode(",",$field); 
-        $title=array_shift($base); 
-        array_push($attributes,$title); 
-      }      
-    } 
+	$result = ps_product_attribute::cartGetAttributes( &$d );
 
-    $description="";
-    $attribute_given = false;
-    foreach($attributes as $a) {
-      $pagevar=str_replace(" ","_",$a);
-      if (!empty($d[$pagevar])) {
-          $attribute_given = true;
-      }
-      if ($description!='') {
-          $description.="; ";
-      }
-       $description.=$a.":";
-       $description .= empty($d[$pagevar]) ? '' : $d[$pagevar];
-    } 
-    rtrim($description);
-    $d["description"] = $description;
-    // end advanced attributes modification addition
-    
-   // added for custom fields by denie van kleef
-   $custom_attribute_list=$db->f("custom_attribute"); 
-    $custom_attribute_given = false;
-    if ($custom_attribute_list) { 
-      $fields=explode(";",$custom_attribute_list); 
-
-
-      $description=$d["description"];
-      foreach($fields as $field) 
-      {
-        $pagevar=str_replace(" ","_",$field);
-        if (!empty($d[$pagevar])) {
-            $custom_attribute_given = true;
-        }
-        if ($description!='') {
-            $description.="; ";
-        }
-         $description.=$field.":";
-         $description .= empty($d[$pagevar]) ? '' : $d[$pagevar];
-      } 
-      rtrim($description);
-      $d["description"] = $description;
-      // END add for custom fields by denie van kleef
-    }
-    if ( ($attribute_given == false && $advanced_attribute_list)
-        || ($custom_attribute_given == false && $custom_attribute_list)){
-        include_class("product");
+    if ( ($result["attribute_given"] == false && $result["advanced_attribute_list"])
+        || ($result["custom_attribute_given"] == false && $result["custom_attribute_list"])){
         $flypage = ps_product::get_flypage($product_id);
         mosRedirect("index.php?option=com_phpshop&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$_POST[category_id]&Itemid=$Itemid", $PHPSHOP_LANG->_PHPSHOP_CART_SELECT_ITEM);
     } 
@@ -192,6 +138,8 @@ class ps_cart {
       $_SESSION['cart'][$k]["description"] = $d["description"];
       $_SESSION['cart']["idx"]++;
     }
+	else
+		$this->update( $d );
     
     /* next 3 lines added by Erich for coupon code */
     /* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
@@ -214,6 +162,8 @@ class ps_cart {
   ***************************************************************************/    
   function update(&$d) {
     global $sess,$PHPSHOP_LANG;
+
+	include_class("product");
 
     $db = new ps_DB;
     $product_id = $d["product_id"];
@@ -263,15 +213,16 @@ class ps_cart {
         $this->delete($d);
     }
     else {
-      for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
-          // modified for the advanced attribute modification
-          if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
-               && 
-              ($_SESSION['cart'][$i]["description"] == $d["description"] )
-            ) {
-              $_SESSION['cart'][$i]["quantity"] = $quantity;
-        }
-      }
+
+		for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
+			// modified for the advanced attribute modification
+			if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
+				&& 
+				($_SESSION['cart'][$i]["description"] == $d["description"] )
+			) {
+				$_SESSION['cart'][$i]["quantity"] = $quantity;
+			}
+		}
     }
     if( !empty( $_SESSION['coupon_discount'] )) {
       // Update the Coupon Discount !!

@@ -16,38 +16,30 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
-$product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
-?>
+$return_args = mosgetparam($_REQUEST, 'return_args');
+if( is_array( $product_id ))
+	$product_id = (int)$product_id[0];
 
-<img src="<?php echo IMAGEURL ?>ps_image/categories.gif" border="0" />
-<span class="sectionname"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL ?>
-<?php
+$product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
+
+$title = '<img src="'. IMAGEURL .'ps_image/categories.gif" border="0" />'.$PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL;
 if (!empty($product_parent_id)) {
-  echo " Item: ";
+  $title .= " Item: ";
 } else {
-  echo " Product: ";
+  $title .= " Product: ";
 }
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
-echo "<a href=\"" . $sess->url($url) . "\">";
-echo $ps_product->get_field($product_id,"product_name");
-echo "</a>";
-?>
-</span>
+$title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name"). "</a>";
 
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm();
+
+?>
 <br /><br />
-  
-  <?php
-/*
-require_once(CLASSPATH.'ps_shopper_group.php');
-$ps_shopper_group = new ps_shopper_group;
-require_once(CLASSPATH.'ps_vendor.php');
-$ps_vendor = new ps_vendor;
-*/
 
-$db = new ps_DB;
-?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" >
-  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+<table class="adminform">
     <tr> 
       <td valign="top" colspan="2"> 
         </td>
@@ -59,37 +51,33 @@ $db = new ps_DB;
       <td width="77%" height="10" >
         <select class="inputbox" name="product_type_id">
           <?php 
-              $db = new ps_DB;
-	      $q  = "SELECT * FROM #__pshop_product_product_type_xref ";
-	      $q .= "WHERE product_id='".$product_id."'";
-              $db->query( $q );
+	$q  = "SELECT * FROM #__pshop_product_product_type_xref ";
+	$q .= "WHERE product_id='".$product_id."'";
+	$db->query( $q );
               
-              $q  = "SELECT product_type_id, product_type_name, product_type_list_order ";
-              $q .= "FROM `#__pshop_product_type` ";
-              $q .= "WHERE 1 = 1 ";
-              while( $db->next_record() ) {
-                  $q .= "AND product_type_id != '".$db->f("product_type_id")."' ";
-              }
-	      $q .= "ORDER BY product_type_list_order ASC";
-              $db->query( $q );
+	$q  = "SELECT product_type_id, product_type_name, product_type_list_order ";
+	$q .= "FROM `#__pshop_product_type` ";
+	while( $db->next_record() ) {
+		$q .= "AND product_type_id != '".$db->f("product_type_id")."' ";
+	}
+	$q .= "ORDER BY product_type_list_order ASC";
+	$db->query( $q );
              
-              while( $db->next_record() ) {
-                echo "<option value=\"".$db->f("product_type_id")."\">".$db->f("product_type_name")."</option>";
-              }
-              echo "</select>";
-        ?>
+	while( $db->next_record() ) {
+		echo "<option value=\"".$db->f("product_type_id")."\">".$db->f("product_type_name")."</option>";
+	}
+	echo "</select>";
+	?>
       </td>
     </tr>
-  </table>
-  <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
-  <input type="hidden" name="product_parent_id" value="<?php echo $product_parent_id; ?>" />
-  <input type="hidden" name="func" value="productProductTypeAdd" />
-  <input type="hidden" name="page" value="<?php echo $modulename ?>.product_product_type_list" />
-  <?php $return_args = mosgetparam( $_REQUEST, 'return_args'); ?>
-  <input type="hidden" name="return_args" value="<?php echo $return_args; ?>" />
-  <input type="hidden" name="option" value="com_phpshop" />
-  <input type="hidden" name="task" value="" />
-  <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-  <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-</form>
-<!-- /** Changed Product Type - End */ -->
+</table>
+
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'product_id', $product_id );
+$formObj->hiddenField( 'product_parent_id', $product_parent_id );
+$formObj->hiddenField( 'return_args', $return_args );
+//
+// finally close the form:
+$formObj->finishForm( 'productProductTypeAdd', $modulename.'.product_product_type_list', $option );
+?>

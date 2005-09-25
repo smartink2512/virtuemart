@@ -64,15 +64,24 @@ class ps_module {
    * returns:
 **************************************************************************/
 
-  function validate_delete($d) {
-    
-    if (!$d[ 'module_id' ]) {
+  function validate_delete($module_id) {
+    global $db;
+	
+    if (empty($module_id)) {
       $this->error = "ERROR:  Please select a module to delete.";
       return False;
     }
-    else {
-      return True;
-    }
+	
+    $db->query( "SELECT module_name FROM #__pshop_module WHERE module_id='$module_id'" );
+	$db->next_record();
+	$name = $db->f("module_name");
+	if( $name == "shop" || $name == "vendor" || $name == "product" || $name == "store" || $name == "order"
+		|| $name == "checkout" || $name == "account" ) {
+		$this->error = "Error: The module $name is a core module. It cannot be deleted.";
+		return false;
+	}
+	return True;
+    
   }
   
   
@@ -183,29 +192,44 @@ class ps_module {
     return true;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: pablo
-   * description: Should delete a category and and categories under it.
-   * parameters: 
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    global $db;
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+		
+		$record_id = $d["module_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
     
-    if (!$this->validate_delete($d)) {
-      $d[ 'error' ]=$this->error;
-      return False;
-    }
-    $q = "DELETE from #__pshop_function WHERE module_id='" . $d[ 'module_id' ] . "'";
-    $db->setQuery($q);
-    $db->query();
-
-    $q = "DELETE FROM #__pshop_module where module_id='" . $d[ 'module_id' ] . "'";
-    $db->setQuery($q);
-    $db->query();
-    return true;
-  }
+		global $db;
+		
+		if (!$this->validate_delete($record_id)) {
+			$d[ 'error' ]=$this->error;
+			return False;
+		}
+		
+		$q = "DELETE from #__pshop_function WHERE module_id='$record_id'";
+		$db->query($q);
+	
+		$q = "DELETE FROM #__pshop_module where module_id='$record_id'";
+		$db->query($q);
+		return true;
+	
+	}
 
   /**************************************************************************
    * name: get_dir()

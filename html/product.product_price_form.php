@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: product.product_price_form.php,v 1.7 2005/06/22 19:50:41 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -18,27 +14,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-?>
-
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_LBL ?></h2>
-  <?php
-require_once(CLASSPATH.'ps_shopper_group.php');
-$ps_shopper_group = new ps_shopper_group;
-require_once(CLASSPATH.'ps_vendor.php');
-$ps_vendor = new ps_vendor;
+$title = $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_LBL.'<br/>';
 
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 $product_price_id = mosgetparam($_REQUEST, 'product_price_id', 0);
-$product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
-
-$product_parent_id = !empty($product_parent_id) ? $product_parent_id : "";
+$product_parent_id = mosgetparam($_REQUEST, 'product_parent_id');
+$return_args = mosgetparam($_REQUEST, 'return_args');
 
 $db = new ps_DB;
 /* If Updating a Price */
 if (!empty($product_price_id)) {
   /* Get field values for update */
-  $q  = "SELECT * FROM #__pshop_product_price ";
-  $q .= "WHERE product_price_id='$product_price_id' ";
+  $q  = "SELECT * FROM #__pshop_product_price WHERE product_price_id='$product_price_id' ";
   $db->query($q); 
   $db->next_record();
 } 
@@ -51,26 +38,30 @@ elseif (empty($vars["error"])) {
 if (!empty($vars["product_price_id"])) {
   $product_price_id = $vars["product_price_id"];
   if (empty($product_parent_id)) {
-    echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT . " ";
+    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT . " ";
   } else {
-    echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM . " ";
+    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM . " ";
   }
 }
 else {
   if (empty($product_parent_id)) {
-    echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT . " ";
+    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT . " ";
   } else {
-    echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM . " ";
+    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM . " ";
   }
 }
 
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
-echo "<a href=\"" . $sess->url($url) . "\">";
-echo $ps_product->get_field($product_id,"product_name");
-echo "</a>"; 
+$title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name"). "</a>"; 
+
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm();
+
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" >
-  <table class="adminForm">
+
+<table class="adminForm">
     <tr> 
       <td valign="top" colspan="2"> 
         </td>
@@ -125,17 +116,19 @@ echo "</a>";
       <td colspan="2" height="22">&nbsp;</td>
     </tr>
   </table>
-  <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
-  <input type="hidden" name="product_parent_id" value="<?php echo $product_parent_id; ?>" />
-  <input type="hidden" name="product_price_id" value="<?php echo !empty($product_price_id) ? $product_price_id : ""; ?>" />
-  <input type="hidden" name="func" value="<?php echo !empty($product_price_id) ? "productPriceUpdate" : "productPriceAdd" ?>" />
-  <input type="hidden" name="page" value="<?php echo $modulename ?>.product_price_list" />
-  <input type="hidden" name="return_args" value="<?php echo $return_args; ?>" />
-  <input type="hidden" name="option" value="com_phpshop" />
-  <input type="hidden" name="task" value="" />
-  <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-  <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-</form>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'product_price_id', $product_price_id );
+$formObj->hiddenField( 'product_id', $product_id );
+$formObj->hiddenField( 'product_parent_id', $product_parent_id );
+$formObj->hiddenField( 'return_args', $return_args );
+
+$funcname = !empty($product_price_id) ? "productPriceUpdate" : "productPriceAdd";
+
+// finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.product_price_list', $option );
+?>
+
 <script type="text/javascript">
 // borrowed from OSCommerce with small modifications. 
 // All rights reserved.

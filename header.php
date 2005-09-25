@@ -19,27 +19,33 @@ mm_showMyFileName( __FILE__ );
 */
 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-global $error, $page, $ps_product;
+global $error, $page;
+$product_id = mosGetParam( $_REQUEST, 'product_id' );
 
-    $mod = array();
-    $q = "SELECT module_name,module_perms from #__pshop_module WHERE module_publish='Y'";
-    $q .= "AND module_name <> 'checkout' ORDER BY list_order ASC";
-    $db->query($q);
-    while ($db->next_record()) {
-        if ($perm->check($db->f("module_perms")))
-            $mod[] = $db->f("module_name");
-    }
-   if (!defined('_PSHOP_ADMIN')) {
-      $my_path = "includes/js/ThemeOffice/";
-      if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
-        echo "<script type=\"text/javaScript\" src=\"includes/js/mambojavascript.js\"></script>\n";
-        echo "<a href=\"index.php\" title=\"Back\"><h3>&nbsp;&nbsp;&gt;&gt; Back to the Main Site &lt;&lt;</h3></a>\n";
-      }
-    ?>
-    <link rel="stylesheet" href="<?php echo $my_path ?>theme.css" type="text/css" />
-    <link rel="stylesheet" href="administrator/templates/mambo_admin_blue/css/template_css.css" type="text/css" />
-    <script language="JavaScript" src="includes/js/JSCookMenu.js" type="text/javascript"></script>
-    <script language="JavaScript" src="<?php echo $my_path ?>theme.js" type="text/javascript"></script>
+if( is_array( $product_id ))
+	$recent_product_id = "";
+else
+	$recent_product_id = $product_id;
+	
+$mod = array();
+$q = "SELECT module_name,module_perms from #__pshop_module WHERE module_publish='Y'";
+$q .= "AND module_name <> 'checkout' ORDER BY list_order ASC";
+$db->query($q);
+while ($db->next_record()) {
+	if ($perm->check($db->f("module_perms")))
+		$mod[] = $db->f("module_name");
+}
+if (!defined('_PSHOP_ADMIN')) {
+  $my_path = "includes/js/ThemeOffice/";
+  if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
+	echo "<script type=\"text/javaScript\" src=\"includes/js/mambojavascript.js\"></script>\n";
+	echo "<a href=\"index.php\" title=\"Back\"><h3>&nbsp;&nbsp;&gt;&gt; Back to the Main Site &lt;&lt;</h3></a>\n";
+  }
+?>
+<link rel="stylesheet" href="<?php echo $my_path ?>theme.css" type="text/css" />
+<link rel="stylesheet" href="administrator/templates/mambo_admin_blue/css/template_css.css" type="text/css" />
+<script language="JavaScript" src="includes/js/JSCookMenu.js" type="text/javascript"></script>
+<script language="JavaScript" src="<?php echo $my_path ?>theme.js" type="text/javascript"></script>
 <?php }
     else {
       $my_path = "../includes/js/ThemeOffice/";
@@ -96,17 +102,17 @@ var phpShopMenu =
                         _cmSplit,
                         [_cmNoAction,'<td class="ThemeOfficeMenuFolderLeft">&nbsp;</td><td colspan="2" align="center" class="ThemeOfficeMenu"><strong><?php echo $lbl ?></strong></td>'],
                         <?php    
-                        if (!empty($_REQUEST['product_id']) && empty($_REQUEST['product_parent_id'])) { 
+                        if (!empty($recent_product_id) && empty($_REQUEST['product_parent_id'])) { 
                               if (!isset($return_args)) $return_args = ""; ?> 
                         
                         ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENT_PRODUCT ?>',null,null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENT_PRODUCT ?>',
-                            ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_attribute_list&product_id=$product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_MNU ?>'],
-                            ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_attribute_form&product_id=$product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_MNU ?>'],
-                            ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_price_list&product_id=$product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>'],
-                            ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_product_type_list&product_id=$product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>'],
-                            ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_product_type_form&product_id=$product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU ?>']
-                            <?php if ($ps_product->product_has_attributes($_REQUEST['product_id'])) { ?>
-                            ,['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_form&product_parent_id=$product_id"); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU ?>']
+                            ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_attribute_list&product_id=$recent_product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_MNU ?>'],
+                            ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_attribute_form&product_id=$recent_product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_MNU ?>'],
+                            ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_price_list&product_id=$recent_product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>'],
+                            ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_product_type_list&product_id=$recent_product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>'],
+                            ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_product_type_form&product_id=$recent_product_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU ?>']
+                            <?php if ($ps_product->product_has_attributes($recent_product_id)) { ?>
+                            ,['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_form&product_parent_id=$recent_product_id"); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU ?>']
                             <?php } ?>
                         ],
                         _cmSplit,
@@ -114,9 +120,9 @@ var phpShopMenu =
                         elseif (!empty($_REQUEST['product_parent_id'])) { ?> 
                     
                             ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENT_ITEM ?>',null,null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENT_ITEM ?>',
-                                ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>','<?php @$sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_price_list&product_id=$product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>'],
+                                ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>','<?php @$sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_price_list&product_id=$recent_product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_MNU ?>'],
                                 ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_form&product_parent_id=" . $product_parent_id); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU ?>'],
-								['<img src="<?php echo $my_path ?>content.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>','<?php @$sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_product_type_list&product_id=$product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>'],
+								['<img src="<?php echo $my_path ?>content.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>','<?php @$sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_product_type_list&product_id=$recent_product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args)); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU ?>'],
                                 ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_RETURN_LBL ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_form&product_id=" . $product_parent_id); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_RETURN_LBL ?>']
                             ],
                         _cmSplit,
@@ -127,8 +133,8 @@ var phpShopMenu =
                         _cmSplit,
                         ['<img src="<?php echo $my_path ?>media.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_FILEMANAGER ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.filemanager"); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_FILEMANAGER ?>'
                         <?php 
-                        if( !empty($product_id) ) { ?>
-                            ,['<img src="<?php echo $my_path ?>media.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_FILEMANAGER_ADD ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.file_form&product_id=$product_id"); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_FILEMANAGER_ADD ?>']],
+                        if( !empty($recent_product_id) ) { ?>
+                            ,['<img src="<?php echo $my_path ?>media.png" />','<?php echo $PHPSHOP_LANG->_PHPSHOP_FILEMANAGER_ADD ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.file_form&product_id=$recent_product_id"); ?>',null,'<?php echo $PHPSHOP_LANG->_PHPSHOP_FILEMANAGER_ADD ?>']],
                         <?php 
                         }
                         else echo "],";

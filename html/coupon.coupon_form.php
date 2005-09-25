@@ -17,36 +17,37 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $coupon_id = mosGetParam( $_REQUEST, 'coupon_id', null );
-$limitstart = mosgetparam( $_REQUEST, 'limitstart');
 
 if ( $coupon_id ) {
-  $q = "SELECT * FROM #__pshop_coupons WHERE coupon_id='$coupon_id'";
-  $db->query($q);
-  $db->next_record();
-  if( $db->f("coupon_type")=="gift") {
-    $selected[0] = "selected=\"selected\"";
-    $selected[1] = "";
-  }
-  else {
-    $selected[1] = "selected=\"selected\"";
-    $selected[0] = "";
-  }
-  ?>
-  <h2><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_EDIT_HEADER ?></h2>
-  <?php 
+	$q = "SELECT * FROM #__pshop_coupons WHERE coupon_id='$coupon_id'";
+	$db->query($q);
+	$db->next_record();
+	if( $db->f("coupon_type")=="gift") {
+		$selected[0] = "selected=\"selected\"";
+		$selected[1] = "";
+	}
+	else {
+		$selected[1] = "selected=\"selected\"";
+		$selected[0] = "";
+	}
+	$title = $PHPSHOP_LANG->_PHPSHOP_COUPON_EDIT_HEADER;
+
 }
 else {
-  $selected[0] = "selected=\"selected\"";
-  $selected[1] = "";
-  ?>
-  <h2><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_NEW_HEADER ?></h2>
-  <?php 
+	$selected[0] = "selected=\"selected\"";
+	$selected[1] = "";
+	$title = $PHPSHOP_LANG->_PHPSHOP_COUPON_NEW_HEADER;
 }
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm();
+
 ?>
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-<script language="Javascript" src="includes/js/overlib_mini.js"></script>
-<form method="post" action="<? echo $_SERVER["PHP_SELF"] ?>" name="adminForm">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+<script type="text/javascript" src="includes/js/overlib_mini.js"></script>
+
+  <table class="adminform">
     <tr> 
       <td colspan="2">&nbsp;</td>
     </tr>
@@ -92,18 +93,12 @@ else {
     </tr>   
   </table>
 <?php 
-if (!empty( $coupon_id )) { ?>
-  <input type="hidden" name="coupon_id" value="<?php echo $coupon_id ?>" />
-  <input type="hidden" name="func" value="<?php echo "couponUpdate"; ?>" />
-<?php 
-}
-else { ?>
-  <input type="hidden" name="func" value="<?php echo "couponAdd"; ?>" />
-<?php 
-} ?>
-  <input type="hidden" name="page" value="<?php echo $modulename ?>.coupon_list" />
-  <input type="hidden" name="task" value="" />
-  <input type="hidden" name="option" value="com_phpshop" />
-  <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-</form>
+$funcname = !empty( $coupon_id ) ? 'couponUpdate' : 'couponAdd';
 
+// Add necessary hidden fields
+$formObj->hiddenField( 'coupon_id', $coupon_id );
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.coupon_list', $option );
+?>

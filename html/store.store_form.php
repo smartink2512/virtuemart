@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: store.store_form.php,v 1.11 2005/06/18 08:51:34 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -19,18 +15,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 include_class( "vendor" );
-global $ps_vendor;
-?>
-<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-<script language="Javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
-<img src="<?php echo IMAGEURL ?>ps_image/store.gif" border="0" alt="Store" />
-<span class="sectionname"><?php echo $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_LBL ?></span>
-<br /><br />
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" name="adminForm">
-<?php 
+global $ps_vendor, $ps_vendor_id;
+
 $q = "SELECT * FROM #__pshop_vendor WHERE vendor_id='$ps_vendor_id'"; 
 $db->query($q);  
 $db->next_record();
+
+$title = '<img src="'. IMAGEURL .'ps_image/store.gif" border="0" alt="Store" />'. $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_LBL;
+
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
+?>
+<br /><br />
+<?php 
 
 /* Build up the Tabs */
 $tabs = new mShopTabs(0, 1, "_main");
@@ -223,15 +222,7 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
     </tr>
     <tr> 
       <td width="22%" align="right" >&nbsp;</td>
-      <td width="78%" > 
-        <input type="hidden" name="func" value="<?php echo "vendorUpdate"; ?>" />
-        <input type="hidden" name="page" value="<?php echo $modulename ?>.display" />
-        <input type="hidden" name="vendor_id" value="<?php echo $ps_vendor_id ?>" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <input type="hidden" name="vendor_thumb_image_action" value="none" />
-        <input type="hidden" name="vendor_full_image_action" value="none" />
-        <input type="hidden" name="task" value="" />
-        </td>
+      <td width="78%" > &nbsp;</td>
     </tr>
   </table>
   <?php
@@ -291,9 +282,17 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
       <td colspan="2" align="center" >&nbsp;</td>
     </tr>
   </table>
-  <?php
-  $tabs->endTab();
-  $tabs->endPane();
-  ?>
-</form>
+<?php
+$tabs->endTab();
+$tabs->endPane();
 
+// Add necessary hidden fields
+$formObj->hiddenField( 'vendor_id', $ps_vendor_id );
+$formObj->hiddenField( 'vendor_thumb_image_action', 'none' );
+$formObj->hiddenField( 'vendor_full_image_action', 'none' );
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( "vendorUpdate", $modulename.'.display', $option );
+
+?>

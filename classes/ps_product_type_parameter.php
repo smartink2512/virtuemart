@@ -370,32 +370,46 @@ class ps_product_type_parameter {
     }
   }
 
-  /**************************************************************************
-  ** name: delete_parameter()
-  ** created by: Zdenek Dvorak
-  ** description: Should delete a Parameter form Product Type 
-  **              and drop column from table product_type_<id>
-  ** parameters: 
-  ** returns:
-  ***************************************************************************/
-  function delete_parameter(&$d) {
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete_parameter($d)) {
-      return False;
-    }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete_parameter(&$d) {
+		
+		if (!$this->validate_delete_parameter($d)) {
+		  return False;
+		}
+		$record_id = $d["parameter_name"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Should delete a Parameter form Product Type 
+	* and drop column from table product_type_<id>
+	*/
+	function delete_record( $record_id, &$d ) {
+		$db = new ps_DB;
 
-	/** Find parameter_type of deleted parameter */
-	$q  = "SELECT parameter_type FROM #__pshop_product_type_parameter";
-    $q2 = " WHERE product_type_id='" . $d["product_type_id"] . "' AND parameter_name='".$d["parameter_name"]."'";
-	$db->query($q.$q2);
-	if( $db->next_record() )
-		$parameter_type = $db->f("parameter_type");
-	else
-		$parameter_type = "B"; // Error - dont delete (maybe nonexisted) column from #__pshop_product_type_XX
 	
-    $q  = "DELETE FROM #__pshop_product_type_parameter";
-    $db->setQuery($q.$q2);   $db->query();
+		/** Find parameter_type of deleted parameter */
+		$q  = "SELECT parameter_type FROM #__pshop_product_type_parameter";
+		$q2 = " WHERE product_type_id='" . $d["product_type_id"] . "' AND parameter_name='$record_id'";
+		$db->query($q.$q2);
+		if( $db->next_record() )
+			$parameter_type = $db->f("parameter_type");
+		else
+			$parameter_type = "B"; // Error - dont delete (maybe nonexisted) column from #__pshop_product_type_XX
+		
+		$q  = "DELETE FROM #__pshop_product_type_parameter";
+		$db->setQuery($q.$q2);   $db->query();
 
 		// Delete index - deleted automaticaly
 /*		$q  = "ALTER TABLE `#__pshop_product_type_";
@@ -405,7 +419,7 @@ class ps_product_type_parameter {
     
 	if ($parameter_type!="B") { // != Break Line
 		// Delete column
-		$q  = "ALTER TABLE #__pshop_product_type_".$d["product_type_id"]." DROP `".$d["parameter_name"]."`";
+		$q  = "ALTER TABLE #__pshop_product_type_".$d["product_type_id"]." DROP `$record_id`";
 		$db->setQuery($q);   $db->query();
     }
         

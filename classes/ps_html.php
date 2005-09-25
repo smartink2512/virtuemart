@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: ps_html.php,v 1.15 2005/09/06 19:28:35 soeren_nb Exp $
+* @version $Id: ps_html.php,v 1.14 2005/08/26 09:27:11 dvorakz Exp $
 * @package mambo-phpShop
 * Contains code from PHPShop(tm):
 * 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
@@ -392,27 +392,29 @@ class ps_html {
 
 
 
-  /****************************************************************************
-   *    function:  list_extra_field_5
-   *  created by: Zdenek Dvorak
-   * description: Lists items of extra_field_5.
-   ****************************************************************************/
-  function list_extra_field_5($t, $extra="") {
-     global $PHPSHOP_LANG;
-     
-     $title = array(array('A',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1),
-                    array('B',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2),
-                    array('C',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3));
-     
-     echo "<select class=\"inputbox\" name=\"extra_field_5\" $extra>\n";
-     for ($i=0;$i<count($title);$i++) {
-        echo "<option value=\"" . $title[$i][0]."\"";
-        if ($title[$i][0] == $t)
-           echo " selected=\"selected\" ";
-        echo ">" . $title[$i][1] . "</option>\n";
-     }
-     echo "</select>\n";
-  }
+	/****************************************************************************
+	*    function:  list_extra_field_5
+	*  created by: Zdenek Dvorak
+	* description: Lists items of extra_field_5.
+	****************************************************************************/
+	function list_extra_field_5($t, $extra="") {
+		global $PHPSHOP_LANG;
+		 
+		$title = array(array('A',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1),
+					array('B',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2),
+					array('C',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3));
+		 
+		echo "<select class=\"inputbox\" name=\"extra_field_5\" $extra>\n";
+		for ($i=0;$i<count($title);$i++) {
+			echo "<option value=\"" . $title[$i][0]."\"";
+			if ($title[$i][0] == $t)
+			   echo " selected=\"selected\" ";
+			echo ">" . $title[$i][1] . "</option>\n";
+		}
+		echo "</select>\n";
+	}
+  
+  
   	/**
 	* Writes a select list of integers
 	* @param int The start integer
@@ -420,12 +422,22 @@ class ps_html {
 	*/
     function writableIndicator( $folder ) {
 
-  	echo '<div class="quote">' . $folder . '/ :: ';
-  	echo is_writable( $folder ) 
-		? '<span style="font-weight:bold;color:green;">Writeable</span>' 
-		: '<span style="font-weight:bold;color:red;">Unwriteable</span>';
-  	echo '</div>';
-  }
+		echo '<div class="quote">' . $folder . ' :: ';
+		echo is_writable( $folder ) 
+			? '<span style="font-weight:bold;color:green;">Writeable</span>' 
+			: '<span style="font-weight:bold;color:red;">Unwriteable</span>';
+		echo '</div>';
+	}
+  
+	function deleteButton( $id_fieldname, $id, $func, $keyword="", $limitstart=0, $extra="" ) {
+		global $page, $PHPSHOP_LANG;
+		
+		$code = "<a class=\"toolbar\" href=\"index2.php?option=com_phpshop&page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart".$extra."\" onclick=\"return confirm('".$PHPSHOP_LANG->_PHPSHOP_DELETE_MSG ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+		$code .= "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$id\" align=\"middle\" border=\"0\" />";
+		$code .= "</a>";
+		
+		return $code;
+	}
 }
  
 ?>

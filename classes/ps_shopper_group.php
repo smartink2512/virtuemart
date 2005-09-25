@@ -55,33 +55,6 @@ function validate_add($d) {
       $d["shopper_group_discount"] = 0;	
     }
   }
-  
-  /**************************************************************************
-  ** name: validate
-  ** created by:
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/    
-function validate_delete(&$d) {
-
-    $db = new ps_DB;
-
-    if (!$d["shopper_group_id"]) {
-      $d["error"] = "ERROR:  Please select a shopper group to delete.";
-      return False;
-    }
-    if ($d["shopper_group_id"]) {
-      $q = "SELECT * from #__pshop_shopper_group where shopper_group_id='";
-      $q .= $d["shopper_group_id"] . "' AND `default`='1'";
-      $db->query($q);
-      if ($db->next_record()) {
-        $d["error"] = "ERROR:  Cannot delete the default shopper group.";
-        return False;
-      }
-    }
-    return True;
-  }
 
   /**************************************************************************
   ** name: validate
@@ -103,6 +76,32 @@ function validate_update($d) {
     return True;
   }
   
+	  /**************************************************************************
+	  ** name: validate
+	  ** created by:
+	  ** description:
+	  ** parameters:
+	  ** returns:
+	  ***************************************************************************/    
+	function validate_delete( $shopper_group_id, &$d) {
+
+		$db = new ps_DB;
+	
+		if (!$shopper_group_id) {
+		  $d["error"] = "ERROR:  Please select a shopper group to delete.";
+		  return False;
+		}
+		
+		$q = "SELECT * FROM #__pshop_shopper_group WHERE shopper_group_id='";
+		$q .= $shopper_group_id . "' AND `default`='1'";
+		$db->query($q);
+		if ($db->next_record()) {
+			$d["error"] = "ERROR:  Cannot delete the default shopper group.";
+			return False;
+		}
+		
+		return True;
+	}
   
   /**************************************************************************
    * name: add()
@@ -201,33 +200,47 @@ function validate_update($d) {
     }
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by:
-   * description:
-   * parameters:
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    
-    if ($this->validate_delete($d)) {
-      $q = "DELETE FROM #__pshop_shopper_group WHERE shopper_group_id='" . $d["shopper_group_id"] . "'";
-      $db->query($q);
-      $db->next_record();
-
-      $q = "DELETE FROM #__pshop_shopper_vendor_xref WHERE shopper_group_id='" . $d["shopper_group_id"] . "'";
-      $db->query($q);
-      $db->next_record();
-
-      $q = "DELETE FROM #__pshop_product_price WHERE shopper_group_id='" . $d["shopper_group_id"] . "'";
-      $db->query($q);
-      $db->next_record();
-      return True;
-    }
-    else {
-      return False;
-    }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["shopper_group_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		
+		if ($this->validate_delete( $record_id, $d)) {
+		  $q = "DELETE FROM #__pshop_shopper_group WHERE shopper_group_id='$record_id'";
+		  $db->query($q);
+		  $db->next_record();
+	
+		  $q = "DELETE FROM #__pshop_shopper_vendor_xref WHERE shopper_group_id='$record_id'";
+		  $db->query($q);
+		  $db->next_record();
+	
+		  $q = "DELETE FROM #__pshop_product_price WHERE shopper_group_id='$record_id'";
+		  $db->query($q);
+		  $db->next_record();
+		  return True;
+		}
+		else {
+		  return False;
+		}
   }
   
   /**************************************************************************

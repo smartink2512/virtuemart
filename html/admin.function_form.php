@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: admin.function_form.php,v 1.4 2005/01/27 19:34:00 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -17,19 +13,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.mambo-phpshop.net
 */
 mm_showMyFileName( __FILE__ );
-?>
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_FUNCTION_FORM_LBL ?></h2>
-<?php 
 
-if (!empty($_REQUEST['function_id'])) {
-  $function_id = $_REQUEST['function_id'];
+$function_id = mosGetParam( $_REQUEST, 'function_id');
+$module_id = mosGetParam( $_REQUEST, 'module_id');
+
+if (!empty($function_id) {
   $q = "SELECT * from #__pshop_function where function_id='$function_id'";
   $db->query($q);
   $db->next_record();
 }
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_FUNCTION_FORM_LBL );
+//Then Start the form
+$formObj->startForm();
 ?> 
-<form method="post" action="<? echo $_SERVER["PHP_SELF"] ?>" name="adminForm">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <table class="adminform">
     <tr> 
       <td colspan="2">&nbsp;</td>
     </tr>
@@ -37,14 +35,6 @@ if (!empty($_REQUEST['function_id'])) {
       <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_FUNCTION_FORM_NAME ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="function_name" value="<?php $db->sp("function_name") ?>" />
-        <input type="hidden" name="function_id" value="<?php echo @$function_id ?>" />
-        <input type="hidden" name="module_id" value="<?php echo $module_id ?>" />
-        <input type="hidden" name="func" value="<?php if (!empty( $function_id )) echo "functionUpdate"; else echo "functionAdd"; ?>" />
-        <input type="hidden" name="page" value="<?php echo $modulename ?>.function_list" />
-        <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
       </td>
     </tr>
     <tr> 
@@ -74,10 +64,20 @@ if (!empty($_REQUEST['function_id'])) {
     </tr>
     <tr align="center"> 
       <td valign="top" colspan="2"> 
-        <textarea name="function_description" wrap="VIRTUAL" cols="60" rows="10"><?php $db->sp("function_description") ?></textarea>
+        <textarea name="function_description" cols="60" rows="10"><?php $db->sp("function_description") ?></textarea>
       </td>
     </tr>
    
   </table>
-</form>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'function_id', $function_id );
+$formObj->hiddenField( 'module_id', $module_id );
 
+$funcname = (!empty( $function_id )) ? "functionUpdate" : "functionAdd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, 'admin.function_list', $option );
+
+?>

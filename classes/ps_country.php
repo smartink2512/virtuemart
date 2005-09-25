@@ -191,10 +191,16 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"]=$this->error;
       return False;
     }
-    $q = "DELETE from #__pshop_country where country_id='" . $d["country_id"] . "'";
-    $db->setQuery($q);
-    $db->query();
-    $db->next_record();
+	if( is_array( $d["country_id"])) {
+		foreach($d["country_id"] as $country ) {
+			$q = "DELETE FROM #__pshop_country WHERE country_id='$country'";
+			$db->query($q);
+		}
+	}
+	else {
+		$q = "DELETE FROM #__pshop_country WHERE country_id='" . $d["country_id"] . "'";
+		$db->query($q);
+	}
     return True;
   }
   

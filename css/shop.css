@@ -3,3 +3,14 @@
 	font-style: italic;
 	color:		red;
 }
+
+.adminListHeader {
+	float:left; 
+	height: 48px; 
+	background-repeat: no-repeat;
+	text-align: left; 
+	font-size: 18px;
+	font-weight: bold;
+	padding-left: 80px;
+	
+}

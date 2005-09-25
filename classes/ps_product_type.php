@@ -51,18 +51,17 @@ class ps_product_type {
   ** parameters:
   ** returns:
   ***************************************************************************/
-  function validate_delete(&$d) {
+  function validate_delete( $product_type_id, &$d) {
 
     $db = new ps_DB;
 
-    if (!$d["product_type_id"]) {
+    if (empty( $product_type_id)) {
       $d["error"] = "ERROR:  Please select a Product Type to delete.";
       return False;
     }
 
     // Check for products assigned to this Product Type
-    $q  = "SELECT * from #__pshop_product_product_type_xref where product_type_id='";
-    $q .= $d["product_type_id"] . "'";
+    $q  = "SELECT * from #__pshop_product_product_type_xref where product_type_id='$product_type_id'";
     $db->setQuery($q);   $db->query();
     if ($db->next_record()) {
       $d["error"]  = "ERROR: This Product Type has product(s). ";
@@ -220,31 +219,44 @@ class ps_product_type {
     }
   }
 
-  /**************************************************************************
-  ** name: delete()
-  ** created by: Zdenek Dvorak
-  ** description: Should delete a Product Type and drop table product_type_<id>
-  ** parameters: 
-  ** returns:
-  ***************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-
-    $q = "DELETE FROM #__pshop_product_type WHERE product_type_id='" . $d["product_type_id"] . "'";
-    $db->setQuery($q);   $db->query();
-
-    $q  = "DELETE FROM #__pshop_product_product_type_xref ";
-    $q .= "WHERE product_type_id='" . $d["product_type_id"] . "'";
-    $db->setQuery($q);   $db->query();
-
-    $q  = "DROP TABLE IF EXISTS `#__pshop_product_type_".$d["product_type_id"]."`";
-    $db->setQuery($q);   $db->query();
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["product_type_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Should delete a Product Type and drop table product_type_<id>
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		
+		if (!$this->validate_delete( $record_id, $d)) {
+		  return False;
+		}
+	
+		$q = "DELETE FROM #__pshop_product_type WHERE product_type_id='$record_id'";
+		$db->setQuery($q);   $db->query();
+	
+		$q  = "DELETE FROM #__pshop_product_product_type_xref WHERE product_type_id='$record_id'";
+		$db->setQuery($q);   $db->query();
+	
+		$q  = "DROP TABLE IF EXISTS `#__pshop_product_type_".$record_id."`";
+		$db->setQuery($q);   $db->query();
+		return True;
+	}
 
 
   /**************************************************************************

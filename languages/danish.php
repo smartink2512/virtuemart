@@ -1,1766 +1,1365 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: danish.php,v 1.17 2005/06/22 19:50:42 soeren_nb Exp $
+* @version $Id: $
 * @package mambo-phpShop
 * @subpackage languages
 *
-* @copyright (C) 2004 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-*
-* Danish Translation: 2004-2005 Kristian Sandrini
-* Danish Validation: Julius L. Thy
 *
 * mambo-phpShop is Free Software.
 * mambo-phpShop comes with absolute no warranty.
 *
 * www.mambo-phpshop.net
 */
-class phpShopLanguage extends mosAbstractLanguage {
-
-    /*####################
-    GENERELLE DEFINITIONER
-    ####################*/
-    
-    var $_PHPSHOP_MENU = "Menu";
-    var $_PHPSHOP_CATEGORY = "Kategori";
-    var $_PHPSHOP_CATEGORIES = "Kategorier";
-    var $_PHPSHOP_SELECT_CATEGORY = "Vælg en kategori:";
-    var $_PHPSHOP_ADMIN = "Administration";
-    var $_PHPSHOP_PRODUCT = "Produkt";
-    var $_PHPSHOP_LIST = "List";
-    var $_PHPSHOP_ALL = "Alle";
-    var $_PHPSHOP_LIST_ALL_PRODUCTS = "Vis alle produkter";    
-    var $_PHPSHOP_VIEW = "gennemse";
-    var $_PHPSHOP_SHOW = "vis";
-    var $_PHPSHOP_ADD = "tilføj";
-    var $_PHPSHOP_UPDATE = "opdater";
-    var $_PHPSHOP_DELETE = "slet";
-    var $_PHPSHOP_SELECT = "vælg";
-    var $_PHPSHOP_SUBMIT = "Submit";
-    var $_PHPSHOP_RANDOM = "Tilfældige produkter";
-    var $_PHPSHOP_LATEST = "Nyeste produkter";
-    
-    /*#####################
-    MODULE ACCOUNT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_HOME_TITLE = "Hjem";
-    var $_PHPSHOP_CART_TITLE = "Indkøbsvogn";
-    var $_PHPSHOP_CHECKOUT_TITLE = "Til kasse";
-    var $_PHPSHOP_LOGIN_TITLE = "Log ind";
-    var $_PHPSHOP_LOGOUT_TITLE = "Log ud";
-    var $_PHPSHOP_BROWSE_TITLE = "Gennemse";
-    var $_PHPSHOP_SEARCH_TITLE = "Søg";
-    var $_PHPSHOP_ACCOUNT_TITLE = "Konto vedligeholdelse";
-    var $_PHPSHOP_NAVIGATION_TITLE = "Navigation";
-    var $_PHPSHOP_DEPARTMENT_TITLE = "Afdeling";
-    var $_PHPSHOP_INFO = "Information";
-    
-    var $_PHPSHOP_BROWSE_LBL = "Gennemse";
-    var $_PHPSHOP_PRODUCTS_LBL = "Produkter";
-    var $_PHPSHOP_PRODUCT_LBL = "Produkt";
-    var $_PHPSHOP_SEARCH_LBL = "Søg";
-    var $_PHPSHOP_FLYPAGE_LBL = "Produktdetaljer";
-    var $_PHPSHOP_PRODUCT_SEARCH_LBL = "Produktsøgning";
-    
-    var $_PHPSHOP_PRODUCT_NAME_TITLE = "Produktnavn";
-    var $_PHPSHOP_PRODUCT_CATEGORY_TITLE = "Produktkategori";
-    var $_PHPSHOP_PRODUCT_DESC_TITLE = "Beskrivelse";
-    
-    var $_PHPSHOP_CART_SHOW = "Vis vogn";
-    var $_PHPSHOP_CART_ADD_TO = "Læg i vogn";
-    var $_PHPSHOP_CART_NAME = "Navn";
-    var $_PHPSHOP_CART_SKU = "Varenr.";
-    var $_PHPSHOP_CART_PRICE = "Pris";
-    var $_PHPSHOP_CART_QUANTITY = "Antal";
-    var $_PHPSHOP_CART_SUBTOTAL = "Subtotal";
-    
-    # Some messages
-    var $_PHPSHOP_ADD_SHIPTO_1 = "Tilføj en ny";
-    var $_PHPSHOP_ADD_SHIPTO_2 = "Leveringsadresse";
-    var $_PHPSHOP_NO_SEARCH_RESULT = "Deres søgning returnerede 0 resultater.<br />";
-    var $_PHPSHOP_PRICE_LABEL = "Pris: ";
-    var $_PHPSHOP_ORDER_BUTTON_LABEL = "Læg i vogn";
-    var $_PHPSHOP_NO_CUSTOMER = "De er endnu ikke registreret som kunde. Vær venlig at indtaste faktureringsoplysningerne.";
-    var $_PHPSHOP_DELETE_MSG = "Er De sikker på at De ønsker at slette denne?";
-    var $_PHPSHOP_THANKYOU = "Tak for Deres ordre.";
-    var $_PHPSHOP_NOT_SHIPPED = "Endnu ikke afsendt";
-    var $_PHPSHOP_EMAIL_SENDTO = "En email der bekræfter Deres ordre er blevet sendt til";
-    var $_PHPSHOP_NO_USER_TO_SELECT = "Beklager, men der er ingen MOS-bruger at tilføje til com_phpshop brugerlisten";
-    
-    // Fejlmeldinger
-    
-    var $_PHPSHOP_ERROR = "FEJL";
-    var $_PHPSHOP_MOD_NOT_REG = "Modulet er ikke registreret.";
-    var $_PHPSHOP_MOD_ISNO_REG = "er ikke et gyldigt phpShop modul.";
-    var $_PHPSHOP_MOD_NO_AUTH = "De har ikke tilladelse til at benytte det ønskede modul.";
-    var $_PHPSHOP_PAGE_404_1 = "Siden eksisterer ikke";
-    var $_PHPSHOP_PAGE_404_2 = "Filnavnet eksisterer ikke. Kan ikke finde filen:";
-    var $_PHPSHOP_PAGE_403 = "Utilstrækkelige adgangsrettigheder";
-    var $_PHPSHOP_FUNC_NO_EXEC = "Du har ikke tilladelse til at afvikle ";
-    var $_PHPSHOP_FUNC_NOT_REG = "Funktionen er ikke registreret";
-    var $_PHPSHOP_FUNC_ISNO_REG = " er ikke en gyldig MOS_com_phpShop funktion.";
-    
-    /*#####################
-    MODULE ADMIN
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ADMIN_MOD = "Admin";
-    
-    
-    // User List
-    var $_PHPSHOP_USER_LIST_MNU = "Vis brugere";
-    var $_PHPSHOP_USER_LIST_LBL = "Brugerliste";
-    var $_PHPSHOP_USER_LIST_USERNAME = "Brugernavn (login navn)";
-    var $_PHPSHOP_USER_LIST_FULL_NAME = "Rigtigt navn";
-    var $_PHPSHOP_USER_LIST_GROUP = "Gruppe";
-    
-    // User Form
-    var $_PHPSHOP_USER_FORM_MNU = "Tilføj bruger";
-    var $_PHPSHOP_USER_FORM_LBL = "Tilføj/opdater bruger information";
-    var $_PHPSHOP_USER_FORM_BILLTO_LBL = "Bill To Information";
-    var $_PHPSHOP_USER_FORM_SHIPTO_LBL = "Leveringsadresse";
-    var $_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL = "Tilføj adresse";
-    var $_PHPSHOP_USER_FORM_ADDRESS_LABEL = "Modtagelsessted";
-    var $_PHPSHOP_USER_FORM_FIRST_NAME = "Fornavn";
-    var $_PHPSHOP_USER_FORM_LAST_NAME = "Efternavn";
-    var $_PHPSHOP_USER_FORM_MIDDLE_NAME = "Mellemnavn";
-    var $_PHPSHOP_USER_FORM_TITLE = "Titel";
-    var $_PHPSHOP_USER_FORM_USERNAME = "Brugernavn";
-    var $_PHPSHOP_USER_FORM_PASSWORD_1 = "Kodeord";
-    var $_PHPSHOP_USER_FORM_PASSWORD_2 = "Bekræft kodeord";
-    var $_PHPSHOP_USER_FORM_PERMS = "Permissions";
-    var $_PHPSHOP_USER_FORM_COMPANY_NAME = "Firmanavn";
-    var $_PHPSHOP_USER_FORM_ADDRESS_1 = "Addresse 1";
-    var $_PHPSHOP_USER_FORM_ADDRESS_2 = "Addresse 2";
-    var $_PHPSHOP_USER_FORM_CITY = "By";
-    var $_PHPSHOP_USER_FORM_STATE = "Stat/Provins/Region";
-    var $_PHPSHOP_USER_FORM_ZIP = "Postnr.";
-    var $_PHPSHOP_USER_FORM_COUNTRY = "Land";
-    var $_PHPSHOP_USER_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_USER_FORM_FAX = "Fax";
-    var $_PHPSHOP_USER_FORM_EMAIL = "Email";
-    
-    // Module List
-    var $_PHPSHOP_MODULE_LIST_MNU = "Vis moduler";
-    var $_PHPSHOP_MODULE_LIST_LBL = "Modul liste";
-    var $_PHPSHOP_MODULE_LIST_NAME = "Modul navn";
-    var $_PHPSHOP_MODULE_LIST_PERMS = "Modul tilladelser";
-    var $_PHPSHOP_MODULE_LIST_FUNCTIONS = "Funktioner";
-    var $_PHPSHOP_MODULE_LIST_ORDER = "Visningsrækkefølge";
-    
-    // Module Form
-    var $_PHPSHOP_MODULE_FORM_MNU = "Tilføj modul";
-    var $_PHPSHOP_MODULE_FORM_LBL = "Modul information";
-    var $_PHPSHOP_MODULE_FORM_MODULE_LABEL = "Modul mærke (til Topmenu)";
-    var $_PHPSHOP_MODULE_FORM_NAME = "Modul Navn";
-    var $_PHPSHOP_MODULE_FORM_PERMS = "Modul Tilladelser";
-    var $_PHPSHOP_MODULE_FORM_HEADER = "Modul Header";
-    var $_PHPSHOP_MODULE_FORM_FOOTER = "Modul Footer";
-    var $_PHPSHOP_MODULE_FORM_MENU = "Vis modul i Administrator menu?";
-    var $_PHPSHOP_MODULE_FORM_ORDER = "Visningsrækkefølge";
-    var $_PHPSHOP_MODULE_FORM_DESCRIPTION = "Modul beskrivelse";
-    var $_PHPSHOP_MODULE_FORM_LANGUAGE_CODE = "Sprog kode";
-    var $_PHPSHOP_MODULE_FORM_LANGUAGE_file = "Sprog fil";
-    
-    // Function List
-    var $_PHPSHOP_FUNCTION_LIST_MNU = "Vis funktioner";
-    var $_PHPSHOP_FUNCTION_LIST_LBL = "Funktion liste";
-    var $_PHPSHOP_FUNCTION_LIST_NAME = "Funktion navne";
-    var $_PHPSHOP_FUNCTION_LIST_CLASS = "Klasse navn";
-    var $_PHPSHOP_FUNCTION_LIST_METHOD = "Klasse metode";
-    var $_PHPSHOP_FUNCTION_LIST_PERMS = "Tilladelser";
-    
-    // Module Form
-    var $_PHPSHOP_FUNCTION_FORM_MNU = "Tilføj funktion";
-    var $_PHPSHOP_FUNCTION_FORM_LBL = "Funktion information";
-    var $_PHPSHOP_FUNCTION_FORM_NAME = "Funktion navn";
-    var $_PHPSHOP_FUNCTION_FORM_CLASS = "Klasse navn";
-    var $_PHPSHOP_FUNCTION_FORM_METHOD = "Klasse metode";
-    var $_PHPSHOP_FUNCTION_FORM_PERMS = "Funktion Tilladelser";
-    var $_PHPSHOP_FUNCTION_FORM_DESCRIPTION = "Funktion beskrivelse";
-    
-    // Currency form and list
-    var $_PHPSHOP_CURRENCY_LIST_MNU = "Vis valutaer";
-    var $_PHPSHOP_CURRENCY_LIST_LBL = "Valuta liste";
-    var $_PHPSHOP_CURRENCY_LIST_ADD = "Tilføj valuta";
-    var $_PHPSHOP_CURRENCY_LIST_NAME = "Valuta navn";
-    var $_PHPSHOP_CURRENCY_LIST_CODE = "Valuta kode";
-    
-    // Country form and list
-    var $_PHPSHOP_COUNTRY_LIST_MNU = "Vis lande";
-    var $_PHPSHOP_COUNTRY_LIST_LBL = "Lande liste";
-    var $_PHPSHOP_COUNTRY_LIST_ADD = "Tilføj land";
-    var $_PHPSHOP_COUNTRY_LIST_NAME = "Landenavn";
-    var $_PHPSHOP_COUNTRY_LIST_3_CODE = "Landekode (3)";
-    var $_PHPSHOP_COUNTRY_LIST_2_CODE = "Landekode (2)";
-    
-    /*#####################
-    MODULE CHECKOUT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ADDRESS = "Adresse";
-    var $_PHPSHOP_CONTINUE = "Fortsæt";
-    
-    # Some messages
-    var $_PHPSHOP_EMPTY_CART = "Deres indkøbsvogn er tom";
-    
-    
-    /*#####################
-    MODULE ISShipping
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ISSHIPPING_MOD = "InterShipper";
-    
-    
-    // Shipping Ping
-    var $_PHPSHOP_ISSHIP_PING_MNU = "Ping InterShipper-server";
-    var $_PHPSHOP_ISSHIP_PING_LBL = "InterShipper-server ping ";
-    var $_PHPSHOP_ISSHIP_PING_ERROR_LBL = "InterShipper ping fejlede";
-    var $_PHPSHOP_ISSHIP_PING_GOOD_LBL = "InterShipper ping lykkedes";
-    var $_PHPSHOP_ISSHIP_PING_CARRIER_LBL = "Transportør";
-    var $_PHPSHOP_ISSHIP_PING_RESPONSE_LBL = "Respons<br />Tid";
-    var $_PHPSHOP_ISSHIP_PING_TIME_LBL = "sec.";
-    
-    // Shipping List
-    var $_PHPSHOP_ISSHIP_LIST_MNU = "Vis forsendelsesmetoder";
-    var $_PHPSHOP_ISSHIP_LIST_LBL = "Aktive forsendelsesmetoder";
-    var $_PHPSHOP_ISSHIP_LIST_CARRIER_LBL = "Forsendelsesmetoder";
-    var $_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL = "Aktive";
-    var $_PHPSHOP_ISSHIP_LIST_RATE_LBL = "Ekspeditonsomkostninger";
-    var $_PHPSHOP_ISSHIP_LIST_LEAD_LBL = "Leveringstid";
-    var $_PHPSHOP_ISSHIP_LIST_CHARGE_F_LBL = "enhedstakst";
-    var $_PHPSHOP_ISSHIP_LIST_CHARGE_P_LBL = "procent";
-    var $_PHPSHOP_ISSHIP_LIST_DAYS_LBL = "dage";
-    var $_PHPSHOP_ISSHIP_LIST_HEAVY_LBL = "Stor vægt";
-    
-    // Dynamic Shipping Form
-    var $_PHPSHOP_ISSHIP_FORM_MNU = "Konfigurer forsendelsesmetoder";
-    var $_PHPSHOP_ISSHIP_FORM_ADD_LBL = "Tilføj forsendelsesmetode";
-    var $_PHPSHOP_ISSHIP_FORM_UPDATE_LBL = "Konfigurer forsendelsesmetode";
-    var $_PHPSHOP_ISSHIP_FORM_REFRESH_LBL = "Opdater";
-    var $_PHPSHOP_ISSHIP_FORM_CARRIER_LBL = "Forsendelsesmetode";
-    var $_PHPSHOP_ISSHIP_FORM_PUBLISH_LBL = "Aktiver";
-    var $_PHPSHOP_ISSHIP_FORM_HANDLING_LBL = "Ekspeditionsomkostninger";
-    var $_PHPSHOP_ISSHIP_FORM_LEAD_LBL = "Leveringstid";
-    var $_PHPSHOP_ISSHIP_FORM_CHARGE_F_LBL = "enhedstakst";
-    var $_PHPSHOP_ISSHIP_FORM_CHARGE_P_LBL = "procent";
-    var $_PHPSHOP_ISSHIP_FORM_DAYS_LBL = "dage";
-    var $_PHPSHOP_ISSHIP_FORM_HEAVY_LBL = "Stor vægt";
-    
-    
-    
-    /*#####################
-    MODULE ORDER
-    #####################*/
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_ORDER_MOD = "Ordrer";
-    
-    // Menu optioner 
-    var $_PHPSHOP_ORDER_CONFIRM_MNU = "Bekræft ordre";
-    var $_PHPSHOP_ORDER_CANCEL_MNU = "Annullér ordre";
-    var $_PHPSHOP_ORDER_PRINT_MNU = "Print ordre";
-    var $_PHPSHOP_ORDER_DELETE_MNU = "Slet ordre";
-    
-    // Ordre Liste
-    var $_PHPSHOP_ORDER_LIST_MNU = "Vis ordrer";
-    var $_PHPSHOP_ORDER_LIST_LBL = "Ordre liste";
-    var $_PHPSHOP_ORDER_LIST_ID = "Ordre nummer";
-    var $_PHPSHOP_ORDER_LIST_CDATE = "Ordre dato";
-    var $_PHPSHOP_ORDER_LIST_MDATE = "Sidst ændret";
-    var $_PHPSHOP_ORDER_LIST_STATUS = "Status";
-    var $_PHPSHOP_ORDER_LIST_TOTAL = "SubTotal";
-    var $_PHPSHOP_ORDER_ITEM = "Ordrelinier";
-    
-    // Ordre print
-    var $_PHPSHOP_ORDER_PRINT_PO_LBL = "Ordrebekræftelse";
-    var $_PHPSHOP_ORDER_PRINT_PO_NUMBER = "Ordre nummer";
-    var $_PHPSHOP_ORDER_PRINT_PO_DATE = "Ordre dato";
-    var $_PHPSHOP_ORDER_PRINT_PO_STATUS = "Ordre status";
-    var $_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL = "Kundeinformation";
-    var $_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL = "Faktureringsinformation";
-    var $_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL = "Leveringsinformation";
-    var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = "Faktureringsadresse";
-    var $_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL = "Leveringsadresse";
-    var $_PHPSHOP_ORDER_PRINT_NAME = "Navn";
-    var $_PHPSHOP_ORDER_PRINT_COMPANY = "Firmanavn";
-    var $_PHPSHOP_ORDER_PRINT_ADDRESS_1 = "Adresse 1";
-    var $_PHPSHOP_ORDER_PRINT_ADDRESS_2 = "Adresse 2";
-    var $_PHPSHOP_ORDER_PRINT_CITY = "By";
-    var $_PHPSHOP_ORDER_PRINT_STATE = "Stat/Provins/Region";
-    var $_PHPSHOP_ORDER_PRINT_ZIP = "Postnr.";
-    var $_PHPSHOP_ORDER_PRINT_COUNTRY = "Land";
-    var $_PHPSHOP_ORDER_PRINT_PHONE = "Telefon";
-    var $_PHPSHOP_ORDER_PRINT_FAX = "Fax";
-    var $_PHPSHOP_ORDER_PRINT_EMAIL = "Email";
-    var $_PHPSHOP_ORDER_PRINT_ITEMS_LBL = "Ordrelinier";
-    var $_PHPSHOP_ORDER_PRINT_QUANTITY = "Antal";
-    var $_PHPSHOP_ORDER_PRINT_QTY = "Antal";
-    var $_PHPSHOP_ORDER_PRINT_SKU = "Varenr.";
-    var $_PHPSHOP_ORDER_PRINT_PRICE = "Pris";
-    var $_PHPSHOP_ORDER_PRINT_TOTAL = "Total";
-    var $_PHPSHOP_ORDER_PRINT_SUBTOTAL = "SubTotal";
-    var $_PHPSHOP_ORDER_PRINT_TOTAL_TAX = "Moms Total";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING = "Levering";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_TAX = "Forsendelsesmoms";
-    var $_PHPSHOP_ORDER_PRINT_PAYMENT_LBL = "Betalingsmetode";
-    var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME = "Kontonavn";
-    var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER = "Kontonummer";
-    var $_PHPSHOP_ORDER_PRINT_EXPIRE_DATE = "Udløbsdato";
-    var $_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL = "Betalingslog";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_LBL = "Leveringsinformation";
-    var $_PHPSHOP_ORDER_PRINT_PAYINFO_LBL = "Betalingsinformation";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL = "Transportør";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL = "Forsendelsesmåde";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_DATE_LBL = "Forsendelsesdato";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL = "Forsendelsespris";
-    
-    var $_PHPSHOP_ORDER_STATUS_LIST_MNU = "Vis ordrestatus typer";
-    var $_PHPSHOP_ORDER_STATUS_FORM_MNU = "Tilføj Ordrestatus typer";
-    
-    var $_PHPSHOP_ORDER_STATUS_LIST_CODE = "Ordrestatus kode";
-    var $_PHPSHOP_ORDER_STATUS_LIST_NAME = "Ordrestatus navn";
-    
-    var $_PHPSHOP_ORDER_STATUS_FORM_LBL = "Ordrestatus";
-    var $_PHPSHOP_ORDER_STATUS_FORM_CODE = "Ordrestatus kode";
-    var $_PHPSHOP_ORDER_STATUS_FORM_NAME = "Ordrestatus navn";
-    var $_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER = "List Ordre";
-    
-    
-    /*#####################
-    MODULE PRODUCT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_PRODUCT_MOD = "Produkter";
-    
-    var $_PHPSHOP_CURRENT_PRODUCT = "Aktuelt produkt";
-    var $_PHPSHOP_CURRENT_ITEM = "Aktuel vare";
-    
-    // Product Inventory
-    var $_PHPSHOP_PRODUCT_INVENTORY_LBL = "Produktkatalog";
-    var $_PHPSHOP_PRODUCT_INVENTORY_MNU = "Gennemse katalog";
-    var $_PHPSHOP_PRODUCT_INVENTORY_PRICE = "Pris";
-    var $_PHPSHOP_PRODUCT_INVENTORY_STOCK = "Antal";
-    var $_PHPSHOP_PRODUCT_INVENTORY_WEIGHT = "Vægt";
-    // Product List
-    var $_PHPSHOP_PRODUCT_LIST_MNU = "List Produkter";
-    var $_PHPSHOP_PRODUCT_LIST_LBL = "Produktliste";
-    var $_PHPSHOP_PRODUCT_LIST_NAME = "Produktnavn";
-    var $_PHPSHOP_PRODUCT_LIST_SKU = "Varenr.";
-    var $_PHPSHOP_PRODUCT_LIST_PUBLISH = "Publicér";
-    
-    // Product Form
-    var $_PHPSHOP_PRODUCT_FORM_MNU = "Tilføj produkt";
-    var $_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT = "Rediger produkt";
-    var $_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE = "Gennemse produktdatabladet i shoppen";
-    var $_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU = "Tilføj vare";
-    var $_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU = "Tilføj yderligere varer";
-    
-    var $_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL = "Nyt produkt";
-    var $_PHPSHOP_PRODUCT_FORM_UPDATE_PRODUCT_LBL = "Opdatér produkt";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL = "Produktinformation";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL = "Produktstatus";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL = "Produktets mål og vægt";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL = "Produktbilleder";
-    
-    var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = "Ny vare";
-    var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = "Opdater vare";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = "Vareinformation";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = "Varestatus";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = "Varens mål og vægt";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = "Varebilleder";
-    var $_PHPSHOP_PRODUCT_FORM_RETURN_LBL = "Tilbage til produktkategori";
-    var $_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL = "For at opdatere det aktuelle billede skal du indtaste stien til et nyt billede.";
-    var $_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL = "Indtast \"none\" for at slette det aktuelle billede.";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL = "Produkt Varer";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL = "Vare attributter";
-    var $_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG = "Er du sikker på at du vil slette dette produkt\\nog de varer der er tilknyttet?";
-    var $_PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG = "Er du sikker på at du ønsker at slette denne vare?";
-    var $_PHPSHOP_PRODUCT_FORM_VENDOR = "Forhandler";
-    var $_PHPSHOP_PRODUCT_FORM_MANUFACTURER = "Producent";
-    var $_PHPSHOP_PRODUCT_FORM_SKU = "Varenr.";
-    var $_PHPSHOP_PRODUCT_FORM_NAME = "Navn";
-    var $_PHPSHOP_PRODUCT_FORM_URL = "URL";
-    var $_PHPSHOP_PRODUCT_FORM_CATEGORY = "Kategori";
-    var $_PHPSHOP_PRODUCT_FORM_PRICE_GROSS = "Udsalgspris";
-    var $_PHPSHOP_PRODUCT_FORM_PRICE_NET = "Product Price (Net)";
-    var $_PHPSHOP_PRODUCT_FORM_DESCRIPTION = "Datablad beskrivelse";
-    var $_PHPSHOP_PRODUCT_FORM_S_DESC = "Kort beskrivelse";
-    var $_PHPSHOP_PRODUCT_FORM_IN_STOCK = "På lager";
-    var $_PHPSHOP_PRODUCT_FORM_ON_ORDER = "I restordre";
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE = "Forventet på lager";
-    var $_PHPSHOP_PRODUCT_FORM_SPECIAL = "Special";
-    var $_PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE = "Rabattype";
-    var $_PHPSHOP_PRODUCT_FORM_PUBLISH = "Publicér?";
-    var $_PHPSHOP_PRODUCT_FORM_LENGTH = "Længde";
-    var $_PHPSHOP_PRODUCT_FORM_WIDTH = "Bredde";
-    var $_PHPSHOP_PRODUCT_FORM_HEIGHT = "Højde";
-    var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM = "Måleenhed";
-    var $_PHPSHOP_PRODUCT_FORM_WEIGHT = "Vægt";
-    var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM = "Måleenhed";
-    var $_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE = "Thumb Nail";
-    var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = "Fuld størrelse";
-    
-    // Product Display
-    var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = "Produkt Tilføj Resultat";
-    var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = "Produkt Opdatér Resultat";
-    var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = "Vare Tilføj Resultat";
-    var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL = "Vare Opdatér Resultat";
-    var $_PHPSHOP_PRODUCT_CSV_UPLOAD = "Benyt CSV-fil";
-    var $_PHPSHOP_PRODUCT_FOLDERS = "Produkt Foldere";
-    
-    // Product Category List
-    var $_PHPSHOP_CATEGORY_LIST_MNU = "Vis kategorier";
-    var $_PHPSHOP_CATEGORY_LIST_LBL = "Kategoritræ";
-    
-    // Product Category Form
-    var $_PHPSHOP_CATEGORY_FORM_MNU = "Tilføj Kategori";
-    var $_PHPSHOP_CATEGORY_FORM_LBL = "Kategori information";
-    var $_PHPSHOP_CATEGORY_FORM_NAME = "Kategorinavn";
-    var $_PHPSHOP_CATEGORY_FORM_PARENT = "Tilhører";
-    var $_PHPSHOP_CATEGORY_FORM_DESCRIPTION = "Kategoribeskrivelse";
-    var $_PHPSHOP_CATEGORY_FORM_PUBLISH = "Publicér?";
-    var $_PHPSHOP_CATEGORY_FORM_FLYPAGE = "Kategori datablad";
-    
-    // Product Attribute List
-    var $_PHPSHOP_ATTRIBUTE_LIST_MNU = "List attributter";
-    var $_PHPSHOP_ATTRIBUTE_LIST_LBL = "Attributliste for";
-    var $_PHPSHOP_ATTRIBUTE_LIST_NAME = "Attributnavn";
-    var $_PHPSHOP_ATTRIBUTE_LIST_ORDER = "Rækkefølge";
-    
-    // Product Attribute Form
-    var $_PHPSHOP_ATTRIBUTE_FORM_MNU = "Tilføj attributter";
-    var $_PHPSHOP_ATTRIBUTE_FORM_LBL = "Attribut formular";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT = "Ny attribut for produkt";
-    var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT = "Opdatér attribut for produkt";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM = "Ny attribut for vare";
-    var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM = "Opdatér attribut for vare";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NAME = "Attributnavn";
-    var $_PHPSHOP_ATTRIBUTE_FORM_ORDER = "Rækkefølge";
-    
-    // Product Price List
-    var $_PHPSHOP_PRICE_LIST_MNU = "Vis kategorier";
-    var $_PHPSHOP_PRICE_LIST_LBL = "Pristræ";
-    var $_PHPSHOP_PRICE_LIST_FOR_LBL = "Pris for";
-    var $_PHPSHOP_PRICE_LIST_GROUP_NAME = "Gruppenavn";
-    var $_PHPSHOP_PRICE_LIST_PRICE = "Pris";
-    var $_PHPSHOP_PRODUCT_LIST_CURRENCY = "Valuta";
-    
-    // Product Price Form
-    var $_PHPSHOP_PRICE_FORM_MNU = "Tilføj Pris";
-    var $_PHPSHOP_PRICE_FORM_LBL = "Prisinformation";
-    var $_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT = "Ny pris for produkt";
-    var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT = "Opdatér pris for produkt";
-    var $_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM = "Ny pris for vare";
-    var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM = "Opdatér pris for vare";
-    var $_PHPSHOP_PRICE_FORM_PRICE = "Pris";
-    var $_PHPSHOP_PRICE_FORM_CURRENCY = "Valuta";
-    var $_PHPSHOP_PRICE_FORM_GROUP = "Kundegruppe";
-    
-    
-    /*#####################
-    MODULE REPORT BASIC
-    #####################*/
-    # Some LABELs
-    var $_PHPSHOP_REPORTBASIC_MOD = "Rapporter";
-    var $_PHPSHOP_RB_INDIVIDUAL = "Individuelle produktlister";
-    var $_PHPSHOP_RB_SALE_TITLE = "Salgsrapportering";
-    
-    /* labels for rpt_sales */
-    var $_PHPSHOP_RB_SALES_PAGE_TITLE = "Salgsaktivitet - oversigt";
-    
-    var $_PHPSHOP_RB_INTERVAL_TITLE = "Interval";
-    var $_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE = "Månedlig";
-    var $_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE = "Ugenlig";
-    var $_PHPSHOP_RB_INTERVAL_DAILY_TITLE = "Daglig";
-    
-    var $_PHPSHOP_RB_THISMONTH_BUTTON = "Denne måned";
-    var $_PHPSHOP_RB_LASTMONTH_BUTTON = "Sidste måned";
-    var $_PHPSHOP_RB_LAST60_BUTTON = "Seneste 60 dage";
-    var $_PHPSHOP_RB_LAST90_BUTTON = "Seneste 90 dage";
-    
-    var $_PHPSHOP_RB_START_DATE_TITLE = "Start den";
-    var $_PHPSHOP_RB_END_DATE_TITLE = "Slut den";
-    var $_PHPSHOP_RB_SHOW_SEL_RANGE = "Vis det valgte interval";
-    var $_PHPSHOP_RB_REPORT_FOR = "Rapport for ";
-    var $_PHPSHOP_RB_DATE = "Dato";
-    var $_PHPSHOP_RB_ORDERS = "Ordrer";
-    var $_PHPSHOP_RB_TOTAL_ITEMS = "Antal varer solgt";
-    var $_PHPSHOP_RB_REVENUE = "Omsætning";
-    var $_PHPSHOP_RB_PRODLIST = "Produktliste";
-    
-    
-    
-    /*#####################
-    MODULE SHOP
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_SHOP_MOD = "Butik";
-    var $_PHPSHOP_PRODUCT_THUMB_TITLE = "Billede";
-    var $_PHPSHOP_PRODUCT_PRICE_TITLE = "Pris";
-    var $_PHPSHOP_ORDER_STATUS_P = "Afventer";
-    var $_PHPSHOP_ORDER_STATUS_C = "Bekræftet";
-    var $_PHPSHOP_ORDER_STATUS_X = "Slettet";
-    
-    
-    # Some messages
-    var $_PHPSHOP_ORDER_BUTTON = "Bestil";
-    
-    
-    
-    /*#####################
-    MODULE SHOPPER
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_SHOPPER_MOD = "Kunde";
-    
-    
-    
-    // Shopper List
-    var $_PHPSHOP_SHOPPER_LIST_MNU = "Vis kunder";
-    var $_PHPSHOP_SHOPPER_LIST_LBL = "Kundeliste";
-    var $_PHPSHOP_SHOPPER_LIST_USERNAME = "Brugernavn";
-    var $_PHPSHOP_SHOPPER_LIST_NAME = "Navn";
-    var $_PHPSHOP_SHOPPER_LIST_GROUP = "Gruppe";
-    
-    // Shopper Form
-    var $_PHPSHOP_SHOPPER_FORM_MNU = "Tilføj kunde";
-    var $_PHPSHOP_SHOPPER_FORM_LBL = "Kundeinformation";
-    var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = "Faktureringsadresse";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL = "Information";
-    var $_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL = "Leveringsadresse";
-    var $_PHPSHOP_SHOPPER_FORM_ADD_SHIPTO_LBL = "Tilføj adresse";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL = "Adressenavn";
-    var $_PHPSHOP_SHOPPER_FORM_USERNAME = "Brugernavn";
-    var $_PHPSHOP_SHOPPER_FORM_FIRST_NAME = "Fornavn";
-    var $_PHPSHOP_SHOPPER_FORM_LAST_NAME = "Efternavn";
-    var $_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME = "Mellemnavn";
-    var $_PHPSHOP_SHOPPER_FORM_TITLE = "Titel";
-    var $_PHPSHOP_SHOPPER_FORM_SHOPPERNAME = "Kundenavn";
-    var $_PHPSHOP_SHOPPER_FORM_PASSWORD_1 = "Adgangskode";
-    var $_PHPSHOP_SHOPPER_FORM_PASSWORD_2 = "Bekræft adgangskode";
-    var $_PHPSHOP_SHOPPER_FORM_GROUP = "Kundegruppe";
-    var $_PHPSHOP_SHOPPER_FORM_COMPANY_NAME = "Firmanavn";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_1 = "Adresse 1";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_2 = "Adresse 2";
-    var $_PHPSHOP_SHOPPER_FORM_CITY = "By";
-    var $_PHPSHOP_SHOPPER_FORM_STATE = "Stat/Provins/Region";
-    var $_PHPSHOP_SHOPPER_FORM_ZIP = "Postnr.";
-    var $_PHPSHOP_SHOPPER_FORM_COUNTRY = "Land";
-    var $_PHPSHOP_SHOPPER_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_SHOPPER_FORM_FAX = "Fax";
-    var $_PHPSHOP_SHOPPER_FORM_EMAIL = "Email";
-    
-    // Shopper Group List
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_MNU = "Vis kundegrupper";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_LBL = "Kundegruppeliste";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_NAME = "Gruppenavn";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION = "Gruppebeskrivelse";
-    
-    
-    // Shopper Group Form
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_LBL = "Kundegruppe formular";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_MNU = "Tilføj kundegruppe";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_NAME = "Gruppenavn";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DESC = "Gruppebeskrivelse";
-    
-    
-    
-    
-    /*#####################
-    MODULE SHOPPER
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_STORE_MOD = "Butik";
-    
-    
-    // Store Form
-    var $_PHPSHOP_STORE_FORM_MNU = "Rediger butik";
-    var $_PHPSHOP_STORE_FORM_LBL = "Butikinformation";
-    var $_PHPSHOP_STORE_FORM_CONTACT_LBL = "Kontaktinformation";
-    var $_PHPSHOP_STORE_FORM_FULL_IMAGE = "Fuld størrelse";
-    var $_PHPSHOP_STORE_FORM_UPLOAD = "Upload billede";
-    var $_PHPSHOP_STORE_FORM_STORE_NAME = "Butiknavn";
-    var $_PHPSHOP_STORE_FORM_COMPANY_NAME = "Butikkens firmanavn";
-    var $_PHPSHOP_STORE_FORM_ADDRESS_1 = "Adresse 1";
-    var $_PHPSHOP_STORE_FORM_ADDRESS_2 = "Adresse 2";
-    var $_PHPSHOP_STORE_FORM_CITY = "By";
-    var $_PHPSHOP_STORE_FORM_STATE = "Stat/Provins/Region";
-    var $_PHPSHOP_STORE_FORM_COUNTRY = "Land";
-    var $_PHPSHOP_STORE_FORM_ZIP = "Postnr.";
-    var $_PHPSHOP_STORE_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_STORE_FORM_CURRENCY = "Valuta";
-    var $_PHPSHOP_STORE_FORM_CATEGORY = "Butikskategori";
-    var $_PHPSHOP_STORE_FORM_LAST_NAME = "Efternavn";
-    var $_PHPSHOP_STORE_FORM_FIRST_NAME = "Fornavn";
-    var $_PHPSHOP_STORE_FORM_MIDDLE_NAME = "Mellemnavn";
-    var $_PHPSHOP_STORE_FORM_TITLE = "Titel";
-    var $_PHPSHOP_STORE_FORM_PHONE_1 = "Telefon 1";
-    var $_PHPSHOP_STORE_FORM_PHONE_2 = "Telefon 2";
-    var $_PHPSHOP_STORE_FORM_FAX = "Fax";
-    var $_PHPSHOP_STORE_FORM_EMAIL = "Email";
-    var $_PHPSHOP_STORE_FORM_IMAGE_PATH = "Billedsti";
-    var $_PHPSHOP_STORE_FORM_DESCRIPTION = "Beskrivelse";
-    
-    
-    
-    var $_PHPSHOP_PAYMENT = "Betalingsformer";
-    // Payment Method List
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_MNU = "Vis betalingsformer";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_LBL = "Betalingsform liste";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_NAME = "Navn";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_CODE = "Kode";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT = "Rabat ";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP = "Kundegruppe";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR = "Betalingsform";
-    
-    // Payment Method Form
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_MNU = "Tilføj betalingsform";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_LBL = "Betalingsform formular";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_NAME = "Betalingsform";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP = "Kundegruppe";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT = "Rabat ";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_CODE = "Kode";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER = "Rækkefølge";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR = "Betalingsform type";
-    
-    
-    
-    /*#####################
-    MODULE TAX
-    #####################*/
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_TAX_MOD = "Moms";
-    
-    // User List
-    var $_PHPSHOP_TAX_RATE = "Momssats";
-    var $_PHPSHOP_TAX_LIST_MNU = "Vis momssatser";
-    var $_PHPSHOP_TAX_LIST_LBL = "Momssats liste";
-    var $_PHPSHOP_TAX_LIST_STATE = "Moms stat eller region";
-    var $_PHPSHOP_TAX_LIST_COUNTRY = "Moms land";
-    var $_PHPSHOP_TAX_LIST_RATE = "Momssats";
-    
-    // User Form
-    var $_PHPSHOP_TAX_FORM_MNU = "Tilføj momssats";
-    var $_PHPSHOP_TAX_FORM_LBL = "Tilføj momsinformation";
-    var $_PHPSHOP_TAX_FORM_STATE = "Moms stat eller region";
-    var $_PHPSHOP_TAX_FORM_COUNTRY = "Moms land";
-    var $_PHPSHOP_TAX_FORM_RATE = "Momssats (for 25% => skriv 0.25)";
-    
-    
-    
-    
-    /*#####################
-    MODULE VENDOR
-    #####################*/
-    
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_VENDOR_MOD = "Forhandler";
-    var $_PHPSHOP_VENDOR_ADMIN = "Forhandlere";
-    
-    
-    // Vendor List
-    var $_PHPSHOP_VENDOR_LIST_MNU = "Vis forhandlere";
-    var $_PHPSHOP_VENDOR_LIST_LBL = "Forhandlerliste";
-    var $_PHPSHOP_VENDOR_LIST_VENDOR_NAME = "Forhandlernavn";
-    var $_PHPSHOP_VENDOR_LIST_ADMIN = "Admin";
-    
-    // Vendor Form
-    var $_PHPSHOP_VENDOR_FORM_MNU = "Tilføj forhandler";
-    var $_PHPSHOP_VENDOR_FORM_LBL = "Tilføj information";
-    var $_PHPSHOP_VENDOR_FORM_INFO_LBL = "Forhandlerinformation";
-    var $_PHPSHOP_VENDOR_FORM_CONTACT_LBL = "Kontaktinformation";
-    var $_PHPSHOP_VENDOR_FORM_FULL_IMAGE = "Fuld størrelse";
-    var $_PHPSHOP_VENDOR_FORM_UPLOAD = "Upload billede";
-    var $_PHPSHOP_VENDOR_FORM_STORE_NAME = "Forhandlers butiksnavn";
-    var $_PHPSHOP_VENDOR_FORM_COMPANY_NAME = "Forhandlers firmanavn";
-    var $_PHPSHOP_VENDOR_FORM_ADDRESS_1 = "Adresse 1";
-    var $_PHPSHOP_VENDOR_FORM_ADDRESS_2 = "Adresse 2";
-    var $_PHPSHOP_VENDOR_FORM_CITY = "By";
-    var $_PHPSHOP_VENDOR_FORM_STATE = "Stat/Provins/Region";
-    var $_PHPSHOP_VENDOR_FORM_COUNTRY = "Land";
-    var $_PHPSHOP_VENDOR_FORM_ZIP = "Postnr.";
-    var $_PHPSHOP_VENDOR_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_VENDOR_FORM_CURRENCY = "Valuta";
-    var $_PHPSHOP_VENDOR_FORM_CATEGORY = "Forhandlerkategori";
-    var $_PHPSHOP_VENDOR_FORM_LAST_NAME = "Efternavn";
-    var $_PHPSHOP_VENDOR_FORM_FIRST_NAME = "Fornavn";
-    var $_PHPSHOP_VENDOR_FORM_MIDDLE_NAME = "Mellemnavn";
-    var $_PHPSHOP_VENDOR_FORM_TITLE = "Titel";
-    var $_PHPSHOP_VENDOR_FORM_PHONE_1 = "Telefon 1";
-    var $_PHPSHOP_VENDOR_FORM_PHONE_2 = "Telefon 2";
-    var $_PHPSHOP_VENDOR_FORM_FAX = "Fax";
-    var $_PHPSHOP_VENDOR_FORM_EMAIL = "Email";
-    var $_PHPSHOP_VENDOR_FORM_IMAGE_PATH = "Billedsti";
-    var $_PHPSHOP_VENDOR_FORM_DESCRIPTION = "Beskrivelse";
-    
-    
-    // Vendor Category List
-    var $_PHPSHOP_VENDOR_CAT_LIST_MNU = "Vis forhandlerkategorier";
-    var $_PHPSHOP_VENDOR_CAT_LIST_LBL = "Forhandlerkategoriliste";
-    var $_PHPSHOP_VENDOR_CAT_NAME = "Kategorinavn";
-    var $_PHPSHOP_VENDOR_CAT_DESCRIPTION = "Kategoribeskrivelse";
-    var $_PHPSHOP_VENDOR_CAT_VENDORS = "Forhandlere";
-    
-    // Vendor Category Form
-    var $_PHPSHOP_VENDOR_CAT_FORM_MNU = "Tilføj forhandlerkategori";
-    var $_PHPSHOP_VENDOR_CAT_FORM_LBL = "Forhandlerkategori formular";
-    var $_PHPSHOP_VENDOR_CAT_FORM_INFO_LBL = "Kategori information";
-    var $_PHPSHOP_VENDOR_CAT_FORM_NAME = "Kategorinavn";
-    var $_PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION = "Kategoribeskrivelse";
-    
-    /*#####################
-    MODULE MANUFACTURER
-    #####################*/
-
-    # Some LABELs
-    var $_PHPSHOP_MANUFACTURER_MOD = "Producent";
-    var $_PHPSHOP_MANUFACTURER_ADMIN = "Producenter";
-    
-    
-    // Manufacturer List
-    var $_PHPSHOP_MANUFACTURER_LIST_MNU = "Vis producenter";
-    var $_PHPSHOP_MANUFACTURER_LIST_LBL = "Producentliste";
-    var $_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME = "Producentnavn";
-    var $_PHPSHOP_MANUFACTURER_LIST_ADMIN = "Admin";
-    
-    // Manufacturer Form
-    var $_PHPSHOP_MANUFACTURER_FORM_MNU = "Tilføj producent";
-    var $_PHPSHOP_MANUFACTURER_FORM_LBL = "Tilføj information";
-    var $_PHPSHOP_MANUFACTURER_FORM_INFO_LBL = "Producentinformation";
-    var $_PHPSHOP_MANUFACTURER_FORM_NAME = "Producentnavn";
-    var $_PHPSHOP_MANUFACTURER_FORM_CATEGORY = "Producentkategori";
-    var $_PHPSHOP_MANUFACTURER_FORM_EMAIL = "Email";
-    var $_PHPSHOP_MANUFACTURER_FORM_URL = "URL til producentens website";
-    var $_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION = "Beskrivelse";
-    
-    
-    // Manufacturer Category List
-    var $_PHPSHOP_MANUFACTURER_CAT_LIST_MNU = "Vis producentkategorier";
-    var $_PHPSHOP_MANUFACTURER_CAT_LIST_LBL = "Producentkategori liste";
-    var $_PHPSHOP_MANUFACTURER_CAT_NAME = "Kategorinavn";
-    var $_PHPSHOP_MANUFACTURER_CAT_DESCRIPTION = "Kategoribeskrivelse";
-    var $_PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS = "Producenter";
-    
-    // Manufacturer Category Form
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_MNU = "Tilføj producentkategori";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_LBL = "Producentkategoriformular";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL = "Kategoriinformation";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_NAME = "Kategorinavn";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION = "Kategoribeskrivelse";
-    
-    
-    /*#####################
-    Modul HELP
-    #####################*/
-    var $_PHPSHOP_HELP_MOD = "Hjælp";
-    
-    // 210104 start
-    
-    var $_PHPSHOP_CART_ACTION = "Opdatér";
-    var $_PHPSHOP_CART_UPDATE = "Opdatér antal i vogn";
-    var $_PHPSHOP_CART_DELETE = "Slet produkt fra vogn";
-    
-    //shopbrowse form
-    
-    var $_PHPSHOP_PRODUCT_PRICETAG = "Pris";
-    var $_PHPSHOP_PRODUCT_CALL = "Ring for pris";
-    var $_PHPSHOP_PRODUCT_PREVIOUS = "Forrige";
-    var $_PHPSHOP_PRODUCT_NEXT = "NÆSTE";
-    
-    //ro_basket
-    
-    var $_PHPSHOP_CART_TAX = "Moms";
-    var $_PHPSHOP_CART_SHIPPING = "Levering";
-    var $_PHPSHOP_CART_TOTAL = "Total";
-    
-    //CHECKOUT.INDEX
-    
-    var $_PHPSHOP_CHECKOUT_NEXT = "Næste";
-    var $_PHPSHOP_CHECKOUT_REGISTER = "REGISTRÉR";
-    
-    //CHECKOUT.CONFIRM
-    
-    var $_PHPSHOP_CHECOUT_CONF_BILLINFO = "Faktureringsinformation";
-    var $_PHPSHOP_CHECKOUT_CONF_COMPANY = "Firma";
-    var $_PHPSHOP_CHECKOUT_CONF_NAME = "Navn";
-    var $_PHPSHOP_CHECKOUT_CONF_ADDRESS = "Adresse";
-    var $_PHPSHOP_CHECKOUT_CONF_PHONE = "Telefon";
-    var $_PHPSHOP_CHECKOUT_CONF_FAX = "Fax";
-    var $_PHPSHOP_CHECKOUT_CONF_EMAIL = "Email";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO = "Leveringsinformation";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY = "Firma";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME = "Navn";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS = "Adresse";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE = "Telefon";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX = "Fax";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO = "Betalingsform";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD = "Navn på kort";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD = "Betalingsform";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM = "Kortnummer";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE = "Udløbsdato";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER = "Fuldfør ordre";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = "krævet information når betaling via betalingskort er valgt";
-    
-    
-    var $_PHPSHOP_ZONE_MOD = "Zone forsendelse";
-    
-    var $_PHPSHOP_ZONE_LIST_MNU = "List Zoner";
-    var $_PHPSHOP_ZONE_FORM_MNU = "Tilføj Zone";
-    var $_PHPSHOP_ZONE_ASSIGN_MNU = "Tildel Zoner";
-    
-    // assign zone List
-    var $_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL = "Land";
-    var $_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL = "Aktuel Zone";
-    var $_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL = "Tildel til Zone";
-    var $_PHPSHOP_ZONE_ASSIGN_UPDATE_LBL = "Opdatér";
-    var $_PHPSHOP_ASSIGN_ZONE_PG_LBL = "Tildel Zoner";
-    
-    // zone Form
-    var $_PHPSHOP_ZONE_FORM_NAME_LBL = "Zonenavn";
-    var $_PHPSHOP_ZONE_FORM_DESC_LBL = "Zonebeskrivelse";
-    var $_PHPSHOP_ZONE_FORM_COST_PER_LBL = "Zonepris pr. vare";
-    var $_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL = "Zone max pris";
-    
-    // List of zones
-    var $_PHPSHOP_ZONE_LIST_LBL = "Zoneliste";
-    var $_PHPSHOP_ZONE_LIST_NAME_LBL = "Zonenavn";
-    var $_PHPSHOP_ZONE_LIST_DESC_LBL = "Zonebeskrivelse";
-    var $_PHPSHOP_ZONE_LIST_COST_PER_LBL = "Zonepris pr. vare";
-    var $_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL = "Zone max pris";
-    
-    var $_PHPSHOP_LOGIN_FIRST = "Log ind eller registrér Dem som bruger (benyt login modulet i højre side).<br>Tak.";
-    var $_PHPSHOP_STORE_FORM_TOS = "Salgs- og leveringsbetingelser";
-    var $_PHPSHOP_AGREE_TO_TOS = "De skal acceptere vores salgs- og leveringsbetingelser først.";
-    var $_PHPSHOP_I_AGREE_TO_TOS = "Jeg accepterer salgsbetingelserne";
-    
-    var $_PHPSHOP_LEAVE_BLANK = "(efterlad BLANK hvis du ikke har<br />en individuel php-fil til den!)";
-    var $_PHPSHOP_RETURN_LOGIN = "Allerede oprettet? Log ind!";
-    var $_PHPSHOP_NEW_CUSTOMER = "Ny kunde? Udfyld skemaet!";
-    var $_PHPSHOP_ACC_CUSTOMER_ACCOUNT = "Kundekonto:";
-    var $_PHPSHOP_ACC_ORDER_INFO = "Ordreinformation";
-    var $_PHPSHOP_ACC_UPD_BILL = "Her kan De opdatere Deres faktureringsoplysninger.";
-    var $_PHPSHOP_ACC_UPD_SHIP = "Her kan De tilføje og vedligeholde leveringsoplysninger.";
-    var $_PHPSHOP_ACC_ACCOUNT_INFO = "Kontoinformation";
-    var $_PHPSHOP_ACC_SHIP_INFO = "Leveringsinformation";
-    var $_PHPSHOP_ACC_NO_ORDERS = "Ingen ordrer at vise";
-    var $_PHPSHOP_ACC_BILL_DEF = "- Standard (Samme som faktureringsadresse)";
-    var $_PHPSHOP_SHIPTO_TEXT = "For at gøre det lettere for Dem at få leveret varer til flere forskellige adresser, kan De nu tilføje flere leveringsadresser til Deres konto. De bedes give hver leveringsadresse et passende navn.";
-    var $_PHPSHOP_CONFIG = "Konfiguration";
-    var $_PHPSHOP_USERS = "Brugere";
-    var $_PHPSHOP_IS_CC_PAYMENT = "er betalingskort betaling?";
-    
-    /*#####################################################
-     MODULE SHIPPING
-    #######################################################*/
-    var $_PHPSHOP_SHIPPING_MOD = "Forsendelse";
-    var $_PHPSHOP_SHIPPING_MENU_LABEL = "Forsendelse";
-    
-    var $_PHPSHOP_CARRIER_LIST_MNU = "Transportør";
-    var $_PHPSHOP_CARRIER_LIST_LBL = "Transportør liste";
-    var $_PHPSHOP_RATE_LIST_MNU = "Forsendelsestarif";
-    var $_PHPSHOP_RATE_LIST_LBL = "Tarifliste";
-    var $_PHPSHOP_CARRIER_LIST_NAME_LBL = "Navn";
-    var $_PHPSHOP_CARRIER_LIST_ORDER_LBL = "Rækkefølge";
-    
-    var $_PHPSHOP_CARRIER_FORM_MNU = "Opret transportør";
-    var $_PHPSHOP_CARRIER_FORM_LBL = "Opret/rediger transportør";
-    var $_PHPSHOP_RATE_FORM_MNU = "Opret forsendelsestarif";
-    var $_PHPSHOP_RATE_FORM_LBL = "Opret/rediger en forsendelsestarif";
-    
-    var $_PHPSHOP_RATE_FORM_NAME = "Forsendelsestarif beskrivelse";
-    var $_PHPSHOP_RATE_FORM_CARRIER = "Transportør";
-    var $_PHPSHOP_RATE_FORM_COUNTRY = "Land";
-    var $_PHPSHOP_RATE_FORM_ZIP_START = "Postnr. interval start";
-    var $_PHPSHOP_RATE_FORM_ZIP_END = "Postnr. interval slut";
-    var $_PHPSHOP_RATE_FORM_WEIGHT_START = "Laveste vægt";
-    var $_PHPSHOP_RATE_FORM_WEIGHT_END = "Højeste vægt";
-    var $_PHPSHOP_RATE_FORM_VALUE = "Forsendelsesomkostning";
-    var $_PHPSHOP_RATE_FORM_PACKAGE_FEE = "Ekspeditionsomkostning";
-    var $_PHPSHOP_RATE_FORM_CURRENCY = "Valuta";
-    var $_PHPSHOP_RATE_FORM_VAT_ID = "Moms Id";
-    var $_PHPSHOP_RATE_FORM_LIST_ORDER = "Rækkefølge";
-    
-    var $_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL = "Transportør";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME = "Forsendelsestarif beskrivelse";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART = "Vægt fra ...";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND = "... til";
-    var $_PHPSHOP_CARRIER_FORM_NAME = "Transportør";
-    var $_PHPSHOP_CARRIER_FORM_LIST_ORDER = "Rækkefølge";
-    
-    var $_PHPSHOP_ERR_MSG_CARRIER_EXIST = "ERROR: Transportør ID eksisterer.";
-    var $_PHPSHOP_ERR_MSG_CARRIER_ID_REQ = "ERROR: Vælg en transportør.";
-    var $_PHPSHOP_ERR_MSG_CARRIER_INUSE = "ERROR: Der eksisterer mindst en forsendelsestarif, slet tariffer før transportør";
-    var $_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND = "ERROR: Kan ikke finde en transportør med dette ID.";
-    
-    var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = "FJEL: Vælg en transportør.";
-    var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = "FEJL: Kan ikke finde en transpørtør med dette ID.";
-    var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = "FEJL: Tarif er påkrævet.";
-    var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = "FEJL: Fejl i destinationsland. Mere end et land skal adskilles med \";\".";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = "FEJL: En lavere vægt er påkrævet";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = "FEJL: En højere vægt er påkrævet";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = "FEJL: Den laveste vægt skal være lavere end den højeste vægt.";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = "FEJL: Forsendelsespris påkrævet.";
-    var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = "FEJL: Vælg et land";
-    
-    var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = "FEJL: En forsendelsespris er påkrævet";
-    
-    var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = "Vælg venligst";
-    var $_PHPSHOP_INFO_MSG_CARRIER = "Transportør";
-    var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = "Forsendelsestarif";
-    var $_PHPSHOP_INFO_MSG_SHIPPING_PRICE = "Pris";
-    var $_PHPSHOP_INFO_MSG_VAT_ZERO_LBL = "0 (-ingen-)";
-    /*#####################################################
-     END: MODULE SHIPPING
-    #######################################################*/
-    
-    var $_PHPSHOP_PAYMENT_FORM_CC = "Betalingskort";
-    var $_PHPSHOP_PAYMENT_FORM_USE_PP = "Benyt betalingsformidler";
-    var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = "Bank debit";
-    var $_PHPSHOP_PAYMENT_FORM_AO = "Efterkrav";
-    var $_PHPSHOP_CHECKOUT_MSG_2 = "Vælg en leveringsadresse!";
-    var $_PHPSHOP_CHECKOUT_MSG_3 = "Vælg en forsendelsesmåde!";
-    var $_PHPSHOP_CHECKOUT_MSG_4 = "Vælg betalingsmåde!";
-    var $_PHPSHOP_CHECKOUT_MSG_99 = "Gennemse venligst det indtastede og bekræft derefter ordren!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_SHIP = "Vælg en forsendelsesmåde.";
-    var $_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP = "Vælg en anden forsendelsesmåde.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_PAYM = "Vælg betalingsmåde.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR = "Indtast kortnummer.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNAME = "Indtast navnet som betalingskortet er udstedt til.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATE = "Det indtastede kortnummer er ikke gyldigt.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCMON = "Indtast kortets udløbsmåned.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR = "Indtast kortets udløbsår.";
-    var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = "Udløbsdatoen er ikke gyldig.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = "Vælg leveringsadresse.";
-    var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = "Kontonummeret eksisterer ikke.";
-    var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = "Der er ingen varer i vognen!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = "FEJL: Vælg en transportør!";
-    var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = "FEJL: Den valgte transporttarif blev ikke fundet!";
-    var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = "FEJL: Deres leveringsadresse blev ikke fundet!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = "FEJL: Der er ingen betalingskort informationer...";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = "FEJL: Betalingskort nummeret blev ikke fundet!";
-    var $_PHPSHOP_CHECKOUT_ERR_TEST = "Beklager, men kortnummeret som blev benyttet er et testnummer!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = "Bruger ID kan ikke findes!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = "Navnet på kontoindehaveren er ikke oplyst.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = "IBAN nummer er ikke oplyst.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = "Bankkonto nummer er ikke oplyst.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = "Bankens reg.nr er ikke oplyst.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = "Bankens navn er ikke oplyst.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = "For at gå gennem kasselinien skal alle trin være afsluttet korrekt!";
-
-    var $_PHPSHOP_CHECKOUT_MSG_LOG = "Betalingsinformation er gemt til senere behandling.<br />";
-    
-    var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = "Minimum ordreværdi er endnu ikke opnået.";
-    var $_PHPSHOP_CHECKOUT_ERR_MIN_POV2 = "Minimum ordreværdi ved køb er:";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_CC = "Betaling med betalingskort";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_OTHER = "Andre betalingsmåder";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_SELECT = "Vælg en betalingsmåde:";
-    
-    var $_PHPSHOP_STORE_FORM_MPOV = "Minimum ordreværdi for din butik";
-    var $_PHPSHOP_ACCOUNT_BANK_TITLE = "Bankkonto information";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR = "Kontonummer";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE = "Reg.nr";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_NAME = "Bankens navn";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_IBAN = "IBAN";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER = "Kontoindehaver";
-    
-    var $_PHPSHOP_MODULES = "Moduler";
-    var $_PHPSHOP_FUNCTIONS = "Funktioner";
-    var $_PHPSHOP_SPECIAL_PRODUCTS = "Specielle produkter";
-    
-    var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = "Her er De velkommen til at skrive en påtegning til ordren";
-    var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = "Kundens påtegning";
-    var $_PHPSHOP_INCLUDING_TAX = "(including \$tax % moms)";
-    var $_PHPSHOP_PLEASE_SEL_ITEM = "Vælg en vare";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = "Vare";
-
-    // DOWNLOADS
-    
-    var $_PHPSHOP_DOWNLOADS_TITLE = "Download område";
-    var $_PHPSHOP_DOWNLOADS_START = "Start Download";
-    var $_PHPSHOP_DOWNLOADS_INFO = "Indtast download-ID'et som De har modtaget pr. e-mail og klik 'Start Download'.";
-    var $_PHPSHOP_DOWNLOADS_ERR_EXP = "Beklager, men Deres downloadperiode er udløbet";
-    var $_PHPSHOP_DOWNLOADS_ERR_MAX = "Beklager, men Deres maksimum antal af downloads er nået";
-    var $_PHPSHOP_DOWNLOADS_ERR_INV = "Ugyldigt download-ID!";
-    var $_PHPSHOP_DOWNLOADS_ERR_SEND = "Kunne ikke sende en besked til ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG = "Besked sendt til ";
-    var $_PHPSHOP_DOWNLOADS_SEND_SUBJ = "Download-Info";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_1 = "fil(erne) De har bestilt er klar til download";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_2 = "Indtast de(t) følgende Download-ID(er) i Deres Downloads Område: ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_3 = "det maksimale antal downloads for hver fil er: ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_4 = "Download indtil {expire} dag(e) efter det første download";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_5 = "Spørgsmål? Kommentarer?";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = "Download-Info af "; // e.g. Download-Info by "Storename"
-    var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = "Produkt kan downloades"; 
-    
-    var $_PHPSHOP_PAYPAL_THANKYOU = "Tak for Deres betaling. 
+class phpShopLanguage extends vmAbstractLanguage {
+	var $_PHPSHOP_MENU = 'Menu';
+	var $_PHPSHOP_CATEGORY = 'Kategori';
+	var $_PHPSHOP_CATEGORIES = 'Kategorier';
+	var $_PHPSHOP_SELECT_CATEGORY = 'Vælg en kategori:';
+	var $_PHPSHOP_ADMIN = 'Administration';
+	var $_PHPSHOP_PRODUCT = 'Produkt';
+	var $_PHPSHOP_LIST = 'List';
+	var $_PHPSHOP_ALL = 'Alle';
+	var $_PHPSHOP_LIST_ALL_PRODUCTS = 'Vis alle produkter';
+	var $_PHPSHOP_VIEW = 'gennemse';
+	var $_PHPSHOP_SHOW = 'vis';
+	var $_PHPSHOP_ADD = 'tilføj';
+	var $_PHPSHOP_UPDATE = 'opdater';
+	var $_PHPSHOP_DELETE = 'slet';
+	var $_PHPSHOP_SELECT = 'vælg';
+	var $_PHPSHOP_SUBMIT = 'Submit';
+	var $_PHPSHOP_RANDOM = 'Tilfældige produkter';
+	var $_PHPSHOP_LATEST = 'Nyeste produkter';
+	var $_PHPSHOP_HOME_TITLE = 'Hjem';
+	var $_PHPSHOP_CART_TITLE = 'Indkøbsvogn';
+	var $_PHPSHOP_CHECKOUT_TITLE = 'Til kasse';
+	var $_PHPSHOP_LOGIN_TITLE = 'Log ind';
+	var $_PHPSHOP_LOGOUT_TITLE = 'Log ud';
+	var $_PHPSHOP_BROWSE_TITLE = 'Gennemse';
+	var $_PHPSHOP_SEARCH_TITLE = 'Søg';
+	var $_PHPSHOP_ACCOUNT_TITLE = 'Konto vedligeholdelse';
+	var $_PHPSHOP_NAVIGATION_TITLE = 'Navigation';
+	var $_PHPSHOP_DEPARTMENT_TITLE = 'Afdeling';
+	var $_PHPSHOP_INFO = 'Information';
+	var $_PHPSHOP_BROWSE_LBL = 'Gennemse';
+	var $_PHPSHOP_PRODUCTS_LBL = 'Produkter';
+	var $_PHPSHOP_PRODUCT_LBL = 'Produkt';
+	var $_PHPSHOP_SEARCH_LBL = 'Søg';
+	var $_PHPSHOP_FLYPAGE_LBL = 'Produktdetaljer';
+	var $_PHPSHOP_PRODUCT_SEARCH_LBL = 'Produktsøgning';
+	var $_PHPSHOP_PRODUCT_NAME_TITLE = 'Produktnavn';
+	var $_PHPSHOP_PRODUCT_CATEGORY_TITLE = 'Produktkategori';
+	var $_PHPSHOP_PRODUCT_DESC_TITLE = 'Beskrivelse';
+	var $_PHPSHOP_CART_SHOW = 'Vis vogn';
+	var $_PHPSHOP_CART_ADD_TO = 'Læg i vogn';
+	var $_PHPSHOP_CART_NAME = 'Navn';
+	var $_PHPSHOP_CART_SKU = 'Varenr.';
+	var $_PHPSHOP_CART_PRICE = 'Pris';
+	var $_PHPSHOP_CART_QUANTITY = 'Antal';
+	var $_PHPSHOP_CART_SUBTOTAL = 'Subtotal';
+	var $_PHPSHOP_ADD_SHIPTO_1 = 'Tilføj en ny';
+	var $_PHPSHOP_ADD_SHIPTO_2 = 'Leveringsadresse';
+	var $_PHPSHOP_NO_SEARCH_RESULT = 'Deres søgning returnerede 0 resultater.<br />';
+	var $_PHPSHOP_PRICE_LABEL = 'Pris: ';
+	var $_PHPSHOP_ORDER_BUTTON_LABEL = 'Læg i vogn';
+	var $_PHPSHOP_NO_CUSTOMER = 'De er endnu ikke registreret som kunde. Vær venlig at indtaste faktureringsoplysningerne.';
+	var $_PHPSHOP_DELETE_MSG = 'Er De sikker på at De ønsker at slette denne?';
+	var $_PHPSHOP_THANKYOU = 'Tak for Deres ordre.';
+	var $_PHPSHOP_NOT_SHIPPED = 'Endnu ikke afsendt';
+	var $_PHPSHOP_EMAIL_SENDTO = 'En email der bekræfter Deres ordre er blevet sendt til';
+	var $_PHPSHOP_NO_USER_TO_SELECT = 'Beklager, men der er ingen MOS-bruger at tilføje til com_phpshop brugerlisten';
+	var $_PHPSHOP_ERROR = 'FEJL';
+	var $_PHPSHOP_MOD_NOT_REG = 'Modulet er ikke registreret.';
+	var $_PHPSHOP_MOD_ISNO_REG = 'er ikke et gyldigt phpShop modul.';
+	var $_PHPSHOP_MOD_NO_AUTH = 'De har ikke tilladelse til at benytte det ønskede modul.';
+	var $_PHPSHOP_PAGE_404_1 = 'Siden eksisterer ikke';
+	var $_PHPSHOP_PAGE_404_2 = 'Filnavnet eksisterer ikke. Kan ikke finde filen:';
+	var $_PHPSHOP_PAGE_403 = 'Utilstrækkelige adgangsrettigheder';
+	var $_PHPSHOP_FUNC_NO_EXEC = 'Du har ikke tilladelse til at afvikle ';
+	var $_PHPSHOP_FUNC_NOT_REG = 'Funktionen er ikke registreret';
+	var $_PHPSHOP_FUNC_ISNO_REG = ' er ikke en gyldig MOS_com_phpShop funktion.';
+	var $_PHPSHOP_ADMIN_MOD = 'Admin';
+	var $_PHPSHOP_USER_LIST_MNU = 'Vis brugere';
+	var $_PHPSHOP_USER_LIST_LBL = 'Brugerliste';
+	var $_PHPSHOP_USER_LIST_USERNAME = 'Brugernavn (login navn)';
+	var $_PHPSHOP_USER_LIST_FULL_NAME = 'Rigtigt navn';
+	var $_PHPSHOP_USER_LIST_GROUP = 'Gruppe';
+	var $_PHPSHOP_USER_FORM_MNU = 'Tilføj bruger';
+	var $_PHPSHOP_USER_FORM_LBL = 'Tilføj/opdater bruger information';
+	var $_PHPSHOP_USER_FORM_BILLTO_LBL = 'Bill To Information';
+	var $_PHPSHOP_USER_FORM_SHIPTO_LBL = 'Leveringsadresse';
+	var $_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL = 'Tilføj adresse';
+	var $_PHPSHOP_USER_FORM_NO_SHIPPING_ADDRESSES = 'No shipping addresses.';
+	var $_PHPSHOP_USER_FORM_ADDRESS_LABEL = 'Modtagelsessted';
+	var $_PHPSHOP_USER_FORM_FIRST_NAME = 'Fornavn';
+	var $_PHPSHOP_USER_FORM_LAST_NAME = 'Efternavn';
+	var $_PHPSHOP_USER_FORM_MIDDLE_NAME = 'Mellemnavn';
+	var $_PHPSHOP_USER_FORM_TITLE = 'Titel';
+	var $_PHPSHOP_USER_FORM_USERNAME = 'Brugernavn';
+	var $_PHPSHOP_USER_FORM_PASSWORD_1 = 'Kodeord';
+	var $_PHPSHOP_USER_FORM_PASSWORD_2 = 'Bekræft kodeord';
+	var $_PHPSHOP_USER_FORM_PERMS = 'Permissions';
+	var $_PHPSHOP_USER_FORM_CUSTOMER_NUMBER = 'Customer Number / ID';
+	var $_PHPSHOP_USER_FORM_COMPANY_NAME = 'Firmanavn';
+	var $_PHPSHOP_USER_FORM_ADDRESS_1 = 'Addresse 1';
+	var $_PHPSHOP_USER_FORM_ADDRESS_2 = 'Addresse 2';
+	var $_PHPSHOP_USER_FORM_CITY = 'By';
+	var $_PHPSHOP_USER_FORM_STATE = 'Stat/Provins/Region';
+	var $_PHPSHOP_USER_FORM_ZIP = 'Postnr.';
+	var $_PHPSHOP_USER_FORM_COUNTRY = 'Land';
+	var $_PHPSHOP_USER_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_USER_FORM_PHONE2 = 'Mobile Phone';
+	var $_PHPSHOP_USER_FORM_FAX = 'Fax';
+	var $_PHPSHOP_USER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_MODULE_LIST_MNU = 'Vis moduler';
+	var $_PHPSHOP_MODULE_LIST_LBL = 'Modul liste';
+	var $_PHPSHOP_MODULE_LIST_NAME = 'Modul navn';
+	var $_PHPSHOP_MODULE_LIST_PERMS = 'Modul tilladelser';
+	var $_PHPSHOP_MODULE_LIST_FUNCTIONS = 'Funktioner';
+	var $_PHPSHOP_MODULE_LIST_ORDER = 'Visningsrækkefølge';
+	var $_PHPSHOP_MODULE_FORM_MNU = 'Tilføj modul';
+	var $_PHPSHOP_MODULE_FORM_LBL = 'Modul information';
+	var $_PHPSHOP_MODULE_FORM_MODULE_LABEL = 'Modul mærke (til Topmenu)';
+	var $_PHPSHOP_MODULE_FORM_NAME = 'Modul Navn';
+	var $_PHPSHOP_MODULE_FORM_PERMS = 'Modul Tilladelser';
+	var $_PHPSHOP_MODULE_FORM_HEADER = 'Modul Header';
+	var $_PHPSHOP_MODULE_FORM_FOOTER = 'Modul Footer';
+	var $_PHPSHOP_MODULE_FORM_MENU = 'Vis modul i Administrator menu?';
+	var $_PHPSHOP_MODULE_FORM_ORDER = 'Visningsrækkefølge';
+	var $_PHPSHOP_MODULE_FORM_DESCRIPTION = 'Modul beskrivelse';
+	var $_PHPSHOP_MODULE_FORM_LANGUAGE_CODE = 'Sprog kode';
+	var $_PHPSHOP_MODULE_FORM_LANGUAGE_file = 'Sprog fil';
+	var $_PHPSHOP_FUNCTION_LIST_MNU = 'Vis funktioner';
+	var $_PHPSHOP_FUNCTION_LIST_LBL = 'Funktion liste';
+	var $_PHPSHOP_FUNCTION_LIST_NAME = 'Funktion navne';
+	var $_PHPSHOP_FUNCTION_LIST_CLASS = 'Klasse navn';
+	var $_PHPSHOP_FUNCTION_LIST_METHOD = 'Klasse metode';
+	var $_PHPSHOP_FUNCTION_LIST_PERMS = 'Tilladelser';
+	var $_PHPSHOP_FUNCTION_FORM_MNU = 'Tilføj funktion';
+	var $_PHPSHOP_FUNCTION_FORM_LBL = 'Funktion information';
+	var $_PHPSHOP_FUNCTION_FORM_NAME = 'Funktion navn';
+	var $_PHPSHOP_FUNCTION_FORM_CLASS = 'Klasse navn';
+	var $_PHPSHOP_FUNCTION_FORM_METHOD = 'Klasse metode';
+	var $_PHPSHOP_FUNCTION_FORM_PERMS = 'Funktion Tilladelser';
+	var $_PHPSHOP_FUNCTION_FORM_DESCRIPTION = 'Funktion beskrivelse';
+	var $_PHPSHOP_CURRENCY_LIST_MNU = 'Vis valutaer';
+	var $_PHPSHOP_CURRENCY_LIST_LBL = 'Valuta liste';
+	var $_PHPSHOP_CURRENCY_LIST_ADD = 'Tilføj valuta';
+	var $_PHPSHOP_CURRENCY_LIST_NAME = 'Valuta navn';
+	var $_PHPSHOP_CURRENCY_LIST_CODE = 'Valuta kode';
+	var $_PHPSHOP_COUNTRY_LIST_MNU = 'Vis lande';
+	var $_PHPSHOP_COUNTRY_LIST_LBL = 'Lande liste';
+	var $_PHPSHOP_COUNTRY_LIST_ADD = 'Tilføj land';
+	var $_PHPSHOP_COUNTRY_LIST_NAME = 'Landenavn';
+	var $_PHPSHOP_COUNTRY_LIST_3_CODE = 'Landekode (3)';
+	var $_PHPSHOP_COUNTRY_LIST_2_CODE = 'Landekode (2)';
+	var $_PHPSHOP_STATE_LIST_MNU = 'List State';
+	var $_PHPSHOP_STATE_LIST_LBL = 'State List for: ';
+	var $_PHPSHOP_STATE_LIST_ADD = 'Add/Update a State';
+	var $_PHPSHOP_STATE_LIST_NAME = 'State Name';
+	var $_PHPSHOP_STATE_LIST_3_CODE = 'State Code (3)';
+	var $_PHPSHOP_STATE_LIST_2_CODE = 'State Code (2)';
+	var $_PHPSHOP_ADDRESS = 'Adresse';
+	var $_PHPSHOP_CONTINUE = 'Fortsæt';
+	var $_PHPSHOP_EMPTY_CART = 'Deres indkøbsvogn er tom';
+	var $_PHPSHOP_ISSHIPPING_MOD = 'InterShipper';
+	var $_PHPSHOP_ISSHIP_PING_MNU = 'Ping InterShipper-server';
+	var $_PHPSHOP_ISSHIP_PING_LBL = 'InterShipper-server ping ';
+	var $_PHPSHOP_ISSHIP_PING_ERROR_LBL = 'InterShipper ping fejlede';
+	var $_PHPSHOP_ISSHIP_PING_GOOD_LBL = 'InterShipper ping lykkedes';
+	var $_PHPSHOP_ISSHIP_PING_CARRIER_LBL = 'Transportør';
+	var $_PHPSHOP_ISSHIP_PING_RESPONSE_LBL = 'Respons<br />Tid';
+	var $_PHPSHOP_ISSHIP_PING_TIME_LBL = 'sec.';
+	var $_PHPSHOP_ISSHIP_LIST_MNU = 'Vis forsendelsesmetoder';
+	var $_PHPSHOP_ISSHIP_LIST_LBL = 'Aktive forsendelsesmetoder';
+	var $_PHPSHOP_ISSHIP_LIST_CARRIER_LBL = 'Forsendelsesmetoder';
+	var $_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL = 'Aktive';
+	var $_PHPSHOP_ISSHIP_LIST_RATE_LBL = 'Ekspeditonsomkostninger';
+	var $_PHPSHOP_ISSHIP_LIST_LEAD_LBL = 'Leveringstid';
+	var $_PHPSHOP_ISSHIP_LIST_CHARGE_F_LBL = 'enhedstakst';
+	var $_PHPSHOP_ISSHIP_LIST_CHARGE_P_LBL = 'procent';
+	var $_PHPSHOP_ISSHIP_LIST_DAYS_LBL = 'dage';
+	var $_PHPSHOP_ISSHIP_LIST_HEAVY_LBL = 'Stor vægt';
+	var $_PHPSHOP_ISSHIP_FORM_MNU = 'Konfigurer forsendelsesmetoder';
+	var $_PHPSHOP_ISSHIP_FORM_ADD_LBL = 'Tilføj forsendelsesmetode';
+	var $_PHPSHOP_ISSHIP_FORM_UPDATE_LBL = 'Konfigurer forsendelsesmetode';
+	var $_PHPSHOP_ISSHIP_FORM_REFRESH_LBL = 'Opdater';
+	var $_PHPSHOP_ISSHIP_FORM_CARRIER_LBL = 'Forsendelsesmetode';
+	var $_PHPSHOP_ISSHIP_FORM_PUBLISH_LBL = 'Aktiver';
+	var $_PHPSHOP_ISSHIP_FORM_HANDLING_LBL = 'Ekspeditionsomkostninger';
+	var $_PHPSHOP_ISSHIP_FORM_LEAD_LBL = 'Leveringstid';
+	var $_PHPSHOP_ISSHIP_FORM_CHARGE_F_LBL = 'enhedstakst';
+	var $_PHPSHOP_ISSHIP_FORM_CHARGE_P_LBL = 'procent';
+	var $_PHPSHOP_ISSHIP_FORM_DAYS_LBL = 'dage';
+	var $_PHPSHOP_ISSHIP_FORM_HEAVY_LBL = 'Stor vægt';
+	var $_PHPSHOP_ORDER_MOD = 'Ordrer';
+	var $_PHPSHOP_ORDER_CONFIRM_MNU = 'Bekræft ordre';
+	var $_PHPSHOP_ORDER_CANCEL_MNU = 'Annullér ordre';
+	var $_PHPSHOP_ORDER_PRINT_MNU = 'Print ordre';
+	var $_PHPSHOP_ORDER_DELETE_MNU = 'Slet ordre';
+	var $_PHPSHOP_ORDER_LIST_MNU = 'Vis ordrer';
+	var $_PHPSHOP_ORDER_LIST_LBL = 'Ordre liste';
+	var $_PHPSHOP_ORDER_LIST_ID = 'Ordre nummer';
+	var $_PHPSHOP_ORDER_LIST_CDATE = 'Ordre dato';
+	var $_PHPSHOP_ORDER_LIST_MDATE = 'Sidst ændret';
+	var $_PHPSHOP_ORDER_LIST_STATUS = 'Status';
+	var $_PHPSHOP_ORDER_LIST_TOTAL = 'SubTotal';
+	var $_PHPSHOP_ORDER_ITEM = 'Ordrelinier';
+	var $_PHPSHOP_ORDER_PRINT_PO_LBL = 'Ordrebekræftelse';
+	var $_PHPSHOP_ORDER_PRINT_PO_NUMBER = 'Ordre nummer';
+	var $_PHPSHOP_ORDER_PRINT_PO_DATE = 'Ordre dato';
+	var $_PHPSHOP_ORDER_PRINT_PO_STATUS = 'Ordre status';
+	var $_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL = 'Kundeinformation';
+	var $_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL = 'Faktureringsinformation';
+	var $_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL = 'Leveringsinformation';
+	var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = 'Faktureringsadresse';
+	var $_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL = 'Leveringsadresse';
+	var $_PHPSHOP_ORDER_PRINT_NAME = 'Navn';
+	var $_PHPSHOP_ORDER_PRINT_COMPANY = 'Firmanavn';
+	var $_PHPSHOP_ORDER_PRINT_ADDRESS_1 = 'Adresse 1';
+	var $_PHPSHOP_ORDER_PRINT_ADDRESS_2 = 'Adresse 2';
+	var $_PHPSHOP_ORDER_PRINT_CITY = 'By';
+	var $_PHPSHOP_ORDER_PRINT_STATE = 'Stat/Provins/Region';
+	var $_PHPSHOP_ORDER_PRINT_ZIP = 'Postnr.';
+	var $_PHPSHOP_ORDER_PRINT_COUNTRY = 'Land';
+	var $_PHPSHOP_ORDER_PRINT_PHONE = 'Telefon';
+	var $_PHPSHOP_ORDER_PRINT_FAX = 'Fax';
+	var $_PHPSHOP_ORDER_PRINT_EMAIL = 'Email';
+	var $_PHPSHOP_ORDER_PRINT_ITEMS_LBL = 'Ordrelinier';
+	var $_PHPSHOP_ORDER_PRINT_QUANTITY = 'Antal';
+	var $_PHPSHOP_ORDER_PRINT_QTY = 'Antal';
+	var $_PHPSHOP_ORDER_PRINT_SKU = 'Varenr.';
+	var $_PHPSHOP_ORDER_PRINT_PRICE = 'Pris';
+	var $_PHPSHOP_ORDER_PRINT_TOTAL = 'Total';
+	var $_PHPSHOP_ORDER_PRINT_SUBTOTAL = 'SubTotal';
+	var $_PHPSHOP_ORDER_PRINT_TOTAL_TAX = 'Moms Total';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING = 'Levering';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_TAX = 'Forsendelsesmoms';
+	var $_PHPSHOP_ORDER_PRINT_PAYMENT_LBL = 'Betalingsmetode';
+	var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME = 'Kontonavn';
+	var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER = 'Kontonummer';
+	var $_PHPSHOP_ORDER_PRINT_EXPIRE_DATE = 'Udløbsdato';
+	var $_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL = 'Betalingslog';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_LBL = 'Leveringsinformation';
+	var $_PHPSHOP_ORDER_PRINT_PAYINFO_LBL = 'Betalingsinformation';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL = 'Transportør';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL = 'Forsendelsesmåde';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_DATE_LBL = 'Forsendelsesdato';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL = 'Forsendelsespris';
+	var $_PHPSHOP_ORDER_STATUS_LIST_MNU = 'Vis ordrestatus typer';
+	var $_PHPSHOP_ORDER_STATUS_FORM_MNU = 'Tilføj Ordrestatus typer';
+	var $_PHPSHOP_ORDER_STATUS_LIST_CODE = 'Ordrestatus kode';
+	var $_PHPSHOP_ORDER_STATUS_LIST_NAME = 'Ordrestatus navn';
+	var $_PHPSHOP_ORDER_STATUS_FORM_LBL = 'Ordrestatus';
+	var $_PHPSHOP_ORDER_STATUS_FORM_CODE = 'Ordrestatus kode';
+	var $_PHPSHOP_ORDER_STATUS_FORM_NAME = 'Ordrestatus navn';
+	var $_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER = 'List Ordre';
+	var $_PHPSHOP_PRODUCT_MOD = 'Produkter';
+	var $_PHPSHOP_CURRENT_PRODUCT = 'Aktuelt produkt';
+	var $_PHPSHOP_CURRENT_ITEM = 'Aktuel vare';
+	var $_PHPSHOP_PRODUCT_INVENTORY_LBL = 'Produktkatalog';
+	var $_PHPSHOP_PRODUCT_INVENTORY_MNU = 'Gennemse katalog';
+	var $_PHPSHOP_PRODUCT_INVENTORY_PRICE = 'Pris';
+	var $_PHPSHOP_PRODUCT_INVENTORY_STOCK = 'Antal';
+	var $_PHPSHOP_PRODUCT_INVENTORY_WEIGHT = 'Vægt';
+	var $_PHPSHOP_PRODUCT_LIST_MNU = 'List Produkter';
+	var $_PHPSHOP_PRODUCT_LIST_LBL = 'Produktliste';
+	var $_PHPSHOP_PRODUCT_LIST_NAME = 'Produktnavn';
+	var $_PHPSHOP_PRODUCT_LIST_SKU = 'Varenr.';
+	var $_PHPSHOP_PRODUCT_LIST_PUBLISH = 'Publicér';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE = 'Search Product';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT = 'modyfied';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE = 'with price modyfied';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE = 'without price';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER = 'After';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE = 'Before';
+	var $_PHPSHOP_PRODUCT_FORM_MNU = 'Tilføj produkt';
+	var $_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT = 'Rediger produkt';
+	var $_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE = 'Gennemse produktdatabladet i shoppen';
+	var $_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU = 'Tilføj vare';
+	var $_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU = 'Tilføj yderligere varer';
+	var $_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL = 'Nyt produkt';
+	var $_PHPSHOP_PRODUCT_FORM_UPDATE_PRODUCT_LBL = 'Opdatér produkt';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL = 'Produktinformation';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL = 'Produktstatus';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL = 'Produktets mål og vægt';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL = 'Produktbilleder';
+	var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = 'Ny vare';
+	var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = 'Opdater vare';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = 'Vareinformation';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = 'Varestatus';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = 'Varens mål og vægt';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = 'Varebilleder';
+	var $_PHPSHOP_PRODUCT_FORM_RETURN_LBL = 'Tilbage til produktkategori';
+	var $_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL = 'For at opdatere det aktuelle billede skal du indtaste stien til et nyt billede.';
+	var $_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL = 'Indtast ';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL = 'Produkt Varer';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL = 'Vare attributter';
+	var $_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG = 'Er du sikker på at du vil slette dette produkt\\nog de varer der er tilknyttet?';
+	var $_PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG = 'Er du sikker på at du ønsker at slette denne vare?';
+	var $_PHPSHOP_PRODUCT_FORM_VENDOR = 'Forhandler';
+	var $_PHPSHOP_PRODUCT_FORM_MANUFACTURER = 'Producent';
+	var $_PHPSHOP_PRODUCT_FORM_SKU = 'Varenr.';
+	var $_PHPSHOP_PRODUCT_FORM_NAME = 'Navn';
+	var $_PHPSHOP_PRODUCT_FORM_URL = 'URL';
+	var $_PHPSHOP_PRODUCT_FORM_CATEGORY = 'Kategori';
+	var $_PHPSHOP_PRODUCT_FORM_PRICE_GROSS = 'Udsalgspris';
+	var $_PHPSHOP_PRODUCT_FORM_PRICE_NET = 'Product Price (Net)';
+	var $_PHPSHOP_PRODUCT_FORM_DESCRIPTION = 'Datablad beskrivelse';
+	var $_PHPSHOP_PRODUCT_FORM_S_DESC = 'Kort beskrivelse';
+	var $_PHPSHOP_PRODUCT_FORM_IN_STOCK = 'På lager';
+	var $_PHPSHOP_PRODUCT_FORM_ON_ORDER = 'I restordre';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE = 'Forventet på lager';
+	var $_PHPSHOP_PRODUCT_FORM_SPECIAL = 'Special';
+	var $_PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE = 'Rabattype';
+	var $_PHPSHOP_PRODUCT_FORM_PUBLISH = 'Publicér?';
+	var $_PHPSHOP_PRODUCT_FORM_LENGTH = 'Længde';
+	var $_PHPSHOP_PRODUCT_FORM_WIDTH = 'Bredde';
+	var $_PHPSHOP_PRODUCT_FORM_HEIGHT = 'Højde';
+	var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM = 'Måleenhed';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT = 'Vægt';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM = 'Måleenhed';
+	var $_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE = 'Thumb Nail';
+	var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = 'Fuld størrelse';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT = 'pounds';
+	var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT = 'inches';
+	var $_PHPSHOP_PRODUCT_FORM_UNIT = 'Unit';
+	var $_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT = 'piece';
+	var $_PHPSHOP_PRODUCT_FORM_PACKAGING = 'Units in Packaging';
+	var $_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION = 'Here you can fill in a number unit in packaging. (max. 65535)';
+	var $_PHPSHOP_PRODUCT_FORM_BOX = 'Units in Box';
+	var $_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION = 'Here you can fill in a number unit in box. (max. 65535)';
+	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = 'Produkt Tilføj Resultat';
+	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = 'Produkt Opdatér Resultat';
+	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = 'Vare Tilføj Resultat';
+	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL = 'Vare Opdatér Resultat';
+	var $_PHPSHOP_PRODUCT_CSV_UPLOAD = 'Benyt CSV-fil';
+	var $_PHPSHOP_PRODUCT_FOLDERS = 'Produkt Foldere';
+	var $_PHPSHOP_CATEGORY_LIST_MNU = 'Vis kategorier';
+	var $_PHPSHOP_CATEGORY_LIST_LBL = 'Kategoritræ';
+	var $_PHPSHOP_CATEGORY_FORM_MNU = 'Tilføj Kategori';
+	var $_PHPSHOP_CATEGORY_FORM_LBL = 'Kategori information';
+	var $_PHPSHOP_CATEGORY_FORM_NAME = 'Kategorinavn';
+	var $_PHPSHOP_CATEGORY_FORM_PARENT = 'Tilhører';
+	var $_PHPSHOP_CATEGORY_FORM_DESCRIPTION = 'Kategoribeskrivelse';
+	var $_PHPSHOP_CATEGORY_FORM_PUBLISH = 'Publicér?';
+	var $_PHPSHOP_CATEGORY_FORM_FLYPAGE = 'Kategori datablad';
+	var $_PHPSHOP_ATTRIBUTE_LIST_MNU = 'List attributter';
+	var $_PHPSHOP_ATTRIBUTE_LIST_LBL = 'Attributliste for';
+	var $_PHPSHOP_ATTRIBUTE_LIST_NAME = 'Attributnavn';
+	var $_PHPSHOP_ATTRIBUTE_LIST_ORDER = 'Rækkefølge';
+	var $_PHPSHOP_ATTRIBUTE_FORM_MNU = 'Tilføj attributter';
+	var $_PHPSHOP_ATTRIBUTE_FORM_LBL = 'Attribut formular';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT = 'Ny attribut for produkt';
+	var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT = 'Opdatér attribut for produkt';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM = 'Ny attribut for vare';
+	var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM = 'Opdatér attribut for vare';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NAME = 'Attributnavn';
+	var $_PHPSHOP_ATTRIBUTE_FORM_ORDER = 'Rækkefølge';
+	var $_PHPSHOP_PRICE_LIST_MNU = 'Vis kategorier';
+	var $_PHPSHOP_PRICE_LIST_LBL = 'Pristræ';
+	var $_PHPSHOP_PRICE_LIST_FOR_LBL = 'Pris for';
+	var $_PHPSHOP_PRICE_LIST_GROUP_NAME = 'Gruppenavn';
+	var $_PHPSHOP_PRICE_LIST_PRICE = 'Pris';
+	var $_PHPSHOP_PRODUCT_LIST_CURRENCY = 'Valuta';
+	var $_PHPSHOP_PRICE_FORM_MNU = 'Tilføj Pris';
+	var $_PHPSHOP_PRICE_FORM_LBL = 'Prisinformation';
+	var $_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT = 'Ny pris for produkt';
+	var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT = 'Opdatér pris for produkt';
+	var $_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM = 'Ny pris for vare';
+	var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM = 'Opdatér pris for vare';
+	var $_PHPSHOP_PRICE_FORM_PRICE = 'Pris';
+	var $_PHPSHOP_PRICE_FORM_CURRENCY = 'Valuta';
+	var $_PHPSHOP_PRICE_FORM_GROUP = 'Kundegruppe';
+	var $_PHPSHOP_REPORTBASIC_MOD = 'Rapporter';
+	var $_PHPSHOP_RB_INDIVIDUAL = 'Individuelle produktlister';
+	var $_PHPSHOP_RB_SALE_TITLE = 'Salgsrapportering';
+	var $_PHPSHOP_RB_SALES_PAGE_TITLE = 'Salgsaktivitet - oversigt';
+	var $_PHPSHOP_RB_INTERVAL_TITLE = 'Interval';
+	var $_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE = 'Månedlig';
+	var $_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE = 'Ugenlig';
+	var $_PHPSHOP_RB_INTERVAL_DAILY_TITLE = 'Daglig';
+	var $_PHPSHOP_RB_THISMONTH_BUTTON = 'Denne måned';
+	var $_PHPSHOP_RB_LASTMONTH_BUTTON = 'Sidste måned';
+	var $_PHPSHOP_RB_LAST60_BUTTON = 'Seneste 60 dage';
+	var $_PHPSHOP_RB_LAST90_BUTTON = 'Seneste 90 dage';
+	var $_PHPSHOP_RB_START_DATE_TITLE = 'Start den';
+	var $_PHPSHOP_RB_END_DATE_TITLE = 'Slut den';
+	var $_PHPSHOP_RB_SHOW_SEL_RANGE = 'Vis det valgte interval';
+	var $_PHPSHOP_RB_REPORT_FOR = 'Rapport for ';
+	var $_PHPSHOP_RB_DATE = 'Dato';
+	var $_PHPSHOP_RB_ORDERS = 'Ordrer';
+	var $_PHPSHOP_RB_TOTAL_ITEMS = 'Antal varer solgt';
+	var $_PHPSHOP_RB_REVENUE = 'Omsætning';
+	var $_PHPSHOP_RB_PRODLIST = 'Produktliste';
+	var $_PHPSHOP_SHOP_MOD = 'Butik';
+	var $_PHPSHOP_PRODUCT_THUMB_TITLE = 'Billede';
+	var $_PHPSHOP_PRODUCT_PRICE_TITLE = 'Pris';
+	var $_PHPSHOP_ORDER_STATUS_P = 'Afventer';
+	var $_PHPSHOP_ORDER_STATUS_C = 'Bekræftet';
+	var $_PHPSHOP_ORDER_STATUS_X = 'Slettet';
+	var $_PHPSHOP_ORDER_BUTTON = 'Bestil';
+	var $_PHPSHOP_SHOPPER_MOD = 'Kunde';
+	var $_PHPSHOP_SHOPPER_LIST_MNU = 'Vis kunder';
+	var $_PHPSHOP_SHOPPER_LIST_LBL = 'Kundeliste';
+	var $_PHPSHOP_SHOPPER_LIST_USERNAME = 'Brugernavn';
+	var $_PHPSHOP_SHOPPER_LIST_NAME = 'Navn';
+	var $_PHPSHOP_SHOPPER_LIST_GROUP = 'Gruppe';
+	var $_PHPSHOP_SHOPPER_FORM_MNU = 'Tilføj kunde';
+	var $_PHPSHOP_SHOPPER_FORM_LBL = 'Kundeinformation';
+	var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = 'Faktureringsadresse';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL = 'Information';
+	var $_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL = 'Leveringsadresse';
+	var $_PHPSHOP_SHOPPER_FORM_ADD_SHIPTO_LBL = 'Tilføj adresse';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL = 'Adressenavn';
+	var $_PHPSHOP_SHOPPER_FORM_USERNAME = 'Brugernavn';
+	var $_PHPSHOP_SHOPPER_FORM_FIRST_NAME = 'Fornavn';
+	var $_PHPSHOP_SHOPPER_FORM_LAST_NAME = 'Efternavn';
+	var $_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME = 'Mellemnavn';
+	var $_PHPSHOP_SHOPPER_FORM_TITLE = 'Titel';
+	var $_PHPSHOP_SHOPPER_FORM_SHOPPERNAME = 'Kundenavn';
+	var $_PHPSHOP_SHOPPER_FORM_PASSWORD_1 = 'Adgangskode';
+	var $_PHPSHOP_SHOPPER_FORM_PASSWORD_2 = 'Bekræft adgangskode';
+	var $_PHPSHOP_SHOPPER_FORM_GROUP = 'Kundegruppe';
+	var $_PHPSHOP_SHOPPER_FORM_COMPANY_NAME = 'Firmanavn';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_1 = 'Adresse 1';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_2 = 'Adresse 2';
+	var $_PHPSHOP_SHOPPER_FORM_CITY = 'By';
+	var $_PHPSHOP_SHOPPER_FORM_STATE = 'Stat/Provins/Region';
+	var $_PHPSHOP_SHOPPER_FORM_ZIP = 'Postnr.';
+	var $_PHPSHOP_SHOPPER_FORM_COUNTRY = 'Land';
+	var $_PHPSHOP_SHOPPER_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_SHOPPER_FORM_PHONE2 = 'Mobile phone';
+	var $_PHPSHOP_SHOPPER_FORM_FAX = 'Fax';
+	var $_PHPSHOP_SHOPPER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1 = 'Yes';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2 = 'No';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1 = 'AAA';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2 = 'BBB';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3 = 'CCC';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_MNU = 'Vis kundegrupper';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_LBL = 'Kundegruppeliste';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_NAME = 'Gruppenavn';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION = 'Gruppebeskrivelse';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_LBL = 'Kundegruppe formular';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_MNU = 'Tilføj kundegruppe';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_NAME = 'Gruppenavn';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DESC = 'Gruppebeskrivelse';
+	var $_PHPSHOP_STORE_MOD = 'Butik';
+	var $_PHPSHOP_STORE_FORM_MNU = 'Rediger butik';
+	var $_PHPSHOP_STORE_FORM_LBL = 'Butikinformation';
+	var $_PHPSHOP_STORE_FORM_CONTACT_LBL = 'Kontaktinformation';
+	var $_PHPSHOP_STORE_FORM_FULL_IMAGE = 'Fuld størrelse';
+	var $_PHPSHOP_STORE_FORM_UPLOAD = 'Upload billede';
+	var $_PHPSHOP_STORE_FORM_STORE_NAME = 'Butiknavn';
+	var $_PHPSHOP_STORE_FORM_COMPANY_NAME = 'Butikkens firmanavn';
+	var $_PHPSHOP_STORE_FORM_ADDRESS_1 = 'Adresse 1';
+	var $_PHPSHOP_STORE_FORM_ADDRESS_2 = 'Adresse 2';
+	var $_PHPSHOP_STORE_FORM_CITY = 'By';
+	var $_PHPSHOP_STORE_FORM_STATE = 'Stat/Provins/Region';
+	var $_PHPSHOP_STORE_FORM_COUNTRY = 'Land';
+	var $_PHPSHOP_STORE_FORM_ZIP = 'Postnr.';
+	var $_PHPSHOP_STORE_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_STORE_FORM_CURRENCY = 'Valuta';
+	var $_PHPSHOP_STORE_FORM_CATEGORY = 'Butikskategori';
+	var $_PHPSHOP_STORE_FORM_LAST_NAME = 'Efternavn';
+	var $_PHPSHOP_STORE_FORM_FIRST_NAME = 'Fornavn';
+	var $_PHPSHOP_STORE_FORM_MIDDLE_NAME = 'Mellemnavn';
+	var $_PHPSHOP_STORE_FORM_TITLE = 'Titel';
+	var $_PHPSHOP_STORE_FORM_PHONE_1 = 'Telefon 1';
+	var $_PHPSHOP_STORE_FORM_PHONE_2 = 'Telefon 2';
+	var $_PHPSHOP_STORE_FORM_FAX = 'Fax';
+	var $_PHPSHOP_STORE_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_STORE_FORM_IMAGE_PATH = 'Billedsti';
+	var $_PHPSHOP_STORE_FORM_DESCRIPTION = 'Beskrivelse';
+	var $_PHPSHOP_PAYMENT = 'Betalingsformer';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_MNU = 'Vis betalingsformer';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_LBL = 'Betalingsform liste';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_NAME = 'Navn';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_CODE = 'Kode';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT = 'Rabat ';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP = 'Kundegruppe';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR = 'Betalingsform';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_MNU = 'Tilføj betalingsform';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_LBL = 'Betalingsform formular';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_NAME = 'Betalingsform';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP = 'Kundegruppe';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT = 'Rabat ';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_CODE = 'Kode';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER = 'Rækkefølge';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR = 'Betalingsform type';
+	var $_PHPSHOP_TAX_MOD = 'Moms';
+	var $_PHPSHOP_TAX_RATE = 'Momssats';
+	var $_PHPSHOP_TAX_LIST_MNU = 'Vis momssatser';
+	var $_PHPSHOP_TAX_LIST_LBL = 'Momssats liste';
+	var $_PHPSHOP_TAX_LIST_STATE = 'Moms stat eller region';
+	var $_PHPSHOP_TAX_LIST_COUNTRY = 'Moms land';
+	var $_PHPSHOP_TAX_LIST_RATE = 'Momssats';
+	var $_PHPSHOP_TAX_FORM_MNU = 'Tilføj momssats';
+	var $_PHPSHOP_TAX_FORM_LBL = 'Tilføj momsinformation';
+	var $_PHPSHOP_TAX_FORM_STATE = 'Moms stat eller region';
+	var $_PHPSHOP_TAX_FORM_COUNTRY = 'Moms land';
+	var $_PHPSHOP_TAX_FORM_RATE = 'Momssats (for 25% => skriv 0.25)';
+	var $_PHPSHOP_VENDOR_MOD = 'Forhandler';
+	var $_PHPSHOP_VENDOR_ADMIN = 'Forhandlere';
+	var $_PHPSHOP_VENDOR_LIST_MNU = 'Vis forhandlere';
+	var $_PHPSHOP_VENDOR_LIST_LBL = 'Forhandlerliste';
+	var $_PHPSHOP_VENDOR_LIST_VENDOR_NAME = 'Forhandlernavn';
+	var $_PHPSHOP_VENDOR_LIST_ADMIN = 'Admin';
+	var $_PHPSHOP_VENDOR_FORM_MNU = 'Tilføj forhandler';
+	var $_PHPSHOP_VENDOR_FORM_LBL = 'Tilføj information';
+	var $_PHPSHOP_VENDOR_FORM_INFO_LBL = 'Forhandlerinformation';
+	var $_PHPSHOP_VENDOR_FORM_CONTACT_LBL = 'Kontaktinformation';
+	var $_PHPSHOP_VENDOR_FORM_FULL_IMAGE = 'Fuld størrelse';
+	var $_PHPSHOP_VENDOR_FORM_UPLOAD = 'Upload billede';
+	var $_PHPSHOP_VENDOR_FORM_STORE_NAME = 'Forhandlers butiksnavn';
+	var $_PHPSHOP_VENDOR_FORM_COMPANY_NAME = 'Forhandlers firmanavn';
+	var $_PHPSHOP_VENDOR_FORM_ADDRESS_1 = 'Adresse 1';
+	var $_PHPSHOP_VENDOR_FORM_ADDRESS_2 = 'Adresse 2';
+	var $_PHPSHOP_VENDOR_FORM_CITY = 'By';
+	var $_PHPSHOP_VENDOR_FORM_STATE = 'Stat/Provins/Region';
+	var $_PHPSHOP_VENDOR_FORM_COUNTRY = 'Land';
+	var $_PHPSHOP_VENDOR_FORM_ZIP = 'Postnr.';
+	var $_PHPSHOP_VENDOR_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_VENDOR_FORM_CURRENCY = 'Valuta';
+	var $_PHPSHOP_VENDOR_FORM_CATEGORY = 'Forhandlerkategori';
+	var $_PHPSHOP_VENDOR_FORM_LAST_NAME = 'Efternavn';
+	var $_PHPSHOP_VENDOR_FORM_FIRST_NAME = 'Fornavn';
+	var $_PHPSHOP_VENDOR_FORM_MIDDLE_NAME = 'Mellemnavn';
+	var $_PHPSHOP_VENDOR_FORM_TITLE = 'Titel';
+	var $_PHPSHOP_VENDOR_FORM_PHONE_1 = 'Telefon 1';
+	var $_PHPSHOP_VENDOR_FORM_PHONE_2 = 'Telefon 2';
+	var $_PHPSHOP_VENDOR_FORM_FAX = 'Fax';
+	var $_PHPSHOP_VENDOR_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_VENDOR_FORM_IMAGE_PATH = 'Billedsti';
+	var $_PHPSHOP_VENDOR_FORM_DESCRIPTION = 'Beskrivelse';
+	var $_PHPSHOP_VENDOR_CAT_LIST_MNU = 'Vis forhandlerkategorier';
+	var $_PHPSHOP_VENDOR_CAT_LIST_LBL = 'Forhandlerkategoriliste';
+	var $_PHPSHOP_VENDOR_CAT_NAME = 'Kategorinavn';
+	var $_PHPSHOP_VENDOR_CAT_DESCRIPTION = 'Kategoribeskrivelse';
+	var $_PHPSHOP_VENDOR_CAT_VENDORS = 'Forhandlere';
+	var $_PHPSHOP_VENDOR_CAT_FORM_MNU = 'Tilføj forhandlerkategori';
+	var $_PHPSHOP_VENDOR_CAT_FORM_LBL = 'Forhandlerkategori formular';
+	var $_PHPSHOP_VENDOR_CAT_FORM_INFO_LBL = 'Kategori information';
+	var $_PHPSHOP_VENDOR_CAT_FORM_NAME = 'Kategorinavn';
+	var $_PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION = 'Kategoribeskrivelse';
+	var $_PHPSHOP_MANUFACTURER_MOD = 'Producent';
+	var $_PHPSHOP_MANUFACTURER_ADMIN = 'Producenter';
+	var $_PHPSHOP_MANUFACTURER_LIST_MNU = 'Vis producenter';
+	var $_PHPSHOP_MANUFACTURER_LIST_LBL = 'Producentliste';
+	var $_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME = 'Producentnavn';
+	var $_PHPSHOP_MANUFACTURER_LIST_ADMIN = 'Admin';
+	var $_PHPSHOP_MANUFACTURER_FORM_MNU = 'Tilføj producent';
+	var $_PHPSHOP_MANUFACTURER_FORM_LBL = 'Tilføj information';
+	var $_PHPSHOP_MANUFACTURER_FORM_INFO_LBL = 'Producentinformation';
+	var $_PHPSHOP_MANUFACTURER_FORM_NAME = 'Producentnavn';
+	var $_PHPSHOP_MANUFACTURER_FORM_CATEGORY = 'Producentkategori';
+	var $_PHPSHOP_MANUFACTURER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_MANUFACTURER_FORM_URL = 'URL til producentens website';
+	var $_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION = 'Beskrivelse';
+	var $_PHPSHOP_MANUFACTURER_CAT_LIST_MNU = 'Vis producentkategorier';
+	var $_PHPSHOP_MANUFACTURER_CAT_LIST_LBL = 'Producentkategori liste';
+	var $_PHPSHOP_MANUFACTURER_CAT_NAME = 'Kategorinavn';
+	var $_PHPSHOP_MANUFACTURER_CAT_DESCRIPTION = 'Kategoribeskrivelse';
+	var $_PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS = 'Producenter';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_MNU = 'Tilføj producentkategori';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_LBL = 'Producentkategoriformular';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL = 'Kategoriinformation';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_NAME = 'Kategorinavn';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION = 'Kategoribeskrivelse';
+	var $_PHPSHOP_HELP_MOD = 'Hjælp';
+	var $_PHPSHOP_CART_ACTION = 'Opdatér';
+	var $_PHPSHOP_CART_UPDATE = 'Opdatér antal i vogn';
+	var $_PHPSHOP_CART_DELETE = 'Slet produkt fra vogn';
+	var $_PHPSHOP_PRODUCT_PRICETAG = 'Pris';
+	var $_PHPSHOP_PRODUCT_CALL = 'Ring for pris';
+	var $_PHPSHOP_PRODUCT_PREVIOUS = 'Forrige';
+	var $_PHPSHOP_PRODUCT_NEXT = 'NÆSTE';
+	var $_PHPSHOP_CART_TAX = 'Moms';
+	var $_PHPSHOP_CART_SHIPPING = 'Levering';
+	var $_PHPSHOP_CART_TOTAL = 'Total';
+	var $_PHPSHOP_CHECKOUT_NEXT = 'Næste';
+	var $_PHPSHOP_CHECKOUT_REGISTER = 'REGISTRÉR';
+	var $_PHPSHOP_CHECKOUT_CONF_BILLINFO = 'Billing Information';
+	var $_PHPSHOP_CHECKOUT_CONF_COMPANY = 'Firma';
+	var $_PHPSHOP_CHECKOUT_CONF_NAME = 'Navn';
+	var $_PHPSHOP_CHECKOUT_CONF_ADDRESS = 'Adresse';
+	var $_PHPSHOP_CHECKOUT_CONF_PHONE = 'Telefon';
+	var $_PHPSHOP_CHECKOUT_CONF_FAX = 'Fax';
+	var $_PHPSHOP_CHECKOUT_CONF_EMAIL = 'Email';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO = 'Leveringsinformation';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY = 'Firma';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME = 'Navn';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS = 'Adresse';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE = 'Telefon';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX = 'Fax';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO = 'Betalingsform';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD = 'Navn på kort';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD = 'Betalingsform';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM = 'Kortnummer';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE = 'Udløbsdato';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER = 'Fuldfør ordre';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = 'krævet information når betaling via betalingskort er valgt';
+	var $_PHPSHOP_ZONE_MOD = 'Zone forsendelse';
+	var $_PHPSHOP_ZONE_LIST_MNU = 'List Zoner';
+	var $_PHPSHOP_ZONE_FORM_MNU = 'Tilføj Zone';
+	var $_PHPSHOP_ZONE_ASSIGN_MNU = 'Tildel Zoner';
+	var $_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL = 'Land';
+	var $_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL = 'Aktuel Zone';
+	var $_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL = 'Tildel til Zone';
+	var $_PHPSHOP_ZONE_ASSIGN_UPDATE_LBL = 'Opdatér';
+	var $_PHPSHOP_ASSIGN_ZONE_PG_LBL = 'Tildel Zoner';
+	var $_PHPSHOP_ZONE_FORM_NAME_LBL = 'Zonenavn';
+	var $_PHPSHOP_ZONE_FORM_DESC_LBL = 'Zonebeskrivelse';
+	var $_PHPSHOP_ZONE_FORM_COST_PER_LBL = 'Zonepris pr. vare';
+	var $_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL = 'Zone max pris';
+	var $_PHPSHOP_ZONE_LIST_LBL = 'Zoneliste';
+	var $_PHPSHOP_ZONE_LIST_NAME_LBL = 'Zonenavn';
+	var $_PHPSHOP_ZONE_LIST_DESC_LBL = 'Zonebeskrivelse';
+	var $_PHPSHOP_ZONE_LIST_COST_PER_LBL = 'Zonepris pr. vare';
+	var $_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL = 'Zone max pris';
+	var $_PHPSHOP_LOGIN_FIRST = 'Log ind eller registrér Dem som bruger (benyt login modulet i højre side).<br>Tak.';
+	var $_PHPSHOP_STORE_FORM_TOS = 'Salgs- og leveringsbetingelser';
+	var $_PHPSHOP_AGREE_TO_TOS = 'De skal acceptere vores salgs- og leveringsbetingelser først.';
+	var $_PHPSHOP_I_AGREE_TO_TOS = 'Jeg accepterer salgsbetingelserne';
+	var $_PHPSHOP_LEAVE_BLANK = '(efterlad BLANK hvis du ikke har<br />en individuel php-fil til den!)';
+	var $_PHPSHOP_RETURN_LOGIN = 'Allerede oprettet? Log ind!';
+	var $_PHPSHOP_NEW_CUSTOMER = 'Ny kunde? Udfyld skemaet!';
+	var $_PHPSHOP_ACC_CUSTOMER_ACCOUNT = 'Kundekonto:';
+	var $_PHPSHOP_ACC_ORDER_INFO = 'Ordreinformation';
+	var $_PHPSHOP_ACC_UPD_BILL = 'Her kan De opdatere Deres faktureringsoplysninger.';
+	var $_PHPSHOP_ACC_UPD_SHIP = 'Her kan De tilføje og vedligeholde leveringsoplysninger.';
+	var $_PHPSHOP_ACC_ACCOUNT_INFO = 'Kontoinformation';
+	var $_PHPSHOP_ACC_SHIP_INFO = 'Leveringsinformation';
+	var $_PHPSHOP_ACC_NO_ORDERS = 'Ingen ordrer at vise';
+	var $_PHPSHOP_ACC_BILL_DEF = '- Standard (Samme som faktureringsadresse)';
+	var $_PHPSHOP_SHIPTO_TEXT = 'For at gøre det lettere for Dem at få leveret varer til flere forskellige adresser, kan De nu tilføje flere leveringsadresser til Deres konto. De bedes give hver leveringsadresse et passende navn.';
+	var $_PHPSHOP_CONFIG = 'Konfiguration';
+	var $_PHPSHOP_USERS = 'Brugere';
+	var $_PHPSHOP_IS_CC_PAYMENT = 'er betalingskort betaling?';
+	var $_PHPSHOP_SHIPPING_MOD = 'Forsendelse';
+	var $_PHPSHOP_SHIPPING_MENU_LABEL = 'Forsendelse';
+	var $_PHPSHOP_CARRIER_LIST_MNU = 'Transportør';
+	var $_PHPSHOP_CARRIER_LIST_LBL = 'Transportør liste';
+	var $_PHPSHOP_RATE_LIST_MNU = 'Forsendelsestarif';
+	var $_PHPSHOP_RATE_LIST_LBL = 'Tarifliste';
+	var $_PHPSHOP_CARRIER_LIST_NAME_LBL = 'Navn';
+	var $_PHPSHOP_CARRIER_LIST_ORDER_LBL = 'Rækkefølge';
+	var $_PHPSHOP_CARRIER_FORM_MNU = 'Opret transportør';
+	var $_PHPSHOP_CARRIER_FORM_LBL = 'Opret/rediger transportør';
+	var $_PHPSHOP_RATE_FORM_MNU = 'Opret forsendelsestarif';
+	var $_PHPSHOP_RATE_FORM_LBL = 'Opret/rediger en forsendelsestarif';
+	var $_PHPSHOP_RATE_FORM_NAME = 'Forsendelsestarif beskrivelse';
+	var $_PHPSHOP_RATE_FORM_CARRIER = 'Transportør';
+	var $_PHPSHOP_RATE_FORM_COUNTRY = 'Land';
+	var $_PHPSHOP_RATE_FORM_ZIP_START = 'Postnr. interval start';
+	var $_PHPSHOP_RATE_FORM_ZIP_END = 'Postnr. interval slut';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_START = 'Laveste vægt';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_END = 'Højeste vægt';
+	var $_PHPSHOP_RATE_FORM_VALUE = 'Forsendelsesomkostning';
+	var $_PHPSHOP_RATE_FORM_PACKAGE_FEE = 'Ekspeditionsomkostning';
+	var $_PHPSHOP_RATE_FORM_CURRENCY = 'Valuta';
+	var $_PHPSHOP_RATE_FORM_VAT_ID = 'Moms Id';
+	var $_PHPSHOP_RATE_FORM_LIST_ORDER = 'Rækkefølge';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL = 'Transportør';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME = 'Forsendelsestarif beskrivelse';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART = 'Vægt fra ...';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND = '... til';
+	var $_PHPSHOP_CARRIER_FORM_NAME = 'Transportør';
+	var $_PHPSHOP_CARRIER_FORM_LIST_ORDER = 'Rækkefølge';
+	var $_PHPSHOP_ERR_MSG_CARRIER_EXIST = 'ERROR: Transportør ID eksisterer.';
+	var $_PHPSHOP_ERR_MSG_CARRIER_ID_REQ = 'ERROR: Vælg en transportør.';
+	var $_PHPSHOP_ERR_MSG_CARRIER_INUSE = 'ERROR: Der eksisterer mindst en forsendelsestarif, slet tariffer før transportør';
+	var $_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND = 'ERROR: Kan ikke finde en transportør med dette ID.';
+	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = 'FJEL: Vælg en transportør.';
+	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = 'FEJL: Kan ikke finde en transpørtør med dette ID.';
+	var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = 'FEJL: Tarif er påkrævet.';
+	var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = 'FEJL: Fejl i destinationsland. Mere end et land skal adskilles med ";".';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = 'FEJL: En lavere vægt er påkrævet';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = 'FEJL: En højere vægt er påkrævet';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = 'FEJL: Den laveste vægt skal være lavere end den højeste vægt.';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = 'FEJL: Forsendelsespris påkrævet.';
+	var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = 'FEJL: Vælg et land';
+	var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = 'FEJL: En forsendelsespris er påkrævet';
+	var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = 'Vælg venligst';
+	var $_PHPSHOP_INFO_MSG_CARRIER = 'Transportør';
+	var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = 'Forsendelsestarif';
+	var $_PHPSHOP_INFO_MSG_SHIPPING_PRICE = 'Pris';
+	var $_PHPSHOP_INFO_MSG_VAT_ZERO_LBL = '0 (-ingen-)';
+	var $_PHPSHOP_PAYMENT_FORM_CC = 'Betalingskort';
+	var $_PHPSHOP_PAYMENT_FORM_USE_PP = 'Benyt betalingsformidler';
+	var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = 'Bank debit';
+	var $_PHPSHOP_PAYMENT_FORM_AO = 'Efterkrav';
+	var $_PHPSHOP_CHECKOUT_MSG_2 = 'Vælg en leveringsadresse!';
+	var $_PHPSHOP_CHECKOUT_MSG_3 = 'Vælg en forsendelsesmåde!';
+	var $_PHPSHOP_CHECKOUT_MSG_4 = 'Vælg betalingsmåde!';
+	var $_PHPSHOP_CHECKOUT_MSG_99 = 'Gennemse venligst det indtastede og bekræft derefter ordren!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIP = 'Vælg en forsendelsesmåde.';
+	var $_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP = 'Vælg en anden forsendelsesmåde.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_PAYM = 'Vælg betalingsmåde.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR = 'Indtast kortnummer.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNAME = 'Indtast navnet som betalingskortet er udstedt til.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATE = 'Det indtastede kortnummer er ikke gyldigt.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCMON = 'Indtast kortets udløbsmåned.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR = 'Indtast kortets udløbsår.';
+	var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = 'Udløbsdatoen er ikke gyldig.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = 'Vælg leveringsadresse.';
+	var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = 'Kontonummeret eksisterer ikke.';
+	var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = 'Der er ingen varer i vognen!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = 'FEJL: Vælg en transportør!';
+	var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = 'FEJL: Den valgte transporttarif blev ikke fundet!';
+	var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = 'FEJL: Deres leveringsadresse blev ikke fundet!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = 'FEJL: Der er ingen betalingskort informationer...';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = 'FEJL: Betalingskort nummeret blev ikke fundet!';
+	var $_PHPSHOP_CHECKOUT_ERR_TEST = 'Beklager, men kortnummeret som blev benyttet er et testnummer!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = 'Bruger ID kan ikke findes!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = 'Navnet på kontoindehaveren er ikke oplyst.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = 'IBAN nummer er ikke oplyst.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = 'Bankkonto nummer er ikke oplyst.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = 'Bankens reg.nr er ikke oplyst.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = 'Bankens navn er ikke oplyst.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = 'For at gå gennem kasselinien skal alle trin være afsluttet korrekt!';
+	var $_PHPSHOP_CHECKOUT_MSG_LOG = 'Betalingsinformation er gemt til senere behandling.<br />';
+	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = 'Minimum ordreværdi er endnu ikke opnået.';
+	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV2 = 'Minimum ordreværdi ved køb er:';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_CC = 'Betaling med betalingskort';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_OTHER = 'Andre betalingsmåder';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_SELECT = 'Vælg en betalingsmåde:';
+	var $_PHPSHOP_STORE_FORM_MPOV = 'Minimum ordreværdi for din butik';
+	var $_PHPSHOP_ACCOUNT_BANK_TITLE = 'Bankkonto information';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR = 'Kontonummer';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE = 'Reg.nr';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_NAME = 'Bankens navn';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_IBAN = 'IBAN';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER = 'Kontoindehaver';
+	var $_PHPSHOP_MODULES = 'Moduler';
+	var $_PHPSHOP_FUNCTIONS = 'Funktioner';
+	var $_PHPSHOP_SPECIAL_PRODUCTS = 'Specielle produkter';
+	var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = 'Her er De velkommen til at skrive en påtegning til ordren';
+	var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = 'Kundens påtegning';
+	var $_PHPSHOP_INCLUDING_TAX = '(including $tax % moms)';
+	var $_PHPSHOP_PLEASE_SEL_ITEM = 'Vælg en vare';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = 'Vare';
+	var $_PHPSHOP_DOWNLOADS_TITLE = 'Download område';
+	var $_PHPSHOP_DOWNLOADS_START = 'Start Download';
+	var $_PHPSHOP_DOWNLOADS_INFO = 'Indtast download-ID\'et som De har modtaget pr. e-mail og klik \'Start Download\'.';
+	var $_PHPSHOP_DOWNLOADS_ERR_EXP = 'Beklager, men Deres downloadperiode er udløbet';
+	var $_PHPSHOP_DOWNLOADS_ERR_MAX = 'Beklager, men Deres maksimum antal af downloads er nået';
+	var $_PHPSHOP_DOWNLOADS_ERR_INV = 'Ugyldigt download-ID!';
+	var $_PHPSHOP_DOWNLOADS_ERR_SEND = 'Kunne ikke sende en besked til ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG = 'Besked sendt til ';
+	var $_PHPSHOP_DOWNLOADS_SEND_SUBJ = 'Download-Info';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_1 = 'fil(erne) De har bestilt er klar til download';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_2 = 'Indtast de(t) følgende Download-ID(er) i Deres Downloads Område: ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_3 = 'det maksimale antal downloads for hver fil er: ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_4 = 'Download indtil {expire} dag(e) efter det første download';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_5 = 'Spørgsmål? Kommentarer?';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = 'Download-Info af ';
+	var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = 'Produkt kan downloades';
+	var $_PHPSHOP_PAYPAL_THANKYOU = 'Tak for Deres betaling. 
         Overførslen lykkedes. De vil modtage en bekræftelsese-mail for transaktionen fra PayPal. 
-        De kan nu vælge at fortsætte eller at logge ind på <a href=http://www.paypal.com>www.paypal.com</a> for at se transaktionsdetaljerne.";
-    var $_PHPSHOP_PAYPAL_ERROR = "Der opstod en fejl under overførslen. Ordrestatus for Deres ordre kunne ikke opdateres.";
-    
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = "Tak for Deres ordre. Detaljerne for Deres ordre fremgår af nedenstående.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2 = "Tak fordi De valgte at handle hos os.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3 = "Kontakt os venligst såfremt De har spørgsmål til ordrebekræftelsen.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4 = "Den følgende ordre er modtaget.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5 = "Se Deres ordre ved at klikke på linket nedenfor.";
-    
-    var $_PHPSHOP_CART_ERROR_NO_NEGATIVE = "Negative antal er ikke tilladt.";
-    var $_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY = "Indtast en værdi for denne vare.";
-    
-    var $_PHPSHOP_CART_STOCK_1 = "Det valgte antal overskrider antal på lager. ";
-    var $_PHPSHOP_CART_STOCK_2 = "Wi har i øjeblikket \$product_in_stock varer på lager. ";
-    var $_PHPSHOP_CART_STOCK_3 = "Klik her for at reserver varen";
-    var $_PHPSHOP_CART_SELECT_ITEM = "Vælg en speciel vare fra detalje visningen!";
-    
-    var $_PHPSHOP_REGISTRATION_FORM_NONE = "ingen";
-    var $_PHPSHOP_REGISTRATION_FORM_MR = "Hr.";
-    var $_PHPSHOP_REGISTRATION_FORM_MRS = "Fru.";
-    var $_PHPSHOP_REGISTRATION_FORM_DR = "Dr.";
-    var $_PHPSHOP_REGISTRATION_FORM_PROF = "Prof.";
-    var $_PHPSHOP_DEFAULT = "Default";
-    
-  /*#####################################################
-    MODULE AFFILIATE
-  #######################################################*/
-    var $_PHPSHOP_AFFILIATE_MOD   = "Partner Administration";
-    
-    // Affiliate List
-    var $_PHPSHOP_AFFILIATE_LIST_MNU		= "List partnere";
-    var $_PHPSHOP_AFFILIATE_LIST_LBL		= "Partnerliste";
-    var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME	= "Partner navn";
-    var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE = "Aktiv";
-    var $_PHPSHOP_AFFILIATE_LIST_RATE		= "Rate";
-    var $_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL = "Måneds total";
-    var $_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION ="Månedskommission";
-    var $_PHPSHOP_AFFILIATE_LIST_ORDERS = "Rækkefølge";
-    
-    // Affiliate Email
-    var $_PHPSHOP_AFFILIATE_EMAIL_MNU		= "Email partnere";
-    var $_PHPSHOP_AFFILIATE_EMAIL_LBL		= "Email partnere";
-    var $_PHPSHOP_AFFILIATE_EMAIL_WHO	= "Hvem skal emailes(* = alle)";
-    var $_PHPSHOP_AFFILIATE_EMAIL_CONTENT		= "Din emailadresse";
-    var $_PHPSHOP_AFFILIATE_EMAIL_SUBJECT = "Emne";
-    var $_PHPSHOP_AFFILIATE_EMAIL_STATS	 = "Indkludér nuværende statistik";
-    
-    // Affiliate Form
-    var $_PHPSHOP_AFFILIATE_FORM_RATE		= "Kommissionsrate (procent)";
-    var $_PHPSHOP_AFFILIATE_FORM_ACTIVE		= "Aktiv?";
-    
-    var $_PHPSHOP_DELIVERY_TIME = "Leveres normalt";
-    var $_PHPSHOP_DELIVERY_INFORMATION = "Leveringsinformation";
-    var $_PHPSHOP_MORE_CATEGORIES = "flere kategorier";
-    var $_PHPSHOP_AVAILABILITY = "Lagerstatus";
-    var $_PHPSHOP_CURRENTLY_NOT_AVAILABLE = "Dette produkt er pt ikke på lager.";
-    var $_PHPSHOP_PRODUCT_AVAILABLE_AGAIN = "Produktet forventes på lager igen den: ";
-    
-    var $_PHPSHOP_STATISTIC_SUMMARY = "Resume";
-    var $_PHPSHOP_STATISTIC_STATISTICS = "Statistik";
-    var $_PHPSHOP_STATISTIC_CUSTOMERS = "Kunder";
-    var $_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS = "aktive produkter";
-    var $_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS = "inaktive produkter";
-    var $_PHPSHOP_STATISTIC_SUM = "Sum";
-    var $_PHPSHOP_STATISTIC_NEW_ORDERS = "Nye ordrer";
-    var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = "Nye kunder";
-    
-    
-	//Waiting list : file /administrator/components/com_phpshop/html/shop.waiting_list.php
-	var $_PHPSHOP_WAITING_LIST_MESSAGE = "Indtast Deres emailadresse nedenfor for at få besked når dette produkt er på lager igen.
+        De kan nu vælge at fortsætte eller at logge ind på <a href=http://www.paypal.com>www.paypal.com</a> for at se transaktionsdetaljerne.';
+	var $_PHPSHOP_PAYPAL_ERROR = 'Der opstod en fejl under overførslen. Ordrestatus for Deres ordre kunne ikke opdateres.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = 'Tak for Deres ordre. Detaljerne for Deres ordre fremgår af nedenstående.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2 = 'Tak fordi De valgte at handle hos os.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3 = 'Kontakt os venligst såfremt De har spørgsmål til ordrebekræftelsen.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4 = 'Den følgende ordre er modtaget.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5 = 'Se Deres ordre ved at klikke på linket nedenfor.';
+	var $_PHPSHOP_CART_ERROR_NO_NEGATIVE = 'Negative antal er ikke tilladt.';
+	var $_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY = 'Indtast en værdi for denne vare.';
+	var $_PHPSHOP_CART_STOCK_1 = 'Det valgte antal overskrider antal på lager. ';
+	var $_PHPSHOP_CART_STOCK_2 = 'Wi har i øjeblikket $product_in_stock varer på lager. ';
+	var $_PHPSHOP_CART_STOCK_3 = 'Klik her for at reserver varen';
+	var $_PHPSHOP_CART_SELECT_ITEM = 'Vælg en speciel vare fra detalje visningen!';
+	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'ingen';
+	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Hr.';
+	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Fru.';
+	var $_PHPSHOP_REGISTRATION_FORM_DR = 'Dr.';
+	var $_PHPSHOP_REGISTRATION_FORM_PROF = 'Prof.';
+	var $_PHPSHOP_DEFAULT = 'Default';
+	var $_PHPSHOP_AFFILIATE_MOD = 'Partner Administration';
+	var $_PHPSHOP_AFFILIATE_LIST_MNU = 'List partnere';
+	var $_PHPSHOP_AFFILIATE_LIST_LBL = 'Partnerliste';
+	var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME = 'Partner navn';
+	var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE = 'Aktiv';
+	var $_PHPSHOP_AFFILIATE_LIST_RATE = 'Rate';
+	var $_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL = 'Måneds total';
+	var $_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION = 'Månedskommission';
+	var $_PHPSHOP_AFFILIATE_LIST_ORDERS = 'Rækkefølge';
+	var $_PHPSHOP_AFFILIATE_EMAIL_MNU = 'Email partnere';
+	var $_PHPSHOP_AFFILIATE_EMAIL_LBL = 'Email partnere';
+	var $_PHPSHOP_AFFILIATE_EMAIL_WHO = 'Hvem skal emailes(* = alle)';
+	var $_PHPSHOP_AFFILIATE_EMAIL_CONTENT = 'Din emailadresse';
+	var $_PHPSHOP_AFFILIATE_EMAIL_SUBJECT = 'Emne';
+	var $_PHPSHOP_AFFILIATE_EMAIL_STATS = 'Indkludér nuværende statistik';
+	var $_PHPSHOP_AFFILIATE_FORM_RATE = 'Kommissionsrate (procent)';
+	var $_PHPSHOP_AFFILIATE_FORM_ACTIVE = 'Aktiv?';
+	var $_PHPSHOP_DELIVERY_TIME = 'Leveres normalt';
+	var $_PHPSHOP_DELIVERY_INFORMATION = 'Leveringsinformation';
+	var $_PHPSHOP_MORE_CATEGORIES = 'flere kategorier';
+	var $_PHPSHOP_AVAILABILITY = 'Lagerstatus';
+	var $_PHPSHOP_CURRENTLY_NOT_AVAILABLE = 'Dette produkt er pt ikke på lager.';
+	var $_PHPSHOP_PRODUCT_AVAILABLE_AGAIN = 'Produktet forventes på lager igen den: ';
+	var $_PHPSHOP_STATISTIC_SUMMARY = 'Resume';
+	var $_PHPSHOP_STATISTIC_STATISTICS = 'Statistik';
+	var $_PHPSHOP_STATISTIC_CUSTOMERS = 'Kunder';
+	var $_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS = 'aktive produkter';
+	var $_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS = 'inaktive produkter';
+	var $_PHPSHOP_STATISTIC_SUM = 'Sum';
+	var $_PHPSHOP_STATISTIC_NEW_ORDERS = 'Nye ordrer';
+	var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = 'Nye kunder';
+	var $_PHPSHOP_WAITING_LIST_MESSAGE = 'Indtast Deres emailadresse nedenfor for at få besked når dette produkt er på lager igen.
                                         Vi hverken deler, udlejer, sælger eller på anden måde benytter Deres emailadresse til andre formål end at holde
-                                        Dem orienteret om hvornår produktet igen er på lager.<br /><br />Tak!";
-	var $_PHPSHOP_WAITING_LIST_THANKS = "Tak for Deres tålmodighed <br />De får besked så snart vi kan give en leveringsdato.";
-
-	//Checkout : file /administrator/components/com_phpshop/html/checkout.thankyou.php
-	var $_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW = "Vis udskrift";
-  
-  /**************************Admin.show_cfg.php in apparition order ;-)**************************************/
-	
-	/* PAGE 1 */
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZE_OR_CYBERCASH = "Vælg ENTEN Authorize.net ELLER CyberCash";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS = " Konfigurationsfil status:";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE = "er skrivbar";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE = "er skrivebeskyttet";
-	
-	var $_PHPSHOP_ADMIN_CFG_GLOBAL = "Global";
-	var $_PHPSHOP_ADMIN_CFG_PATHANDURL = "Sti & URL";
-	var $_PHPSHOP_ADMIN_CFG_SITE = "WebSite";
-	var $_PHPSHOP_ADMIN_CFG_SHIPPING = "Forsendelse";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT = "Kasse";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS = "Downloads";
-	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = "Betalinger";
-	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = "Benyt kun som katalog";
-	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = "Hvis du afkrydser dette disables al indkøbsvognfunktionalitet.";
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = "Vis priser";
-	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = "Vis priser med moms?";
-	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = "Bestemmer om kunderne ser priser med eller uden moms.";
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = "Markér for at vise priserne. Såfremt du benytter katalogfunktionen er det muligt du ikke ønsker at priserne fremgår";
-	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = "Virtuel moms";
-	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = "Bestemmer om varer med 0-vægt er momsbelagt eller ej. Modificer ps_checkout.php->calc_order_taxable() to customize this.";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = "Momsangivelse:";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = "Baseret på leveringsadresse";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = "Baseret på sælgeradresse";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = "Dette bestemmer hvilken momssats der benyttes ved momsberegning:<br />
+                                        Dem orienteret om hvornår produktet igen er på lager.<br /><br />Tak!';
+	var $_PHPSHOP_WAITING_LIST_THANKS = 'Tak for Deres tålmodighed <br />De får besked så snart vi kan give en leveringsdato.';
+	var $_PHPSHOP_WAITING_LIST_NOTIFY_ME = 'Notify Me!';
+	var $_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW = 'Vis udskrift';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZE_OR_CYBERCASH = 'Vælg ENTEN Authorize.net ELLER CyberCash';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS = ' Konfigurationsfil status:';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE = 'er skrivbar';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE = 'er skrivebeskyttet';
+	var $_PHPSHOP_ADMIN_CFG_GLOBAL = 'Global';
+	var $_PHPSHOP_ADMIN_CFG_PATHANDURL = 'Sti & URL';
+	var $_PHPSHOP_ADMIN_CFG_SITE = 'WebSite';
+	var $_PHPSHOP_ADMIN_CFG_SHIPPING = 'Forsendelse';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT = 'Kasse';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS = 'Downloads';
+	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = 'Betalinger';
+	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = 'Benyt kun som katalog';
+	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = 'Hvis du afkrydser dette disables al indkøbsvognfunktionalitet.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = 'Vis priser';
+	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = 'Vis priser med moms?';
+	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = 'Bestemmer om kunderne ser priser med eller uden moms.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = 'Markér for at vise priserne. Såfremt du benytter katalogfunktionen er det muligt du ikke ønsker at priserne fremgår';
+	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = 'Virtuel moms';
+	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = 'Bestemmer om varer med 0-vægt er momsbelagt eller ej. Modificer ps_checkout.php->calc_order_taxable() to customize this.';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = 'Momsangivelse:';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = 'Baseret på leveringsadresse';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = 'Baseret på sælgeradresse';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = 'Dette bestemmer hvilken momssats der benyttes ved momsberegning:<br />
                                                 <ul><li>satsen for landet hvor køber har hjemsted</li><br/>
-                                                <li>eller satsen for landet hvor sælger har hjemsted.</li></ul>";
-	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = "Aktiver flere momssatser?";
-	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = "Markér dette hvis du har produkter med forskellige momssatser (eks. 7% for bøger og mad og 16% for andre varer)";
-	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = "Fratræk betalingstype rabat før moms og forsendelse?";
-	var $_PHPSHOP_ADMIN_CFG_REVIEW = "Aktiver varebedømmelsessystem for kunder";
-	var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = "Hvis systemet er aktiveret tillader du kunder at <strong>bedømme produkter</strong> og <strong>skrive anmeldelser</strong> af disse. <br />
-                                                                                Dine kunder kan således skrive deres egne oplevelser med dine produkter så andre kan se dem.<br />";
-	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = "Bestemmer om rabatten for den valgte betalingsform skal fratrækkes FØR (markeret) eller EFTER moms og forsendelse.";
-	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = "Skal kunder kunne opgive bankkonto data når de registrerer sig?";
-	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = "Markér hvis dine kunder skal kunne opgive bankkonto data når de registrerer sig som brugere af butikken.";
-
-	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = "Skal kunder kunne anføre stat/region?";
-	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = "Markér hvis dine kunder skal have mulighed for at vælge stat/region ved registrering.";
-	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = "Skal kunden acceptere salgs- og leveringsbetingelser?";
-	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = "Markér hvis kunden skal acceptere salgs- og leveringsbetingelserne før han registrerer sig i butikken.";
-	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK = "Check Lager?";
-	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN = "Bestemmer om der skal kontrolleres for lagerbeholdning når en kunde vælger at købe en vare. 
-                                                                                          Hvis markeret vil kunden ikke kunne tilføje flere varer til vognen end der er varer på lageret.";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = "Aktivér partnerprogram?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN = "Dette aktiverer partner tracking i butikken. Aktivér hvis du har tilføjet partnere i backend'en..";
-	
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT = "Format på ordrebekræftelsesmail:";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT = "Tekst mail";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML = "HTML mail";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN = "Bestemmer hvordan dine ordrebekræftelser opsættes:<br />
+                                                <li>eller satsen for landet hvor sælger har hjemsted.</li></ul>';
+	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = 'Aktiver flere momssatser?';
+	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = 'Markér dette hvis du har produkter med forskellige momssatser (eks. 7% for bøger og mad og 16% for andre varer)';
+	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = 'Fratræk betalingstype rabat før moms og forsendelse?';
+	var $_PHPSHOP_ADMIN_CFG_REVIEW = 'Aktiver varebedømmelsessystem for kunder';
+	var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = 'Hvis systemet er aktiveret tillader du kunder at <strong>bedømme produkter</strong> og <strong>skrive anmeldelser</strong> af disse. <br />
+                                                                                Dine kunder kan således skrive deres egne oplevelser med dine produkter så andre kan se dem.<br />';
+	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = 'Bestemmer om rabatten for den valgte betalingsform skal fratrækkes FØR (markeret) eller EFTER moms og forsendelse.';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = 'Skal kunder kunne opgive bankkonto data når de registrerer sig?';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = 'Markér hvis dine kunder skal kunne opgive bankkonto data når de registrerer sig som brugere af butikken.';
+	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = 'Skal kunder kunne anføre stat/region?';
+	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = 'Markér hvis dine kunder skal have mulighed for at vælge stat/region ved registrering.';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = 'Skal kunden acceptere salgs- og leveringsbetingelser?';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = 'Markér hvis kunden skal acceptere salgs- og leveringsbetingelserne før han registrerer sig i butikken.';
+	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK = 'Check Lager?';
+	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN = 'Bestemmer om der skal kontrolleres for lagerbeholdning når en kunde vælger at købe en vare. 
+                                                                                          Hvis markeret vil kunden ikke kunne tilføje flere varer til vognen end der er varer på lageret.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = 'Aktivér partnerprogram?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN = 'Dette aktiverer partner tracking i butikken. Aktivér hvis du har tilføjet partnere i backend\'en..';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT = 'Format på ordrebekræftelsesmail:';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT = 'Tekst mail';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML = 'HTML mail';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN = 'Bestemmer hvordan dine ordrebekræftelser opsættes:<br />
                                                                                         <ul><li>som simpel tekst email</li>
-                                                                                        <li>eller som en html email med billeder.</li></ul>";
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = "Tillad Frontend-administration for ikke-Backend brugere?";
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = "Med denne indstilling kan du aktivere Frontend Administrationen for brugere der
-                                                                                              er butiksadmins, men som ikke har adgang til Mambo Backend (f.eks. Registreret/Redaktør).";
-	
-	/* PAGE 2 */
-	var $_PHPSHOP_ADMIN_CFG_URL = "URL";
-	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = "URL til dit website. Normalt identisk med dit Mambo URL (med afsluttende skråstreg i slutningen!)";
-	var $_PHPSHOP_ADMIN_CFG_URLSECURE = "SECUREURL";
-	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = "Den sikre URL to dit website. (https - med afsluttende skråstreg.)";
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = "COMPONENTURL";
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = "URL til mambo-phpShop komponenten. (med afsluttende skråstreg i slutningen!)";
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = "IMAGEURL";
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = "URL til mambo-pspShop komponent billed bibliotek.";
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = "ADMINPATH";
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = "URL til mambo-phpShop komponent biblioteket.";
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = "CLASSPATH";
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = "URL til mambo-phpShop classes directory.";
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = "PAGEPATH";
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = "URL til mambo-phpShop html directory.";
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = "IMAGEPATH";
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = "URL til mambo-phpShop shop_image directory.";
-	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = "HOMEPAGE";
-	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = "Denne side vil blive loaded som standard.";	
-	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = "ERRORPAGE";
-	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = "Dette er standardsiden for fejlmeldinger.";	
-	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE = "DEBUGPAGE";
-	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN = "Dette er standardsiden for visning af fejlretningsmeddelelser.";
-	var $_PHPSHOP_ADMIN_CFG_DEBUG = "DEBUG ?";
-	var $_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN = "DEBUG?  	   	Aktiverer fejretningsudskrift. Dette aktiverer DEBUGSIDEN for display i bunden af skærmen. Meget værdifuld i f.m. butikudvikling.";
-
-
-/* PAGE 3 */
-
-	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = "PRODUKTBLAD";
-	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = "Dette er standardsiden til visning af produktdetaljer.";
-  var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = "Kategoriskabelon";
-	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = "Denne definerer standard katagoriskabelonen til visning af produkter i en kategori.<br />
+                                                                                        <li>eller som en html email med billeder.</li></ul>';
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Tillad Frontend-administration for ikke-Backend brugere?';
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'Med denne indstilling kan du aktivere Frontend Administrationen for brugere der
+                                                                                              er butiksadmins, men som ikke har adgang til Mambo Backend (f.eks. Registreret/Redaktør).';
+	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
+	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'URL til dit website. Normalt identisk med dit Mambo URL (med afsluttende skråstreg i slutningen!)';
+	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'SECUREURL';
+	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'Den sikre URL to dit website. (https - med afsluttende skråstreg.)';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'COMPONENTURL';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'URL til mambo-phpShop komponenten. (med afsluttende skråstreg i slutningen!)';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'IMAGEURL';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'URL til mambo-pspShop komponent billed bibliotek.';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'ADMINPATH';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'URL til mambo-phpShop komponent biblioteket.';
+	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'CLASSPATH';
+	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'URL til mambo-phpShop classes directory.';
+	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'PAGEPATH';
+	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'URL til mambo-phpShop html directory.';
+	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'IMAGEPATH';
+	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'URL til mambo-phpShop shop_image directory.';
+	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'HOMEPAGE';
+	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'Denne side vil blive loaded som standard.';
+	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'ERRORPAGE';
+	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = 'Dette er standardsiden for fejlmeldinger.';
+	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE = 'DEBUGPAGE';
+	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN = 'Dette er standardsiden for visning af fejlretningsmeddelelser.';
+	var $_PHPSHOP_ADMIN_CFG_DEBUG = 'DEBUG ?';
+	var $_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN = 'DEBUG?  	   	Aktiverer fejretningsudskrift. Dette aktiverer DEBUGSIDEN for display i bunden af skærmen. Meget værdifuld i f.m. butikudvikling.';
+	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = 'PRODUKTBLAD';
+	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = 'Dette er standardsiden til visning af produktdetaljer.';
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = 'Kategoriskabelon';
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Denne definerer standard katagoriskabelonen til visning af produkter i en kategori.<br />
                                                                                                       Du kan oprette nye skabeloner ved at tilpasse eksisterende skabelonfiler <br />
-                                                                                                      (som findes i biblioteket <strong>COMPONENTPATH/html/templates/</strong> og begynder med browse_)";
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = "Standard antal produkter på en række";
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = "Definerer antallet af produkter pr. linie. <br />
-                                                                                                      Eksempel: Hvis værdien sættes til 4, viser kategoriskabelonen 4 produkter pr. linie";
-  
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = "\"no image\" billede";
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = "Dette billede vises når der ikke eksisterer et produktbillede.";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = "SØGERESULTAT";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = "Angiver antal af linier pr. side når søgeresultatet vises.";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = "RESULTATFARVE 1";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = "Angiver farven på de ulige nummererede linier i resultatlisten.";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = "RESULTATFARVE 2";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = "Angiver farven på de lige nummererede linier i resultatlisten.";
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = "MAKS. ANTAL LINIER";
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = "Angiver antallet af linier som skal vises i ordrelistens listeboks.";
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = "Vis footer \"powered by mambo-phpShop\" ?";
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = "Viser et powered-by-mambo-phpShop footer billede.";
-	
-	
-	/* PAGE 4 */
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = "Vælg din butiks forsendelsesmåde";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = "Standard forsendelsesmodul med individuelt konfigurerede transportører og priser. <strong>ANBEFALES !</strong>";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = "  	Zone Forsendelsesmodul Land Version 1.0<br />
-                                                                                                            For flere oplysninger om dette modul besøg da: <a href=\"http://ZephWare.com\">http://ZephWare.com</a><br />
-                                                                                                            eller kontakt <a href=\"mailto:zephware@devcompany.com\">ZephWare.com</a><br /> Markér her for at aktivere zone forsendelsesmodulet.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = "UPS forsendelseskalkulation";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE = "UPS adgangskode";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN = "Din UPS adgangskode";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID = "UPS bruger id";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = "BrugerID som du har modtaget fra UPS";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = "UPS kodeord";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = "Kodeordet til din UPS konto";
-	  
-  var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = "InterShipper Modul. Markér kun hvis du har en Intershipper.com konto";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = "Deaktivér muligheden for at vælge forsendelsesmåde. Deaktivér hvis dine kunder køber ting som kan downloades og derfor ikke kræver forsendelse.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = "InterShipper kodeord";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = "Kodeordet til din Intershipper konto.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = "InterShipper email";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = "Email adressen til din Intershipper konto.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = "KRYPTERINGSNØGLE";
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = "Denne nøgle bruges til at kryptere data i databasen. Denne fil må derfor ikke kunne ses af andre.";
-	
-	
-	/* PAGE 5 */
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = "Aktivér step-o-meter";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = "Markér såfremt du ønsker at det enkelte step i købsprocessen ( 1 - 2 - 3 - 4 med grafik) skal vises.";
-	
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = "Vælg købsprocedure der skal følges i butikken";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = "<strong>Standard :</strong><br/>
+                                                                                                      (som findes i biblioteket <strong>COMPONENTPATH/html/templates/</strong> og begynder med browse_)';
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Standard antal produkter på en række';
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Definerer antallet af produkter pr. linie. <br />
+                                                                                                      Eksempel: Hvis værdien sættes til 4, viser kategoriskabelonen 4 produkter pr. linie';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\"no image\" image';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Dette billede vises når der ikke eksisterer et produktbillede.';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'SØGERESULTAT';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Angiver antal af linier pr. side når søgeresultatet vises.';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = 'RESULTATFARVE 1';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = 'Angiver farven på de ulige nummererede linier i resultatlisten.';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = 'RESULTATFARVE 2';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = 'Angiver farven på de lige nummererede linier i resultatlisten.';
+	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'MAKS. ANTAL LINIER';
+	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Angiver antallet af linier som skal vises i ordrelistens listeboks.';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Vis footer ';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Viser et powered-by-mambo-phpShop footer billede.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Vælg din butiks forsendelsesmåde';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Standard forsendelsesmodul med individuelt konfigurerede transportører og priser. <strong>ANBEFALES !</strong>';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Zone Forsendelsesmodul Land Version 1.0<br />
+                                                                                                            For flere oplysninger om dette modul besøg da: <a href="http://ZephWare.com">http://ZephWare.com</a><br />
+                                                                                                            eller kontakt <a href="mailto:zephware@devcompany.com">ZephWare.com</a><br /> Markér her for at aktivere zone forsendelsesmodulet.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = 'UPS forsendelseskalkulation';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE = 'UPS adgangskode';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN = 'Din UPS adgangskode';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID = 'UPS bruger id';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = 'BrugerID som du har modtaget fra UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = 'UPS kodeord';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = 'Kodeordet til din UPS konto';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'InterShipper Modul. Markér kun hvis du har en Intershipper.com konto';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = 'Deaktivér muligheden for at vælge forsendelsesmåde. Deaktivér hvis dine kunder køber ting som kan downloades og derfor ikke kræver forsendelse.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = 'InterShipper kodeord';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = 'Kodeordet til din Intershipper konto.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = 'InterShipper email';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = 'Email adressen til din Intershipper konto.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = 'KRYPTERINGSNØGLE';
+	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = 'Denne nøgle bruges til at kryptere data i databasen. Denne fil må derfor ikke kunne ses af andre.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = 'Aktivér step-o-meter';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Markér såfremt du ønsker at det enkelte step i købsprocessen ( 1 - 2 - 3 - 4 med grafik) skal vises.';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'Vælg købsprocedure der skal følges i butikken';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = '<strong>Standard :</strong><br/>
                1. Leveringsadresse angives<br />
               2. Leveringsmåde angives<br />
               3. Betalingsform angives<br />
-              4. Ordren bekræftes";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_2 = "<strong>Procedure 2:</strong><br/>
+              4. Ordren bekræftes';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_2 = '<strong>Procedure 2:</strong><br/>
                1. Leveringsadresse angives<br />
               2. Betalingsform angives<br />
-              3. Ordren bekræftes";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_3 = "<strong>Procedure 3:</strong><br/>
+              3. Ordren bekræftes';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_3 = '<strong>Procedure 3:</strong><br/>
                1. Leveringsmåde angives<br />
               2. Betalingsform angives<br />
-              3. Ordren bekræftes";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 = "<strong>Procedure 4:</strong><br/>
+              3. Ordren bekræftes';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 = '<strong>Procedure 4:</strong><br/>
                1. Betalingsform angives<br />
-              2. Ordren bekræftes";
-	
-	
-	
-	/* PAGE 6 */
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = "Aktivér Downloads";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = "Markér for at aktivere downloadfunktionaliteten. (Kun hvis du sælger produkter som kan downloades)";
-	
-	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = "Ordre status der åbner for download";
-	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = "Vælg den ordrestatus der iværksætter notifikation af kunden pr. email om at download nu er mulig.";
-	
-	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = "Ordre status der lukker for download";
-	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = "Vælg den ordrestatus der lukker for kundens mulighed for at downloade.";
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = "DOWNLOAD ROD";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = "Den fysiske sti til filerne som kunden kan downloade. (afsluttende skråstreg i slutningen!)<br>
-        <span class=\"message\">For at øge sikkerheden, benyt da venligst et directory som ikke ligger i webfolderen</span>";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = "Download Maksimum";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = "Angiver antallet af downloads der kan gennemføres med et Download-ID, (for en ordre)";
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = "Download Udløb";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = "Angiver tidsperioden <strong>i sekunder</strong> hvor download er aktiveret for kunden. 
-  Perioden begynder ved den første download! Når perioden er udløbet deaktiveres download-ID'et.<br />Bemærk : 86400s=24t.";
-	
-	
-	
-	
-	/* PAGE 7 */
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = "Aktivér IPN betaling via PayPal?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = "Markér for at lade dine kunder benytte PayPal betalingssystemet.";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = "PayPal betalings email:";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = "Din email som benyttes til PayPal betalinger. Benyttes også som modtager_email.";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = "Ordrestatus ved gennemført transaktion";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = "Vælg den ordrestatus der automatisk gives når PayPal betalingen er gennemført. Hvis du sælger downloads: 
-  Vælg den ordrestatus der tillader download (kunden bliver øjeblikkeligt meddelt at han kan downloade produktet via en email fra butikken).";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = "Ordrestatus ved fejl i transaktionen";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = "Vælg den ordrestatus der automatisk gives hvis PayPal betalingen ikke kan gennemføres.";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = "Aktivér betaling via PayMate?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE_EXPLAIN = "Markér for at lade dine kunder benytte det australske PayMate system.";
-	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME = "PayMate brugernavn:";
-	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN = "Din brugerkonto til PayMate.";
-	
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = "Aktivér Authorize.net betalinger?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = "Markér for at benytte Authorize.net sammen med phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = "Test status ?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = "Vælg 'Ja' mens du tester. Vælg 'Nej' for at aktivere live transaktioner.";
-	var $_PHPSHOP_ADMIN_CFG_YES = "Ja";
-	var $_PHPSHOP_ADMIN_CFG_NO = "Nej";
-	
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = "Authorize.net Login ID";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN = "Dette er dit Authorize.Net Login ID";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY = "Authorize.net Transaktionsnøgle";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN = "Dette er din Authorize.net transaktions nøgle (Transaction Key)";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE = "Autorisationstype";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN = "Dette er Authorize.Net autorisationstype.";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH = "Aktivér CyberCash?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH_EXPLAIN = "Markér for at aktivere CyberCash til phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND = "CyberCash MERCHANT";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN = "CC_MERCHANT er CyberCash Merchant ID";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY = "CyberCash Merchant Nøgle";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN = "CyberCash Merchant nøgle er nøglen givet af CyberCash";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL = "CyberCash Betalings URL";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN = "CyberCash betalings URL er den af Cybercash oplyste URL til sikre betalinger";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE = "CyberCash AUTH TYPE";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN = "CyberCash AUTH TYPE er Cybercash autorisationstype som oplyst af CyberCash";
-	
-
-    /** Advanced Search feature ***/
-    var $_PHPSHOP_ADVANCED_SEARCH  ="Avanceret Søgning";
-    var $_PHPSHOP_SEARCH_ALL_CATEGORIES = "Søg i alle kategorier";
-    var $_PHPSHOP_SEARCH_ALL_PRODINFO = "Søg i alle produktinformationer";
-    var $_PHPSHOP_SEARCH_PRODNAME = "Kun produktnavn";
-    var $_PHPSHOP_SEARCH_MANU_VENDOR = "Kun producent/sælger";
-    var $_PHPSHOP_SEARCH_DESCRIPTION = "Kun produktbeskrivelse";
-    var $_PHPSHOP_SEARCH_AND = "og";
-    var $_PHPSHOP_SEARCH_NOT = "undtagen";
-    var $_PHPSHOP_SEARCH_TEXT1 = "I den første drop-down-liste kan De begrænse søgningen til en bestemt kategori. 
+              2. Ordren bekræftes';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = 'Aktivér Downloads';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = 'Markér for at aktivere downloadfunktionaliteten. (Kun hvis du sælger produkter som kan downloades)';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = 'Ordre status der åbner for download';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = 'Vælg den ordrestatus der iværksætter notifikation af kunden pr. email om at download nu er mulig.';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = 'Ordre status der lukker for download';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = 'Vælg den ordrestatus der lukker for kundens mulighed for at downloade.';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = 'DOWNLOAD ROD';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = 'Den fysiske sti til filerne som kunden kan downloade. (afsluttende skråstreg i slutningen!)<br>
+        <span class="message">For at øge sikkerheden, benyt da venligst et directory som ikke ligger i webfolderen</span>';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = 'Download Maksimum';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Angiver antallet af downloads der kan gennemføres med et Download-ID, (for en ordre)';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Download Udløb';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = 'Angiver tidsperioden <strong>i sekunder</strong> hvor download er aktiveret for kunden. 
+  Perioden begynder ved den første download! Når perioden er udløbet deaktiveres download-ID\'et.<br />Bemærk : 86400s=24t.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = 'Aktivér IPN betaling via PayPal?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = 'Markér for at lade dine kunder benytte PayPal betalingssystemet.';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = 'PayPal betalings email:';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = 'Din email som benyttes til PayPal betalinger. Benyttes også som modtager_email.';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = 'Ordrestatus ved gennemført transaktion';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = 'Vælg den ordrestatus der automatisk gives når PayPal betalingen er gennemført. Hvis du sælger downloads: 
+  Vælg den ordrestatus der tillader download (kunden bliver øjeblikkeligt meddelt at han kan downloade produktet via en email fra butikken).';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = 'Ordrestatus ved fejl i transaktionen';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = 'Vælg den ordrestatus der automatisk gives hvis PayPal betalingen ikke kan gennemføres.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = 'Aktivér betaling via PayMate?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE_EXPLAIN = 'Markér for at lade dine kunder benytte det australske PayMate system.';
+	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME = 'PayMate brugernavn:';
+	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN = 'Din brugerkonto til PayMate.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = 'Aktivér Authorize.net betalinger?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = 'Markér for at benytte Authorize.net sammen med phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = 'Test status ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = 'Vælg \'Ja\' mens du tester. Vælg \'Nej\' for at aktivere live transaktioner.';
+	var $_PHPSHOP_ADMIN_CFG_YES = 'Ja';
+	var $_PHPSHOP_ADMIN_CFG_NO = 'Nej';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = 'Authorize.net Login ID';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN = 'Dette er dit Authorize.Net Login ID';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY = 'Authorize.net Transaktionsnøgle';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN = 'Dette er din Authorize.net transaktions nøgle (Transaction Key)';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE = 'Autorisationstype';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN = 'Dette er Authorize.Net autorisationstype.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH = 'Aktivér CyberCash?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH_EXPLAIN = 'Markér for at aktivere CyberCash til phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND = 'CyberCash MERCHANT';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN = 'CC_MERCHANT er CyberCash Merchant ID';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY = 'CyberCash Merchant Nøgle';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN = 'CyberCash Merchant nøgle er nøglen givet af CyberCash';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL = 'CyberCash Betalings URL';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN = 'CyberCash betalings URL er den af Cybercash oplyste URL til sikre betalinger';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE = 'CyberCash AUTH TYPE';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN = 'CyberCash AUTH TYPE er Cybercash autorisationstype som oplyst af CyberCash';
+	var $_PHPSHOP_ADVANCED_SEARCH = 'Avanceret Søgning';
+	var $_PHPSHOP_SEARCH_ALL_CATEGORIES = 'Søg i alle kategorier';
+	var $_PHPSHOP_SEARCH_ALL_PRODINFO = 'Søg i alle produktinformationer';
+	var $_PHPSHOP_SEARCH_PRODNAME = 'Kun produktnavn';
+	var $_PHPSHOP_SEARCH_MANU_VENDOR = 'Kun producent/sælger';
+	var $_PHPSHOP_SEARCH_DESCRIPTION = 'Kun produktbeskrivelse';
+	var $_PHPSHOP_SEARCH_AND = 'og';
+	var $_PHPSHOP_SEARCH_NOT = 'undtagen';
+	var $_PHPSHOP_SEARCH_TEXT1 = 'I den første drop-down-liste kan De begrænse søgningen til en bestemt kategori. 
         I den anden drop-down-liste kan De begrænse søgningen til en bestemt type produktinformation (f.eks. Navn). 
-        Når De har valgt disse (eller valgt standard), indtast da hvad der skal søges efter. ";
-    var $_PHPSHOP_SEARCH_TEXT2 = " De kan specificere søgningen yderligere ved at tilføje yderligere søgeord og vælge 'OG' eller 'UNDTAGEN' operatoren. 
-        Hvis De vælger 'OG' skal begge ord findes for at et produkt vises. 
-        Hvis De vælger 'UNDTAGEN' vises kun søgeresultater indeholdende det første søgeord hvor det andet søgeord ikke findes i sammenhængen.";
-    var $_PHPSHOP_ORDERBY = "Rækkefølge";
-    
-    /*** Review feature ***/
-    var $_PHPSHOP_CUSTOMER_RATING  = "Gennemsnitlig bedømmelse";
-    var $_PHPSHOP_TOTAL_VOTES = "Antal bedømmelser";
-    var $_PHPSHOP_CAST_VOTE = "Afgiv Deres bedømmelse";
-    var $_PHPSHOP_RATE_BUTTON = "Bedøm";
-    var $_PHPSHOP_RATE_NOM = "Bedømmelse";
-    var $_PHPSHOP_REVIEWS = "Kundeanmeldelser";
-    var $_PHPSHOP_NO_REVIEWS = "Der er ingen bedømmelser af dette produkt.";
-    var $_PHPSHOP_WRITE_FIRST_REVIEW = "Vær den første der bedømmer produktet...";
-    var $_PHPSHOP_REVIEW_LOGIN = "Log venligst ind for at skrive en bedømmelse.";
-    var $_PHPSHOP_REVIEW_ERR_RATE = "Giv venligst produktet en karakter for at afslutte Deres bedømmelse!";
-    var $_PHPSHOP_REVIEW_ERR_COMMENT1 = "En bedømmelse skal længere end 100 tegn.";
-    var $_PHPSHOP_REVIEW_ERR_COMMENT2 = "En bedømmelse må ikke være længere end 2000";
-    var $_PHPSHOP_WRITE_REVIEW = "Skriv en bedømmelse af dette produkt!";
-    var $_PHPSHOP_REVIEW_RATE = "Først skal De give karakter. Giv venligst en karakter mellem 0 (dårligst) og 5 (bedst).";
-    var $_PHPSHOP_REVIEW_COMMENT = "Skriv nu venligst Deres (korte) bedømmelse....(min. 100, maks. 2000 tegn) ";
-    var $_PHPSHOP_REVIEW_COUNT = "Skrevne tegn: ";
-    var $_PHPSHOP_REVIEW_SUBMIT = "Send bedømmelse";
-    var $_PHPSHOP_REVIEW_ALREADYDONE = "De har allerede skrevet en bedømmelse af dette produkt. Tak!";
-    var $_PHPSHOP_REVIEW_THANKYOU = "Tak for Deres bedømmelse.";
-    var $_PHPSHOP_COMMENT= "Kommentar";
-    
-    var $_PHPSHOP_CREDITCARD_FORM_LBL = "Tilføj/Redigér betalingskorttyper";
-    var $_PHPSHOP_CREDITCARD_NAME = "Betalingskortnavn";
-    var $_PHPSHOP_CREDITCARD_CODE = "Betalingskort - forkortelse";
-    var $_PHPSHOP_CREDITCARD_TYPE = "Betalingskort type";
-    
-    var $_PHPSHOP_CREDITCARD_LIST_LBL = "Betalingskort liste";
-    var $_PHPSHOP_UDATE_ADDRESS = "Opdatér adresse";
-    var $_PHPSHOP_CONTINUE_SHOPPING = "Fortsæt indkøb";
-    
-    var $_PHPSHOP_THANKYOU_SUCCESS = "Deres ordre er modtaget!";
-    var $_PHPSHOP_ORDER_LINK = "Følg dette link for at se ordrebekræftelsen.";
-    
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = "Den aktuelle status for Deres ordre {order_id} er opdateret.";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = "Ny status er:";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = "For at se ordredetaljerne, klik da venligst på dette link (eller kopier/indsæt det i Deres browser):";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = "Ordre status opdatering: Deres ordre {order_id}";
-    var $_PHPSHOP_ORDER_LIST_NOTIFY = "Advisér kunde?";
-    var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = "Opdatér venligst ordre status først!";
-    
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = "Rabat til standard kundegruppe (i %)";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = "En positiv værdi X betyder: Såfremt produktet ikke har en pris tilknyttet DENNE kundegruppe, så reduceres standardprisen med X %. En negativ værdi har den modsatte effekt";
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = "Produktrabat";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = "Produktrabat visning";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = "Tilføj/rediger produktrabat";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = "Rabat værdi";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = "Indtast rabatten";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = "Rabat type";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = "Procentdel";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = "Total";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = "Skal værdien være en procentdel eller en total?";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = "Startdato for rabat";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = "Angiver hvilken dag rabatten gives fra";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = "Slutdato for rabat";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = "Angiver hvilken dag rabatten ender";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = "Du kan benytte Produktrabat formularen til at tilføje rabatter!";
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = "De sparer";
-    
-    var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = "Se fuldstørrelse billede";
-    
-/*********************
-Currency Display Style 
-***********************/
-    var $_PHPSHOP_CURRENCY_DISPLAY = "Valuta visning";
-    var $_PHPSHOP_CURRENCY_SYMBOL = "Valuta symbol";
-    var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = "Du kan også benytte HTML koder her (f.eks. &amp;euro;,&amp;pound;,&amp;yen;,...)";
-    var $_PHPSHOP_CURRENCY_DECIMALS = "Decimaler";
-    var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = "Antal af viste decimaler (kan være 0)<br><b>Afrunding foretages hvis værdien har et andet antal decimaler</b>";
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = "Decimal tegn";
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = "Tegn der benyttes som decimal afgrænser";
-    var $_PHPSHOP_CURRENCY_THOUSANDS = "Tusindtals separator";
-    var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = "Tegn der benyttes som tusindtals separator (kan efterlades blank)";
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = "Positivt format";
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = "Visningsformat for positive værdier.<br>(Symb betyder valutasymbol)";
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = "Negativt format";
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = "Visningsformat for negative værdier.<br>(Symb betyder valutasymbol)";
-    
-    var $_PHPSHOP_OTHER_LISTS = "Andre produktlister";
-/**************
-Multiple Images 
-****************/
-    var $_PHPSHOP_MORE_IMAGES = "Se flere billeder";
-    var $_PHPSHOP_AVAILABLE_IMAGES = "Tilgængelige billeder for";
-    var $_PHPSHOP_BACK_TO_DETAILS = "Tilbage til produktdetaljer";
-    
-    /* FILEMANAGER */
-    var $_PHPSHOP_FILEMANAGER = "FilHåndtering";
-    var $_PHPSHOP_FILEMANAGER_LIST = "Filhåndtering::Produktvisning";
-    var $_PHPSHOP_FILEMANAGER_ADD = "Tilføj billede/fil";
-    var $_PHPSHOP_FILEMANAGER_IMAGES = "Tilknyttede billeder";
-    var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = "Kan downloades?";
-    var $_PHPSHOP_FILEMANAGER_FILES = "Tilføjede filer (Datablade,...)";
-    var $_PHPSHOP_FILEMANAGER_PUBLISHED = "Offentliggjort?";
-    
-    /* FILE LIST */
-    var $_PHPSHOP_FILES_LIST = "Filhåndtering::Billede-/filvisning for";
-    var $_PHPSHOP_FILES_LIST_FILENAME = "Filnavn";
-    var $_PHPSHOP_FILES_LIST_FILETITLE = "Fil titel";
-    var $_PHPSHOP_FILES_LIST_FILETYPE = "Fil type";
-    var $_PHPSHOP_FILES_LIST_EDITFILE = "Rediger fil-data";
-    var $_PHPSHOP_FILES_LIST_FULL_IMG = "Stort billede";
-    var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = "Lille billede";
-    
-    
-    /* FILE FORM */
-    var $_PHPSHOP_FILES_FORM = "Upload en fil til";
-    var $_PHPSHOP_FILES_FORM_CURRENT_FILE = "Aktuel fil";
-    var $_PHPSHOP_FILES_FORM_FILE = "Fil";
-    var $_PHPSHOP_FILES_FORM_IMAGE = "Billede";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_TO = "Upload til";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = "standard Produkt Billede Sti";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = "Angiv filplacering";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = "Download Sti (Til salgsbare downloadfiler)";
-    var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = "Auto-Opretning af lille visning?";
-    var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = "Er filen publiceret?";
-    var $_PHPSHOP_FILES_FORM_FILE_TITLE = "Fil titel (Det kunden ser)";
-    var $_PHPSHOP_FILES_FORM_FILE_DESC = "Fil beskrivelse";
-    var $_PHPSHOP_FILES_FORM_FILE_URL = "Fil URL (ikke påkrævet)";
-    
-    /* FILE & IMAGE PROCESSING */
-    var $_PHPSHOP_FILES_PATH_ERROR = "Indtast venligst en korrekt sti!";
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = "Lille visning af billede er oprettet!";
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = "Kunne IKKE oprette lille-visning af billede!";
-    var $_PHPSHOP_FILES_UPLOAD_FAILURE = "Fil/Billede Upload Fejl";
-    
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = "Kunne ikke slette den store version af billedet.";
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = "Stor version af billede er slettet.";
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = "Kunne ikke slette den lille visning af billedet (eksisterer muligvis ikke): ";
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = "Lille visning af billede er oprettet.";
-    var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = "Kunne ikke slette filen.";
-    var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = "Filen er slettet.";
-    
-    var $_PHPSHOP_FILES_NOT_FOUND = "Beklager, men den forespurgte fil eksisterer ikke!";
-    var $_PHPSHOP_IMAGE_NOT_FOUND = "Billede er ikke fundet!";
-
-    /*#####################
-    MODULE COUPON
-    #####################*/
-    
-    var $_PHPSHOP_COUPON_MOD = "Kupon";
-    var $_PHPSHOP_COUPONS = "Kuponer";
-    var $_PHPSHOP_COUPON_LIST = "Kupon visning";
-    var $_PHPSHOP_COUPON_ALREADY_REDEEMED = "Kuponen er allerede blevet indløst.";
-    var $_PHPSHOP_COUPON_REDEEMED = "Kupon indløst! Tak.";
-    var $_PHPSHOP_COUPON_ENTER_HERE = "Såfremt Du har en kuponkode, indtast den da nedenfor:";
-    var $_PHPSHOP_COUPON_SUBMIT_BUTTON = "Send";
-    var $_PHPSHOP_COUPON_CODE_EXISTS = "Kuponkoden eksisterer allerede. Gentag venligst indtastningen.";
-    var $_PHPSHOP_COUPON_EDIT_HEADER = "Opdatér kupon";
-    var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = "Klik på en kuponkode for at redigere den, eller vælg en kuponkode og klik på Slet for at slette den:";
-    var $_PHPSHOP_COUPON_CODE_HEADER = "Kode";
-    var $_PHPSHOP_COUPON_PERCENT_TOTAL = "Procent eller Total";
-    var $_PHPSHOP_COUPON_TYPE = "Kupontype";
-    var $_PHPSHOP_COUPON_TYPE_TOOLTIP = "En gavekupon slettes umiddelbart efter den er indløst. En permanent kupon kan genbruges ligeså ofte en kunde ønsker det.";
-    var $_PHPSHOP_COUPON_TYPE_GIFT = "Gave kupon";    
-    var $_PHPSHOP_COUPON_TYPE_PERMANENT = "Permanent kupon";    
-    var $_PHPSHOP_COUPON_VALUE_HEADER = "Værdi";
-    var $_PHPSHOP_COUPON_DELETE_BUTTON = "Slet kode";
-    var $_PHPSHOP_COUPON_CONFIRM_DELETE = "Er du sikker på at du ønsker at slette denne kuponkode?";
-    var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = "Udfyld venligst alle felter.";
-    var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = "Kuponværdi skal være et tal";
-    var $_PHPSHOP_COUPON_NEW_HEADER = "Ny kupon";
-    var $_PHPSHOP_COUPON_COUPON_HEADER = "Kuponkode";
-    var $_PHPSHOP_COUPON_PERCENT = "Procent";
-    var $_PHPSHOP_COUPON_TOTAL = "Total";
-    var $_PHPSHOP_COUPON_VALUE = "Værdi";
-    var $_PHPSHOP_COUPON_CODE_SAVED = "Kuponkode er gemt.";
-    var $_PHPSHOP_COUPON_SAVE_BUTTON = "Gem kupon";
-    var $_PHPSHOP_COUPON_DISCOUNT = "Kupon rabat";
-    var $_PHPSHOP_COUPON_CODE_INVALID = "Kuponkode kunne ikke findes. Gentag venligst indtastningen.";
-    var $_PHPSHOP_COUPONS_ENABLE = "Aktivér brugen af kuponér";
-    var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = "Såfremt du aktiverer brugen af kuponér, så giver du dine kunder mulighed for at benytte kuponer for at få rabat på deres køb.";
-    
-    /* Free Shipping */
-    var $_PHPSHOP_FREE_SHIPPING = "Frit leveret";
-    var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = "Levering er gratis på denne ordre!";
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT = "Minimum beløb for fri levering";
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = "Beløb (INCL. MOMS!) som er minimum såfremt fri levering skal opnås 
+        Når De har valgt disse (eller valgt standard), indtast da hvad der skal søges efter. ';
+	var $_PHPSHOP_SEARCH_TEXT2 = ' De kan specificere søgningen yderligere ved at tilføje yderligere søgeord og vælge \'OG\' eller \'UNDTAGEN\' operatoren. 
+        Hvis De vælger \'OG\' skal begge ord findes for at et produkt vises. 
+        Hvis De vælger \'UNDTAGEN\' vises kun søgeresultater indeholdende det første søgeord hvor det andet søgeord ikke findes i sammenhængen.';
+	var $_PHPSHOP_ORDERBY = 'Rækkefølge';
+	var $_PHPSHOP_CUSTOMER_RATING = 'Gennemsnitlig bedømmelse';
+	var $_PHPSHOP_TOTAL_VOTES = 'Antal bedømmelser';
+	var $_PHPSHOP_CAST_VOTE = 'Afgiv Deres bedømmelse';
+	var $_PHPSHOP_RATE_BUTTON = 'Bedøm';
+	var $_PHPSHOP_RATE_NOM = 'Bedømmelse';
+	var $_PHPSHOP_REVIEWS = 'Kundeanmeldelser';
+	var $_PHPSHOP_NO_REVIEWS = 'Der er ingen bedømmelser af dette produkt.';
+	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Vær den første der bedømmer produktet...';
+	var $_PHPSHOP_REVIEW_LOGIN = 'Log venligst ind for at skrive en bedømmelse.';
+	var $_PHPSHOP_REVIEW_ERR_RATE = 'Giv venligst produktet en karakter for at afslutte Deres bedømmelse!';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'En bedømmelse skal længere end 100 tegn.';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'En bedømmelse må ikke være længere end 2000';
+	var $_PHPSHOP_WRITE_REVIEW = 'Skriv en bedømmelse af dette produkt!';
+	var $_PHPSHOP_REVIEW_RATE = 'Først skal De give karakter. Giv venligst en karakter mellem 0 (dårligst) og 5 (bedst).';
+	var $_PHPSHOP_REVIEW_COMMENT = 'Skriv nu venligst Deres (korte) bedømmelse....(min. 100, maks. 2000 tegn) ';
+	var $_PHPSHOP_REVIEW_COUNT = 'Skrevne tegn: ';
+	var $_PHPSHOP_REVIEW_SUBMIT = 'Send bedømmelse';
+	var $_PHPSHOP_REVIEW_ALREADYDONE = 'De har allerede skrevet en bedømmelse af dette produkt. Tak!';
+	var $_PHPSHOP_REVIEW_THANKYOU = 'Tak for Deres bedømmelse.';
+	var $_PHPSHOP_COMMENT = 'Kommentar';
+	var $_PHPSHOP_CREDITCARD_FORM_LBL = 'Tilføj/Redigér betalingskorttyper';
+	var $_PHPSHOP_CREDITCARD_NAME = 'Betalingskortnavn';
+	var $_PHPSHOP_CREDITCARD_CODE = 'Betalingskort - forkortelse';
+	var $_PHPSHOP_CREDITCARD_TYPE = 'Betalingskort type';
+	var $_PHPSHOP_CREDITCARD_LIST_LBL = 'Betalingskort liste';
+	var $_PHPSHOP_UDATE_ADDRESS = 'Opdatér adresse';
+	var $_PHPSHOP_CONTINUE_SHOPPING = 'Fortsæt indkøb';
+	var $_PHPSHOP_THANKYOU_SUCCESS = 'Deres ordre er modtaget!';
+	var $_PHPSHOP_ORDER_LINK = 'Følg dette link for at se ordrebekræftelsen.';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = 'Den aktuelle status for Deres ordre {order_id} er opdateret.';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = 'Ny status er:';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = 'For at se ordredetaljerne, klik da venligst på dette link (eller kopier/indsæt det i Deres browser):';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = 'Ordre status opdatering: Deres ordre {order_id}';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY = 'Advisér kunde?';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = 'Opdatér venligst ordre status først!';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = 'Rabat til standard kundegruppe (i %)';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = 'En positiv værdi X betyder: Såfremt produktet ikke har en pris tilknyttet DENNE kundegruppe, så reduceres standardprisen med X %. En negativ værdi har den modsatte effekt';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = 'Produktrabat';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = 'Produktrabat visning';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = 'Tilføj/rediger produktrabat';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = 'Rabat værdi';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = 'Indtast rabatten';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = 'Rabat type';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = 'Procentdel';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = 'Total';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = 'Skal værdien være en procentdel eller en total?';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = 'Startdato for rabat';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = 'Angiver hvilken dag rabatten gives fra';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = 'Slutdato for rabat';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = 'Angiver hvilken dag rabatten ender';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = 'Du kan benytte Produktrabat formularen til at tilføje rabatter!';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = 'De sparer';
+	var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = 'Se fuldstørrelse billede';
+	var $_PHPSHOP_CURRENCY_DISPLAY = 'Valuta visning';
+	var $_PHPSHOP_CURRENCY_SYMBOL = 'Valuta symbol';
+	var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = 'Du kan også benytte HTML koder her (f.eks. €,£,¥,...)';
+	var $_PHPSHOP_CURRENCY_DECIMALS = 'Decimaler';
+	var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = 'Antal af viste decimaler (kan være 0)<br><b>Afrunding foretages hvis værdien har et andet antal decimaler</b>';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = 'Decimal tegn';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = 'Tegn der benyttes som decimal afgrænser';
+	var $_PHPSHOP_CURRENCY_THOUSANDS = 'Tusindtals separator';
+	var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = 'Tegn der benyttes som tusindtals separator (kan efterlades blank)';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = 'Positivt format';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = 'Visningsformat for positive værdier.<br>(Symb betyder valutasymbol)';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = 'Negativt format';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = 'Visningsformat for negative værdier.<br>(Symb betyder valutasymbol)';
+	var $_PHPSHOP_OTHER_LISTS = 'Andre produktlister';
+	var $_PHPSHOP_MORE_IMAGES = 'Se flere billeder';
+	var $_PHPSHOP_AVAILABLE_IMAGES = 'Tilgængelige billeder for';
+	var $_PHPSHOP_BACK_TO_DETAILS = 'Tilbage til produktdetaljer';
+	var $_PHPSHOP_FILEMANAGER = 'FilHåndtering';
+	var $_PHPSHOP_FILEMANAGER_LIST = 'Filhåndtering::Produktvisning';
+	var $_PHPSHOP_FILEMANAGER_ADD = 'Tilføj billede/fil';
+	var $_PHPSHOP_FILEMANAGER_IMAGES = 'Tilknyttede billeder';
+	var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = 'Kan downloades?';
+	var $_PHPSHOP_FILEMANAGER_FILES = 'Tilføjede filer (Datablade,...)';
+	var $_PHPSHOP_FILEMANAGER_PUBLISHED = 'Offentliggjort?';
+	var $_PHPSHOP_FILES_LIST = 'Filhåndtering::Billede-/filvisning for';
+	var $_PHPSHOP_FILES_LIST_FILENAME = 'Filnavn';
+	var $_PHPSHOP_FILES_LIST_FILETITLE = 'Fil titel';
+	var $_PHPSHOP_FILES_LIST_FILETYPE = 'Fil type';
+	var $_PHPSHOP_FILES_LIST_EDITFILE = 'Rediger fil-data';
+	var $_PHPSHOP_FILES_LIST_FULL_IMG = 'Stort billede';
+	var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = 'Lille billede';
+	var $_PHPSHOP_FILES_FORM = 'Upload en fil til';
+	var $_PHPSHOP_FILES_FORM_CURRENT_FILE = 'Aktuel fil';
+	var $_PHPSHOP_FILES_FORM_FILE = 'Fil';
+	var $_PHPSHOP_FILES_FORM_IMAGE = 'Billede';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_TO = 'Upload til';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = 'standard Produkt Billede Sti';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = 'Angiv filplacering';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = 'Download Sti (Til salgsbare downloadfiler)';
+	var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = 'Auto-Opretning af lille visning?';
+	var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = 'Er filen publiceret?';
+	var $_PHPSHOP_FILES_FORM_FILE_TITLE = 'Fil titel (Det kunden ser)';
+	var $_PHPSHOP_FILES_FORM_FILE_DESC = 'Fil beskrivelse';
+	var $_PHPSHOP_FILES_FORM_FILE_URL = 'Fil URL (ikke påkrævet)';
+	var $_PHPSHOP_FILES_PATH_ERROR = 'Indtast venligst en korrekt sti!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = 'Lille visning af billede er oprettet!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = 'Kunne IKKE oprette lille-visning af billede!';
+	var $_PHPSHOP_FILES_UPLOAD_FAILURE = 'Fil/Billede Upload Fejl';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = 'Kunne ikke slette den store version af billedet.';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = 'Stor version af billede er slettet.';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = 'Kunne ikke slette den lille visning af billedet (eksisterer muligvis ikke): ';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = 'Lille visning af billede er oprettet.';
+	var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = 'Kunne ikke slette filen.';
+	var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = 'Filen er slettet.';
+	var $_PHPSHOP_FILES_NOT_FOUND = 'Beklager, men den forespurgte fil eksisterer ikke!';
+	var $_PHPSHOP_IMAGE_NOT_FOUND = 'Billede er ikke fundet!';
+	var $_PHPSHOP_COUPON_MOD = 'Kupon';
+	var $_PHPSHOP_COUPONS = 'Kuponer';
+	var $_PHPSHOP_COUPON_LIST = 'Kupon visning';
+	var $_PHPSHOP_COUPON_ALREADY_REDEEMED = 'Kuponen er allerede blevet indløst.';
+	var $_PHPSHOP_COUPON_REDEEMED = 'Kupon indløst! Tak.';
+	var $_PHPSHOP_COUPON_ENTER_HERE = 'Såfremt Du har en kuponkode, indtast den da nedenfor:';
+	var $_PHPSHOP_COUPON_SUBMIT_BUTTON = 'Send';
+	var $_PHPSHOP_COUPON_CODE_EXISTS = 'Kuponkoden eksisterer allerede. Gentag venligst indtastningen.';
+	var $_PHPSHOP_COUPON_EDIT_HEADER = 'Opdatér kupon';
+	var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = 'Klik på en kuponkode for at redigere den, eller vælg en kuponkode og klik på Slet for at slette den:';
+	var $_PHPSHOP_COUPON_CODE_HEADER = 'Kode';
+	var $_PHPSHOP_COUPON_PERCENT_TOTAL = 'Procent eller Total';
+	var $_PHPSHOP_COUPON_TYPE = 'Kupontype';
+	var $_PHPSHOP_COUPON_TYPE_TOOLTIP = 'En gavekupon slettes umiddelbart efter den er indløst. En permanent kupon kan genbruges ligeså ofte en kunde ønsker det.';
+	var $_PHPSHOP_COUPON_TYPE_GIFT = 'Gave kupon';
+	var $_PHPSHOP_COUPON_TYPE_PERMANENT = 'Permanent kupon';
+	var $_PHPSHOP_COUPON_VALUE_HEADER = 'Værdi';
+	var $_PHPSHOP_COUPON_DELETE_BUTTON = 'Slet kode';
+	var $_PHPSHOP_COUPON_CONFIRM_DELETE = 'Er du sikker på at du ønsker at slette denne kuponkode?';
+	var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = 'Udfyld venligst alle felter.';
+	var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = 'Kuponværdi skal være et tal';
+	var $_PHPSHOP_COUPON_NEW_HEADER = 'Ny kupon';
+	var $_PHPSHOP_COUPON_COUPON_HEADER = 'Kuponkode';
+	var $_PHPSHOP_COUPON_PERCENT = 'Procent';
+	var $_PHPSHOP_COUPON_TOTAL = 'Total';
+	var $_PHPSHOP_COUPON_VALUE = 'Værdi';
+	var $_PHPSHOP_COUPON_CODE_SAVED = 'Kuponkode er gemt.';
+	var $_PHPSHOP_COUPON_SAVE_BUTTON = 'Gem kupon';
+	var $_PHPSHOP_COUPON_DISCOUNT = 'Kupon rabat';
+	var $_PHPSHOP_COUPON_CODE_INVALID = 'Kuponkode kunne ikke findes. Gentag venligst indtastningen.';
+	var $_PHPSHOP_COUPONS_ENABLE = 'Aktivér brugen af kuponér';
+	var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = 'Såfremt du aktiverer brugen af kuponér, så giver du dine kunder mulighed for at benytte kuponer for at få rabat på deres køb.';
+	var $_PHPSHOP_FREE_SHIPPING = 'Frit leveret';
+	var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = 'Levering er gratis på denne ordre!';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT = 'Minimum beløb for fri levering';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = 'Beløb (INCL. MOMS!) som er minimum såfremt fri levering skal opnås 
                                                 (eksempel: <strong>50</strong> betyder fri levering når kunden gennemfører
-                                                en handel med \$50 (inkl. moms) eller mere.)";
-    var $_PHPSHOP_YOUR_STORE = "Din butik";
-    var $_PHPSHOP_CONTROL_PANEL = "Kontrolpanel";
-    
-    /* Configuration Additions */
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = "PDF - Knap";
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = "Vis eller skjul PDF - knappen i butikken";
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = "Skal kunden acceptere salgsbetingelser ved HVER ordre?";
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = "Afkryds såfremt du ønsker at en kunde skal acceptere salgsbetingelserne ved HVER ordre (før ordren oprettes).";
-
-    // We need this for eCheck.net Payments
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = "Bankkonto type";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = "Kontrollerer";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = "Kontrollerer handel";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = "Gemmer";
-    
-    var $_PHPSHOP_PAYMENT_AN_RECURRING = "Periodiske regninger?";
-    var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = "Angiv hvorvidt du ønsker periodiske regninger.";
-    
-    var $_PHPSHOP_INTERNAL_ERROR = "Intern fejl under behandling af forespørgsel om";
-    var $_PHPSHOP_PAYMENT_ERROR = "Fejl under behandling af betalingen";
-    var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = "Betalingen er gennemført korrekt";
-    
-    /* UPS Shipping Module */
-    var $_PHPSHOP_UPS_RESPONSE_ERROR = "UPS kunne ikke behandle forespørgslen om fragtpris.";
-    var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = "Garanterede dag(e) til levering";
-    var $_PHPSHOP_UPS_PICKUP_METHOD = "UPS afhentningsmetode";
-    var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = "Hvordan leverer du pakker til UPS?";
-    var $_PHPSHOP_UPS_PACKAGE_TYPE = "UPS emballering?";
-    var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = "Vælg standard emballering.";
-    var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = "Levering til privatadresse?";
-    var $_PHPSHOP_UPS_RESIDENTIAL = "Privatadresse (RES)";
-    var $_PHPSHOP_UPS_COMMERCIAL    = "Levering til virksomhedsadresse (COM)";
-    var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = "Tilbud for levering til privatadresse (RES) eller virksomhedsadresse (COM).";
-    var $_PHPSHOP_UPS_HANDLING_FEE = "Håndteringsomkostninger";
-    var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = "Dine håndteringsomkostninger for denne forsendelsesmetode.";
-    var $_PHPSHOP_UPS_TAX_CLASS = "Moms sats";
-    var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = "Brug denne moms sats på forsendelsesomkostningerne.";
-    
-    var $_PHPSHOP_ERROR_CODE = "Fejlkode";
-    var $_PHPSHOP_ERROR_DESC = "Fejlbeskrivelse";
-    
-    var $_PHPSHOP_CHANGE_TRANSACTION_KEY = "Vis/Rediger overførselsnøglen";
-    var $_PHPSHOP_CHANGE_PASSKEY_FORM = "Vis/Rediger kodeord/overførselsnøglen";
-    var $_PHPSHOP_TYPE_PASSWORD = "Indtast dit kodeord";
-    var $_PHPSHOP_CURRENT_PASSWORD = "Nuværende kodeord";
-    var $_PHPSHOP_CURRENT_TRANSACTION_KEY = "Nuværende overførselsnøgle";
-    var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = "Overførselsnøglen blev ændret.";
-    
-    var $_PHPSHOP_PAYMENT_CVV2 = "Anmod om kreditkort kontrolcifre (CVV2/CVC2/CID)";
-    var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = "Validér CVV2/CVC2/CID værdien (tre- eller firecifret nummer bag på kreditkortet (på forsiden af American Kort))?";
-    var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = "Indtast venligst det tre- eller firecifrede kontrolnummer. Nummeret findes bag på kreditkortet (på forsiden af American Express Kort)";
-    var $_PHPSHOP_CUSTOMER_CVV2_ERROR = "Indtast kreditkort koden for at fortsætte.";
-    
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME = "Indtast ENTEN et filnavn";
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = "NOTE: Her kan indtastes et filnavn. <strong>Såfremt et filnavn indtastes vil ingen filer blive uploaded!!! Filen skal derefter uploades manuelt via FTP!</strong>.";
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD = "ELLER upload en ny fil";
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = "Du kan uploade en lokal fil. Denne vil vil være det produkt du sælger. En evt. eksisterende fil vil blive overskrevet.";
-    
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = "Indtast her den tekst som kunden skal kunne se på produktarket.<br />f.eks.: 24t, 48 timer, 3 - 5 dage, Restordre.....";
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = "ELLER vælg et billede der skal vises på produktsiden.<br />Billederne findes i biblioteket <i>/components/com_phpshop/shop_image/availability</i><br />";
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = "Attributliste";
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = "<h4>Eksemper på attributliste formatet:</h4>
+                                                en handel med $50 (inkl. moms) eller mere.)';
+	var $_PHPSHOP_YOUR_STORE = 'Din butik';
+	var $_PHPSHOP_CONTROL_PANEL = 'Kontrolpanel';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = 'PDF - Knap';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = 'Vis eller skjul PDF - knappen i butikken';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = 'Skal kunden acceptere salgsbetingelser ved HVER ordre?';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = 'Afkryds såfremt du ønsker at en kunde skal acceptere salgsbetingelserne ved HVER ordre (før ordren oprettes).';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = 'Bankkonto type';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = 'Kontrollerer';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = 'Kontrollerer handel';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = 'Gemmer';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING = 'Periodiske regninger?';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = 'Angiv hvorvidt du ønsker periodiske regninger.';
+	var $_PHPSHOP_INTERNAL_ERROR = 'Intern fejl under behandling af forespørgsel om';
+	var $_PHPSHOP_PAYMENT_ERROR = 'Fejl under behandling af betalingen';
+	var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = 'Betalingen er gennemført korrekt';
+	var $_PHPSHOP_UPS_RESPONSE_ERROR = 'UPS kunne ikke behandle forespørgslen om fragtpris.';
+	var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = 'Garanterede dag(e) til levering';
+	var $_PHPSHOP_UPS_PICKUP_METHOD = 'UPS afhentningsmetode';
+	var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = 'Hvordan leverer du pakker til UPS?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE = 'UPS emballering?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = 'Vælg standard emballering.';
+	var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = 'Levering til privatadresse?';
+	var $_PHPSHOP_UPS_RESIDENTIAL = 'Privatadresse (RES)';
+	var $_PHPSHOP_UPS_COMMERCIAL = 'Levering til virksomhedsadresse (COM)';
+	var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = 'Tilbud for levering til privatadresse (RES) eller virksomhedsadresse (COM).';
+	var $_PHPSHOP_UPS_HANDLING_FEE = 'Håndteringsomkostninger';
+	var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = 'Dine håndteringsomkostninger for denne forsendelsesmetode.';
+	var $_PHPSHOP_UPS_TAX_CLASS = 'Moms sats';
+	var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = 'Brug denne moms sats på forsendelsesomkostningerne.';
+	var $_PHPSHOP_ERROR_CODE = 'Fejlkode';
+	var $_PHPSHOP_ERROR_DESC = 'Fejlbeskrivelse';
+	var $_PHPSHOP_CHANGE_TRANSACTION_KEY = 'Vis/Rediger overførselsnøglen';
+	var $_PHPSHOP_CHANGE_PASSKEY_FORM = 'Vis/Rediger kodeord/overførselsnøglen';
+	var $_PHPSHOP_TYPE_PASSWORD = 'Indtast dit kodeord';
+	var $_PHPSHOP_CURRENT_PASSWORD = 'Nuværende kodeord';
+	var $_PHPSHOP_CURRENT_TRANSACTION_KEY = 'Nuværende overførselsnøgle';
+	var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = 'Overførselsnøglen blev ændret.';
+	var $_PHPSHOP_PAYMENT_CVV2 = 'Anmod om kreditkort kontrolcifre (CVV2/CVC2/CID)';
+	var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = 'Validér CVV2/CVC2/CID værdien (tre- eller firecifret nummer bag på kreditkortet (på forsiden af American Kort))?';
+	var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = 'Indtast venligst det tre- eller firecifrede kontrolnummer. Nummeret findes bag på kreditkortet (på forsiden af American Express Kort)';
+	var $_PHPSHOP_CUSTOMER_CVV2_ERROR = 'Indtast kreditkort koden for at fortsætte.';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME = 'Indtast ENTEN et filnavn';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = 'NOTE: Her kan indtastes et filnavn. <strong>Såfremt et filnavn indtastes vil ingen filer blive uploaded!!! Filen skal derefter uploades manuelt via FTP!</strong>.';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'ELLER upload en ny fil';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Du kan uploade en lokal fil. Denne vil vil være det produkt du sælger. En evt. eksisterende fil vil blive overskrevet.';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Indtast her den tekst som kunden skal kunne se på produktarket.<br />f.eks.: 24t, 48 timer, 3 - 5 dage, Restordre.....';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ELLER vælg et billede der skal vises på produktsiden.<br />Billederne findes i biblioteket <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Attributliste';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Eksemper på attributliste formatet:</h4>
         <pre>Str.,XL[+2.00],M,S[-1.00];Farve,Rød,Grøn,Gul,SpecielFarve[=54.00];Osv.,..,..</pre>
         <h4>Prisjusteringer ved hjælp af de avancerede attributter:</h4>
-        <pre>&#43; == Læg beløbet til standardprisen.<br />
-        &#45; == Træk beløbet fra standardprisen.<br />
-        &#61; == Sæt produktets pris til dette beløb.
-      </pre>";
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = "Brugerdefineret attributliste";
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = "<h4>Eksempler på brugerattributliste formatet:</h4>
-        <pre>Navn;Ekstra;...</pre>";
+        <pre>+ == Læg beløbet til standardprisen.<br />
+        - == Træk beløbet fra standardprisen.<br />
+        = == Sæt produktets pris til dette beløb.
+      </pre>';
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = 'Brugerdefineret attributliste';
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Eksempler på brugerattributliste formatet:</h4>
+        <pre>Navn;Ekstra;...</pre>';
+	var $_PHPSHOP_MULTISELECT = '<i>Multivalg: Brug CTRL-tasten og museknappen</i>';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = 'Enable eProcessingNetwork.com payment?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'Check to use eProcessingNetwork.com with phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = 'Test mode ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = 'eProcessingNetwork.com Login ID';
+	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = 'This is your eProcessingNetwork.com Login ID';
+	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = 'eProcessingNetwork.com Transaction Key';
+	var $_PHPSHOP_ADMIN_CFG_EPN_KEY_EXPLAIN = 'This is your eProcessingNetwork.com Transaction Key';
+	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE = 'Authentication Type';
+	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN = 'This is the eProcessingNetwork.com authentication type.';
+	var $_PHPSHOP_RELATED_PRODUCTS = 'Related Products';
+	var $_PHPSHOP_RELATED_PRODUCTS_TIP = 'You can build up Product Relations using this List. Just select one or more products here and then they are <strong>Related Products</strong>.';
+	var $_PHPSHOP_RELATED_PRODUCTS_HEADING = 'You may also be interested in this/these product(s)';
+	var $_PHPSHOP_IMAGE_ACTION = 'Image Action';
+	var $_PHPSHOP_NONE = 'none';
+	var $_PHPSHOP_ORDER_HISTORY = 'Order History';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT = 'Comment';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = 'Comments on your Order';
+	var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = 'Include this comment?';
+	var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = 'Date Added';
+	var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = 'Customer Notified?';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE = 'Order Status Change';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = 'USPS shipping username';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = 'USPS shipping username';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = 'USPS shipping password';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = 'USPS shipping password';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = 'USPS shipping server';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = 'USPS shipping server';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = 'USPS shipping path';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = 'USPS shipping path';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = 'USPS shipping container';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = 'USPS shipping container';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = 'USPS Package Size';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = 'USPS Package Size';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = 'USPS Package ID (must be 0, does not support multiple packages)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = 'USPS Package ID (must be 0, does not support multiple packages)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = 'USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = 'USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = 'Handling Fee';
+	var $_PHPSHOP_USPS_HANDLING_FEE = 'Your Handling fee for this shipping method.';
+	var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = 'Your Handling fee for this shipping method.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE = 'Your International Handling fee for USPS shipments.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = 'Your International Handling fee for USPS shipments.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE = 'Your International per pound rate for USPS shipments.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = 'Your International per pound rate for USPS shipments.';
+	var $_PHPSHOP_USPS_RESPONSE_ERROR = 'USPS was not able to process the Shipping Rate Request.';
+	var $_PHPSHOP_PARAMETERS_LBL = 'Parameters';
+	var $_PHPSHOP_PRODUCT_TYPE_LBL = 'Product Type';
+	var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = 'Product Type List';
+	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Add/Edit Product Type';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = 'Product Type List for';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = 'List Product Types';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Add Product Type for';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = 'Add Product Type';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = 'Product Type';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = 'Product Type Name';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = 'Product Type Description';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = 'Parameters';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = 'Product Type Information';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = 'Publish?';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = 'Product Type Browse Page';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = 'Product Type Flypage';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = 'Parameters of Product Type';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = 'Parameter Information';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = 'Product Type not found!';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = 'Parameter Name';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = 'This name will be column name of table. Must be unicate and without space.<BR>For example: main_material';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = 'Parameter Label';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = 'Parameter Description';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = 'Parameter Type';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = 'Integer';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = 'Text';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = 'Short Text';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = 'Float';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = 'Char';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = 'Date & Time';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = 'Date';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT = 'YYYY-MM-DD';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = 'Time';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT = 'HH:MM:SS';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = 'Break Line';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = 'Multiple Values';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = 'Possible Values';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = 'Show Possible Values as Multiple select?';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><BR><span class="sectionname">Steel;Wood;Plastic;...</span>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Default Value';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = 'For Parameter Default Value use this format:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Unit';
+	var $_PHPSHOP_PARAMETER_SEARCH = 'Advanced Search according to Parameters';
+	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = 'Parameters Search';
+	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = 'Do you will find products according to technical parametrs?<BR>You can used any prepared form:';
+	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = 'I am sorry. There is no category for search.';
+	var $_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE = 'I am sorry. There is no published Product Type with this name.';
+	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = 'Is Like';
+	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = 'Is NOT Like';
+	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = 'Full-Text Search';
+	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = 'All Selected';
+	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = 'Any Selected';
+	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = 'Reset Form';
+	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = 'Search in Category';
+	var $_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS = 'Change Parameters';
+	var $_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER = 'Descending order';
+	var $_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER = 'Ascending order';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY = 'Parameters of Category';
+	var $_PHPSHOP_FEE = 'Fee';
+	var $_PHPSHOP_PRODUCT_CLONE = 'Clone Product';
+	var $_PHPSHOP_CSV_SETTINGS = 'Settings';
+	var $_PHPSHOP_CSV_DELIMITER = 'Delimiter';
+	var $_PHPSHOP_CSV_ENCLOSURE = 'Field Enclosure Char';
+	var $_PHPSHOP_CSV_UPLOAD_FILE = 'Upload a CSV File';
+	var $_PHPSHOP_CSV_SUBMIT_FILE = 'Submit CSV File';
+	var $_PHPSHOP_CSV_FROM_DIRECTORY = 'Load from directory';
+	var $_PHPSHOP_CSV_FROM_SERVER = 'Load CSV File from Server';
+	var $_PHPSHOP_CSV_EXPORT_TO_FILE = 'Export to CSV File';
+	var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = 'Choose Field Ordering Type';
+	var $_PHPSHOP_CSV_DEFAULT_ORDERING = 'Default Ordering';
+	var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = 'My customized Ordering';
+	var $_PHPSHOP_CSV_SUBMIT_EXPORT = 'Export all Products to CSV File';
+	var $_PHPSHOP_CSV_CONFIGURATION_HEADER = 'CSV Import / Export Configuration';
+	var $_PHPSHOP_CSV_SAVE_CHANGES = 'Save Changes';
+	var $_PHPSHOP_CSV_FIELD_NAME = 'Field Name';
+	var $_PHPSHOP_CSV_DEFAULT_VALUE = 'default Value';
+	var $_PHPSHOP_CSV_FIELD_ORDERING = 'Field Ordering';
+	var $_PHPSHOP_CSV_FIELD_REQUIRED = 'Field Required?';
+	var $_PHPSHOP_CSV_IMPORT_EXPORT = 'Import/Export';
+	var $_PHPSHOP_CSV_NEW_FIELD = 'Add a new Field';
+	var $_PHPSHOP_CSV_DOCUMENTATION = 'Documentation';
+	var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Sorry, but the Product you\'ve requested wasn\'t found!';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = 'Show Products that are out of Stock';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.';
+	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
+	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
         
-    var $_PHPSHOP_MULTISELECT = "<i>Multivalg: Brug CTRL-tasten og museknappen</i>";
-        
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = "Enable eProcessingNetwork.com payment?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = "Check to use eProcessingNetwork.com with phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = "Test mode ?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = "Select 'Yes' while testing. Select 'No' for enabling live transactions.";
-	
-	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = "eProcessingNetwork.com Login ID";
-	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = "This is your eProcessingNetwork.com Login ID";
-	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = "eProcessingNetwork.com Transaction Key";
-	var $_PHPSHOP_ADMIN_CFG_EPN_KEY_EXPLAIN = "This is your eProcessingNetwork.com Transaction Key";
-	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE = "Authentication Type";
-	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN = "This is the eProcessingNetwork.com authentication type.";
-
-    var $_PHPSHOP_RELATED_PRODUCTS = "Related Products";
-    var $_PHPSHOP_RELATED_PRODUCTS_TIP = "You can build up Product Relations using this List. Just select one or more products here and then they are <strong>Related Products</strong>.";
-    
-    var $_PHPSHOP_RELATED_PRODUCTS_HEADING = "You may also be interested in this/these product(s)";
-        
-    var $_PHPSHOP_IMAGE_ACTION = "Image Action";
-    var $_PHPSHOP_NONE = "none";
-    
-    var $_PHPSHOP_ORDER_HISTORY = "Order History";
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT = "Comment";
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = "Comments on your Order";
-    var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = "Include this comment?";
-    var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = "Date Added";
-    var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = "Customer Notified?";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE = "Order Status Change";
-    
-     /* USPS Shipping Module */
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = "USPS shipping username";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = "USPS shipping username";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = "USPS shipping password";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = "USPS shipping password";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = "USPS shipping server";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = "USPS shipping server";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = "USPS shipping path";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = "USPS shipping path";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = "USPS shipping container";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = "USPS shipping container";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = "USPS Package Size";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = "USPS Package Size";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = "USPS Package ID (must be 0, does not support multiple packages)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = "USPS Package ID (must be 0, does not support multiple packages)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = "USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = "USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = "Handling Fee";
-    var $_PHPSHOP_USPS_HANDLING_FEE = "Your Handling fee for this shipping method.";
-    var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = "Your Handling fee for this shipping method.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE = "Your International Handling fee for USPS shipments.";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = "Your International Handling fee for USPS shipments.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE = "Your International per pound rate for USPS shipments.";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = "Your International per pound rate for USPS shipments.";
-    var $_PHPSHOP_USPS_RESPONSE_ERROR = "USPS was not able to process the Shipping Rate Request.";
-        
-    /** Changed Product Type - Begin*/
-    /*** Product Type ***/
-    var $_PHPSHOP_PARAMETERS_LBL = "Parameters";
-    var $_PHPSHOP_PRODUCT_TYPE_LBL = "Product Type";
-    var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = "Product Type List";
-    var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = "Add/Edit Product Type";
-    // Product - Product Product Type list
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = "Product Type List for";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = "List Product Types";
-    // Product - Product Product Type form
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = "Add Product Type for";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = "Add Product Type";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = "Product Type";
-    // Product - Product Type form
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = "Product Type Name";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = "Product Type Description";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = "Parameters";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = "Product Type Information";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = "Publish?";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = "Product Type Browse Page";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = "Product Type Flypage";
-    // Product - Product Type Parameter list
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = "Parameters of Product Type";
-    // Product - Product Type Parameter form
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = "Parameter Information";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = "Product Type not found!";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = "Parameter Name";
-    VAR $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = "This name will be column name of table. Must be unicate and without space.<BR>For example: main_material";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = "Parameter Label";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = "Parameter Description";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = "Parameter Type";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = "Integer";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = "Text";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = "Short Text";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = "Float";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = "Char";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = "Date & Time";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = "Date";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT = "YYYY-MM-DD";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = "Time";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT = "HH:MM:SS";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = "Break Line";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = "Multiple Values";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = "Possible Values";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = "Show Possible Values as Multiple select?";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = "<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><BR><span class=\"sectionname\">Steel;Wood;Plastic;...</span>";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = "Default Value";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = "For Parameter Default Value use this format:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = "Unit";
-    
-	/************************* FrontEnd ***************************/
-	/** shop.parameter_search.php */
-	var $_PHPSHOP_PARAMETER_SEARCH = "Advanced Search according to Parameters";
-	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = "Parameters Search";
-	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = "Do you will find products according to technical parametrs?<BR>You can used any prepared form:";
-// 	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = "There's no result matching your query.";
-	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = "I am sorry. There is no category for search.";
-	/** shop.parameter_search_form.php */
-	var $_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE = "I am sorry. There is no published Product Type with this name.";
-	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = "Is Like";
-	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = "Is NOT Like";
-	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = "Full-Text Search";
-	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = "All Selected";
-	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = "Any Selected";
-	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = "Reset Form";	
-	/** shop.browse.php */
-	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = "Search in Category";
-	var $_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS = "Change Parameters";
-	var $_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER = "Descending order";
-	var $_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER = "Ascending order";
-	/** shop.product.detail */
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY = "Parameters of Category";
-	/** Changed Product Type - End*/
-    
-    // State form and list
-    var $_PHPSHOP_STATE_LIST_MNU = "List State";
-    var $_PHPSHOP_STATE_LIST_LBL = "State List for: ";
-    var $_PHPSHOP_STATE_LIST_ADD = "Add/Update a State";
-    var $_PHPSHOP_STATE_LIST_NAME = "State Name";
-    var $_PHPSHOP_STATE_LIST_3_CODE = "State Code (3)";
-    var $_PHPSHOP_STATE_LIST_2_CODE = "State Code (2)";
-    
-    // Opposite of Discount!
-    var $_PHPSHOP_FEE = "Fee";
-    
-    var $_PHPSHOP_PRODUCT_CLONE = "Clone Product";
-	
-    var $_PHPSHOP_CSV_SETTINGS = "Settings";
-    var $_PHPSHOP_CSV_DELIMITER = "Delimiter";
-    var $_PHPSHOP_CSV_ENCLOSURE = "Field Enclosure Char";
-    var $_PHPSHOP_CSV_UPLOAD_FILE = "Upload a CSV File";
-    var $_PHPSHOP_CSV_SUBMIT_FILE = "Submit CSV File";
-    var $_PHPSHOP_CSV_FROM_DIRECTORY = "Load from directory";
-    var $_PHPSHOP_CSV_FROM_SERVER = "Load CSV File from Server";
-    var $_PHPSHOP_CSV_EXPORT_TO_FILE = "Export to CSV File";
-    var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = "Choose Field Ordering Type";
-    var $_PHPSHOP_CSV_DEFAULT_ORDERING = "Default Ordering";
-    var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = "My customized Ordering";
-    var $_PHPSHOP_CSV_SUBMIT_EXPORT = "Export all Products to CSV File";
-    var $_PHPSHOP_CSV_CONFIGURATION_HEADER = "CSV Import / Export Configuration";
-    var $_PHPSHOP_CSV_SAVE_CHANGES = "Save Changes";
-    var $_PHPSHOP_CSV_FIELD_NAME = "Field Name";
-    var $_PHPSHOP_CSV_DEFAULT_VALUE = "default Value";
-    var $_PHPSHOP_CSV_FIELD_ORDERING = "Field Ordering";
-    var $_PHPSHOP_CSV_FIELD_REQUIRED = "Field Required?";
-    var $_PHPSHOP_CSV_IMPORT_EXPORT = "Import/Export";
-    var $_PHPSHOP_CSV_NEW_FIELD = "Add a new Field";
-    var $_PHPSHOP_CSV_DOCUMENTATION = "Documentation";
-    
-    var $_PHPSHOP_PRODUCT_NOT_FOUND = "Sorry, but the Product you've requested wasn't found!";
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = "Show Products that are out of Stock";
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = "When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.";
-	    
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */
 $PHPSHOP_LANG =& new phpShopLanguage();

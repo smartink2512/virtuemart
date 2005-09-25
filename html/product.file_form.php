@@ -26,23 +26,26 @@ if( $file_id ) {
   $selected_type[0] = $db->f("file_is_image")==1 ? "checked=\"checked\"" : "";
   $selected_type[1] = $db->f("file_is_image")==0 ? "checked=\"checked\"" : "";
 }
-elseif( $product_id ) {
-  $q = "SELECT product_name FROM #__pshop_product ";
-  $q .= "WHERE product_id='$product_id' "; 
-  $db->query($q);  
-  $db->next_record();
-  $selected_type[0] = "checked=\"checked\"";
-  $selected_type[1] = "";
-  $default["file_title"] = "My Title";
-  $default["file_published"] = "1";
-}
+
+$q = "SELECT product_name FROM #__pshop_product WHERE product_id='$product_id' "; 
+$db->query($q);  
+$db->next_record();
+$selected_type[0] = "checked=\"checked\"";
+$selected_type[1] = "";
+$default["file_title"] = "My Title";
+$default["file_published"] = "1";
+
+$title ='<img src="'. $mosConfig_live_site .'/administrator/images/mediamanager.png" width="48" height="48" align="center" alt="Product List" border="0" />'
+		. $PHPSHOP_LANG->_PHPSHOP_FILES_FORM . ": ". $db->f("product_name");
+		
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
 ?>
-<h2><img src="<?php echo $mosConfig_live_site ?>/administrator/images/mediamanager.png" width="48" height="48" align="center" alt="Product List" border="0" />
-<?php echo $PHPSHOP_LANG->_PHPSHOP_FILES_FORM . ": "; $db->p("product_name"); ?></h2>
 <br />
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" name="adminForm">
-  <table class="adminlist">
+  <table class="adminform">
   <?php if( $file_id ) { ?>
     <tr> 
       <td><div align="right" ><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_FILES_FORM_CURRENT_FILE ?>:</strong></div></td>
@@ -103,18 +106,18 @@ elseif( $product_id ) {
     <tr align="center">
       <td colspan="2" >&nbsp;</td>
     </tr>
-    <tr align="center"> 
-      <td colspan="2" > 
-        <input type="hidden" name="file_id" value="<?php echo $file_id ?>" />
-        <input type="hidden" name="product_id" value="<?php echo $product_id ?>" />
-        <input type="hidden" name="func" value="<?php if(empty($file_id)) echo "uploadProductFile"; else echo "updateProductFile" ?>" />
-        <input type="hidden" name="page" value="product.file_list" />
-        <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="com_phpshop" />
-      </td>
-    </tr>
   </table>
-</form>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'file_id', $file_id );
+$formObj->hiddenField( 'product_id', $product_id );
+
+$funcname = empty($file_id) ? "uploadProductFile" : "updateProductFile";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.file_list', $option );
+?>
 <script type="text/javascript">
 function checkThumbnailing() {
   if( document.adminForm.file_type[0].checked==false ) {

@@ -186,26 +186,39 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     return True;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: soeren
-   * description: Should delete a discount record.
-   * parameters: 
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      $d["error"]=$this->error;
-      return False;
-    }
-    $q = "DELETE FROM #__pshop_product_discount WHERE discount_id='" . $d["discount_id"] . "'";
-    $db->setQuery($q);
-    $db->query();
-    
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+		
+		if (!$this->validate_delete($d)) {
+			$d["error"]=$this->error;
+			return False;
+		}
+		$record_id = $d["discount_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		
+		$q = "DELETE FROM #__pshop_product_discount WHERE discount_id='record_id'";
+		$db->query($q);
+		
+		return True;
+	}
   
   /**************************************************************************
    * name: discount_list()

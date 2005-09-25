@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: ps_main.php,v 1.38 2005/09/06 19:28:35 soeren_nb Exp $
+* @version $Id: ps_main.php,v 1.36 2005/08/12 09:28:50 dvorakz Exp $
 * @package mambo-phpShop
 *
 * Contains code from PHPShop(tm):
@@ -468,106 +468,6 @@ function in_list($list, $item) {
   return False;
 }
 
-
-/****************************************************************************
- *    function: search_header
- *  created by: pablo
- * description: New Stuff to make the page selection and search easier
- *  parameters: 
- *     returns: 
- ****************************************************************************/
- 
-// New Stuff to make the page selection and search easier
-function search_header($title, $modulename, $pagename) {
-
-  global $sess,$PHP_SELF, $PHPSHOP_LANG;
-  
-    $_REQUEST['limitstart'] = $limitstart = empty( $_REQUEST['limitstart'] ) ? 0 : $_REQUEST['limitstart'];
-    $_REQUEST['offset'] = mosGetParam( $_REQUEST, 'limitstart', 0);
-    $category_id = mosGetParam( $_REQUEST, 'category_id', null);
-    $show = mosGetParam( $_REQUEST, "show", "" );
-    
-    $header = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">\n";
-    $header .= "<tr>\n";
-    $header .= "<td nowrap=\"nowrap\" align=\"left\"><span class=\"sectionname\">$title</span></td>\n";
-    $header .= "<td colspan=\"3\" align=\"right\">\n";
-    $header .= "<form action=\"" . $PHP_SELF . "\" method=\"get\">". $PHPSHOP_LANG->_PHPSHOP_SEARCH_LBL .":\n";
-    $header .= "<input type=hidden name=\"option\" value=\"com_phpshop\" />\n";
-    $header .= "<input class=\"inputbox\" type=\"text\" size=\"15\" name=\"keyword\" />\n";
-    $header .= "<input type=\"hidden\" name=\"page\" value=\"". $modulename . "." . $pagename . "\" />\n";
-    $header .= "<input class=\"button\" type=\"submit\" name=\"search\" value=\"".$PHPSHOP_LANG->_PHPSHOP_SEARCH_TITLE."\" />\n";
-    $header .= "</form>\n";
-    $header .= "</td></tr>\n";
-    $header .= "</table>\n";
-    $header .= "<form name=\"adminForm\" action=\"$PHP_SELF\">\n";
-    $header .= "<input type=hidden name=\"option\" value=\"com_phpshop\" />\n";
-    $header .= "<input type=\"hidden\" name=\"keyword\" value=\"".urlencode( @$_REQUEST['keyword'] )."\" />\n";
-	if ( @$_REQUEST['search_date'] ) // Changed search by date
-	    $header .= "<input type=\"hidden\" name=\"search_date\" value=\"". @$_REQUEST['search_date'] ."\" />\n"; // Changed search by date
-    $header .= "<input type=\"hidden\" name=\"page\" value=\"$modulename."."$pagename\" />\n";
-    $header .= "<input type=\"hidden\" name=\"limitstart\" value=\"$limitstart\" />\n";
-    if( $category_id ) {
-        $header .= "<input type=\"hidden\" name=\"category_id\" value=\"$category_id\" />\n";
-    }
-    if( $show ) {
-        $header .= "<input type=\"hidden\" name=\"show\" value=\"$show\" />\n";
-    }
-    $header .= "</form>\n";
-  echo $header;
-}
-
-
-/****************************************************************************
- *    function: search_footer
- *  created by: pablo
- * description: 
- *  parameters: 
- *     returns: 
- ****************************************************************************/
-function search_footer($modulename, $pagename, $offset, $num_rows, $keyword, $extra="") {
-    global $sess;
-    $footer = "";
-    if( $num_rows > SEARCH_ROWS || $offset >= $num_rows) {
-        include_once( "includes/pageNavigation.php" );
-        
-        $pagenav = new mosPageNav( $num_rows, $offset, SEARCH_ROWS );
-        
-        if($extra) {
-            $footer .= "<script type=\"text/javascript\">\n";
-            $extrafields = explode("&", $extra);
-            array_shift($extrafields);
-            foreach( $extrafields as $key => $value) {
-                $field = explode("=", $value);
-                $footer .= "document.adminForm.innerHTML += '<input type=\"hidden\" name=\"".$field[0]."\" value=\"".$field[1]."\" />';\n";
-            }
-            $footer .= "</script>\n";
-        }
-        $keyword = urlencode( $keyword );
-        $link = $_SERVER['PHP_SELF']."?option=com_phpshop&page=$modulename.$pagename&keyword=$keyword".$extra;
-        
-        
-        $footer .= "<table class=\"adminlist\" width=\"100%\"><tr><th width=\"100%\"><div align=\"center\">";
-        if( defined('_PSHOP_ADMIN') && !defined("_RELEASE"))
-            $footer .= $pagenav->getPagesLinks();
-        /* Uuh. Mambo development is weird! 4.5 Patch */
-        elseif(defined("_RELEASE"))
-            $pagenav->writePagesLinks();
-        else
-            $footer .= sefRelToAbs( $pagenav->writePagesLinks( $link ) );
-        $footer .= "</div></th></tr></table>";
-        $footer .= "<br /><div align=\"center\">";
-        if( defined('_PSHOP_ADMIN') && !defined("_RELEASE"))
-            $footer .= $pagenav->getPagesCounter();
-        else
-            $footer .= $pagenav->writePagesCounter();
-        $footer .= "</div>";
-        
-    }
-    echo $footer;
-}
-
-
-
 /****************************************************************************
  *    function: hide_vars
  *  created by: pablo
@@ -855,141 +755,7 @@ function include_class($module) {
         $display["negative"] = @$array[6];
         return $display;
     }
-/**
-* @param int The row index
-* @param string The task to fire
-* @param string The alt text for the icon
-* @return string
-*/
-	function mShop_orderUpIcon( $i, $num_rows, $id, $itemType="category", $condition=true, $task='orderup', $alt='Move Up' ) {
-        global $mosConfig_live_site;
-		if (($i > 0) && $condition) {
-		    return '<a href="#reorder" onClick="return listItemTask(\'cb'.$id.'\',\''.$task.'\')" title="'.$alt.'">
-				<img align=\"top\" src="'.$mosConfig_live_site.'/administrator/images/uparrow.png" width="12" height="12" border="0" alt="'.$alt.'">
-			</a>';
-  		} else {
-  		    return '&nbsp;';
-		}
-	}
-/**
-* @param int The row index
-* @param int The number of items in the list
-* @param string The task to fire
-* @param string The alt text for the icon
-* @return string
-*/
-	function mShop_orderDownIcon( $i, $num_rows, $id, $itemType="category", $task='orderdown', $alt='Move Down' ) {
-        global $mosConfig_live_site;
-		if( $i + intval(@$_REQUEST['limitstart']) < $num_rows - 1 ) {
-			return '<a href="#reorder" onClick="return listItemTask(\'cb'.$id.'\',\''.$task.'\')" title="'.$alt.'">
-				<img align=\"bottom\" src="'.$mosConfig_live_site.'/administrator/images/downarrow.png" width="12" height="12" border="0" alt="'.$alt.'">
-			</a>';
-  		} else {
-  		    return '&nbsp;';
-		}
-	}
-if ( !function_exists( "mosToolTip" ) ) {
-    /**
-    * Utility function to provide ToolTips
-    * @param string ToolTip text
-    * @param string Box title
-    * @returns HTML code for ToolTip
-    */
-    function mosToolTip($tooltip, $title='Mambo ToolTip') {
-        global $mosConfig_live_site;
-        $tip = "<a href=\"#\" onMouseOver=\"return overlib('" . $tooltip . "', CAPTION, '$title', BELOW, RIGHT);\" onmouseout=\"return nd();\"><img src=\"" . $mosConfig_live_site . "/images/M_images/con_info.png\" width=\"16\" height=\"16\" border=\"0\" /></a>";
-        return $tip;
-    }
-}
-function mm_ToolTip($tooltip, $title='Tip!', $icon = "{mosConfig_live_site}/images/M_images/con_info.png" ) {
-    global $mosConfig_live_site;
-    if( !defined( "_OVERLIB_LOADED" )) {
-        mosCommonHTML::loadOverlib();
-        define ( "_OVERLIB_LOADED", "1" );
-    }
-    $varname = "html_".uniqid("l");
-    $tip = "<script type=\"text/javascript\">//<![CDATA[
-    var $varname = '$tooltip';
-    //]]></script>\n";
-    $tip .= "<a href=\"#\" onmouseover=\"return overlib($varname, CAPTION, '$title' );\" onmouseout=\"return nd();\">";
-    if( stristr( $icon, "{mosConfig_live_site}" ))
-        $tip .= "<img alt=\"ToolTip\" src=\"".str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $icon)."\" border=\"0\" width=\"16\" height=\"16\" />";
-    else {
-        // assume it's Text
-        $tip .= $icon;
-    }
-    $tip .= "</a>";
-    return $tip;
-}
-    
-/**
-* Tab Creation handler
-* @package Mambo_4.5.1
-* @author Phil Taylor
-* @modifier Soeren Eberhardt
-* Modified to use Panel-in-Panel functionality
-*/
-class mShopTabs {
-	/** @var int Use cookies */
-	var $useCookies = 0;
-    
-    /** @var string Panel ID */
-    var $panel_id;
-    
-	/**
-	* Constructor
-	* Includes files needed for displaying tabs and sets cookie options
-	* @param int useCookies, if set to 1 cookie will hold last used tab between page refreshes
-	* @param int show_js, if set to 1 the Javascript Link and Stylesheet will not be printed
-	*/
-	function mShopTabs($useCookies, $show_js, $panel_id) {
-		global $mosConfig_live_site;
-        if( $show_js == 1 ) {
-            echo "<link id=\"tab-style-sheet\" type=\"text/css\" rel=\"stylesheet\" href=\"" . $mosConfig_live_site. "/components/com_phpshop/js/tabs/mm_tabpane.css\" />";
-            echo "<script type=\"text/javascript\" src=\"". $mosConfig_live_site. "/components/com_phpshop/js/tabs/mm_tabpane.js\"></script>";
-        }
-        $this->useCookies = $useCookies;
-        $this->panel_id = $panel_id;
-	}
 
-	/**
-	* creates a tab pane and creates JS obj
-	* @param string The Tab Pane Name
-	*/
-	function startPane($id){
-		echo "<div class=\"tab-page\" id=\"".$id."\">";
-		echo "<script type=\"text/javascript\">\n";
-		echo "   var tabPane1".$this->panel_id." = new WebFXTabPane( document.getElementById( \"".$id."\" ), ".$this->useCookies." )\n";
-		echo "</script>\n";
-	}
-
-	/**
-	* Ends Tab Pane
-	*/
-	function endPane() {
-		echo "</div>";
-	}
-
-	/*
-	* Creates a tab with title text and starts that tabs page
-	* @param tabText - This is what is displayed on the tab
-	* @param paneid - This is the parent pane to build this tab on
-	*/
-	function startTab( $tabText, $paneid ) {
-		echo "<div class=\"tab-page\" id=\"".$paneid."\">";
-		echo "<h2 class=\"tab\">".$tabText."</h2>";
-		echo "<script type=\"text/javascript\">\n";
-		echo "  tabPane1".$this->panel_id.".addTabPage( document.getElementById( \"".$paneid."\" ) );";
-		echo "</script>";
-	}
-
-	/*
-	* Ends a tab page
-	*/
-	function endTab() {
-		echo "</div>";
-	}
-}
 
 /**
 * Login validation function
@@ -1027,39 +793,99 @@ function mShop_checkpass() {
   else
 	return false;
 }
-// borrowed from mambo.php
-function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) {
-	
-	$string = htmlentities( $string, $quote_style );
-	return $string;
+function search_header() {
+	echo "### THIS FUNCTION IS DEPRECATED. Use the class listFactory instead. ###";
+}
+function search_footer() {
+	echo "### THIS FUNCTION IS DEPRECATED. Use the class listFactory instead. ###";
 }
 
-function mm_showMyFileName( $filename ) {
+if( !function_exists( "mosCreateMail" ) ) {
+  /**
+  * Function to create a mail object for futher use (uses phpMailer)
+  * @param string From e-mail address
+  * @param string From name
+  * @param string E-mail subject
+  * @param string Message body
+  * @return object Mail object
+  */
+  function mosCreateMail($from='', $fromname='', $subject, $body) {
+	  global $mosConfig_absolute_path, $vendor_name, $vendor_mail;
+	  
+	  $mosConfig_mailer = CFG_MAILER;
+	  $mosConfig_smtphost = CFG_SMTPHOST;
+	  $mosConfig_smtpauth = CFG_SMTPAUTH;
+	  $mosConfig_smtpuser = CFG_SMTPUSER;
+	  $mosConfig_smtppass = CFG_SMTPPASS;
+
+	  require_once( CLASSPATH . 'phpmailer/class.phpmailer.php');
     
-    if (DEBUG == '1' ) {
-        if( !defined( "_OVERLIB_LOADED" )) {
-		mosCommonHTML::loadOverlib();
-            define ( "_OVERLIB_LOADED", "1" );
-        }
-        echo mm_ToolTip(addslashes("<div class='inputbox'>Begin of File: $filename</div>"));
-    }
+      $mail = new mShop_PHPMailer();
+      $mail->PluginDir = CLASSPATH . "phpmailer/";
+      $mail->SetLanguage("en", CLASSPATH . "phpmailer/language/");
+	  $mail->CharSet = substr_replace(_ISO, '', 0, 8);
+	  $mail->IsMail();
+	  $mail->From = $from ? $from : $vendor_mail;
+	  $mail->FromName = $fromname ? $fromname : $vendor_name;
+	  $mail->Mailer = $mosConfig_mailer;
+  
+	  // Add smtp values if needed
+	  if ( $mosConfig_mailer == 'smtp' ) {
+		  $mail->SMTPAuth = $mosConfig_smtpauth;
+		  $mail->Username = $mosConfig_smtpuser;
+		  $mail->Password = $mosConfig_smtppass;
+		  $mail->Host = $mosConfig_smtphost;
+	  }
+	  $mail->Subject = $subject;
+	  $mail->Body = $body;
+  
+	  return $mail;
+  }
+  
+  /**
+  * Mail function (uses phpMailer)
+  * @param string From e-mail address
+  * @param string From name
+  * @param string/array Recipient e-mail address(es)
+  * @param string E-mail subject
+  * @param string Message body
+  */
+  function mosMail($from, $fromname, $recipient, $subject, $body) {
+	  global $mosConfig_debug;
+	  $mail = mosCreateMail($from, $fromname, $subject, $body);
+  
+	  if( is_array($recipient) ) {
+		  foreach ($recipient as $to) {
+			  $mail->AddAddress($to);
+		  }
+	  } else {
+		  $mail->AddAddress($recipient);
+	  }
+	  $mailssend = $mail->Send();
+  
+	  if( $mosConfig_debug ) {
+		  //$mosDebug->message( "Mails send: $mailssend");
+	  }
+	  if( $mail->error_count > 0 ) {
+		  //$mosDebug->message( "The mail message $fromname <$from> about $subject to $recipient <b>failed</b><br /><pre>$body</pre>", false );
+		  //$mosDebug->message( "Mailer Error: " . $mail->ErrorInfo . "" );
+	  }
+	  return $mailssend;
+  }
 }
-/**
-* Wraps HTML Code or simple Text into Javascript
-* and uses the noscript Tag to support browsers with JavaScript disabled
-**/
-function mm_writeWithJS( $textToWrap, $noscriptText ) {
-    $text = "";
-    if( !empty( $textToWrap )) {
-        $text = "<script type=\"text/javascript\">//<![CDATA[
-            document.write('".str_replace("\\\"", "\"", addslashes( $textToWrap ))."');
-            //]]></script>\n";
-    }
-    if( !empty( $noscriptText )) {
-        $text .= "<noscript>
-            $noscriptText
-            </noscript>\n";
-    }
-    return $text;
+
+if( !class_exists( "mosCommonHTML" )) {
+	class mosCommonHTML {
+	  /*
+	  * Loads all necessary files for JS Overlib tooltips
+	  */
+	  function loadOverlib() {
+		  global  $mosConfig_live_site;
+		  ?>
+		  <script language="Javascript" type="text/javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
+		  <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
+		  <?php
+	  }
+	}
 }
-?>
+?> 

@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: product.product_category_form.php,v 1.8 2005/09/04 20:08:55 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -17,34 +13,34 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.mambo-phpshop.net
 */
 mm_showMyFileName( __FILE__ );
+global $ps_product_category, $ps_product;
 
 $category_id = mosgetparam($_REQUEST, 'category_id', 0);
-global $ps_product_category, $ps_product;
-?>
 
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_CATEGORY_FORM_LBL ?></h2>
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_CATEGORY_FORM_LBL );
+//Then Start the form
+$formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" name="adminForm">
-<?php 
-  if ($category_id) {
+if ($category_id) {
     $q = "SELECT * FROM #__pshop_category,#__pshop_category_xref ";
     $q .= "WHERE #__pshop_category.category_id='$category_id' ";
     $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id";
     $db->query($q);
     $db->next_record();
-  } 
-  elseif (empty($vars["error"])) {
+} 
+elseif (empty($vars["error"])) {
     $default["category_publish"] = "Y";
     $default["category_flypage"] = "shop.flypage";
     $default["category_browsepage"] = CATEGORY_TEMPLATE;
-    $default["products_per_row"] = PRODUCTS_PER_ROW;
-  }
+    $default["products_per_row"] = PRODUCTS_PER_ROW; 
+}
   
-  $tabs = new mShopTabs(0, 1, "_main");
-  $tabs->startPane("category-pane");
-  $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" width=\"16\" height=\"16\" border=\"0\" />&nbsp;".$PHPSHOP_LANG->_PHPSHOP_CATEGORY_FORM_LBL, "info-page");
+$tabs = new mShopTabs(0, 1, "_main");
+$tabs->startPane("category-pane");
+$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" width=\"16\" height=\"16\" border=\"0\" />&nbsp;".$PHPSHOP_LANG->_PHPSHOP_CATEGORY_FORM_LBL, "info-page");
 ?> 
-  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="adminform">
+<table class="adminform">
     <tr> 
       <td width="21%" nowrap><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CATEGORY_FORM_PUBLISH ?>:</div></td>
       <td width="79%"><?php 
@@ -61,11 +57,6 @@ global $ps_product_category, $ps_product;
       <td width="21%" nowrap><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CATEGORY_FORM_NAME ?>:</div></td>
       <td width="79%"> 
         <input type="text" class="inputbox" name="category_name" size="60" value="<?php echo shopMakeHtmlSafe( $db->sf('category_name')) ?>" />
-        <input type="hidden" name="category_id" value="<?php echo $category_id ?>" />
-        <input type="hidden" name="task" value="" />
-        <input type="hidden" name="page" value="<?php echo $modulename ?>.product_category_list" />
-        <input type="hidden" name="func" value="<?php if (!empty($category_id)) { echo "productCategoryUpdate";} else { echo "productCategoryAdd";} ?>" />
-        <input type="hidden" name="option" value="com_phpshop" />
       </td>
     </tr>
     <tr> 
@@ -120,7 +111,7 @@ global $ps_product_category, $ps_product;
       <input type="text" class="inputbox" name="category_flypage" value="<?php $db->sp("category_flypage"); ?>" />
       </td>
     </tr>
-  </table>
+</table>
 <?php
 $tabs->endTab();
 $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/image.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;"._E_IMAGES, "status-page");
@@ -232,8 +223,16 @@ if( !stristr( $db->f("category_full_image"), "http") )
 <?php
 $tabs->endTab();
 $tabs->endPane();
+
+// Add necessary hidden fields
+$formObj->hiddenField( 'category_id', $category_id );
+
+$funcname = !empty($category_id) ? echo "productCategoryUpdate" : "productCategoryAdd";
+
+//finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.product_category_list', $option );
+
 ?>
-</form>
 <script language="javascript">
 <!--
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {

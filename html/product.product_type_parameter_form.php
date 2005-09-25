@@ -18,31 +18,27 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
 $parameter_name = mosgetparam($_REQUEST, 'parameter_name', "");
 $parameter_type = "";
-$task = mosgetparam($_REQUEST, 'task', "");
 
-  $db = new ps_DB;
-  
-  $q = "SELECT * from #__pshop_product_type ";
-  $q .= "WHERE product_type_id='$product_type_id'";
-  $db->query($q);
-  $db->next_record();
-  
-?>
+$q = "SELECT * from #__pshop_product_type WHERE product_type_id='$product_type_id'";
+$db->query($q);
+$db->next_record();
 
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL."<br>";
-echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_LBL . ": ";
-echo $db->f("product_type_name"); ?>
-</h2>
+$title = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL."<br>";
+$title .= $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_LBL . ": ". $db->f("product_type_name"); 
 
-<?php 
-  if (!$product_type_id || !$db->f("product_type_name")) {
-      echo "<span class=\"sectionname\">";
-      echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND;
-      echo " <a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.product_type_list\"> [";
-      echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL." ]</a>";
-      echo "</span>";
-  }
-  else {
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm();
+
+if (!$product_type_id || !$db->f("product_type_name")) {
+	echo "<span class=\"sectionname\">";
+	echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND;
+	echo " <a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.product_type_list\"> [";
+	echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL." ]</a>";
+	echo "</span>";
+}
+else {
     $edit_parametr = false;  // Parametr not exist and it is created
     if ($parameter_name) {
       $q  = "SELECT * FROM #__pshop_product_type_parameter ";
@@ -52,35 +48,18 @@ echo $db->f("product_type_name"); ?>
       if( $db->next_record() ) {
 	  	$parameter_type = $db->f("parameter_type");
 		$edit_parametr = true;  // Parametr exist and it is edited
-	  }
-    }
-    elseif (empty($vars["error"])) {
-/*      $default["product_type_publish"] = "Y";
-      $default["category_flypage"] = "shop.flypage";
-      $default["category_browsepage"] = CATEGORY_TEMPLATE;
-      $default["products_per_row"] = PRODUCTS_PER_ROW;*/
-    }
-    
+	}
+}
+mosCommonHTML::loadCalendar();
 ?> 
-<!-- import the language module -->
-<script type="text/javascript" src="http://inzep.x-team.cz/includes/js/calendar/lang/calendar-en.js"></script>
-<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-<script language="Javascript" src="http://inzep.x-team.cz/includes/js/overlib_mini.js"></script>
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2" >
+  <table class="adminform">
     <tr> 
       <td width="25%" nowrap><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME ?>
         <?php echo mm_ToolTip($PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION) ?> :</div>
       </td>
       <td width="75%">
         <input type="text" class="inputbox" name="parameter_name" size="60" value="<?php $db->sp('parameter_name') ?>" />
-	<input type="hidden" name="parameter_old_name" value="<?php echo $parameter_name ?>" />
-        <input type="hidden" name="product_type_id" value="<?php echo $product_type_id ?>" />
-        <input type="hidden" name="task" value="<?php echo $task ?>" />
-        <input type="hidden" name="page" value="<?php echo $modulename ?>.product_type_parameter_list" />
-        <input type="hidden" name="func" value="<?php if ($edit_parametr) { echo "ProductTypeUpdateParam";} else {echo "ProductTypeAddParam";} ?>" />
-        <input type="hidden" name="option" value="com_phpshop" />
       </td>
     </tr>
     <tr>
@@ -93,7 +72,6 @@ echo $db->f("product_type_name"); ?>
       <td width="25%" nowrap valign="top"><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION ?>:</div></td>
       <td width="75%" valign="top">
 		<?php
-//		<textarea class="inputbox" name="parameter_description" cols="60" rows="6" ><?php $db->sp("parameter_description") OTAZNIK></textarea>
 		editorArea( 'editor1', $db->f("parameter_description"), 'parameter_description', '450', '200', '60', '6' );
 		?>
       </td>
@@ -191,7 +169,17 @@ echo $db->f("product_type_name"); ?>
       </td>
     </tr>
   </table>
-</form>
-<?php }
+
+<?php 
+
+// Add necessary hidden fields
+$formObj->hiddenField( 'parameter_old_name', $parameter_name );
+$formObj->hiddenField( 'product_type_id', $product_type_id );
+
+$funcname = ($edit_parametr) ? "ProductTypeUpdateParam" : "ProductTypeAddParam";
+
+// finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.product_type_parameter_list', $option );
+}
 /** Changed Product Type - End*/
 ?>  

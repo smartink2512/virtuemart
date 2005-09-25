@@ -182,25 +182,39 @@ class ps_zone {
     return True;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: mike
-   * description: Should delete a category and and categories under it.
-   * parameters: 
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    $ps_vendor_id = $_SESSION["ps_vendor_id"];
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-    $q = "DELETE FROM #__pshop_zone_shipping WHERE zone_id='" . $d["zone_id"] . "'";
-    $db->query($q);
-    $db->next_record();
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		if (!$this->validate_delete($d)) {
+		  return False;
+		}
+		$record_id = $d["zone_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		
+		$q = "DELETE FROM #__pshop_zone_shipping WHERE zone_id='$record_id'";
+		$db->query($q);
+		$db->next_record();
+		return True;
+	}
   /**************************************************************************
    * name: assign()
    * created by: mike
@@ -215,17 +229,21 @@ class ps_zone {
     if (!$this->validate_assign($d)) {
       return False;	
     }
-    $q = "UPDATE #__pshop_country SET ";
-    $q .= "zone_id='" . $d["zone_id"];
-    $q .= "' WHERE country_id='" . $d["country_id"] . "'";
-    $db->query($q);
-    $db->next_record();
+	if( is_array( $d["country_id"] )) {
+		$i = 0;
+		foreach( $d["country_id"] as $country ) {
+			$q = "UPDATE #__pshop_country SET zone_id='".$d["zone_id"][$i]."'";
+			$q .= " WHERE country_id='".$country."'";
+			$db->query($q);
+			$i++;
+		}
+	}
     return True;
   }
   /**************************************************************************
   ** name: list_zones($list_name,$value)
   ** created by: pfmartin/mwattier
-  ** description:  Print an HTML dropdown box for the countries
+  ** description:  Returns an HTML dropdown box for the countries
   ** parameters: $name - name of the HTML dropdown element
   **             $value - Drop down item to make selected
   **             $arr - array used to build the HTML drop down element
@@ -235,19 +253,19 @@ class ps_zone {
      $db = new ps_DB;
 
 
-     $q = "SELECT * from #__pshop_zone_shipping ORDER BY zone_name ASC";
-     $db->query($q);
+	$q = "SELECT * from #__pshop_zone_shipping ORDER BY zone_name ASC";
+	$db->query($q);
 
-       echo "<select class=\"inputbox\" name=$list_name>\n";
-      while ($db->next_record()) {
-       echo "<option value=\"" . $db->f("zone_id");
+	$html = "<select class=\"inputbox\" name=\"$list_name\">\n";
+	while ($db->next_record()) {
+       $html .= "<option value=\"" . $db->f("zone_id");
        if ($value == $db->f("zone_id")) {
-	 echo "\" selected=\"selected\"";
+			$html.= "\" selected=\"selected\"";
        }
-       echo "\">" . $db->f("zone_name") . "</option>\n";
+       $html .= "\">" . $db->f("zone_name") . "</option>\n";
      }
-     echo "</select>\n";
-     return True;
+     $html .= "</select>\n";
+     return $html;
    }
  /**************************************************************************
   ** name: per_item($zone_id)

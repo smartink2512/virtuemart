@@ -14,6 +14,7 @@
          <filename>phpshop_dtree.php</filename>
          <filename>phpshop_JSCook.php</filename>
          <filename>phpshop_JSCookTree.php</filename>
+         <filename>vm_transmenu.php</filename>
         <filename>dtree/dtree.css</filename> 
         <filename>dtree/dtree.js</filename> 
         <filename>dtree/img/base.gif</filename> 
@@ -36,6 +37,18 @@
         <filename>dtree/img/plusbottom.gif</filename> 
         <filename>dtree/img/question.gif</filename> 
         <filename>dtree/img/trash.gif</filename> 
+        <filename>vm_transmenu/Shop_Menu.php</filename> 
+        <filename>vm_transmenu/transmenuh.css</filename> 
+        <filename>vm_transmenu/transmenu.js</filename> 
+        <filename>vm_transmenu/transmenu.php</filename> 
+        <filename>vm_transmenu/transmenuv.css</filename> 
+        <filename>vm_transmenu/img/arrow.gif</filename> 
+        <filename>vm_transmenu/img/arrow.png</filename> 
+        <filename>vm_transmenu/img/grey-40.png</filename> 
+        <filename>vm_transmenu/img/tabarrow.gif</filename> 
+        <filename>vm_transmenu/img/tabarrow.png</filename> 
+        <filename>vm_transmenu/img/white-90.png</filename> 
+        <filename>vm_transmenu/img/x.gif</filename> 
     </files>
     <params>
       <param name="class_sfx" type="text" default="" label="Menu Class Suffix" description="A suffix to be applied to the css class of the menu items" />

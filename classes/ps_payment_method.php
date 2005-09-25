@@ -265,21 +265,40 @@ class ps_payment_method {
   ** parameters:
   ** returns:
   ***************************************************************************/
-  function delete(&$d) {
-    $ps_vendor_id = $_SESSION["ps_vendor_id"];
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-
-    $q = "DELETE from #__pshop_payment_method WHERE payment_method_id='";
-    $q .= $d["payment_method_id"] . "' AND ";
-    $q .= "vendor_id='$ps_vendor_id'";
-
-    $db->query($q);
-    
-    return True;
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		if (!$this->validate_delete($d)) {
+		  return False;
+		}
+		$record_id = $d["payment_method_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+	
+		global $db;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		
+		$q = "DELETE from #__pshop_payment_method WHERE payment_method_id='$record_id' AND ";
+		$q .= "vendor_id='$ps_vendor_id'";
+		$db->query($q);
+		
+		return True;
   }
 
 

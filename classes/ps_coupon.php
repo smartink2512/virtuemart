@@ -127,10 +127,16 @@ class ps_coupon {
         /* remove the coupon coupon_code */
         /* init the database */
         $coupon_db = new ps_DB;
-        
-        $q = "DELETE FROM #__pshop_coupons WHERE coupon_id = '".$d['coupon_id']."' ";
-        $coupon_db->query($q);
-        
+		if( is_array($d['coupon_id'] )) {
+			foreach( $d['coupon_id'] as $coupon ) {
+				$q = "DELETE FROM #__pshop_coupons WHERE coupon_id = '$coupon' ";
+				$coupon_db->query($q);			
+			}
+		}
+		else {
+			$q = "DELETE FROM #__pshop_coupons WHERE coupon_id = '".$d['coupon_id']."' ";
+			$coupon_db->query($q);
+		}
         $_SESSION['coupon_discount'] =    0;
         $_SESSION['coupon_redeemed']   = false;
         

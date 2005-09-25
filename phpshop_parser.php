@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: phpshop_parser.php,v 1.24 2005/09/01 19:58:06 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage Core
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -20,19 +16,24 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /** 
 * This file has nearly the same functionality as the old phpShop Parser - index.php -
 */
+$option = mosGetParam( $_REQUEST, 'option' );
+
 if( !defined( 'CLASSPATH' )) {
 
-    global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vendor_image,$vendor_image_url,
+    global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vendor_image,$vendor_image_url, $keyword,
             $ps_payment_method,$ps_zone,$sess, $page, $func, $pagename, $modulename, $vars, $PHPSHOP_LANG, $cmd, $ok, $mosConfig_lang,
             $auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list, 
-            $vendor_currency_display_style, $vendor_freeshipping, $mm_action_url;
-    
-    // load mosAbstractLanguage
-    require_once($mosConfig_absolute_path. '/administrator/components/com_phpshop/mos_4.6_code.php');
-    
+            $vendor_currency_display_style, $vendor_freeshipping, $mm_action_url, $limit, $limitstart;
+	
+	if( !file_exists( $mosConfig_absolute_path. "/administrator/components/com_phpshop/phpshop.cfg.php" ))
+		die( "<h3>The configuration file for mambo-phpShop is missing!</h3>It should be here: <strong>"
+				. $mosConfig_absolute_path. "/administrator/components/com_phpshop/phpshop.cfg.php</strong>" );
     // the configuration file for the Shop
-    require_once( $mosConfig_absolute_path. "/administrator/components/com_phpshop/phpshop.cfg.php");
+    require_once( $mosConfig_absolute_path. "/administrator/components/com_phpshop/phpshop.cfg.php" );
     
+	// The abstract language class
+	require_once( CLASSPATH."language.class.php" );
+	
     // load the Language File
     if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' ))
         require_once( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' );
@@ -60,10 +61,11 @@ if( !defined( 'CLASSPATH' )) {
     require_once(CLASSPATH."ps_function.php");
     require_once(CLASSPATH."ps_module.php");
     require_once(CLASSPATH."ps_perm.php");
-    require_once(CLASSPATH."ps_user.php");
-    require_once(CLASSPATH."ps_user_address.php");
+    //require_once(CLASSPATH."ps_user.php");
+    //require_once(CLASSPATH."ps_user_address.php");
     require_once(CLASSPATH."ps_shopper_group.php");
     require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
+    require_once(CLASSPATH."htmlTools.class.php");
     
     // Instantiate the DB class
     $db = new ps_DB;
@@ -128,31 +130,26 @@ if( !defined( 'CLASSPATH' )) {
     /** @superglobal CurrencyDisplay $CURRENCY_DISPLAY */
     $GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($curreny_display["id"], $curreny_display["symbol"], $curreny_display["nbdecimal"], $curreny_display["sdecimal"], $curreny_display["thousands"], $curreny_display["positive"], $curreny_display["negative"]);
     
-    // some input validation for limitstart
-    if (!empty($_REQUEST['limitstart'])) {
-      if (is_string($_REQUEST['limitstart']) and $_REQUEST['limitstart'] == (string)(int) $_REQUEST['limitstart']) {
-          $_SESSION['limitstart'] = $_REQUEST['limitstart'];
-       }
-       else die('Please provide a valid value for limitstart');
-    }
-    else
-      $_SESSION['limitstart'] = 0;
-      
-    $mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
-    
-    $_SESSION['session_userstate']['limitstart'] = $limit = mosgetparam($_REQUEST, 'limit', $mosConfig_list_limit);
-    $_SESSION['session_userstate']['limitstart'] = $limitstart = mosgetparam($_REQUEST, 'limitstart', 0);
-    $_SESSION['session_userstate']['keyword'] = $keyword = urldecode(mosgetparam($_REQUEST, 'keyword', ''));
-    $_SESSION['session_userstate']['category_id'] = $category_id = mosgetparam($_REQUEST, 'category_id', 0);
-    $_SESSION['session_userstate']['product_id'] = $product_id = mosgetparam($_REQUEST, 'product_id', 0);
-    
-    $user_id = mosgetparam($_REQUEST, 'user_id', 0);
-    $user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
-    $page = mosgetparam($_REQUEST, 'page', "");
-    $func = mosgetparam($_REQUEST, 'func', "");
-    
-    // basic SQL inject detection
-    $my_insecure_array = array('keyword' => $keyword,
+	if( $option == "com_phpshop" ) {
+		// some input validation for limitstart
+		if (!empty($_REQUEST['limitstart'])) {
+		  if (!is_string($_REQUEST['limitstart']) and $_REQUEST['limitstart'] != (string)(int) $_REQUEST['limitstart'])
+			die('Please provide a valid value for limitstart');
+		}
+		
+		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
+		
+		$_SESSION['session_userstate']['keyword'] = $keyword = urldecode(mosgetparam($_REQUEST, 'keyword', ''));
+		$_SESSION['session_userstate']['category_id'] = $category_id = mosgetparam($_REQUEST, 'category_id', 0);
+		$_SESSION['session_userstate']['product_id'] = $product_id = mosgetparam($_REQUEST, 'product_id', 0);
+		
+		$user_id = mosgetparam($_REQUEST, 'user_id', 0);
+		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
+		$page = mosgetparam($_REQUEST, 'page', "");
+		$func = mosgetparam($_REQUEST, 'func', "");
+		
+		// basic SQL inject detection
+		$my_insecure_array = array('keyword' => $keyword,
                     'category_id' => $category_id,
                     'product_id' => $product_id,
                     'user_id' => $user_id,
@@ -160,25 +157,25 @@ if( !defined( 'CLASSPATH' )) {
                     'page' => $page,
                     'func' => $func);
                     
-    while(list($key,$value)=each($my_insecure_array)) {
-        if (stristr($value,'FROM ') ||
-            stristr($value,'UPDATE ') ||
-            stristr($value,'WHERE ') ||
-            stristr($value,'ALTER ')  ||
-            stristr($value,'SELECT ')  ||
-            stristr($value,'SHUTDOWN ') ||
-            stristr($value,'CREATE ') ||
-            stristr($value,'DROP ') ||
-            stristr($value,'DELETE FROM') ||
-            stristr($value,'script') ||
-            stristr($value,'<>') ||
-            //stristr($value,'=') ||
-            stristr($value,'SET ')) 
-                die('Please provide a permitted value for '.$key);
+		while(list($key,$value)=each($my_insecure_array)) {
+			if( !is_array( $value ))
+				if (stristr($value,'FROM ') ||
+					stristr($value,'UPDATE ') ||
+					stristr($value,'WHERE ') ||
+					stristr($value,'ALTER ')  ||
+					stristr($value,'SELECT ')  ||
+					stristr($value,'SHUTDOWN ') ||
+					stristr($value,'CREATE ') ||
+					stristr($value,'DROP ') ||
+					stristr($value,'DELETE FROM') ||
+					stristr($value,'script') ||
+					stristr($value,'<>') ||
+					//stristr($value,'=') ||
+					stristr($value,'SET ')) 
+						die('Please provide a permitted value for '.$key);
+		}
+		$vars = $_REQUEST;
     }
-    
-    $vars = $_REQUEST;
-    
     // Register the cart
     if (empty($_SESSION["cart"])) {
         $cart = array();
@@ -204,82 +201,81 @@ if( !defined( 'CLASSPATH' )) {
 	// User authentication
     $auth = $perm->doAuthentication();
     
-    // Check if we have to run a Shop Function 
-	// and if the user is allowed to execute it
-	$funcParams = $ps_function->checkFuncPermissions( $func );
-
-    /**********************************************
-	** Get Page/Directory Permissions
-	** Displays error if directory is not registered, 
-	** user has no permission to view it , or file doesn't exist
-	************************************************/
-    if (empty($page)) {// default page
-      if (defined('_PSHOP_ADMIN'))
-        $page = "store.index";
-      else
-        $page = HOMEPAGE;
-    
-    }
-    // Let's check if the user is allowed to view the page
-	// if not, $page is set to ERROR_PAGE
-	$pagePermissionsOK = $ps_module->checkModulePermissions( $page );
+	if( $option == "com_phpshop" ) {
+		// Check if we have to run a Shop Function 
+		// and if the user is allowed to execute it
+		$funcParams = $ps_function->checkFuncPermissions( $func );
 	
-    $ok = false;
-	
-    if ( $funcParams ) {
-		// Get the function parameters: function name and class name
-        $q = "SELECT #__pshop_module.module_name,#__pshop_function.function_class"; 
-        $q .= " FROM #__pshop_module,#__pshop_function WHERE ";
-        $q .= "#__pshop_module.module_id=#__pshop_function.module_id AND ";
-        $q .= "#__pshop_function.function_method='".$funcParams["method"]."' AND ";
-        $q .= "#__pshop_function.function_class='".$funcParams["class"]."'";
-        $db->setQuery($q);
-        $db->query();
-        $db->next_record();
-        
-		if( file_exists( CLASSPATH.$db->f("function_class").".php" ) ) {
-			// Load class definition file
-			require_once( CLASSPATH.$db->f("function_class").".php" );
+		/**********************************************
+		** Get Page/Directory Permissions
+		** Displays error if directory is not registered, 
+		** user has no permission to view it , or file doesn't exist
+		************************************************/
+		if (empty($page)) {// default page
+		  if (defined('_PSHOP_ADMIN'))
+			$page = "store.index";
+		  else
+			$page = HOMEPAGE;
+		
+		}
+		// Let's check if the user is allowed to view the page
+		// if not, $page is set to ERROR_PAGE
+		$pagePermissionsOK = $ps_module->checkModulePermissions( $page );
+		
+		$ok = false;
+		
+		if ( $funcParams ) {
+			// Get the function parameters: function name and class name
+			$q = "SELECT #__pshop_module.module_name,#__pshop_function.function_class"; 
+			$q .= " FROM #__pshop_module,#__pshop_function WHERE ";
+			$q .= "#__pshop_module.module_id=#__pshop_function.module_id AND ";
+			$q .= "#__pshop_function.function_method='".$funcParams["method"]."' AND ";
+			$q .= "#__pshop_function.function_class='".$funcParams["class"]."'";
+			$db->setQuery($q);
+			$db->query();
+			$db->next_record();
 			
-			// create an object
-			$string = "\$" . $funcParams["class"] . " = new " . $funcParams["class"] . ";";
-			eval( $string );
-		  
-			// RUN THE FUNCTION
-			// $ok  = $class->function( $vars );
-			$cmd = "\$ok = \$" . $funcParams["class"] . "->" . $funcParams["method"] . "(\$vars);";
-			eval( $cmd );
-		 
-			if ($ok == false) {
-				$no_last = 1;
-				if( $_SESSION['last_page'] != HOMEPAGE )
-					$page = $_SESSION['last_page'];
-				$my_page= explode ( '.', $page );
-				$modulename = $my_page[0];
-				$pagename = $my_page[1];
-				$_REQUEST['keyword']= $_SESSION['session_userstate']['keyword'];
-				$_REQUEST['category_id']= $_SESSION['session_userstate']['category_id'];
-				$_REQUEST['product_id']=$product_id = $_SESSION['session_userstate']['product_id'];
-				$_REQUEST['limitstart']=$limitstart = $_SESSION['session_userstate']['limitstart'];
-				$_REQUEST['limit']= $limit = @$_SESSION['session_userstate']['limit'];
+			if( file_exists( CLASSPATH.$db->f("function_class").".php" ) ) {
+				// Load class definition file
+				require_once( CLASSPATH.$db->f("function_class").".php" );
+				
+				// create an object
+				$string = "\$" . $funcParams["class"] . " = new " . $funcParams["class"] . ";";
+				eval( $string );
+			  
+				// RUN THE FUNCTION
+				// $ok  = $class->function( $vars );
+				$cmd = "\$ok = \$" . $funcParams["class"] . "->" . $funcParams["method"] . "(\$vars);";
+				eval( $cmd );
+			 
+				if ($ok == false) {
+					$no_last = 1;
+					if( $_SESSION['last_page'] != HOMEPAGE )
+						$page = $_SESSION['last_page'];
+					$my_page= explode ( '.', $page );
+					$modulename = $my_page[0];
+					$pagename = $my_page[1];
+					$_REQUEST['keyword']= $_SESSION['session_userstate']['keyword'];
+					$_REQUEST['category_id']= $_SESSION['session_userstate']['category_id'];
+					$_REQUEST['product_id']=$product_id = $_SESSION['session_userstate']['product_id'];
+				}
 			}
-        }
-		elseif( DEBUG )
-			echo "<div class=\"shop_error\">Fatal Error: Could include the class file ".$db->f("function_class")."</div>";
+			elseif( DEBUG )
+				echo "<div class=\"shop_error\">Fatal Error: Could include the class file ".$db->f("function_class")."</div>";
+				
+			if (!empty($vars["error"]))
+				$error = $vars["error"];
 			
-        if (!empty($vars["error"]))
-            $error = $vars["error"];
-        
-        if (!empty($error))
-            echo "<script type=\"text/javascript\">alert('".mysql_escape_string($error)."');</script>";
+			if (!empty($error))
+				echo "<script type=\"text/javascript\">alert('".mysql_escape_string($error)."');</script>";
+		}
+		else {
+			$no_last = 0;
+			//$error="";
+		}
+		  
+		if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE'))
+		  $_SESSION['last_page'] = $page;
     }
-    else {
-        $no_last = 0;
-        //$error="";
-	}
-      
-    if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE'))
-      $_SESSION['last_page'] = $page;
-    
 }
 ?>

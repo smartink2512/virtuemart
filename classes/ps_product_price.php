@@ -140,25 +140,36 @@ class ps_product_price {
     return true;
   }
 
-  /**************************************************************************
-  ** name: delete()
-  ** created by:
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/  
-  function delete(&$d) {
-    $db = new ps_DB;
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["product_price_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
 
-    $q  = "DELETE FROM #__pshop_product_price ";
-    $q .= "WHERE product_price_id = '" . $d["product_price_id"] . "' ";
-
-    $db->query($q);
-
-    return True;
+		$q  = "DELETE FROM #__pshop_product_price ";
+		$q .= "WHERE product_price_id = '$record_id' ";
+		$db->query($q);
+	
+		return True;
   }
-
-  
+ 
 
 }
 ?>

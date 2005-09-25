@@ -1,1764 +1,1365 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: polish.php,v 1.16 2005/06/22 19:50:45 soeren_nb Exp $
+* @version $Id: $
 * @package mambo-phpShop
 * @subpackage languages
 *
-* @copyright (C) 2004 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-*
-* Polish Translation: Peter £ukañko <koolavy@tlen.pl>
 *
 * mambo-phpShop is Free Software.
 * mambo-phpShop comes with absolute no warranty.
 *
 * www.mambo-phpshop.net
 */
-class phpShopLanguage extends mosAbstractLanguage {
-
-    /*####################
-    GENERAL DEFINITIONS
-    ####################*/
-    
-    var $_PHPSHOP_MENU = "Menu";
-    var $_PHPSHOP_CATEGORY = "Kategoria";
-    var $_PHPSHOP_CATEGORIES = "Kategorie";
-    var $_PHPSHOP_SELECT_CATEGORY = "Wybierz kategoriê:";
-    var $_PHPSHOP_ADMIN = "Administracja";
-    var $_PHPSHOP_PRODUCT = "Produkt";
-    var $_PHPSHOP_LIST = "Listuj";
-    var $_PHPSHOP_ALL = "Wszystkie";
-    var $_PHPSHOP_LIST_ALL_PRODUCTS = "Lista produktów";
-    var $_PHPSHOP_VIEW = "widok";
-    var $_PHPSHOP_SHOW = "poka¿";
-    var $_PHPSHOP_ADD = "dodaj";
-    var $_PHPSHOP_UPDATE = "aktualizuj";
-    var $_PHPSHOP_DELETE = "usuñ";
-    var $_PHPSHOP_SELECT = "wybierz";
-    var $_PHPSHOP_SUBMIT = "Submit";
-    var $_PHPSHOP_RANDOM = "Losowo wybrane produkty";
-    var $_PHPSHOP_LATEST = "Ostatnio dodane produkty";
-    
-    /*#####################
-    MODULE ACCOUNT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_HOME_TITLE = "Strona g³ówna";
-    var $_PHPSHOP_CART_TITLE = "Koszyk";
-    var $_PHPSHOP_CHECKOUT_TITLE = "Zamówienie";
-    var $_PHPSHOP_LOGIN_TITLE = "Zaloguj siê";
-    var $_PHPSHOP_LOGOUT_TITLE = "Wyloguj siê";
-    var $_PHPSHOP_BROWSE_TITLE = "Przegl±daj";
-    var $_PHPSHOP_SEARCH_TITLE = "Szukaj";
-    var $_PHPSHOP_ACCOUNT_TITLE = "Zarz±dzanie kontem";
-    var $_PHPSHOP_NAVIGATION_TITLE = "Nawigacja";
-    var $_PHPSHOP_DEPARTMENT_TITLE = "Oddzia³";
-    var $_PHPSHOP_INFO = "Informacja";
-    
-    var $_PHPSHOP_BROWSE_LBL = "Przegl±daj";
-    var $_PHPSHOP_PRODUCTS_LBL = "Produkty";
-    var $_PHPSHOP_PRODUCT_LBL = "Produkt";
-    var $_PHPSHOP_SEARCH_LBL = "Szukaj";
-    var $_PHPSHOP_FLYPAGE_LBL = "Szczegó³y produktu";
-    var $_PHPSHOP_PRODUCT_SEARCH_LBL = "Wyszukiwanie produktu";
-    
-    var $_PHPSHOP_PRODUCT_NAME_TITLE = "Nazwa produktu";
-    var $_PHPSHOP_PRODUCT_CATEGORY_TITLE = "Kategoria produktu";
-    var $_PHPSHOP_PRODUCT_DESC_TITLE = "Opis";
-    
-    var $_PHPSHOP_CART_SHOW = "Poka¿ koszyk";
-    var $_PHPSHOP_CART_ADD_TO = "Dodaj do koszyka";
-    var $_PHPSHOP_CART_NAME = "Nazwa";
-    var $_PHPSHOP_CART_SKU = "Symbol";
-    var $_PHPSHOP_CART_PRICE = "Cena";
-    var $_PHPSHOP_CART_QUANTITY = "Ilo¶æ";
-    var $_PHPSHOP_CART_SUBTOTAL = "Podsuma";
-    
-    # Some messages
-    var $_PHPSHOP_ADD_SHIPTO_1 = "Dodaj nowy";
-    var $_PHPSHOP_ADD_SHIPTO_2 = "Adres wysy³ki";
-    var $_PHPSHOP_NO_SEARCH_RESULT = "Nie znaleziono elementów spe³niaj±cych podane kryteria wyszukiwania.<br />";
-    var $_PHPSHOP_PRICE_LABEL = "Cena: ";
-    var $_PHPSHOP_ORDER_BUTTON_LABEL = "Dodaj do koszyka";
-    var $_PHPSHOP_NO_CUSTOMER = "Nie jeste¶ jeszcze zarejestrowanym klientem. Prosimy o wprowadzenie swoich danych.";
-    var $_PHPSHOP_DELETE_MSG = "Czy napewno chcesz usun±æ ten zapis?";
-    var $_PHPSHOP_THANKYOU = "Dziêkujemy za zamówienie.";
-    var $_PHPSHOP_NOT_SHIPPED = "Jeszcze nie wys³ano";
-    var $_PHPSHOP_EMAIL_SENDTO = "Potwierdzenie zamówienia zosta³o wys³ane do";
-    var $_PHPSHOP_NO_USER_TO_SELECT = "Przepraszamy, ale nie ma ¿adnego u¿ytkownika MOS, który móg³by zostaæ dodany do listy u¿ytkowników com_phpshop";
-    
-    // Error messages
-    
-    var $_PHPSHOP_ERROR = "B£¡D";
-    var $_PHPSHOP_MOD_NOT_REG = "Modu³ nie zarejestrowany.";
-    var $_PHPSHOP_MOD_ISNO_REG = "nie jest prawid³owym modu³em phpShop.";
-    var $_PHPSHOP_MOD_NO_AUTH = "Nie masz uprawnieñ dostêpu do ¿±danego modu³u.";
-    var $_PHPSHOP_PAGE_404_1 = "Strona nie istnieje";
-    var $_PHPSHOP_PAGE_404_2 = "Plik o danej nazwie nie istnieje. Nie mo¿na znale¼æ pliku:";
-    var $_PHPSHOP_PAGE_403 = "Niewystarczaj±ce prawa dostêpu";
-    var $_PHPSHOP_FUNC_NO_EXEC = "Nie masz uprawnieñ, aby uruchomiæ ";
-    var $_PHPSHOP_FUNC_NOT_REG = "Funkcja nie jest zarejestrowana";
-    var $_PHPSHOP_FUNC_ISNO_REG = " nie jest prawid³owa funkcj± MOS_com_phpshop.";
-    
-    /*#####################
-    MODULE ADMIN
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ADMIN_MOD = "Admin";
-    
-    
-    // User List
-    var $_PHPSHOP_USER_LIST_MNU = "Wylistuj u¿ytkowników";
-    var $_PHPSHOP_USER_LIST_LBL = "Lista u¿ytkowników";
-    var $_PHPSHOP_USER_LIST_USERNAME = "Nazwa u¿ytkownika";
-    var $_PHPSHOP_USER_LIST_FULL_NAME = "Pe³na nazwa";
-    var $_PHPSHOP_USER_LIST_GROUP = "Grupa";
-    
-    // User Form
-    var $_PHPSHOP_USER_FORM_MNU = "Dodaj u¿ytkownika";
-    var $_PHPSHOP_USER_FORM_LBL = "Dodaj/edytuj informacje o u¿ytkowniku";
-    var $_PHPSHOP_USER_FORM_BILLTO_LBL = "Dane klienta";
-    var $_PHPSHOP_USER_FORM_SHIPTO_LBL = "Adresy wysy³ki";
-    var $_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL = "Dodaj adres";
-    var $_PHPSHOP_USER_FORM_ADDRESS_LABEL = "Alias adresu";
-    var $_PHPSHOP_USER_FORM_FIRST_NAME = "Imiê";
-    var $_PHPSHOP_USER_FORM_LAST_NAME = "Nazwisko";
-    var $_PHPSHOP_USER_FORM_MIDDLE_NAME = "Drugie imiê";
-    var $_PHPSHOP_USER_FORM_TITLE = "Tytu³";
-    var $_PHPSHOP_USER_FORM_USERNAME = "Nazwa u¿ytkownika";
-    var $_PHPSHOP_USER_FORM_PASSWORD_1 = "Has³o";
-    var $_PHPSHOP_USER_FORM_PASSWORD_2 = "Potwierd¼ has³o";
-    var $_PHPSHOP_USER_FORM_PERMS = "Uprawnienia";
-    var $_PHPSHOP_USER_FORM_COMPANY_NAME = "Nazwa firmy";
-    var $_PHPSHOP_USER_FORM_ADDRESS_1 = "Adres 1";
-    var $_PHPSHOP_USER_FORM_ADDRESS_2 = "Adres 2";
-    var $_PHPSHOP_USER_FORM_CITY = "Miasto";
-    var $_PHPSHOP_USER_FORM_STATE = "Województwo";
-    var $_PHPSHOP_USER_FORM_ZIP = "Kod pocztowy";
-    var $_PHPSHOP_USER_FORM_COUNTRY = "Kraj";
-    var $_PHPSHOP_USER_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_USER_FORM_FAX = "Faks";
-    var $_PHPSHOP_USER_FORM_EMAIL = "Email";
-    
-    // Module List
-    var $_PHPSHOP_MODULE_LIST_MNU = "Wylistuj modu³y";
-    var $_PHPSHOP_MODULE_LIST_LBL = "Lista modu³ów";
-    var $_PHPSHOP_MODULE_LIST_NAME = "Nazwa modu³u";
-    var $_PHPSHOP_MODULE_LIST_PERMS = "Uprawnienia modu³u";
-    var $_PHPSHOP_MODULE_LIST_FUNCTIONS = "Funkcje";
-    var $_PHPSHOP_MODULE_LIST_ORDER = "Kolejno¶æ na li¶cie";
-    
-    // Module Form
-    var $_PHPSHOP_MODULE_FORM_MNU = "Dodaj modu³";
-    var $_PHPSHOP_MODULE_FORM_LBL = "Informacja o module";
-    var $_PHPSHOP_MODULE_FORM_MODULE_LABEL = "Etykieta modu³u (dla menu górnego)";
-    var $_PHPSHOP_MODULE_FORM_NAME = "Nazwa modu³u";
-    var $_PHPSHOP_MODULE_FORM_PERMS = "Uprawnienia modu³u";
-    var $_PHPSHOP_MODULE_FORM_HEADER = "Nag³ówek modu³u";
-    var $_PHPSHOP_MODULE_FORM_FOOTER = "Stopka modu³u";
-    var $_PHPSHOP_MODULE_FORM_MENU = "Pokazuj modu³ w menu administracyjnym?";
-    var $_PHPSHOP_MODULE_FORM_ORDER = "Porz±dek wy¶wietlania";
-    var $_PHPSHOP_MODULE_FORM_DESCRIPTION = "Opis modu³u";
-    var $_PHPSHOP_MODULE_FORM_LANGUAGE_CODE = "Kod jêzyka";
-    var $_PHPSHOP_MODULE_FORM_LANGUAGE_file = "Plik jêzyka";
-    
-    // Function List
-    var $_PHPSHOP_FUNCTION_LIST_MNU = "Wylistuj funkcje";
-    var $_PHPSHOP_FUNCTION_LIST_LBL = "Lista funkcji";
-    var $_PHPSHOP_FUNCTION_LIST_NAME = "Nazwa funkcji";
-    var $_PHPSHOP_FUNCTION_LIST_CLASS = "Nazwa klasy";
-    var $_PHPSHOP_FUNCTION_LIST_METHOD = "Metoda klasy";
-    var $_PHPSHOP_FUNCTION_LIST_PERMS = "Uprawnienia";
-    
-    // Module Form
-    var $_PHPSHOP_FUNCTION_FORM_MNU = "Dodaj fukcjê";
-    var $_PHPSHOP_FUNCTION_FORM_LBL = "Informacja o funkcji";
-    var $_PHPSHOP_FUNCTION_FORM_NAME = "Nazwa funkcji";
-    var $_PHPSHOP_FUNCTION_FORM_CLASS = "Nazwa klasy";
-    var $_PHPSHOP_FUNCTION_FORM_METHOD = "Metoda klasy";
-    var $_PHPSHOP_FUNCTION_FORM_PERMS = "Uprawnienia funkcji";
-    var $_PHPSHOP_FUNCTION_FORM_DESCRIPTION = "Opis funkcji";
-    
-    // Currency form and list
-    var $_PHPSHOP_CURRENCY_LIST_MNU = "Wylistuj waluty";
-    var $_PHPSHOP_CURRENCY_LIST_LBL = "Lista walut";
-    var $_PHPSHOP_CURRENCY_LIST_ADD = "Dodaj walutê";
-    var $_PHPSHOP_CURRENCY_LIST_NAME = "Nazwa waluty";
-    var $_PHPSHOP_CURRENCY_LIST_CODE = "Kod waluty";
-    
-    // Country form and list
-    var $_PHPSHOP_COUNTRY_LIST_MNU = "Wylistuj kraje";
-    var $_PHPSHOP_COUNTRY_LIST_LBL = "Lista krajów";
-    var $_PHPSHOP_COUNTRY_LIST_ADD = "Dodaj kraj";
-    var $_PHPSHOP_COUNTRY_LIST_NAME = "Nazwa kraju";
-    var $_PHPSHOP_COUNTRY_LIST_3_CODE = "Kod kraju (3)";
-    var $_PHPSHOP_COUNTRY_LIST_2_CODE = "Kod kraju (2)";
-    
-    /*#####################
-    MODULE CHECKOUT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ADDRESS = "Adres";
-    var $_PHPSHOP_CONTINUE = "Kontynuuj";
-    
-    # Some messages
-    var $_PHPSHOP_EMPTY_CART = "Twój koszyk jest pusty.";
-    
-    
-    /*#####################
-    MODULE ISShipping
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ISSHIPPING_MOD = "InterShipper";
-    
-    
-    // Shipping Ping
-    var $_PHPSHOP_ISSHIP_PING_MNU = "Pinguj serwer InterShippera";
-    var $_PHPSHOP_ISSHIP_PING_LBL = "Ping serwera InterShipper";
-    var $_PHPSHOP_ISSHIP_PING_ERROR_LBL = "Nieudany ping serwera InterShipper";
-    var $_PHPSHOP_ISSHIP_PING_GOOD_LBL = "Ping serwera InterShipper wykonany pomy¶lnie";
-    var $_PHPSHOP_ISSHIP_PING_CARRIER_LBL = "Spedytor";
-    var $_PHPSHOP_ISSHIP_PING_RESPONSE_LBL = "Czas<br />odpowiedzi";
-    var $_PHPSHOP_ISSHIP_PING_TIME_LBL = "sek.";
-    
-    // Shipping List
-    var $_PHPSHOP_ISSHIP_LIST_MNU = "Lista metod wysy³ki";
-    var $_PHPSHOP_ISSHIP_LIST_LBL = "Aktywne metody wysy³ki";
-    var $_PHPSHOP_ISSHIP_LIST_CARRIER_LBL = "Metody wysy³ki";
-    var $_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL = "Aktywny";
-    var $_PHPSHOP_ISSHIP_LIST_RATE_LBL = "Op³aty manipulacyjne";
-    var $_PHPSHOP_ISSHIP_LIST_LEAD_LBL = "Czas realizacji";
-    var $_PHPSHOP_ISSHIP_LIST_CHARGE_F_LBL = "rycza³t";
-    var $_PHPSHOP_ISSHIP_LIST_CHARGE_P_LBL = "procent";
-    var $_PHPSHOP_ISSHIP_LIST_DAYS_LBL = "dni";
-    var $_PHPSHOP_ISSHIP_LIST_HEAVY_LBL = "Ciê¿kie ³adunki";
-    
-    // Dynamic Shipping Form
-    var $_PHPSHOP_ISSHIP_FORM_MNU = "Konfiguruj metody wysy³ki";
-    var $_PHPSHOP_ISSHIP_FORM_ADD_LBL = "Dodaj metodê wysy³ki";
-    var $_PHPSHOP_ISSHIP_FORM_UPDATE_LBL = "Konfiguruj metodê wysy³ki";
-    var $_PHPSHOP_ISSHIP_FORM_REFRESH_LBL = "Odw¶ie¿";
-    var $_PHPSHOP_ISSHIP_FORM_CARRIER_LBL = "Metoda wysy³ki";
-    var $_PHPSHOP_ISSHIP_FORM_PUBLISH_LBL = "Aktywuj";
-    var $_PHPSHOP_ISSHIP_FORM_HANDLING_LBL = "Op³ata manipulacyjna";
-    var $_PHPSHOP_ISSHIP_FORM_LEAD_LBL = "Czas realizacji";
-    var $_PHPSHOP_ISSHIP_FORM_CHARGE_F_LBL = "rycza³t";
-    var $_PHPSHOP_ISSHIP_FORM_CHARGE_P_LBL = "procent";
-    var $_PHPSHOP_ISSHIP_FORM_DAYS_LBL = "dni";
-    var $_PHPSHOP_ISSHIP_FORM_HEAVY_LBL = "Ciê¿kie ³adunki";
-    
-    
-    
-    /*#####################
-    MODULE ORDER
-    #####################*/
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_ORDER_MOD = "Zamówienia";
-    
-    // Some menu options 
-    var $_PHPSHOP_ORDER_CONFIRM_MNU = "Potwierd¼ zamówienie";
-    var $_PHPSHOP_ORDER_CANCEL_MNU = "Anuluj zamówienie";
-    var $_PHPSHOP_ORDER_PRINT_MNU = "Drukuj zamówienie";
-    var $_PHPSHOP_ORDER_DELETE_MNU = "Usuñ zamówienie";
-    
-    // Order List
-    var $_PHPSHOP_ORDER_LIST_MNU = "Wylistuj zamówienia";
-    var $_PHPSHOP_ORDER_LIST_LBL = "Lista zamówieñ";
-    var $_PHPSHOP_ORDER_LIST_ID = "Numer zamówienia";
-    var $_PHPSHOP_ORDER_LIST_CDATE = "Data zamówienia";
-    var $_PHPSHOP_ORDER_LIST_MDATE = "Ostatnia modyfikacja";
-    var $_PHPSHOP_ORDER_LIST_STATUS = "Stan";
-    var $_PHPSHOP_ORDER_LIST_TOTAL = "Podsuma";
-    var $_PHPSHOP_ORDER_ITEM = "Szczegó³y zamówienia";
-    
-    // Order print
-    var $_PHPSHOP_ORDER_PRINT_PO_LBL = "Zamówienie";
-    var $_PHPSHOP_ORDER_PRINT_PO_NUMBER = "Numer zamówienia";
-    var $_PHPSHOP_ORDER_PRINT_PO_DATE = "Data zamówienia";
-    var $_PHPSHOP_ORDER_PRINT_PO_STATUS = "Stan zamówienia";
-    var $_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL = "Dane klienta";
-    var $_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL = "Dane do faktury";
-    var $_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL = "Informacje o wysy³ce";
-    var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = "Rachunek dla";
-    var $_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL = "Wysy³ka do";
-    var $_PHPSHOP_ORDER_PRINT_NAME = "Nazwa";
-    var $_PHPSHOP_ORDER_PRINT_COMPANY = "Firma";
-    var $_PHPSHOP_ORDER_PRINT_ADDRESS_1 = "Adres 1";
-    var $_PHPSHOP_ORDER_PRINT_ADDRESS_2 = "Adres 2";
-    var $_PHPSHOP_ORDER_PRINT_CITY = "Miasto";
-    var $_PHPSHOP_ORDER_PRINT_STATE = "Województwo";
-    var $_PHPSHOP_ORDER_PRINT_ZIP = "Kod pocztowy";
-    var $_PHPSHOP_ORDER_PRINT_COUNTRY = "Kraj";
-    var $_PHPSHOP_ORDER_PRINT_PHONE = "Telefon";
-    var $_PHPSHOP_ORDER_PRINT_FAX = "Faks";
-    var $_PHPSHOP_ORDER_PRINT_EMAIL = "Email";
-    var $_PHPSHOP_ORDER_PRINT_ITEMS_LBL = "Szczegó³y zamówienia";
-    var $_PHPSHOP_ORDER_PRINT_QUANTITY = "Ilo¶æ";
-    var $_PHPSHOP_ORDER_PRINT_QTY = "Il.";
-    var $_PHPSHOP_ORDER_PRINT_SKU = "Symbol";
-    var $_PHPSHOP_ORDER_PRINT_PRICE = "Cena";
-    var $_PHPSHOP_ORDER_PRINT_TOTAL = "Suma";
-    var $_PHPSHOP_ORDER_PRINT_SUBTOTAL = "Podsuma";
-    var $_PHPSHOP_ORDER_PRINT_TOTAL_TAX = "Podatek";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING = "Koszty wysy³ki";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_TAX = "Podatek od wysy³ki";
-    var $_PHPSHOP_ORDER_PRINT_PAYMENT_LBL = "Metoda p³atno¶ci";
-    var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME = "Nazwa rachunku";
-    var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER = "Numer rachunku";
-    var $_PHPSHOP_ORDER_PRINT_EXPIRE_DATE = "Data wyga¶niêcia";
-    var $_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL = "Dziennik p³atno¶ci";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_LBL = "Informacje o wysy³ce";
-    var $_PHPSHOP_ORDER_PRINT_PAYINFO_LBL = "Informacje o p³atno¶ci";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL = "Spedytor";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL = "Rodzaj wysy³ki";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_DATE_LBL = "Data wysy³ki";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL = "Koszt wysy³ki";
-    
-    var $_PHPSHOP_ORDER_STATUS_LIST_MNU = "Wylistuj typy stanów zamówieñ";
-    var $_PHPSHOP_ORDER_STATUS_FORM_MNU = "Dodaj typ stanu zamówienia";
-    
-    var $_PHPSHOP_ORDER_STATUS_LIST_CODE = "Kod stanu zamówienia";
-    var $_PHPSHOP_ORDER_STATUS_LIST_NAME = "Nazwa stanu zamówienia";
-    
-    var $_PHPSHOP_ORDER_STATUS_FORM_LBL = "Stan zamówienia";
-    var $_PHPSHOP_ORDER_STATUS_FORM_CODE = "Kod stanu zamówienia";
-    var $_PHPSHOP_ORDER_STATUS_FORM_NAME = "Nazwa stanu zamówienia";
-    var $_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER = "Kolejno¶æ na li¶cie";
-    
-    
-    /*#####################
-    MODULE PRODUCT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_PRODUCT_MOD = "Produkty";
-    
-    var $_PHPSHOP_CURRENT_PRODUCT = "Aktualny produkt";
-    var $_PHPSHOP_CURRENT_ITEM = "Aktualny element";
-    
-    // Product Inventory
-    var $_PHPSHOP_PRODUCT_INVENTORY_LBL = "Spis produktów";
-    var $_PHPSHOP_PRODUCT_INVENTORY_MNU = "Poka¿ spis produktów";
-    var $_PHPSHOP_PRODUCT_INVENTORY_PRICE = "Cena";
-    var $_PHPSHOP_PRODUCT_INVENTORY_STOCK = "Numer";
-    var $_PHPSHOP_PRODUCT_INVENTORY_WEIGHT = "Waga";
-    // Product List
-    var $_PHPSHOP_PRODUCT_LIST_MNU = "Wylistuj produkty";
-    var $_PHPSHOP_PRODUCT_LIST_LBL = "Lista produktów";
-    var $_PHPSHOP_PRODUCT_LIST_NAME = "Nazwa produtku";
-    var $_PHPSHOP_PRODUCT_LIST_SKU = "Symbol";
-    var $_PHPSHOP_PRODUCT_LIST_PUBLISH = "Publikuj";
-    
-    // Product Form
-    var $_PHPSHOP_PRODUCT_FORM_MNU = "Dodaj produkt";
-    var $_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT = "Edytuj ten produtk";
-    var $_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE = "Podgl±d produktu w sklepie";
-    var $_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU = "Dodaj element";
-    var $_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU = "Dodaj nastêpny element";
-    
-    var $_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL = "Nowy produkt";
-    var $_PHPSHOP_PRODUCT_FORM_UPDATE_PRODUCT_LBL = "Aktualizuj produkt";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL = "Informacja o produkcie";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL = "Stan produktu";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL = "Wymiary i waga produktu";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL = "Zdjêcia produktu";
-    
-    var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = "Nowy element";
-    var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = "Aktualizuj element";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = "Informacja o elemencie";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = "Stan elementu";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = "Wymiary i waga elementu";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = "Zdjêcia elementu";
-    var $_PHPSHOP_PRODUCT_FORM_RETURN_LBL = "Powrót do macierzystego produktu";
-    var $_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL = "Aby zaktualizowaæ zdjêcie, wprowad¼ scie¿kê do nowego zdjêcia.";
-    var $_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL = "Wprowad¼ \"none\", aby skasowaæ aktualne zdjêcie.";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL = "Elementy produktu";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL = "Atrybuty elementu";
-    var $_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG = "Czy napewno chcesz usun±æ ten produkt\\ni powi±zane z nim elementy?";
-    var $_PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG = "Czy napewno chcesz usun±æ ten element?";
-    var $_PHPSHOP_PRODUCT_FORM_VENDOR = "Dostawca";
-    var $_PHPSHOP_PRODUCT_FORM_MANUFACTURER = "Producent";
-    var $_PHPSHOP_PRODUCT_FORM_SKU = "Symbol";
-    var $_PHPSHOP_PRODUCT_FORM_NAME = "Nazwa";
-    var $_PHPSHOP_PRODUCT_FORM_URL = "URL";
-    var $_PHPSHOP_PRODUCT_FORM_CATEGORY = "Kategoria";
-    var $_PHPSHOP_PRODUCT_FORM_PRICE_GROSS = "Cena detaliczn";
-    var $_PHPSHOP_PRODUCT_FORM_PRICE_NET = "Product Price (Net)";
-    var $_PHPSHOP_PRODUCT_FORM_DESCRIPTION = "Pe³ny opis produktu";
-    var $_PHPSHOP_PRODUCT_FORM_S_DESC = "Skrócony opis";
-    var $_PHPSHOP_PRODUCT_FORM_IN_STOCK = "Produkt dostêpny";
-    var $_PHPSHOP_PRODUCT_FORM_ON_ORDER = "Na zamówienie";
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE = "Data dostêpno¶ci produktu";
-    var $_PHPSHOP_PRODUCT_FORM_SPECIAL = "W promocji";
-    var $_PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE = "Typ zni¿ki";
-    var $_PHPSHOP_PRODUCT_FORM_PUBLISH = "Publikowaæ?";
-    var $_PHPSHOP_PRODUCT_FORM_LENGTH = "D³ugo¶æ";
-    var $_PHPSHOP_PRODUCT_FORM_WIDTH = "Szeroko¶æ";
-    var $_PHPSHOP_PRODUCT_FORM_HEIGHT = "Wysoko¶æ";
-    var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM = "Jednostka miary";
-    var $_PHPSHOP_PRODUCT_FORM_WEIGHT = "Waga";
-    var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM = "Jednostka miary";
-    var $_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE = "Miniaturka";
-    var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = "Zdjêcie";
-    
-    // Product Display
-    var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = "Dodaj wyniki produktu";
-    var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = "Aktualizuj wyniki produktu";
-    var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = "Dodaj wyniki elementu";
-    var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL = "Aktualizuj wyniki elementu";
-    var $_PHPSHOP_PRODUCT_CSV_UPLOAD = "Importuj z pliku CSV";
-    var $_PHPSHOP_PRODUCT_FOLDERS = "Foldery produktów";
-    
-    // Product Category List
-    var $_PHPSHOP_CATEGORY_LIST_MNU = "Wylistuj kategorie";
-    var $_PHPSHOP_CATEGORY_LIST_LBL = "Drzewo kategorii";
-    
-    // Product Category Form
-    var $_PHPSHOP_CATEGORY_FORM_MNU = "Dodaj kategoriê";
-    var $_PHPSHOP_CATEGORY_FORM_LBL = "Informacje o kategorii";
-    var $_PHPSHOP_CATEGORY_FORM_NAME = "Nazwa kategorii";
-    var $_PHPSHOP_CATEGORY_FORM_PARENT = "Kategoria nadrzêdna";
-    var $_PHPSHOP_CATEGORY_FORM_DESCRIPTION = "Opis kategorii";
-    var $_PHPSHOP_CATEGORY_FORM_PUBLISH = "Publikuj?";
-    var $_PHPSHOP_CATEGORY_FORM_FLYPAGE = "Strona kategorii";
-    
-    // Product Attribute List
-    var $_PHPSHOP_ATTRIBUTE_LIST_MNU = "Wylistuj atrybuty";
-    var $_PHPSHOP_ATTRIBUTE_LIST_LBL = "Lista atrybutów dla";
-    var $_PHPSHOP_ATTRIBUTE_LIST_NAME = "Nazwa atrybutu";
-    var $_PHPSHOP_ATTRIBUTE_LIST_ORDER = "Kolejno¶æ na li¶cie";
-    
-    // Product Attribute Form
-    var $_PHPSHOP_ATTRIBUTE_FORM_MNU = "Dodaj atrybut";
-    var $_PHPSHOP_ATTRIBUTE_FORM_LBL = "Formularz atrybutu";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT = "Nowy atrybut dla produktu";
-    var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT = "Aktualizuj atrybut dla produktu";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM = "Nowy atrybut dla elementu";
-    var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM = "Aktualizuj atrybut dla elementu";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NAME = "Nazwa atrybutu";
-    var $_PHPSHOP_ATTRIBUTE_FORM_ORDER = "Kolejno¶æ na li¶ci";
-    
-    // Product Price List
-    var $_PHPSHOP_PRICE_LIST_MNU = "Wylistuj ceny";
-    var $_PHPSHOP_PRICE_LIST_LBL = "Drzewo cen";
-    var $_PHPSHOP_PRICE_LIST_FOR_LBL = "Cena dla";
-    var $_PHPSHOP_PRICE_LIST_GROUP_NAME = "Nazwa grupy";
-    var $_PHPSHOP_PRICE_LIST_PRICE = "Cena";
-    var $_PHPSHOP_PRODUCT_LIST_CURRENCY = "Waluta";
-    
-    // Product Price Form
-    var $_PHPSHOP_PRICE_FORM_MNU = "Dodaj cenê";
-    var $_PHPSHOP_PRICE_FORM_LBL = "Informacja o cenie";
-    var $_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT = "Nowa cena dla produktu";
-    var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT = "Aktualizuj cenê dla produktu";
-    var $_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM = "Nowa cena dla elementu";
-    var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM = "Aktualizuj cenê dla elementu";
-    var $_PHPSHOP_PRICE_FORM_PRICE = "Cena";
-    var $_PHPSHOP_PRICE_FORM_CURRENCY = "Waluta";
-    var $_PHPSHOP_PRICE_FORM_GROUP = "Grupa klientów";
-    
-    
-    /*#####################
-    MODULE REPORT BASIC
-    #####################*/
-    # Some LABELs
-    var $_PHPSHOP_REPORTBASIC_MOD = "Raporty";
-    var $_PHPSHOP_RB_INDIVIDUAL = "Indywidualny wykaz produktóws";
-    var $_PHPSHOP_RB_SALE_TITLE = "Raporty sprzeda¿y";
-    
-    /* labels for rpt_sales */
-    var $_PHPSHOP_RB_SALES_PAGE_TITLE = "Przegl±d przebiegu sprzeda¿y";
-    
-    var $_PHPSHOP_RB_INTERVAL_TITLE = "Ustaw odstêp czasowy";
-    var $_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE = "Miesiêczny";
-    var $_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE = "Tygodniowy";
-    var $_PHPSHOP_RB_INTERVAL_DAILY_TITLE = "Dzienny";
-    
-    var $_PHPSHOP_RB_THISMONTH_BUTTON = "Ten miesi±c";
-    var $_PHPSHOP_RB_LASTMONTH_BUTTON = "Ostatni miesi±c";
-    var $_PHPSHOP_RB_LAST60_BUTTON = "Ostatnie 60 dni";
-    var $_PHPSHOP_RB_LAST90_BUTTON = "Ostatnie 90 dni";
-    
-    var $_PHPSHOP_RB_START_DATE_TITLE = "Pocz±tek";
-    var $_PHPSHOP_RB_END_DATE_TITLE = "Koniec";
-    var $_PHPSHOP_RB_SHOW_SEL_RANGE = "Poka¿ wybrany zakres";
-    var $_PHPSHOP_RB_REPORT_FOR = "Raport dla ";
-    var $_PHPSHOP_RB_DATE = "Data";
-    var $_PHPSHOP_RB_ORDERS = "Zamówienia";
-    var $_PHPSHOP_RB_TOTAL_ITEMS = "Suma sprzedanych artyku³ów";
-    var $_PHPSHOP_RB_REVENUE = "Dochody";
-    var $_PHPSHOP_RB_PRODLIST = "Wykaz produktów";
-    
-    
-    
-    /*#####################
-    MODULE SHOP
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_SHOP_MOD = "Sklep";
-    var $_PHPSHOP_PRODUCT_THUMB_TITLE = "Zdjêcie";
-    var $_PHPSHOP_PRODUCT_PRICE_TITLE = "Cena";
-    var $_PHPSHOP_ORDER_STATUS_P = "Oczekuje";
-    var $_PHPSHOP_ORDER_STATUS_C = "Potwierdzone";
-    var $_PHPSHOP_ORDER_STATUS_X = "Anulowane";
-    
-    
-    # Some messages
-    var $_PHPSHOP_ORDER_BUTTON = "Zamówienie";
-    
-    
-    
-    /*#####################
-    MODULE SHOPPER
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_SHOPPER_MOD = "Klient";
-    
-    
-    
-    // Shopper List
-    var $_PHPSHOP_SHOPPER_LIST_MNU = "Wylistuj klientów";
-    var $_PHPSHOP_SHOPPER_LIST_LBL = "Lista klientów";
-    var $_PHPSHOP_SHOPPER_LIST_USERNAME = "Nazwa u¿ytkownika";
-    var $_PHPSHOP_SHOPPER_LIST_NAME = "Pe³na nazwa";
-    var $_PHPSHOP_SHOPPER_LIST_GROUP = "Grupa";
-    
-    // Shopper Form
-    var $_PHPSHOP_SHOPPER_FORM_MNU = "Dodaj klienta";
-    var $_PHPSHOP_SHOPPER_FORM_LBL = "Informacje o kliencie";
-    var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = "Dane klienta";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL = "Informacja";
-    var $_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL = "Informacje o wysy³ce";
-    var $_PHPSHOP_SHOPPER_FORM_ADD_SHIPTO_LBL = "Dodaj adres";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL = "Alias adresu";
-    var $_PHPSHOP_SHOPPER_FORM_USERNAME = "Nazwa u¿ytkownika";
-    var $_PHPSHOP_SHOPPER_FORM_FIRST_NAME = "Imiê";
-    var $_PHPSHOP_SHOPPER_FORM_LAST_NAME = "Nazwisko";
-    var $_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME = "Drugie imiê";
-    var $_PHPSHOP_SHOPPER_FORM_TITLE = "Tytu³";
-    var $_PHPSHOP_SHOPPER_FORM_SHOPPERNAME = "Nazwa klienta";
-    var $_PHPSHOP_SHOPPER_FORM_PASSWORD_1 = "Has³o";
-    var $_PHPSHOP_SHOPPER_FORM_PASSWORD_2 = "Potwierd¼ has³o";
-    var $_PHPSHOP_SHOPPER_FORM_GROUP = "Grupa klienta";
-    var $_PHPSHOP_SHOPPER_FORM_COMPANY_NAME = "Nazwa firmy";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_1 = "Adres 1";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_2 = "Adres 2";
-    var $_PHPSHOP_SHOPPER_FORM_CITY = "Miasto";
-    var $_PHPSHOP_SHOPPER_FORM_STATE = "Województwo";
-    var $_PHPSHOP_SHOPPER_FORM_ZIP = "Kod pocztowy";
-    var $_PHPSHOP_SHOPPER_FORM_COUNTRY = "Kraj";
-    var $_PHPSHOP_SHOPPER_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_SHOPPER_FORM_FAX = "Faks";
-    var $_PHPSHOP_SHOPPER_FORM_EMAIL = "Email";
-    
-    // Shopper Group List
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_MNU = "Wylistuj grupy klientów";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_LBL = "Lista grup klientów";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_NAME = "Nazwa grupy";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION = "Opis grupy";
-    
-    
-    // Shopper Group Form
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_LBL = "Formularz grupy klientów";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_MNU = "Dodaj grupê klientów";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_NAME = "Nazwa grupy";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DESC = "Opis grupy";
-    
-    
-    
-    
-    /*#####################
-    MODULE SHOPPER
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_STORE_MOD = "Sklep";
-    
-    
-    // Store Form
-    var $_PHPSHOP_STORE_FORM_MNU = "Edytuj sklep";
-    var $_PHPSHOP_STORE_FORM_LBL = "Informacje o sklepie";
-    var $_PHPSHOP_STORE_FORM_CONTACT_LBL = "Informacje kontaktowe";
-    var $_PHPSHOP_STORE_FORM_FULL_IMAGE = "Logo sklepu";
-    var $_PHPSHOP_STORE_FORM_UPLOAD = "Wczytaj logo";
-    var $_PHPSHOP_STORE_FORM_STORE_NAME = "Nazwa sklepu";
-    var $_PHPSHOP_STORE_FORM_COMPANY_NAME = "Nazwa firmy";
-    var $_PHPSHOP_STORE_FORM_ADDRESS_1 = "Adres 1";
-    var $_PHPSHOP_STORE_FORM_ADDRESS_2 = "Adres 2";
-    var $_PHPSHOP_STORE_FORM_CITY = "Miasto";
-    var $_PHPSHOP_STORE_FORM_STATE = "Województwo";
-    var $_PHPSHOP_STORE_FORM_COUNTRY = "Kraj";
-    var $_PHPSHOP_STORE_FORM_ZIP = "Kod pocztowy";
-    var $_PHPSHOP_STORE_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_STORE_FORM_CURRENCY = "Waluta";
-    var $_PHPSHOP_STORE_FORM_CATEGORY = "Kategoria sklepu";
-    var $_PHPSHOP_STORE_FORM_LAST_NAME = "Nazwisko";
-    var $_PHPSHOP_STORE_FORM_FIRST_NAME = "Imiê";
-    var $_PHPSHOP_STORE_FORM_MIDDLE_NAME = "Drugie imiê";
-    var $_PHPSHOP_STORE_FORM_TITLE = "Tytu³";
-    var $_PHPSHOP_STORE_FORM_PHONE_1 = "Telefon 1";
-    var $_PHPSHOP_STORE_FORM_PHONE_2 = "Telefon 2";
-    var $_PHPSHOP_STORE_FORM_FAX = "Faks";
-    var $_PHPSHOP_STORE_FORM_EMAIL = "Email";
-    var $_PHPSHOP_STORE_FORM_IMAGE_PATH = "¦cie¿ka do obrazka";
-    var $_PHPSHOP_STORE_FORM_DESCRIPTION = "Opis";
-    
-    
-    
-    var $_PHPSHOP_PAYMENT = "P³atno¶æ";
-    // Payment Method List
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_MNU = "Wylistuj metody p³atno¶ci";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_LBL = "Lista metod p³atno¶ci";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_NAME = "Nazwa";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_CODE = "Kod";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT = "Rabat";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP = "Grupa klientów";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR = "Typ metody p³atno¶ci";
-    
-    // Payment Method Form
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_MNU = "Dodaj metodê p³atno¶ci";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_LBL = "Formularz metody p³atno¶ci";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_NAME = "Nazwa metody p³atno¶ci";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP = "Grupa klientów";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT = "Rabat";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_CODE = "Kod";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER = "Kolejno¶æ na li¶cie";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR = "Typ metody p³atno¶ci";
-    
-    
-    
-    /*#####################
-    MODULE TAX
-    #####################*/
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_TAX_MOD = "Podatek";
-    
-    // User List
-    var $_PHPSHOP_TAX_RATE = "Stawki podatkowe";
-    var $_PHPSHOP_TAX_LIST_MNU = "Wylistuj stawki podatkowe";
-    var $_PHPSHOP_TAX_LIST_LBL = "Lista stawek podatkowych";
-    var $_PHPSHOP_TAX_LIST_STATE = "Podatek dla regionu lub stanu";
-    var $_PHPSHOP_TAX_LIST_COUNTRY = "Podatek dla kraju";
-    var $_PHPSHOP_TAX_LIST_RATE = "Stawka podatku";
-    
-    // User Form
-    var $_PHPSHOP_TAX_FORM_MNU = "Dodaj stawkê podatku";
-    var $_PHPSHOP_TAX_FORM_LBL = "Dodaj informacjê o podatku";
-    var $_PHPSHOP_TAX_FORM_STATE = "Podatek dla regionu lub stanu";
-    var $_PHPSHOP_TAX_FORM_COUNTRY = "Podatek dla kraju";
-    var $_PHPSHOP_TAX_FORM_RATE = "Stawka podatku (dla 16% => wpisz 0.16)";
-    
-    
-    
-    
-    /*#####################
-    MODULE VENDOR
-    #####################*/
-    
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_VENDOR_MOD = "Dostawca";
-    var $_PHPSHOP_VENDOR_ADMIN = "Dostawcy";
-    
-    
-    // Vendor List
-    var $_PHPSHOP_VENDOR_LIST_MNU = "Wylistuj dostawców";
-    var $_PHPSHOP_VENDOR_LIST_LBL = "Lista dostawców";
-    var $_PHPSHOP_VENDOR_LIST_VENDOR_NAME = "Nazwa dostawcy";
-    var $_PHPSHOP_VENDOR_LIST_ADMIN = "Admin";
-    
-    // Vendor Form
-    var $_PHPSHOP_VENDOR_FORM_MNU = "Dodaj dostawcê";
-    var $_PHPSHOP_VENDOR_FORM_LBL = "Dodaj informacjê";
-    var $_PHPSHOP_VENDOR_FORM_INFO_LBL = "Informacja o dostawcy";
-    var $_PHPSHOP_VENDOR_FORM_CONTACT_LBL = "Informacje kontaktowe";
-    var $_PHPSHOP_VENDOR_FORM_FULL_IMAGE = "Obrazek";
-    var $_PHPSHOP_VENDOR_FORM_UPLOAD = "Wgraj obrazek";
-    var $_PHPSHOP_VENDOR_FORM_STORE_NAME = "Nazwa sklepu dostawcy";
-    var $_PHPSHOP_VENDOR_FORM_COMPANY_NAME = "Nazwa firmy dostawcy";
-    var $_PHPSHOP_VENDOR_FORM_ADDRESS_1 = "Adres 1";
-    var $_PHPSHOP_VENDOR_FORM_ADDRESS_2 = "Adres 2";
-    var $_PHPSHOP_VENDOR_FORM_CITY = "Miasto";
-    var $_PHPSHOP_VENDOR_FORM_STATE = "Województwo";
-    var $_PHPSHOP_VENDOR_FORM_COUNTRY = "Kraj";
-    var $_PHPSHOP_VENDOR_FORM_ZIP = "Kod pocztowy";
-    var $_PHPSHOP_VENDOR_FORM_PHONE = "Telefon";
-    var $_PHPSHOP_VENDOR_FORM_CURRENCY = "Waluta";
-    var $_PHPSHOP_VENDOR_FORM_CATEGORY = "Kategoria dostawcy";
-    var $_PHPSHOP_VENDOR_FORM_LAST_NAME = "Nazwisko";
-    var $_PHPSHOP_VENDOR_FORM_FIRST_NAME = "Imiê";
-    var $_PHPSHOP_VENDOR_FORM_MIDDLE_NAME = "Drugie imiê";
-    var $_PHPSHOP_VENDOR_FORM_TITLE = "Tytu³";
-    var $_PHPSHOP_VENDOR_FORM_PHONE_1 = "Telefon 1";
-    var $_PHPSHOP_VENDOR_FORM_PHONE_2 = "Telefon 2";
-    var $_PHPSHOP_VENDOR_FORM_FAX = "Faks";
-    var $_PHPSHOP_VENDOR_FORM_EMAIL = "Email";
-    var $_PHPSHOP_VENDOR_FORM_IMAGE_PATH = "¦cie¿ka do obrazka";
-    var $_PHPSHOP_VENDOR_FORM_DESCRIPTION = "Opis";
-    
-    
-    // Vendor Category List
-    var $_PHPSHOP_VENDOR_CAT_LIST_MNU = "Wylistuj kategorie dostawców";
-    var $_PHPSHOP_VENDOR_CAT_LIST_LBL = "Lista kategorii dostawców";
-    var $_PHPSHOP_VENDOR_CAT_NAME = "Nazwa kategorii";
-    var $_PHPSHOP_VENDOR_CAT_DESCRIPTION = "Opis kategorii";
-    var $_PHPSHOP_VENDOR_CAT_VENDORS = "Dostawcy";
-    
-    // Vendor Category Form
-    var $_PHPSHOP_VENDOR_CAT_FORM_MNU = "Dodaj kategoriê dostawców";
-    var $_PHPSHOP_VENDOR_CAT_FORM_LBL = "Formularz kategorii dostawców";
-    var $_PHPSHOP_VENDOR_CAT_FORM_INFO_LBL = "Informacje o kategorii";
-    var $_PHPSHOP_VENDOR_CAT_FORM_NAME = "Nazwa kategorii";
-    var $_PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION = "Opis kategorii";
-    
-    /*#####################
-    MODULE MANUFACTURER
-    #####################*/
-
-    # Some LABELs
-    var $_PHPSHOP_MANUFACTURER_MOD = "Producent";
-    var $_PHPSHOP_MANUFACTURER_ADMIN = "Producenci";
-    
-    
-    // Manufacturer List
-    var $_PHPSHOP_MANUFACTURER_LIST_MNU = "Wylistuj producentów";
-    var $_PHPSHOP_MANUFACTURER_LIST_LBL = "Lista producentów";
-    var $_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME = "Nazwa producenta";
-    var $_PHPSHOP_MANUFACTURER_LIST_ADMIN = "Admin";
-    
-    // Manufacturer Form
-    var $_PHPSHOP_MANUFACTURER_FORM_MNU = "Dodaj producenta";
-    var $_PHPSHOP_MANUFACTURER_FORM_LBL = "Dodaj informacjê";
-    var $_PHPSHOP_MANUFACTURER_FORM_INFO_LBL = "Informacje o producencie";
-    var $_PHPSHOP_MANUFACTURER_FORM_NAME = "Nazwa producenta";
-    var $_PHPSHOP_MANUFACTURER_FORM_CATEGORY = "Kategoria producentów";
-    var $_PHPSHOP_MANUFACTURER_FORM_EMAIL = "Email";
-    var $_PHPSHOP_MANUFACTURER_FORM_URL = "Adres URL strony producenta";
-    var $_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION = "Opis";
-    
-    
-    // Manufacturer Category List
-    var $_PHPSHOP_MANUFACTURER_CAT_LIST_MNU = "Wylistuj kategorie producentów";
-    var $_PHPSHOP_MANUFACTURER_CAT_LIST_LBL = "Lista kategorii producentów";
-    var $_PHPSHOP_MANUFACTURER_CAT_NAME = "Nazwa kategorii";
-    var $_PHPSHOP_MANUFACTURER_CAT_DESCRIPTION = "Opis kategorii";
-    var $_PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS = "Producenci";
-    
-    // Manufacturer Category Form
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_MNU = "Dodaj kategoriê producentów";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_LBL = "Formularz kategorii producentów";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL = "Informacje o kategorii";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_NAME = "Nazwa kategorii";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION = "Opis kategorii";
-    
-    
-    /*#####################
-    Modul HELP
-    #####################*/
-    var $_PHPSHOP_HELP_MOD = "Pomoc";
-    
-    // 210104 start
-    
-    var $_PHPSHOP_CART_ACTION = "Aktualizuj";
-    var $_PHPSHOP_CART_UPDATE = "Aktualizuj ilo¶æ produktów w koszyku";
-    var $_PHPSHOP_CART_DELETE = "Usuñ produkt z koszyka";
-    
-    //shopbrowse form
-    
-    var $_PHPSHOP_PRODUCT_PRICETAG = "Cena";
-    var $_PHPSHOP_PRODUCT_CALL = "Cena przez telefon";
-    var $_PHPSHOP_PRODUCT_PREVIOUS = "Poprzedni";
-    var $_PHPSHOP_PRODUCT_NEXT = "Nastêpny";
-    
-    //ro_basket
-    
-    var $_PHPSHOP_CART_TAX = "Podatek";
-    var $_PHPSHOP_CART_SHIPPING = "Koszty wysy³ki";
-    var $_PHPSHOP_CART_TOTAL = "Suma";
-    
-    //CHECKOUT.INDEX
-    
-    var $_PHPSHOP_CHECKOUT_NEXT = "Nastêpny";
-    var $_PHPSHOP_CHECKOUT_REGISTER = "Zarejestruj siê";
-    
-    //CHECKOUT.CONFIRM
-    
-    var $_PHPSHOP_CHECKOUT_CONF_BILLINFO = "Dane klienta";
-    var $_PHPSHOP_CHECKOUT_CONF_COMPANY = "Firma";
-    var $_PHPSHOP_CHECKOUT_CONF_NAME = "Nazwa";
-    var $_PHPSHOP_CHECKOUT_CONF_ADDRESS = "Adres";
-    var $_PHPSHOP_CHECKOUT_CONF_PHONE = "Telefon";
-    var $_PHPSHOP_CHECKOUT_CONF_FAX = "Faks";
-    var $_PHPSHOP_CHECKOUT_CONF_EMAIL = "Email";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO = "Informacje o wysy³ce";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY = "Firma";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME = "Nazwa";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS = "Adres";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE = "Telefon";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX = "Faks";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO = "Informacje o p³atno¶ci";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD = "Nazwisko na karcie";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD = "Metoda p³atno¶ci";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM = "Numer karty kredytowej";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE = "Data wyga¶niêcia";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER = "Potwierdzenie zamówienia";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = "informacja wymagana je¶li wybrana zosta³a p³atno¶æ kart± kredytow±";
-    
-    
-    var $_PHPSHOP_ZONE_MOD = "Strefa wysy³ki";
-    
-    var $_PHPSHOP_ZONE_LIST_MNU = "Wylistuj strefy";
-    var $_PHPSHOP_ZONE_FORM_MNU = "Dodaj strefê";
-    var $_PHPSHOP_ZONE_ASSIGN_MNU = "Przypisz strefy";
-    
-    // assign zone List
-    var $_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL = "Kraj";
-    var $_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL = "Aktualna strefa";
-    var $_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL = "Przypisz do strefy";
-    var $_PHPSHOP_ZONE_ASSIGN_UPDATE_LBL = "Aktualizuj";
-    var $_PHPSHOP_ASSIGN_ZONE_PG_LBL = "Przypisz strefy";
-    
-    // zone Form
-    var $_PHPSHOP_ZONE_FORM_NAME_LBL = "Nazwa strefy";
-    var $_PHPSHOP_ZONE_FORM_DESC_LBL = "Opis strefy";
-    var $_PHPSHOP_ZONE_FORM_COST_PER_LBL = "Koszty na produkt w strefie";
-    var $_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL = "Limit kosztów strefy";
-    
-    // List of zones
-    var $_PHPSHOP_ZONE_LIST_LBL = "Lista stref";
-    var $_PHPSHOP_ZONE_LIST_NAME_LBL = "Nazwa strefy";
-    var $_PHPSHOP_ZONE_LIST_DESC_LBL = "Opis strefy";
-    var $_PHPSHOP_ZONE_LIST_COST_PER_LBL = "Koszty na produkt w strefie";
-    var $_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL = "Limit kosztów strefy";
-    
-    var $_PHPSHOP_LOGIN_FIRST = "Prosimy o zalogowanie siê lub rejestracjê (u¿ywaj±c modu³u logowania).<br>Dziêkujemy.";
-    var $_PHPSHOP_STORE_FORM_TOS = "Zasady u¿ytkowania";
-    var $_PHPSHOP_AGREE_TO_TOS = "Najpierw prosimy zaakceptowaæ nasze zasady u¿ytkowania.";
-    var $_PHPSHOP_I_AGREE_TO_TOS = "Akceptujê zasady u¿ytkowania";
-    
-    var $_PHPSHOP_LEAVE_BLANK = "(pozostaw puste je¶li nie masz <br /> indywidualnego pliku php!)";
-    var $_PHPSHOP_RETURN_LOGIN = "Powracaj±cy klienci: Prosimy o zalogowanie siê";
-    var $_PHPSHOP_NEW_CUSTOMER = "Nowi? Prosimy wprowadziæ swoje dane";
-    var $_PHPSHOP_ACC_CUSTOMER_ACCOUNT = "Konto klienta:";
-    var $_PHPSHOP_ACC_ORDER_INFO = "Informacje o zamówieniu";
-    var $_PHPSHOP_ACC_UPD_BILL = "Tutaj mo¿esz zaktualizowaæ swoje dane.";
-    var $_PHPSHOP_ACC_UPD_SHIP = "Tutaj mo¿esz dodaæ lub zarz±dzaæ adresami do wysy³kis.";
-    var $_PHPSHOP_ACC_ACCOUNT_INFO = "Informacje o koncie";
-    var $_PHPSHOP_ACC_SHIP_INFO = "Informacje o wysy³ce";
-    var $_PHPSHOP_ACC_NO_ORDERS = "Brak zamówieñ do wy¶wietlenia";
-    var $_PHPSHOP_ACC_BILL_DEF = "- domy¶lny (taki sam jak na rachunku)";
-    var $_PHPSHOP_SHIPTO_TEXT = "Mo¿esz dodaæ adresy docelowe wysy³ki do swojego konta. Prosimy o zastanowienie siê nad odpowiednim aliasem lub kodem dla lokalizacji, któr± wybierzesz poni¿ej.";
-    var $_PHPSHOP_CONFIG = "Konfiguracja";
-    var $_PHPSHOP_USERS = "U¿ytkownicy";
-    var $_PHPSHOP_IS_CC_PAYMENT = "jest p³atno¶ci± kart± kredytow±?";
-    
-    /*#####################################################
-     MODULE SHIPPING
-    #######################################################*/
-    var $_PHPSHOP_SHIPPING_MOD = "Wysy³ka";
-    var $_PHPSHOP_SHIPPING_MENU_LABEL = "Wysy³ka";
-    
-    var $_PHPSHOP_CARRIER_LIST_MNU = "Spedytor";
-    var $_PHPSHOP_CARRIER_LIST_LBL = "Lista spedytorów";
-    var $_PHPSHOP_RATE_LIST_MNU = "Tabela stawek wysy³kowych";
-    var $_PHPSHOP_RATE_LIST_LBL = "Lista stawek wysy³kowych";
-    var $_PHPSHOP_CARRIER_LIST_NAME_LBL = "Nazwa";
-    var $_PHPSHOP_CARRIER_LIST_ORDER_LBL = "Kolejno¶æ na li¶cie";
-    
-    var $_PHPSHOP_CARRIER_FORM_MNU = "Utwórz spedytora";
-    var $_PHPSHOP_CARRIER_FORM_LBL = "Utwórz/edytuj spedytora";
-    var $_PHPSHOP_RATE_FORM_MNU = "Utwórz stawkê wysy³kow±";
-    var $_PHPSHOP_RATE_FORM_LBL = "Utwórz/edytuj stawkê wysy³kow±";
-    
-    var $_PHPSHOP_RATE_FORM_NAME = "Opis stawki wysy³kowej";
-    var $_PHPSHOP_RATE_FORM_CARRIER = "Spedytor";
-    var $_PHPSHOP_RATE_FORM_COUNTRY = "Kraj";
-    var $_PHPSHOP_RATE_FORM_ZIP_START = "pocz±tek zakresu kodu pocztowego";
-    var $_PHPSHOP_RATE_FORM_ZIP_END = "koniec zakresu kodu pocztowego";
-    var $_PHPSHOP_RATE_FORM_WEIGHT_START = "Najni¿sza waga";
-    var $_PHPSHOP_RATE_FORM_WEIGHT_END = "Najwy¿sza waga";
-    var $_PHPSHOP_RATE_FORM_VALUE = "Op³ata";
-    var $_PHPSHOP_RATE_FORM_PACKAGE_FEE = "Twoja op³ata za paczkê";
-    var $_PHPSHOP_RATE_FORM_CURRENCY = "Waluta";
-    var $_PHPSHOP_RATE_FORM_VAT_ID = "Identyfikator VAT";
-    var $_PHPSHOP_RATE_FORM_LIST_ORDER = "Kolejno¶æ na li¶cie";
-    
-    var $_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL = "Spedytor";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME = "Opis stawki wysy³kowej";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART = "Waga od ...";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND = "... do";
-    var $_PHPSHOP_CARRIER_FORM_NAME = "Firma spedycyjna";
-    var $_PHPSHOP_CARRIER_FORM_LIST_ORDER = "Kolejno¶æ na li¶cie";
-    
-    var $_PHPSHOP_ERR_MSG_CARRIER_EXIST = "B£¡D: ID Spedytora ju¿ istnieje.";
-    var $_PHPSHOP_ERR_MSG_CARRIER_ID_REQ = "B£¡D: Wybierz spedytora.";
-    var $_PHPSHOP_ERR_MSG_CARRIER_INUSE = "B£¡D: Istnieje przynajmniej jedna stawka wysy³kowa, wpierw usuñ stawki przypisane do tego spedytora";
-    var $_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND = "B£¡D: Niemo¿liwe odnalezienie spedytora o podanym ID.";
-    
-    var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = "B£¡D: Wybierz spedytora.";
-    var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = "B£¡D: Niemo¿liwe odnalezienie spedytora o podanym ID.";
-    var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = "B£¡D: Deskryptor stawki jest wymagany.";
-    var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = "B£¡D: Kraj docelowy jest niepoprawny. Wiêcej ni¿ jeden kraj mo¿e byæ rozdzielony \";\".";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = "B£¡D: Najni¿sza waga jest wymagana";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = "B£¡D: Najwy¿sza waga jes wymagana";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = "B£¡D: Najni¿sza waga musi byæ mniejsza od najwy¿szej wagi";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = "B£¡D: Op³ata wysy³kowa jest wymagana";
-    var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = "B£¡D: Wybierz walutê";
-    
-    var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = "B£¡D: Stawka wysy³kowa jest wymagana";
-    
-    var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = "Proszê wybraæ";
-    var $_PHPSHOP_INFO_MSG_CARRIER = "Spedytor";
-    var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = "Stawka wysy³kowa";
-    var $_PHPSHOP_INFO_MSG_SHIPPING_PRICE = "Cena";
-    var $_PHPSHOP_INFO_MSG_VAT_ZERO_LBL = "0 (-brak-)";
-    /*#####################################################
-     END: MODULE SHIPPING
-    #######################################################*/
-    
-    var $_PHPSHOP_PAYMENT_FORM_CC = "Karta kredytowa";
-    var $_PHPSHOP_PAYMENT_FORM_USE_PP = "U¿yj procesora p³atno¶ci";
-    var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = "Debet bankowy";
-    var $_PHPSHOP_PAYMENT_FORM_AO = "Tylko adres / za pobraniem";
-    var $_PHPSHOP_CHECKOUT_MSG_2 = "Proszê wybraæ adres wysy³ki!";
-    var $_PHPSHOP_CHECKOUT_MSG_3 = "Proszê wybraæ metodê wysy³ki!";
-    var $_PHPSHOP_CHECKOUT_MSG_4 = "Proszê wybraæ metodê p³atno¶ci!";
-    var $_PHPSHOP_CHECKOUT_MSG_99 = "Proszê sprawdziæ wprowadzone dane i potwierdziæ zamówienie!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_SHIP = "Proszê wybraæ metodê wysy³ki.";
-    var $_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP = "Proszê wybraæ inn± metodê wysy³ki.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_PAYM = "Proszê wybraæ metodê p³atno¶ci.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR = "Proszê wpisaæ numer swojej karty kredytowej.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNAME = "Proszê wpisaæ nazwisko znajduj±ce siê na karcie kredytowej.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATE = "Wpisany numer karty kredytowej jest nieprawid³owy.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCMON = "Proszê wpisaæ miesi±c wyga¶niêcia wa¿no¶ci karty kredytowej.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR = "Prosze wpisaæ rok wyga¶niêcia wa¿no¶ci karty kredytowej.";
-    var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = "Data wyga¶niêcia jest nieprawid³owa.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = "Proszê wybraæ adres wysy³ki.";
-    var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = "Niepoprawny numer konta.";
-    var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = "Nie ma nic w koszyku!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = "B£¡D: Proszê wybraæ spedytora!";
-    var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = "B£¡D: Wybrana stawka wysy³ki nie zosta³a odnaleziona!";
-    var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = "B£¡D: Twój adres wysy³ki nie zosta³ odnaleziony!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = "B£¡D: Brak danych o karcie kredytowej...";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = "B£¡D: Numer karty kredytowej nie znaleziony!";
-    var $_PHPSHOP_CHECKOUT_ERR_TEST = "Przepraszamy, ale numer karty kredytowej, który zosta³ u¿yty jest numerem testowym!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = "Numer ID u¿ytkownika nie zosta³ odnaleziony w bazie danych!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = "Nazwa posiadacza Twojego rachunku bankowego nie zosta³a wprowadzona.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = "Numer IBAN nie zosta³ wprowadzony.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = "Numer Twojego konta bankowego nie zosta³ wprowadzony.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = "Numer rozliczeniowy Twojego banku nie zosta³ wprowadzony.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = "Nazwa Twojego banku nie zosta³a wprowadzona.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = "Proces zamówienia wymaga prawid³owej procedury!";
-
-    var $_PHPSHOP_CHECKOUT_MSG_LOG = "Informacja o p³atno¶ci przechwycona dla dalszego przetwarzania.<br />";
-    
-    var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = "Minimalna warto¶æ zamówienia nie zosta³a jeszcze osi±gniêta.";
-    var $_PHPSHOP_CHECKOUT_ERR_MIN_POV2 = "Minimalna warto¶æ zamówienia w naszym sklepie wynosi:";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_CC = "P³atno¶æ kart± kredytow±";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_OTHER = "inne metody p³atno¶ci";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_SELECT = "Proszê wybraæ metodê p³atno¶ci:";
-    
-    var $_PHPSHOP_STORE_FORM_MPOV = "Minimalna warto¶æ zamówienia dla Twojego sklepu";
-    var $_PHPSHOP_ACCOUNT_BANK_TITLE = "Informacja o rachunku bankowym";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR = "Numer rachunku";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE = "Krajowy numer rozliczeniowy banku";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_NAME = "Nazwa banku";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_IBAN = "IBAN";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER = "Posiadacz rachunku";
-    
-    var $_PHPSHOP_MODULES = "Modu³y";
-    var $_PHPSHOP_FUNCTIONS = "Funkcje";
-    var $_PHPSHOP_SPECIAL_PRODUCTS = "Produkty w promocji";
-    
-    var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = "Je¶li chcesz mo¿esz zostawiæ dla nas notatkê do³±czon± do Swojego zamówienia";
-    var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = "Notatka klienta";
-    var $_PHPSHOP_INCLUDING_TAX = "(w³±czaj±c \$tax % VAT)";
-    var $_PHPSHOP_PLEASE_SEL_ITEM = "Prosimy wybraæ element";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = "Element";
-
-    // DOWNLOADS
-    
-    var $_PHPSHOP_DOWNLOADS_TITLE = "Obszar pobierania";
-    var $_PHPSHOP_DOWNLOADS_START = "Rozpocznij pobieranie";
-    var $_PHPSHOP_DOWNLOADS_INFO = "Prosimy wpisaæ numer ID pobierania, otrzymany emailem, a nastêpnie klikn±æ 'Rozpocznij pobieranie'.";
-    var $_PHPSHOP_DOWNLOADS_ERR_EXP = "Przepraszamy, ale Twoje pobieranie wygas³o";
-    var $_PHPSHOP_DOWNLOADS_ERR_MAX = "Przepraszamy, ale zosta³a osi±gniêta maksymalna liczba pobrañ";
-    var $_PHPSHOP_DOWNLOADS_ERR_INV = "Niepoprawny numer ID pobierania!";
-    var $_PHPSHOP_DOWNLOADS_ERR_SEND = "Niemo¿liwe wys³anie wiadomo¶ci do ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG = "Wiadomo¶æ wys³ana do ";
-    var $_PHPSHOP_DOWNLOADS_SEND_SUBJ = "Informacje o pobieraniu";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_1 = "zamówione pliki s± gotowe do pobrania";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_2 = "Prosimy wpisaæ nastêpuj±cy numer ID pobierania w naszym Obszarze Pobierania: ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_3 = "maksymalna liczba pobrañ dla ka¿dego z plików wynosi: ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_4 = "Mo¿esz pobieraæ przez {expire} dni po pierwszym pobraniu";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_5 = "Pytania? Problemy?";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = "Download-Info by "; // e.g. Download-Info by "Storename"
-    var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = "produkt udostêpniony do pobierania?"; 
-    
-    var $_PHPSHOP_PAYPAL_THANKYOU = "Dziêkujemy za dokonan± p³atno¶æ. 
+class phpShopLanguage extends vmAbstractLanguage {
+	var $_PHPSHOP_MENU = 'Menu';
+	var $_PHPSHOP_CATEGORY = 'Kategoria';
+	var $_PHPSHOP_CATEGORIES = 'Kategorie';
+	var $_PHPSHOP_SELECT_CATEGORY = 'Wybierz kategoriê:';
+	var $_PHPSHOP_ADMIN = 'Administracja';
+	var $_PHPSHOP_PRODUCT = 'Produkt';
+	var $_PHPSHOP_LIST = 'Listuj';
+	var $_PHPSHOP_ALL = 'Wszystkie';
+	var $_PHPSHOP_LIST_ALL_PRODUCTS = 'Lista produktów';
+	var $_PHPSHOP_VIEW = 'widok';
+	var $_PHPSHOP_SHOW = 'poka¿';
+	var $_PHPSHOP_ADD = 'dodaj';
+	var $_PHPSHOP_UPDATE = 'aktualizuj';
+	var $_PHPSHOP_DELETE = 'usuñ';
+	var $_PHPSHOP_SELECT = 'wybierz';
+	var $_PHPSHOP_SUBMIT = 'Submit';
+	var $_PHPSHOP_RANDOM = 'Losowo wybrane produkty';
+	var $_PHPSHOP_LATEST = 'Ostatnio dodane produkty';
+	var $_PHPSHOP_HOME_TITLE = 'Strona g³ówna';
+	var $_PHPSHOP_CART_TITLE = 'Koszyk';
+	var $_PHPSHOP_CHECKOUT_TITLE = 'Zamówienie';
+	var $_PHPSHOP_LOGIN_TITLE = 'Zaloguj siê';
+	var $_PHPSHOP_LOGOUT_TITLE = 'Wyloguj siê';
+	var $_PHPSHOP_BROWSE_TITLE = 'Przegl±daj';
+	var $_PHPSHOP_SEARCH_TITLE = 'Szukaj';
+	var $_PHPSHOP_ACCOUNT_TITLE = 'Zarz±dzanie kontem';
+	var $_PHPSHOP_NAVIGATION_TITLE = 'Nawigacja';
+	var $_PHPSHOP_DEPARTMENT_TITLE = 'Oddzia³';
+	var $_PHPSHOP_INFO = 'Informacja';
+	var $_PHPSHOP_BROWSE_LBL = 'Przegl±daj';
+	var $_PHPSHOP_PRODUCTS_LBL = 'Produkty';
+	var $_PHPSHOP_PRODUCT_LBL = 'Produkt';
+	var $_PHPSHOP_SEARCH_LBL = 'Szukaj';
+	var $_PHPSHOP_FLYPAGE_LBL = 'Szczegó³y produktu';
+	var $_PHPSHOP_PRODUCT_SEARCH_LBL = 'Wyszukiwanie produktu';
+	var $_PHPSHOP_PRODUCT_NAME_TITLE = 'Nazwa produktu';
+	var $_PHPSHOP_PRODUCT_CATEGORY_TITLE = 'Kategoria produktu';
+	var $_PHPSHOP_PRODUCT_DESC_TITLE = 'Opis';
+	var $_PHPSHOP_CART_SHOW = 'Poka¿ koszyk';
+	var $_PHPSHOP_CART_ADD_TO = 'Dodaj do koszyka';
+	var $_PHPSHOP_CART_NAME = 'Nazwa';
+	var $_PHPSHOP_CART_SKU = 'Symbol';
+	var $_PHPSHOP_CART_PRICE = 'Cena';
+	var $_PHPSHOP_CART_QUANTITY = 'Ilo¶æ';
+	var $_PHPSHOP_CART_SUBTOTAL = 'Podsuma';
+	var $_PHPSHOP_ADD_SHIPTO_1 = 'Dodaj nowy';
+	var $_PHPSHOP_ADD_SHIPTO_2 = 'Adres wysy³ki';
+	var $_PHPSHOP_NO_SEARCH_RESULT = 'Nie znaleziono elementów spe³niaj±cych podane kryteria wyszukiwania.<br />';
+	var $_PHPSHOP_PRICE_LABEL = 'Cena: ';
+	var $_PHPSHOP_ORDER_BUTTON_LABEL = 'Dodaj do koszyka';
+	var $_PHPSHOP_NO_CUSTOMER = 'Nie jeste¶ jeszcze zarejestrowanym klientem. Prosimy o wprowadzenie swoich danych.';
+	var $_PHPSHOP_DELETE_MSG = 'Czy napewno chcesz usun±æ ten zapis?';
+	var $_PHPSHOP_THANKYOU = 'Dziêkujemy za zamówienie.';
+	var $_PHPSHOP_NOT_SHIPPED = 'Jeszcze nie wys³ano';
+	var $_PHPSHOP_EMAIL_SENDTO = 'Potwierdzenie zamówienia zosta³o wys³ane do';
+	var $_PHPSHOP_NO_USER_TO_SELECT = 'Przepraszamy, ale nie ma ¿adnego u¿ytkownika MOS, który móg³by zostaæ dodany do listy u¿ytkowników com_phpshop';
+	var $_PHPSHOP_ERROR = 'B£¡D';
+	var $_PHPSHOP_MOD_NOT_REG = 'Modu³ nie zarejestrowany.';
+	var $_PHPSHOP_MOD_ISNO_REG = 'nie jest prawid³owym modu³em phpShop.';
+	var $_PHPSHOP_MOD_NO_AUTH = 'Nie masz uprawnieñ dostêpu do ¿±danego modu³u.';
+	var $_PHPSHOP_PAGE_404_1 = 'Strona nie istnieje';
+	var $_PHPSHOP_PAGE_404_2 = 'Plik o danej nazwie nie istnieje. Nie mo¿na znale¼æ pliku:';
+	var $_PHPSHOP_PAGE_403 = 'Niewystarczaj±ce prawa dostêpu';
+	var $_PHPSHOP_FUNC_NO_EXEC = 'Nie masz uprawnieñ, aby uruchomiæ ';
+	var $_PHPSHOP_FUNC_NOT_REG = 'Funkcja nie jest zarejestrowana';
+	var $_PHPSHOP_FUNC_ISNO_REG = ' nie jest prawid³owa funkcj± MOS_com_phpshop.';
+	var $_PHPSHOP_ADMIN_MOD = 'Admin';
+	var $_PHPSHOP_USER_LIST_MNU = 'Wylistuj u¿ytkowników';
+	var $_PHPSHOP_USER_LIST_LBL = 'Lista u¿ytkowników';
+	var $_PHPSHOP_USER_LIST_USERNAME = 'Nazwa u¿ytkownika';
+	var $_PHPSHOP_USER_LIST_FULL_NAME = 'Pe³na nazwa';
+	var $_PHPSHOP_USER_LIST_GROUP = 'Grupa';
+	var $_PHPSHOP_USER_FORM_MNU = 'Dodaj u¿ytkownika';
+	var $_PHPSHOP_USER_FORM_LBL = 'Dodaj/edytuj informacje o u¿ytkowniku';
+	var $_PHPSHOP_USER_FORM_BILLTO_LBL = 'Dane klienta';
+	var $_PHPSHOP_USER_FORM_SHIPTO_LBL = 'Adresy wysy³ki';
+	var $_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL = 'Dodaj adres';
+	var $_PHPSHOP_USER_FORM_NO_SHIPPING_ADDRESSES = 'No shipping addresses.';
+	var $_PHPSHOP_USER_FORM_ADDRESS_LABEL = 'Alias adresu';
+	var $_PHPSHOP_USER_FORM_FIRST_NAME = 'Imiê';
+	var $_PHPSHOP_USER_FORM_LAST_NAME = 'Nazwisko';
+	var $_PHPSHOP_USER_FORM_MIDDLE_NAME = 'Drugie imiê';
+	var $_PHPSHOP_USER_FORM_TITLE = 'Tytu³';
+	var $_PHPSHOP_USER_FORM_USERNAME = 'Nazwa u¿ytkownika';
+	var $_PHPSHOP_USER_FORM_PASSWORD_1 = 'Has³o';
+	var $_PHPSHOP_USER_FORM_PASSWORD_2 = 'Potwierd¼ has³o';
+	var $_PHPSHOP_USER_FORM_PERMS = 'Uprawnienia';
+	var $_PHPSHOP_USER_FORM_CUSTOMER_NUMBER = 'Customer Number / ID';
+	var $_PHPSHOP_USER_FORM_COMPANY_NAME = 'Nazwa firmy';
+	var $_PHPSHOP_USER_FORM_ADDRESS_1 = 'Adres 1';
+	var $_PHPSHOP_USER_FORM_ADDRESS_2 = 'Adres 2';
+	var $_PHPSHOP_USER_FORM_CITY = 'Miasto';
+	var $_PHPSHOP_USER_FORM_STATE = 'Województwo';
+	var $_PHPSHOP_USER_FORM_ZIP = 'Kod pocztowy';
+	var $_PHPSHOP_USER_FORM_COUNTRY = 'Kraj';
+	var $_PHPSHOP_USER_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_USER_FORM_PHONE2 = 'Mobile Phone';
+	var $_PHPSHOP_USER_FORM_FAX = 'Faks';
+	var $_PHPSHOP_USER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_MODULE_LIST_MNU = 'Wylistuj modu³y';
+	var $_PHPSHOP_MODULE_LIST_LBL = 'Lista modu³ów';
+	var $_PHPSHOP_MODULE_LIST_NAME = 'Nazwa modu³u';
+	var $_PHPSHOP_MODULE_LIST_PERMS = 'Uprawnienia modu³u';
+	var $_PHPSHOP_MODULE_LIST_FUNCTIONS = 'Funkcje';
+	var $_PHPSHOP_MODULE_LIST_ORDER = 'Kolejno¶æ na li¶cie';
+	var $_PHPSHOP_MODULE_FORM_MNU = 'Dodaj modu³';
+	var $_PHPSHOP_MODULE_FORM_LBL = 'Informacja o module';
+	var $_PHPSHOP_MODULE_FORM_MODULE_LABEL = 'Etykieta modu³u (dla menu górnego)';
+	var $_PHPSHOP_MODULE_FORM_NAME = 'Nazwa modu³u';
+	var $_PHPSHOP_MODULE_FORM_PERMS = 'Uprawnienia modu³u';
+	var $_PHPSHOP_MODULE_FORM_HEADER = 'Nag³ówek modu³u';
+	var $_PHPSHOP_MODULE_FORM_FOOTER = 'Stopka modu³u';
+	var $_PHPSHOP_MODULE_FORM_MENU = 'Pokazuj modu³ w menu administracyjnym?';
+	var $_PHPSHOP_MODULE_FORM_ORDER = 'Porz±dek wy¶wietlania';
+	var $_PHPSHOP_MODULE_FORM_DESCRIPTION = 'Opis modu³u';
+	var $_PHPSHOP_MODULE_FORM_LANGUAGE_CODE = 'Kod jêzyka';
+	var $_PHPSHOP_MODULE_FORM_LANGUAGE_file = 'Plik jêzyka';
+	var $_PHPSHOP_FUNCTION_LIST_MNU = 'Wylistuj funkcje';
+	var $_PHPSHOP_FUNCTION_LIST_LBL = 'Lista funkcji';
+	var $_PHPSHOP_FUNCTION_LIST_NAME = 'Nazwa funkcji';
+	var $_PHPSHOP_FUNCTION_LIST_CLASS = 'Nazwa klasy';
+	var $_PHPSHOP_FUNCTION_LIST_METHOD = 'Metoda klasy';
+	var $_PHPSHOP_FUNCTION_LIST_PERMS = 'Uprawnienia';
+	var $_PHPSHOP_FUNCTION_FORM_MNU = 'Dodaj fukcjê';
+	var $_PHPSHOP_FUNCTION_FORM_LBL = 'Informacja o funkcji';
+	var $_PHPSHOP_FUNCTION_FORM_NAME = 'Nazwa funkcji';
+	var $_PHPSHOP_FUNCTION_FORM_CLASS = 'Nazwa klasy';
+	var $_PHPSHOP_FUNCTION_FORM_METHOD = 'Metoda klasy';
+	var $_PHPSHOP_FUNCTION_FORM_PERMS = 'Uprawnienia funkcji';
+	var $_PHPSHOP_FUNCTION_FORM_DESCRIPTION = 'Opis funkcji';
+	var $_PHPSHOP_CURRENCY_LIST_MNU = 'Wylistuj waluty';
+	var $_PHPSHOP_CURRENCY_LIST_LBL = 'Lista walut';
+	var $_PHPSHOP_CURRENCY_LIST_ADD = 'Dodaj walutê';
+	var $_PHPSHOP_CURRENCY_LIST_NAME = 'Nazwa waluty';
+	var $_PHPSHOP_CURRENCY_LIST_CODE = 'Kod waluty';
+	var $_PHPSHOP_COUNTRY_LIST_MNU = 'Wylistuj kraje';
+	var $_PHPSHOP_COUNTRY_LIST_LBL = 'Lista krajów';
+	var $_PHPSHOP_COUNTRY_LIST_ADD = 'Dodaj kraj';
+	var $_PHPSHOP_COUNTRY_LIST_NAME = 'Nazwa kraju';
+	var $_PHPSHOP_COUNTRY_LIST_3_CODE = 'Kod kraju (3)';
+	var $_PHPSHOP_COUNTRY_LIST_2_CODE = 'Kod kraju (2)';
+	var $_PHPSHOP_STATE_LIST_MNU = 'List State';
+	var $_PHPSHOP_STATE_LIST_LBL = 'State List for: ';
+	var $_PHPSHOP_STATE_LIST_ADD = 'Add/Update a State';
+	var $_PHPSHOP_STATE_LIST_NAME = 'State Name';
+	var $_PHPSHOP_STATE_LIST_3_CODE = 'State Code (3)';
+	var $_PHPSHOP_STATE_LIST_2_CODE = 'State Code (2)';
+	var $_PHPSHOP_ADDRESS = 'Adres';
+	var $_PHPSHOP_CONTINUE = 'Kontynuuj';
+	var $_PHPSHOP_EMPTY_CART = 'Twój koszyk jest pusty.';
+	var $_PHPSHOP_ISSHIPPING_MOD = 'InterShipper';
+	var $_PHPSHOP_ISSHIP_PING_MNU = 'Pinguj serwer InterShippera';
+	var $_PHPSHOP_ISSHIP_PING_LBL = 'Ping serwera InterShipper';
+	var $_PHPSHOP_ISSHIP_PING_ERROR_LBL = 'Nieudany ping serwera InterShipper';
+	var $_PHPSHOP_ISSHIP_PING_GOOD_LBL = 'Ping serwera InterShipper wykonany pomy¶lnie';
+	var $_PHPSHOP_ISSHIP_PING_CARRIER_LBL = 'Spedytor';
+	var $_PHPSHOP_ISSHIP_PING_RESPONSE_LBL = 'Czas<br />odpowiedzi';
+	var $_PHPSHOP_ISSHIP_PING_TIME_LBL = 'sek.';
+	var $_PHPSHOP_ISSHIP_LIST_MNU = 'Lista metod wysy³ki';
+	var $_PHPSHOP_ISSHIP_LIST_LBL = 'Aktywne metody wysy³ki';
+	var $_PHPSHOP_ISSHIP_LIST_CARRIER_LBL = 'Metody wysy³ki';
+	var $_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL = 'Aktywny';
+	var $_PHPSHOP_ISSHIP_LIST_RATE_LBL = 'Op³aty manipulacyjne';
+	var $_PHPSHOP_ISSHIP_LIST_LEAD_LBL = 'Czas realizacji';
+	var $_PHPSHOP_ISSHIP_LIST_CHARGE_F_LBL = 'rycza³t';
+	var $_PHPSHOP_ISSHIP_LIST_CHARGE_P_LBL = 'procent';
+	var $_PHPSHOP_ISSHIP_LIST_DAYS_LBL = 'dni';
+	var $_PHPSHOP_ISSHIP_LIST_HEAVY_LBL = 'Ciê¿kie ³adunki';
+	var $_PHPSHOP_ISSHIP_FORM_MNU = 'Konfiguruj metody wysy³ki';
+	var $_PHPSHOP_ISSHIP_FORM_ADD_LBL = 'Dodaj metodê wysy³ki';
+	var $_PHPSHOP_ISSHIP_FORM_UPDATE_LBL = 'Konfiguruj metodê wysy³ki';
+	var $_PHPSHOP_ISSHIP_FORM_REFRESH_LBL = 'Odw¶ie¿';
+	var $_PHPSHOP_ISSHIP_FORM_CARRIER_LBL = 'Metoda wysy³ki';
+	var $_PHPSHOP_ISSHIP_FORM_PUBLISH_LBL = 'Aktywuj';
+	var $_PHPSHOP_ISSHIP_FORM_HANDLING_LBL = 'Op³ata manipulacyjna';
+	var $_PHPSHOP_ISSHIP_FORM_LEAD_LBL = 'Czas realizacji';
+	var $_PHPSHOP_ISSHIP_FORM_CHARGE_F_LBL = 'rycza³t';
+	var $_PHPSHOP_ISSHIP_FORM_CHARGE_P_LBL = 'procent';
+	var $_PHPSHOP_ISSHIP_FORM_DAYS_LBL = 'dni';
+	var $_PHPSHOP_ISSHIP_FORM_HEAVY_LBL = 'Ciê¿kie ³adunki';
+	var $_PHPSHOP_ORDER_MOD = 'Zamówienia';
+	var $_PHPSHOP_ORDER_CONFIRM_MNU = 'Potwierd¼ zamówienie';
+	var $_PHPSHOP_ORDER_CANCEL_MNU = 'Anuluj zamówienie';
+	var $_PHPSHOP_ORDER_PRINT_MNU = 'Drukuj zamówienie';
+	var $_PHPSHOP_ORDER_DELETE_MNU = 'Usuñ zamówienie';
+	var $_PHPSHOP_ORDER_LIST_MNU = 'Wylistuj zamówienia';
+	var $_PHPSHOP_ORDER_LIST_LBL = 'Lista zamówieñ';
+	var $_PHPSHOP_ORDER_LIST_ID = 'Numer zamówienia';
+	var $_PHPSHOP_ORDER_LIST_CDATE = 'Data zamówienia';
+	var $_PHPSHOP_ORDER_LIST_MDATE = 'Ostatnia modyfikacja';
+	var $_PHPSHOP_ORDER_LIST_STATUS = 'Stan';
+	var $_PHPSHOP_ORDER_LIST_TOTAL = 'Podsuma';
+	var $_PHPSHOP_ORDER_ITEM = 'Szczegó³y zamówienia';
+	var $_PHPSHOP_ORDER_PRINT_PO_LBL = 'Zamówienie';
+	var $_PHPSHOP_ORDER_PRINT_PO_NUMBER = 'Numer zamówienia';
+	var $_PHPSHOP_ORDER_PRINT_PO_DATE = 'Data zamówienia';
+	var $_PHPSHOP_ORDER_PRINT_PO_STATUS = 'Stan zamówienia';
+	var $_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL = 'Dane klienta';
+	var $_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL = 'Dane do faktury';
+	var $_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL = 'Informacje o wysy³ce';
+	var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = 'Rachunek dla';
+	var $_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL = 'Wysy³ka do';
+	var $_PHPSHOP_ORDER_PRINT_NAME = 'Nazwa';
+	var $_PHPSHOP_ORDER_PRINT_COMPANY = 'Firma';
+	var $_PHPSHOP_ORDER_PRINT_ADDRESS_1 = 'Adres 1';
+	var $_PHPSHOP_ORDER_PRINT_ADDRESS_2 = 'Adres 2';
+	var $_PHPSHOP_ORDER_PRINT_CITY = 'Miasto';
+	var $_PHPSHOP_ORDER_PRINT_STATE = 'Województwo';
+	var $_PHPSHOP_ORDER_PRINT_ZIP = 'Kod pocztowy';
+	var $_PHPSHOP_ORDER_PRINT_COUNTRY = 'Kraj';
+	var $_PHPSHOP_ORDER_PRINT_PHONE = 'Telefon';
+	var $_PHPSHOP_ORDER_PRINT_FAX = 'Faks';
+	var $_PHPSHOP_ORDER_PRINT_EMAIL = 'Email';
+	var $_PHPSHOP_ORDER_PRINT_ITEMS_LBL = 'Szczegó³y zamówienia';
+	var $_PHPSHOP_ORDER_PRINT_QUANTITY = 'Ilo¶æ';
+	var $_PHPSHOP_ORDER_PRINT_QTY = 'Il.';
+	var $_PHPSHOP_ORDER_PRINT_SKU = 'Symbol';
+	var $_PHPSHOP_ORDER_PRINT_PRICE = 'Cena';
+	var $_PHPSHOP_ORDER_PRINT_TOTAL = 'Suma';
+	var $_PHPSHOP_ORDER_PRINT_SUBTOTAL = 'Podsuma';
+	var $_PHPSHOP_ORDER_PRINT_TOTAL_TAX = 'Podatek';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING = 'Koszty wysy³ki';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_TAX = 'Podatek od wysy³ki';
+	var $_PHPSHOP_ORDER_PRINT_PAYMENT_LBL = 'Metoda p³atno¶ci';
+	var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME = 'Nazwa rachunku';
+	var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER = 'Numer rachunku';
+	var $_PHPSHOP_ORDER_PRINT_EXPIRE_DATE = 'Data wyga¶niêcia';
+	var $_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL = 'Dziennik p³atno¶ci';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_LBL = 'Informacje o wysy³ce';
+	var $_PHPSHOP_ORDER_PRINT_PAYINFO_LBL = 'Informacje o p³atno¶ci';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL = 'Spedytor';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL = 'Rodzaj wysy³ki';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_DATE_LBL = 'Data wysy³ki';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL = 'Koszt wysy³ki';
+	var $_PHPSHOP_ORDER_STATUS_LIST_MNU = 'Wylistuj typy stanów zamówieñ';
+	var $_PHPSHOP_ORDER_STATUS_FORM_MNU = 'Dodaj typ stanu zamówienia';
+	var $_PHPSHOP_ORDER_STATUS_LIST_CODE = 'Kod stanu zamówienia';
+	var $_PHPSHOP_ORDER_STATUS_LIST_NAME = 'Nazwa stanu zamówienia';
+	var $_PHPSHOP_ORDER_STATUS_FORM_LBL = 'Stan zamówienia';
+	var $_PHPSHOP_ORDER_STATUS_FORM_CODE = 'Kod stanu zamówienia';
+	var $_PHPSHOP_ORDER_STATUS_FORM_NAME = 'Nazwa stanu zamówienia';
+	var $_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER = 'Kolejno¶æ na li¶cie';
+	var $_PHPSHOP_PRODUCT_MOD = 'Produkty';
+	var $_PHPSHOP_CURRENT_PRODUCT = 'Aktualny produkt';
+	var $_PHPSHOP_CURRENT_ITEM = 'Aktualny element';
+	var $_PHPSHOP_PRODUCT_INVENTORY_LBL = 'Spis produktów';
+	var $_PHPSHOP_PRODUCT_INVENTORY_MNU = 'Poka¿ spis produktów';
+	var $_PHPSHOP_PRODUCT_INVENTORY_PRICE = 'Cena';
+	var $_PHPSHOP_PRODUCT_INVENTORY_STOCK = 'Numer';
+	var $_PHPSHOP_PRODUCT_INVENTORY_WEIGHT = 'Waga';
+	var $_PHPSHOP_PRODUCT_LIST_MNU = 'Wylistuj produkty';
+	var $_PHPSHOP_PRODUCT_LIST_LBL = 'Lista produktów';
+	var $_PHPSHOP_PRODUCT_LIST_NAME = 'Nazwa produtku';
+	var $_PHPSHOP_PRODUCT_LIST_SKU = 'Symbol';
+	var $_PHPSHOP_PRODUCT_LIST_PUBLISH = 'Publikuj';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE = 'Search Product';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT = 'modyfied';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE = 'with price modyfied';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE = 'without price';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER = 'After';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE = 'Before';
+	var $_PHPSHOP_PRODUCT_FORM_MNU = 'Dodaj produkt';
+	var $_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT = 'Edytuj ten produtk';
+	var $_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE = 'Podgl±d produktu w sklepie';
+	var $_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU = 'Dodaj element';
+	var $_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU = 'Dodaj nastêpny element';
+	var $_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL = 'Nowy produkt';
+	var $_PHPSHOP_PRODUCT_FORM_UPDATE_PRODUCT_LBL = 'Aktualizuj produkt';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL = 'Informacja o produkcie';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL = 'Stan produktu';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL = 'Wymiary i waga produktu';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL = 'Zdjêcia produktu';
+	var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = 'Nowy element';
+	var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = 'Aktualizuj element';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = 'Informacja o elemencie';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = 'Stan elementu';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = 'Wymiary i waga elementu';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = 'Zdjêcia elementu';
+	var $_PHPSHOP_PRODUCT_FORM_RETURN_LBL = 'Powrót do macierzystego produktu';
+	var $_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL = 'Aby zaktualizowaæ zdjêcie, wprowad¼ scie¿kê do nowego zdjêcia.';
+	var $_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL = 'Wprowad¼ ';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL = 'Elementy produktu';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL = 'Atrybuty elementu';
+	var $_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG = 'Czy napewno chcesz usun±æ ten produkt\\ni powi±zane z nim elementy?';
+	var $_PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG = 'Czy napewno chcesz usun±æ ten element?';
+	var $_PHPSHOP_PRODUCT_FORM_VENDOR = 'Dostawca';
+	var $_PHPSHOP_PRODUCT_FORM_MANUFACTURER = 'Producent';
+	var $_PHPSHOP_PRODUCT_FORM_SKU = 'Symbol';
+	var $_PHPSHOP_PRODUCT_FORM_NAME = 'Nazwa';
+	var $_PHPSHOP_PRODUCT_FORM_URL = 'URL';
+	var $_PHPSHOP_PRODUCT_FORM_CATEGORY = 'Kategoria';
+	var $_PHPSHOP_PRODUCT_FORM_PRICE_GROSS = 'Cena detaliczn';
+	var $_PHPSHOP_PRODUCT_FORM_PRICE_NET = 'Product Price (Net)';
+	var $_PHPSHOP_PRODUCT_FORM_DESCRIPTION = 'Pe³ny opis produktu';
+	var $_PHPSHOP_PRODUCT_FORM_S_DESC = 'Skrócony opis';
+	var $_PHPSHOP_PRODUCT_FORM_IN_STOCK = 'Produkt dostêpny';
+	var $_PHPSHOP_PRODUCT_FORM_ON_ORDER = 'Na zamówienie';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE = 'Data dostêpno¶ci produktu';
+	var $_PHPSHOP_PRODUCT_FORM_SPECIAL = 'W promocji';
+	var $_PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE = 'Typ zni¿ki';
+	var $_PHPSHOP_PRODUCT_FORM_PUBLISH = 'Publikowaæ?';
+	var $_PHPSHOP_PRODUCT_FORM_LENGTH = 'D³ugo¶æ';
+	var $_PHPSHOP_PRODUCT_FORM_WIDTH = 'Szeroko¶æ';
+	var $_PHPSHOP_PRODUCT_FORM_HEIGHT = 'Wysoko¶æ';
+	var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM = 'Jednostka miary';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT = 'Waga';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM = 'Jednostka miary';
+	var $_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE = 'Miniaturka';
+	var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = 'Zdjêcie';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT = 'pounds';
+	var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT = 'inches';
+	var $_PHPSHOP_PRODUCT_FORM_UNIT = 'Unit';
+	var $_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT = 'piece';
+	var $_PHPSHOP_PRODUCT_FORM_PACKAGING = 'Units in Packaging';
+	var $_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION = 'Here you can fill in a number unit in packaging. (max. 65535)';
+	var $_PHPSHOP_PRODUCT_FORM_BOX = 'Units in Box';
+	var $_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION = 'Here you can fill in a number unit in box. (max. 65535)';
+	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = 'Dodaj wyniki produktu';
+	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = 'Aktualizuj wyniki produktu';
+	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = 'Dodaj wyniki elementu';
+	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL = 'Aktualizuj wyniki elementu';
+	var $_PHPSHOP_PRODUCT_CSV_UPLOAD = 'Importuj z pliku CSV';
+	var $_PHPSHOP_PRODUCT_FOLDERS = 'Foldery produktów';
+	var $_PHPSHOP_CATEGORY_LIST_MNU = 'Wylistuj kategorie';
+	var $_PHPSHOP_CATEGORY_LIST_LBL = 'Drzewo kategorii';
+	var $_PHPSHOP_CATEGORY_FORM_MNU = 'Dodaj kategoriê';
+	var $_PHPSHOP_CATEGORY_FORM_LBL = 'Informacje o kategorii';
+	var $_PHPSHOP_CATEGORY_FORM_NAME = 'Nazwa kategorii';
+	var $_PHPSHOP_CATEGORY_FORM_PARENT = 'Kategoria nadrzêdna';
+	var $_PHPSHOP_CATEGORY_FORM_DESCRIPTION = 'Opis kategorii';
+	var $_PHPSHOP_CATEGORY_FORM_PUBLISH = 'Publikuj?';
+	var $_PHPSHOP_CATEGORY_FORM_FLYPAGE = 'Strona kategorii';
+	var $_PHPSHOP_ATTRIBUTE_LIST_MNU = 'Wylistuj atrybuty';
+	var $_PHPSHOP_ATTRIBUTE_LIST_LBL = 'Lista atrybutów dla';
+	var $_PHPSHOP_ATTRIBUTE_LIST_NAME = 'Nazwa atrybutu';
+	var $_PHPSHOP_ATTRIBUTE_LIST_ORDER = 'Kolejno¶æ na li¶cie';
+	var $_PHPSHOP_ATTRIBUTE_FORM_MNU = 'Dodaj atrybut';
+	var $_PHPSHOP_ATTRIBUTE_FORM_LBL = 'Formularz atrybutu';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT = 'Nowy atrybut dla produktu';
+	var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT = 'Aktualizuj atrybut dla produktu';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM = 'Nowy atrybut dla elementu';
+	var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM = 'Aktualizuj atrybut dla elementu';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NAME = 'Nazwa atrybutu';
+	var $_PHPSHOP_ATTRIBUTE_FORM_ORDER = 'Kolejno¶æ na li¶ci';
+	var $_PHPSHOP_PRICE_LIST_MNU = 'Wylistuj ceny';
+	var $_PHPSHOP_PRICE_LIST_LBL = 'Drzewo cen';
+	var $_PHPSHOP_PRICE_LIST_FOR_LBL = 'Cena dla';
+	var $_PHPSHOP_PRICE_LIST_GROUP_NAME = 'Nazwa grupy';
+	var $_PHPSHOP_PRICE_LIST_PRICE = 'Cena';
+	var $_PHPSHOP_PRODUCT_LIST_CURRENCY = 'Waluta';
+	var $_PHPSHOP_PRICE_FORM_MNU = 'Dodaj cenê';
+	var $_PHPSHOP_PRICE_FORM_LBL = 'Informacja o cenie';
+	var $_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT = 'Nowa cena dla produktu';
+	var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT = 'Aktualizuj cenê dla produktu';
+	var $_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM = 'Nowa cena dla elementu';
+	var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM = 'Aktualizuj cenê dla elementu';
+	var $_PHPSHOP_PRICE_FORM_PRICE = 'Cena';
+	var $_PHPSHOP_PRICE_FORM_CURRENCY = 'Waluta';
+	var $_PHPSHOP_PRICE_FORM_GROUP = 'Grupa klientów';
+	var $_PHPSHOP_REPORTBASIC_MOD = 'Raporty';
+	var $_PHPSHOP_RB_INDIVIDUAL = 'Indywidualny wykaz produktóws';
+	var $_PHPSHOP_RB_SALE_TITLE = 'Raporty sprzeda¿y';
+	var $_PHPSHOP_RB_SALES_PAGE_TITLE = 'Przegl±d przebiegu sprzeda¿y';
+	var $_PHPSHOP_RB_INTERVAL_TITLE = 'Ustaw odstêp czasowy';
+	var $_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE = 'Miesiêczny';
+	var $_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE = 'Tygodniowy';
+	var $_PHPSHOP_RB_INTERVAL_DAILY_TITLE = 'Dzienny';
+	var $_PHPSHOP_RB_THISMONTH_BUTTON = 'Ten miesi±c';
+	var $_PHPSHOP_RB_LASTMONTH_BUTTON = 'Ostatni miesi±c';
+	var $_PHPSHOP_RB_LAST60_BUTTON = 'Ostatnie 60 dni';
+	var $_PHPSHOP_RB_LAST90_BUTTON = 'Ostatnie 90 dni';
+	var $_PHPSHOP_RB_START_DATE_TITLE = 'Pocz±tek';
+	var $_PHPSHOP_RB_END_DATE_TITLE = 'Koniec';
+	var $_PHPSHOP_RB_SHOW_SEL_RANGE = 'Poka¿ wybrany zakres';
+	var $_PHPSHOP_RB_REPORT_FOR = 'Raport dla ';
+	var $_PHPSHOP_RB_DATE = 'Data';
+	var $_PHPSHOP_RB_ORDERS = 'Zamówienia';
+	var $_PHPSHOP_RB_TOTAL_ITEMS = 'Suma sprzedanych artyku³ów';
+	var $_PHPSHOP_RB_REVENUE = 'Dochody';
+	var $_PHPSHOP_RB_PRODLIST = 'Wykaz produktów';
+	var $_PHPSHOP_SHOP_MOD = 'Sklep';
+	var $_PHPSHOP_PRODUCT_THUMB_TITLE = 'Zdjêcie';
+	var $_PHPSHOP_PRODUCT_PRICE_TITLE = 'Cena';
+	var $_PHPSHOP_ORDER_STATUS_P = 'Oczekuje';
+	var $_PHPSHOP_ORDER_STATUS_C = 'Potwierdzone';
+	var $_PHPSHOP_ORDER_STATUS_X = 'Anulowane';
+	var $_PHPSHOP_ORDER_BUTTON = 'Zamówienie';
+	var $_PHPSHOP_SHOPPER_MOD = 'Klient';
+	var $_PHPSHOP_SHOPPER_LIST_MNU = 'Wylistuj klientów';
+	var $_PHPSHOP_SHOPPER_LIST_LBL = 'Lista klientów';
+	var $_PHPSHOP_SHOPPER_LIST_USERNAME = 'Nazwa u¿ytkownika';
+	var $_PHPSHOP_SHOPPER_LIST_NAME = 'Pe³na nazwa';
+	var $_PHPSHOP_SHOPPER_LIST_GROUP = 'Grupa';
+	var $_PHPSHOP_SHOPPER_FORM_MNU = 'Dodaj klienta';
+	var $_PHPSHOP_SHOPPER_FORM_LBL = 'Informacje o kliencie';
+	var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = 'Dane klienta';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL = 'Informacja';
+	var $_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL = 'Informacje o wysy³ce';
+	var $_PHPSHOP_SHOPPER_FORM_ADD_SHIPTO_LBL = 'Dodaj adres';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL = 'Alias adresu';
+	var $_PHPSHOP_SHOPPER_FORM_USERNAME = 'Nazwa u¿ytkownika';
+	var $_PHPSHOP_SHOPPER_FORM_FIRST_NAME = 'Imiê';
+	var $_PHPSHOP_SHOPPER_FORM_LAST_NAME = 'Nazwisko';
+	var $_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME = 'Drugie imiê';
+	var $_PHPSHOP_SHOPPER_FORM_TITLE = 'Tytu³';
+	var $_PHPSHOP_SHOPPER_FORM_SHOPPERNAME = 'Nazwa klienta';
+	var $_PHPSHOP_SHOPPER_FORM_PASSWORD_1 = 'Has³o';
+	var $_PHPSHOP_SHOPPER_FORM_PASSWORD_2 = 'Potwierd¼ has³o';
+	var $_PHPSHOP_SHOPPER_FORM_GROUP = 'Grupa klienta';
+	var $_PHPSHOP_SHOPPER_FORM_COMPANY_NAME = 'Nazwa firmy';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_1 = 'Adres 1';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_2 = 'Adres 2';
+	var $_PHPSHOP_SHOPPER_FORM_CITY = 'Miasto';
+	var $_PHPSHOP_SHOPPER_FORM_STATE = 'Województwo';
+	var $_PHPSHOP_SHOPPER_FORM_ZIP = 'Kod pocztowy';
+	var $_PHPSHOP_SHOPPER_FORM_COUNTRY = 'Kraj';
+	var $_PHPSHOP_SHOPPER_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_SHOPPER_FORM_PHONE2 = 'Mobile phone';
+	var $_PHPSHOP_SHOPPER_FORM_FAX = 'Faks';
+	var $_PHPSHOP_SHOPPER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1 = 'Yes';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2 = 'No';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1 = 'AAA';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2 = 'BBB';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3 = 'CCC';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_MNU = 'Wylistuj grupy klientów';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_LBL = 'Lista grup klientów';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_NAME = 'Nazwa grupy';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION = 'Opis grupy';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_LBL = 'Formularz grupy klientów';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_MNU = 'Dodaj grupê klientów';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_NAME = 'Nazwa grupy';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DESC = 'Opis grupy';
+	var $_PHPSHOP_STORE_MOD = 'Sklep';
+	var $_PHPSHOP_STORE_FORM_MNU = 'Edytuj sklep';
+	var $_PHPSHOP_STORE_FORM_LBL = 'Informacje o sklepie';
+	var $_PHPSHOP_STORE_FORM_CONTACT_LBL = 'Informacje kontaktowe';
+	var $_PHPSHOP_STORE_FORM_FULL_IMAGE = 'Logo sklepu';
+	var $_PHPSHOP_STORE_FORM_UPLOAD = 'Wczytaj logo';
+	var $_PHPSHOP_STORE_FORM_STORE_NAME = 'Nazwa sklepu';
+	var $_PHPSHOP_STORE_FORM_COMPANY_NAME = 'Nazwa firmy';
+	var $_PHPSHOP_STORE_FORM_ADDRESS_1 = 'Adres 1';
+	var $_PHPSHOP_STORE_FORM_ADDRESS_2 = 'Adres 2';
+	var $_PHPSHOP_STORE_FORM_CITY = 'Miasto';
+	var $_PHPSHOP_STORE_FORM_STATE = 'Województwo';
+	var $_PHPSHOP_STORE_FORM_COUNTRY = 'Kraj';
+	var $_PHPSHOP_STORE_FORM_ZIP = 'Kod pocztowy';
+	var $_PHPSHOP_STORE_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_STORE_FORM_CURRENCY = 'Waluta';
+	var $_PHPSHOP_STORE_FORM_CATEGORY = 'Kategoria sklepu';
+	var $_PHPSHOP_STORE_FORM_LAST_NAME = 'Nazwisko';
+	var $_PHPSHOP_STORE_FORM_FIRST_NAME = 'Imiê';
+	var $_PHPSHOP_STORE_FORM_MIDDLE_NAME = 'Drugie imiê';
+	var $_PHPSHOP_STORE_FORM_TITLE = 'Tytu³';
+	var $_PHPSHOP_STORE_FORM_PHONE_1 = 'Telefon 1';
+	var $_PHPSHOP_STORE_FORM_PHONE_2 = 'Telefon 2';
+	var $_PHPSHOP_STORE_FORM_FAX = 'Faks';
+	var $_PHPSHOP_STORE_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_STORE_FORM_IMAGE_PATH = '¦cie¿ka do obrazka';
+	var $_PHPSHOP_STORE_FORM_DESCRIPTION = 'Opis';
+	var $_PHPSHOP_PAYMENT = 'P³atno¶æ';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_MNU = 'Wylistuj metody p³atno¶ci';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_LBL = 'Lista metod p³atno¶ci';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_NAME = 'Nazwa';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_CODE = 'Kod';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT = 'Rabat';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP = 'Grupa klientów';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR = 'Typ metody p³atno¶ci';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_MNU = 'Dodaj metodê p³atno¶ci';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_LBL = 'Formularz metody p³atno¶ci';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_NAME = 'Nazwa metody p³atno¶ci';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP = 'Grupa klientów';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT = 'Rabat';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_CODE = 'Kod';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER = 'Kolejno¶æ na li¶cie';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR = 'Typ metody p³atno¶ci';
+	var $_PHPSHOP_TAX_MOD = 'Podatek';
+	var $_PHPSHOP_TAX_RATE = 'Stawki podatkowe';
+	var $_PHPSHOP_TAX_LIST_MNU = 'Wylistuj stawki podatkowe';
+	var $_PHPSHOP_TAX_LIST_LBL = 'Lista stawek podatkowych';
+	var $_PHPSHOP_TAX_LIST_STATE = 'Podatek dla regionu lub stanu';
+	var $_PHPSHOP_TAX_LIST_COUNTRY = 'Podatek dla kraju';
+	var $_PHPSHOP_TAX_LIST_RATE = 'Stawka podatku';
+	var $_PHPSHOP_TAX_FORM_MNU = 'Dodaj stawkê podatku';
+	var $_PHPSHOP_TAX_FORM_LBL = 'Dodaj informacjê o podatku';
+	var $_PHPSHOP_TAX_FORM_STATE = 'Podatek dla regionu lub stanu';
+	var $_PHPSHOP_TAX_FORM_COUNTRY = 'Podatek dla kraju';
+	var $_PHPSHOP_TAX_FORM_RATE = 'Stawka podatku (dla 16% => wpisz 0.16)';
+	var $_PHPSHOP_VENDOR_MOD = 'Dostawca';
+	var $_PHPSHOP_VENDOR_ADMIN = 'Dostawcy';
+	var $_PHPSHOP_VENDOR_LIST_MNU = 'Wylistuj dostawców';
+	var $_PHPSHOP_VENDOR_LIST_LBL = 'Lista dostawców';
+	var $_PHPSHOP_VENDOR_LIST_VENDOR_NAME = 'Nazwa dostawcy';
+	var $_PHPSHOP_VENDOR_LIST_ADMIN = 'Admin';
+	var $_PHPSHOP_VENDOR_FORM_MNU = 'Dodaj dostawcê';
+	var $_PHPSHOP_VENDOR_FORM_LBL = 'Dodaj informacjê';
+	var $_PHPSHOP_VENDOR_FORM_INFO_LBL = 'Informacja o dostawcy';
+	var $_PHPSHOP_VENDOR_FORM_CONTACT_LBL = 'Informacje kontaktowe';
+	var $_PHPSHOP_VENDOR_FORM_FULL_IMAGE = 'Obrazek';
+	var $_PHPSHOP_VENDOR_FORM_UPLOAD = 'Wgraj obrazek';
+	var $_PHPSHOP_VENDOR_FORM_STORE_NAME = 'Nazwa sklepu dostawcy';
+	var $_PHPSHOP_VENDOR_FORM_COMPANY_NAME = 'Nazwa firmy dostawcy';
+	var $_PHPSHOP_VENDOR_FORM_ADDRESS_1 = 'Adres 1';
+	var $_PHPSHOP_VENDOR_FORM_ADDRESS_2 = 'Adres 2';
+	var $_PHPSHOP_VENDOR_FORM_CITY = 'Miasto';
+	var $_PHPSHOP_VENDOR_FORM_STATE = 'Województwo';
+	var $_PHPSHOP_VENDOR_FORM_COUNTRY = 'Kraj';
+	var $_PHPSHOP_VENDOR_FORM_ZIP = 'Kod pocztowy';
+	var $_PHPSHOP_VENDOR_FORM_PHONE = 'Telefon';
+	var $_PHPSHOP_VENDOR_FORM_CURRENCY = 'Waluta';
+	var $_PHPSHOP_VENDOR_FORM_CATEGORY = 'Kategoria dostawcy';
+	var $_PHPSHOP_VENDOR_FORM_LAST_NAME = 'Nazwisko';
+	var $_PHPSHOP_VENDOR_FORM_FIRST_NAME = 'Imiê';
+	var $_PHPSHOP_VENDOR_FORM_MIDDLE_NAME = 'Drugie imiê';
+	var $_PHPSHOP_VENDOR_FORM_TITLE = 'Tytu³';
+	var $_PHPSHOP_VENDOR_FORM_PHONE_1 = 'Telefon 1';
+	var $_PHPSHOP_VENDOR_FORM_PHONE_2 = 'Telefon 2';
+	var $_PHPSHOP_VENDOR_FORM_FAX = 'Faks';
+	var $_PHPSHOP_VENDOR_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_VENDOR_FORM_IMAGE_PATH = '¦cie¿ka do obrazka';
+	var $_PHPSHOP_VENDOR_FORM_DESCRIPTION = 'Opis';
+	var $_PHPSHOP_VENDOR_CAT_LIST_MNU = 'Wylistuj kategorie dostawców';
+	var $_PHPSHOP_VENDOR_CAT_LIST_LBL = 'Lista kategorii dostawców';
+	var $_PHPSHOP_VENDOR_CAT_NAME = 'Nazwa kategorii';
+	var $_PHPSHOP_VENDOR_CAT_DESCRIPTION = 'Opis kategorii';
+	var $_PHPSHOP_VENDOR_CAT_VENDORS = 'Dostawcy';
+	var $_PHPSHOP_VENDOR_CAT_FORM_MNU = 'Dodaj kategoriê dostawców';
+	var $_PHPSHOP_VENDOR_CAT_FORM_LBL = 'Formularz kategorii dostawców';
+	var $_PHPSHOP_VENDOR_CAT_FORM_INFO_LBL = 'Informacje o kategorii';
+	var $_PHPSHOP_VENDOR_CAT_FORM_NAME = 'Nazwa kategorii';
+	var $_PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION = 'Opis kategorii';
+	var $_PHPSHOP_MANUFACTURER_MOD = 'Producent';
+	var $_PHPSHOP_MANUFACTURER_ADMIN = 'Producenci';
+	var $_PHPSHOP_MANUFACTURER_LIST_MNU = 'Wylistuj producentów';
+	var $_PHPSHOP_MANUFACTURER_LIST_LBL = 'Lista producentów';
+	var $_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME = 'Nazwa producenta';
+	var $_PHPSHOP_MANUFACTURER_LIST_ADMIN = 'Admin';
+	var $_PHPSHOP_MANUFACTURER_FORM_MNU = 'Dodaj producenta';
+	var $_PHPSHOP_MANUFACTURER_FORM_LBL = 'Dodaj informacjê';
+	var $_PHPSHOP_MANUFACTURER_FORM_INFO_LBL = 'Informacje o producencie';
+	var $_PHPSHOP_MANUFACTURER_FORM_NAME = 'Nazwa producenta';
+	var $_PHPSHOP_MANUFACTURER_FORM_CATEGORY = 'Kategoria producentów';
+	var $_PHPSHOP_MANUFACTURER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_MANUFACTURER_FORM_URL = 'Adres URL strony producenta';
+	var $_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION = 'Opis';
+	var $_PHPSHOP_MANUFACTURER_CAT_LIST_MNU = 'Wylistuj kategorie producentów';
+	var $_PHPSHOP_MANUFACTURER_CAT_LIST_LBL = 'Lista kategorii producentów';
+	var $_PHPSHOP_MANUFACTURER_CAT_NAME = 'Nazwa kategorii';
+	var $_PHPSHOP_MANUFACTURER_CAT_DESCRIPTION = 'Opis kategorii';
+	var $_PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS = 'Producenci';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_MNU = 'Dodaj kategoriê producentów';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_LBL = 'Formularz kategorii producentów';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL = 'Informacje o kategorii';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_NAME = 'Nazwa kategorii';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION = 'Opis kategorii';
+	var $_PHPSHOP_HELP_MOD = 'Pomoc';
+	var $_PHPSHOP_CART_ACTION = 'Aktualizuj';
+	var $_PHPSHOP_CART_UPDATE = 'Aktualizuj ilo¶æ produktów w koszyku';
+	var $_PHPSHOP_CART_DELETE = 'Usuñ produkt z koszyka';
+	var $_PHPSHOP_PRODUCT_PRICETAG = 'Cena';
+	var $_PHPSHOP_PRODUCT_CALL = 'Cena przez telefon';
+	var $_PHPSHOP_PRODUCT_PREVIOUS = 'Poprzedni';
+	var $_PHPSHOP_PRODUCT_NEXT = 'Nastêpny';
+	var $_PHPSHOP_CART_TAX = 'Podatek';
+	var $_PHPSHOP_CART_SHIPPING = 'Koszty wysy³ki';
+	var $_PHPSHOP_CART_TOTAL = 'Suma';
+	var $_PHPSHOP_CHECKOUT_NEXT = 'Nastêpny';
+	var $_PHPSHOP_CHECKOUT_REGISTER = 'Zarejestruj siê';
+	var $_PHPSHOP_CHECKOUT_CONF_BILLINFO = 'Dane klienta';
+	var $_PHPSHOP_CHECKOUT_CONF_COMPANY = 'Firma';
+	var $_PHPSHOP_CHECKOUT_CONF_NAME = 'Nazwa';
+	var $_PHPSHOP_CHECKOUT_CONF_ADDRESS = 'Adres';
+	var $_PHPSHOP_CHECKOUT_CONF_PHONE = 'Telefon';
+	var $_PHPSHOP_CHECKOUT_CONF_FAX = 'Faks';
+	var $_PHPSHOP_CHECKOUT_CONF_EMAIL = 'Email';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO = 'Informacje o wysy³ce';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY = 'Firma';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME = 'Nazwa';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS = 'Adres';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE = 'Telefon';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX = 'Faks';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO = 'Informacje o p³atno¶ci';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD = 'Nazwisko na karcie';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD = 'Metoda p³atno¶ci';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM = 'Numer karty kredytowej';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE = 'Data wyga¶niêcia';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER = 'Potwierdzenie zamówienia';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = 'informacja wymagana je¶li wybrana zosta³a p³atno¶æ kart± kredytow±';
+	var $_PHPSHOP_ZONE_MOD = 'Strefa wysy³ki';
+	var $_PHPSHOP_ZONE_LIST_MNU = 'Wylistuj strefy';
+	var $_PHPSHOP_ZONE_FORM_MNU = 'Dodaj strefê';
+	var $_PHPSHOP_ZONE_ASSIGN_MNU = 'Przypisz strefy';
+	var $_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL = 'Kraj';
+	var $_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL = 'Aktualna strefa';
+	var $_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL = 'Przypisz do strefy';
+	var $_PHPSHOP_ZONE_ASSIGN_UPDATE_LBL = 'Aktualizuj';
+	var $_PHPSHOP_ASSIGN_ZONE_PG_LBL = 'Przypisz strefy';
+	var $_PHPSHOP_ZONE_FORM_NAME_LBL = 'Nazwa strefy';
+	var $_PHPSHOP_ZONE_FORM_DESC_LBL = 'Opis strefy';
+	var $_PHPSHOP_ZONE_FORM_COST_PER_LBL = 'Koszty na produkt w strefie';
+	var $_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL = 'Limit kosztów strefy';
+	var $_PHPSHOP_ZONE_LIST_LBL = 'Lista stref';
+	var $_PHPSHOP_ZONE_LIST_NAME_LBL = 'Nazwa strefy';
+	var $_PHPSHOP_ZONE_LIST_DESC_LBL = 'Opis strefy';
+	var $_PHPSHOP_ZONE_LIST_COST_PER_LBL = 'Koszty na produkt w strefie';
+	var $_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL = 'Limit kosztów strefy';
+	var $_PHPSHOP_LOGIN_FIRST = 'Prosimy o zalogowanie siê lub rejestracjê (u¿ywaj±c modu³u logowania).<br>Dziêkujemy.';
+	var $_PHPSHOP_STORE_FORM_TOS = 'Zasady u¿ytkowania';
+	var $_PHPSHOP_AGREE_TO_TOS = 'Najpierw prosimy zaakceptowaæ nasze zasady u¿ytkowania.';
+	var $_PHPSHOP_I_AGREE_TO_TOS = 'Akceptujê zasady u¿ytkowania';
+	var $_PHPSHOP_LEAVE_BLANK = '(pozostaw puste je¶li nie masz <br /> indywidualnego pliku php!)';
+	var $_PHPSHOP_RETURN_LOGIN = 'Powracaj±cy klienci: Prosimy o zalogowanie siê';
+	var $_PHPSHOP_NEW_CUSTOMER = 'Nowi? Prosimy wprowadziæ swoje dane';
+	var $_PHPSHOP_ACC_CUSTOMER_ACCOUNT = 'Konto klienta:';
+	var $_PHPSHOP_ACC_ORDER_INFO = 'Informacje o zamówieniu';
+	var $_PHPSHOP_ACC_UPD_BILL = 'Tutaj mo¿esz zaktualizowaæ swoje dane.';
+	var $_PHPSHOP_ACC_UPD_SHIP = 'Tutaj mo¿esz dodaæ lub zarz±dzaæ adresami do wysy³kis.';
+	var $_PHPSHOP_ACC_ACCOUNT_INFO = 'Informacje o koncie';
+	var $_PHPSHOP_ACC_SHIP_INFO = 'Informacje o wysy³ce';
+	var $_PHPSHOP_ACC_NO_ORDERS = 'Brak zamówieñ do wy¶wietlenia';
+	var $_PHPSHOP_ACC_BILL_DEF = '- domy¶lny (taki sam jak na rachunku)';
+	var $_PHPSHOP_SHIPTO_TEXT = 'Mo¿esz dodaæ adresy docelowe wysy³ki do swojego konta. Prosimy o zastanowienie siê nad odpowiednim aliasem lub kodem dla lokalizacji, któr± wybierzesz poni¿ej.';
+	var $_PHPSHOP_CONFIG = 'Konfiguracja';
+	var $_PHPSHOP_USERS = 'U¿ytkownicy';
+	var $_PHPSHOP_IS_CC_PAYMENT = 'jest p³atno¶ci± kart± kredytow±?';
+	var $_PHPSHOP_SHIPPING_MOD = 'Wysy³ka';
+	var $_PHPSHOP_SHIPPING_MENU_LABEL = 'Wysy³ka';
+	var $_PHPSHOP_CARRIER_LIST_MNU = 'Spedytor';
+	var $_PHPSHOP_CARRIER_LIST_LBL = 'Lista spedytorów';
+	var $_PHPSHOP_RATE_LIST_MNU = 'Tabela stawek wysy³kowych';
+	var $_PHPSHOP_RATE_LIST_LBL = 'Lista stawek wysy³kowych';
+	var $_PHPSHOP_CARRIER_LIST_NAME_LBL = 'Nazwa';
+	var $_PHPSHOP_CARRIER_LIST_ORDER_LBL = 'Kolejno¶æ na li¶cie';
+	var $_PHPSHOP_CARRIER_FORM_MNU = 'Utwórz spedytora';
+	var $_PHPSHOP_CARRIER_FORM_LBL = 'Utwórz/edytuj spedytora';
+	var $_PHPSHOP_RATE_FORM_MNU = 'Utwórz stawkê wysy³kow±';
+	var $_PHPSHOP_RATE_FORM_LBL = 'Utwórz/edytuj stawkê wysy³kow±';
+	var $_PHPSHOP_RATE_FORM_NAME = 'Opis stawki wysy³kowej';
+	var $_PHPSHOP_RATE_FORM_CARRIER = 'Spedytor';
+	var $_PHPSHOP_RATE_FORM_COUNTRY = 'Kraj';
+	var $_PHPSHOP_RATE_FORM_ZIP_START = 'pocz±tek zakresu kodu pocztowego';
+	var $_PHPSHOP_RATE_FORM_ZIP_END = 'koniec zakresu kodu pocztowego';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_START = 'Najni¿sza waga';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_END = 'Najwy¿sza waga';
+	var $_PHPSHOP_RATE_FORM_VALUE = 'Op³ata';
+	var $_PHPSHOP_RATE_FORM_PACKAGE_FEE = 'Twoja op³ata za paczkê';
+	var $_PHPSHOP_RATE_FORM_CURRENCY = 'Waluta';
+	var $_PHPSHOP_RATE_FORM_VAT_ID = 'Identyfikator VAT';
+	var $_PHPSHOP_RATE_FORM_LIST_ORDER = 'Kolejno¶æ na li¶cie';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL = 'Spedytor';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME = 'Opis stawki wysy³kowej';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART = 'Waga od ...';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND = '... do';
+	var $_PHPSHOP_CARRIER_FORM_NAME = 'Firma spedycyjna';
+	var $_PHPSHOP_CARRIER_FORM_LIST_ORDER = 'Kolejno¶æ na li¶cie';
+	var $_PHPSHOP_ERR_MSG_CARRIER_EXIST = 'B£¡D: ID Spedytora ju¿ istnieje.';
+	var $_PHPSHOP_ERR_MSG_CARRIER_ID_REQ = 'B£¡D: Wybierz spedytora.';
+	var $_PHPSHOP_ERR_MSG_CARRIER_INUSE = 'B£¡D: Istnieje przynajmniej jedna stawka wysy³kowa, wpierw usuñ stawki przypisane do tego spedytora';
+	var $_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND = 'B£¡D: Niemo¿liwe odnalezienie spedytora o podanym ID.';
+	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = 'B£¡D: Wybierz spedytora.';
+	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = 'B£¡D: Niemo¿liwe odnalezienie spedytora o podanym ID.';
+	var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = 'B£¡D: Deskryptor stawki jest wymagany.';
+	var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = 'B£¡D: Kraj docelowy jest niepoprawny. Wiêcej ni¿ jeden kraj mo¿e byæ rozdzielony ";".';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = 'B£¡D: Najni¿sza waga jest wymagana';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = 'B£¡D: Najwy¿sza waga jes wymagana';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = 'B£¡D: Najni¿sza waga musi byæ mniejsza od najwy¿szej wagi';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = 'B£¡D: Op³ata wysy³kowa jest wymagana';
+	var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = 'B£¡D: Wybierz walutê';
+	var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = 'B£¡D: Stawka wysy³kowa jest wymagana';
+	var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = 'Proszê wybraæ';
+	var $_PHPSHOP_INFO_MSG_CARRIER = 'Spedytor';
+	var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = 'Stawka wysy³kowa';
+	var $_PHPSHOP_INFO_MSG_SHIPPING_PRICE = 'Cena';
+	var $_PHPSHOP_INFO_MSG_VAT_ZERO_LBL = '0 (-brak-)';
+	var $_PHPSHOP_PAYMENT_FORM_CC = 'Karta kredytowa';
+	var $_PHPSHOP_PAYMENT_FORM_USE_PP = 'U¿yj procesora p³atno¶ci';
+	var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = 'Debet bankowy';
+	var $_PHPSHOP_PAYMENT_FORM_AO = 'Tylko adres / za pobraniem';
+	var $_PHPSHOP_CHECKOUT_MSG_2 = 'Proszê wybraæ adres wysy³ki!';
+	var $_PHPSHOP_CHECKOUT_MSG_3 = 'Proszê wybraæ metodê wysy³ki!';
+	var $_PHPSHOP_CHECKOUT_MSG_4 = 'Proszê wybraæ metodê p³atno¶ci!';
+	var $_PHPSHOP_CHECKOUT_MSG_99 = 'Proszê sprawdziæ wprowadzone dane i potwierdziæ zamówienie!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIP = 'Proszê wybraæ metodê wysy³ki.';
+	var $_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP = 'Proszê wybraæ inn± metodê wysy³ki.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_PAYM = 'Proszê wybraæ metodê p³atno¶ci.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR = 'Proszê wpisaæ numer swojej karty kredytowej.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNAME = 'Proszê wpisaæ nazwisko znajduj±ce siê na karcie kredytowej.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATE = 'Wpisany numer karty kredytowej jest nieprawid³owy.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCMON = 'Proszê wpisaæ miesi±c wyga¶niêcia wa¿no¶ci karty kredytowej.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR = 'Prosze wpisaæ rok wyga¶niêcia wa¿no¶ci karty kredytowej.';
+	var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = 'Data wyga¶niêcia jest nieprawid³owa.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = 'Proszê wybraæ adres wysy³ki.';
+	var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = 'Niepoprawny numer konta.';
+	var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = 'Nie ma nic w koszyku!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = 'B£¡D: Proszê wybraæ spedytora!';
+	var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = 'B£¡D: Wybrana stawka wysy³ki nie zosta³a odnaleziona!';
+	var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = 'B£¡D: Twój adres wysy³ki nie zosta³ odnaleziony!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = 'B£¡D: Brak danych o karcie kredytowej...';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = 'B£¡D: Numer karty kredytowej nie znaleziony!';
+	var $_PHPSHOP_CHECKOUT_ERR_TEST = 'Przepraszamy, ale numer karty kredytowej, który zosta³ u¿yty jest numerem testowym!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = 'Numer ID u¿ytkownika nie zosta³ odnaleziony w bazie danych!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = 'Nazwa posiadacza Twojego rachunku bankowego nie zosta³a wprowadzona.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = 'Numer IBAN nie zosta³ wprowadzony.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = 'Numer Twojego konta bankowego nie zosta³ wprowadzony.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = 'Numer rozliczeniowy Twojego banku nie zosta³ wprowadzony.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = 'Nazwa Twojego banku nie zosta³a wprowadzona.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = 'Proces zamówienia wymaga prawid³owej procedury!';
+	var $_PHPSHOP_CHECKOUT_MSG_LOG = 'Informacja o p³atno¶ci przechwycona dla dalszego przetwarzania.<br />';
+	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = 'Minimalna warto¶æ zamówienia nie zosta³a jeszcze osi±gniêta.';
+	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV2 = 'Minimalna warto¶æ zamówienia w naszym sklepie wynosi:';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_CC = 'P³atno¶æ kart± kredytow±';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_OTHER = 'inne metody p³atno¶ci';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_SELECT = 'Proszê wybraæ metodê p³atno¶ci:';
+	var $_PHPSHOP_STORE_FORM_MPOV = 'Minimalna warto¶æ zamówienia dla Twojego sklepu';
+	var $_PHPSHOP_ACCOUNT_BANK_TITLE = 'Informacja o rachunku bankowym';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR = 'Numer rachunku';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE = 'Krajowy numer rozliczeniowy banku';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_NAME = 'Nazwa banku';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_IBAN = 'IBAN';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER = 'Posiadacz rachunku';
+	var $_PHPSHOP_MODULES = 'Modu³y';
+	var $_PHPSHOP_FUNCTIONS = 'Funkcje';
+	var $_PHPSHOP_SPECIAL_PRODUCTS = 'Produkty w promocji';
+	var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = 'Je¶li chcesz mo¿esz zostawiæ dla nas notatkê do³±czon± do Swojego zamówienia';
+	var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = 'Notatka klienta';
+	var $_PHPSHOP_INCLUDING_TAX = '(w³±czaj±c $tax % VAT)';
+	var $_PHPSHOP_PLEASE_SEL_ITEM = 'Prosimy wybraæ element';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = 'Element';
+	var $_PHPSHOP_DOWNLOADS_TITLE = 'Obszar pobierania';
+	var $_PHPSHOP_DOWNLOADS_START = 'Rozpocznij pobieranie';
+	var $_PHPSHOP_DOWNLOADS_INFO = 'Prosimy wpisaæ numer ID pobierania, otrzymany emailem, a nastêpnie klikn±æ \'Rozpocznij pobieranie\'.';
+	var $_PHPSHOP_DOWNLOADS_ERR_EXP = 'Przepraszamy, ale Twoje pobieranie wygas³o';
+	var $_PHPSHOP_DOWNLOADS_ERR_MAX = 'Przepraszamy, ale zosta³a osi±gniêta maksymalna liczba pobrañ';
+	var $_PHPSHOP_DOWNLOADS_ERR_INV = 'Niepoprawny numer ID pobierania!';
+	var $_PHPSHOP_DOWNLOADS_ERR_SEND = 'Niemo¿liwe wys³anie wiadomo¶ci do ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG = 'Wiadomo¶æ wys³ana do ';
+	var $_PHPSHOP_DOWNLOADS_SEND_SUBJ = 'Informacje o pobieraniu';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_1 = 'zamówione pliki s± gotowe do pobrania';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_2 = 'Prosimy wpisaæ nastêpuj±cy numer ID pobierania w naszym Obszarze Pobierania: ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_3 = 'maksymalna liczba pobrañ dla ka¿dego z plików wynosi: ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_4 = 'Mo¿esz pobieraæ przez {expire} dni po pierwszym pobraniu';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_5 = 'Pytania? Problemy?';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = 'Download-Info by ';
+	var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = 'produkt udostêpniony do pobierania?';
+	var $_PHPSHOP_PAYPAL_THANKYOU = 'Dziêkujemy za dokonan± p³atno¶æ. 
         Transakcja przebieg³a pomy¶lnie. Otrzymasz potwierdzenie transakcji od PayPal poprzez email. 
-        Mo¿esz teraz kontynuowaæ lub zalogowaæ siê na <a href=http://www.paypal.com>www.paypal.com</a>, aby zobaczyæ szczegó³y transakcji.";
-    var $_PHPSHOP_PAYPAL_ERROR = "Podczas transakcji wyst±pi³ b³±d. Stan Twojego zamówienia nie mo¿e zostaæ zaktualizowany.";
-    
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = "Dziêkujmy za dokonane zakupy. Informacje o Twoim zamówieniu s± nastêpuj±ce.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2 = "Dziêkujemy za skorzystanie z naszych us³ug.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3 = "Pytania? Problemy?";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4 = "Otrzymano nastêpuj±ce zamówienie.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5 = "Obejrzyj zamówienie poda¿aj±c za poni¿szym linkiem.";
-    
-    var $_PHPSHOP_CART_ERROR_NO_NEGATIVE = "Ujemne warto¶ci s± niedozwolone.";
-    var $_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY = "Prosimy wpisaæ poprawn± ilo¶æ dla tego produktu.";
-    
-    var $_PHPSHOP_CART_STOCK_1 = "Wybrana ilo¶æ przekracza aktualny stan magazynowy tego produktu. ";
-    var $_PHPSHOP_CART_STOCK_2 = "Obecnie w magazynie znajduje siê \$product_in_stock produkt(ów). ";
-    var $_PHPSHOP_CART_STOCK_3 = "Kliknij tutaj, aby zapisaæ na li¶cie oczekuj±cych.";
-    var $_PHPSHOP_CART_SELECT_ITEM = "Prosimy o wybór dodatkowych cech produktu na stronie z jego opisem !";
-    
-    var $_PHPSHOP_REGISTRATION_FORM_NONE = "brak";
-    var $_PHPSHOP_REGISTRATION_FORM_MR = "Pan";
-    var $_PHPSHOP_REGISTRATION_FORM_MRS = "Pani";
-    var $_PHPSHOP_REGISTRATION_FORM_DR = "Dr";
-    var $_PHPSHOP_REGISTRATION_FORM_PROF = "Prof.";
-    var $_PHPSHOP_DEFAULT = "Domy¶lny";
-    
-  /*#####################################################
-    MODULE AFFILIATE
-  #######################################################*/
-    var $_PHPSHOP_AFFILIATE_MOD   = "Zarz±dzanie Programem Partnerskim";
-    
-    // Affiliate List
-    var $_PHPSHOP_AFFILIATE_LIST_MNU		= "Wylistuj Partnerów";
-    var $_PHPSHOP_AFFILIATE_LIST_LBL		= "Lista Partnerów";
-    var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME	= "Nazwa partnera";
-    var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE = "Aktywny";
-    var $_PHPSHOP_AFFILIATE_LIST_RATE		= "Stawka";
-    var $_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL = "Miesiêczna suma";
-    var $_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION ="Miesiêczna prowizja";
-    var $_PHPSHOP_AFFILIATE_LIST_ORDERS = "Wylistuj zamówienia";
-    
-    // Affiliate Email
-    var $_PHPSHOP_AFFILIATE_EMAIL_MNU		= "Wy¶lij email do Partnerów";
-    var $_PHPSHOP_AFFILIATE_EMAIL_LBL		= "Wy¶lij email do Partnerów";
-    var $_PHPSHOP_AFFILIATE_EMAIL_WHO	= "Do kogo wys³aæ email(* = WSZYSCY)";
-    var $_PHPSHOP_AFFILIATE_EMAIL_CONTENT		= "Twój adres email";
-    var $_PHPSHOP_AFFILIATE_EMAIL_SUBJECT = "Temat";
-    var $_PHPSHOP_AFFILIATE_EMAIL_STATS	 = "Za³±cz aktualne statystyki";
-    
-    // Affiliate Form
-    var $_PHPSHOP_AFFILIATE_FORM_RATE		= "Stawka prowizji (procent)";
-    var $_PHPSHOP_AFFILIATE_FORM_ACTIVE		= "Aktywny?";
-    
-    var $_PHPSHOP_DELIVERY_TIME = "Przeciêtny czas dostawy";
-    var $_PHPSHOP_DELIVERY_INFORMATION = "Informacje o dostawie";
-    var $_PHPSHOP_MORE_CATEGORIES = "wiêcej kategorii";
-    var $_PHPSHOP_AVAILABILITY = "Dostêpno¶æ";
-    var $_PHPSHOP_CURRENTLY_NOT_AVAILABLE = "Ten produkt jest obecnie niedostêpny.";
-    var $_PHPSHOP_PRODUCT_AVAILABLE_AGAIN = "Bêdzie znowu dostêpny: ";
-    
-    var $_PHPSHOP_STATISTIC_SUMMARY = "Podsumowanie";
-    var $_PHPSHOP_STATISTIC_STATISTICS = "Statystyki";
-    var $_PHPSHOP_STATISTIC_CUSTOMERS = "Klienci";
-    var $_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS = "aktywnych produktów";
-    var $_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS = "nieaktywnych produktów";
-    var $_PHPSHOP_STATISTIC_SUM = "Suma";
-    var $_PHPSHOP_STATISTIC_NEW_ORDERS = "Nowe zamówienia";
-    var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = "Nowi klienci";
-    
-    
-	//Waiting list : file /administrator/components/com_phpshop/html/shop.waiting_list.php
-	var $_PHPSHOP_WAITING_LIST_MESSAGE = "Prosimy o podanie swojego adresu email, w celu otrzymania powiadomienia o dostêpno¶ci produktu. 
+        Mo¿esz teraz kontynuowaæ lub zalogowaæ siê na <a href=http://www.paypal.com>www.paypal.com</a>, aby zobaczyæ szczegó³y transakcji.';
+	var $_PHPSHOP_PAYPAL_ERROR = 'Podczas transakcji wyst±pi³ b³±d. Stan Twojego zamówienia nie mo¿e zostaæ zaktualizowany.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = 'Dziêkujmy za dokonane zakupy. Informacje o Twoim zamówieniu s± nastêpuj±ce.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2 = 'Dziêkujemy za skorzystanie z naszych us³ug.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3 = 'Pytania? Problemy?';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4 = 'Otrzymano nastêpuj±ce zamówienie.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5 = 'Obejrzyj zamówienie poda¿aj±c za poni¿szym linkiem.';
+	var $_PHPSHOP_CART_ERROR_NO_NEGATIVE = 'Ujemne warto¶ci s± niedozwolone.';
+	var $_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY = 'Prosimy wpisaæ poprawn± ilo¶æ dla tego produktu.';
+	var $_PHPSHOP_CART_STOCK_1 = 'Wybrana ilo¶æ przekracza aktualny stan magazynowy tego produktu. ';
+	var $_PHPSHOP_CART_STOCK_2 = 'Obecnie w magazynie znajduje siê $product_in_stock produkt(ów). ';
+	var $_PHPSHOP_CART_STOCK_3 = 'Kliknij tutaj, aby zapisaæ na li¶cie oczekuj±cych.';
+	var $_PHPSHOP_CART_SELECT_ITEM = 'Prosimy o wybór dodatkowych cech produktu na stronie z jego opisem !';
+	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'brak';
+	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Pan';
+	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Pani';
+	var $_PHPSHOP_REGISTRATION_FORM_DR = 'Dr';
+	var $_PHPSHOP_REGISTRATION_FORM_PROF = 'Prof.';
+	var $_PHPSHOP_DEFAULT = 'Domy¶lny';
+	var $_PHPSHOP_AFFILIATE_MOD = 'Zarz±dzanie Programem Partnerskim';
+	var $_PHPSHOP_AFFILIATE_LIST_MNU = 'Wylistuj Partnerów';
+	var $_PHPSHOP_AFFILIATE_LIST_LBL = 'Lista Partnerów';
+	var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME = 'Nazwa partnera';
+	var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE = 'Aktywny';
+	var $_PHPSHOP_AFFILIATE_LIST_RATE = 'Stawka';
+	var $_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL = 'Miesiêczna suma';
+	var $_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION = 'Miesiêczna prowizja';
+	var $_PHPSHOP_AFFILIATE_LIST_ORDERS = 'Wylistuj zamówienia';
+	var $_PHPSHOP_AFFILIATE_EMAIL_MNU = 'Wy¶lij email do Partnerów';
+	var $_PHPSHOP_AFFILIATE_EMAIL_LBL = 'Wy¶lij email do Partnerów';
+	var $_PHPSHOP_AFFILIATE_EMAIL_WHO = 'Do kogo wys³aæ email(* = WSZYSCY)';
+	var $_PHPSHOP_AFFILIATE_EMAIL_CONTENT = 'Twój adres email';
+	var $_PHPSHOP_AFFILIATE_EMAIL_SUBJECT = 'Temat';
+	var $_PHPSHOP_AFFILIATE_EMAIL_STATS = 'Za³±cz aktualne statystyki';
+	var $_PHPSHOP_AFFILIATE_FORM_RATE = 'Stawka prowizji (procent)';
+	var $_PHPSHOP_AFFILIATE_FORM_ACTIVE = 'Aktywny?';
+	var $_PHPSHOP_DELIVERY_TIME = 'Przeciêtny czas dostawy';
+	var $_PHPSHOP_DELIVERY_INFORMATION = 'Informacje o dostawie';
+	var $_PHPSHOP_MORE_CATEGORIES = 'wiêcej kategorii';
+	var $_PHPSHOP_AVAILABILITY = 'Dostêpno¶æ';
+	var $_PHPSHOP_CURRENTLY_NOT_AVAILABLE = 'Ten produkt jest obecnie niedostêpny.';
+	var $_PHPSHOP_PRODUCT_AVAILABLE_AGAIN = 'Bêdzie znowu dostêpny: ';
+	var $_PHPSHOP_STATISTIC_SUMMARY = 'Podsumowanie';
+	var $_PHPSHOP_STATISTIC_STATISTICS = 'Statystyki';
+	var $_PHPSHOP_STATISTIC_CUSTOMERS = 'Klienci';
+	var $_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS = 'aktywnych produktów';
+	var $_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS = 'nieaktywnych produktów';
+	var $_PHPSHOP_STATISTIC_SUM = 'Suma';
+	var $_PHPSHOP_STATISTIC_NEW_ORDERS = 'Nowe zamówienia';
+	var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = 'Nowi klienci';
+	var $_PHPSHOP_WAITING_LIST_MESSAGE = 'Prosimy o podanie swojego adresu email, w celu otrzymania powiadomienia o dostêpno¶ci produktu. 
                                         Nie bêdziemy udostêpniaæ, wypo¿yczaæ, sprzedawaæ lub u¿ywaæ tego adresu email do ¿adnych innych celów, jak tylko 
-                                        do poinformowania kiedy produkt bêdzie znów w magazynie.<br /><br />Dziêkujemy!";
-	var $_PHPSHOP_WAITING_LIST_THANKS = "Dziêkujemy za cierpliwo¶æ! <br />Zostaniesz powiadomiony, jak tylko uzupe³nimy braki magazynowe.";
-	var $_PHPSHOP_WAITING_LIST_NOTIFY_ME = "Powiadom Mnie!";
-	
-	//Checkout : file /administrator/components/com_phpshop/html/checkout.thankyou.php
-	var $_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW = "Widok do druku";
-  
-  /**************************Admin.show_cfg.php in apparition order ;-)**************************************/
-	
-	/* PAGE 1 */
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZE_OR_CYBERCASH = "Prosimy wybraæ Authorize.net lub CyberCash";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS = " Stan pliku konfiguracji:";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE = "jest zapisywalny";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE = "nie jest zapisywalny";
-	
-	var $_PHPSHOP_ADMIN_CFG_GLOBAL = "Ogólne";
-	var $_PHPSHOP_ADMIN_CFG_PATHANDURL = "¦cie¿ki & adresy URL";
-	var $_PHPSHOP_ADMIN_CFG_SITE = "Strona";
-	var $_PHPSHOP_ADMIN_CFG_SHIPPING = "Wysy³ka";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT = "Zamówienie";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS = "Pobierania";
-	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = "P³atno¶ci";
-	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = "U¿yj tylko jako katalogu";
-	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = "Je¶li zaznaczysz t± opcjê, wy³±czysz wszystkie funkcje koszyka.";
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = "Pokazuj ceny";
-	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = "Pokazuj ceny zawieraj±ce podatek?";
-	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = "Ustaw opcjê czy kupuj±cy widzi ceny wraz z podatkiem, czy bez niego.";
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = "Zaznacz, aby pokazywaæ ceny. Niektórzy nie ¿ycz± sobie, aby ceny by³y pokazywane, w przypadku gdy u¿ywa siê funkcji katalogu.";
-	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = "Wirtualny podatek";
-	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = "Okre¶la czy artyku³y posiadaj±ce zerow± wagê s± objête podatkiem czy nie. Zmodyfikuj ps_checkout.php->calc_order_taxable(), aby to zmieniæ.";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = "Forma podatku:";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = "Bazuj±cy na adresie wysy³kowym";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = "Bazuj±cy na adresie sprzedawcy";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = "Okre¶la, która stawka podatkowa jest u¿ywana do wyliczenia podatku:<br />
+                                        do poinformowania kiedy produkt bêdzie znów w magazynie.<br /><br />Dziêkujemy!';
+	var $_PHPSHOP_WAITING_LIST_THANKS = 'Dziêkujemy za cierpliwo¶æ! <br />Zostaniesz powiadomiony, jak tylko uzupe³nimy braki magazynowe.';
+	var $_PHPSHOP_WAITING_LIST_NOTIFY_ME = 'Powiadom Mnie!';
+	var $_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW = 'Widok do druku';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZE_OR_CYBERCASH = 'Prosimy wybraæ Authorize.net lub CyberCash';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS = ' Stan pliku konfiguracji:';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE = 'jest zapisywalny';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE = 'nie jest zapisywalny';
+	var $_PHPSHOP_ADMIN_CFG_GLOBAL = 'Ogólne';
+	var $_PHPSHOP_ADMIN_CFG_PATHANDURL = '¦cie¿ki & adresy URL';
+	var $_PHPSHOP_ADMIN_CFG_SITE = 'Strona';
+	var $_PHPSHOP_ADMIN_CFG_SHIPPING = 'Wysy³ka';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT = 'Zamówienie';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS = 'Pobierania';
+	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = 'P³atno¶ci';
+	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = 'U¿yj tylko jako katalogu';
+	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = 'Je¶li zaznaczysz t± opcjê, wy³±czysz wszystkie funkcje koszyka.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = 'Pokazuj ceny';
+	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = 'Pokazuj ceny zawieraj±ce podatek?';
+	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = 'Ustaw opcjê czy kupuj±cy widzi ceny wraz z podatkiem, czy bez niego.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = 'Zaznacz, aby pokazywaæ ceny. Niektórzy nie ¿ycz± sobie, aby ceny by³y pokazywane, w przypadku gdy u¿ywa siê funkcji katalogu.';
+	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = 'Wirtualny podatek';
+	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = 'Okre¶la czy artyku³y posiadaj±ce zerow± wagê s± objête podatkiem czy nie. Zmodyfikuj ps_checkout.php->calc_order_taxable(), aby to zmieniæ.';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = 'Forma podatku:';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = 'Bazuj±cy na adresie wysy³kowym';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = 'Bazuj±cy na adresie sprzedawcy';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = 'Okre¶la, która stawka podatkowa jest u¿ywana do wyliczenia podatku:<br />
                                                 <ul><li>ta ze stanu/kraju z którego pochodzi w³a¶ciciel sklepu</li><br/>
-                                                <li>lub ta sk±d pochodzi kupuj±cy.</li></ul>";
-	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = "W³±cz ró¿norodne stawki podatkowe?";
-	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = "Zaznacz, je¶li posiadasz w ofercie produkty objête ró¿nymi stawkami podatkowymi (np. 7% dla ksi±¿ek i ¿ywno¶ci, 22% dla innych rzeczy)";
-	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = "Odejmij zni¿ki przed naliczeniem podatku/kosztów przesy³ki?";
-  var $_PHPSHOP_ADMIN_CFG_REVIEW = "W³±cz System Komentarzy/Oceny produktów przez klientów";
-  var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = "Je¶li w³±czony, zezwalasz klientom na <strong>ocenê </strong> i na <strong>pisanie komentarzy</strong> o produktach. <br />
-                                                                                Dziêki czemu mog± opisaæ swoje wra¿enia o produkcie dla innych klientów.<br />";
-	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = "Ustaw opcjê czy odejmowaæ rabat dla wybranej p³atno¶ci PRZED (zaznaczone) lub PO naliczeniu podatku i kosztów przesy³ki.";
-	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = "Klienci mog± podawaæ dane rachunku bankowego?";
-	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = "Zaznacz je¶li chcesz, by Twoi klienci mieli mo¿liwo¶æ wprowadzania danych, dotycz±cych ich rachunków bankowych podczas procesu rejestracji w sklepie.";
-	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = "Klienci mog± wybieraæ stan/region?";
-	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = "Zaznacz je¶li chcesz, by Twoi klienci mieli mo¿liwo¶æ wyboru stanu / regionu podczas procesu rejestracji w sklepie.";
-	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = "Musi zaakceptowaæ Zasady U¿ytkowania?";
-	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = "Zaznacz je¶li chcesz, by klient musia³ zaakceptowaæ Zasady U¿ytkowania zanim zarejestruje sie w Twoim sklepie.";
-	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK = "Sprawd¼ stany magazynowe?";
-	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN = "Ustaw czy maj± byæ sprawdzane stany magazynowe produktu, gdy u¿ytkownik doda element do koszyka. 
-                                                 Je¶li opcja zosta³a ustawiona, u¿ytkownik nie bêdzie móg³ dodaæ wiêcej produktów do koszyka ni¿ znajduje siê w magazynie.";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = "W³±cz Program Partnerski?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN = "Opcja ta w³±cza ¶ledzenie partnerów w czê¶ci u¿ytkowej sklepu. W³±cz j± je¶li doda³e¶ partnerów w panelu administracyjnym..";
-	
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT = "Format mail'a z zamówieniem:";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT = "Wiadomo¶æ tekstowa";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML = "Wiadomo¶æ HTML";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN = "Okre¶la to w jaki sposób skonfigurowane s± emaile potwierdzaj±ce zamówienie:<br />
+                                                <li>lub ta sk±d pochodzi kupuj±cy.</li></ul>';
+	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = 'W³±cz ró¿norodne stawki podatkowe?';
+	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = 'Zaznacz, je¶li posiadasz w ofercie produkty objête ró¿nymi stawkami podatkowymi (np. 7% dla ksi±¿ek i ¿ywno¶ci, 22% dla innych rzeczy)';
+	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = 'Odejmij zni¿ki przed naliczeniem podatku/kosztów przesy³ki?';
+	var $_PHPSHOP_ADMIN_CFG_REVIEW = 'W³±cz System Komentarzy/Oceny produktów przez klientów';
+	var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = 'Je¶li w³±czony, zezwalasz klientom na <strong>ocenê </strong> i na <strong>pisanie komentarzy</strong> o produktach. <br />
+                                                                                Dziêki czemu mog± opisaæ swoje wra¿enia o produkcie dla innych klientów.<br />';
+	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = 'Ustaw opcjê czy odejmowaæ rabat dla wybranej p³atno¶ci PRZED (zaznaczone) lub PO naliczeniu podatku i kosztów przesy³ki.';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = 'Klienci mog± podawaæ dane rachunku bankowego?';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = 'Zaznacz je¶li chcesz, by Twoi klienci mieli mo¿liwo¶æ wprowadzania danych, dotycz±cych ich rachunków bankowych podczas procesu rejestracji w sklepie.';
+	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = 'Klienci mog± wybieraæ stan/region?';
+	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = 'Zaznacz je¶li chcesz, by Twoi klienci mieli mo¿liwo¶æ wyboru stanu / regionu podczas procesu rejestracji w sklepie.';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = 'Musi zaakceptowaæ Zasady U¿ytkowania?';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = 'Zaznacz je¶li chcesz, by klient musia³ zaakceptowaæ Zasady U¿ytkowania zanim zarejestruje sie w Twoim sklepie.';
+	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK = 'Sprawd¼ stany magazynowe?';
+	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN = 'Ustaw czy maj± byæ sprawdzane stany magazynowe produktu, gdy u¿ytkownik doda element do koszyka. 
+                                                 Je¶li opcja zosta³a ustawiona, u¿ytkownik nie bêdzie móg³ dodaæ wiêcej produktów do koszyka ni¿ znajduje siê w magazynie.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = 'W³±cz Program Partnerski?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN = 'Opcja ta w³±cza ¶ledzenie partnerów w czê¶ci u¿ytkowej sklepu. W³±cz j± je¶li doda³e¶ partnerów w panelu administracyjnym..';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT = 'Format mail\'a z zamówieniem:';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT = 'Wiadomo¶æ tekstowa';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML = 'Wiadomo¶æ HTML';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN = 'Okre¶la to w jaki sposób skonfigurowane s± emaile potwierdzaj±ce zamówienie:<br />
                                                                                         <ul><li>jako zwyk³y tekst</li>
-                                                                                        <li>lub jako wiadomo¶æ HTML z obrazkami.</li></ul>";
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = "Zezwalaj na zarz±dzanie z czê¶ci u¿ytkowej sklepu u¿ytkownikom nie posiadaj±cym dostêpu do panelu administracyjnego?";
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = "To ustawienie pozwala na w³±czenie zarz±dzania sklepem z czê¶ci u¿ytkowej, u¿ytkownikom posiadaj±cym uprawnienia storeadmin (administrator sklepu), ale nie maj±cym dostêpu do panelu administracyjnego Mambo (np. Registered / Editor).";
-	
-	/* PAGE 2 */
-	var $_PHPSHOP_ADMIN_CFG_URL = "URL";
-	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = "Adres URL do Twojej strony. Zazwyczaj identyczny z Twoim adresem URL do Mambo (zakoñczony znakiem uko¶nika (slash)!)";
-	var $_PHPSHOP_ADMIN_CFG_URLSECURE = "SECUREURL";
-	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = "Bezpieczny adres URL do Twojej strony. (https - zakoñczony znakiem uko¶nika (slash)!)";
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = "COMPONENTURL";
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = "Adres URL do komponentu mambo-phpShop. (zakoñczony znakiem uko¶nika (slash)!)";
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = "IMAGEURL";
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = "Adres URL do katalogu obrazków komponentu mambo-phpShop.(zakoñczony znakiem uko¶nika (slash)!)";
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = "ADMINPATH";
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = "¦cie¿ka do Twojego katalogu komponentu mambo-phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = "CLASSPATH";
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = "¦cie¿ka do Twojego katalogu klas phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = "PAGEPATH";
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = "¦cie¿ka do Twojego katalogu html phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = "IMAGEPATH";
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = "¦cie¿ka do Twojego katalogu shop_image phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = "HOMEPAGE";
-	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = "Jest to strona, która bêdzie ³adowana domy¶lnie.";	
-	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = "ERRORPAGE";
-	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = "Jest to domy¶lna strona s³u¿±ca do wy¶wietlania wiadomo¶ci o b³êdach.";	
-	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE = "DEBUGPAGE";
-	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN = "Jest to domy¶lna strona s³u¿±ca do wy¶wietlania wiadomo¶ci debuger'a.";
-	var $_PHPSHOP_ADMIN_CFG_DEBUG = "DEBUG ?";
-	var $_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN = "DEBUG?  	   	W³±cza wyj¶cie debugera. Spowoduje to, ¿e strona DEBUGPAGE bêdzie wy¶wietlana na dole ka¿dej podstrony. Jest to bardzo pomocne podczas procesu wdra¿ania sklepu, gdy¿ pokazuje zawarto¶æ koszyka, warto¶ci pól formularzy, itd.";
-
-  /* PAGE 3 */
-
-	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = "FLYPAGE";
-	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = "Jest to domy¶lna strona s³u¿±ca do wy¶wietlania szczegó³ów produktu.";
-  var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = "Szablon kategorii";
-	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = "Definiuje domy¶lny szablon kategorii s³u¿±cy do wy¶wietlania produktów w danej kategorii.<br />
+                                                                                        <li>lub jako wiadomo¶æ HTML z obrazkami.</li></ul>';
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Zezwalaj na zarz±dzanie z czê¶ci u¿ytkowej sklepu u¿ytkownikom nie posiadaj±cym dostêpu do panelu administracyjnego?';
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'To ustawienie pozwala na w³±czenie zarz±dzania sklepem z czê¶ci u¿ytkowej, u¿ytkownikom posiadaj±cym uprawnienia storeadmin (administrator sklepu), ale nie maj±cym dostêpu do panelu administracyjnego Mambo (np. Registered / Editor).';
+	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
+	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'Adres URL do Twojej strony. Zazwyczaj identyczny z Twoim adresem URL do Mambo (zakoñczony znakiem uko¶nika (slash)!)';
+	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'SECUREURL';
+	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'Bezpieczny adres URL do Twojej strony. (https - zakoñczony znakiem uko¶nika (slash)!)';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'COMPONENTURL';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'Adres URL do komponentu mambo-phpShop. (zakoñczony znakiem uko¶nika (slash)!)';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'IMAGEURL';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'Adres URL do katalogu obrazków komponentu mambo-phpShop.(zakoñczony znakiem uko¶nika (slash)!)';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'ADMINPATH';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = '¦cie¿ka do Twojego katalogu komponentu mambo-phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'CLASSPATH';
+	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = '¦cie¿ka do Twojego katalogu klas phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'PAGEPATH';
+	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = '¦cie¿ka do Twojego katalogu html phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'IMAGEPATH';
+	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = '¦cie¿ka do Twojego katalogu shop_image phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'HOMEPAGE';
+	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'Jest to strona, która bêdzie ³adowana domy¶lnie.';
+	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'ERRORPAGE';
+	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = 'Jest to domy¶lna strona s³u¿±ca do wy¶wietlania wiadomo¶ci o b³êdach.';
+	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE = 'DEBUGPAGE';
+	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN = 'Jest to domy¶lna strona s³u¿±ca do wy¶wietlania wiadomo¶ci debuger\'a.';
+	var $_PHPSHOP_ADMIN_CFG_DEBUG = 'DEBUG ?';
+	var $_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN = 'DEBUG?  	   	W³±cza wyj¶cie debugera. Spowoduje to, ¿e strona DEBUGPAGE bêdzie wy¶wietlana na dole ka¿dej podstrony. Jest to bardzo pomocne podczas procesu wdra¿ania sklepu, gdy¿ pokazuje zawarto¶æ koszyka, warto¶ci pól formularzy, itd.';
+	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = 'FLYPAGE';
+	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = 'Jest to domy¶lna strona s³u¿±ca do wy¶wietlania szczegó³ów produktu.';
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = 'Szablon kategorii';
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Definiuje domy¶lny szablon kategorii s³u¿±cy do wy¶wietlania produktów w danej kategorii.<br />
                                                        Mo¿esz tworzyæ nowe szablony przez przerabianie istniej±cych plików <br />
-                                                       (które mieszcz± siê w katalogu <strong>COMPONENTPATH/html/templates/</strong> i zaczynaj± od browse_)";
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = "Domy¶lna liczba produktów w rzêdzie";
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = "Definiuje liczbê produktów w rzêdzie. <br />
-                                                     Przyk³ad: Je¶li utawisz jej warto¶æ na 4, szablon kategorii wy¶wietli 4 produkty na rz±d";
-  
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = "obrazek \"brak obrazka\"";
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = "Ten obrazek zostanie wy¶wietlony, je¿eli nie jest dostêpny obrazek produktu.";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = "SEARCH ROWS";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = "Okre¶la liczbê rzêdów na stronie, podczas wy¶wietlania listy wyników wyszukiwania.";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = "SEARCH COLOR 1";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = "Okre¶la kolor nieparzystych rzêdów na li¶cie wyników.";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = "SEARCH COLOR 2";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = "Okre¶la kolor parzystych rzêdów na li¶cie wyników.";
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = "MAXIMUM ROWS";
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = "Ustala liczbê pozycji pokazywanych na li¶cie wyboru z dokonanymi zamówieniami.";
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = "Poka¿ stopkê \"powered by mambo-phpShop\" ?";
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = "Wy¶wietla w stopce obrazek powered-by-mambo-phpShop.";
-	
-	
-	/* PAGE 4 */
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = "Wybierz metodê wysy³ki dla Twojego sklepu";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = "Standardowy modu³ wysy³ki z indywidualnie konfigurowanymi spedytorami i stawkami. <strong>ZALECANY !</strong>";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = "  	Zone Shipping Module Country Version 1.0<br />
-                                                            Aby zaczerpn±æ wiêcej informacji na temat tego modu³u odwied¼ stronê <a href=\"http://ZephWare.com\">http://ZephWare.com</a><br />
-                                                            lub skontaktuj siê z <a href=\"mailto:zephware@devcompany.com\">ZephWare.com</a><br /> Zaznacz je¶li chcesz w³±czyæ modu³ wysy³ek strefowych";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = "Narzêdzia kalkulacji wysy³ek UPS";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE = "Kod dostêpu UPS";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN = "Twój kod dostepu UPS";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID = "Id u¿ytkownika UPS";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = "ID u¿ytkownika, które otrzyma³e¶ od UPS";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = "Has³o UPS";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = "Has³o do Twojego konta UPS";
-	  
-  var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = "Modu³ InterShipper. Zaznacz wy³±cznie je¶li posiadasz konto na Intershipper.com";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = "Wy³±cz wybór metod wysy³ki. Wybierz je¶li Twoi klienci kupuj± pobieralne produkty, które nie musz± byæ wysy³ane.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = "Has³o InterShipper";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = "Twoje has³o do konta Intershipper.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = "Adres email InterShipper";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = "Twój adres email do konta Intershipper.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = "ENCODE KEY";
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = "Klucz u¿ywany do szyfrowania danych przechowywanych w bazie. Oznacza to, ¿e plik ten powinien byæ chroniony przed wgl±dem za wszelk± cenê.";
-	
-	
-	/* PAGE 5 */
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = "W³±cz graficzny pasek zamówienia";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = "W³±cz, je¶li chcesz by podczas procesu zamówienia wy¶wietlany by³ graficzny pasek postêpu zamówienia ( 1 - 2 - 3 - 4 z obrazkami).";
-	
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = "Wybierz proces przebiegu zamówienia dla swojego sklepu";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = "<strong>Tryb standardowy :</strong><br/>
+                                                       (które mieszcz± siê w katalogu <strong>COMPONENTPATH/html/templates/</strong> i zaczynaj± od browse_)';
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Domy¶lna liczba produktów w rzêdzie';
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Definiuje liczbê produktów w rzêdzie. <br />
+                                                     Przyk³ad: Je¶li utawisz jej warto¶æ na 4, szablon kategorii wy¶wietli 4 produkty na rz±d';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = 'obrazek ';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Ten obrazek zostanie wy¶wietlony, je¿eli nie jest dostêpny obrazek produktu.';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'SEARCH ROWS';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Okre¶la liczbê rzêdów na stronie, podczas wy¶wietlania listy wyników wyszukiwania.';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = 'SEARCH COLOR 1';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = 'Okre¶la kolor nieparzystych rzêdów na li¶cie wyników.';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = 'SEARCH COLOR 2';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = 'Okre¶la kolor parzystych rzêdów na li¶cie wyników.';
+	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'MAXIMUM ROWS';
+	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Ustala liczbê pozycji pokazywanych na li¶cie wyboru z dokonanymi zamówieniami.';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Poka¿ stopkê ';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Wy¶wietla w stopce obrazek powered-by-mambo-phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Wybierz metodê wysy³ki dla Twojego sklepu';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Standardowy modu³ wysy³ki z indywidualnie konfigurowanymi spedytorami i stawkami. <strong>ZALECANY !</strong>';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Zone Shipping Module Country Version 1.0<br />
+                                                            Aby zaczerpn±æ wiêcej informacji na temat tego modu³u odwied¼ stronê <a href="http://ZephWare.com">http://ZephWare.com</a><br />
+                                                            lub skontaktuj siê z <a href="mailto:zephware@devcompany.com">ZephWare.com</a><br /> Zaznacz je¶li chcesz w³±czyæ modu³ wysy³ek strefowych';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = 'Narzêdzia kalkulacji wysy³ek UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE = 'Kod dostêpu UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN = 'Twój kod dostepu UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID = 'Id u¿ytkownika UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = 'ID u¿ytkownika, które otrzyma³e¶ od UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = 'Has³o UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = 'Has³o do Twojego konta UPS';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'Modu³ InterShipper. Zaznacz wy³±cznie je¶li posiadasz konto na Intershipper.com';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = 'Wy³±cz wybór metod wysy³ki. Wybierz je¶li Twoi klienci kupuj± pobieralne produkty, które nie musz± byæ wysy³ane.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = 'Has³o InterShipper';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = 'Twoje has³o do konta Intershipper.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = 'Adres email InterShipper';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = 'Twój adres email do konta Intershipper.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = 'ENCODE KEY';
+	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = 'Klucz u¿ywany do szyfrowania danych przechowywanych w bazie. Oznacza to, ¿e plik ten powinien byæ chroniony przed wgl±dem za wszelk± cenê.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = 'W³±cz graficzny pasek zamówienia';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'W³±cz, je¶li chcesz by podczas procesu zamówienia wy¶wietlany by³ graficzny pasek postêpu zamówienia ( 1 - 2 - 3 - 4 z obrazkami).';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'Wybierz proces przebiegu zamówienia dla swojego sklepu';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = '<strong>Tryb standardowy :</strong><br/>
               1. ¯±dany adres wysy³ki<br />
               2. ¯±dana metoda wysy³ki<br />
               3. ¯±dana metoda p³atno¶ci<br />
-              4. Zakoñczenie zamówienia";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_2 = "<strong>Tryb 2:</strong><br/>
+              4. Zakoñczenie zamówienia';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_2 = '<strong>Tryb 2:</strong><br/>
                1. ¯adany adres wysy³ki<br />
               2. ¯±dana metoda p³atno¶ci<br />
-              3. Zakoñczenie zamówienia";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_3 = "<strong>Tryb 3:</strong><br/>
+              3. Zakoñczenie zamówienia';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_3 = '<strong>Tryb 3:</strong><br/>
                1. ¯±dana metoda wysy³ki<br />
               2. ¯±dana metoda p³atno¶ci<br />
-              3. Zakoñczenie zamówienia";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 = "<strong>Tryb 4:</strong><br/>
+              3. Zakoñczenie zamówienia';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 = '<strong>Tryb 4:</strong><br/>
                1. ¯±dana metoda p³atno¶ci<br />
-              2. Zakoñczenie zamówienia";
-	
-	
-	
-	/* PAGE 6 */
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = "W³±cz pobierania";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = "Zaznacz, aby w³±czyæ mo¿liwo¶æ pobierania. Tylko wtedy, gdy sprzedajesz towary pobieralne.";
-	
-	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = "Stan zamówienia umo¿liwiaj±cy pobieranie";
-	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = "Wybierz stan zamówienia, przy którym klient jest powiadamiany przez wiadomo¶æ email o mo¿liwo¶ci pobrania.";
-	
-	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = "Stan zamówienia wy³±czaj±cy uniemo¿liwiaj±cy pobieranie";
-	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = "Ustawia stan zamówienia, przy którym pobieranie jest uniemo¿liwione dla klienta.";
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = "DOWNLOADROOT";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = "Fizyczna ¶cie¿ka do plików przeznaczonych do pobierania przez klientów. (zakoñczona znakiem uko¶nika (slash)!)<br>
-        <span class=\"message\">Dla bezpieczeñstwa swojego sklepu: je¶li tylko mo¿esz, u¿yj katalogu znajduj±cego siê GDZIEKOLWIEK POZA KATALOGIEM ZE STRON¡</span>";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = "Maksymalna liczba pobierañ";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = "Ustawia liczbê pobierañ, które mog± zostaæ wykonane za pomoc± jednego ID pobierania, (dla jednego zamówienia)";
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = "Wyga¶niêcie pobierania";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = "Ustawia przedzia³ czasowy <strong>w sekundach</strong>, w którym pobieranie jest w³±czone dla klienta. 
-  Przedzia³ ten rozpoczyna siê przy pierwszym pobieraniu! Kiedy przedzia³ czasowy wygasa, ID pobierania zostaje wy³±czone.<br />Uwagi : 86400s=24h";
-	
-	
-	
-	
-	/* PAGE 7 */
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = "W³±cz p³atno¶ci internetowe przez PayPal?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = "Zaznacz, aby zezwoliæ Twoim klientom na u¿ywanie systemu p³atno¶ci PayPal.";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = "Adres email p³atno¶ci PayPal:";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = "Twój firmowy adres email dla p³atno¶ci PayPal. Tak¿e u¿ywany jako receiver_email.";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = "Stan zamówienia dla prawid³owych transakcji";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = "Wybierz stan zamówienia, który zostanie ustawiony, je¶li transakcja z PayPal zakoñczy³a siê pomy¶lnie. Je¶li u¿ywasz opcji sprzeda¿y produktów pobieralnych: 
-  wybierz stan zamówienia, który w³±cza mo¿liwo¶æ pobierania (nastêpnie klient jest natychmiast informowany poprzez wiadomo¶æ email o pobieraniu).";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = "Stan zamówienia dla nieudanych transakcji";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = "Wybierz stan zamówienia dla nieudanych transakcji PayPal.";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = "W³±cz p³atno¶ci przez PayMate?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE_EXPLAIN = "Zaznacz, aby zezwoliæ Twoim klientom na u¿ywanie australijskiego systemu p³atno¶ci PayMate.";
-	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME = "Nazwa u¿ytkownika PayMate:";
-	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN = "Twoje konto u¿ytkownika dla PayMate.";
-	
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = "W³±cz p³atno¶ci przez Authorize.net?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = "Zaznacz, aby u¿ywaæ Authorize.net w phpShop'ie.";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = "Tryb testowy ?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = "Wybierz 'Tak' podczas testowania. Wybierz 'Nie', aby w³±czyæ transakcje na ¿ywo.";
-	var $_PHPSHOP_ADMIN_CFG_YES = "Tak";
-	var $_PHPSHOP_ADMIN_CFG_NO = "Nie";
-	
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = "ID logowania Authorize.net";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN = "To jest Twoje ID logowania w Authorize.Net";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY = "Klucz transakcji Authorize.net";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN = "To jest Twój klucz transakcji Authorize.net";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE = "Typ autentykacji";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN = "To jest typ autentykacji Authorize.Net.";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH = "W³±cz CyberCash?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH_EXPLAIN = "Zaznacz, aby u¿ywaæ CyberCash w phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND = "KUPIEC CyberCash (MERCHANT)";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN = "CC_MERCHANT jest to ID kupca CyberCash";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY = "CyberCash Merchant Key";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN = "CyberCash Merchant Key is the Merchant Provided by CyberCash";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL = "CyberCash PAYMENT URL";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN = "CyberCash PAYMENT URL jest to adres URL udostêpniony przez Cybercash do wykonywania bezpiecznych p³atno¶ci";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE = "CyberCash AUTH TYPE";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN = "CyberCash AUTH TYPE jest to typ autentykacji udostêpniony przez CyberCash";
-	
-
-    /** Advanced Search feature ***/
-    var $_PHPSHOP_ADVANCED_SEARCH  ="Zaawansowane szukanie";
-    var $_PHPSHOP_SEARCH_ALL_CATEGORIES = "Przeszukuj wszystkie kategorie";
-    var $_PHPSHOP_SEARCH_ALL_PRODINFO = "Przeszukuj wszystkie informacje o produkcie";
-    var $_PHPSHOP_SEARCH_PRODNAME = "Tylko nazwa produktu";
-    var $_PHPSHOP_SEARCH_MANU_VENDOR = "Tylko producent/sprzedawca";
-    var $_PHPSHOP_SEARCH_DESCRIPTION = "Tylko opis produktu";
-    var $_PHPSHOP_SEARCH_AND = "i";
-    var $_PHPSHOP_SEARCH_NOT = "nie";
-    var $_PHPSHOP_SEARCH_TEXT1 = "Pierwsza lista rozwijana pozwala na wybranie kategori, aby ograniczyæ Twoje poszukiwania. 
+              2. Zakoñczenie zamówienia';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = 'W³±cz pobierania';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = 'Zaznacz, aby w³±czyæ mo¿liwo¶æ pobierania. Tylko wtedy, gdy sprzedajesz towary pobieralne.';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = 'Stan zamówienia umo¿liwiaj±cy pobieranie';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = 'Wybierz stan zamówienia, przy którym klient jest powiadamiany przez wiadomo¶æ email o mo¿liwo¶ci pobrania.';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = 'Stan zamówienia wy³±czaj±cy uniemo¿liwiaj±cy pobieranie';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = 'Ustawia stan zamówienia, przy którym pobieranie jest uniemo¿liwione dla klienta.';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = 'DOWNLOADROOT';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = 'Fizyczna ¶cie¿ka do plików przeznaczonych do pobierania przez klientów. (zakoñczona znakiem uko¶nika (slash)!)<br>
+        <span class="message">Dla bezpieczeñstwa swojego sklepu: je¶li tylko mo¿esz, u¿yj katalogu znajduj±cego siê GDZIEKOLWIEK POZA KATALOGIEM ZE STRON¡</span>';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = 'Maksymalna liczba pobierañ';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Ustawia liczbê pobierañ, które mog± zostaæ wykonane za pomoc± jednego ID pobierania, (dla jednego zamówienia)';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Wyga¶niêcie pobierania';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = 'Ustawia przedzia³ czasowy <strong>w sekundach</strong>, w którym pobieranie jest w³±czone dla klienta. 
+  Przedzia³ ten rozpoczyna siê przy pierwszym pobieraniu! Kiedy przedzia³ czasowy wygasa, ID pobierania zostaje wy³±czone.<br />Uwagi : 86400s=24h';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = 'W³±cz p³atno¶ci internetowe przez PayPal?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = 'Zaznacz, aby zezwoliæ Twoim klientom na u¿ywanie systemu p³atno¶ci PayPal.';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = 'Adres email p³atno¶ci PayPal:';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = 'Twój firmowy adres email dla p³atno¶ci PayPal. Tak¿e u¿ywany jako receiver_email.';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = 'Stan zamówienia dla prawid³owych transakcji';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = 'Wybierz stan zamówienia, który zostanie ustawiony, je¶li transakcja z PayPal zakoñczy³a siê pomy¶lnie. Je¶li u¿ywasz opcji sprzeda¿y produktów pobieralnych: 
+  wybierz stan zamówienia, który w³±cza mo¿liwo¶æ pobierania (nastêpnie klient jest natychmiast informowany poprzez wiadomo¶æ email o pobieraniu).';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = 'Stan zamówienia dla nieudanych transakcji';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = 'Wybierz stan zamówienia dla nieudanych transakcji PayPal.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = 'W³±cz p³atno¶ci przez PayMate?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE_EXPLAIN = 'Zaznacz, aby zezwoliæ Twoim klientom na u¿ywanie australijskiego systemu p³atno¶ci PayMate.';
+	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME = 'Nazwa u¿ytkownika PayMate:';
+	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN = 'Twoje konto u¿ytkownika dla PayMate.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = 'W³±cz p³atno¶ci przez Authorize.net?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = 'Zaznacz, aby u¿ywaæ Authorize.net w phpShop\'ie.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = 'Tryb testowy ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = 'Wybierz \'Tak\' podczas testowania. Wybierz \'Nie\', aby w³±czyæ transakcje na ¿ywo.';
+	var $_PHPSHOP_ADMIN_CFG_YES = 'Tak';
+	var $_PHPSHOP_ADMIN_CFG_NO = 'Nie';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = 'ID logowania Authorize.net';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN = 'To jest Twoje ID logowania w Authorize.Net';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY = 'Klucz transakcji Authorize.net';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN = 'To jest Twój klucz transakcji Authorize.net';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE = 'Typ autentykacji';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN = 'To jest typ autentykacji Authorize.Net.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH = 'W³±cz CyberCash?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH_EXPLAIN = 'Zaznacz, aby u¿ywaæ CyberCash w phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND = 'KUPIEC CyberCash (MERCHANT)';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN = 'CC_MERCHANT jest to ID kupca CyberCash';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY = 'CyberCash Merchant Key';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN = 'CyberCash Merchant Key is the Merchant Provided by CyberCash';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL = 'CyberCash PAYMENT URL';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN = 'CyberCash PAYMENT URL jest to adres URL udostêpniony przez Cybercash do wykonywania bezpiecznych p³atno¶ci';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE = 'CyberCash AUTH TYPE';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN = 'CyberCash AUTH TYPE jest to typ autentykacji udostêpniony przez CyberCash';
+	var $_PHPSHOP_ADVANCED_SEARCH = 'Zaawansowane szukanie';
+	var $_PHPSHOP_SEARCH_ALL_CATEGORIES = 'Przeszukuj wszystkie kategorie';
+	var $_PHPSHOP_SEARCH_ALL_PRODINFO = 'Przeszukuj wszystkie informacje o produkcie';
+	var $_PHPSHOP_SEARCH_PRODNAME = 'Tylko nazwa produktu';
+	var $_PHPSHOP_SEARCH_MANU_VENDOR = 'Tylko producent/sprzedawca';
+	var $_PHPSHOP_SEARCH_DESCRIPTION = 'Tylko opis produktu';
+	var $_PHPSHOP_SEARCH_AND = 'i';
+	var $_PHPSHOP_SEARCH_NOT = 'nie';
+	var $_PHPSHOP_SEARCH_TEXT1 = 'Pierwsza lista rozwijana pozwala na wybranie kategori, aby ograniczyæ Twoje poszukiwania. 
         Druga lista rozwijana pozwala na ograniczenie Twojego poszukiwania do konkretnej informacji o produkcie (np. Nazwa). 
-        Kiedy ju¿ wybra³e¶ swoje kryteria wyszukiwania (lub pozostawi³e¶ domy¶lne WSZYSTKO), wprowad¼ s³owo kluczowe aby rozpocz±æ wyszukiwanie. ";
-    var $_PHPSHOP_SEARCH_TEXT2 = " Mo¿esz dalej udoskonaliæ swoje poszukiwanie, poprzez dodanie drugiego s³owa kluczowego i wybranie operatora I lub NIE. 
+        Kiedy ju¿ wybra³e¶ swoje kryteria wyszukiwania (lub pozostawi³e¶ domy¶lne WSZYSTKO), wprowad¼ s³owo kluczowe aby rozpocz±æ wyszukiwanie. ';
+	var $_PHPSHOP_SEARCH_TEXT2 = ' Mo¿esz dalej udoskonaliæ swoje poszukiwanie, poprzez dodanie drugiego s³owa kluczowego i wybranie operatora I lub NIE. 
         Wybór I oznacza, ¿e obydwa s³owa musz± byæ obecne, aby produkt zosta³ wy¶wietlony. 
-        Wybór NIE oznacza, ¿e produkt bêdzie wy¶wietlony tylko wtedy, gdy pierwsze s³owo kluczowe jest obecne, a drugie nie wystêpuje.";
-    var $_PHPSHOP_ORDERBY = "Sortuj wed³ug";
-    
-    /*** Review feature ***/
-    var $_PHPSHOP_CUSTOMER_RATING  = "¦rednia ocena klientów";
-    var $_PHPSHOP_TOTAL_VOTES = "Suma g³osów";
-    var $_PHPSHOP_CAST_VOTE = "Prosimy o zag³osowanie";
-    var $_PHPSHOP_RATE_BUTTON = "G³osuj";
-    var $_PHPSHOP_RATE_NOM = "Ocena";
-    var $_PHPSHOP_REVIEWS = "Komentarze klientów";
-    var $_PHPSHOP_NO_REVIEWS = "Nie ma jeszcze ¿adnych komentarzy na temat tego produktu.";
-    var $_PHPSHOP_WRITE_FIRST_REVIEW = "Zostañ pierwszym, który zamie¶ci komentarz...";
-    var $_PHPSHOP_REVIEW_LOGIN = "Aby napisaæ komentarz prosimy o zalogowanie siê.";
-    var $_PHPSHOP_REVIEW_ERR_RATE = "Prosimy oceniæ produkt, aby uzupe³niæ swój komentarz!";
-    var $_PHPSHOP_REVIEW_ERR_COMMENT1 = "Prosimy o napisanie wiêkszej ilo¶ci s³ów w komentarzu. Minimalna ilo¶æ znaków: 100";
-    var $_PHPSHOP_REVIEW_ERR_COMMENT2 = "Prosimy o skrócenie komentarza. Maksymalna dozwolona ilo¶æ znaków: 2000";
-    var $_PHPSHOP_WRITE_REVIEW = "Napisz komentarz do tego produktu!";
-    var $_PHPSHOP_REVIEW_RATE = "Najpierw: Oceñ produkt. Prosimy wybraæ ocenê w skali od 0 (najni¿sza) do 5 gwiazdek (najwy¿sza).";
-    var $_PHPSHOP_REVIEW_COMMENT = "Teraz prosimy o napisanie (krótkiego) komentarza....(min. 100, maks. 2000 znaków) ";
-    var $_PHPSHOP_REVIEW_COUNT = "Wpisanych znaków: ";
-    var $_PHPSHOP_REVIEW_SUBMIT = "Wy¶lij komentarz";
-    var $_PHPSHOP_REVIEW_ALREADYDONE = "Ju¿ napisa³e¶ komentarz do tego produktu. Dziêkujemy.";
-    var $_PHPSHOP_REVIEW_THANKYOU = "Dziêkujemy za komentarz.";
-    var $_PHPSHOP_COMMENT= "Komentarz";
-    
-    var $_PHPSHOP_CREDITCARD_FORM_LBL = "Dodaj/Edytuj rodzaje kart kredytowych";
-    var $_PHPSHOP_CREDITCARD_NAME = "Nazwa karty kredytowej";
-    var $_PHPSHOP_CREDITCARD_CODE = "Krótki kod karty kredytowej";
-    var $_PHPSHOP_CREDITCARD_TYPE = "Rodzaj karty kredytowej";
-    
-    var $_PHPSHOP_CREDITCARD_LIST_LBL = "Lista kart kredytowych";
-    var $_PHPSHOP_UDATE_ADDRESS = "Aktualizuj adres";
-    var $_PHPSHOP_CONTINUE_SHOPPING = "Kontynuuj zakupy";
-    
-    var $_PHPSHOP_THANKYOU_SUCCESS = "Twoje zamówienie zosta³o pomy¶lnie wys³ane!";
-var $_PHPSHOP_ORDER_LINK = "Kliknij ten link, aby zobaczyæ szczegó³y zamówienia.";
-
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = "status Twojego zamówienia nr {order_id} zosta³ zmieniony.";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = "Nowy status to:";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = "Je¶li chcesz zobaczyæ szczegó³y zamówienia, kliknij ten link (lub skopiuj zdres do swojej przegl±darki):";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = "Zmiana statusu zamówienia: Twoje zamówienie {order_id}";
-    var $_PHPSHOP_ORDER_LIST_NOTIFY = "Powiadom klienta?";
-    var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = "Proszê wpierw zmieniæ status zamówienia!";
-    
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = "Rabat dla domy¶lnej grupy klientów (w %)";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = "Dodatnia warto¶æ X oznacza: je¿eli produkt nie posiada ceny przypisanej do TEJ grupy klientów, domy¶lna cena jest pomniejszana o X %. Warto¶æ ujemna daje odwrotny rezultat";
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = "Rabaty na produkty";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = "Lista rabatów na produkty";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = "Dodaj/edytuj rabaty na produkty";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = "Warto¶æ rabatu";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = "Wprowad¼ warto¶æ rabatu";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = "Typ rabatu";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = "Procentowy";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = "Kwotowy";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = "Czy warto¶c powinna byæ procentowa czy kwotowa?";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = "Rabat obowi±zuje od";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = "Okre¶l dzieñ od kiedy obowi±zuje rabat";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = "Rabat obowi±zuje do";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = "Okre¶l dzieñ do kiedy obowi±zuje rabat";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = "Mo¿esz u¿yæ Formularza rabatu na produkty, aby dodaæ rabaty!";
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = "Oszczêdzasz";
-    
-    var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = "Powiêksz zdjêcie";
-    
-/*********************
-Currency Display Style 
-***********************/
-    var $_PHPSHOP_CURRENCY_DISPLAY = "Currency Display Style";
-    var $_PHPSHOP_CURRENCY_SYMBOL = "Currency symbol";
-    var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = "You can also use HTML Entities here (e.g. &amp;euro;,&amp;pound;,&amp;yen;,...)";
-    var $_PHPSHOP_CURRENCY_DECIMALS = "Decimals";
-    var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = "Number of displayed decimals (can be 0)<br><b>Performs rounding if value has different number of decimals</b>";
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = "Decimal symbol";
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = "Character used as decimal symbol";
-    var $_PHPSHOP_CURRENCY_THOUSANDS = "Thousands separator";
-    var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = "Character used to separate thousands (can be empty)";
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = "Positive format";
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = "Display format used to display positive values.<br>(Symb stands for currency symbol)";
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = "Negative format";
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = "Display format used to display negative values.<br>(Symb stands for currency symbol)";
-    
-    var $_PHPSHOP_OTHER_LISTS = "Other Product Lists";
-/**************
-Multiple Images 
-****************/
-    var $_PHPSHOP_MORE_IMAGES = "View More Images";
-    var $_PHPSHOP_AVAILABLE_IMAGES = "Available Images for";
-    var $_PHPSHOP_BACK_TO_DETAILS = "Back to Product Details";
-    
-    /* FILEMANAGER */
-    var $_PHPSHOP_FILEMANAGER = "FileManager";
-    var $_PHPSHOP_FILEMANAGER_LIST = "FileManager::Product List";
-    var $_PHPSHOP_FILEMANAGER_ADD = "Add Image/File";
-    var $_PHPSHOP_FILEMANAGER_IMAGES = "Assigned Images";
-    var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = "Is Downloadable?";
-    var $_PHPSHOP_FILEMANAGER_FILES = "Assigned Files (Datasheets,...)";
-    var $_PHPSHOP_FILEMANAGER_PUBLISHED = "Published?";
-    
-    /* FILE LIST */
-    var $_PHPSHOP_FILES_LIST = "FileManager::Image/File List for";
-    var $_PHPSHOP_FILES_LIST_FILENAME = "Filename";
-    var $_PHPSHOP_FILES_LIST_FILETITLE = "File Title";
-    var $_PHPSHOP_FILES_LIST_FILETYPE = "File Type";
-    var $_PHPSHOP_FILES_LIST_EDITFILE = "Edit File Entry";
-    var $_PHPSHOP_FILES_LIST_FULL_IMG = "Full Image";
-    var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = "Thumbnail Image";
-    
-    
-    /* FILE FORM */
-    var $_PHPSHOP_FILES_FORM = "Upload a File for";
-    var $_PHPSHOP_FILES_FORM_CURRENT_FILE = "Current File";
-    var $_PHPSHOP_FILES_FORM_FILE = "File";
-    var $_PHPSHOP_FILES_FORM_IMAGE = "Image";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_TO = "Upload to";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = "default Product Image Path";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = "Specify the file location";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = "Download Path (e.g. for selling downloadables!)";
-    var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = "Auto-Create Thumbnail?";
-    var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = "File is published?";
-    var $_PHPSHOP_FILES_FORM_FILE_TITLE = "File Title (what the Customer sees)";
-    var $_PHPSHOP_FILES_FORM_FILE_DESC = "File Description";
-    var $_PHPSHOP_FILES_FORM_FILE_URL = "File URL (optional)";
-    
-    /* FILE & IMAGE PROCESSING */
-    var $_PHPSHOP_FILES_PATH_ERROR = "Please provide a valid path!";
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = "The Thumbnail Image has been successfully created!";
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = "Could NOT create Thumbnail Image!";
-    var $_PHPSHOP_FILES_UPLOAD_FAILURE = "File/Image Upload Error";
-    
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = "Could not delete the Full Image File.";
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = "Full Image successfully deleted.";
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = "Could not delete the Thumbnail Image File (maybe didnt exist): ";
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = "Thumbnail Image successfully deleted.";
-    var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = "Could not delete the File.";
-    var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = "File successfully deleted.";
-    
-    var $_PHPSHOP_FILES_NOT_FOUND = "Sorry, but the requested file wasn't found!";
-    var $_PHPSHOP_IMAGE_NOT_FOUND = "Image not found!";
-
-    /*#####################
-    MODULE COUPON
-    #####################*/
-    
-    var $_PHPSHOP_COUPON_MOD = "Coupon";
-    var $_PHPSHOP_COUPONS = "Coupons";
-    var $_PHPSHOP_COUPON_LIST = "Coupon List";
-    var $_PHPSHOP_COUPON_ALREADY_REDEEMED = "Coupon has already been redeemed.";
-    var $_PHPSHOP_COUPON_REDEEMED = "Coupon redeemed! Thank you.";
-    var $_PHPSHOP_COUPON_ENTER_HERE = "If you have a coupon code, please enter it below:";
-    var $_PHPSHOP_COUPON_SUBMIT_BUTTON = "Submit";
-    var $_PHPSHOP_COUPON_CODE_EXISTS = "That coupon code already exists. Please try again.";
-    var $_PHPSHOP_COUPON_EDIT_HEADER = "Update Coupon";
-    var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = "Click a coupon code to edit it, or to delete a coupon code, select it and click Delete:";
-    var $_PHPSHOP_COUPON_CODE_HEADER = "Code";
-    var $_PHPSHOP_COUPON_PERCENT_TOTAL = "Percent or Total";
-    var $_PHPSHOP_COUPON_TYPE = "Coupon Type";
-    var $_PHPSHOP_COUPON_TYPE_TOOLTIP = "A Gift Coupon is deleted after it was used for discounting an order. A permanent coupon can be used as often as the customer wants to.";
-    var $_PHPSHOP_COUPON_TYPE_GIFT = "Gift Coupon";    
-    var $_PHPSHOP_COUPON_TYPE_PERMANENT = "Permanent Coupon";    
-    var $_PHPSHOP_COUPON_VALUE_HEADER = "Value";
-    var $_PHPSHOP_COUPON_DELETE_BUTTON = "Delete Code";
-    var $_PHPSHOP_COUPON_CONFIRM_DELETE = "Are you sure you want to delete this coupon code?";
-    var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = "Please complete all fields.";
-    var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = "Coupon value must be a number.";
-    var $_PHPSHOP_COUPON_NEW_HEADER = "New Coupon";
-    var $_PHPSHOP_COUPON_COUPON_HEADER = "Coupon Code";
-    var $_PHPSHOP_COUPON_PERCENT = "Percent";
-    var $_PHPSHOP_COUPON_TOTAL = "Total";
-    var $_PHPSHOP_COUPON_VALUE = "Value";
-    var $_PHPSHOP_COUPON_CODE_SAVED = "Coupon code saved.";
-    var $_PHPSHOP_COUPON_SAVE_BUTTON = "Save Coupon";
-    var $_PHPSHOP_COUPON_DISCOUNT = "Coupon Discount";
-    var $_PHPSHOP_COUPON_CODE_INVALID = "Coupon code not found. Please try again.";
-    var $_PHPSHOP_COUPONS_ENABLE = "Enable Coupon Usage";
-    var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = "If you enable the Coupon Usage, you allow customers to fill in Coupon Numbers to gain discounts on their purchase.";
-    
-    /* Free Shipping */
-    var $_PHPSHOP_FREE_SHIPPING = "Free Shipping";
-    var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = "Shipping is free on this Order!";
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT = "Minimum Amount for Free Shipping";
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = "The amount (INCLUDING TAX!) which is the Minimum for Free Shipping 
+        Wybór NIE oznacza, ¿e produkt bêdzie wy¶wietlony tylko wtedy, gdy pierwsze s³owo kluczowe jest obecne, a drugie nie wystêpuje.';
+	var $_PHPSHOP_ORDERBY = 'Sortuj wed³ug';
+	var $_PHPSHOP_CUSTOMER_RATING = '¦rednia ocena klientów';
+	var $_PHPSHOP_TOTAL_VOTES = 'Suma g³osów';
+	var $_PHPSHOP_CAST_VOTE = 'Prosimy o zag³osowanie';
+	var $_PHPSHOP_RATE_BUTTON = 'G³osuj';
+	var $_PHPSHOP_RATE_NOM = 'Ocena';
+	var $_PHPSHOP_REVIEWS = 'Komentarze klientów';
+	var $_PHPSHOP_NO_REVIEWS = 'Nie ma jeszcze ¿adnych komentarzy na temat tego produktu.';
+	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Zostañ pierwszym, który zamie¶ci komentarz...';
+	var $_PHPSHOP_REVIEW_LOGIN = 'Aby napisaæ komentarz prosimy o zalogowanie siê.';
+	var $_PHPSHOP_REVIEW_ERR_RATE = 'Prosimy oceniæ produkt, aby uzupe³niæ swój komentarz!';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Prosimy o napisanie wiêkszej ilo¶ci s³ów w komentarzu. Minimalna ilo¶æ znaków: 100';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Prosimy o skrócenie komentarza. Maksymalna dozwolona ilo¶æ znaków: 2000';
+	var $_PHPSHOP_WRITE_REVIEW = 'Napisz komentarz do tego produktu!';
+	var $_PHPSHOP_REVIEW_RATE = 'Najpierw: Oceñ produkt. Prosimy wybraæ ocenê w skali od 0 (najni¿sza) do 5 gwiazdek (najwy¿sza).';
+	var $_PHPSHOP_REVIEW_COMMENT = 'Teraz prosimy o napisanie (krótkiego) komentarza....(min. 100, maks. 2000 znaków) ';
+	var $_PHPSHOP_REVIEW_COUNT = 'Wpisanych znaków: ';
+	var $_PHPSHOP_REVIEW_SUBMIT = 'Wy¶lij komentarz';
+	var $_PHPSHOP_REVIEW_ALREADYDONE = 'Ju¿ napisa³e¶ komentarz do tego produktu. Dziêkujemy.';
+	var $_PHPSHOP_REVIEW_THANKYOU = 'Dziêkujemy za komentarz.';
+	var $_PHPSHOP_COMMENT = 'Komentarz';
+	var $_PHPSHOP_CREDITCARD_FORM_LBL = 'Dodaj/Edytuj rodzaje kart kredytowych';
+	var $_PHPSHOP_CREDITCARD_NAME = 'Nazwa karty kredytowej';
+	var $_PHPSHOP_CREDITCARD_CODE = 'Krótki kod karty kredytowej';
+	var $_PHPSHOP_CREDITCARD_TYPE = 'Rodzaj karty kredytowej';
+	var $_PHPSHOP_CREDITCARD_LIST_LBL = 'Lista kart kredytowych';
+	var $_PHPSHOP_UDATE_ADDRESS = 'Aktualizuj adres';
+	var $_PHPSHOP_CONTINUE_SHOPPING = 'Kontynuuj zakupy';
+	var $_PHPSHOP_THANKYOU_SUCCESS = 'Twoje zamówienie zosta³o pomy¶lnie wys³ane!';
+	var $_PHPSHOP_ORDER_LINK = 'Kliknij ten link, aby zobaczyæ szczegó³y zamówienia.';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = 'status Twojego zamówienia nr {order_id} zosta³ zmieniony.';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = 'Nowy status to:';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = 'Je¶li chcesz zobaczyæ szczegó³y zamówienia, kliknij ten link (lub skopiuj zdres do swojej przegl±darki):';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = 'Zmiana statusu zamówienia: Twoje zamówienie {order_id}';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY = 'Powiadom klienta?';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = 'Proszê wpierw zmieniæ status zamówienia!';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = 'Rabat dla domy¶lnej grupy klientów (w %)';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = 'Dodatnia warto¶æ X oznacza: je¿eli produkt nie posiada ceny przypisanej do TEJ grupy klientów, domy¶lna cena jest pomniejszana o X %. Warto¶æ ujemna daje odwrotny rezultat';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = 'Rabaty na produkty';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = 'Lista rabatów na produkty';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = 'Dodaj/edytuj rabaty na produkty';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = 'Warto¶æ rabatu';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = 'Wprowad¼ warto¶æ rabatu';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = 'Typ rabatu';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = 'Procentowy';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = 'Kwotowy';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = 'Czy warto¶c powinna byæ procentowa czy kwotowa?';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = 'Rabat obowi±zuje od';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = 'Okre¶l dzieñ od kiedy obowi±zuje rabat';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = 'Rabat obowi±zuje do';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = 'Okre¶l dzieñ do kiedy obowi±zuje rabat';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = 'Mo¿esz u¿yæ Formularza rabatu na produkty, aby dodaæ rabaty!';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = 'Oszczêdzasz';
+	var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = 'Powiêksz zdjêcie';
+	var $_PHPSHOP_CURRENCY_DISPLAY = 'Currency Display Style';
+	var $_PHPSHOP_CURRENCY_SYMBOL = 'Currency symbol';
+	var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = 'You can also use HTML Entities here (e.g. &euro;,&pound;,&yen;,...)';
+	var $_PHPSHOP_CURRENCY_DECIMALS = 'Decimals';
+	var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = 'Number of displayed decimals (can be 0)<br><b>Performs rounding if value has different number of decimals</b>';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = 'Decimal symbol';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = 'Character used as decimal symbol';
+	var $_PHPSHOP_CURRENCY_THOUSANDS = 'Thousands separator';
+	var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = 'Character used to separate thousands (can be empty)';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = 'Positive format';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = 'Display format used to display positive values.<br>(Symb stands for currency symbol)';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = 'Negative format';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = 'Display format used to display negative values.<br>(Symb stands for currency symbol)';
+	var $_PHPSHOP_OTHER_LISTS = 'Other Product Lists';
+	var $_PHPSHOP_MORE_IMAGES = 'View More Images';
+	var $_PHPSHOP_AVAILABLE_IMAGES = 'Available Images for';
+	var $_PHPSHOP_BACK_TO_DETAILS = 'Back to Product Details';
+	var $_PHPSHOP_FILEMANAGER = 'FileManager';
+	var $_PHPSHOP_FILEMANAGER_LIST = 'FileManager::Product List';
+	var $_PHPSHOP_FILEMANAGER_ADD = 'Add Image/File';
+	var $_PHPSHOP_FILEMANAGER_IMAGES = 'Assigned Images';
+	var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = 'Is Downloadable?';
+	var $_PHPSHOP_FILEMANAGER_FILES = 'Assigned Files (Datasheets,...)';
+	var $_PHPSHOP_FILEMANAGER_PUBLISHED = 'Published?';
+	var $_PHPSHOP_FILES_LIST = 'FileManager::Image/File List for';
+	var $_PHPSHOP_FILES_LIST_FILENAME = 'Filename';
+	var $_PHPSHOP_FILES_LIST_FILETITLE = 'File Title';
+	var $_PHPSHOP_FILES_LIST_FILETYPE = 'File Type';
+	var $_PHPSHOP_FILES_LIST_EDITFILE = 'Edit File Entry';
+	var $_PHPSHOP_FILES_LIST_FULL_IMG = 'Full Image';
+	var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = 'Thumbnail Image';
+	var $_PHPSHOP_FILES_FORM = 'Upload a File for';
+	var $_PHPSHOP_FILES_FORM_CURRENT_FILE = 'Current File';
+	var $_PHPSHOP_FILES_FORM_FILE = 'File';
+	var $_PHPSHOP_FILES_FORM_IMAGE = 'Image';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_TO = 'Upload to';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = 'default Product Image Path';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = 'Specify the file location';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = 'Download Path (e.g. for selling downloadables!)';
+	var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = 'Auto-Create Thumbnail?';
+	var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = 'File is published?';
+	var $_PHPSHOP_FILES_FORM_FILE_TITLE = 'File Title (what the Customer sees)';
+	var $_PHPSHOP_FILES_FORM_FILE_DESC = 'File Description';
+	var $_PHPSHOP_FILES_FORM_FILE_URL = 'File URL (optional)';
+	var $_PHPSHOP_FILES_PATH_ERROR = 'Please provide a valid path!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = 'The Thumbnail Image has been successfully created!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = 'Could NOT create Thumbnail Image!';
+	var $_PHPSHOP_FILES_UPLOAD_FAILURE = 'File/Image Upload Error';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = 'Could not delete the Full Image File.';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = 'Full Image successfully deleted.';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = 'Could not delete the Thumbnail Image File (maybe didnt exist): ';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = 'Thumbnail Image successfully deleted.';
+	var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = 'Could not delete the File.';
+	var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = 'File successfully deleted.';
+	var $_PHPSHOP_FILES_NOT_FOUND = 'Sorry, but the requested file wasn\'t found!';
+	var $_PHPSHOP_IMAGE_NOT_FOUND = 'Image not found!';
+	var $_PHPSHOP_COUPON_MOD = 'Coupon';
+	var $_PHPSHOP_COUPONS = 'Coupons';
+	var $_PHPSHOP_COUPON_LIST = 'Coupon List';
+	var $_PHPSHOP_COUPON_ALREADY_REDEEMED = 'Coupon has already been redeemed.';
+	var $_PHPSHOP_COUPON_REDEEMED = 'Coupon redeemed! Thank you.';
+	var $_PHPSHOP_COUPON_ENTER_HERE = 'If you have a coupon code, please enter it below:';
+	var $_PHPSHOP_COUPON_SUBMIT_BUTTON = 'Submit';
+	var $_PHPSHOP_COUPON_CODE_EXISTS = 'That coupon code already exists. Please try again.';
+	var $_PHPSHOP_COUPON_EDIT_HEADER = 'Update Coupon';
+	var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = 'Click a coupon code to edit it, or to delete a coupon code, select it and click Delete:';
+	var $_PHPSHOP_COUPON_CODE_HEADER = 'Code';
+	var $_PHPSHOP_COUPON_PERCENT_TOTAL = 'Percent or Total';
+	var $_PHPSHOP_COUPON_TYPE = 'Coupon Type';
+	var $_PHPSHOP_COUPON_TYPE_TOOLTIP = 'A Gift Coupon is deleted after it was used for discounting an order. A permanent coupon can be used as often as the customer wants to.';
+	var $_PHPSHOP_COUPON_TYPE_GIFT = 'Gift Coupon';
+	var $_PHPSHOP_COUPON_TYPE_PERMANENT = 'Permanent Coupon';
+	var $_PHPSHOP_COUPON_VALUE_HEADER = 'Value';
+	var $_PHPSHOP_COUPON_DELETE_BUTTON = 'Delete Code';
+	var $_PHPSHOP_COUPON_CONFIRM_DELETE = 'Are you sure you want to delete this coupon code?';
+	var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = 'Please complete all fields.';
+	var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = 'Coupon value must be a number.';
+	var $_PHPSHOP_COUPON_NEW_HEADER = 'New Coupon';
+	var $_PHPSHOP_COUPON_COUPON_HEADER = 'Coupon Code';
+	var $_PHPSHOP_COUPON_PERCENT = 'Percent';
+	var $_PHPSHOP_COUPON_TOTAL = 'Total';
+	var $_PHPSHOP_COUPON_VALUE = 'Value';
+	var $_PHPSHOP_COUPON_CODE_SAVED = 'Coupon code saved.';
+	var $_PHPSHOP_COUPON_SAVE_BUTTON = 'Save Coupon';
+	var $_PHPSHOP_COUPON_DISCOUNT = 'Coupon Discount';
+	var $_PHPSHOP_COUPON_CODE_INVALID = 'Coupon code not found. Please try again.';
+	var $_PHPSHOP_COUPONS_ENABLE = 'Enable Coupon Usage';
+	var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = 'If you enable the Coupon Usage, you allow customers to fill in Coupon Numbers to gain discounts on their purchase.';
+	var $_PHPSHOP_FREE_SHIPPING = 'Free Shipping';
+	var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = 'Shipping is free on this Order!';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT = 'Minimum Amount for Free Shipping';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = 'The amount (INCLUDING TAX!) which is the Minimum for Free Shipping 
                                                 (example: <strong>50</strong> means Free Shipping when the customer checks out
-                                                with \$50 (including tax) or more.";
-    var $_PHPSHOP_YOUR_STORE = "Your Store";
-    var $_PHPSHOP_CONTROL_PANEL = "Control Panel";
-    
-    /* Configuration Additions */
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = "PDF - Button";
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = "Show or Hide the PDF - Button in the Shop";
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = "Must agree to Terms of Service on EVERY ORDER?";
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = "Check if you want a shopper to agree to your terms of service on EVERY ORDER (before placing the order).";
-
-    // We need this for eCheck.net Payments
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = "Bank Account Type";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = "Checking";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = "Business Checking";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = "Saving";
-    
-    var $_PHPSHOP_PAYMENT_AN_RECURRING = "Recurring Billings?";
-    var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = "Define wether you want recurring billings.";
-    
-    var $_PHPSHOP_INTERNAL_ERROR = "Internal Error processing the Request to";
-    var $_PHPSHOP_PAYMENT_ERROR = "Failure in Processing the Payment";
-    var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = "Payment successfully processed";
-    
-    /* UPS Shipping Module */
-    var $_PHPSHOP_UPS_RESPONSE_ERROR = "UPS was not able to process the Shipping Rate Request.";
-    var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = "Guaranteed Day(s) To Delivery";
-    var $_PHPSHOP_UPS_PICKUP_METHOD = "UPS Pickup Method";
-    var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = "How do you give packages to UPS?";
-    var $_PHPSHOP_UPS_PACKAGE_TYPE = "UPS Packaging?";
-    var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = "Select the default Type of Packaging.";
-    var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = "Residential Delivery?";
-    var $_PHPSHOP_UPS_RESIDENTIAL = "Residential (RES)";
-    var $_PHPSHOP_UPS_COMMERCIAL    = "Commercial Delivery (COM)";
-    var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = "Quote for Residential (RES) or Commercial Delivery (COM).";
-    var $_PHPSHOP_UPS_HANDLING_FEE = "Handling Fee";
-    var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = "Your Handling fee for this shipping method.";
-    var $_PHPSHOP_UPS_TAX_CLASS = "Tax Class";
-    var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = "Use the following tax class on the shipping fee.";
-    
-    var $_PHPSHOP_ERROR_CODE = "Error Code";
-    var $_PHPSHOP_ERROR_DESC = "Error Description";
-    
-    var $_PHPSHOP_CHANGE_TRANSACTION_KEY = "Show / Change the Transaction Key";
-    var $_PHPSHOP_CHANGE_PASSKEY_FORM = "Show/Change the Password/Transaction Key";
-    var $_PHPSHOP_TYPE_PASSWORD = "Please type in your User Password";
-    var $_PHPSHOP_CURRENT_PASSWORD = "Current Password";
-    var $_PHPSHOP_CURRENT_TRANSACTION_KEY = "Current Transaction Key";
-    var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = "The Transaction key was successfully changed.";
-    
-    var $_PHPSHOP_PAYMENT_CVV2 = "Request/Capture Credit Card Code Value (CVV2/CVC2/CID)";
-    var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = "Check for a valid CVV2/CVC2/CID value (three- or four-digit number on the back of a credit card, on the Front of American Express Cards)?";
-    var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = "Please type in the three- or four-digit number on the back of your credit card (On the Front of American Express Cards)";
-    var $_PHPSHOP_CUSTOMER_CVV2_ERROR = "You need to enter your Credit Card Code to proceed.";
-    
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME = "EITHER Fill in a Filename";
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = "NOTE: Here you can fill in a FileName. <strong>If you fill in a Filename here, no Files will be uploaded!!! You will have to upload it via FTP manually!</strong>.";
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD = "OR Upload new File";
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = "You can upload a local file. This file will be the Product you sell. An existing file will be replaced.";
-    
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = "Fill in any text here that will be displayed to the customer on the product flypage.<br />e.g.: 24h, 48 hours, 3 - 5 days, On Order.....";
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = "OR select an Image to be displayed on the Details Page (flypage).<br />The images reside in the directory <i>/components/com_phpshop/shop_image/availability</i><br />";
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = "Attribute List";
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = "<h4>Examples for the Attribute List Format:</h4>
-        <span class=\"sectionname\"><strong>Size</strong>,XL[+1.99],M,S[-2.99]<strong>;Colour</strong>,Red,Green,Yellow,ExpensiveColor[=24.00]<strong>;AndSoOn</strong>,..,..</span>
+                                                with $50 (including tax) or more.';
+	var $_PHPSHOP_YOUR_STORE = 'Your Store';
+	var $_PHPSHOP_CONTROL_PANEL = 'Control Panel';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = 'PDF - Button';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = 'Show or Hide the PDF - Button in the Shop';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = 'Must agree to Terms of Service on EVERY ORDER?';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = 'Check if you want a shopper to agree to your terms of service on EVERY ORDER (before placing the order).';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = 'Bank Account Type';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = 'Checking';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = 'Business Checking';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = 'Saving';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING = 'Recurring Billings?';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = 'Define wether you want recurring billings.';
+	var $_PHPSHOP_INTERNAL_ERROR = 'Internal Error processing the Request to';
+	var $_PHPSHOP_PAYMENT_ERROR = 'Failure in Processing the Payment';
+	var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = 'Payment successfully processed';
+	var $_PHPSHOP_UPS_RESPONSE_ERROR = 'UPS was not able to process the Shipping Rate Request.';
+	var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = 'Guaranteed Day(s) To Delivery';
+	var $_PHPSHOP_UPS_PICKUP_METHOD = 'UPS Pickup Method';
+	var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = 'How do you give packages to UPS?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE = 'UPS Packaging?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = 'Select the default Type of Packaging.';
+	var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = 'Residential Delivery?';
+	var $_PHPSHOP_UPS_RESIDENTIAL = 'Residential (RES)';
+	var $_PHPSHOP_UPS_COMMERCIAL = 'Commercial Delivery (COM)';
+	var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = 'Quote for Residential (RES) or Commercial Delivery (COM).';
+	var $_PHPSHOP_UPS_HANDLING_FEE = 'Handling Fee';
+	var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = 'Your Handling fee for this shipping method.';
+	var $_PHPSHOP_UPS_TAX_CLASS = 'Tax Class';
+	var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = 'Use the following tax class on the shipping fee.';
+	var $_PHPSHOP_ERROR_CODE = 'Error Code';
+	var $_PHPSHOP_ERROR_DESC = 'Error Description';
+	var $_PHPSHOP_CHANGE_TRANSACTION_KEY = 'Show / Change the Transaction Key';
+	var $_PHPSHOP_CHANGE_PASSKEY_FORM = 'Show/Change the Password/Transaction Key';
+	var $_PHPSHOP_TYPE_PASSWORD = 'Please type in your User Password';
+	var $_PHPSHOP_CURRENT_PASSWORD = 'Current Password';
+	var $_PHPSHOP_CURRENT_TRANSACTION_KEY = 'Current Transaction Key';
+	var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = 'The Transaction key was successfully changed.';
+	var $_PHPSHOP_PAYMENT_CVV2 = 'Request/Capture Credit Card Code Value (CVV2/CVC2/CID)';
+	var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = 'Check for a valid CVV2/CVC2/CID value (three- or four-digit number on the back of a credit card, on the Front of American Express Cards)?';
+	var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = 'Please type in the three- or four-digit number on the back of your credit card (On the Front of American Express Cards)';
+	var $_PHPSHOP_CUSTOMER_CVV2_ERROR = 'You need to enter your Credit Card Code to proceed.';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME = 'EITHER Fill in a Filename';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = 'NOTE: Here you can fill in a FileName. <strong>If you fill in a Filename here, no Files will be uploaded!!! You will have to upload it via FTP manually!</strong>.';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'OR Upload new File';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'You can upload a local file. This file will be the Product you sell. An existing file will be replaced.';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Fill in any text here that will be displayed to the customer on the product flypage.<br />e.g.: 24h, 48 hours, 3 - 5 days, On Order.....';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OR select an Image to be displayed on the Details Page (flypage).<br />The images reside in the directory <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Attribute List';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Examples for the Attribute List Format:</h4>
+        <span class="sectionname"><strong>Size</strong>,XL[+1.99],M,S[-2.99]<strong>;Colour</strong>,Red,Green,Yellow,ExpensiveColor[=24.00]<strong>;AndSoOn</strong>,..,..</span>
         <h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
-        <span class=\"sectionname\">
-        <strong>&#43;</strong> == Add this amount to the configured price.<br />
-        <strong>&#45;</strong> == Subtract this amount from the configured price.<br />
-        <strong>&#61;</strong> == Set the product's price to this amount.
-      </span>";
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = "Custom Attribute List";
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = "<h4>Examples for the Custom attribute List Format:</h4>
-        <span class=\"sectionname\"><strong>Name;Extras;</strong>...</span>";
+        <span class="sectionname">
+        <strong>+</strong> == Add this amount to the configured price.<br />
+        <strong>-</strong> == Subtract this amount from the configured price.<br />
+        <strong>=</strong> == Set the product\'s price to this amount.
+      </span>';
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = 'Custom Attribute List';
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Examples for the Custom attribute List Format:</h4>
+        <span class="sectionname"><strong>Name;Extras;</strong>...</span>';
+	var $_PHPSHOP_MULTISELECT = '<i>Wielokrotny wybór: u¿yj klawicza CTRL i myszki</i>';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = 'Enable eProcessingNetwork.com payment?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'Check to use eProcessingNetwork.com with phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = 'Test mode ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = 'eProcessingNetwork.com Login ID';
+	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = 'This is your eProcessingNetwork.com Login ID';
+	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = 'eProcessingNetwork.com Transaction Key';
+	var $_PHPSHOP_ADMIN_CFG_EPN_KEY_EXPLAIN = 'This is your eProcessingNetwork.com Transaction Key';
+	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE = 'Authentication Type';
+	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN = 'This is the eProcessingNetwork.com authentication type.';
+	var $_PHPSHOP_RELATED_PRODUCTS = 'Related Products';
+	var $_PHPSHOP_RELATED_PRODUCTS_TIP = 'You can build up Product Relations using this List. Just select one or more products here and then they are <strong>Related Products</strong>.';
+	var $_PHPSHOP_RELATED_PRODUCTS_HEADING = 'You may also be interested in this/these product(s)';
+	var $_PHPSHOP_IMAGE_ACTION = 'Image Action';
+	var $_PHPSHOP_NONE = 'none';
+	var $_PHPSHOP_ORDER_HISTORY = 'Order History';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT = 'Comment';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = 'Comments on your Order';
+	var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = 'Include this comment?';
+	var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = 'Date Added';
+	var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = 'Customer Notified?';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE = 'Order Status Change';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = 'USPS shipping username';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = 'USPS shipping username';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = 'USPS shipping password';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = 'USPS shipping password';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = 'USPS shipping server';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = 'USPS shipping server';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = 'USPS shipping path';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = 'USPS shipping path';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = 'USPS shipping container';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = 'USPS shipping container';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = 'USPS Package Size';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = 'USPS Package Size';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = 'USPS Package ID (must be 0, does not support multiple packages)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = 'USPS Package ID (must be 0, does not support multiple packages)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = 'USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = 'USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = 'Handling Fee';
+	var $_PHPSHOP_USPS_HANDLING_FEE = 'Your Handling fee for this shipping method.';
+	var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = 'Your Handling fee for this shipping method.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE = 'Your International Handling fee for USPS shipments.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = 'Your International Handling fee for USPS shipments.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE = 'Your International per pound rate for USPS shipments.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = 'Your International per pound rate for USPS shipments.';
+	var $_PHPSHOP_USPS_RESPONSE_ERROR = 'USPS was not able to process the Shipping Rate Request.';
+	var $_PHPSHOP_PARAMETERS_LBL = 'Parameters';
+	var $_PHPSHOP_PRODUCT_TYPE_LBL = 'Product Type';
+	var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = 'Product Type List';
+	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Add/Edit Product Type';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = 'Product Type List for';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = 'List Product Types';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Add Product Type for';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = 'Add Product Type';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = 'Product Type';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = 'Product Type Name';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = 'Product Type Description';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = 'Parameters';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = 'Product Type Information';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = 'Publish?';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = 'Product Type Browse Page';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = 'Product Type Flypage';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = 'Parameters of Product Type';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = 'Parameter Information';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = 'Product Type not found!';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = 'Parameter Name';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = 'This name will be column name of table. Must be unicate and without space.<BR>For example: main_material';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = 'Parameter Label';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = 'Parameter Description';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = 'Parameter Type';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = 'Integer';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = 'Text';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = 'Short Text';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = 'Float';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = 'Char';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = 'Date & Time';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = 'Date';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT = 'YYYY-MM-DD';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = 'Time';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT = 'HH:MM:SS';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = 'Break Line';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = 'Multiple Values';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = 'Possible Values';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = 'Show Possible Values as Multiple select?';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><BR><span class="sectionname">Steel;Wood;Plastic;...</span>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Default Value';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = 'For Parameter Default Value use this format:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Unit';
+	var $_PHPSHOP_PARAMETER_SEARCH = 'Advanced Search according to Parameters';
+	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = 'Parameters Search';
+	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = 'Do you will find products according to technical parametrs?<BR>You can used any prepared form:';
+	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = 'I am sorry. There is no category for search.';
+	var $_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE = 'I am sorry. There is no published Product Type with this name.';
+	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = 'Is Like';
+	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = 'Is NOT Like';
+	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = 'Full-Text Search';
+	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = 'All Selected';
+	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = 'Any Selected';
+	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = 'Reset Form';
+	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = 'Search in Category';
+	var $_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS = 'Change Parameters';
+	var $_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER = 'Descending order';
+	var $_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER = 'Ascending order';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY = 'Parameters of Category';
+	var $_PHPSHOP_FEE = 'Fee';
+	var $_PHPSHOP_PRODUCT_CLONE = 'Clone Product';
+	var $_PHPSHOP_CSV_SETTINGS = 'Settings';
+	var $_PHPSHOP_CSV_DELIMITER = 'Delimiter';
+	var $_PHPSHOP_CSV_ENCLOSURE = 'Field Enclosure Char';
+	var $_PHPSHOP_CSV_UPLOAD_FILE = 'Upload a CSV File';
+	var $_PHPSHOP_CSV_SUBMIT_FILE = 'Submit CSV File';
+	var $_PHPSHOP_CSV_FROM_DIRECTORY = 'Load from directory';
+	var $_PHPSHOP_CSV_FROM_SERVER = 'Load CSV File from Server';
+	var $_PHPSHOP_CSV_EXPORT_TO_FILE = 'Export to CSV File';
+	var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = 'Choose Field Ordering Type';
+	var $_PHPSHOP_CSV_DEFAULT_ORDERING = 'Default Ordering';
+	var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = 'My customized Ordering';
+	var $_PHPSHOP_CSV_SUBMIT_EXPORT = 'Export all Products to CSV File';
+	var $_PHPSHOP_CSV_CONFIGURATION_HEADER = 'CSV Import / Export Configuration';
+	var $_PHPSHOP_CSV_SAVE_CHANGES = 'Save Changes';
+	var $_PHPSHOP_CSV_FIELD_NAME = 'Field Name';
+	var $_PHPSHOP_CSV_DEFAULT_VALUE = 'default Value';
+	var $_PHPSHOP_CSV_FIELD_ORDERING = 'Field Ordering';
+	var $_PHPSHOP_CSV_FIELD_REQUIRED = 'Field Required?';
+	var $_PHPSHOP_CSV_IMPORT_EXPORT = 'Import/Export';
+	var $_PHPSHOP_CSV_NEW_FIELD = 'Add a new Field';
+	var $_PHPSHOP_CSV_DOCUMENTATION = 'Documentation';
+	var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Sorry, but the Product you\'ve requested wasn\'t found!';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = 'Show Products that are out of Stock';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.';
+	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
+	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
         
-    var $_PHPSHOP_MULTISELECT = "<i>Wielokrotny wybór: u¿yj klawicza CTRL i myszki</i>";
-        
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = "Enable eProcessingNetwork.com payment?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = "Check to use eProcessingNetwork.com with phpShop.";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = "Test mode ?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = "Select 'Yes' while testing. Select 'No' for enabling live transactions.";
-	
-	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = "eProcessingNetwork.com Login ID";
-	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = "This is your eProcessingNetwork.com Login ID";
-	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = "eProcessingNetwork.com Transaction Key";
-	var $_PHPSHOP_ADMIN_CFG_EPN_KEY_EXPLAIN = "This is your eProcessingNetwork.com Transaction Key";
-	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE = "Authentication Type";
-	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN = "This is the eProcessingNetwork.com authentication type.";
-
-    var $_PHPSHOP_RELATED_PRODUCTS = "Related Products";
-    var $_PHPSHOP_RELATED_PRODUCTS_TIP = "You can build up Product Relations using this List. Just select one or more products here and then they are <strong>Related Products</strong>.";
-    
-    var $_PHPSHOP_RELATED_PRODUCTS_HEADING = "You may also be interested in this/these product(s)";
-        
-    var $_PHPSHOP_IMAGE_ACTION = "Image Action";
-    var $_PHPSHOP_NONE = "none";
-    
-    var $_PHPSHOP_ORDER_HISTORY = "Order History";
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT = "Comment";
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = "Comments on your Order";
-    var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = "Include this comment?";
-    var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = "Date Added";
-    var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = "Customer Notified?";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE = "Order Status Change";
-    
-     /* USPS Shipping Module */
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = "USPS shipping username";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = "USPS shipping username";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = "USPS shipping password";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = "USPS shipping password";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = "USPS shipping server";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = "USPS shipping server";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = "USPS shipping path";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = "USPS shipping path";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = "USPS shipping container";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = "USPS shipping container";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = "USPS Package Size";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = "USPS Package Size";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = "USPS Package ID (must be 0, does not support multiple packages)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = "USPS Package ID (must be 0, does not support multiple packages)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = "USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = "USPS Shipping type (Express,First Class,Priority,Parcel,BPM,Library,Media)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = "Handling Fee";
-    var $_PHPSHOP_USPS_HANDLING_FEE = "Your Handling fee for this shipping method.";
-    var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = "Your Handling fee for this shipping method.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE = "Your International Handling fee for USPS shipments.";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = "Your International Handling fee for USPS shipments.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE = "Your International per pound rate for USPS shipments.";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = "Your International per pound rate for USPS shipments.";
-    var $_PHPSHOP_USPS_RESPONSE_ERROR = "USPS was not able to process the Shipping Rate Request.";
-        
-    /** Changed Product Type - Begin*/
-    /*** Product Type ***/
-    var $_PHPSHOP_PARAMETERS_LBL = "Parameters";
-    var $_PHPSHOP_PRODUCT_TYPE_LBL = "Product Type";
-    var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = "Product Type List";
-    var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = "Add/Edit Product Type";
-    // Product - Product Product Type list
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = "Product Type List for";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = "List Product Types";
-    // Product - Product Product Type form
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = "Add Product Type for";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = "Add Product Type";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = "Product Type";
-    // Product - Product Type form
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = "Product Type Name";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = "Product Type Description";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = "Parameters";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = "Product Type Information";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = "Publish?";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = "Product Type Browse Page";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = "Product Type Flypage";
-    // Product - Product Type Parameter list
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = "Parameters of Product Type";
-    // Product - Product Type Parameter form
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = "Parameter Information";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = "Product Type not found!";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = "Parameter Name";
-    VAR $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = "This name will be column name of table. Must be unicate and without space.<BR>For example: main_material";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = "Parameter Label";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = "Parameter Description";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = "Parameter Type";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = "Integer";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = "Text";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = "Short Text";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = "Float";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = "Char";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = "Date & Time";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = "Date";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT = "YYYY-MM-DD";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = "Time";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT = "HH:MM:SS";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = "Break Line";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = "Multiple Values";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = "Possible Values";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = "Show Possible Values as Multiple select?";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = "<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><BR><span class=\"sectionname\">Steel;Wood;Plastic;...</span>";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = "Default Value";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = "For Parameter Default Value use this format:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = "Unit";
-    
-	/************************* FrontEnd ***************************/
-	/** shop.parameter_search.php */
-	var $_PHPSHOP_PARAMETER_SEARCH = "Advanced Search according to Parameters";
-	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = "Parameters Search";
-	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = "Do you will find products according to technical parametrs?<BR>You can used any prepared form:";
-// 	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = "There's no result matching your query.";
-	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = "I am sorry. There is no category for search.";
-	/** shop.parameter_search_form.php */
-	var $_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE = "I am sorry. There is no published Product Type with this name.";
-	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = "Is Like";
-	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = "Is NOT Like";
-	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = "Full-Text Search";
-	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = "All Selected";
-	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = "Any Selected";
-	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = "Reset Form";	
-	/** shop.browse.php */
-	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = "Search in Category";
-	var $_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS = "Change Parameters";
-	var $_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER = "Descending order";
-	var $_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER = "Ascending order";
-	/** shop.product.detail */
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY = "Parameters of Category";
-	/** Changed Product Type - End*/
-    
-    // State form and list
-    var $_PHPSHOP_STATE_LIST_MNU = "List State";
-    var $_PHPSHOP_STATE_LIST_LBL = "State List for: ";
-    var $_PHPSHOP_STATE_LIST_ADD = "Add/Update a State";
-    var $_PHPSHOP_STATE_LIST_NAME = "State Name";
-    var $_PHPSHOP_STATE_LIST_3_CODE = "State Code (3)";
-    var $_PHPSHOP_STATE_LIST_2_CODE = "State Code (2)";
-        
-    // Opposite of Discount!
-    var $_PHPSHOP_FEE = "Fee";
-    
-    var $_PHPSHOP_PRODUCT_CLONE = "Clone Product";
-	
-    var $_PHPSHOP_CSV_SETTINGS = "Settings";
-    var $_PHPSHOP_CSV_DELIMITER = "Delimiter";
-    var $_PHPSHOP_CSV_ENCLOSURE = "Field Enclosure Char";
-    var $_PHPSHOP_CSV_UPLOAD_FILE = "Upload a CSV File";
-    var $_PHPSHOP_CSV_SUBMIT_FILE = "Submit CSV File";
-    var $_PHPSHOP_CSV_FROM_DIRECTORY = "Load from directory";
-    var $_PHPSHOP_CSV_FROM_SERVER = "Load CSV File from Server";
-    var $_PHPSHOP_CSV_EXPORT_TO_FILE = "Export to CSV File";
-    var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = "Choose Field Ordering Type";
-    var $_PHPSHOP_CSV_DEFAULT_ORDERING = "Default Ordering";
-    var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = "My customized Ordering";
-    var $_PHPSHOP_CSV_SUBMIT_EXPORT = "Export all Products to CSV File";
-    var $_PHPSHOP_CSV_CONFIGURATION_HEADER = "CSV Import / Export Configuration";
-    var $_PHPSHOP_CSV_SAVE_CHANGES = "Save Changes";
-    var $_PHPSHOP_CSV_FIELD_NAME = "Field Name";
-    var $_PHPSHOP_CSV_DEFAULT_VALUE = "default Value";
-    var $_PHPSHOP_CSV_FIELD_ORDERING = "Field Ordering";
-    var $_PHPSHOP_CSV_FIELD_REQUIRED = "Field Required?";
-    var $_PHPSHOP_CSV_IMPORT_EXPORT = "Import/Export";
-    var $_PHPSHOP_CSV_NEW_FIELD = "Add a new Field";
-    var $_PHPSHOP_CSV_DOCUMENTATION = "Documentation";
-    
-    var $_PHPSHOP_PRODUCT_NOT_FOUND = "Sorry, but the Product you've requested wasn't found!";
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = "Show Products that are out of Stock";
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = "When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.";
-	
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */
 $PHPSHOP_LANG =& new phpShopLanguage();

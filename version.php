@@ -18,22 +18,21 @@ class phpShopversion {
 	/** @var string Product */
 	var $PRODUCT = 'mambo-phpShop';
 	/** @var int Main Release Level */
-	var $RELEASE = '1.2';
+	var $RELEASE = '1.2.1';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'stable';
+	var $DEV_STATUS = 'beta';
 	/** @var int Sub Release Level */
-	var $PATCH_LEVEL = '3';
+	var $PATCH_LEVEL = '0';
 	/** @var string Codename */
-	var $CODENAME = 'Good Young Progress';
+	var $CODENAME = 'Big Bill Broonzy';
 	/** @var string Date */
-	var $RELDATE = '23/06/2005';
+	var $RELDATE = '14/09/2005';
 	/** @var string Time */
-	var $RELTIME = '17:43';
+	var $RELTIME = '18:23';
 	/** @var string Timezone */
 	var $RELTZ = 'GMT';
 	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Conversion to Mambo and the rest: Copyright (C) 2005 Soeren Eberhardt<br />
-	Base System: Copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)  All rights reserved.'; 
+	var $COPYRIGHT = 'Copyright (C) 2005 Soeren Eberhardt. All rights reserved.'; 
 	/** @var string URL */
 	var $URL = '<a href="http://mambo-phpshop.net">mambo-phpShop</a> is a Free Component for Mambo released under the GNU/GPL License.';
 }

@@ -68,7 +68,7 @@ else {
       $product_rows[$i]['product_name'] = "<a href=\"$url\"><strong>" 
         . $ps_product->get_field($_SESSION['cart'][$i]["product_id"], "product_name") 
         . "</strong></a><br />"
-        .$_SESSION['cart'][$i]["description"];
+        . $ps_product->getDescriptionWithTax( $_SESSION['cart'][$i]["description"], $_SESSION['cart'][$i]["product_id"] );
       
       // Display attribute values if this an item
       $product_rows[$i]['product_attributes'] = "";

@@ -71,7 +71,7 @@ if ($product_parent_id != 0) {
 
 // Let's have a look wether the product has related products.
   $q = "SELECT product_sku, related_products FROM #__pshop_product,#__pshop_product_relations ";
-  $q .= "WHERE #__pshop_product_relations.product_id='$product_id' ";
+  $q .= "WHERE #__pshop_product_relations.product_id='$product_id' AND product_publish='Y' ";
   $q .= "AND FIND_IN_SET(#__pshop_product.product_id, REPLACE(related_products, '|', ',' )) LIMIT 0, 4";
   $database->setQuery( $q );
   $related_products = $database->loadObjectList();

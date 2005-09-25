@@ -56,53 +56,53 @@ class ps_vendor {
     }
   }
   
-  /**************************************************************************
-  ** name: validate_delete()
-  ** created by:
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/    
-function validate_delete(&$d) {
-    $db = new ps_DB;
-
-    if (!$d["vendor_id"]) {
-      $d["error"] = "Please select a vendor to delete.";
-      return False;
-    }
-    
-    $q = "SELECT * FROM #__pshop_product where vendor_id='" . $d["vendor_id"] . "'";
-    $db->query($q);
-    if ($db->next_record()) {
-      $d["error"]  = "ERROR:  This vendor still has products.  ";
-      $d["error"] .= "Delete all products first.";
-      return False;
-    }
-
-    /* Get the image filenames from the database */
-    $db = new ps_DB;
-    $q  = "SELECT vendor_thumb_image,vendor_full_image ";
-    $q .= "FROM #__pshop_vendor ";
-    $q .= "WHERE vendor_id='" . $d["vendor_id"] . "'";
-    $db->query($q);
-    $db->next_record();
- 
-    /* Validate vendor_thumb_image */
-    $d["vendor_thumb_image_curr"] = $db->f("vendor_thumb_image");
-    $d["vendor_thumb_image_name"] = "none";
-    if (!validate_image($d,"vendor_thumb_image","vendor")) {
-      return false;
-    }
- 
-    /* Validate vendor_full_image */
-    $d["vendor_full_image_curr"] = $db->f("vendor_full_image");
-    $d["vendor_full_image_name"] = "none";
-    if (!validate_image($d,"vendor_full_image","vendor")) {
-      return false;
-    }
-
-    return True;
-  }
+	/**************************************************************************
+	** name: validate_delete()
+	** created by:
+	** description:
+	** parameters:
+	** returns:
+	***************************************************************************/    
+	function validate_delete( $vendor_id, &$d) {
+		$db = new ps_DB;
+	
+		if (!$d["vendor_id"]) {
+			$d["error"] = "Please select a vendor to delete.";
+			return False;
+		}
+		
+		$q = "SELECT * FROM #__pshop_product where vendor_id='$vendor_id'";
+		$db->query($q);
+		if ($db->next_record()) {
+			$d["error"]  = "ERROR:  This vendor still has products.  ";
+			$d["error"] .= "Delete all products first.";
+			return False;
+		}
+	
+		/* Get the image filenames from the database */
+		$db = new ps_DB;
+		$q  = "SELECT vendor_thumb_image,vendor_full_image ";
+		$q .= "FROM #__pshop_vendor ";
+		$q .= "WHERE vendor_id='$vendor_id'";
+		$db->query($q);
+		$db->next_record();
+	 
+		/* Validate vendor_thumb_image */
+		$d["vendor_thumb_image_curr"] = $db->f("vendor_thumb_image");
+		$d["vendor_thumb_image_name"] = "none";
+		if (!validate_image($d,"vendor_thumb_image","vendor")) {
+			return false;
+		}
+	 
+		/* Validate vendor_full_image */
+		$d["vendor_full_image_curr"] = $db->f("vendor_full_image");
+		$d["vendor_full_image_name"] = "none";
+		if (!validate_image($d,"vendor_full_image","vendor")) {
+			return false;
+		}
+	
+		return True;
+	}
 
   /**************************************************************************
   ** name: validate_update()
@@ -299,24 +299,45 @@ function validate_update(&$d) {
    * parameters:
    * returns:
    **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-
-    /* Delete Image files */
-    if (!process_images($d)) {
-      return false;
-    }
-
-    $q = "DELETE FROM #__pshop_vendor where vendor_id='" . $d["vendor_id"] . "'";
-    $db->query($q);
-
-
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		
+		if (!$this->validate_delete( $record_id, $d)) {
+		  return False;
+		}
+	
+		/* Delete Image files */
+		if (!process_images($d)) {
+		  return false;
+		}
+	
+		$q = "DELETE FROM #__pshop_vendor where vendor_id='$record_id'";
+		$db->query($q);
+	
+	
+		return True;
+	}
 
   /**************************************************************************
   ** name: get_user_vendor_id

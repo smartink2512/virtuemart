@@ -50,6 +50,9 @@ elseif (file_exists( $mosConfig_absolute_path.'/administrator/components/com_php
 /* Load the phpshop main parse code */
 require_once( $mosConfig_absolute_path.'/components/com_phpshop/phpshop_parser.php' );
 
+$limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
+$limitstart = $mainframe->getUserStateFromRequest( "view{$page}limitstart", 'limitstart', 0 );
+	
 if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
     echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";  
 }
@@ -65,6 +68,10 @@ $_SESSION['last_page'] = $page;
 if( $no_menu != 1 ) {
   include(ADMINPATH.'header.php');
 }
+// Include the Stylesheet
+echo '<link href="../components/'.$option.'/css/shop.css" type="text/css" rel="stylesheet" media="screen, projection" />';
+echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
+
 // Load PAGE
 include( PAGEPATH.$modulename.".".$pagename.".php" );
 

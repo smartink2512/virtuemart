@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: order.order_status_form.php,v 1.4 2005/05/22 13:11:05 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -19,20 +15,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $order_status_id = mosGetParam( $_REQUEST, 'order_status_id' );
-?>
 
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL ?></H2>
-<?php 
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL );
+//Then Start the form
+$formObj->startForm();
+
 if (!empty($order_status_id)) {
   $q = "SELECT * FROM #__pshop_order_status WHERE order_status_id='$order_status_id'"; 
   $db->query($q);  
   $db->next_record();
 }  
 ?><br />
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" name="adminForm">
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center">
+<table class="adminform">
     <tr> 
-      <td><b><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL ?></b></td>
+      <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL ?></strong></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
@@ -54,19 +51,16 @@ if (!empty($order_status_id)) {
       </td>
     </tr>
     <tr align="center">
-      <td colspan="2" >&nbsp;</td>
-    </tr>
-    <tr align="center"> 
-      <td colspan="2" > 
-        <input type="hidden" name="order_status_id" value="<?php echo $order_status_id ?>" />
-        <input type="hidden" name="func" value="<?php if ($order_status_id) echo "orderstatusupdate"; else echo "orderstatusadd"; ?>" />
-        <input type="hidden" name="page" value="order.order_status_list" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <input type="hidden" name="task" value="" />
-        <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-      </td>
-    </tr>
-    
-  </table>
-</form>
+      <td colspan="2">&nbsp;</td>
+    </tr>    
+</table>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'order_status_id', $order_status_id );
+
+$funcname = !empty($order_status_id) ? "orderstatusupdate" : "orderstatusadd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.order_status_list', $option );
+?>

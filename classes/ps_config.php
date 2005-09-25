@@ -45,7 +45,7 @@ function writeconfig(&$d) {
           $d['conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS'] = PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS;
         }
         $my_config_array = array(
-            "PSHOP_IS_OFFLINE"  =>      "conf_PSHOP_IS_OFFLINE",
+			"PSHOP_IS_OFFLINE"  =>      "conf_PSHOP_IS_OFFLINE",
             "PSHOP_OFFLINE_MESSAGE"  =>      "conf_PSHOP_OFFLINE_MESSAGE",
             "USE_AS_CATALOGUE"  =>      "conf_USE_AS_CATALOGUE",
             "ENABLE_DOWNLOADS"  =>      "conf_ENABLE_DOWNLOADS",
@@ -55,15 +55,7 @@ function writeconfig(&$d) {
             "DISABLE_DOWNLOAD_STATUS"  =>      "conf_DISABLE_DOWNLOAD_STATUS",
             "DOWNLOADROOT"  =>      "conf_DOWNLOADROOT",
             "_SHOW_PRICES"      =>      "conf__SHOW_PRICES",
-            "URL"               =>      "conf_URL",
             "ORDER_MAIL_HTML"   =>      "conf_ORDER_MAIL_HTML",
-            "SECUREURL"         =>      "conf_SECUREURL",
-            "COMPONENTURL"      =>      "conf_COMPONENTURL",
-            "IMAGEURL"          =>      "conf_IMAGEURL",
-            "ADMINPATH"		=>	"conf_ADMINPATH",
-            "CLASSPATH"		=>	"conf_CLASSPATH",
-            "PAGEPATH"		=>	"conf_PAGEPATH",
-            "IMAGEPATH"         =>      "conf_IMAGEPATH",
             "HOMEPAGE"		=>	"conf_HOMEPAGE",
             "FLYPAGE"		=>	"conf_FLYPAGE",
             "CATEGORY_TEMPLATE"		=>	"conf_CATEGORY_TEMPLATE",
@@ -74,7 +66,6 @@ function writeconfig(&$d) {
             "SEARCH_ROWS"	=>	"conf_SEARCH_ROWS",
             "SEARCH_COLOR_1"	=>	"conf_SEARCH_COLOR_1",
             "SEARCH_COLOR_2"	=>	"conf_SEARCH_COLOR_2",
-            "MAX_ROWS"		=>	"conf_MAX_ROWS",
             "DEBUG"		=>	"conf_DEBUG",
             "SHOWVERSION"	=>  	"conf_SHOWVERSION",
             "PSHOP_ADD_TO_CART_STYLE" => "conf_PSHOP_ADD_TO_CART_STYLE",
@@ -105,22 +96,28 @@ function writeconfig(&$d) {
             "PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS"    	=>      "conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS",
             "PSHOP_SHIPPING_MODULE"    	=>      "conf_SHIPPING"
             );
-        /* 
-        TEST IF WE ARE RUNNING MAMBO 4.5 1.0.9
-        */
-        if( defined( '_RELEASE' ) )
-            /* Yes! */
-            if( _RELEASE == '4.5' ) {
-                $my_config_array["CFG_MAILER"] = "CFG_MAILER";
-                $my_config_array["CFG_MAILFROM"] = "CFG_MAILFROM";
-                $my_config_array["CFG_MAILFROM_NAME"] = "CFG_MAILFROM_NAME";
-                $my_config_array["CFG_SMTPHOST"] = "CFG_SMTPHOST";
-                $my_config_array["CFG_SMTPAUTH"] = "CFG_SMTPAUTH";
-                $my_config_array["CFG_SMTPUSER"] = "CFG_SMTPUSER";
-                $my_config_array["CFG_SMTPPASS"] = "CFG_SMTPPASS";
-            }
             
-    $config = "<?php\n";
+    $config = "<?php
+global \$mosConfig_absolute_path,\$mosConfig_live_site;
+
+if( stristr( \$_SERVER['PHP_SELF'], 'administrator' ))
+	@include_once( '../configuration.php' );
+else
+	@include_once( 'configuration.php' );
+
+// these path and url definitions here are based on the mambo configuration
+define( 'URL', \$mosConfig_live_site.'/' );
+define( 'SECUREURL', '".$d['conf_SECUREURL']."' );
+if( \$_SERVER['SERVER_PORT'] == 443 )
+	define( 'IMAGEURL', SECUREURL .'/components/com_phpshop/shop_image/' );
+else
+	define( 'IMAGEURL', URL .'/components/com_phpshop/shop_image/' );
+define( 'COMPONENTURL', URL .'administrator/components/com_phpshop/' );
+define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_phpshop/' );
+define( 'CLASSPATH', ADMINPATH.'classes/' );
+define( 'PAGEPATH', ADMINPATH.'html/' );
+define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_phpshop/shop_image/' );\n\n";
+
     while (list($key, $value) = each($my_config_array)) {
         if($key == "PSHOP_SHIPPING_MODULE" ) {
             $config .= "\n/* Shipping Methods Definition */\nglobal \$PSHOP_SHIPPING_MODULES;\n";

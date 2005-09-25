@@ -15,6 +15,7 @@
 *
 * www.mambo-phpshop.net
 */
+include_once("../../configuration.php");
 include_once("../../administrator/components/com_phpshop/phpshop.cfg.php");
 
 //	Image2Thumbnail - Klasse einbinden 

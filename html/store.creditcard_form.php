@@ -15,17 +15,20 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $creditcard_id = mosgetparam( $_REQUEST, 'creditcard_id', "");
-?>
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_CREDITCARD_FORM_LBL ?></h2>
-<?php 
-  if (!empty($creditcard_id)) {
-    $q = "SELECT * from #__pshop_creditcard where creditcard_id='$creditcard_id'";
+
+if (!empty($creditcard_id)) {
+    $q = "SELECT * FROM #__pshop_creditcard WHERE creditcard_id='$creditcard_id'";
     $db->query($q);
     $db->next_record();
 }
+
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_CREDITCARD_FORM_LBL );
+//Then Start the form
+$formObj->startForm();
+
 ?> 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table class="adminform">
     <tr> 
       <td colspan="2">&nbsp;</td>
     </tr>
@@ -33,15 +36,6 @@ $creditcard_id = mosgetparam( $_REQUEST, 'creditcard_id', "");
       <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CREDITCARD_NAME ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="creditcard_name" value="<?php $db->sp("creditcard_name") ?>" />
-        <? if (!empty($creditcard_id)) { ?>
-        <input type="hidden" name="creditcard_id" value="<?php echo $creditcard_id ?>" />
-        <? } ?>
-        <input type="hidden" name="func" value="<?php if (!empty($creditcard_id)) echo "creditcardUpdate"; else echo "creditcardAdd"; ?>" />
-        <input type="hidden" name="page" value="store.creditcard_list" />
-        <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
       </td>
     </tr>
     <tr> 
@@ -50,6 +44,14 @@ $creditcard_id = mosgetparam( $_REQUEST, 'creditcard_id', "");
         <input type="text" class="inputbox" name="creditcard_code" value="<?php $db->sp("creditcard_code") ?>">
       </td>
     </tr>
-  </table>
-</form>
+</table>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'creditcard_id', $creditcard_id );
 
+$funcname = !empty($creditcard_id) ? "creditcardUpdate" : "creditcardAdd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.creditcard_list', $option );
+?>

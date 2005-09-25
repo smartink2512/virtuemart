@@ -13,36 +13,25 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.mambo-phpshop.net
 */
 mm_showMyFileName( __FILE__ );
+
+$title = '&nbsp;&nbsp;&nbsp;<img src="'. IMAGEURL .'ps_image/settings.png" width="32" height="32" border="0" />';
+$title .= $PHPSHOP_LANG->_PHPSHOP_CONFIG;
+
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm();
+
+$ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components/com_phpshop/phpshop.cfg.php' ); 
+
+$tabs = new mShopTabs(0, 1, "_main");
+$tabs->startPane("content-pane");
+$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
+	$subtabs1 = new mShopTabs(0, 0, "_global");
+	$subtabs1->startPane("cfg-pane");
+	$subtabs1->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL." I", "cfg-1-page");
 ?>
-<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-<script type="text/javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
-<table width="100%" cellspacing="0" cellpadding="4" border="0">
-<tr>
-      <td width="60">
-      &nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/settings.png" width="32" height="32" border="0" /><br /><br />
-      </td>
-      <td width="60%" valign="middle">
-      <span class="sectionname">&nbsp;&nbsp;&nbsp;<?php echo $PHPSHOP_LANG->_PHPSHOP_CONFIG;?></span>
-    </td>
-    <td align="left" width="40%" class="sectionname"><br />
-   <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_FILE_STATUS ?><br /> phpshop.cfg.php<?php 
-        echo is_writable( $mosConfig_absolute_path.'/administrator/components/com_phpshop/phpshop.cfg.php' ) 
-        ? '&nbsp;<span style="color:green;font-weight:bold;">'.$PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE.'</span>' 
-        : '&nbsp;<span style="color:red;font-weight:bold;">'.$PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE.'</span>' ?>
-        <br /><br />
-    </td>
-  </tr>
-</table>
-  
-<?php
-    $tabs = new mShopTabs(0, 1, "_main");
-    $tabs->startPane("content-pane");
-    $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
-        $subtabs1 = new mShopTabs(0, 0, "_global");
-        $subtabs1->startPane("cfg-pane");
-        $subtabs1->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL." I", "cfg-1-page");
-  ?>
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="adminForm">
+
 <table class="adminform">
     <tr>
         <td><div align="right"><strong>Shop is offline?</strong></div></td>
@@ -127,7 +116,7 @@ mm_showMyFileName( __FILE__ );
     $subtabs1->endTab();
     $subtabs1->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL." II", "cfg-2-page");
     ?>
-<table>
+<table class="adminform">
     <tr>
         <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPONS_ENABLE ?></strong></div></td>
         <td>
@@ -238,15 +227,7 @@ $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page"
 
 <table class="adminform">
     <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URL ?></strong></div></td>
-        <td>
-            <input size="40" type="text" name="conf_URL" class="inputbox" value="<?php echo URL ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URL_EXPLAIN ?>
-        </td>
-    </tr>
-    <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE ?></strong></div></td>
+        <th><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE ?></th>
         <td>
             <input size="40" type="text" name="conf_SECUREURL" class="inputbox" value="<?php echo SECUREURL ?>" />
         </td>
@@ -254,53 +235,7 @@ $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page"
         </td>
     </tr>
     <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URLCOMPONENT ?></strong></div></td>
-        <td>
-            <input size="40" type="text" name="conf_COMPONENTURL" class="inputbox" value="<?php echo COMPONENTURL ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN ?>
-        </td>
-    </tr>
-    <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URLIMAGE ?></strong></div></td>
-        <td>
-            <input size="40" type="text" name="conf_IMAGEURL" class="inputbox" value="<?php echo IMAGEURL ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN ?>
-        </td>
-    </tr>
-    <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ADMINPATH ?></strong></div></td>
-        <td>
-            <input size="40" type="text" name="conf_ADMINPATH" class="inputbox" value="<?php echo ADMINPATH ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN ?>
-        </td>
-    </tr>
-    <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CLASSPATH ?></strong></div></td>
-        <td>
-            <input size="40" type="text" name="conf_CLASSPATH" class="inputbox" value="<?php echo CLASSPATH ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN ?>
-        </td>
-    </tr>
-    <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PAGEPATH ?></strong></div></td>
-        <td>
-            <input size="40" type="text" name="conf_PAGEPATH" class="inputbox" value="<?php echo PAGEPATH ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN ?>
-        </td>
-    </tr>
-    </tr>
-    <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_IMAGEPATH ?></strong></div></td>
-        <td>
-            <input size="40" type="text" name="conf_IMAGEPATH" class="inputbox" value="<?php echo IMAGEPATH ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN ?>
-        </td>
+        <td colspan="3"><hr />&nbsp;</td>
     </tr>
     <tr>
         <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_HOMEPAGE ?></strong></div></td>
@@ -325,6 +260,9 @@ $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page"
         </td>
         <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN ?>
         </td>
+    </tr>
+    <tr>
+        <td colspan="3"><hr />&nbsp;</td>
     </tr>
     <tr>
         <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_DEBUG ?></strong></div></td>
@@ -400,23 +338,6 @@ $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page"
         </td>
     </tr>
     <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_SEARCHROWS ?></strong></div></td>
-        <td>
-            <input type="text" name="conf_SEARCH_ROWS" class="inputbox" value="<?php echo SEARCH_ROWS ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN ?>
-        </td>
-    </tr>
-    <tr>
-        <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MAXIMUMROWS ?></strong></div></td>
-        <td>
-            <input type="text" name="conf_MAX_ROWS" class="inputbox" value="<?php echo MAX_ROWS ?>" />
-        </td>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN ?>
-        </td>
-    </tr>
-
-    <tr>
         <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION ?></strong></div></td>
         <td>
             <input type="checkbox" name="conf_SHOWVERSION" class="inputbox" <?php if (SHOWVERSION == 1) echo "checked=\"checked\""; ?> value="1" />
@@ -429,7 +350,7 @@ $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page"
     $subtabs2->endTab();
     $subtabs2->startTab( "Layout", "layout-2-page");
 ?>
-<table width="100%">
+<table class="adminform">
     <tr>
         <td valign="top"><strong>Add-to-Cart Button Style</strong></div></td>
         <td valign="middle" colspan="2"><?php
@@ -500,94 +421,6 @@ $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page"
     $subtabs2->endPane();
   $tabs->endTab();
   
-  /* 
-  TEST IF WE ARE RUNNING MAMBO 4.5 1.0.9
-  */
-  if( defined( '_RELEASE' ) )
-    /*
-    SHOW MAIL CONFIGURATION DIALOG
-    */
-    if( _RELEASE == '4.5' ) {
-
-		$tabs->startTab("Mail","mail-page");
-		?>
-		<table width="100%" class="adminform">
-		<tr>
-			<td>
-			Mailer:
-			</td>
-			<td>
-            <?php
-            $select_mailer=Array();
-            if( CFG_MAILER == 'mail' ) { $select_mailer[0] = "checked=\"checked\""; $select_mailer[1] = $select_mailer[2] = ""; }
-            elseif( CFG_MAILER == 'sendmail' ) { $select_mailer[1] = "checked=\"checked\""; $select_mailer[0] = $select_mailer[2] = ""; }
-            else { $select_mailer[2] = "checked=\"checked\""; $select_mailer[0] = $select_mailer[1] = ""; }
-            ?>
-			<select name="CFG_MAILER" class="inputbox" size="1">
-                <option value="mail" <?php echo $select_mailer[0] ?>>PHP mail function</option>
-                <option value="sendmail" <?php echo $select_mailer[1] ?>>Sendmail</option>
-                <option value="smtp" <?php echo $select_mailer[2] ?>>SMTP Server</option>
-            </select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Mail From:
-			</td>
-			<td>
-			<input class="text_area" type="text" name="CFG_MAILFROM" size="25" value="<?php echo CFG_MAILFROM; ?>">
-			</td>
-		</tr>
-		<tr>
-			<td>
-			From Name:
-			</td>
-			<td>
-			<input class="text_area" type="text" name="CFG_MAILFROM_NAME" size="25" value="<?php echo CFG_MAILFROM_NAME; ?>">
-			</td>
-		</tr>
-		<tr>
-			<td>
-			SMTP Auth:
-			</td>
-			<td>
-            <?php
-            $select_auth=Array();
-            if( CFG_SMTPAUTH == '0' ) { $select_auth[0] = "checked=\"checked\""; $select_auth[1] = ""; }
-            else { $select_auth[1] = "checked=\"checked\""; $select_auth[0] = ""; }
-            ?>
-			<input type="radio" name="CFG_SMTPAUTH" value="0" <?php echo $select_auth[0] ?> class="inputbox" />No
-            <input type="radio" name="CFG_SMTPAUTH" value="1" <?php echo $select_auth[1] ?> class="inputbox" />Yes
-			</td>
-		</tr>
-		<tr>
-			<td>
-			SMTP User:
-			</td>
-			<td>
-			<input class="text_area" type="text" name="CFG_SMTPUSER" size="15" value="<?php echo CFG_SMTPUSER; ?>">
-			</td>
-		</tr>
-		<tr>
-			<td>
-			SMTP Pass:
-			</td>
-			<td>
-			<input class="text_area" type="text" name="CFG_SMTPPASS" size="12" value="<?php echo CFG_SMTPPASS; ?>">
-			</td>
-		</tr>
-		<tr>
-			<td>
-			SMTP Host:
-			</td>
-			<td>
-			<input class="text_area" type="text" name="CFG_SMTPHOST" size="20" value="<?php echo CFG_SMTPHOST; ?>">
-			</td>
-		</tr>
-		</table>
-		<?php
-		$tabs->endTab();
-    }
   $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING, "shipping-page");
 ?>
 
@@ -792,14 +625,16 @@ echo "<input type=\"hidden\" name=\"shippingMethodCount\" value=\"".count($rows)
 <?php
   $tabs->endTab();
   $tabs->endPane();
+  
+// Add necessary hidden fields
+$formObj->hiddenField( 'conf_SEARCH_ROWS', $mosConfig_list_limit );
+$formObj->hiddenField( 'myname', 'Jabba Binks' );
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( 'writeConfig', $modulename.'.index', $option );
 ?>   
 
-<input type="hidden" name="option" value="com_phpshop" />
-<input type="hidden" name="func" value="writeConfig" />
-<input type="hidden" name="page" value="admin.index" />
-<input type="hidden" name="myname" value="Jabba Binks" />
-  <input type="hidden" name="task" value="">
-</form>
 <script type="text/javascript">
 function unCheckAndDisable( disable ) {
 

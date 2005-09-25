@@ -15,27 +15,27 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $manufacturer_id = mosgetparam( $_REQUEST, 'manufacturer_id', 0 );
-?>
 
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_FORM_LBL ?></H2>
-<?php 
 if (!empty($manufacturer_id)) {
   $q = "SELECT * FROM #__pshop_manufacturer WHERE manufacturer_id='$manufacturer_id'"; 
   $db->query($q);  
   $db->next_record();
 }
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_FORM_LBL );
+//Then Start the form
+$formObj->startForm();
 ?>
 <br />
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" name="adminForm">
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <table class="adminform">
     <tr> 
-      <td><b><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></B></td>
+      <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></strong></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME ?></td>
       <td> 
-        <input type="text" class="inputbox" name="mf_name" value="<?php $db->sp("mf_name") ?>" SIZE="16" />
+        <input type="text" class="inputbox" name="mf_name" value="<?php $db->sp("mf_name") ?>" size="16" />
       </td>
     </tr>
     <tr> 
@@ -44,19 +44,12 @@ if (!empty($manufacturer_id)) {
         <input type="text" class="inputbox" name="mf_url" value="<?php $db->sp("mf_url") ?>" size="32" />
       </td>
     </tr>
-        <input type="hidden" name="func" value="<?php echo !empty($manufacturer_id) ? "manufacturerupdate" : "manufactureradd"; ?>" />
-        <input type="hidden" name="page" value="<?php echo $modulename ?>.manufacturer_list" />
-        <input type="hidden" name="manufacturer_id" value="<?php $db->sp("manufacturer_id") ?>" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <input type="hidden" name="task" value="" />
-        <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
     <tr> 
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_FORM_CATEGORY ?>:</td>
       <td ><?php $ps_manufacturer_category->list_category($db->f("mf_category_id"));     ?></td>
     </tr>
     <tr> 
-      <td align="right" >&nbsp;</td>
+      <td align="right">&nbsp;</td>
       <td >&nbsp;</td>
     </tr>
     <tr> 
@@ -71,12 +64,20 @@ if (!empty($manufacturer_id)) {
     </tr>
     <tr> 
       <td width="22%" align="right"  valign="top"><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION ?>:</td>
-      <td width="78%" ><?
-	  	  editorArea( 'editor1', $db->f("mf_desc"), 'mf_desc', '300', '100', '70', '15' )
-?>
+      <td width="78%" ><?php
+		editorArea( 'editor1', $db->f("mf_desc"), 'mf_desc', '300', '100', '70', '15' )
+	?>
       </td>
     <tr align="center"> 
       <td colspan="2" >&nbsp;</td>
     </tr>
-  </table>
-</form>
+</table>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'manufacturer_id', $manufacturer_id );
+
+$funcname = !empty($manufacturer_id) ? "manufacturerupdate" : "manufactureradd";
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.manufacturer_list', $option );
+?>

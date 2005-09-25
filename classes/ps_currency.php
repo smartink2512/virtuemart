@@ -143,25 +143,37 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     return True;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: soeren
-   * description: Delete a currency.
-   * parameters: 
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
+  	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
     
-    if (!$this->validate_delete($d)) {
-      $d["error"]=$this->error;
-      return False;
-    }
-    $q = "DELETE from #__pshop_currency where currency_id='" . $d["currency_id"] . "'";
-    $db->setQuery($q);
-    $db->query();
-    $db->next_record();
-    return True;
+		if (!$this->validate_delete($d)) {
+			$d["error"]=$this->error;
+			return False;
+		}	
+		$record_id = $d["currency_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+	
+		$q = "DELETE from #__pshop_currency where currency_id='$record_id'";
+		$db->query($q);
+		return True;
   }
   
   

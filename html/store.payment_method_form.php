@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: store.payment_method_form.php,v 1.4 2005/01/27 19:34:03 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -20,8 +16,6 @@ mm_showMyFileName( __FILE__ );
 
 require_once( CLASSPATH . 'ps_creditcard.php' );
 
-require_once(CLASSPATH.'ps_shopper_group.php');
-$ps_shopper_group = new ps_shopper_group;
 $payment_method_id = mosgetparam($_REQUEST, 'payment_method_id', "");
 
 $vars['payment_enabled'] = "Y";
@@ -42,26 +36,19 @@ else {
     include( CLASSPATH."payment/ps_payment.php" );
     $_PAYMENT = new ps_payment();
 }
-?>
-<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-<script language="Javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL );
+//Then Start the form
+$formObj->startForm();
 
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL ?></h2>
+?>
 <br />
 <?php
-        $tabs = new mShopTabs(0, 1, "_main");
-        $tabs->startPane("content-pane");
-        $tabs->startTab( "General", "global-page");
+$tabs = new mShopTabs(0, 1, "_main");
+$tabs->startPane("content-pane");
+$tabs->startTab( "General", "global-page");
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm">
-  <input type="hidden" name="func" value="<?php echo !empty($payment_method_id) ? "paymentMethodUpdate" : "paymentMethodAdd"; ?>" />
-  <input type="hidden" name="page" value="<?php echo $modulename?>.payment_method_list" />
-  <input type="hidden" name="payment_method_id" value="<?php if (!empty($payment_method_id)) echo $payment_method_id ?>" />
-  <input type="hidden" name="option" value="com_phpshop" />
-  <input type="hidden" name="task" value="" />
-  <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-  <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table class="adminform">
     <tr>
       <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL ?>?:</strong></td>
       <td><input type="checkbox" name="payment_enabled" class="inputbox" value="Y" <?php echo $db->sf("payment_enabled")=="Y" ? "checked=\"checked\"" : "" ?> /></td>
@@ -145,15 +132,22 @@ else {
 ?>
 <br />
 <strong>Payment Extra Info:</strong>
-<?php echo mosToolTip("Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.") ?>
+<?php echo mm_ToolTip("Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.") ?>
 <br />
 <textarea class="inputbox" name="payment_extrainfo" cols="120" rows="20"><?php echo htmlspecialchars( $db->sf("payment_extrainfo") ); ?></textarea>
 <?php
-        $tabs->endTab();
-        $tabs->endPane();
+$tabs->endTab();
+$tabs->endPane();
 
+// Add necessary hidden fields
+$formObj->hiddenField( 'payment_method_id', $payment_method_id );
+
+$funcname = !empty($payment_method_id) ? "paymentMethodUpdate" : "paymentMethodAdd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.payment_method_list', $option );
 ?>
-  </form>
   
   <script type="text/javascript">
 function check() {

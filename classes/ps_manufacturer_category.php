@@ -155,26 +155,44 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     return True;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: soeren
-   * description: Should delete a manufacturer record.
-   * parameters: 
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      $d["error"]=$this->error;
-      return False;
-    }
-    $q = "DELETE from #__pshop_manufacturer_category where mf_category_id='" . $d["mf_category_id"] . "'";
-    $db->setQuery($q);
-    $db->query();
-    $db->next_record();
-    return True;
-  }
+	/**************************************************************************
+	* name: delete()
+	* created by: soeren
+	* description: Should delete a manufacturer record.
+	* parameters: 
+	* returns:
+	**************************************************************************/
+	function delete(&$d) {
+		
+		if (!$this->validate_delete($d)) {
+		  $d["error"]=$this->error;
+		  return False;
+		}
+
+	
+		$record_id = $d["mf_category_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		
+		$q = "DELETE from #__pshop_manufacturer_category where mf_category_id='$record_id'";
+		$db->query($q);
+		return True;
+	}
   
     /**************************************************************************
    * name: list_category()

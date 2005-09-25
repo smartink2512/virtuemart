@@ -22,9 +22,12 @@ if( !empty( $state_id )) {
   $db->query($q);
   $db->next_record();
 }
+//First create the object and let it print a form heading
+$formObj = &new formFactory(  );
+//Then Start the form
+$formObj->startForm();
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table class="adminform">
     <tr> 
       <td colspan="2">&nbsp;</td>
     </tr>
@@ -48,14 +51,15 @@ if( !empty( $state_id )) {
     </tr>
     
   </table>  
-  <? if (!empty($state_id)) { ?>
-  <input type="hidden" name="state_id" value="<?php echo $state_id ?>" />
-  <? } ?>
-  <input type="hidden" name="func" value="<?php if (!empty($state_id)) echo "stateUpdate"; else echo "stateAdd"; ?>" />
-  <input type="hidden" name="country_id" value="<?php echo $country_id; ?>" />
-  <input type="hidden" name="page" value="admin.country_state_list" />
-  <input type="hidden" name="task" value="" />
-  <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-  <input type="hidden" name="option" value="com_phpshop" />
-</form>
+<?php
+  
+// Add necessary hidden fields
+$formObj->hiddenField( 'state_id', $state_id );
+$formObj->hiddenField( 'country_id', $country_id );
 
+$funcname = !empty($state_id) ? "stateUpdate" : "stateAdd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, 'admin.country_state_list', $option );
+?>

@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: vendor.vendor_form.php,v 1.8 2005/06/18 08:51:34 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -20,9 +16,14 @@ mm_showMyFileName( __FILE__ );
 ?>
 <h1>This feature is still in an early ALPHA stadium. Don't use it if you're not sure how to debug it.
 mambo-phpshop is not really capable of managing multiple vendors</h1>
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_LBL ?></H2>
 <?php 
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_LBL );
+//Then Start the form
+$formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
+
 $vendor_id = mosgetparam( $_REQUEST, 'vendor_id');
+
 if (!empty($vendor_id)) {
   $q = "SELECT * FROM #__pshop_vendor WHERE vendor_id='$vendor_id'"; 
   $db->query($q);  
@@ -35,8 +36,8 @@ $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
 $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STORE_MOD, "info-page");
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" name="adminForm">
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center">
+
+<table class="adminform">
     <tr> 
       <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ?></strong></td>
       <td>&nbsp;</td>
@@ -158,23 +159,23 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
   $tabs->endTab();
   $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_LBL, "store-page");
 ?>
-  <table>
+  <table class="adminform">
     <tr> 
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_ADDRESS_1 ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="vendor_address_1" value="<?php $db->sp("vendor_address_1") ?>" size="18">
+        <input type="text" class="inputbox" name="vendor_address_1" value="<?php $db->sp("vendor_address_1") ?>" size="18" />
       </td>
     </tr>
     <tr> 
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_ADDRESS_2 ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="vendor_address_2" value="<?php $db->sp("vendor_address_2") ?>" size="18">
+        <input type="text" class="inputbox" name="vendor_address_2" value="<?php $db->sp("vendor_address_2") ?>" size="18" />
       </td>
     </tr>
     <tr> 
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_CITY ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="vendor_city" value="<?php $db->sp("vendor_city") ?>" size="16">
+        <input type="text" class="inputbox" name="vendor_city" value="<?php $db->sp("vendor_city") ?>" size="16" />
       </td>
     </tr>
     <tr> 
@@ -200,20 +201,10 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
     <tr> 
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_PHONE ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="vendor_phone" value="<?php $db->sp("vendor_phone") ?>" size="12">
+        <input type="text" class="inputbox" name="vendor_phone" value="<?php $db->sp("vendor_phone") ?>" size="12" />
       </td>
     </tr>
-    <tr> 
-        <input type="hidden" name="func" value="<?php echo isset($vendor_id) ? "vendorupdate" : "vendoradd"; ?>">
-        <input type="hidden" name="page" value="<?php echo $modulename ?>.vendor_list">
-        <input type="hidden" name="vendor_id" value="<?php $db->sp("vendor_id") ?>">
-        <input type="hidden" name="vendor_thumb_image_action" value="none" />
-        <input type="hidden" name="vendor_full_image_action" value="none" />
-        <input type="hidden" name="option" value="com_phpshop">
-        <input type="hidden" name="task" value="">
-        <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-        
+    <tr>        
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_CURRENCY ?>:</td>
       <td> 
         <?php $ps_html->list_currency("vendor_currency", $db->sf("vendor_currency")); ?>
@@ -231,9 +222,9 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
   $tabs->endTab();
   $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_CONTACT_LBL, "contact-page");
   ?>
-  <table>
+  <table class="adminform">
     <tr> 
-      <td colspan="2"><b><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_CONTACT_LBL ?></B></td>
+      <td colspan="2"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_CONTACT_LBL ?></strong></td>
     </tr>
     <tr> 
       <td align="right" ><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_LAST_NAME ?>:</td>
@@ -280,13 +271,13 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
     <tr> 
       <td align="right" ><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_EMAIL ?>:</td>
       <td>
-        <input type="text" class="inputbox" name="contact_email" value="<?php $db->sp("contact_email") ?>" size="18">
+        <input type="text" class="inputbox" name="contact_email" value="<?php $db->sp("contact_email") ?>" size="18" />
       </td>
     </tr>
     <tr> 
       <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_IMAGE_PATH ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="vendor_image_path" value="<?php $db->sp("vendor_image_path") ?>" size="16">
+        <input type="text" class="inputbox" name="vendor_image_path" value="<?php $db->sp("vendor_image_path") ?>" size="16" />
       </td>
     </tr>
     <tr> 
@@ -312,7 +303,18 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
     </tr> 
   </table>
 <?php
-  $tabs->endTab();
-  $tabs->endPane();
-  ?>
-</form>
+$tabs->endTab();
+$tabs->endPane();
+
+// Add necessary hidden fields
+$formObj->hiddenField( 'vendor_id', $vendor_id );
+$formObj->hiddenField( 'vendor_thumb_image_action', 'none' );
+$formObj->hiddenField( 'vendor_full_image_action', 'none' );
+
+$funcname = !empty($vendor_id) ? "vendorupdate" : "vendoradd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.vendor_list', $option );
+
+?>

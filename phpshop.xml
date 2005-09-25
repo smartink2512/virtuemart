@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
 	<name>phpShop</name>
-	<creationDate>23.06.2004</creationDate>
+	<creationDate>20.09.2004</creationDate>
 	<author>Soeren Eberhardt; Base System: Edikon Corp.</author>
 	<copyright>released under GNU General Public License</copyright>
 	<authorEmail>soeren@mambo-phpshop.net</authorEmail>
 	<authorUrl>www.mambo-phpshop.net</authorUrl>
-	<version>1.2-pl3</version>
+	<version>1.2.1 alpha</version>
 	<description>Online-Shop / E-Commerce Component</description>
   <files>
       <filename>frontend_files.tar.gz</filename>
@@ -105,7 +105,6 @@
         <filename>2checkout_notify.php</filename>
         <filename>admin_files.tar.gz</filename>
         <filename>admin.phpshop.php</filename>
-        <filename>AUTHORIZENET.txt</filename>
         <filename>cart.gif</filename>
         <filename>CHANGELOG.txt</filename>
         <filename>global.php</filename>
@@ -114,12 +113,9 @@
         <filename>install.css</filename>
         <filename>install.php</filename>
         <filename>LICENSE.txt</filename>
-        <filename>mos_4.6_code.php</filename>
         <filename>notify.php</filename>
         <filename>PEAR.php</filename>
         <filename>phpshop.cfg-dist.php</filename>
-        <filename>README.Dankort.txt</filename>
-        <filename>README_ZONE_SHIPPING.txt</filename>
         <filename>Tar.php</filename>
         <filename>TODO.txt</filename>
         <filename>toolbar.phpshop.html.php</filename>

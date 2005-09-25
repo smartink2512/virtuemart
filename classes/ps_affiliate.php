@@ -68,11 +68,16 @@ class ps_affiliate {
       $d['error'] = "Please provide an user info id!";
       return false;
     }
-
-        $q = "DELETE FROM #__pshop_affiliate WHERE ";
-        $q .= "user_id ='". $d["user_info_id"] ."' ";
+	if( is_array( $d["user_info_id"] )) {
+		foreach( $d["user_info_id"] as $affiliate ) {
+			$q = "DELETE FROM #__pshop_affiliate WHERE user_id ='". $affiliate ."' ";
+			$db->query($q);		
+		}
+	}
+	else {
+        $q = "DELETE FROM #__pshop_affiliate WHERE user_id ='". $d["user_info_id"] ."' ";
         $db->query($q);
-      
+	}
         return True;
 
     

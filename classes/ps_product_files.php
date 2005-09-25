@@ -53,7 +53,8 @@ class ps_product_files {
         $this->fileexists = true;
        }      
      }
-     return True;    
+     return True;   
+
    }
   
   /**************************************************************************
@@ -63,17 +64,17 @@ class ps_product_files {
   ** parameters:
   ** returns:
   ***************************************************************************/   
-  function validate_delete( &$d ) {
+  function validate_delete( $file_id, &$d ) {
     
     $db = new ps_DB;
     
-    if (empty($d["file_id"])) {
+    if (empty($file_id)) {
       $d["error"] = "ERROR:  Please select a file to delete.";
       return False;
     }
     $q_dl = "SELECT attribute_name,file_id from #__pshop_product_attribute,#__pshop_product_files WHERE ";
     $q_dl .= "product_id='".$d["product_id"]."' AND attribute_name='download' ";
-    $q_dl .= "AND file_id='".$d["file_id"]."' AND attribute_value=file_title";
+    $q_dl .= "AND file_id='$file_id' AND attribute_value=file_title";
     $db->query($q_dl);
     if( $db->next_record() ) {
       $d["error"] = "ERROR:  This file is still a Downloadable Product File!";
@@ -128,6 +129,7 @@ class ps_product_files {
     if (!$this->validate_add($d)) {
       return False;
     }
+	
     if( empty( $d["file_published"] ))
       $d["file_published"] = 0;
     if( empty( $d["file_create_thumbnail"] ))
@@ -178,6 +180,7 @@ class ps_product_files {
         $file_contents = "";
         if( move_uploaded_file($_FILES['file_upload']['tmp_name'], $uploaddir . $filename )) {
           $upload_success = true;
+		  
         }
         if( $d["file_create_thumbnail"] == "1" ) {
           ## RESIZE THE IMAGE ####
@@ -187,9 +190,11 @@ class ps_product_files {
           $newxsize = PSHOP_IMG_WIDTH;
           $newysize = PSHOP_IMG_HEIGHT;
           $maxsize = 0;
+		  
           $bgred = $bggreen = $bgblue = 255;
           /* We need to resize the image and Save the new one (all done in the constructor) */
-          $neu = new Img2Thumb($tmp_filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
+		  $neu = new Img2Thumb($tmp_filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
+		  
           if( is_file( $fileout ) ) {
             $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS;
             $thumbimg = getimagesize( $fileout );
@@ -436,44 +441,66 @@ class ps_product_files {
    * parameters: 
    * returns:
    **************************************************************************/
-  function delete(&$d) {
-    global $PHPSHOP_LANG;
-    $dbf = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-    $q = "SELECT file_name,file_is_image FROM #__pshop_product_files WHERE file_id='" . $d["file_id"] . "'";
-    $dbf->setQuery($q);
-    $dbf->query();
-    $dbf->next_record();
-    $_REQUEST['mosmsg'] = "";
-    
-    if( $dbf->f("file_is_image") ) {
-      $info = pathinfo($dbf->f("file_name"));
-      if( !@unlink(realpath($dbf->f("file_name"))) )
-        $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE;
-      else
-        $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS;
-      $thumb = $info["dirname"]."/resized/".basename($dbf->f("file_name"), ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
-      if( !@unlink( realpath($thumb) ) )
-        $_REQUEST['mosmsg'] .= $PHPSHOP_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb ;
-      else
-        $_REQUEST['mosmsg'] .= $PHPSHOP_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS;
-    }
-    elseif( $dbf->f("file_name") ) {
-      if( !@unlink(realpath($dbf->f("file_name"))) )
-        $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE;
-      else
-        $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS;
-    }
-    
-    $q = "DELETE FROM #__pshop_product_files WHERE file_id='" . $d["file_id"] . "'";
-    $dbf->setQuery($q);
-    $dbf->query();
-    
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["file_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+	
+		global $PHPSHOP_LANG;
+		$dbf = new ps_DB;
+		
+		if (!$this->validate_delete($record_id, $d)) {
+		  return False;
+		}
+		$q = "SELECT file_name,file_is_image FROM #__pshop_product_files WHERE file_id='$record_id'";
+		$dbf->setQuery($q);
+		$dbf->query();
+		$dbf->next_record();
+		$_REQUEST['mosmsg'] = "";
+		
+		if( $dbf->f("file_is_image") ) {
+		  $info = pathinfo($dbf->f("file_name"));
+		  if( !@unlink(realpath($dbf->f("file_name"))) )
+			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE;
+		  else
+			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS;
+		  $thumb = $info["dirname"]."/resized/".basename($dbf->f("file_name"), ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
+		  if( !@unlink( realpath($thumb) ) )
+			$_REQUEST['mosmsg'] .= $PHPSHOP_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb ;
+		  else
+			$_REQUEST['mosmsg'] .= $PHPSHOP_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS;
+		}
+		elseif( $dbf->f("file_name") ) {
+		  if( !@unlink(realpath($dbf->f("file_name"))) )
+			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE;
+		  else
+			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS;
+		}
+		
+		$q = "DELETE FROM #__pshop_product_files WHERE file_id='$record_id'";
+		$dbf->setQuery($q);
+		$dbf->query();
+		
+		return True;
+	}
   
   /**************************************************************************
    * name: get_file_list()

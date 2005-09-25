@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: affiliate.affiliate_list.php,v 1.6 2005/09/04 20:08:55 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -18,154 +14,157 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 global $ps_affiliate;
-?>
-  
- <table width="100%" cellspacing="0" cellpadding="4" border="0">
-  <tr>
-    <td>
-      <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/affiliate.gif" border="0" />
-      <br /><br />
-    </td>
-    <td><?php
-          search_header($PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_LBL, 'affiliate', "affiliate_list"); 
-        ?>
-    </td>
-  </tr>
-</table>
-<?php
 
- if (!isset($date)) $date = time();
+$vendor_category_id = mosGetParam( $_REQUEST, 'vendor_category_id' );
 
-  // Enable the multi-page search result display
-$limitstart= mosgetparam( $_REQUEST, 'limitstart', 0);
-  if (isset($keyword)) {
-     $list  = "SELECT DISTINCT * FROM #__pshop_affiliate, #__users WHERE ";
-     $count = "SELECT DISTINCT count(*) as num_rows FROM #__pshop_affiliate, #__users  WHERE ";
-     $q  = "((first_name LIKE '%$keyword%') OR (";
-     $q  .= "last_name LIKE '%$keyword%') OR (";
-     $q  .= "username LIKE '%$keyword%') OR (";
-     $q  .= "company LIKE '%$keyword%') OR (";
-     $q  .= "name LIKE '%$keyword%')) ";
-     $q .= "ORDER BY first_name ASC ";
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
-     $count .= $q;   
-  }
-  elseif (isset($vendor_category_id)) 
-  {
-     $q = "";
+require_once( CLASSPATH . "pageNavigation.class.php" );
+require_once( CLASSPATH . "htmlTools.class.php" );
+
+if (!empty($keyword)) {
+	$list  = "SELECT DISTINCT * FROM #__pshop_affiliate, #__users WHERE ";
+	$count = "SELECT DISTINCT count(*) as num_rows FROM #__pshop_affiliate, #__users  WHERE ";
+	$q  = "((first_name LIKE '%$keyword%') OR (";
+	$q  .= "last_name LIKE '%$keyword%') OR (";
+	$q  .= "username LIKE '%$keyword%') OR (";
+	$q  .= "company LIKE '%$keyword%') OR (";
+	$q  .= "name LIKE '%$keyword%')) ";
+	$q .= "ORDER BY first_name ASC ";
+	$list .= $q . " LIMIT $limitstart, " . $limit;
+	$count .= $q;   
+}
+elseif (!empty($vendor_category_id)) {
+	$q = "";
      $list  = "SELECT * FROM #__pshop_affiliate, #__users WHERE ";
-     $count = "SELECT count(*) as num_rows FROM #__pshop_affiliate, #__users  WHERE ";
-     $q = "user_info_id=user_id ";
-     $q .= "ORDER BY first_name ASC ";
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
-     $count .= $q;   
-  }
-  else 
-  {
-     $q = "";
-     $keyword = "";
-     $list  = "SELECT * FROM #__users, #__pshop_affiliate";
-     $list .= " WHERE #__users.user_info_id =#__pshop_affiliate.user_id";
-	   //$list .= " ORDER BY company ASC";
-     $count = "SELECT count(affiliate_id) as num_rows FROM #__pshop_affiliate"; 
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
-     $count .= $q;       
-  }
-  $db->query($count);
-  $db->next_record();
-  $num_rows = $db->f("num_rows");
+	$count = "SELECT count(*) as num_rows FROM #__pshop_affiliate, #__users  WHERE ";
+	$q = "user_info_id=user_id ";
+	$q .= "ORDER BY first_name ASC ";
+	$list .= $q . " LIMIT $limitstart, " . $limit;
+	$count .= $q;   
+}
+else {
+	$q = "";
+	$list  = "SELECT * FROM #__users, #__pshop_affiliate";
+	$list .= " WHERE #__users.user_info_id =#__pshop_affiliate.user_id";
+	//$list .= " ORDER BY company ASC";
+	$count = "SELECT count(affiliate_id) as num_rows FROM #__pshop_affiliate"; 
+	$list .= $q . " LIMIT $limitstart, " . $limit;
+	$count .= $q;       
+}
+$db->query($count);  
+$db->next_record();
+$num_rows = $db->f("num_rows");
   
-  if (empty($num_rows)) {
-     echo $PHPSHOP_LANG->_PHPSHOP_NO_SEARCH_RESULT;
-  }
-  else {
+// Create the Page Navigation
+$pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
+
+// Create the List Object with page navigation
+$listObj = new listFactory( $pageNav );
+
+// print out the search field and a list heading
+$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_LBL, IMAGEURL."ps_image/affiliate.gif", "affiliate", "affiliate_list");
+
+// start the list table
+$listObj->startTable();
+
+// these are the columns in the table
+$columns = Array(  "#" => "width=\"20\"", 
+					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
+					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME => "",
+					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE => "",
+					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL => "",
+					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION => "",
+					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_RATE => "",
+					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_ORDERS => "",
+					_E_REMOVE => "width=\"5%\""
+				);
+$listObj->writeTableHeader( $columns );
+
+if (!isset($date)) $date = time();
+
 ?>
 <h4>Showing Details for <?php echo date("M-Y",$date);?></h4>
-
-<br />
-<table class="adminlist"> 
-  <tr>
-      <th width="20%"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME ?></th>
-      <th width="6%"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE?></th>
-      <th width="15%"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL?></th>
-      <th width="25%"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION ?></th>
-      <th width="15%"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_RATE ?></th>
-      <th width="10%"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_ORDERS ?></th>
-      <th width="9%"><?php echo _E_REMOVE ?></th>
-  </tr> 
 <?php
 $db->query($list);
 $i = 0;
 
 
 while ($db->next_record()) {
-  $affiliate = $ps_affiliate->get_details($date,$db->f("affiliate_id"));
-  if ($i++ % 2) 
-     $bgcolor=SEARCH_COLOR_1;
-  else
-     $bgcolor=SEARCH_COLOR_2;
-     
-?> <tr bgcolor="<?php echo $bgcolor ?>">
-        <td> <?php
-            $url = SECUREURL . "?page=$modulename.affiliate_form&affiliate_id=";
-            $url .= $db->f("affiliate_id");
-            echo "<a href=" . $sess->url($url) . ">";
-            echo $db->f("first_name")." ".$db->f("last_name")." (".$db->f("username").")";
-            echo "</a><br />";?>
-        </td>
-        <td><?php
-            if($db->f("active")=='Y') echo "Yes"; else echo "No"; ?>
-        </td>
-        <td><?php
-            if (!empty($affiliate["orders_total"])) 
-                echo $affiliate["orders_total"];
-            else echo "no sales"; ?>
-        </td>
-        <td><?php
-            if (!empty($affiliate["commission_total"]))
-                echo $affiliate["commission_total"];
-            else echo "no sales"; ?>
-        </td>
-        <td><?php
-            echo $affiliate["rate"]."%"; ?>
-        </td>
-        <td><?php
-                $url = SECUREURL . "?page=$modulename.affiliate_orders_detail&affiliate_id=";
-                $url .= $db->f("affiliate_id");
-                $url.="&date=".$date;
-                echo "<a href=\"" . $sess->url($url) . "\">";
-                echo "list orders";
-                echo "</a><br />";?>
-        </td>
-        <td><a href="index2.php?option=com_phpshop&page=affiliate.affiliate_list&func=affiliatedelete&user_info_id=<?php echo $db->f("user_id")?>">
-        <?php echo _E_REMOVE ?></a>
-        </td>
-    </tr>
-  <?php } ?>
-  </table>
+
+	$affiliate = $ps_affiliate->get_details($date,$db->f("affiliate_id"));
+	
+	$listObj->newRow();
+	
+	// The row number
+	$listObj->addCell( $pageNav->rowNumber( $i ) );
+	
+	// The Checkbox
+	$listObj->addCell( mosHTML::idBox( $i, $db->f("affiliate_id"), false, "affiliate_di" ) );
+	
+	$url = SECUREURL . "?page=$modulename.affiliate_form&affiliate_id=";
+	$url .= $db->f("affiliate_id");
+	$tmp_cell =  "<a href=" . $sess->url($url) . ">". $db->f("first_name")." ".$db->f("last_name")." (".$db->f("username").")</a><br />";
+	
+	$listObj->addCell( $tmp_cell );
+
+
+	if($db->f("active")=='Y') 
+		$tmp_cell = "Yes"; 
+	else 
+		$tmp_cell= "No";
+	$listObj->addCell( $tmp_cell );
+
+
+	if (!empty($affiliate["orders_total"])) 
+		$tmp_cell = $affiliate["orders_total"];
+	else 
+		$tmp_cell = "no sales";
+	$listObj->addCell( $tmp_cell );
+    
+	
+	if (!empty($affiliate["commission_total"]))
+		$tmp_cell = $affiliate["commission_total"];
+	else 
+		$tmp_cell = "no sales"; 
+	$listObj->addCell( $tmp_cell );
+
+
+    $listObj->addCell( $affiliate["rate"]."%" );
+	
+	$url = SECUREURL . "?page=$modulename.affiliate_orders_detail&affiliate_id=";
+	$url .= $db->f("affiliate_id");
+	$url.="&date=".$date;
+	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">List Orders</a><br />";
+	$listObj->addCell( $tmp_cell );
+	
+	$listObj->addCell( $ps_html->deleteButton( "user_info_id", $db->f("user_id"), "affiliatedelete", $keyword, $limitstart ) );
+
+	$i++;
+} 
+$listObj->writeTable();
+
+$listObj->endTable();
+
+$listObj->writeFooter( $keyword );
+?>
   
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-  <input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>" />
-  <input type="hidden" name="date" value="<?php echo isset($date) ? $date : ""; ?>" /> 
-  <input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_list" /> 
-  <input type="hidden" name="option" value="com_phpshop" /> 
-  <input type="hidden" name="task" value="" /> 
- <br>Month
- <select name="date" size="1"><?php
-  for($i=0; $i<12; $i++){ 
-    $mytime = mktime(0,0,0,date('m')-$i,1,date('y'));?>
-    <option value="<?php echo $mytime ?>" <?php if($mytime == $date) echo "selected"?>><?php 
-    echo date('F Y',$mytime); ?>
-    </option><?php echo "\n";
-}
-?> </select><br><br>
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+	<input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>" />
+	<input type="hidden" name="date" value="<?php echo isset($date) ? $date : ""; ?>" /> 
+	<input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_list" /> 
+	<input type="hidden" name="option" value="com_phpshop" /> 
+	<input type="hidden" name="task" value="" /> 
+	<br/>Month
+	<select class="inputbox" name="date" size="1"><?php
+	  for($i=0; $i<12; $i++){ 
+		$mytime = mktime(0,0,0,date('m')-$i,1,date('y'));?>
+		<option value="<?php echo $mytime ?>" <?php if($mytime == $date) echo "selected"?>><?php 
+		echo date('F Y',$mytime); ?>
+		</option><?php echo "\n";
+	}
+	?>
+	</select>
+	<br/><br/>
+	
+	<input type="submit" name="submit" class="submit" value="Change View" />
 
-<input type="submit" name="submit" class="submit" value="Change View">
-
-</form><br><br><?php 
-
-  search_footer($modulename, "affiliate_list", $limitstart, $num_rows, $keyword); 
-
-  } 
-
-?> 
+</form>

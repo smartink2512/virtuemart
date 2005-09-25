@@ -17,18 +17,22 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.mambo-phpshop.net
 */
 mm_showMyFileName( __FILE__ );
-?>
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_TAX_FORM_LBL ?></H2>
-<?php 
+
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_TAX_FORM_LBL );
+//Then Start the form
+$formObj->startForm();
+
 $tax_rate_id= mosgetparam( $_REQUEST, 'tax_rate_id');
+
 if (!empty($tax_rate_id)) {
   $q = "SELECT * FROM #__pshop_tax_rate WHERE tax_rate_id='$tax_rate_id'"; 
   $db->query($q);  
   $db->next_record();
 }
 ?><br />
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" name="adminForm">
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center">
+
+<table class="adminform">
     <tr> 
       <td><b><?php echo $PHPSHOP_LANG->_PHPSHOP_TAX_FORM_LBL ?></b></td>
       <td>&nbsp;</td>
@@ -56,22 +60,21 @@ if (!empty($tax_rate_id)) {
     <tr> 
       <td align="right" ><?php echo $PHPSHOP_LANG->_PHPSHOP_TAX_FORM_RATE ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="tax_rate" value="<?php $db->sp("tax_rate") ?>" size="16">
+        <input type="text" class="inputbox" name="tax_rate" value="<?php $db->sp("tax_rate") ?>" size="16" />
       </td>
     </tr>
     <tr align="center">
       <td colspan="2" >&nbsp;</td>
     </tr>
-    <tr align="center"> 
-      <td colspan="2" > 
-        <input type="hidden" name="tax_rate_id" value="<?php echo $tax_rate_id ?>" />
-        <input type="hidden" name="func" value="<?php if (!empty($tax_rate_id)) echo "updatetaxrate"; else echo "addtaxrate"; ?>" />
-        <input type="hidden" name="page" value="tax.tax_list" />
-        <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-      </td>
-    </tr>
-  </table>
-</form>
+</table>
+<?php
+
+// Add necessary hidden fields
+$formObj->hiddenField( 'tax_rate_id', $tax_rate_id );
+
+$funcname = !empty($tax_rate_id) ? "updatetaxrate" : "addtaxrate";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.tax_list', $option );
+?>

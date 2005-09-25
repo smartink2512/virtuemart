@@ -84,7 +84,7 @@ if( $show_categories == "yes" ) {
   } 
   elseif( $menutype == "transmenu" ) {
       /* TransMenu script to display a DHTML Drop-Down Menu */
-      include( $mosConfig_absolute_path . '/modules/phpshop_transmenu.php' );
+      include( $mosConfig_absolute_path . '/modules/vm_transmenu.php' );
     
   }
   elseif( $menutype == "dtree" ) {

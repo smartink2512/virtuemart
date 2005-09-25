@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: product.product_price_list.php,v 1.7 2005/06/23 18:59:16 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -18,70 +14,90 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-?>
+require_once( CLASSPATH . "pageNavigation.class.php" );
+require_once( CLASSPATH . "htmlTools.class.php" );
 
-<h2> <?php
-if (empty($product_parent_id)) {
-  echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_LBL;
-} else {
-  echo  $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_LBL;
-}
-$limitstart = mosgetparam($_REQUEST, 'limitstart', 0);
-$keyword = mosgetparam($_REQUEST, 'keyword', "");
+if( is_array( $product_id ))
+	$product_id = (int)$product_id[0];
+
 $product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
+$return_args = mosgetparam($_REQUEST, 'return_args');
 
-echo $PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_FOR_LBL."&nbsp;&nbsp;";
+if (empty($product_parent_id)) {
+  $title = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_LBL;
+} else {
+  $title = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_LBL;
+}
+$title .=  "<br/>". $PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_FOR_LBL."&nbsp;&nbsp;";
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
-echo "<a href=\"" . $sess->url($url) . "\">";
-echo $ps_product->get_field($product_id,"product_name");
-echo "</a>"; 
-if( empty($return_args) ) $return_args = "";
-?></h2>
-<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0">
-  <tr> 
-    <td> 
-      <table width="100%" class="adminlist">
-        <tr> 
-          <th width="20">#</th>
-          <th><?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_GROUP_NAME ?></th>
-          <th><?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_PRICE ?></th>
-          <th><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_CURRENCY ?></th>
-          <th width="50">Quantity Start</th>
-          <th width="50">Quantity End</th>
-          <th width="20"><?php echo _E_REMOVE ?></th>
-        </tr>
-        <?php
-        $q  = "SELECT shopper_group_name,product_price_id,product_price,product_currency,price_quantity_start,price_quantity_end ";
-        $q .= "FROM #__pshop_shopper_group,#__pshop_product_price ";
-        $q .= "WHERE product_id = '$product_id' ";
-        if( !$perm->check("admin"))
-          $q .= "AND #__pshop_shopper_group.vendor_id = '$ps_vendor_id' ";
-        $q .= "AND #__pshop_shopper_group.shopper_group_id = #__pshop_product_price.shopper_group_id ";
-        $q .= "ORDER BY shopper_group_name,price_quantity_start, product_price "; 
-        $db->query($q);
-        $i = 0;
-        
-        while ($db->next_record()) { ?> 
-        <tr nowrap>
-          <td width="20"><?php echo $i++ ?></td>
-          <td><?php
-            $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_price_form&limitstart=$limitstart&keyword=$keyword&product_price_id=" . $db->f("product_price_id") . "&product_id=$product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args);
-            echo "<a href=" . $sess->url($url) . ">";
-            $db->sp("shopper_group_name"); 
-            echo "</a>"; 
-            ?></td>
-          <td><?php echo $db->f("product_price"); ?></td>
-          <td><?php echo $db->f("product_currency"); ?></td>
-          <td width="50"><?php echo $db->f("price_quantity_start"); ?></td>
-          <td width="50"><?php echo $db->f("price_quantity_end"); ?></td>
-          <td width="20">
-              <a class="toolbar" href="index2.php?option=com_phpshop&page=<?php echo $_REQUEST['page'] ?>&func=productPriceDelete&product_id=<? echo $product_id ?>&product_price_id=<? $db->p("product_price_id") ?>&limitstart=<?php echo $limitstart ?>" onclick="return confirm('<? echo $PHPSHOP_LANG->_PHPSHOP_DELETE_MSG ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('delete<? echo $i ?>','','<? echo IMAGEURL ?>ps_image/delete_f2.gif',1);"><img src="<? echo IMAGEURL ?>ps_image/delete.gif" alt="Delete this record" name="delete<? echo $i ?>" align="middle" border="0"/>
-              </a>
-          </td>
-        </tr>
-        <?php 
-        } ?> 
-      </table>
-    </td>
-  </tr>
-</table>
+$title .=  "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name")."</a>"; 
+
+
+$count = "SELECT COUNT(*) ";
+$list = "SELECT shopper_group_name,product_price_id,product_price,product_currency,price_quantity_start,price_quantity_end ";
+$q = "FROM #__pshop_shopper_group,#__pshop_product_price ";
+$q .= "WHERE product_id = '$product_id' ";
+if( !$perm->check("admin"))
+  $q .= "AND #__pshop_shopper_group.vendor_id = '$ps_vendor_id' ";
+$q .= "AND #__pshop_shopper_group.shopper_group_id = #__pshop_product_price.shopper_group_id ";
+$q .= "ORDER BY shopper_group_name,price_quantity_start, product_price ";
+$list .= $q . "LIMIT $limitstart, $limit";
+$count .= $q;
+$db->query($count);
+$num_rows = $db->num_rows();
+
+// Create the Page Navigation
+$pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
+
+// Create the List Object with page navigation
+$listObj = new listFactory( $pageNav );
+
+// print out the search field and a list heading
+$listObj->writeSearchHeader($title, IMAGEURL."ps_image/product_code.png", $modulename, "product_list");
+
+// start the list table
+$listObj->startTable();
+
+// these are the columns in the table
+$columns = Array(  "#" => "width=\"20\"", 
+					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
+					$PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_GROUP_NAME => '',
+					$PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_PRICE => '',
+					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_CURRENCY => '',
+					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_START => 'width="50"',
+					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_END => 'width="50"',
+					_E_REMOVE => "width=\"5%\""
+				);
+$listObj->writeTableHeader( $columns );
+
+$db->query( $list );
+$i = 0;
+while ($db->next_record()) {
+
+	$listObj->newRow();
+	
+	// The row number
+	$listObj->addCell( $pageNav->rowNumber( $i ) );
+	
+	// The Checkbox
+	$listObj->addCell( mosHTML::idBox( $i, $db->f("product_price_id"), false, "product_price_id" ) );
+	
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_price_form&limitstart=$limitstart&keyword=$keyword&product_price_id=" . $db->f("product_price_id") . "&product_id=$product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args);
+	$tmp_cell = "<a href=" . $sess->url($url) . ">". $db->f("shopper_group_name"). "</a>";
+	$listObj->addCell( $tmp_cell );
+	
+	$listObj->addCell( $db->f("product_price"));
+	$listObj->addCell( $db->f("product_currency"));
+	$listObj->addCell( $db->f("price_quantity_start"));
+	$listObj->addCell( $db->f("price_quantity_end"));
+	
+	$listObj->addCell( $ps_html->deleteButton( "product_price_id", $db->f("product_price_id"), "productPriceDelete", $keyword, $limitstart ) );
+
+	$i++;
+}
+$listObj->writeTable();
+
+$listObj->endTable();
+
+$listObj->writeFooter( $keyword, "&product_id=$product_id&product_parent_id=$product_parent_id&return_args=$return_args" );
+?>

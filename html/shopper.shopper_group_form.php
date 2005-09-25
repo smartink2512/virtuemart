@@ -21,6 +21,11 @@ mm_showMyFileName( __FILE__ );
 global $ps_product;
 $shopper_group_id = mosgetparam( $_REQUEST, 'shopper_group_id', null );
 
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_LBL );
+//Then Start the form
+$formObj->startForm();
+
 if (!empty($shopper_group_id)) {
    $q = "SELECT * FROM #__pshop_shopper_group ";
    $q .= "WHERE shopper_group_id='$shopper_group_id'";
@@ -31,24 +36,23 @@ if (!empty($shopper_group_id)) {
    $db->next_record();
 }
 ?>
-<script language="Javascript" src="<?php echo $mosConfig_live_site; ?>/includes/js/overlib_mini.js"></script>
-<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-<h2><?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_LBL ?></h2>
-
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table class="adminform">
     <tr>
       <td width="23%" nowrap>
         <strong><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_DEFAULT ?> ?:</div></strong>
       </td>
       <td width="77%" >
-      <?php if($db->f("default")=="1") { ?>
-      <img src="<?php echo $mosConfig_live_site ?>/administrator/images/tick.png" border="0" />
-        <input type="hidden" name="default" value="1" />
-      <?php }
-                  else { ?>
-        <input type="checkbox" name="default" value="1"  />
-        <?php } ?>
+<?php 
+	if($db->f("default")=="1") { ?>
+		<img src="<?php echo $mosConfig_live_site ?>/administrator/images/tick.png" border="0" />
+		<input type="hidden" name="default" value="1" />
+      <?php 
+	}
+	else { ?>
+		<input type="checkbox" name="default" value="1"  />
+        <?php 
+	} 
+?>
       </td>
     </tr>
     <tr>
@@ -57,13 +61,6 @@ if (!empty($shopper_group_id)) {
       </td>
       <td width="77%" > 
         <input type="text" class="inputbox" name="shopper_group_name" size="18" value="<?php $db->sp('shopper_group_name') ?>" />
-        <input type="hidden" name="shopper_group_id" value="<?php echo !empty($shopper_group_id) ? $shopper_group_id : "" ?>" />
-        <input type="hidden" name="page" value="<?php echo $modulename?>.shopper_group_list" />
-        <input type="hidden" name="func" value="<?php echo !empty($shopper_group_id) ? "shopperGroupUpdate" : "shopperGroupAdd"; ?>" />
-        <input type="hidden" name="option" value="com_phpshop" />
-        <input type="hidden" name="task" value="" />
-        <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
-        <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
         </td>
     </tr>
 
@@ -93,7 +90,7 @@ if (!empty($shopper_group_id)) {
           <option <?php echo $selected[0] ?> value="0"><?php echo _CMN_NO ?></option>
           <option <?php echo $selected[1] ?> value="1"><?php echo _CMN_YES ?></option>
         </select>&nbsp;
-        <?php echo mosToolTip( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN ); ?>
+        <?php echo mm_ToolTip( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN ); ?>
       </td>
     </tr> 
     <tr>
@@ -102,7 +99,7 @@ if (!empty($shopper_group_id)) {
       </td>
       <td width="77%" > 
         <input type="text" class="inputbox" name="shopper_group_discount" size="18" value="<?php $db->sp('shopper_group_discount') ?>" />
-        <?php echo mosToolTip( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP ); ?>
+        <?php echo mm_ToolTip( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP ); ?>
       </td>
     </tr> 
     <tr> 
@@ -117,6 +114,15 @@ if (!empty($shopper_group_id)) {
       <td width="23%" nowrap valign="top" >&nbsp;</td>
       <td width="77%" valign="top" >&nbsp;</td>
     </tr>
-  </table>
-  
-</form>
+</table>
+
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'shopper_group_id', $shopper_group_id );
+
+$funcname = !empty($shopper_group_id) ? "shopperGroupUpdate" : "shopperGroupAdd";
+
+// Write your form with mixed tags and text fields
+// and finally close the form:
+$formObj->finishForm( $funcname, $modulename.'.shopper_group_list', $option );
+?>

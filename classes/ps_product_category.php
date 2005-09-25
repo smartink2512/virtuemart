@@ -1,13 +1,10 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: ps_product_category.php,v 1.35 2005/09/06 19:28:35 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.34 2005/08/02 19:07:30 soeren_nb Exp $
 * @package mambo-phpShop
 * Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* g@copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -163,25 +160,24 @@ class ps_product_category {
   ** parameters:
   ** returns:
   ***************************************************************************/
-  function validate_delete(&$d) {
+  function validate_delete( $category_id, &$d) {
 
     $db = new ps_DB;
 
-    if (!$d["category_id"]) {
+    if (empty( $category_id )) {
       $d["error"] = "ERROR:  Please select a category to delete.";
       return False;
     }
 
     // Check for children
-    $q  = "SELECT * FROM #__pshop_category_xref where category_parent_id='";
-    $q .= $d["category_id"] . "'";
+    $q  = "SELECT * FROM #__pshop_category_xref where category_parent_id='$category_id'";
     $db->setQuery($q);   $db->query();
     if ($db->next_record()) {
       $d["error"]  = "ERROR: This category has children. ";
       $d["error"] .= "Please delete children first.";
       return False;
     }
-    $q = "SELECT category_thumb_image,category_full_image FROM #__pshop_category WHERE category_id='".$d["category_id"] . "'";
+    $q = "SELECT category_thumb_image,category_full_image FROM #__pshop_category WHERE category_id='$category_id'";
     $db->query( $q );
     $db->next_record();
     
@@ -389,103 +385,128 @@ class ps_product_category {
     }
   }
 
-  /**************************************************************************
-  ** name: delete()
-  ** created by: pablo
-  ** description: Should delete a category and and categories under it.
-  ** parameters: 
-  ** returns:
-  ***************************************************************************/
-  function delete(&$d) {
-    global $ps_product;
-    $db =& new ps_DB;
-    $dbc =& new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-    // Delete all products from that category
-    // We must filter out those products that are in more than one category!
-    
-    // Case 1: Products are assigned to more than on category
-    // so let's only delete the __pshop_product_category_xref entry
-    $q = "CREATE TEMPORARY TABLE `#__tmp_prod` AS 
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["category_id"];
+
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $ps_product;
+		global $db;
+		$dbc =& new ps_DB;
+		
+		if (!$this->validate_delete($record_id, $d)) {
+		  return False;
+		}
+		// Delete all products from that category
+		// We must filter out those products that are in more than one category!
+		
+		// Case 1: Products are assigned to more than on category
+		// so let's only delete the __pshop_product_category_xref entry
+		$q = "CREATE TEMPORARY TABLE IF NOT EXISTS `#__tmp_prod` AS 
             (SELECT * FROM `#__pshop_product_category_xref` 
-            WHERE `category_id`='".$d['category_id']."');";
-    $db->query( $q );
-    $q = "SELECT #__pshop_product_category_xref.product_id 
+            WHERE `category_id`='$record_id');";
+		$db->query( $q );
+		$q = "SELECT #__pshop_product_category_xref.product_id 
           FROM `#__pshop_product_category_xref`, `#__tmp_prod` 
           WHERE #__pshop_product_category_xref.product_id=#__tmp_prod.product_id 
-            AND #__pshop_product_category_xref.category_id!='".$d['category_id']."';";
-    $db->query( $q );
-    if( $db->num_rows() > 0 ) { 
-      $i = 0;
-      $q = "DELETE FROM #__pshop_product_category_xref WHERE product_id IN (";
-      while( $db->next_record() ) {
-        $q .= "'".$db->f("product_id")."'";
-        if( $i++ < $db->num_rows()-1 )
-          $q .= ",";
-      }
-      $q .= ") AND category_id='".$d['category_id']."'";
-      $db->query( $q );
-    }
-    else {
-      // Case 2: Products are assigned to this category only
-      $q = "SELECT product_id FROM `#__pshop_product_category_xref` WHERE `category_id`='".$d['category_id']."';";
-      $db->query ( $q );
-      while( $db->next_record() ) {
-        $d['product_id'] = $db->f("product_id");
-        $ps_product->delete( $d );
-      }
-    }
-    
-    $q = "DELETE FROM #__pshop_category WHERE category_id='" . $d["category_id"] . "'";
-    $db->setQuery($q);   $db->query();
-
-    $q  = "DELETE FROM #__pshop_category_xref ";
-    $q .= "WHERE category_child_id='" . $d["category_id"] . "'";
-    $db->setQuery($q);   $db->query();
-    
-    /* Delete Image files */
-    if (!process_images($d)) {
-      return false;
-    }
-    
-    return True;
-  }
-  
-  function getCategoryTreeArray() {
-  
-    $db = new ps_DB;
-    if( empty( $GLOBALS['category_info']['category_tree'])) {
-    
-      // Get only published categories
-      $query  = "SELECT category_id, category_name as name,category_child_id as cid, category_parent_id as pid,list_order FROM #__pshop_category, #__pshop_category_xref 
-                WHERE #__pshop_category.category_publish='Y' 
-                  AND #__pshop_category.category_id=#__pshop_category_xref.category_child_id 
-                ORDER BY #__pshop_category.list_order ASC, #__pshop_category.category_name ASC";
-    
-      // initialise the query in the $database connector
-      // this translates the '#__' prefix into the real database prefix
-      $db->query( $query );
-      
-      $categories = Array();
-      // Transfer the Result into a searchable Array
-      
-      while( $db->next_record() ) {
-        $categories[$db->f("cid")]["category_child_id"] = $db->f("cid");
-        $categories[$db->f("cid")]["category_parent_id"] = $db->f("pid");
-        $categories[$db->f("cid")]["category_name"] = $db->f("name");
-        $categories[$db->f("cid")]["list_order"] = $db->f("list_order");
-      }
-      
-      $GLOBALS['category_info']['category_tree'] = $categories;
-      return $GLOBALS['category_info']['category_tree'];
-    }
-    else {
-      return $GLOBALS['category_info']['category_tree'];
-    }
-  }
+            AND #__pshop_product_category_xref.category_id!='$record_id';";
+		$db->query( $q );
+		if( $db->num_rows() > 0 ) { 
+		  $i = 0;
+		  $q = "DELETE FROM #__pshop_product_category_xref WHERE product_id IN (";
+		  while( $db->next_record() ) {
+			$q .= "'".$db->f("product_id")."'";
+			if( $i++ < $db->num_rows()-1 )
+			  $q .= ",";
+		  }
+		  $q .= ") AND category_id='$record_id'";
+		  $db->query( $q );
+		}
+		else {
+		  // Case 2: Products are assigned to this category only
+		  $q = "SELECT product_id FROM `#__pshop_product_category_xref` WHERE `category_id`='$record_id';";
+		  $db->query ( $q );
+		  $d['product_id'] = Array();
+		  while( $db->next_record() ) {
+				$d['product_id'][] = $db->f("product_id");
+		  }
+		  $ps_product->delete( $d );
+		}
+		
+		$q = "DELETE FROM #__pshop_category WHERE category_id='$record_id'";
+		$db->setQuery($q);   $db->query();
+	
+		$q  = "DELETE FROM #__pshop_category_xref WHERE category_child_id='$record_id'";
+		$db->setQuery($q);   $db->query();
+		
+		/* Delete Image files */
+		if (!process_images($d)) {
+			return false;
+		}
+		
+		return True;
+	}
+	/**
+	* This function is repsonsible for returning an array containing category information
+	*/
+	function getCategoryTreeArray( $only_published=true, $keyword = "" ) {
+	  
+		$db = new ps_DB;
+		if( empty( $GLOBALS['category_info']['category_tree'])) {
+		
+			// Get only published categories
+			$query  = "SELECT category_id, category_description, category_name,category_child_id as cid, category_parent_id as pid,list_order, category_publish 
+						FROM #__pshop_category, #__pshop_category_xref WHERE ";
+			if( $only_published )
+				$query .= "#__pshop_category.category_publish='Y' AND ";
+			$query .= "#__pshop_category.category_id=#__pshop_category_xref.category_child_id ";
+			if( !empty( $keyword )) {
+				$query .= "AND ( category_name LIKE '%$keyword%' ";
+				$query .= "OR category_description LIKE '%$keyword%' ";
+				$query .= ") ";
+			}
+			$query .= "ORDER BY #__pshop_category.list_order ASC, #__pshop_category.category_name ASC";
+		
+		  // initialise the query in the $database connector
+		  // this translates the '#__' prefix into the real database prefix
+		  $db->query( $query );
+		  
+		  $categories = Array();
+		  // Transfer the Result into a searchable Array
+		  
+		  while( $db->next_record() ) {
+			$categories[$db->f("cid")]["category_child_id"] = $db->f("cid");
+			$categories[$db->f("cid")]["category_parent_id"] = $db->f("pid");
+			$categories[$db->f("cid")]["category_name"] = $db->f("category_name");
+			$categories[$db->f("cid")]["category_description"] = $db->f("category_description");
+			$categories[$db->f("cid")]["list_order"] = $db->f("list_order");
+			$categories[$db->f("cid")]["category_publish"] = $db->f("category_publish");
+		  }
+		  
+		  $GLOBALS['category_info']['category_tree'] = $categories;
+		  return $GLOBALS['category_info']['category_tree'];
+		}
+		else {
+		  return $GLOBALS['category_info']['category_tree'];
+		}
+	}
   
   
   
@@ -586,7 +607,7 @@ class ps_product_category {
 	
     // Now show the categories
     for($n = 0 ; $n < $nrows ; $n++) {
-
+	  
       if( !isset( $row_list[$n] ) || !isset( $category_tmp[$row_list[$n]]["category_child_id"] ) )
         continue;
       if( $category_id == $category_tmp[$row_list[$n]]["category_child_id"])
@@ -612,7 +633,9 @@ class ps_product_category {
           $css_class = "sublevel";
         else 
           $css_class = $links_css_class;
+		
 		$catname = shopMakeHtmlSafe( $category_tmp[$row_list[$n]]["category_name"] );
+		
         $html .= '
           <a title="'.$catname.'" style="display:block;'.$style.'" class="'. $css_class .'" href="'. $sess->url(URL."index.php?page=shop.browse&amp;category_id=".$category_tmp[$row_list[$n]]["category_child_id"]) .'">'
           . str_repeat("&nbsp;&nbsp;&nbsp;",$depth_list[$n]) . $catname
@@ -1186,81 +1209,83 @@ class ps_product_category {
 
     return $html; 
   }
-  /**************************************************************************
-  ** name: reorder()
-  ** created by: soern
-  ** description: Changes the category List Order
-  ** parameters: category_id
-  ** returns: true if the category has childs; false, if not
-  ***************************************************************************/
-  function reorder( &$d ) {
-      $cb = mosGetParam( $_POST, 'cb', array(0) );
+	/**************************************************************************
+	** name: reorder()
+	** created by: soern
+	** description: Changes the category List Order
+	** parameters: category_id
+	** returns: true if the category has childs; false, if not
+	***************************************************************************/
+	function reorder( &$d ) {
+		
+	  if( !empty( $d['cid'] )) {
+		$cid = $d['cid'][0];
       
-      $db = new ps_DB;
-      switch( $d["task"] ) {
-        case "orderup":
-          $q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
-          $q .= "WHERE category_id='".$cb[0]."' ";
-          $q .= "AND category_child_id='".$cb[0]."' ";
-          $db->query($q);
-          $db->next_record();
-          $currentpos = $db->f("list_order");
-          $category_parent_id = $db->f("category_parent_id");
-          
-          // Get the (former) predecessor and update it
-          $q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
-          $q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
-          $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
-          $q .= "AND list_order='". intval($currentpos - 1) . "'";
-          $db->query($q);
-          $db->next_record();
-          $pred = $db->f("category_id");
-          
-          // Update the category and decrease the list_order
-          $q = "UPDATE #__pshop_category ";
-          $q .= "SET list_order=list_order-1 ";
-          $q .= "WHERE category_id='".$cb[0]."'";
-          $db->query($q);
-
-          $q = "UPDATE #__pshop_category ";
-          $q .= "SET list_order=list_order+1 ";
-          $q .= "WHERE category_id='$pred'";
-          $db->query($q);
-          
-          break;
-          
-        case "orderdown":
-          $q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
-          $q .= "WHERE category_id='".$cb[0]."' ";
-          $q .= "AND category_child_id='".$cb[0]."' ";
-          $db->query($q);
-          $db->next_record();
-          $currentpos = $db->f("list_order");
-          $category_parent_id = $db->f("category_parent_id");
-          
-          // Get the (former) successor and update it
-          $q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
-          $q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
-          $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
-          $q .= "AND list_order='". intval($currentpos + 1) . "'";
-          $db->query($q);
-          $db->next_record();
-          $succ = $db->f("category_id");
-          
-          $q = "UPDATE #__pshop_category ";
-          $q .= "SET list_order=list_order+1 ";
-          $q .= "WHERE category_id='".$cb[0]."' ";
-          $db->query($q);
-          
-          $q = "UPDATE #__pshop_category ";
-          $q .= "SET list_order=list_order-1 ";
-          $q .= "WHERE category_id='$succ'";
-          $db->query($q);
-          
-          break;
-      }
-
-  }
+		$db = new ps_DB;
+		switch( $d["task"] ) {
+			case "orderup":
+			  $q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
+			  $q .= "WHERE category_id='".$cid[0]."' ";
+			  $q .= "AND category_child_id='".$cid[0]."' ";
+			  $db->query($q);
+			  $db->next_record();
+			  $currentpos = $db->f("list_order");
+			  $category_parent_id = $db->f("category_parent_id");
+			  
+			  // Get the (former) predecessor and update it
+			  $q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
+			  $q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
+			  $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
+			  $q .= "AND list_order='". intval($currentpos - 1) . "'";
+			  $db->query($q);
+			  $db->next_record();
+			  $pred = $db->f("category_id");
+			  
+			  // Update the category and decrease the list_order
+			  $q = "UPDATE #__pshop_category ";
+			  $q .= "SET list_order=list_order-1 ";
+			  $q .= "WHERE category_id='".$cid[0]."'";
+			  $db->query($q);
+	
+			  $q = "UPDATE #__pshop_category ";
+			  $q .= "SET list_order=list_order+1 ";
+			  $q .= "WHERE category_id='$pred'";
+			  $db->query($q);
+			  
+			  break;
+			  
+			case "orderdown":
+			  $q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
+			  $q .= "WHERE category_id='".$cid[0]."' ";
+			  $q .= "AND category_child_id='".$cid[0]."' ";
+			  $db->query($q);
+			  $db->next_record();
+			  $currentpos = $db->f("list_order");
+			  $category_parent_id = $db->f("category_parent_id");
+			  
+			  // Get the (former) successor and update it
+			  $q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
+			  $q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
+			  $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
+			  $q .= "AND list_order='". intval($currentpos + 1) . "'";
+			  $db->query($q);
+			  $db->next_record();
+			  $succ = $db->f("category_id");
+			  
+			  $q = "UPDATE #__pshop_category ";
+			  $q .= "SET list_order=list_order+1 ";
+			  $q .= "WHERE category_id='".$cid[0]."' ";
+			  $db->query($q);
+			  
+			  $q = "UPDATE #__pshop_category ";
+			  $q .= "SET list_order=list_order-1 ";
+			  $q .= "WHERE category_id='$succ'";
+			  $db->query($q);
+			  
+			  break;
+		}
+	  }
+    }
 
 }
 ?>

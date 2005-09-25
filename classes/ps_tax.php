@@ -147,19 +147,41 @@ class ps_tax {
    * parameters: 
    * returns:
    **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    $ps_vendor_id = $_SESSION["ps_vendor_id"];
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-    $q = "DELETE from #__pshop_tax_rate where tax_rate_id='" . $d["tax_rate_id"] . "'";
-    $q .= " AND vendor_id='$ps_vendor_id'";
-    $db->query($q);
-    $db->next_record();
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		if (!$this->validate_delete($d)) {
+		  return False;
+		}
+		
+		$record_id = $d["tax_rate_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		
+		$q = "DELETE from #__pshop_tax_rate where tax_rate_id='$record_id'";
+		$q .= " AND vendor_id='$ps_vendor_id'";
+		$db->query($q);
+		$db->next_record();
+		return True;
+	}
   
   /**************************************************************************
    ** name: list_tax_value

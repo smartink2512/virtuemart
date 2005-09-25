@@ -164,26 +164,38 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     return True;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: soeren
-   * description: Deletes a Credit Card Record.
-   * parameters: 
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      $d["error"]=$this->error;
-      return False;
-    }
-    $q = "DELETE FROM #__pshop_creditcard WHERE creditcard_id='" . $d["creditcard_id"] . "'";
-    $db->setQuery($q);
-    $db->query();
-    $db->next_record();
-    return True;
-  }
+	/**
+	* Controller for Deleting Credit Card Records.
+	*/
+	function delete(&$d) {
+	
+		$creditcard_id = $d["creditcard_id"];
+		
+		if( is_array( $creditcard_id)) {
+			foreach( $creditcard_id as $creditcard) {
+				if( !$this->delete_creditcard( $creditcard, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_creditcard( $creditcard_id, $d );
+		}
+	}
+	/**
+	* Deletes a Credit Card Record.
+	*/
+	function delete_creditcard( $creditcard_id, &$d ) {
+		global $db;
+		
+		if (!$this->validate_delete($d)) {
+		  $d["error"]=$this->error;
+		  return False;
+		}
+		$q = "DELETE FROM #__pshop_creditcard WHERE creditcard_id='" . $creditcard_id . "'";
+		$db->query($q);
+		return True;
+	}
   
   
   /**************************************************************************

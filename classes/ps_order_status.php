@@ -117,45 +117,63 @@ class ps_order_status {
     return True;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: pablo
-   * description: Should delete a category and and categories under it.
-   * parameters: 
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    $ps_vendor_id = $_SESSION["ps_vendor_id"];
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-    $q = "DELETE from #__pshop_order_status where order_status_id='" . $d["order_status_id"] . "'";
-    $q .= " AND vendor_id='$ps_vendor_id'";
-    $db->query($q);
-    $db->next_record();
-    return True;
+  	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		if (!$this->validate_delete($d)) {
+		  return False;
+		}
+		$record_id = $d["order_status_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		
+		$q = "DELETE from #__pshop_order_status WHERE order_status_id='$record_id'";
+		$q .= " AND vendor_id='$ps_vendor_id'";
+		$db->query($q);
+		return True;
   }
 
 
-  function list_order_status($order_status_code, $extra="") {
-    $db = new ps_DB;
-
-    $q = "SELECT * from #__pshop_order_status ORDER BY list_order";
-    $db->query($q);
-    echo "<select name=\"order_status\" class=\"inputbox\" $extra>\n";
-    while ($db->next_record()) {
-      echo "<option value=" . $db->f("order_status_code");
-      if ($order_status_code == $db->f("order_status_code")) 
-         echo " selected=\"selected\">";
-      else
-         echo ">";
-      echo $db->f("order_status_name") . "</option>\n";
-    }
-    echo "</select>\n";
-
-  }
+	function list_order_status($order_status_code, $extra="") {
+		echo $this->getOrderStatus( $order_status_code, $extra );
+	}
+	
+	function getOrderStatus( $order_status_code, $extra="") {
+		$db = new ps_DB;
+		
+		$q = "SELECT order_status_id, order_status_code, order_status_name FROM #__pshop_order_status ORDER BY list_order";
+		$db->query($q);
+		$html = "<select name=\"order_status\" class=\"inputbox\" $extra>\n";
+		while ($db->next_record()) {
+		  $html .= "<option value=\"" . $db->f("order_status_code")."\"";
+		  if ($order_status_code == $db->f("order_status_code")) 
+			 $html .= " selected=\"selected\">";
+		  else
+			 $html .= ">";
+		  $html .= $db->f("order_status_name") . "</option>\n";
+		}
+		$html .= "</select>\n";
+		
+		return $html;
+	}
 
 }
 ?>

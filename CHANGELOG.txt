@@ -15,8 +15,40 @@ Legend:
 
 
 
-last mambo-phpShop version (1.2 stable)
+Development Version
 *************************************
+25-09-2005 soeren
+! configuration constant SEARCH_ROWS (deprecated) is to be replaced by $mosConfig_list_limit
+- removed Mail configuration from configuration form (dropping support for Mambo < 4.5.1 )
+- removed configuration constant MAX_ROWS.
+^ changed the configuration file (phpshop.cfg.php) to build URLs and Paths from Mambo configuration variables
+  This means that you don't have to adjust your configuration file when moving a site.
+^ updated all forms to use the new formFactory class and it's methods
++ new class formFactory for managing common form tasks in all administration forms in virtuemart
+
+18-09-2005 soeren
+^ Language files are updated. Language Strings can be returned as HTML Entity-encoded Strings.
+	* class vmAbstractLanguage is the base class for all language files.
+	* function _() returns an html entity-encoded string
+! language classes extend class vmAbstractLanguage from now on. mosAbstractClass is deprecated.
+- file mos_4.6_code.php will be removed.
+	* vmAbstractLanguage & mosAbstractLanguage class moved into language.class.php
+	* mosMailer / mosCommonHTML compat code moved into ps_main.php
+
+13-09-2005 soeren
++ changed the product files list to show images in a tooltip
+# added code to prevent that manufacturers are deleted which still have products assigned to it
+# changed phpshop_parser.php not to be greedy on variables when $option is NOT "com_phpshop"
+	this should fix conflicts with variables of the same name used by other components
+^ Updated the toolbar to allow batch delete / (un)publishing of items in lists
+^ Changed complete page navigation to Mambo style (also remembers list positions!)
+# Product Quantity wasn't updated in cart when adding the same product again
+! functions search_header and search_footer will be removed. Don't use them. Use the class listFactory and its methods instead.
+^ changed all shop administration lists to use the new class listFactory. No more HTML Code in those lists!
++ added new file "htmlTools.class.php" containing a listFactory for admin lists
++ added new file "pageNavigation.class.php" (copy of the administrator/includes/pageNavigation.php)
++ added new file "/js/functions.js" for JS functions in the administration area
+
 06-09-2005 soeren
 ^ mod_phpshop: changed the default value for "Pre-Text" to "" (empty!)
 # product search not handling keywords as separate search words, but as one (normal search)

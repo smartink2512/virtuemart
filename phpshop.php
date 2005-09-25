@@ -113,6 +113,7 @@ else {
           require_once( "includes/HTML_toolbar.php" );
           function editorScript($editor1='', $editor2='') {    
             ?>
+		<script type="text/javascript" src="components/com_phpshop/js/functions.js"></script>
                  <script type="text/javascript">
                     function submitbutton(pressbutton) {
                       var form = document.adminForm;
@@ -233,7 +234,7 @@ if( !function_exists( "load_that_shop_page" )) {
       $ps_payment_method,$ps_zone,$ps_product, $ps_product_category, $ps_order, $sess, $page, $func, $pagename, $modulename, $vars, $cmd, $ok, $mosConfig_lang, $mosConfig_useractivation,
       $auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list, $mosConfig_allowUserRegistration ;
       
-      if( is_callable( array("mosMainFrame", "addCustomHeadTag" ) ) ) {
+      if( is_callable( array("mosMainFrame", "addCustomHeadTag" ) ) && !stristr( $_SERVER['PHP_SELF'], "index2.php") ) {
         $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"components/com_phpshop/js/sleight.js\"></script>
 <script type=\"text/javascript\" src=\"components/com_phpshop/js/sleightbg.js\"></script>
 <link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"components/com_phpshop/css/shop.css\" />" );

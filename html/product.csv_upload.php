@@ -183,7 +183,7 @@ $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_CONFIG, "field_list" );
     ?>
     </form>
   </table><br/>
-  <a style="cursor:pointer" onclick="addField();" class="toolbar" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('newField','','<?php echo $mosConfig_live_site."/administrator/images/new_f2.png" ?>',1);">
+  <a style="cursor:pointer;" onclick="addField();" class="toolbar" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('newField','','<?php echo $mosConfig_live_site."/administrator/images/new_f2.png" ?>',1);">
     <img src="<?php echo $mosConfig_live_site."/administrator/images/new.png" ?>" name="newField" border="0" />
     &nbsp;<?php echo $PHPSHOP_LANG->_PHPSHOP_CSV_NEW_FIELD ?>
   </a>

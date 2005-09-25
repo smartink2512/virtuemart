@@ -4,11 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: product.product_form.php,v 1.36 2005/09/06 19:28:36 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
-* Contains code from PHPShop(tm):
-* 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * mambo-phpShop is Free Software.
@@ -20,9 +16,10 @@ mm_showMyFileName( __FILE__ );
 
 require_once( CLASSPATH.'ps_product_discount.php' );
 
-$limitstart = mosGetParam( $_REQUEST, 'limitstart', 0 );
-$keyword = mosGetParam( $_REQUEST, 'keyword', "" );
 $product_id = mosGetParam( $_REQUEST, 'product_id');
+if( is_array( $product_id ))
+	$product_id = (int)$product_id[0];
+	
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
 
@@ -122,48 +119,31 @@ if( $clone_product == "1" ) {
 <script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/calendar/calendar.js"></script>
 <!-- import the language module -->
 <script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/calendar/lang/calendar-en.js"></script>
-
 <br />
-<table width="100%">
-  <tr>
-	<td>
-	<img src="<?php echo IMAGEURL ?>ps_image/product_code.png" border="0" alt="Product Form" align="right" />
-	</td><td>
-	<div class="sectionname"><?php 
-		echo $action; 
-		if ($product_id) 
-			echo " :: " . $db->f("product_name"); ?>
-	</div>   
-	<?php 
-	if(!empty($product_id)) { // show a link to the shop- flypage 
-		
-		$flypage = $ps_product->get_flypage($product_id); 
-	?>
-		<a href="<?php echo $mosConfig_live_site."/index2.php?option=com_phpshop&page=shop.product_details&flypage=$flypage&product_id=$product_id" ?>" target="_blank">
-			  <?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE ?>
-		</a>
-		<?php 
-	}
-?>
-	</td></tr>
-</table>
 <?php
+$title = '<img src="'. IMAGEURL .'ps_image/product_code.png" border="0" align="center" alt="Product Form" />&nbsp;&nbsp;';
+$title .= $action;
+
+if( !empty( $product_id )) {
+	$title .= " :: " . $db->f("product_name");
+	$flypage = $ps_product->get_flypage($product_id); 
+	?>
+	<a href="<?php echo $mosConfig_live_site."/index2.php?option=com_phpshop&page=shop.product_details&flypage=$flypage&product_id=$product_id" ?>" target="_blank">
+		  <?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE ?>
+	</a>
+	<?php
+}
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
 $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" width=\"16\" height=\"16\" border=\"0\" />&nbsp;$info_label", "info-page");
 ?>
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" enctype="multipart/form-data">
-  <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
-  <input type="hidden" name="product_parent_id" value="<?php echo $product_parent_id; ?>" />
-  <input type="hidden" name="func" value="<?php if ($product_id) { echo "productUpdate";} else {echo "productAdd";} ?>" />
-  <input type="hidden" name="page" value="<?php echo $next_page ?>" />
-  <input type="hidden" name="option" value="com_phpshop" />
-  <input type="hidden" name="keyword" value="<?php echo $keyword ?>" />
-  <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
-
-<table width="100%" border="0" class="adminform">
+<table class="adminform">
   <tr> 
    <td valign="top">
      <table width="100%" border="0">
@@ -652,7 +632,7 @@ if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
  $ps_html->writableIndicator( IMAGEPATH."product" ); 
  
  ?>
-  <table class="adminform" width="100%" border="0" cellspacing="0" cellpadding="2">
+  <table class="adminform" >
     <tr> 
       <td valign="top" width="50%" style="border-right: 1px solid black;">
         <h2><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_FULL_IMAGE ?></h2>
@@ -971,11 +951,18 @@ if( $clone_product == "1" ) {
 }
 ?>
 </div>
-  <input type="hidden" name="task" value="" />
-</form>
-
 <?php
 $tabs->endPane();
+
+// Add necessary hidden fields
+$formObj->hiddenField( 'product_id', $product_id );
+$formObj->hiddenField( 'product_parent_id', $product_parent_id );
+
+$funcname = !empty($product_id) ? "productUpdate" : "productAdd";
+
+// finally close the form:
+$formObj->finishForm( $funcname, $next_page, $option );
+
 ?>
 <script type="text/javascript">
 <!--

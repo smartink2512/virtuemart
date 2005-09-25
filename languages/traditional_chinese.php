@@ -1,11 +1,11 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: traditional_chinese.php,v 1.3 2005/06/22 19:50:45 soeren_nb Exp $
+* @version $Id: $
 * @package mambo-phpShop
 * @subpackage languages
 *
-* @copyright (C) 2005 which
+* @copyright (C) 2004-2005 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
 * mambo-phpShop is Free Software.
@@ -13,1754 +13,1355 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * www.mambo-phpshop.net
 */
-class phpShopLanguage extends mosAbstractLanguage {
-
-    /*####################
-    GENERAL DEFINITIONS
-    ####################*/
-    
-    var $_PHPSHOP_MENU = "¿ï³æ";
-    var $_PHPSHOP_CATEGORY = "Ãþ§O";
-    var $_PHPSHOP_CATEGORIES = "Ãþ§O";
-    var $_PHPSHOP_SELECT_CATEGORY = "¿ï¾Ü¤@­Ó¥Ø¿ý:";    
-    var $_PHPSHOP_ADMIN = "ºÞ²z";
-    var $_PHPSHOP_PRODUCT = "°Ó«~";
-    var $_PHPSHOP_LIST = "¦Cªí";
-    var $_PHPSHOP_ALL = "©Ò¦³";
-    var $_PHPSHOP_LIST_ALL_PRODUCTS = "¦C¥X©Ò¦³°Ó«~";    
-    var $_PHPSHOP_VIEW = "¬d¬Ý";
-    var $_PHPSHOP_SHOW = "Åã¥Ü";
-    var $_PHPSHOP_ADD = "¼W¥[";
-    var $_PHPSHOP_UPDATE = "§ó·s";
-    var $_PHPSHOP_DELETE = "§R°£";
-    var $_PHPSHOP_SELECT = "¿ï¾Ü";
-    var $_PHPSHOP_SUBMIT = "Submit";
-    var $_PHPSHOP_RANDOM = "ÀH¾÷°Ó«~";
-    var $_PHPSHOP_LATEST = "³Ì·s°Ó«~";
-
-    /*#####################
-    MODULE ACCOUNT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_HOME_TITLE = "­º­¶";
-    var $_PHPSHOP_CART_TITLE = "ÁÊª«¨®";
-    var $_PHPSHOP_CHECKOUT_TITLE = "µ²±b";
-    var $_PHPSHOP_LOGIN_TITLE = "µn¤J";
-    var $_PHPSHOP_LOGOUT_TITLE = "µn¥X";
-    var $_PHPSHOP_BROWSE_TITLE = "ÂsÄý";
-    var $_PHPSHOP_SEARCH_TITLE = "·j´M";
-    var $_PHPSHOP_ACCOUNT_TITLE = "±b¸¹ºûÅ@";
-    var $_PHPSHOP_NAVIGATION_TITLE = "¾É¯è";
-    var $_PHPSHOP_DEPARTMENT_TITLE = "³¡ªù";
-    var $_PHPSHOP_INFO = "¸ê°T";
-    
-    var $_PHPSHOP_BROWSE_LBL = "ÂsÄý";
-    var $_PHPSHOP_PRODUCTS_LBL = "°Ó«~";
-    var $_PHPSHOP_PRODUCT_LBL = "°Ó«~";
-    var $_PHPSHOP_SEARCH_LBL = "·j´M";
-    var $_PHPSHOP_FLYPAGE_LBL = "°Ó«~²Ó¸`";
-    var $_PHPSHOP_PRODUCT_SEARCH_LBL = "°Ó«~·j´M";
-    
-    var $_PHPSHOP_PRODUCT_NAME_TITLE = "°Ó«~¦WºÙ";
-    var $_PHPSHOP_PRODUCT_CATEGORY_TITLE = "°Ó«~Ãþ§O";
-    var $_PHPSHOP_PRODUCT_DESC_TITLE = "´y­z";
-    
-    var $_PHPSHOP_CART_SHOW = "Åã¥ÜÁÊª«¨®";
-    var $_PHPSHOP_CART_ADD_TO = "¥[¶iÁÊª«¨®";
-    var $_PHPSHOP_CART_NAME = "°Ó«~¦W";
-    var $_PHPSHOP_CART_SKU = "®w¦s®Æ¸¹";
-    var $_PHPSHOP_CART_PRICE = "»ù®æ";
-    var $_PHPSHOP_CART_QUANTITY = "¼Æ¶q";
-    var $_PHPSHOP_CART_SUBTOTAL = "¤p­p";
-    
-    # Some messages
-    var $_PHPSHOP_ADD_SHIPTO_1 = "¼W¥[·sªº";
-    var $_PHPSHOP_ADD_SHIPTO_2 = "°e³f¦a§}";
-    var $_PHPSHOP_NO_SEARCH_RESULT = "¨S¦³§ä¨ì±z©Ò¬d¸ßªº²£«~¡C<br />";
-    var $_PHPSHOP_PRICE_LABEL = "»ù®æ: ";
-    var $_PHPSHOP_ORDER_BUTTON_LABEL = "¥[¶iÁÊª«¨®";
-    var $_PHPSHOP_NO_CUSTOMER = "±zÁÙ¨S¦³µù¥U¦¨¬°·|­û¡C½Ð´£¨Ñ±zªº¤ä¥I¸ê°T¡C";
-    var $_PHPSHOP_DELETE_MSG = "§A½T»{­n§R°£¦¹°O¿ý¶Ü?";
-    var $_PHPSHOP_THANKYOU = "·PÁÂ±zªº­qÁÊ.";
-    var $_PHPSHOP_NOT_SHIPPED = "ÁÙ¥¼°e³f";
-    var $_PHPSHOP_EMAIL_SENDTO = "¤@«Ê½T»{¶l¥ó¤w±H©¹";
-    var $_PHPSHOP_NO_USER_TO_SELECT = "©êºp, MAMBO¨t²Î¤¤ÁÙ¨S¦³·|­û¯àÅý±z¥[¤J¨ì°Ó©±ªº·|­û¦Cªí¤¤";
-    
-    // Error messages
-    
-    var $_PHPSHOP_ERROR = "¿ù»~";
-    var $_PHPSHOP_MOD_NOT_REG = "¼Ò²Õ¥¼µù¥U¡C";
-    var $_PHPSHOP_MOD_ISNO_REG = "¤£¬O¥¿½Tªº phpshop ¼Ò²Õ¡C";
-    var $_PHPSHOP_MOD_NO_AUTH = "±z¨S¦³Åv­­¦s¨ú¦¹­n¨Dªº¼Ò²Õ¡C";
-    var $_PHPSHOP_PAGE_404_1 = "­¶­±¤£¦s¦b";
-    var $_PHPSHOP_PAGE_404_2 = "´£¨ÑªºÀÉ¦W¤£¦s¦b¡AµLªk§ä¨ìÀÉ®×:";
-    var $_PHPSHOP_PAGE_403 = "¤£¨¬ªº¶i¤J³\¥iÅv";
-    var $_PHPSHOP_FUNC_NO_EXEC = "±zµLÅv­­°õ¦æ";
-    var $_PHPSHOP_FUNC_NOT_REG = "¦¹¥\¯à©|¥¼µù¥U";
-    var $_PHPSHOP_FUNC_ISNO_REG = "¤£¬O¥¿½Tªº  MOS_com_phpshop ¥\¯à¡C";
-    
-    /*#####################
-    MODULE ADMIN
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ADMIN_MOD = "ºÞ²z";
-    
-    
-    // User List
-    var $_PHPSHOP_USER_LIST_MNU = "¦C¥X·|­û";
-    var $_PHPSHOP_USER_LIST_LBL = "·|­û¦Cªí";
-    var $_PHPSHOP_USER_LIST_USERNAME = "·|­û¦WºÙ";
-    var $_PHPSHOP_USER_LIST_FULL_NAME = "©m¦W";
-    var $_PHPSHOP_USER_LIST_GROUP = "¸s²Õ";
-    
-    // User Form
-    var $_PHPSHOP_USER_FORM_MNU = "¼W¥[·|­û";
-    var $_PHPSHOP_USER_FORM_LBL = "¼W¥[/§ó·s ·|­û¸ê°T";
-    var $_PHPSHOP_USER_FORM_BILLTO_LBL = "¥I´Ú¸ê°T";
-    var $_PHPSHOP_USER_FORM_SHIPTO_LBL = "°e³f¦a§}";
-    var $_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL = "¼W¥[¦a§}";
-    var $_PHPSHOP_USER_FORM_ADDRESS_LABEL = "¦a§}§O¦W";
-    var $_PHPSHOP_USER_FORM_FIRST_NAME = "¦W";
-    var $_PHPSHOP_USER_FORM_LAST_NAME = "©m";
-    var $_PHPSHOP_USER_FORM_MIDDLE_NAME = "¤¤¦W";
-    var $_PHPSHOP_USER_FORM_TITLE = "ºÙ©I";
-    var $_PHPSHOP_USER_FORM_USERNAME = "·|­û¦WºÙ";
-    var $_PHPSHOP_USER_FORM_PASSWORD_1 = "±K½X";
-    var $_PHPSHOP_USER_FORM_PASSWORD_2 = "±K½X½T»{";
-    var $_PHPSHOP_USER_FORM_PERMS = "³\¥iÅv";
-    var $_PHPSHOP_USER_FORM_COMPANY_NAME = "¤½¥q¦W";
-    var $_PHPSHOP_USER_FORM_ADDRESS_1 = "¦a§} 1";
-    var $_PHPSHOP_USER_FORM_ADDRESS_2 = "¦a§} 2";
-    var $_PHPSHOP_USER_FORM_CITY = "«°¥«";
-    var $_PHPSHOP_USER_FORM_STATE = "¬Ù¥÷/¦a°Ï";
-    var $_PHPSHOP_USER_FORM_ZIP = "¶l»¼°Ï¸¹";
-    var $_PHPSHOP_USER_FORM_COUNTRY = "°ê®a";
-    var $_PHPSHOP_USER_FORM_PHONE = "¹q¸Ü";
-    var $_PHPSHOP_USER_FORM_FAX = "¶Ç¯u";
-    var $_PHPSHOP_USER_FORM_EMAIL = "Email";
-    
-    // Module List
-    var $_PHPSHOP_MODULE_LIST_MNU = "¦C¥X¼Ò²Õ";
-    var $_PHPSHOP_MODULE_LIST_LBL = "¼Ò²Õ²M³æ";
-    var $_PHPSHOP_MODULE_LIST_NAME = "¼Ò²Õ¦W";
-    var $_PHPSHOP_MODULE_LIST_PERMS = "¼Ò²Õ°Ñ¼Æ";
-    var $_PHPSHOP_MODULE_LIST_FUNCTIONS = "¨ç¼Æ";
-    var $_PHPSHOP_MODULE_LIST_ORDER = "¦C¥X­q³æ";
-    
-    // Module Form
-    var $_PHPSHOP_MODULE_FORM_MNU = "¼W¥[¼Ò²Õ";
-    var $_PHPSHOP_MODULE_FORM_LBL = "¼Ò²Õ¸ê°T";
-    var $_PHPSHOP_MODULE_FORM_MODULE_LABEL = "¼Ò²Õ¼ÐÃD(¥Î©ó¤W¤è¿ï³æ)";
-    var $_PHPSHOP_MODULE_FORM_NAME = "¼Ò²Õ¦W";
-    var $_PHPSHOP_MODULE_FORM_PERMS = "¼Ò²Õ°Ñ¼Æ";
-    var $_PHPSHOP_MODULE_FORM_HEADER = "¼Ò²Õ header";
-    var $_PHPSHOP_MODULE_FORM_FOOTER = "¼Ò²Õ footer";
-    var $_PHPSHOP_MODULE_FORM_MENU = "¦bºÞ²z¥\¯àªí¤¤Åã¥Ü¼Ò²Õ?";
-    var $_PHPSHOP_MODULE_FORM_ORDER = "Åã¥Ü¶¶§Ç";
-    var $_PHPSHOP_MODULE_FORM_DESCRIPTION = "¼Ò²Õ´y­z";
-    var $_PHPSHOP_MODULE_FORM_LANGUAGE_CODE = "»y¨¥½s½X";
-    var $_PHPSHOP_MODULE_FORM_LANGUAGE_file = "»y¨¥ÀÉ®×";
-    
-    // Function List
-    var $_PHPSHOP_FUNCTION_LIST_MNU = "Åã¥Ü¨ç¼Æªí";
-    var $_PHPSHOP_FUNCTION_LIST_LBL = "¨ç¼Æ¦Cªí";
-    var $_PHPSHOP_FUNCTION_LIST_NAME = "¨ç¼Æ¦WºÙ";
-    var $_PHPSHOP_FUNCTION_LIST_CLASS = "class ¦WºÙ";
-    var $_PHPSHOP_FUNCTION_LIST_METHOD = "class ¤èªk";
-    var $_PHPSHOP_FUNCTION_LIST_PERMS = "°Ñ¼Æ";
-    
-    // Module Form
-    var $_PHPSHOP_FUNCTION_FORM_MNU = "¼W¥[¨ç¼Æ";
-    var $_PHPSHOP_FUNCTION_FORM_LBL = "¨ç¼Æ¸ê°T";
-    var $_PHPSHOP_FUNCTION_FORM_NAME = "¨ç¼Æ¦WºÙ";
-    var $_PHPSHOP_FUNCTION_FORM_CLASS = "class¦WºÙ";
-    var $_PHPSHOP_FUNCTION_FORM_METHOD = "class¤èªk";
-    var $_PHPSHOP_FUNCTION_FORM_PERMS = "¨ç¼Æ°Ñ¼Æ";
-    var $_PHPSHOP_FUNCTION_FORM_DESCRIPTION = "¨ç¼Æ´y­z";
-    
-    // Currency form and list
-    var $_PHPSHOP_CURRENCY_LIST_MNU = "¦C¥X³f¹ô";
-    var $_PHPSHOP_CURRENCY_LIST_LBL = "³f¹ô¦Cªí";
-    var $_PHPSHOP_CURRENCY_LIST_ADD = "¼W¥[³f¹ô";
-    var $_PHPSHOP_CURRENCY_LIST_NAME = "³f¹ô¦WºÙ";
-    var $_PHPSHOP_CURRENCY_LIST_CODE = "³f¹ô¥N½X";
-    
-    // Country form and list
-    var $_PHPSHOP_COUNTRY_LIST_MNU = "¦C¥X°ê®a";
-    var $_PHPSHOP_COUNTRY_LIST_LBL = "°ê®a¦Cªí";
-    var $_PHPSHOP_COUNTRY_LIST_ADD = "¼W¥[°ê®a";
-    var $_PHPSHOP_COUNTRY_LIST_NAME = "°ê¦W";
-    var $_PHPSHOP_COUNTRY_LIST_3_CODE = "°ê®a¥N½X(3)";
-    var $_PHPSHOP_COUNTRY_LIST_2_CODE = "°ê®a¥N½X(2)";
-    
-    // State form and list
-    var $_PHPSHOP_STATE_LIST_MNU = "¦C¥X¦{¦W";
-    var $_PHPSHOP_STATE_LIST_LBL = "¦{¦W²M³æµ¹: ";
-    var $_PHPSHOP_STATE_LIST_ADD = "¼W¥[/§ó·s¤@­Ó¦{";
-    var $_PHPSHOP_STATE_LIST_NAME = "¦{¦W";
-    var $_PHPSHOP_STATE_LIST_3_CODE = "¦{½X (3)";
-    var $_PHPSHOP_STATE_LIST_2_CODE = "¦{½X (2)";
-    
-    /*#####################
-    MODULE CHECKOUT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ADDRESS = "¦a§}";
-    var $_PHPSHOP_CONTINUE = "Ä~Äò";
-    
-    # Some messages
-    var $_PHPSHOP_EMPTY_CART = "§AªºÁÊª«¨®²{¦bÁÙ¬OªÅªº¡C";
-    
-    
-    /*#####################
-    MODULE ISShipping
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_ISSHIPPING_MOD = "InterShipper";
-    
-    
-    // Shipping Ping
-    var $_PHPSHOP_ISSHIP_PING_MNU = "Ping InterShipper ¦øªA¾¹";
-    var $_PHPSHOP_ISSHIP_PING_LBL = "InterShipper-Server Ping ";
-    var $_PHPSHOP_ISSHIP_PING_ERROR_LBL = "InterShipper Ping ¥¢±Ñ ";
-    var $_PHPSHOP_ISSHIP_PING_GOOD_LBL = "InterShipper Ping ¦¨¥\ ";
-    var $_PHPSHOP_ISSHIP_PING_CARRIER_LBL = "¹B¿é¤½¥q";
-    var $_PHPSHOP_ISSHIP_PING_RESPONSE_LBL = "¦^À³<br />®É¶¡";
-    var $_PHPSHOP_ISSHIP_PING_TIME_LBL = "¬í";
-    
-    // Shipping List
-    var $_PHPSHOP_ISSHIP_LIST_MNU = "¦C¥X°e³f¤è¦¡";
-    var $_PHPSHOP_ISSHIP_LIST_LBL = "±Ò¥Î¤¤ªº°e³f¤è¦¡";
-    var $_PHPSHOP_ISSHIP_LIST_CARRIER_LBL = "°e³f¤è¦¡";
-    var $_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL = "±Ò¥Î";
-    var $_PHPSHOP_ISSHIP_LIST_RATE_LBL = "¤âÄò¶O";
-    var $_PHPSHOP_ISSHIP_LIST_LEAD_LBL = "¹B¿é®É¶¡";
-    var $_PHPSHOP_ISSHIP_LIST_CHARGE_F_LBL = "²Î¤@¶O¥Î";
-    var $_PHPSHOP_ISSHIP_LIST_CHARGE_P_LBL = "¦Ê¤À¤ñ";
-    var $_PHPSHOP_ISSHIP_LIST_DAYS_LBL = "¤Ñ¼Æ";
-    var $_PHPSHOP_ISSHIP_LIST_HEAVY_LBL = "­t²ü";
-    
-    // Dynamic Shipping Form
-    var $_PHPSHOP_ISSHIP_FORM_MNU = "°t¸m¹B°e¤è¦¡";
-    var $_PHPSHOP_ISSHIP_FORM_ADD_LBL = "¼W¥[¹B°e¤è¦¡";
-    var $_PHPSHOP_ISSHIP_FORM_UPDATE_LBL = "°t¸m¹B°e¤è¦¡";
-    var $_PHPSHOP_ISSHIP_FORM_REFRESH_LBL = "§ó·s";
-    var $_PHPSHOP_ISSHIP_FORM_CARRIER_LBL = "¹B°e¤è¦¡";
-    var $_PHPSHOP_ISSHIP_FORM_PUBLISH_LBL = "±Ò¥Î";
-    var $_PHPSHOP_ISSHIP_FORM_HANDLING_LBL = "¤âÄò¶O";
-    var $_PHPSHOP_ISSHIP_FORM_LEAD_LBL = "¹B°e®É¶¡";
-    var $_PHPSHOP_ISSHIP_FORM_CHARGE_F_LBL = "²Î¤@¶O¥Î";
-    var $_PHPSHOP_ISSHIP_FORM_CHARGE_P_LBL = "¦Ê¤À¤ñ";
-    var $_PHPSHOP_ISSHIP_FORM_DAYS_LBL = "¤Ñ¼Æ";
-    var $_PHPSHOP_ISSHIP_FORM_HEAVY_LBL = "­t²ü";
-    
-    
-    
-    /*#####################
-    MODULE ORDER
-    #####################*/
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_ORDER_MOD = "­q³æ";
-    
-    // Some menu options 
-    var $_PHPSHOP_ORDER_CONFIRM_MNU = "½T»{­q³æ";
-    var $_PHPSHOP_ORDER_CANCEL_MNU = "¨ú®ø­q³æ";
-    var $_PHPSHOP_ORDER_PRINT_MNU = "¦C¦L­q³æ";
-    var $_PHPSHOP_ORDER_DELETE_MNU = "§R°£­q³æ";
-    
-    // Order List
-    var $_PHPSHOP_ORDER_LIST_MNU = "¦C¥X­q³æ";
-    var $_PHPSHOP_ORDER_LIST_LBL = "­q³æ¦Cªí";
-    var $_PHPSHOP_ORDER_LIST_ID = "­q³æ¸¹½X";
-    var $_PHPSHOP_ORDER_LIST_CDATE = "­q³æ¤é´Á";
-    var $_PHPSHOP_ORDER_LIST_MDATE = "³Ì«á­×§ï";
-    var $_PHPSHOP_ORDER_LIST_STATUS = "ª¬ºA";
-    var $_PHPSHOP_ORDER_LIST_TOTAL = "¤p­p";
-    var $_PHPSHOP_ORDER_ITEM = "­qÁÊ¶µ¥Ø";
-    
-    // Order print
-    var $_PHPSHOP_ORDER_PRINT_PO_LBL = "¨M©wÁÊ¶R";
-    var $_PHPSHOP_ORDER_PRINT_PO_NUMBER = "­q³æ¸¹½X";
-    var $_PHPSHOP_ORDER_PRINT_PO_DATE = "­q³æ¤é´Á";
-    var $_PHPSHOP_ORDER_PRINT_PO_STATUS = "­q³æª¬ºA";
-    var $_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL = "«È¤á¸ê°T";
-    var $_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL = "¥I´Ú¸ê°T";
-    var $_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL = "°e³f¸ê°T";
-    var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = "¥I´Ú¦Ü";
-    var $_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL = "°e³f¦Ü";
-    var $_PHPSHOP_ORDER_PRINT_NAME = "©m¦W";
-    var $_PHPSHOP_ORDER_PRINT_COMPANY = "¤½¥q";
-    var $_PHPSHOP_ORDER_PRINT_ADDRESS_1 = "¦a§}1";
-    var $_PHPSHOP_ORDER_PRINT_ADDRESS_2 = "¦a§}2";
-    var $_PHPSHOP_ORDER_PRINT_CITY = "«°¥«";
-    var $_PHPSHOP_ORDER_PRINT_STATE = "¬Ù¥÷/¦a°Ï";
-    var $_PHPSHOP_ORDER_PRINT_ZIP = "¶l»¼°Ï¸¹";
-    var $_PHPSHOP_ORDER_PRINT_COUNTRY = "°ê®a";
-    var $_PHPSHOP_ORDER_PRINT_PHONE = "¹q¸Ü";
-    var $_PHPSHOP_ORDER_PRINT_FAX = "¶Ç¯u";
-    var $_PHPSHOP_ORDER_PRINT_EMAIL = "Email";
-    var $_PHPSHOP_ORDER_PRINT_ITEMS_LBL = "­qÁÊ¶µ¥Ø";
-    var $_PHPSHOP_ORDER_PRINT_QUANTITY = "¼Æ¶q";
-    var $_PHPSHOP_ORDER_PRINT_QTY = "¼Æ¶q";
-    var $_PHPSHOP_ORDER_PRINT_SKU = "®w¦s®Æ¸¹";
-    var $_PHPSHOP_ORDER_PRINT_PRICE = "»ù®æ";
-    var $_PHPSHOP_ORDER_PRINT_TOTAL = "Á`­p";
-    var $_PHPSHOP_ORDER_PRINT_SUBTOTAL = "¤p­p";
-    var $_PHPSHOP_ORDER_PRINT_TOTAL_TAX = "µ|ª÷Á`­p";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING = "¹B¶O¥[¤âÄò¶O";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_TAX = "³fª«µ|";
-    var $_PHPSHOP_ORDER_PRINT_PAYMENT_LBL = "¥I´Ú¤è¦¡";
-    var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME = "±b¸¹¦W";
-    var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER = "±b¸¹";
-    var $_PHPSHOP_ORDER_PRINT_EXPIRE_DATE = "´Áº¡®É¶¡";
-    var $_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL = "¥I´Ú°O¿ý";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_LBL = "°e³f¸ê°T";
-    var $_PHPSHOP_ORDER_PRINT_PAYINFO_LBL = "¥I´Ú¸ê°T";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL = "¹B°eªÌ";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL = "°e³f¼Ò¦¡";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_DATE_LBL = "°e³f¤é´Á";
-    var $_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL = "°e³f¶O¥Î";
-    
-    var $_PHPSHOP_ORDER_STATUS_LIST_MNU = "¦C¥X­q³æª¬ºAÃþ«¬";
-    var $_PHPSHOP_ORDER_STATUS_FORM_MNU = "¼W¥[­q³æª¬ºAÃþ«¬";
-    
-    var $_PHPSHOP_ORDER_STATUS_LIST_CODE = "­q³æª¬ºA¥N½X";
-    var $_PHPSHOP_ORDER_STATUS_LIST_NAME = "­q³æª¬ºA¦WºÙ";
-    
-    var $_PHPSHOP_ORDER_STATUS_FORM_LBL = "­q³æª¬ºA";
-    var $_PHPSHOP_ORDER_STATUS_FORM_CODE = "­q³æª¬ºA¥N½X";
-    var $_PHPSHOP_ORDER_STATUS_FORM_NAME = "­q³æª¬ºA¦WºÙ";
-    var $_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER = "¦C¥X­q³æ";
-    
-    
-    /*#####################
-    MODULE PRODUCT
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_PRODUCT_MOD = "°Ó«~";
-    
-    var $_PHPSHOP_CURRENT_PRODUCT = "¥Ø«e°Ó«~";
-    var $_PHPSHOP_CURRENT_ITEM = "¥Ø«e¶µ¥Ø";
-    
-    // Product Inventory
-    var $_PHPSHOP_PRODUCT_INVENTORY_LBL = "°Ó«~®w¦s";
-    var $_PHPSHOP_PRODUCT_INVENTORY_MNU = "¬d¬Ý®w¦s";
-    var $_PHPSHOP_PRODUCT_INVENTORY_PRICE = "»ù®æ";
-    var $_PHPSHOP_PRODUCT_INVENTORY_STOCK = "¼Æ¶q";
-    var $_PHPSHOP_PRODUCT_INVENTORY_WEIGHT = "­«¶q";
-    // Product List
-    var $_PHPSHOP_PRODUCT_LIST_MNU = "¦C¥X°Ó«~";
-    var $_PHPSHOP_PRODUCT_LIST_LBL = "°Ó«~¦Cªí";
-    var $_PHPSHOP_PRODUCT_LIST_NAME = "°Ó«~¦WºÙ";
-    var $_PHPSHOP_PRODUCT_LIST_SKU = "®w¦s®Æ¸¹";
-    var $_PHPSHOP_PRODUCT_LIST_PUBLISH = "µo§G";
-    
-    // Product Form
-    var $_PHPSHOP_PRODUCT_FORM_MNU = "¼W¥[°Ó«~";
-    var $_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT = "½s¿è¦¹¶µ°Ó«~";
-    var $_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE = "¹wÄý°Ó«~¤¶²Ð­¶­±";
-    var $_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU = "¼W¥[¶µ¥Ø";
-    var $_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU = "¼W¥[¥t¤@­Ó¶µ¥Ø";
-    
-    var $_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL = "·s¼W°Ó«~";
-    var $_PHPSHOP_PRODUCT_FORM_UPDATE_PRODUCT_LBL = "§ó·s°Ó«~";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL = "°Ó«~¸ê°T";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL = "°Ó«~ª¬ºA";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL = "°Ó«~Åé¿n©M­«¶q";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL = "°Ó«~¹Ï¤ù";
-    
-    var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = "·s¼W¶µ¥Ø";
-    var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = "§ó·s¶µ¥Ø";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = "¶µ¥Ø¸ê°T";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = "¶µ¥Øª¬ºA";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = "¶µ¥ØªºÅé¿n©M­«¶q";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = "¶µ¥Ø¹Ï¤ù";
-    var $_PHPSHOP_PRODUCT_FORM_RETURN_LBL = "ªð¦^¤W¤@¼h°Ó«~";
-    var $_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL = "­n§ó·s²{¦³¹Ï¤ù¡A½Ð¿é¤J·s¹Ï¤ùªº¸ô®|¡C";
-    var $_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL = "¿é¤J \"none\" §R°£²{¦³¹Ï¤ù¡C";
-    var $_PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL = "°Ó«~¶µ¥Ø";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL = "¶µ¥ØÄÝ©Ê";
-    var $_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG = "±z½T©w­n§R°£¬ÛÃöªº°Ó«~©M¶µ¥Ø¶Ü?";
-    var $_PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG = "±z½T©w­n§R°£¦¹¶µ¥Ø¶Ü?";
-    var $_PHPSHOP_PRODUCT_FORM_VENDOR = "¹s°â°Ó";
-    var $_PHPSHOP_PRODUCT_FORM_MANUFACTURER = "»s³y°Ó";
-    var $_PHPSHOP_PRODUCT_FORM_SKU = "®w¦s®Æ¸¹";
-    var $_PHPSHOP_PRODUCT_FORM_NAME = "¦WºÙ";
-    var $_PHPSHOP_PRODUCT_FORM_URL = "URL";
-    var $_PHPSHOP_PRODUCT_FORM_CATEGORY = "Ãþ§O";
-    var $_PHPSHOP_PRODUCT_FORM_PRICE_GROSS = "²£«~»ù®æ (Á`ÃB)";
-    var $_PHPSHOP_PRODUCT_FORM_PRICE_NET = "²£«~»ù®æ (ºô¸ô)";
-    var $_PHPSHOP_PRODUCT_FORM_DESCRIPTION = "°Ó«~´y­z";
-    var $_PHPSHOP_PRODUCT_FORM_S_DESC = "Â²µu´y­z";
-    var $_PHPSHOP_PRODUCT_FORM_IN_STOCK = "¦³®w¦s";
-    var $_PHPSHOP_PRODUCT_FORM_ON_ORDER = "¤w­qÁÊ";
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE = "¦³®Ä¤é´Á";
-    var $_PHPSHOP_PRODUCT_FORM_SPECIAL = "¯S»ù¤¤";
-    var $_PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE = "§é¦©Ãþ«¬";
-    var $_PHPSHOP_PRODUCT_FORM_PUBLISH = "µo§G?";
-    var $_PHPSHOP_PRODUCT_FORM_LENGTH = "ªø";
-    var $_PHPSHOP_PRODUCT_FORM_WIDTH = "¼e";
-    var $_PHPSHOP_PRODUCT_FORM_HEIGHT = "°ª";
-    var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM = "­p¶q³æ¦ì";
-    var $_PHPSHOP_PRODUCT_FORM_WEIGHT = "­«¶q";
-    var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM = "­p¶q³æ¦ì";
-    var $_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE = "ÁY¹Ï";
-    var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = "§¹¾ã¹Ï¤ù";
-    
-    // Product Display
-    var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = "°Ó«~·s¼Wµ²ªG";
-    var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = "°Ó«~§ó·sµ²ªG";
-    var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = "¶µ¥Ø¼W¥[µ²ªG";
-    var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL = "¶µ¥Ø§ó·sµ²ªG";
-    var $_PHPSHOP_PRODUCT_CSV_UPLOAD = "¨Ï¥ÎCSV¤W¶Ç";
-    var $_PHPSHOP_PRODUCT_FOLDERS = "°Ó«~ÀÉ®×§¨";
-    
-    // Product Category List
-    var $_PHPSHOP_CATEGORY_LIST_MNU = "¦C¥XÃþ§O";
-    var $_PHPSHOP_CATEGORY_LIST_LBL = "Ãþ§O¾ð";
-    
-    // Product Category Form
-    var $_PHPSHOP_CATEGORY_FORM_MNU = "¼W¥[Ãþ§O";
-    var $_PHPSHOP_CATEGORY_FORM_LBL = "Ãþ§O¸ê°T";
-    var $_PHPSHOP_CATEGORY_FORM_NAME = "Ãþ§O¦WºÙ";
-    var $_PHPSHOP_CATEGORY_FORM_PARENT = "¤÷Ãþ§O";
-    var $_PHPSHOP_CATEGORY_FORM_DESCRIPTION = "Ãþ§O´y­z";
-    var $_PHPSHOP_CATEGORY_FORM_PUBLISH = "µo§G?";
-    var $_PHPSHOP_CATEGORY_FORM_FLYPAGE = "Ãþ§O­¶­±";
-    
-    // Product Attribute List
-    var $_PHPSHOP_ATTRIBUTE_LIST_MNU = "¦C¥XÄÝ©Ê";
-    var $_PHPSHOP_ATTRIBUTE_LIST_LBL = "ÄÝ©Ê²M³æµ¹";
-    var $_PHPSHOP_ATTRIBUTE_LIST_NAME = "ÄÝ©Ê¦WºÙ";
-    var $_PHPSHOP_ATTRIBUTE_LIST_ORDER = "¦C¥X­qÁÊ";
-    
-    // Product Attribute Form
-    var $_PHPSHOP_ATTRIBUTE_FORM_MNU = "¼W¥[ÄÝ©Ê";
-    var $_PHPSHOP_ATTRIBUTE_FORM_LBL = "ÄÝ©Êªí®æ";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT = "¬°°Ó«~¼W¥[·sªºÄÝ©Ê";
-    var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT = "§ó·s°Ó«~ÄÝ©Ê";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM = "·s«Ø¶µ¥ØÄÝ©Ê";
-    var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM = "§ó·sª««~ÄÝ©Ê";
-    var $_PHPSHOP_ATTRIBUTE_FORM_NAME = "ÄÝ©Ê¦WºÙ";
-    var $_PHPSHOP_ATTRIBUTE_FORM_ORDER = "¦C¥X­qÁÊ";
-    
-    // Product Price List
-    var $_PHPSHOP_PRICE_LIST_MNU = "¦C¥XÃþ§O";
-    var $_PHPSHOP_PRICE_LIST_LBL = "»ù®æ¾ð";
-    var $_PHPSHOP_PRICE_LIST_FOR_LBL = "»ù®æµ¹";
-    var $_PHPSHOP_PRICE_LIST_GROUP_NAME = "¸s²Õ¦WºÙ";
-    var $_PHPSHOP_PRICE_LIST_PRICE = "»ù®æ";
-    var $_PHPSHOP_PRODUCT_LIST_CURRENCY = "³f¹ô";
-    
-    // Product Price Form
-    var $_PHPSHOP_PRICE_FORM_MNU = "¼W¥[»ù®æ";
-    var $_PHPSHOP_PRICE_FORM_LBL = "»ù®æ¸ê°T";
-    var $_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT = "·s«Ø°Ó«~»ù®æ";
-    var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT = "§ó·s°Ó«~»ù®æ";
-    var $_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM = "·s»ù®æµ¹¶µ¥Ø";
-    var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM = "§ó·s¶µ¥Ø»ù®æ";
-    var $_PHPSHOP_PRICE_FORM_PRICE = "»ù®æ";
-    var $_PHPSHOP_PRICE_FORM_CURRENCY = "³f¹ô";
-    var $_PHPSHOP_PRICE_FORM_GROUP = "ÁÊª«¸s²Õ";
-    
-    
-    /*#####################
-    MODULE REPORT BASIC
-    #####################*/
-    # Some LABELs
-    var $_PHPSHOP_REPORTBASIC_MOD = "³ø§i";
-    var $_PHPSHOP_RB_INDIVIDUAL = "­Ó§O²£«~¦Cªí";
-    var $_PHPSHOP_RB_SALE_TITLE = "¾P°â³ø§i";
-    
-    /* labels for rpt_sales */
-    var $_PHPSHOP_RB_SALES_PAGE_TITLE = "¾P°â¬¡°Ê¤@Äý";
-    
-    var $_PHPSHOP_RB_INTERVAL_TITLE = "³]¸m¶¡¹j";
-    var $_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE = "¨C¤ë";
-    var $_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE = "¨C¶g";
-    var $_PHPSHOP_RB_INTERVAL_DAILY_TITLE = "¨C¤Ñ";
-    
-    var $_PHPSHOP_RB_THISMONTH_BUTTON = "¥»¤ë";
-    var $_PHPSHOP_RB_LASTMONTH_BUTTON = "¤W­Ó¤ë";
-    var $_PHPSHOP_RB_LAST60_BUTTON = "³Ìªñ60¤Ñ";
-    var $_PHPSHOP_RB_LAST90_BUTTON = "³Ìªñ90¤Ñ";
-    
-    var $_PHPSHOP_RB_START_DATE_TITLE = "¶}©l©ó";
-    var $_PHPSHOP_RB_END_DATE_TITLE = "µ²§ô©ó";
-    var $_PHPSHOP_RB_SHOW_SEL_RANGE = "Åã¥Ü©Ò¿ï¾Üªº½d³ò";
-    var $_PHPSHOP_RB_REPORT_FOR = "³ø§iµ¹ ";
-    var $_PHPSHOP_RB_DATE = "¤é´Á";
-    var $_PHPSHOP_RB_ORDERS = "­q³æ";
-    var $_PHPSHOP_RB_TOTAL_ITEMS = "¥þ³¡½æ¥X¶µ¥Ø";
-    var $_PHPSHOP_RB_REVENUE = "¦¬¤J";
-    var $_PHPSHOP_RB_PRODLIST = "°Ó«~¦Cªí";
-    
-    
-    
-    /*#####################
-    MODULE SHOP
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_SHOP_MOD = "°Ó©±";
-    var $_PHPSHOP_PRODUCT_THUMB_TITLE = "¹Ï¤ù";
-    var $_PHPSHOP_PRODUCT_PRICE_TITLE = "»ù®æ";
-    var $_PHPSHOP_ORDER_STATUS_P = "µ¥«Ý¤¤";
-    var $_PHPSHOP_ORDER_STATUS_C = "¤w½T»{";
-    var $_PHPSHOP_ORDER_STATUS_X = "¤w¨ú®ø";
-    
-    
-    # Some messages
-    var $_PHPSHOP_ORDER_BUTTON = "­qÁÊ";
-    
-    
-    
-    /*#####################
-    MODULE SHOPPER
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_SHOPPER_MOD = "ÅU«È";
-    
-    
-    
-    // Shopper List
-    var $_PHPSHOP_SHOPPER_LIST_MNU = "¦C¥XÅU«È";
-    var $_PHPSHOP_SHOPPER_LIST_LBL = "ÅU«È¦Cªí";
-    var $_PHPSHOP_SHOPPER_LIST_USERNAME = "·|­û¦W";
-    var $_PHPSHOP_SHOPPER_LIST_NAME = "¥þ¦W";
-    var $_PHPSHOP_SHOPPER_LIST_GROUP = "¸s²Õ";
-    
-    // Shopper Form
-    var $_PHPSHOP_SHOPPER_FORM_MNU = "¼W¥[ÅU«È";
-    var $_PHPSHOP_SHOPPER_FORM_LBL = "ÅU«È¸ê°T";
-    var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = "¥I´Ú¸ê°T";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL = "¸ê°T";
-    var $_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL = "°e³f¸ê°T";
-    var $_PHPSHOP_SHOPPER_FORM_ADD_SHIPTO_LBL = "¼W¥[¦a§}";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL = "¦a§}§O¦W";
-    var $_PHPSHOP_SHOPPER_FORM_USERNAME = "¥Î¤á¦W";
-    var $_PHPSHOP_SHOPPER_FORM_FIRST_NAME = "¦W";
-    var $_PHPSHOP_SHOPPER_FORM_LAST_NAME = "©m";
-    var $_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME = "¤¤¦W";
-    var $_PHPSHOP_SHOPPER_FORM_TITLE = "ºÙ©I";
-    var $_PHPSHOP_SHOPPER_FORM_SHOPPERNAME = "ÅU«È¦WºÙ";
-    var $_PHPSHOP_SHOPPER_FORM_PASSWORD_1 = "±K½X";
-    var $_PHPSHOP_SHOPPER_FORM_PASSWORD_2 = "½T»{±K½X";
-    var $_PHPSHOP_SHOPPER_FORM_GROUP = "ÅU«È¸s²Õ";
-    var $_PHPSHOP_SHOPPER_FORM_COMPANY_NAME = "¤½¥q¦WºÙ";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_1 = "¦a§}1";
-    var $_PHPSHOP_SHOPPER_FORM_ADDRESS_2 = "¦a§}2";
-    var $_PHPSHOP_SHOPPER_FORM_CITY = "«°¥«";
-    var $_PHPSHOP_SHOPPER_FORM_STATE = "¬Ù¥÷/¦a°Ï";
-    var $_PHPSHOP_SHOPPER_FORM_ZIP = "¶l»¼°Ï¸¹";
-    var $_PHPSHOP_SHOPPER_FORM_COUNTRY = "°ê®a";
-    var $_PHPSHOP_SHOPPER_FORM_PHONE = "¹q¸Ü";
-    var $_PHPSHOP_SHOPPER_FORM_FAX = "¶Ç¯u";
-    var $_PHPSHOP_SHOPPER_FORM_EMAIL = "Email";
-    
-    // Shopper Group List
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_MNU = "¦C¥XÅU«È¸s²Õ";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_LBL = "ÅU«È¸s²Õ¦Cªí";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_NAME = "¸s²Õ¦WºÙ";
-    var $_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION = "¸s²Õ´y­z";
-    
-    
-    // Shopper Group Form
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_LBL = "ÅU«È¸s²Õªí³æ";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_MNU = "¼W¥[ÅU«È¸s²Õ";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_NAME = "¸s²Õ¦WºÙ";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DESC = "¸s²Õ´y­z";
-    
-    
-    
-    
-    /*#####################
-    MODULE SHOPPER
-    #####################*/
-    
-    # Some LABELs
-    var $_PHPSHOP_STORE_MOD = "°Ó©±";
-    
-    
-    // Store Form
-    var $_PHPSHOP_STORE_FORM_MNU = "½s¿è°Ó©±";
-    var $_PHPSHOP_STORE_FORM_LBL = "°Ó©±¸ê°T";
-    var $_PHPSHOP_STORE_FORM_CONTACT_LBL = "Ápµ¸¸ê°T";
-    var $_PHPSHOP_STORE_FORM_FULL_IMAGE = "§¹¾ã¹Ï¤ù";
-    var $_PHPSHOP_STORE_FORM_UPLOAD = "¤W¶Ç¹Ï¤ù";
-    var $_PHPSHOP_STORE_FORM_STORE_NAME = "°Ó©±¦WºÙ";
-    var $_PHPSHOP_STORE_FORM_COMPANY_NAME = "°Ó©±¤½¥q¦WºÙ";
-    var $_PHPSHOP_STORE_FORM_ADDRESS_1 = "¦a§}1";
-    var $_PHPSHOP_STORE_FORM_ADDRESS_2 = "¦a§}2";
-    var $_PHPSHOP_STORE_FORM_CITY = "«°¥«";
-    var $_PHPSHOP_STORE_FORM_STATE = "¬Ù¥÷/¦a°Ï";
-    var $_PHPSHOP_STORE_FORM_COUNTRY = "°ê®a";
-    var $_PHPSHOP_STORE_FORM_ZIP = "¶l»¼°Ï¸¹";
-    var $_PHPSHOP_STORE_FORM_PHONE = "¹q¸Ü";
-    var $_PHPSHOP_STORE_FORM_CURRENCY = "³f¹ô";
-    var $_PHPSHOP_STORE_FORM_CATEGORY = "°Ó©±Ãþ§O";
-    var $_PHPSHOP_STORE_FORM_LAST_NAME = "¦W";
-    var $_PHPSHOP_STORE_FORM_FIRST_NAME = "©m";
-    var $_PHPSHOP_STORE_FORM_MIDDLE_NAME = "¤¤¦W";
-    var $_PHPSHOP_STORE_FORM_TITLE = "ºÙ©I";
-    var $_PHPSHOP_STORE_FORM_PHONE_1 = "¹q¸Ü 1";
-    var $_PHPSHOP_STORE_FORM_PHONE_2 = "¹q¸Ü 2";
-    var $_PHPSHOP_STORE_FORM_FAX = "¶Ç¯u";
-    var $_PHPSHOP_STORE_FORM_EMAIL = "Email";
-    var $_PHPSHOP_STORE_FORM_IMAGE_PATH = "¹Ï¤ù¸ô®|";
-    var $_PHPSHOP_STORE_FORM_DESCRIPTION = "´y­z";
-    
-    
-    
-    var $_PHPSHOP_PAYMENT = "¥I´Ú";
-    // Payment Method List
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_MNU = "¦C¥X¥I´Ú¤è¦¡";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_LBL = "¥I´Ú¤è¦¡¦Cªí";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_NAME = "¦WºÙ";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_CODE = "¥N½X";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT = "§é¦©";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP = "ÅU«È¸s²Õ";
-    var $_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR = "¥I´Ú¤è¦¡Ãþ«¬";
-    
-    // Payment Method Form
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_MNU = "¼W¥[¥I´Ú¤è¦¡";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_LBL = "¥I´Ú¤è¦¡ªí³æ";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_NAME = "¥I´Ú¤è¦¡¦WºÙ";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP = "ÅU«È¸s²Õ";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT = "§é¦©";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_CODE = "¥N½X";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER = "±Æ¦C¶¶§Ç";
-    var $_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR = "¥I´Ú¤è¦¡Ãþ«¬";
-    
-    
-    
-    /*#####################
-    MODULE TAX
-    #####################*/
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_TAX_MOD = "µ|ª÷";
-    
-    // User List
-    var $_PHPSHOP_TAX_RATE = "µ|²v";
-    var $_PHPSHOP_TAX_LIST_MNU = "¦C¥Xµ|²v";
-    var $_PHPSHOP_TAX_LIST_LBL = "µ|²v¦Cªí";
-    var $_PHPSHOP_TAX_LIST_STATE = "¬Ù¥÷©Î¦a°Ïµ|ª÷";
-    var $_PHPSHOP_TAX_LIST_COUNTRY = "°ê®aµ|ª÷";
-    var $_PHPSHOP_TAX_LIST_RATE = "µ|²v";
-    
-    // User Form
-    var $_PHPSHOP_TAX_FORM_MNU = "¼W¥[µ|²v";
-    var $_PHPSHOP_TAX_FORM_LBL = "¼W¥[µ|ª÷¸ê°T";
-    var $_PHPSHOP_TAX_FORM_STATE = "¬Ù¥÷©Î¦a¤èµ|";
-    var $_PHPSHOP_TAX_FORM_COUNTRY = "¤¤¥¡µ|";
-    var $_PHPSHOP_TAX_FORM_RATE = "µ|²v ( 16% => ¶ñ¤J 0.16 )";
-    
-    
-    
-    
-    /*#####################
-    MODULE VENDOR
-    #####################*/
-    
-    
-    
-    # Some LABELs
-    var $_PHPSHOP_VENDOR_MOD = "¹s°â°Ó";
-    var $_PHPSHOP_VENDOR_ADMIN = "¹s°â°Ó";
-    
-    
-    // Vendor List
-    var $_PHPSHOP_VENDOR_LIST_MNU = "¦C¥X¹s°â°Ó";
-    var $_PHPSHOP_VENDOR_LIST_LBL = "¹s°â°Ó¦Cªí";
-    var $_PHPSHOP_VENDOR_LIST_VENDOR_NAME = "¹s°â°Ó¦WºÙ";
-    var $_PHPSHOP_VENDOR_LIST_ADMIN = "ºÞ²z";
-    
-    // Vendor Form
-    var $_PHPSHOP_VENDOR_FORM_MNU = "¼W¥[¹s°â°Ó";
-    var $_PHPSHOP_VENDOR_FORM_LBL = "¼W¥[¸ê°T";
-    var $_PHPSHOP_VENDOR_FORM_INFO_LBL = "¹s°â°Ó¸ê°T";
-    var $_PHPSHOP_VENDOR_FORM_CONTACT_LBL = "Ápµ¸¸ê°T";
-    var $_PHPSHOP_VENDOR_FORM_FULL_IMAGE = "§¹¾ã¹Ï¤ù";
-    var $_PHPSHOP_VENDOR_FORM_UPLOAD = "¤W¶Ç¹Ï¤ù";
-    var $_PHPSHOP_VENDOR_FORM_STORE_NAME = "¹s°â°Ó°Ó©±¦WºÙ";
-    var $_PHPSHOP_VENDOR_FORM_COMPANY_NAME = "¹s°â°Ó¤½¥q¦WºÙ";
-    var $_PHPSHOP_VENDOR_FORM_ADDRESS_1 = "¦a§} 1";
-    var $_PHPSHOP_VENDOR_FORM_ADDRESS_2 = "¦a§} 2";
-    var $_PHPSHOP_VENDOR_FORM_CITY = "«°¥«";
-    var $_PHPSHOP_VENDOR_FORM_STATE = "¬Ù¥÷/¦a°Ï";
-    var $_PHPSHOP_VENDOR_FORM_COUNTRY = "°ê®a";
-    var $_PHPSHOP_VENDOR_FORM_ZIP = "¶l»¼°Ï¸¹";
-    var $_PHPSHOP_VENDOR_FORM_PHONE = "¹q¸Ü";
-    var $_PHPSHOP_VENDOR_FORM_CURRENCY = "³f¹ô";
-    var $_PHPSHOP_VENDOR_FORM_CATEGORY = "¹s°â°Ó¤ÀÃþ";
-    var $_PHPSHOP_VENDOR_FORM_LAST_NAME = "¦W";
-    var $_PHPSHOP_VENDOR_FORM_FIRST_NAME = "©m";
-    var $_PHPSHOP_VENDOR_FORM_MIDDLE_NAME = "¤¤¶¡¦W";
-    var $_PHPSHOP_VENDOR_FORM_TITLE = "Â¾ºÙ";
-    var $_PHPSHOP_VENDOR_FORM_PHONE_1 = "¹q¸Ü 1";
-    var $_PHPSHOP_VENDOR_FORM_PHONE_2 = "¹q¸Ü 2";
-    var $_PHPSHOP_VENDOR_FORM_FAX = "¶Ç¯u";
-    var $_PHPSHOP_VENDOR_FORM_EMAIL = "Email";
-    var $_PHPSHOP_VENDOR_FORM_IMAGE_PATH = "¹Ï¤ù¸ô®|";
-    var $_PHPSHOP_VENDOR_FORM_DESCRIPTION = "´y­z";
-    
-    
-    // Vendor Category List
-    var $_PHPSHOP_VENDOR_CAT_LIST_MNU = "¦C¥X¹s°â°ÓÃþ§O";
-    var $_PHPSHOP_VENDOR_CAT_LIST_LBL = "¹s°â°ÓÃþ§O¦Cªí";
-    var $_PHPSHOP_VENDOR_CAT_NAME = "Ãþ§O¦WºÙ";
-    var $_PHPSHOP_VENDOR_CAT_DESCRIPTION = "Ãþ§O´y­z";
-    var $_PHPSHOP_VENDOR_CAT_VENDORS = "¹s°â°Ó";
-
-    // Vendor Category Form
-    var $_PHPSHOP_VENDOR_CAT_FORM_MNU = "¼W¥[¹s°â°ÓÃþ§O";
-    var $_PHPSHOP_VENDOR_CAT_FORM_LBL = "¹s°â°ÓÃþ§Oªí³æ";
-    var $_PHPSHOP_VENDOR_CAT_FORM_INFO_LBL = "Ãþ§O¸ê°T";
-    var $_PHPSHOP_VENDOR_CAT_FORM_NAME = "Ãþ§O¦WºÙ";
-    var $_PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION = "Ãþ§O´y­z";
-    
-    /*#####################
-    MODULE MANUFACTURER
-    #####################*/
-
-    # Some LABELs
-    var $_PHPSHOP_MANUFACTURER_MOD = "»s³y°Ó";
-    var $_PHPSHOP_MANUFACTURER_ADMIN = "»s³y°Ó";
-    
-    
-    // Manufacturer List
-    var $_PHPSHOP_MANUFACTURER_LIST_MNU = "¦C¥X»s³y°Ó";
-    var $_PHPSHOP_MANUFACTURER_LIST_LBL = "»s³y°Ó¦Cªí";
-    var $_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME = "»s³y°Ó¦WºÙ";
-    var $_PHPSHOP_MANUFACTURER_LIST_ADMIN = "ºÞ²z";
-    
-    // Manufacturer Form
-    var $_PHPSHOP_MANUFACTURER_FORM_MNU = "¼W¥[»s³y°Ó";
-    var $_PHPSHOP_MANUFACTURER_FORM_LBL = "¼W¥[¸ê°T";
-    var $_PHPSHOP_MANUFACTURER_FORM_INFO_LBL = "»s³y°Ó¸ê°T";
-    var $_PHPSHOP_MANUFACTURER_FORM_NAME = "»s³y°Ó¦WºÙ";
-    var $_PHPSHOP_MANUFACTURER_FORM_CATEGORY = "»s³y°ÓÃþ§O";
-    var $_PHPSHOP_MANUFACTURER_FORM_EMAIL = "Email";
-    var $_PHPSHOP_MANUFACTURER_FORM_URL = "»s³y°Óºô§}";
-    var $_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION = "»¡©ú";
-        
-
-    // Manufacturer Category List
-    var $_PHPSHOP_MANUFACTURER_CAT_LIST_MNU = "¦C¥X»s³y°ÓÃþ§O";
-    var $_PHPSHOP_MANUFACTURER_CAT_LIST_LBL = "»s³y°ÓÃþ§O¦Cªí";
-    var $_PHPSHOP_MANUFACTURER_CAT_NAME = "Ãþ§O¦WºÙ";
-    var $_PHPSHOP_MANUFACTURER_CAT_DESCRIPTION = "Ãþ§O´y­z";
-    var $_PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS = "»s³y°Ó";
-    
-    // Manufacturer Category Form
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_MNU = "¼W¥[»s³y°ÓÃþ§O";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_LBL = "»s³y°ÓÃþ§Oªí³æ";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL = "Ãþ§O¸ê°T";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_NAME = "Ãþ§O¦WºÙ";
-    var $_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION = "Ãþ§O´y­z";
-    
-    
-    /*#####################
-    Modul HELP
-    #####################*/
-    var $_PHPSHOP_HELP_MOD = "¨D§U";
-
-    // 210104 start
-
-    var $_PHPSHOP_CART_ACTION = "§ó·s";
-    var $_PHPSHOP_CART_UPDATE = "§ó·sÁÊª«¨®¤¤ªº¼Æ¶q";
-    var $_PHPSHOP_CART_DELETE = "±qÁÊª«¨®§R°£°Ó«~";    
-
-    //shopbrowse form
-
-    var $_PHPSHOP_PRODUCT_PRICETAG = "»ù®æ";
-    var $_PHPSHOP_PRODUCT_CALL = "¹q¸Ü³ø»ù";
-    var $_PHPSHOP_PRODUCT_PREVIOUS = "¤W¤@­Ó";
-    var $_PHPSHOP_PRODUCT_NEXT = "¤U¤@­Ó";
-
-    //ro_basket
-
-    var $_PHPSHOP_CART_TAX = "µ|ª÷";
-    var $_PHPSHOP_CART_SHIPPING = "¹B¶O¤Î¤âÄò¶O";
-    var $_PHPSHOP_CART_TOTAL = "Á`ÃB";
-
-    //CHECKOUT.INDEX
-
-    var $_PHPSHOP_CHECKOUT_NEXT = "¤U¤@­Ó";
-    var $_PHPSHOP_CHECKOUT_REGISTER = "µù¥U";
-
-    //CHECKOUT.CONFIRM
-
-    var $_PHPSHOP_CHECKOUT_CONF_BILLINFO = "¥I´Ú¸ê°T";
-    var $_PHPSHOP_CHECKOUT_CONF_COMPANY = "¤½¥q";
-    var $_PHPSHOP_CHECKOUT_CONF_NAME = "©m¦W";
-    var $_PHPSHOP_CHECKOUT_CONF_ADDRESS = "¦a§}";
-    var $_PHPSHOP_CHECKOUT_CONF_PHONE = "¹q¸Ü";
-    var $_PHPSHOP_CHECKOUT_CONF_FAX = "¶Ç¯u";
-    var $_PHPSHOP_CHECKOUT_CONF_EMAIL = "Email";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO = "°e³f¸ê°T";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY = "¤½¥q";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME = "©m¦W";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS = "¦a§}";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE = "¹q¸Ü";
-    var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX = "¶Ç¯u";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO = "¥I´Ú¸ê°T";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD = "«H¥Î¥d¤Wªº©m¦W";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD = "¥I´Ú¤è¦¡";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM = "«H¥Î¥d¸¹";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE = "¨ì´Á¤é´Á";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER = "§¹¦¨­qÁÊ";
-    var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = "·í¿ï¥Î«H¥Î¥d¥I´Ú®Éªº¥²¶ñ¸ê°T";
-
-
-    var $_PHPSHOP_ZONE_MOD = "¦a°Ï¹B¶O";
-
-    var $_PHPSHOP_ZONE_LIST_MNU = "¦C¥X¦a°Ï";
-    var $_PHPSHOP_ZONE_FORM_MNU = "¼W¥[¦a°Ï";
-    var $_PHPSHOP_ZONE_ASSIGN_MNU = "¤À°t¦a°Ï";
-    
-    // assign zone List
-    var $_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL = "°ê®a";
-    var $_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL = "²{¦³¦a°Ï";
-    var $_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL = "¤À°t¨ì¦a°Ï";
-    var $_PHPSHOP_ZONE_ASSIGN_UPDATE_LBL = "§ó·s";
-    var $_PHPSHOP_ASSIGN_ZONE_PG_LBL = "¤À°t¦a°Ï";
-    
-    // zone Form
-    var $_PHPSHOP_ZONE_FORM_NAME_LBL = "¦a°Ï¦W";
-    var $_PHPSHOP_ZONE_FORM_DESC_LBL = "¦a°Ï´y­z";
-    var $_PHPSHOP_ZONE_FORM_COST_PER_LBL = "¨C¥óªº¦a°Ï¹B¶O";
-    var $_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL = "¦a°Ï¶O¥Î­­ÃB";
-    
-    // List of zones
-    var $_PHPSHOP_ZONE_LIST_LBL = "¦a°Ï¦Cªí";
-    var $_PHPSHOP_ZONE_LIST_NAME_LBL = "¦a°Ï¦WºÙ";
-    var $_PHPSHOP_ZONE_LIST_DESC_LBL = "¦a°Ï´y­z";
-    var $_PHPSHOP_ZONE_LIST_COST_PER_LBL = "¨C­Ó¶µ¥Øªº¦a°Ï¹B¶O";
-    var $_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL = "¦a°Ï¶O¥Î­­ÃB";
-    
-    var $_PHPSHOP_LOGIN_FIRST = "½Ð¥ýµn¤J©Îµù¥U.<br>ÁÂÁÂ.";
-    var $_PHPSHOP_STORE_FORM_TOS = "ªA°È±ø´Ú";
-    var $_PHPSHOP_AGREE_TO_TOS = "±z¥²¶·¥ý±µ¨ü§Ú­ÌªºªA°È±ø´Ú¡C";
-    var $_PHPSHOP_I_AGREE_TO_TOS = "§Ú¦P·N¦¹ªA°È±ø´Ú";
-    
-    var $_PHPSHOP_LEAVE_BLANK = "(¦pªG±z¨S¦³­Ó§OªºPHPÀÉ®×µ¹¥¦<br />½Ð¯dªÅ!)";
-    var $_PHPSHOP_RETURN_LOGIN = "¤wµù¥U«È¤á: ½Ðµn¤J";
-    var $_PHPSHOP_NEW_CUSTOMER = "·s«È¤á¡H½Ð´£¨Ñ±zªº¥I´Ú¸ê°T";
-    var $_PHPSHOP_ACC_CUSTOMER_ACCOUNT = "ÅU«È±b¸¹:";
-    var $_PHPSHOP_ACC_ORDER_INFO = "­qÁÊ¸ê°T";
-    var $_PHPSHOP_ACC_UPD_BILL = "±z¥i¥H¦b¦¹§ó·s±zªº¥I´Ú¸ê°T.";
-    var $_PHPSHOP_ACC_UPD_SHIP = "³oùØ±z¥i¥H¼W¥[©Î­×§ï¥I´Ú¦a§}.";
-    var $_PHPSHOP_ACC_ACCOUNT_INFO = "±b¤á¸ê°T";
-    var $_PHPSHOP_ACC_SHIP_INFO = "°e³f¸ê°T";
-    var $_PHPSHOP_ACC_NO_ORDERS = "¨S¦³­q³æ¥iÅã¥Ü";
-    var $_PHPSHOP_ACC_BILL_DEF = "- ¹w³] (»P¥I´Ú¤@­P)";
-    var $_PHPSHOP_SHIPTO_TEXT = "±z¥i¥H¼W¥[¦h­Ó°e³f¦a§}. ½Ð¬°±z¿ïªº°e³f¦a§}¨ú¤@­Ó¦X¾Aªº§O¦W©Î¥N½X.";
-    var $_PHPSHOP_CONFIG = "°t¸m";
-    var $_PHPSHOP_USERS = "·|­û";
-    var $_PHPSHOP_IS_CC_PAYMENT = "¬O§_¨Ï¥Î«H¥Î¥d¤ä¥I?";
-    
-    /*#####################################################
-     MODULE SHIPPING
-    #######################################################*/
-    var $_PHPSHOP_SHIPPING_MOD = "¹B°e";
-    var $_PHPSHOP_SHIPPING_MENU_LABEL = "¹B°e";
-    
-    var $_PHPSHOP_CARRIER_LIST_MNU = "¹B°eªÌ";
-    var $_PHPSHOP_CARRIER_LIST_LBL = "¹B°eªÌ¦Cªí";
-    var $_PHPSHOP_RATE_LIST_MNU = "¹B°e¶O²v";
-    var $_PHPSHOP_RATE_LIST_LBL = "¹B°e¶O²v¦Cªí";
-    var $_PHPSHOP_CARRIER_LIST_NAME_LBL = "¦WºÙ";
-    var $_PHPSHOP_CARRIER_LIST_ORDER_LBL = "¦Cªí¶¶§Ç";
-    
-    var $_PHPSHOP_CARRIER_FORM_MNU = "¼W¥[¹B°eªÌ";
-    var $_PHPSHOP_CARRIER_FORM_LBL = "¼W¥[/½s¿è ¹B°eªÌ";
-    var $_PHPSHOP_RATE_FORM_MNU = "·s¼W¹B°e¶O²v";
-    var $_PHPSHOP_RATE_FORM_LBL = "¼W¥[/½s¿è ¹B°e¶O²v";
-    
-    var $_PHPSHOP_RATE_FORM_NAME = "¹B°e¶O²v»¡©ú";
-    var $_PHPSHOP_RATE_FORM_CARRIER = "¹B°eªÌ";
-    var $_PHPSHOP_RATE_FORM_COUNTRY = "°ê®a";
-    var $_PHPSHOP_RATE_FORM_ZIP_START = "¶l»¼°Ï¸¹°_©l½d³ò";
-    var $_PHPSHOP_RATE_FORM_ZIP_END = "¶l»¼°Ï¸¹µ²§ô½d³ò";
-    var $_PHPSHOP_RATE_FORM_WEIGHT_START = "³Ì§C­«¶q";
-    var $_PHPSHOP_RATE_FORM_WEIGHT_END = "³Ì°ª­«¶q";
-    var $_PHPSHOP_RATE_FORM_VALUE = "¶O¥Î";
-    var $_PHPSHOP_RATE_FORM_PACKAGE_FEE = "±zªº¥]»q¶O¥Î";
-    var $_PHPSHOP_RATE_FORM_CURRENCY = "³f¹ô";
-    var $_PHPSHOP_RATE_FORM_VAT_ID = "¥[­Èµ| ID";
-    var $_PHPSHOP_RATE_FORM_LIST_ORDER = "¦Cªí¶¶§Ç";
-    
-    var $_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL = "¹B°eªÌ";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME = "¹B°e¶O²v»¡©ú";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART = "­«¶q±q ...";
-    var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND = "... ¨ì";
-    var $_PHPSHOP_CARRIER_FORM_NAME = "¹B°e¤½¥q";
-    var $_PHPSHOP_CARRIER_FORM_LIST_ORDER = "¦Cªí¶¶§Ç";
-    
-    var $_PHPSHOP_ERR_MSG_CARRIER_EXIST = "¿ù»~: ¹B°eªÌ ID ¤w¦s¦b";
-    var $_PHPSHOP_ERR_MSG_CARRIER_ID_REQ = "¿ù»~: ½Ð¿ï¾Ü¤@­Ó¹B°eªÌ";
-    var $_PHPSHOP_ERR_MSG_CARRIER_INUSE = "¿ù»~: ¦Ü¤Ö¤@­Ó¶O²v¦s¦b, §R°£¹B°eªÌ¤§«e½Ð¥ý§R°£¶O²v";
-    var $_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND = "¿ù»~: µLªk§ä¨ì¸Ó ID ªº¹B°eªÌ";
-    
-    var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = "¿ù»~: ½Ð¿ï¾Ü¤@­Ó¹B°eªÌ";
-    var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = "¿ù»~: µLªk§ä¨ì¸Ó ID ªº¹B°eªÌ";
-    var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = "¿ù»~: »Ý­n¶O²v»¡©ú";
-    var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = "¿ù»~: ¨ì¹F°ê®a¤£¥¿½T¡C¦h­Ó°ê®a¥i¥H¥Î\";\"¤À¹j";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = "¿ù»~: »Ý­n¶ñ¼g³Ì§C­«¶q";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = "¿ù»~: »Ý­n¶ñ¼g³Ì°ª­«¶q";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = "¿ù»~: ³Ì§C­«¶q¥²¶·¤p©ó³Ì°ª­«¶q";
-    var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = "¿ù»~: »Ý­n¶ñ¼g¹B°e¶O²v";
-    var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = "¿ù»~: ½Ð¿ï¾Ü¤@ºØ³f¹ô";
-    
-    var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = "¿ù»~: »Ý­n¶ñ¼g¹B°e¶O²v";
-    
-    var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = "½Ð¿ï¾Ü";
-    var $_PHPSHOP_INFO_MSG_CARRIER = "¹B°eªÌ";
-    var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = "¹B°e¶O²v";
-    var $_PHPSHOP_INFO_MSG_SHIPPING_PRICE = "»ù®æ";
-    var $_PHPSHOP_INFO_MSG_VAT_ZERO_LBL = "0 (-µL-)";
-    /*#####################################################
-     END: MODULE SHIPPING
-    #######################################################*/
-    
-    var $_PHPSHOP_PAYMENT_FORM_CC = "«H¥Î¥d";
-    var $_PHPSHOP_PAYMENT_FORM_USE_PP = "¨Ï¥Î¤ä¥I³B²zµ{§Ç";
-    var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = "»È¦æ¶×´Ú";
-    var $_PHPSHOP_PAYMENT_FORM_AO = "¥u»Ý¦a§}/³f¨ì¥I´Ú";
-    var $_PHPSHOP_CHECKOUT_MSG_2 = "½Ð¿ï¾Ü°e³f¦a§}!";
-    var $_PHPSHOP_CHECKOUT_MSG_3 = "½Ð¿ï¾Ü°e³f¤è¦¡!";
-    var $_PHPSHOP_CHECKOUT_MSG_4 = "½Ð¿ï¾Ü¥I´Ú¤è¦¡!";
-    var $_PHPSHOP_CHECKOUT_MSG_99 = "½Ð¬d¬Ý§A©Ò¿é¤Jªº¤º®e¨Ã½T©w§Aªº­q³æ";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_SHIP = "½Ð¿ï¾Ü°e³f¤è¦¡";
-    var $_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP = "½Ð¿ï¾Ü¨ä¥L°e³f¤è¦¡";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_PAYM = "½Ð¿ï¾Ü¥I´Ú¤è¦¡";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR = "½Ð¿é¤J«H¥Î¥d¸¹½X";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNAME = "½Ð¿é¤J«ù¥d¤H©m¦W.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATE = "«H¥Î¥d¸¹½X¤£¥¿½T";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCMON = "½Ð¿é¤J«H¥Î¥dªº¨ì´Á¤ë¥÷";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR = "½Ð¿é¤J«H¥Î¥dªº¨ì´Á¦~¥÷";
-    var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = "«H¥Î¥dªº¨ì´Á¤é´Á¤£¥¿½T";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = "½Ð¿ï¾Ü°e³f¦a§}";
-    var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = "±b¤á¸¹½X¤£¥¿½T";
-    var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = "±zªºÁÊª«¨®¬OªÅªº";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = "¿ù»~: ½Ð¿ï¾Ü¹B°e¤è¦¡!";
-    var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = "¿ù»~: ¨S¦³§ä¨ì©Ò¿ï¾Üªº¹B°e¶O²v!";
-    var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = "¿ù»~: ¨S¦³§ä¨ì±zªº°e³f¦a§}!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = "¿ù»~: ¨S¦³«H¥Î¥d¸ê®Æ...";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = "¿ù»~: µL«H¥Î¥d¸¹½X!";
-    var $_PHPSHOP_CHECKOUT_ERR_TEST = "¹ï¤£°_¡A§A©Ò¨Ï¥Îªº¥d¸¹¬O´ú¸Õ¸¹½X!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = "¨S¦³§ä¨ì¸Ó¥Î¤á!";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = "±z¨S¦³´£¨Ñ»È¦æ¤á¦W";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = "±zÁÙ¨S¦³´£¨Ñ±zªº»È¦æ°ê»Ú¥N½X.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = "±z¨S¦³´£¨Ñ±zªº»È¦æ±b¸¹";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = "±zÁÙ¨S¦³´£¨Ñ±zªº»È¦æÃþ§O¥N½X";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = "§AÁÙ¨S¦³´£¨Ñ±zªº»È¦æ¦WºÙ.";
-    var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = "¥I´Ú¥²»Ý¦³¤@­Ó¥¿½Tªº¨BÆJ!";
-    
-    var $_PHPSHOP_CHECKOUT_MSG_LOG = "¥I´Ú¸ê°T¤w¦¬¨ì¨Ãµy«á³B²z.<br />";
-    
-    var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = "³Ì§C®ø¶Oª÷ÃB¥Ø«eÁÙ¥¼¹F¨ì.";
-    var $_PHPSHOP_CHECKOUT_ERR_MIN_POV2 = "§Ú­Ìªº³Ì§C®ø¶Oª÷ÃB¬O:";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_CC = "«H¥Î¥d¤ä¥I";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_OTHER = "¨ä¥L¥I´Ú¤èªk";
-    var $_PHPSHOP_CHECKOUT_PAYMENT_SELECT = "½Ð¿ï¾Ü±zªº¥I´Ú¤è¦¡:";
-    
-    var $_PHPSHOP_STORE_FORM_MPOV = " ±z°Ó©±ªº³Ì§C®ø¶Oª÷ÃB";
-    var $_PHPSHOP_ACCOUNT_BANK_TITLE = "»È¦æ±b¤á¸ê°T";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR = "±b¸¹¸¹½X";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE = "»È¦æÃþ§O¸¹½X";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_NAME = "»È¦æ¦WºÙ";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_IBAN = "»È¦æ°ê»Ú¥N½X";
-    var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER = "±b¤á©Ò¦³¤H";
-    
-    var $_PHPSHOP_MODULES = "¼Ò²Õ";
-    var $_PHPSHOP_FUNCTIONS = "¥\¯à";
-    var $_PHPSHOP_SPECIAL_PRODUCTS = "¯S½æ°Ó«~";
-    
-    var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = "½Ð¯d¤U±zªºª`·N¨Æ¶µµ¹§Ú­Ì¦p¦³»Ý­nªº¸Ü";
-    var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = "ÅU«Èªºª`·N¨Æ¶µ";
-    var $_PHPSHOP_INCLUDING_TAX = "(§tµ| \$tax % tax)";
-    var $_PHPSHOP_PLEASE_SEL_ITEM = "½Ð¿ï¾Ü¤@­Ó¶µ¥Ø";
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = "¶µ¥Ø";
-    
-    // DOWNLOADS
-    
-    var $_PHPSHOP_DOWNLOADS_TITLE = "¤U¸ü°Ï";
-    var $_PHPSHOP_DOWNLOADS_START = "¶}©l¤U¸ü";
-    var $_PHPSHOP_DOWNLOADS_INFO = "½Ð¿é¤J±z¦bEMAIL¤¤¦¬¨ìªº¤U¸üID¨Ã«ö¤U¡¥¶}©l¤U¸ü¡¦.";
-    var $_PHPSHOP_DOWNLOADS_ERR_EXP = "¹ï¤£°_¡A±zªº¤U¸ü¤w¹L´Á";
-    var $_PHPSHOP_DOWNLOADS_ERR_MAX = "¹ï¤£°_¡A±z¤w¸g¹F¨ì¤F³Ì¤j¤U¸ü¦¸¼Æ";
-    var $_PHPSHOP_DOWNLOADS_ERR_INV = "µL®Äªº¤U¸üID!";
-    var $_PHPSHOP_DOWNLOADS_ERR_SEND = "¤£¯àµo°e°T®§¨ì";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG = "°T®§°e¨ì";
-    var $_PHPSHOP_DOWNLOADS_SEND_SUBJ = "¤U¸ü-¸ê°T";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_1 = "±z­qÁÊªºÀÉ®×¤w¸g·Ç³Æ¦nÅý±z¤U¸ü";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_2 = "½Ð¦b§Ú­Ìªº¤U¸ü°Ï°ì¿é¤J¥H¤Uªº¤U¸üID: ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_3 = "¨C­ÓÀÉ®×³Ì¦hªº¤U¸ü¦¸¼Æ¬O: ";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_4 = "¦b²Ä¤@¦¸¤U¸ü«áªº²Ä {expire} ¤Ñ²×¤î¤U¸ü";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_5 = "ºÃ°Ý?§xÃø?";
-    var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = "´£¨Ñ¤U¸ü¸ê°Tªº¬O "; // e.g. Download-Info by "Storename"
-    var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = "¥i¤U¸üªº°Ó«~?"; 
-    
-    var $_PHPSHOP_PAYPAL_THANKYOU = "·PÁÂ±zªº¥I´Ú. 
-        ¥»¥æ©ö¤w¦¨¥\. ±z±N·|¦¬¨ì¥Ñ paypal ©Òµo¥Xªº¥»¦¸¥æ©ö½T»{ email. 
-        ±z¥i¥HÄ~Äò©Î¬O°¨¤Wµn¤J <a href=http://www.paypal.com>www.paypal.com</a> ¨Ó½T»{¥æ©ö²Ó¥Ø.";
-    var $_PHPSHOP_PAYPAL_ERROR = "³B²z¥æ©ö®Éµo¥Í¿ù»~¡A§Aªº­q³æª¬ºAµLªk§ó·s.";
-    
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = "·PÁÂ±zªº´fÅU!±zªº¥æ©ö¸ê°T¦p¤U.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2 = "·PÁÂ§Aªº´fÅU.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3 = "ºÃ°Ý?";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4 = "¥H¤Uªº­q³æ¤w¦¬¨ì.";
-    var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5 = "§Q¥Î¥H¤U³sµ²¬d¬Ý­qÁÊ¸ê°T.";
-    
-    var $_PHPSHOP_CART_ERROR_NO_NEGATIVE = "¤£¤¹³\­t¼Æ.";
-    var $_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY = "½Ð¿é¤J¤@­Ó¦³®Äªº¼Æ¶q.";
-    
-    var $_PHPSHOP_CART_STOCK_1 = "¿ï¾Üªº¼Æ¶q¶W¹L®w¦s. ";
-    var $_PHPSHOP_CART_STOCK_2 = "§Ú­Ì¥Ø«e¦³\$product_in_stock ­Ó¶µ¥Ø¥i¥X°â";
-    var $_PHPSHOP_CART_STOCK_3 = "ÂIÀ»¦¹³B§â°Ó«~¥[¨ìµ¥«Ý²M³æ.";
-    var $_PHPSHOP_CART_SELECT_ITEM = "½Ð±q¸Ô²Ó­¶­±¿ï¾Ü¤@­Ó¯S§O¶µ¥Ø!";
-    
-    var $_PHPSHOP_REGISTRATION_FORM_NONE = "µL";
-    var $_PHPSHOP_REGISTRATION_FORM_MR = "Mr.";
-    var $_PHPSHOP_REGISTRATION_FORM_MRS = "Mrs.";
-    var $_PHPSHOP_REGISTRATION_FORM_DR = "Dr.";
-    var $_PHPSHOP_REGISTRATION_FORM_PROF = "Prof.";
-    var $_PHPSHOP_DEFAULT = "¹w³]";
-    
-  /*#####################################################
-    MODULE AFFILIATE
-  #######################################################*/
-    var $_PHPSHOP_AFFILIATE_MOD = "¥[·ù°ÓºÞ²z";
-    
-    // Affiliate List
-    var $_PHPSHOP_AFFILIATE_LIST_MNU = "¦C¥X¥[·ù°Ó";
-    var $_PHPSHOP_AFFILIATE_LIST_LBL = "¥[·ù°Ó¦Cªí";
-    var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME = "¥[·ù°Ó¦WºÙ";
-    var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE = "±Ò¥Î";
-    var $_PHPSHOP_AFFILIATE_LIST_RATE = "¤ñ¨Ò";
-    var $_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL = "¤ëÁ`­p";
-    var $_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION ="¤ë¶Äª÷";
-    var $_PHPSHOP_AFFILIATE_LIST_ORDERS = "¦C¥X­q³æ";
-    
-    // Affiliate Email
-    var $_PHPSHOP_AFFILIATE_EMAIL_MNU = "email ¥[·ù°Ó";
-    var $_PHPSHOP_AFFILIATE_EMAIL_LBL = "Email ¥[·ù°Ó";
-    var $_PHPSHOP_AFFILIATE_EMAIL_WHO = "±Hµ¹½Ö(* = ¥þ³¡)";
-    var $_PHPSHOP_AFFILIATE_EMAIL_CONTENT = "±zªº Email";
-    var $_PHPSHOP_AFFILIATE_EMAIL_SUBJECT = "¥DÃD";
-    var $_PHPSHOP_AFFILIATE_EMAIL_STATS = "¥]¬A¥Ø«eªº²Î­p";
-    
-    // Affiliate Form
-    var $_PHPSHOP_AFFILIATE_FORM_RATE = "¶Äª÷¤ñ¨Ò(¦Ê¤À¤ñ)";
-    var $_PHPSHOP_AFFILIATE_FORM_ACTIVE = "±Ò°Ê?";
-    
-    var $_PHPSHOP_DELIVERY_TIME = "³q±`°e³f¦b";
-    var $_PHPSHOP_DELIVERY_INFORMATION = "¥æ³f¸ê°T";
-    var $_PHPSHOP_MORE_CATEGORIES = "§ó¦hÃþ§O";
-    var $_PHPSHOP_AVAILABILITY = "¦³³f";
-    var $_PHPSHOP_CURRENTLY_NOT_AVAILABLE = "³o­Ó°Ó«~¥Ø«e¨S¦³®w¦s";
-    var $_PHPSHOP_PRODUCT_AVAILABLE_AGAIN = "¤U¦¸¨ÑÀ³®É¶¡±N¦b: ";
-    
-    var $_PHPSHOP_STATISTIC_SUMMARY = "ºK­n";
-    var $_PHPSHOP_STATISTIC_STATISTICS = "²Î­p";
-    var $_PHPSHOP_STATISTIC_CUSTOMERS = "ÅU«È";
-    var $_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS = "ºZ¾Pªº°Ó«~";
-    var $_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS = "º¢¾Pªº°Ó«~";
-    var $_PHPSHOP_STATISTIC_SUM = "Á`¼Æ";
-    var $_PHPSHOP_STATISTIC_NEW_ORDERS = "·s­q³æ";
-    var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = "·sÅU«È";
-
-
-	//Waiting list : file /administrator/components/com_phpshop/html/shop.waiting_list.php
-	var $_PHPSHOP_WAITING_LIST_MESSAGE = "½Ð¦b¤U­±¯d¤U±zªºemail¥H«K¥»¶µ°Ó«~­«·s¤W¥«³qª¾±z. 
+class phpShopLanguage extends vmAbstractLanguage {
+	var $_PHPSHOP_MENU = '¿ï³æ';
+	var $_PHPSHOP_CATEGORY = 'Ãþ§O';
+	var $_PHPSHOP_CATEGORIES = 'Ãþ§O';
+	var $_PHPSHOP_SELECT_CATEGORY = '¿ï¾Ü¤@­Ó¥Ø¿ý:';
+	var $_PHPSHOP_ADMIN = 'ºÞ²z';
+	var $_PHPSHOP_PRODUCT = '°Ó«~';
+	var $_PHPSHOP_LIST = '¦Cªí';
+	var $_PHPSHOP_ALL = '©Ò¦³';
+	var $_PHPSHOP_LIST_ALL_PRODUCTS = '¦C¥X©Ò¦³°Ó«~';
+	var $_PHPSHOP_VIEW = '¬d¬Ý';
+	var $_PHPSHOP_SHOW = 'Åã¥Ü';
+	var $_PHPSHOP_ADD = '¼W¥[';
+	var $_PHPSHOP_UPDATE = '§ó·s';
+	var $_PHPSHOP_DELETE = '§R°£';
+	var $_PHPSHOP_SELECT = '¿ï¾Ü';
+	var $_PHPSHOP_SUBMIT = 'Submit';
+	var $_PHPSHOP_RANDOM = 'ÀH¾÷°Ó«~';
+	var $_PHPSHOP_LATEST = '³Ì·s°Ó«~';
+	var $_PHPSHOP_HOME_TITLE = '­º­¶';
+	var $_PHPSHOP_CART_TITLE = 'ÁÊª«¨®';
+	var $_PHPSHOP_CHECKOUT_TITLE = 'µ²±b';
+	var $_PHPSHOP_LOGIN_TITLE = 'µn¤J';
+	var $_PHPSHOP_LOGOUT_TITLE = 'µn¥X';
+	var $_PHPSHOP_BROWSE_TITLE = 'ÂsÄý';
+	var $_PHPSHOP_SEARCH_TITLE = '·j´M';
+	var $_PHPSHOP_ACCOUNT_TITLE = '±b¸¹ºûÅ@';
+	var $_PHPSHOP_NAVIGATION_TITLE = '¾É¯è';
+	var $_PHPSHOP_DEPARTMENT_TITLE = '³¡ªù';
+	var $_PHPSHOP_INFO = '¸ê°T';
+	var $_PHPSHOP_BROWSE_LBL = 'ÂsÄý';
+	var $_PHPSHOP_PRODUCTS_LBL = '°Ó«~';
+	var $_PHPSHOP_PRODUCT_LBL = '°Ó«~';
+	var $_PHPSHOP_SEARCH_LBL = '·j´M';
+	var $_PHPSHOP_FLYPAGE_LBL = '°Ó«~²Ó¸`';
+	var $_PHPSHOP_PRODUCT_SEARCH_LBL = '°Ó«~·j´M';
+	var $_PHPSHOP_PRODUCT_NAME_TITLE = '°Ó«~¦WºÙ';
+	var $_PHPSHOP_PRODUCT_CATEGORY_TITLE = '°Ó«~Ãþ§O';
+	var $_PHPSHOP_PRODUCT_DESC_TITLE = '´y­z';
+	var $_PHPSHOP_CART_SHOW = 'Åã¥ÜÁÊª«¨®';
+	var $_PHPSHOP_CART_ADD_TO = '¥[¶iÁÊª«¨®';
+	var $_PHPSHOP_CART_NAME = '°Ó«~¦W';
+	var $_PHPSHOP_CART_SKU = '®w¦s®Æ¸¹';
+	var $_PHPSHOP_CART_PRICE = '»ù®æ';
+	var $_PHPSHOP_CART_QUANTITY = '¼Æ¶q';
+	var $_PHPSHOP_CART_SUBTOTAL = '¤p­p';
+	var $_PHPSHOP_ADD_SHIPTO_1 = '¼W¥[·sªº';
+	var $_PHPSHOP_ADD_SHIPTO_2 = '°e³f¦a§}';
+	var $_PHPSHOP_NO_SEARCH_RESULT = '¨S¦³§ä¨ì±z©Ò¬d¸ßªº²£«~¡C<br />';
+	var $_PHPSHOP_PRICE_LABEL = '»ù®æ: ';
+	var $_PHPSHOP_ORDER_BUTTON_LABEL = '¥[¶iÁÊª«¨®';
+	var $_PHPSHOP_NO_CUSTOMER = '±zÁÙ¨S¦³µù¥U¦¨¬°·|­û¡C½Ð´£¨Ñ±zªº¤ä¥I¸ê°T¡C';
+	var $_PHPSHOP_DELETE_MSG = '§A½T»{­n§R°£¦¹°O¿ý¶Ü?';
+	var $_PHPSHOP_THANKYOU = '·PÁÂ±zªº­qÁÊ.';
+	var $_PHPSHOP_NOT_SHIPPED = 'ÁÙ¥¼°e³f';
+	var $_PHPSHOP_EMAIL_SENDTO = '¤@«Ê½T»{¶l¥ó¤w±H©¹';
+	var $_PHPSHOP_NO_USER_TO_SELECT = '©êºp, MAMBO¨t²Î¤¤ÁÙ¨S¦³·|­û¯àÅý±z¥[¤J¨ì°Ó©±ªº·|­û¦Cªí¤¤';
+	var $_PHPSHOP_ERROR = '¿ù»~';
+	var $_PHPSHOP_MOD_NOT_REG = '¼Ò²Õ¥¼µù¥U¡C';
+	var $_PHPSHOP_MOD_ISNO_REG = '¤£¬O¥¿½Tªº phpshop ¼Ò²Õ¡C';
+	var $_PHPSHOP_MOD_NO_AUTH = '±z¨S¦³Åv­­¦s¨ú¦¹­n¨Dªº¼Ò²Õ¡C';
+	var $_PHPSHOP_PAGE_404_1 = '­¶­±¤£¦s¦b';
+	var $_PHPSHOP_PAGE_404_2 = '´£¨ÑªºÀÉ¦W¤£¦s¦b¡AµLªk§ä¨ìÀÉ®×:';
+	var $_PHPSHOP_PAGE_403 = '¤£¨¬ªº¶i¤J³¥iÅv';
+	var $_PHPSHOP_FUNC_NO_EXEC = '±zµLÅv­­°õ¦æ';
+	var $_PHPSHOP_FUNC_NOT_REG = '¦¹¥¯à©|¥¼µù¥U';
+	var $_PHPSHOP_FUNC_ISNO_REG = '¤£¬O¥¿½Tªº  MOS_com_phpshop ¥¯à¡C';
+	var $_PHPSHOP_ADMIN_MOD = 'ºÞ²z';
+	var $_PHPSHOP_USER_LIST_MNU = '¦C¥X·|­û';
+	var $_PHPSHOP_USER_LIST_LBL = '·|­û¦Cªí';
+	var $_PHPSHOP_USER_LIST_USERNAME = '·|­û¦WºÙ';
+	var $_PHPSHOP_USER_LIST_FULL_NAME = '©m¦W';
+	var $_PHPSHOP_USER_LIST_GROUP = '¸s²Õ';
+	var $_PHPSHOP_USER_FORM_MNU = '¼W¥[·|­û';
+	var $_PHPSHOP_USER_FORM_LBL = '¼W¥[/§ó·s ·|­û¸ê°T';
+	var $_PHPSHOP_USER_FORM_BILLTO_LBL = '¥I´Ú¸ê°T';
+	var $_PHPSHOP_USER_FORM_SHIPTO_LBL = '°e³f¦a§}';
+	var $_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL = '¼W¥[¦a§}';
+	var $_PHPSHOP_USER_FORM_NO_SHIPPING_ADDRESSES = 'No shipping addresses.';
+	var $_PHPSHOP_USER_FORM_ADDRESS_LABEL = '¦a§}§O¦W';
+	var $_PHPSHOP_USER_FORM_FIRST_NAME = '¦W';
+	var $_PHPSHOP_USER_FORM_LAST_NAME = '©m';
+	var $_PHPSHOP_USER_FORM_MIDDLE_NAME = '¤¤¦W';
+	var $_PHPSHOP_USER_FORM_TITLE = 'ºÙ©I';
+	var $_PHPSHOP_USER_FORM_USERNAME = '·|­û¦WºÙ';
+	var $_PHPSHOP_USER_FORM_PASSWORD_1 = '±K½X';
+	var $_PHPSHOP_USER_FORM_PASSWORD_2 = '±K½X½T»{';
+	var $_PHPSHOP_USER_FORM_PERMS = '³¥iÅv';
+	var $_PHPSHOP_USER_FORM_CUSTOMER_NUMBER = 'Customer Number / ID';
+	var $_PHPSHOP_USER_FORM_COMPANY_NAME = '¤½¥q¦W';
+	var $_PHPSHOP_USER_FORM_ADDRESS_1 = '¦a§} 1';
+	var $_PHPSHOP_USER_FORM_ADDRESS_2 = '¦a§} 2';
+	var $_PHPSHOP_USER_FORM_CITY = '«°¥«';
+	var $_PHPSHOP_USER_FORM_STATE = '¬Ù¥÷/¦a°Ï';
+	var $_PHPSHOP_USER_FORM_ZIP = '¶l»¼°Ï¸¹';
+	var $_PHPSHOP_USER_FORM_COUNTRY = '°ê®a';
+	var $_PHPSHOP_USER_FORM_PHONE = '¹q¸Ü';
+	var $_PHPSHOP_USER_FORM_PHONE2 = 'Mobile Phone';
+	var $_PHPSHOP_USER_FORM_FAX = '¶Ç¯u';
+	var $_PHPSHOP_USER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_MODULE_LIST_MNU = '¦C¥X¼Ò²Õ';
+	var $_PHPSHOP_MODULE_LIST_LBL = '¼Ò²Õ²M³æ';
+	var $_PHPSHOP_MODULE_LIST_NAME = '¼Ò²Õ¦W';
+	var $_PHPSHOP_MODULE_LIST_PERMS = '¼Ò²Õ°Ñ¼Æ';
+	var $_PHPSHOP_MODULE_LIST_FUNCTIONS = '¨ç¼Æ';
+	var $_PHPSHOP_MODULE_LIST_ORDER = '¦C¥X­q³æ';
+	var $_PHPSHOP_MODULE_FORM_MNU = '¼W¥[¼Ò²Õ';
+	var $_PHPSHOP_MODULE_FORM_LBL = '¼Ò²Õ¸ê°T';
+	var $_PHPSHOP_MODULE_FORM_MODULE_LABEL = '¼Ò²Õ¼ÐÃD(¥Î©ó¤W¤è¿ï³æ)';
+	var $_PHPSHOP_MODULE_FORM_NAME = '¼Ò²Õ¦W';
+	var $_PHPSHOP_MODULE_FORM_PERMS = '¼Ò²Õ°Ñ¼Æ';
+	var $_PHPSHOP_MODULE_FORM_HEADER = '¼Ò²Õ header';
+	var $_PHPSHOP_MODULE_FORM_FOOTER = '¼Ò²Õ footer';
+	var $_PHPSHOP_MODULE_FORM_MENU = '¦bºÞ²z¥¯àªí¤¤Åã¥Ü¼Ò²Õ?';
+	var $_PHPSHOP_MODULE_FORM_ORDER = 'Åã¥Ü¶¶§Ç';
+	var $_PHPSHOP_MODULE_FORM_DESCRIPTION = '¼Ò²Õ´y­z';
+	var $_PHPSHOP_MODULE_FORM_LANGUAGE_CODE = '»y¨¥½s½X';
+	var $_PHPSHOP_MODULE_FORM_LANGUAGE_file = '»y¨¥ÀÉ®×';
+	var $_PHPSHOP_FUNCTION_LIST_MNU = 'Åã¥Ü¨ç¼Æªí';
+	var $_PHPSHOP_FUNCTION_LIST_LBL = '¨ç¼Æ¦Cªí';
+	var $_PHPSHOP_FUNCTION_LIST_NAME = '¨ç¼Æ¦WºÙ';
+	var $_PHPSHOP_FUNCTION_LIST_CLASS = 'class ¦WºÙ';
+	var $_PHPSHOP_FUNCTION_LIST_METHOD = 'class ¤èªk';
+	var $_PHPSHOP_FUNCTION_LIST_PERMS = '°Ñ¼Æ';
+	var $_PHPSHOP_FUNCTION_FORM_MNU = '¼W¥[¨ç¼Æ';
+	var $_PHPSHOP_FUNCTION_FORM_LBL = '¨ç¼Æ¸ê°T';
+	var $_PHPSHOP_FUNCTION_FORM_NAME = '¨ç¼Æ¦WºÙ';
+	var $_PHPSHOP_FUNCTION_FORM_CLASS = 'class¦WºÙ';
+	var $_PHPSHOP_FUNCTION_FORM_METHOD = 'class¤èªk';
+	var $_PHPSHOP_FUNCTION_FORM_PERMS = '¨ç¼Æ°Ñ¼Æ';
+	var $_PHPSHOP_FUNCTION_FORM_DESCRIPTION = '¨ç¼Æ´y­z';
+	var $_PHPSHOP_CURRENCY_LIST_MNU = '¦C¥X³f¹ô';
+	var $_PHPSHOP_CURRENCY_LIST_LBL = '³f¹ô¦Cªí';
+	var $_PHPSHOP_CURRENCY_LIST_ADD = '¼W¥[³f¹ô';
+	var $_PHPSHOP_CURRENCY_LIST_NAME = '³f¹ô¦WºÙ';
+	var $_PHPSHOP_CURRENCY_LIST_CODE = '³f¹ô¥N½X';
+	var $_PHPSHOP_COUNTRY_LIST_MNU = '¦C¥X°ê®a';
+	var $_PHPSHOP_COUNTRY_LIST_LBL = '°ê®a¦Cªí';
+	var $_PHPSHOP_COUNTRY_LIST_ADD = '¼W¥[°ê®a';
+	var $_PHPSHOP_COUNTRY_LIST_NAME = '°ê¦W';
+	var $_PHPSHOP_COUNTRY_LIST_3_CODE = '°ê®a¥N½X(3)';
+	var $_PHPSHOP_COUNTRY_LIST_2_CODE = '°ê®a¥N½X(2)';
+	var $_PHPSHOP_STATE_LIST_MNU = '¦C¥X¦{¦W';
+	var $_PHPSHOP_STATE_LIST_LBL = '¦{¦W²M³æµ¹: ';
+	var $_PHPSHOP_STATE_LIST_ADD = '¼W¥[/§ó·s¤@­Ó¦{';
+	var $_PHPSHOP_STATE_LIST_NAME = '¦{¦W';
+	var $_PHPSHOP_STATE_LIST_3_CODE = '¦{½X (3)';
+	var $_PHPSHOP_STATE_LIST_2_CODE = '¦{½X (2)';
+	var $_PHPSHOP_ADDRESS = '¦a§}';
+	var $_PHPSHOP_CONTINUE = 'Ä~Äò';
+	var $_PHPSHOP_EMPTY_CART = '§AªºÁÊª«¨®²{¦bÁÙ¬OªÅªº¡C';
+	var $_PHPSHOP_ISSHIPPING_MOD = 'InterShipper';
+	var $_PHPSHOP_ISSHIP_PING_MNU = 'Ping InterShipper ¦øªA¾¹';
+	var $_PHPSHOP_ISSHIP_PING_LBL = 'InterShipper-Server Ping ';
+	var $_PHPSHOP_ISSHIP_PING_ERROR_LBL = 'InterShipper Ping ¥¢±Ñ ';
+	var $_PHPSHOP_ISSHIP_PING_GOOD_LBL = 'InterShipper Ping ¦¨¥ ';
+	var $_PHPSHOP_ISSHIP_PING_CARRIER_LBL = '¹B¿é¤½¥q';
+	var $_PHPSHOP_ISSHIP_PING_RESPONSE_LBL = '¦^À³<br />®É¶¡';
+	var $_PHPSHOP_ISSHIP_PING_TIME_LBL = '¬í';
+	var $_PHPSHOP_ISSHIP_LIST_MNU = '¦C¥X°e³f¤è¦¡';
+	var $_PHPSHOP_ISSHIP_LIST_LBL = '±Ò¥Î¤¤ªº°e³f¤è¦¡';
+	var $_PHPSHOP_ISSHIP_LIST_CARRIER_LBL = '°e³f¤è¦¡';
+	var $_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL = '±Ò¥Î';
+	var $_PHPSHOP_ISSHIP_LIST_RATE_LBL = '¤âÄò¶O';
+	var $_PHPSHOP_ISSHIP_LIST_LEAD_LBL = '¹B¿é®É¶¡';
+	var $_PHPSHOP_ISSHIP_LIST_CHARGE_F_LBL = '²Î¤@¶O¥Î';
+	var $_PHPSHOP_ISSHIP_LIST_CHARGE_P_LBL = '¦Ê¤À¤ñ';
+	var $_PHPSHOP_ISSHIP_LIST_DAYS_LBL = '¤Ñ¼Æ';
+	var $_PHPSHOP_ISSHIP_LIST_HEAVY_LBL = '­t²ü';
+	var $_PHPSHOP_ISSHIP_FORM_MNU = '°t¸m¹B°e¤è¦¡';
+	var $_PHPSHOP_ISSHIP_FORM_ADD_LBL = '¼W¥[¹B°e¤è¦¡';
+	var $_PHPSHOP_ISSHIP_FORM_UPDATE_LBL = '°t¸m¹B°e¤è¦¡';
+	var $_PHPSHOP_ISSHIP_FORM_REFRESH_LBL = '§ó·s';
+	var $_PHPSHOP_ISSHIP_FORM_CARRIER_LBL = '¹B°e¤è¦¡';
+	var $_PHPSHOP_ISSHIP_FORM_PUBLISH_LBL = '±Ò¥Î';
+	var $_PHPSHOP_ISSHIP_FORM_HANDLING_LBL = '¤âÄò¶O';
+	var $_PHPSHOP_ISSHIP_FORM_LEAD_LBL = '¹B°e®É¶¡';
+	var $_PHPSHOP_ISSHIP_FORM_CHARGE_F_LBL = '²Î¤@¶O¥Î';
+	var $_PHPSHOP_ISSHIP_FORM_CHARGE_P_LBL = '¦Ê¤À¤ñ';
+	var $_PHPSHOP_ISSHIP_FORM_DAYS_LBL = '¤Ñ¼Æ';
+	var $_PHPSHOP_ISSHIP_FORM_HEAVY_LBL = '­t²ü';
+	var $_PHPSHOP_ORDER_MOD = '­q³æ';
+	var $_PHPSHOP_ORDER_CONFIRM_MNU = '½T»{­q³æ';
+	var $_PHPSHOP_ORDER_CANCEL_MNU = '¨ú®ø­q³æ';
+	var $_PHPSHOP_ORDER_PRINT_MNU = '¦C¦L­q³æ';
+	var $_PHPSHOP_ORDER_DELETE_MNU = '§R°£­q³æ';
+	var $_PHPSHOP_ORDER_LIST_MNU = '¦C¥X­q³æ';
+	var $_PHPSHOP_ORDER_LIST_LBL = '­q³æ¦Cªí';
+	var $_PHPSHOP_ORDER_LIST_ID = '­q³æ¸¹½X';
+	var $_PHPSHOP_ORDER_LIST_CDATE = '­q³æ¤é´Á';
+	var $_PHPSHOP_ORDER_LIST_MDATE = '³Ì«á­×§ï';
+	var $_PHPSHOP_ORDER_LIST_STATUS = 'ª¬ºA';
+	var $_PHPSHOP_ORDER_LIST_TOTAL = '¤p­p';
+	var $_PHPSHOP_ORDER_ITEM = '­qÁÊ¶µ¥Ø';
+	var $_PHPSHOP_ORDER_PRINT_PO_LBL = '¨M©wÁÊ¶R';
+	var $_PHPSHOP_ORDER_PRINT_PO_NUMBER = '­q³æ¸¹½X';
+	var $_PHPSHOP_ORDER_PRINT_PO_DATE = '­q³æ¤é´Á';
+	var $_PHPSHOP_ORDER_PRINT_PO_STATUS = '­q³æª¬ºA';
+	var $_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL = '«È¤á¸ê°T';
+	var $_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL = '¥I´Ú¸ê°T';
+	var $_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL = '°e³f¸ê°T';
+	var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = '¥I´Ú¦Ü';
+	var $_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL = '°e³f¦Ü';
+	var $_PHPSHOP_ORDER_PRINT_NAME = '©m¦W';
+	var $_PHPSHOP_ORDER_PRINT_COMPANY = '¤½¥q';
+	var $_PHPSHOP_ORDER_PRINT_ADDRESS_1 = '¦a§}1';
+	var $_PHPSHOP_ORDER_PRINT_ADDRESS_2 = '¦a§}2';
+	var $_PHPSHOP_ORDER_PRINT_CITY = '«°¥«';
+	var $_PHPSHOP_ORDER_PRINT_STATE = '¬Ù¥÷/¦a°Ï';
+	var $_PHPSHOP_ORDER_PRINT_ZIP = '¶l»¼°Ï¸¹';
+	var $_PHPSHOP_ORDER_PRINT_COUNTRY = '°ê®a';
+	var $_PHPSHOP_ORDER_PRINT_PHONE = '¹q¸Ü';
+	var $_PHPSHOP_ORDER_PRINT_FAX = '¶Ç¯u';
+	var $_PHPSHOP_ORDER_PRINT_EMAIL = 'Email';
+	var $_PHPSHOP_ORDER_PRINT_ITEMS_LBL = '­qÁÊ¶µ¥Ø';
+	var $_PHPSHOP_ORDER_PRINT_QUANTITY = '¼Æ¶q';
+	var $_PHPSHOP_ORDER_PRINT_QTY = '¼Æ¶q';
+	var $_PHPSHOP_ORDER_PRINT_SKU = '®w¦s®Æ¸¹';
+	var $_PHPSHOP_ORDER_PRINT_PRICE = '»ù®æ';
+	var $_PHPSHOP_ORDER_PRINT_TOTAL = 'Á`­p';
+	var $_PHPSHOP_ORDER_PRINT_SUBTOTAL = '¤p­p';
+	var $_PHPSHOP_ORDER_PRINT_TOTAL_TAX = 'µ|ª÷Á`­p';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING = '¹B¶O¥[¤âÄò¶O';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_TAX = '³fª«µ|';
+	var $_PHPSHOP_ORDER_PRINT_PAYMENT_LBL = '¥I´Ú¤è¦¡';
+	var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME = '±b¸¹¦W';
+	var $_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER = '±b¸¹';
+	var $_PHPSHOP_ORDER_PRINT_EXPIRE_DATE = '´Áº¡®É¶¡';
+	var $_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL = '¥I´Ú°O¿ý';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_LBL = '°e³f¸ê°T';
+	var $_PHPSHOP_ORDER_PRINT_PAYINFO_LBL = '¥I´Ú¸ê°T';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL = '¹B°eªÌ';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL = '°e³f¼Ò¦¡';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_DATE_LBL = '°e³f¤é´Á';
+	var $_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL = '°e³f¶O¥Î';
+	var $_PHPSHOP_ORDER_STATUS_LIST_MNU = '¦C¥X­q³æª¬ºAÃþ«¬';
+	var $_PHPSHOP_ORDER_STATUS_FORM_MNU = '¼W¥[­q³æª¬ºAÃþ«¬';
+	var $_PHPSHOP_ORDER_STATUS_LIST_CODE = '­q³æª¬ºA¥N½X';
+	var $_PHPSHOP_ORDER_STATUS_LIST_NAME = '­q³æª¬ºA¦WºÙ';
+	var $_PHPSHOP_ORDER_STATUS_FORM_LBL = '­q³æª¬ºA';
+	var $_PHPSHOP_ORDER_STATUS_FORM_CODE = '­q³æª¬ºA¥N½X';
+	var $_PHPSHOP_ORDER_STATUS_FORM_NAME = '­q³æª¬ºA¦WºÙ';
+	var $_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER = '¦C¥X­q³æ';
+	var $_PHPSHOP_PRODUCT_MOD = '°Ó«~';
+	var $_PHPSHOP_CURRENT_PRODUCT = '¥Ø«e°Ó«~';
+	var $_PHPSHOP_CURRENT_ITEM = '¥Ø«e¶µ¥Ø';
+	var $_PHPSHOP_PRODUCT_INVENTORY_LBL = '°Ó«~®w¦s';
+	var $_PHPSHOP_PRODUCT_INVENTORY_MNU = '¬d¬Ý®w¦s';
+	var $_PHPSHOP_PRODUCT_INVENTORY_PRICE = '»ù®æ';
+	var $_PHPSHOP_PRODUCT_INVENTORY_STOCK = '¼Æ¶q';
+	var $_PHPSHOP_PRODUCT_INVENTORY_WEIGHT = '­«¶q';
+	var $_PHPSHOP_PRODUCT_LIST_MNU = '¦C¥X°Ó«~';
+	var $_PHPSHOP_PRODUCT_LIST_LBL = '°Ó«~¦Cªí';
+	var $_PHPSHOP_PRODUCT_LIST_NAME = '°Ó«~¦WºÙ';
+	var $_PHPSHOP_PRODUCT_LIST_SKU = '®w¦s®Æ¸¹';
+	var $_PHPSHOP_PRODUCT_LIST_PUBLISH = 'µo§G';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE = 'Search Product';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT = 'modyfied';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE = 'with price modyfied';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE = 'without price';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER = 'After';
+	var $_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE = 'Before';
+	var $_PHPSHOP_PRODUCT_FORM_MNU = '¼W¥[°Ó«~';
+	var $_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT = '½s¿è¦¹¶µ°Ó«~';
+	var $_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE = '¹wÄý°Ó«~¤¶²Ð­¶­±';
+	var $_PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU = '¼W¥[¶µ¥Ø';
+	var $_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU = '¼W¥[¥t¤@­Ó¶µ¥Ø';
+	var $_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL = '·s¼W°Ó«~';
+	var $_PHPSHOP_PRODUCT_FORM_UPDATE_PRODUCT_LBL = '§ó·s°Ó«~';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL = '°Ó«~¸ê°T';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL = '°Ó«~ª¬ºA';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL = '°Ó«~Åé¿n©M­«¶q';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL = '°Ó«~¹Ï¤ù';
+	var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = '·s¼W¶µ¥Ø';
+	var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = '§ó·s¶µ¥Ø';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = '¶µ¥Ø¸ê°T';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = '¶µ¥Øª¬ºA';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = '¶µ¥ØªºÅé¿n©M­«¶q';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = '¶µ¥Ø¹Ï¤ù';
+	var $_PHPSHOP_PRODUCT_FORM_RETURN_LBL = 'ªð¦^¤W¤@¼h°Ó«~';
+	var $_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL = '­n§ó·s²{¦³¹Ï¤ù¡A½Ð¿é¤J·s¹Ï¤ùªº¸ô®|¡C';
+	var $_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL = '¿é¤J ';
+	var $_PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL = '°Ó«~¶µ¥Ø';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL = '¶µ¥ØÄÝ©Ê';
+	var $_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG = '±z½T©w­n§R°£¬ÛÃöªº°Ó«~©M¶µ¥Ø¶Ü?';
+	var $_PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG = '±z½T©w­n§R°£¦¹¶µ¥Ø¶Ü?';
+	var $_PHPSHOP_PRODUCT_FORM_VENDOR = '¹s°â°Ó';
+	var $_PHPSHOP_PRODUCT_FORM_MANUFACTURER = '»s³y°Ó';
+	var $_PHPSHOP_PRODUCT_FORM_SKU = '®w¦s®Æ¸¹';
+	var $_PHPSHOP_PRODUCT_FORM_NAME = '¦WºÙ';
+	var $_PHPSHOP_PRODUCT_FORM_URL = 'URL';
+	var $_PHPSHOP_PRODUCT_FORM_CATEGORY = 'Ãþ§O';
+	var $_PHPSHOP_PRODUCT_FORM_PRICE_GROSS = '²£«~»ù®æ (Á`ÃB)';
+	var $_PHPSHOP_PRODUCT_FORM_PRICE_NET = '²£«~»ù®æ (ºô¸ô)';
+	var $_PHPSHOP_PRODUCT_FORM_DESCRIPTION = '°Ó«~´y­z';
+	var $_PHPSHOP_PRODUCT_FORM_S_DESC = 'Â²µu´y­z';
+	var $_PHPSHOP_PRODUCT_FORM_IN_STOCK = '¦³®w¦s';
+	var $_PHPSHOP_PRODUCT_FORM_ON_ORDER = '¤w­qÁÊ';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE = '¦³®Ä¤é´Á';
+	var $_PHPSHOP_PRODUCT_FORM_SPECIAL = '¯S»ù¤¤';
+	var $_PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE = '§é¦©Ãþ«¬';
+	var $_PHPSHOP_PRODUCT_FORM_PUBLISH = 'µo§G?';
+	var $_PHPSHOP_PRODUCT_FORM_LENGTH = 'ªø';
+	var $_PHPSHOP_PRODUCT_FORM_WIDTH = '¼e';
+	var $_PHPSHOP_PRODUCT_FORM_HEIGHT = '°ª';
+	var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM = '­p¶q³æ¦ì';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT = '­«¶q';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM = '­p¶q³æ¦ì';
+	var $_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE = 'ÁY¹Ï';
+	var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = '§¹¾ã¹Ï¤ù';
+	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT = 'pounds';
+	var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT = 'inches';
+	var $_PHPSHOP_PRODUCT_FORM_UNIT = 'Unit';
+	var $_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT = 'piece';
+	var $_PHPSHOP_PRODUCT_FORM_PACKAGING = 'Units in Packaging';
+	var $_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION = 'Here you can fill in a number unit in packaging. (max. 65535)';
+	var $_PHPSHOP_PRODUCT_FORM_BOX = 'Units in Box';
+	var $_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION = 'Here you can fill in a number unit in box. (max. 65535)';
+	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = '°Ó«~·s¼Wµ²ªG';
+	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = '°Ó«~§ó·sµ²ªG';
+	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = '¶µ¥Ø¼W¥[µ²ªG';
+	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL = '¶µ¥Ø§ó·sµ²ªG';
+	var $_PHPSHOP_PRODUCT_CSV_UPLOAD = '¨Ï¥ÎCSV¤W¶Ç';
+	var $_PHPSHOP_PRODUCT_FOLDERS = '°Ó«~ÀÉ®×§¨';
+	var $_PHPSHOP_CATEGORY_LIST_MNU = '¦C¥XÃþ§O';
+	var $_PHPSHOP_CATEGORY_LIST_LBL = 'Ãþ§O¾ð';
+	var $_PHPSHOP_CATEGORY_FORM_MNU = '¼W¥[Ãþ§O';
+	var $_PHPSHOP_CATEGORY_FORM_LBL = 'Ãþ§O¸ê°T';
+	var $_PHPSHOP_CATEGORY_FORM_NAME = 'Ãþ§O¦WºÙ';
+	var $_PHPSHOP_CATEGORY_FORM_PARENT = '¤÷Ãþ§O';
+	var $_PHPSHOP_CATEGORY_FORM_DESCRIPTION = 'Ãþ§O´y­z';
+	var $_PHPSHOP_CATEGORY_FORM_PUBLISH = 'µo§G?';
+	var $_PHPSHOP_CATEGORY_FORM_FLYPAGE = 'Ãþ§O­¶­±';
+	var $_PHPSHOP_ATTRIBUTE_LIST_MNU = '¦C¥XÄÝ©Ê';
+	var $_PHPSHOP_ATTRIBUTE_LIST_LBL = 'ÄÝ©Ê²M³æµ¹';
+	var $_PHPSHOP_ATTRIBUTE_LIST_NAME = 'ÄÝ©Ê¦WºÙ';
+	var $_PHPSHOP_ATTRIBUTE_LIST_ORDER = '¦C¥X­qÁÊ';
+	var $_PHPSHOP_ATTRIBUTE_FORM_MNU = '¼W¥[ÄÝ©Ê';
+	var $_PHPSHOP_ATTRIBUTE_FORM_LBL = 'ÄÝ©Êªí®æ';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT = '¬°°Ó«~¼W¥[·sªºÄÝ©Ê';
+	var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT = '§ó·s°Ó«~ÄÝ©Ê';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM = '·s«Ø¶µ¥ØÄÝ©Ê';
+	var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM = '§ó·sª««~ÄÝ©Ê';
+	var $_PHPSHOP_ATTRIBUTE_FORM_NAME = 'ÄÝ©Ê¦WºÙ';
+	var $_PHPSHOP_ATTRIBUTE_FORM_ORDER = '¦C¥X­qÁÊ';
+	var $_PHPSHOP_PRICE_LIST_MNU = '¦C¥XÃþ§O';
+	var $_PHPSHOP_PRICE_LIST_LBL = '»ù®æ¾ð';
+	var $_PHPSHOP_PRICE_LIST_FOR_LBL = '»ù®æµ¹';
+	var $_PHPSHOP_PRICE_LIST_GROUP_NAME = '¸s²Õ¦WºÙ';
+	var $_PHPSHOP_PRICE_LIST_PRICE = '»ù®æ';
+	var $_PHPSHOP_PRODUCT_LIST_CURRENCY = '³f¹ô';
+	var $_PHPSHOP_PRICE_FORM_MNU = '¼W¥[»ù®æ';
+	var $_PHPSHOP_PRICE_FORM_LBL = '»ù®æ¸ê°T';
+	var $_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT = '·s«Ø°Ó«~»ù®æ';
+	var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT = '§ó·s°Ó«~»ù®æ';
+	var $_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM = '·s»ù®æµ¹¶µ¥Ø';
+	var $_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM = '§ó·s¶µ¥Ø»ù®æ';
+	var $_PHPSHOP_PRICE_FORM_PRICE = '»ù®æ';
+	var $_PHPSHOP_PRICE_FORM_CURRENCY = '³f¹ô';
+	var $_PHPSHOP_PRICE_FORM_GROUP = 'ÁÊª«¸s²Õ';
+	var $_PHPSHOP_REPORTBASIC_MOD = '³ø§i';
+	var $_PHPSHOP_RB_INDIVIDUAL = '­Ó§O²£«~¦Cªí';
+	var $_PHPSHOP_RB_SALE_TITLE = '¾P°â³ø§i';
+	var $_PHPSHOP_RB_SALES_PAGE_TITLE = '¾P°â¬¡°Ê¤@Äý';
+	var $_PHPSHOP_RB_INTERVAL_TITLE = '³]¸m¶¡¹j';
+	var $_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE = '¨C¤ë';
+	var $_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE = '¨C¶g';
+	var $_PHPSHOP_RB_INTERVAL_DAILY_TITLE = '¨C¤Ñ';
+	var $_PHPSHOP_RB_THISMONTH_BUTTON = '¥»¤ë';
+	var $_PHPSHOP_RB_LASTMONTH_BUTTON = '¤W­Ó¤ë';
+	var $_PHPSHOP_RB_LAST60_BUTTON = '³Ìªñ60¤Ñ';
+	var $_PHPSHOP_RB_LAST90_BUTTON = '³Ìªñ90¤Ñ';
+	var $_PHPSHOP_RB_START_DATE_TITLE = '¶}©l©ó';
+	var $_PHPSHOP_RB_END_DATE_TITLE = 'µ²§ô©ó';
+	var $_PHPSHOP_RB_SHOW_SEL_RANGE = 'Åã¥Ü©Ò¿ï¾Üªº½d³ò';
+	var $_PHPSHOP_RB_REPORT_FOR = '³ø§iµ¹ ';
+	var $_PHPSHOP_RB_DATE = '¤é´Á';
+	var $_PHPSHOP_RB_ORDERS = '­q³æ';
+	var $_PHPSHOP_RB_TOTAL_ITEMS = '¥þ³¡½æ¥X¶µ¥Ø';
+	var $_PHPSHOP_RB_REVENUE = '¦¬¤J';
+	var $_PHPSHOP_RB_PRODLIST = '°Ó«~¦Cªí';
+	var $_PHPSHOP_SHOP_MOD = '°Ó©±';
+	var $_PHPSHOP_PRODUCT_THUMB_TITLE = '¹Ï¤ù';
+	var $_PHPSHOP_PRODUCT_PRICE_TITLE = '»ù®æ';
+	var $_PHPSHOP_ORDER_STATUS_P = 'µ¥«Ý¤¤';
+	var $_PHPSHOP_ORDER_STATUS_C = '¤w½T»{';
+	var $_PHPSHOP_ORDER_STATUS_X = '¤w¨ú®ø';
+	var $_PHPSHOP_ORDER_BUTTON = '­qÁÊ';
+	var $_PHPSHOP_SHOPPER_MOD = 'ÅU«È';
+	var $_PHPSHOP_SHOPPER_LIST_MNU = '¦C¥XÅU«È';
+	var $_PHPSHOP_SHOPPER_LIST_LBL = 'ÅU«È¦Cªí';
+	var $_PHPSHOP_SHOPPER_LIST_USERNAME = '·|­û¦W';
+	var $_PHPSHOP_SHOPPER_LIST_NAME = '¥þ¦W';
+	var $_PHPSHOP_SHOPPER_LIST_GROUP = '¸s²Õ';
+	var $_PHPSHOP_SHOPPER_FORM_MNU = '¼W¥[ÅU«È';
+	var $_PHPSHOP_SHOPPER_FORM_LBL = 'ÅU«È¸ê°T';
+	var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = '¥I´Ú¸ê°T';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL = '¸ê°T';
+	var $_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL = '°e³f¸ê°T';
+	var $_PHPSHOP_SHOPPER_FORM_ADD_SHIPTO_LBL = '¼W¥[¦a§}';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL = '¦a§}§O¦W';
+	var $_PHPSHOP_SHOPPER_FORM_USERNAME = '¥Î¤á¦W';
+	var $_PHPSHOP_SHOPPER_FORM_FIRST_NAME = '¦W';
+	var $_PHPSHOP_SHOPPER_FORM_LAST_NAME = '©m';
+	var $_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME = '¤¤¦W';
+	var $_PHPSHOP_SHOPPER_FORM_TITLE = 'ºÙ©I';
+	var $_PHPSHOP_SHOPPER_FORM_SHOPPERNAME = 'ÅU«È¦WºÙ';
+	var $_PHPSHOP_SHOPPER_FORM_PASSWORD_1 = '±K½X';
+	var $_PHPSHOP_SHOPPER_FORM_PASSWORD_2 = '½T»{±K½X';
+	var $_PHPSHOP_SHOPPER_FORM_GROUP = 'ÅU«È¸s²Õ';
+	var $_PHPSHOP_SHOPPER_FORM_COMPANY_NAME = '¤½¥q¦WºÙ';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_1 = '¦a§}1';
+	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_2 = '¦a§}2';
+	var $_PHPSHOP_SHOPPER_FORM_CITY = '«°¥«';
+	var $_PHPSHOP_SHOPPER_FORM_STATE = '¬Ù¥÷/¦a°Ï';
+	var $_PHPSHOP_SHOPPER_FORM_ZIP = '¶l»¼°Ï¸¹';
+	var $_PHPSHOP_SHOPPER_FORM_COUNTRY = '°ê®a';
+	var $_PHPSHOP_SHOPPER_FORM_PHONE = '¹q¸Ü';
+	var $_PHPSHOP_SHOPPER_FORM_PHONE2 = 'Mobile phone';
+	var $_PHPSHOP_SHOPPER_FORM_FAX = '¶Ç¯u';
+	var $_PHPSHOP_SHOPPER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1 = 'Yes';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2 = 'No';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5 = '';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1 = 'AAA';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2 = 'BBB';
+	var $_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3 = 'CCC';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_MNU = '¦C¥XÅU«È¸s²Õ';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_LBL = 'ÅU«È¸s²Õ¦Cªí';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_NAME = '¸s²Õ¦WºÙ';
+	var $_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION = '¸s²Õ´y­z';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_LBL = 'ÅU«È¸s²Õªí³æ';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_MNU = '¼W¥[ÅU«È¸s²Õ';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_NAME = '¸s²Õ¦WºÙ';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DESC = '¸s²Õ´y­z';
+	var $_PHPSHOP_STORE_MOD = '°Ó©±';
+	var $_PHPSHOP_STORE_FORM_MNU = '½s¿è°Ó©±';
+	var $_PHPSHOP_STORE_FORM_LBL = '°Ó©±¸ê°T';
+	var $_PHPSHOP_STORE_FORM_CONTACT_LBL = 'Ápµ¸¸ê°T';
+	var $_PHPSHOP_STORE_FORM_FULL_IMAGE = '§¹¾ã¹Ï¤ù';
+	var $_PHPSHOP_STORE_FORM_UPLOAD = '¤W¶Ç¹Ï¤ù';
+	var $_PHPSHOP_STORE_FORM_STORE_NAME = '°Ó©±¦WºÙ';
+	var $_PHPSHOP_STORE_FORM_COMPANY_NAME = '°Ó©±¤½¥q¦WºÙ';
+	var $_PHPSHOP_STORE_FORM_ADDRESS_1 = '¦a§}1';
+	var $_PHPSHOP_STORE_FORM_ADDRESS_2 = '¦a§}2';
+	var $_PHPSHOP_STORE_FORM_CITY = '«°¥«';
+	var $_PHPSHOP_STORE_FORM_STATE = '¬Ù¥÷/¦a°Ï';
+	var $_PHPSHOP_STORE_FORM_COUNTRY = '°ê®a';
+	var $_PHPSHOP_STORE_FORM_ZIP = '¶l»¼°Ï¸¹';
+	var $_PHPSHOP_STORE_FORM_PHONE = '¹q¸Ü';
+	var $_PHPSHOP_STORE_FORM_CURRENCY = '³f¹ô';
+	var $_PHPSHOP_STORE_FORM_CATEGORY = '°Ó©±Ãþ§O';
+	var $_PHPSHOP_STORE_FORM_LAST_NAME = '¦W';
+	var $_PHPSHOP_STORE_FORM_FIRST_NAME = '©m';
+	var $_PHPSHOP_STORE_FORM_MIDDLE_NAME = '¤¤¦W';
+	var $_PHPSHOP_STORE_FORM_TITLE = 'ºÙ©I';
+	var $_PHPSHOP_STORE_FORM_PHONE_1 = '¹q¸Ü 1';
+	var $_PHPSHOP_STORE_FORM_PHONE_2 = '¹q¸Ü 2';
+	var $_PHPSHOP_STORE_FORM_FAX = '¶Ç¯u';
+	var $_PHPSHOP_STORE_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_STORE_FORM_IMAGE_PATH = '¹Ï¤ù¸ô®|';
+	var $_PHPSHOP_STORE_FORM_DESCRIPTION = '´y­z';
+	var $_PHPSHOP_PAYMENT = '¥I´Ú';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_MNU = '¦C¥X¥I´Ú¤è¦¡';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_LBL = '¥I´Ú¤è¦¡¦Cªí';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_NAME = '¦WºÙ';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_CODE = '¥N½X';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT = '§é¦©';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP = 'ÅU«È¸s²Õ';
+	var $_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR = '¥I´Ú¤è¦¡Ãþ«¬';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_MNU = '¼W¥[¥I´Ú¤è¦¡';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_LBL = '¥I´Ú¤è¦¡ªí³æ';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_NAME = '¥I´Ú¤è¦¡¦WºÙ';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP = 'ÅU«È¸s²Õ';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT = '§é¦©';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_CODE = '¥N½X';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER = '±Æ¦C¶¶§Ç';
+	var $_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR = '¥I´Ú¤è¦¡Ãþ«¬';
+	var $_PHPSHOP_TAX_MOD = 'µ|ª÷';
+	var $_PHPSHOP_TAX_RATE = 'µ|²v';
+	var $_PHPSHOP_TAX_LIST_MNU = '¦C¥Xµ|²v';
+	var $_PHPSHOP_TAX_LIST_LBL = 'µ|²v¦Cªí';
+	var $_PHPSHOP_TAX_LIST_STATE = '¬Ù¥÷©Î¦a°Ïµ|ª÷';
+	var $_PHPSHOP_TAX_LIST_COUNTRY = '°ê®aµ|ª÷';
+	var $_PHPSHOP_TAX_LIST_RATE = 'µ|²v';
+	var $_PHPSHOP_TAX_FORM_MNU = '¼W¥[µ|²v';
+	var $_PHPSHOP_TAX_FORM_LBL = '¼W¥[µ|ª÷¸ê°T';
+	var $_PHPSHOP_TAX_FORM_STATE = '¬Ù¥÷©Î¦a¤èµ|';
+	var $_PHPSHOP_TAX_FORM_COUNTRY = '¤¤¥¡µ|';
+	var $_PHPSHOP_TAX_FORM_RATE = 'µ|²v ( 16% => ¶ñ¤J 0.16 )';
+	var $_PHPSHOP_VENDOR_MOD = '¹s°â°Ó';
+	var $_PHPSHOP_VENDOR_ADMIN = '¹s°â°Ó';
+	var $_PHPSHOP_VENDOR_LIST_MNU = '¦C¥X¹s°â°Ó';
+	var $_PHPSHOP_VENDOR_LIST_LBL = '¹s°â°Ó¦Cªí';
+	var $_PHPSHOP_VENDOR_LIST_VENDOR_NAME = '¹s°â°Ó¦WºÙ';
+	var $_PHPSHOP_VENDOR_LIST_ADMIN = 'ºÞ²z';
+	var $_PHPSHOP_VENDOR_FORM_MNU = '¼W¥[¹s°â°Ó';
+	var $_PHPSHOP_VENDOR_FORM_LBL = '¼W¥[¸ê°T';
+	var $_PHPSHOP_VENDOR_FORM_INFO_LBL = '¹s°â°Ó¸ê°T';
+	var $_PHPSHOP_VENDOR_FORM_CONTACT_LBL = 'Ápµ¸¸ê°T';
+	var $_PHPSHOP_VENDOR_FORM_FULL_IMAGE = '§¹¾ã¹Ï¤ù';
+	var $_PHPSHOP_VENDOR_FORM_UPLOAD = '¤W¶Ç¹Ï¤ù';
+	var $_PHPSHOP_VENDOR_FORM_STORE_NAME = '¹s°â°Ó°Ó©±¦WºÙ';
+	var $_PHPSHOP_VENDOR_FORM_COMPANY_NAME = '¹s°â°Ó¤½¥q¦WºÙ';
+	var $_PHPSHOP_VENDOR_FORM_ADDRESS_1 = '¦a§} 1';
+	var $_PHPSHOP_VENDOR_FORM_ADDRESS_2 = '¦a§} 2';
+	var $_PHPSHOP_VENDOR_FORM_CITY = '«°¥«';
+	var $_PHPSHOP_VENDOR_FORM_STATE = '¬Ù¥÷/¦a°Ï';
+	var $_PHPSHOP_VENDOR_FORM_COUNTRY = '°ê®a';
+	var $_PHPSHOP_VENDOR_FORM_ZIP = '¶l»¼°Ï¸¹';
+	var $_PHPSHOP_VENDOR_FORM_PHONE = '¹q¸Ü';
+	var $_PHPSHOP_VENDOR_FORM_CURRENCY = '³f¹ô';
+	var $_PHPSHOP_VENDOR_FORM_CATEGORY = '¹s°â°Ó¤ÀÃþ';
+	var $_PHPSHOP_VENDOR_FORM_LAST_NAME = '¦W';
+	var $_PHPSHOP_VENDOR_FORM_FIRST_NAME = '©m';
+	var $_PHPSHOP_VENDOR_FORM_MIDDLE_NAME = '¤¤¶¡¦W';
+	var $_PHPSHOP_VENDOR_FORM_TITLE = 'Â¾ºÙ';
+	var $_PHPSHOP_VENDOR_FORM_PHONE_1 = '¹q¸Ü 1';
+	var $_PHPSHOP_VENDOR_FORM_PHONE_2 = '¹q¸Ü 2';
+	var $_PHPSHOP_VENDOR_FORM_FAX = '¶Ç¯u';
+	var $_PHPSHOP_VENDOR_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_VENDOR_FORM_IMAGE_PATH = '¹Ï¤ù¸ô®|';
+	var $_PHPSHOP_VENDOR_FORM_DESCRIPTION = '´y­z';
+	var $_PHPSHOP_VENDOR_CAT_LIST_MNU = '¦C¥X¹s°â°ÓÃþ§O';
+	var $_PHPSHOP_VENDOR_CAT_LIST_LBL = '¹s°â°ÓÃþ§O¦Cªí';
+	var $_PHPSHOP_VENDOR_CAT_NAME = 'Ãþ§O¦WºÙ';
+	var $_PHPSHOP_VENDOR_CAT_DESCRIPTION = 'Ãþ§O´y­z';
+	var $_PHPSHOP_VENDOR_CAT_VENDORS = '¹s°â°Ó';
+	var $_PHPSHOP_VENDOR_CAT_FORM_MNU = '¼W¥[¹s°â°ÓÃþ§O';
+	var $_PHPSHOP_VENDOR_CAT_FORM_LBL = '¹s°â°ÓÃþ§Oªí³æ';
+	var $_PHPSHOP_VENDOR_CAT_FORM_INFO_LBL = 'Ãþ§O¸ê°T';
+	var $_PHPSHOP_VENDOR_CAT_FORM_NAME = 'Ãþ§O¦WºÙ';
+	var $_PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION = 'Ãþ§O´y­z';
+	var $_PHPSHOP_MANUFACTURER_MOD = '»s³y°Ó';
+	var $_PHPSHOP_MANUFACTURER_ADMIN = '»s³y°Ó';
+	var $_PHPSHOP_MANUFACTURER_LIST_MNU = '¦C¥X»s³y°Ó';
+	var $_PHPSHOP_MANUFACTURER_LIST_LBL = '»s³y°Ó¦Cªí';
+	var $_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME = '»s³y°Ó¦WºÙ';
+	var $_PHPSHOP_MANUFACTURER_LIST_ADMIN = 'ºÞ²z';
+	var $_PHPSHOP_MANUFACTURER_FORM_MNU = '¼W¥[»s³y°Ó';
+	var $_PHPSHOP_MANUFACTURER_FORM_LBL = '¼W¥[¸ê°T';
+	var $_PHPSHOP_MANUFACTURER_FORM_INFO_LBL = '»s³y°Ó¸ê°T';
+	var $_PHPSHOP_MANUFACTURER_FORM_NAME = '»s³y°Ó¦WºÙ';
+	var $_PHPSHOP_MANUFACTURER_FORM_CATEGORY = '»s³y°ÓÃþ§O';
+	var $_PHPSHOP_MANUFACTURER_FORM_EMAIL = 'Email';
+	var $_PHPSHOP_MANUFACTURER_FORM_URL = '»s³y°Óºô§}';
+	var $_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION = '»¡©ú';
+	var $_PHPSHOP_MANUFACTURER_CAT_LIST_MNU = '¦C¥X»s³y°ÓÃþ§O';
+	var $_PHPSHOP_MANUFACTURER_CAT_LIST_LBL = '»s³y°ÓÃþ§O¦Cªí';
+	var $_PHPSHOP_MANUFACTURER_CAT_NAME = 'Ãþ§O¦WºÙ';
+	var $_PHPSHOP_MANUFACTURER_CAT_DESCRIPTION = 'Ãþ§O´y­z';
+	var $_PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS = '»s³y°Ó';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_MNU = '¼W¥[»s³y°ÓÃþ§O';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_LBL = '»s³y°ÓÃþ§Oªí³æ';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL = 'Ãþ§O¸ê°T';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_NAME = 'Ãþ§O¦WºÙ';
+	var $_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION = 'Ãþ§O´y­z';
+	var $_PHPSHOP_HELP_MOD = '¨D§U';
+	var $_PHPSHOP_CART_ACTION = '§ó·s';
+	var $_PHPSHOP_CART_UPDATE = '§ó·sÁÊª«¨®¤¤ªº¼Æ¶q';
+	var $_PHPSHOP_CART_DELETE = '±qÁÊª«¨®§R°£°Ó«~';
+	var $_PHPSHOP_PRODUCT_PRICETAG = '»ù®æ';
+	var $_PHPSHOP_PRODUCT_CALL = '¹q¸Ü³ø»ù';
+	var $_PHPSHOP_PRODUCT_PREVIOUS = '¤W¤@­Ó';
+	var $_PHPSHOP_PRODUCT_NEXT = '¤U¤@­Ó';
+	var $_PHPSHOP_CART_TAX = 'µ|ª÷';
+	var $_PHPSHOP_CART_SHIPPING = '¹B¶O¤Î¤âÄò¶O';
+	var $_PHPSHOP_CART_TOTAL = 'Á`ÃB';
+	var $_PHPSHOP_CHECKOUT_NEXT = '¤U¤@­Ó';
+	var $_PHPSHOP_CHECKOUT_REGISTER = 'µù¥U';
+	var $_PHPSHOP_CHECKOUT_CONF_BILLINFO = '¥I´Ú¸ê°T';
+	var $_PHPSHOP_CHECKOUT_CONF_COMPANY = '¤½¥q';
+	var $_PHPSHOP_CHECKOUT_CONF_NAME = '©m¦W';
+	var $_PHPSHOP_CHECKOUT_CONF_ADDRESS = '¦a§}';
+	var $_PHPSHOP_CHECKOUT_CONF_PHONE = '¹q¸Ü';
+	var $_PHPSHOP_CHECKOUT_CONF_FAX = '¶Ç¯u';
+	var $_PHPSHOP_CHECKOUT_CONF_EMAIL = 'Email';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO = '°e³f¸ê°T';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY = '¤½¥q';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME = '©m¦W';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS = '¦a§}';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE = '¹q¸Ü';
+	var $_PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX = '¶Ç¯u';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO = '¥I´Ú¸ê°T';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD = '«H¥Î¥d¤Wªº©m¦W';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD = '¥I´Ú¤è¦¡';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM = '«H¥Î¥d¸¹';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE = '¨ì´Á¤é´Á';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER = '§¹¦¨­qÁÊ';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = '·í¿ï¥Î«H¥Î¥d¥I´Ú®Éªº¥²¶ñ¸ê°T';
+	var $_PHPSHOP_ZONE_MOD = '¦a°Ï¹B¶O';
+	var $_PHPSHOP_ZONE_LIST_MNU = '¦C¥X¦a°Ï';
+	var $_PHPSHOP_ZONE_FORM_MNU = '¼W¥[¦a°Ï';
+	var $_PHPSHOP_ZONE_ASSIGN_MNU = '¤À°t¦a°Ï';
+	var $_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL = '°ê®a';
+	var $_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL = '²{¦³¦a°Ï';
+	var $_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL = '¤À°t¨ì¦a°Ï';
+	var $_PHPSHOP_ZONE_ASSIGN_UPDATE_LBL = '§ó·s';
+	var $_PHPSHOP_ASSIGN_ZONE_PG_LBL = '¤À°t¦a°Ï';
+	var $_PHPSHOP_ZONE_FORM_NAME_LBL = '¦a°Ï¦W';
+	var $_PHPSHOP_ZONE_FORM_DESC_LBL = '¦a°Ï´y­z';
+	var $_PHPSHOP_ZONE_FORM_COST_PER_LBL = '¨C¥óªº¦a°Ï¹B¶O';
+	var $_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL = '¦a°Ï¶O¥Î­­ÃB';
+	var $_PHPSHOP_ZONE_LIST_LBL = '¦a°Ï¦Cªí';
+	var $_PHPSHOP_ZONE_LIST_NAME_LBL = '¦a°Ï¦WºÙ';
+	var $_PHPSHOP_ZONE_LIST_DESC_LBL = '¦a°Ï´y­z';
+	var $_PHPSHOP_ZONE_LIST_COST_PER_LBL = '¨C­Ó¶µ¥Øªº¦a°Ï¹B¶O';
+	var $_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL = '¦a°Ï¶O¥Î­­ÃB';
+	var $_PHPSHOP_LOGIN_FIRST = '½Ð¥ýµn¤J©Îµù¥U.<br>ÁÂÁÂ.';
+	var $_PHPSHOP_STORE_FORM_TOS = 'ªA°È±ø´Ú';
+	var $_PHPSHOP_AGREE_TO_TOS = '±z¥²¶·¥ý±µ¨ü§Ú­ÌªºªA°È±ø´Ú¡C';
+	var $_PHPSHOP_I_AGREE_TO_TOS = '§Ú¦P·N¦¹ªA°È±ø´Ú';
+	var $_PHPSHOP_LEAVE_BLANK = '(¦pªG±z¨S¦³­Ó§OªºPHPÀÉ®×µ¹¥¦<br />½Ð¯dªÅ!)';
+	var $_PHPSHOP_RETURN_LOGIN = '¤wµù¥U«È¤á: ½Ðµn¤J';
+	var $_PHPSHOP_NEW_CUSTOMER = '·s«È¤á¡H½Ð´£¨Ñ±zªº¥I´Ú¸ê°T';
+	var $_PHPSHOP_ACC_CUSTOMER_ACCOUNT = 'ÅU«È±b¸¹:';
+	var $_PHPSHOP_ACC_ORDER_INFO = '­qÁÊ¸ê°T';
+	var $_PHPSHOP_ACC_UPD_BILL = '±z¥i¥H¦b¦¹§ó·s±zªº¥I´Ú¸ê°T.';
+	var $_PHPSHOP_ACC_UPD_SHIP = '³oùØ±z¥i¥H¼W¥[©Î­×§ï¥I´Ú¦a§}.';
+	var $_PHPSHOP_ACC_ACCOUNT_INFO = '±b¤á¸ê°T';
+	var $_PHPSHOP_ACC_SHIP_INFO = '°e³f¸ê°T';
+	var $_PHPSHOP_ACC_NO_ORDERS = '¨S¦³­q³æ¥iÅã¥Ü';
+	var $_PHPSHOP_ACC_BILL_DEF = '- ¹w³] (»P¥I´Ú¤@­P)';
+	var $_PHPSHOP_SHIPTO_TEXT = '±z¥i¥H¼W¥[¦h­Ó°e³f¦a§}. ½Ð¬°±z¿ïªº°e³f¦a§}¨ú¤@­Ó¦X¾Aªº§O¦W©Î¥N½X.';
+	var $_PHPSHOP_CONFIG = '°t¸m';
+	var $_PHPSHOP_USERS = '·|­û';
+	var $_PHPSHOP_IS_CC_PAYMENT = '¬O§_¨Ï¥Î«H¥Î¥d¤ä¥I?';
+	var $_PHPSHOP_SHIPPING_MOD = '¹B°e';
+	var $_PHPSHOP_SHIPPING_MENU_LABEL = '¹B°e';
+	var $_PHPSHOP_CARRIER_LIST_MNU = '¹B°eªÌ';
+	var $_PHPSHOP_CARRIER_LIST_LBL = '¹B°eªÌ¦Cªí';
+	var $_PHPSHOP_RATE_LIST_MNU = '¹B°e¶O²v';
+	var $_PHPSHOP_RATE_LIST_LBL = '¹B°e¶O²v¦Cªí';
+	var $_PHPSHOP_CARRIER_LIST_NAME_LBL = '¦WºÙ';
+	var $_PHPSHOP_CARRIER_LIST_ORDER_LBL = '¦Cªí¶¶§Ç';
+	var $_PHPSHOP_CARRIER_FORM_MNU = '¼W¥[¹B°eªÌ';
+	var $_PHPSHOP_CARRIER_FORM_LBL = '¼W¥[/½s¿è ¹B°eªÌ';
+	var $_PHPSHOP_RATE_FORM_MNU = '·s¼W¹B°e¶O²v';
+	var $_PHPSHOP_RATE_FORM_LBL = '¼W¥[/½s¿è ¹B°e¶O²v';
+	var $_PHPSHOP_RATE_FORM_NAME = '¹B°e¶O²v»¡©ú';
+	var $_PHPSHOP_RATE_FORM_CARRIER = '¹B°eªÌ';
+	var $_PHPSHOP_RATE_FORM_COUNTRY = '°ê®a';
+	var $_PHPSHOP_RATE_FORM_ZIP_START = '¶l»¼°Ï¸¹°_©l½d³ò';
+	var $_PHPSHOP_RATE_FORM_ZIP_END = '¶l»¼°Ï¸¹µ²§ô½d³ò';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_START = '³Ì§C­«¶q';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_END = '³Ì°ª­«¶q';
+	var $_PHPSHOP_RATE_FORM_VALUE = '¶O¥Î';
+	var $_PHPSHOP_RATE_FORM_PACKAGE_FEE = '±zªº¥]»q¶O¥Î';
+	var $_PHPSHOP_RATE_FORM_CURRENCY = '³f¹ô';
+	var $_PHPSHOP_RATE_FORM_VAT_ID = '¥[­Èµ| ID';
+	var $_PHPSHOP_RATE_FORM_LIST_ORDER = '¦Cªí¶¶§Ç';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL = '¹B°eªÌ';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME = '¹B°e¶O²v»¡©ú';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART = '­«¶q±q ...';
+	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND = '... ¨ì';
+	var $_PHPSHOP_CARRIER_FORM_NAME = '¹B°e¤½¥q';
+	var $_PHPSHOP_CARRIER_FORM_LIST_ORDER = '¦Cªí¶¶§Ç';
+	var $_PHPSHOP_ERR_MSG_CARRIER_EXIST = '¿ù»~: ¹B°eªÌ ID ¤w¦s¦b';
+	var $_PHPSHOP_ERR_MSG_CARRIER_ID_REQ = '¿ù»~: ½Ð¿ï¾Ü¤@­Ó¹B°eªÌ';
+	var $_PHPSHOP_ERR_MSG_CARRIER_INUSE = '¿ù»~: ¦Ü¤Ö¤@­Ó¶O²v¦s¦b, §R°£¹B°eªÌ¤§«e½Ð¥ý§R°£¶O²v';
+	var $_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND = '¿ù»~: µLªk§ä¨ì¸Ó ID ªº¹B°eªÌ';
+	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = '¿ù»~: ½Ð¿ï¾Ü¤@­Ó¹B°eªÌ';
+	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = '¿ù»~: µLªk§ä¨ì¸Ó ID ªº¹B°eªÌ';
+	var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = '¿ù»~: »Ý­n¶O²v»¡©ú';
+	var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = '¿ù»~: ¨ì¹F°ê®a¤£¥¿½T¡C¦h­Ó°ê®a¥i¥H¥Î";"¤À¹j';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = '¿ù»~: »Ý­n¶ñ¼g³Ì§C­«¶q';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = '¿ù»~: »Ý­n¶ñ¼g³Ì°ª­«¶q';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = '¿ù»~: ³Ì§C­«¶q¥²¶·¤p©ó³Ì°ª­«¶q';
+	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = '¿ù»~: »Ý­n¶ñ¼g¹B°e¶O²v';
+	var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = '¿ù»~: ½Ð¿ï¾Ü¤@ºØ³f¹ô';
+	var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = '¿ù»~: »Ý­n¶ñ¼g¹B°e¶O²v';
+	var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = '½Ð¿ï¾Ü';
+	var $_PHPSHOP_INFO_MSG_CARRIER = '¹B°eªÌ';
+	var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = '¹B°e¶O²v';
+	var $_PHPSHOP_INFO_MSG_SHIPPING_PRICE = '»ù®æ';
+	var $_PHPSHOP_INFO_MSG_VAT_ZERO_LBL = '0 (-µL-)';
+	var $_PHPSHOP_PAYMENT_FORM_CC = '«H¥Î¥d';
+	var $_PHPSHOP_PAYMENT_FORM_USE_PP = '¨Ï¥Î¤ä¥I³B²zµ{§Ç';
+	var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = '»È¦æ¶×´Ú';
+	var $_PHPSHOP_PAYMENT_FORM_AO = '¥u»Ý¦a§}/³f¨ì¥I´Ú';
+	var $_PHPSHOP_CHECKOUT_MSG_2 = '½Ð¿ï¾Ü°e³f¦a§}!';
+	var $_PHPSHOP_CHECKOUT_MSG_3 = '½Ð¿ï¾Ü°e³f¤è¦¡!';
+	var $_PHPSHOP_CHECKOUT_MSG_4 = '½Ð¿ï¾Ü¥I´Ú¤è¦¡!';
+	var $_PHPSHOP_CHECKOUT_MSG_99 = '½Ð¬d¬Ý§A©Ò¿é¤Jªº¤º®e¨Ã½T©w§Aªº­q³æ';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIP = '½Ð¿ï¾Ü°e³f¤è¦¡';
+	var $_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP = '½Ð¿ï¾Ü¨ä¥L°e³f¤è¦¡';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_PAYM = '½Ð¿ï¾Ü¥I´Ú¤è¦¡';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR = '½Ð¿é¤J«H¥Î¥d¸¹½X';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNAME = '½Ð¿é¤J«ù¥d¤H©m¦W.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATE = '«H¥Î¥d¸¹½X¤£¥¿½T';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCMON = '½Ð¿é¤J«H¥Î¥dªº¨ì´Á¤ë¥÷';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR = '½Ð¿é¤J«H¥Î¥dªº¨ì´Á¦~¥÷';
+	var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = '«H¥Î¥dªº¨ì´Á¤é´Á¤£¥¿½T';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = '½Ð¿ï¾Ü°e³f¦a§}';
+	var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = '±b¤á¸¹½X¤£¥¿½T';
+	var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = '±zªºÁÊª«¨®¬OªÅªº';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = '¿ù»~: ½Ð¿ï¾Ü¹B°e¤è¦¡!';
+	var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = '¿ù»~: ¨S¦³§ä¨ì©Ò¿ï¾Üªº¹B°e¶O²v!';
+	var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = '¿ù»~: ¨S¦³§ä¨ì±zªº°e³f¦a§}!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = '¿ù»~: ¨S¦³«H¥Î¥d¸ê®Æ...';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = '¿ù»~: µL«H¥Î¥d¸¹½X!';
+	var $_PHPSHOP_CHECKOUT_ERR_TEST = '¹ï¤£°_¡A§A©Ò¨Ï¥Îªº¥d¸¹¬O´ú¸Õ¸¹½X!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = '¨S¦³§ä¨ì¸Ó¥Î¤á!';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = '±z¨S¦³´£¨Ñ»È¦æ¤á¦W';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = '±zÁÙ¨S¦³´£¨Ñ±zªº»È¦æ°ê»Ú¥N½X.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = '±z¨S¦³´£¨Ñ±zªº»È¦æ±b¸¹';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = '±zÁÙ¨S¦³´£¨Ñ±zªº»È¦æÃþ§O¥N½X';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = '§AÁÙ¨S¦³´£¨Ñ±zªº»È¦æ¦WºÙ.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = '¥I´Ú¥²»Ý¦³¤@­Ó¥¿½Tªº¨BÆJ!';
+	var $_PHPSHOP_CHECKOUT_MSG_LOG = '¥I´Ú¸ê°T¤w¦¬¨ì¨Ãµy«á³B²z.<br />';
+	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = '³Ì§C®ø¶Oª÷ÃB¥Ø«eÁÙ¥¼¹F¨ì.';
+	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV2 = '§Ú­Ìªº³Ì§C®ø¶Oª÷ÃB¬O:';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_CC = '«H¥Î¥d¤ä¥I';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_OTHER = '¨ä¥L¥I´Ú¤èªk';
+	var $_PHPSHOP_CHECKOUT_PAYMENT_SELECT = '½Ð¿ï¾Ü±zªº¥I´Ú¤è¦¡:';
+	var $_PHPSHOP_STORE_FORM_MPOV = ' ±z°Ó©±ªº³Ì§C®ø¶Oª÷ÃB';
+	var $_PHPSHOP_ACCOUNT_BANK_TITLE = '»È¦æ±b¤á¸ê°T';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR = '±b¸¹¸¹½X';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE = '»È¦æÃþ§O¸¹½X';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_NAME = '»È¦æ¦WºÙ';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_IBAN = '»È¦æ°ê»Ú¥N½X';
+	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER = '±b¤á©Ò¦³¤H';
+	var $_PHPSHOP_MODULES = '¼Ò²Õ';
+	var $_PHPSHOP_FUNCTIONS = '¥¯à';
+	var $_PHPSHOP_SPECIAL_PRODUCTS = '¯S½æ°Ó«~';
+	var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = '½Ð¯d¤U±zªºª`·N¨Æ¶µµ¹§Ú­Ì¦p¦³»Ý­nªº¸Ü';
+	var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = 'ÅU«Èªºª`·N¨Æ¶µ';
+	var $_PHPSHOP_INCLUDING_TAX = '(§tµ| $tax % tax)';
+	var $_PHPSHOP_PLEASE_SEL_ITEM = '½Ð¿ï¾Ü¤@­Ó¶µ¥Ø';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = '¶µ¥Ø';
+	var $_PHPSHOP_DOWNLOADS_TITLE = '¤U¸ü°Ï';
+	var $_PHPSHOP_DOWNLOADS_START = '¶}©l¤U¸ü';
+	var $_PHPSHOP_DOWNLOADS_INFO = '½Ð¿é¤J±z¦bEMAIL¤¤¦¬¨ìªº¤U¸üID¨Ã«ö¤U¡¥¶}©l¤U¸ü¡¦.';
+	var $_PHPSHOP_DOWNLOADS_ERR_EXP = '¹ï¤£°_¡A±zªº¤U¸ü¤w¹L´Á';
+	var $_PHPSHOP_DOWNLOADS_ERR_MAX = '¹ï¤£°_¡A±z¤w¸g¹F¨ì¤F³Ì¤j¤U¸ü¦¸¼Æ';
+	var $_PHPSHOP_DOWNLOADS_ERR_INV = 'µL®Äªº¤U¸üID!';
+	var $_PHPSHOP_DOWNLOADS_ERR_SEND = '¤£¯àµo°e°T®§¨ì';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG = '°T®§°e¨ì';
+	var $_PHPSHOP_DOWNLOADS_SEND_SUBJ = '¤U¸ü-¸ê°T';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_1 = '±z­qÁÊªºÀÉ®×¤w¸g·Ç³Æ¦nÅý±z¤U¸ü';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_2 = '½Ð¦b§Ú­Ìªº¤U¸ü°Ï°ì¿é¤J¥H¤Uªº¤U¸üID: ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_3 = '¨C­ÓÀÉ®×³Ì¦hªº¤U¸ü¦¸¼Æ¬O: ';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_4 = '¦b²Ä¤@¦¸¤U¸ü«áªº²Ä {expire} ¤Ñ²×¤î¤U¸ü';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_5 = 'ºÃ°Ý?§xÃø?';
+	var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = '´£¨Ñ¤U¸ü¸ê°Tªº¬O ';
+	var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = '¥i¤U¸üªº°Ó«~?';
+	var $_PHPSHOP_PAYPAL_THANKYOU = '·PÁÂ±zªº¥I´Ú. 
+        ¥»¥æ©ö¤w¦¨¥. ±z±N·|¦¬¨ì¥Ñ paypal ©Òµo¥Xªº¥»¦¸¥æ©ö½T»{ email. 
+        ±z¥i¥HÄ~Äò©Î¬O°¨¤Wµn¤J <a href=http://www.paypal.com>www.paypal.com</a> ¨Ó½T»{¥æ©ö²Ó¥Ø.';
+	var $_PHPSHOP_PAYPAL_ERROR = '³B²z¥æ©ö®Éµo¥Í¿ù»~¡A§Aªº­q³æª¬ºAµLªk§ó·s.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = '·PÁÂ±zªº´fÅU!±zªº¥æ©ö¸ê°T¦p¤U.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2 = '·PÁÂ§Aªº´fÅU.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3 = 'ºÃ°Ý?';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4 = '¥H¤Uªº­q³æ¤w¦¬¨ì.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5 = '§Q¥Î¥H¤U³sµ²¬d¬Ý­qÁÊ¸ê°T.';
+	var $_PHPSHOP_CART_ERROR_NO_NEGATIVE = '¤£¤¹³­t¼Æ.';
+	var $_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY = '½Ð¿é¤J¤@­Ó¦³®Äªº¼Æ¶q.';
+	var $_PHPSHOP_CART_STOCK_1 = '¿ï¾Üªº¼Æ¶q¶W¹L®w¦s. ';
+	var $_PHPSHOP_CART_STOCK_2 = '§Ú­Ì¥Ø«e¦³$product_in_stock ­Ó¶µ¥Ø¥i¥X°â';
+	var $_PHPSHOP_CART_STOCK_3 = 'ÂIÀ»¦¹³B§â°Ó«~¥[¨ìµ¥«Ý²M³æ.';
+	var $_PHPSHOP_CART_SELECT_ITEM = '½Ð±q¸Ô²Ó­¶­±¿ï¾Ü¤@­Ó¯S§O¶µ¥Ø!';
+	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'µL';
+	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Mr.';
+	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Mrs.';
+	var $_PHPSHOP_REGISTRATION_FORM_DR = 'Dr.';
+	var $_PHPSHOP_REGISTRATION_FORM_PROF = 'Prof.';
+	var $_PHPSHOP_DEFAULT = '¹w³]';
+	var $_PHPSHOP_AFFILIATE_MOD = '¥[·ù°ÓºÞ²z';
+	var $_PHPSHOP_AFFILIATE_LIST_MNU = '¦C¥X¥[·ù°Ó';
+	var $_PHPSHOP_AFFILIATE_LIST_LBL = '¥[·ù°Ó¦Cªí';
+	var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME = '¥[·ù°Ó¦WºÙ';
+	var $_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE = '±Ò¥Î';
+	var $_PHPSHOP_AFFILIATE_LIST_RATE = '¤ñ¨Ò';
+	var $_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL = '¤ëÁ`­p';
+	var $_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION = '¤ë¶Äª÷';
+	var $_PHPSHOP_AFFILIATE_LIST_ORDERS = '¦C¥X­q³æ';
+	var $_PHPSHOP_AFFILIATE_EMAIL_MNU = 'email ¥[·ù°Ó';
+	var $_PHPSHOP_AFFILIATE_EMAIL_LBL = 'Email ¥[·ù°Ó';
+	var $_PHPSHOP_AFFILIATE_EMAIL_WHO = '±Hµ¹½Ö(* = ¥þ³¡)';
+	var $_PHPSHOP_AFFILIATE_EMAIL_CONTENT = '±zªº Email';
+	var $_PHPSHOP_AFFILIATE_EMAIL_SUBJECT = '¥DÃD';
+	var $_PHPSHOP_AFFILIATE_EMAIL_STATS = '¥]¬A¥Ø«eªº²Î­p';
+	var $_PHPSHOP_AFFILIATE_FORM_RATE = '¶Äª÷¤ñ¨Ò(¦Ê¤À¤ñ)';
+	var $_PHPSHOP_AFFILIATE_FORM_ACTIVE = '±Ò°Ê?';
+	var $_PHPSHOP_DELIVERY_TIME = '³q±`°e³f¦b';
+	var $_PHPSHOP_DELIVERY_INFORMATION = '¥æ³f¸ê°T';
+	var $_PHPSHOP_MORE_CATEGORIES = '§ó¦hÃþ§O';
+	var $_PHPSHOP_AVAILABILITY = '¦³³f';
+	var $_PHPSHOP_CURRENTLY_NOT_AVAILABLE = '³o­Ó°Ó«~¥Ø«e¨S¦³®w¦s';
+	var $_PHPSHOP_PRODUCT_AVAILABLE_AGAIN = '¤U¦¸¨ÑÀ³®É¶¡±N¦b: ';
+	var $_PHPSHOP_STATISTIC_SUMMARY = 'ºK­n';
+	var $_PHPSHOP_STATISTIC_STATISTICS = '²Î­p';
+	var $_PHPSHOP_STATISTIC_CUSTOMERS = 'ÅU«È';
+	var $_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS = 'ºZ¾Pªº°Ó«~';
+	var $_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS = 'º¢¾Pªº°Ó«~';
+	var $_PHPSHOP_STATISTIC_SUM = 'Á`¼Æ';
+	var $_PHPSHOP_STATISTIC_NEW_ORDERS = '·s­q³æ';
+	var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = '·sÅU«È';
+	var $_PHPSHOP_WAITING_LIST_MESSAGE = '½Ð¦b¤U­±¯d¤U±zªºemail¥H«K¥»¶µ°Ó«~­«·s¤W¥«³qª¾±z. 
                                         §Ú­Ì«OÃÒ¤£·|¤À¨É, ¥X¯², ³c°â©Î¬O§Q¥Î³o­Ó e-mail °µ¥ô¦ó¨Æ°£¤F
-                                        ³qª¾±z¥»¶µ°Ó«~¦ó®É­«·s¤W¥«.<br /><br />ÁÂÁÂ±z!";
-	var $_PHPSHOP_WAITING_LIST_THANKS = "·PÁÂ±zªºµ¥«Ý¡I <br />¦p¦³¦s³f¡A§Ú­Ì±N¾¨§Ö³qª¾±z¡C";
-	var $_PHPSHOP_WAITING_LIST_NOTIFY_ME = "´£¿ô§Ú";
-	
-	//Checkout : file /administrator/components/com_phpshop/html/checkout.thankyou.php
-	var $_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW = "¦C¦L¹wµø";
-  
-  /**************************Admin.show_cfg.php in apparition order ;-)**************************************/
-	
-	/* PAGE 1 */
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZE_OR_CYBERCASH = "½Ð¥ô¿ïAuthorize.net©ÎªÌCyberCash¤¤ªº¤@­Ó";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS = " °t¸mÀÉ®×ª¬ºA:";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE = "¥i¼g¤J";
-	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE = "¤£¥i¼g¤J";
-	
-	var $_PHPSHOP_ADMIN_CFG_GLOBAL = "¥þ°ì³]©w";
-	var $_PHPSHOP_ADMIN_CFG_PATHANDURL = "¸ô®| & ¦ì§}";
-	var $_PHPSHOP_ADMIN_CFG_SITE = "ºô¯¸";
-	var $_PHPSHOP_ADMIN_CFG_SHIPPING = "°e³f";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT = "µ²±b";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS = "¤U¸ü";
-	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = "¥I´Ú";
-	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = "¶È¥Î©ó¥Ø¿ý";
-	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = "¦pªG¿ï¾Ü¥»¶µ, ±z±N²×¤î©Ò¦³ÁÊª«¨®¥\¯à¡C";
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = "Åã¥Ü»ù®æ";
-	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = "Åã¥Ü§tµ|»ù¡H";
-	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = "µL½×»ù®æ¬O§_§tµ|§¡³]¸m¼Ð»x¡C";
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = "¿ï¾Ü¥HÅã¥Ü»ù®æ¡C ¦pªG¨Ï¥Î¤F¥Ø¿ý¥\¯à, ¦³¨Ç±¡ªp¤U¥i¯à¤£»Ý­n¦b­¶­±¤WÅã¥Ü»ù®æ¡C";
-	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = "¹ê»Úµ|´Ú";
-	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = "³o±N¨M©w¹s­«¶qª««~¬O§_§tµ|¡C ­×§ï ps_checkout.php->calc_order_taxable()¥H¦Û©w¸q¡C";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = "µ|ª÷¼Ò¦¡:";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = "¥H°e³f¦a§}";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = "¥H¹s°â°Ó¦a§}";
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = "³o±N¨M©w¤F­pºâµ|ª÷ªº®É­Ô±Ä¥Î¦óºØµ|²v:<br /> 
+                                        ³qª¾±z¥»¶µ°Ó«~¦ó®É­«·s¤W¥«.<br /><br />ÁÂÁÂ±z!';
+	var $_PHPSHOP_WAITING_LIST_THANKS = '·PÁÂ±zªºµ¥«Ý¡I <br />¦p¦³¦s³f¡A§Ú­Ì±N¾¨§Ö³qª¾±z¡C';
+	var $_PHPSHOP_WAITING_LIST_NOTIFY_ME = '´£¿ô§Ú';
+	var $_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW = '¦C¦L¹wµø';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZE_OR_CYBERCASH = '½Ð¥ô¿ïAuthorize.net©ÎªÌCyberCash¤¤ªº¤@­Ó';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS = ' °t¸mÀÉ®×ª¬ºA:';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE = '¥i¼g¤J';
+	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE = '¤£¥i¼g¤J';
+	var $_PHPSHOP_ADMIN_CFG_GLOBAL = '¥þ°ì³]©w';
+	var $_PHPSHOP_ADMIN_CFG_PATHANDURL = '¸ô®| & ¦ì§}';
+	var $_PHPSHOP_ADMIN_CFG_SITE = 'ºô¯¸';
+	var $_PHPSHOP_ADMIN_CFG_SHIPPING = '°e³f';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT = 'µ²±b';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS = '¤U¸ü';
+	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = '¥I´Ú';
+	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = '¶È¥Î©ó¥Ø¿ý';
+	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = '¦pªG¿ï¾Ü¥»¶µ, ±z±N²×¤î©Ò¦³ÁÊª«¨®¥¯à¡C';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = 'Åã¥Ü»ù®æ';
+	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = 'Åã¥Ü§tµ|»ù¡H';
+	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = 'µL½×»ù®æ¬O§_§tµ|§¡³]¸m¼Ð»x¡C';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = '¿ï¾Ü¥HÅã¥Ü»ù®æ¡C ¦pªG¨Ï¥Î¤F¥Ø¿ý¥¯à, ¦³¨Ç±¡ªp¤U¥i¯à¤£»Ý­n¦b­¶­±¤WÅã¥Ü»ù®æ¡C';
+	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = '¹ê»Úµ|´Ú';
+	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = '³o±N¨M©w¹s­«¶qª««~¬O§_§tµ|¡C ­×§ï ps_checkout.php->calc_order_taxable()¥H¦Û©w¸q¡C';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = 'µ|ª÷¼Ò¦¡:';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = '¥H°e³f¦a§}';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = '¥H¹s°â°Ó¦a§}';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = '³o±N¨M©w¤F­pºâµ|ª÷ªº®É­Ô±Ä¥Î¦óºØµ|²v:<br /> 
                                                 <ul><li>³o¨ú¨M©ó°Ó©±¾Ö¦³ªÌ¨Ó¦Û­þ­Ó¦a°Ï/°ê®a</li><br />
-                                                <li>©Î¬O«È¤áªº¦a°Ï/°ê®a.</li></ul>";
-	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = "±Ò¥Î¦h­«µ|²v?";
-	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = "¦pªG±z©Ò¾P°âªº°Ó«~µ|²v¤£¦Pªº¸Ü¡A¿ï¾Ü¦¹¶µ¡C (¤ñ¦p»¡¹Ï®Ñ¬O7%ªºµ|²v¡A¦Ó¨ä¥L°Ó«~¬O16%ªºµ|²v)";
-	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = "­pºâµ|ª÷/¹B¶O¤§«e´î¥h§é¦©?";
-  var $_PHPSHOP_ADMIN_CFG_REVIEW = "±Ò¥ÎÅU«Èµû»ù¨t²Î";
-  var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = "¦pªG±Ò¥Îªº¸Ü, ±z±N¤¹³\ÅU«È <strong>µû»ù²£«~</strong> ¥H¤Î <strong>¼¶¼gµû½×</strong> ¡C <br />
-                                                                                ³o¼ËÅU«È¥i¥H¼g¤U¥L­ÌªºÅéÅç¡A¬°§OªºÅU«È´£¨Ñ°Ñ¦Ò¡C <br />";
-	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = "³]©w³o­Ó¼Ð°O¨Ó¨M©w­pºâµ|ª÷/¹B¶O¤§«e´î¥h§é¦©ÁÙ¬O¤§«á¦A´î¥h§é¦©¡C";
-	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = "ÅU«È¥i¥H¯d¤U¥L­Ìªº»È¦æ±b¤á¸ê°T?";
-	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = "¦pªG±zªºÅU«ÈÄ@·N¦bµù¥Uªº®É­Ô¶ñ¼g¥L­Ìªº»È¦æ±b¤á¸ê°Tªº¸Ü¡A¿ï¾Ü¦¹¶µ¡C";
-
-	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = "ÅU«È¥i¥H¿ï¾Ü°ê®a/¦a°Ï?";
-	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = "¦pªG§AªºÅU«ÈÄ@·N¦bµù¥Uªº®É­Ô¶ñ¼g¥L­Ìªº°ê®a/¦a°Ïªº¸Ü¡A¿ï¾Ü¦¹¶µ¡C";
-	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = "¥²¶·¦P·NªA°È±ø´Ú?";
-	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = "¦pªG§A·QÅý§AªºÅU«Èµù¥Uªº®É­Ô¦P·NªA°È±ø´Ú¡A¿ï¾Ü¦¹¶µ¡C";
-	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK = "ÀË¬d¦s³f?";
-	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN = "¦¹³]¸m¦b¥Î¤á±Nª««~¥[¨ìÁÊª«¨®ªº®É­Ô¡A¬O§_ÀË¬d¦s³fª¬ªp¡C
-                                                                                          ¦pªG³]©w¡A°Ó©±±N¤£¤¹³\ÅU«È¥[¤J¶W¥X¦s³f¼Æ¶qªº°Ó«~¡C";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = "±Ò¥Î¥[·ùµ{¦¡?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN = "¦pªG±z¦b°Ó©±«á¥x³]¸m¥[·ù°Óªº¸Ü¡A³o±N·|¦b°Ó©±«eºÝ±Ò¥Î¥N²z°Ó°lÂÜ¡C";
-	
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT = "­q³æ¶l¥ó®æ¦¡:";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT = "¯Â¤å¦r¶l¥ó";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML = "HTML¶l¥ó";
-	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN = "³o¨M©w¤F±zªº­q³æ½T»{¶l¥ó±N¥H¦óºØ¤è¦¡±H¥X:<br />
+                                                <li>©Î¬O«È¤áªº¦a°Ï/°ê®a.</li></ul>';
+	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = '±Ò¥Î¦h­«µ|²v?';
+	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = '¦pªG±z©Ò¾P°âªº°Ó«~µ|²v¤£¦Pªº¸Ü¡A¿ï¾Ü¦¹¶µ¡C (¤ñ¦p»¡¹Ï®Ñ¬O7%ªºµ|²v¡A¦Ó¨ä¥L°Ó«~¬O16%ªºµ|²v)';
+	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = '­pºâµ|ª÷/¹B¶O¤§«e´î¥h§é¦©?';
+	var $_PHPSHOP_ADMIN_CFG_REVIEW = '±Ò¥ÎÅU«Èµû»ù¨t²Î';
+	var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = '¦pªG±Ò¥Îªº¸Ü, ±z±N¤¹³ÅU«È <strong>µû»ù²£«~</strong> ¥H¤Î <strong>¼¶¼gµû½×</strong> ¡C <br />
+                                                                                ³o¼ËÅU«È¥i¥H¼g¤U¥L­ÌªºÅéÅç¡A¬°§OªºÅU«È´£¨Ñ°Ñ¦Ò¡C <br />';
+	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = '³]©w³o­Ó¼Ð°O¨Ó¨M©w­pºâµ|ª÷/¹B¶O¤§«e´î¥h§é¦©ÁÙ¬O¤§«á¦A´î¥h§é¦©¡C';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = 'ÅU«È¥i¥H¯d¤U¥L­Ìªº»È¦æ±b¤á¸ê°T?';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = '¦pªG±zªºÅU«ÈÄ@·N¦bµù¥Uªº®É­Ô¶ñ¼g¥L­Ìªº»È¦æ±b¤á¸ê°Tªº¸Ü¡A¿ï¾Ü¦¹¶µ¡C';
+	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = 'ÅU«È¥i¥H¿ï¾Ü°ê®a/¦a°Ï?';
+	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = '¦pªG§AªºÅU«ÈÄ@·N¦bµù¥Uªº®É­Ô¶ñ¼g¥L­Ìªº°ê®a/¦a°Ïªº¸Ü¡A¿ï¾Ü¦¹¶µ¡C';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = '¥²¶·¦P·NªA°È±ø´Ú?';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = '¦pªG§A·QÅý§AªºÅU«Èµù¥Uªº®É­Ô¦P·NªA°È±ø´Ú¡A¿ï¾Ü¦¹¶µ¡C';
+	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK = 'ÀË¬d¦s³f?';
+	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN = '¦¹³]¸m¦b¥Î¤á±Nª««~¥[¨ìÁÊª«¨®ªº®É­Ô¡A¬O§_ÀË¬d¦s³fª¬ªp¡C
+                                                                                          ¦pªG³]©w¡A°Ó©±±N¤£¤¹³ÅU«È¥[¤J¶W¥X¦s³f¼Æ¶qªº°Ó«~¡C';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = '±Ò¥Î¥[·ùµ{¦¡?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN = '¦pªG±z¦b°Ó©±«á¥x³]¸m¥[·ù°Óªº¸Ü¡A³o±N·|¦b°Ó©±«eºÝ±Ò¥Î¥N²z°Ó°lÂÜ¡C';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT = '­q³æ¶l¥ó®æ¦¡:';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT = '¯Â¤å¦r¶l¥ó';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML = 'HTML¶l¥ó';
+	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN = '³o¨M©w¤F±zªº­q³æ½T»{¶l¥ó±N¥H¦óºØ¤è¦¡±H¥X:<br />
                                                                                         <ul><li>Â²³æªº¯Â¤å¦r¶l¥ó</li>
-                                                                                        <li>©ÎªÌ¬O±a¦³¹Ï¤ùªºHTML¶l¥ó¡C</li></ul>";
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = "¤¹³\«D«á»OºÞ²z­û¨Ï¥Î«eºÝºÞ²zµ{¦¡?";
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = "³o­Ó³]¸m¶µ¥i¥H¬°¨º¨ÇµLªk³X°Ý«á»OºÞ²zµ{¦¡(¤ñ¦p µù¥U·|­û/§@ªÌµ¥¯Å)
-                                                   ªº°Ó©±ºÞ²z­û±Ò¥Î«e»OºÞ²z¡C";
-	
-	/* PAGE 2 */
-	var $_PHPSHOP_ADMIN_CFG_URL = "URL";
-	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = "±zªººô¯¸¦ì§}. ³q±`¸ò±zªº MAMBO URL¦P¤@­Ó (¥H±×½uµ²§À)";
-	var $_PHPSHOP_ADMIN_CFG_URLSECURE = "¥[±K«OÅ@URL";
-	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = "¥[±K«OÅ@¦w¥þ¦ì§}. (https ¶}ÀY¡A ¥H±×½uµ²§À)";
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = "¤¸¥óURL";
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = "mambo-PHPshop¤¸¥óªº¦ì§} (¥H±×½uµ²§À)";
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = "¹Ï¤ùURL";
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = "mambo-PHPshop¤¸¥ó¹Ï¤ù¥Ø¿ýªº¦ì§}(¥H±×½uµ²§À)";
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = "ºÞ²z¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = "mambo-PHPshop¤¸¥ó¥Ø¿ýªº¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = "CLASS¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = "mambo-PHPshop¤¸¥ó class ªº¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = "­¶­±¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = "mambo-PHPshop HTML¥Ø¿ýªº¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = "¹Ï¤ù¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = "mambo-PHPshop °Ó©±¹Ï¤ùªº¸ô®|";
-	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = "­º­¶";
-	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = "¹w³]¸ü¤Jªººô­¶";	
-	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = "¿ù»~­¶­±";
-	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = "¹w³]¥X²{¿ù»~®Éªº­¶­±";	
-	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE = "°£¿ù­¶­±";
-	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN = "¹w³]¥X²{°£¿ù°T®§ªº­¶­±";
-	var $_PHPSHOP_ADMIN_CFG_DEBUG = "°£¿ù ?";
-	var $_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN = "°£¿ù?  	   	¥´¶}°£¿ùªº¿é¥X. ³o±N·|§â°£¿ù­¶­±Åã¥Ü¦b¨C­Ó¥¿±`­¶­±ªº©³³¡¡C¦¹¸ê°T¦b°Ó©±«Ø¥ß¶¥¬q«D±`¦³¥Î¡C";
-
-
-/* PAGE 3 */
-
-	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = "°Ó«~­¶­±";
-	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = "³o¬OÅã¥Ü°Ó«~¸Ô±¡ªº¹w³]­¶­±.";
-  var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = "Ãþ§O½d¥»";
-	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = "³o©w¸q¤F¦b¥Ø¿ý¤¤Åã¥Ü°Ó«~ªº¹w³]½d¥»¡C<br />
+                                                                                        <li>©ÎªÌ¬O±a¦³¹Ï¤ùªºHTML¶l¥ó¡C</li></ul>';
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = '¤¹³«D«á»OºÞ²z­û¨Ï¥Î«eºÝºÞ²zµ{¦¡?';
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = '³o­Ó³]¸m¶µ¥i¥H¬°¨º¨ÇµLªk³X°Ý«á»OºÞ²zµ{¦¡(¤ñ¦p µù¥U·|­û/§@ªÌµ¥¯Å)
+                                                   ªº°Ó©±ºÞ²z­û±Ò¥Î«e»OºÞ²z¡C';
+	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
+	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = '±zªººô¯¸¦ì§}. ³q±`¸ò±zªº MAMBO URL¦P¤@­Ó (¥H±×½uµ²§À)';
+	var $_PHPSHOP_ADMIN_CFG_URLSECURE = '¥[±K«OÅ@URL';
+	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = '¥[±K«OÅ@¦w¥þ¦ì§}. (https ¶}ÀY¡A ¥H±×½uµ²§À)';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = '¤¸¥óURL';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'mambo-PHPshop¤¸¥óªº¦ì§} (¥H±×½uµ²§À)';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = '¹Ï¤ùURL';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'mambo-PHPshop¤¸¥ó¹Ï¤ù¥Ø¿ýªº¦ì§}(¥H±×½uµ²§À)';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'ºÞ²z¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'mambo-PHPshop¤¸¥ó¥Ø¿ýªº¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'CLASS¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'mambo-PHPshop¤¸¥ó class ªº¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = '­¶­±¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'mambo-PHPshop HTML¥Ø¿ýªº¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = '¹Ï¤ù¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'mambo-PHPshop °Ó©±¹Ï¤ùªº¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = '­º­¶';
+	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = '¹w³]¸ü¤Jªººô­¶';
+	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = '¿ù»~­¶­±';
+	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = '¹w³]¥X²{¿ù»~®Éªº­¶­±';
+	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE = '°£¿ù­¶­±';
+	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN = '¹w³]¥X²{°£¿ù°T®§ªº­¶­±';
+	var $_PHPSHOP_ADMIN_CFG_DEBUG = '°£¿ù ?';
+	var $_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN = '°£¿ù?  	   	¥´¶}°£¿ùªº¿é¥X. ³o±N·|§â°£¿ù­¶­±Åã¥Ü¦b¨C­Ó¥¿±`­¶­±ªº©³³¡¡C¦¹¸ê°T¦b°Ó©±«Ø¥ß¶¥¬q«D±`¦³¥Î¡C';
+	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = '°Ó«~­¶­±';
+	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = '³o¬OÅã¥Ü°Ó«~¸Ô±¡ªº¹w³]­¶­±.';
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = 'Ãþ§O½d¥»';
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = '³o©w¸q¤F¦b¥Ø¿ý¤¤Åã¥Ü°Ó«~ªº¹w³]½d¥»¡C<br />
                                                         ±z¥i¥H­×§ï²{¦³½d¥»¥H·s¼W·s½d¥»¡C<br />
-                                                        (¦ì©ó<strong>COMPONENTPATH/html/templates/</strong> ¥Ø¿ý¤U­±¡A¦WºÙ¥H¡§browse_¡¨°_©l)";
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = "¨C¦æ¤¤°Ó«~¹w³]¼Æ¥Ø";
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = "³oùØ©w¸q¤F¨C¦æ¤¤Åã¥Ü°Ó«~ªº¼Æ¥Ø <br />
-                                                                                                      ¨Ò¦p¡A¦pªG§A³]¸m¬°4,¨º»ò¥Ø¿ý½d¥»¤¤´N·|¦b¨C¦CÅã¥Ü¥|­Ó°Ó«~¡C";
-  
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = "¡§µL¹Ï¤ù¡¨ ªº¹Ï¤ù";
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = "¦b°Ó«~µL¹Ï¤ù¥i¥Î®É¡AÅã¥Ü¦¹¹Ï¤ù¡C";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = "·j¯Á¦æ¼Æ";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = "¨M©w¤F·j¯Áµ²ªG¦b¨C­¶¤¤Åã¥Üªº¦æ¼Æ¡C";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = "·j¯ÁÃC¦â 1";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = "«ü©wµ²ªG¦Cªí¤¤©_¼Æ¦æªº­I´º¦â¡C";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = "·j¯ÁÃC¦â 2";
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = "«ü©wµ²ªG¦Cªí¤¤°¸¼Æ¦æªº­I´º¦â¡C";
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = "³Ì¤j¦æ¼Æ";
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = "³]¸m¦b­q³æ¦Cªí¿ï¾Ü®ØùØ­±Åã¥Üªº¦æ¼Æ¡C";
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = "Åã¥Ü footer \"powered by mambo-phpShop\" ?";
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = "Åã¥Ü¤@­Ópowered-by-mambo-phpShopªº footer ¹Ï¤ù¡C";
-	
-	
-	/* PAGE 4 */
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = "¿ï¾Ü°Ó©±°e³f¤è¦¡";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = "¤À§O°t¸mªº¹B°eªÌ¸ò¹B¶Oªº¼Ð·Ç°e³f¼Ò²Õ¡C<strong>±ÀÂË !</strong>";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = "  	Zone Shipping Module Country Version 1.0<br />
-                                                        Ãö©ó³o­Ó¼Ò²Õªº§ó¦h¸ê°T½Ð¦Ü <a href=\"http://ZephWare.com\">http://ZephWare.com</a><br />
-                                                        Ãö©ó²Ó¸`©Î¬O³sµ¸½Ð±H«H¦Ü <a href=\"mailto:zephware@devcompany.com\">ZephWare.com</a> ";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = "<a href=\"http://www.ups.com\" target=\"_blank\">UPS Online(R) Tools</a> ¹B¶O­pºâ";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE = "UPS ¦s¨ú½X";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN = "±zªº UPS access code";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID = "UPS ¨Ï¥ÎªÌ id";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = "±z±q UPS ¨ú±oªº¨Ï¥ÎªÌ ID";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = "UPS ±K½X";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = "±z UPS ±b¸¹ªº±K½X";
-	  
-  var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = "InterShipper ¼Ò²Õ. ¦pªG±z¦³ <a href=\"http://www.intershipper.com\" target=\"_blank\">Intershipper.com</a> ±b¸¹ ½Ð¿ï¾Ü";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = "°±¥Î¿ï¾Ü¹B°e¤è¦¡. ¦pªG±zªºÅU«ÈÁÊ¶R¥i¤U¸ü³f«~®É¨Ã¤£»Ý­n¹B°e, ½Ð¿ï¾Ü.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = "InterShipper ±K½X";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = "±zªº intershipper ±b¸¹ªº±K½X.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = "InterShipper email";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = "±zªº email µ¹±zªº intershipper ±b¸¹.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = "½s½XÆ_°Í";
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = "¦b¸ê®Æ®w¸Ì¨Ï¥Î¦¹Æ_°Í¨Ó¥[±K¸ê®Æ. ³oªí¥Ü³o­ÓÀÉ®×¥ô¦ó®É­Ô³£¥²¶·³Q«OÅ@¤£³Q¬Ý¨ì.";
-	
-	
-	/* PAGE 5 */
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = "±Ò¥Îµ²±bÂdÂi";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = "¦pªG§A·Q¦bÅU«Èµ²½ã¹Lµ{¤¤Åã¥Üµ²±bÂdÂi(Åã¥Ü1-2-3-4ªº¹Ï¤ù¶i«×±ø)¡A¿ï¾Ü¦¹¶µ¡C";
-	
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = "¿ï¾Ü±z°Ó©±ªºµ²±b¨BÆJ";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = "<strong>¼Ð·Ç¨BÆJ:</strong><br/>
+                                                        (¦ì©ó<strong>COMPONENTPATH/html/templates/</strong> ¥Ø¿ý¤U­±¡A¦WºÙ¥H¡§browse_¡¨°_©l)';
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = '¨C¦æ¤¤°Ó«~¹w³]¼Æ¥Ø';
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = '³oùØ©w¸q¤F¨C¦æ¤¤Åã¥Ü°Ó«~ªº¼Æ¥Ø <br />
+                                                                                                      ¨Ò¦p¡A¦pªG§A³]¸m¬°4,¨º»ò¥Ø¿ý½d¥»¤¤´N·|¦b¨C¦CÅã¥Ü¥|­Ó°Ó«~¡C';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '¡§µL¹Ï¤ù¡¨ ªº¹Ï¤ù';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = '¦b°Ó«~µL¹Ï¤ù¥i¥Î®É¡AÅã¥Ü¦¹¹Ï¤ù¡C';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = '·j¯Á¦æ¼Æ';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = '¨M©w¤F·j¯Áµ²ªG¦b¨C­¶¤¤Åã¥Üªº¦æ¼Æ¡C';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = '·j¯ÁÃC¦â 1';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = '«ü©wµ²ªG¦Cªí¤¤©_¼Æ¦æªº­I´º¦â¡C';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = '·j¯ÁÃC¦â 2';
+	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = '«ü©wµ²ªG¦Cªí¤¤°¸¼Æ¦æªº­I´º¦â¡C';
+	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = '³Ì¤j¦æ¼Æ';
+	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = '³]¸m¦b­q³æ¦Cªí¿ï¾Ü®ØùØ­±Åã¥Üªº¦æ¼Æ¡C';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Åã¥Ü footer ';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Åã¥Ü¤@­Ópowered-by-mambo-phpShopªº footer ¹Ï¤ù¡C';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = '¿ï¾Ü°Ó©±°e³f¤è¦¡';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = '¤À§O°t¸mªº¹B°eªÌ¸ò¹B¶Oªº¼Ð·Ç°e³f¼Ò²Õ¡C<strong>±ÀÂË !</strong>';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Zone Shipping Module Country Version 1.0<br />
+                                                        Ãö©ó³o­Ó¼Ò²Õªº§ó¦h¸ê°T½Ð¦Ü <a href="http://ZephWare.com">http://ZephWare.com</a><br />
+                                                        Ãö©ó²Ó¸`©Î¬O³sµ¸½Ð±H«H¦Ü <a href="mailto:zephware@devcompany.com">ZephWare.com</a> ';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = '<a href="http://www.ups.com" target="_blank">UPS Online(R) Tools</a> ¹B¶O­pºâ';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE = 'UPS ¦s¨ú½X';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN = '±zªº UPS access code';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID = 'UPS ¨Ï¥ÎªÌ id';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = '±z±q UPS ¨ú±oªº¨Ï¥ÎªÌ ID';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = 'UPS ±K½X';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = '±z UPS ±b¸¹ªº±K½X';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'InterShipper ¼Ò²Õ. ¦pªG±z¦³ <a href="http://www.intershipper.com" target="_blank">Intershipper.com</a> ±b¸¹ ½Ð¿ï¾Ü';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = '°±¥Î¿ï¾Ü¹B°e¤è¦¡. ¦pªG±zªºÅU«ÈÁÊ¶R¥i¤U¸ü³f«~®É¨Ã¤£»Ý­n¹B°e, ½Ð¿ï¾Ü.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = 'InterShipper ±K½X';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = '±zªº intershipper ±b¸¹ªº±K½X.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = 'InterShipper email';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = '±zªº email µ¹±zªº intershipper ±b¸¹.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = '½s½XÆ_°Í';
+	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = '¦b¸ê®Æ®w¸Ì¨Ï¥Î¦¹Æ_°Í¨Ó¥[±K¸ê®Æ. ³oªí¥Ü³o­ÓÀÉ®×¥ô¦ó®É­Ô³£¥²¶·³Q«OÅ@¤£³Q¬Ý¨ì.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = '±Ò¥Îµ²±bÂdÂi';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = '¦pªG§A·Q¦bÅU«Èµ²½ã¹Lµ{¤¤Åã¥Üµ²±bÂdÂi(Åã¥Ü1-2-3-4ªº¹Ï¤ù¶i«×±ø)¡A¿ï¾Ü¦¹¶µ¡C';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = '¿ï¾Ü±z°Ó©±ªºµ²±b¨BÆJ';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = '<strong>¼Ð·Ç¨BÆJ:</strong><br/>
                1. ½T©w°e³f¦a§}<br />
               2. ½T©w°e³f¤è¦¡<br />
               3. ½T©w¥I´Ú¤è¦¡<br />
-              4. §¹¦¨­qÁÊ";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_2 = "<strong>¨BÆJ¤G:</strong><br/>
+              4. §¹¦¨­qÁÊ';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_2 = '<strong>¨BÆJ¤G:</strong><br/>
                1. ½T©w°e³f¦ì§}<br />
               2. ½T©w¥I´Ú¤è¦¡t<br />
-              3. §¹¦¨­qÁÊ";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_3 = "<strong>¨BÆJ¤T:</strong><br/>
+              3. §¹¦¨­qÁÊ';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_3 = '<strong>¨BÆJ¤T:</strong><br/>
                1. ½T©w°e³f¤è¦¡<br />
               2. ½T©w¥I´Ú¤è¦¡<br />
-              3. §¹¦¨­qÁÊ";
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 = "<strong>¨BÆJ¥|:</strong><br/>
+              3. §¹¦¨­qÁÊ';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 = '<strong>¨BÆJ¥|:</strong><br/>
                1. ½T©w¥I´Ú¤è¦¡<br />
-              2. §¹¦¨­qÁÊ";
-	
-	
-	
-	/* PAGE 6 */
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = "±Ò¥Î¤U¸ü";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = "¿ï¾Ü¦¹¶µ·|±Ò¥Î¤U¸ü¥\¯à¡C¾A¥Î©ó¾P°â¥i¤U¸ü°Ó«~ªº±¡ªp¡C";
-	
-	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = "­qÁÊª¬ºA±Ò°Ê¤U¸ü";
-	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = "¿ï¾ÜÅU«È¤U¸ü³qª¾ email ªº­qÁÊª¬ºA.";
-	
-	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = "²×¤î¤U¸üªº­qÁÊª¬ºA";
-	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = "¿ï¾ÜÅU«È¤U¸ü²×¤î³qª¾ email ªº­qÁÊª¬ºA.";
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = "¤U¸ü®Ú¥Ø¿ý";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = "µ¹ÅU«È¤U¸üÀÉ®×ªº¹êÅé¸ô®|. (½Ð¥H±×½uµ²§À!)<br>
-        <span class=\"message\">¬°¤F±zªº°Ó©±ªº¦w¥þ: ¦pªG¥i¥H, ½Ð¨Ï¥Îºô¯¸®Ú¥Ø¿ý¤§¥~ªº¥Ø¿ý</span>";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = "¤U¸ü³Ì¦h";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = "³]©w¤@­Ó¤U¸ü-ID¥i¥H¥Î¨Ó¤U¸üªº¦¸¼Æ, (µ¹¤@¦¸­qÁÊ)";
-	
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = "¤U¸ü´Áº¡";
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = "³]©w¥i¥HÅýÅU«È¤U¸üªº®É¶¡½d³ò¨Ã <strong>¥H¬í­pºâ</strong>. 
-     ±q²Ä¤@¦¸¤U¸ü¶}©l­pºâ®É¶¡! ·í®É¶¡´Áº¡, ¦¹download-ID ±N°±¥Î.<br />ª`·N : 86400¬í=24¤p®É.";
-	
-	
-	
-	
-	/* PAGE 7 */
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = "±Ò¥Î paypal ªº IPN ¥I´Ú?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = "¿ï¾Ü¥iÅý±zªºÅU«È¨Ï¥Î PayPal ¥I´Ú¨t²Î.";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = "PayPal ¥I´Ú email:";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = "±z¦b paypal ¨Ï¥Îªº¥I´Ú email ¦a§}. ¦P®É¤]±N¨Ï¥Î¨Ó¦^«H.";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = "¦¨¥\¥æ©öªº­qÁÊª¬ºA";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = "·í¹ê»Ú­qÁÊ¤w¤U³æ, °²¨Ï Paypal IPN ¤w¦¨¥\, ¿ï¾Üªº­qÁÊª¬ºA. ¦pªG¿ï¾Ü³c°â¤U¸ü³]©w: 
-  ¿ï¾Ü·|±Ò°Ê¤U¸üªºª¬ºA (µM«áÅU«È±N°¨¤W¦¬¨ìÃö©ó¦¹¤U¸üªº³qª¾ e-mail).";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = "¥¢±Ñ¥æ©öªº­qÁÊª¬ºA";
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = "¿ï¾Ü¤@­Ó­qÁÊª¬ºAµ¹¥¢±Ñªº PayPal ¥æ©ö.";
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = "±Ò¥Î PayMate ¥I´Ú?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE_EXPLAIN = "¿ï¾Ü¥iÅý±zªºÅU«È¨Ï¥Î¿D¬w PayMate ¥I´Ú¨t²Î.";
-	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME = "PayMate ¨Ï¥ÎªÌ¦WºÙ:";
-	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN = "±zªº PayMate ¨Ï¥Î±b¸¹.";
-	
-	
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = "±Ò¥Î Authorize.net ¥I´Ú?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = "¿ï¾Ü¥i¨Ï¥Î Authorize.net .";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = "´ú¸Õ¼Ò¦¡ ?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = "¿ï¾Ü '¬O' ¥Î¨Ó´ú¸Õ. ¿ï¾Ü '§_' ±Ò¥Î½u¤W¥æ©ö.";
-	var $_PHPSHOP_ADMIN_CFG_YES = "¬O";
-	var $_PHPSHOP_ADMIN_CFG_NO = "§_";
-	
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = "Authorize.net µn¤J ID";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN = "³o¬O±zªº Authorize.Net µn¤J ID";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY = "Authorize.net ¥æ©ö½X";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN = "³o¬O±zªº Authorize.net ¥æ©ö½X";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE = "Authentication Ãþ«¬";
-	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN = "³o¬O Authorize.Net ±ÂÅvÃþ«¬.";
-
-	
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH = "±Ò¥Î CyberCash?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH_EXPLAIN = "¿ï¾Ü¥H¦b phpshop ¨Ï¥Î CyberCash.";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND = "CyberCash MERCHANT";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN = "CC_MERCHANT ¬O CyberCash Merchant ID";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY = "CyberCash Merchant Key";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN = "CyberCash Merchant Key ¥Ñ CyberCash ©Ò´£¨Ñ";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL = "CyberCash ¤ä¥I URL";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN = "CyberCash ¤ä¥I URL ¬O¥Ñ Cybercash ©Ò´£¨Ñªº¦w¥þ¥I´Ú";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE = "CyberCash AUTH TYPE";
-	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN = "CyberCash AUTH TYPE ´N¬O¥Ñ Cybercase ©Ò´£¨Ñªº Cybercash ±ÂÅvÃþ«¬";
-	
-
-    /** Advanced Search feature ***/
-    var $_PHPSHOP_ADVANCED_SEARCH  ="¶i¶¥·j´M";
-    var $_PHPSHOP_SEARCH_ALL_CATEGORIES = "·j´M©Ò¦³Ãþ§O";
-    var $_PHPSHOP_SEARCH_ALL_PRODINFO = "·j´M©Ò¦³°Ó«~¸ê°T";
-    var $_PHPSHOP_SEARCH_PRODNAME = "¥u­­°Ó«~¦WºÙ";
-    var $_PHPSHOP_SEARCH_MANU_VENDOR = "¥u­­»s³y°Ó/¹s°â°Ó";
-    var $_PHPSHOP_SEARCH_DESCRIPTION = "¥u­­°Ó«~´y­z";
-    var $_PHPSHOP_SEARCH_AND = "and";
-    var $_PHPSHOP_SEARCH_NOT = "not";
-    var $_PHPSHOP_SEARCH_TEXT1 = "²Ä¤@­Ó¤U©Ô²M³æ®Ø¥i¥HÅý±z¿ï¾Ü°Ó«~¥Ø¿ý¥H­­¨î·j¯Á½d³ò¡A 
+              2. §¹¦¨­qÁÊ';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = '±Ò¥Î¤U¸ü';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = '¿ï¾Ü¦¹¶µ·|±Ò¥Î¤U¸ü¥¯à¡C¾A¥Î©ó¾P°â¥i¤U¸ü°Ó«~ªº±¡ªp¡C';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = '­qÁÊª¬ºA±Ò°Ê¤U¸ü';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = '¿ï¾ÜÅU«È¤U¸ü³qª¾ email ªº­qÁÊª¬ºA.';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = '²×¤î¤U¸üªº­qÁÊª¬ºA';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = '¿ï¾ÜÅU«È¤U¸ü²×¤î³qª¾ email ªº­qÁÊª¬ºA.';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = '¤U¸ü®Ú¥Ø¿ý';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = 'µ¹ÅU«È¤U¸üÀÉ®×ªº¹êÅé¸ô®|. (½Ð¥H±×½uµ²§À!)<br>
+        <span class="message">¬°¤F±zªº°Ó©±ªº¦w¥þ: ¦pªG¥i¥H, ½Ð¨Ï¥Îºô¯¸®Ú¥Ø¿ý¤§¥~ªº¥Ø¿ý</span>';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = '¤U¸ü³Ì¦h';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = '³]©w¤@­Ó¤U¸ü-ID¥i¥H¥Î¨Ó¤U¸üªº¦¸¼Æ, (µ¹¤@¦¸­qÁÊ)';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = '¤U¸ü´Áº¡';
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = '³]©w¥i¥HÅýÅU«È¤U¸üªº®É¶¡½d³ò¨Ã <strong>¥H¬í­pºâ</strong>. 
+     ±q²Ä¤@¦¸¤U¸ü¶}©l­pºâ®É¶¡! ·í®É¶¡´Áº¡, ¦¹download-ID ±N°±¥Î.<br />ª`·N : 86400¬í=24¤p®É.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = '±Ò¥Î paypal ªº IPN ¥I´Ú?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = '¿ï¾Ü¥iÅý±zªºÅU«È¨Ï¥Î PayPal ¥I´Ú¨t²Î.';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = 'PayPal ¥I´Ú email:';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = '±z¦b paypal ¨Ï¥Îªº¥I´Ú email ¦a§}. ¦P®É¤]±N¨Ï¥Î¨Ó¦^«H.';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = '¦¨¥¥æ©öªº­qÁÊª¬ºA';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = '·í¹ê»Ú­qÁÊ¤w¤U³æ, °²¨Ï Paypal IPN ¤w¦¨¥, ¿ï¾Üªº­qÁÊª¬ºA. ¦pªG¿ï¾Ü³c°â¤U¸ü³]©w: 
+  ¿ï¾Ü·|±Ò°Ê¤U¸üªºª¬ºA (µM«áÅU«È±N°¨¤W¦¬¨ìÃö©ó¦¹¤U¸üªº³qª¾ e-mail).';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = '¥¢±Ñ¥æ©öªº­qÁÊª¬ºA';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = '¿ï¾Ü¤@­Ó­qÁÊª¬ºAµ¹¥¢±Ñªº PayPal ¥æ©ö.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = '±Ò¥Î PayMate ¥I´Ú?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE_EXPLAIN = '¿ï¾Ü¥iÅý±zªºÅU«È¨Ï¥Î¿D¬w PayMate ¥I´Ú¨t²Î.';
+	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME = 'PayMate ¨Ï¥ÎªÌ¦WºÙ:';
+	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN = '±zªº PayMate ¨Ï¥Î±b¸¹.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = '±Ò¥Î Authorize.net ¥I´Ú?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = '¿ï¾Ü¥i¨Ï¥Î Authorize.net .';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = '´ú¸Õ¼Ò¦¡ ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = '¿ï¾Ü \'¬O\' ¥Î¨Ó´ú¸Õ. ¿ï¾Ü \'§_\' ±Ò¥Î½u¤W¥æ©ö.';
+	var $_PHPSHOP_ADMIN_CFG_YES = '¬O';
+	var $_PHPSHOP_ADMIN_CFG_NO = '§_';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = 'Authorize.net µn¤J ID';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN = '³o¬O±zªº Authorize.Net µn¤J ID';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY = 'Authorize.net ¥æ©ö½X';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN = '³o¬O±zªº Authorize.net ¥æ©ö½X';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE = 'Authentication Ãþ«¬';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN = '³o¬O Authorize.Net ±ÂÅvÃþ«¬.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH = '±Ò¥Î CyberCash?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH_EXPLAIN = '¿ï¾Ü¥H¦b phpshop ¨Ï¥Î CyberCash.';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND = 'CyberCash MERCHANT';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN = 'CC_MERCHANT ¬O CyberCash Merchant ID';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY = 'CyberCash Merchant Key';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN = 'CyberCash Merchant Key ¥Ñ CyberCash ©Ò´£¨Ñ';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL = 'CyberCash ¤ä¥I URL';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN = 'CyberCash ¤ä¥I URL ¬O¥Ñ Cybercash ©Ò´£¨Ñªº¦w¥þ¥I´Ú';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE = 'CyberCash AUTH TYPE';
+	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN = 'CyberCash AUTH TYPE ´N¬O¥Ñ Cybercase ©Ò´£¨Ñªº Cybercash ±ÂÅvÃþ«¬';
+	var $_PHPSHOP_ADVANCED_SEARCH = '¶i¶¥·j´M';
+	var $_PHPSHOP_SEARCH_ALL_CATEGORIES = '·j´M©Ò¦³Ãþ§O';
+	var $_PHPSHOP_SEARCH_ALL_PRODINFO = '·j´M©Ò¦³°Ó«~¸ê°T';
+	var $_PHPSHOP_SEARCH_PRODNAME = '¥u­­°Ó«~¦WºÙ';
+	var $_PHPSHOP_SEARCH_MANU_VENDOR = '¥u­­»s³y°Ó/¹s°â°Ó';
+	var $_PHPSHOP_SEARCH_DESCRIPTION = '¥u­­°Ó«~´y­z';
+	var $_PHPSHOP_SEARCH_AND = 'and';
+	var $_PHPSHOP_SEARCH_NOT = 'not';
+	var $_PHPSHOP_SEARCH_TEXT1 = '²Ä¤@­Ó¤U©Ô²M³æ®Ø¥i¥HÅý±z¿ï¾Ü°Ó«~¥Ø¿ý¥H­­¨î·j¯Á½d³ò¡A 
         ²Ä¤G­Ó¤U©Ô²M³æ®Ø¥i¥H±N±zªº·j¯Á½d³ò­­¨î¨ì°Ó«~¸ê°T¯S©w¦ì¸m¡C (¤ñ¦p»¡°Ó«~¦WºÙ)¡C 
-        µL½×±z¿ï¾Ü»P§_¡A½Ð¥ý¿é¤J·j¯ÁÃöÁä¦r¡A¥H«K§Ú­Ì¬°±z¬d§ä¬ÛÀ³ªº¸ê°T¡C ";
-    var $_PHPSHOP_SEARCH_TEXT2 = " ±z¥i¥H²K¥[ÃB¥~ªº·j¯ÁÃöÁä¦r¨Ã¥[¤J AND ©Î NOT ¥H´£°ª·j´Mµ²ªG©R¤¤²v¡C
+        µL½×±z¿ï¾Ü»P§_¡A½Ð¥ý¿é¤J·j¯ÁÃöÁä¦r¡A¥H«K§Ú­Ì¬°±z¬d§ä¬ÛÀ³ªº¸ê°T¡C ';
+	var $_PHPSHOP_SEARCH_TEXT2 = ' ±z¥i¥H²K¥[ÃB¥~ªº·j¯ÁÃöÁä¦r¨Ã¥[¤J AND ©Î NOT ¥H´£°ª·j´Mµ²ªG©R¤¤²v¡C
         ¿ï¾Ü AND ·N¨ýµÛ¦P®É¥]§t¨â­ÓÃöÁä¦r°Ó«~³£±N¥X²{¦b·j¯Áµ²ªG¤§¤¤¡C
         ¦Ó¿ï¾Ü NOT «h·N¨ýµÛ·j¯Áµ²ªG±N·|¬O©Ò¦³¥]§t²Ä¤@­ÓÃöÁä¦r¦Ó¤£¥]¬A
-        ²Ä¤G­ÓÃöÁä¦rªº°Ó«~¡C";
-    var $_PHPSHOP_ORDERBY = "±Æ§Ç¥H";
-    
-    /*** Review feature ***/
-    var $_PHPSHOP_CUSTOMER_RATING  = "ÅU«È¥­§¡µû»ù";
-    var $_PHPSHOP_TOTAL_VOTES = "¥þ³¡²¼¼Æ";
-    var $_PHPSHOP_CAST_VOTE = "½Ð§ë²¼";
-    var $_PHPSHOP_RATE_BUTTON = "µû»ù";
-    var $_PHPSHOP_RATE_NOM = "µû»ù";
-    var $_PHPSHOP_REVIEWS = "ÅU«Èµû½×";
-    var $_PHPSHOP_NO_REVIEWS = "¦¹°Ó«~¼ÈµLµû½×¡C";
-    var $_PHPSHOP_WRITE_FIRST_REVIEW = "±z¬O²Ä¤@­Ó¬°¦¹°Ó«~¼¶¼gµû½×ªºÅU«È¡C";
-    var $_PHPSHOP_REVIEW_LOGIN = "½Ðµn³°¥H¼¶¼gµû½×¡C";
-    var $_PHPSHOP_REVIEW_ERR_RATE = "½Ðµû»ù¦¹²£«~¥H§¹¦¨±zªºµû½×";
-    var $_PHPSHOP_REVIEW_ERR_COMMENT1 = "½Ð¦A¦h¼g´X¥yµû½×¡A³Ì¤Ö¦r¤¸¼Æ: 100";
-    var $_PHPSHOP_REVIEW_ERR_COMMENT2 = "½ÐÂ²¤Æ±zªºµû½×¡A³Ì¦h¦r¤¸¼Æ: 2000";
-    var $_PHPSHOP_WRITE_REVIEW = "¬°¦¹°Ó«~¼¶¼gµû½×";
-    var $_PHPSHOP_REVIEW_RATE = "­º¥ý: ½Ð¹ï¦¹°Ó«~°µ¥Xµû»ù¡C½Ð¦b0(³Ì®t)¨ì5(³Ì¦n)¤§¶¡°µ¥Xµû»ù¡C";
-    var $_PHPSHOP_REVIEW_COMMENT = "²{¦b½Ð°µ¥X¤@­Óµû½×¡C(³Ì¤Ö 100¡A³Ì¦h:2000 ¦r¤¸) ";
-    var $_PHPSHOP_REVIEW_COUNT = "¦r¼Æ: ";
-    var $_PHPSHOP_REVIEW_SUBMIT = "´£¥æµû½×";
-    var $_PHPSHOP_REVIEW_ALREADYDONE = "·PÁÂ±z¼¶¼g¤F¦¹°Ó«~ªºµû½×¡C";
-    var $_PHPSHOP_REVIEW_THANKYOU = "·PÁÂ±zªºµû»ù";
-    var $_PHPSHOP_COMMENT= "µû½×";
-    
-    var $_PHPSHOP_CREDITCARD_FORM_LBL = "¼W¥[/½s¿è«H¥Î¥dÃþ«¬";
-    var $_PHPSHOP_CREDITCARD_NAME = "«H¥Î¥d¦WºÙ";
-    var $_PHPSHOP_CREDITCARD_CODE = "«H¥Î¥d - short code";
-    var $_PHPSHOP_CREDITCARD_TYPE = "«H¥Î¥dÃþ«¬";
-    
-    var $_PHPSHOP_CREDITCARD_LIST_LBL = "«H¥Î¥d¦Cªí";
-    var $_PHPSHOP_UDATE_ADDRESS = "§ó·s¦a§}";
-    var $_PHPSHOP_CONTINUE_SHOPPING = "Ä~ÄòÁÊª«";
-    
-    var $_PHPSHOP_THANKYOU_SUCCESS = "±zªº­q³æ¤w¸g¦¨¥\´£¥æ";
-    var $_PHPSHOP_ORDER_LINK = "ÂIÀ»¦¹Ãìµ²¬d¬Ý­q³æ¸Ô±¡";
-    
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = "§Aªº²Ä {order_id}¸¹­q³æª¬ºA¤w¸g§ïÅÜ¡C";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = "·sªºª¬ºA¬O:";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = "½ÐÂIÀ»¤U¦CÃìµ²¥H¬d¬Ý­q³æ²Ó¸`:";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = "ÅÜ§ó­q³æª¬ºA: §Aªº²Ä {order_id}¸¹­q³æ";
-    var $_PHPSHOP_ORDER_LIST_NOTIFY = "´£¿ôÅU«È?";
-    var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = "½Ð¥ý§ïÅÜ­q³æª¬ºA!";
-    
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = "¹w³]ÅU«È¸s²Õªº°â»ù§é¦© (¥H¦Ê¤À¤ñªº§Î¦¡)";
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = "¥¿­Èªº X ·N«üµÛ:°Ó«~¦pªG¹ï©ó¸Ó¸s²ÕÅU«È¨S¦³«ü©w»ù®æªº¸Ü¡A¨º»ò±N¦b¹w³]»ù®æ¤W­±´î¤Ö X%¡C­t­È«h¦³¬Û¤Ï®ÄªG¡C";
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = "°Ó«~§é¦©";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = "°Ó«~§é¦©¦Cªí";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = "¼W¥[/½s¿è°Ó«~§é¦©";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = "§é¦©¶q";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = "¿é¤J§é¦©¶q";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = "§é¦©Ãþ«¬";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = "¦Ê¤À¤ñ";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = "Á`¦@";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = "¼Æ¶q¬O¦Ê¤À¤ñ§é¦©ÁÙ¬OÁ`¦@§é¦©?";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = "§é¦©°_©l¤é´Á";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = "«ü©w§é¦©°_©l¤é´Á";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = "§é¦©µ²§ô¤é´Á";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = "«ü©w§é¦©µ²§ô¤é´Á";
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = "±z¥i¥H¨Ï¥Î°Ó«~§é¦©ªí¥H¼W¥[§é¦©¡I";
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = "±z¸`¬Ù¤F";
-    
-    var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = "¬d¬Ý¥þ¤Ø¤o¹Ï¤ù";
-    
-/*********************
-Currency Display Style 
-***********************/
-    var $_PHPSHOP_CURRENCY_DISPLAY = "³f¹ôÅã¥Ü«¬ºA";
-    var $_PHPSHOP_CURRENCY_SYMBOL = "¥Ø«eªº²Å¸¹";
-    var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = "±z¥i¥H¦b¦¹¨Ï¥Î HTML ¦r¤¸ (¨Ò¦p. &amp;euro;,&amp;pound;,&amp;yen;,...)";
-    var $_PHPSHOP_CURRENCY_DECIMALS = "¤p¼ÆÂI";
-    var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = "¤p¼ÆÂIÅã¥Ü¦ì¼Æ (¥i¥H¬O0)<br><b>³]¦¨¤£¦Pªº¦ì¼Æ¥i¯à³y¦¨»~®t</b>";
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = "¤p¼ÆÂI²Å¸¹";
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = "¥Î¨Ó·í¤p¼ÆÂI²Å¸¹ªº¦r¤¸";
-    var $_PHPSHOP_CURRENCY_THOUSANDS = "¤d¤À¦ì²Å¸¹";
-    var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = "¥Î¨Ó¹j¶}¤d¤À¦ìªº¦r¤¸ (¥i¥HªÅ¥Õ)";
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = "Positive format";
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = "¥Î¨ÓÅã¥Ü¥¿­Èªº®æ¦¡.<br>(Symb ¥Nªí³f¹ô²Å¸¹)";
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = "Negative format";
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = "¥Î¨ÓÅã¥Ü­t­Èªº®æ¦¡.<br>(Symb ¥Nªí³f¹ô²Å¸¹)";
-    
-    var $_PHPSHOP_OTHER_LISTS = "¨ä¥L°Ó«~¦Cªí";
-/**************
-Multiple Images 
-****************/
-    var $_PHPSHOP_MORE_IMAGES = "ÂsÄý§ó¦h¹Ï¤ù";
-    var $_PHPSHOP_AVAILABLE_IMAGES = "¥i¥Îªº¹Ï¤ùµ¹";
-    var $_PHPSHOP_BACK_TO_DETAILS = "¦^¨ì°Ó«~¸Ô²Ó¸ê®Æ";
-    
-    /* FILEMANAGER */
-    var $_PHPSHOP_FILEMANAGER = "ÀÉ®×ºÞ²z­û";
-    var $_PHPSHOP_FILEMANAGER_LIST = "ÀÉ®×ºÞ²z­û::°Ó«~¦Cªí";
-    var $_PHPSHOP_FILEMANAGER_ADD = "¼W¥[¹Ï¤ù/ÀÉ®×";
-    var $_PHPSHOP_FILEMANAGER_IMAGES = "¤À°tªº¹Ï¤ù";
-    var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = "¥i³Q¤U¸ü?";
-    var $_PHPSHOP_FILEMANAGER_FILES = "¤À°tªºÀÉ®× (Datasheets,...)";
-    var $_PHPSHOP_FILEMANAGER_PUBLISHED = "µo§G?";
-    
-    /* FILE LIST */
-    var $_PHPSHOP_FILES_LIST = "ÀÉ®×ºÞ²z­û: ¹Ï¤ù/ÀÉ®×²M³æµ¹";
-    var $_PHPSHOP_FILES_LIST_FILENAME = "ÀÉ¦W";
-    var $_PHPSHOP_FILES_LIST_FILETITLE = "ÀÉ®×©ïÀY";
-    var $_PHPSHOP_FILES_LIST_FILETYPE = "ÀÉ®×Ãþ«¬";
-    var $_PHPSHOP_FILES_LIST_EDITFILE = "½s¿èÀÉ®×µn¿ý";
-    var $_PHPSHOP_FILES_LIST_FULL_IMG = "§¹¾ã¹Ï¤ù";
-    var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = "ÁY¹Ï";
-    
-    
-    /* FILE FORM */
-    var $_PHPSHOP_FILES_FORM = "¤W¶Ç¤@­ÓÀÉ®×µ¹";
-    var $_PHPSHOP_FILES_FORM_CURRENT_FILE = "¥Ø«eªºÀÉ®×";
-    var $_PHPSHOP_FILES_FORM_FILE = "ÀÉ®×";
-    var $_PHPSHOP_FILES_FORM_IMAGE = "¹Ï¤ù";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_TO = "¤W¶Ç¦Ü";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = "¹w³]ªº°Ó«~¹Ï¤ù¸ô®|";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = "«ü©wªºÀÉ®×©Ò¦b¦a";
-    var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = "¤U¸ü¸ô®| (¨Ò¦p. ³c°â¤U¸ü°Ó«~®É!)";
-    var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = "¦Û°Ê²£¥ÍÁY¹Ï?";
-    var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = "µo§GÀÉ®×?";
-    var $_PHPSHOP_FILES_FORM_FILE_TITLE = "ÀÉ®×©ïÀY (ÅU«È·|¬Ý¨ìªº)";
-    var $_PHPSHOP_FILES_FORM_FILE_DESC = "ÀÉ®×»¡©ú";
-    var $_PHPSHOP_FILES_FORM_FILE_URL = "ÀÉ®×¦ì§} («D¥²»Ý)";
-    
-    /* FILE & IMAGE PROCESSING */
-    var $_PHPSHOP_FILES_PATH_ERROR = "½Ð´£¨Ñ¤@­Ó¦³®Äªº¸ô®|!";
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = "ÁY¹Ï¤w¸g²£¥Í¦¨¥\!";
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = "µLªk²£¥ÍÁY¹Ï!";
-    var $_PHPSHOP_FILES_UPLOAD_FAILURE = "ÀÉ®×/¹Ï¤ù ¤W¶Ç¿ù»~";
-    
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = "µLªk§R°£§¹¾ã¹Ï¤ùÀÉ®×.";
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = "§¹¾ã¹Ï¤ù§R°£¦¨¥\.";
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = "µLªk§R°£ÁY¹ÏÀÉ®× (¥i¯à¤£¦s¦b): ";
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = "ÁY¹Ï§R°£¦¨¥\.";
-    var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = "µLªk§R°£¦¹ÀÉ®×.";
-    var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = "ÀÉ®×§R°£¦¨¥\.";
-    
-    var $_PHPSHOP_FILES_NOT_FOUND = "©êºp, ­n¨DªºÀÉ®×¥¼§ä¨ì!";
-    var $_PHPSHOP_IMAGE_NOT_FOUND = "¹Ï¤ù¥¼§ä¨ì!";
-
-    /*#####################
-    MODULE COUPON
-    #####################*/
-    
-    var $_PHPSHOP_COUPON_MOD = "Àu«Ý";
-    var $_PHPSHOP_COUPONS = "Àu«Ý";
-    var $_PHPSHOP_COUPON_LIST = "Àu«Ý²M³æ";
-    var $_PHPSHOP_COUPON_ALREADY_REDEEMED = "Àu«Ý¤w³Q§I´«.";
-    var $_PHPSHOP_COUPON_REDEEMED = "Àu«Ý¤w§I´«! ÁÂÁÂ±z.";
-    var $_PHPSHOP_COUPON_ENTER_HERE = "¦pªG±z¦³Àu«Ý§I´«¥N½X, ½Ð¦b¥H¤U¿é¤J:";
-    var $_PHPSHOP_COUPON_SUBMIT_BUTTON = "´£¥æ";
-    var $_PHPSHOP_COUPON_CODE_EXISTS = "¦¹Àu«Ý§I´«¥N½X¤w¦s¦b. ½Ð¦A¸Õ¤@¦¸.";
-    var $_PHPSHOP_COUPON_EDIT_HEADER = "§ó·sÀu«Ý";
-    var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = "ÂI¿ïÀu«Ý§I´«¥N½X¨Ó½s¿è, ©Î¬O¿ï¾Ü¤@­Ó¸¹½XµM«áÂI¿ï§R°£:";
-    var $_PHPSHOP_COUPON_CODE_HEADER = "¥N½X";
-    var $_PHPSHOP_COUPON_PERCENT_TOTAL = "¦Ê¤À¤ñ©Î¬OÁ`ÃB";
-    var $_PHPSHOP_COUPON_TYPE = "Àu«ÝÃþ«¬";
-    var $_PHPSHOP_COUPON_TYPE_TOOLTIP = "¤@±iÀu«ÝÂ§¨÷¤@¥¹¥Î¨Ó¥´§é¤§«á±N³Q§R°£. ¦Ó¥Ã¤[«¬Àu«Ý¨÷«h¥i¥H·Q¦h±`¥Î´N¥Î, ÀHÅU«È°ª¿³.";
-    var $_PHPSHOP_COUPON_TYPE_GIFT = "Àu«ÝÂ§¨÷";    
-    var $_PHPSHOP_COUPON_TYPE_PERMANENT = "¥Ã¤[«¬Àu«Ý¨÷";    
-    var $_PHPSHOP_COUPON_VALUE_HEADER = "¼Æ­È";
-    var $_PHPSHOP_COUPON_DELETE_BUTTON = "§R°£¥N½X";
-    var $_PHPSHOP_COUPON_CONFIRM_DELETE = "±z½T©w­n§R°£³o²ÕÀu«Ý§I´«¥N½X?";
-    var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = "½Ð§¹¦¨©Ò¦³Äæ¦ì.";
-    var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = "Àu«Ýªº­È¥²¶·¬O¼Æ¦r.";
-    var $_PHPSHOP_COUPON_NEW_HEADER = "·sªºÀu«Ý";
-    var $_PHPSHOP_COUPON_COUPON_HEADER = "Àu«Ý§I´«¥N½X";
-    var $_PHPSHOP_COUPON_PERCENT = "¦Ê¤À¤ñ";
-    var $_PHPSHOP_COUPON_TOTAL = "Á`ÃB";
-    var $_PHPSHOP_COUPON_VALUE = "­È";
-    var $_PHPSHOP_COUPON_CODE_SAVED = "Àu«Ý¥N½X¤wÀx¦s.";
-    var $_PHPSHOP_COUPON_SAVE_BUTTON = "Àx¦sÀu«Ý";
-    var $_PHPSHOP_COUPON_DISCOUNT = "Àu«Ý§é¦©";
-    var $_PHPSHOP_COUPON_CODE_INVALID = "Àu«Ý§I´«¥N½X¤£¦s¦b. ½Ð¦A¸Õ¤@¦¸.";
-    var $_PHPSHOP_COUPONS_ENABLE = "±Ò°ÊÀu«Ý¨Ï¥Î";
-    var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = "°²¨Ï±z±Ò°Ê, ªí¥Ü¤¹³\ÅU«È¨Ï¥ÎÀu«Ý§I´«¥N½X¨Ó´«¨ú§é¦©.";
-    
-    /* Free Shipping */
-    var $_PHPSHOP_FREE_SHIPPING = "§K¹B¶O";
-    var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = "¥»¶µ­qÁÊ§K¹B¶O!";
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT = "§K¹B¶O©Ò»Ý³Ì§Cª÷ÃB";
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = "Á`¦@ª÷ÃB (¥]¬Aµ|ª÷!) «üªº¬O§K¹B¶Oªº³Ì§Cª÷ÃB 
+        ²Ä¤G­ÓÃöÁä¦rªº°Ó«~¡C';
+	var $_PHPSHOP_ORDERBY = '±Æ§Ç¥H';
+	var $_PHPSHOP_CUSTOMER_RATING = 'ÅU«È¥­§¡µû»ù';
+	var $_PHPSHOP_TOTAL_VOTES = '¥þ³¡²¼¼Æ';
+	var $_PHPSHOP_CAST_VOTE = '½Ð§ë²¼';
+	var $_PHPSHOP_RATE_BUTTON = 'µû»ù';
+	var $_PHPSHOP_RATE_NOM = 'µû»ù';
+	var $_PHPSHOP_REVIEWS = 'ÅU«Èµû½×';
+	var $_PHPSHOP_NO_REVIEWS = '¦¹°Ó«~¼ÈµLµû½×¡C';
+	var $_PHPSHOP_WRITE_FIRST_REVIEW = '±z¬O²Ä¤@­Ó¬°¦¹°Ó«~¼¶¼gµû½×ªºÅU«È¡C';
+	var $_PHPSHOP_REVIEW_LOGIN = '½Ðµn³°¥H¼¶¼gµû½×¡C';
+	var $_PHPSHOP_REVIEW_ERR_RATE = '½Ðµû»ù¦¹²£«~¥H§¹¦¨±zªºµû½×';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = '½Ð¦A¦h¼g´X¥yµû½×¡A³Ì¤Ö¦r¤¸¼Æ: 100';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = '½ÐÂ²¤Æ±zªºµû½×¡A³Ì¦h¦r¤¸¼Æ: 2000';
+	var $_PHPSHOP_WRITE_REVIEW = '¬°¦¹°Ó«~¼¶¼gµû½×';
+	var $_PHPSHOP_REVIEW_RATE = '­º¥ý: ½Ð¹ï¦¹°Ó«~°µ¥Xµû»ù¡C½Ð¦b0(³Ì®t)¨ì5(³Ì¦n)¤§¶¡°µ¥Xµû»ù¡C';
+	var $_PHPSHOP_REVIEW_COMMENT = '²{¦b½Ð°µ¥X¤@­Óµû½×¡C(³Ì¤Ö 100¡A³Ì¦h:2000 ¦r¤¸) ';
+	var $_PHPSHOP_REVIEW_COUNT = '¦r¼Æ: ';
+	var $_PHPSHOP_REVIEW_SUBMIT = '´£¥æµû½×';
+	var $_PHPSHOP_REVIEW_ALREADYDONE = '·PÁÂ±z¼¶¼g¤F¦¹°Ó«~ªºµû½×¡C';
+	var $_PHPSHOP_REVIEW_THANKYOU = '·PÁÂ±zªºµû»ù';
+	var $_PHPSHOP_COMMENT = 'µû½×';
+	var $_PHPSHOP_CREDITCARD_FORM_LBL = '¼W¥[/½s¿è«H¥Î¥dÃþ«¬';
+	var $_PHPSHOP_CREDITCARD_NAME = '«H¥Î¥d¦WºÙ';
+	var $_PHPSHOP_CREDITCARD_CODE = '«H¥Î¥d - short code';
+	var $_PHPSHOP_CREDITCARD_TYPE = '«H¥Î¥dÃþ«¬';
+	var $_PHPSHOP_CREDITCARD_LIST_LBL = '«H¥Î¥d¦Cªí';
+	var $_PHPSHOP_UDATE_ADDRESS = '§ó·s¦a§}';
+	var $_PHPSHOP_CONTINUE_SHOPPING = 'Ä~ÄòÁÊª«';
+	var $_PHPSHOP_THANKYOU_SUCCESS = '±zªº­q³æ¤w¸g¦¨¥´£¥æ';
+	var $_PHPSHOP_ORDER_LINK = 'ÂIÀ»¦¹Ãìµ²¬d¬Ý­q³æ¸Ô±¡';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = '§Aªº²Ä {order_id}¸¹­q³æª¬ºA¤w¸g§ïÅÜ¡C';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = '·sªºª¬ºA¬O:';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = '½ÐÂIÀ»¤U¦CÃìµ²¥H¬d¬Ý­q³æ²Ó¸`:';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = 'ÅÜ§ó­q³æª¬ºA: §Aªº²Ä {order_id}¸¹­q³æ';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY = '´£¿ôÅU«È?';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = '½Ð¥ý§ïÅÜ­q³æª¬ºA!';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = '¹w³]ÅU«È¸s²Õªº°â»ù§é¦© (¥H¦Ê¤À¤ñªº§Î¦¡)';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = '¥¿­Èªº X ·N«üµÛ:°Ó«~¦pªG¹ï©ó¸Ó¸s²ÕÅU«È¨S¦³«ü©w»ù®æªº¸Ü¡A¨º»ò±N¦b¹w³]»ù®æ¤W­±´î¤Ö X%¡C­t­È«h¦³¬Û¤Ï®ÄªG¡C';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = '°Ó«~§é¦©';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = '°Ó«~§é¦©¦Cªí';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = '¼W¥[/½s¿è°Ó«~§é¦©';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = '§é¦©¶q';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = '¿é¤J§é¦©¶q';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = '§é¦©Ãþ«¬';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = '¦Ê¤À¤ñ';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = 'Á`¦@';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = '¼Æ¶q¬O¦Ê¤À¤ñ§é¦©ÁÙ¬OÁ`¦@§é¦©?';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = '§é¦©°_©l¤é´Á';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = '«ü©w§é¦©°_©l¤é´Á';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = '§é¦©µ²§ô¤é´Á';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = '«ü©w§é¦©µ²§ô¤é´Á';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = '±z¥i¥H¨Ï¥Î°Ó«~§é¦©ªí¥H¼W¥[§é¦©¡I';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = '±z¸`¬Ù¤F';
+	var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = '¬d¬Ý¥þ¤Ø¤o¹Ï¤ù';
+	var $_PHPSHOP_CURRENCY_DISPLAY = '³f¹ôÅã¥Ü«¬ºA';
+	var $_PHPSHOP_CURRENCY_SYMBOL = '¥Ø«eªº²Å¸¹';
+	var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = '±z¥i¥H¦b¦¹¨Ï¥Î HTML ¦r¤¸ (¨Ò¦p. &euro;,&pound;,&yen;,...)';
+	var $_PHPSHOP_CURRENCY_DECIMALS = '¤p¼ÆÂI';
+	var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = '¤p¼ÆÂIÅã¥Ü¦ì¼Æ (¥i¥H¬O0)<br><b>³]¦¨¤£¦Pªº¦ì¼Æ¥i¯à³y¦¨»~®t</b>';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = '¤p¼ÆÂI²Å¸¹';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = '¥Î¨Ó·í¤p¼ÆÂI²Å¸¹ªº¦r¤¸';
+	var $_PHPSHOP_CURRENCY_THOUSANDS = '¤d¤À¦ì²Å¸¹';
+	var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = '¥Î¨Ó¹j¶}¤d¤À¦ìªº¦r¤¸ (¥i¥HªÅ¥Õ)';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = 'Positive format';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = '¥Î¨ÓÅã¥Ü¥¿­Èªº®æ¦¡.<br>(Symb ¥Nªí³f¹ô²Å¸¹)';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = 'Negative format';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = '¥Î¨ÓÅã¥Ü­t­Èªº®æ¦¡.<br>(Symb ¥Nªí³f¹ô²Å¸¹)';
+	var $_PHPSHOP_OTHER_LISTS = '¨ä¥L°Ó«~¦Cªí';
+	var $_PHPSHOP_MORE_IMAGES = 'ÂsÄý§ó¦h¹Ï¤ù';
+	var $_PHPSHOP_AVAILABLE_IMAGES = '¥i¥Îªº¹Ï¤ùµ¹';
+	var $_PHPSHOP_BACK_TO_DETAILS = '¦^¨ì°Ó«~¸Ô²Ó¸ê®Æ';
+	var $_PHPSHOP_FILEMANAGER = 'ÀÉ®×ºÞ²z­û';
+	var $_PHPSHOP_FILEMANAGER_LIST = 'ÀÉ®×ºÞ²z­û::°Ó«~¦Cªí';
+	var $_PHPSHOP_FILEMANAGER_ADD = '¼W¥[¹Ï¤ù/ÀÉ®×';
+	var $_PHPSHOP_FILEMANAGER_IMAGES = '¤À°tªº¹Ï¤ù';
+	var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = '¥i³Q¤U¸ü?';
+	var $_PHPSHOP_FILEMANAGER_FILES = '¤À°tªºÀÉ®× (Datasheets,...)';
+	var $_PHPSHOP_FILEMANAGER_PUBLISHED = 'µo§G?';
+	var $_PHPSHOP_FILES_LIST = 'ÀÉ®×ºÞ²z­û: ¹Ï¤ù/ÀÉ®×²M³æµ¹';
+	var $_PHPSHOP_FILES_LIST_FILENAME = 'ÀÉ¦W';
+	var $_PHPSHOP_FILES_LIST_FILETITLE = 'ÀÉ®×©ïÀY';
+	var $_PHPSHOP_FILES_LIST_FILETYPE = 'ÀÉ®×Ãþ«¬';
+	var $_PHPSHOP_FILES_LIST_EDITFILE = '½s¿èÀÉ®×µn¿ý';
+	var $_PHPSHOP_FILES_LIST_FULL_IMG = '§¹¾ã¹Ï¤ù';
+	var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = 'ÁY¹Ï';
+	var $_PHPSHOP_FILES_FORM = '¤W¶Ç¤@­ÓÀÉ®×µ¹';
+	var $_PHPSHOP_FILES_FORM_CURRENT_FILE = '¥Ø«eªºÀÉ®×';
+	var $_PHPSHOP_FILES_FORM_FILE = 'ÀÉ®×';
+	var $_PHPSHOP_FILES_FORM_IMAGE = '¹Ï¤ù';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_TO = '¤W¶Ç¦Ü';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = '¹w³]ªº°Ó«~¹Ï¤ù¸ô®|';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = '«ü©wªºÀÉ®×©Ò¦b¦a';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = '¤U¸ü¸ô®| (¨Ò¦p. ³c°â¤U¸ü°Ó«~®É!)';
+	var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = '¦Û°Ê²£¥ÍÁY¹Ï?';
+	var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = 'µo§GÀÉ®×?';
+	var $_PHPSHOP_FILES_FORM_FILE_TITLE = 'ÀÉ®×©ïÀY (ÅU«È·|¬Ý¨ìªº)';
+	var $_PHPSHOP_FILES_FORM_FILE_DESC = 'ÀÉ®×»¡©ú';
+	var $_PHPSHOP_FILES_FORM_FILE_URL = 'ÀÉ®×¦ì§} («D¥²»Ý)';
+	var $_PHPSHOP_FILES_PATH_ERROR = '½Ð´£¨Ñ¤@­Ó¦³®Äªº¸ô®|!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = 'ÁY¹Ï¤w¸g²£¥Í¦¨¥!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = 'µLªk²£¥ÍÁY¹Ï!';
+	var $_PHPSHOP_FILES_UPLOAD_FAILURE = 'ÀÉ®×/¹Ï¤ù ¤W¶Ç¿ù»~';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = 'µLªk§R°£§¹¾ã¹Ï¤ùÀÉ®×.';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = '§¹¾ã¹Ï¤ù§R°£¦¨¥.';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = 'µLªk§R°£ÁY¹ÏÀÉ®× (¥i¯à¤£¦s¦b): ';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = 'ÁY¹Ï§R°£¦¨¥.';
+	var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = 'µLªk§R°£¦¹ÀÉ®×.';
+	var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = 'ÀÉ®×§R°£¦¨¥.';
+	var $_PHPSHOP_FILES_NOT_FOUND = '©êºp, ­n¨DªºÀÉ®×¥¼§ä¨ì!';
+	var $_PHPSHOP_IMAGE_NOT_FOUND = '¹Ï¤ù¥¼§ä¨ì!';
+	var $_PHPSHOP_COUPON_MOD = 'Àu«Ý';
+	var $_PHPSHOP_COUPONS = 'Àu«Ý';
+	var $_PHPSHOP_COUPON_LIST = 'Àu«Ý²M³æ';
+	var $_PHPSHOP_COUPON_ALREADY_REDEEMED = 'Àu«Ý¤w³Q§I´«.';
+	var $_PHPSHOP_COUPON_REDEEMED = 'Àu«Ý¤w§I´«! ÁÂÁÂ±z.';
+	var $_PHPSHOP_COUPON_ENTER_HERE = '¦pªG±z¦³Àu«Ý§I´«¥N½X, ½Ð¦b¥H¤U¿é¤J:';
+	var $_PHPSHOP_COUPON_SUBMIT_BUTTON = '´£¥æ';
+	var $_PHPSHOP_COUPON_CODE_EXISTS = '¦¹Àu«Ý§I´«¥N½X¤w¦s¦b. ½Ð¦A¸Õ¤@¦¸.';
+	var $_PHPSHOP_COUPON_EDIT_HEADER = '§ó·sÀu«Ý';
+	var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = 'ÂI¿ïÀu«Ý§I´«¥N½X¨Ó½s¿è, ©Î¬O¿ï¾Ü¤@­Ó¸¹½XµM«áÂI¿ï§R°£:';
+	var $_PHPSHOP_COUPON_CODE_HEADER = '¥N½X';
+	var $_PHPSHOP_COUPON_PERCENT_TOTAL = '¦Ê¤À¤ñ©Î¬OÁ`ÃB';
+	var $_PHPSHOP_COUPON_TYPE = 'Àu«ÝÃþ«¬';
+	var $_PHPSHOP_COUPON_TYPE_TOOLTIP = '¤@±iÀu«ÝÂ§¨÷¤@¥¹¥Î¨Ó¥´§é¤§«á±N³Q§R°£. ¦Ó¥Ã¤[«¬Àu«Ý¨÷«h¥i¥H·Q¦h±`¥Î´N¥Î, ÀHÅU«È°ª¿³.';
+	var $_PHPSHOP_COUPON_TYPE_GIFT = 'Àu«ÝÂ§¨÷';
+	var $_PHPSHOP_COUPON_TYPE_PERMANENT = '¥Ã¤[«¬Àu«Ý¨÷';
+	var $_PHPSHOP_COUPON_VALUE_HEADER = '¼Æ­È';
+	var $_PHPSHOP_COUPON_DELETE_BUTTON = '§R°£¥N½X';
+	var $_PHPSHOP_COUPON_CONFIRM_DELETE = '±z½T©w­n§R°£³o²ÕÀu«Ý§I´«¥N½X?';
+	var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = '½Ð§¹¦¨©Ò¦³Äæ¦ì.';
+	var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = 'Àu«Ýªº­È¥²¶·¬O¼Æ¦r.';
+	var $_PHPSHOP_COUPON_NEW_HEADER = '·sªºÀu«Ý';
+	var $_PHPSHOP_COUPON_COUPON_HEADER = 'Àu«Ý§I´«¥N½X';
+	var $_PHPSHOP_COUPON_PERCENT = '¦Ê¤À¤ñ';
+	var $_PHPSHOP_COUPON_TOTAL = 'Á`ÃB';
+	var $_PHPSHOP_COUPON_VALUE = '­È';
+	var $_PHPSHOP_COUPON_CODE_SAVED = 'Àu«Ý¥N½X¤wÀx¦s.';
+	var $_PHPSHOP_COUPON_SAVE_BUTTON = 'Àx¦sÀu«Ý';
+	var $_PHPSHOP_COUPON_DISCOUNT = 'Àu«Ý§é¦©';
+	var $_PHPSHOP_COUPON_CODE_INVALID = 'Àu«Ý§I´«¥N½X¤£¦s¦b. ½Ð¦A¸Õ¤@¦¸.';
+	var $_PHPSHOP_COUPONS_ENABLE = '±Ò°ÊÀu«Ý¨Ï¥Î';
+	var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = '°²¨Ï±z±Ò°Ê, ªí¥Ü¤¹³ÅU«È¨Ï¥ÎÀu«Ý§I´«¥N½X¨Ó´«¨ú§é¦©.';
+	var $_PHPSHOP_FREE_SHIPPING = '§K¹B¶O';
+	var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = '¥»¶µ­qÁÊ§K¹B¶O!';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT = '§K¹B¶O©Ò»Ý³Ì§Cª÷ÃB';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = 'Á`¦@ª÷ÃB (¥]¬Aµ|ª÷!) «üªº¬O§K¹B¶Oªº³Ì§Cª÷ÃB 
                                                 (Á|¨Ò: <strong>50</strong> «üªº¬O·íÅU«Èµ²±b
-                                                ª÷ÃBÁ`¼Æ¬° \$50 (¥]¬Aµ|ª÷)©Î¶W¹L®É§K¹B¶O.";
-    var $_PHPSHOP_YOUR_STORE = "±zªº°Ó©±";
-    var $_PHPSHOP_CONTROL_PANEL = "±±¨î¥x";
-    
-    /* Configuration Additions */
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = "PDF-«ö¶s";
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = "°Ó©±¤ºÅã¥Ü©Î¬OÁôÂÃ PDF-«ö¶s";
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = "¨C¦¸­qÁÊ³£¥²¶·¦P·N¨Ï¥Î±ø´Ú?";
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = "¿ï¨ú°²¦p±z­nÅU«È¨C¦¸­qÁÊ³£­n¦P·N±zªº¨Ï¥Î±ø´Ú (¤U³æ¤§«e).";
-
-    // We need this for eCheck.net Payments
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = "»È¦æ±b¸¹Ãþ«¬";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = "¤ä²¼±b¤á";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = "°Ó·~¤ä²¼±b¤á";
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = "Àx»W±b¤á";
-    
-    var $_PHPSHOP_PAYMENT_AN_RECURRING = "¦Û°ÊÂà±b?";
-    var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = "¦Û©w¸q±z­nªº¦Û°ÊÂà±b.";
-    
-    var $_PHPSHOP_INTERNAL_ERROR = "­n¨D¤è¦¡µo¥Í¤º³¡¿ù»~";
-    var $_PHPSHOP_PAYMENT_ERROR = "¥I´Úµ{§Ç¥¢±Ñ";
-    var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = "¥I´Úµ{§Ç¤w¦¨¥\ ";
-    
-    /* UPS Shipping Module */
-    var $_PHPSHOP_UPS_RESPONSE_ERROR = "UPS µLªk³B²z¹B¶O¶O²vªº­n¨D.";
-    var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = "«OÃÒ¨ì³f¤Ñ¼Æ";
-    var $_PHPSHOP_UPS_PICKUP_METHOD = "UPS ¦¬³f¤è¦¡";
-    var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = "±z¦p¦ó§â¥]»qµ¹ UPS?";
-    var $_PHPSHOP_UPS_PACKAGE_TYPE = "UPS ¥]¸Ë?";
-    var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = "¿ï¾Ü¹w³]Ãþ«¬ªº¥]¸Ë.";
-    var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = "°e³f¨ì©²?";
-    var $_PHPSHOP_UPS_RESIDENTIAL = "¨ì©²(RES)";
-    var $_PHPSHOP_UPS_COMMERCIAL    = "°Ó·~°e³f (COM)";
-    var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = "°e³f¨ì©²(RES)©Î°Ó·~°e³f(COM)ªº³ø»ù.";
-    var $_PHPSHOP_UPS_HANDLING_FEE = "¤âÄò¶O";
-    var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = "±z³o­Ó¹B°e¤è¦¡ªº¤âÄò¶O.";
-    var $_PHPSHOP_UPS_TAX_CLASS = "µ|§O";
-    var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = "¹B¶O¨Ï¥Î¥H¤Uªºµ|§O.";
-    
-    var $_PHPSHOP_ERROR_CODE = "¿ù»~¥N½X";
-    var $_PHPSHOP_ERROR_DESC = "¿ù»~´y­z";
-    
-    var $_PHPSHOP_CHANGE_TRANSACTION_KEY = "Åã¥Ü/§ó§ï ¥æ©ö½X";
-    var $_PHPSHOP_CHANGE_PASSKEY_FORM = "Åã¥Ü/§ó§ï ±K½X/¥æ©ö½X";
-    var $_PHPSHOP_TYPE_PASSWORD = "½Ð¿é¤J±zªº¨Ï¥ÎªÌ±K½X";
-    var $_PHPSHOP_CURRENT_PASSWORD = "¥Ø«eªº±K½X";
-    var $_PHPSHOP_CURRENT_TRANSACTION_KEY = "¥Ø«eªº¥æ©ö½X";
-    var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = "¥æ©ö½X¤w§ó´«¦¨¥\.";
-    
-    var $_PHPSHOP_PAYMENT_CVV2 = "­n¨D/¨ú±o «H¥Î¥d ±ÂÅv½X (CVV2/CVC2/CID)";
-    var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = "ÀË¬d¤@­Ó¥¿½Tªº CVV2/CVC2/CID ­È (¦b«H¥Î¥dªº­I«á³Ì«á3­Ó©Î¬O4­Ó¼Æ¦r, American Expressªº«H¥Î¥d¦b«e­±)?";
-    var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = "½Ð¿é¤J«H¥Î¥d­I«áªº³Ì«á3­Ó©Î¬O4­Ó¼Æ¦r (American Express«H¥Î¥dªº¦b«e­±)";
-    var $_PHPSHOP_CUSTOMER_CVV2_ERROR = "±z»Ý­n¿é¤J±zªº«H¥Î¥d±ÂÅv½X¥HÄ~Äò.";
-    
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME = "¶ñ¤J¥ô¤@ªºÀÉ¦W";
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = "ª`·N: ±z¥i¥H¦b³o¸Ì¶ñ¤J¤@­ÓÀÉ¦W. <strong>¦pªG±z¦b³o¸Ì¶ñ¤J¤@­ÓÀÉ¦W, ±N¤£·|¦³ÀÉ®×³Q¤W¶Ç!!! ±z±N¥²¶·¤â°Ê§Q¥ÎFTP¤W¶Ç!</strong>.";
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD = "©Î¤W¶Ç·sÀÉ®×";
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = "±z¥i¥H¤W¶Ç¤@­ÓÀÉ®×. ³o­ÓÀÉ®×±N¬O±z©Ò³c½æªº°Ó«~. ¤@­Ó¤w¦s¦bªºÀÉ®×±N³Q´À´«.";
-    
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = "¦b¦¹¿é¤J¥ô¦óªº¤å¦r±N·|¦b°Ó«~¤¶²Ð­¶­±Åã¥Üµ¹ÅU«È.<br />¨Ò¦p: 24h, 48 hours, 3 - 5 days, On Order.....";
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = "©Î¬O¿ï¾Ü¤@­Ó¹Ï¤ùÅã¥Ü¦b¸Ô²Ó­¶­± (¤¶²Ð­¶­±).<br />¹Ï¤ù¦b¥Ø¿ý <i>/components/com_phpshop/shop_image/availability</i>¸Ì­±<br />";
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = "ÄÝ©Ê²M³æ";
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = "<h4>ÄÝ©Ê²M³æ®æ¦¡ªº¨Ò¤l:</h4>
+                                                ª÷ÃBÁ`¼Æ¬° $50 (¥]¬Aµ|ª÷)©Î¶W¹L®É§K¹B¶O.';
+	var $_PHPSHOP_YOUR_STORE = '±zªº°Ó©±';
+	var $_PHPSHOP_CONTROL_PANEL = '±±¨î¥x';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = 'PDF-«ö¶s';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = '°Ó©±¤ºÅã¥Ü©Î¬OÁôÂÃ PDF-«ö¶s';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = '¨C¦¸­qÁÊ³£¥²¶·¦P·N¨Ï¥Î±ø´Ú?';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = '¿ï¨ú°²¦p±z­nÅU«È¨C¦¸­qÁÊ³£­n¦P·N±zªº¨Ï¥Î±ø´Ú (¤U³æ¤§«e).';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = '»È¦æ±b¸¹Ãþ«¬';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = '¤ä²¼±b¤á';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = '°Ó·~¤ä²¼±b¤á';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = 'Àx»W±b¤á';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING = '¦Û°ÊÂà±b?';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = '¦Û©w¸q±z­nªº¦Û°ÊÂà±b.';
+	var $_PHPSHOP_INTERNAL_ERROR = '­n¨D¤è¦¡µo¥Í¤º³¡¿ù»~';
+	var $_PHPSHOP_PAYMENT_ERROR = '¥I´Úµ{§Ç¥¢±Ñ';
+	var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = '¥I´Úµ{§Ç¤w¦¨¥ ';
+	var $_PHPSHOP_UPS_RESPONSE_ERROR = 'UPS µLªk³B²z¹B¶O¶O²vªº­n¨D.';
+	var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = '«OÃÒ¨ì³f¤Ñ¼Æ';
+	var $_PHPSHOP_UPS_PICKUP_METHOD = 'UPS ¦¬³f¤è¦¡';
+	var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = '±z¦p¦ó§â¥]»qµ¹ UPS?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE = 'UPS ¥]¸Ë?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = '¿ï¾Ü¹w³]Ãþ«¬ªº¥]¸Ë.';
+	var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = '°e³f¨ì©²?';
+	var $_PHPSHOP_UPS_RESIDENTIAL = '¨ì©²(RES)';
+	var $_PHPSHOP_UPS_COMMERCIAL = '°Ó·~°e³f (COM)';
+	var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = '°e³f¨ì©²(RES)©Î°Ó·~°e³f(COM)ªº³ø»ù.';
+	var $_PHPSHOP_UPS_HANDLING_FEE = '¤âÄò¶O';
+	var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = '±z³o­Ó¹B°e¤è¦¡ªº¤âÄò¶O.';
+	var $_PHPSHOP_UPS_TAX_CLASS = 'µ|§O';
+	var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = '¹B¶O¨Ï¥Î¥H¤Uªºµ|§O.';
+	var $_PHPSHOP_ERROR_CODE = '¿ù»~¥N½X';
+	var $_PHPSHOP_ERROR_DESC = '¿ù»~´y­z';
+	var $_PHPSHOP_CHANGE_TRANSACTION_KEY = 'Åã¥Ü/§ó§ï ¥æ©ö½X';
+	var $_PHPSHOP_CHANGE_PASSKEY_FORM = 'Åã¥Ü/§ó§ï ±K½X/¥æ©ö½X';
+	var $_PHPSHOP_TYPE_PASSWORD = '½Ð¿é¤J±zªº¨Ï¥ÎªÌ±K½X';
+	var $_PHPSHOP_CURRENT_PASSWORD = '¥Ø«eªº±K½X';
+	var $_PHPSHOP_CURRENT_TRANSACTION_KEY = '¥Ø«eªº¥æ©ö½X';
+	var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = '¥æ©ö½X¤w§ó´«¦¨¥.';
+	var $_PHPSHOP_PAYMENT_CVV2 = '­n¨D/¨ú±o «H¥Î¥d ±ÂÅv½X (CVV2/CVC2/CID)';
+	var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = 'ÀË¬d¤@­Ó¥¿½Tªº CVV2/CVC2/CID ­È (¦b«H¥Î¥dªº­I«á³Ì«á3­Ó©Î¬O4­Ó¼Æ¦r, American Expressªº«H¥Î¥d¦b«e­±)?';
+	var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = '½Ð¿é¤J«H¥Î¥d­I«áªº³Ì«á3­Ó©Î¬O4­Ó¼Æ¦r (American Express«H¥Î¥dªº¦b«e­±)';
+	var $_PHPSHOP_CUSTOMER_CVV2_ERROR = '±z»Ý­n¿é¤J±zªº«H¥Î¥d±ÂÅv½X¥HÄ~Äò.';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME = '¶ñ¤J¥ô¤@ªºÀÉ¦W';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = 'ª`·N: ±z¥i¥H¦b³o¸Ì¶ñ¤J¤@­ÓÀÉ¦W. <strong>¦pªG±z¦b³o¸Ì¶ñ¤J¤@­ÓÀÉ¦W, ±N¤£·|¦³ÀÉ®×³Q¤W¶Ç!!! ±z±N¥²¶·¤â°Ê§Q¥ÎFTP¤W¶Ç!</strong>.';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = '©Î¤W¶Ç·sÀÉ®×';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = '±z¥i¥H¤W¶Ç¤@­ÓÀÉ®×. ³o­ÓÀÉ®×±N¬O±z©Ò³c½æªº°Ó«~. ¤@­Ó¤w¦s¦bªºÀÉ®×±N³Q´À´«.';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = '¦b¦¹¿é¤J¥ô¦óªº¤å¦r±N·|¦b°Ó«~¤¶²Ð­¶­±Åã¥Üµ¹ÅU«È.<br />¨Ò¦p: 24h, 48 hours, 3 - 5 days, On Order.....';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = '©Î¬O¿ï¾Ü¤@­Ó¹Ï¤ùÅã¥Ü¦b¸Ô²Ó­¶­± (¤¶²Ð­¶­±).<br />¹Ï¤ù¦b¥Ø¿ý <i>/components/com_phpshop/shop_image/availability</i>¸Ì­±<br />';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'ÄÝ©Ê²M³æ';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>ÄÝ©Ê²M³æ®æ¦¡ªº¨Ò¤l:</h4>
         <pre>¤j¤p,XL[+100],M,S[-100];ÃC¦â,Red,Green,Yellow,©ù¶QÃC¦â[=2400];µ¥µ¥,..,..</pre>
         <h4>¬A¸¹¤ºªº°â»ù½Õ¾ã¨Ï¥Î¥H¤Uªº¶i¶¥²Å¸¹¨Ó§ó§ï:</h4>
         <pre>
-        &#43; == ¥[¤W³o­Ó¼Æ­È¨ì­ì¥»³]©wªº°â»ù.<br />
-        &#45; == ´î±¼³o­Ó¼Æ­È¨ì­ì¥»³]©w°â»ù.<br />
-        &#61; == ª½±µ³]©w°Ó«~ªº°â»ù¨ì³o­Ó¼Æ­È.
-      </pre>";
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = "¦Û©w¸qÄÝ©Ê²M³æ";
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = "<h4>¦Û©w¸qÄÝ©Ê²M³æ®æ¦¡ªº¨Ò¤l:</h4>
-        <pre>¦WºÙ;ÃB¥~;</strong>...</pre>";
+        + == ¥[¤W³o­Ó¼Æ­È¨ì­ì¥»³]©wªº°â»ù.<br />
+        - == ´î±¼³o­Ó¼Æ­È¨ì­ì¥»³]©w°â»ù.<br />
+        = == ª½±µ³]©w°Ó«~ªº°â»ù¨ì³o­Ó¼Æ­È.
+      </pre>';
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = '¦Û©w¸qÄÝ©Ê²M³æ';
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = '<h4>¦Û©w¸qÄÝ©Ê²M³æ®æ¦¡ªº¨Ò¤l:</h4>
+        <pre>¦WºÙ;ÃB¥~;</strong>...</pre>';
+	var $_PHPSHOP_MULTISELECT = '¤@¦¸¦h¿ï: ¨Ï¥Î CTRLÁä ¸ò ·Æ¹«';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = '±Ò¥Î eProcessingNetwork.com ¤ä¥I?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = '¦b phpshop ¿ï¾Ü¨Ï¥Î eProcessingNetwork.com.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = '´ú¸Õ¼Ò¦¡ ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = '¿ï¾Ü \'¬O\' ¶i¦æ´ú¸Õ. ¿ï¾Ü \'§_\' ±Ò¥Î½u¤W¥æ©ö.';
+	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = 'eProcessingNetwork.com µn¤J ID';
+	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = '³o¬O±zªº eProcessingNetwork.com µn¤J ID';
+	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = 'eProcessingNetwork.com ¥æ©ö½X';
+	var $_PHPSHOP_ADMIN_CFG_EPN_KEY_EXPLAIN = '³o¬O±zªº eProcessingNetwork.com ¥æ©ö½X';
+	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE = '±ÂÅvÃþ«¬';
+	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN = '³o¬O eProcessingNetwork.com ±ÂÅvÃþ«¬.';
+	var $_PHPSHOP_RELATED_PRODUCTS = '¬ÛÃö°Ó«~';
+	var $_PHPSHOP_RELATED_PRODUCTS_TIP = '±z¥i¥H¥Î³o­Ó¦Cªí«Ø¥ß¬ÛÃö°Ó«~ÁpÃ´. ½Ð¿ï¾Ü¤@©Î¦h­Ó°Ó«~µM«á¥¦­Ì´N¦¨¬° <strong>¬ÛÃö°Ó«~</strong>.';
+	var $_PHPSHOP_RELATED_PRODUCTS_HEADING = '±z¥i¯à¤]¹ï³o¨Ç°Ó«~·P¿³½ì';
+	var $_PHPSHOP_IMAGE_ACTION = '¹Ï¤ù°Ê§@';
+	var $_PHPSHOP_NONE = 'µL';
+	var $_PHPSHOP_ORDER_HISTORY = '­qÁÊ¾úµ{';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT = 'µû½×';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = '±z­q³æªºµû½×';
+	var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = '¥]¬A³o­Óµû½×?';
+	var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = '¤é´Á¤w¼W¥[';
+	var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = '³qª¾ÅU«È?';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE = '­qÁÊª¬ºA§ó§ï';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = 'USPS ¨Ï¥ÎªÌ¦WºÙ';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = 'USPS ¹B°e¨Ï¥ÎªÌ¦WºÙ';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = 'USPS ±K½X';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = 'USPS ±K½X';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = 'USPS shipping ¦øªA¾¹';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = 'USPS shipping ¦øªA¾¹';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = 'USPS shipping ¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = 'USPS shipping ¸ô®|';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = 'USPS ¹B°e®e¾¹';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = 'USPS ¹B°e®e¾¹';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = 'USPS ¥]¸Ë¤j¤p';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = 'USPS ¥]¸Ë¤j¤p';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = 'USPS Package ID (¥²¶·¬O 0, ¤£¤ä´©¦h¥]»q)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = 'USPS Package ID (¥²¶·¬O 0, ¤£¤ä´©¦h¥]»q)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = 'USPS ¹B°eÃþ«¬ (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = 'USPS ¹B°eÃþ«¬ (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = '¤âÄò¶O';
+	var $_PHPSHOP_USPS_HANDLING_FEE = '³oºØ¹B°e¤è¦¡ªº¤âÄò¶O.';
+	var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = '³oºØ¹B°e¤è¦¡ªº¤âÄò¶O.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE = '±zªº°ê»Ú USPS ¹B°eªº¤âÄò¶O.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = '±zªº USPS °ê»Ú¹B°eªº¤âÄò¶O.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE = '±zªº USPS °ê»Ú¹B°e¨C½Sªº¶O²v.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = '±zªº USPS °ê»Ú¹B°e¨C½Sªº¶O²v.';
+	var $_PHPSHOP_USPS_RESPONSE_ERROR = 'USPS µLªk¶i¦æ¹B°e¶O²vªº­n¨D.';
+	var $_PHPSHOP_PARAMETERS_LBL = '°Ñ¼Æ';
+	var $_PHPSHOP_PRODUCT_TYPE_LBL = '°Ó«~Ãþ«¬';
+	var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = '°Ó«~Ãþ«¬²M³æ';
+	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = '¼W¥[/½s¿è °Ó«~Ãþ«¬';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = '°Ó«~Ãþ«¬²M³æµ¹';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = '¦C¥X°Ó«~Ãþ«¬';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = '¼W¥[°Ó«~Ãþ«¬µ¹';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = '¼W¥[°Ó«~Ãþ«¬';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = '°Ó«~Ãþ«¬';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = '°Ó«~Ãþ«¬¦WºÙ';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = '°Ó«~Ãþ«¬´y­z';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = '°Ñ¼Æ';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = '°Ó«~Ãþ«¬¸ê°T';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = 'µo§G?';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = '°Ó«~Ãþ«¬ÂsÄý­¶­±';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = '°Ó«~Ãþ«¬¤¶²Ð­¶­±';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = '°Ó«~Ãþ«¬ªº°Ñ¼Æ';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = '°Ñ¼Æ¸ê°T';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = '°Ó«~Ãþ«¬§ä¤£¨ì!';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = '°Ñ¼Æ¦WºÙ';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = '³o­Ó¦WºÙ±N·|¬Oªí®æªº¦æ¦W. ¥²¶·¬O¤p¼g¦Ó¥BµLªÅ¥Õ.<BR>¨Ò¦p: main_material';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = '°Ñ¼Æ¼ÐÅÒ';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = '°Ñ¼Æ´y­z';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = '°Ñ¼ÆÃþ«¬';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = '¾ã¼Æ';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = '¤å¦r';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = 'Â²µu¤å¦r';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = 'Float';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = 'Char';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = '¤é´Á ¤Î ®É¶¡';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = '¤é´Á';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT = 'YYYY-MM-DD';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = '®É¶¡';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT = 'HH:MM:SS';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = 'Â_¦æ';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = '¦h­Ó­È';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = '¥i¯àªº­È';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = 'Åã¥Ü¥i¯àªº­È§@¬°¦h­«¿ï¾Ü?';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>¦pªG³]©w¤F¥i¯àªº­È, °Ñ¼Æ±N¥u¯à¥Î³o­Ó­È. ¨Ò¤l:</strong><BR><span class="sectionname">Steel;Wood;Plastic;...</span>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = '¹w³]­È';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = '°Ñ¼Æ¹w³]­È¨Ï¥Î³oºØ®æ¦¡:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = '³æ¦ì';
+	var $_PHPSHOP_PARAMETER_SEARCH = '¶i¶¥·j´M«ö·Ó°Ñ¼Æ';
+	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = 'Parameters Search';
+	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = '±z­n§Q¥Î§Þ³N©Ê°Ñ¼Æ¨Ó·j´M°Ó«~¶Ü?<BR>¥i¥H¨Ï¥Î¥ô¤@ªí®æ:';
+	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = 'I am sorry. There is no category for search.';
+	var $_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE = 'I am sorry. There is no published Product Type with this name.';
+	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = '´N¹³';
+	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = '¤£¹³';
+	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = '¥þ¤å·j´M';
+	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = 'All Selected';
+	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = 'Any Selected';
+	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = '­«·s³]©w';
+	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = '·j´MºØÃþ';
+	var $_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS = '§ó§ï°Ñ¼Æ';
+	var $_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER = '»¼´î¶¶§Ç';
+	var $_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER = '»¼¼W¶¶§Ç';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY = 'ºØÃþªº°Ñ¼Æ';
+	var $_PHPSHOP_FEE = '¶O¥Î';
+	var $_PHPSHOP_PRODUCT_CLONE = '½Æ»s°Ó«~';
+	var $_PHPSHOP_CSV_SETTINGS = '³]©w';
+	var $_PHPSHOP_CSV_DELIMITER = '©w¸q²Å¸¹';
+	var $_PHPSHOP_CSV_ENCLOSURE = 'Field Enclosure Char';
+	var $_PHPSHOP_CSV_UPLOAD_FILE = '¤W¶Ç CSV ÀÉ®×';
+	var $_PHPSHOP_CSV_SUBMIT_FILE = '´£¥æ CSV ÀÉ®×';
+	var $_PHPSHOP_CSV_FROM_DIRECTORY = '±q¥Ø¿ý¸ü¤J';
+	var $_PHPSHOP_CSV_FROM_SERVER = '±q¦øªA¾¹¸ü¤J CSV ÀÉ®×';
+	var $_PHPSHOP_CSV_EXPORT_TO_FILE = '¿é¥X CSV ÀÉ®×';
+	var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = '¿ï¾ÜÄæ¦ì¶¶§ÇÃþ«¬';
+	var $_PHPSHOP_CSV_DEFAULT_ORDERING = '¹w³]¶¶§Ç';
+	var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = '§Úªº­q»s¶¶§Ç';
+	var $_PHPSHOP_CSV_SUBMIT_EXPORT = '¿é¥X©Ò¦³°Ó«~¨ì CSV ÀÉ®×';
+	var $_PHPSHOP_CSV_CONFIGURATION_HEADER = 'CSV ¿é¤J / ¿é¥X °t¸m';
+	var $_PHPSHOP_CSV_SAVE_CHANGES = 'Àx¦s§ó§ï';
+	var $_PHPSHOP_CSV_FIELD_NAME = 'Äæ¦ì¦WºÙ';
+	var $_PHPSHOP_CSV_DEFAULT_VALUE = '¹w³]­È';
+	var $_PHPSHOP_CSV_FIELD_ORDERING = 'Äæ¦ì¶¶§Ç';
+	var $_PHPSHOP_CSV_FIELD_REQUIRED = '¥²¶·Äæ¦ì?';
+	var $_PHPSHOP_CSV_IMPORT_EXPORT = '¿é¤J/¿é¥X';
+	var $_PHPSHOP_CSV_NEW_FIELD = '·s¼WÄæ¦ì';
+	var $_PHPSHOP_CSV_DOCUMENTATION = '¤å¥ó';
+	var $_PHPSHOP_PRODUCT_NOT_FOUND = '©êºp, ¤£¹L±z­n¨Dªº°Ó«~¥¼§ä¨ì!';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = 'Åã¥Ü¨S¦³®w¦sªº°Ó«~';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = '·í±Ò¥Î®É, ±N·|³¯¦C¥X¨S¦³®w¦sªº°Ó«~. ¤£µM³oÃþ°Ó«~·|¬OÁôÂÃªº.';
+	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
+	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
         
-    var $_PHPSHOP_MULTISELECT = "¤@¦¸¦h¿ï: ¨Ï¥Î CTRLÁä ¸ò ·Æ¹«";
-        
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = "±Ò¥Î eProcessingNetwork.com ¤ä¥I?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = "¦b phpshop ¿ï¾Ü¨Ï¥Î eProcessingNetwork.com.";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = "´ú¸Õ¼Ò¦¡ ?";
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = "¿ï¾Ü '¬O' ¶i¦æ´ú¸Õ. ¿ï¾Ü '§_' ±Ò¥Î½u¤W¥æ©ö.";
-	
-	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = "eProcessingNetwork.com µn¤J ID";
-	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = "³o¬O±zªº eProcessingNetwork.com µn¤J ID";
-	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = "eProcessingNetwork.com ¥æ©ö½X";
-	var $_PHPSHOP_ADMIN_CFG_EPN_KEY_EXPLAIN = "³o¬O±zªº eProcessingNetwork.com ¥æ©ö½X";
-	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE = "±ÂÅvÃþ«¬";
-	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN = "³o¬O eProcessingNetwork.com ±ÂÅvÃþ«¬.";
-
-    var $_PHPSHOP_RELATED_PRODUCTS = "¬ÛÃö°Ó«~";
-    var $_PHPSHOP_RELATED_PRODUCTS_TIP = "±z¥i¥H¥Î³o­Ó¦Cªí«Ø¥ß¬ÛÃö°Ó«~ÁpÃ´. ½Ð¿ï¾Ü¤@©Î¦h­Ó°Ó«~µM«á¥¦­Ì´N¦¨¬° <strong>¬ÛÃö°Ó«~</strong>.";
-    
-    var $_PHPSHOP_RELATED_PRODUCTS_HEADING = "±z¥i¯à¤]¹ï³o¨Ç°Ó«~·P¿³½ì";
-    
-    var $_PHPSHOP_IMAGE_ACTION = "¹Ï¤ù°Ê§@";
-    var $_PHPSHOP_NONE = "µL";
-    
-    var $_PHPSHOP_ORDER_HISTORY = "­qÁÊ¾úµ{";
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT = "µû½×";
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = "±z­q³æªºµû½×";
-    var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = "¥]¬A³o­Óµû½×?";
-    var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = "¤é´Á¤w¼W¥[";
-    var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = "³qª¾ÅU«È?";
-    var $_PHPSHOP_ORDER_STATUS_CHANGE = "­qÁÊª¬ºA§ó§ï";
-    
-     /* USPS Shipping Module */
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = "USPS ¨Ï¥ÎªÌ¦WºÙ";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = "USPS ¹B°e¨Ï¥ÎªÌ¦WºÙ";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = "USPS ±K½X";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = "USPS ±K½X";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = "USPS shipping ¦øªA¾¹";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = "USPS shipping ¦øªA¾¹";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = "USPS shipping ¸ô®|";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = "USPS shipping ¸ô®|";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = "USPS ¹B°e®e¾¹";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = "USPS ¹B°e®e¾¹";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = "USPS ¥]¸Ë¤j¤p";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = "USPS ¥]¸Ë¤j¤p";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = "USPS Package ID (¥²¶·¬O 0, ¤£¤ä´©¦h¥]»q)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = "USPS Package ID (¥²¶·¬O 0, ¤£¤ä´©¦h¥]»q)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = "USPS ¹B°eÃþ«¬ (Express,First Class,Priority,Parcel,BPM,Library,Media)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = "USPS ¹B°eÃþ«¬ (Express,First Class,Priority,Parcel,BPM,Library,Media)";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = "¤âÄò¶O";
-    var $_PHPSHOP_USPS_HANDLING_FEE = "³oºØ¹B°e¤è¦¡ªº¤âÄò¶O.";
-    var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = "³oºØ¹B°e¤è¦¡ªº¤âÄò¶O.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE = "±zªº°ê»Ú USPS ¹B°eªº¤âÄò¶O.";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = "±zªº USPS °ê»Ú¹B°eªº¤âÄò¶O.";
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE = "±zªº USPS °ê»Ú¹B°e¨C½Sªº¶O²v.";
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = "±zªº USPS °ê»Ú¹B°e¨C½Sªº¶O²v.";
-    var $_PHPSHOP_USPS_RESPONSE_ERROR = "USPS µLªk¶i¦æ¹B°e¶O²vªº­n¨D.";
-    
-    /** Changed Product Type - Begin*/
-    /*** Product Type ***/
-    var $_PHPSHOP_PARAMETERS_LBL = "°Ñ¼Æ";
-    var $_PHPSHOP_PRODUCT_TYPE_LBL = "°Ó«~Ãþ«¬";
-    var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = "°Ó«~Ãþ«¬²M³æ";
-    var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = "¼W¥[/½s¿è °Ó«~Ãþ«¬";
-    // Product - Product Product Type list
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = "°Ó«~Ãþ«¬²M³æµ¹";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = "¦C¥X°Ó«~Ãþ«¬";
-    // Product - Product Product Type form
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = "¼W¥[°Ó«~Ãþ«¬µ¹";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = "¼W¥[°Ó«~Ãþ«¬";
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = "°Ó«~Ãþ«¬";
-    // Product - Product Type form
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = "°Ó«~Ãþ«¬¦WºÙ";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = "°Ó«~Ãþ«¬´y­z";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = "°Ñ¼Æ";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = "°Ó«~Ãþ«¬¸ê°T";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = "µo§G?";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = "°Ó«~Ãþ«¬ÂsÄý­¶­±";
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = "°Ó«~Ãþ«¬¤¶²Ð­¶­±";
-    // Product - Product Type Parameter list
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = "°Ó«~Ãþ«¬ªº°Ñ¼Æ";
-    // Product - Product Type Parameter form
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = "°Ñ¼Æ¸ê°T";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = "°Ó«~Ãþ«¬§ä¤£¨ì!";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = "°Ñ¼Æ¦WºÙ";
-    VAR $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = "³o­Ó¦WºÙ±N·|¬Oªí®æªº¦æ¦W. ¥²¶·¬O¤p¼g¦Ó¥BµLªÅ¥Õ.<BR>¨Ò¦p: main_material";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = "°Ñ¼Æ¼ÐÅÒ";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = "°Ñ¼Æ´y­z";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = "°Ñ¼ÆÃþ«¬";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = "¾ã¼Æ";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = "¤å¦r";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = "Â²µu¤å¦r";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = "Float";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = "Char";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = "¤é´Á ¤Î ®É¶¡";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = "¤é´Á";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT = "YYYY-MM-DD";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = "®É¶¡";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT = "HH:MM:SS";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = "Â_¦æ";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = "¦h­Ó­È";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = "¥i¯àªº­È";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = "Åã¥Ü¥i¯àªº­È§@¬°¦h­«¿ï¾Ü?";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = "<strong>¦pªG³]©w¤F¥i¯àªº­È, °Ñ¼Æ±N¥u¯à¥Î³o­Ó­È. ¨Ò¤l:</strong><BR><span class=\"sectionname\">Steel;Wood;Plastic;...</span>";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = "¹w³]­È";
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = "°Ñ¼Æ¹w³]­È¨Ï¥Î³oºØ®æ¦¡:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>";
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = "³æ¦ì";
-    
-	/************************* FrontEnd ***************************/
-	/** shop.parameter_search.php */
-	var $_PHPSHOP_PARAMETER_SEARCH = "¶i¶¥·j´M«ö·Ó°Ñ¼Æ";
-	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = "Parameters Search";
-	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = "±z­n§Q¥Î§Þ³N©Ê°Ñ¼Æ¨Ó·j´M°Ó«~¶Ü?<BR>¥i¥H¨Ï¥Î¥ô¤@ªí®æ:";
-// 	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = "¨S¦³µ²ªG²Å¦X.";
-	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = "I am sorry. There is no category for search.";
-	/** shop.parameter_search_form.php */
-	var $_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE = "I am sorry. There is no published Product Type with this name.";
-	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = "´N¹³";
-	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = "¤£¹³";
-	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = "¥þ¤å·j´M";
-	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = "All Selected";
-	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = "Any Selected";
-	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = "­«·s³]©w";	
-	/** shop.browse.php */
-	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = "·j´MºØÃþ";
-	var $_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS = "§ó§ï°Ñ¼Æ";
-	var $_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER = "»¼´î¶¶§Ç";
-	var $_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER = "»¼¼W¶¶§Ç";
-	/** shop.product.detail */
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY = "ºØÃþªº°Ñ¼Æ";
-	/** Changed Product Type - End*/
-    
-    // Opposite of Discount!
-    var $_PHPSHOP_FEE = "¶O¥Î";
-    
-    var $_PHPSHOP_PRODUCT_CLONE = "½Æ»s°Ó«~";
-    
-    var $_PHPSHOP_CSV_SETTINGS = "³]©w";
-    var $_PHPSHOP_CSV_DELIMITER = "©w¸q²Å¸¹";
-    var $_PHPSHOP_CSV_ENCLOSURE = "Field Enclosure Char";
-    var $_PHPSHOP_CSV_UPLOAD_FILE = "¤W¶Ç CSV ÀÉ®×";
-    var $_PHPSHOP_CSV_SUBMIT_FILE = "´£¥æ CSV ÀÉ®×";
-    var $_PHPSHOP_CSV_FROM_DIRECTORY = "±q¥Ø¿ý¸ü¤J";
-    var $_PHPSHOP_CSV_FROM_SERVER = "±q¦øªA¾¹¸ü¤J CSV ÀÉ®×";
-    var $_PHPSHOP_CSV_EXPORT_TO_FILE = "¿é¥X CSV ÀÉ®×";
-    var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = "¿ï¾ÜÄæ¦ì¶¶§ÇÃþ«¬";
-    var $_PHPSHOP_CSV_DEFAULT_ORDERING = "¹w³]¶¶§Ç";
-    var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = "§Úªº­q»s¶¶§Ç";
-    var $_PHPSHOP_CSV_SUBMIT_EXPORT = "¿é¥X©Ò¦³°Ó«~¨ì CSV ÀÉ®×";
-    var $_PHPSHOP_CSV_CONFIGURATION_HEADER = "CSV ¿é¤J / ¿é¥X °t¸m";
-    var $_PHPSHOP_CSV_SAVE_CHANGES = "Àx¦s§ó§ï";
-    var $_PHPSHOP_CSV_FIELD_NAME = "Äæ¦ì¦WºÙ";
-    var $_PHPSHOP_CSV_DEFAULT_VALUE = "¹w³]­È";
-    var $_PHPSHOP_CSV_FIELD_ORDERING = "Äæ¦ì¶¶§Ç";
-    var $_PHPSHOP_CSV_FIELD_REQUIRED = "¥²¶·Äæ¦ì?";
-    var $_PHPSHOP_CSV_IMPORT_EXPORT = "¿é¤J/¿é¥X";
-    var $_PHPSHOP_CSV_NEW_FIELD = "·s¼WÄæ¦ì";
-    var $_PHPSHOP_CSV_DOCUMENTATION = "¤å¥ó";
-    
-    var $_PHPSHOP_PRODUCT_NOT_FOUND = "©êºp, ¤£¹L±z­n¨Dªº°Ó«~¥¼§ä¨ì!";
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = "Åã¥Ü¨S¦³®w¦sªº°Ó«~";
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = "·í±Ò¥Î®É, ±N·|³¯¦C¥X¨S¦³®w¦sªº°Ó«~. ¤£µM³oÃþ°Ó«~·|¬OÁôÂÃªº.";
-    
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */
 $PHPSHOP_LANG =& new phpShopLanguage();

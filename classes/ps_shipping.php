@@ -41,15 +41,15 @@ class ps_shipping {
     return True;
   }
 
-  function validate_delete(&$d) {
+  function validate_delete( $shipping_carrier_id, &$d) {
     global $PHPSHOP_LANG;
-    if (!$d["shipping_carrier_id"]) {
+    if (!$shipping_carrier_id) {
       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_ERR_MSG_CARRIER_ID_REQ;
       return False;
     }
 
     $db = new ps_DB;
-    $q = "SELECT * FROM #__pshop_shipping_rate WHERE shipping_rate_carrier_id='" . $d["shipping_carrier_id"] . "'";
+    $q = "SELECT shipping_rate_carrier_id FROM #__pshop_shipping_rate WHERE shipping_rate_carrier_id='" . $shipping_carrier_id . "'";
     $db->query($q);
     if ($db->next_record()) {
       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_ERR_MSG_CARRIER_INUSE;
@@ -57,7 +57,7 @@ class ps_shipping {
     }
 
     $db = new ps_DB;
-    $q = "SELECT * FROM #__pshop_shipping_carrier WHERE shipping_carrier_id='" . $d["shipping_carrier_id"] . "'";
+    $q = "SELECT shipping_carrier_id FROM #__pshop_shipping_carrier WHERE shipping_carrier_id='" . $shipping_carrier_id . "'";
     $db->query($q);
     if (!$db->next_record()) {
       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND;
@@ -143,27 +143,40 @@ class ps_shipping {
     return True;
   }
 
-  /**************************************************************************
-   * name: delete()
-   * created by: Ekkehard Domning
-   * description: Should delete an Image and the coresponding files
-   * parameters:
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $ps_vendor_id = $_SESSION["ps_vendor_id"];
-    $db = new ps_DB;
-
-
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-
-    $q = "DELETE FROM #__pshop_shipping_carrier WHERE shipping_carrier_id='" . $d["shipping_carrier_id"] . "'";
-    $db->query($q);
-    $db->next_record();
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["shipping_carrier_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		global $db;
+	
+		if (!$this->validate_delete( $record_id, $d)) {
+		  return False;
+		}
+	
+		$q = "DELETE FROM #__pshop_shipping_carrier WHERE shipping_carrier_id='$record_id'";
+		$db->query($q);
+		$db->next_record();
+		return True;
+	}
 
   /**************************************************************************
    * name: carrier_list()
@@ -389,18 +402,39 @@ class ps_shipping {
    * parameters:
    * returns:
    **************************************************************************/
-  function rate_delete(&$d) {
-    $db = new ps_DB;
-
-    if (!$this->validate_rate_delete($d)) {
-      return False;
-    }
-    $q = "DELETE FROM #__pshop_shipping_rate WHERE ";
-    $q .= "shipping_rate_id = '". $d["shipping_rate_id"] . "'";
-    $db->query($q);
-    $db->next_record();
-    return True;
-  }
+   	/**
+	* Controller for Deleting Shipping Rates.
+	*/
+	function rate_delete(&$d) {
+	
+		if (!$this->validate_rate_delete($d)) {
+		  return False;
+		}
+		$record_id = $d["shipping_rate_id"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_rate_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_rate_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Shipping Rate.
+	*/
+	function delete_rate_record( $record_id, &$d ) {
+		global $db;
+	
+		$q = "DELETE FROM #__pshop_shipping_rate WHERE ";
+		$q .= "shipping_rate_id = '$record_id'";
+		$db->query($q);
+		$db->next_record();
+		return True;
+	}
 
 }
 

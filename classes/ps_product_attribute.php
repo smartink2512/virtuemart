@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: ps_product_attribute.php,v 1.20 2005/09/06 19:28:35 soeren_nb Exp $
+* @version $Id: ps_product_attribute.php,v 1.19 2005/09/01 19:58:06 soeren_nb Exp $
 * @package mambo-phpShop
 * Contains code from PHPShop(tm):
 * 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
@@ -69,8 +69,7 @@ class ps_product_attribute {
     $ps_product = new ps_product;
 
     $db = new ps_DB;
-    $q  = "SELECT product_id FROM #__pshop_product_attribute_sku ";
-    $q .= "WHERE product_id = '" . $d["product_id"] . "' ";
+    $q  = "SELECT product_id FROM #__pshop_product_attribute_sku WHERE product_id = '" . $d["product_id"] . "' ";
     $db->setQuery($q);  $db->query();
     if ($db->num_rows() == 1 and 
              $ps_product->parent_has_children($d["product_id"])) {
@@ -151,37 +150,50 @@ class ps_product_attribute {
     return true;
   }
 
-  /**************************************************************************
-  ** name: delete()
-  ** created by:
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/  
-  function delete(&$d) {
-    if (!$this->validate_delete($d)) {
-      return false;
-    }                                                                           
-
- 
-    $db = new ps_DB;
-
-    $q  = "DELETE FROM #__pshop_product_attribute_sku ";
-    $q .= "WHERE product_id = '" . $d["product_id"] . "' ";
-    $q .= "AND attribute_name = '" . $d["attribute_name"] . "'";
-
-    $db->setQuery($q);  $db->query();
-    $ps_product = new ps_product;
-    $child_pid = $ps_product->get_child_product_ids($d["product_id"]);
-
-    for($i = 0; $i < count($child_pid); $i++) {
-      $q  = "DELETE FROM #__pshop_product_attribute ";
-      $q .= "WHERE product_id = '$child_pid[$i]' ";
-      $q .= "AND attribute_name = '" . $d["attribute_name"] . "' ";
-      $db->setQuery($q);  $db->query();
-    }
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["attribute_name"];
+		
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		
+		if (!$this->validate_delete($d)) {
+		  return false;
+		}                                                                           
+	
+		$q  = "DELETE FROM #__pshop_product_attribute_sku ";
+		$q .= "WHERE product_id = '" . $d["product_id"] . "' ";
+		$q .= "AND attribute_name = '$record_id'";
+	
+		$db->setQuery($q);  $db->query();
+		$ps_product = new ps_product;
+		$child_pid = $ps_product->get_child_product_ids($d["product_id"]);
+	
+		for($i = 0; $i < count($child_pid); $i++) {
+		  $q  = "DELETE FROM #__pshop_product_attribute ";
+		  $q .= "WHERE product_id = '$child_pid[$i]' ";
+		  $q .= "AND attribute_name = '$record_id' ";
+		  $db->setQuery($q);  $db->query();
+		}
+		return True;
+	}
 
   /**************************************************************************
    ** name: list_attribute($product_id, $attribute_name)
@@ -363,6 +375,75 @@ class ps_product_attribute {
     if ($custom_attr_list) { 
       return $html; 
     } 
+  }
+  
+  function cartGetAttributes( &$d ) {
+  
+	global $db;
+	// added for the advanced attributes modification
+    //get listing of titles for attributes (Sean Tobin) 
+    $attributes=array(); 
+    $q = "SELECT attribute, custom_attribute FROM #__pshop_product WHERE product_id='".$d["product_id"]."'"; 
+    $db->query($q); 
+    $db->next_record();  
+    $advanced_attribute_list=$db->f("attribute"); 
+    if ($advanced_attribute_list) {
+      $fields=explode(";",$advanced_attribute_list); 
+      foreach($fields as $field) { 
+        $base=explode(",",$field); 
+        $title=array_shift($base); 
+        array_push($attributes,$title); 
+      }      
+    } 
+
+    $description="";
+    $attribute_given = false;
+    foreach($attributes as $a) {
+      $pagevar=str_replace(" ","_",$a);
+      if (!empty($d[$pagevar])) {
+          $attribute_given = true;
+      }
+      if ($description!='') {
+          $description.="; ";
+      }
+       $description.=$a.":";
+       $description .= empty($d[$pagevar]) ? '' : $d[$pagevar];
+    } 
+    rtrim($description);
+    $d["description"] = $description;
+    // end advanced attributes modification addition
+    
+	// added for custom fields by denie van kleef
+	$custom_attribute_list=$db->f("custom_attribute"); 
+    $custom_attribute_given = false;
+    if ($custom_attribute_list) { 
+      $fields=explode(";",$custom_attribute_list); 
+
+      $description=$d["description"];
+      foreach($fields as $field) 
+      {
+        $pagevar=str_replace(" ","_",$field);
+        if (!empty($d[$pagevar])) {
+            $custom_attribute_given = true;
+        }
+        if ($description!='') {
+            $description.="; ";
+        }
+         $description.=$field.":";
+         $description .= empty($d[$pagevar]) ? '' : $d[$pagevar];
+      } 
+      rtrim($description);
+      $d["description"] = $description;
+      // END add for custom fields by denie van kleef
+	  
+	  $result['attribute_given'] = $attribute_given;
+	  $result['advanced_attribute_list'] = $advanced_attribute_list;
+	  $result['custom_attribute_given'] = $custom_attribute_given;
+	  $result['custom_attribute_list'] = $custom_attribute_list;
+	  
+	  return $result;
+    }
+  
   }
 }
 ?>

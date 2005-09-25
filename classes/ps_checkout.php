@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: ps_checkout.php,v 1.57 2005/09/06 19:28:35 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.55 2005/09/01 19:58:06 soeren_nb Exp $
 * @package mambo-phpShop
 * Contains code from PHPShop(tm):
 * 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
@@ -2007,7 +2007,7 @@ class ps_checkout {
       }
       
       unset( $row );
-      $database->setQuery("SELECT payment_method_name FROM #__pshop_payment_method WHERE payment_method_id='".strip_tags($_REQUEST['payment_method_id'])."'");
+      $database->setQuery("SELECT payment_method_id, payment_method_name FROM #__pshop_payment_method WHERE payment_method_id='".strip_tags($_REQUEST['payment_method_id'])."'");
       $database->loadObject( $row );
       echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
       echo $row->payment_method_name;

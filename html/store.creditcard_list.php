@@ -14,85 +14,74 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-?>
-<table width="100%" cellspacing="0" cellpadding="4" border="0">
-  <tr>
-    <td>
-      <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/credit.jpg" border="0" />
-      <br /><br />
-    </td>
-    <td><?php
-        search_header($PHPSHOP_LANG->_PHPSHOP_CREDITCARD_LIST_LBL, 'store', 'creditcard_list'); 
-        ?>
-    </td>
-  </tr>
-</table>
-<?php
-  // Enable the multi-page search result display
-  $limitstart= mosgetparam( $_REQUEST, 'limitstart', 0 );
-  if (!empty($_REQUEST['keyword'])) {
-     $keyword = $_REQUEST['keyword'];
-     $list  = "SELECT * FROM #__pshop_creditcard WHERE ";
-     $count = "SELECT count(*) as num_rows FROM #__pshop_creditcard WHERE ";
-     $q  = "(creditcard_name LIKE '%$keyword%' OR ";
-     $q .= "creditcard_code LIKE '%$keyword%') ";
-     $q .= "ORDER BY creditcard_name ";
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
-     $count .= $q;   
-  }
-  else 
-  {
-     $keyword = '';
-     $list  = "SELECT * FROM #__pshop_creditcard ";
-     $list .= "ORDER BY creditcard_name ";
-     $list .= "LIMIT $limitstart, " . SEARCH_ROWS;
-     $count = "SELECT count(*) as num_rows FROM #__pshop_creditcard ";
-  }
-  $db->query($count);
-  $db->next_record();
-  $num_rows = $db->f("num_rows");
-  if ($num_rows == 0) {
-     echo $PHPSHOP_LANG->_PHPSHOP_NO_SEARCH_RESULT;
-  }
-  else {
-?>
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="adminForm">
-<input type="hidden" name="option" value="com_phpshop" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
-<table width="100%" class="adminlist">
-  <tr> 
-    <th width="20">#</th>
-    <th align="left"><?php echo $PHPSHOP_LANG->_PHPSHOP_CREDITCARD_NAME ?></th>
-    <th align="left"><?php echo $PHPSHOP_LANG->_PHPSHOP_CREDITCARD_CODE ?></th>
-    <th><? echo _E_REMOVE ?></th>
-  </tr>
-<?php
-  	$db->query($list);
-        $i = 0;
-        while ($db->next_record()) {
-        if ($i++ % 2) 
-           $bgcolor=SEARCH_COLOR_1;
-        else
-           $bgcolor=SEARCH_COLOR_2;
-        ?> 
-  <tr bgcolor="<?php echo $bgcolor ?>"> 
-  
-    <td width="20"><?php $nr = $limitstart+$i; echo $nr; ?></td>
-    <td width="19%">
-    <a href="<?php  echo $sess->url($_SERVER['PHP_SELF'] ."?page=store.creditcard_form&limitstart=$limitstart&keyword=$keyword&creditcard_id=".$db->f("creditcard_id")) ?>">
-    <? echo $db->p("creditcard_name") ?></a>
-    </td>
-    <td width="24%"><?php $db->p("creditcard_code") ?></td>
-    <td>
-        <a class="toolbar" href="<?php echo $_SERVER['PHP_SELF'] ?>?option=com_phpshop&page=<? echo $_REQUEST['page'] ?>&func=creditcardDelete&creditcard_id=<? echo $db->f("creditcard_id") ?>&limitstart=<?php echo $limitstart ?>" onclick="return confirm('<? echo $PHPSHOP_LANG->_PHPSHOP_DELETE_MSG ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('delete<? echo $i ?>','','<? echo IMAGEURL ?>ps_image/delete_f2.gif',1);">
-        <img src="<? echo IMAGEURL ?>ps_image/delete.gif" alt="Delete this record" name="delete<? echo $i ?>" align="middle" border="0"/>
-        </a>
-    </td>
-  </tr>
-  <?php } ?> 
-</table>
-<?php 
-  search_footer('store', 'creditcard_list', $limitstart, $num_rows, $keyword); 
+require_once( CLASSPATH . "pageNavigation.class.php" );
+require_once( CLASSPATH . "htmlTools.class.php" );
+
+if (!empty($keyword)) {
+	$list  = "SELECT * FROM #__pshop_creditcard WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__pshop_creditcard WHERE ";
+	$q  = "(creditcard_name LIKE '%$keyword%' OR ";
+	$q .= "creditcard_code LIKE '%$keyword%') ";
+	$q .= "ORDER BY creditcard_name ";
+	$list .= $q . " LIMIT $limitstart, " . $limit;
+	$count .= $q;   
 }
+else {
+	$list  = "SELECT * FROM #__pshop_creditcard ";
+	$list .= "ORDER BY creditcard_name ";
+	$list .= "LIMIT $limitstart, " . $limit;
+	$count = "SELECT count(*) as num_rows FROM #__pshop_creditcard ";
+}
+$db->query($count);
+$db->next_record();
+$num_rows = $db->f("num_rows");
+  
+// Create the Page Navigation
+$pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
+
+// Create the List Object with page navigation
+$listObj = new listFactory( $pageNav );
+
+// print out the search field and a list heading
+$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_CREDITCARD_LIST_LBL, IMAGEURL."ps_image/credit.jpg", $modulename, "creditcard_list");
+
+// start the list table
+$listObj->startTable();
+
+// these are the columns in the table
+$columns = Array(  "#" => "width=\"20\"", 
+					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
+					$PHPSHOP_LANG->_PHPSHOP_CREDITCARD_NAME => '',
+					$PHPSHOP_LANG->_PHPSHOP_CREDITCARD_CODE => '',
+					_E_REMOVE => "width=\"5%\""
+				);
+$listObj->writeTableHeader( $columns );
+
+$db->query($list);
+$i = 0;
+while ($db->next_record()) {
+
+	$listObj->newRow();
+	
+	// The row number
+	$listObj->addCell( $pageNav->rowNumber( $i ) );
+	
+	// The Checkbox
+	$listObj->addCell( mosHTML::idBox( $i, $db->f("creditcard_id"), false, "creditcard_id" ) );
+    
+    $tmp_cell = '<a href="'. $sess->url($_SERVER['PHP_SELF'] ."?page=store.creditcard_form&limitstart=$limitstart&keyword=$keyword&creditcard_id=".$db->f("creditcard_id")) .'">'.$db->f("creditcard_name")."</a>";
+    $listObj->addCell( $tmp_cell );
+	
+    $listObj->addCell( $db->f("creditcard_code"));
+	
+	$listObj->addCell( $ps_html->deleteButton( "creditcard_id", $db->f("creditcard_id"), "creditcardDelete", $keyword, $limitstart ) );
+
+	$i++;
+}
+
+$listObj->writeTable();
+
+$listObj->endTable();
+
+$listObj->writeFooter( $keyword );
 ?>

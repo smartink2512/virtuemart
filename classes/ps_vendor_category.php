@@ -50,7 +50,7 @@ class ps_vendor_category {
   function validate_delete($d) {
 
     if (!$d["vendor_category_id"]) {
-      $d["error"] = "Please select a vendor to delete.";
+      $d["error"] = "Please select a vendor category to delete.";
       return False;
     }
     else {
@@ -131,27 +131,38 @@ class ps_vendor_category {
     return True;
   }
   
-
-
-  /**************************************************************************
-   * name: delete()
-   * created by:
-   * description:
-   * parameters:
-   * returns:
-   **************************************************************************/
-  function delete(&$d) {
-    $db = new ps_DB;
-    
-    if (!$this->validate_delete($d)) {
-      return False;
-    }
-    $q = "DELETE FROM #__pshop_vendor_category WHERE vendor_category_id='";
-    $q .= $d["vendor_category_id"] . "'";
-    $db->query($q);
-    $db->next_record();
-    return True;
-  }
+	/**
+	* Controller for Deleting Records.
+	*/
+	function delete(&$d) {
+	
+		$record_id = $d["vendor_category_id"];
+		
+		if (!$this->validate_delete($d)) {
+		  return False;
+		}
+		if( is_array( $record_id)) {
+			foreach( $record_id as $record) {
+				if( !$this->delete_record( $record, $d ))
+					return false;
+			}
+			return true;
+		}
+		else {
+			return $this->delete_record( $record_id, $d );
+		}
+	}
+	/**
+	* Deletes one Record.
+	*/
+	function delete_record( $record_id, &$d ) {
+		global $db;
+		
+		$q = "DELETE FROM #__pshop_vendor_category WHERE vendor_category_id='$record_id'";
+		$db->query($q);
+		$db->next_record();
+		return True;
+	}
 
 
   /**************************************************************************
