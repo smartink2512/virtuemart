@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: pageNavigation.class.php,v 1.3 2005/01/27 19:33:39 soeren_nb Exp $
+* @version $Id: pageNavigation.class.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package virtuemart
 * @subpackage classes
 *
@@ -154,10 +154,10 @@ class vmPageNav {
 * @param string The alt text for the icon
 * @return string
 */
-	function orderUpIcon( $i, $condition=true, $task='orderup', $alt='Move Up' ) {
+	function orderUpIcon( $i, $condition=true, $task='orderup', $alt='Move Up', $page, $func ) {
 		if (($i > 0 || ($i+$this->limitstart > 0)) && $condition) {
-		    return '<a href="#reorder" onClick="return listItemTask(\'cb'.$i.'\',\''.$task.'\')" title="'.$alt.'">
-				<img src="images/uparrow.png" width="12" height="12" border="0" alt="'.$alt.'">
+		    return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">
+				<img src="images/uparrow.png" width="12" height="12" border="0" alt="'.$alt.'" />
 			</a>';
   		} else {
   		    return '&nbsp;';
@@ -170,10 +170,10 @@ class vmPageNav {
 * @param string The alt text for the icon
 * @return string
 */
-	function orderDownIcon( $i, $n, $condition=true, $task='orderdown', $alt='Move Down' ) {
+	function orderDownIcon( $i, $n, $condition=true, $task='orderdown', $alt='Move Down', $page, $func ) {
 		if (($i < $n-1 || $i+$this->limitstart < $this->total-1) && $condition) {
-			return '<a href="#reorder" onClick="return listItemTask(\'cb'.$i.'\',\''.$task.'\')" title="'.$alt.'">
-				<img src="images/downarrow.png" width="12" height="12" border="0" alt="'.$alt.'">
+			return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">
+				<img src="images/downarrow.png" width="12" height="12" border="0" alt="'.$alt.'" />
 			</a>';
   		} else {
   		    return '&nbsp;';

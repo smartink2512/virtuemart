@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: admin.function_list.php,v 1.6 2005/01/27 19:34:00 soeren_nb Exp $
+* @version $Id: admin.function_list.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -24,8 +24,7 @@ $q = "SELECT module_name FROM #__pshop_module WHERE module_id='$module_id'";
 $db->query($q);
 $db->next_record();
 $title = $PHPSHOP_LANG->_PHPSHOP_FUNCTION_LIST_LBL . ": " . $db->f("module_name");
-if (!empty($_REQUEST['keyword'])) {
-	$keyword = $_REQUEST['keyword'];
+if (!empty( $keyword )) {
 	$list  = "SELECT * FROM #__pshop_function WHERE ";
 	$count = "SELECT count(*) as num_rows FROM #__pshop_function WHERE ";
 	$q  = "(function_name LIKE '%$keyword%' OR ";
@@ -33,15 +32,13 @@ if (!empty($_REQUEST['keyword'])) {
 	$q .= ") ";
 	$q .= "AND module_id='$module_id' ";
 	$q .= "ORDER BY function_name ";
-	$list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
-else 
-{
-	$keyword = '';
+else {
 	$list  = "SELECT * FROM #__pshop_function WHERE module_id='$module_id' ";
 	$list .= "ORDER BY function_name ";
-	$list .= "LIMIT $limitstart, " . SEARCH_ROWS;
+	$list .= "LIMIT $limitstart, " . $limit;
 	$count = "SELECT count(*) as num_rows FROM #__pshop_function ";
 	$count .= "WHERE module_id='$module_id' ";
 }

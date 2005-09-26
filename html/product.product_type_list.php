@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: product.product_type_list.php,v 1.2 2005/06/22 19:50:41 soeren_nb Exp $
+* @version $Id: product.product_type_list.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 *
@@ -83,20 +83,14 @@ while ($db->next_record()) {
 	$listObj->addCell( $tmp_cell );
       //$listObj->addCell( $db->f("list_order"));
 
-	if ($db->f("product_type_publish")=='Y') { 
-		$tmp_cell = "<img src=\"". $mosConfig_live_site ."/administrator/images/tick.png\" border=\"0\" />\n";
-	} 
-	else { 
-		$tmp_cell = "<img src=\"". $mosConfig_live_site ."/administrator/images/publish_x.png\" border=\"0\" />";
-	}
-	$listObj->addCell( $tmp_cell );  
+	$listObj->addCell( vmCommonHTML::getYesNoIcon( $db->f("product_type_publish") ) );
 	
 //      echo "<a href=\"javascript: void(0);\" onClick=\"return listItemTask('cb$i','orderdown')\">";
 //      echo "Down</a>";	
 	$tmp_cell = "<div align=\"center\">"
-			. $pageNav->orderUpIcon( $i, $i > 0 )
+			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", "Order Up", $page, "ProductTypeReorder" )
 			. "\n&nbsp;" 
-			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows() )
+			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), "orderdown", "Order Down", $page, "ProductTypeReorder" )
 			. "</div>";
 	$listObj->addCell( $tmp_cell );  
 	

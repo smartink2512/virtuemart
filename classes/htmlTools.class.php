@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: ps_affiliate.php,v 1.3 2005/01/27 19:33:39 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package virtuemart
 * @subpackage classes
 *
@@ -361,16 +361,24 @@ class vmCommonHTML {
 	* Writes a "Save Ordering" Button
 	* @param int the number of rows
 	*/
-	function getSaveOrderButton( $num_rows ) {
+	function getSaveOrderButton( $num_rows, $funcname='reorder') {
 		
 		$n = $num_rows-1;
-		return '<a href="javascript: saveorder( '.$n.' )">
+		return '<a href="javascript: document.adminForm.func.value = \''.$funcname.'\'; saveorder( '.$n.' );">
 				<img src="images/filesave.png" border="0" width="16" height="16" alt="Save Order" /></a>';
 	}
 	function getOrderingField( $ordering ) {
 
 		return '<input type="text" name="order[]" size="5" value="'. $ordering .'" class="text_area" style="text-align: center" />';
 
+	}
+	
+	function getYesNoIcon( $condition, $pos_alt = "Published", $neg_alt = "Unpublished" ) {
+		global $mosConfig_live_site;
+		if( $condition===true || strtoupper( $condition ) == "Y" )
+			return '<img src="'.$mosConfig_live_site.'/administrator/images/tick.png" border="0" alt="'.$pos_alt.'" />';
+		else
+			return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
 	}
 }
 

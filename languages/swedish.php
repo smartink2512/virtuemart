@@ -905,7 +905,7 @@ class phpShopLanguage extends vmAbstractLanguage {
                                                          (som finns i mappen <strong>KOMPONENTSÖKVÄG/html/templates/</strong> och vars filnamn börjar med browse_)';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Antal produkter i rad';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Detta definierar antal produkter som visas i rad på samma sida. <br />';
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\"no image\" image';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"no image" image';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Denna bild kommer att visas när det inte finns en bild för produkten.';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'Sök rader';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Specificerar antal rader per sida som visas i sökresultat.';
@@ -1359,6 +1359,17 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'Vid vald visas även proukter som inte finns i lager. Annars döljs dessa produkter.';
 	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
 	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
+	var $_PHPSHOP_HIDE_OUT_OF_STOCK = 'Hide out of stock products';
+	var $_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL = 'Featured & Discounted Products';
+	var $_PHPSHOP_FEATURED = 'Featured';
+	var $_PHPSHOP_BACK_TO_COUNTRY = 'Back to the country';
+	var $_PHPSHOP_BACK_TO_FILEMANAGER = 'Back to the file manager';
+	var $_PHPSHOP_ADD_STATE = 'Add a State';
+	var $_PHPSHOP_LIST_STATES = 'List States';
+	var $_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED = 'featured AND discounted';
+	var $_PHPSHOP_SHOW_FEATURED = 'featured products';
+	var $_PHPSHOP_SHOW_DISCOUNTED = 'discounted products';
+	var $_PHPSHOP_FILTER = 'Filter';
         
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */

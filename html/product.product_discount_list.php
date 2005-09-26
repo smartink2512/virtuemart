@@ -1,7 +1,7 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: product.product_discount_list.php,v 1.2 2005/01/27 19:34:03 soeren_nb Exp $
+* @version $Id: product.product_discount_list.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -25,13 +25,13 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 	$q .= "amount LIKE '%$keyword%' ";
 	$q .= ") ";
 	$q .= "ORDER BY amount ";
-	$list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
 else {
 	$list  = "SELECT * FROM #__pshop_product_discount ";
 	$list .= "ORDER BY amount ";
-	$list .= "LIMIT $limitstart, " . SEARCH_ROWS;
+	$list .= "LIMIT $limitstart, " . $limit;
 	$count = "SELECT count(*) as num_rows FROM #__pshop_product_discount ";
 }
 $db->query($count);

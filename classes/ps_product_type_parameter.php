@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /** Changed Product Type - Begin*/
 /*
-* @version $Id: ps_product_type_parameter.php,v 1.2 2005/06/22 19:50:40 soeren_nb Exp $
+* @version $Id: ps_product_type_parameter.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package Mambo_4.5.1
 * @subpackage mambo-phpShop
 * Contains code from PHPShop(tm):
@@ -471,7 +471,7 @@ class ps_product_type_parameter {
   ** returns: true if the category has childs; false, if not !!!!!!!!!!!!!!!!!!!
   ***************************************************************************/
   function reorder_parameter( &$d ) {
-      $cb = mosGetParam( $_POST, 'cb', array(0) );
+      $cb = mosGetParam( $_POST, 'parameter_name', array(0) );
       $product_type_id = mosGetParam( $_POST, 'product_type_id', 0 );
       
       $db = new ps_DB;

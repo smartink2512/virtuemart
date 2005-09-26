@@ -1,7 +1,7 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: toolbar.phpshop.html.php,v 1.15 2005/09/01 19:58:06 soeren_nb Exp $
+* @version $Id: toolbar.phpshop.html.php,v 1.2 2005/09/25 18:49:26 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage Core
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -119,13 +119,13 @@ class MENU_virtuemart {
 		elseif( $page == "admin.country_form" ) {
             if( !empty( $_REQUEST['country_id'] )) {
 				$href= $_SERVER['PHP_SELF'] ."?option=com_phpshop&page=admin.country_state_form&country_id=". $_REQUEST['country_id'] ."&limitstart=". $limitstart;
-				$alt = "&nbsp;Add a State";
-				vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], $alt );
+				$alt = "&nbsp;".$PHPSHOP_LANG->_PHPSHOP_ADD_STATE;
+				vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 				vmMenuBar::spacer();
 				
 				$href = $_SERVER['PHP_SELF'] ."?option=com_phpshop&page=admin.country_state_list&country_id=". $_REQUEST['country_id'] ."&limitstart=". $limitstart;
-				$alt = "&nbsp;List States";
-				vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], $alt );
+				$alt = "&nbsp;".$PHPSHOP_LANG->_PHPSHOP_LIST_STATES;
+				vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 				vmMenuBar::spacer();
 				
 				vmMenuBar::divider();
@@ -149,18 +149,7 @@ class MENU_virtuemart {
 				$my_page = "store.index";
 		
 		vmMenuBar::cancel();
-		/*
-		$limitstart = "&limitstart=$limitstart";
-		if( $page=="admin.country_state_form") 
-			$limitstart .= "&country_id=".$_REQUEST['country_id'];
-		$href= $_SERVER['PHP_SELF']."?option=com_phpshop&page=$my_page&task=cancel&keyword=".@$_REQUEST['keyword']. $limitstart;
-		$href .= !empty($product_id) ? "&product_id=".$product_id : "";
-		$href .= !empty($_REQUEST['product_type_id']) ? "&product_type_id=".$_REQUEST['product_type_id'] : ""; // Changed Product Type
-		$href .= !empty($product_parent_id) ? "&product_parent_id=".$product_parent_id : "";
-		
-		// Cancel !
-		vmMenuBar::customHref( $href, $vmIcons['cancel_icon'], $vmIcons['cancel_icon2'], _E_CANCEL );
-            */
+
 		vmMenuBar::spacer();
 		vmMenuBar::endTable();
     }
@@ -178,14 +167,14 @@ class MENU_virtuemart {
         if ($page == 'admin.country_state_list') {
 			// Back to the country
 			vmMenuBar::divider();
-			$href = $_SERVER['PHP_SELF']. "?option=com_phpshop&page=admin.country_form&country_id=". $_REQUEST['country_id'] ."&limitstart=". $limitstart;
-			vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], '&nbsp;Back to the country' );
+			$href = $_SERVER['PHP_SELF']. '?option=com_phpshop&page=admin.country_list';
+			vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], '&nbsp;'.$PHPSHOP_LANG->_PHPSHOP_BACK_TO_COUNTRY );
         }
         elseif ($page == 'product.file_list') {
 			// Back to the file manager
 			vmMenuBar::divider();
 			$href = $_SERVER['PHP_SELF']. "?option=com_phpshop&page=product.filemanager";
-			vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], '&nbsp;Back to the file manager' );
+			vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], '&nbsp;'.$PHPSHOP_LANG->_PHPSHOP_BACK_TO_FILEMANAGER );
         }
    
         vmMenuBar::spacer();
@@ -247,7 +236,20 @@ class MENU_virtuemart {
 				vmMenuBar::divider();
 				vmMenuBar::spacer();
 				break;
-				
+			
+			case "admin.country_list":
+
+					$alt = "&nbsp;".$PHPSHOP_LANG->_PHPSHOP_ADD_STATE;
+					vmMenuBar::custom( "", "admin.country_state_form", $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
+					vmMenuBar::spacer();
+					
+					$alt = "&nbsp;".$PHPSHOP_LANG->_PHPSHOP_LIST_STATES;
+					vmMenuBar::custom( "", "admin.country_state_list", $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
+					vmMenuBar::spacer();
+					vmMenuBar::divider();
+					vmMenuBar::spacer();
+				break;
+			
 			default:
 			
 		}

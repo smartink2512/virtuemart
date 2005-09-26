@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: product.product_category_form.php,v 1.8 2005/09/04 20:08:55 soeren_nb Exp $
+* @version $Id: product.product_category_form.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -62,7 +62,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
     <tr> 
       <td width="21%" valign="top" nowrap><div  align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CATEGORY_FORM_DESCRIPTION ?>:</div></td>
       <td width="79%" valign="top"><?php
-        editorArea( 'editor1', $db->f("category_description"), 'category_description', '300', '100', '60', '6' ) ?>
+        editorArea( 'editor1', $db->f("category_description"), 'category_description', '400', '150', '100', '10' ) ?>
       </td>
     </tr>
     <tr>
@@ -227,7 +227,7 @@ $tabs->endPane();
 // Add necessary hidden fields
 $formObj->hiddenField( 'category_id', $category_id );
 
-$funcname = !empty($category_id) ? echo "productCategoryUpdate" : "productCategoryAdd";
+$funcname = !empty($category_id) ? "productCategoryUpdate" : "productCategoryAdd";
 
 //finally close the form:
 $formObj->finishForm( $funcname, $modulename.'.product_category_list', $option );

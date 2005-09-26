@@ -3,7 +3,7 @@
 * mambo-phphop Product Scroller Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_productscroller.php,v 1.2 2005/06/11 10:17:05 soeren_nb Exp $
+* @version $Id: mod_productscroller.php,v 1.1 2005/09/06 20:06:49 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage modules
 * 
@@ -185,7 +185,7 @@ class productScroller {
                         direction=\"".$this->ScrollDirection."\"  
                         height=\"".$this->ScrollHeight."\"
                         width=\"".$this->ScrollWidth."\"
-                        scrollamount=\"".$this->NumberOfProducts."\"
+                        scrollamount=\"".$this->ScrollAmount."\"
                         scrolldelay=\"".$this->ScrollDelay."\"
                         truespeed=\"true\" onmouseover=\"this.stop()\" onmouseout=\"this.start()\"
                         style=\"text-align: ".$this->ScrollTextAlign."; color: ".$this->ScrollTextColor."; font-weight: ".$this->ScrollTextWeight."; font-size: $txt_size\;\" >"; 
@@ -197,7 +197,7 @@ class productScroller {
                         direction=\"".$this->ScrollDirection."\"  
                         height=\"".$this->ScrollHeight."\"
                         width=\"".$this->ScrollWidth."\"
-                        scrollamount=\"".$this->NumberOfProducts."\"
+                        scrollamount=\"".$this->ScrollAmount."\"
                         scrolldelay=\"".$this->ScrollDelay."\"
                         truespeed=\"true\" onmouseover=\"this.stop()\" onmouseout=\"this.start()\">"; 
    }

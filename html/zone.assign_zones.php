@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: zone.assign_zones.php,v 1.3 2005/02/22 18:58:32 soeren_nb Exp $
+* @version $Id: zone.assign_zones.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -22,14 +22,14 @@ if (!empty($keyword)) {
   $count = "SELECT count(*) as num_rows FROM #__pshop_country WHERE ";
   $q  = "(country_name LIKE '%$keyword%')";
   $q .= "ORDER BY country_name ASC ";
-  $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+  $list .= $q . " LIMIT $limitstart, " . $limit;
   $count .= $q;   
 }
 else  {
   $q = "";
   $list  = "SELECT * FROM #__pshop_country ORDER BY country_id ASC ";
   $count = "SELECT count(*) as num_rows FROM #__pshop_country"; 
-  $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+  $list .= $q . " LIMIT $limitstart, " . $limit;
   $count .= $q;   
 }
 $db->query($count);

@@ -907,7 +907,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Oletusm‰‰r‰ tuotteita riviss‰';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'M‰‰rittelee tuotteiden m‰‰r‰n rivi‰ kohden. <br />
                                                                                                       Esimerkki: Jos astetat m‰‰r‰ksi 4, kategoria mallinnus n‰ytt‰‰ 4 tuotetta per rivi';
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\"no image\" image';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"no image" image';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'T‰m‰ kuva n‰kyy kun tuotteelle ei ole m‰‰ritelty kuvaa.';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'SEARCH ROWS';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'M‰‰rittelee rivim‰‰r‰n per sivu kun etsint‰ tulokset esitet‰‰n luettelona.';
@@ -1362,6 +1362,17 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.';
 	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
 	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
+	var $_PHPSHOP_HIDE_OUT_OF_STOCK = 'Hide out of stock products';
+	var $_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL = 'Featured & Discounted Products';
+	var $_PHPSHOP_FEATURED = 'Featured';
+	var $_PHPSHOP_BACK_TO_COUNTRY = 'Back to the country';
+	var $_PHPSHOP_BACK_TO_FILEMANAGER = 'Back to the file manager';
+	var $_PHPSHOP_ADD_STATE = 'Add a State';
+	var $_PHPSHOP_LIST_STATES = 'List States';
+	var $_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED = 'featured AND discounted';
+	var $_PHPSHOP_SHOW_FEATURED = 'featured products';
+	var $_PHPSHOP_SHOW_DISCOUNTED = 'discounted products';
+	var $_PHPSHOP_FILTER = 'Filter';
         
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */

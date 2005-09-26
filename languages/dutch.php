@@ -894,7 +894,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Dit definieerd de standaard categorie sjabloon voor het weergeven van produkten in een categorie.<br /> Nieuwe sjablonen kunnen worden gecreëerd door het wijzigen van de bestaande sjablonen.<br />(deze bevinden zich in de directorie <strong>COMPONENTPATH/html/templates/</strong> en beginnen met browse_)';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Standaard aantal produkten in een rij';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Dit definieerd het standaard aantal produkten in een rij. <br />Bijvoorbeeld: Als het aantal op 4 staat, het categorie sjabloon laat dan 4 produkten per rij zien';
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\"no image\" image';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"no image" image';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Deze afbeelding wordt weergegeven als er geen produkt afbeelding beschikbaar is.';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'SEARCH ROWS';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Bepaalt het aantal rijen per pagina wanneer de zoekresultaten worden weergegen in een lijst.';
@@ -1345,6 +1345,17 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'Wanneer aan, zullen produkten die niet op vorraad zijn getoont worden in de winkel. Anders worden deze verborgen gehouden';
 	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
 	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
+	var $_PHPSHOP_HIDE_OUT_OF_STOCK = 'Hide out of stock products';
+	var $_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL = 'Featured & Discounted Products';
+	var $_PHPSHOP_FEATURED = 'Featured';
+	var $_PHPSHOP_BACK_TO_COUNTRY = 'Back to the country';
+	var $_PHPSHOP_BACK_TO_FILEMANAGER = 'Back to the file manager';
+	var $_PHPSHOP_ADD_STATE = 'Add a State';
+	var $_PHPSHOP_LIST_STATES = 'List States';
+	var $_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED = 'featured AND discounted';
+	var $_PHPSHOP_SHOW_FEATURED = 'featured products';
+	var $_PHPSHOP_SHOW_DISCOUNTED = 'discounted products';
+	var $_PHPSHOP_FILTER = 'Filter';
         
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */

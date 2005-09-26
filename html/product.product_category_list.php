@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: product.product_category_list.php,v 1.4 2005/03/23 07:09:30 soeren_nb Exp $
+* @version $Id: product.product_category_list.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -134,11 +134,7 @@ for($n = $limitstart ; $n < $nrows ; $n++) {
 						. "\">[ ".$PHPSHOP_LANG->_PHPSHOP_SHOW." ]</a>"
 					);
 	
-	if ($category_tmp[$row_list[$n]]["category_publish"]=='N')
-		$tmp_cell = "<img src=\"". $mosConfig_live_site ."/administrator/images/publish_x.png\" border=\"0\" />";
-	else 
-		$tmp_cell = "<img src=\"". $mosConfig_live_site ."/administrator/images/tick.png\" border=\"0\" />\n";
-	$listObj->addCell( $tmp_cell );
+	$listObj->addCell( vmCommonHTML::getYesNoIcon ( $category_tmp[$row_list[$n]]["category_publish"] ) );
 	
 	// Order Up and Down Icons
 	// This must be a big cheat, because we're working on sorted arrays,
@@ -155,6 +151,8 @@ for($n = $limitstart ; $n < $nrows ; $n++) {
 		
 		if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] > $levels[$depth_list[$n]+1] )
 			$downCondition = true;
+			if( $levels[$depth_list[$n]+1] > 1 )
+				$upCondition = true;
 		if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] == $levels[$depth_list[$n]+1] ) {
 			$upCondition = true;
 			$downCondition = false;
@@ -166,9 +164,9 @@ for($n = $limitstart ; $n < $nrows ; $n++) {
 	}
 	$levels[$depth_list[$n]+1]++;
 	
-	$listObj->addCell( $pageNav->orderUpIcon( $ibg, $upCondition )
-						. "&nbsp;" 
-						.$pageNav->orderDownIcon( $ibg, $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]], $downCondition )
+	$listObj->addCell( $pageNav->orderUpIcon( $ibg, $upCondition, 'orderup', 'Order Down', $page, 'reorder' )
+						. '&nbsp;'
+						.$pageNav->orderDownIcon( $ibg, $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]], $downCondition, 'orderdown', 'Order Down', $page, 'reorder' )
 					);
 					
 	$listObj->addCell( vmCommonHTML::getOrderingField( $category_tmp[$row_list[$n]]["list_order"] ) );

@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: product.product_list.php,v 1.20 2005/08/12 09:28:50 dvorakz Exp $
+* @version $Id: product.product_list.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * Contains code from PHPShop(tm):
@@ -299,13 +299,12 @@ if ($num_rows > 0) {
 		
 		$tmpcell = "<a href=\"". $_SERVER['PHP_SELF']."?option=com_phpshop&page=product.product_list&keyword=$keyword&limitstart=$limitstart&product_id=".$db->f("product_id")."&func=publishproduct";
 		if ($db->f("product_publish")=='N') {
-			$tmpcell .= "&product_publish=Y\">
-			<img src=\"$mosConfig_live_site/administrator/images/publish_x.png\" border=\"0\" alt=\"Publish\" />";
+			$tmpcell .= "&product_publish=Y\">";
 		} 
 		else { 
-			$tmpcell .= "&product_publish=N\">
-			<img src=\"$mosConfig_live_site/administrator/images/tick.png\" border=\"0\" alt=\"Unpublish\" />";
+			$tmpcell .= "&product_publish=N\">";
 		}
+		$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("product_publish"), "Publish", "Unpublish" );
 		$tmpcell .= "</a>";
 		$listObj->addCell( $tmpcell );
 		

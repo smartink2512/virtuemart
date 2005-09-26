@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: ps_html.php,v 1.14 2005/08/26 09:27:11 dvorakz Exp $
+* @version $Id: ps_html.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * Contains code from PHPShop(tm):
 * 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
@@ -437,6 +437,17 @@ class ps_html {
 		$code .= "</a>";
 		
 		return $code;
+	}
+	
+	function writePanelIcon( $image, $link, $text ) {
+		echo '<div class="icon" style="float:left;">
+			<a href="'.$link.'">
+				<div class="iconimage">
+					<img src="'.$image.'" alt="'.$text.'" align="middle" name="image" border="0" />
+				</div>
+			'.$text.'</a>
+		</div>';
+	
 	}
 }
  

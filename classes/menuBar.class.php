@@ -1,7 +1,7 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: toolbar.phpshop.html.php,v 1.15 2005/09/01 19:58:06 soeren_nb Exp $
+* @version $Id: menuBar.class.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage Core
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -149,11 +149,15 @@ class vmMenuBar extends mosMenuBar {
 		} else {
 			$href = "javascript:vm_submitButton('$task','$formName', '$page')";
 		}
+		if( empty( $task ))
+			$image_name = uniqid( "img_" );
+		else
+			$image_name  = $task;
 		if ($icon && $iconOver) {
 			?>
 			<td>
-			<a class="toolbar" href="<?php echo $href;?>" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $iconOver;?>',1);">
-			<img name="<?php echo $task;?>" src="<?php echo $icon;?>" alt="<?php echo $alt;?>" border="0" align="middle" />
+			<a class="toolbar" href="<?php echo $href;?>" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $image_name;?>','','<?php echo $iconOver;?>',1);">
+			<img name="<?php echo $image_name;?>" src="<?php echo $icon;?>" alt="<?php echo $alt;?>" border="0" align="middle" />
 			&nbsp;
 			<?php echo $alt; ?></a>
 			</td>

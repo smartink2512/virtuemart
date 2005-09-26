@@ -906,7 +906,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Sjálfvalið number of products in a row';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'This defines the number of products in a row. <br />
                                                                                                       Example: If you set it to 4, the category template will display 4 products per row';
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\"no image\" image';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"no image" image';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'This image will be shown when no product image is available.';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'SEARCH ROWS';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Determines the number of rows per page when search results are displayed in a list.';
@@ -1232,7 +1232,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = 'Enable eProcessingNetwork.com payment?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'Check to use eProcessingNetwork.com with phpShop.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = 'Test mode ?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = 'Select 'Yes' while testing. Select 'No' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = 'Select ';
 	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = 'eProcessingNetwork.com Login ID';
 	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = 'This is your eProcessingNetwork.com Login ID';
 	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = 'eProcessingNetwork.com Transaction Key';
@@ -1313,7 +1313,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = 'Multiple Values';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = 'Possible Values';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = 'Show Possible Values as Multiple select?';
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><BR><span class=\"sectionname\">Steel;Wood;Plastic;...</span>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><BR><span class="sectionname">Steel;Wood;Plastic;...</span>';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Default Value';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = 'For Parameter Default Value use this format:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Unit';
@@ -1356,11 +1356,22 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CSV_IMPORT_EXPORT = 'Import/Export';
 	var $_PHPSHOP_CSV_NEW_FIELD = 'Add a new Field';
 	var $_PHPSHOP_CSV_DOCUMENTATION = 'Documentation';
-	var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Sorry, but the Product you've requested wasn't found!';
+	var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Sorry, but the Product you';
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = 'Show Products that are out of Stock';
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.';
 	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
 	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
+	var $_PHPSHOP_HIDE_OUT_OF_STOCK = 'Hide out of stock products';
+	var $_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL = 'Featured & Discounted Products';
+	var $_PHPSHOP_FEATURED = 'Featured';
+	var $_PHPSHOP_BACK_TO_COUNTRY = 'Back to the country';
+	var $_PHPSHOP_BACK_TO_FILEMANAGER = 'Back to the file manager';
+	var $_PHPSHOP_ADD_STATE = 'Add a State';
+	var $_PHPSHOP_LIST_STATES = 'List States';
+	var $_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED = 'featured AND discounted';
+	var $_PHPSHOP_SHOW_FEATURED = 'featured products';
+	var $_PHPSHOP_SHOW_DISCOUNTED = 'discounted products';
+	var $_PHPSHOP_FILTER = 'Filter';
         
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */

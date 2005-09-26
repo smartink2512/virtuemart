@@ -907,7 +907,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'El número defectuoso de productos en bajo';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Esto define el número de productos en fila. <br />
                                                                                                       Ejempro: Si usted pone 4, plantilla de categoría mostrará 4 productos por fila';
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\"no image\" image';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"no image" image';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Saldrá esta imagen cuando no hay imagen de producto disponible.';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'BUSCAR FILAS';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Determine el número de filas por página cuando los resultados de la busquedad esten mostrado en la lista..';
@@ -1362,6 +1362,17 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.';
 	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
 	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
+	var $_PHPSHOP_HIDE_OUT_OF_STOCK = 'Hide out of stock products';
+	var $_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL = 'Featured & Discounted Products';
+	var $_PHPSHOP_FEATURED = 'Featured';
+	var $_PHPSHOP_BACK_TO_COUNTRY = 'Back to the country';
+	var $_PHPSHOP_BACK_TO_FILEMANAGER = 'Back to the file manager';
+	var $_PHPSHOP_ADD_STATE = 'Add a State';
+	var $_PHPSHOP_LIST_STATES = 'List States';
+	var $_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED = 'featured AND discounted';
+	var $_PHPSHOP_SHOW_FEATURED = 'featured products';
+	var $_PHPSHOP_SHOW_DISCOUNTED = 'discounted products';
+	var $_PHPSHOP_FILTER = 'Filter';
         
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */

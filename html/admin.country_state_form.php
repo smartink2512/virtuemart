@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: admin.country_state_form.php,v 1.1 2005/05/08 09:02:24 soeren_nb Exp $
+* @version $Id: admin.country_state_form.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * @copyright (C) 2005 Soeren Eberhardt
@@ -16,7 +16,9 @@ mm_showMyFileName( __FILE__ );
 
 $state_id = mosGetParam( $_REQUEST, 'state_id', null );
 $country_id = mosGetParam( $_REQUEST, 'country_id', null );
-
+if( is_array( $country_id ))
+	$country_id = $country_id[0];
+	
 if( !empty( $state_id )) {
   $q = "SELECT * FROM #__pshop_state WHERE state_id = '$state_id' AND country_id='$country_id'";
   $db->query($q);

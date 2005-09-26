@@ -1,7 +1,7 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: store.index.php,v 1.10 2005/06/20 19:57:06 soeren_nb Exp $
+* @version $Id: store.index.php,v 1.1 2005/09/06 20:04:22 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage HTML
 * @copyright (C) 2004-2005 Soeren Eberhardt
@@ -68,179 +68,167 @@ while($db->next_record())
 if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table>";
 ?>
 <div class="main">
-<table width="100%" border="0">
-  <tr>
-    <td valign="middle" align="left">
-      <table width="100%" border="0">
-		<tr>
-			<th class="sectionname">
+	<div class="sectionname">
               <img src="<?php echo IMAGEURL ?>ps_image/Desktop.png" width="48px" height="48px" align="center" alt="Desktop" border="0"/>
               <?php echo $PHPSHOP_LANG->_PHPSHOP_YOUR_STORE."::".$PHPSHOP_LANG->_PHPSHOP_CONTROL_PANEL; ?>
-			</th>
-		</tr>
-      </table>
+	</div>
+	
       <table width="100%" class="adminform">
         <tr>
-          <td width="50%" valign="top">
-          <table width="100%" border="0" class="cpanel">
-            <tr>
-                <td align="center" width="34%" height="100px">
-                  <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list") ?>" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_products.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_LBL; ?></a>
-                </td>
-                <td align="center" width="33%" height="100px">
-                  <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list") ?>" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_categories.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_CATEGORY_LIST_LBL; ?></a>
-                </td>
-                <td align="center" width="33%" height="100px">
-                  <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list") ?>" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_orders.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD ?></a>
-                </td>
-            </tr>
-            <tr>
-                <td align="center" height="100px">
-                  <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list") ?>" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_payment.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_MNU ?></a>
-                </td>
-                <td align="center" height="100px">
-                  <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list") ?>" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_vendors.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_VENDOR_MOD ?> Manager</a>
-                </td>
-                <td align="center" height="100px">
-                <?php 
-                if (defined( "_PSHOP_ADMIN" ) ) { ?>
-                  <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list") ?>" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_users.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_USERS ?></a>
-                  <?php 
-                } ?>
-                </td>
-            </tr>
-            <tr>
-                <td align="center" height="100px">
-                  <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg") ?>" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_configuration.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_CONFIG ?></a>
-                </td>
+          <td width="60%" valign="top">
+		<div id="cpanel">
+                <?php
+		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list");
+		$image = IMAGEURL .'ps_image/shop_products.png';
+		$text = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_LBL;
+		$ps_html->writePanelIcon( $image, $link, $text );
+		
+		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list");
+		$image = IMAGEURL .'ps_image/shop_categories.png';
+		$text = $PHPSHOP_LANG->_PHPSHOP_CATEGORY_LIST_LBL;
+		$ps_html->writePanelIcon( $image, $link, $text );
+
+		
+		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list");
+		$image = IMAGEURL .'ps_image/shop_orders.png';
+		$text = $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD;
+		$ps_html->writePanelIcon( $image, $link, $text );
+		
+		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list");
+		$image = IMAGEURL .'ps_image/shop_payment.png';
+		$text = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_MNU;
+		$ps_html->writePanelIcon( $image, $link, $text );
                 
-                <td align="center" height="100px">
-                <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form") ?>" style="text-decoration:none;">
-                <img src="<?php echo IMAGEURL ?>ps_image/shop_mart.png" width="48px" height="48px" align="middle" border="0"/>
-                <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_MNU; ?>
-                </a>
-                </td>
-                <td align="center" height="100px">
-                  <a href="http://www.mambo-phpshop.net/index.php?option=com_wikidoc&Itemid=55" target="_blank" style="text-decoration:none;">
-                  <img src="<?php echo IMAGEURL ?>ps_image/shop_help.png" width="48px" height="48px" align="middle" border="0"/>
-                  <br /><?php echo $PHPSHOP_LANG->_PHPSHOP_HELP_MOD ?></a>
-                </td>
-            </tr>
-          </table>
-        </td>
-	<td width="50%" valign="top">
-	<div style="width:100%;">
+		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
+		$image = IMAGEURL .'ps_image/shop_vendors.png';
+		$text =  $PHPSHOP_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
+		$ps_html->writePanelIcon( $image, $link, $text );
+                
+		if (defined( "_PSHOP_ADMIN" ) ) { 
+			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
+			$image = IMAGEURL .'ps_image/shop_users.png';
+			$text = $PHPSHOP_LANG->_PHPSHOP_USERS;
+			$ps_html->writePanelIcon( $image, $link, $text );
+		}
+            
+		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
+		$image = IMAGEURL .'ps_image/shop_configuration.png';
+		$text = $PHPSHOP_LANG->_PHPSHOP_CONFIG;
+		$ps_html->writePanelIcon( $image, $link, $text );
+                
+		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
+		$image = IMAGEURL .'ps_image/shop_mart.png';
+		$text = $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_MNU;
+		$ps_html->writePanelIcon( $image, $link, $text );
+                
+		$link = 'http://www.mambo-phpshop.net/index.php?option=com_wikidoc&Itemid=55';
+		$image = IMAGEURL .'ps_image/shop_help.png';
+		$text = $PHPSHOP_LANG->_PHPSHOP_HELP_MOD;
+		$ps_html->writePanelIcon( $image, $link, $text );
+		
+		?>
+		</td>
+		<td width="40%" valign="top">
+			<div style="width:100%;">
     <?php
         $tabs = new mShopTabs(0, 1, "_main");
         $tabs->startPane("content-pane");
         $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_STATISTICS, "statistic-page");
     ?>
-    <table class="adminlist">
-        <tr> 
-          <th colspan="2" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_STATISTICS ?></th>
-        </tr>
-        <tr> 
-          <td width="50%"><?php 
-              echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=admin.user_list\">"
-                      .  $PHPSHOP_LANG->_PHPSHOP_STATISTIC_CUSTOMERS ?></a>:</td>
-          <td width="50%"> <?php echo $customers ?></td>
-        </tr>
-        <tr> 
-          <td width="50%"><?php 
-              echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.product_list\">"
-                      .  $PHPSHOP_LANG->_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS ?></a>:</td>
-          <td width="50%"> <?php echo $active_products ?> </td>
-        </tr>
-        <tr> 
-          <td width="50%"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS ?>:</td>
-          <td width="50%"> <?php  echo $inactive_products ?></td>
-        </tr>
-        <tr> 
-          <td width="50%"><?php 
-              echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.specialprod\">"
-                      .  $PHPSHOP_LANG->_PHPSHOP_SPECIAL_PRODUCTS ?></a>:</td>
-          <td width="50%"><?php echo $special_products ?></td>
-        </tr>
-    </table>
-<?php
-$tabs->endTab();
-$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD, "order-page");
-?>
-    <table class="adminlist">
-        <tr> 
-          <th colspan="2" ><?php 
-              echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_list\">"
-                      .  $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD ?></a>:</th>
-        </tr>
-        <?php 
-        $i = 0;
-        foreach($orders as $order_status_name => $order_count) { ?>
-        <tr>
-          <td width="50%"><?php 
-            echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_list&show=".$order_status_code[$i++]."\">";
-            echo $order_status_name ."</a>" ?>:</td>
-          <td width="50%"> <?php echo $order_count ?></td>
-        </tr>
-        <?php } ?>
-        <tr> 
-          <td width="50%"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_SUM ?>:</strong></td>
-          <td width="50%"><strong><?php echo $sum ?></strong></td>
-        </tr>
-	</table>
-<?php
-$tabs->endTab();
-$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS, "neworder-page");
-?>
-    <table class="adminlist">
-      <tr>
-          <th colspan="2"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS ?></th>
-      </tr>
-<?php 
-    foreach($new_orders as $order_id => $total) { ?>
-          <tr>
-          <td width="50%"><?php 
-              echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_print&order_id=$order_id\">";
-              echo $PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_ID." ". $order_id ."</a>" ?>:</td>
-          <td width="50%">(<?php echo $total ." ".$_SESSION['vendor_currency'] ?>)</td>
-        </tr>
-        <?php 
-    } ?>
-	</table>
-<?php
-$tabs->endTab();
-$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS, "newcustomer-page");
-?>
-    <table class="adminlist">
-        <tr> 
-          <th colspan="2" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS ?></th>
-        </tr>
-	        <?php foreach($new_customers as $id => $name) { ?>
-        <tr>
-          <td colspan="2">
-              <a href="<?php echo $_SERVER['PHP_SELF'] ?>?option=com_phpshop&page=admin.user_list&task=edit&cid[0]=<?php echo $id ?>">
-              <?php echo $name ?></a></td>
-        </tr>
-        <?php } ?>
-    </table>
-<?php
-$tabs->endTab();
-$tabs->endPane();
-?> 
-</td></tr></table>
-</td></tr></table>
-
+			<table class="adminlist">
+				<tr> 
+				  <th colspan="2" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_STATISTICS ?></th>
+				</tr>
+				<tr> 
+				  <td width="50%"><?php 
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=admin.user_list\">"
+							  .  $PHPSHOP_LANG->_PHPSHOP_STATISTIC_CUSTOMERS ?></a>:</td>
+				  <td width="50%"> <?php echo $customers ?></td>
+				</tr>
+				<tr> 
+				  <td width="50%"><?php 
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.product_list\">"
+							  .  $PHPSHOP_LANG->_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS ?></a>:</td>
+				  <td width="50%"> <?php echo $active_products ?> </td>
+				</tr>
+				<tr> 
+				  <td width="50%"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS ?>:</td>
+				  <td width="50%"> <?php  echo $inactive_products ?></td>
+				</tr>
+				<tr> 
+				  <td width="50%"><?php 
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.specialprod\">"
+							  .  $PHPSHOP_LANG->_PHPSHOP_SPECIAL_PRODUCTS ?></a>:</td>
+				  <td width="50%"><?php echo $special_products ?></td>
+				</tr>
+			</table>
+		<?php
+		$tabs->endTab();
+		$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD, "order-page");
+		?>
+			<table class="adminlist">
+				<tr> 
+				  <th colspan="2" ><?php 
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_list\">"
+							  .  $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD ?></a>:</th>
+				</tr>
+				<?php 
+				$i = 0;
+				foreach($orders as $order_status_name => $order_count) { ?>
+				<tr>
+				  <td width="50%"><?php 
+					echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_list&show=".$order_status_code[$i++]."\">";
+					echo $order_status_name ."</a>" ?>:</td>
+				  <td width="50%"> <?php echo $order_count ?></td>
+				</tr>
+				<?php } ?>
+				<tr> 
+				  <td width="50%"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_SUM ?>:</strong></td>
+				  <td width="50%"><strong><?php echo $sum ?></strong></td>
+				</tr>
+			</table>
+		<?php
+		$tabs->endTab();
+		$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS, "neworder-page");
+		?>
+			<table class="adminlist">
+				<tr>
+					<th colspan="2"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS ?></th>
+				</tr>
+		<?php 
+			foreach($new_orders as $order_id => $total) { ?>
+				  <tr>
+					<td width="50%"><?php 
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_print&order_id=$order_id\">";
+					  echo $PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_ID." ". $order_id ."</a>" ?>:</td>
+					<td width="50%">(<?php echo $total ." ".$_SESSION['vendor_currency'] ?>)</td>
+				</tr>
+				<?php 
+			} ?>
+			</table>
+		<?php
+		$tabs->endTab();
+		$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS, "newcustomer-page");
+		?>
+			<table class="adminlist">
+				<tr> 
+				  <th colspan="2" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS ?></th>
+				</tr>
+				<?php 
+				foreach($new_customers as $id => $name) { ?>
+				<tr>
+				  <td colspan="2">
+					  <a href="<?php echo $_SERVER['PHP_SELF'] ?>?option=com_phpshop&page=admin.user_list&task=edit&cid[0]=<?php echo $id ?>">
+					  <?php echo $name ?></a></td>
+				</tr>
+				<?php 
+				} ?>
+			</table>
+		<?php
+		$tabs->endTab();
+		$tabs->endPane();
+		?> 
+		</td>
+	</tr>
+</table>
 </div>

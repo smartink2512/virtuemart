@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: ps_product_category.php,v 1.34 2005/08/02 19:07:30 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * Contains code from PHPShop(tm):
 * g@copyright (C) 2004-2005 Soeren Eberhardt
@@ -1217,74 +1217,92 @@ class ps_product_category {
 	** returns: true if the category has childs; false, if not
 	***************************************************************************/
 	function reorder( &$d ) {
+		global $db;
 		
-	  if( !empty( $d['cid'] )) {
-		$cid = $d['cid'][0];
+		if( !empty( $d['category_id'] )) {
+			$cid = $d['category_id'][0];
       
-		$db = new ps_DB;
-		switch( $d["task"] ) {
-			case "orderup":
-			  $q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
-			  $q .= "WHERE category_id='".$cid[0]."' ";
-			  $q .= "AND category_child_id='".$cid[0]."' ";
-			  $db->query($q);
-			  $db->next_record();
-			  $currentpos = $db->f("list_order");
-			  $category_parent_id = $db->f("category_parent_id");
-			  
-			  // Get the (former) predecessor and update it
-			  $q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
-			  $q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
-			  $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
-			  $q .= "AND list_order='". intval($currentpos - 1) . "'";
-			  $db->query($q);
-			  $db->next_record();
-			  $pred = $db->f("category_id");
-			  
-			  // Update the category and decrease the list_order
-			  $q = "UPDATE #__pshop_category ";
-			  $q .= "SET list_order=list_order-1 ";
-			  $q .= "WHERE category_id='".$cid[0]."'";
-			  $db->query($q);
-	
-			  $q = "UPDATE #__pshop_category ";
-			  $q .= "SET list_order=list_order+1 ";
-			  $q .= "WHERE category_id='$pred'";
-			  $db->query($q);
-			  
-			  break;
-			  
-			case "orderdown":
-			  $q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
-			  $q .= "WHERE category_id='".$cid[0]."' ";
-			  $q .= "AND category_child_id='".$cid[0]."' ";
-			  $db->query($q);
-			  $db->next_record();
-			  $currentpos = $db->f("list_order");
-			  $category_parent_id = $db->f("category_parent_id");
-			  
-			  // Get the (former) successor and update it
-			  $q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
-			  $q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
-			  $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
-			  $q .= "AND list_order='". intval($currentpos + 1) . "'";
-			  $db->query($q);
-			  $db->next_record();
-			  $succ = $db->f("category_id");
-			  
-			  $q = "UPDATE #__pshop_category ";
-			  $q .= "SET list_order=list_order+1 ";
-			  $q .= "WHERE category_id='".$cid[0]."' ";
-			  $db->query($q);
-			  
-			  $q = "UPDATE #__pshop_category ";
-			  $q .= "SET list_order=list_order-1 ";
-			  $q .= "WHERE category_id='$succ'";
-			  $db->query($q);
-			  
-			  break;
+			switch( $d["task"] ) {
+				case "orderup":
+					$q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
+					$q .= "WHERE category_id='".$cid[0]."' ";
+					$q .= "AND category_child_id='".$cid[0]."' ";
+					$db->query($q);
+					$db->next_record();
+					$currentpos = $db->f("list_order");
+					$category_parent_id = $db->f("category_parent_id");
+				  
+					// Get the (former) predecessor and update it
+					$q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
+					$q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
+					$q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
+					$q .= "AND list_order='". intval($currentpos - 1) . "'";
+					$db->query($q);
+					$db->next_record();
+					$pred = $db->f("category_id");
+				  
+					// Update the category and decrease the list_order
+					$q = "UPDATE #__pshop_category ";
+					$q .= "SET list_order=list_order-1 ";
+					$q .= "WHERE category_id='".$cid[0]."'";
+					$db->query($q);
+		
+					$q = "UPDATE #__pshop_category ";
+					$q .= "SET list_order=list_order+1 ";
+					$q .= "WHERE category_id='$pred'";
+					$db->query($q);
+				  
+					break;
+				  
+				case "orderdown":
+					$q = "SELECT list_order,category_parent_id FROM #__pshop_category,#__pshop_category_xref ";
+					$q .= "WHERE category_id='".$cid[0]."' ";
+					$q .= "AND category_child_id='".$cid[0]."' ";
+					$db->query($q);
+					$db->next_record();
+					$currentpos = $db->f("list_order");
+					$category_parent_id = $db->f("category_parent_id");
+				  
+					// Get the (former) successor and update it
+					$q = "SELECT list_order,#__pshop_category.category_id FROM #__pshop_category, #__pshop_category_xref ";
+					$q .= "WHERE #__pshop_category_xref.category_parent_id='$category_parent_id' ";
+					$q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
+					$q .= "AND list_order='". intval($currentpos + 1) . "'";
+					$db->query($q);
+					$db->next_record();
+					$succ = $db->f("category_id");
+				  
+					$q = "UPDATE #__pshop_category ";
+					$q .= "SET list_order=list_order+1 ";
+					$q .= "WHERE category_id='".$cid[0]."' ";
+					$db->query($q);
+				  
+					$q = "UPDATE #__pshop_category ";
+					$q .= "SET list_order=list_order-1 ";
+					$q .= "WHERE category_id='$succ'";
+					$db->query($q);
+				  
+					break;
+				case "saveorder":
+					$i = 0;
+					foreach( $d['category_id'] as $category_id ) {
+						if( !is_numeric( $d['order'][$i] ) ) {
+							$d['error'] = "Error: Please use numbers only for ordering the list!";
+							return false;
+						}
+						$i++;
+					}
+					$i = 0;
+					foreach( $d['category_id'] as $category_id ) {
+						$q = "UPDATE #__pshop_category ";
+						$q .= "SET list_order= ".$d['order'][$i];
+						$q .= " WHERE category_id='".$category_id."' ";
+						$db->query($q);
+						$i++;
+					}
+					break;
+			}
 		}
-	  }
     }
 
 }

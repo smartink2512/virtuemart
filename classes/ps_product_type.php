@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /** Changed Product Type - Begin*/
 /*
-* @version $Id: ps_product_type.php,v 1.3 2005/07/01 09:48:58 dvorakz Exp $
+* @version $Id: ps_product_type.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
 * @package mambo-phpShop
 * @subpackage classes
 
@@ -386,65 +386,65 @@ class ps_product_type {
   ** returns: true if the category has childs; false, if not !!!!!!!!!!!!!!!!!!!
   ***************************************************************************/
   function reorder( &$d ) {
-      $cb = mosGetParam( $_POST, 'cb', array(0) );
+      $cb = mosGetParam( $_POST, 'product_type_id', array(0) );
       
       $db = new ps_DB;
       switch( $d["task"] ) {
         case "orderup":
-          $q = "SELECT product_type_list_order FROM #__pshop_product_type ";
-          $q .= "WHERE product_type_id='".$cb[0]."' ";
-          $db->query($q);
-          $db->next_record();
-          $currentpos = $db->f("product_type_list_order");
-          //$category_parent_id = $db->f("category_parent_id");
+			$q = "SELECT product_type_list_order FROM #__pshop_product_type ";
+			$q .= "WHERE product_type_id='".$cb[0]."' ";
+			$db->query($q);
+			$db->next_record();
+			$currentpos = $db->f("product_type_list_order");
+			//$category_parent_id = $db->f("category_parent_id");
           
-          // Get the (former) predecessor and update it
-          $q  = "SELECT product_type_list_order,product_type_id FROM #__pshop_product_type WHERE ";
-          $q .= "product_type_list_order<'". $currentpos . "' ";
-	  $q .= "ORDER BY product_type_list_order DESC";
-          $db->query($q);
-          $db->next_record();
-          $pred = $db->f("product_type_id");
-	  $pred_pos = $db->f("product_type_list_order");
+			// Get the (former) predecessor and update it
+			$q  = "SELECT product_type_list_order,product_type_id FROM #__pshop_product_type WHERE ";
+			$q .= "product_type_list_order<'". $currentpos . "' ";
+			$q .= "ORDER BY product_type_list_order DESC";
+			$db->query($q);
+			$db->next_record();
+			$pred = $db->f("product_type_id");
+			$pred_pos = $db->f("product_type_list_order");
           
-          // Update the Product Type and decrease the list_order
-          $q = "UPDATE #__pshop_product_type ";
-          $q .= "SET product_type_list_order='".$pred_pos."' ";
-          $q .= "WHERE product_type_id='".$cb[0]."'";
-          $db->query($q);
+			// Update the Product Type and decrease the list_order
+			$q = "UPDATE #__pshop_product_type ";
+			$q .= "SET product_type_list_order='".$pred_pos."' ";
+			$q .= "WHERE product_type_id='".$cb[0]."'";
+			$db->query($q);
 
-          $q = "UPDATE #__pshop_product_type ";
-          $q .= "SET product_type_list_order='".intval($pred_pos + 1)."' ";
-          $q .= "WHERE product_type_id='$pred'";
-          $db->query($q);
+			$q = "UPDATE #__pshop_product_type ";
+			$q .= "SET product_type_list_order='".intval($pred_pos + 1)."' ";
+			$q .= "WHERE product_type_id='$pred'";
+			$db->query($q);
           
           break;
           
         case "orderdown":
-          $q = "SELECT product_type_list_order FROM #__pshop_product_type ";
-          $q .= "WHERE product_type_id='".$cb[0]."' ";
-          $db->query($q);
-          $db->next_record();
-          $currentpos = $db->f("product_type_list_order");
+			$q = "SELECT product_type_list_order FROM #__pshop_product_type ";
+			$q .= "WHERE product_type_id='".$cb[0]."' ";
+			$db->query($q);
+			$db->next_record();
+			$currentpos = $db->f("product_type_list_order");
           
-          // Get the (former) successor and update it
-          $q  = "SELECT product_type_list_order,product_type_id FROM #__pshop_product_type WHERE ";
-          $q .= "product_type_list_order>'". $currentpos . "' ";
-	  $q .= "ORDER BY product_type_list_order";
-          $db->query($q);
-          $db->next_record();
-          $succ = $db->f("product_type_id");
-	  $succ_pos = $db->f("product_type_list_order");
+			// Get the (former) successor and update it
+			$q  = "SELECT product_type_list_order,product_type_id FROM #__pshop_product_type WHERE ";
+			$q .= "product_type_list_order>'". $currentpos . "' ";
+			$q .= "ORDER BY product_type_list_order";
+			$db->query($q);
+			$db->next_record();
+			$succ = $db->f("product_type_id");
+			$succ_pos = $db->f("product_type_list_order");
           
-          $q = "UPDATE #__pshop_product_type ";
-          $q .= "SET product_type_list_order='".$succ_pos."' ";
-          $q .= "WHERE product_type_id='".$cb[0]."' ";
-          $db->query($q);
+			$q = "UPDATE #__pshop_product_type ";
+			$q .= "SET product_type_list_order='".$succ_pos."' ";
+			$q .= "WHERE product_type_id='".$cb[0]."' ";
+			$db->query($q);
           
-          $q = "UPDATE #__pshop_product_type ";
-          $q .= "SET product_type_list_order='".intval($succ_pos - 1)."' ";
-          $q .= "WHERE product_type_id='$succ'";
-          $db->query($q);
+			$q = "UPDATE #__pshop_product_type ";
+			$q .= "SET product_type_list_order='".intval($succ_pos - 1)."' ";
+			$q .= "WHERE product_type_id='$succ'";
+			$db->query($q);
           
           break;
       }

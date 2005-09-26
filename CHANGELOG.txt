@@ -1,5 +1,5 @@
 /*
-* $Id: CHANGELOG.txt,v 1.103 2005/09/06 19:28:35 soeren_nb Exp $
+* $Id: CHANGELOG.txt,v 1.2 2005/09/25 18:49:26 soeren_nb Exp $
 */
 Changelog for mambo-phpShop
 
@@ -17,6 +17,9 @@ Legend:
 
 Development Version
 *************************************
+26-09-2005 soeren
+# fixed the "product inventory" and "special products" list
+
 25-09-2005 soeren
 ! configuration constant SEARCH_ROWS (deprecated) is to be replaced by $mosConfig_list_limit
 - removed Mail configuration from configuration form (dropping support for Mambo < 4.5.1 )
