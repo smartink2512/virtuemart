@@ -1,16 +1,24 @@
+/* <?php
+*/
+
+/* Shop Styles here please
+*/
+
+
+/**
+* General definitions
+*/
 .shop_error {
 	font-size:	medium;
 	font-style: italic;
 	color:		red;
 }
 
+/**
+* Administration Styles
+*/
 .adminListHeader {
-	float:left; 
-	height: 48px; 
-	background-repeat: no-repeat;
-	text-align: left; 
-	font-size: 18px;
-	font-weight: bold;
-	padding-left: 80px;
-	
+	float:left; height: 48px; background-repeat: no-repeat;
+	text-align: left; font-size: 18px; font-weight: bold;
+	padding-left: 80px;	
 }

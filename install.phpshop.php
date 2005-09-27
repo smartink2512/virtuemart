@@ -1,16 +1,17 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-/*
-* @version $Id: install.phpshop.php,v 1.14 2005/09/01 19:58:06 soeren_nb Exp $
-* @package mambo-phpShop
-* @subpackage Core
+/**
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage core
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
 *
-* @copyright (C) 2004 Soeren Eberhardt
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 function com_install() 
 {
@@ -49,7 +50,7 @@ else
                 Please consider a small donation to help me keep up the work on this component.<br /><br />
                 <input type="hidden" name="cmd" value="_xclick" />
                 <input type="hidden" name="business" value="soeren_nb@yahoo.de" />
-                <input type="hidden" name="item_name" value="mambo-phpShop Donation" />
+                <input type="hidden" name="item_name" value="VirtueMart Donation" />
                 <input type="hidden" name="item_number" value="" />
                 <input type="hidden" name="currency_code" value="EUR" />
                 <input type="hidden" name="tax" value="0" />
@@ -63,7 +64,7 @@ else
           
           <div id="right">
 
-          <div id="step">Welcome to mambo-phpShop 1.2!</div>
+          <div id="step">Welcome to <?php $shortversion ?>!</div>
 
           <div class="clr"></div>
           <pre><?php echo $version ?></pre>
@@ -99,14 +100,14 @@ else
           <tr><td colspan="3" class="error">[UPDATE MODE]<br/>The Installation Script has found existing mambo-phpShop Tables, so let's update your Database.</td></tr>
             <tr>
               <td align="left" colspan="3">
-                If you're upgrading from version <strong>1.2 RC2</strong> or <strong>Mambo eCommerce Edition</strong> you'll have to click on this link!<br />
+                If you're upgrading from mambo-phpShop, version <strong>1.2 RC2</strong> or <strong>Mambo eCommerce Edition</strong> you'll have to click on this link!<br />
                 
                 <br /><br/>
                 <div align="center">
-                <a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop.');" name="Button2" class="button" href="index2.php?option=com_phpshop&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
+                <a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_phpshop&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
                 </div>
                 <div class="error">Note:</div>If your Version Number is between 1.1 and 1.2 RC2 (e.g. <i>1.2 beta3</i>), you have to update your database before using the Step-by-Step SQL Update Scripts from the folder <pre>
-                /administrator/components/com_phpshop/sql</pre> of your mambo-phpShop Installation. You can run these Scripts with <a href="http://mamboforge.net/projects/mosphpmyadmin/" target="_blank">phpMyAdmin for Mambo</a>.
+                /administrator/components/com_phpshop/sql</pre> of your VirtueMart Installation. You can run these Scripts with <a href="http://mamboforge.net/projects/mosphpmyadmin/" target="_blank">phpMyAdmin for Mambo/Joomla</a>.
                 
               </td>
             </tr>
@@ -124,7 +125,7 @@ else
           <?php 
           } ?>
             <tr>
-              <td align="center" colspan="3">Go to <a href="http://www.mambo-phpShop.net" target="_blank">mambo-phpShop.net</a> for further Help</td>
+              <td align="center" colspan="3">Go to <a href="http://www.virtuemart.net" target="_blank">virtuemart.net</a> for further Help</td>
             </tr>
           </table>
           </div>

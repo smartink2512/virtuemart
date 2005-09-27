@@ -1,23 +1,20 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-
-/* $Id: shop.index.php,v 1.4 2005/09/06 19:28:36 soeren_nb Exp $
-* 
-* @package Mambo Open Source
-* @Copyright (C) 2000 - 2003 Miro International Pty Ltd
-* @ All rights reserved
-* @ Mambo Open Source is Free Software
-* @ Released under GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
-* @version $Revision: 1.4 $
+/**
 *
-* @sub-package mambo-phpShop
-* mostly contains code from PHPShop:
-* Copyright (c) Edikon Corporation ( www.phpshop.org ).
-* Distributed under the GNU Public License (GPL)
-* 
-* www.mambo-phpshop.net
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage html
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-**/
+* http://virtuemart.net
+*/
 require_once( CLASSPATH . 'ps_product.php');
 require_once( CLASSPATH . 'ps_product_category.php');
 $ps_product = new ps_product;

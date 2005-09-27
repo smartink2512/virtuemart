@@ -1,0 +1,178 @@
+<?php
+defined( '_VALID_MOS' ) or die( 'Restricted access' );
+/**
+* @version $Id$
+* @package VirtueMart
+* @subpackage core
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
+*/
+?>
+<pre>
+This is a non-exhaustive (but still near complete) changelog for
+VirtueMart, including beta and release candidate versions.
+Our thanks to all those people who've contributed bug reports and code fixes.
+
+Legend:
+
+# -> Bug Fix
++ -> Addition
+^ -> Change
+- -> Removed
+! -> Note
+
+--------------------------------------------------------------------------------------------------------------
+
+VirtueMart 0.9
+*************************************
+27-09-2005
+# WYSIWYG Editor not loading in frontend admin
+^ Frontend Administration uses the backend toolbar now (shared administration)
+^ changed the file headers of all files to carry the new name (VirtueMart) and a copyright notice
+
+26-09-2005 soeren
+# fixed the "product inventory" and "special products" list
+
+25-09-2005 soeren
+! configuration constant SEARCH_ROWS (deprecated) is to be replaced by $mosConfig_list_limit
+- removed Mail configuration from configuration form (dropping support for Mambo < 4.5.1 )
+- removed configuration constant MAX_ROWS.
+^ changed the configuration file (phpshop.cfg.php) to build URLs and Paths from Mambo configuration variables
+  This means that you don't have to adjust your configuration file when moving a site.
+^ updated all forms to use the new formFactory class and it's methods
++ new class formFactory for managing common form tasks in all administration forms in virtuemart
+
+18-09-2005 soeren
+^ Language files are updated. Language Strings can be returned as HTML Entity-encoded Strings.
+	* class vmAbstractLanguage is the base class for all language files.
+	* function _() returns an html entity-encoded string
+! language classes extend class vmAbstractLanguage from now on. mosAbstractClass is deprecated.
+- file mos_4.6_code.php will be removed.
+	* vmAbstractLanguage & mosAbstractLanguage class moved into language.class.php
+	* mosMailer / mosCommonHTML compat code moved into ps_main.php
+
+13-09-2005 soeren
++ changed the product files list to show images in a tooltip
+# added code to prevent that manufacturers are deleted which still have products assigned to it
+# changed phpshop_parser.php not to be greedy on variables when $option is NOT "com_phpshop"
+	this should fix conflicts with variables of the same name used by other components
+^ Updated the toolbar to allow batch delete / (un)publishing of items in lists
+^ Changed complete page navigation to Mambo style (also remembers list positions!)
+# Product Quantity wasn't updated in cart when adding the same product again
+! functions search_header and search_footer will be removed. Don't use them. Use the class listFactory and its methods instead.
+^ changed all shop administration lists to use the new class listFactory. No more HTML Code in those lists!
++ added new file "htmlTools.class.php" containing a listFactory for admin lists
++ added new file "pageNavigation.class.php" (copy of the administrator/includes/pageNavigation.php)
++ added new file "/js/functions.js" for JS functions in the administration area
+
+06-09-2005 soeren
+^ mod_phpshop: changed the default value for "Pre-Text" to "" (empty!)
+# product search not handling keywords as separate search words, but as one (normal search)
+
+01-09-2005 soeren
+
++ added a CSS file called shop.css to /css: will control all shop specific layout in the future
+^ moved some program logic from phpshop_parser.php to their appropriate classes
+
+
+31-08-2005 soeren
+# products with a single quote (') didn't have a visible product image
+^ upated the CSV documentation
+^ product form: moved the discount drop-down list to product information tab
+	added a check to test if the IMAGEPATH is writable (see Tab "product images")
+# Custom Attribute Values would allow the customer to alter the product price (thanks to "Ary Group" <AryGroup@ua.fm> for reporting that)
+
+=======
+26-08-2005 Zdenek Dvorak
++ Now is possible use EXTRA FIELDS in user_info. Just set variable _PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_X (where X is from 1 to 5)
+  in language file and new input field will be shown in user's billing and shipping address form and in order details. Size of 
+  extra field 1, 2 and 3 is 255 chars. Size of extra field 4 and 5 is one char and they are shown as input select field.
+  For reasonable using extra field 4 and 5 is needed change items of input select in functions list_extra_field_4 
+  and list_extra_field_5 in file classes/ps_html.php.
+  You can change position of this fields in form in files: account.shipto.php account.billing.php account.order_details.php 
+  admin.users.html.php admin.user_address_form.php
++ User info in order includes EXTRA FIELDS. ## REQUIRES a DATABASE UPDATE! ##
+^ ## Database structure changed ##
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_1` varchar(255) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_2` varchar(255) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_3` varchar(255) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_4` char(1) default NULL;
+  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_5` char(1) default NULL;
++ New input field in user's shipping and billing address: phone_2
+# wrong address_type in file account.shipto.php
+# wrong $missing comparision for address_type_name in files account.shipto.php and admin.user_address_form.php
+# showing $missing_style in file admin.user_address_form.php
+# URL for editing shipping address in file admin.users.html.php
++ New variables in language file
+
+12-08-2005 Zdenek Dvorak
++ New feature in backend: You can search products by:
+  - modified date of product (You can search products which are very old and need update or which are new and need be checked)
+  - modified date of product's price (Very usefull if you use price synchronizing with other system - e.g. company accountancy)
+  - products with no price
++ New features: unit & packaging ## REQUIRES a DATABASE UPDATE! ##
+  You can set unit of product, number units in packaging and number units in box. For showing packaging in product_details is
+  needed use in flypage {product_packaging} - see html/templates/product_details/flypage.php
+^ ## Database structure changed ##
+  ALTER TABLE `mos_pshop_product` ADD `product_unit` varchar(32);
+  ALTER TABLE `mos_pshop_product` ADD `product_packaging` int(11);
+^ Now is possible set default product weight unit (pounds) and default product length unit (inches) in language file:
+  var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM and var $_PHPSHOP_PRODUCT_FORM_LENGTH_UOM
++ New language file for Czech translation (czechiso.php with ISO-8859-2 and czech1250.php with CP1250 codepage)
++ New parameter for modul phpshop: moduleclass_sfx
+
+09-08-2005 Zdenek Dvorak
+# bad showing last_page in cart and show error message if no product_id (no redirecting) (ps_cart.php)
+# error message befor login to show account.order_details (ps_main.php)
+# error message in no tax_rate (before show Shipping Address) (ps_product_attribute.php)
+# bad redirecting if URL == SECUREURL (ps_session.php)
+# vertical aligning button "Add to Cart" (shop.product_details.php)
+
+02-08-2005 soeren
+# categories from the category list were not shown in the list under some circumstances
+# Slashes were stripped out of text when saving a payment method (extrainfo)
+^ moved the SQL Queries out of the file shop.browse.php into shop_browse_queries.php
+
+01-08-2005 Zdenek Dvorak
+# Product Type: File mod_phpshop.php, variable _PHPSHOP_PARAMETER_SEARCH was changed to _PHPSHOP_ADVANCED_PARAMETER_SEARCH 
+
+26-07-2005
+# Tax Total wasn't calculated correctly when MULTIPLE_TAXRATES_ENABLE was set to 1 and a disount was applied
+# Product Discounts weren't calculated correctly when PAYMENT_DISCOUNT_BEFORE was enabled (ps_product::get_advanced_attribute_price())
+# basket.php didn't calculate the correct Tax Amount when a Coupont has been redeemed
+# Coupon Discount wasn't calculated correctly (when Percentage) - ps_coupon::process_coupon_code()
+# Quantity Discounts didn't show the correct price in the basket (ps_product::get_price())
+# Related Products couldn't be changed in Product Form
+^ more changes for Mambelfish compatiblity (added product_id / category_id to various SQL queries)
+
+19-07-2005 soeren
+# Tax Rate for other states didn't return 0 when no tax rate was specified
+# Report Basic Module doing an endless loop when showing single products
+# Product Form always displaying the name of the first Shopper Group, not saving the price to the correct shopper group
++ CSV: Added the "Skip the first line" feature by Christian Lehmann (thanks!)
+  so you can just keep the column names in the first line of the CSV file
+
+01-07-2005 Zdenek Dvorak
+! changed ToolTip in files ps_product_type.php, shop.parameter_search_form.php, product.product_form.php and
+  product.product_type_parameter_form.php
+  Now is used function mm_ToolTip.
+  
+^ changed the PNG Fix to this solution: http://www.skyzyx.com/scripts/sleight.php
+  (this doesn't let images disappear)
+
+27-06-2005 soeren
+# Checkout not working (Minimum Purchase Order Value not reached)
+
+---- derived from mambo-phpShop 1.2 stable - patch level 3 ----
+
+---- mambo-phpShop patch level 3 released ----
+
+
+</pre>

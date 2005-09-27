@@ -1,22 +1,22 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: ps_coupon.php,v 1.6 2005/07/29 14:31:48 soeren_nb Exp $
-* @package mambo-phpShop
 *
-* The ps_coupon class
-* @copyright (C) 2004 Erich Vinson
-* 
-* Modifications for mambo-phpShop:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage classes
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
-/*
+
+/**
  * Class Code for coupon codes
  * The author would like to thank Digitally Imported (www.di.fm) for good music to code to
  *

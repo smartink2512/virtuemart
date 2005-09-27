@@ -17,12 +17,13 @@ function vm_isChecked(isitchecked, frmName){
 
 /**
 */
-function vm_listItemTask( id, task, frmName, pageName ) {
+function vm_listItemTask( id, task, frmName, pageName, func ) {
 	var f = eval( "document."+frmName );
 	cb = eval( 'f.' + id );
 	if (cb) {
 		cb.checked = true;
-		submitbutton(task, pageName);
+		f.page.value = pageName;
+		vm_submitListFunc(task, frmName, func);
 	}
 	return false;
 }

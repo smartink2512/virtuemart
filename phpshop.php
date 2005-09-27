@@ -1,16 +1,19 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: phpshop.php,v 1.27 2005/09/01 19:58:06 soeren_nb Exp $
-* @package mambo-phpShop
-* @subpackage HTML
-* @copyright (C) 2004-2005 Soeren Eberhardt
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage core
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 
 global $mosConfig_absolute_path, $product_id;
@@ -65,7 +68,7 @@ else {
   
     if( !$pagePermissionsOK && $error == $PHPSHOP_LANG->_PHPSHOP_MOD_NO_AUTH ) {
       $page = @$_REQUEST['page'];
-      echo "<br/><br/>"._DO_LOGIN;
+      echo '<br/><br/>'._DO_LOGIN.'<br/><br/>';
       $modulename = "checkout";
       $pagename= "login_form";
     }
@@ -98,83 +101,38 @@ else {
             )
         && $no_menu != "1"
     ) {
-      if ( stristr( $_SERVER['PHP_SELF'], "index2.php" ) && !stristr( $_SERVER['PHP_SELF'], "administrator" )) {
-        if( !function_exists( "initEditor"))
-          include( $mosConfig_absolute_path."/editor/editor.php" );
-          
-        initEditor();
-      }
-      // The admin header with dropdown menu
-      include( ADMINPATH."header.php" );
-
-      // Toolbar (save & back)
-      if ( $page == "admin.show_cfg" || stristr($page, "form")) {
+		
+		$mainframe->loadEditor = 1;
+		require_once( $mosConfig_absolute_path."/editor/editor.php" );
+		initEditor();
+		
+		$editor1_array = Array('product.product_form' => 'product_desc',
+								'product.product_category_form' => 'category_description',
+								'store.store_form' => 'vendor_store_desc',
+								'vendor.vendor_form' => 'vendor_store_desc');
+		$editor2_array = Array('store.store_form' => 'vendor_terms_of_service',
+								'vendor.vendor_form' => 'vendor_terms_of_service');
+		editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
+		?>
+		<link type="text/css" rel="stylesheet" media="screen, projection" href="components/com_phpshop/css/admin.css" />
+		<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/com_phpshop/js/functions.js"></script>
+		<?php
+		  
+		// The admin header with dropdown menu
+		include( ADMINPATH."header.php" );
+	
+		include( ADMINPATH."toolbar.phpshop.php" );
+		echo '<br style="clear:both;" />';
       
-          require_once( "includes/HTML_toolbar.php" );
-          function editorScript($editor1='', $editor2='') {    
-            ?>
-		<script type="text/javascript" src="components/com_phpshop/js/functions.js"></script>
-                 <script type="text/javascript">
-                    function submitbutton(pressbutton) {
-                      var form = document.adminForm;
-                      if (pressbutton == 'cancel') {
-                        submitform( pressbutton );
-                        return;
-                      }
-                        <?php 
-                        if ($editor1 != '')
-                          getEditorContents( 'editor1', $editor1 ) ; ?>
-                        <?php
-                        if ($editor2 != '')
-                          getEditorContents( 'editor2', $editor2 ) ; ?>
-                        submitform( pressbutton );
-            
-                    }
-                    </script><?php
-            }
-            $editor1_array = Array('product.product_form' => 'product_desc',
-                                              'product.product_category_form' => 'category_description',
-                                              'store.store_form' => 'vendor_store_desc',
-                                              'vendor.vendor_form' => 'vendor_store_desc');
-            $editor2_array = Array('store.store_form' => 'vendor_terms_of_service',
-                                              'vendor.vendor_form' => 'vendor_terms_of_service');
-           editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
-            ?>
-          <table cellspacing="0" cellpadding="0" border="0" width="100%">
-          <tr>
-            <td >&nbsp;</td>
-            <td width="50%">
-              <?php
-		mosToolBar::startTable();
-			mosToolBar::spacer();
-			$image = 'images/save.png';
-			$image2 = 'images/save_f2.png'; ?>
-			<td width="25" align="center">
-				<a href="javascript:submitbutton('Save');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('save','','<?php echo $image2;?>',1);">
-				<img src="<?php echo $image;?>" width="32" height="32" alt="Save" border="0" name="save" /></a>
-			</td>
-			<?php  mosToolBar::spacer(25);?>
-			<td width="25" align="center">
-				<a href="javascript:window.history.back();" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('cancel','','administrator/images/back_f2.png',1);">
-				<img src="administrator/images/back.png" width="32" height="32" alt="Back" border="0" name="cancel" /></a>
-			</td>
-		<?php	
-		mosToolBar::endtable(); 
-	  ?>
-            </td>
-          </tr>
-        </table>
-        <?php
-        }
       }
     /**
 	** END: FRONTEND ADMIN - MOD
 	*****************************/
     
     /*****************************
-    ** BEGIN affiliate additions
-    ** by nhyde <nhyde@bigDrift.com> for phpshop v0.6.1
-    */
+	** BEGIN affiliate additions
+	** by nhyde <nhyde@bigDrift.com> for phpshop v0.6.1
+	*/
       if (AFFILIATE_ENABLE == '1') {
           $unset_affiliate = false;
           if (!isset($ps_affiliate)) {
@@ -226,7 +184,7 @@ else {
 
 if( !function_exists( "load_that_shop_page" )) {
   function load_that_shop_page( $modulename, $pagename) {
-      global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $page, $database,$mosConfig_absolute_path, $cart, $start,
+      global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $page, $database,$mosConfig_absolute_path, $cart, $start, $option, 
       $product_id,$PHPSHOP_LANG, $sess,$vendor_image,$vendor_country_2_code, $vendor_country_3_code , $vendor_image_url, $PSHOP_SHIPPING_MODULES,
       $_VERSION, $vendor_name, $vendor_address, $vendor_city,$vendor_country,$vendor_mail, $category_id, $mainframe, $mosConfig_list_limit, $limitstart, $limit,
       $vendor_store_name, $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping, $ps_shipping, $ps_order_status,

@@ -2,20 +2,22 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * @version $Id: ps_cashondelpay.php,v 1.4 2005/05/27 19:33:57 ei
-Description:
-a special type of 'cash on delivey':
-its fee depend on total sum
-
-* @package mambo-phpShop
-* @subpackage Payment
-* @copyright (C) 2004-2005 Soeren Eberhardt
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* a special type of 'cash on delivey':
+* its fee depend on total sum
 *
-* www.mambo-phpshop.net
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage payment
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
+* http://virtuemart.net
 */
 
 class ps_cashondel {

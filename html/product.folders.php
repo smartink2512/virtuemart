@@ -1,13 +1,22 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* phpShop dTree menu
-* @license GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
+* Products & Categories in a dTree menu
 * @author Soeren Eberhardt
 * @ Uses dTree Javascript: http://www.destroydrop.com/javascripts/tree/
-* @version $Id: product.folders.php,v 1.5 2005/05/26 21:28:07 soeren_nb Exp $
 *
-* CATEGORY TREE
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage html
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
 
@@ -26,9 +35,9 @@ $phpShopmenu = new phpShopmenu();
 $treename = "JSCook".uniqid( "Tree_" );
 
 $menu_htmlcode = "<br/><br/>
-<a onclick=\"javascript: ctExpandTree('div_$treename',99);\" style=\"cursor:pointer\">Expand Tree</a>
+<a onclick=\"javascript: ctExpandTree('div_$treename',99);\" style=\"cursor:pointer\">".$PHPSHOP_LANG->_PHPSHOP_EXPAND_TREE."</a>
 &nbsp;&nbsp;|&nbsp;&nbsp;
-<a onclick=\"javascript: ctCollapseTree('div_$treename');\" style=\"cursor:pointer\">Collapse Tree</a>
+<a onclick=\"javascript: ctCollapseTree('div_$treename');\" style=\"cursor:pointer\">".$PHPSHOP_LANG->_PHPSHOP_COLLAPSE_TREE."</a>
 <br/>
 <div style=\"margin-left:50px;\" id=\"div_$treename\"></div>
 <br/><br/>

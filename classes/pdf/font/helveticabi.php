@@ -1,18 +1,18 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: helveticabi.php,v 1.2 2005/01/27 19:33:58 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id: fpdf.php,v 1.1 2005/09/06 20:04:20 soeren_nb Exp $
+* @package VirtueMart
 * @subpackage HMTL2PDF
-* @author Olivier PLATHEY 
-* Adaption for Mambo:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 $fpdf_charwidths['helveticaBI']=array(
 	chr(0)=>278,chr(1)=>278,chr(2)=>278,chr(3)=>278,chr(4)=>278,chr(5)=>278,chr(6)=>278,chr(7)=>278,chr(8)=>278,chr(9)=>278,chr(10)=>278,chr(11)=>278,chr(12)=>278,chr(13)=>278,chr(14)=>278,chr(15)=>278,chr(16)=>278,chr(17)=>278,chr(18)=>278,chr(19)=>278,chr(20)=>278,chr(21)=>278,

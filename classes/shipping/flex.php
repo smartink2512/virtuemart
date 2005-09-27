@@ -1,21 +1,28 @@
 <?php
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
-/*
-* @version $Id: flex.php,v .9 2005/02/10  m_shawn 
-* @package Mambo_4.5.1
-* @subpackage mambo-phpShop
-* @copyright (C) 2005 Micah Shawn
+/**
+*
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage shipping
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
+*/
 
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* Based on mambo-phpShop by Soeren Eberhardt.  Thank you Soeren!
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-* www.mambo-phpshop.net
-******************************************************************************
+/**
 * 
+*
 * This class will charge a fixed shipping rate for orders under a minimum sales
 * threshhold and a percentage of the total order price for orders over that
-* threshhold.
+* threshold.
+* @copyright (C) 2005 Micah Shawn
 * 
 *******************************************************************************
 */

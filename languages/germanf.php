@@ -1,17 +1,19 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
+*
 * @version $Id: $
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage languages
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* @copyright (C) 2004-2005 Soeren Eberhardt
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-*
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_MENU = 'Menü';
@@ -1379,6 +1381,9 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_SHOW_FEATURED = 'featured products';
 	var $_PHPSHOP_SHOW_DISCOUNTED = 'discounted products';
 	var $_PHPSHOP_FILTER = 'Filter';
+	var $_PHPSHOP_BACK_TO_MAIN_SITE = 'Back to the Main Site';
+	var $_PHPSHOP_EXPAND_TREE = 'Expand Tree';
+	var $_PHPSHOP_COLLAPSE_TREE = 'Collapse Tree';
         
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */

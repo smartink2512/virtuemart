@@ -1,16 +1,23 @@
 <?php
-/*
-* @version $Id: ps_linkpoint.php,v 1.0 2005/03/30
-* @package Mambo_4.5.x
-* @subpackage mambo-phpShop
-* @copyright (C) 2005 James McMillan
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+/**
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage payment
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* www.mambo-phpshop.net
-*
+* http://virtuemart.net
+*/
+
+
+/**
 * The ps_linkpoint class, containing the payment processing code
 * for transactions with linkpoint.net or yourpay.com
 * contains code for Recurring billing an/or PreAuth Options
@@ -24,10 +31,8 @@
 * you can insert your store number, and public key location.
 *
 * Any questions, email jimmy@freshstation.org
+* @copyright (C) 2005 James McMillan
 */
-
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-
 class ps_linkpoint {
 
     var $payment_code = "LP";

@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
 	<name>phpShop</name>
-	<creationDate>20.09.2004</creationDate>
-	<author>Soeren Eberhardt; Base System: Edikon Corp.</author>
+	<creationDate>27.09.2004</creationDate>
+	<author>Soeren Eberhardt &amp; the VirtueMart dev team</author>
 	<copyright>released under GNU General Public License</copyright>
 	<authorEmail>soeren@mambo-phpshop.net</authorEmail>
 	<authorUrl>www.mambo-phpshop.net</authorUrl>
-	<version>1.2.1 alpha</version>
+	<version>0.9.0 beta</version>
 	<description>Online-Shop / E-Commerce Component</description>
   <files>
       <filename>frontend_files.tar.gz</filename>
@@ -100,27 +100,27 @@
   <installfile>install.phpshop.php</installfile>
   <uninstallfile>uninstall.phpshop.php</uninstallfile>
 	<administration>
-    <menu>mambo-phpShop</menu>
+    <menu>VirtueMart</menu>
       <files>
         <filename>2checkout_notify.php</filename>
         <filename>admin_files.tar.gz</filename>
         <filename>admin.phpshop.php</filename>
         <filename>cart.gif</filename>
-        <filename>CHANGELOG.txt</filename>
+        <filename>CHANGELOG.php</filename>
+        <filename>COPYRIGHT.php</filename>
         <filename>global.php</filename>
         <filename>header.php</filename>
         <filename>index.html</filename>
         <filename>install.css</filename>
         <filename>install.php</filename>
-        <filename>LICENSE.txt</filename>
+        <filename>LICENSE.php</filename>
         <filename>notify.php</filename>
         <filename>PEAR.php</filename>
         <filename>phpshop.cfg-dist.php</filename>
         <filename>Tar.php</filename>
-        <filename>TODO.txt</filename>
+        <filename>TODO.php</filename>
         <filename>toolbar.phpshop.html.php</filename>
         <filename>toolbar.phpshop.php</filename>
-        <filename>UPGRADING_1.2RC2_to_1.2stable.txt</filename>
         <filename>version.php</filename>
         <filename>worldpay_notify.php</filename>
         <filename>x-click-but21.gif</filename>

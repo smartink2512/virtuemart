@@ -8,7 +8,7 @@ else
 
 // these path and url definitions here are based on the mambo configuration
 define( 'URL', $mosConfig_live_site.'/' );
-define( 'SECUREURL', 'https://localhost/joomla/' );
+define( 'SECUREURL', URL );
 if( $_SERVER['SERVER_PORT'] == 443 )
 	define( 'IMAGEURL', SECUREURL .'/components/com_phpshop/shop_image/' );
 else
@@ -55,7 +55,7 @@ define('CAN_SELECT_STATES', '');
 define('SHOW_CHECKOUT_BAR', '1');
 define('CHECKOUT_STYLE', '1');
 define('CHECK_STOCK', '');
-define('ENCODE_KEY', 'mambophpShopIsCool');
+define('ENCODE_KEY', 'VirtueMart_IsCool');
 define('NO_SHIPPING', '');
 define('NO_SHIPTO', '');
 define('AFFILIATE_ENABLE', '');

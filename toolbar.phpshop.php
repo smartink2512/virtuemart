@@ -8,18 +8,23 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - a Forms Toolbar with "Save / Cancel"
 * - no toolbar
 *
-* @version $Id: toolbar.phpshop.php,v 1.5 2005/09/01 19:58:06 soeren_nb Exp $
+*
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
 * @package VirtueMart
-* @subpackage Core
-* @copyright (C) 2004-2005 Soeren Eberhardt
+* @subpackage core
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
-defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
+if( stristr( $_SERVER['PHP_SELF'], 'administrator'))
+	@define( '_PSHOP_ADMIN', '1' );
+	
 global $page;
 if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_phpshop/install.php' )) {
     // We parse the phpShop main code before loading the toolbar,

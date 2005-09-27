@@ -1,17 +1,25 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: PEAR.php,v 1.2 2005/01/27 19:33:24 soeren_nb Exp $
-* @package mambo-phpShop
-* @subpackage Core
 * @author Sterling Hughes <sterling@php.net>
 * @author Stig Bakken <ssb@php.net>
 * @author Tomas V.V.Cox <cox@idecnet.com>
 *
-* @license http://www.php.net/license/3_0.txt. PHP license
 *
-* www.mambo-phpshop.net
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage core
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
 */
+
 //
 // +--------------------------------------------------------------------+
 // | PEAR, the PHP Extension and Application Repository                 |
@@ -31,7 +39,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 // |          Tomas V.V.Cox <cox@idecnet.com>                           |
 // +--------------------------------------------------------------------+
 //
-// $Id: PEAR.php,v 1.2 2005/01/27 19:33:24 soeren_nb Exp $
+// $Id: PEAR.php,v 1.1 2005/09/06 20:04:19 soeren_nb Exp $
 //
 
 define('PEAR_ERROR_RETURN',     1);

@@ -1,17 +1,19 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: pageNavigation.class.php,v 1.2 2005/09/25 18:49:29 soeren_nb Exp $
-* @package virtuemart
+*
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
 * @subpackage classes
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* @copyright (C) 2004-2005 Soeren Eberhardt
-*
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 
 /** 
@@ -155,9 +157,10 @@ class vmPageNav {
 * @return string
 */
 	function orderUpIcon( $i, $condition=true, $task='orderup', $alt='Move Up', $page, $func ) {
+		global $mosConfig_live_site;
 		if (($i > 0 || ($i+$this->limitstart > 0)) && $condition) {
 		    return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">
-				<img src="images/uparrow.png" width="12" height="12" border="0" alt="'.$alt.'" />
+				<img src="'.$mosConfig_live_site.'/administrator/images/uparrow.png" width="12" height="12" border="0" alt="'.$alt.'" />
 			</a>';
   		} else {
   		    return '&nbsp;';
@@ -171,9 +174,10 @@ class vmPageNav {
 * @return string
 */
 	function orderDownIcon( $i, $n, $condition=true, $task='orderdown', $alt='Move Down', $page, $func ) {
+		global $mosConfig_live_site;
 		if (($i < $n-1 || $i+$this->limitstart < $this->total-1) && $condition) {
 			return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">
-				<img src="images/downarrow.png" width="12" height="12" border="0" alt="'.$alt.'" />
+				<img src="'.$mosConfig_live_site.'/administrator/images/downarrow.png" width="12" height="12" border="0" alt="'.$alt.'" />
 			</a>';
   		} else {
   		    return '&nbsp;';

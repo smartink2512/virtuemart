@@ -1,22 +1,28 @@
 <?php
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
-* @version $Id: ups.php,v 1.11 2005/06/22 19:50:40 soeren_nb Exp $
-* @package mambo-phpShop
-* @copyright (C) 2004 Soeren Eberhardt
-* @subpackage Shipping
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-* www.mambo-phpshop.net
-******************************************************************************
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage shipping
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
+*/
+
+/**
 * This is the Shipping class for 
 * using a part of the UPS Online(R) Tools:
 * = Rates and Service Selection =
 *
 * UPS OnLine(R) is a registered trademark of United Parcel Service of America. 
-*******************************************************************************
+*
 */
 class ups {
 
@@ -24,7 +30,7 @@ class ups {
   
   function list_rates( &$d ) {
 	global $vendor_country_2_code, $vendor_currency; 
-	global $PHPSHOP_LANG, $CURRENCY_DISPLAY;
+	global $PHPSHOP_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
 	$db =& new ps_DB;
 	$dbv =& new ps_DB;
 	
@@ -165,7 +171,7 @@ class ups {
 		}
 		else {
 		  /* XML Parsing */
-		  require_once( CLASSPATH. 'domit/xml_domit_lite_include.php' );
+		  require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
 		  $xmlDoc =& new DOMIT_Lite_Document();
 		  $xmlDoc->parseXML( $xmlResult, false, true );
 		  
@@ -214,7 +220,7 @@ class ups {
 		  
 		  if( stristr( $xmlResult, "Success" )) {		  
 			/* XML Parsing */
-			require_once( CLASSPATH. 'domit/xml_domit_lite_include.php' );
+			require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
 			$xmlDoc =& new DOMIT_Lite_Document();
 			if( $xmlDoc->parseXML( $xmlResult, false, true ))
 			  $error = false;

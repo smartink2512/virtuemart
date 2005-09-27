@@ -1,22 +1,22 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: header.php,v 1.21 2005/05/10 18:44:50 soeren_nb Exp $
-* @package mambo-phpShop
-* @subpackage Core
-* @copyright (C) 2004-2005 Soeren Eberhardt
+* Header file for the shop administration.
+* shows all modules that are available to the user in a dropdown menu
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage core
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
 *
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-/** 
-* Header file for the MOS - phpshop component administration.
-* shows all modules that are available to the user in a dropdown menu
-*/
 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 global $error, $page;
@@ -38,8 +38,8 @@ while ($db->next_record()) {
 if (!defined('_PSHOP_ADMIN')) {
   $my_path = "includes/js/ThemeOffice/";
   if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
-	echo "<script type=\"text/javaScript\" src=\"includes/js/mambojavascript.js\"></script>\n";
-	echo "<a href=\"index.php\" title=\"Back\"><h3>&nbsp;&nbsp;&gt;&gt; Back to the Main Site &lt;&lt;</h3></a>\n";
+	echo '<script type="text/javascript" src="includes/js/mambojavascript.js"></script>
+	<a href="index.php" title="Back"><h3>&nbsp;&nbsp;&gt;&gt; '.$PHPSHOP_LANG->_PHPSHOP_BACK_TO_MAIN_SITE.' &lt;&lt;</h3></a>';
   }
 ?>
 <link rel="stylesheet" href="<?php echo $my_path ?>theme.css" type="text/css" />
@@ -52,7 +52,7 @@ if (!defined('_PSHOP_ADMIN')) {
     }
     ?>
 <script language="JavaScript" type="text/javascript">
-var phpShopMenu =
+var vmMenu =
 [  <?php for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules 
 
             $label = "\$lbl =  \$PHPSHOP_LANG->_PHPSHOP_".strtoupper($mod[$i])."_MOD;";
@@ -312,11 +312,10 @@ var phpShopMenu =
 ];
 
 </script>
-
 <table style="width:100%;" cellspacing="0" cellpadding="0" border="0">
     <tr class="menubackgr" >
         <td width="83" style="width:83px; min-width:50px; background: url(<?php echo IMAGEURL ?>ps_image/toplogo.gif) no-repeat;" height="52">&nbsp;</td>
-        <td id="phpShopMenuID" style="padding-bottom: 10px;font-weight:bold; width:auto; background: url(<?php echo IMAGEURL ?>ps_image/toplogo-repeated.gif) repeat-x;" height="52" ></td>
+        <td id="vmMenuID" style="padding-bottom: 10px;font-weight:bold; width:auto; background: url(<?php echo IMAGEURL ?>ps_image/toplogo-repeated.gif) repeat-x;" height="52" ></td>
     </tr>
     <tr valign="top" class="adminform" >
         <td colspan="2">
@@ -329,7 +328,7 @@ var phpShopMenu =
 </table>
 
 <script language="JavaScript" type="text/javascript">
-cmDraw ('phpShopMenuID', phpShopMenu, 'hbr', cmThemeOffice, 'ThemeOffice');
+cmDraw ('vmMenuID', vmMenu, 'hbr', cmThemeOffice, 'ThemeOffice');
 </script>
 
 

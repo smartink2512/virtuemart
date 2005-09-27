@@ -1,18 +1,18 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: zapfdingbats.php,v 1.3 2005/06/13 20:49:00 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id: fpdf.php,v 1.1 2005/09/06 20:04:20 soeren_nb Exp $
+* @package VirtueMart
 * @subpackage HMTL2PDF
-* @author Olivier PLATHEY 
-* Adaption for Mambo:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 $fpdf_charwidths['zapfdingbats']=array(
 	chr(0)=>0,chr(1)=>0,chr(2)=>0,chr(3)=>0,chr(4)=>0,chr(5)=>0,chr(6)=>0,chr(7)=>0,chr(8)=>0,chr(9)=>0,chr(10)=>0,chr(11)=>0,chr(12)=>0,chr(13)=>0,chr(14)=>0,chr(15)=>0,chr(16)=>0,chr(17)=>0,chr(18)=>0,chr(19)=>0,chr(20)=>0,chr(21)=>0,

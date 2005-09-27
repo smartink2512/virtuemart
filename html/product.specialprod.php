@@ -1,24 +1,31 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
-/* $Id: product.specialprod.php,v 1.1 2005/09/06 20:04:22 soeren_nb Exp $
-* 
-* @package mambo-phpShop
-* @subpackage HTML
-* @Copyright (C) 2000 - 2003 Mr PHP
-* @license GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
-* @version $Revision: 1.1 $
+/**
 *
-* 
-* www.mambo-phpshop.net
+* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @package VirtueMart
+* @subpackage html
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
 *
-* ----------------------------------------------------------------------
+* http://virtuemart.net
+*/
+
+/**
+----------------------------------------------------------------------
  Special Products Manager
  ----------------------------------------------------------------------
  Module designed by 
  W: www.mrphp.com.au
  E: info@mrphp.com.au
  P: +61 418 436 690
- ----------------------------------------------------------------------*/
+ ----------------------------------------------------------------------
+ */
 mm_showMyFileName( __FILE__ );
 
 require_once( CLASSPATH . "pageNavigation.class.php" );
