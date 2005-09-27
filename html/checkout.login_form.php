@@ -43,6 +43,6 @@ $Itemid = mosgetparam($_REQUEST, "Itemid", null);
   <input type="hidden" name="op2" value="login" />
   <input type="hidden" name="remember" value="yes" />
   <input type="hidden" name="lang" value="<?php echo $mosConfig_lang; ?>" />
-  <input type="hidden" name="return" value="<?php echo sefRelToAbs( $mm_action_url."index.php?".$_SERVER['QUERY_STRING'] ) ?>" />
+  <input type="hidden" name="return" value="<?php echo sefRelToAbs( $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ) ?>" />
 </form>
 
