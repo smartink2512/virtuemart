@@ -17,7 +17,7 @@ function fnLoadPngs()
 
 	for (var i = document.images.length - 1, img = null; (img = document.images[i]); i--)
 	{
-		if (itsAllGood && img.src.match(/(.*)\/com_phpshop\/(.*)\.png$/i) != null)
+		if (itsAllGood && img.src.match(/(.*)\/com_virtuemart\/(.*)\.png$/i) != null)
 		{
 			var src = img.src;
 			var span = document.createElement("span");
