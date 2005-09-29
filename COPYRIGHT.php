@@ -44,11 +44,6 @@ Currency Converter Module
 Copyright:	2004 Werner Knudsen
 License:	GNU General Public License (GPL)
 
-DOMIT!
-----
-Copyright:	2004 John Heinstein. All rights reserved
-License:	GNU Lesser General Public License (LGPL)
-
 FPDF
 ----
 Copyright:	Olivier PLATHEY
@@ -108,7 +103,7 @@ phpShop
 ----
 Copyright:	2000 - 2004 Edikon Corp. (http://www.edikon.com)
 License:	GNU General Public License (GPL)
-Community: http://www.phpshop.org
+Community: http://www.virtuemart.org
 
 tar-archive
 ----

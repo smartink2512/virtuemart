@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_checkout.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */ 
@@ -91,7 +91,7 @@ class ps_checkout {
             
             <td  <?php if ($highlighted_step==$i) echo $highlighted_style; ?> width="119" align="center" valign="bottom">
             <?php if ($highlighted_step > $i) { ?>
-            <a href="<?php $sess->purl(SECUREURL."index.php?page=checkout.index&option=com_phpshop&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".@$shipping_rate_id."&checkout_next_step=".$steps_to_do[$i-1]) ?>"> 
+            <a href="<?php $sess->purl(SECUREURL."index.php?page=checkout.index&option=com_virtuemart&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".@$shipping_rate_id."&checkout_next_step=".$steps_to_do[$i-1]) ?>"> 
             <?php echo $step_msg[$i-1] ?></a>
             <?php }
             else 
@@ -117,7 +117,7 @@ class ps_checkout {
   **          False - validation failed
   ***************************************************************************/
    function validate_form(&$d) {
-     global $PHPSHOP_LANG, $PSHOP_SHIPPING_MODULES;
+     global $VM_LANG, $PSHOP_SHIPPING_MODULES;
      
      $db = new ps_DB;
      require_once(CLASSPATH.'ps_payment_method.php');
@@ -126,7 +126,7 @@ class ps_checkout {
      $cart = $_SESSION['cart'];
     
     if (!$cart["idx"]) {
-       $q  = "SELECT order_id FROM #__pshop_orders WHERE user_id='" . $auth["user_id"] . "' "; 
+       $q  = "SELECT order_id FROM #__{vm}_orders WHERE user_id='" . $auth["user_id"] . "' "; 
        $q .= "ORDER BY cdate DESC";
        $db->query($q);
        $db->next_record();
@@ -136,19 +136,19 @@ class ps_checkout {
      }
      if( PSHOP_AGREE_TO_TOS_ONORDER == '1' ) {
       if( empty( $d["agreed"] )) {
-        $d["error"] = $PHPSHOP_LANG->_PHPSHOP_AGREE_TO_TOS;
+        $d["error"] = $VM_LANG->_PHPSHOP_AGREE_TO_TOS;
         return false;
       }
      }
   
       if ( NO_SHIPPING != "1" && (CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='3') ) {
        if (empty($d["shipping_rate_id"])) {
-         $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP;
+         $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP;
          return False;
        }
     }
      if (!$d["payment_method_id"]) {
-       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM;
+       $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM;
        return False;
      }
       
@@ -171,7 +171,7 @@ class ps_checkout {
   **          False - validation failed
   ***************************************************************************/
   function validate_add(&$d) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     
     require_once(CLASSPATH.'ps_payment_method.php');
     $ps_payment_method = new ps_payment_method;
@@ -183,7 +183,7 @@ class ps_checkout {
     
     if (NO_SHIPTO != '1') {
      if (empty($d["ship_to_info_id"])) {
-       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
+       $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
        return False;
      }
     }
@@ -195,18 +195,18 @@ class ps_checkout {
     if ($ps_payment_method->is_creditcard($d["payment_method_id"])) {
 
        if (!$_SESSION["ccdata"]["order_payment_number"]) {
-         $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR;
+         $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR;
          return False;
        }
     
        if(!$ps_payment_method->validate_payment($d["payment_method_id"], 
                        $d["order_payment_number"])) {
-         $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_CCNUM_INV;
+         $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCNUM_INV;
          return False;
        }
     
        if(!$_SESSION["ccdata"]["order_payment_expire"]) {
-         $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV;
+         $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV;
          return False;
        }
     }
@@ -226,9 +226,9 @@ class ps_checkout {
   **          False - validation failed
   ***************************************************************************/
   function validate_shipping_method(&$d) {
-    global $PHPSHOP_LANG, $PSHOP_SHIPPING_MODULES;
+    global $VM_LANG, $PSHOP_SHIPPING_MODULES;
     if( empty($d['shipping_rate_id']) ) {
-      $d['error'] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP;
+      $d['error'] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP;
       return false;
     }
 	if( is_callable( array($this->_SHIPPING, 'validate') )) {
@@ -252,13 +252,13 @@ class ps_checkout {
   **          False - validation failed
   ***************************************************************************/
    function validate_payment_method(&$d, $is_test) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     
     $auth = $_SESSION['auth'];
     $cart = $_SESSION['cart'];
     
      if (empty($d["payment_method_id"])) {
-       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM;
+       $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM;
        return false;
      }
      require_once(CLASSPATH.'ps_payment_method.php');
@@ -268,7 +268,7 @@ class ps_checkout {
      
      // Now Check if all needed Payment Information are entered
      // Bank Information is found in the User_Info
-     $w  = "SELECT enable_processor FROM #__pshop_payment_method WHERE ";
+     $w  = "SELECT enable_processor FROM #__{vm}_payment_method WHERE ";
      $w .= "payment_method_id = '" .  $d["payment_method_id"] . "' ";
      $dbp->query($w);
      $dbp->next_record();
@@ -284,46 +284,46 @@ class ps_checkout {
         /*** $_SESSION['ccdata'] = $ccdata; 
         * The Data should be in the session ***/
         if (!isset($_SESSION['ccdata'])) { //Not? Then Error
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATA;
+            $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATA;
             return False;
         }
 
         if (!$_SESSION['ccdata']['order_payment_number']) {
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND;
+            $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND;
             return False;
         }
         
         /** CREDIT CARD NUMBER CHECK 
         ** USING THE CREDIT CARD CLASS in ps_payment **/
         if(!$ps_payment_method->validate_payment( $d["creditcard_code"], $_SESSION['ccdata']['order_payment_number'])) {
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE;
+            $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE;
             return False;
         }
        
         if (!$is_test) {
           $payment_number = ereg_replace(" |-", "", $_SESSION['ccdata']['order_payment_number']);
           if ($payment_number == "4111111111111111") {
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_TEST;
+            $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_TEST;
             return False;
           }
         }
         if(!empty($d['need_card_code']) && empty($d['credit_card_code'])) {
-          $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CUSTOMER_CVV2_ERROR;
+          $d["error"] = $VM_LANG->_PHPSHOP_CUSTOMER_CVV2_ERROR;
           return False;
         }
         if(!$_SESSION['ccdata']['order_payment_expire_month']) {
-          $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCMON;
+          $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCMON;
           return False;
         }
         if(!$_SESSION['ccdata']['order_payment_expire_year']) {
-          $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR;
+          $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR;
           return False;
         }
         $date = getdate( time() );
         if ($_SESSION['ccdata']['order_payment_expire_year'] < $date["year"] or
           ($_SESSION['ccdata']['order_payment_expire_year'] == $date["year"] and
             $_SESSION['ccdata']['order_payment_expire_month'] < $date["mon"])) {
-          $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV;
+          $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV;
           return False;
         }
         return True;
@@ -335,29 +335,29 @@ class ps_checkout {
            $q  = "SELECT bank_account_holder,bank_iban,bank_account_nr,bank_sort_code,bank_name FROM #__users WHERE id = '" . $d["user_id"] . "'";
            $dbu->query($q);
            if (!$dbu->next_record()) {
-               $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA;
+               $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA;
               return False;
            }
            if ($dbu->f("bank_account_holder") == ""){
-               $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME;
+               $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME;
               return False;
            }
            if (($dbu->f("bank_iban") == "") and
                ($dbu->f("bank_account_nr") =="")) {
-               $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_IBAN;
+               $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_IBAN;
               return False;
            }
            if ($dbu->f("bank_iban") == "") {
              if ($dbu->f("bank_account_nr") == ""){
-               $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM;
+               $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM;
                return False;
              }
              if ($dbu->f("bank_sort_code") == ""){
-               $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT;
+               $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT;
                return False;
              }
              if ($dbu->f("bank_name") == ""){
-               $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME;
+               $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME;
                return False;
              }
              $d["creditcard_code"] = "";
@@ -404,11 +404,11 @@ class ps_checkout {
   **          False - a failure during the validation
   ***************************************************************************/
    function process(&$d) {
-     global $checkout_this_step, $sess,$PHPSHOP_LANG;
+     global $checkout_this_step, $sess,$VM_LANG;
      $ccdata = array();
      
      if (!$d["checkout_this_step"]) {
-       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP;
+       $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP;
        return false;
      }
      switch ($d["checkout_this_step"]) {
@@ -427,7 +427,7 @@ class ps_checkout {
            
            // The User has choosen a Shipping address
            if (empty($d["ship_to_info_id"])) {
-             $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
+             $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
              return False;
            }
            break;
@@ -489,7 +489,7 @@ class ps_checkout {
   ** returns:  Prints html radio element to standard out
   ***************************************************************************/
    function ship_to_addresses_radio($user_id, $name, $value) {
-      global $sess,$PHPSHOP_LANG;
+      global $sess,$VM_LANG;
 
       $db = new ps_DB;
           
@@ -502,7 +502,7 @@ class ps_checkout {
       $q .= "AND address_type='BT'";
       $db->query($q);
       if(!$db->num_rows()) {
-          $q  = "SELECT * from #__pshop_user_info WHERE ";
+          $q  = "SELECT * from #__{vm}_user_info WHERE ";
           $q .= "user_id='" . $user_id . "' ";
           $q .= "AND address_type='BT'";
           $db->query($q);
@@ -515,7 +515,7 @@ class ps_checkout {
       $q .= "last_name, first_name, middle_name, phone_1, phone_2, ";
       $q .= "fax, address_1, address_2, city, ";
       $q .= "state, country, zip ";
-      $q .= "FROM #__pshop_user_info ";
+      $q .= "FROM #__{vm}_user_info ";
       $q .= "WHERE user_id = '" . $user_id . "' ";
       $q .= "AND address_type = 'ST' ";
       $q .= "ORDER by address_type_name, mdate DESC";
@@ -532,7 +532,7 @@ class ps_checkout {
       }
       echo "</td>\n";
       echo "<td>\n";
-      echo $PHPSHOP_LANG->_PHPSHOP_ACC_BILL_DEF."\n";
+      echo $VM_LANG->_PHPSHOP_ACC_BILL_DEF."\n";
       echo "</td>\n";
       echo "</tr>\n";
       $i = 2;
@@ -553,7 +553,7 @@ class ps_checkout {
          echo "<strong>" . $db->f("address_type_name") . "</strong> ";
          $url = SECUREURL . "index.php?page=account.shipto&user_info_id=" . $db->f('user_info_id');
          $url .= "&next_page=checkout.index";
-         echo "(<a href=\"".$sess->url($url)."\">".$PHPSHOP_LANG->_PHPSHOP_UDATE_ADDRESS."</a>)\n";
+         echo "(<a href=\"".$sess->url($url)."\">".$VM_LANG->_PHPSHOP_UDATE_ADDRESS."</a>)\n";
          echo "<br />\n";
          echo $db->f("title") . " ";
          echo $db->f("first_name") . " ";
@@ -603,7 +603,7 @@ class ps_checkout {
       $q = "SELECT address_type_name, company, title, last_name, ";
       $q .= "first_name, middle_name, phone_1, phone_2, fax, ";
       $q .= "address_1, address_2, city, state, country, zip ";
-      $q .= "FROM #__pshop_user_info,#__users ";
+      $q .= "FROM #__{vm}_user_info,#__users ";
       $q .= "WHERE user_info_id = '$user_info_id'";
 
       $db->query($q);
@@ -644,7 +644,7 @@ class ps_checkout {
   **          False - Failure in storing the order information
   ***************************************************************************/
    function add( &$d ) {
-      global $HTTP_POST_VARS, $afid, $PHPSHOP_LANG, $mosConfig_debug, $mosConfig_offset;
+      global $HTTP_POST_VARS, $afid, $VM_LANG, $mosConfig_debug, $mosConfig_offset;
       
       $ps_vendor_id = $_SESSION["ps_vendor_id"];
       $auth = $_SESSION['auth'];
@@ -772,14 +772,14 @@ class ps_checkout {
         
         eval( "\$_PAYMENT = new $payment_class();" );
          if (!$_PAYMENT->process_payment($order_number,$order_total, $d)) {
-           $d["error"] .= "\n ".$PHPSHOP_LANG->_PHPSHOP_PAYMENT_ERROR." ($payment_class)";
+           $d["error"] .= "\n ".$VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($payment_class)";
            $_SESSION['last_page'] = "checkout.index";
            return False;
          }
      }
      
      else {
-       $d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_MSG_LOG;
+       $d["order_payment_log"] = $VM_LANG->_PHPSHOP_CHECKOUT_MSG_LOG;
      }
      
      // Remove the Coupon, because it is a Gift Coupon and now is used!!
@@ -790,7 +790,7 @@ class ps_checkout {
      }
      
      /* Insert the main order information */
-     $q = "INSERT INTO #__pshop_orders ";
+     $q = "INSERT INTO #__{vm}_orders ";
      $q .= "(user_id, vendor_id, order_number, user_info_id, ";
      $q .= "ship_method_id, order_total, order_subtotal, order_tax, order_shipping, ";
      $q .= "order_shipping_tax,  order_discount, coupon_discount,order_currency, order_status, cdate, ";
@@ -826,7 +826,7 @@ class ps_checkout {
      
      /* Get the order id just stored */
      
-     $q = "SELECT order_id FROM #__pshop_orders WHERE order_number = ";
+     $q = "SELECT order_id FROM #__{vm}_orders WHERE order_number = ";
      $q .= "'" . $order_number . "'";
      
      $db->query($q);
@@ -837,7 +837,7 @@ class ps_checkout {
     /**
     * Insert the initial Order History.
     */
-    $q = "INSERT INTO #__pshop_order_history ";
+    $q = "INSERT INTO #__{vm}_order_history ";
     $q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
     $q .= "'$order_id', 'P', NOW(), '1', '')";
     $db->query($q);
@@ -850,7 +850,7 @@ class ps_checkout {
      $d["order_payment_code"] = $_SESSION['ccdata']['credit_card_code'];
      
      // Payment number is encrypted using mySQL ENCODE function.
-     $q = "INSERT INTO #__pshop_order_payment ";
+     $q = "INSERT INTO #__{vm}_order_payment ";
      $q .= "(order_id, order_payment_code, payment_method_id, order_payment_number, ";
      $q .= "order_payment_expire, order_payment_log, order_payment_name, order_payment_trans_id) ";
      $q .= "VALUES ('$order_id', ";
@@ -871,15 +871,15 @@ class ps_checkout {
       // Bill To Address
      $db->query( "SELECT * FROM #__users WHERE id='".$auth['user_id']."'" );
      $db->next_record();
-     $q = "INSERT INTO `#__pshop_order_user_info` ";
+     $q = "INSERT INTO `#__{vm}_order_user_info` ";
      $q .= "(`order_id` , `user_id` , `address_type` , `address_type_name` , `company` , `title` , `last_name` , `first_name` , `middle_name` , `phone_1` , `phone_2` , `fax` , `address_1` , `address_2` , `city` , `state` , `country` , `zip` , `user_email` , `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5` ) ";
      $q .= "VALUES ('$order_id', '".$auth['user_id']."', 'BT', '', '".addslashes($db->f("company"))."', '".addslashes($db->f("title"))."', '".addslashes($db->f("last_name"))."', '".addslashes($db->f("first_name"))."', '".addslashes($db->f("middle_name"))."', '".addslashes($db->f("phone_1"))."', '".addslashes($db->f("phone_2"))."', '".addslashes($db->f("fax"))."', '".addslashes($db->f("address_1"))."', '".addslashes($db->f("address_2"))."', '".addslashes($db->f("city"))."', '".addslashes($db->f("state"))."', '".addslashes($db->f("country"))."', '".addslashes($db->f("zip"))."', '".addslashes($db->f("email"))."', '".addslashes($db->f("extra_field_1"))."', '".addslashes($db->f("extra_field_2"))."', '".addslashes($db->f("extra_field_3"))."', '".addslashes($db->f("extra_field_4"))."', '".addslashes($db->f("extra_field_5"))."')";
      $db->query( $q );
      
      // Ship to Address if applicable
-     $db->query( "SELECT * FROM #__pshop_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."'" );
+     $db->query( "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."'" );
      if( $db->next_record() ) {
-       $q = "INSERT INTO `#__pshop_order_user_info` ";
+       $q = "INSERT INTO `#__{vm}_order_user_info` ";
        $q .= "(`order_id` , `user_id` , `address_type` , `address_type_name` , `company` , `title` , `last_name` , `first_name` , `middle_name` , `phone_1` , `phone_2` , `fax` , `address_1` , `address_2` , `city` , `state` , `country` , `zip` , `user_email` , `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5` ) ";
        $q .= "VALUES ('$order_id', '".$auth['user_id']."', 'ST', '', '".addslashes($db->f("company"))."', '".addslashes($db->f("title"))."', '".addslashes($db->f("last_name"))."', '".addslashes($db->f("first_name"))."', '".addslashes($db->f("middle_name"))."', '".addslashes($db->f("phone_1"))."', '".addslashes($db->f("phone_2"))."', '".addslashes($db->f("fax"))."', '".addslashes($db->f("address_1"))."', '".addslashes($db->f("address_2"))."', '".addslashes($db->f("city"))."', '".addslashes($db->f("state"))."', '".addslashes($db->f("country"))."', '".addslashes($db->f("zip"))."', '".addslashes($db->f("user_email"))."', '".addslashes($db->f("extra_field_1"))."', '".addslashes($db->f("extra_field_2"))."', '".addslashes($db->f("extra_field_3"))."', '".addslashes($db->f("extra_field_4"))."', '".addslashes($db->f("extra_field_5"))."')";
        $db->query( $q );
@@ -894,7 +894,7 @@ class ps_checkout {
      for($i = 0; $i < $cart["idx"]; $i++) {
       
         $r = "SELECT product_in_stock,product_sales,product_id,product_sku,product_name ";
-        $r .= "FROM #__pshop_product WHERE product_id='".$cart[$i]["product_id"]."'";
+        $r .= "FROM #__{vm}_product WHERE product_id='".$cart[$i]["product_id"]."'";
         $dboi->query($r);
         $dboi->next_record();
       
@@ -912,7 +912,7 @@ class ps_checkout {
        
         $product_currency = $product_price_arr["product_currency"];
        
-        $q = "INSERT INTO #__pshop_order_item ";
+        $q = "INSERT INTO #__{vm}_order_item ";
         $q .= "(order_id, user_info_id, vendor_id, product_id, order_item_sku, order_item_name, ";
         $q .= "product_quantity, product_item_price, product_final_price, ";
         $q .= "order_item_currency, order_status, product_attribute, cdate, mdate) ";
@@ -940,14 +940,14 @@ class ps_checkout {
       
       /* Update Stock Level and Product Sales */
       if ($dboi->f("product_in_stock")) {
-         $q = "UPDATE #__pshop_product ";
+         $q = "UPDATE #__{vm}_product ";
          $q .= "SET product_in_stock = product_in_stock - ".$cart[$i]["quantity"];
          $q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
          $db->query($q);
          $db->next_record();
       }
       
-      $q = "UPDATE #__pshop_product ";
+      $q = "UPDATE #__{vm}_product ";
       $q .= "SET product_sales= product_sales + ".$cart[$i]["quantity"];
       $q .= " WHERE product_id='".$cart[$i]["product_id"]."'";
       $db->query($q);
@@ -960,7 +960,7 @@ class ps_checkout {
       for($i = 0; $i < $cart["idx"]; $i++) {
         $dlnum=0;
         $dl = "SELECT attribute_name,attribute_value ";
-        $dl .= "FROM #__pshop_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
+        $dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
         $dl .= " AND attribute_name='download'";
         $db->query($dl);
         $db->next_record();
@@ -974,7 +974,7 @@ class ps_checkout {
       
             $download_id = md5($str);
       
-            $q = "INSERT INTO #__pshop_product_download ";
+            $q = "INSERT INTO #__{vm}_product_download ";
             $q .= "(product_id, user_id, order_id, end_date, download_max, download_id, file_name)";
             $q .= " VALUES ('";
             $q .= $cart[$i]["product_id"] . "', '";
@@ -1164,14 +1164,14 @@ class ps_checkout {
           $db->query($q);
           
           if(!$db->num_rows()) {
-              $q = "SELECT state, country FROM #__pshop_user_info ";
+              $q = "SELECT state, country FROM #__{vm}_user_info ";
               $q .= "WHERE user_info_id='". $d["ship_to_info_id"] . "'";
               $db->query($q);
           }
           $db->next_record(); 
           $state = $db->f("state");
           $country = $db->f("country");
-          $q = "SELECT * FROM #__pshop_tax_rate WHERE tax_country='$country' ";
+          $q = "SELECT * FROM #__{vm}_tax_rate WHERE tax_country='$country' ";
           if( $state ) {
             $q .= "AND tax_state='$state'"; 
           }
@@ -1190,9 +1190,9 @@ class ps_checkout {
         elseif (TAX_MODE == '1') {
           
           if (MULTIPLE_TAXRATES_ENABLE != '1') {
-              $q = "SELECT tax_rate FROM #__pshop_vendor, #__pshop_tax_rate ";
+              $q = "SELECT tax_rate FROM #__{vm}_vendor, #__{vm}_tax_rate ";
               $q .= "WHERE tax_country=vendor_country ";
-              $q .= "AND #__pshop_vendor.vendor_id='1'"; 
+              $q .= "AND #__{vm}_vendor.vendor_id='1'"; 
               $db->query($q);
               if ($db->next_record()) {
                  $tax_rate = $db->f("tax_rate");
@@ -1298,7 +1298,7 @@ class ps_checkout {
    function get_vendor_currency($vendor_id) {
       $db = new ps_DB;
 
-      $q = "SELECT vendor_currency FROM #__pshop_vendor WHERE vendor_id='$vendor_id'";
+      $q = "SELECT vendor_currency FROM #__{vm}_vendor WHERE vendor_id='$vendor_id'";
 
       $db->query($q);
       $db->next_record();
@@ -1358,7 +1358,7 @@ class ps_checkout {
   **          False - error occured 
   ***************************************************************************/
    function email_receipt($order_id) {
-       global $sess, $ps_product, $PHPSHOP_LANG, $CURRENCY_DISPLAY,
+       global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY,
               $mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_mailfrom, 
               $mosConfig_fromname, $mosConfig_smtpauth, $mosConfig_mailer, $mosConfig_lang,
               $mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
@@ -1372,7 +1372,7 @@ class ps_checkout {
         
        // Connect to database and gather appropriate order information
        $db = new ps_DB;
-       $q  = "SELECT * FROM #__pshop_orders WHERE order_id='$order_id'";
+       $q  = "SELECT * FROM #__{vm}_orders WHERE order_id='$order_id'";
        $db->query($q);
        $db->next_record();
        $user_id = $db->f("user_id");
@@ -1382,7 +1382,7 @@ class ps_checkout {
        $qt = "SELECT * from #__users WHERE id='$user_id' AND address_type='BT'";
        $dbbt->query($qt);
        if (!$dbbt->num_rows()) {
-            $qt = "SELECT * FROM #__pshop_user_info WHERE user_id='".$user_id."' AND address_type='BT'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$user_id."' AND address_type='BT'";
             $dbbt->query($qt);
         }
        $dbbt->next_record();
@@ -1391,27 +1391,27 @@ class ps_checkout {
        $qt = "SELECT * FROM #__users WHERE user_info_id='".$db->f("user_info_id") . "'";
        $dbst->query($qt);
        if (!$dbst->num_rows()) {
-            $qt = "SELECT * FROM #__pshop_user_info WHERE user_info_id='". $db->f("user_info_id") . "'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='". $db->f("user_info_id") . "'";
             $dbst->query($qt);
         }
        $dbst->next_record(); 
 
        $dbv = new ps_DB;
-       $qt = "SELECT * from #__pshop_vendor ";
+       $qt = "SELECT * from #__{vm}_vendor ";
        /* Need to decide on vendor_id <=> order relationship */
        $qt .= "WHERE vendor_id = '".$_SESSION['ps_vendor_id']."'";
        $dbv->query($qt);
        $dbv->next_record();
 
        $dboi = new ps_DB;
-       $q_oi = "SELECT * FROM #__pshop_product, #__pshop_order_item, #__pshop_orders ";
-       $q_oi .= "WHERE #__pshop_product.product_id=#__pshop_order_item.product_id ";
-       $q_oi .= "AND #__pshop_order_item.order_id='$order_id' ";
-       $q_oi .= "AND #__pshop_orders.order_id=#__pshop_order_item.order_id";
+       $q_oi = "SELECT * FROM #__{vm}_product, #__{vm}_order_item, #__{vm}_orders ";
+       $q_oi .= "WHERE #__{vm}_product.product_id=#__{vm}_order_item.product_id ";
+       $q_oi .= "AND #__{vm}_order_item.order_id='$order_id' ";
+       $q_oi .= "AND #__{vm}_orders.order_id=#__{vm}_order_item.order_id";
        $dboi->query($q_oi);
        
        $db_payment = new ps_DB;
-       $q  = "SELECT payment_method_name FROM #__pshop_order_payment as op, #__pshop_payment_method as pm
+       $q  = "SELECT payment_method_name FROM #__{vm}_order_payment as op, #__{vm}_payment_method as pm
               WHERE order_id='$order_id' AND op.payment_method_id=pm.payment_method_id";
        $db_payment->query($q);
        $db_payment->next_record();
@@ -1442,8 +1442,8 @@ class ps_checkout {
        
        $from_email = $dbv->f("contact_email");
        
-        $shopper_subject = $dbv->f("vendor_name") . " ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL." - " . $db->f("order_id");
-        $vendor_subject = $dbv->f("vendor_name") . " ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL." - " . $db->f("order_id");
+        $shopper_subject = $dbv->f("vendor_name") . " ".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL." - " . $db->f("order_id");
+        $vendor_subject = $dbv->f("vendor_name") . " ".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL." - " . $db->f("order_id");
         
         $shopper_order_link = $sess->url( SECUREURL ."index.php?page=account.order_details&order_id=$order_id" );
         $vendor_order_link = $sess->url( SECUREURL ."index.php?page=order.order_print&order_id=$order_id&pshop_mode=admin" );
@@ -1451,30 +1451,30 @@ class ps_checkout {
        // Headers and Footers
        // ******************************
        // Shopper Header
-       $shopper_header = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1."\n";
+       $shopper_header = $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1."\n";
        
        //Shopper Footer
-       $shopper_footer = "\n\n".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2."\n";
-       $shopper_footer .= "\n\n".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\n";
+       $shopper_footer = "\n\n".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2."\n";
+       $shopper_footer .= "\n\n".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\n";
        $shopper_footer .= $shopper_order_link;
-       $shopper_footer .= "\n\n".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3."\n";
+       $shopper_footer .= "\n\n".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3."\n";
        $shopper_footer .= "Email: " . $from_email;
        
-       $shopper_footer_html = "<br /><br />".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2."<br />";
-       $shopper_footer_html .= "<br /><a title=\"".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\" href=\"$shopper_order_link\">"
-                                        . $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."</a>";
-       $shopper_footer_html .= "<br /><br />".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3."<br />";
+       $shopper_footer_html = "<br /><br />".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2."<br />";
+       $shopper_footer_html .= "<br /><a title=\"".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\" href=\"$shopper_order_link\">"
+                                        . $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."</a>";
+       $shopper_footer_html .= "<br /><br />".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3."<br />";
        $shopper_footer_html .= _CMN_EMAIL.": <a href=\"mailto:" . $from_email."\">".$from_email."</a>";
        
        // Vendor Header
-       $vendor_header = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4."\n";
+       $vendor_header = $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4."\n";
       
        // Vendor Footer
-       $vendor_footer = "\n\n".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\n";
+       $vendor_footer = "\n\n".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\n";
        $vendor_footer .= $vendor_order_link;
        
-       $vendor_footer_html = "<br /><br /><a title=\"".$PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\" href=\"$vendor_order_link\">"
-                                        . $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."</a>";
+       $vendor_footer_html = "<br /><br /><a title=\"".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\" href=\"$vendor_order_link\">"
+                                        . $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."</a>";
        
        $vendor_email = $from_email;
 
@@ -1484,33 +1484,33 @@ class ps_checkout {
     
     // Main Email Message Purchase Order
     // *********************************
-       $shopper_message  = "\n".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL."\n";
+       $shopper_message  = "\n".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL."\n";
        $shopper_message .= "------------------------------------------------------------------------\n";
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER.": " . $db->f("order_id") . "\n";
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":   ";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER.": " . $db->f("order_id") . "\n";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":   ";
        $shopper_message .= date("d-M-Y:H:i", $db->f("cdate")) . "\n";
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.": ";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.": ";
            switch($db->f("order_status")) {
              case ("P"):
-               $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_P."\n\n";
-               $order_status = $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_P;
+               $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_P."\n\n";
+               $order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_P;
                break;
              case ("X"):
-               $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_X."\n\n";
-               $order_status = $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_X;
+               $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_X."\n\n";
+               $order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_X;
                break;
              case ("C"):
-               $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_C."\n\n";
-               $order_status = $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_C;
+               $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_C."\n\n";
+               $order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_C;
                break;
            }
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL."\n";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL."\n";
        $shopper_message .= "--------------------\n\n";
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL."\n";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL."\n";
        $shopper_message .= "-------\n\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COMPANY.":    ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY.":    ";
        $shopper_message .= $dbbt->f("company") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_NAME.":       ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_NAME.":       ";
            if ($dbbt->f("title")) {
              $shopper_message .= $dbbt->f("title") . " ";
            }
@@ -1519,66 +1519,66 @@ class ps_checkout {
              $shopper_message .= $dbbt->f("middle_name") . " ";
            }
        $shopper_message .= $dbbt->f("last_name") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
        $shopper_message .= $dbbt->f("address_1") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
        $shopper_message .= $dbbt->f("address_2") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CITY.":       ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_CITY.":       ";
        $shopper_message .= $dbbt->f("city") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_STATE.":      ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_STATE.":      ";
        $shopper_message .= $dbbt->f("state") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ZIP.":        ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP.":        ";
        $shopper_message .= $dbbt->f("zip") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY.":    ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY.":    ";
        $shopper_message .= $dbbt->f("country") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PHONE.":      ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE.":      ";
        $shopper_message .= $dbbt->f("phone_1") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_FAX.":        ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_FAX.":        ";
        $shopper_message .= $dbbt->f("fax") . "\n\n";
        
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL."\n";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL."\n";
        $shopper_message .= "-------\n\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COMPANY.":    ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY.":    ";
        $shopper_message .= $dbst->f("company") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_NAME.":       ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_NAME.":       ";
        $shopper_message .= $dbbt->f("title") . " ";
        $shopper_message .= $dbst->f("first_name") . " ";
        $shopper_message .= $dbst->f("middle_name") . " ";
        $shopper_message .= $dbst->f("last_name") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
        $shopper_message .= $dbst->f("address_1") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2.":   ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2.":   ";
        $shopper_message .= $dbst->f("address_2") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CITY.":       ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_CITY.":       ";
        $shopper_message .= $dbst->f("city") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_STATE.":      ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_STATE.":      ";
        $shopper_message .= $dbst->f("state") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ZIP.":        ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP.":        ";
        $shopper_message .= $dbst->f("zip") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY.":    ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY.":    ";
        $shopper_message .= $dbst->f("country") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PHONE.":      ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE.":      ";
        $shopper_message .= $dbst->f("phone_1") . "\n";
-       $shopper_message .= "     ".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_FAX.":        ";
+       $shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_FAX.":        ";
        $shopper_message .= $dbst->f("fax") . "\n\n";
 
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ITEMS_LBL."\n";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_ITEMS_LBL."\n";
        $shopper_message .= "-----------";
        $sub_total = 0.00;
        while($dboi->next_record()) {
           $shopper_message .= "\n\n";
-          $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_PRODUCT."  = ";
+          $shopper_message .= $VM_LANG->_PHPSHOP_PRODUCT."  = ";
           if ($dboi->f("product_parent_id")) {
             $shopper_message .= $dboi->f("order_item_name") . "\n";
             $shopper_message .= "SERVICE  = ";
           }
           $shopper_message .= $dboi->f("product_name") . "; ".$dboi->f("product_attribute") ."\n";
-          $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_QUANTITY." = ";
+          $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_QUANTITY." = ";
           $shopper_message .= $dboi->f("product_quantity") . "\n";
-          $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SKU."      = ";
+          $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SKU."      = ";
           $shopper_message .= $dboi->f("order_item_sku") . "\n";
           
-          $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PRICE."    = ";
+          $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PRICE."    = ";
           if ($auth["show_price_including_tax"] == 1) {
             $sub_total += ($dboi->f("product_quantity") * $dboi->f("product_final_price"));
             $shopper_message .= $CURRENCY_DISPLAY->getFullValue($dboi->f("product_final_price"));
@@ -1590,65 +1590,65 @@ class ps_checkout {
 
        $shopper_message .= "\n\n";
        
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL." = ";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL." = ";
        $shopper_message .= $CURRENCY_DISPLAY->getFullValue($sub_total)."\n";
        
         if ( PAYMENT_DISCOUNT_BEFORE == '1') {
           if( !empty($order_discount)) {
             if ($order_discount > 0) {
-                $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT." = ";
+                $shopper_message .= $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT." = ";
                 $shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
             } else {
-                $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_FEE." = ";
+                $shopper_message .= $VM_LANG->_PHPSHOP_FEE." = ";
                 $shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
             }
           }
           if( !empty($coupon_discount)) {
             /* following 2 lines added by Erich for coupon hack */
-            $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT . ": ";
+            $shopper_message .= $VM_LANG->_PHPSHOP_COUPON_DISCOUNT . ": ";
             $shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount) . "\n";
           }
         }
         
        if ($auth["show_price_including_tax"] != 1) {
-         $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
+         $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
          $shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax) . "\n";
        }
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING." = ";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING." = ";
        $shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping) . "\n";
        if( !empty($order_shipping_tax)) {
-          $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_TAX."   = ";
+          $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_TAX."   = ";
           $shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping_tax);
        }
        $shopper_message .= "\n\n";
         if ( PAYMENT_DISCOUNT_BEFORE != '1') {
           if( !empty($order_discount)) {
             if ($order_discount > 0) {
-                $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT." = ";
+                $shopper_message .= $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT." = ";
                 $shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
             } else {
-                $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_FEE." = ";
+                $shopper_message .= $VM_LANG->_PHPSHOP_FEE." = ";
                 $shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
             }
           }
           if( !empty($coupon_discount)) {
             /* following 2 lines added by Erich for coupon hack */
-            $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT . ": ";
+            $shopper_message .= $VM_LANG->_PHPSHOP_COUPON_DISCOUNT . ": ";
             $shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount) . "\n";
           }
         }
-       $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL."    = ";
+       $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL."    = ";
        $shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_total);
    
        if ($auth["show_price_including_tax"] == 1) {
          $shopper_message .= "\n---------------";
          $shopper_message .= "\n";
-         $shopper_message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
+         $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
          $shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax) . "\n";
        }
        
        $shopper_message .= "\n\n------------------------------------------------------------------------\n";
-       $shopper_message .= "\n".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE."\n";
+       $shopper_message .= "\n".$VM_LANG->_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE."\n";
        $shopper_message .= "---------------";
        $shopper_message .= "\n";
        if( !empty( $customer_note ))
@@ -1758,16 +1758,16 @@ class ps_checkout {
         if ( PAYMENT_DISCOUNT_BEFORE == '1') {
             if ($order_discount > 0 || $order_discount < 0) {
               if ($order_discount > 0) {
-                  $order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT.": </td>";
+                  $order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT.": </td>";
                   $order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td>";
               }
               elseif ($order_discount < 0) {
-                  $order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$PHPSHOP_LANG->_PHPSHOP_FEE.": </td>";
+                  $order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_FEE.": </td>";
                   $order_disc1 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td></tr>";
               }
             }
             if ($coupon_discount > 0 || $coupon_discount < 0) {
-              $order_disc1 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT.": </td>";
+              $order_disc1 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_COUPON_DISCOUNT.": </td>";
               if ($coupon_discount > 0)
                   $order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount))."</td>";
               elseif ($coupon_discount < 0)
@@ -1776,15 +1776,15 @@ class ps_checkout {
         }
         elseif ( PAYMENT_DISCOUNT_BEFORE != '1') {
               if ($order_discount > 0) {
-                  $order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT.": </td>";
+                  $order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT.": </td>";
                   $order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td>";
               }
               elseif ($order_discount < 0) {
-                  $order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$PHPSHOP_LANG->_PHPSHOP_FEE.": </td>";
+                  $order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_FEE.": </td>";
                   $order_disc2 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td></tr>";
               }
             if ($coupon_discount > 0 || $coupon_discount < 0) {
-              $order_disc2 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT.": </td>";
+              $order_disc2 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_COUPON_DISCOUNT.": </td>";
               if ($coupon_discount > 0)
                   $order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount))."</td>";
               elseif ($coupon_discount < 0)
@@ -1823,7 +1823,7 @@ class ps_checkout {
         $html = str_replace('{phpShopVendorState}',$v_st,$html);
         $html = str_replace('{phpShopVendorImage}',$v_vfi,$html);
         $html = str_replace('{phpShopOrderHeaderMsg}',$shopper_header,$html);
-        $html = str_replace('{phpShopOrderHeader}',$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL,$html);
+        $html = str_replace('{phpShopOrderHeader}',$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL,$html);
         $html = str_replace('{phpShopOrderNumber}',$v_oi,$html);
         $html = str_replace('{phpShopOrderDate}',strftime( _DATE_FORMAT_LC, $db->f("cdate")),$html);
         $html = str_replace('{phpShopOrderStatus}', $order_status, $html);
@@ -1864,12 +1864,12 @@ class ps_checkout {
         $html = str_replace('{phpShopOrderDisc3}',$order_disc3, $html);
         $html = str_replace('{phpShopCustomerNote}',nl2br($customer_note), $html);
         
-        $html = str_replace('{PAYMENT_INFO_LBL}', $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYINFO_LBL, $html);
+        $html = str_replace('{PAYMENT_INFO_LBL}', $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYINFO_LBL, $html);
         $html = str_replace('{PAYMENT_INFO_DETAILS}', $db_payment->f("payment_method_name"), $html);
         
         $shipping_arr = explode("|", @urldecode($_REQUEST['shipping_rate_id']) );
         
-        $html = str_replace('{SHIPPING_INFO_LBL}', $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL, $html);
+        $html = str_replace('{SHIPPING_INFO_LBL}', $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL, $html);
         if( $this->_SHIPPING )
           $html = str_replace('{SHIPPING_INFO_DETAILS}', $shipping_arr[1]." (".$shipping_arr[2].")", $html);
         else
@@ -1979,17 +1979,17 @@ class ps_checkout {
     * @desc Shows all collected Checkout information on the confirmation Screen
     **************************************************************************/
     function final_info() {
-      global $database, $PHPSHOP_LANG;
+      global $database, $VM_LANG;
       
       // Begin with Shipping Address
       if(CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='2') {
         
           $database->setQuery("SELECT * FROM #__users WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
           if(!$database->loadObject( $row )) {
-            $database->setQuery("SELECT * FROM #__pshop_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
+            $database->setQuery("SELECT * FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
             $database->loadObject( $row );
           }
-          echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ADD_SHIPTO_2 . ":</strong>&nbsp;";
+          echo "<strong>".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 . ":</strong>&nbsp;";
           echo $row->first_name." ".$row->last_name.", ".$row->address_1.", ".$row->zip." ".$row->city;
           echo "<br /><br />";
       }
@@ -1997,7 +1997,7 @@ class ps_checkout {
       // Print out the Selected Shipping Method
       if((CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='3')) {
           
-          echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . ":</strong>&nbsp;";
+          echo "<strong>".$VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . ":</strong>&nbsp;";
           $rate_details = explode( "|", urldecode(urldecode($_REQUEST['shipping_rate_id'])) );
           foreach( $rate_details as $k => $v )
             if( $k > 0 )
@@ -2006,9 +2006,9 @@ class ps_checkout {
       }
       
       unset( $row );
-      $database->setQuery("SELECT payment_method_id, payment_method_name FROM #__pshop_payment_method WHERE payment_method_id='".strip_tags($_REQUEST['payment_method_id'])."'");
+      $database->setQuery("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='".strip_tags($_REQUEST['payment_method_id'])."'");
       $database->loadObject( $row );
-      echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
+      echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
       echo $row->payment_method_name;
       echo "<br />";
     }

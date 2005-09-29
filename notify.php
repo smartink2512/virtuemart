@@ -2,7 +2,7 @@
 /**
 * PayPal IPN Handler
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: notify.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -54,7 +54,6 @@ if ($_POST) {
         else   
             require_once($mosConfig_absolute_path. '/classes/database.php');
             
-        require_once($mosConfig_absolute_path. '/administrator/components/com_phpshop/mos_4.6_code.php');
         
         $database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
         
@@ -66,9 +65,11 @@ if ($_POST) {
     /*** END of Mambo config ***/
     
     
-    /*** mambo-phpShop part ***/        
-        require_once($mosConfig_absolute_path.'/administrator/components/com_phpshop/phpshop.cfg.php');
+    /*** VirtueMart part ***/        
+        require_once($mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php');
         
+		require_once( CLASSPATH. "language.class.php" );
+		
 		if( PAYPAL_DEBUG == "1" )
 			$debug_email_address = $mosConfig_mailfrom;
 		else
@@ -79,7 +80,7 @@ if ($_POST) {
         $mail->PluginDir = $mosConfig_absolute_path . '/includes/phpmailer/';
         $mail->SetLanguage("en", $mosConfig_absolute_path . '/includes/phpmailer/language/');
               
-        /* load the mambo-phpShop Language File */
+        /* load the VirtueMart Language File */
         if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' ))
           require_once( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' );
         else
@@ -88,10 +89,10 @@ if ($_POST) {
         /* Load the PayPal Configuration File */ 
         require_once( CLASSPATH. 'payment/ps_paypal.cfg.php' );
         
-        /* Load the mambo-phpShop database class */
+        /* Load the VirtueMart database class */
         require_once( CLASSPATH. 'ps_database.php' );
         
-    /*** END mambo-phpShop part ***/
+    /*** END VirtueMart part ***/
     
     debug_msg( "1. Finished Initialization of the notify.php script" );
 
@@ -282,7 +283,7 @@ if ($_POST) {
       debug_msg( "5. $error_description ");
       
       // Get the Order Details from the database      
-      $qv = "SELECT order_id, order_number, user_id FROM #__pshop_orders ";
+      $qv = "SELECT order_id, order_number, user_id FROM #__{vm}_orders ";
       $qv .= "WHERE order_number='".$invoice."'";
       $dbbt = new ps_DB;
       $dbbt->query($qv);

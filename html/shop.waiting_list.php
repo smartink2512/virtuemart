@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shop.waiting_list.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -23,9 +23,9 @@ $ps_product = new ps_product;
 
 
 <form action="<?php echo URL ?>index.php" method="post" name="waiting">
-<input type="hidden" name="option" value="com_phpshop" />
+<input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="func" value="waitinglistadd" />
-<?php echo $PHPSHOP_LANG->_PHPSHOP_WAITING_LIST_MESSAGE ?>
+<?php echo $VM_LANG->_PHPSHOP_WAITING_LIST_MESSAGE ?>
 <br />
 <br />
 
@@ -37,7 +37,7 @@ $ps_product = new ps_product;
     $q .= "AND address_type='BT' ";
     $db->query($q);
     if(!$db->num_rows()) {
-        $q =  "SELECT * FROM #__pshop_user_info WHERE ";
+        $q =  "SELECT * FROM #__{vm}_user_info WHERE ";
         $q .= "user_id='" . $auth["user_id"] . "' ";
         $q .= "AND address_type='BT' ";
         $db->query($q);
@@ -62,7 +62,7 @@ $ps_product = new ps_product;
 
 
 
-<input type="submit" class="button" name="waitinglistadd" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_WAITING_LIST_NOTIFY_ME ?>" />
+<input type="submit" class="button" name="waitinglistadd" value="<?php echo $VM_LANG->_PHPSHOP_WAITING_LIST_NOTIFY_ME ?>" />
 
 <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
 <input type="hidden" name="page" value="shop.waiting_thanks" />

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: store.index.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -23,35 +23,35 @@ $db->next_record();
 $customers = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of active products
-$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE product_publish="Y"');
+$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE product_publish="Y"');
 $db->next_record();
 $active_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of inactive products
-$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE product_publish="N"');
+$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE product_publish="N"');
 $db->next_record();
 $inactive_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of featured products
-$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE product_special="Y"');
+$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE product_special="Y"');
 $db->next_record();
 $special_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // 5 last orders
 $new_orders= Array();
-$db->query('SELECT order_id,order_total FROM #__pshop_orders ORDER BY cdate desc limit 5');
+$db->query('SELECT order_id,order_total FROM #__{vm}_orders ORDER BY cdate desc limit 5');
 while($db->next_record()) {
   $new_orders[$db->f('order_id')] = $db->f('order_total');
 }
 
 $db_order_status = new ps_DB;
-$db_order_status->query('SELECT order_status_code,order_status_name FROM #__pshop_order_status');
+$db_order_status->query('SELECT order_status_code,order_status_name FROM #__{vm}_order_status');
 
 $orders = Array();
 $sum = 0;
 while($db_order_status->next_record()) {
   // Number of orders with status...
-  $db->query('SELECT count(*) as num_rows FROM #__pshop_orders WHERE order_status="'.$db_order_status->f("order_status_code").'"');
+  $db->query('SELECT count(*) as num_rows FROM #__{vm}_orders WHERE order_status="'.$db_order_status->f("order_status_code").'"');
   $db->next_record();
   $orders[$db_order_status->f("order_status_name")] = $db->f('num_rows') ? $db->f('num_rows') : 0;
   $order_status_code[] = $db_order_status->f("order_status_code");
@@ -73,7 +73,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 <div class="main">
 	<div class="sectionname">
               <img src="<?php echo IMAGEURL ?>ps_image/Desktop.png" width="48px" height="48px" align="center" alt="Desktop" border="0"/>
-              <?php echo $PHPSHOP_LANG->_PHPSHOP_YOUR_STORE."::".$PHPSHOP_LANG->_PHPSHOP_CONTROL_PANEL; ?>
+              <?php echo $VM_LANG->_PHPSHOP_YOUR_STORE."::".$VM_LANG->_PHPSHOP_CONTROL_PANEL; ?>
 	</div>
 	
       <table width="100%" class="adminform">
@@ -83,50 +83,50 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
                 <?php
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list");
 		$image = IMAGEURL .'ps_image/shop_products.png';
-		$text = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_LBL;
+		$text = $VM_LANG->_PHPSHOP_PRODUCT_LIST_LBL;
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list");
 		$image = IMAGEURL .'ps_image/shop_categories.png';
-		$text = $PHPSHOP_LANG->_PHPSHOP_CATEGORY_LIST_LBL;
+		$text = $VM_LANG->_PHPSHOP_CATEGORY_LIST_LBL;
 		$ps_html->writePanelIcon( $image, $link, $text );
 
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list");
 		$image = IMAGEURL .'ps_image/shop_orders.png';
-		$text = $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD;
+		$text = $VM_LANG->_PHPSHOP_ORDER_MOD;
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list");
 		$image = IMAGEURL .'ps_image/shop_payment.png';
-		$text = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_MNU;
+		$text = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_MNU;
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
 		$image = IMAGEURL .'ps_image/shop_vendors.png';
-		$text =  $PHPSHOP_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
+		$text =  $VM_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
 		if (defined( "_PSHOP_ADMIN" ) ) { 
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
 			$image = IMAGEURL .'ps_image/shop_users.png';
-			$text = $PHPSHOP_LANG->_PHPSHOP_USERS;
+			$text = $VM_LANG->_PHPSHOP_USERS;
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
             
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
 		$image = IMAGEURL .'ps_image/shop_configuration.png';
-		$text = $PHPSHOP_LANG->_PHPSHOP_CONFIG;
+		$text = $VM_LANG->_PHPSHOP_CONFIG;
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
 		$image = IMAGEURL .'ps_image/shop_mart.png';
-		$text = $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_MNU;
+		$text = $VM_LANG->_PHPSHOP_STORE_FORM_MNU;
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
-		$link = 'http://www.mambo-phpshop.net/index.php?option=com_wikidoc&Itemid=55';
+		$link = 'http://www.virtuemart.net/index.php?option=com_wikidoc&Itemid=55';
 		$image = IMAGEURL .'ps_image/shop_help.png';
-		$text = $PHPSHOP_LANG->_PHPSHOP_HELP_MOD;
+		$text = $VM_LANG->_PHPSHOP_HELP_MOD;
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		?>
@@ -136,74 +136,74 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
     <?php
         $tabs = new mShopTabs(0, 1, "_main");
         $tabs->startPane("content-pane");
-        $tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_STATISTICS, "statistic-page");
+        $tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS, "statistic-page");
     ?>
 			<table class="adminlist">
 				<tr> 
-				  <th colspan="2" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_STATISTICS ?></th>
+				  <th colspan="2" align="right"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS ?></th>
 				</tr>
 				<tr> 
 				  <td width="50%"><?php 
-					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=admin.user_list\">"
-							  .  $PHPSHOP_LANG->_PHPSHOP_STATISTIC_CUSTOMERS ?></a>:</td>
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=admin.user_list\">"
+							  .  $VM_LANG->_PHPSHOP_STATISTIC_CUSTOMERS ?></a>:</td>
 				  <td width="50%"> <?php echo $customers ?></td>
 				</tr>
 				<tr> 
 				  <td width="50%"><?php 
-					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.product_list\">"
-							  .  $PHPSHOP_LANG->_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS ?></a>:</td>
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_list\">"
+							  .  $VM_LANG->_PHPSHOP_STATISTIC_ACTIVE_PRODUCTS ?></a>:</td>
 				  <td width="50%"> <?php echo $active_products ?> </td>
 				</tr>
 				<tr> 
-				  <td width="50%"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS ?>:</td>
+				  <td width="50%"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_INACTIVE_PRODUCTS ?>:</td>
 				  <td width="50%"> <?php  echo $inactive_products ?></td>
 				</tr>
 				<tr> 
 				  <td width="50%"><?php 
-					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=product.specialprod\">"
-							  .  $PHPSHOP_LANG->_PHPSHOP_SPECIAL_PRODUCTS ?></a>:</td>
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.specialprod\">"
+							  .  $VM_LANG->_PHPSHOP_SPECIAL_PRODUCTS ?></a>:</td>
 				  <td width="50%"><?php echo $special_products ?></td>
 				</tr>
 			</table>
 		<?php
 		$tabs->endTab();
-		$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD, "order-page");
+		$tabs->startTab( $VM_LANG->_PHPSHOP_ORDER_MOD, "order-page");
 		?>
 			<table class="adminlist">
 				<tr> 
 				  <th colspan="2" ><?php 
-					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_list\">"
-							  .  $PHPSHOP_LANG->_PHPSHOP_ORDER_MOD ?></a>:</th>
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list\">"
+							  .  $VM_LANG->_PHPSHOP_ORDER_MOD ?></a>:</th>
 				</tr>
 				<?php 
 				$i = 0;
 				foreach($orders as $order_status_name => $order_count) { ?>
 				<tr>
 				  <td width="50%"><?php 
-					echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_list&show=".$order_status_code[$i++]."\">";
+					echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list&show=".$order_status_code[$i++]."\">";
 					echo $order_status_name ."</a>" ?>:</td>
 				  <td width="50%"> <?php echo $order_count ?></td>
 				</tr>
 				<?php } ?>
 				<tr> 
-				  <td width="50%"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_SUM ?>:</strong></td>
+				  <td width="50%"><strong><?php echo $VM_LANG->_PHPSHOP_STATISTIC_SUM ?>:</strong></td>
 				  <td width="50%"><strong><?php echo $sum ?></strong></td>
 				</tr>
 			</table>
 		<?php
 		$tabs->endTab();
-		$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS, "neworder-page");
+		$tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS, "neworder-page");
 		?>
 			<table class="adminlist">
 				<tr>
-					<th colspan="2"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS ?></th>
+					<th colspan="2"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS ?></th>
 				</tr>
 		<?php 
 			foreach($new_orders as $order_id => $total) { ?>
 				  <tr>
 					<td width="50%"><?php 
-					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=order.order_print&order_id=$order_id\">";
-					  echo $PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_ID." ". $order_id ."</a>" ?>:</td>
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_print&order_id=$order_id\">";
+					  echo $VM_LANG->_PHPSHOP_ORDER_LIST_ID." ". $order_id ."</a>" ?>:</td>
 					<td width="50%">(<?php echo $total ." ".$_SESSION['vendor_currency'] ?>)</td>
 				</tr>
 				<?php 
@@ -211,17 +211,17 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 			</table>
 		<?php
 		$tabs->endTab();
-		$tabs->startTab( $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS, "newcustomer-page");
+		$tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS, "newcustomer-page");
 		?>
 			<table class="adminlist">
 				<tr> 
-				  <th colspan="2" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS ?></th>
+				  <th colspan="2" align="right"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS ?></th>
 				</tr>
 				<?php 
 				foreach($new_customers as $id => $name) { ?>
 				<tr>
 				  <td colspan="2">
-					  <a href="<?php echo $_SERVER['PHP_SELF'] ?>?option=com_phpshop&page=admin.user_list&task=edit&cid[0]=<?php echo $id ?>">
+					  <a href="<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=admin.user_list&task=edit&cid[0]=<?php echo $id ?>">
 					  <?php echo $name ?></a></td>
 				</tr>
 				<?php 

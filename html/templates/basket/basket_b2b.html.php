@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is the default Basket Template. Modify as you like.
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: basket_b2b.html.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage templates
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -12,24 +12,24 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 ?>
 <table width="100%" cellspacing="0" cellpadding="4" border="0">
   <tr align="left" class="sectiontableheader">
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_NAME ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_SKU ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_PRICE ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_QUANTITY ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_SUBTOTAL ?></th>
-	<th colspan="2" align="center"><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_ACTION ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_NAME ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_PRICE ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?></th>
+	<th colspan="2" align="center"><?php echo $VM_LANG->_PHPSHOP_CART_ACTION ?></th>
   </tr>
 <?php foreach( $product_rows as $product ) { ?>
   <tr valign="top" class="<?php echo $product['row_color'] ?>">
 	<form action="<?php echo $action_url ?>" method="post">
-	<input type="hidden" name="option" value="com_phpshop" />
+	<input type="hidden" name="option" value="com_virtuemart" />
 	<td><?php echo $product['product_name'] . $product['product_attributes'] ?></td>
     <td><?php echo $product['product_sku'] ?></td>
     <td><?php echo $product['product_price'] ?></td>
@@ -41,31 +41,31 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 <?php } ?>
 <!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
   <tr class="sectiontableentry2">
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_SUBTOTAL ?>:</td> 
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?>:</td> 
     <td colspan="3"><?php echo $subtotal_display ?></td>
   </tr>
 <?php if( $discount_before ) { ?>
   <tr class="sectiontableentry1">
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
     </td> 
     <td colspan="3"><?php echo $coupon_display ?></td>
   </tr>
 <?php } 
 if( $shipping ) { ?>
   <tr class="sectiontableentry1">
-	<td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </td> 
+	<td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </td> 
 	<td colspan="3"><?php echo $shipping_display ?></td>
   </tr>
 <?php } 
 if ( $show_tax ) { ?>
   <tr class="sectiontableentry2">
-	<td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </td> 
+	<td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </td> 
 	<td colspan="3"><?php echo $tax_display ?></td>
   </tr>
 <?php }
 if($discount_after) { ?>
   <tr class="sectiontableentry1">
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
     </td> 
     <td colspan="3"><?php echo $coupon_display ?></td>
   </tr>
@@ -75,7 +75,7 @@ if($discount_after) { ?>
     <td colspan="4"><hr /></td>
   </tr>
   <tr>
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?>: </td>
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?>: </td>
     <td colspan="3"><strong><?php echo $order_total_display ?></strong>
     </td>
   </tr>

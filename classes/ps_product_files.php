@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product_files.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -49,7 +49,7 @@ class ps_product_files {
      }
     
      if (!empty($_FILES["file_upload"]["name"])) {
-       $q = "SELECT count(*) as rowcnt from #__pshop_product_files WHERE";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_product_files WHERE";
        $q .= " file_name LIKE '%" .  $_FILES["file_upload"]["name"] . "%'";
        $db->query($q);
        $db->next_record();
@@ -76,7 +76,7 @@ class ps_product_files {
       $d["error"] = "ERROR:  Please select a file to delete.";
       return False;
     }
-    $q_dl = "SELECT attribute_name,file_id from #__pshop_product_attribute,#__pshop_product_files WHERE ";
+    $q_dl = "SELECT attribute_name,file_id from #__{vm}_product_attribute,#__{vm}_product_files WHERE ";
     $q_dl .= "product_id='".$d["product_id"]."' AND attribute_name='download' ";
     $q_dl .= "AND file_id='$file_id' AND attribute_value=file_title";
     $db->query($q_dl);
@@ -105,7 +105,7 @@ class ps_product_files {
      }
     
      if (!empty($_FILES["file_upload"]["name"])) {
-       $q = "SELECT count(*) as rowcnt from #__pshop_product_files WHERE";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_product_files WHERE";
        $q .= " file_name LIKE '%" .  $_FILES["file_upload"]["name"] . "%'";
        $db->query($q);
        $db->next_record();
@@ -125,7 +125,7 @@ class ps_product_files {
    * returns:
    **************************************************************************/
   function add( &$d ) {
-    global $mosConfig_absolute_path, $mosConfig_live_site, $database, $PHPSHOP_LANG;
+    global $mosConfig_absolute_path, $mosConfig_live_site, $database, $VM_LANG;
     
     $db = new ps_DB;
     $timestamp = time();
@@ -169,7 +169,7 @@ class ps_product_files {
           if( !file_exists($uploaddir) )
             @mkdir( $uploaddir );
           if( !file_exists( $uploaddir ) ) {
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_FILES_PATH_ERROR;
+            $d["error"] = $VM_LANG->_PHPSHOP_FILES_PATH_ERROR;
             return false;
           }
           break;
@@ -200,13 +200,13 @@ class ps_product_files {
 		  $neu = new Img2Thumb($tmp_filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
 		  
           if( is_file( $fileout ) ) {
-            $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS;
+            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS;
             $thumbimg = getimagesize( $fileout );
             $file_image_thumb_width = $thumbimg[0];
             $file_image_thumb_height = $thumbimg[1];
           }
           else {
-            $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE;
+            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE;
             $file_image_thumb_height = "";
             $file_image_thumb_width = "";
           }
@@ -241,10 +241,10 @@ class ps_product_files {
     }
     
     if( !$upload_success ) {
-      $d["error"] = $PHPSHOP_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE;
+      $d["error"] = $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE;
       return false;
     }
-    $q = "INSERT INTO #__pshop_product_files ";
+    $q = "INSERT INTO #__{vm}_product_files ";
     $q .= "(file_product_id, file_name, file_title, file_extension, file_mimetype, file_url, file_published,";
     $q .= "file_is_image, file_image_height , file_image_width , file_image_thumb_height, file_image_thumb_width )";
     $q .= " VALUES ('".$d["product_id"]."', '$filename','".$d["file_title"] . "','$ext','".$_FILES['file_upload']['type']."', '".$d['file_url']."', '".$d["file_published"]."',";
@@ -264,7 +264,7 @@ class ps_product_files {
    * returns:
    **************************************************************************/
   function update( &$d ) {
-    global $mosConfig_absolute_path, $mosConfig_live_site, $database, $PHPSHOP_LANG;
+    global $mosConfig_absolute_path, $mosConfig_live_site, $database, $VM_LANG;
     $db = new ps_DB;
     $timestamp = time();
 
@@ -276,7 +276,7 @@ class ps_product_files {
     
     $is_download_attribute = false;
     
-    $q_dl = "SELECT attribute_name,file_id from #__pshop_product_attribute,#__pshop_product_files WHERE ";
+    $q_dl = "SELECT attribute_name,file_id from #__{vm}_product_attribute,#__{vm}_product_files WHERE ";
     $q_dl .= "product_id='".$d["product_id"]."' AND attribute_name='download' ";
     $q_dl .= "AND file_id='".$d["file_id"]."' AND attribute_value=file_title";
     $db->query($q_dl);
@@ -285,7 +285,7 @@ class ps_product_files {
       $is_download_attribute = true;
       if( !empty($_FILES['file_upload']['name'])) {
         // new file uploaded
-        $qu = "UPDATE #__pshop_product_attribute ";
+        $qu = "UPDATE #__{vm}_product_attribute ";
         $qu .= "SET attribute_value = '". $_FILES['file_upload']['name'] ."' ";
         $qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
         $db->query($qu);
@@ -318,7 +318,7 @@ class ps_product_files {
           if( !file_exists($uploaddir) )
             @mkdir( $uploaddir );
           if( !file_exists( $uploaddir ) ) {
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_FILES_PATH_ERROR;
+            $d["error"] = $VM_LANG->_PHPSHOP_FILES_PATH_ERROR;
             return false;
           }
           break;
@@ -346,13 +346,13 @@ class ps_product_files {
           /* We need to resize the image and Save the new one (all done in the constructor) */
           $neu = new Img2Thumb($tmp_filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
           if( is_file( $fileout ) ) {
-            $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS;
+            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS;
             $thumbimg = getimagesize( $fileout );
             $file_image_thumb_width = $thumbimg[0];
             $file_image_thumb_height = $thumbimg[1];
           }
           else {
-            $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE;
+            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE;
             $file_image_thumb_height = "";
             $file_image_thumb_width = "";
           }
@@ -387,14 +387,14 @@ class ps_product_files {
     }
     
     if( !$upload_success ) {
-      $d["error"] = $PHPSHOP_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE;
+      $d["error"] = $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE;
       return false;
     } 
     if( !empty($_FILES['file_upload']['name']) ) {
       // Delete the old file
       $this->delete( $d );
 
-      $q = "INSERT INTO #__pshop_product_files SET ";
+      $q = "INSERT INTO #__{vm}_product_files SET ";
       if( !empty($_FILES['file_upload']['name'])) {
         $q .= "file_id='" . $d["file_id"] . "', ";
         $q .= "file_product_id='" . $d["product_id"] . "', ";
@@ -415,7 +415,7 @@ class ps_product_files {
       $db->query();
     }
     else {
-      $q = "UPDATE #__pshop_product_files SET ";
+      $q = "UPDATE #__{vm}_product_files SET ";
       if( !empty($_FILES['file_upload']['name'])) {
         $q .= "file_name='" . $filename."', ";
         $q .= "file_extension='$ext', ";
@@ -468,13 +468,13 @@ class ps_product_files {
 	*/
 	function delete_record( $record_id, &$d ) {
 	
-		global $PHPSHOP_LANG;
+		global $VM_LANG;
 		$dbf = new ps_DB;
 		
 		if (!$this->validate_delete($record_id, $d)) {
 		  return False;
 		}
-		$q = "SELECT file_name,file_is_image FROM #__pshop_product_files WHERE file_id='$record_id'";
+		$q = "SELECT file_name,file_is_image FROM #__{vm}_product_files WHERE file_id='$record_id'";
 		$dbf->setQuery($q);
 		$dbf->query();
 		$dbf->next_record();
@@ -483,23 +483,23 @@ class ps_product_files {
 		if( $dbf->f("file_is_image") ) {
 		  $info = pathinfo($dbf->f("file_name"));
 		  if( !@unlink(realpath($dbf->f("file_name"))) )
-			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE;
+			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE;
 		  else
-			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS;
+			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS;
 		  $thumb = $info["dirname"]."/resized/".basename($dbf->f("file_name"), ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
 		  if( !@unlink( realpath($thumb) ) )
-			$_REQUEST['mosmsg'] .= $PHPSHOP_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb ;
+			$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb ;
 		  else
-			$_REQUEST['mosmsg'] .= $PHPSHOP_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS;
+			$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS;
 		}
 		elseif( $dbf->f("file_name") ) {
 		  if( !@unlink(realpath($dbf->f("file_name"))) )
-			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE;
+			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE;
 		  else
-			$_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS;
+			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS;
 		}
 		
-		$q = "DELETE FROM #__pshop_product_files WHERE file_id='$record_id'";
+		$q = "DELETE FROM #__{vm}_product_files WHERE file_id='$record_id'";
 		$dbf->setQuery($q);
 		$dbf->query();
 		
@@ -517,17 +517,19 @@ class ps_product_files {
 
     $dbf = new ps_DB;
     $html = "";
+	$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';
+	$dbf->query( $sql );
+	$dbf->next_record();
     $sql = 'SELECT file_id, file_mimetype, file_title'
-        . ' FROM `#__pshop_product_files` '
-        . ' LEFT JOIN #__pshop_product_attribute ON `product_id` = \''.$product_id.'\''
-        . ' WHERE file_title NOT '
-        . ' IN ( attribute_value ) AND file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_is_image = \'0\'';
+        . ' FROM `#__{vm}_product_files` '
+        . ' WHERE file_title != \''.$dbf->f( "attribute_value" ).'\' AND file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_is_image = \'0\'';
     $dbf->setQuery($sql);
     $dbf->query();
+	
     while( $dbf->next_record() ) {
       // Show pdf in a new Window, other file types will be offered as download
       $target = stristr($dbf->f("file_mimetype"), "pdf") ? "_blank" : "_self";
-      $html .= "<a target=\"$target\" href=\"index.php?option=com_phpshop&page=shop.getfile&file_id=".$dbf->f("file_id")."&product_id=$product_id\" title=\"".$dbf->f("file_title")."\">\n";
+      $html .= "<a target=\"$target\" href=\"index.php?option=com_virtuemart&page=shop.getfile&file_id=".$dbf->f("file_id")."&product_id=$product_id\" title=\"".$dbf->f("file_title")."\">\n";
       $html .= $dbf->f("file_title") . "</a><br/>\n";
     }
     return $html;
@@ -543,12 +545,12 @@ class ps_product_files {
    * returns:
    **************************************************************************/
   function send_file( $file_id, $product_id ) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     $dbf = new ps_DB;
     $html = "";
     $sql = 'SELECT file_mimetype, file_name'
-        . ' FROM `#__pshop_product_files` '
-        . ' LEFT JOIN #__pshop_product_attribute ON `product_id` = \''.$product_id.'\''
+        . ' FROM `#__{vm}_product_files` '
+        . ' LEFT JOIN #__{vm}_product_attribute ON `product_id` = \''.$product_id.'\''
         . ' WHERE file_title NOT IN ( attribute_value )'
         . ' AND file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_id = \''.$file_id.'\' AND file_is_image = \'0\'';
     $dbf->setQuery($sql);
@@ -566,7 +568,7 @@ class ps_product_files {
       exit();
     }
     else {
-      echo "<span class=\"message\">".$PHPSHOP_LANG->_PHPSHOP_FILES_NOT_FOUND."</span>";
+      echo "<span class=\"message\">".$VM_LANG->_PHPSHOP_FILES_NOT_FOUND."</span>";
     }
     return true;
   }

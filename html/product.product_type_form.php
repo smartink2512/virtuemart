@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_type_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -19,12 +19,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_LBL );
 //Then Start the form
 $formObj->startForm();
 
 if ($product_type_id) {
-    $q = "SELECT * from #__pshop_product_type WHERE product_type_id='$product_type_id'";
+    $q = "SELECT * from #__{vm}_product_type WHERE product_type_id='$product_type_id'";
     $db->query($q);
     $db->next_record();
 } 
@@ -34,7 +34,7 @@ elseif (empty($vars["error"])) {
 ?> 
 <table class="adminform">
 	<tr> 
-                  <td width="38%" nowrap align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH ?>:</td>
+                  <td width="38%" nowrap align="right"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH ?>:</td>
                   <td width="62%"><?php 
                     if ($db->sf("product_type_publish")=="Y") { 
                       echo "<input type=\"checkbox\" name=\"product_type_publish\" value=\"Y\" checked=\"checked\" />";
@@ -46,20 +46,20 @@ elseif (empty($vars["error"])) {
                   </td>
 	</tr>
 	<tr> 
-                  <td width="38%" nowrap align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_NAME ?>:</td>
+                  <td width="38%" nowrap align="right"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_NAME ?>:</td>
                   <td width="62%"> 
                     <input type="text" class="inputbox" name="product_type_name" size="60" value="<?php $db->sp('product_type_name') ?>" />
                   </td>
 	</tr>
 	<tr> 
-                  <td width="38%" nowrap align="right" valign="top"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION ?>:</td>
+                  <td width="38%" nowrap align="right" valign="top"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION ?>:</td>
                   <td width="62%" valign="top"><?php
                     editorArea( 'editor1', $db->f("product_type_description"), 'product_type_description', '300', '100', '60', '6' ) ?>
                     <!--input type="text" class="inputbox" name="product_type_description" size="60" value="<?php // $db->sp('product_type_description') ?>" /-->
 		  </td>
 	</tr>
 	<tr>
-                  <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_MODULE_LIST_ORDER ?>: </td>
+                  <td align="right"><?php echo $VM_LANG->_PHPSHOP_MODULE_LIST_ORDER ?>: </td>
                   <td valign="top"><?php 
                     echo $ps_product_type->list_order( $db->f("product_type_id"), $db->f("product_type_list_order"));
                     echo "<input type=\"hidden\" name=\"currentpos\" value=\"".$db->f("product_type_list_order")."\" />";
@@ -70,14 +70,14 @@ elseif (empty($vars["error"])) {
                   <td colspan="2"><br /></td>
 	</tr>
 	<tr>
-                  <td align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE ." ". $PHPSHOP_LANG->_PHPSHOP_LEAVE_BLANK ?>: </td>
+                  <td align="right"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE ." ". $VM_LANG->_PHPSHOP_LEAVE_BLANK ?>: </td>
                   <td valign="top">
                   <input type="text" class="inputbox" name="product_type_browsepage" value="<?php $db->sp("product_type_browsepage"); ?>" />
                   </td>
 	</tr>
 	<tr>
                   <td align="right">
-                    <?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE ." ". $PHPSHOP_LANG->_PHPSHOP_LEAVE_BLANK ?>:
+                    <?php echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE ." ". $VM_LANG->_PHPSHOP_LEAVE_BLANK ?>:
                   </td>
                   <td valign="top">
                   <input type="text" class="inputbox" name="product_type_flypage" value="<?php $db->sp("product_type_flypage"); ?>" />

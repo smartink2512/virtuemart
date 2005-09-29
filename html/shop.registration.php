@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -113,7 +113,7 @@ function saveRegistration( $option ) {
 			$url.="&bank_account_holder=".@$_POST['bank_account_holder'];
 			$url.="&bank_account_type=".@$_POST['bank_account_type'];
 			
-			mosRedirect("index.php?option=com_phpshop&page=checkout.index&missing=$missing&$url",_CONTACT_FORM_NC);
+			mosRedirect("index.php?option=com_virtuemart&page=checkout.index&missing=$missing&$url",_CONTACT_FORM_NC);
 			exit();
 	}
 	
@@ -177,14 +177,14 @@ function saveRegistration( $option ) {
 	
 	
 	// insert shopper-vendor-xref
-	$my_q =  "SELECT shopper_group_id from #__pshop_shopper_group WHERE ";
+	$my_q =  "SELECT shopper_group_id from #__{vm}_shopper_group WHERE ";
 	$my_q .= "`default`='1'";
 	   
 	$database->setQuery($my_q);
 	$database->loadObject( $res );
 	$my_shopper_id = $res->shopper_group_id;
 	
-	$q2  = "INSERT INTO #__pshop_shopper_vendor_xref ";
+	$q2  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
 	$q2 .= "(user_id,vendor_id,shopper_group_id,customer_number) ";
 	$q2 .= "VALUES ('";
 	$q2 .= $my_user_id . "','";
@@ -195,7 +195,7 @@ function saveRegistration( $option ) {
 	$database->query();
 	
 	// Insert vendor relationship
-	$q3 = "INSERT INTO #__pshop_auth_user_vendor (user_id,vendor_id)";
+	$q3 = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
 	$q3 .= " VALUES ";
 	$q3 .= "('" . $my_user_id . "','";
 	$q3 .= $_SESSION['ps_vendor_id'] . "') ";
@@ -257,7 +257,7 @@ function saveRegistration( $option ) {
 		echo _REG_COMPLETE_ACTIVATE;
 	} else {
 		$mainframe->login($username, md5( $pwd ));
-		mosRedirect($sess->url(SECUREURL."index.php?option=com_phpshop&page=checkout.index&Itemid=".@$_REQUEST['Itemid']), _REG_COMPLETE);
+		mosRedirect($sess->url(SECUREURL."index.php?option=com_virtuemart&page=checkout.index&Itemid=".@$_REQUEST['Itemid']), _REG_COMPLETE);
 	}
             
 	

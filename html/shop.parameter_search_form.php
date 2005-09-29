@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Paramater search for phpShop
 * @author Zdenek Dvorak (zdenek.dvorak@seznam.cz)
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shop.parameter_search_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -13,46 +13,46 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 
 $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
 
-$q  = "SELECT * FROM #__pshop_product_type ";
+$q  = "SELECT * FROM #__{vm}_product_type ";
 $q .= "WHERE product_type_id='$product_type_id' ";
 $q .= "AND product_type_publish='Y'";
 $db->query($q);
 
 $browsepage = $db->f("product_type_browsepage");
 	
-echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
+echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 
 	if (!$db->next_record()) { // There is no published Product Type
-		echo $PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE;
+		echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE;
 	}
 	else {
 		echo "<table width=\"100%\" border=\"0\">\n<tr><td width=\"40%\">";
-		echo $PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY.": ".$db->f("product_type_name");
+		echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY.": ".$db->f("product_type_name");
 		// Reset form
 		echo "</td><td align=\"center\">";
-		echo "<form action=\"".$_SERVER['PHP_SELF']. "?option=com_phpshop&page=shop.parameter_search_form&product_type_id=". $product_type_id. "&Itemid=" .$_REQUEST['Itemid']. "\" method=\"post\" name=\"reset\">\n";
+		echo "<form action=\"".$_SERVER['PHP_SELF']. "?option=com_virtuemart&page=shop.parameter_search_form&product_type_id=". $product_type_id. "&Itemid=" .$_REQUEST['Itemid']. "\" method=\"post\" name=\"reset\">\n";
 		echo "<input type=\"submit\" class=\"button\" name=\"reset\" value=\"";
-		echo $PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_RESET_FORM ."\">\n</form>";
+		echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_RESET_FORM ."\">\n</form>";
 		echo "</td><td width=\"40%\">&nbsp;</td></tr></table>\n";
 
 ?>
 
 <form action="<?php echo URL ?>index.php" method="post" name="attr_search">
-<input type="hidden" name="option" value="com_phpshop" />
+<input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="page" value="shop.browse" />
 <input type="hidden" name="product_type_id" value="<?php echo $product_type_id ?>" />
 <input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid'] ?>" />
 <BR>
 
 <?php 
-	$q  = "SELECT * FROM #__pshop_product_type_parameter ";
+	$q  = "SELECT * FROM #__{vm}_product_type_parameter ";
 	$q .= "WHERE product_type_id=$product_type_id ";
 	$q .= "ORDER BY parameter_list_order";
 	$db->query($q);
@@ -94,8 +94,8 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 					// Multiple section List of values - comparison FIND_IN_SET
 					$comp  = "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 					$comp .= "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-					$comp .= "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL."</option>\n";
-					$comp .= "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY."</option>\n";
+					$comp .= "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL."</option>\n";
+					$comp .= "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY."</option>\n";
 					$comp .= "</select></td>";
 				}
 				else { // type: all other
@@ -130,9 +130,9 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 							break;
 						}
 						$comp  = "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-						echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
-						echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
-						echo "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_FULLTEXT."</option>\n";
+						echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
+						echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
+						echo "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_FULLTEXT."</option>\n";
 						$comp .= "</select>";
 						break;
 					case "S": // Short Text
@@ -142,8 +142,8 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 							break;
 						}
 						$comp  = "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-						$comp .= "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
-						$comp .= "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
+						$comp .= "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
+						$comp .= "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
 						$comp .= "</select></td>";
 				}
 			}
@@ -168,7 +168,7 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 				}
 				else {
 					$attr .= "\">\n";
-					$attr .= "<option value=\"\">".$PHPSHOP_LANG->_PHPSHOP_SELECT."</option>\n";
+					$attr .= "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
 					foreach($fields as $field) {
 						$attr .= "<option value=\"$field\"".(($get_item_value==$field) ? " selected>" : ">"). $field."</option>\n";
 					}
@@ -211,7 +211,7 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 			
 				if ($db->f("parameter_description")) {
 					echo "&nbsp;";
-					echo mm_ToolTip($db->f("parameter_description"),$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION);
+					echo mm_ToolTip($db->f("parameter_description"),$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION);
 				}
 				echo "&nbsp;:</strong></div>\n  </td>\n";
 				
@@ -227,8 +227,8 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 						// Multiple section List of values - comparison FIND_IN_SET
 						echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 						echo "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-						echo "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL."</option>\n";
-						echo "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY."</option>\n";
+						echo "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL."</option>\n";
+						echo "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY."</option>\n";
 						echo "</select></td>";
 					}
 					else { // type: all other
@@ -265,9 +265,9 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 							}
 							echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 							echo "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
-							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
-							echo "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_FULLTEXT."</option>\n";
+							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
+							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
+							echo "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_FULLTEXT."</option>\n";
 							echo "</select></td>";
 							break;
 						case "V": // Multiple Value
@@ -281,8 +281,8 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 							}
 							echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 							echo "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
-							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
+							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_LIKE."</option>\n";
+							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE."</option>\n";
 							echo "</select></td>";
 					}
 				}
@@ -305,7 +305,7 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 					}
 					else {
 						echo "\">\n";
-						echo "<option value=\"\">".$PHPSHOP_LANG->_PHPSHOP_SELECT."</option>\n";
+						echo "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
 						foreach($fields as $field) {
 							echo "<option value=\"$field\"".(($get_item_value==$field) ? " selected>" : ">"). $field."</option>\n";
 						}
@@ -336,14 +336,14 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 				echo " ".$db->f("parameter_unit");
 				switch( $parameter_type ) {
 					case "D": // Date & Time
-						echo " (".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT." ";
-						echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT.")";
+						echo " (".$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT." ";
+						echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT.")";
 						break;
 					case "A": // Date
-						echo " (".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT.")";
+						echo " (".$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT.")";
 						break;
 					case "M": // Time
-						echo " (".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT.")";
+						echo " (".$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT.")";
 						break;
 				}
 			}
@@ -362,7 +362,7 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 	$get_item_value_comp = mosgetparam($_REQUEST, $item_name."_comp", "");
 	
 	echo "<tr>\n  <td width=\"35%\" height=\"2\" valign=\"top\"><div align=\"right\"><strong>";
-	echo $PHPSHOP_LANG->_PHPSHOP_CART_PRICE."&nbsp;:</strong></div>\n  </td>\n";
+	echo $VM_LANG->_PHPSHOP_CART_PRICE."&nbsp;:</strong></div>\n  </td>\n";
 	// comparison
 	echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 	echo "<select class=\"inputbox\" name=\"price_comp\">";
@@ -380,7 +380,7 @@ echo "<h2>".$PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 ?>	
 	<tr><td colspan="3" height="2" >&nbsp;</td></tr>
 	<tr><td colspan="3" height="2" ><div align="center">
-		<input type="submit" class="button" name="search" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_SEARCH_TITLE ?>">
+		<input type="submit" class="button" name="search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>">
 		</div></td>
 	</tr>
 </table>

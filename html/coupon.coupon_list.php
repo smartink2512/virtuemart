@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: coupon.coupon_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -22,8 +22,8 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
   
-	$list  = "SELECT * FROM #__pshop_coupons WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_coupons WHERE ";
+	$list  = "SELECT * FROM #__{vm}_coupons WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_coupons WHERE ";
 	$q  = "(code LIKE '%$keyword%' OR ";
 	$q .= "value LIKE '%$keyword%' ";
 	$q .= ") ";
@@ -32,10 +32,10 @@ if (!empty($keyword)) {
 	$count .= $q;   
 }
 else  {
-	$list  = "SELECT * FROM #__pshop_coupons ";
+	$list  = "SELECT * FROM #__{vm}_coupons ";
 	$list .= "ORDER BY coupon_id ";
 	$list .= "LIMIT $limitstart, " . $limit;
-	$count = "SELECT count(*) as num_rows FROM #__pshop_coupons ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_coupons ";
 }
 $db->query($count);
 $db->next_record();
@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_COUPON_LIST, IMAGEURL."ps_image/percentage.png", $modulename, "coupon_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_COUPON_LIST, IMAGEURL."ps_image/percentage.png", $modulename, "coupon_list");
 
 // start the list table
 $listObj->startTable();
@@ -56,10 +56,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_COUPON_CODE_HEADER => '',
-					$PHPSHOP_LANG->_PHPSHOP_COUPON_PERCENT_TOTAL => '',
-					$PHPSHOP_LANG->_PHPSHOP_COUPON_TYPE => '',
-					$PHPSHOP_LANG->_PHPSHOP_COUPON_VALUE_HEADER => '',
+					$VM_LANG->_PHPSHOP_COUPON_CODE_HEADER => '',
+					$VM_LANG->_PHPSHOP_COUPON_PERCENT_TOTAL => '',
+					$VM_LANG->_PHPSHOP_COUPON_TYPE => '',
+					$VM_LANG->_PHPSHOP_COUPON_VALUE_HEADER => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -79,10 +79,10 @@ while ($db->next_record()) {
 	$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=coupon.coupon_form&limitstart=$limitstart&keyword=$keyword&coupon_id=" . $db->f("coupon_id")) ."\">".$db->f("coupon_code")."</a>";
 	$listObj->addCell( $tmp_cell );
     
-	$tmp_cell = $db->f("percent_or_total")=='total' ? $PHPSHOP_LANG->_PHPSHOP_COUPON_TOTAL : $PHPSHOP_LANG->_PHPSHOP_COUPON_PERCENT;
+	$tmp_cell = $db->f("percent_or_total")=='total' ? $VM_LANG->_PHPSHOP_COUPON_TOTAL : $VM_LANG->_PHPSHOP_COUPON_PERCENT;
 	$listObj->addCell( $tmp_cell );
 	
-    $tmp_cell = $db->f("coupon_type")=='gift' ? $PHPSHOP_LANG->_PHPSHOP_COUPON_TYPE_GIFT : $PHPSHOP_LANG->_PHPSHOP_COUPON_TYPE_PERMANENT;
+    $tmp_cell = $db->f("coupon_type")=='gift' ? $VM_LANG->_PHPSHOP_COUPON_TYPE_GIFT : $VM_LANG->_PHPSHOP_COUPON_TYPE_PERMANENT;
 	$listObj->addCell( $tmp_cell );
 	
     $listObj->addCell( $db->f("coupon_value"));

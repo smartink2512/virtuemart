@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * normal Basket is: All Update/Delete buttons and the
 * quantity Box are missing.
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ro_basket_b2c.html.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage templates
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -15,18 +15,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 ?>
 <table width="100%" cellspacing="0" cellpadding="4" border="0">
   <tr align="left" class="sectiontableheader">
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_NAME ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_SKU ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_PRICE ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_QUANTITY ?></th>
-	<th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_SUBTOTAL ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_NAME ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_PRICE ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?></th>
   </tr>
 <?php foreach( $product_rows as $product ) { ?>
   <tr valign="top" class="<?php echo $product['row_color'] ?>">
@@ -40,7 +40,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 <!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
   <tr class="sectiontableentry2">
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_SUBTOTAL ?>:</td> 
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?>:</td> 
     <td><?php echo $subtotal_display ?></td>
   </tr>
 <?php if( $payment_discount_before ) { ?>
@@ -52,7 +52,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 <?php } 
 if( $coupon_discount_before ) { ?>
   <tr>
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
     </td> 
     <td><?php echo $coupon_display ?></td>
   </tr>
@@ -60,7 +60,7 @@ if( $coupon_discount_before ) { ?>
 }
 if( $shipping ) { ?>
   <tr class="sectiontableentry1">
-	<td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </td> 
+	<td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </td> 
 	<td ><?php echo $shipping_display ?></td>
   </tr>
 <?php } 
@@ -73,7 +73,7 @@ if( $payment_discount_after ) { ?>
 <?php } 
 if( $coupon_discount_after ) { ?>
   <tr>
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
     </td> 
     <td><?php echo $coupon_display ?></td>
   </tr>
@@ -85,13 +85,13 @@ if( $coupon_discount_after ) { ?>
     <td colspan="2"><hr /></td>
   </tr>
   <tr>
-    <td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?>: </td>
+    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?>: </td>
     <td><strong><?php echo $order_total_display ?></strong>
     </td>
   </tr>
 <?php if ( $tax ) { ?>
   <tr class="sectiontableentry2">
-	<td colspan="4" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </td> 
+	<td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </td> 
 	<td><?php echo $tax_display ?></td>
   </tr>
 <?php } 

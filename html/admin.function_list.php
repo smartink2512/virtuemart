@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: admin.function_list.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -23,13 +23,13 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 // Get module ID
 $module_id = mosgetparam( $_REQUEST, 'module_id', 0 );
 
-$q = "SELECT module_name FROM #__pshop_module WHERE module_id='$module_id'";
+$q = "SELECT module_name FROM #__{vm}_module WHERE module_id='$module_id'";
 $db->query($q);
 $db->next_record();
-$title = $PHPSHOP_LANG->_PHPSHOP_FUNCTION_LIST_LBL . ": " . $db->f("module_name");
+$title = $VM_LANG->_PHPSHOP_FUNCTION_LIST_LBL . ": " . $db->f("module_name");
 if (!empty( $keyword )) {
-	$list  = "SELECT * FROM #__pshop_function WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_function WHERE ";
+	$list  = "SELECT * FROM #__{vm}_function WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_function WHERE ";
 	$q  = "(function_name LIKE '%$keyword%' OR ";
 	$q .= "function_perms LIKE '%$keyword%' ";
 	$q .= ") ";
@@ -39,10 +39,10 @@ if (!empty( $keyword )) {
 	$count .= $q;   
 }
 else {
-	$list  = "SELECT * FROM #__pshop_function WHERE module_id='$module_id' ";
+	$list  = "SELECT * FROM #__{vm}_function WHERE module_id='$module_id' ";
 	$list .= "ORDER BY function_name ";
 	$list .= "LIMIT $limitstart, " . $limit;
-	$count = "SELECT count(*) as num_rows FROM #__pshop_function ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_function ";
 	$count .= "WHERE module_id='$module_id' ";
 }
 $db->query($count);
@@ -64,10 +64,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_FUNCTION_LIST_NAME => "",
-					$PHPSHOP_LANG->_PHPSHOP_FUNCTION_LIST_CLASS => "",
-					$PHPSHOP_LANG->_PHPSHOP_FUNCTION_LIST_METHOD => "",
-					$PHPSHOP_LANG->_PHPSHOP_FUNCTION_LIST_PERMS => "",
+					$VM_LANG->_PHPSHOP_FUNCTION_LIST_NAME => "",
+					$VM_LANG->_PHPSHOP_FUNCTION_LIST_CLASS => "",
+					$VM_LANG->_PHPSHOP_FUNCTION_LIST_METHOD => "",
+					$VM_LANG->_PHPSHOP_FUNCTION_LIST_PERMS => "",
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

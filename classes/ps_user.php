@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_user.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -230,7 +230,7 @@ class ps_user {
     
     
     // Insert vendor relationship
-    $q = "INSERT INTO #__pshop_auth_user_vendor (user_id,vendor_id)";
+    $q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
     $q .= " VALUES ";
     $q .= "('" . $_POST["user_id"] . "','";
     $q .= $ps_vendor_id . "') ";
@@ -299,7 +299,7 @@ class ps_user {
     $q .= $q_end;
     $db->query($q);
 
-    $q = "UPDATE #__pshop_auth_user_vendor set ";
+    $q = "UPDATE #__{vm}_auth_user_vendor set ";
     $q .= "vendor_id='$ps_vendor_id' ";
     $q .= "WHERE user_id='" . $_POST["user_id"] . "'";
     $db->query($q);
@@ -353,7 +353,7 @@ class ps_user {
     $db->query($q);
     $db->next_record();
 
-    $q = "DELETE FROM #__pshop_auth_user_vendor where user_id='" . $d["user_id"] . "'"; 
+    $q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='" . $d["user_id"] . "'"; 
     $db->query($q);
 
     return True;
@@ -368,7 +368,7 @@ class ps_user {
    * returns:
    **************************************************************************/
   function list_perms($name,$group_name) {
-    global $perm,$PHPSHOP_LANG;
+    global $perm,$VM_LANG;
     $auth = $_SESSION['auth'];
         
     $db = new ps_DB;
@@ -376,7 +376,7 @@ class ps_user {
     // Get users current permission value 
     $dvalue = $this->permissions[$auth["perms"]];
     echo "<select class=\"inputbox\" name=\"$name\">\n";
-    echo "<option value=\"0\">".$PHPSHOP_LANG->_PHPSHOP_SELECT ."</option>\n";
+    echo "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT ."</option>\n";
     while (list($key,$value) = each($this->permissions)) {
       // Display only those permission that this user can set
       if ($value <= $dvalue)

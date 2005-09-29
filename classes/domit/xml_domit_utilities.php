@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * DOMIT Utilities are a set of utilities for the DOMIT! parser
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage domit-xmlparser
 * @copyright (C) 2004 John Heinstein. All rights reserved
 * @license http://www.gnu.org/copyleft/lesser.html LGPL License

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_module.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -37,7 +37,7 @@ class ps_module {
       return False;	
     }
     if ($d[ 'module_name' ]) {
-      $q = "SELECT count(*) as rowcnt from #__pshop_module where module_name='" .  $d[ 'module_name' ] . "'";
+      $q = "SELECT count(*) as rowcnt from #__{vm}_module where module_name='" .  $d[ 'module_name' ] . "'";
       $db->setQuery($q);
       $db->next_record();
       if ($db->f("rowcnt") > 0) {
@@ -72,10 +72,10 @@ class ps_module {
       return False;
     }
 	
-    $db->query( "SELECT module_name FROM #__pshop_module WHERE module_id='$module_id'" );
+    $db->query( "SELECT module_name FROM #__{vm}_module WHERE module_id='$module_id'" );
 	$db->next_record();
 	$name = $db->f("module_name");
-	if( $name == "shop" || $name == "vendor" || $name == "product" || $name == "store" || $name == "order"
+	if( $name == "shop" || $name == "vendor" || $name == "product" || $name == "store" || $name == "order" || $name == "admin"
 		|| $name == "checkout" || $name == "account" ) {
 		$this->error = "Error: The module $name is a core module. It cannot be deleted.";
 		return false;
@@ -132,7 +132,7 @@ class ps_module {
     foreach ($d as $key => $value)
         $d[$key] = addslashes($value);
         
-    $q = "INSERT INTO #__pshop_module (module_name, module_description, ";
+    $q = "INSERT INTO #__{vm}_module (module_name, module_description, ";
     $q .= "module_perms, module_header, ";
     $q .= "module_publish, list_order, module_footer, ";
     $q .= "module_label_1) ";
@@ -174,7 +174,7 @@ class ps_module {
           $d[$key] = addslashes($value);
     }
         
-    $q = "UPDATE #__pshop_module SET ";
+    $q = "UPDATE #__{vm}_module SET ";
     $q .= "module_name='" . $d[ 'module_name' ];
     $q .= "',module_perms='" . $d[ 'module_perms' ];
     $q .= "',module_description='" . $d[ 'module_description' ];
@@ -222,10 +222,10 @@ class ps_module {
 			return False;
 		}
 		
-		$q = "DELETE from #__pshop_function WHERE module_id='$record_id'";
+		$q = "DELETE from #__{vm}_function WHERE module_id='$record_id'";
 		$db->query($q);
 	
-		$q = "DELETE FROM #__pshop_module where module_id='$record_id'";
+		$q = "DELETE FROM #__{vm}_module where module_id='$record_id'";
 		$db->query($q);
 		return true;
 	
@@ -243,11 +243,8 @@ class ps_module {
     
     $results = array();
     
-    $q = "SELECT * FROM #__pshop_module where module_name='".$basename."'";
-   
-    $datab->setQuery($q);
-    $datab->query();
-    
+    $q = "SELECT module_perms FROM #__{vm}_module where module_name='".$basename."'";
+    $datab->query($q);
     
     if ($datab->next_record()) {
       $results[ 'perms' ] = $datab->f("module_perms");
@@ -260,7 +257,7 @@ class ps_module {
   
   function checkModulePermissions( $calledPage ) {
 	
-	global $page, $PHPSHOP_LANG, $error_type, $error, $perm;
+	global $page, $VM_LANG, $error_type, $error, $perm;
 	
 	// "shop.browse" => module: shop, page: browse
     $my_page= explode ( '.', $page );
@@ -280,8 +277,8 @@ class ps_module {
         if ($perm->check( $dir_list[ 'perms' ]) ) {
 		
             if ( !file_exists(PAGEPATH.$modulename.".".$pagename.".php") ) {
-                $error_type = $PHPSHOP_LANG->_PHPSHOP_PAGE_404_1;
-                $error = $PHPSHOP_LANG->_PHPSHOP_PAGE_404_2 ."<br />";
+                $error_type = $VM_LANG->_PHPSHOP_PAGE_404_1;
+                $error = $VM_LANG->_PHPSHOP_PAGE_404_2 ."<br />";
                 $error .= $modulename.".".$pagename.".php";
                 $page = ERRORPAGE;
 				return false;
@@ -289,14 +286,14 @@ class ps_module {
 			return true;
         }
         else {
-            $error = $PHPSHOP_LANG->_PHPSHOP_MOD_NO_AUTH;
+            $error = $VM_LANG->_PHPSHOP_MOD_NO_AUTH;
             $page = ERRORPAGE;
             return false;
         }
     }
     else {
-        $error_type = $PHPSHOP_LANG->_PHPSHOP_MOD_NOT_REG;
-        $error = $modulename . $PHPSHOP_LANG->_PHPSHOP_MOD_ISNO_REG;
+        $error_type = $VM_LANG->_PHPSHOP_MOD_NOT_REG;
+        $error = $modulename . $VM_LANG->_PHPSHOP_MOD_ISNO_REG;
         $page = ERRORPAGE;
         return false;
     }

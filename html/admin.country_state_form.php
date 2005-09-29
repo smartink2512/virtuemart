@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: admin.country_state_form.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -23,7 +23,7 @@ if( is_array( $country_id ))
 	$country_id = $country_id[0];
 	
 if( !empty( $state_id )) {
-  $q = "SELECT * FROM #__pshop_state WHERE state_id = '$state_id' AND country_id='$country_id'";
+  $q = "SELECT * FROM #__{vm}_state WHERE state_id = '$state_id' AND country_id='$country_id'";
   $db->query($q);
   $db->next_record();
 }
@@ -37,19 +37,19 @@ $formObj->startForm();
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATE_LIST_NAME ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_STATE_LIST_NAME ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="state_name" value="<?php $db->sp("state_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATE_LIST_2_CODE ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_STATE_LIST_2_CODE ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="state_2_code" value="<?php $db->sp("state_2_code") ?>" />
       </td>
     </tr>
         <tr> 
-      <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_STATE_LIST_3_CODE ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_STATE_LIST_3_CODE ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="state_3_code" value="<?php $db->sp("state_3_code") ?>" />
       </td>

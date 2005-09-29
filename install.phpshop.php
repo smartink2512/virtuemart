@@ -1,7 +1,7 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: install.phpshop.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -64,7 +64,7 @@ else
           
           <div id="right">
 
-          <div id="step">Welcome to <?php $shortversion ?>!</div>
+          <div id="step">Welcome to <?php echo $shortversion ?>!</div>
 
           <div class="clr"></div>
           <pre><?php echo $version ?></pre>
@@ -72,9 +72,9 @@ else
           <table>
           <?php
           if( $installation == "new" ) { ?>
-            <tr><td colspan="3" class="error">Let's prepare the database now (the Installation Script hasn't found existing mambo-phpShop Tables, so let's do a fresh installation).</td></tr>
+            <tr><td colspan="3" class="error">Let's prepare the database now (the Installation Script hasn't found existing mambo-phpShop/VirtueMart Tables, so let's do a fresh installation).</td></tr>
             <tr>
-              <td width="40%">Basic Installation has been finished. You can use mambo-phpShop in a moment after having clicked on a link below.<br/>
+              <td width="40%">Basic Installation has been finished. You can use VirtueMart in a moment after having clicked on a link below.<br/>
               </td>
               <td width="20%">&nbsp;</td>
               <td width="40%">
@@ -84,11 +84,11 @@ else
             </tr>
             <tr>
               <td width="40%">
-                <a title="Go directly to the Shop &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running mambo-phpShop.');" name="Button1" class="button" href="index2.php?option=com_phpshop&install_type=newinstall">Go directly to the Shop &gt;&gt;</a>
+                <a title="Go directly to the Shop &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" name="Button1" class="button" href="index2.php?option=com_phpshop&install_type=newinstall">Go directly to the Shop &gt;&gt;</a>
               </td>
               <td width="20%">&nbsp;</td>
               <td width="40%">
-              <a name="Button2" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running mambo-phpShop.');" class="button" title="Install SAMPLE DATA &gt;&gt;" href="index2.php?option=com_phpshop&install_type=newinstall&install_sample_data=true">Install SAMPLE DATA &gt;&gt;</a>
+              <a name="Button2" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install SAMPLE DATA &gt;&gt;" href="index2.php?option=com_phpshop&install_type=newinstall&install_sample_data=true">Install SAMPLE DATA &gt;&gt;</a>
               </td>
             </tr>
             <tr>
@@ -104,7 +104,7 @@ else
                 
                 <br /><br/>
                 <div align="center">
-                <a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_phpshop&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
+                <a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_phpshop&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
                 </div>
                 <div class="error">Note:</div>If your Version Number is between 1.1 and 1.2 RC2 (e.g. <i>1.2 beta3</i>), you have to update your database before using the Step-by-Step SQL Update Scripts from the folder <pre>
                 /administrator/components/com_phpshop/sql</pre> of your VirtueMart Installation. You can run these Scripts with <a href="http://mamboforge.net/projects/mosphpmyadmin/" target="_blank">phpMyAdmin for Mambo/Joomla</a>.
@@ -116,7 +116,7 @@ else
             </tr>
             <tr>
               <td align="center" colspan="3">If you're updating from version 1.1(a) you'll have to click on this link!<br /><br />
-                <a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop.');" href="index2.php?option=com_phpshop&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
+                <a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtuMart.');" href="index2.php?option=com_phpshop&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
               </td>
             </tr>
             <tr>

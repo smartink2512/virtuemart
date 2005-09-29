@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * PHP HTTP Tools is a library for working with the http protocol
 * php_http_client_generic represents a basic http client
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage php-http-tools
 * @version 0.2-pre
 * @copyright (C) 2004 John Heinstein. All rights reserved

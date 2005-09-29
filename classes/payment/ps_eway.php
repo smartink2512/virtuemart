@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_eway.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -30,7 +30,7 @@ class ps_eway {
     * @returns boolean False when the Payment method has no configration
     */
     function show_configuration() {
-        global $PHPSHOP_LANG;
+        global $VM_LANG;
         $db = new ps_DB();
         
         /** Read current Configuration ***/
@@ -46,23 +46,23 @@ class ps_eway {
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
             <td>
                 <select name="EWAY_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (EWAY_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
                 <option <?php if (EWAY_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
         </tr>
         <tr>
             <td><strong>Order Status for successful transactions</strong></td>
             <td>
                 <select name="EWAY_VERIFIED_STATUS" class="inputbox" >
                 <?php
-                    $q = "SELECT order_status_name,order_status_code FROM #__pshop_order_status ORDER BY list_order";
+                    $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
                     $db->query($q);
                     $order_status_code = Array();
                     $order_status_name = Array();
@@ -103,14 +103,14 @@ class ps_eway {
             <td>Select an order status for failed eWay transactions.</td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
             <td>
                 <select name="EWAY_TEST_REQUEST" class="inputbox" >
-                <option <?php if (EWAY_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (EWAY_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (EWAY_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <option <?php if (EWAY_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN ?>
             </td>
         </tr>
       </table>
@@ -175,7 +175,7 @@ class ps_eway {
   ** returns: 
   ***************************************************************************/
     function process_payment($order_number, $order_total, &$d) {
-        global $vendor_name, $PHPSHOP_LANG;
+        global $vendor_name, $VM_LANG;
         $auth = $_SESSION['auth'];
         
         /*** Get the Configuration File for eway ***/
@@ -221,14 +221,14 @@ class ps_eway {
         
         if( $eway->doPayment() == EWAY_TRANSACTION_OK ) {
 			
-			$d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS;
+			$d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS;
             //Catch Transaction ID
             $d["order_payment_trans_id"] = $eway->getTrxnNumber();
             $d["error"] = "";
             return true;
 		} 
         else {
-			$d["error"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_ERROR.": ";
+			$d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR.": ";
             $d["error"] .= $eway->getErrorMessage();
             //Catch Transaction ID
             $d["order_payment_trans_id"] = $eway->getTrxnNumber();
@@ -244,7 +244,7 @@ class ps_eway {
   *
   * (c) Copyright Matthew Horoschun, CanPrint Communications 2005.
   *
-  * $Id: ps_eway.php,v 1.1 2005/09/06 20:04:20 soeren_nb Exp $
+  * $Id: ps_eway.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
   *
   * Date:    2005-04-18
   * Version: 2.0

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product_attribute.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -41,7 +41,7 @@ class ps_product_attribute {
     }
     elseif ($d["old_attribute_name"] != $d["attribute_name"]) {
       $db = new ps_DB;
-      $q  = "SELECT attribute_name FROM #__pshop_product_attribute_sku ";
+      $q  = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
       $q .= "WHERE attribute_name = '" . $d["attribute_name"] . "'";
       $q .= "AND product_id = '" . $d["product_id"] . "'";
       $db->setQuery($q);  $db->query();
@@ -70,7 +70,7 @@ class ps_product_attribute {
     $ps_product = new ps_product;
 
     $db = new ps_DB;
-    $q  = "SELECT product_id FROM #__pshop_product_attribute_sku WHERE product_id = '" . $d["product_id"] . "' ";
+    $q  = "SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id = '" . $d["product_id"] . "' ";
     $db->setQuery($q);  $db->query();
     if ($db->num_rows() == 1 and 
              $ps_product->parent_has_children($d["product_id"])) {
@@ -95,7 +95,7 @@ class ps_product_attribute {
     }
 
     $db = new ps_DB;
-    $q  = "INSERT INTO #__pshop_product_attribute_sku (product_id,attribute_name,";
+    $q  = "INSERT INTO #__{vm}_product_attribute_sku (product_id,attribute_name,";
     $q .= "attribute_list) VALUES ('" . $d["product_id"] . "','";
     $q .= $d["attribute_name"] . "','" . $d["attribute_list"] . "')";
 
@@ -106,7 +106,7 @@ class ps_product_attribute {
     $child_pid = $ps_product->get_child_product_ids($d["product_id"]);
 
     for($i = 0; $i < count($child_pid); $i++) {
-      $q  = "INSERT INTO #__pshop_product_attribute (product_id,attribute_name) ";
+      $q  = "INSERT INTO #__{vm}_product_attribute (product_id,attribute_name) ";
       $q .= "VALUES ('$child_pid[$i]','" . $d["attribute_name"] . "')";
       $db->setQuery($q);  $db->query();
     }
@@ -128,7 +128,7 @@ class ps_product_attribute {
 
     $db = new ps_DB;
 
-    $q  = "UPDATE #__pshop_product_attribute_sku SET ";
+    $q  = "UPDATE #__{vm}_product_attribute_sku SET ";
     $q .= "attribute_name='" . $d["attribute_name"] . "',";
     $q .= "attribute_list='" . $d["attribute_list"] . "' ";
     $q .= "WHERE product_id='" . $d["product_id"] . "' ";
@@ -141,7 +141,7 @@ class ps_product_attribute {
       $child_pid = $ps_product->get_child_product_ids($d["product_id"]);
 
       for($i = 0; $i < count($child_pid); $i++) {
-        $q  = "UPDATE #__pshop_product_attribute SET ";
+        $q  = "UPDATE #__{vm}_product_attribute SET ";
         $q .= "attribute_name='" . $d["attribute_name"] . "' ";
         $q .= "WHERE product_id='$child_pid[$i]' ";
         $q .= "AND attribute_name='" . $d["old_attribute_name"] . "' ";
@@ -179,7 +179,7 @@ class ps_product_attribute {
 		  return false;
 		}                                                                           
 	
-		$q  = "DELETE FROM #__pshop_product_attribute_sku ";
+		$q  = "DELETE FROM #__{vm}_product_attribute_sku ";
 		$q .= "WHERE product_id = '" . $d["product_id"] . "' ";
 		$q .= "AND attribute_name = '$record_id'";
 	
@@ -188,7 +188,7 @@ class ps_product_attribute {
 		$child_pid = $ps_product->get_child_product_ids($d["product_id"]);
 	
 		for($i = 0; $i < count($child_pid); $i++) {
-		  $q  = "DELETE FROM #__pshop_product_attribute ";
+		  $q  = "DELETE FROM #__{vm}_product_attribute ";
 		  $q .= "WHERE product_id = '$child_pid[$i]' ";
 		  $q .= "AND attribute_name = '$record_id' ";
 		  $db->setQuery($q);  $db->query();
@@ -205,7 +205,7 @@ class ps_product_attribute {
    ***************************************************************************/
   function list_attribute($product_id) {
 
-    global $PHPSHOP_LANG, $CURRENCY_DISPLAY;
+    global $VM_LANG, $CURRENCY_DISPLAY;
     
     require_once (CLASSPATH . 'ps_product.php' );
     $ps_product = new ps_product;
@@ -217,25 +217,25 @@ class ps_product_attribute {
 
     $html = "";
     // Get list of children
-    $q = "SELECT product_id,product_name FROM #__pshop_product WHERE product_parent_id='$product_id' AND product_publish='Y'";
+    $q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND product_publish='Y'";
     $db->setQuery($q);
     $db->query();
     if( $db->num_rows() < 1 ) {
       // Try to Get list of sisters & brothers
-      $q = "SELECT product_parent_id FROM #__pshop_product WHERE product_id='$product_id'";
+      $q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
       $db->setQuery($q);
       $db->query();
       $child_id = $product_id;
       $product_id = $db->f("product_parent_id")!="0" ? $db->f("product_parent_id") : $product_id;
-      $q = "SELECT product_id,product_name FROM #__pshop_product WHERE product_parent_id='".$db->f("product_parent_id")."' AND product_parent_id<>0 AND product_publish='Y'";
+      $q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='".$db->f("product_parent_id")."' AND product_parent_id<>0 AND product_publish='Y'";
       $db->setQuery($q);
       $db->query();
     }
     if( $db->num_rows() > 0 ) {
       $flypage = $ps_product->get_flypage( $product_id );
-      $html .= "<label for=\"product_id_field\">".$PHPSHOP_LANG->_PHPSHOP_PLEASE_SEL_ITEM."</label>: <br />";
-      $html .= "<select class=\"inputbox\" onchange=\"var id = document.getElementById('addtocart').product_id[selectedIndex].value; if(id != '') {window.location='index.php?option=com_phpshop&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id } ;\" id=\"product_id_field\" name=\"product_id\">\n";
-      $html .= "<option value=\"$product_id\">".$PHPSHOP_LANG->_PHPSHOP_SELECT."</option>";	
+      $html .= "<label for=\"product_id_field\">".$VM_LANG->_PHPSHOP_PLEASE_SEL_ITEM."</label>: <br />";
+      $html .= "<select class=\"inputbox\" onchange=\"var id = document.getElementById('addtocart').product_id[selectedIndex].value; if(id != '') {window.location='index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id } ;\" id=\"product_id_field\" name=\"product_id\">\n";
+      $html .= "<option value=\"$product_id\">".$VM_LANG->_PHPSHOP_SELECT."</option>";	
       while ($db->next_record()) {
         $selected = isset($child_id) ? ($db->f("product_id")==$child_id ? "selected=\"selected\"" : "") : "";
         // Get item price
@@ -249,13 +249,13 @@ class ps_product_attribute {
         $html .= $db->f("product_name") . " - ";	
         
         // For each child get attribute values by looping through attribute list
-        $q = "SELECT attribute_name FROM #__pshop_product_attribute_sku ";
+        $q = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
         $q .= "WHERE product_id='$product_id' ORDER BY attribute_list ASC";
         $db_sku->setQuery($q);  $db_sku->query();
         
         while ($db_sku->next_record()) {
           $q = "SELECT attribute_name, attribute_value, product_id ";
-          $q .= "FROM #__pshop_product_attribute WHERE ";
+          $q .= "FROM #__{vm}_product_attribute WHERE ";
           $q .= "product_id='" . $db->f("product_id") . "' AND ";
           $q .= "attribute_name='" . $db_sku->f("attribute_name") . "'";
           $db_item->setQuery($q);  $db_item->query();
@@ -290,7 +290,7 @@ class ps_product_attribute {
     global $CURRENCY_DISPLAY;
     $db = new ps_DB;    
     
-    $q = "SELECT attribute FROM #__pshop_product WHERE product_id='$product_id'"; 
+    $q = "SELECT attribute FROM #__{vm}_product WHERE product_id='$product_id'"; 
     $db->query($q); 
     $db->next_record(); 
 
@@ -350,7 +350,7 @@ class ps_product_attribute {
 	global $mosConfig_secret;
     $db = new ps_DB;    
     
-    $q = "SELECT custom_attribute from #__pshop_product WHERE product_id='$product_id'"; 
+    $q = "SELECT custom_attribute from #__{vm}_product WHERE product_id='$product_id'"; 
     $db->query($q); 
     $db->next_record(); 
 
@@ -384,7 +384,7 @@ class ps_product_attribute {
 	// added for the advanced attributes modification
     //get listing of titles for attributes (Sean Tobin) 
     $attributes=array(); 
-    $q = "SELECT attribute, custom_attribute FROM #__pshop_product WHERE product_id='".$d["product_id"]."'"; 
+    $q = "SELECT attribute, custom_attribute FROM #__{vm}_product WHERE product_id='".$d["product_id"]."'"; 
     $db->query($q); 
     $db->next_record();  
     $advanced_attribute_list=$db->f("attribute"); 

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product_discount.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -130,7 +130,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["end_date"] = "";
     }
     
-    $q = "INSERT INTO #__pshop_product_discount (amount, is_percent, start_date, end_date)";
+    $q = "INSERT INTO #__{vm}_product_discount (amount, is_percent, start_date, end_date)";
     $q .= " VALUES ('";
     $q .= $d["amount"] . "','";
     $q .= $d["is_percent"] . "','";
@@ -177,7 +177,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["end_date"] = "";
     }
     
-    $q = "UPDATE #__pshop_product_discount SET ";
+    $q = "UPDATE #__{vm}_product_discount SET ";
     $q .= "amount='" . $d["amount"]."',";
     $q .= "is_percent='" . $d["is_percent"]."',";
     $q .= "start_date='" . $d["start_date"]."', ";
@@ -217,7 +217,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	function delete_record( $record_id, &$d ) {
 		global $db;
 		
-		$q = "DELETE FROM #__pshop_product_discount WHERE discount_id='record_id'";
+		$q = "DELETE FROM #__{vm}_product_discount WHERE discount_id='record_id'";
 		$db->query($q);
 		
 		return True;
@@ -231,14 +231,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
    * returns:
    **************************************************************************/
   function discount_list( $discount_id='' ) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     $db = new ps_DB;
     $html = "";
-    $db->query( "SELECT * FROM #__pshop_product_discount" );
+    $db->query( "SELECT * FROM #__{vm}_product_discount" );
     
     if($db->num_rows() > 0) {
       $html = "<select name=\"product_discount_id\" class=\"inputbox\">\n";
-      $html .= "<option value=\"0\">".$PHPSHOP_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL."</option>\n";
+      $html .= "<option value=\"0\">".$VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL."</option>\n";
       while( $db->next_record() ) {
         $selected = $db->f("discount_id") == $discount_id ? "selected=\"selected\"" : "";
         $html .= "<option value=\"".$db->f("discount_id")."\" $selected>".$db->f("amount");
@@ -249,7 +249,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     }
     else {
       $html = "<input type=\"hidden\" name=\"product_discount_id\" value=\"0\" />\n
-      <a href=\"".$_SERVER['PHP_SELF']."\" target=\"_blank\">".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP."</a>";
+      <a href=\"".$_SERVER['PHP_SELF']."\" target=\"_blank\">".$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP."</a>";
     }
     return $html;
   }

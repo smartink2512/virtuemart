@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_linkpoint.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -27,7 +27,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * you also should have your public key file provided by linkpoint/yourpay.com secured
 * in a directory outside of the webroot, but readable by the webserver daemon owner (ie; nobody)
 *
-* In the administrator console of mambo-phpShop -> Payment Method List -> Creditcard LP -> Configuration
+* In the administrator console of VirtueMart -> Payment Method List -> Creditcard LP -> Configuration
 * you can insert your store number, and public key location.
 *
 * Any questions, email jimmy@freshstation.org
@@ -45,7 +45,7 @@ class ps_linkpoint {
     */
     function show_configuration() {
 
-      global $PHPSHOP_LANG, $sess;
+      global $VM_LANG, $sess;
       $payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
       /** Read current Configuration ***/
       require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
@@ -68,28 +68,28 @@ class ps_linkpoint {
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
             <td>
                 <select name="LP_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (LP_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
                 <option <?php if (LP_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_AN_RECURRING ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING ?></strong></td>
             <td>
                 <select name="LP_RECURRING" class="inputbox">
                 <option <?php if (LP_RECURRING == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
                 <option <?php if (LP_RECURRING == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP ?>
             </td>
         </tr>
         <tr>
@@ -97,9 +97,9 @@ class ps_linkpoint {
             <td>
                 <select name="LP_PREAUTH" class="inputbox">
                 <option <?php if (LP_PREAUTH == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
                 <option <?php if (LP_PREAUTH == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
             <td><?php echo "Select yes, is billing is not processed immediately.  (ie; Free Trials)" ?>
@@ -183,7 +183,7 @@ class ps_linkpoint {
 	  // Declare new linkpoint php class
 	  $mylphp =& new lphp();
 
-        global $vendor_mail, $vendor_currency, $PHPSHOP_LANG, $database;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $database;
 
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
         $auth = $_SESSION['auth'];
@@ -201,7 +201,7 @@ class ps_linkpoint {
         if( $user_info_id != $d["ship_to_info_id"]) {
             // Get user billing information
             $dbst =& new ps_DB;
-            $qt = "SELECT * FROM #__pshop_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }
@@ -287,7 +287,7 @@ class ps_linkpoint {
 		}
 		else    // Success, let's return
 		{
-		   $d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+		   $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
 		   $d["order_payment_log"] = $result["r_approved"];
 		   // Catch Transaction ID
 		   $d["order_payment_trans_id"] = $result["r_ordernum"];
@@ -312,7 +312,7 @@ class ps_linkpoint {
 	  }
 	  else    // Success, let's return
 	  {
-		 $d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+		 $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
 		 $d["order_payment_log"] = $result["r_approved"];
 		 // Catch Transaction ID
 		 $d["order_payment_trans_id"] = $result["r_ordernum"];

@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file show the customer information in a table
 * while checking out
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: checkout.customer_info.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -13,7 +13,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -28,10 +28,10 @@ $db->next_record(); ?>
 <!-- Customer Information --> 
     <table border="0" cellspacing="0" cellpadding="2" width="100%">
         <tr class="sectiontableheader">
-            <th colspan="2" align="left"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL ?></th>
+            <th colspan="2" align="left"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL ?></th>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>: </td>
            <td width="90%">
            <?php
              $db->p("company");
@@ -39,13 +39,13 @@ $db->next_record(); ?>
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?>: </td>
            <td width="90%"><?php
              echo $db->f("first_name"). " " . $db->f("middle_name") ." " . $db->f("last_name"); ?>
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ADDRESS ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ADDRESS ?>: </td>
            <td width="90%">
            <?php
              $db->p("address_1");
@@ -69,7 +69,7 @@ $db->next_record(); ?>
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>: </td>
            <td width="90%">
            <?php
              $db->p("phone_1");
@@ -77,7 +77,7 @@ $db->next_record(); ?>
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap"width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>: </td>
+           <td nowrap="nowrap"width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>: </td>
            <td width="90%">
            <?php
              $db->p("fax");
@@ -85,7 +85,7 @@ $db->next_record(); ?>
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?>: </td>
            <td width="90%">
            <?php
              $db->p("email");
@@ -93,7 +93,7 @@ $db->next_record(); ?>
            </td>
         </tr>
         <tr><td align="center" colspan="2"><a href="<?php $sess->purl( SECUREURL ."index.php?page=account.billing&next_page=$page"); ?>">
-            (<?php echo $PHPSHOP_LANG->_PHPSHOP_UDATE_ADDRESS ?>)</a>
+            (<?php echo $VM_LANG->_PHPSHOP_UDATE_ADDRESS ?>)</a>
             </td>
         </tr>
     </table>

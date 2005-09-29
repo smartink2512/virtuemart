@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage domit-xmlparser
 * @version 0.98
 * @copyright (C) 2004 John Heinstein. All rights reserved

@@ -1,4 +1,4 @@
-# $Id: Manual_Uninstallation_com_phpshop_1.2.sql,v 1.5 2005/06/11 10:17:05 soeren_nb Exp $
+# $Id$
 # SQL Uninstall script for mambo-phpshop v. 1.2
 # (component AND module) for Mambo 4.5.1
 #

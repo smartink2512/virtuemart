@@ -19,6 +19,7 @@ define( 'CLASSPATH', ADMINPATH.'classes/' );
 define( 'PAGEPATH', ADMINPATH.'html/' );
 define( 'IMAGEPATH', $mosConfig_absolute_path.'/components/com_phpshop/shop_image/' );
 
+define('VM_TABLEPREFIX', 'vm' );
 define('PSHOP_IS_OFFLINE', '');
 define('PSHOP_OFFLINE_MESSAGE', '<h2>Our Shop is currently down for maintenance.</h2> Please check back again soon.');
 define('USE_AS_CATALOGUE', '');

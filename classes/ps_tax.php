@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_tax.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -28,7 +28,7 @@ class ps_tax {
     
     $db = new ps_DB;
     if( TAX_MODE != '1' ) {
-      $q = "SELECT * from #__pshop_tax_rate WHERE tax_state='" . $d["tax_state"] . "'";
+      $q = "SELECT * from #__{vm}_tax_rate WHERE tax_state='" . $d["tax_state"] . "'";
       $db->query($q);
       if ($db->next_record()) {
         $d["error"] = "ERROR:  This state is already listed.";
@@ -100,7 +100,7 @@ class ps_tax {
     if (!$this->validate_add($d)) {
       return False;
     }
-    $q = "INSERT INTO #__pshop_tax_rate (vendor_id, tax_state, tax_country, ";
+    $q = "INSERT INTO #__{vm}_tax_rate (vendor_id, tax_state, tax_country, ";
     $q .= "tax_rate, mdate) VALUES (";
     $q .= "'$ps_vendor_id','";
     $q .= $d["tax_state"] . "','";
@@ -128,7 +128,7 @@ class ps_tax {
     if (!$this->validate_update($d)) {
       return False;	
     }
-    $q = "UPDATE #__pshop_tax_rate SET ";
+    $q = "UPDATE #__{vm}_tax_rate SET ";
     $q .= "tax_state='" . $d["tax_state"];
     $q .= "',tax_country='" . $d["tax_country"];
     $q .= "',tax_rate='" . $d["tax_rate"];
@@ -176,7 +176,7 @@ class ps_tax {
 		global $db;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		
-		$q = "DELETE from #__pshop_tax_rate where tax_rate_id='$record_id'";
+		$q = "DELETE from #__{vm}_tax_rate where tax_rate_id='$record_id'";
 		$q .= " AND vendor_id='$ps_vendor_id'";
 		$db->query($q);
 		$db->next_record();
@@ -192,16 +192,16 @@ class ps_tax {
    ** returns: An array containng all Tax Rates
    ***************************************************************************/
   function list_tax_value($select_name, $selected_value_id) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     $db = new ps_DB;
 
     // Get list of Values
-    $q = "SELECT * FROM #__pshop_tax_rate ORDER BY tax_rate_id ASC";
+    $q = "SELECT * FROM #__{vm}_tax_rate ORDER BY tax_rate_id ASC";
     $db->query($q);
     
     $html = "<select class=\"inputbox\" name=\"$select_name\">\n";
     if ($select_name == "shipping_rate_vat_id" || stristr($select_name, "tax_class") || $select_name == "zone_tax_rate") 
-      $html .= "<option value=\"0\">" . $PHPSHOP_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n";
+      $html .= "<option value=\"0\">" . $VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n";
     $tax_rates = Array();
     while ($db->next_record()) {
       $tax_rates[$db->f("tax_rate_id")] = $db->f("tax_rate");
@@ -238,7 +238,7 @@ class ps_tax {
 
     $db = new ps_DB;   
 
-    $q = "SELECT tax_rate FROM #__pshop_tax_rate WHERE tax_rate_id='$tax_rate_id'"; 
+    $q = "SELECT tax_rate FROM #__{vm}_tax_rate WHERE tax_rate_id='$tax_rate_id'"; 
     $db->query($q);
     if ($db->next_record()) {
        $rate = $db->f("tax_rate");

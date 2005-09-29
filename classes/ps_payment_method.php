@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_payment_method.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -180,7 +180,7 @@ class ps_payment_method {
     $_PAYMENT->write_configuration( $d );
     
     if (!$d["shopper_group_id"]) {
-       $q =  "SELECT * from #__pshop_shopper_group WHERE ";
+       $q =  "SELECT * from #__{vm}_shopper_group WHERE ";
        $q .= "`default`='1' ";
        $q .= "AND vendor_id='$ps_vendor_id'";
        $db->query($q);
@@ -189,7 +189,7 @@ class ps_payment_method {
     }
 
         
-    $q = "INSERT INTO #__pshop_payment_method (vendor_id, payment_method_name, payment_class, shopper_group_id, ";
+    $q = "INSERT INTO #__{vm}_payment_method (vendor_id, payment_method_name, payment_class, shopper_group_id, ";
     $q .= "payment_method_discount, payment_method_code, enable_processor, list_order, is_creditcard,payment_enabled, ";
     $q .= "accepted_creditcards, payment_extrainfo) VALUES (";
     $q .= "'$ps_vendor_id',";
@@ -238,7 +238,7 @@ class ps_payment_method {
     
     $_PAYMENT->write_configuration( $d );
         
-    $q = "UPDATE #__pshop_payment_method SET ";
+    $q = "UPDATE #__{vm}_payment_method SET ";
     $q .= "payment_method_name='" . $d["payment_method_name"] ."',";
     $q .= "payment_class='" . $d["payment_class"] ."',";
     $q .= "shopper_group_id='" . $d["shopper_group_id"] . "',";
@@ -294,7 +294,7 @@ class ps_payment_method {
 		global $db;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		
-		$q = "DELETE from #__pshop_payment_method WHERE payment_method_id='$record_id' AND ";
+		$q = "DELETE from #__{vm}_payment_method WHERE payment_method_id='$record_id' AND ";
 		$q .= "vendor_id='$ps_vendor_id'";
 		$db->query($q);
 		
@@ -317,12 +317,12 @@ class ps_payment_method {
     $ps_shopper_group = new ps_shopper_group;
 
 
-    $q =  "SELECT * from #__pshop_shopper_group WHERE ";
+    $q =  "SELECT * from #__{vm}_shopper_group WHERE ";
     $q .= "`default`='1' ";
     $q .= "AND vendor_id='$ps_vendor_id'";
     $db->query($q);
     if (!$db->num_rows()) {
-        $q =  "SELECT * from #__pshop_shopper_group WHERE ";
+        $q =  "SELECT * from #__{vm}_shopper_group WHERE ";
         $q .= "vendor_id='$ps_vendor_id'";
         $db->query($q);
     }
@@ -330,7 +330,7 @@ class ps_payment_method {
     $default_shopper_group_id = $db->f("shopper_group_id");
  
 
-      $q = "SELECT * from #__pshop_payment_method WHERE ";
+      $q = "SELECT * from #__{vm}_payment_method WHERE ";
       $q .= "vendor_id='$ps_vendor_id' AND ";
       $q .= "shopper_group_id='$default_shopper_group_id' ";
       if ($ps_shopper_group->get_id() != $default_shopper_group_id) 
@@ -374,17 +374,17 @@ class ps_payment_method {
     require_once(CLASSPATH.'ps_shopper_group.php');
     $ps_shopper_group = new ps_shopper_group;
 
-    $q =  "SELECT shopper_group_id from #__pshop_shopper_group WHERE ";
+    $q =  "SELECT shopper_group_id from #__{vm}_shopper_group WHERE ";
     $q .= "`default`='1' ";
     $db->query($q);
      if (!$db->num_rows()) {
-        $q =  "SELECT shopper_group_id from #__pshop_shopper_group";
+        $q =  "SELECT shopper_group_id from #__{vm}_shopper_group";
         $db->query($q);
     }
     $db->next_record();
     $default_shopper_group_id = $db->f("shopper_group_id");
 
-    $q = "SELECT payment_method_id,payment_method_discount, payment_method_name from #__pshop_payment_method WHERE ";
+    $q = "SELECT payment_method_id,payment_method_discount, payment_method_name from #__{vm}_payment_method WHERE ";
     $q .= "(enable_processor='$selector') AND ";
     $q .= "payment_enabled='Y' AND ";
     $q .= "vendor_id='$ps_vendor_id' AND ";
@@ -436,7 +436,7 @@ class ps_payment_method {
   ***************************************************************************/
   function payment_sql($payment_method_id) {
     $db = new ps_DB;
-    $q = "SELECT * FROM #__pshop_payment_method WHERE payment_method_id=$payment_method_id";
+    $q = "SELECT * FROM #__{vm}_payment_method WHERE payment_method_id=$payment_method_id";
     $db->query($q);
     return $db;
   }
@@ -494,7 +494,7 @@ class ps_payment_method {
 
     $db = new ps_DB;
 
-    $q = "SELECT $field_name FROM #__pshop_payment_method WHERE payment_method_id='$payment_method_id'";
+    $q = "SELECT $field_name FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'";
     $db->query($q);
     $db->next_record();
     return $db->f($field_name);
@@ -510,7 +510,7 @@ class ps_payment_method {
     function is_creditcard($payment_id) {
     
         $db = new ps_DB;
-        $q = "SELECT is_creditcard FROM #__pshop_payment_method ";
+        $q = "SELECT is_creditcard FROM #__{vm}_payment_method ";
         $q .= "WHERE payment_method_id='".$payment_id."'";
         $db->query($q);
         $db->next_record();

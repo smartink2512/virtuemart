@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: store.shipping_module_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,7 +21,7 @@ $shipping_module = mosgetparam($_REQUEST, 'shipping_module', null);
 
 if( $shipping_module ) {
   if( !include( CLASSPATH."shipping/$shipping_module" ))
-    mosredirect( $_SERVER['PHP_SELF']."?option=com_phpshop&page=store.shipping_modules", "Could not instantiate Class $shipping_module" );
+    mosredirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules", "Could not instantiate Class $shipping_module" );
   else
     eval( "\$_SHIPPING = new ".basename($shipping_module,".php")."();");
   
@@ -36,7 +36,7 @@ if( $shipping_module ) {
     $_SHIPPING->show_configuration();
   ?>
     <input type="hidden" name="task" value="" />
-    <input type="hidden" name="option" value="com_phpshop" />
+    <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="func" value="shippingmethodSave" />
     <input type="hidden" name="page" value="store.shipping_modules" />
     <input type="hidden" name="shipping_class" value="<?php echo basename($shipping_module,".php"); ?>" />

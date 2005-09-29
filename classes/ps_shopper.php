@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_shopper.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -170,26 +170,26 @@ class ps_shopper {
    
     if (empty($sg_id)) {
     
-       $q =  "SELECT shopper_group_id from #__pshop_shopper_group WHERE ";
+       $q =  "SELECT shopper_group_id from #__{vm}_shopper_group WHERE ";
        $q .= "`default`='1' ";
        
        $db->query($q);
        if (!$db->num_rows()) {  // take the first in the table
        
-           $q =  "SELECT shopper_group_id from #__pshop_shopper_group";
+           $q =  "SELECT shopper_group_id from #__{vm}_shopper_group";
            $db->query($q);
        }
        $db->next_record();
        $sg_id = $db->f("shopper_group_id");
     }
  
-    $q  = "INSERT INTO #__pshop_shopper_vendor_xref ";
+    $q  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
     $q .= "(user_id,vendor_id,shopper_group_id,customer_number) ";
     $q .= "VALUES ('$id', '$vendor_id','$sg_id', '$customer_nr')";
     $db->query($q);
 
     // Insert vendor relationship
-    $q = "INSERT INTO #__pshop_auth_user_vendor (user_id,vendor_id)";
+    $q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
     $q .= " VALUES ('$id', '$vendor_id') ";
     $db->query($q);
     
@@ -231,12 +231,12 @@ class ps_shopper {
     
     if (defined('_PSHOP_ADMIN')) {
       
-      $q = "SELECT shopper_group_id FROM #__pshop_shopper_vendor_xref ";
+      $q = "SELECT shopper_group_id FROM #__{vm}_shopper_vendor_xref ";
       $q .= "WHERE user_id = '".$d['user_id']."'";
       $db->query($q);
       if (!$db->num_rows()) {
           //add
-          $q  = "INSERT INTO #__pshop_shopper_vendor_xref ";
+          $q  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
           $q .= "(user_id,vendor_id,shopper_group_id,customer_number) ";
           $q .= "VALUES ('";
           $q .= $d['user_id'] . "','".$d['vendor_id']."', '";
@@ -245,20 +245,20 @@ class ps_shopper {
           $db->query($q);
       
           // Insert vendor relationship
-          $q = "INSERT INTO #__pshop_auth_user_vendor (user_id,vendor_id)";
+          $q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
           $q .= " VALUES ";
           $q .= "('" . $d['user_id'] . "','";
           $q .= $d['vendor_id'] . "') ";
           $db->query($q);
       }
       else {
-          $q = "UPDATE #__pshop_shopper_vendor_xref SET ";
+          $q = "UPDATE #__{vm}_shopper_vendor_xref SET ";
           $q .= "shopper_group_id='" . $d["shopper_group_id"] . "', ";
           $q .= "vendor_id='" . $d["vendor_id"] . "', ";
           $q .= "customer_number='" . $d["customer_number"] . "' ";
           $q .= "WHERE user_id='" . $d['user_id'] . "'";
           $db->query($q);
-          $q = "UPDATE #__pshop_auth_user_vendor SET ";
+          $q = "UPDATE #__{vm}_auth_user_vendor SET ";
           $q .= "vendor_id='" . $d["vendor_id"] . "' ";
           $q .= "WHERE user_id='" . $d['user_id'] . "'";
           $db->query($q);
@@ -322,8 +322,8 @@ class ps_shopper {
   
       $db->query($q);
   
-      // UPDATE #__pshop_shopper group relationship
-      $q = "SELECT shopper_group_id FROM #__pshop_shopper_vendor_xref ";
+      // UPDATE #__{vm}_shopper group relationship
+      $q = "SELECT shopper_group_id FROM #__{vm}_shopper_vendor_xref ";
       $q .= "WHERE user_id = '".$d['user_id']."'";
       $db->query($q);
       if (!$db->num_rows()) {
@@ -331,11 +331,11 @@ class ps_shopper {
         
         $shopper_db = new ps_DB;
         // get the default shopper group
-        $q =  "SELECT * from #__pshop_shopper_group WHERE ";
+        $q =  "SELECT * from #__{vm}_shopper_group WHERE ";
         $q .= "`default`='1'";
         $shopper_db->query($q);
         if (!$shopper_db->num_rows()) {  // when there is no "default", take the first in the table 
-            $q =  "SELECT * from #__pshop_shopper_group";
+            $q =  "SELECT * from #__{vm}_shopper_group";
             $shopper_db->query($q);
         }
         
@@ -343,7 +343,7 @@ class ps_shopper {
         $my_shopper_group_id = $shopper_db->f("shopper_group_id");
         if (empty($d['customer_number'])) $d['customer_number'] = "";
         
-        $q  = "INSERT INTO #__pshop_shopper_vendor_xref ";
+        $q  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
         $q .= "(user_id,vendor_id,shopper_group_id,customer_number) ";
         $q .= "VALUES ('";
         $q .= $_SESSION['auth']['user_id'] . "','";
@@ -352,12 +352,12 @@ class ps_shopper {
         $q .= $d["customer_number"] . "')";
         $db->query($q);
       }
-      $q = "SELECT user_id FROM #__pshop_auth_user_vendor ";
+      $q = "SELECT user_id FROM #__{vm}_auth_user_vendor ";
       $q .= "WHERE user_id = '".$_SESSION['auth']['user_id']."'";
       $db->query($q);
       if (!$db->num_rows()) {
         // Insert vendor relationship
-        $q = "INSERT INTO #__pshop_auth_user_vendor (user_id,vendor_id)";
+        $q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
         $q .= " VALUES ";
         $q .= "('" . $_SESSION['auth']['user_id'] . "','";
         $q .= $_SESSION['ps_vendor_id'] . "') ";
@@ -413,14 +413,14 @@ class ps_shopper {
     $q .= "AND address_type='BT'";
     
     // Delete Shipping addresses
-    $q = "DELETE FROM #__pshop_user_info where user_id='" . $d["user_id"] . "'"; 
+    $q = "DELETE FROM #__{vm}_user_info where user_id='" . $d["user_id"] . "'"; 
     $db->query($q);
     
     // Delete shopper_vendor_xref entries
-    $q = "DELETE FROM #__pshop_shopper_vendor_xref where user_id='" . $d["user_id"] . "'"; 
+    $q = "DELETE FROM #__{vm}_shopper_vendor_xref where user_id='" . $d["user_id"] . "'"; 
     $db->query($q);
     
-    $q = "DELETE FROM #__pshop_auth_user_vendor where user_id='" . $d["user_id"] . "'"; 
+    $q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='" . $d["user_id"] . "'"; 
     $db->query($q);
     return True;
   }

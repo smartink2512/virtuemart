@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_discount_list.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,8 +21,8 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
  if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__pshop_product_discount WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_product_discount WHERE ";
+	$list  = "SELECT * FROM #__{vm}_product_discount WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_product_discount WHERE ";
 	$q  = "(start_date LIKE '%$keyword%' OR ";
 	$q .= "end_date LIKE '%$keyword%' OR ";
 	$q .= "amount LIKE '%$keyword%' ";
@@ -32,10 +32,10 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 	$count .= $q;   
 }
 else {
-	$list  = "SELECT * FROM #__pshop_product_discount ";
+	$list  = "SELECT * FROM #__{vm}_product_discount ";
 	$list .= "ORDER BY amount ";
 	$list .= "LIMIT $limitstart, " . $limit;
-	$count = "SELECT count(*) as num_rows FROM #__pshop_product_discount ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_product_discount ";
 }
 $db->query($count);
 $db->next_record();
@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL, IMAGEURL."ps_image/percentage.png", $modulename, "product_discount_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL, IMAGEURL."ps_image/percentage.png", $modulename, "product_discount_list");
 
 // start the list table
 $listObj->startTable();
@@ -56,10 +56,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -79,7 +79,7 @@ while ($db->next_record()) {
 	$tmp_cell = '<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.product_discount_form&discount_id='.$db->f("discount_id") ).'">'.$db->f("amount").'</a>';
 	$listObj->addCell( $tmp_cell );
 	
-    $tmp_cell = $db->f("is_percent")=='1' ? $PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT : $PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL;
+    $tmp_cell = $db->f("is_percent")=='1' ? $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT : $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL;
 	$listObj->addCell( $tmp_cell );
 	
 	if($db->f("start_date")) 

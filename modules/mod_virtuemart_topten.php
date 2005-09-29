@@ -1,9 +1,9 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /*
-* Best selling Products module for mambo-phpShop
-* @version $Id: mod_phpshop_topten.php,v 1.6 2005/04/29 16:23:05 soeren_nb Exp $
-* @package mambo-phpShop
+* Best selling Products module for VirtueMart
+* @version $Id$
+* @package VirtueMart
 * @subpackage modules
 *
 * @copyright (C) John Syben (john@webme.co.nz)
@@ -11,10 +11,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * 	@copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 *----------------------------------------------------------------------
 * This code creates a list of the bestselling products
 * and displays it wherever you want
@@ -22,8 +22,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 global $mosConfig_absolute_path, $sess;
 
-/* Load the phpshop main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_phpshop/phpshop_parser.php' );
+/* Load the virtuemart main parse code */
+require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 require_once(CLASSPATH.'ps_product.php');
 $ps_product = new ps_product;
@@ -31,11 +31,11 @@ $ps_product = new ps_product;
 // change the number of items you wanna haved listed via module parameters
 $num_topsellers = $params->get ('num_topsellers', 10);
 
-$list  = "SELECT distinct #__pshop_product.product_id, #__pshop_product.product_parent_id,#__pshop_product.product_name ";
-$list .= "FROM #__pshop_product, #__pshop_product_category_xref, #__pshop_category WHERE ";
-$q = "#__pshop_product.product_publish='Y' AND ";
-$q .= "#__pshop_product.product_sales>0 ";
-$q .= "ORDER BY #__pshop_product.product_sales DESC";
+$list  = "SELECT distinct #__{vm}_product.product_id, #__{vm}_product.product_parent_id,#__{vm}_product.product_name ";
+$list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
+$q = "#__{vm}_product.product_publish='Y' AND ";
+$q .= "#__{vm}_product.product_sales>0 ";
+$q .= "ORDER BY #__{vm}_product.product_sales DESC";
 $list .= $q . " LIMIT 0, $num_topsellers "; 
 
 $db = new ps_DB;

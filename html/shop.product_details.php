@@ -1,16 +1,19 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: shop.product_details.php,v 1.32 2005/09/04 20:08:55 soeren_nb Exp $
-* @package mambo-phpShop
-* @subpackage HTML
-* @copyright (C) 2004-2005 Soeren Eberhardt
 *
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* @version $Id: admin.module_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @package VirtueMart
+* @subpackage html
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
 
@@ -40,7 +43,7 @@ $Itemid = mosgetparam($_REQUEST, "Itemid", null);
 $db_product = new ps_DB;
 
 // Get the product info from the database 
-$q = "SELECT * FROM #__pshop_product WHERE product_id='$product_id'";
+$q = "SELECT * FROM #__{vm}_product WHERE product_id='$product_id'";
 if( !$perm->check("admin,storeadmin") ) {
   $q .= " AND product_publish='Y'";
   if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
@@ -52,38 +55,39 @@ $db_product->query( $q );
 
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
-  mosRedirect( $_SERVER['PHP_SELF']."?option=com_phpshop&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $PHPSHOP_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+  mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 $product_parent_id = $db_product->f("product_parent_id");
 if ($product_parent_id != 0) {
 	$dbp= new ps_DB;
-	$dbp->query("SELECT * FROM #__pshop_product WHERE product_id='$product_parent_id'" );
+	$dbp->query("SELECT * FROM #__{vm}_product WHERE product_id='$product_parent_id'" );
 	$dbp->next_record();
 }
 
 // Let's have a look wether the product has images.
-  $database->setQuery( "SELECT COUNT(file_id) AS images FROM #__pshop_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
-  $database->loadObject( $images );
-  if( !empty($images->images) && $product_parent_id!=0) {
-	  $database->setQuery( "SELECT COUNT(file_id) AS images FROM #__pshop_product_files WHERE file_product_id='$product_parent_id' AND file_is_image='1'" );
-	  $database->loadObject( $images );
+  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
+  $db->next_record();
+  if( $db->f("images") && $product_parent_id!=0) {
+	  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id='$product_parent_id' AND file_is_image='1'" );
+	  $db->next_record();
+	  $images = new stdClass();
+	  $images->images = $db->f("images");
   }
 
 // Let's have a look wether the product has related products.
-  $q = "SELECT product_sku, related_products FROM #__pshop_product,#__pshop_product_relations ";
-  $q .= "WHERE #__pshop_product_relations.product_id='$product_id' AND product_publish='Y' ";
-  $q .= "AND FIND_IN_SET(#__pshop_product.product_id, REPLACE(related_products, '|', ',' )) LIMIT 0, 4";
-  $database->setQuery( $q );
-  $related_products = $database->loadObjectList();
+  $q = "SELECT product_sku, related_products FROM #__{vm}_product,#__{vm}_product_relations ";
+  $q .= "WHERE #__{vm}_product_relations.product_id='$product_id' AND product_publish='Y' ";
+  $q .= "AND FIND_IN_SET(#__{vm}_product.product_id, REPLACE(related_products, '|', ',' )) LIMIT 0, 4";
+  $db->query( $q );
   
   $related_product_html = "";
-  if( !empty($related_products) ) {
+  if( $db->num_rows() > 0 ) {
     $related_product_html .= "<hr/>\n";
-    $related_product_html .= "<h3>".$PHPSHOP_LANG->_PHPSHOP_RELATED_PRODUCTS_HEADING.":</h3>\n";
+    $related_product_html .= "<h3>".$VM_LANG->_PHPSHOP_RELATED_PRODUCTS_HEADING.":</h3>\n";
     $related_product_html .= "<table width=\"100%\" align=\"center\"><tr>\n";
-    foreach( $related_products as $prod ) {
+    while( $db->next_record() ) {
       $related_product_html .= "<td valign=\"top\">".$ps_product->product_snapshot( $prod->product_sku )."</td>\n";
-    }
+	}
     $related_product_html .= "</tr></table>\n";
   }
   
@@ -101,21 +105,21 @@ if ($product_parent_id != 0) {
   $navigation_childlist = "";
   $pathway_appended = false;
   if (empty($category_id))  {
-    $q = "SELECT category_id FROM #__pshop_product_category_xref WHERE product_id = '$product_id' LIMIT 0,1";
-    $database->setQuery( $q );
-    $database->loadObject( $category );
-    if( empty($category->category_id)) {
+    $q = "SELECT category_id FROM #__{vm}_product_category_xref WHERE product_id = '$product_id' LIMIT 0,1";
+    $db->query( $q );
+    $db->next_record();
+    if( !$db->f("category_id") ) {
       // The Product Has no category entry and must be a Child Product
       // So let's get the Parent Product
-      $q = "SELECT product_id FROM #__pshop_product WHERE product_id = '".$db_product->f("product_parent_id")."' LIMIT 0,1";
-      $database->setQuery( $q );
-      $database->loadObject( $product );
+      $q = "SELECT product_id FROM #__{vm}_product WHERE product_id = '".$db_product->f("product_parent_id")."' LIMIT 0,1";
+      $db->query( $q );
+      $db->next_record();
       
-      $q = "SELECT category_id FROM #__pshop_product_category_xref WHERE product_id = '".$product->product_id."' LIMIT 0,1";
-      $database->setQuery( $q );
-      $database->loadObject( $category );
+      $q = "SELECT category_id FROM #__{vm}_product_category_xref WHERE product_id = '".$db->f("product_id")."' LIMIT 0,1";
+      $db->query( $q );
+      $db->next_record();
     }
-    $_GET['category_id'] = $category_id = $category->category_id;
+    $_GET['category_id'] = $category_id = $db->f("category_id");
   }
   $navigation_pathway = $ps_product_category->get_navigation_list($category_id);
   $navigation_pathway .= " ".$ps_product_category->pathway_separator()." ". $product_name;
@@ -124,8 +128,6 @@ if ($product_parent_id != 0) {
     $navigation_childlist = $ps_product_category->get_child_list($category_id);
   }
   
-// check for Mambo >= 4.5.1
-if(isset( $_VERSION )) {
   /* Set Dynamic Pathway */
     $mainframe->appendPathWay( $navigation_pathway );
     $navigation_pathway = "";
@@ -135,12 +137,12 @@ if(isset( $_VERSION )) {
 
   /* Prepend Product Short Description Meta Tag "description" */
     $mainframe->prependMetaTag( "description", strip_tags( $db_product->f("product_s_desc")) );
-}
+
 
 /** Show an "Edit PRODUCT"-Link ***/
   if ($perm->check("admin,storeadmin")) {
-    $edit_link = "<a href=\"". sefRelToAbs($mosConfig_live_site."/index.php?page=product.product_form&next_page=shop.product_details&product_id=$product_id&option=com_phpshop&Itemid=$Itemid")."\">
-      <img src=\"images/M_images/edit.png\" width=\"16\" height=\"16\" alt=\"". $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT ."\" border=\"0\" /></a>";
+    $edit_link = "<a href=\"". sefRelToAbs($mosConfig_live_site."/index.php?page=product.product_form&next_page=shop.product_details&product_id=$product_id&option=com_virtuemart&Itemid=$Itemid")."\">
+      <img src=\"images/M_images/edit.png\" width=\"16\" height=\"16\" alt=\"". $VM_LANG->_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT ."\" border=\"0\" /></a>";
   }
   else {
     $edit_link = "";
@@ -152,22 +154,22 @@ if(isset( $_VERSION )) {
   $manufacturer_link = "";
   if( $manufacturer_id && !empty($manufacturer_name) ) {
     $manufacturer_link = "<script type=\"text/javascript\">//<![CDATA[
-                    document.write('&nbsp;<a href=\"javascript:void window.open(\'$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_phpshop&amp;Itemid=$Itemid\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\');\">');
+                    document.write('&nbsp;<a href=\"javascript:void window.open(\'$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\');\">');
                     document.write('( ".addslashes($manufacturer_name)." )</a>' );
                     //]]></script>";    
-    $manufacturer_link .= "<noscript>&nbsp;<a href=\"$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_phpshop&amp;Itemid=$Itemid\" target=\"_blank\" title=\"$manufacturer_name\">
+    $manufacturer_link .= "<noscript>&nbsp;<a href=\"$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"$manufacturer_name\">
                             ( $manufacturer_name )</a></noscript>";
     // Avoid JavaScript on PDF Output                           
     if( @$_REQUEST['output'] == "pdf" ) 
-      $manufacturer_link = "<a href=\"$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_phpshop&amp;Itemid=$Itemid\" target=\"_blank\" title=\"$manufacturer_name\">
+      $manufacturer_link = "<a href=\"$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"$manufacturer_name\">
                               ( $manufacturer_name )</a>";
   }
 /** PRODUCT PRICE **/
   if (_SHOW_PRICES == '1') { /** Change - Begin */
     if( $db_product->f("product_unit") )
-      $product_price = "<strong>". $PHPSHOP_LANG->_PHPSHOP_CART_PRICE_PER_UNIT.$db_product->f("product_unit").":</strong>";
+      $product_price = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE_PER_UNIT.$db_product->f("product_unit").":</strong>";
     else /** Change - End */
-      $product_price = "<strong>". $PHPSHOP_LANG->_PHPSHOP_CART_PRICE. ": </strong>";
+      $product_price = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE. ": </strong>";
     $product_price .= $ps_product->show_price( $product_id ); 
   }
   else
@@ -180,13 +182,13 @@ if(isset( $_VERSION )) {
         $box = ($db_product->f("product_packaging") >> 16) & 0xFFFF;
         $product_packaging = "";
         if ( $packaging ) {
-            $product_packaging .= $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PACKAGING1.$packaging;
+            $product_packaging .= $VM_LANG->_PHPSHOP_PRODUCT_PACKAGING1.$packaging;
             if( $box ) $product_packaging .= "<BR>";
         }
         if ( $box ) 
-            $product_packaging .= $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PACKAGING2.$box;
+            $product_packaging .= $VM_LANG->_PHPSHOP_PRODUCT_PACKAGING2.$box;
             
-        $product_packaging = str_replace("{unit}",$db_product->f("product_unit")?$db_product->f("product_unit") : $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT,$product_packaging);
+        $product_packaging = str_replace("{unit}",$db_product->f("product_unit")?$db_product->f("product_unit") : $VM_LANG->_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT,$product_packaging);
     }
     else
         $product_packaging = "";
@@ -236,10 +238,10 @@ if(isset( $_VERSION )) {
       if( @$_REQUEST['output'] != "pdf" ) {
         $product_image = "<script type=\"text/javascript\">//<![CDATA[
                     document.write('<a href=\"javascript:void window.open(\'$imageurl\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$width,height=$height,directories=no,location=no\');\">');
-                    document.write('".$ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."<br/>".$PHPSHOP_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE."</a>');
+                    document.write('".$ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE."</a>');
                     //]]></script>
                     <noscript><a href=\"$imageurl\" target=\"_blank\">".$ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."<br/>"
-                    .$PHPSHOP_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE."</a>
+                    .$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE."</a>
                     </noscript>";
       }
       else {
@@ -252,9 +254,9 @@ if(isset( $_VERSION )) {
     $more_images = "";
   if( !empty($images->images) ) {
     /* Build the JavaScript Link */
-    $more_images = "<a href=\"$mosConfig_live_site/index.php?option=com_phpshop&page=shop.view_images&flypage=".@$_REQUEST['flypage']."&product_id=$product_id&Itemid=$Itemid\">";
-    $more_images .= "<img src=\"".IMAGEURL."ps_image/more_images.png\" width=\"16\" height=\"16\" border=\"0\" alt=\"".$PHPSHOP_LANG->_PHPSHOP_MORE_IMAGES ." (".$images->images.")\" />";
-    $more_images .= "<br />".$PHPSHOP_LANG->_PHPSHOP_MORE_IMAGES." (".$images->images.")</a>";
+    $more_images = "<a href=\"$mosConfig_live_site/index.php?option=com_virtuemart&page=shop.view_images&flypage=".@$_REQUEST['flypage']."&product_id=$product_id&Itemid=$Itemid\">";
+    $more_images .= "<img src=\"".IMAGEURL."ps_image/more_images.png\" width=\"16\" height=\"16\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_MORE_IMAGES ." (".$images->images.")\" />";
+    $more_images .= "<br />".$VM_LANG->_PHPSHOP_MORE_IMAGES." (".$images->images.")</a>";
   }
   /* Files? */
   $file_list = ps_product_files::get_file_list( $product_id );
@@ -269,7 +271,7 @@ if(isset( $_VERSION )) {
 /* SHOW RATING */
   $product_rating = "";
   if (PSHOP_ALLOW_REVIEWS == '1') {
-    $product_rating = "<span class=\"contentheading\">".$PHPSHOP_LANG->_PHPSHOP_CUSTOMER_RATING.":</span><br />";
+    $product_rating = "<span class=\"contentheading\">".$VM_LANG->_PHPSHOP_CUSTOMER_RATING.":</span><br />";
     $product_rating .= ps_reviews::allvotes( $product_id );
   }
 
@@ -282,19 +284,19 @@ if(isset( $_VERSION )) {
           // end added for advanced attribute modification
           .$ps_product_attribute->list_custom_attribute($product_id);
           // end added for custom attribute modification
-	if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $PHPSHOP_LANG->_PHPSHOP_PRODUCT_CALL )) { 
+	if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )) { 
 		$addtocart .= "
-        <p><label for=\"quantity\" style=\"vertical-align: middle;\">".$PHPSHOP_LANG->_PHPSHOP_CART_QUANTITY.":</label>
+        <p><label for=\"quantity\" style=\"vertical-align: middle;\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":</label>
             <input type=\"text\" class=\"inputbox\" size=\"4\" id=\"quantity\" name=\"quantity\" value=\"1\" style=\"vertical-align: middle;\" />&nbsp;
             <input type=\"submit\" 
               style=\"text-align:center;background-position:bottom left;width:160px;height:40px;cursor:pointer;background-color:transparent;border:none;font-weight:bold;font-family:inherit;background-image: url('". IMAGEURL ."ps_image/".PSHOP_ADD_TO_CART_STYLE ."');background-repeat: no-repeat;vertical-align: middle;\" 
-              value=\"".$PHPSHOP_LANG->_PHPSHOP_CART_ADD_TO ."\"
-              title=\"".$PHPSHOP_LANG->_PHPSHOP_CART_ADD_TO."\" />
+              value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO ."\"
+              title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" />
           </p>
       <input type=\"hidden\" name=\"flypage\" value=\"shop.$flypage\" />
       <input type=\"hidden\" name=\"page\" value=\"shop.cart\" />
       <input type=\"hidden\" name=\"func\" value=\"cartAdd\" />
-      <input type=\"hidden\" name=\"option\" value=\"com_phpshop\" />
+      <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
       <input type=\"hidden\" name=\"Itemid\" value=\"$Itemid\" />";
 	}
     $addtocart .= "</form>
@@ -315,16 +317,16 @@ if(isset( $_VERSION )) {
   $vend_name = $ps_product->get_vendorname($product_id);
   
   $vendor_link = "<script type=\"text/javascript\">//<![CDATA[
-                    document.write('<a href=\"javascript:void window.open(\'$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_phpshop&amp;Itemid=$Itemid\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\');\">');
-                    document.write('".$PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>');
+                    document.write('<a href=\"javascript:void window.open(\'$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\');\">');
+                    document.write('".$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>');
                   //]]></script>
-                  <noscript><a href=\"$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_phpshop&amp;Itemid=$Itemid\" target=\"_blank\" title=\"".$PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL."\">"
-                  .$PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>
+                  <noscript><a href=\"$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"".$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL."\">"
+                  .$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>
                   </noscript>";
   // Avoid JavaScript on PDF Output 
   if( @$_REQUEST['output'] == "pdf" ) 
-    $vendor_link = "<a href=\"$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_phpshop&amp;Itemid=$Itemid\" target=\"_blank\" title=\"".$PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL."\">"
-                  .$PHPSHOP_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>";
+    $vendor_link = "<a href=\"$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"".$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL."\">"
+                  .$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>";
   
   if ($product_parent_id!=0 && !$ps_product_type->product_in_product_type($product_id)) {
   	$product_type = $ps_product_type->list_product_type($product_parent_id);

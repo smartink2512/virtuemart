@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_zone.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -29,7 +29,7 @@ class ps_zone {
     
     $db = new ps_DB;
    
-    $q = "SELECT * from #__pshop_zone_shipping WHERE zone_name='" . $d["zone_name"] . "'";
+    $q = "SELECT * from #__{vm}_zone_shipping WHERE zone_name='" . $d["zone_name"] . "'";
     $db->query($q);
     if ($db->next_record()) {
       $d["error"] = "ERROR:  This Zone Name already exists. Please select another name.";
@@ -133,7 +133,7 @@ class ps_zone {
     foreach ($d as $key => $value)
         $d[$key] = addslashes($value);
         
-    $q = "INSERT INTO #__pshop_zone_shipping (zone_name, zone_cost, ";
+    $q = "INSERT INTO #__{vm}_zone_shipping (zone_name, zone_cost, ";
     $q .= "zone_limit, zone_description, zone_tax_rate) VALUES ('";
     $q .= $d["zone_name"] . "','";
     $q .= $d["zone_cost"] . "','";
@@ -167,7 +167,7 @@ class ps_zone {
           $d[$key] = addslashes($value);
         
         
-    $q = "UPDATE #__pshop_zone_shipping SET ";
+    $q = "UPDATE #__{vm}_zone_shipping SET ";
     $q .= "zone_name='" . $d["zone_name"];
     $q .= "',zone_cost='" . $d["zone_cost"];
     $q .= "',zone_limit='" . $d["zone_limit"];
@@ -207,7 +207,7 @@ class ps_zone {
 		global $db;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		
-		$q = "DELETE FROM #__pshop_zone_shipping WHERE zone_id='$record_id'";
+		$q = "DELETE FROM #__{vm}_zone_shipping WHERE zone_id='$record_id'";
 		$db->query($q);
 		$db->next_record();
 		return True;
@@ -229,7 +229,7 @@ class ps_zone {
 	if( is_array( $d["country_id"] )) {
 		$i = 0;
 		foreach( $d["country_id"] as $country ) {
-			$q = "UPDATE #__pshop_country SET zone_id='".$d["zone_id"][$i]."'";
+			$q = "UPDATE #__{vm}_country SET zone_id='".$d["zone_id"][$i]."'";
 			$q .= " WHERE country_id='".$country."'";
 			$db->query($q);
 			$i++;
@@ -250,7 +250,7 @@ class ps_zone {
      $db = new ps_DB;
 
 
-	$q = "SELECT * from #__pshop_zone_shipping ORDER BY zone_name ASC";
+	$q = "SELECT * from #__{vm}_zone_shipping ORDER BY zone_name ASC";
 	$db->query($q);
 
 	$html = "<select class=\"inputbox\" name=\"$list_name\">\n";
@@ -276,7 +276,7 @@ class ps_zone {
    function per_item($zone_id) {
       $db = new ps_DB;
 
-      $q = "SELECT zone_cost FROM #__pshop_zone_shipping WHERE zone_id ='$zone_id' ";
+      $q = "SELECT zone_cost FROM #__{vm}_zone_shipping WHERE zone_id ='$zone_id' ";
       $db->query($q);
       $db->next_record(); 
 
@@ -296,7 +296,7 @@ class ps_zone {
    function zone_limit($zone_id) {
        $db = new ps_DB;
 
-     $q = "SELECT zone_limit FROM #__pshop_zone_shipping WHERE zone_id ='$zone_id' ";
+     $q = "SELECT zone_limit FROM #__{vm}_zone_shipping WHERE zone_id ='$zone_id' ";
       $db->query($q);
       $db->next_record(); 
 

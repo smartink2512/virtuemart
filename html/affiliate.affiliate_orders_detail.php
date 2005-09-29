@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: affiliate.affiliate_orders_detail.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -42,10 +42,10 @@ mm_showMyFileName( __FILE__ );
 	$start_date = mktime(0,0,0,date("n"),1,date("Y"));
 	$end_date = mktime(24,0,0,date("n")+1,0,date("Y"));
 		
-	$q = "SELECT * FROM #__pshop_orders,#__pshop_affiliate_sale";
-	$q .=" WHERE #__pshop_orders.order_id = #__pshop_affiliate_sale.order_id";
-	$q .=" AND #__pshop_affiliate_sale.affiliate_id = '".$affiliate["id"]."'";
-	$q .= " AND #__pshop_orders.order_status = 'C'";
+	$q = "SELECT * FROM #__{vm}_orders,#__{vm}_affiliate_sale";
+	$q .=" WHERE #__{vm}_orders.order_id = #__{vm}_affiliate_sale.order_id";
+	$q .=" AND #__{vm}_affiliate_sale.affiliate_id = '".$affiliate["id"]."'";
+	$q .= " AND #__{vm}_orders.order_status = 'C'";
 	$q .= " AND cdate BETWEEN $start_date AND $end_date ";
 
 	$db->query($q);
@@ -65,7 +65,7 @@ mm_showMyFileName( __FILE__ );
   <input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>">
   <input type="hidden" name="date" value="<?php echo isset($date) ? $date : ""; ?>"> 
   <input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_orders_detail"> 
-  <input type="hidden" name="option" value="com_phpshop"> 
+  <input type="hidden" name="option" value="com_virtuemart"> 
   <input type="hidden" name="task" value=""> 
   <br>Month
   <select name="date" size="1"> <?php

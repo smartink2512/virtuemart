@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_skipjack.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -65,7 +65,7 @@ class ps_skipjack {
     */
     function show_configuration() { 
     
-      global $PHPSHOP_LANG, $sess;
+      global $VM_LANG, $sess;
       $payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
       $db =& new ps_DB;
       /** Read current Configuration ***/
@@ -73,34 +73,34 @@ class ps_skipjack {
     ?>
       <table>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_SKJ_TESTMODE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_SKJ_TESTMODE ?></strong></td>
             <td>
                 <select name="SKJ_TEST_REQUEST" class="inputbox" >
-                <option <?php if (SKJ_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (SKJ_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (SKJ_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <option <?php if (SKJ_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_SKJ_TESTMODE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_SKJ_TESTMODE_EXPLAIN ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_SKJ_SERIAL ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SKJ_SERIAL ?></strong></td>
             <td>
 		    <input type="text" name="SKJ_SERIAL" class="inputbox" value="<?php echo SKJ_SERIAL ?>" />
             </td>
-	    <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_SKJ_SERIAL_EXPLAIN ?></td>
+	    <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SKJ_SERIAL_EXPLAIN ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
             <td>
                 <select name="SKJ_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (SKJ_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
                 <option <?php if (SKJ_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
@@ -108,7 +108,7 @@ class ps_skipjack {
             <td>
                 <select name="SKJ_VERIFIED_STATUS" class="inputbox" >
                 <?php
-                    $q = "SELECT order_status_name,order_status_code FROM #__pshop_order_status ORDER BY list_order";
+                    $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
                     $db->query($q);
                     $order_status_code = Array();
                     $order_status_name = Array();
@@ -216,7 +216,7 @@ class ps_skipjack {
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         
-        global $vendor_mail, $vendor_currency, $PHPSHOP_LANG, $database;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $database;
       
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
         $auth = $_SESSION['auth'];
@@ -226,7 +226,7 @@ class ps_skipjack {
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
         
         // Get the Transaction Key securely from the database
-        // $database->setQuery( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__pshop_payment_method WHERE payment_class='".$this->classname."'" );
+        // $database->setQuery( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         // $database->loadObject( $transaction );
         // if( empty($transaction->passkey)) {
         //     $d["error"] = "Key error";
@@ -242,7 +242,7 @@ class ps_skipjack {
         if( $user_info_id != $d["ship_to_info_id"]) {
             // Get user billing information
             $dbst =& new ps_DB;
-            $qt = "SELECT * FROM #__pshop_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }
@@ -331,7 +331,7 @@ class ps_skipjack {
             $error = curl_error( $CR );
             if( !empty( $error )) {
               echo "curl error: ".curl_error( $CR );
-              $html = "<br/><span class=\"message\">".$PHPSHOP_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." Skipjack.com</span>";
+              $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." Skipjack.com</span>";
               return false;
             }
             else {
@@ -388,7 +388,7 @@ class ps_skipjack {
 
         // Approved - Success!
         if ($response[8] == '1') {
-           $d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+           $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
            // $d["order_payment_log"] .= $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[8];

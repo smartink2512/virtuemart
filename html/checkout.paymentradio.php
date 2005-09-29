@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: checkout.paymentradio.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -23,13 +23,13 @@ $payment_method_id = mosgetparam($_REQUEST, 'payment_method_id', 0);
 
 // Do we have Credit Card Payments?
 $db_cc  = new ps_DB;
-$q = "SELECT * from #__pshop_payment_method,#__pshop_shopper_group WHERE ";
-$q .= "#__pshop_payment_method.shopper_group_id=#__pshop_shopper_group.shopper_group_id ";
-$q .= "AND (#__pshop_payment_method.shopper_group_id='".$auth['shopper_group_id']."' ";
-$q .= "OR #__pshop_shopper_group.default='1') ";
+$q = "SELECT * from #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+$q .= "#__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
+$q .= "AND (#__{vm}_payment_method.shopper_group_id='".$auth['shopper_group_id']."' ";
+$q .= "OR #__{vm}_shopper_group.default='1') ";
 $q .= "AND (enable_processor='' OR enable_processor='Y') ";
 $q .= "AND payment_enabled='Y' ";
-$q .= "AND #__pshop_payment_method.vendor_id='$ps_vendor_id'";
+$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id'";
 $db_cc->query($q);
 
 if ($db_cc->num_rows()) {
@@ -41,13 +41,13 @@ else {
 }
 $count = 0;
 $db_nocc  = new ps_DB;
-$q = "SELECT * from #__pshop_payment_method,#__pshop_shopper_group WHERE ";
-$q .= "#__pshop_payment_method.shopper_group_id=#__pshop_shopper_group.shopper_group_id ";
-$q .= "AND (#__pshop_payment_method.shopper_group_id='".$auth['shopper_group_id']."' ";
-$q .= "OR #__pshop_shopper_group.default='1') ";
+$q = "SELECT * from #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+$q .= "#__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
+$q .= "AND (#__{vm}_payment_method.shopper_group_id='".$auth['shopper_group_id']."' ";
+$q .= "OR #__{vm}_shopper_group.default='1') ";
 $q .= "AND (enable_processor='B' OR enable_processor='N' OR enable_processor='P') ";
 $q .= "AND payment_enabled='Y' ";
-$q .= "AND #__pshop_payment_method.vendor_id='$ps_vendor_id'";
+$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id'";
 $db_nocc->query($q);
 if ($db_nocc->next_record()) {
     $nocc_payments=true;
@@ -69,10 +69,10 @@ else {
   if ($cc_payments==true) { ?>
 
     <tr class="sectiontableheader">
-        <th align="left" colspan="2"><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO ?></th>
+        <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO ?></th>
     </tr>
     <tr>
-        <td colspan="2"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_PAYMENT_CC ?></strong></td>
+        <td colspan="2"><strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_PAYMENT_CC ?></strong></td>
     </tr>
     <tr>
         <td colspan="2"><?php $ps_payment_method->list_cc($payment_method_id, false) ?>
@@ -105,13 +105,13 @@ else {
 ?>      </td>
     </tr>
     <tr valign="top">
-        <td nowrap width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD ?>:</td>
+        <td nowrap width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD ?>:</td>
         <td>
         <input type="text" class="inputbox" name="order_payment_name" value="<?php if(!empty($_SESSION['ccdata']['order_payment_name'])) echo $_SESSION['ccdata']['order_payment_name'] ?>" />
         </td>
     </tr>
     <tr valign="top">
-        <td nowrap width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM ?>:</td>
+        <td nowrap width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM ?>:</td>
         <td>
         <input type="text" class="inputbox" name="order_payment_number" value="<?php if(!empty($_SESSION['ccdata']['order_payment_number'])) echo $_SESSION['ccdata']['order_payment_number'] ?>" />
         </td>
@@ -122,12 +122,12 @@ else {
         <td>
             <input type="text" class="inputbox" name="credit_card_code" value="<?php if(!empty($_SESSION['ccdata']['credit_card_code'])) echo $_SESSION['ccdata']['credit_card_code'] ?>" />
             <input type="hidden" class="inputbox" name="need_card_code" value="1" />
-        <?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP); ?>
+        <?php echo mosToolTip($VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP); ?>
         </td>
     </tr>
 <?php } ?>
     <tr>
-        <td nowrap width="10%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE ?>:</td>
+        <td nowrap width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE ?>:</td>
         <td><?php 
         $ps_html->list_month("order_payment_expire_month", @$_SESSION['ccdata']['order_payment_expire_month']);
         echo "/";
@@ -140,7 +140,7 @@ else {
     if ($cc_payments==true) {?>
     
     <tr>
-        <td colspan="2"><br /><br /><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_PAYMENT_OTHER ?></strong></td>
+        <td colspan="2"><br /><br /><strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_PAYMENT_OTHER ?></strong></td>
     </tr>
     <?php
     } ?>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_coupon.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -29,48 +29,48 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_coupon {
 
     function validate_add( &$d ) {
-        global $PHPSHOP_LANG;
+        global $VM_LANG;
         /* init the database */
         $coupon_db =& new ps_DB;
         $valid = true;
         
         /* make sure the coupon_code does not exist */
-        $q = " SELECT coupon_code FROM #__pshop_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
+        $q = " SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_COUPON_CODE_EXISTS;
+            $d["error"] = $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS;
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $d['error'] .= $PHPSHOP_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS;
+            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS;
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $d['error'] .= $PHPSHOP_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER;
+            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER;
             $valid = false;
         }
         return $valid;
         
     }
     function validate_update( &$d ) {
-        global $PHPSHOP_LANG;
+        global $VM_LANG;
         /* init the database */
         $coupon_db =& new ps_DB;
         $valid = true;
         
         /* make sure the coupon_code does not exist */
-        $q = "SELECT coupon_code FROM #__pshop_coupons WHERE coupon_code = '".$d['coupon_code']."' AND coupon_id <> '".$d['coupon_id']."'";
+        $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' AND coupon_id <> '".$d['coupon_id']."'";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $d["error"] = $PHPSHOP_LANG->_PHPSHOP_COUPON_CODE_EXISTS;
+            $d["error"] = $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS;
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $d['error'] .= $PHPSHOP_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS;
+            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS;
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $d['error'] .= $PHPSHOP_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER;
+            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER;
             $valid = false;
         }
         return $valid;
@@ -86,7 +86,7 @@ class ps_coupon {
             return false;
         }
         
-        $q = " INSERT INTO #__pshop_coupons ( coupon_code, percent_or_total, coupon_type, coupon_value ) ";
+        $q = " INSERT INTO #__{vm}_coupons ( coupon_code, percent_or_total, coupon_type, coupon_value ) ";
         $q .= "VALUES ( '".$d['coupon_code']."', '".$d['percent_or_total']."', '".$d['coupon_type']."', '".$d['coupon_value']."' ) ";
         $coupon_db->query($q);
         return true;
@@ -107,7 +107,7 @@ class ps_coupon {
         /* init the database */
         $coupon_db = new ps_DB;
         
-        $q = " UPDATE #__pshop_coupons SET ";
+        $q = " UPDATE #__{vm}_coupons SET ";
         $q .= "coupon_code = '".$d["coupon_code"]."', ";
         $q .= "percent_or_total = '".$d["percent_or_total"]."', ";
         $q .= "coupon_type = '".$d["coupon_type"]."', ";
@@ -129,12 +129,12 @@ class ps_coupon {
         $coupon_db = new ps_DB;
 		if( is_array($d['coupon_id'] )) {
 			foreach( $d['coupon_id'] as $coupon ) {
-				$q = "DELETE FROM #__pshop_coupons WHERE coupon_id = '$coupon' ";
+				$q = "DELETE FROM #__{vm}_coupons WHERE coupon_id = '$coupon' ";
 				$coupon_db->query($q);			
 			}
 		}
 		else {
-			$q = "DELETE FROM #__pshop_coupons WHERE coupon_id = '".$d['coupon_id']."' ";
+			$q = "DELETE FROM #__{vm}_coupons WHERE coupon_id = '".$d['coupon_id']."' ";
 			$coupon_db->query($q);
 		}
         $_SESSION['coupon_discount'] =    0;
@@ -146,7 +146,7 @@ class ps_coupon {
     
     /* function to process a coupon_code entered by a user */ 
     function process_coupon_code( $d ) {
-        global $PHPSHOP_LANG;
+        global $VM_LANG;
         /* init the database */
         $coupon_db =& new ps_DB;
         
@@ -158,11 +158,11 @@ class ps_coupon {
         
         if( $coupon_id ) {
             /* the query to select the coupon coupon_code */
-            $q = "SELECT coupon_id, percent_or_total, coupon_value, coupon_type FROM #__pshop_coupons WHERE coupon_id = '".$coupon_id."' ";
+            $q = "SELECT coupon_id, percent_or_total, coupon_value, coupon_type FROM #__{vm}_coupons WHERE coupon_id = '".$coupon_id."' ";
         }
         else {
             /* the query to select the coupon coupon_code */
-            $q = "SELECT coupon_id, percent_or_total, coupon_value, coupon_type FROM #__pshop_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
+            $q = "SELECT coupon_id, percent_or_total, coupon_value, coupon_type FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
         }
         /* make the query */
         $coupon_db->query($q);
@@ -201,7 +201,7 @@ class ps_coupon {
         else
         {
             /* no record, so coupon_code entered was not valid */
-            $_REQUEST['coupon_error'] = $PHPSHOP_LANG->_PHPSHOP_COUPON_CODE_INVALID;
+            $_REQUEST['coupon_error'] = $VM_LANG->_PHPSHOP_COUPON_CODE_INVALID;
             return false;
             
         }

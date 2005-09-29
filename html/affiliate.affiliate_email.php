@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: affiliate.affiliate_email.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -22,7 +22,7 @@ mm_showMyFileName( __FILE__ );
 <input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>">
 <input type="hidden" name="func" value="affiliateemail"> 
 <input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_email">
-<input type="hidden" name="option" value="com_phpshop">
+<input type="hidden" name="option" value="com_virtuemart">
 <input type="hidden" name="task" value="">
 
 <table width="100%" border="1" cellspacing="0" cellpadding="2" align="center"> 
@@ -35,25 +35,25 @@ mm_showMyFileName( __FILE__ );
   <?php }?> 
   <tr> 
     <td width="30%" height="20" valign="top">
-    <div align="left"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_EMAIL_WHO ?></div>
+    <div align="left"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_WHO ?></div>
     </td>
     <td width="70%" height="20"><?php $ps_affiliate->get_affiliate_list();?></td>
   </tr>
   <tr>
-    <td width="30%" valign="top" height="20"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_EMAIL_STATS ?>
+    <td width="30%" valign="top" height="20"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_STATS ?>
     </td>
     <td width="70%" height="20">
       <input type="checkbox" name="send_stats" value="stats_on">
     </td>
   </tr>
   <tr>
-      <td width="30%" valign="top" height="20"><?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_EMAIL_SUBJECT ?></td>
-      <td width="70%" align="left" height="20"><input type="text" name="subject" value="<?php echo$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_EMAIL_SUBJECT ?>">
+      <td width="30%" valign="top" height="20"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_SUBJECT ?></td>
+      <td width="70%" align="left" height="20"><input type="text" name="subject" value="<?php echo$VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_SUBJECT ?>">
       </td>
   </tr> 
   <tr>
       <td nowrap valign="top" width="30%">
-          <?php echo $PHPSHOP_LANG->_PHPSHOP_AFFILIATE_EMAIL_CONTENT ?>
+          <?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_CONTENT ?>
           <br><br><br> 
       </td>
       <td nowrap width="70%">

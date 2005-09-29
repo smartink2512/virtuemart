@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -40,7 +40,7 @@ class ps_product {
     if (empty($d['error']))
       $d['error'] = "";
       
-    $q = "SELECT product_id,product_thumb_image,product_full_image FROM #__pshop_product WHERE product_sku='";
+    $q = "SELECT product_id,product_thumb_image,product_full_image FROM #__{vm}_product WHERE product_sku='";
     $q .= $d["product_sku"] . "'";
     $db->setQuery($q); $db->query();
     if ($db->next_record()&&($db->f("product_id") != $d["product_id"])) {
@@ -160,7 +160,7 @@ class ps_product {
     /* Get the image filenames from the database */
     $db = new ps_DB;
     $q  = "SELECT product_thumb_image,product_full_image ";
-    $q .= "FROM #__pshop_product ";
+    $q .= "FROM #__{vm}_product ";
     $q .= "WHERE product_id='" . $d["product_id"] . "'";
     $db->setQuery($q); $db->query();
     $db->next_record();
@@ -226,7 +226,7 @@ class ps_product {
 	} 
     $d["product_special"] = empty($d["product_special"]) ? "N" : "Y";
 
-    $q  = "INSERT INTO #__pshop_product (vendor_id,product_parent_id,product_sku,";
+    $q  = "INSERT INTO #__{vm}_product (vendor_id,product_parent_id,product_sku,";
     $q .= "product_name,product_desc,product_s_desc,";
     $q .= "product_thumb_image,product_full_image,";
     $q .= "product_publish,product_weight,product_weight_uom,";
@@ -260,7 +260,7 @@ class ps_product {
 
     // If is Item, add attributes from parent //
     if ($d["product_parent_id"]) {
-      $q  = "SELECT attribute_name FROM #__pshop_product_attribute_sku ";
+      $q  = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
       $q .= "WHERE product_id='" . $d["product_parent_id"] . "' ";
       $q .= "ORDER BY attribute_list,attribute_name";
 
@@ -270,7 +270,7 @@ class ps_product {
       $i = 0;
       while($db->next_record()) {
         $i++;
-        $q = "INSERT INTO #__pshop_product_attribute VALUES ";
+        $q = "INSERT INTO #__{vm}_product_attribute VALUES ";
         $q .= "('".$d["product_id"]."', '".$db->f("attribute_name")."', '".$d["attribute_$i"]."')";
         $db2->query( $q );
       }
@@ -278,13 +278,13 @@ class ps_product {
     else {
       /* If is Product, Insert category ids */
       foreach( $d["product_categories"] as $category_id ) {
-        $q  = "INSERT INTO #__pshop_product_category_xref ";
+        $q  = "INSERT INTO #__{vm}_product_category_xref ";
         $q .= "(category_id,product_id) ";
         $q .= "VALUES ('$category_id','". $d["product_id"] . "')";
         $db->setQuery($q); $db->query();
       }
     }
-    $q = "INSERT INTO #__pshop_product_mf_xref VALUES (";
+    $q = "INSERT INTO #__{vm}_product_mf_xref VALUES (";
     $q .= "'".$d['product_id']."', '".$d['manufacturer_id']."')";
     $db->setQuery($q); $db->query();
     
@@ -304,7 +304,7 @@ class ps_product {
         $d["file_title"] = $d["file_name"];
       }
       // Insert an attribute called "download", attribute_value: filename
-      $q2  = "INSERT INTO #__pshop_product_attribute ";
+      $q2  = "INSERT INTO #__{vm}_product_attribute ";
       $q2 .= "(product_id,attribute_name,attribute_value) ";
       $q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["file_title"]."')";
       $db->setQuery($q2);
@@ -314,7 +314,7 @@ class ps_product {
       /* Insert Pipe separated Related Product IDs */
       $related_products = implode( "|", $d["related_products"] );
       
-      $q  = "INSERT INTO #__pshop_product_relations ";
+      $q  = "INSERT INTO #__{vm}_product_relations ";
       $q .= "(product_id, related_products) ";
       $q .= "VALUES ('".$d["product_id"]."','$related_products')";
       $db->setQuery($q); $db->query();
@@ -337,13 +337,13 @@ class ps_product {
     if( $d["clone_product"] == "Y" ) {
     
       // Clone Parent Product's Attributes
-      $q  = "INSERT INTO #__pshop_product_attribute_sku
+      $q  = "INSERT INTO #__{vm}_product_attribute_sku
               SELECT '".$d["product_id"]."', attribute_name, attribute_list 
-              FROM #__pshop_product_attribute_sku WHERE product_id='" . $d["old_product_id"] . "' ";
+              FROM #__{vm}_product_attribute_sku WHERE product_id='" . $d["old_product_id"] . "' ";
       $db->query( $q );
       if( !empty( $d["child_items"] )) {
         
-        $database->setQuery( "SHOW COLUMNS FROM #__pshop_product" );
+        $database->setQuery( "SHOW COLUMNS FROM #__{vm}_product" );
         $rows = $database->loadObjectList();
         while(list(,$Field) = each( $rows) ) {
           $product_fields[$Field->Field] = $Field->Field;
@@ -357,28 +357,28 @@ class ps_product {
         $product_fields["product_sku"] = "CONCAT(product_sku,'_".$d["product_id"]."')";
         
         $rows = Array();
-        $database->setQuery( "SHOW COLUMNS FROM #__pshop_product_price" );
+        $database->setQuery( "SHOW COLUMNS FROM #__{vm}_product_price" );
         $rows = $database->loadObjectList();
         while(list(,$Field) = each( $rows) ) {
           $price_fields[$Field->Field] = $Field->Field;
         }
         
         foreach( $d["child_items"] as $child_id ) {
-          $q = "INSERT INTO #__pshop_product ";
-          $q .= "SELECT ".implode(",", $product_fields )." FROM #__pshop_product WHERE product_id='$child_id'";
+          $q = "INSERT INTO #__{vm}_product ";
+          $q .= "SELECT ".implode(",", $product_fields )." FROM #__{vm}_product WHERE product_id='$child_id'";
           $db->query( $q );
           $new_product_id = $db->last_insert_id();
           
-          $q = "INSERT INTO #__pshop_product_attribute
+          $q = "INSERT INTO #__{vm}_product_attribute
                   SELECT '$new_product_id', attribute_name, attribute_value
-                  FROM #__pshop_product_attribute WHERE product_id='$child_id'";
+                  FROM #__{vm}_product_attribute WHERE product_id='$child_id'";
           $db->query( $q );
           
           $price_fields["product_price_id"] = "''";
           $price_fields["product_id"] = "'$new_product_id'";
           
-          $q = "INSERT INTO #__pshop_product_price ";
-          $q .= "SELECT ".implode(",", $price_fields )." FROM #__pshop_product_price WHERE product_id='$child_id'";
+          $q = "INSERT INTO #__{vm}_product_price ";
+          $q .= "SELECT ".implode(",", $price_fields )." FROM #__{vm}_product_price WHERE product_id='$child_id'";
           $db->query( $q );
         }
       }
@@ -424,7 +424,7 @@ class ps_product {
     if (empty($d["product_special"])) $d["product_special"] = "N";
     if (empty($d["product_publish"])) $d["product_publish"] = "N";
 
-    $q  = "UPDATE #__pshop_product SET ";
+    $q  = "UPDATE #__{vm}_product SET ";
     $q .= "product_sku='" . $d["product_sku"] . "',";
     $q .= "vendor_id='" . $d["vendor_id"] . "',";
     $q .= "product_name='" . $d["product_name"] . "',";
@@ -466,12 +466,12 @@ class ps_product {
     }
     
     // Check for download
-    $q_dl = "SELECT attribute_name,attribute_value FROM #__pshop_product_attribute WHERE ";
+    $q_dl = "SELECT attribute_name,attribute_value FROM #__{vm}_product_attribute WHERE ";
     $q_dl .= "product_id='".$d["product_id"]."' AND attribute_name='download' ";
     $db->query($q_dl);
     $db->next_record();
     if ($db->num_rows() > 0) { // found one
-      $q_dl = "SELECT file_id from #__pshop_product_files WHERE ";
+      $q_dl = "SELECT file_id from #__{vm}_product_files WHERE ";
       $q_dl .= "file_product_id='".$d["product_id"]."' AND file_title='".$db->f("attribute_value")."'";
       $db->query($q_dl);
       $db->next_record();
@@ -480,7 +480,7 @@ class ps_product {
       if ( @$d['downloadable'] != "Y" ) {
 
         // delete the attribute
-        $q_del = "DELETE FROM #__pshop_product_attribute WHERE ";
+        $q_del = "DELETE FROM #__{vm}_product_attribute WHERE ";
         $q_del .= "product_id='".$d["product_id"]."' AND attribute_name='download'";
         $db->query($q_del);
         
@@ -504,14 +504,14 @@ class ps_product {
           $d["file_url"] = "";
 
           $ps_product_files->add( $d );
-          $qu = "UPDATE #__pshop_product_attribute ";
+          $qu = "UPDATE #__{vm}_product_attribute ";
           $qu.= "SET attribute_value = '". $d["file_title"] ."' ";
           $qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
           $db->query($qu);
         }
         else {
           $d["file_id"] = "";
-          $qu = "UPDATE #__pshop_product_attribute ";
+          $qu = "UPDATE #__{vm}_product_attribute ";
           $qu.= "SET attribute_value = '". $d['filename'] ."' ";
           $qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
           $db->query($qu);
@@ -536,7 +536,7 @@ class ps_product {
         $ps_product_files->add( $d );
         
         // Insert an attribute called "download", attribute_value: filename
-        $q2  = "INSERT INTO #__pshop_product_attribute ";
+        $q2  = "INSERT INTO #__{vm}_product_attribute ";
         $q2 .= "(product_id,attribute_name,attribute_value) ";
         $q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["file_title"]."')";
         $db->setQuery($q2);
@@ -544,7 +544,7 @@ class ps_product {
       }
       elseif ( @$d['downloadable'] == "Y" ) {
         // Insert an attribute called "download", attribute_value: filename
-        $q2  = "INSERT INTO #__pshop_product_attribute ";
+        $q2  = "INSERT INTO #__{vm}_product_attribute ";
         $q2 .= "(product_id,attribute_name,attribute_value) ";
         $q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["filename"]."')";
         $db->setQuery($q2);
@@ -553,7 +553,7 @@ class ps_product {
     }
     // End download check
     
-    $q = "UPDATE #__pshop_product_mf_xref SET ";
+    $q = "UPDATE #__{vm}_product_mf_xref SET ";
     $q .= "manufacturer_id='".$d['manufacturer_id']."' ";
     $q .= "WHERE product_id = '".$d['product_id']."'";
     $db->setQuery($q); $db->query();
@@ -561,7 +561,7 @@ class ps_product {
     
     /* If is Item, update attributes */
     if ($d["product_parent_id"]) {
-      $q  = "SELECT attribute_name FROM #__pshop_product_attribute_sku ";
+      $q  = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
       $q .= "WHERE product_id='" . $d["product_parent_id"] . "' ";
       $q .= "ORDER BY attribute_list,attribute_name";
 
@@ -571,7 +571,7 @@ class ps_product {
       $i = 0;
       while($db->next_record()) {
         $i++;
-        $q2  = "UPDATE #__pshop_product_attribute SET ";
+        $q2  = "UPDATE #__{vm}_product_attribute SET ";
         $q2 .= "attribute_value='" . $d["attribute_$i"] . "' ";
         $q2 .= "WHERE product_id = '" . $d["product_id"] . "' ";
         $q2 .= "AND attribute_name = '" . $db->f("attribute_name") . "' "; 
@@ -581,14 +581,14 @@ class ps_product {
     } 
     else {
       // DELETE ALL OLD CATEGORY_XREF ENTRIES!
-      $q  = "DELETE FROM #__pshop_product_category_xref ";
+      $q  = "DELETE FROM #__{vm}_product_category_xref ";
       $q .= "WHERE product_id = '" . $d["product_id"] . "' ";
       $db->setQuery($q);
       $db->query();
       
       // NOW Re-Insert          
       foreach( $d["product_categories"] as $category_id ) {
-        $q  = "INSERT INTO #__pshop_product_category_xref ";
+        $q  = "INSERT INTO #__{vm}_product_category_xref ";
         $q .= "(category_id,product_id) ";
         $q .= "VALUES ('$category_id','". $d["product_id"] . "')";
         $db->setQuery($q); $db->query();
@@ -599,13 +599,13 @@ class ps_product {
       /* Insert Pipe separated Related Product IDs */
       $related_products = implode( "|", $d["related_products"] );
       
-      $q  = "REPLACE INTO #__pshop_product_relations (product_id, related_products)";
+      $q  = "REPLACE INTO #__{vm}_product_relations (product_id, related_products)";
       $q .= " VALUES( '".$d["product_id"]."', '$related_products') ";
       $db->setQuery($q); $db->query();
       
     }
     else{
-      $q  = "DELETE FROM #__pshop_product_relations ";
+      $q  = "DELETE FROM #__{vm}_product_relations ";
       $q .= " WHERE product_id='".$d["product_id"]."'";
       $db->setQuery($q); $db->query();
     }
@@ -617,7 +617,7 @@ class ps_product {
         $d['product_currency'] = $_SESSION['vendor_currency'];
           
       // look if we have a price for this product
-      $q = "SELECT product_price_id, price_quantity_start, price_quantity_end FROM #__pshop_product_price ";
+      $q = "SELECT product_price_id, price_quantity_start, price_quantity_end FROM #__{vm}_product_price ";
       $q .= "WHERE shopper_group_id = '" . $d["shopper_group_id"] ."' ";
       $q .= "AND product_id = '" . $d["product_id"] ."'";
       $db->query($q);
@@ -645,7 +645,7 @@ class ps_product {
     /** Product Type - Begin */
     $product_id=$d["product_id"];
     $product_parent_id=$d["product_parent_id"];
-    $q  = "SELECT * FROM #__pshop_product_product_type_xref WHERE ";
+    $q  = "SELECT * FROM #__{vm}_product_product_type_xref WHERE ";
     $q .= "product_id='$product_id' ";
     $db->query($q);
     
@@ -656,22 +656,22 @@ class ps_product {
     while ($db->next_record()) {
       $product_type_id = $db->f("product_type_id");
     
-      $q  = "SELECT * FROM #__pshop_product_type_parameter WHERE ";
+      $q  = "SELECT * FROM #__{vm}_product_type_parameter WHERE ";
       $q .= "product_type_id='$product_type_id' ";
       $q .= "ORDER BY parameter_list_order";
       $dbpt->query($q);
       
-/*      $q  = "SELECT * FROM #__pshop_product_type_$product_type_id WHERE ";
+/*      $q  = "SELECT * FROM #__{vm}_product_type_$product_type_id WHERE ";
       $q .= "product_id='$product_id'";
       $dbp->query($q);  
       if (!$dbp->next_record()) {  // Add record if not exist (Items)
-        $q  = "INSERT INTO #__pshop_product_type_$product_type_id (product_id) ";
+        $q  = "INSERT INTO #__{vm}_product_type_$product_type_id (product_id) ";
 	$q .= "VALUES ('$product_id')";
 	$dbp->setQuery($q); $dbp->query();
       }*/
       
       // Update record
-      $q  = "UPDATE #__pshop_product_type_$product_type_id SET ";
+      $q  = "UPDATE #__{vm}_product_type_$product_type_id SET ";
       $q .= "product_id='$product_id'";
       while ($dbpt->next_record()) {
 	if ($dbpt->f("parameter_type")!="B") { // if it is not breaker
@@ -728,7 +728,7 @@ class ps_product {
 		/* If is Product */
 		if ($this->is_product($product_id)) {
 			/* Delete all items first */
-			$q  = "SELECT product_id FROM #__pshop_product WHERE product_parent_id='$product_id'";
+			$q  = "SELECT product_id FROM #__{vm}_product WHERE product_parent_id='$product_id'";
 			$db->setQuery($q); $db->query();
 			while($db->next_record()) {
 				$d2["product_id"] = $db->f("product_id");
@@ -739,31 +739,31 @@ class ps_product {
 			}
 	
 			/* Delete attributes */
-			$q  = "DELETE FROM #__pshop_product_attribute_sku WHERE product_id='$product_id' ";
+			$q  = "DELETE FROM #__{vm}_product_attribute_sku WHERE product_id='$product_id' ";
 			$db->setQuery($q); $db->query();
 	
 			/* Delete categories xref */
-			$q  = "DELETE FROM #__pshop_product_category_xref WHERE product_id = '$product_id' ";
+			$q  = "DELETE FROM #__{vm}_product_category_xref WHERE product_id = '$product_id' ";
 			$db->setQuery($q); $db->query();
 		}
 		/* If is Item */
 		else {
 			/* Delete attribute values */
-			$q  = "DELETE FROM #__pshop_product_attribute WHERE product_id='$product_id'";
+			$q  = "DELETE FROM #__{vm}_product_attribute WHERE product_id='$product_id'";
 			$db->setQuery($q); $db->query();
 		}
 		/* For both Product and Item */
 		
 		/* Delete product - manufacturer xref */
-		  $q = "DELETE FROM #__pshop_product_mf_xref WHERE product_id='$product_id'";
+		  $q = "DELETE FROM #__{vm}_product_mf_xref WHERE product_id='$product_id'";
 		  $db->setQuery($q); $db->query();
 		  
 		/* Delete product votes */
-		  $q  = "DELETE FROM #__pshop_product_votes WHERE product_id='$product_id'";
+		  $q  = "DELETE FROM #__{vm}_product_votes WHERE product_id='$product_id'";
 		  $db->setQuery($q); $db->query();
 		  
 		/* Delete product reviews */
-		  $q = "DELETE FROM #__pshop_product_reviews WHERE product_id='$product_id'";
+		  $q = "DELETE FROM #__{vm}_product_reviews WHERE product_id='$product_id'";
 		  $db->setQuery($q); $db->query();
 		  
 		/* Delete Image files */
@@ -774,22 +774,22 @@ class ps_product {
 		require_once(  CLASSPATH.'ps_product_files.php' );
 		$ps_product_files =& new ps_product_files();
 		
-		$db->query( "SELECT file_id FROM #__pshop_product_files WHERE file_product_id='$product_id'" );
+		$db->query( "SELECT file_id FROM #__{vm}_product_files WHERE file_product_id='$product_id'" );
 		while($db->next_record()) {
 		  $d["file_id"] = $db->f("file_id");
 		  $ps_product_files->delete( $d );
 		}
 		
 		/* Delete Product Relations */
-		$q  = "DELETE FROM #__pshop_product_relations WHERE product_id = '$product_id'";
+		$q  = "DELETE FROM #__{vm}_product_relations WHERE product_id = '$product_id'";
 		$db->setQuery($q); $db->query();    
 		
 		/* Delete Prices */
-		$q  = "DELETE FROM #__pshop_product_price WHERE product_id = '$product_id'";
+		$q  = "DELETE FROM #__{vm}_product_price WHERE product_id = '$product_id'";
 		$db->setQuery($q); $db->query();
 	
-		/* Delete entry FROM #__pshop_product table */
-		$q  = "DELETE FROM #__pshop_product WHERE product_id = '$product_id'";
+		/* Delete entry FROM #__{vm}_product table */
+		$q  = "DELETE FROM #__{vm}_product WHERE product_id = '$product_id'";
 		$db->setQuery($q); $db->query();
 	
 		/* If only deleting an item, go to the parent product page after
@@ -815,7 +815,7 @@ class ps_product {
     $ps_vendor_id = $_SESSION["ps_vendor_id"];
     
     $db = new ps_DB;
-    $q  = "SELECT vendor_id  FROM #__pshop_product ";
+    $q  = "SELECT vendor_id  FROM #__{vm}_product ";
     $q .= "WHERE vendor_id = '$ps_vendor_id' ";
     $q .= "AND product_id = '" . $d["product_id"] . "' ";
     $db->setQuery($q); $db->query();
@@ -837,7 +837,7 @@ class ps_product {
   function sql($product_id) {
     $db = new ps_DB;
 
-    $q  = "SELECT * FROM #__pshop_product WHERE product_id='$product_id' ";
+    $q  = "SELECT * FROM #__{vm}_product WHERE product_id='$product_id' ";
 
     $db->setQuery($q); $db->query();
     return $db;
@@ -853,7 +853,7 @@ class ps_product {
   function items_sql($product_id) {
     $db = new ps_DB;
 
-    $q  = "SELECT * FROM #__pshop_product ";
+    $q  = "SELECT * FROM #__{vm}_product ";
     $q .= "WHERE product_parent_id='$product_id' ";
     $q .= "ORDER BY product_name";
 
@@ -871,7 +871,7 @@ class ps_product {
   function is_product($product_id) {
     $db = new ps_DB;
  
-    $q  = "SELECT product_parent_id FROM #__pshop_product ";
+    $q  = "SELECT product_parent_id FROM #__{vm}_product ";
     $q .= "WHERE product_id='$product_id' ";
  
     $db->setQuery($q); $db->query();
@@ -894,26 +894,26 @@ class ps_product {
   function attribute_sql($item_id="",$product_id="",$attribute_name="") {
     $db = new ps_DB;
     if ($item_id and $product_id) {
-      $q  = "SELECT * FROM #__pshop_product_attribute,#__pshop_product_attribute_sku ";
-      $q .= "WHERE #__pshop_product_attribute.product_id = '$item_id' ";
-      $q .= "AND #__pshop_product_attribute_sku.product_id ='$product_id' ";
+      $q  = "SELECT * FROM #__{vm}_product_attribute,#__{vm}_product_attribute_sku ";
+      $q .= "WHERE #__{vm}_product_attribute.product_id = '$item_id' ";
+      $q .= "AND #__{vm}_product_attribute_sku.product_id ='$product_id' ";
       if ($attribute_name) {
-        $q .= "AND #__pshop_product_attribute.attribute_name = $attribute_name ";
+        $q .= "AND #__{vm}_product_attribute.attribute_name = $attribute_name ";
       }
-      $q .= "AND #__pshop_product_attribute.attribute_name = ";
-      $q .=     "#__pshop_product_attribute_sku.attribute_name ";
-      $q .= "ORDER BY attribute_list,#__pshop_product_attribute.attribute_name";
+      $q .= "AND #__{vm}_product_attribute.attribute_name = ";
+      $q .=     "#__{vm}_product_attribute_sku.attribute_name ";
+      $q .= "ORDER BY attribute_list,#__{vm}_product_attribute.attribute_name";
     } elseif ($item_id) {
-      $q  = "SELECT * FROM #__pshop_product_attribute ";
+      $q  = "SELECT * FROM #__{vm}_product_attribute ";
       $q .= "WHERE product_id = '$item_id' ";
       if ($attribute_name) {
         $q .= "AND attribute_name = $attribute_name ";
       }
     } elseif ($product_id) {
-      $q  = "SELECT * FROM #__pshop_product_attribute_sku ";
+      $q  = "SELECT * FROM #__{vm}_product_attribute_sku ";
       $q .= "WHERE product_id ='$product_id' ";
       if ($attribute_name) {
-        $q .= "AND #__pshop_product_attribute.attribute_name = $attribute_name ";
+        $q .= "AND #__{vm}_product_attribute.attribute_name = $attribute_name ";
       }
       $q .= "ORDER BY attribute_list,attribute_name";
     } else {
@@ -935,7 +935,7 @@ class ps_product {
   ***************************************************************************/
   function get_child_product_ids($pid) {
     $db = new ps_DB;
-    $q  = "SELECT product_id FROM #__pshop_product ";
+    $q  = "SELECT product_id FROM #__{vm}_product ";
     $q .= "WHERE product_parent_id='$pid' ";
 
     $db->setQuery($q); $db->query();
@@ -959,7 +959,7 @@ class ps_product {
   function parent_has_children($pid) {
     $db = new ps_DB;
     if( empty($GLOBALS['product_info'][$pid]["parent_has_children"] )) {
-      $q  = "SELECT product_id as num_rows FROM #__pshop_product WHERE product_parent_id='$pid' ";
+      $q  = "SELECT product_id as num_rows FROM #__{vm}_product WHERE product_parent_id='$pid' ";
       $db->setQuery($q); $db->query();
       if ($db->next_record()) {
         $GLOBALS['product_info'][$pid]["parent_has_children"] = True;
@@ -981,7 +981,7 @@ class ps_product {
   function product_has_attributes($pid) {
     $db = new ps_DB;
     if( empty($GLOBALS['product_info'][$pid]["product_has_attributes"] )) {
-      $q  = "SELECT product_id FROM #__pshop_product_attribute_sku WHERE product_id='$pid' ";
+      $q  = "SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id='$pid' ";
       $db->setQuery($q); $db->query();
       if ($db->next_record()) {
         $GLOBALS['product_info'][$pid]["product_has_attributes"] = True;
@@ -1004,7 +1004,7 @@ class ps_product {
   function get_field($product_id, $field_name) {
     $db = new ps_DB;
     if( empty($GLOBALS['product_info'][$product_id][$field_name] )) {
-      $q = "SELECT  product_id, `$field_name` FROM #__pshop_product WHERE product_id='$product_id'";
+      $q = "SELECT  product_id, `$field_name` FROM #__{vm}_product WHERE product_id='$product_id'";
       $db->query($q);
       if ($db->next_record()) {
          $GLOBALS['product_info'][$product_id][$field_name] = $db->f($field_name);
@@ -1021,7 +1021,7 @@ class ps_product {
   ** created by: pablo
   ** description:  Determines flypage for given product_id by looking at
   **               the product category.  If no flypage is specified for this
-  ** 		   category, then the default FLYPAGE (in phpshop.cfg) is 
+  ** 		   category, then the default FLYPAGE (in virtuemart.cfg) is 
   **		   returned.
   ** parameters:
   ** returns:
@@ -1030,10 +1030,10 @@ class ps_product {
     
     if( empty( $_SESSION['product_info'][$product_id]['flypage'] )) {
       $db = new ps_DB;
-      $q = "SELECT #__pshop_category.category_flypage FROM #__pshop_category, #__pshop_product_category_xref, #__pshop_product ";
-      $q .= "WHERE #__pshop_product.product_id='$product_id' ";
-      $q .= "AND #__pshop_product_category_xref.product_id=#__pshop_product.product_id ";
-      $q .= "AND #__pshop_product_category_xref.category_id=#__pshop_category.category_id";
+      $q = "SELECT #__{vm}_category.category_flypage FROM #__{vm}_category, #__{vm}_product_category_xref, #__{vm}_product ";
+      $q .= "WHERE #__{vm}_product.product_id='$product_id' ";
+      $q .= "AND #__{vm}_product_category_xref.product_id=#__{vm}_product.product_id ";
+      $q .= "AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";
   
       $db->setQuery($q); $db->query();
       $db->next_record();
@@ -1056,9 +1056,9 @@ class ps_product {
   function get_vendorname($product_id) {
     $db = new ps_DB;
 
-    $q = "SELECT #__pshop_vendor.vendor_name FROM #__pshop_product, #__pshop_vendor ";
-    $q .= "WHERE #__pshop_product.product_id='$product_id' ";
-    $q .= "AND #__pshop_vendor.vendor_id=#__pshop_product.vendor_id";
+    $q = "SELECT #__{vm}_vendor.vendor_name FROM #__{vm}_product, #__{vm}_vendor ";
+    $q .= "WHERE #__{vm}_product.product_id='$product_id' ";
+    $q .= "AND #__{vm}_vendor.vendor_id=#__{vm}_product.vendor_id";
 
     $db->query($q);
     $db->next_record();
@@ -1081,7 +1081,7 @@ class ps_product {
   function get_vend_idname($vendor_id) {
     $db = new ps_DB;
 
-    $q = "SELECT vendor_name FROM #__pshop_vendor ";
+    $q = "SELECT vendor_name FROM #__{vm}_vendor ";
     $q .= "WHERE vendor_id='$vendor_id'";
     
     $db->query($q);
@@ -1104,7 +1104,7 @@ class ps_product {
   function get_vendor_id($product_id) {
     $db = new ps_DB;
     if( empty( $_SESSION['product_info'][$product_id]['vendor_id'] )) {
-      $q = "SELECT vendor_id FROM #__pshop_product ";
+      $q = "SELECT vendor_id FROM #__{vm}_product ";
       $q .= "WHERE product_id='$product_id' ";
 
       $db->query($q);
@@ -1132,7 +1132,7 @@ class ps_product {
   function get_manufacturer_id($product_id) {
     $db = new ps_DB;
 
-    $q = "SELECT manufacturer_id FROM #__pshop_product_mf_xref ";
+    $q = "SELECT manufacturer_id FROM #__{vm}_product_mf_xref ";
     $q .= "WHERE product_id='$product_id' ";
 
     $db->query($q);
@@ -1155,9 +1155,9 @@ class ps_product {
   function get_mf_name($product_id) {
     $db = new ps_DB;
 
-    $q = "SELECT mf_name FROM #__pshop_product_mf_xref,#__pshop_manufacturer ";
+    $q = "SELECT mf_name FROM #__{vm}_product_mf_xref,#__{vm}_manufacturer ";
     $q .= "WHERE product_id='$product_id' ";
-    $q .= "AND #__pshop_manufacturer.manufacturer_id=#__pshop_product_mf_xref.manufacturer_id";
+    $q .= "AND #__{vm}_manufacturer.manufacturer_id=#__{vm}_product_mf_xref.manufacturer_id";
 
     $db->query($q);
     $db->next_record();
@@ -1196,7 +1196,7 @@ class ps_product {
       // local image file
       else {
         if(PSHOP_IMG_RESIZE_ENABLE == '1' && $resize==1)
-            $url = $mosConfig_live_site."/components/com_phpshop/show_image_in_imgtag.php?filename=".urlencode($image)."&newxsize=".PSHOP_IMG_WIDTH."&newysize=".PSHOP_IMG_HEIGHT."&fileout=";
+            $url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&newxsize=".PSHOP_IMG_WIDTH."&newysize=".PSHOP_IMG_HEIGHT."&fileout=";
         else
             $url = IMAGEURL.$path_appendix."/".$image;
       }
@@ -1253,14 +1253,14 @@ class ps_product {
             $q = "SELECT state, country FROM #__users WHERE id='". $auth["user_id"] . "'";
             $db->query($q);
             if (!$db->num_rows()) {
-                $q = "SELECT state, country FROM #__pshop_user_info WHERE user_id='". $auth["user_id"] . "'";
+                $q = "SELECT state, country FROM #__{vm}_user_info WHERE user_id='". $auth["user_id"] . "'";
                 $db->query($q);
             }
             $db->next_record(); 
             $state = $db->f("state");
             $country = $db->f("country");
 
-            $q = "SELECT tax_rate FROM #__pshop_tax_rate WHERE tax_country='$country' ";
+            $q = "SELECT tax_rate FROM #__{vm}_tax_rate WHERE tax_country='$country' ";
             if( !empty($state)) {
               $q .= "AND tax_state='$state'"; 
             }
@@ -1278,8 +1278,8 @@ class ps_product {
         elseif (TAX_MODE == 1) {
           if( empty( $_SESSION['taxrate'][$ps_vendor_id] )) {
             // let's get the store's tax rate
-            $q = "SELECT tax_rate FROM #__pshop_vendor, #__pshop_tax_rate ";
-            $q .= "WHERE tax_country=vendor_country AND #__pshop_vendor.vendor_id='1'"; 
+            $q = "SELECT tax_rate FROM #__{vm}_vendor, #__{vm}_tax_rate ";
+            $q .= "WHERE tax_country=vendor_country AND #__{vm}_vendor.vendor_id='1'"; 
             $db->query($q);
             if ($db->next_record()) {
                $_SESSION['taxrate'][$ps_vendor_id] = $db->f("tax_rate");
@@ -1324,7 +1324,7 @@ class ps_product {
         if( empty( $_SESSION['product_info'][$product_id]['tax_rate'] ) ) {
           $db = new ps_DB;       
           // Product's tax rate id has priority!
-          $q = "SELECT tax_rate FROM #__pshop_product, #__pshop_tax_rate ";
+          $q = "SELECT tax_rate FROM #__{vm}_product, #__{vm}_tax_rate ";
           $q .= "WHERE product_tax_id=tax_rate_id AND product_id='$product_id'";
           $db->query($q);
           if ($db->next_record()) {
@@ -1360,18 +1360,18 @@ class ps_product {
         
     $db = new ps_DB;
     // Get the vendor id for this product.
-    $q = "SELECT vendor_id FROM #__pshop_product WHERE product_id='$product_id'";
+    $q = "SELECT vendor_id FROM #__{vm}_product WHERE product_id='$product_id'";
     $db->setQuery($q); $db->query();
     $db->next_record();
     $vendor_id = $db->f("vendor_id");
     
     // Get the default shopper group id for this product and user
-    $q = "SELECT shopper_group_id FROM #__pshop_shopper_group WHERE `vendor_id`='$vendor_id' AND `default`='1'";
+    $q = "SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE `vendor_id`='$vendor_id' AND `default`='1'";
     $db->setQuery($q); $db->query();
     $db->next_record();
     $default_shopper_group_id = $db->f("shopper_group_id");
     
-    $q = "SELECT product_price,product_currency FROM #__pshop_product_price WHERE product_id='$product_id' AND ";
+    $q = "SELECT product_price,product_currency FROM #__{vm}_product_price WHERE product_id='$product_id' AND ";
     $q .= "shopper_group_id='$default_shopper_group_id'";
     $db->setQuery($q); $db->query();
     if ($db->next_record()) {
@@ -1408,7 +1408,7 @@ class ps_product {
       if( empty( $_SESSION['product_info'][$product_id]['vendor_id'] )) {
       
         // Get the vendor id for this product.
-        $q = "SELECT vendor_id FROM #__pshop_product WHERE product_id='$product_id'";
+        $q = "SELECT vendor_id FROM #__{vm}_product WHERE product_id='$product_id'";
         $db->setQuery($q); $db->query();
         $db->next_record();
         $_SESSION['product_info'][$product_id]['vendor_id'] = $vendor_id = $db->f("vendor_id");
@@ -1422,7 +1422,7 @@ class ps_product {
       
       if( empty($GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id']) ) {
         // Get the default shopper group id for this vendor
-        $q = "SELECT shopper_group_id,shopper_group_discount FROM #__pshop_shopper_group WHERE ";
+        $q = "SELECT shopper_group_id,shopper_group_discount FROM #__{vm}_shopper_group WHERE ";
         $q .= "vendor_id='$vendor_id' AND `default`='1'";
         $db->setQuery($q); $db->query();
         $db->next_record();
@@ -1461,7 +1461,7 @@ class ps_product {
       // If the shopper group has a price then show it, otherwise
       // show the default price.
       if( !empty($shopper_group_id) ) {
-        $q = "SELECT product_price, product_price_id, product_currency FROM #__pshop_product_price WHERE product_id='$product_id' AND ";
+        $q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_id' AND ";
         $q .= "shopper_group_id='$shopper_group_id' $volume_quantity_sql";
         $db->setQuery($q); $db->query();
         if ($db->next_record()) {
@@ -1478,7 +1478,7 @@ class ps_product {
         }
       }
       // Get default price
-      $q = "SELECT product_price, product_price_id, product_currency FROM #__pshop_product_price WHERE product_id='$product_id' AND ";
+      $q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_id' AND ";
       $q .= "shopper_group_id='$default_shopper_group_id' $volume_quantity_sql";
       $db->setQuery($q); $db->query();
       if ($db->next_record()) {
@@ -1496,7 +1496,7 @@ class ps_product {
       
       // Maybe its an item with no price, check again with product_parent_id
       if( !empty($shopper_group_id) ) {
-        $q = "SELECT product_price, product_price_id, product_currency FROM #__pshop_product_price WHERE product_id='$product_parent_id' AND ";
+        $q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_parent_id' AND ";
         $q .= "shopper_group_id='$shopper_group_id' $volume_quantity_sql";
         $db->setQuery($q); $db->query();
         if ($db->next_record()) {
@@ -1511,7 +1511,7 @@ class ps_product {
           return $GLOBALS['product_info'][$product_id]['price'];
         }
       }
-      $q = "SELECT product_price, product_price_id, product_currency FROM #__pshop_product_price WHERE product_id='$product_parent_id' AND ";
+      $q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_parent_id' AND ";
       $q .= "shopper_group_id='$default_shopper_group_id' $volume_quantity_sql";
       $db->setQuery($q); $db->query();
       if ($db->next_record()) {
@@ -1538,7 +1538,7 @@ class ps_product {
 	* Adjusts the price from get_price for the selected attributes
 	*
 	* @author Nathan Hyde <nhyde@bigDrift.com>
-	* @author curlyroger from his post at <http://www.phpshop.org/phpbb/viewtopic.php?t=3052>
+	* @author curlyroger from his post at <http://www.virtuemart.org/phpbb/viewtopic.php?t=3052>
 	* @param product_id int 
 	* @param description string optional; the list of selected attributes
 	* @return float
@@ -1797,7 +1797,7 @@ class ps_product {
    ** returns:
    ***************************************************************************/
   function show_price( $product_id, $hide_tax = false ) {
-    global $PHPSHOP_LANG, $CURRENCY_DISPLAY,$vendor_mail,$product_name;
+    global $VM_LANG, $CURRENCY_DISPLAY,$vendor_mail,$product_name;
     
     $auth = $_SESSION['auth'];
     
@@ -1835,7 +1835,7 @@ class ps_product {
           // only show "including x % tax" when it shall
           // not be hidden
           if( !$hide_tax && $auth["show_price_including_tax"] == 1 ) {
-            $text_including_tax = $PHPSHOP_LANG->_PHPSHOP_INCLUDING_TAX;
+            $text_including_tax = $VM_LANG->_PHPSHOP_INCLUDING_TAX;
             eval ("\$text_including_tax = \"$text_including_tax\";");
             
           }
@@ -1854,7 +1854,7 @@ class ps_product {
       
       if(!empty($discount_info["amount"])) {
         $html .= "<br />";
-        $html .= $PHPSHOP_LANG->_PHPSHOP_PRODUCT_DISCOUNT_SAVE.": ";
+        $html .= $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_SAVE.": ";
         if($discount_info["is_percent"]==1)
           $html .= $discount_info["amount"]."%";
         else
@@ -1865,15 +1865,15 @@ class ps_product {
       if( $base_price_info["product_has_multiple_prices"] && !$hide_tax ) {
         $db = new ps_DB;
         // Quantity Discount Table
-        $q = "SELECT product_price, price_quantity_start, price_quantity_end FROM #__pshop_product_price
+        $q = "SELECT product_price, price_quantity_start, price_quantity_end FROM #__{vm}_product_price
               WHERE product_id='$product_id' AND shopper_group_id='".$auth["shopper_group_id"]."' ORDER BY price_quantity_start";
         $db->query( $q );
         
 //         $prices_table = "<table align=\"right\">
         $prices_table = "<table>
                   <thead><tr class=\"sectiontableheader\">
-                  <th>".$PHPSHOP_LANG->_PHPSHOP_CART_QUANTITY."</th>
-                  <th>".$PHPSHOP_LANG->_PHPSHOP_CART_PRICE."</th>
+                  <th>".$VM_LANG->_PHPSHOP_CART_QUANTITY."</th>
+                  <th>".$VM_LANG->_PHPSHOP_CART_PRICE."</th>
                   </tr></thead>
                   <tbody>";
         $i = 1;
@@ -1898,7 +1898,7 @@ class ps_product {
     }
     // No price, so display "Call for pricing"
     else {
-        $html = "&nbsp;<a href=\"mailto:$vendor_mail?subject=".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name\">".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_CALL."</a>";
+        $html = "&nbsp;<a href=\"mailto:$vendor_mail?subject=".$VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name\">".$VM_LANG->_PHPSHOP_PRODUCT_CALL."</a>";
     }
     return $html;
   }
@@ -1927,7 +1927,7 @@ class ps_product {
       $endofday = mktime(0, 0, 0, $month, $day, $year) - 1440;
       
       // Get the DISCOUNT AMOUNT
-      $q = "SELECT amount,is_percent FROM #__pshop_product,#__pshop_product_discount ";
+      $q = "SELECT amount,is_percent FROM #__{vm}_product,#__{vm}_product_discount ";
       $q .= "WHERE product_id='$product_id' AND (start_date<='$starttime' OR start_date=0) AND (end_date>='$endofday' OR end_date=0) ";
       $q .= "AND product_discount_id=discount_id";
       $db->query( $q );
@@ -1963,12 +1963,12 @@ class ps_product {
   
   function product_snapshot( $product_sku, $show_price=true, $show_addtocart=true ) {
   
-    global  $sess,$PHPSHOP_LANG, $mm_action_url;
+    global  $sess,$VM_LANG, $mm_action_url;
     
     $ps_vendor_id = $_SESSION["ps_vendor_id"];
     $db = new ps_DB;
 
-    $q = "SELECT product_id, product_name, product_parent_id, product_thumb_image FROM #__pshop_product WHERE product_sku='$product_sku'";
+    $q = "SELECT product_id, product_name, product_parent_id, product_thumb_image FROM #__{vm}_product WHERE product_sku='$product_sku'";
     $db->setQuery($q); $db->query();
     $html = "";
     if ($db->next_record()) {
@@ -1994,7 +1994,7 @@ class ps_product {
       if (USE_AS_CATALOGUE != 1 && $show_addtocart) {
           $html .= "<br />\n";
           $url = "?page=shop.cart&func=cartAdd&product_id=" .  $db->f("product_id");
-          $html .= "<a title=\"".$PHPSHOP_LANG->_PHPSHOP_CART_ADD_TO.": ".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url . $url)."\">".$PHPSHOP_LANG->_PHPSHOP_CART_ADD_TO."</a><br />\n";
+          $html .= "<a title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO.": ".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url . $url)."\">".$VM_LANG->_PHPSHOP_CART_ADD_TO."</a><br />\n";
        }
     }
 
@@ -2017,7 +2017,7 @@ class ps_product {
     // Creates a form drop down list and prints it
     $db = new ps_DB;
 
-    $q = "SELECT vendor_id,vendor_name FROM #__pshop_vendor ORDER BY vendor_name";
+    $q = "SELECT vendor_id,vendor_name FROM #__{vm}_vendor ORDER BY vendor_name";
     $db->query($q); 
     $db->next_record();
     
@@ -2063,7 +2063,7 @@ class ps_product {
     // Creates a form drop down list and prints it
     $db = new ps_DB;
     
-    $q = "SELECT vendor_name FROM #__pshop_vendor WHERE vendor_id='$id'";
+    $q = "SELECT vendor_name FROM #__{vm}_vendor WHERE vendor_id='$id'";
     $db->query($q); 
     $db->next_record();
     return $db->f("vendor_name");
@@ -2085,7 +2085,7 @@ class ps_product {
     // Creates a form drop down list and prints it
     $db = new ps_DB;
     
-    $q = "SELECT manufacturer_id,mf_name FROM #__pshop_manufacturer ORDER BY mf_name";
+    $q = "SELECT manufacturer_id,mf_name FROM #__{vm}_manufacturer ORDER BY mf_name";
     $db->query($q); 
     $db->next_record();
     
@@ -2128,7 +2128,7 @@ class ps_product {
     
     $db = new ps_DB;
     
-    $q = "SELECT product_weight FROM #__pshop_product WHERE product_id='". $prod_id ."'";
+    $q = "SELECT product_weight FROM #__{vm}_product WHERE product_id='". $prod_id ."'";
     $db->query($q); 
     $db->next_record();
     return $db->f("product_weight");
@@ -2147,7 +2147,7 @@ class ps_product {
   ** returns: array of values
   ***************************************************************************/
   function get_availability($prod_id) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     
     $html = "";
     
@@ -2156,7 +2156,7 @@ class ps_product {
       // Creates a form drop down list and prints it
       $db = new ps_DB;
       
-      $q = "SELECT product_available_date,product_availability,product_in_stock  FROM #__pshop_product WHERE ";
+      $q = "SELECT product_available_date,product_availability,product_in_stock  FROM #__{vm}_product WHERE ";
       $q .= "product_id='". $prod_id ."'";
       
       $db->query($q); 
@@ -2164,35 +2164,35 @@ class ps_product {
       $pad = $db->f("product_available_date");
       $pav = $db->f("product_availability");
       
-      $heading = "<div style=\"text-decoration:underline;font-weight:bold;\">".$PHPSHOP_LANG->_PHPSHOP_AVAILABILITY."</div><br />";
+      $heading = "<div style=\"text-decoration:underline;font-weight:bold;\">".$VM_LANG->_PHPSHOP_AVAILABILITY."</div><br />";
       
       if (CHECK_STOCK == '1') {
         if ($db->f("product_in_stock") < 1) {
-            $html .= $PHPSHOP_LANG->_PHPSHOP_CURRENTLY_NOT_AVAILABLE."<br />";
+            $html .= $VM_LANG->_PHPSHOP_CURRENTLY_NOT_AVAILABLE."<br />";
             if($pad > time()) {
-              $html .= $PHPSHOP_LANG->_PHPSHOP_PRODUCT_AVAILABLE_AGAIN;
+              $html .= $VM_LANG->_PHPSHOP_PRODUCT_AVAILABLE_AGAIN;
               $html .= date("d.m.Y", $pad). "<br /><br />";
               define('_PHSHOP_PRODUCT_NOT_AVAILABLE', '1');
             }
         }
         elseif($pad > time()) {
-              $html .= $PHPSHOP_LANG->_PHPSHOP_CURRENTLY_NOT_AVAILABLE."<br />";
-              $html .= $PHPSHOP_LANG->_PHPSHOP_PRODUCT_AVAILABLE_AGAIN;
+              $html .= $VM_LANG->_PHPSHOP_CURRENTLY_NOT_AVAILABLE."<br />";
+              $html .= $VM_LANG->_PHPSHOP_PRODUCT_AVAILABLE_AGAIN;
               $html .= date("d.m.Y", $pad). "<br /><br />";
               define('_PHSHOP_PRODUCT_NOT_AVAILABLE', '1');
         }
         else {
-            $html .= "<span style=\"font-weight:bold;\">".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_IN_STOCK.": </span>".$db->f("product_in_stock")."<br /><br />";
+            $html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_PRODUCT_FORM_IN_STOCK.": </span>".$db->f("product_in_stock")."<br /><br />";
         }
       }
       if (!empty($pav)) {
         if (stristr($pav, "gif") || stristr($pav, "jpg") || stristr($pav, "png")) {
           // we think it's a pic then...
-          $html .= "<span style=\"font-weight:bold;\">".$PHPSHOP_LANG->_PHPSHOP_DELIVERY_TIME.": </span><br /><br />";
+          $html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_DELIVERY_TIME.": </span><br /><br />";
           $html .= "<img align=\"middle\" src=\"".IMAGEURL."availability/".$pav."\" border=\"0\" alt=\"$pav\" />";
         }
         else {
-          $html .= "<span style=\"font-weight:bold;\">".$PHPSHOP_LANG->_PHPSHOP_DELIVERY_TIME.": </span>";
+          $html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_DELIVERY_TIME.": </span>";
           $html .= $pav;
         }
       }
@@ -2222,7 +2222,7 @@ class ps_product {
 			if( $d['task'] == "publish" || $d['task'] == "unpublish" ) {
 				$published = $d['task'] == "publish" ? "Y" : "N";
 				foreach( $d['product_id'] as $product_id ) {
-					$q = "UPDATE #__pshop_product SET product_publish='".$published."' ";
+					$q = "UPDATE #__{vm}_product SET product_publish='".$published."' ";
 					$q .= "WHERE product_id='".$product_id."' ";
 					$q .= "AND vendor_id='".$_SESSION['ps_vendor_id']."'";
 					$db->query( $q );
@@ -2242,7 +2242,7 @@ class ps_product {
 				$d['error'] = "Error: Please provide a valid value to publish or unpublish the product!";
 				return false;
 			}
-			$q = "UPDATE #__pshop_product SET product_publish='".$d['product_publish']."' ";
+			$q = "UPDATE #__{vm}_product SET product_publish='".$d['product_publish']."' ";
 			$q .= "WHERE product_id='".$d['product_id']."' ";
 			$q .= "AND vendor_id='".$_SESSION['ps_vendor_id']."'";
 			$db->query( $q );

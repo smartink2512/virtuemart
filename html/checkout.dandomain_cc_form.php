@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: checkout.dandomain_cc_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -24,18 +24,18 @@ $sessionid = mosGetParam( $_GET, "sessionid" );
 $cookievals = base64_decode( $sessionid );
 $orderID = substr( $cookievals, 0, 8 );
 $order_id = intval( $orderID );
-$phpshopcookie = substr( $cookievals, 8, 32 );
+$virtuemartcookie = substr( $cookievals, 8, 32 );
 $sessioncookie = substr( $cookievals, 40, 32 );
 $md5_check = substr( $cookievals, 72, 32 );
 
 // Check Validity of the Page Load using the MD5 Check
-$submitted_hashbase = $orderID . $phpshopcookie . $sessioncookie;
+$submitted_hashbase = $orderID . $virtuemartcookie . $sessioncookie;
 
 // OK! VALID...
 if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) {
 
-  session_id( $phpshopcookie );
-  session_name( 'phpshop' );
+  session_id( $virtuemartcookie );
+  session_name( 'virtuemart' );
   @session_start();
   
   $session = new mosSession( $database );
@@ -49,9 +49,9 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
   
   /** Retrieve Order & Payment Info **/
   $db = new ps_DB;
-  $q  = "SELECT order_id,order_total FROM #__pshop_orders ";
-  $q .= "WHERE #__pshop_orders.user_id='" . $my->id . "' ";
-  $q .= "AND #__pshop_orders.order_id='$order_id' ";
+  $q  = "SELECT order_id,order_total FROM #__{vm}_orders ";
+  $q .= "WHERE #__{vm}_orders.user_id='" . $my->id . "' ";
+  $q .= "AND #__{vm}_orders.order_id='$order_id' ";
   $db->query($q);
   if ($db->next_record()) {
   
@@ -82,7 +82,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
       document.checkout_pbscc_payment.CVC.value = document.checkout_pbscc_payment.CVC.value.replace(/(\D)+/g,"");
       
       if(document.checkout_pbscc_payment.CardNumber.value.length < 10 ) {
-        alert('<?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE ?>');
+        alert('<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE ?>');
         return false;
       }      
       else if(document.checkout_pbscc_payment.CVC.value.length < 3 ) {
@@ -93,7 +93,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
     }
     </script>
             
-        <h2><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYINFO_LBL ?></h2>
+        <h2><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYINFO_LBL ?></h2>
         <h3>This page is located on the webshop's website.<br/>
         the gateway execute the page on the website, and the shows the result SSL Encrypted.</h3>
     
@@ -105,28 +105,28 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
       <input type="hidden" name="TestMode" value="1" />
     <?php } ?>
     <input type="hidden" name="sessionid" value="<?php echo $sessionid ?>" />
-	<input type="hidden" name="OKURL" value="<?php echo $mosConfig_live_site ?>/index.php?option=com_phpshop&page=checkout.dandomain_result&accept=1" />
-	<input type="hidden" name="FAILURL" value="<?php echo $mosConfig_live_site ?>/index.php?option=com_phpshop&page=checkout.dandomain_result&accept=0" />
+	<input type="hidden" name="OKURL" value="<?php echo $mosConfig_live_site ?>/index.php?option=com_virtuemart&page=checkout.dandomain_result&accept=1" />
+	<input type="hidden" name="FAILURL" value="<?php echo $mosConfig_live_site ?>/index.php?option=com_virtuemart&page=checkout.dandomain_result&accept=0" />
     <input type="hidden" name="MerchantNumber" value="<?php echo PBS_MERCHANT_ID ?>" /> 
     <br/>
     <table>
       <tr>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER ?>:</td>
+        <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER ?>:</td>
         <td><?php printf("%08d", $db->f("order_id")); ?></td>
       </tr>
       <tr>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_TOTAL ?>:</td>
+        <td><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL ?>:</td>
         <td><?php echo $CURRENCY_DISPLAY->getFullValue( $db->f("order_total")); ?></td>
       </tr>
       <tr>
         <td colspan="2"><hr/></td>
       </tr>
       <tr>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM ?>:</td>
+        <td><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM ?>:</td>
         <td><input class="inputbox" type="text" name="CardNumber" size="20"></td>
       </tr>
       <tr>
-        <td><?php echo $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE ?>:</td>
+        <td><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE ?>:</td>
         <td>
           <select class="inputbox" name="ExpireMonth">
             <option value="01">01</option>
@@ -162,7 +162,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
       <tr>
         <td>Credit Card Validation Code:</td>
         <td><input class="inputbox" type="text" name="CardCVC" size="5" />
-        <?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP, "What\'s the Credit Card Validation Code?"); ?>
+        <?php echo mosToolTip($VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP, "What\'s the Credit Card Validation Code?"); ?>
         </td>
       </tr>
     </table>
@@ -175,7 +175,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
 else {
 ?>
       <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-      <span class="message"><? echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_ERROR ?> (MD5 Check failed)</span>
+      <span class="message"><? echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (MD5 Check failed)</span>
 <?php
 }
 ?>

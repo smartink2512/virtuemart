@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_cart.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -45,7 +45,7 @@ class ps_cart {
   ** returns:
   ***************************************************************************/  
   function add(&$d) {
-    global $sess, $PHPSHOP_LANG;
+    global $sess, $VM_LANG;
 	
 	include_class("product");
 	
@@ -57,26 +57,26 @@ class ps_cart {
 
     // Check for negative quantity
     if ($quantity < 0) {
-      $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
+      $d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
       return False;
     }
 
     if (!ereg("^[0-9]*$", $quantity)) {
-     	$d["error"] = $PHPSHOP_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
+     	$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
         return False; 
     }
 
     // Check to see if checking stock quantity
     if (CHECK_STOCK) {
       $q = "SELECT product_in_stock ";
-      $q .= "FROM #__pshop_product where product_id='$product_id'";
+      $q .= "FROM #__{vm}_product where product_id='$product_id'";
       $db->query($q);
       $db->next_record();
       $product_in_stock = $db->f("product_in_stock");
       if (empty($product_in_stock)) $product_in_stock = 0;
       if ($quantity > $product_in_stock) {
-        $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CART_STOCK_1;
-        $msg = "\$msg = \"".$PHPSHOP_LANG->_PHPSHOP_CART_STOCK_2."\";";
+        $d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1;
+        $msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
         eval($msg);
         $d["error"] .= $msg;
 
@@ -90,16 +90,16 @@ class ps_cart {
     }
 
     // Quick add of item
-    $q = "SELECT product_id FROM #__pshop_product WHERE ";
+    $q = "SELECT product_id FROM #__{vm}_product WHERE ";
     $q .= "product_parent_id = '".$d['product_id']."'";
     $db->query ( $q );
    
     if ( $db->num_rows()) {
         include_class("product");
         $flypage = ps_product::get_flypage($product_id);
-		$d["error"] = $PHPSHOP_LANG->_PHPSHOP_CART_SELECT_ITEM;
+		$d["error"] = $VM_LANG->_PHPSHOP_CART_SELECT_ITEM;
 		return false;
-        mosRedirect("index.php?option=com_phpshop&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=".$_POST['category_id']."&Itemid=$Itemid", $PHPSHOP_LANG->_PHPSHOP_CART_SELECT_ITEM);
+        mosRedirect("index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=".$_POST['category_id']."&Itemid=$Itemid", $VM_LANG->_PHPSHOP_CART_SELECT_ITEM);
     } 
 
     // If no quantity sent them assume 1
@@ -115,7 +115,7 @@ class ps_cart {
     if ( ($result["attribute_given"] == false && $result["advanced_attribute_list"])
         || ($result["custom_attribute_given"] == false && $result["custom_attribute_list"])){
         $flypage = ps_product::get_flypage($product_id);
-        mosRedirect("index.php?option=com_phpshop&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$_POST[category_id]&Itemid=$Itemid", $PHPSHOP_LANG->_PHPSHOP_CART_SELECT_ITEM);
+        mosRedirect("index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$_POST[category_id]&Itemid=$Itemid", $VM_LANG->_PHPSHOP_CART_SELECT_ITEM);
     } 
     
     // Check for duplicate and do not add to current quantity
@@ -162,7 +162,7 @@ class ps_cart {
   ** returns:
   ***************************************************************************/    
   function update(&$d) {
-    global $sess,$PHPSHOP_LANG;
+    global $sess,$VM_LANG;
 
 	include_class("product");
 
@@ -173,27 +173,27 @@ class ps_cart {
 
     // Check for negative quantity
     if ($quantity < 0) {
-      $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
+      $d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
       return False;
     }
 
     if (!ereg("^[0-9]*$", $quantity)) {
-        $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
+        $d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
         return False;
     }
 
     // Check to see if checking stock quantity
     if (CHECK_STOCK) {
       $q = "SELECT product_in_stock ";
-      $q .= "FROM #__pshop_product where product_id=";
+      $q .= "FROM #__{vm}_product where product_id=";
       $q .= $product_id;
       $db->query($q);
       $db->next_record();
       $product_in_stock = $db->f("product_in_stock");
       if (empty($product_in_stock)) $product_in_stock = 0;
       if ($quantity > $product_in_stock) {
-        $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CART_STOCK_1."<br />";
-        $msg = "\$msg = \"".$PHPSHOP_LANG->_PHPSHOP_CART_STOCK_2."\";";
+        $d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1."<br />";
+        $msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
         eval($msg);
         $d["error"] .= $msg;
 

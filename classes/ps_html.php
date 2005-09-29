@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This Class provides some utility functions
 * to easily create drop-down lists
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_html.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -13,7 +13,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -64,14 +64,14 @@ class ps_html {
    * description: Lists some titles.
    ****************************************************************************/
   function list_user_title($t, $extra="") {
-     global $PHPSHOP_LANG;
+     global $VM_LANG;
      
-     $title = array($PHPSHOP_LANG->_PHPSHOP_REGISTRATION_FORM_MR, 
-                          $PHPSHOP_LANG->_PHPSHOP_REGISTRATION_FORM_MRS, 
-                          $PHPSHOP_LANG->_PHPSHOP_REGISTRATION_FORM_DR, 
-                          $PHPSHOP_LANG->_PHPSHOP_REGISTRATION_FORM_PROF);
+     $title = array($VM_LANG->_PHPSHOP_REGISTRATION_FORM_MR, 
+                          $VM_LANG->_PHPSHOP_REGISTRATION_FORM_MRS, 
+                          $VM_LANG->_PHPSHOP_REGISTRATION_FORM_DR, 
+                          $VM_LANG->_PHPSHOP_REGISTRATION_FORM_PROF);
      echo "<select class=\"inputbox\" name=\"title\" $extra>\n";
-     echo "<option value=\"\">".$PHPSHOP_LANG->_PHPSHOP_REGISTRATION_FORM_NONE."</option>\n";
+     echo "<option value=\"\">".$VM_LANG->_PHPSHOP_REGISTRATION_FORM_NONE."</option>\n";
      for ($i=0;$i<count($title);$i++) {
         echo "<option value=\"" . $title[$i]."\"";
         if ($title[$i] == $t)
@@ -94,7 +94,7 @@ class ps_html {
   ** returns: prints HTML drop down element to standard output
   ***************************************************************************/
    function list_month($list_name, $selected_item="") {
-      global $PHPSHOP_LANG;
+      global $VM_LANG;
        $list = array("Month",
                     "01" => _JAN,
                     "02" => _FEB,
@@ -145,17 +145,17 @@ class ps_html {
   ** returns: prints HTML drop down element to standard output
   ***************************************************************************/
    function list_states($list_name,$selected_item="", $country_id="", $extra="") {
-      global $PHPSHOP_LANG;
+      global $VM_LANG;
       
       $db =& new ps_DB;
-      $q = "SELECT country_name, state_name, state_3_code , state_2_code FROM #__pshop_state, #__pshop_country "; 
-      $q .= "WHERE #__pshop_state.country_id = #__pshop_country.country_id ";
+      $q = "SELECT country_name, state_name, state_3_code , state_2_code FROM #__{vm}_state, #__{vm}_country "; 
+      $q .= "WHERE #__{vm}_state.country_id = #__{vm}_country.country_id ";
       if( !empty( $country_id ))
         $q .= " AND country_id='$country_id' ";
       $q .= "ORDER BY country_name, state_name";
       $db->query( $q );
       $list = Array();
-      $list["0"] = $PHPSHOP_LANG->_PHPSHOP_SELECT;
+      $list["0"] = $VM_LANG->_PHPSHOP_SELECT;
       $list["NONE"] = "not listed";
       $country = "";
       
@@ -172,7 +172,7 @@ class ps_html {
    }
    
     function dynamic_state_lists( $country_list_name, $state_list_name, $selected_country_code="", $selected_state_code="" ) {
-      global $database, $vendor_country_3_code, $PHPSHOP_LANG;
+      global $database, $vendor_country_3_code, $VM_LANG;
       if( empty( $selected_country_code ))
         $selected_country_code = $vendor_country_3_code;
         
@@ -181,8 +181,8 @@ class ps_html {
       else
         $selected_state_code = "'".$selected_state_code."'";
         
-      $database->setQuery( "SELECT #__pshop_country.country_id,country_3_code 
-                              FROM #__pshop_country" );
+      $database->setQuery( "SELECT #__{vm}_country.country_id,country_3_code 
+                              FROM #__{vm}_country" );
       $countries = $database->loadObjectList();
       
       if( $countries ) {
@@ -196,7 +196,7 @@ class ps_html {
       
         foreach( $countries as $country ) {
         
-            $database->setQuery( "SELECT state_name, state_2_code FROM #__pshop_state WHERE country_id='".$country->country_id."'" );
+            $database->setQuery( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$country->country_id."'" );
             
             $states = Array();
             $states = $database->loadObjectList();
@@ -207,7 +207,7 @@ class ps_html {
               }
             }
             else
-              $script .= "states[".$i++."] = new Array( '".addslashes($country->country_3_code)."','".$PHPSHOP_LANG->_PHPSHOP_NONE."','".$PHPSHOP_LANG->_PHPSHOP_NONE."' );\n";
+              $script .= "states[".$i++."] = new Array( '".addslashes($country->country_3_code)."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
             
             
         }
@@ -238,9 +238,9 @@ class ps_html {
   ** returns: prints HTML drop down element to standard output
   ***************************************************************************/
    function list_weight_uom($list_name) {
-       global $PHPSHOP_LANG;
+       global $VM_LANG;
        
-       $list = array($PHPSHOP_LANG->_PHPSHOP_SELECT,
+       $list = array($VM_LANG->_PHPSHOP_SELECT,
                     "LBS" => "Pounds",
                     "KGS" => "Kilograms",
                     "G" => "Grams");
@@ -260,14 +260,14 @@ class ps_html {
   ** returns: prints HTML drop down element to standard output
   ***************************************************************************/
    function list_country($list_name, $value="", $extra="") {
-     global $PHPSHOP_LANG;
+     global $VM_LANG;
    
      $db = new ps_DB;
      
-     $q = "SELECT * from #__pshop_country ORDER BY country_name ASC";
+     $q = "SELECT * from #__{vm}_country ORDER BY country_name ASC";
      $db->query($q);
      echo "<select class=\"inputbox\" name=\"$list_name\" $extra>\n";
-     echo "<option value=\"\">".$PHPSHOP_LANG->_PHPSHOP_SELECT."</option>\n";
+     echo "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
      while ($db->next_record()) {
        echo "<option value=\"" . $db->f("country_3_code")."\"";
        if ($value == $db->f("country_3_code")) {
@@ -289,13 +289,13 @@ class ps_html {
   ** returns: prints HTML drop down element to standard output
   ***************************************************************************/
    function list_currency($list_name, $value="") {
-     global $PHPSHOP_LANG;
+     global $VM_LANG;
      $db = new ps_DB;
      
-     $q = "SELECT * from #__pshop_currency ORDER BY currency_name ASC";
+     $q = "SELECT * from #__{vm}_currency ORDER BY currency_name ASC";
      $db->query($q);
      echo "<select class=\"inputbox\" name=\"$list_name\">\n";
-     echo "<option value=\"\">".$PHPSHOP_LANG->_PHPSHOP_SELECT."</option>\n";
+     echo "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
      while ($db->next_record()) {
        echo "<option value=" . $db->f("currency_code");
        if ($value == $db->f("currency_code")) {
@@ -317,13 +317,13 @@ class ps_html {
   ** returns: prints HTML drop down element to standard output
   ***************************************************************************/
    function list_currency_id($list_name, $value="") {
-     global $PHPSHOP_LANG;
+     global $VM_LANG;
      $db = new ps_DB;
      
-     $q = "SELECT * from #__pshop_currency ORDER BY currency_name ASC";
+     $q = "SELECT * from #__{vm}_currency ORDER BY currency_name ASC";
      $db->query($q);
      echo "<select class=\"inputbox\" name=\"$list_name\">\n";
-     echo "<option value=\"\">".$PHPSHOP_LANG->_PHPSHOP_SELECT."</option>\n";
+     echo "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
      while ($db->next_record()) {
        echo "<option value=" . $db->f("currency_id");
        if ($value == $db->f("currency_id")) {
@@ -352,7 +352,7 @@ class ps_html {
 
         $db =& new ps_DB;
         
-        $q = "SELECT product_id, product_name FROM #__pshop_product ";
+        $q = "SELECT product_id, product_name FROM #__{vm}_product ";
         if( !$show_items ) {
           $q .= "WHERE product_parent_id='0' AND product_id <> '$product_id'";
         }
@@ -374,10 +374,10 @@ class ps_html {
    * description: Lists items of extra_field_4.
    ****************************************************************************/
   function list_extra_field_4($t, $extra="") {
-     global $PHPSHOP_LANG;
+     global $VM_LANG;
      
-     $title = array(array('Y',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1),
-                    array('N',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2));
+     $title = array(array('Y',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1),
+                    array('N',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2));
      
      echo "<select class=\"inputbox\" name=\"extra_field_4\" $extra>\n";
      for ($i=0;$i<count($title);$i++) {
@@ -397,11 +397,11 @@ class ps_html {
 	* description: Lists items of extra_field_5.
 	****************************************************************************/
 	function list_extra_field_5($t, $extra="") {
-		global $PHPSHOP_LANG;
+		global $VM_LANG;
 		 
-		$title = array(array('A',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1),
-					array('B',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2),
-					array('C',$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3));
+		$title = array(array('A',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1),
+					array('B',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2),
+					array('C',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3));
 		 
 		echo "<select class=\"inputbox\" name=\"extra_field_5\" $extra>\n";
 		for ($i=0;$i<count($title);$i++) {
@@ -429,9 +429,9 @@ class ps_html {
 	}
   
 	function deleteButton( $id_fieldname, $id, $func, $keyword="", $limitstart=0, $extra="" ) {
-		global $page, $PHPSHOP_LANG;
+		global $page, $VM_LANG;
 		
-		$code = "<a class=\"toolbar\" href=\"index2.php?option=com_phpshop&page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart".$extra."\" onclick=\"return confirm('".$PHPSHOP_LANG->_PHPSHOP_DELETE_MSG ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+		$code = "<a class=\"toolbar\" href=\"index2.php?option=com_virtuemart&page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart".$extra."\" onclick=\"return confirm('".$VM_LANG->_PHPSHOP_DELETE_MSG ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
 		$code .= "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$id\" align=\"middle\" border=\"0\" />";
 		$code .= "</a>";
 		

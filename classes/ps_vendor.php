@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_vendor.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -71,7 +71,7 @@ class ps_vendor {
 			return False;
 		}
 		
-		$q = "SELECT * FROM #__pshop_product where vendor_id='$vendor_id'";
+		$q = "SELECT * FROM #__{vm}_product where vendor_id='$vendor_id'";
 		$db->query($q);
 		if ($db->next_record()) {
 			$d["error"]  = "ERROR:  This vendor still has products.  ";
@@ -82,7 +82,7 @@ class ps_vendor {
 		/* Get the image filenames from the database */
 		$db = new ps_DB;
 		$q  = "SELECT vendor_thumb_image,vendor_full_image ";
-		$q .= "FROM #__pshop_vendor ";
+		$q .= "FROM #__{vm}_vendor ";
 		$q .= "WHERE vendor_id='$vendor_id'";
 		$db->query($q);
 		$db->next_record();
@@ -167,7 +167,7 @@ function validate_update(&$d) {
     
     $d['display_style'] = implode("|", $d['display_style'] );
     
-    $q = "INSERT INTO #__pshop_vendor (";
+    $q = "INSERT INTO #__{vm}_vendor (";
     $q .= "vendor_name,contact_last_name,contact_first_name,";
     $q .= "contact_middle_name,contact_title,contact_phone_1,";
     $q .= "contact_phone_2,contact_fax,contact_email,";
@@ -208,7 +208,7 @@ function validate_update(&$d) {
     $db->next_record();
 
     // Get the assigned vendor_id //
-    $q  = "SELECT vendor_id FROM #__pshop_vendor ";
+    $q  = "SELECT vendor_id FROM #__{vm}_vendor ";
     $q .= "WHERE vendor_name = '" . $d["vendor_name"] . "' ";
     $q .= "AND cdate = $timestamp";
     addslashes($q);
@@ -217,7 +217,7 @@ function validate_update(&$d) {
     $d["vendor_id"] = $db->f("vendor_id");
 
     /* Insert default- shopper group */
-    $q = "INSERT INTO #__pshop_shopper_group (";
+    $q = "INSERT INTO #__{vm}_shopper_group (";
     $q .= "`vendor_id`,";
     $q .= "`shopper_group_name`,";
     $q .= "`shopper_group_desc`,`default`) VALUES ('";
@@ -254,7 +254,7 @@ function validate_update(&$d) {
     
     $d['display_style'] = implode("|", $d['display_style'] );
     
-    $q = "UPDATE #__pshop_vendor set vendor_name='" . $d["vendor_name"] . "',";
+    $q = "UPDATE #__{vm}_vendor set vendor_name='" . $d["vendor_name"] . "',";
     $q .= "contact_last_name='" . $d["contact_last_name"] . "',";
     $q .= "contact_first_name='" . $d["contact_first_name"] . "',";
     $q .= "contact_middle_name='" . $d["contact_middle_name"] . "',";
@@ -332,7 +332,7 @@ function validate_update(&$d) {
 		  return false;
 		}
 	
-		$q = "DELETE FROM #__pshop_vendor where vendor_id='$record_id'";
+		$q = "DELETE FROM #__{vm}_vendor where vendor_id='$record_id'";
 		$db->query($q);
 	
 	
@@ -351,7 +351,7 @@ function validate_update(&$d) {
 
     $db = new ps_DB;
 
-    $q  = "SELECT vendor_id FROM #__pshop_auth_user_vendor ";
+    $q  = "SELECT vendor_id FROM #__{vm}_auth_user_vendor ";
     $q .= "WHERE user_id='" . $auth["user_id"] . "'";
     $db->query($q);
     $db->next_record();
@@ -378,7 +378,7 @@ function validate_update(&$d) {
     if ($d["vendor_category_id"] == "0") {
       $d["vendor_category_id"] = "";
     } 
-    $q = "SELECT * FROM #__pshop_vendor where vendor_name LIKE '%" . $d["vendor_name"] . "%'";
+    $q = "SELECT * FROM #__{vm}_vendor where vendor_name LIKE '%" . $d["vendor_name"] . "%'";
     $q .= " AND contact_last_name LIKE '%" . $d["contact_last_name"] . "%'";
     $q .= " AND contact_first_name LIKE '%" . $d["contact_first_name"] . "%'";
     $q .= " AND contact_middle_name LIKE '%" . $d["contact_middle_name"] . "%'";
@@ -406,7 +406,7 @@ function validate_update(&$d) {
     if ($db->num_rows() == 1) {
       return "?vid=" . $db->f("vendor_id");
     }
-    $t = new phpshop_Table;
+    $t = new virtuemart_Table;
     $t->query = $q;
     $t->table = "vendor";
     $t->start = $start;
@@ -441,11 +441,11 @@ function validate_update(&$d) {
     $db = new ps_DB;
 
     if ($vendor_id) {
-      $q = "SELECT vendor_name FROM #__pshop_vendor WHERE vendor_id = '$vendor_id'";
+      $q = "SELECT vendor_name FROM #__{vm}_vendor WHERE vendor_id = '$vendor_id'";
     } elseif ($product_id) {
-      $q  = "SELECT vendor_name FROM #__pshop_product,#__pshop_vendor ";
+      $q  = "SELECT vendor_name FROM #__{vm}_product,#__{vm}_vendor ";
       $q .= "WHERE product_id = '$product_id' ";
-      $q .= "AND #__pshop_product.vendor_id = #__pshop_vendor.vendor_id ";
+      $q .= "AND #__{vm}_product.vendor_id = #__{vm}_vendor.vendor_id ";
     } else {
       /* ERROR: No arguments were specified. */
       return 0;
@@ -488,7 +488,7 @@ function validate_update(&$d) {
     // Creates a form drop down list and prints it
     $db = new ps_DB;
     
-    $q = "SELECT count(*) as rowcnt FROM #__pshop_vendor ORDER BY vendor_name";
+    $q = "SELECT count(*) as rowcnt FROM #__{vm}_vendor ORDER BY vendor_name";
     $db->query($q);
     $db->next_record();
     $rowcnt = $db->f("rowcnt");
@@ -497,13 +497,13 @@ function validate_update(&$d) {
     if ($rowcnt == 1) 
        return True;
 
-    $q = "SELECT * FROM #__pshop_vendor ORDER BY vendor_name";
+    $q = "SELECT * FROM #__{vm}_vendor ORDER BY vendor_name";
     $db->query($q);
    
     $code = "<form action=\"" . SECUREURL . "\" method=\"post\">\n";
     $code .= "<input type=\"hidden\" name=\"page\" value=\"admin.index\" />\n";
     $code .= "<input type=\"hidden\" name=\"func\" value=\"setvendor\" />\n";
-    $code .= "<input type=\"hidden\" name=\"option\" value=\"com_phpshop\" />\n";
+    $code .= "<input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />\n";
     $code .= "<select name=\"vendor_id\">\n";
     while ($db->next_record()) {     
       $code .= "  <option value=\"" . $db->f("vendor_id") . "\"";
@@ -529,7 +529,7 @@ function validate_update(&$d) {
   function get_field($vendor_id, $field_name) {
     $db = new ps_DB;
 
-    $q = "SELECT $field_name FROM #__pshop_vendor WHERE vendor_id='$vendor_id'";
+    $q = "SELECT $field_name FROM #__{vm}_vendor WHERE vendor_id='$vendor_id'";
     $db->query($q);
     if ($db->next_record()) {
        return $db->f($field_name);

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: $
+* @version $Id: english.php,v 1.4 2005/09/27 17:51:27 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -71,7 +71,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Thank you for your order.';
 	var $_PHPSHOP_NOT_SHIPPED = 'Not Shipped Yet';
 	var $_PHPSHOP_EMAIL_SENDTO = 'A confirmation email has been sent to';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Sorry, there\'s no MOS - user that you could add to the com_phpshop userlist';
+	var $_PHPSHOP_NO_USER_TO_SELECT = 'Sorry, there\'s no MOS - user that you could add to the com_virtuemart userlist';
 	var $_PHPSHOP_ERROR = 'ERROR';
 	var $_PHPSHOP_MOD_NOT_REG = 'Module Not Registered.';
 	var $_PHPSHOP_MOD_ISNO_REG = 'is not a valid phpShop module.';
@@ -880,11 +880,11 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'SECUREURL';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'The secure URL to your site. (https - with trailing slash at the end!)';
 	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'COMPONENTURL';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'The URL to the mambo-phpShop component. (with trailing slash at the end!)';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'The URL to the VirtueMart component. (with trailing slash at the end!)';
 	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'IMAGEURL';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'The URL to the mambo-phpShop component image directory.(with trailing slash at the end!)';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'The URL to the VirtueMart component image directory.(with trailing slash at the end!)';
 	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'ADMINPATH';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'The path to your mambo-phpShop component directory.';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'The path to your VirtueMart component directory.';
 	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'CLASSPATH';
 	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'The path to your phpShop classes directory.';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'PAGEPATH';
@@ -919,7 +919,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'MAXIMUM ROWS';
 	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Sets the number of rows to show in the order list select box.';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Show footer ';
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Displays a powered-by-mambo-phpShop footer image.';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Displays a powered-by-VirtueMart footer image.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Choose your store\'s shipping method';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Standard Shipping module with indiviual configured carriers and rates. <strong>RECOMMENDED !</strong>';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Zone Shipping Module Country Version 1.0<br />
@@ -1217,7 +1217,7 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'OR Upload new File';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'You can upload a local file. This file will be the Product you sell. An existing file will be replaced.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Fill in any text here that will be displayed to the customer on the product flypage.<br />e.g.: 24h, 48 hours, 3 - 5 days, On Order.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OR select an Image to be displayed on the Details Page (flypage).<br />The images reside in the directory <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OR select an Image to be displayed on the Details Page (flypage).<br />The images reside in the directory <i>/components/com_virtuemart/shop_image/availability</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Attribute List';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Examples for the Attribute List Format:</h4>
         <pre>Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];AndSoOn,..,..</pre>
@@ -1379,6 +1379,6 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_COLLAPSE_TREE = 'Collapse Tree';
         
 }
-/** @global phpShopLanguage $PHPSHOP_LANG */
-$PHPSHOP_LANG =& new phpShopLanguage();
+/** @global phpShopLanguage $VM_LANG */
+$VM_LANG =& new phpShopLanguage();
 ?>

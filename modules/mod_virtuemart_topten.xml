@@ -4,12 +4,12 @@
     <creationDate>01.06.2004</creationDate>
     <author>soeren</author>
     <copyright>phpShop is released under GNU/GPLicense</copyright>
-    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
-    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <authorEmail>soeren@virtuemart.net</authorEmail>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.1</version>
     <description>Shows the best selling products from your phpShop.</description>
      <files>
-         <filename module="mod_phpshop_topten">mod_phpshop_topten.php</filename>
+         <filename module="mod_virtuemart_topten">mod_virtuemart_topten.php</filename>
      </files>
      <params>
         <param name="num_topsellers" type="text" default="10" label="Number of displayed products" description="This defines the number of products which will be displayed in the module." />

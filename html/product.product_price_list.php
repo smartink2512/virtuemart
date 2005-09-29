@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_price_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -27,22 +27,22 @@ $product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
 $return_args = mosgetparam($_REQUEST, 'return_args');
 
 if (empty($product_parent_id)) {
-  $title = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_LBL;
+  $title = $VM_LANG->_PHPSHOP_PRODUCT_LBL;
 } else {
-  $title = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_LBL;
+  $title = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_LBL;
 }
-$title .=  "<br/>". $PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_FOR_LBL."&nbsp;&nbsp;";
+$title .=  "<br/>". $VM_LANG->_PHPSHOP_PRICE_LIST_FOR_LBL."&nbsp;&nbsp;";
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .=  "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name")."</a>"; 
 
 
 $count = "SELECT COUNT(*) ";
 $list = "SELECT shopper_group_name,product_price_id,product_price,product_currency,price_quantity_start,price_quantity_end ";
-$q = "FROM #__pshop_shopper_group,#__pshop_product_price ";
+$q = "FROM #__{vm}_shopper_group,#__{vm}_product_price ";
 $q .= "WHERE product_id = '$product_id' ";
 if( !$perm->check("admin"))
-  $q .= "AND #__pshop_shopper_group.vendor_id = '$ps_vendor_id' ";
-$q .= "AND #__pshop_shopper_group.shopper_group_id = #__pshop_product_price.shopper_group_id ";
+  $q .= "AND #__{vm}_shopper_group.vendor_id = '$ps_vendor_id' ";
+$q .= "AND #__{vm}_shopper_group.shopper_group_id = #__{vm}_product_price.shopper_group_id ";
 $q .= "ORDER BY shopper_group_name,price_quantity_start, product_price ";
 $list .= $q . "LIMIT $limitstart, $limit";
 $count .= $q;
@@ -64,11 +64,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_GROUP_NAME => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRICE_LIST_PRICE => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_CURRENCY => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_START => 'width="50"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_END => 'width="50"',
+					$VM_LANG->_PHPSHOP_PRICE_LIST_GROUP_NAME => '',
+					$VM_LANG->_PHPSHOP_PRICE_LIST_PRICE => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_CURRENCY => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_START => 'width="50"',
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_END => 'width="50"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

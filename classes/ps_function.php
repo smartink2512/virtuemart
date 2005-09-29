@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_function.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -73,7 +73,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
        return False;	
      }
      if ($d["function_name"]) {
-       $q = "SELECT count(*) as rowcnt from #__pshop_function where";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_function where";
        $q .= " function_name='" .  $d["function_name"] . "'";
        $db->setQuery($q);
        $db->query();
@@ -156,7 +156,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
         $d[$key] = addslashes($value);
         
         
-    $q = "INSERT INTO #__pshop_function (module_id, function_name, function_class, ";
+    $q = "INSERT INTO #__{vm}_function (module_id, function_name, function_class, ";
     $q .= "function_method, function_perms, function_description)";
     $q .= " VALUES ('";
     $q .= $d["module_id"] . "','";
@@ -191,7 +191,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     foreach ($d as $key => $value)
         $d[$key] = addslashes($value);
         
-    $q = "UPDATE #__pshop_function set ";
+    $q = "UPDATE #__{vm}_function set ";
     $q .= "function_name='" . $d["function_name"];
     $q .= "',function_class='" . $d["function_class"];
     $q .= "',function_method='" . $d["function_method"];
@@ -237,7 +237,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	*/
 	function delete_record( $record_id, &$d ) {
 		global $db;
-		$q = "DELETE from #__pshop_function where function_id='$record_id'";
+		$q = "DELETE from #__{vm}_function where function_id='$record_id'";
 		$db->query($q);
 		return True;
 	}
@@ -255,7 +255,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     $db = new ps_DB;
     $result = array(); 
     
-    $q = "SELECT * FROM #__pshop_function WHERE LOWER(function_name)='".strtolower($func)."'";
+    $q = "SELECT * FROM #__{vm}_function WHERE LOWER(function_name)='".strtolower($func)."'";
     $db->setQuery($q);
     $db->query();
     if ($db->next_record()) {
@@ -276,7 +276,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     ************************************************/
   function checkFuncPermissions( $func ) {
 	
-	global $page, $perm, $PHPSHOP_LANG, $error_type, $error;
+	global $page, $perm, $VM_LANG, $error_type, $error;
 	  
 	if (!empty($func)) {
     
@@ -286,15 +286,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 				return $funcParams;
 			}
 			else {
-				$error_type = $PHPSHOP_LANG->_PHPSHOP_PAGE_403;
-				$error = $PHPSHOP_LANG->_PHPSHOP_FUNC_NO_EXEC . $func;
+				$error_type = $VM_LANG->_PHPSHOP_PAGE_403;
+				$error = $VM_LANG->_PHPSHOP_FUNC_NO_EXEC . $func;
 				$page = ERRORPAGE;          
 				return false;
 			}
 		}
 		else {
-			$error_type = $PHPSHOP_LANG->_PHPSHOP_FUNC_NOT_REG;
-			$error = $func . $PHPSHOP_LANG->_PHPSHOP_FUNC_ISNO_REG ;
+			$error_type = $VM_LANG->_PHPSHOP_FUNC_NOT_REG;
+			$error = $func . $VM_LANG->_PHPSHOP_FUNC_ISNO_REG ;
 			$page = ERRORPAGE;    
 			return false;
 		}

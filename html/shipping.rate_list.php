@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shipping.rate_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,8 +21,8 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__pshop_shipping_rate WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_shipping_rate WHERE ";
+	$list  = "SELECT * FROM #__{vm}_shipping_rate WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_shipping_rate WHERE ";
 	$q  = "(shipping_rate_name LIKE '%$keyword%') ";
 	$q .= "ORDER BY shipping_rate_carrier_id ASC ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
@@ -30,8 +30,8 @@ if (!empty($keyword)) {
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__pshop_shipping_rate ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_shipping_rate";
+	$list  = "SELECT * FROM #__{vm}_shipping_rate ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_shipping_rate";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;
 }
@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_RATE_LIST_LBL, IMAGEURL."ps_image/shipping.gif", $modulename, "rate_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_RATE_LIST_LBL, IMAGEURL."ps_image/shipping.gif", $modulename, "rate_list");
 
 // start the list table
 $listObj->startTable();
@@ -54,10 +54,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL => '',
-					$PHPSHOP_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME => '',
-					$PHPSHOP_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART => '',
-					$PHPSHOP_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND => '',
+					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL => '',
+					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME => '',
+					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART => '',
+					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -74,7 +74,7 @@ while ($db->next_record()) {
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("shipping_rate_id"), false, "shipping_rate_id" ) );
 	
 	$cdb = new ps_DB;
-	$cq = "SELECT shipping_carrier_name FROM #__pshop_shipping_carrier WHERE ";
+	$cq = "SELECT shipping_carrier_name FROM #__{vm}_shipping_carrier WHERE ";
 	$cq .= "shipping_carrier_id = '" . $db->f("shipping_rate_carrier_id") . "'";
 	$cdb->query($cq);
 	$cdb->next_record();

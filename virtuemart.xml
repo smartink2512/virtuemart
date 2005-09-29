@@ -1,0 +1,131 @@
+<?xml version="1.0" ?>
+<mosinstall type="component">
+	<name>VirtueMart</name>
+	<creationDate>27.09.2004</creationDate>
+	<author>Soeren Eberhardt &amp; the VirtueMart dev team</author>
+	<copyright>released under GNU General Public License</copyright>
+	<authorEmail>soeren@virtuemart.net</authorEmail>
+	<authorUrl>www.virtuemart.net</authorUrl>
+	<version>0.9.0 beta</version>
+	<description>Online-Shop / E-Commerce Component</description>
+  <files>
+      <filename>frontend_files.tar.gz</filename>
+  </files>
+  <install>
+      <queries>
+          <query>SELECT id FROM #__components</query>
+      </queries>
+  </install>
+  <uninstall>
+    <queries>
+      <query>DROP TABLE `#__{vm}_affiliate`;</query>
+      <query>DROP TABLE `#__{vm}_affiliate_sale`;</query>
+      <query>DROP TABLE `#__{vm}_auth_user_vendor`;</query>
+      <query>DROP TABLE `#__{vm}_category`;</query>
+      <query>DROP TABLE `#__{vm}_category_xref`;</query>
+      <query>DROP TABLE `#__{vm}_country`;</query>
+      <query>DROP TABLE `#__{vm}_coupons`;</query>
+      <query>DROP TABLE `#__{vm}_creditcard`;</query>
+      <query>DROP TABLE `#__{vm}_csv`;</query>
+      <query>DROP TABLE `#__{vm}_currency`;</query>
+      <query>DROP TABLE `#__{vm}_function`;</query>
+      <query>DROP TABLE `#__{vm}_manufacturer`;</query>
+      <query>DROP TABLE `#__{vm}_manufacturer_category`;</query>
+      <query>DROP TABLE `#__{vm}_module`;</query>
+      <query>DROP TABLE `#__{vm}_order_history`;</query>
+      <query>DROP TABLE `#__{vm}_order_item`;</query>
+      <query>DROP TABLE `#__{vm}_order_payment`;</query>
+      <query>DROP TABLE `#__{vm}_order_status`;</query>
+      <query>DROP TABLE `#__{vm}_order_user_info`;</query>
+      <query>DROP TABLE `#__{vm}_orders`;</query>
+      <query>DROP TABLE `#__{vm}_payment_method`;</query>
+      <query>DROP TABLE `#__{vm}_product`;</query>
+      <query>DROP TABLE `#__{vm}_product_attribute`;</query>
+      <query>DROP TABLE `#__{vm}_product_attribute_sku`;</query>
+      <query>DROP TABLE `#__{vm}_product_category_xref`;</query>
+      <query>DROP TABLE `#__{vm}_product_discount`;</query>
+      <query>DROP TABLE `#__{vm}_product_download`;</query>
+      <query>DROP TABLE `#__{vm}_product_files`;</query>   
+      <query>DROP TABLE `#__{vm}_product_mf_xref`;</query>   
+      <query>DROP TABLE `#__{vm}_product_price`;</query>
+      <query>DROP TABLE `#__{vm}_product_relations`;</query>
+      <query>DROP TABLE `#__{vm}_product_reviews`;</query>
+      <query>DROP TABLE `#__{vm}_product_type`;</query>
+      <query>DROP TABLE `#__{vm}_product_type_parameter`;</query>
+      <query>DROP TABLE `#__{vm}_product_product_type_xref`;</query>
+      <query>DROP TABLE `#__{vm}_product_votes`;</query>
+      <query>DROP TABLE `#__{vm}_shipping_carrier`;</query>
+      <query>DROP TABLE `#__{vm}_shipping_rate`;</query>
+      <query>DROP TABLE `#__{vm}_shopper_group`;</query>
+      <query>DROP TABLE `#__{vm}_shopper_vendor_xref`;</query>
+      <query>DROP TABLE `#__{vm}_state`;</query>
+      <query>DROP TABLE `#__{vm}_tax_rate`;</query>
+      <query>DROP TABLE `#__{vm}_user_info`;</query>
+      <query>DROP TABLE `#__{vm}_vendor`;</query>
+      <query>DROP TABLE `#__{vm}_vendor_category`;</query>
+      <query>DROP TABLE `#__{vm}_visit`;</query>
+      <query>DROP TABLE `#__{vm}_waiting_list`;</query>
+      <query>DROP TABLE `#__{vm}_zone_shipping`;</query>
+      <query>ALTER TABLE `#__users` DROP `user_info_id`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_type`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_type_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `company`;</query>
+      <query>ALTER TABLE `#__users` DROP `title`;</query>
+      <query>ALTER TABLE `#__users` DROP `last_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `first_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `middle_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `phone_1`;</query>
+      <query>ALTER TABLE `#__users` DROP `phone_2`;</query>
+      <query>ALTER TABLE `#__users` DROP `fax`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_1`;</query>
+      <query>ALTER TABLE `#__users` DROP `address_2`;</query>
+      <query>ALTER TABLE `#__users` DROP `city`;</query>
+      <query>ALTER TABLE `#__users` DROP `state`;</query>
+      <query>ALTER TABLE `#__users` DROP `country`;</query>
+      <query>ALTER TABLE `#__users` DROP `zip`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_1`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_2`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_3`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_4`;</query>
+      <query>ALTER TABLE `#__users` DROP `extra_field_5`;</query>
+      <query>ALTER TABLE `#__users` DROP `perms`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_account_nr`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_account_type`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_name`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_sort_code`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_iban`;</query>
+      <query>ALTER TABLE `#__users` DROP `bank_account_holder`;</query>
+    </queries>
+  </uninstall>
+  <installfile>install.virtuemart.php</installfile>
+  <uninstallfile>uninstall.virtuemart.php</uninstallfile>
+	<administration>
+    <menu>VirtueMart</menu>
+      <files>
+        <filename>2checkout_notify.php</filename>
+        <filename>admin_files.tar.gz</filename>
+        <filename>admin.virtuemart.php</filename>
+        <filename>admin.styles.css</filename>
+        <filename>cart.gif</filename>
+        <filename>CHANGELOG.php</filename>
+        <filename>COPYRIGHT.php</filename>
+        <filename>global.php</filename>
+        <filename>header.php</filename>
+        <filename>index.html</filename>
+        <filename>install.css</filename>
+        <filename>install.copy.php</filename>
+        <filename>install.php</filename>
+        <filename>LICENSE.php</filename>
+        <filename>notify.php</filename>
+        <filename>PEAR.php</filename>
+        <filename>virtuemart.cfg-dist.php</filename>
+        <filename>Tar.php</filename>
+        <filename>TODO.php</filename>
+        <filename>toolbar.virtuemart.html.php</filename>
+        <filename>toolbar.virtuemart.php</filename>
+        <filename>version.php</filename>
+        <filename>worldpay_notify.php</filename>
+        <filename>x-click-but21.gif</filename>
+      </files>
+    </administration>
+</mosinstall>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: help.about.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -24,10 +24,10 @@ include( ADMINPATH . "version.php" );
   <tr>
    <td>
     <pre><strong>Your Version:</strong> <?php echo $version ?></pre>
-    <img hspace="5" align="left" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_phpshop/cart.gif" alt="cart.gif" />
+    <img hspace="5" align="left" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_virtuemart/cart.gif" alt="cart.gif" />
     <span style="font-weight: bold;">
      VirtueMart</span> is the complete Open Source E-Commerce solution for Mambo and Joomla. It is an Application, which comes with a Component, 6 Modules and 2 Mambots.
-     It has its roots in a Shopping Cart Script called &quot;phpShop&quot; (Authors: Edikon Corp. &amp; the <a href="http://www.phpshop.org/" target="_blank">phpShop</a> community).
+     It has its roots in a Shopping Cart Script called &quot;phpShop&quot; (Authors: Edikon Corp. &amp; the <a href="http://www.virtuemart.org/" target="_blank">phpShop</a> community).
      <br /><br />VirtueMart is licensed under the <a href="http://www.gnu.org/copyleft/gpl.html" target="_blank">GNU / GPL License</a>.
      <br /><br /><br />There's a small bunch of developers who help in pushing this
           Shopping Script towards professionality and usability.
@@ -51,7 +51,7 @@ include( ADMINPATH . "version.php" );
       <input type="hidden" name="tax" value="0" />
       <input type="hidden" name="no_note" value="0" />
       <input type="hidden" name="amount" />
-      <input type="image" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_phpshop/x-click-but21.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
+      <input type="image" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_virtuemart/x-click-but21.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
     </form>
    </td>
   </tr>

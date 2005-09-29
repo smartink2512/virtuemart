@@ -1,14 +1,14 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* mambo-phpShop JSCookTree menu
+* VirtueMart JSCookTree menu
 * @ Released under GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
-* @ JSCookTree mambo-phpShop menu created by Soeren
+* @ JSCookTree VirtueMart menu created by Soeren
 * @ modified by soeren
 * @ Uses JSCookTree Javascript: http://www.cs.ucla.edu/~heng/JSCookTree/
-* @ version $Id: phpshop_JSCookTree.php,v 1.3 2005/05/31 20:42:35 soeren_nb Exp $
+* @ version $Id$
 *
-* This file is included by the phpshop module if the module parameter
+* This file is included by the virtuemart module if the module parameter
 * MenuType is set to jscooktree
 **/
 global $module, $root_label;
@@ -22,9 +22,9 @@ $jscook_theme = "ThemeNavy";
 $jscook_tree = "ctThemeNavy";
 
 echo "
-<script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_phpshop/js/JSCookTree.js\"></script>
-<link rel=\"stylesheet\" href=\"components/com_phpshop/js/$jscook_theme/theme.css\" type=\"text/css\" />
-<script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_phpshop/js/$jscook_theme/theme.js\"></script>
+<script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_virtuemart/js/JSCookTree.js\"></script>
+<link rel=\"stylesheet\" href=\"components/com_virtuemart/js/$jscook_theme/theme.css\" type=\"text/css\" />
+<script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_virtuemart/js/$jscook_theme/theme.js\"></script>
 ";
 /*********************************************************
 ************* CATEGORY TREE ******************************
@@ -66,7 +66,7 @@ class MamboMartTree {
         global $database, $module, $mosConfig_live_site;
         $level++;
         $query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
-        . "FROM #__pshop_category as a, #__pshop_category_xref as b "
+        . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
          . "WHERE a.category_publish='Y' AND "
          . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
          . "ORDER BY category_parent_id, list_order, category_name ASC";
@@ -82,8 +82,8 @@ class MamboMartTree {
             $itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
             $mymenu_content.= ",\n[null,'".$category->cname;
             $mymenu_content.= ps_product_category::products_in_category( $category->cid );
-            $mymenu_content.= "','".sefRelToAbs('index.php?option=com_phpshop&page=shop.browse&category_id='.$category->cid.$itemid."&TreeId=$Treeid")."','_self','".$category->cname."'\n ";
-            /*$database->setQuery("SELECT count(*) FROM #__pshop_category as a, #__pshop_category_xref as b "
+            $mymenu_content.= "','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$category->cid.$itemid."&TreeId=$Treeid")."','_self','".$category->cname."'\n ";
+            /*$database->setQuery("SELECT count(*) FROM #__{vm}_category as a, #__{vm}_category_xref as b "
                                          . "WHERE a.category_publish='Y' AND "
                                          . "b.category_parent='".$category->cid."'");
               $res = $database->query();

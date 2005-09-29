@@ -11,24 +11,24 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 ?>
 <pre>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  mambo-phpShop To-Do List
+  VirtueMart To-Do List
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  Know Bugs
 ##################
 
-* FedEX Module not ported to mambo-phpShop Shipping API (will it ever work?)
+* FedEX Module not ported to VirtueMart Shipping API (will it ever work?)
 
  FEATURES
 ##################
-* add a field "product_packing_unit" to mos_pshop_product
+* add a field "product_packing_unit" to mos_{vm}_product
 
 * XML - Product Data Import/Export
 * XML - Order Data Import/Export
@@ -59,7 +59,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  General to-do 
 ##################
 
-* Move Customer Information from mos_users to mos_pshop_user_info
+* Move Customer Information from mos_users to mos_{vm}_user_info
 * Move Email Templates to /html/templates
 
 * Change $func to $mm_func

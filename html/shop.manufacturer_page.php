@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shop.manufacturer_page.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -20,7 +20,7 @@ mm_showMyFileName( __FILE__ );
 $manufacturer_id = intval( mosGetParam( $_GET, 'manufacturer_id' ));
 
 if( !empty( $manufacturer_id ) ) {
-  $q  = "SELECT mf_name,mf_email,mf_desc,mf_url FROM #__pshop_manufacturer WHERE ";
+  $q  = "SELECT mf_name,mf_email,mf_desc,mf_url FROM #__{vm}_manufacturer WHERE ";
   $q .= "manufacturer_id='$manufacturer_id'";
   $db->query($q);
   $db->next_record();
@@ -35,7 +35,7 @@ if( !empty( $manufacturer_id ) ) {
   <table align="center"cellspacing="0" cellpadding="0" border="0">
       <tr valign="top"> 
         <th colspan="2" align="center"class="sectiontableheader">
-          <strong><? echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></strong>
+          <strong><? echo $VM_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></strong>
         </th>
       </tr>
       <tr valign="top">
@@ -47,7 +47,7 @@ if( !empty( $manufacturer_id ) ) {
   
       <tr>
         <td valign="top" align="center"colspan="2">
-            <br /><? echo $PHPSHOP_LANG->_PHPSHOP_STORE_FORM_EMAIL ?>:&nbsp;
+            <br /><? echo $VM_LANG->_PHPSHOP_STORE_FORM_EMAIL ?>:&nbsp;
             <a href="mailto:<?php echo $mf_email; ?>"><?php echo $mf_email; ?></a>
             <br />
             <br /><a href="<? echo $mf_url ?>" target="_blank"><? echo $mf_url ?></a><br />

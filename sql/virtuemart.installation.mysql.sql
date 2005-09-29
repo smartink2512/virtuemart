@@ -1,4 +1,4 @@
-# $Id: com_phpshop_1.2.sql,v 1.40 2005/09/01 19:58:07 soeren_nb Exp $
+# $Id$
 #
 # To undo the changes done by this script, run uninstall.phpshop.sql
 #

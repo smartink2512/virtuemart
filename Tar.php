@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @author Vincent Blavet <vincent@blavet.net>
 *
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: Tar.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -13,7 +13,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -35,7 +35,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 // | Author: Vincent Blavet <vincent@blavet.net>                          |
 // +----------------------------------------------------------------------+
 
-require_once( $mosConfig_absolute_path.'/administrator/components/com_phpshop/PEAR.php' );
+require_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/PEAR.php' );
 
 
 define ('ARCHIVE_TAR_ATT_SEPARATOR', 90001);
@@ -44,7 +44,7 @@ define ('ARCHIVE_TAR_ATT_SEPARATOR', 90001);
 * Creates a (compressed) Tar archive
 *
 * @author   Vincent Blavet <vincent@blavet.net>
-* @version  $Revision: 1.1 $
+* @version  $Revision: 1.2 $
 * @package  Archive
 */
 class Archive_Tar extends PEAR

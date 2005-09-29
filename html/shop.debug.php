@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shop.debug.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -22,7 +22,7 @@ $return_to_page = mosGetParam( $_REQUEST, 'return_to_page' );
 $i = 0;
 if( !empty( $database->_log )) {
   foreach( $database->_log as $sql ) {
-    if( strstr( $sql, "_pshop_" ) || strstr( $sql, "'BT'" ) || strstr( $sql, "first_name"))
+    if( strstr( $sql, "_{vm}_" ) || strstr( $sql, "'BT'" ) || strstr( $sql, "first_name"))
       $i++;
   }
 }
@@ -48,7 +48,7 @@ $tabs->startTab( "Shop Core Variables", "shop-variables" );
           <td width="32%" valign="top" nowrap><?php 
             echo $i 
                 . "&nbsp;&nbsp;"
-                .mosToolTip( mysql_escape_string("Note: This is only the number of queries related to mambo-phpShop, 
+                .mosToolTip( mysql_escape_string("Note: This is only the number of queries related to VirtueMart, 
                               which have been processed so far. Because the component is wrapped 
                               into the Mambo Framework, we can't get the total number of Queries at THIS point")); 
             ?>
@@ -142,7 +142,7 @@ $tabs->startTab( "Global Variables", "global-variables");
           <?php 
         }
         else {
-          echo "<strong>Something's wrong with your Session Setup - the Session is empty. mambo-phpShop cannot run without
+          echo "<strong>Something's wrong with your Session Setup - the Session is empty. VirtueMart cannot run without
           Sessions!</strong>";
         }
           ?>

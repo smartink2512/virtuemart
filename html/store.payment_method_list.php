@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: store.payment_method_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -20,24 +20,24 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__pshop_payment_method, #__pshop_shopper_group WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_payment_method,#__pshop_shopper_group WHERE ";
-	$q  = "(#__pshop_payment_method.payment_method_name LIKE '%$keyword%' ";
-	$q .= "AND #__pshop_payment_method.vendor_id='$ps_vendor_id' ";
-	$q .= "AND #__pshop_payment_method.shopper_group_id=#__pshop_shopper_group.shopper_group_id ";
+	$list  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_shopper_group WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+	$q  = "(#__{vm}_payment_method.payment_method_name LIKE '%$keyword%' ";
+	$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
+	$q .= "AND #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
 	$q .= ") ";
-	$q .= "ORDER BY #__pshop_payment_method.list_order,#__pshop_payment_method.payment_method_name ";
+	$q .= "ORDER BY #__{vm}_payment_method.list_order,#__{vm}_payment_method.payment_method_name ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__pshop_payment_method,#__pshop_shopper_group WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_payment_method,#__pshop_shopper_group WHERE ";
-	$q .= "#__pshop_payment_method.vendor_id='$ps_vendor_id' ";
-	$q .= "AND #__pshop_payment_method.shopper_group_id=#__pshop_shopper_group.shopper_group_id ";
+	$list  = "SELECT * FROM #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+	$q .= "#__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
+	$q .= "AND #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
 	$list .= $q;
-	$list .= "ORDER BY #__pshop_payment_method.list_order,#__pshop_payment_method.payment_method_name ";
+	$list .= "ORDER BY #__{vm}_payment_method.list_order,#__{vm}_payment_method.payment_method_name ";
 	$list .= "LIMIT $limitstart, " . $limit;
 	$count .= $q;
 }
@@ -52,7 +52,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_LBL, IMAGEURL."ps_image/payment.gif", $modulename, "payment_method_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_LBL, IMAGEURL."ps_image/payment.gif", $modulename, "payment_method_list");
 
 // start the list table
 $listObj->startTable();
@@ -60,12 +60,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_NAME => '',
-					$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_CODE => '',
-					$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT => '',
-					$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP => '',
-					$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR => '',
-					$PHPSHOP_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL => '',
+					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_NAME => '',
+					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_CODE => '',
+					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT => '',
+					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP => '',
+					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR => '',
+					$VM_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -94,19 +94,19 @@ while ($db->next_record()) {
 	$enable_processor = $db->f("enable_processor");
 	switch($enable_processor) { 
 		case "Y": 
-			$tmp_cell = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_FORM_USE_PP;
+			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_USE_PP;
 			break;
 		case "N":
-			$tmp_cell = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_FORM_AO;
+			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_AO;
 			break;
 		case "B":
-			$tmp_cell = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_FORM_BANK_DEBIT;
+			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_BANK_DEBIT;
 			break;
 		case "P":
 			$tmp_cell = "PayPal related";
 			break;
 		default:
-			$tmp_cell = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_FORM_CC;
+			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_CC;
 			break;
 	}
 	$listObj->addCell( $tmp_cell );

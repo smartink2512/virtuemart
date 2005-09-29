@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: intershipper.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -25,15 +25,15 @@ class intershipper {
       require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 	  
 	  $dbv = new ps_DB;
-	  $q  = "SELECT * from #__pshop_vendor, #__pshop_country WHERE vendor_id='" . $_SESSION["ps_vendor_id"] . "' AND (vendor_country=country_2_code OR vendor_country=country_3_code)";
+	  $q  = "SELECT * from #__{vm}_vendor, #__{vm}_country WHERE vendor_id='" . $_SESSION["ps_vendor_id"] . "' AND (vendor_country=country_2_code OR vendor_country=country_3_code)";
 	  $dbv->query($q);
 	  $dbv->next_record();
 	  
 	  $dbst = new ps_DB;
-	  $q  = "SELECT * from #__users, #__pshop_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+	  $q  = "SELECT * from #__users, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 	  $dbst->query($q);
 	  if( !$dbst->next_record() ) {
-		$q  = "SELECT * from #__pshop_user_info, #__pshop_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+		$q  = "SELECT * from #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 		$dbst->query($q);
 		$dbst->next_record();
 	  }
@@ -383,7 +383,7 @@ class intershipper {
     */
     function show_configuration() { 
     
-      global $PHPSHOP_LANG;
+      global $VM_LANG;
       /** Read current Configuration ***/
       require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 	  
@@ -397,29 +397,29 @@ class intershipper {
 		  </td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="IS_PASSWORD" class="inputbox" value="<? echo IS_PASSWORD ?>" />
-			  <?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN) ?>
+			  <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="IS_EMAIL" class="inputbox" value="<? echo IS_EMAIL ?>" />
-				<?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN) ?>
+				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN) ?>
 			</td>
 		</tr>
 	  <tr>
-		<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
 		<td>
 		  <?php
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("IS_TAX_CLASS", IS_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+		<td><?php echo mosToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
 	  </tr>	
 		<tr>
 		  <td colspan="4"><hr /></td>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_affiliate.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -35,7 +35,7 @@ class ps_affiliate {
       $d['error'] = "Please provide an user info id!";
       return false;
     }
-    $q = "SELECT user_id FROM #__pshop_affiliate WHERE user_id='".$d['user_info_id']."'";
+    $q = "SELECT user_id FROM #__{vm}_affiliate WHERE user_id='".$d['user_info_id']."'";
     $db->query( $q );
     
     if ($db->next_record()) {
@@ -43,7 +43,7 @@ class ps_affiliate {
         return false;
     }
     else {
-        $q = "INSERT INTO #__pshop_affiliate (user_id, active, rate) ";
+        $q = "INSERT INTO #__{vm}_affiliate (user_id, active, rate) ";
         $q .= "VALUES ('". $d["user_info_id"] ."','Y','5')";
         $db->query($q);
       
@@ -69,12 +69,12 @@ class ps_affiliate {
     }
 	if( is_array( $d["user_info_id"] )) {
 		foreach( $d["user_info_id"] as $affiliate ) {
-			$q = "DELETE FROM #__pshop_affiliate WHERE user_id ='". $affiliate ."' ";
+			$q = "DELETE FROM #__{vm}_affiliate WHERE user_id ='". $affiliate ."' ";
 			$db->query($q);		
 		}
 	}
 	else {
-        $q = "DELETE FROM #__pshop_affiliate WHERE user_id ='". $d["user_info_id"] ."' ";
+        $q = "DELETE FROM #__{vm}_affiliate WHERE user_id ='". $d["user_info_id"] ."' ";
         $db->query($q);
 	}
         return True;
@@ -96,7 +96,7 @@ class ps_affiliate {
     global $sess,$afid,$page;
     $timestamp = time();
     $db = new ps_DB;
-    $q = "INSERT INTO #__pshop_visit (visit_id, affiliate_id,pages,entry_page,exit_page,sdate,edate)";
+    $q = "INSERT INTO #__{vm}_visit (visit_id, affiliate_id,pages,entry_page,exit_page,sdate,edate)";
     $q .=" VALUES ('".session_id()."','".$afid."','1','".$page."',";
     $q .="'".$page."','".$timestamp."','".$timestamp."'";
     $q .=")";
@@ -118,7 +118,7 @@ class ps_affiliate {
     global $sess,$afid,$page;
 	$timestamp = time();
     $db = new ps_DB;
-    $q = "UPDATE #__pshop_visit SET pages = pages +1, edate= '".$timestamp."'";
+    $q = "UPDATE #__{vm}_visit SET pages = pages +1, edate= '".$timestamp."'";
     $q .=",exit_page = '".$page."'"; 
     $q .=" WHERE visit_id = '".session_id()."'";
     $db->query($q);
@@ -139,7 +139,7 @@ class ps_affiliate {
   {
     
     $db = new ps_DB;
-	$q = "UPDATE #__pshop_affiliate SET";
+	$q = "UPDATE #__{vm}_affiliate SET";
 	$q .=" rate = '".$d["rate"]."', active = ";
 	$d["active"] == 'on' ? $q .="'Y'" :$q .="'N'";
 	$q .=" WHERE affiliate_id ='".$d["affiliate_id"]."'";
@@ -160,12 +160,12 @@ class ps_affiliate {
    $afid = $_SESSION['afid'];
      
     $db = new ps_DB;
-	$q = "SELECT rate FROM #__pshop_affiliate ";
+	$q = "SELECT rate FROM #__{vm}_affiliate ";
 	$q .=" WHERE affiliate_id = '".$afid."'";
 	$db->query($q);
 	$db->next_record();
 	$rate = $db->f("rate");
-    $q = "INSERT into #__pshop_affiliate_sale(affiliate_id, order_id,visit_id,rate)";
+    $q = "INSERT into #__{vm}_affiliate_sale(affiliate_id, order_id,visit_id,rate)";
 	$q .=" VALUES('".$afid."','".$order_id."','".session_id()."','".$rate."')";
     $db->query($q);
    return True;
@@ -201,20 +201,20 @@ class ps_affiliate {
 	 $end_date = mktime(24,0,0,$month+1,0,$year);
 	
 	//get the affiliate id from affiliate table for this user
-	$q =  "SELECT affiliate_id,rate FROM #__pshop_affiliate, #__users";
-	$q .= " WHERE #__pshop_affiliate.user_id = #__users.user_info_id";
+	$q =  "SELECT affiliate_id,rate FROM #__{vm}_affiliate, #__users";
+	$q .= " WHERE #__{vm}_affiliate.user_id = #__users.user_info_id";
 	$q .= " AND #__users.id = '".$auth["user_id"]."'";
 	
 	$db->query($q);
 	if($db->next_record()){
 			$affiliate = $db->f("affiliate_id");
-		   	$q = "SELECT * FROM #__pshop_orders,#__pshop_affiliate_sale ";
+		   	$q = "SELECT * FROM #__{vm}_orders,#__{vm}_affiliate_sale ";
 	    	$q .= "WHERE vendor_id='$ps_vendor_id' ";
-			$q .= "AND #__pshop_affiliate_sale.order_id = #__pshop_orders.order_id ";
+			$q .= "AND #__{vm}_affiliate_sale.order_id = #__{vm}_orders.order_id ";
 			$q .= "AND affiliate_id = '$affiliate' ";
 			$q .= "AND cdate BETWEEN $start_date AND $end_date ";
-	    	$q .= " GROUP BY #__pshop_orders.order_id ";
-			$q .= " ORDER BY #__pshop_orders.cdate DESC ";
+	    	$q .= " GROUP BY #__{vm}_orders.order_id ";
+			$q .= " ORDER BY #__{vm}_orders.cdate DESC ";
 		   	$db->query($q);
 	    	echo "<select name=order_id size=" . MAX_ROWS . ">";;
 	    	while ($db->next_record()) {
@@ -253,13 +253,13 @@ class ps_affiliate {
     $db = new ps_DB;
    
    //get the affiliate id from affiliate table for this user
-	$q =  "SELECT * FROM #__pshop_affiliate, #__users";
-	$q .= " WHERE #__pshop_affiliate.user_id = #__users.user_info_id";
+	$q =  "SELECT * FROM #__{vm}_affiliate, #__users";
+	$q .= " WHERE #__{vm}_affiliate.user_id = #__users.user_info_id";
 	if(!$affiliate_id){
 		$q .= " AND #__users.id = '".$auth["user_id"]."'";
 	}
 	else {
-		$q .=" AND #__pshop_affiliate.affiliate_id = '".$affiliate_id."'";
+		$q .=" AND #__{vm}_affiliate.affiliate_id = '".$affiliate_id."'";
 	}
 	$db->query($q);
     if($db->next_record()){
@@ -321,12 +321,12 @@ class ps_affiliate {
    $db = new ps_DB;
    $dbv = new ps_DB;
    
-   $qt = "SELECT * from #__pshop_vendor ";
+   $qt = "SELECT * from #__{vm}_vendor ";
    $qt .= "WHERE vendor_id = $ps_vendor_id";
    $dbv->query($qt);
    $dbv->next_record();
    
-   $q ="SELECT * from #__pshop_affiliate ";
+   $q ="SELECT * from #__{vm}_affiliate ";
    $q .=" WHERE active ='Y' ";
    if($d["affiliate_id"] != "*"){
      $q .="AND affiliate_id = '".$d["affiliate_id"]."'";
@@ -379,8 +379,8 @@ class ps_affiliate {
     	
 	
 	//get the affiliate id from affiliate table for this user
-	$q =  "SELECT affiliate_id,first_name,last_name,name,username FROM #__pshop_affiliate, #__users";
-	$q .= " WHERE #__pshop_affiliate.user_id = #__users.user_info_id";
+	$q =  "SELECT affiliate_id,first_name,last_name,name,username FROM #__{vm}_affiliate, #__users";
+	$q .= " WHERE #__{vm}_affiliate.user_id = #__users.user_info_id";
     if($affiliate_active  == 'Y'){
 	$q .=" AND active = 'Y' ";
 	}
@@ -439,13 +439,13 @@ class ps_affiliate {
 	//get the affiliate id from affiliate table for this user
 	
 	if($affiliate_id ==0){
-		$q =  "SELECT affiliate_id,rate FROM #__pshop_affiliate, #__users";
-		$q .= " WHERE #__pshop_affiliate.user_id = #__users.user_info_id";
+		$q =  "SELECT affiliate_id,rate FROM #__{vm}_affiliate, #__users";
+		$q .= " WHERE #__{vm}_affiliate.user_id = #__users.user_info_id";
 		$q .= " AND #__users.id = '".$auth["user_id"]."'";	
 		
 	}
 	else{
-	   $q =  "SELECT affiliate_id,rate FROM #__pshop_affiliate";
+	   $q =  "SELECT affiliate_id,rate FROM #__{vm}_affiliate";
 	   $q .= " WHERE affiliate_id = '".$affiliate_id."'";
 	}
 	
@@ -456,12 +456,12 @@ class ps_affiliate {
 	  $affiliate["rate"] = $db->f("rate");
 		
 	//get the orders for this month
-	$q = "SELECT affiliate_id, COUNT(#__pshop_affiliate_sale.order_id) AS orders_made,";
+	$q = "SELECT affiliate_id, COUNT(#__{vm}_affiliate_sale.order_id) AS orders_made,";
 	$q .="SUM(order_subtotal) AS order_total, ";
-	$q .="SUM(order_subtotal*(rate*0.01)) AS commission FROM #__pshop_orders,#__pshop_affiliate_sale";
-	$q .=" WHERE #__pshop_orders.order_id = #__pshop_affiliate_sale.order_id";
-	$q .=" AND #__pshop_affiliate_sale.affiliate_id = '".$affiliate["id"]."'";
-	$q .= "AND #__pshop_orders.cdate BETWEEN $start_date AND $end_date ";
+	$q .="SUM(order_subtotal*(rate*0.01)) AS commission FROM #__{vm}_orders,#__{vm}_affiliate_sale";
+	$q .=" WHERE #__{vm}_orders.order_id = #__{vm}_affiliate_sale.order_id";
+	$q .=" AND #__{vm}_affiliate_sale.affiliate_id = '".$affiliate["id"]."'";
+	$q .= "AND #__{vm}_orders.cdate BETWEEN $start_date AND $end_date ";
 	$q .=" GROUP BY affiliate_id";
 	$db->query($q);
 		
@@ -485,7 +485,7 @@ class ps_affiliate {
 	
 	
 	//query the visit table
-	$q = "SELECT  count(affiliate_id) AS visitors,sum(pages) AS pages_viewed FROM #__pshop_visit ";
+	$q = "SELECT  count(affiliate_id) AS visitors,sum(pages) AS pages_viewed FROM #__{vm}_visit ";
 	$q .=" WHERE affiliate_id = '".$affiliate["id"]."'";
 	$q .= "AND sdate BETWEEN $start_date AND $end_date ";
 	$q .=" GROUP BY affiliate_id";

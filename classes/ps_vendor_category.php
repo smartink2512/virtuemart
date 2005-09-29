@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_vendor_category.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -94,7 +94,7 @@ class ps_vendor_category {
     foreach ($d as $key => $value)
         $d[$key] = addslashes($value);
         
-    $q = "INSERT INTO #__pshop_vendor_category (";
+    $q = "INSERT INTO #__{vm}_vendor_category (";
     $q .= "vendor_category_name,";
     $q .= "vendor_category_desc) VALUES ('";
     $q .= $d["vendor_category_name"] . "','";
@@ -122,7 +122,7 @@ class ps_vendor_category {
     foreach ($d as $key => $value)
         $d[$key] = addslashes($value);
         
-    $q = "UPDATE #__pshop_vendor_category ";
+    $q = "UPDATE #__{vm}_vendor_category ";
     $q .= "set vendor_category_name='" . $d["vendor_category_name"] . "',";
     $q .= "vendor_category_desc='" . $d["vendor_category_desc"];
     $q .= "' WHERE vendor_category_id='" . $d["vendor_category_id"] . "'";
@@ -158,7 +158,7 @@ class ps_vendor_category {
 	function delete_record( $record_id, &$d ) {
 		global $db;
 		
-		$q = "DELETE FROM #__pshop_vendor_category WHERE vendor_category_id='$record_id'";
+		$q = "DELETE FROM #__{vm}_vendor_category WHERE vendor_category_id='$record_id'";
 		$db->query($q);
 		$db->next_record();
 		return True;
@@ -179,13 +179,13 @@ class ps_vendor_category {
     // Creates a form drop down list and prints it
     $db = new ps_DB;
     
-    $q = "SELECT count(*) as rowcnt FROM #__pshop_vendor_category ORDER BY vendor_category_name";
+    $q = "SELECT count(*) as rowcnt FROM #__{vm}_vendor_category ORDER BY vendor_category_name";
     $db->query($q);
     $db->next_record();
     $rowcnt = $db->f("rowcnt");
 
 
-    $q = "SELECT * FROM #__pshop_vendor_category ORDER BY vendor_category_name";
+    $q = "SELECT * FROM #__{vm}_vendor_category ORDER BY vendor_category_name";
     $db->query($q);                                                                                     
     $code = "<select name=vendor_category_id>\n";
     if ( $rowcnt > 1) {

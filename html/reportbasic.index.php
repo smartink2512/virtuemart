@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: reportbasic.index.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -31,16 +31,16 @@ $selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
 ?>
 <!-- BEGIN body -->
 &nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/report.gif" border="0" />&nbsp;&nbsp;&nbsp;
-<span class="sectionname"><?php echo $PHPSHOP_LANG->_PHPSHOP_REPORTBASIC_MOD ?></span><br /><br />
+<span class="sectionname"><?php echo $VM_LANG->_PHPSHOP_REPORTBASIC_MOD ?></span><br /><br />
     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <input type="hidden" name="page" value="reportbasic.index" />
-    <input type="hidden" name="option" value="com_phpshop" />
+    <input type="hidden" name="option" value="com_virtuemart" />
     <table class="adminform" width="100%" border="0" cellspacing="0" cellpadding="1">
         <tr>
-          <td><?php echo $PHPSHOP_LANG->_PHPSHOP_VIEW ?></td>
+          <td><?php echo $VM_LANG->_PHPSHOP_VIEW ?></td>
           <td><input type="checkbox" name="show_products" id="show_products" value="show_products"<?php
           if (!empty($show_products)) { echo ' checked="checked"'; } ?> />
-          <label for="show_products"><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_INDIVIDUAL ?></label> &nbsp; &nbsp; 
+          <label for="show_products"><?php echo $VM_LANG->_PHPSHOP_RB_INDIVIDUAL ?></label> &nbsp; &nbsp; 
           </td>
         </tr>
 
@@ -50,14 +50,14 @@ $selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
           </td>
         </tr>
         <tr>
-          <td><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_INTERVAL_TITLE; ?></td>
+          <td><?php echo $VM_LANG->_PHPSHOP_RB_INTERVAL_TITLE; ?></td>
 
           <td><input type="radio" id="byMonth" name="interval" value="byMonth" <?php if($interval=="byMonth") echo "checked='checked'" ?> />
-          <label for="byMonth"><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE ?></label> &nbsp; &nbsp; 
+          <label for="byMonth"><?php echo $VM_LANG->_PHPSHOP_RB_INTERVAL_MONTHLY_TITLE ?></label> &nbsp; &nbsp; 
           <input type="radio" name="interval" id="byWeek" value="byWeek" <?php if($interval=="byWeek") echo "checked='checked'" ?> />
-          <label for="byWeek"><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE; ?></label> &nbsp; &nbsp;
+          <label for="byWeek"><?php echo $VM_LANG->_PHPSHOP_RB_INTERVAL_WEEKLY_TITLE; ?></label> &nbsp; &nbsp;
           <input type="radio" name="interval" id="byDay" value="byDay" <?php if($interval=="byDay") echo "checked='checked'" ?> />
-          <label for="byDay"><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_INTERVAL_DAILY_TITLE; ?></label></td>
+          <label for="byDay"><?php echo $VM_LANG->_PHPSHOP_RB_INTERVAL_DAILY_TITLE; ?></label></td>
         </tr>
 
         <tr>
@@ -67,13 +67,13 @@ $selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
         </tr>
 
         <tr>
-          <td><?php echo $PHPSHOP_LANG->_PHPSHOP_SHOW ?></td>
+          <td><?php echo $VM_LANG->_PHPSHOP_SHOW ?></td>
 
           <td>
-          <input type="submit" class="button" name="thisMonth" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_RB_THISMONTH_BUTTON; ?>" /> &nbsp; 
-          <input type="submit" class="button" name="lastMonth" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_RB_LASTMONTH_BUTTON; ?>" /> &nbsp; 
-          <input type="submit" class="button" name="last60" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_RB_LAST60_BUTTON; ?>" /> &nbsp;
-          <input type="submit" class="button" name="last90" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_RB_LAST90_BUTTON; ?>" />
+          <input type="submit" class="button" name="thisMonth" value="<?php echo $VM_LANG->_PHPSHOP_RB_THISMONTH_BUTTON; ?>" /> &nbsp; 
+          <input type="submit" class="button" name="lastMonth" value="<?php echo $VM_LANG->_PHPSHOP_RB_LASTMONTH_BUTTON; ?>" /> &nbsp; 
+          <input type="submit" class="button" name="last60" value="<?php echo $VM_LANG->_PHPSHOP_RB_LAST60_BUTTON; ?>" /> &nbsp;
+          <input type="submit" class="button" name="last90" value="<?php echo $VM_LANG->_PHPSHOP_RB_LAST90_BUTTON; ?>" />
           </td>
         </tr>
 
@@ -84,7 +84,7 @@ $selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
         </tr>
 
         <tr valign="top">
-          <td width="100"><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_START_DATE_TITLE; ?></td>
+          <td width="100"><?php echo $VM_LANG->_PHPSHOP_RB_START_DATE_TITLE; ?></td>
 
           <td><?php
           $nh_report->make_date_popups("s", $selected_begin );
@@ -92,7 +92,7 @@ $selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
         </tr>
 
         <tr>
-          <td width="100"><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_END_DATE_TITLE; ?></td>
+          <td width="100"><?php echo $VM_LANG->_PHPSHOP_RB_END_DATE_TITLE; ?></td>
 
           <td><?php $nh_report->make_date_popups("e", $selected_end ); ?></td>
         </tr>
@@ -100,7 +100,7 @@ $selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
         <tr>
           <td>&nbsp;</td>
 
-          <td><input type="submit" class="button" name="sbmt" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_RB_SHOW_SEL_RANGE ?>" /> </td>
+          <td><input type="submit" class="button" name="sbmt" value="<?php echo $VM_LANG->_PHPSHOP_RB_SHOW_SEL_RANGE ?>" /> </td>
         </tr>
       </table>
     </form>
@@ -177,7 +177,7 @@ $query_date_line = "";
   $q .= "FROM_UNIXTIME(cdate, '%Y%m%d') as date_num, ";
   $q .= "COUNT(order_id) as number_of_orders, ";
   $q .= "SUM(order_subtotal) as revenue ";
-  $q .= "FROM #__pshop_orders ";
+  $q .= "FROM #__{vm}_orders ";
   $q .= $query_between_line;
   if ($query_group_line) {
     $q .= $query_group_line;
@@ -190,7 +190,7 @@ $query_date_line = "";
   }
   $r .= "FROM_UNIXTIME(cdate, '%Y%m%d') as date_num, ";
   $r .= "SUM(product_quantity) as items_sold ";
-  $r .= "FROM #__pshop_order_item ";
+  $r .= "FROM #__{vm}_order_item ";
   $r .= $query_between_line;
   if ($query_group_line) {
     $r .= $query_group_line;
@@ -202,14 +202,14 @@ if (!empty($show_products)) {
 /* setup end of product listing query */
   $u .= "product_name, product_sku, ";
   if ($query_date_line) {
-    $u .= str_replace ("cdate", "#__pshop_order_item.cdate", $query_date_line);
+    $u .= str_replace ("cdate", "#__{vm}_order_item.cdate", $query_date_line);
   }
-  $u .= "FROM_UNIXTIME(#__pshop_order_item.cdate, '%Y%m%d') as date_num, ";
+  $u .= "FROM_UNIXTIME(#__{vm}_order_item.cdate, '%Y%m%d') as date_num, ";
   $u .= "SUM(product_quantity) as items_sold ";
-  $u .= "FROM #__pshop_order_item, #__pshop_orders, #__pshop_product ";
-  $u .= str_replace ("cdate", "#__pshop_order_item.cdate", $query_between_line);
-  $u .= "AND #__pshop_orders.order_id=#__pshop_order_item.order_id ";
-  $u .= "AND #__pshop_order_item.product_id=#__pshop_product.product_id ";
+  $u .= "FROM #__{vm}_order_item, #__{vm}_orders, #__{vm}_product ";
+  $u .= str_replace ("cdate", "#__{vm}_order_item.cdate", $query_between_line);
+  $u .= "AND #__{vm}_orders.order_id=#__{vm}_order_item.order_id ";
+  $u .= "AND #__{vm}_order_item.product_id=#__{vm}_product.product_id ";
   $u .= "GROUP BY product_sku, product_name, order_date ";
   $u .= " ORDER BY date_num, product_name ASC";
   $dbpl = new ps_DB;
@@ -223,19 +223,19 @@ if (!empty($show_products)) {
   $dbis->query($r);
  ?>
     <h4><?php 
-    echo $PHPSHOP_LANG->_PHPSHOP_RB_REPORT_FOR ." ";
+    echo $VM_LANG->_PHPSHOP_RB_REPORT_FOR ." ";
     echo date("M j, Y", $start_date)." --&gt;.". date("M j, Y", $end_date); 
     ?></h4>
 
     <table class="adminlist">
       <tr>
-        <th><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_DATE ?></th>
+        <th><?php echo $VM_LANG->_PHPSHOP_RB_DATE ?></th>
 
-        <th><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_ORDERS ?></th>
+        <th><?php echo $VM_LANG->_PHPSHOP_RB_ORDERS ?></th>
 
-        <th><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_TOTAL_ITEMS ?></th>
+        <th><?php echo $VM_LANG->_PHPSHOP_RB_TOTAL_ITEMS ?></th>
 
-        <th><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_REVENUE ?></th>
+        <th><?php echo $VM_LANG->_PHPSHOP_RB_REVENUE ?></th>
       </tr>
 <?php
   while ($db->next_record()) {
@@ -261,12 +261,12 @@ if (!empty($show_products)) {
     <tr><td>&nbsp;</td><td colspan="2">
       <table class="adminlist">
         <tr>
-          <td colspan="3" align="left"><h3><?php echo $PHPSHOP_LANG->_PHPSHOP_RB_PRODLIST ?></h3></td>
+          <td colspan="3" align="left"><h3><?php echo $VM_LANG->_PHPSHOP_RB_PRODLIST ?></h3></td>
         </tr>
         <tr bgcolor="#ffffff">
           <th>#</th>
-          <th><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_NAME_TITLE ?></th>
-          <th><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_QUANTITY ?></th>
+          <th><?php echo $VM_LANG->_PHPSHOP_PRODUCT_NAME_TITLE ?></th>
+          <th><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?></th>
         </tr>
       <?php
         $i = 1;

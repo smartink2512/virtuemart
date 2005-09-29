@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: manufacturer.manufacturer_category_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -19,30 +19,30 @@ mm_showMyFileName( __FILE__ );
 
 $mf_category_id = mosGetParam( $_REQUEST, 'mf_category_id' );
 if (!empty($mf_category_id)) {
-   $q = "SELECT * from #__pshop_manufacturer_category ";
+   $q = "SELECT * from #__{vm}_manufacturer_category ";
    $q .= "where mf_category_id='$mf_category_id'";
    $db->query($q);
    $db->next_record();
 }
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_LBL );
 //Then Start the form
 $formObj->startForm();
 ?>
 <table class="adminform">
 	<tr> 
-                  <td width="38%" align="right"><B><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL ?></b> 
+                  <td width="38%" align="right"><B><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL ?></b> 
                   </td>
                   <td width="62%">&nbsp;</td>
 	</tr>
 	<tr> 
-                  <td width="38%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_NAME ?>:</td>
+                  <td width="38%" align="right"><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_NAME ?>:</td>
                   <td width="62%"> 
                     <input type="text" class="inputbox" name="mf_category_name" size="18" value="<?php $db->sp('mf_category_name') ?>" />
                   </td>
 	</tr>
 	<tr> 
-                  <td width="38%" nowrap align="right" valign="top"><?php echo $PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION ?>:</td>
+                  <td width="38%" nowrap align="right" valign="top"><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION ?>:</td>
                   <td width="62%" valign="top"> 
                     <textarea name="mf_category_desc" cols="40" rows="2"><?php $db->sp('mf_category_desc'); ?></textarea>
                   </td>

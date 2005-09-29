@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_order.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -43,7 +43,7 @@ class ps_order {
     $db = new ps_DB;
     
 
-    $q = "SELECT * from #__pshop_orders where ";
+    $q = "SELECT * from #__{vm}_orders where ";
     $q .= "order_id = '" . $d["order_id"] . "'";
     $db->query($q);
     if ($db->next_record()) {
@@ -83,10 +83,10 @@ class ps_order {
     // When the order is set to "confirmed", we can capture 
     // the Payment with authorize.net
     if( $curr_order_status=="P" && $d["order_status"]=="C") {
-      $q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__pshop_payment_method,#__pshop_order_payment,#__pshop_orders WHERE ";
-      $q .= "#__pshop_order_payment.order_id='".$d['order_id']."' ";
-      $q .= "AND #__pshop_orders.order_id='".$d['order_id']."' ";
-      $q .= "AND #__pshop_order_payment.payment_method_id=#__pshop_payment_method.payment_method_id";
+      $q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
+      $q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
+      $q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+      $q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
       $db->query( $q );
       $db->next_record();
       $payment_class = $db->f("payment_class");
@@ -103,14 +103,14 @@ class ps_order {
       }
     }
     
-    $q = "UPDATE #__pshop_orders SET";
+    $q = "UPDATE #__{vm}_orders SET";
     $q .= " order_status='" . $d["order_status"] . "' ";
     $q .= ", mdate='" . $timestamp . "' ";
     $q .= "WHERE order_id='" . $d["order_id"] . "'";
     $db->query($q);
     
     // Update the Order History.
-    $q = "INSERT INTO #__pshop_order_history ";
+    $q = "INSERT INTO #__{vm}_order_history ";
     $q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
     $q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', NOW(), '$notify_customer', '".$d['order_comment']."')";
     $db->query($q);
@@ -123,12 +123,12 @@ class ps_order {
       ) {
       // Get the order items and update the stock level
       // to the number before the order was placed
-      $q = "SELECT product_id, product_quantity FROM #__pshop_order_item WHERE order_id='".$d["order_id"]."'";
+      $q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='".$d["order_id"]."'";
       $db->query( $q );
       $dbu = new ps_DB;
       // Now update each ordered product
       while( $db->next_record() ) {
-        $q = "UPDATE #__pshop_product SET product_in_stock=product_in_stock+".$db->f("product_quantity")
+        $q = "UPDATE #__{vm}_product SET product_in_stock=product_in_stock+".$db->f("product_quantity")
             .",product_sales=product_sales-".$db->f("product_quantity")." WHERE product_id='".$db->f("product_id")."'";
         $dbu->query( $q );
       }
@@ -156,15 +156,15 @@ class ps_order {
   function mail_download_id( &$d ){
   
     global $mosConfig_live_site, $mosConfig_absolute_path, $db,
-           $PHPSHOP_LANG, $mosConfig_smtpauth, $mosConfig_mailer,
+           $VM_LANG, $mosConfig_smtpauth, $mosConfig_mailer,
            $mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
     
-    $url = $mosConfig_live_site."/index.php?option=com_phpshop&page=shop.downloads";
+    $url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads";
     
     if ($d["order_status"]==ENABLE_DOWNLOAD_STATUS) {
       $dbw = new ps_DB; 
       $dbw_2 = new ps_DB;
-      $q = "SELECT * FROM #__pshop_product_download WHERE";
+      $q = "SELECT * FROM #__{vm}_product_download WHERE";
       $q .= " order_id = '" . $d["order_id"] . "'";
       $dbw->query($q);
       $dbw->next_record();
@@ -176,7 +176,7 @@ class ps_order {
       if ($download_id) {
 
        $dbv = new ps_DB;
-       $q = "SELECT * FROM #__pshop_vendor ";
+       $q = "SELECT * FROM #__{vm}_vendor ";
        $q .= "WHERE vendor_id='1'";
        $dbv->query($q);
        $dbv->next_record();
@@ -207,26 +207,26 @@ class ps_order {
        $db->next_record();
 
        $message = _HI . $db->f("first_name") . " " . $db->f("last_name") . "\n\n";
-       $message .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_1.".\n";
-       $message .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_2."\n\n";
+       $message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_1.".\n";
+       $message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_2."\n\n";
        
        while($dbw_2->next_record()) {
           $message .= $dbw_2->f("file_name").": ".$dbw_2->f("download_id") 
                             . "\n$url&download_id=".$dbw_2->f("download_id")."\n\n";
         }
         
-       $message .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_3.": ".DOWNLOAD_MAX."\n";
+       $message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_3.": ".DOWNLOAD_MAX."\n";
        $expire = ((DOWNLOAD_EXPIRE / 60) / 60) / 24;
-       $message .= str_replace("{expire}", $expire, $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_4);
+       $message .= str_replace("{expire}", $expire, $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_4);
        $message .= "\n\n____________________________________________________________\n";
-       $message .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_5."\n";        
+       $message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_5."\n";        
        $message .= $dbv->f("vendor_name") . " \n" . $mosConfig_live_site."\n\n".$dbv->f("contact_email") . "\n";
        $message .= "____________________________________________________________\n";
-       $message .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_6 . $dbv->f("vendor_name");
+       $message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_6 . $dbv->f("vendor_name");
 
 
         $mail->Body = $message;
-        $mail->Subject = $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_SUBJ;
+        $mail->Subject = $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_SUBJ;
 
        switch( $mosConfig_mailer ) {
       
@@ -257,13 +257,13 @@ class ps_order {
        $mail->AddAddress($db->f("email"));
        if ($mail->Send()) {
        
-          $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email");
+          $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email");
 
        }
 
      else {
      
-          $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email")." (". $mail->ErrorInfo.")";
+          $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email")." (". $mail->ErrorInfo.")";
        }
     }
    }
@@ -271,7 +271,7 @@ class ps_order {
 ##---------------------------updated 03/28/2004-----------------------------------
 
    elseif ($d["order_status"]==DISABLE_DOWNLOAD_STATUS) {
-      $q = "DELETE FROM #__pshop_product_download WHERE order_id=" . $d["order_id"];
+      $q = "DELETE FROM #__{vm}_product_download WHERE order_id=" . $d["order_id"];
       $db->query($q);
       $db->next_record();
    }
@@ -289,14 +289,14 @@ class ps_order {
   function notify_customer( &$d ){
   
     global $mosConfig_live_site, $mosConfig_absolute_path, 
-           $PHPSHOP_LANG, $mosConfig_smtpauth, $mosConfig_mailer,
+           $VM_LANG, $mosConfig_smtpauth, $mosConfig_mailer,
            $mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
     
-    $url = $mosConfig_live_site."/index.php?option=com_phpshop&page=account.order_details&order_id=".$d["order_id"];
+    $url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=account.order_details&order_id=".$d["order_id"];
 
     $db = new ps_DB;
     $dbv = new ps_DB;
-    $q = "SELECT vendor_name,contact_email FROM #__pshop_vendor ";
+    $q = "SELECT vendor_name,contact_email FROM #__{vm}_vendor ";
     $q .= "WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
     $dbv->query($q);
     $dbv->next_record();
@@ -321,7 +321,7 @@ class ps_order {
         $mosConfig_smtppass = CFG_SMTPPASS;
       }
       
-    $q = "SELECT first_name,last_name,email,order_status_name FROM #__users,#__pshop_orders,#__pshop_order_status ";
+    $q = "SELECT first_name,last_name,email,order_status_name FROM #__users,#__{vm}_orders,#__{vm}_order_status ";
     $q .= "WHERE order_id = '".$d["order_id"]."' ";
     $q .= "AND user_id = id ";
     $q .= "AND order_status = order_status_code ";
@@ -330,19 +330,19 @@ class ps_order {
     
     /* MAIL BODY */
     $message = _HI . $db->f("first_name") . " " . $db->f("last_name") . ",\n\n";
-    $message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1."\n\n";
+    $message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1."\n\n";
     
     if( !empty($d['include_comment']) && !empty($d['order_comment']) ) {
-      $message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL.":\n";
+      $message .= $VM_LANG->_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL.":\n";
       $message .= $d['order_comment'];
       $message .= "\n____________________________________________________________\n\n";
     }
     
-    $message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2."\n";
+    $message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2."\n";
     $message .= "____________________________________________________________\n\n";
     $message .= $db->f("order_status_name");
     $message .= "\n____________________________________________________________\n\n";
-    $message .= $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3."\n";
+    $message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3."\n";
     $message .= $url;
     $message .= "\n\n____________________________________________________________\n";      
     $message .= $dbv->f("vendor_name") . " \n";
@@ -352,7 +352,7 @@ class ps_order {
     $message = str_replace( "{order_id}", $d["order_id"], $message );
 
     $mail->Body = html_entity_decode($message);
-    $mail->Subject = str_replace( "{order_id}", $d["order_id"], html_entity_decode($PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ));
+    $mail->Subject = str_replace( "{order_id}", $d["order_id"], html_entity_decode($VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ));
 
     switch( $mosConfig_mailer ) {
   
@@ -384,10 +384,10 @@ class ps_order {
     
     /* Send the email */
     if ($mail->Send()) {
-      $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email");
+      $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email");
     }
     else {
-      $_REQUEST['mosmsg'] = $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email")." (". $mail->ErrorInfo.")";
+      $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email")." (". $mail->ErrorInfo.")";
     }
   }
 
@@ -400,13 +400,13 @@ class ps_order {
    * returns:$return_info
    **************************************************************************/
   function download_request(&$d) {
-    global  $return_success, $download_id, $PHPSHOP_LANG;
+    global  $return_success, $download_id, $VM_LANG;
     $auth  = $_SESSION['auth'];
     
     $db = new ps_DB;
     $download_id = strip_tags( $d["download_id"] );
     
-    $q = "SELECT * FROM #__pshop_product_download WHERE";
+    $q = "SELECT * FROM #__{vm}_product_download WHERE";
     $q .= " download_id = '$download_id'";
     
     $db->query($q);
@@ -419,22 +419,22 @@ class ps_order {
     $zeit=time();
 
     if (!$download_id) {
-       $d['error'] .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_ERR_INV;
-       mosRedirect("index.php?option=com_phpshop&page=shop.downloads", $d["error"]);
+       $d['error'] .= $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_INV;
+       mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
     }
 
     elseif ($download_max=="0") {
-       $q ="DELETE FROM #__pshop_product_download";
+       $q ="DELETE FROM #__{vm}_product_download";
        $q .=" WHERE download_id = '" . $d["download_id"] . "'";
        $db->query($q);
        $db->next_record();
-       $d['error'] .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX;
-       mosRedirect("index.php?option=com_phpshop&page=shop.downloads", $d["error"]);
+       $d['error'] .= $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX;
+       mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
      }
 
      elseif ($end_date=="0") {
        $end_date=time(u) + DOWNLOAD_EXPIRE;
-       $q ="UPDATE #__pshop_product_download SET";
+       $q ="UPDATE #__{vm}_product_download SET";
        $q .=" end_date=$end_date";
        $q .=" WHERE download_id = '" . $d["download_id"] . "'";
        $db->query($q);
@@ -442,17 +442,17 @@ class ps_order {
      }
 
      elseif ($zeit > $end_date) {
-       $q ="DELETE FROM #__pshop_product_download";
+       $q ="DELETE FROM #__{vm}_product_download";
        $q .=" WHERE download_id = '" . $d["download_id"] . "'";
        $db->query($q);
        $db->next_record();
-       $d['error'] .= $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_ERR_EXP;
-       mosredirect("index.php?option=com_phpshop&page=shop.downloads", $d["error"]);
+       $d['error'] .= $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_EXP;
+       mosredirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
      }
 
      $dl_max = $download_max - 1;
 
-     $q ="UPDATE #__pshop_product_download SET";
+     $q ="UPDATE #__{vm}_product_download SET";
      $q .=" download_max=$dl_max";
      $q .=" WHERE download_id = '" . $d["download_id"] . "'";
      $db->query($q);
@@ -495,12 +495,12 @@ class ps_order {
         }
         else {
           $d["error"] = "Sorry, but the requested file can't be read from the Server";
-          mosRedirect("index.php?option=com_phpshop&page=shop.downloads", $d["error"]);
+          mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
         }
       }
       else {
         $d["error"] = "Sorry, but the requested file wasn't found. Possible Cause: Wrong path";
-        mosRedirect("index.php?option=com_phpshop&page=shop.downloads", $d["error"]);
+        mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
       }
    }
 
@@ -513,7 +513,7 @@ class ps_order {
    * returns:
    **************************************************************************/
   function list_order($order_status='A', $secure=0, $view_all=0) {
-    global $PHPSHOP_LANG, $CURRENCY_DISPLAY, $sess;
+    global $VM_LANG, $CURRENCY_DISPLAY, $sess;
     
     $ps_vendor_id = $_SESSION["ps_vendor_id"];
     $auth = $_SESSION['auth'];
@@ -522,7 +522,7 @@ class ps_order {
     $dbs = new ps_DB;
     $i = 0;
 
-    $q = "SELECT cdate,order_total,order_status,order_id FROM #__pshop_orders ";
+    $q = "SELECT cdate,order_total,order_status,order_id FROM #__{vm}_orders ";
     $q .= "WHERE vendor_id='$ps_vendor_id' ";
     if ($order_status != "A") {
       $q .= "AND order_status='$order_status' ";
@@ -539,7 +539,7 @@ class ps_order {
       echo "<table width=\"100%\" cellpadding=\"4\" cellspacing=\"1\" border=\"0\">\n";
       
       while ($db->next_record()) {
-        $dbs->query( "SELECT order_status_name FROM #__pshop_order_status WHERE order_status_code='".$db->f("order_status")."'");
+        $dbs->query( "SELECT order_status_name FROM #__{vm}_order_status WHERE order_status_code='".$db->f("order_status")."'");
         $dbs->next_record();
         $order_status = $dbs->f("order_status_name");
         if ($i++ % 2) 
@@ -547,26 +547,26 @@ class ps_order {
         else
            $bgcolor=SEARCH_COLOR_2;
            
-        echo "<tr style=\"background-color:$bgcolor;cursor:pointer;\" onclick=\"window.location='index.php?option=com_phpshop&page=account.order_details&order_id=".$db->f("order_id")."';\">\n<td>";
-        echo "<a href=\"index.php?option=com_phpshop&page=account.order_details&order_id=".$db->f("order_id")."&Itemid=".@$_REQUEST['Itemid']."\">\n";
-        echo "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".$PHPSHOP_LANG->_PHPSHOP_ORDER_LINK."\" />&nbsp;".$PHPSHOP_LANG->_PHPSHOP_VIEW."</a><br />";
+        echo "<tr style=\"background-color:$bgcolor;cursor:pointer;\" onclick=\"window.location='index.php?option=com_virtuemart&page=account.order_details&order_id=".$db->f("order_id")."';\">\n<td>";
+        echo "<a href=\"index.php?option=com_virtuemart&page=account.order_details&order_id=".$db->f("order_id")."&Itemid=".@$_REQUEST['Itemid']."\">\n";
+        echo "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ORDER_LINK."\" />&nbsp;".$VM_LANG->_PHPSHOP_VIEW."</a><br />";
         echo "</td>\n<td>";
-        echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":</strong> " . strftime("%d. %B %Y", $db->f("cdate"));
+        echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":</strong> " . strftime("%d. %B %Y", $db->f("cdate"));
         echo "<br />";
-        echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL.":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"));
+        echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL.":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"));
         echo "</td>\n<td>";
-        echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.":</strong> ".$order_status;
+        echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.":</strong> ".$order_status;
         echo "<br />";
-        echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER.":</strong> " . sprintf("%08d", $db->f("order_id"));
+        echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER.":</strong> " . sprintf("%08d", $db->f("order_id"));
         echo "</td>\n</tr>";
       }
       if (!$i) {
-        echo "<span style=\"font-style:italic;\">".$PHPSHOP_LANG->_PHPSHOP_ACC_NO_ORDERS."</span>\n";
+        echo "<span style=\"font-style:italic;\">".$VM_LANG->_PHPSHOP_ACC_NO_ORDERS."</span>\n";
       }
       echo "</table>\n";
       if( !$view_all ) {
         $url = $sess->url( URL."index.php?page=account.index&view_all=1" );
-        echo "<a href=\"$url\">[ ".$PHPSHOP_LANG->_PHPSHOP_ALL." ]</a>";
+        echo "<a href=\"$url\">[ ".$VM_LANG->_PHPSHOP_ALL." ]</a>";
       }
       else {
         $url = $sess->url( URL."index.php?page=account.index&view_all=0" );
@@ -594,12 +594,12 @@ class ps_order {
     if( CHECK_STOCK == '1' ) {
       // Get the order items and update the stock level
       // to the number before the order was placed
-      $q = "SELECT product_id, product_quantity FROM #__pshop_order_item WHERE order_id='$order_id'";
+      $q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='$order_id'";
       $db->query( $q );
       $dbu = new ps_DB;
       // Now update each ordered product
       while( $db->next_record() ) {
-        $q = "UPDATE #__pshop_product SET product_in_stock=product_in_stock+".$db->f("product_quantity")
+        $q = "UPDATE #__{vm}_product SET product_in_stock=product_in_stock+".$db->f("product_quantity")
             .",product_sales=product_sales-".$db->f("product_quantity")." WHERE product_id='".$db->f("product_id")."'";
         $dbu->query( $q );
       }
@@ -632,19 +632,19 @@ class ps_order {
 		global $db;
   
 		if ($this->validate_delete($record_id)) {
-			$q = "DELETE from #__pshop_orders where order_id='$record_id'";
+			$q = "DELETE from #__{vm}_orders where order_id='$record_id'";
 			$db->query($q);
 			$db->next_record();
 	
-			$q = "DELETE from #__pshop_order_item where order_id='$record_id'";
+			$q = "DELETE from #__{vm}_order_item where order_id='$record_id'";
 			$db->query($q);
 			$db->next_record();
 	
-			$q = "DELETE from #__pshop_order_payment where order_id='$record_id'";
+			$q = "DELETE from #__{vm}_order_payment where order_id='$record_id'";
 			$db->query($q);
 			$db->next_record();
 		  
-			$q = "DELETE from #__pshop_product_download where order_id='$record_id'";
+			$q = "DELETE from #__{vm}_product_download where order_id='$record_id'";
 			$db->query($q);
 			$db->next_record();
 		  
@@ -661,7 +661,7 @@ class ps_order {
     $navi_db =& new ps_DB;
   
     $navigation = "<br /><div align=\"center\">\n<strong>\n";
-    $q = "SELECT order_id FROM #__pshop_orders WHERE ";
+    $q = "SELECT order_id FROM #__{vm}_orders WHERE ";
     $q .= "order_id < '$order_id' ORDER BY order_id DESC";
     $navi_db->query($q);
     $navi_db->next_record();
@@ -672,7 +672,7 @@ class ps_order {
     } else
        $navigation .= "<span class=\"pagenav\">" ._ITEM_PREVIOUS." | </span>";
     
-    $q = "SELECT order_id FROM #__pshop_orders WHERE ";
+    $q = "SELECT order_id FROM #__{vm}_orders WHERE ";
     $q .= "order_id > '$order_id' ORDER BY order_id";
     $navi_db->query($q);
     $navi_db->next_record();

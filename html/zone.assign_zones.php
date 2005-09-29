@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: zone.assign_zones.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,8 +21,8 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-  $list  = "SELECT * FROM #__pshop_country WHERE ";
-  $count = "SELECT count(*) as num_rows FROM #__pshop_country WHERE ";
+  $list  = "SELECT * FROM #__{vm}_country WHERE ";
+  $count = "SELECT count(*) as num_rows FROM #__{vm}_country WHERE ";
   $q  = "(country_name LIKE '%$keyword%')";
   $q .= "ORDER BY country_name ASC ";
   $list .= $q . " LIMIT $limitstart, " . $limit;
@@ -30,8 +30,8 @@ if (!empty($keyword)) {
 }
 else  {
   $q = "";
-  $list  = "SELECT * FROM #__pshop_country ORDER BY country_id ASC ";
-  $count = "SELECT count(*) as num_rows FROM #__pshop_country"; 
+  $list  = "SELECT * FROM #__{vm}_country ORDER BY country_id ASC ";
+  $count = "SELECT count(*) as num_rows FROM #__{vm}_country"; 
   $list .= $q . " LIMIT $limitstart, " . $limit;
   $count .= $q;   
 }
@@ -46,16 +46,16 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_ASSIGN_ZONE_PG_LBL, '', $modulename, "assign_zones");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_ASSIGN_ZONE_PG_LBL, '', $modulename, "assign_zones");
 
 // start the list table
 $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					$PHPSHOP_LANG->_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL => '',
-					$PHPSHOP_LANG->_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL => '',
-					$PHPSHOP_LANG->_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL => ''
+					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL => '',
+					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL => '',
+					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL => ''
 				);
 $listObj->writeTableHeader( $columns );
 

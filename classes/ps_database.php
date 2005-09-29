@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_database.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -50,8 +50,9 @@ class ps_DB extends database {
     */
     function setQuery( $sql ) {
         global $database;
-        
-        $this->_sql = $sql;
+        $vm_prefix = "{vm}";
+		
+        $this->_sql = str_replace( $vm_prefix, VM_TABLEPREFIX, $sql );
         $database->_sql = $this->replacePrefixAndSetQuery( $this->_sql );
     }
     
@@ -128,38 +129,39 @@ class ps_DB extends database {
             $literal .= substr($sql, $startPos, $n - $startPos);
         return $literal;
     }
-  /**
-  * Runs query and sets up the query id for the class.
-  *
-  * @param string The SQL query
-  */
-  function query( $q='' ) {
-      global $database, $mosConfig_dbprefix, $mosConfig_debug;
-      $prefix = "#__";
+	/**
+	* Runs query and sets up the query id for the class.
+	*
+	* @param string The SQL query
+	*/
+	function query( $q='' ) {
+		global $database, $mosConfig_dbprefix, $mosConfig_debug;
+		$prefix = "#__";
+		$vm_prefix = "{vm}";
+	  
+		if (empty($q)) {
+			if (empty($this->_sql))
+				return 0;
+		}
       
-      if (empty($q)) {
-          if (empty($this->_sql))
-            return 0;
-      }
-      
-      else {
-          $this->_sql = $q;
-          $database->setQuery( $this->_sql );
-      }
-      $this->row = 0;
-      $this->called = false;
-      $this->record = null;
-      $this->record = Array();
+		else {
+			$this->_sql = str_replace( $vm_prefix, VM_TABLEPREFIX, $q );
+			$database->setQuery( $this->_sql );
+		}
+		$database->_sql = str_replace( '_pshop_', VM_TABLEPREFIX, $database->_sql );
+		$this->row = 0;
+		$this->called = false;
+		$this->record = null;
+		$this->record = Array();
 
-      if (strtoupper(substr( $this->_sql , 0, 6 )) == "SELECT" ) {
-        $this->record = $database->loadObjectList();
-      }
-	  else
-        $database->query();
+		if (strtoupper(substr( $this->_sql , 0, 6 )) == "SELECT" ) {
+			$this->record = $database->loadObjectList();
+		}
+		else
+			$database->query();
 
   }
   
-
   /**
   * Returns the next row in the RecordSet for the last query run.  
   * Returns False if RecordSet is empty or at the end.

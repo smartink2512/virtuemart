@@ -3,7 +3,7 @@
 *
 * 2Checkout Order Confirmation Handler
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: checkout.2Checkout_result.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -12,7 +12,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -52,10 +52,10 @@ else {
   if ($compare_hash1 != $compare_hash2) {
         ?>
         <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><? echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_ERROR ?></span><?php
+        <span class="message"><? echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?></span><?php
   }
   else {
-        $qv = "SELECT order_id, order_number FROM #__pshop_orders ";
+        $qv = "SELECT order_id, order_number FROM #__{vm}_orders ";
         $qv .= "WHERE order_number='".$order_number."'";
         $dbbt = new ps_DB;
         $dbbt->query($qv);
@@ -72,7 +72,7 @@ else {
             
     ?> 
             <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="Success" border="0" />
-            <h2><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS ?></h2>
+            <h2><?php echo $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS ?></h2>
         <?php
         }
         else {
@@ -86,14 +86,14 @@ else {
             
     ?> 
             <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-            <h2><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_ERROR ?></h2>
+            <h2><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?></h2>
         <?php
         } 
   }
   ?>
 <br />
-<p><a href="<?php @$sess->purl( SECUREURL."index.php?option=com_phpshop&page=account.order_details&order_id=".$d['order_id'] ) ?>">
-   <?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_LINK ?></a>
+<p><a href="<?php @$sess->purl( SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=".$d['order_id'] ) ?>">
+   <?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?></a>
 </p>
 <?php
 }

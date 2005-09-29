@@ -1,19 +1,19 @@
 <?php
 /**
-* @version $Id: ps_cybercash.php,v 1.4 2005/01/27 19:33:57 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id: ps_cybercash.php,v 1.1 2005/09/06 20:04:20 soeren_nb Exp $
+* @package VirtueMart
 * @subpackage Payment
 * Contains code from PHPShop(tm):
 * 	@copyright (C) 2000 - 2004 Edikon Corporation (www.edikon.com)
-*	Community: www.phpshop.org, forums.phpshop.org
+*	Community: www.virtuemart.org, forums.virtuemart.org
 * Conversion to Mambo and the rest:
 * 	@copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 *
 * The ps_cybercash class, containing the payment processing code
 *  for transactions with deprecated cybercash
@@ -30,42 +30,42 @@ class ps_cybercash {
     * @returns boolean False when the Payment method has no configration
     */
     function show_configuration() {
-      global $PHPSHOP_LANG;
+      global $VM_LANG;
       
       /** Read current Configuration ***/
       require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
     ?>
       <table>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND ?></strong></td>
             <td>
                 <input type="text" name="CC_MERCHANT" class="inputbox" value="<? echo CC_MERCHANT ?>" />
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_EXPLAIN ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY ?></strong></td>
             <td>
                 <input type="text" name="CC_MERCHANT_KEY" class="inputbox" value="<? echo CC_MERCHANT_KEY ?>" />
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND_KEY_EXPLAIN ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_URL ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_URL ?></strong></td>
             <td>
                 <input type="text" name="CC_PAYMENT_URL" class="inputbox" value="<? echo CC_PAYMENT_URL ?>" />
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE ?></strong></td>
             <td>
                 <input type="text" name="CC_AUTH_TYPE" class="inputbox" value="<? echo CC_AUTH_TYPE ?>" />
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN ?>
             </td>
         </tr>
       </table>
@@ -149,7 +149,7 @@ class ps_cybercash {
      $qt .= "AND address_type='BT'";
      $dbbt->query($qt);
      if (!$db->num_rows()) {
-         $qt = "SELECT * from #__pshop_user_info ";
+         $qt = "SELECT * from #__{vm}_user_info ";
          $qt .= "WHERE user_id='".$auth["user_id"]."' ";
          $qt .= "AND address_type='BT'";
          $dbbt->query($qt);

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: zw_waiting_list.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -31,7 +31,7 @@ class zw_waiting_list {
 
   function validate_add(&$d) {
     $db = new ps_DB;
-    $q = "SELECT waiting_list_id from #__pshop_waiting_list WHERE ";
+    $q = "SELECT waiting_list_id from #__{vm}_waiting_list WHERE ";
     $q .= "notify_email='" . $d["notify_email"] . "' AND ";
     $q .= "product_id='" . $d["product_id"] . "' AND notified='0'";
     $db->query($q);
@@ -85,7 +85,7 @@ class zw_waiting_list {
     if (!$this->validate_add($d)) {
       return False;
     }
-    $q = "INSERT INTO #__pshop_waiting_list (product_id, user_id, notify_email)";
+    $q = "INSERT INTO #__{vm}_waiting_list (product_id, user_id, notify_email)";
     $q .= " VALUES ('";
     $q .= $d["product_id"] . "','";
     $q .= $d["user_id"] . "','";
@@ -106,7 +106,7 @@ class zw_waiting_list {
   function update($shopper_email,$product_id) {
     $dbu = new ps_DB;
 
-    $qu = "UPDATE #__pshop_waiting_list SET notified='1' WHERE ";
+    $qu = "UPDATE #__{vm}_waiting_list SET notified='1' WHERE ";
     $qu .= "notify_email='$shopper_email' AND ";
     $qu .= "product_id='$product_id'";
     $dbu->query($qu);
@@ -127,7 +127,7 @@ class zw_waiting_list {
     if (!$this->validate_delete($d)) {
       return False;
     }
-    $q = "DELETE from #__pshop_waiting_list where notify_email='" . $d["notify_email"] . "'";
+    $q = "DELETE from #__{vm}_waiting_list where notify_email='" . $d["notify_email"] . "'";
     $q .= " AND product_id='" .$d["product_id"] ."'";
     $db->query($q);
     $db->next_record();
@@ -147,7 +147,7 @@ class zw_waiting_list {
     }
 
     $dbv = new ps_DB;
-    $qt = "SELECT * from #__pshop_vendor ";
+    $qt = "SELECT * from #__{vm}_vendor ";
     $qt .= "WHERE vendor_id='1'";
     $dbv->query($qt);
     $dbv->next_record();
@@ -155,7 +155,7 @@ class zw_waiting_list {
 
    
     $db = new ps_DB;
-    $q = "SELECT * FROM #__pshop_waiting_list WHERE ";
+    $q = "SELECT * FROM #__{vm}_waiting_list WHERE ";
     $q .= "notified='0' AND product_id='$product_id'";
     $db->query($q);
 
@@ -187,7 +187,7 @@ class zw_waiting_list {
               $notice_subject, $notice_body, "From: $from_email\n");
   
       $dbu = new ps_DB;
-      $qu = "UPDATE #__pshop_waiting_list SET notified='1' WHERE ";
+      $qu = "UPDATE #__{vm}_waiting_list SET notified='1' WHERE ";
       $qu .= "notify_email='$shopper_email' AND ";
       $qu .= "product_id='$product_id'";
       $dbu->query($qu);

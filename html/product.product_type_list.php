@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_type_list.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,18 +11,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$q = "SELECT * FROM #__pshop_product_type ";
-/*    $q .= "WHERE #__pshop_category_xref.category_parent_id='";
+$q = "SELECT * FROM #__{vm}_product_type ";
+/*    $q .= "WHERE #__{vm}_category_xref.category_parent_id='";
 $q .= $category_id . "' AND ";
-$q .= "#__pshop_category.category_id=#__pshop_category_xref.category_child_id ";
-$q .= "AND #__pshop_category.vendor_id = $ps_vendor_id ";*/
+$q .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
+$q .= "AND #__{vm}_category.vendor_id = $ps_vendor_id ";*/
 $q .= "ORDER BY product_type_list_order asc ";
 $q .= "LIMIT $limitstart, $limit";
 $db->setQuery($q);   
@@ -36,7 +36,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL, IMAGEURL."ps_image/categories.gif", $modulename, "product_type_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL, IMAGEURL."ps_image/categories.gif", $modulename, "product_type_list");
 
 // start the list table
 $listObj->startTable();
@@ -44,12 +44,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_NAME => 'width="25%"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="30%"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS => 'width="15%"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCTS_LBL => 'width="15%"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
-					$PHPSHOP_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="5%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_NAME => 'width="25%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="30%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS => 'width="15%"',
+					$VM_LANG->_PHPSHOP_PRODUCTS_LBL => 'width="15%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
+					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="5%"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -68,19 +68,19 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("product_type_id"), false, "product_type_id" ) );
 	
-	$tmp_cell = "<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_phpshop&page=product.product_type_form&product_type_id=" . $db->f("product_type_id") . "\">". $db->f("product_type_name") . "</a>";
+	$tmp_cell = "<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_form&product_type_id=" . $db->f("product_type_id") . "\">". $db->f("product_type_name") . "</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell(  $db->f("product_type_description"));
 
-	$tmp_cell = $parameter_count . " " . $PHPSHOP_LANG->_PHPSHOP_PARAMETERS_LBL . " <a href=\""
-			. $_SERVER['PHP_SELF'] . "?option=com_phpshop&page=product.product_type_parameter_list&product_type_id="
-			. $db->f("product_type_id") . "\">[ ".$PHPSHOP_LANG->_PHPSHOP_SHOW." ]</a>";
+	$tmp_cell = $parameter_count . " " . $VM_LANG->_PHPSHOP_PARAMETERS_LBL . " <a href=\""
+			. $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_parameter_list&product_type_id="
+			. $db->f("product_type_id") . "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$tmp_cell = $product_count ." ". $PHPSHOP_LANG->_PHPSHOP_PRODUCTS_LBL."&nbsp;<a href=\""
-			. $_SERVER['PHP_SELF'] . "?option=com_phpshop&page=product.product_list&product_type_id=" . $db->f("product_type_id")
-			. "\">[ ".$PHPSHOP_LANG->_PHPSHOP_SHOW." ]</a>";
+	$tmp_cell = $product_count ." ". $VM_LANG->_PHPSHOP_PRODUCTS_LBL."&nbsp;<a href=\""
+			. $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_list&product_type_id=" . $db->f("product_type_id")
+			. "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>";
 	$listObj->addCell( $tmp_cell );
       //$listObj->addCell( $db->f("list_order"));
 

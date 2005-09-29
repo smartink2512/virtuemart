@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.review_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -25,7 +25,7 @@ $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 $q = "";
 $count = "SELECT COUNT( * ) ";
 $list = "SELECT comment, user_rating,userid,username,time ";
-$q .= "FROM #__pshop_product_reviews,#__users ";
+$q .= "FROM #__{vm}_product_reviews,#__users ";
 $q .= "WHERE product_id = '$product_id' AND id=userid ";
 if( !empty( $keyword ))
 	$q .= "AND ( comment LIKE '%$keyword%' OR username LIKE '%$keyword%' ) ";
@@ -41,7 +41,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );
 
-$title = $PHPSHOP_LANG->_PHPSHOP_REVIEWS;
+$title = $VM_LANG->_PHPSHOP_REVIEWS;
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id";
 $title .= " :: [ <a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name"). "</a> ]";
 		  
@@ -55,8 +55,8 @@ $listObj->startTable();
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
 					"Name/Date" => 'width="15%"',
-					$PHPSHOP_LANG->_PHPSHOP_REVIEW_COMMENT => 'width="45%"',
-					$PHPSHOP_LANG->_PHPSHOP_RATE_NOM => 'width="25%"',
+					$VM_LANG->_PHPSHOP_REVIEW_COMMENT => 'width="45%"',
+					$VM_LANG->_PHPSHOP_RATE_NOM => 'width="25%"',
 					_E_REMOVE => 'width="10%"'
 				);
 $listObj->writeTableHeader( $columns );

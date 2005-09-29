@@ -3,13 +3,13 @@
     <name>All-In-One New/Featured/TopTen/Random Products Module</name>
     <creationDate>22.03.2005</creationDate>
     <author>soeren</author>
-    <copyright>mambo-phpShop is released under GNU/GPLicense</copyright>
-    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
-    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <copyright>VirtueMart is released under GNU/GPLicense</copyright>
+    <authorEmail>soeren@virtuemart.net</authorEmail>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
     <description>Shows the newest/featured/best selling/random products from your phpShop.</description>
      <files>
-         <filename module="mod_phpshop_allinone">mod_phpshop_allinone.php</filename>
+         <filename module="mod_virtuemart_allinone">mod_virtuemart_allinone.php</filename>
      </files>
      <params>
         <param name="show_new" type="radio" default="1" label="Show new products?" description="Shows the  newest products from your portfolio." >

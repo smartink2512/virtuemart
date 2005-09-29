@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @author Soeren Eberhardt
 * @ Uses dTree Javascript: http://www.destroydrop.com/javascripts/tree/
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.folders.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -14,7 +14,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -35,9 +35,9 @@ $phpShopmenu = new phpShopmenu();
 $treename = "JSCook".uniqid( "Tree_" );
 
 $menu_htmlcode = "<br/><br/>
-<a onclick=\"javascript: ctExpandTree('div_$treename',99);\" style=\"cursor:pointer\">".$PHPSHOP_LANG->_PHPSHOP_EXPAND_TREE."</a>
+<a onclick=\"javascript: ctExpandTree('div_$treename',99);\" style=\"cursor:pointer\">".$VM_LANG->_PHPSHOP_EXPAND_TREE."</a>
 &nbsp;&nbsp;|&nbsp;&nbsp;
-<a onclick=\"javascript: ctCollapseTree('div_$treename');\" style=\"cursor:pointer\">".$PHPSHOP_LANG->_PHPSHOP_COLLAPSE_TREE."</a>
+<a onclick=\"javascript: ctCollapseTree('div_$treename');\" style=\"cursor:pointer\">".$VM_LANG->_PHPSHOP_COLLAPSE_TREE."</a>
 <br/>
 <div style=\"margin-left:50px;\" id=\"div_$treename\"></div>
 <br/><br/>
@@ -53,10 +53,10 @@ var treeindex = ctDraw ('div_$treename', $treename, $jscook_tree, '$jscook_theme
 
 
 echo "
-<script language=\"JavaScript\" type=\"text/javascript\" src=\"$mosConfig_live_site/components/com_phpshop/js/JSCookTree.js\"></script>
-<link rel=\"stylesheet\" href=\"$mosConfig_live_site/components/com_phpshop/js/$jscook_theme/theme.css\" type=\"text/css\" />
-<script type=\"text/javascript\">var ctThemeXPBase = '$mosConfig_live_site/components/com_phpshop/js/ThemeXP/';</script>
-<script language=\"JavaScript\" type=\"text/javascript\" src=\"$mosConfig_live_site/components/com_phpshop/js/$jscook_theme/theme.js\"></script>
+<script language=\"JavaScript\" type=\"text/javascript\" src=\"$mosConfig_live_site/components/com_virtuemart/js/JSCookTree.js\"></script>
+<link rel=\"stylesheet\" href=\"$mosConfig_live_site/components/com_virtuemart/js/$jscook_theme/theme.css\" type=\"text/css\" />
+<script type=\"text/javascript\">var ctThemeXPBase = '$mosConfig_live_site/components/com_virtuemart/js/ThemeXP/';</script>
+<script language=\"JavaScript\" type=\"text/javascript\" src=\"$mosConfig_live_site/components/com_virtuemart/js/$jscook_theme/theme.js\"></script>
 ";
 
 echo $menu_htmlcode;
@@ -71,7 +71,7 @@ class phpShopmenu {
         global $database, $module, $mosConfig_live_site;
         $level++;
         $query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
-        . "FROM #__pshop_category as a, #__pshop_category_xref as b "
+        . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
          . "WHERE a.category_publish='Y' AND "
          . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
          . "ORDER BY category_parent_id, list_order, category_name ASC";
@@ -87,19 +87,19 @@ class phpShopmenu {
             $itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
             $mymenu_content.= ",\n[null,'".$category->cname;
             $mymenu_content.= ps_product_category::products_in_category( $category->cid );
-            $mymenu_content.= "','".$_SERVER['PHP_SELF'].'?option=com_phpshop&page=product.product_category_form&category_id='.$category->cid."','_self','".$category->cname."'\n ";
+            $mymenu_content.= "','".$_SERVER['PHP_SELF'].'?option=com_virtuemart&page=product.product_category_form&category_id='.$category->cid."','_self','".$category->cname."'\n ";
             
-            $q = "SELECT #__pshop_product.product_name,#__pshop_product.product_id FROM #__pshop_product, #__pshop_product_category_xref ";
-            $q .= "WHERE #__pshop_product.product_id=#__pshop_product_category_xref.product_id ";
-            $q .= "AND #__pshop_product_category_xref.category_id='".$category->cid."' ";
-            $q .= "ORDER BY #__pshop_product.product_name";
+            $q = "SELECT #__{vm}_product.product_name,#__{vm}_product.product_id FROM #__{vm}_product, #__{vm}_product_category_xref ";
+            $q .= "WHERE #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
+            $q .= "AND #__{vm}_product_category_xref.category_id='".$category->cid."' ";
+            $q .= "ORDER BY #__{vm}_product.product_name";
             $database->setQuery( $q );
             $products = $database->loadObjectList();
             $xx = 1;
             foreach( $products as $product ) {
               // get name and link (just to save space in the code later on)
               $mymenu_content.= ",\n[null,'".$product->product_name;
-              $url = $_SERVER['PHP_SELF'].'?option=com_phpshop&page=product.product_form&product_id='.$product->product_id;
+              $url = $_SERVER['PHP_SELF'].'?option=com_virtuemart&page=product.product_form&product_id='.$product->product_id;
               $mymenu_content .= "','".$url."','_self','".$product->product_name."']";
               if( $xx++ < sizeof( $products ))
                 $mymenu_content .= ",\n";

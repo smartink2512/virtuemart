@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_csv.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -26,14 +26,14 @@ class ps_csv {
   var $classname = "ps_csv";
   /** @var Array  Contains all fieldnames that are required on CSV Upload */
   var $reserved_words = Array( "product_sku", "product_name", "category_path" );
-  /** @var Array  Contains all fieldnames for the mos_pshop_products table which are not to be filled dynamically */
+  /** @var Array  Contains all fieldnames for the mos_{vm}_products table which are not to be filled dynamically */
   var $dont_use_in_query = Array( "product_sku", "product_name", "product_price", "category_path", "manufacturer_id", "attributes", "attribute_values" );
   
   /**************************************************************************
   ** name: upload_csv()
   ** created by: John Syben
   ** modified by: nhyde
-  ** A db table named 'mos_pshop_csv' must exist with the product fields
+  ** A db table named 'mos_{vm}_csv' must exist with the product fields
   ** allocated their relative positions in the csv line
   ***************************************************************************/
 
@@ -48,7 +48,7 @@ class ps_csv {
 
     // Get row positions of each element as set in csv table
     $db = new ps_DB;
-    $q = "SELECT * FROM #__pshop_csv ";
+    $q = "SELECT * FROM #__{vm}_csv ";
     $db->query($q);
     
     $csv_fields = Array();
@@ -64,7 +64,7 @@ class ps_csv {
     }
     
     $dbc = new ps_DB;
-    $q = "SELECT vendor_currency FROM #__pshop_vendor WHERE vendor_id='$ps_vendor_id' ";
+    $q = "SELECT vendor_currency FROM #__{vm}_vendor WHERE vendor_id='$ps_vendor_id' ";
     $dbc->query($q);
     $dbc->next_record();
     $product_currency = $dbc->f("vendor_currency");
@@ -144,14 +144,14 @@ class ps_csv {
             $timestamp = time();
 
             // See if sku exists. If so, update product - otherwise add product
-            $q = "SELECT product_id FROM #__pshop_product ";
+            $q = "SELECT product_id FROM #__{vm}_product ";
             $q .= "WHERE product_sku='$product_sku'";
             $dbp->query($q);
             
             // When the Product is an Item, we must get the ID of the Parent Product
             // This assumes that the Parent Product already has been added 
             if( $data[$csv_fields["product_parent_id"]["ordering"]-1] != $data[$csv_fields["product_sku"]["ordering"]-1] ) {
-              $q = "SELECT product_id FROM #__pshop_product WHERE product_sku='".$data[$csv_fields["product_parent_id"]["ordering"]-1]."'";
+              $q = "SELECT product_id FROM #__{vm}_product WHERE product_sku='".$data[$csv_fields["product_parent_id"]["ordering"]-1]."'";
               $dbu->query( $q );
               $dbu->next_record();
               $data[$csv_fields["product_parent_id"]["ordering"]-1] = $dbu->f("product_id");
@@ -164,7 +164,7 @@ class ps_csv {
             *****************************/
             if ($dbp->next_record()) { // SKU exists - update product
                 // Update product information
-                $q = "UPDATE #__pshop_product SET ";
+                $q = "UPDATE #__{vm}_product SET ";
                 foreach( $csv_fields as $fieldname ) {
                   
                   if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
@@ -189,12 +189,12 @@ class ps_csv {
                 if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
                   $attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
                   $i = 0;
-                  $dbu->query( "DELETE FROM #__pshop_product_attribute_sku WHERE product_id ='".$dbp->f("product_id")."'");
+                  $dbu->query( "DELETE FROM #__{vm}_product_attribute_sku WHERE product_id ='".$dbp->f("product_id")."'");
                   while(list(,$val) = each($attributes)) {
                     $values = explode( "::", $val );
                     if( empty( $values[1] ))
                       $values[1] = $i;
-                    $dbu->query( "INSERT INTO #__pshop_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
+                    $dbu->query( "INSERT INTO #__{vm}_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
                                     VALUES ('".$dbp->f("product_id")."', '".$values[0]."', '".$values[1]."' )");
                     $i++;
                   }
@@ -208,12 +208,12 @@ class ps_csv {
                 if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
                   $attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
                   $i = 0;
-                  $dbu->query( "DELETE FROM #__pshop_product_attribute WHERE product_id ='".$dbp->f("product_id")."'");
+                  $dbu->query( "DELETE FROM #__{vm}_product_attribute WHERE product_id ='".$dbp->f("product_id")."'");
                   while(list(,$val) = each($attribute_values)) {
                     $values = explode( "::", $val );
                     if( empty( $values[1] ))
                       $values[1] = "";
-                    $dbu->query( "INSERT INTO #__pshop_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
+                    $dbu->query( "INSERT INTO #__{vm}_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
                                     VALUES ('".$dbp->f("product_id")."', '".$values[0]."', '".$values[1]."' )");
                     $i++;
                   }
@@ -224,7 +224,7 @@ class ps_csv {
                 if( !empty($data[$csv_fields["product_price"]["ordering"]-1])) {
                   // Get default shopper group ID
                   if( empty( $GLOBALS[$ps_vendor_id]["default_shopper_group"] )) {
-                    $q = "SELECT shopper_group_id FROM #__pshop_shopper_group ";
+                    $q = "SELECT shopper_group_id FROM #__{vm}_shopper_group ";
                     $q .= "WHERE `default`='1' and vendor_id='$ps_vendor_id'";
                     $dbsg = new ps_DB;
                     $dbsg->query($q);
@@ -233,7 +233,7 @@ class ps_csv {
                   }
 
                   // Update product price for default shopper group   
-                  $q = "UPDATE #__pshop_product_price SET ";
+                  $q = "UPDATE #__{vm}_product_price SET ";
                   $q .= "product_price='" . $data[$csv_fields["product_price"]["ordering"]-1] . "',";
                   $q .= "product_currency='" . $product_currency . "',";
                   $q .= "shopper_group_id='" . $GLOBALS[$ps_vendor_id]["default_shopper_group"] . "', ";
@@ -247,13 +247,13 @@ class ps_csv {
                   $category_id = $this->csv_category($data[$csv_fields["category_path"]["ordering"]-1]);
                   
                   // Delete old entries
-                  $q  = "DELETE FROM #__pshop_product_category_xref WHERE product_id =";
+                  $q  = "DELETE FROM #__{vm}_product_category_xref WHERE product_id =";
                   $q .= " '".$dbp->f("product_id")."'";
                   $dbcat->query($q);
                   
                   // Insert new product/category relationships
                   foreach( $category_id as $value ) {
-                    $q  = "INSERT INTO #__pshop_product_category_xref (category_id, product_id ) VALUES (";
+                    $q  = "INSERT INTO #__{vm}_product_category_xref (category_id, product_id ) VALUES (";
                     $q .= "'$value', '".$dbp->f("product_id")."')";
                     $dbcat->query($q);
                   }
@@ -266,7 +266,7 @@ class ps_csv {
                 ** SKU does not exist - add new product
                 ** Add product information ***********
                 **************************************/ 
-                $q  = "INSERT INTO #__pshop_product (vendor_id,product_sku,product_name,cdate,mdate,product_publish,";
+                $q  = "INSERT INTO #__{vm}_product (vendor_id,product_sku,product_name,cdate,mdate,product_publish,";
                 $x = 1;
                 foreach( $csv_fields as $fieldname ) {
                 
@@ -295,14 +295,14 @@ class ps_csv {
                           
                 // Store the manufacturer ID and create a
                 // product <-> manufacturer relationship
-                $q = "INSERT INTO #__pshop_product_mf_xref VALUES (";
+                $q = "INSERT INTO #__{vm}_product_mf_xref VALUES (";
                 $q .= "'$product_id', '".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."')";
                 $dbcat->setQuery($q);  $dbcat->query();
                 
                 // Care for the Manufacturer Entry
                 if( empty( $manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] )) {
                   // Must Search for the Manufacturer ID
-                  $q = "SELECT manufacturer_id FROM #__pshop_manufacturer WHERE manufacturer_id='".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."'";
+                  $q = "SELECT manufacturer_id FROM #__{vm}_manufacturer WHERE manufacturer_id='".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."'";
                   $dbcat->query( $q );
                   if( $dbcat->next_record() ) {
                     $manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] = 1;
@@ -323,7 +323,7 @@ class ps_csv {
                 if( empty($data[$csv_fields["product_parent_id"]["ordering"]-1])) {
                   // Insert new product/category relationships
                   foreach( $category_id as $value ) {
-                    $q  = "INSERT INTO #__pshop_product_category_xref (category_id, product_id ) VALUES (";
+                    $q  = "INSERT INTO #__{vm}_product_category_xref (category_id, product_id ) VALUES (";
                     $q .= "'$value', '$product_id')";
                     $dbcat->query($q);
                   }
@@ -331,14 +331,14 @@ class ps_csv {
                 if( !empty($data[$csv_fields["product_price"]["ordering"]-1])) {
                   // Get default shopper group ID
                   if( empty( $GLOBALS[$ps_vendor_id]["default_shopper_group"] )) {
-                    $q = "SELECT shopper_group_id FROM #__pshop_shopper_group ";
+                    $q = "SELECT shopper_group_id FROM #__{vm}_shopper_group ";
                     $q .= "WHERE `default`='1' AND vendor_id='$ps_vendor_id'";
                     $dbsg->query($q);
                     $dbsg->next_record();
                     $GLOBALS[$ps_vendor_id]["default_shopper_group"] = $dbsg->f("shopper_group_id");
                   }
                   // Add  product price for default shopper group
-                  $q = "INSERT INTO #__pshop_product_price ";
+                  $q = "INSERT INTO #__{vm}_product_price ";
                   $q .= "(product_price,product_currency,product_id,shopper_group_id,mdate) ";
                   $q .= "VALUES ('";
                   $q .= $data[$csv_fields["product_price"]["ordering"]-1] . "','";
@@ -362,7 +362,7 @@ class ps_csv {
                     $values = explode( "::", $val );
                     if( empty( $values[1] ))
                       $values[1] = $i;
-                    $dbu->query( "INSERT INTO #__pshop_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
+                    $dbu->query( "INSERT INTO #__{vm}_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
                                     VALUES ('".$product_id."', '".$values[0]."', '".$values[1]."' )");
                     $i++;
                   }
@@ -380,7 +380,7 @@ class ps_csv {
                     $values = explode( "::", $val );
                     if( empty( $values[1] ))
                       $values[1] = "";
-                    $dbu->query( "INSERT INTO #__pshop_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
+                    $dbu->query( "INSERT INTO #__{vm}_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
                                     VALUES ('".$product_id."', '".$values[0]."', '".$values[1]."' )");
                     $i++;
                   }
@@ -426,10 +426,10 @@ class ps_csv {
         // For each category in array
         for($i = 0; $i < $category_count; $i++) {
           // See if this category exists with it's parent in xref
-          $q = "SELECT #__pshop_category.category_id FROM #__pshop_category,#__pshop_category_xref ";
-          $q .= "WHERE #__pshop_category.category_name='" . $category_list[$i] . "' ";
-          $q .= "AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id ";
-          $q .= "AND #__pshop_category_xref.category_parent_id='$category_parent_id'";
+          $q = "SELECT #__{vm}_category.category_id FROM #__{vm}_category,#__{vm}_category_xref ";
+          $q .= "WHERE #__{vm}_category.category_name='" . $category_list[$i] . "' ";
+          $q .= "AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id ";
+          $q .= "AND #__{vm}_category_xref.category_parent_id='$category_parent_id'";
           $db->query($q);
             // If it does not exist, create it
             if ($db->next_record()) { // Category exists
@@ -441,7 +441,7 @@ class ps_csv {
               
               // Let's find out the last category in
               // the level of the new category
-              $q = "SELECT MAX(list_order) AS list_order FROM #__pshop_category_xref,#__pshop_category ";
+              $q = "SELECT MAX(list_order) AS list_order FROM #__{vm}_category_xref,#__{vm}_category ";
               $q .= "WHERE category_parent_id='".$category_parent_id."' ";
               $q .= "AND category_child_id=category_id ";
               $db->query( $q );
@@ -450,7 +450,7 @@ class ps_csv {
               $list_order = intval($db->f("list_order"))+1;
               
               // Add category
-              $q = "INSERT INTO #__pshop_category ";
+              $q = "INSERT INTO #__{vm}_category ";
               $q .= "(vendor_id,category_name, category_publish,cdate,mdate,list_order) ";
               $q .= "VALUES ('1', '";
               $q .= $category_list[$i] . "', '";
@@ -462,7 +462,7 @@ class ps_csv {
               $category_id = $db->last_insert_id();
               
               // Create xref with parent
-              $q = "INSERT INTO #__pshop_category_xref ";
+              $q = "INSERT INTO #__{vm}_category_xref ";
               $q .= "(category_parent_id, category_child_id) ";
               $q .= "VALUES ('";
               $q .= $category_parent_id . "', '";
@@ -612,14 +612,14 @@ class ps_csv {
         $db = new ps_DB;
 
         // Get default shopper group ID for prices
-        $q = "SELECT shopper_group_id FROM #__pshop_shopper_group WHERE `default`='1' and vendor_id = '$ps_vendor_id'";
+        $q = "SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE `default`='1' and vendor_id = '$ps_vendor_id'";
         $db->query($q);
         $db->next_record();
         $shopper_group_id = $db->f("shopper_group_id");
         
         // Get row positions of each element as set in csv table
         $db = new ps_DB;
-        $q = "SELECT * FROM #__pshop_csv ";
+        $q = "SELECT * FROM #__{vm}_csv ";
         $db->query($q);
               
         $csv_ordering = Array();        
@@ -630,14 +630,14 @@ class ps_csv {
         * Get all products - including items
         * as well as products without a price
         **/
-        $sql = 'SELECT * FROM #__pshop_product'
-          . ' LEFT OUTER JOIN #__pshop_product_price'
-          . ' ON #__pshop_product.product_id = #__pshop_product_price.product_id'
-          . ' AND #__pshop_product.vendor_id = \'1\' '
+        $sql = 'SELECT * FROM #__{vm}_product'
+          . ' LEFT OUTER JOIN #__{vm}_product_price'
+          . ' ON #__{vm}_product.product_id = #__{vm}_product_price.product_id'
+          . ' AND #__{vm}_product.vendor_id = \'1\' '
           . ' AND shopper_group_id = \'5\' '
-          . ' LEFT JOIN #__pshop_product_mf_xref'
+          . ' LEFT JOIN #__{vm}_product_mf_xref'
           . ' USING( product_id )'
-          . ' ORDER BY product_parent_id ASC , #__pshop_product.product_id ASC';
+          . ' ORDER BY product_parent_id ASC , #__{vm}_product.product_id ASC';
         
         $db->query( $sql );
         $delim = $d['csv_delimiter'];
@@ -655,7 +655,7 @@ class ps_csv {
           $attributes = $attribute_values = "";
           if( $db->f("product_parent_id") == 0 ) {
             
-            $db_attributes->query( "SELECT attribute_name, attribute_list FROM #__pshop_product_attribute_sku WHERE product_id = '".$db->f("product_id")."'" );
+            $db_attributes->query( "SELECT attribute_name, attribute_list FROM #__{vm}_product_attribute_sku WHERE product_id = '".$db->f("product_id")."'" );
             if( $db_attributes->next_record() ) {
               $has_attributes = true;
               $db_attributes->reset();
@@ -672,7 +672,7 @@ class ps_csv {
           }
           else {
             
-            $db_attribute_values->query( "SELECT attribute_name, attribute_value FROM #__pshop_product_attribute WHERE product_id = '".$db->f("product_id")."'" );
+            $db_attribute_values->query( "SELECT attribute_name, attribute_value FROM #__{vm}_product_attribute WHERE product_id = '".$db->f("product_id")."'" );
             if( $db_attribute_values->next_record() ) {
               $db_attribute_values->reset();
               while( $db_attribute_values->next_record() ) {
@@ -681,7 +681,7 @@ class ps_csv {
                   $attribute_values .= "|";
               }
             }
-            $database->setQuery( "SELECT product_sku FROM #__pshop_product WHERE product_id='".$db->f("product_parent_id")."'" );
+            $database->setQuery( "SELECT product_sku FROM #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'" );
             $product_sku = $database->loadResult();
             $export_sku = $product_sku;
           }
@@ -741,7 +741,7 @@ class ps_csv {
           
         }
 
-        $filename = "mambo-phpShop_" .date("jmYHis"). ".csv";
+        $filename = "VirtueMart_" .date("jmYHis"). ".csv";
 
         if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
           $UserBrowser = "Opera";
@@ -786,12 +786,12 @@ class ps_csv {
     function get_category_path( $product_id ) {
         global $database;
         $db = new ps_DB;
-        $q = "SELECT #__pshop_product.product_id, #__pshop_product.product_parent_id, category_name,#__pshop_category_xref.category_parent_id "
-                ."FROM #__pshop_category, #__pshop_product, #__pshop_product_category_xref,#__pshop_category_xref "
-                ."WHERE #__pshop_product.product_id='$product_id' "
-                ."AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id "
-                ."AND #__pshop_category_xref.category_child_id = #__pshop_product_category_xref.category_id "
-                ."AND #__pshop_product.product_id = #__pshop_product_category_xref.product_id";
+        $q = "SELECT #__{vm}_product.product_id, #__{vm}_product.product_parent_id, category_name,#__{vm}_category_xref.category_parent_id "
+                ."FROM #__{vm}_category, #__{vm}_product, #__{vm}_product_category_xref,#__{vm}_category_xref "
+                ."WHERE #__{vm}_product.product_id='$product_id' "
+                ."AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id "
+                ."AND #__{vm}_category_xref.category_child_id = #__{vm}_product_category_xref.category_id "
+                ."AND #__{vm}_product.product_id = #__{vm}_product_category_xref.product_id";
         $database->setQuery( $q );
         $rows = $database->loadObjectList();
         $k = 1;
@@ -809,16 +809,16 @@ class ps_csv {
               /** must be an item 
               * So let's search for the category path of the
               * parent product **/
-              $q = "SELECT product_parent_id FROM #__pshop_product WHERE product_id='$product_id'";
+              $q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
               $db->query( $q );
               $db->next_record();
               
-              $q  = "SELECT #__pshop_product.product_id, #__pshop_product.product_parent_id, category_name,#__pshop_category_xref.category_parent_id "
-                  ."FROM #__pshop_category, #__pshop_product, #__pshop_product_category_xref,#__pshop_category_xref "
-                  ."WHERE #__pshop_product.product_id='".$db->f("product_parent_id")."' "
-                  ."AND #__pshop_category_xref.category_child_id=#__pshop_category.category_id "
-                  ."AND #__pshop_category_xref.category_child_id = #__pshop_product_category_xref.category_id "
-                  ."AND #__pshop_product.product_id = #__pshop_product_category_xref.product_id";
+              $q  = "SELECT #__{vm}_product.product_id, #__{vm}_product.product_parent_id, category_name,#__{vm}_category_xref.category_parent_id "
+                  ."FROM #__{vm}_category, #__{vm}_product, #__{vm}_product_category_xref,#__{vm}_category_xref "
+                  ."WHERE #__{vm}_product.product_id='".$db->f("product_parent_id")."' "
+                  ."AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id "
+                  ."AND #__{vm}_category_xref.category_child_id = #__{vm}_product_category_xref.category_id "
+                  ."AND #__{vm}_product.product_id = #__{vm}_product_category_xref.product_id";
               $db->query( $q );
               $db->next_record();
               $category_parent_id = $db->f("category_parent_id");
@@ -828,9 +828,9 @@ class ps_csv {
           
           while( $category_parent_id != "0" ) {
               $q = "SELECT category_name, category_parent_id "
-                      ."FROM #__pshop_category, #__pshop_category_xref "
-                      ."WHERE #__pshop_category_xref.category_child_id=#__pshop_category.category_id "
-                      ."AND #__pshop_category.category_id='$category_parent_id'";
+                      ."FROM #__{vm}_category, #__{vm}_category_xref "
+                      ."WHERE #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id "
+                      ."AND #__{vm}_category.category_id='$category_parent_id'";
               $db->query( $q );
               $db->next_record();
               $category_parent_id = $db->f("category_parent_id");
@@ -869,7 +869,7 @@ class ps_csv {
          $this->error = "ERROR:  You must enter a name for the Field.";
          return False;	
        }
-       $q = "SELECT count(*) as rowcnt from #__pshop_csv where";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_csv where";
        $q .= " field_name='" .  $field["_name"] . "'";
        $db->setQuery($q);
        $db->query();
@@ -899,7 +899,7 @@ class ps_csv {
        }
        if( in_array( $field["_name"], $this->reserved_words ))
         $i++;
-       $q = "SELECT count(*) as rowcnt from #__pshop_csv where";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_csv where";
        $q .= " field_name='" .  $field["_name"] . "' AND field_id <> '".$field["_id"]."'";
        $db->setQuery($q);
        $db->query();
@@ -950,7 +950,7 @@ class ps_csv {
     }
     
     foreach( $d['field'] as $field ) {
-      $q = "INSERT INTO #__pshop_csv (field_name, field_default_value, field_ordering, field_required)";
+      $q = "INSERT INTO #__{vm}_csv (field_name, field_default_value, field_ordering, field_required)";
       $q .= " VALUES ('";
       $q .= $field["_name"] . "','";
       $q .= $field["_default_value"] . "','";
@@ -977,7 +977,7 @@ class ps_csv {
       return False;	
     }
     foreach( $d['field'] as $field ) {
-      $q = "UPDATE #__pshop_csv SET ";
+      $q = "UPDATE #__{vm}_csv SET ";
       $q .= "field_name='" . $field["_name"]."',";
       $q .= "field_default_value='" . $field["_default_value"]."',";
       $q .= "field_ordering='" . $field["_ordering"]."', ";
@@ -1002,7 +1002,7 @@ class ps_csv {
       $d["error"]=$this->error;
       return False;
     }
-    $q = "DELETE from #__pshop_csv WHERE field_id='" . $d["field_id"] . "'";
+    $q = "DELETE from #__{vm}_csv WHERE field_id='" . $d["field_id"] . "'";
     $db->setQuery($q);
     $db->query();
     $db->next_record();

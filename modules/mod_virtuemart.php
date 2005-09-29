@@ -4,26 +4,26 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * mambo-phphop Main Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_phpshop.php,v 1.23 2005/09/04 20:09:34 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id$
+* @package VirtueMart
 * @subpackage modules
 * 
 * @copyright (C) 2004-2005 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 */
 
-/* Load the phpshop main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_phpshop/phpshop_parser.php' );
+/* Load the virtuemart main parse code */
+require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 require_once(CLASSPATH.'ps_product_category.php');
 $ps_product_category =& new ps_product_category();
 
-global $module, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $PHPSHOP_LANG, $sess, $mm_action_url;
+global $module, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $VM_LANG, $sess, $mm_action_url;
 
 $category_id = mosGetParam( $_REQUEST, 'category_id' );
 
@@ -89,12 +89,12 @@ if( $show_categories == "yes" ) {
   }
   elseif( $menutype == "dtree" ) {
       /* dTree script to display structured categories */
-      include( $mosConfig_absolute_path . '/modules/phpshop_dtree.php' );
+      include( $mosConfig_absolute_path . '/modules/vm_dtree.php' );
     
   }
   elseif( $menutype == "jscook" ) {
       /* JSCook Script to display structured categories */
-      include( $mosConfig_absolute_path . '/modules/phpshop_JSCook.php' );
+      include( $mosConfig_absolute_path . '/modules/vm_JSCook.php' );
     
   }
 }
@@ -106,7 +106,7 @@ if ( $show_listall == 'yes' ) { ?>
     <tr> 
       <td colspan="2"><br />
           <a href="<?php $sess->purl($mm_action_url."index.php?page=shop.browse") ?>">
-          <?php echo $PHPSHOP_LANG->_PHPSHOP_LIST_ALL_PRODUCTS ?>
+          <?php echo $VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS ?>
           </a>
       </td>
     </tr>
@@ -120,22 +120,22 @@ if ( $show_productsearch == 'yes' ) { ?>
   <tr> 
     <td colspan="2">
 	  <hr />
-      <label for="shop_search_field"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_SEARCH_LBL ?></label>
+      <label for="shop_search_field"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_SEARCH_LBL ?></label>
       <form action="<?php echo $mm_action_url."index.php" ?>" method="get">
-        <input id="shop_search_field" title="<?php echo $PHPSHOP_LANG->_PHPSHOP_SEARCH_TITLE ?>" class="inputbox" type="text" size="12" name="keyword" />
-        <input class="button" type="submit" name="Search" value="<?php echo $PHPSHOP_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
+        <input id="shop_search_field" title="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" class="inputbox" type="text" size="12" name="keyword" />
+        <input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
 		<input type="hidden" name="Itemid" value="<?php echo intval(@$_REQUEST['Itemid']) ?>" />
-		<input type="hidden" name="option" value="com_phpshop" />
+		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="page" value="shop.browse" />
 	  </form>
         <br />
-        <a href="<?php echo $sess->url($mm_action_url."index.php?option=com_phpshop&page=shop.search") ?>">
-            <?php echo $PHPSHOP_LANG->_PHPSHOP_ADVANCED_SEARCH ?>
+        <a href="<?php echo $sess->url($mm_action_url."index.php?option=com_virtuemart&page=shop.search") ?>">
+            <?php echo $VM_LANG->_PHPSHOP_ADVANCED_SEARCH ?>
         </a><?php /** Changed Product Type - Begin */
 	if ( $show_product_parameter_search == 'yes' ) { ?>
         <br />
-        <a href="<?php echo $sess->url($mm_action_url."index.php?option=com_phpshop&page=shop.parameter_search") ?>" title="<?php echo $PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH ?>">
-            <?php echo $PHPSHOP_LANG->_PHPSHOP_PARAMETER_SEARCH ?>
+        <a href="<?php echo $sess->url($mm_action_url."index.php?option=com_virtuemart&page=shop.parameter_search") ?>" title="<?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH ?>">
+            <?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH ?>
         </a>
 <?php } /** Changed Product Type - End */ ?>
         <hr />
@@ -153,14 +153,14 @@ if ($perm->check("admin,storeadmin")
     ) { ?>
     <tr> 
       <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index&pshop_mode=admin");
-      echo "\">".$PHPSHOP_LANG->_PHPSHOP_ADMIN_MOD; ?></a></td>
+      echo "\">".$VM_LANG->_PHPSHOP_ADMIN_MOD; ?></a></td>
     </tr>
   <?php }
    if ($perm->is_registered_customer($auth["user_id"])) {
   ?> 
     <tr> 
       <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=account.index");?>">
-      <?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_TITLE ?></a></td>
+      <?php echo $VM_LANG->_PHPSHOP_ACCOUNT_TITLE ?></a></td>
     </tr><?php 
 }
 
@@ -217,7 +217,7 @@ if ( $show_login_form == "yes" ) {
 			<tr>
 			  <td colspan="2">
 				<?php echo _NO_ACCOUNT; ?>
-				<a href="<?php $sess->purl( SECUREURL.'index.php?option=com_phpshop&amp;page=shop.registration' ); ?>">
+				<a href="<?php $sess->purl( SECUREURL.'index.php?option=com_virtuemart&amp;page=shop.registration' ); ?>">
 				<?php echo _CREATE_ACCOUNT; ?>
 				</a>
 				<hr />
@@ -238,7 +238,7 @@ if (ENABLE_DOWNLOADS == '1') { ?>
   <tr> 
     <td colspan="2">
         <a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=shop.downloads");?>">
-        <?php echo $PHPSHOP_LANG->_PHPSHOP_DOWNLOADS_TITLE ?>
+        <?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_TITLE ?>
         </a>
     </td>
   </tr><?php
@@ -250,7 +250,7 @@ if (ENABLE_DOWNLOADS == '1') { ?>
 if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes') {
 ?>
     <tr>
-        <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl($mm_action_url."index.php?page=shop.cart")?>"><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_SHOW ?></td>
+        <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl($mm_action_url."index.php?page=shop.cart")?>"><?php echo $VM_LANG->_PHPSHOP_CART_SHOW ?></td>
     </tr>
     <tr>
         <td colspan="2"><?php include (PAGEPATH.'shop.basket_short.php') ?></td>
@@ -261,4 +261,4 @@ if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes') {
 </table>
 <?php
 // Just for SIMPLEBOARD compatibility !
-if (@$_REQUEST['option'] != "com_phpshop") $db = array();   ?>
+if (@$_REQUEST['option'] != "com_virtuemart") $db = array();   ?>

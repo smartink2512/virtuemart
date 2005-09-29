@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: tax.tax_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,8 +21,8 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__pshop_tax_rate WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_tax_rate WHERE ";
+	$list  = "SELECT * FROM #__{vm}_tax_rate WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_tax_rate WHERE ";
 	$q  = "(tax_state LIKE '%$keyword%' OR ";
 	$q .= "tax_country LIKE '%$keyword%'";
 	$q .= ") ";
@@ -32,8 +32,8 @@ if (!empty($keyword)) {
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__pshop_tax_rate ORDER BY tax_country, tax_state ASC ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_tax_rate"; 
+	$list  = "SELECT * FROM #__{vm}_tax_rate ORDER BY tax_country, tax_state ASC ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_tax_rate"; 
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_TAX_LIST_LBL, IMAGEURL."ps_image/taxes.gif", $modulename, "tax_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_TAX_LIST_LBL, IMAGEURL."ps_image/taxes.gif", $modulename, "tax_list");
 
 // start the list table
 $listObj->startTable();
@@ -56,9 +56,9 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_TAX_LIST_COUNTRY => 'width="44%"',
-					$PHPSHOP_LANG->_PHPSHOP_TAX_LIST_STATE => 'width="38%"',
-					$PHPSHOP_LANG->_PHPSHOP_TAX_LIST_RATE => 'width="18%"',
+					$VM_LANG->_PHPSHOP_TAX_LIST_COUNTRY => 'width="44%"',
+					$VM_LANG->_PHPSHOP_TAX_LIST_STATE => 'width="38%"',
+					$VM_LANG->_PHPSHOP_TAX_LIST_RATE => 'width="18%"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_shopper_group.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -37,7 +37,7 @@ function validate_add($d) {
       return False;	
     }
     else {
-      $q = "SELECT count(*) as num_rows from #__pshop_shopper_group";
+      $q = "SELECT count(*) as num_rows from #__{vm}_shopper_group";
       $q .= " WHERE shopper_group_name='" . $d["shopper_group_name"] . "'";
       $q .= " AND vendor_id='" . $ps_vendor_id . "'";
 
@@ -92,7 +92,7 @@ function validate_update($d) {
 		  return False;
 		}
 		
-		$q = "SELECT * FROM #__pshop_shopper_group WHERE shopper_group_id='";
+		$q = "SELECT * FROM #__{vm}_shopper_group WHERE shopper_group_id='";
 		$q .= $shopper_group_id . "' AND `default`='1'";
 		$db->query($q);
 		if ($db->next_record()) {
@@ -112,7 +112,7 @@ function validate_update($d) {
    **************************************************************************/
   function add(&$d) {
       global $perm;
-      $hash_secret = "mambo-phpshop";
+      $hash_secret = "virtuemart";
       if( $perm->check( "admin" ) ) {
         $vendor_id = $d["vendor_id"];
       }
@@ -127,7 +127,7 @@ function validate_update($d) {
       if ($this->validate_add($d)) {
         $user_id=md5(uniqid($hash_secret));
         
-        $q = "INSERT INTO #__pshop_shopper_group (shopper_group_name, shopper_group_desc, shopper_group_discount, vendor_id, show_price_including_tax, `default`) ";
+        $q = "INSERT INTO #__{vm}_shopper_group (shopper_group_name, shopper_group_desc, shopper_group_discount, vendor_id, show_price_including_tax, `default`) ";
         $q .= "VALUES ('";
         $q .= $d["shopper_group_name"] . "','";
         $q .= $d["shopper_group_desc"] . "','";
@@ -138,7 +138,7 @@ function validate_update($d) {
         $db->query($q);
         $db->next_record();
         
-        $q = "SELECT * from #__pshop_shopper_group where";
+        $q = "SELECT * from #__{vm}_shopper_group where";
         $q .= " shopper_group_name='";
         $q .= $d["shopper_group_name"] . "' ";
         $q .= "AND shopper_group_desc='" . $d["shopper_group_desc"] ."'";
@@ -175,7 +175,7 @@ function validate_update($d) {
     
     if ($this->validate_update($d)) {
       
-      $q = "UPDATE #__pshop_shopper_group set shopper_group_name='" . $d["shopper_group_name"] . "', ";
+      $q = "UPDATE #__{vm}_shopper_group set shopper_group_name='" . $d["shopper_group_name"] . "', ";
       $q .= "shopper_group_desc='" . $d["shopper_group_desc"] . "', ";
       $q .= "shopper_group_discount='" . $d["shopper_group_discount"] . "', ";
       $q .= "show_price_including_tax='" . $d["show_price_including_tax"] . "', ";
@@ -185,7 +185,7 @@ function validate_update($d) {
       $db->query($q);
       $db->next_record();
       if ($default == "1") {
-          $q = "UPDATE #__pshop_shopper_group ";
+          $q = "UPDATE #__{vm}_shopper_group ";
           $q .= "SET `default`='0' ";
           $q .= "WHERE shopper_group_id != '" . $d["shopper_group_id"] . "' ";
           $q .= "AND vendor_id = '$vendor_id' ";
@@ -225,15 +225,15 @@ function validate_update($d) {
 		global $db;
 		
 		if ($this->validate_delete( $record_id, $d)) {
-		  $q = "DELETE FROM #__pshop_shopper_group WHERE shopper_group_id='$record_id'";
+		  $q = "DELETE FROM #__{vm}_shopper_group WHERE shopper_group_id='$record_id'";
 		  $db->query($q);
 		  $db->next_record();
 	
-		  $q = "DELETE FROM #__pshop_shopper_vendor_xref WHERE shopper_group_id='$record_id'";
+		  $q = "DELETE FROM #__{vm}_shopper_vendor_xref WHERE shopper_group_id='$record_id'";
 		  $db->query($q);
 		  $db->next_record();
 	
-		  $q = "DELETE FROM #__pshop_product_price WHERE shopper_group_id='$record_id'";
+		  $q = "DELETE FROM #__{vm}_product_price WHERE shopper_group_id='$record_id'";
 		  $db->query($q);
 		  $db->next_record();
 		  return True;
@@ -257,7 +257,7 @@ function validate_update($d) {
     
     echo "<select class=\"inputbox\" name=\"$name\">\n";
 
-    $q  = "SELECT shopper_group_id,shopper_group_name,vendor_id FROM #__pshop_shopper_group ";
+    $q  = "SELECT shopper_group_id,shopper_group_name,vendor_id FROM #__{vm}_shopper_group ";
     if( !$perm->check("admin"))
       $q .= "WHERE vendor_id = '$ps_vendor_id' ";
     $q .= "ORDER BY shopper_group_name";
@@ -307,9 +307,9 @@ function validate_update($d) {
         
     $db = new ps_DB;
 
-    $q =  "SELECT #__pshop_shopper_group.shopper_group_id FROM #__pshop_shopper_group,#__pshop_shopper_vendor_xref ";
-    $q .= "WHERE #__pshop_shopper_vendor_xref.user_id='" . $auth["user_id"] . "' ";
-    $q .= "AND #__pshop_shopper_group.shopper_group_id=#__pshop_shopper_vendor_xref.shopper_group_id";
+    $q =  "SELECT #__{vm}_shopper_group.shopper_group_id FROM #__{vm}_shopper_group,#__{vm}_shopper_vendor_xref ";
+    $q .= "WHERE #__{vm}_shopper_vendor_xref.user_id='" . $auth["user_id"] . "' ";
+    $q .= "AND #__{vm}_shopper_group.shopper_group_id=#__{vm}_shopper_vendor_xref.shopper_group_id";
     $db->query($q);
     $db->next_record();
 
@@ -330,14 +330,14 @@ function validate_update($d) {
     $ps_vendor_id = $_SESSION['ps_vendor_id'];
     $db = new ps_DB;
 
-    $q =  "SELECT #__pshop_shopper_group.shopper_group_id, show_price_including_tax, `default`, shopper_group_discount FROM #__pshop_shopper_group";
+    $q =  "SELECT #__{vm}_shopper_group.shopper_group_id, show_price_including_tax, `default`, shopper_group_discount FROM #__{vm}_shopper_group";
     if( !empty( $my->id )) {
-      $q .= ",#__pshop_shopper_vendor_xref";
-      $q .= " WHERE #__pshop_shopper_vendor_xref.user_id='" . $id . "' AND ";
-      $q .= " #__pshop_shopper_group.shopper_group_id=#__pshop_shopper_vendor_xref.shopper_group_id";
+      $q .= ",#__{vm}_shopper_vendor_xref";
+      $q .= " WHERE #__{vm}_shopper_vendor_xref.user_id='" . $id . "' AND ";
+      $q .= " #__{vm}_shopper_group.shopper_group_id=#__{vm}_shopper_vendor_xref.shopper_group_id";
     }
     else
-      $q .= " WHERE #__pshop_shopper_group.vendor_id='$ps_vendor_id' AND `default`='1'";
+      $q .= " WHERE #__{vm}_shopper_group.vendor_id='$ps_vendor_id' AND `default`='1'";
     
     $db->query($q);
     $db->next_record();
@@ -360,7 +360,7 @@ function validate_update($d) {
     
     $db = new ps_DB;
 
-    $q =  "SELECT customer_number FROM #__pshop_shopper_vendor_xref ";
+    $q =  "SELECT customer_number FROM #__{vm}_shopper_vendor_xref ";
     $q .= "WHERE user_id='" . $id . "' ";
     $db->query($q);
     $db->next_record();

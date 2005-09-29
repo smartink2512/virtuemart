@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_type_parameter_list.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,17 +21,17 @@ $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$q  = "SELECT product_type_name FROM #__pshop_product_type ";
+$q  = "SELECT product_type_name FROM #__{vm}_product_type ";
 $q .= "WHERE product_type_id=$product_type_id";
 $db->query($q);   
 $db->next_record();
 
-$title = $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL .": ";
+$title = $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL .": ";
 if ($product_type_id && $db->f("product_type_name"))
 	$title .= $db->f("product_type_name");
-$title .= '<a href="'. $_SERVER['PHP_SELF'] .'?option=com_phpshop&page=product.product_type_list">['. $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL .']</a>';
+$title .= '<a href="'. $_SERVER['PHP_SELF'] .'?option=com_virtuemart&page=product.product_type_list">['. $VM_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL .']</a>';
 
-$q  = "SELECT * FROM #__pshop_product_type_parameter ";
+$q  = "SELECT * FROM #__{vm}_product_type_parameter ";
 $q .= "WHERE product_type_id=$product_type_id ";
 $q .= "ORDER BY parameter_list_order asc ";
 $q .= "LIMIT $limitstart, $limit";
@@ -54,10 +54,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL => 'width="25%"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME => 'width="20%"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="40%"',
-					$PHPSHOP_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="5%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL => 'width="25%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME => 'width="20%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="40%"',
+					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="5%"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -73,7 +73,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("parameter_name"), false, "parameter_name" ) );
 	
-    $tmp_cell = "<a href=\"" . $_SERVER['PHP_SELF'] . "?option=com_phpshop&page=product.product_type_parameter_form&product_type_id=" . $db->f("product_type_id")."&parameter_name=".$db->f("parameter_name")."&task=edit\">". $db->f("parameter_label") . "</a>";
+    $tmp_cell = "<a href=\"" . $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_parameter_form&product_type_id=" . $db->f("product_type_id")."&parameter_name=".$db->f("parameter_name")."&task=edit\">". $db->f("parameter_label") . "</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $db->f("parameter_name") );

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: checkout_bar.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -22,25 +22,25 @@ mm_showMyFileName( __FILE__ );
     */
     if (CHECKOUT_STYLE == '1') {
     $steps_to_do = array(CHECK_OUT_GET_SHIPPING_ADDR, CHECK_OUT_GET_SHIPPING_METHOD, CHECK_OUT_GET_PAYMENT_METHOD, CHECK_OUT_GET_FINAL_CONFIRMATION);
-    $step_msg = array($PHPSHOP_LANG->_PHPSHOP_ADD_SHIPTO_2,$PHPSHOP_LANG->_PHPSHOP_ISSHIP_LIST_CARRIER_LBL,$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
+    $step_msg = array($VM_LANG->_PHPSHOP_ADD_SHIPTO_2,$VM_LANG->_PHPSHOP_ISSHIP_LIST_CARRIER_LBL,$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
     $step_count = 4;
     
     }
     elseif (CHECKOUT_STYLE == '2') {
     $steps_to_do = array(CHECK_OUT_GET_SHIPPING_ADDR, CHECK_OUT_GET_PAYMENT_METHOD, CHECK_OUT_GET_FINAL_CONFIRMATION);
-    $step_msg = array($PHPSHOP_LANG->_PHPSHOP_ADD_SHIPTO_2, $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
+    $step_msg = array($VM_LANG->_PHPSHOP_ADD_SHIPTO_2, $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
     $step_count = 3;
     
     }
     elseif (CHECKOUT_STYLE == '3') {
     $steps_to_do = array(CHECK_OUT_GET_SHIPPING_METHOD, CHECK_OUT_GET_PAYMENT_METHOD, CHECK_OUT_GET_FINAL_CONFIRMATION);
-    $step_msg = array($PHPSHOP_LANG->_PHPSHOP_ISSHIP_LIST_CARRIER_LBL, $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
+    $step_msg = array($VM_LANG->_PHPSHOP_ISSHIP_LIST_CARRIER_LBL, $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
     $step_count = 3;
     
     }
     elseif (CHECKOUT_STYLE == '4') {
     $steps_to_do = array(CHECK_OUT_GET_PAYMENT_METHOD, CHECK_OUT_GET_FINAL_CONFIRMATION);
-    $step_msg = array($PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
+    $step_msg = array($VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL, $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER);
     $step_count = 2;
     
     }

@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: htmlTools.class.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -12,7 +12,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -30,7 +30,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * $listObj = new listFactory( $pageNav );
 * 
 * // print out the search field and a list heading
-* $listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_LBL, IMAGEURL."ps_image/product_code.png", $modulename, "product_list");
+* $listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_LIST_LBL, IMAGEURL."ps_image/product_code.png", $modulename, "product_list");
 * 
 * // start the list table
 * $listObj->startTable();
@@ -38,8 +38,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * // these are the columns in the table
 * $columns = Array(  "#" => "width=\"20\"", 
 * 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",* 
-* 					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_NAME => '',
-* 					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_SKU => '',
+* 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => '',
+* 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => '',
 * 					_E_REMOVE => "width=\"5%\""
 * 				);
 * $listObj->writeTableHeader( $columns );
@@ -169,7 +169,7 @@ class listFactory {
 	*/
 	function writeSearchHeader( $title, $image="", $modulename, $pagename) {
 	
-		global $sess, $keyword, $PHP_SELF, $PHPSHOP_LANG, $option;
+		global $sess, $keyword, $PHP_SELF, $VM_LANG, $option;
 	  
 		if( !empty( $keyword ))
 			$keyword = urldecode( $keyword );
@@ -189,7 +189,7 @@ class listFactory {
 		if( !empty( $pagename )) 
 			$header .= "<div align=\"right\"><br/>
 			<input class=\"inputbox\" type=\"text\" size=\"25\" name=\"keyword\" value=\"$keyword\" />
-			<input class=\"button\" type=\"submit\" name=\"search\" value=\"".$PHPSHOP_LANG->_PHPSHOP_SEARCH_TITLE."\" />
+			<input class=\"button\" type=\"submit\" name=\"search\" value=\"".$VM_LANG->_PHPSHOP_SEARCH_TITLE."\" />
 			</div>";
 		$header .= "<br style=\"clear:both;\" />";
 		
@@ -274,7 +274,7 @@ class formFactory {
 	* Writes necessary hidden input fields
 	* and closes the form
 	*/
-	function finishForm( $func, $page, $option='com_phpshop' ) {
+	function finishForm( $func, $page, $option='com_virtuemart' ) {
 	
 		$html = '
 		<input type="hidden" name="func" value="'.$func.'" />
@@ -312,8 +312,8 @@ class mShopTabs {
 	function mShopTabs($useCookies, $show_js, $panel_id) {
 		global $mosConfig_live_site;
         if( $show_js == 1 ) {
-            echo "<link id=\"tab-style-sheet\" type=\"text/css\" rel=\"stylesheet\" href=\"" . $mosConfig_live_site. "/components/com_phpshop/js/tabs/mm_tabpane.css\" />";
-            echo "<script type=\"text/javascript\" src=\"". $mosConfig_live_site. "/components/com_phpshop/js/tabs/mm_tabpane.js\"></script>";
+            echo "<link id=\"tab-style-sheet\" type=\"text/css\" rel=\"stylesheet\" href=\"" . $mosConfig_live_site. "/components/com_virtuemart/js/tabs/mm_tabpane.css\" />";
+            echo "<script type=\"text/javascript\" src=\"". $mosConfig_live_site. "/components/com_virtuemart/js/tabs/mm_tabpane.js\"></script>";
         }
         $this->useCookies = $useCookies;
         $this->panel_id = $panel_id;
@@ -383,6 +383,16 @@ class vmCommonHTML {
 		else
 			return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
 	}
+	/*
+	* Loads all necessary files for JS Overlib tooltips
+	*/
+	function loadOverlib() {
+		global  $mosConfig_live_site;
+		?>
+		<script language="Javascript" type="text/javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
+		<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
+		<?php
+	}
 }
 
 
@@ -402,7 +412,7 @@ if ( !function_exists( "mosToolTip" ) ) {
 function mm_ToolTip($tooltip, $title='Tip!', $icon = "{mosConfig_live_site}/images/M_images/con_info.png" ) {
     global $mosConfig_live_site;
     if( !defined( "_OVERLIB_LOADED" )) {
-        mosCommonHTML::loadOverlib();
+        vmCommonHTML::loadOverlib();
         define ( "_OVERLIB_LOADED", "1" );
     }
     $varname = "html_".uniqid("l");

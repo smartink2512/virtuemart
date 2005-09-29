@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_manufacturer_category.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -58,7 +58,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
      }
     
     else {
-       $q = "SELECT count(*) as rowcnt from #__pshop_manufacturer_category where";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_manufacturer_category where";
        $q .= " mf_category_name='" .  $d["mf_category_name"] . "'";
        $db->setQuery($q);
        $db->query();
@@ -122,7 +122,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return false;
     }
-    $q = "INSERT INTO #__pshop_manufacturer_category (mf_category_name, mf_category_desc)";
+    $q = "INSERT INTO #__{vm}_manufacturer_category (mf_category_name, mf_category_desc)";
     $q .= " VALUES ('";
     $q .= $d["mf_category_name"] . "','";
     $q .= $d["mf_category_desc"]. "')";
@@ -148,7 +148,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return False;	
     }
-    $q = "UPDATE #__pshop_manufacturer_category set ";
+    $q = "UPDATE #__{vm}_manufacturer_category set ";
     $q .= "mf_category_name='" . $d["mf_category_name"]."',";
     $q .= "mf_category_desc='" .$d["mf_category_desc"] . "' ";
     $q .= "WHERE mf_category_id='".$d["mf_category_id"]."'";
@@ -192,7 +192,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	function delete_record( $record_id, &$d ) {
 		global $db;
 		
-		$q = "DELETE from #__pshop_manufacturer_category where mf_category_id='$record_id'";
+		$q = "DELETE from #__{vm}_manufacturer_category where mf_category_id='$record_id'";
 		$db->query($q);
 		return True;
 	}
@@ -205,21 +205,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
    * returns: array of values
    **************************************************************************/
   function list_category($mf_category_id='0') {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     
     $db = new ps_DB;
     
-    $q = "SELECT count(*) as rowcnt FROM #__pshop_manufacturer_category ORDER BY mf_category_name";
+    $q = "SELECT count(*) as rowcnt FROM #__{vm}_manufacturer_category ORDER BY mf_category_name";
     $db->query($q);
     $db->next_record();
     $rowcnt = $db->f("rowcnt");
 
 
-    $q = "SELECT * FROM #__pshop_manufacturer_category ORDER BY mf_category_name";
+    $q = "SELECT * FROM #__{vm}_manufacturer_category ORDER BY mf_category_name";
     $db->query($q);                                                                                     
     $code = "<select name=\"mf_category_id\" class=\"inputbox\">\n";
     if ( $rowcnt > 1) {
-      $code .= "<option value=\"0\">".$PHPSHOP_LANG->_PHPSHOP_SELECT."</option>\n";      
+      $code .= "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";      
     }   
     while ($db->next_record()) {
       $code .= "  <option value=\"" . $db->f("mf_category_id") . "\"";

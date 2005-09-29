@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
-	<name>phpShop</name>
+	<name>VirtueMart</name>
 	<creationDate>27.09.2004</creationDate>
 	<author>Soeren Eberhardt &amp; the VirtueMart dev team</author>
 	<copyright>released under GNU General Public License</copyright>
@@ -18,54 +18,54 @@
   </install>
   <uninstall>
     <queries>
-      <query>DROP TABLE `#__pshop_affiliate`;</query>
-      <query>DROP TABLE `#__pshop_affiliate_sale`;</query>
-      <query>DROP TABLE `#__pshop_auth_user_vendor`;</query>
-      <query>DROP TABLE `#__pshop_category`;</query>
-      <query>DROP TABLE `#__pshop_category_xref`;</query>
-      <query>DROP TABLE `#__pshop_country`;</query>
-      <query>DROP TABLE `#__pshop_coupons`;</query>
-      <query>DROP TABLE `#__pshop_creditcard`;</query>
-      <query>DROP TABLE `#__pshop_csv`;</query>
-      <query>DROP TABLE `#__pshop_currency`;</query>
-      <query>DROP TABLE `#__pshop_function`;</query>
-      <query>DROP TABLE `#__pshop_manufacturer`;</query>
-      <query>DROP TABLE `#__pshop_manufacturer_category`;</query>
-      <query>DROP TABLE `#__pshop_module`;</query>
-      <query>DROP TABLE `#__pshop_order_history`;</query>
-      <query>DROP TABLE `#__pshop_order_item`;</query>
-      <query>DROP TABLE `#__pshop_order_payment`;</query>
-      <query>DROP TABLE `#__pshop_order_status`;</query>
-      <query>DROP TABLE `#__pshop_order_user_info`;</query>
-      <query>DROP TABLE `#__pshop_orders`;</query>
-      <query>DROP TABLE `#__pshop_payment_method`;</query>
-      <query>DROP TABLE `#__pshop_product`;</query>
-      <query>DROP TABLE `#__pshop_product_attribute`;</query>
-      <query>DROP TABLE `#__pshop_product_attribute_sku`;</query>
-      <query>DROP TABLE `#__pshop_product_category_xref`;</query>
-      <query>DROP TABLE `#__pshop_product_discount`;</query>
-      <query>DROP TABLE `#__pshop_product_download`;</query>
-      <query>DROP TABLE `#__pshop_product_files`;</query>   
-      <query>DROP TABLE `#__pshop_product_mf_xref`;</query>   
-      <query>DROP TABLE `#__pshop_product_price`;</query>
-      <query>DROP TABLE `#__pshop_product_relations`;</query>
-      <query>DROP TABLE `#__pshop_product_reviews`;</query>
-      <query>DROP TABLE `#__pshop_product_type`;</query>
-      <query>DROP TABLE `#__pshop_product_type_parameter`;</query>
-      <query>DROP TABLE `#__pshop_product_product_type_xref`;</query>
-      <query>DROP TABLE `#__pshop_product_votes`;</query>
-      <query>DROP TABLE `#__pshop_shipping_carrier`;</query>
-      <query>DROP TABLE `#__pshop_shipping_rate`;</query>
-      <query>DROP TABLE `#__pshop_shopper_group`;</query>
-      <query>DROP TABLE `#__pshop_shopper_vendor_xref`;</query>
-      <query>DROP TABLE `#__pshop_state`;</query>
-      <query>DROP TABLE `#__pshop_tax_rate`;</query>
-      <query>DROP TABLE `#__pshop_user_info`;</query>
-      <query>DROP TABLE `#__pshop_vendor`;</query>
-      <query>DROP TABLE `#__pshop_vendor_category`;</query>
-      <query>DROP TABLE `#__pshop_visit`;</query>
-      <query>DROP TABLE `#__pshop_waiting_list`;</query>
-      <query>DROP TABLE `#__pshop_zone_shipping`;</query>
+      <query>DROP TABLE `#__vm_affiliate`;</query>
+      <query>DROP TABLE `#__vm_affiliate_sale`;</query>
+      <query>DROP TABLE `#__vm_auth_user_vendor`;</query>
+      <query>DROP TABLE `#__vm_category`;</query>
+      <query>DROP TABLE `#__vm_category_xref`;</query>
+      <query>DROP TABLE `#__vm_country`;</query>
+      <query>DROP TABLE `#__vm_coupons`;</query>
+      <query>DROP TABLE `#__vm_creditcard`;</query>
+      <query>DROP TABLE `#__vm_csv`;</query>
+      <query>DROP TABLE `#__vm_currency`;</query>
+      <query>DROP TABLE `#__vm_function`;</query>
+      <query>DROP TABLE `#__vm_manufacturer`;</query>
+      <query>DROP TABLE `#__vm_manufacturer_category`;</query>
+      <query>DROP TABLE `#__vm_module`;</query>
+      <query>DROP TABLE `#__vm_order_history`;</query>
+      <query>DROP TABLE `#__vm_order_item`;</query>
+      <query>DROP TABLE `#__vm_order_payment`;</query>
+      <query>DROP TABLE `#__vm_order_status`;</query>
+      <query>DROP TABLE `#__vm_order_user_info`;</query>
+      <query>DROP TABLE `#__vm_orders`;</query>
+      <query>DROP TABLE `#__vm_payment_method`;</query>
+      <query>DROP TABLE `#__vm_product`;</query>
+      <query>DROP TABLE `#__vm_product_attribute`;</query>
+      <query>DROP TABLE `#__vm_product_attribute_sku`;</query>
+      <query>DROP TABLE `#__vm_product_category_xref`;</query>
+      <query>DROP TABLE `#__vm_product_discount`;</query>
+      <query>DROP TABLE `#__vm_product_download`;</query>
+      <query>DROP TABLE `#__vm_product_files`;</query>   
+      <query>DROP TABLE `#__vm_product_mf_xref`;</query>   
+      <query>DROP TABLE `#__vm_product_price`;</query>
+      <query>DROP TABLE `#__vm_product_relations`;</query>
+      <query>DROP TABLE `#__vm_product_reviews`;</query>
+      <query>DROP TABLE `#__vm_product_type`;</query>
+      <query>DROP TABLE `#__vm_product_type_parameter`;</query>
+      <query>DROP TABLE `#__vm_product_product_type_xref`;</query>
+      <query>DROP TABLE `#__vm_product_votes`;</query>
+      <query>DROP TABLE `#__vm_shipping_carrier`;</query>
+      <query>DROP TABLE `#__vm_shipping_rate`;</query>
+      <query>DROP TABLE `#__vm_shopper_group`;</query>
+      <query>DROP TABLE `#__vm_shopper_vendor_xref`;</query>
+      <query>DROP TABLE `#__vm_state`;</query>
+      <query>DROP TABLE `#__vm_tax_rate`;</query>
+      <query>DROP TABLE `#__vm_user_info`;</query>
+      <query>DROP TABLE `#__vm_vendor`;</query>
+      <query>DROP TABLE `#__vm_vendor_category`;</query>
+      <query>DROP TABLE `#__vm_visit`;</query>
+      <query>DROP TABLE `#__vm_waiting_list`;</query>
+      <query>DROP TABLE `#__vm_zone_shipping`;</query>
       <query>ALTER TABLE `#__users` DROP `user_info_id`;</query>
       <query>ALTER TABLE `#__users` DROP `address_type`;</query>
       <query>ALTER TABLE `#__users` DROP `address_type_name`;</query>
@@ -97,14 +97,15 @@
       <query>ALTER TABLE `#__users` DROP `bank_account_holder`;</query>
     </queries>
   </uninstall>
-  <installfile>install.phpshop.php</installfile>
-  <uninstallfile>uninstall.phpshop.php</uninstallfile>
+  <installfile>install.virtuemart.php</installfile>
+  <uninstallfile>uninstall.virtuemart.php</uninstallfile>
 	<administration>
     <menu>VirtueMart</menu>
       <files>
         <filename>2checkout_notify.php</filename>
         <filename>admin_files.tar.gz</filename>
-        <filename>admin.phpshop.php</filename>
+        <filename>admin.virtuemart.php</filename>
+        <filename>admin.styles.css</filename>
         <filename>cart.gif</filename>
         <filename>CHANGELOG.php</filename>
         <filename>COPYRIGHT.php</filename>
@@ -112,11 +113,12 @@
         <filename>header.php</filename>
         <filename>index.html</filename>
         <filename>install.css</filename>
+        <filename>install.copy.php</filename>
         <filename>install.php</filename>
         <filename>LICENSE.php</filename>
         <filename>notify.php</filename>
         <filename>PEAR.php</filename>
-        <filename>phpshop.cfg-dist.php</filename>
+        <filename>virtuemart.cfg-dist.php</filename>
         <filename>Tar.php</filename>
         <filename>TODO.php</filename>
         <filename>toolbar.phpshop.html.php</filename>

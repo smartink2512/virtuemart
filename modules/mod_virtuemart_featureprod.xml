@@ -1,15 +1,15 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>Latest products</name>
-    <creationDate>22.03.2005</creationDate>
-    <author>Soeren Eberhardt</author>
+    <name>Featured Products</name>
+    <creationDate>01.04.2005</creationDate>
+    <author>Mrphp & Soeren Eberhardt</author>
     <copyright>GNU/GPLicense</copyright>
-    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
-    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <authorEmail>soeren@virtuemart.net</authorEmail>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
-    <description>Shows the Latest Products from your Shop.</description>
+    <description>Shows featured (special) Products from your Shop.</description>
      <files>
-         <filename module="mod_phpshop_latestprod">mod_phpshop_latestprod.php</filename>
+         <filename module="mod_virtuemart_featureprod">mod_virtuemart_featureprod.php</filename>
      </files>
     <params>
      <param name="max_items" type="text" default="2" label="Number of displayed products" description="This defines the number of products which will be displayed in the module." />

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_price_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,13 +11,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
 
-$title = $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_LBL.'<br/>';
+$title = $VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'<br/>';
 
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 $product_price_id = mosgetparam($_REQUEST, 'product_price_id', 0);
@@ -28,7 +28,7 @@ $db = new ps_DB;
 /* If Updating a Price */
 if (!empty($product_price_id)) {
   /* Get field values for update */
-  $q  = "SELECT * FROM #__pshop_product_price WHERE product_price_id='$product_price_id' ";
+  $q  = "SELECT * FROM #__{vm}_product_price WHERE product_price_id='$product_price_id' ";
   $db->query($q); 
   $db->next_record();
 } 
@@ -41,16 +41,16 @@ elseif (empty($vars["error"])) {
 if (!empty($vars["product_price_id"])) {
   $product_price_id = $vars["product_price_id"];
   if (empty($product_parent_id)) {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT . " ";
   } else {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM . " ";
+    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM . " ";
   }
 }
 else {
   if (empty($product_parent_id)) {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT . " ";
   } else {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM . " ";
+    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM . " ";
   }
 }
 
@@ -71,7 +71,7 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="20" valign="middle" > 
-        <div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?>:</strong></div>
       </td>
       <td width="77%" height="20" > 
         <input type="text" class="inputbox" name="product_price" onkeyup="updateGross();" value="<?php $db->sp("product_price"); ?>" size="10" maxlength="10" />
@@ -79,13 +79,13 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="29%" ><strong><div align="right">
-        <?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?>:</div></strong>
+        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?>:</div></strong>
       </td>
       <td width="71%" ><input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" /></td>
     </tr>
     <tr> 
       <td width="23%" height="10" valign="middle" > 
-        <div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_CURRENCY ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRICE_FORM_CURRENCY ?>:</strong></div>
       </td>
       <td width="77%" height="10" > 
         <?php $ps_html->list_currency("product_currency",$db->sf("product_currency")) ?>
@@ -93,7 +93,7 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="10" valign="middle" > 
-        <div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_GROUP ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP ?>:</strong></div>
       </td>
       <td width="77%" height="10" >
           <?php 

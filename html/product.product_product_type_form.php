@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_product_type_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -23,7 +23,7 @@ if( is_array( $product_id ))
 
 $product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
 
-$title = '<img src="'. IMAGEURL .'ps_image/categories.gif" border="0" />'.$PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL;
+$title = '<img src="'. IMAGEURL .'ps_image/categories.gif" border="0" />'.$VM_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL;
 if (!empty($product_parent_id)) {
   $title .= " Item: ";
 } else {
@@ -47,17 +47,17 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="20" valign="middle" > 
-        <div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE ?>:</div>
+        <div align="right"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE ?>:</div>
       </td>
       <td width="77%" height="10" >
         <select class="inputbox" name="product_type_id">
           <?php 
-	$q  = "SELECT * FROM #__pshop_product_product_type_xref ";
+	$q  = "SELECT * FROM #__{vm}_product_product_type_xref ";
 	$q .= "WHERE product_id='".$product_id."'";
 	$db->query( $q );
               
 	$q  = "SELECT product_type_id, product_type_name, product_type_list_order ";
-	$q .= "FROM `#__pshop_product_type` ";
+	$q .= "FROM `#__{vm}_product_type` ";
 	while( $db->next_record() ) {
 		$q .= "AND product_type_id != '".$db->f("product_type_id")."' ";
 	}

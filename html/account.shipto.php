@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: account.shipto.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,13 +11,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
 
-$mainframe->setPageTitle( $PHPSHOP_LANG->_PHPSHOP_ADD_SHIPTO_1 ." ".$PHPSHOP_LANG->_PHPSHOP_ADD_SHIPTO_2 );
+$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ADD_SHIPTO_1 ." ".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 );
       
 $Itemid = mosGetParam( $_REQUEST, "Itemid", null );
 $next_page = mosGetParam( $_REQUEST, "next_page", "account.shipping" );
@@ -32,7 +32,7 @@ if (!empty( $missing )) {
 }
 $db = new ps_DB;
 if (!empty($user_info_id)) {
-  $q =  "SELECT * from #__pshop_user_info WHERE user_info_id='".$database->getEscaped($user_info_id)."' ";
+  $q =  "SELECT * from #__{vm}_user_info WHERE user_info_id='".$database->getEscaped($user_info_id)."' ";
   $q .=  " AND user_id='".$auth['user_id']."'";
   $q .=  " AND address_type='ST'";
   $db->query($q);
@@ -44,7 +44,7 @@ if (!empty($user_info_id)) {
 **/
  if (SHOW_CHECKOUT_BAR == '1' && $next_page=="checkout.index") {
     
-     echo "<h3>". $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_TITLE ."</h3>";
+     echo "<h3>". $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ."</h3>";
      
      // This is the file, where the checkout symbols are displayed
     // 1 - 2 - 3 - 4 , you know ;-)
@@ -56,14 +56,14 @@ if (!empty($user_info_id)) {
 ** End Checkout Bar Feature
 *****************************/
 echo "<fieldset>
-        <legend><span class=\"sectiontableheader\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL."</span></legend>";
+        <legend><span class=\"sectiontableheader\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL."</span></legend>";
         
-echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
+echo "<br />".$VM_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
 ?>
 <div style="width:90%;">
 <!-- Registration form -->
 <form action="<?php echo SECUREURL ?>index.php" method="post" name="adminForm">
-  <input type="hidden" name="option" value="com_phpshop" />
+  <input type="hidden" name="option" value="com_virtuemart" />
   <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
   <input type="hidden" name="page" value="<?php echo $next_page ?>" />
 <?php
@@ -81,69 +81,69 @@ echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
   
 
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'address_type_name')) echo $missing_style ?>">
-    <?php echo "<label for=\"address_type_name\">".$PHPSHOP_LANG->_PHPSHOP_USER_FORM_ADDRESS_LABEL."</label>*" ?>:</div>
+    <?php echo "<label for=\"address_type_name\">".$VM_LANG->_PHPSHOP_USER_FORM_ADDRESS_LABEL."</label>*" ?>:</div>
   <div style="float:left;width:60%;">
     <input type="text" class="inputbox" id="address_type_name" name="address_type_name" value="<?php $db->sp("address_type_name") ?>" maxlength="64" size="16" />
   </div>
   <br/><br/>
   
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'first_name')) echo $missing_style ?>">
-    <?php echo "<label for=\"first_name\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_FIRST_NAME."</label>*"  ?>:</div>
+    <?php echo "<label for=\"first_name\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_FIRST_NAME."</label>*"  ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="first_name" name="first_name" size="40" value="<?php $db->sp("first_name") ?>" class="inputbox" />
   </div>
 <br/><br/>
  
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'last_name')) echo $missing_style ?>" >
-  <?php echo "<label for=\"last_name\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_LAST_NAME."</label>*" ?>:</div>
+  <?php echo "<label for=\"last_name\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_LAST_NAME."</label>*" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="last_name" name="last_name" size="40" value="<?php $db->sp("last_name") ?>" class="inputbox" />
   </div>
 <br/><br/>
  
   <div style="float:left;width:30%;text-align:right;">
-    <?php echo "<label for=\"middle_name\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME."</label>"  ?>:</div>
+    <?php echo "<label for=\"middle_name\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME."</label>"  ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="middle_name" name="middle_name" size="40" value="<?php $db->sp("middle_name") ?>" class="inputbox" />
   </div>
   <br/><br/>
   <div style="float:left;width:30%;text-align:right;" >
-    <?php echo "<label for=\"company\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_COMPANY_NAME."</label>" ?>:</div>
+    <?php echo "<label for=\"company\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_COMPANY_NAME."</label>" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="company" name="company" size="40" value="<?php $db->sp("company") ?>" class="inputbox" />
   </div>
 <br/><br/>
  
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'address_1')) echo $missing_style ?>">
-  <?php echo "<label for=\"address_1\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_1."</label>*" ?>:</div>
+  <?php echo "<label for=\"address_1\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_1."</label>*" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="address_1" name="address_1" size="40" value="<?php $db->sp("address_1") ?>" class="inputbox" />
   </div>
 <br/><br/>
  
   <div style="float:left;width:30%;text-align:right;" >
-    <?php echo "<label for=\"address_2\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_2."</label>" ?>:</div>
+    <?php echo "<label for=\"address_2\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_2."</label>" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="address_2" name="address_2" size="40" value="<?php $db->sp("address_2") ?>" class="inputbox" />
   </div>
 <br/><br/>
  
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'city')) echo $missing_style ?>">
-  <?php echo "<label for=\"city\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_CITY."</label>*" ?>:</div>
+  <?php echo "<label for=\"city\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_CITY."</label>*" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="city" name="city" size="40" value="<?php $db->sp("city") ?>" class="inputbox" />
   </div>
 <br/><br/>
  
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'zip')) echo $missing_style ?>">
-  <?php echo "<label for=\"zip\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_ZIP."</label>*" ?>:</div>
+  <?php echo "<label for=\"zip\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_ZIP."</label>*" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="zip" name="zip" size="10" value="<?php $db->sp("zip") ?>" class="inputbox" />
   </div>
 <br/><br/>
      
       <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'country')) echo $missing_style ?>">
-      <?php echo "<label for=\"country_field\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_COUNTRY."</label>*" ?>:</div>
+      <?php echo "<label for=\"country_field\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_COUNTRY."</label>*" ?>:</div>
       <div style="float:left;width:60%;">
         <?php $ps_html->list_country("country", $db->sf("country"), "id=\"country_field\" onchange=\"changeStateList();\"") ?>
       </div>
@@ -152,7 +152,7 @@ echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
     if (CAN_SELECT_STATES == '1') {
 ?>
       <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'state')) echo $missing_style ?>">
-      <?php echo "<label for=\"state\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_STATE."</label>" ?>:</div>
+      <?php echo "<label for=\"state\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_STATE."</label>" ?>:</div>
       <div style="float:left;width:60%;"> 
         <?php 
         
@@ -166,32 +166,32 @@ echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
     <?php } ?>
  
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'phone_1')) echo $missing_style ?>" >
-    <?php echo "<label for=\"phone_1\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_PHONE."</label>*" ?>:</div>
+    <?php echo "<label for=\"phone_1\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_PHONE."</label>*" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="phone_1" name="phone_1" size="40" value="<?php $db->sp("phone_1") ?>" class="inputbox" />
   </div>
 <br/><br/>  
  
   <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'phone_2')) echo $missing_style ?>" >
-    <?php echo "<label for=\"phone_2\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_PHONE2."</label>" ?>:</div>
+    <?php echo "<label for=\"phone_2\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_PHONE2."</label>" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="phone_2" name="phone_2" size="40" value="<?php $db->sp("phone_2") ?>" class="inputbox" />
   </div>
 <br/><br/>  
  
   <div style="float:left;width:30%;text-align:right;" >
-    <?php echo "<label for=\"fax\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_FAX."</label>" ?>:</div>
+    <?php echo "<label for=\"fax\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_FAX."</label>" ?>:</div>
   <div style="float:left;width:60%;"> 
     <input type="text" id="fax" name="fax" size="40" value="<?php $db->sp("fax") ?>" class="inputbox" />
   </div>
 <br/><br/>
 
     <!-- If you wish show a EXTRA FIELD only in account billing address (not in this form) add into condition "false && ".
-         For example: if( false && $PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) -->
+         For example: if( false && $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) -->
     <!-- EXTRA FIELD 1 - BEGIN - You can move this section into any other position of form. -->
-    <?php if( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) { ?>
+    <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) { ?>
       <div style="float:left;width:30%;text-align:right;" >
-        <?php echo "<label for=\"extra_field_1\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1."</label>" ?>:</div>
+        <?php echo "<label for=\"extra_field_1\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1."</label>" ?>:</div>
       <div style="float:left;width:60%;"> 
         <input type="text" id="extra_field_1" name="extra_field_1" size="40" value="<?php $db->sp("extra_field_1"); ?>" class="inputbox" />
       </div>
@@ -200,9 +200,9 @@ echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
     <!-- EXTRA FIELD 1 - END -->
     
     <!-- EXTRA FIELD 2 - BEGIN - You can move this section into any other position of form. -->
-    <?php if( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 != "" ) { ?>
+    <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 != "" ) { ?>
       <div style="float:left;width:30%;text-align:right;" >
-        <?php echo "<label for=\"extra_field_2\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2."</label>" ?>:</div>
+        <?php echo "<label for=\"extra_field_2\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2."</label>" ?>:</div>
       <div style="float:left;width:60%;"> 
         <input type="text" id="extra_field_2" name="extra_field_2" size="40" value="<?php $db->sp("extra_field_2"); ?>" class="inputbox" />
       </div>
@@ -211,9 +211,9 @@ echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
     <!-- EXTRA FIELD 2 - END -->
     
     <!-- EXTRA FIELD 3- BEGIN - You can move this section into any other position of form. -->
-    <?php if( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 != "" ) { ?>
+    <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 != "" ) { ?>
       <div style="float:left;width:30%;text-align:right;" >
-        <?php echo "<label for=\"extra_field_3\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3."</label>" ?>:</div>
+        <?php echo "<label for=\"extra_field_3\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3."</label>" ?>:</div>
       <div style="float:left;width:60%;"> 
         <input type="text" id="extra_field_3" name="extra_field_3" size="40" value="<?php $db->sp("extra_field_3"); ?>" class="inputbox" />
       </div>
@@ -222,18 +222,18 @@ echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
     <!-- EXTRA FIELD 3 - END -->
     
     <!-- EXTRA FIELD 4 - BEGIN - You can move this section into any other position of form. -->
-    <?php if( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 != "" ) { ?>
+    <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 != "" ) { ?>
       <div style="float:left;width:30%;text-align:right;" >
-        <?php echo "<label for=\"extra_field_4\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4."</label>" ?>:</div>
+        <?php echo "<label for=\"extra_field_4\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4."</label>" ?>:</div>
       <div style="float:left;width:60%;"><?php $ps_html->list_extra_field_4($db->sf("extra_field_4"), "id=\"extra_field_4\""); ?></div>
     <br/><br/>
     <?php } ?>
     <!-- EXTRA FIELD 4 - END -->
     
     <!-- EXTRA FIELD 5 BEGIN - You can move this section into any other position of form. -->
-    <?php if( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5 != "" ) { ?>
+    <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5 != "" ) { ?>
       <div style="float:left;width:30%;text-align:right;" >
-        <?php echo "<label for=\"extra_field_5\">".$PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5."</label>" ?>:</div>
+        <?php echo "<label for=\"extra_field_5\">".$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5."</label>" ?>:</div>
       <div style="float:left;width:60%;"><?php $ps_html->list_extra_field_5($db->sf("extra_field_5"), "id=\"extra_field_5\""); ?></div>
     <br/><br/>
     <?php } ?>
@@ -249,7 +249,7 @@ echo "<br />".$PHPSHOP_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
   if (!empty($user_info_id)) { ?>
     <div style="float:left;width:45%;text-align:center;"> 
       <form action="<?php echo SECUREURL ?>index.php" method="post">
-        <input type="hidden" name="option" value="com_phpshop" />
+        <input type="hidden" name="option" value="com_virtuemart" />
         <input type="hidden" name="page" value="<?php echo $next_page ?>" />
         <input type="hidden" name="func" value="useraddressdelete" />
         <input type="hidden" name="user_info_id" value="<?php echo $user_info_id ?>" />

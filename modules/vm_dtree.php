@@ -8,7 +8,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @ Uses dTree Javascript: http://www.destroydrop.com/javascripts/tree/
 * @ version $Id: mod_dtreemenu.php
 *
-* This file is included by the phpshop module if the module parameter
+* This file is included by the virtuemart module if the module parameter
 * MenuType is set to treemenu
 **/
 
@@ -48,9 +48,9 @@ require_once( CLASSPATH. "ps_product_category.php" );
         $category_id = mosgetParam( $_REQUEST, 'category_id', 0 );
         
         // select menu items from database
-        $query  = "SELECT category_id,category_parent_id,category_name FROM #__pshop_category, #__pshop_category_xref ";
-        $query .= "WHERE #__pshop_category.category_publish='Y' AND ";
-        $query .= "#__pshop_category.category_id=#__pshop_category_xref.category_child_id ";
+        $query  = "SELECT category_id,category_parent_id,category_name FROM #__{vm}_category, #__{vm}_category_xref ";
+        $query .= "WHERE #__{vm}_category.category_publish='Y' AND ";
+        $query .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
         $query .= "ORDER BY category_parent_id, list_order, category_name ASC";
 
         $database->setQuery( $query );
@@ -95,7 +95,7 @@ require_once( CLASSPATH. "ps_product_category.php" );
         // what is the ID of this node?
         $baseid = $first_row->category_parent_id;
         // create the link (if not a menu item, no link [could be: to entry page of site])
-        $baselink = ( $base == "first") ? sefRelToAbs("index.php?option=com_phpshop&Itemid=$Itemid") : "";
+        $baselink = ( $base == "first") ? sefRelToAbs("index.php?option=com_virtuemart&Itemid=$Itemid") : "";
         // remember which item is open, normally $Itemid
         // except when we want the first item (e.g. Home) to be the base;
         // in that case we have to pretend all remaining items belong to "Home"
@@ -119,7 +119,7 @@ require_once( CLASSPATH. "ps_product_category.php" );
         
             // get name and link (just to save space in the code later on)
             $name = $row->category_name. ps_product_category::products_in_category( $row->category_id );
-            $url = sefRelToAbs('index.php?option=com_phpshop&page=shop.browse&category_id='.$row->category_id.'&Itemid='.$Itemid);
+            $url = sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$row->category_id.'&Itemid='.$Itemid);
             $menu_htmlcode .= "$tree.add(\"".$row->category_id."\",\"".$row->category_parent_id."\",\"$name\",\"$url\",\"\",\"$target\");\n";
           
             // if this node is the selected node

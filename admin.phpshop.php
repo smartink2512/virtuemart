@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: admin.phpshop.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -31,7 +31,7 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
   /** true or false **/
   $install_sample_data = mosgetparam( $_GET, 'install_sample_data', false );
   
-  installphpShop( $install_type, $install_sample_data );
+  installvirtuemart( $install_type, $install_sample_data );
   $error = "";
   $page = "store.index";
 
@@ -41,7 +41,7 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
     echo "You'll have to delete the file manually before being able to use mambo-phpShop!</span>";
   }
 }
-elseif (file_exists( $mosConfig_absolute_path.'/administrator/components/com_phpshop/install.php' )) {
+elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/com_phpshop/install.php' )) {
   include( $mosConfig_absolute_path.'/administrator/components/com_phpshop/install.phpshop.php' );
   com_install();
   exit();
@@ -71,6 +71,7 @@ if( $no_menu != 1 ) {
   include(ADMINPATH.'header.php');
 }
 // Include the Stylesheet
+echo '<link rel="stylesheet" href="components/'.$option.'/admin.styles.css" type="text/css" />';
 echo '<link href="../components/'.$option.'/css/shop.css" type="text/css" rel="stylesheet" media="screen, projection" />';
 echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
 

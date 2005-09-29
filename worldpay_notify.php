@@ -1,15 +1,15 @@
 <?php
 /*
-* @version $Id: worldpay_notify.php,v 1.2 2005/01/27 19:33:25 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id: worldpay_notify.php,v 1.1 2005/09/06 20:04:19 soeren_nb Exp $
+* @package VirtueMart
 * @subpackage Payment
 *
 * @copyright (C) 2004 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 */
 
 if ($_POST) {
@@ -22,10 +22,9 @@ if ($_POST) {
 
     /*** access Mambo's configuration file ***/
     $my_path = dirname($_SERVER['SCRIPT_FILENAME']);
-    $mambo_path = str_replace("administrator/components/com_phpshop", "", $my_path);
+    $mambo_path = str_replace("administrator/components/com_virtuemart", "", $my_path);
     require_once($mambo_path.'configuration.php');
     require_once($mambo_path.'includes/database.php');
-    require_once($mosConfig_absolute_path. '/administrator/components/com_phpshop/mos_4.6_code.php');
 
     global $database;
 
@@ -41,13 +40,15 @@ if ($_POST) {
 
     /*** END of Mambo config ***/
 
-    /*** mambo-phpShop part ***/
+    /*** VirtueMart part ***/
 
-    define('PHPSHOPPATH', $mosConfig_absolute_path.'/administrator/components/com_phpshop/');
+    define('PHPSHOPPATH', $mosConfig_absolute_path.'/administrator/components/com_virtuemart/');
 
-    require_once(PHPSHOPPATH."phpshop.cfg.php");
+    require_once(PHPSHOPPATH."virtuemart.cfg.php");
 
-        
+	
+	require_once( CLASSPATH. "language.class.php" );
+	
     //Set up the mailer to infor Warehouse of validated order
     //require_once( $mosConfig_absolute_path . '/includes/phpmailer/class.phpmailer.php');
     //$mail = new mosPHPMailer();
@@ -55,7 +56,7 @@ if ($_POST) {
     //$mail->SetLanguage("en", $mosConfig_absolute_path . '/includes/phpmailer/language/');
   
 
-    /* load the mambo-phpShop Language File */
+    /* load the VirtueMart Language File */
     if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' ))
       require_once( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' );
     else
@@ -71,10 +72,10 @@ if ($_POST) {
 
 
 
-    /* Load the mambo-phpShop database class */
+    /* Load the VirtueMart database class */
     require_once( CLASSPATH. 'ps_database.php' );
 
-    /*** END mambo-phpShop part ***/
+    /*** END VirtueMart part ***/
 
     /**
     Read in the post from worldpay.

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shopper.shopper_group_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,8 +21,8 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 $q = "";
 if (!empty($keyword)) {
-	$list = "SELECT * FROM #__pshop_shopper_group WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_shopper_group WHERE ";
+	$list = "SELECT * FROM #__{vm}_shopper_group WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_shopper_group WHERE ";
 	if( !$perm->check("admin")) {
 		$q = " vendor_id='$ps_vendor_id' ";
 	}
@@ -35,8 +35,8 @@ if (!empty($keyword)) {
 }
 else {
 
-	$list = "SELECT * FROM #__pshop_shopper_group ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_shopper_group ";
+	$list = "SELECT * FROM #__{vm}_shopper_group ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_shopper_group ";
 	if( !$perm->check("admin")) {
 		$q = "WHERE vendor_id='$ps_vendor_id' ";
 	}
@@ -55,7 +55,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_LIST_LBL, IMAGEURL."ps_image/shoppers.png", $modulename, "shopper_group_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_SHOPPER_GROUP_LIST_LBL, IMAGEURL."ps_image/shoppers.png", $modulename, "shopper_group_list");
 
 // start the list table
 $listObj->startTable();
@@ -63,10 +63,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_LIST_NAME => 'width="30%"',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR => '',
-					$PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION => '',
-					$PHPSHOP_LANG->_PHPSHOP_DEFAULT => '',
+					$VM_LANG->_PHPSHOP_SHOPPER_GROUP_LIST_NAME => 'width="30%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR => '',
+					$VM_LANG->_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION => '',
+					$VM_LANG->_PHPSHOP_DEFAULT => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

@@ -3,7 +3,7 @@
 // defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: class.img2thumb.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -12,7 +12,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -24,7 +24,7 @@
 *
 * @author     Andreas Martens <heyn@plautdietsch.de>
 * @author     Patrick Teague <webdude@veslach.com>
-* @author     Soeren Eberhardt <soeren@mambo-phpshop.net>
+* @author     Soeren Eberhardt <soeren@virtuemart.net>
 *@version	1.0b
 *@date       modified 11/22/2004
 *@modifications 

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shop.pdf_output.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -25,7 +25,7 @@ $category_id = mosGetParam( $_REQUEST, 'category_id');
 /* Who cares for Safe Mode ? Not me! */
 if (@file_exists( "/usr/bin/htmldoc" )) {
 	
-	$load_page = $mosConfig_live_site . "/index2.php?option=com_phpshop&page=$page&flypage=$flypage&product_id=$product_id&category_id=$category_id&pop=1&hide_js=1&output=pdf";
+	$load_page = $mosConfig_live_site . "/index2.php?option=com_virtuemart&page=$page&flypage=$flypage&product_id=$product_id&category_id=$category_id&pop=1&hide_js=1&output=pdf";
 	header( "Content-Type: application/pdf" );
 	header( "Content-Disposition: inline; filename=\"pdf-mambo.pdf\"" );
 	flush();
@@ -68,7 +68,7 @@ function repairImageLinks( $html ) {
 
 }
 function freePDF( $showpage, $flypage, $product_id, $category_id ) {
-	global $db, $sess, $auth, $my, $perm, $PHPSHOP_LANG, $mosConfig_live_site, $mosConfig_sitename, $mosConfig_offset, $mosConfig_hideCreateDate, $mosConfig_hideAuthor, 
+	global $db, $sess, $auth, $my, $perm, $VM_LANG, $mosConfig_live_site, $mosConfig_sitename, $mosConfig_offset, $mosConfig_hideCreateDate, $mosConfig_hideAuthor, 
 	$mosConfig_hideModifyDate,$mm_action_url, $database, $mainframe, $mosConfig_absolute_path, $vendor_full_image, $vendor_name, $limitstart, $limit;
 	
 	ob_end_clean();

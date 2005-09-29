@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: zone.zone_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,8 +21,8 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__pshop_zone_shipping WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_zone_shipping WHERE ";
+	$list  = "SELECT * FROM #__{vm}_zone_shipping WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_zone_shipping WHERE ";
 	$q  = "(zone_name LIKE '%$keyword%')";
 	$q .= "ORDER BY zone_name ASC ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
@@ -30,8 +30,8 @@ if (!empty($keyword)) {
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__pshop_zone_shipping ORDER BY zone_name ASC ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_zone_shipping"; 
+	$list  = "SELECT * FROM #__{vm}_zone_shipping ORDER BY zone_name ASC ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_zone_shipping"; 
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_ZONE_LIST_LBL, "", $modulename, "zone_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_ZONE_LIST_LBL, "", $modulename, "zone_list");
 
 // start the list table
 $listObj->startTable();
@@ -54,10 +54,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_ZONE_LIST_NAME_LBL => '',
-					$PHPSHOP_LANG->_PHPSHOP_ZONE_LIST_DESC_LBL => '',
-					$PHPSHOP_LANG->_PHPSHOP_ZONE_LIST_COST_PER_LBL => '',
-					$PHPSHOP_LANG->_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL => '',
+					$VM_LANG->_PHPSHOP_ZONE_LIST_NAME_LBL => '',
+					$VM_LANG->_PHPSHOP_ZONE_LIST_DESC_LBL => '',
+					$VM_LANG->_PHPSHOP_ZONE_LIST_COST_PER_LBL => '',
+					$VM_LANG->_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

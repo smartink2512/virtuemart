@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: affiliate.orders_list.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -46,9 +46,9 @@ mm_showMyFileName( __FILE__ );
             $month = date("n",$date);
             $year = date("y",$date);
           
-            $q = "select * from #__pshop_orders,#__pshop_affiliate_sale";
-            $q .=" where #__pshop_orders.order_id = #__pshop_affiliate_sale.order_id";
-            $q .=" and #__pshop_affiliate_sale.affiliate_id = '".$affiliate["id"]."'";
+            $q = "select * from #__{vm}_orders,#__{vm}_affiliate_sale";
+            $q .=" where #__{vm}_orders.order_id = #__{vm}_affiliate_sale.order_id";
+            $q .=" and #__{vm}_affiliate_sale.affiliate_id = '".$affiliate["id"]."'";
             $q .= " and from_unixtime(cdate,'m') = $month";
             $q .= " and from_unixtime(cdate,'y') = $year";
             $db->query($q);

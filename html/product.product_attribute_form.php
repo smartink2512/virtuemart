@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_attribute_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -26,22 +26,22 @@ $product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
 $attribute_name = mosgetparam($_REQUEST, 'attribute_name', 0);
 $return_args = mosgetparam($_REQUEST, 'return_args' );
 
-$title = $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_LBL.'<br />';
+$title = $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_LBL.'<br />';
 
 if (!empty($attribute_name)) {
   if (empty($product_parent_id)) {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT . " ";
   } 
   else {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM . " ";
+    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM . " ";
   }
 } 
 else {
   if (empty($product_parent_id)) {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT . " ";
   } 
   else {
-    $title .= $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM . " ";
+    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM . " ";
   }
 }
 
@@ -50,7 +50,7 @@ $title .= '<a href="' . $sess->url($url) . '">'. $ps_product->get_field($product
 
 if ($attribute_name) {
   $db = new ps_DB;
-  $q = "SELECT * FROM #__pshop_product_attribute_sku WHERE product_id='$product_id' ";
+  $q = "SELECT * FROM #__{vm}_product_attribute_sku WHERE product_id='$product_id' ";
   $q .= "AND attribute_name = '$attribute_name' ";
   $db->query($q); 
   $db->next_record();
@@ -65,7 +65,7 @@ $formObj->startForm();
 <table class="adminform">
 	<tr> 
 		<td width="23%" height="20" valign="top"> 
-			<div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_NAME ?>:</div>
+			<div align="right"><?php echo $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_NAME ?>:</div>
 		</td>
 		<td width="77%" height="20"> 
 			<input type="text" class="inputbox" name="attribute_name" value="<?php $db->sp("attribute_name"); ?>" size="32" maxlength="255" />
@@ -73,7 +73,7 @@ $formObj->startForm();
 	</tr>
 	<tr> 
 		<td width="23%" height="10" valign="top"> 
-			<div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_FORM_ORDER ?>:</div>
+			<div align="right"><?php echo $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_ORDER ?>:</div>
 		</td>
 		<td width="77%" height="10"> 
 			<input type="text" class="inputbox" name="attribute_list" value="<?php $db->sp("attribute_list"); ?>" size="5" maxlength="11" />

@@ -10,7 +10,7 @@ defined( '_VALID_MOS' ) or die( 'Restricted access' );
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -32,7 +32,16 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+29-09-2005
+- updated all files to use com_virtuemart as path
+- updated all queries to use {vm} as shop table prefix
+- Changed $PHPSHOP_LANG to $VM_LANG
+- fixed product file listing
+- renamed *phpshop*.php to *virtuemart*.php
+- added "update to virtuemart" routines to install.php
+
 27-09-2005
+- Domit! libraries are not longer included in VirtueMart, Mambo provides them
 # WYSIWYG Editor not loading in frontend admin
 ^ Frontend Administration uses the backend toolbar now (shared administration)
 ^ changed the file headers of all files to carry the new name (VirtueMart) and a copyright notice
@@ -44,7 +53,7 @@ VirtueMart 0.9
 ! configuration constant SEARCH_ROWS (deprecated) is to be replaced by $mosConfig_list_limit
 - removed Mail configuration from configuration form (dropping support for Mambo < 4.5.1 )
 - removed configuration constant MAX_ROWS.
-^ changed the configuration file (phpshop.cfg.php) to build URLs and Paths from Mambo configuration variables
+^ changed the configuration file (virtuemart.cfg.php) to build URLs and Paths from Mambo configuration variables
   This means that you don't have to adjust your configuration file when moving a site.
 ^ updated all forms to use the new formFactory class and it's methods
 + new class formFactory for managing common form tasks in all administration forms in virtuemart
@@ -61,7 +70,7 @@ VirtueMart 0.9
 13-09-2005 soeren
 + changed the product files list to show images in a tooltip
 # added code to prevent that manufacturers are deleted which still have products assigned to it
-# changed phpshop_parser.php not to be greedy on variables when $option is NOT "com_phpshop"
+# changed virtuemart_parser.php not to be greedy on variables when $option is NOT "com_virtuemart"
 	this should fix conflicts with variables of the same name used by other components
 ^ Updated the toolbar to allow batch delete / (un)publishing of items in lists
 ^ Changed complete page navigation to Mambo style (also remembers list positions!)
@@ -73,13 +82,13 @@ VirtueMart 0.9
 + added new file "/js/functions.js" for JS functions in the administration area
 
 06-09-2005 soeren
-^ mod_phpshop: changed the default value for "Pre-Text" to "" (empty!)
+^ mod_virtuemart: changed the default value for "Pre-Text" to "" (empty!)
 # product search not handling keywords as separate search words, but as one (normal search)
 
 01-09-2005 soeren
 
 + added a CSS file called shop.css to /css: will control all shop specific layout in the future
-^ moved some program logic from phpshop_parser.php to their appropriate classes
+^ moved some program logic from virtuemart_parser.php to their appropriate classes
 
 
 31-08-2005 soeren
@@ -100,11 +109,11 @@ VirtueMart 0.9
   admin.users.html.php admin.user_address_form.php
 + User info in order includes EXTRA FIELDS. ## REQUIRES a DATABASE UPDATE! ##
 ^ ## Database structure changed ##
-  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_1` varchar(255) default NULL;
-  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_2` varchar(255) default NULL;
-  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_3` varchar(255) default NULL;
-  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_4` char(1) default NULL;
-  ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_5` char(1) default NULL;
+  ALTER TABLE mos_{vm}_order_user_info ADD  `extra_field_1` varchar(255) default NULL;
+  ALTER TABLE mos_{vm}_order_user_info ADD  `extra_field_2` varchar(255) default NULL;
+  ALTER TABLE mos_{vm}_order_user_info ADD  `extra_field_3` varchar(255) default NULL;
+  ALTER TABLE mos_{vm}_order_user_info ADD  `extra_field_4` char(1) default NULL;
+  ALTER TABLE mos_{vm}_order_user_info ADD  `extra_field_5` char(1) default NULL;
 + New input field in user's shipping and billing address: phone_2
 # wrong address_type in file account.shipto.php
 # wrong $missing comparision for address_type_name in files account.shipto.php and admin.user_address_form.php
@@ -121,12 +130,12 @@ VirtueMart 0.9
   You can set unit of product, number units in packaging and number units in box. For showing packaging in product_details is
   needed use in flypage {product_packaging} - see html/templates/product_details/flypage.php
 ^ ## Database structure changed ##
-  ALTER TABLE `mos_pshop_product` ADD `product_unit` varchar(32);
-  ALTER TABLE `mos_pshop_product` ADD `product_packaging` int(11);
+  ALTER TABLE `mos_{vm}_product` ADD `product_unit` varchar(32);
+  ALTER TABLE `mos_{vm}_product` ADD `product_packaging` int(11);
 ^ Now is possible set default product weight unit (pounds) and default product length unit (inches) in language file:
   var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM and var $_PHPSHOP_PRODUCT_FORM_LENGTH_UOM
 + New language file for Czech translation (czechiso.php with ISO-8859-2 and czech1250.php with CP1250 codepage)
-+ New parameter for modul phpshop: moduleclass_sfx
++ New parameter for modul virtuemart: moduleclass_sfx
 
 09-08-2005 Zdenek Dvorak
 # bad showing last_page in cart and show error message if no product_id (no redirecting) (ps_cart.php)
@@ -141,7 +150,7 @@ VirtueMart 0.9
 ^ moved the SQL Queries out of the file shop.browse.php into shop_browse_queries.php
 
 01-08-2005 Zdenek Dvorak
-# Product Type: File mod_phpshop.php, variable _PHPSHOP_PARAMETER_SEARCH was changed to _PHPSHOP_ADVANCED_PARAMETER_SEARCH 
+# Product Type: File mod_virtuemart.php, variable _PHPSHOP_PARAMETER_SEARCH was changed to _PHPSHOP_ADVANCED_PARAMETER_SEARCH 
 
 26-07-2005
 # Tax Total wasn't calculated correctly when MULTIPLE_TAXRATES_ENABLE was set to 1 and a disount was applied
@@ -170,9 +179,9 @@ VirtueMart 0.9
 27-06-2005 soeren
 # Checkout not working (Minimum Purchase Order Value not reached)
 
----- derived from mambo-phpShop 1.2 stable - patch level 3 ----
+---- derived from VirtueMart 1.2 stable - patch level 3 ----
 
----- mambo-phpShop patch level 3 released ----
+---- VirtueMart patch level 3 released ----
 
 
 </pre>

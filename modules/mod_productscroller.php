@@ -3,17 +3,17 @@
 * mambo-phphop Product Scroller Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_productscroller.php,v 1.1 2005/09/06 20:06:49 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id: mod_productscroller.php,v 1.2 2005/09/26 20:37:40 soeren_nb Exp $
+* @package VirtueMart
 * @subpackage modules
 * 
 * @copyright (C) 2005 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 */
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 
@@ -168,7 +168,7 @@ class productScroller {
  function displayScroller (&$rows) {
    global $database, $mosConfig_absolute_path;
    
-   require_once( $mosConfig_absolute_path."/components/com_phpshop/phpshop_parser.php" );
+   require_once( $mosConfig_absolute_path."/components/com_virtuemart/virtuemart_parser.php" );
    require_once( CLASSPATH."ps_product.php" );
    $ps_product = new ps_product;
    
@@ -263,10 +263,10 @@ function getProductSKU( $database, $limit=0, $how=null, $category_id=0, $order='
         $limit = "";
     }
     
-    $query = "SELECT p.product_sku FROM #__pshop_product AS p";
+    $query = "SELECT p.product_sku FROM #__{vm}_product AS p";
 
     if( $category_id != 0 )
-      $query .= "\nJOIN #__pshop_product_category_xref as pc ON p.product_id=pc.product_id AND pc.category_id='$category_id'";
+      $query .= "\nJOIN #__{vm}_product_category_xref as pc ON p.product_id=pc.product_id AND pc.category_id='$category_id'";
       
     $query .= "\n WHERE p.product_publish = 'Y' AND product_parent_id='0'";
     switch( $how ) {

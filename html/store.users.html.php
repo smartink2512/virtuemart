@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: store.users.html.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 class HTML_users {
 	function showUsers( &$rows, $pageNav, $search, $option ) {
-	global $mosConfig_offset, $db, $PHPSHOP_LANG;
+	global $mosConfig_offset, $db, $VM_LANG;
 ?>
 <form action="index2.php" method="post" name="adminForm">
   <table cellpadding="4" cellspacing="0" border="0" width="100%">
@@ -37,16 +37,16 @@ class HTML_users {
       <th width="2%" class="title">#</td>
       <th width="3%" class="title"> <input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($rows); ?>);" />
       </th>
-      <th width="20%" class="title"><?php echo($PHPSHOP_LANG->_PHPSHOP_USER_LIST_FULL_NAME);?></th>
+      <th width="20%" class="title"><?php echo($VM_LANG->_PHPSHOP_USER_LIST_FULL_NAME);?></th>
       <th width="10%" class="title">
-        <a alt="order by username" href="index2.php?page=store.user_list&option=com_phpshop&arg=a.username&order=<?php echo @$_REQUEST['order']=='asc' ? 'desc' : 'asc' ?>">
+        <a alt="order by username" href="index2.php?page=store.user_list&option=com_virtuemart&arg=a.username&order=<?php echo @$_REQUEST['order']=='asc' ? 'desc' : 'asc' ?>">
         <?php echo defined('_ADMIN_USER_ID') ? _ADMIN_USER_ID : "Username";?></th>
       <th width="15%" class="title">
-        <a href="index2.php?page=store.user_list&option=com_phpshop&arg=a.perms&order=<?php echo @$_REQUEST['order']=='asc' ? 'desc' : 'asc' ?>">
-        <?php echo($PHPSHOP_LANG->_PHPSHOP_USER_LIST_GROUP);?></a></th>
-      <th width="15%" class="title"><?php echo($PHPSHOP_LANG->_PHPSHOP_PRICE_FORM_GROUP);?></th>
+        <a href="index2.php?page=store.user_list&option=com_virtuemart&arg=a.perms&order=<?php echo @$_REQUEST['order']=='asc' ? 'desc' : 'asc' ?>">
+        <?php echo($VM_LANG->_PHPSHOP_USER_LIST_GROUP);?></a></th>
+      <th width="15%" class="title"><?php echo($VM_LANG->_PHPSHOP_PRICE_FORM_GROUP);?></th>
       <th width="15%" class="title">
-        <a href="index2.php?page=store.user_list&option=com_phpshop&arg=a.email&order=<?php echo @$_REQUEST['order']=='asc' ? 'desc' : 'asc' ?>">
+        <a href="index2.php?page=store.user_list&option=com_virtuemart&arg=a.email&order=<?php echo @$_REQUEST['order']=='asc' ? 'desc' : 'asc' ?>">
         <?php echo defined('_ADMIN_USER_EMAIL') ? _ADMIN_USER_EMAIL : "E-mail";?></th>
       <th width="10%" class="title"><?php echo defined('_ADMIN_USER_ENABLED') ? _ADMIN_USER_ENABLED : "Enabled?";?></th>
     </tr>
@@ -57,8 +57,8 @@ class HTML_users {
 			$img = $row->block ? 'publish_x.png' : 'tick.png';
 			$task = $row->block ? 'unblock' : 'block';
       
-      $q = "SELECT shopper_group_name FROM #__pshop_shopper_group, #__pshop_shopper_vendor_xref WHERE ";
-      $q .= "#__pshop_shopper_vendor_xref.user_id='".$row->id."' AND #__pshop_shopper_vendor_xref.shopper_group_id=#__pshop_shopper_group.shopper_group_id";
+      $q = "SELECT shopper_group_name FROM #__{vm}_shopper_group, #__{vm}_shopper_vendor_xref WHERE ";
+      $q .= "#__{vm}_shopper_vendor_xref.user_id='".$row->id."' AND #__{vm}_shopper_vendor_xref.shopper_group_id=#__{vm}_shopper_group.shopper_group_id";
       $db->query( $q );
       $db->next_record();
       $shopper_group_name = $db->f("shopper_group_name");
@@ -102,7 +102,7 @@ class HTML_users {
 
 	function edituser( &$row, &$lists, $option, $uid ) {
   
-		global $my, $acl, $sess, $ps_user, $ps_html, $database, $db, $ps_shopper_group, $PHPSHOP_LANG;
+		global $my, $acl, $sess, $ps_user, $ps_html, $database, $db, $ps_shopper_group, $VM_LANG;
     
     require_once(CLASSPATH.'ps_user.php');
     $ps_user = new ps_user;
@@ -143,8 +143,8 @@ class HTML_users {
   <tr>
     <td width="" class="tabpadding">&nbsp;</td>
     <td id="tab1" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo defined('_ADMIN_USER_MANAGER') ? _ADMIN_USER_MANAGER : "User Manager";?></td>
-    <td id="tab2" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL ?></td>
-    <td id="tab3" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_BANK_TITLE ?></td>
+    <td id="tab2" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL ?></td>
+    <td id="tab3" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_BANK_TITLE ?></td>
     <td width="90%" class="tabpadding">&nbsp;</td>
   </tr>
 </table>
@@ -176,11 +176,11 @@ class HTML_users {
 		  <td><?php echo $lists['gid']; ?></td>
 		</tr>
             <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td>
             <td > <?php $ps_user->list_perms("perms", $db->sf("perms")) ?> </td>
           </tr>
           <tr> 
-            <td> <?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_FORM_GROUP ?>:</td>
+            <td> <?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_GROUP ?>:</td>
             <td><?php
                 include_class('shopper');
                 $sg_id = $ps_shopper_group->get_shoppergroup_by_id($row->id);
@@ -226,29 +226,29 @@ class HTML_users {
     ?>
     <table border="0" width="100%" cellpadding="4" cellspacing="1" class="adminform">
         <tr> 
-            <td width="100"><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_FIRST_NAME ?>:</td>
+            <td width="100"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_FIRST_NAME ?>:</td>
             <td width="85%"> 
               <input type="text" class="inputbox" name="first_name" size="40" value="<?php echo $db->f("first_name") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_LAST_NAME ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_LAST_NAME ?>:</td>
             <td> 
               <input type="text" class="inputbox" name="last_name" size="40" value="<?php $db->sp("last_name") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_MIDDLE_NAME ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_MIDDLE_NAME ?>:</td>
             <td > 
               <input type="text" class="inputbox" name="middle_name" size="40" value="<?php $db->sp("middle_name") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_TITLE ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_TITLE ?>:</td>
             <td > <?php $ps_html->list_user_title($db->sf("title")); ?></td>
           </tr>
           <tr> 
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL ?></strong></td>
             <td>&nbsp; </td>
           </tr>
           <tr> 
@@ -258,58 +258,58 @@ class HTML_users {
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_COMPANY_NAME ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_COMPANY_NAME ?>:</td>
             <td > 
               <input type="text" class="inputbox" name="company" size="40" value="<?php $db->sp("company") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_ADDRESS_1 ?>: 
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADDRESS_1 ?>: 
             </td>
             <td > 
               <input type="text" class="inputbox" name="address_1" size="40" value="<?php $db->sp("address_1") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_ADDRESS_2 ?>: 
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADDRESS_2 ?>: 
             </td>
             <td > 
               <input type="text" class="inputbox" name="address_2" size="40" value="<?php $db->sp("address_2") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_CITY ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_CITY ?>:</td>
             <td > 
               <input type="text" class="inputbox" name="city" size="40" value="<?php $db->sp("city") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_ZIP ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_ZIP ?>:</td>
             <td > 
               <input type="text" class="inputbox" name="zip" size="10" value="<?php $db->sp("zip") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_COUNTRY ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_COUNTRY ?>:</td>
             <td > 
               <?php $ps_html->list_country("country", $db->sf("country"), "id=\"country_field\" onchange=\"changeStateList();\"") ?>
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_STATE ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_STATE ?>:</td>
             <td ><?php
               echo $ps_html->dynamic_state_lists( "country", "state", $db->sf('country'), $db->sf('state') );
               ?>
             </td>
           </tr>
           <tr> 
-            <td> <?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_PHONE ?>:</td>
+            <td> <?php echo $VM_LANG->_PHPSHOP_USER_FORM_PHONE ?>:</td>
             <td > 
               <input type="text" class="inputbox" name="phone_1" size="40" value="<?php $db->sp("phone_1") ?>">
             </td>
           </tr>
           <tr> 
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_FAX ?>:</td>
+            <td><?php echo $VM_LANG->_PHPSHOP_USER_FORM_FAX ?>:</td>
             <td > 
               <input type="text" class="inputbox" name="fax" size="40" value="<?php $db->sp("fax") ?>">
             </td>
@@ -322,8 +322,8 @@ class HTML_users {
             <td><?php if (!empty($row->id)) { ?> 
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr> 
-                  <td ><b><?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL ?></b><a href="<?php $sess->purl($PHP_SELF . "?page=$modulename/user_address_form&user_id=$user_id") ?>"><br>
-                    </a><a href="<?php $sess->purl($PHP_SELF . "?page=store.user_address_form&user_id=".$row->id) ?>" >(<?php echo $PHPSHOP_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?>) 
+                  <td ><b><?php echo $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL ?></b><a href="<?php $sess->purl($PHP_SELF . "?page=$modulename/user_address_form&user_id=$user_id") ?>"><br>
+                    </a><a href="<?php $sess->purl($PHP_SELF . "?page=store.user_address_form&user_id=".$row->id) ?>" >(<?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?>) 
                     </a></td>
                 </tr>
                 <tr> 
@@ -331,7 +331,7 @@ class HTML_users {
                 </tr>
                 <tr> 
                   <td ><?php
-                    $qt = "SELECT * from #__pshop_user_info where user_id='$user_id' ";
+                    $qt = "SELECT * from #__{vm}_user_info where user_id='$user_id' ";
                     $qt .= "AND address_type='ST'"; 
                     $dbt = new ps_DB;
                     $dbt->query($qt);
@@ -361,16 +361,16 @@ class HTML_users {
   
   <div id="page3" class="pagetext">
     <table border="0" width="100%" cellpadding="4" cellspacing="1" class="adminform">
-      <tr><td colspan="2" nowrap><b><?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_BANK_TITLE ?> </b></td></tr>
-        <tr><td width="100"><?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR ?>:</td>
+      <tr><td colspan="2" nowrap><b><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_BANK_TITLE ?> </b></td></tr>
+        <tr><td width="100"><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR ?>:</td>
         <td width="85%" ><input type="text" class="inputbox" name="bank_account_nr" size="40" value="<?php $db->sp("bank_account_nr") ?>"></td></tr>
-        <tr><td><?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE ?>:</td>
+        <tr><td><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE ?>:</td>
         <td><input type="text" class="inputbox" name="bank_sort_code" size="40" value="<?php $db->sp("bank_sort_code") ?>"></td></tr>
-        <tr><td><?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_NAME ?>:</td>
+        <tr><td><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_NAME ?>:</td>
         <td><input type="text" class="inputbox" name="bank_name" size="40" value="<?php $db->sp("bank_name") ?>"></td></tr>
-        <tr><td><?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_IBAN ?>:</td>
+        <tr><td><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_IBAN ?>:</td>
         <td><input type="text" class="inputbox" name="bank_iban" size="40" value="<?php $db->sp("bank_iban") ?>"></td></tr>
-        <tr><td><?php echo $PHPSHOP_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER ?>:</td>
+        <tr><td><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER ?>:</td>
         <td><input type="text" class="inputbox" name="bank_account_holder" size="40" value="<?php $db->sp("bank_account_holder") ?>"></td></tr>
     </table>
   </div>
@@ -383,7 +383,7 @@ class HTML_users {
 <?php } ?>
   <input type="hidden" name="address_type" value="BT" />
   <input type="hidden" name="address_type_name" value="-default-" />
-  <input type="hidden" name="option" value="com_phpshop" />
+  <input type="hidden" name="option" value="com_virtuemart" />
   <input type="hidden" name="page" value="store.user_list" />
   <input type="hidden" name="task" value="" />
 </form>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product_type.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -61,7 +61,7 @@ class ps_product_type {
     }
 
     // Check for products assigned to this Product Type
-    $q  = "SELECT * from #__pshop_product_product_type_xref where product_type_id='$product_type_id'";
+    $q  = "SELECT * from #__{vm}_product_product_type_xref where product_type_id='$product_type_id'";
     $db->setQuery($q);   $db->query();
     if ($db->next_record()) {
       $d["error"]  = "ERROR: This Product Type has product(s). ";
@@ -106,18 +106,18 @@ class ps_product_type {
             $d[$key] = addslashes($value);
       }
       // find product_type_id
-      $q  = "SELECT MAX(product_type_id) AS product_type_id FROM #__pshop_product_type";
+      $q  = "SELECT MAX(product_type_id) AS product_type_id FROM #__{vm}_product_type";
       $db->query( $q );
       $db->next_record();
       $product_type_id = intval($db->f("product_type_id")) + 1;
       
       // Let's find out the last Product Type
-      $q = "SELECT MAX(product_type_list_order) AS list_order FROM #__pshop_product_type";
+      $q = "SELECT MAX(product_type_list_order) AS list_order FROM #__{vm}_product_type";
       $db->query( $q );
       $db->next_record();      
       $list_order = intval($db->f("list_order"))+1;
       
-      $q = "INSERT into #__pshop_product_type (product_type_id, product_type_name, product_type_description, ";
+      $q = "INSERT into #__{vm}_product_type (product_type_id, product_type_name, product_type_description, ";
       $q .= "product_type_publish, product_type_browsepage, product_type_flypage, product_type_list_order) ";
       $q .= "VALUES ('";
       $q .= $product_type_id . "','";
@@ -134,7 +134,7 @@ class ps_product_type {
       $db->query();
 
       // Make new table product_type_<id>
-      $q = "CREATE TABLE `#__pshop_product_type_";
+      $q = "CREATE TABLE `#__{vm}_product_type_";
       $q .= $product_type_id . "` (";
       $q .= "`product_id` int(11) NOT NULL,";
       $q .= "PRIMARY KEY (`product_id`)";
@@ -165,7 +165,7 @@ class ps_product_type {
         $d[$key] = addslashes($value);
     }
     if ($this->validate_update($d)) {
-      $q = "update #__pshop_product_type SET ";
+      $q = "update #__{vm}_product_type SET ";
       $q .= "product_type_id='" . $d["product_type_id"];
       $q .= "',product_type_name='" . $d["product_type_name"];
       $q .= "',product_type_description='" . $d["product_type_description"];
@@ -187,26 +187,26 @@ class ps_product_type {
         /* Moved UP in the list order */
         if( intval($d['list_order']) < intval($d['currentpos']) ) {
         
-          $q  = "SELECT product_type_id FROM #__pshop_product_type WHERE ";
+          $q  = "SELECT product_type_id FROM #__{vm}_product_type WHERE ";
           $q .= "product_type_id <> '" . $d["product_type_id"] . "' ";
           $q .= "AND product_type_list_order >= '" . intval($d["list_order"]) . "'";
           $db->query( $q );
           
           while( $db->next_record() ) {
-            $dbu->query("UPDATE #__pshop_product_type SET product_type_list_order=product_type_list_order+1 WHERE product_type_id='".$db->f("product_type_id")."'");
+            $dbu->query("UPDATE #__{vm}_product_type SET product_type_list_order=product_type_list_order+1 WHERE product_type_id='".$db->f("product_type_id")."'");
           }
         }
         /* Moved DOWN in the list order */
         else {
         
-          $q = "SELECT product_type_id FROM #__pshop_product_type WHERE ";
+          $q = "SELECT product_type_id FROM #__{vm}_product_type WHERE ";
           $q .= "product_type_id <> '" . $d["product_type_id"] . "' ";
           $q .= "AND product_type_list_order > '" . intval($d["currentpos"]) . "'";
           $q .= "AND product_type_list_order <= '" . intval($d["list_order"]) . "'";
           $db->query( $q );
           
           while( $db->next_record() ) {
-            $dbu->query("UPDATE #__pshop_product_type SET product_type_list_order=product_type_list_order-1 WHERE product_type_id='".$db->f("product_type_id")."'");
+            $dbu->query("UPDATE #__{vm}_product_type SET product_type_list_order=product_type_list_order-1 WHERE product_type_id='".$db->f("product_type_id")."'");
           }
         
         }
@@ -247,13 +247,13 @@ class ps_product_type {
 		  return False;
 		}
 	
-		$q = "DELETE FROM #__pshop_product_type WHERE product_type_id='$record_id'";
+		$q = "DELETE FROM #__{vm}_product_type WHERE product_type_id='$record_id'";
 		$db->setQuery($q);   $db->query();
 	
-		$q  = "DELETE FROM #__pshop_product_product_type_xref WHERE product_type_id='$record_id'";
+		$q  = "DELETE FROM #__{vm}_product_product_type_xref WHERE product_type_id='$record_id'";
 		$db->setQuery($q);   $db->query();
 	
-		$q  = "DROP TABLE IF EXISTS `#__pshop_product_type_".$record_id."`";
+		$q  = "DROP TABLE IF EXISTS `#__{vm}_product_type_".$record_id."`";
 		$db->setQuery($q);   $db->query();
 		return True;
 	}
@@ -273,11 +273,11 @@ class ps_product_type {
     
     $db = new ps_DB;
     
-    $count  = "SELECT count(*) as num_rows from #__pshop_product,#__pshop_product_product_type_xref WHERE ";
-    $q  = "#__pshop_product.vendor_id = '$ps_vendor_id' ";
-    $q .= "AND #__pshop_product_product_type_xref.product_type_id='$product_type_id' "; 
-    $q .= "AND #__pshop_product.product_id=#__pshop_product_product_type_xref.product_id ";
-    $q .= "AND #__pshop_product.product_parent_id='' ";
+    $count  = "SELECT count(*) as num_rows from #__{vm}_product,#__{vm}_product_product_type_xref WHERE ";
+    $q  = "#__{vm}_product.vendor_id = '$ps_vendor_id' ";
+    $q .= "AND #__{vm}_product_product_type_xref.product_type_id='$product_type_id' "; 
+    $q .= "AND #__{vm}_product.product_id=#__{vm}_product_product_type_xref.product_id ";
+    $q .= "AND #__{vm}_product.product_parent_id='' ";
     //$q .= "ORDER BY product_publish DESC,product_name ";
     $count .= $q;  
     $db->setQuery($count); $db->query();
@@ -297,7 +297,7 @@ class ps_product_type {
   function parameter_count($product_type_id) {
     $db = new ps_DB;
 
-    $count  = "SELECT count(*) as num_rows from #__pshop_product_type_parameter WHERE ";
+    $count  = "SELECT count(*) as num_rows from #__{vm}_product_type_parameter WHERE ";
     $q = "product_type_id='$product_type_id' ";
     $count .= $q;  
     $db->setQuery($count); $db->query();
@@ -315,7 +315,7 @@ class ps_product_type {
   function get_name($product_type_id) {
     $db = new ps_DB;
 
-    $q = "SELECT product_type_name FROM #__pshop_product_type ";
+    $q = "SELECT product_type_name FROM #__{vm}_product_type ";
     $q .= "WHERE product_type_id='$product_type_id' ";
     $db->setQuery($q);   $db->query();
 
@@ -335,7 +335,7 @@ class ps_product_type {
   function get_description($product_type_id) {
     $db = new ps_DB;
 
-    $q = "SELECT product_type_description FROM #__pshop_product_type ";
+    $q = "SELECT product_type_description FROM #__{vm}_product_type ";
     $q .= "WHERE product_type_id='$product_type_id' ";
     $db->setQuery($q);   $db->query();
 
@@ -359,7 +359,7 @@ class ps_product_type {
     }
     else {
         
-      $q  = "SELECT product_type_list_order,product_type_name FROM #__pshop_product_type ";
+      $q  = "SELECT product_type_list_order,product_type_name FROM #__{vm}_product_type ";
       $q .= "ORDER BY product_type_list_order ASC";
       $db->query( $q );
       
@@ -391,7 +391,7 @@ class ps_product_type {
       $db = new ps_DB;
       switch( $d["task"] ) {
         case "orderup":
-			$q = "SELECT product_type_list_order FROM #__pshop_product_type ";
+			$q = "SELECT product_type_list_order FROM #__{vm}_product_type ";
 			$q .= "WHERE product_type_id='".$cb[0]."' ";
 			$db->query($q);
 			$db->next_record();
@@ -399,7 +399,7 @@ class ps_product_type {
 			//$category_parent_id = $db->f("category_parent_id");
           
 			// Get the (former) predecessor and update it
-			$q  = "SELECT product_type_list_order,product_type_id FROM #__pshop_product_type WHERE ";
+			$q  = "SELECT product_type_list_order,product_type_id FROM #__{vm}_product_type WHERE ";
 			$q .= "product_type_list_order<'". $currentpos . "' ";
 			$q .= "ORDER BY product_type_list_order DESC";
 			$db->query($q);
@@ -408,12 +408,12 @@ class ps_product_type {
 			$pred_pos = $db->f("product_type_list_order");
           
 			// Update the Product Type and decrease the list_order
-			$q = "UPDATE #__pshop_product_type ";
+			$q = "UPDATE #__{vm}_product_type ";
 			$q .= "SET product_type_list_order='".$pred_pos."' ";
 			$q .= "WHERE product_type_id='".$cb[0]."'";
 			$db->query($q);
 
-			$q = "UPDATE #__pshop_product_type ";
+			$q = "UPDATE #__{vm}_product_type ";
 			$q .= "SET product_type_list_order='".intval($pred_pos + 1)."' ";
 			$q .= "WHERE product_type_id='$pred'";
 			$db->query($q);
@@ -421,14 +421,14 @@ class ps_product_type {
           break;
           
         case "orderdown":
-			$q = "SELECT product_type_list_order FROM #__pshop_product_type ";
+			$q = "SELECT product_type_list_order FROM #__{vm}_product_type ";
 			$q .= "WHERE product_type_id='".$cb[0]."' ";
 			$db->query($q);
 			$db->next_record();
 			$currentpos = $db->f("product_type_list_order");
           
 			// Get the (former) successor and update it
-			$q  = "SELECT product_type_list_order,product_type_id FROM #__pshop_product_type WHERE ";
+			$q  = "SELECT product_type_list_order,product_type_id FROM #__{vm}_product_type WHERE ";
 			$q .= "product_type_list_order>'". $currentpos . "' ";
 			$q .= "ORDER BY product_type_list_order";
 			$db->query($q);
@@ -436,12 +436,12 @@ class ps_product_type {
 			$succ = $db->f("product_type_id");
 			$succ_pos = $db->f("product_type_list_order");
           
-			$q = "UPDATE #__pshop_product_type ";
+			$q = "UPDATE #__{vm}_product_type ";
 			$q .= "SET product_type_list_order='".$succ_pos."' ";
 			$q .= "WHERE product_type_id='".$cb[0]."' ";
 			$db->query($q);
           
-			$q = "UPDATE #__pshop_product_type ";
+			$q = "UPDATE #__{vm}_product_type ";
 			$q .= "SET product_type_list_order='".intval($succ_pos - 1)."' ";
 			$q .= "WHERE product_type_id='$succ'";
 			$db->query($q);
@@ -460,7 +460,7 @@ class ps_product_type {
   ***************************************************************************/
   function get_parameter_form($product_type_id='0') {
 	$db = new ps_DB;
-	$q  = "SELECT * FROM #__pshop_product_type_parameter ";
+	$q  = "SELECT * FROM #__{vm}_product_type_parameter ";
 	$q .= "WHERE product_type_id='$product_type_id'";
 	$db->query($q);
 	
@@ -503,7 +503,7 @@ class ps_product_type {
   ***************************************************************************/
   function get_parameter_order_list($product_type_id,$orderby="") {
 	$db = new ps_DB;
-	$q  = "SELECT * FROM #__pshop_product_type_parameter ";
+	$q  = "SELECT * FROM #__{vm}_product_type_parameter ";
 	$q .= "WHERE product_type_id=$product_type_id ";
 	$q .= "AND parameter_type<>'B' "; // NO Break Line
 	$q .= "ORDER BY parameter_list_order";
@@ -526,7 +526,7 @@ class ps_product_type {
   function product_in_product_type($product_id) {  
 	global $database;
 	$db = new ps_DB;
-	$q = "SELECT * FROM #__pshop_product_product_type_xref WHERE product_id='$product_id'";
+	$q = "SELECT * FROM #__{vm}_product_product_type_xref WHERE product_id='$product_id'";
 	$db->setQuery( $q );	$db->query();
 	return $db->num_rows() > 0;
   }
@@ -539,7 +539,7 @@ class ps_product_type {
   ** returns: 
   ***************************************************************************/
   function list_product_type($product_id) {
-	global $PHPSHOP_LANG, $mosConfig_live_site;
+	global $VM_LANG, $mosConfig_live_site;
 
 	if (!$this->product_in_product_type($product_id))
 		return "";
@@ -549,12 +549,12 @@ class ps_product_type {
 	$dbp = new ps_DB;
 	$html = "";
 
-	$q  = "SELECT * FROM #__pshop_product_product_type_xref ";
-	$q .= "LEFT JOIN #__pshop_product_type USING (product_type_id) ";
+	$q  = "SELECT * FROM #__{vm}_product_product_type_xref ";
+	$q .= "LEFT JOIN #__{vm}_product_type USING (product_type_id) ";
 	$q .= "WHERE product_id='$product_id' AND product_type_publish='Y' ";
 	$q .= "ORDER BY product_type_list_order";
 	$dbag->query( $q );
-	$q  = "SELECT * FROM #__pshop_product_type_parameter ";
+	$q  = "SELECT * FROM #__{vm}_product_type_parameter ";
 	$q .= "WHERE product_type_id=";
 	while ($dbag->next_record()) { // Show all Product Type
 		if ($dbag->f("product_type_flypage")) {
@@ -565,9 +565,9 @@ class ps_product_type {
 			}
 		}
 		$html .= "<BR>\n<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n";
-		$html .= "<tr><td colspan=\"2\"><strong>".$PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY. ": ".$dbag->f("product_type_name")."</strong></td></tr>\n";
+		$html .= "<tr><td colspan=\"2\"><strong>".$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY. ": ".$dbag->f("product_type_name")."</strong></td></tr>\n";
 		// SELECT parameter value of product
-		$q2  = "SELECT * FROM #__pshop_product_type_".$dbag->f("product_type_id");
+		$q2  = "SELECT * FROM #__{vm}_product_type_".$dbag->f("product_type_id");
 		$q2 .= " WHERE product_id='$product_id'";
 		$dbp->query($q2);
 		// SELECT parameter of Product Type
@@ -583,7 +583,7 @@ class ps_product_type {
 			$parameter_description = $dba->f("parameter_description");
 			if (!empty($parameter_description)) {
 				$html .= "&nbsp;";
-				$html .= mm_ToolTip($parameter_description, $PHPSHOP_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION);
+				$html .= mm_ToolTip($parameter_description, $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION);
 			}
 			$html .= "</td>\n<td>";
 			$html .= $dbp->f($dba->f("parameter_name"))." ".$dba->f("parameter_unit")."</td></tr>\n";

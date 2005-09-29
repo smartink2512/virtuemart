@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_order_status.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -78,7 +78,7 @@ class ps_order_status {
     if (!$this->validate_add($d)) {
       return False;
     }
-    $q = "INSERT INTO #__pshop_order_status (vendor_id, order_status_code,";
+    $q = "INSERT INTO #__{vm}_order_status (vendor_id, order_status_code,";
     $q .= "order_status_name, list_order) ";
     $q .= "VALUES (";
     $q .= "'$ps_vendor_id','";
@@ -106,7 +106,7 @@ class ps_order_status {
     if (!$this->validate_update($d)) {
       return False;	
     }
-    $q = "UPDATE #__pshop_order_status SET ";
+    $q = "UPDATE #__{vm}_order_status SET ";
     $q .= "order_status_code='" . $d["order_status_code"];
     $q .= "',order_status_name='" . $d["order_status_name"];
     $q .= "',list_order='" . $d["list_order"];
@@ -145,7 +145,7 @@ class ps_order_status {
 		global $db;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		
-		$q = "DELETE from #__pshop_order_status WHERE order_status_id='$record_id'";
+		$q = "DELETE from #__{vm}_order_status WHERE order_status_id='$record_id'";
 		$q .= " AND vendor_id='$ps_vendor_id'";
 		$db->query($q);
 		return True;
@@ -159,7 +159,7 @@ class ps_order_status {
 	function getOrderStatus( $order_status_code, $extra="") {
 		$db = new ps_DB;
 		
-		$q = "SELECT order_status_id, order_status_code, order_status_name FROM #__pshop_order_status ORDER BY list_order";
+		$q = "SELECT order_status_id, order_status_code, order_status_name FROM #__{vm}_order_status ORDER BY list_order";
 		$db->query($q);
 		$html = "<select name=\"order_status\" class=\"inputbox\" $extra>\n";
 		while ($db->next_record()) {

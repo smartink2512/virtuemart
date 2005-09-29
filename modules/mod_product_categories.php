@@ -4,17 +4,17 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * mambo-phphop Product Categories Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_product_categories.php,v 1.2 2005/09/04 20:09:34 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id: mod_product_categories.php,v 1.1 2005/09/06 20:06:49 soeren_nb Exp $
+* @package VirtueMart
 * @subpackage modules
 * 
 * @copyright (C) 2004-2005 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 */
 
 /* Get module parameters */
@@ -41,11 +41,11 @@ else {
 }
 $class_mainlevel = "mainlevel".$class_sfx;
 
-/* Load the phpshop main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_phpshop/phpshop_parser.php' );
+/* Load the virtuemart main parse code */
+require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 require_once(CLASSPATH.'ps_product_category.php');
 
-global $PHPSHOP_LANG, $sess;
+global $VM_LANG, $sess;
 
 
 /* MENUTPYE LINK LIST */
@@ -53,11 +53,11 @@ if ( $menutype == 'links' ) {
 
   // Show only top level categories and categories that are
   // being published
-  $query  = "SELECT * FROM #__pshop_category, #__pshop_category_xref ";
-  $query .= "WHERE #__pshop_category.category_publish='Y' AND ";
-  $query .= "(#__pshop_category_xref.category_parent_id='' OR #__pshop_category_xref.category_parent_id='0') AND ";
-  $query .= "#__pshop_category.category_id=#__pshop_category_xref.category_child_id ";
-  $query .= "ORDER BY #__pshop_category.list_order, #__pshop_category.category_name ASC";
+  $query  = "SELECT * FROM #__{vm}_category, #__{vm}_category_xref ";
+  $query .= "WHERE #__{vm}_category.category_publish='Y' AND ";
+  $query .= "(#__{vm}_category_xref.category_parent_id='' OR #__{vm}_category_xref.category_parent_id='0') AND ";
+  $query .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
+  $query .= "ORDER BY #__{vm}_category.list_order, #__{vm}_category.category_name ASC";
   
   // initialise the query in the $database connector
   // this translates the '#__' prefix into the real database prefix
@@ -80,7 +80,7 @@ if ( $menutype == 'links' ) {
   foreach ($rows as $category) { ?>
   <tr>
 	<td colspan="2">
-	  <a class="<?php echo $class_mainlevel ?>" href="<?php echo $sess->url(URL."index.php?option=com_phpshop&amp;page=shop.browse&amp;category_id=$category->category_id"); ?>">
+	  <a class="<?php echo $class_mainlevel ?>" href="<?php echo $sess->url(URL."index.php?option=com_virtuemart&amp;page=shop.browse&amp;category_id=$category->category_id"); ?>">
 	  <?php 
 		echo $category->category_name;
 		echo ps_product_category::products_in_category( $category->category_id );
@@ -122,12 +122,12 @@ if ( $menutype == 'links' ) {
 }  /** END LINK LIST **/
 elseif( $menutype == "dtree" ) {
 	/* dTree script to display structured categories */
-	include( $mosConfig_absolute_path . '/modules/phpshop_dtree.php' );
+	include( $mosConfig_absolute_path . '/modules/virtuemart_dtree.php' );
   
 }
 elseif( $menutype == "jscook" ) {
 	/* dTree script to display structured categories */
-	include( $mosConfig_absolute_path . '/modules/phpshop_JSCook.php' );
+	include( $mosConfig_absolute_path . '/modules/virtuemart_JSCook.php' );
   
 }
 ?>

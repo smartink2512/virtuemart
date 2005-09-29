@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file is called after the order has been placed by the customer
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: checkout.thankyou.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -12,7 +12,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -30,30 +30,30 @@ $order_id = $vars["order_id"];
 $print = mosgetparam( $_REQUEST, 'print', 0);
 
 /** Retrieve User Email **/
-$q  = "SELECT * FROM #__pshop_order_user_info WHERE order_id='$order_id' AND address_type='BT'"; 
+$q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='$order_id' AND address_type='BT'"; 
 $database->setQuery( $q );
 $database->loadObject($user);
 $user->email = $user->user_email;
 
 /** Retrieve Order & Payment Info **/
 $db = new ps_DB;
-$q  = "SELECT * FROM #__pshop_payment_method, #__pshop_order_payment, #__pshop_orders ";
-$q .= "WHERE #__pshop_order_payment.order_id='$order_id' ";
-$q .= "AND #__pshop_payment_method.payment_method_id=#__pshop_order_payment.payment_method_id ";
-$q .= "AND #__pshop_orders.user_id='" . $auth["user_id"] . "' ";
-$q .= "AND #__pshop_orders.order_id='$order_id' ";
+$q  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_order_payment, #__{vm}_orders ";
+$q .= "WHERE #__{vm}_order_payment.order_id='$order_id' ";
+$q .= "AND #__{vm}_payment_method.payment_method_id=#__{vm}_order_payment.payment_method_id ";
+$q .= "AND #__{vm}_orders.user_id='" . $auth["user_id"] . "' ";
+$q .= "AND #__{vm}_orders.order_id='$order_id' ";
 $db->query($q);
 if ($db->next_record()) {
 
 ?>
-<h3><? echo $PHPSHOP_LANG->_PHPSHOP_THANKYOU ?></h3>
+<h3><? echo $VM_LANG->_PHPSHOP_THANKYOU ?></h3>
  <p>
  <?php if( empty($vars['error'])) { ?>
    <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
-   <?php echo $PHPSHOP_LANG->_PHPSHOP_THANKYOU_SUCCESS?>
+   <?php echo $VM_LANG->_PHPSHOP_THANKYOU_SUCCESS?>
   
   <br /><br />
-  <?php echo $PHPSHOP_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $user->user_email; ?></strong><br />
+  <?php echo $VM_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $user->user_email; ?></strong><br />
   </p>
   <?php } ?>
   
@@ -85,8 +85,8 @@ if ($db->next_record()) {
 <?php
   }
 ?>
- <p><a href="<?php $sess->purl(SECUREURL."index.php?option=com_phpshop&page=account.order_details&order_id=". $order_id) ?>">
- <?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_LINK ?></a>
+ <p><a href="<?php $sess->purl(SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=". $order_id) ?>">
+ <?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?></a>
  </p>
  <?php
   

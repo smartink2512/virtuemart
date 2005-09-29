@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shop.view_images.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -29,24 +29,24 @@ if( !empty($product_id) ) {
   $ps_product =& new ps_product();
   
 // Get the default full and thumb image
-  $db->query( "SELECT product_name,product_full_image,product_thumb_image FROM #__pshop_product WHERE product_id='$product_id'" );
+  $db->query( "SELECT product_name,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_id='$product_id'" );
   $db->next_record();
-  echo "<h3>".$PHPSHOP_LANG->_PHPSHOP_AVAILABLE_IMAGES." ".$db->f("product_name")."</h3>\n";
-  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_phpshop&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid\">"
-      . $PHPSHOP_LANG->_PHPSHOP_BACK_TO_DETAILS."</a>\n<br/><br/><br/>";
+  echo "<h3>".$VM_LANG->_PHPSHOP_AVAILABLE_IMAGES." ".$db->f("product_name")."</h3>\n";
+  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid\">"
+      . $VM_LANG->_PHPSHOP_BACK_TO_DETAILS."</a>\n<br/><br/><br/>";
   
   $alt = $db->f("product_name");
   $height = PSHOP_IMG_WIDTH;
   $width = PSHOP_IMG_HEIGHT;
   $border = ($image_id == "product") ? "4" : "1";
-  $href = $_SERVER['PHP_SELF']."?option=com_phpshop&page=$page&product_id=$product_id&image_id=product&Itemid=".$Itemid;
+  $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&product_id=$product_id&image_id=product&Itemid=".$Itemid;
   $title = $db->f("product_name");
   echo "<a href=\"$href\" target=\"_self\" title=\"$title\">\n";
   $ps_product->show_image( $db->f("product_thumb_image"), "alt=\"$alt\" align=\"center\" border=\"$border\"");
   echo "</a>&nbsp;&nbsp;&nbsp;";
 
 // Let's have a look wether the product has more images.
-  $database->setQuery( "SELECT * FROM #__pshop_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
+  $database->setQuery( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
   $images = $database->loadObjectList();
   $i = 0;
   foreach( $images as $image ) {
@@ -58,7 +58,7 @@ if( !empty($product_id) ) {
     $width = empty($image->file_image_thumb_width) ? PSHOP_IMG_WIDTH : $image->file_image_thumb_width; 
     
     $border = ($image->file_id == $image_id) ? "4" : "1";
-    $href = $_SERVER['PHP_SELF']."?option=com_phpshop&page=$page&product_id=$product_id&image_id=".$image->file_id."&Itemid=".$Itemid;
+    $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&product_id=$product_id&image_id=".$image->file_id."&Itemid=".$Itemid;
     $title = $image->file_title;
     echo "<a href=\"$href\" target=\"_self\" title=\"$title\"><img src=\"$src\" alt=\"$alt\" align=\"center\" width=\"$width\" border=\"$border\" /></a>\n&nbsp;&nbsp;&nbsp;";
     // Break Row when needed
@@ -74,11 +74,11 @@ if( !empty($product_id) ) {
   else {
     if( !empty($image_id) ) {
       // Get that image!
-      $database->setQuery( "SELECT * FROM #__pshop_product_files WHERE file_product_id='$product_id' AND file_is_image='1' AND file_id='$image_id'" );
+      $database->setQuery( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1' AND file_id='$image_id'" );
     }
     else {
       // Get the first image
-      $database->setQuery( "SELECT * FROM #__pshop_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
+      $database->setQuery( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
     }
     $database->loadObject( $show_img );
     if( $show_img ) {
@@ -91,7 +91,7 @@ if( !empty($product_id) ) {
       echo "<div style=\"text-align:center;overflow:auto;\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" border=\"0\" /></div>";
     }
     else {
-      echo $PHPSHOP_LANG->_PHPSHOP_IMAGE_NOT_FOUND;
+      echo $VM_LANG->_PHPSHOP_IMAGE_NOT_FOUND;
     }
   }
 }

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shipping.carrier_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,32 +11,32 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_CARRIER_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_PHPSHOP_CARRIER_FORM_LBL );
 //Then Start the form
 $formObj->startForm();
 
 $shipping_carrier_id = mosgetparam( $_REQUEST, 'shipping_carrier_id');
 
 if (!empty($shipping_carrier_id)) {
-  $q = "SELECT * FROM #__pshop_shipping_carrier WHERE shipping_carrier_id='$shipping_carrier_id'";
+  $q = "SELECT * FROM #__{vm}_shipping_carrier WHERE shipping_carrier_id='$shipping_carrier_id'";
   $db->query($q);
   $db->next_record();
 }
 ?><br />
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
-		<td width="21%" ><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CARRIER_FORM_NAME ?>:</div></td>
+		<td width="21%" ><div align="right"><?php echo $VM_LANG->_PHPSHOP_CARRIER_FORM_NAME ?>:</div></td>
 		<td width="79%" ><input class="inputbox" type="text" name="shipping_carrier_name" size="32" maxlength="255" value="<?php $db->sp("shipping_carrier_name") ?>"></td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CARRIER_FORM_LIST_ORDER ?>:</div></td>
+		<td width="21%" ><div align="right"><?php echo $VM_LANG->_PHPSHOP_CARRIER_FORM_LIST_ORDER ?>:</div></td>
 		<td width="79%" ><input class="inputbox" type="text" name="shipping_carrier_list_order" size="32" maxlength="255" value="<?php $db->sp("shipping_carrier_list_order") ?>"></td>
 	</tr>
 </table>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: affiliate.affiliate_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -24,8 +24,8 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT DISTINCT * FROM #__pshop_affiliate, #__users WHERE ";
-	$count = "SELECT DISTINCT count(*) as num_rows FROM #__pshop_affiliate, #__users  WHERE ";
+	$list  = "SELECT DISTINCT * FROM #__{vm}_affiliate, #__users WHERE ";
+	$count = "SELECT DISTINCT count(*) as num_rows FROM #__{vm}_affiliate, #__users  WHERE ";
 	$q  = "((first_name LIKE '%$keyword%') OR (";
 	$q  .= "last_name LIKE '%$keyword%') OR (";
 	$q  .= "username LIKE '%$keyword%') OR (";
@@ -37,8 +37,8 @@ if (!empty($keyword)) {
 }
 elseif (!empty($vendor_category_id)) {
 	$q = "";
-     $list  = "SELECT * FROM #__pshop_affiliate, #__users WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_affiliate, #__users  WHERE ";
+     $list  = "SELECT * FROM #__{vm}_affiliate, #__users WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_affiliate, #__users  WHERE ";
 	$q = "user_info_id=user_id ";
 	$q .= "ORDER BY first_name ASC ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
@@ -46,10 +46,10 @@ elseif (!empty($vendor_category_id)) {
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__users, #__pshop_affiliate";
-	$list .= " WHERE #__users.user_info_id =#__pshop_affiliate.user_id";
+	$list  = "SELECT * FROM #__users, #__{vm}_affiliate";
+	$list .= " WHERE #__users.user_info_id =#__{vm}_affiliate.user_id";
 	//$list .= " ORDER BY company ASC";
-	$count = "SELECT count(affiliate_id) as num_rows FROM #__pshop_affiliate"; 
+	$count = "SELECT count(affiliate_id) as num_rows FROM #__{vm}_affiliate"; 
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;       
 }
@@ -64,7 +64,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_LBL, IMAGEURL."ps_image/affiliate.gif", "affiliate", "affiliate_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_AFFILIATE_LIST_LBL, IMAGEURL."ps_image/affiliate.gif", "affiliate", "affiliate_list");
 
 // start the list table
 $listObj->startTable();
@@ -72,12 +72,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME => "",
-					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE => "",
-					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL => "",
-					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION => "",
-					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_RATE => "",
-					$PHPSHOP_LANG->_PHPSHOP_AFFILIATE_LIST_ORDERS => "",
+					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME => "",
+					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE => "",
+					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL => "",
+					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION => "",
+					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_RATE => "",
+					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_ORDERS => "",
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -154,7 +154,7 @@ $listObj->writeFooter( $keyword );
 	<input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>" />
 	<input type="hidden" name="date" value="<?php echo isset($date) ? $date : ""; ?>" /> 
 	<input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_list" /> 
-	<input type="hidden" name="option" value="com_phpshop" /> 
+	<input type="hidden" name="option" value="com_virtuemart" /> 
 	<input type="hidden" name="task" value="" /> 
 	<br/>Month
 	<select class="inputbox" name="date" size="1"><?php

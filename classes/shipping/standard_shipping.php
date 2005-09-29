@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: standard_shipping.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -28,7 +28,7 @@ class standard_shipping {
    * returns:
    **************************************************************************/
   function list_rates( &$d ) {
-    global $PHPSHOP_LANG, $CURRENCY_DISPLAY;
+    global $VM_LANG, $CURRENCY_DISPLAY;
     $auth = $_SESSION["auth"];
     
     $dbc = new ps_DB; // Carriers
@@ -39,18 +39,18 @@ class standard_shipping {
     $q = "SELECT country,zip FROM #__users WHERE user_info_id='".$d['ship_to_info_id']."'";
     $dbc->query($q);
     if(!$dbc->next_record()) {
-      $q = "SELECT country,zip FROM #__pshop_user_info WHERE user_info_id='".$d['ship_to_info_id']."'";
+      $q = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id='".$d['ship_to_info_id']."'";
       $dbc->query($q);$dbc->next_record();
     }
     $zip = $dbc->f("zip");
     $country = $dbc->f("country");
 
-    $q = "SELECT shipping_carrier_id,shipping_carrier_name FROM #__pshop_shipping_carrier ORDER BY shipping_carrier_list_order ASC";
+    $q = "SELECT shipping_carrier_id,shipping_carrier_name FROM #__{vm}_shipping_carrier ORDER BY shipping_carrier_list_order ASC";
     $dbc->query($q);
     $i = 0;
     $html = "";
     while ($dbc->next_record()) {
-        $q = "SELECT shipping_rate_id,shipping_rate_name,shipping_rate_value,shipping_rate_package_fee FROM #__pshop_shipping_rate WHERE ";
+        $q = "SELECT shipping_rate_id,shipping_rate_name,shipping_rate_value,shipping_rate_package_fee FROM #__{vm}_shipping_rate WHERE ";
         $q .= "shipping_rate_carrier_id='" . $dbc->f("shipping_carrier_id") . "' AND ";
         $q .= "(shipping_rate_country LIKE '%" . $country . "%' OR ";
         $q .= "shipping_rate_country = '') AND ";
@@ -66,9 +66,9 @@ class standard_shipping {
         while($dbr->next_record()) {
           if( !defined( "_SHIPPING_RATE_TABLE_HEADER" ) ) {            
             $html = "<table width=\"100%\">\n<tr class=\"sectiontableheader\"><th>&nbsp;</th>";
-            $html .= "<th>" . $PHPSHOP_LANG->_PHPSHOP_INFO_MSG_CARRIER . "</th><th>";
-            $html .= $PHPSHOP_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . "</th><th>";
-            $html .= $PHPSHOP_LANG->_PHPSHOP_INFO_MSG_SHIPPING_PRICE . "</th></tr>\n";
+            $html .= "<th>" . $VM_LANG->_PHPSHOP_INFO_MSG_CARRIER . "</th><th>";
+            $html .= $VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . "</th><th>";
+            $html .= $VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_PRICE . "</th></tr>\n";
             define( "_SHIPPING_RATE_TABLE_HEADER", "1" );
           }
           if ($i++ % 2)
@@ -143,7 +143,7 @@ class standard_shipping {
         $ship_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
         $shipping_rate_id = $ship_arr[4];
       }
-      $database->setQuery( "SELECT tax_rate FROM #__pshop_shipping_rate,#__pshop_tax_rate WHERE shipping_rate_id='$shipping_rate_id' AND shipping_rate_vat_id=tax_rate_id" );
+      $database->setQuery( "SELECT tax_rate FROM #__{vm}_shipping_rate,#__{vm}_tax_rate WHERE shipping_rate_id='$shipping_rate_id' AND shipping_rate_vat_id=tax_rate_id" );
       $database->loadObject( $tax_rate );
 	  if( $tax_rate ) 
         return $tax_rate->tax_rate;
@@ -171,7 +171,7 @@ class standard_shipping {
 	$rate_id = $details[4];
 	
     $dbr = new ps_DB; // Rates
-    $q = "SELECT * FROM #__pshop_shipping_rate WHERE ";
+    $q = "SELECT * FROM #__{vm}_shipping_rate WHERE ";
     $q .= "shipping_rate_id='$rate_id'";
     $dbr->query($q);
     if ($dbr->next_record()) {
@@ -182,7 +182,7 @@ class standard_shipping {
       $rvalue["vat_id"] = $dbr->f("shipping_rate_vat_id");
       if (TAX_MODE == '1') {
         $dbv = new ps_DB;
-        $q = "SELECT * FROM #__pshop_tax_rate WHERE tax_rate_id ='".$dbr->f("shipping_rate_vat_id")."'";
+        $q = "SELECT * FROM #__{vm}_tax_rate WHERE tax_rate_id ='".$dbr->f("shipping_rate_vat_id")."'";
         $dbv->query($q);
         if ($dbv->next_record()) {
           $rvalue["vat_rate"] = $dbv->f("tax_rate");
@@ -190,13 +190,13 @@ class standard_shipping {
         }
       }
       $dbc = new ps_DB;
-      $q = "SELECT * FROM #__pshop_shipping_carrier WHERE shipping_carrier_id ='".$dbr->f("shipping_rate_carrier_id")."'";
+      $q = "SELECT * FROM #__{vm}_shipping_carrier WHERE shipping_carrier_id ='".$dbr->f("shipping_rate_carrier_id")."'";
       $dbc->query($q);
       if ($dbc->next_record()) {
         $rvalue["carrier"] = $dbc->f("shipping_carrier_name");
       }
 
-      $q = "SELECT * FROM #__pshop_currency WHERE currency_id ='".$dbr->f("shipping_rate_currency_id")."'";
+      $q = "SELECT * FROM #__{vm}_currency WHERE currency_id ='".$dbr->f("shipping_rate_currency_id")."'";
       $dbc->query($q);
       if ($dbc->next_record()) {
         $rvalue["rate_curr"] = $dbc->f("currency_code");
@@ -213,7 +213,7 @@ class standard_shipping {
    * returns: several values in an array
    **************************************************************************/
   function validate( &$d ) {
-     global $PHPSHOP_LANG;
+     global $VM_LANG;
      $cart = $_SESSION['cart'];
      $auth = $_SESSION['auth'];
      
@@ -226,17 +226,17 @@ class standard_shipping {
      
      $totalweight = 0;
      for($i = 0; $i < $cart["idx"]; $i++) {
-        $q = "SELECT product_weight FROM #__pshop_product WHERE product_id='";
+        $q = "SELECT product_weight FROM #__{vm}_product WHERE product_id='";
         $q .= $cart[$i]["product_id"] . "'";
         $dbp->query($q);
         if ($dbp->next_record()) {
           if ($cart[$i]["quantity"] == "0"){
-             $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
+             $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
              return False;
           }
           $totalweight += $cart[$i]["quantity"] * $dbp->f("product_weight");
         } else {
-          $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
+          $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
           return False;
         }
      }
@@ -244,11 +244,11 @@ class standard_shipping {
      $dbu = new ps_DB; //DB User
      $dbu->query($q);
      if (!$dbu->next_record()) {
-          $q  = "SELECT country,zip FROM #__pshop_user_info WHERE user_info_id = '". $d["ship_to_info_id"] . "'";
+          $q  = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id = '". $d["ship_to_info_id"] . "'";
           $dbu = new ps_DB; //DB User
           $dbu->query($q);
           if (!$dbu->next_record()) {
-            /*$d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND;
+            /*$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND;
             return False;*/
           }
           
@@ -264,11 +264,11 @@ class standard_shipping {
         $zip = $dbu->f("zip");
     }
 
-     $q  = "SELECT * FROM #__pshop_shipping_rate WHERE shipping_rate_id = '$rate_id'";
+     $q  = "SELECT * FROM #__{vm}_shipping_rate WHERE shipping_rate_id = '$rate_id'";
      $dbs = new ps_DB; // DB Shiping_rate
      $dbs->query($q);
      if (!$dbs->next_record()) {
-       $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND;
+       $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND;
        return False;
      }
      
@@ -282,9 +282,9 @@ class standard_shipping {
    * returns: true if fit
    **************************************************************************/
   function rate_id_valid($rate_id, $country, $zip, $weight) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     $db = new ps_DB; // Rates
-    $q = "SELECT * FROM #__pshop_shipping_rate WHERE ";
+    $q = "SELECT * FROM #__{vm}_shipping_rate WHERE ";
     $q .= "shipping_rate_id='$rate_id'";
     $db->query($q);
     if ($db->next_record()) {
@@ -297,7 +297,7 @@ class standard_shipping {
                    ($db->f("shipping_rate_zip_start")   > $zip) or
                    ($db->f("shipping_rate_zip_end")     < $zip)
                 ) {
-                $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP;
+                $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP;
                 return false;
              }
       }
@@ -308,7 +308,7 @@ class standard_shipping {
                   ($db->f("shipping_rate_weight_start") > $weight) or
                    ($db->f("shipping_rate_weight_end")  < $weight) 
                 ) {
-                $d["error"] = $PHPSHOP_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP;
+                $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP;
                 return false;
              }
       }

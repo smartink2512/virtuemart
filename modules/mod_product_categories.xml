@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>mambo-phpShop Module</name>
+    <name>VirtueMart Module</name>
     <creationDate>05.04.2005</creationDate>
     <author>Soeren Eberhardt</author>
-    <copyright>mambo-phpShop is released under GNU/GPLicense</copyright>
-    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
-    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <copyright>VirtueMart is released under GNU/GPLicense</copyright>
+    <authorEmail>soeren@virtuemart.net</authorEmail>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
-    <description>Shows mambo-phpShop Product Categories. !!!Requires the installation of the mambo-phpShop Main Module!!!</description>
+    <description>Shows VirtueMart Product Categories. !!!Requires the installation of the VirtueMart Main Module!!!</description>
     <files>
          <filename module="mod_product_categories">mod_product_categories.php</filename>
     </files>

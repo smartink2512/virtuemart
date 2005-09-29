@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_manufacturer.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -58,7 +58,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
      }
     
     else {
-       $q = "SELECT count(*) as rowcnt from #__pshop_manufacturer where";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_manufacturer where";
        $q .= " mf_name='" .  $d["mf_name"] . "'";
        $db->setQuery($q);
        $db->query();
@@ -85,7 +85,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $this->error = "ERROR:  Please select a manufacturer to delete.";
       return False;
     }
-	$db->query( "SELECT manufacturer_id FROM #__pshop_product_mf_xref WHERE manufacturer_id='$mf_id'" );
+	$db->query( "SELECT manufacturer_id FROM #__{vm}_product_mf_xref WHERE manufacturer_id='$mf_id'" );
 	if( $db->num_rows() > 0 ) {
 		$this->error = "Error: This Manufacturer still has products assigned to it.";
 		return false;
@@ -127,7 +127,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return false;
     }
-    $q = "INSERT INTO #__pshop_manufacturer (mf_name, mf_email, mf_desc, mf_category_id, mf_url)";
+    $q = "INSERT INTO #__{vm}_manufacturer (mf_name, mf_email, mf_desc, mf_category_id, mf_url)";
     $q .= " VALUES ('";
     $q .= $d["mf_name"] . "','";
     $q .= $d["mf_email"] . "','";
@@ -156,7 +156,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return False;	
     }
-    $q = "UPDATE #__pshop_manufacturer set ";
+    $q = "UPDATE #__{vm}_manufacturer set ";
     $q .= "mf_name='" . $d["mf_name"]."',";
     $q .= "mf_email='" .$d["mf_email"] . "',";
     $q .= "mf_desc='" .$d["mf_desc"] . "',";
@@ -196,7 +196,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 		  $d["error"]=$this->error;
 		  return False;
 		}
-		$q = "DELETE from #__pshop_manufacturer where manufacturer_id='$record_id'";
+		$q = "DELETE from #__{vm}_manufacturer where manufacturer_id='$record_id'";
 		$db->query($q);
 		return True;
   }

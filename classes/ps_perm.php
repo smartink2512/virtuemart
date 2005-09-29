@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_perm.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -28,7 +28,13 @@ class ps_perm {
 			   "admin" 	=>  "8" 
 			);
 	
-	
+	/**
+	* This function does the basic authentication
+	* for a user in the shop.
+	* It assigns permissions, the name, country, zip  and
+	* the shopper group id with the user and the session.
+	* @returns array Authentication information
+	*/
 	function doAuthentication() {
 		
 		global $shopper_group, $my, $db;
@@ -46,29 +52,21 @@ class ps_perm {
 				$db->query($q);
 				$db->next_record();
 			
-				switch ($db->f("perms")) {
-					case "admin": 
-						$auth["perms"]  = "admin";
-						break;
-					case "storeadmin":
-						$auth["perms"]  = "storeadmin";
-						break;
-					case "shopper":
-						$auth["perms"]  = "shopper";
-						break;
-					case "demo":
-						$auth["perms"]  = "demo";
-						break;
-				}
+				$auth["perms"]  = $db->f("perms");
+				
 				$auth["first_name"] = $db->f("first_name");
 				$auth["last_name"] = $db->f("last_name");
 				$auth["country"] = $db->f("country");
 				$auth["zip"] = $db->f("zip");
 				
-				if (stristr($my->usertype,"Administrator"))
-				  $auth["perms"]  = "admin";
-				elseif (stristr($my->usertype,"Manager")) 
-				  $auth["perms"]  = "storeadmin";
+				// Shopper is the default value
+				// We must prevent that Administrators or Managers are 'just' shoppers
+				if( $auth["perms"] == "shopper" ) {
+					if (stristr($my->usertype,"Administrator"))
+					  $auth["perms"]  = "admin";
+					elseif (stristr($my->usertype,"Manager")) 
+					  $auth["perms"]  = "storeadmin";
+				}
 				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
 				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
 				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];

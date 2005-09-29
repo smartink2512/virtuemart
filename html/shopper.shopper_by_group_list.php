@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shopper.shopper_by_group_list.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -26,9 +26,9 @@ $db->query($q);
 ?> 
 <table width="100%" class="adminlist">
   <tr > 
-    <th width="23%"><?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_LIST_USERNAME ?></th>
-    <th width="46%"><?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?></th>
-    <th width="31%"><?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_LIST_GROUP ?></th>
+    <th width="23%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_USERNAME ?></th>
+    <th width="46%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?></th>
+    <th width="31%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_GROUP ?></th>
   </tr>
   <tr> 
     <td colspan="3"> 

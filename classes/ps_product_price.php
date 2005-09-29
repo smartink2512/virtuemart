@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );  
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product_price.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -36,11 +36,14 @@ class ps_product_price {
   function validate(&$d) {
     $valid = true;
     $d["error"] = "";
-    if (!isset($d["product_price"])) {
+    if (empty($d["product_price"])) {
         $d["error"] .= "ERROR: A price must be entered.";
         $valid = false;
     }
-    
+    if (empty($d["product_id"])) {
+        $d["error"] .= "ERROR: A product ID is missing.";
+        $valid = false;
+    }
     // convert all "," in prices to decimal points.
     if (stristr($d["product_price"],",")) 
         $d['product_price'] = str_replace(',', '.', $d["product_price"]);
@@ -58,7 +61,7 @@ class ps_product_price {
     }
     
     $db = new ps_DB;
-    $q = "SELECT count(*) AS num_rows FROM #__pshop_product_price WHERE";
+    $q = "SELECT count(*) AS num_rows FROM #__{vm}_product_price WHERE";
     if (!empty($d["product_price_id"])) {
         $q .= " product_price_id != '".$d['product_price_id']."' AND";
     }
@@ -92,7 +95,7 @@ class ps_product_price {
     if (empty($d["product_price_edate"])) $d["product_price_edate"] = '';
     
     $db = new ps_DB;
-    $q  = "INSERT INTO #__pshop_product_price (product_id,shopper_group_id,";
+    $q  = "INSERT INTO #__{vm}_product_price (product_id,shopper_group_id,";
     $q .= "product_price,product_currency,product_price_vdate,";
     $q .= "product_price_edate,cdate,mdate,price_quantity_start,price_quantity_end) ";
     $q .= "VALUES ('" . $d["product_id"] . "','" . $d["shopper_group_id"];
@@ -123,7 +126,7 @@ class ps_product_price {
     if (empty($d["product_price_vdate"])) $d["product_price_vdate"] = '';
     if (empty($d["product_price_edate"])) $d["product_price_edate"] = '';
     
-    $q  = "UPDATE #__pshop_product_price SET ";
+    $q  = "UPDATE #__{vm}_product_price SET ";
     $q .= "shopper_group_id='" . $d["shopper_group_id"] . "',";
     $q .= "product_id='" . $d["product_id"] . "',";
     $q .= "product_price='" . $d["product_price"] . "',";
@@ -163,7 +166,7 @@ class ps_product_price {
 	*/
 	function delete_record( $record_id, &$d ) {
 
-		$q  = "DELETE FROM #__pshop_product_price ";
+		$q  = "DELETE FROM #__{vm}_product_price ";
 		$q .= "WHERE product_price_id = '$record_id' ";
 		$db->query($q);
 	

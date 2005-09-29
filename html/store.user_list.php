@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: store.user_list.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -127,7 +127,7 @@ function showUsers( $option ) {
 	HTML_users::showUsers( $rows, $pageNav, $search, $option );
 }
 
-function editUser( $uid='0', $option='com_phpshop' ) {
+function editUser( $uid='0', $option='com_virtuemart' ) {
 	global $database, $my, $acl;
 
 	$row = new mosUser( $database );
@@ -136,7 +136,7 @@ function editUser( $uid='0', $option='com_phpshop' ) {
 
 	// check to ensure only super admins can edit super admin info
 	if ( ( $my->gid < 25 ) && ( $row->gid == 25 ) ) {
-		mosRedirect( 'index2.php?option=com_phpshop', _NOT_AUTH );
+		mosRedirect( 'index2.php?option=com_virtuemart', _NOT_AUTH );
 	}
 	
 	$lists = array();
@@ -203,7 +203,7 @@ function saveUser( $option ) {
 	$group_id = $database->loadResult();
 	
 	if ( ( $my->gid < 25 ) && ( $group_id == 25 ) ) {
-		mosRedirect( 'index2.php?option=com_phpshop', _NOT_AUTH );
+		mosRedirect( 'index2.php?option=com_virtuemart', _NOT_AUTH );
 	}
 	
 	// number of Super Administrators
@@ -216,7 +216,7 @@ function saveUser( $option ) {
 	$supers = $database->loadResult();
 	// check if only one Super Administrator exists
 	if ( $supers == 1 && $_POST["block"] ) {
-		mosRedirect( "index2.php?option=com_phpshop&page=store.user_list", "You cannot block the only Superadministrator!" );
+		mosRedirect( "index2.php?option=com_virtuemart&page=store.user_list", "You cannot block the only Superadministrator!" );
 	}
   
 	$pwd = '';
@@ -409,11 +409,11 @@ function removeUsers( $cid, $option ) {
         if (empty($msg)) {
         
             /** Delete shopper_vendor_xref entries **/
-            $q = "DELETE FROM #__pshop_shopper_vendor_xref where user_id='" . $id . "'"; 
+            $q = "DELETE FROM #__{vm}_shopper_vendor_xref where user_id='" . $id . "'"; 
             $database->setQuery($q);
             $database->query();
             
-            $q = "DELETE FROM #__pshop_auth_user_vendor where user_id='" . $id . "'"; 
+            $q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='" . $id . "'"; 
             $database->setQuery($q);
             $database->query();
 
@@ -443,11 +443,11 @@ function remove_as_customer( $cid, $option ) {
         if ($ps_user->delete( $d )) {
         
             /** Delete shopper_vendor_xref entries **/
-            $q = "DELETE FROM #__pshop_shopper_vendor_xref where user_id='" . $id . "'"; 
+            $q = "DELETE FROM #__{vm}_shopper_vendor_xref where user_id='" . $id . "'"; 
             $database->setQuery($q);
             $database->query();
             
-            $q = "DELETE FROM #__pshop_auth_user_vendor where user_id='" . $id . "'"; 
+            $q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='" . $id . "'"; 
             $database->setQuery($q);
             $database->query();
             $msg = "User was removed from customer list";

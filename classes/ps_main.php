@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_main.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,14 +11,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 
 
 /**************************************************************************
-** This is no class! This file only provides core phpshop functions.
+** This is no class! This file only provides core virtuemart functions.
 **
 ** name: validate_image
 ** created by: jep
@@ -127,7 +127,7 @@ function validate_image(&$d,$field_name,$table_name) {
             }
             
             /* Generate Image Destination File Name */
-            $to_file_thumb = md5(uniqid("mambo-phpShop"));
+            $to_file_thumb = md5(uniqid("VirtueMart"));
             $fileout = IMAGEPATH."/product/resized/".$to_file_thumb."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
             $neu = new Img2Thumb( $full_file, PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT, $fileout, 0, 255, 255, 255 );
             if( isset($tmp_file_from_url) ) unlink( realpath($tmp_file_from_url) );
@@ -218,7 +218,7 @@ function validate_image(&$d,$field_name,$table_name) {
   }
 
   // Generate Image Destination File Name
-  $to_file = md5(uniqid("mambo-phpShop"));
+  $to_file = md5(uniqid("VirtueMart"));
 
     /* Check image file format */
     if( $orig_file != "none" ) {
@@ -771,7 +771,7 @@ function mShop_checkpass() {
 	$passwd = trim( mosGetParam( $_POST, 'passwd', '' ) );
 	$passwd = md5( $passwd );
 	$bypost = 1;
-	if (!$username || !$passwd || $_REQUEST['option'] != "com_phpshop") {
+	if (!$username || !$passwd || $_REQUEST['option'] != "com_virtuemart") {
 	  return false;
 	} 
 	else {
@@ -891,20 +891,5 @@ if( !function_exists( "mosCreateMail" ) ) {
 	  }
 	  return $mailssend;
   }
-}
-
-if( !class_exists( "mosCommonHTML" )) {
-	class mosCommonHTML {
-	  /*
-	  * Loads all necessary files for JS Overlib tooltips
-	  */
-	  function loadOverlib() {
-		  global  $mosConfig_live_site;
-		  ?>
-		  <script language="Javascript" type="text/javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
-		  <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-		  <?php
-	  }
-	}
 }
 ?> 

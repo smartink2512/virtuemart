@@ -4,11 +4,11 @@
     <creationDate>22.03.2005</creationDate>
     <author>Soeren Eberhardt</author>
     <copyright>GNU/GPLicense</copyright>
-    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
-    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <authorEmail>soeren@virtuemart.net</authorEmail>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
     <description>Shows the Cart for your Customers</description>
      <files>
-         <filename module="mod_phpshop_cart">mod_phpshop_cart.php</filename>
+         <filename module="mod_virtuemart_cart">mod_virtuemart_cart.php</filename>
      </files>
 </mosinstall>

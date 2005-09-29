@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ro_basket.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -27,7 +27,7 @@ global $weight_total, $total, $tax_total;
 
 /* make sure this is the checkout screen */
 if ($cart["idx"] == 0) {
-   echo $PHPSHOP_LANG->_PHPSHOP_EMPTY_CART;
+   echo $VM_LANG->_PHPSHOP_EMPTY_CART;
    $checkout = False;
 }
 else {
@@ -107,11 +107,11 @@ else {
       $product_rows[$i]['subtotal'] = $CURRENCY_DISPLAY->getFullValue($subtotal);
       if (!empty($my_taxrate) && MULTIPLE_TAXRATES_ENABLE=='1') {
           if( $auth["show_price_including_tax"] == 1 ) {
-            eval( "\$message = \"".$PHPSHOP_LANG->_PHPSHOP_INCLUDING_TAX."\";" );
+            eval( "\$message = \"".$VM_LANG->_PHPSHOP_INCLUDING_TAX."\";" );
             $product_rows[$i]['subtotal'] .= "&nbsp;".$message;
           }
           else {
-            $product_rows[$i]['subtotal'] .= "&nbsp;(+ $tax% ".$PHPSHOP_LANG->_PHPSHOP_CART_TAX.")";
+            $product_rows[$i]['subtotal'] .= "&nbsp;(+ $tax% ".$VM_LANG->_PHPSHOP_CART_TAX.")";
           }
       }
             
@@ -122,16 +122,16 @@ else {
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
         <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
-        <input type=\"image\" name=\"update\" title=\"". $PHPSHOP_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  value=\"". $PHPSHOP_LANG->_PHPSHOP_UPDATE ."\" />
+        <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  value=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
       </form>";
       $product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" />
-        <input type=\"hidden\" name=\"option\" value=\"com_phpshop\" />
+        <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
         <input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
         <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
         <input type=\"hidden\" name=\"func\" value=\"cartDelete\" />
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
-      <input type=\"image\" name=\"delete\" title=\"". $PHPSHOP_LANG->_PHPSHOP_CART_DELETE ."\" src=\"". IMAGEURL ."ps_image/delete_f2.gif\" border=\"0\" value=\"". $PHPSHOP_LANG->_PHPSHOP_CART_DELETE ."\" />
+      <input type=\"image\" name=\"delete\" title=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" src=\"". IMAGEURL ."ps_image/delete_f2.gif\" border=\"0\" value=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" />
       </form>";
   } // End of for loop through the Cart
   
@@ -144,9 +144,9 @@ else {
     if( $payment_discount != 0.00 ) {
       $payment_discount_before = true;
       if( $payment_discount > 0.00 ) 
-        $discount_word = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+        $discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
       else 
-        $discount_word = $PHPSHOP_LANG->_PHPSHOP_FEE;
+        $discount_word = $VM_LANG->_PHPSHOP_FEE;
         
       $total -= $payment_discount;
       $payment_discount_display = $CURRENCY_DISPLAY->getFullValue($payment_discount-($payment_discount*2));
@@ -209,9 +209,9 @@ else {
     if( $payment_discount != 0.00 ) {
       $payment_discount_after = true;
       if( $payment_discount > 0.00 ) 
-        $discount_word = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+        $discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
       else 
-        $discount_word = $PHPSHOP_LANG->_PHPSHOP_FEE;
+        $discount_word = $VM_LANG->_PHPSHOP_FEE;
       $total -= $payment_discount;
       $payment_discount_display = $CURRENCY_DISPLAY->getFullValue($payment_discount-($payment_discount*2));
     }   

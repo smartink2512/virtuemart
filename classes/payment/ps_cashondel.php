@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * a special type of 'cash on delivey':
 * its fee depend on total sum
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_cashondel.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -15,7 +15,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -30,16 +30,16 @@ class ps_cashondel {
     * @returns boolean False when the Payment method has no configration
     */
     function show_configuration() {
-        global $PHPSHOP_LANG;
+        global $VM_LANG;
         
         /** Read current Configuration ***/
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
-		echo $PHPSHOP_LANG->_PHPSHOP_SPEC_CASH_ON_DELIVER_RATES;
+		echo $VM_LANG->_PHPSHOP_SPEC_CASH_ON_DELIVER_RATES;
         ?>
         <table>
           <tr>
-          <td align="center"><b><?=$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL?></b></td>
-          <td align="center"><b><?=$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_FEE?></b></td>
+          <td align="center"><b><?=$VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL?></b></td>
+          <td align="center"><b><?=$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_FEE?></b></td>
           </tr>
           <tr>
           <td><strong>5000</strong> =></td>

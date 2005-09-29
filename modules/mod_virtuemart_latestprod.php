@@ -2,8 +2,8 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /* Latest Products Module
 *
-* @version $Id: mod_phpshop_latestprod.php,v 1.9 2005/06/20 19:57:06 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id$
+* @package VirtueMart
 * @subpackage modules
 *
 * @copyright (C) 2000 - 2004 Mr PHP
@@ -14,15 +14,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * 	@copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 */
 
 global $mosConfig_absolute_path;
-/* Load the phpshop main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_phpshop/phpshop_parser.php' );
+/* Load the virtuemart main parse code */
+require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 if( empty($max_items))
   $max_items = $params->get( 'max_items', 2 ); //maximum number of items to display
@@ -42,12 +42,12 @@ $ps_product = new ps_product;
 
 
   $db =& new ps_DB;
-  $q  = "SELECT DISTINCT product_sku FROM #__pshop_product, #__pshop_product_category_xref, #__pshop_category WHERE ";
+  $q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
   $q .= "product_parent_id=''";
-  $q .= "AND #__pshop_product.product_id=#__pshop_product_category_xref.product_id ";
-  $q .= "AND #__pshop_category.category_id=#__pshop_product_category_xref.category_id ";
-  $q .= "AND #__pshop_product.product_publish='Y' ";
-  $q .= "ORDER BY #__pshop_product.product_id DESC ";
+  $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
+  $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
+  $q .= "AND #__{vm}_product.product_publish='Y' ";
+  $q .= "ORDER BY #__{vm}_product.product_id DESC ";
   $q .= "LIMIT 0, $max_items ";
   $db->query($q);
 

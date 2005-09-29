@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: admin.curr_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -19,13 +19,13 @@ mm_showMyFileName( __FILE__ );
 
 $currency_id = mosgetparam( $_REQUEST, 'currency_id');
 if ($currency_id) {
-    $q = "SELECT * from #__pshop_currency WHERE currency_id='$currency_id'";
+    $q = "SELECT * from #__{vm}_currency WHERE currency_id='$currency_id'";
     $db->query($q);
     $db->next_record();
 }
   
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_ADD );
+$formObj = &new formFactory( $VM_LANG->_PHPSHOP_CURRENCY_LIST_ADD );
 //Then Start the form
 $formObj->startForm();
 
@@ -35,13 +35,13 @@ $formObj->startForm();
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_NAME ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_LIST_NAME ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="currency_name" value="<?php $db->sp("currency_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_CURRENCY_LIST_CODE ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_LIST_CODE ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="currency_code" value="<?php $db->sp("currency_code") ?>" />
       </td>

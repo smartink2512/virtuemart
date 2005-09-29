@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shop.index.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,11 +21,11 @@ $ps_product = new ps_product;
 
 // Show only top level categories and categories that are
 // being published
-$query  = "SELECT * FROM #__pshop_category, #__pshop_category_xref ";
-$query .= "WHERE #__pshop_category.category_publish='Y' AND ";
-$query .= "(#__pshop_category_xref.category_parent_id='' OR #__pshop_category_xref.category_parent_id='0') AND ";
-$query .= "#__pshop_category.category_id=#__pshop_category_xref.category_child_id ";
-$query .= "ORDER BY #__pshop_category.list_order, #__pshop_category.category_name ASC";
+$query  = "SELECT * FROM #__{vm}_category, #__{vm}_category_xref ";
+$query .= "WHERE #__{vm}_category.category_publish='Y' AND ";
+$query .= "(#__{vm}_category_xref.category_parent_id='' OR #__{vm}_category_xref.category_parent_id='0') AND ";
+$query .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
+$query .= "ORDER BY #__{vm}_category.list_order, #__{vm}_category.category_name ASC";
 
 // initialise the query in the $database connector
 // this translates the '#__' prefix into the real database prefix
@@ -37,7 +37,7 @@ $cellwidth = intval( 100 / $categories_per_row );
 ?>
 <table class="moduletable" width="100%" cellspacing="0" cellpadding="0">  
   <tr>
-    <th colspan="<?php echo $categories_per_row ?>"><?php echo $PHPSHOP_LANG->_PHPSHOP_CATEGORIES ?></th>
+    <th colspan="<?php echo $categories_per_row ?>"><?php echo $VM_LANG->_PHPSHOP_CATEGORIES ?></th>
   </tr>
   <?php
 	// cycle through the returned rows displaying them in a table
@@ -51,7 +51,7 @@ $cellwidth = intval( 100 / $categories_per_row );
 		$catname = shopMakeHtmlSafe($db->f("category_name"))
       ?> 
         <td align="center" width="<?php echo $cellwidth ?>" valign="top">
-          <a title="<?php echo $catname ?>" href="<?php echo $sess->url(URL."index.php?option=com_phpshop&amp;page=shop.browse&amp;category_id=".$db->f("category_id")); ?>"> 
+          <a title="<?php echo $catname ?>" href="<?php echo $sess->url(URL."index.php?option=com_virtuemart&amp;page=shop.browse&amp;category_id=".$db->f("category_id")); ?>"> 
           <?php 
           if ($db->f("category_thumb_image")) {
             echo $ps_product->show_image( $db->f("category_thumb_image"), "", 0, "category");

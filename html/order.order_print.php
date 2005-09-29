@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: order.order_print.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -26,13 +26,13 @@ if (!is_numeric($order_id))
     echo "<h2>The Order ID $order_id is not valid.</h2>";
 else {
     
-	$q = "SELECT * FROM #__pshop_orders WHERE order_id='$order_id'";
+	$q = "SELECT * FROM #__{vm}_orders WHERE order_id='$order_id'";
 	$db->query($q);
 	if( $db->next_record() ) {
 	
 	  echo ps_order::order_print_navigation( $order_id );
 	  
-	  $q = "SELECT * FROM #__pshop_order_history WHERE order_id='$order_id' ORDER BY order_status_history_id ASC";
+	  $q = "SELECT * FROM #__{vm}_order_history WHERE order_id='$order_id' ORDER BY order_status_history_id ASC";
 	  $database->setQuery( $q );
 	  $order_events = $database->loadObjectList();
 	  ?>
@@ -41,18 +41,18 @@ else {
 		  <td valign="top" width="35%"> 
 			<table width="100%" border="0" cellspacing="0" cellpadding="1">
 			  <tr class="sectiontableheader"> 
-				<th colspan="2"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL ?></th>
+				<th colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL ?></th>
 			  </tr>
 			  <tr> 
-				<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER ?>:</strong></td>
+				<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER ?>:</strong></td>
 				<td><?php printf("%08d", $db->f("order_id"));?></td>
 			  </tr>
 			  <tr> 
-				<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE ?>:</strong></td>
+				<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE ?>:</strong></td>
 				<td><?php echo date("d-M-Y:H:i", $db->f("cdate"));?></td>
 			  </tr>
 			  <tr> 
-				<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</strong></td>
+				<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</strong></td>
 				<td><?php $db->p("order_status") ?></td>
 			  </tr>
 			  <tr>
@@ -70,43 +70,43 @@ else {
 			?>
 			<table class="adminlist">
 			 <tr>
-			  <th colspan="3"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_STATUS_CHANGE ?></th>
+			  <th colspan="3"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE ?></th>
 			 </tr>
 			 <tr>
-			  <td colspan="3"><?php echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS .": </strong>";
+			  <td colspan="3"><?php echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS .": </strong>";
 				  $ps_order_status->list_order_status($db->f("order_status")); ?>
 					<input type="submit" class="button" name="Submit" value="Update Status" />
 					<input type="hidden" name="page" value="order.order_print" />
 					<input type="hidden" name="func" value="orderStatusSet" />
-					<input type="hidden" name="option" value="com_phpshop" />
+					<input type="hidden" name="option" value="com_virtuemart" />
 					<input type="hidden" name="current_order_status" value="<?php $db->p("order_status") ?>" />
 					<input type="hidden" name="order_id" value="<?php echo $order_id ?>" />
 			  </td>
 			 </tr>
 			 <tr>
-			  <td valign="top"><?php echo "<strong>".$PHPSHOP_LANG->_PHPSHOP_COMMENT .": </strong>"; ?>
+			  <td valign="top"><?php echo "<strong>".$VM_LANG->_PHPSHOP_COMMENT .": </strong>"; ?>
 			  </td>
 			  <td>
 				<textarea name="order_comment" rows="4" cols="35"></textarea>
 			  </td>
 			  <td>
-				<input type="checkbox" name="notify_customer" checked="checked" value="Y" /> <?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_NOTIFY ?>
+				<input type="checkbox" name="notify_customer" checked="checked" value="Y" /> <?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY ?>
 				<br/>
-				<input type="checkbox" name="include_comment" checked="checked" value="Y" /> <?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT ?>
+				<input type="checkbox" name="include_comment" checked="checked" value="Y" /> <?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT ?>
 				</form>
 			  </td>
 			 </tr>
 			</table>
 				<?php
 				$tab->endTab();
-				$tab->startTab( $PHPSHOP_LANG->_PHPSHOP_ORDER_HISTORY, "order_history_pane" );
+				$tab->startTab( $VM_LANG->_PHPSHOP_ORDER_HISTORY, "order_history_pane" );
 				?>
 			<table class="adminlist">
 			 <tr >
-			  <th><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_HISTORY_DATE_ADDED ?></th>
-			  <th><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED ?></th>
-			  <th><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_STATUS ?></th>
-			  <th><?php echo $PHPSHOP_LANG->_PHPSHOP_COMMENT ?></th>
+			  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_DATE_ADDED ?></th>
+			  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED ?></th>
+			  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_STATUS ?></th>
+			  <th><?php echo $VM_LANG->_PHPSHOP_COMMENT ?></th>
 			 </tr>
 			 <?php 
 			 foreach( $order_events as $order_event ) {
@@ -137,19 +137,19 @@ else {
 		</tr><?php
 		  $user_id = $db->f("user_id");
 		  $dbt = new ps_DB;
-		  $qt = "SELECT * from #__pshop_order_user_info WHERE user_id='$user_id' AND order_id='$order_id' ORDER BY address_type ASC"; 
+		  $qt = "SELECT * from #__{vm}_order_user_info WHERE user_id='$user_id' AND order_id='$order_id' ORDER BY address_type ASC"; 
 		  $dbt->query($qt);
 		  $dbt->next_record();
 	   ?> 
 		<tr> 
-		  <th width="48%" valign="top"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL ?></th>
-		  <th width="52%" valign="top"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL ?></th>
+		  <th width="48%" valign="top"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL ?></th>
+		  <th width="52%" valign="top"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL ?></th>
 		</tr>
 		<tr> 
 		  <td width="48%" valign="top">
 			<table width="100%" border="0" cellspacing="0" cellpadding="1">
 			  <tr> 
-				<td width="35%" align="right">&nbsp;<?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_NAME ?>:</td>
+				<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?>:</td>
 				<td width="65%"><?php
 					if ($dbt->f("title")) {
 					  echo $dbt->f("title") . " ";
@@ -162,48 +162,48 @@ else {
 				</td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("company"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1 ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1 ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("address_1"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2 ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2 ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("address_2"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CITY ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CITY ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("city");  ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_STATE ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_STATE ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("state"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?>:</strong></td>
 				<td width="65%"><?php echo $dbt->p("zip"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?>:</strong></td>
 				<td width="65%"><?php 
 			$country = $dbt->f("country");
-			$database->setQuery( "SELECT country_name FROM #__pshop_country WHERE country_3_code = '$country'");
+			$database->setQuery( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
 			$country_name = $database->loadResult();
 			echo $country_name;
 		 ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("phone_1"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("fax"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("user_email"); ?></td>
 			  </tr>
 			</table>
@@ -215,7 +215,7 @@ else {
 	  ?> 
 			<table width="100%" border="0" cellspacing="0" cellpadding="1">
 			  <tr> 
-				<td width="35%" align="right">&nbsp;<?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_NAME ?>:</td>
+				<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?>:</td>
 				<td width="65%"><?php
 					if ($dbt->f("title")) {
 					  echo $dbt->f("title") . " ";
@@ -228,46 +228,46 @@ else {
 				?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("company"); ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1 ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1 ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("address_1") ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2 ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2 ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("address_2")  ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CITY ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CITY ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("city") ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_STATE ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_STATE ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("state") ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("zip") ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?>:</strong></td>
 				<td width="65%"><?php 
 			if( $country != $dbt->f("country")) {
 				$country = $dbt->f("country");
-				$database->setQuery( "SELECT country_name FROM #__pshop_country WHERE country_3_code = '$country'");
+				$database->setQuery( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
 				$country_name = $database->loadResult();
 			}
 			echo $country_name;
 			 ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("phone_1") ?></td>
 			  </tr>
 			  <tr> 
-				<td width="35%" align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>:</strong></td>
+				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>:</strong></td>
 				<td width="65%"><?php $dbt->p("fax") ?></td>
 			  </tr>
 			</table>
@@ -280,18 +280,18 @@ else {
 		  <td colspan="2"> 
 			<table  class="adminlist">
 			  <tr > 
-				<th width="5%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_QUANTITY ?></th>
-				<th width="42%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_NAME ?></th>
-				<th width="9%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SKU ?></th>
-				<th width="12%"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?></th>
-				<th width="12%"><?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?></th>
-				<th width="19%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?></th>
+				<th width="5%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_QUANTITY ?></th>
+				<th width="42%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?></th>
+				<th width="9%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SKU ?></th>
+				<th width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?></th>
+				<th width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?></th>
+				<th width="19%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?></th>
 			  </tr>
 			  <?php
 			  $dbt = new ps_DB;
 			  $qt  = "SELECT product_quantity,order_item_name,order_item_sku,product_id,product_item_price,product_final_price, product_attribute
-						FROM #__pshop_order_item 
-						WHERE #__pshop_order_item.order_id='$order_id' ";
+						FROM #__{vm}_order_item 
+						WHERE #__{vm}_order_item.order_id='$order_id' ";
 			  $dbt->query($qt);
 			  $i = 0;
 			  
@@ -323,7 +323,7 @@ else {
 			  <tr> 
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
-				<td colspan="3"><div align="right"><strong> <?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL ?>: </strong></div></td>
+				<td colspan="3"><div align="right"><strong> <?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL ?>: </strong></div></td>
 				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_subtotal")); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 	  <?php
@@ -339,9 +339,9 @@ else {
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div  align="right"><strong><?php 
 				  if( $db->f("order_discount") > 0)
-					echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+					echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
 				  else
-					echo $PHPSHOP_LANG->_PHPSHOP_FEE;
+					echo $VM_LANG->_PHPSHOP_FEE;
 					?>:</div></strong></td>
 				<td width="19%"><div  align="right"><?php
 					  if ($db->f("order_discount") > 0 )
@@ -356,7 +356,7 @@ else {
 			  if( $coupon_discount > 0 || $coupon_discount < 0) {
 	  ?>
 			  <tr>
-				<td colspan="5"><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div>
+				<td colspan="5"><div align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div>
 				</td> 
 				<td><div align="right"><?php
 				  echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -370,19 +370,19 @@ else {
 			  <tr> 
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
-				<td colspan="3"><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </div></strong></td>
+				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </div></strong></td>
 				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_tax")) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 			  <tr> 
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
-				<td colspan="3"><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </div></strong></td>
+				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </div></strong></td>
 				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_shipping")) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 			  <tr> 
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
-				<td colspan="3"><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_TAX ?>: </div></strong></td>
+				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_TAX ?>: </div></strong></td>
 				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_shipping_tax")) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 	  <?php
@@ -394,9 +394,9 @@ else {
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong><?php 
 				  if( $db->f("order_discount") > 0)
-					echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+					echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
 				  else
-					echo $PHPSHOP_LANG->_PHPSHOP_FEE;
+					echo $VM_LANG->_PHPSHOP_FEE;
 					?>:</strong></div></td>
 				<td width="19%"><div align="right"><?php
 					  if ($db->f("order_discount") > 0 )
@@ -413,7 +413,7 @@ else {
 			  <tr> 
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
-				<td colspan="3"><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div></strong>
+				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div></strong>
 				</td> 
 				<td><div align="right"><?php
 				  echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -426,7 +426,7 @@ else {
 			  <tr>
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
-				<td colspan="3"><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_CART_TOTAL ?>:</div> </strong></td>
+				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL ?>:</div> </strong></td>
 				<td width="19%"><div align="right"><strong><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_total")); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></strong>
 				  </td>
 			  </tr>
@@ -444,23 +444,23 @@ else {
 				  <tr>
 					<th ><?php 
 							$details = explode( "|", $db->f("ship_method_id"));
-							echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL ?>
+							echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL ?>
 					</th>
 				  </tr>
 				  <tr> 
 					<td width="50%">
-					  <strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL ?>: </strong>
+					  <strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL ?>: </strong>
 						<?php  echo $details[1]; ?>&nbsp;</td>
 	  
 				  <tr>
 					<td width="50%">
-					  <strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL ?>: </strong>
+					  <strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL ?>: </strong>
 					  <?php echo $details[2]; ?></td>
 					
 				  </tr>
 				  <tr>
 					<td width="50%">
-					  <strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL ?>: </strong>
+					  <strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL ?>: </strong>
 					<?php echo $CURRENCY_DISPLAY->getFullValue($details[3]); ?>
 					</td>
 				  </tr>
@@ -473,7 +473,7 @@ else {
 			  <td valign="top">
 				<table class="adminlist">
 				  <tr>
-					<th><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE ?></th>
+					<th><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE ?></th>
 				  </tr>
 				  <tr>
 				  <td valign="top" width="50%" rowspan="4"><?php
@@ -493,25 +493,25 @@ else {
 			  <td valign="top">
 				<table class="adminlist">
 				  <tr class="sectiontableheader"> 
-					<th width="13%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL ?></th>
-					<th width="40%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME ?></th>
-					<th width="30%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER;
+					<th width="13%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL ?></th>
+					<th width="40%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME ?></th>
+					<th width="30%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER;
 						$dbpm =& new ps_DB;
-						$q  = "SELECT * FROM #__pshop_payment_method, #__pshop_order_payment WHERE #__pshop_order_payment.order_id='$order_id' ";
-						$q .= "AND #__pshop_payment_method.payment_method_id=#__pshop_order_payment.payment_method_id";
+						$q  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_order_payment WHERE #__{vm}_order_payment.order_id='$order_id' ";
+						$q .= "AND #__{vm}_payment_method.payment_method_id=#__{vm}_order_payment.payment_method_id";
 						$dbpm->query($q);
 						$dbpm->next_record();
 					   
 						// DECODE Account Number
 						$dbaccount =& new ps_DB;
 					   $q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') 
-							as account_number from #__pshop_order_payment  
+							as account_number from #__{vm}_order_payment  
 							where order_id='".$order_id."'";
 						$dbaccount->query($q);
 						$dbaccount->next_record();
 					  ?> 
 					  </th>
-					<th width="17%"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_EXPIRE_DATE ?></th>
+					<th width="17%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EXPIRE_DATE ?></th>
 				  </tr>
 				  <tr> 
 					<td width="13%"><?php $dbpm->p("payment_method_name");?> </td>
@@ -521,7 +521,7 @@ else {
 				  </tr>
 				  <tr> 
 				  <tr class="sectiontableheader"> 
-					<th colspan="4"><?php echo $PHPSHOP_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL ?></th>
+					<th colspan="4"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL ?></th>
 				  </tr>
 				  <tr> 
 					<td colspan="4"><?php if($dbpm->f("order_payment_log")) echo $dbpm->f("order_payment_log"); else echo "./."; ?></td>

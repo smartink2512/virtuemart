@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: global.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -18,17 +18,17 @@ mm_showMyFileName( __FILE__ );
 global $header_bgcolor, $leftbar_title_bgcolor, $leftbar_font_color,$vendor_image,$vendor_country_2_code ,$vendor_country_3_code ,
         $vendor_image_url, $vendor_name, $vendor_address, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name,
         $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping,
-        $module_description, $PHPSHOP_LANG, $vendor_currency_display_style, $vendor_full_image;
+        $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image;
 
 # Global links
-$search_box_title = $PHPSHOP_LANG->_PHPSHOP_SEARCH_TITLE;
+$search_box_title = $VM_LANG->_PHPSHOP_SEARCH_TITLE;
 
 # Some database values we will need throughout
 # Get Vendor Information
-$q = "SELECT * FROM #__pshop_vendor, #__pshop_country";
+$q = "SELECT * FROM #__{vm}_vendor, #__{vm}_country";
 if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
-    $q .= ", #__pshop_shopper_vendor_xref WHERE #__pshop_vendor.vendor_id = #__pshop_shopper_vendor_xref.vendor_id ";
-    $q .= "AND #__pshop_shopper_vendor_xref.user_id ='".$my->id."' AND ";
+    $q .= ", #__{vm}_shopper_vendor_xref WHERE #__{vm}_vendor.vendor_id = #__{vm}_shopper_vendor_xref.vendor_id ";
+    $q .= "AND #__{vm}_shopper_vendor_xref.user_id ='".$my->id."' AND ";
 }
 else {
     $q .= " WHERE vendor_id='1' AND ";

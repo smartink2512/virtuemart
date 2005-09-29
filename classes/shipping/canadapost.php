@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: canadapost.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -101,12 +101,12 @@ class canadapost {
 	}
 	
 	function 	_initRequestXML(){
-      global $PHPSHOP_LANG;
+      global $VM_LANG;
 
 		$this->xml_request = 
 "<?phpxml version=\"1.0\" ?>
 <eparcel>
-	<language>".$PHPSHOP_LANG->_PHPSHOP_CPOST_SEND_LANGUAGE_CODE."</language>
+	<language>".$VM_LANG->_PHPSHOP_CPOST_SEND_LANGUAGE_CODE."</language>
 	<ratesAndServicesRequest>
 		<merchantCPCID>" . $this->merchant_cpcid . "</merchantCPCID>
 		<lineItems>" ;
@@ -173,17 +173,17 @@ class canadapost {
 
 	
 	function list_rates( &$d ) {	
-      global $PHPSHOP_LANG, $CURRENCY_DISPLAY;
+      global $VM_LANG, $CURRENCY_DISPLAY;
 	  
 	  $d["ship_to_info_id"] = mosGetParam( $_REQUEST, "ship_to_info_id" );
       /** Read current Configuration ***/
       require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 	  
 	  $dbst = new ps_DB;
-	  $q  = "SELECT * from #__users, #__pshop_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+	  $q  = "SELECT * from #__users, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 	  $dbst->query($q);
 	  if( !$dbst->next_record() ) {
-		$q  = "SELECT * from #__pshop_user_info, #__pshop_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+		$q  = "SELECT * from #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 		$dbst->query($q);
 		$dbst->next_record();
 	  }
@@ -192,7 +192,7 @@ class canadapost {
      $dboi = new ps_DB;
      for($i = 0; $i < $cart["idx"]; $i++) {
         $r = "SELECT product_id,product_name,product_weight,product_length,product_width ";
-        $r .= "FROM #__pshop_product WHERE product_id='".$cart[$i]["product_id"]."'";
+        $r .= "FROM #__{vm}_product WHERE product_id='".$cart[$i]["product_id"]."'";
         $dboi->query($r);
         $dboi->next_record();
 		
@@ -217,9 +217,9 @@ class canadapost {
 	  ?>
       <table width="100%"><tr class="sectiontableheader">
 	  <th>&nbsp;</th>
-	  <th><?php echo $PHPSHOP_LANG->_PHPSHOP_ISSHIP_LIST_CARRIER_LBL ?></th>
- 	  <th><?php echo $PHPSHOP_LANG->_PHPSHOP_CPOST_FORM_HANDLING_DATE ?><sup>1</sup></th>
-	  <th><?php echo $PHPSHOP_LANG->_PHPSHOP_CPOST_FORM_HANDLING_LBL ?><sup>2</sup></th>
+	  <th><?php echo $VM_LANG->_PHPSHOP_ISSHIP_LIST_CARRIER_LBL ?></th>
+ 	  <th><?php echo $VM_LANG->_PHPSHOP_CPOST_FORM_HANDLING_DATE ?><sup>1</sup></th>
+	  <th><?php echo $VM_LANG->_PHPSHOP_CPOST_FORM_HANDLING_LBL ?><sup>2</sup></th>
       </tr>
       <?php
 	  	foreach( $this->shipping_methods as $m ){
@@ -239,7 +239,7 @@ class canadapost {
 			if (($timestamp = strtotime($str)) === -1) {
 			   $str = html_entity_decode($m["deliveryDate"]);
 			} else {
-				if ($PHPSHOP_LANG->_PHPSHOP_CPOST_SEND_LANGUAGE_CODE == "FR") {
+				if ($VM_LANG->_PHPSHOP_CPOST_SEND_LANGUAGE_CODE == "FR") {
 					setlocale(LC_ALL, 'fr');		   
 					$str = strftime('%A %d %B %Y',$timestamp);
 				} else {
@@ -330,65 +330,65 @@ class canadapost {
     */
     function show_configuration() { 
     
-      global $PHPSHOP_LANG;
+      global $VM_LANG;
       /** Read current Configuration ***/
       require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 	  
     ?>
       <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr>
-		  <td width="20%"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID ?></strong>:</td>
+		  <td width="20%"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID ?></strong>:</td>
 		  <td colspan="3" width="80%">
 			  <input type="text" name="MERCHANT_CPCID" class="inputbox" value="<?php echo MERCHANT_CPCID ?>" />
-			  <?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID_EXPLAIN) ?>
+			  <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID_EXPLAIN) ?>
 		  </td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_SERVER" class="inputbox" value="<?php echo CP_SERVER ?>" />
-			  <?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER_EXPLAIN) ?>
+			  <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_PORT" class="inputbox" value="<?php echo CP_PORT ?>" />
-				<?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT_EXPLAIN) ?>
+				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_FEDERAL_TAX" class="inputbox" value="<?php echo CP_FEDERAL_TAX ?>" />
-				<?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX_EXPLAIN) ?>
+				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_PROVINCIAL_TAX" class="inputbox" value="<?php echo CP_PROVINCIAL_TAX ?>" />
-				<?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX_EXPLAIN) ?>
+				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN ?></strong>:
 			</td>
 			<td colspan="3">
 				<textarea name="CP_ARRIVAL_DATE_EXPLAIN" class="inputbox" cols="50" rows="5" ><?php echo CP_ARRIVAL_DATE_EXPLAIN ?></textarea>
-				<?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN_I) ?>
+				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN_I) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN ?></strong>:
+			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN ?></strong>:
 			</td>
 			<td colspan="3">
 				<textarea name="CP_HANDLING_CHARGE_EXPLAIN" class="inputbox" cols="50" rows="5" ><?php echo CP_HANDLING_CHARGE_EXPLAIN ?></textarea>
-				<?php echo mosToolTip($PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN_I) ?>
+				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN_I) ?>
 			</td>
 		</tr>
 		<tr>

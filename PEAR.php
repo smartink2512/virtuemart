@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @author Tomas V.V.Cox <cox@idecnet.com>
 *
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: PEAR.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -15,7 +15,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -39,7 +39,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 // |          Tomas V.V.Cox <cox@idecnet.com>                           |
 // +--------------------------------------------------------------------+
 //
-// $Id: PEAR.php,v 1.1 2005/09/06 20:04:19 soeren_nb Exp $
+// $Id: PEAR.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 //
 
 define('PEAR_ERROR_RETURN',     1);

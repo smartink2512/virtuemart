@@ -1,14 +1,14 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* mambo-phpShop JSCookTree menu
+* VirtueMart JSCookTree menu
 * @ Released under GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
-* @ JSCookTree mambo-phpShop menu created by Soeren
+* @ JSCookTree VirtueMart menu created by Soeren
 * @ modified by soeren
 * @ Uses JSCookTree Javascript: http://www.cs.ucla.edu/~heng/JSCookTree/
-* @ version $Id: phpshop_JSCook.php,v 1.3 2005/06/30 17:42:53 soeren_nb Exp $
+* @ version $Id$
 *
-* This file is included by the phpshop module if the module parameter
+* This file is included by the virtuemart module if the module parameter
 * MenuType is set to jscooktree
 **/
 global $module, $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style, $ps_product_category;
@@ -25,9 +25,9 @@ if( $jscook_type == "tree" ) {
     $jscook_tree = "ctThemeNavy";
 
   echo "
-    <script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_phpshop/js/JSCookTree.js\"></script>
-    <link rel=\"stylesheet\" href=\"components/com_phpshop/js/$jscookTree_style/theme.css\" type=\"text/css\" />
-    <script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_phpshop/js/$jscookTree_style/theme.js\"></script>
+    <script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_virtuemart/js/JSCookTree.js\"></script>
+    <link rel=\"stylesheet\" href=\"components/com_virtuemart/js/$jscookTree_style/theme.css\" type=\"text/css\" />
+    <script language=\"JavaScript\" type=\"text/javascript\" src=\"components/com_virtuemart/js/$jscookTree_style/theme.js\"></script>
     ";
   $MamboMart = new MamboMartTree();
 }
@@ -82,28 +82,27 @@ class MamboMartTree {
     */
     function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
         static $ibg = -1;
-        global $database, $module, $mosConfig_live_site;
+        global $db, $module, $mosConfig_live_site;
         $level++;
         $query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
-        . "FROM #__pshop_category as a, #__pshop_category_xref as b "
+        . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
          . "WHERE a.category_publish='Y' AND "
          . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
          . "ORDER BY category_parent_id, list_order, category_name ASC";
-        $database->setQuery( $query );
+        $db->query( $query );
         
         $categories = $database->loadObjectList();
         
-        if( !( $categories==null ) ) {
-          foreach ($categories as $category) {
+		while( $db->next_record() ) {
             $ibg++;
             $Treeid = $ibg == 0 ? 1 : $ibg;
             $itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
-            $mymenu_content.= ",\n[null,'".$category->cname;
-            $mymenu_content.= ps_product_category::products_in_category( $category->cid );
-            $mymenu_content.= "','".sefRelToAbs('index.php?option=com_phpshop&page=shop.browse&category_id='.$category->cid.$itemid."&TreeId=$Treeid")."','_self','".$category->cname."'\n ";
-            /*$database->setQuery("SELECT count(*) FROM #__pshop_category as a, #__pshop_category_xref as b "
+            $mymenu_content.= ",\n[null,'".$db->f("cname");
+            $mymenu_content.= ps_product_category::products_in_category( $db->f("cid") );
+            $mymenu_content.= "','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("cid").$itemid."&TreeId=$Treeid")."','_self','".$db->f("cname")."'\n ";
+            /*$database->setQuery("SELECT count(*) FROM #__{vm}_category as a, #__{vm}_category_xref as b "
                                          . "WHERE a.category_publish='Y' AND "
-                                         . "b.category_parent='".$category->cid."'");
+                                         . "b.category_parent='".$db->f("cid."'");
               $res = $database->query();
               // are there more categories?
               if ($database->getNumRows($res) > 0)
@@ -112,18 +111,14 @@ class MamboMartTree {
                 $mymenu_content.= "],\n";*/
                 
               /* recurse through the subcategories */
-              $this->traverse_tree_down($mymenu_content, $category->ccid, $level);
+              $this->traverse_tree_down($mymenu_content, $db->f("ccid"), $level);
               
               /* let's see if the loop has reached its end */
               $mymenu_content.= "]";
               
                 
-          }
-        }
-        else {
-            
-        }
-      }
+		}
+	}
 }
 /************* END OF CATEGORY TREE ******************************
 *********************************************************
@@ -134,29 +129,26 @@ class MamboMartMenu {
     */
     function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
         static $ibg = 0;
-        global $database, $module, $mosConfig_live_site;
+        global $db, $module, $mosConfig_live_site;
         $level++;
         $query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
-        . "FROM #__pshop_category as a, #__pshop_category_xref as b "
+        . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
          . "WHERE a.category_publish='Y' AND "
          . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
          . "ORDER BY category_parent_id, list_order, category_name ASC";
-        $database->setQuery( $query );
+        $db->query( $query );
         
-        $categories = $database->loadObjectList();
-        
-        if( !( $categories==null ) ) {
-          foreach ($categories as $category) {
+		while($db->next_record()) {
             $itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
             if( $ibg != 0 )
               $mymenu_content.= ",";
               
-            $mymenu_content.= "\n['<img src=\"$mosConfig_live_site/components/com_phpshop/js/ThemeXP/darrow.png\">','".$category->cname."','".sefRelToAbs('index.php?option=com_phpshop&page=shop.browse&category_id='.$category->cid.$itemid)."',null,'".$category->cname."'\n ";
+            $mymenu_content.= "\n['<img src=\"$mosConfig_live_site/components/com_virtuemart/js/ThemeXP/darrow.png\">','".$db->f("cname")."','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("cid").$itemid)."',null,'".$db->f("cname")."'\n ";
             
             $ibg++;
                 
             /* recurse through the subcategories */
-            $this->traverse_tree_down($mymenu_content, $category->ccid, $level);
+            $this->traverse_tree_down($mymenu_content, $db->f("ccid"), $level);
             
             /* let's see if the loop has reached its end */
             $mymenu_content.= "]";

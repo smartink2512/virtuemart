@@ -1,19 +1,19 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>mambo-phpShop Module</name>
+    <name>VirtueMart Module</name>
     <creationDate>23.06.2005</creationDate>
     <author>Soeren Eberhardt</author>
-    <copyright>mambo-phpShop is released under GNU/GPLicense</copyright>
-    <authorEmail>soeren@mambo-phpshop.net</authorEmail>
-    <authorUrl>http://www.mambo-phpshop.net</authorUrl>
+    <copyright>VirtueMart is released under GNU/GPLicense</copyright>
+    <authorEmail>soeren@virtuemart.net</authorEmail>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2_stable-pl3</version>
-    <description>Shows mambo-phpShop Categories, the actual Cart, a Product Search Field,
+    <description>Shows VirtueMart Categories, the actual Cart, a Product Search Field,
                an Administration Link, an Account Maintenance Link and a link to the Download Page</description>
     <files>
-         <filename module="mod_phpshop">mod_phpshop.php</filename>
-         <filename>phpshop_dtree.php</filename>
-         <filename>phpshop_JSCook.php</filename>
-         <filename>phpshop_JSCookTree.php</filename>
+         <filename module="mod_virtuemart">mod_virtuemart.php</filename>
+         <filename>virtuemart_dtree.php</filename>
+         <filename>virtuemart_JSCook.php</filename>
+         <filename>virtuemart_JSCookTree.php</filename>
          <filename>vm_transmenu.php</filename>
         <filename>dtree/dtree.css</filename> 
         <filename>dtree/dtree.js</filename> 

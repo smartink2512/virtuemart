@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_config.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,7 +21,7 @@ class ps_config {
 /****************************************************************************
  *    function: writeconfig
  *  created by: soeren
- * description: writes the phpshop.cfg.php
+ * description: writes the virtuemart.cfg.php
  *  parameters: passed by html from
  *     returns: true if successful
  ****************************************************************************/
@@ -51,6 +51,7 @@ function writeconfig(&$d) {
 			"PSHOP_IS_OFFLINE"  =>      "conf_PSHOP_IS_OFFLINE",
             "PSHOP_OFFLINE_MESSAGE"  =>      "conf_PSHOP_OFFLINE_MESSAGE",
             "USE_AS_CATALOGUE"  =>      "conf_USE_AS_CATALOGUE",
+            "VM_TABLEPREFIX"  =>      "conf_VM_TABLEPREFIX",
             "ENABLE_DOWNLOADS"  =>      "conf_ENABLE_DOWNLOADS",
             "DOWNLOAD_MAX"  =>      "conf_DOWNLOAD_MAX",
             "DOWNLOAD_EXPIRE"  =>      "conf_DOWNLOAD_EXPIRE",
@@ -112,14 +113,14 @@ else
 define( 'URL', \$mosConfig_live_site.'/' );
 define( 'SECUREURL', '".$d['conf_SECUREURL']."' );
 if( \$_SERVER['SERVER_PORT'] == 443 )
-	define( 'IMAGEURL', SECUREURL .'/components/com_phpshop/shop_image/' );
+	define( 'IMAGEURL', SECUREURL .'/components/com_virtuemart/shop_image/' );
 else
-	define( 'IMAGEURL', URL .'/components/com_phpshop/shop_image/' );
-define( 'COMPONENTURL', URL .'administrator/components/com_phpshop/' );
-define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_phpshop/' );
+	define( 'IMAGEURL', URL .'/components/com_virtuemart/shop_image/' );
+define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
+define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_virtuemart/' );
 define( 'CLASSPATH', ADMINPATH.'classes/' );
 define( 'PAGEPATH', ADMINPATH.'html/' );
-define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_phpshop/shop_image/' );\n\n";
+define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_image/' );\n\n";
 
     while (list($key, $value) = each($my_config_array)) {
         if($key == "PSHOP_SHIPPING_MODULE" ) {
@@ -136,18 +137,18 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_phpshop/shop_ima
     
     $config .= "?>";
 
-	if ($fp = fopen(ADMINPATH ."phpshop.cfg.php", "w")) {
+	if ($fp = fopen(ADMINPATH ."virtuemart.cfg.php", "w")) {
 		fputs($fp, $config, strlen($config));
 		fclose ($fp);
 
 		defined('_PSHOP_ADMIN') ? 
-        mosRedirect( "index2.php?page=admin.show_cfg&option=com_phpshop", "The configuration details have been updated!" ) :
-        mosRedirect( "index.php?page=admin.show_cfg&option=com_phpshop", "The configuration details have been updated!" );
+        mosRedirect( "index2.php?page=admin.show_cfg&option=com_virtuemart", "The configuration details have been updated!" ) :
+        mosRedirect( "index.php?page=admin.show_cfg&option=com_virtuemart", "The configuration details have been updated!" );
 
 	} else {
         defined('_PSHOP_ADMIN') ? 
-        mosRedirect( "index2.php?page=admin.show_cfg&option=com_phpshop", "An Error Has Occurred! Unable to open config file to write!" ) :
-        mosRedirect( "index.php?page=admin.show_cfg&option=com_phpshop", "TAn Error Has Occurred! Unable to open config file to write!" );
+        mosRedirect( "index2.php?page=admin.show_cfg&option=com_virtuemart", "An Error Has Occurred! Unable to open config file to write!" ) :
+        mosRedirect( "index.php?page=admin.show_cfg&option=com_virtuemart", "TAn Error Has Occurred! Unable to open config file to write!" );
 	}
     }
   } // end function writeconfig

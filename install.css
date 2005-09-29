@@ -1,5 +1,5 @@
 /**
-* @version $Id: install.css,v 1.2 2005/05/25 19:04:48 soeren_nb Exp $
+* @version $Id: install.css,v 1.1 2005/09/06 20:04:19 soeren_nb Exp $
 * @package Mambo_4.5.1
 * @copyright (C) 2000 - 2004 Miro International Pty Ltd
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -40,7 +40,7 @@ body {
 	font-weight: bold;
 	text-align: left;
 	color: #666666;
-	padding: 10px 0px 20px 80px;
+	padding: 10px 0px 20px 40px;
 	white-space: nowrap;
 	position: relative;
 	float: left;

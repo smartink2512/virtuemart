@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: shopper.shopper_group_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,12 +21,12 @@ global $ps_product;
 $shopper_group_id = mosgetparam( $_REQUEST, 'shopper_group_id', null );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_LBL );
 //Then Start the form
 $formObj->startForm();
 
 if (!empty($shopper_group_id)) {
-   $q = "SELECT * FROM #__pshop_shopper_group ";
+   $q = "SELECT * FROM #__{vm}_shopper_group ";
    $q .= "WHERE shopper_group_id='$shopper_group_id'";
    if( !$perm->check("admin")) {
      $q .= " AND vendor_id = '$ps_vendor_id'";
@@ -38,7 +38,7 @@ if (!empty($shopper_group_id)) {
 <table class="adminform">
     <tr>
       <td width="23%" nowrap>
-        <strong><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_DEFAULT ?> ?:</div></strong>
+        <strong><div align="right"><?php echo $VM_LANG->_PHPSHOP_DEFAULT ?> ?:</div></strong>
       </td>
       <td width="77%" >
 <?php 
@@ -56,7 +56,7 @@ if (!empty($shopper_group_id)) {
     </tr>
     <tr>
       <td width="23%" nowrap>
-        <strong><div align="right"><?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_NAME ?>:</div></strong>
+        <strong><div align="right"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_NAME ?>:</div></strong>
       </td>
       <td width="77%" > 
         <input type="text" class="inputbox" name="shopper_group_name" size="18" value="<?php $db->sp('shopper_group_name') ?>" />
@@ -68,7 +68,7 @@ if (!empty($shopper_group_id)) {
       include_class("product");  ?>
       <tr> 
         <td width="23%"><strong><div align="right">
-          <?php echo $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</div></strong>
+          <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</div></strong>
         </td>
         <td width="77%" ><?php $ps_product->list_vendor($db->sf("vendor_id"));  ?></td>
       </tr>
@@ -82,28 +82,28 @@ if (!empty($shopper_group_id)) {
 ?>
     <tr>
       <td width="23%" nowrap><strong><div align="right"><?php
-      echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX.": "; ?></div></strong>
+      echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX.": "; ?></div></strong>
       </td>
       <td width="77%" > 
         <select class="inputbox" name="show_price_including_tax">
           <option <?php echo $selected[0] ?> value="0"><?php echo _CMN_NO ?></option>
           <option <?php echo $selected[1] ?> value="1"><?php echo _CMN_YES ?></option>
         </select>&nbsp;
-        <?php echo mm_ToolTip( $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN ); ?>
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN ); ?>
       </td>
     </tr> 
     <tr>
       <td width="23%" nowrap><strong><div align="right"><?php
-      echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT.": "; ?></div></strong>
+      echo $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT.": "; ?></div></strong>
       </td>
       <td width="77%" > 
         <input type="text" class="inputbox" name="shopper_group_discount" size="18" value="<?php $db->sp('shopper_group_discount') ?>" />
-        <?php echo mm_ToolTip( $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP ); ?>
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP ); ?>
       </td>
     </tr> 
     <tr> 
       <td width="23%" nowrap valign="top"><strong><div align="right">
-      <?php echo $PHPSHOP_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DESC ?>:</div></strong>
+      <?php echo $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DESC ?>:</div></strong>
       </td>
       <td width="77%" valign="top" >
       <?php editorArea( 'editor1', $db->f('shopper_group_desc'), 'shopper_group_desc', '300', '100', '60', '4' ) ?>

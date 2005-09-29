@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.specialprod.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -53,25 +53,25 @@ switch( $filter ) {
 // Check to see if this is a search or a browse by category
 // Default is to show all products
 if (!empty( $category_id )) {
-	$list  = "SELECT * FROM #__pshop_product, #__pshop_product_category_xref WHERE ";
-	$count  = "SELECT count(*) as num_rows FROM #__pshop_product,
+	$list  = "SELECT * FROM #__{vm}_product, #__{vm}_product_category_xref WHERE ";
+	$count  = "SELECT count(*) as num_rows FROM #__{vm}_product,
                 product_category_xref, category WHERE ";
 	//$q  = "product.vendor_id = '$ps_vendor_id' ";
-	$q = "#__pshop_product_category_xref.category_id='$category_id' ";
-	$q .= "AND #__pshop_product.product_id=#__pshop_product_category_xref.product_id ";
+	$q = "#__{vm}_product_category_xref.category_id='$category_id' ";
+	$q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
 	$q .= $qfilter;
 	$q .= "ORDER BY product_name ";
 	$list .= $q . " LIMIT $limitstart, $limit";
 	$count .= $q;
 }
 elseif (!empty($keyword)) {
-	$list  = "SELECT * FROM #__pshop_product WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_product WHERE ";
+	$list  = "SELECT * FROM #__{vm}_product WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_product WHERE ";
 	//$q  = "product.vendor_id = '$ps_vendor_id' ";
-	$q = "(#__pshop_product.product_name LIKE '%$keyword%' OR ";
-	$q .= "#__pshop_product.product_sku LIKE '%$keyword%' OR ";
-	$q .= "#__pshop_product.product_s_desc LIKE '%$keyword%' OR ";
-	$q .= "#__pshop_product.product_desc LIKE '%$keyword%'";
+	$q = "(#__{vm}_product.product_name LIKE '%$keyword%' OR ";
+	$q .= "#__{vm}_product.product_sku LIKE '%$keyword%' OR ";
+	$q .= "#__{vm}_product.product_s_desc LIKE '%$keyword%' OR ";
+	$q .= "#__{vm}_product.product_desc LIKE '%$keyword%'";
 	$q .= ") ";
 	$q .= $qfilter;
 	$q .= "ORDER BY product_name ";
@@ -79,8 +79,8 @@ elseif (!empty($keyword)) {
 	$count .= $q;
 }
 else {
-	$list  = "SELECT * FROM #__pshop_product ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_product ";
+	$list  = "SELECT * FROM #__{vm}_product ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_product ";
 	$q = "WHERE 1=1 ";
 	$q .= $qfilter;
 	$q .= "ORDER BY product_name ";
@@ -99,26 +99,26 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_('_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "specialprod");
+$listObj->writeSearchHeader($VM_LANG->_('_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "specialprod");
 
-echo '<strong>'.$PHPSHOP_LANG->_PHPSHOP_FILTER.':</strong>&nbsp;&nbsp;';
-if($filter != "all") echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=all").'" title="'.$PHPSHOP_LANG->_PHPSHOP_LIST_ALL_PRODUCTS.'">';
-echo $PHPSHOP_LANG->_PHPSHOP_LIST_ALL_PRODUCTS;
+echo '<strong>'.$VM_LANG->_PHPSHOP_FILTER.':</strong>&nbsp;&nbsp;';
+if($filter != "all") echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=all").'" title="'.$VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS.'">';
+echo $VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS;
 if ($filter != 'all') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.$PHPSHOP_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
-echo $PHPSHOP_LANG->_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED;
+if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
+echo $VM_LANG->_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED;
 if ($filter != 'featured_and_discounted') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.$PHPSHOP_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
-echo $PHPSHOP_LANG->_PHPSHOP_SHOW_FEATURED;
+if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
+echo $VM_LANG->_PHPSHOP_SHOW_FEATURED;
 if ($filter != 'featured') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.$PHPSHOP_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
-echo $PHPSHOP_LANG->_PHPSHOP_SHOW_DISCOUNTED;
+if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
+echo $VM_LANG->_PHPSHOP_SHOW_DISCOUNTED;
 if ($filter != 'discounted') echo '</a>';
 
 echo '<br /><br />';
@@ -128,12 +128,12 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_NAME => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_LIST_SKU => '',
-					$PHPSHOP_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE => '',
-					$PHPSHOP_LANG->_PHPSHOP_FEATURED => '',
-					$PHPSHOP_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT => '',
-					$PHPSHOP_LANG->_PHPSHOP_FILEMANAGER_PUBLISHED => ''
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => '',
+					$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE => '',
+					$VM_LANG->_PHPSHOP_FEATURED => '',
+					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT => '',
+					$VM_LANG->_PHPSHOP_FILEMANAGER_PUBLISHED => ''
 				);
 $listObj->writeTableHeader( $columns );
 

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: menuBar.class.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -49,8 +49,9 @@ class vmMenuBar extends mosMenuBar {
 		?>
 		<td>
 		<a class="toolbar" href="javascript:submitbutton('<?php echo $task;?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
-		<?php echo $image; ?>
-		<?php echo $alt;?>
+		<?php 
+		echo $image.'<br/>';
+		echo $alt;?>
 		</a>
 		</td>
 		<?php
@@ -66,8 +67,9 @@ class vmMenuBar extends mosMenuBar {
 		?>
      	<td>
 		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to publish'); } else {vm_submitListFunc('<?php echo $task;?>', 'adminForm', '<?php echo $func;?>');}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
-		<?php echo $image; ?>
-		<?php echo $alt; ?>
+		<?php 
+		echo $image.'<br/>';
+		echo $alt; ?>
 		</a>
 		</td>
      	<?php
@@ -84,7 +86,7 @@ class vmMenuBar extends mosMenuBar {
 		<td>
 		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to unpublish'); } else {vm_submitListFunc('<?php echo $task;?>', 'adminForm', '<?php echo $func;?>' );}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);" >
 		<?php 
-		echo $image; 
+		echo $image .'<br/>';
 		echo $alt; ?>
 		</a></td>
 		<?php
@@ -101,7 +103,7 @@ class vmMenuBar extends mosMenuBar {
 		?>
 		<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to delete'); } else if (confirm('Are you sure you want to delete selected items?')){ vm_submitListFunc('<?php echo $task;?>', 'adminForm', '<?php echo $func;?>' );}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
 		<?php 
-		echo $image; 
+		echo $image .'<br/>';
 		echo $alt; ?>
 		</a></td>
 		<?php
@@ -161,7 +163,7 @@ class vmMenuBar extends mosMenuBar {
 			<td>
 			<a class="toolbar" href="<?php echo $href;?>" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $image_name;?>','','<?php echo $iconOver;?>',1);">
 			<img name="<?php echo $image_name;?>" src="<?php echo $icon;?>" alt="<?php echo $alt;?>" border="0" align="middle" />
-			&nbsp;
+			&nbsp;<br/>
 			<?php echo $alt; ?></a>
 			</td>
 			<?php
@@ -191,7 +193,7 @@ class vmMenuBar extends mosMenuBar {
 			<td>
 			<a class="toolbar" href="<?php echo $href;?>" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $alt;?>','','<?php echo $iconOver;?>',1);">
 			<img name="<?php echo $alt;?>" src="<?php echo $icon;?>" alt="<?php echo $alt;?>" border="0" align="middle" />
-			&nbsp;
+			&nbsp;<br/>
 			<?php echo $alt; ?></a>
 			</td>
 			<?php

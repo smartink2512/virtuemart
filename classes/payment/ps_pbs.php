@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_pbs.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -32,7 +32,7 @@ class ps_pbs {
     */
     function show_configuration() {
     
-      global $PHPSHOP_LANG, $mosConfig_live_site;
+      global $VM_LANG, $mosConfig_live_site;
       $db =& new ps_DB;
       /** Read current Configuration ***/
       require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
@@ -71,7 +71,7 @@ class ps_pbs {
             <td>
                 <select name="PBS_VERIFIED_STATUS" class="inputbox" >
                 <?php
-                    $q = "SELECT order_status_name,order_status_code FROM #__pshop_order_status ORDER BY list_order";
+                    $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
                     $db->query($q);
                     $order_status_code = Array();
                     $order_status_name = Array();
@@ -112,14 +112,14 @@ class ps_pbs {
             <td>Select an order status for failed transactions.</td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
             <td>
                 <select name="PBS_TEST_MODE" class="inputbox" >
-                <option <?php if (PBS_TEST_MODE == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (PBS_TEST_MODE == '0') echo "selected=\"selected\""; ?> value="0"><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (PBS_TEST_MODE == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <option <?php if (PBS_TEST_MODE == '0') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN ?>
             </td>
         </tr>
       </table>
@@ -131,13 +131,13 @@ class ps_pbs {
             case 0:
                 form.payment_extrainfo.value = '<'+'?php\n'
                         +'// This is the Session ID\n'
-                        +'// It contains the Order ID, the mambo-phpShop Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
-                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'phpshop\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
+                        +'// It contains the Order ID, the VirtueMart Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
+                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'virtuemart\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
                         +'$sessionid .= md5( $sessionid . $mosConfig_secret . ENCODE_KEY);\n'
                         +'$sessionid = base64_encode( $sessionid );\n'
                         +'?>\n'
                         +'<form action="https://pay.freeway.dk/payform/relay.asp/<?php echo PBS_MERCHANT_ID ?>?sessionid=<'+'?php echo $sessionid ?>" method="post" name="paymentform">\n'
-                        +'<input type="image" src="components/com_phpshop/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
+                        +'<input type="image" src="components/com_virtuemart/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
                         +'</form>'
                         +'<a href="#" onclick="document.paymentform.submit();">Pay your Order now - Click here!</a>\n';
                 break;
@@ -145,13 +145,13 @@ class ps_pbs {
             case 1:
                 form.payment_extrainfo.value = '<'+'?php\n'
                         +'// This is the Session ID\n'
-                        +'// It contains the Order ID, the mambo-phpShop Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
-                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'phpshop\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
+                        +'// It contains the Order ID, the VirtueMart Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
+                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'virtuemart\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
                         +'$sessionid .= md5( $sessionid . $mosConfig_secret . ENCODE_KEY);\n'
                         +'$sessionid = base64_encode( $sessionid );\n'
                         +'?>\n'
                         +'<form action="https://gateway.fuzion.dk/" method="post">\n'
-                        +'<input type="image" src="components/com_phpshop/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
+                        +'<input type="image" src="components/com_virtuemart/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
                         +'<input type="hidden" name="shopid" value="<'+'?php echo PBS_SHOP_ID ?>" />\n'
                         +'<input type="hidden" name="sessionid" value="<'+'?php echo $sessionid ?>" />\n'
                         +'<input type="hidden" name="shop_orderid" value="<'+'?php echo $order_id ?>" />\n'
@@ -162,13 +162,13 @@ class ps_pbs {
             case 2:
                 form.payment_extrainfo.value = '<'+'?php\n'
                         +'// This is the Session ID\n'
-                        +'// It contains the Order ID, the mambo-phpShop Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
-                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'phpshop\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
+                        +'// It contains the Order ID, the VirtueMart Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
+                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'virtuemart\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
                         +'$sessionid .= md5( $sessionid . $mosConfig_secret . ENCODE_KEY);\n'
                         +'$sessionid = base64_encode( $sessionid );\n'
                         +'?>\n'
                         +'<form action="https://secure.webhosting.dk/pbsgateway/index.php" method="post" name="paymentform">\n'
-                        +'<input type="image" src="components/com_phpshop/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
+                        +'<input type="image" src="components/com_virtuemart/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
                         +'<input type="hidden" name="shopid" value="<'+'?php echo PBS_SHOP_ID ?>" />\n'
                         +'<input type="hidden" name="sessionid" value="<'+'?php echo $sessionid ?>" />\n'
                         +'<input type="hidden" name="orderid" value="<'+'?php echo $order_id ?>" />\n'
@@ -181,13 +181,13 @@ class ps_pbs {
             case 3:
                 form.payment_extrainfo.value = '<'+'?php\n'
                         +'// This is the Session ID\n'
-                        +'// It contains the Order ID, the mambo-phpShop Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
-                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'phpshop\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
+                        +'// It contains the Order ID, the VirtueMart Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
+                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'virtuemart\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
                         +'$sessionid .= md5( $sessionid . $mosConfig_secret . ENCODE_KEY);\n'
                         +'$sessionid = base64_encode( $sessionid );\n'
                         +'?>\n'
                         +'<form action="https://pbs.interpay.dk/?sessionid=<'+'?php echo $sessionid ?>&amount=<'+'?php $db->p("order_total") ?>" method="post" name="paymentform">\n'
-                        +'<input type="image" src="components/com_phpshop/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
+                        +'<input type="image" src="components/com_virtuemart/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
                         +'</form>'
                         +'<a href="#" onclick="document.paymentform.submit();">Pay your Order now - Click here!</a>\n';
                 break;
@@ -195,13 +195,13 @@ class ps_pbs {
             case 4:
                 form.payment_extrainfo.value = '<'+'?php\n'
                         +'// This is the Session ID\n'
-                        +'// It contains the Order ID, the mambo-phpShop Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
-                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'phpshop\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
+                        +'// It contains the Order ID, the VirtueMart Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
+                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'virtuemart\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
                         +'$sessionid .= md5( $sessionid . $mosConfig_secret . ENCODE_KEY);\n'
                         +'$sessionid = base64_encode( $sessionid );\n'
                         +'?>\n'
-                        +'<form action="https://betaling.wannafind.dk/proxy/p.php/<?php echo $mosConfig_live_site ?>/index.php?option=com_phpshop&page=checkout.wannafind_cc_form&sessionid=<'+'?php echo $sessionid ?>" method="post" name="paymentform">\n'
-                        +'<input type="image" src="components/com_phpshop/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
+                        +'<form action="https://betaling.wannafind.dk/proxy/p.php/<?php echo $mosConfig_live_site ?>/index.php?option=com_virtuemart&page=checkout.wannafind_cc_form&sessionid=<'+'?php echo $sessionid ?>" method="post" name="paymentform">\n'
+                        +'<input type="image" src="components/com_virtuemart/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
                         +'<input type="hidden" name="shopid" value="<'+'?php echo PBS_SHOP_ID ?>" />\n'
                         +'<input type="hidden" name="orderid" value="<'+'?php echo $order_id ?>" />\n'
                         +'</form>'
@@ -211,15 +211,15 @@ class ps_pbs {
             case 5:
                 form.payment_extrainfo.value = '<'+'?php\n'
                         +'// This is the Session ID\n'
-                        +'// It contains the Order ID, the mambo-phpShop Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
-                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'phpshop\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
+                        +'// It contains the Order ID, the VirtueMart Session ID, Mambo\'s SessionCookie and an md5 HASH CheckCode\n'
+                        +'$sessionid = sprintf("%08d", $order_id). $_COOKIE[\'virtuemart\'].md5($_COOKIE[\'sessioncookie\'].$_SERVER[\'REMOTE_ADDR\']);\n'
                         +'$sessionid .= md5( $sessionid . $mosConfig_secret . ENCODE_KEY);\n'
                         +'$sessionid = base64_encode( $sessionid );\n'
                         +'?>\n'
                         +'<form action="https://pay.dandomain.dk/securetunnel.asp" method="post" name="paymentform">\n'
-                        +'<input type="image" src="components/com_phpshop/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
+                        +'<input type="image" src="components/com_virtuemart/shop_image/ps_image/payment.gif" name="submit" alt="Pay your Order now - Click here!" align="center" border="0" />\n'
                         +'<input type="hidden" name="MerchantNumber" value="<'+'?php echo PBS_MERCHANT_ID ?>" />\n'
-                        +'<input type="hidden" name="TunnelURL" value="<'+'?php echo $mosConfig_live_site ?>/index.php?option=com_phpshop&page=checkout.dandomain_cc_form&sessionid=<'+'?php echo $sessionid ?>" />\n'
+                        +'<input type="hidden" name="TunnelURL" value="<'+'?php echo $mosConfig_live_site ?>/index.php?option=com_virtuemart&page=checkout.dandomain_cc_form&sessionid=<'+'?php echo $sessionid ?>" />\n'
                         +'<input type="hidden" name="shopid" value="<'+'?php echo PBS_SHOP_ID ?>" />\n'
                         +'<input type="hidden" name="OrderID" value="<'+'?php echo $order_id ?>" />\n'
                         +'<input type="hidden" name="Amount" value="<'+'?php echo str_replace(".", ",", $db->f("order_total")) ?>" />\n'

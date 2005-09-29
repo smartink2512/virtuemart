@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * DOMIT! is a non-validating, but lightweight and fast DOM parser for PHP
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage domit-xmlparser
 * @version 1.0
 * @copyright (C) 2004 John Heinstein. All rights reserved
@@ -3328,96 +3328,4 @@ class DOMIT_Parser {
 						$this->parseItem = 'doctype';
 					}	
 					else if ($data{(strlen($data) - 1)} == '>') {
-						$this->parseContainer .= "\n   ";
-					}
-					break;
-			}
-		}
-	} //defaultDataElement
-	
-	/**
-	* Catches a doctype event and processes the data
-	* @param Object A reference to the current SAX parser
-	* @param string The current data
-	*/
-	function doctypeElement(&$parser, $data) {
-		$start = strpos($data, '<!DOCTYPE');
-		$name = trim(substr($data, $start));
-		$end = strpos($name, ' ');
-		$name = substr($name, 0, $end);		
-		
-		$currentNode =& new DOMIT_DocumentType($name, $data);
-		$currentNode->ownerDocument =& $this->xmlDoc;
-		
-		$this->lastChild->appendChild($currentNode);
-		$this->xmlDoc->doctype =& $currentNode;
-	} //doctypeElement
-	
-	/**
-	* Catches a notation node event and processes the data
-	* @param Object A reference to the current SAX parser
-	* @param string The current notation data
-	*/
-	function notationElement(&$parser, $data) {
-		//add to doctype string
-		if (($this->parseItem == 'doctype_inline')  || ($this->parseItem == 'doctype')) {
-			$this->parseContainer .= $data;
-		}
-	} //notationElement
-	
-	/**
-	* Catches a comment node event and processes the data
-	* @param Object A reference to the current SAX parser
-	* @param string The comment data
-	*/
-	function commentElement(&$parser, $data) {
-		if ($this->inTextNode) {
-			$this->dumpTextNode();
-		}
-		
-		$currentNode =& $this->xmlDoc->createComment($data);
-		$this->lastChild->appendChild($currentNode);
-	} //commentElement	
-	
-	/**
-	* Catches a processing instruction node event and processes the data
-	* @param Object A reference to the current SAX parser
-	* @param string The target of the processing instruction data
-	* @param string The processing instruction data
-	*/
-	function processingInstructionElement(&$parser, $target, $data) {	
-		if ($this->inTextNode) {
-			$this->dumpTextNode();
-		}
-		
-		$currentNode =& $this->xmlDoc->createProcessingInstruction($target, $data);
-		$this->lastChild->appendChild($currentNode);
-		
-		if (strtolower($target) == 'xml') {
-			$this->xmlDoc->xmldeclaration =& $currentNode;
-		}
-	} //processingInstructionElement
-	
-	/**
-	* Catches a start namespace declaration event and processes the data
-	* @param Object A reference to the current SAX parser
-	* @param string The namespace prefix
-	* @param string The namespace uri
-	*/
-	function startNamespaceDeclaration(&$parser, $prefix, $uri) {
-		//make uri lower case because Expat forces it to upper case for some reason
-		$this->namespaceURIMap[strtolower($uri)] = $prefix;
-	} //startNamespaceDeclaration
-	
-	/**
-	* Catches an end namespace declaration event
-	* @param Object A reference to the current SAX parser
-	* @param string The namespace prefix
-	*/
-	function endNamespaceDeclaration(&$parser, $prefix) {
-		//do nothing; could remove from map, but would hardly be optimal
-	} //endNamespaceDeclaration
-	
-} //DOMIT_Parser
-
-?>
+						$this->parseContainer .= "\

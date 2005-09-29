@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * DOMIT! is a non-validating, but lightweight and fast DOM parser for PHP
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage domit-xmlparser
 * @version 1.0
 * @copyright (C) 2004 John Heinstein. All rights reserved

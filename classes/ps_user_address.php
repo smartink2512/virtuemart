@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_user_address.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -27,7 +27,7 @@ class ps_user_address {
   ** returns:
   ***************************************************************************/
   function validate_add(&$d) {
-    global $my, $PHPSHOP_LANG;
+    global $my, $VM_LANG;
     $valid = true;
     $d["error"] = "";
     $d['missing'] = "";
@@ -83,7 +83,7 @@ class ps_user_address {
     $q .= "AND id='" . $d["user_id"] . "'";
     $db->query($q);
     if (!$db->num_rows()) {
-        $q  = "SELECT user_id from #__pshop_user_info ";
+        $q  = "SELECT user_id from #__{vm}_user_info ";
         $q .= "WHERE address_type_name='" . $d["address_type_name"] . "' ";
         $q .= "AND address_type='" . $d["address_type"] . "' ";
         $q .= "AND user_id='" . $d["user_id"] . "'";
@@ -123,7 +123,7 @@ class ps_user_address {
   ** returns:
   ***************************************************************************/
   function validate_update(&$d) {
-    global $PHPSHOP_LANG;
+    global $VM_LANG;
     
     $valid = true;
     
@@ -176,7 +176,7 @@ class ps_user_address {
     $q .= "AND id='" . $d["user_id"] . "'";
     $db->query($q);
     if (!$db->num_rows()) {
-        $q  = "SELECT user_id from #__pshop_user_info ";
+        $q  = "SELECT user_id from #__{vm}_user_info ";
         $q .= "WHERE address_type_name='" . $d["address_type_name"] . "' ";
         $q .= "AND address_type='" . $d["address_type"] . "' ";
         $q .= "AND user_id='" . $d["user_id"] . "' ";
@@ -221,7 +221,7 @@ class ps_user_address {
     if (empty($d["extra_field_5"]))
       $d["extra_field_5"] = "N";
     
-    $q = "INSERT INTO #__pshop_user_info (user_id,address_type,address_type_name,";
+    $q = "INSERT INTO #__{vm}_user_info (user_id,address_type,address_type_name,";
     $q .= "company,title,last_name,first_name,middle_name,";
     $q .= "phone_1,phone_2,fax,address_1,";
     $q .= "address_2,city,state,country,zip,extra_field_1,extra_field_2,extra_field_3,extra_field_4,extra_field_5,";
@@ -257,7 +257,7 @@ class ps_user_address {
     $q .= $timestamp . "') ";
     $db->query($q);
 
-    mosRedirect($_SERVER['PHP_SELF']."?option=com_phpshop&page=$page&task=edit&cid[0]=".$_REQUEST['cid'][0]."&Itemid=".$_REQUEST['Itemid'], "" );
+    mosRedirect($_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&task=edit&cid[0]=".$_REQUEST['cid'][0]."&Itemid=".$_REQUEST['Itemid'], "" );
   }
   
   /**************************************************************************
@@ -287,7 +287,7 @@ class ps_user_address {
     if (empty($d["extra_field_5"]))
       $d["extra_field_5"] = "N";
     
-    $q  = "UPDATE #__pshop_user_info set company='" . $d["company"] . "', ";
+    $q  = "UPDATE #__{vm}_user_info set company='" . $d["company"] . "', ";
     $q .= "address_type='" . $d["address_type"] . "', ";
     $q .= "address_type_name='" . $d["address_type_name"] . "', ";
     $q .= "title='" . $d["title"] . "', ";
@@ -315,7 +315,7 @@ class ps_user_address {
     }
     $db->query($q);
     
-    mosRedirect($_SERVER['PHP_SELF']."?option=com_phpshop&page=$page&task=edit&cid[0]=".$_REQUEST['cid'][0]."&Itemid=".$_REQUEST['Itemid'], "" );
+    mosRedirect($_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&task=edit&cid[0]=".$_REQUEST['cid'][0]."&Itemid=".$_REQUEST['Itemid'], "" );
     //return true;
   }
   
@@ -335,7 +335,7 @@ class ps_user_address {
       return false;
     }
 
-    $q  = "DELETE FROM #__pshop_user_info ";
+    $q  = "DELETE FROM #__{vm}_user_info ";
     $q .= "WHERE user_info_id='" . $d["user_info_id"] . "'";
     if (!$perm->check("admin,storeadmin")) {
         $q .= " AND user_id='".$_SESSION['auth']['user_id']."'";

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: zone.zone_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,21 +11,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $PHPSHOP_LANG->_PHPSHOP_ZONE_MOD );
+$formObj = &new formFactory( $VM_LANG->_PHPSHOP_ZONE_MOD );
 //Then Start the form
 $formObj->startForm();
 
 $zone_id = mosgetparam( $_REQUEST, 'zone_id');
 
 if (!empty($zone_id)) {
-  $q = "SELECT * FROM #__pshop_zone_shipping WHERE zone_id='$zone_id'"; 
+  $q = "SELECT * FROM #__{vm}_zone_shipping WHERE zone_id='$zone_id'"; 
   $db->query($q);  
   $db->next_record();
 }  
@@ -35,7 +35,7 @@ if (!empty($zone_id)) {
 <table class="adminform">
 	<tr>
 		<td valign="top">
-			<div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ZONE_FORM_NAME_LBL;?>:&nbsp;</strong></div>
+			<div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_NAME_LBL;?>:&nbsp;</strong></div>
 		</td>
 		<td valign="top">
 		  <input type="text" name="zone_name" size="25" value="<?php echo $db->sp("zone_name");?>" />
@@ -43,7 +43,7 @@ if (!empty($zone_id)) {
 	</tr>
 	<tr>
 		<td valign="top">
-			<div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ZONE_FORM_DESC_LBL;?>:&nbsp;</strong></div>
+			<div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_DESC_LBL;?>:&nbsp;</strong></div>
 		</td>
 		<td valign="top">
 		  <textarea name="zone_description" rows="7" cols="35"><?php echo $db->sp("zone_description");?></textarea>
@@ -51,7 +51,7 @@ if (!empty($zone_id)) {
 	</tr>
 	<tr>
 	  <td valign="top">
-		  <div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ZONE_FORM_COST_PER_LBL;?>:&nbsp;</strong></div>
+		  <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_COST_PER_LBL;?>:&nbsp;</strong></div>
 	  </td>
 	  <td valign="top">
 		<input type="text" name="zone_cost" size="5" value="<?php echo $db->sp("zone_cost");?>" />
@@ -59,19 +59,19 @@ if (!empty($zone_id)) {
 	</tr>
 	<tr>
 	  <td valign="top">
-		  <div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL;?>:&nbsp;</strong></div>
+		  <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL;?>:&nbsp;</strong></div>
 	  </td>
 	  <td valign="top">
 		<input type="text" name="zone_limit" size="5" value="<?php echo $db->sp("zone_limit");?>" />
 	  </td>
 	</tr>
 	<tr>
-	  <td><div align="right"><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></div></td>
+	  <td><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></div></td>
 	  <td>
 		<?php
 		require_once(CLASSPATH.'ps_tax.php');
 		ps_tax::list_tax_value("zone_tax_rate", $db->sf("zone_tax_rate")) ;
-		echo mm_ToolTip($PHPSHOP_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?>
+		echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?>
 	  </td>
 	</tr>	
 	<tr>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * SAXY_Parser_Base is a base class for SAXY and SAXY Lite
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage saxy-xmlparser
 * @version 0.87
 * @copyright (C) 2004 John Heinstein. All rights reserved

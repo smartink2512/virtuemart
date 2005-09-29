@@ -1,25 +1,25 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /* 
-* All-in-one module for mambo-phpShop
+* All-in-one module for VirtueMart
 * includes:
     Latest Products Manager
     Top Ten Products Manager
     Special Products ManagerM
     (All Modules originally designed by Mr PHP)
 *
-* @version $Id: mod_phpshop_allinone.php,v 1.6 2005/03/24 21:05:45 soeren_nb Exp $
-* @package mambo-phpShop
+* @version $Id$
+* @package VirtueMart
 * @subpackage modules
 *
 * Conversion to Mambo and the rest:
 * 	@copyright (C) 2004-2005 Soeren Eberhardt
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.virtuemart.net
 */
 
 global $mosConfig_absolute_path;
@@ -47,8 +47,8 @@ if ($count_mods == 0) {
     $show_special = '1';
 }
 
-/* Load the phpshop main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_phpshop/phpshop_parser.php' );
+/* Load the virtuemart main parse code */
+require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 
 ?>
@@ -160,12 +160,12 @@ require_once( $mosConfig_absolute_path.'/components/com_phpshop/phpshop_parser.p
         
     $db=new ps_DB;
 
-    $q  = "SELECT * FROM #__pshop_product, #__pshop_product_category_xref, #__pshop_category WHERE ";
+    $q  = "SELECT * FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
     $q .= "product_parent_id=''";
-    $q .= "AND #__pshop_product.product_id=#__pshop_product_category_xref.product_id ";
-    $q .= "AND #__pshop_category.category_id=#__pshop_product_category_xref.category_id ";
-    $q .= "AND #__pshop_product.product_publish='Y' ";
-    $q .= "ORDER BY #__pshop_product.product_id DESC ";
+    $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
+    $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
+    $q .= "AND #__{vm}_product.product_publish='Y' ";
+    $q .= "ORDER BY #__{vm}_product.product_id DESC ";
     $q .= "LIMIT $max_items ";
     $db->query($q);
     
@@ -224,11 +224,11 @@ if ($show_topten == '1') { ?>
     <tr>
         <td>
         <?php
-        $list  = "SELECT DISTINCT #__pshop_product.product_id, #__pshop_product.product_parent_id,#__pshop_product.product_name ";
-        $list .= "FROM #__pshop_product, #__pshop_product_category_xref, #__pshop_category WHERE ";
-        $q = "#__pshop_product.product_publish='Y' AND ";
-        $q .= "#__pshop_product.product_sales>0 ";
-        $q .= "ORDER BY #__pshop_product.product_sales DESC";
+        $list  = "SELECT DISTINCT #__{vm}_product.product_id, #__{vm}_product.product_parent_id,#__{vm}_product.product_name ";
+        $list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
+        $q = "#__{vm}_product.product_publish='Y' AND ";
+        $q .= "#__{vm}_product.product_sales>0 ";
+        $q .= "ORDER BY #__{vm}_product.product_sales DESC";
         $list .= $q . " LIMIT 0, $num_topsellers "; 
         ?>
         
@@ -288,12 +288,12 @@ if ($show_special == '1') { ?>
         
         //$max_items = 2;
         
-          $q  = "SELECT DISTINCT product_sku FROM #__pshop_product, #__pshop_product_category_xref, #__pshop_category WHERE ";
-          $q .= "(#__pshop_product.product_parent_id='' OR #__pshop_product.product_parent_id='0') ";
-          $q .= "AND #__pshop_product.product_id=#__pshop_product_category_xref.product_id ";
-          $q .= "AND #__pshop_category.category_id=#__pshop_product_category_xref.category_id ";
-          $q .= "AND #__pshop_product.product_publish='Y' ";
-          $q .= "AND #__pshop_product.product_special='Y' ";
+          $q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
+          $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') ";
+          $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
+          $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
+          $q .= "AND #__{vm}_product.product_publish='Y' ";
+          $q .= "AND #__{vm}_product.product_special='Y' ";
           $q .= "ORDER BY product_name DESC ";
         //  $q .= "LIMIT $max_items ";
           $db->query($q);
@@ -344,11 +344,11 @@ if ($show_random == '1') { ?>
     $max_items=2; //maximum number of items to display
 
 
-    $q  = "SELECT DISTINCT product_sku FROM #__pshop_product, #__pshop_product_category_xref, #__pshop_category WHERE ";
+    $q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
     $q .= "product_parent_id=''";
-    $q .= "AND #__pshop_product.product_id=#__pshop_product_category_xref.product_id ";
-    $q .= "AND #__pshop_category.category_id=#__pshop_product_category_xref.category_id ";
-    $q .= "AND #__pshop_product.product_publish='Y' ";
+    $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
+    $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
+    $q .= "AND #__{vm}_product.product_publish='Y' ";
     $q .= "ORDER BY product_name DESC";
     $db->query($q);
     

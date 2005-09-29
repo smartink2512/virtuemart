@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_session.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -21,17 +21,17 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *                   
 * ps_session
 *
-* The class is the former session class for phpshop
+* The class is the former session class for virtuemart
 *
 *************************************************************************/
 class ps_session {
 
-    var $component_name = "option=com_phpshop";    
+    var $component_name = "option=com_virtuemart";    
     
     /**************************************************************************
     ** name: getShopItemid()
     ** created by: soeren
-    ** description: Gets the Itemid for the com_phpshop Component
+    ** description: Gets the Itemid for the com_virtuemart Component
     **              and stores it in a global Variable
     ** parameters: none
     ** returns: nothing
@@ -40,7 +40,7 @@ class ps_session {
        
         if( empty( $_REQUEST['shopItemid'] )) { 
             $db = new ps_DB;
-            $db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_phpshop' AND published='1'");
+            $db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published='1'");
             if( $db->next_record() )
                 $_REQUEST['shopItemid'] = $db->f("id");
             else
@@ -82,12 +82,12 @@ class ps_session {
                 if( !empty($my->id)) {
                     // User is already logged in
                     // We need to transfer the usercookie if present
-                    $martID = @base64_encode( $_COOKIE['phpshop']."|".$_COOKIE['sessioncookie']."|".$_COOKIE['usercookie']['password']."|".$_COOKIE['usercookie']['username'] );
+                    $martID = @base64_encode( $_COOKIE['virtuemart']."|".$_COOKIE['sessioncookie']."|".$_COOKIE['usercookie']['password']."|".$_COOKIE['usercookie']['username'] );
                     
                 }
                 else {
                     // User is not logged in, but has Cart Contents
-                    $martID = base64_encode( $_COOKIE['phpshop']."|".$_COOKIE['sessioncookie'] );
+                    $martID = base64_encode( $_COOKIE['virtuemart']."|".$_COOKIE['sessioncookie'] );
                 }
                 // Redirect and send the Cookie Values within the variable martID
                 mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index&martID=$martID") );
@@ -113,7 +113,7 @@ class ps_session {
                 
                 $id_array = explode( "|", $cookievals );
                 
-                $phpshopcookie = $id_array[0];
+                $virtuemartcookie = $id_array[0];
                 $sessioncookie = $id_array[1];
                 $usercookie["password"] = @$id_array[2];
                 $usercookie["username"] = @$id_array[3];
@@ -139,10 +139,10 @@ class ps_session {
                 * This is important:
                 * When session_start() has been called before this won't work!!
                 * This will probably not work when phpBB or Simple Machines Forum are loaded with the Site, 
-                * as those scripts start their own Sessions before mambo-phpShop can!!
+                * as those scripts start their own Sessions before VirtueMart can!!
                 */
-                session_id( $phpshopcookie );
-                session_name( 'phpshop' );
+                session_id( $virtuemartcookie );
+                session_name( 'virtuemart' );
                 session_start();
                 
                 // Prevent the martID from being displayed in the URL
@@ -182,7 +182,7 @@ class ps_session {
   ** created by:
   ** description:
   ** parameters:
-  ** returns: an URL concatenated with "option=com_phpshop"
+  ** returns: an URL concatenated with "option=com_virtuemart"
   ***************************************************************************/  
   function url($text) {
     global $mosConfig_sef;
@@ -199,7 +199,7 @@ class ps_session {
         default:
             $limiter = strpos($text, '?');
             
-            // now append "&option=com_phpshop&Itemid=XX"
+            // now append "&option=com_virtuemart&Itemid=XX"
             $appendix = "&" . $this->component_name.$Itemid;
             
             if (!defined( '_PSHOP_ADMIN' )) {
@@ -246,7 +246,7 @@ class ps_session {
   ** created by:
   ** description:
   ** parameters:
-  ** returns: echoes an URL concatenated with the string "option=com_phpshop"
+  ** returns: echoes an URL concatenated with the string "option=com_virtuemart"
   ***************************************************************************/  
   
   function purl($text) {
@@ -263,7 +263,7 @@ class ps_session {
         default:
             $limiter = strpos($text, '?');
             
-            // now append "&option=com_phpshop&Itemid=XX"
+            // now append "&option=com_virtuemart&Itemid=XX"
             $appendix = "&" . $this->component_name.$Itemid;
             
             if (!defined( '_PSHOP_ADMIN' )) {

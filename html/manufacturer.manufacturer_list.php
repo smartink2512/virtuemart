@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: manufacturer.manufacturer_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -23,8 +23,8 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 $mf_category_id = mosgetparam( $_REQUEST, 'mf_category_id');
 
 if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__pshop_manufacturer WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_manufacturer WHERE ";
+	$list  = "SELECT * FROM #__{vm}_manufacturer WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_manufacturer WHERE ";
 	$q  = "(mf_name LIKE '%$keyword%' OR ";
 	$q .= "mf_desc LIKE '%$keyword%'";
 	$q .= ") ";
@@ -34,17 +34,17 @@ if (!empty($keyword)) {
 }
 elseif (!empty($mf_category_id)) {
 	$q = "";
-	$list="SELECT * FROM #__pshop_manufacturer, #__pshop_manufacturer_category WHERE ";
-	$count="SELECT count(*) as num_rows FROM #__pshop_manufacturer,#__pshop_manufacturer_category WHERE "; 
-	$q = "#__pshop_manufacturer.mf_category_id=#__pshop_manufacturer_category.mf_category_id ";
-	$q .= "ORDER BY #__pshop_manufacturer.mf_name ASC ";
+	$list="SELECT * FROM #__{vm}_manufacturer, #__{vm}_manufacturer_category WHERE ";
+	$count="SELECT count(*) as num_rows FROM #__{vm}_manufacturer,#__{vm}_manufacturer_category WHERE "; 
+	$q = "#__{vm}_manufacturer.mf_category_id=#__{vm}_manufacturer_category.mf_category_id ";
+	$q .= "ORDER BY #__{vm}_manufacturer.mf_name ASC ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__pshop_manufacturer ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_manufacturer ";
+	$list  = "SELECT * FROM #__{vm}_manufacturer ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_manufacturer ";
 	$q .= "ORDER BY mf_name ASC ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
@@ -60,7 +60,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_LIST_LBL, IMAGEURL."ps_image/manufacturer.gif", $modulename, "manufacturer_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_MANUFACTURER_LIST_LBL, IMAGEURL."ps_image/manufacturer.gif", $modulename, "manufacturer_list");
 
 // start the list table
 $listObj->startTable();
@@ -68,8 +68,8 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME => 'width="45%"',
-					$PHPSHOP_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN => 'width="45%"',
+					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME => 'width="45%"',
+					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN => 'width="45%"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -92,7 +92,7 @@ while ($db->next_record()) {
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("mf_name"). "</a><br />";
 	$listObj->addCell( $tmp_cell );
 	
-    $tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=$modulename.manufacturer_form&manufacturer_id=" . $db->f("manufacturer_id")) ."\">".$PHPSHOP_LANG->_PHPSHOP_UPDATE ."</a>";
+    $tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=$modulename.manufacturer_form&manufacturer_id=" . $db->f("manufacturer_id")) ."\">".$VM_LANG->_PHPSHOP_UPDATE ."</a>";
     $listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "manufacturer_id", $db->f("manufacturer_id"), "manufacturerDelete", $keyword, $limitstart ) );

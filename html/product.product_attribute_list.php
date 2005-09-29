@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: product.product_attribute_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -25,14 +25,14 @@ $return_args = mosgetparam($_REQUEST, 'return_args');
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 
 if (!empty($product_parent_id)) {
-  $title = $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_LBL. " - Product:";
+  $title = $VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_LBL. " - Product:";
 } else {
-  $title = $PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_LBL. " - Item:";
+  $title = $VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_LBL. " - Item:";
 }
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name") ."</a>"; 
 
-$q = "SELECT * FROM #__pshop_product_attribute_sku WHERE product_id = '$product_id' ";
+$q = "SELECT * FROM #__{vm}_product_attribute_sku WHERE product_id = '$product_id' ";
 $q .= "ORDER BY attribute_list,attribute_name";
 $db->query($q);
 
@@ -48,8 +48,8 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$db->num_rows().")\" />" => 'width="5%"',
-					$PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_NAME => 'width="30%"',
-					$PHPSHOP_LANG->_PHPSHOP_ATTRIBUTE_LIST_ORDER => 'width="45%"',
+					$VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_NAME => 'width="30%"',
+					$VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_ORDER => 'width="45%"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

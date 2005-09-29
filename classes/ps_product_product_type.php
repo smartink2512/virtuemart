@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product_product_type.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -44,7 +44,7 @@ class ps_product_product_type {
       return false;
     }
     $db = new ps_DB;
-    $q  = "SELECT COUNT(*) AS count FROM #__pshop_product_product_type_xref ";
+    $q  = "SELECT COUNT(*) AS count FROM #__{vm}_product_product_type_xref ";
     $q .= "WHERE product_id='".$d["product_id"]."' AND product_type_id='".$d["product_type_id"]."'";
     $db->query($q);
     if ($db->f("count") != 0) {
@@ -92,11 +92,11 @@ class ps_product_product_type {
           if (!is_array($value))
             $d[$key] = addslashes($value);
       }
-      $q  = "INSERT INTO #__pshop_product_product_type_xref (product_id, product_type_id) ";
+      $q  = "INSERT INTO #__{vm}_product_product_type_xref (product_id, product_type_id) ";
       $q .= "VALUES ('".$d["product_id"]."','".$d["product_type_id"]."')";
       $db->query($q);
       
-      $q  = "INSERT INTO #__pshop_product_type_".$d["product_type_id"]." (product_id) ";
+      $q  = "INSERT INTO #__{vm}_product_type_".$d["product_type_id"]." (product_id) ";
       $q .= "VALUES ('".$d["product_id"]."')";
       $db->query($q);
       
@@ -136,11 +136,11 @@ class ps_product_product_type {
 	function delete_record( $record_id, &$d ) {
 		global $db;
 	
-		$q  = "DELETE FROM #__pshop_product_product_type_xref WHERE product_type_id='$record_id' ";
+		$q  = "DELETE FROM #__{vm}_product_product_type_xref WHERE product_type_id='$record_id' ";
 		$q .= "AND product_id='".$d["product_id"]."'";
 		$db->setQuery($q);   $db->query();
 	
-		$q  = "DELETE FROM #__pshop_product_type_".$record_id." WHERE product_id='".$d["product_id"]."'";
+		$q  = "DELETE FROM #__{vm}_product_type_".$record_id." WHERE product_id='".$d["product_id"]."'";
 		$db->query($q);
 		
 		return True;

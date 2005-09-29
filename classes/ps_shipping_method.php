@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_shipping_method.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -109,14 +109,14 @@ class ps_shipping_method {
     $ps_vendor_id = $_SESSION["ps_vendor_id"];
     $db = new ps_DB;
 
-    $q  = "SELECT product_sku,product_parent_id,product_weight,product_weight_uom FROM #__pshop_product ";
+    $q  = "SELECT product_sku,product_parent_id,product_weight,product_weight_uom FROM #__{vm}_product ";
     $q .= "WHERE product_id='$pid' ";
     
     $db->query($q);
     $db->next_record();
 
     if ($db->f("product_weight") == 0 && $db->f("product_parent_id")) {
-       $q = "SELECT * from #__pshop_product WHERE product_id='".$db->f("product_parent_id")."'";
+       $q = "SELECT * from #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'";
        $db->query($q);
        $db->next_record();       
     }
@@ -156,14 +156,14 @@ class ps_shipping_method {
     $ps_vendor_id = $_SESSION["ps_vendor_id"];
     $db = new ps_DB;
 
-    $q  = "SELECT product_sku,product_parent_id,product_weight,product_weight_uom FROM #__pshop_product ";
+    $q  = "SELECT product_sku,product_parent_id,product_weight,product_weight_uom FROM #__{vm}_product ";
     $q .= "WHERE product_id='$pid' ";
     
     $db->query($q);
     $db->next_record();
 
     if ($db->f("product_weight") == 0 && $db->f("product_parent_id")) {
-       $q = "SELECT * from #__pshop_product WHERE product_id='".$db->f("product_parent_id")."'";
+       $q = "SELECT * from #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'";
        $db->query($q);
        $db->next_record();       
     }
@@ -203,14 +203,14 @@ class ps_shipping_method {
     $ps_vendor_id = $_SESSION["ps_vendor_id"];
     $db = new ps_DB;
 
-    $q  = "SELECT product_sku,product_parent_id,product_weight,product_weight_uom FROM #__pshop_product ";
+    $q  = "SELECT product_sku,product_parent_id,product_weight,product_weight_uom FROM #__{vm}_product ";
     $q .= "WHERE product_id='$pid' ";
     
     $db->query($q);
     $db->next_record();
 
     if ($db->f("product_weight") == 0 && $db->f("product_parent_id")) {
-       $q = "SELECT * from #__pshop_product WHERE product_id='".$db->f("product_parent_id")."'";
+       $q = "SELECT * from #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'";
        $db->query($q);
        $db->next_record();       
     }

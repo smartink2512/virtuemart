@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * PHP HTTP Tools is a library for working with the http protocol
 * HTTPExceptions is an HTTP Exceptions class
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage php-http-tools
 * @copyright (C) 2004 John Heinstein. All rights reserved
 * @license http://www.gnu.org/copyleft/lesser.html LGPL License

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: order.order_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -25,29 +25,29 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT  order_id,#__pshop_orders.cdate,#__pshop_orders.mdate,order_total,";
-	$list .= "order_status FROM #__pshop_orders, #__users WHERE ";
-	$count = "SELECT  count(*) as num_rows FROM #__pshop_orders, #__users WHERE ";
-	$q  = "(#__pshop_orders.order_id LIKE '%$keyword%' ";
-	$q .= "OR #__pshop_orders.order_status LIKE '%$keyword%' ";
+	$list  = "SELECT  order_id,#__{vm}_orders.cdate,#__{vm}_orders.mdate,order_total,";
+	$list .= "order_status FROM #__{vm}_orders, #__users WHERE ";
+	$count = "SELECT  count(*) as num_rows FROM #__{vm}_orders, #__users WHERE ";
+	$q  = "(#__{vm}_orders.order_id LIKE '%$keyword%' ";
+	$q .= "OR #__{vm}_orders.order_status LIKE '%$keyword%' ";
 	$q .= "OR #__users.username LIKE '%$keyword%' ";
 	$q .= ") ";
-	$q .= "AND (#__pshop_orders.user_id=#__users.id) ";
-	$q .= "AND #__pshop_orders.vendor_id='".$_SESSION['ps_vendor_id']."' ";
-	$q .= "ORDER BY #__pshop_orders.cdate DESC ";
+	$q .= "AND (#__{vm}_orders.user_id=#__users.id) ";
+	$q .= "AND #__{vm}_orders.vendor_id='".$_SESSION['ps_vendor_id']."' ";
+	$q .= "ORDER BY #__{vm}_orders.cdate DESC ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
 else {
 	$keyword = "";
 	$q = "";
-	$list  = "SELECT * FROM #__pshop_orders ";
-	$count = "SELECT count(*) as num_rows FROM #__pshop_orders ";
-	$q .= "WHERE  #__pshop_orders.vendor_id='".$_SESSION['ps_vendor_id']."' ";
+	$list  = "SELECT * FROM #__{vm}_orders ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_orders ";
+	$q .= "WHERE  #__{vm}_orders.vendor_id='".$_SESSION['ps_vendor_id']."' ";
 	if (!empty($show)) 
 		$q .= "AND order_status = '$show' ";
 		
-	$q .= "ORDER BY #__pshop_orders.cdate DESC ";
+	$q .= "ORDER BY #__{vm}_orders.cdate DESC ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;   
 }
@@ -62,14 +62,14 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_LBL, IMAGEURL."ps_image/orders.gif", $modulename, "order_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_ORDER_LIST_LBL, IMAGEURL."ps_image/orders.gif", $modulename, "order_list");
 
 ?>
 <div align="center">
 <?php
 $navi_db = new ps_DB;
 $q = "SELECT order_status_code, order_status_name ";
-$q .= "FROM #__pshop_order_status WHERE vendor_id = '$ps_vendor_id'";
+$q .= "FROM #__{vm}_order_status WHERE vendor_id = '$ps_vendor_id'";
 $navi_db->query($q);
 while ($navi_db->next_record()) {  ?> 
   <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=$modulename.order_list&show=".$navi_db->f("order_status_code")) ?>">
@@ -79,7 +79,7 @@ while ($navi_db->next_record()) {  ?>
 } 
 ?>
     <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=$modulename.order_list&show=")?>"><b>
-    <?php echo $PHPSHOP_LANG->_PHPSHOP_LIST." ".$PHPSHOP_LANG->_PHPSHOP_ALL ?></b></a>
+    <?php echo $VM_LANG->_PHPSHOP_LIST." ".$VM_LANG->_PHPSHOP_ALL ?></b></a>
 </div>
 <br />
 <?php 
@@ -89,13 +89,13 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_ID => '',
-					$PHPSHOP_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW => '',
-					$PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_CDATE => '',
-					$PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
-					$PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
-					$PHPSHOP_LANG->_PHPSHOP_UPDATE => '',
-					$PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_ID => '',
+					$VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_CDATE => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
+					$VM_LANG->_PHPSHOP_UPDATE => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -129,8 +129,8 @@ while ($db->next_record()) {
 	$listObj->addCell( $ps_order_status->getOrderStatus($db->f("order_status"), "onchange=\"document.adminForm$i.order_status.selectedIndex = this.selectedIndex;document.adminForm$i.changed.value='1'\""));
 	
 	$listObj->addCell( '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.checked = true;} else {document.adminForm'. $i .'.notify_customer.checked = false;}" value="Y" />'
-						.$PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_NOTIFY .'<br />
-					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. $PHPSHOP_LANG->_PHPSHOP_ORDER_LIST_NOTIFY_ERR .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="Update Status" />' );
+						.$VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY .'<br />
+					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY_ERR .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="Update Status" />' );
 
 	$listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
 	
@@ -140,7 +140,7 @@ while ($db->next_record()) {
 		<input type="hidden" name="page" value="order.order_list" />
 		<input type="hidden" name="func" value="orderStatusSet" />
 		<input type="hidden" name="changed" value="0" />
-		<input type="hidden" name="option" value="com_phpshop" />
+		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="order_id" value="'. $db->f("order_id") .'" />
 		<input type="hidden" name="current_order_status" value="'. $db->f("order_status").'" />
 		</form>';

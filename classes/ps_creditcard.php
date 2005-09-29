@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_creditcard.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -61,7 +61,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
        return False;	
      }
 
-     $q = "SELECT count(*) as rowcnt from #__pshop_creditcard where";
+     $q = "SELECT count(*) as rowcnt from #__{vm}_creditcard where";
      $q .= " creditcard_name='" .  $d["creditcard_name"] . "' OR ";
      $q .= " creditcard_code='" .  $d["creditcard_code"] . "'";
      $db->setQuery($q);
@@ -130,7 +130,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return False;
     }
-    $q = "INSERT INTO #__pshop_creditcard (vendor_id, creditcard_name, creditcard_code)";
+    $q = "INSERT INTO #__{vm}_creditcard (vendor_id, creditcard_name, creditcard_code)";
     $q .= " VALUES ('";
     $q .= $_SESSION["ps_vendor_id"] . "','";
     $q .= $d["creditcard_name"] . "','";
@@ -157,7 +157,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return False;	
     }
-    $q = "UPDATE #__pshop_creditcard set ";
+    $q = "UPDATE #__{vm}_creditcard set ";
     $q .= "creditcard_name='" . $d["creditcard_name"];
     $q .= "',creditcard_code='" . $d["creditcard_code"]."' ";
     $q .= "WHERE creditcard_id='".$d["creditcard_id"]."'";
@@ -195,7 +195,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 		  $d["error"]=$this->error;
 		  return False;
 		}
-		$q = "DELETE FROM #__pshop_creditcard WHERE creditcard_id='" . $creditcard_id . "'";
+		$q = "DELETE FROM #__{vm}_creditcard WHERE creditcard_id='" . $creditcard_id . "'";
 		$db->query($q);
 		return True;
 	}
@@ -216,7 +216,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       else
           $selected_arr = Array();
       $db = new ps_DB;
-      $q = "SELECT creditcard_name, creditcard_id FROM #__pshop_creditcard WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
+      $q = "SELECT creditcard_name, creditcard_id FROM #__{vm}_creditcard WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
       $db->query( $q );
       $html = "";
 
@@ -244,15 +244,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     
     /*** Select all credit card records ***/
     if(empty($payment_method_id)) {
-      $q = "SELECT creditcard_name, creditcard_id,creditcard_code FROM #__pshop_creditcard WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
+      $q = "SELECT creditcard_name, creditcard_id,creditcard_code FROM #__{vm}_creditcard WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
     }
     /*** Get only accepted credit cards records ***/
     else {
-        $q = "SELECT accepted_creditcards FROM #__pshop_payment_method WHERE payment_method_id='$payment_method_id'";
+        $q = "SELECT accepted_creditcards FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'";
         $db->query( $q );
         $db->next_record();
         $cc_array = explode( ",", $db->f("accepted_creditcards"));
-        $q = "SELECT creditcard_name,creditcard_id,creditcard_code FROM #__pshop_creditcard WHERE vendor_id='".$_SESSION['ps_vendor_id']."' AND (";
+        $q = "SELECT creditcard_name,creditcard_id,creditcard_code FROM #__{vm}_creditcard WHERE vendor_id='".$_SESSION['ps_vendor_id']."' AND (";
         foreach ( $cc_array as $idx => $creditcard_id ) {
             $q .= "creditcard_id='$creditcard_id' ";
             if( $idx+1 < sizeof( $cc_array )) $q.= "OR ";
@@ -298,7 +298,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
           $accepted_creditcards = explode( ",", $db_cc->f("accepted_creditcards") );
           $cards = Array();
           foreach( $accepted_creditcards as $key => $value ) {
-              $q = "SELECT creditcard_code,creditcard_name FROM #__pshop_creditcard WHERE creditcard_id='$value'";
+              $q = "SELECT creditcard_code,creditcard_name FROM #__{vm}_creditcard WHERE creditcard_id='$value'";
               $database->setQuery( $q );
               $database->loadObject( $row );
               $cards[$row->creditcard_code] = $row->creditcard_name;

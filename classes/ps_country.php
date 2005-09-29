@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_country.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -66,7 +66,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     }
     
      if ($d["country_name"]) {
-       $q = "SELECT count(*) as rowcnt from #__pshop_country where";
+       $q = "SELECT count(*) as rowcnt from #__{vm}_country where";
        $q .= " country_name='" .  $d["country_name"] . "'";
        $db->setQuery($q);
        $db->query();
@@ -137,7 +137,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return False;
     }
-    $q = "INSERT INTO #__pshop_country (country_name, zone_id, country_3_code, country_2_code)";
+    $q = "INSERT INTO #__{vm}_country (country_name, zone_id, country_3_code, country_2_code)";
     $q .= " VALUES ('";
     $q .= $d["country_name"] . "','";
     $q .= $d["zone_id"] . "','";
@@ -165,7 +165,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return False;	
     }
-    $q = "UPDATE #__pshop_country set ";
+    $q = "UPDATE #__{vm}_country set ";
     $q .= "country_name='" . $d["country_name"]."',";
     $q .= "zone_id='" . $d["zone_id"]."',";
     $q .= "country_3_code='" . $d["country_3_code"]."', ";
@@ -193,12 +193,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     }
 	if( is_array( $d["country_id"])) {
 		foreach($d["country_id"] as $country ) {
-			$q = "DELETE FROM #__pshop_country WHERE country_id='$country'";
+			$q = "DELETE FROM #__{vm}_country WHERE country_id='$country'";
 			$db->query($q);
 		}
 	}
 	else {
-		$q = "DELETE FROM #__pshop_country WHERE country_id='" . $d["country_id"] . "'";
+		$q = "DELETE FROM #__{vm}_country WHERE country_id='" . $d["country_id"] . "'";
 		$db->query($q);
 	}
     return True;
@@ -211,7 +211,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = "Error: No country was selected for this State";
       return False;
     }
-    $q = "INSERT INTO #__pshop_state (state_name, country_id, state_3_code, state_2_code)";
+    $q = "INSERT INTO #__{vm}_state (state_name, country_id, state_3_code, state_2_code)";
     $q .= " VALUES ('";
     $q .= $d["state_name"] . "','";
     $q .= $d["country_id"] . "','";
@@ -230,7 +230,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = "Please select a state or country for update!";
       return False;	
     }
-    $q = "UPDATE #__pshop_state SET ";
+    $q = "UPDATE #__{vm}_state SET ";
     $q .= "state_name='" . $d["state_name"]."',";
     $q .= "state_3_code='" . $d["state_3_code"]."', ";
     $q .= "state_2_code='" . $d["state_2_code"]."' ";
@@ -249,7 +249,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"]= "Please select a state to delete!";
       return false;
     }
-    $q = "DELETE FROM #__pshop_state where state_id='" . $d["state_id"] . "' LIMIT 1";
+    $q = "DELETE FROM #__{vm}_state where state_id='" . $d["state_id"] . "' LIMIT 1";
     $db->query($q);
     
     return True;

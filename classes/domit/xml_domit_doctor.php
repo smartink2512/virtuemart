@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * DOMIT! Doctor is a set of utilities for repairing malformed XML
-* @package mambo-phpShop
+* @package VirtueMart
 * @subpackage domit-xmlparser
 * @copyright (C) 2004 John Heinstein. All rights reserved
 * @license http://www.gnu.org/copyleft/lesser.html LGPL License

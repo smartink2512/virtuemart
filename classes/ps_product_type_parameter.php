@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: COPYRIGHT.php 70 2005-09-15 20:45:51Z spacemonkey $
+* @version $Id: ps_product_type_parameter.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -59,7 +59,7 @@ class ps_product_type_parameter {
       $db = new ps_DB;
       
       // find if there is not a column with the same name
-      $q  = "SELECT COUNT(*) AS count FROM #__pshop_product_type_parameter ";
+      $q  = "SELECT COUNT(*) AS count FROM #__{vm}_product_type_parameter ";
       $q .= "WHERE product_type_id='".$d["product_type_id"]."' ";
       $q .= "AND parameter_name='".$d["parameter_name"]."'";
       $db->query( $q );
@@ -119,7 +119,7 @@ class ps_product_type_parameter {
       $db = new ps_DB;
       
       // find if there is not a column with the same name
-      $q  = "SELECT COUNT(*) AS count FROM #__pshop_product_type_parameter ";
+      $q  = "SELECT COUNT(*) AS count FROM #__{vm}_product_type_parameter ";
       $q .= "WHERE product_type_id='".$d["product_type_id"]."' ";
       $q .= "AND parameter_name='".$d["parameter_name"]."'";
       $db->query( $q );
@@ -149,7 +149,7 @@ class ps_product_type_parameter {
             $d[$key] = addslashes($value);
       }
       // Let's find out the last product_type
-      $q = "SELECT MAX(parameter_list_order) AS list_order FROM #__pshop_product_type_parameter ";
+      $q = "SELECT MAX(parameter_list_order) AS list_order FROM #__{vm}_product_type_parameter ";
       $q .="WHERE product_type_id='".$d["product_type_id"]."';";
       $db->query( $q );
       $db->next_record();
@@ -167,7 +167,7 @@ class ps_product_type_parameter {
 	  $d["parameter_description"] = str_replace("\r\n","",$d["parameter_description"]);
  	  $d["parameter_description"] = str_replace("\n","",$d["parameter_description"]);
       
-	  $q = "INSERT into #__pshop_product_type_parameter (product_type_id, parameter_name, parameter_label, ";
+	  $q = "INSERT into #__{vm}_product_type_parameter (product_type_id, parameter_name, parameter_label, ";
       $q .= "parameter_description, parameter_list_order, parameter_type, parameter_values, parameter_multiselect, parameter_default, ";
       $q .= "parameter_unit) VALUES ('";
       $q .= $d["product_type_id"] . "','";
@@ -185,7 +185,7 @@ class ps_product_type_parameter {
 
       if ($d["parameter_type"]!="B") { // != Break Line
 		// Make new column in table product_type_<id>
-		$q = "ALTER TABLE `#__pshop_product_type_";
+		$q = "ALTER TABLE `#__{vm}_product_type_";
 		$q .= $d["product_type_id"] . "` ADD `";
 		$q .= $d["parameter_name"]."` ";
 		switch( $d["parameter_type"] ) {
@@ -208,14 +208,14 @@ class ps_product_type_parameter {
 		
 		// Make index for this column
 		if ($d["parameter_type"]=="T") { 
-			$q  = "ALTER TABLE `#__pshop_product_type_";
+			$q  = "ALTER TABLE `#__{vm}_product_type_";
 			$q .= $d["product_type_id"]."` ADD FULLTEXT `idx_product_type_".$d["product_type_id"]."_";
 			$q .= $d["parameter_name"]."` (`".$d["parameter_name"]."`);";
 			$db->setQuery($q);
 			$db->query();
 		}
 		else {
-			$q  = "ALTER TABLE `#__pshop_product_type_";
+			$q  = "ALTER TABLE `#__{vm}_product_type_";
 			$q .= $d["product_type_id"]."` ADD KEY `idx_product_type_".$d["product_type_id"]."_";
 			$q .= $d["parameter_name"]."` (`".$d["parameter_name"]."`);";
 			$db->setQuery($q);
@@ -244,7 +244,7 @@ class ps_product_type_parameter {
     if ($this->validate_update_parameter($d)) {
 	  if ($d["parameter_old_type"] == "B") {
 	  	// delete record and call add_parameter()
-		$q  = "DELETE FROM #__pshop_product_type_parameter WHERE product_type_id='" . $d["product_type_id"] . "' ";
+		$q  = "DELETE FROM #__{vm}_product_type_parameter WHERE product_type_id='" . $d["product_type_id"] . "' ";
 		$q .= "AND parameter_name='".$d["parameter_name"]."'";
 		$db->setQuery($q);   $db->query();
 		return $this->add_parameter($d);
@@ -265,7 +265,7 @@ class ps_product_type_parameter {
 	  $d["parameter_description"] = str_replace("\r\n","",$d["parameter_description"]);
  	  $d["parameter_description"] = str_replace("\n","",$d["parameter_description"]);
 		
-      $q  = "UPDATE `#__pshop_product_type_parameter` SET ";
+      $q  = "UPDATE `#__{vm}_product_type_parameter` SET ";
       $q .= "`parameter_name`='".$d["parameter_name"]."',";
       $q .= "`parameter_label`='".$d["parameter_label"]."',";
       $q .= "`parameter_description`='".$d["parameter_description"]."',";
@@ -287,20 +287,20 @@ class ps_product_type_parameter {
         /* Moved UP in the list order */
         if( intval($d['list_order']) < intval($d['currentpos']) ) {
         
-          $q  = "SELECT product_type_id,parameter_name FROM #__pshop_product_type_parameter WHERE ";
+          $q  = "SELECT product_type_id,parameter_name FROM #__{vm}_product_type_parameter WHERE ";
 	  $q .= "product_type_id=' ".$d["product_type_id"];
           $q .= "' AND parameter_name <> '" . $d["parameter_name"];
           $q .= "' AND parameter_list_order >= '" . intval($d["list_order"]) . "'";
           $db->query( $q );
           
           while( $db->next_record() ) {
-            $dbu->query("UPDATE #__pshop_product_type_parameter SET parameter_list_order=parameter_list_order+1 WHERE product_type_id='".$db->f("product_type_id")."' AND parameter_name='".$db->f("parameter_name")."'");
+            $dbu->query("UPDATE #__{vm}_product_type_parameter SET parameter_list_order=parameter_list_order+1 WHERE product_type_id='".$db->f("product_type_id")."' AND parameter_name='".$db->f("parameter_name")."'");
           }
         }
         /* Moved DOWN in the list order */
         else {
         
-          $q = "SELECT product_type_id,parameter_name FROM #__pshop_product_type_parameter WHERE ";
+          $q = "SELECT product_type_id,parameter_name FROM #__{vm}_product_type_parameter WHERE ";
           $q .= "product_type_id='" . $d["product_type_id"];
 	  $q .= "' AND parameter_name <> '".$d["parameter_name"];
           $q .= "' AND parameter_list_order > '" . intval($d["currentpos"]);
@@ -308,7 +308,7 @@ class ps_product_type_parameter {
           $db->query( $q );
           
           while( $db->next_record() ) {
-            $dbu->query("UPDATE #__pshop_product_type_parameter SET parameter_list_order=parameter_list_order-1 WHERE product_type_id='".$db->f("product_type_id")."' AND parameter_name='".$db->f("parameter_name")."'");
+            $dbu->query("UPDATE #__{vm}_product_type_parameter SET parameter_list_order=parameter_list_order-1 WHERE product_type_id='".$db->f("product_type_id")."' AND parameter_name='".$db->f("parameter_name")."'");
           }
         
         }
@@ -316,14 +316,14 @@ class ps_product_type_parameter {
       
       if ($d["parameter_type"]!="B") { // != Break Line
 		// Delete old index
-		$q  = "ALTER TABLE `#__pshop_product_type_";
+		$q  = "ALTER TABLE `#__{vm}_product_type_";
 		$q .= $d["product_type_id"]."` DROP INDEX `idx_product_type_".$d["product_type_id"]."_";
 		$q .= $d["parameter_old_name"]."`;";
 		$db->setQuery($q);
 		$db->query();
 		
 		// Update column in table product_type_<id>
-		$q  = "ALTER TABLE `#__pshop_product_type_";
+		$q  = "ALTER TABLE `#__{vm}_product_type_";
 		$q .= $d["product_type_id"] . "` CHANGE `";
 		$q .= $d["parameter_old_name"] . "` `";
 		$q .= $d["parameter_name"]."` ";
@@ -347,14 +347,14 @@ class ps_product_type_parameter {
 		
 		// Make index for this column
 		if ($d["parameter_type"]=="T") { 
-			$q  = "ALTER TABLE `#__pshop_product_type_";
+			$q  = "ALTER TABLE `#__{vm}_product_type_";
 			$q .= $d["product_type_id"]."` ADD FULLTEXT `idx_product_type_".$d["product_type_id"]."_";
 			$q .= $d["parameter_name"]."` (`".$d["parameter_name"]."`);";
 			$db->setQuery($q);
 			$db->query();
 		}
 		else {
-			$q  = "ALTER TABLE `#__pshop_product_type_";
+			$q  = "ALTER TABLE `#__{vm}_product_type_";
 			$q .= $d["product_type_id"]."` ADD KEY `idx_product_type_".$d["product_type_id"]."_";
 			$q .= $d["parameter_name"]."` (`".$d["parameter_name"]."`);";
 			$db->setQuery($q);
@@ -398,26 +398,26 @@ class ps_product_type_parameter {
 
 	
 		/** Find parameter_type of deleted parameter */
-		$q  = "SELECT parameter_type FROM #__pshop_product_type_parameter";
+		$q  = "SELECT parameter_type FROM #__{vm}_product_type_parameter";
 		$q2 = " WHERE product_type_id='" . $d["product_type_id"] . "' AND parameter_name='$record_id'";
 		$db->query($q.$q2);
 		if( $db->next_record() )
 			$parameter_type = $db->f("parameter_type");
 		else
-			$parameter_type = "B"; // Error - dont delete (maybe nonexisted) column from #__pshop_product_type_XX
+			$parameter_type = "B"; // Error - dont delete (maybe nonexisted) column from #__{vm}_product_type_XX
 		
-		$q  = "DELETE FROM #__pshop_product_type_parameter";
+		$q  = "DELETE FROM #__{vm}_product_type_parameter";
 		$db->setQuery($q.$q2);   $db->query();
 
 		// Delete index - deleted automaticaly
-/*		$q  = "ALTER TABLE `#__pshop_product_type_";
+/*		$q  = "ALTER TABLE `#__{vm}_product_type_";
 		$q .= $d["product_type_id"]."` DROP INDEX `idx_product_type_".$d["product_type_id"]."_";
 		$q .= $d["parameter_name"]."`;";
 		$db->setQuery($q);   $db->query();*/
     
 	if ($parameter_type!="B") { // != Break Line
 		// Delete column
-		$q  = "ALTER TABLE #__pshop_product_type_".$d["product_type_id"]." DROP `$record_id`";
+		$q  = "ALTER TABLE #__{vm}_product_type_".$d["product_type_id"]." DROP `$record_id`";
 		$db->setQuery($q);   $db->query();
     }
         
@@ -440,7 +440,7 @@ class ps_product_type_parameter {
     }
     else {
         
-      $q  = "SELECT parameter_list_order,parameter_label,parameter_name FROM #__pshop_product_type_parameter ";
+      $q  = "SELECT parameter_list_order,parameter_label,parameter_name FROM #__{vm}_product_type_parameter ";
       $q .= "ORDER BY parameter_list_order ASC";
       $db->query( $q );
       
@@ -475,7 +475,7 @@ class ps_product_type_parameter {
       $db = new ps_DB;
       switch( $d["task"] ) {
         case "orderup":
-          $q = "SELECT parameter_list_order FROM #__pshop_product_type_parameter ";
+          $q = "SELECT parameter_list_order FROM #__{vm}_product_type_parameter ";
           $q .= "WHERE product_type_id='".$product_type_id."' ";
           $q .= "AND parameter_name='".$cb[0]."'";
           $db->query($q);
@@ -483,7 +483,7 @@ class ps_product_type_parameter {
           $currentpos = $db->f("parameter_list_order");
           
           // Get the (former) predecessor and update it
-          $q  = "SELECT parameter_list_order,parameter_name FROM #__pshop_product_type_parameter WHERE ";
+          $q  = "SELECT parameter_list_order,parameter_name FROM #__{vm}_product_type_parameter WHERE ";
           $q .= "parameter_list_order<'". $currentpos . "' ";
 	  $q .= "ORDER BY parameter_list_order DESC";
           $db->query($q);
@@ -492,13 +492,13 @@ class ps_product_type_parameter {
 	  $pred_pos = $db->f("parameter_list_order");
           
           // Update the product_type and decrease the list_order
-          $q = "UPDATE #__pshop_product_type_parameter ";
+          $q = "UPDATE #__{vm}_product_type_parameter ";
           $q .= "SET parameter_list_order='".$pred_pos."' ";
           $q .= "WHERE product_type_id='".$product_type_id."' ";
           $q .= "AND parameter_name='".$cb[0]."'";
           $db->query($q);
 
-          $q = "UPDATE #__pshop_product_type_parameter ";
+          $q = "UPDATE #__{vm}_product_type_parameter ";
           $q .= "SET parameter_list_order='".intval($pred_pos + 1)."' ";
           $q .= "WHERE product_type_id='".$product_type_id."' ";
           $q .= "AND parameter_name='$pred'";
@@ -507,7 +507,7 @@ class ps_product_type_parameter {
           break;
           
         case "orderdown":
-          $q = "SELECT parameter_list_order FROM #__pshop_product_type_parameter ";
+          $q = "SELECT parameter_list_order FROM #__{vm}_product_type_parameter ";
           $q .= "WHERE product_type_id='".$product_type_id."' ";
           $q .= "AND parameter_name='".$cb[0]."'";
           $db->query($q);
@@ -515,7 +515,7 @@ class ps_product_type_parameter {
           $currentpos = $db->f("parameter_list_order");
           
           // Get the (former) successor and update it
-          $q  = "SELECT parameter_list_order,parameter_name FROM #__pshop_product_type_parameter WHERE ";
+          $q  = "SELECT parameter_list_order,parameter_name FROM #__{vm}_product_type_parameter WHERE ";
           $q .= "parameter_list_order>'". $currentpos . "' ";
 	  $q .= "ORDER BY parameter_list_order";
           $db->query($q);
@@ -523,13 +523,13 @@ class ps_product_type_parameter {
           $succ = $db->f("parameter_name");
 	  $succ_pos = $db->f("parameter_list_order");
           
-          $q = "UPDATE #__pshop_product_type_parameter ";
+          $q = "UPDATE #__{vm}_product_type_parameter ";
           $q .= "SET parameter_list_order='".$succ_pos."' ";
           $q .= "WHERE product_type_id='".$product_type_id."' ";
           $q .= "AND parameter_name='".$cb[0]."'";
           $db->query($q);
           
-          $q = "UPDATE #__pshop_product_type_parameter ";
+          $q = "UPDATE #__{vm}_product_type_parameter ";
           $q .= "SET parameter_list_order='".intval($succ_pos - 1)."' ";
           $q .= "WHERE product_type_id='".$product_type_id."' ";
           $q .= "AND parameter_name='$succ'";
