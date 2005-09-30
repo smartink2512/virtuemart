@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_LBL );

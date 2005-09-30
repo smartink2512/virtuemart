@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $order_status_id = mosGetParam( $_REQUEST, 'order_status_id' );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL );

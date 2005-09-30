@@ -23,23 +23,23 @@ $db->next_record();
 $customers = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of active products
-$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE product_publish="Y"');
+$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE vendor_id='.$ps_vendor_id.' AND product_publish="Y"');
 $db->next_record();
 $active_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of inactive products
-$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE product_publish="N"');
+$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE vendor_id='.$ps_vendor_id.' AND product_publish="N"');
 $db->next_record();
 $inactive_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of featured products
-$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE product_special="Y"');
+$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE vendor_id='.$ps_vendor_id.' AND product_special="Y"');
 $db->next_record();
 $special_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // 5 last orders
 $new_orders= Array();
-$db->query('SELECT order_id,order_total FROM #__{vm}_orders ORDER BY cdate desc limit 5');
+$db->query('SELECT order_id,order_total FROM #__pshop_orders WHERE vendor_id='.$ps_vendor_id.' ORDER BY cdate desc limit 5');
 while($db->next_record()) {
   $new_orders[$db->f('order_id')] = $db->f('order_total');
 }
@@ -101,11 +101,13 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		$image = IMAGEURL .'ps_image/shop_payment.png';
 		$text = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_MNU;
 		$ps_html->writePanelIcon( $image, $link, $text );
-                
-		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
-		$image = IMAGEURL .'ps_image/shop_vendors.png';
-		$text =  $VM_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
-		$ps_html->writePanelIcon( $image, $link, $text );
+              
+        if (defined( "_PSHOP_ADMIN" ) ) {
+		    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
+		    $image = IMAGEURL .'ps_image/shop_vendors.png';
+            $text =  $VM_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
+		    $ps_html->writePanelIcon( $image, $link, $text );
+        }
                 
 		if (defined( "_PSHOP_ADMIN" ) ) { 
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
@@ -113,11 +115,13 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 			$text = $VM_LANG->_PHPSHOP_USERS;
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
-            
-		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
-		$image = IMAGEURL .'ps_image/shop_configuration.png';
-		$text = $VM_LANG->_PHPSHOP_CONFIG;
-		$ps_html->writePanelIcon( $image, $link, $text );
+        
+        if (defined( "_PSHOP_ADMIN" ) ) {    
+			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
+			$image = IMAGEURL .'ps_image/shop_configuration.png';
+			$text = $VM_LANG->_PHPSHOP_CONFIG;
+			$ps_html->writePanelIcon( $image, $link, $text );
+		}
                 
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
 		$image = IMAGEURL .'ps_image/shop_mart.png';
@@ -211,6 +215,8 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 			</table>
 		<?php
 		$tabs->endTab();
+		
+		if (defined( "_PSHOP_ADMIN" ) ) {
 		$tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS, "newcustomer-page");
 		?>
 			<table class="adminlist">
@@ -229,6 +235,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 			</table>
 		<?php
 		$tabs->endTab();
+		}
 		$tabs->endPane();
 		?> 
 		</td>

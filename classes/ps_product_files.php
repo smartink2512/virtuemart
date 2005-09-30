@@ -520,7 +520,7 @@ class ps_product_files {
 	$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';
 	$dbf->query( $sql );
 	$dbf->next_record();
-    $sql = 'SELECT file_id, file_mimetype, file_title'
+    $sql = 'SELECT DISTINCT file_id, file_mimetype, file_title'
         . ' FROM `#__{vm}_product_files` '
         . ' WHERE file_title != \''.$dbf->f( "attribute_value" ).'\' AND file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_is_image = \'0\'';
     $dbf->setQuery($sql);

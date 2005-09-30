@@ -20,6 +20,7 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . 'ps_creditcard.php' );
 
 $payment_method_id = mosgetparam($_REQUEST, 'payment_method_id', "");
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $vars['payment_enabled'] = "Y";
 

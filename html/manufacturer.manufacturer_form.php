@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $manufacturer_id = mosgetparam( $_REQUEST, 'manufacturer_id', 0 );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty($manufacturer_id)) {
   $q = "SELECT * FROM #__{vm}_manufacturer WHERE manufacturer_id='$manufacturer_id'"; 

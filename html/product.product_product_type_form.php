@@ -18,6 +18,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 $return_args = mosgetparam($_REQUEST, 'return_args');
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+
 if( is_array( $product_id ))
 	$product_id = (int)$product_id[0];
 

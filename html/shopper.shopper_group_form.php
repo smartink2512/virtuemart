@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 global $ps_product;
 $shopper_group_id = mosgetparam( $_REQUEST, 'shopper_group_id', null );
-
+$option = mosgetparam( $_REQUEST, 'option', 'com_virtuemart' );
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_LBL );
 //Then Start the form

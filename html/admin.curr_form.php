@@ -18,6 +18,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $currency_id = mosgetparam( $_REQUEST, 'currency_id');
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+
 if ($currency_id) {
     $q = "SELECT * from #__{vm}_currency WHERE currency_id='$currency_id'";
     $db->query($q);

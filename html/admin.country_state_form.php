@@ -19,6 +19,8 @@ mm_showMyFileName( __FILE__ );
 
 $state_id = mosGetParam( $_REQUEST, 'state_id', null );
 $country_id = mosGetParam( $_REQUEST, 'country_id', null );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+
 if( is_array( $country_id ))
 	$country_id = $country_id[0];
 	

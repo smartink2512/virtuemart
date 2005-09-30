@@ -20,6 +20,7 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH. 'ps_zone.php');
 $ps_zone = new ps_zone;
 $country_id = mosGetParam( $_REQUEST, 'country_id' );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty( $country_id )) {
   $q = "SELECT * from #__{vm}_country WHERE country_id='$country_id'";

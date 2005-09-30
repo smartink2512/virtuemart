@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $coupon_id = mosGetParam( $_REQUEST, 'coupon_id', null );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if ( $coupon_id ) {
 	$q = "SELECT * FROM #__{vm}_coupons WHERE coupon_id='$coupon_id'";

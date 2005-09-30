@@ -25,6 +25,7 @@ if( is_array( $product_id ))
 $product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
 $attribute_name = mosgetparam($_REQUEST, 'attribute_name', 0);
 $return_args = mosgetparam($_REQUEST, 'return_args' );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $title = $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_LBL.'<br />';
 

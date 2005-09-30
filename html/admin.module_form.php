@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $module_id = mosGetParam( $_REQUEST, 'module_id' );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty( $module_id )) {
   $q = "SELECT * from #__{vm}_module where module_id='$module_id'";

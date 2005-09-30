@@ -157,7 +157,8 @@ class ps_affiliate {
 
   function register_sale($order_id){
 
-   $afid = $_SESSION['afid'];
+    if (isset($_SESSION['afid'])) {
+    $afid = $_SESSION['afid'];
      
     $db = new ps_DB;
 	$q = "SELECT rate FROM #__{vm}_affiliate ";
@@ -168,6 +169,7 @@ class ps_affiliate {
     $q = "INSERT into #__{vm}_affiliate_sale(affiliate_id, order_id,visit_id,rate)";
 	$q .=" VALUES('".$afid."','".$order_id."','".session_id()."','".$rate."')";
     $db->query($q);
+    }
    return True;
   } 
 

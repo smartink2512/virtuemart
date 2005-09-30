@@ -19,6 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 $function_id = mosGetParam( $_REQUEST, 'function_id');
 $module_id = mosGetParam( $_REQUEST, 'module_id');
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty($function_id)) {
   $q = "SELECT * from #__{vm}_function where function_id='$function_id'";

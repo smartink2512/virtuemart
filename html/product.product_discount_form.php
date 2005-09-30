@@ -23,6 +23,7 @@ $formObj = &new formFactory( $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT );
 $formObj->startForm();
 
 $discount_id = mosGetParam( $_REQUEST, 'discount_id', null );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if ( !empty($discount_id) ) {
   $q = "SELECT * FROM #__{vm}_product_discount WHERE discount_id='$discount_id'";

@@ -32,6 +32,14 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+30-09-2005 schirmer
+# frontend administration can't load page
+# missing pshop_mode=admin in inventory for links
+# ps_affiliate undefined index afid on checkout in register_sale function
+^ list_year in ps_html changed to dynamic year list
+# store.index only shows apropriate options and information. no links to unusable modules or non-vendor specific stats
+# fixed duplicate files listed on flypage
+
 29-09-2005
 - updated all files to use com_virtuemart as path
 - updated all queries to use {vm} as shop table prefix

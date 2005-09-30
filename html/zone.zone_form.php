@@ -22,6 +22,7 @@ $formObj = &new formFactory( $VM_LANG->_PHPSHOP_ZONE_MOD );
 //Then Start the form
 $formObj->startForm();
 
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 $zone_id = mosgetparam( $_REQUEST, 'zone_id');
 
 if (!empty($zone_id)) {

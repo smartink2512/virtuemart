@@ -76,12 +76,12 @@ $listObj = new listFactory( $pageNav );
 $listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_LBL, IMAGEURL."ps_image/inventory.gif", $modulename, "product_inventory");
 
 echo '&nbsp;&nbsp;';
-if($allproducts != 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&allproducts=1").'" title="'.$VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS.'">';
+if($allproducts != 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=1").'" title="'.$VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS.'">';
 echo $VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS;
 if ($allproducts != 1) echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($allproducts == 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&allproducts=0").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
+if ($allproducts == 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=0").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
 echo $VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK;
 if ($allproducts == 1) '</a>';
 echo '<br /><br />';
@@ -107,7 +107,7 @@ while ($db->next_record()) {
 	// The row number
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=" . $db->f("product_id");
+	$url = $_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=$modulename.product_form&product_id=" . $db->f("product_id");
 	if ($db->f("product_parent_id")) {
 		$url .= "&product_parent_id=" . $db->f("product_parent_id");
 	}

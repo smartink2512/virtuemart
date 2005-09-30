@@ -23,6 +23,7 @@ $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 $product_price_id = mosgetparam($_REQUEST, 'product_price_id', 0);
 $product_parent_id = mosgetparam($_REQUEST, 'product_parent_id');
 $return_args = mosgetparam($_REQUEST, 'return_args');
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $db = new ps_DB;
 /* If Updating a Price */

@@ -123,14 +123,9 @@ class ps_html {
   ** returns: prints HTML drop down element to standard output
   ***************************************************************************/
    function list_year($list_name,$selected_item="") {
-       $list = array("2005" => "2005",
-                    "2006" => "2006",
-                    "2007" => "2007",
-                    "2008" => "2008",
-                    "2009" => "2009",
-                    "2010" => "2010",
-                    "2011" => "2011",
-                    "2012" => "2012");
+       $current = date("Y");
+       for ($i=$current; $i<$current+7; $i++)
+            $list[$i] = $i;
        $this->dropdown_display($list_name, $selected_item, $list);
        return 1;
    }

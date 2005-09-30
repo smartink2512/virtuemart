@@ -19,6 +19,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
 $parameter_name = mosgetparam($_REQUEST, 'parameter_name', "");
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 $parameter_type = "";
 
 $q = "SELECT * from #__{vm}_product_type WHERE product_type_id='$product_type_id'";

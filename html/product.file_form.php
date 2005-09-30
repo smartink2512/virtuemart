@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $product_id= mosgetparam( $_REQUEST, 'product_id');
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $q = "SELECT product_name FROM #__{vm}_product WHERE product_id='$product_id' "; 
 $db->query($q);  

@@ -23,6 +23,7 @@ $formObj = &new formFactory( $VM_LANG->_PHPSHOP_TAX_FORM_LBL );
 $formObj->startForm();
 
 $tax_rate_id= mosgetparam( $_REQUEST, 'tax_rate_id');
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty($tax_rate_id)) {
   $q = "SELECT * FROM #__{vm}_tax_rate WHERE tax_rate_id='$tax_rate_id'"; 

@@ -25,6 +25,7 @@ if( is_array( $product_id ))
 	
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $dl_checked = "";
 $curr_filename = "";

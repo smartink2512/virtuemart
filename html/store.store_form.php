@@ -20,6 +20,8 @@ mm_showMyFileName( __FILE__ );
 include_class( "vendor" );
 global $ps_vendor, $ps_vendor_id;
 
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+
 $q = "SELECT * FROM #__{vm}_vendor WHERE vendor_id='$ps_vendor_id'"; 
 $db->query($q);  
 $db->next_record();

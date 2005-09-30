@@ -25,6 +25,7 @@ $formObj = &new formFactory( $VM_LANG->_PHPSHOP_VENDOR_FORM_LBL );
 //Then Start the form
 $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 $vendor_id = mosgetparam( $_REQUEST, 'vendor_id');
 
 if (!empty($vendor_id)) {

@@ -19,6 +19,7 @@ mm_showMyFileName( __FILE__ );
 global $ps_product_category, $ps_product;
 
 $category_id = mosgetparam($_REQUEST, 'category_id', 0);
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $VM_LANG->_PHPSHOP_CATEGORY_FORM_LBL );

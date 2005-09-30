@@ -23,6 +23,7 @@ $formObj = &new formFactory( $VM_LANG->_PHPSHOP_CARRIER_FORM_LBL );
 $formObj->startForm();
 
 $shipping_carrier_id = mosgetparam( $_REQUEST, 'shipping_carrier_id');
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty($shipping_carrier_id)) {
   $q = "SELECT * FROM #__{vm}_shipping_carrier WHERE shipping_carrier_id='$shipping_carrier_id'";

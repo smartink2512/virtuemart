@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $creditcard_id = mosgetparam( $_REQUEST, 'creditcard_id', "");
+$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty($creditcard_id)) {
     $q = "SELECT * FROM #__{vm}_creditcard WHERE creditcard_id='$creditcard_id'";
