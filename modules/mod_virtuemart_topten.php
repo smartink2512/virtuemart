@@ -31,7 +31,7 @@ $ps_product = new ps_product;
 // change the number of items you wanna haved listed via module parameters
 $num_topsellers = $params->get ('num_topsellers', 10);
 
-$list  = "SELECT distinct #__{vm}_product.product_id, #__{vm}_product.product_parent_id,#__{vm}_product.product_name ";
+$list  = "SELECT distinct #__{vm}_product.product_id, #__{vm}_product.product_parent_id,#__{vm}_product.product_name, #__{vm}_category.category_id ";
 $list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
 $q = "#__{vm}_product.product_publish='Y' AND ";
 $q .= "#__{vm}_product.product_sales>0 ";
@@ -59,6 +59,7 @@ $i = 0;
       $flypage = $ps_product->get_flypage($db->f("product_id"));
       $tt_item++;
       $pid = $db->f("product_parent_id") ? $db->f("product_parent_id") : $db->f("product_id");
+
       ?>
     <tr class="<?php echo $sectioncolor ?>">
       <td width="15%"><?php printf("%02d", $tt_item); ?></td>

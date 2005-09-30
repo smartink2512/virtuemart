@@ -63,48 +63,36 @@ class MamboMartTree {
     */
     function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
         static $ibg = -1;
-        global $database, $module, $mosConfig_live_site;
+        global $db, $module, $mosConfig_live_site;
         $level++;
-        $query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
+        $query = "SELECT category_name, category_id, category_child_id "
         . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
          . "WHERE a.category_publish='Y' AND "
          . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
          . "ORDER BY category_parent_id, list_order, category_name ASC";
-        $database->setQuery( $query );
+        $db->query( $query );
         
-        $categories = $database->loadObjectList();
-        
-        if( !( $categories==null ) ) {
-          $i = 1;
-          foreach ($categories as $category) {
-            $ibg++;
-            $Treeid = $ibg == 0 ? 1 : $ibg;
-            $itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
-            $mymenu_content.= ",\n[null,'".$category->cname;
-            $mymenu_content.= ps_product_category::products_in_category( $category->cid );
-            $mymenu_content.= "','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$category->cid.$itemid."&TreeId=$Treeid")."','_self','".$category->cname."'\n ";
-            /*$database->setQuery("SELECT count(*) FROM #__{vm}_category as a, #__{vm}_category_xref as b "
-                                         . "WHERE a.category_publish='Y' AND "
-                                         . "b.category_parent='".$category->cid."'");
-              $res = $database->query();
-              // are there more categories?
-              if ($database->getNumRows($res) > 0)
-                $mymenu_content.= ",\n";
-              else
-                $mymenu_content.= "],\n";*/
+        if( !( $db->num_rows() < 1 ) ) {
+			$i = 1;
+			while( $db->next_record() ) {
+				$ibg++;
+				$Treeid = $ibg == 0 ? 1 : $ibg;
+				$itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
+				$mymenu_content.= ",\n[null,'".$db->f("category_name");
+				$mymenu_content.= ps_product_category::products_in_category( $db->f("category_id") );
+				$mymenu_content.= "','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("category_id").$itemid."&TreeId=$Treeid")."','_self','".$db->f("category_name")."'\n ";
                 
-              /* recurse through the subcategories */
-              $this->traverse_tree_down($mymenu_content, $category->ccid, $level);
+				/* recurse through the subcategories */
+				$this->traverse_tree_down($mymenu_content, $db->f("category_child_id"), $level);
               
-              /* let's see if the loop has reached its end */
-              if ( $i == sizeof( $categories ) && $level == 1)
-                $mymenu_content.= "]";
-              else
-                $mymenu_content.= "]";
-              $i++;
-              
+				/* let's see if the loop has reached its end */
+				if ( $i == sizeof( $categories ) && $level == 1)
+					$mymenu_content.= "]";
+				else
+					$mymenu_content.= "]";
+				$i++;
                 
-          }
+			}
         }
         else {
             

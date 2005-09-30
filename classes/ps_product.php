@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_product.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1967,35 +1967,40 @@ class ps_product {
     
     $ps_vendor_id = $_SESSION["ps_vendor_id"];
     $db = new ps_DB;
-
+	
+	require_once(CLASSPATH.'ps_product_category.php');
+	$ps_product_category = new ps_product_category;
+	
     $q = "SELECT product_id, product_name, product_parent_id, product_thumb_image FROM #__{vm}_product WHERE product_sku='$product_sku'";
-    $db->setQuery($q); $db->query();
+    $db->query( $q );
     $html = "";
     if ($db->next_record()) {
-        
-      $html .= "<span style=\"font-weight:bold;\">".$db->f("product_name")."</span>\n";
-      $html .= "<br />\n";
-      $url = "?page=shop.product_details&flypage=".$this->get_flypage($db->f("product_id"));
-      if ($db->f("product_parent_id")) {
-        $url = "?page=shop.product_details&flypage=".$this->get_flypage($db->f("product_parent_id"));
-        $url .= "&product_id=" . $db->f("product_parent_id");
-      } else {
-        $url = "?page=shop.product_details&flypage=".$this->get_flypage($db->f("product_id"));
-        $url .= "&product_id=" . $db->f("product_id");
-      }
-      $html .= "<a title=\"".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url. "index.php" . $url)."\">";
-      $html .= $this->image_tag($db->f("product_thumb_image"), "alt=\"".$db->f("product_name")."\"");
-      $html .= "</a><br />\n";
+		
+		$cid = $ps_product_category->get_cid( $db->f("product_id" ) );
+		
+		$html .= "<span style=\"font-weight:bold;\">".$db->f("product_name")."</span>\n";
+		$html .= "<br />\n";
+		$url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_id"));
+		if ($db->f("product_parent_id")) {
+			$url = "?page=shop.product_details&flypage=".$this->get_flypage($db->f("product_parent_id"));
+			$url .= "&product_id=" . $db->f("product_parent_id");
+		} else {
+			$url = "?page=shop.product_details&flypage=".$this->get_flypage($db->f("product_id"));
+			$url .= "&product_id=" . $db->f("product_id");
+		}
+		$html .= "<a title=\"".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url. "index.php" . $url)."\">";
+		$html .= $this->image_tag($db->f("product_thumb_image"), "alt=\"".$db->f("product_name")."\"");
+		$html .= "</a><br />\n";
       
-      if (_SHOW_PRICES == '1' && $show_price) {
-          // Show price, but without "including X% tax"
-          $html .= $this->show_price( $db->f("product_id"), true );
-      }
-      if (USE_AS_CATALOGUE != 1 && $show_addtocart) {
-          $html .= "<br />\n";
-          $url = "?page=shop.cart&func=cartAdd&product_id=" .  $db->f("product_id");
-          $html .= "<a title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO.": ".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url . $url)."\">".$VM_LANG->_PHPSHOP_CART_ADD_TO."</a><br />\n";
-       }
+		if (_SHOW_PRICES == '1' && $show_price) {
+			// Show price, but without "including X% tax"
+			$html .= $this->show_price( $db->f("product_id"), true );
+		}
+		if (USE_AS_CATALOGUE != 1 && $show_addtocart) {
+			$html .= "<br />\n";
+			$url = "?page=shop.cart&func=cartAdd&product_id=" .  $db->f("product_id");
+			$html .= "<a title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO.": ".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url . $url)."\">".$VM_LANG->_PHPSHOP_CART_ADD_TO."</a><br />\n";
+		}
     }
 
     return $html;

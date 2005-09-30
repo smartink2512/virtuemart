@@ -10,6 +10,6 @@
 	<version>1.0</version>
 	<description>Performs a Product Search</description>
 	<files>
-		<filename mambot="phpshop.searchbot">phpshop.searchbot.php</filename>
+		<filename mambot="virtuemart.searchbot">virtuemart.searchbot.php</filename>
 	</files>
 </mosinstall>

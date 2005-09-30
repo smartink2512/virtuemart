@@ -1,14 +1,14 @@
 <?xml version="1.0" ?>
 <mosinstall version="4.5.1" type="mambot" group="pat">
-    <name>mambo-phpShop Product Snapshot xtd</name>
+    <name>VirtueMart Product Snapshot xtd</name>
     <version>1.27</version>
     <creationDate>March 2005</creationDate>
-    <author>mambo-phpShop Project</author>
+    <author>VirtueMart Project</author>
     <authorEmail>N/A</authorEmail>
     <authorUrl>http://mambo-phpShop.net</authorUrl>
     <copyright>nobody</copyright>
     <license>GNU / GPL</license>
-    <description>Let's you add/edit snapshots of products in your mambo-phpShop. Enter multiple products by separating them with a |.</description>
+    <description>Let's you add/edit snapshots of products in your VirtueMart. Enter multiple products by separating them with a |.</description>
     <files>
         <filename mambot="mosproductsnap_xtd">mosproductsnap_xtd.php</filename>
 	</files>

@@ -103,7 +103,7 @@ phpShop
 ----
 Copyright:	2000 - 2004 Edikon Corp. (http://www.edikon.com)
 License:	GNU General Public License (GPL)
-Community: http://www.virtuemart.org
+Community: http://www.phpshop.org
 
 tar-archive
 ----

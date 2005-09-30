@@ -17,22 +17,104 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 function com_uninstall() {
-  global $database;
-  
-  // This is the function which is called on Uninstall after the component files
-  // have been removed and all tables for VirtueMart that are contained
-  // in the virtuemart.xml file have been removed.
-  // But what if we can't predict the number of tables?
-  // e.g.: For each new Product Type we dynamically create one new Table.
-  // So let's remove those tables (if there).
-  $database->setQuery( "SELECT product_type_id FROM #__{vm}_product_type" );
-  $tables = $database->loadObjectList();
-  if( !empty( $tables )) {
-	foreach( $tables as $table ) {
-	  $database->setQuery( "DROP TABLE IF EXISTS `#__{vm}_product_type_". $table->product_type_id . "`" );
-	  $database->query();
+	global $database, $mosConfig_absolute_path;
+	
+	require( $mosConfig_absolute_path.'/adminstrator/components/com_virtuemart/classes/ps_database.php' );
+	
+	$db = &new ps_DB;
+	
+	$db->query( 'DROP TABLE `#__{vm}_affiliate`;' );
+	$db->query( 'DROP TABLE `#__{vm}_affiliate_sale`;' );
+	$db->query( 'DROP TABLE `#__{vm}_auth_user_vendor`;' );
+	$db->query( 'DROP TABLE `#__{vm}_category`;' );
+	$db->query( 'DROP TABLE `#__{vm}_category_xref`;' );
+	$db->query( 'DROP TABLE `#__{vm}_country`;' );
+	$db->query( 'DROP TABLE `#__{vm}_coupons`;' );
+	$db->query( 'DROP TABLE `#__{vm}_creditcard`;' );
+	$db->query( 'DROP TABLE `#__{vm}_csv`;' );
+	$db->query( 'DROP TABLE `#__{vm}_currency`;' );
+	$db->query( 'DROP TABLE `#__{vm}_function`;' );
+	$db->query( 'DROP TABLE `#__{vm}_manufacturer`;' );
+	$db->query( 'DROP TABLE `#__{vm}_manufacturer_category`;' );
+	$db->query( 'DROP TABLE `#__{vm}_module`;' );
+	$db->query( 'DROP TABLE `#__{vm}_order_history`;' );
+	$db->query( 'DROP TABLE `#__{vm}_order_item`;' );
+	$db->query( 'DROP TABLE `#__{vm}_order_payment`;' );
+	$db->query( 'DROP TABLE `#__{vm}_order_status`;' );
+	$db->query( 'DROP TABLE `#__{vm}_order_user_info`;' );
+	$db->query( 'DROP TABLE `#__{vm}_orders`;' );
+	$db->query( 'DROP TABLE `#__{vm}_payment_method`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_attribute`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_attribute_sku`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_category_xref`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_discount`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_download`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_files`;' );   
+	$db->query( 'DROP TABLE `#__{vm}_product_mf_xref`;' );   
+	$db->query( 'DROP TABLE `#__{vm}_product_price`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_relations`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_reviews`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_type`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_type_parameter`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_product_type_xref`;' );
+	$db->query( 'DROP TABLE `#__{vm}_product_votes`;' );
+	$db->query( 'DROP TABLE `#__{vm}_shipping_carrier`;' );
+	$db->query( 'DROP TABLE `#__{vm}_shipping_rate`;' );
+	$db->query( 'DROP TABLE `#__{vm}_shopper_group`;' );
+	$db->query( 'DROP TABLE `#__{vm}_shopper_vendor_xref`;' );
+	$db->query( 'DROP TABLE `#__{vm}_state`;' );
+	$db->query( 'DROP TABLE `#__{vm}_tax_rate`;' );
+	$db->query( 'DROP TABLE `#__{vm}_user_info`;' );
+	$db->query( 'DROP TABLE `#__{vm}_vendor`;' );
+	$db->query( 'DROP TABLE `#__{vm}_vendor_category`;' );
+	$db->query( 'DROP TABLE `#__{vm}_visit`;' );
+	$db->query( 'DROP TABLE `#__{vm}_waiting_list`;' );
+	$db->query( 'DROP TABLE `#__{vm}_zone_shipping`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `user_info_id`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `address_type`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `address_type_name`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `company`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `title`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `last_name`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `first_name`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `middle_name`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `phone_1`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `phone_2`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `fax`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `address_1`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `address_2`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `city`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `state`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `country`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `zip`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_1`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_2`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_3`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_4`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_5`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `perms`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `bank_account_nr`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `bank_account_type`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `bank_name`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `bank_sort_code`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `bank_iban`;' );
+	$db->query( 'ALTER TABLE `#__users` DROP `bank_account_holder`;' );
+	  
+	// This is the function which is called on Uninstall after the component files
+	// have been removed and all tables for VirtueMart that are contained
+	// in the virtuemart.xml file have been removed.
+	// But what if we can't predict the number of tables?
+	// e.g.: For each new Product Type we dynamically create one new Table.
+	// So let's remove those tables (if there).
+	$database->setQuery( "SELECT product_type_id FROM #__{vm}_product_type" );
+	$tables = $database->loadObjectList();
+	if( !empty( $tables )) {
+		foreach( $tables as $table ) {
+			$database->setQuery( "DROP TABLE IF EXISTS `#__{vm}_product_type_". $table->product_type_id . "`" );
+			$database->query();
+		}
 	}
-  }
   
 }
 

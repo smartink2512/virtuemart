@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.module_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -254,7 +254,7 @@ if ($product_parent_id != 0) {
     $more_images = "";
   if( !empty($images->images) ) {
     /* Build the JavaScript Link */
-    $more_images = "<a href=\"$mosConfig_live_site/index.php?option=com_virtuemart&page=shop.view_images&flypage=".@$_REQUEST['flypage']."&product_id=$product_id&Itemid=$Itemid\">";
+    $more_images = "<a href=\"$mosConfig_live_site/index.php?option=com_virtuemart&page=shop.view_images&flypage=".@$_REQUEST['flypage']."&product_id=$product_id&category_id=$category_id&Itemid=$Itemid\">";
     $more_images .= "<img src=\"".IMAGEURL."ps_image/more_images.png\" width=\"16\" height=\"16\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_MORE_IMAGES ." (".$images->images.")\" />";
     $more_images .= "<br />".$VM_LANG->_PHPSHOP_MORE_IMAGES." (".$images->images.")</a>";
   }

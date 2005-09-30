@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: admin.module_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: install.php,v 1.2 2005/09/29 20:01:12 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -21,7 +21,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 function installvirtuemart( $install_type, $install_sample_data=false ){
-	global $database, $mosConfig_absolute_path, $mosConfig_mailfrom, $PHPSHOP_LANG, $mosConfig_dirperms;
+	global 	$database, $mosConfig_absolute_path, $mosConfig_mailfrom, $VM_LANG, $mosConfig_dirperms;
 	
 	if( empty($mosConfig_mailfrom)) $mosConfig_mailfrom = "demo_order@virtuemart.net";
   
@@ -237,8 +237,9 @@ include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser
 		// with the mamboXplorer when no longer needed!
 		$database->setQuery( 'DELETE FROM #__components WHERE link LIKE \'%option=com_phpshop%\'' );
 		$database->query();
-
-		$database->setQuery( 'SHOW TABLES LIKE \'%_pshop_%\'' );
+		
+		// RENAME all mambo-phpShop tables used by this site
+		$database->setQuery( 'SHOW TABLES LIKE \'#__pshop_%\'' );
 		$tables = $database->loadObjectList();
 		foreach( $tables as $pshop_table ) {
 			foreach (get_object_vars($pshop_table) as $k => $v) {

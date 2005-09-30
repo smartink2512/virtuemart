@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_product_category.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.5 2005/09/29 20:01:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1128,7 +1128,23 @@ class ps_product_category {
 
     return $db->f("category_name");
   }
+	/**
+	** Returns the category ID of the first category
+	* assigned to the given product ID
+	* @params int The product id
+	* @return int The category id
+  ***************************************************************************/
+  function get_cid($product_id) {
+    $db = new ps_DB;
 
+    $q = "SELECT #__{vm}_category.category_id FROM #__{vm}_category,#__{vm}_product_category_xref ";
+    $q .= "WHERE product_id='$product_id' ";
+    $q .= "AND #__{vm}_category.category_id = #__{vm}_product_category_xref.category_id ";
+    $db->query();
+    $db->next_record();
+
+    return (int)$db->f("category_name");
+  }
 
   /**************************************************************************
   ** name: get_description()
