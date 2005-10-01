@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This Class provides some utility functions
 * to easily create drop-down lists
 *
-* @version $Id: ps_html.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_html.php,v 1.6 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -167,7 +167,8 @@ class ps_html {
    }
    
     function dynamic_state_lists( $country_list_name, $state_list_name, $selected_country_code="", $selected_state_code="" ) {
-      global $database, $vendor_country_3_code, $VM_LANG;
+      global $vendor_country_3_code, $VM_LANG;
+	  $db = new ps_DB;
       if( empty( $selected_country_code ))
         $selected_country_code = $vendor_country_3_code;
         
@@ -176,11 +177,11 @@ class ps_html {
       else
         $selected_state_code = "'".$selected_state_code."'";
         
-      $database->setQuery( "SELECT #__{vm}_country.country_id,country_3_code 
+      $db->query( "SELECT #__{vm}_country.country_id,country_3_code 
                               FROM #__{vm}_country" );
-      $countries = $database->loadObjectList();
       
-      if( $countries ) {
+      if( $db->num_rows() > 0 ) {
+		$dbs = new ps_DB;
         // Build the State lists for each Country
         $script = "<script language=\"javascript\" type=\"text/javascript\">//<![CDATA[\n";
         $script .= "<!--\n";
@@ -189,20 +190,18 @@ class ps_html {
         $script .= "var states = new Array();	// array in the format [key,value,text]\n";
         $i = 0;
       
-        foreach( $countries as $country ) {
+        while( $db->next_record() ) {
         
-            $database->setQuery( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$country->country_id."'" );
+            $dbs->query( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$db->f("country_id")."'" );
             
-            $states = Array();
-            $states = $database->loadObjectList();
-            if( !empty( $states )) {
-              foreach( $states as $state ) {
-                  // array in the format [key,value,text]
-                  $script .= "states[".$i++."] = new Array( '".addslashes($country->country_3_code)."','".$state->state_2_code."','".addslashes($state->state_name)."' );\n";
-              }
-            }
+			if( $dbs->num_rows() > 0 ) {
+				while( $dbs->next_record() ) {
+					  // array in the format [key,value,text]
+					  $script .= "states[".$i++."] = new Array( '".addslashes($db->f("country_3_code"))."','".$dbs->f("state_2_code")."','".addslashes($dbs->f("state_name"))."' );\n";
+				}
+			}
             else
-              $script .= "states[".$i++."] = new Array( '".addslashes($country->country_3_code)."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
+              $script .= "states[".$i++."] = new Array( '".addslashes($db->f("country_3_code"))."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
             
             
         }

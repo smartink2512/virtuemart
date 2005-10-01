@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.index.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: store.index.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -23,23 +23,23 @@ $db->next_record();
 $customers = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of active products
-$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE vendor_id='.$ps_vendor_id.' AND product_publish="Y"');
+$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE vendor_id='.$ps_vendor_id.' AND product_publish="Y"');
 $db->next_record();
 $active_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of inactive products
-$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE vendor_id='.$ps_vendor_id.' AND product_publish="N"');
+$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE vendor_id='.$ps_vendor_id.' AND product_publish="N"');
 $db->next_record();
 $inactive_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // Number of featured products
-$db->query('SELECT count(*) as num_rows FROM #__pshop_product WHERE vendor_id='.$ps_vendor_id.' AND product_special="Y"');
+$db->query('SELECT count(*) as num_rows FROM #__{vm}_product WHERE vendor_id='.$ps_vendor_id.' AND product_special="Y"');
 $db->next_record();
 $special_products = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
 // 5 last orders
 $new_orders= Array();
-$db->query('SELECT order_id,order_total FROM #__pshop_orders WHERE vendor_id='.$ps_vendor_id.' ORDER BY cdate desc limit 5');
+$db->query('SELECT order_id,order_total FROM #__{vm}_orders WHERE vendor_id='.$ps_vendor_id.' ORDER BY cdate desc limit 5');
 while($db->next_record()) {
   $new_orders[$db->f('order_id')] = $db->f('order_total');
 }

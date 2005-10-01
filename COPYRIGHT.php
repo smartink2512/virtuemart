@@ -110,6 +110,11 @@ tar-archive
 Copyright:	1997-2003 The PHP Group
 License:	PHP License
 
+wz-tooltip
+----
+Copyright:	2002-2004 Walter Zorn
+License:	GNU Lesser General Public License (LGPL)
+
 FOOOD Icons (Administrator Toolbar)
 ----
 Copyright:	2004 FOOOD's Icons

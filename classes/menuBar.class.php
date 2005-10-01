@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: menuBar.class.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: menuBar.class.php,v 1.5 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -130,9 +130,10 @@ class vmMenuBar extends mosMenuBar {
 		$image2 = mosAdminMenus::ImageCheckAdmin( 'cancel_f2.png', '/administrator/images/', NULL, NULL, $alt, $task, 0 );
 		?>
 		<td>
-			<a class="toolbar" href="javascript:vm_submitButton('<?php echo $task;?>', 'adminForm', '<?php echo $my_page ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);" />
-				<?php echo $image; ?>
-				<br /><?php echo $alt;?></a>
+			<a class="toolbar" href="javascript:vm_submitButton('<?php echo $task;?>', 'adminForm', '<?php echo $my_page ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
+			<?php 
+			echo $image .'<br />';
+			echo $alt;?></a>
 		</td>
 		<?php
 	}

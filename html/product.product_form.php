@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.product_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -152,7 +152,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
    <td valign="top">
      <table width="100%" border="0">
       <tr> 
-       <td align="left" colspan="2"><?php echo "<h2>$info_label</h2>"; ?></td>
+       <td align="left" colspan="2"><?php echo "<h2 >$info_label</h2>"; ?></td>
     </tr>
     <tr> 
       <td  width="21%" ><div style="text-align:right;font-weight:bold;">
@@ -235,7 +235,7 @@ else {
               $ps_html->list_currency("product_currency",$price["product_currency"]) ?>
             </td>
             <td>&nbsp;<?php
-                echo mosToolTip( $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP . ": ".$shopper_db->f("shopper_group_name")); ?>               
+                echo mm_ToolTip( $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP . ": ".$shopper_db->f("shopper_group_name")); ?>               
                 <input type="hidden" name="shopper_group_id" value="<? echo $my_shopper_group_id ?>" />
              </td>
             </tr>
@@ -284,10 +284,8 @@ else {
       </td>
       <td width="85%">
         <?php
-            
-          editorArea( 'editor1', $db->sf("product_desc"), 'product_desc', '350', '300', '55', '25' )
-        
-            ?>
+		editorArea( 'editor1', htmlspecialchars( $db->sf("product_desc"), ENT_QUOTES ), 'product_desc', '350', '300', '55', '25' )
+	?>
       </td>
     </tr>
   </table>
@@ -574,7 +572,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
       </td>
       <td width="21%" > 
         <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $db->f("product_packaging") & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo mosToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION); ?>
+        echo mm_ToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION); ?>
       </td>
     </tr>
     <tr>
@@ -583,7 +581,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
       </td>
       <td width="21%" > 
         <input type="text" class="inputbox"  name="product_box" value="<?php echo ($db->f("product_packaging")>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo mosToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION); ?>
+        echo mm_ToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION); ?>
       </td>
     </tr>
     <!-- Changed Packaging - End -->
@@ -744,24 +742,21 @@ if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
 $tabs->endTab();
 $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/related.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;".$VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
 ?>
-  <table class="adminform">
-    <tr>
-      <td colspan="2">
-      <h2><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS ?></h2>
-      </td>
-    </tr>
-    <tr>
-      <td width="21%" valign="top">
-        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_INFO_MSG_PLEASE_SELECT ?>:</div>
-        <br/><br/>
-        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?></div>
-      </td>
-      <td width="79%"><?php 
-        echo $ps_html->list_products("related_products[]", $related_products, $product_id, false ); 
-        ?>
-      </td>
-    </tr>
-  </table>
+	<table class="adminform">
+		<tr>
+			<td colspan="2"><h2><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS ?></h2></td>
+		</tr>
+		<tr>
+			<td width="21%" valign="top">
+				<div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_INFO_MSG_PLEASE_SELECT ?>:</div>
+				<br/><br/>
+				<?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?>
+			</td>
+			<td width="79%"><?php 
+				echo $ps_html->list_products("related_products[]", $related_products, $product_id, false ); 
+			?></td>
+		</tr>
+	</table>
 <!-- Changed Product Type - Begin -->
 <?php
 $tabs->endTab();
@@ -953,9 +948,7 @@ if( $clone_product == "1" ) {
   
   $tabs->endTab();
 }
-?>
-</div>
-<?php
+
 $tabs->endPane();
 
 // Add necessary hidden fields
@@ -968,6 +961,7 @@ $funcname = !empty($product_id) ? "productUpdate" : "productAdd";
 $formObj->finishForm( $funcname, $next_page, $option );
 
 ?>
+
 <script type="text/javascript">
 <!--
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {

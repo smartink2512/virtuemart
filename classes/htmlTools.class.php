@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.5 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -388,48 +388,87 @@ class vmCommonHTML {
 	*/
 	function loadOverlib() {
 		global  $mosConfig_live_site;
-		?>
-		<script language="Javascript" type="text/javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
-		<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-		<?php
+		if( !defined( "_OVERLIB_LOADED" )) {
+			?>
+			<script language="Javascript" type="text/javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
+			<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
+			<?php
+			define ( "_OVERLIB_LOADED", "1" );
+		}
 	}
 }
 
 
 if ( !function_exists( "mosToolTip" ) ) {
-    /**
-    * Utility function to provide ToolTips
-    * @param string ToolTip text
-    * @param string Box title
-    * @returns HTML code for ToolTip
-    */
-    function mosToolTip($tooltip, $title='Mambo ToolTip') {
-        global $mosConfig_live_site;
-        $tip = "<a href=\"#\" onmouseover=\"return overlib('" . $tooltip . "', CAPTION, '$title', BELOW, RIGHT);\" onmouseout=\"return nd();\"><img src=\"" . $mosConfig_live_site . "/images/M_images/con_info.png\" width=\"16\" height=\"16\" border=\"0\" alt=\"info\" /></a>";
-        return $tip;
-    }
-}
-function mm_ToolTip($tooltip, $title='Tip!', $icon = "{mosConfig_live_site}/images/M_images/con_info.png" ) {
-    global $mosConfig_live_site;
-    if( !defined( "_OVERLIB_LOADED" )) {
-        vmCommonHTML::loadOverlib();
-        define ( "_OVERLIB_LOADED", "1" );
-    }
-    $varname = "html_".uniqid("l");
-    $tip = "<script type=\"text/javascript\">//<![CDATA[
-    var $varname = '$tooltip';
-    //]]></script>\n";
-    $tip .= "<a href=\"#\" onmouseover=\"return overlib($varname, CAPTION, '$title', ABOVE, VAUTO );\" onmouseout=\"return nd();\">";
-    if( stristr( $icon, "{mosConfig_live_site}" ))
-        $tip .= "<img alt=\"ToolTip\" src=\"".str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $icon)."\" border=\"0\" width=\"16\" height=\"16\" />";
-    else {
-        // assume it's Text
-        $tip .= $icon;
-    }
-    $tip .= "</a>";
-    return $tip;
+	/**
+	* Utility function to provide ToolTips
+	* @param string ToolTip text
+	* @param string Box title
+	* @returns HTML code for ToolTip
+	*/
+	function mosToolTip( $tooltip, $title='', $width='', $image='tooltip.png', $text='', $href='#', $link=1 ) {
+		global $mosConfig_live_site;
+		
+		vmCommonHTML::loadOverlib();
+		
+		if ( $width ) {
+			$width = ', WIDTH, \''.$width .'\'';
+		}
+		if ( $title ) {
+			$title = ', CAPTION, \''.$title .'\'';
+		}
+		if ( !$text ) {
+			$image 	= $mosConfig_live_site . '/includes/js/ThemeOffice/'. $image;
+			$text 	= '<img src="'. $image .'" border="0" alt="ToolTip" />';
+		}
+		$style = 'style="text-decoration: none; color: #333;"';
+		if ( $href ) {
+			$style = '';
+		}
+	
+		if ( $link ) {
+			$tip = "<a href=\"". $href ."\" onMouseOver=\"return overlib('" . $tooltip . "'". $title .", BELOW, RIGHT". $width .");\" onmouseout=\"return nd();\" ". $style .">". $text ."</a>";
+		} else {
+			$tip = "<span onMouseOver=\"return overlib('" . $tooltip . "'". $title .", BELOW, RIGHT". $width .");\" onmouseout=\"return nd();\" ". $style .">". $text ."</span>";
+		}
+	
+		return $tip;
+	}
 }
 
+/**
+* Utility function to provide ToolTips
+* @param string ToolTip text
+* @param string Box title
+* @returns HTML code for ToolTip
+*/
+function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) {
+	global $mosConfig_live_site;
+	
+	$tooltip = mysql_escape_string( $tooltip );
+	
+	if ( $width ) {
+		$width = 'this.T_WIDTH=\''.$width .'\';';
+	}
+	if ( $title ) {
+		$title = 'this.T_TITLE=\''.$title .'\';';
+	}
+	if ( !$text ) {
+		$image = str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $image);
+		$text 	= '<img src="'. $image .'" border="0" />';
+	}
+	$style = 'style="text-decoration: none; color: #333;"';
+	if ( $href ) {
+		$style = '';
+	}
+	if ( $link ) {
+		$tip = "<a href=\"". $href ."\" onmouseover=\"return escape( '$tooltip' );\" ". $style .">". $text ."</a>";
+	} else {
+		$tip = "<span onmouseover=\"$width $title return escape( '$tooltip' );\" ". $style .">". $text ."</span>";
+	}
+
+	return $tip;
+}
 // borrowed from mambo.php
 function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) {
 	
@@ -440,10 +479,6 @@ function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) 
 function mm_showMyFileName( $filename ) {
     
     if (DEBUG == '1' ) {
-        if( !defined( "_OVERLIB_LOADED" )) {
-			mosCommonHTML::loadOverlib();
-            define ( "_OVERLIB_LOADED", "1" );
-        }
         echo mm_ToolTip(addslashes("<div class='inputbox'>Begin of File: $filename</div>"));
     }
 }

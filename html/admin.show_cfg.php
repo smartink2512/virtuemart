@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.show_cfg.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: admin.show_cfg.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -109,12 +109,12 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
     <tr>
         <td><div align="right">
             <strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY ?></strong>&nbsp;&nbsp;
-            <?php echo mostooltip( $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN ); ?>
             </div>
         </td>
-        <td colspan="2">
+        <td>
             <input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo ENCODE_KEY ?>" />
         </td>
+		<td><?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN ); ?></td>
     </tr>
 </table>
     <?php
@@ -138,7 +138,6 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
         <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN ?>
         </td>
     </tr>
-    <tr>
     <tr>
         <td><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK ?></strong></div></td>
         <td>
@@ -183,7 +182,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
         <td valign="top"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN ?>
         <div style="visibility:hidden;" align="left" id="cs3">
         <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN ?>
-        <div>
+        </div>
         </td>
     </tr>
     <tr>
@@ -368,7 +367,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
 ?>
 <table class="adminform">
     <tr>
-        <td valign="top"><strong>Add-to-Cart Button Style</strong></div></td>
+        <td valign="top"><strong>Add-to-Cart Button Style</strong></td>
         <td valign="middle" colspan="2"><?php
                     $path = IMAGEPATH."ps_image";
             $files = mosReadDirectory( "$path", "add-to-cart_?.", true, true);
@@ -386,7 +385,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
         <td colspan="3"><hr />&nbsp;</td>
     </tr>
     <tr>
-        <td width="30%" valign="top" align="right"><strong>Enable Dynamic Thumbnail Resizing?</strong></div></td>
+        <td width="30%" valign="top" align="right"><strong>Enable Dynamic Thumbnail Resizing?</strong></td>
         <td width="15%" valign="top">
             <input type="checkbox" name="conf_PSHOP_IMG_RESIZE_ENABLE" class="inputbox" <?php if (PSHOP_IMG_RESIZE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
         </td>
@@ -415,7 +414,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
         <td colspan="3"><hr />&nbsp;</td>
     </tr>
     <tr>
-        <td><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 ?></strong></div></td>
+        <td><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 ?></strong></td>
         <td>
             <input type="text" name="conf_SEARCH_COLOR_1" class="inputbox" value="<?php echo SEARCH_COLOR_1 ?>" />
         </td>
@@ -423,7 +422,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
         </td>
     </tr>
     <tr>
-        <td><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 ?></strong></div></td>
+        <td><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 ?></strong></td>
         <td>
             <input type="text" name="conf_SEARCH_COLOR_2" class="inputbox" value="<?php echo SEARCH_COLOR_2 ?>" />
         </td>
@@ -441,7 +440,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
 ?>
 
 <table class="adminform">
-<tr><td colspan="2"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD ?></strong></div></td></tr>
+<tr><td colspan="2"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD ?></strong></td></tr>
 <?php
 require_once( CLASSPATH. "ps_shipping_method.php" );
 $ps_shipping_method = new ps_shipping_method;
@@ -521,6 +520,7 @@ echo "<input type=\"hidden\" name=\"shippingMethodCount\" value=\"".count($rows)
         <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN ?>
         </td>
     </tr>
+    <tr>
         <td rowspan="4" valign="top"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS ?></strong></div></td>
         <td width="40" valign="top">
             <input type="radio" name="conf_CHECKOUT_STYLE" <?php if (CHECKOUT_STYLE == '1') echo "checked=\"checked\""; ?> value="1" />

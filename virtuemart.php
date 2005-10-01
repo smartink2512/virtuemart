@@ -19,7 +19,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 global $mosConfig_absolute_path, $product_id;
 
 /* Load the virtuemart main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
+require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
 $my_page= explode ( '.', $page );
 $modulename = $my_page[0];
@@ -73,7 +73,7 @@ else {
       $pagename= "login_form";
     }
     else {
-      mosRedirect('index.php?option=com_virtuemart&page='.$_SESSION['last_page'], $error." Error Type: ".$error_type);
+      mosRedirect('index.php?option='.$option.'&page='.$_SESSION['last_page'], $error." Error Type: ".$error_type);
       exit();
     }
   }
@@ -101,7 +101,7 @@ else {
             )
         && $no_menu != "1"
     ) {
-		
+		define( '_FRONTEND_ADMIN_LOADED', '1' );
 		$mainframe->loadEditor = 1;
 		require_once( $mosConfig_absolute_path."/editor/editor.php" );
 		initEditor();
@@ -114,8 +114,8 @@ else {
 								'vendor.vendor_form' => 'vendor_terms_of_service');
 		editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
 		?>
-		<link type="text/css" rel="stylesheet" media="screen, projection" href="components/com_virtuemart/css/admin.css" />
-		<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/com_virtuemart/js/functions.js"></script>
+		<link type="text/css" rel="stylesheet" media="screen, projection" href="components/<?php echo $option ?>/css/admin.css" />
+		<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/functions.js"></script>
 		<?php
 		  
 		// The admin header with dropdown menu
@@ -193,27 +193,27 @@ if( !function_exists( "load_that_shop_page" )) {
       $auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list, $mosConfig_allowUserRegistration ;
       
       if( is_callable( array("mosMainFrame", "addCustomHeadTag" ) ) && !stristr( $_SERVER['PHP_SELF'], "index2.php") ) {
-        $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"components/com_virtuemart/js/sleight.js\"></script>
-<script type=\"text/javascript\" src=\"components/com_virtuemart/js/sleightbg.js\"></script>
-<link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"components/com_virtuemart/css/shop.css\" />" );
+        $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"components/$option/js/sleight.js\"></script>
+<script type=\"text/javascript\" src=\"components/$option/js/sleightbg.js\"></script>
+<link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"components/$option/css/shop.css\" />" );
       } else {
       ?>
-      <script type="text/javascript" src="components/com_virtuemart/js/sleight.js"></script>
-      <script type="text/javascript" src="components/com_virtuemart/js/sleightbg.js"></script>
-	<link type="text/css" rel="stylesheet" media="screen, projection" href="components/com_virtuemart/css/shop.css" />
+      <script type="text/javascript" src="components/<?php echo $option ?>/js/sleight.js"></script>
+      <script type="text/javascript" src="components/<?php echo $option ?>/js/sleightbg.js"></script>
+	<link type="text/css" rel="stylesheet" media="screen, projection" href="components/<?php echo $option ?>/css/shop.css" />
       <?php
       }
       
 	  // Show the PDF Button?
       if( PSHOP_PDF_BUTTON_ENABLE=='1' && !isset($_REQUEST['output']) && ($page=="shop.browse" || $page=="shop.product_details")) {
-        echo "<table align=\"right\"><tr><td><a title=\"PDF\" target=\"_blank\" href=\"index2.php?option=com_virtuemart&page=shop.pdf_output&showpage=$page&pop=1&output=pdf&product_id=$product_id&category_id=$category_id\">
+        echo "<table align=\"right\"><tr><td><a title=\"PDF\" target=\"_blank\" href=\"index2.php?option=$option&page=shop.pdf_output&showpage=$page&pop=1&output=pdf&product_id=$product_id&category_id=$category_id\">
             <img src=\"".IMAGEURL."ps_image/acroread.png\" alt=\"PDF\" height=\"32\" width=\"32\" border=\"0\" /></a></td></tr></table>";
       }
       // Load requested PAGE
       include( PAGEPATH.$modulename.".".$pagename.".php" );
     
       if (SHOWVERSION) {
-        include(PAGEPATH ."/VERSION.txt");
+        include(PAGEPATH ."/VERSION.php");
       }
     
       // Set debug option on/off
@@ -250,4 +250,6 @@ if( !function_exists( "load_that_shop_page" )) {
       load_that_shop_page( $modulename, $pagename);
   }
 }
+if( defined( '_FRONTEND_ADMIN_LOADED' ) || DEBUG == '1')
+	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
 ?>

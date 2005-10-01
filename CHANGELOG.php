@@ -32,6 +32,11 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+01-10-2005 soeren
+^ Changed all tooltips to use wz_tooltip, this gives always working tooltips - even on tabbed forms
++ added JS ToolTip by Walter Zorn to VirtueMart
+
+
 30-09-2005 schirmer
 # frontend administration can't load page
 # missing pshop_mode=admin in inventory for links

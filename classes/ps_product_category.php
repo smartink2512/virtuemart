@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_product_category.php,v 1.5 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.6 2005/09/30 18:59:45 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -692,7 +692,7 @@ class ps_product_category {
       for ($i=0; $i<$level; $i++) {
         echo "&nbsp;&nbsp;&nbsp;";
       }
-      echo "&#095&#095;|$level|&nbsp;";
+      echo "&#095;&#095;|$level|&nbsp;";
       echo "<a href=\"" ;   
       echo $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_category_form&category_id=" . $db->f("category_child_id"). "&category_parent_id=" . $db->f("category_parent_id");
       echo "\">";
@@ -1101,7 +1101,7 @@ class ps_product_category {
         echo "<option $selected value=\"$child_id\">\n";
       }
       for ($i=0;$i<$level;$i++) {
-        echo "&#151";
+        echo "&#151;";
       }
       echo "|$level|";
       echo "&nbsp;" . $db->f("category_name") . "</option>";

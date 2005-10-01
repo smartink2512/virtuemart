@@ -21,9 +21,9 @@ defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
 $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
 global $VM_LANG;
 /*** INSTALLER SECTION ***/
-if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
+if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
   
-  include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' );
+  include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
   
   /** can be update and newinstall **/
   $install_type = mosgetparam( $_REQUEST, 'install_type', 'newinstall' );
@@ -41,8 +41,8 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
     echo "You'll have to delete the file manually before being able to use VirtueMart!</span>";
   }
 }
-elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
-  include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.virtuemart.php' );
+elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
+  include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.virtuemart.php' );
   com_install();
   exit();
 }
@@ -50,7 +50,7 @@ elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/com_vir
 
 
 /* Load the virtuemart main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
+require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
 $limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
 $limitstart = $mainframe->getUserStateFromRequest( "view{$page}limitstart", 'limitstart', 0 );
@@ -82,4 +82,5 @@ if( DEBUG == '1' ) {
   // Load PAGE
   include( PAGEPATH."shop.debug.php" );
 }
+echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
 ?>

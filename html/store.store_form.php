@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.store_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: store.store_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -41,7 +41,7 @@ $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
 $tabs->startTab( $VM_LANG->_PHPSHOP_STORE_MOD, "info-page");
 ?>
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <table class="adminform">
     <tr> 
       <td width="22%" align="right" ><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_FULL_IMAGE ?>:</td>
       <td width="78%" ><?php  
@@ -72,7 +72,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_STORE_MOD, "info-page");
       <td width="22%" align="right" ><?php echo $VM_LANG->_PHPSHOP_FREE_SHIPPING_AMOUNT ?>: </td>
       <td width="78%" > 
         <input type="text" class="inputbox" name="vendor_freeshipping" value="<?php $db->sp("vendor_freeshipping") ?>" size="6" />
-      <?php echo mosToolTip( $VM_LANG->_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP ) ?>
+      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP ) ?>
       </td>
     </tr>
     <tr>
@@ -86,74 +86,74 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
     <tr>
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_SYMBOL ?> : </td>
       <td>
-        <input type="hidden" name="display_style[0]" value="<? echo $ps_vendor_id; ?>" size="4">
-        <input type="text" name="display_style[1]" value="<? echo $currency_display['symbol']; ?>" size="4" />
-        <?php echo mosToolTip( $VM_LANG->_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP )?>
+        <input type="hidden" name="display_style[0]" value="<?php echo $ps_vendor_id; ?>" size="4">
+        <input type="text" name="display_style[1]" value="<?php echo $currency_display['symbol']; ?>" size="4" />
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP )?>
       </td>
     </tr>
     <tr>
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_DECIMALS ?> : </td>
-      <td><input type="text" name="display_style[2]" value="<? echo $currency_display['nbdecimal']; ?>" size="1" />
-      <?php echo mosToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP ) ?>
+      <td><input type="text" name="display_style[2]" value="<?php echo $currency_display['nbdecimal']; ?>" size="1" />
+      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP ) ?>
       </td>
     </tr>
     <tr>
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_DECIMALSYMBOL ?> : </td>
-      <td><input type="text" name="display_style[3]" value="<? echo $currency_display['sdecimal']; ?>" size="1" />
-      <?php echo mosToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP ) ?></td>
+      <td><input type="text" name="display_style[3]" value="<?php echo $currency_display['sdecimal']; ?>" size="1" />
+      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP ) ?></td>
     </tr>
     <tr>
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_THOUSANDS ?> : </td>
-      <td><input type="text" name="display_style[4]" value="<? echo $currency_display['thousands']; ?>" size="1" />
-      <?php echo mosToolTip( $VM_LANG->_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP )?></td>
+      <td><input type="text" name="display_style[4]" value="<?php echo $currency_display['thousands']; ?>" size="1" />
+      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP )?></td>
     </tr>
     <tr>
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY ?> : </td>
       <td>
         <select name="display_style[5]">
-			<option value="0"<? if ($currency_display['positive']=='0') echo ' selected=\"selected\" ';?>>00Symb</option>
-	   		<option value="1"<? if ($currency_display['positive']=='1') echo ' selected=\"selected\" ';?>>00 Symb</option>
-	   		<option value="2"<? if ($currency_display['positive']=='2') echo ' selected=\"selected\" ';?>>Symb00</option>
-		   	<option value="3"<? if ($currency_display['positive']=='3') echo ' selected=\"selected\" ';?>>Symb 00</option>
+			<option value="0"<?php if ($currency_display['positive']=='0') echo ' selected=\"selected\" ';?>>00Symb</option>
+	   		<option value="1"<?php if ($currency_display['positive']=='1') echo ' selected=\"selected\" ';?>>00 Symb</option>
+	   		<option value="2"<?php if ($currency_display['positive']=='2') echo ' selected=\"selected\" ';?>>Symb00</option>
+		   	<option value="3"<?php if ($currency_display['positive']=='3') echo ' selected=\"selected\" ';?>>Symb 00</option>
         </select>
-        <?php echo mosToolTip( $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP ) ?>
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP ) ?>
       </td>
     </tr>
     <tr>
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY ?> : </td>
       <td>
         <select name="display_style[6]">
-			<option value="0"<? if ($currency_display['negative']=='0') echo ' selected=\"selected\" ';?>>(Symb00)</option>
-		   	<option value="1"<? if ($currency_display['negative']=='1') echo ' selected=\"selected\" ';?>>-Symb00</option>
-		   	<option value="2"<? if ($currency_display['negative']=='2') echo ' selected=\"selected\" ';?>>Symb-00</option>
-		   	<option value="3"<? if ($currency_display['negative']=='3') echo ' selected=\"selected\" ';?>>Symb00-</option>
-		   	<option value="4"<? if ($currency_display['negative']=='4') echo ' selected=\"selected\" ';?>>(00Symb)</option>
-		   	<option value="5"<? if ($currency_display['negative']=='5') echo ' selected=\"selected\" ';?>>-00Symb</option>
-		   	<option value="6"<? if ($currency_display['negative']=='6') echo ' selected=\"selected\" ';?>>00-Symb</option>
-		   	<option value="7"<? if ($currency_display['negative']=='7') echo ' selected=\"selected\" ';?>>00Symb-</option>
-		   	<option value="8"<? if ($currency_display['negative']=='8') echo ' selected=\"selected\" ';?>>-00 Symb</option>
-		   	<option value="9"<? if ($currency_display['negative']=='9') echo ' selected=\"selected\" ';?>>-Symb 00</option>
-		   	<option value="10"<? if ($currency_display['negative']=='10') echo ' selected=\"selected\" ';?>>00 Symb-</option>
-		   	<option value="11"<? if ($currency_display['negative']=='11') echo ' selected=\"selected\" ';?>>Symb 00-</option>
-		   	<option value="12"<? if ($currency_display['negative']=='12') echo ' selected=\"selected\" ';?>>Symb -00</option>
-		   	<option value="13"<? if ($currency_display['negative']=='13') echo ' selected=\"selected\" ';?>>00- Symb</option>
-		   	<option value="14"<? if ($currency_display['negative']=='14') echo ' selected=\"selected\" ';?>>(Symb 00)</option>
-		   	<option value="15"<? if ($currency_display['negative']=='15') echo ' selected=\"selected\" ';?>>(00 Symb)</option>
+			<option value="0"<?php if ($currency_display['negative']=='0') echo ' selected=\"selected\" ';?>>(Symb00)</option>
+		   	<option value="1"<?php if ($currency_display['negative']=='1') echo ' selected=\"selected\" ';?>>-Symb00</option>
+		   	<option value="2"<?php if ($currency_display['negative']=='2') echo ' selected=\"selected\" ';?>>Symb-00</option>
+		   	<option value="3"<?php if ($currency_display['negative']=='3') echo ' selected=\"selected\" ';?>>Symb00-</option>
+		   	<option value="4"<?php if ($currency_display['negative']=='4') echo ' selected=\"selected\" ';?>>(00Symb)</option>
+		   	<option value="5"<?php if ($currency_display['negative']=='5') echo ' selected=\"selected\" ';?>>-00Symb</option>
+		   	<option value="6"<?php if ($currency_display['negative']=='6') echo ' selected=\"selected\" ';?>>00-Symb</option>
+		   	<option value="7"<?php if ($currency_display['negative']=='7') echo ' selected=\"selected\" ';?>>00Symb-</option>
+		   	<option value="8"<?php if ($currency_display['negative']=='8') echo ' selected=\"selected\" ';?>>-00 Symb</option>
+		   	<option value="9"<?php if ($currency_display['negative']=='9') echo ' selected=\"selected\" ';?>>-Symb 00</option>
+		   	<option value="10"<?php if ($currency_display['negative']=='10') echo ' selected=\"selected\" ';?>>00 Symb-</option>
+		   	<option value="11"<?php if ($currency_display['negative']=='11') echo ' selected=\"selected\" ';?>>Symb 00-</option>
+		   	<option value="12"<?php if ($currency_display['negative']=='12') echo ' selected=\"selected\" ';?>>Symb -00</option>
+		   	<option value="13"<?php if ($currency_display['negative']=='13') echo ' selected=\"selected\" ';?>>00- Symb</option>
+		   	<option value="14"<?php if ($currency_display['negative']=='14') echo ' selected=\"selected\" ';?>>(Symb 00)</option>
+		   	<option value="15"<?php if ($currency_display['negative']=='15') echo ' selected=\"selected\" ';?>>(00 Symb)</option>
         </select>
-        <?php echo mosToolTip( $VM_LANG->_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP ) ?>
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP ) ?>
       </td>
     </tr>
  
     <tr> 
       <td width="22%" align="right" valign="top"><hr /><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_DESCRIPTION ?>:</td>
-      <td width="78%" ><hr /><?
+      <td width="78%" ><hr /><?php
 	  	  editorArea( 'editor1', $db->f("vendor_store_desc"), 'vendor_store_desc', '400', '200', '70', '15' )
 
       ?></td>
     </tr>
         <tr> 
       <td width="22%" align="right"  valign="top"><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_TOS ?>:</td>
-      <td width="78%" ><?
+      <td width="78%" ><?php
 	  editorArea( 'editor2', $db->f("vendor_terms_of_service"), 'vendor_terms_of_service', '400', '200', '70', '15' )
       ?></td>
     </tr>
@@ -162,7 +162,7 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
   $tabs->endTab();
   $tabs->startTab( $VM_LANG->_PHPSHOP_STORE_FORM_LBL, "store-page");
   ?>
-  <table>
+  <table class="adminform">
     <tr> 
       <td width="22%" align="right" ><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_STORE_NAME ?>:</td>
       <td width="78%" > 
@@ -234,7 +234,7 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
   $tabs->endTab();
   $tabs->startTab( $VM_LANG->_PHPSHOP_STORE_FORM_CONTACT_LBL, "contact-page");
   ?>
-  <table>
+  <table class="adminform">
     <tr>
       <td width="22%" align="right" > <?php echo $VM_LANG->_PHPSHOP_STORE_FORM_LAST_NAME ?>:</td>
       <td width="78%" > 
