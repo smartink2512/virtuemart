@@ -17,43 +17,16 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 @ini_set( "max_execution_time", "120" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_auth_user_vendor` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_auth_user_vendor` (
 	  `user_id` varchar(32) default NULL,
 	  `vendor_id` int(11) default NULL,
 	  KEY `idx_auth_user_vendor_user_id` (`user_id`),
 	  KEY `idx_auth_user_vendor_vendor_id` (`vendor_id`)
-		) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `user_info_id` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `address_type` char(2) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `address_type_name` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `company` varchar(64) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `title` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `last_name` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `first_name` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `middle_name` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `phone_1` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `phone_2` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `fax` varchar(32) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `address_1` varchar(64) NOT NULL default '';" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `address_2` varchar(64) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `city` varchar(32) NOT NULL default '';" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `state` varchar(32) NOT NULL default '';" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `country` varchar(32) NOT NULL default 'US';" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `zip` varchar(32) NOT NULL default '';" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `extra_field_1` varchar(255) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `extra_field_2` varchar(255) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `extra_field_3` varchar(255) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `extra_field_4` char(1) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `extra_field_5` char(1) default NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `perms` VARCHAR( 40 ) DEFAULT 'shopper' NOT NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `bank_account_nr` varchar(32) NOT NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `bank_name` varchar(32) NOT NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `bank_sort_code` varchar(16) NOT NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `bank_iban` varchar(64) NOT NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `bank_account_holder` varchar(48) NOT NULL;" ); $database->query();
-$database->setQuery( "ALTER TABLE #__users ADD  `bank_account_type` ENUM( 'Checking', 'Business Checking', 'Savings' ) DEFAULT 'Checking' NOT NULL;" ); $database->query();
+		) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_category` (
+/** REMOVED ALTERATION OF Joomla's User Table **/
+
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_category` (
   `category_id` INT( 11 ) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL default '0',
   `category_name` varchar(128) NOT NULL default '',
@@ -70,17 +43,17 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_category` (
   PRIMARY KEY  (`category_id`),
   KEY `idx_category_vendor_id` (`vendor_id`),
   KEY `idx_category_name` (`category_name`)
-) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_category_xref` (
+) TYPE=MyISAM;" );
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_category_xref` (
   `category_parent_id` INT( 11 ) NOT NULL,
   `category_child_id` INT( 11 ) NOT NULL,
   `category_list` int(11) default NULL,
   KEY `category_xref_category_parent_id` (`category_parent_id`),
   KEY `category_xref_category_child_id` (`category_child_id`),
   KEY `idx_category_xref_category_list` (`category_list`)
-) TYPE=MyISAM;" ); $database->query();
+) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_country` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_country` (
   `country_id` int(11) NOT NULL auto_increment,
   `zone_id` int(11) NOT NULL default '1',
   `country_name` varchar(64) default NULL,
@@ -88,8 +61,8 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_country` (
   `country_2_code` char(2) default NULL,
   PRIMARY KEY  (`country_id`),
   KEY `idx_country_name` (`country_name`)
-) TYPE=MyISAM AUTO_INCREMENT=240 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_country` VALUES (1, 1, 'Afghanistan', 'AFG', 'AF'),
+) TYPE=MyISAM AUTO_INCREMENT=240 ;" );
+$db->query( "INSERT INTO `#__{vm}_country` VALUES (1, 1, 'Afghanistan', 'AFG', 'AF'),
   (2, 1, 'Albania', 'ALB', 'AL'),	(3, 1, 'Algeria', 'DZA', 'DZ'),	(4, 1, 'American Samoa', 'ASM', 'AS'),
   (5, 1, 'Andorra', 'AND', 'AD'),	(6, 1, 'Angola', 'AGO', 'AO'),	(7, 1, 'Anguilla', 'AIA', 'AI'),
   (8, 1, 'Antarctica', 'ATA', 'AQ'),	(9, 1, 'Antigua and Barbuda', 'ATG', 'AG'),	(10, 1, 'Argentina', 'ARG', 'AR'),
@@ -168,26 +141,26 @@ $database->setQuery( "INSERT INTO `#__pshop_country` VALUES (1, 1, 'Afghanistan'
   (227, 1, 'Vanuatu', 'VUT', 'VU'),	(228, 1, 'Vatican City State (Holy See)', 'VAT', 'VA'),	(229, 1, 'Venezuela', 'VEN', 'VE'),
   (230, 1, 'Viet Nam', 'VNM', 'VN'),	(231, 1, 'Virgin Islands (British)', 'VGB', 'VG'),	(232, 1, 'Virgin Islands (U.S.)', 'VIR', 'VI'),
   (233, 1, 'Wallis and Futuna Islands', 'WLF', 'WF'),	(234, 1, 'Western Sahara', 'ESH', 'EH'),	(235, 1, 'Yemen', 'YEM', 'YE'),
-  (236, 1, 'Yugoslavia', 'YUG', 'YU'),	(237, 1, 'Zaire', 'ZAR', 'ZR'),	(238, 1, 'Zambia', 'ZMB', 'ZM'),	(239, 1, 'Zimbabwe', 'ZWE', 'ZW');"); $database->query();
+  (236, 1, 'Yugoslavia', 'YUG', 'YU'),	(237, 1, 'Zaire', 'ZAR', 'ZR'),	(238, 1, 'Zambia', 'ZMB', 'ZM'),	(239, 1, 'Zimbabwe', 'ZWE', 'ZW');");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_coupons` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_coupons` (
   `coupon_id` int(16) NOT NULL auto_increment,
   `coupon_code` varchar(32) NOT NULL default '',
   `percent_or_total` enum('percent','total') NOT NULL default 'percent',
   `coupon_type` ENUM( 'gift', 'permanent' ) DEFAULT 'gift' NOT NULL,
   `coupon_value` decimal(10,2) NOT NULL default '0.00',
   PRIMARY KEY  (`coupon_id`)
-) TYPE=MyISAM AUTO_INCREMENT=6 ;"); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=6 ;");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_csv` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_csv` (
   `field_id` int(11) NOT NULL auto_increment,
   `field_name` VARCHAR(128) NOT NULL,
   `field_default_value` text,
   `field_ordering` int(3) NOT NULL,
   `field_required` char(1) default 'N',
   PRIMARY KEY  (`field_id`)
-) TYPE=MyISAM;"); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_csv` VALUES
+) TYPE=MyISAM;");
+$db->query( "INSERT INTO `#__{vm}_csv` VALUES
   ('', 'product_sku', '', 1, 'Y' ),  ('', 'product_s_desc', '', 2, 'N' ),  ('', 'product_desc', '', 3, 'N' ),
   ('', 'product_thumb_image', '', 4, 'N' ),  ('', 'product_full_image', '', 5, 'N' ),  ('', 'product_weight', '', 6, 'N' ),
   ('', 'product_weight_uom', 'KG', 7, 'N' ),  ('', 'product_length', '', 8, 'N' ),  ('', 'product_width', '', 9, 'N' ),
@@ -195,16 +168,16 @@ $database->setQuery( "INSERT INTO `#__pshop_csv` VALUES
   ('', 'product_available_date', '', 13, 'N' ),  ('', 'product_discount_id', '', 14, 'N' ),  ('', 'product_name', '', 15, 'Y' ),
   ('', 'product_price', '', 16, 'N' ),  ('', 'category_path', '', 17, 'Y' ),  ('', 'manufacturer_id', '', 18, 'N' ),
   ('', 'product_tax_id', '', 19, 'N' ),  ('', 'product_sales', '', 20, 'N' ),  ('', 'product_parent_id', '0', 21, 'N' ),
-  ('', 'attribute', '', 22, 'N' ),  ('', 'custom_attribute', '', 23, 'N' ), ('', 'attributes', '', 24, 'N' ),  ('', 'attribute_values', '', 25, 'N' );"); $database->query();
+  ('', 'attribute', '', 22, 'N' ),  ('', 'custom_attribute', '', 23, 'N' ), ('', 'attributes', '', 24, 'N' ),  ('', 'attribute_values', '', 25, 'N' );");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_currency` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_currency` (
   `currency_id` int(11) NOT NULL auto_increment,
   `currency_name` varchar(64) default NULL,
   `currency_code` char(3) default NULL,
   PRIMARY KEY  (`currency_id`),
   KEY `idx_currency_name` (`currency_name`)
-) TYPE=MyISAM AUTO_INCREMENT=157 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_currency` VALUES (1,'Andorran Peseta','ADP'),
+) TYPE=MyISAM AUTO_INCREMENT=157 ;" );
+$db->query( "INSERT INTO `#__{vm}_currency` VALUES (1,'Andorran Peseta','ADP'),
   (2,'United Arab Emirates Dirham','AED'),	(3,'Afghanistan Afghani','AFA'),	(4,'Albanian Lek','ALL'),
   (5,'Netherlands Antillian Guilder','ANG'),	(6,'Angolan Kwanza','AOK'),	(7,'Argentinian Austral','ARA'),
   (9,'Australian Dollar','AUD'),	(10,'Aruban Florin','AWG'),	(11,'Barbados Dollar','BBD'),
@@ -251,9 +224,9 @@ $database->setQuery( "INSERT INTO `#__pshop_currency` VALUES (1,'Andorran Peseta
   (145,'Uruguayan Peso','UYP'),	(146,'Venezualan Bolivar','VEB'),	(147,'Vietnamese Dong','VND'),
   (148,'Vanuatu Vatu','VUV'),	(149,'Samoan Tala','WST'),	(150,'Democratic Yemeni Dinar','YDD'),
   (151,'Yemeni Rial','YER'),	(152,'New Yugoslavia Dinar','YUD'),	(153,'South African Rand','ZAR'),
-  (154,'Zambian Kwacha','ZMK'),	(155,'Zaire Zaire','ZRZ'),	(156,'Zimbabwe Dollar','ZWD'),	(157,'Slovak Koruna','SKK');"); $database->query();
+  (154,'Zambian Kwacha','ZMK'),	(155,'Zaire Zaire','ZRZ'),	(156,'Zimbabwe Dollar','ZWD'),	(157,'Slovak Koruna','SKK');");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_function` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_function` (
   `function_id` int(11) NOT NULL auto_increment,
   `module_id` int(11) default NULL,
   `function_name` varchar(32) default NULL,
@@ -264,8 +237,8 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_function` (
   PRIMARY KEY  (`function_id`),
   KEY `idx_function_module_id` (`module_id`),
   KEY `idx_function_name` (`function_name`)
-) TYPE=MyISAM AUTO_INCREMENT=110 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'admin,storeadmin'),
+) TYPE=MyISAM AUTO_INCREMENT=110 ;" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'admin,storeadmin'),
   (2, 1, 'userDelete', 'ps_user', 'delete', '', 'admin,storeadmin'),
   (3, 1, 'userUpdate', 'ps_user', 'update', '', 'admin,storeadmin'),
   (4, 1, 'adminPasswdUpdate', 'ps_user', 'update_admin_passwd', 'Updates Site Administrator Password', 'admin'),
@@ -387,9 +360,9 @@ $database->setQuery( "INSERT INTO `#__pshop_function` VALUES (1, 1, 'userAdd', '
   ('', 1, 'stateDelete', 'ps_country', 'deleteState', 'Delete a state record', 'storeadmin,admin'),
   ('', 2, 'csvFieldAdd', 'ps_csv', 'add', 'Add a CSV Field ', 'storeadmin,admin'),
   ('', 2, 'csvFieldUpdate', 'ps_csv', 'update', 'Update a CSV Field', 'storeadmin,admin'),
-  ('', 2, 'csvFieldDelete', 'ps_csv', 'delete', 'Delete a CSV Field', 'storeadmin,admin');"); $database->query();
+  ('', 2, 'csvFieldDelete', 'ps_csv', 'delete', 'Delete a CSV Field', 'storeadmin,admin');");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_manufacturer` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_manufacturer` (
 	`manufacturer_id` int(11) NOT NULL auto_increment,
 	`mf_name` varchar(64) default NULL,
 	`mf_email` varchar(255) default NULL,
@@ -397,26 +370,26 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_manufacturer` (
 	`mf_category_id` int(11) default NULL,
 	`mf_url` VARCHAR( 255 ) NOT NULL,
 	PRIMARY KEY  (`manufacturer_id`)
-  ) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_manufacturer` VALUES ('1', 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', '1', 'http://www.a-url.com');" ); $database->query();
+  ) TYPE=MyISAM;" );
+$db->query( "INSERT INTO `#__{vm}_manufacturer` VALUES ('1', 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', '1', 'http://www.a-url.com');" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_manufacturer_category` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_manufacturer_category` (
 			  `mf_category_id` int(11) NOT NULL auto_increment,
 			  `mf_category_name` varchar(64) default NULL,
 			  `mf_category_desc` text,
 			  PRIMARY KEY  (`mf_category_id`),
 			  KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
-			) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_manufacturer_category` VALUES ('1', '-default-', 'This is the default manufacturer category');" ); $database->query();
+			) TYPE=MyISAM;" );
+$db->query( "INSERT INTO `#__{vm}_manufacturer_category` VALUES ('1', '-default-', 'This is the default manufacturer category');" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_mf_xref` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_mf_xref` (
 			  `product_id` varchar(32) default NULL,
 			  `manufacturer_id` int(11) default NULL,
 			  KEY `idx_product_mf_xref_product_id` (`product_id`),
 			  KEY `idx_product_mf_xref_manufacturer_id` (`manufacturer_id`)
-			) TYPE=MyISAM;" ); $database->query();
+			) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_module` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_module` (
   `module_id` int(11) NOT NULL auto_increment,
   `module_name` varchar(255) default NULL,
   `module_description` text,
@@ -443,27 +416,27 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_module` (
   PRIMARY KEY  (`module_id`),
   KEY `idx_module_name` (`module_name`),
   KEY `idx_module_list_order` (`list_order`)
-) TYPE=MyISAM AUTO_INCREMENT=12838 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (1, 'admin', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n\r\n<p>Only used for the following:</p>\r\n<OL>\r\n\r\n<LI>User Maintenance</LI>\r\n<LI>Module Maintenance</LI>\r\n<LI>Function Maintenance</LI>\r\n</OL>\r\n', 'admin', 'header.ihtml', 'footer.ihtml', 'Y', 1, 'eng', 'esl', '', '', '', 'lang_eng.inc', 'lang_esl.inc', '', '', '', 'Admin', 'Admin', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (2, 'product', '<p>Here you can adminster your online catalog of products.  The Product Administrator allows you to create product categories, create new products, edit product attributes, and add product items for each attribute value.</p>', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'Y', 4, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Products', 'Mis<br />Productos', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (3, 'vendor', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n<p>Here you can manage the vendors on the phpShop system.</p>', 'admin', 'header.ihtml', 'footer.ihtml', 'Y', 6, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Vendors', 'Los<br />Distribuidores', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (4, 'shopper', '<p>Manage shoppers in your store.  Allows you to create shopper groups.  Shopper groups can be used when setting the price for a product.  This allows you to create different prices for different types of users.  An example of this would be to have a \'wholesale\' group and a \'retail\' group. </p>', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 4, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Shoppers', 'Mis<br />Clientes', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (5, 'order', '<p>View Order and Update Order Status.</p>', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 5, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Orders', 'Mis<br />Ordenes', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (6, 'msgs', 'This module is unprotected an used for displaying system messages to users.  We need to have an area that does not require authorization when things go wrong.', 'none', 'header.ihtml', 'footer.ihtml', 'N', 99, 'eng', 'esl', '', '', '', 'lang_en.inc', '', '', '', '', 'Admin', '', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (7, 'shop', 'This is the Washupito store module.  This is the demo store included with the phpShop distribution.', 'none', 's_header.ihtml', 's_footer.ihtml', 'Y', 99, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Shop', 'Visita<br />la Tienda', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (8, 'store', '', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'Y', 2, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Store', 'Mi<br />Tienda', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (9, 'account', 'This module allows shoppers to update their account information and view previously placed orders.', 'shopper,storeadmin,admin,demo', 's_header.ihtml', 's_footer.ihtml', 'N', 99, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Account', 'Account', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (10, 'checkout', '', 'none', 's_header.ihtml', 's_footer.ihtml', 'N', 99, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Checkout', 'Checkout', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (11, 'tax', 'The tax module allows you to set tax rates for states or regions within a country.  The rate is set as a decimal figure.  For example, 2 percent tax would be 0.02.', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 8, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Taxes', 'Impuestos', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (12, 'reportbasic', 'The report basic module allows you to do queries on all orders.', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 7, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Report Basic', 'Report Basic', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (13, 'zone', 'This is the zone-shipping module. Here you can manage your shipping costs according to Zones.', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'N', 9, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Zone Shipping', 'Zone Shipping', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES ( '12839', 'shipping', '<h4>Shipping</h4><p>Let this module calculate the shipping fees for your customers.<br>Create carriers for shipping areas and weight groups.</p>', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', '10', 'eng', 'ger', '', '', '', '', '', '', '', '', 'Shipping', 'Versand', '', '', '');;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES( '98', 'affiliate', 'administrate the affiliates on your store.', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'N', '99', 'EN', 'ES', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'affiliates', '', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES( '99', 'manufacturer', 'Manage the manufacturers of products in your store.', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'Y', '12', 'EN', 'ES', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'manufacturer', '', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (12842, 'help', 'Help for mambo-phpshop', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', '13', 'eng', '', '', '', '', '', '', '', '', '', 'Help', '', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_module` VALUES (12843, 'coupon', 'Coupon Management', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', '11', 'eng', '', '', '', '', '', '', '', '', '', 'Coupon', '', '', '', '');"); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=12838 ;" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (1, 'admin', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n\r\n<p>Only used for the following:</p>\r\n<OL>\r\n\r\n<LI>User Maintenance</LI>\r\n<LI>Module Maintenance</LI>\r\n<LI>Function Maintenance</LI>\r\n</OL>\r\n', 'admin', 'header.ihtml', 'footer.ihtml', 'Y', 1, 'eng', 'esl', '', '', '', 'lang_eng.inc', 'lang_esl.inc', '', '', '', 'Admin', 'Admin', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (2, 'product', '<p>Here you can adminster your online catalog of products.  The Product Administrator allows you to create product categories, create new products, edit product attributes, and add product items for each attribute value.</p>', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'Y', 4, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Products', 'Mis<br />Productos', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (3, 'vendor', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n<p>Here you can manage the vendors on the phpShop system.</p>', 'admin', 'header.ihtml', 'footer.ihtml', 'Y', 6, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Vendors', 'Los<br />Distribuidores', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (4, 'shopper', '<p>Manage shoppers in your store.  Allows you to create shopper groups.  Shopper groups can be used when setting the price for a product.  This allows you to create different prices for different types of users.  An example of this would be to have a \'wholesale\' group and a \'retail\' group. </p>', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 4, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Shoppers', 'Mis<br />Clientes', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (5, 'order', '<p>View Order and Update Order Status.</p>', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 5, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Orders', 'Mis<br />Ordenes', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (6, 'msgs', 'This module is unprotected an used for displaying system messages to users.  We need to have an area that does not require authorization when things go wrong.', 'none', 'header.ihtml', 'footer.ihtml', 'N', 99, 'eng', 'esl', '', '', '', 'lang_en.inc', '', '', '', '', 'Admin', '', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (7, 'shop', 'This is the Washupito store module.  This is the demo store included with the phpShop distribution.', 'none', 's_header.ihtml', 's_footer.ihtml', 'Y', 99, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Shop', 'Visita<br />la Tienda', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (8, 'store', '', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'Y', 2, 'eng', 'esl', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'Store', 'Mi<br />Tienda', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (9, 'account', 'This module allows shoppers to update their account information and view previously placed orders.', 'shopper,storeadmin,admin,demo', 's_header.ihtml', 's_footer.ihtml', 'N', 99, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Account', 'Account', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (10, 'checkout', '', 'none', 's_header.ihtml', 's_footer.ihtml', 'N', 99, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Checkout', 'Checkout', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (11, 'tax', 'The tax module allows you to set tax rates for states or regions within a country.  The rate is set as a decimal figure.  For example, 2 percent tax would be 0.02.', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 8, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Taxes', 'Impuestos', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (12, 'reportbasic', 'The report basic module allows you to do queries on all orders.', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 7, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Report Basic', 'Report Basic', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (13, 'zone', 'This is the zone-shipping module. Here you can manage your shipping costs according to Zones.', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'N', 9, 'eng', 'esl', '', '', '', '', '', '', '', '', 'Zone Shipping', 'Zone Shipping', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES ( '12839', 'shipping', '<h4>Shipping</h4><p>Let this module calculate the shipping fees for your customers.<br>Create carriers for shipping areas and weight groups.</p>', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', '10', 'eng', 'ger', '', '', '', '', '', '', '', '', 'Shipping', 'Versand', '', '', '');;" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES( '98', 'affiliate', 'administrate the affiliates on your store.', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'N', '99', 'EN', 'ES', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'affiliates', '', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES( '99', 'manufacturer', 'Manage the manufacturers of products in your store.', 'storeadmin,admin', 'header.ihtml', 'footer.ihtml', 'Y', '12', 'EN', 'ES', '', '', '', 'lang_en.inc', 'lang_es.inc', '', '', '', 'manufacturer', '', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (12842, 'help', 'Help for mambo-phpshop', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', '13', 'eng', '', '', '', '', '', '', '', '', '', 'Help', '', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_module` VALUES (12843, 'coupon', 'Coupon Management', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', '11', 'eng', '', '', '', '', '', '', '', '', '', 'Coupon', '', '', '', '');");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_history` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_history` (
 `order_status_history_id` int( 11 ) NOT NULL AUTO_INCREMENT ,
 `order_id` int( 11 ) NOT NULL default '0',
 `order_status_code` CHAR( 1 ) NOT NULL DEFAULT '0',
@@ -471,9 +444,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_history` (
 `customer_notified` int( 1 ) default '0',
 `comments` text,
 PRIMARY KEY ( `order_status_history_id` )
-) TYPE = MYISAM;" ); $database->query();
+) TYPE = MYISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_item` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_item` (
   `order_item_id` int(11) NOT NULL auto_increment,
   `order_id` int(11) default NULL,
   `user_info_id` varchar(32) default NULL default NULL,
@@ -493,9 +466,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_item` (
   KEY `idx_order_item_order_id` (`order_id`),
   KEY `idx_order_item_user_info_id` (`user_info_id`),
   KEY `idx_order_item_vendor_id` (`vendor_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=1 ;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_payment` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_payment` (
   `order_id` int(11) NOT NULL default '0',
   `payment_method_id` int(11) default NULL,
   `order_payment_code` VARCHAR( 30 ) NOT NULL,
@@ -506,9 +479,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_payment` (
   `order_payment_trans_id` TEXT NOT NULL,
   KEY `idx_order_payment_order_id` (`order_id`),
   KEY `idx_order_payment_method_id` (`payment_method_id`)
-) TYPE=MyISAM;" ); $database->query();
+) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_status` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_status` (
   `order_status_id` int(11) NOT NULL auto_increment,
   `order_status_code` char(1) NOT NULL default '',
   `order_status_name` varchar(64) default NULL,
@@ -517,14 +490,14 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_status` (
   PRIMARY KEY  (`order_status_id`),
   KEY `idx_order_status_list_order` (`list_order`),
   KEY `idx_order_status_vendor_id` (`vendor_id`)
-) TYPE=MyISAM AUTO_INCREMENT=5 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_order_status` VALUES (1, 'P', 'Pending', 1, 1);" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_order_status` VALUES (2, 'C', 'Confirmed', 2, 1);" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_order_status` VALUES (3, 'X', 'Cancelled', 3, 1);" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_order_status` VALUES (4, 'R', 'Refunded', 4, 1);" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_order_status` VALUES (5, 'S', 'Shipped', 5, 1);" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=5 ;" );
+$db->query( "INSERT INTO `#__{vm}_order_status` VALUES (1, 'P', 'Pending', 1, 1);" );
+$db->query( "INSERT INTO `#__{vm}_order_status` VALUES (2, 'C', 'Confirmed', 2, 1);" );
+$db->query( "INSERT INTO `#__{vm}_order_status` VALUES (3, 'X', 'Cancelled', 3, 1);" );
+$db->query( "INSERT INTO `#__{vm}_order_status` VALUES (4, 'R', 'Refunded', 4, 1);" );
+$db->query( "INSERT INTO `#__{vm}_order_status` VALUES (5, 'S', 'Shipped', 5, 1);" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_user_info` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_user_info` (
 	`order_info_id` int(11) NOT NULL auto_increment,
 	`order_id` int(11) NOT NULL,
 	`user_id` varchar(32) NOT NULL default '',
@@ -552,9 +525,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_order_user_info` (
 	`extra_field_5` char(1) default NULL,
 	PRIMARY KEY  (`order_info_id`),
 	KEY `idx_order_info_order_id` (`order_id`)
-  ) TYPE=MyISAM;" ); $database->query();
+  ) TYPE=MyISAM;" );
   
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_orders` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_orders` (
   `order_id` int(11) NOT NULL auto_increment,
   `user_id` varchar(32) NOT NULL default '',
   `vendor_id` int(11) NOT NULL default '0',
@@ -580,9 +553,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_orders` (
   KEY `idx_orders_order_number` (`order_number`),
   KEY `idx_orders_user_info_id` (`user_info_id`),
   KEY `idx_orders_ship_method_id` (`ship_method_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=1 ;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_payment_method` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_payment_method` (
   `payment_method_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) default NULL,
   `payment_method_name` varchar(255) default NULL,
@@ -602,12 +575,12 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_payment_method` (
   KEY `idx_payment_method_name` (`payment_method_name`),
   KEY `idx_payment_method_list_order` (`list_order`),
   KEY `idx_payment_method_shopper_group_id` (`shopper_group_id`)
-) TYPE=MyISAM AUTO_INCREMENT=5 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (1, 1, 'Purchase Order', '', 6, '0.00', 4, 'PO', 'N', 0, 'Y', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (2, 1, 'Cash On Delivery', '', 5, '-2.00', 5, 'COD', 'N', 0, 'Y', '', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (3, 1, 'Credit Card', 'ps_authorize', 5, '0.00', 0, 'AN', 'Y', 0, 'Y', '1,2,6,7,', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (4, 1, 'PayPal', 'ps_paypal', 5, '0.00', 0, 'PP', 'P', 0, 'Y', '', '<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_blank\">\r\n<input type=\"image\" name=\"submit\" src=\"http://images.paypal.com/images/x-click-but6.gif\" border=\"0\" alt=\"Make payments with PayPal, it\'s fast, free, and secure!\">\r\n<input type=\"hidden\" name=\"cmd\" value=\"_xclick\" />\r\n<input type=\"hidden\" name=\"business\" value=\"<?php echo PAYPAL_EMAIL ?>\" />\r\n<input type=\"hidden\" name=\"receiver_email\" value=\"<?php echo PAYPAL_EMAIL ?>\" />\r\n<input type=\"hidden\" name=\"item_name\" value=\"Order Nr. <?php \$db->p(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"order_id\" value=\"<?php \$db->p(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"invoice\" value=\"<?php \$db->p(\"order_number\") ?>\" />\r\n<input type=\"hidden\" name=\"amount\" value=\"<?php printf(\"%.2f\", \$db->f(\"order_total\"))?>\" />\r\n<input type=\"hidden\" name=\"currency_code\" value=\"<?php echo \$_SESSION[\'vendor_currency\'] ?>\" />\r\n<input type=\"hidden\" name=\"image_url\" value=\"<?php echo \$vendor_image_url ?>\" />\r\n<input type=\"hidden\" name=\"return\" value=\"<?php echo SECUREURL .\"index.php?option=com_phpshop&amp;page=checkout.result&amp;order_id=\".\$db->f(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"notify_url\" value=\"<?php echo SECUREURL .\"administrator/components/com_phpshop/notify.php\" ?>\" />\r\n<input type=\"hidden\" name=\"cancel_return\" value=\"<?php echo SECUREURL .\"index.php\" ?>\" />\r\n<input type=\"hidden\" name=\"undefined_quantity\" value=\"0\" />\r\n<input type=\"hidden\" name=\"pal\" value=\"NRUBJXESJTY24\" />\r\n<input type=\"hidden\" name=\"no_shipping\" value=\"1\" />\r\n<input type=\"hidden\" name=\"no_note\" value=\"1\" />\r\n</form>', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (5, 1, 'PayMate', 'ps_paymate', 5, '0.00', 0, 'PM', 'P', 0, 'N', '', '<script type=\"text/javascript\" language=\"javascript\">
+) TYPE=MyISAM AUTO_INCREMENT=5 ;" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (1, 1, 'Purchase Order', '', 6, '0.00', 4, 'PO', 'N', 0, 'Y', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (2, 1, 'Cash On Delivery', '', 5, '-2.00', 5, 'COD', 'N', 0, 'Y', '', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (3, 1, 'Credit Card', 'ps_authorize', 5, '0.00', 0, 'AN', 'Y', 0, 'Y', '1,2,6,7,', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (4, 1, 'PayPal', 'ps_paypal', 5, '0.00', 0, 'PP', 'P', 0, 'Y', '', '<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_blank\">\r\n<input type=\"image\" name=\"submit\" src=\"http://images.paypal.com/images/x-click-but6.gif\" border=\"0\" alt=\"Make payments with PayPal, it\'s fast, free, and secure!\">\r\n<input type=\"hidden\" name=\"cmd\" value=\"_xclick\" />\r\n<input type=\"hidden\" name=\"business\" value=\"<?php echo PAYPAL_EMAIL ?>\" />\r\n<input type=\"hidden\" name=\"receiver_email\" value=\"<?php echo PAYPAL_EMAIL ?>\" />\r\n<input type=\"hidden\" name=\"item_name\" value=\"Order Nr. <?php \$db->p(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"order_id\" value=\"<?php \$db->p(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"invoice\" value=\"<?php \$db->p(\"order_number\") ?>\" />\r\n<input type=\"hidden\" name=\"amount\" value=\"<?php printf(\"%.2f\", \$db->f(\"order_total\"))?>\" />\r\n<input type=\"hidden\" name=\"currency_code\" value=\"<?php echo \$_SESSION[\'vendor_currency\'] ?>\" />\r\n<input type=\"hidden\" name=\"image_url\" value=\"<?php echo \$vendor_image_url ?>\" />\r\n<input type=\"hidden\" name=\"return\" value=\"<?php echo SECUREURL .\"index.php?option=com_phpshop&amp;page=checkout.result&amp;order_id=\".\$db->f(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"notify_url\" value=\"<?php echo SECUREURL .\"administrator/components/com_phpshop/notify.php\" ?>\" />\r\n<input type=\"hidden\" name=\"cancel_return\" value=\"<?php echo SECUREURL .\"index.php\" ?>\" />\r\n<input type=\"hidden\" name=\"undefined_quantity\" value=\"0\" />\r\n<input type=\"hidden\" name=\"pal\" value=\"NRUBJXESJTY24\" />\r\n<input type=\"hidden\" name=\"no_shipping\" value=\"1\" />\r\n<input type=\"hidden\" name=\"no_note\" value=\"1\" />\r\n</form>', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (5, 1, 'PayMate', 'ps_paymate', 5, '0.00', 0, 'PM', 'P', 0, 'N', '', '<script type=\"text/javascript\" language=\"javascript\">
   function openExpress(){
 	var url = \'https://www.paymate.com.au/PayMate/ExpressPayment?mid=<?php echo PAYMATE_USERNAME.
 	  \"&amt=\".\$db->f(\"order_total\").
@@ -631,8 +604,8 @@ $database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (5, 1, 'PayMa
   <img src=\"https://www.paymate.com.au/homepage/images/butt_PayNow.gif\" border=\"0\" alt=\"Pay with Paymate Express\">
   <br />click here to pay your account</a>
   </p>
-  </div>', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (6, 1, 'WorldPay', 'ps_worldpay', 5, '0.00', 0, 'WP', 'P', 0, 'N', '', '<form action=\"https://select.worldpay.com/wcc/purchase\" method=\"post\">
+  </div>', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (6, 1, 'WorldPay', 'ps_worldpay', 5, '0.00', 0, 'WP', 'P', 0, 'N', '', '<form action=\"https://select.worldpay.com/wcc/purchase\" method=\"post\">
 						  <input type=hidden name=\"testMode\" value=\"100\"> 
 						  <input type=\"hidden\" name=\"instId\" value=\"<?php echo WORLDPAY_INST_ID ?>\" />
 						  <input type=\"hidden\" name=\"cartId\" value=\"<?php echo \$db->f(\"order_id\") ?>\" />
@@ -649,8 +622,8 @@ $database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (6, 1, 'World
 						  <input type=\"hidden\" name=\"withDelivery\"  value=\"true\">
 						  <br />
 						  <input type=\"submit\" value =\"PROCEED TO PAYMENT PAGE\" />
-						  </form>', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (7, 1, '2Checkout', 'ps_twocheckout', 5, '0.00', 0, '2CO', 'P', 0, 'N', '', '<?php
+						  </form>', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (7, 1, '2Checkout', 'ps_twocheckout', 5, '0.00', 0, '2CO', 'P', 0, 'N', '', '<?php
 	\$q  = \"SELECT * FROM #__users WHERE user_info_id=\'\".\$db->f(\"user_info_id\").\"\'\"; 
 	\$dbbt = new ps_DB;
 	\$dbbt->setQuery(\$q);
@@ -658,7 +631,7 @@ $database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (7, 1, '2Chec
 	\$dbbt->next_record(); 
 	// Get ship_to information
 	if( \$db->f(\"user_info_id\") != \$dbbt->f(\"user_info_id\")) {
-	  \$q2  = \"SELECT * FROM #__pshop_user_info WHERE user_info_id=\'\".\$db->f(\"user_info_id\").\"\'\"; 
+	  \$q2  = \"SELECT * FROM #__{vm}_user_info WHERE user_info_id=\'\".\$db->f(\"user_info_id\").\"\'\"; 
 	  \$dbst = new ps_DB;
 	  \$dbst->setQuery(\$q2);
 	  \$dbst->query();
@@ -719,20 +692,20 @@ $database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (7, 1, '2Chec
 	<?php echo \$poststring ?>
 	<p>Click on the Image below to pay...</p>
 	<input type=\"image\" name=\"submit\" src=\"https://www.2checkout.com/images/buy_logo.gif\" border=\"0\" alt=\"Make payments with 2Checkout, it\'s fast and secure!\" title=\"Pay your Order with 2Checkout, it\'s fast and secure!\" />
-	</form>', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (8, 1, 'NoChex', 'ps_nochex', 5, '0.00', 0, 'NOCHEX', 'P', 0, 'N', '', '<form action=\"https://www.nochex.com/nochex.dll/checkout\" method=post target=\"_blank\"> 
+	</form>', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (8, 1, 'NoChex', 'ps_nochex', 5, '0.00', 0, 'NOCHEX', 'P', 0, 'N', '', '<form action=\"https://www.nochex.com/nochex.dll/checkout\" method=post target=\"_blank\"> 
 											<input type=\"hidden\" name=\"email\" value=\"<?php echo NOCHEX_EMAIL ?>\" />
 											<input type=\"hidden\" name=\"amount\" value=\"<?php printf(\"%.2f\", \$db->f(\"order_total\"))?>\" />
 											<input type=\"hidden\" name=\"ordernumber\" value=\"<?php \$db->p(\"order_id\") ?>\" />
 											<input type=\"hidden\" name=\"logo\" value=\"<?php echo \$vendor_image_url ?>\" />
 											<input type=\"hidden\" name=\"returnurl\" value=\"<?php echo SECUREURL .\"index.php?option=com_phpshop&amp;page=checkout.result&amp;order_id=\".\$db->f(\"order_id\") ?>\" />
 											<input type=\"image\" name=\"submit\" src=\"http://www.nochex.com/web/images/paymeanimated.gif\"> 
-											</form>', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (9, 1, 'Credit Card (PayMeNow)', 'ps_paymenow', 5, '0.00', 0, 'PN', 'Y', 0, 'N', '1,2,3,', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (10, 1, 'eWay', 'ps_eway', 5, '0.00', 0, 'EW', 'Y', 0, 'N', '', '', '');"); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (11, 1, 'eCheck.net', 'ps_echeck', 5, '0.00', 0, 'ECK', 'B', 0, 'N', '', '', '');"); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (12, 1, 'Credit Card (eProcessingNetwork)', 'ps_epn', 5, '0.00', 0, 'EPN', 'Y', 0, 'N', '1,2,3,', '', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (13, 1, 'iKobo', '', 5, '0.00', 0, 'IK', 'P', 0, 'N', '', '<form action=\"https://www.iKobo.com/store/index.php\" method=\"post\"> 
+											</form>', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (9, 1, 'Credit Card (PayMeNow)', 'ps_paymenow', 5, '0.00', 0, 'PN', 'Y', 0, 'N', '1,2,3,', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (10, 1, 'eWay', 'ps_eway', 5, '0.00', 0, 'EW', 'Y', 0, 'N', '', '', '');");
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (11, 1, 'eCheck.net', 'ps_echeck', 5, '0.00', 0, 'ECK', 'B', 0, 'N', '', '', '');");
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (12, 1, 'Credit Card (eProcessingNetwork)', 'ps_epn', 5, '0.00', 0, 'EPN', 'Y', 0, 'N', '1,2,3,', '', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (13, 1, 'iKobo', '', 5, '0.00', 0, 'IK', 'P', 0, 'N', '', '<form action=\"https://www.iKobo.com/store/index.php\" method=\"post\"> 
   <input type=\"hidden\" name=\"cmd\" value=\"cart\" />Click on the image below to Pay with iKobo
   <input type=\"image\" src=\"https://www.ikobo.com/merchant/buttons/ikobo_pay1.gif\" name=\"submit\" alt=\"Pay with iKobo\" /> 
   <input type=\"hidden\" name=\"poid\" value=\"USER_ID\" /> 
@@ -746,8 +719,8 @@ $database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (13, 1, 'iKob
   <input type=\"hidden\" name=\"zip\" value=\"<?php echo \$user->zip?>\" /> 
   <input type=\"hidden\" name=\"phone\" value=\"<?php echo \$user->phone_1?>\" /> 
   <input type=\"hidden\" name=\"email\" value=\"<?php echo \$user->email?>\" /> 
-  </form> >', '');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (14, 1, 'iTransact', '', 5, '0.00', 0, 'ITR', 'P', 0, 'N', '', '<?php
+  </form> >', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (14, 1, 'iTransact', '', 5, '0.00', 0, 'ITR', 'P', 0, 'N', '', '<?php
   //your iTransact account details
   \$vendorID = \"XXXXX\";
   global \$vendor_name;
@@ -790,10 +763,10 @@ $database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES (14, 1, 'iTra
 		<input type=\"hidden\" name=\"phone\" value=\"<?php echo \$phone; ?>\" />
 		<input type=\"hidden\" name=\"email\" value=\"<?php echo \$email; ?>\" />
 		<p><input type=\"image\" alt=\"Process Secure Credit Card Transaction using iTransact\" border=\"0\" height=\"60\" width=\"210\" src=\"<?php echo \$cc_payment_image; ?>\" /> </p>
-		</form>', '');" ); $database->query();	
-$database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES ('', 1, 'Dankort / PBS', 'ps_pbs', 5, '0.00', 0, 'PBS', 'P', 0, 'N', '', '', '');"); $database->query();
+		</form>', '');" );	
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES ('', 1, 'Dankort / PBS', 'ps_pbs', 5, '0.00', 0, 'PBS', 'P', 0, 'N', '', '', '');");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product` (
   `product_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) NOT NULL default '0',
   `product_parent_id` int(11) default '0' NOT NULL,
@@ -831,42 +804,42 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product` (
   KEY `idx_product_sku` (`product_sku`),
   KEY `idx_product_ship_code_id` (`ship_code_id`),
   KEY `idx_product_name` (`product_name`)
-) TYPE=MyISAM AUTO_INCREMENT=17 ;" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=17 ;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_attribute` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_attribute` (
 	`product_id` int(11) NOT NULL default '0',
 	`attribute_name` char(255) NOT NULL default '',
 	`attribute_value` char(255) NOT NULL default '',
 	KEY `idx_product_attribute_product_id` (`product_id`),
 	KEY `idx_product_attribute_name` (`attribute_name`)
-  ) TYPE=MyISAM;" ); $database->query();
+  ) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_attribute_sku` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_attribute_sku` (
 	`product_id` int(11) NOT NULL default '0',
 	`attribute_name` char(255) NOT NULL default '',
 	`attribute_list` int(11) NOT NULL default '0',
 	KEY `idx_product_attribute_sku_product_id` (`product_id`),
 	KEY `idx_product_attribute_sku_attribute_name` (`attribute_name`),
 	KEY `idx_product_attribute_list` (`attribute_list`)
-  ) TYPE=MyISAM;" ); $database->query();
+  ) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_category_xref` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_category_xref` (
   `category_id` INT( 11 ) NOT NULL,
   `product_id` int(11) NOT NULL default '0',
   `product_list` int(11) default NULL,
   KEY `idx_product_category_xref_category_id` (`category_id`),
   KEY `idx_product_category_xref_product_id` (`product_id`),
   KEY `idx_product_category_xref_product_list` (`product_list`)
-) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_discount` (
+) TYPE=MyISAM;" );
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_discount` (
   `discount_id` int(11) NOT NULL auto_increment,
   `amount` decimal(5,2) NOT NULL default '0.00',
   `is_percent` tinyint(1) NOT NULL default '0',
   `start_date` int(11) NOT NULL default '0',
   `end_date` int(11) NOT NULL default '0',
   PRIMARY KEY  (`discount_id`)
-) TYPE=MyISAM;"); $database->query();
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_download` (
+) TYPE=MyISAM;");
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_download` (
   `product_id` int( 11 ) DEFAULT '0' NOT NULL ,
   `user_id` varchar( 255 ) DEFAULT '' NOT NULL ,
   `order_id` varchar( 255 ) DEFAULT '' NOT NULL ,
@@ -875,9 +848,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_download` (
   `download_id` varchar( 255 ) DEFAULT '' NOT NULL ,
   `file_name` varchar( 255 ) DEFAULT '' NOT NULL ,
   PRIMARY KEY ( `download_id` ) 
-  );" ); $database->query();
+  );" );
   
-  $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_files` (
+  $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_files` (
   `file_id` int(19) NOT NULL auto_increment,
   `file_product_id` int(11) NOT NULL default '0',
   `file_name` varchar(128) NOT NULL default '',
@@ -893,9 +866,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_download` (
   `file_image_thumb_height` int NOT NULL default '50',
   `file_image_thumb_width` int NOT NULL default '0',
   PRIMARY KEY  (`file_id`)
-) TYPE=MyISAM;" ); $database->query();
+) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_price` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_price` (
   `product_price_id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL default '0',
   `product_price` decimal(10,5) default NULL,
@@ -910,15 +883,15 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_price` (
   PRIMARY KEY  (`product_price_id`),
   KEY `idx_product_price_product_id` (`product_id`),
   KEY `idx_product_price_shopper_group_id` (`shopper_group_id`)
-) TYPE=MyISAM AUTO_INCREMENT=17 ;" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=17 ;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_relations` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_relations` (
   `product_id` int(11) NOT NULL default '0',
   `related_products` text,
   PRIMARY KEY  (`product_id`)
-) TYPE=MyISAM;"); $database->query();
+) TYPE=MyISAM;");
 	
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_reviews` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_reviews` (
 	  `product_id` varchar(255) NOT NULL default '',
 	  `comment` text NOT NULL,
 	  `userid` int(11) NOT NULL default '0',
@@ -926,9 +899,9 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_reviews` (
 	  `user_rating` tinyint(1) NOT NULL default '0',
 	  `review_ok` int(11) NOT NULL default '0',
 	  `review_votes` int(11) NOT NULL default '0'
-	) TYPE=MyISAM;" ); $database->query();
+	) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_type` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_type` (
 	  `product_type_id` int(11) NOT NULL auto_increment,
 	  `product_type_name` varchar(255) NOT NULL default '',
 	  `product_type_description` text default NULL,
@@ -937,16 +910,16 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_type` (
 	  `product_type_flypage` varchar(255) default NULL,
 	  `product_type_list_order` int(11) default NULL,
 	  PRIMARY KEY (`product_type_id`)
-  ) TYPE=MyISAM;" ); $database->query();
+  ) TYPE=MyISAM;" );
   
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_product_type_xref` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_product_type_xref` (
 	  `product_id` int(11) NOT NULL,
 	  `product_type_id` int(11) NOT NULL,
 	  KEY `idx_product_product_type_xref_product_id` (`product_id`),
 	  KEY `idx_product_product_type_xref_product_type_id` (`product_type_id`)
-  ) TYPE=MyISAM;" ); $database->query();
+  ) TYPE=MyISAM;" );
   
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_type_parameter` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_type_parameter` (
 	  `product_type_id` int(11) NOT NULL,
 	  `parameter_name` varchar(255) NOT NULL,
 	  `parameter_label` varchar(255) NOT NULL default '',
@@ -960,25 +933,25 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_type_paramete
 	  PRIMARY KEY (`product_type_id`,`parameter_name`),
 	  KEY `idx_product_type_parameter_product_type_id` (`product_type_id`),
 	  KEY `idx_product_type_parameter_parameter_order` (`parameter_list_order`)
-  ) TYPE=MyISAM;" ); $database->query();
+  ) TYPE=MyISAM;" );
   
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_votes` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_votes` (
   `product_id` int(255) NOT NULL default '0',
   `votes` text NOT NULL,
   `allvotes` int(11) NOT NULL default '0',
   `rating` tinyint(1) NOT NULL default '0',
   `lastip` varchar(50) NOT NULL default '0'
-) TYPE=MyISAM;" ); $database->query();
+) TYPE=MyISAM;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_shipping_carrier` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_shipping_carrier` (
 				`shipping_carrier_id` int(11) not null auto_increment, 
 				`shipping_carrier_name` char(80) default '' not null, 
 				`shipping_carrier_list_order` int(11) not null default 0, 
-				PRIMARY KEY (`shipping_carrier_id`)) ;" ); $database->query();
-  $database->setQuery( " INSERT INTO `#__pshop_shipping_carrier` VALUES (1, 'DHL', 0);" ); $database->query();
-  $database->setQuery( " INSERT INTO `#__pshop_shipping_carrier` VALUES (2, 'UPS', 1);" ); $database->query();
+				PRIMARY KEY (`shipping_carrier_id`)) ;" );
+  $db->query( " INSERT INTO `#__{vm}_shipping_carrier` VALUES (1, 'DHL', 0);" );
+  $db->query( " INSERT INTO `#__{vm}_shipping_carrier` VALUES (2, 'UPS', 1);" );
   
-  $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_shipping_rate` (
+  $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_shipping_rate` (
 				`shipping_rate_id` int(11) not null auto_increment, 
 				`shipping_rate_name` varchar(255) default '' not null, 
 				`shipping_rate_carrier_id` int(11) default '0' not null, 
@@ -992,30 +965,30 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_shipping_carrier` (
 				`shipping_rate_currency_id` int(11) default '0' not null, 
 				`shipping_rate_vat_id` int(11) default '0' not null,
 				`shipping_rate_list_order` int(11) default '0' not null, 
-				PRIMARY KEY (`shipping_rate_id`)) ;" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (1,'Inland &gt; 4kg','1','DEU','00000','99999','0.0','4.0','5.62','2','47','0','1');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (2,'Inland &gt; 8kg','1','DEU','00000','99999','4.0','8.0','6.39','2','47','0','2');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (3,'Inland &gt; 12kg','1','DEU','00000','99999','8.0','12.0','7.16','2','47','0','3');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (4,'Inland &gt; 20kg','1','DEU','00000','99999','12.0','20.0','8.69','2','47','0','4');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (5,'EU+ &gt;  4kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','0.0','4.0','14,57','2','47','0','5');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (6,'EU+ &gt;  8kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','4.0','8.0','18,66','2','47','0','6');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (7,'EU+ &gt; 12kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','8.0','12.0','22,57','2','47','0','7');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (8,'EU+ &gt; 20kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','12.0','20.0','30,93','2','47','0','8');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (9,'Europe &gt; 4kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','0.0','4.0','23,78','2','47','0','9');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (10,'Europe &gt;  8kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','4.0','8.0','29,91','2','47','0','10');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (11,'Europe &gt; 12kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','8.0','12.0','36,05','2','47','0','11');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (12,'Europe &gt; 20kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','12.0','20.0','48,32','2','47','0','12');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (13,'World_1 &gt;  4kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','0.0','4.0','26,84','2','47','0','13');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (14,'World_1 &gt; 8kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','4.0','8.0','35,02','2','47','0','14');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (15,'World_1 &gt;12kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','8.0','12.0','43,20','2','47','0','15');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (16,'World_1 &gt;20kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','12.0','20.0','59,57','2','47','0','16');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (17,'World_2 &gt; 4kg','1','','00000','99999','0.0','4.0','32,98','2','47','0','17');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (18,'World_2 &gt; 8kg','1','','00000','99999','4.0','8.0','47,29','2','47','0','18');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (19,'World_2 &gt; 12kg','1','','00000','99999','8.0','12.0','61,61','2','47','0','19');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (20,'World_2 &gt; 20kg','1','','00000','99999','12.0','20.0','90,24','2','47','0','20');" ); $database->query();
-   $database->setQuery( " INSERT INTO `#__pshop_shipping_rate` VALUES (21,'UPS Express','2','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','0.0','20.0','5,24','2','47','0','21');" ); $database->query();
+				PRIMARY KEY (`shipping_rate_id`)) ;" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (1,'Inland &gt; 4kg','1','DEU','00000','99999','0.0','4.0','5.62','2','47','0','1');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (2,'Inland &gt; 8kg','1','DEU','00000','99999','4.0','8.0','6.39','2','47','0','2');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (3,'Inland &gt; 12kg','1','DEU','00000','99999','8.0','12.0','7.16','2','47','0','3');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (4,'Inland &gt; 20kg','1','DEU','00000','99999','12.0','20.0','8.69','2','47','0','4');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (5,'EU+ &gt;  4kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','0.0','4.0','14,57','2','47','0','5');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (6,'EU+ &gt;  8kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','4.0','8.0','18,66','2','47','0','6');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (7,'EU+ &gt; 12kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','8.0','12.0','22,57','2','47','0','7');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (8,'EU+ &gt; 20kg','1','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','12.0','20.0','30,93','2','47','0','8');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (9,'Europe &gt; 4kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','0.0','4.0','23,78','2','47','0','9');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (10,'Europe &gt;  8kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','4.0','8.0','29,91','2','47','0','10');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (11,'Europe &gt; 12kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','8.0','12.0','36,05','2','47','0','11');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (12,'Europe &gt; 20kg','1','ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP','00000','99999','12.0','20.0','48,32','2','47','0','12');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (13,'World_1 &gt;  4kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','0.0','4.0','26,84','2','47','0','13');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (14,'World_1 &gt; 8kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','4.0','8.0','35,02','2','47','0','14');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (15,'World_1 &gt;12kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','8.0','12.0','43,20','2','47','0','15');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (16,'World_1 &gt;20kg','1','EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA','00000','99999','12.0','20.0','59,57','2','47','0','16');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (17,'World_2 &gt; 4kg','1','','00000','99999','0.0','4.0','32,98','2','47','0','17');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (18,'World_2 &gt; 8kg','1','','00000','99999','4.0','8.0','47,29','2','47','0','18');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (19,'World_2 &gt; 12kg','1','','00000','99999','8.0','12.0','61,61','2','47','0','19');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (20,'World_2 &gt; 20kg','1','','00000','99999','12.0','20.0','90,24','2','47','0','20');" );
+   $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (21,'UPS Express','2','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','0.0','20.0','5,24','2','47','0','21');" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_shopper_group` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_shopper_group` (
   `shopper_group_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) default NULL,
   `shopper_group_name` varchar(32) default NULL,
@@ -1026,12 +999,12 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_shopper_group` (
   PRIMARY KEY  (`shopper_group_id`),
   KEY `idx_shopper_group_vendor_id` (`vendor_id`),
   KEY `idx_shopper_group_name` (`shopper_group_name`)
-) TYPE=MyISAM AUTO_INCREMENT=8 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_shopper_group` VALUES (5, 1, '-default-', 'This is the default shopper group.','0.00', '1', '1')" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_shopper_group` VALUES (6, 1, 'Gold Level', 'Gold Level phpShoppers.','0.00', '1', '0')" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_shopper_group` VALUES (7, 1, 'Wholesale', 'Shoppers that can buy at wholesale.','0.00', '0', '0')" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=8 ;" );
+$db->query( "INSERT INTO `#__{vm}_shopper_group` VALUES (5, 1, '-default-', 'This is the default shopper group.','0.00', '1', '1')" );
+$db->query( "INSERT INTO `#__{vm}_shopper_group` VALUES (6, 1, 'Gold Level', 'Gold Level phpShoppers.','0.00', '1', '0')" );
+$db->query( "INSERT INTO `#__{vm}_shopper_group` VALUES (7, 1, 'Wholesale', 'Shoppers that can buy at wholesale.','0.00', '0', '0')" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_shopper_vendor_xref` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_shopper_vendor_xref` (
   `user_id` varchar(32) default NULL,
   `vendor_id` int(11) default NULL,
   `shopper_group_id` int(11) default NULL,
@@ -1039,19 +1012,10 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_shopper_vendor_xref` 
   KEY `idx_shopper_vendor_xref_user_id` (`user_id`),
   KEY `idx_shopper_vendor_xref_vendor_id` (`vendor_id`),
   KEY `idx_shopper_vendor_xref_shopper_group_id` (`shopper_group_id`)
-) TYPE=MyISAM;" ); $database->query();
-
-$database->setQuery( "SELECT id FROM #__users"); 
-$row = $database->loadObjectList();
-foreach( $row as $user) {
-  $database->setQuery( "INSERT INTO `#__pshop_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '');" );
-  $database->query();
-  $database->setQuery( "INSERT INTO `#__pshop_auth_user_vendor` VALUES ('".$user->id."', '1');" );
-  $database->query();
-}
+) TYPE=MyISAM;" );
 
 # States Management; 05.05.2005
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_state` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_state` (
 	`state_id` int(11) NOT NULL auto_increment,
 	`country_id` int(11) NOT NULL default '1',
 	`state_name` varchar(64) default NULL,
@@ -1060,8 +1024,8 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_state` (
 	PRIMARY KEY  (`state_id`),
 	UNIQUE KEY `state_3_code` (`state_3_code`,`state_2_code`),
 	KEY `idx_country_id` (`country_id`)
-  ) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_state` VALUES
+  ) TYPE=MyISAM;" );
+$db->query( "INSERT INTO `#__{vm}_state` VALUES
 ('', 223, 'Alabama', 'ALA', 'AL'),  ('', 223, 'Alaska', 'ALK', 'AK'),  ('', 223, 'Arizona', 'ARZ', 'AZ'),
 ('', 223, 'Arkansas', 'ARK', 'AR'),  ('', 223, 'California', 'CAL', 'CA'),  ('', 223, 'Colorado', 'COL', 'CO'),
 ('', 223, 'Connecticut', 'CCT', 'CT'),  ('', 223, 'Delaware', 'DEL', 'DE'),  ('', 223, 'District Of Columbia', 'DOC', 'DC'),
@@ -1121,9 +1085,9 @@ $database->setQuery( "INSERT INTO `#__pshop_state` VALUES
 ('', 44, 'Nei Mongol', 'NML', 'NM'),  ('', 44, 'Ningxia Hui', 'NIH', 'NH'),  ('', 44, 'Qinghai', 'QIN', 'QI'),
 ('', 44, 'Shaanxi', 'SHA', 'SH'),  ('', 44, 'Shandong', 'SNG', 'SG'),  ('', 44, 'Shanghai', 'SHH', 'SI'),
 ('', 44, 'Shanxi', 'SHX', 'SX'),  ('', 44, 'Sichuan', 'SIC', 'SN'),  ('', 44, 'Tianjin', 'TIA', 'TI'),
-('', 44, 'Xinjiang Uygur', 'XIU', 'XU'),  ('', 44, 'Xizang', 'XIZ', 'XI'),  ('', 44, 'Yunnan', 'YUN', 'YU'),  ('', 44, 'Zhejiang', 'ZHE', 'ZH');"); $database->query();
+('', 44, 'Xinjiang Uygur', 'XIU', 'XU'),  ('', 44, 'Xizang', 'XIZ', 'XI'),  ('', 44, 'Yunnan', 'YUN', 'YU'),  ('', 44, 'Zhejiang', 'ZHE', 'ZH');");
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_tax_rate` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_tax_rate` (
   `tax_rate_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) default NULL,
   `tax_state` varchar(64) default NULL,
@@ -1132,10 +1096,10 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_tax_rate` (
   `tax_rate` decimal(10,4) default NULL,
   PRIMARY KEY  (`tax_rate_id`),
   KEY `idx_tax_rate_vendor_id` (`vendor_id`)
-) TYPE=MyISAM AUTO_INCREMENT=3 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_tax_rate` VALUES (2, 1, 'CA', 'USA', 964565926, '0.0825');" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=3 ;" );
+$db->query( "INSERT INTO `#__{vm}_tax_rate` VALUES (2, 1, 'CA', 'USA', 964565926, '0.0825');" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_user_info` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_user_info` (
   `user_info_id` int(11) NOT NULL auto_increment,
   `user_id` varchar(32) NOT NULL default '',
   `address_type` char(2) default NULL,
@@ -1163,11 +1127,29 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_user_info` (
   `cdate` int(11) default NULL,
   `mdate` int(11) default NULL,
   `perms` VARCHAR( 40 ) DEFAULT 'shopper' NOT NULL,
+  `bank_account_nr` varchar(32) NOT NULL,
+  `bank_name` varchar(32) NOT NULL,
+  `bank_sort_code` varchar(16) NOT NULL,
+  `bank_iban` varchar(64) NOT NULL,
+  `bank_account_holder` varchar(48) NOT NULL,
+  `bank_account_type` ENUM( 'Checking', 'Business Checking', 'Savings' ) DEFAULT 'Checking' NOT NULL,
   PRIMARY KEY  (`user_info_id`),
   KEY `idx_user_info_user_id` (`user_id`)
-) TYPE=MyISAM AUTO_INCREMENT=20 ;" ); $database->query();
+) TYPE=MyISAM AUTO_INCREMENT=20 ;" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_vendor` (
+
+$db->query( "SELECT id FROM #__users"); 
+$row = $database->loadObjectList();
+foreach( $row as $user) {
+	$db->query( "INSERT INTO `#__{vm}_auth_user_vendor` VALUES ('".$user->id."', '1');" );
+	$db->query( "INSERT INTO `#__{vm}_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '');" );
+	$db->query( "INSERT INTO `#__{vm}_user_info (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate`,`user_email` )
+					VALUES( '".md5(uniqid('virtuemart'))."','".$user->id."','BT', UNIX_TIMESTAMP('".$user->registerDate."'),UNIX_TIMESTAMP('".$user->lastvisitDate."'),'".$user->email."');" );
+
+ 
+}
+
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_vendor` (
   `vendor_id` int(11) NOT NULL auto_increment,
   `vendor_name` varchar(64) default NULL,
   `contact_last_name` varchar(32) NOT NULL default '',
@@ -1202,25 +1184,25 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_vendor` (
   PRIMARY KEY  (`vendor_id`),
   KEY `idx_vendor_name` (`vendor_name`),
   KEY `idx_vendor_category_id` (`vendor_category_id`)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_vendor` VALUES (1, 'Washupito\'s Tiendita', 'Owner', 'Demo', 'Store', 'Mr.', 
+) TYPE=MyISAM AUTO_INCREMENT=2 ;" );
+$db->query( "INSERT INTO `#__{vm}_vendor` VALUES (1, 'Washupito\'s Tiendita', 'Owner', 'Demo', 'Store', 'Mr.', 
 	  '555-555-1212', '555-555-1212', '555-555-1212', '$mosConfig_mailfrom', '555-555-1212', '100 Washupito Avenue, N.W.', 
 	  '', 'Lake Forest', 'CA', 'USA', '92630', 'Washupito\'s Tiendita', 
 	  '<p>We have the best tools for do-it-yourselfers.  Check us out! </p>
 	<p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p>
 	<p>You can easily find products selecting the category you would like to browse above.</p>', 0, '', 'c19970d6f2970cb0d1b13bea3af3144a.gif', 'USD', 950302468, 968309845, 'shop_image/', 
 	  '<h5>You haven\'t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_phpshop>here</a> to change this text.</h5>',
-	  'http://www.mambo-phpshop.net','0.00', '0.00', '1|$|2|.| |2|1');" ); $database->query();
+	  'http://www.mambo-phpshop.net','0.00', '0.00', '1|$|2|.| |2|1');" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_vendor_category` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_vendor_category` (
   `vendor_category_id` int(11) NOT NULL auto_increment,
   `vendor_category_name` varchar(64) default NULL,
   `vendor_category_desc` text,
   PRIMARY KEY  (`vendor_category_id`),
   KEY `idx_vendor_category_category_name` (`vendor_category_name`)
-) TYPE=MyISAM AUTO_INCREMENT=7 ;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_vendor_category` VALUES (6, '-default-', 'Default');" ); $database->query();
-$database->setQuery( "CREATE TABLE `#__pshop_waiting_list` (
+) TYPE=MyISAM AUTO_INCREMENT=7 ;" );
+$db->query( "INSERT INTO `#__{vm}_vendor_category` VALUES (6, '-default-', 'Default');" );
+$db->query( "CREATE TABLE `#__{vm}_waiting_list` (
 	  waiting_list_id int(11) NOT NULL auto_increment,
 	  product_id int(11) NOT NULL default '0',
 	  user_id varchar(32) NOT NULL default '',
@@ -1230,8 +1212,8 @@ $database->setQuery( "CREATE TABLE `#__pshop_waiting_list` (
 	  PRIMARY KEY  (waiting_list_id),
 	  KEY product_id (product_id),
 	  KEY notify_email (notify_email)
-	) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_zone_shipping` (
+	) TYPE=MyISAM;" );
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_zone_shipping` (
   `zone_id` int(11) NOT NULL auto_increment,
   `zone_name` varchar(255) default NULL,
   `zone_cost` decimal(10,2) default NULL,
@@ -1240,27 +1222,27 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_zone_shipping` (
   `zone_tax_rate` INT( 11 ) NOT NULL,
   PRIMARY KEY  (`zone_id`),
   KEY zone_id (`zone_id`)
-) TYPE=MyISAM;" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_zone_shipping` VALUES (1, 'Default', '6.00', '35.00', 'This is the default Shipping Zone. This is the zone information that all countries will use until you assign each individual country to a Zone.', '2');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_zone_shipping` VALUES (2, 'Zone 1', '1000.00', '10000.00', 'This is a zone example', '2');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_zone_shipping` VALUES (3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', '2');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_zone_shipping` VALUES (4, 'Zone 3', '11.00', '64.00', 'Another usefull thing might be details about this zone or special instructions.', '2');" ); $database->query();
+) TYPE=MyISAM;" );
+$db->query( "INSERT INTO `#__{vm}_zone_shipping` VALUES (1, 'Default', '6.00', '35.00', 'This is the default Shipping Zone. This is the zone information that all countries will use until you assign each individual country to a Zone.', '2');" );
+$db->query( "INSERT INTO `#__{vm}_zone_shipping` VALUES (2, 'Zone 1', '1000.00', '10000.00', 'This is a zone example', '2');" );
+$db->query( "INSERT INTO `#__{vm}_zone_shipping` VALUES (3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', '2');" );
+$db->query( "INSERT INTO `#__{vm}_zone_shipping` VALUES (4, 'Zone 3', '11.00', '64.00', 'Another usefull thing might be details about this zone or special instructions.', '2');" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_affiliate_sale` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_affiliate_sale` (
 			   `order_id` int(11) NOT NULL,
 			   `visit_id` varchar(32) NOT NULL,
 			   `affiliate_id` int(11) NOT NULL,
 			   `rate` int(2) NOT NULL,
-			   PRIMARY KEY (`order_id`));" ); $database->query();
+			   PRIMARY KEY (`order_id`));" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_affiliate` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_affiliate` (
 	   `affiliate_id` int(11) NOT NULL auto_increment,
 	   `user_id` VARCHAR(32) NOT NULL,
 	   `active` char(1) DEFAULT 'N' NOT NULL,
 	   `rate` int(11) NOT NULL,
-	   PRIMARY KEY (`affiliate_id`));" ); $database->query();
+	   PRIMARY KEY (`affiliate_id`));" );
 
-$database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_visit` (
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_visit` (
 			 `visit_id` varchar(255) NOT NULL,
 			 `affiliate_id` int(11) NOT NULL,
 			 `pages` int(11) NOT NULL,
@@ -1268,20 +1250,20 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_visit` (
 			 `exit_page` varchar(255) NOT NULL,
 			 `sdate` int(11) NOT NULL,
 			 `edate` int(11) NOT NULL,
-			 PRIMARY KEY (`visit_id`));" ); $database->query();
- $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_creditcard` (
+			 PRIMARY KEY (`visit_id`));" );
+ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_creditcard` (
 				`creditcard_id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
 				`vendor_id` INT( 11 ) NOT NULL,
 				`creditcard_name` VARCHAR( 70 ) NOT NULL ,
 				`creditcard_code` VARCHAR( 30 ) NOT NULL ,
 				PRIMARY KEY ( `creditcard_id` )
-				);" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_creditcard` VALUES (1, 1, 'Visa', 'VISA');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_creditcard` VALUES (2, 1, 'MasterCard', 'MC');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_creditcard` VALUES (3, 1, 'American Express', 'amex');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_creditcard` VALUES (4, 1, 'Discover Card', 'discover');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_creditcard` VALUES (5, 1, 'Diners Club', 'diners');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_creditcard` VALUES (6, 1, 'JCB', 'jcb');" ); $database->query();
-$database->setQuery( "INSERT INTO `#__pshop_creditcard` VALUES (7, 1, 'Australian Bankcard', 'australian_bc');" ); $database->query();
+				);" );
+$db->query( "INSERT INTO `#__{vm}_creditcard` VALUES (1, 1, 'Visa', 'VISA');" );
+$db->query( "INSERT INTO `#__{vm}_creditcard` VALUES (2, 1, 'MasterCard', 'MC');" );
+$db->query( "INSERT INTO `#__{vm}_creditcard` VALUES (3, 1, 'American Express', 'amex');" );
+$db->query( "INSERT INTO `#__{vm}_creditcard` VALUES (4, 1, 'Discover Card', 'discover');" );
+$db->query( "INSERT INTO `#__{vm}_creditcard` VALUES (5, 1, 'Diners Club', 'diners');" );
+$db->query( "INSERT INTO `#__{vm}_creditcard` VALUES (6, 1, 'JCB', 'jcb');" );
+$db->query( "INSERT INTO `#__{vm}_creditcard` VALUES (7, 1, 'Australian Bankcard', 'australian_bc');" );
 
 ?>

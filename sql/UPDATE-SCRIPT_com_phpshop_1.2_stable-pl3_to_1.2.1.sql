@@ -17,3 +17,10 @@ ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_2` varchar(255) default 
 ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_3` varchar(255) default NULL;
 ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_4` char(1) default NULL;
 ALTER TABLE mos_pshop_order_user_info ADD  `extra_field_5` char(1) default NULL;
+
+ALTER TABLE mos_users ADD  `bank_account_nr` varchar(32) NOT NULL;
+ALTER TABLE mos_users ADD  `bank_name` varchar(32) NOT NULL;
+ALTER TABLE mos_users ADD  `bank_sort_code` varchar(16) NOT NULL;
+ALTER TABLE mos_users ADD  `bank_iban` varchar(64) NOT NULL;
+ALTER TABLE mos_users ADD  `bank_account_holder` varchar(48) NOT NULL;
+ALTER TABLE mos_users ADD  `bank_account_type` ENUM( 'Checking', 'Business Checking', 'Savings' ) DEFAULT 'Checking' NOT NULL;
