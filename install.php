@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: install.php,v 1.2 2005/09/29 20:01:12 soeren_nb Exp $
+* @version $Id: install.php,v 1.3 2005/09/30 18:59:44 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -21,7 +21,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 function installvirtuemart( $install_type, $install_sample_data=false ){
-	global 	$database, $mosConfig_absolute_path, $mosConfig_mailfrom, $VM_LANG, $mosConfig_dirperms;
+	global 	$database, $mosConfig_absolute_path, $mosConfig_mailfrom, $VM_LANG, $mosConfig_dirperms, $mosConfig_live_site;
 	
 	if( empty($mosConfig_mailfrom)) $mosConfig_mailfrom = "demo_order@virtuemart.net";
   
@@ -80,7 +80,11 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		What's wrong? Either YOU unpack all the files and upload them or I do that (I can do that when Safe Mode is OFF).
 		</span>" );
 	}
-  
+	
+	require( $admin_dir .'/classes/ps_database.php' );
+	$db = new ps_DB;
+	define( 'VM_TABLEPREFIX', 'vm' );
+	
 	/**
 	* Query SECTION 
 	*
@@ -88,23 +92,31 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	// UPDATE FROM mambo-phpShop 1.1
 	if ($install_type=='update11') {
 		require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.1.php" );
+		require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
+		require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
 	}
-	//UDATE FROM mambo-phpShop 1..2 stable-pl3
+	//UDATE FROM mambo-phpShop 1..2 RC2
 	elseif ($install_type=='update12') {  
   
-		require_once( $admin_dir.'/sql/sql.update.from.mambo-phpshop-1.2-stable-pl3.php');
-		
+		require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
+		require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+	}
+	//UDATE FROM mambo-phpShop 1..2 stable-pl3
+	elseif ($install_type=='update12pl3') {  
+  
+		require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+	}
+
+	// New Installation : Create all tables
+	elseif ($install_type=='newinstall') {	
 		/* Rename the cfg-dist file to cfg */
-		$dist_file = dirname( __FILE__ ) . "/phpshop.cfg-dist.php";
-		$cfg_file = dirname( __FILE__ ) . "/phpshop.cfg.php";
+		$dist_file = dirname( __FILE__ ) . "/virtuemart.cfg-dist.php";
+		$cfg_file = dirname( __FILE__ ) . "/virtuemart.cfg.php";
 	  
 		if (!@rename( $dist_file, $cfg_file )) {
 			$messages[] = "Fatal Error: Something went wrong while RENAMING the VirtueMart CONFIGURATION FILE!";
 			$messages[] =  "Please rename $dist_file to $cfg_file manually!!";
 		}
-	}
-	// New Installation : Create all tables
-	elseif ($install_type=='newinstall') {	
 		require_once( $admin_dir.'/sql/sql.virtuemart.php' );
 	}
 	
@@ -161,21 +173,6 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		$toDir = $mosConfig_absolute_path.'/administrator/components/com_virtuemart/html/templates';
 		copydirr( $fromDir, $toDir, $perms );
 		
-		$database->setQuery( 'SELECT file_name FROM `#__pshop_product_files`' );
-		$files_to_copy = $database->loadObjectList();
-		foreach( $files_to_copy as $file ) {
-			if( stristr( $file, 'com_phpshop' ) ) {
-				$newFile = str_replace( 'com_phpshop', 'com_virtuemart' );
-				copy( $file, $newFile );
-			}
-		}
-		
-		// REPLACE 'com_phpshop' with 'com_virtuemart' for file references
-		// in the table mos_pshop_product_files
-		$database->setQuery( "UPDATE `#__pshop_product_files` SET 
-		file_name = REPLACE (file_name ,'com_phpshop','com_virtuemart'), 
-		file_url = REPLACE (file_url  ,'com_phpshop','com_virtuemart')";
-		$database->query();
 		
 		// COPY&RENAME the configuration file phpshop.cfg.php 
 		// TO virtuemart.cfg.php AND replace 'com_phpshop' by 'com_virtuemart'
@@ -237,22 +234,6 @@ include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser
 		// with the mamboXplorer when no longer needed!
 		$database->setQuery( 'DELETE FROM #__components WHERE link LIKE \'%option=com_phpshop%\'' );
 		$database->query();
-		
-		// RENAME all mambo-phpShop tables used by this site
-		$database->setQuery( 'SHOW TABLES LIKE \'#__pshop_%\'' );
-		$tables = $database->loadObjectList();
-		foreach( $tables as $pshop_table ) {
-			foreach (get_object_vars($pshop_table) as $k => $v) {
-				if( substr( $k, 0, 1 ) != '_' ) {			// internal attributes of an object are ignored
-					$vm_table = str_replace( '_pshop_', '_vm_', $v );
-					$database->setQuery( 'ALTER TABLE `'.$v.'` RENAME `'.$vm_table.'` ;' );
-					if( !$database->query() )
-						$messages[] = "Failed renaming table $v to $vm_table";
-					else
-						$messages[] = "Successfully renamed table $v to $vm_table";
-				}
-			}
-		}
 	
 }
 //Finally check if the VirtueMart component has an Entry in the Administration => Components Menu

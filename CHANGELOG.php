@@ -33,6 +33,12 @@ Legend:
 VirtueMart 0.9
 *************************************
 01-10-2005 soeren
+- Removed many fields from the table jos_vm_modules which are not longer necessary (and were actually never needed)
+! Updated all SQL files and the Installation script
+! Beginning to change the code to not to use mos_users table for customer information
+! ### Database Structure Changes ### ! 
+	Details: /sql/UPDATE-SCRIPT_mambo-phpshop_1.2_stable-pl3_to_VirtueMart_1.0.sql
+
 ^ Changed all tooltips to use wz_tooltip, this gives always working tooltips - even on tabbed forms
 + added JS ToolTip by Walter Zorn to VirtueMart
 

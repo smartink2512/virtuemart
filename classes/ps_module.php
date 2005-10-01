@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_module.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_module.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -133,18 +133,14 @@ class ps_module {
         $d[$key] = addslashes($value);
         
     $q = "INSERT INTO #__{vm}_module (module_name, module_description, ";
-    $q .= "module_perms, module_header, ";
-    $q .= "module_publish, list_order, module_footer, ";
-    $q .= "module_label_1) ";
+    $q .= "module_perms, ";
+    $q .= "module_publish, list_order) ";
     $q .= " VALUES ('";
     $q .= $d[ 'module_name' ] . "','";
     $q .= $d[ 'module_description' ] . "','";
     $q .= $d[ 'module_perms' ] . "','";
-    $q .= $d[ 'module_header' ] . "','";
     $q .= $d[ 'module_publish' ] . "','";
-    $q .= $d[ 'list_order' ] . "','";
-    $q .= $d[ 'module_footer' ] . "','";
-    $q .= $d[ 'module_label_1' ] . "')";
+    $q .= $d[ 'list_order' ] . "' )";
     
     $db->setQuery($q);
     $db->query();
@@ -178,11 +174,8 @@ class ps_module {
     $q .= "module_name='" . $d[ 'module_name' ];
     $q .= "',module_perms='" . $d[ 'module_perms' ];
     $q .= "',module_description='" . $d[ 'module_description' ];
-    $q .= "',module_header='" . $d[ 'module_header' ];
-    $q .= "',module_footer='" . $d[ 'module_footer' ];
     $q .= "',module_publish='" . $d[ 'module_publish' ];
     $q .= "',list_order='" . $d[ 'list_order' ];
-    $q .= "',module_label_1='" . $d[ 'module_label_1' ];
     $q .= "' WHERE module_id='" . $d[ 'module_id' ] . "'";
     
     $db->setQuery($q);

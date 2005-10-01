@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.module_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: admin.module_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -41,18 +41,6 @@ $formObj->startForm();
       <td width="24%" align="right" ><?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_PERMS ?>:</td>
       <td width="76%" > 
         <input type="text" class="inputbox" name="module_perms" value="<?php $db->sp("module_perms") ?>" />
-      </td>
-    </tr>
-    <tr> 
-      <td width="24%" align="right" ><?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_HEADER ?>:</td>
-      <td width="76%" > 
-        <input type="text" class="inputbox" name="module_header" value="<?php $db->sp("module_header") ?>" />
-      </td>
-    </tr>
-    <tr> 
-      <td width="24%" align="right" ><?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_FOOTER ?>:</td>
-      <td width="76%" > 
-        <input type="text" class="inputbox" name="module_footer" value="<?php $db->sp("module_footer") ?>" />
       </td>
     </tr>
     <tr> 

@@ -339,8 +339,5 @@ $database->setQuery( "INSERT INTO `#__pshop_function` VALUES ('', 2, 'csvFieldUp
 $database->setQuery( "INSERT INTO `#__pshop_function` VALUES ('', 2, 'csvFieldDelete', 'ps_csv', 'delete', 'Delete a CSV Field', 'storeadmin,admin');"); $database->query();
 
 $database->setQuery( "INSERT INTO `#__pshop_payment_method` VALUES ('', 1, 'Dankort / PBS', 'ps_pbs', 5, '0.00', 0, 'PBS', 'P', 0, 'N', '', '', '');"); $database->query();
-
-$database->setQuery( "ALTER TABLE `#__pshop_product` ADD `product_unit` varchar(32);"); $database->query();
-$database->setQuery( "ALTER TABLE `#__pshop_product` ADD `product_packaging` int(11);"); $database->query();
   
 ?> 
