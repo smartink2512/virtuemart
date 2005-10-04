@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_print.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: order.order_print.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,7 +25,7 @@ $order_id = mosGetParam( $_REQUEST, 'order_id' );
 if (!is_numeric($order_id))
     echo "<h2>The Order ID $order_id is not valid.</h2>";
 else {
-    
+    $dbc = new ps_DB;
 	$q = "SELECT * FROM #__{vm}_orders WHERE order_id='$order_id'";
 	$db->query($q);
 	if( $db->next_record() ) {
@@ -33,8 +33,8 @@ else {
 	  echo ps_order::order_print_navigation( $order_id );
 	  
 	  $q = "SELECT * FROM #__{vm}_order_history WHERE order_id='$order_id' ORDER BY order_status_history_id ASC";
-	  $database->setQuery( $q );
-	  $order_events = $database->loadObjectList();
+	  $dbc->query( $q );
+	  $order_events = $dbc->record;
 	  ?>
 	  <table class="adminlist">
 		<tr> 
@@ -189,8 +189,10 @@ else {
 				<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?>:</strong></td>
 				<td width="65%"><?php 
 			$country = $dbt->f("country");
-			$database->setQuery( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-			$country_name = $database->loadResult();
+			
+			$dbc->query( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
+			$dbc->next_record();
+			$country_name = $dbc->f("country_name");
 			echo $country_name;
 		 ?></td>
 			  </tr>
@@ -256,8 +258,9 @@ else {
 				<td width="65%"><?php 
 			if( $country != $dbt->f("country")) {
 				$country = $dbt->f("country");
-				$database->setQuery( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-				$country_name = $database->loadResult();
+				$dbc->query( "SELECT country_id, country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
+				$dbc->next_record();
+				$country_name = $dbc->f("country_name");
 			}
 			echo $country_name;
 			 ?></td>

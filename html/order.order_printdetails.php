@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_printdetails.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: order.order_printdetails.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -21,7 +21,7 @@ require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 
 $order_id = mosgetparam( $_REQUEST, 'order_id', null);
- 
+$dbc = new ps_DB;
 if (!is_numeric($order_id))
     die ('Please provide a valid Order ID!');
 
@@ -85,8 +85,7 @@ $db->next_record();
     $q  = "SELECT * FROM #__{vm}_order_user_info WHERE user_id='" . $db->f("user_id") . "'  AND order_id='$order_id' ORDER BY address_type ASC"; 
     $dbbt->query($q);
     $dbbt->next_record(); 
-    $database->setQuery( $q );
-    $user = $database->loadObjectList();
+    $user = $dbbt->record;
   ?> 
       <table width="100%" cellspacing="0" cellpadding="2" border="0">
         <tr> 
@@ -130,8 +129,9 @@ $db->next_record();
           <td><? echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?> :</td>
           <td><?php 
 		$country = $dbbt->f("country");
-		$database->setQuery( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-		$country_name = $database->loadResult();
+		$dbc->query( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
+		$dbc->next_record();
+		$country_name = $dbc->f("country_name");
 		echo $country_name;
 	?></td>
         </tr>
@@ -145,7 +145,7 @@ $db->next_record();
         </tr>
         <tr> 
           <td><? echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?> :</td>
-          <td><?php $dbbt->p("email"); ?></td>
+          <td><?php $dbbt->p("user_email"); ?></td>
         </tr>
       </table>
       <!-- End BillTo --> </td>
@@ -197,8 +197,9 @@ $db->next_record();
           <td><?php 
 		if( $country != $dbst->f("country")) {
 			$country = $dbst->f("country");
-			$database->setQuery( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-			$country_name = $database->loadResult();
+			$dbc->query( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
+			$dbc->next_record();
+			$country_name = $dbc->f("country_name");
 		}
 		echo $country_name;
 		?></td>

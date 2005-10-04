@@ -71,35 +71,7 @@ function com_uninstall() {
 	$db->query( 'DROP TABLE `#__{vm}_visit`;' );
 	$db->query( 'DROP TABLE `#__{vm}_waiting_list`;' );
 	$db->query( 'DROP TABLE `#__{vm}_zone_shipping`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `user_info_id`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `address_type`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `address_type_name`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `company`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `title`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `last_name`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `first_name`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `middle_name`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `phone_1`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `phone_2`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `fax`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `address_1`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `address_2`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `city`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `state`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `country`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `zip`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_1`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_2`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_3`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_4`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `extra_field_5`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `perms`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `bank_account_nr`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `bank_account_type`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `bank_name`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `bank_sort_code`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `bank_iban`;' );
-	$db->query( 'ALTER TABLE `#__users` DROP `bank_account_holder`;' );
+
 	  
 	// This is the function which is called on Uninstall after the component files
 	// have been removed and all tables for VirtueMart that are contained

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.order_details.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: account.order_details.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -137,8 +137,7 @@ if ($db->next_record()) {
     $q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC"; 
     $dbbt->query($q);
     $dbbt->next_record(); 
-    $database->setQuery( $q );
-    $database->loadObject($user);
+    $user = $dbbt->record;
   ?> 
       <table width="100%" cellspacing="0" cellpadding="2" border="0">
         <tr> 
@@ -380,10 +379,12 @@ if ($db->next_record()) {
       $q .= "WHERE #__{vm}_order_item.order_id='$order_id' ";
       $dbcart->query($q); 
       $subtotal = 0;
+	  $dbi = new ps_DB;
       while ($dbcart->next_record()) {
           $product_id = null;
-          $database->setQuery( "SELECT product_id FROM #__{vm}_product WHERE product_sku='".$dbcart->f("order_item_sku")."'");
-          $product_id = $database->loadResult();
+          $dbi->query( "SELECT product_id FROM #__{vm}_product WHERE product_sku='".$dbcart->f("order_item_sku")."'");
+		  $dbi->next_record();
+          $product_id = $dbi->f("product_id" );
 ?> 
         <tr align="left"> 
           <td><?php $dbcart->p("product_quantity"); ?></td>
@@ -394,8 +395,7 @@ if ($db->next_record()) {
             echo " <div style=\"font-size:smaller;\">" . $dbcart->f("product_attribute") . "</div>"; 
             if( !empty( $product_id ))
               echo "</a>";
-                        ?>
-
+		?>
           </td>
           <td><?php $dbcart->p("order_item_sku"); ?></td>
           <td><?php /*

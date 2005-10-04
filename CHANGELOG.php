@@ -32,12 +32,21 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+
+04-10-2005 soeren
+^ moved the Shipping Rates and Carriers of the standard shipping module into sample data file
+^ the class ps_user registers users into VirtueMart (function for admins!)
+^ the class ps_shopper registers Shoppers into VirtueMart (function add for Shoppers)
+^ Changed the registration process to use the registration component of Mambo/Joomla
+- file shop.registration.php
+! User Management no longer uses modified Mambo files, but includes needed functions.
+- file admin.users.html.php
+
 04-10-2005 schirmer
 ^ Updated Montrada payment class for VirtueMart
 # Minor fix in url generation in ps_session. If option is specified com_virtuemart will not be appended.
 # Category count now displays correct count for vendors
 # Error messages from ps_product now are space seperated for better readability
-
 
 01-10-2005 soeren
 - Removed many fields from the table jos_vm_modules which are not longer necessary (and were actually never needed)

@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: global.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: global.php,v 1.3 2005/09/29 20:01:12 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,8 +27,8 @@ $search_box_title = $VM_LANG->_PHPSHOP_SEARCH_TITLE;
 # Get Vendor Information
 $q = "SELECT * FROM #__{vm}_vendor, #__{vm}_country";
 if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
-    $q .= ", #__{vm}_shopper_vendor_xref WHERE #__{vm}_vendor.vendor_id = #__{vm}_shopper_vendor_xref.vendor_id ";
-    $q .= "AND #__{vm}_shopper_vendor_xref.user_id ='".$my->id."' AND ";
+    $q .= ", #__{vm}_auth_user_vendor WHERE #__{vm}_vendor.vendor_id = #__{vm}_auth_user_vendor.vendor_id ";
+    $q .= "AND #__{vm}_auth_user_vendor.user_id ='".$my->id."' AND ";
 }
 else {
     $q .= " WHERE vendor_id='1' AND ";

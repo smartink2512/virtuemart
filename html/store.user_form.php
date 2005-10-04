@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: store.user_list.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -21,6 +21,6 @@ if (!$acl->acl_check( 'administration', 'manage', 'users', $my->usertype, 'compo
 	mosRedirect( 'index2.php', _NOT_AUTH );
 }
 
-require_once( PAGEPATH . 'admin.user_list.php' );
+require_once( PAGEPATH . 'admin.user_form.php' );
 
 ?>

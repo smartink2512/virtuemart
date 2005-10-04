@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file show the customer information in a table
 * while checking out
 *
-* @version $Id: checkout.customer_info.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: checkout.customer_info.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -20,7 +20,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $db = new ps_DB;
-$q  = "SELECT * from #__users WHERE id='" . $auth["user_id"] . "' ";
+$q  = "SELECT * FROM #__{vm}_user_info WHERE user_id='" . $auth["user_id"] . "' ";
 $q .= "AND address_type='BT'";
 $db->query($q);
 $db->next_record(); ?>
@@ -88,7 +88,7 @@ $db->next_record(); ?>
            <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?>: </td>
            <td width="90%">
            <?php
-             $db->p("email");
+             $db->p("user_email");
            ?>
            </td>
         </tr>

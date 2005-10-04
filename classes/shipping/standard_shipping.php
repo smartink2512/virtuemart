@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: standard_shipping.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -36,12 +36,10 @@ class standard_shipping {
 
     $selected = False;
     
-    $q = "SELECT country,zip FROM #__users WHERE user_info_id='".$d['ship_to_info_id']."'";
-    $dbc->query($q);
-    if(!$dbc->next_record()) {
-      $q = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id='".$d['ship_to_info_id']."'";
-      $dbc->query($q);$dbc->next_record();
-    }
+	$q = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id='".$d['ship_to_info_id']."'";
+	$dbc->query($q);
+	$dbc->next_record();
+    
     $zip = $dbc->f("zip");
     $country = $dbc->f("country");
 
@@ -212,68 +210,57 @@ class standard_shipping {
    * parameters: $rate_id : The id of therate
    * returns: several values in an array
    **************************************************************************/
-  function validate( &$d ) {
-     global $VM_LANG;
-     $cart = $_SESSION['cart'];
-     $auth = $_SESSION['auth'];
-     
-     $dbp = new ps_DB; // Product
-     $d['shipping_rate_id'] = mosGetParam( $_REQUEST, 'shipping_rate_id' );
-     $d['ship_to_info_id'] = mosGetParam( $_REQUEST, 'ship_to_info_id' );
-     
-	 $details = explode("|", urldecode($d['shipping_rate_id']) );
-	 $rate_id = $details[4];
-     
-     $totalweight = 0;
-     for($i = 0; $i < $cart["idx"]; $i++) {
-        $q = "SELECT product_weight FROM #__{vm}_product WHERE product_id='";
-        $q .= $cart[$i]["product_id"] . "'";
-        $dbp->query($q);
-        if ($dbp->next_record()) {
-          if ($cart[$i]["quantity"] == "0"){
-             $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
-             return False;
-          }
-          $totalweight += $cart[$i]["quantity"] * $dbp->f("product_weight");
-        } else {
-          $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
-          return False;
-        }
-     }
-     $q  = "SELECT country,zip FROM #__users WHERE user_info_id = '".$d["ship_to_info_id"]."'";
-     $dbu = new ps_DB; //DB User
-     $dbu->query($q);
-     if (!$dbu->next_record()) {
-          $q  = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id = '". $d["ship_to_info_id"] . "'";
-          $dbu = new ps_DB; //DB User
-          $dbu->query($q);
-          if (!$dbu->next_record()) {
-            /*$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND;
-            return False;*/
-          }
-          
-    }
-    $zip = $dbu->f("zip");
-    $country = $dbu->f("country");
-    
-    if (empty($zip)) {
-        $q  = "SELECT country,zip FROM #__users WHERE id ='".$auth['user_id']."'";
-        $dbu = new ps_DB; //DB User
-        $dbu->query($q);
-        $dbu->next_record();
-        $zip = $dbu->f("zip");
-    }
-
-     $q  = "SELECT * FROM #__{vm}_shipping_rate WHERE shipping_rate_id = '$rate_id'";
-     $dbs = new ps_DB; // DB Shiping_rate
-     $dbs->query($q);
-     if (!$dbs->next_record()) {
-       $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND;
-       return False;
-     }
-     
-    return $this->rate_id_valid( $rate_id, $country, $zip, $totalweight );
-  }
+	function validate( &$d ) {
+		global $VM_LANG;
+		$cart = $_SESSION['cart'];
+		$auth = $_SESSION['auth'];
+		 
+		$dbp = new ps_DB; // Product
+		$d['shipping_rate_id'] = mosGetParam( $_REQUEST, 'shipping_rate_id' );
+		$d['ship_to_info_id'] = mosGetParam( $_REQUEST, 'ship_to_info_id' );
+		 
+		$details = explode("|", urldecode($d['shipping_rate_id']) );
+		$rate_id = $details[4];
+		 
+		$totalweight = 0;
+		for($i = 0; $i < $cart["idx"]; $i++) {
+			$q = "SELECT product_weight FROM #__{vm}_product WHERE product_id='";
+			$q .= $cart[$i]["product_id"] . "'";
+			$dbp->query($q);
+			if ($dbp->next_record()) {
+				if ($cart[$i]["quantity"] == "0"){
+					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
+					return False;
+				}
+				$totalweight += $cart[$i]["quantity"] * $dbp->f("product_weight");
+			} else {
+				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
+				return False;
+			}
+		}
+		
+		$dbu = new ps_DB; //DB User
+		$q  = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id = '". $d["ship_to_info_id"] . "'";
+		$dbu = new ps_DB; //DB User
+		$dbu->query($q);
+		if (!$dbu->next_record()) {
+			/*$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND;
+			return False;*/
+		}
+		
+		$zip = $dbu->f("zip");
+		$country = $dbu->f("country");
+	
+		$q  = "SELECT * FROM #__{vm}_shipping_rate WHERE shipping_rate_id = '$rate_id'";
+		$dbs = new ps_DB; // DB Shiping_rate
+		$dbs->query($q);
+		if (!$dbs->next_record()) {
+			$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND;
+			return False;
+		}
+		 
+		return $this->rate_id_valid( $rate_id, $country, $zip, $totalweight );
+	}
   /**************************************************************************
    * name: rate_id_valid()
    * created by: Ekkehard Domning

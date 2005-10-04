@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_order.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_order.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -189,20 +189,8 @@ class ps_order {
        $mail->FromName = $dbv->f("vendor_name");
        $mail->AddReplyTo($dbv->f("contact_email"), $dbv->f("vendor_name"));
        
-        /* 
-        TEST IF WE ARE RUNNING MAMBO 4.5 1.0.9
-        */
-        if( defined( '_RELEASE' ) )
-          if( _RELEASE == '4.5' ) {
-            $mosConfig_mailer = CFG_MAILER;
-            $mosConfig_smtphost = CFG_SMTPHOST;
-            $mosConfig_smtpauth = CFG_SMTPAUTH;
-            $mosConfig_smtpuser = CFG_SMTPUSER;
-            $mosConfig_smtppass = CFG_SMTPPASS;
-          }
-       
        $db = new ps_DB;
-       $q="SELECT first_name,last_name, email FROM #__users WHERE id = '$userid'";
+       $q="SELECT first_name,last_name, user_email FROM #__{vm}_user_info WHERE user_id = '$userid' AND address_type='BT'";
        $db->query($q);
        $db->next_record();
 
@@ -254,16 +242,16 @@ class ps_order {
               $mail->IsMail();
               break;
        }
-       $mail->AddAddress($db->f("email"));
+       $mail->AddAddress($db->f("user_email"));
        if ($mail->Send()) {
        
-          $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email");
+          $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("user_email");
 
        }
 
      else {
      
-          $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email")." (". $mail->ErrorInfo.")";
+          $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("user_email")." (". $mail->ErrorInfo.")";
        }
     }
    }
@@ -308,22 +296,11 @@ class ps_order {
     $mail->From =  $dbv->f("contact_email");
     $mail->FromName = $dbv->f("vendor_name");
     $mail->AddReplyTo($dbv->f("contact_email"), $dbv->f("vendor_name"));
-    
-    /* 
-    TEST IF WE ARE RUNNING MAMBO 4.5 1.0.9
-    */
-    if( defined( '_RELEASE' ) )
-      if( _RELEASE == '4.5' ) {
-        $mosConfig_mailer = CFG_MAILER;
-        $mosConfig_smtphost = CFG_SMTPHOST;
-        $mosConfig_smtpauth = CFG_SMTPAUTH;
-        $mosConfig_smtpuser = CFG_SMTPUSER;
-        $mosConfig_smtppass = CFG_SMTPPASS;
-      }
       
-    $q = "SELECT first_name,last_name,email,order_status_name FROM #__users,#__{vm}_orders,#__{vm}_order_status ";
-    $q .= "WHERE order_id = '".$d["order_id"]."' ";
-    $q .= "AND user_id = id ";
+    $q = "SELECT first_name,last_name,user_email,order_status_name FROM #__{vm}_order_user_info,#__{vm}_orders,#__{vm}_order_status ";
+    $q .= "WHERE #__{vm}_orders.order_id = '".$d["order_id"]."' ";
+    $q .= "AND #__{vm}_orders.user_id = #__{vm}_order_user_info.user_id ";
+    $q .= "AND #__{vm}_orders.order_id = #__{vm}_order_user_info.order_id ";
     $q .= "AND order_status = order_status_code ";
     $db->query($q);
     $db->next_record();

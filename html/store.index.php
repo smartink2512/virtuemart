@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.index.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
+* @version $Id: store.index.php,v 1.6 2005/10/01 08:55:44 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 // Number of customers
-$db->query('SELECT count(*) as num_rows FROM #__users WHERE user_info_id <> ""');
+$db->query('SELECT count(*) as num_rows FROM #__{vm}_user_info WHERE address_type = \'BT\'');
 $db->next_record();
 $customers = $db->f('num_rows') ? $db->f('num_rows') : 0;
 
@@ -60,10 +60,10 @@ while($db_order_status->next_record()) {
 
 // last 5 new customers
 $new_customers = Array();
-$db->query('SELECT id,first_name, last_name, username FROM #__users 
-              WHERE user_info_id <> "" AND perms <> \'admin\' AND perms <> \'storeadmin\' 
+$db->query('SELECT id,first_name, last_name, username FROM #__users, #__{vm}_user_info 
+              WHERE address_type = \'BT\' AND perms <> \'admin\' AND perms <> \'storeadmin\' 
               AND INSTR(usertype,\'administrator\') = 0 AND INSTR(usertype,\'Administrator\') = 0 
-              ORDER BY registerdate desc limit 5');
+              ORDER BY cdate desc limit 5');
 
 while($db->next_record())
   $new_customers[$db->f("id")] = $db->f('username') ." (" . $db->f('first_name')." ".$db->f('last_name').")";

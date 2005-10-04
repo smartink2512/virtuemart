@@ -40,6 +40,7 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
     echo "<br /><span class=\"message\">Something went wrong when trying to delete the file <strong>install.php</strong>!<br />";
     echo "You'll have to delete the file manually before being able to use VirtueMart!</span>";
   }
+  unlink( dirname( __FILE__ ) . "/install.copy.php" );
 }
 elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
   include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.virtuemart.php' );

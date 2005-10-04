@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.billing.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: account.billing.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -28,7 +28,10 @@ $missing_style = "color: Red; font-weight: Bold;";
 if (!empty($missing))
     echo "<script type=\"text/javascript\"> alert('"._CONTACT_FORM_NC."'); </script>\n";
 
-$q =  "SELECT * FROM #__users WHERE id='" . $auth["user_id"] . "' AND address_type='BT' ";
+$q =  "SELECT * FROM #__users, #__{vm}_user_info 
+		WHERE user_id='" . $auth["user_id"] . "' 
+		AND user_id = id
+		AND address_type='BT' ";
 $db->query($q);
 $db->next_record();    
 $db_shoppergroup = new ps_DB;
@@ -45,15 +48,16 @@ echo "<div><a href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\
 ?>
 <!-- Registration form -->
 <form action="<?php echo $mm_action_url."index.php" ?>" method="post" name="adminForm">
-  <input type="hidden" name="option" value="com_virtuemart" />
+  <input type="hidden" name="option" value="<?php echo $option ?>" />
   <input type="hidden" name="page" value="<?php echo $next_page; ?>" />
   <input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
   <input type="hidden" name="func" value="shopperupdate" />
   <input type="hidden" name="username" value="<?php echo $auth["username"] ?>" />
   <input type="hidden" name="user_info_id" value="<?php $db->p("user_info_id"); ?>" />
+  <input type="hidden" name="id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="shopper_group_id" value="<?php echo $shopper_group_id; ?>" />
-  <input type="hidden" name="address_type" value="bt" />
+  <input type="hidden" name="address_type" value="BT" />
   
 <div style="width:90%;">
   <fieldset>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_perm.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_perm.php,v 1.3 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -48,7 +48,7 @@ class ps_perm {
 			
 			if ($this->is_registered_customer($my->id)) {
 			
-				$q = "SELECT perms,first_name,last_name,country,zip FROM #__users WHERE id='".$my->id."'";
+				$q = "SELECT perms,first_name,last_name,country,zip FROM #__{vm}_user_info WHERE user_id='".$my->id."'";
 				$db->query($q);
 				$db->next_record();
 			
@@ -143,6 +143,19 @@ class ps_perm {
      return False;    
         
     }
+	
+	function hasHigherPerms( $perm ) {
+		$auth = $_SESSION["auth"];
+		
+		if( $perm ) {
+			if( $this->permissions[$perm] <= $this->permissions[$auth['perms']] )
+				return true;
+			else
+				return false;		
+		}
+		else
+			return false;
+	}
   /**************************************************************************
   ** name: is_registered_customer()
   ** created by: soeren
@@ -160,7 +173,7 @@ class ps_perm {
     }
     else {
       $db_check = new ps_DB;
-      $q  = "SELECT id from #__users WHERE id='" . $user_id . "' AND address_type='BT'";
+      $q  = "SELECT id from #__users, #__{vm}_user_info WHERE id='" . $user_id . "' AND id=user_id AND address_type='BT'";
       $db_check->query($q);
       // Query failed or not?
       if ($db_check->num_rows()) 

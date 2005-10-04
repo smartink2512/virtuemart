@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file is called after the order has been placed by the customer
 *
-* @version $Id: checkout.thankyou.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: checkout.thankyou.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -31,9 +31,10 @@ $print = mosgetparam( $_REQUEST, 'print', 0);
 
 /** Retrieve User Email **/
 $q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='$order_id' AND address_type='BT'"; 
-$database->setQuery( $q );
-$database->loadObject($user);
-$user->email = $user->user_email;
+$db->query( $q );
+$db->next_record();
+$user = $db->record[0];
+$user->email = $db->f("user_email");
 
 /** Retrieve Order & Payment Info **/
 $db = new ps_DB;
@@ -46,7 +47,7 @@ $db->query($q);
 if ($db->next_record()) {
 
 ?>
-<h3><? echo $VM_LANG->_PHPSHOP_THANKYOU ?></h3>
+<h3><?php echo $VM_LANG->_PHPSHOP_THANKYOU ?></h3>
  <p>
  <?php if( empty($vars['error'])) { ?>
    <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
@@ -85,12 +86,10 @@ if ($db->next_record()) {
 <?php
   }
 ?>
- <p><a href="<?php $sess->purl(SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=". $order_id) ?>">
+ <p><a href="<?php $sess->purl(SECUREURL."index.php?page=account.order_details&order_id=". $order_id) ?>">
  <?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?></a>
  </p>
  <?php
-  
-  
   
 } /* End of security check */
 ?>

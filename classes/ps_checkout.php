@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -332,7 +332,7 @@ class ps_checkout {
           $_REQUEST['creditcard_code'] = "";
            // Bankeinzug
            $dbu = new ps_DB; //DB User
-           $q  = "SELECT bank_account_holder,bank_iban,bank_account_nr,bank_sort_code,bank_name FROM #__users WHERE id = '" . $d["user_id"] . "'";
+           $q  = "SELECT bank_account_holder,bank_iban,bank_account_nr,bank_sort_code,bank_name FROM #__{vm}_user_info WHERE user_id = '" . $d["user_id"] . "'";
            $dbu->query($q);
            if (!$dbu->next_record()) {
                $d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA;
@@ -488,105 +488,98 @@ class ps_checkout {
   **                      checked
   ** returns:  Prints html radio element to standard out
   ***************************************************************************/
-   function ship_to_addresses_radio($user_id, $name, $value) {
-      global $sess,$VM_LANG;
+	function ship_to_addresses_radio($user_id, $name, $value) {
+		global $sess,$VM_LANG;
 
-      $db = new ps_DB;
+		$db = new ps_DB;
           
-      /* Select all the ship to information for this user id and
-       * order by modification date; most recently changed to oldest
-       */
-
-      $q  = "SELECT * from #__users WHERE ";
-      $q .= "id='" . $user_id . "' ";
-      $q .= "AND address_type='BT'";
-      $db->query($q);
-      if(!$db->num_rows()) {
-          $q  = "SELECT * from #__{vm}_user_info WHERE ";
-          $q .= "user_id='" . $user_id . "' ";
-          $q .= "AND address_type='BT'";
-          $db->query($q);
-      }
-      $db->next_record();
+		/* Select all the ship to information for this user id and
+		* order by modification date; most recently changed to oldest
+		*/	
+		$q  = "SELECT * from #__{vm}_user_info WHERE ";
+		$q .= "user_id='" . $user_id . "' ";
+		$q .= "AND address_type='BT'";
+		$db->query($q);
+		$db->next_record();
       
-      $bt_user_info_id = $db->f("user_info_id");
- 
-      $q  = "SELECT user_info_id, address_type_name, company, title, ";
-      $q .= "last_name, first_name, middle_name, phone_1, phone_2, ";
-      $q .= "fax, address_1, address_2, city, ";
-      $q .= "state, country, zip ";
-      $q .= "FROM #__{vm}_user_info ";
-      $q .= "WHERE user_id = '" . $user_id . "' ";
-      $q .= "AND address_type = 'ST' ";
-      $q .= "ORDER by address_type_name, mdate DESC";
+		$bt_user_info_id = $db->f("user_info_id");
+	 
+		$q  = "SELECT user_info_id, address_type_name, company, title, ";
+		$q .= "last_name, first_name, middle_name, phone_1, phone_2, ";
+		$q .= "fax, address_1, address_2, city, ";
+		$q .= "state, country, zip ";
+		$q .= "FROM #__{vm}_user_info ";
+		$q .= "WHERE user_id = '" . $user_id . "' ";
+		$q .= "AND address_type = 'ST' ";
+		$q .= "ORDER by address_type_name, mdate DESC";
+	
+		$db->query($q);
+	
+		echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"0\">\n";
+		echo "<tr class=\"sectiontableentry1\">\n";
+		echo "<td>\n";
+		if ($db->num_rows() and $bt_user_info_id != $value) {
+			echo "<input type=\"radio\" name=\"$name\" value=\"$bt_user_info_id\" />\n";
+		} else {
+			echo "<input type=\"radio\" name=\"$name\" value=\"$bt_user_info_id\" checked=\"checked\" />\n";
+		}
+		echo "</td>\n";
+		echo "<td>\n";
+		echo $VM_LANG->_PHPSHOP_ACC_BILL_DEF."\n";
+		echo "</td>\n";
+		echo "</tr>\n";
+		$i = 2;
+		while($db->next_record()) {
+			echo "<tr class=\"sectiontableentry$i\">\n";
+			echo "<td>\n";
+			if (!strcmp($value, $db->f("user_info_id"))) {
+				echo "<input type=\"radio\" name=\"$name\" value=\"" . $db->f("user_info_id") . "\" checked=\"checked\">\n";
+			}
+			else {
+				echo "<input type=\"radio\" name=\"$name\" value=\"" . $db->f("user_info_id") . "\">\n";
+			}
+			echo "</td>\n";
+			echo "<td>\n";
+			echo "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"1\">\n";
+			echo "<tr>\n";
+			echo "<td>\n";
+			echo "<strong>" . $db->f("address_type_name") . "</strong> ";
+			$url = SECUREURL . "index.php?page=account.shipto&user_info_id=" . $db->f('user_info_id');
+			$url .= "&next_page=checkout.index";
+			echo "(<a href=\"".$sess->url($url)."\">".$VM_LANG->_PHPSHOP_UDATE_ADDRESS."</a>)\n";
+			echo "<br />\n";
+			echo $db->f("title") . " ";
+			echo $db->f("first_name") . " ";
+			echo $db->f("middle_name") . " ";
+			echo $db->f("last_name") . "\n";
+			echo "<br />\n";
+			if ($db->f("company")) {
+				echo $db->f("company") . "<br />\n";
+			}
+			echo $db->f("address_1") . "\n";
+			if ($db->f("address_2")) {
+				echo "<br />". $db->f("address_2"). "\n";
+			}
+			echo "<br />\n";
+			echo $db->f("city");
+			echo ", ";
+			echo $db->f("state") . " ";
+			echo $db->f("zip") . "<br />\n";
+			echo "Phone:". $db->f("phone_1") . "\n";
+			echo "<br />\n";
+			echo "Fax:".$db->f("fax") . "\n";
+			echo "</td></tr>\n";
+			echo "</table></td></tr>\n";
+			if($i == 1) $i++;
+			elseif($i == 2) $i--;
+		}
+	
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "</table>\n";
 
-      $db->query($q);
-
-      echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"0\">\n";
-      echo "<tr class=\"sectiontableentry1\">\n";
-      echo "<td>\n";
-      if ($db->num_rows() and $bt_user_info_id != $value) {
-        echo "<input type=\"radio\" name=\"$name\" value=\"$bt_user_info_id\" />\n";
-      } else {
-        echo "<input type=\"radio\" name=\"$name\" value=\"$bt_user_info_id\" checked=\"checked\" />\n";
-      }
-      echo "</td>\n";
-      echo "<td>\n";
-      echo $VM_LANG->_PHPSHOP_ACC_BILL_DEF."\n";
-      echo "</td>\n";
-      echo "</tr>\n";
-      $i = 2;
-      while($db->next_record()) {
-         echo "<tr class=\"sectiontableentry$i\">\n";
-         echo "<td>\n";
-         if (!strcmp($value, $db->f("user_info_id"))) {
-            echo "<input type=\"radio\" name=\"$name\" value=\"" . $db->f("user_info_id") . "\" checked=\"checked\">\n";
-         }
-         else {
-            echo "<input type=\"radio\" name=\"$name\" value=\"" . $db->f("user_info_id") . "\">\n";
-         }
-         echo "</td>\n";
-         echo "<td>\n";
-         echo "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"1\">\n";
-         echo "<tr>\n";
-         echo "<td>\n";
-         echo "<strong>" . $db->f("address_type_name") . "</strong> ";
-         $url = SECUREURL . "index.php?page=account.shipto&user_info_id=" . $db->f('user_info_id');
-         $url .= "&next_page=checkout.index";
-         echo "(<a href=\"".$sess->url($url)."\">".$VM_LANG->_PHPSHOP_UDATE_ADDRESS."</a>)\n";
-         echo "<br />\n";
-         echo $db->f("title") . " ";
-         echo $db->f("first_name") . " ";
-         echo $db->f("middle_name") . " ";
-         echo $db->f("last_name") . "\n";
-         echo "<br />\n";
-         if ($db->f("company")) {
-           echo $db->f("company") . "<br />\n";
-         }
-         echo $db->f("address_1") . "\n";
-         if ($db->f("address_2")) {
-            echo "<br />". $db->f("address_2"). "\n";
-         }
-         echo "<br />\n";
-         echo $db->f("city");
-         echo ", ";
-         echo $db->f("state") . " ";
-         echo $db->f("zip") . "<br />\n";
-         echo "Phone:". $db->f("phone_1") . "\n";
-         echo "<br />\n";
-         echo "Fax:".$db->f("fax") . "\n";
-         echo "</td></tr>\n";
-         echo "</table></td></tr>\n";
-          if($i == 1) $i++;
-          elseif($i == 2) $i--;
-      }
-
-      echo "</td>\n";
-      echo "</tr>\n";
-      echo "</table>\n";
-
-      return(true);
-   }
+		return(true);
+	}
 
   /**************************************************************************
   ** name: display_address()
@@ -603,7 +596,7 @@ class ps_checkout {
       $q = "SELECT address_type_name, company, title, last_name, ";
       $q .= "first_name, middle_name, phone_1, phone_2, fax, ";
       $q .= "address_1, address_2, city, state, country, zip ";
-      $q .= "FROM #__{vm}_user_info,#__users ";
+      $q .= "FROM #__{vm}_user_info ";
       $q .= "WHERE user_info_id = '$user_info_id'";
 
       $db->query($q);
@@ -866,24 +859,17 @@ class ps_checkout {
      $db->next_record();
     
     /**
-    * Insert the User Billto & Shipto Info
-    */
-      // Bill To Address
-     $db->query( "SELECT * FROM #__users WHERE id='".$auth['user_id']."'" );
-     $db->next_record();
-     $q = "INSERT INTO `#__{vm}_order_user_info` ";
-     $q .= "(`order_id` , `user_id` , `address_type` , `address_type_name` , `company` , `title` , `last_name` , `first_name` , `middle_name` , `phone_1` , `phone_2` , `fax` , `address_1` , `address_2` , `city` , `state` , `country` , `zip` , `user_email` , `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5` ) ";
-     $q .= "VALUES ('$order_id', '".$auth['user_id']."', 'BT', '', '".addslashes($db->f("company"))."', '".addslashes($db->f("title"))."', '".addslashes($db->f("last_name"))."', '".addslashes($db->f("first_name"))."', '".addslashes($db->f("middle_name"))."', '".addslashes($db->f("phone_1"))."', '".addslashes($db->f("phone_2"))."', '".addslashes($db->f("fax"))."', '".addslashes($db->f("address_1"))."', '".addslashes($db->f("address_2"))."', '".addslashes($db->f("city"))."', '".addslashes($db->f("state"))."', '".addslashes($db->f("country"))."', '".addslashes($db->f("zip"))."', '".addslashes($db->f("email"))."', '".addslashes($db->f("extra_field_1"))."', '".addslashes($db->f("extra_field_2"))."', '".addslashes($db->f("extra_field_3"))."', '".addslashes($db->f("extra_field_4"))."', '".addslashes($db->f("extra_field_5"))."')";
-     $db->query( $q );
+	* Insert the User Billto & Shipto Info
+	*/
+	// Bill To Address
+	$q = "INSERT INTO `#__{vm}_order_user_info` ";
+	$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
+	$db->query( $q );
      
-     // Ship to Address if applicable
-     $db->query( "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."'" );
-     if( $db->next_record() ) {
-       $q = "INSERT INTO `#__{vm}_order_user_info` ";
-       $q .= "(`order_id` , `user_id` , `address_type` , `address_type_name` , `company` , `title` , `last_name` , `first_name` , `middle_name` , `phone_1` , `phone_2` , `fax` , `address_1` , `address_2` , `city` , `state` , `country` , `zip` , `user_email` , `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5` ) ";
-       $q .= "VALUES ('$order_id', '".$auth['user_id']."', 'ST', '', '".addslashes($db->f("company"))."', '".addslashes($db->f("title"))."', '".addslashes($db->f("last_name"))."', '".addslashes($db->f("first_name"))."', '".addslashes($db->f("middle_name"))."', '".addslashes($db->f("phone_1"))."', '".addslashes($db->f("phone_2"))."', '".addslashes($db->f("fax"))."', '".addslashes($db->f("address_1"))."', '".addslashes($db->f("address_2"))."', '".addslashes($db->f("city"))."', '".addslashes($db->f("state"))."', '".addslashes($db->f("country"))."', '".addslashes($db->f("zip"))."', '".addslashes($db->f("user_email"))."', '".addslashes($db->f("extra_field_1"))."', '".addslashes($db->f("extra_field_2"))."', '".addslashes($db->f("extra_field_3"))."', '".addslashes($db->f("extra_field_4"))."', '".addslashes($db->f("extra_field_5"))."')";
-       $db->query( $q );
-     }
+	// Ship to Address if applicable
+	$q = "INSERT INTO `#__{vm}_order_user_info` ";
+	$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."'";
+	$db->query( $q );
      
     /**
     * Insert all Products from the Cart into order line items; 
@@ -1159,15 +1145,9 @@ class ps_checkout {
         
         // Shipping address based TAX
         if (TAX_MODE == '0') {
-          $q = "SELECT state, country FROM #__users ";
+          $q = "SELECT state, country FROM #__{vm}_user_info ";
           $q .= "WHERE user_info_id='". $d["ship_to_info_id"] . "'";
           $db->query($q);
-          
-          if(!$db->num_rows()) {
-              $q = "SELECT state, country FROM #__{vm}_user_info ";
-              $q .= "WHERE user_info_id='". $d["ship_to_info_id"] . "'";
-              $db->query($q);
-          }
           $db->next_record(); 
           $state = $db->f("state");
           $country = $db->f("country");
@@ -1379,21 +1359,14 @@ class ps_checkout {
        $customer_note = $db->f("customer_note");
 
        $dbbt = new ps_DB;
-       $qt = "SELECT * from #__users WHERE id='$user_id' AND address_type='BT'";
-       $dbbt->query($qt);
-       if (!$dbbt->num_rows()) {
-            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$user_id."' AND address_type='BT'";
-            $dbbt->query($qt);
-        }
+       $dbst = new ps_DB;
+       
+	   $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$user_id."' AND address_type='BT'";
+	   $dbbt->query($qt);
        $dbbt->next_record();
 
-       $dbst = new ps_DB;
-       $qt = "SELECT * FROM #__users WHERE user_info_id='".$db->f("user_info_id") . "'";
+       $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='". $db->f("user_info_id") . "'";
        $dbst->query($qt);
-       if (!$dbst->num_rows()) {
-            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='". $db->f("user_info_id") . "'";
-            $dbst->query($qt);
-        }
        $dbst->next_record(); 
 
        $dbv = new ps_DB;
@@ -1437,8 +1410,6 @@ class ps_checkout {
        // **************************************
        $shopper_email = $dbbt->f("user_email");
        $shopper_name = $dbbt->f("first_name")." ".$dbbt->f("last_name");
-       if (empty($shopper_email))
-           $shopper_email = $dbbt->f("email");
        
        $from_email = $dbv->f("contact_email");
        
@@ -1838,7 +1809,7 @@ class ps_checkout {
         $html = str_replace('{phpShopBTCountry}', $dbbt->f("country"), $html);
         $html = str_replace('{phpShopBTPhone}', $dbbt->f("phone_1"), $html);
         $html = str_replace('{phpShopBTFax}', $dbbt->f("fax"), $html);
-        $html = str_replace('{phpShopBTEmail}', $dbbt->f("email"), $html);
+        $html = str_replace('{phpShopBTEmail}', $dbbt->f("user_email"), $html);
         
         $html = str_replace('{phpShopSTCompany}', $dbst->f("company"), $html);
         $html = str_replace('{phpShopSTName}', $dbst->f("first_name")." ".$dbst->f("middle_name")." ".$dbst->f("last_name"),$html);
@@ -1979,18 +1950,16 @@ class ps_checkout {
     * @desc Shows all collected Checkout information on the confirmation Screen
     **************************************************************************/
     function final_info() {
-      global $database, $VM_LANG;
-      
+      global $VM_LANG;
+      $db = new ps_DB;
       // Begin with Shipping Address
       if(CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='2') {
         
-          $database->setQuery("SELECT * FROM #__users WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
-          if(!$database->loadObject( $row )) {
-            $database->setQuery("SELECT * FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
-            $database->loadObject( $row );
-          }
+          $db->query("SELECT * FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
+		  $db->next_record();
+          
           echo "<strong>".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 . ":</strong>&nbsp;";
-          echo $row->first_name." ".$row->last_name.", ".$row->address_1.", ".$row->zip." ".$row->city;
+          echo $db->f("first_name")." ".$db->f("last_name").", ".$db->f("address_1").", ".$db->f("zip")." ".$db->F("city");
           echo "<br /><br />";
       }
       
@@ -2006,10 +1975,10 @@ class ps_checkout {
       }
       
       unset( $row );
-      $database->setQuery("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='".strip_tags($_REQUEST['payment_method_id'])."'");
-      $database->loadObject( $row );
+      $db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='".strip_tags($_REQUEST['payment_method_id'])."'");
+      $db->next_record();
       echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
-      echo $row->payment_method_name;
+      echo $db->f("payment_method_name");
       echo "<br />";
     }
     

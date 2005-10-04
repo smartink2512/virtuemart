@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.user_address_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: admin.user_address_form.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -215,7 +215,7 @@ echo "<br />".$VM_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
     } ?>
   <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="address_type" value="ST">
-  <input type="hidden" name="page" value="<?php echo $modulename?>.user_list"  />
+  <input type="hidden" name="page" value="<?php echo $modulename ?>.user_form"  />
   <input type="hidden" name="cache" value="0" />
   <input type="hidden" name="task" value="" />
   <input type="hidden" name="user_id" value="<?php echo $_REQUEST['user_id']; ?>" />

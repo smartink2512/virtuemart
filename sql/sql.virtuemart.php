@@ -1508,7 +1508,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_shopper_group` (
 
 $db->query( "INSERT INTO `#__{vm}_shopper_group` VALUES (5, 1, '-default-', 'This is the default shopper group.', 0.00, 1, 1),
 (6, 1, 'Gold Level', 'Gold Level phpShoppers.', 0.00, 1, 0),
-(7, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', 0.00, 0, 0);
+(7, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', 0.00, 0, 0);" );
 
 ## --------------------------------------------------------
 
@@ -1928,7 +1928,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_zone_shipping` (
 $db->query( "INSERT INTO `#__{vm}_zone_shipping` VALUES (1, 'Default', 6.00, 35.00, 'This is the default Shipping Zone. This is the zone information that all countries will use until you assign each individual country to a Zone.', 2),
 (2, 'Zone 1', 1000.00, 10000.00, 'This is a zone example', 2),
 (3, 'Zone 2', 2.00, 22.00, 'This is the second zone. You can use this for notes about this zone', 2),
-(4, 'Zone 3', 11.00, 64.00, 'Another usefull thing might be details about this zone or special instructions.', 2);
+(4, 'Zone 3', 11.00, 64.00, 'Another usefull thing might be details about this zone or special instructions.', 2);");
 
 
 $db->query( "SELECT id FROM #__users"); 

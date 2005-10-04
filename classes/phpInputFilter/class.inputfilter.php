@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: class.inputfilter.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: class.inputfilter.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage phpInputFilter
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,7 +25,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
   * @email: dan@rootcube.com
   * @license: GNU General Public License (GPL)
   */
-class mm_InputFilter {
+class vmInputFilter {
 	var $tagsArray;			// default = empty array
 	var $attrArray;			// default = empty array
 
@@ -45,7 +45,7 @@ class mm_InputFilter {
 	  * @param int $attrMethod - 0= allow just user-defined, 1= allow all but user-defined
 	  * @param int $xssAuto - 0= only auto clean essentials, 1= allow clean blacklisted tags/attr
 	  */
-	function mm_inputFilter($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1) {
+	function vmInputFilter($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1) {
 		// make sure user defined arrays are in lowercase
 		for ($i = 0; $i < count($tagsArray); $i++) $tagsArray[$i] = strtolower($tagsArray[$i]);
 		for ($i = 0; $i < count($attrArray); $i++) $attrArray[$i] = strtolower($attrArray[$i]);

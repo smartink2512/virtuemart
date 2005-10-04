@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_product_category.php,v 1.6 2005/09/30 18:59:45 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.8 2005/10/04 14:13:17 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -538,6 +538,7 @@ class ps_product_category {
     // Copy the Array into an Array with auto_incrementing Indexes
     $key = array_keys($categories);
     $size = sizeOf($key);
+	$category_tmp = Array();
     for ($i=0; $i<$size; $i++) 
      $category_tmp[$i] = &$categories[$key[$i]];
     

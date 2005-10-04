@@ -22,9 +22,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file has nearly the same functionality as the old phpShop Parser - index.php -
 */
 $option = mosGetParam( $_REQUEST, 'option' );
-
+	
 if( !defined( 'CLASSPATH' )) {
 
+	if( $my->id )
+		$my->load( $my->id );
+	
     global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vendor_image,$vendor_image_url, $keyword,
             $ps_payment_method,$ps_zone,$sess, $page, $func, $pagename, $modulename, $vars, $VM_LANG, $cmd, $ok, $mosConfig_lang,
             $auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list, 
@@ -227,7 +230,7 @@ if( !defined( 'CLASSPATH' )) {
 		// if not, $page is set to ERROR_PAGE
 		$pagePermissionsOK = $ps_module->checkModulePermissions( $page );
 		
-		$ok = false;
+		$ok = true;
 		
 		if ( $funcParams ) {
 			// Get the function parameters: function name and class name

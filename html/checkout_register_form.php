@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout_register_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: checkout_register_form.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -279,24 +279,14 @@ if (empty($my->id)) { ?>
   } ?>
     <input type="submit" value="<?php echo _BUTTON_SEND_REG; ?>" class="button" onclick="return( submitregistration());" />
   </div>
-    <input type="hidden" name="id" value="<?php echo $my->id ?>" />
+
     <input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid'] ?>" />
-    <input type="hidden" name="user_id" value="<?php echo $my->id ?>" />
     <input type="hidden" name="gid" value="<? echo $my->gid ?>" />
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="remember" value="yes" />
     <input type="hidden" name="useractivation" value="<?php echo $mosConfig_useractivation; ?>" />
-    <?php if (!$my->id) { ?>
-      <input type="hidden" name="task" value="saveRegistration" />
-      <input type="hidden" name="page" value="shop.registration" />
-    <?php 
-    } 
-    else { ?>
-      <input type="hidden" name="func" value="shopperupdate" />
+      <input type="hidden" name="func" value="shopperadd" />
       <input type="hidden" name="page" value="checkout.index" />
-    <?php 
-    } ?>
-    <input type="hidden" name="is_it_safe" value="yep" />
   </fieldset>
 </form>
 </div>  
