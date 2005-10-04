@@ -199,8 +199,11 @@ class ps_session {
         default:
             $limiter = strpos($text, '?');
             
+            $appendix = "";
             // now append "&option=com_virtuemart&Itemid=XX"
-            $appendix = "&" . $this->component_name.$Itemid;
+            if (!strstr($text, "option="))
+               $appendix .= "&" . $this->component_name;
+            $appendix .= $Itemid;
             
             if (!defined( '_PSHOP_ADMIN' )) {
                 
@@ -263,8 +266,11 @@ class ps_session {
         default:
             $limiter = strpos($text, '?');
             
+            $appendix = "";
             // now append "&option=com_virtuemart&Itemid=XX"
-            $appendix = "&" . $this->component_name.$Itemid;
+            if (!strstr($text, "option="))
+               $appendix .= "&" . $this->component_name;
+            $appendix .= $Itemid;
             
             if (!defined( '_PSHOP_ADMIN' )) {
                 // be sure that we have the correct PHP_SELF in front of the url

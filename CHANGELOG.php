@@ -32,6 +32,13 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+04-10-2005 schirmer
+^ Updated Montrada payment class for VirtueMart
+# Minor fix in url generation in ps_session. If option is specified com_virtuemart will not be appended.
+# Category count now displays correct count for vendors
+# Error messages from ps_product now are space seperated for better readability
+
+
 01-10-2005 soeren
 - Removed many fields from the table jos_vm_modules which are not longer necessary (and were actually never needed)
 ! Updated all SQL files and the Installation script

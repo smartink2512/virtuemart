@@ -1,20 +1,21 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id$
-* @package VirtueMart
-* @subpackage Payment
-* @copyright (C) 2005 Benjamin Schirmer
-*
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-*
-* www.mambo-phpshop.net
-
 * The ps_montrada class, containing the payment processing code
-*  for transactions with montrada.de
- */
+*  for credit card transactions with montrada.de
+*
+* @version $Id$* @package VirtueMart
+* @subpackage payment
+* @copyright Copyright (C) 2005 Benjamin Schirmer. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
+*/
 
 class ps_montrada {
 
@@ -27,7 +28,7 @@ class ps_montrada {
     */
     function show_configuration() { 
     
-      global $PHPSHOP_LANG, $sess;
+      global $VM_LANG, $sess;
       $db =& new ps_DB;
       $payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
       /** Read current Configuration ***/
@@ -36,25 +37,25 @@ class ps_montrada {
       <table>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
             <td>
                 <select name="MO_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (MO_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
                 <option <?php if (MO_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_USERNAME ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_USERNAME ?></strong></td>
             <td>
                 <input type="text" name="MO_USERNAME" class="inputbox" value="<?php echo MO_USERNAME ?>" />
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_PASSWORD ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_PASSWORD ?></strong></td>
             <td>
                 <input type="text" name="MO_PASSWORD" class="inputbox" value="<?php echo MO_PASSWORD ?>" />
             </td>
@@ -64,7 +65,7 @@ class ps_montrada {
             <td>
                 <select name="MO_VERIFIED_STATUS" class="inputbox" >
                 <?php
-                    $q = "SELECT order_status_name,order_status_code FROM #__pshop_order_status ORDER BY list_order";
+                    $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
                     $db->query($q);
                     $order_status_code = Array();
                     $order_status_name = Array();
@@ -174,7 +175,7 @@ class ps_montrada {
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         
-        global $vendor_mail, $vendor_currency, $PHPSHOP_LANG, $database;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $database;
         
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
         $auth = $_SESSION['auth'];
@@ -192,7 +193,7 @@ class ps_montrada {
         if( $user_info_id != $d["ship_to_info_id"]) {
             // Get user billing information
             $dbst =& new ps_DB;
-            $qt = "SELECT * FROM #__pshop_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }
@@ -243,7 +244,7 @@ class ps_montrada {
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $d["error"] = curl_error( $CR );
-              $d["error"] .= "<br/><span class=\"message\">".$PHPSHOP_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
+              $d["error"] .= "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
               return false;
             }
             else {
@@ -314,7 +315,7 @@ class ps_montrada {
         $rc1 = array("000", "005", "033", "091", "096");
         // Approved - Success!
         if (isset($response['posherr']) && ($response['posherr'] == 0)) {
-           $d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+           $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
            $d["order_payment_log"] .= $response['rmsg'];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response['trefnum'];
@@ -324,7 +325,7 @@ class ps_montrada {
         else
         {
            if ($response['posherr'] = "") $response['posherr'] = -1;
-           $d["error"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_ERROR." ($response[posherr])";
+           $d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($response[posherr])";
            
            if (in_array($response['posherr'], $posherr1))
            {

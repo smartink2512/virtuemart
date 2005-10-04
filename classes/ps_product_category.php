@@ -240,6 +240,9 @@ class ps_product_category {
       
       $list_order = intval($db->f("list_order"))+1;
       
+      if (empty($d["category_publish"]))
+        $d["category_publish"] = "N";
+      
       $q = "INSERT into #__{vm}_category (vendor_id, category_name, ";
       $q .= "category_publish, category_description, category_browsepage, products_per_row, ";
       $q .= "category_flypage, category_thumb_image, category_full_image, cdate, mdate, list_order) ";
@@ -738,8 +741,11 @@ class ps_product_category {
     if( !isset($GLOBALS['category_info'][$category_id]['product_count'] )) {
       
       $count  = "SELECT count(#__{vm}_product.product_id) as num_rows from #__{vm}_product,#__{vm}_product_category_xref, #__{vm}_category WHERE ";
-      $q  = "#__{vm}_product.vendor_id = '$ps_vendor_id' ";
-      $q .= "AND #__{vm}_product_category_xref.category_id='$category_id' "; 
+      $q = "";
+      if (defined('_PSHOP_ADMIN' ))
+        if (!$perm->check( "admin,storeadmin"))
+          $q .= "#__{vm}_product.vendor_id = '$ps_vendor_id' AND ";     
+      $q .= "#__{vm}_product_category_xref.category_id='$category_id' "; 
       $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
       $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
       //$q .= "AND #__{vm}_product.product_parent_id='' ";
