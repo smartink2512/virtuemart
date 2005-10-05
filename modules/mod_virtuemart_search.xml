@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>phpShop Search Module</name>
+    <name>VirtueMart Search Module</name>
     <creationDate>01.06.2004</creationDate>
-    <author>Edikon / Soeren Eberhardt</author>
-    <copyright>phpShop is released under GNU/GPLicense</copyright>
+    <author>Soeren Eberhardt</author>
+    <copyright>VirtueMart is released under GNU/GPLicense</copyright>
     <authorEmail>soeren@virtuemart.net</authorEmail>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.0</version>

@@ -7,7 +7,7 @@
     <authorEmail>soeren@virtuemart.net</authorEmail>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
-    <description>Shows the newest/featured/best selling/random products from your phpShop.</description>
+    <description>Shows the newest/featured/best selling/random products from your VirtueMart.</description>
      <files>
          <filename module="mod_virtuemart_allinone">mod_virtuemart_allinone.php</filename>
      </files>
