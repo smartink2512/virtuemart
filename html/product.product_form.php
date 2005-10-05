@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
+* @version $Id: product.product_form.php,v 1.6 2005/10/01 08:55:44 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -60,6 +60,8 @@ else {
     $images_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL;
     $delete_message = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG;
 }
+
+$price = $ps_product->get_retail_price($product_id);
 
 if (!empty($product_id)) {
   // get the Database object we're filling the product form with
@@ -222,11 +224,10 @@ else {
       <td width="29%" ><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?>:</div>
       </td>
       <td width="71%" >
-        <table border="0">
+        <table border="0" cellspacing="0" cellpadding="0">
             <tr>
             <td>
-                <input type="text" class="inputbox" name="product_price" onkeyup="updateGross();"
-                value="<?php $price = $ps_product->get_retail_price($product_id); echo $price["product_price"]; ?>" size="10" maxlength="10" />
+                <input type="text" value="<?php echo $price["product_price"]; ?>" class="inputbox" name="product_price" onkeyup="updateGross();" size="10" maxlength="10" />
                 <input type="hidden" name="product_price_id" value="<?php echo @$price["product_price_id"] ?>" />
             </td>
             <td><?php
@@ -264,6 +265,15 @@ else {
       <td width="79%" ><?php
         echo ps_product_discount::discount_list( $db->sf("product_discount_id") ); ?>
       </td>
+    </tr>
+    <tr> 
+      <td width="21%" ><div style="text-align:right;font-weight:bold;">
+        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE ?>:</div>
+      </td>
+      <td width="79%" >
+		<input type="text" size="10" name="discounted_price_override" onkeyup="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
+		<?php echo mm_ToolTip( $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP ) ?>
+	</td>
     </tr>
     <tr> 
       <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
@@ -1034,8 +1044,26 @@ function updateNet() {
 
   document.adminForm.product_price.value = doRound(netValue, 5);
 }
+
+function updateDiscountedPrice() {
+	try {
+		var selected_discount = document.adminForm.product_discount_id.selectedIndex;
+		var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
+		var origPrice = document.adminForm.product_price_incl_tax.value;
+		
+		if( discountCalc ) {
+			eval( 'var discPrice = ' + origPrice + discountCalc );
+			document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+		}
+	}
+	catch( e ) { }
+}
+
 updateGross();
+updateDiscountedPrice();
 toggleDisable( document.adminForm.downloadable, document.adminForm.filename, false );
 toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );
+
+
 //-->
 </script>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_product_discount.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_product_discount.php,v 1.4 2005/09/29 20:01:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -47,7 +47,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
        return False;	
      }
      if( $d["is_percent"]=="" ) {
-       $this->error = "ERROR:  You must enter an amount type for the Discount.";
+       $this->error = "ERROR:  You must select a Discount type.";
        return False;	
      }
      return True;    
@@ -90,9 +90,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $this->error = "ERROR:  Please select a Discount to delete.";
       return False;
     }
-    else {
-      return True;
-    }
+    $db = new ps_DB;
+	$db->query( "SELECT product_id FROM #__{vm}_product WHERE product_discount_id='".$d["discount_id"]."'" );
+	if( $db->num_rows() > 0 ) {
+		$this->error = "Error: This discount still has products assigned to it!";
+		return false;
+	}
+	
+	return True;
+    
   }
   
   
@@ -111,6 +117,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $d["error"] = $this->error;
       return False;
     }
+	
     if (!empty($d["start_date"])) {
         $day = substr ( $d["start_date"], 8, 2);
         $month= substr ( $d["start_date"], 5, 2);
@@ -194,10 +201,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	*/
 	function delete(&$d) {
 		
-		if (!$this->validate_delete($d)) {
-			$d["error"]=$this->error;
-			return False;
-		}
 		$record_id = $d["discount_id"];
 		
 		if( is_array( $record_id)) {
@@ -217,7 +220,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	function delete_record( $record_id, &$d ) {
 		global $db;
 		
-		$q = "DELETE FROM #__{vm}_product_discount WHERE discount_id='record_id'";
+		if (!$this->validate_delete($d)) {
+			$d["error"]=$this->error;
+			return False;
+		}
+		$q = "DELETE FROM #__{vm}_product_discount WHERE discount_id='$record_id'";
 		$db->query($q);
 		
 		return True;
@@ -231,25 +238,31 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
    * returns:
    **************************************************************************/
   function discount_list( $discount_id='' ) {
-    global $VM_LANG;
+    global $VM_LANG, $option;
     $db = new ps_DB;
     $html = "";
     $db->query( "SELECT * FROM #__{vm}_product_discount" );
     
     if($db->num_rows() > 0) {
-      $html = "<select name=\"product_discount_id\" class=\"inputbox\">\n";
-      $html .= "<option value=\"0\">".$VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL."</option>\n";
+      $html = "<select name=\"product_discount_id\" class=\"inputbox\" onchange=\"updateDiscountedPrice();\">\n";
+      $html .= "<option id=\"*1\" value=\"0\">".$VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL."</option>\n";
       while( $db->next_record() ) {
+		if( $db->f("is_percent") ) {
+			$id = "*".(100-$db->f("amount"))/100;
+		}
+		else
+			$id = "-".$db->f("amount");
         $selected = $db->f("discount_id") == $discount_id ? "selected=\"selected\"" : "";
-        $html .= "<option value=\"".$db->f("discount_id")."\" $selected>".$db->f("amount");
+        $html .= "<option id=\"$id\" value=\"".$db->f("discount_id")."\" $selected>".$db->f("amount");
         $html .= $db->f("is_percent")=="1" ? "%" : $_SESSION['vendor_currency'];
         $html .= "</option>\n";
       }
+	  $html .= "<option value=\"override\">Override</option>\n";
       $html .= "</select>\n";
     }
     else {
       $html = "<input type=\"hidden\" name=\"product_discount_id\" value=\"0\" />\n
-      <a href=\"".$_SERVER['PHP_SELF']."\" target=\"_blank\">".$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP."</a>";
+      <a href=\"".$_SERVER['PHP_SELF']."?option=$option&page=product.product_discount_form\" target=\"_blank\">".$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP."</a>";
     }
     return $html;
   }

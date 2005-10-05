@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: english.php,v 1.4 2005/09/27 17:51:27 soeren_nb Exp $
+* @version $Id: $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1377,8 +1377,11 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_BACK_TO_MAIN_SITE = 'Back to the Main Site';
 	var $_PHPSHOP_EXPAND_TREE = 'Expand Tree';
 	var $_PHPSHOP_COLLAPSE_TREE = 'Collapse Tree';
+	var $_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE = 'Discounted Price';
+	var $_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP = 'Here you can override the discount setting fill in a special discount price for this product.<br/>
+The Shop will create a new discount record from the discounted price.';
         
 }
-/** @global phpShopLanguage $VM_LANG */
-$VM_LANG =& new phpShopLanguage();
+/** @global phpShopLanguage $PHPSHOP_LANG */
+$PHPSHOP_LANG =& new phpShopLanguage();
 ?>

@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -1377,6 +1377,9 @@ class phpShopLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_BACK_TO_MAIN_SITE = 'Back to the Main Site';
 	var $_PHPSHOP_EXPAND_TREE = 'Expand Tree';
 	var $_PHPSHOP_COLLAPSE_TREE = 'Collapse Tree';
+	var $_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE = 'Discounted Price';
+	var $_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP = 'Here you can override the discount setting fill in a special discount price for this product.<br/>
+The Shop will create a new discount record from the discounted price.';
         
 }
 /** @global phpShopLanguage $PHPSHOP_LANG */

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_product.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.5 2005/09/30 18:59:45 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -33,6 +33,7 @@ class ps_product {
   ** returns:
   ***************************************************************************/  
   function validate(&$d) {
+	global $database;
     $valid = true;
     $db = new ps_DB;
 
@@ -44,22 +45,34 @@ class ps_product {
     $q .= $d["product_sku"] . "'";
     $db->setQuery($q); $db->query();
     if ($db->next_record()&&($db->f("product_id") != $d["product_id"])) {
-      $d["error"] .= "ERROR: A Product with that SKU already exists. ";
+      $d["error"] .= "ERROR: A Product with that SKU already exists.";
       $valid = false;
     }
+	if( !empty( $d['product_discount_id'] )) {
+		if( $d['product_discount_id'] == "override" ) {
+			
+			$d['is_percent'] = "0";
+			$d['amount'] = (float)$d['product_price_incl_tax'] - (float)$d['discounted_price_override'];
+			
+			require_once( CLASSPATH. 'ps_product_discount.php' );
+			$ps_product_discount = new ps_product_discount;
+			$ps_product_discount->add( $d );
+			$d['product_discount_id'] = $database->insertid();
+		}
+	}
     if (empty($d['manufacturer_id'])) {
         $d['manufacturer_id'] = "1";
     }
     if (!$d["product_sku"]) {
-      $d["error"] .= "ERROR: A Product Sku must be entered. ";
+      $d["error"] .= "ERROR: A Product Sku must be entered.";
       $valid = false;
     }
     if (!$d["product_name"]) {
-      $d["error"] .= "ERROR: A name must be entered. ";
+      $d["error"] .= "ERROR: A name must be entered.";
       $valid = false;
     }
     if (!$d["product_available_date"]) {
-        $d["error"] .= "ERROR: You must provide an availability date. ";
+        $d["error"] .= "ERROR: You must provide an availability date.";
         $valid = false;
     } 
     else {
@@ -72,12 +85,12 @@ class ps_product {
     /** Validate Product Specific Fields **/
     if (!$d["product_parent_id"]) {
       if (sizeof($d["product_categories"]) < 1) {
-        $d["error"] .= "ERROR: A Category must be selected. ";
+        $d["error"] .= "ERROR: A Category must be selected.";
         $valid = false;
       }
     }
     if( !empty($d['downloadable']) && (empty($_FILES['file_upload']['name'] ) && empty($d['filename']))) {
-      $d["error"] .= "Please specify a Product File for Download! ";
+      $d["error"] .= "Please specify a Product File for Download!";
       $valid =  false;
     }
     
@@ -87,7 +100,7 @@ class ps_product {
     if (!empty( $d['product_thumb_image_url'] )) {
       // Image URL
       if (substr( $d['product_thumb_image_url'], 0, 4) != "http") {
-        $d['error'] .= "Error: Image URL must begin with http. ";
+        $d['error'] .= "Error: Image URL must begin with http.";
         $valid =  false;
       }
         
@@ -111,7 +124,7 @@ class ps_product {
     if (!empty( $d['product_full_image_url'] )) {
       // Image URL
       if (substr( $d['product_full_image_url'], 0, 4) != "http") {
-        $d['error'] = "Error: Image URL must begin with http. ";
+        $d['error'] = "Error: Image URL must begin with http.";
         return false;
       }
       // if we have an uploaded image file, prepare this one for deleting.
@@ -980,11 +993,6 @@ class ps_product {
   ***************************************************************************/
   function product_has_attributes($pid) {
     $db = new ps_DB;
-    if (!isset($GLOBALS['product_info']))
-        return false;
-    if (!isset($GLOBALS['product_info']["$pid"]))
-        return false;
-
     if( empty($GLOBALS['product_info'][$pid]["product_has_attributes"] )) {
       $q  = "SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id='$pid' ";
       $db->setQuery($q); $db->query();
