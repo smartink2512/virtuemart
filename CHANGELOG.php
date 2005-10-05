@@ -32,6 +32,12 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+05-10-2005 soeren
++ added new product discount "overrides" to the product form which can be used to
+	fill in a discounted end user price, from which a discount will be calculated and added to the product discount list
+# fixed a bug in install.php
++ added a new CVS module 'build_scripts', so you can build your installers
+
 
 04-10-2005 soeren
 ^ moved the Shipping Rates and Carriers of the standard shipping module into sample data file
