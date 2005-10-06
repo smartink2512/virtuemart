@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.6 2005/10/01 08:55:44 soeren_nb Exp $
+* @version $Id: product.product_form.php,v 1.8 2005/10/06 13:14:56 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -276,6 +276,7 @@ else {
 		<?php echo mm_ToolTip( $PHPSHOP_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP ) ?>
 	</td>
     </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
     <tr> 
       <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
           <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_S_DESC ?>:</div>
@@ -295,7 +296,7 @@ else {
       </td>
       <td width="85%">
         <?php
-		editorArea( 'editor1', htmlspecialchars( $db->sf("product_desc"), ENT_QUOTES ), 'product_desc', '350', '300', '55', '25' )
+		editorArea( 'editor1', htmlspecialchars( $db->sf("product_desc"), ENT_QUOTES ), 'product_desc', '550', '300', '55', '25' )
 	?>
       </td>
     </tr>

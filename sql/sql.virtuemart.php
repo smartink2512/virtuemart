@@ -1943,7 +1943,48 @@ foreach( $row as $user) {
 $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (1, 1, 'Purchase Order', '', 6, '0.00', 4, 'PO', 'N', 0, 'Y', '', '', '');" );
 $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (2, 1, 'Cash On Delivery', '', 5, '-2.00', 5, 'COD', 'N', 0, 'Y', '', '', '');" );
 $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (3, 1, 'Credit Card', 'ps_authorize', 5, '0.00', 0, 'AN', 'Y', 0, 'Y', '1,2,6,7,', '', '');" );
-$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (4, 1, 'PayPal', 'ps_paypal', 5, '0.00', 0, 'PP', 'P', 0, 'Y', '', '<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_blank\">\r\n<input type=\"image\" name=\"submit\" src=\"http://images.paypal.com/images/x-click-but6.gif\" border=\"0\" alt=\"Make payments with PayPal, it\'s fast, free, and secure!\">\r\n<input type=\"hidden\" name=\"cmd\" value=\"_xclick\" />\r\n<input type=\"hidden\" name=\"business\" value=\"<?php echo PAYPAL_EMAIL ?>\" />\r\n<input type=\"hidden\" name=\"receiver_email\" value=\"<?php echo PAYPAL_EMAIL ?>\" />\r\n<input type=\"hidden\" name=\"item_name\" value=\"Order Nr. <?php \$db->p(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"order_id\" value=\"<?php \$db->p(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"invoice\" value=\"<?php \$db->p(\"order_number\") ?>\" />\r\n<input type=\"hidden\" name=\"amount\" value=\"<?php printf(\"%.2f\", \$db->f(\"order_total\"))?>\" />\r\n<input type=\"hidden\" name=\"currency_code\" value=\"<?php echo \$_SESSION[\'vendor_currency\'] ?>\" />\r\n<input type=\"hidden\" name=\"image_url\" value=\"<?php echo \$vendor_image_url ?>\" />\r\n<input type=\"hidden\" name=\"return\" value=\"<?php echo SECUREURL .\"index.php?option=com_phpshop&amp;page=checkout.result&amp;order_id=\".\$db->f(\"order_id\") ?>\" />\r\n<input type=\"hidden\" name=\"notify_url\" value=\"<?php echo SECUREURL .\"administrator/components/com_phpshop/notify.php\" ?>\" />\r\n<input type=\"hidden\" name=\"cancel_return\" value=\"<?php echo SECUREURL .\"index.php\" ?>\" />\r\n<input type=\"hidden\" name=\"undefined_quantity\" value=\"0\" />\r\n<input type=\"hidden\" name=\"pal\" value=\"NRUBJXESJTY24\" />\r\n<input type=\"hidden\" name=\"no_shipping\" value=\"1\" />\r\n<input type=\"hidden\" name=\"no_note\" value=\"1\" />\r\n</form>', '');" );
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (4, 1, 'PayPal', 'ps_paypal', 5, '0.00', 0, 'PP', 'P', 0, 'Y', '', '
+<?php
+\$url = \"https://www.paypal.com/cgi-bin/webscr\";
+\$post_variables = Array(
+\"cmd\" => \"_xclick\",
+\"business\" => PAYPAL_EMAIL,
+\"receiver_email\" => PAYPAL_EMAIL,
+\"item_name\" => \"Order Nr. \". \$db->f(\"order_id\"),
+\"order_id\" => \$db->f(\"order_id\"),
+\"invoice\" => \$db->f(\"order_number\"),
+\"amount\" => sprintf(\"%.2f\", \$db->f(\"order_subtotal\")),
+\"shipping\" => sprintf(\"%.2f\", \$db->f(\"order_shipping\")),
+\"currency_code\" => \$_SESSION[\'vendor_currency\'],
+\"image_url\" => \$vendor_image_url,
+\"return\" => SECUREURL .\"index.php?option=com_phpshop&page=checkout.result&order_id=\".\$db->f(\"order_id\"),
+\"notify_url\" => SECUREURL .\"administrator/components/com_phpshop/notify.php\",
+\"cancel_return\" => SECUREURL .\"index.php\",
+\"undefined_quantity\" => \"0\",
+\"test_ipn\" => PAYPAL_DEBUG,
+\"pal\" => \"NRUBJXESJTY24\",
+\"no_shipping\" => \"1\",
+\"no_note\" => \"1\"
+);
+if( \$page == \"checkout.thankyou\" ) {
+\$query_string = \"?\";
+foreach( \$post_variables as \$name => \$value ) {
+\$query_string .= \$name. \"=\" . urlencode(\$value) .\"&\";
+}
+mosRedirect( \$url . \$query_string );
+} else {
+
+echo \'<form action=\"\'.\$url.\'\" method=\"post\" target=\"_blank\">\';
+echo \'<input type=\"image\" name=\"submit\" src=\"http://images.paypal.com/images/x-click-but6.gif\" border=\"0\" alt=\"Make payments with PayPal, it is fast, free, and secure!\">\';
+
+foreach( \$post_variables as \$name => \$value ) {
+echo \'<input type=\"hidden\" name=\"\'.\$name.\'\" value=\"\'.\$value.\'\" />\';
+}
+
+echo \'</form>\';
+
+}
+?>', '');" );
 $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (5, 1, 'PayMate', 'ps_paymate', 5, '0.00', 0, 'PM', 'P', 0, 'N', '', '<script type=\"text/javascript\" language=\"javascript\">
   function openExpress(){
 	var url = \'https://www.paymate.com.au/PayMate/ExpressPayment?mid=<?php echo PAYMATE_USERNAME.

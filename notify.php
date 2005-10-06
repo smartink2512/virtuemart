@@ -2,7 +2,7 @@
 /**
 * PayPal IPN Handler
 *
-* @version $Id: notify.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: notify.php,v 1.3 2005/09/29 20:01:12 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -34,7 +34,7 @@ if ($_POST) {
     global $mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_lang, $database,
     $mosConfig_mailfrom, $mosConfig_fromname;
     
-    /*** access Mambo's configuration file ***/
+    /*** access Joomla's configuration file ***/
         $my_path = dirname(__FILE__);
         
         if( file_exists($my_path."/../../../configuration.php")) {
@@ -47,7 +47,7 @@ if ($_POST) {
             require_once( $my_path."/configuration.php" );
         }
         else
-            die( "Mambo Configuration File not found!" );
+            die( "Joomla Configuration File not found!" );
 			
         if( file_exists ($mosConfig_absolute_path. '/includes/database.php'))
             require_once($mosConfig_absolute_path. '/includes/database.php');
@@ -57,7 +57,7 @@ if ($_POST) {
         
         $database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
         
-        // load Mambo Language File
+        // load Joomla Language File
         if (file_exists( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' ))
           require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
         else

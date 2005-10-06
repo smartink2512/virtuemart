@@ -13,7 +13,22 @@
 	font-style: italic;
 	color:		red;
 }
+.formLabel {
+	float:left;
+	width:30%;
+	text-align:right;
+	font-weight: bold;
+	margin: 2px;
+	white-space: nowrap;
+	clear: left;
+}
 
+.formField {
+	float:left;
+	width:60%;
+	margin: 2px;
+		
+}
 /**
 * Administration Styles
 */
