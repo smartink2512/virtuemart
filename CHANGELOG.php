@@ -32,6 +32,10 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+06-10-2005 schirmer
+# typos in install script
+# missing / in dummy phpshop file
+
 05-10-2005 soeren
 + added new product discount "overrides" to the product form which can be used to
 	fill in a discounted end user price, from which a discount will be calculated and added to the product discount list

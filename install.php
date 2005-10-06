@@ -204,7 +204,7 @@ global \$mosConfig_absolute_path;
 \$newURL = str_replace( 'com_phpshop', 'com_virtuemart', \$_SERVER['QUERY_STRING'] );
 
 header( 'HTTP/1.1 301 Moved Permanently' );
-header( 'Location: '.\$mosConfig_live_site.basename( \$_SERVER['PHP_SELF'] ).'?'.\$newURL );
+header( 'Location: '.\$mosConfig_live_site.\"/\".basename( \$_SERVER['PHP_SELF'] ).'?'.\$newURL );
 exit();
 
 ?>

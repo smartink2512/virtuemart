@@ -54,7 +54,7 @@ ALTER TABLE `mos_pshop_order_user_info` CHANGE `user_id` `user_id` INT( 11 ) NOT
 
 ALTER TABLE `mos_pshop_orders` CHANGE `user_id` `user_id` INT( 11 ) NOT NULL ;
 
-ALTER TABLE `mos_pshop_auth_user_vendor` CHANGE `user_id` `user_id` INT( 11 ) NULL DEFAULT NULL 
+ALTER TABLE `mos_pshop_auth_user_vendor` CHANGE `user_id` `user_id` INT( 11 ) NULL DEFAULT NULL ;
 
 ALTER TABLE `mos_pshop_affiliate` CHANGE `user_id` `user_id` INT( 11 ) NOT NULL ;
 
@@ -131,32 +131,32 @@ INSERT INTO `mos_vm_user_info`
 	SELECT `user_info_id`, `id`, `address_type`, `address_type_name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `state`, `country`, `zip`,`email`, `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5`, `perms`, `bank_account_nr`, `bank_name`, `bank_sort_code`, `bank_iban`, `bank_account_holder`, `bank_account_type`, UNIX_TIMESTAMP( registerDate ), UNIX_TIMESTAMP( lastvisitDate )
 	FROM mos_users WHERE address_type='BT';
 	
-ALTER TABLE `mos_users` DROP `user_info_id`
-ALTER TABLE `mos_users` DROP `address_type`
-ALTER TABLE `mos_users` DROP `address_type_name`
-ALTER TABLE `mos_users` DROP `company`
-ALTER TABLE `mos_users` DROP `title`
-ALTER TABLE `mos_users` DROP `last_name`
-ALTER TABLE `mos_users` DROP `first_name`
-ALTER TABLE `mos_users` DROP `middle_name`
-ALTER TABLE `mos_users` DROP `phone_1`
-ALTER TABLE `mos_users` DROP `phone_2`
-ALTER TABLE `mos_users` DROP `fax`
-ALTER TABLE `mos_users` DROP `address_1`
-ALTER TABLE `mos_users` DROP `address_2`
-ALTER TABLE `mos_users` DROP `city`
-ALTER TABLE `mos_users` DROP `state`
-ALTER TABLE `mos_users` DROP `country`
-ALTER TABLE `mos_users` DROP `zip`
-ALTER TABLE `mos_users` DROP `extra_field_1`
-ALTER TABLE `mos_users` DROP `extra_field_2`
-ALTER TABLE `mos_users` DROP `extra_field_3`
-ALTER TABLE `mos_users` DROP `extra_field_4`
-ALTER TABLE `mos_users` DROP `extra_field_5`
-ALTER TABLE `mos_users` DROP `perms`
-ALTER TABLE `mos_users` DROP `bank_account_nr`
-ALTER TABLE `mos_users` DROP `bank_account_type`
-ALTER TABLE `mos_users` DROP `bank_name`
-ALTER TABLE `mos_users` DROP `bank_sort_code`
-ALTER TABLE `mos_users` DROP `bank_iban`
-ALTER TABLE `mos_users` DROP `bank_account_holder`
+ALTER TABLE `mos_users` DROP `user_info_id`;
+ALTER TABLE `mos_users` DROP `address_type`;
+ALTER TABLE `mos_users` DROP `address_type_name`;
+ALTER TABLE `mos_users` DROP `company`;
+ALTER TABLE `mos_users` DROP `title`;
+ALTER TABLE `mos_users` DROP `last_name`;
+ALTER TABLE `mos_users` DROP `first_name`;
+ALTER TABLE `mos_users` DROP `middle_name`;
+ALTER TABLE `mos_users` DROP `phone_1`;
+ALTER TABLE `mos_users` DROP `phone_2`;
+ALTER TABLE `mos_users` DROP `fax`;
+ALTER TABLE `mos_users` DROP `address_1`;
+ALTER TABLE `mos_users` DROP `address_2`;
+ALTER TABLE `mos_users` DROP `city`;
+ALTER TABLE `mos_users` DROP `state`;
+ALTER TABLE `mos_users` DROP `country`;
+ALTER TABLE `mos_users` DROP `zip`;
+ALTER TABLE `mos_users` DROP `extra_field_1`;
+ALTER TABLE `mos_users` DROP `extra_field_2`;
+ALTER TABLE `mos_users` DROP `extra_field_3`;
+ALTER TABLE `mos_users` DROP `extra_field_4`;
+ALTER TABLE `mos_users` DROP `extra_field_5`;
+ALTER TABLE `mos_users` DROP `perms`;
+ALTER TABLE `mos_users` DROP `bank_account_nr`;
+ALTER TABLE `mos_users` DROP `bank_account_type`;
+ALTER TABLE `mos_users` DROP `bank_name`;
+ALTER TABLE `mos_users` DROP `bank_sort_code`;
+ALTER TABLE `mos_users` DROP `bank_iban`;
+ALTER TABLE `mos_users` DROP `bank_account_holder`;

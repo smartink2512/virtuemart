@@ -100,7 +100,7 @@ else
 										
 										<br /><br/>
 										<div align="center">
-											<a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
+											<a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
 										</div>
 										<div class="error">Note:</div>
 										If your Version Number is between 1.1 and 1.2 stable.pl3 (e.g. <i>1.2 beta3</i>), you have to update your database before using the Step-by-Step SQL Update Scripts from the folder 
@@ -112,7 +112,7 @@ else
 								</tr>
 								<tr>
 									<td align="center" colspan="3">If you're updating from version 1.1(a) you'll have to click on this link!<br /><br />
-										<a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart to VirtuMart.');" href="index2.php?option=com_virtuemart&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
+										<a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtuMart.');" href="index2.php?option=com_virtuemart&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
 									</td>
 								</tr>
 								<tr>
