@@ -32,6 +32,10 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+
+06-10-2005 soeren
+^ updated the PayPal Form Code according to this post (http://mambo-phpshop.net/index.php?option=com_smf&Itemid=71&topic=11167.msg21226#msg21226)
+
 06-10-2005 schirmer
 # tax list optional with onChange field. product_form automatically edits the price fields if tax is changed.
 # public frontend fixed. New menu buttons didn't send admin state pshop_mode variable.
