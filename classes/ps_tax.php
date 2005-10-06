@@ -191,7 +191,7 @@ class ps_tax {
    **             selected_value_id : ID of the selected Item
    ** returns: An array containng all Tax Rates
    ***************************************************************************/
-  function list_tax_value($select_name, $selected_value_id) {
+  function list_tax_value($select_name, $selected_value_id, $on_change='') {
     global $VM_LANG;
     $db = new ps_DB;
 
@@ -199,7 +199,10 @@ class ps_tax {
     $q = "SELECT * FROM #__{vm}_tax_rate ORDER BY tax_rate_id ASC";
     $db->query($q);
     
-    $html = "<select class=\"inputbox\" name=\"$select_name\">\n";
+    $html = "<select class=\"inputbox\" name=\"$select_name\"";
+    if ($on_change!='')
+      $html .= " onChange=\"$on_change\"";
+    $html .= ">\n";
     if ($select_name == "shipping_rate_vat_id" || stristr($select_name, "tax_class") || $select_name == "zone_tax_rate") 
       $html .= "<option value=\"0\">" . $VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n";
     $tax_rates = Array();

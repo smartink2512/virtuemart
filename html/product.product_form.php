@@ -61,7 +61,8 @@ else {
     $delete_message = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG;
 }
 
-$price = $ps_product->get_retail_price($product_id);
+if (!empty($product_id))
+    $price = $ps_product->get_retail_price($product_id);
 
 if (!empty($product_id)) {
   // get the Database object we're filling the product form with
@@ -255,7 +256,7 @@ else {
       <td width="71%" >
         <?php
         require_once(CLASSPATH.'ps_tax.php');
-        $tax_rates = ps_tax::list_tax_value("product_tax_id",$db->sf("product_tax_id")) ?>
+        $tax_rates = ps_tax::list_tax_value("product_tax_id",$db->sf("product_tax_id"),"updateGross();") ?>
       </td>
     </tr>
     <tr> 

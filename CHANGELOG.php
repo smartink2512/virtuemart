@@ -33,6 +33,10 @@ Legend:
 VirtueMart 0.9
 *************************************
 06-10-2005 schirmer
+# tax list optional with onChange field. product_form automatically edits the price fields if tax is changed.
+# public frontend fixed. New menu buttons didn't send admin state pshop_mode variable.
+
+06-10-2005 schirmer
 # typos in install script
 # missing / in dummy phpshop file
 

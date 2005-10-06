@@ -185,6 +185,8 @@ class listFactory {
 					<input type=\"hidden\" name=\"task\" value=\"\" />\n
 					<input type=\"hidden\" name=\"func\" value=\"\" />\n
 					<input type=\"hidden\" name=\"boxchecked\" />\n";
+		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  )
+            $header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
 		$header .= "<h2 class=\"adminListHeader\" style=\"background-image:url($image);\">$title</h2>\n";
 		if( !empty( $pagename )) 
 			$header .= "<div align=\"right\"><br/>
@@ -280,7 +282,10 @@ class formFactory {
 		<input type="hidden" name="func" value="'.$func.'" />
         <input type="hidden" name="page" value="'.$page.'" />
         <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="'.$option.'" />
+        <input type="hidden" name="option" value="'.$option.'" />';
+        if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  )
+          $html .= '<input type="hidden" name="pshop_admin" value="admin" />';
+        $html .= '
 		</form>
 		';
 		
