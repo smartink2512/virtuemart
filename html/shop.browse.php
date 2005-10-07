@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is the Main Product Listing File!
 *
-* @version $Id: shop.browse.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.browse.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -250,7 +250,7 @@ else
     
       // Set the flypage for this product based on the category.
       // If no flypage is set then use the default as set in virtuemart.cfg.php
-      $flypage = $ps_product->get_flypage($db_browse->f("product_id"));
+      $flypage = $db_browse->f("category_flypage");
       
       $url = $sess->url( $mm_action_url."index.php?page=shop.product_details&flypage=$flypage&product_id=" . $db_browse->f("product_id") . "&category_id=" . $db_browse->f("category_id"));
       

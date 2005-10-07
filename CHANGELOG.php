@@ -32,6 +32,9 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+07-10-2005 soeren
++ new function vmPopupLink to quickly generate a JS + XHTML compliant link
+# TopTen module optimized (ran 11 queries before on 10 products, now ONE)
 
 06-10-2005 soeren
 ^ updated the PayPal Form Code according to this post (http://mambo-phpshop.net/index.php?option=com_smf&Itemid=71&topic=11167.msg21226#msg21226)

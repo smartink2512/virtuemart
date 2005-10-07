@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This Class provides some utility functions
 * to easily create drop-down lists
 *
-* @version $Id: ps_html.php,v 1.6 2005/09/30 10:14:30 codename-matrix Exp $
+* @version $Id: ps_html.php,v 1.7 2005/10/01 08:55:44 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -167,60 +167,60 @@ class ps_html {
    }
    
     function dynamic_state_lists( $country_list_name, $state_list_name, $selected_country_code="", $selected_state_code="" ) {
-      global $vendor_country_3_code, $VM_LANG;
-	  $db = new ps_DB;
-      if( empty( $selected_country_code ))
-        $selected_country_code = $vendor_country_3_code;
-        
-      if( empty( $selected_state_code ))
-        $selected_state_code = "originalPos";
-      else
-        $selected_state_code = "'".$selected_state_code."'";
-        
-      $db->query( "SELECT #__{vm}_country.country_id,country_3_code 
-                              FROM #__{vm}_country" );
-      
-      if( $db->num_rows() > 0 ) {
-		$dbs = new ps_DB;
-        // Build the State lists for each Country
-        $script = "<script language=\"javascript\" type=\"text/javascript\">//<![CDATA[\n";
-        $script .= "<!--\n";
-        $script .= "var originalOrder = '1';\n";
-        $script .= "var originalPos = '$selected_country_code';\n";
-        $script .= "var states = new Array();	// array in the format [key,value,text]\n";
-        $i = 0;
-      
-        while( $db->next_record() ) {
-        
-            $dbs->query( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$db->f("country_id")."'" );
-            
-			if( $dbs->num_rows() > 0 ) {
-				while( $dbs->next_record() ) {
-					  // array in the format [key,value,text]
-					  $script .= "states[".$i++."] = new Array( '".addslashes($db->f("country_3_code"))."','".$dbs->f("state_2_code")."','".addslashes($dbs->f("state_name"))."' );\n";
+		global $vendor_country_3_code, $VM_LANG;
+		$db = new ps_DB;
+		if( empty( $selected_country_code ))
+			$selected_country_code = $vendor_country_3_code;
+			
+		if( empty( $selected_state_code ))
+			$selected_state_code = "originalPos";
+		else
+			$selected_state_code = "'".$selected_state_code."'";
+			
+		$db->query( "SELECT #__{vm}_country.country_id,country_3_code 
+								  FROM #__{vm}_country" );
+		  
+		if( $db->num_rows() > 0 ) {
+			$dbs = new ps_DB;
+			// Build the State lists for each Country
+			$script = "<script language=\"javascript\" type=\"text/javascript\">//<![CDATA[\n";
+			$script .= "<!--\n";
+			$script .= "var originalOrder = '1';\n";
+			$script .= "var originalPos = '$selected_country_code';\n";
+			$script .= "var states = new Array();	// array in the format [key,value,text]\n";
+			$i = 0;
+		  
+			while( $db->next_record() ) {
+			
+				$dbs->query( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$db->f("country_id")."'" );
+				
+				if( $dbs->num_rows() > 0 ) {
+					while( $dbs->next_record() ) {
+						  // array in the format [key,value,text]
+						  $script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$dbs->f("state_2_code")."','".htmlspecialchars($dbs->f("state_name"), ENT_QUOTES)."' );\n";
+					}
 				}
+				else
+				  $script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
+				
+				
 			}
-            else
-              $script .= "states[".$i++."] = new Array( '".addslashes($db->f("country_3_code"))."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
-            
-            
-        }
-        $script .= "
-        function changeStateList() { 
-          var selected_country = null;
-          for (var i=0; i<document.adminForm.".$country_list_name.".length; i++)
-             if (document.adminForm.".$country_list_name."[i].selected)
-                selected_country = document.adminForm.".$country_list_name."[i].value;
-          changeDynaList('".$state_list_name."',states,selected_country, originalPos, originalOrder);
-          
-        }
-		writeDynaList( 'class=\"inputbox\" name=\"".$state_list_name."\" size=\"1\" id=\"state\"', states, originalPos, originalPos, $selected_state_code );
-		//-->
-        //]]></script>";
-        
-        return $script;
-      }
-  }
+			$script .= "
+			function changeStateList() { 
+			  var selected_country = null;
+			  for (var i=0; i<document.adminForm.".$country_list_name.".length; i++)
+				 if (document.adminForm.".$country_list_name."[i].selected)
+					selected_country = document.adminForm.".$country_list_name."[i].value;
+			  changeDynaList('".$state_list_name."',states,selected_country, originalPos, originalOrder);
+			  
+			}
+			writeDynaList( 'class=\"inputbox\" name=\"".$state_list_name."\" size=\"1\" id=\"state\"', states, originalPos, originalPos, $selected_state_code );
+			//-->
+			//]]></script>";
+			
+			return $script;
+		}
+	}
    
   /**************************************************************************
   ** name: list_weight_uom($list_name)

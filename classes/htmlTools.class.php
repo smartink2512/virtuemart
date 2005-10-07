@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.5 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.7 2005/10/06 13:14:56 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -403,44 +403,6 @@ class vmCommonHTML {
 	}
 }
 
-
-if ( !function_exists( "mosToolTip" ) ) {
-	/**
-	* Utility function to provide ToolTips
-	* @param string ToolTip text
-	* @param string Box title
-	* @returns HTML code for ToolTip
-	*/
-	function mosToolTip( $tooltip, $title='', $width='', $image='tooltip.png', $text='', $href='#', $link=1 ) {
-		global $mosConfig_live_site;
-		
-		vmCommonHTML::loadOverlib();
-		
-		if ( $width ) {
-			$width = ', WIDTH, \''.$width .'\'';
-		}
-		if ( $title ) {
-			$title = ', CAPTION, \''.$title .'\'';
-		}
-		if ( !$text ) {
-			$image 	= $mosConfig_live_site . '/includes/js/ThemeOffice/'. $image;
-			$text 	= '<img src="'. $image .'" border="0" alt="ToolTip" />';
-		}
-		$style = 'style="text-decoration: none; color: #333;"';
-		if ( $href ) {
-			$style = '';
-		}
-	
-		if ( $link ) {
-			$tip = "<a href=\"". $href ."\" onMouseOver=\"return overlib('" . $tooltip . "'". $title .", BELOW, RIGHT". $width .");\" onmouseout=\"return nd();\" ". $style .">". $text ."</a>";
-		} else {
-			$tip = "<span onMouseOver=\"return overlib('" . $tooltip . "'". $title .", BELOW, RIGHT". $width .");\" onmouseout=\"return nd();\" ". $style .">". $text ."</span>";
-		}
-	
-		return $tip;
-	}
-}
-
 /**
 * Utility function to provide ToolTips
 * @param string ToolTip text
@@ -504,6 +466,15 @@ function mm_writeWithJS( $textToWrap, $noscriptText ) {
             </noscript>\n";
     }
     return $text;
+}
+/**
+* A function to create a XHTML compliant and JS-disabled-safe pop-up link
+*/
+function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='_blank', $title='' ) {
+	
+	$jslink = "<a href=\"javascript:void window.open('$link', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupWidth,directories=no,location=no');\" title=\"$title\">$text</a>";
+	$noscriptlink = "<a href=\"$link\" target=\"$target\" title=\"$title\">$text</a>";
+	return mm_writeWithJS( $jslink, $noscriptlink );
 }
 
 ?>

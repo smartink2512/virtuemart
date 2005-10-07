@@ -31,15 +31,18 @@ $ps_product = new ps_product;
 // change the number of items you wanna haved listed via module parameters
 $num_topsellers = $params->get ('num_topsellers', 10);
 
-$list  = "SELECT distinct #__{vm}_product.product_id, #__{vm}_product.product_parent_id,#__{vm}_product.product_name, #__{vm}_category.category_id ";
+$list  = "SELECT distinct #__{vm}_product.product_id, product_parent_id,product_name, #__{vm}_category.category_id, category_flypage ";
 $list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
 $q = "#__{vm}_product.product_publish='Y' AND ";
+$q .= "#__{vm}_product_category_xref.product_id = #__{vm}_product.product_id AND ";
+$q .= "#__{vm}_product_category_xref.category_id = #__{vm}_category.category_id AND ";
 $q .= "#__{vm}_product.product_sales>0 ";
 $q .= "ORDER BY #__{vm}_product.product_sales DESC";
 $list .= $q . " LIMIT 0, $num_topsellers "; 
 
 $db = new ps_DB;
 $db->query($list);
+
 $tt_item=0;
 $i = 0;
 ?>
@@ -56,7 +59,7 @@ $i = 0;
           $sectioncolor = "sectiontableentry1";
           $i -= 1;
       } 
-      $flypage = $ps_product->get_flypage($db->f("product_id"));
+      $flypage = $db->f('category_flypage');
       $tt_item++;
       $pid = $db->f("product_parent_id") ? $db->f("product_parent_id") : $db->f("product_id");
 

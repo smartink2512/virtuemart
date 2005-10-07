@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.5 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1145,78 +1145,78 @@ class ps_checkout {
         
         // Shipping address based TAX
         if (TAX_MODE == '0') {
-          $q = "SELECT state, country FROM #__{vm}_user_info ";
-          $q .= "WHERE user_info_id='". $d["ship_to_info_id"] . "'";
-          $db->query($q);
-          $db->next_record(); 
-          $state = $db->f("state");
-          $country = $db->f("country");
-          $q = "SELECT * FROM #__{vm}_tax_rate WHERE tax_country='$country' ";
-          if( $state ) {
-            $q .= "AND tax_state='$state'"; 
-          }
-          $db->query($q);
-          if ($db->next_record()) {
-             $rate = $order_taxable * $db->f("tax_rate");
-             if (empty($rate))
-                $order_tax = 0;
-             else
-                $order_tax = $rate;
-          }
-          else
-             $order_tax = 0;
+			$q = "SELECT state, country FROM #__{vm}_user_info ";
+			$q .= "WHERE user_info_id='". $d["ship_to_info_id"] . "'";
+			$db->query($q);
+			$db->next_record(); 
+			$state = $db->f("state");
+			$country = $db->f("country");
+			$q = "SELECT * FROM #__{vm}_tax_rate WHERE tax_country='$country' ";
+			if( $state ) {
+				$q .= "AND tax_state='$state'"; 
+			}
+			$db->query($q);
+			if ($db->next_record()) {
+				$rate = $order_taxable * $db->f("tax_rate");
+				if (empty($rate))
+					$order_tax = 0;
+				else
+					$order_tax = $rate;
+			}
+			else
+				$order_tax = 0;
         }
         // Store Owner Address based TAX
         elseif (TAX_MODE == '1') {
           
-          if (MULTIPLE_TAXRATES_ENABLE != '1') {
-              $q = "SELECT tax_rate FROM #__{vm}_vendor, #__{vm}_tax_rate ";
-              $q .= "WHERE tax_country=vendor_country ";
-              $q .= "AND #__{vm}_vendor.vendor_id='1'"; 
-              $db->query($q);
-              if ($db->next_record()) {
-                 $tax_rate = $db->f("tax_rate");
-                 $rate = $order_taxable * $tax_rate;
-                 if (empty($rate))
-                    $order_tax = 0;
-                 else
-                    $order_tax = $rate;
-              }
-              else
-                 $order_tax = 0;
-          }
-          else {
-              // Calculate the Tax with a tax rate for every product
-              $cart = $_SESSION['cart'];
-              $order_tax = 0.0;
-              $total = 0.0;
-              
-              require_once(CLASSPATH.'ps_product.php');
-              $ps_product= new ps_product;
-              require_once(CLASSPATH.'ps_shipping_method.php');
-              
-              for($i = 0; $i < $cart["idx"]; $i++) {
-                  $item_weight = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
-                  
-                  if ($item_weight !=0 or TAX_VIRTUAL) {
-                      $price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-                      
-                      $tax_rate = $ps_product->get_product_taxrate($cart[$i]["product_id"]);
-                      
-                      $order_tax += $price["product_price"] * $tax_rate * $cart[$i]["quantity"];
-                      $total += $price["product_price"] * $cart[$i]["quantity"];
-                  }
-              }
-              
-              if( !empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ) ) {
-                if( $total > 0 )
-                  $factor = $order_taxable / $total;
-                else
-                  $factor = 1;
-                $order_tax = $order_tax * $factor;
-              }
-              
-          }
+			if (MULTIPLE_TAXRATES_ENABLE != '1') {
+				$q = "SELECT tax_rate FROM #__{vm}_vendor, #__{vm}_tax_rate ";
+				$q .= "WHERE tax_country=vendor_country ";
+				$q .= "AND #__{vm}_vendor.vendor_id='1'"; 
+				$db->query($q);
+				if ($db->next_record()) {
+					$tax_rate = $db->f("tax_rate");
+					$rate = $order_taxable * $tax_rate;
+					if (empty($rate))
+						$order_tax = 0;
+					else
+						$order_tax = $rate;
+				}
+				else
+					$order_tax = 0;
+			}
+			else {
+				// Calculate the Tax with a tax rate for every product
+				$cart = $_SESSION['cart'];
+				$order_tax = 0.0;
+				$total = 0.0;
+				  
+				require_once(CLASSPATH.'ps_product.php');
+				$ps_product= new ps_product;
+				require_once(CLASSPATH.'ps_shipping_method.php');
+				  
+				for($i = 0; $i < $cart["idx"]; $i++) {
+					$item_weight = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
+					  
+					if ($item_weight !=0 or TAX_VIRTUAL) {
+						$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
+						  
+						$tax_rate = $ps_product->get_product_taxrate($cart[$i]["product_id"]);
+						  
+						$order_tax += $price["product_price"] * $tax_rate * $cart[$i]["quantity"];
+						$total += $price["product_price"] * $cart[$i]["quantity"];
+					}
+				}
+				  
+				if( !empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ) ) {
+					if( $total > 0 )
+						$factor = $order_taxable / $total;
+					else
+						$factor = 1;
+					$order_tax = $order_tax * $factor;
+				}
+				  
+			}
           
         }
         return( round( $order_tax, 2 ) );

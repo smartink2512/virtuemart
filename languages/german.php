@@ -15,12 +15,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-class phpShopLanguage extends vmAbstractLanguage {
+class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE = 'Discounted Price';
 	var $_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP = 'Here you can override the discount setting fill in a special discount price for this product.<br/>
 The Shop will create a new discount record from the discounted price.';
+	var $_PHPSHOP_CART_PRICE_PER_UNIT = 'Price per Unit';
         
 }
-/** @global phpShopLanguage $PHPSHOP_LANG */
-$PHPSHOP_LANG =& new phpShopLanguage();
+class phpShopLanguage extends vmLanguage { }
+
+/** @global vmLanguage $VM_LANG */
+$VM_LANG =& new vmLanguage();
 ?>

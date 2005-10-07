@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: install.php,v 1.4 2005/10/01 16:24:53 soeren_nb Exp $
+* @version $Id: install.php,v 1.6 2005/10/06 07:07:16 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -83,7 +83,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	
 	require( $admin_dir .'/classes/ps_database.php' );
 	$db = new ps_DB;
-	define( 'VM_TABLEPREFIX', 'vm' );
+	defined( 'VM_TABLEPREFIX' ) or define( 'VM_TABLEPREFIX', 'vm' );
 	
 	/**
 	* Query SECTION 
@@ -122,7 +122,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	
 	// SAMPLE DATA! 
 	if ($install_sample_data) {
-		require_once( $admin_dir.'sql.sampledata.php' );
+		require_once( $admin_dir.'sql/sql.sampledata.php' );
 	}
 	else {
 		/*** Delete the Sample Product - Images ***/

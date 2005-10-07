@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_reviews.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_reviews.php,v 1.4 2005/09/29 20:01:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -58,7 +58,7 @@ class ps_reviews {
   } 
   
   function voteform( $product_id ) {
-      global $VM_LANG, $page, $my;
+      global $VM_LANG, $page, $my, $option;
       $html = "";
       if (PSHOP_ALLOW_REVIEWS == "1" && !empty($my->id)) { 
         $html = "<strong>". $VM_LANG->_PHPSHOP_CAST_VOTE .":</strong>&nbsp;&nbsp;
@@ -73,7 +73,7 @@ class ps_reviews {
             </select>
             <input class=\"button\" type=\"submit\" name=\"submit_vote\" value=\"". $VM_LANG->_PHPSHOP_RATE_BUTTON."\" />
             <input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />
-            <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
+            <input type=\"hidden\" name=\"option\" value=\"$option\" />
             <input type=\"hidden\" name=\"page\" value=\"$page\" />
             <input type=\"hidden\" name=\"category_id\" value=\"". @$_REQUEST['category_id'] ."\" />
             <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
@@ -120,7 +120,7 @@ class ps_reviews {
   }
   
   function reviewform( $product_id ) {
-      global $db, $my, $page, $VM_LANG;
+      global $db, $my, $page, $VM_LANG, $option;
       $html = "";
       
       $db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid='".$my->id."'");
@@ -189,7 +189,7 @@ class ps_reviews {
             </div>
             
             <input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />
-            <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
+            <input type=\"hidden\" name=\"option\" value=\"$option\" />
             <input type=\"hidden\" name=\"page\" value=\"$page\" />
             <input type=\"hidden\" name=\"category_id\" value=\"". @$_REQUEST['category_id'] ."\" />
             <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />

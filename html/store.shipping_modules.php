@@ -1,8 +1,10 @@
 <?php 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
+* This file lists all shipping modules. It's in a file that's not called shipping_module_list
+* because we currently can't add or remove shipping modules automatically!
 *
-* @version $Id: store.shipping_modules.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: store.shipping_modules.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -60,7 +62,7 @@ else {
       <tr bgcolor="<?php echo $bgcolor ?>"> 
         <td><?php echo( $i ); ?></td>
         <td><?php 
-          if( true === array_search(basename($row['filename'], ".php"), $PSHOP_SHIPPING_MODULES ) )
+          if( in_array(str_replace('.php', '', $row['filename']), $PSHOP_SHIPPING_MODULES ) )
             echo "<img src=\"$mosConfig_live_site/administrator/images/tick.png\" border=\"0\" alt=\"Active\"  align=\"center\"/>";
         ?></td>
         <td width="19%"><?php

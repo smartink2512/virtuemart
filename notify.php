@@ -2,7 +2,7 @@
 /**
 * PayPal IPN Handler
 *
-* @version $Id: notify.php,v 1.3 2005/09/29 20:01:12 soeren_nb Exp $
+* @version $Id: notify.php,v 1.4 2005/10/06 20:56:37 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -62,18 +62,13 @@ if ($_POST) {
           require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
         else
           require_once( $mosConfig_absolute_path. '/language/english.php' );
-    /*** END of Mambo config ***/
+    /*** END of Joomla config ***/
     
     
     /*** VirtueMart part ***/        
         require_once($mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php');
         
 		require_once( CLASSPATH. "language.class.php" );
-		
-		if( PAYPAL_DEBUG == "1" )
-			$debug_email_address = $mosConfig_mailfrom;
-		else
-			$debug_email_address = PAYPAL_EMAIL;
 	
         require_once( $mosConfig_absolute_path . '/includes/phpmailer/class.phpmailer.php');
         $mail = new mosPHPMailer();
@@ -92,6 +87,11 @@ if ($_POST) {
         /* Load the VirtueMart database class */
         require_once( CLASSPATH. 'ps_database.php' );
         
+		if( PAYPAL_DEBUG == "1" )
+			$debug_email_address = $mosConfig_mailfrom;
+		else
+			$debug_email_address = PAYPAL_EMAIL;
+			
     /*** END VirtueMart part ***/
     
     debug_msg( "1. Finished Initialization of the notify.php script" );
@@ -291,7 +291,8 @@ if ($_POST) {
       $order_id = $dbbt->f("order_id");
      
       $d['order_id'] = $order_id;
-      
+      $d['notify_customer'] = "Y";
+	  
       // remove post headers if present.
       $res = preg_replace("'Content-type: text/plain'si","",$res);
       

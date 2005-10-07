@@ -187,8 +187,70 @@ You don't need to unpack any of the archives in this complete package!
 	and click on 'Delete'.
    
     Done.
-    
------------------------------------------------------
+
+
+############################
+   DEVELOPER INFORMATION
+###########################
+For all developers and users dealing with mambo-phpShop, it's important to know that VirtueMart 
+is the successor of mambo-phpShop. So you as a developer must know how to update your extensions, 
+modules and/or hacks to work in VirtueMart.
+
+The name change mambo-phpShop => VirtueMart requires us to rename files and tables related to the shop.
+
+Filenames cange
+---------------------
+VirtueMart will be installed into the directories
+	/administrator/components/com_virtuemart and
+	/components/com_virtuemart
+
+We have provided an easy and fail-safe Update script that
+
+    * copies your images and product-related files to the new directory
+    * copies your existing templates to the new directory
+    * copies your configuration file (phpshop.cfg.php => virtuemart.cfg.php
+    * renames the tables from *_pshop_* to *_vm_*
+
+As you might know, the most modules and mambots include the file
+phpshop_parser.php (which builds up the Shop framework). It will still be there to be included, 
+but it now just includes the file virtuemart_parser.php, so you don't need to change anything.
+
+Variable Name changes
+----------------------------
+Most important is the name change for the language object $PHPSHOP_LANG, which has the name $VM_LANG now. 
+It's an object of the class vmLanguage which extends the class vmAbstractLanguage (which was formerly handled as 
+phpShopLanguage extends mosAbstractLanguage). For compatibility reasons, $PHPSHOP_LANG will still be available in the scripts.
+
+Table Prefixes for shop-related tables
+---------------------------------------------
+All shop-related tables had the secondary prefix _pshop_.
+This prefix will change to _vm_. The tag that is to be replaced by the defineable Table Prefix ( like #_ in Mambo/Joomla, this will be {vm}).
+
+So a table is called using
+
+"SELECT product_id FROM #__{vm}_product WHERE product_id='4' "
+
+You must use the VirtueMart database object! It translates the placeholder
+{vm} into the VirtueMart table prefix.
+
+Please update your extensions or hacks or mods to include this.
+Although we will catch all queries that still have '_pshop_' in it and replace that by '_vm_', 
+we can't do that when your code uses Mambo's/Joomla's database object.
+
+
+VirtueMart will no longer use Mambo's/Joomla's User Table
+---------------------------------------------
+mambo-phpShop has always used the table mos_users for storing Customer Information. 
+On installation it altered the table structure of that table. This is no longer wanted, because those 
+modification sometimes lead to problems with other components like the phpBB integration for Mambo/Joomla.
+VirtueMart will instead hold the customer information in the table mos_vm_user_info. 
+This table holds an ID (as a foreign key pointing to a user id in the table mos_users).
+When updating from mambo-phpShop to VirtueMart, the update script will take care of that 
+and copy all necessary information from mos_users to the renamed table mos_vm_user_info.
+
+#
+############################
+#
 
 For updates / changes / hints please read the ChangeLog!
 
@@ -196,6 +258,6 @@ For updates / changes / hints please read the ChangeLog!
 
 
 Developers, Documentation Writers, Helpers and Coders are welcome to help us. 
-Please contact me: soeren@mambo-phpshop.net
+Please contact me: soeren@virtuemart.net
 
 This VirtueMart component can be developed much further...

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_tax.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_tax.php,v 1.5 2005/10/06 13:14:56 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -201,7 +201,7 @@ class ps_tax {
     
     $html = "<select class=\"inputbox\" name=\"$select_name\"";
     if ($on_change!='')
-      $html .= " onChange=\"$on_change\"";
+      $html .= " onchange=\"$on_change\"";
     $html .= ">\n";
     if ($select_name == "shipping_rate_vat_id" || stristr($select_name, "tax_class") || $select_name == "zone_tax_rate") 
       $html .= "<option value=\"0\">" . $VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n";

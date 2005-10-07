@@ -49,7 +49,7 @@ if( !defined( 'CLASSPATH' )) {
         require_once( ADMINPATH. 'languages/english.php' );
     
     /** @global phpShopLanguage $VM_LANG */
-    $GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new phpShopLanguage();
+    $GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
     
     /** @global Array $product_info: Stores Product Information for re-use */
     $GLOBALS['product_info'] = Array();

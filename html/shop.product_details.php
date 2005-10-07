@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.4 2005/09/30 18:59:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -153,21 +153,18 @@ if ($product_parent_id != 0) {
   $manufacturer_name = $ps_product->get_mf_name($product_id);
   $manufacturer_link = "";
   if( $manufacturer_id && !empty($manufacturer_name) ) {
-    $manufacturer_link = "<script type=\"text/javascript\">//<![CDATA[
-                    document.write('&nbsp;<a href=\"javascript:void window.open(\'$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\');\">');
-                    document.write('( ".addslashes($manufacturer_name)." )</a>' );
-                    //]]></script>";    
-    $manufacturer_link .= "<noscript>&nbsp;<a href=\"$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"$manufacturer_name\">
-                            ( $manufacturer_name )</a></noscript>";
+    $link = "$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=".$Itemid;
+	$text = '( '.$manufacturer_name.' )';
+    $manufacturer_link .= vmPopupLink( $link, $text );
+	
     // Avoid JavaScript on PDF Output                           
     if( @$_REQUEST['output'] == "pdf" ) 
-      $manufacturer_link = "<a href=\"$mosConfig_live_site/index2.php?page=shop.manufacturer_page&amp;manufacturer_id=$manufacturer_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"$manufacturer_name\">
-                              ( $manufacturer_name )</a>";
+      $manufacturer_link = "<a href=\"$link\" target=\"_blank\" title=\"$text\">$text</a>";
   }
 /** PRODUCT PRICE **/
   if (_SHOW_PRICES == '1') { /** Change - Begin */
     if( $db_product->f("product_unit") )
-      $product_price = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE_PER_UNIT.$db_product->f("product_unit").":</strong>";
+      $product_price = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE_PER_UNIT.' ('.$db_product->f("product_unit")."):</strong>";
     else /** Change - End */
       $product_price = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE. ": </strong>";
     $product_price .= $ps_product->show_price( $product_id ); 
@@ -183,7 +180,7 @@ if ($product_parent_id != 0) {
         $product_packaging = "";
         if ( $packaging ) {
             $product_packaging .= $VM_LANG->_PHPSHOP_PRODUCT_PACKAGING1.$packaging;
-            if( $box ) $product_packaging .= "<BR>";
+            if( $box ) $product_packaging .= "<br/>";
         }
         if ( $box ) 
             $product_packaging .= $VM_LANG->_PHPSHOP_PRODUCT_PACKAGING2.$box;
@@ -236,13 +233,10 @@ if ($product_parent_id != 0) {
       }
       /* Build the "See Bigger Image" Link */
       if( @$_REQUEST['output'] != "pdf" ) {
-        $product_image = "<script type=\"text/javascript\">//<![CDATA[
-                    document.write('<a href=\"javascript:void window.open(\'$imageurl\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$width,height=$height,directories=no,location=no\');\">');
-                    document.write('".$ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE."</a>');
-                    //]]></script>
-                    <noscript><a href=\"$imageurl\" target=\"_blank\">".$ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."<br/>"
-                    .$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE."</a>
-                    </noscript>";
+		$link = $imageurl;
+		$text = $ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
+		// vmPopupLink can be found in: htmlTools.class.php
+		$product_image = vmPopupLink( $link, $text, $width, $height );
       }
       else {
         $product_image = "<a href=\"$imageurl\" target=\"_blank\">".$ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."</a>";
@@ -296,7 +290,7 @@ if ($product_parent_id != 0) {
       <input type=\"hidden\" name=\"flypage\" value=\"shop.$flypage\" />
       <input type=\"hidden\" name=\"page\" value=\"shop.cart\" />
       <input type=\"hidden\" name=\"func\" value=\"cartAdd\" />
-      <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
+      <input type=\"hidden\" name=\"option\" value=\"$option\" />
       <input type=\"hidden\" name=\"Itemid\" value=\"$Itemid\" />";
 	}
     $addtocart .= "</form>
@@ -316,17 +310,13 @@ if ($product_parent_id != 0) {
   $vend_id = $ps_product->get_vendor_id($product_id);  
   $vend_name = $ps_product->get_vendorname($product_id);
   
-  $vendor_link = "<script type=\"text/javascript\">//<![CDATA[
-                    document.write('<a href=\"javascript:void window.open(\'$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\');\">');
-                    document.write('".$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>');
-                  //]]></script>
-                  <noscript><a href=\"$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"".$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL."\">"
-                  .$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>
-                  </noscript>";
+  $link = "$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=".$Itemid;
+  $text = $VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL;
+  $vendor_link = vmPopupLink( $link, $text );
+  
   // Avoid JavaScript on PDF Output 
   if( @$_REQUEST['output'] == "pdf" ) 
-    $vendor_link = "<a href=\"$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=$Itemid\" target=\"_blank\" title=\"".$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL."\">"
-                  .$VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL ."</a>";
+    $vendor_link = "<a href=\"$link\" target=\"_blank\" title=\"$text\">$text</a>";
   
   if ($product_parent_id!=0 && !$ps_product_type->product_in_product_type($product_id)) {
   	$product_type = $ps_product_type->list_product_type($product_parent_id);

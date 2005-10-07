@@ -1931,12 +1931,12 @@ $db->query( "INSERT INTO `#__{vm}_zone_shipping` VALUES (1, 'Default', 6.00, 35.
 (4, 'Zone 3', 11.00, 64.00, 'Another usefull thing might be details about this zone or special instructions.', 2);");
 
 
-$db->query( "SELECT id FROM #__users"); 
+$db->query( "SELECT * FROM #__users"); 
 $row = $database->loadObjectList();
 foreach( $row as $user) {
 	$db->query( "INSERT INTO `#__{vm}_auth_user_vendor` VALUES ('".$user->id."', '1');" );
 	$db->query( "INSERT INTO `#__{vm}_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '');" );
-	$db->query( "INSERT INTO `#__{vm}_user_info (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate`,`user_email` )
+	$db->query( "INSERT INTO `#__{vm}_user_info` (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate`,`user_email` )
 					VALUES( '".md5(uniqid('virtuemart'))."','".$user->id."','BT', UNIX_TIMESTAMP('".$user->registerDate."'),UNIX_TIMESTAMP('".$user->lastvisitDate."'),'".$user->email."');" );
 }
 

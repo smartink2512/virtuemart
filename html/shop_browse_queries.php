@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file is to be included from the file shop.browse.php
 * and uses variables from the environment of the file shop.browse.php
 *
-* @version $Id: shop_browse_queries.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop_browse_queries.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -23,7 +23,7 @@ mm_showMyFileName( __FILE__ );
 *
 */
 // These are the names of all fields we fetch data from
-$fieldnames = "product_name,products_per_row,category_browsepage,#__{vm}_product.product_id,#__{vm}_category.category_id,product_full_image,product_thumb_image,product_s_desc,product_parent_id,product_publish,product_in_stock,product_sku";
+$fieldnames = "product_name,products_per_row,category_browsepage,category_flypage,#__{vm}_product.product_id,#__{vm}_category.category_id,product_full_image,product_thumb_image,product_s_desc,product_parent_id,product_publish,product_in_stock,product_sku";
 $count_name = "COUNT(DISTINCT #__{vm}_product.product_sku) as num_rows";
 
 /** Changed Product Type - Begin */

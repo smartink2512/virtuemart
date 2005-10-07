@@ -28,41 +28,21 @@ global $module, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $js
 $category_id = mosGetParam( $_REQUEST, 'category_id' );
 
 /* Get module parameters */
-if( defined ("_RELEASE") ) {
-  /* Mambo 4.5 1.0.9 Workaround */
-  if( _RELEASE == '4.5' ) {
-    $show_categories = isset($params->show_categories) ? $params->show_categories : "yes";
-    $show_login_form = isset($params->show_login_form) ? $params->show_login_form : "no";
-    $show_listall = isset($params->show_listall) ? $params->show_listall : "yes";
-    $show_minicart = isset($params->show_minicart) ? $params->show_minicart : "yes";
-    $show_productsearch = isset($params->show_productsearch) ? $params->show_productsearch : "yes";
-    $show_product_parameter_search = isset($params->show_product_parameter_search) ? $params->show_product_parameter_search : "no";
-    $menutype = isset($params->menutype) ? $params->menutype : "links";
-    $class_sfx = isset($params->class_sfx) ? $params->class_sfx : "";
-    $pretext = isset($params->pretext) ? $params->pretext : "";
-    $jscookMenu_style = isset($params->jscookMenu_style) ? $params->jscookMenu_style : "ThemeOffice";
-    $jscookTree_style = isset($params->jscookTree_style) ? $params->jscookTree_style : "ThemeXP";
-    $jscook_type = isset($params->jscook_type) ? $params->jscook_type : "menu";
-    $menu_orientation = isset($params->menu_orientation) ? $params->menu_orientation : "hbr";
-    $_REQUEST['root_label'] = isset($params->root_label) ? $params->root_label : 'Shop';
-  }
-}
-else {
-  $show_login_form = $params->get( 'show_login_form', 'no' );
-  $show_categories = $params->get( 'show_categories', 'yes' );
-  $show_listall = $params->get( 'show_listall', 'yes' );
-  $show_minicart = $params->get( 'show_minicart', 'yes' );
-  $show_productsearch = $params->get( 'show_productsearch', 'yes' );
-  $show_product_parameter_search = $params->get( 'show_product_parameter_search', 'no' );
-  $menutype = $params->get( 'menutype', "links" );
-  $class_sfx = $params->get( 'class_sfx', '' );
-  $pretext = $params->get( 'pretext', '' );
-  $jscookMenu_style = $params->get( 'jscookMenu_style', 'ThemeOffice' );
-  $jscookTree_style = $params->get( 'jscookTree_style', 'ThemeXP' );
-  $jscook_type = $params->get( 'jscook_type', 'menu' );
-  $menu_orientation = $params->get( 'menu_orientation', 'hbr' );
-  $_REQUEST['root_label'] = $params->get( 'root_label', 'Shop' );
-}
+$show_login_form = $params->get( 'show_login_form', 'no' );
+$show_categories = $params->get( 'show_categories', 'yes' );
+$show_listall = $params->get( 'show_listall', 'yes' );
+$show_minicart = $params->get( 'show_minicart', 'yes' );
+$show_productsearch = $params->get( 'show_productsearch', 'yes' );
+$show_product_parameter_search = $params->get( 'show_product_parameter_search', 'no' );
+$menutype = $params->get( 'menutype', "links" );
+$class_sfx = $params->get( 'class_sfx', '' );
+$pretext = $params->get( 'pretext', '' );
+$jscookMenu_style = $params->get( 'jscookMenu_style', 'ThemeOffice' );
+$jscookTree_style = $params->get( 'jscookTree_style', 'ThemeXP' );
+$jscook_type = $params->get( 'jscook_type', 'menu' );
+$menu_orientation = $params->get( 'menu_orientation', 'hbr' );
+$_REQUEST['root_label'] = $params->get( 'root_label', 'Shop' );
+
 $class_mainlevel = "mainlevel".$class_sfx;
 
 // This is "Categories:" by default. Change it in the Module Parameters Form
@@ -250,7 +230,9 @@ if (ENABLE_DOWNLOADS == '1') { ?>
 if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes') {
 ?>
     <tr>
-        <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl($mm_action_url."index.php?page=shop.cart")?>"><?php echo $VM_LANG->_PHPSHOP_CART_SHOW ?></td>
+        <td colspan="2">
+		<a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl($mm_action_url."index.php?page=shop.cart")?>"><?php echo $VM_LANG->_PHPSHOP_CART_SHOW ?></a>
+	</td>
     </tr>
     <tr>
         <td colspan="2"><?php include (PAGEPATH.'shop.basket_short.php') ?></td>
