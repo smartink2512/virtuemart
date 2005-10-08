@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is the Main Product Listing File!
 *
-* @version $Id: shop.browse.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: shop.browse.php,v 1.4 2005/10/07 14:29:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -36,7 +36,8 @@ require_once (CLASSPATH."ps_reviews.php");
 $Itemid = mosgetparam($_REQUEST, "Itemid", null);
 if (empty($orderby)) $orderby = "{vm}_product.product_name";
 if (empty($category_id)) $category_id = $search_category;
-
+global $default;
+$default['category_flypage'] = FLYPAGE;
 
 if (!empty($category_id) ) { 
     
@@ -157,10 +158,10 @@ if ( $num_rows > 1 && @$_REQUEST['output'] != "pdf") {
         <option value="{vm}_product.product_name" <?php echo $orderby=="{vm}_product.product_name" ? "selected=\"selected\"" : "";?>>
         <?php echo $VM_LANG->_PHPSHOP_PRODUCT_NAME_TITLE ?></option>
         <?php
-          if (_SHOW_PRICES == '1') { ?>
+	if (_SHOW_PRICES == '1' && $auth['show_prices']) { ?>
               <option value="{vm}_product_price.product_price" <?php echo $orderby=="{vm}_product_price.product_price" ? "selected=\"selected\"" : "";?>>
               <?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE ?></option><?php 
-          } ?>
+	} ?>
       </select>
 	  <?php
 	  	if ($DescOrderBy == "DESC") {
@@ -250,7 +251,7 @@ else
     
       // Set the flypage for this product based on the category.
       // If no flypage is set then use the default as set in virtuemart.cfg.php
-      $flypage = $db_browse->f("category_flypage");
+      $flypage = $db_browse->sf("category_flypage");
       
       $url = $sess->url( $mm_action_url."index.php?page=shop.product_details&flypage=$flypage&product_id=" . $db_browse->f("product_id") . "&category_id=" . $db_browse->f("category_id"));
       
@@ -312,7 +313,7 @@ else
 
       
       /** Price: xx.xx EUR ***/
-      if (_SHOW_PRICES == '1') {
+      if (_SHOW_PRICES == '1' && $auth['show_prices']) {
         $product_price = $ps_product->show_price( $db_browse->f("product_id") ); 
       } 
       else {

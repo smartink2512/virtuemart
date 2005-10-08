@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_config.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_config.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,8 +27,13 @@ class ps_config {
  ****************************************************************************/
 
 function writeconfig(&$d) {
-    global $my;
+    global $my, $db;
     
+	$group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
+	$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
+	$db->next_record();
+	$d['conf_VM_PRICE_ACCESS_LEVEL'] = $db->f('name');
+	
     if ($_POST['myname'] != "Jabba Binks")
         return false;
     else {
@@ -52,6 +57,9 @@ function writeconfig(&$d) {
             "PSHOP_OFFLINE_MESSAGE"  =>      "conf_PSHOP_OFFLINE_MESSAGE",
             "USE_AS_CATALOGUE"  =>      "conf_USE_AS_CATALOGUE",
             "VM_TABLEPREFIX"  =>      "conf_VM_TABLEPREFIX",
+            "VM_PRICE_SHOW_PACKAGING_PRICELABEL"  =>      "conf_VM_PRICE_SHOW_PACKAGING_PRICELABEL",
+            "VM_PRICE_SHOW_INCLUDINGTAX"  =>      "conf_VM_PRICE_SHOW_INCLUDINGTAX",
+            "VM_PRICE_ACCESS_LEVEL"  =>      "conf_VM_PRICE_ACCESS_LEVEL",
             "ENABLE_DOWNLOADS"  =>      "conf_ENABLE_DOWNLOADS",
             "DOWNLOAD_MAX"  =>      "conf_DOWNLOAD_MAX",
             "DOWNLOAD_EXPIRE"  =>      "conf_DOWNLOAD_EXPIRE",

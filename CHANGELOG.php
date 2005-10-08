@@ -32,6 +32,16 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+08-10-2005 soeren
++ added new configuration parameter VM_PRICE_ACCESS_LEVEL
+	The value is the name of a Joomla user group, default: "Public Frontend"
+	It can be used to restrict the price display to certian membergroups (including their childs)
++ added new configuration parameter VM_PRICE_SHOW_INCLUDINGTAX
+	A flag to turn on or off the message (including 8.5% tax) behind a price display
++ added new configuration parameter VM_PRICE_SHOW_PACKAGING_PRICELABEL
+	A flag to switch between usual price labels or packaging price labels (which are used, when Packaging Units are set)
+^ re-arranged fields in the configuration panel
+
 07-10-2005 soeren
 + new function vmPopupLink to quickly generate a JS + XHTML compliant link
 # TopTen module optimized (ran 11 queries before on 10 products, now ONE)

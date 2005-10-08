@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_product.php,v 1.5 2005/09/30 18:59:45 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.7 2005/10/05 19:00:12 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1811,110 +1811,114 @@ class ps_product {
    ***************************************************************************/
   function show_price( $product_id, $hide_tax = false ) {
     global $VM_LANG, $CURRENCY_DISPLAY,$vendor_mail,$product_name;
-    
     $auth = $_SESSION['auth'];
-    
-    // Get the DISCOUNT AMOUNT
-    $discount_info = $this->get_discount( $product_id );
-    
-    // Get the Price according to the quantity in the Cart
-    $price_info = $this->get_price( $product_id );
-    // Get the Base Price of the Product
-    $base_price_info = $this->get_price($product_id, true );
-    
-    $html = "";
-    $undiscounted_price = 0;
-    if (isset($price_info["product_price_id"])) {
-      
-      $base_price = $base_price_info["product_price"];
-      $price = $price_info["product_price"];
-      
-      if ($auth["show_price_including_tax"] == 1) {
-          $my_taxrate = $this->get_product_taxrate($product_id);
-          $base_price += ($my_taxrate * $price_info["product_price"]);
-      }
-      
-      // Calculate discount
-      if( !empty($discount_info["amount"])) {
-        $undiscounted_price = $base_price;
-        switch( $discount_info["is_percent"] ) {
-          case 0: $base_price -= $discount_info["amount"]; break;
-          case 1: $base_price *= (100 - $discount_info["amount"])/100; break;
-        }
-      }
-      $text_including_tax = "";
-      if (!empty($my_taxrate)) {
-          $tax = $my_taxrate * 100;
-          // only show "including x % tax" when it shall
-          // not be hidden
-          if( !$hide_tax && $auth["show_price_including_tax"] == 1 ) {
-            $text_including_tax = $VM_LANG->_PHPSHOP_INCLUDING_TAX;
-            eval ("\$text_including_tax = \"$text_including_tax\";");
-            
-          }
-      }
-      if(!empty($discount_info["amount"])) {
-        $html .= "<span style=\"color:red;\">\n<strike>";
-        $html .= $CURRENCY_DISPLAY->getFullValue($undiscounted_price);
-        $html .= "</strike> $text_including_tax</span>\n<br/>";
-      }
-      
-      $html .= "<span style=\"font-weight:bold\">\n";
-      $html .= $CURRENCY_DISPLAY->getFullValue($base_price);
-      $html .= "</span>\n ";
-
-      $html .= $text_including_tax;
-      
-      if(!empty($discount_info["amount"])) {
-        $html .= "<br />";
-        $html .= $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_SAVE.": ";
-        if($discount_info["is_percent"]==1)
-          $html .= $discount_info["amount"]."%";
-        else
-          $html .= $CURRENCY_DISPLAY->getFullValue($discount_info["amount"]);
-      }
-      
-      // Check if we need to display a Table with all Quantity <=> Price Relationships
-      if( $base_price_info["product_has_multiple_prices"] && !$hide_tax ) {
-        $db = new ps_DB;
-        // Quantity Discount Table
-        $q = "SELECT product_price, price_quantity_start, price_quantity_end FROM #__{vm}_product_price
-              WHERE product_id='$product_id' AND shopper_group_id='".$auth["shopper_group_id"]."' ORDER BY price_quantity_start";
-        $db->query( $q );
-        
-//         $prices_table = "<table align=\"right\">
-        $prices_table = "<table>
-                  <thead><tr class=\"sectiontableheader\">
-                  <th>".$VM_LANG->_PHPSHOP_CART_QUANTITY."</th>
-                  <th>".$VM_LANG->_PHPSHOP_CART_PRICE."</th>
-                  </tr></thead>
-                  <tbody>";
-        $i = 1;
-        while( $db->next_record() ) {
-          
-          $prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>\n";
-          $prices_table .= "<td>";
-          if (!empty($my_taxrate)) 
-            $prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$db->f("product_price") );
-          else            
-            $prices_table .= $CURRENCY_DISPLAY->getFullValue( $db->f("product_price") );
-          $prices_table .= "</td>\n</tr>";
-          $i == 1 ? $i++ : $i--;
-        }
-        $prices_table .= "</tbody></table>";
-        if( @$_REQUEST['page'] == "shop.browse" ) {
-          $html .= mm_ToolTip( mysql_escape_string($prices_table) );
-        }
-        else
-          $html .= $prices_table;
-      }
-    }
-    // No price, so display "Call for pricing"
-    else {
-        $html = "&nbsp;<a href=\"mailto:$vendor_mail?subject=".$VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name\">".$VM_LANG->_PHPSHOP_PRODUCT_CALL."</a>";
-    }
-    return $html;
-  }
+	$no_price_html = "&nbsp;<a href=\"mailto:$vendor_mail?subject=".$VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name\">".$VM_LANG->_PHPSHOP_PRODUCT_CALL."</a>";
+	    
+    if( $auth['show_prices'] ) {
+		// Get the DISCOUNT AMOUNT
+		$discount_info = $this->get_discount( $product_id );
+		
+		// Get the Price according to the quantity in the Cart
+		$price_info = $this->get_price( $product_id );
+		// Get the Base Price of the Product
+		$base_price_info = $this->get_price($product_id, true );
+		
+		$html = "";
+		$undiscounted_price = 0;
+		if (isset($price_info["product_price_id"])) {
+		  
+		  $base_price = $base_price_info["product_price"];
+		  $price = $price_info["product_price"];
+		  
+		  if ($auth["show_price_including_tax"] == 1) {
+			  $my_taxrate = $this->get_product_taxrate($product_id);
+			  $base_price += ($my_taxrate * $price_info["product_price"]);
+		  }
+		  
+		  // Calculate discount
+		  if( !empty($discount_info["amount"])) {
+			$undiscounted_price = $base_price;
+			switch( $discount_info["is_percent"] ) {
+			  case 0: $base_price -= $discount_info["amount"]; break;
+			  case 1: $base_price *= (100 - $discount_info["amount"])/100; break;
+			}
+		  }
+		  $text_including_tax = "";
+		  if (!empty($my_taxrate)) {
+			  $tax = $my_taxrate * 100;
+			  // only show "including x % tax" when it shall
+			  // not be hidden
+			  if( !$hide_tax && $auth["show_price_including_tax"] == 1 && VM_PRICE_SHOW_INCLUDINGTAX) {
+				$text_including_tax = $VM_LANG->_PHPSHOP_INCLUDING_TAX;
+				eval ("\$text_including_tax = \"$text_including_tax\";");
+				
+			  }
+		  }
+		  if(!empty($discount_info["amount"])) {
+			$html .= "<span style=\"color:red;\">\n<strike>";
+			$html .= $CURRENCY_DISPLAY->getFullValue($undiscounted_price);
+			$html .= "</strike> $text_including_tax</span>\n<br/>";
+		  }
+		  
+		  $html .= "<span style=\"font-weight:bold\">\n";
+		  $html .= $CURRENCY_DISPLAY->getFullValue($base_price);
+		  $html .= "</span>\n ";
+	
+		  $html .= $text_including_tax;
+		  
+		  if(!empty($discount_info["amount"])) {
+			$html .= "<br />";
+			$html .= $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_SAVE.": ";
+			if($discount_info["is_percent"]==1)
+			  $html .= $discount_info["amount"]."%";
+			else
+			  $html .= $CURRENCY_DISPLAY->getFullValue($discount_info["amount"]);
+		  }
+		  
+		  // Check if we need to display a Table with all Quantity <=> Price Relationships
+		  if( $base_price_info["product_has_multiple_prices"] && !$hide_tax ) {
+			$db = new ps_DB;
+			// Quantity Discount Table
+			$q = "SELECT product_price, price_quantity_start, price_quantity_end FROM #__{vm}_product_price
+				  WHERE product_id='$product_id' AND shopper_group_id='".$auth["shopper_group_id"]."' ORDER BY price_quantity_start";
+			$db->query( $q );
+			
+	//         $prices_table = "<table align=\"right\">
+			$prices_table = "<table>
+					  <thead><tr class=\"sectiontableheader\">
+					  <th>".$VM_LANG->_PHPSHOP_CART_QUANTITY."</th>
+					  <th>".$VM_LANG->_PHPSHOP_CART_PRICE."</th>
+					  </tr></thead>
+					  <tbody>";
+			$i = 1;
+			while( $db->next_record() ) {
+			  
+			  $prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>\n";
+			  $prices_table .= "<td>";
+			  if (!empty($my_taxrate)) 
+				$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$db->f("product_price") );
+			  else            
+				$prices_table .= $CURRENCY_DISPLAY->getFullValue( $db->f("product_price") );
+			  $prices_table .= "</td>\n</tr>";
+			  $i == 1 ? $i++ : $i--;
+			}
+			$prices_table .= "</tbody></table>";
+			if( @$_REQUEST['page'] == "shop.browse" ) {
+			  $html .= mm_ToolTip( mysql_escape_string($prices_table) );
+			}
+			else
+			  $html .= $prices_table;
+		  }
+		}
+		// No price, so display "Call for pricing"
+		else {
+			$html = $no_price_html;
+		}
+		return $html;
+	  }
+	  else
+		return $no_price_html;
+	}
   
   /**************************************************************************
    ** name: get_discount

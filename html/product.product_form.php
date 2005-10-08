@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.8 2005/10/06 13:14:56 codename-matrix Exp $
+* @version $Id: product.product_form.php,v 1.9 2005/10/06 20:56:37 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -228,7 +228,7 @@ else {
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
             <td>
-                <input type="text" value="<?php echo $price["product_price"]; ?>" class="inputbox" name="product_price" onkeyup="updateGross();" size="10" maxlength="10" />
+                <input type="text" value="<?php echo @$price["product_price"]; ?>" class="inputbox" name="product_price" onkeyup="updateGross();" size="10" maxlength="10" />
                 <input type="hidden" name="product_price_id" value="<?php echo @$price["product_price_id"] ?>" />
             </td>
             <td><?php
@@ -1018,47 +1018,53 @@ function getTaxRate() {
 }
 
 function updateGross() {
-  var taxRate = getTaxRate();
-  
-  var r = new RegExp("\,", "i");
-  document.adminForm.product_price.value = document.adminForm.product_price.value.replace( r, "." );
-  
-  var grossValue = document.adminForm.product_price.value;
-  
-  if (taxRate > 0) {
-    grossValue = grossValue * (taxRate + 1);
-  }
-
-  document.adminForm.product_price_incl_tax.value = doRound(grossValue, 5);
+	if( document.adminForm.product_price.value != '' ) {
+		var taxRate = getTaxRate();
+		
+		var r = new RegExp("\,", "i");
+		document.adminForm.product_price.value = document.adminForm.product_price.value.replace( r, "." );
+		  
+		var grossValue = document.adminForm.product_price.value;
+		  
+		if (taxRate > 0) {
+			grossValue = grossValue * (taxRate + 1);
+		}
+		
+		document.adminForm.product_price_incl_tax.value = doRound(grossValue, 5);
+	}
 }
 
 function updateNet() {
-  var taxRate = getTaxRate();
-  
-  var r = new RegExp("\,", "i");
-  document.adminForm.product_price_incl_tax.value = document.adminForm.product_price_incl_tax.value.replace( r, "." );
-  
-  var netValue = document.adminForm.product_price_incl_tax.value;
-
-  if (taxRate > 0) {
-    netValue = netValue / (taxRate + 1);
-  }
-
-  document.adminForm.product_price.value = doRound(netValue, 5);
+	if( document.adminForm.product_price_incl_tax.value != '' ) {
+		var taxRate = getTaxRate();
+		  
+		var r = new RegExp("\,", "i");
+		document.adminForm.product_price_incl_tax.value = document.adminForm.product_price_incl_tax.value.replace( r, "." );
+		  
+		var netValue = document.adminForm.product_price_incl_tax.value;
+		
+		if (taxRate > 0) {
+			netValue = netValue / (taxRate + 1);
+		}
+		
+		document.adminForm.product_price.value = doRound(netValue, 5);
+	}
 }
 
 function updateDiscountedPrice() {
-	try {
-		var selected_discount = document.adminForm.product_discount_id.selectedIndex;
-		var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
-		var origPrice = document.adminForm.product_price_incl_tax.value;
-		
-		if( discountCalc ) {
-			eval( 'var discPrice = ' + origPrice + discountCalc );
-			document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+	if( document.adminForm.product_price.value != '' ) {
+		try {
+			var selected_discount = document.adminForm.product_discount_id.selectedIndex;
+			var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
+			var origPrice = document.adminForm.product_price_incl_tax.value;
+			
+			if( discountCalc ) {
+				eval( 'var discPrice = ' + origPrice + discountCalc );
+				document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+			}
 		}
+		catch( e ) { }
 	}
-	catch( e ) { }
 }
 
 updateGross();

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.4 2005/09/30 18:59:46 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.5 2005/10/07 14:29:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -35,7 +35,7 @@ require_once(CLASSPATH . 'ps_reviews.php' );
 * so let's get the second part - flypage */
 $flypage = mosGetParam($_REQUEST, "flypage", FLYPAGE);
 $flypage = explode(".", $flypage );
-$flypage = basename($flypage[1]);
+$flypage = basename(@$flypage[1]);
 
 $product_id = mosgetparam($_REQUEST, "product_id", null);
 $category_id = mosgetparam($_REQUEST, "category_id", null);
@@ -163,7 +163,7 @@ if ($product_parent_id != 0) {
   }
 /** PRODUCT PRICE **/
   if (_SHOW_PRICES == '1') { /** Change - Begin */
-    if( $db_product->f("product_unit") )
+    if( $db_product->f("product_unit") && VM_PRICE_SHOW_PACKAGING_PRICELABEL)
       $product_price = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE_PER_UNIT.' ('.$db_product->f("product_unit")."):</strong>";
     else /** Change - End */
       $product_price = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE. ": </strong>";
