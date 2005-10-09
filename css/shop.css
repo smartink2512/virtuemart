@@ -37,3 +37,11 @@
 	text-align: left; font-size: 18px; font-weight: bold;
 	padding-left: 80px;	
 }
+
+.labelcell {
+	margin-left: auto;
+	text-align: right;
+	font-weight: bold;
+	vertical-align: top;
+	width: 30%;
+}

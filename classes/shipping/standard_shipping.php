@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: standard_shipping.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -134,7 +134,7 @@ class standard_shipping {
   }
   	
   function get_tax_rate( $shipping_rate_id=0 ) {
-      global $database;
+      $database = new ps_DB;
       
 	  if( $shipping_rate_id == 0) {
         $shipping_rate_id = $_REQUEST["shipping_rate_id"];

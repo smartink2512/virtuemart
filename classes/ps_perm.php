@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_perm.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: ps_perm.php,v 1.5 2005/10/08 15:56:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -37,12 +37,18 @@ class ps_perm {
 	*/
 	function doAuthentication() {
 		
-		global $shopper_group, $my, $db, $acl;
-		
+		global $shopper_group, $my, $acl;
+		$db = new ps_DB;
 		$auth = array();
+		
 		$child_groups = gacl_api::_getBelow( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level',	'g1.name', null, VM_PRICE_ACCESS_LEVEL );
 		foreach( $child_groups as $child_group )
 			$acl->_mos_add_acl( 'virtuemart', 'prices', 'users', $child_group->name, null, null );
+		if( $my->id > 0 && empty( $my->usertype )) {
+			$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$my->gid.'\'' );
+			$db->next_record();
+			$my->usertype = $db->f( 'name' );
+		}
 		$auth['show_prices']  = $acl->acl_check( 'virtuemart', 'prices', 'users', strtolower($my->usertype), null, null );
 	
 		if (!empty($my->id)) { // user has already logged in

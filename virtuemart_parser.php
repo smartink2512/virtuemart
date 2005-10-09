@@ -25,8 +25,10 @@ $option = mosGetParam( $_REQUEST, 'option' );
 	
 if( !defined( 'CLASSPATH' )) {
 
-	if( $my->id )
+	if( $my->id > 0 )
 		$my->load( $my->id );
+	else
+		$my->usertype = 'Public Frontend';
 	
     global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vendor_image,$vendor_image_url, $keyword,
             $ps_payment_method,$ps_zone,$sess, $page, $func, $pagename, $modulename, $vars, $VM_LANG, $cmd, $ok, $mosConfig_lang,
@@ -208,7 +210,7 @@ if( !defined( 'CLASSPATH' )) {
 	
 	// User authentication
     $auth = $perm->doAuthentication();
-    
+	
 	if( $option == "com_virtuemart" ) {
 		// Check if we have to run a Shop Function 
 		// and if the user is allowed to execute it

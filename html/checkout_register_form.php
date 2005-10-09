@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout_register_form.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: checkout_register_form.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,13 +27,17 @@ $missing = mosGetParam( $_REQUEST, "missing", "" );
       
 			// do field validation
           <?php 
-          if (!$my->id) { ?>
+          if (!$my->id ) { 
+			if( && VM_SILENT_REGISTRATION != '1' ) {?>
           
 			if (form.username.value == "") {
 				alert( "<?php echo _REGWARN_UNAME; ?>" );
                 return false;
 			}
-            else if (r.exec(form.username.value) || form.username.value.length < 3) {
+			<?php
+			}
+			?>
+            if (r.exec(form.username.value) || form.username.value.length < 3) {
                       alert( "<?php printf(_VALID_AZ09, _PROMPT_UNAME, 2);   ?>" );
                       return false;
                   } 
@@ -86,7 +90,7 @@ if (!empty( $missing )) {
       <?php echo _REGISTER_TITLE . " (* = " . _CMN_REQUIRED . ")";?>
     </div>
 <?php 
-if (empty($my->id)) { ?>
+if (empty($my->id) && VM_SILENT_REGISTRATION != '1') { ?>
   <br/>
     <fieldset>
       <legend><span class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL ?></span></legend>
@@ -98,11 +102,6 @@ if (empty($my->id)) { ?>
         <input type="text" id="uname_field" name="username" size="40" value="<?php echo empty($_REQUEST['username']) ? '' : $_REQUEST['username']; ?>" class="inputbox" />
       </div>
       <br/><br/>
-        
-      <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'email')) echo $missing_style ?>" >
-        <?php echo "<label for=\"email_field\">"._REGISTER_EMAIL."</label>*"  ?></div>
-      <div style="float:left;width:60%;"><input type="text" id="email_field" name="email" size="40" value="<?php echo empty($_REQUEST['email']) ? '' : $_REQUEST['email']; ?>" class="inputbox" /></div>
-    <br/><br/>
     
       <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'password')) echo $missing_style ?>" >
         <?php echo "<label for=\"passwd_field\">"._REGISTER_PASS."</label>*"   ?></div>
@@ -214,6 +213,12 @@ if (empty($my->id)) { ?>
       <div style="float:left;width:60%;"> 
         <input type="text" id="fax" name="fax" size="40" value="<?php echo empty($_REQUEST['fax']) ? '' : $_REQUEST['fax']; ?>" class="inputbox" />
       </div>
+	<br/><br/>
+	
+      <div style="float:left;width:30%;text-align:right;<?php if (stristr($missing,'email')) echo $missing_style ?>" >
+        <?php echo "<label for=\"email_field\">"._REGISTER_EMAIL."</label>*"  ?></div>
+      <div style="float:left;width:60%;"><input type="text" id="email_field" name="email" size="40" value="<?php echo empty($_REQUEST['email']) ? '' : $_REQUEST['email']; ?>" class="inputbox" /></div>
+
   </fieldset>
   
     

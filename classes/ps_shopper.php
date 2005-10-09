@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_shopper.php,v 1.3 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: ps_shopper.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -38,7 +38,7 @@ class ps_shopper {
 		$provided_required = true;
 		$missing = "";
 		
-		if( empty( $my->id )) {
+		if( empty( $my->id ) && VM_SILENT_REGISTRATION != '1') {
 			if (empty($d['username'])) { $provided_required = false; $missing .= "username,"; }
 			if (empty($d['password'])) { $provided_required = false; $missing .= "password,"; }
 			if (empty($d['password2'])) { $provided_required = false; $missing .= "password2,"; }
@@ -58,9 +58,10 @@ class ps_shopper {
 		//if (empty($d['phone_1'])) { $provided_required = false; $missing .= "phone_1"; }
 		
 		if (MUST_AGREE_TO_TOS == '1'&& !$perm->is_registered_customer( $my->id )) { 
-		  if( empty( $d['agreed'] ))
-			$provided_required = false;
-			$missing .= "agreed,";
+			if( empty( $d['agreed'] )) {
+				$provided_required = false;
+				$missing .= "agreed,";
+			}
 		}
 		
 		if (!$provided_required) {
@@ -152,24 +153,28 @@ class ps_shopper {
 		if (!$this->validate_add($d)) {
 		  return False;
 		}
-		
+		// Use InputFilter class to prevent SQL injection or HTML tags
 		$iFilter = new vmInputFilter();
 		$d = $iFilter->process( $d );
 	
 		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 and $d["extra_field_4"] == "") {
 		  $d["extra_field_4"] = "N";
 		}
-		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 and $d["extra_field_5"] == "") {
+		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5 and $d["extra_field_5"] == "") {
 		  $d["extra_field_5"] = "N";
 		} 
 		if( empty( $my->id ) ) {
-			// Joomla User Information stuff
-			$mainframe->_path->front_html = $mosConfig_absolute_path.'/components/com_registration/registration.html.php';
-			$_REQUEST['task'] = $task = 'saveRegistration';
+
 			$_POST['name'] = $d['first_name']." ".$d['last_name'];
-			require_once( $mosConfig_absolute_path.'/components/com_registration/registration.php' );
+			if( VM_SILENT_REGISTRATION == '1' ) {
+				$_POST['username'] = $d['username'] = $d['email'];
+				$_POST['password'] = $d['password'] = mosMakePassword();
+				$_POST['password2'] = $_POST['password'];
+			}
+			// Process Mambo/Joomla registration stuff
+			$this->saveRegistration();
 			
-			$database->setQuery( "SELECT id FROM #__users ORDER BY registerDate DESC" );
+			$database->setQuery( "SELECT id FROM #__users WHERE username='".$d['username']."'" );
 			$database->loadObject( $userid );
 			$uid = $userid->id;
 		}
@@ -248,6 +253,116 @@ class ps_shopper {
 		return True;
     
 	}
+	/**
+	* The function from com_registration!
+	* Registers a user into Mambo/Joomla
+	*/
+	function saveRegistration() {
+		global $database, $acl, $VM_LANG;
+		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation, $mosConfig_allowUserRegistration;
+		global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_mailfrom, $mosConfig_fromname;
+	
+		if ($mosConfig_allowUserRegistration=='0') {
+			mosNotAuth(); return;
+		}
+	
+		$row = new mosUser( $database );
+	
+		if (!$row->bind( $_POST, 'usertype' )) {
+			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
+			exit();
+		}
+	
+		mosMakeHtmlSafe($row);
+		
+		$usergroup = 'Registered';
+		$row->id = 0;
+		$row->usertype = $usergroup;
+		$row->gid = $acl->get_group_id( $usergroup, 'ARO' );
+	
+		if ($mosConfig_useractivation == '1') {
+			$row->activation = md5( mosMakePassword() );
+			$row->block = '1';
+		}
+	
+		if (!$row->check()) {
+			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
+			exit();
+		}
+	
+		$pwd 				= $row->password;
+		$row->password 		= md5( $row->password );
+		$row->registerDate 	= date('Y-m-d H:i:s');
+	
+		if (!$row->store()) {
+			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
+			exit();
+		}
+		$row->checkin();
+	
+		$name 		= $row->name;
+		$email 		= $row->email;
+		$username 	= $row->username;
+	
+		$subject 	= sprintf (_SEND_SUB, $name, $mosConfig_sitename);
+		$subject 	= html_entity_decode($subject, ENT_QUOTES);
+		if ($mosConfig_useractivation=="1"){
+			$message = sprintf (_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $mosConfig_live_site."/index.php?option=com_registration&task=activate&activation=".$row->activation, $mosConfig_live_site, $username, $pwd);
+		} else {
+			$message = sprintf ($VM_LANG->_PHPSHOP_USER_SEND_REGISTRATION_DETAILS, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
+		}
+	
+		$message = html_entity_decode($message, ENT_QUOTES);
+		// Send email to user
+		if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
+			$adminName2 = $mosConfig_fromname;
+			$adminEmail2 = $mosConfig_mailfrom;
+		} else {
+			$query = "SELECT name, email"
+			. "\n FROM #__users"
+			. "\n WHERE LOWER( usertype ) = 'superadministrator'"
+			. "\n OR LOWER( usertype ) = 'super administrator'"
+			;
+			$database->setQuery( $query );
+			$rows = $database->loadObjectList();
+			$row2 			= $rows[0];
+			$adminName2 	= $row2->name;
+			$adminEmail2 	= $row2->email;
+		}
+	
+		mosMail($adminEmail2, $adminName2, $email, $subject, $message);
+	
+		// Send notification to all administrators
+		$subject2 = sprintf (_SEND_SUB, $name, $mosConfig_sitename);
+		$message2 = sprintf (_ASEND_MSG, $adminName2, $mosConfig_sitename, $row->name, $email, $username);
+		$subject2 = html_entity_decode($subject2, ENT_QUOTES);
+		$message2 = html_entity_decode($message2, ENT_QUOTES);
+	
+		// get superadministrators id
+		$admins = $acl->get_group_objects( 25, 'ARO' );
+	
+		foreach ( $admins['users'] AS $id ) {
+			$query = "SELECT email, sendEmail"
+			. "\n FROM #__users"
+			."\n WHERE id = $id"
+			;
+			$database->setQuery( $query );
+			$rows = $database->loadObjectList();
+	
+			$row = $rows[0];
+	
+			if ($row->sendEmail) {
+				mosMail($adminEmail2, $adminName2, $row->email, $subject2, $message2);
+			}
+		}
+	
+		if ( $mosConfig_useractivation == 1 ){
+			echo _REG_COMPLETE_ACTIVATE;
+		} else {
+			echo _REG_COMPLETE;
+		}
+	}
+
   
 	/**
 	* Function to update a Shopper Entry

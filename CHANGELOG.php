@@ -32,6 +32,12 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+09-10-2005 soeren
++ new Configuration parameter VM_SILENT_REGISTRATION
+	allows users to "silently" register into Mambo/Joomla
+	means they don't have to fill in a username and password at the registration.
+! you can use the configuration panel to set this value; default: 1 (=enabled)
+
 08-10-2005 soeren
 + added new configuration parameter VM_PRICE_ACCESS_LEVEL
 	The value is the name of a Joomla user group, default: "Public Frontend"

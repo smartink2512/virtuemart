@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );  
 /**
 *
-* @version $Id: ps_product_price.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_product_price.php,v 1.4 2005/09/29 20:01:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -67,6 +67,7 @@ class ps_product_price {
     }
     $q .= " shopper_group_id = '".$d["shopper_group_id"]."'";
     $q .= " AND product_id = '".$d['product_id']."'";
+    $q .= " AND product_currency = '".$d['product_currency']."'";
     $q .= " AND (('".$d['price_quantity_start']."' >= price_quantity_start AND '".$d['price_quantity_start']."' <= price_quantity_end)";
     $q .= " OR ('".$d['price_quantity_end']."' >= price_quantity_start AND '".$d['price_quantity_end']."' <= price_quantity_end))";
     $db->query( $q ); $db->next_record();

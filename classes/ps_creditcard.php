@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_creditcard.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_creditcard.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -281,7 +281,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
    * returns: the script code
    **************************************************************************/
   function creditcard_lists( &$db_cc ) {
-      global $database;
+      $db = new ps_DB;
       
       $db_cc->next_record();
       // Build the Credit Card lists for each CreditCard Payment Method
@@ -291,17 +291,17 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
       $script .= "var originalPos = '".$db_cc->f("payment_method_name")."';\n";
       $script .= "var orders = new Array();	// array in the format [key,value,text]\n";
       $i = 0;
-      $db_cc->row = 0;
-      $db_cc->called = false;
+      $db_cc->reset();
       
       while( $db_cc->next_record() ) {
           $accepted_creditcards = explode( ",", $db_cc->f("accepted_creditcards") );
           $cards = Array();
           foreach( $accepted_creditcards as $key => $value ) {
               $q = "SELECT creditcard_code,creditcard_name FROM #__{vm}_creditcard WHERE creditcard_id='$value'";
-              $database->setQuery( $q );
-              $database->loadObject( $row );
-              $cards[$row->creditcard_code] = $row->creditcard_name;
+              $db->query( $q );
+              $db->next_record();
+			  
+              $cards[$db->f('creditcard_code')] = $db->f('creditcard_name');
           }
           foreach( $cards as $code => $name ) {
               $script .= "orders[".$i++."] = new Array( '".addslashes($db_cc->f("payment_method_name"))."','$code','$name' );\n";

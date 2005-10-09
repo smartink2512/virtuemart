@@ -52,6 +52,21 @@ When not checked, price labels look just as usual: <strong>Price: $xx.xx</strong
 	var $_PHPSHOP_ADMIN_CFG_CORE_SETTINGS = 'Core Settings';
 	var $_PHPSHOP_ADMIN_CFG_FRONTEND_FEATURES = 'Frontend Features';
 	var $_PHPSHOP_ADMIN_CFG_TAX_CONFIGURATION = 'Tax Configuration';
+	var $_PHPSHOP_PRODUCT_LIST_QUANTITY_START = 'Quantity Start';
+	var $_PHPSHOP_PRODUCT_LIST_QUANTITY_END = 'Quantity End';
+	var $_PHPSHOP_ADMIN_CFG_USER_REGISTRATION_SETTINGS = 'User Registration Settings';
+	var $_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION = 'User registration allowed?';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION = 'New account activation necessary?';
+	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION = 'Use silent (hidden) user registration?';
+	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION_TIP = 'When enabled, users don\'t need to fill in a username and password for a new account. Instead the email address is used for the new account and a random password is generated. The registration details are mailed to the customer.';
+	var $_PHPSHOP_USER_SEND_REGISTRATION_DETAILS = 'Hello %s,
+
+Thank you for registering at %s. Your customer account has been created.
+You may login to %s using the following username and password:
+
+Username - %s
+Password - %s
+';
         
 }
 class phpShopLanguage extends vmLanguage { }

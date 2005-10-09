@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_config.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_config.php,v 1.5 2005/10/08 15:56:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -60,6 +60,7 @@ function writeconfig(&$d) {
             "VM_PRICE_SHOW_PACKAGING_PRICELABEL"  =>      "conf_VM_PRICE_SHOW_PACKAGING_PRICELABEL",
             "VM_PRICE_SHOW_INCLUDINGTAX"  =>      "conf_VM_PRICE_SHOW_INCLUDINGTAX",
             "VM_PRICE_ACCESS_LEVEL"  =>      "conf_VM_PRICE_ACCESS_LEVEL",
+            "VM_SILENT_REGISTRATION"  =>      "conf_VM_SILENT_REGISTRATION",
             "ENABLE_DOWNLOADS"  =>      "conf_ENABLE_DOWNLOADS",
             "DOWNLOAD_MAX"  =>      "conf_DOWNLOAD_MAX",
             "DOWNLOAD_EXPIRE"  =>      "conf_DOWNLOAD_EXPIRE",
