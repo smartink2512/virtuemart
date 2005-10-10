@@ -22,30 +22,30 @@ $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
 global $VM_LANG;
 /*** INSTALLER SECTION ***/
 if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-  
-  include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
-  
-  /** can be update and newinstall **/
-  $install_type = mosgetparam( $_REQUEST, 'install_type', 'newinstall' );
-  
-  /** true or false **/
-  $install_sample_data = mosgetparam( $_GET, 'install_sample_data', false );
-  
-  installvirtuemart( $install_type, $install_sample_data );
-  $error = "";
-  $page = "store.index";
 
-  $installfile = dirname( __FILE__ ) . "/install.php";
-  if( !@unlink( $installfile ) ) {
-    echo "<br /><span class=\"message\">Something went wrong when trying to delete the file <strong>install.php</strong>!<br />";
-    echo "You'll have to delete the file manually before being able to use VirtueMart!</span>";
-  }
-  unlink( dirname( __FILE__ ) . "/install.copy.php" );
+	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
+
+	/** can be update and newinstall **/
+	$install_type = mosgetparam( $_REQUEST, 'install_type', 'newinstall' );
+
+	/** true or false **/
+	$install_sample_data = mosgetparam( $_GET, 'install_sample_data', false );
+
+	installvirtuemart( $install_type, $install_sample_data );
+	$error = "";
+	$page = "store.index";
+
+	$installfile = dirname( __FILE__ ) . "/install.php";
+	if( !@unlink( $installfile ) ) {
+		echo "<br /><span class=\"message\">Something went wrong when trying to delete the file <strong>install.php</strong>!<br />";
+		echo "You'll have to delete the file manually before being able to use VirtueMart!</span>";
+	}
+	unlink( dirname( __FILE__ ) . "/install.copy.php" );
 }
 elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-  include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.virtuemart.php' );
-  com_install();
-  exit();
+	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.virtuemart.php' );
+	com_install();
+	exit();
 }
 /*** END INSTALLER ***/
 
@@ -55,9 +55,9 @@ require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parse
 
 $limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
 $limitstart = $mainframe->getUserStateFromRequest( "view{$page}limitstart", 'limitstart', 0 );
-	
+
 if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
-    echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";  
+	echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";
 }
 
 
@@ -69,7 +69,7 @@ $pagename = $my_page[1];
 $_SESSION['last_page'] = $page;
 
 if( $no_menu != 1 ) {
-  include(ADMINPATH.'header.php');
+	include(ADMINPATH.'header.php');
 }
 // Include the Stylesheet
 echo '<link rel="stylesheet" href="components/'.$option.'/admin.styles.css" type="text/css" />';
@@ -80,8 +80,8 @@ echo '<script type="text/javascript" src="../components/'.$option.'/js/functions
 include( PAGEPATH.$modulename.".".$pagename.".php" );
 
 if( DEBUG == '1' ) {
-  // Load PAGE
-  include( PAGEPATH."shop.debug.php" );
+	// Load PAGE
+	include( PAGEPATH."shop.debug.php" );
 }
 echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
 ?>

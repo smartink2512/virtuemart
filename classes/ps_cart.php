@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_cart.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_cart.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -34,260 +34,275 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *************************************************************************/
 
 class ps_cart {
-  var $classname="ps_cart";
-
-
-  /**************************************************************************
-  ** name: add()
-  ** created by: pablo
-  ** description: adds an item to the shopping cart
-  ** parameters:
-  ** returns:
-  ***************************************************************************/  
-  function add(&$d) {
-    global $sess, $VM_LANG;
+	var $classname="ps_cart";
 	
-	include_class("product");
-	
-    $Itemid = mosgetparam($_REQUEST, "Itemid", null);
-    $db = new ps_DB;
-    $product_id = $d["product_id"];
-    $quantity = isset($d["quantity"]) ? $d["quantity"] : 1;
-	$_SESSION['last_page'] = "shop.product_details";
-
-    // Check for negative quantity
-    if ($quantity < 0) {
-      $d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
-      return False;
-    }
-
-    if (!ereg("^[0-9]*$", $quantity)) {
-     	$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
-        return False; 
-    }
-
-    // Check to see if checking stock quantity
-    if (CHECK_STOCK) {
-      $q = "SELECT product_in_stock ";
-      $q .= "FROM #__{vm}_product where product_id='$product_id'";
-      $db->query($q);
-      $db->next_record();
-      $product_in_stock = $db->f("product_in_stock");
-      if (empty($product_in_stock)) $product_in_stock = 0;
-      if ($quantity > $product_in_stock) {
-        $d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1;
-        $msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
-        eval($msg);
-        $d["error"] .= $msg;
-
-        // added for the waiting list addon
-        $url = "index.php?page=shop.waiting_list&product_id=";
-        $url .= $product_id;
-        mosRedirect( $sess->url(URL . $url), $msg );
-    
-        return False;
-      }
-    }
-
-    // Quick add of item
-    $q = "SELECT product_id FROM #__{vm}_product WHERE ";
-    $q .= "product_parent_id = '".$d['product_id']."'";
-    $db->query ( $q );
-   
-    if ( $db->num_rows()) {
-        include_class("product");
-        $flypage = ps_product::get_flypage($product_id);
-		$d["error"] = $VM_LANG->_PHPSHOP_CART_SELECT_ITEM;
-		return false;
-        mosRedirect("index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=".$_POST['category_id']."&Itemid=$Itemid", $VM_LANG->_PHPSHOP_CART_SELECT_ITEM);
-    } 
-
-    // If no quantity sent them assume 1
-    if ($quantity == "")
-      $quantity = 1;
-      
-      
-    // Check to see if we already have it
-    $updated = 0;
-    
-	$result = ps_product_attribute::cartGetAttributes( &$d );
-
-    if ( ($result["attribute_given"] == false && $result["advanced_attribute_list"])
-        || ($result["custom_attribute_given"] == false && $result["custom_attribute_list"])){
-        $flypage = ps_product::get_flypage($product_id);
-        mosRedirect("index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$_POST[category_id]&Itemid=$Itemid", $VM_LANG->_PHPSHOP_CART_SELECT_ITEM);
-    } 
-    
-    // Check for duplicate and do not add to current quantity
-      for ($i=0;$i<$_SESSION["cart"]["idx"];$i++) {
-      // modified for advanced attributes
-      if ($_SESSION['cart'][$i]["product_id"] == $product_id
-      	 && 
-      	$_SESSION['cart'][$i]["description"] == $d["description"]
-      ) {
-          $updated = 1;
-      }
-    }
-    // If we did not update then add the item
-    if (!$updated) {
-      
-      $k = $_SESSION['cart']["idx"];
-      
-      $_SESSION['cart'][$k]["quantity"] = $quantity;
-      $_SESSION['cart'][$k]["product_id"] = $product_id;
-      // added for the advanced attribute modification
-      $_SESSION['cart'][$k]["description"] = $d["description"];
-      $_SESSION['cart']["idx"]++;
-    }
-	else
-		$this->update( $d );
-    
-    /* next 3 lines added by Erich for coupon code */
-    /* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
-    if( !empty( $_SESSION['coupon_discount'] )) {
-      // Update the Coupon Discount !!
-      require_once( CLASSPATH . "ps_coupon.php" );
-      ps_coupon::process_coupon_code( $d );
-    }
-    
-    $cart = $_SESSION['cart'];
-    return True; 
-  }
-
- /**************************************************************************
-  ** name: update()
-  ** created by: pablo
-  ** description: updates the quantity of a product_id in the cart
-  ** parameters:
-  ** returns:
-  ***************************************************************************/    
-  function update(&$d) {
-    global $sess,$VM_LANG;
-
-	include_class("product");
-
-    $db = new ps_DB;
-    $product_id = $d["product_id"];
-    $quantity = $d["quantity"];
-	$_SESSION['last_page'] = "shop.cart";
-
-    // Check for negative quantity
-    if ($quantity < 0) {
-      $d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
-      return False;
-    }
-
-    if (!ereg("^[0-9]*$", $quantity)) {
-        $d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
-        return False;
-    }
-
-    // Check to see if checking stock quantity
-    if (CHECK_STOCK) {
-      $q = "SELECT product_in_stock ";
-      $q .= "FROM #__{vm}_product where product_id=";
-      $q .= $product_id;
-      $db->query($q);
-      $db->next_record();
-      $product_in_stock = $db->f("product_in_stock");
-      if (empty($product_in_stock)) $product_in_stock = 0;
-      if ($quantity > $product_in_stock) {
-        $d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1."<br />";
-        $msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
-        eval($msg);
-        $d["error"] .= $msg;
-
-     //added for the waiting list addon
-      $url = "index.php?page=shop.waiting_list&product_id=";
-      $url .= $product_id;
-      mosRedirect( $sess->url(URL . $url), $msg );
-
-      return False;
-      }
-    }
-
-    if (!$product_id) {
-      return false;
-    }
-
-    if ($quantity == 0) {
-        $this->delete($d);
-    }
-    else {
-
-		for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
-			// modified for the advanced attribute modification
-			if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
-				&& 
-				($_SESSION['cart'][$i]["description"] == $d["description"] )
-			) {
-				$_SESSION['cart'][$i]["quantity"] = $quantity;
+	/**
+	 * Calls the constructor
+	 *
+	 * @return array An empty cart
+	 */
+	function ps_cart() {
+		global $my;
+		// Register the cart
+		if (empty($_SESSION['cart'])) {
+			$cart = array();
+			$cart['idx'] = 0;
+		}
+		else {
+			if( ( @$_SESSION['auth']['user_id'] != @$my->id ) && empty( $my->id ) ) {
+				// If the user ID has changed (after logging out)
+				// empty the cart!
+				$this->reset();
+			}
+			else {
+				$cart = $_SESSION["cart"];
 			}
 		}
-    }
-    if( !empty( $_SESSION['coupon_discount'] )) {
-      // Update the Coupon Discount !!
-      require_once( CLASSPATH . "ps_coupon.php" );
-      ps_coupon::process_coupon_code( $d );
-    }
-    $_SESSION["cart"]=$_SESSION['cart'];
-    return True;
-  }
-  
- /**************************************************************************
-  ** name: delete()
-  ** created by: pablo
-  ** description: deletes a given product_id from the cart
-  ** parameters:
-  ** returns:
-  ***************************************************************************/    
-  function delete($d) {
+		$_SESSION['cart'] = $cart;
+		return $cart;
+	}
+	/**
+ 	* adds an item to the shopping cart
+ 	* @author pablo
+ 	* @param array $d
+ 	*/
+	function add(&$d) {
+		global $sess, $VM_LANG, $cart, $option;
 
-    $temp = array();
-    $product_id = $d["product_id"];
+		include_class("product");
 
-    if (!$product_id) {
-	  $_SESSION['last_page'] = "shop.cart";
-      return False;
-    }
- 
-    $j = 0;
-    for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
-            // modified for the advanced attribute modification
-      if (
-      	($_SESSION['cart'][$i]["product_id"] != $product_id)
-      	 || 
-     	($_SESSION['cart'][$i]["description"] != $d["description"])
-     ) {
-          $temp[$j++] = $_SESSION['cart'][$i];
-      }
-    }
-    $temp["idx"] = $j;
-    $_SESSION['cart'] = $temp;
-    
-    if( !empty( $_SESSION['coupon_discount'] )) {
-      // Update the Coupon Discount !!
-      require_once( CLASSPATH . "ps_coupon.php" );
-      ps_coupon::process_coupon_code( $d );
-    }
-    
-    return True;
-  } 
+		$Itemid = mosgetparam($_REQUEST, "Itemid", null);
+		$db = new ps_DB;
+		$product_id = $d["product_id"];
+		$quantity = isset($d["quantity"]) ? $d["quantity"] : 1;
+		$_SESSION['last_page'] = "shop.product_details";
+
+		// Check for negative quantity
+		if ($quantity < 0) {
+			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
+			return False;
+		}
+
+		if (!ereg("^[0-9]*$", $quantity)) {
+			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
+			return False;
+		}
+
+		// Check to see if checking stock quantity
+		if (CHECK_STOCK) {
+			$q = "SELECT product_in_stock ";
+			$q .= "FROM #__{vm}_product where product_id='$product_id'";
+			$db->query($q);
+			$db->next_record();
+			$product_in_stock = $db->f("product_in_stock");
+			if (empty($product_in_stock)) $product_in_stock = 0;
+			if ($quantity > $product_in_stock) {
+				$d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1;
+				$msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
+				eval($msg);
+				$d["error"] .= $msg;
+
+				// added for the waiting list addon
+				$url = "index.php?page=shop.waiting_list&product_id=";
+				$url .= $product_id;
+				mosRedirect( $sess->url(URL . $url), $msg );
+
+				return False;
+			}
+		}
+
+		// Quick add of item
+		$q = "SELECT product_id FROM #__{vm}_product WHERE ";
+		$q .= "product_parent_id = '".$d['product_id']."'";
+		$db->query ( $q );
+
+		if ( $db->num_rows()) {
+			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_CART_SELECT_ITEM;
+			return false;
+		}
+
+		// If no quantity sent them assume 1
+		if ($quantity == "")
+		$quantity = 1;
 
 
- /**************************************************************************
-  ** name: reset()
-  ** created by: pablo
-  ** description: resets the cart (i.e. empty)
-  ** parameters:
-  ** returns:
-  ***************************************************************************/    
-  function reset() { 
+		// Check to see if we already have it
+		$updated = 0;
+		
+		$result = ps_product_attribute::cartGetAttributes( $d );
+		
+		if ( ($result["attribute_given"] == false && !empty( $result["advanced_attribute_list"] ))
+		|| ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )) ) {
+			$flypage = ps_product::get_flypage($product_id);
+			mosRedirect("index.php?option=$option&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$_POST[category_id]&Itemid=$Itemid", $VM_LANG->_PHPSHOP_CART_SELECT_ITEM);
+		}
 
-    $_SESSION['cart']["idx"]=0;
-    $_SESSION["cart"]=$_SESSION['cart'];
-    return True;
-  }
+		// Check for duplicate and do not add to current quantity
+		for ($i=0;$i<$_SESSION["cart"]["idx"];$i++) {
+			// modified for advanced attributes
+			if ($_SESSION['cart'][$i]["product_id"] == $product_id
+			&&
+			$_SESSION['cart'][$i]["description"] == $d["description"]
+			) {
+				$updated = 1;
+			}
+		}
+		// If we did not update then add the item
+		if (!$updated) {
+
+			$k = $_SESSION['cart']["idx"];
+
+			$_SESSION['cart'][$k]["quantity"] = $quantity;
+			$_SESSION['cart'][$k]["product_id"] = $product_id;
+			// added for the advanced attribute modification
+			$_SESSION['cart'][$k]["description"] = $d["description"];
+			$_SESSION['cart']["idx"]++;
+		}
+		else
+		$this->update( $d );
+
+		/* next 3 lines added by Erich for coupon code */
+		/* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
+		if( !empty( $_SESSION['coupon_discount'] )) {
+			// Update the Coupon Discount !!
+			require_once( CLASSPATH . "ps_coupon.php" );
+			ps_coupon::process_coupon_code( $d );
+		}
+
+		$cart = $_SESSION['cart'];
+		return True;
+	}
+
+	/**
+	 * updates the quantity of a product_id in the cart
+	 * @author pablo
+	 * @param array $d
+	 * @return boolean result of the update
+	 */
+	function update(&$d) {
+		global $sess,$VM_LANG;
+
+		include_class("product");
+
+		$db = new ps_DB;
+		$product_id = $d["product_id"];
+		$quantity = $d["quantity"];
+		$_SESSION['last_page'] = "shop.cart";
+
+		// Check for negative quantity
+		if ($quantity < 0) {
+			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
+			return False;
+		}
+
+		if (!ereg("^[0-9]*$", $quantity)) {
+			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
+			return False;
+		}
+
+		// Check to see if checking stock quantity
+		if (CHECK_STOCK) {
+			$q = "SELECT product_in_stock ";
+			$q .= "FROM #__{vm}_product where product_id=";
+			$q .= $product_id;
+			$db->query($q);
+			$db->next_record();
+			$product_in_stock = $db->f("product_in_stock");
+			if (empty($product_in_stock)) $product_in_stock = 0;
+			if ($quantity > $product_in_stock) {
+				$d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1."<br />";
+				$msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
+				eval($msg);
+				$d["error"] .= $msg;
+
+				//added for the waiting list addon
+				$url = "index.php?page=shop.waiting_list&product_id=";
+				$url .= $product_id;
+				mosRedirect( $sess->url(URL . $url), $msg );
+
+				return False;
+			}
+		}
+
+		if (!$product_id) {
+			return false;
+		}
+
+		if ($quantity == 0) {
+			$this->delete($d);
+		}
+		else {
+
+			for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
+				// modified for the advanced attribute modification
+				if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
+				&&
+				($_SESSION['cart'][$i]["description"] == $d["description"] )
+				) {
+					$_SESSION['cart'][$i]["quantity"] = $quantity;
+				}
+			}
+		}
+		if( !empty( $_SESSION['coupon_discount'] )) {
+			// Update the Coupon Discount !!
+			require_once( CLASSPATH . "ps_coupon.php" );
+			ps_coupon::process_coupon_code( $d );
+		}
+		$_SESSION["cart"]=$_SESSION['cart'];
+		return True;
+	}
+
+	/**
+	 * deletes a given product_id from the cart
+	 *
+	 * @param array $d
+	 * @return boolan Result of the deletion
+	 */
+	function delete($d) {
+
+		$temp = array();
+		$product_id = $d["product_id"];
+
+		if (!$product_id) {
+			$_SESSION['last_page'] = "shop.cart";
+			return False;
+		}
+
+		$j = 0;
+		for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
+			// modified for the advanced attribute modification
+			if (
+			($_SESSION['cart'][$i]["product_id"] != $product_id)
+			||
+			($_SESSION['cart'][$i]["description"] != $d["description"])
+			) {
+				$temp[$j++] = $_SESSION['cart'][$i];
+			}
+		}
+		$temp["idx"] = $j;
+		$_SESSION['cart'] = $temp;
+
+		if( !empty( $_SESSION['coupon_discount'] )) {
+			// Update the Coupon Discount !!
+			require_once( CLASSPATH . "ps_coupon.php" );
+			ps_coupon::process_coupon_code( $d );
+		}
+
+		return True;
+	}
+
+
+	/**
+	 * Empties the cart
+	 * @author pablo
+	 * @return boolean true
+	 */
+	function reset() {
+		global $cart;
+		$_SESSION['cart']["idx"]=0;
+		$cart = $_SESSION['cart'];
+		return True;
+	}
 }
 
 ?>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_session.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_session.php,v 1.4 2005/10/04 14:13:17 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,15 +27,40 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_session {
 
     var $component_name = "option=com_virtuemart";    
+    /**
+     * Initialize the Session environment for VirtueMart
+     *
+     */
+    function ps_session() {
+    	$this->initSession();
+    }
+    /**
+     * Initiate the Session
+     *
+     */
+    function initSession() {
+    	if( empty($_SESSION)) {
+			//Session not yet started!";
+			session_name( 'virtuemart' );
+			session_start();
+			if( !empty($_SESSION) && !empty($_COOKIE['virtuemart'])) {
+				echo DEBUG ? '<div style="border: green 2px solid;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session called <i>phpShop</i> was successfully started!</div>' : '';
+			}
+		}
+		else
+		echo DEBUG ? '<div style="border: orange 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.</div>' : '';
+		if( empty($_COOKIE['virtuemart'] )) {
+			setCookie( 'virtuemart', md5(uniqid('virtuemart')), 0, "/" );
+			echo DEBUG ? '<div style="border: red 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A phpShop Cookie had to be set (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.</div>' : '';
+		}
+    }
     
-    /**************************************************************************
-    ** name: getShopItemid()
-    ** created by: soeren
-    ** description: Gets the Itemid for the com_virtuemart Component
-    **              and stores it in a global Variable
-    ** parameters: none
-    ** returns: nothing
-    ***************************************************************************/  
+    /**
+     * Gets the Itemid for the com_virtuemart Component
+     * and stores it in a global Variable
+     *
+     * @return int Itemid
+     */
     function getShopItemid() {
        
         if( empty( $_REQUEST['shopItemid'] )) { 
@@ -51,16 +76,14 @@ class ps_session {
 
     }
     
-    /**************************************************************************
-    ** name: prepare_SSL_Session()
-    ** created by: soeren
-    ** description: copies some cookies from the Main Mambo site domain into
-    **              a shared SSL domain (only when necessary!)
-    ** parameters: none
-    ** returns: nothing
-    ***************************************************************************/  
+    /**
+     * This is a solution for  the Shared SSL problem
+     * We have to copy some cookies from the Main Mambo site domain into
+     * the shared SSL domain (only when necessary!)
+     *
+     */
     function prepare_SSL_Session() {
-        global $mainframe, $my, $database;
+        global $my;
         
         $ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
         $martID = mosGetParam( $_GET, 'martID', null );
@@ -185,10 +208,9 @@ class ps_session {
   ** returns: an URL concatenated with "option=com_virtuemart"
   ***************************************************************************/  
   function url($text) {
-    global $mosConfig_sef;
     
     $Itemid = "&Itemid=".$this->getShopItemid();
-    $pshop_mode = mosGetParam( $_REQUEST, 'pshop_mode' );
+
     switch ($text) {
         case SECUREURL:
             $text =  SECUREURL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
@@ -255,7 +277,7 @@ class ps_session {
   function purl($text) {
   
     $Itemid = "&Itemid=".$this->getShopItemid();
-    $pshop_mode = mosGetParam( $_REQUEST, 'pshop_mode' );
+
     switch ($text) {
         case SECUREURL:
             $text =  SECUREURL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;

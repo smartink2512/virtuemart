@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: class.inputfilter.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: class.inputfilter.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage phpInputFilter
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -291,7 +291,9 @@ class vmInputFilter {
 	  * @param Buffer $connection - An open MySQL connection
 	  * @return String $source - 'cleaned' version of input parameter
 	  */
-	function safeSQL($source, &$connection) {
+	function safeSQL($source) {
+		global $database;
+		$connection =& $database->_resource;
 		// clean all elements in this array
 		if (is_array($source)) {
 			foreach($source as $key => $value)
@@ -332,10 +334,14 @@ class vmInputFilter {
 	  */
 	function escapeString($string, &$connection) {
 		// depreciated function
-		if (version_compare(phpversion(),"4.3.0", "<")) mysql_escape_string($string);
+		if (version_compare(phpversion(),"4.3.0", "<")) {
+			return mysql_escape_string($string);
+		}
 		// current function
-		else mysql_real_escape_string($string);
-		return $string;
+		else {
+			return mysql_real_escape_string($string, $connection );
+		}
+		
 	}
 }
 

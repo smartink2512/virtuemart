@@ -32,6 +32,16 @@ Legend:
 
 VirtueMart 0.9
 *************************************
+10-10-2005 soeren
+^ moved to class vmInputFiler to prevent SQL injection
+	(we always had our own basic protection against that, but vmInputFilter was especially made for that)
+	To secure a variable just use $variable = $vmInputFilter->safeSQL( $variable );
+# fixed a dumb bug in the function ps_product_attributes::cartGetAttributes
+	(allowed to add products without choosing attributes)
+^ moved ACL code for 'show_prices' authentication into ps_perm::prepareACL()
+^ moved cart initialization code into a new constructor for ps_cart
+^ moved Session initialization code into ps_session::initSession(); a new constructor calls this on class instantiation
+
 09-10-2005 soeren
 + new Configuration parameter VM_SILENT_REGISTRATION
 	allows users to "silently" register into Mambo/Joomla
