@@ -1,9 +1,9 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * This file is called after the order has been placed by the customer
 *
-* @version $Id: checkout.thankyou.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: checkout.thankyou.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,12 +25,12 @@ $Itemid = mosGetParam( $_REQUEST, "Itemid", null );
 global $vendor_currency;
 
 // Order_id is returned by checkoutComplete function
-$order_id = $vars["order_id"]; 
+$order_id = $GLOBALS['vmInputFilter']->process( $vars["order_id"] );
 
 $print = mosgetparam( $_REQUEST, 'print', 0);
 
 /** Retrieve User Email **/
-$q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='$order_id' AND address_type='BT'"; 
+$q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='$order_id' AND address_type='BT'";
 $db->query( $q );
 $db->next_record();
 $user = $db->record[0];
@@ -49,34 +49,39 @@ if ($db->next_record()) {
 ?>
 <h3><?php echo $VM_LANG->_PHPSHOP_THANKYOU ?></h3>
  <p>
- <?php if( empty($vars['error'])) { ?>
+ <?php 
+ if( empty($vars['error'])) { ?>
    <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
    <?php echo $VM_LANG->_PHPSHOP_THANKYOU_SUCCESS?>
   
   <br /><br />
   <?php echo $VM_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $user->user_email; ?></strong><br />
   </p>
-  <?php } ?>
+  <?php 
+ } ?>
   
 <!-- Begin Payment Information -->
 <?php
 
- if ($db->f("order_status") == "P" ) {
- 
+if ($db->f("order_status") == "P" ) {
+	// Copy the db object to prevent it gets altered
+	$db_temp = ps_DB::_clone( $db );
  /** Start printing out HTML Form code (Payment Extra Info) **/ ?>
  <br />
 <table width="100%">
   <tr>
     <td width="100%" align="center">
     <?php 
-      /* Try to get PayPal/PayMate/Worldpay/whatever Configuration File */
-      @include( CLASSPATH."payment/".$db->f("payment_class").".cfg.php" );
-      
-      // Here's the place where the Payment Extra Form Code is included
-      // Thanks to Steve for this solution (why make it complicated...?)
-      eval('?>' . $db->f("payment_extrainfo") . '<?php ');
-      
-      /** END printing out HTML Form code (Payment Extra Info) **/
+    /* Try to get PayPal/PayMate/Worldpay/whatever Configuration File */
+    @include( CLASSPATH."payment/".$db->f("payment_class").".cfg.php" );
+
+    // Here's the place where the Payment Extra Form Code is included
+    // Thanks to Steve for this solution (why make it complicated...?)
+    if( eval('?>' . $db->f("payment_extrainfo") . '<?php ') === true ) {
+    	echo vmCommonHTML::getErrorField( "Error: The code of the payment method ".$db->f( 'payment_method_name').' ('.$db->f('payment_method_code').') '
+    	.'contains a Parse Error!<br />Please correct that first' );
+    }
+    /** END printing out HTML Form code (Payment Extra Info) **/
 
       ?>
     </td>
@@ -84,12 +89,13 @@ if ($db->next_record()) {
 </table>
 <br />
 <?php
-  }
+$db = $db_temp;
+}
 ?>
  <p><a href="<?php $sess->purl(SECUREURL."index.php?page=account.order_details&order_id=". $order_id) ?>">
  <?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?></a>
  </p>
  <?php
-  
+
 } /* End of security check */
 ?>

@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.7 2005/10/06 13:14:56 codename-matrix Exp $
+* @version $Id: htmlTools.class.php,v 1.8 2005/10/07 14:29:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -400,6 +400,18 @@ class vmCommonHTML {
 			<?php
 			define ( "_OVERLIB_LOADED", "1" );
 		}
+	}
+	/**
+	 * Returns a div element of the class "shop_error" 
+	 * containing $msg to print out an error
+	 *
+	 * @param string $msg
+	 * @return string HTML code
+	 */
+	function getErrorField( $msg ) {
+		
+		$html = '<div class="shop_error">'.$msg.'<div>';
+		return $html;
 	}
 }
 

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_payment_method.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_payment_method.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -29,6 +29,7 @@ define('SWITCH_MAESTRO', 10);
 define('SWITCH_', 11);
 define('MAESTRO ', 12);
 define('UK_ELECTRON', 13);
+define('SWITCHCARD', 14);
 
 define('CC_OK', 0);
 define('CC_ECALL', 1);
@@ -524,7 +525,7 @@ class ps_payment_method {
   /**************************************************************************
   ** name: validate_payment()
   ** Adapted From CreditCard Class
-  ** Copyright (C) 2002 Daniel Fróz Costa
+  ** Copyright (C) 2002 Daniel Frï¿½z Costa
   **
   ** created by: soeren
   * Documentation:
@@ -622,7 +623,11 @@ class ps_payment_method {
      || ereg ('^4917[3-5].{11}$', $this->number)
      || ereg ('^491880[0-9].{9}$', $this->number))  
       $this->type= UK_ELECTRON;
-     
+      
+	//DB 18-07-05
+    else if(preg_match("/^6\d{15,21}$/", $this->number))
+       $this->type = SWITCHCARD;
+       
     else if(preg_match("/^6011\d{12}$/", $this->number))
       $this->type = DISCOVER;
 

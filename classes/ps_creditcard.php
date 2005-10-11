@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_creditcard.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_creditcard.php,v 1.5 2005/10/09 13:28:07 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -301,7 +301,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
               $db->query( $q );
               $db->next_record();
 			  
-              $cards[$db->f('creditcard_code')] = $db->f('creditcard_name');
+              $cards[$db->f('creditcard_code')] = htmlspecialchars( $db->f('creditcard_name'), ENT_QUOTES );
           }
           foreach( $cards as $code => $name ) {
               $script .= "orders[".$i++."] = new Array( '".addslashes($db_cc->f("payment_method_name"))."','$code','$name' );\n";

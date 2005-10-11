@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.index.php,v 1.6 2005/10/01 08:55:44 soeren_nb Exp $
+* @version $Id: store.index.php,v 1.7 2005/10/04 18:30:35 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -128,7 +128,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		$text = $VM_LANG->_PHPSHOP_STORE_FORM_MNU;
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
-		$link = 'http://www.virtuemart.net/index.php?option=com_wikidoc&Itemid=55';
+		$link = 'http://virtuemart.net/index.php?option=com_content&task=view&id=103&Itemid=67';
 		$image = IMAGEURL .'ps_image/shop_help.png';
 		$text = $VM_LANG->_PHPSHOP_HELP_MOD;
 		$ps_html->writePanelIcon( $image, $link, $text );
@@ -227,7 +227,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 				foreach($new_customers as $id => $name) { ?>
 				<tr>
 				  <td colspan="2">
-					  <a href="<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=admin.user_list&task=edit&cid[0]=<?php echo $id ?>">
+					  <a href="<?php $sess->purl( $_SERVER['PHP_SELF'] .'?page=admin.user_list&user_id='. $id ); ?>">
 					  <?php echo $name ?></a></td>
 				</tr>
 				<?php 

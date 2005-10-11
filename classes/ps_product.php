@@ -19,26 +19,33 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
  * The class is is used to manage product repository.
  * @package virtuemart
+ * @author pablo, jep, gday, soeren
  * 
  */
 class ps_product {
 	var $classname = "ps_product";
 
-	/**************************************************************************
-	** name: validate()
-	** created by:
-	** description: Validates fields and uploaded image files.
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates product fields and uploaded image files.
+	 *
+	 * @param array $d The input vars
+	 * @return boolean True when validation successful, false when not
+	 */
 	function validate(&$d) {
-		global $database;
+		global $database, $perm;
 		$valid = true;
 		$db = new ps_DB;
-
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		if( $perm->check( 'admin' )) {
+			$vendor_id = $d['vendor_id'];
+		}
+		else {
+			$vendor_id = $ps_vendor_id;
+		}
 		/** Validate Fields **/
-		if (empty($d['error']))
-		$d['error'] = "";
+		if (empty($d['error'])) {
+			$d['error'] = "";
+		}
 
 		$q = "SELECT product_id,product_thumb_image,product_full_image FROM #__{vm}_product WHERE product_sku='";
 		$q .= $d["product_sku"] . "'";
@@ -150,21 +157,20 @@ class ps_product {
 		return $valid;
 	}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
-	function validate_delete(&$d) {
+	/**
+	 * Validates that a product can be deleted
+	 *
+	 * @param array $d The input vars
+	 * @return boolean Validation sucessful?
+	 */
+	function validate_delete( $product_id, &$d ) {
 
 		/* Check that ps_vendor_id and product_id match
 		if (!$this->check_vendor($d)) {
-		$d["error"] = "ERROR: Cannot delete product. Wrong product or vendor." ;
-		return false;
+			$d["error"] = "ERROR: Cannot delete product. Wrong product or vendor." ;
+			return false;
 		}*/
-		if (empty($d['product_id'])) {
+		if (empty($product_id)) {
 			$d['error'] = "Please specify a Product to delete!";
 			return false;
 		}
@@ -172,7 +178,7 @@ class ps_product {
 		$db = new ps_DB;
 		$q  = "SELECT product_thumb_image,product_full_image ";
 		$q .= "FROM #__{vm}_product ";
-		$q .= "WHERE product_id='" . $d["product_id"] . "'";
+		$q .= "WHERE product_id='$product_id'";
 		$db->setQuery($q); $db->query();
 		$db->next_record();
 
@@ -197,17 +203,16 @@ class ps_product {
 
 	}
 
-	/**************************************************************************
-	** name: add()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
-	function add(&$d) {
-		global $database;
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-
+	/**
+	 * Function to add a new product into the product table
+	 *
+	 * @param array $d The input vars
+	 * @return boolean True, when the product was added, false when not
+	 */
+	function add( &$d ) {
+		global $perm;
+		$database = new ps_DB();
+		
 		if (!$this->validate($d)) {
 			return false;
 		}
@@ -400,15 +405,13 @@ class ps_product {
 		return true;
 	}
 
-	/**************************************************************************
-	** name: update()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
-	function update(&$d) {
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+	/**
+	 * Function to update product $d['product_id'] in the product table
+	 *
+	 * @param array $d The input vars
+	 * @return boolean True, when the product was updated, false when not
+	 */
+	function update( &$d ) {
 
 		if (!$this->validate($d)) {
 			return false;
@@ -482,85 +485,85 @@ class ps_product {
 		$db->query($q_dl);
 		$db->next_record();
 		if ($db->num_rows() > 0) { // found one
-		$q_dl = "SELECT file_id from #__{vm}_product_files WHERE ";
-		$q_dl .= "file_product_id='".$d["product_id"]."' AND file_title='".$db->f("attribute_value")."'";
-		$db->query($q_dl);
-		$db->next_record();
-		$d["file_id"] = $db->f("file_id");
-
-		if ( @$d['downloadable'] != "Y" ) {
-
-			// delete the attribute
-			$q_del = "DELETE FROM #__{vm}_product_attribute WHERE ";
-			$q_del .= "product_id='".$d["product_id"]."' AND attribute_name='download'";
-			$db->query($q_del);
-
+			$q_dl = "SELECT file_id from #__{vm}_product_files WHERE ";
+			$q_dl .= "file_product_id='".$d["product_id"]."' AND file_title='".$db->f("attribute_value")."'";
+			$db->query($q_dl);
+			$db->next_record();
+			$d["file_id"] = $db->f("file_id");
+	
+			if ( @$d['downloadable'] != "Y" ) {
+	
+				// delete the attribute
+				$q_del = "DELETE FROM #__{vm}_product_attribute WHERE ";
+				$q_del .= "product_id='".$d["product_id"]."' AND attribute_name='download'";
+				$db->query($q_del);
+	
+				if( !empty($d["file_id"])) {
+					require_once(  CLASSPATH.'ps_product_files.php' );
+					$ps_product_files =& new ps_product_files();
+					// Delete the existing file entry
+					$ps_product_files->delete( $d );
+				}
+			}
+			else { // update the attribute
+	
+			require_once(  CLASSPATH.'ps_product_files.php' );
+			$ps_product_files =& new ps_product_files();
+	
+			if( !empty($_FILES['file_upload']['name'])) {
+				// Set file-add values
+				$d["file_published"] = "1";
+				$d["upload_dir"] = "DOWNLOADPATH";
+				$d["file_title"] = $_FILES['file_upload']['name'];
+				$d["file_url"] = "";
+	
+				$ps_product_files->add( $d );
+				$qu = "UPDATE #__{vm}_product_attribute ";
+				$qu.= "SET attribute_value = '". $d["file_title"] ."' ";
+				$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
+				$db->query($qu);
+			}
+			else {
+				$d["file_id"] = "";
+				$qu = "UPDATE #__{vm}_product_attribute ";
+				$qu.= "SET attribute_value = '". $d['filename'] ."' ";
+				$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
+				$db->query($qu);
+			}
+	
 			if( !empty($d["file_id"])) {
-				require_once(  CLASSPATH.'ps_product_files.php' );
-				$ps_product_files =& new ps_product_files();
-				// Delete the existing file entry
+				// Now: Delete the existing file entry
 				$ps_product_files->delete( $d );
 			}
-		}
-		else { // update the attribute
-
-		require_once(  CLASSPATH.'ps_product_files.php' );
-		$ps_product_files =& new ps_product_files();
-
-		if( !empty($_FILES['file_upload']['name'])) {
-			// Set file-add values
-			$d["file_published"] = "1";
-			$d["upload_dir"] = "DOWNLOADPATH";
-			$d["file_title"] = $_FILES['file_upload']['name'];
-			$d["file_url"] = "";
-
-			$ps_product_files->add( $d );
-			$qu = "UPDATE #__{vm}_product_attribute ";
-			$qu.= "SET attribute_value = '". $d["file_title"] ."' ";
-			$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
-			$db->query($qu);
-		}
-		else {
-			$d["file_id"] = "";
-			$qu = "UPDATE #__{vm}_product_attribute ";
-			$qu.= "SET attribute_value = '". $d['filename'] ."' ";
-			$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
-			$db->query($qu);
-		}
-
-		if( !empty($d["file_id"])) {
-			// Now: Delete the existing file entry
-			$ps_product_files->delete( $d );
-		}
-
-		}
+	
+			}
 		}
 		else {  // found none
-		require_once(  CLASSPATH.'ps_product_files.php' );
-		$ps_product_files =& new ps_product_files();
-		if ( @$d['downloadable'] == "Y" && !empty($_FILES['file_upload']['name'])) {
-			// Set file-add values
-			$d["file_published"] = "1";
-			$d["upload_dir"] = "DOWNLOADPATH";
-			$d["file_title"] = $_FILES['file_upload']['name'];
-			$d["file_url"] = "";
-			$ps_product_files->add( $d );
-
-			// Insert an attribute called "download", attribute_value: filename
-			$q2  = "INSERT INTO #__{vm}_product_attribute ";
-			$q2 .= "(product_id,attribute_name,attribute_value) ";
-			$q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["file_title"]."')";
-			$db->setQuery($q2);
-			$db->query();
-		}
-		elseif ( @$d['downloadable'] == "Y" ) {
-			// Insert an attribute called "download", attribute_value: filename
-			$q2  = "INSERT INTO #__{vm}_product_attribute ";
-			$q2 .= "(product_id,attribute_name,attribute_value) ";
-			$q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["filename"]."')";
-			$db->setQuery($q2);
-			$db->query();
-		}
+			require_once(  CLASSPATH.'ps_product_files.php' );
+			$ps_product_files =& new ps_product_files();
+			if ( @$d['downloadable'] == "Y" && !empty($_FILES['file_upload']['name'])) {
+				// Set file-add values
+				$d["file_published"] = "1";
+				$d["upload_dir"] = "DOWNLOADPATH";
+				$d["file_title"] = $_FILES['file_upload']['name'];
+				$d["file_url"] = "";
+				$ps_product_files->add( $d );
+	
+				// Insert an attribute called "download", attribute_value: filename
+				$q2  = "INSERT INTO #__{vm}_product_attribute ";
+				$q2 .= "(product_id,attribute_name,attribute_value) ";
+				$q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["file_title"]."')";
+				$db->setQuery($q2);
+				$db->query();
+			}
+			elseif ( @$d['downloadable'] == "Y" ) {
+				// Insert an attribute called "download", attribute_value: filename
+				$q2  = "INSERT INTO #__{vm}_product_attribute ";
+				$q2 .= "(product_id,attribute_name,attribute_value) ";
+				$q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["filename"]."')";
+				$db->setQuery($q2);
+				$db->query();
+			}
 		}
 		// End download check
 
@@ -655,7 +658,7 @@ class ps_product {
 
 		/** Product Type - Begin */
 		$product_id=$d["product_id"];
-		$product_parent_id=$d["product_parent_id"];
+
 		$q  = "SELECT * FROM #__{vm}_product_product_type_xref WHERE ";
 		$q .= "product_id='$product_id' ";
 		$db->query($q);
@@ -703,13 +706,13 @@ class ps_product {
 		return true;
 	}
 
-	/**************************************************************************
-	** name: delete()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+
+	/**
+	 * Function to delete product(s) $d['product_id'] from the product table
+	 *
+	 * @param array $d The input vars
+	 * @return boolean True, when the product was deleted, false when not
+	 */
 	function delete(&$d) {
 
 		$product_id = $d["product_id"];
@@ -725,15 +728,20 @@ class ps_product {
 			return $this->delete_product( $product_id, $d );
 		}
 	}
+	
 	/**
-	* The function that holds the code for deleting
-	* one product from the database and all related tables
-	* plus deleting files related to the product
-	*/
+	 * The function that holds the code for deleting
+	 * one product from the database and all related tables
+	 * plus deleting files related to the product
+	 *
+	 * @param int $product_id
+	 * @param array $d The input vars
+	 * @return boolean True on success, false on error
+	 */
 	function delete_product( $product_id, &$d ) {
 		global $db;
 
-		if (!$this->validate_delete($d)) {
+		if (!$this->validate_delete($product_id, $d)) {
 			return false;
 		}
 		/* If is Product */
@@ -814,13 +822,14 @@ class ps_product {
 		return true;
 	}
 
-	/**************************************************************************
-	** name: check_vendor()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Function to check if the vendor_id of the product
+	 * $d['product_id'] matches the vendor_id associated with the
+	 * user that calls this function
+	 *
+	 * @param array $d
+	 * @return boolean True, when vendor_id matches, false when not
+	 */
 	function check_vendor($d) {
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -838,13 +847,13 @@ class ps_product {
 	}
 
 
-	/**************************************************************************
-	** name: sql()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Function to create a ps_DB object holding the data of product $d['product_id']
+	 * from the table #__{vm}_product
+	 *
+	 * @param int $product_id
+	 * @return ps_DB DB object holding all data for product $product_id
+	 */
 	function sql($product_id) {
 		$db = new ps_DB;
 
@@ -853,14 +862,14 @@ class ps_product {
 		$db->setQuery($q); $db->query();
 		return $db;
 	}
-
-	/**************************************************************************
-	** name: items_sql()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	
+	/**
+	 * Function to create a db object holding the data of all child items of
+	 * product $product_id
+	 *
+	 * @param int $product_id
+	 * @return ps_DB object that holds all items of product $product_id
+	 */
 	function items_sql($product_id) {
 		$db = new ps_DB;
 
@@ -872,13 +881,12 @@ class ps_product {
 		return $db;
 	}
 
-	/**************************************************************************
-	** name: is_product()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Function to check whether a product is a parent product or not
+	 *
+	 * @param int $product_id
+	 * @return boolean True when the product is a parent product, false when product is a child item
+	 */
 	function is_product($product_id) {
 		$db = new ps_DB;
 
@@ -895,13 +903,15 @@ class ps_product {
 		}
 	}
 
-	/**************************************************************************
-	** name: attribute_sql()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Function to create a DB object that holds all information
+	 * from the attribute tables about item $item_id AND/OR product $product_id
+	 *
+	 * @param int $item_id The product_id of the item
+	 * @param int $product_id The product_id of the parent product
+	 * @param string $attribute_name The name of the attribute to filter
+	 * @return ps_DB The db object...
+	 */
 	function attribute_sql($item_id="",$product_id="",$attribute_name="") {
 		$db = new ps_DB;
 		if ($item_id and $product_id) {
@@ -937,13 +947,12 @@ class ps_product {
 		return $db;
 	}
 
-	/**************************************************************************
-	** name: get_child_product_ids()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Function to return the product ids of all child items of product $pid
+	 *
+	 * @param int $pid The ID of the parent product
+	 * @return array $list
+	 */
 	function get_child_product_ids($pid) {
 		$db = new ps_DB;
 		$q  = "SELECT product_id FROM #__{vm}_product ";
@@ -960,13 +969,12 @@ class ps_product {
 		return $list;
 	}
 
-	/**************************************************************************
-	** name: parent_has_children()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Function to quickly check whether a product has child products or not
+	 *
+	 * @param int $pid The id of the product to check
+	 * @return boolean True when the product has childs, false when not
+	 */
 	function parent_has_children($pid) {
 		$db = new ps_DB;
 		if( empty($GLOBALS['product_info'][$pid]["parent_has_children"] )) {
@@ -982,14 +990,16 @@ class ps_product {
 		return $GLOBALS['product_info'][$pid]["parent_has_children"];
 	}
 
-	/**************************************************************************
-	** name: product_has_attributes()
-	** created by: jep
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Function to quickly check whether a product has attributes or not
+	 *
+	 * @param int $pid The id of the product to check
+	 * @return boolean True when the product has attributes, false when not
+	 */
 	function product_has_attributes($pid) {
+		if( is_array($pid)) {
+			return false;
+		}
 		$db = new ps_DB;
 		if( empty($GLOBALS['product_info'][$pid]["product_has_attributes"] )) {
 			$q  = "SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id='$pid' ";
@@ -1004,14 +1014,13 @@ class ps_product {
 		return $GLOBALS['product_info'][$pid]["product_has_attributes"];
 	}
 
-
-	/**************************************************************************
-	** name: get_field()
-	** created by: pablo
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Get the value of the field $field_name for product $product_id from the product table
+	 *
+	 * @param int $product_id
+	 * @param string $field_name
+	 * @return string The value of the field $field_name for that product
+	 */
 	function get_field( $product_id, $field_name ) {
 		$db = new ps_DB;
 		if( empty($GLOBALS['product_info'][$product_id][$field_name] )) {
@@ -1028,24 +1037,28 @@ class ps_product {
 	}
 
 	/**
-	* Sets a global value for a fieldname for a specific product
-	*/
+	 * Sets a global value for a fieldname for a specific product
+	 * Is to be used by other scripts to populate a field value for a prodct
+	 * that was already fetched from the database - so it doesn't need to e fetched again
+	 * Can be also used to override a value
+	 *
+	 * @param int $product_id
+	 * @param string $field_name
+	 * @param mixed $value
+	 */
 	function set_field( $product_id, $field_name, $value ) {
 
 		$GLOBALS['product_info'][$product_id][$field_name] = $value;
 
 	}
 
-	/**************************************************************************
-	** name: get_flypage()
-	** created by: pablo
-	** description:  Determines flypage for given product_id by looking at
-	**               the product category.  If no flypage is specified for this
-	** 		   category, then the default FLYPAGE (in virtuemart.cfg) is
-	**		   returned.
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * This is a very time consuming function. 
+	 * It fetches the category flypage for a specific product id
+	 *
+	 * @param int $product_id
+	 * @return string The flypage value for that product
+	 */
 	function get_flypage($product_id) {
 
 		if( empty( $_SESSION['product_info'][$product_id]['flypage'] )) {
@@ -1066,13 +1079,13 @@ class ps_product {
 		}
 		return $_SESSION['product_info'][$product_id]['flypage'];
 	}
-	/**************************************************************************
-	** name: get_vendorname()
-	** created by: pablo
-	** description:
-	** parameters: product_id
-	** returns:    vendor_name
-	***************************************************************************/
+	
+	/**
+	 * Function to get the name of the vendor the product is associated with
+	 *
+	 * @param int $product_id
+	 * @return string The name of the vendor
+	 */
 	function get_vendorname($product_id) {
 		$db = new ps_DB;
 
@@ -1090,14 +1103,12 @@ class ps_product {
 		}
 	}
 
-	/**************************************************************************
-	** name: get_vend_idname()
-	** created by: pablo
-	** description:
-	**
-	** parameters: vendor_id
-	** returns:    vendor_name
-	***************************************************************************/
+	/**
+	 * Function to get the name of a vendor by its id
+	 * @author pablo
+	 * @param int $vendor_id
+	 * @return string The name of the vendor
+	 */
 	function get_vend_idname($vendor_id) {
 		$db = new ps_DB;
 
@@ -1114,13 +1125,12 @@ class ps_product {
 		}
 	}
 
-	/**************************************************************************
-	** name: get_vendor_id()
-	** created by: pablo
-	** description:
-	** parameters: product_id
-	** returns:    vendor_name
-	***************************************************************************/
+	/**
+	 * Function to get the vendor_id of a product
+	 * @author pablo
+	 * @param int $product_id
+	 * @return int The vendor id
+	 */
 	function get_vendor_id($product_id) {
 		$db = new ps_DB;
 		if( empty( $_SESSION['product_info'][$product_id]['vendor_id'] )) {
@@ -1139,16 +1149,12 @@ class ps_product {
 		return $_SESSION['product_info'][$product_id]['vendor_id'];
 	}
 
-	/**************************************************************************
-	** name: get_manufacturer_id()
-	** created by: Soern
-	** description:  Bestimmt ID des Lieferanten f�r eine product_id durch
-	**               Suche �ber product.vendor_id.  Wenn kein
-	** 		   	 Name gefunden wird, wird eine leere Zeichenkette zur�ckgegeben.
-	**
-	** parameters: product_id
-	** returns:    vendor_name
-	***************************************************************************/
+	/**
+	 * Function to get the manufacturer id the product $product_id is assigned to
+	 * @author soeren
+	 * @param int $product_id
+	 * @return int The manufacturer id
+	 */
 	function get_manufacturer_id($product_id) {
 		$db = new ps_DB;
 
@@ -1165,13 +1171,12 @@ class ps_product {
 		}
 	}
 
-	/**************************************************************************
-	** name: get_mf_name()
-	** created by: Soern
-	** description:  search for the manufacturer name
-	** parameters: product_id
-	** returns:    vendor_name
-	***************************************************************************/
+	/**
+	 * Functon to get the name of the manufacturer this product is assigned to
+	 *
+	 * @param int $product_id
+	 * @return string the manufacturer name
+	 */
 	function get_mf_name($product_id) {
 		$db = new ps_DB;
 
@@ -1188,21 +1193,33 @@ class ps_product {
 			return "";
 		}
 	}
-
+	/**
+	 * Prints the img tag for the given product image
+	 *
+	 * @param string $image The name of the imahe OR the full URL to the image
+	 * @param string $args Additional attributes for the img tag
+	 * @param int $resize 
+	 * (1 = resize the image by using height and width attributes, 
+	 * 0 = do not resize the image)
+	 * @param string $path_appendix The path to be appended to IMAGEURL / IMAGEPATH
+	 */
 	function show_image($image, $args="", $resize=1, $path_appendix="product") {
 		echo $this->image_tag($image, $args, $resize, $path_appendix);
 	}
 
-	/**************************************************************************
-	** name: image_tag()
-	** created by: pablo
-	** description:  Shows the image send in the $image field.
-	**               $args are appended to the IMG tag.
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns the img tag for the given product image
+	 *
+	 * @param string $image The name of the imahe OR the full URL to the image
+	 * @param string $args Additional attributes for the img tag
+	 * @param int $resize 
+	 * (1 = resize the image by using height and width attributes, 
+	 * 0 = do not resize the image)
+	 * @param string $path_appendix The path to be appended to IMAGEURL / IMAGEPATH
+	 * @return The HTML code of the img tag
+	 */
 	function image_tag($image, $args="", $resize=1, $path_appendix="product") {
-		global $mosConfig_live_site, $page;
+		global $mosConfig_live_site;
 
 		$border="";
 		if( !strpos( $args, "border=" ))
@@ -1247,16 +1264,12 @@ class ps_product {
 		return "<img src=\"$url\" $html_height_width $args $border />";
 
 	}
-	/**************************************************************************
-	** name: get_taxrate()
-	** created by: soeren
-	** description: Calculate the tax rate
-	based whether on the Bill to address of the user
-	or on the vendor address
-	**
-	** parameters: none
-	** returns: the Tax rate
-	***************************************************************************/
+
+	/**
+	 * Get the tax rate...
+	 * @author soeren
+	 * @return int The tax rate found
+	 */
 	function get_taxrate() {
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -1316,18 +1329,19 @@ class ps_product {
 
 			return $_SESSION['taxrate'][$ps_vendor_id];
 		}
-		else
-		return 0;
+		else {
+			return 0;
+		}
 	}
 
-	/**************************************************************************
-	** name: get_product_taxrate()
-	** created by: soeren
-	** description: Returns the tax rate for a product
-	**
-	** parameters: none
-	** returns: the Tax rate
-	***************************************************************************/
+	/**
+	 * Function to get the tax rate of product $product_id
+	 * If not found, it uses get_taxrate()
+	 *
+	 * @param int $product_id
+	 * @param int $weight_subtotal (tax virtual/zero-weight items?)
+	 * @return int The tax rate for the product
+	 */
 	function get_product_taxrate( $product_id, $weight_subtotal=0 ) {
 
 		if (($weight_subtotal != 0 or TAX_VIRTUAL=='1') && TAX_MODE =='0') {
@@ -1363,19 +1377,20 @@ class ps_product {
 					return 0;
 				}
 			}
-			else
-			return $_SESSION['product_info'][$product_id]['tax_rate'];
+			else {
+				return $_SESSION['product_info'][$product_id]['tax_rate'];
+			}
 		}
+		return 0;
 	}
-
-	/**************************************************************************
-	** name: get_retail_price($product_id)
-	** created by:
-	** description: gets the price for the default Shopper Group
-	**               without ANY discounts!!!
-	** parameters:
-	** returns:
-	***************************************************************************/
+	
+	/**
+	 * Function to get the "pure" undiscounted and untaxed price 
+	 * of product $product_id. Used by the administration section.
+	 *
+	 * @param int $product_id
+	 * @return array The product price information
+	 */
 	function get_retail_price($product_id) {
 
 		$db = new ps_DB;
@@ -1405,17 +1420,14 @@ class ps_product {
 		return $price_info;
 	}
 
-	/**************************************************************************
-	** name: get_price($product_id)
-	** created by:
-	** description: gets price for a given product Id based on
-	**              the shopper group a user belongs to and whether
-	**              and item has a price or it must grab it from the
-	**              parent.
-	**               CALCULATES WITH THE SHOPPER GROUP DISCOUNT!
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Get the price of product $product_id for the shopper group associated
+	 * with $auth['user_id'] - including shopper group discounts
+	 *
+	 * @param int $product_id
+	 * @param boolean $check_multiple_prices Check if the product has more than one price for that shopper group?
+	 * @return array The product price information
+	 */
 	function get_price($product_id, $check_multiple_prices=false) {
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
@@ -1473,8 +1485,9 @@ class ps_product {
                                 OR (price_quantity_end='0') OR ('$quantity' > price_quantity_end)) ORDER BY price_quantity_end DESC";
 				/* End Addition */
 			}
-			else
-			$volume_quantity_sql = " ORDER BY price_quantity_start";
+			else {
+				$volume_quantity_sql = " ORDER BY price_quantity_start";
+			}
 
 			// Getting prices
 			//
@@ -1549,22 +1562,20 @@ class ps_product {
 			$GLOBALS['product_info'][$product_id]['price'] = false;
 			return $GLOBALS['product_info'][$product_id]['price'];
 		}
-		else
-		return $GLOBALS['product_info'][$product_id]['price'];
+		else {
+			return $GLOBALS['product_info'][$product_id]['price'];
+		}
 	}
 
-	// added for advanced attribute price adjustments
-	/***********************************************************
-	* Adjusts the price from get_price for the selected attributes
-	*
-	* @author Nathan Hyde <nhyde@bigDrift.com>
-	* @author curlyroger from his post at <http://www.virtuemart.org/phpbb/viewtopic.php?t=3052>
-	* @param product_id int
-	* @param description string optional; the list of selected attributes
-	* @return float
-	* @returns adjusted price for passed attributes
-	* @requires advanced product attributes modification by SeanTobin
-	**************************************************************/
+	/**
+	 * Adjusts the price from get_price for the selected attributes
+	 * @author Nathan Hyde <nhyde@bigDrift.com>
+	 * @author curlyroger from his post at <http://www.phpshop.org/phpbb/viewtopic.php?t=3052>
+	 *
+	 * @param int $product_id
+	 * @param string $description
+	 * @return array The adjusted price information
+	 */
 	function get_adjusted_attribute_price ($product_id, $description='') {
 
 		global $auth, $mosConfig_secret;
@@ -1628,19 +1639,19 @@ class ps_product {
 					$my_mod=substr($temp_desc, $start+1, $length-1);
 					//echo "before: ".$my_mod."<br>\n";
 					if ($o != $c) { // skip the tests if we don't have to process the string
-					if ($o < $c ) {
-						$char = "]";
-						$offset = $start;
-					}
-					else {
-						$char = "[";
-						$offset = $finish;
-					}
-					$s = substr_count($my_mod, $char);
-					for ($r=1;$r<$s;$r++) {
-						$pos = strrpos($my_mod, $char);
-						$my_mod = substr($my_mod, $pos+1);
-					}
+						if ($o < $c ) {
+							$char = "]";
+							$offset = $start;
+						}
+						else {
+							$char = "[";
+							$offset = $finish;
+						}
+						$s = substr_count($my_mod, $char);
+						for ($r=1;$r<$s;$r++) {
+							$pos = strrpos($my_mod, $char);
+							$my_mod = substr($my_mod, $pos+1);
+						}
 					}
 					$oper=substr($my_mod,0,1);
 
@@ -1679,11 +1690,12 @@ class ps_product {
 		if ($set_price == false) {
 			$price["product_price"] = $base_price + $adjustment;
 		}
-		else { // otherwise, set the price
-		// add the base price to the price set in the attributes
-		// then subtract the adjustment amount
-		// we could also just add the set_price to the adjustment... not sure on that one.
-		$price["product_price"] = $setprice;
+		else { 
+			// otherwise, set the price
+			// add the base price to the price set in the attributes
+			// then subtract the adjustment amount
+			// we could also just add the set_price to the adjustment... not sure on that one.
+			$price["product_price"] = $setprice;
 		}
 
 		// don't let negative prices get by, set to 0
@@ -1712,13 +1724,18 @@ class ps_product {
 
 		return $price;
 	}
+	
 	/**
-	* This function can parse an "advanced / custom attribute"
-	* description like
-	* Size:big[+2.99]; Color:red[+0.99]
-	* and return the same string with values, tax added
-	* Size: big (+3.47), Color: red (+1.15)
-	*/ 
+	 * This function can parse an "advanced / custom attribute"
+	 * description like
+	 * Size:big[+2.99]; Color:red[+0.99]
+	 * and return the same string with values, tax added
+	 * Size: big (+3.47), Color: red (+1.15)
+	 * 
+	 * @param string $description
+	 * @param int $product_id
+	 * @return string The reformatted description
+	 */
 	function getDescriptionWithTax( $description, $product_id ) {
 		global $auth, $CURRENCY_DISPLAY, $mosConfig_secret;
 
@@ -1816,6 +1833,14 @@ class ps_product {
 	** parameters: int product_id
 	** returns:
 	***************************************************************************/
+	/**
+	 * Function to calculate the price, apply discounts from the discount table
+	 * and reformat the price
+	 *
+	 * @param int $product_id
+	 * @param boolean $hide_tax Wether to show the text "(including X.X% tax)" or not
+	 * @return string The formatted price
+	 */
 	function show_price( $product_id, $hide_tax = false ) {
 		global $VM_LANG, $CURRENCY_DISPLAY,$vendor_mail;
 		$auth = $_SESSION['auth'];
@@ -1841,7 +1866,7 @@ class ps_product {
 
 				if ($auth["show_price_including_tax"] == 1) {
 					$my_taxrate = $this->get_product_taxrate($product_id);
-					$base_price += ($my_taxrate * $price_info["product_price"]);
+					$base_price += ($my_taxrate * $price);
 				}
 
 				// Calculate discount
@@ -1936,6 +1961,12 @@ class ps_product {
 	** parameters: int product_id
 	** returns:
 	***************************************************************************/
+	/**
+	 * Get the information about the discount for a product
+	 *
+	 * @param int $product_id
+	 * @return array The discount information
+	 */
 	function get_discount( $product_id ) {
 		global $mosConfig_lifetime;
 
@@ -1972,26 +2003,32 @@ class ps_product {
 		else
 		return $_SESSION['product_info'][$product_id]['discount_info'];
 	}
-	/**************************************************************************
-	** name: show_snapshot($product_sku)
-	** created by:
-	** description: display a snapshot of a product based on the product sku.
-	**              This was written to privde a quick way to display a product on
-	**              a side navigation bar.
-	** parameters:
-	** returns:
-	***************************************************************************/
+
+	/**
+	 * display a snapshot of a product based on the product sku.
+	 * This was written to provide a quick way to display a product inside of modules
+	 *
+	 * @param string $product_sku The SKU identifying the product
+	 * @param boolean $show_price Show the product price?
+	 * @param boolean $show_addtocart Show the add-to-cart link?
+	 */
 	function show_snapshot($product_sku, $show_price=true, $show_addtocart=true ) {
 
 		echo $this->product_snapshot($product_sku, $show_price, $show_addtocart);
 
 	}
-
+	/**
+	 * Returns HTML code for a snapshot of a product based on the product sku.
+	 * This was written to provide a quick way to display a product inside of modules
+	 *
+	 * @param string $product_sku The SKU identifying the product
+	 * @param boolean $show_price Show the product price?
+	 * @param boolean $show_addtocart Show the add-to-cart link?
+	 */
 	function product_snapshot( $product_sku, $show_price=true, $show_addtocart=true ) {
 
 		global  $sess, $VM_LANG, $mm_action_url;
 
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 
 		require_once(CLASSPATH.'ps_product_category.php');
@@ -2032,20 +2069,13 @@ class ps_product {
 		return $html;
 	}
 
+	/**
+	 * Prints a drop-down list of vendor names and their ids.
+	 *
+	 * @param int $vendor_id
+	 */
+	function list_vendor($vendor_id='1') {
 
-	/**************************************************************************
-	** name: listVendor()
-	** created by:
-	** description: Creates a list of SELECT recods using vendor name and
-	**              vendor id.
-	** parameters:
-	** returns: array of values
-	***************************************************************************/
-	function list_vendor($vendor_id='0') {
-		global  $sess;
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-
-		// Creates a form drop down list and prints it
 		$db = new ps_DB;
 
 		$q = "SELECT vendor_id,vendor_name FROM #__{vm}_vendor ORDER BY vendor_name";
@@ -2058,7 +2088,6 @@ class ps_product {
 			echo $db->f("vendor_id");
 			echo "\" />";
 			echo $db->f("vendor_name");
-			return true;
 		}
 		elseif($db->num_rows() > 1) {
 			$db->reset();
@@ -2075,23 +2104,24 @@ class ps_product {
 		}
 	}
 
-	/**************************************************************************
-	** name: show_vendorname()
-	** created by:
-	** description: Creates a list of SELECT recods using vendor name and
-	**              vendor id.
-	** parameters:
-	** returns: array of values
-	***************************************************************************/
+	/**
+	 * Print the name of vendor $vend_id
+	 *
+	 * @param int $vend_id
+	 */
 	function show_vendorname($vend_id) {
 
 		echo $this->getVendorName( $vend_id );
 
 	}
-
+	/**
+	 * Return the name of vendor $id
+	 *
+	 * @param unknown_type $id
+	 * @return unknown
+	 */
 	function getVendorName( $id ) {
 
-		// Creates a form drop down list and prints it
 		$db = new ps_DB;
 
 		$q = "SELECT vendor_name FROM #__{vm}_vendor WHERE vendor_id='$id'";
@@ -2101,19 +2131,13 @@ class ps_product {
 
 	}
 
-
-	/**************************************************************************
-	** name: list_manufacturer()
-	** created by: soeren
-	** description: Creates a list of SELECT recods using manufacturer name and
-	**              manufacturer id.
-	** parameters:
-	** returns: array of values
-	***************************************************************************/
+	/**
+	 * Prints a drop-down list of manufacturer names and their ids.
+	 *
+	 * @param int $manufacturer_id
+	 */
 	function list_manufacturer($manufacturer_id='0') {
-		global  $sess;
 
-		// Creates a form drop down list and prints it
 		$db = new ps_DB;
 
 		$q = "SELECT manufacturer_id,mf_name FROM #__{vm}_manufacturer ORDER BY mf_name";
@@ -2127,7 +2151,6 @@ class ps_product {
 			echo $db->f("manufacturer_id");
 			echo "\" />";
 			echo $db->f("mf_name");
-			return true;
 		}
 		elseif( $db->num_rows() > 1) {
 			$db->reset();
@@ -2147,14 +2170,12 @@ class ps_product {
 		}
 	}
 
-
-	/**************************************************************************
-	** name: get_weight()
-	** created by:
-	** description: Use this function if you need the weight of a product
-	** parameters:
-	** returns: array of values
-	***************************************************************************/
+	/**
+	 * Use this function if you need the weight of a product
+	 *
+	 * @param int $prod_id
+	 * @return int The weight of the product
+	 */
 	function get_weight($prod_id) {
 
 		$db = new ps_DB;
@@ -2165,18 +2186,21 @@ class ps_product {
 		return $db->f("product_weight");
 
 	}
-
+	/**
+	 * Print the availability HTML code for product $prod_id
+	 *
+	 * @param int $prod_id
+	 */
 	function show_availability($prod_id) {
 		echo $this->get_availability($prod_id);
 	}
 
-	/**************************************************************************
-	** name: get_availibility()
-	** created by: soeren
-	** description: Returns some HTML with availability info for a product
-	** parameters:
-	** returns: array of values
-	***************************************************************************/
+	/**
+	 * Returns the availability information as HTML code
+	 * @author soeren
+	 * @param unknown_type $prod_id
+	 * @return unknown
+	 */
 	function get_availability($prod_id) {
 		global $VM_LANG;
 
@@ -2184,7 +2208,6 @@ class ps_product {
 
 		$is_parent = $this->parent_has_children( $prod_id );
 		if( !$is_parent ) {
-			// Creates a form drop down list and prints it
 			$db = new ps_DB;
 
 			$q = "SELECT product_available_date,product_availability,product_in_stock  FROM #__{vm}_product WHERE ";
@@ -2227,20 +2250,21 @@ class ps_product {
 					$html .= $pav;
 				}
 			}
-			if (!empty($html))
-			$html = $heading.$html;
+			if (!empty($html)) {
+				$html = $heading.$html;
+			}
 		}
 		return $html;
 
 	}
-	/**************************************************************************
-	** name: product_publish()
-	** created by: soeren
-	** description: Changes the product_publish field, so that a product can
-	**                  be published or unpublished easily
-	** parameters: $d: product_id AND product_publish (Y / N) are required
-	** returns: true if the process was successful, false if not
-	***************************************************************************/
+
+	/**
+	 * Modifies the product_publish field and toggles it from Y to N or N to Y
+	 * for product $d['product_id']
+	 *
+	 * @param int $d $d['task'] must be "publish" or "unpublish"
+	 * @return unknown
+	 */
 	function product_publish( &$d ) {
 		global $db;
 
@@ -2259,8 +2283,9 @@ class ps_product {
 					$db->query( $q );
 				}
 			}
-			else
-			return;
+			else {
+				return false;
+			}
 		}
 		// This is the case when only one product has to be updated
 		else {

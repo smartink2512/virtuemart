@@ -136,13 +136,11 @@ if( !defined( 'CLASSPATH' )) {
 
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
-		$_SESSION['session_userstate']['keyword'] = $keyword = urldecode(mosgetparam($_REQUEST, 'keyword', ''));
-		$_SESSION['session_userstate']['category_id'] = $category_id = mosgetparam($_REQUEST, 'category_id', 0);
-		$_SESSION['session_userstate']['product_id'] = $product_id = mosgetparam($_REQUEST, 'product_id', 0);
+		$keyword = urldecode(mosgetparam($_REQUEST, 'keyword', ''));
 
 		$user_id = intval( mosgetparam($_REQUEST, 'user_id', 0) );
-		$product_id = intval( mosgetparam($_REQUEST, 'product_id', 0) );
-		$category_id = intval( mosgetparam($_REQUEST, 'category_id', 0) );
+		$_SESSION['session_userstate']['product_id'] = $product_id = intval( mosgetparam($_REQUEST, 'product_id', 0) );
+		$_SESSION['session_userstate']['category_id'] = $category_id = intval( mosgetparam($_REQUEST, 'category_id', 0) );
 		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
 
 		$myInsecureArray = array('keyword' => $keyword,
@@ -157,10 +155,13 @@ if( !defined( 'CLASSPATH' )) {
 		$GLOBALS['vmInputFilter'] = new vmInputFilter();
 		// prevent SQL injection
 		$myInsecureArray = $vmInputFilter->safeSQL( $myInsecureArray );
-		
+		// Re-insert the escaped strings into $_REQUEST
 		foreach( $myInsecureArray as $requestvar => $requestval) {
 				$_REQUEST[$requestvar] = $requestval;
 		}
+		// Limit the keyword (=search string) length to 50
+		$_SESSION['session_userstate']['keyword'] = $keyword = substr(mosgetparam($_REQUEST, 'keyword', ''), 0, 50);
+		
 		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
 		$page = mosgetparam($_REQUEST, 'page', "");
 		$func = mosgetparam($_REQUEST, 'func', "");
@@ -185,11 +186,12 @@ if( !defined( 'CLASSPATH' )) {
 		** user has no permission to view it , or file doesn't exist
 		************************************************/
 		if (empty($page)) {// default page
-		if (defined('_PSHOP_ADMIN'))
-		$page = "store.index";
-		else
-		$page = HOMEPAGE;
-
+			if (defined('_PSHOP_ADMIN')) {
+				$page = "store.index";
+			} 
+			else {
+				$page = HOMEPAGE;
+			}
 		}
 		// Let's check if the user is allowed to view the page
 		// if not, $page is set to ERROR_PAGE
@@ -223,8 +225,9 @@ if( !defined( 'CLASSPATH' )) {
 
 				if ($ok == false) {
 					$no_last = 1;
-					if( $_SESSION['last_page'] != HOMEPAGE )
-					$page = $_SESSION['last_page'];
+					if( $_SESSION['last_page'] != HOMEPAGE ) {
+						$page = $_SESSION['last_page'];
+					}
 					$my_page= explode ( '.', $page );
 					$modulename = $my_page[0];
 					$pagename = $my_page[1];
@@ -236,19 +239,22 @@ if( !defined( 'CLASSPATH' )) {
 			elseif( DEBUG )
 			echo "<div class=\"shop_error\">Fatal Error: Could include the class file ".$db->f("function_class")."</div>";
 
-			if (!empty($vars["error"]))
-			$error = $vars["error"];
+			if (!empty($vars["error"])) {
+				$error = $vars["error"];
+			}
 
-			if (!empty($error))
-			echo "<script type=\"text/javascript\">alert('".mysql_escape_string($error)."');</script>";
+			if (!empty($error)) {
+				echo "<script type=\"text/javascript\">alert('".mysql_escape_string($error)."');</script>";
+			}
 		}
 		else {
 			$no_last = 0;
 			//$error="";
 		}
 
-		if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE'))
-		$_SESSION['last_page'] = $page;
+		if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE')) {
+			$_SESSION['last_page'] = $page;
+		}
 	}
 }
 ?>

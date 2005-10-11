@@ -286,7 +286,8 @@ if (CAN_SELECT_STATES == '1') {
 	</div>
 
 	<input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid'] ?>" />
-	<input type="hidden" name="gid" value="<? echo $my->gid ?>" />
+	<input type="hidden" name="gid" value="<?php echo $my->gid ?>" />
+	<input type="hidden" name="id" value="<?php echo $my->id ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="remember" value="yes" />
 	<input type="hidden" name="useractivation" value="<?php echo $mosConfig_useractivation; ?>" />

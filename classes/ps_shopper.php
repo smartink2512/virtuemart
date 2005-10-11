@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_shopper.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: ps_shopper.php,v 1.5 2005/10/09 13:28:07 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -154,8 +154,7 @@ class ps_shopper {
 		  return False;
 		}
 		// Use InputFilter class to prevent SQL injection or HTML tags
-		$iFilter = new vmInputFilter();
-		$d = $iFilter->process( $d );
+		$d = $GLOBALS['vmInputFilter']->safeSQL( $d );
 	
 		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 and $d["extra_field_4"] == "") {
 		  $d["extra_field_4"] = "N";
@@ -246,8 +245,10 @@ class ps_shopper {
 		$q .= "(user_id,vendor_id,shopper_group_id,customer_number) ";
 		$q .= "VALUES ('$uid', '$ps_vendor_id','".$d['shopper_group_id']."', '$customer_nr')";
 		$db->query($q);
-
-		$mainframe->login($d['username'], md5( $d['password'] ));
+		
+		if( !$my->id ) {
+			$mainframe->login($d['username'], md5( $d['password'] ));
+		}
 		
 		mosRedirect( "index.php?option=$option&page=checkout.index" );
 		return True;
@@ -375,8 +376,7 @@ class ps_shopper {
 			
 		$db = new ps_DB;
 		
-		$iFilter = new vmInputFilter();
-		$d = $iFilter->process( $d );
+		$d = $GLOBALS['vmInputFilter']->safeSQL( $d );
 	
 		if ($d["user_id"] != $auth["user_id"] && $auth["perms"] != "admin") {
 		  $d["error"] = "Tricky tricky, but we know about this one.";
@@ -386,7 +386,7 @@ class ps_shopper {
 		require_once(CLASSPATH. 'ps_user.php' );
 		$_POST['name'] = $d['first_name']." ". $d['last_name'];
 		$_POST['id'] = $auth["user_id"];
-		$_POST['gid'] = 18;
+		$_POST['gid'] = $my->gid;
 		ps_user::saveUser();
 		
 		if (!$this->validate_update($d)) {

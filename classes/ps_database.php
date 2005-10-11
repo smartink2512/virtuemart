@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_database.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_database.php,v 1.3 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -37,6 +37,15 @@ class ps_DB extends database {
 
     function ps_DB() {
       /** just a dummy contructor for now **/
+    }
+    /**
+     * Clone an object
+     *
+     * @param ps_DB $obj
+     * @return ps_DB copy of $obj
+     */
+    function _clone( $obj ) {
+    	return $obj;
     }
     
     /**
