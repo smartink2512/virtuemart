@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_payment_method.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_payment_method.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -84,8 +84,9 @@ class ps_payment_method {
     }
     
     $d['payment_extrainfo'] = mosGetParam( $_POST, 'payment_extrainfo', '', _MOS_ALLOWHTML );
-	if( !get_magic_quotes_runtime() )
+	if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
 		$d['payment_extrainfo'] = addslashes( $d['payment_extrainfo'] );
+	}
     
     return true;
   }
@@ -132,8 +133,9 @@ class ps_payment_method {
     }
     
     $d['payment_extrainfo'] = mosGetParam( $_POST, 'payment_extrainfo', '', _MOS_ALLOWHTML );
-	if( !get_magic_quotes_runtime() )
+	if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
 		$d['payment_extrainfo'] = addslashes( $d['payment_extrainfo'] );
+	}
 
     return True;
   }
