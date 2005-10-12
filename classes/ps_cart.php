@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_cart.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_cart.php,v 1.5 2005/10/10 18:49:05 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -42,7 +42,7 @@ class ps_cart {
 	 * @return array An empty cart
 	 */
 	function ps_cart() {
-		global $my;
+		global $my, $cart;
 		// Register the cart
 		if (empty($_SESSION['cart'])) {
 			$cart = array();

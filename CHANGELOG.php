@@ -30,8 +30,21 @@ Legend:
 
 --------------------------------------------------------------------------------------------------------------
 
-VirtueMart 0.9
+VirtueMart 1.0
 *************************************
+12-10-2005 soeren
+# wz_tooltip.js is included now whenever mm_ToolTip was called
+^ The registration & billto form have been completely rewritten
+	The are built out of a loop now, that runs through an array with all fields and 
+	marks required fields. This prepares the integration of	a form & field management 
+	component! You can already now easily re-arrange the fields by changing their order.
++ Added complete JS validation to the registration / billto forms
+	Uses vmCommonHTML::printJS_formvalidation() to print a JS form validation function
+	
+11-10-2005 soeren
+# fixed a bug in the shopper-registration of a registered user
++ added SwitchCard support to CC numbers validation
+
 10-10-2005 soeren
 ^ moved to class vmInputFiler to prevent SQL injection
 	(we always had our own basic protection against that, but vmInputFilter was especially made for that)

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: version.php,v 1.4 2005/09/29 20:01:12 soeren_nb Exp $
+* @version $Id: version.php,v 1.5 2005/10/10 18:49:05 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,9 +27,9 @@ class vmVersion {
 	/** @var string Codename */
 	var $CODENAME = 'Big Bill Broonzy';
 	/** @var string Date */
-	var $RELDATE = '10/10/2005';
+	var $RELDATE = '11/10/2005';
 	/** @var string Time */
-	var $RELTIME = '6:48';
+	var $RELTIME = '19:51';
 	/** @var string Timezone */
 	var $RELTZ = 'GMT';
 	/** @var string Copyright Text */

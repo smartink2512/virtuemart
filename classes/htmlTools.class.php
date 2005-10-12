@@ -413,6 +413,88 @@ class vmCommonHTML {
 		$html = '<div class="shop_error">'.$msg.'<div>';
 		return $html;
 	}
+	/**
+	 * Prints a JS function to validate all fields
+	 * given in the array $required_fields
+	 * Does only test if non-empty
+	 * Includes a check for a valid email-address
+	 *
+	 * @param array $required_fields The list of form elements that are to be validated
+	 * @param string $formname The name for the form element
+	 * @param string $div_id_postfix The ID postfix to identify the label for the field
+	 */
+	function printJS_formvalidation( $required_fields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
+		global $VM_LANG;
+		echo '
+		<script language="javascript" type="text/javascript">//<![CDATA[
+		function '.$functioname.'() {
+			var form = document.'.$formname.';
+			var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
+			var isvalid = true';
+		
+		foreach ( $required_fields as $fieldname ) {
+			echo '
+			if( form.'.$fieldname.'.value == "" ) {
+				document.getElementById(\''.$fieldname.$div_id_postfix.'\').style.color = "red";
+				isvalid = false;
+			}
+			else {
+				document.getElementById(\''.$fieldname.$div_id_postfix.'\').style.color = "";
+			}
+			
+			';
+		}
+		if( in_array( 'email', $required_fields)) {
+		
+			echo '
+			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email.value))) {
+				alert( \''. _REGWARN_MAIL .'\');
+				return false;
+			}';
+
+		}
+		if( in_array( 'username', $required_fields )) {
+			
+			echo '
+			if (r.exec(form.username.value) || form.username.value.length < 3) {
+				alert( "'. sprintf(_VALID_AZ09, _PROMPT_UNAME, 2) .'" );
+				return false;
+			}';
+		}
+		if( in_array( 'password', $required_fields )) {
+			
+			echo '
+			if (form.password.value.length < 6) {
+				alert( "'. _REGWARN_PASS .'" );
+				return false;
+			} else if (form.password2.value == "") {
+				alert( "'. _REGWARN_VPASS1.'" );
+				return false;
+			} else if ((form.password.value != "") && (form.password.value != form.password2.value)){
+				alert( "'. _REGWARN_VPASS2 .'" );
+				return false;
+			} else if (r.exec(form.password.value)) {
+				alert( "'. sprintf( _VALID_AZ09, _REGISTER_PASS, 6 ) .'" );
+				return false;
+			}';
+		}
+		if( in_array( 'agreed', $required_fields )) {
+			echo '
+			if (!form.agreed.checked) {
+				alert( "'. $VM_LANG->_PHPSHOP_AGREE_TO_TOS .'" );
+				return false;
+			}';
+		}
+		// Finish the validation function
+		echo '
+			if( !isvalid) {
+				alert("'.addslashes( _CONTACT_FORM_NC ).'" );
+			}
+			return isvalid;
+		}
+		//]]>
+		</script>';
+	}
 }
 
 /**
@@ -423,6 +505,8 @@ class vmCommonHTML {
 */
 function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) {
 	global $mosConfig_live_site;
+	
+	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
 	$tooltip = mysql_escape_string( $tooltip );
 	

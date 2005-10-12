@@ -253,7 +253,7 @@ else {
 		load_that_shop_page( $modulename, $pagename);
 	}
 }
-if( defined( '_FRONTEND_ADMIN_LOADED' ) || DEBUG == '1') {
+if( defined( 'vmToolTipCalled')) {
 	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
 }
 ?>

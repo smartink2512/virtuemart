@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Header file for the shop administration.
 * shows all modules that are available to the user in a dropdown menu
 *
-* @version $Id: header.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: header.php,v 1.4 2005/09/29 20:01:12 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -310,23 +310,17 @@ var vmMenu =
         }   ?>
           ]          
 ];
-
 </script>
-<table style="width:100%;" cellspacing="0" cellpadding="0" border="0">
-    <tr class="menubackgr" >
-        <td width="83" style="width:83px; min-width:50px; background: url(<?php echo IMAGEURL ?>ps_image/toplogo.gif) no-repeat;" height="52">&nbsp;</td>
-        <td id="vmMenuID" style="padding-bottom: 10px;font-weight:bold; width:auto; background: url(<?php echo IMAGEURL ?>ps_image/toplogo-repeated.gif) repeat-x;" height="52" ></td>
-    </tr>
-    <tr valign="top" class="adminform" >
-        <td colspan="2">
-        <?php 
-        if (!empty($error) && ($page != ERRORPAGE)) { ?>
-          <br /><span class="message"><?php echo $error; ?></span><br /><?php 
-        } ?>
-        </td>
-    </tr>
-</table>
 
+<img align="left" hspace="15" src="<?php echo IMAGEURL ?>ps_image/toplogo.gif" />
+<br/><div id="vmMenuID" style="border: 1px solid black;text-align:left;background:#CCCCFF;" height="52" ></div>
+<br />
+
+<?php 
+if (!empty($error) && ($page != ERRORPAGE)) {
+     echo '<br /><div class="message">'. $error.'</div><br />';
+}
+?>
 <script language="JavaScript" type="text/javascript">
 cmDraw ('vmMenuID', vmMenu, 'hbr', cmThemeOffice, 'ThemeOffice');
 </script>

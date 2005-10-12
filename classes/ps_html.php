@@ -247,8 +247,9 @@ class ps_html {
 						$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$dbs->f("state_2_code")."','".htmlspecialchars($dbs->f("state_name"), ENT_QUOTES)."' );\n";
 					}
 				}
-				else
-				$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
+				else {
+					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
+				}
 
 
 			}

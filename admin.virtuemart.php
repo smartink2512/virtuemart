@@ -83,5 +83,7 @@ if( DEBUG == '1' ) {
 	// Load PAGE
 	include( PAGEPATH."shop.debug.php" );
 }
-echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
+if( defined( 'vmToolTipCalled')) {
+	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
+}
 ?>
