@@ -68,7 +68,7 @@ function com_install() {
 								<div id="step">Welcome to <?php echo $shortversion ?>!</div>
 			
 								<div class="clr"></div>
-								<pre><?php echo $version ?></pre>
+								<pre><?php echo $myVersion ?></pre>
 								<h1>The first step of the Installation was <font color="green">SUCCESSFUL</font></h1>
 								<table>
 								<?php

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_shopper.php,v 1.5 2005/10/09 13:28:07 soeren_nb Exp $
+* @version $Id: ps_shopper.php,v 1.6 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -65,6 +65,9 @@ class ps_shopper {
 		}
 		
 		if (!$provided_required) {
+			$_REQUEST['missing'] = $missing;
+			return false;
+			/*
 			$url="username=".$d['username'];
 			$url.="&email=".$d['email'];
 			$url.="&first_name=".$d['first_name'];
@@ -88,7 +91,7 @@ class ps_shopper {
 			$url.="&bank_account_type=".@$d['bank_account_type'];
 			
 			mosRedirect( "index.php?option=com_virtuemart&page=".$_SESSION['last_page']."&missing=$missing&$url", _CONTACT_FORM_NC );
-			exit();
+			*/
 		}
 		
 		$d['user_email'] = $d['email'];
@@ -171,7 +174,9 @@ class ps_shopper {
 				$_POST['password2'] = $_POST['password'];
 			}
 			// Process Mambo/Joomla registration stuff
-			$this->saveRegistration();
+			if( !$this->saveRegistration() ) {
+				return false;
+			}
 			
 			$database->setQuery( "SELECT id FROM #__users WHERE username='".$d['username']."'" );
 			$database->loadObject( $userid );
@@ -254,24 +259,28 @@ class ps_shopper {
 		return True;
     
 	}
+
 	/**
-	* The function from com_registration!
-	* Registers a user into Mambo/Joomla
-	*/
+	 * The function from com_registration!
+	 * Registers a user into Mambo/Joomla
+	 *
+	 * @return boolean True when the registration process was successful, False when not
+	 */
 	function saveRegistration() {
 		global $database, $acl, $VM_LANG;
 		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation, $mosConfig_allowUserRegistration;
 		global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_mailfrom, $mosConfig_fromname;
 	
 		if ($mosConfig_allowUserRegistration=='0') {
-			mosNotAuth(); return;
+			mosNotAuth(); 
+			return false;
 		}
 	
 		$row = new mosUser( $database );
 	
 		if (!$row->bind( $_POST, 'usertype' )) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			echo "<script type=\"text/javascript\"> alert('".$row->getError()."');</script>\n";
+			return false;
 		}
 	
 		mosMakeHtmlSafe($row);
@@ -287,8 +296,8 @@ class ps_shopper {
 		}
 	
 		if (!$row->check()) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			echo "<script type=\"text/javascript\"> alert('".$row->getError()."');</script>\n";
+			return false;
 		}
 	
 		$pwd 				= $row->password;
@@ -296,8 +305,8 @@ class ps_shopper {
 		$row->registerDate 	= date('Y-m-d H:i:s');
 	
 		if (!$row->store()) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			echo "<script type=\"text/javascript\"> alert('".$row->getError()."');</script>\n";
+			return false;
 		}
 		$row->checkin();
 	
@@ -362,6 +371,7 @@ class ps_shopper {
 		} else {
 			echo _REG_COMPLETE;
 		}
+		return true;
 	}
 
   

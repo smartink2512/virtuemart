@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_csv.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_csv.php,v 1.3 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -38,6 +38,8 @@ class ps_csv {
   ***************************************************************************/
 
   function upload_csv(&$d) {
+  	global $database;
+  
     $ps_vendor_id = $_SESSION['ps_vendor_id'];
     $GLOBALS[$ps_vendor_id]["default_shopper_group"] = "";
     
@@ -313,6 +315,7 @@ class ps_csv {
                     $d['mf_category_id'] = 1;
                     $d['mf_desc'] = $d['mf_email'] = $d['mf_url'] = "";
                     $ps_manufacturer->add( $d );
+                    $manufacturers[$database->insertid()] = 1;
                   }
                 }
                   

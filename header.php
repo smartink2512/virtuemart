@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Header file for the shop administration.
 * shows all modules that are available to the user in a dropdown menu
 *
-* @version $Id: header.php,v 1.4 2005/09/29 20:01:12 soeren_nb Exp $
+* @version $Id: header.php,v 1.5 2005/10/12 18:13:10 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -41,9 +41,11 @@ if (!defined('_PSHOP_ADMIN')) {
 	echo '<script type="text/javascript" src="includes/js/mambojavascript.js"></script>
 	<a href="index.php" title="Back"><h3>&nbsp;&nbsp;&gt;&gt; '.$VM_LANG->_PHPSHOP_BACK_TO_MAIN_SITE.' &lt;&lt;</h3></a>';
   }
+  // We need the admin template css now, but which one? - so check here
+  $adminTemplate = $_VERSION->PRODUCT == 'Joomla!' ? 'joomla_admin' : 'mambo_admin_blue';
 ?>
 <link rel="stylesheet" href="<?php echo $my_path ?>theme.css" type="text/css" />
-<link rel="stylesheet" href="administrator/templates/mambo_admin_blue/css/template_css.css" type="text/css" />
+<link rel="stylesheet" href="administrator/templates/<?php echo $adminTemplate; ?>/css/template_css.css" type="text/css" />
 <script language="JavaScript" src="includes/js/JSCookMenu.js" type="text/javascript"></script>
 <script language="JavaScript" src="<?php echo $my_path ?>theme.js" type="text/javascript"></script>
 <?php }

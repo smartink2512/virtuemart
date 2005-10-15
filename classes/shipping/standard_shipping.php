@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: standard_shipping.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.5 2005/10/09 13:30:01 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -89,7 +89,11 @@ class standard_shipping {
           
         // THE ORDER OF THOSE VALUES IS IMPORTANT:
         // ShippingClassName|carrier_name|rate_name|totalshippingcosts|rate_id
-          . urlencode($this->classname."|".$dbc->f("shipping_carrier_name")."|".$dbr->f("shipping_rate_name")."|".$total_shipping_handling."|".$dbr->f("shipping_rate_id"))."\" ";
+          . urlencode($this->classname."|"
+					.$dbc->f("shipping_carrier_name")."|"
+					.$dbr->f("shipping_rate_name")."|"
+					.number_format($total_shipping_handling, 2)."|"
+					.$dbr->f("shipping_rate_id"))."\" ";
           if (!$selected) {
             $selected = True;
             $html .= "checked=\"checked\"";

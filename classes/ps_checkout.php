@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.6 2005/10/07 14:29:57 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.7 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1143,7 +1143,7 @@ class ps_checkout {
 		// Shipping address based TAX
 		if (TAX_MODE == '0') {
 			$q = "SELECT state, country FROM #__{vm}_user_info ";
-			$q .= "WHERE user_info_id='". $d["ship_to_info_id"] . "'";
+			$q .= "WHERE user_info_id='".@$d["ship_to_info_id"] . "'";
 			$db->query($q);
 			$db->next_record();
 			$state = $db->f("state");
@@ -1950,7 +1950,7 @@ class ps_checkout {
 	* @desc Shows all collected Checkout information on the confirmation Screen
 	**************************************************************************/
 	function final_info() {
-		global $VM_LANG;
+		global $VM_LANG, $CURRENCY_DISPLAY;
 		$db = new ps_DB;
 		// Begin with Shipping Address
 		if(CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='2') {
@@ -1968,9 +1968,13 @@ class ps_checkout {
 
 			echo "<strong>".$VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . ":</strong>&nbsp;";
 			$rate_details = explode( "|", urldecode(urldecode($_REQUEST['shipping_rate_id'])) );
-			foreach( $rate_details as $k => $v )
-			if( $k > 0 )
-			echo "$v; ";
+			foreach( $rate_details as $k => $v ) {
+				if( $k == 3 ) {
+					echo $CURRENCY_DISPLAY->getFullValue( $v );
+				} elseif( $k > 0 ) {
+					echo "$v; ";
+				}
+			}
 			echo "<br /><br />";
 		}
 

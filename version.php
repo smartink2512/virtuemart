@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: version.php,v 1.5 2005/10/10 18:49:05 soeren_nb Exp $
+* @version $Id: version.php,v 1.6 2005/10/12 18:13:10 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -21,15 +21,15 @@ class vmVersion {
 	/** @var string Product */
 	var $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	var $RELEASE = '1.0';
+	var $RELEASE = '0.9.9';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'beta';
 	/** @var string Codename */
 	var $CODENAME = 'Big Bill Broonzy';
 	/** @var string Date */
-	var $RELDATE = '11/10/2005';
+	var $RELDATE = '15/10/2005';
 	/** @var string Time */
-	var $RELTIME = '19:51';
+	var $RELTIME = '11:09';
 	/** @var string Timezone */
 	var $RELTZ = 'GMT';
 	/** @var string Copyright Text */
@@ -41,7 +41,7 @@ $VMVERSION =& new vmVersion();
 
 $shortversion = $VMVERSION->PRODUCT . " " . $VMVERSION->RELEASE . " " . $VMVERSION->DEV_STATUS. " ";
 	
-$version = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
+$myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
 	. $VMVERSION->RELTIME . " " . $VMVERSION->RELTZ;
 	
 

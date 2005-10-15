@@ -136,7 +136,7 @@ if( !defined( 'CLASSPATH' )) {
 
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
-		$keyword = urldecode(mosgetparam($_REQUEST, 'keyword', ''));
+		$keyword = substr( urldecode(mosgetparam($_REQUEST, 'keyword', '')), 0, 50 );
 
 		$user_id = intval( mosgetparam($_REQUEST, 'user_id', 0) );
 		$_SESSION['session_userstate']['product_id'] = $product_id = intval( mosgetparam($_REQUEST, 'product_id', 0) );

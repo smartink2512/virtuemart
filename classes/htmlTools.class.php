@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.8 2005/10/07 14:29:57 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.10 2005/10/12 18:13:10 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -448,7 +448,7 @@ class vmCommonHTML {
 		
 			echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email.value))) {
-				alert( \''. _REGWARN_MAIL .'\');
+				alert( \''. html_entity_decode( _REGWARN_MAIL ).'\');
 				return false;
 			}';
 
@@ -457,7 +457,7 @@ class vmCommonHTML {
 			
 			echo '
 			if (r.exec(form.username.value) || form.username.value.length < 3) {
-				alert( "'. sprintf(_VALID_AZ09, _PROMPT_UNAME, 2) .'" );
+				alert( "'. html_entity_decode( sprintf(_VALID_AZ09, _PROMPT_UNAME, 2)) .'" );
 				return false;
 			}';
 		}
@@ -465,16 +465,16 @@ class vmCommonHTML {
 			
 			echo '
 			if (form.password.value.length < 6) {
-				alert( "'. _REGWARN_PASS .'" );
+				alert( "'. html_entity_decode( _REGWARN_PASS ).'" );
 				return false;
 			} else if (form.password2.value == "") {
-				alert( "'. _REGWARN_VPASS1.'" );
+				alert( "'.html_entity_decode( _REGWARN_VPASS1).'" );
 				return false;
 			} else if ((form.password.value != "") && (form.password.value != form.password2.value)){
-				alert( "'. _REGWARN_VPASS2 .'" );
+				alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
 				return false;
 			} else if (r.exec(form.password.value)) {
-				alert( "'. sprintf( _VALID_AZ09, _REGISTER_PASS, 6 ) .'" );
+				alert( "'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
 				return false;
 			}';
 		}
@@ -488,7 +488,7 @@ class vmCommonHTML {
 		// Finish the validation function
 		echo '
 			if( !isvalid) {
-				alert("'.addslashes( _CONTACT_FORM_NC ).'" );
+				alert("'.addslashes( html_entity_decode(_CONTACT_FORM_NC) ).'" );
 			}
 			return isvalid;
 		}

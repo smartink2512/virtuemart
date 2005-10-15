@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: checkout_register_form.php,v 1.5 2005/10/09 13:30:02 soeren_nb Exp $
+* @version $Id: checkout_register_form.php,v 1.8 2005/10/12 18:13:11 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -178,7 +178,11 @@ vmCommonHTML::printJS_formvalidation( $required_fields );
 			case 'agreed':
 				echo '<input type="checkbox" id="agreed_field" name="agreed" value="1" class="inputbox" />';
 				break;
-				
+			case 'password':
+			case 'password2':
+				echo '<input type="password" id="'.$fieldname.'_field" name="'.$fieldname.'" size="40" class="inputbox" />'."\n";
+	   			break;
+	   			
    			default:
 		        echo '<input type="text" id="'.$fieldname.'_field" name="'.$fieldname.'" size="40" value="'. mosGetParam( $_REQUEST, $fieldname) .'" class="inputbox" />'."\n";
 	   			break;

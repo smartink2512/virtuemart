@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.8 2005/10/08 15:56:06 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.10 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1283,12 +1283,10 @@ class ps_product {
 
 				if (TAX_MODE == '0') {
 					if( $auth["user_id"] > 0 ) {
-						$q = "SELECT state, country FROM #__users WHERE id='". $auth["user_id"] . "'";
+						
+						$q = "SELECT state, country FROM #__{vm}_user_info WHERE user_id='". $auth["user_id"] . "'";
 						$db->query($q);
-						if (!$db->num_rows()) {
-							$q = "SELECT state, country FROM #__{vm}_user_info WHERE user_id='". $auth["user_id"] . "'";
-							$db->query($q);
-						}
+
 						$db->next_record();
 						$state = $db->f("state");
 						$country = $db->f("country");

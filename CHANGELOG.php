@@ -32,6 +32,11 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+14-10-2005 soeren
+# On registration an error from the Joomla registration function would empty all fields
++ added new Version check link to admin section
+# keyword length is restricted to 50 from now on (security), prevents 10000 characters long keyword via URL 
+
 12-10-2005 soeren
 # wz_tooltip.js is included now whenever mm_ToolTip was called
 ^ The registration & billto form have been completely rewritten
