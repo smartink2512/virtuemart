@@ -16,7 +16,7 @@ function alphaBackgrounds(){
 			if (bg.match(/(.*)\/com_virtuemart\/(.*)\.png$/i) != null){
 				var mypng = bg.substring(5,bg.length-2);
 				document.all[i].style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+mypng+"', sizingMethod='scale')";
-				document.all[i].style.backgroundImage = "url('/assets/images/x.gif')";
+				document.all[i].style.backgroundImage = "url('components/com_virtuemart/shop_image/blank.gif')";
 			}
 		}
 	}

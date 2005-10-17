@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_attribute.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_product_attribute.php,v 1.5 2005/10/10 18:49:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -286,7 +286,8 @@ class ps_product_attribute {
 	function list_advanced_attribute($product_id) {
 		global $CURRENCY_DISPLAY;
 		$db = new ps_DB;
-
+		$auth = $_SESSION['auth'];
+		
 		$q = "SELECT attribute FROM #__{vm}_product WHERE product_id='$product_id'";
 		$db->query($q);
 		$db->next_record();
@@ -315,7 +316,12 @@ class ps_product_attribute {
 						else {
 							$price = floatval(substr($base_value,strrpos($base_value, '[')+2));
 						}
-						if ($price=="0") $attribut_hint = "test";
+						// Apply shopper group discount
+						$price *= 1 - ($auth["shopper_group_discount"]/100);
+						
+						if ($price=="0") {
+							$attribut_hint = "test";
+						}
 						$base_var=str_replace(" ","_",$base_value);
 						$html.="<option value=\"$base_var\">$attribtxt&nbsp;(&nbsp;".$vorzeichen."&nbsp;".$CURRENCY_DISPLAY->getFullValue($price)."&nbsp;)</option>";
 					}
@@ -381,6 +387,7 @@ class ps_product_attribute {
 	function cartGetAttributes( &$d ) {
 
 		global $db;
+		
 		// added for the advanced attributes modification
 		//get listing of titles for attributes (Sean Tobin)
 		$attributes = array();

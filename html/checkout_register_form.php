@@ -32,7 +32,7 @@ $field_div_style = 'float:left;width:60%;';
  * This section will be changed in future releases of VirtueMart,
  * when we have a registration form manager
  */
-$required_fields = Array( 'email', 'first_name', 'last_name', 'address_1', 'city', 'zip', 'country', 'phone_1' );
+$required_fields = Array( 'first_name', 'last_name', 'address_1', 'city', 'zip', 'country', 'phone_1' );
 
 $shopper_fields = array();
 // This is a list of all fields in the form
@@ -53,7 +53,7 @@ if (!$my->id && VM_SILENT_REGISTRATION != '1' ) {
 	// Finish the fieldset
 	$shopper_fields[uniqid('fieldset_end')] = "";
 	// Add the new required fields into the existing array of required fields
-	$required_fields = array_merge( $required_fields, Array( 'username','password','password2') );
+	$required_fields = array_merge( $required_fields, Array( 'email', 'username','password','password2') );
 }
 // Now the fields for customer information...Bill To !
 $shopper_fields[uniqid('fieldset_begin')] = $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL;
@@ -74,8 +74,9 @@ $shopper_fields[uniqid('fieldset_begin')] = $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_
 	$shopper_fields['phone_1'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_PHONE;
 	$shopper_fields['phone_2'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_PHONE2;
 	$shopper_fields['fax'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_FAX;
-	if ($my->id ) {
+	if (!$my->id && VM_SILENT_REGISTRATION == '1') {
 		$shopper_fields['email'] = _REGISTER_EMAIL;
+		$required_fields[] = 'email';
 	}
 $shopper_fields[uniqid('fieldset_end')] = "";
 

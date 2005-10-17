@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: fpdf.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: fpdf.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage HMTL2PDF
 * @author Olivier PLATHEY 
@@ -1678,8 +1678,6 @@ function Output($name='',$dest='')
 			if(isset($HTTP_SERVER_VARS['SERVER_NAME']))
 			{
 				//We send to a browser
-				if(isset($HTTP_SERVER_VARS['HTTP_USER_AGENT']) and strpos($HTTP_SERVER_VARS['HTTP_USER_AGENT'],'MSIE'))
-				  header("Cache-Control: must-revalidate");
 				Header('Content-Type: application/pdf');
 				if(headers_sent())
 					$this->Error('Some data has already been output to browser, can\'t send PDF file');
@@ -2176,8 +2174,7 @@ function _parsepng($file)
 	if($ct==0) $colspace='DeviceGray';
 	elseif($ct==2) $colspace='DeviceRGB';
 	elseif($ct==3) $colspace='Indexed';
-	else $colspace='DeviceRGB';
-	//$this->Error('Alpha channel not supported: '.$file);
+	else $this->Error('Alpha channel not supported: '.$file);
 	if(ord(fread($f,1))!=0)	$this->Error('Unknown compression method: '.$file);
 	if(ord(fread($f,1))!=0)	$this->Error('Unknown filter method: '.$file);
 	if(ord(fread($f,1))!=0)	$this->Error('Interlacing not supported: '.$file);
@@ -2227,7 +2224,7 @@ function _parsepng($file)
 
 function _parsegif($file) //EDITEI - GIF support is now included
 { 
-	//Function by Jérôme Fenal
+	//Function by Jï¿½rï¿½me Fenal
 	require_once(RELATIVE_PATH.'gif.php'); //GIF class in pure PHP from Yamasoft (http://www.yamasoft.com/php-gif.zip)
 
 	$h=0;

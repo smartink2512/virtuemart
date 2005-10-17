@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: html2fpdf.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: html2fpdf_site.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage HMTL2PDF
 * @author Renato Coelho
@@ -15,7 +15,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-
 /*
 *** General-use version
 
@@ -55,7 +54,7 @@ TODO (in the future...):
 // together: 								                                                //
 //	                          					                                    //
 // fpdf.php, html2fpdf.php, gif.php,htmltoolkit.php,license.txt,credits.txt //
-// Version: 3.0.2 beta                                                                         //
+//                                                                          //
 //////////////////////////////////////////////////////////////////////////////
 
 Misc. Observations:
@@ -2460,4 +2459,468 @@ function setCSS($arrayaux)
 				case 'COLOR': // font color
 					  $cor = ConvertColor($v);
 					  $this->colorarray = $cor;
-					  $this->SetTextColor($cor['R'],$cor['G'],$cor[
+					  $this->SetTextColor($cor['R'],$cor['G'],$cor['B']);
+					  $this->issetcolor=true;
+					  break;
+		}//end of switch($k)
+   }//end of foreach
+}
+
+function SetStyle($tag,$enable)
+{
+//! @return void
+//! @desc Enables/Disables B,I,U styles
+	//Modify style and select corresponding font
+	$this->$tag+=($enable ? 1 : -1);
+	$style='';
+  //Fix some SetStyle misuse
+	if ($this->$tag < 0) $this->$tag = 0;
+	if ($this->$tag > 1) $this->$tag = 1;
+	foreach(array('B','I','U') as $s)
+		if($this->$s>0)
+			$style.=$s;
+			
+	$this->currentstyle=$style;
+	$this->SetFont('',$style);
+}
+
+function DisableTags($str='')
+{
+//! @return void
+//! @desc Disable some tags using ',' as separator. Enable all tags calling this function without parameters.
+  if ($str == '') //enable all tags
+  {
+    //Insert new supported tags in the long string below.
+    $this->enabledtags = "<tt><kbd><samp><option><outline><span><newpage><page_break><s><strike><del><bdo><big><small><address><ins><cite><font><center><sup><sub><input><select><option><textarea><title><form><ol><ul><li><h1><h2><h3><h4><h5><h6><pre><b><u><i><a><img><p><br><strong><em><code><th><tr><blockquote><hr><td><tr><table><div>";
+  }
+  else
+  {
+    $str = explode(",",$str);
+    foreach($str as $v) $this->enabledtags = str_replace(trim($v),'',$this->enabledtags);
+  }
+}
+
+////////////////////////TABLE CODE (from PDFTable)/////////////////////////////////////
+//Thanks to vietcom (vncommando at yahoo dot com)
+/*     Modified by Renato Coelho
+   in order to print tables that span more than 1 page and to allow 
+   bold,italic and the likes inside table cells (and alignment now works with styles!)
+*/
+
+//table		Array of (w, h, bc, nr, wc, hr, cells)
+//w			Width of table
+//h			Height of table
+//nc		Number column
+//nr		Number row
+//hr		List of height of each row
+//wc		List of width of each column
+//cells		List of cells of each rows, cells[i][j] is a cell in the table
+function _tableColumnWidth(&$table){
+//! @return void
+	$cs = &$table['cells'];
+	$mw = $this->getStringWidth('W');
+	$nc = $table['nc'];
+	$nr = $table['nr'];
+	$listspan = array();
+	//Xac dinh do rong cua cac cell va cac cot tuong ung
+	for($j = 0 ; $j < $nc ; $j++ ) //columns
+  {
+		$wc = &$table['wc'][$j];
+		for($i = 0 ; $i < $nr ; $i++ ) //rows
+    {
+			if (isset($cs[$i][$j]) && $cs[$i][$j])
+      {
+				$c = &$cs[$i][$j];
+				$miw = $mw;
+				if (isset($c['maxs']) and $c['maxs'] != '') $c['s'] = $c['maxs'];
+				$c['maw']	= $c['s'];
+				if (isset($c['nowrap'])) $miw = $c['maw'];
+				if (isset($c['w']))
+        {
+					if ($miw<$c['w'])	$c['miw'] = $c['w'];
+					if ($miw>$c['w'])	$c['miw'] = $c['w']	  = $miw;
+					if (!isset($wc['w'])) $wc['w'] = 1;
+				}
+        else $c['miw'] = $miw;
+				if ($c['maw']  < $c['miw']) $c['maw'] = $c['miw'];
+				if (!isset($c['colspan']))
+        {
+					if ($wc['miw'] < $c['miw'])		$wc['miw']	= $c['miw'];
+					if ($wc['maw'] < $c['maw'])		$wc['maw']	= $c['maw'];
+				}
+        else $listspan[] = array($i,$j);
+        //Check if minimum width of the whole column is big enough for a huge word to fit
+        $auxtext = implode("",$c['text']);
+        $minwidth = $this->WordWrap($auxtext,$wc['miw']-2);// -2 == margin
+        if ($minwidth < 0 and (-$minwidth) > $wc['miw']) $wc['miw'] = (-$minwidth) +2; //increase minimum width
+        if ($wc['miw'] > $wc['maw']) $wc['maw'] = $wc['miw']; //update maximum width, if needed
+			}
+		}//rows
+	}//columns
+	//Xac dinh su anh huong cua cac cell colspan len cac cot va nguoc lai
+	$wc = &$table['wc'];
+	foreach ($listspan as $span)
+  {
+		list($i,$j) = $span;
+		$c = &$cs[$i][$j];
+		$lc = $j + $c['colspan'];
+		if ($lc > $nc) $lc = $nc;
+		
+		$wis = $wisa = 0;
+		$was = $wasa = 0;
+		$list = array();
+		for($k=$j;$k<$lc;$k++)
+    {
+			$wis += $wc[$k]['miw'];
+			$was += $wc[$k]['maw'];
+			if (!isset($c['w']))
+      {
+				$list[] = $k;
+				$wisa += $wc[$k]['miw'];
+				$wasa += $wc[$k]['maw'];
+			}
+		}
+		if ($c['miw'] > $wis)
+    {
+			if (!$wis)
+      {//Cac cot chua co kich thuoc => chia deu
+				for($k=$j;$k<$lc;$k++) $wc[$k]['miw'] = $c['miw']/$c['colspan'];
+			}
+      elseif(!count($list))
+      {//Khong co cot nao co kich thuoc auto => chia deu phan du cho tat ca
+				$wi = $c['miw'] - $wis;
+				for($k=$j;$k<$lc;$k++) $wc[$k]['miw'] += ($wc[$k]['miw']/$wis)*$wi;
+			}
+      else
+      {//Co mot so cot co kich thuoc auto => chia deu phan du cho cac cot auto
+				$wi = $c['miw'] - $wis;
+				foreach ($list as $k)	$wc[$k]['miw'] += ($wc[$k]['miw']/$wisa)*$wi;
+			}
+		}
+		if ($c['maw'] > $was)
+    {
+			if (!$wis)
+      {//Cac cot chua co kich thuoc => chia deu
+				for($k=$j;$k<$lc;$k++) $wc[$k]['maw'] = $c['maw']/$c['colspan'];
+			}
+      elseif (!count($list))
+      {
+      //Khong co cot nao co kich thuoc auto => chia deu phan du cho tat ca
+				$wi = $c['maw'] - $was;
+				for($k=$j;$k<$lc;$k++) $wc[$k]['maw'] += ($wc[$k]['maw']/$was)*$wi;
+			}
+      else
+      {//Co mot so cot co kich thuoc auto => chia deu phan du cho cac cot auto
+				$wi = $c['maw'] - $was;
+				foreach ($list as $k)	$wc[$k]['maw'] += ($wc[$k]['maw']/$wasa)*$wi;
+			}
+		}
+	}
+}
+
+function _tableWidth(&$table){
+//! @return void
+//! @desc Calculates the Table Width
+// @desc Xac dinh chieu rong cua table
+	$widthcols = &$table['wc'];
+	$numcols = $table['nc'];
+	$tablewidth = 0;
+	for ( $i = 0 ; $i < $numcols ; $i++ )
+  {
+		$tablewidth += isset($widthcols[$i]['w']) ? $widthcols[$i]['miw'] : $widthcols[$i]['maw'];
+	}
+	if ($tablewidth > $this->pgwidth) $table['w'] = $this->pgwidth;
+	if (isset($table['w']))
+  {
+		$wis = $wisa = 0;
+		$list = array();
+		for( $i = 0 ; $i < $numcols ; $i++ )
+    {
+			$wis += $widthcols[$i]['miw'];
+			if (!isset($widthcols[$i]['w'])){ $list[] = $i;$wisa += $widthcols[$i]['miw'];}
+		}
+		if ($table['w'] > $wis)
+    {
+			if (!count($list))
+      {//Khong co cot nao co kich thuoc auto => chia deu phan du cho tat ca
+      //http://www.ksvn.com/anhviet_new.htm - translating comments...
+      //bent shrink essence move size measure automatic => divide against give as a whole
+				//$wi = $table['w'] - $wis;
+				$wi = ($table['w'] - $wis)/$numcols;
+				for($k=0;$k<$numcols;$k++) 
+					//$widthcols[$k]['miw'] += ($widthcols[$k]['miw']/$wis)*$wi;
+					$widthcols[$k]['miw'] += $wi;
+			}
+      else
+      {//Co mot so cot co kich thuoc auto => chia deu phan du cho cac cot auto
+				//$wi = $table['w'] - $wis;
+				$wi = ($table['w'] - $wis)/count($list);
+				foreach ($list as $k)
+					//$widthcols[$k]['miw'] += ($widthcols[$k]['miw']/$wisa)*$wi;
+					$widthcols[$k]['miw'] += $wi;
+			}
+		}
+		for ($i=0;$i<$numcols;$i++)
+    {
+			$tablewidth = $widthcols[$i]['miw'];
+			unset($widthcols[$i]);
+			$widthcols[$i] = $tablewidth;
+		}
+	}
+  else //table has no width defined
+  {
+		$table['w'] = $tablewidth;
+		for ( $i = 0 ; $i < $numcols ; $i++)
+    {
+			$tablewidth = isset($widthcols[$i]['w']) ? $widthcols[$i]['miw'] : $widthcols[$i]['maw'];
+			unset($widthcols[$i]);
+			$widthcols[$i] = $tablewidth;
+		}
+	}
+}
+	
+function _tableHeight(&$table){
+//! @return void
+//! @desc Calculates the Table Height
+	$cells = &$table['cells'];
+	$numcols = $table['nc'];
+	$numrows = $table['nr'];
+	$listspan = array();
+	for( $i = 0 ; $i < $numrows ; $i++ )//rows
+  {
+		$heightrow = &$table['hr'][$i];
+		for( $j = 0 ; $j < $numcols ; $j++ ) //columns
+    {
+			if (isset($cells[$i][$j]) && $cells[$i][$j])
+      {
+				$c = &$cells[$i][$j];
+				list($x,$cw) = $this->_tableGetWidth($table, $i,$j);
+        //Check whether width is enough for this cells' text
+        $auxtext = implode("",$c['text']);
+        $auxtext2 = $auxtext; //in case we have text with styles
+        $nostyles_size = $this->GetStringWidth($auxtext) + 3; // +3 == margin
+        $linesneeded = $this->WordWrap($auxtext,$cw-2);// -2 == margin
+				if ($c['s'] > $nostyles_size and !isset($c['form'])) //Text with styles
+				{
+           $auxtext = $auxtext2; //recover original characteristics (original /n placements)
+           $diffsize = $c['s'] - $nostyles_size; //with bold et al. char width gets a bit bigger than plain char
+           if ($linesneeded == 0) $linesneeded = 1; //to avoid division by zero
+           $diffsize /= $linesneeded;
+           $linesneeded = $this->WordWrap($auxtext,$cw-2-$diffsize);//diffsize used to wrap text correctly
+        }
+        if (isset($c['form']))
+        {
+           $linesneeded = ceil(($c['s']-3)/($cw-2)); //Text + form in a cell
+           //Presuming the use of styles
+           if ( ($this->GetStringWidth($auxtext) + 3) > ($cw-2) ) $linesneeded++;
+        }
+        $ch = $linesneeded * 1.1 * $this->lineheight;
+        //If height is bigger than page height...
+        if ($ch > ($this->fh - $this->bMargin - $this->tMargin)) $ch = ($this->fh - $this->bMargin - $this->tMargin);
+        //If height is defined and it is bigger than calculated $ch then update values
+				if (isset($c['h']) && $c['h'] > $ch)
+				{
+           $c['mih'] = $ch; //in order to keep valign working
+           $ch = $c['h'];
+        }
+        else $c['mih'] = $ch;
+				if (isset($c['rowspan']))	$listspan[] = array($i,$j);
+				elseif ($heightrow < $ch) $heightrow = $ch;
+        if (isset($c['form'])) $c['mih'] = $ch;
+      }
+		}//end of columns
+	}//end of rows
+	$heightrow = &$table['hr'];
+	foreach ($listspan as $span)
+  {
+		list($i,$j) = $span;
+		$c = &$cells[$i][$j];
+		$lr = $i + $c['rowspan'];
+		if ($lr > $numrows) $lr = $numrows;
+		$hs = $hsa = 0;
+		$list = array();
+		for($k=$i;$k<$lr;$k++)
+    {
+			$hs += $heightrow[$k];
+			if (!isset($c['h']))
+      {
+				$list[] = $k;
+				$hsa += $heightrow[$k];
+			}
+		}
+		if ($c['mih'] > $hs)
+    {
+			if (!$hs)
+      {//Cac dong chua co kich thuoc => chia deu
+				for($k=$i;$k<$lr;$k++) $heightrow[$k] = $c['mih']/$c['rowspan'];
+			}
+      elseif (!count($list))
+      {//Khong co dong nao co kich thuoc auto => chia deu phan du cho tat ca
+				$hi = $c['mih'] - $hs;
+				for($k=$i;$k<$lr;$k++) $heightrow[$k] += ($heightrow[$k]/$hs)*$hi;
+			}
+      else
+      {//Co mot so dong co kich thuoc auto => chia deu phan du cho cac dong auto
+				$hi = $c['mih'] - $hsa;
+				foreach ($list as $k) $heightrow[$k] += ($heightrow[$k]/$hsa)*$hi;
+			}
+		}
+	}
+}
+
+function _tableGetWidth(&$table, $i,$j){
+//! @return array(x,w)
+// @desc Xac dinh toa do va do rong cua mot cell
+
+	$cell = &$table['cells'][$i][$j];
+	if ($cell)
+  {
+		if (isset($cell['x0'])) return array($cell['x0'], $cell['w0']);
+		$x = 0;
+		$widthcols = &$table['wc'];
+		for( $k = 0 ; $k < $j ; $k++ ) $x += $widthcols[$k];
+		$w = $widthcols[$j];
+		if (isset($cell['colspan']))
+    {
+			 for ( $k = $j+$cell['colspan']-1 ; $k > $j ; $k-- )	$w += $widthcols[$k];
+		}
+		$cell['x0'] = $x;
+		$cell['w0'] = $w;
+		return array($x, $w);
+	}
+	return array(0,0);
+}
+
+function _tableGetHeight(&$table, $i,$j){
+//! @return array(y,h)
+	$cell = &$table['cells'][$i][$j];
+	if ($cell){
+		if (isset($cell['y0'])) return array($cell['y0'], $cell['h0']);
+		$y = 0;
+		$heightrow = &$table['hr'];
+		for ($k=0;$k<$i;$k++) $y += $heightrow[$k];
+		$h = $heightrow[$i];
+		if (isset($cell['rowspan'])){
+			for ($k=$i+$cell['rowspan']-1;$k>$i;$k--)
+				$h += $heightrow[$k];
+		}
+		$cell['y0'] = $y;
+		$cell['h0'] = $h;
+		return array($y, $h);
+	}
+	return array(0,0);
+}
+
+function _tableRect($x, $y, $w, $h, $type=1){
+//! @return void
+	if ($type==1)	$this->Rect($x, $y, $w, $h);
+	elseif (strlen($type)==4){
+		$x2 = $x + $w; $y2 = $y + $h;
+		if (intval($type{0})) $this->Line($x , $y , $x2, $y );
+		if (intval($type{1})) $this->Line($x2, $y , $x2, $y2);
+		if (intval($type{2})) $this->Line($x , $y2, $x2, $y2);
+		if (intval($type{3})) $this->Line($x , $y , $x , $y2);
+	}
+}
+
+function _tableWrite(&$table){
+//! @desc Main table function
+//! @return void
+	$cells = &$table['cells'];
+	$numcols = $table['nc'];
+	$numrows = $table['nr'];
+	$x0 = $this->x;
+	$y0 = $this->y;
+	$right = $this->pgwidth - $this->rMargin;
+	if (isset($table['a']) and ($table['w'] != $this->pgwidth))
+  {
+		if ($table['a']=='C') $x0 += (($right-$x0) - $table['w'])/2;
+		elseif ($table['a']=='R')	$x0 = $right - $table['w'];
+	}
+  $returny = 0;
+  $tableheader = array();
+	//Draw Table Contents and Borders
+	for( $i = 0 ; $i < $numrows ; $i++ ) //Rows
+  { 
+    $skippage = false;
+    for( $j = 0 ; $j < $numcols ; $j++ ) //Columns
+    {
+  			if (isset($cells[$i][$j]) && $cells[$i][$j])
+        {
+				  $cell = &$cells[$i][$j];
+				  list($x,$w) = $this->_tableGetWidth($table, $i, $j);
+				  list($y,$h) = $this->_tableGetHeight($table, $i, $j);
+				  $x += $x0;
+  			  $y += $y0;
+          $y -= $returny;
+          if ((($y + $h) > ($this->fh - $this->bMargin)) && ($y0 >0 || $x0 > 0))
+          {
+            if (!$skippage)
+            {
+               $y -= $y0;
+               $returny += $y;
+               $this->AddPage();
+               if ($this->usetableheader) $this->Header($tableheader);
+               if ($this->usetableheader) $y0 = $this->y;
+               else $y0 = $this->tMargin;
+               $y = $y0;
+            }
+            $skippage = true;
+          }
+				  //Align
+				  $this->x = $x; $this->y = $y;
+				  $align = isset($cell['a'])? $cell['a'] : 'L';
+				  //Vertical align
+				  if (!isset($cell['va']) || $cell['va']=='M') $this->y += ($h-$cell['mih'])/2;
+          elseif (isset($cell['va']) && $cell['va']=='B') $this->y += $h-$cell['mih'];
+				  //Fill
+				  $fill = isset($cell['bgcolor']) ? $cell['bgcolor']
+  					: (isset($table['bgcolor'][$i]) ? $table['bgcolor'][$i]
+  					: (isset($table['bgcolor'][-1]) ? $table['bgcolor'][-1] : 0));
+  				if ($fill)
+          {
+  					$color = ConvertColor($fill);
+  					$this->SetFillColor($color['R'],$color['G'],$color['B']);
+  					$this->Rect($x, $y, $w, $h, 'F');
+  				}
+   				//Border
+  				if (isset($cell['border'])) $this->_tableRect($x, $y, $w, $h, $cell['border']);
+  				elseif (isset($table['border']) && $table['border']) $this->Rect($x, $y, $w, $h);
+          $this->divalign=$align;
+          $this->divwidth=$w-2;
+          //Get info of first row == table header
+          if ($this->usetableheader and $i == 0 )
+          {
+              $tableheader[$j]['x'] = $x;
+              $tableheader[$j]['y'] = $y;
+              $tableheader[$j]['h'] = $h;
+              $tableheader[$j]['w'] = $w;
+              $tableheader[$j]['text'] = $cell['text'];
+              $tableheader[$j]['textbuffer'] = $cell['textbuffer'];
+              $tableheader[$j]['a'] = isset($cell['a'])? $cell['a'] : 'L';
+              $tableheader[$j]['va'] = $cell['va'];
+              $tableheader[$j]['mih'] = $cell['mih'];
+              $tableheader[$j]['bgcolor'] = $fill;
+              if ($table['border']) $tableheader[$j]['border'] = 'all';
+              elseif (isset($cell['border'])) $tableheader[$j]['border'] = $cell['border'];
+          }
+          if (!empty($cell['textbuffer'])) $this->printbuffer($cell['textbuffer'],false,true/*inside a table*/);
+          //Reset values
+          $this->Reset();
+        }//end of (if isset(cells)...)
+    }// end of columns
+    if ($i == $numrows-1) $this->y = $y + $h; //last row jump (update this->y position)
+  }// end of rows
+}//END OF FUNCTION _tableWrite()
+
+/////////////////////////END OF TABLE CODE//////////////////////////////////
+
+}//end of Class
+
+/*
+----  JUNK(?)/OLD CODE: ------
+// <? <- this fixes HIGHLIGHT PSPAD bug ... 
+
+*/
+
+?>

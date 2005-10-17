@@ -451,7 +451,7 @@ class ps_checkout {
 			// 3-digit Security Code
 			$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
 
-			if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber
+			if (!$this->validate_payment_method($d, true)) { //Change false to true to Let the user play with the VISA Testnumber
 				return false;
 			}
 			break;
@@ -978,26 +978,6 @@ class ps_checkout {
 		// Export the order_id so the checkout complete page can get it
 		$d["order_id"] = $order_id;
 
-		// Unset the payment_method variables
-
-		$d["payment_method_id"] = "";
-		$d["order_payment_number"] = "";
-		$d["order_payment_expire"] = "";
-		$d["order_payment_name"] = "";
-		$d["credit_card_code"] = "";
-		$_SESSION['ccdata']['order_payment_name']  = "";
-		$_SESSION['ccdata']['order_payment_number']  = "";
-		$_SESSION['ccdata']['order_payment_expire_month'] = "";
-		$_SESSION['ccdata']['order_payment_expire_year'] = "";
-		$_SESSION['ccdata']['credit_card_code'] = "";
-		$HTTP_POST_VARS["payment_method_id"] = "";
-		$HTTP_POST_VARS["order_payment_number"] = "";
-		$HTTP_POST_VARS["order_payment_expire"] = "";
-		$HTTP_POST_VARS["order_payment_name"] = "";
-		$_SESSION['coupon_discount'] = "";
-		$_SESSION['coupon_id'] = "";
-		$_SESSION['coupon_redeemed'] = false;
-
 		// Now as everything else has been done, we can update
 		// the Order Status if the Payment Method is
 		// "Use Payment Processor", because:
@@ -1023,6 +1003,25 @@ class ps_checkout {
 		// Reset the cart
 		$ps_cart->reset();
 
+		// Unset the payment_method variables
+		$d["payment_method_id"] = "";
+		$d["order_payment_number"] = "";
+		$d["order_payment_expire"] = "";
+		$d["order_payment_name"] = "";
+		$d["credit_card_code"] = "";
+		$_SESSION['ccdata']['order_payment_name']  = "";
+		$_SESSION['ccdata']['order_payment_number']  = "";
+		$_SESSION['ccdata']['order_payment_expire_month'] = "";
+		$_SESSION['ccdata']['order_payment_expire_year'] = "";
+		$_SESSION['ccdata']['credit_card_code'] = "";
+		$HTTP_POST_VARS["payment_method_id"] = "";
+		$HTTP_POST_VARS["order_payment_number"] = "";
+		$HTTP_POST_VARS["order_payment_expire"] = "";
+		$HTTP_POST_VARS["order_payment_name"] = "";
+		$_SESSION['coupon_discount'] = "";
+		$_SESSION['coupon_id'] = "";
+		$_SESSION['coupon_redeemed'] = false;
+		
 		return True;
 	}
 
@@ -1349,7 +1348,6 @@ class ps_checkout {
 		require_once(CLASSPATH.'ps_product.php');
 		$ps_product = new ps_product;
 
-
 		// Connect to database and gather appropriate order information
 		$db = new ps_DB;
 		$q  = "SELECT * FROM #__{vm}_orders WHERE order_id='$order_id'";
@@ -1419,6 +1417,25 @@ class ps_checkout {
 		$shopper_order_link = $sess->url( SECUREURL ."index.php?page=account.order_details&order_id=$order_id" );
 		$vendor_order_link = $sess->url( SECUREURL ."index.php?page=order.order_print&order_id=$order_id&pshop_mode=admin" );
 
+		/**
+		 * Prepare the payment information, including Credit Card information when not empty
+		 */
+		$payment_info_details = $db_payment->f("payment_method_name");
+		if( !empty( $_SESSION['ccdata']['order_payment_name'] )
+			&& !empty($_SESSION['ccdata']['order_payment_number'])) {
+	  		$payment_info_details .= '<br />'.$VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD.': '.$_SESSION['ccdata']['order_payment_name'].'<br />';
+	  		$payment_info_details .= $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM.': '.$this->asterisk_pad($_SESSION['ccdata']['order_payment_number'], 4 ).'<br />';
+	  		$payment_info_details .= $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE.': '.$_SESSION['ccdata']['order_payment_expire_month'].' / '.$_SESSION['ccdata']['order_payment_expire_year'].'<br />';
+	  		if( !empty($_SESSION['ccdata']['credit_card_code'])) {
+	  			$payment_info_details .= 'CVV code: '.$_SESSION['ccdata']['credit_card_code'].'<br />';
+	  		}
+		}
+		// Convert HTML into Text
+		$payment_info_details_text = str_replace( '<br />', "\n", $payment_info_details );
+		
+		// Get the Shipping Details
+		$shipping_arr = explode("|", @urldecode($_REQUEST['shipping_rate_id']) );
+		
 		// Headers and Footers
 		// ******************************
 		// Shopper Header
@@ -1617,15 +1634,27 @@ class ps_checkout {
 			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
 			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax) . "\n";
 		}
-
+		// Payment Details
+		$shopper_message .= "\n\n------------------------------------------------------------------------\n";
+		$shopper_message .= $payment_info_details_text;
+		
+		// Shipping Details
+		if( $this->_SHIPPING) {
+			$shopper_message .= "\n\n------------------------------------------------------------------------\n";
+			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL.":\n";
+			$shopper_message .= $shipping_arr[1]." (".$shipping_arr[2].")";
+		}
+		// Customer Note
 		$shopper_message .= "\n\n------------------------------------------------------------------------\n";
 		$shopper_message .= "\n".$VM_LANG->_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE."\n";
 		$shopper_message .= "---------------";
 		$shopper_message .= "\n";
-		if( !empty( $customer_note ))
-		$shopper_message .= $customer_note."\n";
-		else
-		$shopper_message .= " ./. \n";
+		if( !empty( $customer_note )) {
+			$shopper_message .= $customer_note."\n";
+		}
+		else {
+			$shopper_message .= " ./. \n";
+		}
 		$shopper_message .= "------------------------------------------------------------------------\n";
 
 		// End of Purchase Order
@@ -1684,18 +1713,6 @@ class ps_checkout {
 			$vendor_mail->Sender = $from_email;
 			$vendor_mail->AddAddress($vendor_email);
 			$vendor_mail->Subject = $vendor_subject;
-
-			/*
-			TEST IF WE ARE RUNNING MAMBO 4.5 1.0.9
-			*/
-			if( defined( '_RELEASE' ) )
-			if( _RELEASE == '4.5' ) {
-				$mosConfig_mailer = CFG_MAILER;
-				$mosConfig_smtphost = CFG_SMTPHOST;
-				$mosConfig_smtpauth = CFG_SMTPAUTH;
-				$mosConfig_smtpuser = CFG_SMTPUSER;
-				$mosConfig_smtppass = CFG_SMTPPASS;
-			}
 
 			$dboi->query($q_oi);
 
@@ -1764,12 +1781,15 @@ class ps_checkout {
 			}
 
 			// open the HTML file and read it into $html
-			if (file_exists(PAGEPATH."templates/order_emails/email_".$mosConfig_lang.".html"))
-			$html_file = fopen(PAGEPATH."templates/order_emails/email_".$mosConfig_lang.".html","r");
-			elseif(file_exists(ADMINPATH."email_".$mosConfig_lang.".html"))
-			$html_file = fopen(ADMINPATH."email_".$mosConfig_lang.".html","r");
-			else
-			$html_file = fopen(PAGEPATH."templates/order_emails/email_english.html","r");
+			if (file_exists(PAGEPATH."templates/order_emails/email_".$mosConfig_lang.".html")) {
+				$html_file = fopen(PAGEPATH."templates/order_emails/email_".$mosConfig_lang.".html","r");
+			}
+			elseif(file_exists(ADMINPATH."email_".$mosConfig_lang.".html")) {
+				$html_file = fopen(ADMINPATH."email_".$mosConfig_lang.".html","r");
+			}
+			else {
+				$html_file = fopen(PAGEPATH."templates/order_emails/email_english.html","r");
+			}
 
 			$html = "";
 
@@ -1836,15 +1856,16 @@ class ps_checkout {
 			$html = str_replace('{phpShopCustomerNote}',nl2br($customer_note), $html);
 
 			$html = str_replace('{PAYMENT_INFO_LBL}', $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYINFO_LBL, $html);
-			$html = str_replace('{PAYMENT_INFO_DETAILS}', $db_payment->f("payment_method_name"), $html);
 
-			$shipping_arr = explode("|", @urldecode($_REQUEST['shipping_rate_id']) );
+			$html = str_replace('{PAYMENT_INFO_DETAILS}', $payment_info_details, $html);
 
 			$html = str_replace('{SHIPPING_INFO_LBL}', $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL, $html);
-			if( $this->_SHIPPING )
-			$html = str_replace('{SHIPPING_INFO_DETAILS}', $shipping_arr[1]." (".$shipping_arr[2].")", $html);
-			else
-			$html = str_replace('{SHIPPING_INFO_DETAILS}', " ./. ", $html);
+			if( $this->_SHIPPING ) {
+				$html = str_replace('{SHIPPING_INFO_DETAILS}', $shipping_arr[1]." (".$shipping_arr[2].")", $html);
+			}
+			else {
+				$html = str_replace('{SHIPPING_INFO_DETAILS}', " ./. ", $html);
+			}
 
 			$shopper_html = str_replace('{phpShopOrderClosingMsg}',$shopper_footer_html,$html);
 			$vendor_html = str_replace('{phpShopOrderClosingMsg}',$vendor_footer_html,$html);
@@ -1920,24 +1941,29 @@ class ps_checkout {
 
 
 
-	/**************************************************************************
-	** name: asterisk_pad()
-	** created by: gday
-	** description:  Return $str with all but $display_length at the end as
-	**               asterisks.
-	** parameters: $str - string to asterisk pad
-	**             $display_length - length at the end of $str that will not
-	**                               be obscured by asterisks
-	** returns: $str with all but $display_length at the end obscured
-	**          by asterisks
-	***************************************************************************/
-	function asterisk_pad($str, $display_length) {
+	/**
+	 * Return $str with all but $display_length at the end as asterisks.
+	 * @author gday
+	 *
+	 * @param string $str The string to mask
+	 * @param int $display_length The length at the end of the string that is NOT masked
+	 * @param boolean $reversed When true, masks the end. Masks from the beginning at default
+	 * @return string The string masked by asteriks
+	 */
+	function asterisk_pad($str, $display_length, $reversed = false) {
 
 		$total_length = strlen($str);
 
 		if($total_length > $display_length) {
-			for($i = 0; $i < $total_length - $display_length; $i++) {
-				$str[$i] = "*";
+			if( !$reversed) {
+				for($i = 0; $i < $total_length - $display_length; $i++) {
+					$str[$i] = "*";
+				}
+			}
+			else {
+				for($i = $total_length-1; $i >= $total_length - $display_length; $i--) {
+					$str[$i] = "*";
+				}
 			}
 		}
 
@@ -1970,7 +1996,7 @@ class ps_checkout {
 			$rate_details = explode( "|", urldecode(urldecode($_REQUEST['shipping_rate_id'])) );
 			foreach( $rate_details as $k => $v ) {
 				if( $k == 3 ) {
-					echo $CURRENCY_DISPLAY->getFullValue( $v );
+					echo $CURRENCY_DISPLAY->getFullValue( round( $v, 2) );
 				} elseif( $k > 0 ) {
 					echo "$v; ";
 				}

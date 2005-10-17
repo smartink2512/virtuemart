@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_payment_method.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: ps_payment_method.php,v 1.6 2005/10/12 18:57:11 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -65,8 +65,8 @@ class ps_payment_method {
        $d["error"] = "Please enter a payment method code.";
        return False;
     }
-    if (empty($d['is_creditcard']))
-        $d['is_creditcard'] = 0;
+    
+    $d['is_creditcard'] = !empty( $d['creditcard']) ? '1' : '0';
         
     if (empty($d['payment_class']))
         $d['payment_class'] = "";
@@ -104,8 +104,7 @@ class ps_payment_method {
        $d["error"] = "Please enter a payment method code.";
        return False;
     }
-    if (empty($d['is_creditcard']))
-        $d['is_creditcard'] = 0;
+	$d['is_creditcard'] = !empty( $d['creditcard']) ? '1' : '0';
         
     if (empty($d['payment_class']))
         $d['payment_class'] = "";
@@ -513,15 +512,13 @@ class ps_payment_method {
     function is_creditcard($payment_id) {
     
         $db = new ps_DB;
-        $q = "SELECT is_creditcard FROM #__{vm}_payment_method ";
+        $q = "SELECT is_creditcard,accepted_creditcards FROM #__{vm}_payment_method ";
         $q .= "WHERE payment_method_id='".$payment_id."'";
         $db->query($q);
         $db->next_record();
+        $details = $db->f('is_creditcard');
         
-        if ($db->f('is_creditcard')=='1')
-            return true;
-        else
-            return false;
+        return $details != "";
     
     }
   /**************************************************************************

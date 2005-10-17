@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_print.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: order.order_print.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -19,6 +19,8 @@ mm_showMyFileName( __FILE__ );
 
 require_once(CLASSPATH.'ps_product.php');
 $ps_product =& new ps_product;
+
+require_once(CLASSPATH.'ps_checkout.php');
 
 $order_id = mosGetParam( $_REQUEST, 'order_id' );
 
@@ -491,35 +493,34 @@ else {
 				  </tr>
 				</table>
 			  </td>
-			  
+			  <?php
+			    $dbpm =& new ps_DB;
+				$q  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_order_payment WHERE #__{vm}_order_payment.order_id='$order_id' ";
+				$q .= "AND #__{vm}_payment_method.payment_method_id=#__{vm}_order_payment.payment_method_id";
+				$dbpm->query($q);
+				$dbpm->next_record();
+			   
+				// DECODE Account Number
+				$dbaccount =& new ps_DB;
+			    $q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') 
+					AS account_number FROM #__{vm}_order_payment  
+					WHERE order_id='".$order_id."'";
+				$dbaccount->query($q);
+				$dbaccount->next_record();
+				?>
 			  <!-- Payment Information -->
 			  <td valign="top">
 				<table class="adminlist">
 				  <tr class="sectiontableheader"> 
 					<th width="13%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL ?></th>
 					<th width="40%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME ?></th>
-					<th width="30%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER;
-						$dbpm =& new ps_DB;
-						$q  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_order_payment WHERE #__{vm}_order_payment.order_id='$order_id' ";
-						$q .= "AND #__{vm}_payment_method.payment_method_id=#__{vm}_order_payment.payment_method_id";
-						$dbpm->query($q);
-						$dbpm->next_record();
-					   
-						// DECODE Account Number
-						$dbaccount =& new ps_DB;
-					   $q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') 
-							as account_number from #__{vm}_order_payment  
-							where order_id='".$order_id."'";
-						$dbaccount->query($q);
-						$dbaccount->next_record();
-					  ?> 
-					  </th>
+					<th width="30%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER; ?></th>
 					<th width="17%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EXPIRE_DATE ?></th>
 				  </tr>
 				  <tr> 
 					<td width="13%"><?php $dbpm->p("payment_method_name");?> </td>
 					<td width="40%"><?php $dbpm->p("order_payment_name");?></td>
-					<td width="30%"><?php $dbaccount->p("account_number");?></td>
+					<td width="30%"><?php echo ps_checkout::asterisk_pad( $dbaccount->f("account_number"), 4, true );?></td>
 					<td width="17%"><?php echo date("M-Y", $dbpm->f("order_payment_expire")); ?></td>
 				  </tr>
 				  <tr> 

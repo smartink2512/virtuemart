@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: account.order_details.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: account.order_details.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 
@@ -86,7 +87,9 @@ if ( $db->f("order_status") == "P" ) {
     <td width="100%" align="center">
     <?php 
     @include( CLASSPATH. "payment/".$dbpm->f("payment_class").".cfg.php" );
-
+	
+    echo DEBUG ? vmCommonHTML::getInfoField('Beginning to parse the payment extra info code...' ) : '';
+    
     // Here's the place where the Payment Extra Form Code is included
     // Thanks to Steve for this solution (why make it complicated...?)
     if( eval('?>' . $dbpm->f("payment_extrainfo") . '<?php ') === false ) {
@@ -583,16 +586,16 @@ if( PAYMENT_DISCOUNT_BEFORE == '1') {
 
 	  	// DECODE Account Number
 	  	$dbaccount = new ps_DB;
-	  	$q = "SELECT DECODE(\"". $dbpm->f("order_payment_number")."\",\"".ENCODE_KEY."\") as account_number";
+	  	$q = "SELECT DECODE(\"". $dbpm->f("order_payment_number")."\",\"".ENCODE_KEY."\") as account_number FROM #__{vm}_order_payment WHERE order_id='".$order_id."'";
 	  	$dbaccount->query($q);
-            $dbaccount->next_record(); ?>
+        $dbaccount->next_record(); ?>
       <tr> 
         <td width="10%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME ?> :</td>
         <td><?php $dbpm->p("order_payment_name"); ?> </td>
       </tr>
       <tr> 
         <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER ?> :</td>
-        <td> <?php echo $ps_checkout->asterisk_pad($dbaccount->f("account_number"),4);
+        <td> <?php echo ps_checkout::asterisk_pad($dbaccount->f("account_number"),4);
     ?> </td>
       </tr>
       <tr> 

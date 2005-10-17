@@ -182,8 +182,10 @@ class ps_shopper {
 			$database->loadObject( $userid );
 			$uid = $userid->id;
 		}
-		else
+		else {
 			$uid = $my->id;
+			$d['email'] = $my->email;
+		}
 		
 		// Insert billto
 		$q = "INSERT INTO #__{vm}_user_info VALUES (";

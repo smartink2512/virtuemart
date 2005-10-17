@@ -32,6 +32,15 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+17-10-2005 soeren
+# user registration required email, although no email field was there
+# credit card payment wasn't recognized correctly on order details screens
+^ added Credit Card details to order confirmation email
+# fixed the PDF function (a file was missing php code), updated HTML2FPDF to version 3.02beta
+# prices from advanced attribute field didn't include shopper group discount, 
+  when the price was set to a fixed price ( Color,blue,green[=45.00]; )
+# dtree module crashed - missing global $db declaration
+
 14-10-2005 soeren
 # On registration an error from the Joomla registration function would empty all fields
 + added new Version check link to admin section

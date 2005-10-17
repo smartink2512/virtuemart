@@ -12,7 +12,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * MenuType is set to treemenu
 **/
 
-global $module, $root_label, $sess;
+global $module, $root_label, $sess, $db;
 $Itemid = mosGetParam( $_REQUEST, 'Itemid', "");
 
 require_once( CLASSPATH. "ps_product_category.php" );
@@ -114,7 +114,7 @@ require_once( CLASSPATH. "ps_product_category.php" );
 	while( $db->next_record() ) {
 	
 		// get name and link (just to save space in the code later on)
-		$name = $db->f("category_name"). ps_product_category::products_in_category( $db->f("category_id") );
+		$name = $db->f("category_name", false). ps_product_category::products_in_category( $db->f("category_id") );
 		$url = sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("category_id").'&Itemid='.$Itemid);
 		$menu_htmlcode .= "$tree.add(\"".$db->f("category_id")."\",\"".$db->f("category_parent_id")."\",\"$name\",\"$url\",\"\",\"$target\");\n";
 	  

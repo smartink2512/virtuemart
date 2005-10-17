@@ -1356,11 +1356,15 @@ class ps_product {
 			if( empty( $_SESSION['product_info'][$product_id]['tax_rate'] ) ) {
 				$db = new ps_DB;
 				// Product's tax rate id has priority!
-				$q = "SELECT tax_rate FROM #__{vm}_product, #__{vm}_tax_rate ";
+				$q = "SELECT product_weight, tax_rate FROM #__{vm}_product, #__{vm}_tax_rate ";
 				$q .= "WHERE product_tax_id=tax_rate_id AND product_id='$product_id'";
 				$db->query($q);
 				if ($db->next_record()) {
 					$rate = $db->f("tax_rate");
+					$product_weight = $db->f('product_weight');
+					if( $weight_subtotal == 0 && $product_weight > 0 ) {
+						$weight_subtotal = $product_weight;
+					}
 				}
 				else {
 					// if we didn't find a product tax rate id, let's get the store's tax rate
@@ -1576,7 +1580,8 @@ class ps_product {
 	 */
 	function get_adjusted_attribute_price ($product_id, $description='') {
 
-		global $auth, $mosConfig_secret;
+		global $mosConfig_secret;
+		$auth = $_SESSION['auth'];
 		$price = $this->get_price($product_id);
 
 		$base_price = $price["product_price"];
@@ -1693,6 +1698,8 @@ class ps_product {
 			// add the base price to the price set in the attributes
 			// then subtract the adjustment amount
 			// we could also just add the set_price to the adjustment... not sure on that one.
+			// $setprice += $adjustment;
+			$setprice *= 1 - ($auth["shopper_group_discount"]/100);
 			$price["product_price"] = $setprice;
 		}
 
@@ -1735,8 +1742,8 @@ class ps_product {
 	 * @return string The reformatted description
 	 */
 	function getDescriptionWithTax( $description, $product_id ) {
-		global $auth, $CURRENCY_DISPLAY, $mosConfig_secret;
-
+		global $CURRENCY_DISPLAY, $mosConfig_secret;
+		$auth = $_SESSION['auth'];
 		// if we've been given a description to deal with, get the adjusted price
 		if ($description != '' && stristr( $description, "[" ) && $auth["show_price_including_tax"] == 1) {
 

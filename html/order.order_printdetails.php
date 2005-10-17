@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_printdetails.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: order.order_printdetails.php,v 1.4 2005/10/04 18:30:35 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 
@@ -445,7 +446,7 @@ $db->next_record();
           
             // DECODE Account Number
             $dbaccount = new ps_DB;
-            $q = "SELECT DECODE(\"". $dbpm->f("order_payment_number")."\",\"".ENCODE_KEY."\") as account_number";
+            $q = "SELECT DECODE(\"". $dbpm->f("order_payment_number")."\",\"".ENCODE_KEY."\") as account_number FROM #__{vm}_order_payment WHERE order_id='".$order_id."'";
             $dbaccount->query($q);
             $dbaccount->next_record(); ?>
       <tr> 
@@ -454,7 +455,7 @@ $db->next_record();
       </tr>
       <tr> 
         <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER ?> :</td>
-        <td> <?php echo $ps_checkout->asterisk_pad($dbaccount->f("account_number"),4);
+        <td><?php echo ps_checkout::asterisk_pad($dbaccount->f("account_number"),4);
     ?> </td>
       </tr>
       <tr> 

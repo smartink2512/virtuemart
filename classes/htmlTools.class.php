@@ -414,6 +414,18 @@ class vmCommonHTML {
 		return $html;
 	}
 	/**
+	 * Returns a div element of the class "shop_error" 
+	 * containing $msg to print out an error
+	 *
+	 * @param string $msg
+	 * @return string HTML code
+	 */
+	function getInfoField( $msg ) {
+		
+		$html = '<div style="color:blue;font-weight:bold;">'.$msg.'<div>';
+		return $html;
+	}
+	/**
 	 * Prints a JS function to validate all fields
 	 * given in the array $required_fields
 	 * Does only test if non-empty

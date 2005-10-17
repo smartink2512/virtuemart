@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file is called after the order has been placed by the customer
 *
-* @version $Id: checkout.thankyou.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: checkout.thankyou.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -74,10 +74,12 @@ if ($db->f("order_status") == "P" ) {
     <?php 
     /* Try to get PayPal/PayMate/Worldpay/whatever Configuration File */
     @include( CLASSPATH."payment/".$db->f("payment_class").".cfg.php" );
-
+    
+	echo DEBUG ? vmCommonHTML::getInfoField('Beginning to parse the payment extra info code...' ) : '';
+	
     // Here's the place where the Payment Extra Form Code is included
     // Thanks to Steve for this solution (why make it complicated...?)
-    if( eval('?>' . $db->f("payment_extrainfo") . '<?php ') === true ) {
+    if( eval('?>' . $db->f("payment_extrainfo") . '<?php ') === false ) {
     	echo vmCommonHTML::getErrorField( "Error: The code of the payment method ".$db->f( 'payment_method_name').' ('.$db->f('payment_method_code').') '
     	.'contains a Parse Error!<br />Please correct that first' );
     }

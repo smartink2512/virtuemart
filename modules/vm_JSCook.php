@@ -141,12 +141,8 @@ class MamboMartMenu {
             /* let's see if the loop has reached its end */
             $mymenu_content.= "]";
                 
-          }
         }
-        else {
-            
-        }
-      }
+    }
 }
 
 ?>

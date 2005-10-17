@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-* @version $Id: htmltoolkit.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: htmltoolkit.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage HMTL2PDF
 * @author Renato Coelho
@@ -14,6 +14,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+*/
+/*
+This script is supposed to be used together with the HTML2FPDF.php class
+Copyright (C) 2004-2005 Renato Coelho
 */
 
 function ConvertColor($color="#000000"){
@@ -46,9 +50,9 @@ function ConvertColor($color="#000000"){
   }
   else //case of RGB(r,g,b)
   {
-  	$color = str_replace("rgb(",'',$color); //remove ´rgb(´
-  	$color = str_replace("RGB(",'',$color); //remove ´RGB(´ -- PHP < 5 does not have str_ireplace
-  	$color = str_replace(")",'',$color); //remove ´)´
+  	$color = str_replace("rgb(",'',$color); //remove ï¿½rgb(ï¿½
+  	$color = str_replace("RGB(",'',$color); //remove ï¿½RGB(ï¿½ -- PHP < 5 does not have str_ireplace
+  	$color = str_replace(")",'',$color); //remove ï¿½)ï¿½
     $cores = explode(",", $color);
     $color = array();
 	  $color['R']=$cores[0];
@@ -93,20 +97,20 @@ function lesser_entity_decode($html)
  	$html = str_replace("&amp;","&",$html);
  	$html = str_replace("&lt;","<",$html);
  	$html = str_replace("&gt;",">",$html);
- 	$html = str_replace("&laquo;","«",$html);
- 	$html = str_replace("&raquo;","»",$html);
- 	$html = str_replace("&para;","¶",$html);
- 	$html = str_replace("&euro;","€",$html);
- 	$html = str_replace("&trade;","™",$html);
- 	$html = str_replace("&copy;","©",$html);
- 	$html = str_replace("&reg;","®",$html);
- 	$html = str_replace("&plusmn;","±",$html);
+ 	$html = str_replace("&laquo;","ï¿½",$html);
+ 	$html = str_replace("&raquo;","ï¿½",$html);
+ 	$html = str_replace("&para;","ï¿½",$html);
+ 	$html = str_replace("&euro;","ï¿½",$html);
+ 	$html = str_replace("&trade;","ï¿½",$html);
+ 	$html = str_replace("&copy;","ï¿½",$html);
+ 	$html = str_replace("&reg;","ï¿½",$html);
+ 	$html = str_replace("&plusmn;","ï¿½",$html);
  	$html = str_replace("&tilde;","~",$html);
  	$html = str_replace("&circ;","^",$html);
  	$html = str_replace("&quot;",'"',$html);
- 	$html = str_replace("&permil;","‰",$html);
- 	$html = str_replace("&Dagger;","‡",$html);
- 	$html = str_replace("&dagger;","†",$html);
+ 	$html = str_replace("&permil;","ï¿½",$html);
+ 	$html = str_replace("&Dagger;","ï¿½",$html);
+ 	$html = str_replace("&dagger;","ï¿½",$html);
   return $html;
 }
 
