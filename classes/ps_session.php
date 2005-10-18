@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_session.php,v 1.4 2005/10/04 14:13:17 codename-matrix Exp $
+* @version $Id: ps_session.php,v 1.5 2005/10/10 18:49:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -238,7 +238,7 @@ class ps_session {
                     $prep = "index2.php";
                     
                 $appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
-                $appendix = sefRelToAbs ( $appendix );
+                $appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
                 if( !stristr( $appendix, URL ) )
                     $appendix = URL . $appendix;
             } 
@@ -248,9 +248,10 @@ class ps_session {
             else
                 $appendix = URL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
                 
-            if ( stristr($text, SECUREURL))
-                $appendix = str_replace(URL, SECUREURL, $appendix);
-                
+            if ( stristr($text, SECUREURL)) {
+            	$appendix = str_replace(URL, SECUREURL, $appendix);
+            }
+            
             $text = $appendix;
 
             break;

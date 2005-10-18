@@ -89,7 +89,7 @@ require_once( CLASSPATH. "ps_product_category.php" );
 	// what is the ID of this node?
 	$baseid = $db->f("category_parent_id");
 	// create the link (if not a menu item, no link [could be: to entry page of site])
-	$baselink = ( $base == "first") ? $sess->url( URL ) : "";
+	$baselink = ( $base == "first") ? $sess->url( $_SESSION['PHP_SELF'] ) : "";
 	// remember which item is open, normally $Itemid
 	// except when we want the first item (e.g. Home) to be the base;
 	// in that case we have to pretend all remaining items belong to "Home"
