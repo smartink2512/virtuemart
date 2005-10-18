@@ -88,8 +88,8 @@ if( !defined( 'CLASSPATH' )) {
 	// Constructor initializes the session!
 	$sess = new ps_session();
 	
-	// Constructor initializes the cart!
-	$cart = new ps_cart();
+	// Initialize the cart
+	$cart = ps_cart::initCart();
 	
 	// Instantiate the module class
 	$ps_module = new ps_module();
@@ -173,7 +173,7 @@ if( !defined( 'CLASSPATH' )) {
 	$shopper_group = $ps_shopper_group->get_shoppergroup_by_id( $my->id );
 
 	// User authentication
-	$auth = $perm->doAuthentication();
+	$auth = $perm->doAuthentication( $shopper_group );
 
 	if( $option == "com_virtuemart" ) {
 		// Check if we have to run a Shop Function

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_cart.php,v 1.5 2005/10/10 18:49:05 soeren_nb Exp $
+* @version $Id: ps_cart.php,v 1.6 2005/10/12 18:13:10 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -41,25 +41,23 @@ class ps_cart {
 	 *
 	 * @return array An empty cart
 	 */
-	function ps_cart() {
+	function initCart() {
 		global $my, $cart;
 		// Register the cart
 		if (empty($_SESSION['cart'])) {
 			$cart = array();
 			$cart['idx'] = 0;
+			$_SESSION['cart'] = $cart;
+			return $cart;
 		}
 		else {
-			if( ( @$_SESSION['auth']['user_id'] != @$my->id ) && empty( $my->id ) ) {
+			if( ( @$_SESSION['auth']['user_id'] != $my->id ) && empty( $my->id ) ) {
 				// If the user ID has changed (after logging out)
 				// empty the cart!
-				$this->reset();
-			}
-			else {
-				$cart = $_SESSION["cart"];
+				ps_cart::reset();
 			}
 		}
-		$_SESSION['cart'] = $cart;
-		return $cart;
+		return $_SESSION['cart'];
 	}
 	/**
  	* adds an item to the shopping cart

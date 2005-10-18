@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.10 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.12 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1873,7 +1873,7 @@ class ps_product {
 					$my_taxrate = $this->get_product_taxrate($product_id);
 					$base_price += ($my_taxrate * $price);
 				}
-
+				$my_taxrate;
 				// Calculate discount
 				if( !empty($discount_info["amount"])) {
 					$undiscounted_price = $base_price;
@@ -2032,7 +2032,7 @@ class ps_product {
 	 */
 	function product_snapshot( $product_sku, $show_price=true, $show_addtocart=true ) {
 
-		global  $sess, $VM_LANG, $mm_action_url;
+		global $sess, $VM_LANG, $mm_action_url;
 
 		$db = new ps_DB;
 

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout.login_form.php,v 1.3 2005/09/27 19:42:20 soeren_nb Exp $
+* @version $Id: checkout.login_form.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -18,7 +18,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $registration_enabled = $mosConfig_allowUserRegistration;
-$Itemid = mosgetparam($_REQUEST, "Itemid", null);
+$return = mosGetParam( $_SERVER, 'REQUEST_URI', null );
+// converts & to &amp; for xtml compliance
+$return = str_replace( '&', '&amp;', $return );
+$return = str_replace( 'option', '&amp;option', $return );
 ?>
 <form action="index.php?option=login" method="post" name="login">
   <div style="width:98%;">
@@ -43,6 +46,6 @@ $Itemid = mosgetparam($_REQUEST, "Itemid", null);
   <input type="hidden" name="op2" value="login" />
   <input type="hidden" name="remember" value="yes" />
   <input type="hidden" name="lang" value="<?php echo $mosConfig_lang; ?>" />
-  <input type="hidden" name="return" value="<?php echo sefRelToAbs( $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ) ?>" />
+  <input type="hidden" name="return" value="<?php echo sefRelToAbs( $return ) ?>" />
 </form>
 

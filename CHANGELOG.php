@@ -33,6 +33,9 @@ Legend:
 VirtueMart 1.0
 *************************************
 18-10-2005 soeren
++ re-added shop.registration.php (includes login form and registration form)
+# changed cart initialitation function from "ps_cart" to "initCart"
+# fixed bug #135 Cannot use a scalar value as an array
 # bug in product folder view
 ^ introduced new blue icons
 # bug in product file form + filemanager

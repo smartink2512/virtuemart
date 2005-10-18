@@ -47,12 +47,16 @@ class ps_session {
 				echo DEBUG ? '<div style="border: green 2px solid;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session called <i>phpShop</i> was successfully started!</div>' : '';
 			}
 		}
-		else
-		echo DEBUG ? '<div style="border: orange 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.</div>' : '';
+		else {
+			echo DEBUG ? '<div style="border: orange 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.</div>' : '';
+		}
+		/**
+		 * I don't think, we need this...
 		if( empty($_COOKIE['virtuemart'] )) {
 			setCookie( 'virtuemart', md5(uniqid('virtuemart')), 0, "/" );
 			echo DEBUG ? '<div style="border: red 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A phpShop Cookie had to be set (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.</div>' : '';
 		}
+		*/
     }
     
     /**

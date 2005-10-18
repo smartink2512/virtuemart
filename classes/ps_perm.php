@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_perm.php,v 1.6 2005/10/09 13:28:07 soeren_nb Exp $
+* @version $Id: ps_perm.php,v 1.7 2005/10/10 18:49:05 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -51,9 +51,9 @@ class ps_perm {
 	* the shopper group id with the user and the session.
 	* @return array Authentication information
 	*/
-	function doAuthentication() {
+	function doAuthentication( $shopper_group ) {
 
-		global $shopper_group, $my, $acl;
+		global $my, $acl;
 		$db = new ps_DB;
 		$auth = array();
 		
