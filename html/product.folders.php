@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @author Soeren Eberhardt
 * @ Uses dTree Javascript: http://www.destroydrop.com/javascripts/tree/
 *
-* @version $Id: product.folders.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.folders.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -68,16 +68,16 @@ class phpShopmenu {
     */
     function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
         static $ibg = -1;
-        global $database, $module, $mosConfig_live_site;
+        global $db, $module, $mosConfig_live_site;
         $level++;
         $query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
         . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
          . "WHERE a.category_publish='Y' AND "
          . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
          . "ORDER BY category_parent_id, list_order, category_name ASC";
-        $database->setQuery( $query );
+        $db->query( $query );
         
-        $categories = $database->loadObjectList();
+        $categories = $db->record;
         
         if( !( $categories==null ) ) {
           $i = 1;
@@ -93,8 +93,8 @@ class phpShopmenu {
             $q .= "WHERE #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
             $q .= "AND #__{vm}_product_category_xref.category_id='".$category->cid."' ";
             $q .= "ORDER BY #__{vm}_product.product_name";
-            $database->setQuery( $q );
-            $products = $database->loadObjectList();
+            $db->query( $q );
+            $products = $db->record;
             $xx = 1;
             foreach( $products as $product ) {
               // get name and link (just to save space in the code later on)

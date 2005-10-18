@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.show_cfg.php,v 1.7 2005/10/08 15:56:06 soeren_nb Exp $
+* @version $Id: admin.show_cfg.php,v 1.8 2005/10/09 13:30:01 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -515,7 +515,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
         <td>
             <input type="checkbox" name="conf_SHOWVERSION" class="inputbox" <?php if (SHOWVERSION == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN ?>
         </td>
     </tr>
 </table>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.file_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.file_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -20,6 +20,8 @@ mm_showMyFileName( __FILE__ );
 $product_id= mosgetparam( $_REQUEST, 'product_id');
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
+$selected_type = Array();
+
 $q = "SELECT product_name FROM #__{vm}_product WHERE product_id='$product_id' "; 
 $db->query($q);  
 $db->next_record();
@@ -32,7 +34,6 @@ $title ='<img src="'. $mosConfig_live_site .'/administrator/images/mediamanager.
 
 $file_id= mosgetparam( $_REQUEST, 'file_id' );
 
-$selected_type = Array();
 if( !empty($file_id) ) {
   $q = "SELECT file_name,file_url,file_is_image,file_published,file_title 
   FROM #__{vm}_product_files 

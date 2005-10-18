@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.filemanager.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.filemanager.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -83,16 +83,16 @@ while ($db->next_record()) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
       
 	// Is the product downloadable?
-	$database->setQuery( "SELECT attribute_name FROM #__{vm}_product_attribute WHERE product_id='" . $db->f("product_id") . "' AND attribute_name='download'" );
-	$database->loadObject( $downloadable );
+	$dbp->setQuery( "SELECT attribute_name FROM #__{vm}_product_attribute WHERE product_id='" . $db->f("product_id") . "' AND attribute_name='download'" );
+	$dbp->loadObject( $downloadable );
       
 	// What Images does the product have ?
-	$database->setQuery( "SELECT count(file_id) as images FROM #__{vm}_product_files WHERE file_product_id='" . $db->f("product_id") . "' AND file_is_image='1' " );
-	$database->loadObject($images);
+	$dbp->setQuery( "SELECT count(file_id) as images FROM #__{vm}_product_files WHERE file_product_id='" . $db->f("product_id") . "' AND file_is_image='1' " );
+	$dbp->loadObject($images);
       
 	// What Files does the product have ?
-	$database->setQuery( "SELECT count(file_id) as files FROM #__{vm}_product_files WHERE file_product_id='" . $db->f("product_id") . "' AND file_is_image='0' " );
-	$database->loadObject($files);
+	$dbp->setQuery( "SELECT count(file_id) as files FROM #__{vm}_product_files WHERE file_product_id='" . $db->f("product_id") . "' AND file_is_image='0' " );
+	$dbp->loadObject($files);
 	
 	if( $db->f("product_parent_id")) 
 		$tmp_cell = "&nbsp;&nbsp;&nbsp;&nbsp;";

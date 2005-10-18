@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_payment_method.php,v 1.6 2005/10/12 18:57:11 soeren_nb Exp $
+* @version $Id: ps_payment_method.php,v 1.7 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -516,7 +516,7 @@ class ps_payment_method {
         $q .= "WHERE payment_method_id='".$payment_id."'";
         $db->query($q);
         $db->next_record();
-        $details = $db->f('is_creditcard');
+        $details = $db->f('accepted_creditcards');
         
         return $details != "";
     

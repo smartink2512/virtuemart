@@ -10,16 +10,16 @@ else
 define( 'URL', $mosConfig_live_site.'/' );
 define( 'SECUREURL', URL );
 if( $_SERVER['SERVER_PORT'] == 443 )
-	define( 'IMAGEURL', SECUREURL .'/components/com_virtuemart/shop_image/' );
+	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
 else
-	define( 'IMAGEURL', URL .'/components/com_virtuemart/shop_image/' );
+	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 define( 'ADMINPATH', $mosConfig_absolute_path.'/administrator/components/com_virtuemart/' );
 define( 'CLASSPATH', ADMINPATH.'classes/' );
 define( 'PAGEPATH', ADMINPATH.'html/' );
 define( 'IMAGEPATH', $mosConfig_absolute_path.'/components/com_virtuemart/shop_image/' );
 
-define('VM_TABLEPREFIX', 'vm' );
+@define('VM_TABLEPREFIX', 'vm' );
 define('VM_PRICE_SHOW_PACKAGING_PRICELABEL', '1' );
 define('VM_PRICE_SHOW_INCLUDINGTAX', '1' );
 define('VM_PRICE_ACCESS_LEVEL', 'Public Frontend' );

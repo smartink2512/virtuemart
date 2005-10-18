@@ -32,10 +32,16 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+18-10-2005 soeren
+# bug in product folder view
+^ introduced new blue icons
+# bug in product file form + filemanager
+
 17-10-2005 soeren
 # user registration required email, although no email field was there
 # credit card payment wasn't recognized correctly on order details screens
 ^ added Credit Card details to order confirmation email
+^ last 4 digits of a Credit Card number are masked by asterisks now (security!) in administration
 # fixed the PDF function (a file was missing php code), updated HTML2FPDF to version 3.02beta
 # prices from advanced attribute field didn't include shopper group discount, 
   when the price was set to a fixed price ( Color,blue,green[=45.00]; )

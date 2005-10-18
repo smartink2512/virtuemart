@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.7 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.9 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -195,7 +195,7 @@ class ps_checkout {
 			}
 
 			if(!$ps_payment_method->validate_payment($d["payment_method_id"],
-			$d["order_payment_number"])) {
+					$_SESSION["ccdata"]["order_payment_number"])) {
 				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCNUM_INV;
 				return False;
 			}
@@ -451,7 +451,7 @@ class ps_checkout {
 			// 3-digit Security Code
 			$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
 
-			if (!$this->validate_payment_method($d, true)) { //Change false to true to Let the user play with the VISA Testnumber
+			if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber
 				return false;
 			}
 			break;
