@@ -160,3 +160,5 @@ ALTER TABLE `mos_users` DROP `bank_name`;
 ALTER TABLE `mos_users` DROP `bank_sort_code`;
 ALTER TABLE `mos_users` DROP `bank_iban`;
 ALTER TABLE `mos_users` DROP `bank_account_holder`;
+
+ALTER TABLE `mos_vm_order_item` CHANGE `product_item_price` `product_item_price` DECIMAL( 10, 5 ) NULL DEFAULT NULL;

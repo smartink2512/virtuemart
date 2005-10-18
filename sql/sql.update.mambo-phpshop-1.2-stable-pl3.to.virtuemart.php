@@ -149,4 +149,6 @@ $db->query( 'ALTER TABLE `#__{vm}_orders` CHANGE `user_id` `user_id` INT( 11 ) N
 $db->query( 'ALTER TABLE `#__{vm}_auth_user_vendor` CHANGE `user_id` `user_id` INT( 11 ) NULL DEFAULT NULL ' );
 
 $db->query( 'ALTER TABLE `#__{vm}_affiliate` CHANGE `user_id` `user_id` INT( 11 ) NOT NULL ;' );
+
+$db->query( 'ALTER TABLE `#__{vm}_order_item` CHANGE `product_item_price` `product_item_price` DECIMAL( 10, 5 ) NULL DEFAULT NULL ' );
 ?>

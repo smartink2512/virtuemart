@@ -33,6 +33,11 @@ Legend:
 VirtueMart 1.0
 *************************************
 18-10-2005 soeren
+^ Changed the field jos_vm_order_item.product_item_price from DECIMAL(10,2) to DECIMAL(10,5) to prevent rounding errors
+##########
+ALTER TABLE `mos_vm_order_item` CHANGE `product_item_price` `product_item_price` DECIMAL( 10, 5 ) NULL DEFAULT NULL;
+##########
+
 + re-added shop.registration.php (includes login form and registration form)
 # changed cart initialitation function from "ps_cart" to "initCart"
 # fixed bug #135 Cannot use a scalar value as an array

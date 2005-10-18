@@ -898,7 +898,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_item` (
   `order_item_sku` varchar(64) NOT NULL default '',
   `order_item_name` varchar(64) NOT NULL default '',
   `product_quantity` int(11) default NULL,
-  `product_item_price` decimal(10,2) default NULL,
+  `product_item_price` decimal(10,5) default NULL,
   `product_final_price` decimal(10,2) NOT NULL default '0.00',
   `order_item_currency` varchar(16) default NULL,
   `order_status` char(1) default NULL,
