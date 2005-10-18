@@ -20,6 +20,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 <br />
 <div align="center">
   <a href="http://virtuemart.net" target="_blank">
-    <img src="<?php echo IMAGEURL ?>ps_image/com_virtuemart_poweredby.gif" border="0" alt="Powered by VirtueMart" />
+    <img src="<?php echo IMAGEURL ?>ps_image/poweredByVirtueMart.gif" border="0" alt="Powered by VirtueMart" />
   </a>
 </div>

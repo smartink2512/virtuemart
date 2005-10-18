@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.5 2005/10/07 14:29:57 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.6 2005/10/08 15:56:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -283,7 +283,7 @@ if ($product_parent_id != 0) {
         <p><label for=\"quantity\" style=\"vertical-align: middle;\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":</label>
             <input type=\"text\" class=\"inputbox\" size=\"4\" id=\"quantity\" name=\"quantity\" value=\"1\" style=\"vertical-align: middle;\" />&nbsp;
             <input type=\"submit\" 
-              style=\"text-align:center;background-position:bottom left;width:160px;height:40px;cursor:pointer;background-color:transparent;border:none;font-weight:bold;font-family:inherit;background-image: url('". IMAGEURL ."ps_image/".PSHOP_ADD_TO_CART_STYLE ."');background-repeat: no-repeat;vertical-align: middle;\" 
+              style=\"text-align:center;background-position:bottom left;width:160px;height:35px;cursor:pointer;border:none;font-weight:bold;font-family:inherit;background: url('". IMAGEURL ."ps_image/".PSHOP_ADD_TO_CART_STYLE ."') no-repeat left center transparent;vertical-align: middle;\" 
               value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO ."\"
               title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" />
           </p>

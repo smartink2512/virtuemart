@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: help.about.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: help.about.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -16,14 +16,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-include( ADMINPATH . "version.php" );
+include_once( ADMINPATH . "version.php" );
 ?>
 <br /><br />
 <table align="center" style="width: 80%;" class="admin">
  <tbody>
   <tr>
    <td>
-    <pre><strong>Your Version:</strong> <?php echo $version ?></pre>
+    <pre><strong>Your <?php echo $VMVERSION->PRODUCT ?> version:</strong> <?php echo $myVersion ?></pre>
     <img hspace="5" align="left" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_virtuemart/cart.gif" alt="cart.gif" />
     <span style="font-weight: bold;">
      VirtueMart</span> is the complete Open Source E-Commerce solution for Mambo and Joomla. It is an Application, which comes with a Component, 6 Modules and 2 Mambots.
