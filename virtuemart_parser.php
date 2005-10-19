@@ -154,7 +154,7 @@ if( !defined( 'CLASSPATH' )) {
 		 */
 		$GLOBALS['vmInputFilter'] = new vmInputFilter();
 		// prevent SQL injection
-		$myInsecureArray = $vmInputFilter->safeSQL( $myInsecureArray );
+		$myInsecureArray = $GLOBALS['vmInputFilter']->safeSQL( $myInsecureArray );
 		// Re-insert the escaped strings into $_REQUEST
 		foreach( $myInsecureArray as $requestvar => $requestval) {
 				$_REQUEST[$requestvar] = $requestval;
@@ -199,7 +199,7 @@ if( !defined( 'CLASSPATH' )) {
 
 		$ok = true;
 
-		if ( $funcParams ) {
+		if ( !empty( $funcParams["method"] ) ) {
 			// Get the function parameters: function name and class name
 			$q = "SELECT #__{vm}_module.module_name,#__{vm}_function.function_class";
 			$q .= " FROM #__{vm}_module,#__{vm}_function WHERE ";

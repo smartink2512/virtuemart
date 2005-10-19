@@ -15,9 +15,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
+global $mosConfig_dbprefix;
 
 // RENAME all mambo-phpShop tables used by this site
-$database->setQuery( 'SHOW TABLES LIKE \'#__pshop_%\'' );
+$database->setQuery( "SHOW TABLES LIKE '".$mosConfig_dbprefix."pshop_%'" );
 $tables = $database->loadObjectList();
 foreach( $tables as $pshop_table ) {
 	foreach (get_object_vars($pshop_table) as $k => $v) {
@@ -45,7 +46,7 @@ foreach( $files_to_copy as $file ) {
 // in the table mos_vm_product_files
 $db->query( "UPDATE `#__{vm}_product_files` SET 
 file_name = REPLACE (file_name ,'com_phpshop','com_virtuemart'), 
-file_url = REPLACE (file_url  ,'com_phpshop','com_virtuemart')";
+file_url = REPLACE (file_url  ,'com_phpshop','com_virtuemart')" );
 
 $db->query( "ALTER TABLE #__{vm}_order_user_info ADD `bank_account_nr` varchar(32) NOT NULL;" );
 $db->query( "ALTER TABLE #__{vm}_order_user_info ADD `bank_name` varchar(32) NOT NULL;" );
@@ -63,7 +64,7 @@ $db->query( "ALTER TABLE #__{vm}_user_info ADD `bank_account_type` ENUM( 'Checki
 
 $db->query( 'INSERT INTO `#__{vm}_user_info`
 	SELECT `user_info_id`, `id`, `address_type`, `address_type_name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `state`, `country`, `zip`,`email`, `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5`, `perms`, `bank_account_nr`, `bank_name`, `bank_sort_code`, `bank_iban`, `bank_account_holder`, `bank_account_type`, UNIX_TIMESTAMP( registerDate ), UNIX_TIMESTAMP( lastvisitDate )
-	FROM mos_users WHERE address_type=\'BT\';' );
+	FROM #__users WHERE address_type=\'BT\';' );
 
 $db->query( 'ALTER TABLE `#__users` DROP `user_info_id`;' );
 $db->query( 'ALTER TABLE `#__users` DROP `address_type`;' );

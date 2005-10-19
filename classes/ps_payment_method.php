@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_payment_method.php,v 1.7 2005/10/17 19:05:29 soeren_nb Exp $
+* @version $Id: ps_payment_method.php,v 1.8 2005/10/18 05:16:51 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -403,7 +403,7 @@ class ps_payment_method {
 
     // Start radio list
     while ($db->next_record()) {
-       echo "<input type=\"radio\" name=\"payment_method_id\" id=\"".$db->f("payment_method_name")."\" value=\"" . $db->f("payment_method_id") . "\" ";
+       echo "<input type=\"radio\" name=\"payment_method_id\" id=\"".$db->f("payment_method_name")."\" value=\"".$db->f("payment_method_id")."\" ";
        if( $selector == "' OR enable_processor='Y" ) {
           echo "onchange=\"javascript: changeCreditCardList();\" ";
        }
@@ -414,13 +414,14 @@ class ps_payment_method {
        else
           echo ">\n";
        $discount  = $db->f("payment_method_discount");
-       echo $db->f("payment_method_name");
+       echo "<label for=\"".$db->f("payment_method_name")."\">".$db->f("payment_method_name");
        if ($discount > 0.00) {
            echo " (- ".$CURRENCY_DISPLAY->getFullValue(abs($discount)).") \n";
        } 
        elseif ($discount < 0.00) {
            echo " (+ ".$CURRENCY_DISPLAY->getFullValue(abs($discount)).") \n";
        } 
+       echo "</label>";
        if ($horiz) {
          echo(" ");
        } else {

@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is the Main Product Listing File!
 *
-* @version $Id: shop.browse.php,v 1.5 2005/10/08 15:56:06 soeren_nb Exp $
+* @version $Id: shop.browse.php,v 1.6 2005/10/10 18:49:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -156,10 +156,10 @@ else {
         <option value="{vm}_product.product_name" <?php echo $orderby=="{vm}_product.product_name" ? "selected=\"selected\"" : "";?>>
         <?php echo $VM_LANG->_PHPSHOP_PRODUCT_NAME_TITLE ?></option>
         <?php
-	if (_SHOW_PRICES == '1' && $auth['show_prices']) { ?>
-              <option value="{vm}_product_price.product_price" <?php echo $orderby=="{vm}_product_price.product_price" ? "selected=\"selected\"" : "";?>>
-              <?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE ?></option><?php 
-	} ?>
+		if (_SHOW_PRICES == '1' && $auth['show_prices']) { ?>
+	              <option value="{vm}_product_price.product_price" <?php echo $orderby=="{vm}_product_price.product_price" ? "selected=\"selected\"" : "";?>>
+	              <?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE ?></option><?php 
+		} ?>
       </select>
 	  <?php
 	  if ($DescOrderBy == "DESC") {
@@ -189,30 +189,34 @@ else {
         <input type="hidden" name="keyword1" value="<?php echo urlencode( $keyword1 ) ?>" />
         <input type="hidden" name="keyword2" value="<?php echo urlencode( $keyword2 ) ?>" />
 <?php 
-if( !empty( $product_type_id ))
-echo $ps_product_type->get_parameter_form($product_type_id);
-
-if( PSHOP_SHOW_TOP_PAGENAV =='1' && ($num_rows > $limit || $num_rows > 5)) {
-	echo "&nbsp;&nbsp;&nbsp;&nbsp;"._PN_DISPLAY_NR."&nbsp;&nbsp;";
-	//echo "<form action=\"$search_string\" method=\"post\">";
-	$pagenav->writeLimitBox( $search_string );
-	echo "<noscript><input type=\"submit\" value=\"".$VM_LANG->_PHPSHOP_SUBMIT."\" /></noscript></form>";
-}
-else
-echo "</form>\n";
-if( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit ) {
-	// PAGE NAVIGATION AT THE TOP
-	echo "<br/><div style=\"text-align:center;\">";
-	echo sefReltoAbs($pagenav->writePagesLinks( $search_string ));
-	echo "</div><br/>";
-}
+		if( !empty( $product_type_id )) {
+			echo $ps_product_type->get_parameter_form($product_type_id);
+		}
+		
+		if( PSHOP_SHOW_TOP_PAGENAV =='1' && ($num_rows > $limit || $num_rows > 5)) {
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;"._PN_DISPLAY_NR."&nbsp;&nbsp;";
+			//echo "<form action=\"$search_string\" method=\"post\">";
+			$pagenav->writeLimitBox( $search_string );
+			echo "<noscript><input type=\"submit\" value=\"".$VM_LANG->_PHPSHOP_SUBMIT."\" /></noscript></form>";
+		}
+		else {
+			echo "</form>\n";
+		}
+		if( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit ) {
+			// PAGE NAVIGATION AT THE TOP
+			echo "<br/><div style=\"text-align:center;\">";
+			echo sefReltoAbs($pagenav->writePagesLinks( $search_string ));
+			echo "</div><br/>";
+		}
 	}
 	$use_tables = @$_REQUEST['output'] == "pdf" ? true : false;
 
-	if( $use_tables )
-	echo '<table width="100%"><tr>';
-	else
-	echo '<div id="product_list" style="width:100%; float:none;">';
+	if( $use_tables ) {
+		echo '<table width="100%"><tr>';
+	}
+	else {
+		echo '<div id="product_list" style="width:100%; float:none;">';
+	}
 
 	$i = 0;
 	$row = 0;
@@ -221,17 +225,20 @@ if( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit ) {
 	$db_browse->next_record();
 
 	$products_per_row = (!empty($category_id)) ? $db_browse->f("products_per_row") : PRODUCTS_PER_ROW;
-	if( $products_per_row < 1 )
-	$products_per_row = 1;
+	if( $products_per_row < 1 ) {
+		$products_per_row = 1;
+	}
 	/**
   *   Read the template file into a String variable.
   *   Then replace the placeholders with HTML formatted product details
   *
   * function read_file( $file, $defaultfile='') ***/
-	if(@$_REQUEST['output'] != "pdf")
-	$templatefile = (!empty($category_id)) ? $db_browse->f("category_browsepage") : CATEGORY_TEMPLATE;
-	else
-	$templatefile = "browse_lite_pdf";
+	if(@$_REQUEST['output'] != "pdf") {
+		$templatefile = (!empty($category_id)) ? $db_browse->f("category_browsepage") : CATEGORY_TEMPLATE;
+	}
+	else {
+		$templatefile = "browse_lite_pdf";
+	}
 
 	$template = read_file( PAGEPATH."templates/browse/$templatefile.php",
 	PAGEPATH."templates/browse/".CATEGORY_TEMPLATE.".php");
@@ -253,32 +260,42 @@ if( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit ) {
 
 		$url = $sess->url( $mm_action_url."index.php?page=shop.product_details&flypage=$flypage&product_id=" . $db_browse->f("product_id") . "&category_id=" . $db_browse->f("category_id"));
 
-		if( $db_browse->f("product_thumb_image") )
-		$product_thumb_image = $db_browse->f("product_thumb_image");
+		if( $db_browse->f("product_thumb_image") ) {
+			$product_thumb_image = $db_browse->f("product_thumb_image");
+		}
 		else {
-			if( $product_parent_id != 0 )
-			$product_thumb_image = $dbp->f("product_thumb_image"); // Use product_thumb_image from Parent Product
-			else
-			$product_thumb_image = 0;
+			if( $product_parent_id != 0 ) {
+				$product_thumb_image = $dbp->f("product_thumb_image"); // Use product_thumb_image from Parent Product
+			}
+			else {
+				$product_thumb_image = 0;
+			}
 		}
 		if( $product_thumb_image ) {
 			if( substr( $product_thumb_image, 0, 4) != "http" ) {
-				if(PSHOP_IMG_RESIZE_ENABLE == '1')
-				$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&newxsize=".PSHOP_IMG_WIDTH."&newysize=".PSHOP_IMG_HEIGHT."&fileout=";
-				else
-				$product_thumb_image = IMAGEURL."product/".$product_thumb_image;
+				if(PSHOP_IMG_RESIZE_ENABLE == '1') {
+					$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&newxsize=".PSHOP_IMG_WIDTH."&newysize=".PSHOP_IMG_HEIGHT."&fileout=";
+				}
+				else {
+					$product_thumb_image = IMAGEURL."product/".$product_thumb_image;
+				}
 			}
 		}
-		else
-		$product_thumb_image = IMAGEURL.NO_IMAGE;
+		else {
+			$product_thumb_image = IMAGEURL.NO_IMAGE;
+		}
 
-		if( $db_browse->f("product_full_image") )
-		$product_full_image = $db_browse->f("product_full_image");
-		else
-		if( $product_parent_id != 0 )
-		$product_full_image = $dbp->f("product_full_image"); // Use product_full_image from Parent Product
-		else
-		$product_full_image = "..".NO_IMAGE;
+		if( $db_browse->f("product_full_image") ) {
+			$product_full_image = $db_browse->f("product_full_image");
+		}
+		else {
+			if( $product_parent_id != 0 ) {
+				$product_full_image = $dbp->f("product_full_image"); // Use product_full_image from Parent Product
+			}
+			else {
+				$product_full_image = "..".NO_IMAGE;
+			}
+		}
 		if( file_exists( IMAGEPATH."product/$product_full_image" )) {
 			$full_image_info = getimagesize( IMAGEPATH."product/$product_full_image" );
 			$full_image_width = $full_image_info[0]+40;
@@ -288,14 +305,17 @@ if( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit ) {
 			$full_image_width = $full_image_height = "";
 		}
 		$product_name = $db_browse->f("product_name");
-		if( $db_browse->f("product_publish") == "N" )
-		$product_name .= " ("._CMN_UNPUBLISHED.")";
+		if( $db_browse->f("product_publish") == "N" ) {
+			$product_name .= " ("._CMN_UNPUBLISHED.")";
+		}
 
-		if( empty($product_name) && $product_parent_id!=0 )
-		$product_name = $dbp->f("product_name"); // Use product_name from Parent Product
+		if( empty($product_name) && $product_parent_id!=0 ) {
+			$product_name = $dbp->f("product_name"); // Use product_name from Parent Product
+		}
 		$product_s_desc = $db_browse->f("product_s_desc");
-		if( empty($product_s_desc) && $product_parent_id!=0 )
-		$product_s_desc = $dbp->f("product_s_desc"); // Use product_s_desc from Parent Product
+		if( empty($product_s_desc) && $product_parent_id!=0 ) {
+			$product_s_desc = $dbp->f("product_s_desc"); // Use product_s_desc from Parent Product
+		}
 		$product_details = $VM_LANG->_PHPSHOP_FLYPAGE_LBL;
 
 		if (PSHOP_ALLOW_REVIEWS == '1' && @$_REQUEST['output'] != "pdf") {
@@ -386,18 +406,25 @@ if( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit ) {
 
 		/*** Now echo the filled cell ***/
 		if( $tmp_row != $row || $row == 0 ) {
-			if ( $db_browse->num_rows() - ($i) < $products_per_row )
-			$cell_count = $db_browse->num_rows() - ($i);
-			else
-			$cell_count = $products_per_row;
+			if ( $db_browse->num_rows() - ($i) < $products_per_row ) {
+				$cell_count = $db_browse->num_rows() - ($i);
+			}
+			else {
+				$cell_count = $products_per_row;
+			}
 			$row++;
 			$tmp_row = $row;
 		}
 		$colspan = $products_per_row - $cell_count + 1;
-		if( $use_tables )
-		echo "<td colspan=\"$colspan\" width=\"". intval(round(100/$cell_count)-4) ."%\">";
-		else
-		echo "<div style=\"margin-right: 5px; width:". intval(round(100/$cell_count)-4) ."%; float:left;\" id=\"".uniqid( "row_" ) ."\">";
+		if( $cell_count < 1 ) {
+			$cell_count = 1;
+		}
+		if( $use_tables ) {
+			echo "<td colspan=\"$colspan\" width=\"". intval(round(100/$cell_count)-4) ."%\">";
+		}
+		else {
+			echo "<div style=\"margin-right: 5px; width:". intval(round(100/$cell_count)-4) ."%; float:left;\" id=\"".uniqid( "row_" ) ."\">";
+		}
 
 		echo $product_cell;
 
@@ -406,24 +433,30 @@ if( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit ) {
 		if ( ($i) % $products_per_row == 0) {
 			$row++;
 			/** if yes, close the current row and print out a horizontal bar ***/
-			if( $use_tables )
-			echo "\n</td></tr><tr>";
-			else
-			echo "\n</div><br style=\"clear:both;\" />";
+			if( $use_tables ) {
+				echo "\n</td></tr><tr>";
+			}
+			else {
+				echo "\n</div><br style=\"clear:both;\" />";
+			}
 		}
 		else {
-			if( $use_tables )
-			echo "\n</td>";
-			else
-			echo "\n</div>";
+			if( $use_tables ) {
+				echo "\n</td>";
+			}
+			else {
+				echo "\n</div>";
+			}
 		}
 	} /*** END OF while loop ***/
 
 	echo '<br style="clear:both;" />';
-	if( $use_tables )
-	echo '</tr></table>';
-	else
-	echo '</div>';
+	if( $use_tables ) {
+		echo '</tr></table>';
+	}
+	else {
+		echo '</div>';
+	}
 ?>
 <!-- BEGIN PAGE NAVIGATION -->
 <div align="center">

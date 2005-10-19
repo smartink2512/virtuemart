@@ -14,7 +14,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 function com_install() {
-	global $mosConfig_absolute_path, $database;
+	global $mosConfig_absolute_path, $mosConfig_dbprefix, $database;
 	include( $mosConfig_absolute_path. "/administrator/components/com_virtuemart/version.php" );
 	
 	if( defined( '_RELEASE' )) {
@@ -26,7 +26,7 @@ function com_install() {
 	}
 	// Check for old mambo-phpShop Tables. When they exist,
 	// offer an Upgrade
-	$database->setQuery( "SHOW TABLES LIKE '#__pshop_%'" );
+	$database->setQuery( "SHOW TABLES LIKE '".$mosConfig_dbprefix."pshop_%'" );
 	$pshop_tables = $database->loadObjectList();
 	
 	if( !empty( $pshop_tables )) {
@@ -103,10 +103,9 @@ function com_install() {
 									</tr>
 									<tr>
 										<td align="left" colspan="3">If you're upgrading from mambo-phpShop, version <strong>1.2 stable-pl3</strong> or <strong>Mambo eCommerce Edition</strong> you'll have to click on this link!<br />
-											
 											<br /><br/>
 											<div align="center">
-												<a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
+												<a title="UPDATE FROM VERSION 1.2 stable-pl3 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=update12pl3">UPDATE FROM VERSION 1.2 stable-pl3 &gt;&gt;</a>
 											</div>
 											<div class="error">Note:</div>
 											If your Version Number is between 1.1 and 1.2 stable.pl3 (e.g. <i>1.2 beta3</i>), you have to update your database before using the Step-by-Step SQL Update Scripts from the folder 
@@ -117,6 +116,13 @@ function com_install() {
 										<td align="center" colspan="3"><br /><br /><hr /><br /></td>
 									</tr>
 									<tr>
+										<td align="center" colspan="3">
+											<br /><br/>
+											<div align="center">
+												<a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
+											</div>
+										</td>
+									</tr>
 										<td align="center" colspan="3">If you're updating from version 1.1(a) you'll have to click on this link!<br /><br />
 											<a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtuMart.');" href="index2.php?option=com_virtuemart&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
 										</td>

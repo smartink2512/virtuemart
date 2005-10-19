@@ -1,7 +1,11 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Restricted access' );
 /**
+<<<<<<< CHANGELOG.php
 * @version $Id$
+=======
+* @version $Id$
+>>>>>>> 1.22
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -32,8 +36,22 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+
+19-10-2005 soeren
+# fixed session debug messages, a session isn't started in the backend now
+# fixed various installation / update bugs
+^ changed Mail functions
+	* renamed mShop_Mailer to vmMailer
+	* added the functions vmMail (similar to mosMail) and vmCreateMail( similar to mosCreateMail)
+	* line-ending fix for Mac & Win problems sending mail (Could not instatiate mail function)
+	
+# made labels for payment methods clickable
+# fixed bug #137 'unpublished products can become related products'
+
+=======
 19-10-2005 schirmer
 #  fixed Top10 module showing products multiple times if it has more than one category
+
 
 18-10-2005 soeren
 ^ Changed the field jos_vm_order_item.product_item_price from DECIMAL(10,2) to DECIMAL(10,5) to prevent rounding errors

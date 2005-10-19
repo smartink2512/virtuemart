@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout.paymentradio.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: checkout.paymentradio.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -29,7 +29,8 @@ $q .= "AND (#__{vm}_payment_method.shopper_group_id='".$auth['shopper_group_id']
 $q .= "OR #__{vm}_shopper_group.default='1') ";
 $q .= "AND (enable_processor='' OR enable_processor='Y') ";
 $q .= "AND payment_enabled='Y' ";
-$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id'";
+$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
+$q .= " ORDER BY list_order";
 $db_cc->query($q);
 
 if ($db_cc->num_rows()) {
@@ -47,7 +48,8 @@ $q .= "AND (#__{vm}_payment_method.shopper_group_id='".$auth['shopper_group_id']
 $q .= "OR #__{vm}_shopper_group.default='1') ";
 $q .= "AND (enable_processor='B' OR enable_processor='N' OR enable_processor='P') ";
 $q .= "AND payment_enabled='Y' ";
-$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id'";
+$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
+$q .= " ORDER BY list_order";
 $db_nocc->query($q);
 if ($db_nocc->next_record()) {
     $nocc_payments=true;
@@ -137,7 +139,7 @@ else {
   <?php  }  
 
   if ($nocc_payments==true) {  
-    if ($cc_payments==true) {?>
+    if ($cc_payments==true) { ?>
     
     <tr>
         <td colspan="2"><br /><br /><strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_PAYMENT_OTHER ?></strong></td>

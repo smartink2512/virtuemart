@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_session.php,v 1.5 2005/10/10 18:49:06 soeren_nb Exp $
+* @version $Id: ps_session.php,v 1.7 2005/10/18 18:45:35 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,6 +27,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_session {
 
     var $component_name = "option=com_virtuemart";    
+    var $_session_name = 'virtuemart';
     /**
      * Initialize the Session environment for VirtueMart
      *
@@ -41,13 +42,14 @@ class ps_session {
     function initSession() {
     	if( empty($_SESSION)) {
 			//Session not yet started!";
-			session_name( 'virtuemart' );
+			
+			session_name( $this->_session_name );
 			session_start();
-			if( !empty($_SESSION) && !empty($_COOKIE['virtuemart'])) {
-				echo DEBUG ? '<div style="border: green 2px solid;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session called <i>phpShop</i> was successfully started!</div>' : '';
+			if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
+				echo DEBUG ? '<div style="border: green 2px solid;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session called <i>'.$this->_session_name.'</i> was successfully started!</div>' : '';
 			}
 		}
-		else {
+		elseif( !defined('_PSHOP_ADMIN')) {
 			echo DEBUG ? '<div style="border: orange 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.</div>' : '';
 		}
 		/**

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: class.phpmailer.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: class.phpmailer.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage phpMailer
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -34,7 +34,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * @author Brent R. Matzelle
  * @copyright 2001 - 2003 Brent R. Matzelle
  */
-class mShop_PHPMailer
+class vmPHPMailer
 {
     /////////////////////////////////////////////////
     // PUBLIC VARIABLES
@@ -1509,5 +1509,7 @@ class mShop_PHPMailer
         $this->CustomHeader[] = explode(":", $custom_header, 2);
     }
 }
+
+class mShop_PHPMailer extends vmPHPMailer { }
 
 ?>

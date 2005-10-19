@@ -2,7 +2,7 @@
 /**
 * mambo-phpShop Show-Product-Snapshop Mambot
 *
-* @version $Id: mosproductsnap.php,v 1.7 2005/03/06 17:04:47 soeren_nb Exp $
+* @version $Id: mosproductsnap.php,v 1.1 2005/09/06 20:06:49 soeren_nb Exp $
 * @package Mambo_4.5.1
 * @subpackage mambo-phpShop
 *
@@ -35,7 +35,7 @@ $_MAMBOTS->registerFunction( 'onPrepareContent', 'mosProductSnapshotPlugin_onPre
 function mosProductSnapshotPlugin_onPrepareContent( $published, &$row, &$params, $page=0  ) {
   global $ps_product, $mosConfig_absolute_path;
   
-  require_once( $mosConfig_absolute_path . "/components/com_phpshop/phpshop_parser.php" );
+  require_once( $mosConfig_absolute_path . "/components/com_virtuemart/virtuemart_parser.php" );
   include_class("product");
   
   $pshop_productsnap_entrytext = $row->text;

@@ -80,12 +80,11 @@ function com_uninstall() {
 	// But what if we can't predict the number of tables?
 	// e.g.: For each new Product Type we dynamically create one new Table.
 	// So let's remove those tables (if there).
-	$database->setQuery( "SELECT product_type_id FROM #__{vm}_product_type" );
-	$tables = $database->loadObjectList();
+	$db->query( "SELECT product_type_id FROM #__{vm}_product_type" );
+	$tables = $db->record;
 	if( !empty( $tables )) {
 		foreach( $tables as $table ) {
-			$database->setQuery( "DROP TABLE IF EXISTS `#__{vm}_product_type_". $table->product_type_id . "`" );
-			$database->query();
+			$db->query( "DROP TABLE IF EXISTS `#__{vm}_product_type_". $table->product_type_id . "`" );
 		}
 	}
   

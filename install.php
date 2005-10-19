@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: install.php,v 1.6 2005/10/06 07:07:16 codename-matrix Exp $
+* @version $Id: install.php,v 1.7 2005/10/07 14:29:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -180,6 +180,14 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		$toDir = $mosConfig_absolute_path.'/administrator/components/com_virtuemart';
 		
 		$config_contents = str_replace( 'com_phpshop', 'com_virtuemart', file_get_contents( $fromDir.'/phpshop.cfg.php' ) );
+		$config_contents .= "<?php
+@define('VM_TABLEPREFIX', 'vm' );
+define('VM_PRICE_SHOW_PACKAGING_PRICELABEL', '1' );
+define('VM_PRICE_SHOW_INCLUDINGTAX', '1' );
+define('VM_PRICE_ACCESS_LEVEL', 'Public Frontend' );
+define('VM_SILENT_REGISTRATION', '1');
+?>";
+
 		file_put_contents( $toDir.'/virtuemart.cfg.php', $config_contents );
 		
 		// BACKUP 

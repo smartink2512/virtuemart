@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This Class provides some utility functions
 * to easily create drop-down lists
 *
-* @version $Id: ps_html.php,v 1.8 2005/10/07 14:29:57 soeren_nb Exp $
+* @version $Id: ps_html.php,v 1.10 2005/10/12 18:13:10 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -374,6 +374,8 @@ class ps_html {
 		else {
 			$q .= "WHERE product_id <> '$product_id'";
 		}
+		$q .= ' AND product_publish=\'Y\'';
+		
 		$db->query( $q );
 		$products = Array();
 		while( $db->next_record() ) {

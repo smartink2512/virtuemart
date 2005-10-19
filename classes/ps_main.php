@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
-* @version $Id: ps_main.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_main.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -786,77 +786,133 @@ function editorScript($editor1='', $editor2='') {
 	 </script><?php
 }
 
-if( !function_exists( "mosCreateMail" ) ) {
-	/**
-  * Function to create a mail object for futher use (uses phpMailer)
-  * @param string From e-mail address
-  * @param string From name
-  * @param string E-mail subject
-  * @param string Message body
-  * @return object Mail object
-  */
-	function mosCreateMail($from='', $fromname='', $subject, $body) {
-		global $mosConfig_absolute_path, $vendor_name, $vendor_mail;
+/**
+* Function to create an email object for further use (uses phpMailer)
+* @param string From e-mail address
+* @param string From name
+* @param string E-mail subject
+* @param string Message body
+* @return vmPHPMailer Mail object
+*/
+function vmCreateMail( $from='', $fromname='', $subject='', $body='' ) {
+	global $mosConfig_absolute_path, $mosConfig_sendmail;
+	global $mosConfig_smtpauth, $mosConfig_smtpuser;
+	global $mosConfig_smtppass, $mosConfig_smtphost;
+	global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_mailer;
+	
+	require_once( CLASSPATH . 'phpmailer/class.phpmailer.php');
+	
+	$mail = new vmPHPMailer();
 
-		$mosConfig_mailer = CFG_MAILER;
-		$mosConfig_smtphost = CFG_SMTPHOST;
-		$mosConfig_smtpauth = CFG_SMTPAUTH;
-		$mosConfig_smtpuser = CFG_SMTPUSER;
-		$mosConfig_smtppass = CFG_SMTPPASS;
+	$mail->PluginDir = CLASSPATH .'phpmailer/';
+	$mail->SetLanguage( 'en', CLASSPATH . 'phpmailer/language/' );
+	$mail->CharSet 	= substr_replace(_ISO, '', 0, 8);
+	$mail->IsMail();
+	$mail->From 	= $from ? $from : $mosConfig_mailfrom;
+	$mail->FromName = $fromname ? $fromname : $mosConfig_fromname;
+	$mail->Sender 	= $from ? $from : $mosConfig_mailfrom;
+	$mail->Mailer 	= $mosConfig_mailer;
 
-		require_once( CLASSPATH . 'phpmailer/class.phpmailer.php');
+	// Add smtp values if needed
+	if ( $mosConfig_mailer == 'smtp' ) {
+		$mail->SMTPAuth = $mosConfig_smtpauth;
+		$mail->Username = $mosConfig_smtpuser;
+		$mail->Password = $mosConfig_smtppass;
+		$mail->Host 	= $mosConfig_smtphost;
+	} else
 
-		$mail = new mShop_PHPMailer();
-		$mail->PluginDir = CLASSPATH . "phpmailer/";
-		$mail->SetLanguage("en", CLASSPATH . "phpmailer/language/");
-		$mail->CharSet = substr_replace(_ISO, '', 0, 8);
-		$mail->IsMail();
-		$mail->From = $from ? $from : $vendor_mail;
-		$mail->FromName = $fromname ? $fromname : $vendor_name;
-		$mail->Mailer = $mosConfig_mailer;
-
-		// Add smtp values if needed
-		if ( $mosConfig_mailer == 'smtp' ) {
-			$mail->SMTPAuth = $mosConfig_smtpauth;
-			$mail->Username = $mosConfig_smtpuser;
-			$mail->Password = $mosConfig_smtppass;
-			$mail->Host = $mosConfig_smtphost;
-		}
-		$mail->Subject = $subject;
-		$mail->Body = $body;
-
-		return $mail;
+	// Set sendmail path
+	if ( $mosConfig_mailer == 'sendmail' ) {
+		if (isset($mosConfig_sendmail))
+			$mail->Sendmail = $mosConfig_sendmail;
+	} // if
+	if( $subject ) {
+		$mail->Subject 	= $subject;
 	}
-
-	/**
-  * Mail function (uses phpMailer)
-  * @param string From e-mail address
-  * @param string From name
-  * @param string/array Recipient e-mail address(es)
-  * @param string E-mail subject
-  * @param string Message body
-  */
-	function mosMail($from, $fromname, $recipient, $subject, $body) {
-		global $mosConfig_debug;
-		$mail = mosCreateMail($from, $fromname, $subject, $body);
-
-		if( is_array($recipient) ) {
-			foreach ($recipient as $to) {
-				$mail->AddAddress($to);
-			}
-		} else {
-			$mail->AddAddress($recipient);
-		}
-		$mailssend = $mail->Send();
-
-		if( $mosConfig_debug ) {
-			//$mosDebug->message( "Mails send: $mailssend");
-		}
-		if( $mail->error_count > 0 ) {
-			//$mosDebug->message( "The mail message $fromname <$from> about $subject to $recipient <b>failed</b><br /><pre>$body</pre>", false );
-			//$mosDebug->message( "Mailer Error: " . $mail->ErrorInfo . "" );
-		}
-		return $mailssend;
+	if( $body) {
+		$mail->Body 	= $body;
 	}
+	// Patch to get correct Line Endings
+	switch( substr( strtoupper( PHP_OS ), 0, 3 ) ) {
+		case "WIN":
+			$mail->LE = "\r\n";
+			break;
+		case "MAC": // fallthrough
+		case "DAR": // Does PHP_OS return 'Macintosh' or 'Darwin' ?
+			$mail->LE = "\r";
+		default: // change nothing
+			break;
+	}
+	return $mail;
 }
+
+/**
+* Mail function (uses phpMailer)
+* @param string From e-mail address
+* @param string From name
+* @param string/array Recipient e-mail address(es)
+* @param string E-mail subject
+* @param string Message body
+* @param boolean false = plain text, true = HTML
+* @param string/array CC e-mail address(es)
+* @param string/array BCC e-mail address(es)
+* @param array Images path,cid,name,filename,encoding,mimetype
+* @param string/array Attachment file name(s)
+* @return boolean Mail send success
+*/
+function vmMail($from, $fromname, $recipient, $subject, $body, $Altbody, $mode=false, $cc=NULL, $bcc=NULL, $images=null, $attachment=null ) {
+	global $mosConfig_debug;
+	$mail = vmCreateMail( $from, $fromname, $subject, $body );
+	
+	if( $Altbody != "" ) {
+		$mail->AltBody = $Altbody;
+	}
+	
+	// activate HTML formatted emails
+	if ( $mode ) {
+		$mail->IsHTML(true);
+	}
+
+	if( is_array($recipient) ) {
+		foreach ($recipient as $to) {
+			$mail->AddAddress($to);
+		}
+	} else {
+		$mail->AddAddress($recipient);
+	}
+	if (isset($cc)) {
+		if( is_array($cc) )
+			foreach ($cc as $to) $mail->AddCC($to);
+		else
+			$mail->AddCC($cc);
+	}
+	if (isset($bcc)) {
+		if( is_array($bcc) )
+			foreach ($bcc as $to) $mail->AddBCC($to);
+		else
+			$mail->AddBCC($bcc);
+	}
+	if( $images ) {
+		foreach( $images as $image) {
+			$mail->AddEmbeddedImage( $image['path'], $image['name'], $image['filename'], $image['encoding'], $image['mimetype']);
+		}
+	}
+	if ($attachment) {
+		if ( is_array($attachment) )
+			foreach ($attachment as $fname) $mail->AddAttachment($fname);
+		else
+			$mail->AddAttachment($attachment);
+	}
+	$mailssend = $mail->Send();
+
+	if( $mosConfig_debug ) {
+		//$mosDebug->message( "Mails send: $mailssend");
+	}
+	if( $mail->error_count > 0 ) {
+		//$mosDebug->message( "The mail message $fromname <$from> about $subject to $recipient <b>failed</b><br /><pre>$body</pre>", false );
+		//$mosDebug->message( "Mailer Error: " . $mail->ErrorInfo . "" );
+	}
+	return $mailssend;
+} 
+
 ?> 

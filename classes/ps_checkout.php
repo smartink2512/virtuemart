@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.9 2005/10/17 19:05:29 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.10 2005/10/18 05:16:51 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1690,30 +1690,6 @@ class ps_checkout {
 		//
 		elseif (ORDER_MAIL_HTML == '1') {
 
-			require_once( CLASSPATH . 'phpmailer/class.phpmailer.php');
-			$iso = split( '=', _ISO );
-			$shopper_mail = new mShop_PHPMailer();
-			$shopper_mail->PluginDir = CLASSPATH . "phpmailer/";
-			$shopper_mail->SetLanguage("en", CLASSPATH . "phpmailer/language/");
-			$shopper_mail->CharSet = $iso[1];
-			$shopper_mail->IsHTML( true );
-			$shopper_mail->From = $from_email;
-			$shopper_mail->FromName = $mosConfig_fromname;
-			$shopper_mail->Sender = $from_email;
-			$shopper_mail->AddAddress($shopper_email);
-			$shopper_mail->Subject = $shopper_subject;
-
-			$vendor_mail = new mShop_PHPMailer();
-			$vendor_mail->PluginDir = CLASSPATH . "phpmailer/";
-			$vendor_mail->SetLanguage("en", CLASSPATH . "phpmailer/language/");
-			$vendor_mail->CharSet = $iso[1];
-			$vendor_mail->IsHTML( true );
-			$vendor_mail->From = $shopper_email;
-			$vendor_mail->FromName = $shopper_name;
-			$vendor_mail->Sender = $from_email;
-			$vendor_mail->AddAddress($vendor_email);
-			$vendor_mail->Subject = $vendor_subject;
-
 			$dboi->query($q_oi);
 
 			// CREATE THE LIST WITH ALL ORDER ITEMS
@@ -1876,58 +1852,31 @@ class ps_checkout {
 			* The name of the image should match exactly
 			* (case-sensitive) to the name in the html.
 			*/
-			$shopper_mail->Body = $html;
-			$shopper_mail->AltBody = $shopper_header . $shopper_message . $shopper_footer;
+			$shopper_mail_Body = $html;
+			$shopper_mail_AltBody = $shopper_header . $shopper_message . $shopper_footer;
 
-			$vendor_mail->Body = $vendor_html;
-			$vendor_mail->AltBody = $vendor_header . $shopper_message . $vendor_footer;
+			$vendor_mail_Body = $vendor_html;
+			$vendor_mail_AltBody = $vendor_header . $shopper_message . $vendor_footer;
 
 			$imagefile = pathinfo($dbv->f("vendor_full_image"));
 			$extension = $imagefile['extension'] == "jpg" ? "jpeg" : "jpeg";
 
-			$shopper_mail->AddEmbeddedImage(IMAGEPATH."vendor/".$dbv->f("vendor_full_image"),  "vendor_image", $dbv->f("vendor_full_image"), "base64", "image/".$extension );
-			$vendor_mail->AddEmbeddedImage(IMAGEPATH."vendor/".$dbv->f("vendor_full_image"),  "vendor_image", $dbv->f("vendor_full_image"), "base64", "image/".$extension );
+			$EmbeddedImages[] = array(	'path' => IMAGEPATH."vendor/".$dbv->f("vendor_full_image"),
+								'name' => "vendor_image", 
+								'filename' => $dbv->f("vendor_full_image"),
+								'encoding' => "base64",
+								'mimetype' => "image/".$extension );
 
-			switch( $mosConfig_mailer ) {
+			
+			$shopper_email_msg = vmMail( $from_email, $mosConfig_fromname, $shopper_email, $shopper_subject, $shopper_mail_Body, $shopper_mail_AltBody, true, null, null, $EmbeddedImages);
 
-				case "mail":
-				$shopper_mail->IsMail();
-				$vendor_mail->IsMail();
-				break;
+			$vendor_email_msg = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_mail_Body, $vendor_mail_AltBody, true, null, null, $EmbeddedImages);
 
-				/*** tell the mailer objects to use SMTP ***/
-				case "smtp":
-				$shopper_mail->IsSMTP();
-				$vendor_mail->IsSMTP();
-
-				$shopper_mail->Host = $mosConfig_smtphost;
-				$vendor_mail->Host = $mosConfig_smtphost;
-
-				$shopper_mail->SMTPAuth = $mosConfig_smtpauth=='1' ? true : false;
-				$vendor_mail->SMTPAuth = $mosConfig_smtpauth=='1' ? true : false;
-
-				if ($mosConfig_smtpauth=='1') {
-					$shopper_mail->Username = $mosConfig_smtpuser;
-					$vendor_mail->Username = $mosConfig_smtpuser;
-					$shopper_mail->Password = $mosConfig_smtppass;
-					$vendor_mail->Password = $mosConfig_smtppass;
+			if ( !$shopper_email_msg || !$vendor_email_msg ) {
+				if( DEBUG ) {
+					echo $shopper_mail->ErrorInfo;
+					echo $vendor_mail->ErrorInfo;
 				}
-				break;
-
-				case "sendmail":
-				$shopper_mail->IsSendmail();
-				$vendor_mail->IsSendmail();
-				break;
-
-				default:
-				$shopper_mail->IsMail();
-				$vendor_mail->IsMail();
-				break;
-			}
-
-			if ( !$shopper_mail->Send() || !$vendor_mail->Send() ) {
-				echo $shopper_mail->ErrorInfo;
-				echo $vendor_mail->ErrorInfo;
 				return false;
 			}
 			//

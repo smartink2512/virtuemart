@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.9 2005/10/06 20:56:37 soeren_nb Exp $
+* @version $Id: product.product_form.php,v 1.10 2005/10/08 15:56:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -84,8 +84,9 @@ if (!empty($product_id)) {
     
   // Get the Related Products
   $db2->query("SELECT related_products FROM #__{vm}_product_relations WHERE product_id='$product_id'");
-  if($db2->next_record())
-    $related_products = explode("|", $db2->f("related_products"));
+  if($db2->next_record()) {
+  	$related_products = explode("|", $db2->f("related_products"));
+  }
     
   // Look if the Product is downloadable
   $q_dl = "SELECT attribute_name,attribute_value AS filename FROM #__{vm}_product_attribute WHERE ";
