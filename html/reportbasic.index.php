@@ -28,6 +28,8 @@ $selected_end["day"] = $eday = mosGetParam( $_REQUEST, "eday", date("d") );
 $selected_end["month"] = $emonth = mosGetParam( $_REQUEST, "emonth", date("m"));
 $selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
 
+$i=0;
+
 ?>
 <!-- BEGIN body -->
 &nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/report.gif" border="0" />&nbsp;&nbsp;&nbsp;

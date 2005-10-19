@@ -32,6 +32,9 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+19-10-2005 schirmer
+#  fixed Top10 module showing products multiple times if it has more than one category
+
 18-10-2005 soeren
 ^ Changed the field jos_vm_order_item.product_item_price from DECIMAL(10,2) to DECIMAL(10,5) to prevent rounding errors
 ##########
