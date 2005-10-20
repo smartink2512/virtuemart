@@ -63,7 +63,7 @@
         <option value="yes">Yes</option>
         <option value="no">No</option>
       </param>
-      <param name="show_listall" type="radio" default="yes" label="Show 'List All' - link?"
+      <param name="show_listall" type="radio" default="yes" label="Show List All - link?"
       description="Defines wether a link to list all products is displayed or not." >
         <option value="yes">Yes</option>
         <option value="no">No</option>
