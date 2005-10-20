@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_list.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.product_list.php,v 1.5 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -296,7 +296,7 @@ if ($num_rows > 0) {
 		}
 		$listObj->addCell( $tmpcell );
 		
-		$tmpcell = "<a href=\"". $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_list&keyword=$keyword&limitstart=$limitstart&product_id=".$db->f("product_id")."&func=publishproduct";
+		$tmpcell = "<a href=\"". $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_list&category_id=$category_id&product_id=".$db->f("product_id")."&func=publishproduct";
 		if ($db->f("product_publish")=='N') {
 			$tmpcell .= "&product_publish=Y\">";
 		} 

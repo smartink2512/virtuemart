@@ -1,11 +1,8 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Restricted access' );
 /**
-<<<<<<< CHANGELOG.php
+*
 * @version $Id$
-=======
-* @version $Id$
->>>>>>> 1.22
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -36,6 +33,9 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+20-10-2005 soeren
+# fixed various bugs in modules (vm_dtree, vm_transmenu, vm_JSCook, vm_product_categories, vm_productscroller)
+# category_id is lost when (un)publishing a product directly from the product list
 
 19-10-2005 soeren
 # fixed session debug messages, a session isn't started in the backend now

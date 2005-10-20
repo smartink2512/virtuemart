@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
     <name>VirtueMart Module</name>
-    <creationDate>08.10.2005</creationDate>
+    <creationDate>20.10.2005</creationDate>
     <author>Soeren Eberhardt</author>
     <copyright>VirtueMart is released under GNU/GPLicense</copyright>
     <authorEmail>soeren@virtuemart.net</authorEmail>
@@ -13,7 +13,6 @@
          <filename module="mod_virtuemart">mod_virtuemart.php</filename>
          <filename>vm_dtree.php</filename>
          <filename>vm_JSCook.php</filename>
-         <filename>vm_JSCookTree.php</filename>
          <filename>vm_transmenu.php</filename>
         <filename>dtree/dtree.css</filename> 
         <filename>dtree/dtree.js</filename> 

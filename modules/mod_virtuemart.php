@@ -52,7 +52,6 @@ echo $pretext;
 // changed while running a function
 $cart = $_SESSION["cart"];
 $auth = $_SESSION["auth"];
-$sess = new ps_session;
 
 if( $show_categories == "yes" ) {
   

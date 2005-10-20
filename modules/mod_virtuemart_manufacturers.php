@@ -40,10 +40,10 @@ if ($auto == 1 && !empty( $category_id ) ) {
     . " AND b.product_id = c.product_id AND c.manufacturer_id = a.manufacturer_id ";
 }
 $query .= "ORDER BY mf_name ASC";
-  
-$database->setQuery( $query );
-$database->query();
-$res = $database->loadObjectList();
+$db = new ps_DB;
+$db->query( $query );
+
+$res = $db->record;
     
 ?>
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">

@@ -24,6 +24,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 $option = mosGetParam( $_REQUEST, 'option' );
 
 if( !defined( 'CLASSPATH' )) {
+	global $my;
 	
 	if( $my->id > 0 ) {
 		// This is necessary to get the real GID

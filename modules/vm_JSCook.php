@@ -82,7 +82,8 @@ class MamboMartTree {
     */
     function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
         static $ibg = -1;
-        global $db, $module, $mosConfig_live_site;
+        global $module, $mosConfig_live_site;
+        $db = new ps_DB();
         $level++;
         $query = "SELECT category_name, category_id, category_child_id "
         . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
@@ -117,13 +118,14 @@ class MamboMartMenu {
     */
     function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
         static $ibg = 0;
-        global $db, $module, $mosConfig_live_site;
+        global $module, $mosConfig_live_site;
         $level++;
         $query = "SELECT category_name, category_id, category_child_id "
         . "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
          . "WHERE a.category_publish='Y' AND "
          . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
          . "ORDER BY category_parent_id, list_order, category_name ASC";
+        $db = new ps_DB();
         $db->query( $query );
         
 		while($db->next_record()) {

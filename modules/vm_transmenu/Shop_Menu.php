@@ -30,7 +30,7 @@ class Shop_Menu{
 	}
 	
 	function  loadMenu(){
-		global $database, $my, $cur_template, $Itemid;
+		global $my, $database, $cur_template, $Itemid;
 		global $mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_shownoauth;
 
 		$query  = "SELECT category_id as id, category_parent_id as parent, category_name as name, '' as type,
@@ -40,8 +40,10 @@ class Shop_Menu{
 								WHERE #__{vm}_category.category_publish='Y' 
 									AND #__{vm}_category.category_id=#__{vm}_category_xref.category_child_id 
 								ORDER BY name ASC";
+		
 		$this->_db->setQuery( $query );
-		$rows = $this->_db->loadObjectList( 'id' );
+		$database->setQuery( $this->_db->_sql );
+		$rows = $database->loadObjectList( 'id' );
 
 		// establish the hierarchy of the menu
 		$this->children = array();

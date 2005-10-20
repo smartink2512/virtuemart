@@ -18,9 +18,9 @@ $params->set( 'absPath', $mosConfig_absolute_path . '/modules/' . $params->get( 
 $params->set( 'LSPath', $mosConfig_live_site . '/modules/' . $params->get( 'module' ) );
 include_once( $params->get( 'absPath' ) .'/Shop_Menu.php' );
 
-global $my;
+global $my, $db;
 
-$mbtmenu= new Shop_Menu($database, $params);
+$mbtmenu= new Shop_Menu($db, $params);
 
 $mbtmenu->genMenu();
 
