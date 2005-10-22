@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.10 2005/10/18 05:16:51 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.11 2005/10/19 17:51:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -964,7 +964,7 @@ class ps_checkout {
 					$q .= " 0" . "', '";
 					$q .= DOWNLOAD_MAX . "', '";
 					$q .= $download_id . "', '";
-					$q .= $db->f("attribute_value") . "')";
+					$q .= $GLOBALS['vmInputFilter']->safeSQL( $db->f("attribute_value")) . "')";
 					$db->query($q);
 					$db->next_record();
 				}

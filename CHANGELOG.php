@@ -33,6 +33,9 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+21-20-2005 soeren
+# waiting list extension printing errors...
+
 20-10-2005 soeren
 # fixed various bugs in modules (vm_dtree, vm_transmenu, vm_JSCook, vm_product_categories, vm_productscroller)
 # category_id is lost when (un)publishing a product directly from the product list

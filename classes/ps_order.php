@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_order.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_order.php,v 1.5 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -435,7 +435,7 @@ class ps_order {
      $db->query($q);
      $db->next_record();
 
-     $datei .= DOWNLOADROOT . $file_name;
+     $datei = DOWNLOADROOT . $file_name;
      
      // Check, if file path is correct
      // and file is 

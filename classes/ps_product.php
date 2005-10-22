@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.12 2005/10/17 19:05:29 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.13 2005/10/18 18:45:35 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -314,7 +314,9 @@ class ps_product {
 				$d["upload_dir"] = "DOWNLOADPATH";
 				$d["file_title"] = $_FILES['file_upload']['name'];
 				$d["file_url"] = "";
-				$ps_product_files->add( $d );
+				if( !$ps_product_files->add( $d ) ) {
+					$d['error'] = 'Error: Failed to upload the downloadable file.';
+				}
 			}
 			else {
 				$d["file_title"] = $d["file_name"];
@@ -486,7 +488,7 @@ class ps_product {
 		$db->next_record();
 		if ($db->num_rows() > 0) { // found one
 			$q_dl = "SELECT file_id from #__{vm}_product_files WHERE ";
-			$q_dl .= "file_product_id='".$d["product_id"]."' AND file_title='".$db->f("attribute_value")."'";
+			$q_dl .= "file_product_id='".$d["product_id"]."' AND file_title='".$GLOBALS['vmInputFilter']->safeSQL( $db->f("attribute_value"))."'";
 			$db->query($q_dl);
 			$db->next_record();
 			$d["file_id"] = $db->f("file_id");

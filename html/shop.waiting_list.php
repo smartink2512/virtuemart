@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.waiting_list.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.waiting_list.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -22,50 +22,39 @@ $ps_product = new ps_product;
 ?>
 
 
-<form action="<?php echo URL ?>index.php" method="post" name="waiting">
-<input type="hidden" name="option" value="com_virtuemart" />
+<form action="<?php echo $mm_action_url ?>index.php" method="post" name="waiting">
+<input type="hidden" name="option" value="<?php echo $option ?>" />
 <input type="hidden" name="func" value="waitinglistadd" />
 <?php echo $VM_LANG->_PHPSHOP_WAITING_LIST_MESSAGE ?>
 <br />
 <br />
 
 <?php
-    if ($auth["user_id"]) {
+if ($auth["user_id"]) {
 
-    $q =  "SELECT * FROM #__users WHERE ";
-    $q .= "id='" . $auth["user_id"] . "' ";
+    $q =  "SELECT user_email FROM #__{vm}_user_info WHERE ";
+    $q .= "user_id='" . $auth["user_id"] . "' ";
     $q .= "AND address_type='BT' ";
     $db->query($q);
-    if(!$db->num_rows()) {
-        $q =  "SELECT * FROM #__{vm}_user_info WHERE ";
-        $q .= "user_id='" . $auth["user_id"] . "' ";
-        $q .= "AND address_type='BT' ";
-        $db->query($q);
-    }
     $db->next_record();
-    $email = $db->f("user_email");
-    if (!empty($email))
-        $shopper_email = $db->f("user_email");
-    else
-        $shopper_email = $db->f("email");
-?>
-<input type="hidden" name="user_id" value="<?php echo $auth["user_id"]; ?>" />
-<input type="text" class="inputbox" name="notify_email" value="<?php echo $shopper_email ?>" />
-<br />
-<?php
- } else {?> 
-
-<input type="text" class="inputbox" name="notify_email"><br />
-<?php
+    $shopper_email = $db->f("user_email");
+	?>
+	<input type="hidden" name="user_id" value="<?php echo $auth["user_id"]; ?>" />
+	<input type="text" class="inputbox" name="notify_email" value="<?php echo $shopper_email ?>" />
+	<br />
+	<?php
+ } 
+ else {
+ 	?> 
+	<input type="text" class="inputbox" name="notify_email"><br />
+	<?php
 }
 ?>
-
 
 
 <input type="submit" class="button" name="waitinglistadd" value="<?php echo $VM_LANG->_PHPSHOP_WAITING_LIST_NOTIFY_ME ?>" />
 
 <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
 <input type="hidden" name="page" value="shop.waiting_thanks" />
-
 
 </form>

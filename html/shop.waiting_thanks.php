@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.waiting_thanks.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.waiting_thanks.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -16,8 +16,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+
+if( $ok ) {
+	echo $VM_LANG->_PHPSHOP_WAITING_LIST_THANKS ;
+}
 ?>
-<?php echo $VM_LANG->_PHPSHOP_WAITING_LIST_THANKS ?>
 <br />
-<br />.<br /><br />
-<?php include(PAGEPATH."basket.php"); ?>
+<br />
+<?php 
+include(PAGEPATH."shop.cart.php"); 
+?>
