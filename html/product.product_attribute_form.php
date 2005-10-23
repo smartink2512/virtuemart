@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_attribute_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.product_attribute_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -94,5 +94,5 @@ $funcname = !empty($attribute_name) ? "productAttributeUpdate" : "productAttribu
 
 // Write your form with mixed tags and text fields
 // and finally close the form:
-$formObj->finishForm( $funcname, $modulename.'.country_list', $option );
+$formObj->finishForm( $funcname, $modulename.'.product_attribute_list', $option );
 ?>

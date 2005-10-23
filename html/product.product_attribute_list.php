@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_attribute_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.product_attribute_list.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -66,7 +66,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $i+1 );
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, urlencode($db->f("attribute_name"), false, "attribute_name" ) ) );
+	$listObj->addCell( mosHTML::idBox( $i, urlencode($db->f("attribute_name")), false, "attribute_name" ) );
 	
 	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_attribute_form&limitstart=$limitstart&keyword=$keyword&product_id=" . $product_id . "&attribute_name=" . urlencode($db->f("attribute_name")) . "&return_args=" . urlencode($return_args);
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">$attribute_name</a>";
