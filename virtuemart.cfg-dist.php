@@ -1,14 +1,41 @@
-<?php
+<?php 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+/**
+*
+* @version $Id$
+* @package VirtueMart
+* @subpackage core
+* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
+*/
 	
 global $mosConfig_absolute_path,$mosConfig_live_site;
-if( stristr( $_SERVER['PHP_SELF'], 'administrator' ))
+if( stristr( $_SERVER['PHP_SELF'], 'administrator' )) {
+	// Our location: /administrator/index2.php
 	require_once( '../configuration.php' );
-else
+} 
+else {
+	// Our location: /index.php or /index2.php
 	require_once( 'configuration.php' );
-
+}
+// Check for trailing slash
+if( $mosConfig_live_site[strlen( $mosConfig_live_site)-1] == '/' ) {
+	$app = '';
+}
+else {
+	$app = '/';
+}
 // these path and url definitions here are based on the mambo configuration
-define( 'URL', $mosConfig_live_site.'/' );
-define( 'SECUREURL', URL );
+define( 'URL', $mosConfig_live_site.$app );
+define( 'SECUREURL', $mosConfig_live_site.$app);
+
 if( $_SERVER['SERVER_PORT'] == 443 )
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
 else
@@ -32,7 +59,7 @@ define('DOWNLOAD_MAX', '3');
 define('DOWNLOAD_EXPIRE', '432000');
 define('ENABLE_DOWNLOAD_STATUS', 'C');
 define('DISABLE_DOWNLOAD_STATUS', 'X');
-define('DOWNLOADROOT', '/opt/lampp/htdocs/joomla/');
+define('DOWNLOADROOT', $mosConfig_absolute_path.'/');
 define('_SHOW_PRICES', '1');
 define('ORDER_MAIL_HTML', '1');
 define('HOMEPAGE', 'shop.index');
