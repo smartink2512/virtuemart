@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: account.order_details.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: account.order_details.php,v 1.6 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -34,7 +34,14 @@ $q .= "AND #__{vm}_orders.order_id='$order_id'";
 $db->query($q);
 
 if ($db->next_record()) {
-
+    
+	// Get bill_to information
+    $dbbt = new ps_DB;
+    $q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
+    $dbbt->query($q);
+    $dbbt->next_record();
+    $user = $dbbt->record;
+    
 	/** Retrieve Payment Info **/
 	$dbpm = new ps_DB;
 	$q  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_order_payment, #__{vm}_orders ";
@@ -139,14 +146,7 @@ $db = $db_temp;
     <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL ?></th>
   </tr>
   <tr valign="top"> 
-    <td width="50%"> <!-- Begin BillTo --><?php
-    // Get bill_to information
-    $dbbt = new ps_DB;
-    $q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
-    $dbbt->query($q);
-    $dbbt->next_record();
-    $user = $dbbt->record;
-  ?> 
+    <td width="50%"> <!-- Begin BillTo -->
       <table width="100%" cellspacing="0" cellpadding="2" border="0">
         <tr> 
           <td colspan="2"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL ?></strong></td>

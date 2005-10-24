@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.billing.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: account.billing.php,v 1.5 2005/10/12 18:13:11 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -39,9 +39,15 @@ $shopper_fields = array();
 // where the begin of the fieldset is marked by 
 // an index called uniqid('fieldset_begin')
 // and the end uniqid('fieldset_end')
-$shopper_fields[uniqid('fieldset_begin')] = $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL;
+$shopper_fields[uniqid('fieldset_begin')] = $VM_LANG->_PHPSHOP_ACC_ACCOUNT_INFO;
 	$shopper_fields['username'] = _REGISTER_UNAME;
+	$shopper_fields['password'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_PASSWORD_1;
+	$shopper_fields['password2'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_PASSWORD_2;
 	$shopper_fields['email'] = _REGISTER_EMAIL;
+$shopper_fields[uniqid('fieldset_end')]	 = "";
+
+$shopper_fields[uniqid('fieldset_begin')] = $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL;
+	
 	$shopper_fields['company'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_COMPANY_NAME;
 	$shopper_fields['title'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_TITLE;
 	$shopper_fields['first_name'] = $VM_LANG->_PHPSHOP_SHOPPER_FORM_FIRST_NAME;
@@ -158,10 +164,10 @@ vmCommonHTML::printJS_formvalidation( $required_fields, 'adminForm', 'submitshop
 		      echo "</noscript>\n";
    			break;
    			
-   			case 'username':
-	   			$db->p($fieldname);
-			    echo '<input type="hidden" id="'.$fieldname.'_field" name="'.$fieldname.'" value="'. $db->sf($fieldname) .'" />'."\n";
-			    break;
+   			case 'password':
+			case 'password2':
+				echo '<input type="password" id="'.$fieldname.'_field" name="'.$fieldname.'" size="40" class="inputbox" />'."\n";
+	   			break;
 			    
 			case 'bank_account_type':
 				echo '<select class="inputbox" name="bank_account_type">
@@ -211,7 +217,6 @@ vmCommonHTML::printJS_formvalidation( $required_fields, 'adminForm', 'submitshop
   <input type="hidden" name="page" value="<?php echo $next_page; ?>" />
   <input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
   <input type="hidden" name="func" value="shopperupdate" />
-  <input type="hidden" name="username" value="<?php echo $auth["username"] ?>" />
   <input type="hidden" name="user_info_id" value="<?php $db->p("user_info_id"); ?>" />
   <input type="hidden" name="id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />

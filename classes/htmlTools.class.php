@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.10 2005/10/12 18:13:10 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.12 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -410,9 +410,11 @@ class vmCommonHTML {
 	 */
 	function getErrorField( $msg ) {
 		
-		$html = '<div class="shop_error">'.$msg.'<div>';
+		$html = '<div class="shop_error">'.$msg.'</div>';
 		return $html;
 	}
+
+
 	/**
 	 * Returns a div element of the class "shop_error" 
 	 * containing $msg to print out an error
@@ -422,7 +424,7 @@ class vmCommonHTML {
 	 */
 	function getInfoField( $msg ) {
 		
-		$html = '<div style="color:blue;font-weight:bold;">'.$msg.'<div>';
+		$html = '<div class="shop_info">'.$msg.'</div>';
 		return $html;
 	}
 	/**

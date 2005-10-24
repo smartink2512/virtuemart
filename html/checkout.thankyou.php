@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file is called after the order has been placed by the customer
 *
-* @version $Id: checkout.thankyou.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: checkout.thankyou.php,v 1.6 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -34,6 +34,8 @@ $q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='$order_id' AND addr
 $db->query( $q );
 $db->next_record();
 $user = $db->record[0];
+$dbbt = $db->_clone( $db );
+
 $user->email = $db->f("user_email");
 
 /** Retrieve Order & Payment Info **/
@@ -82,6 +84,9 @@ if ($db->f("order_status") == "P" ) {
     if( eval('?>' . $db->f("payment_extrainfo") . '<?php ') === false ) {
     	echo vmCommonHTML::getErrorField( "Error: The code of the payment method ".$db->f( 'payment_method_name').' ('.$db->f('payment_method_code').') '
     	.'contains a Parse Error!<br />Please correct that first' );
+    }
+    else {
+    	echo DEBUG ? vmCommonHTML::getInfoField('Successfully parsed the payment extra info code.' ) : '';
     }
     /** END printing out HTML Form code (Payment Extra Info) **/
 
