@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_list.php,v 1.5 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: product.product_list.php,v 1.6 2005/10/20 17:36:30 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -39,12 +39,12 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 	<form style="float:right;" action="<?php $_SERVER['PHP_SELF'] ?>" method="get"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE ?>&nbsp;
           <select class="inputbox" name="search_type">
               <option value="product"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT ?></option>
-              <option value="price" <?php echo $search_type == "price" ? "selected>" : ">"; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE ?></option>
-              <option value="withoutprice" <?php echo $search_type == "withoutprice" ? "selected>" : ">"; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE ?></option>
+              <option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE ?>></option>
+              <option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE ?>></option>
           </select>
           <select class="inputbox" name="search_order">
               <option value="<"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE ?></option>
-              <option value=">" <?php echo $search_order == ">" ? "selected>" : ">"; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER ?></option>
+              <option value=">" <?php echo $search_order == ">" ? 'selected="selected"' : ''; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER ?>></option>
           </select>
           <input type="hidden" name="option" value="com_virtuemart" />
           <input class="inputbox" type="text" size="15" name="search_date" value="<?php echo mosgetparam($_REQUEST, 'search_date', $nowstring) ?>" />
