@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_cart.php,v 1.6 2005/10/12 18:13:10 soeren_nb Exp $
+* @version $Id: ps_cart.php,v 1.7 2005/10/18 18:45:35 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -65,7 +65,7 @@ class ps_cart {
  	* @param array $d
  	*/
 	function add(&$d) {
-		global $sess, $VM_LANG, $cart, $option;
+		global $sess, $VM_LANG, $cart, $option, $vmLogger;
 
 		include_class("product");
 
@@ -77,12 +77,12 @@ class ps_cart {
 
 		// Check for negative quantity
 		if ($quantity < 0) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
+			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
 			return False;
 		}
 
 		if (!ereg("^[0-9]*$", $quantity)) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
+			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
 			return False;
 		}
 
@@ -93,19 +93,16 @@ class ps_cart {
 			$db->query($q);
 			$db->next_record();
 			$product_in_stock = $db->f("product_in_stock");
-			if (empty($product_in_stock)) $product_in_stock = 0;
+			if (empty($product_in_stock)) {
+				$product_in_stock = 0;
+			}
 			if ($quantity > $product_in_stock) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1;
-				$msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
-				eval($msg);
-				$d["error"] .= $msg;
-
-				// added for the waiting list addon
-				$url = "index.php?page=shop.waiting_list&product_id=";
-				$url .= $product_id;
-				mosRedirect( $sess->url(URL . $url), $msg );
-
-				return False;
+				$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
+				eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
+				
+				$vmLogger->info( $msg );
+				$GLOBALS['page'] = 'shop.waiting_list';
+				return true;
 			}
 		}
 
@@ -115,7 +112,7 @@ class ps_cart {
 		$db->query ( $q );
 
 		if ( $db->num_rows()) {
-			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_CART_SELECT_ITEM;
+			$vmLogger->info( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
 			return false;
 		}
 
@@ -131,8 +128,10 @@ class ps_cart {
 		
 		if ( ($result["attribute_given"] == false && !empty( $result["advanced_attribute_list"] ))
 		|| ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )) ) {
-			$flypage = ps_product::get_flypage($product_id);
-			mosRedirect("index.php?option=$option&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$_POST[category_id]&Itemid=$Itemid", $VM_LANG->_PHPSHOP_CART_SELECT_ITEM);
+			$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
+			$GLOBALS['page'] = 'shop.product_details';
+			$vmLogger->info( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+			return true;
 		}
 
 		// Check for duplicate and do not add to current quantity
@@ -156,8 +155,9 @@ class ps_cart {
 			$_SESSION['cart'][$k]["description"] = $d["description"];
 			$_SESSION['cart']["idx"]++;
 		}
-		else
-		$this->update( $d );
+		else {
+			$this->update( $d );
+		}
 
 		/* next 3 lines added by Erich for coupon code */
 		/* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
@@ -178,7 +178,7 @@ class ps_cart {
 	 * @return boolean result of the update
 	 */
 	function update(&$d) {
-		global $sess,$VM_LANG;
+		global $sess,$VM_LANG, $vmLogger;
 
 		include_class("product");
 
@@ -189,12 +189,12 @@ class ps_cart {
 
 		// Check for negative quantity
 		if ($quantity < 0) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE;
+			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
 			return False;
 		}
 
 		if (!ereg("^[0-9]*$", $quantity)) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY;
+			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
 			return False;
 		}
 
@@ -208,17 +208,12 @@ class ps_cart {
 			$product_in_stock = $db->f("product_in_stock");
 			if (empty($product_in_stock)) $product_in_stock = 0;
 			if ($quantity > $product_in_stock) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CART_STOCK_1."<br />";
-				$msg = "\$msg = \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";";
-				eval($msg);
-				$d["error"] .= $msg;
-
-				//added for the waiting list addon
-				$url = "index.php?page=shop.waiting_list&product_id=";
-				$url .= $product_id;
-				mosRedirect( $sess->url(URL . $url), $msg );
-
-				return False;
+				$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
+				eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
+				
+				$vmLogger->info( $msg );
+				$GLOBALS['page'] = 'shop.waiting_list';
+				return true;
 			}
 		}
 

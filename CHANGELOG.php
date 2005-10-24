@@ -33,8 +33,20 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+
+24-10-2005 soeren
+# fixed a bug where "my-email-address@domain.com" couldn't be used for username (converting - to _ now)
+^ file uploading errors are handled better now
++ introduced new global Log object for better Error Message Handling
+	See http://pear.php.net/package/Log for docs.
+	The class and its child classes can be found in /classes/Log. VM uses a modified version
+	of the display class. Support for buffering and formatting depending on priority was added.
+
 24-10-2005 schirmer
 # Reviews display fixed (was showing only one review)
+
+22-10-2005 soeren
++ added ability to change username + password through shop's billing form
 
 21-10-2005 soeren
 # waiting list extension printing errors...
@@ -54,10 +66,8 @@ VirtueMart 1.0
 # made labels for payment methods clickable
 # fixed bug #137 'unpublished products can become related products'
 
-=======
 19-10-2005 schirmer
 #  fixed Top10 module showing products multiple times if it has more than one category
-
 
 18-10-2005 soeren
 ^ Changed the field jos_vm_order_item.product_item_price from DECIMAL(10,2) to DECIMAL(10,5) to prevent rounding errors

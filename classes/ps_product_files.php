@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_files.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
+* @version $Id: ps_product_files.php,v 1.6 2005/10/22 06:04:37 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -40,11 +40,11 @@ class ps_product_files {
 		$db = new ps_DB;
 
 		if (empty($_FILES["file_upload"]["name"]) && empty($d['file_url'])) {
-			$d["error"] = "ERROR: You must either Upload a File or provide a File URL.";
+			$GLOBALS['vmLogger']->log( "You must either Upload a File or provide a File URL.", PEAR_LOG_ERR );
 			return False;
 		}
 		if (empty($d["product_id"])) {
-			$d["error"] = "ERROR: A product ID must be specified.";
+			$GLOBALS['vmLogger']->log( "A product ID must be specified.", PEAR_LOG_ERR );
 			return False;
 		}
 
@@ -73,15 +73,15 @@ class ps_product_files {
 		$db = new ps_DB;
 
 		if (empty($file_id)) {
-			$d["error"] = "ERROR:  Please select a file to delete.";
+			$GLOBALS['vmLogger']->log( "Please select a file to delete.", PEAR_LOG_ERR );
 			return False;
 		}
-		$q_dl = "SELECT attribute_name,file_id from #__{vm}_product_attribute,#__{vm}_product_files WHERE ";
+		$q_dl = "SELECT attribute_value, attribute_name,file_id from #__{vm}_product_attribute,#__{vm}_product_files WHERE ";
 		$q_dl .= "product_id='".$d["product_id"]."' AND attribute_name='download' ";
 		$q_dl .= "AND file_id='$file_id' AND attribute_value=file_title";
 		$db->query($q_dl);
 		if( $db->next_record() ) {
-			$d["error"] = "ERROR:  This file is still a Downloadable Product File!";
+			$GLOBALS['vmLogger']->log( "The file ".$db->f("attribute_value")." is still a Downloadable Product File!", PEAR_LOG_ERR );
 			return False;
 		}
 		else {
@@ -100,7 +100,7 @@ class ps_product_files {
 
 		$db = new ps_DB;
 		if (empty($d["product_id"])) {
-			$d["error"] = "ERROR:  A product ID must be specified.";
+			$GLOBALS['vmLogger']->log( "A product ID must be specified.", PEAR_LOG_ERR );
 			return False;
 		}
 
@@ -141,8 +141,9 @@ class ps_product_files {
 			$d["file_create_thumbnail"] = 0;
 		}
 
-
+		// Do we have an uploaded file?
 		if( !empty($_FILES['file_upload']['name']) ) {
+			// Uploaded file branch
 			$upload_success = false;
 			$fileinfo = pathinfo( $_FILES['file_upload']['name'] );
 			$ext = $fileinfo["extension"];
@@ -171,7 +172,7 @@ class ps_product_files {
 					if( !file_exists($uploaddir) )
 					@mkdir( $uploaddir );
 					if( !file_exists( $uploaddir ) ) {
-						$d["error"] = $VM_LANG->_PHPSHOP_FILES_PATH_ERROR;
+						$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_PATH_ERROR,PEAR_LOG_ERR );
 						return false;
 					}
 					break;
@@ -179,15 +180,20 @@ class ps_product_files {
 					$uploaddir = DOWNLOADROOT;
 					break;
 			}
+			if( $this->checkUploadedFile( 'file_upload' ) ) {
+				$upload_success = $this->moveUploadedFile( 'file_upload', $uploaddir.$filename);
+			}
+			else {
+				$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE, PEAR_LOG_ERR );
+				return false;
+			}
+			
 			if( @$d['file_type'] == "image" ) {
 				$is_image = "1";
 				$d["file_url"] = IMAGEURL."product/".$filename;
 
 				$file_contents = "";
-				if( move_uploaded_file($_FILES['file_upload']['tmp_name'], $uploaddir . $filename )) {
-					$upload_success = true;
 
-				}
 				if( $d["file_create_thumbnail"] == "1" ) {
 					## RESIZE THE IMAGE ####
 					require_once( CLASSPATH . "class.img2thumb.php" );
@@ -202,13 +208,13 @@ class ps_product_files {
 					$neu = new Img2Thumb($tmp_filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
 
 					if( is_file( $fileout ) ) {
-						$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS;
+						$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS, PEAR_LOG_INFO );
 						$thumbimg = getimagesize( $fileout );
 						$file_image_thumb_width = $thumbimg[0];
 						$file_image_thumb_height = $thumbimg[1];
 					}
 					else {
-						$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE;
+						$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE, PEAR_LOG_WARNING );
 						$file_image_thumb_height = "";
 						$file_image_thumb_width = "";
 					}
@@ -222,11 +228,6 @@ class ps_product_files {
 			else {
 				### File (no image) Upload ###
 				$is_image = "0";
-				$filename = $uploaddir . $filename;
-				// $d['file_type'] == "file"
-				if( move_uploaded_file($_FILES['file_upload']['tmp_name'], $filename )) {
-					$upload_success = true;
-				}
 				$file_image_height = $file_image_width = $file_image_thumb_height = $file_image_thumb_width = "";
 			}
 		}
@@ -244,10 +245,6 @@ class ps_product_files {
 			$file_image_height = $file_image_width = $file_image_thumb_height = $file_image_thumb_width = "";
 		}
 
-		if( !$upload_success ) {
-			$d["error"] = $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE;
-			return false;
-		}
 		$filename = $GLOBALS['vmInputFilter']->safeSQL( $filename );
 		$d["file_title"] = $GLOBALS['vmInputFilter']->safeSQL( $d["file_title"] );
 		$q = "INSERT INTO #__{vm}_product_files ";
@@ -303,7 +300,6 @@ class ps_product_files {
 
 		if( !empty($_FILES['file_upload']['name']) ) {
 
-
 			$upload_success = false;
 			$fileinfo = pathinfo( $_FILES['file_upload']['name'] );
 			$ext = $fileinfo["extension"];
@@ -324,7 +320,7 @@ class ps_product_files {
 				if( !file_exists($uploaddir) )
 				@mkdir( $uploaddir );
 				if( !file_exists( $uploaddir ) ) {
-					$d["error"] = $VM_LANG->_PHPSHOP_FILES_PATH_ERROR;
+					$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_PATH_ERROR, PEAR_LOG_ERR );
 					return false;
 				}
 				break;
@@ -332,14 +328,21 @@ class ps_product_files {
 				$uploaddir = DOWNLOADROOT;
 				break;
 			}
+			
+			if( $this->checkUploadedFile( 'file_upload' ) ) {
+				$upload_success = $this->moveUploadedFile( 'file_upload', $uploaddir.$filename);
+			}
+			else {
+				$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE, PEAR_LOG_ERR );
+				return false;
+			}
+			
 			if( @$d['file_type'] == "image" ) {
 				$is_image = "1";
 				$d["file_url"] = IMAGEURL."product/".$_FILES['file_upload']['name'];
 
 				$file_contents = "";
-				if( move_uploaded_file($_FILES['file_upload']['tmp_name'], $uploaddir . $filename )) {
-					$upload_success = true;
-				}
+
 				if( $d["file_create_thumbnail"] == "1" ) {
 					## RESIZE THE IMAGE ####
 					require_once( CLASSPATH . "class.img2thumb.php" );
@@ -374,9 +377,6 @@ class ps_product_files {
 				$is_image = "0";
 				$filename = $uploaddir . $filename;
 				// $d['file_type'] == "file"
-				if( move_uploaded_file($_FILES['file_upload']['tmp_name'], $filename )) {
-					$upload_success = true;
-				}
 				$file_image_height = $file_image_width = $file_image_thumb_height = $file_image_thumb_width = "";
 			}
 		}
@@ -392,10 +392,6 @@ class ps_product_files {
 			$file_image_height = $file_image_width = $file_image_thumb_height = $file_image_thumb_width = "";
 		}
 
-		if( !$upload_success ) {
-			$d["error"] = $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE;
-			return false;
-		}
 		if( !empty($_FILES['file_upload']['name']) ) {
 			// Delete the old file
 			$this->delete( $d );
@@ -488,21 +484,27 @@ class ps_product_files {
 
 		if( $dbf->f("file_is_image") ) {
 			$info = pathinfo($dbf->f("file_name"));
-			if( !@unlink(realpath($dbf->f("file_name"))) )
-			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE;
-			else
-			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS;
+			if( !@unlink(realpath($dbf->f("file_name"))) ) {
+				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE;
+			}
+			else {
+				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS;
+			}
 			$thumb = $info["dirname"]."/resized/".basename($dbf->f("file_name"), ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
-			if( !@unlink( realpath($thumb) ) )
-			$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb ;
-			else
-			$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS;
+			if( !@unlink( realpath($thumb) ) ) {
+				$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb ;
+			}
+			else {
+				$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS;
+			}
 		}
 		elseif( $dbf->f("file_name") ) {
-			if( !@unlink(realpath($dbf->f("file_name"))) )
-			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE;
-			else
-			$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS;
+			if( !@unlink(realpath($dbf->f("file_name"))) ) {
+				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE;
+			}
+			else {
+				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS;
+			}
 		}
 
 		$q = "DELETE FROM #__{vm}_product_files WHERE file_id='$record_id'";
@@ -575,11 +577,59 @@ class ps_product_files {
 			exit();
 		}
 		else {
-			echo "<span class=\"message\">".$VM_LANG->_PHPSHOP_FILES_NOT_FOUND."</span>";
+			echo "<span class=\"shop_error\">".$VM_LANG->_PHPSHOP_FILES_NOT_FOUND."</span>";
 		}
 		return true;
 	}
-
+	/**
+	 * Checks if a file was correctly uploaded.
+	 *
+	 * @param string $fieldname The name of the index in $_FILES to check
+	 * @return boolean True when the file upload is correct, false when not.
+	 */
+	function checkUploadedFile( $fieldname ) {
+		global $vars, $vmLogger;
+		if( is_uploaded_file( $_FILES[$fieldname]['tmp_name'])) {
+			return true;
+		}
+		else {
+			switch( $_FILES[$fieldname]['error'] ){
+				case 0: //no error; possible file attack!
+					$vmLogger->log( "There was a problem with your upload.", PEAR_LOG_WARNING );
+					break;
+				case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
+					$vmLogger->log( "The file you are trying to upload is too big.", PEAR_LOG_WARNING );
+					break;
+				case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
+					$vmLogger->log( "The file you are trying to upload is too big.", PEAR_LOG_WARNING );
+					break;
+				case 3: //uploaded file was only partially uploaded
+					$vmLogger->log( "The file you are trying upload was only partially uploaded.", PEAR_LOG_WARNING );
+					break;
+				case 4: //no file was uploaded
+					$vmLogger->log( "You must select a file/image for upload.", PEAR_LOG_WARNING );
+					break;
+				default: //a default error, just in case!  :)
+					$vmLogger->log( "There was a problem with your upload.", PEAR_LOG_WARNING );
+					break;
+			}
+			
+			return false;
+		}
+	}
+	/**
+	 * Moves an uploaded file $_FILES[$fieldname] to $storefilename
+	 *
+	 * @param string $fieldname The array index of the _FILES array
+	 * @param string $storefilename The full path including filename to the store path
+	 */
+	function moveUploadedFile( $fieldname, $storefilename ) {
+		if( move_uploaded_file( $_FILES[$fieldname]['tmp_name'], $storefilename )) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
-
 ?>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_shopper.php,v 1.6 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: ps_shopper.php,v 1.8 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -108,10 +108,11 @@ class ps_shopper {
 	** returns:
 	***************************************************************************/
 	function validate_update(&$d) {
-		global $my, $perm;
+		global $my, $perm, $vmLogger;
 		
 		if ($my->id == 0){
-		  $d["error"] .= "Please Login first.";
+		  $vmLogger->err( "Please Login first." );
+		  
 		  return false;
 		}
 		return $this->validate_add( $d );
@@ -129,11 +130,11 @@ class ps_shopper {
 		global $my;		
 		 
 		if ($my->id == 0){
-			$d["error"] .= "Please Login first.";
+		 	$vmLogger->err( "Please Login first." );
 			return false;
 		}
 		if (!$d["user_id"]) {
-			$d["error"] .= "ERROR:  Please select a user to delete.";
+			$vmLogger->err( "Please select a user to delete." );
 			return False;
 		}
 		else {
@@ -146,7 +147,8 @@ class ps_shopper {
 	* Function to add a new Shopper into the Shop and Joomla
 	*/
 	function add( &$d ) {
-		global $my, $ps_user, $mainframe, $mosConfig_absolute_path, $VM_LANG, $database, $option;
+		global $my, $ps_user, $mainframe, $mosConfig_absolute_path, 
+		$VM_LANG, $database, $option;
 		
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$hash_secret = "VirtueMartIsCool";
@@ -169,7 +171,7 @@ class ps_shopper {
 
 			$_POST['name'] = $d['first_name']." ".$d['last_name'];
 			if( VM_SILENT_REGISTRATION == '1' ) {
-				$_POST['username'] = $d['username'] = $d['email'];
+				$_POST['username'] = $d['username'] = str_replace( '-', '_', $d['email'] );
 				$_POST['password'] = $d['password'] = mosMakePassword();
 				$_POST['password2'] = $_POST['password'];
 			}
@@ -269,7 +271,7 @@ class ps_shopper {
 	 * @return boolean True when the registration process was successful, False when not
 	 */
 	function saveRegistration() {
-		global $database, $acl, $VM_LANG;
+		global $database, $acl, $VM_LANG, $vmLogger;
 		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation, $mosConfig_allowUserRegistration;
 		global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_mailfrom, $mosConfig_fromname;
 	
@@ -281,7 +283,9 @@ class ps_shopper {
 		$row = new mosUser( $database );
 	
 		if (!$row->bind( $_POST, 'usertype' )) {
-			echo "<script type=\"text/javascript\"> alert('".$row->getError()."');</script>\n";
+			$error = html_entity_decode( $row->getError() );
+			$vmLogger->err( $error );
+			echo "<script type=\"text/javascript\"> alert('". $error. "');</script>\n";
 			return false;
 		}
 	
@@ -298,7 +302,9 @@ class ps_shopper {
 		}
 	
 		if (!$row->check()) {
-			echo "<script type=\"text/javascript\"> alert('".$row->getError()."');</script>\n";
+			$error = html_entity_decode( $row->getError() );
+			$vmLogger->err( $error );
+			echo "<script type=\"text/javascript\"> alert('". $error. "');</script>\n";
 			return false;
 		}
 	
@@ -307,7 +313,9 @@ class ps_shopper {
 		$row->registerDate 	= date('Y-m-d H:i:s');
 	
 		if (!$row->store()) {
-			echo "<script type=\"text/javascript\"> alert('".$row->getError()."');</script>\n";
+			$error = html_entity_decode( $row->getError() );
+			$vmLogger->err( $error );
+			echo "<script type=\"text/javascript\"> alert('". $error. "');</script>\n";
 			return false;
 		}
 		$row->checkin();
@@ -382,7 +390,7 @@ class ps_shopper {
 	* (uses who have perms='shopper')
 	*/
 	function update(&$d) {
-		global $my, $perm, $sess;
+		global $my, $perm, $sess, $vmLogger;
 		
 		$auth = $_SESSION['auth'];
 			
@@ -391,7 +399,7 @@ class ps_shopper {
 		$d = $GLOBALS['vmInputFilter']->safeSQL( $d );
 	
 		if ($d["user_id"] != $auth["user_id"] && $auth["perms"] != "admin") {
-		  $d["error"] = "Tricky tricky, but we know about this one.";
+		  $vmLogger->crit( "Tricky tricky, but we know about this one." );
 		  return False;
 		}
 		
@@ -399,7 +407,12 @@ class ps_shopper {
 		$_POST['name'] = $d['first_name']." ". $d['last_name'];
 		$_POST['id'] = $auth["user_id"];
 		$_POST['gid'] = $my->gid;
-		ps_user::saveUser();
+		$d['error'] = "";
+		ps_user::saveUser( $d );
+		if( !empty( $d['error']) ) {
+			
+			return false;
+		}
 		
 		if (!$this->validate_update($d)) {
 			$_SESSION['last_page'] = "checkout.index";

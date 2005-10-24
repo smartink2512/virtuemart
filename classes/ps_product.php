@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.13 2005/10/18 18:45:35 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.14 2005/10/22 06:04:37 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -32,7 +32,7 @@ class ps_product {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate(&$d) {
-		global $database, $perm;
+		global $vmLogger, $database, $perm;
 		$valid = true;
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -42,16 +42,12 @@ class ps_product {
 		else {
 			$vendor_id = $ps_vendor_id;
 		}
-		/** Validate Fields **/
-		if (empty($d['error'])) {
-			$d['error'] = "";
-		}
 
 		$q = "SELECT product_id,product_thumb_image,product_full_image FROM #__{vm}_product WHERE product_sku='";
 		$q .= $d["product_sku"] . "'";
 		$db->setQuery($q); $db->query();
 		if ($db->next_record()&&($db->f("product_id") != $d["product_id"])) {
-			$d["error"] .= "ERROR: A Product with that SKU already exists.";
+			$vmLogger->err( "A Product with the SKU ".$d['product_sku']." already exists." );
 			$valid = false;
 		}
 		if( !empty( $d['product_discount_id'] )) {
@@ -69,16 +65,16 @@ class ps_product {
 		if (empty($d['manufacturer_id'])) {
 			$d['manufacturer_id'] = "1";
 		}
-		if (!$d["product_sku"]) {
-			$d["error"] .= "ERROR: A Product Sku must be entered.";
+		if (empty( $d["product_sku"])) {
+			$vmLogger->err( "A Product Sku must be entered." );
 			$valid = false;
 		}
 		if (!$d["product_name"]) {
-			$d["error"] .= "ERROR: A name must be entered.";
+			$vmLogger->err( "A product name must be entered." );
 			$valid = false;
 		}
 		if (!$d["product_available_date"]) {
-			$d["error"] .= "ERROR: You must provide an availability date.";
+			$vmLogger->err( "You must provide an availability date." );
 			$valid = false;
 		}
 		else {
@@ -90,13 +86,13 @@ class ps_product {
 
 		/** Validate Product Specific Fields **/
 		if (!$d["product_parent_id"]) {
-			if (sizeof($d["product_categories"]) < 1) {
-				$d["error"] .= "ERROR: A Category must be selected.";
+			if (sizeof(@$d["product_categories"]) < 1) {
+				$vmLogger->err( "A Category must be selected." );
 				$valid = false;
 			}
 		}
 		if( !empty($d['downloadable']) && (empty($_FILES['file_upload']['name'] ) && empty($d['filename']))) {
-			$d["error"] .= "Please specify a Product File for Download!";
+			$vmLogger->err( "Please specify a Product File for Download!" );
 			$valid =  false;
 		}
 
@@ -106,7 +102,7 @@ class ps_product {
 		if (!empty( $d['product_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['product_thumb_image_url'], 0, 4) != "http") {
-				$d['error'] .= "Error: Image URL must begin with http.";
+				$vmLogger->err( "Image URL must begin with http." );
 				$valid =  false;
 			}
 
@@ -130,7 +126,7 @@ class ps_product {
 		if (!empty( $d['product_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['product_full_image_url'], 0, 4) != "http") {
-				$d['error'] = "Error: Image URL must begin with http.";
+				$vmLogger->err( "Image URL must begin with http." );
 				return false;
 			}
 			// if we have an uploaded image file, prepare this one for deleting.
@@ -164,14 +160,14 @@ class ps_product {
 	 * @return boolean Validation sucessful?
 	 */
 	function validate_delete( $product_id, &$d ) {
-
+		global $vmLogger;
 		/* Check that ps_vendor_id and product_id match
 		if (!$this->check_vendor($d)) {
 			$d["error"] = "ERROR: Cannot delete product. Wrong product or vendor." ;
 			return false;
 		}*/
 		if (empty($product_id)) {
-			$d['error'] = "Please specify a Product to delete!";
+			$vmLogger->err( "Please specify a Product to delete!" );
 			return false;
 		}
 		/* Get the image filenames from the database */
@@ -187,7 +183,7 @@ class ps_product {
 			$_REQUEST["product_thumb_image_curr"] = $db->f("product_thumb_image");
 			$d["product_thumb_image_action"] = "delete";
 			if (!validate_image($d,"product_thumb_image","product")) {
-				$d["error"] = "Error Deleting Product Images!";
+				$vmLogger->err( "Failed deleting Product Images!" );
 				return false;
 			}
 		}
@@ -210,7 +206,7 @@ class ps_product {
 	 * @return boolean True, when the product was added, false when not
 	 */
 	function add( &$d ) {
-		global $perm;
+		global $perm, $vmLogger;
 		$database = new ps_DB();
 		
 		if (!$this->validate($d)) {
@@ -224,11 +220,13 @@ class ps_product {
 		$timestamp = time();
 		$db = new ps_DB;
 
-		if (empty($d["product_publish"]))
-		$d["product_publish"] = "N";
+		if (empty($d["product_publish"])) {
+			$d["product_publish"] = "N";
+		}
 
-		if (empty($d["clone_product"]))
-		$d["clone_product"] = "N";
+		if (empty($d["clone_product"])) {
+			$d["clone_product"] = "N";
+		}
 
 		// added for advanced attribute modification
 		// strips the trailing semi-colon from an attribute
@@ -402,8 +400,14 @@ class ps_product {
 			}
 
 			// End Cloning
+			
 		}
-
+		if( $d['clone_product'] == 'Y') {
+			$vmLogger->info( "Product was successfully cloned." );
+		}
+		else {
+			$vmLogger->info( "Product was successfully added." );
+		}
 		return true;
 	}
 
@@ -414,7 +418,8 @@ class ps_product {
 	 * @return boolean True, when the product was updated, false when not
 	 */
 	function update( &$d ) {
-
+		global $vmLogger;
+		
 		if (!$this->validate($d)) {
 			return false;
 		}
@@ -704,7 +709,7 @@ class ps_product {
 			$dbp->setQuery($q); $dbp->query();
 		}
 		/** Product Type - End */
-
+		$vmLogger->info( "Product was successfully updated" );
 		return true;
 	}
 
@@ -754,7 +759,6 @@ class ps_product {
 			while($db->next_record()) {
 				$d2["product_id"] = $db->f("product_id");
 				if (!$this->delete($d2)) {
-					$d["error"] = $d2["error"];
 					return false;
 				}
 			}
@@ -820,7 +824,7 @@ class ps_product {
 			$d["product_id"] = $d["product_parent_id"];
 			$d["product_parent_id"] = "";
 		}
-
+		$vmLogger->info( "Deleted Product ID: $product_id" );
 		return true;
 	}
 

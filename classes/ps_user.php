@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_user.php,v 1.3 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: ps_user.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -432,7 +432,7 @@ class ps_user {
 	* Function to save User Information
 	* into Joomla
 	*/
-	function saveUser() {
+	function saveUser( &$d ) {
 		global $database, $my;
 		global $mosConfig_live_site, $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_sitename;
 	
@@ -462,6 +462,12 @@ class ps_user {
 				// password set to null if empty
 				$row->password = null;
 			} else {
+				if( !empty( $_POST['password'] )) {
+					if( $row->password != @$_POST['password2'] ) {
+						$d['error'] = html_entity_decode(_REGWARN_VPASS2);
+						return false;
+					}
+				}
 				$row->password = md5( $row->password );
 			}
 		}

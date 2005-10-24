@@ -75,8 +75,9 @@ if( !defined( 'CLASSPATH' )) {
 	require_once(CLASSPATH."ps_module.php");
 	require_once(CLASSPATH."ps_perm.php");
 	require_once(CLASSPATH."ps_shopper_group.php");
-	require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
 	require_once(CLASSPATH."htmlTools.class.php");
+	require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
+	require_once(CLASSPATH."Log/Log.php");
 
 	// Instantiate the DB class
 	$db = new ps_DB();
@@ -130,6 +131,17 @@ if( !defined( 'CLASSPATH' )) {
 	$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($curreny_display["id"], $curreny_display["symbol"], $curreny_display["nbdecimal"], $curreny_display["sdecimal"], $curreny_display["thousands"], $curreny_display["positive"], $curreny_display["negative"]);
 
 	if( $option == "com_virtuemart" ) {
+		
+		$conf = array(
+			'buffering' => true
+			);
+		/**
+		 * This Log Object will help us log messages and errors
+		 * See http://pear.php.net/package/Log
+		 * @global Log vmLogger
+		 */
+		$GLOBALS['vmLogger'] = $vmLogger = &Log::singleton('display', '', '', $conf, PEAR_LOG_DEBUG);
+
 		// some input validation for limitstart
 		if (!empty($_REQUEST['limitstart'])) {
 			$_REQUEST['limitstart'] = intval( $_REQUEST['limitstart'] );
@@ -138,7 +150,8 @@ if( !defined( 'CLASSPATH' )) {
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
 		$keyword = substr( urldecode(mosgetparam($_REQUEST, 'keyword', '')), 0, 50 );
-
+	
+		unset( $_REQUEST["error"] );
 		$user_id = intval( mosgetparam($_REQUEST, 'user_id', 0) );
 		$_SESSION['session_userstate']['product_id'] = $product_id = intval( mosgetparam($_REQUEST, 'product_id', 0) );
 		$_SESSION['session_userstate']['category_id'] = $category_id = intval( mosgetparam($_REQUEST, 'category_id', 0) );
@@ -243,10 +256,15 @@ if( !defined( 'CLASSPATH' )) {
 			if (!empty($vars["error"])) {
 				$error = $vars["error"];
 			}
-
 			if (!empty($error)) {
-				echo "<script type=\"text/javascript\">alert('".mysql_escape_string($error)."');</script>";
+				echo vmCommonHTML::getErrorField($error);
 			}
+			// the Log object holds all error messages
+			// here we flush the buffer and print out all messages
+			$vmLogger->flush();
+			// Now we can switch to implicit flushing
+			$vmLogger->_buffering = false;
+			
 		}
 		else {
 			$no_last = 0;
@@ -257,5 +275,6 @@ if( !defined( 'CLASSPATH' )) {
 			$_SESSION['last_page'] = $page;
 		}
 	}
+	
 }
 ?>

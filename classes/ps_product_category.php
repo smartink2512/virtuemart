@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_category.php,v 1.9 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.10 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -31,9 +31,10 @@ class ps_product_category {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate_add(&$d) {
+		global $vmLogger;
 		$valid = true;
 		if (!$d["category_name"]) {
-			$d["error"] = "ERROR:  You must enter a name for the category.";
+			$vmLogger->err( "You must enter a name for the category.");
 			$valid = False;
 		}
 
@@ -43,7 +44,7 @@ class ps_product_category {
 		if (!empty( $d['category_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_thumb_image_url'], 0, 4) != "http") {
-				$d['error'] .= "Error: Image URL must begin with http.";
+				$vmLogger->err( "Image URL must begin with http." );
 				$valid =  false;
 			}
 
@@ -59,7 +60,7 @@ class ps_product_category {
 		if (!empty( $d['category_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_full_image_url'], 0, 4) != "http") {
-				$d['error'] = "Error: Image URL must begin with http.";
+				$vmLogger->err( "Image URL must begin with http." );
 				return false;
 			}
 			$d["category_full_image"] = $d['category_full_image_url'];
@@ -83,15 +84,15 @@ class ps_product_category {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate_update(&$d) {
-
+		global $vmLogger;
 		$valid = true;
 
 		if (!$d["category_name"]) {
-			$d["error"] = "ERROR:  You must enter a name for the category.";
+			$vmLogger->err( "You must enter a name for the category." );
 			$valid = False;
 		}
 		elseif ($d["category_id"] == $d["category_parent_id"]) {
-			$d["error"] = "ERROR:  Category parent cannot be same category.";
+			$vmLogger->err( "Category parent cannot be same category." );
 			$valid = False;
 		}
 		$db =& new ps_DB;
@@ -105,7 +106,7 @@ class ps_product_category {
 		if (!empty( $d['category_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_thumb_image_url'], 0, 4) != "http") {
-				$d['error'] .= "Error: Image URL must begin with http.";
+				$vmLogger->err( "An Image URL must begin with 'http'." );
 				$valid =  false;
 			}
 
@@ -129,7 +130,7 @@ class ps_product_category {
 		if (!empty( $d['category_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_full_image_url'], 0, 4) != "http") {
-				$d['error'] = "Error: Image URL must begin with http.";
+				$vmLogger->err( "Image URL must begin with 'http'." );
 				return false;
 			}
 			// if we have an uploaded image file, prepare this one for deleting.
@@ -162,11 +163,11 @@ class ps_product_category {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate_delete( $category_id, &$d) {
-
+		global $vmLogger;
 		$db = new ps_DB;
 
 		if (empty( $category_id )) {
-			$d["error"] = "ERROR:  Please select a category to delete.";
+			$vmLogger->err( "Please select a category to delete." );
 			return False;
 		}
 
@@ -174,8 +175,7 @@ class ps_product_category {
 		$q  = "SELECT * FROM #__{vm}_category_xref where category_parent_id='$category_id'";
 		$db->setQuery($q);   $db->query();
 		if ($db->next_record()) {
-			$d["error"]  = "ERROR: This category has children. ";
-			$d["error"] .= "Please delete children first.";
+			$vmLogger->err( "This category has children - please delete those children first.");
 			return False;
 		}
 		$q = "SELECT category_thumb_image,category_full_image FROM #__{vm}_category WHERE category_id='$category_id'";
@@ -187,7 +187,7 @@ class ps_product_category {
 			$_REQUEST["category_thumb_image_curr"] = $db->f("category_thumb_image");
 			$d["category_thumb_image_action"] = "delete";
 			if (!validate_image($d,"category_thumb_image","category")) {
-				$d["error"] = "Error Deleting Category Images!";
+				$vmLogger->err( "Failed deleting Category Images!" );
 				return false;
 			}
 		}
@@ -212,6 +212,7 @@ class ps_product_category {
 	 * @return mixed - int category_id on success, false on error
 	 */
 	function add( &$d ) {
+		global $vmLogger;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		
 		$db = new ps_DB;
@@ -271,7 +272,8 @@ class ps_product_category {
 			$q .= $category_id . "')";
 			$db->setQuery($q);
 			$db->query();
-
+			
+			$vmLogger->info( "Successfully added new category: ".$d['category_name'].'.');
 			return $category_id;
 		}
 		else {
@@ -290,6 +292,7 @@ class ps_product_category {
 	 * @return boolean true on success, false on error
 	 */
 	function update(&$d) {
+		global $vmLogger;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
 		$db = new ps_DB;
@@ -384,6 +387,9 @@ class ps_product_category {
 				$q = "UPDATE #__{vm}_category SET list_order=".$db->f("list_order")."+1 WHERE category_id='".$d["category_id"]."'";
 				$db->query( $q );
 			}
+			
+			$vmLogger->info( "Successfully updated category: ".$d['category_name'].'.' );
+			
 			return True;
 		}
 		else {
@@ -414,8 +420,7 @@ class ps_product_category {
 	* Deletes one Record.
 	*/
 	function delete_record( $record_id, &$d ) {
-		global $ps_product;
-		global $db;
+		global $ps_product, $db, $vmLogger;
 
 		if (!$this->validate_delete($record_id, $d)) {
 			return False;
@@ -466,7 +471,7 @@ class ps_product_category {
 		if (!process_images($d)) {
 			return false;
 		}
-
+		$vmLogger->info( "Successfully deleted category ID: $record_id." );
 		return True;
 	}
 	/**
@@ -616,7 +621,7 @@ class ps_product_category {
 
 			if( !isset( $row_list[$n] ) || !isset( $category_tmp[$row_list[$n]]["category_child_id"] ) )
 				continue;
-			if( $category_id == $category_tmp[$row_list[$n]]["category_child_id"])
+			if( $category_id == $category_tmp[$row_list[$n]]["category_child_id"] )
 				$style = $highlighted_style;
 			else
 				$style = "";
@@ -633,8 +638,11 @@ class ps_product_category {
 			}
 			else
 				$allowed = true;
-
+			$append = "";
 			if( $allowed ) {
+				if( $style == $highlighted_style ) {
+					$append = 'id="active_menu"';
+				}
 				if( $depth_list[$n] > 0 )
 					$css_class = "sublevel";
 				else
@@ -643,7 +651,7 @@ class ps_product_category {
 				$catname = shopMakeHtmlSafe( $category_tmp[$row_list[$n]]["category_name"] );
 
 				$html .= '
-          <a title="'.$catname.'" style="display:block;'.$style.'" class="'. $css_class .'" href="'. $sess->url(URL."index.php?page=shop.browse&amp;category_id=".$category_tmp[$row_list[$n]]["category_child_id"]) .'">'
+          <a title="'.$catname.'" style="display:block;'.$style.'" class="'. $css_class .'" href="'. $sess->url(URL."index.php?page=shop.browse&amp;category_id=".$category_tmp[$row_list[$n]]["category_child_id"]) .'" '.$append.'>'
 				. str_repeat("&nbsp;&nbsp;&nbsp;",$depth_list[$n]) . $catname
 				. ps_product_category::products_in_category( $category_tmp[$row_list[$n]]["category_child_id"] )
 				.'</a>';
