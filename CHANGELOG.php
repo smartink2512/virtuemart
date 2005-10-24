@@ -33,7 +33,10 @@ Legend:
 
 VirtueMart 1.0
 *************************************
-21-20-2005 soeren
+24-10-2005 schirmer
+# Reviews display fixed (was showing only one review)
+
+21-10-2005 soeren
 # waiting list extension printing errors...
 
 20-10-2005 soeren

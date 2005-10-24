@@ -88,7 +88,8 @@ class ps_reviews {
       global $db, $my, $VM_LANG;
       $html = "";
       if (PSHOP_ALLOW_REVIEWS == "1" ) {
-		$dbc = &new ps_DB;
+		  $html = "<h4>".$VM_LANG->_PHPSHOP_REVIEWS.":</h4>";      
+		  $dbc = &new ps_DB;
           $showall = mosgetparam( $_REQUEST, 'showall', 0);
           $q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews WHERE product_id='$product_id'";
           if( $limit > 0 )
@@ -98,7 +99,6 @@ class ps_reviews {
           $dbc->query( $q );
           
           while( $dbc->next_record() ) {
-				$html = "<h4>".$VM_LANG->_PHPSHOP_REVIEWS.":</h4>";
 				$i=0;
 				$db->query("SELECT name FROM #__users WHERE id='".$dbc->f("userid")."'");
 				$db->next_record();
