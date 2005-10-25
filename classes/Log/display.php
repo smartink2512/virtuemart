@@ -119,21 +119,14 @@ class Log_display extends Log
         /* Extract the string representation of the message. */
         $message = $this->_extractMessage($message);
              
-        
-        if( $this->_buffering ) {
-        	// Buffer the log message and its priority
-        	$this->_messages[$this->_count]['priority'] = $priority;
-        	$this->_messages[$this->_count]['message'] = $message;
-        	$this->_count++;
-        }
-        else {
-        	/* Build and output the complete log line. */	
-        	echo $this->formatOutput(
-		             '<b>' . ucfirst($this->priorityToString($priority)) . '</b>: '.
-		             nl2br(htmlspecialchars($message)) .
-		             $this->_linebreak,
-		             $priority
-		         );
+        // Store the log message and its priority
+    	$this->_messages[$this->_count]['priority'] = $priority;
+    	$this->_messages[$this->_count]['message'] = $message;
+    	$this->_count++;
+        	
+        if( !$this->_buffering ) {
+        	
+        	$this->flush();
         }
         /* Notify observers about this log message. */
         $this->_announce(array('priority' => $priority, 'message' => $message));
@@ -150,6 +143,9 @@ class Log_display extends Log
     function formatOutput( $message, $priority) {
     	if( $priority >= PEAR_LOG_TIP) {
     		return '<div class="shop_tip">'. $message . '</div>';
+    	}
+    	elseif( $priority >= PEAR_LOG_DEBUG) {
+    		return '<div class="shop_debug">'. $message . '</div>';
     	}
     	elseif( $priority >= PEAR_LOG_INFO) {
     		return '<div class="shop_info">'. $message . '</div>';
@@ -172,10 +168,12 @@ class Log_display extends Log
 		$output = "";
 		if( $this->_count > 10 ) {
 			// Wrap the messages into a scrollable div field
-			echo '<div style="width:90%; overflow:auto; height:200px;">';
+			$output .= '<div style="width:90%; overflow:auto; height:200px;">';
 		}
 		foreach( $this->_messages as $message ) {
-			if( $priority === null || $priority <= $message['priority']) {
+			if( ( $priority === null || $priority <= $message['priority'] )
+				&& $message['priority'] !== PEAR_LOG_DEBUG
+				|| ( $message['priority'] === PEAR_LOG_DEBUG && DEBUG == '1')) {
 				$output .= $this->formatOutput(
 			             '<b>' . ucfirst($this->priorityToString($message['priority'])) . '</b>: '.
 			             nl2br(htmlspecialchars($message['message'])) 
@@ -185,7 +183,7 @@ class Log_display extends Log
 			}
 		}
 		if( $this->_count > 10 ) {
-			echo '</div>';
+			$output .= '</div>';
 		}
 		$this->_count = 0;
 		$this->_messages = array();

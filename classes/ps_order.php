@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_order.php,v 1.5 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: ps_order.php,v 1.6 2005/10/22 06:04:37 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -520,11 +520,11 @@ class ps_order {
         $dbs->next_record();
         $order_status = $dbs->f("order_status_name");
         if ($i++ % 2) 
-           $bgcolor=SEARCH_COLOR_1;
+           $class="sectiontableentry1";
         else
-           $bgcolor=SEARCH_COLOR_2;
+           $class="sectiontableentry2";
            
-        echo "<tr style=\"background-color:$bgcolor;cursor:pointer;\" onclick=\"window.location='index.php?option=com_virtuemart&page=account.order_details&order_id=".$db->f("order_id")."';\">\n<td>";
+        echo "<tr class=\"$class\" style=\"cursor:pointer;\" onclick=\"window.location='index.php?option=com_virtuemart&page=account.order_details&order_id=".$db->f("order_id")."';\">\n<td>";
         echo "<a href=\"index.php?option=com_virtuemart&page=account.order_details&order_id=".$db->f("order_id")."&Itemid=".@$_REQUEST['Itemid']."\">\n";
         echo "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ORDER_LINK."\" />&nbsp;".$VM_LANG->_PHPSHOP_VIEW."</a><br />";
         echo "</td>\n<td>";

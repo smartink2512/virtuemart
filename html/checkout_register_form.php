@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: checkout_register_form.php,v 1.8 2005/10/12 18:13:11 soeren_nb Exp $
+* @version $Id: checkout_register_form.php,v 1.10 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -101,7 +101,7 @@ if (MUST_AGREE_TO_TOS == '1') {
 		// This label is a JS link with a noscript alternative for non-JS users
 		$shopper_fields['agreed'] = '<script type="text/javascript">//<![CDATA[
 			document.write(\'<label for="agreed_field"><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
-			document.write(\''. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'</a></label>\');
+			document.write(\''.htmlspecialchars( $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS, ENT_QUOTES ) .'</a></label>\');
 			//]]></script>
 			<noscript><label for="agreed_field"><a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&page=shop.tos" title="'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'">
 			'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'</a></label></noscript>';

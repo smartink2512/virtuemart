@@ -250,8 +250,9 @@ if( !defined( 'CLASSPATH' )) {
 					$_REQUEST['product_id']=$product_id = $_SESSION['session_userstate']['product_id'];
 				}
 			}
-			elseif( DEBUG )
-			echo "<div class=\"shop_error\">Fatal Error: Could include the class file ".$db->f("function_class")."</div>";
+			elseif( DEBUG ) {
+				$vmLogger->err( "Could not include the class file ".$db->f("function_class") );
+			}
 
 			if (!empty($vars["error"])) {
 				$error = $vars["error"];

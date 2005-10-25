@@ -171,7 +171,7 @@ class ps_shopper {
 
 			$_POST['name'] = $d['first_name']." ".$d['last_name'];
 			if( VM_SILENT_REGISTRATION == '1' ) {
-				$_POST['username'] = $d['username'] = str_replace( '-', '_', $d['email'] );
+				$_POST['username'] = $d['username'] = substr( str_replace( '-', '_', $d['email'] ), 0, 25 );
 				$_POST['password'] = $d['password'] = mosMakePassword();
 				$_POST['password2'] = $_POST['password'];
 			}

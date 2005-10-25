@@ -216,17 +216,15 @@ else {
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
 
 			if (SHOWVERSION) {
-				include(PAGEPATH ."/VERSION.php");
+				include(PAGEPATH ."footer.php");
 			}
 
 			// Set debug option on/off
 			if (DEBUG) {
 				$end = utime();
 				$runtime = $end - $start;
-				$my_debug_page= explode ( '.', DEBUGPAGE );
-				$modname = $my_debug_page[0];
-				$pagename = $my_debug_page[1];
-				include( PAGEPATH . "$modname.$pagename.php" );
+				
+				include( PAGEPATH . "shop.debug.php" );
 			}
 			return $mainframe;
 		}

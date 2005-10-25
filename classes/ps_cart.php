@@ -293,6 +293,7 @@ class ps_cart {
 	function reset() {
 		global $cart;
 		$_SESSION['cart']["idx"]=0;
+		$_SESSION['product_info'] = Array();
 		$cart = $_SESSION['cart'];
 		return True;
 	}

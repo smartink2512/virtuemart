@@ -33,6 +33,16 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+25-10-2005 soeren
+# Bug #174 ? Checkout using USPS Module, fixed path to xml domit! library
+^ renamed /html/VERSION.php to /html/footer.php
+^ changed the colors of the order list to joomla css classes (account maintance section)
+# FR #127 font size in tab headings too big in safari browser
++ added new language tokens for the Log integration
+# Bug #166 ? virtuemart-beta4-shared SSL
+# Bug #173 - Registration with e-mails over 25 characters
+# bug #176 - beta4: message tax included displayed even if OFF
+^ FR #125 vendor name in shopper group drop-down
 
 24-10-2005 soeren
 # fixed a bug where "my-email-address@domain.com" couldn't be used for username (converting - to _ now)
@@ -42,13 +52,9 @@ VirtueMart 1.0
 	The class and its child classes can be found in /classes/Log. VM uses a modified version
 	of the display class. Support for buffering and formatting depending on priority was added.
 
-24-10-2005 schirmer
-# Reviews display fixed (was showing only one review)
-
-22-10-2005 soeren
+	
+22-20-2005 soeren
 + added ability to change username + password through shop's billing form
-
-21-10-2005 soeren
 # waiting list extension printing errors...
 
 20-10-2005 soeren
@@ -66,8 +72,10 @@ VirtueMart 1.0
 # made labels for payment methods clickable
 # fixed bug #137 'unpublished products can become related products'
 
+=======
 19-10-2005 schirmer
 #  fixed Top10 module showing products multiple times if it has more than one category
+
 
 18-10-2005 soeren
 ^ Changed the field jos_vm_order_item.product_item_price from DECIMAL(10,2) to DECIMAL(10,5) to prevent rounding errors

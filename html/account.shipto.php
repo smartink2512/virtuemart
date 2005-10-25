@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.shipto.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: account.shipto.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -28,7 +28,7 @@ $missing = mosGetParam( $vars, 'missing' );
 $missing_style = "color: Red; font-weight: Bold;";
 
 if (!empty( $missing )) {
-    echo "<script type=\"text/javascript\">alert('"._CONTACT_FORM_NC."'); </script>\n";
+    echo "<script type=\"text/javascript\">alert('".html_entity_decode( _CONTACT_FORM_NC )."'); </script>\n";
 }
 $db = new ps_DB;
 if (!empty($user_info_id)) {
@@ -242,7 +242,7 @@ echo "<br />".$VM_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
   <br/>
   <div style="float:left;width:45%;text-align:right;" >
     <input type="submit" class="button" name="submit" value="<? echo _E_SAVE ?>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="<?php $sess->purl( SECUREURL."index.php?page=account.shipping") ?>" class="button"><?php echo _BACK ?></a>
+    <a href="<?php $sess->purl( SECUREURL."index.php?page=$next_page") ?>" class="button"><?php echo _BACK ?></a>
   </div>
   </form>
 <?php

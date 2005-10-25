@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Header file for the shop administration.
 * shows all modules that are available to the user in a dropdown menu
 *
-* @version $Id: header.php,v 1.5 2005/10/12 18:13:10 soeren_nb Exp $
+* @version $Id: header.php,v 1.6 2005/10/15 09:17:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -314,8 +314,8 @@ var vmMenu =
 ];
 </script>
 
-<img align="left" hspace="15" src="<?php echo IMAGEURL ?>ps_image/toplogo.gif" />
-<br/><div id="vmMenuID" style="border: 1px solid black;text-align:left;background:#CCCCFF;" height="52" ></div>
+<img align="left" hspace="15" src="<?php echo IMAGEURL ?>ps_image/menu_logo.gif" alt="VirtueMart Cart Logo" />
+<br/><div id="vmMenuID" style="border: 1px solid black;text-align:left;background:#E6D48E;" height="52" ></div>
 <br />
 
 <?php 

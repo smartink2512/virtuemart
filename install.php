@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: install.php,v 1.7 2005/10/07 14:29:57 soeren_nb Exp $
+* @version $Id: install.php,v 1.8 2005/10/19 17:51:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -158,7 +158,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	*/
 	if( $install_type != 'newinstall' && is_dir( $mosConfig_absolute_path.'/components/com_phpshop' ) ) {
 	
-		require( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.copy.php' );
+		require_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.copy.php' );
 		
 		// COPY all Images from /componentes/com_phpshop/shop_image/*
 		// TO /components/com_virtuemart/shop_image/*

@@ -556,7 +556,7 @@ function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) 
 function mm_showMyFileName( $filename ) {
     
     if (DEBUG == '1' ) {
-        echo mm_ToolTip(addslashes("<div class='inputbox'>Begin of File: $filename</div>"));
+        echo mm_ToolTip( '<div class=\'inputbox\'>Begin of File: '. $filename.'</div>');
     }
 }
 /**

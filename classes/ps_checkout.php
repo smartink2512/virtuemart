@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.11 2005/10/19 17:51:19 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.12 2005/10/22 06:04:37 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -115,7 +115,7 @@ class ps_checkout {
 	 * @return unknown
 	 */
 	function validate_form(&$d) {
-		global $VM_LANG, $PSHOP_SHIPPING_MODULES;
+		global $VM_LANG, $PSHOP_SHIPPING_MODULES, $vmLogger;
 
 		$db = new ps_DB;
 		require_once(CLASSPATH.'ps_payment_method.php');
@@ -129,24 +129,23 @@ class ps_checkout {
 			$db->query($q);
 			$db->next_record();
 			$d["order_id"] = $db->f("order_id");
-			$d["error"] = "";
 			return False;
 		}
 		if( PSHOP_AGREE_TO_TOS_ONORDER == '1' ) {
 			if( empty( $d["agreed"] )) {
-				$d["error"] = $VM_LANG->_PHPSHOP_AGREE_TO_TOS;
+				$vmLogger->warning( $VM_LANG->_PHPSHOP_AGREE_TO_TOS );
 				return false;
 			}
 		}
 
 		if ( NO_SHIPPING != "1" && (CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='3') ) {
 			if (empty($d["shipping_rate_id"])) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP );
 				return False;
 			}
 		}
 		if (!$d["payment_method_id"]) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM;
+			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM );
 			return False;
 		}
 
@@ -169,7 +168,7 @@ class ps_checkout {
 	**          False - validation failed
 	***************************************************************************/
 	function validate_add(&$d) {
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 
 		require_once(CLASSPATH.'ps_payment_method.php');
 		$ps_payment_method = new ps_payment_method;
@@ -178,30 +177,30 @@ class ps_checkout {
 
 		if (NO_SHIPTO != '1') {
 			if (empty($d["ship_to_info_id"])) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO );
 				return False;
 			}
 		}
 
 		if (!$d["payment_method_id"]) {
-			$d["error"] = "Please select a payment method.";
+			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_MSG_4 );
 			return False;
 		}
 		if ($ps_payment_method->is_creditcard($d["payment_method_id"])) {
 
 			if (!$_SESSION["ccdata"]["order_payment_number"]) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR );
 				return False;
 			}
 
 			if(!$ps_payment_method->validate_payment($d["payment_method_id"],
 					$_SESSION["ccdata"]["order_payment_number"])) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCNUM_INV;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCNUM_INV );
 				return False;
 			}
 
 			if(!$_SESSION["ccdata"]["order_payment_expire"]) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV );
 				return False;
 			}
 		}
@@ -221,9 +220,10 @@ class ps_checkout {
 	**          False - validation failed
 	***************************************************************************/
 	function validate_shipping_method(&$d) {
-		global $VM_LANG, $PSHOP_SHIPPING_MODULES;
+		global $VM_LANG, $PSHOP_SHIPPING_MODULES, $vmLogger;
+		
 		if( empty($d['shipping_rate_id']) ) {
-			$d['error'] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP;
+			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP );
 			return false;
 		}
 		if( is_callable( array($this->_SHIPPING, 'validate') )) {
@@ -247,13 +247,13 @@ class ps_checkout {
 	**          False - validation failed
 	***************************************************************************/
 	function validate_payment_method(&$d, $is_test) {
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 
 		if (empty($d["payment_method_id"])) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM;
+			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM );
 			return false;
 		}
 		require_once(CLASSPATH.'ps_payment_method.php');
@@ -272,53 +272,53 @@ class ps_checkout {
 
 			/*** Creditcard ***/
 			if (empty( $d["creditcard_code"]) ) {
-				$d["error"] = "Error: Credit Card Type not found.";
+				$vmLogger->err( "Credit Card Type not found." );
 				return false;
 			}
 
 			/*** $_SESSION['ccdata'] = $ccdata;
 			* The Data should be in the session ***/
 			if (!isset($_SESSION['ccdata'])) { //Not? Then Error
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATA;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATA );
 				return False;
 			}
 
 			if (!$_SESSION['ccdata']['order_payment_number']) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND );
 				return False;
 			}
 
 			/** CREDIT CARD NUMBER CHECK
         ** USING THE CREDIT CARD CLASS in ps_payment **/
 			if(!$ps_payment_method->validate_payment( $d["creditcard_code"], $_SESSION['ccdata']['order_payment_number'])) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE );
 				return False;
 			}
 
 			if (!$is_test) {
 				$payment_number = ereg_replace(" |-", "", $_SESSION['ccdata']['order_payment_number']);
 				if ($payment_number == "4111111111111111") {
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_TEST;
+					$vmLogger->warning( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_TEST );
 					return False;
 				}
 			}
 			if(!empty($d['need_card_code']) && empty($d['credit_card_code'])) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CUSTOMER_CVV2_ERROR;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CUSTOMER_CVV2_ERROR );
 				return False;
 			}
 			if(!$_SESSION['ccdata']['order_payment_expire_month']) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCMON;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCMON );
 				return False;
 			}
 			if(!$_SESSION['ccdata']['order_payment_expire_year']) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR );
 				return False;
 			}
 			$date = getdate( time() );
 			if ($_SESSION['ccdata']['order_payment_expire_year'] < $date["year"] or
 			($_SESSION['ccdata']['order_payment_expire_year'] == $date["year"] and
 			$_SESSION['ccdata']['order_payment_expire_month'] < $date["mon"])) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV );
 				return False;
 			}
 			return True;
@@ -330,29 +330,29 @@ class ps_checkout {
 			$q  = "SELECT bank_account_holder,bank_iban,bank_account_nr,bank_sort_code,bank_name FROM #__{vm}_user_info WHERE user_id = '" . $d["user_id"] . "'";
 			$dbu->query($q);
 			if (!$dbu->next_record()) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA );
 				return False;
 			}
 			if ($dbu->f("bank_account_holder") == ""){
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME );
 				return False;
 			}
 			if (($dbu->f("bank_iban") == "") and
 			($dbu->f("bank_account_nr") =="")) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_IBAN;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_IBAN );
 				return False;
 			}
 			if ($dbu->f("bank_iban") == "") {
 				if ($dbu->f("bank_account_nr") == ""){
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM;
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM );
 					return False;
 				}
 				if ($dbu->f("bank_sort_code") == ""){
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT;
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT );
 					return False;
 				}
 				if ($dbu->f("bank_name") == ""){
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME;
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME );
 					return False;
 				}
 				$d["creditcard_code"] = "";
@@ -377,6 +377,8 @@ class ps_checkout {
 	**          False - update failed
 	***************************************************************************/
 	function update(&$d) {
+		global $vmLogger;
+		
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -385,7 +387,7 @@ class ps_checkout {
 			return True;
 		}
 		else {
-			$d["error"] = $this->error;
+			$vmLogger->err( $this->error );
 			return False;
 		}
 	}
@@ -399,73 +401,77 @@ class ps_checkout {
 	**          False - a failure during the validation
 	***************************************************************************/
 	function process(&$d) {
-		global $checkout_this_step, $sess,$VM_LANG;
+		global $checkout_this_step, $sess,$VM_LANG, $vmLogger;
 		$ccdata = array();
 
 		if (!$d["checkout_this_step"]) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP;
+			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP );
 			return false;
 		}
 		switch ($d["checkout_this_step"]) {
 
-			case CHECK_OUT_GET_FINAL_BASKET :
-
-			// The User has finished his works on the Basket, now the next steps
-			$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_ADDR;
-			$checkout_this_step = CHECK_OUT_GET_SHIPPING_ADDR;
-			break;
+				case CHECK_OUT_GET_FINAL_BASKET :
+	
+				// The User has finished his works on the Basket, now the next steps
+				$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_ADDR;
+				$checkout_this_step = CHECK_OUT_GET_SHIPPING_ADDR;
+				break;
 
 			case CHECK_OUT_GET_SHIPPING_ADDR :
 
-			$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
-			$checkout_this_step = CHECK_OUT_GET_SHIPPING_METHOD;
-
-			// The User has choosen a Shipping address
-			if (empty($d["ship_to_info_id"])) {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
-				return False;
-			}
-			break;
+				$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
+				$checkout_this_step = CHECK_OUT_GET_SHIPPING_METHOD;
+	
+				// The User has choosen a Shipping address
+				if (empty($d["ship_to_info_id"])) {
+					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
+					return False;
+				}
+				break;
 
 			case CHECK_OUT_GET_SHIPPING_METHOD:
 
-			$d["checkout_this_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
-			$checkout_this_step = CHECK_OUT_GET_PAYMENT_METHOD;
-			// The User has choosen a Shipping method
-			if (!$this->validate_shipping_method($d)) {
-				return false;
-			}
-			break;
+				$d["checkout_this_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
+				$checkout_this_step = CHECK_OUT_GET_PAYMENT_METHOD;
+				// The User has choosen a Shipping method
+				if (!$this->validate_shipping_method($d)) {
+					return false;
+				}
+				break;
 
 			case CHECK_OUT_GET_PAYMENT_METHOD:
 
-			$d["checkout_this_step"] = CHECK_OUT_GET_FINAL_CONFIRMATION;
-			$checkout_this_step = CHECK_OUT_GET_FINAL_CONFIRMATION;
-			// The User has choosen a payment method
-			$_SESSION['ccdata']['order_payment_name'] = @$d['order_payment_name'];
-			// VISA, AMEX, DISCOVER....
-			$_SESSION['ccdata']['creditcard_code'] = @$d['creditcard_code'];
-			$_SESSION['ccdata']['order_payment_number'] = @$d['order_payment_number'];
-			$_SESSION['ccdata']['order_payment_expire_month'] = @$d['order_payment_expire_month'];
-			$_SESSION['ccdata']['order_payment_expire_year'] = @$d['order_payment_expire_year'];
-			// 3-digit Security Code
-			$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
-
-			if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber
-				return false;
-			}
-			break;
+				$d["checkout_this_step"] = CHECK_OUT_GET_FINAL_CONFIRMATION;
+				$checkout_this_step = CHECK_OUT_GET_FINAL_CONFIRMATION;
+				
+				// The User has choosen a payment method
+				$_SESSION['ccdata']['order_payment_name'] = @$d['order_payment_name'];
+				// VISA, AMEX, DISCOVER....
+				$_SESSION['ccdata']['creditcard_code'] = @$d['creditcard_code'];
+				$_SESSION['ccdata']['order_payment_number'] = @$d['order_payment_number'];
+				$_SESSION['ccdata']['order_payment_expire_month'] = @$d['order_payment_expire_month'];
+				$_SESSION['ccdata']['order_payment_expire_year'] = @$d['order_payment_expire_year'];
+				// 3-digit Security Code
+				$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
+	
+				if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber
+					$d["checkout_this_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
+					$_REQUEST["checkout_next_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
+					return false;
+				}
+				
+				break;
 
 			case CHECK_OUT_GET_FINAL_CONFIRMATION:
 
-			// The User wants to order now, validate everything, if OK than Add immeditialtly
-			require_once(CLASSPATH.'ps_payment_method.php');
-			$ps_payment_method = new ps_payment_method;
-			return ($this->add($d));
+				// The User wants to order now, validate everything, if OK than Add immeditialtly
+				require_once(CLASSPATH.'ps_payment_method.php');
+				$ps_payment_method = new ps_payment_method;
+				return ($this->add($d));
 
 			default:
-			$d["error"] = "CheckOut step ($checkout_this_step) is undefined!";
-			return false;
+				$vmLogger->crit( "CheckOut step ($checkout_this_step) is undefined!" );
+				return false;
 
 		} // end switch
 		return true;
@@ -632,7 +638,8 @@ class ps_checkout {
 	**          False - Failure in storing the order information
 	***************************************************************************/
 	function add( &$d ) {
-		global $HTTP_POST_VARS, $afid, $VM_LANG, $mosConfig_debug, $mosConfig_offset;
+		global $HTTP_POST_VARS, $afid, $VM_LANG, $mosConfig_debug, $mosConfig_offset,
+		$vmLogger;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$auth = $_SESSION['auth'];
@@ -737,18 +744,19 @@ class ps_checkout {
 		$order_total = round( $order_total, 2);
 
 
-		if( DEBUG == '1' || $mosConfig_debug == '1' ) {
-			echo "<strong>-- Checkout Debug--</strong><br/>";
-			echo "Subtotal: $order_subtotal<br/>";
-			echo "Taxable: $order_taxable<br/>";
-			echo "Payment Discount: $payment_discount (untaxed: $payment_discount_untaxed)<br/>";
-			echo "Coupon Discount: $coupon_discount<br/>";
-			echo "Shipping: $order_shipping<br/>";
-			echo "Shipping Tax : $order_shipping_tax<br/>";
-			echo "Tax : $order_tax<br/>";
-			echo "------------------------<br/>";
-			echo "Order Total: $order_total<br/>";
-		}
+		$vmLogger->debug( '-- Checkout Debug--
+		
+Subtotal: '.$order_subtotal.'
+Taxable: '.$order_taxable.'
+Payment Discount: '.$payment_discount.' (untaxed: '.$payment_discount_untaxed.')
+Coupon Discount: '.$coupon_discount.'
+Shipping: '.$order_shipping.'
+Shipping Tax : '.$order_shipping_tax.'
+Tax : '.$order_tax.'
+------------------------
+Order Total: '.$order_total.'
+----------------------------' 
+		);
 
 		// Check to see if Payment Class File exists
 		$payment_class = $ps_payment_method->get_field($d["payment_method_id"], "payment_class");
@@ -760,7 +768,7 @@ class ps_checkout {
 
 			eval( "\$_PAYMENT = new $payment_class();" );
 			if (!$_PAYMENT->process_payment($order_number,$order_total, $d)) {
-				$d["error"] .= "\n ".$VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($payment_class)";
+				$vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($payment_class)" );
 				$_SESSION['last_page'] = "checkout.index";
 				return False;
 			}
@@ -823,16 +831,16 @@ class ps_checkout {
 		$d["order_id"] = $order_id = $db->f("order_id");
 
 		/**
-    * Insert the initial Order History.
-    */
+	    * Insert the initial Order History.
+	    */
 		$q = "INSERT INTO #__{vm}_order_history ";
 		$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
 		$q .= "'$order_id', 'P', NOW(), '1', '')";
 		$db->query($q);
 
 		/**
-    * Insert the Order payment info 
-    */
+	    * Insert the Order payment info 
+	    */
 		$payment_number = ereg_replace(" |-", "", $_SESSION['ccdata']['order_payment_number']);
 
 		$d["order_payment_code"] = $_SESSION['ccdata']['credit_card_code'];
@@ -854,8 +862,8 @@ class ps_checkout {
 		$db->next_record();
 
 		/**
-	* Insert the User Billto & Shipto Info
-	*/
+		* Insert the User Billto & Shipto Info
+		*/
 		// Bill To Address
 		$q = "INSERT INTO `#__{vm}_order_user_info` ";
 		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
@@ -1321,10 +1329,12 @@ class ps_checkout {
 
 		$discount = $ps_payment_method->get_field($payment_method_id, "payment_method_discount");
 
-		if (!empty($discount))
-		return(floatval($discount));
-		else
-		return(0);
+		if (!empty($discount)) {
+			return(floatval($discount));
+		}
+		else {
+			return(0);
+		}
 	}
 
 	/**************************************************************************
@@ -1480,17 +1490,17 @@ class ps_checkout {
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.": ";
 		switch($db->f("order_status")) {
 			case ("P"):
-			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_P."\n\n";
-			$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_P;
-			break;
+				$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_P."\n\n";
+				$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_P;
+				break;
 			case ("X"):
-			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_X."\n\n";
-			$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_X;
-			break;
+				$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_X."\n\n";
+				$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_X;
+				break;
 			case ("C"):
-			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_C."\n\n";
-			$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_C;
-			break;
+				$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_C."\n\n";
+				$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_C;
+				break;
 		}
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL."\n";
 		$shopper_message .= "--------------------\n\n";
@@ -1670,18 +1680,12 @@ class ps_checkout {
 			$msg = $shopper_header . $shopper_message . $shopper_footer;
 
 			// Mail receipt to the shopper
-			mail($shopper_email,
-			$shopper_subject,
-			$msg,
-			"From: $from_email\n");
+			vmMail( $from_email, $mosConfig_fromname, $shopper_email, $shopper_subject, $msg, "" );
 
 			$msg = $vendor_header . $shopper_message . $vendor_footer;
 
 			// Mail receipt to the vendor
-			mail($vendor_email,
-			$vendor_subject,
-			$msg,
-			"From: $shopper_email\n");
+			vmMail($shopper_email, $mosConfig_fromname, $vendor_email, $vendor_subject,	$msg, "" );
 
 		}
 
@@ -1873,10 +1877,9 @@ class ps_checkout {
 			$vendor_email_msg = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_mail_Body, $vendor_mail_AltBody, true, null, null, $EmbeddedImages);
 
 			if ( !$shopper_email_msg || !$vendor_email_msg ) {
-				if( DEBUG ) {
-					echo $shopper_mail->ErrorInfo;
-					echo $vendor_mail->ErrorInfo;
-				}
+				
+				$vmLogger->debug( $shopper_mail->ErrorInfo );
+				$vmLogger->debug( $vendor_mail->ErrorInfo );
 				return false;
 			}
 			//
@@ -1945,7 +1948,7 @@ class ps_checkout {
 			$rate_details = explode( "|", urldecode(urldecode($_REQUEST['shipping_rate_id'])) );
 			foreach( $rate_details as $k => $v ) {
 				if( $k == 3 ) {
-					echo $CURRENCY_DISPLAY->getFullValue( round( $v, 2) );
+					echo $CURRENCY_DISPLAY->getFullValue( $v )."; ";
 				} elseif( $k > 0 ) {
 					echo "$v; ";
 				}
