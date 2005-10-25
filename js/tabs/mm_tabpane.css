@@ -51,6 +51,8 @@
 	top:			-2px;
 	color:			WindowText;
 	font:			Message-Box;
+	font-size : 	0.7em;
+    font-weight:	normal;
 	padding:		10px;
 	/*height:			200px;*/
 }
