@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.debug.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.debug.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -48,9 +48,9 @@ $tabs->startTab( "Shop Core Variables", "shop-variables" );
           <td width="32%" valign="top" nowrap><?php 
             echo $i 
                 . "&nbsp;&nbsp;"
-                .mosToolTip( mysql_escape_string("Note: This is only the number of queries related to VirtueMart, 
+                .mm_ToolTip( "Note: This is only the number of queries related to VirtueMart, 
                               which have been processed so far. Because the component is wrapped 
-                              into the Mambo Framework, we can't get the total number of Queries at THIS point")); 
+                              into the Mambo Framework, we can't get the total number of Queries at THIS point"); 
             ?>
           </td>
           <td class="sectiontableentry2" width="18%" align="right" valign="top"><b>Last Page:</b></td>
