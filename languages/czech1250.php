@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.martlanguages.php,v 1.2 2005/10/01 08:54:08 soeren_nb Exp $
+* @version $Id: admin.martlanguages.php,v 1.4 2005/10/15 15:26:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1427,6 +1427,15 @@ You may login to %s using the following username and password:
 Username - %s
 Password - %s
 ';
+	var $_PEAR_LOG_CRIT = 'Critical';
+	var $_PEAR_LOG_ERR = 'Error';
+	var $_PEAR_LOG_WARNING = 'Warning';
+	var $_PEAR_LOG_INFO = 'Info';
+	var $_PEAR_LOG_TIP = 'Info';
+	var $_PEAR_LOG_ALERT = 'Alert';
+	var $_PEAR_LOG_EMERG = 'Emergency';
+	var $_PEAR_LOG_NOTICE = 'Notice';
+	var $_PEAR_LOG_DEBUG = 'Debug';
         
 }
 class phpShopLanguage extends vmLanguage { }

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.martlanguages.php,v 1.2 2005/10/01 08:54:08 soeren_nb Exp $
+* @version $Id: admin.martlanguages.php,v 1.4 2005/10/15 15:26:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -751,7 +751,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = 'Article';
 	var $_PHPSHOP_DOWNLOADS_TITLE = 'Zone de Téléchargement';
 	var $_PHPSHOP_DOWNLOADS_START = 'Démarrer le Téléchargement';
-	var $_PHPSHOP_DOWNLOADS_INFO = 'Veuillez saisir le Numéro de téléchargement qui vous a été communiqué par email, puis cliquez sur \"Démarrer le téléchargement\".';
+	var $_PHPSHOP_DOWNLOADS_INFO = 'Veuillez saisir le Numéro de téléchargement qui vous a été communiqué par email, puis cliquez sur "Démarrer le téléchargement".';
 	var $_PHPSHOP_DOWNLOADS_ERR_EXP = 'Désolé, mais votre téléchargement a expiré';
 	var $_PHPSHOP_DOWNLOADS_ERR_MAX = 'Désolé, mais vous avez atteint le nombre maximal de téléchargements possibles';
 	var $_PHPSHOP_DOWNLOADS_ERR_INV = 'Numéro de Téléchargement Non Valide !';
@@ -897,7 +897,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = 'Page de Détail';
 	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = 'Nom de la page qui sera utilisée par défaut pour afficher les détails de votre produit.';
 	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = 'Modèle Catégorie';
-	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Nom du fichier Modèle, qui sera utilisé par défaut pour afficher les produits d\'une catégorie.<br />                                                                                                     Vous pouvez créer de nouveaux modèles en personnalisant les fichiers de modèles existants.Ces fichiers sont dans le répertoire <strong>COMPONENTPATH/html/templates/browse</strong> et commence par le mot \"browse\".<br />
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Nom du fichier Modèle, qui sera utilisé par défaut pour afficher les produits d\'une catégorie.<br />                                                                                                     Vous pouvez créer de nouveaux modèles en personnalisant les fichiers de modèles existants.Ces fichiers sont dans le répertoire <strong>COMPONENTPATH/html/templates/browse</strong> et commence par le mot "browse".<br />
                                                                                                       ';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Nombre par défaut de produits sur une ligne';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Nombre de produits à afficher sur une ligne. <br />                                                           Exemple: Si vous réglez à 4, le modèle catégorie affichera 4 produits par ligne';
@@ -960,7 +960,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = 'Sélectionner le statut de commande pour lequel les téléchargements sont interdits au client.';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = 'Racine des Fichiers en Téléchargement';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = 'Le chemin physique où sont stockés les fichiers téléchargeables. (avec / à la fin!)<br>
-        <span class=\"message\">Attention sécurité : Veuillez utiliser un répertoire situé EN DEHORS DE VOTRE RACINE DE SITE.</span>';
+        <span class="message">Attention sécurité : Veuillez utiliser un répertoire situé EN DEHORS DE VOTRE RACINE DE SITE.</span>';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = 'Téléchargement Maximum';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Saisir le nombre maximal de téléchargements possibles avec la même clé de téléchargement (pour une commande)';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Expiration du téléchargement';
@@ -1306,7 +1306,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = 'Valeurs Multiples';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = 'Valeurs Possibles';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = 'Afficher Valeurs Possibles en sélection multiple ?';
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>Si Valeurs Possibles est choisi, le Paramètre ne peut avoir seulement que ces valeurs. Exemple pour Valeurs Possibles :</strong><BR><span class=\"sectionname\">Acier;Bois;Plastique;...</span>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>Si Valeurs Possibles est choisi, le Paramètre ne peut avoir seulement que ces valeurs. Exemple pour Valeurs Possibles :</strong><BR><span class="sectionname">Acier;Bois;Plastique;...</span>';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Valeur par Défaut';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = 'Comme Valeur par Défaut du Paramètre utiliser ce format:<ul><li>Date: AAAA-MM-JJ</li><li>Heure: HH:MM:SS</li><li>Date & Heure: AAAA-MM-JJ HH:MM:SS</li></ul>';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Unité';
@@ -1383,17 +1383,17 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP = 'Affiche le nombre de Produits dans une Catégorie (4)?';
 	var $_PHPSHOP_ADMIN_CFG_ADDTOCART_STYLE = 'Style du bouton Ajouter au Panier';
 	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING = 'Active la Création Automatique de Vignette?';
-	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Cocher pour la création automatique de vignette. Toutes les images Vignettes sont redimensionnées aux valeurs fournies ci dessous en utilisant les fonctions GD2 de PHP. (Pour vérifier si ces fonctions sont disponibles, aller dans le menu \"Help//System/System Info\" et chercher la fonction GD. La qualité des vignettes créées est meilleure que celle des vignettes redimensionnées automatiquement par le navigateur. Les nouvelles images créées sont stockées dans le répertoire /shop_image/product/resized. Si une vignette existe déjà, elle sera affichée. Il n\'y a pas de nouvelle création de vignette.';
+	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Cocher pour la création automatique de vignette. Toutes les images Vignettes sont redimensionnées aux valeurs fournies ci dessous en utilisant les fonctions GD2 de PHP. (Pour vérifier si ces fonctions sont disponibles, aller dans le menu "Help//System/System Info" et chercher la fonction GD. La qualité des vignettes créées est meilleure que celle des vignettes redimensionnées automatiquement par le navigateur. Les nouvelles images créées sont stockées dans le répertoire /shop_image/product/resized. Si une vignette existe déjà, elle sera affichée. Il n\'y a pas de nouvelle création de vignette.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH = 'Largeur de la Vignette';
-	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP = '<strong>\"Largeur\"</strong> de la Vignette créée.';
+	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP = '<strong>"Largeur"</strong> de la Vignette créée.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT = 'Hauteur de la vignette';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP = '<strong>Hauteur</strong> de la Vignette créee.';
 	var $_PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION = 'Merci de sélectionner au moins une méthode d\'Expédition!';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_CONFIGURATION = 'Configuration des Prix';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL = 'Choix du groupe pour l\'affichage des prix';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP = 'Les prix seront affichés pour les membres du groupe sélectionné et pour ceux ayant un droit d\'accès plus élevé.';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Affiche \"(Taxes XX% comprises)\" quand possible?';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Cocher si le texte \"(Taxes XX% comprises)\" est affiché si les prix sont affichés avec les taxes.';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Affiche "(Taxes XX% comprises)" quand possible?';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Cocher si le texte "(Taxes XX% comprises)" est affiché si les prix sont affichés avec les taxes.';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL = 'Affiche le prix par emballage?';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'Cocher si le prix affiché est fonction du prix unitaire et du prix par emaballage:<br /><strong>Prix Unitaire (10 pièces)</strong>.<br />Si la case n\'est pas cochée, le prix affiché est comme d\'habitude: <strong>Prix: xx.xx €</strong>
 	';
@@ -1416,6 +1416,15 @@ Vous pouvez vous connectez sur %s en utilisant le nom d\'utilisateur et mot de p
 Nom d\'Utiliateur - %s
 Mot de passe - %s
 ';
+	var $_PEAR_LOG_CRIT = 'Critical';
+	var $_PEAR_LOG_ERR = 'Error';
+	var $_PEAR_LOG_WARNING = 'Warning';
+	var $_PEAR_LOG_INFO = 'Info';
+	var $_PEAR_LOG_TIP = 'Info';
+	var $_PEAR_LOG_ALERT = 'Alert';
+	var $_PEAR_LOG_EMERG = 'Emergency';
+	var $_PEAR_LOG_NOTICE = 'Notice';
+	var $_PEAR_LOG_DEBUG = 'Debug';
         
 }
 class phpShopLanguage extends vmLanguage { }
