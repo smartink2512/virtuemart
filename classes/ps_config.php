@@ -74,7 +74,6 @@ function writeconfig(&$d) {
             "CATEGORY_TEMPLATE"		=>	"conf_CATEGORY_TEMPLATE",
             "PRODUCTS_PER_ROW"		=>	"conf_PRODUCTS_PER_ROW",
             "ERRORPAGE"		=>	"conf_ERRORPAGE",
-            "DEBUGPAGE"		=>	"conf_DEBUGPAGE",
             "NO_IMAGE"		=>	"conf_NO_IMAGE",
             "SEARCH_ROWS"	=>	"conf_SEARCH_ROWS",
             "SEARCH_COLOR_1"	=>	"conf_SEARCH_COLOR_1",

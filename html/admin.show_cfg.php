@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.show_cfg.php,v 1.8 2005/10/09 13:30:01 soeren_nb Exp $
+* @version $Id: admin.show_cfg.php,v 1.9 2005/10/18 05:16:51 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -422,14 +422,6 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
 				<input type="text" name="conf_ERRORPAGE" class="inputbox" value="<?php echo ERRORPAGE ?>" />
 			</td>
 			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DEBUGPAGE ?></td>
-			<td>
-				<input type="text" name="conf_DEBUGPAGE" class="inputbox" value="<?php echo DEBUGPAGE ?>" />
-			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN ?>
 			</td>
 		</tr>
 	</table>
