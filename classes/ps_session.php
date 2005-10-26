@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_session.php,v 1.8 2005/10/19 17:51:19 soeren_nb Exp $
+* @version $Id: ps_session.php,v 1.9 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -89,12 +89,12 @@ class ps_session {
      *
      */
 	function prepare_SSL_Session() {
-		global $my;
+		global $my, $mosConfig_secret;
 
 		$ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
 		$martID = mosGetParam( $_GET, 'martID', null );
 		$ssl_domain = "";
-		$filename = $_COOKIE[$this->_session_name].'_'.$my->id.'.sess';
+		$filename = $_COOKIE[$this->_session_name].'_'.md5($mosConfig_secret).'.sess';
 		$sessionFile = IMAGEPATH.$filename;
 		/**
         * This is the first part of the Function:
@@ -188,10 +188,13 @@ class ps_session {
 					
 					// Read the session data into $_SESSION
 					session_decode( $session_data );
-	
+					
+					session_write_close();
+					
 					// Prevent the martID from being displayed in the URL
-					if( !empty( $_GET['martID'] ))
-					mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index") );
+					if( !empty( $_GET['martID'] )) {
+						mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index") );
+					}
 	
 				}
 	
