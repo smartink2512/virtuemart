@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_price_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.product_price_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -16,7 +16,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+require_once( CLASSPATH.'ps_vendor.php');
+require_once( CLASSPATH.'ps_shopper_group.php');
+global $ps_html;
 $title = $VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'<br/>';
 
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
@@ -36,7 +38,7 @@ if (!empty($product_price_id)) {
 /* If Adding a new Price */
 elseif (empty($vars["error"])) {
   /* Set default currency for product price */
-  $default["product_currency"] = $ps_vendor->get_field($ps_vendor_id,"vendor_currency");
+  $default["product_currency"] = ps_vendor::get_field($ps_vendor_id,"vendor_currency");
 }
 
 if (!empty($vars["product_price_id"])) {
@@ -98,7 +100,7 @@ $formObj->startForm();
       </td>
       <td width="77%" height="10" >
           <?php 
-            $ps_shopper_group->list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id"),$db->sf("product_id"));
+            ps_shopper_group::list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id"),$db->sf("product_id"));
           ?>
       </td>
     </tr>
