@@ -77,7 +77,7 @@ class Log_display extends Log
      * @access public
      */
     function Log_display($name = '', $ident = '', $conf = array(),
-                         $level = PEAR_LOG_DEBUG)
+                         $level = PEAR_LOG_TIP)
     {
         $this->_id = md5(microtime());
         $this->_ident = $ident;
@@ -118,7 +118,7 @@ class Log_display extends Log
 
         /* Extract the string representation of the message. */
         $message = $this->_extractMessage($message);
-             
+
         // Store the log message and its priority
     	$this->_messages[$this->_count]['priority'] = $priority;
     	$this->_messages[$this->_count]['message'] = $message;

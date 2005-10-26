@@ -140,7 +140,7 @@ if( !defined( 'CLASSPATH' )) {
 		 * See http://pear.php.net/package/Log
 		 * @global Log vmLogger
 		 */
-		$GLOBALS['vmLogger'] = $vmLogger = &Log::singleton('display', '', '', $conf, PEAR_LOG_DEBUG);
+		$GLOBALS['vmLogger'] = $vmLogger = &Log::singleton('display', '', '', $conf, PEAR_LOG_TIP);
 
 		// some input validation for limitstart
 		if (!empty($_REQUEST['limitstart'])) {

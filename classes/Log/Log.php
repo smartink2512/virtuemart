@@ -382,7 +382,7 @@ class Log
      *                              to log.
      *
      * @return  boolean True if the message was successfully logged.
-     *
+     * @author soeren
      * @access  public
      * @since   Log 1.9.0
      */
@@ -452,17 +452,18 @@ class Log
      * @since   Log 1.0
      */
     function priorityToString($priority)
-    {
+    {	
+    	global $VM_LANG;
         $levels = array(
-            PEAR_LOG_EMERG   => 'emergency',
-            PEAR_LOG_ALERT   => 'alert',
-            PEAR_LOG_CRIT    => 'critical',
-            PEAR_LOG_ERR     => 'error',
-            PEAR_LOG_WARNING => 'warning',
-            PEAR_LOG_NOTICE  => 'notice',
-            PEAR_LOG_INFO    => 'info',
-            PEAR_LOG_DEBUG   => 'debug',
-            PEAR_LOG_TIP   => 'info'
+            PEAR_LOG_EMERG   => $VM_LANG->_PEAR_LOG_EMERG,
+            PEAR_LOG_ALERT   => $VM_LANG->_PEAR_LOG_ALERT,
+            PEAR_LOG_CRIT    => $VM_LANG->_PEAR_LOG_CRIT,
+            PEAR_LOG_ERR     => $VM_LANG->_PEAR_LOG_ERR,
+            PEAR_LOG_WARNING => $VM_LANG->_PEAR_LOG_WARNING,
+            PEAR_LOG_NOTICE  => $VM_LANG->_PEAR_LOG_NOTICE,
+            PEAR_LOG_INFO    => $VM_LANG->_PEAR_LOG_INFO,
+            PEAR_LOG_DEBUG   => $VM_LANG->_PEAR_LOG_DEBUG,
+            PEAR_LOG_TIP   => $VM_LANG->_PEAR_LOG_TIP
         );
 
         return $levels[$priority];
@@ -482,16 +483,17 @@ class Log
      */
     function stringToPriority($name)
     {
+    	global $VM_LANG;
         $levels = array(
-            'emergency' => PEAR_LOG_EMERG,
-            'alert'     => PEAR_LOG_ALERT,
-            'critical'  => PEAR_LOG_CRIT,
-            'error'     => PEAR_LOG_ERR,
-            'warning'   => PEAR_LOG_WARNING,
-            'notice'    => PEAR_LOG_NOTICE,
-            'info'      => PEAR_LOG_INFO,
-            'debug'     => PEAR_LOG_DEBUG,
-            'info'     => PEAR_LOG_TIP
+            $VM_LANG->_PEAR_LOG_EMERG => PEAR_LOG_EMERG,
+            $VM_LANG->_PEAR_LOG_ALERT     => PEAR_LOG_ALERT,
+            $VM_LANG->_PEAR_LOG_CRIT  => PEAR_LOG_CRIT,
+            $VM_LANG->_PEAR_LOG_ERR     => PEAR_LOG_ERR,
+            $VM_LANG->_PEAR_LOG_WARNING   => PEAR_LOG_WARNING,
+            $VM_LANG->_PEAR_LOG_NOTICE    => PEAR_LOG_NOTICE,
+            $VM_LANG->_PEAR_LOG_INFO      => PEAR_LOG_INFO,
+            $VM_LANG->_PEAR_LOG_DEBUG     => PEAR_LOG_DEBUG,
+            $VM_LANG->_PEAR_LOG_TIP     => PEAR_LOG_TIP
         );
 
         return $levels[strtolower($name)];
