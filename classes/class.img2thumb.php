@@ -3,7 +3,7 @@
 // defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: class.img2thumb.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: class.img2thumb.php,v 1.4 2005/09/29 20:01:12 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -49,6 +49,10 @@ class Img2Thumb	{
 	var $bg_green;
 	var $bg_blue;
 	var $maxSize;
+	/**
+	 * @var string Filename for the thumbnail
+	 */
+	var $fileout;
 
 /**
 *   Constructor - requires following vars:
@@ -104,7 +108,6 @@ class Img2Thumb	{
 			$this->bg_blue = 0;
 		}
 		
-		
 		$this->NewImgCreate($filename,$newxsize,$newysize,$fileout);
 	}
 	
@@ -115,7 +118,14 @@ class Img2Thumb	{
 */
 	function NewImgCreate($filename,$newxsize,$newysize,$fileout)
 	{
+
 		$type = $this->GetImgType($filename);
+		
+		$pathinfo = pathinfo( $fileout );
+		if( empty( $pathinfo['extension'])) {
+			$fileout .= '.'.$type;
+		}
+		$this->fileout = $fileout;
 		
 		// free some memory
 		clearstatcache();
@@ -133,7 +143,7 @@ class Img2Thumb	{
 				}
 				else
 				{
-					print( "sorry, this server doesn't support <b>imagecreatefromgif()</b>" );
+					echo 'Sorry, this server doesn\'t support <b>imagecreatefromgif()</b>';
 					exit;
 					break;
 				}
@@ -335,15 +345,14 @@ class Img2Thumb	{
 */
 	function GetImgType($filename)
 	{
-		$size = getimagesize($filename);
+		$info = getimagesize($filename);
 		/* Original code removed in favor of 'switch' statement
 		if($size[2]==2)
 			return "jpg";
 		elseif($size[2]==3)
 			return "png";
 		*/
-		switch($size[2])
-		{
+		switch($info[2]) {
 			case 1:
 				return "gif";
 				break;
@@ -353,6 +362,8 @@ class Img2Thumb	{
 			case 3:
 				return "png";
 				break;
+			default:
+				return false;
 		}
 	}
 	

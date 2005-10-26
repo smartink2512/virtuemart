@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
-* @version $Id: ps_main.php,v 1.5 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: ps_main.php,v 1.6 2005/10/19 17:51:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -31,12 +31,36 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * @return boolean When the upload validation was sucessfull, true is returned, otherwise false
  */
 function validate_image(&$d,$field_name,$table_name) {
-	$ps_vendor_id = $_SESSION["ps_vendor_id"];
-	require_once(CLASSPATH.'ps_vendor.php');
-	$ps_vendor = new ps_vendor;
+	global $vmLogger;
 
+	
+	/* Generate the path to images */
+	$path  = IMAGEPATH;
+	$path .= $table_name . "/";
+
+	/* Check permissions to write to destination directory */
+	// Workaround for Window$
+	if(strstr($path , ":" )) {
+		$path_begin = substr( $path, strpos( $path , ":" )+1, strlen($path));
+		$path = str_replace( "//", "/", $path_begin );
+	}
+	if (!is_dir( $path )) {
+		mkdir( $path, 0777 );
+		$vmLogger->debug( 'Had to create the directory '.$path);
+	}
+	
+	if( !is_writable($path)) {
+		$vmLogger->err( 'Cannot write to '.$table_name.' image directory: '.$path );
+		return false;
+	}
+	// Check for upload errors
+	require_once( CLASSPATH. 'ps_product_files.php');
+	ps_product_files::checkUploadedFile( $field_name );
+	
 	$tmp_field_name = str_replace( "thumb", "full", $field_name );
-
+	//	Class for resizing Thumbnails
+	require_once( CLASSPATH . "class.img2thumb.php");
+			
 	if( @$d[$tmp_field_name.'_action'] == 'auto_resize'
 		&& empty($d['resizing_prepared'])
 	) {
@@ -46,26 +70,14 @@ function validate_image(&$d,$field_name,$table_name) {
 			$image_info = getimagesize($full_file);
 		}
 		elseif( !empty($d[$tmp_field_name."_url"] )) {
-
-			@ini_set( "allow_url_fopen");
-			$remote_fetching = ini_get( "allow_url_fopen");
-			if( $remote_fetching ) {
-				$handle = fopen( $d[$tmp_field_name."_url"] , "rb" );
-				$data = "";
-				while( !feof( $handle )) {
-					$data .= fread( $handle, 4096 );
-				}
-				fclose( $handle );
-				$tmp_file_from_url = $full_file = tempnam(IMAGEPATH."/product/", "FOO");
-				$handle = fopen($full_file, "wb");
-				fwrite($handle, $data);
-				fclose($handle);
+			$tmp_file_from_url = $full_file = ps_product_files::getRemoteFile($d[$tmp_field_name."_url"]);
+			if( $full_file ) {
+				$vmLogger->debug( 'Successfully fetched the image file from '.$d[$tmp_field_name."_url"].' for later resizing' );
 				$image_info = getimagesize($full_file);
 			}
 		}
 		if( !empty( $image_info )) {
-			//	Class for resizing Thumbnails
-			require_once( CLASSPATH . "class.img2thumb.php");
+			
 			if( $image_info[2] == 1) {
 				if( function_exists("imagegif") ) {
 					$ext = ".gif";
@@ -84,11 +96,13 @@ function validate_image(&$d,$field_name,$table_name) {
 				$ext = ".png";
 				$noimgif="";
 			}
-
+			$vmLogger->debug( 'The resized Thumbnail will have extension '.$noimgif.$ext );
 			/* Generate Image Destination File Name */
 			$to_file_thumb = md5(uniqid("VirtueMart"));
 			$fileout = IMAGEPATH."/product/resized/".$to_file_thumb."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
 			$neu = new Img2Thumb( $full_file, PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT, $fileout, 0, 255, 255, 255 );
+			$vmLogger->debug( 'Finished creating the thumbnail' );
+						
 			if( isset($tmp_file_from_url) ) unlink( realpath($tmp_file_from_url) );
 			$tmp_field_name = str_replace( "full", "thumb", $tmp_field_name );
 			$tmp_field_name = str_replace( "_url", "", $tmp_field_name );
@@ -123,26 +137,16 @@ function validate_image(&$d,$field_name,$table_name) {
 	} else {
 		$image_type = ereg_replace("_"," ",$field_name);
 	}
-
-	/* Generate the path to images */
-	$path  = IMAGEPATH;
-
-	$path .= $table_name . "/";
-
+	
 	/* If User types "none" in Image Upload Field */
 	if ($d[$field_name."_action"] == "delete") {
 		/* If there is a current image file */
 		if (!empty($curr_file)) {
-			/* Check permissions to delete from $path */
-			if (!is_writeable($path)) {
-				$d["error"] .= "ERROR: Cannot delete from $image_type directory $path";
-				return false;
-			}
-			else {
-				$delete = str_replace("\\", "/", realpath($path."/".$curr_file));
-				if( file_exists( $delete ) )
-				$d["image_commands"] .= "\$ret = unlink(\"$delete\");";
-			}
+			
+			$delete = str_replace("\\", "/", realpath($path."/".$curr_file));
+			if( file_exists( $delete ) )
+			$d["image_commands"] .= "\$ret = unlink(\"$delete\");";
+			$vmLogger->debug( 'Preparing: delete old '.$image_type.' '.$delete );
 			/* Remove the resized image if exists */
 			if( PSHOP_IMG_RESIZE_ENABLE=="1" && $image_type == "thumbnail image") {
 				$pathinfo = pathinfo( $delete );
@@ -150,8 +154,10 @@ function validate_image(&$d,$field_name,$table_name) {
 				isset($pathinfo["extension"]) or $pathinfo["extension"] = "";
 				$filehash = basename( $delete, ".".$pathinfo["extension"] );
 				$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
-				if( file_exists($resizedfilename))
-				$d["image_commands"] .= "\$ret = unlink(\"$resizedfilename\");";
+				if( file_exists($resizedfilename)) {
+					$d["image_commands"] .= "\$ret = unlink(\"$resizedfilename\");";
+					$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
+				}
 			}
 
 		}
@@ -160,7 +166,7 @@ function validate_image(&$d,$field_name,$table_name) {
 	}
 	/* If upload fails */
 	elseif($orig_file and $temp_file == "none") {
-		$d["error"] .= "ERROR: $image_type upload failed.";
+		$vmLogger->err( $image_type.' upload failed.');
 		return false;
 	}
 
@@ -172,13 +178,13 @@ function validate_image(&$d,$field_name,$table_name) {
 		}
 	}
 	if( empty( $temp_file )) {
-		$d["error"] .= "Error: The File Upload was not successful: there's no uploaded temporary file!";
+		$vmLogger->err( 'The File Upload was not successful: there\'s no uploaded temporary file!' );
 		return false;
 	}
 	// Check permissions to read temp file
 	if (!is_readable($temp_file)) {
-		$d["error"] .= "Error: Cannot read uploaded $image_type temp file: $temp_file. \\n
-    One common reason for this that the upload path cannot be accessed because of the open_basedir settings in the php.ini .";
+		$vmLogger->err( 'Cannot read uploaded '.$image_type.' temp file: '.$temp_file.'.
+    One common reason for this that the upload path cannot be accessed because of the open_basedir settings in the php.ini.' );
 		return false;
 	}
 
@@ -187,38 +193,10 @@ function validate_image(&$d,$field_name,$table_name) {
 
 	/* Check image file format */
 	if( $orig_file != "none" ) {
-		switch($file_type) {
-			case "image/gif":
-				$to_file .= ".gif";
-				$ext = ".gif";
-				break;
-			case "image/jpeg":
-				$to_file .= ".jpg";
-				$ext = ".jpg";
-				break;
-			case "image/png":
-				$to_file .= ".png";
-				$ext = ".png";
-				break;
-			default:
-			$image_info = getimagesize($temp_file);
-			switch($image_info[2]) {
-				case 1:
-					$to_file .= ".gif";
-					$ext = ".gif";
-					break;
-				case 2:
-					$to_file .= ".jpg";
-					$ext = ".jpg";
-					break;
-				case 3:
-					$to_file .= ".png";
-					$ext = ".png";
-					break;
-				default:
-					$d["error"] .= "ERROR: $image_type file is invalid: $file_type.";
-					return false;
-			}
+		$to_file .= $ext = '.'.Img2Thumb::GetImgType( $temp_file );
+		if( !$to_file ) {
+			$vmLogger->err( $image_type.' file is invalid: '.$file_type.'.' );
+			return false;
 		}
 	}
 	/*
@@ -226,35 +204,24 @@ function validate_image(&$d,$field_name,$table_name) {
 	** and it is a valid image file.
 	*/
 
-	/* Check permissions to write to destination directory */
-	// Workaround for Window$
-	if(strstr($path , ":" )) {
-		$path_begin = substr( $path, strpos( $path , ":" )+1, strlen($path));
-		$path = str_replace( "//", "/", $path_begin );
-	}
-	if (!is_dir( $path )) {
-		mkdir( $path, 0777 );	
-	}
-	
-	if( !is_writable($path)) {
-		@$d["error"] .= "ERROR: Cannot write to $image_type destination directory: $path";
-		return false;
-	}
 
 	/* If Updating */
-
 	if (!empty($curr_file)) {
 		/* Command to remove old image file */
 		$delete = str_replace( "\\", "/", realpath($path)."/".$curr_file);
-		if( file_exists( $delete ) )
-		$d["image_commands"] .= "\$ret = unlink(\"$delete\");";
+		if( file_exists( $delete ) ) {
+			$d["image_commands"] .= "\$ret = unlink(\"$delete\");";
+			$vmLogger->debug( 'Preparing: delete old '.$image_type.' '.$delete );
+		}
 		/* Remove the resized image if exists */
 		if( PSHOP_IMG_RESIZE_ENABLE=="1" && $image_type == "thumbnail image") {
 			$pathinfo = pathinfo( $delete );
 			$filehash = basename( $delete, ".".$pathinfo["extension"] );
 			$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
-			if( file_exists($resizedfilename))
-			$d["image_commands"] .= "\$ret = unlink(\"$resizedfilename\");";
+			if( file_exists($resizedfilename)) {
+				$d["image_commands"] .= "\$ret = unlink(\"$resizedfilename\");";
+				$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
+			}
 		}
 	}
 
@@ -276,19 +243,26 @@ function validate_image(&$d,$field_name,$table_name) {
  * @return boolean True when all image commands were executed successfully, false when not
  */
 function process_images(&$d) {
-
+	global $vmLogger;
+	require_once(CLASSPATH.'ps_product_files.php');
+	
 	if (!empty($d["image_commands"])) {
 
 		$commands = explode(";",ereg_replace(";$","",$d["image_commands"]));
 		$commands = str_replace('\\"', '"', $commands);
 		$d["image_commands"] = "";
+		
 		$cnt = count($commands);
 		for ($i=0;$i<$cnt;$i++) {
 			eval($commands[$i] . ";");
-			if ($ret == False) {
-				$d["error"] .= "ERROR: Image Update command failed.\n ";
-				$d["error"] .= $commands[$i];
+			if ($ret == false) {
+				$vmLogger->err ( 'Image Update command failed:
+								'. $commands[$i] );
 				return false;
+			}
+			else {
+				$vmLogger->debug( 'Successfully processed image command:
+				'.$commands[$i] );
 			}
 
 		}

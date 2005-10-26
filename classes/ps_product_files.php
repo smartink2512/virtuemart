@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_files.php,v 1.6 2005/10/22 06:04:37 soeren_nb Exp $
+* @version $Id: ps_product_files.php,v 1.7 2005/10/24 18:14:02 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -589,28 +589,29 @@ class ps_product_files {
 	 */
 	function checkUploadedFile( $fieldname ) {
 		global $vars, $vmLogger;
-		if( is_uploaded_file( $_FILES[$fieldname]['tmp_name'])) {
+		if( (!is_uploaded_file( $_FILES[$fieldname]['tmp_name']) && strstr( $fieldname, 'thumb')
+			|| substr( $_REQUEST[$fieldname.'_url'], 0, 4 ) == 'http' )) {
 			return true;
 		}
 		else {
 			switch( $_FILES[$fieldname]['error'] ){
 				case 0: //no error; possible file attack!
-					$vmLogger->log( "There was a problem with your upload.", PEAR_LOG_WARNING );
+					//$vmLogger->warning( "There was a problem with your upload." );
 					break;
 				case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-					$vmLogger->log( "The file you are trying to upload is too big.", PEAR_LOG_WARNING );
+					$vmLogger->warning( "The file you are trying to upload is too big." );
 					break;
 				case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-					$vmLogger->log( "The file you are trying to upload is too big.", PEAR_LOG_WARNING );
+					$vmLogger->warning( "The file you are trying to upload is too big." );
 					break;
 				case 3: //uploaded file was only partially uploaded
-					$vmLogger->log( "The file you are trying upload was only partially uploaded.", PEAR_LOG_WARNING );
+					$vmLogger->warning( "The file you are trying upload was only partially uploaded." );
 					break;
 				case 4: //no file was uploaded
-					$vmLogger->log( "You must select a file/image for upload.", PEAR_LOG_WARNING );
+					//$vmLogger->warning( "You have not selected a file/image for upload." );
 					break;
 				default: //a default error, just in case!  :)
-					$vmLogger->log( "There was a problem with your upload.", PEAR_LOG_WARNING );
+					//$vmLogger->warning( "There was a problem with your upload." );
 					break;
 			}
 			
@@ -624,11 +625,72 @@ class ps_product_files {
 	 * @param string $storefilename The full path including filename to the store path
 	 */
 	function moveUploadedFile( $fieldname, $storefilename ) {
+		if( !is_uploaded_file( $_FILES[$fieldname]['tmp_name'] )) {
+			return true;
+		}
 		if( move_uploaded_file( $_FILES[$fieldname]['tmp_name'], $storefilename )) {
 			return true;
 		}
 		else {
 			return false;
+		}
+	}
+	
+	
+	function createThumbImage( $from ) {
+		//	Class for resizing Thumbnails
+		require_once( CLASSPATH . "class.img2thumb.php");
+
+		/* Generate Image Destination File Name */
+		$to_file_thumb = md5(uniqid("VirtueMart"));
+		$fileout = IMAGEPATH."/product/resized/".$to_file_thumb;
+		$Img2Thumb = new Img2Thumb( $from, PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT, $fileout, 0, 255, 255, 255 );
+		
+		return $Img2Thumb->fileout;
+			
+	}
+	
+	function getRemoteFile( $url ) {
+			@ini_set( "allow_url_fopen");
+			$remote_fetching = ini_get( "allow_url_fopen");
+			if( $remote_fetching ) {
+				$handle = fopen( $url , "rb" );
+				$data = "";
+				while( !feof( $handle )) {
+					$data .= fread( $handle, 4096 );
+				}
+				fclose( $handle );
+				$tmp_file = tempnam(IMAGEPATH."/product/", "FOO");
+				$handle = fopen($tmp_file, "wb");
+				fwrite($handle, $data);
+				fclose($handle);
+				
+				return $tmp_file;
+				
+			}
+			else {
+				return false;
+			}
+	}
+	
+	function isImage( $type, $file ) {
+	
+		switch($type) {
+			case "image/gif":
+			case "image/jpeg":
+			case "image/png":
+				return true;
+				
+			default:
+			$image_info = getimagesize($file);
+			switch($image_info[2]) {
+				case 1:
+				case 2:
+				case 3:
+					return true;
+				default:
+					return false;
+			}
 		}
 	}
 }
