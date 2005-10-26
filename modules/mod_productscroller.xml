@@ -12,7 +12,7 @@
          <filename module="mod_productscroller">mod_productscroller.php</filename>
      </files>
     <params>
-        <param name="pretext" type="text" default="Our latest Products..." label="Pre-Text" description="This text will be displayed just above the Scroller." />
+        <param name="pretext" type="text" default="" label="Pre-Text" description="This text will be displayed just above the Scroller." />
 		
 		<param name="NumberOfProducts" type="text" default="5" label="Number of Products" description="The Number of Products that are member of the Scrollshow" />
 		

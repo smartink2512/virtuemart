@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_cart.php,v 1.7 2005/10/18 18:45:35 soeren_nb Exp $
+* @version $Id: ps_cart.php,v 1.9 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -100,7 +100,7 @@ class ps_cart {
 				$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
 				eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
 				
-				$vmLogger->info( $msg );
+				$vmLogger->tip( $msg );
 				$GLOBALS['page'] = 'shop.waiting_list';
 				return true;
 			}
@@ -112,7 +112,7 @@ class ps_cart {
 		$db->query ( $q );
 
 		if ( $db->num_rows()) {
-			$vmLogger->info( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+			$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
 			return false;
 		}
 
@@ -130,7 +130,7 @@ class ps_cart {
 		|| ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )) ) {
 			$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
 			$GLOBALS['page'] = 'shop.product_details';
-			$vmLogger->info( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+			$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
 			return true;
 		}
 
@@ -211,7 +211,7 @@ class ps_cart {
 				$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
 				eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
 				
-				$vmLogger->info( $msg );
+				$vmLogger->tip( $msg );
 				$GLOBALS['page'] = 'shop.waiting_list';
 				return true;
 			}

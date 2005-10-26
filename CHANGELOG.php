@@ -33,6 +33,10 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+26-10-2005 soeren
++ added debugging to image upload function
+# Bug #181 ? Can't add new prices to product
+
 25-10-2005 soeren
 # Bug #174 ? Checkout using USPS Module, fixed path to xml domit! library
 ^ renamed /html/VERSION.php to /html/footer.php

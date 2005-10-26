@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.index.php,v 1.7 2005/10/04 18:30:35 soeren_nb Exp $
+* @version $Id: store.index.php,v 1.8 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -227,7 +227,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 				foreach($new_customers as $id => $name) { ?>
 				<tr>
 				  <td colspan="2">
-					  <a href="<?php $sess->purl( $_SERVER['PHP_SELF'] .'?page=admin.user_list&user_id='. $id ); ?>">
+					  <a href="<?php $sess->purl( $_SERVER['PHP_SELF'] .'?page=admin.user_form&user_id='. $id ); ?>">
 					  <?php echo $name ?></a></td>
 				</tr>
 				<?php 

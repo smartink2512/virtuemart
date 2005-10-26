@@ -35,13 +35,14 @@ foreach( $tables as $pshop_table ) {
 		
 $db->query( 'SELECT file_name FROM `#__{vm}_product_files`' );
 $files_to_copy = $db->record;
-foreach( $files_to_copy as $file ) {
-	if( stristr( $file, 'com_phpshop' ) ) {
-		$newFile = str_replace( 'com_phpshop', 'com_virtuemart' );
-		copy( $file, $newFile );
+if( $files_to_copy ) {
+	foreach( $files_to_copy as $file ) {
+		if( stristr( $file, 'com_phpshop' ) ) {
+			$newFile = str_replace( 'com_phpshop', 'com_virtuemart' );
+			copy( $file, $newFile );
+		}
 	}
 }
-
 // REPLACE 'com_phpshop' with 'com_virtuemart' for file references
 // in the table mos_vm_product_files
 $db->query( "UPDATE `#__{vm}_product_files` SET 
