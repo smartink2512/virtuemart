@@ -64,7 +64,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADD_SHIPTO_1 = 'Ajouter une nouvelle';
 	var $_PHPSHOP_ADD_SHIPTO_2 = 'Adresse d\'expédition';
 	var $_PHPSHOP_NO_SEARCH_RESULT = 'Aucun produit n\'a été trouvé.<BR>';
-	var $_PHPSHOP_PRICE_LABEL = 'Prix: €';
+	var $_PHPSHOP_PRICE_LABEL = 'Prix: ';
 	var $_PHPSHOP_ORDER_BUTTON_LABEL = 'Commander';
 	var $_PHPSHOP_NO_CUSTOMER = 'Vous n\'êtes pas encore client(e) enregistré(e). Veuillez fournir vos informations de facturation en vous enregistrant. Merci.';
 	var $_PHPSHOP_DELETE_MSG = 'Etes-vous sur(e) de vouloir supprimer cet article ?';
@@ -74,14 +74,14 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_NO_USER_TO_SELECT = 'Désolé, il n\'y a aucun utilisateur valide que vous pourriez ajouter à la liste des acheteurs.';
 	var $_PHPSHOP_ERROR = 'ERREUR';
 	var $_PHPSHOP_MOD_NOT_REG = 'Module non enregistré.';
-	var $_PHPSHOP_MOD_ISNO_REG = 'n\'est pas un module PhpShop valide.';
+	var $_PHPSHOP_MOD_ISNO_REG = 'n\'est pas un module VirtueMart valide.';
 	var $_PHPSHOP_MOD_NO_AUTH = 'Vous n\'avez pas l\'autorisation d\'accéder à ce module.';
 	var $_PHPSHOP_PAGE_404_1 = 'La page n\'existe pas ou plus.';
 	var $_PHPSHOP_PAGE_404_2 = 'Le fichier n\'existe pas. Fichier introuvable:';
 	var $_PHPSHOP_PAGE_403 = 'Droits d\'Accès Insuffisants';
 	var $_PHPSHOP_FUNC_NO_EXEC = 'Vous n\'avez pas la permission d\'exécuter ';
 	var $_PHPSHOP_FUNC_NOT_REG = 'Fonction Non Enregistrée';
-	var $_PHPSHOP_FUNC_ISNO_REG = ' n\'est pas une fonction phpShop valide.';
+	var $_PHPSHOP_FUNC_ISNO_REG = ' n\'est pas une fonction VirtueMart valide.';
 	var $_PHPSHOP_ADMIN_MOD = 'Configuration générale';
 	var $_PHPSHOP_USER_LIST_MNU = 'Lister les utilisateurs';
 	var $_PHPSHOP_USER_LIST_LBL = 'Liste des utilisateurs';
@@ -144,7 +144,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_FUNCTION_FORM_NAME = 'Nom de la Fonction';
 	var $_PHPSHOP_FUNCTION_FORM_CLASS = 'Nom de la Classe';
 	var $_PHPSHOP_FUNCTION_FORM_METHOD = 'Méthode de la Classe';
-	var $_PHPSHOP_FUNCTION_FORM_PERMS = 'Permissions de la Fonction';
+	var $_PHPSHOP_FUNCTION_FORM_PERMS = 'Autorisations de la Fonction';
 	var $_PHPSHOP_FUNCTION_FORM_DESCRIPTION = 'Description de la Fonction';
 	var $_PHPSHOP_CURRENCY_LIST_MNU = 'Lister les Devises';
 	var $_PHPSHOP_CURRENCY_LIST_LBL = 'Liste des Devises';
@@ -324,15 +324,15 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_WEIGHT = 'Poids';
 	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM = 'Unité de Mesure';
 	var $_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE = 'Vignette';
-	var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = 'Image Gde Taille';
+	var $_PHPSHOP_PRODUCT_FORM_FULL_IMAGE = 'Image Grande Taille';
 	var $_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT = 'livres';
 	var $_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT = 'pouces';
 	var $_PHPSHOP_PRODUCT_FORM_UNIT = 'Unité';
 	var $_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT = 'pièce';
 	var $_PHPSHOP_PRODUCT_FORM_PACKAGING = 'Nombre de pièces dans l\'emballage';
 	var $_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION = 'Préciser le nombre de pièces dans l\'emballage. (max. 65535)';
-	var $_PHPSHOP_PRODUCT_FORM_BOX = 'Nombre de pièce le Lot';
-	var $_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION = 'Préciser le nombre de pièce dans le lot. (max. 65535)';
+	var $_PHPSHOP_PRODUCT_FORM_BOX = 'Nombre de pièces le Lot';
+	var $_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION = 'Préciser le nombre de pièces dans le lot. (max. 65535)';
 	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = 'Résultats Produit Ajouté';
 	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = 'Résultats Produit Mis à Jour';
 	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = 'Résultats Elément Ajouté';
@@ -342,7 +342,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CATEGORY_LIST_MNU = 'Lister les Catégories';
 	var $_PHPSHOP_CATEGORY_LIST_LBL = 'Arborescence des Catégories';
 	var $_PHPSHOP_CATEGORY_FORM_MNU = 'Ajouter une Catégorie';
-	var $_PHPSHOP_CATEGORY_FORM_LBL = 'Information de la Catégorie';
+	var $_PHPSHOP_CATEGORY_FORM_LBL = 'Information sur la Catégorie';
 	var $_PHPSHOP_CATEGORY_FORM_NAME = 'Nom de la Catégorie';
 	var $_PHPSHOP_CATEGORY_FORM_PARENT = 'Parent';
 	var $_PHPSHOP_CATEGORY_FORM_DESCRIPTION = 'Description de la Catégorie';
@@ -608,7 +608,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM = 'Numéro de Carte de Crédit';
 	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE = 'Date d\'Expiration';
 	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER = 'Passer la Commande';
-	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = 'Infomation Requise quand vous choisissez le Paiement par Carte Bancaire';
+	var $_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO = 'Information Requise quand vous choisissez le Paiement par Carte Bancaire';
 	var $_PHPSHOP_ZONE_MOD = 'Zone d\'Expédition';
 	var $_PHPSHOP_ZONE_LIST_MNU = 'Liste des Zones';
 	var $_PHPSHOP_ZONE_FORM_MNU = 'Ajouter une Zone';
@@ -689,7 +689,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = 'ERREUR: Le poids minimal doit être inférieur au poids maximal';
 	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = 'ERREUR: Des frais d\'expédition sont requis';
 	var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = 'ERREUR: Veuillez choisir une devise';
-	var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = 'ERREUR: Un taux d\'espédition est demandé';
+	var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = 'ERREUR: Un taux d\'expédition est demandé';
 	var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = 'Veuillez sélectionner';
 	var $_PHPSHOP_INFO_MSG_CARRIER = 'Expéditeur';
 	var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = 'Taux d\'Expédition';
@@ -698,7 +698,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PAYMENT_FORM_CC = 'Carte de Crédit';
 	var $_PHPSHOP_PAYMENT_FORM_USE_PP = 'Utiliser un Terminal de Paiement';
 	var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = 'Virement Bancaire';
-	var $_PHPSHOP_PAYMENT_FORM_AO = 'Adresse Seulement / Paiement à Livraison';
+	var $_PHPSHOP_PAYMENT_FORM_AO = 'Adresse Seulement / Paiement à la Livraison';
 	var $_PHPSHOP_CHECKOUT_MSG_2 = 'Veuillez choisir une Adresse d\'Expédition !';
 	var $_PHPSHOP_CHECKOUT_MSG_3 = 'Veuillez choisir une Méthode d\'Expédition !';
 	var $_PHPSHOP_CHECKOUT_MSG_4 = 'Veuillez choisir une Méthode de Paiement !';
@@ -744,7 +744,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_MODULES = 'Modules';
 	var $_PHPSHOP_FUNCTIONS = 'Fonctions';
 	var $_PHPSHOP_SPECIAL_PRODUCTS = 'Produits spéciaux';
-	var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = 'Veuillez nous laisser une remarque avec votre commande si vous le désirez';
+	var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = 'Vous pouvez nous laisser une remarque avec votre commande si vous le désirez';
 	var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = 'Remarque Client';
 	var $_PHPSHOP_INCLUDING_TAX = '(Taxes $tax % comprises)';
 	var $_PHPSHOP_PLEASE_SEL_ITEM = 'Veuillez sélectionner un article';
@@ -766,10 +766,10 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = 'Informations de Téléchargement de ';
 	var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = 'produit téléchargeable ?';
 	var $_PHPSHOP_PAYPAL_THANKYOU = 'Merci pour votre règlement. 
-            La transaction a été réalisée avec succès. Vous allez recevoir une confirmation de règlement de la part de Pay-Pal par email.
+            La transaction a été traitée avec succès. Vous allez recevoir une confirmation de règlement de la part de Pay-Pal par email.
             Vous pouvez maintenant continuer ou vous connecter sur <a href=\'http://www.paypal.com\'>www.paypal.com</a> pour voir le détail de la transaction.';
 	var $_PHPSHOP_PAYPAL_ERROR = 'Une erreur est survenue durant le traitement de la transaction. Le statut de votre commande ne peut être mis à jour.';
-	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = 'Nous vous remercions pour vos achats réalisés chez nous. Les informations concernant votre commande se trouvent ci-dessous.';
+	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1 = 'Nous vous remercions de la confiance que vous nous avez témoignée. Les informations concernant votre commande se trouvent ci-dessous.';
 	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2 = 'Merci de faire partie de notre clientèle.';
 	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3 = 'Questions ? Problèmes ?';
 	var $_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4 = 'La commande suivante à été reçue.';
@@ -838,7 +838,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = 'Afficher les prix';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = 'Les prix affichés sont TTC ?';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = 'Si la case est cochée, les prix sont affichés taxes incluses.  Sinon ils sont affichés sans les taxes.';
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = 'Cocher pour afficher les prix. Si vous utilisez comme catalogue uniquement, vous pouvez ne pas montrer les prix.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = 'Cocher pour afficher les prix. Si vous utilisez comme catalogue uniquement, vous pouvez ne pas afficher les prix.';
 	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = 'Taxe Virtuelle';
 	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = 'Précise si un produit ayant un poids à 0 se voit appliquer une taxe ou non. Modifier le fichier ps_checkout.php->calc_order_taxable() pour personnaliser cela.';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = 'Calcul des taxes :';
@@ -855,11 +855,11 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
                                                                                 De cette manière les clients partagent leurs avis et expériences avec les autres clients.<br />';
 	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = 'Cocher pour soustraire remises et promotions du règlement AVANT application des taxes et frais d\'expédition. Ne pas cocher, si le calcul doit se faire APRES.';
 	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = 'Les clients peuvent laisser leurs coordonnées bancaires ?';
-	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = 'Cocher si vous désirez laisser la possibilité à vos client de laisser leurs coordonnées bancaires lorsqu\'ils s\'enregistrent.';
+	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = 'Cocher si vous désirez laisser la possibilité à vos clients de laisser leurs coordonnées bancaires lorsqu\'ils s\'enregistrent.';
 	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = 'Les clients peuvent-ils sélectionner leurs état / région ?';
 	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = 'Cocher pour permettre aux clients de sélectionner leur lieu de provenance lorsqu\'ils s\'enregistrent.';
 	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = 'Les clients doivent-ils accepter les Conditions d\'Utilisation ?';
-	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = 'Cocher si vous voulez que le client doive accepter les Conditions d\'Utilisation avant de s\'enregistrer sur la boutique.';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = 'Cocher si le client doit accepter les Conditions d\'Utilisation avant de s\'enregistrer sur la boutique.';
 	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK = 'Vérifier les Stocks ?';
 	var $_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN = 'Cocher pour activer la gestion des stocks, et pour empêcher toute commande si l\'article n\'est pas (ou plus) disponible.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = 'Activer le Programme d\'Affiliation ?';
@@ -873,19 +873,19 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
 	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'L\'adresse de votre site. Habituellement la même que celle de votre site Mambo (avec le / à la fin!)';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'URL Sécurisée';
-	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'Si vous bénéficiez d\'un serveur sécurisé. Normalement la même adresse que votre site Mambo, remplacez seulement http par https. (avec le / à la fin!)';
+	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'Adresse URL sécurisée de votre site. (https - avec le / à la fin!)';
 	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'URL du Composant';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'L\'adresse du composant PhpShop. (avec le / à la fin!)';
+	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'L\'adresse du composant VirtueMart. (avec le / à la fin!)';
 	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'URL des Images';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'L\'adresse du répertoire des images pour PhpShop.(avec le / à la fin!)';
+	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'L\'adresse du répertoire des images pour VirtueMart.(avec le / à la fin!)';
 	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'Chemin pour l\'Administration';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'Le chemin du répertoire d\'administration de PhpShop.';
+	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'Le chemin du répertoire d\'administration de VirtueMart.';
 	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'Chemin des Classes';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'Le chemin du répertoire classes de PhpShop.';
+	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'Le chemin du répertoire classes de VirtueMart.';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'Chemin des Pages';
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'Le chemin du répertoire des pages html de PhpShop.';
+	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'Le chemin du répertoire des pages html de VirtueMart.';
 	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'Chemin des Images';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'Le chemin du répertoire images pour PhpShop.';
+	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'Le chemin du répertoire images pour VirtueMart.';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'Page d\'Accueil';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'La page qui sera affichée par défaut.';
 	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'Page d\'Erreur';
@@ -911,8 +911,8 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = 'Spécifie la couleur des lignes paires des résultats.';
 	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'Lignes maxi';
 	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Règle le nombre de lignes à afficher dans la boite de sélection de Tri.';
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Afficher la version de phpShop en pied-de-page ?';
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Affiche le numéro de version de PhpShop en bas de chaque page.  Utlisé pour les démonstrations, mais pas en production.  Habituellement non activé.';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Afficher la version de VirtueMart en pied-de-page ?';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Affiche le numéro de version de VirtueMART en bas de chaque page.  Utlisé pour les démonstrations, mais pas en production.  Habituellement non activé.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Choisisir votre méthode d\'expédition';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Module standard, avec frais et transporteur indépendant. <strong>RECOMMANDÉ !</strong>';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Module d\'expédition par Zone/Pays Version 1.0<br />
@@ -955,7 +955,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = 'Activer les Téléchargements';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = 'Cocher pour activer les téléchargements. Seulement si vos produits peuvent être téléchargés.';
 	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = 'Statut des commandes permettant le téléchargement';
-	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = 'Sélectionner le statut de commande à partir duquel un email sera envoyé au client pour l\'avertir que son téléchargement est disponible.';
+	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = 'Sélectionner le statut de commande pour lequel un email est envoyé au client pour l\'avertir que son téléchargement est disponible.';
 	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = 'Statut des commandes interdisant le téléchargement';
 	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = 'Sélectionner le statut de commande pour lequel les téléchargements sont interdits au client.';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = 'Racine des Fichiers en Téléchargement';
@@ -972,7 +972,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = 'Votre adresse email PayPal. Aussi utilisée pour recevoir les messages.';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = 'Statut des commandes pour transaction accepté';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = 'Sélectionner le statut des commandes pour un paiement PayPal accepté. Si vous utilisez le sytème de téléchargement pour vos produits: 
-          Sélectionnez le statut qui permet le téléchargement pour le client. (ainsi le client recevra immédiatement un email avec sa clé de téléchargement).';
+          Sélectionnez le statut qui autorise le téléchargement pour le client. (ainsi le client recevra immédiatement un email avec sa clé de téléchargement).';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = 'Statut des commandes pour transaction refusé';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = 'Sélectionner le statut des commandes pour un paiement PayPal refusé.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = 'Activer le paiement par PayMate ?';
@@ -1045,7 +1045,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_THANKYOU_SUCCESS = 'Votre commande a été prise en compte avec succès!';
 	var $_PHPSHOP_ORDER_LINK = 'Suivez ce lien pour voir les Détails de la Commande.';
 	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = 'Le Statut de votre Commande No. {order_id} a été modifié.';
-	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = 'Nouveau statut est :';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = 'Le nouveau statut est :';
 	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = 'Pour voir les Détails de la Commande, veuillez SVP suivre ce lien (ou le copier dans votre navigateur):';
 	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = 'Modification du Statut de Commande: Votre Commande {order_id}';
 	var $_PHPSHOP_ORDER_LIST_NOTIFY = 'Avertir le Client ?';
@@ -1060,14 +1060,14 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = 'Type de Remise';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = 'Pourcentage';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = 'Total';
-	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = 'Le montant sera en pourcentage ou un total ?';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = 'Le montant sera un pourcentage ou un total ?';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = 'Date Début Remise';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = 'Spécifier le jour à partir duquel la remise s\'applique';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = 'Date Fin Remise';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = 'Spécifier le dernier jour de la remise';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = 'Vous pouvez utiliser le Formulaire de Remises Produits pour ajouter des remises !';
 	var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = 'Remise';
-	var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = 'Voir Image en Grande Taille';
+	var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = 'Agrandir l\'image';
 	var $_PHPSHOP_CURRENCY_DISPLAY = 'Style Affichage Monnaie';
 	var $_PHPSHOP_CURRENCY_SYMBOL = 'Symbole monétaire';
 	var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = 'Vous pouvez aussi utiliser les balises HTML (ex. €,£,¥,...)';
@@ -1165,7 +1165,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_YOUR_STORE = 'Votre Boutique';
 	var $_PHPSHOP_CONTROL_PANEL = 'Panneau de Contrôle';
 	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = 'Bouton - PDF';
-	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = 'Affiche ou masque le bouton PDF dans la Boutique';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = 'Affiche ou masque le bouton PDF sur la Vitrine de la Boutique';
 	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = 'Doit accepter les Conditions Générales de Vente pour CHAQUE COMMANDE ?';
 	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = 'Cocher si vous voulez que chaque client soit obligé d\'accepter les Conditions Générales de Vente lors de CHAQUE COMMANDE (avant d\'émettre toute commande).';
 	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = 'Type Compte Bancaire';
@@ -1208,7 +1208,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'SOIT Envoyer un Nouveau Fichier';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Vous pouvez envoyer un fichier local. Ce fichier sera le produit que vous vendez. Tout fichier existant sera remplacé.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Saisir ici tout texte qui sera affiché au client sur la flypage produit.<br />ex.: 24 h, 48 heures, 3 à 5 jours, Sur Commande.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OU sélectionner une Image à afficher sur la Page des Détails (flypage).<br />Les images se trouvent dans le répertoire <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OU sélectionner une Image à afficher sur la Page des Détails (flypage).<br />Les images se trouvent dans le répertoire <i>/components/com_virtuemart/shop_image/availability</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Liste des Attributs';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Exemples pour le Formatage de la Liste des Attributs:</h4>
         <pre>Taille,XL[+1.99],M,S[-2.99];Couleur,Rouge,Vert,Jaune,CouleurPrécieuse[=24.00];Etc,..,..</pre>
@@ -1223,7 +1223,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
         <pre>Nom;Options;...</pre>';
 	var $_PHPSHOP_MULTISELECT = 'Multisélection : utiliser la touche Ctrl + clic souris';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = 'Activer paiement par eProcessingNetwork.com ?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'Utiliser eProcessingNetwork.com avec phpShop.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'Utiliser eProcessingNetwork.com avec VirtueMart.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = 'Mode test ?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = 'Sélectionner \'Oui\' durant les tests. Sélectionner \'Non\' pour autoriser les transactions réelles.';
 	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = 'ID Login eProcessingNetwork.com';
@@ -1393,10 +1393,9 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL = 'Choix du groupe pour l\'affichage des prix';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP = 'Les prix seront affichés pour les membres du groupe sélectionné et pour ceux ayant un droit d\'accès plus élevé.';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Affiche "(Taxes XX% comprises)" quand possible?';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Cocher si le texte "(Taxes XX% comprises)" est affiché si les prix sont affichés avec les taxes.';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Cocher si vous voulez que le texte "(Taxes XX% comprises)" soit affiché avec le prix.';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL = 'Affiche le prix par emballage?';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'Cocher si le prix affiché est fonction du prix unitaire et du prix par emaballage:<br /><strong>Prix Unitaire (10 pièces)</strong>.<br />Si la case n\'est pas cochée, le prix affiché est comme d\'habitude: <strong>Prix: xx.xx €</strong>
-	';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'Cocher si le prix affiché est fonction du prix unitaire et du prix par emballage:<br /><strong>Prix Unitaire (10 pièces)</strong>.<br />Si la case n\'est pas cochée, le prix affiché est comme d\'habitude: <strong>Prix: xx.xx </strong>';
 	var $_PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS = 'Paramètres Principaux (suite)';
 	var $_PHPSHOP_ADMIN_CFG_CORE_SETTINGS = 'Paramètres Principaux';
 	var $_PHPSHOP_ADMIN_CFG_FRONTEND_FEATURES = 'Fonctionnalités de la Vitrine';
@@ -1413,17 +1412,17 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 Merci de vous être enregistré(e) sur %s. Votre compte client a été créé.
 Vous pouvez vous connectez sur %s en utilisant le nom d\'utilisateur et mot de passe suivant:
 
-Nom d\'Utiliateur - %s
+Nom d\'Utilisateur - %s
 Mot de passe - %s
 ';
-	var $_PEAR_LOG_CRIT = 'Critical';
-	var $_PEAR_LOG_ERR = 'Error';
-	var $_PEAR_LOG_WARNING = 'Warning';
+	var $_PEAR_LOG_CRIT = 'Critique';
+	var $_PEAR_LOG_ERR = 'Erreur';
+	var $_PEAR_LOG_WARNING = 'Avertissement';
 	var $_PEAR_LOG_INFO = 'Info';
 	var $_PEAR_LOG_TIP = 'Info';
-	var $_PEAR_LOG_ALERT = 'Alert';
-	var $_PEAR_LOG_EMERG = 'Emergency';
-	var $_PEAR_LOG_NOTICE = 'Notice';
+	var $_PEAR_LOG_ALERT = 'Alerte';
+	var $_PEAR_LOG_EMERG = 'Urgence';
+	var $_PEAR_LOG_NOTICE = 'Notification';
 	var $_PEAR_LOG_DEBUG = 'Debug';
         
 }
