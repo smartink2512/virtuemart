@@ -168,7 +168,7 @@ class Log_display extends Log
 		$output = "";
 		if( $this->_count > 10 ) {
 			// Wrap the messages into a scrollable div field
-			$output .= '<div style="width:90%; overflow:auto; height:200px;">';
+			$output .= '<div style="width:90%; overflow:auto; height:150px;">';
 		}
 		foreach( $this->_messages as $message ) {
 			if( ( $priority === null || $priority <= $message['priority'] )

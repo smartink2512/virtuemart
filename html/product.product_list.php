@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_list.php,v 1.6 2005/10/20 17:36:30 soeren_nb Exp $
+* @version $Id: product.product_list.php,v 1.7 2005/10/24 18:12:35 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -296,12 +296,12 @@ if ($num_rows > 0) {
 		}
 		$listObj->addCell( $tmpcell );
 		
-		$tmpcell = "<a href=\"". $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_list&category_id=$category_id&product_id=".$db->f("product_id")."&func=publishproduct";
+		$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.product_list&category_id=$category_id&product_id=".$db->f("product_id")."&func=changePublishState" );
 		if ($db->f("product_publish")=='N') {
-			$tmpcell .= "&product_publish=Y\">";
+			$tmpcell .= "&task=publish\">";
 		} 
 		else { 
-			$tmpcell .= "&product_publish=N\">";
+			$tmpcell .= "&task=unpublish\">";
 		}
 		$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("product_publish"), "Publish", "Unpublish" );
 		$tmpcell .= "</a>";

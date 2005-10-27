@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_payment_method.php,v 1.8 2005/10/18 05:16:51 soeren_nb Exp $
+* @version $Id: ps_payment_method.php,v 1.9 2005/10/19 17:51:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -39,7 +39,7 @@ define('CC_ENUMBER', 4);
 define('CC_EFORMAT', 5);
 define('CC_ECANTYPE', 6);
 
-class ps_payment_method {
+class ps_payment_method extends vmAbstractObject {
 
   var $classname = "ps_payment_method";
   

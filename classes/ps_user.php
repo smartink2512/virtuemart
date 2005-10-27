@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_user.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: ps_user.php,v 1.5 2005/10/24 18:14:02 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -32,29 +32,29 @@ class ps_user {
   ** returns:
   ***************************************************************************/
   function validate_add(&$d) {
-    global $my, $perm;
+    global $my, $perm, $vmLogger;
     $valid = true;
     
     if (empty($d["country"])) {
-      $d["error"] .= "Please select a country.";
+      $vmLogger->warning( 'Please select a country.' );
       $valid = false;
     }
 	if (empty($d["address_1"])) {
-      $d["error"] .= "'Address 1' is a required field.";
+      $vmLogger->warning( '"Address 1" is a required field.');
       $valid = false;
     }
     if ( empty($d["city"]) ) {
-      $d["error"] .= "'City' is a required field.";
+      $vmLogger->warning( '"City" is a required field.' );
       $valid = false;
     }
     if (CAN_SELECT_STATES == '1') {
         if ( empty($d["state"]) ) {
-          $d["error"] .= "'State/Region' is a required field.";
+          $vmLogger->warning( '"State/Region" is a required field.' );
           $valid = false;
         }
     }
     if ( empty($d["zip"]) ) {
-      $d["error"] .= "'Zip' is a required field.";
+      $vmLogger->warning( '"Zip" is a required field.' );
       $valid = false;
     }
     /*
@@ -63,19 +63,16 @@ class ps_user {
       $valid = false;
     }
     */
-    if ($my->id == 0){
-      $d["error"] .= "Please Login first.";
-      $valid = false;
-    }
     if (!$d['perms']) {
-      $d["error"] .= "You must assign the user to a group.";
+      $vmLogger->warning( 'You must assign the user to a group.' );
       $valid = false;
     }
 	else {
 		if( !$perm->hasHigherPerms( $d['perms'] )) {
-			$d["error"] .= "You have no permission to add a user of that usertype: ".$d['perms'];
+			$vmLogger->err( 'You have no permission to add a user of that usertype: '.$d['perms'] );
 			$valid = false;
 		}
+		
 	}
     return $valid;
   }
@@ -88,38 +85,34 @@ class ps_user {
 	** returns:
 	***************************************************************************/
 	function validate_update(&$d) {
-		global $my, $perm;
+		global $my, $perm, $vmLogger;
 		
 		$valid = true;
 		
-		if ($my->id == 0){
-		  $d["error"] .= "Please Login first.";
-		  $valid = false;
-		}
 		if (empty($d['user_id'])){
-		  $d["error"] .= "Please select a user to update.";
+		  $vmLogger->warning( 'Please select a user to update.' );
 		  $valid = false;
 		}
 		if (empty($d["country"])) {
-		  $d["error"] .= "Please select a country.";
+		  $vmLogger->warning( 'Please select a country.');
 		  $valid = false;
 		}
 			if (!$d["address_1"]) {
-		  $d["error"] .= "'Address 1' is a required field.";
+		  $vmLogger->warning( '"Address 1" is a required field.' );
 		  $valid = false;
 		}
 		if (!$d["city"]) {
-		  $d["error"] .= "'City' is a required field.";
+		  $vmLogger->warning( '"City" is a required field.' );
 		  $valid = false;
 		}
 		if (CAN_SELECT_STATES == '1') {
 			if (!$d["state"]) {
-			  $d["error"] .= "'State/Region' is a required field.";
+			  $vmLogger->warning( '"State/Region" is a required field.' );
 			  $valid = false;
 			}
 		}
 		if (!$d["zip"]) {
-		  $d["error"] .= "'Zip' is a required field.";
+		  $vmLogger->warning( '"Zip" is a required field.' );
 		  $valid = false;
 		}
 		/*
@@ -128,14 +121,13 @@ class ps_user {
 		  $valid = false;
 		}
 		*/
-	  
-		if (!$d['perms']) {
-		  $d["error"] .= "You must assign the user to a group.";
-		  $valid = false;
-		}
+	    if (!$d['perms']) {
+	      $vmLogger->warning( 'You must assign the user to a group.' );
+	      $valid = false;
+	    }
 		else {
 			if( !$perm->hasHigherPerms( $d['perms'] )) {
-				$d["error"] .= "You have no permission to update a user of that usertype: ".$d['perms'];
+				$vmLogger->err( 'You have no permission to add a user of that usertype: '.$d['perms'] );
 				$valid = false;
 			}
 		}
@@ -149,22 +141,26 @@ class ps_user {
 	** parameters:
 	** returns:
 	  ***************************************************************************/
-	function validate_delete(&$d) {
-		global $my;
-		$valid = true;
+	function validate_delete( $id ) {
+		global $my, $vmLogger;
+		$auth = $_SESSION['auth'];
 		
-		if ($my->id == 0) {
-			$d["error"] .= "Please Login first.";
-			$valid = false;
+		if( empty($id)) {
+			$vmLogger->err( 'Please select a user to delete.' );
+			return False;
 		}
-	
-		if (!$d["user_id"]) {
-			$d["error"] .= "Please select a user to delete.";
-			$valid =  False;
+		$db = new ps_DB();
+		$q = "SELECT user_id, perms FROM #__{vm}_user_info WHERE user_id=$id";
+		$db->query( $q );
+		$perms = $db->f('perms');
+		if( $this->permissions[$perms] >= $this->permissions[$auth['perms']]) {
+			$vmLogger->err( 'You have no permission to delete a user of that usertype: '.$perms );
+			return false;
 		}
-		else {
-			$valid =  True;
-		}    
+		if( $id == $my->id) {
+			$vmLogger->err( 'Very funny, but you cannot delete yourself.' );
+			return false;			
+		}
 		return $valid;
 	}
 	  
@@ -370,9 +366,6 @@ class ps_user {
 	function delete(&$d) {
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
-		if (!$this->validate_delete($d)) {
-			return False;
-		}
 		
 		$this->removeUsers( $d['user_id' ], $d );
 		
@@ -380,6 +373,9 @@ class ps_user {
 			$d['user_id'][0] = $d['user_id'];
 			
 		foreach( $d['user_id'] as $user ) {
+			if (!$this->validate_delete($user_id)) {
+				return False;
+			}
 			// Delete user_info entries
 			$q  = "DELETE FROM #__{vm}_user_info ";
 			$q .= "WHERE user_id='" . $user . "' ";

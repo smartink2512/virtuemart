@@ -64,7 +64,13 @@ $db->query( "ALTER TABLE #__{vm}_user_info ADD `bank_account_holder` varchar(48)
 $db->query( "ALTER TABLE #__{vm}_user_info ADD `bank_account_type` ENUM( 'Checking', 'Business Checking', 'Savings' ) DEFAULT 'Checking' NOT NULL;" ); 
 
 $db->query( 'INSERT INTO `#__{vm}_user_info`
-	SELECT `user_info_id`, `id`, `address_type`, `address_type_name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `state`, `country`, `zip`,`email`, `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5`, `perms`, `bank_account_nr`, `bank_name`, `bank_sort_code`, `bank_iban`, `bank_account_holder`, `bank_account_type`, UNIX_TIMESTAMP( registerDate ), UNIX_TIMESTAMP( lastvisitDate )
+	SELECT `user_info_id`, `id`, `address_type`, `address_type_name`, 
+	`company`, `title`, `last_name`, `first_name`, `middle_name`, 
+	`phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, 
+	`state`, `country`, `zip`,`email`, `extra_field_1`, `extra_field_2`, 
+	`extra_field_3`, `extra_field_4`, `extra_field_5`, UNIX_TIMESTAMP( registerDate ), 
+	UNIX_TIMESTAMP( lastvisitDate ), `perms`, `bank_account_nr`, `bank_name`, 
+	`bank_sort_code`, `bank_iban`, `bank_account_holder`, `bank_account_type`
 	FROM #__users WHERE address_type=\'BT\';' );
 
 $db->query( 'ALTER TABLE `#__users` DROP `user_info_id`;' );
@@ -153,4 +159,10 @@ $db->query( 'ALTER TABLE `#__{vm}_auth_user_vendor` CHANGE `user_id` `user_id` I
 $db->query( 'ALTER TABLE `#__{vm}_affiliate` CHANGE `user_id` `user_id` INT( 11 ) NOT NULL ;' );
 
 $db->query( 'ALTER TABLE `#__{vm}_order_item` CHANGE `product_item_price` `product_item_price` DECIMAL( 10, 5 ) NULL DEFAULT NULL ' );
+
+$db->query( "UPDATE `#__{vm}_function` SET `function_name` = 'changePublishState',
+`function_class` = 'vmAbstractObject.class',
+`function_method` = 'handlePublishState',
+`function_description` = 'Changes the publish field of an item, so that it can be published or unpublished easily.' WHERE `function_name` ='productPublish' LIMIT 1 ;");
+
 ?>

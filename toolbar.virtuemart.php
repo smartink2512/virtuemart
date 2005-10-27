@@ -38,7 +38,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 	// We have to do some page declarations here
 	
 	// Used for pages that allow (un)publishing items
-	$allowsListPublish = Array( "product.product_list" => "publishProduct", 
+	$allowsListPublish = Array( "product.product_list", 
 							"product.product_category_list",
 							"store.payment_method_list"
 						);
@@ -94,9 +94,9 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 			MENU_virtuemart::LISTS_MENU_NEW();
 		}
 		// For (Un)Publishing Items
-		if( !empty( $allowsListPublish[$page] ))
-			MENU_virtuemart::LISTS_MENU_PUBLISH( $allowsListPublish[$page] );
-			
+		if( in_array( $page, $allowsListPublish )) {
+			MENU_virtuemart::LISTS_MENU_PUBLISH( 'changePublishState' );
+		}
 		// Delete Items
 		if( !empty( $allowsListDeletion[$page] )) {
 			vmMenuBar::divider();

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.6 2005/10/08 15:56:06 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.7 2005/10/18 04:35:41 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -86,7 +86,7 @@ if ($product_parent_id != 0) {
     $related_product_html .= "<h3>".$VM_LANG->_PHPSHOP_RELATED_PRODUCTS_HEADING.":</h3>\n";
     $related_product_html .= "<table width=\"100%\" align=\"center\"><tr>\n";
     while( $db->next_record() ) {
-      $related_product_html .= "<td valign=\"top\">".$ps_product->product_snapshot( $prod->product_sku )."</td>\n";
+      $related_product_html .= "<td valign=\"top\">".$ps_product->product_snapshot( $db->f('product_sku') )."</td>\n";
 	}
     $related_product_html .= "</tr></table>\n";
   }

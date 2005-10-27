@@ -750,7 +750,7 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES (1, 1, 'userAdd', 'ps_user', 
 (136, 8, 'creditcardAdd', 'ps_creditcard', 'add', 'Adds a Credit Card entry.', 'admin,storeadmin'),
 (137, 8, 'creditcardUpdate', 'ps_creditcard', 'update', 'Updates a Credit Card entry.', 'admin,storeadmin'),
 (138, 8, 'creditcardDelete', 'ps_creditcard', 'delete', 'Deletes a Credit Card entry.', 'admin,storeadmin'),
-(139, 2, 'publishProduct', 'ps_product', 'product_publish', 'Changes the product_publish field, so that a product can be published or unpublished easily.', 'admin,storeadmin'),
+(139, 2, 'changePublishState', 'vmAbstractObject.class', 'changePublishState', 'Changes the publish field of an item, so that it can be published or unpublished easily.', 'admin,storeadmin'),
 (140, 2, 'export_csv', 'ps_csv', 'export_csv', 'This function exports all relevant product data to CSV.', 'admin,storeadmin'),
 (141, 2, 'reorder', 'ps_product_category', 'reorder', 'Changes the list order of a category.', 'admin,storeadmin'),
 (142, 2, 'discountAdd', 'ps_product_discount', 'add', 'Adds a discount.', 'admin,storeadmin'),
@@ -1946,15 +1946,17 @@ $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (3, 1, 'Credit Card', '
 $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (4, 1, 'PayPal', 'ps_paypal', 5, '0.00', 0, 'PP', 'P', 0, 'Y', '', '
 <?php
 \$url = \"https://www.paypal.com/cgi-bin/webscr\";
+\$tax_total = \$db->f(\"order_tax\") + \$db->f(\"order_shipping_tax\");
 \$post_variables = Array(
 \"cmd\" => \"_xclick\",
 \"business\" => PAYPAL_EMAIL,
 \"receiver_email\" => PAYPAL_EMAIL,
-\"item_name\" => \"Order Nr. \". \$db->f(\"order_id\"),
+\"item_name\" => \$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER.\": \". \$db->f(\"order_id\"),
 \"order_id\" => \$db->f(\"order_id\"),
 \"invoice\" => \$db->f(\"order_number\"),
 \"amount\" => sprintf(\"%.2f\", \$db->f(\"order_subtotal\")),
 \"shipping\" => sprintf(\"%.2f\", \$db->f(\"order_shipping\")),
+\"tax\" => \$tax_total,
 \"currency_code\" => \$_SESSION[\'vendor_currency\'],
 \"image_url\" => \$vendor_image_url,
 \"return\" => SECUREURL .\"index.php?option=com_phpshop&page=checkout.result&order_id=\".\$db->f(\"order_id\"),

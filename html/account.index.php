@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.index.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: account.index.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -20,32 +20,20 @@ mm_showMyFileName( __FILE__ );
 require_once(CLASSPATH.'ps_order.php');
 $ps_order = new ps_order;
 
-$view_all = mosGetParam( $_REQUEST, 'view_all', 0 );
-
 /* Set Dynamic Page Title when applicable */
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE );
     
 if ($perm->is_registered_customer($auth['user_id'])) { 
 
 ?>
-
   <strong><? echo $VM_LANG->_PHPSHOP_ACC_CUSTOMER_ACCOUNT ?></strong>
   <?php  echo $auth["first_name"] . " " . $auth["last_name"] . "<br />";?>
   <br />
   <table border="0" cellspacing="0" cellpadding="10" width="100%" align="center">
-    <tr>
-      <td><strong><?php 
-      echo "<img src=\"".IMAGEURL."ps_image/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
-      echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?></strong>
-      <br />
-      <br />
-
-        <?php $ps_order->list_order("A", "1", $view_all); ?>
-      </td>
-    </tr>
+  
           
     <tr>
-      <td><hr />
+      <td>
       <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.billing") ?>">
           <?php 
           echo "<img src=\"".IMAGEURL."ps_image/identity.png\" align=\"middle\" height=\"48\" width=\"48\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\" />&nbsp;";
@@ -53,6 +41,8 @@ if ($perm->is_registered_customer($auth['user_id'])) {
           <br /><? echo $VM_LANG->_PHPSHOP_ACC_UPD_BILL ?>
       </td>
     </tr>
+    <tr><td>&nbsp;</td></tr>
+    
     <tr>
       <td><hr />
       <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipping") ?>"><?php
@@ -62,6 +52,19 @@ if ($perm->is_registered_customer($auth['user_id'])) {
         <? echo $VM_LANG->_PHPSHOP_ACC_UPD_SHIP ?>
       </td>
     </tr>
+    <tr><td>&nbsp;</td></tr>
+    
+    <tr>
+      <td><hr /><strong><?php 
+      echo "<img src=\"".IMAGEURL."ps_image/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
+      echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?></strong>
+      <br />
+      <br />
+
+        <?php $ps_order->list_order("A", "1" ); ?>
+      </td>
+    </tr>
+    
 </table>
 <!-- Body ends here -->
 <? } 

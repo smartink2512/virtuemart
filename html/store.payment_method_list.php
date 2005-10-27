@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.payment_method_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: store.payment_method_list.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -111,11 +111,17 @@ while ($db->next_record()) {
 	}
 	$listObj->addCell( $tmp_cell );
     
-	if ($db->f("payment_enabled")=='N')
-		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/publish_x.png" border="0" />';
-	else 
-		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/tick.png" border="0" />';
-	$listObj->addCell( $tmp_cell );
+	
+	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=$page&payment_method_id=".$db->f("payment_method_id")."&func=changePublishState" );
+	if ($db->f("payment_enabled")=='N') {
+		$tmpcell .= "&task=publish\">";
+	} 
+	else { 
+		$tmpcell .= "&task=unpublish\">";
+	}
+	$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("payment_enabled"), "Publish", "Unpublish" );
+	$tmpcell .= "</a>";
+	$listObj->addCell( $tmpcell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "payment_method_id", $db->f("payment_method_id"), "paymentMethodDelete", $keyword, $limitstart ) );
 

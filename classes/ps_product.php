@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.14 2005/10/22 06:04:37 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.16 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -22,7 +22,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * @author pablo, jep, gday, soeren
  * 
  */
-class ps_product {
+class ps_product extends vmAbstractObject {
 	var $classname = "ps_product";
 
 	/**
@@ -1880,7 +1880,9 @@ class ps_product {
 					$my_taxrate = $this->get_product_taxrate($product_id);
 					$base_price += ($my_taxrate * $price);
 				}
-				$my_taxrate;
+				else {
+					$my_taxrate = 0;
+				}
 				// Calculate discount
 				if( !empty($discount_info["amount"])) {
 					$undiscounted_price = $base_price;
@@ -2273,49 +2275,15 @@ class ps_product {
 	/**
 	 * Modifies the product_publish field and toggles it from Y to N or N to Y
 	 * for product $d['product_id']
-	 *
+	 * @deprecated 
 	 * @param int $d $d['task'] must be "publish" or "unpublish"
 	 * @return unknown
 	 */
 	function product_publish( &$d ) {
-		global $db;
+		global $db, $vmLogger;
 
-		if (empty( $d['product_id'] )) {
-			$d['error'] = "Error: Please provide a product ID !";
-			return false;
-		}
-		// Check if we have to do a batch update
-		if( is_array( $d['product_id'] )) {
-			if( $d['task'] == "publish" || $d['task'] == "unpublish" ) {
-				$published = $d['task'] == "publish" ? "Y" : "N";
-				foreach( $d['product_id'] as $product_id ) {
-					$q = "UPDATE #__{vm}_product SET product_publish='".$published."' ";
-					$q .= "WHERE product_id='".$product_id."' ";
-					$q .= "AND vendor_id='".$_SESSION['ps_vendor_id']."'";
-					$db->query( $q );
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		// This is the case when only one product has to be updated
-		else {
-			if (empty( $d['product_publish'] ) ) {
-				$d['error'] = "Error: Please tell wether you want to publish or unpublish the product!";
-				return false;
-			}
-			elseif( strtoupper($d['product_publish']) != "Y"
-			&& strtoupper($d['product_publish']) != "N") {
-				$d['error'] = "Error: Please provide a valid value to publish or unpublish the product!";
-				return false;
-			}
-			$q = "UPDATE #__{vm}_product SET product_publish='".$d['product_publish']."' ";
-			$q .= "WHERE product_id='".$d['product_id']."' ";
-			$q .= "AND vendor_id='".$_SESSION['ps_vendor_id']."'";
-			$db->query( $q );
-		}
-		return true;
+		$this->handlePublishState( $d );
+		return;
 	}
 
 }  // ENd of CLASS ps_product

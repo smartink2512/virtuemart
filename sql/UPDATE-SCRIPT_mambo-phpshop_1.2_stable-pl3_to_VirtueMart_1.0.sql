@@ -162,3 +162,8 @@ ALTER TABLE `mos_users` DROP `bank_iban`;
 ALTER TABLE `mos_users` DROP `bank_account_holder`;
 
 ALTER TABLE `mos_vm_order_item` CHANGE `product_item_price` `product_item_price` DECIMAL( 10, 5 ) NULL DEFAULT NULL;
+
+UPDATE `mos_{vm}_function` SET `function_name` = 'changePublishState',
+`function_class` = 'vmAbstractObject.class',
+`function_method` = 'handlePublishState',
+`function_description` = 'Changes the publish field of an item, so that it can be published or unpublished easily.' WHERE `function_name` ='productPublish' LIMIT 1 ;

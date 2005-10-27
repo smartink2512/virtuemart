@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: pageNavigation.class.php,v 1.4 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: pageNavigation.class.php,v 1.5 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,7 +27,7 @@ class vmPageNav {
 	var $limit = null;
 	/** @var int Total number of rows */
 	var $total = null;
-
+	
 	function vmPageNav( $total, $limitstart, $limit ) {
 		$this->total = intval( $total );
 		$this->limitstart = max( $limitstart, 0 );
@@ -134,10 +134,15 @@ class vmPageNav {
 	}
 	
 	function getListFooter() {
-	    $html = '<table class="adminlist"><tr><th colspan="3">';
-		$html .= $this->getPagesLinks();
-		$html .= '</th></tr><tr>';
-		$html .= '<td nowrap="true" width="48%" align="right">Display #</td>';
+	    $html = '<table class="adminlist">';
+	    if( $this->total > $this->limit || $this->limitstart > 0) {
+	    	
+		    $html .= '<tr><th colspan="3">';
+		    
+			$html .= $this->getPagesLinks();
+			$html .= '</th></tr>';
+	    }
+		$html .= '<tr><td nowrap="true" width="48%" align="right">Display #</td>';
 		$html .= '<td>' .$this->getLimitBox() . '</td>';
 		$html .= '<td nowrap="true" width="48%" align="left">' . $this->getPagesCounter() . '</td>';
 		$html .= '</tr></table>';

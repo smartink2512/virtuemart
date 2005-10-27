@@ -75,6 +75,7 @@ if( !defined( 'CLASSPATH' )) {
 	require_once(CLASSPATH."ps_module.php");
 	require_once(CLASSPATH."ps_perm.php");
 	require_once(CLASSPATH."ps_shopper_group.php");
+	require_once(CLASSPATH."vmAbstractObject.class.php");
 	require_once(CLASSPATH."htmlTools.class.php");
 	require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
 	require_once(CLASSPATH."Log/Log.php");
@@ -227,14 +228,14 @@ if( !defined( 'CLASSPATH' )) {
 			if( file_exists( CLASSPATH.$db->f("function_class").".php" ) ) {
 				// Load class definition file
 				require_once( CLASSPATH.$db->f("function_class").".php" );
-
+				$classname = str_replace( '.class', '', $funcParams["class"]);
 				// create an object
-				$string = "\$" . $funcParams["class"] . " = new " . $funcParams["class"] . ";";
+				$string = "\$$classname = new $classname;";
 				eval( $string );
 
 				// RUN THE FUNCTION
 				// $ok  = $class->function( $vars );
-				$cmd = "\$ok = \$" . $funcParams["class"] . "->" . $funcParams["method"] . "(\$vars);";
+				$cmd = "\$ok = \$".$classname."->" . $funcParams["method"] . "(\$vars);";
 				eval( $cmd );
 
 				if ($ok == false) {

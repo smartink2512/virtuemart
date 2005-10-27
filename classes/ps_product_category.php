@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_category.php,v 1.10 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.11 2005/10/24 18:14:02 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -20,7 +20,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * The class to manage and show product categories
  *
  */
-class ps_product_category {
+class ps_product_category extends vmAbstractObject {
 	var $classname = "ps_product_category";
 
 	/**

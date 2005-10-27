@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.12 2005/10/17 19:05:29 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.14 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -72,8 +72,8 @@ class listFactory {
 
 	/** @var int the number of rows in the table */
 	var $columnCount = 0;
-	/** @var string css classes for alternating rows (row0 and row1 ) */
-	var $alternateColors = "row0";
+	/** @var array css classes for alternating rows (row0 and row1 ) */
+	var $alternateColors;
 	/** @var int The column number */
 	var $x = -1;
 	/** @var int The row number */
@@ -82,9 +82,16 @@ class listFactory {
 	var $cells = Array();
 	/** @var vmPageNavigation The Page Navigation Object */
 	var $pageNav;
+	/** @var int The smallest number of results that shows the page navigation */
+	var $_resultsToShowPageNav = 6;
 	
 	function listFactory( $pageNav=null ) {
-	
+		if( defined('_PSHOP_ADMIN')) {
+			$this->alternateColors = array( 0 => 'row0', 1 => 'row1' );
+		}
+		else {
+			$this->alternateColors = array( 0 => 'sectiontableentry1', 1 => 'sectiontableentry2' );
+		}
 		$this->pageNav = $pageNav;
 	}
 	
@@ -98,8 +105,7 @@ class listFactory {
 			var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
 		}
 		//--></script>
-		<table class="adminlist">
-		<tr>
+		<table class="adminlist" width="100%">
 		<?php
 	}
 	/**
@@ -108,9 +114,10 @@ class listFactory {
 	*/
 	function writeTableHeader( $columnNames ) {
 		if( !is_array( $columnNames ))
-			return false;
+			$this->columnCount = intval( $columnNames );
 		else {
 			$this->columnCount = count( $columnNames );
+			echo '<tr>';
 			foreach( $columnNames as $name => $attributes ) {
 				$name = html_entity_decode( $name );
 				echo "<th $attributes>$name</th>\n";
@@ -143,15 +150,16 @@ class listFactory {
 			return false;
 		
 		else {
+			$i = 0;
 			foreach( $this->cells as $row ) {
-				echo "<tr class=\"".$this->alternateColors."\">\n";
+				echo "<tr class=\"".$this->alternateColors[$i]."\">\n";
 				foreach( $row as $cell ) {
 					$value = $cell["data"];
 					$attributes = $cell["attributes"];
 					echo "<td  $attributes>$value</td>\n";
 				}
 				echo "</tr>\n";
-				$this->alternateColors = ($this->alternateColors == "row1") ? "row0" : "row1";
+				$i == 0 ? $i++ : $i--;
 			}
 		}
 	}
@@ -213,11 +221,16 @@ class listFactory {
 	* @param Additional varaibles to include as hidden input fields
 	*/
 	function writeFooter($keyword, $extra="") {
+		$footer= "";
+		if( $this->pageNav !== null ) {
+			if( $this->_resultsToShowPageNav <= $this->pageNav->total ) {
 		
-		if( $this->pageNav != null )
-			$footer = $this->pageNav->getListFooter();
-		else
+				$footer = $this->pageNav->getListFooter();
+			}
+		}
+		else {
 			$footer = "";
+		}
 			
 		if(!empty( $extra )) {
 			$extrafields = explode("&", $extra);
@@ -522,18 +535,17 @@ function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/im
 	
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
-	$tooltip = mysql_escape_string( $tooltip );
+	$tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES);
 	
-	if ( $width ) {
+	if ( !empty($width) ) {
 		$width = 'this.T_WIDTH=\''.$width .'\';';
 	}
 	if ( $title ) {
 		$title = 'this.T_TITLE=\''.$title .'\';';
 	}
-	if ( !$text ) {
-		$image = str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $image);
-		$text 	= '<img src="'. $image .'" border="0" />';
-	}
+	$image = str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $image);
+	$text 	= '<img src="'. $image .'" align="middle" border="0" />&nbsp;'.$text;
+	
 	$style = 'style="text-decoration: none; color: #333;"';
 	if ( $href ) {
 		$style = '';

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_category_list.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.product_category_list.php,v 1.5 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -136,8 +136,17 @@ for($n = $limitstart ; $n < $nrows ; $n++) {
 						."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $category_tmp[$row_list[$n]]["category_child_id"]."&option=com_virtuemart"
 						. "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>"
 					);
-	
-	$listObj->addCell( vmCommonHTML::getYesNoIcon ( $category_tmp[$row_list[$n]]["category_publish"] ) );
+	// Publish / Unpublish
+	$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.product_category_list&category_id=".$category_tmp[$row_list[$n]]["category_child_id"]."&func=changePublishState" );
+	if ($category_tmp[$row_list[$n]]["category_publish"]=='N') {
+		$tmp_cell .= "&task=publish\">";
+	} 
+	else { 
+		$tmp_cell .= "&task=unpublish\">";
+	}
+	$tmp_cell .= vmCommonHTML::getYesNoIcon ( $category_tmp[$row_list[$n]]["category_publish"] );
+	$tmp_cell .= "</a>";
+	$listObj->addCell( $tmp_cell );
 	
 	// Order Up and Down Icons
 	// This must be a big cheat, because we're working on sorted arrays,

@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * mambo-phphop Product Categories Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_product_categories.php,v 1.2 2005/09/29 20:02:56 soeren_nb Exp $
+* @version $Id: mod_product_categories.php,v 1.3 2005/10/20 17:36:30 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage modules
 * 
@@ -17,6 +17,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.virtuemart.net
 */
 global $jscook_type;
+
+$category_id = mosGetParam( $_REQUEST, 'category_id');
+
 /* Get module parameters */
 $class_sfx = $params->get( 'class_sfx', "" );
 $menutype = $params->get( 'menutype', "links" );

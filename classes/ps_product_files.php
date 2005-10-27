@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_files.php,v 1.7 2005/10/24 18:14:02 soeren_nb Exp $
+* @version $Id: ps_product_files.php,v 1.8 2005/10/26 19:23:32 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -100,7 +100,7 @@ class ps_product_files {
 
 		$db = new ps_DB;
 		if (empty($d["product_id"])) {
-			$GLOBALS['vmLogger']->log( "A product ID must be specified.", PEAR_LOG_ERR );
+			$GLOBALS['vmLogger']->err( "A product ID must be specified.");
 			return False;
 		}
 
@@ -590,7 +590,10 @@ class ps_product_files {
 	function checkUploadedFile( $fieldname ) {
 		global $vars, $vmLogger;
 		if( (!is_uploaded_file( $_FILES[$fieldname]['tmp_name']) && strstr( $fieldname, 'thumb')
-			|| substr( $_REQUEST[$fieldname.'_url'], 0, 4 ) == 'http' )) {
+			|| substr( @$_REQUEST[$fieldname.'_url'], 0, 4 ) == 'http' )) {
+			return true;
+		}
+		elseif( is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
 			return true;
 		}
 		else {

@@ -33,6 +33,27 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+27-10-2005 
+# fixed a bug in ps_order.php, where the mail would have been sent to '' (nobody)
+# some fixes for the wz_tooltip (using htmlentities now)
+^ page navigation links only show up when more results are there to display than $limit
++ added page navigation to order list in account maintenance section
++ added tax amount to paypal payment form code
+# fixed a big bug in the SQL update of the user data to VirtueMart
++ added quick (un)publish feature to category and payment method list
+- files admin.user.hmtl.php, store.user.html.php
+^ restricted access to the user list & form to conform with joomla's user component access
++ added new class vmAbstractObject
++ added new handlePublishState function (class vmAbstractObject)
+^ changed productPublish function to handlePublishState
+! Database table entry changed: 
+##############
+UPDATE `jos_vm_function` SET `function_name` = 'changePublishState',
+`function_class` = 'vmAbstractObject.class',
+`function_method` = 'handlePublishState',
+`function_description` = 'Changes the publish field of an item, so that it can be published or unpublished easily.' WHERE `function_id` =139 LIMIT 1 ;
+##############
+
 26-10-2005 soeren
 + added debugging to image upload function
 # Bug #181 ? Can't add new prices to product
