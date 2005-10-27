@@ -166,7 +166,7 @@ class Log_display extends Log
      */
 	function flush( $priority = null ) {
 		$output = "";
-		if( $this->_count > 10 ) {
+		if( $this->_count > 10 && DEBUG) {
 			// Wrap the messages into a scrollable div field
 			$output .= '<div style="width:90%; overflow:auto; height:150px;">';
 		}

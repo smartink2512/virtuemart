@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * PayPal IPN Result Checker
 *
-* @version $Id: checkout.result.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: checkout.result.php,v 1.4 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -30,8 +30,9 @@ else {
 	$q .= "AND #__{vm}_orders.order_id= $order_id ";
 	$db->query($q);
 	if ($db->next_record()) {
-		if($db->f("order_status") == PAYPAL_VERIFIED_STATUS
-      || $db->f("order_status") == PAYPAL_PENDING_STATUS) {  ?> 
+		$order_status = $db->f("order_status");
+		if($order_status == PAYPAL_VERIFIED_STATUS
+      || $order_status == PAYPAL_PENDING_STATUS) {  ?> 
         <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="Success" border="0" />
         <h2><?php echo $VM_LANG->_PHPSHOP_PAYPAL_THANKYOU ?></h2>
     

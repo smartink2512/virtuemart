@@ -5,7 +5,7 @@
 * @author Andreas Martens <heyn@plautdietsch.de>
 * @author Patrick Teague <webdude@veslach.com>
 *
-* @version $Id: show_image_in_imgtag.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: show_image_in_imgtag.php,v 1.4 2005/09/29 20:20:58 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -18,6 +18,7 @@
 *
 * http://virtuemart.net
 */
+define('_VALID_MOS', 1);
 include_once("../../configuration.php");
 include_once("../../administrator/components/com_virtuemart/virtuemart.cfg.php");
 
