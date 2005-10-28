@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout.wannafind_cc_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: checkout.wannafind_cc_form.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -159,7 +159,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
       <tr>
         <td>Credit Card Validation Code:</td>
         <td><input class="inputbox" type="text" name="cvc" size="5" />
-        <?php echo mosToolTip($VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP, "What\'s the Credit Card Validation Code?"); ?>
+        <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP, "What\'s the Credit Card Validation Code?"); ?>
         </td>
       </tr>
     </table>

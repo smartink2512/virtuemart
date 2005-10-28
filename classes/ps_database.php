@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_database.php,v 1.3 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_database.php,v 1.4 2005/10/11 17:03:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -161,7 +161,7 @@ class ps_DB extends database {
 		$this->row = 0;
 		$this->called = false;
 		$this->record = null;
-		$this->record = Array();
+		$this->record = Array(0);
 
 		if (strtoupper(substr( $this->_sql , 0, 6 )) == "SELECT" ) {
 			$this->record = $database->loadObjectList();

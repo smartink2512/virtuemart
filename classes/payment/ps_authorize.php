@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * The ps_authorize class, containing the payment processing code
 *  for transactions with authorize.net 
 *
-* @version $Id: ps_authorize.php,v 1.3 2005/09/29 20:02:17 soeren_nb Exp $
+* @version $Id: ps_authorize.php,v 1.4 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -225,8 +225,8 @@ class ps_authorize {
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
         
         // Get the Transaction Key securely from the database
-        $database->setQuery( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
-        $database->loadObject( $transaction );
+        $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
+        $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
             $d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR;
             return false;
@@ -437,7 +437,8 @@ class ps_authorize {
   ***************************************************************************/
    function capture_payment( &$d ) {
         
-        global $vendor_mail, $vendor_currency, $VM_LANG, $database;
+        global $vendor_mail, $vendor_currency, $VM_LANG;
+        $database = new ps_DB();
         /*
         $host = "secure.authorize.net";
         $port = 443;
@@ -460,8 +461,8 @@ Discover Test Account       5424000000000015
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
         
         // Get the Transaction Key securely from the database
-        $database->setQuery( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
-        $database->loadObject( $transaction );
+        $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
+        $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
             $d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR;
             return false;

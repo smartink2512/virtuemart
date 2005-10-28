@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: intershipper.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: intershipper.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -393,7 +393,7 @@ class intershipper {
 		  <td width="20%"><strong>Intershipper Username</strong>:</td>
 		  <td colspan="3" width="80%">
 			  <input type="text" name="IS_USERNAME" class="inputbox" value="<? echo IS_USERNAME ?>" />
-			<?php echo mosToolTip('The InterShipper Username') ?>
+			<?php echo mm_ToolTip('The InterShipper Username') ?>
 		  </td>
 		</tr>
 		<tr>
@@ -401,7 +401,7 @@ class intershipper {
 			</td>
 			<td colspan="3">
 				<input type="text" name="IS_PASSWORD" class="inputbox" value="<? echo IS_PASSWORD ?>" />
-			  <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN) ?>
+			  <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
@@ -409,7 +409,7 @@ class intershipper {
 			</td>
 			<td colspan="3">
 				<input type="text" name="IS_EMAIL" class="inputbox" value="<? echo IS_EMAIL ?>" />
-				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN) ?>
+				<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN) ?>
 			</td>
 		</tr>
 	  <tr>
@@ -419,7 +419,7 @@ class intershipper {
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("IS_TAX_CLASS", IS_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mosToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
 	  </tr>	
 		<tr>
 		  <td colspan="4"><hr /></td>
@@ -427,11 +427,11 @@ class intershipper {
 		<tr>
 		  <td>&nbsp;</td>
 		  <td style="text-indent:20px;font-weight:bold;">Name
-		  <?php echo mostooltip("Specify the carriers which shall return their shipping rates."); ?></td>
+		  <?php echo mm_ToolTip("Specify the carriers which shall return their shipping rates."); ?></td>
 		  <td style="text-indent:20px;font-weight:bold;">Invoice
-		  <?php echo mostooltip("Specifies whether or not you are invoiced directly from the carrier"); ?></td>
+		  <?php echo mm_ToolTip("Specifies whether or not you are invoiced directly from the carrier"); ?></td>
 		  <td style="text-indent:20px;font-weight:bold;">Account No. (optional)
-		  <?php echo mostooltip("Your carrier account number -> to take advantage of any special discounts or offers"); ?></td>
+		  <?php echo mm_ToolTip("Your carrier account number -> to take advantage of any special discounts or offers"); ?></td>
 		</tr>
 		<tr>
 		  <td style="float:right;">Carrier 1:</td>

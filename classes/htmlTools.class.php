@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.14 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.15 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -561,7 +561,7 @@ function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/im
 // borrowed from mambo.php
 function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) {
 	
-	$string = htmlentities( $string, $quote_style );
+	$string = htmlspecialchars( $string, $quote_style );
 	return $string;
 }
 

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout.paymentradio.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: checkout.paymentradio.php,v 1.4 2005/10/19 17:51:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -124,7 +124,7 @@ else {
         <td>
             <input type="text" class="inputbox" name="credit_card_code" value="<?php if(!empty($_SESSION['ccdata']['credit_card_code'])) echo $_SESSION['ccdata']['credit_card_code'] ?>" />
             <input type="hidden" class="inputbox" name="need_card_code" value="1" />
-        <?php echo mosToolTip($VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP); ?>
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP); ?>
         </td>
     </tr>
 <?php } ?>

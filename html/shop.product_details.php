@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.7 2005/10/18 04:35:41 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.8 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -65,14 +65,14 @@ if ($product_parent_id != 0) {
 }
 
 // Let's have a look wether the product has images.
-  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
+  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id=$product_id AND file_is_image=1" );
   $db->next_record();
   if( $db->f("images") && $product_parent_id!=0) {
-	  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id='$product_parent_id' AND file_is_image='1'" );
+	  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id=$product_parent_id AND file_is_image=1" );
 	  $db->next_record();
-	  $images = new stdClass();
-	  $images->images = $db->f("images");
   }
+  $images = new stdClass();
+  $images->images = $db->f("images");
 
 // Let's have a look wether the product has related products.
   $q = "SELECT product_sku, related_products FROM #__{vm}_product,#__{vm}_product_relations ";

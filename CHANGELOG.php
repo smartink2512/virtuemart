@@ -33,7 +33,14 @@ Legend:
 
 VirtueMart 1.0
 *************************************
-27-10-2005 
+28-10-2005 soeren
+# changed shopmakeHtmlSafe to use hmtlspecialchars instead of htmlentities
+# fixed a lot of queries using a database object instead of ps_DB
+# replaced all occurences of mosToolTip by mm_ToolTip
+# tax rate is automatically divided by 100 when larger than 1.0
+# "view more images" wasn't shown on product details, view_images page had SQL errors
+
+27-10-2005 soeren
 # fixed a bug in ps_order.php, where the mail would have been sent to '' (nobody)
 # some fixes for the wz_tooltip (using htmlentities now)
 ^ page navigation links only show up when more results are there to display than $limit

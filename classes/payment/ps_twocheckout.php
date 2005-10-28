@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_twocheckout.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_twocheckout.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -30,7 +30,8 @@ class ps_twocheckout {
     */
     function show_configuration() { 
     
-      global $VM_LANG, $database;
+      global $VM_LANG;
+      $database = new ps_DB();
       /** Read current Configuration ***/
       require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
     ?>
@@ -57,8 +58,8 @@ class ps_twocheckout {
                 <select name="TWOCO_VERIFIED_STATUS" class="inputbox" >
                 <?php
                     $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
-                    $database->setQuery($q);
-                    $rows = $database->loadObjectList();
+                    $database->query($q);
+                    $rows = $database->record;
                     $order_status_code = Array();
                     $order_status_name = Array();
                     

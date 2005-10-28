@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_skipjack.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_skipjack.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -224,14 +224,6 @@ class ps_skipjack {
       
         /*** Get the Configuration File for Skipjack.com ***/
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
-        
-        // Get the Transaction Key securely from the database
-        // $database->setQuery( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
-        // $database->loadObject( $transaction );
-        // if( empty($transaction->passkey)) {
-        //     $d["error"] = "Key error";
-        //     return false;
-        // }
         
         // Get user billing information
         $dbbt = new ps_DB;

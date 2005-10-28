@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_files.php,v 1.8 2005/10/26 19:23:32 soeren_nb Exp $
+* @version $Id: ps_product_files.php,v 1.9 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -589,15 +589,15 @@ class ps_product_files {
 	 */
 	function checkUploadedFile( $fieldname ) {
 		global $vars, $vmLogger;
-		if( (!is_uploaded_file( $_FILES[$fieldname]['tmp_name']) && strstr( $fieldname, 'thumb')
+		if( (!is_uploaded_file( @$_FILES[$fieldname]['tmp_name']) && strstr( $fieldname, 'thumb')
 			|| substr( @$_REQUEST[$fieldname.'_url'], 0, 4 ) == 'http' )) {
 			return true;
 		}
-		elseif( is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
+		elseif( is_uploaded_file(@$_FILES[$fieldname]['tmp_name'])) {
 			return true;
 		}
 		else {
-			switch( $_FILES[$fieldname]['error'] ){
+			switch( @$_FILES[$fieldname]['error'] ){
 				case 0: //no error; possible file attack!
 					//$vmLogger->warning( "There was a problem with your upload." );
 					break;

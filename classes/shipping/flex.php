@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: flex.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: flex.php,v 1.4 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -144,7 +144,7 @@ class flex {
             <input type="text" name="FLEX_BASE_AMOUNT" class="inputbox" value="<?php echo FLEX_BASE_AMOUNT ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("A flat fee will be charged if the total value of the cart is less than this amount. If the value of the cart is greater than this amount, a percentage will be charged") ?> 
+        <?php echo mm_ToolTip("A flat fee will be charged if the total value of the cart is less than this amount. If the value of the cart is greater than this amount, a percentage will be charged") ?> 
         </td>
     </tr>
     <tr>
@@ -154,7 +154,7 @@ class flex {
             <input type="text" name="FLEX_MIN_CHG" class="inputbox" value="<?php echo FLEX_MIN_CHG ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("This is the flat fee to be charged if the value in the cart is less than the amount entered above.") ?>
+        <?php echo mm_ToolTip("This is the flat fee to be charged if the value in the cart is less than the amount entered above.") ?>
         </td>
     </tr>
     <tr>
@@ -164,7 +164,7 @@ class flex {
             <input type="text" name="FLEX_SHIP_PERC" class="inputbox" value="<?php echo FLEX_SHIP_PERC ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip("This is the percentage (of the total purchase) to be charged if the amount in the cart is greater than the amount entered above.") ?>
+            <?php echo mm_ToolTip("This is the percentage (of the total purchase) to be charged if the amount in the cart is greater than the amount entered above.") ?>
         </td>
     </tr>
 	<tr>
@@ -174,7 +174,7 @@ class flex {
             <input type="text" name="FLEX_HAND_FEE" class="inputbox" value="<?php echo FLEX_HAND_FEE ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip("If you want to use a flat fee in addition to the conditional rate, add it here, If not, set to Zero.") ?>
+            <?php echo mm_ToolTip("If you want to use a flat fee in addition to the conditional rate, add it here, If not, set to Zero.") ?>
         </td>
     </tr>
 	  <tr>
@@ -184,7 +184,7 @@ class flex {
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("FLEX_TAX_CLASS", FLEX_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mosToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
 	  </tr>	
 	</table>
    <?php

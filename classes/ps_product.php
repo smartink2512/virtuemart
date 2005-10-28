@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.16 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.18 2005/10/27 19:42:54 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -359,8 +359,8 @@ class ps_product extends vmAbstractObject {
 			$db->query( $q );
 			if( !empty( $d["child_items"] )) {
 
-				$database->setQuery( "SHOW COLUMNS FROM #__{vm}_product" );
-				$rows = $database->loadObjectList();
+				$database->query( "SHOW COLUMNS FROM #__{vm}_product" );
+				$rows = $database->record;
 				while(list(,$Field) = each( $rows) ) {
 					$product_fields[$Field->Field] = $Field->Field;
 				}
@@ -373,8 +373,8 @@ class ps_product extends vmAbstractObject {
 				$product_fields["product_sku"] = "CONCAT(product_sku,'_".$d["product_id"]."')";
 
 				$rows = Array();
-				$database->setQuery( "SHOW COLUMNS FROM #__{vm}_product_price" );
-				$rows = $database->loadObjectList();
+				$database->query( "SHOW COLUMNS FROM #__{vm}_product_price" );
+				$rows = $database->record;
 				while(list(,$Field) = each( $rows) ) {
 					$price_fields[$Field->Field] = $Field->Field;
 				}

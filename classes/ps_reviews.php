@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_reviews.php,v 1.4 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: ps_reviews.php,v 1.6 2005/10/24 11:16:41 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -162,21 +162,44 @@ class ps_reviews {
             <form method=\"post\" action=\"". URL ."index.php\" name=\"reviewForm\" id=\"reviewform\">
             <table cellpadding=\"5\" summary=\"".$VM_LANG->_PHPSHOP_REVIEW_RATE."\">
               <tr>
-                <th id=\"five_stars\"><img alt=\"5 stars\" src=\"".IMAGEURL."stars/5.gif\" border=\"0\" /></th>
-                <th id=\"four_stars\"><img alt=\"4 stars\" src=\"".IMAGEURL."stars/4.gif\" border=\"0\" /></th>
-                <th id=\"three_stars\"><img alt=\"3 stars\" src=\"".IMAGEURL."stars/3.gif\" border=\"0\" /></th>
-                <th id=\"two_stars\"><img alt=\"2 stars\" src=\"".IMAGEURL."stars/2.gif\" border=\"0\" /></th>
-                <th id=\"one_star\"><img alt=\"1 star\" src=\"".IMAGEURL."stars/1.gif\" border=\"0\" /></th>
-                <th id=\"null_stars\"><img alt=\"0 stars\" src=\"".IMAGEURL."stars/0.gif\" border=\"0\" /></th>
+                <th id=\"five_stars\">
+                	<label for=\"user_rating5\"><img alt=\"5 stars\" src=\"".IMAGEURL."stars/5.gif\" border=\"0\" /></label>
+                </th>
+                <th id=\"four_stars\">
+                	<label for=\"user_rating4\"><img alt=\"4 stars\" src=\"".IMAGEURL."stars/4.gif\" border=\"0\" /></label>
+                </th>
+                <th id=\"three_stars\">
+                	<label for=\"user_rating3\"><img alt=\"3 stars\" src=\"".IMAGEURL."stars/3.gif\" border=\"0\" /></label>
+                </th>
+                <th id=\"two_stars\">
+                	<label for=\"user_rating2\"><img alt=\"2 stars\" src=\"".IMAGEURL."stars/2.gif\" border=\"0\" /></label>
+                </th>
+                <th id=\"one_star\">
+                	<label for=\"user_rating1\"><img alt=\"1 star\" src=\"".IMAGEURL."stars/1.gif\" border=\"0\" /></label>
+                </th>
+                <th id=\"null_stars\">
+                	<label for=\"user_rating0\"><img alt=\"0 stars\" src=\"".IMAGEURL."stars/0.gif\" border=\"0\" /></label>
+                </th>
               </tr>
               <tr>
                 <td headers=\"five_stars\" style=\"text-align:center;\">
-                  <input type=\"radio\" name=\"user_rating\" value=\"5\" /></td>
-                <td headers=\"four_stars\" style=\"text-align:center;\"><input type=\"radio\" name=\"user_rating\" value=\"4\" /></td>
-                <td headers=\"three_stars\" style=\"text-align:center;\"><input type=\"radio\" name=\"user_rating\" value=\"3\" /></td>
-                <td headers=\"two_stars\" style=\"text-align:center;\"><input type=\"radio\" name=\"user_rating\" value=\"2\" /></td>
-                <td headers=\"one_star\" style=\"text-align:center;\"><input type=\"radio\" name=\"user_rating\" value=\"1\" /></td>
-                <td headers=\"null_stars\" style=\"text-align:center;\"><input type=\"radio\" name=\"user_rating\" value=\"0\" /></td>
+                  <input type=\"radio\" id=\"user_rating5\" name=\"user_rating\" value=\"5\" />
+                </td>
+                <td headers=\"four_stars\" style=\"text-align:center;\">
+                	<input type=\"radio\" id=\"user_rating4\" name=\"user_rating\" value=\"4\" />
+                </td>
+                <td headers=\"three_stars\" style=\"text-align:center;\">
+                	<input type=\"radio\" id=\"user_rating3\" name=\"user_rating\" value=\"3\" />
+                </td>
+                <td headers=\"two_stars\" style=\"text-align:center;\">
+                	<input type=\"radio\" id=\"user_rating2\" name=\"user_rating\" value=\"2\" />
+                </td>
+                <td headers=\"one_star\" style=\"text-align:center;\">
+                	<input type=\"radio\" id=\"user_rating1\" name=\"user_rating\" value=\"1\" />
+                </td>
+                <td headers=\"null_stars\" style=\"text-align:center;\">
+                	<input type=\"radio\" id=\"user_rating0\" name=\"user_rating\" value=\"0\" />
+                </td>
               </tr>
             </table>
             <br /><br />". $VM_LANG->_PHPSHOP_REVIEW_COMMENT ."<br />

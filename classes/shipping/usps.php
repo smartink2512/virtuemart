@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: usps.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: usps.php,v 1.4 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -314,7 +314,7 @@ class usps {
             <input type="text" name="USPS_USERNAME" class="inputbox" value="<? echo USPS_USERNAME ?>" />
 		</td>
 		<td>
-          <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP) ?>
+          <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP) ?>
         </td>
     </tr>
     <tr>
@@ -324,7 +324,7 @@ class usps {
             <input type="text" name="USPS_PASSWORD" class="inputbox" value="<? echo USPS_PASSWORD ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP) ?>
         </td>
     </tr>
     <tr>
@@ -334,7 +334,7 @@ class usps {
             <input type="text" name="USPS_SERVER" class="inputbox" value="<? echo USPS_SERVER ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP) ?>
         </td>
     </tr>
 	<tr>
@@ -344,7 +344,7 @@ class usps {
             <input type="text" name="USPS_PATH" class="inputbox" value="<? echo USPS_PATH ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP) ?>
         </td>
     </tr>
 	<tr>
@@ -354,7 +354,7 @@ class usps {
             <input type="text" name="USPS_CONTAINER" class="inputbox" value="<? echo USPS_CONTAINER ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP) ?>
         </td>
     </tr>
 	<tr>
@@ -364,7 +364,7 @@ class usps {
             <input type="text" name="USPS_PACKAGESIZE" class="inputbox" value="<? echo USPS_PACKAGESIZE ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP) ?>
         </td>
     </tr>
 	<tr>
@@ -374,7 +374,7 @@ class usps {
             <input type="text" name="USPS_PACKAGEID" class="inputbox" value="<? echo USPS_PACKAGEID ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP) ?>
         </td>
     </tr>
 	<tr>
@@ -384,7 +384,7 @@ class usps {
             <input type="text" name="USPS_SHIPSERVICE" class="inputbox" value="<? echo USPS_SHIPSERVICE ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP) ?>
         </td>
     </tr>
 	  <tr>
@@ -394,7 +394,7 @@ class usps {
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("USPS_TAX_CLASS", USPS_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mosToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
 	  </tr>	
 		<tr>
 		  <td colspan="3"><hr /></td>
@@ -402,7 +402,7 @@ class usps {
 	<tr>
 	  <td><strong><?php echo $VM_LANG->_PHPSHOP_USPS_HANDLING_FEE ?></strong></td>
 	  <td><input class="inputbox" type="text" name="USPS_HANDLINGFEE" value="<?php echo USPS_HANDLINGFEE ?>" /></td>
-	  <td><?php echo mosToolTip($VM_LANG->_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP) ?></td>
+	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP) ?></td>
 	</tr>
 	<tr>
         <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE ?></strong>
@@ -411,7 +411,7 @@ class usps {
             <input type="text" name="USPS_INTLLBRATE" class="inputbox" value="<? echo USPS_INTLLBRATE ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP) ?>
         </td>
     </tr>
 	<tr>
@@ -421,7 +421,7 @@ class usps {
             <input type="text" name="USPS_INTLHANDLINGFEE" class="inputbox" value="<? echo USPS_INTLHANDLINGFEE ?>" />
 		</td>
 		<td>
-            <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP) ?>
         </td>
     </tr>
 	</table>

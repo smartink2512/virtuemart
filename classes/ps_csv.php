@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_csv.php,v 1.3 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_csv.php,v 1.4 2005/10/15 09:17:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -609,10 +609,11 @@ class ps_csv {
     * 
 	  */
     function export_csv( &$d ) {
-        global $mosConfig_sitename, $database;
+        global $mosConfig_sitename;
         $ps_vendor_id = $_SESSION['ps_vendor_id'];
         $use_standard_order = mosGetParam( $_REQUEST, 'use_standard_order', "N" );
         $db = new ps_DB;
+        $database = new ps_DB;
 
         // Get default shopper group ID for prices
         $q = "SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE `default`='1' and vendor_id = '$ps_vendor_id'";
@@ -684,8 +685,8 @@ class ps_csv {
                   $attribute_values .= "|";
               }
             }
-            $database->setQuery( "SELECT product_sku FROM #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'" );
-            $product_sku = $database->loadResult();
+            $database->query( "SELECT product_sku FROM #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'" );
+            $product_sku = $database->record;
             $export_sku = $product_sku;
           }
             
@@ -787,16 +788,18 @@ class ps_csv {
 	  * @returns String category_path
 	  */
     function get_category_path( $product_id ) {
-        global $database;
+        
         $db = new ps_DB;
+        $database = new ps_DB();
+        
         $q = "SELECT #__{vm}_product.product_id, #__{vm}_product.product_parent_id, category_name,#__{vm}_category_xref.category_parent_id "
                 ."FROM #__{vm}_category, #__{vm}_product, #__{vm}_product_category_xref,#__{vm}_category_xref "
                 ."WHERE #__{vm}_product.product_id='$product_id' "
                 ."AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id "
                 ."AND #__{vm}_category_xref.category_child_id = #__{vm}_product_category_xref.category_id "
                 ."AND #__{vm}_product.product_id = #__{vm}_product_category_xref.product_id";
-        $database->setQuery( $q );
-        $rows = $database->loadObjectList();
+        $database->query( $q );
+        $rows = $database->record;
         $k = 1;
         $category_path = "";
         

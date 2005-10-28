@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.view_images.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.view_images.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -44,10 +44,10 @@ if( !empty($product_id) ) {
   echo "<a href=\"$href\" target=\"_self\" title=\"$title\">\n";
   $ps_product->show_image( $db->f("product_thumb_image"), "alt=\"$alt\" align=\"center\" border=\"$border\"");
   echo "</a>&nbsp;&nbsp;&nbsp;";
-
+  $dbi = new ps_DB();
 // Let's have a look wether the product has more images.
-  $database->setQuery( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
-  $images = $database->loadObjectList();
+  $dbi->query( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
+  $images = $dbi->record;
   $i = 0;
   foreach( $images as $image ) {
     $info = pathinfo( $image->file_name );
@@ -74,13 +74,13 @@ if( !empty($product_id) ) {
   else {
     if( !empty($image_id) ) {
       // Get that image!
-      $database->setQuery( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1' AND file_id='$image_id'" );
+      $dbi->query( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1' AND file_id='$image_id'" );
     }
     else {
       // Get the first image
-      $database->setQuery( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
+      $dbi->query( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
     }
-    $database->loadObject( $show_img );
+    $show_img = $dbi->record[0];
     if( $show_img ) {
       $src = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $show_img->file_name );
       if( strstr( $src, $mosConfig_live_site.$show_img->file_name))

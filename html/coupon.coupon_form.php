@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: coupon.coupon_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: coupon.coupon_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -57,7 +57,7 @@ $formObj->startForm();
       <td width="24%"><div align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_COUPON_HEADER ?>:</div></td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="coupon_code" value="<?php $db->sp("coupon_code") ?>" />
-        <?php echo mosToolTip( $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP ); ?>
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP ); ?>
       </td>
     </tr>
     <tr> 
@@ -65,7 +65,7 @@ $formObj->startForm();
       <td width="76%"> 
         <input type="radio" class="inputbox" name="percent_or_total" value="percent" <?php if($db->sf("percent_or_total")=='percent' || empty($coupon_id)) echo "checked=\"checked\""; ?> />
         <?php echo $VM_LANG->_PHPSHOP_COUPON_PERCENT ?>&nbsp;&nbsp;&nbsp;
-        <?php echo mosToolTip( $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP ); ?><br />
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP ); ?><br />
         <input type="radio" class="inputbox" name="percent_or_total" value="total" <?php if($db->sf("percent_or_total")=='total') echo "checked=\"checked\""; ?> />
         <?php echo $VM_LANG->_PHPSHOP_COUPON_TOTAL ?>
       </td>
@@ -81,7 +81,7 @@ $formObj->startForm();
             <?php echo $VM_LANG->_PHPSHOP_COUPON_TYPE_PERMANENT ?>
           </option>
         </select>
-        <?php echo mosToolTip( $VM_LANG->_PHPSHOP_COUPON_TYPE_TOOLTIP ); ?>
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_COUPON_TYPE_TOOLTIP ); ?>
       </td>
     </tr>
     <tr> 

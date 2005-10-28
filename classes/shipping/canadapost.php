@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
 /**
 *
-* @version $Id: canadapost.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: canadapost.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -340,7 +340,7 @@ class canadapost {
 		  <td width="20%"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID ?></strong>:</td>
 		  <td colspan="3" width="80%">
 			  <input type="text" name="MERCHANT_CPCID" class="inputbox" value="<?php echo MERCHANT_CPCID ?>" />
-			  <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID_EXPLAIN) ?>
+			  <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID_EXPLAIN) ?>
 		  </td>
 		</tr>
 		<tr>
@@ -348,7 +348,7 @@ class canadapost {
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_SERVER" class="inputbox" value="<?php echo CP_SERVER ?>" />
-			  <?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER_EXPLAIN) ?>
+			  <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
@@ -356,7 +356,7 @@ class canadapost {
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_PORT" class="inputbox" value="<?php echo CP_PORT ?>" />
-				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT_EXPLAIN) ?>
+				<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
@@ -364,7 +364,7 @@ class canadapost {
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_FEDERAL_TAX" class="inputbox" value="<?php echo CP_FEDERAL_TAX ?>" />
-				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX_EXPLAIN) ?>
+				<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
@@ -372,7 +372,7 @@ class canadapost {
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_PROVINCIAL_TAX" class="inputbox" value="<?php echo CP_PROVINCIAL_TAX ?>" />
-				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX_EXPLAIN) ?>
+				<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX_EXPLAIN) ?>
 			</td>
 		</tr>
 		<tr>
@@ -380,7 +380,7 @@ class canadapost {
 			</td>
 			<td colspan="3">
 				<textarea name="CP_ARRIVAL_DATE_EXPLAIN" class="inputbox" cols="50" rows="5" ><?php echo CP_ARRIVAL_DATE_EXPLAIN ?></textarea>
-				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN_I) ?>
+				<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN_I) ?>
 			</td>
 		</tr>
 		<tr>
@@ -388,7 +388,7 @@ class canadapost {
 			</td>
 			<td colspan="3">
 				<textarea name="CP_HANDLING_CHARGE_EXPLAIN" class="inputbox" cols="50" rows="5" ><?php echo CP_HANDLING_CHARGE_EXPLAIN ?></textarea>
-				<?php echo mosToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN_I) ?>
+				<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN_I) ?>
 			</td>
 		</tr>
 		<tr>
