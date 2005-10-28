@@ -188,7 +188,7 @@ else {
 	if( !function_exists( "load_that_shop_page" )) {
 		function load_that_shop_page( $modulename, $pagename) {
 			global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $page, $database,$mosConfig_absolute_path, $cart, $start, $option,
-			$product_id,$VM_LANG, $sess,$vendor_image,$vendor_country_2_code, $vendor_country_3_code , $vendor_image_url, $PSHOP_SHIPPING_MODULES,
+			$product_id,$VM_LANG, $PHPSHOP_LANG, $sess,$vendor_image,$vendor_country_2_code, $vendor_country_3_code , $vendor_image_url, $PSHOP_SHIPPING_MODULES,
 			$_VERSION, $vendor_name, $vendor_address, $vendor_city,$vendor_country,$vendor_mail, $category_id, $mainframe, $mosConfig_list_limit, $limitstart, $limit,
 			$vendor_store_name, $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping, $ps_shipping, $ps_order_status,
 			$module_description, $vendor_currency_display_style, $vendor_full_image, $mosConfig_live_site, $vendor_id, $CURRENCY_DISPLAY, $keyword, $mm_action_url,
