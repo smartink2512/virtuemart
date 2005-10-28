@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_user.php,v 1.5 2005/10/24 18:14:02 soeren_nb Exp $
+* @version $Id: ps_user.php,v 1.6 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -190,7 +190,7 @@ class ps_user {
 		} 
 		
 		// Joomla User Information stuff
-		$uid = $this->saveUser();
+		$uid = $this->saveUser( $d );
 		if( empty( $uid ) ) {
 			$d['error'] = 'New User couldn\'t be added';
 			return false;
@@ -281,7 +281,7 @@ class ps_user {
 		}
 		
 		// Joomla User Information stuff
-		$this->saveUser();
+		$this->saveUser( $d );
 	
 		/* Update Bill To */
 		$q  = "UPDATE #__{vm}_user_info SET ";
