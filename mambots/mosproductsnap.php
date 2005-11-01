@@ -2,7 +2,7 @@
 /**
 * mambo-phpShop Show-Product-Snapshop Mambot
 *
-* @version $Id: mosproductsnap.php,v 1.1 2005/09/06 20:06:49 soeren_nb Exp $
+* @version $Id: mosproductsnap.php,v 1.2 2005/10/19 17:51:19 soeren_nb Exp $
 * @package Mambo_4.5.1
 * @subpackage mambo-phpShop
 *
@@ -45,7 +45,7 @@ function mosProductSnapshotPlugin_onPrepareContent( $published, &$row, &$params,
     foreach ($pshop_productsnap_matches[0] as $pshop_productsnap_match) {
       $pshop_productsnap_output = "";
       $pshop_productsnap_match = str_replace("{product_snapshot:id=", "", $pshop_productsnap_match);
-      $pshop_productsnap_match = str_replace("}", "", $pshop_productsnap_match);
+      $pshop_productsnap_match = (int)str_replace("}", "", $pshop_productsnap_match);
       
       // Get Bot Parameters
       $pshop_productsnap_params = array();
@@ -84,7 +84,8 @@ function mosProductSnapshotPlugin_onPrepareContent( $published, &$row, &$params,
     $db = new ps_DB;
     $html = "";
     
-    $q = "SELECT product_name,product_id,product_parent_id,product_thumb_image,product_s_desc FROM #__pshop_product WHERE product_id='$product_id'";
+    $q = "SELECT product_name,product_id,product_parent_id,product_thumb_image,product_s_desc 
+			FROM #__{vm}_product WHERE product_id=$product_id ";
     $db->setQuery($q); $db->query();
     
     if ($db->next_record()) {

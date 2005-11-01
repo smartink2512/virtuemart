@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_session.php,v 1.10 2005/10/26 19:25:10 soeren_nb Exp $
+* @version $Id: ps_session.php,v 1.11 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -60,7 +60,18 @@ class ps_session {
 		}
 		*/
 	}
-
+	function restartSession( $sid = '') {
+		// Destroy the started session
+		session_destroy();
+		
+		// Prepare the new session
+		if( $sid != '' ) {
+			session_id( $virtuemartcookie );
+		}
+		session_name( $this->_session_name );
+		// Start the new Session.
+		session_start();
+	}
 	/**
      * Gets the Itemid for the com_virtuemart Component
      * and stores it in a global Variable
@@ -72,10 +83,12 @@ class ps_session {
 		if( empty( $_REQUEST['shopItemid'] )) {
 			$db = new ps_DB;
 			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published='1'");
-			if( $db->next_record() )
-			$_REQUEST['shopItemid'] = $db->f("id");
-			else
-			$_REQUEST['shopItemid'] = 1;
+			if( $db->next_record() ) {
+				$_REQUEST['shopItemid'] = $db->f("id");
+			}
+			else {
+				$_REQUEST['shopItemid'] = 1;
+			}
 		}
 
 		return $_REQUEST['shopItemid'];
@@ -86,8 +99,9 @@ class ps_session {
      * This is a solution for  the Shared SSL problem
      * We have to copy some cookies from the Main Mambo site domain into
      * the shared SSL domain (only when necessary!)
-     *
-     */
+	 *
+	 * The function is called on each page load.
+	 */
 	function prepare_SSL_Session() {
 		global $my, $mosConfig_secret;
 
@@ -170,14 +184,7 @@ class ps_session {
 						setcookie( "usercookie[username]", $usercookie["username"], $lifetime, "/" );
 						setcookie( "usercookie[password]", $usercookie["password"], $lifetime, "/" );
 					}
-					// Destroy the started session
-					session_destroy();
-					
-					// Prepare the new session
-					session_id( $virtuemartcookie );
-					session_name( $this->_session_name );
-					// Start the new Session.
-					session_start();
+					$this->restartSession( $virtuemartcookie );
 					
 					require_once( ADMINPATH.'install.copy.php');
 					
@@ -193,7 +200,7 @@ class ps_session {
 					
 					// Prevent the martID from being displayed in the URL
 					if( !empty( $_GET['martID'] )) {
-						mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index") );
+						mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index&cartReset=N") );
 					}
 	
 				}
@@ -201,7 +208,13 @@ class ps_session {
 			}
 		}
 	}
-
+	/**
+	 * This function compares the store URL with the SECUREURL
+	 * and returns the result
+	 *
+	 * @param string $ssl_domain The SSL domain (empty string to be filled here)
+	 * @return boolean True when we have to do a SSL redirect (for Shared SSL)
+	 */
 	function check_Shared_SSL( &$ssl_domain ) {
 
 		if( URL == SECUREURL ) {
@@ -225,61 +238,79 @@ class ps_session {
 		return $ssl_redirect;
 	}
 
-	/**************************************************************************
-	** name: url()
-	** created by:
-	** description:
-	** parameters:
-	** returns: an URL concatenated with "option=com_virtuemart"
-	***************************************************************************/
+	/**
+	 * Prints a reformatted URL
+	 *
+	 * @param string $text
+	 */
+	function purl($text) {
+		
+		echo $this->url( $text );
+		
+	}
+	
+	/**
+	 * This reformats an URL, appends "option=com_virtuemart" and "Itemid=XX"
+	 * where XX is the Id of an entry in the table mos_menu with "link: option=com_virtuemart"
+	 * It also calls sefRelToAbs to apply SEF formatting
+	 * 
+	 * @param strong $text THE URL
+	 * @return string The reformatted URL
+	 */
 	function url($text) {
 
 		$Itemid = "&Itemid=".$this->getShopItemid();
 
 		switch ($text) {
 			case SECUREURL:
-			$text =  SECUREURL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
-			break;
+				$text =  SECUREURL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
+				break;
 			case URL:
-			$text =  URL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
-			break;
+				$text =  URL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
+				break;
+				
 			default:
-			$limiter = strpos($text, '?');
+				$limiter = strpos($text, '?');
 
-			$appendix = "";
-			// now append "&option=com_virtuemart&Itemid=XX"
-			if (!strstr($text, "option="))
-			$appendix .= "&" . $this->component_name;
-			$appendix .= $Itemid;
-
-			if (!defined( '_PSHOP_ADMIN' )) {
-
-				// be sure that we have the correct PHP_SELF in front of the url
-				if( stristr( $_SERVER['PHP_SELF'], "index2.php" ))
-				$prep = "index2.php";
+				$appendix = "";
+				// now append "&option=com_virtuemart&Itemid=XX"
+				if (!strstr($text, "option=")) {
+					$appendix .= "&" . $this->component_name;
+				}
+				$appendix .= $Itemid;
+	
+				if (!defined( '_PSHOP_ADMIN' )) {
+	
+					// be sure that we have the correct PHP_SELF in front of the url
+					if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
+						$prep = "index2.php";
+					}
+					else {
+						$prep = "index.php";
+					}
+					if( stristr( $text, "index2.php" )) {
+						$prep = "index2.php";
+					}
+	
+					$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
+					$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
+					if( !stristr( $appendix, URL ) ) {
+						$appendix = URL . $appendix;
+					}
+				}
+				elseif( $_SERVER['SERVER_PORT'] == 443 ) {
+					$appendix = SECUREURL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
+				}
 				else
-				$prep = "index.php";
-				if( stristr( $text, "index2.php" ))
-				$prep = "index2.php";
-
-				$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
-				$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
-				if( !stristr( $appendix, URL ) )
-				$appendix = URL . $appendix;
-			}
-			elseif( $_SERVER['SERVER_PORT'] == 443 ) {
-				$appendix = SECUREURL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
-			}
-			else
-			$appendix = URL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
-
-			if ( stristr($text, SECUREURL)) {
-				$appendix = str_replace(URL, SECUREURL, $appendix);
-			}
-
-			$text = $appendix;
-
-			break;
+				$appendix = URL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
+	
+				if ( stristr($text, SECUREURL)) {
+					$appendix = str_replace(URL, SECUREURL, $appendix);
+				}
+	
+				$text = $appendix;
+	
+				break;
 		}
 		/**
     ** This has to be redone, because it doesn't work with mosRedirect
@@ -291,71 +322,6 @@ class ps_session {
     */
 		return $text;
 	}
-
-	/**************************************************************************
-	** name: url()
-	** created by:
-	** description:
-	** parameters:
-	** returns: echoes an URL concatenated with the string "option=com_virtuemart"
-	***************************************************************************/
-
-	function purl($text) {
-
-		$Itemid = "&Itemid=".$this->getShopItemid();
-
-		switch ($text) {
-			case SECUREURL:
-			$text =  SECUREURL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
-			break;
-			case URL:
-			$text =  URL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
-			break;
-			default:
-			$limiter = strpos($text, '?');
-
-			$appendix = "";
-			// now append "&option=com_virtuemart&Itemid=XX"
-			if (!strstr($text, "option="))
-			$appendix .= "&" . $this->component_name;
-			$appendix .= $Itemid;
-
-			if (!defined( '_PSHOP_ADMIN' )) {
-				// be sure that we have the correct PHP_SELF in front of the url
-				if( stristr( $_SERVER['PHP_SELF'], "index2.php" ))
-				$prep = "index2.php";
-				else
-				$prep = "index.php";
-				if( stristr( $text, "index2.php" ))
-				$prep = "index2.php";
-				$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
-				$appendix = sefRelToAbs ( $appendix );
-				if( !stristr( $appendix, URL ) )
-				$appendix = URL . $appendix;
-			}
-			elseif( $_SERVER['SERVER_PORT'] == 443 ) {
-				$appendix = SECUREURL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
-			}
-			else
-			$appendix = URL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
-
-			if ( stristr($text, SECUREURL))
-			$appendix = str_replace(URL, SECUREURL, $appendix);
-
-			$text = $appendix;
-
-			break;
-		}
-		/**
-    ** This has to be redone, because it doesn't work with mosRedirect
-    if (!defined( '_PSHOP_ADMIN' ) && $pshop_mode != "admin") {
-        $text = str_replace( "&", "&amp;", $text );
-        $text = str_replace( "&amp;amp;", "&amp;", $text );
-    }
-    */
-		echo $text;
-	}
-
 
 	/**************************************************************************
 	** name: hidden_session()

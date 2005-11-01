@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout.index.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: checkout.index.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -47,7 +47,7 @@ if (SHOW_CHECKOUT_BAR == '1') {
 /**
 ** End Checkout Bar Feature
 *****************************/
-
+	
 /* Decide, which Checkout Step is the next one 
 * $checkout_this_step controls the step thru the checkout process
 * we have the following steps
@@ -92,27 +92,20 @@ if ($checkout_this_step == CHECK_OUT_GET_FINAL_CONFIRMATION) {
     include(PAGEPATH . 'ro_basket.php');
 }
 else {
-    if( $my->id > 0 )
-        $show_basket = true;
-    else
-        $show_basket = false;
+    if( $my->id > 0 ){
+    	$show_basket = true;
+    }
+    else {
+    	$show_basket = false;
+    }
         
     include(PAGEPATH . 'basket.php');
-}
-?>
 
-<br />
-<?php 
-
-if ($perm->is_registered_customer($my->id)) {
-    $label = "\$lbl = \$VM_LANG->_PHPSHOP_CHECKOUT_MSG_$checkout_this_step;";
-    eval($label);
-    echo "<h5>".$lbl."</h5>";
-    /* Set Dynamic Page Title when applicable */
-    if(is_callable(array('mosMainFrame', 'setPageTitle'))) {
-        $mainframe->setPageTitle( $lbl );
-    }
 }
+
+echo '<br />';
+    
+
 
 if ($checkout) {
     // We have something in the Card so move on
@@ -126,6 +119,20 @@ if ($checkout) {
     <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
     <input type="hidden" name="user_id" value="<?php echo $my->id ?>" />
     <?php
+    	/* Input Field for the Coupon Code */
+		if( PSHOP_COUPONS_ENABLE=='1' 
+			&& !@$_SESSION['coupon_redeemed']
+			&& @$checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD) {  
+		 	include (PAGEPATH."coupon.coupon_field.php"); 	
+		}
+		
+	    $label = "\$lbl = \$VM_LANG->_PHPSHOP_CHECKOUT_MSG_$checkout_this_step;";
+	    eval($label);
+	    echo "<h4>".$lbl."</h4>";
+	    /* Set Dynamic Page Title when applicable */
+	    $mainframe->setPageTitle( $lbl );
+
+       
         if ($checkout_this_step == CHECK_OUT_GET_SHIPPING_ADDR) {
             // CHECK_OUT_GET_SHIPPING_ADDR
             // let the user choose a shipto address

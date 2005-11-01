@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ro_basket.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: ro_basket.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -137,7 +137,22 @@ else {
   
   $total = $total_undiscounted = round($total, 2);
   $subtotal_display = $CURRENCY_DISPLAY->getFullValue($total);
-  
+
+
+	if ($_REQUEST["page"] == "checkout.index" && !empty($_POST["do_coupon"])) {
+		/* process the coupon */
+		
+		/* make sure they arent trying to run it twice */
+		if (@$_SESSION['coupon_redeemed'] == true) {
+			$vmLogger->warning( $VM_LANG->_PHPSHOP_COUPON_ALREADY_REDEEMED );
+		}
+		else {
+			require_once( CLASSPATH . "ps_coupon.php" );
+			$vars["total"] = $total;
+			ps_coupon::process_coupon_code( $vars );
+		}
+	}
+	
   /* DISCOUNT */
   $payment_discount = $ps_checkout->get_payment_discount($payment_method_id, $total);
   if ( PAYMENT_DISCOUNT_BEFORE == '1') { 

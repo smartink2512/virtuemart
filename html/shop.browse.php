@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is the Main Product Listing File!
 *
-* @version $Id: shop.browse.php,v 1.6 2005/10/10 18:49:19 soeren_nb Exp $
+* @version $Id: shop.browse.php,v 1.7 2005/10/19 17:51:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -21,7 +21,7 @@ mm_showMyFileName( __FILE__ );
 global $manufacturer_id,$keyword1,$keyword2,$search_category,$DescOrderBy,$search_limiter,
 $search_op,$orderby,$product_type_id;
 
-echo "<h3>".$VM_LANG->_PHPSHOP_BROWSE_LBL."</h3>";
+echo "<h3>".$VM_LANG->_PHPSHOP_BROWSE_LBL."</h3>\n";
 
 $db_browse = new ps_DB;
 $dbp = new ps_DB;
@@ -110,8 +110,9 @@ else {
 	elseif( $keyword ) {
 		$mainframe->setPageTitle( html_entity_decode( $VM_LANG->_PHPSHOP_SEARCH_TITLE ) );
 	}
-	else
-	$mainframe->setPageTitle( html_entity_decode($VM_LANG->_PHPSHOP_BROWSE_LBL) );
+	else {
+		$mainframe->setPageTitle( html_entity_decode($VM_LANG->_PHPSHOP_BROWSE_LBL) );
+	}
 
 	if (!empty($product_type_id) && @$_REQUEST['output'] != "pdf") {
     ?>

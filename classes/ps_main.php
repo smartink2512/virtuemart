@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
-* @version $Id: ps_main.php,v 1.6 2005/10/19 17:51:19 soeren_nb Exp $
+* @version $Id: ps_main.php,v 1.7 2005/10/26 19:23:32 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -226,7 +226,7 @@ function validate_image(&$d,$field_name,$table_name) {
 	}
 
 	/* Command to move uploaded file into destination directory */
-	$d["image_commands"] .= "\$ret = copy(\"".addslashes($temp_file)."\", \"".$path.$to_file."\");";
+	$d["image_commands"] .= "\$ret = copy(\"".addslashes(realpath($temp_file))."\", \"".$path.$to_file."\");";
 	if( file_exists( realpath($temp_file) )) {
 		$d["image_commands"] .= "\$ret = @unlink(\"".addslashes(realpath($temp_file))."\" );";
 	}

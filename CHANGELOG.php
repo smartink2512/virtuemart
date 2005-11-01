@@ -33,6 +33,13 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+01-11-2005 soeren
+# category_flypage was 'flypage' regardless of the category setting (changed ps_DB::sf() )
+^ changed coupon field to be displayed only on the payment method selection screen
+# percentage coupon was miscalculated on quantity update in cart (thanks gwen)
+^ currency symbol in store form is now stored as HTML entity (?  => &euro; )
+^ payment methods are surrounded by fieldsets now
+
 28-10-2005 soeren
 # changed shopmakeHtmlSafe to use hmtlspecialchars instead of htmlentities
 # fixed a lot of queries using a database object instead of ps_DB

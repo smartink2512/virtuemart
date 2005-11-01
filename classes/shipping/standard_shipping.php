@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: standard_shipping.php,v 1.7 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.8 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -148,8 +148,8 @@ class standard_shipping {
 		}
 		$database->query( "SELECT tax_rate FROM #__{vm}_shipping_rate,#__{vm}_tax_rate WHERE shipping_rate_id='$shipping_rate_id' AND shipping_rate_vat_id=tax_rate_id" );
 		$database->next_record();
-		if( $db->f('tax_rate') ) {
-			return $db->f('tax_rate');
+		if( $database->f('tax_rate') ) {
+			return $database->f('tax_rate');
 		}
 		else {
 			return 0;

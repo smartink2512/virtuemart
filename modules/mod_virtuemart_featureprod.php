@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /*
 * Special Products Module
 *
@@ -19,7 +19,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * VirtueMart comes with absolute no warranty.
 *
 * www.virtuemart.net
-*/ 
+*/
 global $mosConfig_absolute_path;
 
 /* Load the virtuemart main parse code */
@@ -37,21 +37,27 @@ $ps_product = new ps_product;
 $db = new ps_DB;
 
 if ( $category_id ) {
-  $q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
-  $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') ";
-  $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
-  $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
-  $q .= "AND #__{vm}_category.category_id='$category_id'";
-  $q .= "AND #__{vm}_product.product_publish='Y' ";
-  $q .= "AND #__{vm}_product.product_special='Y' ";
-  $q .= "ORDER BY product_name ASC LIMIT 0, $max_items";
+	$q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
+	$q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') ";
+	$q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
+	$q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
+	$q .= "AND #__{vm}_category.category_id='$category_id'";
+	$q .= "AND #__{vm}_product.product_publish='Y' ";
+	$q .= "AND #__{vm}_product.product_special='Y' ";
+	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+		$q .= " AND product_in_stock > 0 ";
+	}
+	$q .= "ORDER BY product_name ASC LIMIT 0, $max_items";
 }
 else {
-  $q  = "SELECT DISTINCT product_sku FROM #__{vm}_product WHERE ";
-  $q .= "product_parent_id='' AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
-  $q .= "AND #__{vm}_product.product_publish='Y' ";
-  $q .= "AND #__{vm}_product.product_special='Y' ";
-  $q .= "ORDER BY product_name ASC LIMIT 0, $max_items";
+	$q  = "SELECT DISTINCT product_sku FROM #__{vm}_product WHERE ";
+	$q .= "product_parent_id='' AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
+	$q .= "AND #__{vm}_product.product_publish='Y' ";
+	$q .= "AND #__{vm}_product.product_special='Y' ";
+	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+		$q .= " AND product_in_stock > 0 ";
+	}
+	$q .= "ORDER BY product_name ASC LIMIT 0, $max_items";
 }
 $db->query($q);
 if( $db->num_rows() > 0 ) {
@@ -61,17 +67,17 @@ if( $db->num_rows() > 0 ) {
 	<?php
 	$i = 0;
 	while($db->next_record() ){
-        if ($i%2)
-            $sectioncolor = "sectiontableentry2";
-        else
-            $sectioncolor = "sectiontableentry1";
-            
+		if ($i%2)
+		$sectioncolor = "sectiontableentry2";
+		else
+		$sectioncolor = "sectiontableentry1";
+
 		if( $display_style == "vertical" ) {
         ?>
 			<tr align="center" class="<?php echo $sectioncolor ?>">
 				<td width="<?php echo $width ?>%">
 					<?php 
-					$ps_product->show_snapshot($db->f("product_sku"), $show_price, $show_addtocart); 
+					$ps_product->show_snapshot($db->f("product_sku"), $show_price, $show_addtocart);
 					?><br />
 				</td>
 			</tr>
@@ -79,23 +85,23 @@ if( $db->num_rows() > 0 ) {
 		}
 		elseif( $display_style== "horizontal" ) {
 			if( $i == 0 )
-				echo "<tr>\n";
+			echo "<tr>\n";
 			echo "<td width=\"$width%\" align=\"center\">";
 			$ps_product->show_snapshot($db->f("product_sku"), $show_price, $show_addtocart);
 			echo "</td>\n";
 			if( ($i+1) == $db->num_rows() )
-				echo "</tr>\n";
+			echo "</tr>\n";
 		}
 		elseif( $display_style== "table" ) {
 			if( $i == 0 )
-				echo "<tr>\n";
+			echo "<tr>\n";
 			echo "<td width=\"$width%\" align=\"center\">";
 			$ps_product->show_snapshot($db->f("product_sku"), $show_price, $show_addtocart);
 			echo "</td>\n";
 			if ( ($i+1) % $products_per_row == 0)
-				echo "</tr><tr>\n";
+			echo "</tr><tr>\n";
 			if( ($i+1) == $max_items )
-				echo "</tr>\n";
+			echo "</tr>\n";
 		}
 		$i++;
 	}

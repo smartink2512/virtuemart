@@ -40,8 +40,12 @@ $q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_categor
 $q .= "product_parent_id=''";
 $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
 $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
-if( !empty( $category_id ) )
-$q .= "AND #__{vm}_category.category_id='$category_id' ";
+if( !empty( $category_id ) ) {
+	$q .= "AND #__{vm}_category.category_id='$category_id' ";
+}
+if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+	$q .= " AND product_in_stock > 0 ";
+}
 $q .= "AND #__{vm}_product.product_publish='Y' ";
 $q .= "ORDER BY #__{vm}_product.product_id DESC ";
 $q .= "LIMIT 0, $max_items ";

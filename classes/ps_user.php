@@ -172,7 +172,7 @@ class ps_user {
 	* returns:
 	**************************************************************************/
 	function add(&$d) {
-		global $my, $VM_LANG, $perm;
+		global $my, $VM_LANG, $perm, $vmLogger;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$hash_secret = "VirtueMartIsCool";
 		$db = new ps_DB;
@@ -192,7 +192,7 @@ class ps_user {
 		// Joomla User Information stuff
 		$uid = $this->saveUser( $d );
 		if( empty( $uid ) ) {
-			$d['error'] = 'New User couldn\'t be added';
+			$vmLogger->err( 'New User couldn\'t be added' );
 			return false;
 		}
 		if( !empty( $d['id'] ) )
@@ -301,6 +301,7 @@ class ps_user {
 		$q .= "state='" . $d["state"] . "', ";
 		$q .= "country='" . $d["country"] . "', ";
 		$q .= "zip='" . $d["zip"] . "', ";
+		$q .= "user_email='" . $d["email"] . "', ";
 		$q .= "extra_field_1='" . @$d["extra_field_1"] . "', ";
 		$q .= "extra_field_2='" . @$d["extra_field_2"] . "', ";
 		$q .= "extra_field_3='" . @$d["extra_field_3"] . "', ";

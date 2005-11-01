@@ -24,7 +24,7 @@ global $VM_LANG, $mm_action_url, $sess;
 
 ?>
 <!--BEGIN Search Box --> 
-<form action="<?php $sess->purl( $mm_action_url."index.php?page=shop.browse" ) ?>" method="get" />
+<form action="<?php $sess->purl( $mm_action_url."index.php?page=shop.browse" ) ?>" method="post" />
 <table cellpadding="1" cellspacing="1" border="0" width="100%">
 	<tr> 
 		<td colspan="2">

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.8 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.9 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -34,8 +34,8 @@ require_once(CLASSPATH . 'ps_reviews.php' );
 /* Flypage Parameter has old page syntax: shop.flypage
 * so let's get the second part - flypage */
 $flypage = mosGetParam($_REQUEST, "flypage", FLYPAGE);
-$flypage = explode(".", $flypage );
-$flypage = basename(@$flypage[1]);
+
+$flypage = str_replace( 'shop.', '', $flypage);
 
 $product_id = mosgetparam($_REQUEST, "product_id", null);
 $category_id = mosgetparam($_REQUEST, "category_id", null);

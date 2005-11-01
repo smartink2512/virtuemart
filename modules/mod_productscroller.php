@@ -3,7 +3,7 @@
 * mambo-phphop Product Scroller Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_productscroller.php,v 1.3 2005/09/29 20:02:56 soeren_nb Exp $
+* @version $Id: mod_productscroller.php,v 1.4 2005/10/20 17:36:30 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage modules
 * 
@@ -271,7 +271,10 @@ function getProductSKU( $limit=0, $how=null, $category_id=0, $order='asc' ) {
 	if( $category_id != 0 )
 	$query .= "\nJOIN #__{vm}_product_category_xref as pc ON p.product_id=pc.product_id AND pc.category_id='$category_id'";
 
-	$query .= "\n WHERE p.product_publish = 'Y' AND product_parent_id='0'";
+	$query .= "\n WHERE p.product_publish = 'Y' AND product_parent_id=0 ";
+	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+		$query .= " AND product_in_stock > 0 ";
+	}
 	switch( $how ) {
 		case 'random':
 		$query .= "\n ORDER BY RAND() $limit";

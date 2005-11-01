@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_cart.php,v 1.9 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: ps_cart.php,v 1.10 2005/10/26 19:25:24 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -42,7 +42,7 @@ class ps_cart {
 	 * @return array An empty cart
 	 */
 	function initCart() {
-		global $my, $cart;
+		global $my, $cart, $sess;
 		// Register the cart
 		if (empty($_SESSION['cart'])) {
 			$cart = array();
@@ -51,9 +51,12 @@ class ps_cart {
 			return $cart;
 		}
 		else {
-			if( ( @$_SESSION['auth']['user_id'] != $my->id ) && empty( $my->id ) ) {
+			if( ( @$_SESSION['auth']['user_id'] != $my->id ) && empty( $my->id ) 
+				&& @$_GET['cartReset'] != 'N') {
 				// If the user ID has changed (after logging out)
 				// empty the cart!
+				
+				$sess->restartSession();
 				ps_cart::reset();
 			}
 		}
@@ -238,8 +241,7 @@ class ps_cart {
 		}
 		if( !empty( $_SESSION['coupon_discount'] )) {
 			// Update the Coupon Discount !!
-			require_once( CLASSPATH . "ps_coupon.php" );
-			ps_coupon::process_coupon_code( $d );
+			$_POST['do_coupon'] = 'yes';
 		}
 		$_SESSION["cart"]=$_SESSION['cart'];
 		return True;
@@ -293,7 +295,6 @@ class ps_cart {
 	function reset() {
 		global $cart;
 		$_SESSION['cart']["idx"]=0;
-		$_SESSION['product_info'] = Array();
 		$cart = $_SESSION['cart'];
 		return True;
 	}
