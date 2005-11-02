@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_print.php,v 1.5 2005/10/17 19:05:29 soeren_nb Exp $
+* @version $Id: order.order_print.php,v 1.6 2005/10/18 19:12:44 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -316,10 +316,8 @@ else {
 				</td>
 				<td width="9%"><?php  $dbt->p("order_item_sku") ?>&nbsp;</td>
 				<td width="12%" align="right"><?php 
-					$tmp_nbDecimal = $CURRENCY_DISPLAY->nbDecimal;
-					$CURRENCY_DISPLAY->nbDecimal = 5;
-					echo $CURRENCY_DISPLAY->getFullValue($dbt->f("product_item_price"));  
-					$CURRENCY_DISPLAY->nbDecimal = $tmp_nbDecimal;
+					echo $CURRENCY_DISPLAY->getFullValue($dbt->f("product_item_price"), 5);  
+					
 					?></td>
 				<td width="12%" align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($dbt->f("product_final_price"));  ?></td>
 				<td width="19%" align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($t); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -334,7 +332,7 @@ else {
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong> <?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL ?>: </strong></div></td>
-				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_subtotal")); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_subtotal"), 5); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 	  <?php
 			  /* COUPON DISCOUNT */

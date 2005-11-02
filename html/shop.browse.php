@@ -84,6 +84,10 @@ $db_browse->query( $count );
 
 $num_rows = $db_browse->f("num_rows");
 
+if( $limitstart > 0 && $limit > $num_rows) {
+	$list = str_replace( 'LIMIT '.$limitstart, 'LIMIT 0', $list );
+}
+
 /*** when nothing has been found
 * we tell this here and say goodbye */
 
@@ -462,6 +466,7 @@ else {
 <!-- BEGIN PAGE NAVIGATION -->
 <div align="center">
 <?php
+
 if ( $num_rows > $limit && @$_REQUEST['output'] != "pdf") {
 	if( !isset($pagenav) ) {
 		include_once( "includes/pageNavigation.php" );

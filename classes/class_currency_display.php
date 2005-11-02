@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: class_currency_display.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: class_currency_display.php,v 1.3 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -90,7 +90,7 @@ if(!defined("_CLASS_CURRENCY_DISPLAY_LOADED")) {
 		return($this->id);
 	}
 	// ================
-	function getValue($nb){
+	function getValue($nb, $decimals=''){
 		$res = "";		
 		// Warning ! number_format function performs implicit rounding
 		// Rounding is not handled in this DISPLAY class
@@ -100,16 +100,19 @@ if(!defined("_CLASS_CURRENCY_DISPLAY_LOADED")) {
 		// case, an unwanted ',' is displayed.
 		// That's why we have to do the work ourserlve.
 		// Note : when no decimal il given (i.e. 3 parameters), everything works fine
+		if( $decimals === '') {
+			$decimals = $this->nbDecimal;
+		}
 		if ($this->thousands != ''){
-			$res=number_format($nb,$this->nbDecimal,$this->decimal,$this->thousands);
+			$res=number_format($nb,$decimals,$this->decimal,$this->thousands);
 		} else {
 			// If decimal is equal to defaut thousand separator, apply a trick
 			if ($this->decimal==','){
-				$res=number_format($nb,$this->nbDecimal,$this->decimal,'|');
+				$res=number_format($nb,$decimals,$this->decimal,'|');
 				$res=str_replace('|','',$res);			
 			} else {
 				// Else a simple substitution is enough
-				$res=number_format($nb,$this->nbDecimal,$this->decimal,$this->thousands);
+				$res=number_format($nb,$decimals,$this->decimal,$this->thousands);
 				$res=str_replace(',','',$res);
 			}
 		}
@@ -117,11 +120,11 @@ if(!defined("_CLASS_CURRENCY_DISPLAY_LOADED")) {
 	}
 
 	// ================
-	function getFullValue($nb){
+	function getFullValue($nb, $decimals=''){
 		$res = "";
 		// Currency symbol position
 		if ($nb == abs($nb)){
-			$res=$this->getValue($nb);
+			$res=$this->getValue($nb, $decimals);
 			// Positive number
 			switch ($this->positivePos){
 			case 0:
@@ -144,7 +147,7 @@ if(!defined("_CLASS_CURRENCY_DISPLAY_LOADED")) {
 			}
 		} else {
 			// Negative number
-			$res=$this->getValue(abs($nb));
+			$res=$this->getValue(abs($nb), $decimals);
 			switch ($this->negativePos){
 			case 0:
 				// 0 = '(Symb00)'

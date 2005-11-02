@@ -33,6 +33,15 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+02-11-2005 soeren
+# wrong rounding of the subtotal field
+! table structure changed!
+	#####
+	ALTER TABLE `jos_vm_orders` 
+	CHANGE `order_subtotal` `order_subtotal` DECIMAL( 10, 5 ) NULL DEFAULT NULL;
+	#####
+^ refreshed paypal code (removed tax field, charging amount=subtotal+tax and shipping now).
+	
 01-11-2005 soeren
 # category_flypage was 'flypage' regardless of the category setting (changed ps_DB::sf() )
 ^ changed coupon field to be displayed only on the payment method selection screen

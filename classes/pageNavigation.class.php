@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: pageNavigation.class.php,v 1.5 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: pageNavigation.class.php,v 1.6 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -59,7 +59,7 @@ class vmPageNav {
 	* Writes the html limit # input box
 	*/
 	function writeLimitBox () {
-		echo mosPageNav::getLimitBox();
+		echo vmPageNav::getLimitBox();
 	}
 	function writePagesCounter() {
 		echo $this->getPagesCounter();

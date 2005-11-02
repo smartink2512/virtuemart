@@ -1030,7 +1030,7 @@ CREATE TABLE IF NOT EXISTS `jos_vm_orders` (
   `order_number` varchar(32) default NULL,
   `user_info_id` varchar(32) default NULL,
   `order_total` decimal(10,2) NOT NULL default '0.00',
-  `order_subtotal` decimal(10,2) default NULL,
+  `order_subtotal` decimal(10,5) default NULL,
   `order_tax` decimal(10,2) default NULL,
   `order_shipping` decimal(10,2) default NULL,
   `order_shipping_tax` decimal(10,2) default NULL,

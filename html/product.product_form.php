@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.10 2005/10/08 15:56:06 soeren_nb Exp $
+* @version $Id: product.product_form.php,v 1.11 2005/10/19 17:51:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -691,8 +691,9 @@ if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
             <td colspan="2" >
               <div style="overflow:auto;">
                 <?php 
-                if( $clone_product != "1" )
-                  echo $ps_product->image_tag($db->f("product_full_image"), "", 0) 
+                if( $clone_product != "1" ) {
+                	echo $ps_product->image_tag($db->f("product_full_image"), "", 0); 
+                }
                 ?>
               </div>
             </td>
@@ -711,11 +712,11 @@ if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
           </tr>
           <tr> 
             <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
-              <input type="radio" class="inputbox" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+              <input type="radio" class="inputbox" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
               <?php echo $VM_LANG->_PHPSHOP_NONE ?><br/>
               <?php 
               if ($product_id and $db->f("product_thumb_image")) { ?>
-                <input type="radio" class="inputbox" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+                <input type="radio" class="inputbox" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
                 <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "<br />"; 
               } ?> 
             </td>
@@ -947,15 +948,17 @@ if( $clone_product == "1" ) {
   $db->query( "SELECT product_id, product_name 
                 FROM #__{vm}_product
                 WHERE product_parent_id='".$_REQUEST['product_id']."' " );
-  if( $db->num_rows() > 0 )
-    echo "<h3>Also clone these Child Items:</h3>";
+  if( $db->num_rows() > 0 ) {
+  	echo "<h3>Also clone these Child Items:</h3>";
+  }
   while( $db->next_record() ) {
     $db_att->query( "SELECT attribute_name, attribute_value FROM #__{vm}_product_attribute 
                       WHERE product_id ='".$db->f("product_id")."'" );
     echo '<input type="checkbox" checked="checked" name="child_items[]" value="'.$db->f("product_id").'" id="child_'.$db->f("product_id").'" />
     <label for="child_'.$db->f("product_id").'">'.$db->f("product_name").' (';
-    while( $db_att->next_record() )
-      echo $db_att->f("attribute_name").": ".$db_att->f("attribute_value")."; ";
+    while( $db_att->next_record() ) {
+    	echo $db_att->f("attribute_name").": ".$db_att->f("attribute_value")."; ";
+    }
     echo ')</label><br/>';
   }
   

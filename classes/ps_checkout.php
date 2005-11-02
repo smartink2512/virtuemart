@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.12 2005/10/22 06:04:37 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.13 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -76,33 +76,30 @@ class ps_checkout {
 		global $sess, $ship_to_info_id, $shipping_rate_id;
 
 		// CSS style for the <td> tag of the cell which is actually highlighted
-		$highlighted_style = "style=\"font-weight: bold;\"";
+		$highlighted_style = 'style="font-weight: bold;"';
+		echo '
+		<table style="background: url('. IMAGEURL .'ps_image/checkout'. $step_count.'_'.$highlighted_step .'.png) right; background-repeat: no-repeat; height:85px;text-align:center;" border="0" cellspacing="0" cellpadding="0">
+          <tr>';
+          
 
-        ?>
+        for ($i = 1; $i <= $step_count; $i++) { 
         
-        <table style="background: url(<?php echo IMAGEURL ?>ps_image/checkout<? echo $step_count."_".$highlighted_step ?>.png) right; background-repeat: no-repeat; height:85px;text-align:center;" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-          <?php
+            echo '<td '.(($highlighted_step==$i) ? $highlighted_style : '') .' width="119" align="center" valign="bottom">';
+            if ($highlighted_step > $i) {
+            	echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&option=com_virtuemart&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".@$shipping_rate_id."&checkout_next_step=".$steps_to_do[$i-1]) .'">';
+            	echo $step_msg[$i-1] .'</a>';
+            }
+            else {
+            	echo $step_msg[$i-1];
+			}
+            echo '</td>';
 
-            for ($i = 1; $i <= $step_count; $i++) { ?>
-            
-            <td  <?php if ($highlighted_step==$i) echo $highlighted_style; ?> width="119" align="center" valign="bottom">
-            <?php if ($highlighted_step > $i) { ?>
-            <a href="<?php $sess->purl(SECUREURL."index.php?page=checkout.index&option=com_virtuemart&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".@$shipping_rate_id."&checkout_next_step=".$steps_to_do[$i-1]) ?>"> 
-            <?php echo $step_msg[$i-1] ?></a>
-            <?php }
-            else
-                echo $step_msg[$i-1]; ?>
-            </td>
-    
-                <?php 
-            } ?>
-                
+        }
+        echo '    
           </tr>
         </table>
-        <br />
+        <br />';
         
-    <?php 
 	}
 	
 	/**
@@ -1121,8 +1118,9 @@ Order Total: '.$order_total.'
 				$product_price = $product_price /($my_taxrate+1);
 				$order_subtotal += $product_price;
 			}
-			else
-			$order_subtotal += $product_price * $cart[$i]["quantity"];
+			else {
+				$order_subtotal += $product_price * $cart[$i]["quantity"];
+			}
 		}
 
 		return($order_subtotal);
@@ -1347,7 +1345,7 @@ Order Total: '.$order_total.'
 	**          False - error occured
 	***************************************************************************/
 	function email_receipt($order_id) {
-		global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY,
+		global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY, $vmLogger,
 		$mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_mailfrom,
 		$mosConfig_fromname, $mosConfig_smtpauth, $mosConfig_mailer, $mosConfig_lang,
 		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
@@ -1872,11 +1870,11 @@ Order Total: '.$order_total.'
 								'mimetype' => "image/".$extension );
 
 			
-			$shopper_email_msg = vmMail( $from_email, $mosConfig_fromname, $shopper_email, $shopper_subject, $shopper_mail_Body, $shopper_mail_AltBody, true, null, null, $EmbeddedImages);
+			$shopper_mail = vmMail( $from_email, $mosConfig_fromname, $shopper_email, $shopper_subject, $shopper_mail_Body, $shopper_mail_AltBody, true, null, null, $EmbeddedImages);
 
-			$vendor_email_msg = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_mail_Body, $vendor_mail_AltBody, true, null, null, $EmbeddedImages);
+			$vendor_mail = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_mail_Body, $vendor_mail_AltBody, true, null, null, $EmbeddedImages);
 
-			if ( !$shopper_email_msg || !$vendor_email_msg ) {
+			if ( !$shopper_mail || !$vendor_mail ) {
 				
 				$vmLogger->debug( $shopper_mail->ErrorInfo );
 				$vmLogger->debug( $vendor_mail->ErrorInfo );
