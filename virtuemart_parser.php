@@ -125,7 +125,7 @@ if( !defined( 'CLASSPATH' )) {
 	// the global file for PHPShop
 	require_once( ADMINPATH . 'global.php' );
 
-	$curreny_display =& vendor_currency_display_style( $vendor_currency_display_style );
+	$curreny_display = vendor_currency_display_style( $vendor_currency_display_style );
 	/** load Currency Display Class **/
 	require_once( CLASSPATH.'class_currency_display.php' );
 	/** @global CurrencyDisplay $CURRENCY_DISPLAY */
@@ -277,6 +277,11 @@ if( !defined( 'CLASSPATH' )) {
 			$_SESSION['last_page'] = $page;
 		}
 	}
+	// I don't get it, why Joomla uses masked gid values!
+	if( !defined( '_PSHOP_ADMIN' )) {
+		$my = $mainframe->getUser();
+	}
+		
 	
 }
 ?>

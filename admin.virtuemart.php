@@ -43,9 +43,21 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
 
 }
 elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.virtuemart.php' );
-	com_install();
-	exit();
+	$installfile = dirname( __FILE__ ) . "/install.php";
+	if( file_exists($mosConfig_absolute_path.'/administrator/components/'.$option.'/classes/ps_main.php' )) {
+		echo '<h2>You already have installed VirtueMart on this server</h2>';
+		if( unlink( $installfile ) ) {
+			echo '<div>The installation file <strong>install.php</strong> has been deleted.</div>';
+		}
+		else {
+			echo '<div>Please delete the file <strong>install.php</strong>!</div>';
+		}
+	}
+	else {
+		include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.virtuemart.php' );
+		com_install();
+		exit();
+	}
 }
 /*** END INSTALLER ***/
 

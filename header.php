@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Header file for the shop administration.
 * shows all modules that are available to the user in a dropdown menu
 *
-* @version $Id: header.php,v 1.6 2005/10/15 09:17:59 soeren_nb Exp $
+* @version $Id: header.php,v 1.7 2005/10/25 19:35:47 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -57,7 +57,7 @@ if (!defined('_PSHOP_ADMIN')) {
 var vmMenu =
 [  <?php for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules 
 
-            $label = "\$lbl =  \$VM_LANG->_PHPSHOP_".strtoupper($mod[$i])."_MOD;";
+            $label = "\$lbl =  htmlspecialchars( \$VM_LANG->_PHPSHOP_".strtoupper($mod[$i])."_MOD, ENT_QUOTES );";
             eval($label);
              switch($mod[$i]) {
             

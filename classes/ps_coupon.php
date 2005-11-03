@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_coupon.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_coupon.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -29,24 +29,24 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_coupon {
 
     function validate_add( &$d ) {
-        global $VM_LANG;
+        global $VM_LANG, $vmLogger;
         /* init the database */
         $coupon_db =& new ps_DB;
         $valid = true;
         
         /* make sure the coupon_code does not exist */
-        $q = " SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
+        $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $d["error"] = $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS;
+            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS );
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS;
+            $vmLogger->warning( $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS );
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER;
+            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER );
             $valid = false;
         }
         return $valid;
@@ -86,7 +86,7 @@ class ps_coupon {
             return false;
         }
         
-        $q = " INSERT INTO #__{vm}_coupons ( coupon_code, percent_or_total, coupon_type, coupon_value ) ";
+        $q = "INSERT INTO #__{vm}_coupons ( coupon_code, percent_or_total, coupon_type, coupon_value ) ";
         $q .= "VALUES ( '".$d['coupon_code']."', '".$d['percent_or_total']."', '".$d['coupon_type']."', '".$d['coupon_value']."' ) ";
         $coupon_db->query($q);
         return true;
@@ -107,7 +107,7 @@ class ps_coupon {
         /* init the database */
         $coupon_db = new ps_DB;
         
-        $q = " UPDATE #__{vm}_coupons SET ";
+        $q = "UPDATE #__{vm}_coupons SET ";
         $q .= "coupon_code = '".$d["coupon_code"]."', ";
         $q .= "percent_or_total = '".$d["percent_or_total"]."', ";
         $q .= "coupon_type = '".$d["coupon_type"]."', ";

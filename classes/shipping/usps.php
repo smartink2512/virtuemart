@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: usps.php,v 1.4 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: usps.php,v 1.5 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -29,7 +29,7 @@ class usps {
 
 	function list_rates( &$d ) {
 		global $vendor_country_2_code, $vendor_currency;
-		global $VM_LANG, $CURRENCY_DISPLAY;
+		global $VM_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
 		$db =& new ps_DB;
 		$dbv =& new ps_DB;
 

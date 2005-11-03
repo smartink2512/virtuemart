@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: coupon.coupon_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
+* @version $Id: coupon.coupon_form.php,v 1.6 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -46,8 +46,6 @@ $formObj = &new formFactory( $title );
 $formObj->startForm();
 
 ?>
-<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-<script type="text/javascript" src="includes/js/overlib_mini.js"></script>
 
   <table class="adminform">
     <tr> 

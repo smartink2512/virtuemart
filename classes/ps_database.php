@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_database.php,v 1.5 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: ps_database.php,v 1.6 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -225,7 +225,7 @@ class ps_DB extends database {
 	function sf($field_name, $stripslashes=true) {
 		global $vars, $default;
 
-		if (isset($vars["error"]) && !empty($vars["$field_name"])) {
+		if ((defined( '_VM_LOG_ERRORS' ) || isset($vars["error"])) && !empty($vars["$field_name"])) {
 			if($stripslashes) {
 				return  stripslashes($vars[$field_name] );
 			}
@@ -278,17 +278,21 @@ class ps_DB extends database {
 	function sp($field_name, $stripslashes=true) {
 		global $vars, $default;
 
-		if (isset($vars["error"]) && !empty($vars["$field_name"])) {
-			if( $stripslashes )
-			print  stripslashes($vars["$field_name"] );
-			else
-			print  $vars["$field_name"];
+		if((defined( '_VM_LOG_ERRORS' ) || isset($vars["error"])) && !empty($vars["$field_name"])) {
+			if( $stripslashes ) {
+				print  stripslashes($vars["$field_name"] );
+			}
+			else {
+				print  $vars["$field_name"];
+			}
 		}
 		elseif (isset($default["$field_name"])) {
-			if( $stripslashes )
-			print  stripslashes($default["$field_name"] );
-			else
-			print $default["$field_name"];
+			if( $stripslashes ) {
+				print  stripslashes($default["$field_name"] );
+			}
+			else {
+				print $default["$field_name"];
+			}
 		}
 		elseif (isset($this->record[$this->row]->$field_name)) {
 			if( $stripslashes )

@@ -115,7 +115,9 @@ class Log_display extends Log
         if (!$this->_isMasked($priority)) {
             return false;
         }
-
+		if( $priority >= PEAR_LOG_ERR ) {
+			defined( '_VM_LOG_ERRORS' ) or define( '_VM_LOG_ERRORS', 1);
+		}
         /* Extract the string representation of the message. */
         $message = $this->_extractMessage($message);
 

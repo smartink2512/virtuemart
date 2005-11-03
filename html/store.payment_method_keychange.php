@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.payment_method_keychange.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: store.payment_method_keychange.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -26,8 +26,8 @@ if ( $payment_method_id ) {
   echo "<h2>".$VM_LANG->_PHPSHOP_CHANGE_PASSKEY_FORM."</h2>";
   
   // Get the Transaction Key securely from the database
-  $database->setQuery( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') AS `passkey` FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'" );
-  $database->loadObject( $transaction );
+  $db->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') AS `passkey` FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'" );
+  $db->next_record();
 	
   // authenticated. Show "Change Key" and "Password" Form
   if( mShop_checkpass() && empty( $passkey ) ) {
@@ -35,7 +35,7 @@ if ( $payment_method_id ) {
 	echo "<form action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
 	echo "<table class=\"adminForm\">\n";
 	echo "<tr><td>".$VM_LANG->_PHPSHOP_CURRENT_TRANSACTION_KEY.":</td>\n";
-	echo "<td><input type=\"text\" name=\"passkey\" value=\"". $transaction->passkey ."\" /></td></tr>\n";
+	echo "<td><input type=\"text\" name=\"passkey\" value=\"". $db->f('passkey') ."\" /></td></tr>\n";
 	echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
 	echo "<tr><td>".$VM_LANG->_PHPSHOP_TYPE_PASSWORD.":</td>\n";
 	echo "<td><input type=\"password\" name=\"passwd\" value=\"\" /></td></tr>\n";
@@ -57,8 +57,7 @@ if ( $payment_method_id ) {
 	$q = "UPDATE #__{vm}_payment_method ";
 	$q .= "SET payment_passkey = ENCODE('$passkey','" . ENCODE_KEY . "')\n";
 	$q .= "WHERE payment_method_id='$payment_method_id';";
-	$database->setQuery( $q );
-	$database->query();
+	$db->query( $q );
 	mosRedirect( $sess->url($_SERVER['PHP_SELF']."?page=store.payment_method_form&payment_method_id=$payment_method_id"), $VM_LANG->_PHPSHOP_CHANGE_PASSKEY_SUCCESS);
   }
   // not authenticated
@@ -66,7 +65,7 @@ if ( $payment_method_id ) {
 	require_once( CLASSPATH. "ps_checkout.php" );
 	echo "<form action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
 	echo "<table class=\"adminForm\">\n";
-	echo "<tr><td>".$VM_LANG->_PHPSHOP_CURRENT_TRANSACTION_KEY.":</td><td>". ps_checkout::asterisk_pad( $transaction->passkey, 4 )."</td></tr>\n";
+	echo "<tr><td>".$VM_LANG->_PHPSHOP_CURRENT_TRANSACTION_KEY.":</td><td>". ps_checkout::asterisk_pad( $db->f('passkey'), 4 )."</td></tr>\n";
 	echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
 	echo "<tr><td>".$VM_LANG->_PHPSHOP_TYPE_PASSWORD.":</td>\n";
 	echo "<td><input type=\"password\" name=\"passwd\" value=\"\" /></td></tr>\n";

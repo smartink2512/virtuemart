@@ -34,6 +34,11 @@ Legend:
 VirtueMart 1.0
 *************************************
 02-11-2005 soeren
+# fatal error in payment method form in frontend
+# passkey change code didn't work (e.g. authorize.net)
+# admin top menu didn't show up when quotes in a module name
+# usps module referenced wrong DOMIT! path
+# coupon add didn't work
 # wrong rounding of the subtotal field
 ! table structure changed!
 	#####
