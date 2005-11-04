@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: install.php,v 1.8 2005/10/19 17:51:19 soeren_nb Exp $
+* @version $Id: install.php,v 1.9 2005/10/25 19:35:47 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -244,12 +244,26 @@ include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser
 		$database->query();
 	
 	}
-	//Finally check if the VirtueMart component has an Entry in the Administration => Components Menu
+	//Check if the VirtueMart component has an Entry in the Administration => Components Menu
 	$database->setQuery( "SELECT id FROM `#__components` WHERE `link` LIKE '%option=com_virtuemart%'" );
 	$id = $database->loadResult();
 	if( empty( $id )) {
 		$database->setQuery( "INSERT INTO `#__components` ( `id` , `name` , `link` , `menuid` , `parent` , `admin_menu_link` , `admin_menu_alt` , `option` , `ordering` , `admin_menu_img` , `iscore` )
 							VALUES ('', 'VirtueMart', 'option=com_virtuemart', '0', '0', 'option=com_virtuemart', 'VirtueMart', 'com_virtuemart', '0', 'js/ThemeOffice/component.png', '0');" ); 
+		$database->query();
+	}
+	// Finally insert the version number into the database
+	include_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/version.php' );
+	$database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
+	$old_version =  $database->loadResult();
+	if( $old_version ) {
+		$database-setQuery( 'UPDATE `#__components` SET params = \'RELEASE='$VMVERSION->RELEASE.'
+DEV_STATUS='.$VMVERSION->DEV_STATUS.'\' WHERE name = \'virtuemart_version\'' );
+		$database->query();
+	}
+	else {
+		$database-setQuery( 'INSERT INTO `#__components` (name, parent, params ) VALUES ( \'virtuemart_version\', 9999, \'RELEASE='$VMVERSION->RELEASE.'
+DEV_STATUS='.$VMVERSION->DEV_STATUS.'\')' );
 		$database->query();
 	}
 }

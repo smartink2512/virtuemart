@@ -79,7 +79,16 @@ if( !defined( 'CLASSPATH' )) {
 	require_once(CLASSPATH."htmlTools.class.php");
 	require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
 	require_once(CLASSPATH."Log/Log.php");
-
+	$vmLoggerConf = array(
+		'buffering' => true
+		);
+	/**
+	 * This Log Object will help us log messages and errors
+	 * See http://pear.php.net/package/Log
+	 * @global Log vmLogger
+	 */
+	$GLOBALS['vmLogger'] = $vmLogger = &Log::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
+	
 	// Instantiate the DB class
 	$db = new ps_DB();
 	
@@ -102,9 +111,10 @@ if( !defined( 'CLASSPATH' )) {
 	$ps_shopper_group = new ps_shopper_group();
 
 	// Set the mosConfig_live_site to its' SSL equivalent
-	if( $_SERVER['SERVER_PORT'] == 443 || strstr( "checkout.", $page )) {
+	if( $_SERVER['SERVER_PORT'] == 443 || @strstr( "checkout.", $page )) {
 		// temporary solution until we have
 		// $mosConfig_secure_site
+		$GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];
 		$GLOBALS['mosConfig_live_site'] = ereg_replace('/$','',SECUREURL);
 		$mm_action_url = SECUREURL;
 	}
@@ -132,16 +142,6 @@ if( !defined( 'CLASSPATH' )) {
 	$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($curreny_display["id"], $curreny_display["symbol"], $curreny_display["nbdecimal"], $curreny_display["sdecimal"], $curreny_display["thousands"], $curreny_display["positive"], $curreny_display["negative"]);
 
 	if( $option == "com_virtuemart" ) {
-		
-		$conf = array(
-			'buffering' => true
-			);
-		/**
-		 * This Log Object will help us log messages and errors
-		 * See http://pear.php.net/package/Log
-		 * @global Log vmLogger
-		 */
-		$GLOBALS['vmLogger'] = $vmLogger = &Log::singleton('display', '', '', $conf, PEAR_LOG_TIP);
 
 		// some input validation for limitstart
 		if (!empty($_REQUEST['limitstart'])) {
@@ -221,11 +221,11 @@ if( !defined( 'CLASSPATH' )) {
 			$q .= "#__{vm}_module.module_id=#__{vm}_function.module_id AND ";
 			$q .= "#__{vm}_function.function_method='".$funcParams["method"]."' AND ";
 			$q .= "#__{vm}_function.function_class='".$funcParams["class"]."'";
-			$db->setQuery($q);
-			$db->query();
+			
+			$db->query($q);
 			$db->next_record();
-
-			if( file_exists( CLASSPATH.$db->f("function_class").".php" ) ) {
+			$class = $db->f('function_class');
+			if( file_exists( CLASSPATH."$class.php" ) ) {
 				// Load class definition file
 				require_once( CLASSPATH.$db->f("function_class").".php" );
 				$classname = str_replace( '.class', '', $funcParams["class"]);
@@ -251,9 +251,10 @@ if( !defined( 'CLASSPATH' )) {
 					$_REQUEST['product_id']=$product_id = $_SESSION['session_userstate']['product_id'];
 				}
 			}
-			elseif( DEBUG ) {
-				$vmLogger->err( "Could not include the class file ".$db->f("function_class") );
+			else {
+				$vmLogger->debug( "Could not include the class file $class" );
 			}
+			
 
 			if (!empty($vars["error"])) {
 				$error = $vars["error"];
@@ -261,11 +262,6 @@ if( !defined( 'CLASSPATH' )) {
 			if (!empty($error)) {
 				echo vmCommonHTML::getErrorField($error);
 			}
-			// the Log object holds all error messages
-			// here we flush the buffer and print out all messages
-			$vmLogger->flush();
-			// Now we can switch to implicit flushing
-			$vmLogger->_buffering = false;
 			
 		}
 		else {
@@ -281,7 +277,12 @@ if( !defined( 'CLASSPATH' )) {
 	if( !defined( '_PSHOP_ADMIN' )) {
 		$my = $mainframe->getUser();
 	}
-		
+	
+	// the Log object holds all error messages
+	// here we flush the buffer and print out all messages
+	$vmLogger->flush();
+	// Now we can switch to implicit flushing
+	$vmLogger->_buffering = false;
 	
 }
 ?>

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_module.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: ps_module.php,v 1.5 2005/10/01 16:24:53 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -250,7 +250,7 @@ class ps_module {
   
   function checkModulePermissions( $calledPage ) {
 	
-	global $page, $VM_LANG, $error_type, $error, $perm;
+	global $page, $VM_LANG, $error_type, $vmLogger, $perm;
 	
 	// "shop.browse" => module: shop, page: browse
     $my_page= explode ( '.', $page );
@@ -265,29 +265,28 @@ class ps_module {
     if ($dir_list) {
 		
 		// Load MODULE-specific CLASS-FILES
-        include_class ( $modulename );
+        include_class( $modulename );
 		
         if ($perm->check( $dir_list[ 'perms' ]) ) {
 		
             if ( !file_exists(PAGEPATH.$modulename.".".$pagename.".php") ) {
-                $error_type = $VM_LANG->_PHPSHOP_PAGE_404_1;
-                $error = $VM_LANG->_PHPSHOP_PAGE_404_2 ."<br />";
+                $error = $VM_LANG->_PHPSHOP_PAGE_404_1;
+                $error .= ' '.$VM_LANG->_PHPSHOP_PAGE_404_2 ."<br />";
                 $error .= $modulename.".".$pagename.".php";
-                $page = ERRORPAGE;
+                $vmLogger->err( $error );
 				return false;
             }
 			return true;
         }
         else {
-            $error = $VM_LANG->_PHPSHOP_MOD_NO_AUTH;
-            $page = ERRORPAGE;
+            $vmLogger->err( $VM_LANG->_PHPSHOP_MOD_NO_AUTH );
             return false;
         }
     }
     else {
-        $error_type = $VM_LANG->_PHPSHOP_MOD_NOT_REG;
-        $error = $modulename . $VM_LANG->_PHPSHOP_MOD_ISNO_REG;
-        $page = ERRORPAGE;
+        $error = $VM_LANG->_PHPSHOP_MOD_NOT_REG;
+        $error .= $modulename . $VM_LANG->_PHPSHOP_MOD_ISNO_REG;
+        $vmLogger->err( $error );
         return false;
     }
   

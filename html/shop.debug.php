@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.debug.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: shop.debug.php,v 1.4 2005/10/25 19:35:11 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-global $page, $last_page, $error, $database;
+global $page, $last_page, $error, $database, $funcParams, $pagePermissionsOK;
 $return_to_page = mosGetParam( $_REQUEST, 'return_to_page' );
 $i = 0;
 if( !empty( $database->_log )) {
@@ -26,83 +26,102 @@ if( !empty( $database->_log )) {
       $i++;
   }
 }
-include_once(ADMINPATH ."/version.php");
+include_once(ADMINPATH ."version.php");
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
 $tabs->startTab( "Shop Core Variables", "shop-variables" );
 ?>
-      <table width="100%" border="0" cellspacing="0" cellpadding="2" >
+      <table width="100%" border="0" cellspacing="5" cellpadding="2" >
         <tr class="sectiontableheader" nowrap> 
-          <td colspan="4" align="center">
-          <h3>--DEBUG--</h3><br />
-          <?php echo "Version: <div align=\"center\">$version</div>"; ?></td>
+          <th colspan="4" align="center">
+          <h3>DEBUG CENTER</h3>
+          <?php echo "Version: $myVersion"; ?></th>
         </tr>
-        <tr nowrap> 
-          <td class="sectiontableentry1" nowrap align="right" width="14%"><b>RunTime:</b></td>
-          <td align="left" nowrap width="32%"><?php echo @$runtime; ?> sec.&nbsp;</td>
-          <td class="sectiontableentry1" width="18%" align="right" valign="top"><b>Current Page:</b></td>
-          <td width="36%" valign="top"><?php echo $page; ?></td>
+       
+        <tr class="sectiontableentry1"> 
+          <td align="right"><b>RunTime:</b></td>
+          <td align="left"><?php echo @$runtime; ?> sec.&nbsp;</td>
+          <td align="right" valign="top"><b>Current Page:</b></td>
+          <td valign="top"><?php echo $page; ?></td>
         </tr>
-        <tr nowrap> 
-          <td class="sectiontableentry2" width="14%" align="right" valign="top" nowrap><b>No. of queries executed:</b></td>
-          <td width="32%" valign="top" nowrap><?php 
-            echo $i 
+       
+        <tr class="sectiontableentry2"> 
+          <td align="right" valign="top" nowrap><b>Queries executed:</b></td>
+          <td valign="top" nowrap><?php 
+            echo $database->_ticker 
                 . "&nbsp;&nbsp;"
                 .mm_ToolTip( "Note: This is only the number of queries related to VirtueMart, 
                               which have been processed so far. Because the component is wrapped 
                               into the Mambo Framework, we can't get the total number of Queries at THIS point"); 
             ?>
           </td>
-          <td class="sectiontableentry2" width="18%" align="right" valign="top"><b>Last Page:</b></td>
-          <td width="36%" valign="top"><?php echo empty($_SESSION['last_page']) ? "empty" : $_SESSION['last_page']; ?>&nbsp;</td>
+          <td align="right" valign="top"><b>Last Page:</b></td>
+          <td valign="top"><?php echo empty($_SESSION['last_page']) ? "empty" : $_SESSION['last_page']; ?>&nbsp;</td>
         </tr>
-        <tr nowrap> 
-          <td class="sectiontableentry1" width="14%" align="right" nowrap valign="top"><b>UID:</b></td>
-          <td width="32%" nowrap valign="top"><?php echo $auth["user_id"]; ?>&nbsp;</td>
-          <td class="sectiontableentry1" width="18%" align="right" valign="top"><b>Return To Page:</b></td>
-          <td width="36%" valign="top"><?php echo $return_to_page; ?>&nbsp;</td>
+       
+        <tr class="sectiontableentry1"> 
+          <td align="right" valign="top"><b>UID:</b></td>
+          <td valign="top"><?php echo $auth["user_id"]; ?>&nbsp;</td>
+          <td align="right" valign="top"><b>Return To Page:</b></td>
+          <td valign="top"><?php echo $return_to_page; ?>&nbsp;</td>
         </tr>
-        <tr nowrap> 
-          <td class="sectiontableentry2" width="14%" align="right" valign="top"><b>Username:</b></td>
-          <td width="32%" valign="top"><?php echo $auth["username"]; ?>&nbsp;</td>
-          <td class="sectiontableentry2" width="18%" align="right" valign="top"><b>Function:</b></td>
-          <td width="36%" valign="top"><?php echo $func;?>&nbsp;</b></td>
+       
+        <tr class="sectiontableentry2"> 
+          <td align="right" valign="top"><b>Username:</b></td>
+          <td valign="top"><?php echo $auth["username"]; ?>&nbsp;</td>
+          <td align="right" valign="top"><b>Function:</b></td>
+          <td valign="top"><?php echo $func;?>&nbsp;</b></td>
         </tr>
-        <tr nowrap> 
-          <td class="sectiontableentry1" width="14%" align="right" valign="top"><b>Perms:</b></td>
-          <td width="32%" valign="top"><?php echo $auth["perms"]; ?>&nbsp;</td>
-          <td class="sectiontableentry1" width="18%" align="right" valign="top"><b>&nbsp;&nbsp;Command:</b></td>
-          <td width="36%" valign="top">
-            <?php echo $cmd."<br />Result:"; 
-                  if ($ok) 
-                     echo "True"; 
-                  else  
-                     echo "False"; ?>  &nbsp;</td>
+        
+        <tr class="sectiontableentry1" > 
+          <td align="right" valign="top"><b>Perms:</b></td>
+          <td valign="top"><?php echo $auth["perms"]; ?>&nbsp;</td>
+          <td align="right" valign="top"><b>Command (Result):</b></td>
+          <td valign="top"><?php echo $cmd." (" . ($ok ? "True": "False").') '; ?>&nbsp;</td>
         </tr>
-        <tr nowrap> 
-          <td class="sectiontableentry2" width="14%" align="right" valign="top"><b>$func_perms:</b></td>
-          <td width="32%" valign="top"><?php echo $func_list["perms"]; ?>&nbsp;</td>
-          <td class="sectiontableentry2" width="18%" align="right" valign="top"><b>$ps_vendor_id:</b></td>
-          <td width="36%" valign="top"><?php echo $ps_vendor_id; ?> &nbsp;&nbsp;</td>
+       
+        <tr class="sectiontableentry1"> 
+          <td align="right" valign="top"><b>$func_perms:</b></td>
+          <td valign="top"><?php 
+          	if( !empty($funcParams["method"])) {
+          		echo '<pre>'.print_r($funcParams, true).'</pre>'; 
+          	}
+          	else {
+          		echo './.';
+          	}
+          		?>
+          </td>
+          <td align="right" valign="top"><b>$ps_vendor_id:</b></td>
+          <td valign="top"><?php echo $ps_vendor_id; ?> &nbsp;&nbsp;</td>
         </tr>
-        <tr> 
-          <td class="sectiontableentry1" width="14%" align="right" valign="top"><b>&nbsp;&nbsp;</b><b>$dir_perms:</b></td>
-          <td width="32%" valign="top"><?php echo $dir_list["perms"]; ?>&nbsp;</td>
-          <td class="sectiontableentry1" width="18%" align="right" valign="top"><b>$error:</b></td>
-          <td width="36%" valign="top"><?php echo $error; ?> &nbsp;&nbsp;</td>
+        <tr><td>&nbsp;</td></tr>
+        <tr class="sectiontableentry2"> 
+          <td align="right" valign="top"><b>$dir_perms:</b></td>
+          <td valign="top"><?php echo $pagePermissionsOK ? 'Ok' : 'False';	?>&nbsp;</td>
+          <td align="right" valign="top"><b>global Log:</b></td>
+          <td valign="top"><?php echo $vmLogger->_ticker.' logged message(s).'; ?> &nbsp;&nbsp;</td>
         </tr>
-        <tr> 
-          <td class="sectiontableentry2" align="right" width="14%"><b>$cart:</b></td>
-          <td colspan="3" width="32%"><?php   
+        <tr><td>&nbsp;</td></tr>
+        <tr class="sectiontableentry1"> 
+          <td align="right" valign="top"><b><?php echo '<strong>'.$_VERSION->PRODUCT.' Session ID:</strong>'; ?></b></td>
+          <td colspan="3" valign="top"><?php echo $mainframe->_session->session_id; ?>&nbsp;</td>
+        </tr>
+        <tr class="sectiontableentry2"> 
+          <td  align="right" valign="top"><b>VirtueMart Session ID:</b></td>
+          <td colspan="3" valign="top"><?php echo session_id(); ?> &nbsp;&nbsp;</td>
+        </tr>
+        <tr class="sectiontableentry1"> 
+          <td align="right"><b>$cart:</b></td>
+          <td colspan="3"><?php   
           for ($i=0; $i < $_SESSION["cart"]["idx"];$i++) {
             echo "\$cart[$i]:ID[" . $_SESSION["cart"][$i]["product_id"];
             echo "]->Qty:[" . $_SESSION["cart"][$i]["quantity"] . "]<br />";
            } 
            ?></td>
         </tr>
-        <tr> 
-          <td class="sectiontableentry2" align="right" width="14%"><b>$auth:</b></td>
-          <td colspan="3" width="32%"><?php   print_r( $auth ); ?></td>
+        <tr class="sectiontableentry2" > 
+          <td align="right" valign="top"><b>$auth:</b></td>
+          <td colspan="3"><?php   print_r( $auth ); ?></td>
         </tr>
     </table>
 <?php
@@ -114,8 +133,8 @@ $tabs->startTab( "Global Variables", "global-variables");
         <?php 
         if ($_POST) { ?>
         <tr class="sectiontableentry1"> 
-          <td width="14%" align="right" valign="top"><b>$_POST:</b></td>
-          <td colspan="3" width="32%" valign="top"><?php   
+          <td align="right" valign="top"><b>$_POST:</b></td>
+          <td colspan="3" valign="top"><?php   
             while (list($val,$key) = each($_POST)) {
               echo "$val=>$key<br/>";
             }
@@ -125,34 +144,49 @@ $tabs->startTab( "Global Variables", "global-variables");
           }
           if ($_GET) { ?>
         <tr class="sectiontableentry1"> 
-          <td width="14%" align="right" valign="top"><b>$_GET:</b> </td>
-          <td colspan="3" width="32%" valign="top"><?php   
+          <td align="right" valign="top"><b>$_GET:</b> </td>
+          <td colspan="3" valign="top"><?php   
             while (list($val,$key) = each($_GET)) {
               echo "$val=>$key<br/>";
             }
             ?>
           </td>
     <?php } ?>
-        </tr><?php
-        if ($_SESSION) { ?>
+        </tr>
+        
+         
+        <?php
+        if ($_COOKIE) { ?>
+        <tr class="sectiontableentry2"> 
+          <td align="right" valign="top"><b>$_COOKIE:</b></td>
+          <td colspan="3" valign="top"><?php   echo "<pre>".print_r( $_COOKIE, true )."</pre>";  ?>
+          </td>
+         </tr>
+          <?php 
+        }
+          ?>
+          
         <tr class="sectiontableentry1"> 
-          <td width="14%" align="right" valign="top"><b>$_SESSION:</b></td>
-          <td colspan="3" width="32%" valign="top"><?php   echo "<pre>".print_r( $_SESSION, true )."</pre>";  ?>
+        <?php
+        if ($_SESSION) { ?>
+          <td align="right" valign="top"><b>$_SESSION:</b></td>
+          <td colspan="3" valign="top"><?php   echo "<pre>".print_r( $_SESSION, true )."</pre>";  ?>
           </td>
           <?php 
         }
         else {
-          echo "<strong>Something's wrong with your Session Setup - the Session is empty. VirtueMart cannot run without
-          Sessions!</strong>";
+          echo "<td colspan=\"4\"><strong>Something's wrong with your Session Setup - the Session is empty. VirtueMart cannot run without
+          Sessions!</strong></td>";
         }
           ?>
+         </tr>
         <tr class="sectiontableentry1"> 
-          <td width="14%" align="right" valign="top">&nbsp;</td>
-          <td colspan="3" width="32%" valign="top">&nbsp;</td>
+          <td align="right" valign="top">&nbsp;</td>
+          <td colspan="3" valign="top">&nbsp;</td>
         </tr>
         <tr class="sectiontableentry2">
-          <td width="18%" align="right" valign="top"><b>$vars:</b></td>
-          <td colspan="3" width="36%"><?php   
+          <td align="right" valign="top"><b>$vars:</b></td>
+          <td colspan="3"><?php   
             while (list($val,$key) = each($vars)) {
               echo "$val=>$key<br/>";
             }

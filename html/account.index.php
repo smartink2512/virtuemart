@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.index.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: account.index.php,v 1.4 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -55,12 +55,12 @@ if ($perm->is_registered_customer($auth['user_id'])) {
     <tr><td>&nbsp;</td></tr>
     
     <tr>
-      <td><hr /><strong><?php 
-      echo "<img src=\"".IMAGEURL."ps_image/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
-      echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?></strong>
-      <br />
-      <br />
-
+      <td>
+      	<hr />
+      	<strong><?php 
+	      echo "<img src=\"".IMAGEURL."ps_image/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
+	      echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?>
+	    </strong>
         <?php $ps_order->list_order("A", "1" ); ?>
       </td>
     </tr>

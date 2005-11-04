@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_function.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: ps_function.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -276,7 +276,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     ************************************************/
   function checkFuncPermissions( $func ) {
 	
-	global $page, $perm, $VM_LANG, $error_type, $error;
+	global $page, $perm, $VM_LANG, $vmLogger;
 	  
 	if (!empty($func)) {
     
@@ -286,16 +286,16 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 				return $funcParams;
 			}
 			else {
-				$error_type = $VM_LANG->_PHPSHOP_PAGE_403;
-				$error = $VM_LANG->_PHPSHOP_FUNC_NO_EXEC . $func;
-				$page = ERRORPAGE;          
+				$error = $VM_LANG->_PHPSHOP_PAGE_403.'. ';
+				$error .= $VM_LANG->_PHPSHOP_FUNC_NO_EXEC . $func;
+				$vmLogger->err( $error );
 				return false;
 			}
 		}
 		else {
-			$error_type = $VM_LANG->_PHPSHOP_FUNC_NOT_REG;
-			$error = $func . $VM_LANG->_PHPSHOP_FUNC_ISNO_REG ;
-			$page = ERRORPAGE;    
+			$error = $VM_LANG->_PHPSHOP_FUNC_NOT_REG.'. ';
+			$error .= $func . $VM_LANG->_PHPSHOP_FUNC_ISNO_REG ;
+			$vmLogger->err( $error );
 			return false;
 		}
     }

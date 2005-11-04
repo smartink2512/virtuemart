@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.15 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.16 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -179,10 +179,12 @@ class listFactory {
 	
 		global $sess, $keyword, $PHP_SELF, $VM_LANG, $option;
 	  
-		if( !empty( $keyword ))
+		if( !empty( $keyword )) {
 			$keyword = urldecode( $keyword );
-		else
+		}
+		else {
 			$keyword = "";
+		}
 		$category_id = mosGetParam( $_REQUEST, 'category_id', null);
 		$search_date = mosGetParam( $_REQUEST, 'search_date', null);
 		$show = mosGetParam( $_REQUEST, "show", "" );
@@ -195,7 +197,10 @@ class listFactory {
 					<input type=\"hidden\" name=\"boxchecked\" />\n";
 		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  )
             $header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
-		$header .= "<h2 class=\"adminListHeader\" style=\"background-image:url($image);\">$title</h2>\n";
+        if( $title != "" ) {
+        	$style = ($image != '') ? 'style="background-image:url('.$image.');"' : '';
+        	$header .= "<h2 class=\"adminListHeader\" $style>$title</h2>\n";
+        }
 		if( !empty( $pagename )) 
 			$header .= "<div align=\"right\"><br/>
 			<input class=\"inputbox\" type=\"text\" size=\"25\" name=\"keyword\" value=\"$keyword\" />

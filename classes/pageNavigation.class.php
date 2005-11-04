@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: pageNavigation.class.php,v 1.6 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: pageNavigation.class.php,v 1.7 2005/11/02 20:06:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -76,9 +76,9 @@ class vmPageNav {
 			$to_result = $this->total;
 		}
 		if ($this->total > 0) {
-			$html .= "\nResults " . $from_result . " - " . $to_result . " of " . $this->total;
+			$html .= _PN_RESULTS." $from_result - $to_result "._PN_OF." $this->total";
 		} else {
-			$html .= "\nNo records found.";
+			//$html .= "\nNo records found.";
 		}
 		return $html;
 	}
@@ -105,11 +105,11 @@ class vmPageNav {
 
 		if ($this_page > 1) {
 			$page = ($this_page - 2) * $this->limit;
-			$html .= "\n<a href=\"#beg\" class=\"pagenav\" title=\"first page\" onclick=\"javascript: document.adminForm.limitstart.value=0; document.adminForm.submit();return false;\">&lt;&lt; Start</a>";
-			$html .= "\n<a href=\"#prev\" class=\"pagenav\" title=\"previous page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\">&lt; Previous</a>";
+			$html .= "\n<a href=\"#beg\" class=\"pagenav\" title=\"first page\" onclick=\"javascript: document.adminForm.limitstart.value=0; document.adminForm.submit();return false;\">&lt;&lt; "._PN_START."</a>";
+			$html .= "\n<a href=\"#prev\" class=\"pagenav\" title=\"previous page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\">&lt; "._PN_PREVIOUS."</a>";
 		} else {
-			$html .= "\n<span class=\"pagenav\">&lt;&lt; Start</span>";
-			$html .= "\n<span class=\"pagenav\">&lt; Previous</span>";
+			$html .= "\n<span class=\"pagenav\">&lt;&lt; "._PN_START."</span>";
+			$html .= "\n<span class=\"pagenav\">&lt; "._PN_PREVIOUS."</span>";
 		}
 
 		for ($i=$start_loop; $i <= $stop_loop; $i++) {
@@ -124,11 +124,11 @@ class vmPageNav {
 		if ($this_page < $total_pages) {
 			$page = $this_page * $this->limit;
 			$end_page = ($total_pages-1) * $this->limit;
-			$html .= "\n<a href=\"#next\" class=\"pagenav\" title=\"next page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"> Next &gt;</a>";
-			$html .= "\n<a href=\"#end\" class=\"pagenav\" title=\"end page\" onclick=\"javascript: document.adminForm.limitstart.value=$end_page; document.adminForm.submit();return false;\"> End &gt;&gt;</a>";
+			$html .= "\n<a href=\"#next\" class=\"pagenav\" title=\"next page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"> "._PN_NEXT." &gt;</a>";
+			$html .= "\n<a href=\"#end\" class=\"pagenav\" title=\"end page\" onclick=\"javascript: document.adminForm.limitstart.value=$end_page; document.adminForm.submit();return false;\"> "._PN_END." &gt;&gt;</a>";
 		} else {
-			$html .= "\n<span class=\"pagenav\">Next &gt;</span>";
-			$html .= "\n<span class=\"pagenav\">End &gt;&gt;</span>";
+			$html .= "\n<span class=\"pagenav\">"._PN_NEXT." &gt;</span>";
+			$html .= "\n<span class=\"pagenav\">"._PN_END." &gt;&gt;</span>";
 		}
 		return $html;
 	}
@@ -142,7 +142,7 @@ class vmPageNav {
 			$html .= $this->getPagesLinks();
 			$html .= '</th></tr>';
 	    }
-		$html .= '<tr><td nowrap="true" width="48%" align="right">Display #</td>';
+		$html .= '<tr><td nowrap="true" width="48%" align="right">'._PN_DISPLAY_NR.'</td>';
 		$html .= '<td>' .$this->getLimitBox() . '</td>';
 		$html .= '<td nowrap="true" width="48%" align="left">' . $this->getPagesCounter() . '</td>';
 		$html .= '</tr></table>';

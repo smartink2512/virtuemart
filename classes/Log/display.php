@@ -62,7 +62,7 @@ class Log_display extends Log
     var $_messages = array();
     
     /**
-     * Counts messages
+     * Counts messages in the message array
      * @var int
      */
     var $_count = 0;
@@ -115,6 +115,8 @@ class Log_display extends Log
         if (!$this->_isMasked($priority)) {
             return false;
         }
+        $this->_ticker++;
+        
 		if( $priority >= PEAR_LOG_ERR ) {
 			defined( '_VM_LOG_ERRORS' ) or define( '_VM_LOG_ERRORS', 1);
 		}

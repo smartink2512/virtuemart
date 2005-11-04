@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_order.php,v 1.7 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: ps_order.php,v 1.8 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -310,7 +310,7 @@ class ps_order {
 	* returns:$return_info
 	**************************************************************************/
 	function download_request(&$d) {
-		global  $return_success, $download_id, $VM_LANG;
+		global  $return_success, $download_id, $VM_LANG, $vmLogger;
 		$auth  = $_SESSION['auth'];
 
 		$db = new ps_DB;
@@ -329,8 +329,9 @@ class ps_order {
 		$zeit=time();
 
 		if (!$download_id) {
-			$d['error'] .= $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_INV;
-			mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_INV );
+			return false;
+			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 
 		elseif ($download_max=="0") {
@@ -338,8 +339,9 @@ class ps_order {
 			$q .=" WHERE download_id = '" . $d["download_id"] . "'";
 			$db->query($q);
 			$db->next_record();
-			$d['error'] .= $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX;
-			mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX );
+			return false;
+			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 
 		elseif ($end_date=="0") {
@@ -356,8 +358,9 @@ class ps_order {
 			$q .=" WHERE download_id = '" . $d["download_id"] . "'";
 			$db->query($q);
 			$db->next_record();
-			$d['error'] .= $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_EXP;
-			mosredirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_EXP );
+			return false;
+			//mosredirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 
 		$dl_max = $download_max - 1;
@@ -404,13 +407,15 @@ class ps_order {
 				exit();
 			}
 			else {
-				$d["error"] = "Sorry, but the requested file can't be read from the Server";
-				mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+				$vmLogger->err( "Sorry, but the requested file can't be read from the Server" );
+				return false;
+				//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 			}
 		}
 		else {
-			$d["error"] = "Sorry, but the requested file wasn't found. Possible Cause: Wrong path";
-			mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			$vmLogger->err( "Sorry, but the requested file wasn't found. Possible Cause: Wrong path" );
+			return false;
+			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 	}
 
@@ -429,7 +434,7 @@ class ps_order {
 	 * @param int $secure Restrict the order list to a specific user id (=1) or not (=0)?
 	 */
 	function list_order($order_status='A', $secure=0 ) {
-		global $VM_LANG, $CURRENCY_DISPLAY, $sess, $limit, $limitstart, $keyword;
+		global $VM_LANG, $CURRENCY_DISPLAY, $sess, $limit, $limitstart, $keyword, $mm_action_url;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$auth = $_SESSION['auth'];
@@ -458,6 +463,7 @@ class ps_order {
 		$count .= $q;
 		
 		$db->query($count);
+		
 		if( $db->num_rows() == 0 ) {
 			echo "<span style=\"font-style:italic;\">".$VM_LANG->_PHPSHOP_ACC_NO_ORDERS."</span>\n";
 			return;
@@ -470,7 +476,7 @@ class ps_order {
 		$listObj = new listFactory( $pageNav );	
 		
 		// print out the search field and a list heading
-		$listObj->writeSearchHeader( $VM_LANG->_PHPSHOP_ORDER_LIST_LBL, '', 'account', 'index');
+		$listObj->writeSearchHeader( '', '', 'account', 'index');
 
 		// start the list table
 		$listObj->startTable();
@@ -484,7 +490,7 @@ class ps_order {
 			
 			$listObj->newRow();
 			
-			$tmp_cell = "<a href=\"". $sess->url( "index.php?page=account.order_details&order_id=".$db->f("order_id") )."\">\n";
+			$tmp_cell = "<a href=\"". $sess->url( $mm_action_url."index.php?page=account.order_details&order_id=".$db->f("order_id") )."\">\n";
 			$tmp_cell .= "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ORDER_LINK."\" />&nbsp;".$VM_LANG->_PHPSHOP_VIEW."</a><br />";
 			$listObj->addCell( $tmp_cell );
 			

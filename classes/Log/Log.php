@@ -100,8 +100,13 @@ class Log
      * @access private
      */
     var $_listeners = array();
-
-
+	/**
+	 * Counts all log messages
+	 *
+	 * @var int
+	 * @access private
+	 */
+	var $_ticker = 0;
     /**
      * Attempts to return a concrete Log instance of type $handler.
      *

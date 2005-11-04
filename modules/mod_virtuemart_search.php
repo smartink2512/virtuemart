@@ -25,20 +25,11 @@ global $VM_LANG, $mm_action_url, $sess;
 ?>
 <!--BEGIN Search Box --> 
 <form action="<?php $sess->purl( $mm_action_url."index.php?page=shop.browse" ) ?>" method="post" />
-<table cellpadding="1" cellspacing="1" border="0" width="100%">
-	<tr> 
-		<td colspan="2">
-			<hr/>
-			<label for="keyword"><?php echo $VM_LANG->_PHPSHOP_SEARCH_LBL ?></label>
-		</td>
-	</tr>
-	<tr> 
-		<td colspan="2">
-			<input name="keyword" type="text" size="12" title="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" class="inputbox" id="keyword"  />
-			<input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
-			<hr/>
-		</td>
-	</tr>
-</table>
+
+	<p><label for="keyword"><?php echo $VM_LANG->_PHPSHOP_SEARCH_LBL ?></label></p>
+	<p>
+		<input name="keyword" type="text" size="12" title="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" class="inputbox" id="keyword"  />
+		<input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
+	</p>
 </form>
 <!-- End Search Box --> 

@@ -33,6 +33,12 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+04-11-2005 soeren
+- removed the table prefix replacing function from ps_database
+^ changed the url formatting function ps_session::url to use $mm_action_url instead of URL
+# more fixes to the Shared SSL support (it now logs the user in on the https domain, even when Joomla is used)
+
+
 02-11-2005 soeren
 # fatal error in payment method form in frontend
 # passkey change code didn't work (e.g. authorize.net)

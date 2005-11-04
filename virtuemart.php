@@ -76,15 +76,15 @@ else {
 			$pagename= "login_form";
 		}
 		else {
-			mosRedirect('index.php?option='.$option.'&page='.$_SESSION['last_page'], $error." Error Type: ".$error_type);
-			exit();
+			$page = $_SESSION['last_page'];
 		}
 	}
 
 	// For there's no errorpage to display the error,
 	// we must echo it before the page is loaded
-	if (!empty($error) && $page != ERRORPAGE)
-	echo "<span class=\"shop_error\">".$error."</span>";
+	if (!empty($error) && $page != ERRORPAGE) {
+		echo "<span class=\"shop_error\">".$error."</span>";
+	}
 
 	/*****************************
 	** FRONTEND ADMIN - MOD

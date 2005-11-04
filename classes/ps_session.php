@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_session.php,v 1.11 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: ps_session.php,v 1.12 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -40,17 +40,18 @@ class ps_session {
      *
      */
 	function initSession() {
+		global $vmLogger;
 		if( empty($_SESSION)) {
 			//Session not yet started!";
-
 			session_name( $this->_session_name );
 			session_start();
+			
 			if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
-				echo DEBUG ? '<div style="border: green 2px solid;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session called <i>'.$this->_session_name.'</i> was successfully started!</div>' : '';
+				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
 			}
 		}
 		elseif( !defined('_PSHOP_ADMIN')) {
-			echo DEBUG ? '<div style="border: orange 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.</div>' : '';
+			$vmLogger->debug( 'A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.' );
 		}
 		/**
 		 * I don't think, we need this...
@@ -59,42 +60,25 @@ class ps_session {
 			echo DEBUG ? '<div style="border: red 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A phpShop Cookie had to be set (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.</div>' : '';
 		}
 		*/
+		
 	}
 	function restartSession( $sid = '') {
-		// Destroy the started session
-		session_destroy();
+		
+		// Save the session data and close the session
+		session_write_close();
 		
 		// Prepare the new session
 		if( $sid != '' ) {
-			session_id( $virtuemartcookie );
+			session_id( $sid );
 		}
 		session_name( $this->_session_name );
 		// Start the new Session.
 		session_start();
+		
 	}
-	/**
-     * Gets the Itemid for the com_virtuemart Component
-     * and stores it in a global Variable
-     *
-     * @return int Itemid
-     */
-	function getShopItemid() {
-
-		if( empty( $_REQUEST['shopItemid'] )) {
-			$db = new ps_DB;
-			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published='1'");
-			if( $db->next_record() ) {
-				$_REQUEST['shopItemid'] = $db->f("id");
-			}
-			else {
-				$_REQUEST['shopItemid'] = 1;
-			}
-		}
-
-		return $_REQUEST['shopItemid'];
-
+	function emptySession() {
+		$_SESSION = array();
 	}
-
 	/**
      * This is a solution for  the Shared SSL problem
      * We have to copy some cookies from the Main Mambo site domain into
@@ -103,13 +87,12 @@ class ps_session {
 	 * The function is called on each page load.
 	 */
 	function prepare_SSL_Session() {
-		global $my, $mosConfig_secret;
+		global $my, $mosConfig_secret, $_VERSION;
 
 		$ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
 		$martID = mosGetParam( $_GET, 'martID', null );
 		$ssl_domain = "";
-		$filename = @$_COOKIE[$this->_session_name].'_'.md5($mosConfig_secret).'.sess';
-		$sessionFile = IMAGEPATH.$filename;
+		
 		/**
         * This is the first part of the Function:
         * We check if the function must be called at all
@@ -122,28 +105,37 @@ class ps_session {
 			// and the https Domain Name. If both do not match, we move on
 			// else we leave this function.
 			if( $this->check_Shared_SSL( $ssl_domain ) && $_SERVER['SERVER_PORT'] != 443) {
-
+				if( $_VERSION->PRODUCT == 'Joomla!') {
+					$sessionCookieName = md5( 'site'.$GLOBALS['mosConfig_live_site'] );
+				}
+				else {
+					$sessionCookieName = 'sessioncookie';
+					
+				}
 				if( !empty($my->id)) {
 					// User is already logged in
 					// We need to transfer the usercookie if present
-					$martID = @base64_encode( $_COOKIE[$this->_session_name]."|".$_COOKIE['sessioncookie']."|".$_COOKIE['usercookie']['password']."|".$_COOKIE['usercookie']['username'] );
+					$martID = @base64_encode( $_COOKIE[$this->_session_name]."|".$_COOKIE[$sessionCookieName]."|".$_COOKIE['usercookie']['password']."|".$_COOKIE['usercookie']['username'] );
 
 				}
 				else {
 					// User is not logged in, but has Cart Contents
 					$martID = base64_encode( $_COOKIE[$this->_session_name]."|".$_COOKIE['sessioncookie'] );
 				}
-
+				$sessionFile = IMAGEPATH. md5( $martID ).'.sess';
 				$session_contents = session_encode();
-				require_once( ADMINPATH.'install.copy.php');
+				if( file_exists( ADMINPATH.'install.copy.php')) {
+					require_once( ADMINPATH.'install.copy.php');
+				}
 				file_put_contents( $sessionFile, $session_contents );
 
 				// Redirect and send the Cookie Values within the variable martID
 				mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index&martID=$martID") );
 			}
 			// do nothing but redirect
-			else
-			mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index") );
+			else {
+				mosRedirect( $this->url(SECUREURL . "index.php?page=checkout.index") );
+			}
 		}
 		/**
         * This is part two of the function
@@ -172,11 +164,18 @@ class ps_session {
 	                * so we can delete it. But Deleting Cookies is not trivial...we just set the
 	                * Session Cookie again with an empty value. This erases the Cookie.
 	                */
-					setcookie( "sessioncookie", "", time() - 43200, "/" );
+					if( $_VERSION->PRODUCT == 'Joomla!') {
+						$sessionCookieName = md5( 'site'.$GLOBALS['real_mosConfig_live_site'] );
+					}
+					else {
+						$sessionCookieName = 'sessioncookie';
+						
+					}
+					setcookie( $sessionCookieName, "", time() - 43200, "/" );
 					// Set the "old" new Cookies now
-					setcookie( "sessioncookie", $sessioncookie, time() + 43200, "/", dirname($ssl_domain), true );
+					setcookie( $sessionCookieName, $sessioncookie, time() + 43200, "/", dirname($ssl_domain), true );
 					// Get sure the cookie is set
-					$_COOKIE['sessioncookie'] = $sessioncookie;
+					$_COOKIE[$sessionCookieName] = $sessioncookie;
 	
 					// Also log the user in when he was already logged in at the other domain
 					if(!empty($usercookie["password"]) && !empty($usercookie["username"])) {
@@ -184,19 +183,20 @@ class ps_session {
 						setcookie( "usercookie[username]", $usercookie["username"], $lifetime, "/" );
 						setcookie( "usercookie[password]", $usercookie["password"], $lifetime, "/" );
 					}
+					
 					$this->restartSession( $virtuemartcookie );
 					
 					require_once( ADMINPATH.'install.copy.php');
+					
+					$sessionFile = IMAGEPATH. md5( $martID ).'.sess';
 					
 					// Read the contents of the session file
 					$session_data = file_get_contents( $sessionFile );
 					// Delete it for security and disk space reasons
 					unlink( $sessionFile );
-					
+
 					// Read the session data into $_SESSION
 					session_decode( $session_data );
-					
-					session_write_close();
 					
 					// Prevent the martID from being displayed in the URL
 					if( !empty( $_GET['martID'] )) {
@@ -237,7 +237,30 @@ class ps_session {
 
 		return $ssl_redirect;
 	}
+	
+	/**
+     * Gets the Itemid for the com_virtuemart Component
+     * and stores it in a global Variable
+     *
+     * @return int Itemid
+     */
+	function getShopItemid() {
 
+		if( empty( $_REQUEST['shopItemid'] )) {
+			$db = new ps_DB;
+			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published='1'");
+			if( $db->next_record() ) {
+				$_REQUEST['shopItemid'] = $db->f("id");
+			}
+			else {
+				$_REQUEST['shopItemid'] = 1;
+			}
+		}
+
+		return $_REQUEST['shopItemid'];
+
+	}
+	
 	/**
 	 * Prints a reformatted URL
 	 *
@@ -258,7 +281,8 @@ class ps_session {
 	 * @return string The reformatted URL
 	 */
 	function url($text) {
-
+		global $mm_action_url;
+		
 		$Itemid = "&Itemid=".$this->getShopItemid();
 
 		switch ($text) {
@@ -294,15 +318,16 @@ class ps_session {
 	
 					$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
 					$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
-					if( !stristr( $appendix, URL ) ) {
-						$appendix = URL . $appendix;
+					if( !stristr( $appendix, $mm_action_url ) ) {
+						$appendix = $mm_action_url . $appendix;
 					}
 				}
 				elseif( $_SERVER['SERVER_PORT'] == 443 ) {
 					$appendix = SECUREURL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
 				}
-				else
-				$appendix = URL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
+				else {
+					$appendix = URL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
+				}
 	
 				if ( stristr($text, SECUREURL)) {
 					$appendix = str_replace(URL, SECUREURL, $appendix);
@@ -313,24 +338,21 @@ class ps_session {
 				break;
 		}
 		/**
-    ** This has to be redone, because it doesn't work with mosRedirect
-
-    if (!defined( '_PSHOP_ADMIN' ) && $pshop_mode != "admin") {
-        $text = str_replace( "&", "&amp;", $text );
-        $text = str_replace( "&amp;amp;", "&amp;", $text );
-    } 
-    */
+	    ** This has to be redone, because it doesn't work with mosRedirect
+	
+	    if (!defined( '_PSHOP_ADMIN' ) && $pshop_mode != "admin") {
+	        $text = str_replace( "&", "&amp;", $text );
+	        $text = str_replace( "&amp;amp;", "&amp;", $text );
+	    } 
+	    */
 		return $text;
 	}
 
-	/**************************************************************************
-	** name: hidden_session()
-	** created by:
-	** description:
-	** parameters:
-	** returns: nothing
-	***************************************************************************/
-
+	/**
+	 * Formerly printed the session id into a hidden field
+	 * @deprecated 
+	 * @return boolean
+	 */
 	function hidden_session() {
 		return true;
 	}
