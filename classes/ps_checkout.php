@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.13 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.14 2005/11/02 20:06:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -149,7 +149,7 @@ class ps_checkout {
 		// calculate the unix timestamp for the specified expiration date
 		// default the day to the 1st
 
-		$expire_timestamp = mktime(0,0,0,$_SESSION["ccdata"]["order_payment_expire_month"], 1,$_SESSION["ccdata"]["order_payment_expire_year"]);
+		$expire_timestamp = @mktime(0,0,0,$_SESSION["ccdata"]["order_payment_expire_month"], 1,$_SESSION["ccdata"]["order_payment_expire_year"]);
 		$_SESSION["ccdata"]["order_payment_expire"] = $expire_timestamp;
 
 		return True;
@@ -636,7 +636,7 @@ class ps_checkout {
 	***************************************************************************/
 	function add( &$d ) {
 		global $HTTP_POST_VARS, $afid, $VM_LANG, $mosConfig_debug, $mosConfig_offset,
-		$vmLogger;
+		$vmLogger, $vmInputFilter;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$auth = $_SESSION['auth'];
@@ -850,10 +850,10 @@ Order Total: '.$order_total.'
 		$q .= "'" . $d["order_payment_code"] . "', ";
 		$q .= "'" . $d["payment_method_id"] . "', ";
 		$q .= "ENCODE(\"$payment_number\",\"" . ENCODE_KEY . "\"), ";
-		$q .= "'" . $_SESSION["ccdata"]["order_payment_expire"] . "',";
+		$q .= "'" . @$_SESSION["ccdata"]["order_payment_expire"] . "',";
 		$q .= "'" . @$d["order_payment_log"] . "',";
-		$q .= "'" . $_SESSION["ccdata"]["order_payment_name"] . "',";
-		$q .= "'" . @$d["order_payment_trans_id"] . "'";
+		$q .= "'" . @$_SESSION["ccdata"]["order_payment_name"] . "',";
+		$q .= "'" . $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] ). "'";
 		$q .= ")";
 		$db->query($q);
 		$db->next_record();
