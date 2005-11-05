@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: basket.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: basket.php,v 1.5 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -59,10 +59,12 @@ else {
 		$flypage = $ps_product->get_flypage($cart[$i]["product_id"]);
 
 		// Build URL based on whether item or product
-		if ($product_parent_id)
-		$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
-		else
-		$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
+		if ($product_parent_id) {
+			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
+		}
+		else {
+			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
+		}
 
 		$product_rows[$i]['product_name'] = "<a href=\"$url\"><strong>"
 		. $ps_product->get_field($_SESSION['cart'][$i]["product_id"], "product_name")
@@ -240,6 +242,17 @@ else {
 		else {
 			include (PAGEPATH."templates/basket/basket_b2b.html.php");
 		}
+	}
+   	/* Input Field for the Coupon Code */
+	if( PSHOP_COUPONS_ENABLE=='1' 
+		&& !@$_SESSION['coupon_redeemed']
+		&& ($page == "shop.cart"
+			|| @$checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD
+			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_ADDR && CHECKOUT_STYLE != 3 
+			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_METHOD && CHECKOUT_STYLE == 3 
+			)
+		) {  
+	 	include (PAGEPATH."coupon.coupon_field.php"); 	
 	}
 }
 ?>

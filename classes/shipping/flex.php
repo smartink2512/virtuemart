@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: flex.php,v 1.4 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: flex.php,v 1.5 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -123,10 +123,13 @@ class flex {
 
 		$shipping_rate_id = $d["shipping_rate_id"];
 
-		if( array_key_exists( $shipping_rate_id, $_SESSION ))
-		return true;
-		else
-		return false;
+		if( array_key_exists( $shipping_rate_id, $_SESSION )) {
+			
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	/**
     * Show all configuration parameters for this Shipping method

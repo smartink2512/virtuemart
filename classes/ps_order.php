@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_order.php,v 1.8 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: ps_order.php,v 1.9 2005/11/04 15:16:48 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -76,8 +76,13 @@ class ps_order {
 		// get the current order status
 		$curr_order_status = @$d["current_order_status"];
 		$notify_customer = empty($d['notify_customer']) ? "N" : $d['notify_customer'];
-		if( $notify_customer=="Y" ) $notify_customer=1; else $notify_customer=0;
-
+		if( $notify_customer=="Y" ) {
+			$notify_customer=1; 
+		}
+		else {
+			$notify_customer=0;
+		}
+		
 		$d['order_comment'] = empty($d['order_comment']) ? "" : $d['order_comment'];
 
 		// When the order is set to "confirmed", we can capture
@@ -195,7 +200,7 @@ class ps_order {
 					. "\n$url&download_id=".$dbw_2->f("download_id")."\n\n";
 				}
 
-				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_3.": ".DOWNLOAD_MAX."\n";
+				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_3 . DOWNLOAD_MAX."\n";
 				$expire = ((DOWNLOAD_EXPIRE / 60) / 60) / 24;
 				$message .= str_replace("{expire}", $expire, $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_4);
 				$message .= "\n\n____________________________________________________________\n";

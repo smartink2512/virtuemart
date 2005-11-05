@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: standard_shipping.php,v 1.8 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.9 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -82,18 +82,23 @@ class standard_shipping {
 				$total_shipping_handling = $dbr->f("shipping_rate_value") + $dbr->f("shipping_rate_package_fee");
 				$total_shipping_handling *= $taxrate;
 				$show_shipping_handling = $CURRENCY_DISPLAY->getFullValue($total_shipping_handling);
-
-				$html .= "<tr class=\"$class\">";
-				$html .= "<td width=\"10\">
-          <input type=\"radio\" id=\"shipping_rate_id_ss_".$dbr->f("shipping_rate_id")."\" name=\"shipping_rate_id\" value=\""
-
+				
 				// THE ORDER OF THOSE VALUES IS IMPORTANT:
 				// ShippingClassName|carrier_name|rate_name|totalshippingcosts|rate_id
-				. urlencode($this->classname."|"
-				.$dbc->f("shipping_carrier_name")."|"
-				.$dbr->f("shipping_rate_name")."|"
-				.number_format($total_shipping_handling, 2)."|"
-				.$dbr->f("shipping_rate_id"))."\" ";
+				$shipping_rate_id = urlencode( $this->classname."|"
+									.$dbc->f("shipping_carrier_name")."|"
+									.$dbr->f("shipping_rate_name")."|"
+									.number_format($total_shipping_handling, 2)."|"
+									.$dbr->f("shipping_rate_id"));
+				
+				$_SESSION[$shipping_rate_id] = 1;
+				
+				$html .= "<tr class=\"$class\">";
+				$html .= "<td width=\"10\">
+          				<input type=\"radio\" id=\"shipping_rate_id_ss_"
+						.$dbr->f("shipping_rate_id")."\" name=\"shipping_rate_id\" value=\""
+						. $shipping_rate_id."\" ";
+						
 				if (!$selected) {
 					$selected = True;
 					$html .= "checked=\"checked\"";
@@ -218,15 +223,18 @@ class standard_shipping {
 	* returns: several values in an array
 	**************************************************************************/
 	function validate( &$d ) {
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 		$cart = $_SESSION['cart'];
 		$auth = $_SESSION['auth'];
-
+		
 		$dbp = new ps_DB; // Product
 		$d['shipping_rate_id'] = mosGetParam( $_REQUEST, 'shipping_rate_id' );
 		$d['ship_to_info_id'] = mosGetParam( $_REQUEST, 'ship_to_info_id' );
 
-		$details = explode("|", urldecode($d['shipping_rate_id']) );
+		if( empty( $_SESSION[$d['shipping_rate_id']] )) {
+			return false;
+		}
+		$details = explode("|", urldecode( $d['shipping_rate_id']) );
 		$rate_id = $details[4];
 
 		$totalweight = 0;
@@ -236,12 +244,12 @@ class standard_shipping {
 			$dbp->query($q);
 			if ($dbp->next_record()) {
 				if ($cart[$i]["quantity"] == "0"){
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART );
 					return False;
 				}
 				$totalweight += $cart[$i]["quantity"] * $dbp->f("product_weight");
 			} else {
-				$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART );
 				return False;
 			}
 		}
@@ -258,11 +266,11 @@ class standard_shipping {
 		$zip = $dbu->f("zip");
 		$country = $dbu->f("country");
 
-		$q  = "SELECT * FROM #__{vm}_shipping_rate WHERE shipping_rate_id = '$rate_id'";
+		$q  = "SELECT shipping_rate_id FROM #__{vm}_shipping_rate WHERE shipping_rate_id = '$rate_id'";
 		$dbs = new ps_DB; // DB Shiping_rate
 		$dbs->query($q);
 		if (!$dbs->next_record()) {
-			$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND;
+			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND );
 			return False;
 		}
 
@@ -276,7 +284,7 @@ class standard_shipping {
 	* returns: true if fit
 	**************************************************************************/
 	function rate_id_valid($rate_id, $country, $zip, $weight) {
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 		$db = new ps_DB; // Rates
 		$q = "SELECT * FROM #__{vm}_shipping_rate WHERE ";
 		$q .= "shipping_rate_id='$rate_id'";
@@ -291,7 +299,7 @@ class standard_shipping {
 				($db->f("shipping_rate_zip_start")   > $zip) or
 				($db->f("shipping_rate_zip_end")     < $zip)
 				) {
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP;
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP );
 					return false;
 				}
 			}
@@ -302,14 +310,15 @@ class standard_shipping {
 				($db->f("shipping_rate_weight_start") > $weight) or
 				($db->f("shipping_rate_weight_end")  < $weight)
 				) {
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP;
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP );
 					return false;
 				}
 			}
 			return true;
 		}
-		else
-		return false;
+		else {
+			return false;
+		}
 	}
 
 

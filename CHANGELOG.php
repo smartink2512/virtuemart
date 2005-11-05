@@ -34,6 +34,15 @@ Legend:
 VirtueMart 1.0
 *************************************
 04-11-2005 soeren
+# when updating the order status from the order list, always a customer notification would be sent
+# the Altbody (alternative text part of an email) is utf8_encoded now,
+	when the language charset is 'utf-8' (standard in all new language files in joomla!)
++ Manufacturer ID is shown in manufacturer_list now
++ added search by product_sku to searchbot
+^ payment method and shipping method are validated again on orderAdd
+# fixed the shipping_rate_id validation in the standard_shipping module
+# moved the coupon field back into the cart
+# wrong names for new customers in overview
 - removed the table prefix replacing function from ps_database
 ^ changed the url formatting function ps_session::url to use $mm_action_url instead of URL
 # more fixes to the Shared SSL support (it now logs the user in on the https domain, even when Joomla is used)

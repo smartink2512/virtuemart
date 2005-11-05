@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.index.php,v 1.8 2005/10/11 17:03:28 soeren_nb Exp $
+* @version $Id: store.index.php,v 1.9 2005/10/26 19:25:24 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -61,9 +61,12 @@ while($db_order_status->next_record()) {
 // last 5 new customers
 $new_customers = Array();
 $db->query('SELECT id,first_name, last_name, username FROM #__users, #__{vm}_user_info 
-              WHERE address_type = \'BT\' AND perms <> \'admin\' AND perms <> \'storeadmin\' 
-              AND INSTR(usertype,\'administrator\') = 0 AND INSTR(usertype,\'Administrator\') = 0 
-              ORDER BY cdate desc limit 5');
+              WHERE address_type = \'BT\' AND perms <> \'admin\' 
+              AND perms <> \'storeadmin\' 
+              AND INSTR(usertype,\'administrator\') = 0 
+              AND INSTR(usertype,\'Administrator\') = 0 
+              AND id = user_id
+              ORDER BY cdate DESC LIMIT 5');
 
 while($db->next_record())
   $new_customers[$db->f("id")] = $db->f('username') ." (" . $db->f('first_name')." ".$db->f('last_name').")";

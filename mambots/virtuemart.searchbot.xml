@@ -2,11 +2,11 @@
 <mosinstall type="mambot" group="search">
 	<name>ProductSearchBot</name>
 	<author>soeren</author>
-	<creationDate>August 2004</creationDate>
-	<copyright>soeren 2004</copyright>
+	<creationDate>November 2005</creationDate>
+	<copyright>soeren</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>soeren@mambo-phpshop.net</authorEmail>
-	<authorUrl>www.mamboserver.com</authorUrl>
+	<authorEmail>soeren@virtuemart.net</authorEmail>
+	<authorUrl>virtuemart.net</authorUrl>
 	<version>1.0</version>
 	<description>Performs a Product Search</description>
 	<files>

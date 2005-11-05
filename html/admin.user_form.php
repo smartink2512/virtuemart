@@ -23,7 +23,7 @@ if (!$acl->acl_check( 'administration', 'manage', 'users', $my->usertype, 'compo
 }
 
 $user_id = mosGetParam( $_REQUEST, 'user_id' );
-
+global $ps_shopper_group;
 if( !empty($user_id) ) {
 	$q = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id ";
 	$q .= "WHERE id='$user_id' ";
@@ -264,7 +264,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
           <tr> 
             <td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_CUSTOMER_NUMBER ?>:</td>
             <td > 
-              <input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo $ps_shopper_group->get_customer_num($db->f("user_id")) ?>">
+              <input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo $ps_shopper_group->get_customer_num($db->f("user_id")) ?>" />
             </td>
           </tr>
           <tr> 

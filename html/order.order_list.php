@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: order.order_list.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -128,7 +128,7 @@ while ($db->next_record()) {
 	
 	$listObj->addCell( $ps_order_status->getOrderStatus($db->f("order_status"), "onchange=\"document.adminForm$i.order_status.selectedIndex = this.selectedIndex;document.adminForm$i.changed.value='1'\""));
 	
-	$listObj->addCell( '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.checked = true;} else {document.adminForm'. $i .'.notify_customer.checked = false;}" value="Y" />'
+	$listObj->addCell( '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.value = \'Y\';} else {document.adminForm'. $i .'.notify_customer.value = \'N\';}" value="Y" />'
 						.$VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY .'<br />
 					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY_ERR .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="Update Status" />' );
 
@@ -136,7 +136,7 @@ while ($db->next_record()) {
 	
 	$form_code .= '<form style="float:left;" method="post" action="'. $_SERVER['PHP_SELF'] .'" name="adminForm'. $i .'">';
 	$form_code .= $ps_order_status->getOrderStatus($db->f("order_status"), "style=\"visibility:hidden;\" onchange=\"document.adminForm$i.changed.value='1'\"");
-	$form_code .= '<input type="hidden" class="inputbox" name="notify_customer" value="Y" />
+	$form_code .= '<input type="hidden" class="inputbox" name="notify_customer" value="N" />
 		<input type="hidden" name="page" value="order.order_list" />
 		<input type="hidden" name="func" value="orderStatusSet" />
 		<input type="hidden" name="changed" value="0" />

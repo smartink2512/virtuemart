@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.14 2005/11/02 20:06:59 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.15 2005/11/04 15:29:24 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -136,19 +136,16 @@ class ps_checkout {
 		}
 
 		if ( NO_SHIPPING != "1" && (CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='3') ) {
-			if (empty($d["shipping_rate_id"])) {
-				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP );
+			if ( !$this->validate_shipping_method($d) ) {
 				return False;
 			}
 		}
-		if (!$d["payment_method_id"]) {
-			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM );
-			return False;
+		if ( !$this->validate_payment_method( $d, false )) {
+			return false;
 		}
 
 		// calculate the unix timestamp for the specified expiration date
 		// default the day to the 1st
-
 		$expire_timestamp = @mktime(0,0,0,$_SESSION["ccdata"]["order_payment_expire_month"], 1,$_SESSION["ccdata"]["order_payment_expire_year"]);
 		$_SESSION["ccdata"]["order_payment_expire"] = $expire_timestamp;
 
@@ -224,8 +221,11 @@ class ps_checkout {
 			return false;
 		}
 		if( is_callable( array($this->_SHIPPING, 'validate') )) {
-			if(!$this->_SHIPPING->validate( $d ))
-			return false;
+			
+			if(!$this->_SHIPPING->validate( $d )) {
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP );
+				return false;
+			}
 		}
 		// JBarrera 11Jun05 - never returned true
 		return true;
@@ -432,6 +432,8 @@ class ps_checkout {
 				$checkout_this_step = CHECK_OUT_GET_PAYMENT_METHOD;
 				// The User has choosen a Shipping method
 				if (!$this->validate_shipping_method($d)) {
+					$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
+					$_REQUEST["checkout_next_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
 					return false;
 				}
 				break;
@@ -656,11 +658,13 @@ class ps_checkout {
 
 		$db = new ps_DB;
 
-		if (!$this->validate_form($d))
-		return false;
+		if (!$this->validate_form($d)) {
+			return false;
+		}
 
-		if (!$this->validate_add($d))
-		return false;
+		if (!$this->validate_add($d)) {
+			return false;
+		}
 
 
 		/* Set the order number */

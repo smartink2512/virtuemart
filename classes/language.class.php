@@ -2,7 +2,7 @@
 /**
 * This file contains the lanuages handler class
 *
-* @version $Id: language.class.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id: language.class.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
 * @package VirtueMart
 * @copyright Copyright (C) 2005 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -38,7 +38,7 @@ class vmAbstractLanguage {
 	    $key = strtoupper( $var );
 	    if (isset($this->$key)) {
 			if( $htmlentities )
-				return htmlentities( $this->$key, ENT_QUOTES );
+				return htmlentities( $this->$key, ENT_QUOTES, 'utf-8' );
 			else
 				return $this->$key;
 		} 
@@ -62,6 +62,52 @@ class vmAbstractLanguage {
 		} else {
 		    return false;
 		}
+	}
+	/**
+	 * This safely converts an iso-8859 string into an utf-8 encoded
+	 * string. It does not convert when the string is already utf-8 encoded
+	 *
+	 * @param string $text iso-8859 encoded text
+	 * @param string $charset This is a k.o.-Argument. If it is NOT equal to 'utf-8', no conversion will take place
+	 * @return unknown
+	 */
+	function safe_utf8_encode( $text, $charset ) {
+		if( strtolower($charset) == 'utf-8') {
+			// when the virtuemart language file is not
+			// utf-8_encoded, we must encode it
+			if( !vmAbstractLanguage::seems_utf8($text)) {
+				$text = utf8_encode($text);
+			}
+		}
+		// This converts the currency symbol from HTML entity to the utf-8 symbol
+		// example:  &euro; => €
+		$text = html_entity_decode( $text, null, 'utf-8' );
+		
+		return $text;
+	}
+	/**
+	 * a simple function that can help, if you want to know 
+	 * if a string could be UTF-8 or not
+	 * @author bmorel at ssi dot fr
+	 * @param unknown_type $Str
+	 * @return unknown
+	 */
+	function seems_utf8($Str) {
+		for ($i=0; $i<strlen($Str); $i++) {
+			if (ord($Str[$i]) < 0x80) continue; # 0bbbbbbb
+			elseif ((ord($Str[$i]) & 0xE0) == 0xC0) $n=1; # 110bbbbb
+			elseif ((ord($Str[$i]) & 0xF0) == 0xE0) $n=2; # 1110bbbb
+			elseif ((ord($Str[$i]) & 0xF8) == 0xF0) $n=3; # 11110bbb
+			elseif ((ord($Str[$i]) & 0xFC) == 0xF8) $n=4; # 111110bb
+			elseif ((ord($Str[$i]) & 0xFE) == 0xFC) $n=5; # 1111110b
+			else return false; # Does not match any model
+			for ($j=0; $j<$n; $j++) { # n bytes matching 10bbbbbb follow ?
+				if ((++$i == strlen($Str)) || ((ord($Str[$i]) & 0xC0) != 0x80)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
 class mosAbstractLanguage extends vmAbstractLanguage { }

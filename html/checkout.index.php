@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout.index.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: checkout.index.php,v 1.4 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -118,14 +118,7 @@ if ($checkout) {
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
     <input type="hidden" name="user_id" value="<?php echo $my->id ?>" />
-    <?php
-    	/* Input Field for the Coupon Code */
-		if( PSHOP_COUPONS_ENABLE=='1' 
-			&& !@$_SESSION['coupon_redeemed']
-			&& @$checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD) {  
-		 	include (PAGEPATH."coupon.coupon_field.php"); 	
-		}
-		
+    <?php		
 	    $label = "\$lbl = \$VM_LANG->_PHPSHOP_CHECKOUT_MSG_$checkout_this_step;";
 	    eval($label);
 	    echo "<h4>".$lbl."</h4>";
@@ -174,6 +167,7 @@ if ($checkout) {
             }
             $vars["weight"] = $weight_total;
             $i = 0;
+            
             foreach( $PSHOP_SHIPPING_MODULES as $shipping_module ) {
                 include_once( CLASSPATH. "shipping/".$shipping_module.".php" );
                 eval( "\$SHIPPING =& new ".$shipping_module."();");

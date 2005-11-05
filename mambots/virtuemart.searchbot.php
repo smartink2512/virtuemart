@@ -1,8 +1,8 @@
 <?php
 /**
-* mambo-phpShop Search Bot
+* VirtueMart Search Bot
 * @version 1.0
-* @package mambo-phpShop
+* @package VirtueMart
 * @copyright (C) Copyright 2004-2005 by Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 */
@@ -11,7 +11,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 
 /** Register search function inside Mambo's API */
-$_MAMBOTS->registerFunction( 'onSearch', 'botSearchphpShop' );
+$_MAMBOTS->registerFunction( 'onSearch', 'botSearchVM' );
 
 /**
 * Search method
@@ -19,7 +19,7 @@ $_MAMBOTS->registerFunction( 'onSearch', 'botSearchphpShop' );
 * The sql must return the following fields that are used in a common display
 * routine: href, title, section, created, text, browsernav
 */
-function botSearchphpShop( $text, $phrase='', $ordering='' ) {
+function botSearchVM( $text, $phrase='', $ordering='' ) {
   global $database;
   $text = trim( $text );
   if ($text == '') {
@@ -30,6 +30,7 @@ function botSearchphpShop( $text, $phrase='', $ordering='' ) {
 		case 'exact':
 			$wheres2 = array();
 			$wheres2[] = "LOWER(product_name) LIKE '%$text%'";
+			$wheres2[] = "LOWER(product_sku) LIKE '%$text%'";
 			$wheres2[] = "LOWER(product_desc) LIKE '%$text%'";
 			$wheres2[] = "LOWER(product_s_desc) LIKE '%$text%'";
 			$wheres2[] = "LOWER(product_url) LIKE '%$text%'";
@@ -43,6 +44,7 @@ function botSearchphpShop( $text, $phrase='', $ordering='' ) {
 			foreach ($words as $word) {
 				$wheres2 = array();
 				$wheres2[] = "LOWER(product_name) LIKE '%$text%'";
+				$wheres2[] = "LOWER(product_sku) LIKE '%$text%'";
 				$wheres2[] = "LOWER(product_desc) LIKE '%$text%'";
 				$wheres2[] = "LOWER(product_s_desc) LIKE '%$text%'";
 				$wheres2[] = "LOWER(product_url) LIKE '%$text%'";
@@ -71,7 +73,7 @@ function botSearchphpShop( $text, $phrase='', $ordering='' ) {
 			break;
 	}
   
-  $database->setQuery( " SELECT id, name FROM  `#__menu` WHERE link LIKE '%com_phpshop%' AND published =  '1'");
+  $database->setQuery( " SELECT id, name FROM  `#__menu` WHERE link LIKE '%com_virtuemart%' AND published=1");
   $database->loadObject( $Item );
   $ItemName = !empty( $Item->name ) ? $Item->name : "Shop";
   $Itemid = !empty( $Item->id ) ? $Item->id : "1";
@@ -82,7 +84,7 @@ function botSearchphpShop( $text, $phrase='', $ordering='' ) {
                . "\n    '$ItemName' as section,"
                . "\n    CONCAT('index.php?option=com_phpshop&page=shop.product_details&flypage=shop.flypage&product_id=', product_id, '&Itemid=".$Itemid."' ) as href,"
                . "\n    '2' as browsernav"
-               . "\n FROM #__pshop_product"
+               . "\n FROM #__vm_product"
                . "\n WHERE $where"
 			   . "\n AND (product_parent_id='' OR product_parent_id='0')"
 			   . "\n AND product_publish='Y'"

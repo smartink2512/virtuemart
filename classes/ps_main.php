@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
-* @version $Id: ps_main.php,v 1.7 2005/10/26 19:23:32 soeren_nb Exp $
+* @version $Id: ps_main.php,v 1.8 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -801,7 +801,7 @@ function vmCreateMail( $from='', $fromname='', $subject='', $body='' ) {
 			$mail->Sendmail = $mosConfig_sendmail;
 	} // if
 	if( $subject ) {
-		$mail->Subject 	= $subject;
+		$mail->Subject 	= vmAbstractLanguage::safe_utf8_encode( $subject, $mail->CharSet );
 	}
 	if( $body) {
 		$mail->Body 	= $body;
@@ -839,14 +839,17 @@ function vmMail($from, $fromname, $recipient, $subject, $body, $Altbody, $mode=f
 	$mail = vmCreateMail( $from, $fromname, $subject, $body );
 	
 	if( $Altbody != "" ) {
-		$mail->AltBody = $Altbody;
+		// In this section we take care for utf-8 encoded mails
+		$mail->AltBody = vmAbstractLanguage::safe_utf8_encode( $Altbody, $mail->CharSet );
 	}
 	
 	// activate HTML formatted emails
 	if ( $mode ) {
 		$mail->IsHTML(true);
 	}
-
+	if( $mail->ContentType == "text/plain" ) {
+		$mail->Body = vmAbstractLanguage::safe_utf8_encode( $mail->Body, $mail->CharSet );
+	}
 	if( is_array($recipient) ) {
 		foreach ($recipient as $to) {
 			$mail->AddAddress($to);
@@ -889,4 +892,51 @@ function vmMail($from, $fromname, $recipient, $subject, $body, $Altbody, $mode=f
 	return $mailssend;
 } 
 
+// $ Id: html_entity_decode.php,v 1.7 2005/01/26 04:55:13 aidan Exp $
+if (!defined('ENT_NOQUOTES')) {
+    define('ENT_NOQUOTES', 0);
+}
+if (!defined('ENT_COMPAT')) {
+    define('ENT_COMPAT', 2);
+}
+if (!defined('ENT_QUOTES')) {
+    define('ENT_QUOTES', 3);
+}
+
+/**
+ * Replace html_entity_decode()
+ *
+ * @category    PHP
+ * @package     PHP_Compat
+ * @link        http://php.net/function.html_entity_decode
+ * @author      David Irvine <dave@codexweb.co.za>
+ * @author      Aidan Lister <aidan@php.net>
+ * @version     $Revision: 1.7 $
+ * @since       PHP 4.3.0
+ * @internal    Setting the charset will not do anything
+ * @require     PHP 4.0.0 (user_error)
+ */
+if (!function_exists('html_entity_decode')) {
+    function html_entity_decode($string, $quote_style = ENT_COMPAT, $charset = null)
+    {
+        if (!is_int($quote_style)) {
+            user_error('html_entity_decode() expects parameter 2 to be long, ' .
+                gettype($quote_style) . ' given', E_USER_WARNING);
+            return;
+        }
+        $trans_tbl = get_html_translation_table(HTML_ENTITIES);
+        $trans_tbl = array_flip($trans_tbl);
+
+        // Add single quote to translation table;
+        $trans_tbl['&#039;'] = '\'';
+
+        // Not translating double quotes
+        if ($quote_style & ENT_NOQUOTES) {
+            // Remove double quote from translation table
+            unset($trans_tbl['&quot;']);
+        }
+
+        return strtr($string, $trans_tbl);
+    }
+}
 ?> 

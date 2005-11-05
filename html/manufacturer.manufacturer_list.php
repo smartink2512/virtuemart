@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: manufacturer.manufacturer_list.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: manufacturer.manufacturer_list.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -68,6 +68,7 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
+					'ID' => 'width="5%"',
 					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME => 'width="45%"',
 					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN => 'width="45%"',
 					_E_REMOVE => "width=\"5%\""
@@ -87,9 +88,13 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("manufacturer_id"), false, "manufacturer_id" ) );
 	
+	$listObj->addCell( $db->f('manufacturer_id') );
+	
 	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.manufacturer_form&limitstart=$limitstart&keyword=$keyword&manufacturer_id=";
 	$url .= $db->f("manufacturer_id");
-	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("mf_name"). "</a><br />";
+	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">"
+				. $db->f("mf_name")
+				. "</a><br />";
 	$listObj->addCell( $tmp_cell );
 	
     $tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=$modulename.manufacturer_form&manufacturer_id=" . $db->f("manufacturer_id")) ."\">".$VM_LANG->_PHPSHOP_UPDATE ."</a>";
