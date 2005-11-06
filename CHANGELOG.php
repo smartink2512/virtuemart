@@ -34,6 +34,8 @@ Legend:
 VirtueMart 1.0
 *************************************
 06-11-2205 soeren
+# changed all occurences to 'com_phpshop' to 'com_virtuemart' in payment methods
+# bug #164 (Admin doesn't accept any input and doesn't change pages)
 # fixed a fatal error in the install.php
 
 04-11-2005 soeren
@@ -418,9 +420,9 @@ ALTER TABLE `mos_vm_order_item` CHANGE `product_item_price` `product_item_price`
 27-06-2005 soeren
 # Checkout not working (Minimum Purchase Order Value not reached)
 
----- derived from VirtueMart 1.2 stable - patch level 3 ----
+---- derived from mambo-phpShop 1.2 stable - patch level 3 ----
 
----- VirtueMart patch level 3 released ----
+---- mambo-phpShop 1.2 stable patch level 3 released ----
 
 
 </pre>

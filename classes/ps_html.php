@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This Class provides some utility functions
 * to easily create drop-down lists
 *
-* @version $Id: ps_html.php,v 1.11 2005/10/19 17:51:19 soeren_nb Exp $
+* @version $Id: ps_html.php,v 1.12 2005/10/26 19:25:24 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -248,7 +248,7 @@ class ps_html {
 					}
 				}
 				else {
-					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$VM_LANG->_PHPSHOP_NONE."','".$VM_LANG->_PHPSHOP_NONE."' );\n";
+					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_PHPSHOP_NONE."' );\n";
 				}
 
 

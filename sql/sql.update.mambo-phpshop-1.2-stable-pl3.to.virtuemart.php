@@ -167,4 +167,8 @@ $db->query( "UPDATE `#__{vm}_function` SET `function_name` = 'changePublishState
 `function_method` = 'handlePublishState',
 `function_description` = 'Changes the publish field of an item, so that it can be published or unpublished easily.' WHERE `function_name` ='productPublish' LIMIT 1 ;");
 
+$db->query("UPDATE `#__{vm}_payment_method` 
+			SET `payment_extrainfo` = REPLACE (
+				`payment_extrainfo` ,'com_phpshop','com_virtuemart'
+			);");
 ?>

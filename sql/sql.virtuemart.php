@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -1837,7 +1837,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_vendor` (
 ## Dumping data for table `#__{vm}_vendor`
 ## 
 
-$db->query( "INSERT INTO `#__{vm}_vendor` VALUES (1, 'Washupito''s Tiendita', 'Owner', 'Demo', 'Store', 'Mr.', '555-555-1212', '555-555-1212', '555-555-1212', '$mosConfig_mailfrom', '555-555-1212', '100 Washupito Avenue, N.W.', '', 'Lake Forest', 'CA', 'USA', '92630', 'Washupito''s Tiendita', '<p>We have the best tools for do-it-yourselfers.  Check us out! </p>\r\n		<p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p>\r\n		<p>You can easily find products selecting the category you would like to browse above.</p>', 0, '', 'c19970d6f2970cb0d1b13bea3af3144a.gif', 'USD', 950302468, 968309845, 'shop_image/', '<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_phpshop>here</a> to change this text.</h5>', '$mosConfig_live_site', 0.00, 0.00, '1|$|2|.| |2|1'); " );
+$db->query( "INSERT INTO `#__{vm}_vendor` VALUES (1, 'Washupito''s Tiendita', 'Owner', 'Demo', 'Store', 'Mr.', '555-555-1212', '555-555-1212', '555-555-1212', '$mosConfig_mailfrom', '555-555-1212', '100 Washupito Avenue, N.W.', '', 'Lake Forest', 'CA', 'USA', '92630', 'Washupito''s Tiendita', '<p>We have the best tools for do-it-yourselfers.  Check us out! </p>\r\n		<p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p>\r\n		<p>You can easily find products selecting the category you would like to browse above.</p>', 0, '', 'c19970d6f2970cb0d1b13bea3af3144a.gif', 'USD', 950302468, 968309845, 'shop_image/', '<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>', '$mosConfig_live_site', 0.00, 0.00, '1|$|2|.| |2|1'); " );
 
 ## --------------------------------------------------------
 
@@ -1958,8 +1958,8 @@ $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (4, 1, 'PayPal', 'ps_pa
 \"shipping\" => sprintf(\"%.2f\", \$db->f(\"order_shipping\")),
 \"currency_code\" => \$_SESSION[\'vendor_currency\'],
 \"image_url\" => \$vendor_image_url,
-\"return\" => SECUREURL .\"index.php?option=com_phpshop&page=checkout.result&order_id=\".\$db->f(\"order_id\"),
-\"notify_url\" => SECUREURL .\"administrator/components/com_phpshop/notify.php\",
+\"return\" => SECUREURL .\"index.php?option=com_virtuemart&page=checkout.result&order_id=\".\$db->f(\"order_id\"),
+\"notify_url\" => SECUREURL .\"administrator/components/com_virtuemart/notify.php\",
 \"cancel_return\" => SECUREURL .\"index.php\",
 \"undefined_quantity\" => \"0\",
 \"test_ipn\" => PAYPAL_DEBUG,
@@ -2104,7 +2104,7 @@ $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (8, 1, 'NoChex', 'ps_no
 											<input type=\"hidden\" name=\"amount\" value=\"<?php printf(\"%.2f\", \$db->f(\"order_total\"))?>\" />
 											<input type=\"hidden\" name=\"ordernumber\" value=\"<?php \$db->p(\"order_id\") ?>\" />
 											<input type=\"hidden\" name=\"logo\" value=\"<?php echo \$vendor_image_url ?>\" />
-											<input type=\"hidden\" name=\"returnurl\" value=\"<?php echo SECUREURL .\"index.php?option=com_phpshop&amp;page=checkout.result&amp;order_id=\".\$db->f(\"order_id\") ?>\" />
+											<input type=\"hidden\" name=\"returnurl\" value=\"<?php echo SECUREURL .\"index.php?option=com_virtuemart&amp;page=checkout.result&amp;order_id=\".\$db->f(\"order_id\") ?>\" />
 											<input type=\"image\" name=\"submit\" src=\"http://www.nochex.com/web/images/paymeanimated.gif\"> 
 											</form>', '');" );
 $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (9, 1, 'Credit Card (PayMeNow)', 'ps_paymenow', 5, '0.00', 0, 'PN', 'Y', 0, 'N', '1,2,3,', '', '');" );
@@ -2133,7 +2133,7 @@ $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (14, 1, 'iTransact', ''
   \$mername = \$vendor_name;
   
   //order details
-  \$total = \$db->f(\"order_total\");\$first_name = \$user->first_name;\$last_name = \$user->last_name;\$address = \$user->address_1;\$city = \$user->city;\$state = \$user->state;\$zip = \$user->zip;\$country = \$user->country;\$email = \$user->email;\$phone = \$user->phone_1;\$home_page = \$mosConfig_live_site.\"/index.php\";\$ret_addr = \$mosConfig_live_site.\"/index.php\";\$cc_payment_image = \$mosConfig_live_site.\"/components/com_phpshop/shop_image/ps_image/cc_payment.jpg\";
+  \$total = \$db->f(\"order_total\");\$first_name = \$user->first_name;\$last_name = \$user->last_name;\$address = \$user->address_1;\$city = \$user->city;\$state = \$user->state;\$zip = \$user->zip;\$country = \$user->country;\$email = \$user->email;\$phone = \$user->phone_1;\$home_page = \$mosConfig_live_site.\"/index.php\";\$ret_addr = \$mosConfig_live_site.\"/index.php\";\$cc_payment_image = \$mosConfig_live_site.\"/components/com_virtuemart/shop_image/ps_image/cc_payment.jpg\";
   ?>
   <form action=\"https://secure.paymentclearing.com/cgi-bin/mas/split.cgi\" method=\"POST\"> 
 		<input type=\"hidden\" name=\"vendor_id\" value=\"<?php echo \$vendorID; ?>\" />

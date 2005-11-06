@@ -128,7 +128,7 @@ ALTER TABLE `mos_pshop_waiting_list` RENAME `mos_vm_waiting_list`;
 ALTER TABLE `mos_pshop_zone_shipping` RENAME `mos_vm_zone_shipping`;
 
 INSERT INTO `mos_vm_user_info`
-	SELECT `user_info_id`, `id`, `address_type`, `address_type_name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `state`, `country`, `zip`,`email`, `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5`, `perms`, `bank_account_nr`, `bank_name`, `bank_sort_code`, `bank_iban`, `bank_account_holder`, `bank_account_type`, UNIX_TIMESTAMP( registerDate ), UNIX_TIMESTAMP( lastvisitDate )
+	SELECT `user_info_id`, `id`, `address_type`, `address_type_name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `state`, `country`, `zip`, `email`, `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5`, UNIX_TIMESTAMP( registerDate ), UNIX_TIMESTAMP( lastvisitDate ), `perms`, `bank_account_nr`, `bank_name`, `bank_sort_code`, `bank_iban`, `bank_account_holder`, `bank_account_type`
 	FROM mos_users WHERE address_type='BT';
 	
 ALTER TABLE `mos_users` DROP `user_info_id`;
@@ -163,7 +163,13 @@ ALTER TABLE `mos_users` DROP `bank_account_holder`;
 
 ALTER TABLE `mos_vm_order_item` CHANGE `product_item_price` `product_item_price` DECIMAL( 10, 5 ) NULL DEFAULT NULL;
 
-UPDATE `mos_{vm}_function` SET `function_name` = 'changePublishState',
+UPDATE `mos_vm_function` SET `function_name` = 'changePublishState',
 `function_class` = 'vmAbstractObject.class',
 `function_method` = 'handlePublishState',
 `function_description` = 'Changes the publish field of an item, so that it can be published or unpublished easily.' WHERE `function_name` ='productPublish' LIMIT 1 ;
+
+UPDATE `mos_vm_payment_method` SET `payment_extrainfo` = REPLACE (
+`payment_extrainfo` ,
+'com_phpshop',
+'com_virtuemart'
+);

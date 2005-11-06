@@ -26,6 +26,9 @@ $option = mosGetParam( $_REQUEST, 'option' );
 if( !defined( 'CLASSPATH' )) {
 	global $my;
 	
+	$page = mosgetparam($_REQUEST, 'page', "");
+	$func = mosgetparam($_REQUEST, 'func', "");
+	
 	if( $my->id > 0 ) {
 		// This is necessary to get the real GID
 		$my->load( $my->id );
@@ -178,8 +181,6 @@ if( !defined( 'CLASSPATH' )) {
 		$_SESSION['session_userstate']['keyword'] = $keyword = substr(mosgetparam($_REQUEST, 'keyword', ''), 0, 50);
 		
 		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
-		$page = mosgetparam($_REQUEST, 'page', "");
-		$func = mosgetparam($_REQUEST, 'func', "");
 		
 		$vars = $_REQUEST;
 	}
