@@ -33,6 +33,9 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+06-11-2205 soeren
+# fixed a fatal error in the install.php
+
 04-11-2005 soeren
 # when updating the order status from the order list, always a customer notification would be sent
 # the Altbody (alternative text part of an email) is utf8_encoded now,
