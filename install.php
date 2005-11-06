@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: install.php,v 1.10 2005/11/04 15:16:47 soeren_nb Exp $
+* @version $Id: install.php,v 1.11 2005/11/06 09:10:23 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -257,12 +257,12 @@ include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser
 	$database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
 	$old_version =  $database->loadResult();
 	if( $old_version ) {
-		$database-setQuery( 'UPDATE `#__components` SET params = \'RELEASE='.$VMVERSION->RELEASE.'
+		$database->setQuery( 'UPDATE `#__components` SET params = \'RELEASE='.$VMVERSION->RELEASE.'
 DEV_STATUS='.$VMVERSION->DEV_STATUS.'\' WHERE name = \'virtuemart_version\'' );
 		$database->query();
 	}
 	else {
-		$database-setQuery( 'INSERT INTO `#__components` (name, parent, params ) VALUES ( \'virtuemart_version\', 9999, \'RELEASE='.$VMVERSION->RELEASE.'
+		$database->setQuery( 'INSERT INTO `#__components` (name, parent, params ) VALUES ( \'virtuemart_version\', 9999, \'RELEASE='.$VMVERSION->RELEASE.'
 DEV_STATUS='.$VMVERSION->DEV_STATUS.'\')' );
 		$database->query();
 	}
