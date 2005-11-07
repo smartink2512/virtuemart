@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_perm.php,v 1.7 2005/10/10 18:49:05 soeren_nb Exp $
+* @version $Id: ps_perm.php,v 1.8 2005/10/18 18:45:35 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -214,10 +214,11 @@ class ps_perm {
 		}
 		else {
 			$db_check = new ps_DB;
-			$q  = "SELECT id from #__users, #__{vm}_user_info WHERE id='" . $user_id . "' AND id=user_id AND address_type='BT'";
+			$q  = "SELECT id, user_id from #__users, #__{vm}_user_info WHERE id='" . $user_id . "' AND id=user_id AND address_type='BT' AND first_name != '' AND last_name != '' AND city != ''";
 			$db_check->query($q);
+			
 			// Query failed or not?
-			if ($db_check->num_rows()) {
+			if ($db_check->num_rows() > 0) {
 				return true;
 			}
 			else {

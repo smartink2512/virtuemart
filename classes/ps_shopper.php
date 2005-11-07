@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_shopper.php,v 1.8 2005/10/17 19:05:29 soeren_nb Exp $
+* @version $Id: ps_shopper.php,v 1.10 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -94,7 +94,7 @@ class ps_shopper {
 			*/
 		}
 		
-		$d['user_email'] = $d['email'];
+		$d['user_email'] = @$d['email'];
 		$d['perms'] = 'shopper';
 	
 		return $provided_required;
@@ -186,7 +186,14 @@ class ps_shopper {
 		}
 		else {
 			$uid = $my->id;
-			$d['email'] = $my->email;
+			$d['email'] = $_POST['email'] = $my->email;
+			
+		}
+		$db->query( 'SELECT user_id FROM #__{vm}_user_info WHERE user_id='.$my->id );
+		$db->next_record();
+		
+		if( $db->f('user_id')) {
+			return $this->update( $d );
 		}
 		
 		// Insert billto
@@ -283,7 +290,7 @@ class ps_shopper {
 		$row = new mosUser( $database );
 	
 		if (!$row->bind( $_POST, 'usertype' )) {
-			$error = html_entity_decode( $row->getError() );
+			$error = vmHtmlEntityDecode( $row->getError() );
 			$vmLogger->err( $error );
 			echo "<script type=\"text/javascript\"> alert('". $error. "');</script>\n";
 			return false;
@@ -302,7 +309,7 @@ class ps_shopper {
 		}
 	
 		if (!$row->check()) {
-			$error = html_entity_decode( $row->getError() );
+			$error = vmHtmlEntityDecode( $row->getError() );
 			$vmLogger->err( $error );
 			echo "<script type=\"text/javascript\"> alert('". $error. "');</script>\n";
 			return false;
@@ -313,7 +320,7 @@ class ps_shopper {
 		$row->registerDate 	= date('Y-m-d H:i:s');
 	
 		if (!$row->store()) {
-			$error = html_entity_decode( $row->getError() );
+			$error = vmHtmlEntityDecode( $row->getError() );
 			$vmLogger->err( $error );
 			echo "<script type=\"text/javascript\"> alert('". $error. "');</script>\n";
 			return false;
@@ -325,14 +332,14 @@ class ps_shopper {
 		$username 	= $row->username;
 	
 		$subject 	= sprintf (_SEND_SUB, $name, $mosConfig_sitename);
-		$subject 	= html_entity_decode($subject, ENT_QUOTES);
+		$subject 	= vmHtmlEntityDecode($subject, ENT_QUOTES);
 		if ($mosConfig_useractivation=="1"){
 			$message = sprintf (_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $mosConfig_live_site."/index.php?option=com_registration&task=activate&activation=".$row->activation, $mosConfig_live_site, $username, $pwd);
 		} else {
 			$message = sprintf ($VM_LANG->_PHPSHOP_USER_SEND_REGISTRATION_DETAILS, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
 		}
 	
-		$message = html_entity_decode($message, ENT_QUOTES);
+		$message = vmHtmlEntityDecode($message, ENT_QUOTES);
 		// Send email to user
 		if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
 			$adminName2 = $mosConfig_fromname;
@@ -355,8 +362,8 @@ class ps_shopper {
 		// Send notification to all administrators
 		$subject2 = sprintf (_SEND_SUB, $name, $mosConfig_sitename);
 		$message2 = sprintf (_ASEND_MSG, $adminName2, $mosConfig_sitename, $row->name, $email, $username);
-		$subject2 = html_entity_decode($subject2, ENT_QUOTES);
-		$message2 = html_entity_decode($message2, ENT_QUOTES);
+		$subject2 = vmHtmlEntityDecode($subject2, ENT_QUOTES);
+		$message2 = vmHtmlEntityDecode($message2, ENT_QUOTES);
 	
 		// get superadministrators id
 		$admins = $acl->get_group_objects( 25, 'ARO' );
@@ -398,16 +405,18 @@ class ps_shopper {
 		
 		$d = $GLOBALS['vmInputFilter']->safeSQL( $d );
 	
-		if ($d["user_id"] != $auth["user_id"] && $auth["perms"] != "admin") {
+		if (@$d["user_id"] != $my->id && $auth["perms"] != "admin") {
 		  $vmLogger->crit( "Tricky tricky, but we know about this one." );
 		  return False;
 		}
 		
 		require_once(CLASSPATH. 'ps_user.php' );
+		$_POST['username'] = $my->username;
 		$_POST['name'] = $d['first_name']." ". $d['last_name'];
 		$_POST['id'] = $auth["user_id"];
 		$_POST['gid'] = $my->gid;
 		$d['error'] = "";
+		
 		ps_user::saveUser( $d );
 		if( !empty( $d['error']) ) {
 			

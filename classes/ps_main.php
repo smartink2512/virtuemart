@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
-* @version $Id: ps_main.php,v 1.8 2005/11/01 18:39:46 soeren_nb Exp $
+* @version $Id: ps_main.php,v 1.9 2005/11/05 14:11:56 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -911,32 +911,30 @@ if (!defined('ENT_QUOTES')) {
  * @link        http://php.net/function.html_entity_decode
  * @author      David Irvine <dave@codexweb.co.za>
  * @author      Aidan Lister <aidan@php.net>
- * @version     $Revision: 1.7 $
+ * @version     $Revision: 1.9 $
  * @since       PHP 4.3.0
  * @internal    Setting the charset will not do anything
  * @require     PHP 4.0.0 (user_error)
  */
-if (!function_exists('html_entity_decode')) {
-    function html_entity_decode($string, $quote_style = ENT_COMPAT, $charset = null)
-    {
-        if (!is_int($quote_style)) {
-            user_error('html_entity_decode() expects parameter 2 to be long, ' .
-                gettype($quote_style) . ' given', E_USER_WARNING);
-            return;
-        }
-        $trans_tbl = get_html_translation_table(HTML_ENTITIES);
-        $trans_tbl = array_flip($trans_tbl);
-
-        // Add single quote to translation table;
-        $trans_tbl['&#039;'] = '\'';
-
-        // Not translating double quotes
-        if ($quote_style & ENT_NOQUOTES) {
-            // Remove double quote from translation table
-            unset($trans_tbl['&quot;']);
-        }
-
-        return strtr($string, $trans_tbl);
+function vmHtmlEntityDecode($string, $quote_style = ENT_COMPAT, $charset = null) {
+	
+    if (!is_int($quote_style) && !is_null($quote_style)) {
+        user_error(__FUNCTION__.'() expects parameter 2 to be long, ' .
+            gettype($quote_style) . ' given', E_USER_WARNING);
+        return;
     }
+    $trans_tbl = get_html_translation_table(HTML_ENTITIES);
+    $trans_tbl = array_flip($trans_tbl);
+
+    // Add single quote to translation table;
+    $trans_tbl['&#039;'] = '\'';
+
+    // Not translating double quotes
+    if ($quote_style & ENT_NOQUOTES) {
+        // Remove double quote from translation table
+        unset($trans_tbl['&quot;']);
+    }
+
+    return strtr($string, $trans_tbl);
 }
 ?> 

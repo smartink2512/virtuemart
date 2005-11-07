@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_user.php,v 1.6 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: ps_user.php,v 1.8 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -435,8 +435,7 @@ class ps_user {
 	
 		$row = new mosUser( $database );
 		if (!$row->bind( $_POST )) {
-			echo "<script type=\"text/javascript\"> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode($row->getError())."');</script>\n";
 		}
 	
 		$isNew 	= !$row->id;
@@ -461,7 +460,7 @@ class ps_user {
 			} else {
 				if( !empty( $_POST['password'] )) {
 					if( $row->password != @$_POST['password2'] ) {
-						$d['error'] = html_entity_decode(_REGWARN_VPASS2);
+						$d['error'] = vmHtmlEntityDecode(_REGWARN_VPASS2);
 						return false;
 					}
 				}
@@ -489,12 +488,12 @@ class ps_user {
 		}
 	
 		if (!$row->check()) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode($row->getError())."');</script>\n";
+			return false;
 		}
 		if (!$row->store()) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode($row->getError())."');</script>\n";
+			return false;
 		}
 		if ( $isNew ) {
 			$newUserId = $row->id;

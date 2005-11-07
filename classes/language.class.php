@@ -2,7 +2,7 @@
 /**
 * This file contains the lanuages handler class
 *
-* @version $Id: language.class.php,v 1.4 2005/09/29 20:01:13 soeren_nb Exp $
+* @version $Id: language.class.php,v 1.5 2005/11/05 14:11:56 soeren_nb Exp $
 * @package VirtueMart
 * @copyright Copyright (C) 2005 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -81,7 +81,7 @@ class vmAbstractLanguage {
 		}
 		// This converts the currency symbol from HTML entity to the utf-8 symbol
 		// example:  &euro; => €
-		$text = html_entity_decode( $text, null, 'utf-8' );
+		$text = vmHtmlEntityDecode( $text, null, 'utf-8' );
 		
 		return $text;
 	}

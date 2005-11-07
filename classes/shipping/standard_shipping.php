@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: standard_shipping.php,v 1.9 2005/11/01 18:39:46 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.10 2005/11/05 14:11:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -234,6 +234,7 @@ class standard_shipping {
 		if( empty( $_SESSION[$d['shipping_rate_id']] )) {
 			return false;
 		}
+		
 		$details = explode("|", urldecode( $d['shipping_rate_id']) );
 		$rate_id = $details[4];
 
@@ -288,12 +289,13 @@ class standard_shipping {
 		$db = new ps_DB; // Rates
 		$q = "SELECT * FROM #__{vm}_shipping_rate WHERE ";
 		$q .= "shipping_rate_id='$rate_id'";
+		
 		$db->query($q);
 		if ($db->next_record()) {
 			if (is_numeric($zip)) {
 				if (
 				(!stristr($db->f("shipping_rate_country"),$country)
-				&& $db->f("shipping_rate_country") != "") or
+					&& $db->f('shipping_rate_country') != "") or
 				($db->f("shipping_rate_weight_start") > $weight) or
 				($db->f("shipping_rate_weight_end")  < $weight) or
 				($db->f("shipping_rate_zip_start")   > $zip) or

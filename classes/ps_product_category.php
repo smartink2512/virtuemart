@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_category.php,v 1.12 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: ps_product_category.php,v 1.13 2005/11/02 20:06:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -757,8 +757,11 @@ class ps_product_category extends vmAbstractObject {
 			$q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
 			$q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
 			//$q .= "AND #__{vm}_product.product_parent_id='' ";
-			if( !$perm->check( "admin,storeadmin") && CHECK_STOCK == "1" && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1" ) {
-				$q .= "AND product_in_stock > 0 ";
+			if( !$perm->check("admin,storeadmin") ) {
+				$q .= " AND product_publish='Y'";
+				if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+					$q .= " AND product_in_stock > 0 ";
+				}
 			}
 			$count .= $q;
 			$db->query($count);

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.18 2005/10/27 19:42:54 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.19 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1751,6 +1751,7 @@ class ps_product extends vmAbstractObject {
 	function getDescriptionWithTax( $description, $product_id ) {
 		global $CURRENCY_DISPLAY, $mosConfig_secret;
 		$auth = $_SESSION['auth'];
+		
 		// if we've been given a description to deal with, get the adjusted price
 		if ($description != '' && stristr( $description, "[" ) && $auth["show_price_including_tax"] == 1) {
 
@@ -1831,11 +1832,13 @@ class ps_product extends vmAbstractObject {
 				$i++; // not necessary, but perhaps interesting? ;)
 			}
 		}
+		$description = str_replace( $CURRENCY_DISPLAY->symbol, '@saved@', $description );
 		$description = str_replace( "[", " (", $description );
 		$description = str_replace( "]", ")", $description );
 		$description = str_replace( ":", ": ", $description );
 		$description = str_replace( ";", "<br/>", $description );
-
+		$description = str_replace( '@saved@', $CURRENCY_DISPLAY->symbol, $description );
+		
 		return $description;
 	}
 	/**************************************************************************

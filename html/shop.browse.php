@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is the Main Product Listing File!
 *
-* @version $Id: shop.browse.php,v 1.7 2005/10/19 17:51:19 soeren_nb Exp $
+* @version $Id: shop.browse.php,v 1.9 2005/11/02 20:06:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -311,7 +311,7 @@ else {
 		}
 		$product_name = $db_browse->f("product_name");
 		if( $db_browse->f("product_publish") == "N" ) {
-			$product_name .= " ("._CMN_UNPUBLISHED.")";
+			$product_name .= " (".vmHtmlEntityDecode(_CMN_UNPUBLISHED).")";
 		}
 
 		if( empty($product_name) && $product_parent_id!=0 ) {

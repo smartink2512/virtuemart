@@ -33,7 +33,16 @@ Legend:
 
 VirtueMart 1.0
 *************************************
-06-11-2205 soeren
+07-11-2005 soeren
+
+# task #252 (Japanese Yen Currency symbol affects attribute list line break)
+# unpublished products were counted in "products in category".
+# task #249 (a bug with html_entity_decode ("Warning.....MBCS not implemented"))
+# fixed a small notice in vm_dtree.php
+
+---- 1.0.0 RC2 released ----
+
+06-11-2005 soeren
 # changed all occurences to 'com_phpshop' to 'com_virtuemart' in payment methods
 # bug #164 (Admin doesn't accept any input and doesn't change pages)
 # fixed a fatal error in the install.php

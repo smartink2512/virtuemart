@@ -3,7 +3,7 @@
 * mambo-phphop Product Scroller Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_productscroller.php,v 1.4 2005/10/20 17:36:30 soeren_nb Exp $
+* @version $Id: mod_productscroller.php,v 1.5 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage modules
 * 
@@ -18,6 +18,10 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 
 global $my;
+
+/* Load the virtuemart main parse code */
+require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
+
 /**
 * This class sets all Parameters.
 * Must first call the MOS function, something like: 
@@ -168,7 +172,6 @@ class productScroller {
 	function displayScroller (&$rows) {
 		global $mosConfig_absolute_path;
 
-		require_once( $mosConfig_absolute_path."/components/com_virtuemart/virtuemart_parser.php" );
 		$database = new ps_DB();
 		require_once( CLASSPATH."ps_product.php" );
 		$ps_product = new ps_product;

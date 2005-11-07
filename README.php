@@ -255,3 +255,4 @@ Developers, Documentation Writers, Helpers and Coders are welcome to help us.
 Please contact me: soeren@virtuemart.net
 
 This VirtueMart component can be developed much further...
+</pre>
