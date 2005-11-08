@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.15 2005/11/04 15:29:24 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.16 2005/11/05 14:11:56 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1490,20 +1490,16 @@ Order Total: '.$order_total.'
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":   ";
 		$shopper_message .= date("d-M-Y:H:i", $db->f("cdate")) . "\n";
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.": ";
-		switch($db->f("order_status")) {
-			case ("P"):
-				$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_P."\n\n";
-				$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_P;
-				break;
-			case ("X"):
-				$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_X."\n\n";
-				$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_X;
-				break;
-			case ("C"):
-				$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_C."\n\n";
-				$order_status = $VM_LANG->_PHPSHOP_ORDER_STATUS_C;
-				break;
-		}
+		
+		$dbos = new ps_DB;
+
+		$q = "SELECT order_status_name FROM `#__{vm}_order_status` WHERE order_status_code='".$db->f("order_status")."'";
+		$dbos->query($q);
+		$dbos->next_record();
+		
+		$shopper_message .= $dbos->f("order_status_name")."\n\n";
+		$order_status = $dbos->f("order_status_name");
+		
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL."\n";
 		$shopper_message .= "--------------------\n\n";
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL."\n";
@@ -1521,7 +1517,7 @@ Order Total: '.$order_total.'
 		$shopper_message .= $dbbt->f("last_name") . "\n";
 		$shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
 		$shopper_message .= $dbbt->f("address_1") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1.":   ";
+		$shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2.":   ";
 		$shopper_message .= $dbbt->f("address_2") . "\n";
 		$shopper_message .= "     ".$VM_LANG->_PHPSHOP_ORDER_PRINT_CITY.":       ";
 		$shopper_message .= $dbbt->f("city") . "\n";

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_list.php,v 1.7 2005/10/24 18:12:35 soeren_nb Exp $
+* @version $Id: product.product_list.php,v 1.8 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -87,7 +87,6 @@ if (!empty($category_id)) {
 	}
 	$count .= $q;
 	$q .= "ORDER BY product_publish DESC,product_name ";
-	$list .= $q . " LIMIT $limitstart, " . $limit;
 }  
 elseif (!empty($keyword)) {
 	$list  = "SELECT DISTINCT *";
@@ -107,7 +106,6 @@ elseif (!empty($keyword)) {
 	}
 	$count .= $q;   
 	$q .= " ORDER BY product_publish DESC,product_name ";
-	$list .= $q . " LIMIT $limitstart, " . $limit;
 }
 elseif (!empty($product_parent_id)) {
 	$list  = "SELECT DISTINCT * FROM #__{vm}_product WHERE ";
@@ -118,7 +116,6 @@ elseif (!empty($product_parent_id)) {
 	//$q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
 	$count .= $q;
 	$q .= " ORDER BY product_publish DESC,product_name ";
-	$list .= $q . " LIMIT $limitstart, " . $limit;
 } 
 /** Changed Product Type - Begin */
 elseif (!empty($product_type_id)) {
@@ -133,7 +130,6 @@ elseif (!empty($product_type_id)) {
 		$q .=  "AND #__{vm}_product.vendor_id='$vendor' ";
 	}
 	$q .= " ORDER BY product_publish DESC,product_name ";
-	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;
 }  /** Changed Product Type - End */
 /** Changed search by date - Begin */
@@ -182,7 +178,6 @@ elseif (!empty($search_date)) {
         }
         
         $q = implode(" AND ",$where) . $q . " ORDER BY #__{vm}_product.product_publish DESC,#__{vm}_product.product_name ";
-        $list .= $q . " LIMIT $limitstart, " . $limit;
         $count .= $q;
     }
     else
@@ -203,7 +198,6 @@ else {
 	//$q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
 	$count .= $q;
 	$q .= " ORDER BY product_publish DESC,product_name ";
-	$list .= $q . " LIMIT $limitstart, " . $limit;
 }
 $db->query($count);
 $db->next_record();
@@ -211,6 +205,9 @@ $num_rows = $db->f("num_rows");
        
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
+
+$limitstart = $pageNav->limitstart;
+$list .= $q . " LIMIT $limitstart, " . $limit;
 
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );
