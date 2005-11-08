@@ -34,6 +34,10 @@ Legend:
 VirtueMart 1.0
 *************************************
 08-11-2005 soeren
+# installation displays a log now
+# installation would copy files with wrong permissions on upgrade
+# product list empty when browsing child products of a product from pages no. >= 2
+# ps_checkout typos
 # "Empty Cart" - fixed a bug where the session id would have been changed on each page load
 	what made keeping items in the cart impossible
 	
