@@ -23,6 +23,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * @version $ Revision: 1.51 $
  * @package Log
  */
+if( !class_exists( 'Log' )) {
+	
 
 define('PEAR_LOG_EMERG',    0);     /** System is unusable */
 define('PEAR_LOG_ALERT',    1);     /** Immediate action required */
@@ -708,3 +710,6 @@ class Log
         return $this->_ident;
     }
 }
+
+}
+?>

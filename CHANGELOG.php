@@ -33,6 +33,10 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+08-11-2005 soeren
+# "Empty Cart" - fixed a bug where the session id would have been changed on each page load
+	what made keeping items in the cart impossible
+	
 07-11-2005 soeren
 
 # task #252 (Japanese Yen Currency symbol affects attribute list line break)

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.show_cfg.php,v 1.9 2005/10/18 05:16:51 soeren_nb Exp $
+* @version $Id: admin.show_cfg.php,v 1.10 2005/10/25 19:33:52 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -177,7 +177,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 				
 			</td>
 			<td align="left">
-				<input type="checkbox" name="conf_TAX_VIRTUAL" name="conf_TAX_VIRTUAL" class="inputbox" <?php if (TAX_VIRTUAL == 1) echo "checked=\"checked\""; ?> value="1" />
+				<input type="checkbox" name="conf_TAX_VIRTUAL" id="conf_TAX_VIRTUAL" class="inputbox" <?php if (TAX_VIRTUAL == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
 			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN ?>
 			</td>
@@ -254,7 +254,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 				
 			</td>
 			<td>
-				<input type="checkbox" name="conf_LEAVE_BANK_DATA" name="conf_LEAVE_BANK_DATA" class="inputbox" <?php if (LEAVE_BANK_DATA == '1') echo "checked=\"checked\""; ?> value="1" />
+				<input type="checkbox" name="conf_LEAVE_BANK_DATA" id="conf_LEAVE_BANK_DATA" class="inputbox" <?php if (LEAVE_BANK_DATA == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
 			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN ?>
 			</td>
@@ -432,9 +432,9 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
 	<table class="adminform">
 		<tr>
 			<td>
-				<input type="checkbox" name="conf_DEBUG" class="inputbox" <?php if (DEBUG == 1) echo "checked=\"checked\""; ?> value="1" />
+				<input type="checkbox" id="conf_DEBUG" name="conf_DEBUG" class="inputbox" <?php if (DEBUG == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN ?>
+			<td><label for="conf_DEBUG"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN ?></label>
 			</td>
 		</tr>
 	</table>

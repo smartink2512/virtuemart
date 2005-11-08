@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.payment_method_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
+* @version $Id: store.payment_method_form.php,v 1.6 2005/11/03 21:01:32 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -18,7 +18,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 require_once( CLASSPATH . 'ps_creditcard.php' );
+
+include_class( 'shopper');
 global $ps_shopper_group;
+
 $payment_method_id = mosgetparam($_REQUEST, 'payment_method_id', "");
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 

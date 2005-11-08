@@ -6,25 +6,27 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * - running SQL updates
 * - finishing the installation
 *
-* @version $Id: install.php,v 1.11 2005/11/06 09:10:23 soeren_nb Exp $
+* @version $Id: install.php,v 1.12 2005/11/06 10:29:56 soeren_nb Exp $
 * @package VirtueMart
-* @subpackage html
+* @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_phpshop/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
 
 function installvirtuemart( $install_type, $install_sample_data=false ){
-	global 	$database, $mosConfig_absolute_path, $mosConfig_mailfrom, $VM_LANG, $mosConfig_dirperms, $mosConfig_live_site;
+	global $database, $mosConfig_absolute_path, $mosConfig_mailfrom, $VM_LANG, $mosConfig_dirperms, $mosConfig_live_site;
 	
 	if( empty($mosConfig_mailfrom)) $mosConfig_mailfrom = "demo_order@virtuemart.net";
-  
+	
+	$messages = array();
+	
 	$frontend_dir = $mosConfig_absolute_path."/components/com_virtuemart/";
 	$frontend_file = $mosConfig_absolute_path."/components/com_virtuemart/frontend_files.tar.gz";
 	$admin_dir = $mosConfig_absolute_path."/administrator/components/com_virtuemart/";
@@ -32,7 +34,9 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
   
 	// Check if the Archives are there
 	if( file_exists( $frontend_file ) && file_exists( $admin_file ) ) {
-  
+		
+		echo '<div align="left" style="max-height: 200px;overflow:auto;"><h2>Update Log</h2>';
+		
 		/** UNPACK THE ARCHIVES **/
 		require_once( $mosConfig_absolute_path."/administrator/components/com_virtuemart/Tar.php" );
 		
@@ -55,16 +59,16 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	
 		if( $frontend_archive->extract( $frontend_dir ) ) {
 			$frontend = true;
-			echo "<br /><br />Frontend Files successfully extracted.<br />";
+			$messages[] = "Frontend Files successfully extracted.";
 			if( @unlink( $frontend_file ) ) {
-				echo "Frontend Archive File successfully deleted.<br />";;
+				$messages[] = "Frontend Archive File successfully deleted.";
 			}
 		}
 		if( $admin_archive->extract( $admin_dir ) ) {
 			$backend = true;
-			echo "<br /><br />Backend Files successfully extracted.<br />";
+			$messages[] = "Backend Files successfully extracted.";
 			if( @unlink( $admin_file ) ) {
-					echo "Backend Archive File successfully deleted.<br />";;
+					$messages[] = "Backend Archive File successfully deleted.";
 			}
 		}
 		if( !$frontend || !$backend ) {
@@ -164,15 +168,16 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		// TO /components/com_virtuemart/shop_image/*
 		$fromDir = $mosConfig_absolute_path.'/components/com_phpshop/shop_image';
 		$toDir = $mosConfig_absolute_path.'/components/com_virtuemart/shop_image';
-		$perms = !empty( $mosConfig_dirperms ) ? $mosConfig_dirperms : '0755';
-		copydirr( $fromDir, $toDir, $perms );
+		$perms = '0777';
+		umask( 0022 );
+		
+		copydirr( $fromDir, $toDir, $perms, true );
 		
 		// COPY templates from /administrator/components/com_phpshop/templates
 		// TO /administrator/components/com_virtuemart/templates
 		$fromDir = $mosConfig_absolute_path.'/administrator/components/com_phpshop/html/templates';
 		$toDir = $mosConfig_absolute_path.'/administrator/components/com_virtuemart/html/templates';
-		copydirr( $fromDir, $toDir, $perms );
-		
+		copydirr( $fromDir, $toDir, $perms, true );
 		
 		// COPY&RENAME the configuration file phpshop.cfg.php 
 		// TO virtuemart.cfg.php AND replace 'com_phpshop' by 'com_virtuemart'
@@ -188,7 +193,7 @@ define('VM_PRICE_ACCESS_LEVEL', 'Public Frontend' );
 define('VM_SILENT_REGISTRATION', '1');
 ?>";
 
-		file_put_contents( $toDir.'/virtuemart.cfg.php', $config_contents );
+		file_put_contents( $toDir.'/virtuemart.cfg.php', $config_contents );			
 		
 		// BACKUP 
 		// phpshop.php TO phpshop~.php.
@@ -198,9 +203,10 @@ define('VM_SILENT_REGISTRATION', '1');
 			@chmod( $fromDir.'/phpshop.php',  '0777' );
 		if( !is_writable( $fromDir.'/phpshop_parser.php' ))
 			@chmod( $fromDir.'/phpshop_parser.php',  '0777' );
-		rename( $fromDir.'/phpshop.php', $fromDir.'/phpshop~.php' );
-		rename( $fromDir.'/phpshop_parser.php', $fromDir.'/phpshop_parser~.php' );
 		
+		if( !rename( $fromDir.'/phpshop.php', $fromDir.'/phpshop~.php' )) {
+			;
+		}		
 		// CREATE A NEW FILE 'phpshop.php', to handle permanent Redirect to 
 		// FROM index.php?option=com_phpshop&...
 		// TO index.php?option=com_virtuemart&...
@@ -220,8 +226,10 @@ exit();
 		if( file_put_contents( $fromDir.'/phpshop.php', $contents ) )
 			$messages[] = "Established redirection from old phpshop links to new virtuemart links";
 		else
-			$messages[] = "Notice: Couldn't established redirection from old phpshop links to new virtuemart links";
+			$messages[] = "Notice: Couldn't established redirection from old phpshop links to new virtuemart links.";
 		
+		
+		rename( $fromDir.'/phpshop_parser.php', $fromDir.'/phpshop_parser~.php' );
 		$contents = "<?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 global \$mosConfig_absolute_path;
@@ -254,6 +262,8 @@ include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser
 	}
 	// Finally insert the version number into the database
 	include_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/version.php' );
+	global $VM_VERSION;
+	
 	$database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
 	$old_version =  $database->loadResult();
 	if( $old_version ) {
@@ -266,5 +276,13 @@ DEV_STATUS='.$VMVERSION->DEV_STATUS.'\' WHERE name = \'virtuemart_version\'' );
 DEV_STATUS='.$VMVERSION->DEV_STATUS.'\')' );
 		$database->query();
 	}
+	if( !empty( $messages )) {
+		echo '<ul>';
+		foreach( $messages as $message ) {
+			echo "<li>$message</li>";
+		}
+		echo '<ul>';
+	}
+	echo '</div>';
 }
 ?>

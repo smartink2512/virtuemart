@@ -104,7 +104,7 @@ $db->query( 'ALTER TABLE `#__users` DROP `bank_iban`;' );
 $db->query( 'ALTER TABLE `#__users` DROP `bank_account_holder`;' );
 
 # We don't need these fields!
-$db->query( 'ALTER TABLE `jos_vm_module` DROP `language_code_1` ,
+$db->query( 'ALTER TABLE `#__{vm}_module` DROP `language_code_1` ,
 							DROP `language_code_2` ,
 							DROP `language_code_3` ,
 							DROP `language_code_4` ,

@@ -24,6 +24,21 @@ function com_uninstall() {
 	
 	$db = &new ps_DB;
 	
+	  
+	// This is the function which is called on Uninstall after the component files
+	// have been removed and all tables for VirtueMart that are contained
+	// in the virtuemart.xml file have been removed.
+	// But what if we can't predict the number of tables?
+	// e.g.: For each new Product Type we dynamically create one new Table.
+	// So let's remove those tables (if there).
+	$db->query( "SELECT product_type_id FROM #__{vm}_product_type" );
+	$tables = $db->record;
+	if( !empty( $tables )) {
+		foreach( $tables as $table ) {
+			$db->query( "DROP TABLE IF EXISTS `#__{vm}_product_type_". $table->product_type_id . "`" );
+		}
+	}
+	
 	$db->query( 'DROP TABLE `#__{vm}_affiliate`;' );
 	$db->query( 'DROP TABLE `#__{vm}_affiliate_sale`;' );
 	$db->query( 'DROP TABLE `#__{vm}_auth_user_vendor`;' );
@@ -72,21 +87,6 @@ function com_uninstall() {
 	$db->query( 'DROP TABLE `#__{vm}_visit`;' );
 	$db->query( 'DROP TABLE `#__{vm}_waiting_list`;' );
 	$db->query( 'DROP TABLE `#__{vm}_zone_shipping`;' );
-
-	  
-	// This is the function which is called on Uninstall after the component files
-	// have been removed and all tables for VirtueMart that are contained
-	// in the virtuemart.xml file have been removed.
-	// But what if we can't predict the number of tables?
-	// e.g.: For each new Product Type we dynamically create one new Table.
-	// So let's remove those tables (if there).
-	$db->query( "SELECT product_type_id FROM #__{vm}_product_type" );
-	$tables = $db->record;
-	if( !empty( $tables )) {
-		foreach( $tables as $table ) {
-			$db->query( "DROP TABLE IF EXISTS `#__{vm}_product_type_". $table->product_type_id . "`" );
-		}
-	}
   
 }
 

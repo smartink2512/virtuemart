@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_session.php,v 1.12 2005/11/01 18:39:46 soeren_nb Exp $
+* @version $Id: ps_session.php,v 1.13 2005/11/04 15:16:48 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -40,28 +40,30 @@ class ps_session {
      *
      */
 	function initSession() {
-		global $vmLogger;
+		global $vmLogger, $mainframe;
 		if( empty($_SESSION)) {
 			//Session not yet started!";
+			if( empty($_COOKIE[$this->_session_name])) {
+				$_COOKIE[$this->_session_name] = md5($mainframe->_session->session_id);
+			}
+			
 			session_name( $this->_session_name );
+			session_id( $_COOKIE[$this->_session_name] );
+			
 			session_start();
 			
 			if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
 				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
 			}
+			else {
+				$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
+			}
 		}
 		elseif( !defined('_PSHOP_ADMIN')) {
 			$vmLogger->debug( 'A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.' );
-		}
-		/**
-		 * I don't think, we need this...
-		if( empty($_COOKIE['virtuemart'] )) {
-			setCookie( 'virtuemart', md5(uniqid('virtuemart')), 0, "/" );
-			echo DEBUG ? '<div style="border: red 2px dotted;padding: 3px;margin: 2px;"><strong>Shop Debug:</strong> A phpShop Cookie had to be set (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.</div>' : '';
-		}
-		*/
-		
+		}	
 	}
+	
 	function restartSession( $sid = '') {
 		
 		// Save the session data and close the session
@@ -77,7 +79,9 @@ class ps_session {
 		
 	}
 	function emptySession() {
+		global $mainframe;
 		$_SESSION = array();
+		$_COOKIE[$this->_session_name] = md5($mainframe->_session->session_id);
 	}
 	/**
      * This is a solution for  the Shared SSL problem
@@ -165,7 +169,12 @@ class ps_session {
 	                * Session Cookie again with an empty value. This erases the Cookie.
 	                */
 					if( $_VERSION->PRODUCT == 'Joomla!') {
-						$sessionCookieName = md5( 'site'.$GLOBALS['real_mosConfig_live_site'] );
+						if( !empty($GLOBALS['real_mosConfig_live_site'])) {
+							$sessionCookieName = md5( 'site'.$GLOBALS['real_mosConfig_live_site'] );
+						}
+						else {
+							$sessionCookieName = md5( 'site'.$GLOBALS['mosConfig_live_site'] );
+						}
 					}
 					else {
 						$sessionCookieName = 'sessioncookie';
@@ -177,6 +186,9 @@ class ps_session {
 					// Get sure the cookie is set
 					$_COOKIE[$sessionCookieName] = $sessioncookie;
 	
+					// Set the Cookie for VirtueMart
+					$_COOKIE[$this->_session_name] = $virtuemartcookie;
+					
 					// Also log the user in when he was already logged in at the other domain
 					if(!empty($usercookie["password"]) && !empty($usercookie["username"])) {
 						$lifetime = time() + 365*24*60*60;
@@ -197,6 +209,8 @@ class ps_session {
 
 					// Read the session data into $_SESSION
 					session_decode( $session_data );
+					
+					session_write_close();
 					
 					// Prevent the martID from being displayed in the URL
 					if( !empty( $_GET['martID'] )) {

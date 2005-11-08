@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.martlanguages.php,v 1.4 2005/10/15 15:26:14 soeren_nb Exp $
+* @version $Id: french.php,v 1.11 2005/10/26 19:43:20 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -965,7 +965,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Saisir le nombre maximal de téléchargements possibles avec la même clé de téléchargement (pour une commande)';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Expiration du téléchargement';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = 'Saisir le laps de temps <b>en secondes</b> pendant lequel le fichier est disponible pour le client. 
-                  Le décompte commence après le premier téléchargement! quand le laps de temps expire, la clé de téléchargement n\'est plus valable.<br />Nota : 86400s=24h.';
+                  Le décompte commence après le premier téléchargement! Quand le laps de temps expire, la clé de téléchargement n\'est plus valable.<br />Nota : 86400s=24h.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = 'Activer le paiement via IPN PayPal ?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = 'Permet aux clients de payer via le système PayPal.';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = 'Email PayPal:';
@@ -1319,7 +1319,7 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = 'Contient';
 	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = 'Ne Contient PAS';
 	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = 'Recherche Texte Entier';
-	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = 'Tout Sélectionné';
+	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = 'Tout Sélectionner';
 	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = 'Quelques';
 	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = 'Effacer Formulaire';
 	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = 'Recherche dans une Catégorie';
@@ -1399,13 +1399,13 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS = 'Paramètres Principaux (suite)';
 	var $_PHPSHOP_ADMIN_CFG_CORE_SETTINGS = 'Paramètres Principaux';
 	var $_PHPSHOP_ADMIN_CFG_FRONTEND_FEATURES = 'Fonctionnalités de la Vitrine';
-	var $_PHPSHOP_ADMIN_CFG_TAX_CONFIGURATION = 'Configuration desTaxes';
+	var $_PHPSHOP_ADMIN_CFG_TAX_CONFIGURATION = 'Configuration des Taxes';
 	var $_PHPSHOP_PRODUCT_LIST_QUANTITY_START = 'Début Quantité';
 	var $_PHPSHOP_PRODUCT_LIST_QUANTITY_END = 'Fin Quantité';
 	var $_PHPSHOP_ADMIN_CFG_USER_REGISTRATION_SETTINGS = 'Paramètres d\'Enregistrement des Utilisateurs';
 	var $_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION = 'Enregistrement des utilisateurs autorisé?';
 	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION = 'Utiliser l\'activation des comptes?';
-	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION = 'Utiliser l\'inscription silencieuses (caché)?';
+	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION = 'Utiliser l\'inscription silencieuse (caché)?';
 	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION_TIP = 'Si activé, les clients n\'ont pas besoin de fournir un nom d\'utilisateur et mot de passe. A la place,  l\'adresse email est utilisé comme nouveau compte, et un mot de passe aléatoire est généré. Les détails de l\'inscription sont envoyés par mail au client.';
 	var $_PHPSHOP_USER_SEND_REGISTRATION_DETAILS = 'Bonjour %s,
 

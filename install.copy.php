@@ -5,78 +5,83 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 http://de3.php.net/manual/de/function.copy.php#55130
 26.07.2005
 Author: Anton Makarenko
-   makarenkoa at ukrpost dot net
-   webmaster at eufimb dot edu dot ua
+makarenkoa at ukrpost dot net
+webmaster at eufimb dot edu dot ua
 */
 function copydirr($fromDir,$toDir,$chmod=0757,$verbose=false)
 /*
-   copies everything from directory $fromDir to directory $toDir
-   and sets up files mode $chmod
+copies everything from directory $fromDir to directory $toDir
+and sets up files mode $chmod
 */
 {
-//* Check for some errors
-$errors=array();
-$messages=array();
-if (!is_writable($toDir))
-   $errors[]='target '.$toDir.' is not writable';
-if (!is_dir($toDir))
-   $errors[]='target '.$toDir.' is not a directory';
-if (!is_dir($fromDir))
-   $errors[]='source '.$fromDir.' is not a directory';
-if (!empty($errors))
-   {
-   if ($verbose)
-       foreach($errors as $err)
-           echo '<strong>Error</strong>: '.$err.'<br />';
-   return false;
-   }
-//*/
-$exceptions=array('.','..');
-//* Processing
-$handle=opendir($fromDir);
-while (false!==($item=readdir($handle)))
-   if (!in_array($item,$exceptions))
-       {
-       //* cleanup for trailing slashes in directories destinations
-       $from=str_replace('//','/',$fromDir.'/'.$item);
-       $to=str_replace('//','/',$toDir.'/'.$item);
-       //*/
-       if (is_file($from))
-           {
-           if (@copy($from,$to))
-               {
-               chmod($to,$chmod);
-               touch($to,filemtime($from)); // to track last modified time
-               $messages[]='File copied from '.$from.' to '.$to;
-               }
-           else
-               $errors[]='cannot copy file from '.$from.' to '.$to;
-           }
-       if (is_dir($from))
-           {
-           if (@mkdir($to))
-               {
-               chmod($to,$chmod);
-               $messages[]='Directory created: '.$to;
-               }
-           else
-               $errors[]='cannot create directory '.$to;
-           copydirr($from,$to,$chmod,$verbose);
-           }
-       }
-closedir($handle);
-//*/
-//* Output
-if ($verbose)
-   {
-   foreach($errors as $err)
-       echo '<strong>Error</strong>: '.$err.'<br />';
-   foreach($messages as $msg)
-       echo $msg.'<br />';
-   }
-//*/
-return true;
-} 
+	//* Check for some errors
+	$errors=array();
+	$messages=array();
+	if (!is_writable($toDir)) {
+		$errors[]='target '.$toDir.' is not writable';
+	}
+	if (!is_dir($toDir)) {
+		$errors[]='target '.$toDir.' is not a directory';
+	}
+	if (!is_dir($fromDir)) {
+		$errors[]='source '.$fromDir.' is not a directory';
+	}
+	if (!empty($errors))
+	{
+		if ($verbose) {
+			foreach($errors as $err) {
+				echo '<strong>Error</strong>: '.$err.'<br />';
+			}
+		}
+		return false;
+	}
+	//*/
+	$exceptions=array('.','..');
+	//* Processing
+	$handle=opendir($fromDir);
+	while (false!==($item=readdir($handle)))
+	if (!in_array($item,$exceptions))
+	{
+		//* cleanup for trailing slashes in directories destinations
+		$from=str_replace('//','/',$fromDir.'/'.$item);
+		$to=str_replace('//','/',$toDir.'/'.$item);
+		//*/
+		if (is_file($from))
+		{
+			if (@copy($from,$to))
+			{
+				chmod($to,$chmod);
+				touch($to,filemtime($from)); // to track last modified time
+				$messages[]='File copied from '.$from.' to '.$to;
+			}
+			else
+			$errors[]='cannot copy file from '.$from.' to '.$to;
+		}
+		if (is_dir($from))
+		{
+			if (@mkdir($to))
+			{
+				chmod($to,$chmod);
+				$messages[]='Directory created: '.$to;
+			}
+			else
+			$errors[]='cannot create directory '.$to;
+			copydirr($from,$to,$chmod,$verbose);
+		}
+	}
+	closedir($handle);
+	//*/
+	//* Output
+	if ($verbose)
+	{
+		foreach($errors as $err)
+		echo '<strong>Error</strong>: '.$err.'<br />';
+		foreach($messages as $msg)
+		echo $msg.'<br />';
+	}
+	//*/
+	return true;
+}
 /**
  * Replace file_get_contents()
  *
@@ -151,13 +156,13 @@ if (!function_exists('file_put_contents')) {
 
 		// Check what mode we are using
 		$mode = ($flags & FILE_APPEND) ?
-					$mode = 'a' :
-					$mode = 'w';
+		$mode = 'a' :
+		$mode = 'w';
 
 		// Check if we're using the include path
 		$use_inc_path = ($flags & FILE_USE_INCLUDE_PATH) ?
-					true :
-					false;
+		true :
+		false;
 
 		// Open the file for writing
 		if (($fh = @fopen($filename, $mode, $use_inc_path)) === false) {
@@ -169,8 +174,8 @@ if (!function_exists('file_put_contents')) {
 		$bytes = 0;
 		if (($bytes = @fwrite($fh, $content)) === false) {
 			$errormsg = sprintf('file_put_contents() Failed to write %d bytes to %s',
-							$length,
-							$filename);
+			$length,
+			$filename);
 			trigger_error($errormsg, E_USER_WARNING);
 			return false;
 		}
@@ -181,8 +186,8 @@ if (!function_exists('file_put_contents')) {
 		// Check all the data was written
 		if ($bytes != $length) {
 			$errormsg = sprintf('file_put_contents() Only %d of %d bytes written, possibly out of free disk space.',
-							$bytes,
-							$length);
+			$bytes,
+			$length);
 			trigger_error($errormsg, E_USER_WARNING);
 			return false;
 		}

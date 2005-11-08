@@ -92,7 +92,7 @@ echo '<script type="text/javascript" src="../components/'.$option.'/js/functions
 include( PAGEPATH.$modulename.".".$pagename.".php" );
 include_once( ADMINPATH. 'version.php' );
 
-echo '<br style="clear:both;"/><div class="smallgrey" align="center"><a href="http://virtuemart.net/index.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE.'" target="_blank">Check for latest VirtueMart version</a></div>';
+echo '<br style="clear:both;"/><div class="smallgrey" align="center"><a href="http://virtuemart.net/index.php?option=com_versions&catid=1&myVersion='.@$VMVERSION->RELEASE.'" target="_blank">Check for latest VirtueMart version</a></div>';
 
 if( DEBUG == '1' ) {
 	// Load PAGE
