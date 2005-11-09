@@ -30,7 +30,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * is called (when the script is terminated).
  *
  * PLEASE NOTE that you must create a Log_mail object using =&, like this :
- *  $logger =& Log::factory("mail", "recipient@example.com", ...)
+ *  $logger =& vmLog::factory("mail", "recipient@example.com", ...)
  *
  * This is a PEAR requirement for destructors to work properly.
  * See http://pear.php.net/manual/en/class.pear.php
@@ -42,7 +42,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example mail.php    Using the mail handler.
  */
-class Log_mail extends Log
+class Log_mail extends vmLog
 {
     /**
      * String holding the recipient's email address.
@@ -99,7 +99,7 @@ class Log_mail extends Log
         $this->_id = md5(microtime());
         $this->_recipient = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (!empty($conf['from'])) {
             $this->_from = $conf['from'];
@@ -225,7 +225,7 @@ class Log_mail extends Log
         $message = $this->_extractMessage($message);
 
         $entry = sprintf("%s %s [%s] %s\r\n", strftime('%b %d %H:%M:%S'),
-                         $this->_ident, Log::priorityToString($priority),
+                         $this->_ident, vmLog::priorityToString($priority),
                          $message);
 
         $this->_message .= $entry;

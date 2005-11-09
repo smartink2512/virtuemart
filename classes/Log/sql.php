@@ -50,7 +50,7 @@ require_once 'DB.php';
  *
  * @example sql.php     Using the SQL handler.
  */
-class Log_sql extends Log
+class Log_sql extends vmLog
 {
     /**
      * Variable containing the DSN information.
@@ -124,7 +124,7 @@ class Log_sql extends Log
     {
         $this->_id = md5(microtime());
         $this->_table = $name;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         /* If an options array was provided, use it. */
         if (isset($conf['options']) && is_array($conf['options']))

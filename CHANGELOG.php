@@ -33,6 +33,11 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+09-11-2005 soeren
+# fatal error: prices can't be deleted (ps_product_price.php, product.product_price_list.php)
+# renamed class 'Log' to 'vmLog'
+# standard shipping module not accepting valid rates onValidate
+
 08-11-2005 soeren
 # installation displays a log now
 # installation would copy files with wrong permissions on upgrade

@@ -34,7 +34,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * @since Log 1.0
  * @package Log
  */
-class Log_mcal extends Log
+class Log_mcal extends vmLog
 {
     /**
      * holding the calendar specification to connect to.
@@ -94,7 +94,7 @@ class Log_mcal extends Log
         $this->_id = md5(microtime());
         $this->_name = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
         $this->_calendar = $conf['calendar'];
         $this->_username = $conf['username'];
         $this->_password = $conf['password'];

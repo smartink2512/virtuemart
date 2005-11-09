@@ -109,7 +109,7 @@ You don't need to unpack any of the archives in this complete package!
 	Go to "Installers" => "Modules"
 	(or - if you're using Mambo - "Modules" => "Install/Uninstall"), 
 	and select the file 
-	- mod_phpshop_x.xx.tar.gz 
+	- mod_virtuemart_x.xx.tar.gz 
 	and then click 'Upload module'.
     
 4. The module is installed, but it still is not published!
@@ -153,7 +153,7 @@ You don't need to unpack any of the archives in this complete package!
          /components/com_virtuemart/shop_image/stars
          
          /administrator/components/com_virtuemart
-         - contains config files and the main phpshop-parser
+         - contains config files and the main virtuemart-parser
          
          /administrator/components/com_virtuemart/classes
          - contains all the classes (formerly the /lib/*.inc - directories)
@@ -177,7 +177,7 @@ You don't need to unpack any of the archives in this complete package!
 1. Go to "Installers" => "Components" (or "Modules")
 	( or - if you're using Mambo - "Components" ( or "Modules" ) => "Install/Uninstall"
         
-2. Now select 'VirtueMart' ( or for the module: 'mod_phpshop' )
+2. Now select 'VirtueMart' ( or for the module: 'mod_virtuemart' )
 	and click on 'Delete'.
    
     Done.

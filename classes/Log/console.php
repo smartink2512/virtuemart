@@ -33,7 +33,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example console.php     Using the console handler.
  */
-class Log_console extends Log
+class Log_console extends vmLog
 {
     /**
      * Handle to the current output stream.
@@ -98,7 +98,7 @@ class Log_console extends Log
     {
         $this->_id = md5(microtime());
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (!empty($conf['stream'])) {
             $this->_stream = $conf['stream'];

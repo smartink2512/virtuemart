@@ -37,7 +37,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example composite.php   Using the composite handler.
  */
-class Log_composite extends Log
+class Log_composite extends vmLog
 {
     /**
      * Array holding all of the Log instances to which log events should be

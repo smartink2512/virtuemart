@@ -27,7 +27,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * @version $ Revision: 1.2 $
  * @package Log
  */
-class Log_daemon extends Log
+class Log_daemon extends vmLog
 {
     /**
      * Integer holding the log facility to use.
@@ -94,7 +94,7 @@ class Log_daemon extends Log
         $this->_id = md5(microtime());
         $this->_name = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (isset($conf['ip'])) {
             $this->_ip = $conf['ip'];

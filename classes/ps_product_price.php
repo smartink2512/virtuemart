@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );  
 /**
 *
-* @version $Id: ps_product_price.php,v 1.4 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: ps_product_price.php,v 1.5 2005/10/09 13:28:07 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -166,7 +166,7 @@ class ps_product_price {
 	* Deletes one Record.
 	*/
 	function delete_record( $record_id, &$d ) {
-
+		global $db;
 		$q  = "DELETE FROM #__{vm}_product_price ";
 		$q .= "WHERE product_price_id = '$record_id' ";
 		$db->query($q);

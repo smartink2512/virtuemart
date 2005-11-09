@@ -36,7 +36,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example display.php     Using the display handler.
  */
-class Log_display extends Log
+class Log_display extends vmLog
 {
 
     /**
@@ -81,7 +81,7 @@ class Log_display extends Log
     {
         $this->_id = md5(microtime());
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (isset($conf['linebreak'])) {
             $this->_linebreak = $conf['linebreak'];

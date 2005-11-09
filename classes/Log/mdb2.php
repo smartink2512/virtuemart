@@ -48,7 +48,7 @@ MDB2::loadFile('Date');
  * @since   Log 1.9.0
  * @package Log
  */
-class Log_mdb2 extends Log
+class Log_mdb2 extends vmLog
 {
     /**
      * Variable containing the DSN information.
@@ -134,7 +134,7 @@ class Log_mdb2 extends Log
     {
         $this->_id = md5(microtime());
         $this->_table = $name;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         /* If an options array was provided, use it. */
         if (isset($conf['options']) && is_array($conf['options'])) {

@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: standard_shipping.php,v 1.10 2005/11/05 14:11:57 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.11 2005/11/07 20:22:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -239,20 +239,10 @@ class standard_shipping {
 		$rate_id = $details[4];
 
 		$totalweight = 0;
+		require_once( CLASSPATH . 'ps_shipping_method.php' );
 		for($i = 0; $i < $cart["idx"]; $i++) {
-			$q = "SELECT product_weight FROM #__{vm}_product WHERE product_id='";
-			$q .= $cart[$i]["product_id"] . "'";
-			$dbp->query($q);
-			if ($dbp->next_record()) {
-				if ($cart[$i]["quantity"] == "0"){
-					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART );
-					return False;
-				}
-				$totalweight += $cart[$i]["quantity"] * $dbp->f("product_weight");
-			} else {
-				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_EMPTY_CART );
-				return False;
-			}
+			$weight_subtotal = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
+			$totalweight += $weight_subtotal;
 		}
 
 		$dbu = new ps_DB; //DB User

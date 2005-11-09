@@ -38,7 +38,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example win.php     Using the window handler.
  */
-class Log_win extends Log
+class Log_win extends vmLog
 {
     /**
      * The name of the output window.
@@ -92,7 +92,7 @@ class Log_win extends Log
         $this->_id = md5(microtime());
         $this->_name = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (isset($conf['title'])) {
             $this->_title = $conf['title'];

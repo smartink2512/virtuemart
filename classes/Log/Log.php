@@ -22,9 +22,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @version $ Revision: 1.51 $
  * @package Log
- */
-if( !class_exists( 'Log' )) {
-	
+ */	
 
 define('PEAR_LOG_EMERG',    0);     /** System is unusable */
 define('PEAR_LOG_ALERT',    1);     /** Immediate action required */
@@ -54,7 +52,7 @@ define('PEAR_LOG_TYPE_FILE',    3); /** Append to a file */
  * @since   Horde 1.3
  * @package Log
  */
-class Log
+class vmLog
 {
     /**
      * Indicates whether or not the log can been opened / connected.
@@ -203,7 +201,7 @@ class Log
 
         $signature = serialize(array($handler, $name, $ident, $conf, $level));
         if (!isset($instances[$signature])) {
-            $instances[$signature] = &Log::factory($handler, $name, $ident,
+            $instances[$signature] = &vmLog::factory($handler, $name, $ident,
                                                    $conf, $level);
         }
 
@@ -579,7 +577,7 @@ class Log
      */
     function _isMasked($priority)
     {
-        return (Log::MASK($priority) & $this->_mask);
+        return (vmLog::MASK($priority) & $this->_mask);
     }
 
     /**
@@ -711,5 +709,4 @@ class Log
     }
 }
 
-}
 ?>

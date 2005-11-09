@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.19 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.20 2005/11/07 20:22:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1935,7 +1935,7 @@ class ps_product extends vmAbstractObject {
 					$db->query( $q );
 
 					//         $prices_table = "<table align=\"right\">
-					$prices_table = "<table>
+					$prices_table = "<table width=\"100%\">
 					  <thead><tr class=\"sectiontableheader\">
 					  <th>".$VM_LANG->_PHPSHOP_CART_QUANTITY."</th>
 					  <th>".$VM_LANG->_PHPSHOP_CART_PRICE."</th>
@@ -1944,18 +1944,18 @@ class ps_product extends vmAbstractObject {
 					$i = 1;
 					while( $db->next_record() ) {
 
-						$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>\n";
+						$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>";
 						$prices_table .= "<td>";
 						if (!empty($my_taxrate))
 						$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$db->f("product_price") );
 						else
 						$prices_table .= $CURRENCY_DISPLAY->getFullValue( $db->f("product_price") );
-						$prices_table .= "</td>\n</tr>";
+						$prices_table .= "</td></tr>";
 						$i == 1 ? $i++ : $i--;
 					}
 					$prices_table .= "</tbody></table>";
 					if( @$_REQUEST['page'] == "shop.browse" ) {
-						$html .= mm_ToolTip( mysql_escape_string($prices_table) );
+						$html .= mm_ToolTip( $prices_table );
 					}
 					else
 					$html .= $prices_table;

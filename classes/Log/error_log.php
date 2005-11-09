@@ -33,7 +33,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example error_log.php   Using the error_log handler.
  */
-class Log_error_log extends Log
+class Log_error_log extends vmLog
 {
     /**
      * The error_log() log type.
@@ -72,7 +72,7 @@ class Log_error_log extends Log
         $this->_id = md5(microtime());
         $this->_type = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (!empty($conf['destination'])) {
             $this->_destination = $conf['destination'];

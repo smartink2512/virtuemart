@@ -34,7 +34,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example file.php    Using the file handler.
  */
-class Log_file extends Log
+class Log_file extends vmLog
 {
     /**
      * String containing the name of the log file.
@@ -130,7 +130,7 @@ class Log_file extends Log
         $this->_id = md5(microtime());
         $this->_filename = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (isset($conf['append'])) {
             $this->_append = $conf['append'];

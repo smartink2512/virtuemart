@@ -57,7 +57,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example sqlite.php      Using the Sqlite handler.
  */
-class Log_sqlite extends Log
+class Log_sqlite extends vmLog
 {
     /**
      * Array containing the connection defaults
@@ -105,7 +105,7 @@ class Log_sqlite extends Log
         $this->_id = md5(microtime());
         $this->_table = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
 
         if (is_array($conf)) {
             foreach ($conf as $k => $opt) {

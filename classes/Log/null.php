@@ -33,7 +33,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example null.php    Using the null handler.
  */
-class Log_null extends Log
+class Log_null extends vmLog
 {
     /**
      * Constructs a new Log_null object.
@@ -49,7 +49,7 @@ class Log_null extends Log
     {
         $this->_id = md5(microtime());
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
     }
 
     /**

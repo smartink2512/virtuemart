@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.filemanager.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: product.filemanager.php,v 1.5 2005/10/18 05:16:51 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -118,7 +118,8 @@ while ($db->next_record()) {
 	
 	unset( $downloadable );
     
-	$listObj->addCell( $files->files );
+	$tmp_cell = empty($files->files) ? "0" : $files->files; 
+	$listObj->addCell( $tmp_cell );
 	
 	if ($db->f("product_publish")=="N") { 
 		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/publish_x.png" border="0" alt="Publish" />';

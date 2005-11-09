@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_attribute.php,v 1.5 2005/10/10 18:49:06 soeren_nb Exp $
+* @version $Id: ps_product_attribute.php,v 1.6 2005/10/17 19:05:29 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -238,7 +238,7 @@ class ps_product_attribute {
 				$html .= $db->f("product_name") . " - ";
 
 				// For each child get attribute values by looping through attribute list
-				$q = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
+				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku ";
 				$q .= "WHERE product_id='$product_id' ORDER BY attribute_list ASC";
 				$db_sku->setQuery($q);  $db_sku->query();
 
@@ -288,7 +288,7 @@ class ps_product_attribute {
 		$db = new ps_DB;
 		$auth = $_SESSION['auth'];
 		
-		$q = "SELECT attribute FROM #__{vm}_product WHERE product_id='$product_id'";
+		$q = "SELECT product_id, attribute FROM #__{vm}_product WHERE product_id='$product_id'";
 		$db->query($q);
 		$db->next_record();
 
@@ -350,7 +350,7 @@ class ps_product_attribute {
 		global $mosConfig_secret;
 		$db = new ps_DB;
 
-		$q = "SELECT custom_attribute from #__{vm}_product WHERE product_id='$product_id'";
+		$q = "SELECT product_id, custom_attribute from #__{vm}_product WHERE product_id='$product_id'";
 		$db->query($q);
 		$db->next_record();
 
@@ -392,7 +392,7 @@ class ps_product_attribute {
 		//get listing of titles for attributes (Sean Tobin)
 		$attributes = array();
 		
-		$q = "SELECT attribute, custom_attribute FROM #__{vm}_product WHERE product_id='".$d["product_id"]."'";
+		$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='".$d["product_id"]."'";
 		$db->query($q);
 		$db->next_record();
 		$advanced_attribute_list=$db->f("attribute");

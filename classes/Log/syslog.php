@@ -36,7 +36,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  * @example syslog.php      Using the syslog handler.
  */
-class Log_syslog extends Log
+class Log_syslog extends vmLog
 {
     /**
     * Integer holding the log facility to use.
@@ -65,7 +65,7 @@ class Log_syslog extends Log
         $this->_id = md5(microtime());
         $this->_name = $name;
         $this->_ident = $ident;
-        $this->_mask = Log::UPTO($level);
+        $this->_mask = vmLog::UPTO($level);
     }
 
     /**
