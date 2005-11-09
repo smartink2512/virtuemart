@@ -177,7 +177,7 @@ if ( $show_login_form == "yes" ) {
 			<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="yes" name="remember" />
-			<input type="hidden" value="<?php $mm_action_url . "index.php?". $_SERVER['QUERY_STRING'] ?>" name="return" />
+			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $_SERVER['QUERY_STRING']); ?>" name="return" />
 		  <br/>
 			<input type="submit" value="<?php echo _BUTTON_LOGIN ?>" class="button" name="Login" />
 			</form>
