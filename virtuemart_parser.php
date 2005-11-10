@@ -90,7 +90,7 @@ if( !defined( 'CLASSPATH' )) {
 	 * See http://pear.php.net/package/Log
 	 * @global Log vmLogger
 	 */
-	$GLOBALS['vmLogger'] = $vmLogger = &Log::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
+	$GLOBALS['vmLogger'] = $vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
 	
 	// Instantiate the DB class
 	$db = new ps_DB();

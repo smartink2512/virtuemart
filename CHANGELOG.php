@@ -33,6 +33,9 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+10-11-2005 schirmer
+# renamed 'Log' to 'vmLog' in virtuemart_parser.php
+
 09-11-2005 soeren
 # fatal error: prices can't be deleted (ps_product_price.php, product.product_price_list.php)
 # renamed class 'Log' to 'vmLog'
