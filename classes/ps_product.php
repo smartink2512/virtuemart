@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.20 2005/11/07 20:22:06 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.21 2005/11/09 20:55:04 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -2076,7 +2076,7 @@ class ps_product extends vmAbstractObject {
 				// Show price, but without "including X% tax"
 				$html .= $this->show_price( $db->f("product_id"), true );
 			}
-			if (USE_AS_CATALOGUE != 1 && $show_addtocart) {
+			if (USE_AS_CATALOGUE != 1 && $show_addtocart && !strstr( $html, $VM_LANG->_PHPSHOP_PRODUCT_CALL)) {
 				$html .= "<br />\n";
 				$url = "?page=shop.cart&func=cartAdd&product_id=" .  $db->f("product_id");
 				$html .= "<a title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO.": ".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url . $url)."\">".$VM_LANG->_PHPSHOP_CART_ADD_TO."</a><br />\n";
