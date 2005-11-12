@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_order.php,v 1.9 2005/11/04 15:16:48 soeren_nb Exp $
+* @version $Id: ps_order.php,v 1.10 2005/11/05 14:11:56 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -479,10 +479,10 @@ class ps_order {
 		$db->query( $list );
 		
 		$listObj = new listFactory( $pageNav );	
-		
-		// print out the search field and a list heading
-		$listObj->writeSearchHeader( '', '', 'account', 'index');
-
+		if( $db->f('num_rows') > 0 ) {
+			// print out the search field and a list heading
+			$listObj->writeSearchHeader( '', '', 'account', 'index');
+		}
 		// start the list table
 		$listObj->startTable();
 
@@ -509,7 +509,9 @@ class ps_order {
 		}
 		$listObj->writeTable();
 		$listObj->endTable();
-		$listObj->writeFooter( $keyword );
+		if( $db->f('num_rows') > 0 ) {
+			$listObj->writeFooter( $keyword );
+		}
 		
 	}
 

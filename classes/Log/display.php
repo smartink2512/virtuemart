@@ -191,7 +191,8 @@ class Log_display extends vmLog
 		}
 		$this->_count = 0;
 		$this->_messages = array();
-		
-		echo $output .  $this->_linebreak;
+		if( $output ) {
+			echo $output .  $this->_linebreak;
+		}
 	}
 }

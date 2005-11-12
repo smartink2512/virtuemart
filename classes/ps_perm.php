@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_perm.php,v 1.8 2005/10/18 18:45:35 soeren_nb Exp $
+* @version $Id: ps_perm.php,v 1.9 2005/11/07 20:22:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -207,9 +207,9 @@ class ps_perm {
 	 * @return boolean
 	 */
 	function is_registered_customer($user_id) {
-		global $auth, $page, $func;
-
-		if( @is_bool( $auth["is_registered_customer"]) && ($page!="checkout.index" && $func!="shopperupdate")) {
+		global $page, $func, $auth;
+		
+		if( @is_bool( $auth["is_registered_customer"]) && ($page!="checkout.index" && strtolower($func)!="shopperupdate")) {
 			return $auth["is_registered_customer"];
 		}
 		else {

@@ -23,7 +23,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 $option = mosGetParam( $_REQUEST, 'option' );
 
-if( !defined( 'CLASSPATH' )) {
+if( !defined( '_VM_PARSER_LOADED' )) {
 	global $my;
 	
 	$page = mosgetparam($_REQUEST, 'page', "");
@@ -285,5 +285,6 @@ if( !defined( 'CLASSPATH' )) {
 	// Now we can switch to implicit flushing
 	$vmLogger->_buffering = false;
 	
+	define( '_VM_PARSER_LOADED', 1 );
 }
 ?>

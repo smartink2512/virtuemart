@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php,v 1.16 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: htmlTools.class.php,v 1.17 2005/11/04 15:16:48 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -540,7 +540,12 @@ function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/im
 	
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
-	$tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES);
+	if( function_exists('mysql_real_escape_string')) {
+		$tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES);
+	}
+	else {
+		$tooltip = htmlentities( mysql_escape_string($tooltip), ENT_QUOTES);
+	}
 	
 	if ( !empty($width) ) {
 		$width = 'this.T_WIDTH=\''.$width .'\';';

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: basket.php,v 1.5 2005/11/01 18:39:46 soeren_nb Exp $
+* @version $Id: basket.php,v 1.6 2005/11/05 14:11:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -126,16 +126,16 @@ else {
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
         <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
-        <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  value=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
+        <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  alt=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
       </form>";
-		$product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" />
+		$product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" >
         <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
         <input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
         <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
         <input type=\"hidden\" name=\"func\" value=\"cartDelete\" />
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
-      <input type=\"image\" name=\"delete\" title=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" src=\"". IMAGEURL ."ps_image/delete_f2.gif\" border=\"0\" value=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" />
+      <input type=\"image\" name=\"delete\" title=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" src=\"". IMAGEURL ."ps_image/delete_f2.gif\" border=\"0\" alt=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" />
       </form>";
 	} // End of for loop through the Cart
 

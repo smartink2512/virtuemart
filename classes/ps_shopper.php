@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_shopper.php,v 1.10 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: ps_shopper.php,v 1.11 2005/11/07 20:22:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -411,7 +411,7 @@ class ps_shopper {
 		}
 		
 		require_once(CLASSPATH. 'ps_user.php' );
-		$_POST['username'] = $my->username;
+		$_POST['username'] = $d['username'];
 		$_POST['name'] = $d['first_name']." ". $d['last_name'];
 		$_POST['id'] = $auth["user_id"];
 		$_POST['gid'] = $my->gid;

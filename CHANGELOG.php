@@ -33,6 +33,11 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+12-11-2005 soeren
+
+# users couldn't rename their username in account maintenance (ps_shopper.php)
+# small notices in ps_checkout.php
+
 10-11-2005 schirmer
 # renamed 'Log' to 'vmLog' in virtuemart_parser.php
 
@@ -40,6 +45,8 @@ VirtueMart 1.0
 # fatal error: prices can't be deleted (ps_product_price.php, product.product_price_list.php)
 # renamed class 'Log' to 'vmLog'
 # standard shipping module not accepting valid rates onValidate
+
+---- 1.0.0 RC3 released ----
 
 08-11-2005 soeren
 # installation displays a log now

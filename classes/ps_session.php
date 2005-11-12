@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_session.php,v 1.13 2005/11/04 15:16:48 soeren_nb Exp $
+* @version $Id: ps_session.php,v 1.14 2005/11/08 19:21:01 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -42,9 +42,20 @@ class ps_session {
 	function initSession() {
 		global $vmLogger, $mainframe;
 		if( empty($_SESSION)) {
-			//Session not yet started!";
+			// Session not yet started!";
+			// Set the virtuemart cookie, using the md5 hash of the recent mambo/joomla session
 			if( empty($_COOKIE[$this->_session_name])) {
 				$_COOKIE[$this->_session_name] = md5($mainframe->_session->session_id);
+			}
+			// Set the sessioncookie if its missing
+			// this is needed for joomla sites only
+			$sessionCookieName = md5( 'site'.$GLOBALS['mosConfig_live_site'] );
+			$sessioncookie 	= mosGetParam( $_COOKIE, $sessionCookieName, null );
+			if( empty($_COOKIE['sessioncookie'])) {
+				$_COOKIE['sessioncookie'] = $sessioncookie;
+			}
+			elseif( $_COOKIE['sessioncookie'] != $sessioncookie ) {			
+				$_COOKIE['sessioncookie'] = $sessioncookie;
 			}
 			
 			session_name( $this->_session_name );
@@ -114,7 +125,6 @@ class ps_session {
 				}
 				else {
 					$sessionCookieName = 'sessioncookie';
-					
 				}
 				if( !empty($my->id)) {
 					// User is already logged in

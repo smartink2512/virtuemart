@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.16 2005/11/05 14:11:56 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.17 2005/11/08 19:27:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -842,9 +842,9 @@ Order Total: '.$order_total.'
 		/**
 	    * Insert the Order payment info 
 	    */
-		$payment_number = ereg_replace(" |-", "", $_SESSION['ccdata']['order_payment_number']);
+		$payment_number = ereg_replace(" |-", "", @$_SESSION['ccdata']['order_payment_number']);
 
-		$d["order_payment_code"] = $_SESSION['ccdata']['credit_card_code'];
+		$d["order_payment_code"] = @$_SESSION['ccdata']['credit_card_code'];
 
 		// Payment number is encrypted using mySQL ENCODE function.
 		$q = "INSERT INTO #__{vm}_order_payment ";
@@ -1218,10 +1218,12 @@ Order Total: '.$order_total.'
 				}
 
 				if( !empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ) ) {
-					if( $total > 0 )
-					$factor = $order_taxable / $total;
-					else
-					$factor = 1;
+					if( $total > 0 ) {
+						$factor = $order_taxable / $total;
+					}
+					else {
+						$factor = 1;
+					}
 					$order_tax = $order_tax * $factor;
 				}
 

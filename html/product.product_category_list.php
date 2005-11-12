@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_category_list.php,v 1.5 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: product.product_category_list.php,v 1.6 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -33,7 +33,7 @@ $html = "";
 /** FIRST STEP
 * Order the Category Array and build a Tree of it
 **/
-$nrows = $num_rows = count( $category_tmp );
+$nrows = $num_rows = @count( $category_tmp );
     
 $id_list = Array();
 $row_list = Array();

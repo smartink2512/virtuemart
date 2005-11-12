@@ -82,7 +82,7 @@ function botSearchVM( $text, $phrase='', $ordering='' ) {
                . "\n    FROM_UNIXTIME( cdate, '%Y-%m-%d %H:%i:%s'  ) AS created," 
                . "\n    product_s_desc AS text,"
                . "\n    '$ItemName' as section,"
-               . "\n    CONCAT('index.php?option=com_phpshop&page=shop.product_details&flypage=shop.flypage&product_id=', product_id, '&Itemid=".$Itemid."' ) as href,"
+               . "\n    CONCAT('index.php?option=com_virtuemart&page=shop.product_details&flypage=shop.flypage&product_id=', product_id, '&Itemid=".$Itemid."' ) as href,"
                . "\n    '2' as browsernav"
                . "\n FROM #__vm_product"
                . "\n WHERE $where"
