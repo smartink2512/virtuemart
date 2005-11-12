@@ -89,7 +89,8 @@ require_once( CLASSPATH. "ps_product_category.php" );
 	// what is the ID of this node?
 	$baseid = $db->f("category_parent_id");
 	// create the link (if not a menu item, no link [could be: to entry page of site])
-	$baselink = ( $base == "first") ? $sess->url( $_SERVER['PHP_SELF'] ) : "";
+	$baselink = ( $base == "first") ? $sess->url( $mm_action_url.'index.php?page='.HOMEPAGE ) : "";
+
 	// remember which item is open, normally $Itemid
 	// except when we want the first item (e.g. Home) to be the base;
 	// in that case we have to pretend all remaining items belong to "Home"
@@ -115,7 +116,7 @@ require_once( CLASSPATH. "ps_product_category.php" );
 	
 		// get name and link (just to save space in the code later on)
 		$name = $db->f("category_name", false). ps_product_category::products_in_category( $db->f("category_id") );
-		$url = sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("category_id").'&Itemid='.$Itemid);
+		$url = $sess->url($mm_action_url."index.php?page=shop.browse&category_id=".$db->f("category_id"));
 		$menu_htmlcode .= "$tree.add(\"".$db->f("category_id")."\",\"".$db->f("category_parent_id")."\",\"$name\",\"$url\",\"\",\"$target\");\n";
 	  
 		// if this node is the selected node
