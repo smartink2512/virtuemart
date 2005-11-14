@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.9 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.10 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -342,7 +342,9 @@ $template = str_replace( "{file_list}", $file_list, $template );
 $template = str_replace( "{edit_link}", $edit_link, $template );
 $template = str_replace( "{manufacturer_link}", $manufacturer_link, $template );
 $template = str_replace( "{product_price}", $product_price, $template );
+$template = str_replace( "{product_s_desc}", $db_product->f("product_s_desc"), $template );
 $template = str_replace( "{product_description}", $product_description, $template );
+$template = str_replace( "{product_weight}", $db_product->f("product_weight"), $template );
 $template = str_replace( "{product_sku}", $db_product->f("product_sku"), $template );
 $template = str_replace( "{addtocart}", $addtocart, $template );
 $template = str_replace( "{product_reviews}", $product_reviews, $template );

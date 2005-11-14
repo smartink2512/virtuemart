@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_csv.php,v 1.4 2005/10/15 09:17:59 soeren_nb Exp $
+* @version $Id: ps_csv.php,v 1.5 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -502,11 +502,12 @@ class ps_csv {
 		$allowed_mime_types_arr = array(0 => 'text/html'
                                         ,1 => 'text/plain'
                                         ,2 => 'application/octet-stream'
-                                        ,3 => 'application/vnd.ms-excel'
-                                        ,4 => 'application/force-download'
-                                        ,5 => 'text/comma-separated-values'
-                                        ,6 => 'text/x-csv'
-                                        ,7 => 'text/x-comma-separated-values'
+                                        ,3 => 'application/x-octet-stream'
+                                        ,4 => 'application/vnd.ms-excel'
+                                        ,5 => 'application/force-download'
+                                        ,6 => 'text/comma-separated-values'
+                                        ,7 => 'text/x-csv'
+                                        ,8 => 'text/x-comma-separated-values'
                                         // add more here if needed
     );
 		

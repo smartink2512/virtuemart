@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_list.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: order.order_list.php,v 1.5 2005/11/05 14:11:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -79,7 +79,7 @@ while ($navi_db->next_record()) {  ?>
 } 
 ?>
     <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=$modulename.order_list&show=")?>"><b>
-    <?php echo $VM_LANG->_PHPSHOP_LIST." ".$VM_LANG->_PHPSHOP_ALL ?></b></a>
+    <?php echo $VM_LANG->_PHPSHOP_ALL ?></b></a>
 </div>
 <br />
 <?php 
