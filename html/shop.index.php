@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: shop.index.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: shop.index.php,v 1.4 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -50,7 +50,7 @@ $cellwidth = intval( 100 / $categories_per_row );
         }
 		$catname = shopMakeHtmlSafe($db->f("category_name"))
       ?> 
-        <td align="center" width="<?php echo $cellwidth ?>%" valign="top">
+        <td style="text-align:center;" width="<?php echo $cellwidth ?>%" valign="top">
           <a title="<?php echo $catname ?>" href="<?php echo $sess->url(URL."index.php?option=com_virtuemart&amp;page=shop.browse&amp;category_id=".$db->f("category_id")); ?>"> 
           <?php 
           if ($db->f("category_thumb_image")) {

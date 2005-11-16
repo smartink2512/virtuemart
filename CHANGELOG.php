@@ -33,9 +33,22 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+16-11-2005 soeren
+
+^ splitted up and renamed "/sql/virtuemart.installation.mysql.sql"
+	into "/sql/virtuemart.installation.joomla.sql"
+	and "/sql/virtuemart.installation.mambo.sql"
+	for those users WHO DON'T EVEN LOOK INTO THE FILE THEY ARE UPLOADING IN PHPMYADMIN.
+	
+^ updated the INSTALLATION.php to be able to distribute a "Manual Installation" package,
+	where it is added to as "README.txt"
+# authorize.net not getting the correct billto address
+^ improved the debug and error message reporting in authorize.net payment module
+
 16-11-2005 schirmer
 # switched to vmLogger in payment and shipping modules
 # switched to new user_info table in payment and shipping modules
+
 
 15-11-2005 soeren
 # fixed a small bug in the ps_shopper.php

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>VirtueMart Module</name>
+    <name>Product Categories Module</name>
     <creationDate>15.11.2005</creationDate>
     <author>Soeren Eberhardt</author>
     <copyright>VirtueMart is released under GNU/GPLicense</copyright>

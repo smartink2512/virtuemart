@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * The ps_authorize class, containing the payment processing code
 *  for transactions with authorize.net 
 *
-* @version $Id: ps_authorize.php,v 1.4 2005/10/17 19:05:29 soeren_nb Exp $
+* @version $Id: ps_authorize.php,v 1.6 2005/11/16 14:43:32 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -228,13 +228,15 @@ class ps_authorize {
         $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
-            $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
+            $vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR.'. Technical Note: The required transaction key is empty! The payment method settings must be reviewed.' );
             return false;
         }
         
         // Get user billing information
         $dbbt = new ps_DB;
-        $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
+
+        $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id=".$auth["user_id"]." AND address_type='BT'";
+
         $dbbt->query($qt);
         $dbbt->next_record();
         $user_info_id = $dbbt->f("user_info_id");
@@ -330,7 +332,9 @@ class ps_authorize {
         $poststring = substr($poststring, 0, -1);
         
         if( function_exists( "curl_init" )) {
-        
+        	
+        	$vmLogger->debug( 'Using the cURL library for communicating with '.$host );
+        	
             $CR = curl_init();
             curl_setopt($CR, CURLOPT_URL, "https://".$host.$path);
             curl_setopt($CR, CURLOPT_POST, 1);
@@ -347,7 +351,7 @@ class ps_authorize {
             
             $error = curl_error( $CR );
             if( !empty( $error )) {
-              echo curl_error( $CR );
+              $vmLogger->err( $error );
               $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
               return false;
             }
@@ -357,14 +361,16 @@ class ps_authorize {
             curl_close( $CR );
         }
         else {
-        
+        	$vmLogger->debug( 'Starting communication with '.$host.' without cURL library.');
+        	
             $fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
             if(!$fp){
                 //error tell us
-                echo "$errstr ($errno)\n";
+                $vmLogger->err( "Possible server error! - $errstr ($errno)\n" );
             }
             else {
-    
+    			$vmLogger->debug( 'Connection opened to '.$host.', now posting the variables.');
+    			
                 //send the server request
                 fputs($fp, "POST $path HTTP/1.1\r\n");
                 fputs($fp, "Host: $host\r\n");
@@ -380,8 +386,8 @@ class ps_authorize {
                 }
                 // If didnt get content-lenght, something is wrong, return false.
                 if (!stristr($str, 'content-length')) {
-                   return false;
-                
+                	$vmLogger->err('An error occured while communicating with the authorize.net server. It didn\'t reply (correctly). Please try again later, thank you.' );
+  					return false;
                 }
                 $data = "";
                 while (!feof($fp)) {
@@ -400,11 +406,16 @@ class ps_authorize {
           }
         }
         $response = explode("|", $result);
-
+		
+        $vmLogger->debug('Beginning to analyse the response from '.$host);
+		
         // Approved - Success!
         if ($response[0] == '1') {
            $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
            $d["order_payment_log"] .= $response[3];
+           
+           $vmLogger->debug( $d['order_payment_log']);
+           
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];
 
@@ -412,7 +423,9 @@ class ps_authorize {
         } 
         // Payment Declined
         elseif ($response[0] == '2') {
-           $vmLogger->err($response[3]);
+
+           $vmLogger->err( $response[3] );
+
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];
@@ -420,7 +433,9 @@ class ps_authorize {
         }
         // Transaction Error
         elseif ($response[0] == '3') {
-           $vmLogger->err($response[3]);
+
+           $vmLogger->err( $response[3] );
+
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];

@@ -39,10 +39,10 @@ Community Home: http://virtuemart.net
 Package Contents:
 ##########################
 
- * 1 Component (com_virtuemart_1.0.0.tar.gz)
+ * 1 Component (com_virtuemart_1.0.0-final.tar.gz)
    INSTALLATION REQUIRED!
    
- * 1 Main module (mod_virtuemart_1.0.0.tar.gz)
+ * 1 Main module (mod_virtuemart_1.0.0-final.tar.gz)
    INSTALLATION REQUIRED!
    
  * 8 additional Modules

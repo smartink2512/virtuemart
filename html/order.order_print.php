@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_print.php,v 1.7 2005/11/02 20:06:59 soeren_nb Exp $
+* @version $Id: order.order_print.php,v 1.8 2005/11/16 06:59:04 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -506,7 +506,7 @@ else {
 				// DECODE Account Number
 				$dbaccount =& new ps_DB;
 			    $q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') 
-					AS account_number FROM #__{vm}_order_payment  
+					AS account_number, order_payment_code FROM #__{vm}_order_payment  
 					WHERE order_id='".$order_id."'";
 				$dbaccount->query($q);
 				$dbaccount->next_record();
@@ -523,7 +523,12 @@ else {
 				  <tr> 
 					<td width="13%"><?php $dbpm->p("payment_method_name");?> </td>
 					<td width="40%"><?php $dbpm->p("order_payment_name");?></td>
-					<td width="30%"><?php echo ps_checkout::asterisk_pad( $dbaccount->f("account_number"), 4, true );?></td>
+					<td width="30%"><?php 
+					echo ps_checkout::asterisk_pad( $dbaccount->f("account_number"), 4, true );
+					if( $dbaccount->f('order_payment_code')) {
+						echo '<br/>(CVV Code: '.$dbaccount->f('order_payment_code').') ';
+					}
+					?></td>
 					<td width="17%"><?php echo date("M-Y", $dbpm->f("order_payment_expire")); ?></td>
 				  </tr>
 				  <tr> 

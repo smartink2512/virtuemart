@@ -72,11 +72,17 @@ if($db->num_rows() > 0) { ?>
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <?php
 
-      srand ((double) microtime() * 10000000);
-      if (sizeof($prodlist)>1)
-          $rand_prods = array_rand ($prodlist, $max_items);
-      else
-          $rand_prods = rand (4545.3545, $max_items);
+	srand ((double) microtime() * 10000000);
+	if (sizeof($prodlist)>1) {
+		// enable smaller product list than max products
+		if (sizeof($prodlist) < $max_items) {
+			$max_items = sizeof($prodlist);
+			// end of fix
+			$rand_prods = array_rand ($prodlist, $max_items);
+		}
+		else {
+			$rand_prods = rand (4545.3545, $max_items);
+		}
           
       if ($max_items==1) { ?>
         <tr align="center" class="sectiontableentry1">
