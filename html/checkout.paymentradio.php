@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: checkout.paymentradio.php,v 1.5 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: checkout.paymentradio.php,v 1.6 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -117,13 +117,14 @@ if ($cc_payments==true) {
 		        <input type="text" class="inputbox" id="order_payment_number" name="order_payment_number" value="<?php if(!empty($_SESSION['ccdata']['order_payment_number'])) echo $_SESSION['ccdata']['order_payment_number'] ?>" />
 		        </td>
 		    </tr>
-		<?php if( $require_cvv_code == "YES" ) { ?>
+		<?php if( $require_cvv_code == "YES" ) { 
+					$_SESSION['ccdata']['need_card_code'] = 1;	
+			?>
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
 		        	<label for="credit_card_code">Credit Card Security Code:</label></td>
 		        <td>
 		            <input type="text" class="inputbox" id="credit_card_code" name="credit_card_code" value="<?php if(!empty($_SESSION['ccdata']['credit_card_code'])) echo $_SESSION['ccdata']['credit_card_code'] ?>" />
-		            <input type="hidden" class="inputbox" name="need_card_code" value="1" />
 		        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP); ?>
 		        </td>
 		    </tr>

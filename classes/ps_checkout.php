@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.17 2005/11/08 19:27:14 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.18 2005/11/12 08:32:07 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -268,7 +268,7 @@ class ps_checkout {
 		($dbp->f("enable_processor") == "")) {
 
 			/*** Creditcard ***/
-			if (empty( $d["creditcard_code"]) ) {
+			if (empty( $_SESSION['ccdata']['creditcard_code']) ) {
 				$vmLogger->err( "Credit Card Type not found." );
 				return false;
 			}
@@ -287,7 +287,7 @@ class ps_checkout {
 
 			/** CREDIT CARD NUMBER CHECK
         ** USING THE CREDIT CARD CLASS in ps_payment **/
-			if(!$ps_payment_method->validate_payment( $d["creditcard_code"], $_SESSION['ccdata']['order_payment_number'])) {
+			if(!$ps_payment_method->validate_payment( $_SESSION['ccdata']['creditcard_code'], $_SESSION['ccdata']['order_payment_number'])) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE );
 				return False;
 			}
@@ -299,7 +299,7 @@ class ps_checkout {
 					return False;
 				}
 			}
-			if(!empty($d['need_card_code']) && empty($d['credit_card_code'])) {
+			if(!empty($_SESSION['ccdata']['need_card_code']) && empty($_SESSION['ccdata']['credit_card_code'])) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CUSTOMER_CVV2_ERROR );
 				return False;
 			}
@@ -321,7 +321,7 @@ class ps_checkout {
 			return True;
 		}
 		elseif ($dbp->f("enable_processor") == "B") {
-			$_REQUEST['creditcard_code'] = "";
+			$_SESSION['ccdata']['creditcard_code'] = "";
 			// Bankeinzug
 			$dbu = new ps_DB; //DB User
 			$q  = "SELECT bank_account_holder,bank_iban,bank_account_nr,bank_sort_code,bank_name FROM #__{vm}_user_info WHERE user_id = '" . $d["user_id"] . "'";
@@ -352,11 +352,10 @@ class ps_checkout {
 					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME );
 					return False;
 				}
-				$d["creditcard_code"] = "";
 			}
 		}
 		else {
-			$_REQUEST['creditcard_code'] = "";
+			$_SESSION['ccdata']['creditcard_code'] = '';
 		}
 		// Enter additional Payment check procedures here if neccessary
 
@@ -450,7 +449,7 @@ class ps_checkout {
 				$_SESSION['ccdata']['order_payment_number'] = @$d['order_payment_number'];
 				$_SESSION['ccdata']['order_payment_expire_month'] = @$d['order_payment_expire_month'];
 				$_SESSION['ccdata']['order_payment_expire_year'] = @$d['order_payment_expire_year'];
-				// 3-digit Security Code
+				// 3-digit Security Code (CVV)
 				$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
 	
 				if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: order.order_print.php,v 1.6 2005/10/18 19:12:44 soeren_nb Exp $
+* @version $Id: order.order_print.php,v 1.7 2005/11/02 20:06:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -295,7 +295,7 @@ else {
 			  <?php
 			  $dbt = new ps_DB;
 			  $qt  = "SELECT product_quantity,order_item_name,order_item_sku,product_id,product_item_price,product_final_price, product_attribute
-						FROM #__{vm}_order_item 
+						FROM `#__{vm}_order_item`
 						WHERE #__{vm}_order_item.order_id='$order_id' ";
 			  $dbt->query($qt);
 			  $i = 0;

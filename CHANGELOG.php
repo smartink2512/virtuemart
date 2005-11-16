@@ -33,6 +33,11 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+15-11-2005 soeren
+# fixed a small bug in the ps_shopper.php
++ new: bulgarian language file
+# "Credit Card type not found" error would prevent checkout.
+
 12-11-2005 soeren
 
 # users couldn't rename their username in account maintenance (ps_shopper.php)

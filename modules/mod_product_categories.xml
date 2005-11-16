@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
     <name>VirtueMart Module</name>
-    <creationDate>05.04.2005</creationDate>
+    <creationDate>15.11.2005</creationDate>
     <author>Soeren Eberhardt</author>
     <copyright>VirtueMart is released under GNU/GPLicense</copyright>
     <authorEmail>soeren@virtuemart.net</authorEmail>
@@ -30,5 +30,9 @@
       </param>
       <param name="jscookTree_style" type="text" default="ThemeXP" label="JSCookTree Style" description="The Style for the JSCookTree. Only fill in when you have selected JSCookTree as Display Style" />
       <param name="root_label" type="text" default="Shop" label="Label of the dTree Root" description="Whatever you fill in here: it will be displayed in the root of the dTree." />
+	  
+    <param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+    <param name="class_sfx" type="text" default="" label="Menu Class Suffix" description="A suffix to be applied to the css class of the menu items" />
     </params>
+
 </mosinstall>
