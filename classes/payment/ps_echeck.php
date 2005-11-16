@@ -166,7 +166,7 @@ class ps_echeck {
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         
-        global $vendor_mail, $vendor_currency, $VM_LAN;
+        global $vendor_mail, $vendor_currency, $VM_LAN, $vmLogger;
         $database = new ps_DB();
       
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -180,13 +180,13 @@ class ps_echeck {
         $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
-            $d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR;
+            $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
             return false;
         }
         
         // Get user billing information
         $dbbt = new ps_DB;
-        $qt = "SELECT * FROM #__users WHERE id='".$auth["user_id"]."' AND address_type='BT'";
+        $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
         $user_info_id = $dbbt->f("user_info_id");
@@ -295,7 +295,7 @@ class ps_echeck {
             
             $error = curl_error( $CR );
             if( !empty( $error )) {
-              echo curl_error( $CR );
+              $vmLogger->err( curl_error( $CR ) );
               $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
               return false;
             }
@@ -309,7 +309,7 @@ class ps_echeck {
             $fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
             if(!$fp){
                 //error tell us
-                echo "$errstr ($errno)\n";
+                $vmLogger->err( "$errstr ($errno)" );
             }
             else {
     
@@ -357,13 +357,13 @@ class ps_echeck {
         } 
         // Payment Declined
         elseif ($response[0] == '2') {
-           $d["error"] = $response[3];
+           $vmLogger->err($response[3]);
            $d["order_payment_log"] = $response[3];
            return False;
         }
         // Transaction Error
         elseif ($response[0] == '3') {
-           $d["error"] = $response[3];
+           $vmLogger->err($response[3]);
            $d["order_payment_log"] = $response[3];
            return False;
         }

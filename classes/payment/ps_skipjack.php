@@ -216,7 +216,7 @@ class ps_skipjack {
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         
-        global $vendor_mail, $vendor_currency, $VM_LANG, $database;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $vmLogger;
       
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
         $auth = $_SESSION['auth'];
@@ -227,7 +227,7 @@ class ps_skipjack {
         
         // Get user billing information
         $dbbt = new ps_DB;
-        $qt = "SELECT * FROM #__users WHERE id='".$auth["user_id"]."' AND address_type='BT'";
+        $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
         $user_info_id = $dbbt->f("user_info_id");
@@ -273,11 +273,11 @@ class ps_skipjack {
             'Ordernumber' => $order_number,
             'Accountnumber' => $_SESSION['ccdata']['order_payment_number'],
             'Month' => ($_SESSION['ccdata']['order_payment_expire_month']),
-	    'Year' => ($_SESSION['ccdata']['order_payment_expire_year']),
+	        'Year' => ($_SESSION['ccdata']['order_payment_expire_year']),
             'Serialnumber' => SKJ_SERIAL,
             'Transactionamount' => $order_total,
-	    //FIXME - Needs order details to be compliant
-	    'Orderstring' => "1~1~0.00~1~N~||",
+	        //FIXME - Needs order details to be compliant
+	        'Orderstring' => "1~1~0.00~1~N~||",
             'Shiptophone' => $phone,
             
             // Customer Shipping Address
@@ -322,7 +322,7 @@ class ps_skipjack {
             
             $error = curl_error( $CR );
             if( !empty( $error )) {
-              echo "curl error: ".curl_error( $CR );
+              $vmLogger->err( "curl error: ".curl_error( $CR ) );
               $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." Skipjack.com</span>";
               return false;
             }
@@ -336,7 +336,7 @@ class ps_skipjack {
             $fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
             if(!$fp){
                 //error tell us
-                echo "$errstr ($errno)\n";
+                $vmLogger->err( "$errstr ($errno)" );
             }
             else {
     
@@ -389,7 +389,7 @@ class ps_skipjack {
         } 
         // Payment Declined
         elseif ($response[8] == '0') {
-           $d["error"] = $response[3];
+           $vmLogger->err( $response[3] );
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[8];
@@ -397,7 +397,7 @@ class ps_skipjack {
         }
         // Transaction Error
         elseif ($response[0] == '0') {
-           $d["error"] = $response[3];
+           $vmLogger->err( $response[3] );
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[8];

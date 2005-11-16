@@ -29,7 +29,7 @@ class ups {
   var $classname = "ups";
   
   function list_rates( &$d ) {
-	global $vendor_country_2_code, $vendor_currency; 
+	global $vendor_country_2_code, $vendor_currency, $vmLogger; 
 	global $VM_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
 	$db =& new ps_DB;
 	$dbv =& new ps_DB;
@@ -39,12 +39,8 @@ class ups {
 	/** Read current Configuration ***/
 	require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 
-	$q  = "SELECT * FROM #__users, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+    $q  = "SELECT * FROM #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 	$db->query($q);
-	if( !$db->next_record()) {
-	  $q  = "SELECT * FROM #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
-	  $db->query($q);
-	}
 	
 	$q  = "SELECT * FROM #__{vm}_vendor WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
 	$dbv->query($q);
@@ -165,7 +161,7 @@ class ups {
 		
 		$error = curl_error( $CR );
 		if( !empty( $error )) {
-		  echo curl_error( $CR );
+		  $vmLogger->err( curl_error( $CR ) );
 		  $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_INTERNAL_ERROR." UPS.com</span>";
 		  $error = true;
 		}
@@ -238,7 +234,7 @@ class ups {
 	  }
 	  if( $error ) {
 		// comment out, if you don't want the Errors to be shown!!
-		echo $html;
+		$vmLogger->err( $html );
 		// Switch to StandardShipping on Error !!!
 		require_once( CLASSPATH . 'shipping/standard_shipping.php' );
 		$shipping =& new standard_shipping();
@@ -512,6 +508,7 @@ class ups {
 	* @returns boolean True when writing was successful
 	*/
    function write_configuration( &$d ) {
+      global $vmLogger;
       
       $my_config_array = array("UPS_ACCESS_CODE" => $d['UPS_ACCESS_CODE'],
 							  "UPS_USER_ID" => $d['UPS_USER_ID'],
@@ -536,7 +533,7 @@ class ups {
           return true;
      }
      else {
-		$d['error'] = "Error writing to configuration file";
+		$vmLogger->err( "Error writing to configuration file" );
         return false;
 	 }
    }

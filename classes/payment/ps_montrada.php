@@ -175,7 +175,7 @@ class ps_montrada {
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         
-        global $vendor_mail, $vendor_currency, $VM_LANG, $database;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $vmLogger;
         
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
         $auth = $_SESSION['auth'];
@@ -186,7 +186,7 @@ class ps_montrada {
         
         // Get user billing information
         $dbbt = new ps_DB;
-        $qt = "SELECT * FROM #__users WHERE id='".$auth["user_id"]."' AND address_type='BT'";
+        $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
         $user_info_id = $dbbt->f("user_info_id");
@@ -243,8 +243,8 @@ class ps_montrada {
             
             $error = curl_error( $CR );
             if( !empty( $error )) {
-              $d["error"] = curl_error( $CR );
-              $d["error"] .= "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
+              $vmLogger->err( curl_error( $CR )
+                              ."<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>" );
               return false;
             }
             else {
@@ -257,7 +257,7 @@ class ps_montrada {
             $fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
             if(!$fp){
                 //error tell us
-                echo "$errstr ($errno)\n";
+                $vmLogger_>err( "$errstr ($errno)" );
             }
             else {
     
@@ -325,16 +325,16 @@ class ps_montrada {
         else
         {
            if ($response['posherr'] = "") $response['posherr'] = -1;
-           $d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($response[posherr])";
+           $vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($response[posherr])" );
            
            if (in_array($response['posherr'], $posherr1))
            {
                  if ($response['posherr'] == 100)
                  {
                         if (in_array($response['rc'], $rc1))
-                               $d["error"] = $response['rmsg'];
+                               $vmLogger->err( $response['rmsg'] );
                  } else {
-                 $d["error"] = $response['rmsg']; 
+                 $vmLogger-err( $response['rmsg'] );
                  }
            }
            $d["order_payment_log"] = $response['rmsg'];

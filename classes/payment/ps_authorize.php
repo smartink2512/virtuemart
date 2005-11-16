@@ -215,7 +215,7 @@ class ps_authorize {
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         
-        global $vendor_mail, $vendor_currency, $VM_LANG;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $vmLogger;
         $database = new ps_DB;
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
         $auth = $_SESSION['auth'];
@@ -228,19 +228,19 @@ class ps_authorize {
         $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
-            $d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR;
+            $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
             return false;
         }
         
         // Get user billing information
         $dbbt = new ps_DB;
-        $qt = "SELECT * FROM #__users WHERE id='".$auth["user_id"]."' AND address_type='BT'";
+        $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
         $user_info_id = $dbbt->f("user_info_id");
         if( $user_info_id != $d["ship_to_info_id"]) {
             // Get user billing information
-            $dbst =& new ps_DB;
+            $dbst =& new ps_DB;                   
             $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
@@ -412,7 +412,7 @@ class ps_authorize {
         } 
         // Payment Declined
         elseif ($response[0] == '2') {
-           $d["error"] = $response[3];
+           $vmLogger->err($response[3]);
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];
@@ -420,7 +420,7 @@ class ps_authorize {
         }
         // Transaction Error
         elseif ($response[0] == '3') {
-           $d["error"] = $response[3];
+           $vmLogger->err($response[3]);
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];
@@ -437,7 +437,7 @@ class ps_authorize {
   ***************************************************************************/
    function capture_payment( &$d ) {
         
-        global $vendor_mail, $vendor_currency, $VM_LANG;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $vmLogger;
         $database = new ps_DB();
         /*
         $host = "secure.authorize.net";
@@ -454,7 +454,7 @@ Discover Test Account       5424000000000015
         $path = "/gateway/transact.dll";
 
         if( empty($d['order_number'])) {
-            $d['error'] = "Error: No Order Number provided.";
+            $vmLogger->err("Error: No Order Number provided.");
             return false;
         }
         /*** Get the Configuration File for authorize.net ***/
@@ -464,7 +464,7 @@ Discover Test Account       5424000000000015
         $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
-            $d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR;
+            $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
             return false;
         }
         $db = new ps_DB;
@@ -473,7 +473,7 @@ Discover Test Account       5424000000000015
         $q .= "AND #__{vm}_orders.order_id=#__{vm}_order_payment.order_id";
         $db->query( $q );
         if( !$db->next_record() ) {
-            $d['error'] = "Error: Order not found.";
+            $vmLogger->err("Error: Order not found.");
             return false;
         }
         $expire_date = date( "my", $db->f("order_payment_expire") );
@@ -487,7 +487,7 @@ Discover Test Account       5424000000000015
         
         // Get user billing information
         $dbbt = new ps_DB;
-        $qt = "SELECT * FROM #__users WHERE id='".$db->f("user_id")."'";
+        $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$db->f("user_id")."'";
         $dbbt->query($qt);
         $dbbt->next_record();
         $user_info_id = $dbbt->f("user_info_id");
@@ -597,7 +597,7 @@ Discover Test Account       5424000000000015
             
             $error = curl_error( $CR );
             if( !empty( $error )) {
-              echo curl_error( $CR );
+              $vmLogger->err( curl_error( $CR ) );
               $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
               return false;
             }
@@ -611,7 +611,7 @@ Discover Test Account       5424000000000015
             $fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
             if(!$fp){
                 //error tell us
-                echo "$errstr ($errno)\n";
+                $vmLogger->err("$errstr ($errno)");
             }
             else {
     
@@ -668,7 +668,7 @@ Discover Test Account       5424000000000015
         } 
         // Payment Declined
         elseif ($response[0] == '2') {
-           $d["error"] = $response[3];
+           $vmLogger->err($response[3]);
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];
@@ -676,7 +676,7 @@ Discover Test Account       5424000000000015
         }
         // Transaction Error
         elseif ($response[0] == '3') {
-           $d["error"] = $response[3];
+           $vmLogger->err($response[3]);
            $d["order_payment_log"] = $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];

@@ -295,6 +295,7 @@ $tabs->endPane();
 $formObj->hiddenField( 'vendor_id', $ps_vendor_id );
 $formObj->hiddenField( 'vendor_thumb_image_action', 'none' );
 $formObj->hiddenField( 'vendor_full_image_action', 'none' );
+$formObj->hiddenField( 'pshop_mode', 'admin' );
 
 // Write your form with mixed tags and text fields
 // and finally close the form:

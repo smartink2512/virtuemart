@@ -100,7 +100,7 @@ class ps_fedexdc {
     */        
     function fetch_quote( &$d )
     {
-    
+        global $vmLogger;
         // Weight Units
         if( empty($d['fdx']['weight_units']) )
         {
@@ -182,7 +182,7 @@ class ps_fedexdc {
         if ($error = $this->getError()) 
         {
             
-            $d['error'] =  $error;
+            $vmLogger->err( $error );
             return false;
         } 
         else 

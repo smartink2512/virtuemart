@@ -263,6 +263,7 @@ class ps_pbs {
 	* @returns boolean True when writing was successful
 	*/
    function write_configuration( &$d ) {
+      global $vmLogger;
       
       $my_config_array = array("PBS_MERCHANT_ID" => $d['PBS_MERCHANT_ID'],
                                 "PBS_GATEWAY" => $d['PBS_GATEWAY'],
@@ -285,7 +286,7 @@ class ps_pbs {
           return true;
      }
      else {
-        $d["error"] = "Could not write to configuration file ".CLASSPATH ."payment/".$this->classname.".cfg.php";
+        $vmLogger->err( "Could not write to configuration file ".CLASSPATH ."payment/".$this->classname.".cfg.php" );
         return false;
      }
    }

@@ -209,6 +209,7 @@ class flex {
 	* @returns boolean True when writing was successful
 	*/
 	function write_configuration( &$d ) {
+	    global $vmLogger;
 
 		$my_config_array = array("FLEX_BASE_AMOUNT" => $d['FLEX_BASE_AMOUNT'],
 		"FLEX_MIN_CHG" => $d['FLEX_MIN_CHG'],
@@ -230,7 +231,7 @@ class flex {
 			return true;
 		}
 		else {
-			$d['error'] = "Error writing to configuration file";
+			$vmLogger->err( "Error writing to configuration file" );
 			return false;
 		}
 	}

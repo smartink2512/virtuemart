@@ -175,7 +175,7 @@ class ps_linkpoint {
   ** returns: T/F
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
-
+      global $vmLogger;
 
 	  // We must include the yourpay/linkpoint api file. 
 	  require( CLASSPATH . "payment/lphp.php" );
@@ -258,7 +258,7 @@ class ps_linkpoint {
 		  $result = $mylphp->curl_process($myorder);
   
 		  if ($result["r_approved"] != "APPROVED") {   // transaction failed, print the reason
-			$d["error"] = $result["r_error"];
+			$vmLogger->err( $result["r_error"] );
 			$d["order_payment_log"] = $result["r_error"];
 			$d["order_payment_log"] .= $result["r_message"];
 			$d["order_payment_trans_id"] = $result["r_ordernum"];
@@ -279,7 +279,7 @@ class ps_linkpoint {
 		
 		if ($result["r_approved"] != "SUBMITTED")    // transaction failed, print the reason
 		{
-		   $d["error"] = $result["r_error"];
+		   $vmLogger->err( $result["r_error"] );
 		   $d["order_payment_log"] = $result["r_error"];
 		   $d["order_payment_log"] .= $result["r_message"];
 		   $d["order_payment_trans_id"] = $result["r_ordernum"];
@@ -304,7 +304,7 @@ class ps_linkpoint {
 
 	  if ($result["r_approved"] != "APPROVED")    // transaction failed, print the reason
 	  {
-		 $d["error"] = $result["r_error"];
+		 $vmLogger->err( $result["r_error"] );
 		 $d["order_payment_log"] = $result["r_error"];
 		 $d["order_payment_log"] .= $result["r_message"];
 		 $d["order_payment_trans_id"] = $result["r_ordernum"];

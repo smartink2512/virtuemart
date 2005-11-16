@@ -463,8 +463,6 @@ class ps_checkout {
 			case CHECK_OUT_GET_FINAL_CONFIRMATION:
 
 				// The User wants to order now, validate everything, if OK than Add immeditialtly
-				require_once(CLASSPATH.'ps_payment_method.php');
-				$ps_payment_method = new ps_payment_method;
 				return ($this->add($d));
 
 			default:

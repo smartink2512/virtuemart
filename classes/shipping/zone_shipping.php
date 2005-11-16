@@ -41,15 +41,9 @@ class zone_shipping {
       global $CURRENCY_DISPLAY;
       $db = new ps_DB;
       
-      $q = "SELECT country FROM #__users WHERE ";
+      $q = "SELECT country FROM #__{vm}_user_info WHERE ";
       $q .= "user_info_id='". $d["ship_to_info_id"] . "'";
       $db->query($q);
-      
-      if (!$db->num_rows()) {
-          $q = "SELECT country FROM #__{vm}_user_info WHERE ";
-          $q .= "user_info_id='". $d["ship_to_info_id"] . "'";
-          $db->query($q);
-      }
       $db->next_record(); 
       $country = $db->f("country");
       

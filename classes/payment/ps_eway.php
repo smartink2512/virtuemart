@@ -175,7 +175,7 @@ class ps_eway {
   ** returns: 
   ***************************************************************************/
     function process_payment($order_number, $order_total, &$d) {
-        global $vendor_name, $VM_LANG;
+        global $vendor_name, $VM_LANG, $vmLogger;
         $auth = $_SESSION['auth'];
         
         /*** Get the Configuration File for eway ***/
@@ -224,12 +224,12 @@ class ps_eway {
 			$d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS;
             //Catch Transaction ID
             $d["order_payment_trans_id"] = $eway->getTrxnNumber();
-            $d["error"] = "";
+            //$d["error"] = "";
             return true;
 		} 
         else {
-			$d["error"] = $VM_LANG->_PHPSHOP_PAYMENT_ERROR.": ";
-            $d["error"] .= $eway->getErrorMessage();
+			$vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR.": "
+                            .$eway->getErrorMessage() );
             //Catch Transaction ID
             $d["order_payment_trans_id"] = $eway->getTrxnNumber();
             return false;

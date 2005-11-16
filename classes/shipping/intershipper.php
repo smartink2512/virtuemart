@@ -30,12 +30,9 @@ class intershipper {
 	  $dbv->next_record();
 	  
 	  $dbst = new ps_DB;
-	  $q  = "SELECT * from #__users, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+	  $q  = "SELECT * from #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 	  $dbst->query($q);
-	  if( !$dbst->next_record() ) {
-		$q  = "SELECT * from #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
-		$dbst->query($q);
-		$dbst->next_record();
+	  $dbst->next_record();
 	  }
 	  
 	  $carrier_arr = Array();
@@ -333,7 +330,7 @@ class intershipper {
 	  }
 	  else {
 		// Switch to StandardShipping on Error !!!
-		echo $html;
+		$vmLogger->err( $html );
 		require_once( CLASSPATH . 'shipping/standard_shipping.php' );
 		$shipping =& new standard_shipping();
 		$shipping->list_rates( $d );
@@ -562,6 +559,7 @@ class intershipper {
 	* @returns boolean True when writing was successful
 	*/
    function write_configuration( &$d ) {
+      global $vmLogger;
       
       $my_config_array = array("IS_USERNAME" => $d['IS_USERNAME'],
 							  "IS_PASSWORD" => $d['IS_PASSWORD'],
@@ -602,7 +600,7 @@ class intershipper {
           return true;
      }
      else {
-		$d['error'] = "Error writing to configuration file";
+		$vmLogger->err( "Error writing to configuration file" );
         return false;
 	 }
    }

@@ -400,7 +400,7 @@ else if($order_total < $base_ship10) {
           return true;
      }
      else {
-		$d['error'] = "Error writing to configuration file";
+		$vmLogger->err( "Error writing to configuration file" );
         return false;
 	 }
    }

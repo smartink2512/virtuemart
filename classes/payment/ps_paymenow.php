@@ -163,6 +163,8 @@ class ps_paymenow {
   ** returns: 
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
+        global $vmLogger;
+        
         $vars = array(
              "action" => "ns_quicksale_cc",
              "ecxid"  => PN_LOGIN,
@@ -181,11 +183,11 @@ class ps_paymenow {
         else {
             if ($reason = stristr($results, "Declined"))
             {
-            echo "The transaction was declined because of: <strong>$reason</strong><br />";
+            $vmLogger->err( "The transaction was declined because of: <strong>$reason</strong><br />" );
             }
             else
             {
-            echo "FATAL ERROR! Declined for an unknown reason, possibly a server misconfiguration error.<br/>$results";
+            $vmLogger->err( "FATAL ERROR! Declined for an unknown reason, possibly a server misconfiguration error.<br/>$results" );
             }
             return false;
         }

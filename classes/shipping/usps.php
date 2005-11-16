@@ -28,7 +28,7 @@ class usps {
 	var $classname = "usps";
 
 	function list_rates( &$d ) {
-		global $vendor_country_2_code, $vendor_currency;
+		global $vendor_country_2_code, $vendor_currency, $vmLogger;
 		global $VM_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
 		$db =& new ps_DB;
 		$dbv =& new ps_DB;
@@ -142,7 +142,7 @@ class usps {
 					//echo "<textarea>".$xmlResult."</textarea>";
 					$error = curl_error( $CR );
 					if( !empty( $error )) {
-						echo curl_error( $CR );
+						$vmLogger->err( curl_error( $CR ) );
 						$html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_INTERNAL_ERROR." USPS.com</span>";
 						$error = true;
 					}
@@ -209,7 +209,7 @@ class usps {
 
 				if( $error ) {
 					// comment out, if you don't want the Errors to be shown!!
-					echo $html;
+					$vmLogger->err( $html );
 					// Switch to StandardShipping on Error !!!
 					require_once( CLASSPATH . 'shipping/standard_shipping.php' );
 					$shipping =& new standard_shipping();
@@ -445,6 +445,7 @@ class usps {
 	* @returns boolean True when writing was successful
 	*/
 	function write_configuration( &$d ) {
+	    global $vmLogger;
 
 		$my_config_array = array("USPS_USERNAME" => $d['USPS_USERNAME'],
 		"USPS_PASSWORD" => $d['USPS_PASSWORD'],
@@ -473,7 +474,7 @@ class usps {
 			return true;
 		}
 		else {
-			$d['error'] = "Error writing to configuration file";
+			$vmLogger->err( "Error writing to configuration file" );
 			return false;
 		}
 	} //end function write_configuration

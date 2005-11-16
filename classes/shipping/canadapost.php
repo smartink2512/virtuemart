@@ -180,12 +180,9 @@ class canadapost {
       require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 	  
 	  $dbst = new ps_DB;
-	  $q  = "SELECT * from #__users, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+	  $q  = "SELECT * from #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 	  $dbst->query($q);
-	  if( !$dbst->next_record() ) {
-		$q  = "SELECT * from #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
-		$dbst->query($q);
-		$dbst->next_record();
+	  $dbst->next_record();
 	  }
 
      $cart = $_SESSION['cart'];
@@ -414,6 +411,8 @@ class canadapost {
 	* @returns boolean True when writing was successful
 	*/
    function write_configuration( &$d ) {
+   
+      global $vmLogger;
       
       $my_config_array = array("MERCHANT_CPCID" => $d['MERCHANT_CPCID'],
 							  "CP_SERVER" => $d['CP_SERVER'],
@@ -437,7 +436,7 @@ class canadapost {
           return true;
      }
      else {
-		$d['error'] = "Error writing to configuration file";
+		$vmLogger->err( "Error writing to configuration file" );
         return false;
 	 }
    }

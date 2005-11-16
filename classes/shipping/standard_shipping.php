@@ -250,7 +250,7 @@ class standard_shipping {
 		$dbu = new ps_DB; //DB User
 		$dbu->query($q);
 		if (!$dbu->next_record()) {
-			/*$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND;
+			/*$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND );
 			return False;*/
 		}
 
