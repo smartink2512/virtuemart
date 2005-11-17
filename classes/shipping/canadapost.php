@@ -183,7 +183,6 @@ class canadapost {
 	  $q  = "SELECT * from #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 	  $dbst->query($q);
 	  $dbst->next_record();
-	  }
 
      $cart = $_SESSION['cart'];
      $dboi = new ps_DB;

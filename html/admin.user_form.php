@@ -25,7 +25,7 @@ global $ps_shopper_group;
 include_class( 'shopper' );
 
 $user_id = mosGetParam( $_REQUEST, 'user_id' );
-;
+
 if( !empty($user_id) ) {
 	$q = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id ";
 	$q .= "WHERE id='$user_id' ";

@@ -1,23 +1,24 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
+* @version $Id$
+* @package mambo-phpShop
+* @subpackage Payment
+* @copyright (C) 2005 Benjamin Schirmer
+*
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+* mambo-phpShop is Free Software.
+* mambo-phpShop comes with absolute no warranty.
+*
+* www.mambo-phpshop.net
+
 * The ps_montrada class, containing the payment processing code
-*  for credit card transactions with montrada.de
-*
-* @version $Id$* @package VirtueMart
-* @subpackage payment
-* @copyright Copyright (C) 2005 Benjamin Schirmer. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
-*
-* http://virtuemart.net
-*/
+*  for transactions with montrada.de
+ */
 
 class ps_montrada {
+
+    var $debug = false;
 
     var $payment_code = "MO";
     var $classname = "ps_montrada";
@@ -28,7 +29,7 @@ class ps_montrada {
     */
     function show_configuration() { 
     
-      global $VM_LANG, $sess;
+      global $PHPSHOP_LANG, $sess;
       $db =& new ps_DB;
       $payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
       /** Read current Configuration ***/
@@ -37,25 +38,25 @@ class ps_montrada {
       <table>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
             <td>
                 <select name="MO_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (MO_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
                 <option <?php if (MO_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_USERNAME ?></strong></td>
+            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_USERNAME ?></strong></td>
             <td>
                 <input type="text" name="MO_USERNAME" class="inputbox" value="<?php echo MO_USERNAME ?>" />
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_PASSWORD ?></strong></td>
+            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_PASSWORD ?></strong></td>
             <td>
                 <input type="text" name="MO_PASSWORD" class="inputbox" value="<?php echo MO_PASSWORD ?>" />
             </td>
@@ -223,7 +224,13 @@ class ps_montrada {
         }
         // strip off trailing ampersand
         $poststring = substr($poststring, 0, -1);
-               
+        
+        /* DEBUG Message */
+        if ($this->debug)
+        {
+            $vmLogger->debug( wordwrap($poststring, 60, "<br/>", 1) );
+        }
+        
         if( function_exists( "curl_init" )) {
         
             $CR = curl_init();
@@ -257,7 +264,7 @@ class ps_montrada {
             $fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
             if(!$fp){
                 //error tell us
-                $vmLogger_>err( "$errstr ($errno)" );
+                $vmLogger->err( "$errstr ($errno)" );
             }
             else {
     
@@ -282,6 +289,10 @@ class ps_montrada {
           }
         }
 
+        /* DEBUG Message */
+        if ($this->debug)
+            $vmLogger->debug( wordwrap( urldecode($result), 60, "<br/>", 1) );
+        
         // Split Response-Data
         $data = explode("&", $result);
         foreach ($data as $var)
@@ -315,12 +326,17 @@ class ps_montrada {
         $rc1 = array("000", "005", "033", "091", "096");
         // Approved - Success!
         if (isset($response['posherr']) && ($response['posherr'] == 0)) {
-           $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+           $d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
            $d["order_payment_log"] .= $response['rmsg'];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response['trefnum'];
 
            return True;
+           
+           $db = new ps_DB;
+           $q = "UPDATE #__{vm}_order_payment SET order_payment_code='',order_payment_number='',order_payment_expire='' WHERE order_id=$order_number";
+           $db->query($q);
+           $db->next_record();
         } 
         else
         {
@@ -334,7 +350,7 @@ class ps_montrada {
                         if (in_array($response['rc'], $rc1))
                                $vmLogger->err( $response['rmsg'] );
                  } else {
-                 $vmLogger-err( $response['rmsg'] );
+                 $vmLogger->err( $response['rmsg'] );
                  }
            }
            $d["order_payment_log"] = $response['rmsg'];
