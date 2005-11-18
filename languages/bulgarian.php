@@ -14,10 +14,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
-*
-*Translated by Kalin Sivov (majonkata@gmail.com) and Stoyana Stoeva (stoeva_s@yahoo.com).
-*ROCK ON!
-*
 */
 class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_MENU = 'Меню';
@@ -337,7 +333,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION = 'Тук може да попълните брой единици в 1 опаковка. (макс. 65535)';
 	var $_PHPSHOP_PRODUCT_FORM_BOX = 'Единици в кутия';
 	var $_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION = 'Тук може да попълните брой единици в кутия. (макс. 65535)';
-  	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = 'Резултат от добавяне на продукт';
+	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL = 'Резултат от добавяне на продукт';
 	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL = 'Резултат от промяна на продукт';
 	var $_PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL = 'Резултат от добавяне на артикул';
 	var $_PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL = 'Резултат от промяна на артикул';
@@ -1015,8 +1011,8 @@ class vmLanguage extends vmAbstractLanguage {
         Ако изберете <b>AND</b>, продуктите, които ще получите като резултат, ще <b>съдържат и двете ключови думи</b>. 
         Ако изберете <b>NOT</b>, ще получите като резултат продуктите, които <b>съдържат първата ключова дума и не съдържат втората</b>.';
 	var $_PHPSHOP_ORDERBY = 'Подреждане според';
-  	var $_PHPSHOP_CUSTOMER_RATING = 'Средна оценка на потребители';
-  	var $_PHPSHOP_TOTAL_VOTES = 'Общо гласове';
+	var $_PHPSHOP_CUSTOMER_RATING = 'Средна оценка на потребители';
+	var $_PHPSHOP_TOTAL_VOTES = 'Общо гласове';
 	var $_PHPSHOP_CAST_VOTE = 'Моля, гласувайте';
 	var $_PHPSHOP_RATE_BUTTON = 'Оценка';
 	var $_PHPSHOP_RATE_NOM = 'Оценяване';
@@ -1071,7 +1067,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CURRENCY_DISPLAY = 'Стил за показване на валутата';
 	var $_PHPSHOP_CURRENCY_SYMBOL = 'Символ за валутата';
 	var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = 'Moje da polzvate i specialni HTML oznacheniia';
-  	var $_PHPSHOP_CURRENCY_DECIMALS = 'Символи след десетичния знак';
+	var $_PHPSHOP_CURRENCY_DECIMALS = 'Символи след десетичния знак';
 	var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = 'Broi na znacite sled desetichnata zapetaia (moje da bude 0)<br><b>Performs rounding if value has different number of decimals</b>';
 	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = 'Десетичен знак';
 	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = 'Simvol, koito se polzva za desetichen znak';
@@ -1421,6 +1417,14 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PEAR_LOG_EMERG = 'Внимание!!!';
 	var $_PEAR_LOG_NOTICE = 'Бележка';
 	var $_PEAR_LOG_DEBUG = 'Дебъг';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP = 'Enable PayFlow Pro payment?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_EXPLAIN = 'Check to use VeriSign\'s PayFlow Pro with VirtueMart.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE = 'Test mode ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNER = 'VeriSign processing Partner ID';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME = 'PayFlow Pro Login ID';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME_EXPLAIN = 'This is your PayFlow Pro Login ID';
         
 }
 class phpShopLanguage extends vmLanguage { }

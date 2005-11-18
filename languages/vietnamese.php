@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
@@ -14,9 +14,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
-
 */
-
 class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_MENU = 'Menu';
 	var $_PHPSHOP_CATEGORY = 'Category';
@@ -180,7 +178,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ISSHIP_LIST_LBL = 'Kích hoạt cách vận chuyển';
 	var $_PHPSHOP_ISSHIP_LIST_CARRIER_LBL = 'Vận chuyển';
 	var $_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL = 'Kích hoạt';
-	//x1
 	var $_PHPSHOP_ISSHIP_LIST_RATE_LBL = 'Handling Charge';
 	var $_PHPSHOP_ISSHIP_LIST_LEAD_LBL = 'Lead Time';
 	var $_PHPSHOP_ISSHIP_LIST_CHARGE_F_LBL = 'flat rate';
@@ -362,7 +359,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM = 'Thuộc tính mới cho Item';
 	var $_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM = 'Cập nhật Thuộc tính cho Item';
 	var $_PHPSHOP_ATTRIBUTE_FORM_NAME = 'Tên Thuộc tính';
-//x2
 	var $_PHPSHOP_ATTRIBUTE_FORM_ORDER = 'Danh sách Order';
 	var $_PHPSHOP_PRICE_LIST_MNU = 'Danh sách Giá';
 	var $_PHPSHOP_PRICE_LIST_LBL = 'Giá Danh sách';
@@ -540,7 +536,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_VENDOR_FORM_FIRST_NAME = 'Tên họ';
 	var $_PHPSHOP_VENDOR_FORM_MIDDLE_NAME = 'Tên';
 	var $_PHPSHOP_VENDOR_FORM_TITLE = 'Chức danh';
-	//x3
 	var $_PHPSHOP_VENDOR_FORM_PHONE_1 = 'Điện thoại 1';
 	var $_PHPSHOP_VENDOR_FORM_PHONE_2 = 'Điện thoại 2';
 	var $_PHPSHOP_VENDOR_FORM_FAX = 'Fax';
@@ -1189,7 +1184,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = 'Payment successfully processed';
 	var $_PHPSHOP_UPS_RESPONSE_Lỗi = 'UPS was not able to process the Vận chuyển Rate Request.';
 	var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = 'Guaranteed Day(s) To Delivery';
-
 	var $_PHPSHOP_UPS_PICKUP_METHOD = 'UPS Pickup Method';
 	var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = 'How do you give packages to UPS?';
 	var $_PHPSHOP_UPS_PACKAGE_TYPE = 'UPS Packaging?';
@@ -1321,7 +1315,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Mặc định Value';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = 'For Parameter Mặc định Value use this format:<ul><li>Ngày: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Ngày & Time: YYYY-MM-DD HH:MM:SS</li></ul>';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Unit';
-	var $_PHPSHOP_PARAMETER_SEARCH = ''; //error (Tìm kiếm nâng cao dùng giới hạn)
+	var $_PHPSHOP_PARAMETER_SEARCH = 'Advanced Search according to Parameters';
 	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = 'Tham số Tìm kiếm';
 	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = 'Do you will find products according to technical parametrs?<BR>You can used any prepared form:';
 	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = 'I am sorry. There is no category cho search.';
@@ -1439,6 +1433,14 @@ Mật khẩu - %s
 	var $_PEAR_LOG_EMERG = 'Emergency';
 	var $_PEAR_LOG_NOTICE = 'Notice';
 	var $_PEAR_LOG_DEBUG = 'Debug';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP = 'Enable PayFlow Pro payment?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_EXPLAIN = 'Check to use VeriSign\'s PayFlow Pro with VirtueMart.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE = 'Test mode ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNER = 'VeriSign processing Partner ID';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME = 'PayFlow Pro Login ID';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME_EXPLAIN = 'This is your PayFlow Pro Login ID';
         
 }
 class phpShopLanguage extends vmLanguage { }

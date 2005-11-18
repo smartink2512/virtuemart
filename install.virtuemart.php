@@ -13,6 +13,34 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
+function virtuemart_is_installed() {
+	global $database, $mosConfig_absolute_path, $mosConfig_dbprefix;
+	$option = 'com_virtuemart';
+	$installfile = dirname( __FILE__ ) . "/install.php";
+	
+	$database->setQuery( "SHOW TABLES LIKE '".$mosConfig_dbprefix."vm_%'" );
+	$vm_tables = $database->loadObjectList();
+	
+	if( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/classes/htmlTools.class.php' ) 
+		&& count( $vm_tables)> 30 ) {
+		@unlink( $installfile );
+		if( ( file_exists($installfile)) || !file_exists(dirname( __FILE__ ) . "/virtuemart.cfg.php")) {
+			die('<h2>Virtuemart Installation Notice</h2>
+			<p>You already have installed VirtueMart.</p>
+			<p>You MUST 
+			<ol>
+				<li>DELETE the file <strong>'.$installfile.'</strong>,</li>
+				<li>RENAME the file <strong>virtuemart.cfg-dist.php</strong> to <strong>virtuemart.cfg.php</strong></li>
+			</ol>before you can use VirtueMart.
+			</p>');
+		}
+		else {
+			mosRedirect('index2.php?option=com_virtuemart');
+		}
+	}
+	return false;
+	
+}
 function com_install() {
 	global $mosConfig_absolute_path, $mosConfig_dbprefix, $database;
 	include( $mosConfig_absolute_path. "/administrator/components/com_virtuemart/version.php" );

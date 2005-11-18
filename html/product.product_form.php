@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.11 2005/10/19 17:51:19 soeren_nb Exp $
+* @version $Id: product.product_form.php,v 1.12 2005/11/02 20:06:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -644,7 +644,7 @@ if( !stristr( $db->f("product_thumb_image"), "http") && $clone_product != "1" )
 if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
   echo "<input type=\"hidden\" name=\"product_full_image_curr\" value=\"". $db->f("product_full_image") ."\" />";
   
- $ps_html->writableIndicator( IMAGEPATH."product" ); 
+ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resized") );
  
  ?>
   <table class="adminform" >
@@ -661,13 +661,17 @@ if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
           </tr>
           <tr> 
             <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
-              <input type="radio" class="inputbox" name="product_full_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-              <?php echo $VM_LANG->_PHPSHOP_NONE ?><br/>
-              <input type="radio" class="inputbox" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-              <?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL . "<br />"; 
+              <input type="radio" class="inputbox" id="product_full_image_action0" name="product_full_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+              <label for="product_full_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE; ?></label><br/>
+              <?php
+              // Check if GD library is available
+              if( function_exists('imagecreatefromjpeg')) { ?>
+	              <input type="radio" class="inputbox" id="product_full_image_action1" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+	              <label for="product_full_image_action1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL . "</label><br />"; 
+              }
               if ($product_id and $db->f("product_full_image")) { ?>
-                <input type="radio" class="inputbox" name="product_full_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-                <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "<br />"; 
+                <input type="radio" class="inputbox" id="product_full_image_action2" name="product_full_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+                <label for="product_full_image_action2"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
               } ?> 
             </td>
           </tr>
@@ -712,12 +716,12 @@ if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
           </tr>
           <tr> 
             <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
-              <input type="radio" class="inputbox" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-              <?php echo $VM_LANG->_PHPSHOP_NONE ?><br/>
+              <input type="radio" class="inputbox" id="product_thumb_image_action0" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+              <label for="product_thumb_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE ?></label><br/>
               <?php 
               if ($product_id and $db->f("product_thumb_image")) { ?>
-                <input type="radio" class="inputbox" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-                <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "<br />"; 
+                <input type="radio" class="inputbox" id="product_thumb_image_action1" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+                <label for="product_thumb_image_action1"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
               } ?> 
             </td>
           </tr>
@@ -981,22 +985,25 @@ $formObj->finishForm( $funcname, $next_page, $option );
 <script type="text/javascript">
 <!--
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
-  if( !disableOnChecked ) {
-    if(elementOnChecked.checked==true) {
-      elementDisable.disabled=false; 
-    }
-    else {
-      elementDisable.disabled=true;
-    }
-  }
-  else {
-    if(elementOnChecked.checked==true) {
-      elementDisable.disabled=true; 
-    }
-    else {
-      elementDisable.disabled=false;
-    }
-  }
+	try {
+	  if( !disableOnChecked ) {
+	    if(elementOnChecked.checked==true) {
+	      elementDisable.disabled=false; 
+	    }
+	    else {
+	      elementDisable.disabled=true;
+	    }
+	  }
+	  else {
+	    if(elementOnChecked.checked==true) {
+	      elementDisable.disabled=true; 
+	    }
+	    else {
+	      elementDisable.disabled=false;
+	    }
+	  }
+	}
+	catch( e ) {}
 }
 // borrowed from OSCommerce with small modifications. 
 // All rights reserved.

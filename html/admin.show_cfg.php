@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.show_cfg.php,v 1.10 2005/10/25 19:33:52 soeren_nb Exp $
+* @version $Id: admin.show_cfg.php,v 1.11 2005/11/08 19:21:02 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -534,31 +534,43 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL, "pathandurl-page");
     <tr>
         <td colspan="3"><hr />&nbsp;</td>
     </tr>
-    <tr>
-        <td width="30%" valign="top" align="right">
-		<strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING ?></strong></td>
-        <td width="15%" valign="top">
-            <input type="checkbox" name="conf_PSHOP_IMG_RESIZE_ENABLE" class="inputbox" <?php if (PSHOP_IMG_RESIZE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
-        </td>
-        <td width="55%"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP ?></td>
-    </tr>
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH ?></td>
-        <td>
-            <input type="text" name="conf_PSHOP_IMG_WIDTH" class="inputbox" value="<?php echo PSHOP_IMG_WIDTH ?>" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP ?></td>
-    </tr>
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT ?></td>
-        <td>
-            <input type="text" name="conf_PSHOP_IMG_HEIGHT" class="inputbox" value="<?php echo PSHOP_IMG_HEIGHT ?>" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP ?></td>
-    </tr>
-    <tr>
-        <td colspan="3"><hr />&nbsp;</td>
-    </tr>
+    <?php
+    if( function_exists('imagecreatefromjpeg')) {
+    	?>
+    
+	    <tr>
+	        <td width="30%" valign="top" align="right">
+			<strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING ?></strong></td>
+	        <td width="15%" valign="top">
+	            <input type="checkbox" name="conf_PSHOP_IMG_RESIZE_ENABLE" class="inputbox" <?php if (PSHOP_IMG_RESIZE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
+	        </td>
+	        <td width="55%"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP ?></td>
+	    </tr>
+	    <tr>
+	        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH ?></td>
+	        <td>
+	            <input type="text" name="conf_PSHOP_IMG_WIDTH" class="inputbox" value="<?php echo PSHOP_IMG_WIDTH ?>" />
+	        </td>
+	        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP ?></td>
+	    </tr>
+	    <tr>
+	        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT ?></td>
+	        <td>
+	            <input type="text" name="conf_PSHOP_IMG_HEIGHT" class="inputbox" value="<?php echo PSHOP_IMG_HEIGHT ?>" />
+	        </td>
+	        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP ?></td>
+	    </tr>
+	    <tr>
+	        <td colspan="3"><hr />&nbsp;</td>
+	    </tr>
+	    <?php
+    }
+    else {
+    	echo '<input type="hidden" name="conf_PSHOP_IMG_RESIZE_ENABLE" value="0" />';
+    	echo '<input type="hidden" name="conf_PSHOP_IMG_WIDTH" value="'. PSHOP_IMG_WIDTH .'" />';
+    	echo '<input type="hidden" name="conf_PSHOP_IMG_HEIGHT" value="'. PSHOP_IMG_HEIGHT .'" />';
+    }
+    ?>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 ?></strong></td>
         <td>

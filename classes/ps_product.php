@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.21 2005/11/09 20:55:04 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.22 2005/11/12 15:55:02 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -15,6 +15,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
+
+// The product section needs much memory
+@ini_set('memory_limit', '16M');
 
 /**
  * The class is is used to manage product repository.

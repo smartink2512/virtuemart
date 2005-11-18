@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.basket_short.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.basket_short.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -50,7 +50,7 @@ $auth = $_SESSION['auth'];
       $subtotal = round( $price["product_price"], 2 ) * $cart[$i]["quantity"];
       $total += $subtotal;
 
-      $weight_subtotal = ps_shipping_method::get_weight($cart[$i]["product_id"]);
+      $weight_subtotal = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]["quantity"];
       $weight_total += $weight_subtotal;
     }
     

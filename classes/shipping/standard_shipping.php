@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: standard_shipping.php,v 1.11 2005/11/07 20:22:06 soeren_nb Exp $
+* @version $Id: standard_shipping.php,v 1.13 2005/11/16 14:43:32 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -35,7 +35,7 @@ class standard_shipping {
 		$dbr = new ps_DB; // Rates
 
 		$selected = False;
-
+		$d['ship_to_info_id'] = mosGetParam($_REQUEST, 'ship_to_info_id');
 		$q = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id='".$d['ship_to_info_id']."'";
 		$dbc->query($q);
 		$dbc->next_record();

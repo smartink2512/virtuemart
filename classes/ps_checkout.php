@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.18 2005/11/12 08:32:07 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.19 2005/11/16 06:57:51 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -60,7 +60,21 @@ class ps_checkout {
 			eval( "\$this->_SHIPPING =& new ".$filename."();");
 
 		}
+        if(empty($_REQUEST['ship_to_info_id']) && CHECKOUT_STYLE=='3') {
 
+            $db = new ps_DB();
+
+            /* Select all the ship to information for this user id and
+            * order by modification date; most recently changed to oldest
+            */
+            $q  = "SELECT user_info_id from `#__{vm}_user_info` WHERE ";
+            $q .= "user_id='" . $_SESSION['auth']["user_id"] . "' ";
+            $q .= "AND address_type='BT'";
+            $db->query($q);
+            $db->next_record();
+
+            $_REQUEST['ship_to_info_id'] = $db->f("user_info_id");
+        }
 	}
 
 	/**
@@ -463,6 +477,8 @@ class ps_checkout {
 			case CHECK_OUT_GET_FINAL_CONFIRMATION:
 
 				// The User wants to order now, validate everything, if OK than Add immeditialtly
+				require_once(CLASSPATH.'ps_payment_method.php');
+				$ps_payment_method = new ps_payment_method;
 				return ($this->add($d));
 
 			default:

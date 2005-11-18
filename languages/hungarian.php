@@ -1,9 +1,8 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'K&ouml;zvetlen hozz&aacute;f&eacute;r&eacute;s  ehez a ter&uuml;lethez nincs megengedve.' );
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: english.php,v 1.9 2005/10/09 13:30:02 soeren_nb Exp $
-* @version $Id: hungarian.php,v 1.9 2005/11/07 22:30:02 soeren_nb Exp $
+* @version $Id: admin.martlanguages.php,v 1.4 2005/10/15 15:26:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -13,7 +12,7 @@ defined( '_VALID_MOS' ) or die( 'K&ouml;zvetlen hozz&aacute;f&eacute;r&eacute;s 
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
-* hungarian.php,v 1.9 2005/11/07 22:30:02 translated by Szekely Denes aka. webGobe (e-mail: joomla@webgobe.ro, http://www.webgobe.ro)
+*
 * http://virtuemart.net
 */
 class vmLanguage extends vmAbstractLanguage {
@@ -433,7 +432,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_SHOPPER_FORM_STATE = '&Aacute;llam/Tartom&aacute;ny/Ter&uuml;let';
 	var $_PHPSHOP_SHOPPER_FORM_ZIP = 'Ir&aacute;ny&iacute;t&oacute;sz&aacute;m';
 	var $_PHPSHOP_SHOPPER_FORM_COUNTRY = 'Orsz&aacute;g';
-
 	var $_PHPSHOP_SHOPPER_FORM_PHONE = 'Telefon';
 	var $_PHPSHOP_SHOPPER_FORM_PHONE2 = 'Mobiltelefon';
 	var $_PHPSHOP_SHOPPER_FORM_FAX = 'Fax';
@@ -510,7 +508,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_TAX_FORM_LBL = 'Ad&oacute;z&aacute;si inform&aacute;ci&oacute;k hozz&aacute;ad&aacute;sa';
 	var $_PHPSHOP_TAX_FORM_STATE = 'Ad&oacute;z&aacute;si &aacute;llam vagy r&eacute;gi&oacute;';
 	var $_PHPSHOP_TAX_FORM_COUNTRY = 'Ad&oacute;z&aacute;si orsz&aacute;g';
-	var $_PHPSHOP_TAX_FORM_RATE = 'Ad&oacute;z&aacute;si r&aacute;ta (16%-&eacute;rt  =&gt;  0,16-ot t&ouml;lts&ouml;n ki)';
+	var $_PHPSHOP_TAX_FORM_RATE = 'Ad&oacute;z&aacute;si r&aacute;ta (16%-&eacute;rt  =>  0,16-ot t&ouml;lts&ouml;n ki)';
 	var $_PHPSHOP_VENDOR_MOD = 'Forgalmaz&oacute;';
 	var $_PHPSHOP_VENDOR_ADMIN = 'Forgalmaz&oacute;k';
 	var $_PHPSHOP_VENDOR_LIST_MNU = 'Forgalmaz&oacute;k list&aacute;z&aacute;sa';
@@ -839,7 +837,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = '&Aacute;ll&iacute;tsa be, hogy a v&aacute;s&aacute;rl&oacute; az &aacute;rakat ad&oacute;val egy&uuml;tt vagy ad&oacute; n&eacute;lk&uuml;l l&aacute;ssa.';
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = 'Jel&ouml;lje be, hogy mutassa az &aacute;rakat. Ha katal&oacute;gusk&eacute;nt akarod haszn&aacute;lni, akkor lehetős&eacute;g van az &aacute;rak elrejt&eacute;s&eacute;re.';
 	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = 'Virtu&aacute;lis ad&oacute;';
-	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = 'Ez adja meg, hogy a 0 s&uacute;ly&uacute;k&eacute;nt szereplő t&eacute;telekre sz&aacute;m&iacute;tson-e sz&aacute;ll&iacute;t&aacute;si k&ouml;lts&eacute;get vagy nem. M&oacute;dos&iacute;tsa a  ps_checkout.php-&gt;calc_order_taxable()-t, hogy szem&eacute;lyre szabja ezt.';
+	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = 'Ez adja meg, hogy a 0 s&uacute;ly&uacute;k&eacute;nt szereplő t&eacute;telekre sz&aacute;m&iacute;tson-e sz&aacute;ll&iacute;t&aacute;si k&ouml;lts&eacute;get vagy nem. M&oacute;dos&iacute;tsa a  ps_checkout.php->calc_order_taxable()-t, hogy szem&eacute;lyre szabja ezt.';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = 'Ad&oacute;z&aacute;si elj&aacute;r&aacute;s:';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = 'A sz&aacute;ll&iacute;t&aacute;si c&iacute;m alapj&aacute;n';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = 'Az elad&oacute; c&iacute;me alapj&aacute;n';
@@ -900,7 +898,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = 'Kateg&oacute;ria st&iacute;luslap';
 	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Meghat&aacute;rozza egy bizonyos kateg&oacute;ri&aacute;ba tartoz&oacute; term&eacute;kek megjelen&iacute;t&eacute;s&eacute;re haszn&aacute;land&oacute; alap&eacute;rtelmezett kateg&oacute;ria st&iacute;luslapot.<br />
                                                                                                       &Ouml;n l&eacute;trehozhat &uacute;j st&iacute;luslapokat a megl&eacute;vők testreszab&aacute;s&aacute;val <br />
-                                                                                                      (amelyek ebben a k&ouml;nyvt&aacute;rban tal&aacute;lhat&oacute;k <strong>COMPONENTPATH/html/templates/</strong> &eacute;s a nev&uuml;k \"browse_\"-vel kezdődik)';
+                                                                                                      (amelyek ebben a k&ouml;nyvt&aacute;rban tal&aacute;lhat&oacute;k <strong>COMPONENTPATH/html/templates/</strong> &eacute;s a nev&uuml;k "browse_"-vel kezdődik)';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Az egy sorban mutatott term&eacute;kek alap&eacute;rtelmezett sz&aacute;ma';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Megadja a soronk&eacute;nt megjelen&iacute;tendő term&eacute;kek sz&aacute;m&aacute;t. <br />
                                                                                                       P&eacute;lda:  Ha &ouml;n 4-et &iacute;r be, a Kateg&oacute;ria st&iacute;luslap 4 term&eacute;ket mutat soronk&eacute;nt';
@@ -915,7 +913,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'MAXIMUM ROWS';
 	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Be&aacute;ll&iacute;tja a megrendel&eacute;s kiv&aacute;laszt&aacute;s list&aacute;ban megjelen&iacute;tendő sorok sz&aacute;m&aacute;t.';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Mutasd a l&aacute;bl&eacute;cet ';
-	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'A l&aacute;bl&eacute;cben megjelen&iacute;ti a \"powered by VirtueMart\"  &uuml;zenetet.';
+	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'A l&aacute;bl&eacute;cben megjelen&iacute;ti a "powered by VirtueMart"  &uuml;zenetet.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'V&aacute;lassza ki az &uuml;zletet sz&aacute;ll&iacute;t&aacute;si m&oacute;dszer&eacute;t';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Standard Sz&aacute;ll&iacute;t&aacute;si modul  egy&eacute;nileg konfigur&aacute;lt sz&aacute;ll&iacute;tm&aacute;nyoz&oacute;kkal &eacute;s d&iacute;jt&eacute;telekkel. <strong>AJ&Aacute;NLOTT!</strong>';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Zon&aacute;lis sz&aacute;ll&iacute;t&aacute;s Orsz&aacute;g-modul 1.0 Verzi&oacute;<br />
@@ -1378,7 +1376,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP = 'Megmutassam a kateg&oacute;ri&aacute;ban l&eacute;vő term&eacute;kek sz&aacute;m&aacute;t? (mint pl. Kateg&oacute;ria (4) )?';
 	var $_PHPSHOP_ADMIN_CFG_ADDTOCART_STYLE = 'Hozz&aacute;ad-a-bev&aacute;s&aacute;rl&oacute;kos&aacute;rhoz nyom&oacute;gomb st&iacute;lus';
 	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING = 'Megengedi a dinamikus b&eacute;lyegk&eacute;p &aacute;tm&eacute;retez&eacute;st?';
-	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Ha bejel&ouml;l&ouml;d, enged&eacute;lyezed a dinamikus k&eacute;p &aacute;tm&eacute;retez&eacute;st. Ez azt jelenti, hogy valamennyi b&eacute;lyegk&eacute;p &aacute;t lesz m&eacute;retezve az al&aacute;bb megadott &eacute;rt&eacute;kekre a PHP GD2 f&uuml;ggv&eacute;nyei seg&iacute;ts&eacute;g&eacute;vel (Ellenőrizheted, hogy van-e GD2 t&aacute;mogat&aacute;sod a \Rendszer\Rendszer inform&aacute;ci&oacute;\PHP inform&aacute;ci&oacute;\gd lapon. A b&eacute;lyegk&eacute;p minős&eacute;ge sokkal jobb, mint a b&ouml;ng&eacute;sző &aacute;ltal  \"&aacute;tm&eacute;retezett\" k&eacute;pek&eacute;. Az &uacute;jonnan l&eacute;trehozott k&eacute;pek a /shop_image/product/resized k&ouml;nyvt&aacute;rba ker&uuml;lnek. Ha a k&eacute;p m&aacute;r &aacute;t van m&eacute;retezve, ez a m&aacute;solat lesz megjelen&iacute;tve a b&ouml;ng&eacute;szőben, teh&aacute;t a k&eacute;p nem lesz mindegyre &aacute;tm&eacute;retezve.';
+	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Ha bejel&ouml;l&ouml;d, enged&eacute;lyezed a dinamikus k&eacute;p &aacute;tm&eacute;retez&eacute;st. Ez azt jelenti, hogy valamennyi b&eacute;lyegk&eacute;p &aacute;t lesz m&eacute;retezve az al&aacute;bb megadott &eacute;rt&eacute;kekre a PHP GD2 f&uuml;ggv&eacute;nyei seg&iacute;ts&eacute;g&eacute;vel (Ellenőrizheted, hogy van-e GD2 t&aacute;mogat&aacute;sod a \Rendszer\Rendszer inform&aacute;ci&oacute;\PHP inform&aacute;ci&oacute;\gd lapon. A b&eacute;lyegk&eacute;p minős&eacute;ge sokkal jobb, mint a b&ouml;ng&eacute;sző &aacute;ltal  "&aacute;tm&eacute;retezett" k&eacute;pek&eacute;. Az &uacute;jonnan l&eacute;trehozott k&eacute;pek a /shop_image/product/resized k&ouml;nyvt&aacute;rba ker&uuml;lnek. Ha a k&eacute;p m&aacute;r &aacute;t van m&eacute;retezve, ez a m&aacute;solat lesz megjelen&iacute;tve a b&ouml;ng&eacute;szőben, teh&aacute;t a k&eacute;p nem lesz mindegyre &aacute;tm&eacute;retezve.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH = 'B&eacute;lyegk&eacute;p f&aacute;jl sz&eacute;less&eacute;g';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP = 'Az &aacute;tm&eacute;retezett b&eacute;lyegk&eacute;p &aacute;llom&aacute;ny <strong>sz&eacute;less&eacute;ge</strong>.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT = 'B&eacute;lyegk&eacute;p f&aacute;jl magass&aacute;g';
@@ -1387,8 +1385,8 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PRICE_CONFIGURATION = '&Aacute;r be&aacute;ll&iacute;t&aacute;s';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL = 'A felhaszn&aacute;l&oacute;csoport akiknek ezeket az &aacute;rakat kell megmutatni';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP = 'A kiv&aacute;lasztott v&aacute;s&aacute;rl&oacute;csoport, &eacute;s mindenki, akinek enn&eacute;l magasabb besorol&aacute;sa van ezt a  term&eacute;k&aacute;rat fogja l&aacute;tni.';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Mutassa \"(bele&eacute;rtve XX% ad&oacute;t)\" amikor alkalmazhat&oacute;?';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Amikor be van jel&ouml;lve, a felhaszn&aacute;l&oacute;k l&aacute;tni fogj&aacute;k a\"(bele&eacute;rtve xx% ad&oacute;)\"  sz&ouml;veget, amikor &aacute;rak ad&oacute;val egy&ouml;tt ker&uuml;lnek kijelz&eacute;sre.';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Mutassa "(bele&eacute;rtve XX% ad&oacute;t)" amikor alkalmazhat&oacute;?';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Amikor be van jel&ouml;lve, a felhaszn&aacute;l&oacute;k l&aacute;tni fogj&aacute;k a"(bele&eacute;rtve xx% ad&oacute;)"  sz&ouml;veget, amikor &aacute;rak ad&oacute;val egy&ouml;tt ker&uuml;lnek kijelz&eacute;sre.';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL = 'Mutatja az &aacute;rat a csomagol&aacute;shoz?';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'Amikor be van jel&ouml;lve, a term&eacute;k &aacute;ra az egys&eacute;g&aacute;rb&oacute;l &eacute;s a csomagonk&eacute;nti darabsz&aacute;mb&oacute;l lesz kisz&aacute;m&iacute;tva:<br/> <strong>Egys&eacute;g&aacute;r (10 darab)</strong><br/> Amikor nincs bejel&ouml;lve, az &aacute;rak a megszokott form&aacute;ban jelennek meg: <strong>&Aacute;r</strong> : USD xx.xx ';
 	var $_PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS = 't&ouml;bb L&eacute;nyeges be&aacute;ll&iacute;t&aacute;s';
@@ -1412,6 +1410,15 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PEAR_LOG_EMERG = 'Emergency';
 	var $_PEAR_LOG_NOTICE = 'Notice';
 	var $_PEAR_LOG_DEBUG = 'Debug';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP = 'Enable PayFlow Pro payment?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_EXPLAIN = 'Check to use VeriSign\'s PayFlow Pro with VirtueMart.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE = 'Test mode ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNER = 'VeriSign processing Partner ID';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME = 'PayFlow Pro Login ID';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME_EXPLAIN = 'This is your PayFlow Pro Login ID';
+        
 }
 class phpShopLanguage extends vmLanguage { }
 

@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This Class provides some utility functions
 * to easily create drop-down lists
 *
-* @version $Id: ps_html.php,v 1.12 2005/10/26 19:25:24 soeren_nb Exp $
+* @version $Id: ps_html.php,v 1.13 2005/11/06 20:12:45 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -440,11 +440,17 @@ class ps_html {
 	* @return string Prints a div element
 	*/
 	function writableIndicator( $folder ) {
-
-		echo '<div class="quote">' . $folder . ' :: ';
-		echo is_writable( $folder )
-		? '<span style="font-weight:bold;color:green;">Writeable</span>'
-		: '<span style="font-weight:bold;color:red;">Unwriteable</span>';
+		if( !is_array( $folder)) {
+			$folder = array($folder);
+		}
+		echo '<div class="quote" style="text-align:left;margin-left:20px;" >';
+		foreach( $folder as $dir ) {
+			echo $dir . ' :: ';
+			echo is_writable( $dir )
+			? '<span style="font-weight:bold;color:green;">Writeable</span>'
+			: '<span style="font-weight:bold;color:red;">Unwriteable</span>';
+			echo '<br/>';
+		}
 		echo '</div>';
 	}
 	/**

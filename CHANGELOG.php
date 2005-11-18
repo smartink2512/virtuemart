@@ -33,6 +33,14 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+17-11-2005 soeren
++ added check for existance of GD library in configuration, product and category form
+^ preventing to install over an existing installation
+^ moved the "VirtueMart already installed?" check to allow manual installation.
+^ extended ps_html::writableIndicator to process arrays with more than one directory
++ integrated Verisign Payflow Pro payment module into VirtueMart
+
+
 17-11-2005 schirmer
 # minor fixes to payment and shipping modules
 

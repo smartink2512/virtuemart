@@ -1930,7 +1930,10 @@ $db->query( "INSERT INTO `#__{vm}_zone_shipping` VALUES (1, 'Default', 6.00, 35.
 (3, 'Zone 2', 2.00, 22.00, 'This is the second zone. You can use this for notes about this zone', 2),
 (4, 'Zone 3', 11.00, 64.00, 'Another usefull thing might be details about this zone or special instructions.', 2);");
 
-
+/**
+ * You wonder why users are visible in VirtueMart after installation?
+ * Well, because we add them here.
+ */
 $db->query( "SELECT * FROM #__users"); 
 $row = $database->loadObjectList();
 foreach( $row as $user) {
@@ -2171,6 +2174,7 @@ $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (14, 1, 'iTransact', ''
 		<p><input type=\"image\" alt=\"Process Secure Credit Card Transaction using iTransact\" border=\"0\" height=\"60\" width=\"210\" src=\"<?php echo \$cc_payment_image; ?>\" /> </p>
 		</form>', '');" );	
 $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES ('', 1, 'Dankort / PBS', 'ps_pbs', 5, '0.00', 0, 'PBS', 'P', 0, 'N', '', '', '');");
+$db->query( "INSERT INTO `#__{vm}_payment_method` VALUES ('', 1, 'Verisign PayFlow Pro', 'ps_pfp', 5, '0.00', 0, 'PFP', 'Y', 0, 'Y', '1,2,6,7,', '', '');" );
 
 $db->query( "INSERT INTO `#__{vm}_manufacturer` VALUES ('1', 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', '1', 'http://www.a-url.com');" );
 $db->query( "INSERT INTO `#__{vm}_manufacturer_category` VALUES ('1', '-default-', 'This is the default manufacturer category');" );

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_order.php,v 1.10 2005/11/05 14:11:56 soeren_nb Exp $
+* @version $Id: ps_order.php,v 1.11 2005/11/12 08:32:08 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -102,6 +102,68 @@ class ps_order {
 					$authorize =& new ps_authorize();
 					$d["order_number"] = $db->f("order_number");
 					if( !$authorize->capture_payment( $d )) {
+						return false;
+					}
+				}
+			}
+		}
+		/*
+		 * This is like the test above for delayed capture only
+		 * we (well, I - durian) don't think the credit card
+		 * should be captured until the item(s) are shipped.
+		 * In fact, VeriSign says not to capture the cards until
+		 * the item ships.  Maybe this behavior should be a
+		 * configurable item?
+		 *
+		 * When the order changes from Confirmed or Pending to
+		 * Shipped, perform the delayed capture.
+		 *
+		 * Restricted to PayFlow Pro for now.
+		 */
+		if( ($curr_order_status=="P" || $curr_order_status="C") && $d["order_status"]=="S") {
+			$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
+			$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
+			$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+			$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
+			$db->query( $q );
+			$db->next_record();
+			$payment_class = $db->f("payment_class");
+			if( $payment_class=="ps_pfp" ) {
+				require_once( CLASSPATH."payment/ps_pfp.cfg.php");
+				if( PFP_TYPE == 'A' ) {
+					require_once( CLASSPATH."payment/ps_pfp.php");
+					$pfp =& new ps_pfp();
+					$d["order_number"] = $db->f("order_number");
+					if( !$pfp->capture_payment( $d )) {
+						return false;
+					}
+				}
+			}
+		}
+
+		/*
+		 * If a pending order gets cancelled, void the authorization.
+		 *
+		 * It might work on captured cards too, if we want to
+		 * void shipped orders.
+		 *
+		 * Restricted to PayFlow Pro for now.
+		 */
+		if( $curr_order_status=="P" && $d["order_status"]=="X") {
+			$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
+			$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
+			$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+			$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
+			$db->query( $q );
+			$db->next_record();
+			$payment_class = $db->f("payment_class");
+			if( $payment_class=="ps_pfp" ) {
+				require_once( CLASSPATH."payment/ps_pfp.cfg.php");
+				if( PFP_TYPE == 'A' ) {
+					require_once( CLASSPATH."payment/ps_pfp.php");
+					$pfp =& new ps_pfp();
+					$d["order_number"] = $db->f("order_number");
+					if( !$pfp->void_authorization( $d )) {
 						return false;
 					}
 				}

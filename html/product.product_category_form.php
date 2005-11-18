@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_category_form.php,v 1.4 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: product.product_category_form.php,v 1.6 2005/09/30 10:14:30 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -125,6 +125,8 @@ if( !stristr( $db->f("category_thumb_image"), "http") )
 
 if( !stristr( $db->f("category_full_image"), "http") )
   echo "<input type=\"hidden\" name=\"category_full_image_curr\" value=\"". $db->f("category_full_image") ."\" />";
+  
+  $ps_html->writableIndicator( array( IMAGEPATH."category") );
 ?>
 
   <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -141,13 +143,17 @@ if( !stristr( $db->f("category_full_image"), "http") )
           </tr>
           <tr> 
             <td colspan="2" ><strong><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</strong><br/>
-              <input type="radio" class="inputbox" name="category_full_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-              <?php echo $VM_LANG->_PHPSHOP_NONE ?><br/>
-              <input type="radio" class="inputbox" name="category_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-              <?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL . "<br />"; 
+              <input type="radio" class="inputbox" name="category_full_image_action" id="category_full_image_action0" checked="checked" value="none" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
+              <label for="category_full_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE ?></label><br/>
+              <?php
+              if( function_exists('imagecreatefromjpeg')) {
+              		?>
+	              <input type="radio" class="inputbox" name="category_full_image_action" id="category_full_image_action1" value="auto_resize" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
+	              <label for="category_full_image_action1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL . "</label><br />"; 
+              }
               if ($category_id and $db->f("category_full_image")) { ?>
-                <input type="radio" class="inputbox" name="category_full_image_action" value="delete" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-                <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "<br />"; 
+                <input type="radio" class="inputbox" name="category_full_image_action" id="category_full_image_action2" value="delete" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
+                <label for="category_full_image_action2"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
               } ?> 
             </td>
           </tr>
@@ -188,12 +194,12 @@ if( !stristr( $db->f("category_full_image"), "http") )
           </tr>
           <tr> 
             <td colspan="2" ><strong><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</strong><br/>
-              <input type="radio" class="inputbox" name="category_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-              <?php echo $VM_LANG->_PHPSHOP_NONE ?><br/>
+              <input type="radio" class="inputbox" id="category_thumb_image_action0" name="category_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image_url, true );"/>
+              <label for="category_thumb_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE ?></label><br/>
               <?php 
               if ($category_id and $db->f("category_thumb_image")) { ?>
-                <input type="radio" class="inputbox" name="category_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-                <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "<br />"; 
+                <input type="radio" class="inputbox" id="category_thumb_image_action1" name="category_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image_url, true );"/>
+                <label for="category_thumb_image_action1"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
               } ?> 
             </td>
           </tr>

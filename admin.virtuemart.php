@@ -21,8 +21,10 @@ defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
 $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
 global $VM_LANG;
 /*** INSTALLER SECTION ***/
-if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
+include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.virtuemart.php' );
 
+if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
+	virtuemart_is_installed();
 	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
 
 	/** can be update and newinstall **/
@@ -43,21 +45,10 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
 
 }
 elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-	$installfile = dirname( __FILE__ ) . "/install.php";
-	if( file_exists($mosConfig_absolute_path.'/administrator/components/'.$option.'/classes/ps_main.php' )) {
-		echo '<h2>You already have installed VirtueMart on this server</h2>';
-		if( unlink( $installfile ) ) {
-			echo '<div>The installation file <strong>install.php</strong> has been deleted.</div>';
-		}
-		else {
-			echo '<div>Please delete the file <strong>install.php</strong>!</div>';
-		}
-	}
-	else {
-		include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.virtuemart.php' );
-		com_install();
-		exit();
-	}
+	
+	com_install();
+	exit();
+	
 }
 /*** END INSTALLER ***/
 
