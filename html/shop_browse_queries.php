@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file is to be included from the file shop.browse.php
 * and uses variables from the environment of the file shop.browse.php
 *
-* @version $Id: shop_browse_queries.php,v 1.4 2005/10/07 14:29:57 soeren_nb Exp $
+* @version $Id: shop_browse_queries.php,v 1.5 2005/10/10 18:49:19 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -36,8 +36,8 @@ if (!empty($product_type_id)) {
 	$db_browse->query($q);
 
 	/*** GET ALL PUBLISHED PRODUCT WHICH MATCH PARAMETERS ***/
-	$list  = "SELECT DISTINCT $fieldnames FROM #__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group ";
-	$count  = "SELECT $count_name FROM #__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group ";
+	$list  = "SELECT DISTINCT $fieldnames FROM (#__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group) ";
+	$count  = "SELECT $count_name FROM (#__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group) ";
 
 	$q  = "LEFT JOIN #__{vm}_product_price ON #__{vm}_product.product_id = #__{vm}_product_price.product_id ";
 	$q .= "LEFT JOIN #__{vm}_product_type_$product_type_id ON #__{vm}_product.product_id = #__{vm}_product_type_$product_type_id.product_id ";
@@ -168,8 +168,8 @@ if (!empty($product_type_id)) {
 elseif (empty($manufacturer_id)) {
 
 	/*** GET ALL PUBLISHED PRODUCTS ***/
-	$list  = "SELECT DISTINCT $fieldnames FROM #__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group ";
-	$count  = "SELECT $count_name FROM #__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group ";
+	$list  = "SELECT DISTINCT $fieldnames FROM (#__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group) ";
+	$count  = "SELECT $count_name FROM (#__{vm}_product, #__{vm}_category, #__{vm}_product_category_xref,#__{vm}_shopper_group) ";
 	$q  = "LEFT JOIN #__{vm}_product_price ON #__{vm}_product.product_id = #__{vm}_product_price.product_id ";
 	$q .= "WHERE #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id ";
 	if( $category_id ) {
@@ -271,8 +271,8 @@ elseif (empty($manufacturer_id)) {
 
 /*** GET ALL PUBLISHED PRODUCTS FROM THAT MANUFACTURER ***/
 elseif (!empty($manufacturer_id)) {
-	$list  = "SELECT DISTINCT * FROM #__{vm}_product, #__{vm}_product_mf_xref, #__{vm}_product_price,#__{vm}_shopper_group ";
-	$count  = "SELECT $count_name FROM #__{vm}_product, #__{vm}_product_mf_xref, #__{vm}_product_price,#__{vm}_shopper_group,#__{vm}_shopper_vendor_xref WHERE ";
+	$list  = "SELECT DISTINCT * FROM (#__{vm}_product, #__{vm}_product_mf_xref, #__{vm}_product_price,#__{vm}_shopper_group) ";
+	$count  = "SELECT $count_name FROM (#__{vm}_product, #__{vm}_product_mf_xref, #__{vm}_product_price,#__{vm}_shopper_group,#__{vm}_shopper_vendor_xref) WHERE ";
 	$q  = " manufacturer_id='".$manufacturer_id."' ";
 	$q .= "AND #__{vm}_product.product_id=#__{vm}_product_mf_xref.product_id ";
 	$q .= "AND #__{vm}_product.product_id=#__{vm}_product_price.product_id ";

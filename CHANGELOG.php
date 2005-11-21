@@ -33,16 +33,13 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+18-11-2005
++ added login form to account maintenance pages to allow quick login
+
 17-11-2005 soeren
-+ added check for existance of GD library in configuration, product and category form
-^ preventing to install over an existing installation
-^ moved the "VirtueMart already installed?" check to allow manual installation.
+^ removed the "VirtueMart already installed?" check to allow manual installation.
 ^ extended ps_html::writableIndicator to process arrays with more than one directory
 + integrated Verisign Payflow Pro payment module into VirtueMart
-
-
-17-11-2005 schirmer
-# minor fixes to payment and shipping modules
 
 16-11-2005 soeren
 
@@ -59,6 +56,7 @@ VirtueMart 1.0
 16-11-2005 schirmer
 # switched to vmLogger in payment and shipping modules
 # switched to new user_info table in payment and shipping modules
+
 
 15-11-2005 soeren
 # fixed a small bug in the ps_shopper.php

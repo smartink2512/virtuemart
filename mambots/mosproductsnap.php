@@ -1,24 +1,24 @@
 <?php
 /**
-* mambo-phpShop Show-Product-Snapshop Mambot
+* VirtueMart Show-Product-Snapshop Mambot
 *
-* @version $Id: mosproductsnap.php,v 1.2 2005/10/19 17:51:19 soeren_nb Exp $
-* @package Mambo_4.5.1
-* @subpackage mambo-phpShop
+* @version $Id: mosproductsnap.php,v 1.3 2005/11/01 18:39:46 soeren_nb Exp $
+* @package VirtueMart
+* @subpackage mambots
 *
 * @copyright (C) 2004 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* http://virtuemart.net
 */
 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 
 /**
-* mambo-phpShop Show-Product-Snapshop Mambot
+* VirtueMart Show-Product-Snapshop Mambot
 *
 * <b>Usage:</b>
 * <code>{product_snapshot:id=XX,showprice,showdesc,sowaddtocart,align}</code>
@@ -45,7 +45,7 @@ function mosProductSnapshotPlugin_onPrepareContent( $published, &$row, &$params,
     foreach ($pshop_productsnap_matches[0] as $pshop_productsnap_match) {
       $pshop_productsnap_output = "";
       $pshop_productsnap_match = str_replace("{product_snapshot:id=", "", $pshop_productsnap_match);
-      $pshop_productsnap_match = (int)str_replace("}", "", $pshop_productsnap_match);
+      $pshop_productsnap_match = str_replace("}", "", $pshop_productsnap_match);
       
       // Get Bot Parameters
       $pshop_productsnap_params = array();
@@ -58,14 +58,13 @@ function mosProductSnapshotPlugin_onPrepareContent( $published, &$row, &$params,
       $showaddtocart = $pshop_productsnap_params[3]=='true' ? true : false;
       $align  = $pshop_productsnap_params[4];
       
-      $showsnapshot = return_snapshot( $pshop_productsnap_match, $showprice, $showdesc, $showaddtocart, $align);
+      $showsnapshot = return_snapshot( $id, $showprice, $showdesc, $showaddtocart, $align);
   
       $pshop_productsnap_entrytext = preg_replace("/{product_snapshot:id=.+?}/", $showsnapshot, $pshop_productsnap_entrytext, 1);
     }
     $row->text = $pshop_productsnap_entrytext;
   
   }
-
 }
 
 /**************************************************************************

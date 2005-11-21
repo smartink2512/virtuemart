@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.index.php,v 1.4 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: account.index.php,v 1.5 2005/11/04 15:16:48 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -23,7 +23,7 @@ $ps_order = new ps_order;
 /* Set Dynamic Page Title when applicable */
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE );
     
-if ($perm->is_registered_customer($auth['user_id'])) { 
+if ($perm->is_registered_customer($auth['user_id'])) {
 
 ?>
   <strong><? echo $VM_LANG->_PHPSHOP_ACC_CUSTOMER_ACCOUNT ?></strong>
@@ -41,17 +41,23 @@ if ($perm->is_registered_customer($auth['user_id'])) {
           <br /><? echo $VM_LANG->_PHPSHOP_ACC_UPD_BILL ?>
       </td>
     </tr>
-    <tr><td>&nbsp;</td></tr>
-    
-    <tr>
-      <td><hr />
-      <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipping") ?>"><?php
-      echo "<img src=\"".IMAGEURL."ps_image/web.png\" align=\"middle\" border=\"0\" height=\"32\" width=\"32\" alt=\"".$VM_LANG->_PHPSHOP_ACC_SHIP_INFO."\" />&nbsp;&nbsp;&nbsp;";
-      echo $VM_LANG->_PHPSHOP_ACC_SHIP_INFO ?></a></strong>
-        <br />
-        <? echo $VM_LANG->_PHPSHOP_ACC_UPD_SHIP ?>
-      </td>
-    </tr>
+    <?php
+    if(CHECKOUT_STYLE == 1 || CHECKOUT_STYLE == 2) {
+	?>
+		<tr><td>&nbsp;</td></tr>
+		
+		<tr>
+		  <td><hr />
+		  <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipping") ?>"><?php
+		  echo "<img src=\"".IMAGEURL."ps_image/web.png\" align=\"middle\" border=\"0\" height=\"32\" width=\"32\" alt=\"".$VM_LANG->_PHPSHOP_ACC_SHIP_INFO."\" />&nbsp;&nbsp;&nbsp;";
+		  echo $VM_LANG->_PHPSHOP_ACC_SHIP_INFO ?></a></strong>
+			<br />
+			<? echo $VM_LANG->_PHPSHOP_ACC_UPD_SHIP ?>
+		  </td>
+		</tr>
+		<?php
+	}
+	?>
     <tr><td>&nbsp;</td></tr>
     
     <tr>
@@ -67,7 +73,8 @@ if ($perm->is_registered_customer($auth['user_id'])) {
     
 </table>
 <!-- Body ends here -->
-<? } 
+<?php } 
 else { 
-    echo $VM_LANG->_PHPSHOP_NO_CUSTOMER;
+    echo _LOGIN_TEXT .'<br/><br/><br/>';
+    include(PAGEPATH.'checkout.login_form.php');
 } ?>
