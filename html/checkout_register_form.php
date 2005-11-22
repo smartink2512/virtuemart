@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: checkout_register_form.php,v 1.11 2005/10/25 19:36:49 soeren_nb Exp $
+* @version $Id: checkout_register_form.php,v 1.12 2005/11/18 16:43:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -223,6 +223,7 @@ vmCommonHTML::printJS_formvalidation( $required_fields );
 	<input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid'] ?>" />
 	<input type="hidden" name="gid" value="<?php echo $my->gid ?>" />
 	<input type="hidden" name="id" value="<?php echo $my->id ?>" />
+	<input type="hidden" name="user_id" value="<?php echo $my->id ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="remember" value="yes" />
 	<input type="hidden" name="useractivation" value="<?php echo $mosConfig_useractivation; ?>" />
