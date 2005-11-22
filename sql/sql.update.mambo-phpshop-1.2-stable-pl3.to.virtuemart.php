@@ -171,4 +171,6 @@ $db->query("UPDATE `#__{vm}_payment_method`
 			SET `payment_extrainfo` = REPLACE (
 				`payment_extrainfo` ,'com_phpshop','com_virtuemart'
 			);");
+
+$db->query( 'ALTER TABLE `#__{vm}_product` CHANGE `product_in_stock` `product_in_stock` INT( 11 ) NULL DEFAULT NULL;')
 ?>

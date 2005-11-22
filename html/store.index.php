@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.index.php,v 1.9 2005/10/26 19:25:24 soeren_nb Exp $
+* @version $Id: store.index.php,v 1.10 2005/11/05 14:11:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -75,79 +75,79 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 ?>
 <div class="main">
 	<div class="sectionname">
-              <img src="<?php echo IMAGEURL ?>ps_image/Desktop.png" width="48px" height="48px" align="center" alt="Desktop" border="0"/>
+              <img src="<?php echo IMAGEURL ?>ps_image/Desktop.gif" width="48px" height="48px" align="center" alt="Desktop" border="0"/>
               <?php echo $VM_LANG->_PHPSHOP_YOUR_STORE."::".$VM_LANG->_PHPSHOP_CONTROL_PANEL; ?>
 	</div>
-	
-      <table width="100%" class="adminform">
+	<br style="clear:both;" />
+      <table width="100%" class="adminlist">
         <tr>
           <td width="60%" valign="top">
-		<div id="cpanel">
+				<div id="cpanel">
                 <?php
-		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list");
-		$image = IMAGEURL .'ps_image/shop_products.png';
-		$text = $VM_LANG->_PHPSHOP_PRODUCT_LIST_LBL;
-		$ps_html->writePanelIcon( $image, $link, $text );
+				$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list");
+				$image = IMAGEURL .'ps_image/shop_products.png';
+				$text = $VM_LANG->_PHPSHOP_PRODUCT_LIST_LBL;
+				$ps_html->writePanelIcon( $image, $link, $text );
+				
+				$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list");
+				$image = IMAGEURL .'ps_image/shop_categories.png';
+				$text = $VM_LANG->_PHPSHOP_CATEGORY_LIST_LBL;
+				$ps_html->writePanelIcon( $image, $link, $text );
 		
-		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list");
-		$image = IMAGEURL .'ps_image/shop_categories.png';
-		$text = $VM_LANG->_PHPSHOP_CATEGORY_LIST_LBL;
-		$ps_html->writePanelIcon( $image, $link, $text );
-
-		
-		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list");
-		$image = IMAGEURL .'ps_image/shop_orders.png';
-		$text = $VM_LANG->_PHPSHOP_ORDER_MOD;
-		$ps_html->writePanelIcon( $image, $link, $text );
-		
-		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list");
-		$image = IMAGEURL .'ps_image/shop_payment.png';
-		$text = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_MNU;
-		$ps_html->writePanelIcon( $image, $link, $text );
-              
-        if (defined( "_PSHOP_ADMIN" ) ) {
-		    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
-		    $image = IMAGEURL .'ps_image/shop_vendors.png';
-            $text =  $VM_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
-		    $ps_html->writePanelIcon( $image, $link, $text );
-        }
-                
-		if (defined( "_PSHOP_ADMIN" ) ) { 
-			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
-			$image = IMAGEURL .'ps_image/shop_users.png';
-			$text = $VM_LANG->_PHPSHOP_USERS;
-			$ps_html->writePanelIcon( $image, $link, $text );
-		}
-        
-        if (defined( "_PSHOP_ADMIN" ) ) {    
-			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
-			$image = IMAGEURL .'ps_image/shop_configuration.png';
-			$text = $VM_LANG->_PHPSHOP_CONFIG;
-			$ps_html->writePanelIcon( $image, $link, $text );
-		}
-                
-		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
-		$image = IMAGEURL .'ps_image/shop_mart.png';
-		$text = $VM_LANG->_PHPSHOP_STORE_FORM_MNU;
-		$ps_html->writePanelIcon( $image, $link, $text );
-                
-		$link = 'http://virtuemart.net/index.php?option=com_content&task=view&id=103&Itemid=67';
-		$image = IMAGEURL .'ps_image/shop_help.png';
-		$text = $VM_LANG->_PHPSHOP_HELP_MOD;
-		$ps_html->writePanelIcon( $image, $link, $text );
-		
-		?>
+				
+				$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list");
+				$image = IMAGEURL .'ps_image/shop_orders.png';
+				$text = $VM_LANG->_PHPSHOP_ORDER_MOD;
+				$ps_html->writePanelIcon( $image, $link, $text );
+				
+				$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list");
+				$image = IMAGEURL .'ps_image/shop_payment.png';
+				$text = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_MNU;
+				$ps_html->writePanelIcon( $image, $link, $text );
+		              
+		        if (defined( "_PSHOP_ADMIN" ) ) {
+				    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
+				    $image = IMAGEURL .'ps_image/shop_vendors.png';
+		            $text =  $VM_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
+				    $ps_html->writePanelIcon( $image, $link, $text );
+		        }
+		                
+				if (defined( "_PSHOP_ADMIN" ) ) { 
+					$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
+					$image = IMAGEURL .'ps_image/shop_users.png';
+					$text = $VM_LANG->_PHPSHOP_USERS;
+					$ps_html->writePanelIcon( $image, $link, $text );
+				}
+		        
+		        if (defined( "_PSHOP_ADMIN" ) ) {    
+					$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
+					$image = IMAGEURL .'ps_image/shop_configuration.png';
+					$text = $VM_LANG->_PHPSHOP_CONFIG;
+					$ps_html->writePanelIcon( $image, $link, $text );
+				}
+		                
+				$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
+				$image = IMAGEURL .'ps_image/shop_mart.png';
+				$text = $VM_LANG->_PHPSHOP_STORE_FORM_MNU;
+				$ps_html->writePanelIcon( $image, $link, $text );
+		                
+				$link = 'http://virtuemart.net/index.php?option=com_content&task=view&id=103&Itemid=67';
+				$image = IMAGEURL .'ps_image/shop_help.png';
+				$text = $VM_LANG->_PHPSHOP_HELP_MOD;
+				$ps_html->writePanelIcon( $image, $link, $text );
+				
+				?>
+			</div>
 		</td>
 		<td width="40%" valign="top">
-			<div style="width:100%;">
-    <?php
-        $tabs = new mShopTabs(0, 1, "_main");
-        $tabs->startPane("content-pane");
-        $tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS, "statistic-page");
-    ?>
-			<table class="adminlist">
+		    <?php
+		        $tabs = new mShopTabs(0, 1, "_main");
+		        $tabs->startPane("content-pane");
+		        $tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS, "statistic-page");
+		    ?>
+			<table style="width:95%;">
 				<tr> 
-				  <th colspan="2" align="right"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS ?></th>
+				  <th colspan="2" class="title"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS ?></th>
 				</tr>
 				<tr> 
 				  <td width="50%"><?php 
@@ -176,9 +176,9 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		$tabs->endTab();
 		$tabs->startTab( $VM_LANG->_PHPSHOP_ORDER_MOD, "order-page");
 		?>
-			<table class="adminlist">
+			<table style="width:95%;">
 				<tr> 
-				  <th colspan="2" ><?php 
+				  <th colspan="2" class="title"><?php 
 					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list\">"
 							  .  $VM_LANG->_PHPSHOP_ORDER_MOD ?></a>:</th>
 				</tr>
@@ -201,9 +201,9 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		$tabs->endTab();
 		$tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS, "neworder-page");
 		?>
-			<table class="adminlist">
+			<table style="width:95%;">
 				<tr>
-					<th colspan="2"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS ?></th>
+					<th colspan="2" class="title"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS ?></th>
 				</tr>
 		<?php 
 			foreach($new_orders as $order_id => $total) { ?>
@@ -222,9 +222,9 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		if (defined( "_PSHOP_ADMIN" ) ) {
 		$tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS, "newcustomer-page");
 		?>
-			<table class="adminlist">
+			<table style="width:95%;">
 				<tr> 
-				  <th colspan="2" align="right"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS ?></th>
+				  <th colspan="2" class="title"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS ?></th>
 				</tr>
 				<?php 
 				foreach($new_customers as $id => $name) { ?>

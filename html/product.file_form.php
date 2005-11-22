@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.file_form.php,v 1.5 2005/09/30 10:14:30 codename-matrix Exp $
+* @version $Id: product.file_form.php,v 1.6 2005/10/18 05:16:51 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -27,9 +27,10 @@ $db->query($q);
 $db->next_record();
 $selected_type[0] = "checked=\"checked\"";
 $selected_type[1] = "";
+$product_name = '<a href="'.$_SERVER['PHP_SELF'].'?option='.$option.'&amp;product_id='.$product_id.'&amp;page=product.product_form">'.$db->f("product_name").'</a>';
 
 $title ='<img src="'. $mosConfig_live_site .'/administrator/images/mediamanager.png" width="48" height="48" align="center" alt="Product List" border="0" />'
-		. $VM_LANG->_PHPSHOP_FILES_FORM . ": ". $db->f("product_name");
+		. $VM_LANG->_PHPSHOP_FILES_FORM . ": ". $product_name ;
 
 
 $file_id= mosgetparam( $_REQUEST, 'file_id' );
@@ -71,34 +72,39 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
     <tr> 
       <td valign="top"><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_LIST_FILETYPE ?>:</strong></div></td>
       <td> 
-        <input type="radio" onchange="checkThumbnailing();" <?php echo $selected_type[0] ?> class="inputbox" name="file_type" value="image" >
-        <?php echo $VM_LANG->_PHPSHOP_FILES_FORM_IMAGE ?><br/>
-        <input type="radio" onchange="checkThumbnailing();" <?php echo $selected_type[1] ?> class="inputbox" name="file_type" value="file">
-        <?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE ?>
+        <input type="radio" onchange="checkThumbnailing();" <?php echo $selected_type[0] ?> class="inputbox" id="file_type0" name="file_type" value="image" >
+        <label for="file_type0"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_IMAGE ?></label><br/>
+        <input type="radio" onchange="checkThumbnailing();" <?php echo $selected_type[1] ?> class="inputbox" id="file_type1" name="file_type" value="file">
+        <label for="file_type1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE ?></label>
       </td>
     </tr>
     <tr> 
       <td valign="top"><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_TO ?>:</strong></div></td>
       <td> 
-        <input type="radio" class="inputbox" name="upload_dir" checked="checked" value="IMAGEPATH" />
-        <?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH ?><br/><br/>
-        <input type="radio" class="inputbox" name="upload_dir" value="FILEPATH" />
-        <?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH ?>:
+        <input type="radio" class="inputbox" name="upload_dir" id="upload_dir0" checked="checked" value="IMAGEPATH" />
+        <label for="upload_dir0"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH ?></label><br/><br/>
+        <input type="radio" class="inputbox" name="upload_dir" id="upload_dir1" value="FILEPATH" />
+        <label for="upload_dir1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH ?></label>:
         &nbsp;&nbsp;&nbsp;<input type="text" class="inputbox" name="file_path" size="40" value="<?php echo $mosConfig_absolute_path ?>/media/" /><br/><br/>
-        <input type="radio" class="inputbox" name="upload_dir" value="DOWNLOADPATH" /><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH ?>
+        <input type="radio" class="inputbox" name="upload_dir" id="upload_dir2" value="DOWNLOADPATH" />
+        <label for="upload_dir2"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH ?></label>
       </td>
     </tr>
     <tr> 
-      <td><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL ?></strong></div></td>
+      <td><div align="right"><strong>
+      		<label for="file_create_thumbnail"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL ?></label>
+      	</strong></div></td>
       <td> 
-        <input type="checkbox" class="inputbox" name="file_create_thumbnail" checked="checked" value="1" />
+        <input type="checkbox" class="inputbox" id="file_create_thumbnail" name="file_create_thumbnail" checked="checked" value="1" />
       </td>
     </tr>
 
     <tr> 
-      <td><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_PUBLISHED ?></strong></div></td>
+      <td><div align="right" ><strong>
+      		<label for="file_published"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_PUBLISHED ?></label>
+      	</strong></div></td>
       <td> 
-        <input type="checkbox" class="inputbox" name="file_published" value="1" <?php if($db->sf("file_published")==1) echo "checked=\"checked\"" ?> size="16" />
+        <input type="checkbox" class="inputbox" id="file_published" name="file_published" value="1" <?php if($db->sf("file_published")==1) echo "checked=\"checked\"" ?> size="16" />
       </td>
     </tr>
     <tr> 

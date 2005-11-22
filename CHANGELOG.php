@@ -34,6 +34,13 @@ Legend:
 VirtueMart 1.0
 *************************************
 18-11-2005
+# filenames didn't include the full path
+# problem with filemanager: "The request file wasn't found"
+^ small DB structure change to allow negative quantities for "jos_vm_product.product_in_stock" (just removed the UNSIGNED attribute)
+	ALTER TABLE `jos_vm_product` CHANGE `product_in_stock` `product_in_stock` INT( 11 ) NULL DEFAULT NULL;
+# wrong height of full-image-popUp-window in product details
+^ (or bug fix?): added ob_start according to this bug report: http://virtuemart.net/index.php?option=com_flyspray&Itemid=83&do=details&id=300
+^ fixed the laoyut for IE in "Your store::control panel"
 + added login form to account maintenance pages to allow quick login
 
 17-11-2005 soeren

@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file lists all shipping modules. It's in a file that's not called shipping_module_list
 * because we currently can't add or remove shipping modules automatically!
 *
-* @version $Id: store.shipping_modules.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: store.shipping_modules.php,v 1.4 2005/10/07 14:29:57 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -44,11 +44,11 @@ else {
     <tr> 
       <th width="20">#</th>
       <th width="20">Active?</th>
-      <th align="left">Name</th>
-      <th align="left">Version</th>
-      <th align="left">Author</th>
-      <th align="left">Author URL</th>
-      <th align="left">Author Email</th>
+      <th class="title">Name</th>
+      <th class="title">Version</th>
+      <th class="title">Author</th>
+      <th class="title">Author URL</th>
+      <th class="title">Author Email</th>
       <th>Description</th>
     </tr>
 <?php
@@ -66,21 +66,26 @@ else {
             echo "<img src=\"$mosConfig_live_site/administrator/images/tick.png\" border=\"0\" alt=\"Active\"  align=\"center\"/>";
         ?></td>
         <td width="19%"><?php
-        if( $row['filename'] == "zone_shipping.php" || $row['filename'] == "standard_shipping.php" || $row['filename'] == "no_shipping.php" ) {
-          echo $row["name"];
-          echo "<br/><a href=\""; 
-          if( $row['filename'] == "zone_shipping.php" )
-            echo $sess->url( $_SERVER['PHP_SELF']."?page=zone.zone_list" );
-          elseif( $row['filename'] == "standard_shipping.php" )
-            echo $sess->url( $_SERVER['PHP_SELF']."?page=shipping.rate_list.php" );
-          elseif( $row['filename'] == "no_shipping.php" )
-            echo "";
-          echo "\">".$VM_LANG->_PHPSHOP_ISSHIP_FORM_UPDATE_LBL."</a>";
-        } 
+        echo $row["name"];
+        echo "<br/>"; 
+        
+        if( $row['filename'] == "zone_shipping.php" ) {
+        	echo "<a href=\"".$sess->url( $_SERVER['PHP_SELF']."?page=zone.zone_list" )."\">";
+        }
+        elseif( $row['filename'] == "standard_shipping.php" ) {
+        	echo "<a href=\"".$sess->url( $_SERVER['PHP_SELF']."?page=shipping.rate_list.php" )."\">";
+        }
+        elseif( $row['filename'] == "no_shipping.php" ) {
+        	//
+        }	
         else {
-              echo $row["name"]."<br/><a href=\"".$sess->url( $_SERVER['PHP_SELF']."?page=store.shipping_module_form&shipping_module=".$row['filename'] )."\">";
-              echo $VM_LANG->_PHPSHOP_ISSHIP_FORM_UPDATE_LBL."</a>";
-          }
+              echo "<a href=\"".$sess->url( $_SERVER['PHP_SELF']."?page=store.shipping_module_form&shipping_module=".$row['filename'] )."\">";
+        }
+        
+        if( $row['filename'] != 'no_shipping.php' ) {
+        	echo $VM_LANG->_PHPSHOP_ISSHIP_FORM_UPDATE_LBL."</a>";
+        }
+        
           ?>
         </td>
         <td width="7%"><?php echo $row["version"]; ?></td>

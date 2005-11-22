@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_database.php,v 1.7 2005/11/03 21:01:32 soeren_nb Exp $
+* @version $Id: ps_database.php,v 1.8 2005/11/04 15:16:48 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -212,6 +212,21 @@ class ps_DB extends database {
 		echo $this->sf( $field_name, $stripslashes);
 	}
 
+		/**
+	* This global function loads the first row of a query into an object
+	*
+	* If an object is passed to this function, the returned row is bound to the existing elements of <var>object</var>.
+	* If <var>object</var> has a value of null, then all of the returned query fields returned in the object.
+	* @param string The SQL query
+	* @param object The address of variable
+	*/
+	function loadObject( &$object ) {
+		$this->query();
+		if( !empty($this->record)) {
+			$object = $this->record[0];
+		}
+	}
+	
 	/**
 	 * Returns the number of rows in the RecordSet from a query.
 	 * @return int

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.filemanager.php,v 1.5 2005/10/18 05:16:51 soeren_nb Exp $
+* @version $Id: product.filemanager.php,v 1.6 2005/11/09 20:55:04 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -88,14 +88,17 @@ while ($db->next_record()) {
       
 	// What Images does the product have ?
 	$dbp->setQuery( "SELECT count(file_id) as images FROM #__{vm}_product_files WHERE file_product_id='" . $db->f("product_id") . "' AND file_is_image='1' " );
+	$images = array();
 	$dbp->loadObject($images);
       
 	// What Files does the product have ?
 	$dbp->setQuery( "SELECT count(file_id) as files FROM #__{vm}_product_files WHERE file_product_id='" . $db->f("product_id") . "' AND file_is_image='0' " );
+	$files = array();
 	$dbp->loadObject($files);
 	
-	if( $db->f("product_parent_id")) 
+	if( $db->f("product_parent_id")) {
 		$tmp_cell = "&nbsp;&nbsp;&nbsp;&nbsp;";
+	}
 	$tmp_cell .= $db->f("product_name");
 	$listObj->addCell( $tmp_cell );
 	

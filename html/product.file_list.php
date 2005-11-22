@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @author Soeren Eberhardt
 * @param int product_id
 *
-* @version $Id: product.file_list.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
+* @version $Id: product.file_list.php,v 1.5 2005/10/27 16:09:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -24,13 +24,14 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
+global $option;
 $product_id = mosGetParam($_REQUEST, 'product_id' );
 $task = mosGetParam($_REQUEST, 'task' );
 
 $q  = "SELECT product_name FROM #__{vm}_product WHERE product_id = '$product_id'";
 $db->query($q);
 $db->next_record();
-$product_name = $db->f("product_name");
+$product_name = '<a href="'.$_SERVER['PHP_SELF'].'?option='.$option.'&amp;product_id='.$product_id.'&amp;page=product.product_form">'.$db->f("product_name").'</a>';
 
 $dbf = new ps_DB;
 $sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';

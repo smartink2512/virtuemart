@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.10 2005/11/01 18:39:46 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.11 2005/11/14 18:58:14 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -215,10 +215,11 @@ if ($product_parent_id != 0) {
       // so returns false on remote files
       // This should fix the "Long Page generation bug"
       if( file_exists( IMAGEPATH."product/$full_image" )) {
+      	
         /* Get image width and height */
         if( $image_info = @getimagesize(IMAGEPATH."product/$full_image") ) {
-          $width = $image_info[0]+20;
-          $height = $image_info[1]+20;
+          $width = $image_info[0] + 20;
+          $height = $image_info[1] + 20;
         }
       }
       else {

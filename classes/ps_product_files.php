@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product_files.php,v 1.9 2005/10/27 16:09:13 soeren_nb Exp $
+* @version $Id: ps_product_files.php,v 1.10 2005/10/28 09:35:36 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -97,10 +97,11 @@ class ps_product_files {
 	** returns:
 	***************************************************************************/
 	function validate_update( &$d ) {
-
+		global $vmLogger;
+		
 		$db = new ps_DB;
 		if (empty($d["product_id"])) {
-			$GLOBALS['vmLogger']->err( "A product ID must be specified.");
+			$vmLogger->err( "A product ID must be specified.");
 			return False;
 		}
 
@@ -125,7 +126,8 @@ class ps_product_files {
 	* returns:
 	**************************************************************************/
 	function add( &$d ) {
-		global $mosConfig_absolute_path, $mosConfig_live_site, $database, $VM_LANG;
+		global $mosConfig_absolute_path, $mosConfig_live_site, 
+			$database, $VM_LANG, $vmLogger;
 
 		$db = new ps_DB;
 		$timestamp = time();
@@ -168,12 +170,17 @@ class ps_product_files {
 					$uploaddir = IMAGEPATH ."product/";
 					break;
 				case "FILEPATH":
-					$uploaddir = $d["file_path"];
-					if( !file_exists($uploaddir) )
-					@mkdir( $uploaddir );
+					$uploaddir = trim( $d["file_path"] );
+					if( !file_exists($uploaddir) ) {
+						@mkdir( $uploaddir );
+					}
 					if( !file_exists( $uploaddir ) ) {
-						$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_PATH_ERROR,PEAR_LOG_ERR );
+						$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_PATH_ERROR );
 						return false;
+					}
+					
+					if( substr( $uploaddir, strlen($uploaddir)-1, 1) != '/') {
+						$uploaddir .= '/';
 					}
 					break;
 				case "DOWNLOADPATH":
@@ -184,7 +191,7 @@ class ps_product_files {
 				$upload_success = $this->moveUploadedFile( 'file_upload', $uploaddir.$filename);
 			}
 			else {
-				$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE, PEAR_LOG_ERR );
+				$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_UPLOAD_FAILURE );
 				return false;
 			}
 			
@@ -208,13 +215,13 @@ class ps_product_files {
 					$neu = new Img2Thumb($tmp_filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
 
 					if( is_file( $fileout ) ) {
-						$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS, PEAR_LOG_INFO );
+						$vmLogger->info( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS );
 						$thumbimg = getimagesize( $fileout );
 						$file_image_thumb_width = $thumbimg[0];
 						$file_image_thumb_height = $thumbimg[1];
 					}
 					else {
-						$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE, PEAR_LOG_WARNING );
+						$vmLogger->warning( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE );
 						$file_image_thumb_height = "";
 						$file_image_thumb_width = "";
 					}
@@ -228,6 +235,7 @@ class ps_product_files {
 			else {
 				### File (no image) Upload ###
 				$is_image = "0";
+				$filename = $uploaddir . $filename;
 				$file_image_height = $file_image_width = $file_image_thumb_height = $file_image_thumb_width = "";
 			}
 		}
@@ -247,6 +255,7 @@ class ps_product_files {
 
 		$filename = $GLOBALS['vmInputFilter']->safeSQL( $filename );
 		$d["file_title"] = $GLOBALS['vmInputFilter']->safeSQL( $d["file_title"] );
+		
 		$q = "INSERT INTO #__{vm}_product_files ";
 		$q .= "(file_product_id, file_name, file_title, file_extension, file_mimetype, file_url, file_published,";
 		$q .= "file_is_image, file_image_height , file_image_width , file_image_thumb_height, file_image_thumb_width )";
@@ -267,15 +276,17 @@ class ps_product_files {
 	* returns:
 	**************************************************************************/
 	function update( &$d ) {
-		global $mosConfig_absolute_path, $mosConfig_live_site, $database, $VM_LANG;
+		global $mosConfig_absolute_path, $mosConfig_live_site, 
+			$database, $VM_LANG, $vmLogger;
 		$db = new ps_DB;
 		$timestamp = time();
 
 		if (!$this->validate_update($d)) {
 			return False;
 		}
-		if( empty( $d["file_published"] ))
-		$d["file_published"] = 0;
+		if( empty( $d["file_published"] )) {
+			$d["file_published"] = 0;
+		}
 
 		$is_download_attribute = false;
 
@@ -294,8 +305,9 @@ class ps_product_files {
 				$db->query($qu);
 			}
 		}
-		if( empty( $d["file_create_thumbnail"] ))
-		$d["file_create_thumbnail"] = 0;
+		if( empty( $d["file_create_thumbnail"] )) {
+			$d["file_create_thumbnail"] = 0;
+		}
 
 
 		if( !empty($_FILES['file_upload']['name']) ) {
@@ -313,20 +325,24 @@ class ps_product_files {
 			}
 			switch( $d["upload_dir"] ) {
 				case "IMAGEPATH":
-				$uploaddir = IMAGEPATH ."product/";
-				break;
+					$uploaddir = IMAGEPATH ."product/";
+					break;
 				case "FILEPATH":
-				$uploaddir = $d["file_path"];
-				if( !file_exists($uploaddir) )
-				@mkdir( $uploaddir );
-				if( !file_exists( $uploaddir ) ) {
-					$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_PATH_ERROR, PEAR_LOG_ERR );
-					return false;
-				}
-				break;
+					$uploaddir = trim( $d["file_path"] );
+					if( !file_exists($uploaddir) ) {
+						@mkdir( $uploaddir );
+					}
+					if( !file_exists( $uploaddir ) ) {
+						$GLOBALS['vmLogger']->log( $VM_LANG->_PHPSHOP_FILES_PATH_ERROR, PEAR_LOG_ERR );
+						return false;
+					}
+					if( substr( $uploaddir, strlen($uploaddir)-1, 1) != '/') {
+						$uploaddir .= '/';
+					}
+					break;
 				case "DOWNLOADPATH":
-				$uploaddir = DOWNLOADROOT;
-				break;
+					$uploaddir = DOWNLOADROOT;
+					break;
 			}
 			
 			if( $this->checkUploadedFile( 'file_upload' ) ) {
@@ -355,13 +371,13 @@ class ps_product_files {
 					/* We need to resize the image and Save the new one (all done in the constructor) */
 					$neu = new Img2Thumb($tmp_filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
 					if( is_file( $fileout ) ) {
-						$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS;
+						$vmLogger->info( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS );
 						$thumbimg = getimagesize( $fileout );
 						$file_image_thumb_width = $thumbimg[0];
 						$file_image_thumb_height = $thumbimg[1];
 					}
 					else {
-						$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE;
+						$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE );
 						$file_image_thumb_height = "";
 						$file_image_thumb_width = "";
 					}
@@ -381,10 +397,12 @@ class ps_product_files {
 			}
 		}
 		else {
-			if( $d['file_type'] == "image" )
-			$is_image = "1";
-			else
-			$is_image = "0";
+			if( $d['file_type'] == "image" ) {
+				$is_image = "1";
+			}
+			else {
+				$is_image = "0";
+			}
 			$filename = "";
 			$file_contents = "";
 			$ext = "";
@@ -470,40 +488,39 @@ class ps_product_files {
 	*/
 	function delete_record( $record_id, &$d ) {
 
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 		$dbf = new ps_DB;
 
 		if (!$this->validate_delete($record_id, $d)) {
 			return False;
 		}
-		$q = "SELECT file_name,file_is_image FROM #__{vm}_product_files WHERE file_id='$record_id'";
+		$q = "SELECT file_name,file_is_image FROM `#__{vm}_product_files` WHERE file_id='$record_id'";
 		$dbf->setQuery($q);
 		$dbf->query();
 		$dbf->next_record();
-		$_REQUEST['mosmsg'] = "";
 
 		if( $dbf->f("file_is_image") ) {
 			$info = pathinfo($dbf->f("file_name"));
 			if( !@unlink(realpath($dbf->f("file_name"))) ) {
-				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE );
 			}
 			else {
-				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS;
+				$vmLogger->info( $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS );
 			}
 			$thumb = $info["dirname"]."/resized/".basename($dbf->f("file_name"), ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
 			if( !@unlink( realpath($thumb) ) ) {
-				$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb ;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb );
 			}
 			else {
-				$_REQUEST['mosmsg'] .= $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS;
+				$vmLogger->info( $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS );
 			}
 		}
 		elseif( $dbf->f("file_name") ) {
 			if( !@unlink(realpath($dbf->f("file_name"))) ) {
-				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE;
+				$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_FAILURE );
 			}
 			else {
-				$_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS;
+				$vmLogger->info( $VM_LANG->_PHPSHOP_FILES_FILE_DELETE_SUCCESS );
 			}
 		}
 
@@ -530,8 +547,11 @@ class ps_product_files {
 		$dbf->next_record();
 		$exclude_filename = $GLOBALS['vmInputFilter']->safeSQL( $dbf->f( "attribute_value" ) );
 		$sql = 'SELECT DISTINCT file_id, file_mimetype, file_title'
-		. ' FROM `#__{vm}_product_files` '
-		. ' WHERE file_title != \''.$exclude_filename.'\' AND file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_is_image = \'0\'';
+			. ' FROM `#__{vm}_product_files` WHERE ';
+		if( $exclude_filename ) {
+			$sql .= ' file_title != \''.$exclude_filename.'\' AND ';
+		}
+		$sql .= 'file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_is_image = \'0\'';
 		$dbf->setQuery($sql);
 		$dbf->query();
 
@@ -554,30 +574,41 @@ class ps_product_files {
 	* returns:
 	**************************************************************************/
 	function send_file( $file_id, $product_id ) {
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 		$dbf = new ps_DB;
 		$html = "";
+		
+		$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';
+		$dbf->query( $sql );
+		$dbf->next_record();
+		$exclude_filename = $GLOBALS['vmInputFilter']->safeSQL( $dbf->f( "attribute_value" ) );
+		
 		$sql = 'SELECT file_mimetype, file_name'
-		. ' FROM `#__{vm}_product_files` '
-		. ' LEFT JOIN #__{vm}_product_attribute ON `product_id` = \''.$product_id.'\''
-		. ' WHERE file_title NOT IN ( attribute_value )'
-		. ' AND file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_id = \''.$file_id.'\' AND file_is_image = \'0\'';
+		. ' FROM `#__{vm}_product_files` WHERE ';
+		if( $exclude_filename ) {
+			$sql .= ' file_title != \''.$exclude_filename.'\' AND ';
+		}
+		$sql .= ' file_product_id = \''.$product_id.'\' AND file_published = \'1\' AND file_id = \''.$file_id.'\' AND file_is_image = \'0\'';
+		
 		$dbf->setQuery($sql);
 		$dbf->query();
 		if( $dbf->next_record() && is_readable($dbf->f("file_name") ) ) {
 			// dump anything in the buffer
-			@ob_end_clean();
+			while( @ob_end_clean() );
 
 			header('Content-Type: ' . $dbf->f("file_mimetype"));
-			if(!stristr($dbf->f("file_mimetype"), "pdf"))
-			header('Content-Disposition: attachment; filename="' . basename($dbf->f("file_name")) . '"');
+			
+			$ext = $dbf->f('file_extension');
+			if(!stristr($dbf->f("file_mimetype"), "pdf") && $ext != 'pdf') {
+				header('Content-Disposition: attachment; filename="' . basename($dbf->f("file_name")) . '"');
+			}
 			/*** Now send the file!! ***/
 			readfile( $dbf->f("file_name") );
 
 			exit();
 		}
 		else {
-			echo "<span class=\"shop_error\">".$VM_LANG->_PHPSHOP_FILES_NOT_FOUND."</span>";
+			$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_NOT_FOUND );
 		}
 		return true;
 	}
@@ -632,6 +663,7 @@ class ps_product_files {
 			return true;
 		}
 		if( move_uploaded_file( $_FILES[$fieldname]['tmp_name'], $storefilename )) {
+			chmod( $storefilename, 0644 );
 			return true;
 		}
 		else {
