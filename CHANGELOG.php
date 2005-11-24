@@ -33,7 +33,15 @@ Legend:
 
 VirtueMart 1.0
 *************************************
-18-11-2005
+23-11-2005 soeren
+# vmPopUpLink generating window with same value for width and height
+# removed whitepace at the end of ps_main.php
+# even when no discount was selected in the product form, a discounted end price was filled in
+# when user is assigned to a Shoppergroup which doesn't exist, the default one is used now (thanks to esteve!)
+# CSV-Export: removed export of "product_special" field, because it's not included in the default CSV configuration
+# CSV-Export running incorrect query (empty file received)
+
+21-11-2005 soeren
 # filenames didn't include the full path
 # problem with filemanager: "The request file wasn't found"
 ^ small DB structure change to allow negative quantities for "jos_vm_product.product_in_stock" (just removed the UNSIGNED attribute)

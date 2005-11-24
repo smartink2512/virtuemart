@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
-* @version $Id: ps_main.php,v 1.9 2005/11/05 14:11:56 soeren_nb Exp $
+* @version $Id: ps_main.php,v 1.10 2005/11/07 20:22:06 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -49,7 +49,7 @@ function validate_image(&$d,$field_name,$table_name) {
 		$vmLogger->debug( 'Had to create the directory '.$path);
 	}
 	
-	if( !is_writable($path)) {
+	if( !is_writable($path) && !empty( $_FILES[$field_name]["tmp_name"]) ) {
 		$vmLogger->err( 'Cannot write to '.$table_name.' image directory: '.$path );
 		return false;
 	}
@@ -911,7 +911,7 @@ if (!defined('ENT_QUOTES')) {
  * @link        http://php.net/function.html_entity_decode
  * @author      David Irvine <dave@codexweb.co.za>
  * @author      Aidan Lister <aidan@php.net>
- * @version     $Revision: 1.9 $
+ * @version     $Revision: 1.10 $
  * @since       PHP 4.3.0
  * @internal    Setting the charset will not do anything
  * @require     PHP 4.0.0 (user_error)
@@ -937,4 +937,4 @@ function vmHtmlEntityDecode($string, $quote_style = ENT_COMPAT, $charset = null)
 
     return strtr($string, $trans_tbl);
 }
-?> 
+?>

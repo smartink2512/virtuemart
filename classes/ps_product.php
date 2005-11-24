@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.22 2005/11/12 15:55:02 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.23 2005/11/18 16:43:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1315,7 +1315,7 @@ class ps_product extends vmAbstractObject {
 					$_SESSION['taxrate'][$ps_vendor_id] = 0;
 
 				}
-				elseif (TAX_MODE == 1) {
+				elseif (TAX_MODE == '1') {
 					if( empty( $_SESSION['taxrate'][$ps_vendor_id] )) {
 						// let's get the store's tax rate
 						$q = "SELECT tax_rate FROM #__{vm}_vendor, #__{vm}_tax_rate ";
@@ -1324,8 +1324,9 @@ class ps_product extends vmAbstractObject {
 						if ($db->next_record()) {
 							$_SESSION['taxrate'][$ps_vendor_id] = $db->f("tax_rate");
 						}
-						else
-						$_SESSION['taxrate'][$ps_vendor_id] = 0;
+						else {
+							$_SESSION['taxrate'][$ps_vendor_id] = 0;
+						}
 					}
 					return $_SESSION['taxrate'][$ps_vendor_id];
 				}

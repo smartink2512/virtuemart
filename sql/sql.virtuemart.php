@@ -1893,7 +1893,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_waiting_list` (
   `user_id` int(11) NOT NULL default '0',
   `notify_email` varchar(150) NOT NULL default '',
   `notified` enum('0','1') default '0',
-  `notify_date` timestamp(14) NOT NULL default '',
+  `notify_date` timestamp(14) NOT NULL,
   PRIMARY KEY  (`waiting_list_id`),
   KEY `product_id` (`product_id`),
   KEY `notify_email` (`notify_email`)

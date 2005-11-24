@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_shopper_group.php,v 1.4 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: ps_shopper_group.php,v 1.5 2005/10/25 19:36:49 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -332,30 +332,42 @@ class ps_shopper_group {
 	** parameters:
 	** returns:
 	***************************************************************************/
-	function get_shoppergroup_by_id($id) {
-		global $my;
-		$ps_vendor_id = $_SESSION['ps_vendor_id'];
-		$db = new ps_DB;
+  	function get_shoppergroup_by_id($id, $default_group = false) {
+    	global $my;
+    	$ps_vendor_id = $_SESSION['ps_vendor_id'];
+    	$db = new ps_DB;
 
-		$q =  "SELECT #__{vm}_shopper_group.shopper_group_id, show_price_including_tax, `default`, shopper_group_discount FROM #__{vm}_shopper_group";
-		if( !empty( $my->id )) {
-			$q .= ",#__{vm}_shopper_vendor_xref";
-			$q .= " WHERE #__{vm}_shopper_vendor_xref.user_id='" . $id . "' AND ";
-			$q .= " #__{vm}_shopper_group.shopper_group_id=#__{vm}_shopper_vendor_xref.shopper_group_id";
-		}
-		else
-		$q .= " WHERE #__{vm}_shopper_group.vendor_id='$ps_vendor_id' AND `default`='1'";
-
-		$db->query($q);
-		$db->next_record();
-
-		$group["shopper_group_id"] = $db->f("shopper_group_id");
-		$group["shopper_group_discount"] = $db->f("shopper_group_discount");
-		$group["show_price_including_tax"] = $db->f("show_price_including_tax");
-		$group["default_shopper_group"] = $db->f("default");
-
-		return $group;
-	}
+    	$q =  "SELECT #__{vm}_shopper_group.shopper_group_id, show_price_including_tax, `default`, shopper_group_discount 
+    		FROM `#__{vm}_shopper_group`";
+    	if( !empty( $my->id ) && !$default_group) {
+      		$q .= ",`#__{vm}_shopper_vendor_xref`";
+      		$q .= " WHERE #__{vm}_shopper_vendor_xref.user_id='" . $id . "' AND ";
+      		$q .= "#__{vm}_shopper_group.shopper_group_id=#__{vm}_shopper_vendor_xref.shopper_group_id";
+    	}
+    	else {
+    		$q .= " WHERE #__{vm}_shopper_group.vendor_id='$ps_vendor_id' AND `default`='1'";
+    	}
+    	$db->query($q);
+    	if ($db->next_record()){ //not sure that is is filled in database (Steve)
+            $group["shopper_group_id"] = $db->f("shopper_group_id");
+            $group["shopper_group_discount"] = $db->f("shopper_group_discount");
+            $group["show_price_including_tax"] = $db->f("show_price_including_tax");
+            $group["default_shopper_group"] = $db->f("default");
+        }
+        else {
+			$q = "SELECT #__{vm}_shopper_group.shopper_group_id, show_price_including_tax, `default`, shopper_group_discount 
+    				FROM `#__{vm}_shopper_group`
+    				WHERE #__{vm}_shopper_group.vendor_id='$ps_vendor_id' AND `default`='1'";
+			$db->query($q);
+			$db->next_record();
+			$group["shopper_group_id"] = $db->f("shopper_group_id");
+            $group["shopper_group_discount"] = $db->f("shopper_group_discount");
+            $group["show_price_including_tax"] = $db->f("show_price_including_tax");
+            $group["default_shopper_group"] = $db->f("default");
+	    	
+        }
+    	return $group;
+  	}
 	/**************************************************************************
 	** name: get_customer_num
 	** created by: soeren

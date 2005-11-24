@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_vendor.php,v 1.4 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: ps_vendor.php,v 1.5 2005/11/01 18:39:46 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -72,7 +72,7 @@ class ps_vendor {
 			return False;
 		}
 
-		$q = "SELECT * FROM #__{vm}_product where vendor_id='$vendor_id'";
+		$q = "SELECT vendor_id FROM #__{vm}_product where vendor_id='$vendor_id'";
 		$db->query($q);
 		if ($db->next_record()) {
 			$vmLogger->err( 'This vendor still has products. Delete all products first.' );

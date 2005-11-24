@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_csv.php,v 1.5 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: ps_csv.php,v 1.6 2005/11/14 18:58:13 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -92,8 +92,9 @@ class ps_csv {
       $data = fgetcsv($fp, 4096, $d['csv_delimiter']);
     }
     $skip_first_line = false;
-    if((strtoupper($d['skip_first_line'])) == 'Y') 
-      $skip_first_line = true; 
+    if(!empty($d['skip_first_line'])) {
+    	$skip_first_line = true; 
+    }
       
       $dbu = new ps_DB;
       $dbp = new ps_DB;
@@ -116,22 +117,40 @@ class ps_csv {
           }
           continue;
         }
+
+        // This will prevent importing weird data because of wrong exports
+        // Previous versions of this class exported an additional field (product_special), which is not wanted here
+        if( $csv_fields['product_available_date']['ordering'] == 13 
+        	&& $csv_fields['product_discount_id']['ordering'] == 14
+        	&& ( $data[13] == 'N' || $data[13] == 'Y' || (empty($data[13]) && $data[13]!==0 && $data[13]!=='0')) 
+        	) {
+        	$max = count( $data )-1;
+        	for( $i = 13; $i < $max; $i++ ) {
+        		$data[$i] = $data[$i+1];
+        	}
+        }
+        
         // Check for required Fields
         foreach( $required_fields as $fieldname => $ordering ) {
-          if (!$data[$ordering-1]) {
-            // If no category path is there, let's check if it's an item
-            if( $fieldname == "category_path" ) {
-              // It's an item, when Parent SKU and Product SKU do no match
-              if( $data[$csv_fields["product_parent_id"]["ordering"]-1] == $data[$csv_fields["product_sku"]["ordering"]-1])
-                $this_error .= "No $fieldname, ";
-            }
-            else
-              $this_error .= "No $fieldname, ";
-          }
-          else 
-            $$fieldname = $data[$ordering-1]; // This is a cool trick with dynamic variable names
+        	
+          	if (!$data[$ordering-1]) {
+            	// If no category path is there, let's check if it's an item
+            	if( $fieldname == "category_path" ) {
+              		// It's an item, when Parent SKU and Product SKU do no match
+              		if( $data[$csv_fields["product_parent_id"]["ordering"]-1] == $data[$csv_fields["product_sku"]["ordering"]-1]) {
+                		$this_error .= "No $fieldname, ";
+            		}
+            	}
+        		else {
+        			$this_error .= "No $fieldname, ";
+        		}
+          	}
+          	else {
+          		$$fieldname = $data[$ordering-1]; // This is a cool trick with dynamic variable names
+          	}
         }
-
+        
+        
           // Check for Manufacturer ID and set to 1 if omitted
           if( empty($data[$csv_fields["manufacturer_id"]["ordering"]-1])) {
             $data[$csv_fields["manufacturer_id"]["ordering"]-1] = $csv_fields["manufacturer_id"]["default_value"];
@@ -606,7 +625,7 @@ class ps_csv {
 	  * @name export_csv
 	  * @author soeren
 	  * @param array d
-	  * @returns void
+	  * @return void
     * 
 	  */
     function export_csv( &$d ) {
@@ -635,16 +654,17 @@ class ps_csv {
         * Get all products - including items
         * as well as products without a price
         **/
-        $sql = 'SELECT * FROM #__{vm}_product'
-          . ' LEFT OUTER JOIN #__{vm}_product_price'
-          . ' ON #__{vm}_product.product_id = #__{vm}_product_price.product_id'
-          . ' AND #__{vm}_product.vendor_id = \'1\' '
-          . ' AND shopper_group_id = \'5\' '
-          . ' LEFT JOIN #__{vm}_product_mf_xref'
-          . ' USING( product_id )'
-          . ' ORDER BY product_parent_id ASC , #__{vm}_product.product_id ASC';
+        $sql = 'SELECT * FROM #__{vm}_product
+        		LEFT OUTER JOIN #__{vm}_product_price
+        		ON #__{vm}_product.product_id = #__{vm}_product_price.product_id
+        		AND #__{vm}_product.vendor_id = \'1\'
+        		AND shopper_group_id = \'5\'
+        		LEFT JOIN #__{vm}_product_mf_xref
+        			ON #__{vm}_product.product_id = #__{vm}_product_mf_xref.product_id
+        		ORDER BY product_parent_id ASC , #__{vm}_product.product_id ASC';
         
         $db->query( $sql );
+        
         $delim = $d['csv_delimiter'];
         $encl = stripslashes(@$d['csv_enclosurechar']);
         
@@ -705,7 +725,7 @@ class ps_csv {
                                 . $delim . $encl . addslashes( $db->f("product_lwh_uom")) . $encl
                                 . $delim . $encl . $db->f("product_in_stock") . $encl
                                 . $delim . $encl . $db->f("product_available_date") . $encl
-                                . $delim . $encl . $db->f("product_special") . $encl
+                                //. $delim . $encl . $db->f("product_special") . $encl
                                 . $delim . $encl . $db->f("product_discount_id") . $encl
                                 . $delim . $encl . addslashes( $db->f("product_name")) . $encl
                                 . $delim . $encl . $db->f("product_price") . $encl
@@ -759,7 +779,8 @@ class ps_csv {
         $mime_type = ($UserBrowser == 'IE' || $UserBrowser == 'Opera') ? 'application/octetstream' : 'application/octet-stream';
         
         // dump anything in the buffer
-        @ob_end_clean();
+		while( @ob_end_clean() );
+		
         ob_start();
         header('Content-Type: ' . $mime_type);
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');

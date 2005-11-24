@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_tax.php,v 1.7 2005/10/28 09:35:36 soeren_nb Exp $
+* @version $Id: ps_tax.php,v 1.8 2005/11/12 08:32:08 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -53,7 +53,7 @@ class ps_tax {
 		}
 		$d["tax_rate"] = str_replace( ',', '.', $d['tax_rate']);
 		if( (float)@$d["tax_rate"] > 1.0 ) {
-			$d["tax_rate"] = (float)@$d["tax_rate"] / 100;
+			$d["tax_rate"] = floatval(@$d["tax_rate"]) / 100;
 		}
 
 		return $valid;
@@ -88,7 +88,7 @@ class ps_tax {
 		}
 		$d["tax_rate"] = str_replace( ',', '.', $d['tax_rate']);
 		if( (float)@$d["tax_rate"] > 1.0 ) {
-			$d["tax_rate"] = (float)@$d["tax_rate"] / 100;
+			$d["tax_rate"] = floatval(@$d["tax_rate"]) / 100;
 		}
 		return True;
 	}
@@ -130,7 +130,7 @@ class ps_tax {
 		$q .= "'$ps_vendor_id','";
 		$q .= $d["tax_state"] . "','";
 		$q .= $d["tax_country"] . "','";
-		$q .= (float)$d["tax_rate"] . "','";
+		$q .= $d["tax_rate"] . "','";
 		$q .= $timestamp . "')";
 		$db->query($q);
 		$db->next_record();
@@ -156,7 +156,7 @@ class ps_tax {
 		$q = "UPDATE #__{vm}_tax_rate SET ";
 		$q .= "tax_state='" . $d["tax_state"];
 		$q .= "',tax_country='" . $d["tax_country"];
-		$q .= "',tax_rate='" . (float)$d["tax_rate"];
+		$q .= "',tax_rate='" . $d["tax_rate"];
 		$q .= "',mdate='" . $timestamp;
 		$q .= "' WHERE tax_rate_id='" . $d["tax_rate_id"] . "'";
 		$q .= " AND vendor_id='$ps_vendor_id'";
@@ -238,8 +238,9 @@ class ps_tax {
 		}
 		/* This makes you able to select "no tax" for a product - so if you need it, uncomment it.
 		Then you must edit get_taxrate in ps_product too.
-		if ($select_name == "product_tax_id")
-		$html .= "<option value=\"0\">" . _PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n";
+		if ($select_name == "product_tax_id") {
+				$html .= "<option value=\"0\">" . _PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n";
+		}
 		*/
 		$html .= "</select>\n";
 		echo $html;

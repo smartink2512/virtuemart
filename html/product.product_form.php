@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_form.php,v 1.12 2005/11/02 20:06:59 soeren_nb Exp $
+* @version $Id: product.product_form.php,v 1.13 2005/11/18 16:43:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1071,7 +1071,9 @@ function updateDiscountedPrice() {
 			
 			if( discountCalc ) {
 				eval( 'var discPrice = ' + origPrice + discountCalc );
-				document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+				if( discPrice != origPrice ) {
+					document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+				}
 			}
 		}
 		catch( e ) { }

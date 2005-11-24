@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_checkout.php,v 1.19 2005/11/16 06:57:51 soeren_nb Exp $
+* @version $Id: ps_checkout.php,v 1.21 2005/11/18 16:43:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1891,8 +1891,7 @@ Order Total: '.$order_total.'
 
 			if ( !$shopper_mail || !$vendor_mail ) {
 				
-				$vmLogger->debug( $shopper_mail->ErrorInfo );
-				$vmLogger->debug( $vendor_mail->ErrorInfo );
+				$vmLogger->debug( 'Something went wrong while sending the order confirmation email to '.$from_email.' and '.$shopper_email );
 				return false;
 			}
 			//

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: version.php,v 1.13 2005/11/08 19:21:00 soeren_nb Exp $
+* @version $Id: version.php,v 1.14 2005/11/12 15:55:01 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,11 +25,12 @@ class vmVersion {
 	/** @var string Development Status */
 	var $DEV_STATUS = 'final';
 	/** @var string Codename */
-	var $CODENAME = 'Big Bill Broonzy';
+	// Big Walter Hornton was an US-american blues musician
+	var $CODENAME = 'Big Walter Horton';
 	/** @var string Date */
-	var $RELDATE = '12/11/2005';
+	var $RELDATE = '23/11/2005';
 	/** @var string Time */
-	var $RELTIME = '16:53';
+	var $RELTIME = '20:53';
 	/** @var string Timezone */
 	var $RELTZ = 'GMT';
 	/** @var string Copyright Text */
