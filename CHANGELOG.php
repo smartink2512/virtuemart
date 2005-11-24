@@ -33,6 +33,13 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+
+24-11-2005 soeren
+# setlocale( LC_NUMERIC, 'en' ) is used globally for ensuring that numbers are handled with decimal points
+# fixed a parser error in the random products module
+
+---- VirtueMart 1.0.0 final released ----
+
 23-11-2005 soeren
 # vmPopUpLink generating window with same value for width and height
 # removed whitepace at the end of ps_main.php
