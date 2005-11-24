@@ -229,6 +229,10 @@ else {
 			return $mainframe;
 		}
 	}
+	// Pre-Chache the output of the component
+	// why? Hmm. http://virtuemart.net/index.php?option=com_flyspray&Itemid=83&do=details&id=300
+	ob_start();
+	
 	// Caching is a sensible thing. We may cache only those pages 
 	// that look the same again and again
 	// Currently this are two pages: shop.browse, shop.product_details
