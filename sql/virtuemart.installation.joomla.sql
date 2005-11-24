@@ -1896,7 +1896,7 @@ CREATE TABLE IF NOT EXISTS `jos_vm_waiting_list` (
   `user_id` int(11) NOT NULL default '0',
   `notify_email` varchar(150) NOT NULL default '',
   `notified` enum('0','1') default '0',
-  `notify_date` timestamp(14) NOT NULL default '',
+  `notify_date` timestamp(14) NOT NULL,
   PRIMARY KEY  (`waiting_list_id`),
   KEY `product_id` (`product_id`),
   KEY `notify_email` (`notify_email`)
@@ -1924,12 +1924,4 @@ CREATE TABLE IF NOT EXISTS `jos_vm_zone_shipping` (
   KEY `zone_id` (`zone_id`)
 ) TYPE=MyISAM COMMENT='The Zones managed by the Zone Shipping Module';
 
-## 
-## Dumping data for table `jos_vm_zone_shipping`
-## 
-
-INSERT INTO `jos_vm_zone_shipping` VALUES (1, 'Default', 6.00, 35.00, 'This is the default Shipping Zone. This is the zone information that all countries will use until you assign each individual country to a Zone.', 2),
-(2, 'Zone 1', 1000.00, 10000.00, 'This is a zone example', 2),
-(3, 'Zone 2', 2.00, 22.00, 'This is the second zone. You can use this for notes about this zone', 2),
-(4, 'Zone 3', 11.00, 64.00, 'Another usefull thing might be details about this zone or special instructions.', 2);
         
