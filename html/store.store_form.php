@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: store.store_form.php,v 1.6 2005/10/01 08:55:44 soeren_nb Exp $
+* @version $Id: store.store_form.php,v 1.8 2005/11/16 14:43:32 codename-matrix Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -81,7 +81,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_STORE_MOD, "info-page");
     
 <?php
 /* Decode vendor_currency_display_style */
-$currency_display =& vendor_currency_display_style( $db->f("vendor_currency_display_style") );
+$currency_display = vendor_currency_display_style( $db->f("vendor_currency_display_style") );
 ?>
     <tr>
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_SYMBOL ?> : </td>
