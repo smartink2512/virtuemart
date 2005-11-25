@@ -33,6 +33,8 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+25-11-2005 schirmer
+# fixed bug #334 - Mambo mosPageNav used max($limit, 0) creating division by zero error. change occurances to vmPageNav
 
 24-11-2005 soeren
 # setlocale( LC_NUMERIC, 'en' ) is used globally for ensuring that numbers are handled with decimal points
