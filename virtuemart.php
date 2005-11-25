@@ -231,6 +231,7 @@ else {
 	}
 	// Pre-Chache the output of the component
 	// why? Hmm. http://virtuemart.net/index.php?option=com_flyspray&Itemid=83&do=details&id=300
+	if (_FRONTEND_ADMIN_LOADED == 0)
 	ob_start();
 	
 	// Caching is a sensible thing. We may cache only those pages 
