@@ -130,7 +130,7 @@ class Log_display extends vmLog
         	
         if( !$this->_buffering ) {
         	
-        	$this->flush();
+        	$this->printLog();
         }
         /* Notify observers about this log message. */
         $this->_announce(array('priority' => $priority, 'message' => $message));
@@ -168,7 +168,7 @@ class Log_display extends vmLog
      * Flush the _messages array and print all messages
      * @author Soeren Eberhardt
      */
-	function flush( $priority = null ) {
+	function printLog( $priority = null ) {
 		$output = "";
 		if( $this->_count > 10 && DEBUG) {
 			// Wrap the messages into a scrollable div field
