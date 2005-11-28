@@ -71,7 +71,7 @@ function freePDF( $showpage, $flypage, $product_id, $category_id ) {
 	global $db, $sess, $auth, $my, $perm, $VM_LANG, $mosConfig_live_site, $mosConfig_sitename, $mosConfig_offset, $mosConfig_hideCreateDate, $mosConfig_hideAuthor, 
 	$mosConfig_hideModifyDate,$mm_action_url, $database, $mainframe, $mosConfig_absolute_path, $vendor_full_image, $vendor_name, $limitstart, $limit;
 	
-	ob_end_clean();
+	while( @ob_end_clean() );
 	error_reporting( 0 );
 	ini_set( "allow_url_fopen", "1" );
 	define('FPDF_FONTPATH', CLASSPATH.'pdf/font/');
@@ -113,6 +113,7 @@ function freePDF( $showpage, $flypage, $product_id, $category_id ) {
 	  $pdf->WriteHTML($html);
 	  break;
 	}
+	
 	//Output the file
 	$pdf->Output();		
 }
