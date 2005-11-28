@@ -270,15 +270,17 @@ class ps_module {
         if ($perm->check( $dir_list[ 'perms' ]) ) {
 		
             if ( !file_exists(PAGEPATH.$modulename.".".$pagename.".php") ) {
+            	define( '_VM_PAGE_NOT_FOUND', 1 );
                 $error = $VM_LANG->_PHPSHOP_PAGE_404_1;
-                $error .= ' '.$VM_LANG->_PHPSHOP_PAGE_404_2 ."<br />";
-                $error .= $modulename.".".$pagename.".php";
+                $error .= ' '.$VM_LANG->_PHPSHOP_PAGE_404_2 ;
+                $error .= ' '.$modulename.".".$pagename.".php";
                 $vmLogger->err( $error );
 				return false;
             }
 			return true;
         }
         else {
+        	define( '_VM_PAGE_NOT_AUTH', 1 );
             $vmLogger->err( $VM_LANG->_PHPSHOP_MOD_NO_AUTH );
             return false;
         }
