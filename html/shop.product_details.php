@@ -121,16 +121,15 @@ if ($product_parent_id != 0) {
     }
     $_GET['category_id'] = $category_id = $db->f("category_id");
   }
-  $navigation_pathway = $ps_product_category->get_navigation_list($category_id);
+  $navigation_pathway .= $ps_product_category->get_navigation_list($category_id);
   $navigation_pathway .= " ".$ps_product_category->pathway_separator()." ". $product_name;
 
   if ($ps_product_category->has_childs($category_id) ) { 
-    $navigation_childlist = $ps_product_category->get_child_list($category_id);
+    $navigation_childlist .= $ps_product_category->get_child_list($category_id);
   }
   
   /* Set Dynamic Pathway */
     $mainframe->appendPathWay( $navigation_pathway );
-    $navigation_pathway = "";
  
   /* Set Dynamic Page Title */
     $mainframe->setPageTitle( html_entity_decode( substr($product_name, 0, 60 ) ));

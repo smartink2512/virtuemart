@@ -33,6 +33,9 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+28-11-2005 schirmer
+# fixed pathway not showing in flypages
+
 25-11-2005 schirmer
 # fixed bug #334 - Mambo mosPageNav used max($limit, 0) creating division by zero error. change occurances to vmPageNav
 # new precaching blocked frontend admin. workaround implemented.
