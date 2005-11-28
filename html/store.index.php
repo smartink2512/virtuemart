@@ -167,8 +167,8 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 				</tr>
 				<tr> 
 				  <td width="50%"><?php 
-					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.specialprod\">"
-							  .  $VM_LANG->_PHPSHOP_SPECIAL_PRODUCTS ?></a>:</td>
+					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.specialprod&filter=featured\">"
+							  .  $VM_LANG->_PHPSHOP_SHOW_FEATURED ?></a>:</td>
 				  <td width="50%"><?php echo $special_products ?></td>
 				</tr>
 			</table>
