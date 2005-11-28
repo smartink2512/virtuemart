@@ -21,14 +21,14 @@ class vmVersion {
 	/** @var string Product */
 	var $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	var $RELEASE = '1.0.0';
+	var $RELEASE = '1.1.0';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'final';
+	var $DEV_STATUS = 'alpha';
 	/** @var string Codename */
 	// Big Walter Hornton was an US-american blues musician
 	var $CODENAME = 'Big Walter Horton';
 	/** @var string Date */
-	var $RELDATE = '23/11/2005';
+	var $RELDATE = '28/11/2005';
 	/** @var string Time */
 	var $RELTIME = '20:53';
 	/** @var string Timezone */
