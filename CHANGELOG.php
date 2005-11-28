@@ -33,6 +33,14 @@ Legend:
 
 VirtueMart 1.0
 *************************************
+
+28-11-2005 soeren
+^ renamed the vmLog function 'flush' to 'printLog' to prevent early flushing (was it caused by the function name?? would be another curious php bug)
+! wrong error handling when a user is not allowed to view the requested page (Security Issue).
+# wrong featured products links on storeadmin homepage
+# PDF output not working
+# calling html_entity_decode with an empty string crashed Apache and VM (class.phpinputfilter.php)
+ 
 28-11-2005 schirmer
 # fixed pathway not showing in flypages
 
@@ -40,6 +48,7 @@ VirtueMart 1.0
 # fixed bug #334 - Mambo mosPageNav used max($limit, 0) creating division by zero error. change occurances to vmPageNav
 # new precaching blocked frontend admin. workaround implemented.
 
+>>>>>>> 1.56
 24-11-2005 soeren
 # setlocale( LC_NUMERIC, 'en' ) is used globally for ensuring that numbers are handled with decimal points
 # fixed a parser error in the random products module

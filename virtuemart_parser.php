@@ -284,7 +284,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	
 	// the Log object holds all error messages
 	// here we flush the buffer and print out all messages
-	$vmLogger->flush();
+	$vmLogger->printLog();
 	// Now we can switch to implicit flushing
 	$vmLogger->_buffering = false;
 	
