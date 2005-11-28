@@ -275,12 +275,14 @@ class vmInputFilter {
 	  * @return String $source
 	  */
 	function decode($source) {
-		// url decode
-		$source = html_entity_decode($source, ENT_QUOTES, "ISO-8859-1");
-		// convert decimal
-		$source = preg_replace('/&#(\d+);/me',"chr(\\1)", $source);				// decimal notation
-		// convert hex
-		$source = preg_replace('/&#x([a-f0-9]+);/mei',"chr(0x\\1)", $source);	// hex notation
+		if( $source != "" ) { //bypass php html_entity_decode bug # 21338 on systems where unable to upgrade php
+			// url decode
+			$source = html_entity_decode($source, ENT_QUOTES, "ISO-8859-1");
+			// convert decimal
+			$source = preg_replace('/&#(\d+);/me',"chr(\\1)", $source);				// decimal notation
+			// convert hex
+			$source = preg_replace('/&#x([a-f0-9]+);/mei',"chr(0x\\1)", $source);	// hex notation
+		}
 		return $source;
 	}
 
