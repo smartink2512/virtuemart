@@ -84,7 +84,8 @@ $db_browse->query( $count );
 
 $num_rows = $db_browse->f("num_rows");
 
-if( $limitstart > 0 && $limit > $num_rows) {
+if( $limitstart > 0 && $limit >= $num_rows) {
+	
 	$list = str_replace( 'LIMIT '.$limitstart, 'LIMIT 0', $list );
 }
 
@@ -135,8 +136,8 @@ else {
 	if ( $num_rows > 1 && @$_REQUEST['output'] != "pdf") {
 		// Prepare Page Navigation
 		if ( $num_rows > $limit  || $num_rows > 5 ) {
-			require_once(CLASSPATH."pageNavigation.class.php");
-			$pagenav = new vmPageNav( $num_rows, $limitstart, $limit);
+			require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
+			$pagenav = new mosPageNav( $num_rows, $limitstart, $limit);
 
 			$search_string = $mm_action_url."index.php?option=com_virtuemart&page=$modulename.browse&category_id=$category_id&keyword=".urlencode( $keyword )."&manufacturer_id=$manufacturer_id&Itemid=$Itemid";
 			$search_string .= !empty($orderby) ? "&orderby=".urlencode($orderby) : "";
@@ -469,8 +470,8 @@ else {
 
 if ( $num_rows > $limit && @$_REQUEST['output'] != "pdf") {
 	if( !isset($pagenav) ) {
-		require_once(CLASSPATH."pageNavigation.class.php");
-		$pagenav = new vmPageNav( $num_rows, $limitstart, $limit);
+		require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
+		$pagenav = new mosPageNav( $num_rows, $limitstart, $limit);
 	}
 	echo sefReltoAbs($pagenav->writePagesLinks( $search_string ));
 }

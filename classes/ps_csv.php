@@ -781,24 +781,22 @@ class ps_csv {
         // dump anything in the buffer
 		while( @ob_end_clean() );
 		
-        ob_start();
         header('Content-Type: ' . $mime_type);
+        header('Content-Encoding: none');
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
   
         if ($UserBrowser == 'IE') {
-          header('Content-Disposition: inline; filename="' . $filename . '"');
-          header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-          header('Pragma: public');
+          	header('Content-Disposition: inline; filename="' . $filename . '"');
+          	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+          	header('Pragma: public');
         } else {
-          header('Content-Disposition: attachment; filename="' . $filename . '"');
-          header('Pragma: no-cache');
+          	header('Content-Disposition: attachment; filename="' . $filename . '"');
+          	header('Pragma: no-cache');
         }
          /*** Now dump the data!! ***/
-				echo $contents;
-				ob_end_flush();
-				ob_start();
-				// do nothin' more
-				exit();
+		echo $contents;				
+		// do nothin' more
+		exit();
     }
     
 	/**

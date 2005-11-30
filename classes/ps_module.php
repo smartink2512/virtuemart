@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: ps_module.php,v 1.5 2005/10/01 16:24:53 soeren_nb Exp $
+* @version $Id: ps_module.php,v 1.6.2.1 2005/11/28 17:55:23 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -273,7 +273,7 @@ class ps_module {
             	define( '_VM_PAGE_NOT_FOUND', 1 );
                 $error = $VM_LANG->_PHPSHOP_PAGE_404_1;
                 $error .= ' '.$VM_LANG->_PHPSHOP_PAGE_404_2 ;
-                $error .= ' '.$modulename.".".$pagename.".php";
+                $error .= ' "'.$modulename.".".$pagename.'.php"';
                 $vmLogger->err( $error );
 				return false;
             }
@@ -287,7 +287,7 @@ class ps_module {
     }
     else {
         $error = $VM_LANG->_PHPSHOP_MOD_NOT_REG;
-        $error .= $modulename . $VM_LANG->_PHPSHOP_MOD_ISNO_REG;
+        $error .= '"'.$modulename .'" '. $VM_LANG->_PHPSHOP_MOD_ISNO_REG;
         $vmLogger->err( $error );
         return false;
     }

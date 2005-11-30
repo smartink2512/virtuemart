@@ -27,7 +27,7 @@ mm_showMyFileName( __FILE__ );
    $db->next_record();
 }
 ?> 
-<form method="post" action="<?php echo $PHP_SELF ?>" name="adminForm">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm">
   <table width="100%" border="0" cellspacing="0" cellpadding="2" >
     <tr> 
       <td colspan="2" nowrap align="right" > 

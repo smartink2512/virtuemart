@@ -24,6 +24,10 @@ if (!$acl->acl_check( 'administration', 'manage', 'users', $my->usertype, 'compo
 global $ps_shopper_group;
 include_class( 'shopper' );
 
+if( !isset($ps_shopper_group)) {
+	$ps_shopper_group = new ps_shopper_group();
+}
+
 $user_id = mosGetParam( $_REQUEST, 'user_id' );
 
 if( !empty($user_id) ) {

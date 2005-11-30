@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 ?> 
 
-<form method="post" action="<?php echo $PHP_SELF ?>" name="adminForm"> 
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm"> 
 <input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>">
 <input type="hidden" name="func" value="affiliateemail"> 
 <input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_email">

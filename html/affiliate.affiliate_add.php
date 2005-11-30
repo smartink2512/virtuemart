@@ -33,7 +33,7 @@ if (isset($user_id)) {
    $db->next_record();
 }
 ?> 
-<form method="post" action="<?php echo $PHP_SELF ?>" name="adminForm" class="adminform">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" class="adminform">
   <input type="hidden" name="user_info_id" value="<?php $db->sp("user_info_id"); ?>">
   <input type="hidden" name="cache" value="0">
   <input type="hidden" name="func" value="<?php echo isset($user_id) ? "affiliateAdd" : "shopperAdd"; ?>">

@@ -855,7 +855,7 @@ class ps_product_category extends vmAbstractObject {
 	 * @return string The HTML code
 	 */
 	function get_child_list($category_id) {
-		global $sess, $PHP_SELF, $ps_product, $VM_LANG;
+		global $sess, $ps_product, $VM_LANG;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 
@@ -1202,7 +1202,7 @@ class ps_product_category extends vmAbstractObject {
 	 * @param int $category_id
 	 */
 	function get_navigation_list($category_id) {
-		global $sess, $PHP_SELF, $mosConfig_live_site;
+		global $sess, $mosConfig_live_site;
 		$db = new ps_DB;
 
 		static $i=0;
@@ -1214,7 +1214,7 @@ class ps_product_category extends vmAbstractObject {
 		$db->next_record();
 		if ($db->f("category_parent_id")) {
 			$link = "<a class=\"pathway\" href=\"";
-			$link .= $sess->url($PHP_SELF . "?page=shop.browse&category_id=$category_id");
+			$link .= $sess->url($_SERVER['PHP_SELF'] . "?page=shop.browse&category_id=$category_id");
 			$link .= "\">";
 			$link .= $db->f("category_name");
 			$link .= "</a>";
@@ -1223,7 +1223,7 @@ class ps_product_category extends vmAbstractObject {
 		}
 		else {
 			$link = "<a class=\"pathway\" href=\"";
-			$link .= $sess->url($PHP_SELF . "?page=shop.browse&category_id=$category_id");
+			$link .= $sess->url($_SERVER['PHP_SELF'] . "?page=shop.browse&category_id=$category_id");
 			$link .= "\">";
 			$link .= $db->f("category_name");
 			$link .= "</a>";

@@ -177,7 +177,7 @@ class listFactory {
 	*/
 	function writeSearchHeader( $title, $image="", $modulename, $pagename) {
 	
-		global $sess, $keyword, $PHP_SELF, $VM_LANG, $option;
+		global $sess, $keyword, $VM_LANG, $option;
 	  
 		if( !empty( $keyword )) {
 			$keyword = urldecode( $keyword );
@@ -189,7 +189,7 @@ class listFactory {
 		$search_date = mosGetParam( $_REQUEST, 'search_date', null);
 		$show = mosGetParam( $_REQUEST, "show", "" );
 		
-		$header = "<form name=\"adminForm\" action=\"$PHP_SELF\" method=\"post\">
+		$header = "<form name=\"adminForm\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">
 					<input type=\"hidden\" name=\"option\" value=\"$option\" />
 					<input type=\"hidden\" name=\"page\" value=\"". $modulename . "." . $pagename . "\" />
 					<input type=\"hidden\" name=\"task\" value=\"\" />\n

@@ -4,6 +4,9 @@ INSERT INTO `jos_vm_coupons` VALUES (2, 'test2', 'percent', 'permanent', 15.00);
 INSERT INTO `jos_vm_coupons` VALUES (3, 'test3', 'total', 'permanent', 4.00);
 INSERT INTO `jos_vm_coupons` VALUES (4, 'test4', 'total', 'gift', 15.00);
 
+INSERT INTO `jos_vm_shipping_carrier` VALUES (1, 'DHL', 0);
+INSERT INTO `jos_vm_shipping_carrier` VALUES (2, 'UPS', 1);
+
 INSERT INTO `jos_vm_shipping_rate` VALUES (1,'Inland &gt; 4kg','1','DEU','00000','99999','0.0','4.0','5.62','2','47','0','1');
 INSERT INTO `jos_vm_shipping_rate` VALUES (2,'Inland &gt; 8kg','1','DEU','00000','99999','4.0','8.0','6.39','2','47','0','2');
 INSERT INTO `jos_vm_shipping_rate` VALUES (3,'Inland &gt; 12kg','1','DEU','00000','99999','8.0','12.0','7.16','2','47','0','3');

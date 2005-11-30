@@ -56,13 +56,16 @@ elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$opti
 /* Load the virtuemart main parse code */
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
+if( empty( $page )) {
+	$page = 'store.index';
+}
+
 $limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
 $limitstart = $mainframe->getUserStateFromRequest( "view{$page}limitstart", 'limitstart', 0 );
 
 if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
 	echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";
 }
-
 
 // renew Page-Information
 $my_page= explode ( '.', $page );
@@ -80,7 +83,12 @@ echo '<link href="../components/'.$option.'/css/shop.css" type="text/css" rel="s
 echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
 
 // Load PAGE
-include( PAGEPATH.$modulename.".".$pagename.".php" );
+if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
+	include( PAGEPATH.$modulename.".".$pagename.".php" );
+}
+else {
+	include( PAGEPATH.'store.index.php' );
+}
 include_once( ADMINPATH. 'version.php' );
 
 echo '<br style="clear:both;"/><div class="smallgrey" align="center"><a href="http://virtuemart.net/index.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" target="_blank">Check for latest VirtueMart version</a></div>';

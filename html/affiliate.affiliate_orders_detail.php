@@ -61,7 +61,7 @@ mm_showMyFileName( __FILE__ );
 
 </table>
 
-<form method="post" action="<?php echo $PHP_SELF ?>">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
   <input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>">
   <input type="hidden" name="date" value="<?php echo isset($date) ? $date : ""; ?>"> 
   <input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_orders_detail"> 

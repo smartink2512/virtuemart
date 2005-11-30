@@ -31,8 +31,17 @@ Legend:
 
 --------------------------------------------------------------------------------------------------------------
 
-VirtueMart 1.0
+VirtueMart 1.0.x
 *************************************
+
+30-11-2005
+# added a routine to unpublish mambo-phpShop mambots on upgrade
+# added checks for the existance of files which are to be loaded
+# added a check if $ps_shopper_group is an instantiated ps_shopper_group object to admin.user_form.php
+# renamed all occurences of $PHP_SELF to $_SERVER['PHP_SELF']
+# fixed a bug in the page navigation on the browse page (document.adminForm is null or not an object)
+
+---- VirtueMart 1.0.1 released ----
 
 28-11-2005 soeren
 ^ renamed the vmLog function 'flush' to 'printLog' to prevent early flushing (was it caused by the function name?? would be another curious php bug)
@@ -41,14 +50,6 @@ VirtueMart 1.0
 # PDF output not working
 # calling html_entity_decode with an empty string crashed Apache and VM (class.phpinputfilter.php)
  
-28-11-2005 schirmer
-# fixed pathway not showing in flypages
-
-25-11-2005 schirmer
-# fixed bug #334 - Mambo mosPageNav used max($limit, 0) creating division by zero error. change occurances to vmPageNav
-# new precaching blocked frontend admin. workaround implemented.
-
->>>>>>> 1.56
 24-11-2005 soeren
 # setlocale( LC_NUMERIC, 'en' ) is used globally for ensuring that numbers are handled with decimal points
 # fixed a parser error in the random products module

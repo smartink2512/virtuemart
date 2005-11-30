@@ -2,11 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-<<<<<<< virtuemart.php
 * @version $Id$
-=======
-* @version $Id$
->>>>>>> 1.10
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -229,7 +225,15 @@ else {
             <img src=\"".IMAGEURL."ps_image/acroread.png\" alt=\"PDF\" height=\"32\" width=\"32\" border=\"0\" /></a></td></tr></table>";
 			}
 			// Load requested PAGE
-			include( PAGEPATH.$modulename.".".$pagename.".php" );
+			if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
+				include( PAGEPATH.$modulename.".".$pagename.".php" );
+			}
+			elseif( file_exists( PAGEPATH . HOMEPAGE.'.php' )) {
+				include( PAGEPATH . HOMEPAGE.'.php' );
+			}
+			else {
+				include( PAGEPATH.'shop.index.php');
+			}
 
 			if (SHOWVERSION) {
 				include(PAGEPATH ."footer.php");
@@ -245,7 +249,6 @@ else {
 			return $mainframe;
 		}
 	}
-
 	// Caching is a sensible thing. We may cache only those pages 
 	// that look the same again and again
 	// Currently this are two pages: shop.browse, shop.product_details

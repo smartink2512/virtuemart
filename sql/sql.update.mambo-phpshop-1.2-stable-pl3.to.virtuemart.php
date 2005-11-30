@@ -172,5 +172,10 @@ $db->query("UPDATE `#__{vm}_payment_method`
 				`payment_extrainfo` ,'com_phpshop','com_virtuemart'
 			);");
 
-$db->query( 'ALTER TABLE `#__{vm}_product` CHANGE `product_in_stock` `product_in_stock` INT( 11 ) NULL DEFAULT NULL;')
+$db->query( 'ALTER TABLE `#__{vm}_product` CHANGE `product_in_stock` `product_in_stock` INT( 11 ) NULL DEFAULT NULL;');
+
+// Unpublish old mambots which could cause VirtueMart not to load
+$db->query( 'UPDATE `#__mambots` SET published=0 WHERE element=\'phpshop.searchbot\'');
+$db->query( 'UPDATE `#__mambots` SET published=0 WHERE element=\'mosproductsnap\'');
+
 ?>
