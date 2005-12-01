@@ -935,9 +935,9 @@ class ps_product extends vmAbstractObject {
 			$q .= "ORDER BY attribute_list,#__{vm}_product_attribute.attribute_name";
 		} elseif ($item_id) {
 			$q  = "SELECT * FROM #__{vm}_product_attribute ";
-			$q .= "WHERE product_id = '$item_id' ";
+			$q .= "WHERE product_id=$item_id ";
 			if ($attribute_name) {
-				$q .= "AND attribute_name = $attribute_name ";
+				$q .= "AND attribute_name = '$attribute_name' ";
 			}
 		} elseif ($product_id) {
 			$q  = "SELECT * FROM #__{vm}_product_attribute_sku ";
@@ -1752,12 +1752,13 @@ class ps_product extends vmAbstractObject {
 	 * @param int $product_id
 	 * @return string The reformatted description
 	 */
-	function getDescriptionWithTax( $description, $product_id ) {
+	function getDescriptionWithTax( $description, $product_id=0 ) {
 		global $CURRENCY_DISPLAY, $mosConfig_secret;
 		$auth = $_SESSION['auth'];
 		
 		// if we've been given a description to deal with, get the adjusted price
-		if ($description != '' && stristr( $description, "[" ) && $auth["show_price_including_tax"] == 1) {
+		if ($description != '' && stristr( $description, "[" ) 
+			&& $auth["show_price_including_tax"] == 1 && $product_id != 0 ) {
 
 			$my_taxrate = $this->get_product_taxrate($product_id);
 

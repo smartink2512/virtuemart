@@ -896,7 +896,7 @@ Order Total: '.$order_total.'
 
 		for($i = 0; $i < $cart["idx"]; $i++) {
 
-			$r = "SELECT product_in_stock,product_sales,product_id,product_sku,product_name ";
+			$r = "SELECT product_id,product_in_stock,product_sales,product_parent_id,product_sku,product_name ";
 			$r .= "FROM #__{vm}_product WHERE product_id='".$cart[$i]["product_id"]."'";
 			$dboi->query($r);
 			$dboi->next_record();
@@ -904,11 +904,26 @@ Order Total: '.$order_total.'
 			$product_price_arr = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
 			$product_price = $product_price_arr["product_price"];
 
-			if( empty( $_SESSION['product_info'][$cart[$i]["product_id"]]['tax_rate'] ))
-			$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
-			else
-			$my_taxrate = $_SESSION['product_info'][$cart[$i]["product_id"]]['tax_rate'];
-
+			if( empty( $_SESSION['product_info'][$cart[$i]["product_id"]]['tax_rate'] )) {
+				$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
+			}
+			else {
+				$my_taxrate = $_SESSION['product_info'][$cart[$i]["product_id"]]['tax_rate'];
+			}
+			// Attribute handling
+			$product_parent_id = $dboi->f('product_parent_id');
+			
+			if( $product_parent_id > 0 ) {
+				$description = '';
+				$db_atts = $ps_product->attribute_sql( $dboi->f('product_id'), $product_parent_id );
+				while( $db_atts->next_record()) {
+					$description .=	$db_atts->f('attribute_name').': '.$db_atts->f('attribute_value').'; ';
+				}
+			}
+			else {
+				$description = $_SESSION['cart'][$i]["description"];
+			}
+			
 			$product_final_price = round( ($product_price *($my_taxrate+1)), 2 );
 
 			$vendor_id = $ps_vendor_id;
@@ -932,7 +947,7 @@ Order Total: '.$order_total.'
 			$q .= $product_currency . "', ";
 			$q .= "'P','";
 			// added for advanced attribute storage
-			$q .= addslashes($_SESSION['cart'][$i]["description"]) . "', '";
+			$q .= addslashes( $description ) . "', '";
 			// END advanced attribute modifications
 			$q .= $timestamp . "','";
 			$q .= $timestamp . "'";

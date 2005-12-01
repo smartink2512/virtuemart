@@ -33,8 +33,15 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+01-12-2005 soeren
+^ attributes are formatted now in the order print screen - just as in the frontend
++ attributes of child products (which were selected by the customer) are stored now which each order
+# fixed a bug in the frontend order listing (account maintenance section), which showed no search box and page navigation
+# fixed a bug in global.php, where an administrator, which has no record in the table
+  jos_vm_auth_user_vendor wouldn't get the vendor information (and see prices in the backend with no decimals)
 
-30-11-2005
+
+30-11-2005 soeren
 # added a routine to unpublish mambo-phpShop mambots on upgrade
 # added checks for the existance of files which are to be loaded
 # added a check if $ps_shopper_group is an instantiated ps_shopper_group object to admin.user_form.php

@@ -530,18 +530,20 @@ class ps_order {
 		$count .= $q;
 		
 		$db->query($count);
-		
-		if( $db->num_rows() == 0 ) {
+		$db->next_record();
+		$num_rows = $db->f('num_rows');
+		if( $num_rows == 0 ) {
 			echo "<span style=\"font-style:italic;\">".$VM_LANG->_PHPSHOP_ACC_NO_ORDERS."</span>\n";
 			return;
 		}
-		$pageNav = new vmPageNav( $db->f('num_rows'), $limitstart, $limit );
+		$pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 		
 		$list .= $q .= " LIMIT ".$pageNav->limitstart.", $limit ";
 		$db->query( $list );
 		
 		$listObj = new listFactory( $pageNav );	
-		if( $db->f('num_rows') > 0 ) {
+		
+		if( $num_rows > 0 ) {
 			// print out the search field and a list heading
 			$listObj->writeSearchHeader( '', '', 'account', 'index');
 		}
@@ -571,7 +573,7 @@ class ps_order {
 		}
 		$listObj->writeTable();
 		$listObj->endTable();
-		if( $db->f('num_rows') > 0 ) {
+		if( $num_rows > 0 ) {
 			$listObj->writeFooter( $keyword );
 		}
 		

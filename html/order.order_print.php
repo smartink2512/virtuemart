@@ -311,7 +311,7 @@ else {
 			  <tr bgcolor="<?php echo $bgcolor; ?>" valign="top"> 
 				<td width="5%"> <?php $dbt->p("product_quantity") ?></td>
 				<td width="42%"><?php $dbt->p("order_item_name"); 
-				  echo "<br /><font size=\"-2\">" . $dbt->f("product_attribute") . "</font>"; 
+				  echo "<br /><font size=\"-2\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</font>"; 
 				  ?>
 				</td>
 				<td width="9%"><?php  $dbt->p("order_item_sku") ?>&nbsp;</td>

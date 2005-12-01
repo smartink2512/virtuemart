@@ -32,6 +32,8 @@ class ps_DB extends database {
 	var $errno = "";
 	/** @var string   The current sql Query    */
 	var $_sql = "";
+	/** @var boolean Flag to see if a query has been renewed between two query calls */
+	var $_query_set= false;
 	/** @var boolean   true if next_record has already been called   */
 	var $called = false;
 
@@ -62,7 +64,7 @@ class ps_DB extends database {
 
 		$this->_sql = str_replace( $vm_prefix, VM_TABLEPREFIX, $sql );
 		$database->setQuery( $this->_sql );
-		
+		$this->_query_set = true;
 	}
 
 	/**
@@ -71,13 +73,16 @@ class ps_DB extends database {
 	* @param string The SQL query
 	*/
 	function query( $q='' ) {
-		global $database, $mosConfig_dbprefix, $mosConfig_debug;
+		global $database, $mosConfig_dbprefix, $mosConfig_debug, $vmLogger;
 		$prefix = "#__";
 		$vm_prefix = "{vm}";
 
 		if (empty($q) ) {
 			if( empty($this->_sql)) {
-				return 0;
+				$vmLogger->debug( '"'.__CLASS__.'::'.__FUNCTION__.'" called without a pending query.');
+			}
+			elseif( !$this->_query_set ) {
+				$vmLogger->debug( '"'.__CLASS__.'::'.__FUNCTION__.'": A query was run twice without having changed the SQL text.');
 			}
 		}
 		else {
@@ -95,7 +100,9 @@ class ps_DB extends database {
 		else {
 			$database->query();
 		}
-
+		
+		$this->_query_set = false;
+		
 	}
 
 	/**
@@ -104,9 +111,9 @@ class ps_DB extends database {
 	 * @return boolean False if RecordSet is empty or the pointer is at the end.
 	 */
 	function next_record() {
-
+		global $vmLogger;
 		if ( empty( $this->_sql ) ) {
-			$this->error = "next_record called with no query pending.";
+			$vmLogger->debug( '"'.__CLASS__.'::'.__FUNCTION__.'()" called with no query pending.' );
 			return false;
 		}
 		if ( $this->called ) {

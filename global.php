@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: global.php,v 1.3 2005/09/29 20:01:12 soeren_nb Exp $
+* @version $Id: global.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,25 +25,28 @@ $search_box_title = $VM_LANG->_PHPSHOP_SEARCH_TITLE;
 
 # Some database values we will need throughout
 # Get Vendor Information
-$q = "SELECT * FROM #__{vm}_vendor, #__{vm}_country";
-if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
-    $q .= ", #__{vm}_auth_user_vendor WHERE #__{vm}_vendor.vendor_id = #__{vm}_auth_user_vendor.vendor_id ";
-    $q .= "AND #__{vm}_auth_user_vendor.user_id ='".$my->id."' AND ";
+// Benjamin: change this using a dynamic global variable...
+$default_vendor = 1;
+
+if( $my->id ) {
+	$db->query( 'SELECT `vendor_id` FROM `#__{vm}_auth_user_vendor` WHERE `user_id` ='.$my->id );
+	$db->next_record();
+	if( $db->f( 'vendor_id' ) ) {
+		$default_vendor = $db->f( 'vendor_id' );
+	}
 }
-else {
-    $q .= " WHERE vendor_id='1' AND ";
-}
-$q .= "(vendor_country=country_2_code OR vendor_country=country_3_code)";
+
+$_SESSION["ps_vendor_id"] = $ps_vendor_id = $default_vendor;
+
+$q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, 
+			vendor_address_1, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
+			vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style
+		FROM (`#__{vm}_vendor`, `#__{vm}_country`)
+		WHERE `vendor_id`=$default_vendor
+		AND (vendor_country=country_2_code OR vendor_country=country_3_code);";
 
 $db->query($q);
 $db->next_record();
-
-$ps_vendor_id = $db->f("vendor_id");
-if( !empty( $ps_vendor_id ))
-    $_SESSION["ps_vendor_id"] = $ps_vendor_id;
-else
-    // Prevent Users from belonging to no vendor
-    $_SESSION["ps_vendor_id"] = $ps_vendor_id = 1;
 
 $_SESSION['minimum_pov'] = $db->f("vendor_min_pov"); 
 $vendor_name = $db->f("vendor_name");
@@ -66,4 +69,5 @@ $vendor_store_desc = $db->f("vendor_store_desc");
 $vendor_currency = $db->f("vendor_currency");
 $vendor_currency_display_style = $db->f("vendor_currency_display_style");
 $_SESSION["vendor_currency"] = $vendor_currency;
+
 ?>
