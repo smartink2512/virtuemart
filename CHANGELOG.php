@@ -33,6 +33,10 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+04-12-2005 soeren
+^ Extra Fields are now visually integrated in the registration form, not appended at the end
+^ more debug output in standard_shipping module (only when DEBUG is turned on)
+
 01-12-2005 soeren
 ^ attributes are formatted now in the order print screen - just as in the frontend
 + attributes of child products (which were selected by the customer) are stored now which each order

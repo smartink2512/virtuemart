@@ -138,11 +138,12 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the global file for PHPShop
 	require_once( ADMINPATH . 'global.php' );
 
-	$curreny_display = vendor_currency_display_style( $vendor_currency_display_style );
+	$currency_display = vendor_currency_display_style( $vendor_currency_display_style );
+	
 	/** load Currency Display Class **/
 	require_once( CLASSPATH.'class_currency_display.php' );
 	/** @global CurrencyDisplay $CURRENCY_DISPLAY */
-	$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($curreny_display["id"], $curreny_display["symbol"], $curreny_display["nbdecimal"], $curreny_display["sdecimal"], $curreny_display["thousands"], $curreny_display["positive"], $curreny_display["negative"]);
+	$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
 
 	if( $option == "com_virtuemart" ) {
 

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.product_details.php,v 1.11 2005/11/14 18:58:14 soeren_nb Exp $
+* @version $Id: shop.product_details.php,v 1.12.2.1 2005/11/28 19:06:53 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -79,6 +79,12 @@ if ($product_parent_id != 0) {
   $q .= "WHERE #__{vm}_product_relations.product_id='$product_id' AND product_publish='Y' ";
   $q .= "AND FIND_IN_SET(#__{vm}_product.product_id, REPLACE(related_products, '|', ',' )) LIMIT 0, 4";
   $db->query( $q );
+/*// This shows randomly selected products from the products table
+  // if you don't like to set up related products for each product
+  $q = "SELECT product_sku FROM #__{vm}_product ";
+  $q .= "WHERE product_publish='Y' AND product_id != $product_id ";
+  $q .= "ORDER BY RAND() LIMIT 0, 4";
+  $db->query( $q );*/
   
   $related_product_html = "";
   if( $db->num_rows() > 0 ) {

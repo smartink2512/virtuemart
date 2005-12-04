@@ -78,6 +78,15 @@ $shopper_fields[uniqid('fieldset_begin')] = $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_
 		$shopper_fields['email'] = _REGISTER_EMAIL;
 		$required_fields[] = 'email';
 	}
+	
+	// Extra Fields when defined in the language file
+	for( $i=1; $i<6; $i++ ) {
+		$property = "_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_$i";
+		if( $VM_LANG->$property != "" ) {
+			$shopper_fields['extra_field_'.$i] = $VM_LANG->$property;
+		}
+	}
+
 $shopper_fields[uniqid('fieldset_end')] = "";
 
 // Is entering bank account information possible?
@@ -95,6 +104,7 @@ if (LEAVE_BANK_DATA == '1') {
 	    $shopper_fields['bank_iban'] = $VM_LANG->_PHPSHOP_ACCOUNT_LBL_BANK_IBAN;
     $shopper_fields[uniqid('fieldset_end')] = "";
 }
+
 // Does the customer have to agree to your Terms & Conditions?
 if (MUST_AGREE_TO_TOS == '1') {
 	$shopper_fields[uniqid('fieldset_begin')] = _BUTTON_SEND_REG;
@@ -183,6 +193,10 @@ vmCommonHTML::printJS_formvalidation( $required_fields );
 			case 'password2':
 				echo '<input type="password" id="'.$fieldname.'_field" name="'.$fieldname.'" size="30" class="inputbox" />'."\n";
 	   			break;
+	   		
+	   		case 'extra_field_4': case 'extra_field_5':
+	   			eval( "\$ps_html->list_extra_field_$i( mosGetParam( \$_REQUEST, 'extra_field_$i'), \"id=\\\"extra_field_$i\\\"\");" );
+	   			break;
 	   			
    			default:
 		        echo '<input type="text" id="'.$fieldname.'_field" name="'.$fieldname.'" size="30" value="'. mosGetParam( $_REQUEST, $fieldname) .'" class="inputbox" />'."\n";
@@ -192,30 +206,7 @@ vmCommonHTML::printJS_formvalidation( $required_fields );
    		echo '</div>
 			      <br/><br/>';
    }
-   /**
-    * @deprecated 
-    * thanks to Zdenek for that. Checks for Extra Form Fields
-    */
-   for( $i=1; $i<6; $i++ ) {
-   		$property = "_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_$i";
-   		if( $VM_LANG->$property != "" ) { ?>
-
-	      <div style="float:left;width:30%;text-align:right;" >
-	        <?php echo "<label for=\"extra_field_".$i."\">".$VM_LANG->$property."</label>" ?>:</div>
-	      <div style="float:left;width:60%;"> 
-	      <?php
-	      	if( $i == 4 || $i == 5) {
-	      		eval( "\$ps_html->list_extra_field_$i( mosGetParam( $_REQUEST, 'extra_field_$i'), \"id=\\\"extra_field_$i\\\"\");" );
-	      	}
-	      	else {
-	      		echo '<input type="text" id="extra_field_'. $i.'" name="extra_field_'. $i .'" size="40" value="'. mosGetParam( $_REQUEST, 'extra_field_'.$i).'" class="inputbox" />';
-	      	}
-	      ?>
-	      </div>
-	    <br/><br/>
-    	<?php 
-		} 
-   }
+   
     ?>
 	<div align="center">	
 		<input type="submit" value="<?php echo _BUTTON_SEND_REG; ?>" class="button" onclick="return( submitregistration());" />

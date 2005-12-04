@@ -2,7 +2,7 @@
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /**
 *
-* @version $Id: standard_shipping.php,v 1.13 2005/11/16 14:43:32 codename-matrix Exp $
+* @version $Id: standard_shipping.php,v 1.14 2005/11/18 16:43:50 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -236,7 +236,7 @@ class standard_shipping {
 		}
 		
 		$details = explode("|", urldecode( $d['shipping_rate_id']) );
-		$rate_id = $details[4];
+		$rate_id = intval( $details[4] );
 
 		$totalweight = 0;
 		require_once( CLASSPATH . 'ps_shipping_method.php' );
@@ -278,37 +278,45 @@ class standard_shipping {
 		global $VM_LANG, $vmLogger;
 		$db = new ps_DB; // Rates
 		$q = "SELECT * FROM #__{vm}_shipping_rate WHERE ";
-		$q .= "shipping_rate_id='$rate_id'";
+		$q .= "shipping_rate_id=$rate_id";
 		
 		$db->query($q);
 		if ($db->next_record()) {
+			$valid = true;
+			if (!stristr($db->f("shipping_rate_country"),$country)
+				&& $db->f('shipping_rate_country') != "") {
+				$vmLogger->debug( 'The country '.$country.' is not supported by this shipping rate.');
+				$valid = false;
+			}
+			if($db->f("shipping_rate_weight_start") > $weight) {
+				$vmLogger->debug( 'The weight '.$weight.' is not enough for this shipping rate.');
+				$valid = false;
+				
+			}
+			if( $db->f("shipping_rate_weight_end")  < $weight ) {
+				$vmLogger->debug( 'The weight '.$weight.' is too high for this shipping rate.');
+				$valid = false;
+				
+			}
 			if (is_numeric($zip)) {
-				if (
-				(!stristr($db->f("shipping_rate_country"),$country)
-					&& $db->f('shipping_rate_country') != "") or
-				($db->f("shipping_rate_weight_start") > $weight) or
-				($db->f("shipping_rate_weight_end")  < $weight) or
-				($db->f("shipping_rate_zip_start")   > $zip) or
-				($db->f("shipping_rate_zip_end")     < $zip)
-				) {
-					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP );
-					return false;
+				if( $db->f("shipping_rate_zip_start") > $zip ) {
+					$vmLogger->debug( 'The ZIP '.$country.' is smaller than the supported ZIP code range of this shipping rate.');
+					$valid = false;
+					
 				}
-			}
-			elseif (!is_numeric($zip)) {
-				if (
-				(!stristr($db->f("shipping_rate_country"),$country)
-				&& $db->f("shipping_rate_country") != "") or
-				($db->f("shipping_rate_weight_start") > $weight) or
-				($db->f("shipping_rate_weight_end")  < $weight)
-				) {
-					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP );
-					return false;
+				if( $db->f("shipping_rate_zip_end") < $zip) {
+					$vmLogger->debug( 'The ZIP '.$country.' is higher than the supported ZIP code range of this shipping rate.');
+					$valid = false;			
 				}
+			}	
+			if( !$valid ) {
+				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP );
 			}
-			return true;
+			return $valid;
+			
 		}
 		else {
+			$vmLogger->debug( 'The rate id '.$rate_id.' is not a valid shipping rate');
 			return false;
 		}
 	}
