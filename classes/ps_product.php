@@ -1070,7 +1070,7 @@ class ps_product extends vmAbstractObject {
 	 */
 	function get_flypage($product_id) {
 
-		if( empty( $_SESSION['product_info'][$product_id]['flypage'] )) {
+		if( empty( $_SESSION['product_sess'][$product_id]['flypage'] )) {
 			$db = new ps_DB;
 			$q = "SELECT #__{vm}_category.category_flypage FROM #__{vm}_category, #__{vm}_product_category_xref, #__{vm}_product ";
 			$q .= "WHERE #__{vm}_product.product_id='$product_id' ";
@@ -1080,13 +1080,13 @@ class ps_product extends vmAbstractObject {
 			$db->setQuery($q); $db->query();
 			$db->next_record();
 			if ($db->f("category_flypage")) {
-				$_SESSION['product_info'][$product_id]['flypage'] = $db->f("category_flypage");
+				$_SESSION['product_sess'][$product_id]['flypage'] = $db->f("category_flypage");
 			}
 			else {
-				$_SESSION['product_info'][$product_id]['flypage'] = FLYPAGE;
+				$_SESSION['product_sess'][$product_id]['flypage'] = FLYPAGE;
 			}
 		}
-		return $_SESSION['product_info'][$product_id]['flypage'];
+		return $_SESSION['product_sess'][$product_id]['flypage'];
 	}
 	
 	/**
@@ -1142,20 +1142,20 @@ class ps_product extends vmAbstractObject {
 	 */
 	function get_vendor_id($product_id) {
 		$db = new ps_DB;
-		if( empty( $_SESSION['product_info'][$product_id]['vendor_id'] )) {
+		if( empty( $_SESSION['product_sess'][$product_id]['vendor_id'] )) {
 			$q = "SELECT vendor_id FROM #__{vm}_product ";
 			$q .= "WHERE product_id='$product_id' ";
 
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("vendor_id")) {
-				$_SESSION['product_info'][$product_id]['vendor_id'] = $db->f("vendor_id");
+				$_SESSION['product_sess'][$product_id]['vendor_id'] = $db->f("vendor_id");
 			}
 			else {
-				$_SESSION['product_info'][$product_id]['vendor_id'] = "";
+				$_SESSION['product_sess'][$product_id]['vendor_id'] = "";
 			}
 		}
-		return $_SESSION['product_info'][$product_id]['vendor_id'];
+		return $_SESSION['product_sess'][$product_id]['vendor_id'];
 	}
 
 	/**
@@ -1353,17 +1353,17 @@ class ps_product extends vmAbstractObject {
 	function get_product_taxrate( $product_id, $weight_subtotal=0 ) {
 
 		if (($weight_subtotal != 0 or TAX_VIRTUAL=='1') && TAX_MODE =='0') {
-			$_SESSION['product_info'][$product_id]['tax_rate'] = $this->get_taxrate();
-			return $_SESSION['product_info'][$product_id]['tax_rate'];
+			$_SESSION['product_sess'][$product_id]['tax_rate'] = $this->get_taxrate();
+			return $_SESSION['product_sess'][$product_id]['tax_rate'];
 		}
 		elseif( ($weight_subtotal == 0 or TAX_VIRTUAL != '1' ) && TAX_MODE =='0') {
-			$_SESSION['product_info'][$product_id]['tax_rate'] = 0;
-			return $_SESSION['product_info'][$product_id]['tax_rate'];
+			$_SESSION['product_sess'][$product_id]['tax_rate'] = 0;
+			return $_SESSION['product_sess'][$product_id]['tax_rate'];
 		}
 
 		elseif( TAX_MODE == '1' ) {
 
-			if( empty( $_SESSION['product_info'][$product_id]['tax_rate'] ) ) {
+			if( empty( $_SESSION['product_sess'][$product_id]['tax_rate'] ) ) {
 				$db = new ps_DB;
 				// Product's tax rate id has priority!
 				$q = "SELECT product_weight, tax_rate FROM #__{vm}_product, #__{vm}_tax_rate ";
@@ -1381,16 +1381,16 @@ class ps_product extends vmAbstractObject {
 					$rate = $this->get_taxrate();
 				}
 				if ($weight_subtotal != 0 or TAX_VIRTUAL=='1') {
-					$_SESSION['product_info'][$product_id]['tax_rate'] = $rate;
+					$_SESSION['product_sess'][$product_id]['tax_rate'] = $rate;
 					return $rate;
 				}
 				else {
-					$_SESSION['product_info'][$product_id]['tax_rate'] = 0;
+					$_SESSION['product_sess'][$product_id]['tax_rate'] = 0;
 					return 0;
 				}
 			}
 			else {
-				return $_SESSION['product_info'][$product_id]['tax_rate'];
+				return $_SESSION['product_sess'][$product_id]['tax_rate'];
 			}
 		}
 		return 0;
@@ -1449,16 +1449,16 @@ class ps_product extends vmAbstractObject {
 		|| $check_multiple_prices) {
 			$db = new ps_DB;
 
-			if( empty( $_SESSION['product_info'][$product_id]['vendor_id'] )) {
+			if( empty( $_SESSION['product_sess'][$product_id]['vendor_id'] )) {
 
 				// Get the vendor id for this product.
 				$q = "SELECT vendor_id FROM #__{vm}_product WHERE product_id='$product_id'";
 				$db->setQuery($q); $db->query();
 				$db->next_record();
-				$_SESSION['product_info'][$product_id]['vendor_id'] = $vendor_id = $db->f("vendor_id");
+				$_SESSION['product_sess'][$product_id]['vendor_id'] = $vendor_id = $db->f("vendor_id");
 			}
 			else {
-				$vendor_id = $_SESSION['product_info'][$product_id]['vendor_id'];
+				$vendor_id = $_SESSION['product_sess'][$product_id]['vendor_id'];
 			}
 
 			$shopper_group_id = $auth["shopper_group_id"];
@@ -1770,8 +1770,9 @@ class ps_product extends vmAbstractObject {
 					$custom_attribute_fields = mosGetParam( $_SESSION, "custom_attribute_fields", Array() );
 					$custom_attribute_fields_check = mosGetParam( $_SESSION, "custom_attribute_fields_check", Array() );
 				}
-				else
-				$custom_attribute_fields = $custom_attribute_fields_check = Array();
+				else {
+					$custom_attribute_fields = $custom_attribute_fields_check = Array();
+				}
 			}
 			else {
 				$custom_attribute_fields = $_SESSION["custom_attribute_fields"] = mosGetParam( $_REQUEST, "custom_attribute_fields", Array() );
@@ -1779,6 +1780,7 @@ class ps_product extends vmAbstractObject {
 			}
 
 			$attribute_keys = explode( ";", $description );
+			
 			foreach( $attribute_keys as $temp_desc ) {
 
 				$temp_desc = trim( $temp_desc );
@@ -1806,29 +1808,33 @@ class ps_product extends vmAbstractObject {
 					// We found a pair of brackets (price modifier?)
 					if ($length > 1) {
 						$my_mod=substr($temp_desc, $start+1, $length-1);
+						
 						//echo "before: ".$my_mod."<br>\n";
 						if ($o != $c) { // skip the tests if we don't have to process the string
-						if ($o < $c ) {
-							$char = "]";
-							$offset = $start;
+							if ($o < $c ) {
+								$char = "]";
+								$offset = $start;
+							}
+							else {
+								$char = "[";
+								$offset = $finish;
+							}
+							$s = substr_count($my_mod, $char);
+							for ($r=1;$r<$s;$r++) {
+								$pos = strrpos($my_mod, $char);
+								$my_mod = substr($my_mod, $pos+1);
+							}
 						}
-						else {
-							$char = "[";
-							$offset = $finish;
-						}
-						$s = substr_count($my_mod, $char);
-						for ($r=1;$r<$s;$r++) {
-							$pos = strrpos($my_mod, $char);
-							$my_mod = substr($my_mod, $pos+1);
-						}
-						}
-
+						
 						$value_notax = (float)substr($my_mod,1);
-
-						$value_taxed = $value_notax * ($my_taxrate+1);
-
-						$description = str_replace( $value_notax, $CURRENCY_DISPLAY->getFullValue( $value_taxed ), $description);
-
+						if( abs($value_notax) >0 ) {
+							$value_taxed = $value_notax * ($my_taxrate+1);
+						
+							$description = str_replace( $value_notax, $CURRENCY_DISPLAY->getFullValue( $value_taxed ), $description);
+						}
+						elseif( $my_mod === "+0" || $my_mod === '-0') {
+							$description = str_replace( "[".$my_mod."]", '', $description);
+						}
 						$temp_desc = substr($temp_desc, $finish+1);
 						$start = strpos($temp_desc, "[");
 						$finish = strpos($temp_desc,"]");
@@ -1995,8 +2001,8 @@ class ps_product extends vmAbstractObject {
 		// We use the Session now to store the discount info for
 		// each product. But this info can change regularly,
 		// so we check if the session time has expired
-		if( empty( $_SESSION['product_info'][$product_id]['discount_info'] )
-		|| (time() - $_SESSION['product_info'][$product_id]['discount_info']['create_time'] )>$mosConfig_lifetime) {
+		if( empty( $_SESSION['product_sess'][$product_id]['discount_info'] )
+		|| (time() - $_SESSION['product_sess'][$product_id]['discount_info']['create_time'] )>$mosConfig_lifetime) {
 			$db = new ps_DB;
 			$starttime = time();
 			$year = date('Y');
@@ -2019,11 +2025,11 @@ class ps_product extends vmAbstractObject {
 				$discount_info["is_percent"] = 0;
 			}
 			$discount_info['create_time'] = time();
-			$_SESSION['product_info'][$product_id]['discount_info'] = $discount_info;
+			$_SESSION['product_sess'][$product_id]['discount_info'] = $discount_info;
 			return $discount_info;
 		}
 		else
-		return $_SESSION['product_info'][$product_id]['discount_info'];
+		return $_SESSION['product_sess'][$product_id]['discount_info'];
 	}
 
 	/**

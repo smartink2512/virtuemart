@@ -33,7 +33,15 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+07-12-2005 soeren
+# Task #63: Prices are stored in the session and do not change on update
+# wrong xhtml syntax in mod_virtuemart_search
+# Task #374: Incorrect "Title" wording on [Featured & Discounted Products] Screen
+# Task #372: Product Search doesn't work when Joomla Caching is ON
+	(product search pages were cached, so the search function could only be used once)
+
 04-12-2005 soeren
+# "product_list" search not working, when a category is selected
 ^ Extra Fields are now visually integrated in the registration form, not appended at the end
 ^ more debug output in standard_shipping module (only when DEBUG is turned on)
 

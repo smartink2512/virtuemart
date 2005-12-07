@@ -252,7 +252,12 @@ else {
 	// Caching is a sensible thing. We may cache only those pages 
 	// that look the same again and again
 	// Currently this are two pages: shop.browse, shop.product_details
-	if ( !empty($mosConfig_caching) && ($page=="shop.browse" || $page=="shop.product_details") && class_exists("mosCache")) {
+	// when no keyword is submitted!
+	if ( !empty($mosConfig_caching) 
+			&& ($page=="shop.browse" || $page=="shop.product_details") 
+			&& class_exists("mosCache")
+			&& (empty($keyword) && empty($keyword1) && empty($keyword2))
+		) {
 
 		// Get the Cache_Lite_Function object
 		$cache =& mosCache::getCache( 'com_content' );

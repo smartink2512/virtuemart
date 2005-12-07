@@ -107,17 +107,17 @@ echo $VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS;
 if ($filter != 'all') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
+if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.$VM_LANG->_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED.'">';
 echo $VM_LANG->_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED;
 if ($filter != 'featured_and_discounted') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
+if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.$VM_LANG->_PHPSHOP_SHOW_FEATURED.'">';
 echo $VM_LANG->_PHPSHOP_SHOW_FEATURED;
 if ($filter != 'featured') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
+if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.$VM_LANG->_PHPSHOP_SHOW_DISCOUNTED.'">';
 echo $VM_LANG->_PHPSHOP_SHOW_DISCOUNTED;
 if ($filter != 'discounted') echo '</a>';
 

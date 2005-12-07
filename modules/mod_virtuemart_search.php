@@ -24,7 +24,7 @@ global $VM_LANG, $mm_action_url, $sess;
 
 ?>
 <!--BEGIN Search Box --> 
-<form action="<?php $sess->purl( $mm_action_url."index.php?page=shop.browse" ) ?>" method="post" />
+<form action="<?php $sess->purl( $mm_action_url."index.php?page=shop.browse" ) ?>" method="post">
 
 	<p><label for="keyword"><?php echo $VM_LANG->_PHPSHOP_SEARCH_LBL ?></label></p>
 	<p>

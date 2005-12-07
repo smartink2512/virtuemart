@@ -68,6 +68,13 @@ if (!$perm->check("admin")) {
     $db->next_record();
     $vendor = $db->f("vendor_id");
 }
+
+$search_sql = " (#__{vm}_product.product_name LIKE '%$keyword%' OR \n";
+$search_sql .= "#__{vm}_product.product_sku LIKE '%$keyword%' OR \n";
+$search_sql .= "#__{vm}_product.product_s_desc LIKE '%$keyword%' OR \n";
+$search_sql .= "#__{vm}_product.product_desc LIKE '%$keyword%'";
+$search_sql .= ") \n";
+
 // Check to see if this is a search or a browse by category
 // Default is to show all products 
 if (!empty($category_id)) {
@@ -85,6 +92,9 @@ if (!empty($category_id)) {
 	elseif( !empty($vendor) ) {
 		$q .=  "AND #__{vm}_product.vendor_id='$vendor' ";
 	}
+	if( !empty( $keyword)) {
+		$q .= " AND $search_sql";
+	}
 	$count .= $q;
 	$q .= "ORDER BY product_publish DESC,product_name ";
 }  
@@ -92,11 +102,7 @@ elseif (!empty($keyword)) {
 	$list  = "SELECT DISTINCT *";
 	$list .= " FROM #__{vm}_product WHERE ";
 	$count = "SELECT DISTINCT count(*) as num_rows FROM #__{vm}_product WHERE ";
-	$q = "(#__{vm}_product.product_name LIKE '%$keyword%' OR ";
-	$q .= "#__{vm}_product.product_sku LIKE '%$keyword%' OR ";
-	$q .= "#__{vm}_product.product_s_desc LIKE '%$keyword%' OR ";
-	$q .= "#__{vm}_product.product_desc LIKE '%$keyword%'";
-	$q .= ") ";
+	$q = $search_sql;
 	$q .= "AND #__{vm}_product.product_parent_id='' ";
 	if (!$perm->check("admin")) {
 		$q  .= "AND #__{vm}_product.vendor_id = '$ps_vendor_id' ";
@@ -112,6 +118,9 @@ elseif (!empty($product_parent_id)) {
 	$count = "SELECT DISTINCT count(*) as num_rows FROM #__{vm}_product WHERE ";
 	$q = "product_parent_id='$product_parent_id' ";
 	$q .= !empty($vendor) ? "AND #__{vm}_product.vendor_id='$vendor'" : "";
+	if( !empty( $keyword)) {
+		$q .= " AND $search_sql";
+	}
 	//$q .= "AND #__{vm}_product.product_id=#__{vm}_product_reviews.product_id ";
 	//$q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
 	$count .= $q;
@@ -128,6 +137,9 @@ elseif (!empty($product_type_id)) {
 	}
 	elseif( !empty($vendor) ) {
 		$q .=  "AND #__{vm}_product.vendor_id='$vendor' ";
+	}
+	if( !empty( $keyword)) {
+		$q .= " AND $search_sql";
 	}
 	$q .= " ORDER BY product_publish DESC,product_name ";
 	$count .= $q;
@@ -180,8 +192,9 @@ elseif (!empty($search_date)) {
         $q = implode(" AND ",$where) . $q . " ORDER BY #__{vm}_product.product_publish DESC,#__{vm}_product.product_name ";
         $count .= $q;
     }
-    else
-        echo "<script type=\"text/javascript\">alert('".$d["error"]."')</script>\n";  
+    else {
+    	echo "<script type=\"text/javascript\">alert('".$d["error"]."')</script>\n";  
+    }
 }
 /** Changed search by date - End */
 else {
