@@ -33,6 +33,11 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+10-12-2005 soeren
+
+# currency_convert including wrong DOMIT files.
+# user list has no valid user id in the delete link (deleting didn't work)
+
 07-12-2005 soeren
 # Task #63: Prices are stored in the session and do not change on update
 # wrong xhtml syntax in mod_virtuemart_search
