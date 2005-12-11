@@ -56,10 +56,9 @@ function convertECB ($amountA, $currA, $currB) {
 	  
 	if( !is_writable( $store_path )) {
 	  $archive = '';
-	  if( DEBUG == "1" )
-		echo "<span class=\"message\">Die Datei $archivefile_name can't be created. The directory $store_path is not writable</span>";
+	  $vmLogger->debug( "The file $archivefile_name can't be created. The directory $store_path is not writable" );
 	}
-	
+		
 	$handle = @fopen($curr_filename, 'r');
 	if ($handle) {
 		$contents = '';
@@ -86,7 +85,7 @@ function convertECB ($amountA, $currA, $currB) {
 		$contents = str_replace ("<Cube currency='USD'", " <Cube currency='EUR' rate='1'/> <Cube currency='USD'", $contents);
 		
 		/* XML Parsing */
-		require_once( CLASSPATH. 'domit/xml_domit_lite_include.php' );
+		require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
 		$xmlDoc =& new DOMIT_Lite_Document();
 		$xmlDoc->parseXML( $contents, false, true );
 		
