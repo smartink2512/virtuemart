@@ -76,18 +76,20 @@ $db->query($list);
 $dbs = new ps_DB;
 $i = 0;
 while( $db->next_record() ) { 
-
+	
+	$user_id = $db->f('id') ? intval($db->f('id')) : intval($db->f('user_id'));
+	
 	$listObj->newRow();
 	
 	// The row number
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
-	$condition = $db->f("id") == $my->id ? false : true;
+	$condition = $user_id == $my->id ? false : true;
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("id"), !$condition, "user_id" ) );
+	$listObj->addCell( mosHTML::idBox( $i, $user_id, !$condition, "user_id" ) );
 	
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.user_form&user_id=". $db->f("id");
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.user_form&user_id=$user_id";
 	$tmp_cell = '<a href="' . $sess->url($url) . '">'. $db->f("username") . "</a>"; 
 
 	$listObj->addCell( $tmp_cell );
@@ -98,7 +100,7 @@ while( $db->next_record() ) {
 	
 	if( $db->f("user_id") ) {
 		$q = "SELECT shopper_group_name FROM #__{vm}_shopper_group, #__{vm}_shopper_vendor_xref WHERE ";
-		$q .= "#__{vm}_shopper_vendor_xref.user_id='".$db->f("user_id")."' AND #__{vm}_shopper_vendor_xref.shopper_group_id=#__{vm}_shopper_group.shopper_group_id";
+		$q .= "#__{vm}_shopper_vendor_xref.user_id=$user_id AND #__{vm}_shopper_vendor_xref.shopper_group_id=#__{vm}_shopper_group.shopper_group_id";
 		$dbs->query( $q );
 		$dbs->next_record();
 		$tmp_cell = $dbs->f("shopper_group_name");
@@ -108,7 +110,7 @@ while( $db->next_record() ) {
 	$listObj->addCell( $tmp_cell );
 	
 	if( $condition )
-		$listObj->addCell( $ps_html->deleteButton( "user_id", $db->f("user_id"), "userDelete", $keyword, $limitstart ) );
+		$listObj->addCell( $ps_html->deleteButton( "user_id", $user_id, "userDelete", $keyword, $limitstart ) );
 	else
 		$listObj->addCell( '' );
 		
@@ -120,4 +122,4 @@ $listObj->writeTable();
 $listObj->endTable();
 
 $listObj->writeFooter( $keyword );
-?> 
+?>
