@@ -3,7 +3,7 @@
 * mambo-phphop Product Scroller Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id: mod_productscroller.php,v 1.5 2005/11/01 18:39:46 soeren_nb Exp $
+* @version $Id: mod_productscroller.php,v 1.6 2005/11/07 20:22:28 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage modules
 * 
@@ -283,7 +283,7 @@ function getProductSKU( $limit=0, $how=null, $category_id=0, $order='asc' ) {
 		$query .= "\n ORDER BY RAND() $limit";
 		break;
 		default:
-		$query .= "\n ORDER BY $order $limit";
+		$query .= "\n ORDER BY cdate $order $limit";
 		break;
 	}
 	$database->query( $query );
