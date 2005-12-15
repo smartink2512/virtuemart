@@ -45,7 +45,7 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
 
 }
 elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-	
+	virtuemart_is_installed();
 	com_install();
 	exit();
 	

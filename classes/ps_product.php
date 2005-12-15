@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_product.php,v 1.23 2005/11/18 16:43:50 soeren_nb Exp $
+* @version $Id: ps_product.php,v 1.24.2.2 2005/12/07 20:10:10 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -516,35 +516,35 @@ class ps_product extends vmAbstractObject {
 				}
 			}
 			else { // update the attribute
-	
-			require_once(  CLASSPATH.'ps_product_files.php' );
-			$ps_product_files =& new ps_product_files();
-	
-			if( !empty($_FILES['file_upload']['name'])) {
-				// Set file-add values
-				$d["file_published"] = "1";
-				$d["upload_dir"] = "DOWNLOADPATH";
-				$d["file_title"] = $_FILES['file_upload']['name'];
-				$d["file_url"] = "";
-	
-				$ps_product_files->add( $d );
-				$qu = "UPDATE #__{vm}_product_attribute ";
-				$qu.= "SET attribute_value = '". $d["file_title"] ."' ";
-				$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
-				$db->query($qu);
-			}
-			else {
-				$d["file_id"] = "";
-				$qu = "UPDATE #__{vm}_product_attribute ";
-				$qu.= "SET attribute_value = '". $d['filename'] ."' ";
-				$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
-				$db->query($qu);
-			}
-	
-			if( !empty($d["file_id"])) {
-				// Now: Delete the existing file entry
-				$ps_product_files->delete( $d );
-			}
+		
+				require_once(  CLASSPATH.'ps_product_files.php' );
+				$ps_product_files =& new ps_product_files();
+		
+				if( !empty($_FILES['file_upload']['name'])) {
+					// Set file-add values
+					$d["file_published"] = "1";
+					$d["upload_dir"] = "DOWNLOADPATH";
+					$d["file_title"] = $_FILES['file_upload']['name'];
+					$d["file_url"] = "";
+		
+					$ps_product_files->add( $d );
+					$qu = "UPDATE #__{vm}_product_attribute ";
+					$qu.= "SET attribute_value = '". $d["file_title"] ."' ";
+					$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
+					$db->query($qu);
+				}
+				else {
+					$d["file_id"] = "";
+					$qu = "UPDATE #__{vm}_product_attribute ";
+					$qu.= "SET attribute_value = '". $d['filename'] ."' ";
+					$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
+					$db->query($qu);
+				}
+		
+				if( !empty($d["file_id"])) {
+					// Now: Delete the existing file entry
+					$ps_product_files->delete( $d );
+				}
 	
 			}
 		}
@@ -635,28 +635,37 @@ class ps_product extends vmAbstractObject {
 		}
 
 		// UPDATE THE PRICE, IF EMPTY ADD 0
-		if (!empty($d['product_price'])) {
-
-			if(empty($d['product_currency']))
+		if(empty($d['product_currency'])) {
 			$d['product_currency'] = $_SESSION['vendor_currency'];
+		}
 
-			// look if we have a price for this product
-			$q = "SELECT product_price_id, price_quantity_start, price_quantity_end FROM #__{vm}_product_price ";
-			$q .= "WHERE shopper_group_id = '" . $d["shopper_group_id"] ."' ";
-			$q .= "AND product_id = '" . $d["product_id"] ."'";
-			$db->query($q);
+		// look if we have a price for this product
+		$q = "SELECT product_price_id, price_quantity_start, price_quantity_end FROM #__{vm}_product_price ";
+		$q .= "WHERE shopper_group_id = '" . $d["shopper_group_id"] ."' ";
+		$q .= "AND product_id = '" . $d["product_id"] ."'";
+		$db->query($q);
 
 
-			if ($db->next_record()) {
+		if ($db->next_record()) {
+			
+			$d["product_price_id"] = $db->f("product_price_id");
+			require_once ( CLASSPATH. 'ps_product_price.php');
+			$my_price = new ps_product_price;
+				
+			if (@$d['product_price'] != '') {
 				// update prices
 				$d["price_quantity_start"] = $db->f("price_quantity_start");
 				$d["price_quantity_end"] = $db->f("price_quantity_end");
-				$d["product_price_id"] = $db->f("product_price_id");
-				require_once ( CLASSPATH. 'ps_product_price.php');
-				$my_price = new ps_product_price;
+				
 				$my_price->update($d);
 			}
 			else {
+				// delete the price
+				$my_price->delete( $d );	
+			}
+		}
+		else {
+			if (isset($d['product_price'])) {
 				// add the price
 				$d["price_quantity_start"] = 0;
 				$d["price_quantity_end"] = "";
@@ -665,7 +674,7 @@ class ps_product extends vmAbstractObject {
 				$my_price->add($d);
 			}
 		}
-
+		
 		/** Product Type - Begin */
 		$product_id=$d["product_id"];
 

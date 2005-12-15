@@ -33,8 +33,15 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
-10-12-2005 soeren
+15-12-2005 soeren
+# product prices can be zero or empty now. When the product price is left empty in the product form, an existing price will be deleted and no price will be added.
+^ PayPal payment extra info now subtracts order and coupon discounts from the order subtotal
+^ Now it's possible to checkout with $0 in the cart. Allows free purchases using gift coupons.
+# Tax total is zero although user's country/state combinination has a matching tax rate record (when CHECKOUT_STYLE = 3 or 4)
+# Task #364 "thank you for your patience...": wrong Waiting list link
+# Task #386 "New user couldn't be added"
 
+10-12-2005 soeren
 # currency_convert including wrong DOMIT files.
 # user list has no valid user id in the delete link (deleting didn't work)
 

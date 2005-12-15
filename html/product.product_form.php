@@ -61,8 +61,9 @@ else {
     $delete_message = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG;
 }
 
-if (!empty($product_id))
-    $price = $ps_product->get_retail_price($product_id);
+if (!empty($product_id)) {
+	$price = $ps_product->get_retail_price($product_id);
+}
 
 if (!empty($product_id)) {
   // get the Database object we're filling the product form with

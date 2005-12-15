@@ -60,7 +60,7 @@ class ps_checkout {
 			eval( "\$this->_SHIPPING =& new ".$filename."();");
 
 		}
-        if(empty($_REQUEST['ship_to_info_id']) && CHECKOUT_STYLE=='3') {
+        if(empty($_REQUEST['ship_to_info_id']) && (CHECKOUT_STYLE=='3' || CHECKOUT_STYLE=='4')) {
 
             $db = new ps_DB();
 
@@ -129,8 +129,7 @@ class ps_checkout {
 		global $VM_LANG, $PSHOP_SHIPPING_MODULES, $vmLogger;
 
 		$db = new ps_DB;
-		require_once(CLASSPATH.'ps_payment_method.php');
-		$ps_payment_method = new ps_payment_method;
+		
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 
@@ -189,14 +188,14 @@ class ps_checkout {
 				return False;
 			}
 		}
-
+		/*
 		if (!$d["payment_method_id"]) {
 			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_MSG_4 );
 			return False;
-		}
-		if ($ps_payment_method->is_creditcard($d["payment_method_id"])) {
+		}*/
+		if ($ps_payment_method->is_creditcard(@$d["payment_method_id"])) {
 
-			if (!$_SESSION["ccdata"]["order_payment_number"]) {
+			if (empty($_SESSION["ccdata"]["order_payment_number"])) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCNR );
 				return False;
 			}
@@ -207,7 +206,7 @@ class ps_checkout {
 				return False;
 			}
 
-			if(!$_SESSION["ccdata"]["order_payment_expire"]) {
+			if(empty( $_SESSION["ccdata"]["order_payment_expire"])) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCDATE_INV );
 				return False;
 			}
@@ -258,12 +257,24 @@ class ps_checkout {
 	**          False - validation failed
 	***************************************************************************/
 	function validate_payment_method(&$d, $is_test) {
-		global $VM_LANG, $vmLogger;
+		global $VM_LANG, $vmLogger, $order_total;
 
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
-
-		if (empty($d["payment_method_id"])) {
+		
+		// We don't need to validate a payment method when
+		// the user has no order total he should pay
+		if( empty( $_REQUEST['order_total'])) {
+			if( !empty( $d['order_total'])) {
+				if( $d['order_total'] <= 0.00 ) {
+					return true;
+				}
+			}
+			if( $order_total <= 0.00 ) {
+				return true;
+			}
+		}
+		if (empty($d["payment_method_id"]) ) {
 			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_PAYM );
 			return false;
 		}
@@ -477,9 +488,7 @@ class ps_checkout {
 			case CHECK_OUT_GET_FINAL_CONFIRMATION:
 
 				// The User wants to order now, validate everything, if OK than Add immeditialtly
-				require_once(CLASSPATH.'ps_payment_method.php');
-				$ps_payment_method = new ps_payment_method;
-				return ($this->add($d));
+				return( $this->add( $d ) );
 
 			default:
 				$vmLogger->crit( "CheckOut step ($checkout_this_step) is undefined!" );
@@ -671,15 +680,6 @@ class ps_checkout {
 
 		$db = new ps_DB;
 
-		if (!$this->validate_form($d)) {
-			return false;
-		}
-
-		if (!$this->validate_add($d)) {
-			return false;
-		}
-
-
 		/* Set the order number */
 		$order_number = $this->get_order_number();
 
@@ -739,7 +739,15 @@ class ps_checkout {
 
 		$timestamp = time() + ($mosConfig_offset*60*60);
 
-		$order_total = $tmp_subtotal + $order_tax + $order_shipping + $order_shipping_tax;
+		$d['order_total'] = $order_total = $tmp_subtotal + $order_tax + $order_shipping + $order_shipping_tax;
+		
+		if (!$this->validate_form($d)) {
+			return false;
+		}
+
+		if (!$this->validate_add($d)) {
+			return false;
+		}
 		/*
 		if (PAYMENT_DISCOUNT_BEFORE != '1') {
 		if($auth["show_price_including_tax"] == 1) {
@@ -1180,7 +1188,7 @@ Order Total: '.$order_total.'
 		// Shipping address based TAX
 		if (TAX_MODE == '0') {
 			$q = "SELECT state, country FROM #__{vm}_user_info ";
-			$q .= "WHERE user_info_id='".@$d["ship_to_info_id"] . "'";
+			$q .= "WHERE user_info_id='".@$_REQUEST["ship_to_info_id"] . "'";
 			$db->query($q);
 			$db->next_record();
 			$state = $db->f("state");
@@ -1955,7 +1963,7 @@ Order Total: '.$order_total.'
 	* @desc Shows all collected Checkout information on the confirmation Screen
 	**************************************************************************/
 	function final_info() {
-		global $VM_LANG, $CURRENCY_DISPLAY;
+		global $VM_LANG, $CURRENCY_DISPLAY, $order_total;
 		$db = new ps_DB;
 		// Begin with Shipping Address
 		if(CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='2') {
@@ -1984,11 +1992,15 @@ Order Total: '.$order_total.'
 		}
 
 		unset( $row );
-		$db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='".strip_tags($_REQUEST['payment_method_id'])."'");
-		$db->next_record();
-		echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
-		echo $db->f("payment_method_name");
-		echo "<br />";
+		if( $order_total > 0.00 ) {
+			$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id' );
+			
+			$db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'");
+			$db->next_record();
+			echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
+			echo $db->f("payment_method_name");
+			echo "<br />";
+		}
 	}
 
 	/*
