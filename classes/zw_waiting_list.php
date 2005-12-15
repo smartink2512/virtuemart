@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: zw_waiting_list.php,v 1.3 2005/09/29 20:01:14 soeren_nb Exp $
+* @version $Id: zw_waiting_list.php,v 1.4.2.1 2005/12/07 20:10:10 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -145,6 +145,8 @@ class zw_waiting_list {
 	function notify_list($product_id) {
 		global $sess;
 		
+		$option = mosGetParam( $_REQUEST, 'option' );
+		
 		if (!$product_id) {
 			return False;
 		}
@@ -178,7 +180,7 @@ class zw_waiting_list {
 			$notice_body .= " is now in stock and can be purchased by following this link\n";
 
 			// now get the url information
-			$url = $sess->url( URL . "index.php?page=shop.product_details&flypage=shop.flypage&product_id=$product_id" );
+			$url = URL . "index.php?page=shop.product_details&flypage=shop.flypage&product_id=$product_id&option=$option&Itemid=".$sess->getShopItemid();
 			$notice_body .= $url;
 			$notice_body .= "\n";
 
