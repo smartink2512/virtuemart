@@ -36,8 +36,8 @@ if( !empty($product_id) ) {
       . $VM_LANG->_PHPSHOP_BACK_TO_DETAILS."</a>\n<br/><br/><br/>";
   
   $alt = $db->f("product_name");
-  $height = PSHOP_IMG_WIDTH;
-  $width = PSHOP_IMG_HEIGHT;
+  $height = PSHOP_IMG_HEIGHT;
+  $width = PSHOP_IMG_WIDTH;
   $border = ($image_id == "product") ? "4" : "1";
   $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&product_id=$product_id&image_id=product&Itemid=".$Itemid;
   $title = $db->f("product_name");
