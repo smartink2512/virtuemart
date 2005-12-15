@@ -1950,6 +1950,7 @@ $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (4, 1, 'PayPal', 'ps_pa
 <?php
 \$url = \"https://www.paypal.com/cgi-bin/webscr\";
 \$tax_total = \$db->f(\"order_tax\") + \$db->f(\"order_shipping_tax\");
+\$discount_total = \$db->f(\"coupon_discount\") + \$db->f(\"order_discount\");
 \$post_variables = Array(
 \"cmd\" => \"_xclick\",
 \"business\" => PAYPAL_EMAIL,
@@ -1957,7 +1958,7 @@ $db->query( "INSERT INTO `#__{vm}_payment_method` VALUES (4, 1, 'PayPal', 'ps_pa
 \"item_name\" => \$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER.\": \". \$db->f(\"order_id\"),
 \"order_id\" => \$db->f(\"order_id\"),
 \"invoice\" => \$db->f(\"order_number\"),
-\"amount\" => round( \$db->f(\"order_subtotal\")+\$tax_total, 2),
+\"amount\" => round( \$db->f(\"order_subtotal\")+\$tax_total-\$discount_total, 2),
 \"shipping\" => sprintf(\"%.2f\", \$db->f(\"order_shipping\")),
 \"currency_code\" => \$_SESSION[\'vendor_currency\'],
 \"image_url\" => \$vendor_image_url,
