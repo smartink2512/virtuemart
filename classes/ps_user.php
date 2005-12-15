@@ -191,12 +191,13 @@ class ps_user {
 		
 		// Joomla User Information stuff
 		$uid = $this->saveUser( $d );
-		if( empty( $uid ) ) {
+		if( empty( $uid ) && empty( $d['id'] ) ) {
 			$vmLogger->err( 'New User couldn\'t be added' );
 			return false;
 		}
-		if( !empty( $d['id'] ) )
+		elseif( !empty( $d['id'])) {
 			$uid = $d['id'];
+		}
 			
 		// Insert billto
 		$q = "INSERT INTO #__{vm}_user_info VALUES (";
