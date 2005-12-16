@@ -362,6 +362,15 @@ $template = str_replace( "{related_products}", $related_product_html, $template 
 $template = str_replace( "{product_type}", $product_type, $template ); // Changed Product Type
 $template = str_replace( "{product_packaging}", $product_packaging, $template ); // Changed Packaging
 
+/* 
+  Really cool regular expression that let's you easily translate the flypage 
+  Usage:
+   {vm_lang:_PHPSHOP__PHPSHOP_ACCOUNT_TITLE} 
+   will print the content of $VM_LANG->_PHPSHOP_ACCOUNT_TITLE
+   from the current language
+*/
+$template = preg_replace("/{vm_lang:([^}]*)}/ie", "\$VM_LANG->\\1", $template);
+
 /* Finish and Print out the Page */
 echo $template;
 
