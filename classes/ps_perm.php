@@ -150,11 +150,10 @@ class ps_perm {
 	 */
 	function check($perms) {
 
+		$auth = $_SESSION["auth"];
+		
 		// Parse all permissions in argument, comma separated
 		// It is assumed auth_user only has one group per user.
-
-		$auth = $_SESSION["auth"];
-
 		if ($perms == "none") {
 			return True;
 		}
@@ -191,6 +190,37 @@ class ps_perm {
 		}
 	
 	}
+	
+	/**
+	 * lists the permission levels in a select box
+	 * @author pablo
+	 * @param string $name The name of the select element
+	 * @param string $group_name The preselected key
+	 */
+	function list_perms( $name, $group_name ) {
+		global $VM_LANG;
+		$auth = $_SESSION['auth'];
+			
+		$db = new ps_DB;
+	  
+		// Get users current permission value 
+		$dvalue = $this->permissions[$auth["perms"]];
+		echo "<select class=\"inputbox\" name=\"$name\">\n";
+		echo "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT ."</option>\n";
+		while( list($key,$value) = each($this->permissions) ) {
+			// Display only those permission that this user can set
+			if ($value <= $dvalue)
+				if ($key == $group_name) {
+					echo "<option value=\"".$key."\" selected=\"selected\">$key</option>\n";
+				}
+				else {
+					echo "<option value=\"$key\">$key</option>\n";
+				}
+		}
+		echo "</select>\n";
+	}
+	
+	
 	/**************************************************************************
 	** name: is_registered_customer()
 	** created by: soeren
@@ -227,7 +257,6 @@ class ps_perm {
 			}
 		//}
 	}
-
 
 }
 

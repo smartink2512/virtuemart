@@ -246,8 +246,7 @@ else {
    	/* Input Field for the Coupon Code */
 	if( PSHOP_COUPONS_ENABLE=='1' 
 		&& !@$_SESSION['coupon_redeemed']
-		&& ($page == "shop.cart"
-			|| @$checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD
+		&& ( @$checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD
 			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_ADDR && CHECKOUT_STYLE != 3 
 			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_METHOD && CHECKOUT_STYLE == 3 
 			)

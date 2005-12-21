@@ -37,8 +37,8 @@ class ps_paypal {
         /** Read current Configuration ***/
         include_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
     ?>
-    <table>
-        <tr>
+    <table class="adminform">
+        <tr class="row0">
         <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
             <td>
                 <select name="PAYPAL_DEBUG" class="inputbox" >
@@ -46,12 +46,13 @@ class ps_paypal {
                 <option <?php if (@PAYPAL_DEBUG != '1') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
                 </select>
             </td>
-            <td>When enabled, let's you test your Notify Script File 
-            <pre><?php echo COMPONENTURL."notify.php" ?></pre>
-            through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>
+            <td>
+            <?php
+            printf( $VM_LANG->_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP, '<pre>'. COMPONENTURL."notify.php</pre>" );
+			?>            
             </td>
         </tr>
-        <tr>
+        <tr class="row1">
         <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL ?></strong></td>
             <td>
                 <input type="text" name="PAYPAL_EMAIL" class="inputbox" value="<?  echo PAYPAL_EMAIL ?>" />
@@ -59,7 +60,7 @@ class ps_paypal {
             <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN ?>
             </td>
         </tr>
-        <tr>
+        <tr class="row0">
             <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS ?></strong></td>
             <td>
                 <select name="PAYPAL_VERIFIED_STATUS" class="inputbox" >
@@ -86,8 +87,8 @@ class ps_paypal {
             <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN ?>
             </td>
         </tr>
-            <tr>
-            <td><strong>Order Status for Pending Payments</strong></td>
+        <tr class="row1">
+            <td><strong><?php echo $VM_LANG->_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING ?></strong></td>
             <td>
                 <select name="PAYPAL_PENDING_STATUS" class="inputbox" >
                 <?php
@@ -101,11 +102,9 @@ class ps_paypal {
                     } ?>
                     </select>
             </td>
-            <td>The order Status to which Orders are set, which have no completed Payment Transaction. 
-            The transaction was not cancelled in this case, but it is just pending and waiting for completion.</td>
+            <td><?php echo $VM_LANG->_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN ?></td>
         </tr>
-        </tr>
-            <tr>
+        <tr class="row0">
             <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED ?></strong></td>
             <td>
                 <select name="PAYPAL_INVALID_STATUS" class="inputbox" >

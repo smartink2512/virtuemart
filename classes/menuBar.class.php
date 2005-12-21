@@ -155,10 +155,12 @@ class vmMenuBar extends mosMenuBar {
 		} else {
 			$href = "javascript:vm_submitButton('$task','$formName', '$page')";
 		}
-		if( empty( $task ))
+		if( empty( $task )) {
 			$image_name = uniqid( "img_" );
-		else
+		}
+		else {
 			$image_name  = $task;
+		}
 		if ($icon && $iconOver) {
 			?>
 			<td>

@@ -20,7 +20,8 @@ mm_showMyFileName( __FILE__ );
 if (!$acl->acl_check( 'administration', 'manage', 'users', $my->usertype, 'components', 'com_users' )) {
 	mosRedirect( 'index2.php', _NOT_AUTH );
 }
-
+require_once( CLASSPATH . 'ps_user.php');
+$ps_user = new ps_user();
 require_once( PAGEPATH . 'admin.user_form.php' );
 
 ?>

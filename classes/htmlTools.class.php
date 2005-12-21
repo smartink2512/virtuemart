@@ -381,7 +381,7 @@ class mShopTabs {
 	}
 }
 
-class vmCommonHTML {
+class vmCommonHTML extends mosHTML {
 
 	/**
 	* Writes a "Save Ordering" Button
@@ -401,10 +401,12 @@ class vmCommonHTML {
 	
 	function getYesNoIcon( $condition, $pos_alt = "Published", $neg_alt = "Unpublished" ) {
 		global $mosConfig_live_site;
-		if( $condition===true || strtoupper( $condition ) == "Y" )
+		if( $condition==true || strtoupper( $condition ) == "Y" ) {
 			return '<img src="'.$mosConfig_live_site.'/administrator/images/tick.png" border="0" alt="'.$pos_alt.'" />';
-		else
+		}
+		else {
 			return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
+		}
 	}
 	/*
 	* Loads all necessary files for JS Overlib tooltips
@@ -448,7 +450,7 @@ class vmCommonHTML {
 	/**
 	 * Prints a JS function to validate all fields
 	 * given in the array $required_fields
-	 * Does only test if non-empty
+	 * Does only test if non-empty (or if no options are selected)
 	 * Includes a check for a valid email-address
 	 *
 	 * @param array $required_fields The list of form elements that are to be validated
@@ -456,26 +458,83 @@ class vmCommonHTML {
 	 * @param string $div_id_postfix The ID postfix to identify the label for the field
 	 */
 	function printJS_formvalidation( $required_fields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
-		global $VM_LANG;
+		global $VM_LANG, $page;
 		echo '
 		<script language="javascript" type="text/javascript">//<![CDATA[
 		function '.$functioname.'() {
 			var form = document.'.$formname.';
 			var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
-			var isvalid = true';
+			var isvalid = true;
+			var required_fields = new Array(\'';
 		
-		foreach ( $required_fields as $fieldname ) {
-			echo '
-			if( form.'.$fieldname.'.value == "" ) {
-				document.getElementById(\''.$fieldname.$div_id_postfix.'\').style.color = "red";
-				isvalid = false;
+		$field_list = implode( "','", $required_fields );
+		$field_list = str_replace( "'email',", '', $field_list );
+		$field_list = str_replace( "'username',", '', $field_list );
+		$field_list = str_replace( "'password',", '', $field_list );
+		$field_list = str_replace( "'password2',", '', $field_list );
+		echo $field_list;
+		echo '\');
+		for (var i=0; i < required_fields.length; i++) {
+			formelement = eval( \'form.\' + required_fields[i] );
+			';
+		echo "
+			if( !formelement ) { 
+				formelement = document.getElementById( required_fields[i]+'_field0' );
+				var loopIds = true;
+			}
+			if( !formelement ) { continue; }
+			if (formelement.type == 'radio' || formelement.type == 'checkbox') {
+				if( loopIds ) {
+					var rOptions = new Array();
+					for(var j=0; j<30; j++ ) {
+						rOptions[j] = document.getElementById( required_fields[i] + '_field' + j );
+						if( !rOptions[j] ) { break; }
+					}
+				} else {
+					var rOptions = form[formelement.getAttribute('name')];
+				}
+				var rChecked = 0;
+				if(rOptions.length > 1) {
+					for (var r=0; r < rOptions.length; r++) {
+						if( !rOptions[r] ) { continue; }
+						if (rOptions[r].checked) {	rChecked=1; }
+					}
+				} else {
+					if (formelement.checked) {
+						rChecked=1;
+					}
+				}
+				if(rChecked==0) {
+					document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+					isvalid = false;
+				} 
+				else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
+					document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+				}				
+			}
+			else if( formelement.options ) {
+				if(formelement.selectedIndex.value == '') {
+					document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+					isvalid = false;
+				} 
+				else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
+					document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+				}
 			}
 			else {
-				document.getElementById(\''.$fieldname.$div_id_postfix.'\').style.color = "";
+				if (formelement.value == '') {
+					document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+					isvalid = false;
+				}
+				else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
+					document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+				}
 			}
-			
-			';
 		}
+		";
+			
+		// We have skipped email in the first loop above!
+		// Now let's handle email address validation
 		if( in_array( 'email', $required_fields)) {
 		
 			echo '
@@ -494,19 +553,22 @@ class vmCommonHTML {
 			}';
 		}
 		if( in_array( 'password', $required_fields )) {
-			
-			echo '
+			if( $page != 'checkout.index') {
+				echo '
 			if (form.password.value.length < 6) {
 				alert( "'. html_entity_decode( _REGWARN_PASS ).'" );
 				return false;
 			} else if (form.password2.value == "") {
 				alert( "'.html_entity_decode( _REGWARN_VPASS1).'" );
 				return false;
-			} else if ((form.password.value != "") && (form.password.value != form.password2.value)){
-				alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
-				return false;
 			} else if (r.exec(form.password.value)) {
 				alert( "'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
+				return false;
+			}';
+			}
+			echo '
+			if ((form.password.value != "") && (form.password.value != form.password2.value)){
+				alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
 				return false;
 			}';
 		}
@@ -527,6 +589,157 @@ class vmCommonHTML {
 		//]]>
 		</script>';
 	}
+	/**
+	 * This class allows us to create fieldsets like in Community builder
+	 * @author Copyright 2004 - 2005 MamboJoe/JoomlaJoe, Beat and CB team
+	 *
+	 * @param array $arr
+	 * @param string $tag_name
+	 * @param string $tag_attribs
+	 * @param string $key
+	 * @param string $text
+	 * @param mixed $selected
+	 * @param mixed $required
+	 * @return string HTML form code
+	 */
+	// begin class vmCommonHTML extends mosHTML {
+
+	function radioListArr( &$arr, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
+		reset( $arr );
+		$html = array();
+		$n=count( $arr );
+		for ($i=0; $i < $n; $i++ ) {
+			$k = stripslashes($arr[$i]->$key);
+			$t = stripslashes($arr[$i]->$text);
+			$id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+
+			$extra = '';
+			$extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
+			if (is_array( $selected )) {
+				foreach ($selected as $obj) {
+					$k2 = stripslashes($obj->$key);
+					if ($k == $k2) {
+						$extra .= " checked=\"checked\"";
+						break;
+					}
+				}
+			} else {
+				$extra .= ($k == stripslashes($selected) ? "  checked=\"checked\"" : '');
+			}
+			$html[] = "<input type=\"radio\" name=\"$tag_name\" id=\"".$tag_name."_field$i\" $tag_attribs value=\"".$k."\"$extra /> " . "<label for=\"".$tag_name."_field$i\">$t</label>";
+		}
+		return $html;
+	}
+	function radioList( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
+		return "\n\t".implode("\n\t ", vmCommonHTML::radioListArr( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $required ))."\n";
+	}
+	function radioListTable( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $cols=0, $rows=1, $size=0, $required=0 ) {
+		$cellsHtml = vmCommonHTML::radioListArr( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $required );
+		return vmCommonHTML::list2Table( $cellsHtml, $cols, $rows, $size );
+	}
+	function selectList( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
+		reset( $arr );
+		$html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
+		if(!$required) $html .= "\n\t<option value=\"\"> </option>";
+ 		$n=count( $arr );
+		for ($i=0; $i < $n; $i++ ) {
+			$k = stripslashes($arr[$i]->$key);
+			$t = stripslashes($arr[$i]->$text);
+			$id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+
+			$extra = '';
+			$extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
+			if (is_array( $selected )) {
+				foreach ($selected as $obj) {
+					$k2 = stripslashes($obj->$key);
+					if ($k == $k2) {
+						$extra .= " selected=\"selected\"";
+						break;
+					}
+				}
+			} else {
+				$extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
+			}
+			$html .= "\n\t<option value=\"".$k."\"$extra>";
+			$html .= $t;
+			$html .= "</option>";
+		}
+		$html .= "\n</select>\n";
+		return $html;
+	}
+	function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0  ) {
+		reset( $arr );
+		$html = array();
+		for ($i=0, $n=count( $arr ); $i < $n; $i++ ) {
+			$k = $arr[$i]->$key;
+			$t = $arr[$i]->$text;
+			$id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+
+			$extra = '';
+			$extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
+			if (is_array( $selected )) {
+				foreach ($selected as $obj) {
+					$k2 = $obj->$key;
+					if ($k == $k2) {
+						$extra .= " checked=\"checked\"";
+						break;
+					}
+				}
+			} else {
+				$extra .= ($k == $selected ? " checked=\"checked\"" : '');
+			}
+			$html[] = "<input type=\"checkbox\" name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."_field$i\" value=\"".$k."\"$extra $tag_attribs />" . "<label for=\"".str_replace('[]', '', $tag_name)."_field$i\">$t</label>";
+		}
+		return $html;
+	}
+	function checkboxList( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0 ) {
+		return "\n\t".implode("\n\t", vmCommonHTML::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required ))."\n";
+	}
+	function checkboxListTable( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $cols=0, $rows=0, $size=0, $required=0 ) {
+		$cellsHtml = vmCommonHTML::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required );
+		return vmCommonHTML::list2Table( $cellsHtml, $cols, $rows, $size );
+	}
+	// private methods:
+	function list2Table ( $cellsHtml, $cols, $rows, $size ) {
+		$cells = count($cellsHtml);
+		if ($size == 0) {
+			$localstyle = ""; //" style='width:100%'";
+		} else {
+			$size = (($size-($size % 3)) / 3  ) * 2; // int div  3 * 2 width/heigh ratio
+			$localstyle = " style='width:".$size."em;'";
+		}
+		$return="";
+		if ($cells) {
+			if ($rows) {
+				$return = "\n\t<table class='vmMulti'".$localstyle.">";
+				$cols = ($cells-($cells % $rows)) / $rows;	// int div
+				if ($cells % $rows) $cols++;
+				$lineIdx=0;
+				for ($lineIdx=0 ; $lineIdx < min($rows, $cells) ; $lineIdx++) {
+					$return .= "\n\t\t<tr>";
+					for ($i=$lineIdx ; $i < $cells; $i += $rows) {
+						$return .= "<td>".$cellsHtml[$i]."</td>";
+					}
+					$return .= "</tr>\n";
+				}
+				$return .= "\t</table>\n";
+			} else if ($cols) {
+				$return = "\n\t<table class='vmMulti'".$localstyle.">";
+				$idx=0;
+				while ($cells) {
+					$return .= "\n\t\t<tr>";
+					for ($i=0, $n=min($cells,$cols); $i < $n; $i++, $cells-- ) {
+						$return .= "<td>".$cellsHtml[$idx++]."</td>";
+					}
+					$return .= "</tr>\n";
+				}
+				$return .= "\t</table>\n";
+			} else {
+				$return = "\n\t".implode("\n\t ", $cellsHtml)."\n";
+			}
+		}
+		return $return;
+	} // end class vmCommonHTML, thanks folks!
 }
 
 /**

@@ -34,13 +34,13 @@ $ps_product_category = new ps_product_category;
 require_once (CLASSPATH."ps_reviews.php");
 
 $Itemid = mosgetparam($_REQUEST, "Itemid", null);
-if (empty($orderby)) $orderby = "{vm}_product.product_name";
+
 if (empty($category_id)) $category_id = $search_category;
 global $default;
 $default['category_flypage'] = FLYPAGE;
 
 if (!empty($category_id) ) {
-
+	if (empty($orderby)) $orderby = "{vm}_product_category_xref.product_list";
 	/**
     * PATHWAY - Navigation List
     */
@@ -76,6 +76,9 @@ if (!empty($category_id) ) {
 		echo '</div>
             <br style="clear:both;" /><br />';
 	}
+}
+else {
+	if (empty($orderby)) $orderby = "{vm}_product.product_name";
 }
 // NEW: Include the query section from an external file
 require_once( PAGEPATH. "shop_browse_queries.php" );
@@ -264,7 +267,7 @@ else {
 		// If no flypage is set then use the default as set in virtuemart.cfg.php
 		$flypage = $db_browse->sf("category_flypage");
 
-		$url = $sess->url( $mm_action_url."index.php?page=shop.product_details&flypage=$flypage&product_id=" . $db_browse->f("product_id") . "&category_id=" . $db_browse->f("category_id"));
+		$url = $sess->url( $mm_action_url."index.php?page=shop.product_details&flypage=$flypage&product_id=" . $db_browse->f("product_id") . "&category_id=" . $db_browse->f("category_id"). "&manufacturer_id=" . $manufacturer_id);
 
 		if( $db_browse->f("product_thumb_image") ) {
 			$product_thumb_image = $db_browse->f("product_thumb_image");

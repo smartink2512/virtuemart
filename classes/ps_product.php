@@ -295,10 +295,13 @@ class ps_product extends vmAbstractObject {
 		else {
 			/* If is Product, Insert category ids */
 			foreach( $d["product_categories"] as $category_id ) {
-				$q  = "INSERT INTO #__{vm}_product_category_xref ";
-				$q .= "(category_id,product_id) ";
-				$q .= "VALUES ('$category_id','". $d["product_id"] . "')";
-				$db->setQuery($q); $db->query();
+					$db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
+					$db->next_record();
+					
+					$q  = "INSERT INTO #__{vm}_product_category_xref ";
+					$q .= "(category_id,product_id,product_list) ";
+					$q .= "VALUES ('$category_id','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
+					$db->setQuery($q); $db->query();
 			}
 		}
 		$q = "INSERT INTO #__{vm}_product_mf_xref VALUES (";
@@ -448,7 +451,7 @@ class ps_product extends vmAbstractObject {
 		if (empty($d["product_special"])) $d["product_special"] = "N";
 		if (empty($d["product_publish"])) $d["product_publish"] = "N";
 
-		$q  = "UPDATE #__{vm}_product SET ";
+		$q  = "UPDATE `#__{vm}_product` SET ";
 		$q .= "product_sku='" . $d["product_sku"] . "',";
 		$q .= "vendor_id='" . $d["vendor_id"] . "',";
 		$q .= "product_name='" . $d["product_name"] . "',";
@@ -604,18 +607,39 @@ class ps_product extends vmAbstractObject {
 			/* If it is a Product, update Category */
 		}
 		else {
-			// DELETE ALL OLD CATEGORY_XREF ENTRIES!
-			$q  = "DELETE FROM #__{vm}_product_category_xref ";
-			$q .= "WHERE product_id = '" . $d["product_id"] . "' ";
+			// Handle category selection: product_category_xref
+			$q  = "SELECT `category_id` FROM `#__{vm}_product_category_xref` ";
+			$q .= "WHERE `product_id` = '" . $d["product_id"] . "' ";
 			$db->setQuery($q);
 			$db->query();
-
-			// NOW Re-Insert
+			$old_categories = array();
+			while( $db->next_record()) {
+				$old_categories[$db->f('category_id')] = $db->f('category_id');
+			}
+			// NOW Insert new categories
+			$new_categories = array();
 			foreach( $d["product_categories"] as $category_id ) {
-				$q  = "INSERT INTO #__{vm}_product_category_xref ";
-				$q .= "(category_id,product_id) ";
-				$q .= "VALUES ('$category_id','". $d["product_id"] . "')";
-				$db->setQuery($q); $db->query();
+				if( !in_array( $category_id, $old_categories ) ) {
+					$db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
+					$db->next_record();
+					
+					$q  = "INSERT INTO #__{vm}_product_category_xref ";
+					$q .= "(category_id,product_id,product_list) ";
+					$q .= "VALUES ('$category_id','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
+					$db->setQuery($q); $db->query();
+					$new_categories[$category_id] = $category_id;
+				}
+				else {
+					unset( $old_categories[$category_id]);
+				}
+			}
+			// The rest of the old categories can be deleted
+			foreach( $old_categories as $category_id ) {
+				$q  = "DELETE FROM `#__{vm}_product_category_xref` ";
+				$q .= "WHERE `product_id` = '" . $d["product_id"] . "' ";
+				$q .= "AND `category_id` = '" . $category_id . "' ";
+				$db->setQuery($q);
+				$db->query();
 			}
 		}
 
@@ -746,6 +770,36 @@ class ps_product extends vmAbstractObject {
 		else {
 			return $this->delete_product( $product_id, $d );
 		}
+	}
+	/**
+	 * Move a product from one category to another
+	 *
+	 * @param array $d
+	 * @return boolean True on sucess, false on failure
+	 */
+	function move( &$d ) {
+		global $db, $vmLogger;
+		if( !is_array( $d['product_id'])) {
+			$vmLogger->err( 'No product found to move.');
+			return false;
+		}
+		if( empty( $d['category_id'])) {
+			$vmLogger->err( 'You must select ONE category!');
+			return false;
+		}
+		// Loop though each product
+		foreach( $d['product_id'] as $product_id ) {
+			// check if the product is already assigned to the category it should be moved to
+			$db->query( 'SELECT product_id FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id).' AND `category_id`='.intval($d['category_id']));
+			if( !$db->next_record()) {
+				// If the product is not yet in this category, move it!
+				$db->query( 'SELECT MAX(`product_list`) as max FROM `#__{vm}_product_category_xref` WHERE `category_id`='.intval($d['category_id']));
+				$db->next_record();
+				$db->query('INSERT INTO `#__{vm}_product_category_xref` VALUES ('.intval($d['category_id']).', '.intval($product_id).', '.intval( $db->f('max') + 1) .') ');
+			}
+			$db->query('DELETE FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id).' AND `category_id`='.intval($d['old_category_id']));
+		}
+		return true;
 	}
 	
 	/**
@@ -1449,7 +1503,7 @@ class ps_product extends vmAbstractObject {
 	 * @param boolean $check_multiple_prices Check if the product has more than one price for that shopper group?
 	 * @return array The product price information
 	 */
-	function get_price($product_id, $check_multiple_prices=false) {
+	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='') {
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 
@@ -1469,10 +1523,14 @@ class ps_product extends vmAbstractObject {
 			else {
 				$vendor_id = $_SESSION['product_sess'][$product_id]['vendor_id'];
 			}
-
-			$shopper_group_id = $auth["shopper_group_id"];
-			$shopper_group_discount = $auth["shopper_group_discount"];
-
+			if( $overrideShopperGroup === '') {
+				$shopper_group_id = $auth["shopper_group_id"];
+				$shopper_group_discount = $auth["shopper_group_discount"];
+			}
+			else {
+				$shopper_group_id = $overrideShopperGroup;
+				$shopper_group_discount = 0;
+			}
 			if( empty($GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id']) ) {
 				// Get the default shopper group id for this vendor
 				$q = "SELECT shopper_group_id,shopper_group_discount FROM #__{vm}_shopper_group WHERE ";
@@ -1501,10 +1559,11 @@ class ps_product extends vmAbstractObject {
 						$quantity  += $cart[$i]["quantity"];
 					}
 				}
-
-				$volume_quantity_sql = " AND (('$quantity' >= price_quantity_start AND '$quantity' <= price_quantity_end)
+				$volume_quantity_sql = " ORDER BY price_quantity_start";
+				if( $quantity > 0 ) {
+					$volume_quantity_sql = " AND (('$quantity' >= price_quantity_start AND '$quantity' <= price_quantity_end)
                                 OR (price_quantity_end='0') OR ('$quantity' > price_quantity_end)) ORDER BY price_quantity_end DESC";
-				/* End Addition */
+				}
 			}
 			else {
 				$volume_quantity_sql = " ORDER BY price_quantity_start";
@@ -1861,13 +1920,51 @@ class ps_product extends vmAbstractObject {
 		
 		return $description;
 	}
-	/**************************************************************************
-	** name: show_price
-	** created by: soeren
-	** description: display a Price, formatted and with Discounts
-	** parameters: int product_id
-	** returns:
-	***************************************************************************/
+	
+	function calcEndUserprice( $product_id, $overrideShoppergroup ) {
+		global $VM_LANG, $CURRENCY_DISPLAY;
+		$auth = $_SESSION['auth'];
+		// Get the DISCOUNT AMOUNT
+		$discount_info = $this->get_discount( $product_id );
+
+		// Get the Price according to the quantity in the Cart
+		$price_info = $this->get_price( $product_id, false, $overrideShoppergroup );
+
+		$html = "";
+		$undiscounted_price = 0;
+		if (isset($price_info["product_price_id"])) {
+
+			$base_price = $price_info["product_price"];
+			$price = $price_info["product_price"];
+
+			if ($auth["show_price_including_tax"] == 1) {
+				$my_taxrate = $this->get_product_taxrate($product_id);
+				$base_price += ($my_taxrate * $price);
+			}
+			else {
+				$my_taxrate = 0;
+			}
+			$tax = $my_taxrate * 100;
+			$price_info['tax_rate'] = $VM_LANG->_PHPSHOP_TAX_LIST_RATE.': '.$tax.'%';
+			// Calculate discount
+			if( !empty($discount_info["amount"])) {
+				$undiscounted_price = $base_price;
+				switch( $discount_info["is_percent"] ) {
+					case 0: 
+						$base_price -= $discount_info["amount"]; 
+						$price_info['discount_info'] = $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LBL.': '.$CURRENCY_DISPLAY->getFullValue($discount_info['amount']);
+						break;
+					case 1: 
+						$base_price *= (100 - $discount_info["amount"])/100; 
+						$price_info['discount_info'] = $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LBL.': '.$discount_info['amount'].'%';
+						break;
+				}
+			}
+			$price_info['product_price'] = $base_price;
+		}
+		return $price_info;
+	}
+	
 	/**
 	 * Function to calculate the price, apply discounts from the discount table
 	 * and reformat the price

@@ -47,7 +47,7 @@ $keyword2 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword2
 $DescOrderBy = $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'DescOrderBy', "ASC" ));
 $search_limiter= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_limiter', null ));
 $search_op= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_op', null ));
-$orderby = $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'orderby', '{vm}_product.product_name' ));
+$orderby = $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'orderby' ));
 
 
 if( PSHOP_IS_OFFLINE == "1" ) {

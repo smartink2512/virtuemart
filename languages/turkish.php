@@ -817,25 +817,16 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_STATISTIC_SUM = 'Toplam';
 	var $_PHPSHOP_STATISTIC_NEW_ORDERS = 'Yeni Sipariþler';
 	var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = 'Yeni Müþteriler';
-
-	//Waiting list : file /administrator/components/com_phpshop/html/shop.waiting_list.php
 	var $_PHPSHOP_WAITING_LIST_MESSAGE = 'Ürün stoklarda bulunduðund haberdar olmak için lütfen aþaðýya e-mail adresinizi giriniz. 
                                         E-mail adresinizi hiçkimseyle hiçbir þekilde paylaþmayacak,satmayacak,kiralamayacaðýz.
                                         Sadece ürün stoklara geldiðinde sizi haberdar edeceðiz.<br /><br />Teþekkür ederiz!';
 	var $_PHPSHOP_WAITING_LIST_THANKS = 'Beklediðiniz için teþekkür ederiz! <br />Stoklarla ilgili en ayakýn zamanda sizi haberdar edeceðiz.';
 	var $_PHPSHOP_WAITING_LIST_NOTIFY_ME = 'Beni haberdar et!';
-	
-	//Checkout : file /administrator/components/com_phpshop/html/checkout.thankyou.php
 	var $_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW = 'Printer çýktýsý';
-  
-  /**************************Admin.show_cfg.php in apparition order ;-)**************************************/
-	
-	/* PAGE 1 */
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZE_OR_CYBERCASH = 'Lütfen Authorize.net veya CyberCash seçiniz';
 	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS = ' Düzenleme dosyasý durumu:';
 	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_WRITEABLE = 'yazýlabilir';
 	var $_PHPSHOP_ADMIN_CFG_FILE_STATUS_UNWRITEABLE = 'yazýlamaz';
-	
 	var $_PHPSHOP_ADMIN_CFG_GLOBAL = 'Genel';
 	var $_PHPSHOP_ADMIN_CFG_PATHANDURL = 'Yol & Link';
 	var $_PHPSHOP_ADMIN_CFG_SITE = 'Site';
@@ -860,13 +851,12 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = 'Çoklu vergiyi aktif et';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = 'Eðer farklý vergi oranlarýna sahip ürünleriniz varsa bunu iþaretleyiniz.';
 	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = 'Vergi ve kargodan önce hesaptan indirimi yap';
-  var $_PHPSHOP_ADMIN_CFG_REVIEW = 'Müþteri yorum /ürün oylama sistemini aktif et';
-  var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = 'Eðer aktif ederseniz müþteriler <strong>ürünleri oylayabilir</strong> ve ürünlerle ilgili<strong> yorum yazabilir</strong><br />
+	var $_PHPSHOP_ADMIN_CFG_REVIEW = 'Müþteri yorum /ürün oylama sistemini aktif et';
+	var $_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN = 'Eðer aktif ederseniz müþteriler <strong>ürünleri oylayabilir</strong> ve ürünlerle ilgili<strong> yorum yazabilir</strong><br />
                                                                                 Böylece müþteriler ürünle ilgili tecrübelerini dðer müþterilerle paylaþabilirler.<br />';
 	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN = 'Ýndirimin vergi ve nakliye ücreti kesilmeden önce mi sonramý yapýlmasý gerektiðini belirler.';
 	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK = 'Müþteriler banka hesap bilgilerini boþ geçebilir mi?';
 	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = 'Maðazaya kayýt olunduðunda banka hesap bilgilerini belirtmesi gerekip gerekmediðini belirler.';
-
 	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = 'Müþteriler ilçe/bölge seçebilir mi?';
 	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = 'Eðer seçilirse müþteriler kayýt olduklarýnda kendi bölgelerini/ilçelerini seçip seçemeyeceklerini belirler.';
 	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = 'Kullaným koþullarýný kabul zorunluluðu olsun mu?';
@@ -876,18 +866,15 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                           Seçilmesi halinde müþterinin stokta olmayan ürünü almasý iptal edilir.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE = 'Ortak þirketler programýný aktif et?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN = 'Ortak þirketler programýný aktif eder,eðer arka planda eklenen þirketler varsa onlarý aktif edebilirsiniz.';
-	
 	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT = 'Sipariþ-posta fromatý:';
 	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT = 'Düz yazý halinde';
 	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML = 'HTML halinde';
 	var $_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN = 'Onay e-mail lerinin formatýný düzenlemenizi saðlar:<br />
                                                                                         <ul><li>Sadece düz yazý halinde</li>
                                                                                         <li>veya HTML olarak resimlerle beraber</li></ul>';
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Kullanýcýlara admin kullanýmýna izin ver';
-  var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'Bu seçenekle mambo kullanýcýsý olmayan fakat 
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Kullanýcýlara admin kullanýmýna izin ver';
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'Bu seçenekle mambo kullanýcýsý olmayan fakat 
                                                                                               maðaza admini olan kullanýcýlara mambo adminliði hakký verilir.';
-	
-	/* PAGE 2 */
 	var $_PHPSHOP_ADMIN_CFG_URL = 'Link';
 	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'Sitenizin internet adresi. Mambo linki ile ayný olmalýdýr (sonu / ile bitmelidir).';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'Güvenli Alan';
@@ -905,27 +892,22 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'Resim yolu';
 	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'phpShop shop_image klasörü resim yolu.';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'Ana Sayfa';
-	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'Varsayýlan olarak bu sayfa yüklenecektir.';	
+	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'Varsayýlan olarak bu sayfa yüklenecektir.';
 	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'Hata Sayfasý';
-	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = 'Hata mesajlarý için varsayýlan olarak bu sayfa yüklencektir.';	
+	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN = 'Hata mesajlarý için varsayýlan olarak bu sayfa yüklencektir.';
 	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE = 'Düzeltme Sayfasý';
 	var $_PHPSHOP_ADMIN_CFG_DEBUGPAGE_EXPLAIN = 'Onarým mesajlarý için bu sayfa varsayýlan olarak açýlacaktýr.';
 	var $_PHPSHOP_ADMIN_CFG_DEBUG = 'Onarma açýk ?';
 	var $_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN = 'ONAR?  	   	Onarmayý açar. Her sayfanýn sonunda onarma sayfasý açýlacaktýr. Maðaza yapým aþamasnda iken çok faydalýdýr.';
-
-
-/* PAGE 3 */
-
 	var $_PHPSHOP_ADMIN_CFG_FLYPAGE = 'Önizleme Sayfasý';
 	var $_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN = 'Ürün detaylarý için varsayýlan önizleme sayfasýdýr.';
-  var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = 'Þablon Kategorisi';
+	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE = 'Þablon Kategorisi';
 	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Ürünlerin varsayýlan olarak gösterileceði kategoridir.<br />
                                                                                                       Önceki þablonlarý tekrar düzenleyerek yeni þablonlar oluþturabilirsiniz.<br />
                                                                                                       (burada bulabilirsiniz <strong>COMPONENTPATH/html/templates/</strong> aramaya _ ile baþlayýn)';
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Herbir satýrda gözükecek ürün (varsayýlan)';
-  var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Her satýrda bulunacak ürün sayýsýný belirler. <br />
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Herbir satýrda gözükecek ürün (varsayýlan)';
+	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Her satýrda bulunacak ürün sayýsýný belirler. <br />
                                                                                                       Örneðin: Üç olarak(3) belirlerseniz, kategori þablonu her satýrda 3 ürün gösterir';
-  
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\'no image\' resmi';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Eðer ürünle ilgili hiçbir resim yoksa bu resim gösterilir.';
 	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'Satýr Arama';
@@ -938,9 +920,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Sipariþ listesi kutusunda gösterilecek azami sýra sayýsý .';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'En altta \'powered by mambo-phpShop\' gösterilsin mi?';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Seçilmesi halinde en altta ..powered-by-mambo-phpShop.. resmi gösterilir.';
-	
-	
-	/* PAGE 4 */
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Maðazanýzýn nakliye türünü seçiniz.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Standart nakliye modülü ,düzenlenmiþ ve oylanmýþ kargolarla birlikte. <strong>RECOMMENDED !</strong>';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Alan nakliye modülü 1.0<br />
@@ -953,8 +932,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = 'Ups ten almýþ olduðunuz kimlik';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = 'UPS þifresi';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = 'Ups hesabýnýzýn þifresi';
-	  
-  var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'Uluslararasý nakliye. Eðer <a href=\'http://www.intershipper.com\' target=\'_blank\'>Intershipper.com</a> hesabýnýz varsa seçiniz';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'Uluslararasý nakliye. Eðer <a href=\'http://www.intershipper.com\' target=\'_blank\'>Intershipper.com</a> hesabýnýz varsa seçiniz';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = 'Nakliye metodu seçimini iptal et. Eðer müþterilerinizin aldýðý ürünlere nakliye gerekmiyorsa seçiniz.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = 'Uluslararasý nakliye þifresi';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = 'Uluslararasý nakliye hesabýnýzýn þifresi.';
@@ -962,13 +940,8 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = 'Uluslararasý nakliye hesabýnýzýn e-mail adresi.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = 'Þifreleme anahtarý';
 	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = 'Veritabanýndaki saklanan bilgileri þifrelemek için kullanýlan anahtar. Dosyanýn görüntülenmesinden korumak manasýna gelir.';
-	
-	
-	/* PAGE 5 */
-	
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = 'Hesabý Ödeme Çubuðunu Aktif Et';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Eðer bunu aktif ederseniz müþteriler hesap ödeme sýrasýnda bunu görüntüleyeceklerdir.';
-	
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'Maðazanýzýn hesap ödeme þeklini seçiniz';
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = '<strong>Standart :</strong><br/>
                1. Kargo adresi isteði<br />
@@ -986,37 +959,20 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 = '<strong>Ýþlem 4:</strong><br/>
                1. Ödeme türü isteði<br />
               2. Sipariþi tamamla';
-	
-	
-	
-	/* PAGE 6 */
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS = 'Ýndirilebilir ürün aktif et';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN = 'Eðer indirilebilir ürünler satmak istiyorsanýz bunu aktif ediniz.';
-	
 	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS = 'Ürün indirme aktif ürün durumu';
 	var $_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN = 'Müþteriye e-mail yoluyla belirtilecek , indirilebilir ürün durumunu seçiniz .';
-	
 	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS = 'Ürün indirme pasif ürün durumu';
 	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = 'Ýndirilebilir ürün durumunu pasif hale geçirmek için bu özelliði kullanabilirsiniz.';
-	
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = 'DOWNLOADROOT';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = 'Müþterilerin dosyalarý indirecekleri fiziksel yol.<br>
         <span class=\'message\'>Maðazanýzýn güvenliði için: Eðer yapabiliyorsanýz sitenizin ana klasörü dýþýnda bir yer seçiniz</span>';
-	
-	
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = 'Azami Dosya Ýndirme';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Tek dosya indirme kimliði ile dosyalarýn indirilmesini saðlar, (tek sipariþ için)';
-	
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Dosya Ýndirme Süresi';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = 'Dosya indirme sýnýrýný <strong>saniye</strong> olarak belirleyebilirsiniz. 
   Bu sýnýr ilk dosya indirme ile baþlar! Sýnýr aþýldýðýnda, Dosya indirme kimliði iptal olur.<br />Not : 86400sn =24saat.';
-	
-	
-	
-	
-	/* PAGE 7 */
-	
-	
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = 'PayPal ile IPN ödeme açýk mý?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = 'Kullanýcýlarýn Paypal ile ödeme sistemini kullanmasý için seçiniz.';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = 'PayPal ödemesi için email:';
@@ -1025,30 +981,22 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = 'Asýl durumu belirtilmiþ ürün durumu, eðer paypal ödeme baþarýlý olmuþ ise.';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = 'Baþarýsýz iþlemler için ürün durumu';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN = 'Baþarýsýz PAYPAL iþlemleri için ürün durumunu seçiniz.';
-	
-	
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE = 'PayMate ile ödemeler aktif mi?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYMATE_EXPLAIN = 'Kullanýcýlarýn Paymate ile ödeme sistemini kullanmasý için seçiniz.';
 	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME = 'PayMate kullanýcý adý:';
 	var $_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN = 'PayMate hesabýndaki kullanýcý adý.';
-	
-	
-	
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = 'Authorize.net ödeme sistemini aç?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = 'Authorize.net i phpShop ile kullan.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = 'Test modu ?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = 'Test halinde iken \'Evet\' seçin. Canlý iþlemler için \'Hayýr\' seçiniz.';
 	var $_PHPSHOP_ADMIN_CFG_YES = 'Evet';
 	var $_PHPSHOP_ADMIN_CFG_NO = 'Hayýr';
-	
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = 'Authorize.net Kullanýcý kimliði';
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN = 'Bu sizin Authorize.Net kullanýcý kimliðiniz';
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY = 'Authorize.net iþlem anahtarý';
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN = 'Bu sizin Authorize.net iþlem anahtarýnýz.';
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE = 'Belgeleme Türü';
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN = 'Bu sizin Authorize.Net belgeleme türünüz.';
-	
-	
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH = 'CyberCash aktif et.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CYBERCASH_EXPLAIN = 'CyberCash i phpShop ile kullan.';
 	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_MERCHAND = 'CyberCash Tüccar';
@@ -1059,266 +1007,217 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_URL_EXPLAIN = 'CyberCash PAYMENT URL is the URL provided by Cybercash for secure payment';
 	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE = 'CyberCash Belgeleme türü';
 	var $_PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN = 'Cybercase tarafýndan saðlanan CyberCash belgeleme türü ';
-	
-
-    /** Advanced Search feature ***/
-    var $_PHPSHOP_ADVANCED_SEARCH  ='Kapsamlý Arama';
-    var $_PHPSHOP_SEARCH_ALL_CATEGORIES = 'Tüm kategorileri ara';
-    var $_PHPSHOP_SEARCH_ALL_PRODINFO = 'Tüm ürün özelliklerinde ara';
-    var $_PHPSHOP_SEARCH_PRODNAME = 'Sadece ürün adý';
-    var $_PHPSHOP_SEARCH_MANU_VENDOR = 'Sadece üretici/Satýcý';
-    var $_PHPSHOP_SEARCH_DESCRIPTION = 'Sadece ürün tanýmý';
-    var $_PHPSHOP_SEARCH_AND = 've';
-    var $_PHPSHOP_SEARCH_NOT = 'yok';
-    var $_PHPSHOP_SEARCH_TEXT1 = 'Birinci açýlýr menü belli bir limitte arama yapmak için kategori seçmenizi saðlar . 
+	var $_PHPSHOP_ADVANCED_SEARCH = 'Kapsamlý Arama';
+	var $_PHPSHOP_SEARCH_ALL_CATEGORIES = 'Tüm kategorileri ara';
+	var $_PHPSHOP_SEARCH_ALL_PRODINFO = 'Tüm ürün özelliklerinde ara';
+	var $_PHPSHOP_SEARCH_PRODNAME = 'Sadece ürün adý';
+	var $_PHPSHOP_SEARCH_MANU_VENDOR = 'Sadece üretici/Satýcý';
+	var $_PHPSHOP_SEARCH_DESCRIPTION = 'Sadece ürün tanýmý';
+	var $_PHPSHOP_SEARCH_AND = 've';
+	var $_PHPSHOP_SEARCH_NOT = 'yok';
+	var $_PHPSHOP_SEARCH_TEXT1 = 'Birinci açýlýr menü belli bir limitte arama yapmak için kategori seçmenizi saðlar . 
         Ýkinci açýlýr menü ürünle ilgili belli bir arama yapmak için kategori seçmenizi saðlar  (mesela ürün adý) .
         Bunlarý seçip anahtar kelimeyi giriniz. ';
-    var $_PHPSHOP_SEARCH_TEXT2 = ' Aramanýzý ikinci bir anahtar kelime ekleyerek ve operatörleri(ve,veya) kullanarak inceltebilirsiniz . 
+	var $_PHPSHOP_SEARCH_TEXT2 = ' Aramanýzý ikinci bir anahtar kelime ekleyerek ve operatörleri(ve,veya) kullanarak inceltebilirsiniz . 
         Ve anahtar kelimesini seçmek iki kelimeninde üründe bulunmasý manasýna gelmektedir. 
         YOk anahtar kelimesini seçmek ilk kelimenin üründe bulunmasý manasýna gelmektedir. ';
-    var $_PHPSHOP_ORDERBY = 'Sipariþ';
-    
-    /*** Review feature ***/
-    var $_PHPSHOP_CUSTOMER_RATING  = 'Averaj müþteri reytingi';
-    var $_PHPSHOP_TOTAL_VOTES = 'Toplam Oy';
-    var $_PHPSHOP_CAST_VOTE = 'Oyunuzu seçiniz';
-    var $_PHPSHOP_RATE_BUTTON = 'Oran';
-    var $_PHPSHOP_RATE_NOM = 'Reyting';
-    var $_PHPSHOP_REVIEWS = 'Müþteri yorumlarý';
-    var $_PHPSHOP_NO_REVIEWS = 'Bu ürün için hiç görüþ belirtilmemiþ.';
-    var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Ýlk görüþü siz belirtin';
-    var $_PHPSHOP_REVIEW_LOGIN = 'Lütfen görüþ belirtmek için kullanýcý giriþi yapýn.';
-    var $_PHPSHOP_REVIEW_ERR_RATE = 'Lütfen yorumunuzu tamamlamak için oy verin.';
-    var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Lütfen yorumunuzu yapýnýz. Asgari izin verilen limit 100 karakterdir.';
-    var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Yorumunuzu kýsaltýn : Azami 2000 karaktere izin veriyoruz ';
-    var $_PHPSHOP_WRITE_REVIEW = 'Ürün için yorum yapýn!';
-    var $_PHPSHOP_REVIEW_RATE = 'Öne ürüne oy veriniz. Lütfen 0 (Çok kötü) ile 5 (Süper) arasý deðer seçiniz.';
-    var $_PHPSHOP_REVIEW_COMMENT = 'Kýsa bir yorum girin....(asgari  100, azami 2000 characters) ';
-    var $_PHPSHOP_REVIEW_COUNT = 'Yazýlan karakterler: ';
-    var $_PHPSHOP_REVIEW_SUBMIT = 'Yorum gönder';
-    var $_PHPSHOP_REVIEW_ALREADYDONE = 'Önceden bu ürünle ilgili inceleme yapmýþsýnýz,teþekkür ederiz.';
-    var $_PHPSHOP_REVIEW_THANKYOU = 'Ýncelemeniz için teþekkürler.';
-    var $_PHPSHOP_COMMENT= 'Yorum';
-    
-    var $_PHPSHOP_CREDITCARD_FORM_LBL = 'Kredi Kartý Türü Ekle/Düzenle';
-    var $_PHPSHOP_CREDITCARD_NAME = 'Kredi Kartý Adý';
-    var $_PHPSHOP_CREDITCARD_CODE = 'Kredi Kartý - Güvenlik Kodu';
-    var $_PHPSHOP_CREDITCARD_TYPE = 'Kredi Kartý Türü';
-    
-    var $_PHPSHOP_CREDITCARD_LIST_LBL = 'Kredi Kartý Listesi';
-    var $_PHPSHOP_UDATE_ADDRESS = 'Adres Güncelle';
-    var $_PHPSHOP_CONTINUE_SHOPPING = 'Alýþveriþe devam et';
-    
-    var $_PHPSHOP_THANKYOU_SUCCESS = 'Sipariþiniz alýndý!';
-    var $_PHPSHOP_ORDER_LINK = 'Sipariþ detaylarý için aþaðýdaki linklerden faydalanabilirsiniz';
-    
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = 'Ürününüzün {order_id} durumu deðiþti.';
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = 'Yeni durum:';
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = 'Sipariþ detaylarý için aþaðýdaki linke týklayýn:';
-    var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = 'Ürün durumu deðiþti: Ürününüz {order_id}';
-    var $_PHPSHOP_ORDER_LIST_NOTIFY = 'Müþteriyi haberdar et.';
-    var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = 'Önce sipariþ durumunu deðiþtirin';
-    
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = 'Varsayýlan müþteri grubu için ürün indirimi (% olarak)';
-    var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = 'Pozitif X : Eðer bu ürün grubuna hiçbir ürün ücreti atanmamýþsa, varsayýlan ücretten X yüzde olarak düþülür. Negatif deðerler tam tersi etki yapar.';
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = 'Ürün indirimleri';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = 'Ýndirimli Ürün Listesi';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = 'Ürün indirimi ekle düzelt';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = 'Ýndirim tutarý';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = 'Ýndirim tutarýný giriniz';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = 'Ýndirim tipi';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = 'Yüzde';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = 'Toplam';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = 'Tutar yüzde olarak mý toplam olarak mý gösterilecek?';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = 'Ýndirimin baþlangýç tarihi';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = 'Ýndirimin baþladýðý günü belirler';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = 'Ýndirimin bitiþ tarihi';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = 'Ýndirimin bittiði günü belirler';
-    var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = 'Ürün indirim formundan indirim ekleyebilirsiniz!';
-    
-    var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = 'Bu kadar kazandýnýz';
-    
-    var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = 'Resmin tümünü görüntüle';
-    
-/*********************
-Currency Display Style 
-***********************/
-    var $_PHPSHOP_CURRENCY_DISPLAY = 'Parabirimi gösterim þekli';
-    var $_PHPSHOP_CURRENCY_SYMBOL = 'Parabirimi sembolü';
-    var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = 'Buradan HTML giriþi yapabilirsiniz (örneðin &amp;euro;,&amp;pound;,&amp;yen;,...)';
-    var $_PHPSHOP_CURRENCY_DECIMALS = 'Ondalýk Kýsým';
-    var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = 'Kaç tane ondalýk basamak gösterilecek (0 olabilir)<br><b>Eðer farklý bir sayý ise yuvarlama yapar</b>';
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = 'Ondalýk sembolü';
-    var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = 'Ondalýk sembolü için kullanýlacak karakter';
-    var $_PHPSHOP_CURRENCY_THOUSANDS = 'Binlik ayracý';
-    var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = 'Binler basamaðýný ayýrmak için kullanýlacak sembol (boþ býrakýlabilir)';
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = 'Pozitif Deðer Biçemi';
-    var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = 'Pozitif deðerleri göstermek için biçemi kullan.<br>(Symb stands for currency symbol)';
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = 'Negatif Deðer Biçemi';
-    var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = 'Negatif deðerleri göstermek için biçemi kullan.<br>(Symb stands for currency symbol)';
-    
-    var $_PHPSHOP_OTHER_LISTS = 'Diðer ürünlerin listesi';
-/**************
-Multiple Images 
-****************/
-    var $_PHPSHOP_MORE_IMAGES = 'Daha Fazla Resim Göster';
-    var $_PHPSHOP_AVAILABLE_IMAGES = 'Etki resimler';
-    var $_PHPSHOP_BACK_TO_DETAILS = 'Ürün Detaylarýna Dön';
-    
-    /* FILEMANAGER */
-    var $_PHPSHOP_FILEMANAGER = 'Dosya Yöneticisi';
-    var $_PHPSHOP_FILEMANAGER_LIST = 'Dosya Yöneticisi: Ürün Listesi';
-    var $_PHPSHOP_FILEMANAGER_ADD = 'Dosya/Resim Ekle';
-    var $_PHPSHOP_FILEMANAGER_IMAGES = 'Atanan resimler';
-    var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = 'indirilebilir mi?';
-    var $_PHPSHOP_FILEMANAGER_FILES = 'Atanan Dosyalar';
-    var $_PHPSHOP_FILEMANAGER_PUBLISHED = 'Yayýnla?';
-    
-    /* FILE LIST */
-    var $_PHPSHOP_FILES_LIST = 'Dosya Yöneticisi::Resim/Dosya Listesi';
-    var $_PHPSHOP_FILES_LIST_FILENAME = 'Dosya Ýsmi';
-    var $_PHPSHOP_FILES_LIST_FILETITLE = 'Dosya Baþlýðý';
-    var $_PHPSHOP_FILES_LIST_FILETYPE = 'Dosya Türü';
-    var $_PHPSHOP_FILES_LIST_EDITFILE = 'Dosya Girþi Düzenle';
-    var $_PHPSHOP_FILES_LIST_FULL_IMG = 'Resim';
-    var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = 'Küçültülmüþ Resim';
-    
-    
-    /* FILE FORM */
-    var $_PHPSHOP_FILES_FORM = 'Dosya yükleme';
-    var $_PHPSHOP_FILES_FORM_CURRENT_FILE = 'Þu Anki Dosya';
-    var $_PHPSHOP_FILES_FORM_FILE = 'Dosya';
-    var $_PHPSHOP_FILES_FORM_IMAGE = 'Resim';
-    var $_PHPSHOP_FILES_FORM_UPLOAD_TO = 'Þuraya yükle';
-    var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = 'Varsayýlan Resim Yolu';
-    var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = 'Dosya yerini belirt';
-    var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = 'Dosya Ýndirme Yolu';
-    var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = 'Küçük resimleri otomatik oluþtur?';
-    var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = 'Dosya yayýnlansýn mý?';
-    var $_PHPSHOP_FILES_FORM_FILE_TITLE = 'Dosya Baþlýðý';
-    var $_PHPSHOP_FILES_FORM_FILE_DESC = 'Dosya tanýmý';
-    var $_PHPSHOP_FILES_FORM_FILE_URL = 'Dosya linki';
-    
-    /* FILE & IMAGE PROCESSING */
-    var $_PHPSHOP_FILES_PATH_ERROR = 'Lütfen doðru yol belirtiniz!';
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = 'Küçültülmüþ resim oluþturuldu!';
-    var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = 'Küçültülmüþ resim oluþturulamadý!';
-    var $_PHPSHOP_FILES_UPLOAD_FAILURE = 'Dosya/Rsim Yükleme Hatasý';
-    
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = 'Resim dosyasý silinemedi.';
-    var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = 'Resim dosyasý Silindi.';
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = 'Küçültülmüþ resim silinemedi (resim olmayabilir) : ';
-    var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = 'Küçültülmüþ resim silindi.';
-    var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = 'Dosya silinemedi.';
-    var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = 'Dosya baþarý ile silindi.';
-    
-    var $_PHPSHOP_FILES_NOT_FOUND = 'Üzgünüz, istenen dosya bulunamadý!';
-    var $_PHPSHOP_IMAGE_NOT_FOUND = 'Resim bulunamadý!';
-    
-    /*#####################
-    MODULE COUPON
-    #####################*/
-    
-    var $_PHPSHOP_COUPON_MOD = 'Kupon';
-    var $_PHPSHOP_COUPONS = 'Kuponlar';
-    var $_PHPSHOP_COUPON_LIST = 'Kupon Listesi';
-    var $_PHPSHOP_COUPON_ALREADY_REDEEMED = 'Kupon önceden ödenmiþ.';
-    var $_PHPSHOP_COUPON_REDEEMED = 'Kupon ödendi! Teþekkür ederiz.';
-    var $_PHPSHOP_COUPON_ENTER_HERE = 'Kupon kodunuz varsa, aþaðýya giriniz:';
-    var $_PHPSHOP_COUPON_SUBMIT_BUTTON = 'Gönder';
-    var $_PHPSHOP_COUPON_CODE_EXISTS = 'Bu kupon kodu var ,tekrar deneyin.';
-    var $_PHPSHOP_COUPON_EDIT_HEADER = 'Kupon güncelle';
-    var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = 'Düzenlemek için kupon kodunun üzerine týklayýn, kupon kodunu silmek için, seçin ve silme tuþuna basýn:';
-    var $_PHPSHOP_COUPON_CODE_HEADER = 'Kod';
-    var $_PHPSHOP_COUPON_PERCENT_TOTAL = 'Yüzde veya Toplam';
-    var $_PHPSHOP_COUPON_TYPE = 'Kupon Tipi';
-    var $_PHPSHOP_COUPON_TYPE_TOOLTIP = 'Eðer hediye kuponu indirim kuponu olarak kullanýlýrsa silinir. Kalýcý kuponu müþteri istediði zaman istediði gibi kullanabilir.';
-    var $_PHPSHOP_COUPON_TYPE_GIFT = 'Hediye kuponu';    
-    var $_PHPSHOP_COUPON_TYPE_PERMANENT = 'Kalýcý kupon';    
-    var $_PHPSHOP_COUPON_VALUE_HEADER = 'Deðeri';
-    var $_PHPSHOP_COUPON_DELETE_BUTTON = 'Kodu Sil';
-    var $_PHPSHOP_COUPON_CONFIRM_DELETE = 'Bu kupon kodunu silmek istediðinizden emin misiniz?';
-    var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = 'Tüm alanlarý giriniz.';
-    var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = 'Kupon deðeri numara olmalýdýr.';
-    var $_PHPSHOP_COUPON_NEW_HEADER = 'Yeni Kupon';
-    var $_PHPSHOP_COUPON_COUPON_HEADER = 'Kupon Kodu';
-    var $_PHPSHOP_COUPON_PERCENT = 'Yüzde';
-    var $_PHPSHOP_COUPON_TOTAL = 'Toplam';
-    var $_PHPSHOP_COUPON_VALUE = 'Deðer';
-    var $_PHPSHOP_COUPON_CODE_SAVED = 'Kupon kodu kaydedildi.';
-    var $_PHPSHOP_COUPON_SAVE_BUTTON = 'Kuponu kaydet';
-    var $_PHPSHOP_COUPON_DISCOUNT = 'Kupon indirimi';
-    var $_PHPSHOP_COUPON_CODE_INVALID = 'Kupon kodu bulunamadý,tekrar deneyiniz.';
-    var $_PHPSHOP_COUPONS_ENABLE = 'Kupon kullanýmýný aktif et';
-    var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = 'Kupon kullanýmýný aktif ederseniz,müþterilerin kupon kodlarýný kullanarak alýþveriþlerinde kazançlý olmalarýný saðlayabilirsiniz .';
-    
-    /* Free Shipping */
-    var $_PHPSHOP_FREE_SHIPPING = 'Bedava Nakliye';
-    var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = 'Bu sipariþte nakliye bedava!';
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT = 'Nakliye için asgari tutar';
-    var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = 'Tutar (Vergiler DAHÝL!) Nakliye Ýçin Asgari
+	var $_PHPSHOP_ORDERBY = 'Sipariþ';
+	var $_PHPSHOP_CUSTOMER_RATING = 'Averaj müþteri reytingi';
+	var $_PHPSHOP_TOTAL_VOTES = 'Toplam Oy';
+	var $_PHPSHOP_CAST_VOTE = 'Oyunuzu seçiniz';
+	var $_PHPSHOP_RATE_BUTTON = 'Oran';
+	var $_PHPSHOP_RATE_NOM = 'Reyting';
+	var $_PHPSHOP_REVIEWS = 'Müþteri yorumlarý';
+	var $_PHPSHOP_NO_REVIEWS = 'Bu ürün için hiç görüþ belirtilmemiþ.';
+	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Ýlk görüþü siz belirtin';
+	var $_PHPSHOP_REVIEW_LOGIN = 'Lütfen görüþ belirtmek için kullanýcý giriþi yapýn.';
+	var $_PHPSHOP_REVIEW_ERR_RATE = 'Lütfen yorumunuzu tamamlamak için oy verin.';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Lütfen yorumunuzu yapýnýz. Asgari izin verilen limit 100 karakterdir.';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Yorumunuzu kýsaltýn : Azami 2000 karaktere izin veriyoruz ';
+	var $_PHPSHOP_WRITE_REVIEW = 'Ürün için yorum yapýn!';
+	var $_PHPSHOP_REVIEW_RATE = 'Öne ürüne oy veriniz. Lütfen 0 (Çok kötü) ile 5 (Süper) arasý deðer seçiniz.';
+	var $_PHPSHOP_REVIEW_COMMENT = 'Kýsa bir yorum girin....(asgari  100, azami 2000 characters) ';
+	var $_PHPSHOP_REVIEW_COUNT = 'Yazýlan karakterler: ';
+	var $_PHPSHOP_REVIEW_SUBMIT = 'Yorum gönder';
+	var $_PHPSHOP_REVIEW_ALREADYDONE = 'Önceden bu ürünle ilgili inceleme yapmýþsýnýz,teþekkür ederiz.';
+	var $_PHPSHOP_REVIEW_THANKYOU = 'Ýncelemeniz için teþekkürler.';
+	var $_PHPSHOP_COMMENT = 'Yorum';
+	var $_PHPSHOP_CREDITCARD_FORM_LBL = 'Kredi Kartý Türü Ekle/Düzenle';
+	var $_PHPSHOP_CREDITCARD_NAME = 'Kredi Kartý Adý';
+	var $_PHPSHOP_CREDITCARD_CODE = 'Kredi Kartý - Güvenlik Kodu';
+	var $_PHPSHOP_CREDITCARD_TYPE = 'Kredi Kartý Türü';
+	var $_PHPSHOP_CREDITCARD_LIST_LBL = 'Kredi Kartý Listesi';
+	var $_PHPSHOP_UDATE_ADDRESS = 'Adres Güncelle';
+	var $_PHPSHOP_CONTINUE_SHOPPING = 'Alýþveriþe devam et';
+	var $_PHPSHOP_THANKYOU_SUCCESS = 'Sipariþiniz alýndý!';
+	var $_PHPSHOP_ORDER_LINK = 'Sipariþ detaylarý için aþaðýdaki linklerden faydalanabilirsiniz';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = 'Ürününüzün {order_id} durumu deðiþti.';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = 'Yeni durum:';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = 'Sipariþ detaylarý için aþaðýdaki linke týklayýn:';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = 'Ürün durumu deðiþti: Ürününüz {order_id}';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY = 'Müþteriyi haberdar et.';
+	var $_PHPSHOP_ORDER_LIST_NOTIFY_ERR = 'Önce sipariþ durumunu deðiþtirin';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT = 'Varsayýlan müþteri grubu için ürün indirimi (% olarak)';
+	var $_PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP = 'Pozitif X : Eðer bu ürün grubuna hiçbir ürün ücreti atanmamýþsa, varsayýlan ücretten X yüzde olarak düþülür. Negatif deðerler tam tersi etki yapar.';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LBL = 'Ürün indirimleri';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL = 'Ýndirimli Ürün Listesi';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT = 'Ürün indirimi ekle düzelt';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT = 'Ýndirim tutarý';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP = 'Ýndirim tutarýný giriniz';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE = 'Ýndirim tipi';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT = 'Yüzde';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL = 'Toplam';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP = 'Tutar yüzde olarak mý toplam olarak mý gösterilecek?';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE = 'Ýndirimin baþlangýç tarihi';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE_TIP = 'Ýndirimin baþladýðý günü belirler';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE = 'Ýndirimin bitiþ tarihi';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE_TIP = 'Ýndirimin bittiði günü belirler';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP = 'Ürün indirim formundan indirim ekleyebilirsiniz!';
+	var $_PHPSHOP_PRODUCT_DISCOUNT_SAVE = 'Bu kadar kazandýnýz';
+	var $_PHPSHOP_FLYPAGE_ENLARGE_IMAGE = 'Resmin tümünü görüntüle';
+	var $_PHPSHOP_CURRENCY_DISPLAY = 'Parabirimi gösterim þekli';
+	var $_PHPSHOP_CURRENCY_SYMBOL = 'Parabirimi sembolü';
+	var $_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP = 'Buradan HTML giriþi yapabilirsiniz (örneðin &euro;,&pound;,&yen;,...)';
+	var $_PHPSHOP_CURRENCY_DECIMALS = 'Ondalýk Kýsým';
+	var $_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP = 'Kaç tane ondalýk basamak gösterilecek (0 olabilir)<br><b>Eðer farklý bir sayý ise yuvarlama yapar</b>';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL = 'Ondalýk sembolü';
+	var $_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP = 'Ondalýk sembolü için kullanýlacak karakter';
+	var $_PHPSHOP_CURRENCY_THOUSANDS = 'Binlik ayracý';
+	var $_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP = 'Binler basamaðýný ayýrmak için kullanýlacak sembol (boþ býrakýlabilir)';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY = 'Pozitif Deðer Biçemi';
+	var $_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP = 'Pozitif deðerleri göstermek için biçemi kullan.<br>(Symb stands for currency symbol)';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY = 'Negatif Deðer Biçemi';
+	var $_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP = 'Negatif deðerleri göstermek için biçemi kullan.<br>(Symb stands for currency symbol)';
+	var $_PHPSHOP_OTHER_LISTS = 'Diðer ürünlerin listesi';
+	var $_PHPSHOP_MORE_IMAGES = 'Daha Fazla Resim Göster';
+	var $_PHPSHOP_AVAILABLE_IMAGES = 'Etki resimler';
+	var $_PHPSHOP_BACK_TO_DETAILS = 'Ürün Detaylarýna Dön';
+	var $_PHPSHOP_FILEMANAGER = 'Dosya Yöneticisi';
+	var $_PHPSHOP_FILEMANAGER_LIST = 'Dosya Yöneticisi: Ürün Listesi';
+	var $_PHPSHOP_FILEMANAGER_ADD = 'Dosya/Resim Ekle';
+	var $_PHPSHOP_FILEMANAGER_IMAGES = 'Atanan resimler';
+	var $_PHPSHOP_FILEMANAGER_DOWNLOADABLE = 'indirilebilir mi?';
+	var $_PHPSHOP_FILEMANAGER_FILES = 'Atanan Dosyalar';
+	var $_PHPSHOP_FILEMANAGER_PUBLISHED = 'Yayýnla?';
+	var $_PHPSHOP_FILES_LIST = 'Dosya Yöneticisi::Resim/Dosya Listesi';
+	var $_PHPSHOP_FILES_LIST_FILENAME = 'Dosya Ýsmi';
+	var $_PHPSHOP_FILES_LIST_FILETITLE = 'Dosya Baþlýðý';
+	var $_PHPSHOP_FILES_LIST_FILETYPE = 'Dosya Türü';
+	var $_PHPSHOP_FILES_LIST_EDITFILE = 'Dosya Girþi Düzenle';
+	var $_PHPSHOP_FILES_LIST_FULL_IMG = 'Resim';
+	var $_PHPSHOP_FILES_LIST_THUMBNAIL_IMG = 'Küçültülmüþ Resim';
+	var $_PHPSHOP_FILES_FORM = 'Dosya yükleme';
+	var $_PHPSHOP_FILES_FORM_CURRENT_FILE = 'Þu Anki Dosya';
+	var $_PHPSHOP_FILES_FORM_FILE = 'Dosya';
+	var $_PHPSHOP_FILES_FORM_IMAGE = 'Resim';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_TO = 'Þuraya yükle';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH = 'Varsayýlan Resim Yolu';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH = 'Dosya yerini belirt';
+	var $_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH = 'Dosya Ýndirme Yolu';
+	var $_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL = 'Küçük resimleri otomatik oluþtur?';
+	var $_PHPSHOP_FILES_FORM_FILE_PUBLISHED = 'Dosya yayýnlansýn mý?';
+	var $_PHPSHOP_FILES_FORM_FILE_TITLE = 'Dosya Baþlýðý';
+	var $_PHPSHOP_FILES_FORM_FILE_DESC = 'Dosya tanýmý';
+	var $_PHPSHOP_FILES_FORM_FILE_URL = 'Dosya linki';
+	var $_PHPSHOP_FILES_PATH_ERROR = 'Lütfen doðru yol belirtiniz!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_SUCCESS = 'Küçültülmüþ resim oluþturuldu!';
+	var $_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE = 'Küçültülmüþ resim oluþturulamadý!';
+	var $_PHPSHOP_FILES_UPLOAD_FAILURE = 'Dosya/Rsim Yükleme Hatasý';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_FAILURE = 'Resim dosyasý silinemedi.';
+	var $_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS = 'Resim dosyasý Silindi.';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE = 'Küçültülmüþ resim silinemedi (resim olmayabilir) : ';
+	var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = 'Küçültülmüþ resim silindi.';
+	var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = 'Dosya silinemedi.';
+	var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = 'Dosya baþarý ile silindi.';
+	var $_PHPSHOP_FILES_NOT_FOUND = 'Üzgünüz, istenen dosya bulunamadý!';
+	var $_PHPSHOP_IMAGE_NOT_FOUND = 'Resim bulunamadý!';
+	var $_PHPSHOP_COUPON_MOD = 'Kupon';
+	var $_PHPSHOP_COUPONS = 'Kuponlar';
+	var $_PHPSHOP_COUPON_LIST = 'Kupon Listesi';
+	var $_PHPSHOP_COUPON_ALREADY_REDEEMED = 'Kupon önceden ödenmiþ.';
+	var $_PHPSHOP_COUPON_REDEEMED = 'Kupon ödendi! Teþekkür ederiz.';
+	var $_PHPSHOP_COUPON_ENTER_HERE = 'Kupon kodunuz varsa, aþaðýya giriniz:';
+	var $_PHPSHOP_COUPON_SUBMIT_BUTTON = 'Gönder';
+	var $_PHPSHOP_COUPON_CODE_EXISTS = 'Bu kupon kodu var ,tekrar deneyin.';
+	var $_PHPSHOP_COUPON_EDIT_HEADER = 'Kupon güncelle';
+	var $_PHPSHOP_COUPON_EDIT_HELP_TEXT = 'Düzenlemek için kupon kodunun üzerine týklayýn, kupon kodunu silmek için, seçin ve silme tuþuna basýn:';
+	var $_PHPSHOP_COUPON_CODE_HEADER = 'Kod';
+	var $_PHPSHOP_COUPON_PERCENT_TOTAL = 'Yüzde veya Toplam';
+	var $_PHPSHOP_COUPON_TYPE = 'Kupon Tipi';
+	var $_PHPSHOP_COUPON_TYPE_TOOLTIP = 'Eðer hediye kuponu indirim kuponu olarak kullanýlýrsa silinir. Kalýcý kuponu müþteri istediði zaman istediði gibi kullanabilir.';
+	var $_PHPSHOP_COUPON_TYPE_GIFT = 'Hediye kuponu';
+	var $_PHPSHOP_COUPON_TYPE_PERMANENT = 'Kalýcý kupon';
+	var $_PHPSHOP_COUPON_VALUE_HEADER = 'Deðeri';
+	var $_PHPSHOP_COUPON_DELETE_BUTTON = 'Kodu Sil';
+	var $_PHPSHOP_COUPON_CONFIRM_DELETE = 'Bu kupon kodunu silmek istediðinizden emin misiniz?';
+	var $_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS = 'Tüm alanlarý giriniz.';
+	var $_PHPSHOP_COUPON_VALUE_NOT_NUMBER = 'Kupon deðeri numara olmalýdýr.';
+	var $_PHPSHOP_COUPON_NEW_HEADER = 'Yeni Kupon';
+	var $_PHPSHOP_COUPON_COUPON_HEADER = 'Kupon Kodu';
+	var $_PHPSHOP_COUPON_PERCENT = 'Yüzde';
+	var $_PHPSHOP_COUPON_TOTAL = 'Toplam';
+	var $_PHPSHOP_COUPON_VALUE = 'Deðer';
+	var $_PHPSHOP_COUPON_CODE_SAVED = 'Kupon kodu kaydedildi.';
+	var $_PHPSHOP_COUPON_SAVE_BUTTON = 'Kuponu kaydet';
+	var $_PHPSHOP_COUPON_DISCOUNT = 'Kupon indirimi';
+	var $_PHPSHOP_COUPON_CODE_INVALID = 'Kupon kodu bulunamadý,tekrar deneyiniz.';
+	var $_PHPSHOP_COUPONS_ENABLE = 'Kupon kullanýmýný aktif et';
+	var $_PHPSHOP_COUPONS_ENABLE_EXPLAIN = 'Kupon kullanýmýný aktif ederseniz,müþterilerin kupon kodlarýný kullanarak alýþveriþlerinde kazançlý olmalarýný saðlayabilirsiniz .';
+	var $_PHPSHOP_FREE_SHIPPING = 'Bedava Nakliye';
+	var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = 'Bu sipariþte nakliye bedava!';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT = 'Nakliye için asgari tutar';
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = 'Tutar (Vergiler DAHÝL!) Nakliye Ýçin Asgari
                                                 (örneðin: <strong>50</strong> Müþteri 50\$ veya fazla alýþveriþ yaptýðýnda
                                                 bedava nakliye anlamýna gelir .';
-    var $_PHPSHOP_YOUR_STORE = 'Sizin Maðazanýz';
-    var $_PHPSHOP_CONTROL_PANEL = 'Kontrol Panel';
-    
-    /* Configuration Additions */
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = 'PDF - Butonu';
-    var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = 'PDF butonunu göster/gizle';
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = 'Her sipariþ için þatlarý kabul mecburiyeti olsun mu?';
-    var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = 'Eðer seçerseniz müþteri her sipariþi için servis þartlarýný kabul etme mecburiyetinde olacak.';
-    
-    // We need this for eCheck.net Payments
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = 'Banka hesap tipi';
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = 'Çek';
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = 'Ticari Çek';
-    var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = 'Birikim';
-    
-    var $_PHPSHOP_PAYMENT_AN_RECURRING = 'Devirli Ödeme?';
-    var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = 'Devirli ödeme yapmak istediðinizi belirtin.';
-    
-    var $_PHPSHOP_INTERNAL_ERROR = 'Ýstek yapýlýrken iç hata!';
-    var $_PHPSHOP_PAYMENT_ERROR = 'Ödeme yapýlýrken hata oluþtu!';
-    var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = 'Ödeme baþarý ile gerçekleþtirildi!';
-    
-    /* UPS Shipping Module */
-    var $_PHPSHOP_UPS_RESPONSE_ERROR = 'UPS istenen nakliye oranýný gerçekleþtiremedi.';
-    var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = 'Gündelik Teslimat Garantisi';
-    var $_PHPSHOP_UPS_PICKUP_METHOD = 'UPS Taþýma methodu';
-    var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = 'Paketler UPS\'e nasýl verilecek?';
-    var $_PHPSHOP_UPS_PACKAGE_TYPE = 'UPS Paketleme tipi?';
-    var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = 'Paketleme için varsayýlan türü seçiniz.';
-    var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = 'Bireysel teslimat?';
-    var $_PHPSHOP_UPS_RESIDENTIAL = 'Bireysel (RES)';
-    var $_PHPSHOP_UPS_COMMERCIAL    = 'Ticari Teslimat (COM)';
-    var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = 'Ticari teslimattan alýntý (COM).';
-    var $_PHPSHOP_UPS_HANDLING_FEE = 'Taþýma ücreti';
-    var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = 'Bu nakliye çeþidi için taþýma ücreti.';
-    var $_PHPSHOP_UPS_TAX_CLASS = 'Vergi Sýnýfý';
-    var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = 'Nakliye ücreti vergisi için bu deðerleri kullan.';
-    
-    var $_PHPSHOP_ERROR_CODE = 'Hata Kodu';
-    var $_PHPSHOP_ERROR_DESC = 'Hata Tanýmý';
-    
-    var $_PHPSHOP_CHANGE_TRANSACTION_KEY = 'Muamele Anahtarý Göster/Deðiþtir';
-    var $_PHPSHOP_CHANGE_PASSKEY_FORM = 'Muamele Anahtarý Þifresi Göster/Deðiþtir';
-    var $_PHPSHOP_TYPE_PASSWORD = 'Kullanýcý þifrenizi Giriniz';
-    var $_PHPSHOP_CURRENT_PASSWORD = 'Þu Anki Þifre';
-    var $_PHPSHOP_CURRENT_TRANSACTION_KEY = 'Þu Anki Muamele Anahtarý';
-    var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = 'Muamele Anahtarý Baþarý ile deðiþtirildi.';
-    var $_PHPSHOP_PAYMENT_CVV2 = 'Ýstek/Alým Kredi Kartý Güvenlik Kodu (CVV2/CVC2/CID)';
-    var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = 'Geçerli güvenlik deðerini kontrol edin. (CVV2/CVC2/CID)  (kredi kartýnýzýn arkasýndaki 3,4 haneli rakam, amerikan expreess kartlarýn önünde)';
-    var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = 'Lütfen Kredi kartýnýzýn Arkasýndaki 3,4 haneli güvenlik deðerini giriniz (American Express kartlarýn önündedir)';
-    var $_PHPSHOP_CUSTOMER_CVV2_ERROR = 'Ýþlem yapabilmeniz için kodu girmeniz gerekmektedir.';
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME = 'Dosya ismini giriniz';
-    var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = 'NOT: Dosya ismini girebilirsiniz. <strong>Dosya ismini grerseniz, Hiçbir dosya yüklenmeyecek!!! FTP ile manual olarak yüklemeniz gerekecek!</strong>.';
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'Yada yeni dosya yükleyin';
-    var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Yerel dosyayý yükleyebilirsiniz. Bu dosya sattýðýnýz ürün olacak. Varolan dosya ile deðiþtirilecek.';
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Müþteri önizleme sayfasýnda gösterilecek bölümü doldurun.<br />mesala 24 saat 3,5 gün , sipariþte';
-    var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'Yada ürün detaylarý sayfaýnda gösterilecek resmi seçiniz.<br />Klasörde bulunan resim <i>/components/com_phpshop/shop_image/availability</i><br />';
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Nitelik Listesi';
-    var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Nitelik Liste Formatý Örnekleri:</h4>
+	var $_PHPSHOP_YOUR_STORE = 'Sizin Maðazanýz';
+	var $_PHPSHOP_CONTROL_PANEL = 'Kontrol Panel';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON = 'PDF - Butonu';
+	var $_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN = 'PDF butonunu göster/gizle';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER = 'Her sipariþ için þatlarý kabul mecburiyeti olsun mu?';
+	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN = 'Eðer seçerseniz müþteri her sipariþi için servis þartlarýný kabul etme mecburiyetinde olacak.';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE = 'Banka hesap tipi';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING = 'Çek';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING = 'Ticari Çek';
+	var $_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS = 'Birikim';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING = 'Devirli Ödeme?';
+	var $_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP = 'Devirli ödeme yapmak istediðinizi belirtin.';
+	var $_PHPSHOP_INTERNAL_ERROR = 'Ýstek yapýlýrken iç hata!';
+	var $_PHPSHOP_PAYMENT_ERROR = 'Ödeme yapýlýrken hata oluþtu!';
+	var $_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS = 'Ödeme baþarý ile gerçekleþtirildi!';
+	var $_PHPSHOP_UPS_RESPONSE_ERROR = 'UPS istenen nakliye oranýný gerçekleþtiremedi.';
+	var $_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS = 'Gündelik Teslimat Garantisi';
+	var $_PHPSHOP_UPS_PICKUP_METHOD = 'UPS Taþýma methodu';
+	var $_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP = 'Paketler UPS\'e nasýl verilecek?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE = 'UPS Paketleme tipi?';
+	var $_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP = 'Paketleme için varsayýlan türü seçiniz.';
+	var $_PHPSHOP_UPS_TYPE_RESIDENTIAL = 'Bireysel teslimat?';
+	var $_PHPSHOP_UPS_RESIDENTIAL = 'Bireysel (RES)';
+	var $_PHPSHOP_UPS_COMMERCIAL = 'Ticari Teslimat (COM)';
+	var $_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP = 'Ticari teslimattan alýntý (COM).';
+	var $_PHPSHOP_UPS_HANDLING_FEE = 'Taþýma ücreti';
+	var $_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP = 'Bu nakliye çeþidi için taþýma ücreti.';
+	var $_PHPSHOP_UPS_TAX_CLASS = 'Vergi Sýnýfý';
+	var $_PHPSHOP_UPS_TAX_CLASS_TOOLTIP = 'Nakliye ücreti vergisi için bu deðerleri kullan.';
+	var $_PHPSHOP_ERROR_CODE = 'Hata Kodu';
+	var $_PHPSHOP_ERROR_DESC = 'Hata Tanýmý';
+	var $_PHPSHOP_CHANGE_TRANSACTION_KEY = 'Muamele Anahtarý Göster/Deðiþtir';
+	var $_PHPSHOP_CHANGE_PASSKEY_FORM = 'Muamele Anahtarý Þifresi Göster/Deðiþtir';
+	var $_PHPSHOP_TYPE_PASSWORD = 'Kullanýcý þifrenizi Giriniz';
+	var $_PHPSHOP_CURRENT_PASSWORD = 'Þu Anki Þifre';
+	var $_PHPSHOP_CURRENT_TRANSACTION_KEY = 'Þu Anki Muamele Anahtarý';
+	var $_PHPSHOP_CHANGE_PASSKEY_SUCCESS = 'Muamele Anahtarý Baþarý ile deðiþtirildi.';
+	var $_PHPSHOP_PAYMENT_CVV2 = 'Ýstek/Alým Kredi Kartý Güvenlik Kodu (CVV2/CVC2/CID)';
+	var $_PHPSHOP_PAYMENT_CVV2_TOOLTIP = 'Geçerli güvenlik deðerini kontrol edin. (CVV2/CVC2/CID)  (kredi kartýnýzýn arkasýndaki 3,4 haneli rakam, amerikan expreess kartlarýn önünde)';
+	var $_PHPSHOP_CUSTOMER_CVV2_TOOLTIP = 'Lütfen Kredi kartýnýzýn Arkasýndaki 3,4 haneli güvenlik deðerini giriniz (American Express kartlarýn önündedir)';
+	var $_PHPSHOP_CUSTOMER_CVV2_ERROR = 'Ýþlem yapabilmeniz için kodu girmeniz gerekmektedir.';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME = 'Dosya ismini giriniz';
+	var $_PHPSHOP_PRODUCT_FORM_FILENAME_TOOLTIP = 'NOT: Dosya ismini girebilirsiniz. <strong>Dosya ismini grerseniz, Hiçbir dosya yüklenmeyecek!!! FTP ile manual olarak yüklemeniz gerekecek!</strong>.';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'Yada yeni dosya yükleyin';
+	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Yerel dosyayý yükleyebilirsiniz. Bu dosya sattýðýnýz ürün olacak. Varolan dosya ile deðiþtirilecek.';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Müþteri önizleme sayfasýnda gösterilecek bölümü doldurun.<br />mesala 24 saat 3,5 gün , sipariþte';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'Yada ürün detaylarý sayfaýnda gösterilecek resmi seçiniz.<br />Klasörde bulunan resim <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Nitelik Listesi';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Nitelik Liste Formatý Örnekleri:</h4>
         <pre>Boyut,XL[+1.99],M,S[-2.99];Renk,Kýrmýzý,Yeþil,Sarý,YüksekRenk[=24.00];veYakýnda,..,..</pre>
         <h4>Ýleri Düzey Nitelik Düzenlemesi:</h4>
         <pre>
@@ -1326,12 +1225,10 @@ Multiple Images
         &#45; == Bu tutarý düzenlenen ücretten çýkar.<br />
         &#61; == Bu tutarý düzenlenen ürün ücreti olarak ayarla.
       </pre>';
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = 'Özel Nitelik Listesi';
-    var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Özel nitelik formatý liste örnekleri:</h4>
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = 'Özel Nitelik Listesi';
+	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Özel nitelik formatý liste örnekleri:</h4>
         <pre>Ýsim;Ekler;</strong>...</pre>';
-        
-    var $_PHPSHOP_MULTISELECT = 'Çoklu seçim: CTRL- tuþu ve mouse kullanýn';
-        
+	var $_PHPSHOP_MULTISELECT = 'Çoklu seçim: CTRL- tuþu ve mouse kullanýn';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = 'eProcessingNetwork.com ödemeyi aktif et?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'eProcessingNetwork.com phpShop ile kullanýmý kontrol et.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = 'Test türü ?';
@@ -1342,151 +1239,126 @@ Multiple Images
 	var $_PHPSHOP_ADMIN_CFG_EPN_KEY_EXPLAIN = 'Bu sizin eProcessingNetwork.com mumamele anahtarýnýz';
 	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE = 'Belgeleme Tipi';
 	var $_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN = 'Bu eProcessingNetwork.com tipi';
-
-    var $_PHPSHOP_RELATED_PRODUCTS = 'Related Products';
-    var $_PHPSHOP_RELATED_PRODUCTS_TIP = 'Bu listeyi kullanarak ürün benzer ürünleri oluþturabilirsiniz. Bir veya birden fazla ürün seçin ve sonra <strong>benzer ürünler</strong>.';
-    
-    var $_PHPSHOP_RELATED_PRODUCTS_HEADING = 'Bu ürünü alanlar bunlarýda aldýlar.';
-    
-    var $_PHPSHOP_IMAGE_ACTION = 'Resim Hareketi';
-    var $_PHPSHOP_NONE = 'hiçbiri';
-    
-    var $_PHPSHOP_ORDER_HISTORY = 'Sipariþ Geçmiþi';
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT = 'Yorum';
-    var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = 'Sipariþinize yorum';
-    var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = 'Bu yorumu kapsasýn mý?';
-    var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = 'Ekleme tarihi';
-    var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = 'Müþteri bilgilendirilsin mi?';
-    var $_PHPSHOP_ORDER_STATUS_CHANGE = 'Sipariþ Durum Deðiþikliði';
-    
-     /* USPS Shipping Module */
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = 'Usps nakliye kullanýcý ismi ';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = 'USPS nakliye kullanýcý ismi';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = 'USPS nakliye þifresi';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = 'USPS nakliye þifresi';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = 'USPS nakliye serveri';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = 'USPS nakliye serveri';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = 'USPS nakliye yolu';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = 'USPS nakliye yolu';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = 'USPS nakliye konteynýrý';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = 'USPS nakliye konteynýrý';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = 'USPS Paket Büyüklüðü';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = 'USPS Paket Büyüklüðü';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = 'Usps paket kimlik bilgisi (0 olmalýdýr , çoðul paketleri desteklemez) ';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = 'Usps paket kimlik bilgisi (0 olmalýdýr ,çoðul paketleri desteklemez) ';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = 'USPS Nakliye Tipi (Express,First Class,Priority,Parcel,BPM,Library,Media)';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = 'USPS Nakliye Tipi (Express,First Class,Priority,Parcel,BPM,Library,Media)';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = 'Ele alan ücret';
-    var $_PHPSHOP_USPS_HANDLING_FEE = 'Sizin nakliye yönteminizdeki ücret tutarý';
-    var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = 'Sizin nakliye yönteminizdeki ücret tutarý';
+	var $_PHPSHOP_RELATED_PRODUCTS = 'Related Products';
+	var $_PHPSHOP_RELATED_PRODUCTS_TIP = 'Bu listeyi kullanarak ürün benzer ürünleri oluþturabilirsiniz. Bir veya birden fazla ürün seçin ve sonra <strong>benzer ürünler</strong>.';
+	var $_PHPSHOP_RELATED_PRODUCTS_HEADING = 'Bu ürünü alanlar bunlarýda aldýlar.';
+	var $_PHPSHOP_IMAGE_ACTION = 'Resim Hareketi';
+	var $_PHPSHOP_NONE = 'hiçbiri';
+	var $_PHPSHOP_ORDER_HISTORY = 'Sipariþ Geçmiþi';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT = 'Yorum';
+	var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = 'Sipariþinize yorum';
+	var $_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT = 'Bu yorumu kapsasýn mý?';
+	var $_PHPSHOP_ORDER_HISTORY_DATE_ADDED = 'Ekleme tarihi';
+	var $_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED = 'Müþteri bilgilendirilsin mi?';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE = 'Sipariþ Durum Deðiþikliði';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME = 'Usps nakliye kullanýcý ismi ';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP = 'USPS nakliye kullanýcý ismi';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD = 'USPS nakliye þifresi';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP = 'USPS nakliye þifresi';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER = 'USPS nakliye serveri';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP = 'USPS nakliye serveri';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH = 'USPS nakliye yolu';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP = 'USPS nakliye yolu';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER = 'USPS nakliye konteynýrý';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_CONTAINER_TOOLTIP = 'USPS nakliye konteynýrý';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE = 'USPS Paket Büyüklüðü';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP = 'USPS Paket Büyüklüðü';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID = 'Usps paket kimlik bilgisi (0 olmalýdýr , çoðul paketleri desteklemez) ';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGEID_TOOLTIP = 'Usps paket kimlik bilgisi (0 olmalýdýr ,çoðul paketleri desteklemez) ';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE = 'USPS Nakliye Tipi (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SHIPSERVICE_TOOLTIP = 'USPS Nakliye Tipi (Express,First Class,Priority,Parcel,BPM,Library,Media)';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_HANDLING_FEE = 'Ele alan ücret';
+	var $_PHPSHOP_USPS_HANDLING_FEE = 'Sizin nakliye yönteminizdeki ücret tutarý';
+	var $_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP = 'Sizin nakliye yönteminizdeki ücret tutarý';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE = 'Usps uluslararasý sevkiyatlar için alýnan ücret';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = 'Usps uluslararasý sevkiyatlar için alýnan ücret';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP = 'Usps uluslararasý sevkiyatlar için alýnan ücret';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE = 'Uluslararasý her sterlininiz usps sevkiyatlar için deðerlendirir';
-    var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = 'Uluslararasý her sterlininiz usps sevkiyatlar için deðerlendirir';
-    var $_PHPSHOP_USPS_RESPONSE_ERROR = 'Usps nakliye oran isteðini iþlemden geçiremedi ';
-    
-    /** Changed Product Type - Begin*/
-    /*** Product Type ***/
-    var $_PHPSHOP_PARAMETERS_LBL = 'Parametreler';
-    var $_PHPSHOP_PRODUCT_TYPE_LBL = 'Ürün Türü';
-    var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = 'Ürün Türü Listesi';
-    var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Ürün Türü Ekle/Düzenle';
-    // Product - Product Product Type list
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = 'Ürün Türü Listesi';
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = 'Ürün Türlerini Listele';
-    // Product - Product Product Type form
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Ürün çeþidini buna ekle ';
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = 'Ürün Çeþidi Ekle';
-    var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = 'Ürün Çeþidi';
-    // Product - Product Type form
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = 'Ürün Çeþidi Adý';
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = 'Ürün Çeþidi Tanýmlamasý';
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = 'Parametreler';
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = 'Ürün Çeþidi Bilgisi';
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = 'Yayýnla?';
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = 'Ürün Çeþidi Arama Sayfasý';
-    var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = 'Ürün Çeþidi Öngösterim Sayfasý';
-    // Product - Product Type Parameter list
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = 'Ürünü Çeþidi Parametreleri';
-    // Product - Product Type Parameter form
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = 'Parametre Bilgisi';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = 'Ürün Çeþidi Bulunamdý!';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = 'Parametre Ýsmi';
-    VAR $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = 'Bu kolon ismi olacak. Boþluksuz ve tek olmalýdýr.<BR>Mesela: ana_materyal';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = 'Parametre Etiketi';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = 'Parametre Tanýmlamasý';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = 'Parametre Çeþidi';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = 'Integer Sayý';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = 'Yazý';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = 'Kýsa Yazý';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = 'Virgüllü Sayý';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = 'Karakter';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = 'Tarih Zaman';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = 'Tarih';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP = 'Uluslararasý her sterlininiz usps sevkiyatlar için deðerlendirir';
+	var $_PHPSHOP_USPS_RESPONSE_ERROR = 'Usps nakliye oran isteðini iþlemden geçiremedi ';
+	var $_PHPSHOP_PARAMETERS_LBL = 'Parametreler';
+	var $_PHPSHOP_PRODUCT_TYPE_LBL = 'Ürün Türü';
+	var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = 'Ürün Türü Listesi';
+	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Ürün Türü Ekle/Düzenle';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = 'Ürün Türü Listesi';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = 'Ürün Türlerini Listele';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Ürün çeþidini buna ekle ';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = 'Ürün Çeþidi Ekle';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = 'Ürün Çeþidi';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = 'Ürün Çeþidi Adý';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION = 'Ürün Çeþidi Tanýmlamasý';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS = 'Parametreler';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_LBL = 'Ürün Çeþidi Bilgisi';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH = 'Yayýnla?';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE = 'Ürün Çeþidi Arama Sayfasý';
+	var $_PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE = 'Ürün Çeþidi Öngösterim Sayfasý';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL = 'Ürünü Çeþidi Parametreleri';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL = 'Parametre Bilgisi';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND = 'Ürün Çeþidi Bulunamdý!';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME = 'Parametre Ýsmi';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION = 'Bu kolon ismi olacak. Boþluksuz ve tek olmalýdýr.<BR>Mesela: ana_materyal';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL = 'Parametre Etiketi';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION = 'Parametre Tanýmlamasý';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE = 'Parametre Çeþidi';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER = 'Integer Sayý';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT = 'Yazý';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT = 'Kýsa Yazý';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT = 'Virgüllü Sayý';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR = 'Karakter';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME = 'Tarih Zaman';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE = 'Tarih';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT = 'YYYY-AA-GG';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = 'Saat';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME = 'Saat';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT = 'SS:DD:SS';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = 'Kesme Satýrý';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = 'Çoklu Deðerler';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = 'Mümkün Deðerler';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK = 'Kesme Satýrý';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = 'Çoklu Deðerler';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = 'Mümkün Deðerler';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = 'Mümkün deðerleri çoklu der olarak göster?';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>Mümkün deðerler ayarlandýysa,parametreler sadece kendi deðerlerini alabilirler. Mümkün deðerler için örnek:</strong><BR><span class=\'sectionname\'>Çelik;Ahþap;Plastik;...</span>';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Varsayýlan Deðer';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>Mümkün deðerler ayarlandýysa,parametreler sadece kendi deðerlerini alabilirler. Mümkün deðerler için örnek:</strong><BR><span class=\'sectionname\'>Çelik;Ahþap;Plastik;...</span>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Varsayýlan Deðer';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = 'Varsayýlan parametreler için bu formatý kullan:<ul><li>Tarih: YYYY-AA-GG</li><li>Saat: SS:DD:SS</li><li>Tarih & Saat: YYYY-AA-GG SS:DD:SS</li></ul>';
-    var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Unit';
-    
-	/************************* FrontEnd ***************************/
-	/** shop.parameter_search.php */
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Unit';
 	var $_PHPSHOP_PARAMETER_SEARCH = 'Parametreye Göre Ayrýntýlý Arama';
 	var $_PHPSHOP_ADVANCED_PARAMETER_SEARCH = 'Parametre Arama';
 	var $_PHPSHOP_PARAMETER_SEARCH_TEXT1 = 'Ürünleri Teknik Parametrelere Göre mi Aramak Ýstiyorsunuz?<BR>Herhangi bir hazýr formu kullanabilirsiniz:';
-// 	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = 'Sorgunuza sonuç bulunamadý.';
 	var $_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE = 'Üzgünüm. Arama için kategori bulunamadý.';
-	/** shop.parameter_search_form.php */
 	var $_PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE = 'Üzgünüm. Bu isimde yayýnlanan bir ürün çeþidi yok.';
 	var $_PHPSHOP_PARAMETER_SEARCH_IS_LIKE = 'benzer';
 	var $_PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE = 'benzemez';
 	var $_PHPSHOP_PARAMETER_SEARCH_FULLTEXT = 'Tam-yazý arama';
 	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL = 'Tümü seçili';
 	var $_PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY = 'Hiçbiri seçilmemiþ';
-	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = 'Reset Form';	
-	/** shop.browse.php */
+	var $_PHPSHOP_PARAMETER_SEARCH_RESET_FORM = 'Reset Form';
 	var $_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY = 'Kategoride Ara';
 	var $_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS = 'Parametreleri Deðiþtir';
 	var $_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER = 'Azalan Düzende';
 	var $_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER = 'Artan Düzende';
-	/** shop.product.detail */
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY = 'Kategori Parametreleri';
-	/** Deðiþtirilmiþ ürün - son*/
-    // Ýndirimin karþýtý!
-    var $_PHPSHOP_FEE = 'Ücret';
-    
-    var $_PHPSHOP_PRODUCT_CLONE = 'Ürün Klonla';
-    var $_PHPSHOP_CSV_SETTINGS = 'Ayarlar';
-    var $_PHPSHOP_CSV_DELIMITER = 'Ayraç';
-    var $_PHPSHOP_CSV_ENCLOSURE = 'Çit karakter';
-    var $_PHPSHOP_CSV_UPLOAD_FILE = 'CSV dosyasý yükle';
-    var $_PHPSHOP_CSV_SUBMIT_FILE = 'CSV dosyasýna gönder';
-    var $_PHPSHOP_CSV_FROM_DIRECTORY = 'Klasörden yükle';
-    var $_PHPSHOP_CSV_FROM_SERVER = 'Serverdaki CSV dosyasýndan yükle';
-    var $_PHPSHOP_CSV_EXPORT_TO_FILE = 'CSV dosyasýna ver';
-    var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = 'Alan düzeni tipini seçiniz';
-    var $_PHPSHOP_CSV_DEFAULT_ORDERING = 'Varsayýlan Düzen';
-    var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = 'Benim özel düzenim';
-    var $_PHPSHOP_CSV_SUBMIT_EXPORT = 'Tüm ürünleri CSV dosyasýna ver';
-    var $_PHPSHOP_CSV_CONFIGURATION_HEADER = 'CSV Al/Ver/Düzenle';
-    var $_PHPSHOP_CSV_SAVE_CHANGES = 'Deðiþiklikleri Kaydet';
-    var $_PHPSHOP_CSV_FIELD_NAME = 'Alan Adý';
-    var $_PHPSHOP_CSV_DEFAULT_VALUE = 'varsayýlan deðer';
-    var $_PHPSHOP_CSV_FIELD_ORDERING = 'Alan Düzeni';
-    var $_PHPSHOP_CSV_FIELD_REQUIRED = 'Alan Gerekli mi?';
-    var $_PHPSHOP_CSV_IMPORT_EXPORT = 'Al/Ver';
-    var $_PHPSHOP_CSV_NEW_FIELD = 'Yeni Alan Ekle';
-    var $_PHPSHOP_CSV_DOCUMENTATION = 'Dökümanlar';
-    var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Üzgünüz, istediðiniz ürün bulunamadý!';
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = 'Stokta bulunmayan ürünleri göster';
-    var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'Aktif edildiðinde, stokta bulunmayan ürünler gösterilecektir. Aksi halde ürünler gizli olacaktýr.';
-	
+	var $_PHPSHOP_FEE = 'Ücret';
+	var $_PHPSHOP_PRODUCT_CLONE = 'Ürün Klonla';
+	var $_PHPSHOP_CSV_SETTINGS = 'Ayarlar';
+	var $_PHPSHOP_CSV_DELIMITER = 'Ayraç';
+	var $_PHPSHOP_CSV_ENCLOSURE = 'Çit karakter';
+	var $_PHPSHOP_CSV_UPLOAD_FILE = 'CSV dosyasý yükle';
+	var $_PHPSHOP_CSV_SUBMIT_FILE = 'CSV dosyasýna gönder';
+	var $_PHPSHOP_CSV_FROM_DIRECTORY = 'Klasörden yükle';
+	var $_PHPSHOP_CSV_FROM_SERVER = 'Serverdaki CSV dosyasýndan yükle';
+	var $_PHPSHOP_CSV_EXPORT_TO_FILE = 'CSV dosyasýna ver';
+	var $_PHPSHOP_CSV_SELECT_FIELD_ORDERING = 'Alan düzeni tipini seçiniz';
+	var $_PHPSHOP_CSV_DEFAULT_ORDERING = 'Varsayýlan Düzen';
+	var $_PHPSHOP_CSV_CUSTOMIZED_ORDERING = 'Benim özel düzenim';
+	var $_PHPSHOP_CSV_SUBMIT_EXPORT = 'Tüm ürünleri CSV dosyasýna ver';
+	var $_PHPSHOP_CSV_CONFIGURATION_HEADER = 'CSV Al/Ver/Düzenle';
+	var $_PHPSHOP_CSV_SAVE_CHANGES = 'Deðiþiklikleri Kaydet';
+	var $_PHPSHOP_CSV_FIELD_NAME = 'Alan Adý';
+	var $_PHPSHOP_CSV_DEFAULT_VALUE = 'varsayýlan deðer';
+	var $_PHPSHOP_CSV_FIELD_ORDERING = 'Alan Düzeni';
+	var $_PHPSHOP_CSV_FIELD_REQUIRED = 'Alan Gerekli mi?';
+	var $_PHPSHOP_CSV_IMPORT_EXPORT = 'Al/Ver';
+	var $_PHPSHOP_CSV_NEW_FIELD = 'Yeni Alan Ekle';
+	var $_PHPSHOP_CSV_DOCUMENTATION = 'Dökümanlar';
+	var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Üzgünüz, istediðiniz ürün bulunamadý!';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = 'Stokta bulunmayan ürünleri göster';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'Aktif edildiðinde, stokta bulunmayan ürünler gösterilecektir. Aksi halde ürünler gizli olacaktýr.';
 	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
 	var $_PHPSHOP_PRODUCT_PACKAGING2 = 'Number {unit}s in box:';
 	var $_PHPSHOP_HIDE_OUT_OF_STOCK = 'Hide out of stock products';
@@ -1571,6 +1443,31 @@ Password - %s
 	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service';
 	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME = 'PayFlow Pro Login ID';
 	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME_EXPLAIN = 'This is your PayFlow Pro Login ID';
+	var $_VM_MANAGE_USER_FIELDS = 'Manage User Fields';
+	var $_VM_FIELDMANAGER_NAME = 'Field name';
+	var $_VM_FIELDMANAGER_TITLE = 'Field title';
+	var $_VM_FIELDMANAGER_TYPE = 'Field type';
+	var $_VM_FIELDMANAGER_REQUIRED = 'Required';
+	var $_VM_FIELDMANAGER_PUBLISHED = 'Published';
+	var $_VM_FIELDMANAGER_SHOW_ON_REGISTRATION = 'Show in registration form';
+	var $_VM_FIELDMANAGER_SHOW_ON_ACCOUNT = 'Show in account maintenance';
+	var $_VM_FIELDMANAGER_REORDER = 'Reorder';
+	var $_VM_USERFIELD_FORM_LBL = 'Add / Edit User Fields';
+	var $_VM_PRODUCTS_MOVE_TOOLBAR = 'Move Products';
+	var $_VM_PRODUCTS_MOVE_LBL = 'Move products from one category to another';
+	var $_VM_PRODUCTS_MOVE_LIST = 'You have chosen to move the following %s products';
+	var $_VM_PRODUCTS_MOVE_TO_CATEGORY = 'Move to the following category';
+	var $_VM_PAYMENT_CLASS_NAME = 'Payment class name';
+	var $_VM_PAYMENT_CLASS_NAME_TIP = '(e.g. <strong>ps_netbanx</strong>) :<br />
+default: ps_payment<br />
+<i>Leave blank if you\'re not sure what to fill in!</i>';
+	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.';
+	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
+	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';
+	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>';
+	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction. 
+The transaction was not cancelled in this case, but it is just pending and waiting for completion.';
+	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Order Status for Pending Payments';
         
 }
 class phpShopLanguage extends vmLanguage { }

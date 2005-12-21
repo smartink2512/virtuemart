@@ -39,6 +39,7 @@ $flypage = str_replace( 'shop.', '', $flypage);
 
 $product_id = mosgetparam($_REQUEST, "product_id", null);
 $category_id = mosgetparam($_REQUEST, "category_id", null);
+$manufacturer_id = mosgetparam($_REQUEST, "manufacturer_id", null);
 $Itemid = mosgetparam($_REQUEST, "Itemid", null);
 $db_product = new ps_DB;
 
@@ -295,6 +296,8 @@ if ($product_parent_id != 0) {
           </p>
       <input type=\"hidden\" name=\"flypage\" value=\"shop.$flypage\" />
       <input type=\"hidden\" name=\"page\" value=\"shop.cart\" />
+      <input type=\"hidden\" name=\"manufacturer_id\" value=\"$manufacturer_id\" />
+      <input type=\"hidden\" name=\"category_id\" value=\"$category_id\" />
       <input type=\"hidden\" name=\"func\" value=\"cartAdd\" />
       <input type=\"hidden\" name=\"option\" value=\"$option\" />
       <input type=\"hidden\" name=\"Itemid\" value=\"$Itemid\" />";

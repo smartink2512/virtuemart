@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id: ps_user.php,v 1.8 2005/11/01 18:39:46 soeren_nb Exp $
@@ -17,66 +17,54 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 class ps_user {
-    var $classname = "ps_user";
-    var $permissions = array(
-			   "shopper" 	=>  "1",
-			   "demo" 	=>  "2",
-			   "storeadmin" =>  "4",
-			   "admin" 	=>  "8" 
-			);
-  /**************************************************************************
-  ** name: validate_add()
-  ** created by:
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/
-  function validate_add(&$d) {
-    global $my, $perm, $vmLogger;
-    $valid = true;
-    
-    if (empty($d["country"])) {
-      $vmLogger->warning( 'Please select a country.' );
-      $valid = false;
-    }
-	if (empty($d["address_1"])) {
-      $vmLogger->warning( '"Address 1" is a required field.');
-      $valid = false;
-    }
-    if ( empty($d["city"]) ) {
-      $vmLogger->warning( '"City" is a required field.' );
-      $valid = false;
-    }
-    if (CAN_SELECT_STATES == '1') {
-        if ( empty($d["state"]) ) {
-          $vmLogger->warning( '"State/Region" is a required field.' );
-          $valid = false;
-        }
-    }
-    if ( empty($d["zip"]) ) {
-      $vmLogger->warning( '"Zip" is a required field.' );
-      $valid = false;
-    }
-    /*
-    if (!$d["phone_1"]) {
-      $d["error"] .= "'Phone Number' is a required field.";
-      $valid = false;
-    }
-    */
-    if (!$d['perms']) {
-      $vmLogger->warning( 'You must assign the user to a group.' );
-      $valid = false;
-    }
-	else {
-		if( !$perm->hasHigherPerms( $d['perms'] )) {
-			$vmLogger->err( 'You have no permission to add a user of that usertype: '.$d['perms'] );
+	var $classname = "ps_user";
+
+	/**************************************************************************
+	** name: validate_add()
+	** created by:
+	** description:
+	** parameters:
+	** returns:
+	***************************************************************************/
+	function validate_add(&$d) {
+		global $my, $perm, $vmLogger;
+
+		$db = new ps_DB;
+
+		$valid = true;
+		$missing = "";
+		
+		require_once( CLASSPATH . 'ps_userfield.php' );
+		$requiredFields = ps_userfield::getUserFields( 'registration', true );
+
+		$skipFields = array( 'username', 'password', 'password2', 'email');
+		
+		foreach( $requiredFields as $field )  {
+			if( in_array( $field->name, $skipFields )) {
+				continue;
+			}
+			if( empty( $d[$field->name])) {
+				$valid = false;
+				$vmLogger->err( 'Missing value for field "'.$field->name .'".' );
+			}
+		}
+
+		$d['user_email'] = @$d['email'];
+
+		if (!$d['perms']) {
+			$vmLogger->warning( 'You must assign the user to a group.' );
 			$valid = false;
 		}
-		
+		else {
+			if( !$perm->hasHigherPerms( $d['perms'] )) {
+				$vmLogger->err( 'You have no permission to add a user of that usertype: '.$d['perms'] );
+				$valid = false;
+			}
+
+		}
+		return $valid;
 	}
-    return $valid;
-  }
-  
+
 	/**************************************************************************
 	** name: validate_update()
 	** created by:
@@ -85,66 +73,20 @@ class ps_user {
 	** returns:
 	***************************************************************************/
 	function validate_update(&$d) {
-		global $my, $perm, $vmLogger;
-		
-		$valid = true;
-		
-		if (empty($d['user_id'])){
-		  $vmLogger->warning( 'Please select a user to update.' );
-		  $valid = false;
-		}
-		if (empty($d["country"])) {
-		  $vmLogger->warning( 'Please select a country.');
-		  $valid = false;
-		}
-			if (!$d["address_1"]) {
-		  $vmLogger->warning( '"Address 1" is a required field.' );
-		  $valid = false;
-		}
-		if (!$d["city"]) {
-		  $vmLogger->warning( '"City" is a required field.' );
-		  $valid = false;
-		}
-		if (CAN_SELECT_STATES == '1') {
-			if (!$d["state"]) {
-			  $vmLogger->warning( '"State/Region" is a required field.' );
-			  $valid = false;
-			}
-		}
-		if (!$d["zip"]) {
-		  $vmLogger->warning( '"Zip" is a required field.' );
-		  $valid = false;
-		}
-		/*
-		if (!$d["phone_1"]) {
-		  $d["error"] .= "'Phone Number' is a required field.";
-		  $valid = false;
-		}
-		*/
-	    if (!$d['perms']) {
-	      $vmLogger->warning( 'You must assign the user to a group.' );
-	      $valid = false;
-	    }
-		else {
-			if( !$perm->hasHigherPerms( $d['perms'] )) {
-				$vmLogger->err( 'You have no permission to add a user of that usertype: '.$d['perms'] );
-				$valid = false;
-			}
-		}
-		return $valid;
+		return $this->validate_add( $d );
 	}
-  
+
 	/**************************************************************************
 	** name: validate_delete()
 	** created by:
 	** description:
 	** parameters:
 	** returns:
-	  ***************************************************************************/
+	***************************************************************************/
 	function validate_delete( $id ) {
-		global $my, $vmLogger;
+		global $my, $vmLogger, $perm;
 		$auth = $_SESSION['auth'];
-		
+
 		if( empty($id)) {
 			$vmLogger->err( 'Please select a user to delete.' );
 			return False;
@@ -153,17 +95,17 @@ class ps_user {
 		$q = "SELECT user_id, perms FROM #__{vm}_user_info WHERE user_id=$id";
 		$db->query( $q );
 		$perms = $db->f('perms');
-		if( $this->permissions[$perms] >= $this->permissions[$auth['perms']]) {
+		if( !$perm->hasHigherPerms( $perms ) ) {
 			$vmLogger->err( 'You have no permission to delete a user of that usertype: '.$perms );
 			return false;
 		}
 		if( $id == $my->id) {
 			$vmLogger->err( 'Very funny, but you cannot delete yourself.' );
-			return false;			
+			return false;
 		}
 		return $valid;
 	}
-	  
+
 	/**************************************************************************
 	* name: add()
 	* created by:
@@ -177,18 +119,11 @@ class ps_user {
 		$hash_secret = "VirtueMartIsCool";
 		$db = new ps_DB;
 		$timestamp = time();
-		
+
 		if (!$this->validate_add($d)) {
-		  return False;
+			return False;
 		}
-		
-		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 and $d["extra_field_4"] == "") {
-		  $d["extra_field_4"] = "N";
-		}
-		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 and $d["extra_field_5"] == "") {
-		  $d["extra_field_5"] = "N";
-		} 
-		
+
 		// Joomla User Information stuff
 		$uid = $this->saveUser( $d );
 		if( empty( $uid ) && empty( $d['id'] ) ) {
@@ -198,65 +133,65 @@ class ps_user {
 		elseif( !empty( $d['id'])) {
 			$uid = $d['id'];
 		}
-			
-		// Insert billto
-		$q = "INSERT INTO #__{vm}_user_info VALUES (";
+
+		// Get all fields which where shown to the user
+		$userFields = ps_userfield::getUserFields();
+		
+		// Insert billto; 
+		
+		// Building the query: PART ONE
+		// The first 7 fields are FIX and not built dynamically
+		$q = "INSERT INTO #__{vm}_user_info (`user_info_id`, `user_id`, `address_type`, `address_type_name`, `cdate`, `mdate`, `perms`, ";
+		$fields = array();
+		foreach( $userFields as $userField ) {
+			$fields[] = "`".$userField->name."`";
+		}
+		$q .= str_replace( '`email`', '`user_email`', implode( ',', $fields ));
+		
+		// Building the query: PART TWO, listing all values
+		$q .= ") VALUES (\n";
 		$q .= "'" . md5(uniqid( $hash_secret)) . "',";
 		$q .= "'" . $uid . "',";
-		$q .= "'".$d['address_type']."',";
-		$q .= "'".$d['address_type_name']."',";
-		$q .= "'" .$d["company"] . "',";
-		$q .= "'" .$d["title"] . "',";
-		$q .= "'" .$d["last_name"] . "',";
-		$q .= "'" .$d["first_name"] . "',";
-		$q .= "'" .$d["middle_name"] . "',";
-		$q .= "'" .$d["phone_1"] . "',";
-		$q .= "'" .$d["phone_2"] . "',";
-		$q .= "'" .$d["fax"] . "',";
-		$q .= "'" .$d["address_1"] . "',";
-		$q .= "'" .$d["address_2"] . "',";
-		$q .= "'" .$d["city"] . "',";
-		$q .= "'" .$d["state"] . "',";
-		$q .= "'" .$d["country"] . "',";
-		$q .= "'" .$d["zip"] . "',";
-		$q .= "'" .$d["email"] . "',";
-		$q .= "'" .@$d["extra_field_1"] . "',";
-		$q .= "'" .@$d["extra_field_2"] . "',";
-		$q .= "'" .@$d["extra_field_3"] . "',";
-		$q .= "'" .@$d["extra_field_4"] . "',";
-		$q .= "'" .@$d["extra_field_5"] . "',";
+		$q .= "'BT',";
+		$q .= "'-default-',";
 		$q .= "'" .$timestamp . "',";
 		$q .= "'" .$timestamp . "',";
 		$q .= "'".$d['perms']."', ";
-		$q .= "'" . $d["bank_account_nr"] . "', ";
-		$q .= "'" . $d["bank_name"] . "', ";
-		$q .= "'" . $d["bank_sort_code"] . "', ";
-		$q .= "'" . $d["bank_iban"] . "', ";
-		$q .= "'" . $d["bank_account_holder"] . "', ";
-		$q .= "'" . $d["bank_account_type"] . "') ";
 		
+		$values = array();
+		foreach( $userFields as $userField ) {
+			$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+			$values[] = "'".$d[$userField->name]."'";
+		}
+		$q .= implode( ',', $values );
+		$q .= ") ";
+	
+		// Run the query now!
 		$db->query($q);
-		if( $perm->check("admin"))
+
+		if( $perm->check("admin")) {
 			$vendor_id = $d['vendor_id'];
-		else
+		}
+		else {
 			$vendor_id = $ps_vendor_id;
-			
+		}
+
 		// Insert vendor relationship
 		$q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
 		$q .= " VALUES ";
 		$q .= "('" . $uid . "','$vendor_id') ";
 		$db->query($q);
-		
+
 		// Insert Shopper -ShopperGroup - Relationship
 		$q  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
 		$q .= "(user_id,vendor_id,shopper_group_id,customer_number) ";
 		$q .= "VALUES ('$uid', '$vendor_id','".$d['shopper_group_id']."', '".$d['customer_number']."')";
 		$db->query($q);
-		
+
 		return True;
-		
+
 	}
-	  
+
 	/**************************************************************************
 	* name: update()
 	* created by:
@@ -269,63 +204,47 @@ class ps_user {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 		$timestamp = time();
-		
+
 		if (!$this->validate_update($d)) {
-		  return False;
+			return False;
 		}
-		
-		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4 and @$d["extra_field_4"] == "") {
-		  $d["extra_field_4"] = "N";
-		}
-		if ($VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5 and @$d["extra_field_5"] == "") {
-		  $d["extra_field_5"] = "N";
-		}
-		
+
 		// Joomla User Information stuff
 		$this->saveUser( $d );
-	
+
 		/* Update Bill To */
-		$q  = "UPDATE #__{vm}_user_info SET ";
-		$q .= "company='" . $d["company"] . "', ";
-		$q .= "address_type='" . $d["address_type"] . "', ";
-		$q .= "address_type_name='" . $d["address_type_name"] . "', ";
-		$q .= "title='" . $d["title"] . "', ";
-		$q .= "last_name='" . $d["last_name"] . "', ";
-		$q .= "first_name='" . $d["first_name"] . "', ";
-		$q .= "middle_name='" . $d["middle_name"] . "', ";
-		$q .= "phone_1='" . $d["phone_1"] . "', ";
-		$q .= "phone_2='" . $d["phone_2"] . "', ";
-		$q .= "fax='" . $d["fax"] . "', ";
-		$q .= "address_1='" . $d["address_1"] . "', ";
-		$q .= "address_2='" . $d["address_2"] . "', ";
-		$q .= "city='" . $d["city"] . "', ";
-		$q .= "state='" . $d["state"] . "', ";
-		$q .= "country='" . $d["country"] . "', ";
-		$q .= "zip='" . $d["zip"] . "', ";
-		$q .= "user_email='" . $d["email"] . "', ";
-		$q .= "extra_field_1='" . @$d["extra_field_1"] . "', ";
-		$q .= "extra_field_2='" . @$d["extra_field_2"] . "', ";
-		$q .= "extra_field_3='" . @$d["extra_field_3"] . "', ";
-		$q .= "extra_field_4='" . @$d["extra_field_4"] . "', ";
-		$q .= "extra_field_5='" . @$d["extra_field_5"] . "', ";
-		$q .= "mdate='" . $timestamp . "', ";
-		$q .= "bank_iban='" . $d["bank_iban"] . "', ";
-		$q .= "bank_account_nr='" . $d["bank_account_nr"] . "', ";
-		$q .= "bank_sort_code='" . $d["bank_sort_code"] . "', ";
-		$q .= "bank_name='" . $d["bank_name"] . "', ";
-		$q .= "bank_account_holder='" . $d["bank_account_holder"] . "', ";
-		$q .= "perms ='".$d['perms']."' ";    
-		$q .= "WHERE user_id='" . $d["user_id"] . "' AND ";
-		$q .= "address_type='BT'";
+
+		// Get all fields which where shown to the user
+		$userFields = ps_userfield::getUserFields();
 		
+		$user_id = intval( $d['id'] );
+		
+		// Building the query: PART ONE
+		// The first 7 fields are FIX and not built dynamically
+		$q = "UPDATE #__{vm}_user_info SET
+				`mdate` = '".time()."',
+				`perms` = '".$d['perms']."', ";
+		$fields = array();
+		foreach( $userFields as $userField ) {
+			$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+			$fields[] = "`".$userField->name."`='".$d[$userField->name]."'";
+		}
+		$q .= str_replace( '`email`', '`user_email`', implode( ',', $fields ));
+		
+		$q .= " WHERE user_id=".$user_id." AND address_type='BT'";
+		
+		// Run the query now!
 		$db->query($q);
-		if( $perm->check("admin"))
+
+		if( $perm->check("admin")) {
 			$vendor_id = $d['vendor_id'];
-		else
+		}
+		else {
 			$vendor_id = $ps_vendor_id;
-		
+		}
+
 		$db->query( "SELECT COUNT(user_id) FROM #__{vm}_auth_user_vendor WHERE vendor_id='".$vendor_id."' AND user_id='" . $d["user_id"] . "'" );
-		if( $db->num_rows() < 1 ) {		
+		if( $db->num_rows() < 1 ) {
 			// Insert vendor relationship
 			$q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
 			$q .= " VALUES ";
@@ -354,10 +273,10 @@ class ps_user {
 			$q .= "WHERE user_id='" . $d["user_id"] . "' ";
 		}
 		$db->query($q);
-		
+
 		return True;
-	  }
-  
+	}
+
 	/**************************************************************************
 	* name: delete()
 	* created by:
@@ -368,12 +287,12 @@ class ps_user {
 	function delete(&$d) {
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
-		
+
 		$this->removeUsers( $d['user_id' ], $d );
-		
+
 		if( !is_array( $d['user_id'] ))
-			$d['user_id'][0] = $d['user_id'];
-			
+		$d['user_id'][0] = $d['user_id'];
+
 		foreach( $d['user_id'] as $user ) {
 			if (!$this->validate_delete($user_id)) {
 				return False;
@@ -384,48 +303,17 @@ class ps_user {
 			$q .= "AND address_type='BT'";
 			$db->query($q);
 			$db->next_record();
-		
-			$q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='$user' AND vendor_id='$ps_vendor_id'"; 
+
+			$q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='$user' AND vendor_id='$ps_vendor_id'";
 			$db->query($q);
-			
-			$q = "DELETE FROM #__{vm}_shopper_vendor_xref where user_id='$user' AND vendor_id='$ps_vendor_id'"; 
+
+			$q = "DELETE FROM #__{vm}_shopper_vendor_xref where user_id='$user' AND vendor_id='$ps_vendor_id'";
 			$db->query($q);
 		}
-		
+
 		return True;
 	}
-  
-  
-	/**************************************************************************
-	* name: list_perms()
-	* created by: pablo
-	* description: lists the permission in a select box
-	* parameters:
-	* returns:
-	**************************************************************************/
-	function list_perms($name,$group_name) {
-		global $perm,$VM_LANG;
-		$auth = $_SESSION['auth'];
-			
-		$db = new ps_DB;
-	  
-		// Get users current permission value 
-		$dvalue = $this->permissions[$auth["perms"]];
-		echo "<select class=\"inputbox\" name=\"$name\">\n";
-		echo "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT ."</option>\n";
-		while (list($key,$value) = each($this->permissions)) {
-			// Display only those permission that this user can set
-			if ($value <= $dvalue)
-				if ($key == $group_name) {
-					echo "<option value=\"".$key."\" selected>$key</option>\n";
-				}
-				else {
-					echo "<option value=\"$key\">$key</option>\n";
-				}
-		}
-		echo "</select>\n";
-	}
-	
+
 	/**
 	* Function to save User Information
 	* into Joomla
@@ -433,15 +321,15 @@ class ps_user {
 	function saveUser( &$d ) {
 		global $database, $my;
 		global $mosConfig_live_site, $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_sitename;
-	
+
 		$row = new mosUser( $database );
 		if (!$row->bind( $_POST )) {
 			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode($row->getError())."');</script>\n";
 		}
-	
+
 		$isNew 	= !$row->id;
 		$pwd 	= '';
-		
+
 		// MD5 hash convert passwords
 		if ($isNew) {
 			// new user stuff
@@ -468,7 +356,7 @@ class ps_user {
 				$row->password = md5( $row->password );
 			}
 		}
-	
+
 		// save usertype to usetype column
 		$query = "SELECT name"
 		. "\n FROM #__core_acl_aro_groups"
@@ -477,7 +365,7 @@ class ps_user {
 		$database->setQuery( $query );
 		$usertype = $database->loadResult();
 		$row->usertype = $usertype;
-	
+
 		// save params
 		$params = mosGetParam( $_POST, 'params', '' );
 		if (is_array( $params )) {
@@ -487,7 +375,7 @@ class ps_user {
 			}
 			$row->params = implode( "\n", $txt );
 		}
-	
+
 		if (!$row->check()) {
 			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode($row->getError())."');</script>\n";
 			return false;
@@ -500,12 +388,12 @@ class ps_user {
 			$newUserId = $row->id;
 		}
 		else
-			$newUserId = false;
-		
+		$newUserId = false;
+
 		$row->checkin();
-		
+
 		$_SESSION['session_user_params']= $row->params;
-		
+
 		// update the ACL
 		if ( !$isNew ) {
 			$query = "SELECT aro_id"
@@ -514,7 +402,7 @@ class ps_user {
 			;
 			$database->setQuery( $query );
 			$aro_id = $database->loadResult();
-	
+
 			$query = "UPDATE #__core_acl_groups_aro_map"
 			. "\n SET group_id = $row->gid"
 			. "\n WHERE aro_id = $aro_id"
@@ -522,7 +410,7 @@ class ps_user {
 			$database->setQuery( $query );
 			$database->query() or die( $database->stderr() );
 		}
-	
+
 		// for new users, email username and password
 		if ($isNew) {
 			$query = "SELECT email"
@@ -531,10 +419,10 @@ class ps_user {
 			;
 			$database->setQuery( $query );
 			$adminEmail = $database->loadResult();
-	
+
 			$subject = _NEW_USER_MESSAGE_SUBJECT;
 			$message = sprintf ( _NEW_USER_MESSAGE, $row->name, $mosConfig_sitename, $mosConfig_live_site, $row->username, $pwd );
-	
+
 			if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
 				$adminName 	= $mosConfig_fromname;
 				$adminEmail = $mosConfig_mailfrom;
@@ -554,17 +442,17 @@ class ps_user {
 		}
 		return $newUserId;
 	}
-	
+
 	/**
 	* Function to remove a user from Joomla
 	*/
 	function removeUsers( $cid, &$d ) {
 		global $database, $acl, $my;
-	
+
 		if (!is_array( $cid ) ) {
 			$cid[0] = $cid;
 		}
-	
+
 		if ( count( $cid ) ) {
 			$obj = new mosUser( $database );
 			foreach ($cid as $id) {
@@ -584,6 +472,7 @@ class ps_user {
 			}
 		}
 	}
+
 }
 
 ?>

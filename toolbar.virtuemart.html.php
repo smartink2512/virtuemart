@@ -212,7 +212,7 @@ class MENU_virtuemart {
 		
 			case "product.product_list":
 			
-				if( empty($product_parent_id) ) { 
+				if( empty($_REQUEST['product_parent_id']) ) { 
 					// add new attribute
 					$alt = "&nbsp;". $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_MNU;
 					vmMenuBar::custom( "", "product.product_attribute_form", $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
@@ -238,6 +238,13 @@ class MENU_virtuemart {
 				}
 				vmMenuBar::divider();
 				vmMenuBar::spacer();
+				if( !empty( $_REQUEST['category_id'])) {
+					$alt = $VM_LANG->_VM_PRODUCTS_MOVE_TOOLBAR;
+					vmMenuBar::custom( 'move', 'product.product_move', $mosConfig_live_site.'/administrator/images/move.png', $mosConfig_live_site.'/administrator/images/move_f2.png', $alt );
+					vmMenuBar::spacer();
+					vmMenuBar::divider();
+					vmMenuBar::spacer();
+				}
 				break;
 			
 			case "admin.country_list":

@@ -25,7 +25,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 if( stristr( $_SERVER['PHP_SELF'], 'administrator'))
 	@define( '_PSHOP_ADMIN', '1' );
 	
-global $page;
+global $page, $sess;
 if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
     // We parse the phpShop main code before loading the toolbar,
     // for we can catch errors and adjust the toolbar when
@@ -40,6 +40,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 	// Used for pages that allow (un)publishing items
 	$allowsListPublish = Array( "product.product_list", 
 							"product.product_category_list",
+							"admin.user_field_list",
 							"store.payment_method_list"
 						);
 	// The list of pages with their functions that allow batch deletion
@@ -49,6 +50,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 								"admin.function_list" => "functionDelete",
 								"admin.module_list" => "moduleDelete",
 								"admin.user_list" => "userDelete",
+								"admin.user_field_list" => "userfieldDelete",
 								"affiliate.affiliate_list" => "affiliateDelete",
 								"coupon.coupon_list" => "couponDelete",
 								"store.creditcard_list" => "creditcardDelete",
@@ -110,6 +112,13 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 		vmMenuBar::custom( 'save', $page, $vmIcons['save_icon'], $vmIcons['save_icon2'], 'Save Zone Assignments', true, "adminForm", 'zoneassign' );
 		vmMenuBar::endTable();
 	}
-
+	elseif( $page == "product.product_move" ) {
+		vmMenuBar::startTable();
+		vmMenuBar::custom( 'save', 'product.product_list', $vmIcons['save_icon'], $vmIcons['save_icon2'], 'Move Products', false, "adminForm", 'productMove' );
+		vmMenuBar::spacer();
+		vmMenuBar::customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), $vmIcons['cancel_icon'], $vmIcons['cancel_icon2'], _CMN_CANCEL );
+		vmMenuBar::spacer();
+		vmMenuBar::endTable();
+	}
 }
 ?>

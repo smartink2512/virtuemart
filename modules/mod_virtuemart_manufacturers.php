@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * Manufacturer Module
 *
-* NOTE: THIS MODULE REQUIRES THE MAMBO-PHPSHOP COMPONENT!
+* NOTE: THIS MODULE REQUIRES THE VIRTUEMART COMPONENT!
 /*
 * @version $Id$
 * @package VirtueMart
@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.virtuemart.net
 */
 
-global $mosConfig_absolute_path;
+global $mosConfig_absolute_path, $sess;
 
 $text_before = $params->get( 'text_before', '');
 $show_dropdown = $params->get( 'show_dropdown', 1);
@@ -28,7 +28,6 @@ $category_id = mosGetParam( $_REQUEST, 'category_id', '' );
 
 // the configuration file for PHPShop
 require_once( $mosConfig_absolute_path."/components/com_virtuemart/virtuemart_parser.php");
-$sess = new ps_session;
 
 $query  = "SELECT distinct a.manufacturer_id,a.mf_name FROM #__{vm}_manufacturer AS a ";
 if ($auto == 1 && !empty( $category_id ) ) {
@@ -81,10 +80,15 @@ if( $show_dropdown == 1 ) { ?>
         <select class="inputbox" name="manufacturer_id">
             <option value=""><?php echo _CMN_SELECT ?></option>
         <?php  
-	foreach ($res as $manufacturer) { ?>
-            <option value="<?php echo $manufacturer->manufacturer_id ?>"><?php echo $manufacturer->mf_name ?></option>
-          <?php 
-	} ?>
+			foreach ($res as $manufacturer) { 
+				$selected = '';
+				if( @$_REQUEST['manufacturer_id'] == $manufacturer->manufacturer_id ) {
+					$selected = 'selected="selected"';	
+				}
+				echo "<option value=\"".$manufacturer->manufacturer_id ."\" $selected>". $manufacturer->mf_name ."</option>\n";
+          
+			} 
+	?>
         </select>
     </td>
   </tr>

@@ -36,9 +36,12 @@ class ps_DB extends database {
 	var $_query_set= false;
 	/** @var boolean   true if next_record has already been called   */
 	var $called = false;
-
+	/** @var database The core database object */
+	var $_database = null;
+	
 	function ps_DB() {
-		/** just a dummy contructor for now **/
+		global $database;
+		$this->_database = $database;
 	}
 	/**
      * Clone an object
@@ -59,11 +62,10 @@ class ps_DB extends database {
     * @param string The SQL query
     */
 	function setQuery( $sql ) {
-		global $database;
 		$vm_prefix = "{vm}";
 
 		$this->_sql = str_replace( $vm_prefix, VM_TABLEPREFIX, $sql );
-		$database->setQuery( $this->_sql );
+		$this->_database->setQuery( $this->_sql );
 		$this->_query_set = true;
 	}
 
@@ -73,7 +75,7 @@ class ps_DB extends database {
 	* @param string The SQL query
 	*/
 	function query( $q='' ) {
-		global $database, $mosConfig_dbprefix, $mosConfig_debug, $vmLogger;
+		global $mosConfig_dbprefix, $mosConfig_debug, $vmLogger;
 		$prefix = "#__";
 		$vm_prefix = "{vm}";
 
@@ -95,10 +97,10 @@ class ps_DB extends database {
 		$this->record = Array(0);
 
 		if (strtoupper(substr( $this->_sql , 0, 6 )) == "SELECT" ) {
-			$this->record = $database->loadObjectList();
+			$this->record = $this->_database->loadObjectList();
 		}
 		else {
-			$database->query();
+			$this->_database->query();
 		}
 		
 		$this->_query_set = false;
@@ -219,21 +221,6 @@ class ps_DB extends database {
 		echo $this->sf( $field_name, $stripslashes);
 	}
 
-		/**
-	* This global function loads the first row of a query into an object
-	*
-	* If an object is passed to this function, the returned row is bound to the existing elements of <var>object</var>.
-	* If <var>object</var> has a value of null, then all of the returned query fields returned in the object.
-	* @param string The SQL query
-	* @param object The address of variable
-	*/
-	function loadObject( &$object ) {
-		$this->query();
-		if( !empty($this->record)) {
-			$object = $this->record[0];
-		}
-	}
-	
 	/**
 	 * Returns the number of rows in the RecordSet from a query.
 	 * @return int
@@ -248,8 +235,7 @@ class ps_DB extends database {
 	 * @return int
 	 */
 	function last_insert_id() {
-		global $database;
-		return $database->insertid();
+		return $this->_database->insertid();
 	}
 	
 	/**
@@ -271,6 +257,40 @@ class ps_DB extends database {
 		$this->row = 0;
 		$this->called = false;
 
+	}
+	
+///////////////////////////////
+// Parental Database functions
+// We must overwrite them because
+// we still use a global database
+// object, not a ps_DB object
+///////////////////////////////
+	function loadResult() {
+		return $this->_database->loadResult();
+	}
+	function loadResultArray($numinarray = 0) {
+		return $this->_database->loadResultArray( $numinarray );
+	}
+	function loadAssocList( $key='' ) {
+		return $this->_database->loadAssocList( $key );
+	}
+	function loadObject( &$object ) {
+		return $this->_database->loadObject($object);
+	}
+	function loadObjectList( $key='' ) {
+		return $this->_database->loadObjectList( $key );
+	}
+	function loadRow() {
+		return $this->_database->loadRow();
+	}
+	function loadRowList( $key='' ) {
+		return $this->_database->loadRowList($key);
+	}
+	function getErrorMsg() {
+		return $this->_database->getErrorMsg();
+	}
+	function stderr() {
+		return $this->_database->stderr();
 	}
 }
 ?>

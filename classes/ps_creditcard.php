@@ -219,13 +219,15 @@ class ps_creditcard {
 		$q = "SELECT creditcard_name, creditcard_id FROM #__{vm}_creditcard WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
 		$db->query( $q );
 		$html = "";
-
+		$i = 0;
 		while( $db->next_record() ) {
-			$html .= "<input type=\"checkbox\" name=\"creditcard[]\" value=\"".$db->f("creditcard_id")."\" class=\"inputbox\" ";
-			if (in_array($db->f("creditcard_id"), $selected_arr))
-			$html .= "checked=\checked\"";
+			$html .= "<input type=\"checkbox\" name=\"creditcard[]\"  id=\"creditcard$i\" value=\"".$db->f("creditcard_id")."\" class=\"inputbox\" ";
+			if (in_array($db->f("creditcard_id"), $selected_arr)) {
+				$html .= "checked=\checked\"";
+			}
 			$html .= "/>";
-			$html .= $db->f("creditcard_name")."<br/>";
+			$html .= "<label for=\"creditcard$i\">".$db->f("creditcard_name")."</label><br/>";
+			$i++;
 		}
 
 		echo $html;

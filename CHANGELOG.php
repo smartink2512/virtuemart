@@ -33,6 +33,28 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+
+20-12-2005 soeren
++ showing End-User price in the admin's product list now
+^ thumbnail generation: improved JPG quality, allowing gif thumbnails now
+^ removed the coupon form from "shop.cart"
+# order list: searching by user names won't work
+^ improved "Continue shopping" link in the cart, now redirects to "shop.browse" or isn't visible when just the cart was viewed
++ new "Move Products" feature lets you move products from one category to another
+# manufacturer can't be deleted although it has no real products assigned to it
+^ browse page now is ordering products by product list order when a category is selected
++ added product reordering feature (a category must be selected in the product list, then you'll see the reorder fields)
+^ fixed problem saving a manufacturer (category) with ' in name or description
+^ moved function list_perms from class ps_user to class ps_perm
+- removed property "permissions" from class ps_user
+
++ first version of the new "user fields" management system
+!! DATABASE STRUCTURE CHANGED:  two new tables	!!
+!! see /sql/UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql			!!
+
+^ silently registered users don't have to remember their old usernames now (Task #385 returning hidden/silent users can't use the same email address)
+
+
 16-12-2005 schirmer
 + New feature to easily translate the flypage using {vm_lang:xxx} place holder. Usage instructions in html/shop.product_details.php
 

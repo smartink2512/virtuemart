@@ -275,7 +275,7 @@ class ps_shopper_group {
 			else {
 				$selected = '';
 			}
-			echo "<option value=\"" . $db->f("shopper_group_id")  . "\">";
+			echo "<option value=\"" . $db->f("shopper_group_id")  . "\"$selected>";
 			echo $db->f("shopper_group_name") . '; '.$db->f('vendor_name').' (Vendor ID: '.$db->f('vendor_id').")</option>\n";
 			
 		}

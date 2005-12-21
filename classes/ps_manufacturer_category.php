@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id: ps_manufacturer_category.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
@@ -19,13 +19,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /****************************************************************************
 *
 * CLASS DESCRIPTION
-*                   
+*
 * ps_manufacturer_category
 *
 * The class is is used to manage the manufacturer categories in your store.
-* 
-* properties:  
-* 	
+*
+* properties:
+*
 *       error - the error message returned by validation if any
 * methods:
 *       validate_add()
@@ -34,151 +34,154 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *       add()
 *       update()
 *       delete()
-*	
+*
 *
 *************************************************************************/
- class ps_manufacturer_category {
-   var $classname = "ps_manufacturer_category";
-   var $error;
-   
-  /**************************************************************************
-  ** name: validate_add()
-  ** created by: soeren
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/  
-   function validate_add($d) {
-     
-     $db = new ps_DB;
-     
-     if (!$d["mf_category_name"]) {
-       $this->error = "ERROR:  You must enter a name for the manufacturer category.";
-       return False;	
-     }
-    
-    else {
-       $q = "SELECT count(*) as rowcnt from #__{vm}_manufacturer_category where";
-       $q .= " mf_category_name='" .  $d["mf_category_name"] . "'";
-       $db->setQuery($q);
-       $db->query();
-       $db->next_record();
-       if ($db->f("rowcnt") > 0) {
-          $this->error = "The given manufacturer category name already exists.";
-          return False;
-       }      
-     }
-     return True;    
-   }
-  
-  /**************************************************************************
-  ** name: validate_delete()
-  ** created by: soeren
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/   
-  function validate_delete($d) {
-    
-    if (!$d["mf_category_id"]) {
-      $this->error = "ERROR:  Please select a manufacturer category to delete.";
-      return False;
-    }
-    else {
-      return True;
-    }
-  }
-  
-  /**************************************************************************
-  ** name: validate_update
-  ** created by: soeren
-  ** description:
-  ** parameters:
-  ** returns:
-  ***************************************************************************/   
-  function validate_update($d) {
-    
-    if (!$d["mf_category_name"]) {
-      $this->error = "ERROR:  You must enter a name for the manufacturer category.";
-      return false;	
-    }
-    
-   return true;
-  }
-  
-  
-  /**************************************************************************
-   * name: add()
-   * created by: soeren
-   * description: creates a new manufacturer record
-   * parameters:
-   * returns:
-   **************************************************************************/
-  function add(&$d) {
-    
-    $db = new ps_DB;
-    
-    if (!$this->validate_add($d)) {
-      $d["error"] = $this->error;
-      return false;
-    }
-    $q = "INSERT INTO #__{vm}_manufacturer_category (mf_category_name, mf_category_desc)";
-    $q .= " VALUES ('";
-    $q .= $d["mf_category_name"] . "','";
-    $q .= $d["mf_category_desc"]. "')";
-    $db->setQuery($q);
-    $db->query();
-    $db->next_record();
-    return True;
+class ps_manufacturer_category {
+	var $classname = "ps_manufacturer_category";
+	var $error;
 
-  }
-  
-  /**************************************************************************
-   * name: update()
-   * created by: soeren
-   * description: updates manufacturer information
-   * parameters:
-   * returns:
-   **************************************************************************/
-  function update(&$d) {
-    $db = new ps_DB;
-    $timestamp = time();
+	/**************************************************************************
+	** name: validate_add()
+	** created by: soeren
+	** description:
+	** parameters:
+	** returns:
+	***************************************************************************/
+	function validate_add($d) {
 
-    if (!$this->validate_update($d)) {
-      $d["error"] = $this->error;
-      return False;	
-    }
-    $q = "UPDATE #__{vm}_manufacturer_category set ";
-    $q .= "mf_category_name='" . $d["mf_category_name"]."',";
-    $q .= "mf_category_desc='" .$d["mf_category_desc"] . "' ";
-    $q .= "WHERE mf_category_id='".$d["mf_category_id"]."'";
-    $db->setQuery($q);
-    $db->query();
-    $db->next_record();
-    return True;
-  }
+		$db = new ps_DB;
+
+		if (!$d["mf_category_name"]) {
+			$this->error = "ERROR:  You must enter a name for the manufacturer category.";
+			return False;
+		}
+
+		else {
+			$q = "SELECT count(*) as rowcnt from #__{vm}_manufacturer_category where";
+			$q .= " mf_category_name='" .  $d["mf_category_name"] . "'";
+			$db->setQuery($q);
+			$db->query();
+			$db->next_record();
+			if ($db->f("rowcnt") > 0) {
+				$this->error = "The given manufacturer category name already exists.";
+				return False;
+			}
+		}
+		return True;
+	}
+
+	/**************************************************************************
+	** name: validate_delete()
+	** created by: soeren
+	** description:
+	** parameters:
+	** returns:
+	***************************************************************************/
+	function validate_delete($d) {
+
+		if (!$d["mf_category_id"]) {
+			$this->error = "ERROR:  Please select a manufacturer category to delete.";
+			return False;
+		}
+		else {
+			return True;
+		}
+	}
+
+	/**************************************************************************
+	** name: validate_update
+	** created by: soeren
+	** description:
+	** parameters:
+	** returns:
+	***************************************************************************/
+	function validate_update($d) {
+
+		if (!$d["mf_category_name"]) {
+			$this->error = "ERROR:  You must enter a name for the manufacturer category.";
+			return false;
+		}
+
+		return true;
+	}
+
+
+	/**************************************************************************
+	* name: add()
+	* created by: soeren
+	* description: creates a new manufacturer record
+	* parameters:
+	* returns:
+	**************************************************************************/
+	function add(&$d) {
+
+		$db = new ps_DB;
+		$GLOBALS['vmInputFilter']->safeSQL( $d );
+		
+		if (!$this->validate_add($d)) {
+			$d["error"] = $this->error;
+			return false;
+		}
+		$q = "INSERT INTO #__{vm}_manufacturer_category (mf_category_name, mf_category_desc)";
+		$q .= " VALUES ('";
+		$q .= $d["mf_category_name"] . "','";
+		$q .= $d["mf_category_desc"]. "')";
+		$db->setQuery($q);
+		$db->query();
+		$db->next_record();
+		return True;
+
+	}
+
+	/**************************************************************************
+	* name: update()
+	* created by: soeren
+	* description: updates manufacturer information
+	* parameters:
+	* returns:
+	**************************************************************************/
+	function update(&$d) {
+		$db = new ps_DB;
+		$timestamp = time();
+		
+		$GLOBALS['vmInputFilter']->safeSQL( $d );
+		
+		if (!$this->validate_update($d)) {
+			$d["error"] = $this->error;
+			return False;
+		}
+		$q = "UPDATE #__{vm}_manufacturer_category set ";
+		$q .= "mf_category_name='" . $d["mf_category_name"]."',";
+		$q .= "mf_category_desc='" .$d["mf_category_desc"] . "' ";
+		$q .= "WHERE mf_category_id='".$d["mf_category_id"]."'";
+		$db->setQuery($q);
+		$db->query();
+		$db->next_record();
+		return True;
+	}
 
 	/**************************************************************************
 	* name: delete()
 	* created by: soeren
 	* description: Should delete a manufacturer record.
-	* parameters: 
+	* parameters:
 	* returns:
 	**************************************************************************/
 	function delete(&$d) {
-		
+
 		if (!$this->validate_delete($d)) {
-		  $d["error"]=$this->error;
-		  return False;
+			$d["error"]=$this->error;
+			return False;
 		}
 
-	
+
 		$record_id = $d["mf_category_id"];
-		
+
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {
 				if( !$this->delete_record( $record, $d ))
-					return false;
+				return false;
 			}
 			return true;
 		}
@@ -191,47 +194,47 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	*/
 	function delete_record( $record_id, &$d ) {
 		global $db;
-		
+
 		$q = "DELETE from #__{vm}_manufacturer_category where mf_category_id='$record_id'";
 		$db->query($q);
 		return True;
 	}
-  
-    /**************************************************************************
-   * name: list_category()
-   * created by: soeren
-   * description: Creates a list of Manufacturer Categories to be used in a drop down list
-   * parameters:
-   * returns: array of values
-   **************************************************************************/
-  function list_category($mf_category_id='0') {
-    global $VM_LANG;
-    
-    $db = new ps_DB;
-    
-    $q = "SELECT count(*) as rowcnt FROM #__{vm}_manufacturer_category ORDER BY mf_category_name";
-    $db->query($q);
-    $db->next_record();
-    $rowcnt = $db->f("rowcnt");
+
+	/**************************************************************************
+	* name: list_category()
+	* created by: soeren
+	* description: Creates a list of Manufacturer Categories to be used in a drop down list
+	* parameters:
+	* returns: array of values
+	**************************************************************************/
+	function list_category($mf_category_id='0') {
+		global $VM_LANG;
+
+		$db = new ps_DB;
+
+		$q = "SELECT count(*) as rowcnt FROM #__{vm}_manufacturer_category ORDER BY mf_category_name";
+		$db->query($q);
+		$db->next_record();
+		$rowcnt = $db->f("rowcnt");
 
 
-    $q = "SELECT * FROM #__{vm}_manufacturer_category ORDER BY mf_category_name";
-    $db->query($q);                                                                                     
-    $code = "<select name=\"mf_category_id\" class=\"inputbox\">\n";
-    if ( $rowcnt > 1) {
-      $code .= "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";      
-    }   
-    while ($db->next_record()) {
-      $code .= "  <option value=\"" . $db->f("mf_category_id") . "\"";
-      if ($db->f("mf_category_id") == $mf_category_id) { 
-        $code .= " selected=\"selected\" "; 
-      }
-      $code .= ">" . $db->f("mf_category_name") . "</option>\n";
-    }
-    $code .= "</select>\n";
-    
-    echo $code;
-  }
+		$q = "SELECT * FROM #__{vm}_manufacturer_category ORDER BY mf_category_name";
+		$db->query($q);
+		$code = "<select name=\"mf_category_id\" class=\"inputbox\">\n";
+		if ( $rowcnt > 1) {
+			$code .= "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
+		}
+		while ($db->next_record()) {
+			$code .= "  <option value=\"" . $db->f("mf_category_id") . "\"";
+			if ($db->f("mf_category_id") == $mf_category_id) {
+				$code .= " selected=\"selected\" ";
+			}
+			$code .= ">" . $db->f("mf_category_name") . "</option>\n";
+		}
+		$code .= "</select>\n";
+
+		echo $code;
+	}
 
 }
 

@@ -74,14 +74,14 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_NO_USER_TO_SELECT = 'Sorry, there\'s no MOS - user that you could add to the com_virtuemart userlist';
 	var $_PHPSHOP_ERROR = 'ERROR';
 	var $_PHPSHOP_MOD_NOT_REG = 'Module Not Registered.';
-	var $_PHPSHOP_MOD_ISNO_REG = 'is not a valid phpShop module.';
+	var $_PHPSHOP_MOD_ISNO_REG = 'is not a valid VirtueMart core module.';
 	var $_PHPSHOP_MOD_NO_AUTH = 'You do not have permission to access the requested module.';
 	var $_PHPSHOP_PAGE_404_1 = 'Page Does Not Exist';
 	var $_PHPSHOP_PAGE_404_2 = 'Given filename does not exist. Cannot find file:';
 	var $_PHPSHOP_PAGE_403 = 'Insufficient Access Rights';
 	var $_PHPSHOP_FUNC_NO_EXEC = 'You do not have permission to execute ';
 	var $_PHPSHOP_FUNC_NOT_REG = 'Function Not Registered';
-	var $_PHPSHOP_FUNC_ISNO_REG = ' is not a valid MOS_com_phpShop function.';
+	var $_PHPSHOP_FUNC_ISNO_REG = ' is not a valid VirtueMart function.';
 	var $_PHPSHOP_ADMIN_MOD = 'Admin';
 	var $_PHPSHOP_USER_LIST_MNU = 'List Users';
 	var $_PHPSHOP_USER_LIST_LBL = 'User List';
@@ -1445,6 +1445,31 @@ Password - %s
 	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service';
 	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME = 'PayFlow Pro Login ID';
 	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME_EXPLAIN = 'This is your PayFlow Pro Login ID';
+	var $_VM_MANAGE_USER_FIELDS = 'Manage User Fields';
+	var $_VM_FIELDMANAGER_NAME = 'Field name';
+	var $_VM_FIELDMANAGER_TITLE = 'Field title';
+	var $_VM_FIELDMANAGER_TYPE = 'Field type';
+	var $_VM_FIELDMANAGER_REQUIRED = 'Required';
+	var $_VM_FIELDMANAGER_PUBLISHED = 'Published';
+	var $_VM_FIELDMANAGER_SHOW_ON_REGISTRATION = 'Show in registration form';
+	var $_VM_FIELDMANAGER_SHOW_ON_ACCOUNT = 'Show in account maintenance';
+	var $_VM_FIELDMANAGER_REORDER = 'Reorder';
+	var $_VM_USERFIELD_FORM_LBL = 'Add / Edit User Fields';
+	var $_VM_PRODUCTS_MOVE_TOOLBAR = 'Move Products';
+	var $_VM_PRODUCTS_MOVE_LBL = 'Move products from one category to another';
+	var $_VM_PRODUCTS_MOVE_LIST = 'You have chosen to move the following %s products';
+	var $_VM_PRODUCTS_MOVE_TO_CATEGORY = 'Move to the following category';
+	var $_VM_PAYMENT_CLASS_NAME = 'Payment class name';
+	var $_VM_PAYMENT_CLASS_NAME_TIP = '(e.g. <strong>ps_netbanx</strong>) :<br />
+default: ps_payment<br />
+<i>Leave blank if you\'re not sure what to fill in!</i>';
+	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.';
+	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
+	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';
+	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>';
+	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction. 
+The transaction was not cancelled in this case, but it is just pending and waiting for completion.';
+	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Order Status for Pending Payments';
         
 }
 class phpShopLanguage extends vmLanguage { }

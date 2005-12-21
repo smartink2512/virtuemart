@@ -125,8 +125,8 @@ function validate_image(&$d,$field_name,$table_name) {
 	 * function are returned as a string here.  The
 	 * commands are EVAL commands separated by ";"
 	 */
-	if (!isset($d['image_commands'])) {
-		$d['image_commands'] = "";
+	if (empty($d['image_commands'])) {
+		$d['image_commands'] = array();
 	}
 
 	/* Generate text to display in error messages */
@@ -144,8 +144,13 @@ function validate_image(&$d,$field_name,$table_name) {
 		if (!empty($curr_file)) {
 			
 			$delete = str_replace("\\", "/", realpath($path."/".$curr_file));
-			if( file_exists( $delete ) )
-			$d["image_commands"] .= "\$ret = unlink(\"$delete\");";
+			$d["image_commands"][] = "if( file_exists( \"$delete\" ) ) {
+										\$ret = unlink(\"$delete\");
+										}
+										else {
+											\$ret = true;
+										}";
+			
 			$vmLogger->debug( 'Preparing: delete old '.$image_type.' '.$delete );
 			/* Remove the resized image if exists */
 			if( PSHOP_IMG_RESIZE_ENABLE=="1" && $image_type == "thumbnail image") {
@@ -154,10 +159,15 @@ function validate_image(&$d,$field_name,$table_name) {
 				isset($pathinfo["extension"]) or $pathinfo["extension"] = "";
 				$filehash = basename( $delete, ".".$pathinfo["extension"] );
 				$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
-				if( file_exists($resizedfilename)) {
-					$d["image_commands"] .= "\$ret = unlink(\"$resizedfilename\");";
-					$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
-				}
+				
+				$d["image_commands"][] = "if( file_exists(\"$resizedfilename\")) {
+											\$ret = unlink(\"$resizedfilename\");
+										}
+										else {
+											\$ret = true;
+										}";
+				$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
+				
 			}
 
 		}
@@ -184,7 +194,9 @@ function validate_image(&$d,$field_name,$table_name) {
 	// Check permissions to read temp file
 	if (!is_readable($temp_file)) {
 		$vmLogger->err( 'Cannot read uploaded '.$image_type.' temp file: '.$temp_file.'.
-    One common reason for this that the upload path cannot be accessed because of the open_basedir settings in the php.ini.' );
+    					One common reason for this that the upload path cannot be accessed 
+    					because of the open_basedir settings in the php.ini. Or maybe the 
+    					directory for temporary upload files on this server is not readable.' );
 		return false;
 	}
 
@@ -209,27 +221,36 @@ function validate_image(&$d,$field_name,$table_name) {
 	if (!empty($curr_file)) {
 		/* Command to remove old image file */
 		$delete = str_replace( "\\", "/", realpath($path)."/".$curr_file);
-		if( file_exists( $delete ) ) {
-			$d["image_commands"] .= "\$ret = unlink(\"$delete\");";
-			$vmLogger->debug( 'Preparing: delete old '.$image_type.' '.$delete );
-		}
+		
+		$d["image_commands"][] = "if( file_exists( \"$delete\" ) ) {
+									\$ret = unlink(\"$delete\");
+								  } else { \$ret = true; }";
+		$vmLogger->debug( 'Preparing: delete old '.$image_type.' '.$delete );
+		
 		/* Remove the resized image if exists */
 		if( PSHOP_IMG_RESIZE_ENABLE=="1" && $image_type == "thumbnail image") {
 			$pathinfo = pathinfo( $delete );
 			$filehash = basename( $delete, ".".$pathinfo["extension"] );
 			$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
-			if( file_exists($resizedfilename)) {
-				$d["image_commands"] .= "\$ret = unlink(\"$resizedfilename\");";
-				$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
-			}
+			
+			$d["image_commands"][] = "if( file_exists($resizedfilename)) {
+										\$ret = unlink(\"$resizedfilename\");
+									  } else { \$ret = true; }";
+			$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
+			
 		}
 	}
 
 	/* Command to move uploaded file into destination directory */
-	$d["image_commands"] .= "\$ret = copy(\"".addslashes(realpath($temp_file))."\", \"".$path.$to_file."\");";
-	if( file_exists( realpath($temp_file) )) {
-		$d["image_commands"] .= "\$ret = @unlink(\"".addslashes(realpath($temp_file))."\" );";
-	}
+	$d["image_commands"][] = "\$ret = copy(\"".addslashes(realpath($temp_file))."\", \"".$path.$to_file."\");";
+	
+	$d["image_commands"][] = "if( file_exists( realpath(\"$temp_file\") )) {
+								\$ret = @unlink(\"".addslashes(realpath($temp_file))."\" );
+							  }
+							  else {
+							  	\$ret = true;
+							  }";
+	
 
 	/* Return new image file name */
 	$d[$field_name] = $to_file;
@@ -248,24 +269,23 @@ function process_images(&$d) {
 	
 	if (!empty($d["image_commands"])) {
 
-		$commands = explode(";",ereg_replace(";$","",$d["image_commands"]));
-		$commands = str_replace('\\"', '"', $commands);
-		$d["image_commands"] = "";
-		
-		$cnt = count($commands);
-		for ($i=0;$i<$cnt;$i++) {
-			eval($commands[$i] . ";");
+		foreach ( $d['image_commands'] as $command ) {
+			$command = str_replace('\\"', '"', $command);
+			
+			$res = eval($command . ";");
+			if( $res === false ) {
+				$vmLogger->err( 'Parse Error in this command: '.$command);
+			}
 			if ($ret == false) {
-				$vmLogger->err ( 'Image Update command failed:
-								'. $commands[$i] );
+				$vmLogger->err ( 'The following image update command failed: '. $command );
 				return false;
 			}
 			else {
-				$vmLogger->debug( 'Successfully processed image command:
-				'.$commands[$i] );
+				$vmLogger->debug( 'Successfully processed image command: '.$command );
 			}
 
 		}
+		$d["image_commands"] = array();
 	}
 	return true;
 }
@@ -936,5 +956,19 @@ function vmHtmlEntityDecode($string, $quote_style = ENT_COMPAT, $charset = null)
     }
 
     return strtr($string, $trans_tbl);
+}
+/**
+ * Unescapes REQUEST values if magic_quotes_gpc is set 
+ *
+ * @param string $string The string to strip slashes from
+ * @return string
+ */
+function vmGetUnEscaped( $string ) {
+	if (get_magic_quotes_gpc()==1) {
+		// if (ini_get('magic_quotes_sybase')) return str_replace("''","'",$string);
+		return ( stripslashes( $string ));			// this does not handle it correctly if magic_quotes_sybase is ON.
+	} else {
+		return ( $string );
+	}
 }
 ?>

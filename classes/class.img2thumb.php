@@ -218,19 +218,25 @@ class Img2Thumb	{
 			// Need to image fill just in case image is transparent, don't always want black background
 			$bgfill = imagecolorallocate( $im_out, $this->bg_red, $this->bg_green, $this->bg_blue );
  		    
-			if( function_exists( "imageAntiAlias" ))
-			  imageAntiAlias($im_out,true);
+			if( function_exists( "imageAntiAlias" )) {
+				imageAntiAlias($im_out,true);
+			}
  		    imagealphablending($im_out, false);
-		    if( function_exists( "imagesavealpha"))
-			  imagesavealpha($im_out,true);
-		    if( function_exists( "imagecolorallocatealpha"))
-			  $transparent = imagecolorallocatealpha($im_out, 255, 255, 255, 127);
+		    if( function_exists( "imagesavealpha")) {
+		    	imagesavealpha($im_out,true);
+		    }
+		    if( function_exists( "imagecolorallocatealpha")) {
+		    	$transparent = imagecolorallocatealpha($im_out, 255, 255, 255, 127);
+		    }
 			
 			//imagefill( $im_out, 0,0, $bgfill );
-			if( function_exists("imagecopyresampled") )
-			  ImageCopyResampled($im_out, $orig_img, $adjustX, $adjustY, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
-			else
-			  ImageCopyResized($im_out, $orig_img, $adjustX, $adjustY, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
+			if( function_exists("imagecopyresampled") ){
+				ImageCopyResampled($im_out, $orig_img, $adjustX, $adjustY, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
+			}
+			else {
+				ImageCopyResized($im_out, $orig_img, $adjustX, $adjustY, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
+			}
+			
 		}
 		else
 		{
@@ -269,19 +275,26 @@ class Img2Thumb	{
 		switch($type)
 		{
 			case "gif":
-				if( function_exists("imagegif") )
+				if( !function_exists("imagegif") )
 				{
-					if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".gif")
+					if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".gif") {
 						$fileout .= ".png";
+					}
 					return imagepng($new_img,$fileout);
-					break;
+					
 				}
-				else
-					$this->NewImgSave( $new_img, $fileout, "jpg" );
+				else {
+					if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".gif") {
+						$fileout .= '.gif';
+					}
+					return imagegif( $new_img, $fileout );
+					
+				}
+				break;
 			case "jpg":
 				if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".jpg")
 					$fileout .= ".jpg";
-				return imagejpeg($new_img,$fileout);
+				return imagejpeg($new_img, $fileout, 100);
 				break;
 			case "png":
 				if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".png")
