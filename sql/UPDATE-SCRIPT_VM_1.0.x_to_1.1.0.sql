@@ -75,3 +75,8 @@ CREATE TABLE `jos_vm_userfield_values` (
   `sys` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`fieldvalueid`)
 ) TYPE=MyISAM COMMENT='Holds the different values for dropdown and radio lists';
+
+INSERT INTO `jos_vm_function` VALUES ('', 1, 'userfieldSave', 'ps_userfield', 'savefield', 'add or edit a user field', 'admin');
+INSERT INTO `jos_vm_function` VALUES ('', 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin');
+INSERT INTO `jos_vm_function` VALUES ('', 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin');
+INSERT INTO `jos_vm_function` VALUES ('', 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');

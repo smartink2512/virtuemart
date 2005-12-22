@@ -86,5 +86,10 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_userfield_values` (
   `sys` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`fieldvalueid`)
 ) TYPE=MyISAM COMMENT='Holds the different values for dropdown and radio lists';" );
- 
+
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'userfieldSave', 'ps_userfield', 'savefield', 'add or edit a user field', 'admin');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');" );
+
 ?>

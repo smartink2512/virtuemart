@@ -782,7 +782,11 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (165, 1, 'stateDelete', 'ps_country', 'deleteState', 'Delete a state record', 'storeadmin,admin'),
 (166, 2, 'csvFieldAdd', 'ps_csv', 'add', 'Add a CSV Field ', 'storeadmin,admin'),
 (167, 2, 'csvFieldUpdate', 'ps_csv', 'update', 'Update a CSV Field', 'storeadmin,admin'),
-(168, 2, 'csvFieldDelete', 'ps_csv', 'delete', 'Delete a CSV Field', 'storeadmin,admin');
+(168, 2, 'csvFieldDelete', 'ps_csv', 'delete', 'Delete a CSV Field', 'storeadmin,admin'),
+(169, 1, 'userfieldSave', 'ps_userfield', 'savefield', 'add or edit a user field', 'admin'),
+(170, 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin'),
+(171, 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin'),
+(172, 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');
 
 ## --------------------------------------------------------
 
