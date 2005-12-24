@@ -81,6 +81,10 @@ DROP TABLE IF EXISTS  `jos_vm_tax_rate`;
 
 DROP TABLE IF EXISTS  `jos_vm_user_info`;
 
+DROP TABLE IF EXISTS  `jos_vm_userfield`;
+
+DROP TABLE IF EXISTS  `jos_vm_userfield_values`;
+
 DROP TABLE IF EXISTS  `jos_vm_vendor`;
 
 DROP TABLE IF EXISTS  `jos_vm_vendor_category`;
@@ -89,7 +93,6 @@ DROP TABLE IF EXISTS  `jos_vm_visit`;
 DROP TABLE IF EXISTS  `jos_vm_waiting_list`;
 
 DROP TABLE IF EXISTS  `jos_vm_zone_shipping`;
-
 
 
 ############################################################

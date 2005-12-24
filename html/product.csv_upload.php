@@ -37,6 +37,8 @@ $tabs = new mShopTabs(0, 1, "_csv");
 $tabs->startPane("uploadform-pane");
 $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" ); 
 ?>
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" enctype="multipart/form-data">
+
 <table class="adminform" border="0">
     <tr>
       <td rowspan="2" width="50%">
@@ -44,31 +46,38 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
           <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_SETTINGS ?></th></tr>
           <tr>
           <td valign="top" width="15%" align="right">
-          <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" enctype="multipart/form-data">
+          
               <input type="hidden" name="func" value="product_csv" />
               <input type="hidden" name="task" value="" />
               <input type="hidden" name="page" value="product.mycsv" />
               <input type="hidden" name="option" value="com_virtuemart" />
               <input type="hidden" name="no_html" value="0" />
-              <?php echo $VM_LANG->_PHPSHOP_CSV_DELIMITER ?>:
+              <?php 
+              echo $VM_LANG->_PHPSHOP_CSV_DELIMITER.': ';
+              $checked_1 = (stripslashes(@$vars['csv_delimiter']) == ',') ? 'checked="checked"' : '';
+              $checked_2 = (stripslashes(@$vars['csv_delimiter']) == ';' || empty($vars['csv_delimiter']) ) ? 'checked="checked"' : '';
+               ?>
             </td>
             <td valign="top" width="5%">
-              <input type="radio" name="csv_delimiter" checked="checked" value="," />
+              <input type="radio" name="csv_delimiter" <?php echo $checked_1 ?> value="," />
                 <span class="sectionname">,</span><br />
-              <input type="radio" name="csv_delimiter" value=";" />
+              <input type="radio" name="csv_delimiter" <?php echo $checked_2 ?> value=";" />
                 <span class="sectionname">;</span>
             </td>
             <?php
             if( $show_fec ) {
+				$checked_1 = (@$vars['csv_enclosurechar'] == '&quote;' || !isset($vars['csv_delimiter'])) ? 'checked="checked"' : '';
+ 	            $checked_2 = (@$vars['csv_enclosurechar'] == '&#039;' ) ? 'checked="checked"' : '';
+ 	            $checked_3 = (@$vars['csv_enclosurechar'] == '' ) ? 'checked="checked"' : '';
       ?>
               <td valign="top" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_CSV_ENCLOSURE ?>:</td>
               <td valign="top" width="15%">
-                  <input type="radio" name="csv_enclosurechar" checked="checked" value='"' />
-                    <span class="sectionname">"</span><br />
-                  <input type="radio" name="csv_enclosurechar" value="'" />
-                    <span class="sectionname">'</span><br />
-                  <input type="radio" name="csv_enclosurechar" value="" />
-                    none
+                  <input type="radio" name="csv_enclosurechar" <?php echo $checked_1 ?> value="&quot;" />
+                    <span class="sectionname">&quot;</span><br />
+                  <input type="radio" name="csv_enclosurechar" <?php echo $checked_2 ?>value="&#039;" />
+                    <span class="sectionname">&#039;</span><br />
+                  <input type="radio" name="csv_enclosurechar" <?php echo $checked_3 ?> value="" />
+                    (<?php echo $VM_LANG->_PHPSHOP_NONE ?>)
               </td>
               <?php 
             }
@@ -81,7 +90,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
             <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_UPLOAD_FILE ?></th></tr>
             <tr>
               <td align="center" colspan="<?php echo $cols; ?>">
-                    <input type="file" name="file" />
+                    <input type="file" name="file" size="40" />
                     <br />
                     <a href="#" onclick="javascript: document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';document.adminForm.local_csv_file.value='';submitbutton();" >
                     <img alt="Import" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png" align="center" /><?php echo $VM_LANG->_PHPSHOP_CSV_SUBMIT_FILE ?></a>
@@ -208,7 +217,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_DOCUMENTATION, "doc-page" );
   <div class="quote" style="max-width:600px;overflow:scroll;">
   <pre><?php echo htmlentities('"G01","<p>Nice hand shovel to dig with in the yard.</p>","<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br>  5\" Diameter<br>  Tungsten handle tip with 5 point loft<br>","8d886c5855770cc01a3b8a2db57f6600.jpg","cca3cd5db813ee6badf6a3598832f2fc.jpg","10.0000","pounds","0.0000","0.0000","0.0000","inches","10","1072911600","Y","1","Hand Shovel","4.99000","Hand Tools","1","2","0","G01","","","Color::1|Size::2",""
 "G02","A really long ladder to reach high places.","<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br>  5\" Diameter<br>  Tungsten handle tip with 5 point loft<br>","ffd5d5ace2840232c8c32de59553cd8d.jpg","8cb8d644ef299639b7eab25829d13dbc.jpg","10.0000","pounds","0.0000","0.0000","0.0000","inches","76","1072911600","N","0","Ladder","49.99000","Garden Tools","1","2","0","G02","","","Material::1",""
-"G03","Nice shovel.  You can dig your way to China with this one.","<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br>  5\" Diameter<br>  Tungsten handle tip with 5 point loft<br>","8147a3a9666aec0296525dbd81f9705e.jpg","520efefd6d7977f91b16fac1149c7438.jpg","10.0000","pounds","0.0000","0.0000","0.0000","inches","32","1072911600","N","0","Shovel","24.99000","Garden Tools","1","2","0","G03","Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00]","","",""</div>');
+"G03","Nice shovel.  You can dig your way to China with this one.","<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br>  5\" Diameter<br>  Tungsten handle tip with 5 point loft<br>","8147a3a9666aec0296525dbd81f9705e.jpg","520efefd6d7977f91b16fac1149c7438.jpg","10.0000","pounds","0.0000","0.0000","0.0000","inches","32","1072911600","N","0","Shovel","24.99000","Garden Tools","1","2","0","G03","Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00]","","",""');
 ?></pre></div>
   <br />
   <strong>Please check the Tab "Configuration" above to see the list of all the fields you can include in the CSV file.

@@ -33,6 +33,15 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+22-12-2005 soeren
++ new HelpTip from WebFx (http://webfx.eae.net/dhtml/helptip/helptip.html)
+	this javascript allows displaying details of products in a box that 
+	can be shown and hidden and doesnt vanish on mouse scrolling (used on CSV Upload)
+	Usage: echo vmHelpToolTip( "My tip in the box", "The link text" );
++ step-by-step import on CSV Upload
++ CSV Upload simulation: uploaded CSV files are not instantly imported, but the
+	import first is simulated and the results are shown to the user
+^ admin dropdown menu now is able to display special characters (e.g. dutch and german special chars)
 
 20-12-2005 soeren
 + showing End-User price in the admin's product list now

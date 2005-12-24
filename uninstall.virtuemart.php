@@ -82,6 +82,8 @@ function com_uninstall() {
 	$db->query( 'DROP TABLE `#__{vm}_state`;' );
 	$db->query( 'DROP TABLE `#__{vm}_tax_rate`;' );
 	$db->query( 'DROP TABLE `#__{vm}_user_info`;' );
+	$db->query( 'DROP TABLE `#__{vm}_userfield`;' );
+	$db->query( 'DROP TABLE `#__{vm}_userfield_values`;' );
 	$db->query( 'DROP TABLE `#__{vm}_vendor`;' );
 	$db->query( 'DROP TABLE `#__{vm}_vendor_category`;' );
 	$db->query( 'DROP TABLE `#__{vm}_visit`;' );

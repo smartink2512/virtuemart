@@ -1450,6 +1450,23 @@ default: ps_payment<br />
 	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction. 
 The transaction was not cancelled in this case, but it is just pending and waiting for completion.';
 	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Order Status for Pending Payments';
+	var $_VM_SHIPPING_MODULE_LIST_LBL = 'Shipping Module List';
+	var $_VM_ENABLED = 'enabled';
+	var $_VM_DISABLED = 'disabled';
+	var $_VM_ABOUT = 'About';
+	var $_VM_HELP_TOPICS = 'Help Topics';
+	var $_VM_COMMUNITY_FORUM = 'Forum';
+	var $_VM_CSV_UPLOAD_SIMULATION_RESULTS_LBL = 'CSV Upload Simulation Results';
+	var $_VM_CSV_UPLOAD_IMPORTNOW = 'Import Now!';
+	var $_VM_CSV_UPLOAD_RESULTS = 'CSV Upload Results';
+	var $_VM_CSV_UPLOAD_START_AT = 'Start reading from line';
+	var $_VM_CSV_UPLOAD_LINES_TO_PROCESS = 'No. of lines to import';
+	var $_VM_CSV_UPLOAD_NO_ERRORS = 'No errors found during CSV import simulation.';
+	var $_VM_CSV_UPLOAD_TOTAL_LINES = 'Total lines found';
+	var $_VM_CSV_UPLOAD_FIRST_LINE = 'First line read';
+	var $_VM_CSV_UPLOAD_FIELD_EXPLANATION = 'Field Ordering used => Values found';
+	var $_VM_PRODUCT_IMPORT_LOG = 'Product Import Log';
+	var $_VM_CSV_UPLOAD_DETAILS_ANALYSIS = 'CSV Upload Details / Analysis';
         
 }
 class phpShopLanguage extends vmLanguage { }

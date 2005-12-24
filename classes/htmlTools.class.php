@@ -781,6 +781,29 @@ function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/im
 
 	return $tip;
 }
+
+function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
+	global $mosConfig_live_site;
+
+	if( !defined( 'vmHelpToolTipCalled')) {
+		echo '<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/helptip/helptip.js"></script>
+			<link type="text/css" rel="stylesheet" href="'.$mosConfig_live_site.'/components/com_virtuemart/js/helptip/helptip.css" />';
+		define('vmHelpToolTipCalled', 1);
+	}
+	$tip = str_replace( "\n", "", 
+			str_replace( "&lt;", "<", 
+			str_replace( "&gt;", ">", 
+			str_replace( "&amp;", "&", 
+			htmlentities( $tip, ENT_QUOTES )))));
+	$varname = 'a'.md5( $tip );
+	echo '<script type="text/javascript">//<![CDATA[
+	var '.$varname.' = \''.$tip.'\';
+	//]]></script>
+	';
+	echo '<a class="helpLink" href="?" onclick="showHelpTip(event, '.$varname.'); return false">'.$linktext.'</a>
+';
+}
+
 // borrowed from mambo.php
 function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) {
 	

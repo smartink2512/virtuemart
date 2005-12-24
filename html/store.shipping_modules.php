@@ -29,7 +29,7 @@ $ps_shipping_method = new ps_shipping_method;
       <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/ups.gif" border="0" />
       <br /><br />
     </td>
-    <td><span class="sectionname">Shipping Module List</span></td>
+    <td><span class="sectionname"><?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_LBL ?></span></td>
   </tr>
 </table>
 
@@ -43,23 +43,20 @@ else {
   <table width="100%" class="adminlist">
     <tr> 
       <th width="20">#</th>
-      <th width="20">Active?</th>
-      <th class="title">Name</th>
-      <th class="title">Version</th>
-      <th class="title">Author</th>
-      <th class="title">Author URL</th>
-      <th class="title">Author Email</th>
-      <th>Description</th>
+      <th width="20"><?php echo ucfirst($VM_LANG->_VM_ENABLED).'?' ?></th>
+      <th class="title"><?php echo _NAME ?></th>
+      <th class="title"><?php echo _E_VERSION ?></th>
+      <th class="title"><?php echo _HEADER_AUTHOR ?></th>
+      <th class="title"><?php echo _URL ?></th>
+      <th class="title"><?php echo _EMAIL ?></th>
+      <th><?php echo _CMN_DESCRIPTION ?></th>
     </tr>
 <?php
     $i = 0;
     foreach( $rows as $row ) {
-      if ($i++ % 2) 
-         $bgcolor=SEARCH_COLOR_1;
-      else
-         $bgcolor=SEARCH_COLOR_2;
-          ?> 
-      <tr bgcolor="<?php echo $bgcolor ?>"> 
+      	$i++;
+         ?> 
+      <tr class="row<?php echo $i%2 ?>"> 
         <td><?php echo( $i ); ?></td>
         <td><?php 
           if( in_array(str_replace('.php', '', $row['filename']), $PSHOP_SHIPPING_MODULES ) )
