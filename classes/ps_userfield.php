@@ -44,7 +44,11 @@ class ps_userfield extends vmAbstractObject {
 				break;
 		}
 		$db = new ps_DB();
+		
 		$sql="SELECT COUNT(*) as num_rows FROM `#__{vm}_userfield` WHERE name='".$d['name']."'";
+		if( !empty($d['fieldid'])) {
+			$sql .= ' AND fieldid != '.intval($d['fieldid']);
+		}
 		$db->query($sql); $db->next_record();
 		if($db->f('num_rows')) {
 			$vmLogger->err( "The field name ".$d['name']." is already in use!" );
@@ -97,7 +101,7 @@ class ps_userfield extends vmAbstractObject {
 					 WHERE `fieldid` ='. intval($d['fieldid']);
 			$db->query( $q );
 			if( $d['type'] != 'delimiter') {
-				$this->changeColumn( $d['name'], $d['cType'], 'change');
+				$this->changeColumn( $d['name'], $d['cType'], 'update');
 			}
 
 		} else {
@@ -126,6 +130,7 @@ class ps_userfield extends vmAbstractObject {
 		$fieldValues = array();
 		$fieldNames = array();
 		$fieldNames = $_POST['vNames'];
+		$fieldValues = $_POST['vValues'];
 		$j=1;
 		if( !empty( $d['fieldid'] )) {
 			$db->query( "DELETE FROM #__{vm}_userfield_values"
@@ -135,11 +140,11 @@ class ps_userfield extends vmAbstractObject {
 			$maxID=$db->loadResult();
 			$d['fieldid']=$maxID;
 		}
-		//for($i=0, $n=count( $fieldNames ); $i < $n; $i++) {
-		foreach ($fieldNames as $fieldName) {
-			if(trim($fieldName)!=null || trim($fieldName)!='') {
-				$db->query( "INSERT INTO #__{vm}_userfield_values (fieldid,fieldtitle,ordering)"
-				. " VALUES('".$d['fieldid']."','".htmlspecialchars($fieldName)."',$j)" );
+		$n=count( $fieldNames );
+		for($i=0; $i < $n; $i++) {
+			if(trim($fieldNames[$i])!=null || trim($fieldNames[$i])!='') {
+				$db->query( "INSERT INTO #__{vm}_userfield_values (fieldid,fieldtitle,fieldvalue, ordering)"
+				. " VALUES('".$d['fieldid']."','".htmlspecialchars($fieldNames[$i])."','".htmlspecialchars($fieldValues[$i])."',$j)" );
 				$j++;
 			}
 		}
@@ -157,13 +162,19 @@ class ps_userfield extends vmAbstractObject {
 		
 		switch( $action ) {
 			case 'add': $action = 'ADD'; break;
-			case 'update': $action = 'CHANGE'; break;
+			case 'update': 
+			case 'change': 
+				$action = 'CHANGE'; break;
 			case 'delete': $action = 'DROP'; break;
 			default: $action = 'ADD'; break;
 		}
 		$db = new ps_DB();
 		// The general shopper information table
-		$sql="ALTER TABLE `#__{vm}_user_info` $action `$column` $type";
+		$special = '';
+		if( $action=='CHANGE') {
+			$special = "`$column`";
+		}
+		$sql="ALTER TABLE `#__{vm}_user_info` $action `$column` $special $type";
 		$db->query($sql);
 		// The table where the shopper information at the time of an order is stored
 		$sql="ALTER TABLE `#__{vm}_order_user_info` $action `$column` $type";
@@ -266,8 +277,8 @@ class ps_userfield extends vmAbstractObject {
 	   			continue;
 	   		}
 	   		// Title handling.
-	   		if( strstr($field->title, '_PHPSHOP_') || strstr($field->title, '_VM_')) {
-	   			$key = $field->title;
+	   		$key = $field->title;
+	   		if( isset( $VM_LANG->$key )) {
 	   			$field->title = $VM_LANG->$key;
 	   		}
 	   		elseif( substr( $field->title, 0, 1) == '_') {
@@ -334,18 +345,6 @@ class ps_userfield extends vmAbstractObject {
 				    $ps_html->list_states("state", $db->sf('state'), "", "id=\"state\"");
 				    echo "</noscript>\n";
 	   				break;
-				    
-				case 'bank_account_type':
-				    $selected[0] = $db->sf('bank_account_type')=="Checking" ? 'selected="selected"' : '';
-				    $selected[1] = $db->sf('bank_account_type')=="Business Checking" ? 'selected="selected"' : '';
-		    		$selected[2] = $db->sf('bank_account_type')=="Savings" ? 'selected="selected"' : '';
-					echo '<select class="inputbox" name="bank_account_type">
-				            <option '. $selected[0] .' value="Checking">'. $VM_LANG->_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING .'</option>
-				            <option '. $selected[1] .' value="Business Checking">'. $VM_LANG->_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING .'</option>
-				            <option '. $selected[2] .' value="Savings">'. $VM_LANG->_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS .'</option>
-				          </select>';
-					break;
-					
 				case 'agreed':
 					echo '<input type="checkbox" id="agreed_field" name="agreed" value="1" class="inputbox" />';
 					break;
@@ -381,31 +380,32 @@ class ps_userfield extends vmAbstractObject {
 						case 'multiselect':
 						case 'radio':
 							$k = $db->f($field->name);
-							$dbf->setQuery( "SELECT fieldtitle FROM #__{vm}_userfield_values"
+							$dbf->setQuery( "SELECT fieldtitle,fieldvalue FROM #__{vm}_userfield_values"
 							. "\n WHERE fieldid = ".$field->fieldid
 							. "\n ORDER BY ordering" );
 							$Values = $dbf->loadObjectList();
 							$multi="";
+							$rowFieldValues['lst_'.$field->name] = '';
 							if($field->type=='multiselect') $multi="multiple='multiple'";		
 							if(count($Values) > 0) {
 								if($field->type=='radio') {
 									$rowFieldValues['lst_'.$field->name] = vmCommonHTML::radioListTable( $Values, $field->name, 
 										'class="inputbox" size="1" ', 
-										'fieldtitle', 'fieldtitle', $k, $field->cols, $field->rows, $field->size, $field->required);
+										'fieldvalue', 'fieldtitle', $k, $field->cols, $field->rows, $field->size, $field->required);
 								} else {
 									$ks=explode("|*|",$k);
 									$k = array();
 									foreach($ks as $kv) {
-										$k[]->fieldtitle=$kv;
+										$k[]->fieldvalue=$kv;
 									}
 									if($field->type=='multicheckbox') {
 										$rowFieldValues['lst_'.$field->name] = vmCommonHTML::checkboxListTable( $Values, $field->name."[]", 
 											'class="inputbox" size="'.$field->size.'" '.$multi, 
-											'fieldtitle', 'fieldtitle', $k, $field->cols, $field->rows, $field->size, $field->required);
+											'fieldvalue', 'fieldtitle', $k, $field->cols, $field->rows, $field->size, $field->required);
 									} else {
 										$rowFieldValues['lst_'.$field->name] = vmCommonHTML::selectList( $Values, $field->name."[]", 
 											'class="inputbox" size="'.$field->size.'" '.$multi, 
-											'fieldtitle', 'fieldtitle', $k);
+											'fieldvalue', 'fieldtitle', $k);
 									}
 								}
 							}
@@ -484,7 +484,7 @@ class ps_userfield extends vmAbstractObject {
 			if( $sys == '1') { $q .= " AND f.sys=1"; }
 			elseif( $sys == '0') { $q .= " AND f.sys=0"; }
 		}
-		$q .= " AND FIND_IN_SET( f.name, '".implode(',', ps_userfield::getSkipFields())."') = 0 ";
+		$q .= " OR ( FIND_IN_SET( f.name, '".implode(',', ps_userfield::getSkipFields())."') = 0 AND f.published=1 )";
 		$q .= "\n ORDER BY f.ordering";
 		
 		$db->setQuery( $q );

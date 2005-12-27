@@ -74,6 +74,11 @@ $db->query( "INSERT INTO `#__{vm}_userfield` VALUES (26, 'bank_iban', '_PHPSHOP_
 $db->query( "INSERT INTO `#__{vm}_userfield` VALUES (27, 'delimiter_sendregistration', '_BUTTON_SEND_REG', '', 'delimiter', 25, 30, 0, 28, NULL, NULL, NULL, NULL, 1, 1, 0, 0, 0, 0, 1, NULL);" );
 $db->query( "INSERT INTO `#__{vm}_userfield` VALUES (28, 'agreed', '_PHPSHOP_I_AGREE_TO_TOS', '', 'checkbox', NULL, NULL, 1, 29, NULL, NULL, NULL, NULL, 1, 1, 0, 0, 0, 1, 1, NULL);" );
 $db->query( "INSERT INTO `#__{vm}_userfield` VALUES (29, 'delimiter_userinfo', '_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL', '', 'delimiter', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 0, 1, NULL);" );
+$db->query( "INSERT INTO `#__{vm}_userfield` VALUES (30, 'extra_field_1', '_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1', '', 'text', 255, 30, 0, 31, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 0, 0, 1, NULL);" );
+$db->query( "INSERT INTO `#__{vm}_userfield` VALUES (31, 'extra_field_2', '_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2', '', 'text', 255, 30, 0, 32, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 0, 0, 1, NULL);" );
+$db->query( "INSERT INTO `#__{vm}_userfield` VALUES (32, 'extra_field_3', '_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3', '', 'text', 255, 30, 0, 33, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 0, 0, 1, NULL);" );
+$db->query( "INSERT INTO `#__{vm}_userfield` VALUES (33, 'extra_field_4', '_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4', '', 'select', 1, 1, 0, 34, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 0, 0, 1, NULL);" );
+$db->query( "INSERT INTO `#__{vm}_userfield` VALUES (34, 'extra_field_5', '_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5', '', 'select', 1, 1, 0, 35, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 0, 0, 1, NULL);" );
 
 ## --------------------------------------------------------
 
@@ -81,11 +86,17 @@ $db->query( "INSERT INTO `#__{vm}_userfield` VALUES (29, 'delimiter_userinfo', '
 $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_userfield_values` (
   `fieldvalueid` int(11) NOT NULL auto_increment,
   `fieldid` int(11) NOT NULL default '0',
-  `fieldtitle` varchar(50) NOT NULL default '',
+  `fieldtitle` varchar(255) NOT NULL default '',
+  `fieldvalue` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL default '0',
   `sys` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`fieldvalueid`)
 ) TYPE=MyISAM COMMENT='Holds the different values for dropdown and radio lists';" );
+
+$db->query( "INSERT INTO `#__{vm}_userfield_values` VALUES (1, 25, '_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING','Checking', 1, 1);" );
+$db->query( "INSERT INTO `#__{vm}_userfield_values` VALUES (2, 25, '_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING', 'Business Checking', 2, 1);" );
+$db->query( "INSERT INTO `#__{vm}_userfield_values` VALUES (3, 25, '_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS', 'Savings', 3, 1);" );
+
 
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'userfieldSave', 'ps_userfield', 'savefield', 'add or edit a user field', 'admin');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin');" );

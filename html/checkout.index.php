@@ -289,8 +289,9 @@ if ($checkout) {
             // SO REDIRECT HIM TO shop/shopper_add
       ?>
             <table width="100%">
-            <tr class="sectiontableheader"><th><?php echo $VM_LANG->_PHPSHOP_NO_CUSTOMER ?></th>
-            </tr>
+            	<tr class="sectiontableheader">
+            		<th><?php echo $VM_LANG->_PHPSHOP_NO_CUSTOMER ?></th>
+            	</tr>
             </table>
       <?php 
             include(PAGEPATH. 'checkout_register_form.php');

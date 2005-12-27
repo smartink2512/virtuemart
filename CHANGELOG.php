@@ -33,6 +33,13 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+27-12-2005 soeren
+^! changed the structure of the table jos_vm_userfield_values: added a column "fieldvalue"
+	for being able to list fieldtitles in an option list, using fieldvalue in the value="" attribute
+	For staying up-to-date in CVS: "ALTER TABLE `jos_vm_userfield_value ADD `fieldvalue` varchar(255) NOT NULL"
+# mod_productscroller not using category ID for filtering products
+
+
 22-12-2005 soeren
 + new HelpTip from WebFx (http://webfx.eae.net/dhtml/helptip/helptip.html)
 	this javascript allows displaying details of products in a box that 

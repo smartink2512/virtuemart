@@ -49,9 +49,9 @@ $webaddrtypes = array();
 $webaddrtypes[] = mosHTML::makeOption( '0', 'URL only' );
 $webaddrtypes[] = mosHTML::makeOption( '2', 'Hypertext and URL' );
 
-$db->query( "SELECT fieldtitle "
-	. "\n FROM #__{vm}_userfield_values"
-	. "\n WHERE fieldid=$fieldid"
+$db->query( "SELECT `fieldtitle`, `fieldvalue` "
+	. "\n FROM `#__{vm}_userfield_values`"
+	. "\n WHERE `fieldid`=$fieldid"
 	. "\n ORDER BY ordering" );
 $fieldvalues = $db->loadObjectList();
 
@@ -176,7 +176,8 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 		<input type=button onclick="insertRow();" value="Add a Value" />
 		<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" >
 		<thead>
-			<th width="20%">Name</th>
+			<th class="title" width="20%">Title</th>
+			<th class="title" width="80%">Value</th>
 		</thead>
 		<tbody id="fieldValuesBody">
 		<tr>
@@ -185,15 +186,18 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 	<?php	
 		//echo "count:".count( $fieldvalues );
 		//print_r (array_values($fieldvalues));
-		for ($i=0, $n=count( $fieldvalues ); $i < $n; $i++) {
+		$n=count( $fieldvalues );
+		for ($i=0; $i < $n; $i++) {
 			//print "count:".$i;
 			$fieldvalue = $fieldvalues[$i];
 			if ($i==0) $req =1;
 			else $req = 0;
-			echo "<tr>\n<td width=\"20%\"><input type=text mosReq=$req  mosLabel='Value' value=\"".stripslashes(@$fieldvalue->fieldtitle)."\" name=vNames[".$i."] /></td></tr>\n";
+			echo "<tr>\n<td width=\"20%\"><input type=\"text\" value=\"".stripslashes(@$fieldvalue->fieldtitle)."\" name=\"vNames[".$i."]\" /></td>\n";
+			echo "\n<td width=\"80%\"><input type=\"text\" value=\"".stripslashes(@$fieldvalue->fieldvalue)."\" name=\"vValues[".$i."]\" /></td></tr>\n";
 		}
 		if(count( $fieldvalues )< 1) {
-			echo "<tr>\n<td width=\"20%\"><input type=text mosReq=0  mosLabel='Value' value='' name=vNames[0] /></td></tr>\n";
+			echo "<tr>\n<td width=\"20%\"><input type=\"text\" value=\"\" name=\"vNames[0]\" /></td>\n";
+			echo "\n<td width=\"80%\"><input type=\"text\" value=\"\" name=\"vValues[0]\" /></td></tr>\n";
 			$i=0;
 		}
 	?>
@@ -228,37 +232,10 @@ $formObj->finishForm( 'userfieldSave', $modulename.'.user_field_list', $option )
   }
   
    function submitbutton(pressbutton) {
-     if (pressbutton == 'showField') {
+
        document.adminForm.type.disabled=false;
        submitform(pressbutton);
-       return;
-     }
-     var coll = document.adminForm;
-     var errorMSG = '';
-     var iserror=0;
-     if (coll != null) {
-       var elements = coll.elements;
-       // loop through all input elements in form
-       for (var i=0; i < elements.length; i++) {
-         // check if element is mandatory; here mosReq=1
-         if (elements.item(i).getAttribute('mosReq') == 1) {
-           if (elements.item(i).value == '') {
-             //alert(elements.item(i).getAttribute('mosLabel') + ':' + elements.item(i).getAttribute('mosReq'));
-             // add up all error messages
-             errorMSG += elements.item(i).getAttribute('mosLabel') + ' <?php echo $VM_LANG->_VM_FIELDMANAGER_REQUIRED; ?>\n';
-             // notify user by changing background color, in this case to red
-             elements.item(i).style.background = "red";
-             iserror=1;
-           }
-         }
-       }
-     }
-     if(iserror==1) {
-       alert(errorMSG);
-     } else {
-       document.adminForm.type.disabled=false;
-       submitform(pressbutton);
-     }
+     
    }
 
   function insertRow() {
@@ -274,9 +251,16 @@ $formObj->finishForm( 'userfieldSave', $modulename.'.user_field_list', $option )
     oCell = document.createElement("TD");
     oInput=document.createElement("INPUT");
     oInput.name="vNames["+i+"]";
-    oInput.setAttribute('mosLabel','Name');
-    oInput.setAttribute('mosReq',0);
+    oInput.setAttribute('id',"vNames_"+i);
     oCell.appendChild(oInput);
+    oRow.appendChild(oCell);
+    
+    oCell = document.createElement("TD");
+    oInput=document.createElement("INPUT");
+    oInput.name="vValues["+i+"]";
+    oInput.setAttribute('id',"vValues_"+i);
+    oCell.appendChild(oInput);
+    
     oRow.appendChild(oCell);
     oInput.focus();
 

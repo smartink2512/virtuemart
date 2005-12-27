@@ -638,9 +638,10 @@ class vmCommonHTML extends mosHTML {
 		return vmCommonHTML::list2Table( $cellsHtml, $cols, $rows, $size );
 	}
 	function selectList( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
+		global $VM_LANG;
 		reset( $arr );
 		$html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
-		if(!$required) $html .= "\n\t<option value=\"\"> </option>";
+		if(!$required) $html .= "\n\t<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>";
  		$n=count( $arr );
 		for ($i=0; $i < $n; $i++ ) {
 			$k = stripslashes($arr[$i]->$key);
@@ -661,16 +662,18 @@ class vmCommonHTML extends mosHTML {
 				$extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
 			}
 			$html .= "\n\t<option value=\"".$k."\"$extra>";
-			$html .= $t;
+			$html .= isset($VM_LANG->$t) ? $VM_LANG->$t : $t;
 			$html .= "</option>";
 		}
 		$html .= "\n</select>\n";
 		return $html;
 	}
 	function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0  ) {
+		global $VM_LANG;
 		reset( $arr );
 		$html = array();
-		for ($i=0, $n=count( $arr ); $i < $n; $i++ ) {
+		$n=count( $arr );
+		for ($i=0; $i < $n; $i++ ) {
 			$k = $arr[$i]->$key;
 			$t = $arr[$i]->$text;
 			$id = isset($arr[$i]->id) ? $arr[$i]->id : null;
@@ -688,7 +691,10 @@ class vmCommonHTML extends mosHTML {
 			} else {
 				$extra .= ($k == $selected ? " checked=\"checked\"" : '');
 			}
-			$html[] = "<input type=\"checkbox\" name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."_field$i\" value=\"".$k."\"$extra $tag_attribs />" . "<label for=\"".str_replace('[]', '', $tag_name)."_field$i\">$t</label>";
+			$tmp = "<input type=\"checkbox\" name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."_field$i\" value=\"".$k."\"$extra $tag_attribs />" . "<label for=\"".str_replace('[]', '', $tag_name)."_field$i\">";
+			$tmp .= isset($VM_LANG->$t) ? $VM_LANG->$t : $t;
+			$tmp .= "</label>";
+			$html[] = $tmp;
 		}
 		return $html;
 	}
