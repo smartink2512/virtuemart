@@ -31,10 +31,10 @@ require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_pa
 * @example $scroller = new productScroller($params);
 */
 class productScroller {
-	/**
-  * @var $NumberOfProducts
-  */
+	/** @var int */
 	var $NumberOfProducts = 5;
+	/** @var int The category id to filter by
+	var $category_id = null;
 	/**
   * // scroll, alternate, slide
   * @var $ScrollBehavior
@@ -137,6 +137,9 @@ class productScroller {
 	function productScroller (&$params) {
 
 		$this->params = $params;
+
+		$this->category_id = $params->get( 'category_id', null ); // Display products from this category only
+		
 		// standard mammeters
 		$this->show_product_name              =  $params->get('show_product_name', "yes");
 		$this->show_addtocart              =  $params->get('show_addtocart', "yes");
@@ -248,7 +251,7 @@ $scroller =& new productScroller($params);
 /**
 * Load Products
 **/ 
-$rows = getProductSKU( $scroller->NumberOfProducts, $scroller->ScrollSortMethod, 0, $scroller->returnSortType($scroller->ScrollSortMethod)  );
+$rows = getProductSKU( $scroller->NumberOfProducts, $scroller->ScrollSortMethod, $scroller->category_id, $scroller->returnSortType($scroller->ScrollSortMethod)  );
 
 /**
 * Display Product Scroller
@@ -271,8 +274,9 @@ function getProductSKU( $limit=0, $how=null, $category_id=0, $order='asc' ) {
 
 	$query = "SELECT p.product_sku FROM #__{vm}_product AS p";
 
-	if( $category_id != 0 )
-	$query .= "\nJOIN #__{vm}_product_category_xref as pc ON p.product_id=pc.product_id AND pc.category_id='$category_id'";
+	if( $category_id != 0 ) {
+		$query .= "\nJOIN #__{vm}_product_category_xref as pc ON p.product_id=pc.product_id AND pc.category_id='$category_id'";
+	}
 
 	$query .= "\n WHERE p.product_publish = 'Y' AND product_parent_id=0 ";
 	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {

@@ -53,13 +53,16 @@ function mosProductSnapshotPlugin_onPrepareContent( $published, &$row, &$params,
       
       // Assign Bot Parameters
       $id = $pshop_productsnap_params[0];
-      $showprice = $pshop_productsnap_params[1]=='true' ? true : false;
-      $showdesc = $pshop_productsnap_params[2]=='true' ? true : false;
-      $showaddtocart = $pshop_productsnap_params[3]=='true' ? true : false;
-      $align  = $pshop_productsnap_params[4];
-      
-      $showsnapshot = return_snapshot( $id, $showprice, $showdesc, $showaddtocart, $align);
-  
+      $showprice = @$pshop_productsnap_params[1]=='true' ? true : false;
+      $showdesc = @$pshop_productsnap_params[2]=='true' ? true : false;
+      $showaddtocart = @$pshop_productsnap_params[3]=='true' ? true : false;
+      $align  = @$pshop_productsnap_params[4];
+      if( !empty( $id )) {
+      	$showsnapshot = return_snapshot( $id, $showprice, $showdesc, $showaddtocart, $align);
+      }
+  	  else {
+  	  	$showsnapshot = 'Error: '.__FUNCTION__.' received no product ID<br/>';
+  	  }
       $pshop_productsnap_entrytext = preg_replace("/{product_snapshot:id=.+?}/", $showsnapshot, $pshop_productsnap_entrytext, 1);
     }
     $row->text = $pshop_productsnap_entrytext;

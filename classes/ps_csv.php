@@ -22,8 +22,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * products and categories from a csv file
 *************************************************************************/
 
-require_once( CLASSPATH.'csv/File/CSV.php');
-
 class ps_csv {
 	var $classname = "ps_csv";
 	/** @var Array  Contains all fieldnames that are required on CSV Upload */
