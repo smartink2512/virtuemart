@@ -760,10 +760,10 @@ function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/im
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
 	if( function_exists('mysql_real_escape_string')) {
-		$tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES);
+		$tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES, 'utf-8');
 	}
 	else {
-		$tooltip = htmlentities( mysql_escape_string($tooltip), ENT_QUOTES);
+		$tooltip = htmlentities( mysql_escape_string($tooltip), ENT_QUOTES, 'utf-8');
 	}
 	
 	if ( !empty($width) ) {

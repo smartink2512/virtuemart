@@ -33,6 +33,11 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
+05-01-2006 soeren
+
+# Task #430 — ToolTip Error when use Chinese
+^ Task #427 — Add To Cart button in Browse uses Joomla button CSS.
+
 27-12-2005 soeren
 ^! changed the structure of the table jos_vm_userfield_values: added a column "fieldvalue"
 	for being able to list fieldtitles in an option list, using fieldvalue in the value="" attribute
