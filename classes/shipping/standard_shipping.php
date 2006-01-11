@@ -30,7 +30,15 @@ class standard_shipping {
 	function list_rates( &$d ) {
 		global $VM_LANG, $CURRENCY_DISPLAY, $vmLogger;
 		$auth = $_SESSION["auth"];
-
+		
+		if( defined( $this->classname.'_list_rates_called')) {
+			return;
+		}
+		// Prevent that list_rates is called more than once
+		// as this is a fallback method when other classes fail to
+		// list their rates
+		define( $this->classname.'_list_rates_called', 1);
+		
 		$dbc = new ps_DB; // Carriers
 		$dbr = new ps_DB; // Rates
 

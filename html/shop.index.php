@@ -35,9 +35,9 @@ $iCol = 1;
 $categories_per_row = 4;
 $cellwidth = intval( 100 / $categories_per_row );
 ?>
-<table class="moduletable" width="100%" cellspacing="0" cellpadding="0">  
+<table width="100%" cellspacing="0" cellpadding="0">  
   <tr>
-    <th colspan="<?php echo $categories_per_row ?>"><?php echo $VM_LANG->_PHPSHOP_CATEGORIES ?></th>
+    <td class="componentheading" colspan="<?php echo $categories_per_row ?>"><?php echo $VM_LANG->_PHPSHOP_CATEGORIES ?></td>
   </tr>
   <?php
 	// cycle through the returned rows displaying them in a table

@@ -44,13 +44,15 @@ if( !$perm->check("admin"))
   $q .= "AND #__{vm}_shopper_group.vendor_id = '$ps_vendor_id' ";
 $q .= "AND #__{vm}_shopper_group.shopper_group_id = #__{vm}_product_price.shopper_group_id ";
 $q .= "ORDER BY shopper_group_name,price_quantity_start, product_price ";
-$list .= $q . "LIMIT $limitstart, $limit";
+
 $count .= $q;
 $db->query($count);
 $num_rows = $db->num_rows();
 
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
+
+$list .= $q . 'LIMIT '.$pageNav->limitstart.', '.$pageNav->limit;
 
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );

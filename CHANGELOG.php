@@ -33,8 +33,24 @@ Legend:
 
 VirtueMart 1.0.x
 *************************************
-05-01-2006 soeren
+11-01-2006 soeren
++ when Caching is on, cached pages are watermarked with a timestamp ("Last updated: Wednesday, 11 January 2006 16:31") like we know from eBay
++ FedEx shipping module integration begun
+# fixed minor issues with the new userfield registration system
+# Task #435 — Link to component class
+# Task #433 — Blocked message (popup) on registration
+# Task #432 — missing ST address in order_user_info when using default address
+# Task #431 — Pricelist doesn't show prices
 
+ 
+09-01-2006 soeren
+^ Payment method discounts/fees: Implemented a percentage discount...
+	You can now charge the customer a certain percentage of the order total
+
+	! DATABASE STRUCTURE CHANGED: table jos_vm_payment_method
+	  Added 3 new fields to that table to allow percentage discounts
+
+05-01-2006 soeren
 # Task #430 — ToolTip Error when use Chinese
 ^ Task #427 — Add To Cart button in Browse uses Joomla button CSS.
 

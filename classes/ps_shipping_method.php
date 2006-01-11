@@ -28,21 +28,31 @@ class ps_shipping_method {
 	* returns:
 	**************************************************************************/
 	function save(&$d) {
-
+		global $VM_LANG, $vmLogger;
+		
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
-
-		include( CLASSPATH."shipping/".$d["shipping_class"].".php" );
-		eval( "\$_SHIPPING = new ".$d["shipping_class"]."();");
-
-
-		$_SHIPPING->write_configuration( $d );
-
-		return True;
-
+		
+		if( file_exists( CLASSPATH."shipping/".$d["shipping_class"].".php" )) {
+			include( CLASSPATH."shipping/".$d["shipping_class"].".php" );
+			eval( "\$_SHIPPING = new ".$d["shipping_class"]."();");
+			
+			if( $_SHIPPING->configfile_writeable() ) {
+				$_SHIPPING->write_configuration( $d );
+				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				return True;
+			}
+			else {
+		    	$vmLogger->err( sprintf($VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE , CLASSPATH."payment/".$_SHIPPING->classname.".cfg.php" ) );
+		    	return false;
+		    }
+			
+		}
+		else {
+			$vmLogger->err( 'The shipping class file '.CLASSPATH."shipping/".$d["shipping_class"].".php could not be found." );
+			return false;
+		}
 	}
-
-
 
 	/**************************************************************************
 	** name: method_list()

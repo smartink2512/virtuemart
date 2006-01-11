@@ -58,7 +58,7 @@ require_once( CLASSPATH . "htmlTools.class.php" );
         ?>
          </select>
          <?php 
-         echo mm_ToolTip( 'Select a product category to reorder products in a category');
+         echo mm_ToolTip( $VM_LANG->_VM_PRODUCT_LIST_REORDER_TIP );
          ?>
 	</form>
 	<br/>

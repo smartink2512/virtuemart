@@ -38,9 +38,8 @@ $return = str_replace( 'option', '&amp;option', $return );
 	<div style="float:left;width:30%;text-align:left;">
 	  <input type="password" id="passwd_login" name="passwd" class="inputbox" size="20" />
 	</div>
-	<div style="float:left;width:30%;text-align:left;">
 		<input type="submit" name="Submit" class="button" value="<?php echo _BUTTON_LOGIN; ?>" />
-	</div>
+	
   </div>
   
   <input type="hidden" name="op2" value="login" />

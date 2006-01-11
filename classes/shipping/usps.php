@@ -38,12 +38,9 @@ class usps {
 		/** Read current Configuration ***/
 		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 
-		$q  = "SELECT * FROM #__users, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+		$q  = "SELECT * FROM #__user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 		$db->query($q);
-		if( !$db->next_record()) {
-			$q  = "SELECT * FROM #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
-			$db->query($q);
-		}
+		$db->next_record();
 
 		$q  = "SELECT * FROM #__{vm}_vendor WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
 		$dbv->query($q);
@@ -193,6 +190,9 @@ class usps {
 							$xmlResult .= fgets($fp, 4096);
 						}
 						if( stristr( $xmlResult, "Success" )) {
+												
+							// Cut off the HTTP Header and get the Body
+							$xmlResult = trim(substr( $xmlResult, strpos( $xmlResult, "\r\n\r\n" )+2 ));
 							/* XML Parsing */
 							require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
 							$xmlDoc =& new DOMIT_Lite_Document();

@@ -198,7 +198,7 @@ class ps_shopper {
 			return $this->update( $d );
 		}
 		// Get all fields which where shown to the user
-		$userFields = ps_userfield::getUserFields();
+		$userFields = ps_userfield::getUserFields('registration', false, '', true );
 		
 		// Insert billto; 
 		
@@ -262,6 +262,9 @@ class ps_shopper {
 		if( !$my->id && $mosConfig_useractivation == '0') {
 			$mainframe->login($d['username'], md5( $d['password'] ));
 			mosRedirect( "index.php?option=$option&page=checkout.index" );
+		}
+		else {
+			mosRedirect( "index.php?option=$option&page=shop.index", _REG_COMPLETE_ACTIVATE );
 		}
 
 		return true;
@@ -434,7 +437,7 @@ class ps_shopper {
 		/* Update Bill To */
 
 		// Get all fields which where shown to the user
-		$userFields = ps_userfield::getUserFields( 'account' );
+		$userFields = ps_userfield::getUserFields( 'account', false, '', true );
 		
 		// Insert billto; 
 		
@@ -443,9 +446,12 @@ class ps_shopper {
 		$q = "UPDATE #__{vm}_user_info SET
 				`mdate` = '".time()."', ";
 		$fields = array();
+		$skip_fields = ps_userfield::getSkipFields();
 		foreach( $userFields as $userField ) {
-			$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
-			$fields[] = "`".$userField->name."`='".$d[$userField->name]."'";
+			if( !in_array($userField->name,$skip_fields)) {
+				$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+				$fields[] = "`".$userField->name."`='".$d[$userField->name]."'";
+			}
 		}
 		$q .= str_replace( '`email`', '`user_email`', implode( ',', $fields ));
 		

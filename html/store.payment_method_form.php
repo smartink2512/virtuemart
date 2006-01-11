@@ -57,25 +57,25 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
 ?>
 <table class="adminform">
     <tr class="row0">
-      <td><strong><?php echo $VM_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL ?>?:</strong></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL ?>?:</td>
       <td><input type="checkbox" name="payment_enabled" class="inputbox" value="Y" <?php echo $db->sf("payment_enabled")=="Y" ? "checked=\"checked\"" : "" ?> /></td>
     </tr>
     <tr class="row1"> 
-      <td width="31%" align="right" nowrap="nowrap" ><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_NAME ?>:</strong></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_NAME ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="payment_method_name" value="<?php $db->sp("payment_method_name") ?>" size="32" />
       </td>
     </tr>
     <tr class="row0"> 
-      <td width="31%" align="right" nowrap="nowrap" ><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_CODE ?>:</strong></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_CODE ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="payment_method_code" value="<?php $db->sp("payment_method_code") ?>" size="4" maxlength="8" />
       </td>
     </tr>
     <tr class="row1">
-      <td width="31%" align="right"><strong><?php
+      <td class="labelcell"><?php
           echo $VM_LANG->_VM_PAYMENT_CLASS_NAME;
-          ?></strong>
+          ?>
       </td>
       <td width="69%">
       	<input type="text" class="inputbox" name="payment_class" value="<?php $db->sp("payment_class") ?>" />
@@ -83,7 +83,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
       </td>
     </tr>
     <tr class="row0"> 
-      <td width="31%" valign="top" align="right" nowrap="nowrap" ><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR ?>:</strong></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR ?>:</td>
       <td width="69%" >
       <?php 
           $payment_process = $db->f("enable_processor"); 
@@ -91,7 +91,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
                               "Y" => $VM_LANG->_PHPSHOP_PAYMENT_FORM_USE_PP, 
                               "B" => $VM_LANG->_PHPSHOP_PAYMENT_FORM_BANK_DEBIT, 
                               "N" => $VM_LANG->_PHPSHOP_PAYMENT_FORM_AO, 
-                              "P" => "PayPal (or related)");
+                              "P" => $VM_LANG->_VM_PAYMENT_FORM_FORMBASED );
           $i = 0;
           foreach( $payment_types as $value => $description) {
             echo "<input type=\"radio\" onchange=\"check()\" name=\"enable_processor\" id=\"enable_processor$i\" value=\"$value\"";
@@ -106,7 +106,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
       <td colspan="2"><hr /></td>
     </tr>
     <tr class="row0">
-      <td width="31%" align="right" valign="top"><div id="accepted_creditcards1"></div></td>
+      <td class="labelcell"><div id="accepted_creditcards1"></div></td>
       <td width="69%"><div id="accepted_creditcards2"></div></td>
     </tr>
     <div id="accepted_creditcards_store"></div>
@@ -114,35 +114,60 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr class="row0"> 
-      <td width="31%" align="right"  valign="top"><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP ?>:</strong></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP ?>:</td>
       <td width="69%" ><?php $ps_shopper_group->list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id")) ?> 
       </td>
     </tr>
     <tr class="row1"> 
-      <td width="31%" align="right" valign="top"><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT ?>:</strong></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_DISCOUNT ?>:</td>
       <td width="69%" > 
-        <INPUT type="text" class="inputbox" name="payment_method_discount" size="6"  value="<?php $db->sp("payment_method_discount"); ?>" />
+        <input type="text" class="inputbox" name="payment_method_discount" size="6"  value="<?php $db->sp("payment_method_discount"); ?>" />
+        <?php echo mm_ToolTip( $VM_LANG->_VM_PAYMENT_METHOD_DISCOUNT_TIP ); ?>
       </td>
     </tr>
+    
+    <tr class="row1"> 
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE ?>:</div></td>
+      <td width="69%"> 
+        <input type="radio" class="inputbox" id="payment_method_discount_is_percent0" name="payment_method_discount_is_percent" value="1" <?php if($db->sf("payment_method_discount_is_percent")==1) echo "checked=\"checked\""; ?> />
+        <label for="payment_method_discount_is_percent0"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT ?></label>&nbsp;&nbsp;&nbsp;
+        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT_TIP ); ?><br />
+        <input type="radio" class="inputbox" id="payment_method_discount_is_percent1" name="payment_method_discount_is_percent" value="0" <?php if($db->sf("payment_method_discount_is_percent")==0) echo "checked=\"checked\""; ?> />
+        <label for="payment_method_discount_is_percent1"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ISTOTAL ?></label>
+      </td>
+    </tr>
+    <tr class="row1"> 
+    	<td class="labelcell"><?php echo $VM_LANG->_VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT ?>:</td>
+    	<td ><input type="text" name="payment_method_discount_max_amount" value="<?php $db->sp('payment_method_discount_max_amount') ?>" size="5" /></td>
+   	</tr>
+   	
+    <tr class="row1"> 
+    	<td class="labelcell"><?php echo $VM_LANG->_VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT ?>:</td>
+    	<td ><input type="text" name="payment_method_discount_min_amount" value="<?php $db->sp('payment_method_discount_min_amount') ?>" size="5" /></td>
+   	</tr>
+   	
     <tr class="row0"> 
-      <td width="31%" align="right" valign="top"><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER ?>:</strong></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LIST_ORDER ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="list_order" size="4" maxlength="4" value="<?php $db->sp("list_order"); ?>" />
       </td>
     </tr>
     <tr class="row0"> 
-      <td width="31%" align="right"  valign="top">&nbsp;</td>
-      <td width="69%" >&nbsp; </td>
+      <td colspan="2">&nbsp;</td>
     </tr>
   </table>
 <?php
         $tabs->endTab();
         $tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "config-page");
         
+        if( $_PAYMENT->has_configuration() ) {
+        	$ps_html->writableIndicator( CLASSPATH."payment/".$_PAYMENT->classname.".cfg.php" );
+        }
+        
         $_PAYMENT->show_configuration();
         
         echo '<br />
-<strong>'.$VM_LANG->_VM_PAYMENT_EXTRAINFO.':</strong>';
+<strong>'.$VM_LANG->_VM_PAYMENT_EXTRAINFO.':';
 		echo mm_ToolTip( $VM_LANG->_VM_PAYMENT_EXTRAINFO_TIP ) 
 	?>
 <br />
@@ -164,7 +189,7 @@ $formObj->finishForm( $funcname, $modulename.'.payment_method_list', $option );
   <script type="text/javascript">
 function check() {
    if (document.adminForm.enable_processor[0].checked == true || document.adminForm.enable_processor[1].checked == true) {
-      document.getElementById('accepted_creditcards1').innerHTML = '<strong><?php echo $VM_LANG->_VM_PAYMENT_ACCEPTED_CREDITCARDS ?>:</strong>';
+      document.getElementById('accepted_creditcards1').innerHTML = '<strong><?php echo $VM_LANG->_VM_PAYMENT_ACCEPTED_CREDITCARDS ?>:';
       if (document.getElementById('accepted_creditcards_store').innerHTML != '')
         document.getElementById('accepted_creditcards2').innerHTML ='<input type="text" name="accepted_creditcards" value="' + document.getElementById('accepted_creditcards_store').innerHTML + '" class="inputbox" />';
       else

@@ -1,5 +1,5 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id: store.shipping_module_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
@@ -20,11 +20,14 @@ mm_showMyFileName( __FILE__ );
 $shipping_module = mosgetparam($_REQUEST, 'shipping_module', null);
 
 if( $shipping_module ) {
-  if( !include( CLASSPATH."shipping/$shipping_module" ))
-    mosredirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules", "Could not instantiate Class $shipping_module" );
-  else
-    eval( "\$_SHIPPING = new ".basename($shipping_module,".php")."();");
-  
+	if( !include( CLASSPATH."shipping/$shipping_module" )) {
+		mosredirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules", "Could not instantiate Class $shipping_module" );
+	}
+	else {
+		eval( "\$_SHIPPING = new ".basename($shipping_module,".php")."();");
+	}
+	$ps_html->writableIndicator(CLASSPATH."shipping/".basename($shipping_module,".php").'.cfg.php');
+	
   ?>
   <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
   <script language="Javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
@@ -33,7 +36,7 @@ if( $shipping_module ) {
   <br /><br />
   <form action="<?php echo $_SERVER['PHP_SELF']?>" name="adminForm" method="post">
   <?php
-    $_SHIPPING->show_configuration();
+  $_SHIPPING->show_configuration();
   ?>
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="option" value="com_virtuemart" />
@@ -45,8 +48,8 @@ if( $shipping_module ) {
 }
 else {
 
-  // Form for new shipping modules
-  
+	// Form for new shipping modules
+
 }
 
 ?>

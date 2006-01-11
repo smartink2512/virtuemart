@@ -1495,6 +1495,21 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_CSV_UPLOAD_FIELD_EXPLANATION = 'Field Ordering used => Values found';
 	var $_VM_PRODUCT_IMPORT_LOG = 'Product Import Log';
 	var $_VM_CSV_UPLOAD_DETAILS_ANALYSIS = 'CSV Upload Details / Analysis';
+	var $_VM_CONFIGURATION_CHANGE_SUCCESS = 'The configuration details have been updated!';
+	var $_VM_CONFIGURATION_CHANGE_FAILURE = 'Unable to write into the configuration file %s!';
+	var $_VM_PAYMENT_METHOD_DISCOUNT_TIP = 'To turn the discount into a fee, use a negative value here (Example: <strong>-2.00</strong>).';
+	var $_VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT = 'Maximum discount amount';
+	var $_VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT = 'Minimum discount amount';
+	var $_VM_PAYMENT_FORM_FORMBASED = 'HTML-Form based (e.g. PayPal)';
+	var $_VM_WRITABLE = 'Writeable';
+	var $_VM_UNWRITABLE = 'Unwriteable';
+	var $_VM_PRODUCT_LIST_REORDER_TIP = 'Select a product category to reorder products in a category';
+	var $_VM_FEDEX_ACCOUNT_NUMBER = 'FedEx Account Number';
+	var $_VM_FEDEX_METER_NUMBER = 'FedEx Meter Number';
+	var $_VM_FEDEX_METER_NUMBER_TIP = 'The meter number you have received from FedEx';
+	var $_VM_FEDEX_URI = 'FedEx Server Address';
+	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
+<br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
         
 }
 class phpShopLanguage extends vmLanguage { }

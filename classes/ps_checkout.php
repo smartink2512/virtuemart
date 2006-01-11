@@ -30,21 +30,33 @@ define("CHECK_OUT_GET_FINAL_CONFIRMATION", 99);
 class ps_checkout {
 	var $classname = "ps_checkout";
 	var $_SHIPPING = null;
-
+	
+	var $_subtotal = null;
+	var $_shipping = null;
+	var $_shipping_tax = null;
+	var $_payment_discount = null;
+	var $_coupon_discount = null;
+	var $_order_total = null;
+	/** @var string An md5 hash of print_r( $cart, true ) to check wether the checkout values have to be renewed */
+	var $_cartHash;
+	
 	/**
 	 * Initiate Shipping Modules
-	 *
-	 * @return ps_checkout
 	 */
 	function ps_checkout() {
 		global $vendor_freeshipping, $vars, $PSHOP_SHIPPING_MODULES;
-
+		
+		// Make a snapshot of the current checkout configuration
+		$this->generate_cart_hash();
+		
 		/* Ok, need to decide if we have a free Shipping amount > 0,
 		* and IF the cart total is more than that Free Shipping amount,
 		* let's set Order Shipping = 0
 		*/
-		$total = $this->calc_order_subtotal($vars);
-		if( $vendor_freeshipping > 0 && $total > $vendor_freeshipping) {
+				
+		$this->_subtotal = $this->get_order_subtotal($vars);
+		
+		if( $vendor_freeshipping > 0 && $this->_subtotal > $vendor_freeshipping) {
 			$PSHOP_SHIPPING_MODULES = Array( "free_shipping" );
 			include_once( CLASSPATH. "shipping/free_shipping.php" );
 			$this->_SHIPPING =& new free_shipping();
@@ -893,13 +905,13 @@ Order Total: '.$order_total.'
 
 		// Ship to Address if applicable
 		$q = "INSERT INTO `#__{vm}_order_user_info` ";
-		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."'";
+		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
 		$db->query( $q );
 
 		/**
-    * Insert all Products from the Cart into order line items; 
-    * one row per product in the cart 
-    */
+	    * Insert all Products from the Cart into order line items; 
+	    * one row per product in the cart 
+	    */
 		$dboi = new ps_DB;
 
 		for($i = 0; $i < $cart["idx"]; $i++) {
@@ -1091,8 +1103,47 @@ Order Total: '.$order_total.'
 
 		return($order_number);
 	}
-
-
+	/**
+	 * Stores the md5 hash of the recent cart in the var _cartHash
+	 *
+	 */
+	function generate_cart_hash() {
+		$this->_cartHash = $this->get_new_cart_hash();
+	}
+	
+	/**
+	 * Generates the md5 hash of the recent cart / checkout constellation
+	 *
+	 * @return unknown
+	 */
+	function get_new_cart_hash() {
+		
+		return md5( print_r( $_SESSION['cart'], true)
+					. @$_REQUEST['shipping_rate_id']
+					. @$_REQUEST['payment_method_id']
+					);
+		
+	}
+	
+	/**
+	 * Returns the recent subtotal
+	 *
+	 * @param array $d
+	 * @return float The current order subtotal
+	 */
+	function get_order_subtotal( &$d ) {
+		
+		if(	$this->_subtotal === null ) {
+			$this->_subtotal = $this->calc_order_subtotal( $d );
+		}
+		else {
+			if( $this->_cartHash != $this->get_new_cart_hash() ) {
+				// Need to re-calculate the subtotal
+				$this->_subtotal = $this->calc_order_subtotal( $d );
+			}
+		}
+		return $this->_subtotal;
+	}
 	/***************************************************************************
 	** name: calc_order_taxable()
 	** created by: Chris Coleman
@@ -1332,7 +1383,7 @@ Order Total: '.$order_total.'
 
 		$currency = $db->f("vendor_currency");
 
-		return($currency);
+		return( $currency );
 	}
 
 
@@ -1344,13 +1395,16 @@ Order Total: '.$order_total.'
 	** returns: Discount as a decimal if found
 	**          0 if nothing is found
 	***************************************************************************/
-	function get_payment_discount($payment_method_id, $subtotal) {
-
+	function get_payment_discount( $payment_method_id, $subtotal='' ) {
+		global $vars;
+		$db = new ps_DB();
 		//MOD ei
 		// There is a special payment method, which fee is depend on subtotal
 		// it is a type of cash on delivery
-
-		require_once(CLASSPATH.'ps_payment_method.php');
+		// comment soeren: Payment methods can implement their own method
+		// how to calculate the discount: the function "get_payment_rate"
+		// should return a float value from the payment class
+		require_once(CLASSPATH . 'ps_payment_method.php');
 		$ps_payment_method = new ps_payment_method;
 
 		$payment_class = $ps_payment_method->get_field($payment_method_id, "payment_class");
@@ -1366,26 +1420,55 @@ Order Total: '.$order_total.'
 			}
 		}
 		//End of MOD ei
-
-		$discount = $ps_payment_method->get_field($payment_method_id, "payment_method_discount");
-
-		if (!empty($discount)) {
-			return(floatval($discount));
+		
+		// If a payment method has no special way of calculating a discount,
+		// let's do this on our own from the payment_method_discount settings
+		$q = 'SELECT `payment_method_discount`,`payment_method_discount_is_percent`,`payment_method_discount_max_amount`, `payment_method_discount_min_amount`
+				FROM `#__{vm}_payment_method` WHERE payment_method_id='.$payment_method_id;
+		$db->query($q);$db->next_record();
+		
+		$discount = $db->f('payment_method_discount');
+		$is_percent = $db->f('payment_method_discount_is_percent');
+		
+		if( !$is_percent ) {
+			// Standard method: absolute amount
+			if (!empty($discount)) {
+				return(floatval($discount));
+			}
+			else {
+				return(0);
+			}
 		}
 		else {
-			return(0);
+			
+			if( $subtotal === '') {
+				$subtotal = $this->get_order_subtotal( $vars );
+			}
+			
+			// New: percentage of the subtotal, limited by minimum and maximum
+			$max = $db->f('payment_method_discount_max_amount');
+			$min = $db->f('payment_method_discount_min_amount');
+			$value = (float) ($discount/100) * $subtotal;
+			
+			if( abs($value) > $max && $max > 0 ) {
+				$value = -$max;
+			}
+			elseif( abs($value) < $min && $min > 0 ) {
+				$value = -$min;
+			}
+			return $value;
 		}
+		
 	}
 
-	/**************************************************************************
-	** name: email_receipt()
-	** created by: gday
-	** description:  Create a receipt for the current order and email it to
-	**               the customer and the vendor.
-	** parameters: $order_id - Order ID for which to create the email receipts
-	** returns:  True - receipt created and emailed
-	**          False - error occured
-	***************************************************************************/
+	/**
+	 * Create a receipt for the current order and email it to
+	 * the customer and the vendor.
+	 * @author gday
+	 * @author soeren
+	 * @param int $order_id
+	 * @return boolean True on success, false on failure
+	 */
 	function email_receipt($order_id) {
 		global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY, $vmLogger,
 		$mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_mailfrom,

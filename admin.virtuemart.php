@@ -61,7 +61,7 @@ if( empty( $page )) {
 }
 
 $limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
-$limitstart = $mainframe->getUserStateFromRequest( "view{$page}limitstart", 'limitstart', 0 );
+$limitstart = $mainframe->getUserStateFromRequest( "view{$page}{$product_id}{$category_id}limitstart", 'limitstart', 0 );
 
 if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
 	echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";

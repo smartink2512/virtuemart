@@ -311,7 +311,7 @@ if ($checkout) {
           
           
           ?><br />
-            <div class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></div>
+            <span><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></span>
                 <br /><?php
           
                 include(PAGEPATH. 'checkout_register_form.php');

@@ -440,6 +440,7 @@ class ps_html {
 	* @return string Prints a div element
 	*/
 	function writableIndicator( $folder ) {
+		global $VM_LANG;
 		if( !is_array( $folder)) {
 			$folder = array($folder);
 		}
@@ -447,8 +448,8 @@ class ps_html {
 		foreach( $folder as $dir ) {
 			echo $dir . ' :: ';
 			echo is_writable( $dir )
-			? '<span style="font-weight:bold;color:green;">Writeable</span>'
-			: '<span style="font-weight:bold;color:red;">Unwriteable</span>';
+			? '<span style="font-weight:bold;color:green;">'.$VM_LANG->_VM_WRITABLE.'</span>'
+			: '<span style="font-weight:bold;color:red;">'.$VM_LANG->_VM_UNWRITABLE.'</span>';
 			echo '<br/>';
 		}
 		echo '</div>';

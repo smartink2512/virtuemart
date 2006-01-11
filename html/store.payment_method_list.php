@@ -87,8 +87,13 @@ while ($db->next_record()) {
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell(  $db->f("payment_method_code") );
-	
-	$listObj->addCell(  $db->f("payment_method_discount"));
+	if( $db->f('payment_method_discount_is_percent')) {
+		$tmp_cell = $db->f("payment_method_discount").'%';
+	}
+	else {
+		$tmp_cell = $CURRENCY_DISPLAY->getFullValue( $db->f("payment_method_discount") );
+	}
+	$listObj->addCell( $tmp_cell );
     $listObj->addCell(  $db->f("shopper_group_name"));
     
 	$enable_processor = $db->f("enable_processor");
@@ -103,7 +108,7 @@ while ($db->next_record()) {
 			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_BANK_DEBIT;
 			break;
 		case "P":
-			$tmp_cell = "PayPal related";
+			$tmp_cell = $VM_LANG->_VM_PAYMENT_FORM_FORMBASED;
 			break;
 		default:
 			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_CC;

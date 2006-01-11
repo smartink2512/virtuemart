@@ -90,3 +90,11 @@ INSERT INTO `jos_vm_function` VALUES ('', 1, 'userfieldSave', 'ps_userfield', 's
 INSERT INTO `jos_vm_function` VALUES ('', 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin');
 INSERT INTO `jos_vm_function` VALUES ('', 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin');
 INSERT INTO `jos_vm_function` VALUES ('', 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');
+
+
+# Allow percentages as payment method discount
+
+ALTER TABLE `jos_vm_payment_method` 
+	ADD `payment_method_discount_is_percent` TINYINT( 1 ) NOT NULL AFTER `payment_method_discount` ,
+	ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,
+	ADD `payment_method_discount_min_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_max_amount` ;

@@ -103,4 +103,8 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'userfieldDelete', 'p
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');" );
 
+$db->query( "ALTER TABLE `#__{vm}_payment_method` ADD `payment_method_discount_is_percent` TINYINT( 1 ) NOT NULL AFTER `payment_method_discount` ,
+ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,
+ADD `payment_method_discount_min_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_max_amount` ;");
+
 ?>
