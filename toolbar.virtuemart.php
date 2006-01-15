@@ -41,7 +41,8 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 	$allowsListPublish = Array( "product.product_list", 
 							"product.product_category_list",
 							"admin.user_field_list",
-							"store.payment_method_list"
+							"store.payment_method_list",
+							"order.order_export_list",
 						);
 	// The list of pages with their functions that allow batch deletion
 	$allowsListDeletion = Array(
@@ -60,6 +61,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 								"manufacturer.manufacturer_list" => "manufacturerDelete",
 								"order.order_list" => "orderDelete",
 								"order.order_status_list" => "orderStatusDelete",
+								"order.order_export_list" => "orderExportDelete",
 								"store.payment_method_list" => "paymentMethodDelete",
 								"product.product_attribute_list" => "productAttributeDelete",
 								"product.product_category_list" => "productCategoryDelete",
