@@ -66,7 +66,6 @@ Boston, MA 02116
 */
 // Contact FedEx and register for the API address.  It will look like
 // https://xxx.xxx.com/GatewayDC
-define('FEDEX_URI', '', true);
 
 // HTTP timeout
 define('REQUEST_TIMEOUT', 15, true);
