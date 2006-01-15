@@ -201,12 +201,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ORDER_CANCEL_MNU = 'Bestellung ablehnen';
 	var $_PHPSHOP_ORDER_PRINT_MNU = 'Bestellung ausdrucken';
 	var $_PHPSHOP_ORDER_DELETE_MNU = 'Bestellung löschen';
-	var $_PHPSHOP_ORDER_EXPORT = 'Bestellexport';
-	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_MNU = 'Bestellexport Module auflisten';
-	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_LBL = 'Bestellexport Modulliste';
-	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_NAME = 'Name';
-	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_DESC = 'Beschreibung';
-	var $_PHPSHOP_ORDER_EXPORT_MODULE_FORM_MNU = 'Neues Bestellexport Modul';
 	var $_PHPSHOP_ORDER_LIST_MNU = 'Bestellungen auflisten';
 	var $_PHPSHOP_ORDER_LIST_LBL = 'Liste aller Bestellungen';
 	var $_PHPSHOP_ORDER_LIST_ID = 'Bestellnummer';
@@ -1516,6 +1510,14 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_FEDEX_URI = 'FedEx Server Address';
 	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
 <br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
+	var $_VM_ORDER_EXPORT = 'Bestellexport';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'Bestellexport Module auflisten';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Bestellexport Modulliste';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_NAME = 'Name';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_DESC = 'Beschreibung';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Neues Bestellexport Modul';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Bestellexport Modul-Formular';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name des Export Moduls';
 
 }
 class phpShopLanguage extends vmLanguage { }

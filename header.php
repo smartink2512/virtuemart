@@ -261,9 +261,9 @@ for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules
                     ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_status_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_LIST_MNU ?>'],
                     ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_status_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_MNU ?>']
                 ],
-                 ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $VM_LANG->_PHPSHOP_ORDER_EXPORT ?>',null,null,'<?php echo $VM_LANG->_PHPSHOP_ORDER_EXPORT ?>',
-                    ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_ORDER_EXPORT_MODULE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_export_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_ORDER_EXPORT_MODULE_LIST_MNU ?>'],
-                    ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_ORDER_EXPORT_MODULE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_export_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_ORDER_EXPORT_MODULE_FORM_MNU ?>']
+                 ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT ?>',null,null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT ?>',
+                    ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_export_list") ?>',null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?>'],
+                    ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_export_form") ?>',null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_FORM_MNU ?>']
                 ],
                 <?php break;
                 
