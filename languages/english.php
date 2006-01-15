@@ -203,6 +203,9 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ORDER_DELETE_MNU = 'Delete Order';
 	var $_PHPSHOP_ORDER_EXPORT = 'Order Export';
 	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_MNU = 'List Order Export Modules';
+	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_LBL = 'Order Export Module List';
+	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_NAME = 'Name';
+	var $_PHPSHOP_ORDER_EXPORT_MODULE_LIST_DESC = 'Description';
 	var $_PHPSHOP_ORDER_EXPORT_MODULE_FORM_MNU = 'Add Order Export Module';
 	var $_PHPSHOP_ORDER_LIST_MNU = 'List Orders';
 	var $_PHPSHOP_ORDER_LIST_LBL = 'Order List';
