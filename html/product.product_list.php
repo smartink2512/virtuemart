@@ -39,12 +39,12 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 	<form style="float:right;" action="<?php $_SERVER['PHP_SELF'] ?>" method="get"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE ?>&nbsp;
           <select class="inputbox" name="search_type">
               <option value="product"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT ?></option>
-              <option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE ?>></option>
-              <option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE ?>></option>
+              <option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE ?></option>
+              <option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE ?></option>
           </select>
           <select class="inputbox" name="search_order">
               <option value="<"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE ?></option>
-              <option value=">" <?php echo $search_order == ">" ? 'selected="selected"' : ''; echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER ?>></option>
+              <option value=">" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER ?></option>
           </select>
           <input type="hidden" name="option" value="com_virtuemart" />
           <input class="inputbox" type="text" size="15" name="search_date" value="<?php echo mosgetparam($_REQUEST, 'search_date', $nowstring) ?>" />

@@ -1320,17 +1320,21 @@ class ps_product extends vmAbstractObject {
 			$html_height_width = $arr[3];
 			$height_greater = $arr[0] < $arr[1];
 			if( (PSHOP_IMG_WIDTH < $arr[0] || PSHOP_IMG_HEIGHT < $arr[1]) && $resize != 0 ) {
-				if( $height_greater )
-				$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
-				else
-				$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
+				if( $height_greater ) {
+					$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
+				}
+				else {
+					$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
+				}
 			}
 		}
 		if((PSHOP_IMG_RESIZE_ENABLE != '1') && ($resize==1) ) {
-			if( $height_greater )
-			$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
-			else
-			$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
+			if( $height_greater ) {
+				$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
+			}
+			else {
+				$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
+			}
 		}
 
 		return "<img src=\"$url\" $html_height_width $args $border />";
@@ -1998,7 +2002,7 @@ class ps_product extends vmAbstractObject {
 
 				if ($auth["show_price_including_tax"] == 1) {
 					$my_taxrate = $this->get_product_taxrate($product_id);
-					$base_price += ($my_taxrate * $price);
+					$base_price += ($my_taxrate * $base_price);
 				}
 				else {
 					$my_taxrate = 0;

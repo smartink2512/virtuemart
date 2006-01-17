@@ -32,46 +32,23 @@ class ps_order {
 	var $error;
 
 
-	/**************************************************************************
-	* name: find
-	* created by: pablo
-	* description: find an order by its order_id
-	* parameters:
-	* returns:
-	**************************************************************************/
-	function find(&$d, $start=0) {
-		$db = new ps_DB;
-
-
-		$q = "SELECT * from #__{vm}_orders where ";
-		$q .= "order_id = '" . $d["order_id"] . "'";
-		$db->query($q);
-		if ($db->next_record()) {
-			return True;
-		}
-		else {
-			$d["error"] = "ORDER NOT FOUND:  The order number you entered was not found.";
-			return False;
-		}
-	}
-
-
-	/**************************************************************************
-	* name: order_status_update
-	* created by: pablo, download-mod by Uli
-	* description: changes the status of an order.  Can be 3 statuses:
-	*              default: P - pending
-	*                       C - complete
-	*                       X - canceled
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Changes the status of an order
+	 * @author pablo
+	 * @author soeren
+	 * @author Uli
+	 * 
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function order_status_update(&$d) {
 
 		$db = new ps_DB;
 		$timestamp = time();
-		if( empty($_REQUEST['include_comment']))
-		$include_comment="N";
+		if( empty($_REQUEST['include_comment'])) {
+			$include_comment="N";
+		}
 
 		// get the current order status
 		$curr_order_status = @$d["current_order_status"];

@@ -311,7 +311,7 @@ class ps_product_attribute {
 					if( $attribtxt != "") {
 						$vorzeichen=substr($base_value,strrpos($base_value, '[')+1,1); // negative, equal or positive?
 						if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
-							$price = floatval(substr($base_value,strrpos($base_value, '[')+2))*(1+ @$_SESSION['product_info'][$product_id]['tax_rate']); // calculate Tax
+							$price = floatval(substr($base_value,strrpos($base_value, '[')+2))*(1+ @$_SESSION['product_sess'][$product_id]['tax_rate']); // calculate Tax
 						}
 						else {
 							$price = floatval(substr($base_value,strrpos($base_value, '[')+2));

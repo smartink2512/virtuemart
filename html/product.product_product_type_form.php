@@ -59,13 +59,14 @@ $formObj->startForm();
 	$db->query( $q );
               
 	$q  = "SELECT product_type_id, product_type_name, product_type_list_order ";
-	$q .= "FROM `#__{vm}_product_type` ";
+	$q .= "FROM `#__{vm}_product_type` WHERE ";
 	while( $db->next_record() ) {
-		$q .= "AND product_type_id != '".$db->f("product_type_id")."' ";
+		$q .= "product_type_id != '".$db->f("product_type_id")."' ";
+		if (!$db->is_last_record() ) { $q .= "AND "; }
 	}
 	$q .= "ORDER BY product_type_list_order ASC";
 	$db->query( $q );
-             
+    
 	while( $db->next_record() ) {
 		echo "<option value=\"".$db->f("product_type_id")."\">".$db->f("product_type_name")."</option>";
 	}

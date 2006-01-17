@@ -34,14 +34,14 @@ $q .= "AND #__{vm}_orders.order_id='$order_id'";
 $db->query($q);
 
 if ($db->next_record()) {
-    
+
 	// Get bill_to information
-    $dbbt = new ps_DB;
-    $q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
-    $dbbt->query($q);
-    $dbbt->next_record();
-    $user = $dbbt->record;
-    
+	$dbbt = new ps_DB;
+	$q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
+	$dbbt->query($q);
+	$dbbt->next_record();
+	$user = $dbbt->record;
+
 	/** Retrieve Payment Info **/
 	$dbpm = new ps_DB;
 	$q  = "SELECT * FROM `#__{vm}_payment_method`, `#__{vm}_order_payment`, `#__{vm}_orders` ";
@@ -77,9 +77,10 @@ if ($db->next_record()) {
      echo $vendor_name . "<br />";
      echo $vendor_address . "<br />";
      echo $vendor_city . ", ";
-     if (CAN_SELECT_STATES == '1')
-     echo $vendor_state . " ";
-        echo $vendor_zip; ?></p>
+     if (CAN_SELECT_STATES == '1') {
+     	echo $vendor_state . " ";
+     }
+     echo $vendor_zip; ?></p>
     </td>
     <td valign="top" width="10%" align="right"><?php echo $vendor_image; ?></td>
   </tr>
@@ -94,9 +95,9 @@ if ( $db->f("order_status") == "P" ) {
     <td width="100%" align="center">
     <?php 
     @include( CLASSPATH. "payment/".$dbpm->f("payment_class").".cfg.php" );
-	
+
     echo DEBUG ? vmCommonHTML::getInfoField('Beginning to parse the payment extra info code...' ) : '';
-    
+
     // Here's the place where the Payment Extra Form Code is included
     // Thanks to Steve for this solution (why make it complicated...?)
     if( eval('?>' . $dbpm->f("payment_extrainfo") . '<?php ') === false ) {
@@ -108,7 +109,7 @@ if ( $db->f("order_status") == "P" ) {
   </tr>
 </table>
 <?php
-$db = $db_temp;
+	$db = $db_temp;
 }
 
 /** END printing out HTML Form code (Payment Extra Info) **/
@@ -130,13 +131,13 @@ $db = $db_temp;
   <tr> 
     <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</td>
     <td><?php
-    $q = "SELECT order_status_name FROM #__{vm}_order_status WHERE ";
+    $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status WHERE ";
     $q .= "order_status_code = '" . $db->f("order_status") . "'";
     $dbos = new ps_DB;
     $dbos->query($q);
     $dbos->next_record();
     echo $dbos->f("order_status_name");
-         ?>
+    ?>
 
 </td>
   </tr>
@@ -371,6 +372,41 @@ $db = $db_temp;
   <tr class="sectiontableheader"> 
     <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_ITEM ?></th>
   </tr>
+    <!-- BEGIN HACK EUGENE -->
+  <tr>
+    <td colspan="4">
+<?php
+$dbdl = new ps_DB;
+/* Check if the order has been paid for */
+if ($dbos->f("order_status_code") == ENABLE_DOWNLOAD_STATUS && ENABLE_DOWNLOADS) {
+
+	$q = "SELECT `download_id` FROM #__{vm}_product_download WHERE";
+	$q .= " order_id = '" . $vars["order_id"] . "'";
+	$dbdl->query($q);
+
+	// $q = "SELECT * FROM #__{vm}_product_download WHERE order_id ='" . $db->f("order_id")
+	// $dbbt->query($q);
+
+
+	/* check if download records exist for this purchase order */
+	if ($dbdl->next_record()) {
+		echo "<b>Click on Product Name to Download File(s).</b><br /><br />";
+
+		echo($VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_3.DOWNLOAD_MAX.". <br />");
+
+		$expire = ((DOWNLOAD_EXPIRE / 60) / 60) / 24;
+		echo(str_replace("{expire}", $expire, $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_4));
+		
+		echo "<br /><br />";
+	}
+	else {
+		echo "<b>You have already downloaded the file(s) the maximum number of times, or the download period has expired.</b><br /><br />";
+	}
+}
+?>
+    </td>
+  </tr>
+  <!-- END HACK EUGENE -->
   <tr> 
     <td colspan="2"> 
       <table width="100%" cellspacing="0" cellpadding="2" border="0">
@@ -389,6 +425,19 @@ $db = $db_temp;
         $subtotal = 0;
         $dbi = new ps_DB;
         while ($dbcart->next_record()) {
+
+        	/* BEGIN HACK EUGENE */
+        	/*HACK SCOTT had to retest order status else unpaid were able to download*/
+        	if ($dbos->f("order_status_code") == ENABLE_DOWNLOAD_STATUS && ENABLE_DOWNLOADS) {
+        		/* search for download record that corresponds to this order item */
+        		$q = "SELECT `download_id` FROM #__{vm}_product_download WHERE";
+        		$q .= " `order_id`=" . intval($vars["order_id"]);
+        		$q .= " AND `product_id`=". intval($dbcart->f("product_id"));
+        		$dbdl->query($q);
+
+        	}
+        	/* END HACK EUGENE */
+
         	$product_id = null;
         	$dbi->query( "SELECT product_id FROM #__{vm}_product WHERE product_sku='".$dbcart->f("order_item_sku")."'");
         	$dbi->next_record();
@@ -397,22 +446,36 @@ $db = $db_temp;
         <tr align="left"> 
           <td><?php $dbcart->p("product_quantity"); ?></td>
           <td><?php 
-          if( !empty( $product_id ))
-          echo '<a href="'.$sess->url( $mm_action_url."index.php?page=shop.product_details&product_id=$product_id") .'" title="'.$dbcart->f("order_item_name").'">';
-          $dbcart->p("order_item_name");
-          echo " <div style=\"font-size:smaller;\">" . $dbcart->f("product_attribute") . "</div>";
-          if( !empty( $product_id ))
-          echo "</a>";
+              if ($dbdl->next_record()) {
+        			/* hyperlink downloadable order item */
+
+        			$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads";
+        			echo '<a href="'."$url&download_id=".$dbdl->f("download_id").'">';
+        			echo $dbcart->p("order_item_name");
+        			echo '</a>';
+				}
+        		else {
+		        	if( !empty( $product_id )) {
+		          		echo '<a href="'.$sess->url( $mm_action_url."index.php?page=shop.product_details&product_id=$product_id") .'" title="'.$dbcart->f("order_item_name").'">';
+		          	}
+		          	$dbcart->p("order_item_name");
+		          	echo " <div style=\"font-size:smaller;\">" . $dbcart->f("product_attribute") . "</div>";
+		          	if( !empty( $product_id )) {
+		          		echo "</a>";
+		          	}
+        		}
 		?>
           </td>
           <td><?php $dbcart->p("order_item_sku"); ?></td>
           <td><?php /*
 		$price = $ps_product->get_price($dbcart->f("product_id"));
 		$item_price = $price["product_price"]; */
-		if( $auth["show_price_including_tax"] )
-		$item_price = $dbcart->f("product_final_price");
-		else
-		$item_price = $dbcart->f("product_item_price");
+		if( $auth["show_price_including_tax"] ){
+			$item_price = $dbcart->f("product_final_price");
+		}
+		else {
+			$item_price = $dbcart->f("product_item_price");
+		}
 		echo $CURRENCY_DISPLAY->getFullValue($item_price);
 
            ?></td>
@@ -628,8 +691,8 @@ if( PAYMENT_DISCOUNT_BEFORE == '1') {
     }
 
 } /* End of security check */
-else { 
-    echo '<h4>'._LOGIN_TEXT .'</h4><br/>';
-    include(PAGEPATH.'checkout.login_form.php');
-    echo '<br/><br/>';
+else {
+	echo '<h4>'._LOGIN_TEXT .'</h4><br/>';
+	include(PAGEPATH.'checkout.login_form.php');
+	echo '<br/><br/>';
 } ?>

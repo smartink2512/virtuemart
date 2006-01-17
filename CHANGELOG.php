@@ -31,8 +31,23 @@ Legend:
 
 --------------------------------------------------------------------------------------------------------------
 
-VirtueMart 1.0.x
+VirtueMart 1.1.x
 *************************************
+16-01-2006 soeren
+# Task #443 — Registration not possible with .info domain
+# Task #418 — Can't assign multiple product types to a product
+# product list not showing all search options
+# Task 412 - no tax on attributes
+# Task 413 -  wrong price on details page when using quantity-based prices
+# Using recent Itemid instead of 1, when the Shop has no own Itemid
++ added Australia Post shipping module by Ben Wilson (ben@diversionware.com.au)
+# mosproductsnapshot Mambot wouldn't correctly display linked images
++ Download ID "hack" by Eugene, scott, joomlasolutions!
+	Customers can get their download IDs for downloading files
+	directly from the order details page (products are linked)
++ showing filesize for files which are listed on the product details page (by djlongy)
+
+
 11-01-2006 soeren
 + when Caching is on, cached pages are watermarked with a timestamp ("Last updated: Wednesday, 11 January 2006 16:31") like we know from eBay
 + FedEx shipping module integration begun

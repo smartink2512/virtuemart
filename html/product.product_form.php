@@ -26,6 +26,7 @@ if( is_array( $product_id ))
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$clone_product = mosGetParam( $_REQUEST, 'clone_product', "0" );
 
 $dl_checked = "";
 $curr_filename = "";
@@ -35,7 +36,7 @@ $related_products = Array();
 
 if ($product_parent_id) {
     if ($product_id) {
-        $action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL;
+    	$action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL;
     } 
     else {
         $action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL;
@@ -49,7 +50,12 @@ if ($product_parent_id) {
 else {
     $product_parent_id = '';
     if ($product_id = @$vars["product_id"]) {
-        $action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UPDATE_PRODUCT_LBL;
+    	if( $clone_product == '1') {
+    		$action = $VM_LANG->_PHPSHOP_PRODUCT_CLONE;
+    	}
+    	else {
+    		$action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL;
+    	}
     } 
     else {
         $action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL;
@@ -118,7 +124,6 @@ $shopper_db->next_record();
 $my_shopper_group_id = $shopper_db->f("shopper_group_id");
 
 // For cloning a product, we just need to empty the variable product_id
-$clone_product = mosGetParam( $_REQUEST, 'clone_product', "0" );
 if( $clone_product == "1" ) {
   $product_id = "";
 }

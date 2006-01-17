@@ -107,7 +107,8 @@ function mosProductSnapshotPlugin_onPrepareContent( $published, &$row, &$params,
       }
       
       $html .= "<tr><td align=\"center\"><a title=\"".$db->f("product_name")."\" href=\"". $sess->url(URL . $url)."\">";
-      $html .= "<img alt=\"".$db->f("product_name")."\" hspace=\"7\" src=\"".IMAGEURL."/product/".$db->f("product_thumb_image")."\" width=\"90\" border=\"0\" />";
+      $html .= $ps_product->image_tag( $db->f("product_thumb_image"), "alt=\"".$db->f("product_name")."\" hspace=\"7\"" );
+      
       $html .= "</a></td></tr>\n";
       
       if ($showdesc)

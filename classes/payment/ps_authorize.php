@@ -455,20 +455,20 @@ class ps_authorize {
 
 		global $vendor_mail, $vendor_currency, $VM_LANG, $vmLogger;
 		$database = new ps_DB();
-		/*
+
 		$host = "secure.authorize.net";
 		$port = 443;
 		$path = "/gateway/transact.dll";
-		CERTIFICATION
+		/*CERTIFICATION
 		Visa Test Account           4007000000027
 		Amex Test Account           370000000000002
 		Master Card Test Account    6011000000000012
 		Discover Test Account       5424000000000015
-		*/
+
 		$host = "certification.authorize.net";
 		$port = 443;
 		$path = "/gateway/transact.dll";
-
+		*/
 		if( empty($d['order_number'])) {
 			$vmLogger->err("Error: No Order Number provided.");
 			return false;
@@ -508,7 +508,7 @@ class ps_authorize {
 		$dbbt->next_record();
 		$user_info_id = $dbbt->f("user_info_id");
 		if( $user_info_id != $db->f("user_info_id")) {
-			// Get user billing information
+			// Get user's alternative shipping information
 			$dbst =& new ps_DB;
 			$qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$db->f("user_info_id")."' AND address_type='ST'";
 			$dbst->query($qt);

@@ -272,12 +272,17 @@ class ps_session {
 
 		if( empty( $_REQUEST['shopItemid'] )) {
 			$db = new ps_DB;
-			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published='1'");
+			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published=1");
 			if( $db->next_record() ) {
 				$_REQUEST['shopItemid'] = $db->f("id");
 			}
 			else {
-				$_REQUEST['shopItemid'] = 1;
+				if( !empty( $_REQUEST['Itemid'] )) {
+					$_REQUEST['shopItemid'] = $_REQUEST['Itemid'];
+				}
+				else {
+					$_REQUEST['shopItemid'] = 1;
+				}
 			}
 		}
 

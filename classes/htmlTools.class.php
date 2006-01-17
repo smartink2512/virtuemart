@@ -538,7 +538,7 @@ class vmCommonHTML extends mosHTML {
 		if( in_array( 'email', $required_fields)) {
 		
 			echo '
-			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email.value))) {
+			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
 				alert( \''. html_entity_decode( _REGWARN_MAIL ).'\');
 				return false;
 			}';

@@ -546,7 +546,7 @@ class ps_product_files {
 		$dbf->query( $sql );
 		$dbf->next_record();
 		$exclude_filename = $GLOBALS['vmInputFilter']->safeSQL( $dbf->f( "attribute_value" ) );
-		$sql = 'SELECT DISTINCT file_id, file_mimetype, file_title'
+		$sql = 'SELECT DISTINCT file_id, file_mimetype, file_title, file_name'
 			. ' FROM `#__{vm}_product_files` WHERE ';
 		if( $exclude_filename ) {
 			$sql .= ' file_title != \''.$exclude_filename.'\' AND ';
@@ -556,10 +556,17 @@ class ps_product_files {
 		$dbf->query();
 
 		while( $dbf->next_record() ) {
+			$filesize = @filesize($dbf->f("file_name")) / 1048000;
+			if( $filesize > 0.5) {
+				$filesize_display = ' ('. number_format( $filesize, 2,',','.')." MB)";
+			}
+			else {
+				$filesize_display = ' ('. number_format( $filesize*1024, 2,',','.')." KB)";
+			}
 			// Show pdf in a new Window, other file types will be offered as download
 			$target = stristr($dbf->f("file_mimetype"), "pdf") ? "_blank" : "_self";
 			$html .= "<a target=\"$target\" href=\"index.php?option=com_virtuemart&page=shop.getfile&file_id=".$dbf->f("file_id")."&product_id=$product_id\" title=\"".$dbf->f("file_title")."\">\n";
-			$html .= $dbf->f("file_title") . "</a><br/>\n";
+			$html .= $dbf->f("file_title") . $filesize_display. "</a><br/>\n" ;
 		}
 		return $html;
 	}

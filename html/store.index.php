@@ -108,7 +108,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		        if (defined( "_PSHOP_ADMIN" ) ) {
 				    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
 				    $image = IMAGEURL .'ps_image/shop_vendors.png';
-		            $text =  $VM_LANG->_PHPSHOP_VENDOR_MOD .' Manager';
+		            $text =  $VM_LANG->_PHPSHOP_VENDOR_MOD;
 				    $ps_html->writePanelIcon( $image, $link, $text );
 		        }
 		                
