@@ -1,8 +1,8 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.martlanguages.php,v 1.4 2005/10/15 15:26:14 soeren_nb Exp $
+* @version $Id: admin.martlanguages.php,v 1.5 2005/10/26 19:26:33 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -765,7 +765,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_DOWNLOADS_SEND_MSG_5 = 'Fragen? Probleme?';
 	var $_PHPSHOP_DOWNLOADS_SEND_MSG_6 = 'Download-Info von ';
 	var $_PHPSHOP_PRODUCT_FORM_DOWNLOADABLE = 'downloadbares Produkt?';
-	var $_PHPSHOP_PAYPAL_THANKYOU = 'Danke für Ihre Zahlung.
+	var $_PHPSHOP_PAYPAL_THANKYOU = 'Danke für Ihre Zahlung. 
         Ihre Transaktion wurde abgeschlossen und Sie erhalten per E-Mail eine Quittung für Ihren Kauf. 
         Sie können sich unter <a href=http://www.paypal.com>www.paypal.com</a> in Ihr Konto einloggen, um die Transaktionsdetails anzuzeigen.';
 	var $_PHPSHOP_PAYPAL_ERROR = 'Achtung, bei der Transaktion ist möglicherweise ein Fehler aufgetreten. Der Status der Bestellung
@@ -818,7 +818,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_STATISTIC_SUM = 'Summe';
 	var $_PHPSHOP_STATISTIC_NEW_ORDERS = 'Neue Bestellungen';
 	var $_PHPSHOP_STATISTIC_NEW_CUSTOMERS = 'Neue Kunden';
-	var $_PHPSHOP_WAITING_LIST_MESSAGE = 'Bitte tragen Sie Ihre email-Adresse ein, um benachrichtigt zu werden, wenn das Produkt wieder verfügbar ist.
+	var $_PHPSHOP_WAITING_LIST_MESSAGE = 'Bitte tragen Sie Ihre email-Adresse ein, um benachrichtigt zu werden, wenn das Produkt wieder verfügbar ist. 
                                                                         Wir werden Ihre email-Adresse ausschließlich zum Zwecke der Benachrichtigung verwenden.
                                                                         <br /><br />Vielen Dank!';
 	var $_PHPSHOP_WAITING_LIST_THANKS = 'Vielen Dank! <br />Wir werden Sie benachrichtigen, sobald das Produkt wieder verfügbar ist.';
@@ -860,7 +860,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN = 'Falls aktiviert, besteht für Kunden die Möglichkeit, ihre Daten zur Bankverbindung zu hinterlassen.
                                                                                       Erforderlich bei der Nutzung von Zahlungsarten wie Bankeinzug o.ä.';
 	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE = 'Die Eingabe/Auswahl von Bundesländern ermöglichem?';
-	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = 'Falls aktiviert, können Kunden bei der Registrierung aus einer Auswahlliste Bundesländer auswählen.
+	var $_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN = 'Falls aktiviert, können Kunden bei der Registrierung aus einer Auswahlliste Bundesländer auswählen. 
                                                                                   (standardmäßig sind nur Bundesländer der USA vorgegeben. Die Liste von Bundesländern kann in der Datei ps_html.php geändert werden.)';
 	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS = 'Zustimmung zu Geschäftsbedingungen erforderlich?';
 	var $_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN = 'Falls aktiviert, können sich Kunden nur im Shop registrieren, wenn Sie vorher den Geschäftsbedingungen zustimmen.';
@@ -877,7 +877,7 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                         <ul><li>als a einfache Text-email</li>
                                                                                         <li>oder als eine formatierte HTML-email mit Bildern.</li></ul>';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Frontend-Administration für nicht-Backend Nutzer erlauben?';
-	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'Mit dieser Einstellung kann es nicht-Backend-Nutzern (mit storeadmin oder admin Rechten) ermöglicht werden,
+	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'Mit dieser Einstellung kann es nicht-Backend-Nutzern (mit storeadmin oder admin Rechten) ermöglicht werden, 
                                                                                               die Frontend Administration zu nutzen (z.B. für registrierte Nutzer / Autoren).';
 	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
 	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'Die Web-Adresse zur Seite. Normalerweise identisch mit der Mambo URL (mit einem Schrägstrich am Ende!)';
@@ -948,7 +948,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = 'Sicherheits-Schlüsselwort';
 	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = 'Wird genutzt, um Daten in der Datenbank verschlüsselt zu hinterlegen. Diese Datei sollte daher nicht von Unauthorisierten eingesehen werden können.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = 'Bestellbegleitende Übersicht aktivieren?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Falls aktiviert, wird dem Kunden während der verschiedenen Schritte der Bestellung jederzeit visuell signalisiert,
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Falls aktiviert, wird dem Kunden während der verschiedenen Schritte der Bestellung jederzeit visuell signalisiert, 
                                                                                                         an welcher Stelle er/sie sich gerade befindet ( 1 - 2 - 3 - 4 mit Graphiken).';
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'Bestellprozess auswählen';
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = '<strong>Standard :</strong><br/>
@@ -979,14 +979,14 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = 'Download-Maximum';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Gibt die Anzahl von Dowloads an, die mit einer Download-ID durchgeführt werden können.';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Download-Zeitspanne';
-	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = 'Gibt die Zeitspanne <strong>in Sekunden</strong> an, in der der Kunde den Download durchführen kann.
+	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN = 'Gibt die Zeitspanne <strong>in Sekunden</strong> an, in der der Kunde den Download durchführen kann. 
   Die Zeitspanne läuft ab dem ersten Download. Ist diese abgelaufen, wird die Download-ID deaktiviert.<br />Hinweis : 86400s=24h, 432000=5d.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL = 'IPN (Sofortige Zahlungsbestätigung - PayPal) nutzen?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PAYPAL_EXPLAIN = 'Falls aktiviert, können Kunden die Zahlung über einen kostenlosen PayPal Account abwickeln.';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL = 'PayPal Email:';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN = 'Die email adresse für PayPal Zahlungen. Ihre Empfänger-Email-Adresse.';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS = 'Bestellstatus for erfolgreiche Transaktionen';
-	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = 'Wählen Sie den Bestellstatus aus, auf den die Bestellung gesetzt wird, wenn die Zahlunge über PayPal erfolgreich war.
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN = 'Wählen Sie den Bestellstatus aus, auf den die Bestellung gesetzt wird, wenn die Zahlunge über PayPal erfolgreich war. 
                                                                                                             Falls Sie das Download-Feature aktiviert haben, wählen Sie den Status aus, bei dem der Download aktiviert wird und der Kunde
                                                                                                             die Download-ID mitgeteilt bekommt.';
 	var $_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED = 'Bestellstatus für fehlgeschlagene Transaktionen';
@@ -1025,7 +1025,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_SEARCH_DESCRIPTION = 'nur nach Produktbeschreibung';
 	var $_PHPSHOP_SEARCH_AND = 'und';
 	var $_PHPSHOP_SEARCH_NOT = 'nicht';
-	var $_PHPSHOP_SEARCH_TEXT1 = 'Die erste Auswahlliste lässt Sie eine Kategorie wählen, in der Sie ausschließlich suchen wollen.
+	var $_PHPSHOP_SEARCH_TEXT1 = 'Die erste Auswahlliste lässt Sie eine Kategorie wählen, in der Sie ausschließlich suchen wollen. 
         In der zweiten Auswahlliste können Sie angeben, nach welcher Art von Produktdetails Sie suchen wollen.';
 	var $_PHPSHOP_SEARCH_TEXT2 = 'Sie können die Suche durch Angabe eines zweiten Suchwortes verfeinern.
     Durch Auswahl von UND oder NICHT bestimmen Sie, ob das zweite Suchwort in den Produktdetails vorkommen muss,
@@ -1175,7 +1175,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_FREE_SHIPPING = 'Versandkostenfrei';
 	var $_PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT = 'Diese Bestellung ist versandkostenfrei!';
 	var $_PHPSHOP_FREE_SHIPPING_AMOUNT = 'Mindestbetrag für Wegfall der Versandkosten';
-	var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = 'Dieser Betrag (inkl. MwSt.!) gibt an, ab wann die Versandkosten komplett wegfallen
+	var $_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP = 'Dieser Betrag (inkl. MwSt.!) gibt an, ab wann die Versandkosten komplett wegfallen 
                                                 (Beispiel: <strong>50</strong> bedeutet versandkostenfreue Bestellung ab einem Bestellwert
                                                 von 50€ (inkl. MwSt.)';
 	var $_PHPSHOP_YOUR_STORE = 'Ihr Shop';
@@ -1398,7 +1398,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP = 'Soll die Anzahl von Produkte innerhalb einer Kategorie angezeigt werden? Beispiel: Gartengeräte (4)';
 	var $_PHPSHOP_ADMIN_CFG_ADDTOCART_STYLE = 'Stil der "Bestellen" Buttos';
 	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING = 'Dynamisches Verkleinern von Produktbildern aktivieren?';
-	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Falls aktiviert, werden Produktbilder automatisch auf die unten angebenen Maße verkleinert.
+	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Falls aktiviert, werden Produktbilder automatisch auf die unten angebenen Maße verkleinert. 
 Hierzu wird zwingend die GD1 / GD2 Bibliothek benötigt. Das Vorhandensein der GD2 Unterstützung kann unter "System" -> "System Info" -> "PHP Info" -> gd angezeigt werden. 
 Die Qualität der erzeugten Bilder ist viel besser, als wenn die Bilder vom Browser des Kunden verkleinert dargestellt würden. Die verkleinerten Bilder sind im Verzeichnis /shop_image/prduct/resized/ zu finden. Falls das Bild bereits verkleinert wurde, wird immer wieder die vorhandene Kopie genutzt.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH = 'Breite des verkleinerten Bildes';
@@ -1475,7 +1475,7 @@ default: ps_payment<br />
 	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
 	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';
 	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>';
-	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction.
+	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction. 
 The transaction was not cancelled in this case, but it is just pending and waiting for completion.';
 	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Order Status for Pending Payments';
 	var $_VM_SHIPPING_MODULE_LIST_LBL = 'Shipping Module List';
@@ -1510,15 +1510,24 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_FEDEX_URI = 'FedEx Server Address';
 	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
 <br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
-	var $_VM_ORDER_EXPORT = 'Bestellexport';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'Bestellexport Module auflisten';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Bestellexport Modulliste';
+	var $_VM_ORDER_EXPORT = 'Order Export';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'List Order Export Modules';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Order Export Module List';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_NAME = 'Name';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_DESC = 'Beschreibung';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Neues Bestellexport Modul';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Bestellexport Modul-Formular';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name des Export Moduls';
-
+	var $_VM_ORDER_EXPORT_MODULE_LIST_DESC = 'Description';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Add Order Export Module';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Order Export Module Form';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name of Export Module';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_DESC = 'Description';
+	var $_VM_ORDER_EXPORT_CLASS_NAME = 'Export Module Class Name';
+	var $_VM_ORDER_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_olsi</strong>) :<br />
+default: ps_xmlexport<br />
+<i>Leave blank if you\'re not sure what to fill in!</i>';
+	var $_VM_ORDER_EXPORT_CONFIG = 'Order Export configuration';
+	var $_VM_ORDER_EXPORT_CONFIG_TIP = 'Here you can configure your order export.
+It has to be valid PHP Code!
+';
+        
 }
 class phpShopLanguage extends vmLanguage { }
 
