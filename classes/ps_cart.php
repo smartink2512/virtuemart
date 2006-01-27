@@ -165,8 +165,7 @@ class ps_cart {
 		/* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
 		if( !empty( $_SESSION['coupon_discount'] )) {
 			// Update the Coupon Discount !!
-			require_once( CLASSPATH . "ps_coupon.php" );
-			ps_coupon::process_coupon_code( $d );
+			$_POST['do_coupon'] = 'yes';
 		}
 
 		$cart = $_SESSION['cart'];

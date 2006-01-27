@@ -33,9 +33,19 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27-01-2006 soeren
+
+^ FedEx: basic implementation of FedEx' service "Rate available Services" finished
+	You can now use FedEx to fetch and list available shipping rates
+
+19-01-2006 soeren
+# Deleting a product didn't delete the product <-> product type relationship,
+	so you couldn't delete the product type
+
 16-01-2006 soeren
 # Task #443 — Registration not possible with .info domain
 # Task #418 — Can't assign multiple product types to a product
+# Task #417 — Changing status to 'C' for auth net settle del. trans ID!
 # product list not showing all search options
 # Task 412 - no tax on attributes
 # Task 413 -  wrong price on details page when using quantity-based prices

@@ -207,7 +207,7 @@ if ($product_parent_id != 0) {
 
   /* Wrap the Image into an URL when applicable */
   if ( $db_product->f("product_url") ) { 
-    $product_image = "<a href=\"". $db_product->f("product_url")."\" title=\"".$product_name."\">";
+    $product_image = "<a href=\"". $db_product->f("product_url")."\" title=\"".$product_name."\" target=\"_blank\">";
     $product_image .= $ps_product->image_tag($full_image, "alt=\"".$product_name."\"", 0);
     $product_image .= "</a>";
   }

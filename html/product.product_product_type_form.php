@@ -59,8 +59,10 @@ $formObj->startForm();
 	$db->query( $q );
               
 	$q  = "SELECT product_type_id, product_type_name, product_type_list_order ";
-	$q .= "FROM `#__{vm}_product_type` WHERE ";
+	$q .= "FROM `#__{vm}_product_type` ";
+	$first = true;
 	while( $db->next_record() ) {
+		if( $first ) { $q = " WHERE "; $first = false; }
 		$q .= "product_type_id != '".$db->f("product_type_id")."' ";
 		if (!$db->is_last_record() ) { $q .= "AND "; }
 	}

@@ -875,6 +875,10 @@ class ps_product extends vmAbstractObject {
 		$q  = "DELETE FROM #__{vm}_product_relations WHERE product_id = '$product_id'";
 		$db->setQuery($q); $db->query();
 
+		/* Delete Product - ProductType Relations */
+		$q  = "DELETE FROM `#__{vm}_product_product_type_xref` WHERE `product_id`=$product_id";
+		$db->setQuery($q); $db->query();
+		
 		/* Delete Prices */
 		$q  = "DELETE FROM #__{vm}_product_price WHERE product_id = '$product_id'";
 		$db->setQuery($q); $db->query();

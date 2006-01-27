@@ -142,7 +142,7 @@ else {
 	$total = $total_undiscounted = round($total, 2);
 	$subtotal_display = $CURRENCY_DISPLAY->getFullValue($total);
 
-	if (!empty($_POST["do_coupon"])) {
+	if (!empty($_POST["do_coupon"]) || (($func == 'cartadd' || $func == 'cartupdate') && !empty($_SESSION['coupon_discount'])) ) {
 		/* process the coupon */
 
 		/* make sure they arent trying to run it twice */
