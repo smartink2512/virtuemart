@@ -41,7 +41,10 @@ class fedex {
 		
 		// The meter number is needed for all services except tracking
 		if( FEDEX_METER_NUMBER=='') {
-			$this->update_meter_number();
+			if( !$this->update_meter_number() ) {
+				$vmLogger->err( 'Error updating the Meter Number.');
+				return false;
+			}
 		}
 		
 		$q  = "SELECT * FROM #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
@@ -52,7 +55,7 @@ class fedex {
 		$dbv->query($q);
 		$dbv->next_record();
 
-		$order_weight = (float)$d['weight'];		
+		$order_weight = number_format( (float)$d['weight'], 1, '.', '' );
 		
 		// config values
 		$fed_conf = array();
@@ -86,6 +89,7 @@ class fedex {
 		
 		if ($error = $fed->getError()) {
 		    $vmLogger->err( $error );
+
 		   	// Switch to StandardShipping on Error !!!
 			require_once( CLASSPATH . 'shipping/standard_shipping.php' );
 			$shipping =& new standard_shipping();
@@ -104,8 +108,8 @@ class fedex {
 		        echo "SURCHARGE : ".$rate_Ret['1417-'.$i]."\n";
 		        echo "DISCOUNT : ".$rate_Ret['1418-'.$i]."\n";
 		        echo "NET CHARGE : ".$rate_Ret['1419-'.$i]."\n";
-		        echo "DELIVERY DAY : ".$rate_Ret['194-'.$i]."\n";
-		        echo "DELIVERY DATE : ".$rate_Ret['409-'.$i]."\n\n";
+		        echo "DELIVERY DAY : ".@$rate_Ret['194-'.$i]."\n";
+		        echo "DELIVERY DATE : ".@$rate_Ret['409-'.$i]."\n\n";
 		    }
 		    echo "</pre>";
 		}
@@ -118,23 +122,25 @@ class fedex {
 		$html = '';
 		// Loop through all rates
 		for ($i=1; $i<=$rate_Ret[1133]; $i++) {
-			$charge = $rate_Ret['1417-'.$i] + floatval( FEDEX_HANDLING_FEE );
+			$charge = $rate_Ret['1417-'.$i] + floatval( FEDEX_HANDLINGFEE );
 			$charge *= $taxrate;
 			$surcharge = $CURRENCY_DISPLAY->getFullValue($charge);
 			
 			$shipping_rate_id = urlencode($this->classname."|FedEx|".$fed->service_type($rate_Ret['1274-'.$i])."|".$charge);
 			
-			$checked = (@$d["shipping_rate_id"] == $value) ? "checked=\"checked\"" : "";
+			$checked = (@$d["shipping_rate_id"] == $shipping_rate_id) ? "checked=\"checked\"" : "";
 			
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" />\n";
+			$html .= "\n<input type=\"radio\" id=\"$shipping_rate_id\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" />\n";
 			  
 			$_SESSION[$shipping_rate_id] = 1;
 			  
-			$html .= $fed->service_type($rate_Ret['1274-'.$i])." ";
+			$html .= "<label for=\"$shipping_rate_id\">".$fed->service_type($rate_Ret['1274-'.$i])." ";
 			$html .= "<strong>(".$surcharge.")</strong>";
-			$html .= ", expected delivery: ".$rate_Ret['194-'.$i].', '.$rate_Ret['409-'.$i];
+			if( !empty( $rate_Ret['194-'.$i] ) && !empty($rate_Ret['409-'.$i])) {
+				$html .= ", expected delivery: ".$rate_Ret['194-'.$i].', '.$rate_Ret['409-'.$i];
+			}
 
-			$html .= "<br />";
+			$html .= "</label><br />";
 		}
 		echo $html;
 		return true;
@@ -295,23 +301,29 @@ class fedex {
    
 	function update_meter_number() {
 		global $vendor_name,$vendor_address,$vendor_city,$vendor_state,$vendor_zip,
-			$vendor_country_2_code;
+			$vendor_country_2_code, $vendor_phone, $vmLogger;
+			
 		$fed = new FedExDC( FEDEX_ACCOUNT_NUMBER );
-
+		$db = new ps_DB();
+		$db->query( ('SELECT `contact_first_name`, `contact_last_name` FROM `#__{vm}_vendor` WHERE `vendor_id` ='.intval($_SESSION['ps_vendor_id'])));
+		$db->next_record();
 	    $aRet = $fed->subscribe(
 	    array(
 	        1 => uniqid( 'vmFed_' ), // Don't really need this but can be used for ref
-	        4003 => $vendor_name,
+	        4003 => $db->f('contact_first_name').' '.$db->f('contact_last_name'),
 	        4008 => $vendor_address,
 	        4011 => $vendor_city,
 	        4012 => $vendor_state,
 	        4013 => $vendor_zip,
 	        4014 => $vendor_country_2_code,
-	        4015 => FEDEX_ACCOUNT_NUMBER
+	        4015 => $vendor_phone
 	    ));
-	    
+	    if ($error = $fed->getError() ) {
+		    $vmLogger->err( $error );
+		    return false;
+	    }
 	    $meter_number = $aRet[498];
-	    
+
 	    $d['FEDEX_ACCOUNT_NUMBER'] = FEDEX_ACCOUNT_NUMBER;
 	   	$d['FEDEX_METER_NUMBER'] = $meter_number;
 		$d['FEDEX_URI'] = FEDEX_URI;
@@ -321,6 +333,8 @@ class fedex {
 		$this->write_configuration( $d );
 		
 		define( 'FEDEX_METER_NUMBER_TEMP', $meter_number );
+		
+		return true;
 	}
 }
 

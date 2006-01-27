@@ -372,7 +372,7 @@ class FedExDC extends FedExTags{
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
 		// When you need to communicate through a proxy:
-		curl_setopt( $ch, CURLOPT_PROXY, 'http://10.42.74.16:8080');
+		//curl_setopt( $ch, CURLOPT_PROXY, 'http://proxyURL:8080');
 		
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 			'User-Agent: '. $this->NAME .'-'. $this->VERSION . ' class ( http://vermonster.com/ )'

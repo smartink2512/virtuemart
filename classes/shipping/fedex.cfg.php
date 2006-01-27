@@ -15,9 +15,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-define('FEDEX_URI', 'https://gatewaybeta.fedex.com/GatewayDC' );
-define('FEDEX_ACCOUNT_NUMBER', '289176063' );
-define('FEDEX_METER_NUMBER', '1041490'); 
+//define('FEDEX_URI', 'https://gatewaybeta.fedex.com/GatewayDC' );
+define('FEDEX_URI', '' );
+define('FEDEX_ACCOUNT_NUMBER', 'xxxxxxxxxxx' );
+define('FEDEX_METER_NUMBER', ''); 
 define( 'FEDEX_TAX_CLASS', 0);
 define( 'FEDEX_HANDLINGFEE', 0);
 
