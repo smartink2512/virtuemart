@@ -285,6 +285,11 @@ class vmAbstractObject {
 				$table_name = "#__{vm}_payment_method";
 				$publish_field_name = 'payment_enabled';
 				$field_name = 'payment_method_id';
+		}	
+		elseif( !empty( $d['order_export_id'])) {
+				$table_name = "#__{vm}_order_export";
+				$publish_field_name = 'export_enabled';
+				$field_name = 'order_export_id';
 		}		
 		elseif( !empty( $d['fieldid'])) {
 				$table_name = "#__{vm}_userfield";
