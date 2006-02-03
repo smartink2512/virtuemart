@@ -1510,20 +1510,20 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_FEDEX_URI = 'FedEx Server Address';
 	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
 <br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
-	var $_VM_ORDER_EXPORT = 'Order Export';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'List Order Export Modules';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Order Export Module List';
+	var $_VM_ORDER_EXPORT = 'Bestell Export';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'Bestell Export Module auflisten';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Bestell Export Module auflisten';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_NAME = 'Name';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_DESC = 'Description';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Add Order Export Module';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Order Export Module Form';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name of Export Module';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_DESC = 'Description';
-	var $_VM_ORDER_EXPORT_CLASS_NAME = 'Export Module Class Name';
-	var $_VM_ORDER_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_olsi</strong>) :<br />
-default: ps_xmlexport<br />
-<i>Leave blank if you\'re not sure what to fill in!</i>';
-	var $_VM_ORDER_EXPORT_CONFIG = 'Order Export configuration';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_DESC = 'Beschreibung';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Neu: Bestell Export Modul';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Bestell Export Modul Formular';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name des Export Moduls';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_DESC = 'Beschreibung';
+	var $_VM_ORDER_EXPORT_CLASS_NAME = 'Export Modul Klassen Name';
+	var $_VM_ORDER_EXPORT_CLASS_NAME_TIP = '(z.B. <strong>ps_olsi</strong>) :<br />
+standard: ps_xmlexport<br />
+<i>Leer lassen, wenn Sie sich nicht sicher sind was Sie eingeben sollen!</i>';
+	var $_VM_ORDER_EXPORT_CONFIG = 'Bestell Export Konfiguration';
 	var $_VM_ORDER_EXPORT_CONFIG_TIP = 'Here you can configure your order export.
 It has to be valid PHP Code!
 ';
