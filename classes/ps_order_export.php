@@ -20,11 +20,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_order_export {
 	var $classname = 'ps_order_export';
 
-	/*
-	** VALIDATION FUNCTIONS
-	**
+	/**
+	* validate order export module add
+	* @param array
+	* @return bool
+	* @author Manfred Dennerlein Rodelo <manni@zapto.de>
 	*/
-
 	function validate_add(&$d) {
 
 		$db = new ps_DB;
@@ -36,14 +37,19 @@ class ps_order_export {
 		if (empty($d['export_enabled'])) {
 			$d['export_enabled'] = 'N';
 		}
-		
+
 		$d['order_export_config'] = mosGetParam( $_POST, 'order_export_config', '', _MOS_ALLOWHTML );
 		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
 			$d['order_export_config'] = addslashes( $d['order_export_config'] );
 		}
 		return True;
 	}
-
+	/**
+	* validate order export module deletion
+	* @param array
+	* @return bool
+	* @author Manfred Dennerlein Rodelo <manni@zapto.de>
+	*/
 	function validate_delete($d) {
 
 		if (!$d['order_export_id']) {
@@ -55,6 +61,12 @@ class ps_order_export {
 		}
 	}
 
+	/**
+	* validate order export module update
+	* @param array
+	* @return bool
+	* @author Manfred Dennerlein Rodelo <manni@zapto.de>
+	*/
 	function validate_update(&$d) {
 		$db = new ps_DB;
 
@@ -66,7 +78,7 @@ class ps_order_export {
 			$d['error'] = 'ERROR:  You must enter a name for the order export module.';
 			return False;
 		}
-		
+
 		$d['order_export_config'] = mosGetParam( $_POST, 'order_export_config', '', _MOS_ALLOWHTML );
 		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
 			$d['order_export_config'] = addslashes( $d['order_export_config'] );
@@ -77,8 +89,8 @@ class ps_order_export {
 
 	/**
 	* Add an export module
-	* @param 
-	* @return
+	* @param array
+	* @return bool
 	* @author Manfred Dennerlein Rodelo <manni@zapto.de>
 	*/
 	function add(&$d) {
@@ -105,13 +117,12 @@ class ps_order_export {
 
 	}
 
-	/**************************************************************************
-	* name: update()
-	* created by: pablo
-	* description: updates function information
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	* update export module
+	* @param array
+	* @return bool
+	* @author Manfred Dennerlein
+	*/
 	function update(&$d) {
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
@@ -122,9 +133,9 @@ class ps_order_export {
 		}
 		$q = 'UPDATE #__{vm}_order_export SET ';
 		if(!$d['iscore']) {
-		$q .= "order_export_name='" . $d['order_export_name'];
-		$q .= "',order_export_desc='" . $d['order_export_desc'];
-		$q .= "',order_export_class='" . $d['order_export_class'];
+			$q .= "order_export_name='" . $d['order_export_name'];
+			$q .= "',order_export_desc='" . $d['order_export_desc'];
+			$q .= "',order_export_class='" . $d['order_export_class'];
 		}
 		$q .= "',order_export_config='" . $d['order_export_config'];
 		$q .= "',export_enabled='" . $d['export_enabled'];
@@ -135,8 +146,12 @@ class ps_order_export {
 		return True;
 	}
 
+
 	/**
 	* Controller for Deleting Records.
+	* @param array
+	* @return bool
+	* @author Manfred Dennerlein
 	*/
 	function delete(&$d) {
 
@@ -156,8 +171,12 @@ class ps_order_export {
 			return $this->delete_record( $record_id, $d );
 		}
 	}
+	
 	/**
-	* Deletes one Record.
+	* delete order export module update
+	* @param array
+	* @return bool
+	* @author Manfred Dennerlein Rodelo <manni@zapto.de>
 	*/
 	function delete_record( $record_id, &$d ) {
 		global $db;
