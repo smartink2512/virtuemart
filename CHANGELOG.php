@@ -33,6 +33,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03-02-2006 mdennerlein
+# fixed bug in vmCommonHTML::getYesNoIcon which always returned published icon
+
 27-01-2006 soeren
 
 ^ FedEx: basic implementation of FedEx' service "Rate available Services" finished
