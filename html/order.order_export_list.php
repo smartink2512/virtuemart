@@ -92,7 +92,7 @@ while ($db->next_record()) {
 	$tmpcell .= "</a>";
 	$listObj->addCell( $tmpcell );
 
-	$listObj->addCell( $ps_html->deleteButton( "order_export_id", $db->f("order_export_id"), "paymentMethodDelete", $keyword, $limitstart ) );
+	$listObj->addCell( $ps_html->deleteButton( "order_export_id", $db->f("order_export_id"), "orderExportDelete", $keyword, $limitstart ) );
 
 	$i++;
 }
