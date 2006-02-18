@@ -33,13 +33,49 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17-02-2006 soeren
+
+# When price field left empty and product had no price, a price record (0) was added.
+# Task #456 — Foreign adress give error on checkout
+	If you leave the ZIP start or end fields empty, automatically "00000" or "99999"
+	is inserted. This was a trap for many users.
+# Task #515 — Problem with Authorize.net after upgrade
+# Task #519 — Fatal error when adding a manufacturer
+# linkpoint class using wrong user information query (ps_linkpoint.php)
+# order list query error
++ order and user list can be filtered by full name now 
+	(before it was possible to search for the first name OR the last name, not both at the same time)
+	
+14-02-2006 soeren
+# Task #480 — Various Errors (one fatal) in vm_dtree.php
+# Task #514 — add to cart URL does not always work
+# Task #509 — Deleting manufacturer bug
+# Task #495 — Related products list doesn't update with new products: 
+	now displaying 2000 related products instead of 1000.
+# Task #455 — Silent user registration not working ($mosConfig_useractivation issue)
+# Task #474 — Changing default flypage is broken
+# Task #473 — Free Shipping broken: SQL statement in global.php 
+# Task #471 — The script sleight.js isn't loaded when SEF URLs is on
+# Task #468 — wrong variable in standard_shipping.php
+
+08-02-2006 soeren
+# Task #486 — HTTPS Error In Virtuemart.cfg.php (not every server uses port 443 for secure connections)
+	changed ** $_SERVER['SERVER_PORT] == 443 ** to ** @$_SERVER['HTTPS'] == 'on' **
+# authorize.net: Strip off quotes from the first response field to be sure the correct response is received
+
 03-02-2006 mdennerlein
 # fixed bug in vmCommonHTML::getYesNoIcon which always returned published icon
 
+28-01-2006 soeren
+# Shoppers / Users couldn't be deleted.
+
 27-01-2006 soeren
 
++ order list at user form! (Thanks to Qazazz! http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=14001.msg26715#msg26715)
 ^ FedEx: basic implementation of FedEx' service "Rate available Services" finished
 	You can now use FedEx to fetch and list available shipping rates
+	
+[---- VirtueMart 1.0.2 released ----]
 
 19-01-2006 soeren
 # Deleting a product didn't delete the product <-> product type relationship,

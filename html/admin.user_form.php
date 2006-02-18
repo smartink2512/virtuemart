@@ -128,7 +128,7 @@ if( $db->f("user_id") ) {
          <?php 
 }
 
-$tabs->endPane();
+$tabs->endTab();
 $tabs->startTab( $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL, "billto-page");
 
 
@@ -140,6 +140,86 @@ $skipFields = array('username', 'email', 'password', 'password2', 'agreed');
 echo '<table class="adminform"><tr><td>';
 ps_userfield::listUserFields( $userFields, $skipFields, $db );
 echo '</td></tr></table>';
+
+$tabs->endTab();
+$tabs->startTab( $VM_LANG->_PHPSHOP_ORDER_LIST_LBL, "order-list");
+?>
+
+<h3><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_LBL ?> </h3>
+
+<?php
+require_once( CLASSPATH . "pageNavigation.class.php" );
+require_once( CLASSPATH . "htmlTools.class.php" );
+require_once(CLASSPATH.'ps_order_status.php');
+$ps_order_status = new ps_order_status;
+
+$q = "";
+$list  = "SELECT * FROM #__{vm}_orders ";
+$count = "SELECT count(*) as num_rows FROM #__{vm}_orders ";
+$q .= "WHERE  #__{vm}_orders.vendor_id='".$_SESSION['ps_vendor_id']."' AND #__{vm}_orders.user_id=".$user_id." ";
+$q .= "ORDER BY #__{vm}_orders.cdate DESC ";
+$count .= $q;
+
+$db->query($count);
+$db->next_record();
+$num_rows = $db->f("num_rows");
+
+// Create the Page Navigation
+$pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
+
+// Create the List Object with page navigation
+$listObj = new listFactory( $pageNav );
+
+$listObj->startTable();
+
+// these are the columns in the table
+$columns = Array(  "#" => "width=\"20\"", 
+					$VM_LANG->_PHPSHOP_ORDER_LIST_ID => '',
+					$VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_CDATE => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
+					$VM_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
+					_E_REMOVE => "width=\"5%\""
+				);
+$listObj->writeTableHeader( $columns );
+
+$db->query($list);
+$i = 0;
+while ($db->next_record()) { 
+    
+	$listObj->newRow();
+	
+	// The row number
+	$listObj->addCell( $pageNav->rowNumber( $i ) );
+	
+	$url = $_SERVER['PHP_SELF']."?page=order.order_print&limitstart=$limitstart&keyword=$keyword&order_id=". $db->f("order_id");
+	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">".sprintf("%08d", $db->f("order_id"))."</a><br />";
+	$listObj->addCell( $tmp_cell );
+	
+	$details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1");
+    $details_url = stristr( $_SERVER['PHP_SELF'], "index2.php" ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
+	
+    $details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
+    $details_link .= "<img src=\"$mosConfig_live_site/images/M_images/printButton.png\" align=\"center\" height=\"16\" width=\"16\" border=\"0\" /></a>"; 
+    $listObj->addCell( $details_link );
+
+	$listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("cdate")));
+    $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("mdate")));
+
+	$listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
+	
+	$listObj->addCell(  $ps_order_status->getOrderStatusName($db->f("order_status")));
+	
+    
+	$listObj->addCell( $ps_html->deleteButton( "order_id", $db->f("order_id"), "orderDelete", $keyword, $limitstart ) );
+
+	$i++; 
+}
+
+$listObj->writeTable();
+
+$listObj->endTable();
 
 $tabs->endTab();
 $tabs->endPane();

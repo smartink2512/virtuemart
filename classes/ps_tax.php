@@ -29,7 +29,7 @@ class ps_tax {
 		global $vmLogger;
 		$valid = true;
 		$db = new ps_DB;
-		if( TAX_MODE != '1' ) {
+		if( TAX_MODE != '1' && $d['tax_state'] != ' - ' ) {
 			$q = "SELECT tax_rate_id from #__{vm}_tax_rate WHERE tax_state='" . $d["tax_state"] . "'";
 			$db->query($q);
 			if ($db->next_record()) {

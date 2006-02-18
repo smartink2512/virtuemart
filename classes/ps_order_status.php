@@ -174,6 +174,14 @@ class ps_order_status {
 		
 		return $html;
 	}
-
+	
+	function getOrderStatusName( $order_status_code ) {
+		$db = new ps_DB;
+		
+		$q = "SELECT order_status_id, order_status_name FROM #__{vm}_order_status WHERE `order_status_code`='".$order_status_code."'";
+		$db->query($q);
+		$db->next_record();
+		return $db->f("order_status_name");
+	}
 }
 ?>

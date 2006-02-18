@@ -49,19 +49,16 @@ if ($_POST) {
         else
             die( "Joomla Configuration File not found!" );
 			
-        if( file_exists ($mosConfig_absolute_path. '/includes/database.php'))
-            require_once($mosConfig_absolute_path. '/includes/database.php');
-        else   
-            require_once($mosConfig_absolute_path. '/classes/database.php');
-            
-        
+        require_once($mosConfig_absolute_path. '/includes/database.php');
         $database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
         
         // load Joomla Language File
-        if (file_exists( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' ))
-          require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
-        else
-          require_once( $mosConfig_absolute_path. '/language/english.php' );
+        if (file_exists( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' )) {
+        	require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
+        }
+        else {
+        	require_once( $mosConfig_absolute_path. '/language/english.php' );
+        }
     /*** END of Joomla config ***/
     
     
@@ -87,10 +84,12 @@ if ($_POST) {
         /* Load the VirtueMart database class */
         require_once( CLASSPATH. 'ps_database.php' );
         
-		if( PAYPAL_DEBUG == "1" )
+		if( PAYPAL_DEBUG == "1" ) {
 			$debug_email_address = $mosConfig_mailfrom;
-		else
+		}
+		else {
 			$debug_email_address = PAYPAL_EMAIL;
+		}
 			
     /*** END VirtueMart part ***/
     
@@ -140,6 +139,8 @@ if ($_POST) {
     $payer_email = trim(stripslashes($_POST['payer_email']));
     $payment_date = trim(stripslashes($_POST['payment_date']));
     $invoice =  trim(stripslashes($_POST['invoice']));
+    $amount =  trim(stripslashes($_POST['amount']));
+    $currency_code =  trim(stripslashes($_POST['currency_code']));
     $quantity = trim(stripslashes($_POST['quantity']));
     $pending_reason = trim(stripslashes($_POST['pending_reason']));
     $payment_method = trim(stripslashes($_POST['payment_method']));
@@ -283,8 +284,11 @@ if ($_POST) {
       debug_msg( "5. $error_description ");
       
       // Get the Order Details from the database      
-      $qv = "SELECT order_id, order_number, user_id FROM #__{vm}_orders ";
-      $qv .= "WHERE order_number='".$invoice."'";
+      $qv = "SELECT `order_id`, `order_number`, `user_id`, `order_subtotal`
+      				`order_total`, ` order_currency`, `order_tax`, 
+      				`order_shipping_tax`, `coupon_discount`, `order_discount`
+      			FROM `#__{vm}_orders` 
+      			WHERE `order_number`='".$invoice."'";
       $dbbt = new ps_DB;
       $dbbt->query($qv);
       $dbbt->next_record();
@@ -315,8 +319,34 @@ if ($_POST) {
                     $mail->Body = "The right order_id wasn't found during a PayPal transaction on your website.
                     The Order ID received was: $invoice";
                     $mail->Send();
+                    exit();
                 }
-                
+                $tax_total = $db->f("order_tax") + $db->f("order_shipping_tax");
+				$discount_total = $db->f("coupon_discount") + $db->f("order_discount");
+				$amount_check = round( $db->f("order_subtotal")+$tax_total-$discount_total, 2);
+				
+                if( $amount != $amount_check 
+                	|| $currency_code != $db->f('order_currency')
+				) {
+                    $mail->From = $mosConfig_mailfrom;
+                    $mail->FromName = $mosConfig_fromname;
+                    $mail->AddAddress($debug_email_address);
+                    $mail->Subject = "PayPal IPN Transaction on your site: Received Amount not correct";
+                    $mail->Body = "During a paypal transaction on your site the received amount didn't match the order total.
+                    Order Number: $invoice.
+                    The amount received was: $amount.
+                    It should be:
+                    		   ".$db->f("order_tax")." (Order Tax)
+                    		 + ".$db->f("order_shipping_tax")." (Order shipping tax)
+                    		 - ".$db->f("coupon_discount")." (Coupon Discount)
+                    		 - ".$db->f("order_discount")." (Payment Discount)
+                    		 + ".$db->f("order_subtotal")." (Order Subtotal)
+                    		 ----------------------------------------------
+                    		 = ".$amount_check;
+                    
+                    $mail->Send();
+                    exit();
+                }
                 // UPDATE THE ORDER STATUS to 'Completed'
                 if(eregi ("Completed", $payment_status)) {
                     $d['order_status'] = PAYPAL_VERIFIED_STATUS;                    

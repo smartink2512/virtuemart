@@ -43,8 +43,9 @@ else {
 	$shipping_tax = 0;
 	$order_total = 0;
 	$discount_before=$discount_after=$show_tax=$shipping=false;
-	$product_rows = Array();
-
+	$product_rows = array();
+	$tax_rates = array();
+	
 	for ($i=0;$i<$cart["idx"];$i++) {
 		// Added for the zone shipping module
 		$vars["zone_qty"] += $cart[$i]["quantity"];
@@ -109,7 +110,12 @@ else {
 
 		$total += $subtotal;
 		$product_rows[$i]['subtotal'] = $CURRENCY_DISPLAY->getFullValue($subtotal);
+		// Multiple Tax Rates handling...
 		if (!empty($my_taxrate) && MULTIPLE_TAXRATES_ENABLE=='1') {
+			// Store all different tax rates
+			if( !in_array( $my_taxrate, $tax_rates )) {
+				$tax_rates[] = $my_taxrate;
+			}
 			if( $auth["show_price_including_tax"] == 1 ) {
 				eval( "\$message = \"".$VM_LANG->_PHPSHOP_INCLUDING_TAX."\";" );
 				$product_rows[$i]['subtotal'] .= "&nbsp;".$message;

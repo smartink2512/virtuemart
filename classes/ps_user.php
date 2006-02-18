@@ -86,10 +86,11 @@ class ps_user {
 	function validate_delete( $id ) {
 		global $my, $vmLogger, $perm;
 		$auth = $_SESSION['auth'];
-
+		$valid = true;
+		
 		if( empty($id)) {
 			$vmLogger->err( 'Please select a user to delete.' );
-			return False;
+			return false;
 		}
 		$db = new ps_DB();
 		$q = "SELECT user_id, perms FROM #__{vm}_user_info WHERE user_id=$id";
@@ -97,13 +98,13 @@ class ps_user {
 		$perms = $db->f('perms');
 		if( !$perm->hasHigherPerms( $perms ) ) {
 			$vmLogger->err( 'You have no permission to delete a user of that usertype: '.$perms );
-			return false;
+			$valid = false;
 		}
 		if( $id == $my->id) {
 			$vmLogger->err( 'Very funny, but you cannot delete yourself.' );
-			return false;
+			$valid = false;
 		}
-		return $valid;
+		$valid = $valid;
 	}
 
 	/**************************************************************************
@@ -290,11 +291,12 @@ class ps_user {
 
 		$this->removeUsers( $d['user_id' ], $d );
 
-		if( !is_array( $d['user_id'] ))
-		$d['user_id'][0] = $d['user_id'];
-
+		if( !is_array( $d['user_id'] )) {
+			$d['user_id'] = array( $d['user_id'] );
+		}
+		
 		foreach( $d['user_id'] as $user ) {
-			if (!$this->validate_delete($user_id)) {
+			if( !$this->validate_delete($user) ) {
 				return False;
 			}
 			// Delete user_info entries
@@ -450,7 +452,7 @@ class ps_user {
 		global $database, $acl, $my;
 
 		if (!is_array( $cid ) ) {
-			$cid[0] = $cid;
+			$cid = array( $cid );
 		}
 
 		if ( count( $cid ) ) {

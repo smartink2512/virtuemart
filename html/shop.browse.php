@@ -266,7 +266,11 @@ else {
 		// Set the flypage for this product based on the category.
 		// If no flypage is set then use the default as set in virtuemart.cfg.php
 		$flypage = $db_browse->sf("category_flypage");
-
+		
+		if (empty($flypage)){
+			$flypage = FLYPAGE;
+		}
+		
 		$url = $sess->url( $mm_action_url."index.php?page=shop.product_details&flypage=$flypage&product_id=" . $db_browse->f("product_id") . "&category_id=" . $db_browse->f("category_id"). "&manufacturer_id=" . $manufacturer_id);
 
 		if( $db_browse->f("product_thumb_image") ) {

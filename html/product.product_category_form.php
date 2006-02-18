@@ -35,7 +35,7 @@ if ($category_id) {
 } 
 elseif (empty($vars["error"])) {
     $default["category_publish"] = "Y";
-    $default["category_flypage"] = "shop.flypage";
+    $default["category_flypage"] = FLYPAGE;
     $default["category_browsepage"] = CATEGORY_TEMPLATE;
     $default["products_per_row"] = PRODUCTS_PER_ROW; 
 }

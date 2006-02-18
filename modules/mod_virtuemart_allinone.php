@@ -224,9 +224,11 @@ if ($show_topten == '1') { ?>
     <tr>
         <td>
         <?php
-        $list  = "SELECT DISTINCT #__{vm}_product.product_id, #__{vm}_product.product_parent_id,#__{vm}_product.product_name ";
-        $list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
-        $q = "#__{vm}_product.product_publish='Y' AND ";
+        $list  = "SELECT #__{vm}_product.product_id, product_parent_id,product_name, #__{vm}_category.category_id, category_flypage ";
+		$list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
+		$q = "#__{vm}_product.product_publish='Y' AND ";
+		$q .= "#__{vm}_product_category_xref.product_id = #__{vm}_product.product_id AND ";
+		$q .= "#__{vm}_product_category_xref.category_id = #__{vm}_category.category_id AND ";
         $q .= "#__{vm}_product.product_sales>0 ";
         $q .= "ORDER BY #__{vm}_product.product_sales DESC";
         $list .= $q . " LIMIT 0, $num_topsellers "; 
@@ -255,7 +257,7 @@ if ($show_topten == '1') { ?>
             <tr class="<?php echo $sectioncolor ?>">
               <td valign="top"><?php printf("%02d", $tt_item); ?>&nbsp;<br /></td>
               <td valign="top">
-                <a href="<?php  $sess->purl(URL . "?page=$flypage&product_id=" . $pid . "&category_id=" . $db->f("category_id")) ?>">
+                <a href="<?php  $sess->purl(URL . "?page=shop.product_details&flypage=$flypage&product_id=" . $pid . "&category_id=" . $db->f("category_id")) ?>">
                               <?php $db->p("product_name"); ?>
                                   </a><br />
               </td>

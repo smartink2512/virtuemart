@@ -831,10 +831,12 @@ Order Total: '.$order_total.'
 		$q .= "'" . $order_number . "', '";
 		$q .= $d["ship_to_info_id"] . "', '";
 
-		if (!empty($d["shipping_rate_id"]))
-		$q .= urldecode($d["shipping_rate_id"]) . "', '";
-		else
-		$q .= "', '";
+		if (!empty($d["shipping_rate_id"])) {
+			$q .= urldecode($d["shipping_rate_id"]) . "', '";
+		}
+		else {
+			$q .= "', '";
+		}
 		$q .= $order_total . "', '";
 		$q .= $order_subtotal . "', '";
 		$q .= $order_tax . "', '";
@@ -847,15 +849,16 @@ Order Total: '.$order_total.'
 		$q .= $timestamp . "', '";
 		$q .= $timestamp. "', '";
 		$q .= htmlspecialchars(strip_tags($d['customer_note'])) . "', '";
-		if (!empty($_SERVER['REMOTE_ADDR']))
-		$q .= $_SERVER['REMOTE_ADDR'] . "') ";
-		else
-		$q .= $HTTP_SERVER_VARS['REMOTE_ADDR'] . "') ";
+		if (!empty($_SERVER['REMOTE_ADDR'])) {
+			$q .= $_SERVER['REMOTE_ADDR'] . "') ";
+		}
+		else {
+			$q .= $HTTP_SERVER_VARS['REMOTE_ADDR'] . "') ";
+		}
 		$db->query($q);
 		$db->next_record();
 
 		/* Get the order id just stored */
-
 		$q = "SELECT order_id FROM #__{vm}_orders WHERE order_number = ";
 		$q .= "'" . $order_number . "'";
 

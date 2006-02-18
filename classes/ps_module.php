@@ -254,8 +254,9 @@ class ps_module {
 	
 	// "shop.browse" => module: shop, page: browse
     $my_page= explode ( '.', $page );
-	if( empty( $my_page[1] ))
+	if( empty( $my_page[1] )) {
 		return false;
+	}
     $modulename = $my_page[0];
     $pagename = $my_page[1];
     

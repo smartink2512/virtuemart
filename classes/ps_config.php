@@ -145,10 +145,11 @@ else {
 define( 'URL', \$mosConfig_live_site.\$app );
 define( 'SECUREURL', '".$d['conf_SECUREURL']."' );
 
-if( \$_SERVER['SERVER_PORT'] == 443 )
+if ( @\$_SERVER['HTTPS'] == 'on' ) {
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
-else
+} else {
 	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
+}
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_virtuemart/' );
 define( 'CLASSPATH', ADMINPATH.'classes/' );

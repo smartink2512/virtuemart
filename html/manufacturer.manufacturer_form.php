@@ -17,6 +17,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+global $ps_manufacturer_category;
+
 $manufacturer_id = mosgetparam( $_REQUEST, 'manufacturer_id', 0 );
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 

@@ -296,7 +296,7 @@ class ps_authorize {
 		'x_customer_tax_id' => $dbbt->f("tax_id"),
 
 		// Email Settings
-		'x_email' => $dbbt->f("email"),
+		'x_email' => $dbbt->f("user_email"),
 		'x_email_customer' => 'False',
 		'x_merchant_email' => $vendor_mail,
 
@@ -407,7 +407,9 @@ class ps_authorize {
 			}
 		}
 		$response = explode("|", $result);
-
+		// Strip off quotes from the first response field
+		$response[0] = str_replace( '"', '', $response[0] );
+		
 		$vmLogger->debug('Beginning to analyse the response from '.$host);
 
 		// Approved - Success!

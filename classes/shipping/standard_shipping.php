@@ -308,12 +308,12 @@ class standard_shipping {
 			}
 			if (is_numeric($zip)) {
 				if( $db->f("shipping_rate_zip_start") > $zip ) {
-					$vmLogger->debug( 'The ZIP '.$country.' is smaller than the supported ZIP code range of this shipping rate.');
+					$vmLogger->debug( 'The ZIP '.$zip.' is smaller than the supported ZIP code range of this shipping rate.');
 					$valid = false;
 					
 				}
 				if( $db->f("shipping_rate_zip_end") < $zip) {
-					$vmLogger->debug( 'The ZIP '.$country.' is higher than the supported ZIP code range of this shipping rate.');
+					$vmLogger->debug( 'The ZIP '.$zip.' is higher than the supported ZIP code range of this shipping rate.');
 					$valid = false;			
 				}
 			}	

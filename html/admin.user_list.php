@@ -35,6 +35,7 @@ if ( !empty($keyword) ) {
 	$q .= "ui.company LIKE '%$keyword%' OR ";
 	$q .= "ui.last_name LIKE '%$keyword%' OR ";
 	$q .= "ui.first_name LIKE '%$keyword%' OR ";
+	$q .= "CONCAT( `ui`.`first_name`, ' ', `ui`.`last_name`) LIKE '%$keyword%' OR ";
 	$q .= "ui.phone_1 LIKE '%$keyword%' ";
 	$q .= ") AND ";
 }

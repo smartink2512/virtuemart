@@ -376,7 +376,7 @@ class ps_html {
 		}
 		$q .= ' AND product_publish=\'Y\'';
 		// This is necessary, because so much products are difficult to handle!
-		$q .= ' LIMIT 0, 1000';
+		$q .= ' LIMIT 0, 2000';
 		
 		$db->query( $q );
 		$products = Array();

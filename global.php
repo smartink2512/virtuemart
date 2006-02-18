@@ -38,7 +38,7 @@ if( $my->id ) {
 
 $_SESSION["ps_vendor_id"] = $ps_vendor_id = $default_vendor;
 
-$q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, 
+$q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, vendor_freeshipping,
 			vendor_address_1, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
 			vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style
 		FROM (`#__{vm}_vendor`, `#__{vm}_country`)
