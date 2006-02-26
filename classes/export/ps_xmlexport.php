@@ -20,7 +20,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 *
 * The ps_xmlexport class, containing the default export processing code
-* for payment methods that have no own class
+* for export methods that have no own class
 *
 */
 class ps_xmlexport {
@@ -46,8 +46,7 @@ class ps_xmlexport {
 	* @returns boolean True when the configuration file is writeable, false when not
 	*/
    function configfile_writeable() {
-   		return true;
-      return is_writeable( CLASSPATH."export/".$this->classname.".cfg.php" );
+      return true;
    }
    
   /**
@@ -56,24 +55,35 @@ class ps_xmlexport {
 	* @returns boolean True when the configuration file is writeable, false when not
 	*/
    function configfile_readable() {
-      return is_readable( CLASSPATH."export/".$this->classname.".cfg.php" );
+      return true;
    }
    
   /**
 	* Writes the configuration file for this payment method
 	* @param array An array of objects
-	* @returns boolean True when writing was successful
+	* @return boolean True when writing was successful
 	*/
    function write_configuration( &$d ) {
       /* ... */
+      return true;
    }
    
-  /**************************************************************************
-  ** name: process_payment()
-  ** returns: 
-  ***************************************************************************/
-   function process_export($order_number, $order_total, &$d) {
+  /**
+  * process export
+  * @name process_export
+  * @param Filterstatement to select orders
+  * @param db-object
+  * @return bool true/false
+  */
+   function process_export($filter = '', &$d) {
         return true;
     }
-   
+    
+    /**
+    * output of export
+    * @return bool true/false
+    */
+    function output_export() {
+    	return true;
+    }
 }
