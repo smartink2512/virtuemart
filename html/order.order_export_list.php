@@ -78,7 +78,7 @@ while ($db->next_record()) {
 	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.order_export_form&limitstart=$limitstart&keyword=$keyword&order_export_id=".$db->f("order_export_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f('order_export_name')."</a>";
 	$listObj->addCell( $tmp_cell );
-	
+
 	$listObj->addCell( $db->f('order_export_desc') );
 
 	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=$page&order_export_id=".$db->f("order_export_id")."&func=changePublishState" );
