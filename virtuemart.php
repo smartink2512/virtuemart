@@ -16,15 +16,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-global $mosConfig_absolute_path, $product_id;
-
-
-// Pre-Chache the output of the component
-// why? Hmm. http://virtuemart.net/index.php?option=com_flyspray&Itemid=83&do=details&id=300
-if( ob_get_level() === 0 ) {
-	ob_start();
-}
-	
+global $mosConfig_absolute_path, $product_id, $vmInputFilter;
+        
 /* Load the virtuemart main parse code */
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
@@ -42,16 +35,8 @@ $manufacturer_id = intval( mosGetParam( $_REQUEST, 'manufacturer_id', null ) );
 $search_category= intval( mosGetParam( $_REQUEST, 'search_category', null ) );
 $product_type_id = intval( mosgetparam($_REQUEST, 'product_type_id', null) );
 
-$keyword1 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword1', null )));
-$keyword2 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword2', null )));
-$DescOrderBy = $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'DescOrderBy', "ASC" ));
-$search_limiter= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_limiter', null ));
-$search_op= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_op', null ));
-$orderby = $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'orderby' ));
-
-
 if( PSHOP_IS_OFFLINE == "1" ) {
-	echo PSHOP_OFFLINE_MESSAGE;
+        echo PSHOP_OFFLINE_MESSAGE;
 }
 else {
 
@@ -193,28 +178,28 @@ else {
 
 	// Here is the most important part of the whole Shop:
 	// LOADING the requested page for displaying it to the customer.
-	// I have wrapped it with a function, because it becomes
-	// cacheable that way.
-	// It's just an "include" statement which loads the page
-	$vmDoCaching = ($page=="shop.browse" || $page=="shop.product_details") 
-			&& class_exists("mosCache")
-			&& (empty($keyword) && empty($keyword1) && empty($keyword2));
-			
-	if( !function_exists( "load_that_shop_page" )) {
-		function load_that_shop_page( $modulename, $pagename) {
-			global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $page, $database,$mosConfig_absolute_path, $cart, $start, $option, $vmLogger, $vmDoCaching,
-			$product_id,$VM_LANG, $PHPSHOP_LANG, $sess,$vendor_image,$vendor_country_2_code, $vendor_country_3_code , $vendor_image_url, $PSHOP_SHIPPING_MODULES,
-			$_VERSION, $vendor_name, $vendor_address, $vendor_city,$vendor_country,$vendor_mail, $category_id, $mainframe, $mosConfig_list_limit, $limitstart, $limit,
-			$vendor_store_name, $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping, $ps_shipping, $ps_order_status,
-			$module_description, $vendor_currency_display_style, $vendor_full_image, $mosConfig_live_site, $vendor_id, $CURRENCY_DISPLAY, $keyword, $mm_action_url,
-			$ps_payment_method,$ps_zone,$ps_product, $ps_product_category, $ps_order, $sess, $page, $func, $pagename, $modulename, $vars, $cmd, $ok, $mosConfig_lang, $mosConfig_useractivation,
-			$auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list, $mosConfig_allowUserRegistration, $mosConfig_caching;
+        // I have wrapped it with a function, because it becomes
+        // cacheable that way.
+        // It's just an "include" statement which loads the page
+        $vmDoCaching = ($page=="shop.browse" || $page=="shop.product_details") 
+                        && class_exists("mosCache")
+                        && (empty($keyword) && empty($keyword1) && empty($keyword2));
 
-			if( is_callable( array("mosMainFrame", "addCustomHeadTag" ) ) && !stristr( $_SERVER['PHP_SELF'], "index2.php") ) {
-				$mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"components/$option/js/sleight.js\"></script>
+        if( !function_exists( "load_that_shop_page" )) {
+                function load_that_shop_page( $modulename, $pagename) {
+                        global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $page, $database,$mosConfig_absolute_path, $cart, $start, $option, $vmLogger, $vmDoCaching,
+                        $product_id,$VM_LANG, $PHPSHOP_LANG, $sess,$vendor_image,$vendor_country_2_code, $vendor_country_3_code , $vendor_image_url, $PSHOP_SHIPPING_MODULES,
+                        $_VERSION, $vendor_name, $vendor_address, $vendor_city,$vendor_country,$vendor_mail, $category_id, $mainframe, $mosConfig_list_limit, $limitstart, $limit,
+                        $vendor_store_name, $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping, $ps_shipping, $ps_order_status,
+                        $module_description, $vendor_currency_display_style, $vendor_full_image, $mosConfig_live_site, $vendor_id, $CURRENCY_DISPLAY, $keyword, $mm_action_url,
+                        $ps_payment_method,$ps_zone,$ps_product, $ps_product_category, $ps_order, $sess, $page, $func, $pagename, $modulename, $vars, $cmd, $ok, $mosConfig_lang, $mosConfig_useractivation,
+                        $auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list, $mosConfig_allowUserRegistration, $mosConfig_caching;
+
+                        if( is_callable( array("mosMainFrame", "addCustomHeadTag" ) ) && !stristr( $_SERVER['PHP_SELF'], "index2.php") ) {
+                                $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleight.js\"></script>
 <script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleightbg.js\"></script>
 <link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"$mosConfig_live_site/components/$option/css/shop.css\" />" );
-			} else {
+                        } else {
       ?>
       <script type="text/javascript" src="<?php echo "$mosConfig_live_site/components/$option" ?>/js/sleight.js"></script>
       <script type="text/javascript" src="<?php echo "$mosConfig_live_site/components/$option" ?>/js/sleightbg.js"></script>
@@ -234,15 +219,15 @@ else {
 			elseif( file_exists( PAGEPATH . HOMEPAGE.'.php' )) {
 				include( PAGEPATH . HOMEPAGE.'.php' );
 			}
-			else {
-				include( PAGEPATH.'shop.index.php');
-			}
-			if ( !empty($mosConfig_caching) && $vmDoCaching) {
-				echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span';
-			}
-			if (SHOWVERSION) {
-				include(PAGEPATH ."footer.php");
-			}
+                        else {
+                                include( PAGEPATH.'shop.index.php');
+                        }
+                        if ( !empty($mosConfig_caching) && $vmDoCaching) {
+                                echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span';
+                        }
+                        if (SHOWVERSION) {
+                                include(PAGEPATH ."footer.php");
+                        }
 
 			// Set debug option on/off
 			if (DEBUG) {
@@ -255,24 +240,23 @@ else {
 		}
 	}
 	// Caching is a sensible thing. We may cache only those pages 
-	// that look the same again and again
-	// Currently this are two pages: shop.browse, shop.product_details
-	// when no keyword is submitted!
-	if ( !empty($mosConfig_caching) && $vmDoCaching) {
+        // that look the same again and again
+        // Currently this are two pages: shop.browse, shop.product_details
+        // when no keyword is submitted!
+        if ( !empty($mosConfig_caching) && $vmDoCaching) {
 
-		// Get the Cache_Lite_Function object
-		$cache =& mosCache::getCache( 'com_content' );
+                // Get the Cache_Lite_Function object
+                $cache =& mosCache::getCache( 'com_content' );
 
 		// The function we let call remotely here has only two arguments: the Modulename(shop) and the Pagename(browse or product_details),
 		// But Cache_Lite takes the arguments for identifying common calls to cacheable functions.
-		// The Page will change with every different parameter / argument, so provide this for identification
-		// "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
-		// or the caching time range has expired
-		$return = $cache->call('load_that_shop_page', $modulename, $pagename, $product_id, $category_id, $auth["shopper_group_id"], $limitstart, $limit, @$_REQUEST['orderby'], @$_REQUEST['DescOrderBy'] );
-		if( get_class( $return ) == "mosMainFrame" ) {
-			$mainframe = $return;
-		}
-		
+                // The Page will change with every different parameter / argument, so provide this for identification
+                // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
+                // or the caching time range has expired
+                $return = $cache->call('load_that_shop_page', $modulename, $pagename, $product_id, $category_id, $manufacturer_id, $auth["shopper_group_id"], $limitstart, $limit, @$_REQUEST['orderby'], @$_REQUEST['DescOrderBy'] );
+                if( get_class( $return ) == "mosMainFrame" ) {
+                        $mainframe = $return;
+                }
 	}
 	else {
 		load_that_shop_page( $modulename, $pagename);

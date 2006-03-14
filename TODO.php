@@ -24,7 +24,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  Know Bugs
 ##################
 
-* FedEX Module not ported to VirtueMart Shipping API (will it ever work?)
+See Bugtracker:
+http://virtuemart.net/index.php?option=com_flyspray&Itemid=91
 
  FEATURES
 ##################
@@ -33,7 +34,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * XML - Product Data Import/Export
 * XML - Order Data Import/Export
 
-* Allow unregistered Users to place an Order
 * make Orders changeable afterwards
 * Multiple-Currency Support 
   * changeable by the Customer in the Frontend
@@ -58,12 +58,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
  General to-do 
 ##################
-
-* Move Customer Information from mos_users to mos_{vm}_user_info
-* Move Email Templates to /html/templates
-
-* Change $func to $mm_func
-* Change $page to $mm_page
 
 * improve performance
   - Reduce Numbers of SQL Queries

@@ -33,34 +33,115 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+12-03-2006 soeren
+
+# users, who are logged in, but not yet registered as customer/shopper 
+        can't directly continue their "checkout" after registration as shopper
+# users who are logged in, but have an empty "usertype" field don't see prices
+# added $manufacturer_id support for caching pages
+
+---- VirtueMart 1.0.3 released ----
+
+11-03-2006 soeren
+# syntax error in shipping.rate_form.php
+
+10-03-2006 soeren
+# Task #325 Log out does not work
+# missing $mosConfig_absolute_path in currency_convert.php
+
+07-03-2006 soeren
+# many short tag fixes (< ? => < ?php )
+# Task #566 â DescOrderBy doesn't work with SEF
+# more ps_session class fixes to work on Joomla 1.0.8 & Mambo 4.6
+        seems to me as if some Joomla 1.0.8 users are suffering serious Session problems now
+^ setting memory_limit to 16M when it is lower
++ multiple tax rate details in order email
+
+04-03-2006 soeren
+# short php tags in shop.manufacturer_page.php
+# Task #551 â Cart showing extra products after adding first item
+# Task #562 â Discount deletion problem
+
+02-03-2006 soeren
+# Task #432 â missing ST address in order_user_info when using default address
+# Task #482 â error with multiple mod_virtuemart
+# Task #541 â IE gets error in admin orders
+# View by Manufacturer: Products without prices not shown
++ new global variable $VM_BROWSE_ORDERBY_FIELDS, contains all sort-by fields for the browse page
+^ moved $orderby code to shop.browse.php and shop_browse_queries.php
++ new configuration constant: VM_BROWSE_ORDERBY_FIELD can be [product_name|product_price|product_cdate|product_sku]
++ added "ob_start" to the session class to prevent HTML output BEFORE the template is loaded ( Task #553 â Product Display)
+^ tax rates in drop-down list in product form are ordered by rate, descending now
+
+28-02-2006 soeren
+
+# tax total calculated based on product tax rate when TAX_MODE = 1 (store-address based tax mode)
+# Task #536 â vendor info page error
+# page navigation on browse pages contained the live site URL.
+
+22-02-2006 soeren
+
+# standard shipping module doing wrong number_format when amount is greater than 999.99
+# fixed: multiple tax rates / subtotal re-calculation when discounts are applied
+# ps_product_category::get_cid => category ID query not executed
+# attribute prices being displayed without tax, although "show prices including tax" is active
+# totals getting stored without decimals: changed "setlocale( LC_NUMERIC, 'en' )" to "setlocale( LC_NUMERIC, 'en_US' )"
++ page title on order details page in account maintenance
+# checkout login form using sefRelToAbs for $return
+^ using the same "Add-to-cart" image as in product_details in browse page now
+# tax rates were stored with 0.0000 value
+
+! DATABASE STRUCTURE CHANGED 
+---
+        # http://virtuemart.net/index.php?option=com_flyspray&Itemid=83&do=details&id=521
+        ALTER TABLE `jos_vm_product_mf_xref` CHANGE `product_id` `product_id` INT( 11 ) NULL DEFAULT NULL 
+        
+        # Store multiple-tax-rates details for each order when applicable
+        ALTER TABLE `jos_vm_orders` ADD `order_tax_details` TEXT NOT NULL AFTER `order_tax` ;
+---
+
+
+21-02-2006 soeren
+
+# Task #525 â USPS shipping module: User details SQL query
+# order email: text part had ugly HTML entities in it (e.g. &euro; )
+^ file downloads (paid downloads): reading and sending the file is now handled by a new function 
+        (previously: readfile, now: vmReadFileChunked )
+# fixes for compatibility with Joomla 1.1.x, still maintaining backwards compatibility with Mambo
+        - added $vmInputFilter to global declaration list in virtuemart.php
+        - virtuemart module dealing with wrong module paths
+        - ps_perm needed its own ACL manipulation methods
+        - ps_session doesn't need to append "&Itemid=" in the backend
+        
 17-02-2006 soeren
 
 # When price field left empty and product had no price, a price record (0) was added.
-# Task #456 — Foreign adress give error on checkout
+# Task #456 â Foreign adress give error on checkout
 	If you leave the ZIP start or end fields empty, automatically "00000" or "99999"
 	is inserted. This was a trap for many users.
-# Task #515 — Problem with Authorize.net after upgrade
-# Task #519 — Fatal error when adding a manufacturer
+# Task #515 â Problem with Authorize.net after upgrade
+# Task #519 â Fatal error when adding a manufacturer
 # linkpoint class using wrong user information query (ps_linkpoint.php)
 # order list query error
 + order and user list can be filtered by full name now 
-	(before it was possible to search for the first name OR the last name, not both at the same time)
-	
+        (before it was possible to search for the first name OR the last name, not both at the same time)
+        
 14-02-2006 soeren
-# Task #480 — Various Errors (one fatal) in vm_dtree.php
-# Task #514 — add to cart URL does not always work
-# Task #509 — Deleting manufacturer bug
-# Task #495 — Related products list doesn't update with new products: 
-	now displaying 2000 related products instead of 1000.
-# Task #455 — Silent user registration not working ($mosConfig_useractivation issue)
-# Task #474 — Changing default flypage is broken
-# Task #473 — Free Shipping broken: SQL statement in global.php 
-# Task #471 — The script sleight.js isn't loaded when SEF URLs is on
-# Task #468 — wrong variable in standard_shipping.php
+# Task #480 â Various Errors (one fatal) in vm_dtree.php
+# Task #514 â add to cart URL does not always work
+# Task #509 â Deleting manufacturer bug
+# Task #495 â Related products list doesn't update with new products: 
+        now displaying 2000 related products instead of 1000.
+# Task #455 â Silent user registration not working ($mosConfig_useractivation issue)
+# Task #474 â Changing default flypage is broken
+# Task #473 â Free Shipping broken: SQL statement in global.php
+# Task #471 â The script sleight.js isn't loaded when SEF URLs is on
+# Task #468 â wrong variable in standard_shipping.php
 
 08-02-2006 soeren
-# Task #486 — HTTPS Error In Virtuemart.cfg.php (not every server uses port 443 for secure connections)
-	changed ** $_SERVER['SERVER_PORT] == 443 ** to ** @$_SERVER['HTTPS'] == 'on' **
+# Task #486 â HTTPS Error In Virtuemart.cfg.php (not every server uses port 443 for secure connections)
+        changed ** $_SERVER['SERVER_PORT] == 443 ** to ** @$_SERVER['HTTPS'] == 'on' **
 # authorize.net: Strip off quotes from the first response field to be sure the correct response is received
 
 03-02-2006 mdennerlein
@@ -73,18 +154,18 @@ VirtueMart 1.1.x
 
 + order list at user form! (Thanks to Qazazz! http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=14001.msg26715#msg26715)
 ^ FedEx: basic implementation of FedEx' service "Rate available Services" finished
-	You can now use FedEx to fetch and list available shipping rates
-	
+        You can now use FedEx to fetch and list available shipping rates
+        
 [---- VirtueMart 1.0.2 released ----]
 
 19-01-2006 soeren
 # Deleting a product didn't delete the product <-> product type relationship,
-	so you couldn't delete the product type
+        so you couldn't delete the product type
 
 16-01-2006 soeren
-# Task #443 — Registration not possible with .info domain
-# Task #418 — Can't assign multiple product types to a product
-# Task #417 — Changing status to 'C' for auth net settle del. trans ID!
+# Task #443 â Registration not possible with .info domain
+# Task #418 â Can't assign multiple product types to a product
+# Task #417 â Changing status to 'C' for auth net settle del. trans ID!
 # product list not showing all search options
 # Task 412 - no tax on attributes
 # Task 413 -  wrong price on details page when using quantity-based prices
@@ -92,8 +173,10 @@ VirtueMart 1.1.x
 + added Australia Post shipping module by Ben Wilson (ben@diversionware.com.au)
 # mosproductsnapshot Mambot wouldn't correctly display linked images
 + Download ID "hack" by Eugene, scott, joomlasolutions!
-	Customers can get their download IDs for downloading files
-	directly from the order details page (products are linked)
+        Customers can get their download IDs for downloading files
+        directly from the order details page (products are linked)
++ showing filesize for files which are listed on the product details page (by djlongy)
+        directly from the order details page (products are linked)
 + showing filesize for files which are listed on the product details page (by djlongy)
 
 
@@ -101,38 +184,38 @@ VirtueMart 1.1.x
 + when Caching is on, cached pages are watermarked with a timestamp ("Last updated: Wednesday, 11 January 2006 16:31") like we know from eBay
 + FedEx shipping module integration begun
 # fixed minor issues with the new userfield registration system
-# Task #435 — Link to component class
-# Task #433 — Blocked message (popup) on registration
-# Task #432 — missing ST address in order_user_info when using default address
-# Task #431 — Pricelist doesn't show prices
+# Task #435 â Link to component class
+# Task #433 â Blocked message (popup) on registration
+# Task #432 â missing ST address in order_user_info when using default address
+# Task #431 â Pricelist doesn't show prices
 
  
 09-01-2006 soeren
 ^ Payment method discounts/fees: Implemented a percentage discount...
-	You can now charge the customer a certain percentage of the order total
+        You can now charge the customer a certain percentage of the order total
 
-	! DATABASE STRUCTURE CHANGED: table jos_vm_payment_method
-	  Added 3 new fields to that table to allow percentage discounts
+        ! DATABASE STRUCTURE CHANGED: table jos_vm_payment_method
+          Added 3 new fields to that table to allow percentage discounts
 
 05-01-2006 soeren
-# Task #430 — ToolTip Error when use Chinese
-^ Task #427 — Add To Cart button in Browse uses Joomla button CSS.
+# Task #430 â ToolTip Error when use Chinese
+^ Task #427 â Add To Cart button in Browse uses Joomla button CSS.
 
 27-12-2005 soeren
 ^! changed the structure of the table jos_vm_userfield_values: added a column "fieldvalue"
-	for being able to list fieldtitles in an option list, using fieldvalue in the value="" attribute
-	For staying up-to-date in CVS: "ALTER TABLE `jos_vm_userfield_value ADD `fieldvalue` varchar(255) NOT NULL"
+        for being able to list fieldtitles in an option list, using fieldvalue in the value="" attribute
+        For staying up-to-date in CVS: "ALTER TABLE `jos_vm_userfield_value ADD `fieldvalue` varchar(255) NOT NULL"
 # mod_productscroller not using category ID for filtering products
 
 
 22-12-2005 soeren
 + new HelpTip from WebFx (http://webfx.eae.net/dhtml/helptip/helptip.html)
-	this javascript allows displaying details of products in a box that 
-	can be shown and hidden and doesnt vanish on mouse scrolling (used on CSV Upload)
-	Usage: echo vmHelpToolTip( "My tip in the box", "The link text" );
+        this javascript allows displaying details of products in a box that 
+        can be shown and hidden and doesnt vanish on mouse scrolling (used on CSV Upload)
+        Usage: echo vmHelpToolTip( "My tip in the box", "The link text" );
 + step-by-step import on CSV Upload
 + CSV Upload simulation: uploaded CSV files are not instantly imported, but the
-	import first is simulated and the results are shown to the user
+        import first is simulated and the results are shown to the user
 ^ admin dropdown menu now is able to display special characters (e.g. dutch and german special chars)
 
 20-12-2005 soeren
@@ -150,8 +233,8 @@ VirtueMart 1.1.x
 - removed property "permissions" from class ps_user
 
 + first version of the new "user fields" management system
-!! DATABASE STRUCTURE CHANGED:  two new tables	!!
-!! see /sql/UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql			!!
+!! DATABASE STRUCTURE CHANGED:  two new tables  !!
+!! see /sql/UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql                 !!
 
 ^ silently registered users don't have to remember their old usernames now (Task #385 returning hidden/silent users can't use the same email address)
 
@@ -161,8 +244,6 @@ VirtueMart 1.1.x
 
 15-12-2005 soeren
 # product prices can be zero or empty now. When the product price is left empty in the product form, an existing price will be deleted and no price will be added.
-^ PayPal payment extra info now subtracts order and coupon discounts from the order subtotal
-^ Now it's possible to checkout with $0 in the cart. Allows free purchases using gift coupons.
 # Tax total is zero although user's country/state combinination has a matching tax rate record (when CHECKOUT_STYLE = 3 or 4)
 # Task #364 "thank you for your patience...": wrong Waiting list link
 # Task #386 "New user couldn't be added"

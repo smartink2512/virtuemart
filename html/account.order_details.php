@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: account.order_details.php,v 1.7 2005/10/24 18:13:07 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -23,7 +23,6 @@ $ps_product= new ps_product;
 
 global $vendor_currency;
 
-
 $print = mosgetparam( $_REQUEST, 'print', 0);
 $order_id = mosgetparam( $_REQUEST, 'order_id', 0);
 
@@ -34,10 +33,17 @@ $q .= "AND #__{vm}_orders.order_id='$order_id'";
 $db->query($q);
 
 if ($db->next_record()) {
-
-	// Get bill_to information
-	$dbbt = new ps_DB;
-	$q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
+        
+        $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO.' : '.$VM_LANG->_PHPSHOP_ORDER_LIST_ID.' '.$db->f('order_id'));
+        require_once( CLASSPATH.'ps_product_category.php');
+        $pathway = "<a href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
+              .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".ps_product_category::pathway_separator().' '
+              .$VM_LANG->_PHPSHOP_ACC_ORDER_INFO;
+        $mainframe->appendPathWay( $pathway );
+        
+        // Get bill_to information
+        $dbbt = new ps_DB;
+        $q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
 	$dbbt->query($q);
 	$dbbt->next_record();
 	$user = $dbbt->record;
@@ -552,7 +558,6 @@ if( PAYMENT_DISCOUNT_BEFORE == '1') {
           <td align="right"><?php 
 
           echo $CURRENCY_DISPLAY->getFullValue($tax_total);
-
             ?>&nbsp;&nbsp;&nbsp;</td>
         </tr>
 <?php
@@ -617,12 +622,21 @@ if( PAYMENT_DISCOUNT_BEFORE == '1') {
           <td align="right"><?php 
 
           echo $CURRENCY_DISPLAY->getFullValue($tax_total);
-
+		  
             ?>&nbsp;&nbsp;&nbsp;</td>
         </tr>
 <?php
   }
-  ?>
+  ?>    <tr> 
+          <td colspan="3" align="right">&nbsp;</td>
+          <td colspan="2" align="right"><hr/></td>
+        </tr>
+        <tr> 
+          <td colspan="3" align="right">&nbsp;</td>
+          <td colspan="2" align="right"><?php 
+                                echo ps_checkout::show_tax_details( $db->f('order_tax_details') );
+            ?>&nbsp;&nbsp;&nbsp;</td>
+        </tr>
       </table>
     </td>
   </tr>

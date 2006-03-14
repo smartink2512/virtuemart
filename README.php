@@ -21,10 +21,10 @@ Version: 1.0.x
 ****************
 Complete Package for Mambo >= 4.5.1 and Joomla 1.0.x
 
-You can't use this software on an earlier Mambo version than 4.5.1 (e.g. Mambo 4.5 1.0.9) or later than 4.5.2.
+You can't use this software on an earlier Mambo version than 4.5.1 (e.g. Mambo 4.5 1.0.9) 
 without running into serious problems.
 
-Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
 License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 VirtueMart is free software. This version may have been modified pursuant
 to the GNU General Public License, and as distributed it includes or
@@ -39,17 +39,17 @@ Community Home: http://virtuemart.net
 Package Contents:
 ##########################
 
- * 1 Component (com_virtuemart_1.0.0-final.tar.gz)
+ * 1 Component (com_virtuemart_1.0.3.tar.gz)
    INSTALLATION REQUIRED!
    
- * 1 Main module (mod_virtuemart_1.0.0-final.tar.gz)
+ * 1 Main module (mod_virtuemart_1.0.3.tar.gz)
    INSTALLATION REQUIRED!
    
  * 8 additional Modules
  
  * 2 Mambots 
-   - 1 SearchBot for Integration into Mambo Main Search (virtuemart.searchbot.tar.gz), 
-   - 1 Content Mambot for displaying product details in Mambo content (mosproductsnap.tar.gz)
+   - 1 SearchBot for Integration into the site search (virtuemart.searchbot.tar.gz), 
+   - 1 Content Mambot for displaying product details in content items (mosproductsnap.tar.gz)
 
 ##########################
    ABOUT
@@ -70,6 +70,8 @@ This package contains some code from the original 0.8.0 Edikon Corp. phpShop dis
 This package was tested on 
 - Mambo 4.5.1a
 - Mambo 4.5.2.3
+- Mambo 4.5.3h
+- Mambo 4.6 beta
 - Joomla 1.0.x
 
  -- IMPORTANT --
@@ -92,25 +94,25 @@ You don't need to unpack any of the archives in this complete package!
 	- 2 other Packages (these are the so-called Mambots).
     
 2. Login to the Mambo/Joomla Administrator.
-	
-	Now go to "Installers" => "Components"
-	or - if you are using Mambo - "Components" --> "Install/Uninstall".
-	
-	You can see an upload form now.
-	Select the file 
-	- com_virtuemart_x.xx.tar.gz 
-	and click 'Upload Component'
-	
-	If everything is ok, you should see a "Welcome ..." Screen.
-	Choose you way of installation to finish the component installation.
-	
-3. Now we have to install the Main module, which will help you to browse
-	your categories and products.
-	Go to "Installers" => "Modules"
-	(or - if you're using Mambo - "Modules" => "Install/Uninstall"), 
-	and select the file 
-	- mod_virtuemart_x.xx.tar.gz 
-	and then click 'Upload module'.
+        
+        Now go to "Installers" => "Components"
+        or - if you are using an older Mambo version: "Components" --> "Install/Uninstall".
+        
+        You can see an upload form now.
+        Select the file 
+        - com_virtuemart_x.xx.tar.gz 
+        and click 'Upload Component'
+        
+        If everything is ok, you should see a "Welcome ..." screen.
+        Choose you way of installation to finish the component installation.
+        
+3. Now we have to install the main module, which will help you to browse
+        your categories and products.
+        Go to "Installers" => "Modules"
+        (or - if you're using an older Mambo version: "Modules" => "Install/Uninstall"), 
+        and select the file 
+        - mod_virtuemart_x.xx.tar.gz 
+        and then click 'Upload module'.
     
 4. The module is installed, but it still is not published!
 	To publish that module on your site, you must go to the list of 
@@ -156,10 +158,10 @@ You don't need to unpack any of the archives in this complete package!
          - contains config files and the main virtuemart-parser
          
          /administrator/components/com_virtuemart/classes
-         - contains all the classes (formerly the /lib/*.inc - directories)
+         - contains all the class files
          
          /administrator/components/com_virtuemart/html
-         - contains all the "ihtml" files (formerly the /html - directories)
+         - contains all pages accessible for the shop
          
          /administrator/components/com_virtuemart/html/templates
          
@@ -222,7 +224,7 @@ This prefix will change to _vm_. The tag that is to be replaced by the defineabl
 
 So a table is called using
 
-"SELECT product_id FROM #__{vm}_product WHERE product_id='4' "
+"SELECT `product_id` FROM `#__{vm}_product` WHERE `product_id`=4 "
 
 You must use the VirtueMart database object! It translates the placeholder
 {vm} into the VirtueMart table prefix.

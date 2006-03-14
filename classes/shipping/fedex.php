@@ -122,7 +122,7 @@ class fedex {
 		$html = '';
 		// Loop through all rates
 		for ($i=1; $i<=$rate_Ret[1133]; $i++) {
-			$charge = $rate_Ret['1417-'.$i] + floatval( FEDEX_HANDLINGFEE );
+			$charge = $rate_Ret['1419-'.$i] + floatval( FEDEX_HANDLINGFEE );
 			$charge *= $taxrate;
 			$surcharge = $CURRENCY_DISPLAY->getFullValue($charge);
 			

@@ -175,7 +175,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
 else {
 ?>
       <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-      <span class="message"><? echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (MD5 Check failed)</span>
+      <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (MD5 Check failed)</span>
 <?php
 }
 ?>

@@ -84,17 +84,17 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
   ** parameters:
   ** returns:
   ***************************************************************************/   
-  function validate_delete($d) {
+  function validate_delete($discount_id) {
     
-    if (!$d["discount_id"]) {
+    if (!$discount_id) {
       $this->error = "ERROR:  Please select a Discount to delete.";
       return False;
     }
     $db = new ps_DB;
-	$db->query( "SELECT product_id FROM #__{vm}_product WHERE product_discount_id='".$d["discount_id"]."'" );
-	if( $db->num_rows() > 0 ) {
-		$this->error = "Error: This discount still has products assigned to it!";
-		return false;
+        $db->query( "SELECT product_id FROM #__{vm}_product WHERE product_discount_id=".intval($discount_id) );
+        if( $db->num_rows() > 0 ) {
+                $this->error = "Error: This discount still has products assigned to it!";
+                return false;
 	}
 	
 	return True;
@@ -217,13 +217,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	/**
 	* Deletes one Record.
 	*/
-	function delete_record( $record_id, &$d ) {
-		global $db;
-		
-		if (!$this->validate_delete($d)) {
-			$d["error"]=$this->error;
-			return False;
-		}
+        function delete_record( $record_id, &$d ) {
+                global $db;
+                
+                if (!$this->validate_delete($record_id)) {
+                        $d["error"]=$this->error;
+                        return False;
+                }
 		$q = "DELETE FROM #__{vm}_product_discount WHERE discount_id='$record_id'";
 		$db->query($q);
 		

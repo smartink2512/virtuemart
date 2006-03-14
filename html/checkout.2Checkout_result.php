@@ -52,7 +52,7 @@ else {
   if ($compare_hash1 != $compare_hash2) {
         ?>
         <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><? echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?></span><?php
+        <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?></span><?php
   }
   else {
         $qv = "SELECT order_id, order_number FROM #__{vm}_orders ";

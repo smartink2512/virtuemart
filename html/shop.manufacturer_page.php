@@ -21,7 +21,7 @@ $manufacturer_id = intval( mosGetParam( $_GET, 'manufacturer_id' ));
 
 if( !empty( $manufacturer_id ) ) {
   $q  = "SELECT mf_name,mf_email,mf_desc,mf_url FROM #__{vm}_manufacturer WHERE ";
-  $q .= "manufacturer_id='$manufacturer_id'";
+  $q .= "manufacturer_id=$manufacturer_id";
   $db->query($q);
   $db->next_record();
   
@@ -35,7 +35,7 @@ if( !empty( $manufacturer_id ) ) {
   <table align="center"cellspacing="0" cellpadding="0" border="0">
       <tr valign="top"> 
         <th colspan="2" align="center"class="sectiontableheader">
-          <strong><? echo $VM_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></strong>
+          <strong><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></strong>
         </th>
       </tr>
       <tr valign="top">
@@ -47,15 +47,15 @@ if( !empty( $manufacturer_id ) ) {
   
       <tr>
         <td valign="top" align="center"colspan="2">
-            <br /><? echo $VM_LANG->_PHPSHOP_STORE_FORM_EMAIL ?>:&nbsp;
+            <br /><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_EMAIL ?>:&nbsp;
             <a href="mailto:<?php echo $mf_email; ?>"><?php echo $mf_email; ?></a>
             <br />
-            <br /><a href="<? echo $mf_url ?>" target="_blank"><? echo $mf_url ?></a><br />
+            <br /><a href="<?php echo $mf_url ?>" target="_blank"><?php echo $mf_url ?></a><br />
         </td>
       </tr>
       <tr>
         <td valign="top" align="left" colspan="2">
-            <br /><? echo $mf_desc ?><br />
+            <br /><?php echo $mf_desc ?><br />
         </td>
       </tr>
     

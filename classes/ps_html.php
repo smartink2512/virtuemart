@@ -241,13 +241,13 @@ class ps_html {
 
 				$dbs->query( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$db->f("country_id")."'" );
 
-				if( $dbs->num_rows() > 0 ) {
-					while( $dbs->next_record() ) {
-						// array in the format [key,value,text]
-						$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$dbs->f("state_2_code")."','".htmlspecialchars($dbs->f("state_name"), ENT_QUOTES)."' );\n";
-					}
-				}
-				else {
+                                if( $dbs->num_rows() > 0 ) {
+                                        while( $dbs->next_record() ) {
+                                                // array in the format [key,value,text]
+                                                $script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$dbs->f("state_2_code")."','".htmlentities($dbs->f("state_name"), ENT_QUOTES)."' );\n";
+                                        }
+                                }
+                                else {
 					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_PHPSHOP_NONE."' );\n";
 				}
 
@@ -437,22 +437,22 @@ class ps_html {
 	* A red colored "Unwritable" box when the file is NOT writeable
 	* 
 	* @param string A path to a file or directory
-	* @return string Prints a div element
-	*/
-	function writableIndicator( $folder ) {
-		global $VM_LANG;
-		if( !is_array( $folder)) {
-			$folder = array($folder);
-		}
+        * @return string Prints a div element
+        */
+        function writableIndicator( $folder ) {
+                global $VM_LANG;
+                if( !is_array( $folder)) {
+                        $folder = array($folder);
+                }
 		echo '<div class="quote" style="text-align:left;margin-left:20px;" >';
-		foreach( $folder as $dir ) {
-			echo $dir . ' :: ';
-			echo is_writable( $dir )
-			? '<span style="font-weight:bold;color:green;">'.$VM_LANG->_VM_WRITABLE.'</span>'
-			: '<span style="font-weight:bold;color:red;">'.$VM_LANG->_VM_UNWRITABLE.'</span>';
-			echo '<br/>';
-		}
-		echo '</div>';
+                foreach( $folder as $dir ) {
+                        echo $dir . ' :: ';
+                        echo is_writable( $dir )
+                        ? '<span style="font-weight:bold;color:green;">'.$VM_LANG->_VM_WRITABLE.'</span>'
+                        : '<span style="font-weight:bold;color:red;">'.$VM_LANG->_VM_UNWRITABLE.'</span>';
+                        echo '<br/>';
+                }
+                echo '</div>';
 	}
 	/**
 	 * This is used by lists to show a "Delete this item" button in each row

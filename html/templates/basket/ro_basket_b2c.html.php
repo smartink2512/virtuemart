@@ -20,10 +20,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 ?>
-<table width="100%" cellspacing="0" cellpadding="4" border="0">
+<table width="100%" cellspacing="2" cellpadding="4" border="0">
   <tr align="left" class="sectiontableheader">
-	<th><?php echo $VM_LANG->_PHPSHOP_CART_NAME ?></th>
-	<th><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></th>
+        <th><?php echo $VM_LANG->_PHPSHOP_CART_NAME ?></th>
+        <th><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></th>
 	<th><?php echo $VM_LANG->_PHPSHOP_CART_PRICE ?></th>
 	<th><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?></th>
 	<th><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?></th>
@@ -91,8 +91,8 @@ if( $coupon_discount_after ) { ?>
   </tr>
 <?php if ( $tax ) { ?>
   <tr class="sectiontableentry2">
-	<td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </td> 
-	<td><?php echo $tax_display ?></td>
+        <td colspan="4" align="right" valign="top"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </td> 
+        <td><?php echo $tax_display ?></td>
   </tr>
 <?php } 
 ?>

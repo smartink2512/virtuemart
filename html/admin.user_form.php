@@ -25,17 +25,17 @@ global $ps_shopper_group;
 include_class( 'shopper' );
 
 if( !isset($ps_shopper_group)) {
-	$ps_shopper_group = new ps_shopper_group();
+        $ps_shopper_group = new ps_shopper_group();
 }
 
 $user_id = intval( mosGetParam( $_REQUEST, 'user_id' ));
 
 if( !empty($user_id) ) {
-	$q = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id ";
-	$q .= "WHERE id=$user_id ";
-	$q .= "AND (address_type='BT' OR address_type IS NULL ) ";
-	$q .= "AND gid <= ".$my->gid;
-	$db->query($q);
+        $q = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id ";
+        $q .= "WHERE id=$user_id ";
+        $q .= "AND (address_type='BT' OR address_type IS NULL ) ";
+        $q .= "AND gid <= ".$my->gid;
+        $db->query($q);
 	$db->next_record();
 }
 
@@ -50,6 +50,7 @@ $tabs->startTab( 'General User Information', "userform-page");
 
 $_REQUEST['cid'][0] = $user_id;
 $_REQUEST['task'] = 'edit';
+$GLOBALS['option'] = 'com_users'; // Cheat Joomla 1.1
 $mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
 $mainframe->_path->class = $mosConfig_absolute_path.'/administrator/components/com_users/users.class.php';
 ob_start();
@@ -59,42 +60,46 @@ ob_end_clean();
 
 $userform = str_replace( '<form action="index2.php" method="post" name="adminForm">', '', $userform );
 $userform = str_replace( '</form>', '', $userform );
-
+$userform = str_replace( '<div id="editcell">', '', $userform );
+$userform = str_replace( '</table>
+                </div>', '</table>', $userform );
 echo $userform;
-$_REQUEST['option'] = 'com_virtuemart';
+
+$_REQUEST['option'] = $GLOBALS['option'] = 'com_virtuemart';
 
 $tabs->endTab();
 $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
 ?>
 <table class="adminform">  
+        <tr> 
+                <td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</td>
+                <td><?php $ps_product->list_vendor($db->f("vendor_id"));  ?></td>
+        </tr>
 	<tr> 
-		<td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</td>
-		<td><?php $ps_product->list_vendor($db->f("vendor_id"));  ?></td>
-	</tr>
-	<tr> 
-		<td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td> 
-		<td width="62%" > 
-			<?php
-			$perm->list_perms("perms", $db->sf("perms"));
-			?> 
-		</td> 
-	</tr>
-	<tr> 
+                <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td> 
+                <td width="62%" > 
+                        <?php
+                        if( !isset( $ps_user)) { $ps_user = new ps_user(); }
+                        $ps_user->list_perms("perms", $db->sf("perms"));
+                        ?> 
+                </td> 
+        </tr> 
+          <tr> 
         <td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_CUSTOMER_NUMBER ?>:</td>
-        <td > 
+            <td > 
           <input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo $ps_shopper_group->get_customer_num($db->f("user_id")) ?>" />
-        </td>
-      </tr>
-      <tr> 
+            </td>
+          </tr>
+          <tr> 
         <td style="text-align:right;"> <?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_GROUP ?>:</td>
-        <td><?php
-			include_class('shopper');
-			$sg_id = $ps_shopper_group->get_shoppergroup_by_id($db->f("user_id"));
-			$ps_shopper_group->list_shopper_groups("shopper_group_id",$sg_id["shopper_group_id"]);?>
-        </td>
-      </tr>
+            <td ><?php
+                        include_class('shopper');
+                        $sg_id = $ps_shopper_group->get_shoppergroup_by_id($db->f("user_id"));
+                        $ps_shopper_group->list_shopper_groups("shopper_group_id",$sg_id["shopper_group_id"]);?>
+                        </td>
+                </tr>
 </table> 
-
+       
        
 <?php 
 if( $db->f("user_id") ) { 
@@ -144,7 +149,7 @@ echo '</td></tr></table>';
 $tabs->endTab();
 $tabs->startTab( $VM_LANG->_PHPSHOP_ORDER_LIST_LBL, "order-list");
 ?>
-
+        
 <h3><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_LBL ?> </h3>
 
 <?php
@@ -174,47 +179,47 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					$VM_LANG->_PHPSHOP_ORDER_LIST_ID => '',
-					$VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_CDATE => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
-					_E_REMOVE => "width=\"5%\""
-				);
+                                        $VM_LANG->_PHPSHOP_ORDER_LIST_ID => '',
+                                        $VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW => '',
+                                        $VM_LANG->_PHPSHOP_ORDER_LIST_CDATE => '',
+                                        $VM_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
+                                        $VM_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
+                                        $VM_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
+                                        _E_REMOVE => "width=\"5%\""
+                                );
 $listObj->writeTableHeader( $columns );
 
 $db->query($list);
 $i = 0;
 while ($db->next_record()) { 
     
-	$listObj->newRow();
-	
-	// The row number
-	$listObj->addCell( $pageNav->rowNumber( $i ) );
-	
-	$url = $_SERVER['PHP_SELF']."?page=order.order_print&limitstart=$limitstart&keyword=$keyword&order_id=". $db->f("order_id");
-	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">".sprintf("%08d", $db->f("order_id"))."</a><br />";
-	$listObj->addCell( $tmp_cell );
-	
-	$details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1");
+        $listObj->newRow();
+        
+        // The row number
+        $listObj->addCell( $pageNav->rowNumber( $i ) );
+        
+        $url = $_SERVER['PHP_SELF']."?page=order.order_print&limitstart=$limitstart&keyword=$keyword&order_id=". $db->f("order_id");
+        $tmp_cell = "<a href=\"" . $sess->url($url) . "\">".sprintf("%08d", $db->f("order_id"))."</a><br />";
+        $listObj->addCell( $tmp_cell );
+        
+        $details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1");
     $details_url = stristr( $_SERVER['PHP_SELF'], "index2.php" ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
-	
+        
     $details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
     $details_link .= "<img src=\"$mosConfig_live_site/images/M_images/printButton.png\" align=\"center\" height=\"16\" width=\"16\" border=\"0\" /></a>"; 
     $listObj->addCell( $details_link );
 
-	$listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("cdate")));
+        $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("cdate")));
     $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("mdate")));
 
-	$listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
-	
-	$listObj->addCell(  $ps_order_status->getOrderStatusName($db->f("order_status")));
-	
+        $listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
+        
+        $listObj->addCell(  $ps_order_status->getOrderStatusName($db->f("order_status")));
+        
     
-	$listObj->addCell( $ps_html->deleteButton( "order_id", $db->f("order_id"), "orderDelete", $keyword, $limitstart ) );
+        $listObj->addCell( $ps_html->deleteButton( "order_id", $db->f("order_id"), "orderDelete", $keyword, $limitstart ) );
 
-	$i++; 
+        $i++; 
 }
 
 $listObj->writeTable();
@@ -238,8 +243,8 @@ $formObj->finishForm( $funcname, 'admin.user_list', $option );
 ?>
 <script type="text/javascript">
 function submitbutton( button ) {
-	if( submitregistration() ) {
-		document.adminForm.submit();
-	}
+        if( submitregistration() ) {
+                document.adminForm.submit();
+        }
 }
 </script>

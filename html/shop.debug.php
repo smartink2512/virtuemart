@@ -52,7 +52,7 @@ $tabs->startTab( "Shop Core Variables", "shop-variables" );
                 . "&nbsp;&nbsp;"
                 .mm_ToolTip( "Note: This is only the number of queries related to VirtueMart, 
                               which have been processed so far. Because the component is wrapped 
-                              into the Mambo Framework, we can't get the total number of Queries at THIS point"); 
+                              into the Joomla! Framework, we can't get the total number of Queries at THIS point"); 
             ?>
           </td>
           <td align="right" valign="top"><b>Last Page:</b></td>

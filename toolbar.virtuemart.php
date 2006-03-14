@@ -23,9 +23,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 if( stristr( $_SERVER['PHP_SELF'], 'administrator'))
-	@define( '_PSHOP_ADMIN', '1' );
-	
-global $page, $sess;
+        @define( '_PSHOP_ADMIN', '1' );
+        
+global $page;
 if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
     // We parse the phpShop main code before loading the toolbar,
     // for we can catch errors and adjust the toolbar when
@@ -37,34 +37,34 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 	
 	// We have to do some page declarations here
 	
-	// Used for pages that allow (un)publishing items
-	$allowsListPublish = Array( "product.product_list", 
-							"product.product_category_list",
-							"admin.user_field_list",
-							"store.payment_method_list",
-							"order.order_export_list",
-						);
-	// The list of pages with their functions that allow batch deletion
-	$allowsListDeletion = Array(
+        // Used for pages that allow (un)publishing items
+        $allowsListPublish = Array( "product.product_list", 
+                                                        "product.product_category_list",
+                                                        "admin.user_field_list",
+                                                        "store.payment_method_list",
+                                                        "order.order_export_list",
+                                                );
+        // The list of pages with their functions that allow batch deletion
+        $allowsListDeletion = Array(
 								"admin.country_list" => "countryDelete",
 								"admin.curr_list" => "currencyDelete",
-								"admin.function_list" => "functionDelete",
-								"admin.module_list" => "moduleDelete",
-								"admin.user_list" => "userDelete",
-								"admin.user_field_list" => "userfieldDelete",
-								"affiliate.affiliate_list" => "affiliateDelete",
-								"coupon.coupon_list" => "couponDelete",
-								"store.creditcard_list" => "creditcardDelete",
+                                                                "admin.function_list" => "functionDelete",
+                                                                "admin.module_list" => "moduleDelete",
+                                                                "admin.user_list" => "userDelete",
+                                                                "admin.user_field_list" => "userfieldDelete",
+                                                                "affiliate.affiliate_list" => "affiliateDelete",
+                                                                "coupon.coupon_list" => "couponDelete",
+                                                                "store.creditcard_list" => "creditcardDelete",
 								"product.file_list" => "deleteProductFile",
 								"tax.tax_list" => "deleteTaxRate",
 								"manufacturer.manufacturer_category_list" => "manufacturercategoryDelete",
-								"manufacturer.manufacturer_list" => "manufacturerDelete",
-								"order.order_list" => "orderDelete",
-								"order.order_status_list" => "orderStatusDelete",
-								"order.order_export_list" => "orderExportDelete",
-								"store.payment_method_list" => "paymentMethodDelete",
-								"product.product_attribute_list" => "productAttributeDelete",
-								"product.product_category_list" => "productCategoryDelete",
+                                                                "manufacturer.manufacturer_list" => "manufacturerDelete",
+                                                                "order.order_list" => "orderDelete",
+                                                                "order.order_status_list" => "orderStatusDelete",
+                                                                "order.order_export_list" => "orderExportDelete",
+                                                                "store.payment_method_list" => "paymentMethodDelete",
+                                                                "product.product_attribute_list" => "productAttributeDelete",
+                                                                "product.product_category_list" => "productCategoryDelete",
 								"product.product_discount_list" => "discountDelete",
 								"product.product_list" => "productDelete",
 								"product.product_price_list" => "productPriceDelete",
@@ -111,16 +111,16 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 	}
 	elseif( $page == "zone.assign_zones" ) {
 		vmMenuBar::startTable();
-		vmMenuBar::custom( 'save', $page, $vmIcons['save_icon'], $vmIcons['save_icon2'], 'Save Zone Assignments', true, "adminForm", 'zoneassign' );
-		vmMenuBar::endTable();
-	}
-	elseif( $page == "product.product_move" ) {
-		vmMenuBar::startTable();
-		vmMenuBar::custom( 'save', 'product.product_list', $vmIcons['save_icon'], $vmIcons['save_icon2'], 'Move Products', false, "adminForm", 'productMove' );
-		vmMenuBar::spacer();
-		vmMenuBar::customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), $vmIcons['cancel_icon'], $vmIcons['cancel_icon2'], _CMN_CANCEL );
-		vmMenuBar::spacer();
-		vmMenuBar::endTable();
-	}
+                vmMenuBar::custom( 'save', $page, $vmIcons['save_icon'], $vmIcons['save_icon2'], 'Save Zone Assignments', true, "adminForm", 'zoneassign' );
+                vmMenuBar::endTable();
+        }
+        elseif( $page == "product.product_move" ) {
+                vmMenuBar::startTable();
+                vmMenuBar::custom( 'save', 'product.product_list', $vmIcons['save_icon'], $vmIcons['save_icon2'], 'Move Products', false, "adminForm", 'productMove' );
+                vmMenuBar::spacer();
+                vmMenuBar::customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), $vmIcons['cancel_icon'], $vmIcons['cancel_icon2'], _CMN_CANCEL );
+                vmMenuBar::spacer();
+                vmMenuBar::endTable();
+        }
 }
 ?>

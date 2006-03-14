@@ -23,16 +23,16 @@ $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_CART_TITLE );
 
 $continue_link = '';
 if( !empty( $category_id)) {
-	$continue_link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.browse&amp;category_id='.$category_id );
+        $continue_link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.browse&amp;category_id='.$category_id );
 }
 elseif( empty( $category_id) && !empty($product_id)) {
-	$db->query( 'SELECT `category_id` FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id) );
-	$db->next_record();
-	$category_id = $db->f('category_id');
-	$continue_link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.browse&amp;category_id='.$category_id );
+        $db->query( 'SELECT `category_id` FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id) );
+        $db->next_record();
+        $category_id = $db->f('category_id');
+        $continue_link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.browse&amp;category_id='.$category_id );
 }
 elseif( !empty( $manufacturer_id )) {
-	$continue_link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.browse&amp;manufacturer_id='.$manufacturer_id );
+        $continue_link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.browse&amp;manufacturer_id='.$manufacturer_id );
 }
 
 $show_basket = true;
@@ -46,19 +46,19 @@ echo '<!-- End Cart -->
 ';
 
 if ($cart["idx"]) {
-	echo '<br />
+        echo '<br />
  <div style="text-align:center;width:40%;float:left;">&nbsp;';
-	
-	if( $continue_link != '') {
-		?>
+        
+        if( $continue_link != '') {
+ ?>
      <h3><a href="<?php echo $continue_link ?>">
      <img src="<?php echo IMAGEURL ?>ps_image/back.png" align="middle" width="32" height="32" alt="Back" border="0" />
       <?php echo $VM_LANG->_PHPSHOP_CONTINUE_SHOPPING; ?>
      </a></h3>
  <?php
-	}
-	echo '</div>';
-	
+        }
+        echo '</div>';
+        
    if (!defined('_MIN_POV_REACHED')) { ?>
        <div style="text-align:center;width:40%;float:left;">
        <br /><br />
@@ -69,7 +69,7 @@ if ($cart["idx"]) {
  ?>
  <div style="text-align:center;width:40%;float:left;">
      <h3><a href="<?php $sess->purl( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1"); ?>">
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/forward.png" align="middle" width="32" height="32" alt="Forward" border="0" />
+     <img src="<?php echo IMAGEURL ?>ps_image/forward.png" align="middle" width="32" height="32" alt="Forward" border="0" />
       <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ?>
      </a></h3>
  </div>
@@ -83,3 +83,4 @@ if ($cart["idx"]) {
 // End if statement
 }
 ?>
+

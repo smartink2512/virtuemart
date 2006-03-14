@@ -24,6 +24,7 @@ $formObj->startForm();
 
 $shipping_rate_id = mosgetparam( $_REQUEST, 'shipping_rate_id');
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+if (!isset($ps_shipping)) $ps_shipping = new ps_shipping();
 
 if (!empty($shipping_rate_id)) {
   $q = "SELECT * FROM #__{vm}_shipping_rate WHERE shipping_rate_id='$shipping_rate_id'";

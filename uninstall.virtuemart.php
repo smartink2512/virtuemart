@@ -79,16 +79,18 @@ function com_uninstall() {
 	$db->query( 'DROP TABLE `#__{vm}_shipping_rate`;' );
 	$db->query( 'DROP TABLE `#__{vm}_shopper_group`;' );
 	$db->query( 'DROP TABLE `#__{vm}_shopper_vendor_xref`;' );
-	$db->query( 'DROP TABLE `#__{vm}_state`;' );
-	$db->query( 'DROP TABLE `#__{vm}_tax_rate`;' );
-	$db->query( 'DROP TABLE `#__{vm}_user_info`;' );
-	$db->query( 'DROP TABLE `#__{vm}_userfield`;' );
-	$db->query( 'DROP TABLE `#__{vm}_userfield_values`;' );
-	$db->query( 'DROP TABLE `#__{vm}_vendor`;' );
-	$db->query( 'DROP TABLE `#__{vm}_vendor_category`;' );
-	$db->query( 'DROP TABLE `#__{vm}_visit`;' );
-	$db->query( 'DROP TABLE `#__{vm}_waiting_list`;' );
-	$db->query( 'DROP TABLE `#__{vm}_zone_shipping`;' );
+        $db->query( 'DROP TABLE `#__{vm}_state`;' );
+        $db->query( 'DROP TABLE `#__{vm}_tax_rate`;' );
+        $db->query( 'DROP TABLE `#__{vm}_user_info`;' );
+        $db->query( 'DROP TABLE `#__{vm}_userfield`;' );
+        $db->query( 'DROP TABLE `#__{vm}_userfield_values`;' );
+        $db->query( 'DROP TABLE `#__{vm}_vendor`;' );
+        $db->query( 'DROP TABLE `#__{vm}_vendor_category`;' );
+        $db->query( 'DROP TABLE `#__{vm}_visit`;' );
+        $db->query( 'DROP TABLE `#__{vm}_waiting_list`;' );
+        $db->query( 'DROP TABLE `#__{vm}_zone_shipping`;' );
+        
+        $db->query( 'DELETE FROM `#__components` WHERE name = \'virtuemart_version\';' );
   
 }
 

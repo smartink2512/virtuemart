@@ -28,13 +28,13 @@ class vmVersion {
 	// Big Walter Hornton was an US-american blues musician
 	var $CODENAME = 'Big Walter Horton';
 	/** @var string Date */
-	var $RELDATE = '28/11/2005';
+	var $RELDATE = '14/03/2006';
 	/** @var string Time */
 	var $RELTIME = '20:53';
 	/** @var string Timezone */
 	var $RELTZ = 'GMT';
 	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Copyright (C) 2005 Soeren Eberhardt. All rights reserved.'; 
+	var $COPYRIGHT = 'Copyright (C) 2005-2006 Soeren Eberhardt. All rights reserved.'; 
 	/** @var string URL */
 	var $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Mambo released under the GNU/GPL License.';
 }

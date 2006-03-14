@@ -1,7 +1,10 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-*
+* This is the read-only version of the BASKET handler.
+* It displays all products and all totals. Product quantities can't be
+* changed on this page.
+* 
 * @version $Id: ro_basket.php,v 1.4 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
@@ -23,7 +26,7 @@ require_once(CLASSPATH. 'ps_checkout.php' );
 $ps_checkout = new ps_checkout;
 require_once(CLASSPATH . 'ps_shipping_method.php' );
 
-global $weight_total, $total, $tax_total;
+global $weight_total, $total, $tax_total, $order_tax_details, $discount_factor;
 
 /* make sure this is the checkout screen */
 if ($cart["idx"] == 0) {
@@ -197,27 +200,22 @@ else {
   /* SHOW TAX */
   if (!empty($_REQUEST['ship_to_info_id']) || $auth["show_price_including_tax"] == 1) { 
     $tax = true;
-    if ($auth["show_price_including_tax"] == 1 || PAYMENT_DISCOUNT_BEFORE == '1') {
-      // Here we need to re-calculate the Discount
-      // because we assume the Discount is "including Tax"
-      $taxrate = ps_product::get_taxrate();
-      $payment_discount_untaxed = round( $payment_discount / ($taxrate+1), 2);
-      $coupon_discount_untaxed = round( $coupon_discount / ($taxrate+1), 2);
-    }
-    else {
-      $payment_discount_untaxed = $payment_discount;
-      $coupon_discount_untaxed = $coupon_discount;
-    }
+
     if ($weight_total != 0 or TAX_VIRTUAL=='1') {
         $order_taxable = $ps_checkout->calc_order_taxable($vars);
         $vars['payment_discount'] = $payment_discount;
-        $tax_total = $ps_checkout->calc_order_tax($order_taxable-$payment_discount_untaxed-$coupon_discount_untaxed, $vars);
+        $tax_total = $ps_checkout->calc_order_tax($order_taxable, $vars);
     } else {
         $tax_total = 0;
     }
+        if( $auth['show_price_including_tax']) {
+                $tax_total *= $discount_factor;
+        }
     $tax_total += $shipping_tax;
     $tax_total = round( $tax_total, 2 );
     $tax_display = $CURRENCY_DISPLAY->getFullValue($tax_total); 
+                
+        $tax_display .= ps_checkout::show_tax_details( $order_tax_details );
   }
     
   if ( PAYMENT_DISCOUNT_BEFORE != '1') { 

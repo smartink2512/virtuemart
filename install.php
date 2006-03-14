@@ -95,23 +95,29 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	*/
 	// UPDATE FROM mambo-phpShop 1.1
 	if ($install_type=='update11') {
-		require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.1.php" );
-		require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
-		require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
-	}
-	//UDATE FROM mambo-phpShop 1..2 RC2
-	elseif ($install_type=='update12') {  
+                require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.1.php" );
+                require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
+                require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+        }
+        //UDATE FROM mambo-phpShop 1..2 RC2
+        elseif ($install_type=='update12') {  
   
-		require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
-		require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
-	}
-	//UDATE FROM mambo-phpShop 1..2 stable-pl3
-	elseif ($install_type=='update12pl3') {  
+                require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
+                require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+        }
+        //UDATE FROM mambo-phpShop 1..2 stable-pl3
+        elseif ($install_type=='update12pl3') {  
   
-		require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
-	}
+                require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+        }
+        elseif( $install_type == 'updatevm10x' ) {
+                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+        }
 
-	// New Installation : Create all tables
+        // New Installation : Create all tables
 	elseif ($install_type=='newinstall') {	
 		/* Rename the cfg-dist file to cfg */
 		$dist_file = dirname( __FILE__ ) . "/virtuemart.cfg-dist.php";

@@ -44,18 +44,28 @@ if (MUST_AGREE_TO_TOS != '1') {
 }
 ps_userfield::listUserFields( $fields, $skip_fields );
 
-echo '	
-	<div align="center">	
-		<input type="submit" value="'. _BUTTON_SEND_REG .'" class="button" onclick="return( submitregistration());" />
+    echo '
+	<div align="center">';
+    
+	if( !$mosConfig_useractivation ) {
+		echo '<input type="checkbox" name="remember" value="yes" id="remember_login2" checked="checked" />
+		<label for="remember_login2">'. _REMEMBER_ME .'</label><br /><br />';
+	}
+	else {
+		echo '<input type="hidden" name="remember" value="yes" />';
+	}
+	echo '
+		<input type="submit" value="'. _BUTTON_SEND_REG . '" class="button" onclick="return( submitregistration());" />
 	</div>
-   	<input type="hidden" name="Itemid" value="'. @$_REQUEST['Itemid'] .'" />
+	<input type="hidden" name="Itemid" value="'. @$_REQUEST['Itemid'] .'" />
 	<input type="hidden" name="gid" value="'. $my->gid .'" />
 	<input type="hidden" name="id" value="'. $my->id .'" />
 	<input type="hidden" name="user_id" value="'. $my->id .'" />
-	<input type="hidden" name="option" value="'.$_REQUEST['option'].'" />
-	<input type="hidden" name="remember" value="yes" />	
+	<input type="hidden" name="option" value="com_virtuemart" />
+	
+	<input type="hidden" name="useractivation" value="'. $mosConfig_useractivation .'" />
 	<input type="hidden" name="func" value="shopperadd" />
 	<input type="hidden" name="page" value="checkout.index" />
 	</form>
-	';
+</div>';
 ?>

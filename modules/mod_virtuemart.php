@@ -27,6 +27,8 @@ global $module, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $js
 
 $category_id = mosGetParam( $_REQUEST, 'category_id' );
 
+$mod_dir = dirname( __FILE__ );
+
 /* Get module parameters */
 $show_login_form = $params->get( 'show_login_form', 'no' );
 $show_categories = $params->get( 'show_categories', 'yes' );
@@ -63,17 +65,17 @@ if( $show_categories == "yes" ) {
   } 
   elseif( $menutype == "transmenu" ) {
       /* TransMenu script to display a DHTML Drop-Down Menu */
-      include( $mosConfig_absolute_path . '/modules/vm_transmenu.php' );
+      include( $mod_dir.'/vm_transmenu.php' );
     
   }
   elseif( $menutype == "dtree" ) {
       /* dTree script to display structured categories */
-      include( $mosConfig_absolute_path . '/modules/vm_dtree.php' );
+      include( $mod_dir.'/vm_dtree.php' );
     
   }
   elseif( $menutype == "jscook" ) {
       /* JSCook Script to display structured categories */
-      include( $mosConfig_absolute_path . '/modules/vm_JSCook.php' );
+      include( $mod_dir.'/vm_JSCook.php' );
     
   }
 }

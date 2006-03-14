@@ -169,6 +169,7 @@ if ($checkout) {
             $i = 0;
             
             foreach( $PSHOP_SHIPPING_MODULES as $shipping_module ) {
+                $vmLogger->debug( 'Starting Shipping module: '.$shipping_module );
                 include_once( CLASSPATH. "shipping/".$shipping_module.".php" );
                 eval( "\$SHIPPING =& new ".$shipping_module."();");
                 $SHIPPING->list_rates( $vars );
@@ -289,9 +290,9 @@ if ($checkout) {
             // SO REDIRECT HIM TO shop/shopper_add
       ?>
             <table width="100%">
-            	<tr class="sectiontableheader">
-            		<th><?php echo $VM_LANG->_PHPSHOP_NO_CUSTOMER ?></th>
-            	</tr>
+                <tr class="sectiontableheader">
+                        <th><?php echo $VM_LANG->_PHPSHOP_NO_CUSTOMER ?></th>
+            </tr>
             </table>
       <?php 
             include(PAGEPATH. 'checkout_register_form.php');
@@ -311,7 +312,7 @@ if ($checkout) {
           
           
           ?><br />
-            <span><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></span>
+            <div class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></div>
                 <br /><?php
           
                 include(PAGEPATH. 'checkout_register_form.php');

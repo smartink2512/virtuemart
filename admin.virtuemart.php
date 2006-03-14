@@ -64,7 +64,7 @@ $limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConf
 $limitstart = $mainframe->getUserStateFromRequest( "view{$page}{$product_id}{$category_id}limitstart", 'limitstart', 0 );
 
 if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
-	echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";
+        echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";
 }
 
 // renew Page-Information
@@ -91,10 +91,12 @@ else {
 }
 include_once( ADMINPATH. 'version.php' );
 
-echo '<br style="clear:both;"/><div class="smallgrey" align="center"><a href="http://virtuemart.net/index.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" target="_blank">Check for latest VirtueMart version</a></div>';
+echo '<br style="clear:both;"/><div class="smallgrey" align="center">'
+                .$VMVERSION->PRODUCT.' '.$VMVERSION->RELEASE
+                .' (<a href="http://virtuemart.net/index2.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" onclick="javascript:void window.open(\'http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE .'\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no\'); return false;" title="VirtueMart Version Check" target="_blank">Check for latest version</a>)</div>';
 
 if( DEBUG == '1' ) {
-	// Load PAGE
+        // Load PAGE
 	include( PAGEPATH."shop.debug.php" );
 }
 if( defined( 'vmToolTipCalled')) {

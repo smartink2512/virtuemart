@@ -241,7 +241,7 @@ echo "<br />".$VM_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
     
   <br/>
   <div style="float:left;width:45%;text-align:right;" >
-    <input type="submit" class="button" name="submit" value="<? echo _E_SAVE ?>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="submit" class="button" name="submit" value="<?php echo _E_SAVE ?>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="<?php $sess->purl( SECUREURL."index.php?page=$next_page") ?>" class="button"><?php echo _BACK ?></a>
   </div>
   </form>
@@ -254,7 +254,7 @@ echo "<br />".$VM_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
         <input type="hidden" name="func" value="useraddressdelete" />
         <input type="hidden" name="user_info_id" value="<?php echo $user_info_id ?>" />
         <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
-        <input type="submit" class="button" name="submit" value="<? echo _E_REMOVE ?>" />
+        <input type="submit" class="button" name="submit" value="<?php echo _E_REMOVE ?>" />
       </form>
     </div>
 <?php 

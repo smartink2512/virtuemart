@@ -16,12 +16,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-// The product section needs much memory
-$memory_limit = str_replace( 'M', '', ini_get('memory_limit'));
-if( (int) $memory_limit < 16 ) {
-	@ini_set('memory_limit', '16M');
-}
-
 /**
  * The class is is used to manage product repository.
  * @package virtuemart
@@ -295,18 +289,18 @@ class ps_product extends vmAbstractObject {
 				$db2->query( $q );
 			}
 		}
-		else {
-			/* If is Product, Insert category ids */
-			foreach( $d["product_categories"] as $category_id ) {
-					$db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
-					$db->next_record();
-					
-					$q  = "INSERT INTO #__{vm}_product_category_xref ";
-					$q .= "(category_id,product_id,product_list) ";
-					$q .= "VALUES ('$category_id','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
-					$db->setQuery($q); $db->query();
-			}
-		}
+                else {
+                        /* If is Product, Insert category ids */
+                        foreach( $d["product_categories"] as $category_id ) {
+                                        $db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
+                                        $db->next_record();
+                                        
+                                $q  = "INSERT INTO #__{vm}_product_category_xref ";
+                                        $q .= "(category_id,product_id,product_list) ";
+                                        $q .= "VALUES ('$category_id','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
+                                $db->setQuery($q); $db->query();
+                        }
+                }
 		$q = "INSERT INTO #__{vm}_product_mf_xref VALUES (";
 		$q .= "'".$d['product_id']."', '".$d['manufacturer_id']."')";
 		$db->setQuery($q); $db->query();
@@ -451,13 +445,13 @@ class ps_product extends vmAbstractObject {
 			$d["product_custom_attribute"] =substr($d["product_custom_attribute"], 0, strlen($d["product_custom_attribute"])-1);
 		}
 
-		if (empty($d["product_special"])) $d["product_special"] = "N";
-		if (empty($d["product_publish"])) $d["product_publish"] = "N";
-		
-		$q  = "UPDATE `#__{vm}_product` SET ";
-		$q .= "product_sku='" . $d["product_sku"] . "',";
-		$q .= "vendor_id='" . $d["vendor_id"] . "',";
-		$q .= "product_name='" . $d["product_name"] . "',";
+                if (empty($d["product_special"])) $d["product_special"] = "N";
+                if (empty($d["product_publish"])) $d["product_publish"] = "N";
+
+                $q  = "UPDATE `#__{vm}_product` SET ";
+                $q .= "product_sku='" . $d["product_sku"] . "',";
+                $q .= "vendor_id='" . $d["vendor_id"] . "',";
+                $q .= "product_name='" . $d["product_name"] . "',";
 		$q .= "product_s_desc='" . $d["product_s_desc"] . "',";
 		$q .= "product_desc='" . $d["product_desc"] . "',";
 		$q .= "product_publish='" . $d["product_publish"] . "',";
@@ -475,14 +469,14 @@ class ps_product extends vmAbstractObject {
 		$q .= $d["product_available_date_timestamp"] . "',";
 		$q .= "product_availability='" . $d["product_availability"] . "',";
 		$q .= "product_special='" . $d["product_special"] . "',";
-		$q .= "product_discount_id='" . $d["product_discount_id"] . "',";
-		$q .= "product_thumb_image='" . $d["product_thumb_image"] . "',";
-		$q .= "product_full_image='" . $d["product_full_image"] . "',";
-		$q .= "attribute='".str_replace( '"', '\'', $d["product_advanced_attribute"])."',";
-		$q .= "custom_attribute='".str_replace( '"', '\'', $d["product_custom_attribute"])."',";
-		$q .= "product_tax_id='".$d["product_tax_id"]."',";
-		$q .= "mdate='$timestamp' ";
-		$q .= "WHERE product_id='" . $d["product_id"] . "'";
+                $q .= "product_discount_id='" . $d["product_discount_id"] . "',";
+                $q .= "product_thumb_image='" . $d["product_thumb_image"] . "',";
+                $q .= "product_full_image='" . $d["product_full_image"] . "',";
+                $q .= "attribute='".str_replace( '"', '\'', $d["product_advanced_attribute"])."',";
+                $q .= "custom_attribute='".str_replace( '"', '\'', $d["product_custom_attribute"])."',";
+                $q .= "product_tax_id='".$d["product_tax_id"]."',";
+                $q .= "mdate='$timestamp' ";
+                $q .= "WHERE product_id='" . $d["product_id"] . "'";
 		//$q .= "AND vendor_id='" . $d['vendor_id'] . "'";
 
 		$db->setQuery($q); $db->query();
@@ -607,44 +601,44 @@ class ps_product extends vmAbstractObject {
 				$q2 .= "AND attribute_name = '" . $db->f("attribute_name") . "' ";
 				$db2->setQuery($q2); $db2->query();
 			}
-			/* If it is a Product, update Category */
-		}
-		else {
-			// Handle category selection: product_category_xref
-			$q  = "SELECT `category_id` FROM `#__{vm}_product_category_xref` ";
-			$q .= "WHERE `product_id` = '" . $d["product_id"] . "' ";
-			$db->setQuery($q);
-			$db->query();
-			$old_categories = array();
-			while( $db->next_record()) {
-				$old_categories[$db->f('category_id')] = $db->f('category_id');
-			}
-			// NOW Insert new categories
-			$new_categories = array();
-			foreach( $d["product_categories"] as $category_id ) {
-				if( !in_array( $category_id, $old_categories ) ) {
-					$db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
-					$db->next_record();
-					
-					$q  = "INSERT INTO #__{vm}_product_category_xref ";
-					$q .= "(category_id,product_id,product_list) ";
-					$q .= "VALUES ('$category_id','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
-					$db->setQuery($q); $db->query();
-					$new_categories[$category_id] = $category_id;
-				}
-				else {
-					unset( $old_categories[$category_id]);
-				}
-			}
-			// The rest of the old categories can be deleted
-			foreach( $old_categories as $category_id ) {
-				$q  = "DELETE FROM `#__{vm}_product_category_xref` ";
-				$q .= "WHERE `product_id` = '" . $d["product_id"] . "' ";
-				$q .= "AND `category_id` = '" . $category_id . "' ";
-				$db->setQuery($q);
-				$db->query();
-			}
-		}
+                        /* If it is a Product, update Category */
+                }
+                else {
+                        // Handle category selection: product_category_xref
+                        $q  = "SELECT `category_id` FROM `#__{vm}_product_category_xref` ";
+                        $q .= "WHERE `product_id` = '" . $d["product_id"] . "' ";
+                        $db->setQuery($q);
+                        $db->query();
+                        $old_categories = array();
+                        while( $db->next_record()) {
+                                $old_categories[$db->f('category_id')] = $db->f('category_id');
+                        }
+                        // NOW Insert new categories
+                        $new_categories = array();
+                        foreach( $d["product_categories"] as $category_id ) {
+                                if( !in_array( $category_id, $old_categories ) ) {
+                                        $db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
+                                        $db->next_record();
+                                        
+                                $q  = "INSERT INTO #__{vm}_product_category_xref ";
+                                        $q .= "(category_id,product_id,product_list) ";
+                                        $q .= "VALUES ('$category_id','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
+                                $db->setQuery($q); $db->query();
+                                        $new_categories[$category_id] = $category_id;
+                                }
+                                else {
+                                        unset( $old_categories[$category_id]);
+                                }
+                        }
+                        // The rest of the old categories can be deleted
+                        foreach( $old_categories as $category_id ) {
+                                $q  = "DELETE FROM `#__{vm}_product_category_xref` ";
+                                $q .= "WHERE `product_id` = '" . $d["product_id"] . "' ";
+                                $q .= "AND `category_id` = '" . $category_id . "' ";
+                                $db->setQuery($q);
+                                $db->query();
+                        }
+                }
 
 		if( !empty($d["related_products"])) {
 			/* Insert Pipe separated Related Product IDs */
@@ -771,42 +765,42 @@ class ps_product extends vmAbstractObject {
 			return true;
 		}
 		else {
-			return $this->delete_product( $product_id, $d );
-		}
-	}
-	/**
-	 * Move a product from one category to another
-	 *
-	 * @param array $d
-	 * @return boolean True on sucess, false on failure
-	 */
-	function move( &$d ) {
-		global $db, $vmLogger;
-		if( !is_array( $d['product_id'])) {
-			$vmLogger->err( 'No product found to move.');
-			return false;
-		}
-		if( empty( $d['category_id'])) {
-			$vmLogger->err( 'You must select ONE category!');
-			return false;
-		}
-		// Loop though each product
-		foreach( $d['product_id'] as $product_id ) {
-			// check if the product is already assigned to the category it should be moved to
-			$db->query( 'SELECT product_id FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id).' AND `category_id`='.intval($d['category_id']));
-			if( !$db->next_record()) {
-				// If the product is not yet in this category, move it!
-				$db->query( 'SELECT MAX(`product_list`) as max FROM `#__{vm}_product_category_xref` WHERE `category_id`='.intval($d['category_id']));
-				$db->next_record();
-				$db->query('INSERT INTO `#__{vm}_product_category_xref` VALUES ('.intval($d['category_id']).', '.intval($product_id).', '.intval( $db->f('max') + 1) .') ');
-			}
-			$db->query('DELETE FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id).' AND `category_id`='.intval($d['old_category_id']));
-		}
-		return true;
-	}
-	
-	/**
-	 * The function that holds the code for deleting
+                        return $this->delete_product( $product_id, $d );
+                }
+        }
+        /**
+         * Move a product from one category to another
+         *
+         * @param array $d
+         * @return boolean True on sucess, false on failure
+         */
+        function move( &$d ) {
+                global $db, $vmLogger;
+                if( !is_array( $d['product_id'])) {
+                        $vmLogger->err( 'No product found to move.');
+                        return false;
+                }
+                if( empty( $d['category_id'])) {
+                        $vmLogger->err( 'You must select ONE category!');
+                        return false;
+                }
+                // Loop though each product
+                foreach( $d['product_id'] as $product_id ) {
+                        // check if the product is already assigned to the category it should be moved to
+                        $db->query( 'SELECT product_id FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id).' AND `category_id`='.intval($d['category_id']));
+                        if( !$db->next_record()) {
+                                // If the product is not yet in this category, move it!
+                                $db->query( 'SELECT MAX(`product_list`) as max FROM `#__{vm}_product_category_xref` WHERE `category_id`='.intval($d['category_id']));
+                                $db->next_record();
+                                $db->query('INSERT INTO `#__{vm}_product_category_xref` VALUES ('.intval($d['category_id']).', '.intval($product_id).', '.intval( $db->f('max') + 1) .') ');
+                        }
+                        $db->query('DELETE FROM `#__{vm}_product_category_xref` WHERE `product_id`='.intval($product_id).' AND `category_id`='.intval($d['old_category_id']));
+                }
+                return true;
+        }
+        
+        /**
+         * The function that holds the code for deleting
 	 * one product from the database and all related tables
 	 * plus deleting files related to the product
 	 *
@@ -849,12 +843,16 @@ class ps_product extends vmAbstractObject {
 		/* For both Product and Item */
 
 		/* Delete product - manufacturer xref */
-		$q = "DELETE FROM #__{vm}_product_mf_xref WHERE product_id='$product_id'";
-		$db->setQuery($q); $db->query();
+                $q = "DELETE FROM #__{vm}_product_mf_xref WHERE product_id='$product_id'";
+                $db->setQuery($q); $db->query();
 
-		/* Delete product votes */
-		$q  = "DELETE FROM #__{vm}_product_votes WHERE product_id='$product_id'";
-		$db->setQuery($q); $db->query();
+                /* Delete Product - ProductType Relations */
+                $q  = "DELETE FROM `#__{vm}_product_product_type_xref` WHERE `product_id`=$product_id";
+                $db->setQuery($q); $db->query();
+                
+                /* Delete product votes */
+                $q  = "DELETE FROM #__{vm}_product_votes WHERE product_id='$product_id'";
+                $db->setQuery($q); $db->query();
 
 		/* Delete product reviews */
 		$q = "DELETE FROM #__{vm}_product_reviews WHERE product_id='$product_id'";
@@ -875,16 +873,12 @@ class ps_product extends vmAbstractObject {
 		}
 
 		/* Delete Product Relations */
-		$q  = "DELETE FROM #__{vm}_product_relations WHERE product_id = '$product_id'";
-		$db->setQuery($q); $db->query();
+                $q  = "DELETE FROM #__{vm}_product_relations WHERE product_id = '$product_id'";
+                $db->setQuery($q); $db->query();
 
-		/* Delete Product - ProductType Relations */
-		$q  = "DELETE FROM `#__{vm}_product_product_type_xref` WHERE `product_id`=$product_id";
-		$db->setQuery($q); $db->query();
-		
-		/* Delete Prices */
-		$q  = "DELETE FROM #__{vm}_product_price WHERE product_id = '$product_id'";
-		$db->setQuery($q); $db->query();
+                /* Delete Prices */
+                $q  = "DELETE FROM #__{vm}_product_price WHERE product_id = '$product_id'";
+                $db->setQuery($q); $db->query();
 
 		/* Delete entry FROM #__{vm}_product table */
 		$q  = "DELETE FROM #__{vm}_product WHERE product_id = '$product_id'";
@@ -1324,43 +1318,43 @@ class ps_product extends vmAbstractObject {
 		$height_greater = false;
 		if( file_exists(IMAGEPATH.$path_appendix."/".$image)) {
 			$arr = @getimagesize( IMAGEPATH.$path_appendix."/".$image );
-			$html_height_width = $arr[3];
-			$height_greater = $arr[0] < $arr[1];
-			if( (PSHOP_IMG_WIDTH < $arr[0] || PSHOP_IMG_HEIGHT < $arr[1]) && $resize != 0 ) {
-				if( $height_greater ) {
-					$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
-				}
-				else {
-					$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
-				}
-			}
-		}
-		if((PSHOP_IMG_RESIZE_ENABLE != '1') && ($resize==1) ) {
-			if( $height_greater ) {
-				$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
-			}
-			else {
-				$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
-			}
-		}
+                        $html_height_width = $arr[3];
+                        $height_greater = $arr[0] < $arr[1];
+                        if( (PSHOP_IMG_WIDTH < $arr[0] || PSHOP_IMG_HEIGHT < $arr[1]) && $resize != 0 ) {
+                                if( $height_greater ) {
+                                $html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
+                                }
+                                else {
+                                $html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
+                        }
+                }
+                }
+                if((PSHOP_IMG_RESIZE_ENABLE != '1') && ($resize==1) ) {
+                        if( $height_greater ) {
+                        $html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
+                        }
+                        else {
+                        $html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
+                }
+                }
 
-		return "<img src=\"$url\" $html_height_width $args $border />";
+                return "<img src=\"$url\" $html_height_width $args $border />";
 
 	}
 
 	/**
 	 * Get the tax rate...
 	 * @author soeren
-	 * @return int The tax rate found
-	 */
-	function get_taxrate() {
-		global $page;
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-		$auth = $_SESSION['auth'];
+         * @return int The tax rate found
+         */
+        function get_taxrate() {
+                global $page;
+                $ps_vendor_id = $_SESSION["ps_vendor_id"];
+                $auth = $_SESSION['auth'];
 
-		if( !defined('_PSHOP_ADMIN' ) || $page == 'product.product_list') {
+                if( !defined('_PSHOP_ADMIN' ) || $page == 'product.product_list') {
 
-			$db = new ps_DB;
+                        $db = new ps_DB;
 
 			if ($auth["show_price_including_tax"] == 1) {
 
@@ -1391,17 +1385,16 @@ class ps_product extends vmAbstractObject {
 					}
 
 				}
-				elseif (TAX_MODE == '1') {
-					if( empty( $_SESSION['taxrate'][$ps_vendor_id] )) {
-						// let's get the store's tax rate
-						$q = "SELECT `tax_rate` FROM #__{vm}_vendor, #__{vm}_tax_rate ";
-						$q .= "WHERE tax_country=vendor_country AND #__{vm}_vendor.vendor_id=1 ";
-						// !! Important !! take the highest available tax rate for the store's country
-						$q .= "ORDER BY `tax_rate` DESC ";
-						echo $q;
-						$db->query($q);
-						if ($db->next_record()) {
-							$_SESSION['taxrate'][$ps_vendor_id] = $db->f("tax_rate");
+                                elseif (TAX_MODE == '1') {
+                                        if( empty( $_SESSION['taxrate'][$ps_vendor_id] )) {
+                                                // let's get the store's tax rate
+                                                $q = "SELECT `tax_rate` FROM #__{vm}_vendor, #__{vm}_tax_rate ";
+                                                $q .= "WHERE tax_country=vendor_country AND #__{vm}_vendor.vendor_id=1 ";
+                                                // !! Important !! take the highest available tax rate for the store's country
+                                                $q .= "ORDER BY `tax_rate` DESC";
+                                                $db->query($q);
+                                                if ($db->next_record()) {
+                                                        $_SESSION['taxrate'][$ps_vendor_id] = $db->f("tax_rate");
 						}
 						else {
 							$_SESSION['taxrate'][$ps_vendor_id] = 0;
@@ -1442,14 +1435,13 @@ class ps_product extends vmAbstractObject {
 		}
 
 		elseif( TAX_MODE == '1' ) {
-
+			
 			if( empty( $_SESSION['product_sess'][$product_id]['tax_rate'] ) ) {
 				$db = new ps_DB;
 				// Product's tax rate id has priority!
 				$q = "SELECT product_weight, tax_rate FROM #__{vm}_product, #__{vm}_tax_rate ";
 				$q .= "WHERE product_tax_id=tax_rate_id AND product_id='$product_id'";
 				$db->query($q);
-				
 				if ($db->next_record()) {
 					$rate = $db->f("tax_rate");
 					$product_weight = $db->f('product_weight');
@@ -1518,12 +1510,12 @@ class ps_product extends vmAbstractObject {
 	 * with $auth['user_id'] - including shopper group discounts
 	 *
 	 * @param int $product_id
-	 * @param boolean $check_multiple_prices Check if the product has more than one price for that shopper group?
-	 * @return array The product price information
-	 */
-	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='') {
-		$auth = $_SESSION['auth'];
-		$cart = $_SESSION['cart'];
+         * @param boolean $check_multiple_prices Check if the product has more than one price for that shopper group?
+         * @return array The product price information
+         */
+        function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='') {
+                $auth = $_SESSION['auth'];
+                $cart = $_SESSION['cart'];
 
 		if( empty( $GLOBALS['product_info'][$product_id]['price'] )
 		|| !empty($GLOBALS['product_info'][$product_id]['price']["product_has_multiple_prices"])
@@ -1538,20 +1530,20 @@ class ps_product extends vmAbstractObject {
 				$db->next_record();
 				$_SESSION['product_sess'][$product_id]['vendor_id'] = $vendor_id = $db->f("vendor_id");
 			}
-			else {
-				$vendor_id = $_SESSION['product_sess'][$product_id]['vendor_id'];
-			}
-			if( $overrideShopperGroup === '') {
-				$shopper_group_id = $auth["shopper_group_id"];
-				$shopper_group_discount = $auth["shopper_group_discount"];
-			}
-			else {
-				$shopper_group_id = $overrideShopperGroup;
-				$shopper_group_discount = 0;
-			}
-			if( empty($GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id']) ) {
-				// Get the default shopper group id for this vendor
-				$q = "SELECT shopper_group_id,shopper_group_discount FROM #__{vm}_shopper_group WHERE ";
+                        else {
+                                $vendor_id = $_SESSION['product_sess'][$product_id]['vendor_id'];
+                        }
+                        if( $overrideShopperGroup === '') {
+                        $shopper_group_id = $auth["shopper_group_id"];
+                        $shopper_group_discount = $auth["shopper_group_discount"];
+                        }
+                        else {
+                                $shopper_group_id = $overrideShopperGroup;
+                                $shopper_group_discount = 0;
+                        }
+                        if( empty($GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id']) ) {
+                                // Get the default shopper group id for this vendor
+                                $q = "SELECT shopper_group_id,shopper_group_discount FROM #__{vm}_shopper_group WHERE ";
 				$q .= "vendor_id='$vendor_id' AND `default`='1'";
 				$db->setQuery($q); $db->query();
 				$db->next_record();
@@ -1574,17 +1566,17 @@ class ps_product extends vmAbstractObject {
 				$quantity = 0;
 				for ($i=0;$i<$cart["idx"];$i++) {
 					if ($cart[$i]["product_id"] == $product_id) {
-						$quantity  += $cart[$i]["quantity"];
-					}
-				}
-				$volume_quantity_sql = " ORDER BY price_quantity_start";
-				if( $quantity > 0 ) {
-					$volume_quantity_sql = " AND (('$quantity' >= price_quantity_start AND '$quantity' <= price_quantity_end)
+                                                $quantity  += $cart[$i]["quantity"];
+                                        }
+                                }
+                                $volume_quantity_sql = " ORDER BY price_quantity_start";
+                                if( $quantity > 0 ) {
+                                $volume_quantity_sql = " AND (('$quantity' >= price_quantity_start AND '$quantity' <= price_quantity_end)
                                 OR (price_quantity_end='0') OR ('$quantity' > price_quantity_end)) ORDER BY price_quantity_end DESC";
-				}
-			}
-			else {
-				$volume_quantity_sql = " ORDER BY price_quantity_start";
+                                }
+                        }
+                        else {
+                                $volume_quantity_sql = " ORDER BY price_quantity_start";
 			}
 
 			// Getting prices
@@ -1935,57 +1927,57 @@ class ps_product extends vmAbstractObject {
 		$description = str_replace( ":", ": ", $description );
 		$description = str_replace( ";", "<br/>", $description );
 		$description = str_replace( '@saved@', $CURRENCY_DISPLAY->symbol, $description );
-		
-		return $description;
-	}
-	
-	function calcEndUserprice( $product_id, $overrideShoppergroup ) {
-		global $VM_LANG, $CURRENCY_DISPLAY;
-		$auth = $_SESSION['auth'];
-		// Get the DISCOUNT AMOUNT
-		$discount_info = $this->get_discount( $product_id );
+                
+                return $description;
+        }
+        
+        function calcEndUserprice( $product_id, $overrideShoppergroup ) {
+                global $VM_LANG, $CURRENCY_DISPLAY;
+                $auth = $_SESSION['auth'];
+                // Get the DISCOUNT AMOUNT
+                $discount_info = $this->get_discount( $product_id );
 
-		// Get the Price according to the quantity in the Cart
-		$price_info = $this->get_price( $product_id, false, $overrideShoppergroup );
+                // Get the Price according to the quantity in the Cart
+                $price_info = $this->get_price( $product_id, false, $overrideShoppergroup );
 
-		$html = "";
-		$undiscounted_price = 0;
-		if (isset($price_info["product_price_id"])) {
+                $html = "";
+                $undiscounted_price = 0;
+                if (isset($price_info["product_price_id"])) {
 
-			$base_price = $price_info["product_price"];
-			$price = $price_info["product_price"];
+                        $base_price = $price_info["product_price"];
+                        $price = $price_info["product_price"];
 
-			if ($auth["show_price_including_tax"] == 1) {
-				$my_taxrate = $this->get_product_taxrate($product_id);
-				$base_price += ($my_taxrate * $price);
-			}
-			else {
-				$my_taxrate = 0;
-			}
-			$tax = $my_taxrate * 100;
-			$price_info['tax_rate'] = $VM_LANG->_PHPSHOP_TAX_LIST_RATE.': '.$tax.'%';
-			// Calculate discount
-			if( !empty($discount_info["amount"])) {
-				$undiscounted_price = $base_price;
-				switch( $discount_info["is_percent"] ) {
-					case 0: 
-						$base_price -= $discount_info["amount"]; 
-						$price_info['discount_info'] = $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LBL.': '.$CURRENCY_DISPLAY->getFullValue($discount_info['amount']);
-						break;
-					case 1: 
-						$base_price *= (100 - $discount_info["amount"])/100; 
-						$price_info['discount_info'] = $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LBL.': '.$discount_info['amount'].'%';
-						break;
-				}
-			}
-			$price_info['product_price'] = $base_price;
-		}
-		return $price_info;
-	}
-	
-	/**
-	 * Function to calculate the price, apply discounts from the discount table
-	 * and reformat the price
+                        if ($auth["show_price_including_tax"] == 1) {
+                                $my_taxrate = $this->get_product_taxrate($product_id);
+                                $base_price += ($my_taxrate * $price);
+                        }
+                        else {
+                                $my_taxrate = 0;
+                        }
+                        $tax = $my_taxrate * 100;
+                        $price_info['tax_rate'] = $VM_LANG->_PHPSHOP_TAX_LIST_RATE.': '.$tax.'%';
+                        // Calculate discount
+                        if( !empty($discount_info["amount"])) {
+                                $undiscounted_price = $base_price;
+                                switch( $discount_info["is_percent"] ) {
+                                        case 0: 
+                                                $base_price -= $discount_info["amount"]; 
+                                                $price_info['discount_info'] = $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LBL.': '.$CURRENCY_DISPLAY->getFullValue($discount_info['amount']);
+                                                break;
+                                        case 1: 
+                                                $base_price *= (100 - $discount_info["amount"])/100; 
+                                                $price_info['discount_info'] = $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_LBL.': '.$discount_info['amount'].'%';
+                                                break;
+                                }
+                        }
+                        $price_info['product_price'] = $base_price;
+                }
+                return $price_info;
+        }
+        
+        /**
+         * Function to calculate the price, apply discounts from the discount table
+         * and reformat the price
 	 *
 	 * @param int $product_id
 	 * @param boolean $hide_tax Wether to show the text "(including X.X% tax)" or not
@@ -2193,17 +2185,17 @@ class ps_product extends vmAbstractObject {
 
 			$cid = $ps_product_category->get_cid( $db->f("product_id" ) );
 
-			$html .= "<span style=\"font-weight:bold;\">".$db->f("product_name")."</span>\n";
-			$html .= "<br />\n";
-			$url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_id"));
-			if ($db->f("product_parent_id")) {
-				$url = "?page=shop.product_details&flypage=".$this->get_flypage($db->f("product_parent_id"));
-				$url .= "&product_id=" . $db->f("product_parent_id");
-			} else {
-				$url = "?page=shop.product_details&flypage=".$this->get_flypage($db->f("product_id"));
-				$url .= "&product_id=" . $db->f("product_id");
-			}
-			$html .= "<a title=\"".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url. "index.php" . $url)."\">";
+                        $html .= "<span style=\"font-weight:bold;\">".$db->f("product_name")."</span>\n";
+                        $html .= "<br />\n";
+                        
+                        if ($db->f("product_parent_id")) {
+                                $url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_parent_id"));
+                                $url .= "&product_id=" . $db->f("product_parent_id");
+                        } else {
+                                $url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_id"));
+                                $url .= "&product_id=" . $db->f("product_id");
+                        }
+                        $html .= "<a title=\"".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url. "index.php" . $url)."\">";
 			$html .= $this->image_tag($db->f("product_thumb_image"), "alt=\"".$db->f("product_name")."\"");
 			$html .= "</a><br />\n";
 

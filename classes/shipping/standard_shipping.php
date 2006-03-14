@@ -28,19 +28,19 @@ class standard_shipping {
 	* returns:
 	**************************************************************************/
 	function list_rates( &$d ) {
-		global $VM_LANG, $CURRENCY_DISPLAY, $vmLogger;
-		$auth = $_SESSION["auth"];
-		
-		if( defined( $this->classname.'_list_rates_called')) {
-			return;
-		}
-		// Prevent that list_rates is called more than once
-		// as this is a fallback method when other classes fail to
-		// list their rates
-		define( $this->classname.'_list_rates_called', 1);
-		
-		$dbc = new ps_DB; // Carriers
-		$dbr = new ps_DB; // Rates
+                global $VM_LANG, $CURRENCY_DISPLAY, $vmLogger;
+                $auth = $_SESSION["auth"];
+
+                if( defined( $this->classname.'_list_rates_called')) {
+                        return;
+                }
+                // Prevent that list_rates is called more than once
+                // as this is a fallback method when other classes fail to
+                // list their rates
+                define( $this->classname.'_list_rates_called', 1);
+                
+                $dbc = new ps_DB; // Carriers
+                $dbr = new ps_DB; // Rates
 
 		$selected = False;
 		$d['ship_to_info_id'] = mosGetParam($_REQUEST, 'ship_to_info_id');
@@ -93,13 +93,13 @@ class standard_shipping {
 				
 				// THE ORDER OF THOSE VALUES IS IMPORTANT:
 				// ShippingClassName|carrier_name|rate_name|totalshippingcosts|rate_id
-				$shipping_rate_id = urlencode( $this->classname."|"
-									.$dbc->f("shipping_carrier_name")."|"
-									.$dbr->f("shipping_rate_name")."|"
-									.number_format($total_shipping_handling, 2)."|"
-									.$dbr->f("shipping_rate_id"));
-				
-				$_SESSION[$shipping_rate_id] = 1;
+                                $shipping_rate_id = urlencode( $this->classname."|"
+                                                                        .$dbc->f("shipping_carrier_name")."|"
+                                                                        .$dbr->f("shipping_rate_name")."|"
+                                                                        .number_format($total_shipping_handling, 2, '.', '')."|"
+                                                                        .$dbr->f("shipping_rate_id"));
+                                
+                                $_SESSION[$shipping_rate_id] = 1;
 				
 				$html .= "<tr class=\"$class\">";
 				$html .= "<td width=\"10\">

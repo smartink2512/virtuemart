@@ -971,4 +971,38 @@ function vmGetUnEscaped( $string ) {
 		return ( $string );
 	}
 }
+
+/**
+ * Reads a file and sends them in chunks to the browser
+ * This should overcome memory problems
+ * http://www.php.net/manual/en/function.readfile.php#54295
+ *
+ * @param string $filename
+ * @param boolean $retbytes
+ * @return mixed
+ */
+function vmReadFileChunked($filename,$retbytes=true) {
+	$chunksize = 1*(1024*1024); // how many bytes per chunk
+	$buffer = '';
+	$cnt =0;
+	// $handle = fopen($filename, 'rb');
+	$handle = fopen($filename, 'rb');
+	if ($handle === false) {
+		return false;
+	}
+	while (!feof($handle)) {
+		$buffer = fread($handle, $chunksize);
+		echo $buffer;
+		flush();
+		if ($retbytes) {
+			$cnt += strlen($buffer);
+		}
+	}
+	$status = fclose($handle);
+	if ($retbytes && $status) {
+		return $cnt; // return num. bytes delivered like readfile() does.
+	}
+	return $status;
+}
+
 ?>

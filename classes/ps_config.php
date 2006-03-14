@@ -27,10 +27,10 @@ class ps_config {
  ****************************************************************************/
 
 function writeconfig(&$d) {
-    global $my, $db, $VM_LANG;
+    global $my, $db;
     
-	$group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
-	$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
+        $group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
+        $db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
 	$db->next_record();
 	$d['conf_VM_PRICE_ACCESS_LEVEL'] = $db->f('name');
 	
@@ -61,6 +61,7 @@ function writeconfig(&$d) {
             "VM_PRICE_SHOW_INCLUDINGTAX"  =>      "conf_VM_PRICE_SHOW_INCLUDINGTAX",
             "VM_PRICE_ACCESS_LEVEL"  =>      "conf_VM_PRICE_ACCESS_LEVEL",
             "VM_SILENT_REGISTRATION"  =>      "conf_VM_SILENT_REGISTRATION",
+            "VM_BROWSE_ORDERBY_FIELD"  =>      "conf_VM_BROWSE_ORDERBY_FIELD",
             "ENABLE_DOWNLOADS"  =>      "conf_ENABLE_DOWNLOADS",
             "DOWNLOAD_MAX"  =>      "conf_DOWNLOAD_MAX",
             "DOWNLOAD_EXPIRE"  =>      "conf_DOWNLOAD_EXPIRE",
@@ -104,12 +105,13 @@ function writeconfig(&$d) {
             "PSHOP_COUPONS_ENABLE" => "conf_PSHOP_COUPONS_ENABLE",
             "PSHOP_PDF_BUTTON_ENABLE" => "conf_PSHOP_PDF_BUTTON_ENABLE",
             "PSHOP_SHOW_PRODUCTS_IN_CATEGORY" => "conf_PSHOP_SHOW_PRODUCTS_IN_CATEGORY",
-            "PSHOP_SHOW_TOP_PAGENAV"    	=>      "conf_PSHOP_SHOW_TOP_PAGENAV",
-            "PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS"    	=>      "conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS",
-            "PSHOP_SHIPPING_MODULE"    	=>      "conf_SHIPPING"
+            "PSHOP_SHOW_TOP_PAGENAV"            =>      "conf_PSHOP_SHOW_TOP_PAGENAV",
+            "PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS"          =>      "conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS",
+            "VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
+            "PSHOP_SHIPPING_MODULE"     =>      "conf_SHIPPING"
             );
             
-    	$config = "<?php
+    $config = "<?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 * The configuration file for VirtueMart
@@ -155,31 +157,47 @@ define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_vi
 define( 'CLASSPATH', ADMINPATH.'classes/' );
 define( 'PAGEPATH', ADMINPATH.'html/' );
 define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_image/' );\n\n";
-
-	    while (list($key, $value) = each($my_config_array)) {
-	        if($key == "PSHOP_SHIPPING_MODULE" ) {
-	            $config .= "\n/* Shipping Methods Definition */\nglobal \$PSHOP_SHIPPING_MODULES;\n";
-	            $i = 0;
+                
+        // LOOP THROUGH ALL CONFIGURATION VARIABLES
+            while (list($key, $value) = each($my_config_array)) {
+                
+                if( $key == "PSHOP_SHIPPING_MODULE" ) {
+                    $config .= "\n/* Shipping Methods Definition */\nglobal \$PSHOP_SHIPPING_MODULES;\n";
+                    $i = 0;
 	            foreach( $d['conf_SHIPPING'] as $shipping_module) {
 	                $config.= "\$PSHOP_SHIPPING_MODULES[$i] = \"$shipping_module\";\n";
-	                $i++;
-	            }
-	        }
-	        else
-	            $config .= "define('".$key."', '".$d[$value]."');\n";
-	    }
-	    
-	    $config .= "?>";
-	
+                        $i++;
+                    }
+                }
+                elseif( $key == "VM_BROWSE_ORDERBY_FIELDS" ) {
+                    $config .= "\n/* OrderByFields */\nglobal \$VM_BROWSE_ORDERBY_FIELDS;\n";
+                    $config .= "\$VM_BROWSE_ORDERBY_FIELDS = array( ";
+                    $i= 0;
+                    foreach( $d['conf_VM_BROWSE_ORDERBY_FIELDS'] as $orderbyfield) {
+                        $config.= "'$orderbyfield'";
+                        if( $i+1 < sizeof( $d['conf_VM_BROWSE_ORDERBY_FIELDS'] )) {
+                                $config .= ',';
+                        }
+                        $i++;
+                    }
+                    $config.= " );\n";
+                }
+                else {
+                        $config .= "define('".$key."', '".$d[$value]."');\n";
+                }
+            }
+            
+            $config .= "?>";
+        
 		if ($fp = fopen(ADMINPATH ."virtuemart.cfg.php", "w")) {
-			fputs($fp, $config, strlen($config));
-			fclose ($fp);
-	
-	        mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
-	
-		} else {
-	        mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", sprintf( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE, ADMINPATH ."virtuemart.cfg.php" ) );
-		}
+                        fputs($fp, $config, strlen($config));
+                        fclose ($fp);
+        
+                mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+        
+                } else {
+                mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", sprintf( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE, ADMINPATH ."virtuemart.cfg.php" ) );
+                }
     }
   } // end function writeconfig
   

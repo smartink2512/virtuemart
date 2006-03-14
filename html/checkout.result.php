@@ -40,7 +40,7 @@ else {
       }
       else { ?>
         <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><? echo $VM_LANG->_PHPSHOP_PAYPAL_ERROR ?></span>
+        <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYPAL_ERROR ?></span>
     
     <?php
     } ?>

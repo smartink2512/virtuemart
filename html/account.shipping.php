@@ -46,7 +46,7 @@ $db->query($q);
 ?>
    <br/><br/>
    <div>
-      <a class="button" href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipto&next_page=account.shipping"); ?>"><? echo $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?></a>
+      <a class="button" href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipto&next_page=account.shipping"); ?>"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?></a>
    </div>
 </fieldset>
 <!-- Body ends here -->

@@ -23,7 +23,7 @@ mm_showMyFileName( __FILE__ );
       <table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="khaki">
         <tr align="center"> 
           <td> 
-            <h4><? echo $VM_LANG->_PHPSHOP_ERROR ?></h4>
+            <h4><?php echo $VM_LANG->_PHPSHOP_ERROR ?></h4>
             <span class="message"><?php echo $error_type;?></span>
             <center>
               <span class="message"><?php echo $error?></span>

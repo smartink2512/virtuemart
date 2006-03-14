@@ -12,8 +12,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * MenuType is set to treemenu
 **/
 
-global $module, $root_label, $sess, $db, $mm_action_url;
+global $module, $root_label, $sess, $db;
 $Itemid = mosGetParam( $_REQUEST, 'Itemid', "");
+if( @get_class( $db ) != 'ps_DB' ) $db = new ps_DB();
 
 require_once( CLASSPATH. "ps_product_category.php" );
 $ps_product_category = new ps_product_category();
