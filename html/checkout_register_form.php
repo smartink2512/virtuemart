@@ -47,7 +47,7 @@ ps_userfield::listUserFields( $fields, $skip_fields );
     echo '
 	<div align="center">';
     
-	if( !$mosConfig_useractivation ) {
+	if( !$mosConfig_useractivation && @VM_SHOW_REMEMBER_ME_BOX ) {
 		echo '<input type="checkbox" name="remember" value="yes" id="remember_login2" checked="checked" />
 		<label for="remember_login2">'. _REMEMBER_ME .'</label><br /><br />';
 	}

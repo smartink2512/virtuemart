@@ -28,36 +28,36 @@ define("CHECK_OUT_GET_FINAL_CONFIRMATION", 99);
  *
  */
 class ps_checkout {
-        var $classname = "ps_checkout";
-        var $_SHIPPING = null;
-        
-        var $_subtotal = null;
-        var $_shipping = null;
-        var $_shipping_tax = null;
-        var $_payment_discount = null;
-        var $_coupon_discount = null;
-        var $_order_total = null;
-        /** @var string An md5 hash of print_r( $cart, true ) to check wether the checkout values have to be renewed */
-        var $_cartHash;
-        
-        /**
+	var $classname = "ps_checkout";
+	var $_SHIPPING = null;
+
+	var $_subtotal = null;
+	var $_shipping = null;
+	var $_shipping_tax = null;
+	var $_payment_discount = null;
+	var $_coupon_discount = null;
+	var $_order_total = null;
+	/** @var string An md5 hash of print_r( $cart, true ) to check wether the checkout values have to be renewed */
+	var $_cartHash;
+
+	/**
          * Initiate Shipping Modules
          */
-        function ps_checkout() {
-                global $vendor_freeshipping, $vars, $PSHOP_SHIPPING_MODULES;
+	function ps_checkout() {
+		global $vendor_freeshipping, $vars, $PSHOP_SHIPPING_MODULES;
 
-                // Make a snapshot of the current checkout configuration
-                $this->generate_cart_hash();
-                
-                /* Ok, need to decide if we have a free Shipping amount > 0,
-                * and IF the cart total is more than that Free Shipping amount,
-                * let's set Order Shipping = 0
-                */
-                                
-                $this->_subtotal = $this->get_order_subtotal($vars);
-                
-                if( $vendor_freeshipping > 0 && $this->_subtotal > $vendor_freeshipping) {
-                        $PSHOP_SHIPPING_MODULES = Array( "free_shipping" );
+		// Make a snapshot of the current checkout configuration
+		$this->generate_cart_hash();
+
+		/* Ok, need to decide if we have a free Shipping amount > 0,
+		* and IF the cart total is more than that Free Shipping amount,
+		* let's set Order Shipping = 0
+		*/
+
+		$this->_subtotal = $this->get_order_subtotal($vars);
+
+		if( $vendor_freeshipping > 0 && $this->_subtotal > $vendor_freeshipping) {
+			$PSHOP_SHIPPING_MODULES = Array( "free_shipping" );
 			include_once( CLASSPATH. "shipping/free_shipping.php" );
 			$this->_SHIPPING =& new free_shipping();
 		}
@@ -72,21 +72,21 @@ class ps_checkout {
 			eval( "\$this->_SHIPPING =& new ".$filename."();");
 
 		}
-        if(empty($_REQUEST['ship_to_info_id']) && (CHECKOUT_STYLE=='3' || CHECKOUT_STYLE=='4')) {
+		if(empty($_REQUEST['ship_to_info_id']) && (CHECKOUT_STYLE=='3' || CHECKOUT_STYLE=='4')) {
 
-            $db = new ps_DB();
+			$db = new ps_DB();
 
-            /* Select all the ship to information for this user id and
-            * order by modification date; most recently changed to oldest
-            */
-            $q  = "SELECT user_info_id from `#__{vm}_user_info` WHERE ";
-            $q .= "user_id='" . $_SESSION['auth']["user_id"] . "' ";
-            $q .= "AND address_type='BT'";
-            $db->query($q);
-            $db->next_record();
+			/* Select all the ship to information for this user id and
+			* order by modification date; most recently changed to oldest
+			*/
+			$q  = "SELECT user_info_id from `#__{vm}_user_info` WHERE ";
+			$q .= "user_id='" . $_SESSION['auth']["user_id"] . "' ";
+			$q .= "AND address_type='BT'";
+			$db->query($q);
+			$db->next_record();
 
-            $_REQUEST['ship_to_info_id'] = $db->f("user_info_id");
-        }
+			$_REQUEST['ship_to_info_id'] = $db->f("user_info_id");
+		}
 	}
 
 	/**
@@ -106,28 +106,28 @@ class ps_checkout {
 		echo '
 		<table style="background: url('. IMAGEURL .'ps_image/checkout'. $step_count.'_'.$highlighted_step .'.png) right; background-repeat: no-repeat; height:85px;text-align:center;" border="0" cellspacing="0" cellpadding="0">
           <tr>';
-          
 
-        for ($i = 1; $i <= $step_count; $i++) { 
-        
-            echo '<td '.(($highlighted_step==$i) ? $highlighted_style : '') .' width="119" align="center" valign="bottom">';
-            if ($highlighted_step > $i) {
-            	echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&option=com_virtuemart&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".@$shipping_rate_id."&checkout_next_step=".$steps_to_do[$i-1]) .'">';
-            	echo $step_msg[$i-1] .'</a>';
-            }
-            else {
-            	echo $step_msg[$i-1];
+
+		for ($i = 1; $i <= $step_count; $i++) {
+
+			echo '<td '.(($highlighted_step==$i) ? $highlighted_style : '') .' width="119" align="center" valign="bottom">';
+			if ($highlighted_step > $i) {
+				echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&option=com_virtuemart&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".@$shipping_rate_id."&checkout_next_step=".$steps_to_do[$i-1]) .'">';
+				echo $step_msg[$i-1] .'</a>';
 			}
-            echo '</td>';
+			else {
+				echo $step_msg[$i-1];
+			}
+			echo '</td>';
 
-        }
-        echo '    
+		}
+		echo '
           </tr>
         </table>
         <br />';
-        
+
 	}
-	
+
 	/**
 	 * Called to validate the form values before the order is stored
 	 * 
@@ -141,7 +141,7 @@ class ps_checkout {
 		global $VM_LANG, $PSHOP_SHIPPING_MODULES, $vmLogger;
 
 		$db = new ps_DB;
-		
+
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 
@@ -202,8 +202,8 @@ class ps_checkout {
 		}
 		/*
 		if (!$d["payment_method_id"]) {
-			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_MSG_4 );
-			return False;
+		$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_MSG_4 );
+		return False;
 		}*/
 		if ($ps_payment_method->is_creditcard(@$d["payment_method_id"])) {
 
@@ -213,7 +213,7 @@ class ps_checkout {
 			}
 
 			if(!$ps_payment_method->validate_payment($d["payment_method_id"],
-					$_SESSION["ccdata"]["order_payment_number"])) {
+			$_SESSION["ccdata"]["order_payment_number"])) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_CCNUM_INV );
 				return False;
 			}
@@ -240,13 +240,13 @@ class ps_checkout {
 	***************************************************************************/
 	function validate_shipping_method(&$d) {
 		global $VM_LANG, $PSHOP_SHIPPING_MODULES, $vmLogger;
-		
+
 		if( empty($d['shipping_rate_id']) ) {
 			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP );
 			return false;
 		}
 		if( is_callable( array($this->_SHIPPING, 'validate') )) {
-			
+
 			if(!$this->_SHIPPING->validate( $d )) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP );
 				return false;
@@ -273,7 +273,7 @@ class ps_checkout {
 
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
-		
+
 		// We don't need to validate a payment method when
 		// the user has no order total he should pay
 		if( empty( $_REQUEST['order_total'])) {
@@ -411,7 +411,7 @@ class ps_checkout {
 	***************************************************************************/
 	function update(&$d) {
 		global $vmLogger;
-		
+
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -443,8 +443,8 @@ class ps_checkout {
 		}
 		switch ($d["checkout_this_step"]) {
 
-				case CHECK_OUT_GET_FINAL_BASKET :
-	
+			case CHECK_OUT_GET_FINAL_BASKET :
+
 				// The User has finished his works on the Basket, now the next steps
 				$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_ADDR;
 				$checkout_this_step = CHECK_OUT_GET_SHIPPING_ADDR;
@@ -454,7 +454,7 @@ class ps_checkout {
 
 				$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
 				$checkout_this_step = CHECK_OUT_GET_SHIPPING_METHOD;
-	
+
 				// The User has choosen a Shipping address
 				if (empty($d["ship_to_info_id"])) {
 					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
@@ -478,7 +478,7 @@ class ps_checkout {
 
 				$d["checkout_this_step"] = CHECK_OUT_GET_FINAL_CONFIRMATION;
 				$checkout_this_step = CHECK_OUT_GET_FINAL_CONFIRMATION;
-				
+
 				// The User has choosen a payment method
 				$_SESSION['ccdata']['order_payment_name'] = @$d['order_payment_name'];
 				// VISA, AMEX, DISCOVER....
@@ -488,13 +488,13 @@ class ps_checkout {
 				$_SESSION['ccdata']['order_payment_expire_year'] = @$d['order_payment_expire_year'];
 				// 3-digit Security Code (CVV)
 				$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
-	
+
 				if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber
 					$d["checkout_this_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
 					$_REQUEST["checkout_next_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
 					return false;
 				}
-				
+
 				break;
 
 			case CHECK_OUT_GET_FINAL_CONFIRMATION:
@@ -657,22 +657,22 @@ class ps_checkout {
 			echo "Fax:". $db->f("fax"). "</td></tr></table>";
 		}
 
-                return True;
-        }
+		return True;
+	}
 
-        /**
+	/**
          * This is the main function which stores the order information in the database
          * 
          * @author gday, soeren, many others!
          * @param array $d The REQUEST/$vars array
          * @return boolean
          */
-        function add( &$d ) {
-                global $order_tax_details, $afid, $VM_LANG, $mosConfig_debug, $mosConfig_offset,
-                $vmLogger, $vmInputFilter, $discount_factor;
+	function add( &$d ) {
+		global $order_tax_details, $afid, $VM_LANG, $mosConfig_debug, $mosConfig_offset,
+		$vmLogger, $vmInputFilter, $discount_factor;
 
-                $ps_vendor_id = $_SESSION["ps_vendor_id"];
-                $auth = $_SESSION['auth'];
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 		$d["error"] = "";
 		require_once(CLASSPATH. 'ps_payment_method.php' );
@@ -694,7 +694,7 @@ class ps_checkout {
 
 		/* sets _subtotal */
 		$order_subtotal = $tmp_subtotal = $this->calc_order_subtotal($d);
-		
+
 		$order_taxable = $this->calc_order_taxable($d);
 
 		$payment_discount = $d['payment_discount'] = $this->get_payment_discount($d['payment_method_id'], $order_subtotal);
@@ -704,50 +704,50 @@ class ps_checkout {
 			$coupon_discount = floatval($_SESSION['coupon_discount']);
 		}
 		else {
-                        $coupon_discount = 0.00;
-                }
+			$coupon_discount = 0.00;
+		}
 
-                // make sure Total doesn't become negative
-                if( $tmp_subtotal < 0 ) $order_subtotal = $tmp_subtotal = 0;
-                if( $order_taxable < 0 ) $order_taxable = 0;
+		// make sure Total doesn't become negative
+		if( $tmp_subtotal < 0 ) $order_subtotal = $tmp_subtotal = 0;
+		if( $order_taxable < 0 ) $order_taxable = 0;
 
-                // from now on we have $order_tax_details
-                $d['order_tax'] = $order_tax = round( $this->calc_order_tax($order_taxable, $d), 2 );
-                
-                if( $this->_SHIPPING ) {                        
+		// from now on we have $order_tax_details
+		$d['order_tax'] = $order_tax = round( $this->calc_order_tax($order_taxable, $d), 2 );
+
+		if( $this->_SHIPPING ) {
 			/* sets _shipping */
 			$d['order_shipping'] = $order_shipping = round( $this->calc_order_shipping( $d ), 2 );
 
 			/* sets _shipping_tax
-                        * btw: This is WEIRD! To get an exactly rounded value we have to convert
-                        * the amount to a String and call "round" with the string. */
-                        $d['order_shipping_tax'] = $order_shipping_tax = round( strval($this->calc_order_shipping_tax($d)), 2 );
-                }
-                else {
-                        $d['order_shipping'] = $order_shipping = $order_shipping_tax = $d['order_shipping_tax'] = 0.00;
+			* btw: This is WEIRD! To get an exactly rounded value we have to convert
+			* the amount to a String and call "round" with the string. */
+			$d['order_shipping_tax'] = $order_shipping_tax = round( strval($this->calc_order_shipping_tax($d)), 2 );
+		}
+		else {
+			$d['order_shipping'] = $order_shipping = $order_shipping_tax = $d['order_shipping_tax'] = 0.00;
 		}
 
-                $timestamp = time() + ($mosConfig_offset*60*60);
+		$timestamp = time() + ($mosConfig_offset*60*60);
 
-                $d['order_total'] = $order_total =      $tmp_subtotal 
-                                                                                        + $order_tax 
-                                                                                        + $order_shipping 
-                                                                                        + $order_shipping_tax
-                                                                                        - $coupon_discount
-                                                                                        - $payment_discount;
-                
-                $order_tax *= $discount_factor;
-                
-                if (!$this->validate_form($d)) {
-                        return false;
+		$d['order_total'] = $order_total =      $tmp_subtotal
+		+ $order_tax
+		+ $order_shipping
+		+ $order_shipping_tax
+		- $coupon_discount
+		- $payment_discount;
+
+		$order_tax *= $discount_factor;
+
+		if (!$this->validate_form($d)) {
+			return false;
 		}
 
-                if (!$this->validate_add($d)) {
-                        return false;
-                }
+		if (!$this->validate_add($d)) {
+			return false;
+		}
 
-                // make sure Total doesn't become negative
-                if( $order_total < 0 ) $order_total = 0;
+		// make sure Total doesn't become negative
+		if( $order_total < 0 ) $order_total = 0;
 
 		$order_total = round( $order_total, 2);
 
@@ -764,304 +764,304 @@ Tax : '.$order_tax.'
 ------------------------
 Order Total: '.$order_total.'
 ----------------------------' 
-		);
+);
 
-		// Check to see if Payment Class File exists
-		$payment_class = $ps_payment_method->get_field($d["payment_method_id"], "payment_class");
-		$enable_processor = $ps_payment_method->get_field($d["payment_method_id"], "enable_processor");
+// Check to see if Payment Class File exists
+$payment_class = $ps_payment_method->get_field($d["payment_method_id"], "payment_class");
+$enable_processor = $ps_payment_method->get_field($d["payment_method_id"], "enable_processor");
 
-		if (file_exists(CLASSPATH . "payment/$payment_class.php") ) {
-			if( !class_exists( $payment_class ))
-			include( CLASSPATH. "payment/$payment_class.php" );
+if (file_exists(CLASSPATH . "payment/$payment_class.php") ) {
+	if( !class_exists( $payment_class ))
+	include( CLASSPATH. "payment/$payment_class.php" );
 
-			eval( "\$_PAYMENT = new $payment_class();" );
-			if (!$_PAYMENT->process_payment($order_number,$order_total, $d)) {
-				$vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($payment_class)" );
-				$_SESSION['last_page'] = "checkout.index";
-				return False;
-			}
-		}
+	eval( "\$_PAYMENT = new $payment_class();" );
+	if (!$_PAYMENT->process_payment($order_number,$order_total, $d)) {
+		$vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($payment_class)" );
+		$_SESSION['last_page'] = "checkout.index";
+		return False;
+	}
+}
 
-		else {
-			$d["order_payment_log"] = $VM_LANG->_PHPSHOP_CHECKOUT_MSG_LOG;
-		}
+else {
+	$d["order_payment_log"] = $VM_LANG->_PHPSHOP_CHECKOUT_MSG_LOG;
+}
 
-		// Remove the Coupon, because it is a Gift Coupon and now is used!!
-		if( @$_SESSION['coupon_type'] == "gift" ) {
-			$d['coupon_id'] = $_SESSION['coupon_id'];
-			include_once( CLASSPATH.'ps_coupon.php' );
-			ps_coupon::remove_coupon_code( $d );
-                }
+// Remove the Coupon, because it is a Gift Coupon and now is used!!
+if( @$_SESSION['coupon_type'] == "gift" ) {
+	$d['coupon_id'] = $_SESSION['coupon_id'];
+	include_once( CLASSPATH.'ps_coupon.php' );
+	ps_coupon::remove_coupon_code( $d );
+}
 
-                /* Insert the main order information */
-                $q = "INSERT INTO #__{vm}_orders \n";
-                $q .= "(user_id, vendor_id, order_number, user_info_id, ship_method_id, \n";
-                $q .= "order_total, order_subtotal, order_tax, order_tax_details, order_shipping, \n";
-                $q .= "order_shipping_tax, order_discount, coupon_discount,order_currency, order_status, cdate, \n";
-                $q .= "mdate,customer_note,ip_address) \n";
-                $q .= "VALUES (";
-                $q .= "'" . $auth["user_id"] . "', ";
-                $q .= $ps_vendor_id . ", ";
-		$q .= "'" . $order_number . "', '";
-		$q .= $d["ship_to_info_id"] . "', '";
+/* Insert the main order information */
+$q = "INSERT INTO #__{vm}_orders \n";
+$q .= "(user_id, vendor_id, order_number, user_info_id, ship_method_id, \n";
+$q .= "order_total, order_subtotal, order_tax, order_tax_details, order_shipping, \n";
+$q .= "order_shipping_tax, order_discount, coupon_discount,order_currency, order_status, cdate, \n";
+$q .= "mdate,customer_note,ip_address) \n";
+$q .= "VALUES (";
+$q .= "'" . $auth["user_id"] . "', ";
+$q .= $ps_vendor_id . ", ";
+$q .= "'" . $order_number . "', '";
+$q .= $d["ship_to_info_id"] . "', '";
 
-		if (!empty($d["shipping_rate_id"])) {
-			$q .= urldecode($d["shipping_rate_id"]) . "', '";
-		}
-		else {
-			$q .= "', '";
-		}
-                $q .= $order_total . "', '";
-                $q .= $order_subtotal . "', '";
-                $q .= $order_tax . "', '";
-                $q .= serialize($order_tax_details). "', '";
-                $q .= $order_shipping . "', '";
-                $q .= $order_shipping_tax . "', '";
-                $q .= $payment_discount . "', '";
-		$q .= $coupon_discount . "', '";
-		$q .= $_SESSION['vendor_currency']."', "; /* Currency is at the product level - line item */
-		$q .= "'P', '";
-		$q .= $timestamp . "', '";
-		$q .= $timestamp. "', '";
-		$q .= htmlspecialchars(strip_tags($d['customer_note'])) . "', '";
-		if (!empty($_SERVER['REMOTE_ADDR'])) {
-                        $q .= $_SERVER['REMOTE_ADDR'] . "') ";
-                }
-                else {
-                        $q .= "unknown') ";
-                }
-                $db->query($q);
-                $db->next_record();
+if (!empty($d["shipping_rate_id"])) {
+	$q .= urldecode($d["shipping_rate_id"]) . "', '";
+}
+else {
+	$q .= "', '";
+}
+$q .= $order_total . "', '";
+$q .= $order_subtotal . "', '";
+$q .= $order_tax . "', '";
+$q .= serialize($order_tax_details). "', '";
+$q .= $order_shipping . "', '";
+$q .= $order_shipping_tax . "', '";
+$q .= $payment_discount . "', '";
+$q .= $coupon_discount . "', '";
+$q .= $_SESSION['vendor_currency']."', "; /* Currency is at the product level - line item */
+$q .= "'P', '";
+$q .= $timestamp . "', '";
+$q .= $timestamp. "', '";
+$q .= htmlspecialchars(strip_tags($d['customer_note'])) . "', '";
+if (!empty($_SERVER['REMOTE_ADDR'])) {
+	$q .= $_SERVER['REMOTE_ADDR'] . "') ";
+}
+else {
+	$q .= "unknown') ";
+}
+$db->query($q);
+$db->next_record();
 
-		/* Get the order id just stored */
+/* Get the order id just stored */
 
-		$q = "SELECT order_id FROM #__{vm}_orders WHERE order_number = ";
-		$q .= "'" . $order_number . "'";
+$q = "SELECT order_id FROM #__{vm}_orders WHERE order_number = ";
+$q .= "'" . $order_number . "'";
 
-		$db->query($q);
-		$db->next_record();
+$db->query($q);
+$db->next_record();
 
-		$d["order_id"] = $order_id = $db->f("order_id");
+$d["order_id"] = $order_id = $db->f("order_id");
 
-		/**
+/**
 	    * Insert the initial Order History.
 	    */
-		$q = "INSERT INTO #__{vm}_order_history ";
-		$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
-		$q .= "'$order_id', 'P', NOW(), '1', '')";
-		$db->query($q);
+$q = "INSERT INTO #__{vm}_order_history ";
+$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
+$q .= "'$order_id', 'P', NOW(), '1', '')";
+$db->query($q);
 
-		/**
+/**
 	    * Insert the Order payment info 
 	    */
-		$payment_number = ereg_replace(" |-", "", @$_SESSION['ccdata']['order_payment_number']);
+$payment_number = ereg_replace(" |-", "", @$_SESSION['ccdata']['order_payment_number']);
 
-		$d["order_payment_code"] = @$_SESSION['ccdata']['credit_card_code'];
+$d["order_payment_code"] = @$_SESSION['ccdata']['credit_card_code'];
 
-		// Payment number is encrypted using mySQL ENCODE function.
-		$q = "INSERT INTO #__{vm}_order_payment ";
-		$q .= "(order_id, order_payment_code, payment_method_id, order_payment_number, ";
-		$q .= "order_payment_expire, order_payment_log, order_payment_name, order_payment_trans_id) ";
-		$q .= "VALUES ('$order_id', ";
-		$q .= "'" . $d["order_payment_code"] . "', ";
-		$q .= "'" . $d["payment_method_id"] . "', ";
-		$q .= "ENCODE(\"$payment_number\",\"" . ENCODE_KEY . "\"), ";
-		$q .= "'" . @$_SESSION["ccdata"]["order_payment_expire"] . "',";
-		$q .= "'" . @$d["order_payment_log"] . "',";
-		$q .= "'" . @$_SESSION["ccdata"]["order_payment_name"] . "',";
-		$q .= "'" . $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] ). "'";
-		$q .= ")";
-		$db->query($q);
-		$db->next_record();
+// Payment number is encrypted using mySQL ENCODE function.
+$q = "INSERT INTO #__{vm}_order_payment ";
+$q .= "(order_id, order_payment_code, payment_method_id, order_payment_number, ";
+$q .= "order_payment_expire, order_payment_log, order_payment_name, order_payment_trans_id) ";
+$q .= "VALUES ('$order_id', ";
+$q .= "'" . $d["order_payment_code"] . "', ";
+$q .= "'" . $d["payment_method_id"] . "', ";
+$q .= "ENCODE(\"$payment_number\",\"" . ENCODE_KEY . "\"), ";
+$q .= "'" . @$_SESSION["ccdata"]["order_payment_expire"] . "',";
+$q .= "'" . @$d["order_payment_log"] . "',";
+$q .= "'" . @$_SESSION["ccdata"]["order_payment_name"] . "',";
+$q .= "'" . $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] ). "'";
+$q .= ")";
+$db->query($q);
+$db->next_record();
 
-		/**
+/**
 		* Insert the User Billto & Shipto Info
 		*/
-		// Bill To Address
-		$q = "INSERT INTO `#__{vm}_order_user_info` ";
-		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
-		$db->query( $q );
+// Bill To Address
+$q = "INSERT INTO `#__{vm}_order_user_info` ";
+$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
+$db->query( $q );
 
-		// Ship to Address if applicable
-		$q = "INSERT INTO `#__{vm}_order_user_info` ";
-		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
-		$db->query( $q );
+// Ship to Address if applicable
+$q = "INSERT INTO `#__{vm}_order_user_info` ";
+$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
+$db->query( $q );
 
-		/**
+/**
     * Insert all Products from the Cart into order line items; 
     * one row per product in the cart 
     */
-		$dboi = new ps_DB;
+$dboi = new ps_DB;
 
-		for($i = 0; $i < $cart["idx"]; $i++) {
+for($i = 0; $i < $cart["idx"]; $i++) {
 
-			$r = "SELECT product_id,product_in_stock,product_sales,product_parent_id,product_sku,product_name ";
-			$r .= "FROM #__{vm}_product WHERE product_id='".$cart[$i]["product_id"]."'";
-			$dboi->query($r);
-			$dboi->next_record();
+	$r = "SELECT product_id,product_in_stock,product_sales,product_parent_id,product_sku,product_name ";
+	$r .= "FROM #__{vm}_product WHERE product_id='".$cart[$i]["product_id"]."'";
+	$dboi->query($r);
+	$dboi->next_record();
 
-                        $product_price_arr = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-                        $product_price = $product_price_arr["product_price"];
+	$product_price_arr = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
+	$product_price = $product_price_arr["product_price"];
 
-                        if( empty( $_SESSION['product_sess'][$cart[$i]["product_id"]]['tax_rate'] )) {
-                                $my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
-                        }
-                        else {
-                                $my_taxrate = $_SESSION['product_sess'][$cart[$i]["product_id"]]['tax_rate'];
-                        }
-                        // Attribute handling
-                        $product_parent_id = $dboi->f('product_parent_id');
-			
-			if( $product_parent_id > 0 ) {
-				$description = '';
-				$db_atts = $ps_product->attribute_sql( $dboi->f('product_id'), $product_parent_id );
-				while( $db_atts->next_record()) {
-					$description .=	$db_atts->f('attribute_name').': '.$db_atts->f('attribute_value').'; ';
-				}
-			}
-			else {
-				$description = $_SESSION['cart'][$i]["description"];
-			}
-			
-			$product_final_price = round( ($product_price *($my_taxrate+1)), 2 );
+	if( empty( $_SESSION['product_sess'][$cart[$i]["product_id"]]['tax_rate'] )) {
+		$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
+	}
+	else {
+		$my_taxrate = $_SESSION['product_sess'][$cart[$i]["product_id"]]['tax_rate'];
+	}
+	// Attribute handling
+	$product_parent_id = $dboi->f('product_parent_id');
 
-			$vendor_id = $ps_vendor_id;
+	if( $product_parent_id > 0 ) {
+		$description = '';
+		$db_atts = $ps_product->attribute_sql( $dboi->f('product_id'), $product_parent_id );
+		while( $db_atts->next_record()) {
+			$description .=	$db_atts->f('attribute_name').': '.$db_atts->f('attribute_value').'; ';
+		}
+	}
+	else {
+		$description = $_SESSION['cart'][$i]["description"];
+	}
 
-			$product_currency = $product_price_arr["product_currency"];
+	$product_final_price = round( ($product_price *($my_taxrate+1)), 2 );
 
-			$q = "INSERT INTO #__{vm}_order_item ";
-			$q .= "(order_id, user_info_id, vendor_id, product_id, order_item_sku, order_item_name, ";
-			$q .= "product_quantity, product_item_price, product_final_price, ";
-			$q .= "order_item_currency, order_status, product_attribute, cdate, mdate) ";
-			$q .= "VALUES ('";
-			$q .= $order_id . "', '";
-			$q .= $d["ship_to_info_id"] . "', '";
-			$q .= $vendor_id . "', '";
+	$vendor_id = $ps_vendor_id;
+
+	$product_currency = $product_price_arr["product_currency"];
+
+	$q = "INSERT INTO #__{vm}_order_item ";
+	$q .= "(order_id, user_info_id, vendor_id, product_id, order_item_sku, order_item_name, ";
+	$q .= "product_quantity, product_item_price, product_final_price, ";
+	$q .= "order_item_currency, order_status, product_attribute, cdate, mdate) ";
+	$q .= "VALUES ('";
+	$q .= $order_id . "', '";
+	$q .= $d["ship_to_info_id"] . "', '";
+	$q .= $vendor_id . "', '";
+	$q .= $cart[$i]["product_id"] . "', '";
+	$q .= addslashes($dboi->f("product_sku")) . "', '";
+	$q .= addslashes($dboi->f("product_name")) . "', '";
+	$q .= $cart[$i]["quantity"] . "', '";
+	$q .= $product_price . "', '";
+	$q .= $product_final_price . "', '";
+	$q .= $product_currency . "', ";
+	$q .= "'P','";
+	// added for advanced attribute storage
+	$q .= addslashes( $description ) . "', '";
+	// END advanced attribute modifications
+	$q .= $timestamp . "','";
+	$q .= $timestamp . "'";
+	$q .= ")";
+
+	$db->query($q);
+	$db->next_record();
+
+	/* Update Stock Level and Product Sales */
+	if ($dboi->f("product_in_stock")) {
+		$q = "UPDATE #__{vm}_product ";
+		$q .= "SET product_in_stock = product_in_stock - ".$cart[$i]["quantity"];
+		$q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
+		$db->query($q);
+		$db->next_record();
+	}
+
+	$q = "UPDATE #__{vm}_product ";
+	$q .= "SET product_sales= product_sales + ".$cart[$i]["quantity"];
+	$q .= " WHERE product_id='".$cart[$i]["product_id"]."'";
+	$db->query($q);
+	$db->next_record();
+
+}
+
+######## BEGIN DOWNLOAD MOD ###############
+if( ENABLE_DOWNLOADS == "1" ) {
+	for($i = 0; $i < $cart["idx"]; $i++) {
+		$dlnum=0;
+		$dl = "SELECT attribute_name,attribute_value ";
+		$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
+		$dl .= " AND attribute_name='download'";
+		$db->query($dl);
+		$db->next_record();
+
+		if ($db->f("attribute_name") =="download") {
+
+			$str = $order_id;
+			$str .=$cart[$i]["product_id"];
+			$str .=$dlnum;
+			$str .=time();
+
+			$download_id = md5($str);
+
+			$q = "INSERT INTO #__{vm}_product_download ";
+			$q .= "(product_id, user_id, order_id, end_date, download_max, download_id, file_name)";
+			$q .= " VALUES ('";
 			$q .= $cart[$i]["product_id"] . "', '";
-			$q .= addslashes($dboi->f("product_sku")) . "', '";
-			$q .= addslashes($dboi->f("product_name")) . "', '";
-			$q .= $cart[$i]["quantity"] . "', '";
-			$q .= $product_price . "', '";
-			$q .= $product_final_price . "', '";
-			$q .= $product_currency . "', ";
-			$q .= "'P','";
-			// added for advanced attribute storage
-			$q .= addslashes( $description ) . "', '";
-			// END advanced attribute modifications
-			$q .= $timestamp . "','";
-			$q .= $timestamp . "'";
-			$q .= ")";
-
+			$q .= $auth["user_id"] . "', '";
+			$q .= $order_id . "', '";
+			$q .= " 0" . "', '";
+			$q .= DOWNLOAD_MAX . "', '";
+			$q .= $download_id . "', '";
+			$q .= $GLOBALS['vmInputFilter']->safeSQL( $db->f("attribute_value")) . "')";
 			$db->query($q);
 			$db->next_record();
-
-			/* Update Stock Level and Product Sales */
-			if ($dboi->f("product_in_stock")) {
-				$q = "UPDATE #__{vm}_product ";
-				$q .= "SET product_in_stock = product_in_stock - ".$cart[$i]["quantity"];
-				$q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
-				$db->query($q);
-				$db->next_record();
-			}
-
-			$q = "UPDATE #__{vm}_product ";
-			$q .= "SET product_sales= product_sales + ".$cart[$i]["quantity"];
-			$q .= " WHERE product_id='".$cart[$i]["product_id"]."'";
-			$db->query($q);
-			$db->next_record();
-
 		}
+	}
+}
+################## END DOWNLOAD MOD ###########
 
-		######## BEGIN DOWNLOAD MOD ###############
-		if( ENABLE_DOWNLOADS == "1" ) {
-			for($i = 0; $i < $cart["idx"]; $i++) {
-				$dlnum=0;
-				$dl = "SELECT attribute_name,attribute_value ";
-				$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
-				$dl .= " AND attribute_name='download'";
-				$db->query($dl);
-				$db->next_record();
+if (AFFILIATE_ENABLE == '1') {
+	$ps_affiliate->register_sale($order_id);
+}
+// Export the order_id so the checkout complete page can get it
+$d["order_id"] = $order_id;
 
-				if ($db->f("attribute_name") =="download") {
-
-					$str = $order_id;
-					$str .=$cart[$i]["product_id"];
-					$str .=$dlnum;
-					$str .=time();
-
-					$download_id = md5($str);
-
-					$q = "INSERT INTO #__{vm}_product_download ";
-					$q .= "(product_id, user_id, order_id, end_date, download_max, download_id, file_name)";
-					$q .= " VALUES ('";
-					$q .= $cart[$i]["product_id"] . "', '";
-					$q .= $auth["user_id"] . "', '";
-					$q .= $order_id . "', '";
-					$q .= " 0" . "', '";
-					$q .= DOWNLOAD_MAX . "', '";
-					$q .= $download_id . "', '";
-					$q .= $GLOBALS['vmInputFilter']->safeSQL( $db->f("attribute_value")) . "')";
-					$db->query($q);
-					$db->next_record();
-				}
-			}
-		}
-		################## END DOWNLOAD MOD ###########
-
-		if (AFFILIATE_ENABLE == '1') {
-			$ps_affiliate->register_sale($order_id);
-		}
-		// Export the order_id so the checkout complete page can get it
-		$d["order_id"] = $order_id;
-
-		// Now as everything else has been done, we can update
-		// the Order Status if the Payment Method is
-		// "Use Payment Processor", because:
-		// Payment Processors return false on any error
-		// Only completed payments return true!
-		if( $enable_processor == "Y" ) {
-			eval( "if( defined(\"".$_PAYMENT->payment_code."_VERIFIED_STATUS\")) {
+// Now as everything else has been done, we can update
+// the Order Status if the Payment Method is
+// "Use Payment Processor", because:
+// Payment Processors return false on any error
+// Only completed payments return true!
+if( $enable_processor == "Y" ) {
+	eval( "if( defined(\"".$_PAYMENT->payment_code."_VERIFIED_STATUS\")) {
               \$d['order_status'] = ".$_PAYMENT->payment_code."_VERIFIED_STATUS;
               \$update_order = true;
             }
             else
               \$update_order = false;" );
-			if ( $update_order ) {
-				require_once(CLASSPATH."ps_order.php");
-				$ps_order =& new ps_order();
-				$ps_order->order_status_update($d);
-			}
-		}
+	if ( $update_order ) {
+		require_once(CLASSPATH."ps_order.php");
+		$ps_order =& new ps_order();
+		$ps_order->order_status_update($d);
+	}
+}
 
-                // Send the e-mail confirmation messages
-                $this->email_receipt($order_id);
+// Send the e-mail confirmation messages
+$this->email_receipt($order_id);
 
-                // Reset the cart (=empty it)
-                $ps_cart->reset();
+// Reset the cart (=empty it)
+$ps_cart->reset();
 
-                // Unset the payment_method variables
-		$d["payment_method_id"] = "";
-		$d["order_payment_number"] = "";
-                $d["order_payment_expire"] = "";
-                $d["order_payment_name"] = "";
-                $d["credit_card_code"] = "";
-                // Clear the sensitive Session data
-                $_SESSION['ccdata']['order_payment_name']  = "";
-                $_SESSION['ccdata']['order_payment_number']  = "";
-                $_SESSION['ccdata']['order_payment_expire_month'] = "";
-                $_SESSION['ccdata']['order_payment_expire_year'] = "";
-                $_SESSION['ccdata']['credit_card_code'] = "";
-                $_SESSION['coupon_discount'] = "";
-                $_SESSION['coupon_id'] = "";
-                $_SESSION['coupon_redeemed'] = false;
-                
-                $_POST["payment_method_id"] = "";
-                $_POST["order_payment_number"] = "";
-                $_POST["order_payment_expire"] = "";
-                $_POST["order_payment_name"] = "";
-                
-                return True;
-        }
+// Unset the payment_method variables
+$d["payment_method_id"] = "";
+$d["order_payment_number"] = "";
+$d["order_payment_expire"] = "";
+$d["order_payment_name"] = "";
+$d["credit_card_code"] = "";
+// Clear the sensitive Session data
+$_SESSION['ccdata']['order_payment_name']  = "";
+$_SESSION['ccdata']['order_payment_number']  = "";
+$_SESSION['ccdata']['order_payment_expire_month'] = "";
+$_SESSION['ccdata']['order_payment_expire_year'] = "";
+$_SESSION['ccdata']['credit_card_code'] = "";
+$_SESSION['coupon_discount'] = "";
+$_SESSION['coupon_id'] = "";
+$_SESSION['coupon_redeemed'] = false;
+
+$_POST["payment_method_id"] = "";
+$_POST["order_payment_number"] = "";
+$_POST["order_payment_expire"] = "";
+$_POST["order_payment_name"] = "";
+
+return True;
+	}
 
 	/**************************************************************************
 	** name: get_order_number()
@@ -1082,135 +1082,135 @@ Order Total: '.$order_total.'
 
 		$order_number = md5($str);
 
-                return($order_number);
-        }
-        /**
+		return($order_number);
+	}
+	/**
          * Stores the md5 hash of the recent cart in the var _cartHash
          *
          */
-        function generate_cart_hash() {
-                $this->_cartHash = $this->get_new_cart_hash();
-        }
-        
-        /**
+	function generate_cart_hash() {
+		$this->_cartHash = $this->get_new_cart_hash();
+	}
+
+	/**
          * Generates the md5 hash of the recent cart / checkout constellation
          *
          * @return unknown
          */
-        function get_new_cart_hash() {
-                
-                return md5( print_r( $_SESSION['cart'], true)
-                                        . @$_REQUEST['shipping_rate_id']
-                                        . @$_REQUEST['payment_method_id']
-                                        );
-                
-        }
-        
-        /**
+	function get_new_cart_hash() {
+
+		return md5( print_r( $_SESSION['cart'], true)
+		. @$_REQUEST['shipping_rate_id']
+		. @$_REQUEST['payment_method_id']
+		);
+
+	}
+
+	/**
          * Returns the recent subtotal
          *
          * @param array $d
          * @return float The current order subtotal
          */
-        function get_order_subtotal( &$d ) {
-                
-                if(     $this->_subtotal === null ) {
-                        $this->_subtotal = $this->calc_order_subtotal( $d );
-                }
-                else {
-                        if( $this->_cartHash != $this->get_new_cart_hash() ) {
-                                // Need to re-calculate the subtotal
-                                $this->_subtotal = $this->calc_order_subtotal( $d );
-                        }
-                }
-                return $this->_subtotal;
-        }
-        
-        /**************************************************************************
-        ** name: calc_order_subtotal()
+	function get_order_subtotal( &$d ) {
+
+		if(     $this->_subtotal === null ) {
+			$this->_subtotal = $this->calc_order_subtotal( $d );
+		}
+		else {
+			if( $this->_cartHash != $this->get_new_cart_hash() ) {
+				// Need to re-calculate the subtotal
+				$this->_subtotal = $this->calc_order_subtotal( $d );
+			}
+		}
+		return $this->_subtotal;
+	}
+
+	/**************************************************************************
+	** name: calc_order_subtotal()
 	** created by: gday
 	** description:  Calculate the order subtotal for the current order.
 	**               Does not include tax or shipping charges.
-        ** parameters: $d
-        ** returns: sub total for this order
-        ***************************************************************************/
-        function calc_order_subtotal( &$d ) {
-                global $order_tax_details;
-                
-                $order_tax_details = array();
-                $d['order_subtotal_withtax'] = 0;
-                $d['payment_discount'] = 0;
-                $auth = $_SESSION['auth'];
-                $cart = $_SESSION['cart'];
-                $order_subtotal = 0;
+	** parameters: $d
+	** returns: sub total for this order
+	***************************************************************************/
+	function calc_order_subtotal( &$d ) {
+		global $order_tax_details;
+
+		$order_tax_details = array();
+		$d['order_subtotal_withtax'] = 0;
+		$d['payment_discount'] = 0;
+		$auth = $_SESSION['auth'];
+		$cart = $_SESSION['cart'];
+		$order_subtotal = 0;
 
 		require_once(CLASSPATH.'ps_product.php');
-                $ps_product= new ps_product;
+		$ps_product= new ps_product;
 
-                for($i = 0; $i < $cart["idx"]; $i++) {
-                        $my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
-                        $price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-                        $product_price = $price["product_price"];
-                        if( $auth["show_price_including_tax"] == 1 ) {
-                                $product_price = round( ($product_price *($my_taxrate+1)), 2 );
-                                $product_price *= $cart[$i]["quantity"];
-                                $d['order_subtotal_withtax'] += $product_price;
-                                $product_price = $product_price /($my_taxrate+1);
-                                $order_subtotal += $product_price;
-                        }
-                        else {
-                                $order_subtotal += $product_price * $cart[$i]["quantity"];
-                                
-                                $product_price = round( ($product_price *($my_taxrate+1)), 2 );
-                                $product_price *= $cart[$i]["quantity"];
-                                $d['order_subtotal_withtax'] += $product_price;
-                                $product_price = $product_price /($my_taxrate+1);
-                        }
-                        if( MULTIPLE_TAXRATES_ENABLE ) {
-                                // Calculate the amounts for each tax rate
-                                if( !isset( $order_tax_details[$my_taxrate] )) {
-                                        $order_tax_details[$my_taxrate] = 0;
-                                }
-                                $order_tax_details[$my_taxrate] += $price["product_price"]*$my_taxrate*$cart[$i]["quantity"];
-                        }
-                }
+		for($i = 0; $i < $cart["idx"]; $i++) {
+			$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
+			$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
+			$product_price = $price["product_price"];
+			if( $auth["show_price_including_tax"] == 1 ) {
+				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
+				$product_price *= $cart[$i]["quantity"];
+				$d['order_subtotal_withtax'] += $product_price;
+				$product_price = $product_price /($my_taxrate+1);
+				$order_subtotal += $product_price;
+			}
+			else {
+				$order_subtotal += $product_price * $cart[$i]["quantity"];
 
-                return($order_subtotal);
-        }
+				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
+				$product_price *= $cart[$i]["quantity"];
+				$d['order_subtotal_withtax'] += $product_price;
+				$product_price = $product_price /($my_taxrate+1);
+			}
+			if( MULTIPLE_TAXRATES_ENABLE ) {
+				// Calculate the amounts for each tax rate
+				if( !isset( $order_tax_details[$my_taxrate] )) {
+					$order_tax_details[$my_taxrate] = 0;
+				}
+				$order_tax_details[$my_taxrate] += $price["product_price"]*$my_taxrate*$cart[$i]["quantity"];
+			}
+		}
+
+		return($order_subtotal);
+	}
 
 
-        /**
+	/**
          * Calculates the taxable order subtotal for the order.
          * If an item has no weight, it is non taxable.
          * @author Chris Coleman
          * @param array $d
          * @return float Subtotal
          */
-        function calc_order_taxable($d) {
-                $auth = $_SESSION['auth'];
-                $cart = $_SESSION['cart'];
+	function calc_order_taxable($d) {
+		$auth = $_SESSION['auth'];
+		$cart = $_SESSION['cart'];
 
-                $subtotal = 0.0;
-                
-                require_once(CLASSPATH.'ps_product.php');
-                $ps_product= new ps_product;
-                require_once(CLASSPATH.'ps_shipping_method.php');
+		$subtotal = 0.0;
 
-                $db = new ps_DB;
+		require_once(CLASSPATH.'ps_product.php');
+		$ps_product= new ps_product;
+		require_once(CLASSPATH.'ps_shipping_method.php');
 
-                for($i = 0; $i < $cart["idx"]; $i++) {
-                        $price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-                        $product_price = $price["product_price"];
-                        $item_weight = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
+		$db = new ps_DB;
 
-                        if ($item_weight != 0 or TAX_VIRTUAL=='1') {
-                                $subtotal += $product_price * $cart[$i]["quantity"];
-                        }
-                }
-                return($subtotal);
-        }
-        
-        /**
+		for($i = 0; $i < $cart["idx"]; $i++) {
+			$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
+			$product_price = $price["product_price"];
+			$item_weight = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
+
+			if ($item_weight != 0 or TAX_VIRTUAL=='1') {
+				$subtotal += $product_price * $cart[$i]["quantity"];
+			}
+		}
+		return($subtotal);
+	}
+
+	/**
          * Calculate the tax charges for the current order.
          * You can switch the way, taxes are calculated:
          * either based on the VENDOR address,
@@ -1221,20 +1221,20 @@ Order Total: '.$order_total.'
          * @param array $d
          * @return float
          */
-        function calc_order_tax($order_taxable, $d) {
-                global $order_tax_details, $discount_factor;
-                $auth = $_SESSION['auth'];
-                $ps_vendor_id = $_SESSION["ps_vendor_id"];
-                $db = new ps_DB;
-		
-                require_once(CLASSPATH.'ps_tax.php');
-                $ps_tax = new ps_tax;
-                
-                $discount_factor = 1;
-                
-                // Shipping address based TAX
-                if (TAX_MODE == '0') {
-                        $q = "SELECT state, country FROM #__{vm}_user_info ";
+	function calc_order_tax($order_taxable, $d) {
+		global $order_tax_details, $discount_factor;
+		$auth = $_SESSION['auth'];
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		$db = new ps_DB;
+
+		require_once(CLASSPATH.'ps_tax.php');
+		$ps_tax = new ps_tax;
+
+		$discount_factor = 1;
+
+		// Shipping address based TAX
+		if (TAX_MODE == '0') {
+			$q = "SELECT state, country FROM #__{vm}_user_info ";
 			$q .= "WHERE user_info_id='".@$_REQUEST["ship_to_info_id"] . "'";
 			$db->query($q);
 			$db->next_record();
@@ -1254,105 +1254,105 @@ Order Total: '.$order_total.'
 					$order_tax = $rate;
 				}
 			}
-                        else {
-                                $order_tax = 0.0;
-                        }
-                        $order_tax_details[$db->f('tax_rate')] = $order_tax;
-                }
-                // Store Owner Address based TAX
-                elseif (TAX_MODE == '1') {
+			else {
+				$order_tax = 0.0;
+			}
+			$order_tax_details[$db->f('tax_rate')] = $order_tax;
+		}
+		// Store Owner Address based TAX
+		elseif (TAX_MODE == '1') {
 
-                        if (MULTIPLE_TAXRATES_ENABLE != '1' ) {
-                                $q = "SELECT `tax_rate` FROM #__{vm}_vendor, #__{vm}_tax_rate ";
-                                $q .= "WHERE tax_country=vendor_country ";
-                                $q .= "AND #__{vm}_vendor.vendor_id='1' ";
-                                $q .= "ORDER BY `tax_rate` DESC";
-                                $db->query($q);
-                                if ($db->next_record()) {
-                                        $tax_rate = $db->f("tax_rate");
-                                        $rate = $order_taxable * $tax_rate;
-                                        
-                                        if (empty($rate)) {
-                                                $order_tax = 0.0;
-                                        }
-                                        else {
-                                                $order_tax = $rate;
-                                        }
-                                }
-                                else {
-                                        $order_tax = 0.0;
-                                }
-                                $order_tax_details[$db->f('tax_rate')] = $order_tax;
-                        }
-                        else {
-                                // Calculate the Tax with a tax rate for every product
-                                $cart = $_SESSION['cart'];
-                                $order_tax = 0.0;
-                                $total = 0.0;
-                                if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
-                                        && PAYMENT_DISCOUNT_BEFORE == '1' ) {
-                                        // We need to recalculate the tax details when the discounts are applied
-                                        // BEFORE taxes - because they affect the product subtotals then
-                                        $order_tax_details = array();
-                                }
-                                require_once(CLASSPATH.'ps_product.php');
-                                $ps_product= new ps_product;
-                                require_once(CLASSPATH.'ps_shipping_method.php');
+			if (MULTIPLE_TAXRATES_ENABLE != '1' ) {
+				$q = "SELECT `tax_rate` FROM #__{vm}_vendor, #__{vm}_tax_rate ";
+				$q .= "WHERE tax_country=vendor_country ";
+				$q .= "AND #__{vm}_vendor.vendor_id='1' ";
+				$q .= "ORDER BY `tax_rate` DESC";
+				$db->query($q);
+				if ($db->next_record()) {
+					$tax_rate = $db->f("tax_rate");
+					$rate = $order_taxable * $tax_rate;
+
+					if (empty($rate)) {
+						$order_tax = 0.0;
+					}
+					else {
+						$order_tax = $rate;
+					}
+				}
+				else {
+					$order_tax = 0.0;
+				}
+				$order_tax_details[$db->f('tax_rate')] = $order_tax;
+			}
+			else {
+				// Calculate the Tax with a tax rate for every product
+				$cart = $_SESSION['cart'];
+				$order_tax = 0.0;
+				$total = 0.0;
+				if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
+				&& PAYMENT_DISCOUNT_BEFORE == '1' ) {
+					// We need to recalculate the tax details when the discounts are applied
+					// BEFORE taxes - because they affect the product subtotals then
+					$order_tax_details = array();
+				}
+				require_once(CLASSPATH.'ps_product.php');
+				$ps_product= new ps_product;
+				require_once(CLASSPATH.'ps_shipping_method.php');
 
 				for($i = 0; $i < $cart["idx"]; $i++) {
 					$item_weight = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
 
-                                        if ($item_weight !=0 or TAX_VIRTUAL) {
-                                                $price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-                                                $tax_rate = $ps_product->get_product_taxrate($cart[$i]["product_id"]);
-                                                
-                                                if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
-                                                        && PAYMENT_DISCOUNT_BEFORE == '1' ) {
-                                                        // Reduce the product subtotals by the factor the complete subtotal is reduced/raised by the discounts
-                                                        $factor = (100 * ($_SESSION['coupon_discount'] + $d['payment_discount'])) / $this->_subtotal;
-                                                        $price["product_price"] = $price["product_price"] - ($factor * $price["product_price"] / 100);
-                                                        @$order_tax_details[$tax_rate] += $price["product_price"] * $tax_rate * $cart[$i]["quantity"];
-                                                }
-                                                
-                                                $order_tax += $price["product_price"] * $tax_rate * $cart[$i]["quantity"];
-                                                $total += $price["product_price"] * $cart[$i]["quantity"];
-                                        }
-                                }
+					if ($item_weight !=0 or TAX_VIRTUAL) {
+						$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
+						$tax_rate = $ps_product->get_product_taxrate($cart[$i]["product_id"]);
 
-                                if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
-                                        && PAYMENT_DISCOUNT_BEFORE != '1' ) {
-                                                
-                                        // Here we need to re-calculate the Discount
-                                        // because we assume the Discount is "including Tax"
-                                        $discounted_total = $d['order_subtotal_withtax'] - $_SESSION['coupon_discount'] - $d['payment_discount'];
-                                        
-                                        if( $discounted_total != $d['order_subtotal_withtax'] ) {
-                                                $discount_factor = $discounted_total / $d['order_subtotal_withtax'];
-                                                
-                                                foreach( $order_tax_details as $rate => $value ) {
-                                                        $order_tax_details[$rate] = $value * $discount_factor;
-                                                }
-                                        }
-                                        
-                                }
-                                if( $this->_SHIPPING ) {
-                                        $taxrate = $this->_SHIPPING->get_tax_rate();
-                                        if( $taxrate ) {
-                                                $rate = $this->_SHIPPING->get_rate( $d );
-                                                if( $auth["show_price_including_tax"] == 1 ) {
-                                                        @$order_tax_details[$taxrate] += $rate - ($rate / ($taxrate+1));
-                                                }
-                                                else {
-                                                        @$order_tax_details[$taxrate] += $rate * $taxrate;
-                                                }
-                                        }
-                                }
-                        }
+						if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
+						&& PAYMENT_DISCOUNT_BEFORE == '1' ) {
+							// Reduce the product subtotals by the factor the complete subtotal is reduced/raised by the discounts
+							$factor = (100 * ($_SESSION['coupon_discount'] + $d['payment_discount'])) / $this->_subtotal;
+							$price["product_price"] = $price["product_price"] - ($factor * $price["product_price"] / 100);
+							@$order_tax_details[$tax_rate] += $price["product_price"] * $tax_rate * $cart[$i]["quantity"];
+						}
 
-                }
+						$order_tax += $price["product_price"] * $tax_rate * $cart[$i]["quantity"];
+						$total += $price["product_price"] * $cart[$i]["quantity"];
+					}
+				}
+
+				if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
+				&& PAYMENT_DISCOUNT_BEFORE != '1' ) {
+
+					// Here we need to re-calculate the Discount
+					// because we assume the Discount is "including Tax"
+					$discounted_total = $d['order_subtotal_withtax'] - @$_SESSION['coupon_discount'] - $d['payment_discount'];
+
+					if( $discounted_total != $d['order_subtotal_withtax'] ) {
+						$discount_factor = $discounted_total / $d['order_subtotal_withtax'];
+
+						foreach( $order_tax_details as $rate => $value ) {
+							$order_tax_details[$rate] = $value * $discount_factor;
+						}
+					}
+
+				}
+				if( $this->_SHIPPING ) {
+					$taxrate = $this->_SHIPPING->get_tax_rate();
+					if( $taxrate ) {
+						$rate = $this->_SHIPPING->get_rate( $d );
+						if( $auth["show_price_including_tax"] == 1 ) {
+							@$order_tax_details[$taxrate] += $rate - ($rate / ($taxrate+1));
+						}
+						else {
+							@$order_tax_details[$taxrate] += $rate * $taxrate;
+						}
+					}
+				}
+			}
+
+		}
 		return( round( $order_tax, 2 ) );
 	}
-  
+
 	/**************************************************************************
 	** name: calc_order_shipping()
 	** created by: soeren
@@ -1425,19 +1425,19 @@ Order Total: '.$order_total.'
 	** created by: soeren
 	** description:  Get the discount for the selected payment
 	** parameters: $payment_method_id
-        ** returns: Discount as a decimal if found
-        **          0 if nothing is found
-        ***************************************************************************/
-        function get_payment_discount($payment_method_id, $subtotal) {
-
-                //MOD ei
-                // There is a special payment method, which fee is depend on subtotal
-                // it is a type of cash on delivery
-                // comment soeren: Payment methods can implement their own method
-                // how to calculate the discount: the function "get_payment_rate"
-                // should return a float value from the payment class
-                require_once(CLASSPATH.'ps_payment_method.php');
-                $ps_payment_method = new ps_payment_method;
+	** returns: Discount as a decimal if found
+	**          0 if nothing is found
+	***************************************************************************/
+	function get_payment_discount( $payment_method_id, $subtotal = '' ) {
+		$db = new ps_DB();
+		//MOD ei
+		// There is a special payment method, which fee is depend on subtotal
+		// it is a type of cash on delivery
+		// comment soeren: Payment methods can implement their own method
+		// how to calculate the discount: the function "get_payment_rate"
+		// should return a float value from the payment class
+		require_once(CLASSPATH.'ps_payment_method.php');
+		$ps_payment_method = new ps_payment_method;
 
 		$payment_class = $ps_payment_method->get_field($payment_method_id, "payment_class");
 
@@ -1450,50 +1450,50 @@ Order Total: '.$order_total.'
 			if(is_callable(array($payment_class, 'get_payment_rate'))) {
 				return $_PAYMENT->get_payment_rate($subtotal);
 			}
-                }
-                //End of MOD ei
+		}
+		//End of MOD ei
 
-                // If a payment method has no special way of calculating a discount,
-                // let's do this on our own from the payment_method_discount settings
-                $q = 'SELECT `payment_method_discount`,`payment_method_discount_is_percent`,`payment_method_discount_max_amount`, `payment_method_discount_min_amount`
+		// If a payment method has no special way of calculating a discount,
+		// let's do this on our own from the payment_method_discount settings
+		$q = 'SELECT `payment_method_discount`,`payment_method_discount_is_percent`,`payment_method_discount_max_amount`, `payment_method_discount_min_amount`
                                 FROM `#__{vm}_payment_method` WHERE payment_method_id='.$payment_method_id;
-                $db->query($q);$db->next_record();
+		$db->query($q);$db->next_record();
 
-                $discount = $db->f('payment_method_discount');
-                $is_percent = $db->f('payment_method_discount_is_percent');
-                
-                if( !$is_percent ) {
-                        // Standard method: absolute amount
-                if (!empty($discount)) {
-                        return(floatval($discount));
-                }
+		$discount = $db->f('payment_method_discount');
+		$is_percent = $db->f('payment_method_discount_is_percent');
+
+		if( !$is_percent ) {
+			// Standard method: absolute amount
+			if (!empty($discount)) {
+				return(floatval($discount));
+			}
+			else {
+				return(0);
+			}
+		}
 		else {
-                        return(0);
-                }
-        }
-                else {
 
-                        if( $subtotal === '') {
-                                $subtotal = $this->get_order_subtotal( $vars );
-                        }
-                        
-                        // New: percentage of the subtotal, limited by minimum and maximum
-                        $max = $db->f('payment_method_discount_max_amount');
-                        $min = $db->f('payment_method_discount_min_amount');
-                        $value = (float) ($discount/100) * $subtotal;
-                        
-                        if( abs($value) > $max && $max > 0 ) {
-                                $value = -$max;
-                        }
-                        elseif( abs($value) < $min && $min > 0 ) {
-                                $value = -$min;
-                        }
-                        return $value;
-                }
-                
-        }
+			if( $subtotal === '') {
+				$subtotal = $this->get_order_subtotal( $vars );
+			}
 
-        /**
+			// New: percentage of the subtotal, limited by minimum and maximum
+			$max = $db->f('payment_method_discount_max_amount');
+			$min = $db->f('payment_method_discount_min_amount');
+			$value = (float) ($discount/100) * $subtotal;
+
+			if( abs($value) > $max && $max > 0 ) {
+				$value = -$max;
+			}
+			elseif( abs($value) < $min && $min > 0 ) {
+				$value = -$min;
+			}
+			return $value;
+		}
+
+	}
+
+	/**
          * Create a receipt for the current order and email it to
          * the customer and the vendor.
          * @author gday
@@ -1501,9 +1501,9 @@ Order Total: '.$order_total.'
          * @param int $order_id
          * @return boolean True on success, false on failure
          */
-        function email_receipt($order_id) {
-                global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY, $vmLogger,
-                $mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_mailfrom,
+	function email_receipt($order_id) {
+		global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY, $vmLogger,
+		$mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_mailfrom,
 		$mosConfig_fromname, $mosConfig_smtpauth, $mosConfig_mailer, $mosConfig_lang,
 		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
 
@@ -1587,20 +1587,20 @@ Order Total: '.$order_total.'
 		 */
 		$payment_info_details = $db_payment->f("payment_method_name");
 		if( !empty( $_SESSION['ccdata']['order_payment_name'] )
-			&& !empty($_SESSION['ccdata']['order_payment_number'])) {
-	  		$payment_info_details .= '<br />'.$VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD.': '.$_SESSION['ccdata']['order_payment_name'].'<br />';
-	  		$payment_info_details .= $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM.': '.$this->asterisk_pad($_SESSION['ccdata']['order_payment_number'], 4 ).'<br />';
-	  		$payment_info_details .= $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE.': '.$_SESSION['ccdata']['order_payment_expire_month'].' / '.$_SESSION['ccdata']['order_payment_expire_year'].'<br />';
-	  		if( !empty($_SESSION['ccdata']['credit_card_code'])) {
-	  			$payment_info_details .= 'CVV code: '.$_SESSION['ccdata']['credit_card_code'].'<br />';
-	  		}
+		&& !empty($_SESSION['ccdata']['order_payment_number'])) {
+			$payment_info_details .= '<br />'.$VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD.': '.$_SESSION['ccdata']['order_payment_name'].'<br />';
+			$payment_info_details .= $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM.': '.$this->asterisk_pad($_SESSION['ccdata']['order_payment_number'], 4 ).'<br />';
+			$payment_info_details .= $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE.': '.$_SESSION['ccdata']['order_payment_expire_month'].' / '.$_SESSION['ccdata']['order_payment_expire_year'].'<br />';
+			if( !empty($_SESSION['ccdata']['credit_card_code'])) {
+				$payment_info_details .= 'CVV code: '.$_SESSION['ccdata']['credit_card_code'].'<br />';
+			}
 		}
 		// Convert HTML into Text
 		$payment_info_details_text = str_replace( '<br />', "\n", $payment_info_details );
-		
+
 		// Get the Shipping Details
 		$shipping_arr = explode("|", @urldecode($_REQUEST['shipping_rate_id']) );
-		
+
 		// Headers and Footers
 		// ******************************
 		// Shopper Header
@@ -1643,16 +1643,16 @@ Order Total: '.$order_total.'
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":   ";
 		$shopper_message .= date("d-M-Y:H:i", $db->f("cdate")) . "\n";
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.": ";
-		
+
 		$dbos = new ps_DB;
 
 		$q = "SELECT order_status_name FROM `#__{vm}_order_status` WHERE order_status_code='".$db->f("order_status")."'";
 		$dbos->query($q);
 		$dbos->next_record();
-		
+
 		$shopper_message .= $dbos->f("order_status_name")."\n\n";
 		$order_status = $dbos->f("order_status_name");
-		
+
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL."\n";
 		$shopper_message .= "--------------------\n\n";
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL."\n";
@@ -1792,16 +1792,16 @@ Order Total: '.$order_total.'
 		if ($auth["show_price_including_tax"] == 1) {
 			$shopper_message .= "\n---------------";
 			$shopper_message .= "\n";
-                        $shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
-                        $shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax) . "\n";
-                }
-                if( $db->f('order_tax_details') ) {
-                        $shopper_message .= str_replace( '<br />', "\n", ps_checkout::show_tax_details( $db->f('order_tax_details') ) );
-                }
-                // Payment Details
-                $shopper_message .= "\n\n------------------------------------------------------------------------\n";
-                $shopper_message .= $payment_info_details_text;
-		
+			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
+			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax) . "\n";
+		}
+		if( $db->f('order_tax_details') ) {
+			$shopper_message .= str_replace( '<br />', "\n", ps_checkout::show_tax_details( $db->f('order_tax_details') ) );
+		}
+		// Payment Details
+		$shopper_message .= "\n\n------------------------------------------------------------------------\n";
+		$shopper_message .= $payment_info_details_text;
+
 		// Shipping Details
 		if( $this->_SHIPPING) {
 			$shopper_message .= "\n\n------------------------------------------------------------------------\n";
@@ -1818,14 +1818,14 @@ Order Total: '.$order_total.'
 		}
 		else {
 			$shopper_message .= " ./. \n";
-                }
-                $shopper_message .= "------------------------------------------------------------------------\n";
-                
-                // Decode things like &euro; => â¬
-                $shopper_message = vmHtmlEntityDecode( $shopper_message );
-                
-                // End of Purchase Order
-                // *********************
+		}
+		$shopper_message .= "------------------------------------------------------------------------\n";
+
+		// Decode things like &euro; => â¬
+		$shopper_message = vmHtmlEntityDecode( $shopper_message );
+
+		// End of Purchase Order
+		// *********************
 
 		//
 		//END: set up text mail
@@ -1981,11 +1981,11 @@ Order Total: '.$order_total.'
 
 			$html = str_replace('{phpShopOrderItems}',$order_items,$html);
 
-                        $html = str_replace('{phpShopOrderSubtotal}',$CURRENCY_DISPLAY->getFullValue($sub_total),$html);
-                        $html = str_replace('{phpShopOrderShipping}',$CURRENCY_DISPLAY->getFullValue($order_shipping),$html);
-                        $html = str_replace('{phpShopOrderTax}',$CURRENCY_DISPLAY->getFullValue($order_tax). ps_checkout::show_tax_details( $db->f('order_tax_details') ), $html );
+			$html = str_replace('{phpShopOrderSubtotal}',$CURRENCY_DISPLAY->getFullValue($sub_total),$html);
+			$html = str_replace('{phpShopOrderShipping}',$CURRENCY_DISPLAY->getFullValue($order_shipping),$html);
+			$html = str_replace('{phpShopOrderTax}',$CURRENCY_DISPLAY->getFullValue($order_tax). ps_checkout::show_tax_details( $db->f('order_tax_details') ), $html );
 
-                        $html = str_replace('{phpShopOrderTotal}',$CURRENCY_DISPLAY->getFullValue($order_total),$html);
+			$html = str_replace('{phpShopOrderTotal}',$CURRENCY_DISPLAY->getFullValue($order_total),$html);
 
 			$html = str_replace('{phpShopOrderDisc1}',$order_disc1, $html);
 			$html = str_replace('{phpShopOrderDisc2}',$order_disc2, $html);
@@ -2023,18 +2023,18 @@ Order Total: '.$order_total.'
 			$extension = $imagefile['extension'] == "jpg" ? "jpeg" : "jpeg";
 
 			$EmbeddedImages[] = array(	'path' => IMAGEPATH."vendor/".$dbv->f("vendor_full_image"),
-								'name' => "vendor_image", 
-								'filename' => $dbv->f("vendor_full_image"),
-								'encoding' => "base64",
-								'mimetype' => "image/".$extension );
+			'name' => "vendor_image",
+			'filename' => $dbv->f("vendor_full_image"),
+			'encoding' => "base64",
+			'mimetype' => "image/".$extension );
 
-			
+
 			$shopper_mail = vmMail( $from_email, $mosConfig_fromname, $shopper_email, $shopper_subject, $shopper_mail_Body, $shopper_mail_AltBody, true, null, null, $EmbeddedImages);
 
 			$vendor_mail = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_mail_Body, $vendor_mail_AltBody, true, null, null, $EmbeddedImages);
 
 			if ( !$shopper_mail || !$vendor_mail ) {
-				
+
 				$vmLogger->debug( 'Something went wrong while sending the order confirmation email to '.$from_email.' and '.$shopper_email );
 				return false;
 			}
@@ -2115,50 +2115,50 @@ Order Total: '.$order_total.'
 		unset( $row );
 		if( $order_total > 0.00 ) {
 			$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id' );
-			
+
 			$db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'");
 			$db->next_record();
 			echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
 			echo $db->f("payment_method_name");
-                        echo "<br />";
-                }
-        }
-        /**
+			echo "<br />";
+		}
+	}
+	/**
          * Displays the order_tax_details array when it contains
          * more than one 
          * @param mixed $details
          * @return string
          */
-        function show_tax_details( $details ) {
-                global $discount_factor, $CURRENCY_DISPLAY, $VM_LANG;
-                
-                if( !isset( $discount_factor) || !empty($_REQUEST['discount_factor'])) {
-                        $discount_factor = 1;
-                }
-                $auth = $_SESSION['auth'];
-                if( !is_array( $details )) {
-                        $details = @unserialize( $details );
-                        if( !is_array($details)) {
-                                return false;
-                        }
-                }
-                $html = '';
-                if( sizeof( $details) > 1 ) {
-                        $html .= '<br />'.$VM_LANG->_VM_TAXDETAILS_LABEL.':<br />';
-                        
-                        foreach ($details as $rate => $value ) {
-                                if( !$auth['show_price_including_tax']) {
-                                        $value /= $discount_factor;
-                                }
-                                $rate = str_replace( '-', $CURRENCY_DISPLAY->decimal, $rate )*100;
-                                $html .= $CURRENCY_DISPLAY->getFullValue( $value, 5 ).' ('.$rate.'% '.$VM_LANG->_PHPSHOP_CART_TAX.')<br />';
-                        }
-                }
-                return $html;
-        }
-        
-        /*
-        * @abstract This function is very useful to round totals with definite decimals.
+	function show_tax_details( $details ) {
+		global $discount_factor, $CURRENCY_DISPLAY, $VM_LANG;
+
+		if( !isset( $discount_factor) || !empty($_REQUEST['discount_factor'])) {
+			$discount_factor = 1;
+		}
+		$auth = $_SESSION['auth'];
+		if( !is_array( $details )) {
+			$details = @unserialize( $details );
+			if( !is_array($details)) {
+				return false;
+			}
+		}
+		$html = '';
+		if( sizeof( $details) > 1 ) {
+			$html .= '<br />'.$VM_LANG->_VM_TAXDETAILS_LABEL.':<br />';
+
+			foreach ($details as $rate => $value ) {
+				if( !$auth['show_price_including_tax']) {
+					$value /= $discount_factor;
+				}
+				$rate = str_replace( '-', $CURRENCY_DISPLAY->decimal, $rate )*100;
+				$html .= $CURRENCY_DISPLAY->getFullValue( $value, 5 ).' ('.$rate.'% '.$VM_LANG->_PHPSHOP_CART_TAX.')<br />';
+			}
+		}
+		return $html;
+	}
+
+	/*
+	* @abstract This function is very useful to round totals with definite decimals.
 	*
 	* @param float   $value
 	* @param integer $dec

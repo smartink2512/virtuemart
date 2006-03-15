@@ -41,9 +41,17 @@ $return = str_replace( 'option', '&amp;option', $return );
         <div style="float:left;width:30%;text-align:left;">
                 <input type="submit" name="Submit" class="button" value="<?php echo _BUTTON_LOGIN; ?>" />
         </div>
-        <br style="clear:both;" />
-        <input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
-        <label for="remember_login"><?php echo _REMEMBER_ME ?></label>
+        <?php 
+        if( @VM_SHOW_REMEMBER_ME_BOX ) { ?>
+	        <br style="clear:both;" />
+	        <input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
+	        <label for="remember_login"><?php echo _REMEMBER_ME ?></label>
+	       <?php
+        }
+        else {
+        	echo '<input type="hidden" name="remember" value="yes" />';
+        }
+        ?>
   </div>
   
   <input type="hidden" name="op2" value="login" />

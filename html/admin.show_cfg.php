@@ -16,10 +16,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-global $acl, $VM_BROWSE_ORDERBY_FIELDS;
-if( !isset( $VM_BROWSE_ORDERBY_FIELDS )) {
-        $VM_BROWSE_ORDERBY_FIELDS = array();
-}
+global $acl, $VM_BROWSE_ORDERBY_FIELDS, $VM_MODULES_FORCE_HTTPS;
+if( !isset( $VM_BROWSE_ORDERBY_FIELDS )) { $VM_BROWSE_ORDERBY_FIELDS = array(); }
+if( !isset( $VM_MODULES_FORCE_HTTPS )) { $VM_MODULES_FORCE_HTTPS = array('account','checkout'); }
+
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 // Compose the Access DropDown List, for the first time used for setting Price Acess
@@ -145,6 +145,19 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION_TIP ?>
 			</td>
 		</tr>
+		
+		<tr>
+			<td class="labelcell">
+				<label for="conf_VM_SHOW_REMEMBER_ME_BOX"><?php echo $VM_LANG->_VM_SHOW_REMEMBER_ME_BOX ?></label>
+				
+			</td>
+			<td>
+				<input type="checkbox" id="conf_VM_SHOW_REMEMBER_ME_BOX" name="conf_VM_SHOW_REMEMBER_ME_BOX" class="inputbox" <?php if (@VM_SHOW_REMEMBER_ME_BOX == "1") echo "checked=\"checked\""; ?> value="1" />
+			</td> 
+			<td><?php echo $VM_LANG->_VM_SHOW_REMEMBER_ME_BOX_TIP ?>
+			</td>
+		</tr>
+		
 		<tr>
 			<td class="labelcell" colspan="2"><?php
 				echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION;
@@ -156,6 +169,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			else {
 				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_NO.'</span>';
 			}
+			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_PHPSHOP_UPDATE.']</a>';
 			?></td>
 		</tr>
 		<tr>
@@ -169,6 +183,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			else {
 				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_YES.'</span>';
 			}
+			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_PHPSHOP_UPDATE.']</a>';
 			?></td>
 		</tr>
 		
@@ -398,7 +413,30 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN ?>
 			</td>
 		</tr>
-	</table>
+		<tr>
+			<td class="labelcell">
+				<label for="conf_VM_MODULES_FORCE_HTTPS"><?php echo $VM_LANG->_VM_MODULES_FORCE_HTTPS ?></label>
+				
+			</td>
+			<td>
+				<input type="text" id="conf_VM_MODULES_FORCE_HTTPS" name="conf_VM_MODULES_FORCE_HTTPS" class="inputbox" value="<?php echo implode(',', $VM_MODULES_FORCE_HTTPS ); ?>" />
+			</td>
+			<td><?php echo $VM_LANG->_VM_MODULES_FORCE_HTTPS_TIP ?>
+			</td>
+		</tr>
+	
+		<tr>
+			<td class="labelcell">
+				<label for="conf_VM_GENERALLY_PREVENT_HTTPS"><?php echo $VM_LANG->_VM_GENERALLY_PREVENT_HTTPS ?></label>
+				
+			</td>
+			<td>
+				<input type="checkbox" id="conf_VM_GENERALLY_PREVENT_HTTPS" name="conf_VM_GENERALLY_PREVENT_HTTPS" class="inputbox" <?php if (@VM_GENERALLY_PREVENT_HTTPS == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td><?php echo $VM_LANG->_VM_GENERALLY_PREVENT_HTTPS_TIP ?>
+			</td>
+		</tr>
+		</table>
 </fieldset>
 <br/>
 <fieldset>

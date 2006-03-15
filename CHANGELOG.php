@@ -33,7 +33,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+15-03-2006 soeren
 
++ direct link to global configuration from shop configuration (where the Joomla registration settings are shown) 
++ new configuration variable: VM_SHOW_REMEMBER_ME_BOX (you can now choose whether the "Remember me" box is shown
+	on login or the usercookie is forced with a hidden field.)
++ new configuration variables for better being able to switch between http and https:
+	VM_GENERALLY_PREVENT_HTTPS - allows to get back from https to http in areas, where https is not necessary (as it only slows down the connection)
+	VM_MODULES_FORCE_HTTPS - allows you to specify a list of shop areas (= shop core modules, e.g. account,checkout,...) where https connections are forced
+# Session class fixes ( session_id( ... ) is no longer used, from now on we just don't care about the Joomla/Mambo session ID)
+	
 12-03-2006 soeren
 
 # users, who are logged in, but not yet registered as customer/shopper 

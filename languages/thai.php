@@ -1478,6 +1478,12 @@ It has to be valid PHP Code!
 	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP = 'Defines by which field products are ordered by default on the browse pages';
 	var $_VM_BROWSE_ORDERBY_FIELDS_LBL = 'Available "Sort-by" fields';
 	var $_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP = 'Choose the "Sort-by" fields for the browse page. Each one defines a sort method for the product browse page. If you deselect all, the Order-By-Form will not be shown.';
+	var $_VM_GENERALLY_PREVENT_HTTPS = 'Generally prevent https connections?';
+	var $_VM_GENERALLY_PREVENT_HTTPS_TIP = 'When checked, the shopper is redirected to the <strong>http</strong> URL when not browsing in those shop areas, which are forced to use https.';
+	var $_VM_MODULES_FORCE_HTTPS = 'Shop areas which must use https';
+	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
+	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
+	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
         
 }
 class phpShopLanguage extends vmLanguage { }

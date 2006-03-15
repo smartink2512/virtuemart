@@ -53,6 +53,8 @@ define('VM_PRICE_SHOW_INCLUDINGTAX', '1' );
 define('VM_PRICE_ACCESS_LEVEL', 'Public Frontend' );
 define('VM_SILENT_REGISTRATION', '1');
 define('VM_BROWSE_ORDERBY_FIELD', 'product_name');
+define('VM_GENERALLY_PREVENT_HTTPS', '1');
+define('VM_SHOW_REMEMBER_ME_BOX', '');
 define('PSHOP_IS_OFFLINE', '');
 define('PSHOP_OFFLINE_MESSAGE', '<h2>Our Shop is currently down for maintenance.</h2> Please check back again soon.');
 define('USE_AS_CATALOGUE', '');
@@ -106,6 +108,10 @@ define('PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS', '1');
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;
 $VM_BROWSE_ORDERBY_FIELDS = array( 'product_name', 'product_price', 'product_cdate' );
+
+/* Shop Modules that run with https only*/
+global $VM_MODULES_FORCE_HTTPS;
+$VM_MODULES_FORCE_HTTPS = array( 'account','checkout' );
 
 /* Shipping Methods Definition */
 global $PSHOP_SHIPPING_MODULES;
