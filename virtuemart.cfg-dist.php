@@ -19,11 +19,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 global $mosConfig_absolute_path,$mosConfig_live_site;
 if( stristr( $_SERVER['PHP_SELF'], 'administrator' )) {
 	// Our location: /administrator/index2.php
-	require_once( '../configuration.php' );
+	include_once( '../configuration.php' );
 } 
 else {
 	// Our location: /index.php or /index2.php
-	require_once( 'configuration.php' );
+	include_once( 'configuration.php' );
 }
 // Check for trailing slash
 if( $mosConfig_live_site[strlen( $mosConfig_live_site)-1] == '/' ) {
