@@ -76,6 +76,7 @@ function com_uninstall() {
 	$db->query( 'DROP TABLE `#__{vm}_product_product_type_xref`;' );
 	$db->query( 'DROP TABLE `#__{vm}_product_votes`;' );
 	$db->query( 'DROP TABLE `#__{vm}_shipping_carrier`;' );
+	$db->query( 'DROP TABLE `#__{vm}_shipping_label`;' );
 	$db->query( 'DROP TABLE `#__{vm}_shipping_rate`;' );
 	$db->query( 'DROP TABLE `#__{vm}_shopper_group`;' );
 	$db->query( 'DROP TABLE `#__{vm}_shopper_vendor_xref`;' );

@@ -67,6 +67,8 @@ DROP TABLE IF EXISTS  `jos_vm_product_votes`;
 
 DROP TABLE IF EXISTS  `jos_vm_shipping_carrier`;
 
+DROP TABLE IF EXISTS  `jos_vm_shipping_label`;
+
 DROP TABLE IF EXISTS  `jos_vm_shipping_rate`;
 
 DROP TABLE IF EXISTS  `jos_vm_state`;

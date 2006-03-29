@@ -107,4 +107,43 @@ $db->query( "ALTER TABLE `#__{vm}_payment_method` ADD `payment_method_discount_i
 ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,
 ADD `payment_method_discount_min_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_max_amount` ;");
 
+# DHL integration
+$db->query( "CREATE TABLE IF NOT EXISTS `#__vm_shipping_label` (
+	`order_id` int(11) NOT NULL default '0',
+	`shipper_class` varchar(32) default NULL,
+	`ship_date` varchar(32) default NULL,
+	`service_code` varchar(32) default NULL,
+	`special_service` varchar(32) default NULL,
+	`package_type` varchar(16) default NULL,
+	`order_weight` decimal(10,2) default NULL,
+	`is_international` tinyint(1) default NULL,
+	`additional_protection_type` varchar(16) default NULL,
+	`additional_protection_value` decimal(10,2) default NULL,
+	`duty_value` decimal(10,2) default NULL,
+	`content_desc` varchar(255) default NULL,
+	`label_is_generated` tinyint(1) NOT NULL default '0',
+	`tracking_number` varchar(32) default NULL,
+	`label_image` blob default NULL,
+	`have_signature` tinyint(1) NOT NULL default '0',
+	`signature_image` blob default NULL,
+	PRIMARY KEY (`order_id`)
+) TYPE=MyISAM COMMENT='Stores information used in generating shipping labels'; ");
+
+# NEW States
+$db->query( "INSERT INTO `#__{vm}_state` (country_id, state_name, state_3_code, state_2_code)
+VALUES
+    (104, 'Gaza Strip', 'GZS', 'GZ'),
+    (104, 'West Bank', 'WBK', 'WB'),
+    (104, 'Other', 'OTH', 'OT'),
+    (151, 'St. Maarten', 'STM', 'SM'),
+    (151, 'Bonaire', 'BNR', 'BN'),
+    (151, 'Curacao', 'CUR', 'CR') ;");
+# NEW Countries
+$db->query( "INSERT INTO `#__{vm}_country` (country_name, country_3_code, country_2_code)
+VALUES
+    ('East Timor', 'XET', 'XE'),
+    ('Jersey', 'XJE', 'XJ'),
+    ('St. Barthelemy', 'XSB', 'XB'),
+    ('St. Eustatius', 'XSE', 'XU'),
+    ('Canary Islands', 'XCA', 'XC');");
 ?>

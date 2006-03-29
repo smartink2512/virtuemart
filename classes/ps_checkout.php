@@ -1014,6 +1014,15 @@ if (AFFILIATE_ENABLE == '1') {
 // Export the order_id so the checkout complete page can get it
 $d["order_id"] = $order_id;
 
+/*
+ * Let the shipping module know which shipping method
+ * was selected.  This way it can save any information
+ * it might need later to print a shipping label.
+ */
+if( is_callable( array($this->_SHIPPING, 'save_rate_info') )) {
+	$this->_SHIPPING->save_rate_info($d);
+}
+
 // Now as everything else has been done, we can update
 // the Order Status if the Payment Method is
 // "Use Payment Processor", because:
@@ -2105,7 +2114,7 @@ return True;
 			foreach( $rate_details as $k => $v ) {
 				if( $k == 3 ) {
 					echo $CURRENCY_DISPLAY->getFullValue( $v )."; ";
-				} elseif( $k > 0 ) {
+				} elseif( $k > 0 && $k < 4) {
 					echo "$v; ";
 				}
 			}

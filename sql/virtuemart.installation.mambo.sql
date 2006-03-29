@@ -382,7 +382,12 @@ INSERT INTO `mos_vm_country` VALUES (1, 1, 'Afghanistan', 'AFG', 'AF'),
 (236, 1, 'Yugoslavia', 'YUG', 'YU'),
 (237, 1, 'Zaire', 'ZAR', 'ZR'),
 (238, 1, 'Zambia', 'ZMB', 'ZM'),
-(239, 1, 'Zimbabwe', 'ZWE', 'ZW');
+(239, 1, 'Zimbabwe', 'ZWE', 'ZW'),
+(240, 1, 'East Timor', 'XET', 'XE'),
+(241, 1, 'Jersey', 'XJE', 'XJ'),
+(242, 1, 'St. Barthelemy', 'XSB', 'XB'),
+(243, 1, 'St. Eustatius', 'XSE', 'XU'),
+(244, 1, 'Canary Islands', 'XCA', 'XC');
 
 ## --------------------------------------------------------
 
@@ -1482,6 +1487,27 @@ CREATE TABLE IF NOT EXISTS `mos_vm_shipping_carrier` (
 ## Dumping data for table `mos_vm_shipping_carrier`
 ## 
 
+# DHL integration
+CREATE TABLE IF NOT EXISTS `mos_vm_shipping_label` (
+	`order_id` int(11) NOT NULL default '0',
+	`shipper_class` varchar(32) default NULL,
+	`ship_date` varchar(32) default NULL,
+	`service_code` varchar(32) default NULL,
+	`special_service` varchar(32) default NULL,
+	`package_type` varchar(16) default NULL,
+	`order_weight` decimal(10,2) default NULL,
+	`is_international` tinyint(1) default NULL,
+	`additional_protection_type` varchar(16) default NULL,
+	`additional_protection_value` decimal(10,2) default NULL,
+	`duty_value` decimal(10,2) default NULL,
+	`content_desc` varchar(255) default NULL,
+	`label_is_generated` tinyint(1) NOT NULL default '0',
+	`tracking_number` varchar(32) default NULL,
+	`label_image` blob default NULL,
+	`have_signature` tinyint(1) NOT NULL default '0',
+	`signature_image` blob default NULL,
+	PRIMARY KEY (`order_id`)
+) TYPE=MyISAM COMMENT='Stores information used in generating shipping labels';
 
 ## --------------------------------------------------------
 
@@ -1744,7 +1770,13 @@ INSERT INTO `mos_vm_state` VALUES (1, 223, 'Alabama', 'ALA', 'AL'),
 (162, 44, 'Xinjiang Uygur', 'XIU', 'XU'),
 (163, 44, 'Xizang', 'XIZ', 'XI'),
 (164, 44, 'Yunnan', 'YUN', 'YU'),
-(165, 44, 'Zhejiang', 'ZHE', 'ZH');
+(165, 44, 'Zhejiang', 'ZHE', 'ZH'),
+(166, 104, 'Gaza Strip', 'GZS', 'GZ'),
+(167, 104, 'West Bank', 'WBK', 'WB'),
+(168, 104, 'Other', 'OTH', 'OT'),
+(169, 151, 'St. Maarten', 'STM', 'SM'),
+(170, 151, 'Bonaire', 'BNR', 'BN'),
+(171, 151, 'Curacao', 'CUR', 'CR');
 
 ## --------------------------------------------------------
 
