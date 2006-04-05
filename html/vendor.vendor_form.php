@@ -126,10 +126,10 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY ?> : </td>
       <td>
         <select name="display_style[5]">
-                        <option value="0"<?php if ($currency_display['positive']=='0') echo ' selected=\"selected\" ';?>>00Symb</option>
-                        <option value="1"<?php if ($currency_display['positive']=='1') echo ' selected=\"selected\" ';?>>00 Symb</option>
-                        <option value="2"<?php if ($currency_display['positive']=='2') echo ' selected=\"selected\" ';?>>Symb00</option>
-                        <option value="3"<?php if ($currency_display['positive']=='3') echo ' selected=\"selected\" ';?>>Symb 00</option>
+			<option value="0"<?php if ($currency_display['positive']=='0') echo ' selected=\"selected\" ';?>>00Symb</option>
+	   		<option value="1"<?php if ($currency_display['positive']=='1') echo ' selected=\"selected\" ';?>>00 Symb</option>
+	   		<option value="2"<?php if ($currency_display['positive']=='2') echo ' selected=\"selected\" ';?>>Symb00</option>
+		   	<option value="3"<?php if ($currency_display['positive']=='3') echo ' selected=\"selected\" ';?>>Symb 00</option>
         </select>
         <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP ) ?>
       </td>
@@ -138,22 +138,22 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
       <td align="right"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY ?> : </td>
       <td>
         <select name="display_style[6]">
-                        <option value="0"<?php if ($currency_display['negative']=='0') echo ' selected=\"selected\" ';?>>(Symb00)</option>
-                        <option value="1"<?php if ($currency_display['negative']=='1') echo ' selected=\"selected\" ';?>>-Symb00</option>
-                        <option value="2"<?php if ($currency_display['negative']=='2') echo ' selected=\"selected\" ';?>>Symb-00</option>
-                        <option value="3"<?php if ($currency_display['negative']=='3') echo ' selected=\"selected\" ';?>>Symb00-</option>
-                        <option value="4"<?php if ($currency_display['negative']=='4') echo ' selected=\"selected\" ';?>>(00Symb)</option>
-                        <option value="5"<?php if ($currency_display['negative']=='5') echo ' selected=\"selected\" ';?>>-00Symb</option>
-                        <option value="6"<?php if ($currency_display['negative']=='6') echo ' selected=\"selected\" ';?>>00-Symb</option>
-                        <option value="7"<?php if ($currency_display['negative']=='7') echo ' selected=\"selected\" ';?>>00Symb-</option>
-                        <option value="8"<?php if ($currency_display['negative']=='8') echo ' selected=\"selected\" ';?>>-00 Symb</option>
-                        <option value="9"<?php if ($currency_display['negative']=='9') echo ' selected=\"selected\" ';?>>-Symb 00</option>
-                        <option value="10"<?php if ($currency_display['negative']=='10') echo ' selected=\"selected\" ';?>>00 Symb-</option>
-                        <option value="11"<?php if ($currency_display['negative']=='11') echo ' selected=\"selected\" ';?>>Symb 00-</option>
-                        <option value="12"<?php if ($currency_display['negative']=='12') echo ' selected=\"selected\" ';?>>Symb -00</option>
-                        <option value="13"<?php if ($currency_display['negative']=='13') echo ' selected=\"selected\" ';?>>00- Symb</option>
-                        <option value="14"<?php if ($currency_display['negative']=='14') echo ' selected=\"selected\" ';?>>(Symb 00)</option>
-                        <option value="15"<?php if ($currency_display['negative']=='15') echo ' selected=\"selected\" ';?>>(00 Symb)</option>
+			<option value="0"<?php if ($currency_display['negative']=='0') echo ' selected=\"selected\" ';?>>(Symb00)</option>
+		   	<option value="1"<?php if ($currency_display['negative']=='1') echo ' selected=\"selected\" ';?>>-Symb00</option>
+		   	<option value="2"<?php if ($currency_display['negative']=='2') echo ' selected=\"selected\" ';?>>Symb-00</option>
+		   	<option value="3"<?php if ($currency_display['negative']=='3') echo ' selected=\"selected\" ';?>>Symb00-</option>
+		   	<option value="4"<?php if ($currency_display['negative']=='4') echo ' selected=\"selected\" ';?>>(00Symb)</option>
+		   	<option value="5"<?php if ($currency_display['negative']=='5') echo ' selected=\"selected\" ';?>>-00Symb</option>
+		   	<option value="6"<?php if ($currency_display['negative']=='6') echo ' selected=\"selected\" ';?>>00-Symb</option>
+		   	<option value="7"<?php if ($currency_display['negative']=='7') echo ' selected=\"selected\" ';?>>00Symb-</option>
+		   	<option value="8"<?php if ($currency_display['negative']=='8') echo ' selected=\"selected\" ';?>>-00 Symb</option>
+		   	<option value="9"<?php if ($currency_display['negative']=='9') echo ' selected=\"selected\" ';?>>-Symb 00</option>
+		   	<option value="10"<?php if ($currency_display['negative']=='10') echo ' selected=\"selected\" ';?>>00 Symb-</option>
+		   	<option value="11"<?php if ($currency_display['negative']=='11') echo ' selected=\"selected\" ';?>>Symb 00-</option>
+		   	<option value="12"<?php if ($currency_display['negative']=='12') echo ' selected=\"selected\" ';?>>Symb -00</option>
+		   	<option value="13"<?php if ($currency_display['negative']=='13') echo ' selected=\"selected\" ';?>>00- Symb</option>
+		   	<option value="14"<?php if ($currency_display['negative']=='14') echo ' selected=\"selected\" ';?>>(Symb 00)</option>
+		   	<option value="15"<?php if ($currency_display['negative']=='15') echo ' selected=\"selected\" ';?>>(00 Symb)</option>
         </select>
         <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP ) ?>
       </td>

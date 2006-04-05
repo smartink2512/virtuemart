@@ -378,13 +378,13 @@ class mShopTabs {
 	*/
 	function endTab() {
 		echo "</div>";
-        }
+	}
 }
 
 class vmCommonHTML extends mosHTML {
 
-        /**
-        * Writes a "Save Ordering" Button
+	/**
+	* Writes a "Save Ordering" Button
 	* @param int the number of rows
 	*/
 	function getSaveOrderButton( $num_rows, $funcname='reorder') {
@@ -398,19 +398,17 @@ class vmCommonHTML extends mosHTML {
 		return '<input type="text" name="order[]" size="5" value="'. $ordering .'" class="text_area" style="text-align: center" />';
 
 	}
-        
-        function getYesNoIcon( $condition, $pos_alt = "Published", $neg_alt = "Unpublished" ) {
-                global $mosConfig_live_site;
-                if( $condition==false || strtoupper( $condition ) == "N" ) {
-                        return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
-        }
-                else {
-                        return '<img src="'.$mosConfig_live_site.'/administrator/images/tick.png" border="0" alt="'.$pos_alt.'" />';
-                }
-        }
-        /*
-        * Loads all necessary files for JS Overlib tooltips
-        */
+	
+	function getYesNoIcon( $condition, $pos_alt = "Published", $neg_alt = "Unpublished" ) {
+		global $mosConfig_live_site;
+		if( $condition===true || strtoupper( $condition ) == "Y" )
+			return '<img src="'.$mosConfig_live_site.'/administrator/images/tick.png" border="0" alt="'.$pos_alt.'" />';
+		else
+			return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
+	}
+	/*
+	* Loads all necessary files for JS Overlib tooltips
+	*/
 	function loadOverlib() {
 		global  $mosConfig_live_site;
 		if( !defined( "_OVERLIB_LOADED" )) {
@@ -447,17 +445,17 @@ class vmCommonHTML extends mosHTML {
 		$html = '<div class="shop_info">'.$msg.'</div>';
 		return $html;
 	}
-        /**
-         * Prints a JS function to validate all fields
-         * given in the array $required_fields
-         * Does only test if non-empty (or if no options are selected)
-         * Includes a check for a valid email-address
-         *
-         * @param array $required_fields The list of form elements that are to be validated
+	/**
+	 * Prints a JS function to validate all fields
+	 * given in the array $required_fields
+	 * Does only test if non-empty (or if no options are selected)
+	 * Includes a check for a valid email-address
+	 *
+	 * @param array $required_fields The list of form elements that are to be validated
 	 * @param string $formname The name for the form element
-         * @param string $div_id_postfix The ID postfix to identify the label for the field
-         */
-        function printJS_formvalidation( $required_fields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
+	 * @param string $div_id_postfix The ID postfix to identify the label for the field
+	 */
+	function printJS_formvalidation( $required_fields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
                 global $VM_LANG, $page;
                 echo '
                 <script language="javascript" type="text/javascript">//<![CDATA[
@@ -757,16 +755,16 @@ class vmCommonHTML extends mosHTML {
 function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) {
 	global $mosConfig_live_site;
 	
-        defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
-        
-        if( function_exists('mysql_real_escape_string')) {
-                $tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES, 'utf-8');
-        }
-        else {
-                $tooltip = htmlentities( mysql_escape_string($tooltip), ENT_QUOTES, 'utf-8');
-        }
-        
-        if ( !empty($width) ) {
+	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
+	
+	if( function_exists('mysql_real_escape_string')) {
+		$tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
+	}
+	else {
+		$tooltip = htmlentities( mysql_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
+	}
+	
+	if ( !empty($width) ) {
 		$width = 'this.T_WIDTH=\''.$width .'\';';
 	}
 	if ( $title ) {
@@ -785,7 +783,7 @@ function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/im
 		$tip = "<span onmouseover=\"$width $title return escape( '$tooltip' );\" ". $style .">". $text ."</span>";
 	}
 
-        return $tip;
+	return $tip;
 }
 
 function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
@@ -812,7 +810,7 @@ function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
 
 // borrowed from mambo.php
 function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) {
-        
+	
 	$string = htmlspecialchars( $string, $quote_style );
 	return $string;
 }
@@ -845,10 +843,10 @@ function mm_writeWithJS( $textToWrap, $noscriptText ) {
 * A function to create a XHTML compliant and JS-disabled-safe pop-up link
 */
 function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='_blank', $title='' ) {
-        
-        $jslink = "<a href=\"javascript:void window.open('$link', 'win2', 'status=no,toolbar=no,scrollbars=no,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no');\" title=\"$title\">$text</a>";
-        $noscriptlink = "<a href=\"$link\" target=\"$target\" title=\"$title\">$text</a>";
-        return mm_writeWithJS( $jslink, $noscriptlink );
+	
+	$jslink = "<a href=\"javascript:void window.open('$link', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no');\" title=\"$title\">$text</a>";
+	$noscriptlink = "<a href=\"$link\" target=\"$target\" title=\"$title\">$text</a>";
+	return mm_writeWithJS( $jslink, $noscriptlink );
 }
 
 ?>

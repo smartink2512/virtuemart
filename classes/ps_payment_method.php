@@ -183,10 +183,10 @@ class ps_payment_method extends vmAbstractObject {
 			include( CLASSPATH."payment/ps_payment.php" );
 			$_PAYMENT = new ps_payment();
 		}
-		if( $_PAYMENT->configfile_writeable() ) {
-			$_PAYMENT->write_configuration( $d );
-		}
-
+        if( is_callable( array( $_PAYMENT, 'write_configuration'))) {
+    	    $_PAYMENT->write_configuration( $d );
+        }
+    
 		if (!$d["shopper_group_id"]) {
 			$q =  "SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE ";
 			$q .= "`default`='1' ";

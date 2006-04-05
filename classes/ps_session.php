@@ -40,36 +40,13 @@ class ps_session {
 	function initSession() {
 		global $vmLogger, $mainframe;
 		if( empty($_SESSION)) {
-			// Session not yet started!
-
-			// Fix for Mambo 4.5.3h; I hope this will not smash other components using Sessions
-			@session_write_close();
-			
-			$sessionId = $this->getSessionId();
-			
-			if( !empty($sessionId)) {
-				
-				$sessionIdHash = md5( $sessionId );
-				// Set the virtuemart cookie, using the md5 hash of the recent mambo/joomla session
-				if( empty($_COOKIE[$this->_session_name])) {
-					$_COOKIE[$this->_session_name] = $sessionIdHash;
-				}
-				// Mambo backwards compatibility
-				if( empty($_COOKIE['sessioncookie'])) {
-					$_COOKIE['sessioncookie'] = $sessionId;
-				}
-				elseif( $_COOKIE['sessioncookie'] != $sessionId ) {			
-					$_COOKIE['sessioncookie'] = $sessionId;
-				}
-				session_id( $sessionIdHash );
-			}
-			
+			// Session not yet started!			
 			session_name( $this->_session_name );
 			
 			if( @$_REQUEST['option'] == 'com_virtuemart' ) {
 			    ob_start();
 			}
-			session_start();
+			@session_start();
 			
 			if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
 				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
@@ -82,14 +59,13 @@ class ps_session {
 			$vmLogger->debug( 'A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.' );
 		}	
 	}
-	
+		
 	/**
 	 * Returns the Joomla/Mambo Session ID
 	 *
 	 */
 	function getSessionId() {
 		global $mainframe;
-		
 		// Joomla >= 1.0.8
 		if( is_callable( array( 'mosMainframe', 'sessionCookieName'))) {			
 			// Session Cookie `name`
@@ -111,7 +87,6 @@ class ps_session {
 			return $mainframe->_session->session_id;
 		}
 	}
-	
 	function restartSession( $sid = '') {
 		
 		// Save the session data and close the session
@@ -229,18 +204,15 @@ class ps_session {
 						$mainframe->login( $usercookie["username"], $usercookie["password"] );
 					}
 					
-					//$this->restartSession( $virtuemartcookie );
-					
 					require_once( ADMINPATH.'install.copy.php');
 					
 					$sessionFile = IMAGEPATH. md5( $martID ).'.sess';
 					
 					// Read the contents of the session file
 					$session_data = file_get_contents( $sessionFile );
-					
 					// Delete it for security and disk space reasons
 					unlink( $sessionFile );
-
+					
 					// Read the session data into $_SESSION
 					session_decode( $session_data );
 					
@@ -333,7 +305,7 @@ class ps_session {
 	 * @return string The reformatted URL
 	 */
 	function url($text) {
-		global $mm_action_url;
+		global $mm_action_url, $page;
 		
 		if( !defined( '_PSHOP_ADMIN' )) {
 			$Itemid = "&Itemid=".$this->getShopItemid();

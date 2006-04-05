@@ -484,15 +484,15 @@ class ps_product_category extends vmAbstractObject {
 		$db = new ps_DB;
 		if( empty( $GLOBALS['category_info']['category_tree'])) {
 
-                        // Get only published categories
-                        $query  = "SELECT category_id, category_description, category_name,category_child_id as cid, category_parent_id as pid,list_order, category_publish
-                                                FROM #__{vm}_category, #__{vm}_category_xref WHERE ";
-                        if( $only_published ) {
-                                $query .= "#__{vm}_category.category_publish='Y' AND ";
-                        }
-                        $query .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
-                        if( !empty( $keyword )) {
-                                $query .= "AND ( category_name LIKE '%$keyword%' ";
+			// Get only published categories
+			$query  = "SELECT category_id, category_description, category_name,category_child_id as cid, category_parent_id as pid,list_order, category_publish
+						FROM #__{vm}_category, #__{vm}_category_xref WHERE ";
+			if( $only_published ) {
+				$query .= "#__{vm}_category.category_publish='Y' AND ";
+			}
+			$query .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
+			if( !empty( $keyword )) {
+				$query .= "AND ( category_name LIKE '%$keyword%' ";
 				$query .= "OR category_description LIKE '%$keyword%' ";
 				$query .= ") ";
 			}
@@ -899,8 +899,12 @@ class ps_product_category extends vmAbstractObject {
 					$html.= "</tr>\n";
 					$iCol = 1;
 				}
-				else
-				$iCol++;
+				else {
+					$iCol++;
+				}
+			}
+			if ($db->num_rows() < $categories_per_row) {
+				$html.= "</tr>\n";
 			}
 			$html.= "</table>";
 		}
@@ -1012,12 +1016,12 @@ class ps_product_category extends vmAbstractObject {
 	 * @param int $category_id The category ID
 	 * @param array $selected_categories The ids of the categories to be pre-selected
 	 * @param int $size The size of the select element
-         * @param boolean $toplevel List only top-level categories?
-         * @param boolean $multiple Allow multiple selections?
-         */
-        function list_all($name, $category_id, $selected_categories=Array(), $size=1, $toplevel=true, $multiple=false, $disabledFields=array()) {
+	 * @param boolean $toplevel List only top-level categories?
+	 * @param boolean $multiple Allow multiple selections?
+	 */
+	function list_all($name, $category_id, $selected_categories=Array(), $size=1, $toplevel=true, $multiple=false) {
 
-                $db = new ps_DB;
+		$db = new ps_DB;
 
 		$q  = "SELECT category_parent_id FROM #__{vm}_category_xref ";
 		if( $category_id )
@@ -1079,13 +1083,13 @@ class ps_product_category extends vmAbstractObject {
 	 *
 	 * @param int $category_id A single category to be pre-selected
 	 * @param int $cid Internally used for recursion
-         * @param int $level Internally used for recursion
-         * @param array $selected_categories All category IDs that will be pre-selected
-         */
-        function list_tree($category_id="", $cid='0', $level='0', $selected_categories=Array(), $disabledFields=array() ) {
+	 * @param int $level Internally used for recursion
+	 * @param array $selected_categories All category IDs that will be pre-selected
+	 */
+	function list_tree($category_id="", $cid='0', $level='0', $selected_categories=Array() ) {
 
-                $ps_vendor_id = $_SESSION["ps_vendor_id"];
-                $db = new ps_DB;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		$db = new ps_DB;
 
 		$level++;
 
@@ -1144,13 +1148,13 @@ class ps_product_category extends vmAbstractObject {
 	function get_cid($product_id) {
 		$db = new ps_DB;
 
-                $q = "SELECT #__{vm}_category.category_id FROM #__{vm}_category,#__{vm}_product_category_xref ";
-                $q .= "WHERE product_id='$product_id' ";
-                $q .= "AND #__{vm}_category.category_id = #__{vm}_product_category_xref.category_id ";
-                $db->query( $q );
-                $db->next_record();
+		$q = "SELECT #__{vm}_category.category_id FROM #__{vm}_category,#__{vm}_product_category_xref ";
+		$q .= "WHERE product_id='$product_id' ";
+		$q .= "AND #__{vm}_category.category_id = #__{vm}_product_category_xref.category_id ";
+		$db->query( $q );
+		$db->next_record();
 
-                return (int)$db->f('category_id');
+		return (int)$db->f('category_id');
 	}
 
 	/**

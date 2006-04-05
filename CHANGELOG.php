@@ -33,7 +33,21 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02-04-2006 soeren
+
+# Task #632 - get_flypage doesn't take into consideration parent products (ps_product.php)
+# Task #631 - Customer Unable to Remove Data from Bill To / Ship To Fields
+# Task #629 - PayFlow Pro does not handle 4 digit expiration dates gracefully
+# Task #511 - Discount % percentage is ignored by cart (ps_product.php)
+# Page redirection on error from Ship-To address from fixed, thanks TJ! (account.shipto.php)
+
 29-03-2006 soeren
+
+^ integrated the changes to the authorize.net class by Daniel Wagner (http://virtuemart.net/index.php?option=com_flyspray&do=details&id=634&Itemid=83)
+# wrong object names in PayPal notify.php script lead to a fatal error
+# Task #656 - "Remember Me" must be enabled to checkout, checkout_registration_form.php
+# tooltip function: added charset parameter to encode UTF-8 strings too, htmlTools.class.php
++ introduced a new function called "vmGetCharset" to return the current charset from the _ISO setting (UTF-8 by default), ps_main.php
 
 + new DHL shipping method integration, thanks to Durian!
 
@@ -41,6 +55,57 @@ VirtueMart 1.1.x
 	NEW TABLE "jos_vm_shipping_label"
 	
 + customer name on oder list
+
+28-03-2006 soeren
+# query error in ps_affiliate.php
+# fixed reviews listing ("More..." - link when more than 5 reviews exist for a product) in the frontend (ps_reviews.php)
+# fixed page navigation on product review list in adminsitration (product.review_list.php)
++ customer name on order list (thanks to deneb!), (order.order_list.php)
+# Fixed PayPal notify.php script:
+	- wrong field name (` order_currency` instead of `order_currency`)
+	- checking received currency and amount against database
+# parameter search query missing a `
+
+27-03-2006 soeren
+
+# version.php causing fatal error regarding "class vmVersion previously declared..."
+# Prices visible to all users, although restricted
+# Admin Menu not visible with chinese language file (htmlentities missing third (=Charset) parameter)
+# CSV Export doesn't export parent product SKU (parent-child relationship gets lost)
+# fixed a small typo in the product scroller module
+
+---- VirtueMart 1.0.4 released ----
+
+23-03-2006 soeren
+
+# Order "Print View" link lead to a 404 error
++ ProductScroller module: added the category_id parameter to the XML file, so you can now specify a category_id (or a comma-separated list of more than one category_id) 
+	to filter the products by (multiple) category/ies
+# Product Reviews are not added to the database, although the vote is added
+	
+20-03-2006 soeren
+^ Payment method preselecection: the first displayed payment method is always pre-selected now
+# "delete from cart" fails when the custom attribute value contains quotes
+# can't assign more than one product type to a product
+# Task #622 - Order Update Time is Wrong
+# Task #601 - Show the Number of Products in a Category
++ for debugging: added '@ini_set( 'display_errors', 1 );' to virtuemart_parser.php
+	for making PHP errors visible
+^ changed behaviour for HTTPS links when in HTTPS mode.
+	When the user is NOT on "checkout" or "account" pages, all links are generated using the http://... URL
+	This will allow leaving the HTTPS mode 2 after the order has been placed.
+# Task #490 - adding attributes error on sub-items
+# Task #518 - Reports miss same-day orders
+# Task #558 - Bug in report basic module
+^ showing "no image" image when a product thumbnail image is not available
+# Task #470 - Close tablerow after Categorylisting
++ products can be viewed using the SKU now. Works for the product details page:
+	Instead of "&product_id=XX" just use "&sku=YY" where YY stands for the SKU of the product
+# credit card number not checked on form submit, another bug, same reason: payment method can be left unchecked
++ added: autocomplete="off" to the credit card form to prevent sensible information being prefilled
++ Order item status update by manelzaera
+# Task #617 - Wrong image path in account.billing.php
+# Task #615 - Cannot add multiple Product Types to a Product
 
 15-03-2006 soeren
 
@@ -58,9 +123,15 @@ VirtueMart 1.1.x
         can't directly continue their "checkout" after registration as shopper
 # users who are logged in, but have an empty "usertype" field don't see prices
 # added $manufacturer_id support for caching pages
-
----- VirtueMart 1.0.3 released ----
-
+28-03-2006 soeren
+# query error in ps_affiliate.php
+# fixed reviews listing ("More..." - link when more than 5 reviews exist for a product) in the frontend (ps_reviews.php)
+# fixed page navigation on product review list in adminsitration (product.review_list.php)
++ customer name on order list (thanks to deneb!), (order.order_list.php)
+# Fixed PayPal notify.php script:
+	- wrong field name (` order_currency` instead of `order_currency`)
+	- checking received currency and amount against database
+# parameter search query missing a `
 11-03-2006 soeren
 # syntax error in shipping.rate_form.php
 

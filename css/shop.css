@@ -61,26 +61,26 @@ General Formatting
 	color:		red;
 	background-image: url( ../shop_image/ps_image/log_error.png );
 	background-repeat: no-repeat;
-	background-position: left;
+	background-position: top left;
 	background-color: white;
 }
 .shop_warning {
 	color:		#993300;
 	background-image: url( ../shop_image/ps_image/log_warning.png );
 	background-repeat: no-repeat;
-	background-position: left;
+	background-position: top left;
 }
 .shop_info {
 
 	color:		#003399;
 	background-image: url( ../shop_image/ps_image/log_info.png );
 	background-repeat: no-repeat;
-	background-position: left;
+	background-position: top left;
 }
 .shop_tip {
 	background-image: url( ../shop_image/ps_image/info.png );
 	background-repeat: no-repeat;
-	background-position: left;
+	background-position: top left;
 
 }
 .shop_debug {
@@ -88,7 +88,7 @@ General Formatting
 	color:		#003399;
 	background-image: url( ../shop_image/ps_image/log_debug.png );
 	background-repeat: no-repeat;
-	background-position: left;
+	background-position: top left;
 
 }
 .shop_critical {
@@ -96,6 +96,6 @@ General Formatting
 	font-weight: bold;
 	background-image: url( ../shop_image/ps_image/log_critical.png );
 	background-repeat: no-repeat;
-	background-position: left;
+	background-position: top left;
 	background-color: white;
 }

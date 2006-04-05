@@ -12,6 +12,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * MenuType is set to jscooktree
 **/
 global $module, $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style, $ps_product_category;
+require_once( CLASSPATH . 'ps_product_category.php' );
 if( !isset( $ps_product_category )) $ps_product_category = new ps_product_category;
 $Itemid = mosGetParam( $_REQUEST, 'Itemid', "");
 $TreeId = mosGetParam( $_REQUEST, 'TreeId', "");

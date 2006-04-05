@@ -208,7 +208,7 @@ else {
                 $selected = Array( "", "selected=\"selected\"" );
                 $asc_desc = Array( "ASC", "DESC" );
         }
-        echo mm_writeWithJS('<input type="hidden" name="DescOrderBy" value="'.$asc_desc[0].'" /><a href="javascript:void(0);" onclick="document.order.DescOrderBy.value=\''.$asc_desc[1].'\'; order.submit()"><img src="'. $mosConfig_live_site."/images/M_images/$icon"  .'" border="0" alt="'. $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER .'" title="'.$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER .'" width="12" height="12"/></a>',
+        echo mm_writeWithJS('<input type="hidden" name="DescOrderBy" value="'.$asc_desc[0].'" /><a href="javascript: document.order.DescOrderBy.value=\''.$asc_desc[1].'\'; document.order.submit()"><img src="'. $mosConfig_live_site."/images/M_images/$icon"  .'" border="0" alt="'. $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER .'" title="'.$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER .'" width="12" height="12"/></a>',
           '<select class="inputbox" name="DescOrderBy">
                                 <option '.$selected[0].' value="DESC">'.$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER.'</option>
                                 <option '.$selected[1].' value="ASC">'.$VM_LANG->_PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER.'</option>
@@ -317,7 +317,12 @@ else {
 					$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&newxsize=".PSHOP_IMG_WIDTH."&newysize=".PSHOP_IMG_HEIGHT."&fileout=";
 				}
 				else {
-					$product_thumb_image = IMAGEURL."product/".$product_thumb_image;
+					if( file_exists( IMAGEPATH."product/".$product_thumb_image )) {
+                        $product_thumb_image = IMAGEURL."product/".$product_thumb_image;
+                    }
+                    else {
+                        $product_thumb_image = IMAGEURL.NO_IMAGE;
+                    }
 				}
 			}
 		}

@@ -2058,4 +2058,4 @@ CREATE TABLE IF NOT EXISTS `jos_vm_zone_shipping` (
   KEY `zone_id` (`zone_id`)
 ) TYPE=MyISAM COMMENT='The Zones managed by the Zone Shipping Module';
 
-        
+INSERT INTO `jos_components` (name, parent, params ) VALUES ( 'virtuemart_version', 9999, 'RELEASE=1.1.0\nDEV_STATUS=alpha');

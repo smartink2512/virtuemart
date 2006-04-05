@@ -110,7 +110,7 @@ if ($cc_payments==true) {
 		        	<label for="order_payment_name"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD ?>:</label>
 		        </td>
 		        <td>
-		        <input type="text" class="inputbox" id="order_payment_name" name="order_payment_name" value="<?php if(!empty($_SESSION['ccdata']['order_payment_name'])) echo $_SESSION['ccdata']['order_payment_name'] ?>" />
+		        <input type="text" class="inputbox" id="order_payment_name" name="order_payment_name" value="<?php if(!empty($_SESSION['ccdata']['order_payment_name'])) echo $_SESSION['ccdata']['order_payment_name'] ?>" autocomplete="off" />
 		        </td>
 		    </tr>
 		    <tr valign="top">
@@ -118,7 +118,7 @@ if ($cc_payments==true) {
 		        	<label for="order_payment_number"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM ?>:</label>
 		        </td>
 		        <td>
-		        <input type="text" class="inputbox" id="order_payment_number" name="order_payment_number" value="<?php if(!empty($_SESSION['ccdata']['order_payment_number'])) echo $_SESSION['ccdata']['order_payment_number'] ?>" />
+		        <input type="text" class="inputbox" id="order_payment_number" name="order_payment_number" value="<?php if(!empty($_SESSION['ccdata']['order_payment_number'])) echo $_SESSION['ccdata']['order_payment_number'] ?>" autocomplete="off" />
 		        </td>
 		    </tr>
 		<?php if( $require_cvv_code == "YES" ) { 
@@ -128,7 +128,7 @@ if ($cc_payments==true) {
 		        <td nowrap width="10%" align="right">
 		        	<label for="credit_card_code">Credit Card Security Code:</label></td>
 		        <td>
-		            <input type="text" class="inputbox" id="credit_card_code" name="credit_card_code" value="<?php if(!empty($_SESSION['ccdata']['credit_card_code'])) echo $_SESSION['ccdata']['credit_card_code'] ?>" />
+		            <input type="text" class="inputbox" id="credit_card_code" name="credit_card_code" value="<?php if(!empty($_SESSION['ccdata']['credit_card_code'])) echo $_SESSION['ccdata']['credit_card_code'] ?>" autocomplete="off" />
 		        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP); ?>
 		        </td>
 		    </tr>

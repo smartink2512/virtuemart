@@ -27,6 +27,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 See Bugtracker:
 http://virtuemart.net/index.php?option=com_flyspray&Itemid=91
 
+Not logged:
+
+# Redirection to child product fails in Internet Explorer when SEF mode = On
+
+
  FEATURES
 ##################
 * add a field "product_packing_unit" to mos_{vm}_product

@@ -134,7 +134,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	if ($install_sample_data) {
 		require_once( $admin_dir.'sql/sql.sampledata.php' );
 	}
-	else {
+	elseif ($install_type=='newinstall') {
 		/*** Delete the Sample Product - Images ***/
 		@unlink( $mosConfig_absolute_path."/components/com_virtuemart/shop_image/product/1aa8846d3cfe3504b2ccaf7c23bb748f.jpg" );
 		@unlink( $mosConfig_absolute_path."/components/com_virtuemart/shop_image/product/1b0c96d67abdbea648cd0ea96fd6abcb.jpg" );
@@ -268,7 +268,7 @@ include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser
 	}
 	// Finally insert the version number into the database
 	include_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/version.php' );
-	global $VM_VERSION;
+	global $VMVERSION;
 	
 	$database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
 	$old_version =  $database->loadResult();

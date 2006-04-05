@@ -22,13 +22,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 // Especially the product section needs much memory
 $memLimit = @ini_get('memory_limit');
 if( stristr( $memLimit, 'k') ) {
-        $memLimit = str_replace( 'k', '', str_replace( 'K', '', $memLimit )) * 1024;
+	$memLimit = str_replace( 'k', '', str_replace( 'K', '', $memLimit )) * 1024;
 }
 elseif( stristr( $memLimit, 'm') ) {
-        $memLimit = str_replace( 'm', '', str_replace( 'M', '', $memLimit )) * 1024 * 1024;
+	$memLimit = str_replace( 'm', '', str_replace( 'M', '', $memLimit )) * 1024 * 1024;
 }
 if( $memLimit < 16777216 ) {
-        @ini_set('memory_limit', '16M');
+	@ini_set('memory_limit', '16M');
 }
 
 $option = mosGetParam( $_REQUEST, 'option' );
@@ -97,14 +97,14 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		);
 	/**
 	 * This Log Object will help us log messages and errors
-         * See http://pear.php.net/package/Log
-         * @global Log vmLogger
-         */
-        $vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
-        $GLOBALS['vmLogger'] =& $vmLogger;
-        // Instantiate the DB class
-        $db = new ps_DB();
-        
+	 * See http://pear.php.net/package/Log
+	 * @global Log vmLogger
+	 */
+	$vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
+	$GLOBALS['vmLogger'] =& $vmLogger;
+	// Instantiate the DB class
+	$db = new ps_DB();
+	
 	// Instantiate the permission class
 	$perm = new ps_perm();
 	// Instantiate the HTML helper class
@@ -121,13 +121,13 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// Instantiate the function class
 	$ps_function = new ps_function();
 	// Instantiate the ps_shopper_group class
-        $ps_shopper_group = new ps_shopper_group();
+	$ps_shopper_group = new ps_shopper_group();
 
-        // Set the mosConfig_live_site to its' SSL equivalent
-        if( $_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' || @strstr( $page, "checkout." )) {
-                // temporary solution until we have
-                // $mosConfig_secure_site
-                $GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];
+	// Set the mosConfig_live_site to its' SSL equivalent
+	if( $_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' || @strstr( $page, "checkout." )) {
+		// temporary solution until we have
+		// $mosConfig_secure_site
+		$GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];
 		$GLOBALS['mosConfig_live_site'] = ereg_replace('/$','',SECUREURL);
 		$mm_action_url = SECUREURL;
 	}
@@ -155,13 +155,13 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	/** @global CurrencyDisplay $CURRENCY_DISPLAY */
 	$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
 
-        if( $option == "com_virtuemart" ) {
+	if( $option == "com_virtuemart" ) {
 
-                // Get sure that we have float values with a decimal point!
-                setlocale(LC_NUMERIC,'en_US');
-                
-                // some input validation for limitstart
-                if (!empty($_REQUEST['limitstart'])) {
+		// Get sure that we have float values with a decimal point!
+		@setlocale( LC_NUMERIC, 'en_US', 'en' );
+		
+		// some input validation for limitstart
+		if (!empty($_REQUEST['limitstart'])) {
 			$_REQUEST['limitstart'] = intval( $_REQUEST['limitstart'] );
 		}
 
@@ -288,15 +288,15 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$_SESSION['last_page'] = $page;
 		}
 	}
-        // I don't get it, why Joomla uses masked gid values!
-        if( !defined( '_PSHOP_ADMIN' )) {
-                $my = $mainframe->getUser();
-                if( isset( $my->_model )) {
-                        $my = $my->_model;
-                }
-        }
-        
-        // the Log object holds all error messages
+	// I don't get it, why Joomla uses masked gid values!
+	if( !defined( '_PSHOP_ADMIN' )) {
+		$my = $mainframe->getUser();
+		if( isset( $my->_model )) {
+			$my = $my->_model;
+		}
+	}
+	
+	// the Log object holds all error messages
 	// here we flush the buffer and print out all messages
 	$vmLogger->printLog();
 	// Now we can switch to implicit flushing

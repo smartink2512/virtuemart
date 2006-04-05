@@ -194,7 +194,7 @@ class ps_linkpoint {
 
         // Get user billing information
         $dbbt = new ps_DB;
-        $qt = "SELECT * FROM `#__{vm}_user_info` WHERE id='".$auth["user_id"]."' AND address_type='BT'";
+        $qt = "SELECT * FROM `#__{vm}_user_info` WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
         $user_info_id = $dbbt->f("user_info_id");

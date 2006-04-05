@@ -38,7 +38,7 @@ class ps_DB extends database {
 	var $called = false;
 	/** @var database The core database object */
 	var $_database = null;
-	
+
 	function ps_DB() {
 		global $database;
 		$this->_database = $database;
@@ -90,7 +90,7 @@ class ps_DB extends database {
 		else {
 			$this->setQuery( $q );
 		}
-		
+
 		$this->row = 0;
 		$this->called = false;
 		$this->record = null;
@@ -102,9 +102,9 @@ class ps_DB extends database {
 		else {
 			$this->_database->query();
 		}
-		
+
 		$this->_query_set = false;
-		
+
 	}
 
 	/**
@@ -228,7 +228,7 @@ class ps_DB extends database {
 	function num_rows() {
 		return sizeof( $this->record );
 	}
-	
+
 	/**
 	 * Returns the ID of the last AUTO_INCREMENT INSERT.
 	 *
@@ -237,7 +237,7 @@ class ps_DB extends database {
 	function last_insert_id() {
 		return $this->_database->insertid();
 	}
-	
+
 	/**
 	 * returns true when the actual row is the last record in the record set
 	 * otherwise returns false
@@ -258,13 +258,13 @@ class ps_DB extends database {
 		$this->called = false;
 
 	}
-	
-///////////////////////////////
-// Parental Database functions
-// We must overwrite them because
-// we still use a global database
-// object, not a ps_DB object
-///////////////////////////////
+
+	///////////////////////////////
+	// Parental Database functions
+	// We must overwrite them because
+	// we still use a global database
+	// object, not a ps_DB object
+	///////////////////////////////
 	function loadResult() {
 		return $this->_database->loadResult();
 	}
@@ -291,6 +291,9 @@ class ps_DB extends database {
 	}
 	function stderr() {
 		return $this->_database->stderr();
+	}
+	function getEscaped( $text ) {
+		return $this->_database->getEscaped( $text );
 	}
 }
 ?>

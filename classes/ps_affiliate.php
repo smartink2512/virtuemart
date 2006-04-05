@@ -256,9 +256,9 @@ class ps_affiliate {
    
    //get the affiliate id from affiliate table for this user
 	$q =  "SELECT * FROM #__{vm}_affiliate, #__users";
-	$q .= " WHERE #__{vm}_affiliate.user_id = #__users.user_info_id";
+	$q .= " WHERE #__{vm}_affiliate.user_id = #__{vm}_user_info.user_info_id";
 	if(!$affiliate_id){
-		$q .= " AND #__users.id = '".$auth["user_id"]."'";
+		$q .= " AND #__{vm}_user_info.user_id = '".$auth["user_id"]."'";
 	}
 	else {
 		$q .=" AND #__{vm}_affiliate.affiliate_id = '".$affiliate_id."'";

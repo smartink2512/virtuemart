@@ -48,22 +48,23 @@ if ($_POST) {
         }
         else
             die( "Joomla Configuration File not found!" );
-			
+                        
         require_once($mosConfig_absolute_path. '/includes/database.php');
         $database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
         
         // load Joomla Language File
         if (file_exists( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' )) {
-        	require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
+            require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
         }
         else {
-        	require_once( $mosConfig_absolute_path. '/language/english.php' );
+            require_once( $mosConfig_absolute_path. '/language/english.php' );
         }
     /*** END of Joomla config ***/
     
     
     /*** VirtueMart part ***/        
         require_once($mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php');
+        require_once( CLASSPATH. 'ps_main.php');
         
 		require_once( CLASSPATH. "language.class.php" );
 	
@@ -90,7 +91,7 @@ if ($_POST) {
 		else {
 			$debug_email_address = PAYPAL_EMAIL;
 		}
-			
+                        
     /*** END VirtueMart part ***/
     
     debug_msg( "1. Finished Initialization of the notify.php script" );
@@ -285,14 +286,14 @@ if ($_POST) {
       
       // Get the Order Details from the database      
       $qv = "SELECT `order_id`, `order_number`, `user_id`, `order_subtotal`
-      				`order_total`, ` order_currency`, `order_tax`, 
-      				`order_shipping_tax`, `coupon_discount`, `order_discount`
-      			FROM `#__{vm}_orders` 
-      			WHERE `order_number`='".$invoice."'";
-      $dbbt = new ps_DB;
-      $dbbt->query($qv);
-      $dbbt->next_record();
-      $order_id = $dbbt->f("order_id");
+                                `order_total`, `order_currency`, `order_tax`, 
+                                `order_shipping_tax`, `coupon_discount`, `order_discount`
+                        FROM `#__{vm}_orders` 
+                        WHERE `order_number`='".$invoice."'";
+      $db = new ps_DB;
+      $db->query($qv);
+      $db->next_record();
+      $order_id = $db->f("order_id");
      
       $d['order_id'] = $order_id;
       $d['notify_customer'] = "Y";
@@ -321,13 +322,13 @@ if ($_POST) {
                     $mail->Send();
                     exit();
                 }
-                $tax_total = $db->f("order_tax") + $db->f("order_shipping_tax");
-				$discount_total = $db->f("coupon_discount") + $db->f("order_discount");
-				$amount_check = round( $db->f("order_subtotal")+$tax_total-$discount_total, 2);
-				
+                /*$tax_total = $db->f("order_tax") + $db->f("order_shipping_tax");
+                                $discount_total = $db->f("coupon_discount") + $db->f("order_discount");
+                                $amount_check = round( $db->f("order_subtotal")+$tax_total-$discount_total, 2);
+                                
                 if( $amount != $amount_check 
-                	|| $currency_code != $db->f('order_currency')
-				) {
+                        || $currency_code != $db->f('order_currency')
+                                ) {
                     $mail->From = $mosConfig_mailfrom;
                     $mail->FromName = $mosConfig_fromname;
                     $mail->AddAddress($debug_email_address);
@@ -336,17 +337,18 @@ if ($_POST) {
                     Order Number: $invoice.
                     The amount received was: $amount.
                     It should be:
-                    		   ".$db->f("order_tax")." (Order Tax)
-                    		 + ".$db->f("order_shipping_tax")." (Order shipping tax)
-                    		 - ".$db->f("coupon_discount")." (Coupon Discount)
-                    		 - ".$db->f("order_discount")." (Payment Discount)
-                    		 + ".$db->f("order_subtotal")." (Order Subtotal)
-                    		 ----------------------------------------------
-                    		 = ".$amount_check;
+                                   ".$db->f("order_tax")." (Order Tax)
+                                 + ".$db->f("order_shipping_tax")." (Order shipping tax)
+                                 - ".$db->f("coupon_discount")." (Coupon Discount)
+                                 - ".$db->f("order_discount")." (Payment Discount)
+                                 + ".$db->f("order_subtotal")." (Order Subtotal)
+                                 ----------------------------------------------
+                                 = ".$amount_check;
                     
                     $mail->Send();
                     exit();
                 }
+                */
                 // UPDATE THE ORDER STATUS to 'Completed'
                 if(eregi ("Completed", $payment_status)) {
                     $d['order_status'] = PAYPAL_VERIFIED_STATUS;                    
@@ -391,7 +393,7 @@ if ($_POST) {
                 a Failed PayPal Transaction on $mosConfig_live_site requires your attention.
                 -----------------------------------------------------------
                 Order ID: ".$d['order_id']."
-                User ID: ".$dbbt->f("user_id")."
+                User ID: ".$db->f("user_id")."
                 Payment Status returned by PayPal: $payment_status 
                 
                 $error_description";
@@ -414,7 +416,7 @@ if ($_POST) {
                 $mail->Body .= "REMOTE IP ADDRESS: ".$_SERVER['REMOTE_ADDR']."\n";
                 $mail->Body .= "REMOTE HOST NAME: $remote_hostname\n";
                 $mail->Body .= "Order ID: ".$d['order_id']."\n";
-                $mail->Body .= "User ID: ".$dbbt->f("user_id")."\n";
+                $mail->Body .= "User ID: ".$db->f("user_id")."\n";
                 $mail->Body .= $error_description;
                 $mail->Send();
 

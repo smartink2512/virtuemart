@@ -18,10 +18,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 function convertECB ($amountA, $currA, $currB) {
-        global $mosConfig_cachepath, $mosConfig_live_site, $mosConfig_absolute_path;
-        /* variables:
-        * $amountA      - amount to convert
-        * $currA        - currency to covert from
+	global $mosConfig_cachepath, $mosConfig_live_site, $mosConfig_absolute_path;
+	/* variables:
+	* $amountA 	- amount to convert
+	* $currA 	- currency to covert from
 	* $currB	- currency to convert to
 	* $do_date	- if set, check only date
 	*/

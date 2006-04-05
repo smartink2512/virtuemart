@@ -37,26 +37,39 @@ $flypage = mosGetParam($_REQUEST, "flypage", FLYPAGE);
 
 $flypage = str_replace( 'shop.', '', $flypage);
 
-$product_id = mosgetparam($_REQUEST, "product_id", null);
+$product_id = intval( mosgetparam($_REQUEST, "product_id", null) );
+$product_sku = $db->getEscaped( mosgetparam($_REQUEST, "sku", '' ) );
 $category_id = mosgetparam($_REQUEST, "category_id", null);
 $manufacturer_id = mosgetparam($_REQUEST, "manufacturer_id", null);
 $Itemid = mosgetparam($_REQUEST, "Itemid", null);
 $db_product = new ps_DB;
 
-// Get the product info from the database 
-$q = "SELECT * FROM #__{vm}_product WHERE product_id='$product_id'";
-if( !$perm->check("admin,storeadmin") ) {
-  $q .= " AND product_publish='Y'";
-  if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
-    $q .= " AND product_in_stock > 0 ";
-  }
+// Get the product info from the database
+$q = "SELECT * FROM `#__{vm}_product` WHERE ";
+if( !empty($product_id)) {
+	$q .= "`product_id`=$product_id";
+}
+elseif( !empty($product_sku )) {
+	$q .= "`product_sku`='$product_sku'";
+}
+else {
+	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 
+if( !$perm->check("admin,storeadmin") ) {
+  	$q .= " AND `product_publish`='Y'";
+  	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+    	$q .= " AND `product_in_stock` > 0 ";
+  	}
+}
 $db_product->query( $q );
 
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
   mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+}
+if( empty($product_id)) {
+	$product_id = $db_product->f('product_id');
 }
 $product_parent_id = $db_product->f("product_parent_id");
 if ($product_parent_id != 0) {
@@ -66,14 +79,15 @@ if ($product_parent_id != 0) {
 }
 
 // Let's have a look wether the product has images.
-  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id=$product_id AND file_is_image=1" );
-  $db->next_record();
-  if( $db->f("images") && $product_parent_id!=0) {
+if( $product_parent_id != 0 ) {
 	  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id=$product_parent_id AND file_is_image=1" );
-	  $db->next_record();
-  }
-  $images = new stdClass();
-  $images->images = $db->f("images");
+}
+else {
+  	$db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id=$product_id AND file_is_image=1" );
+}
+$db->next_record();
+$images = new stdClass();
+$images->images = $db->f("images");
 
 // Let's have a look wether the product has related products.
   $q = "SELECT product_sku, related_products FROM #__{vm}_product,#__{vm}_product_relations ";
@@ -345,6 +359,7 @@ $template = str_replace( "{navigation_pathway}", $navigation_pathway, $template 
 $template = str_replace( "{navigation_childlist}", $navigation_childlist, $template );
 $template = str_replace( "{product_name}", $product_name, $template );
 $template = str_replace( "{product_image}", $product_image, $template );
+$template = str_replace( "{full_image}", $full_image, $template ); // to display the full image on flypage
 $template = str_replace( "{more_images}", $more_images, $template );
 $template = str_replace( "{file_list}", $file_list, $template );
 $template = str_replace( "{edit_link}", $edit_link, $template );

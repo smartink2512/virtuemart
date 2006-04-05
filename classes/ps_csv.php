@@ -1045,8 +1045,8 @@ class ps_csv {
 					}
 				}
 				$database->query( "SELECT product_sku FROM #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'" );
-				$product_sku = $database->record;
-				$export_sku = $product_sku;
+            $database->next_record();
+            $export_sku = $database->f('product_sku');
 			}
 
 			if( $use_standard_order == "Y" ) {

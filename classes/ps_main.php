@@ -233,7 +233,7 @@ function validate_image(&$d,$field_name,$table_name) {
 			$filehash = basename( $delete, ".".$pathinfo["extension"] );
 			$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
 			
-			$d["image_commands"][] = "if( file_exists($resizedfilename)) {
+			$d["image_commands"][] = "if( file_exists(\"$resizedfilename\")) {
 										\$ret = unlink(\"$resizedfilename\");
 									  } else { \$ret = true; }";
 			$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
@@ -931,7 +931,6 @@ if (!defined('ENT_QUOTES')) {
  * @link        http://php.net/function.html_entity_decode
  * @author      David Irvine <dave@codexweb.co.za>
  * @author      Aidan Lister <aidan@php.net>
- * @version     $Revision: 1.10 $
  * @since       PHP 4.3.0
  * @internal    Setting the charset will not do anything
  * @require     PHP 4.0.0 (user_error)
@@ -1003,6 +1002,21 @@ function vmReadFileChunked($filename,$retbytes=true) {
 		return $cnt; // return num. bytes delivered like readfile() does.
 	}
 	return $status;
+}
+
+/**
+ * Returns the charset string from the global _ISO constant
+ *
+ * @return string UTF-8 by default
+ */
+function vmGetCharset() {
+	$iso = explode( '=', _ISO );
+	if( !empty( $iso[1] )) {
+		return $iso[1];
+	}
+	else {
+		return 'UTF-8';
+	}
 }
 
 ?>

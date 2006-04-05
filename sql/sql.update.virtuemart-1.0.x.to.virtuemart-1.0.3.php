@@ -17,8 +17,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 // http://virtuemart.net/index.php?option=com_flyspray&Itemid=83&do=details&id=521
-$database->setQuery( 'ALTER TABLE `#__{vm}_product_mf_xref` CHANGE `product_id` `product_id` INT( 11 ) NULL DEFAULT NULL');
-$database->query();
+$db->setQuery( 'ALTER TABLE `#__{vm}_product_mf_xref` CHANGE `product_id` `product_id` INT( 11 ) NULL DEFAULT NULL');
+$db->query();
 
-$database->setQuery( 'ALTER TABLE `#__{vm}_orders` ADD `order_tax_details` TEXT NOT NULL AFTER `order_tax`');
-$database->query();
+$db->setQuery( 'ALTER TABLE `#__{vm}_orders` ADD `order_tax_details` TEXT NOT NULL AFTER `order_tax`');
+$db->query();

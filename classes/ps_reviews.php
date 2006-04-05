@@ -91,11 +91,18 @@ class ps_reviews {
 		  $html = "<h4>".$VM_LANG->_PHPSHOP_REVIEWS.":</h4>";      
 		  $dbc = &new ps_DB;
           $showall = mosgetparam( $_REQUEST, 'showall', 0);
-          $q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews WHERE product_id='$product_id'";
-          if( $limit > 0 )
-            $q .= " LIMIT ".intval($limit);
-          if( !$showall )
-              $q .= "LIMIT 0,5";
+          $q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews WHERE product_id='$product_id' ORDER BY `time` DESC ";
+          $count = "SELECT COUNT(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='$product_id'";
+           
+          if( $limit > 0 ) {
+          	$q .= " LIMIT ".intval($limit);
+          }
+          elseif( !$showall ) {
+          	$q .= " LIMIT 0, 5";
+          }
+          
+          $dbc->query( $count );
+          $num_rows = $dbc->f('num_rows');
           $dbc->query( $q );
           
           while( $dbc->next_record() ) {
@@ -106,15 +113,15 @@ class ps_reviews {
 				$html .= $VM_LANG->_PHPSHOP_RATE_NOM.": <img src=\"".IMAGEURL."stars/".$dbc->f("user_rating").".gif\" border=\"0\" alt=\"".$dbc->f("user_rating")."\" />";
 				$html .= "<br />".$dbc->f("comment")."<br /><br />";
           }
-          if( $dbc->num_rows() < 1 ) {
+          if( $num_rows < 1 ) {
               $html .= $VM_LANG->_PHPSHOP_NO_REVIEWS." <br />";
               if (!empty($my->id)) 
                 $html .= $VM_LANG->_PHPSHOP_WRITE_FIRST_REVIEW;
               else 
                 $html .= $VM_LANG->_PHPSHOP_REVIEW_LOGIN;
           }
-          if( !$showall && $db->num_rows() >=5 )
-            $html .= "<a href=\"".$_SERVER['REQUEST_URI']."&showall=1\">"._MORE."</a>";
+          if( !$showall && $num_rows >=5 )
+            $html .= "<a href=\"".$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']."&showall=1\">"._MORE."</a>";
       }
       return $html;
   }
@@ -290,7 +297,7 @@ class ps_reviews {
               }
 		  }
           if ($commented==false) {
-            $comment=nl2br(htmlspecialchars(strip_tags($d["comment"])));
+            $comment=$db->getEscaped( nl2br(htmlspecialchars(strip_tags($d["comment"]))) );
             $sql="INSERT INTO #__{vm}_product_reviews (product_id, comment, userid, time, user_rating) VALUES 
                       ('".$d["product_id"]."', '$comment', '".$my->id."', '".time()."', '".$d["user_rating"]."')";
             $db->query( $sql );

@@ -23,14 +23,14 @@ global $error, $page, $ps_product, $ps_product_category;
 $product_id = mosGetParam( $_REQUEST, 'product_id' );
 
 if( is_array( $product_id )) {
-        $recent_product_id = "";
+    $recent_product_id = "";
 }
 else {
-        $recent_product_id = $product_id;
+    $recent_product_id = $product_id;
 }
         
 $mod = array();
-$q = "SELECT module_name,module_perms from #__{vm}_module WHERE module_publish='Y'";
+$q = "SELECT module_name,module_perms from #__{vm}_module WHERE module_publish='Y' ";
 $q .= "AND module_name <> 'checkout' ORDER BY list_order ASC";
 $db->query($q);
 while ($db->next_record()) {
@@ -331,7 +331,8 @@ $menu_code = ob_get_contents();
 // clean this output buffer and end it
 ob_end_clean();
 // convert all special chars into HTML entities
-$menu_code = htmlentities( $menu_code, ENT_NOQUOTES );
+
+$menu_code = htmlentities( $menu_code, ENT_NOQUOTES, vmGetCharset() );
 // reconvert "htmlspecialchars"
 $menu_code = str_replace( '&gt;', '>', 
                          str_replace( '&lt;', '<', 

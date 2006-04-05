@@ -33,17 +33,17 @@ $q .= "AND #__{vm}_orders.order_id='$order_id'";
 $db->query($q);
 
 if ($db->next_record()) {
-        
-        $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO.' : '.$VM_LANG->_PHPSHOP_ORDER_LIST_ID.' '.$db->f('order_id'));
-        require_once( CLASSPATH.'ps_product_category.php');
-        $pathway = "<a href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-              .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".ps_product_category::pathway_separator().' '
-              .$VM_LANG->_PHPSHOP_ACC_ORDER_INFO;
-        $mainframe->appendPathWay( $pathway );
-        
-        // Get bill_to information
-        $dbbt = new ps_DB;
-        $q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
+	
+	$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO.' : '.$VM_LANG->_PHPSHOP_ORDER_LIST_ID.' '.$db->f('order_id'));
+	require_once( CLASSPATH.'ps_product_category.php');
+	$pathway = "<a href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
+	      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".ps_product_category::pathway_separator().' '
+	      .$VM_LANG->_PHPSHOP_ACC_ORDER_INFO;
+	$mainframe->appendPathWay( $pathway );
+	
+	// Get bill_to information
+	$dbbt = new ps_DB;
+	$q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
 	$dbbt->query($q);
 	$dbbt->next_record();
 	$user = $dbbt->record;
@@ -634,7 +634,7 @@ if( PAYMENT_DISCOUNT_BEFORE == '1') {
         <tr> 
           <td colspan="3" align="right">&nbsp;</td>
           <td colspan="2" align="right"><?php 
-                                echo ps_checkout::show_tax_details( $db->f('order_tax_details') );
+				echo ps_checkout::show_tax_details( $db->f('order_tax_details') );
             ?>&nbsp;&nbsp;&nbsp;</td>
         </tr>
       </table>

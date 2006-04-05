@@ -23,17 +23,17 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 
 $q = "";
-$count = "SELECT COUNT( * ) ";
+$count = "SELECT COUNT(*) AS num_rows ";
 $list = "SELECT comment, user_rating,userid,username,time ";
 $q .= "FROM #__{vm}_product_reviews,#__users ";
-$q .= "WHERE product_id = '$product_id' AND id=userid ";
+$q .= "WHERE product_id = '$product_id' AND #__users.id=#__{vm}_product_reviews.userid ";
 if( !empty( $keyword ))
 	$q .= "AND ( comment LIKE '%$keyword%' OR username LIKE '%$keyword%' ) ";
 $q .= "ORDER BY userid "; 
-$count .= $q ." LIMIT $limitstart, $limit";
-$list .= $q;
+$list .= $q ." LIMIT $limitstart, $limit";
+$count .= $q;
 $db->query($count);
-$num_rows = $db->num_rows();
+$num_rows = $db->f('num_rows');
 
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );

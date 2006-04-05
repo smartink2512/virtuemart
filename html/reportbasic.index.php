@@ -123,7 +123,7 @@ $i=0;
  }
  else if(isset ($last90)) {
    $start_date = mktime(0,0,0,date("n"),date("j")-90,date("Y"));
-   $end_date = mktime(0,0,0,date("n"),date("j"),date("Y"));
+   $end_date = mktime(23,59,59,date("n"),date("j"),date("Y"));
  }
  elseif (isset($sbmt)) {
    /* start and end dates should have been given, assign accordingly */
@@ -272,13 +272,19 @@ if (!empty($show_products)) {
         </tr>
       <?php
         $i = 1;
-        while ($dbpl->f("order_date") == $db->f("order_date") && $dbpl->next_record()) {
-          echo "<tr bgcolor=\"#ffffff\">\n";
-          echo "<td>".$i++."</td>\n";
-          echo '<td align="left">' . $dbpl->f("product_name") . " (" . $dbpl->f("product_sku") . ")</td>\n";
-          echo '<td align="left">' . $dbpl->f("items_sold") . "</td>\n";
-          echo "</tr>\n";
+        $has_next = $dbpl->next_record();
+        
+        while ( $has_next) {
+        	if( $dbpl->f("order_date") == $db->f("order_date")) {
+	          echo "<tr bgcolor=\"#ffffff\">\n";
+	          echo "<td>".$i++."</td>\n";
+	          echo '<td align="left">' . $dbpl->f("product_name") . " (" . $dbpl->f("product_sku") . ")</td>\n";
+	          echo '<td align="left">' . $dbpl->f("items_sold") . "</td>\n";
+	          echo "</tr>\n";
+        	}
+         	$has_next = $dbpl->next_record();
         }
+        $dbpl->reset();
       ?>
         <tr><td colspan="3"><hr width="85%"></td></tr>
       </table>

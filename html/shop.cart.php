@@ -66,7 +66,7 @@ if ($cart["idx"]) {
        </div><?php
    }
    else {
- ?>
+ ?><br />
  <div style="text-align:center;width:40%;float:left;">
      <h3><a href="<?php $sess->purl( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1"); ?>">
      <img src="<?php echo IMAGEURL ?>ps_image/forward.png" align="middle" width="32" height="32" alt="Forward" border="0" />

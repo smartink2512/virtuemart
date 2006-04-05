@@ -145,6 +145,53 @@ class ps_authorize {
             </td>
             <td>Select an order status for failed authorize.net transactions.</td>
         </tr>
+
+            <tr>
+            <td><strong>Show Response Codes for Failed Transactions?</strong></td>
+            <td>
+                <select name="AN_SHOW_ERROR_CODE" class="inputbox">
+                <option <?php if (AN_SHOW_ERROR_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <option <?php if (AN_SHOW_ERROR_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                </select>
+            </td>
+            <td>If set to YES then the customer will see the Authorize.net Transaction Response Reason Codes (Response Code - 
+				Response Subcode - Response Reason Code - AVS Result Code - Card Code (CVV2/CVC2/CID) Response Code - 
+				Cardholder Authentication Verification Value (CAVV) Response Code - in a format like: 2-2-65-Y-N--)
+				along with the Response Reason Text. This can be useful for troubleshooting failed or declined transactions.
+				For further details see the <a href="http://www.authorize.net/support/AIM_guide.pdf">Authorize.net Advanced Integration Method (AIM) Implementation Guide</a></td>
+        </tr>
+        <tr>
+            <td><strong>Email Confirmation from Gateway to Merchant?</strong></td>
+            <td>
+                <select name="AN_EMAIL_MERCHANT" class="inputbox">
+                <option <?php if (AN_EMAIL_MERCHANT == 'YES') echo "selected=\"selected\""; ?> value="YES">
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <option <?php if (AN_EMAIL_MERCHANT == 'NO') echo "selected=\"selected\""; ?> value="NO">
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                </select>
+            </td>
+            <td>Send copy of the customer confirmation email to the Merchant? If yes then an email will
+				be sent to the Merchant address as well as the address(es) configured in the Merchant Interface.
+				<em> Note: this email is sent from the Authorize.net gateway and is independent of any email sent by VirtueMart</em> 
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Email Confirmation from Gateway to Customer?</strong></td>
+            <td>
+                <select name="AN_EMAIL_CUSTOMER" class="inputbox">
+                <option <?php if (AN_EMAIL_CUSTOMER == 'YES') echo "selected=\"selected\""; ?> value="YES">
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <option <?php if (AN_EMAIL_CUSTOMER == 'NO') echo "selected=\"selected\""; ?> value="NO">
+                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                </select>
+            </td>
+            <td>Send a confirmation email to the customer? If yes then an email will
+				be sent to the customer from the Merchant Interface.
+				<em> Note: this email is sent from the Authorize.net gateway and is independent of any email sent by VirtueMart</em> 
+            </td>
+        </tr>
       </table>
    <?php
    // return false if there's no configuration
@@ -186,7 +233,10 @@ class ps_authorize {
 		"AN_CHECK_CARD_CODE" => $d['AN_CHECK_CARD_CODE'],
 		"AN_VERIFIED_STATUS" => $d['AN_VERIFIED_STATUS'],
 		"AN_INVALID_STATUS" => $d['AN_INVALID_STATUS'],
-		"AN_RECURRING" => $d['AN_RECURRING']
+		"AN_RECURRING" => $d['AN_RECURRING'], 
+		"AN_EMAIL_MERCHANT" => $d['AN_EMAIL_MERCHANT'],
+		"AN_EMAIL_CUSTOMER" => $d['AN_EMAIL_CUSTOMER'],
+		"AN_SHOW_ERROR_CODE" => $d['AN_SHOW_ERROR_CODE']
 		);
 		$config = "<?php\n";
 		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
@@ -255,7 +305,16 @@ class ps_authorize {
 		$host = "secure.authorize.net";
 		$port = 443;
 		$path = "/gateway/transact.dll";
-
+		// Option to send email to merchant from gateway
+		if (AN_EMAIL_MERCHANT == 'NO') {
+				$vendor_mail = "";
+ 		}
+		if (AN_EMAIL_CUSTOMER == 'YES') {
+			$email_customer = "TRUE";
+		} else {
+			$email_customer = "FALSE";
+ 		}
+ 			
 		//Authnet vars to send
 		$formdata = array (
 		'x_version' => '3.1',
@@ -297,7 +356,7 @@ class ps_authorize {
 
 		// Email Settings
 		'x_email' => $dbbt->f("user_email"),
-		'x_email_customer' => 'False',
+		'x_email_customer' => $email_customer,
 		'x_merchant_email' => $vendor_mail,
 
 		// Invoice Information
@@ -427,7 +486,11 @@ class ps_authorize {
 		// Payment Declined
 		elseif ($response[0] == '2') {
 
-			$vmLogger->err( $response[3] );
+			if (AN_SHOW_ERROR_CODE == 'YES') {
+				$vmLogger->err( $response[0] . "-" . $response[1] . "-" . $response[2] . "-" .  $response[5] . "-" . $response[38] . "-" . $response[39] . "-" . $response[3] );
+		   	} else {
+           		$vmLogger->err( $response[3] );
+			}
 
 			$d["order_payment_log"] = $response[3];
 			// Catch Transaction ID
@@ -437,7 +500,12 @@ class ps_authorize {
 		// Transaction Error
 		elseif ($response[0] == '3') {
 
-			$vmLogger->err( $response[3] );
+			if (AN_SHOW_ERROR_CODE == 'YES') {
+				$vmLogger->err( $response[0] . "-" . $response[1] . "-" . $response[2] . "-" .  $response[5] . "-" . $response[38] . "-" . $response[39] . "-" . $response[3] );
+		   	} 
+		   	else {
+           		$vmLogger->err( $response[3] );
+			}
 
 			$d["order_payment_log"] = $response[3];
 			// Catch Transaction ID

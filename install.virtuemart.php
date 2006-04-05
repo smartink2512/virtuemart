@@ -13,8 +13,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
+
 function virtuemart_is_installed() {
-	global $database, $mosConfig_absolute_path, $mosConfig_dbprefix;
+	global $database, $mosConfig_absolute_path, $mosConfig_dbprefix, 
+		$VMVERSION, $shortversion, $myVersion, $version_info;
 	$option = 'com_virtuemart';
 	$installfile = dirname( __FILE__ ) . "/install.php";
 	
@@ -23,6 +25,20 @@ function virtuemart_is_installed() {
 	
 	if( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/classes/htmlTools.class.php' ) 
 		&& count( $vm_tables)> 30 ) {
+		// VirtueMart is installed! But is it an older version that needs to be updated?
+		$database->setQuery( 'SELECT id, params FROM `#__components` WHERE name = \'virtuemart_version\'' );
+		$database->loadObject( $old_version );
+		if( $old_version && file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/classes/htmlTools.class.php')) {
+			$version_info = new mosParameters( $old_version->params );
+			include_once( $mosConfig_absolute_path.'/administrator/components/'.$option.'/version.php' );
+			$VMVERSION = new vmVersion();
+			$result = version_compare( $version_info->get( 'RELEASE' ), '1.0.3' );
+			
+			if( $result == -1 ) {
+				return false;
+			}			
+		}
+		
 		@unlink( $installfile );
 		if( ( file_exists($installfile)) || !file_exists(dirname( __FILE__ ) . "/virtuemart.cfg.php")) {
 			die('<h2>Virtuemart Installation Notice</h2>
@@ -42,9 +58,14 @@ function virtuemart_is_installed() {
 	
 }
 function com_install() {
-	global $mosConfig_absolute_path, $mosConfig_dbprefix, $database;
+	global $mosConfig_absolute_path, $mosConfig_dbprefix, $database, 
+		$VMVERSION, $myVersion, $shortversion, $version_info;
 	include( $mosConfig_absolute_path. "/administrator/components/com_virtuemart/version.php" );
-	
+	if( !isset( $shortversion )) {
+		$shortversion = $VMVERSION->PRODUCT . " " . $VMVERSION->RELEASE . " " . $VMVERSION->DEV_STATUS. " ";
+		$myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
+					. $VMVERSION->RELTIME . " " . $VMVERSION->RELTZ;
+	}
 	if( defined( '_RELEASE' )) {
 		// Refuse to install on Mambo 4.5.0
 		if( _RELEASE == '4.5' || (float)_RELEASE <= 4.50 )
@@ -55,24 +76,24 @@ function com_install() {
 	// Check for old mambo-phpShop Tables. When they exist,
 	// offer an Upgrade
 	$database->setQuery( "SHOW TABLES LIKE '".$mosConfig_dbprefix."pshop_%'" );
-        $pshop_tables = $database->loadObjectList();
-        
-        if( !empty( $pshop_tables )) {
-          $installation = "phpshopupdate";
-        }
-        else {
-                $database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
-                $old_version =  $database->loadResult();
-                if( $old_version && file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/classes/htmlTools.class.php')) {
-                        $installation = 'vm_update';
-                }
-                else {
-                        $installation = "new";
-                }
-        }
-        ?>
-        <link rel="stylesheet" href="components/com_virtuemart/install.css" type="text/css" />
-        <div align="center">
+	$pshop_tables = $database->loadObjectList();
+	
+	if( !empty( $pshop_tables )) {
+	  $installation = "phpshopupdate";
+	}
+	else {
+		$database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
+		$old_version =  $database->loadResult();
+		if( $old_version && file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/classes/htmlTools.class.php')) {
+			$installation = 'vm_update';
+		}
+		else {
+			$installation = "new";
+		}
+	}
+	?>
+	<link rel="stylesheet" href="components/com_virtuemart/install.css" type="text/css" />
+	<div align="center">
 		<table width="100%" border="0">
 			<tr>
 				<td valign="middle" align="center">
@@ -130,27 +151,30 @@ function com_install() {
 									</tr>
 									<tr>
 										<td align="center" colspan="3"><br /><br /><hr /><br /></td>
-                                                                        </tr>
-                                                                        <?php 
-                                                                }
-                                                                elseif( $installation == 'vm_update' ) { ?>
-                                                                        <tr>
-                                                                                <td colspan="3" class="error">[UPDATE MODE]<br/>The Installation script has found out that you've already installed VirtueMart, so let's update your Database.</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                                <td align="left" colspan="3">If you're updating from VirtueMart  <strong>&lt; 1.0.3</strong> you'll have to click on this link!<br />
-                                                                                        <br /><br/>
-                                                                                        <div align="center">
-                                                                                                <a title="UPDATE FROM VERSION 1.0.x &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=updatevm10x">UPDATE FROM VERSION 1.0.x &gt;&gt;</a>
-                                                                                        </div>
-                                                                                </td>
-                                                                        </tr>
-                                                                        <?php
-                                                                }
-                                                                elseif( $installation == 'phpshopupdate' ) {  ?>
-                                                                        <tr>
-                                                                                <td colspan="3" class="error">[UPDATE MODE]<br/>The Installation Script has found existing mambo-phpShop Tables, so let's update your Database.</td>
-                                                                        </tr>
+									</tr>
+									<?php 
+								}
+								elseif( $installation == 'vm_update' ) { 
+									$old_version = get_class($version_info) =='mosparameters' ? $version_info->get( 'RELEASE') : '1.0.x';
+									?>
+										<td colspan="3" class="error">[UPDATE MODE]<br/>The Installation script has found out that you've already installed VirtueMart <?php echo $old_version ?>, so let's update your Database.</td>
+									<tr>
+									</tr>
+									<tr>
+										<td align="left" colspan="3">
+											<div align="center">
+												<a title="UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=updatevm10x">UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;</a>
+											</div><br /><br/>
+											Your version is NOT <strong><?php echo $old_version ?></strong>? Then please just delete the file <pre><?php echo dirname(__FILE__).'/install.php' ?></pre><br />
+											
+										</td>
+									</tr>
+									<?php
+								}
+								elseif( $installation == 'phpshopupdate' ) {  ?>
+									<tr>
+										<td colspan="3" class="error">[UPDATE MODE]<br/>The Installation Script has found existing mambo-phpShop Tables, so let's update your Database.</td>
+									</tr>
 									<tr>
 										<td align="left" colspan="3">If you're upgrading from mambo-phpShop, version <strong>1.2 stable-pl3</strong> or <strong>Mambo eCommerce Edition</strong> you'll have to click on this link!<br />
 											<br /><br/>

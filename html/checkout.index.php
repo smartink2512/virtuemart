@@ -25,14 +25,14 @@ $payment_method_id = mosgetparam( $_REQUEST, 'payment_method_id');
 $Itemid = mosgetparam( $_REQUEST, 'Itemid', null);
 $checkout_next_step = mosgetparam( $_REQUEST, 'checkout_next_step', 2);
 $checkout_this_step = mosgetparam( $_REQUEST, 'checkout_this_step', 2);
-if( empty( $vars["error"] ) )
-    $checkout_this_step = $checkout_next_step;
+if( empty( $vars["error"] ) ) {
+	$checkout_this_step = $checkout_next_step;
+}
+if( empty( $checkout_this_step )) {
+	$checkout_this_step = 2;
+}
 
-?>
-
-<h3><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ?></h3>
-
-<?php
+echo '<h3>'. $VM_LANG->_PHPSHOP_CHECKOUT_TITLE .'</h3>';
 
 /*****************************
 ** Checkout Bar Feature

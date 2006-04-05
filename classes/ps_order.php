@@ -29,29 +29,32 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *************************************************************************/
 class ps_order {
 	var $classname = "ps_order";
-        var $error;
+	var $error;
 
 
-        /**
-         * Changes the status of an order
-         * @author pablo
-         * @author soeren
-         * @author Uli
-         * 
-         *
-         * @param array $d
-         * @return boolean
-         */
-        function order_status_update(&$d) {
+	/**
+     * Changes the status of an order
+     * @author pablo
+     * @author soeren
+     * @author Uli
+     * 
+     *
+     * @param array $d
+     * @return boolean
+    */
+	function order_status_update(&$d) {
+		global $mosConfig_offset;
+		
+		$db = new ps_DB;
+		$timestamp = time() + ($mosConfig_offset*60*60);
+		$mysqlDatetime = date("Y-m-d G:i:s",$timestamp);
 
-                $db = new ps_DB;
-                $timestamp = time();
-                if( empty($_REQUEST['include_comment'])) {
-                $include_comment="N";
-                }
+		if( empty($_REQUEST['include_comment'])) {
+			$include_comment="N";
+		}
 
-                // get the current order status
-                $curr_order_status = @$d["current_order_status"];
+		// get the current order status
+		$curr_order_status = @$d["current_order_status"];
 		$notify_customer = empty($d['notify_customer']) ? "N" : $d['notify_customer'];
 		if( $notify_customer=="Y" ) {
 			$notify_customer=1; 
@@ -59,9 +62,10 @@ class ps_order {
 		else {
 			$notify_customer=0;
 		}
-		
-		$d['order_comment'] = empty($d['order_comment']) ? "" : $d['order_comment'];
 
+		$d['order_comment'] = empty($d['order_comment']) ? "" : $d['order_comment'];
+		$d['order_comment'] = $db->getEscaped( $d['order_comment'] );
+		
 		// When the order is set to "confirmed", we can capture
 		// the Payment with authorize.net
 		if( $curr_order_status=="P" && $d["order_status"]=="C") {
@@ -156,15 +160,15 @@ class ps_order {
 		// Update the Order History.
 		$q = "INSERT INTO #__{vm}_order_history ";
 		$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
-		$q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', NOW(), '$notify_customer', '".$d['order_comment']."')";
+		$q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', '$mysqlDatetime', '$notify_customer', '".$d['order_comment']."')";
 		$db->query($q);
 
 		// Do we need to re-update the Stock Level?
 		if( ($d["order_status"] == "X" || $d["order_status"]=="R" ||
-		$d["order_status"] == "x" || $d["order_status"]=="r") &&
-		CHECK_STOCK == '1' &&
-		$curr_order_status != $d["order_status"]
-		) {
+			$d["order_status"] == "x" || $d["order_status"]=="r") &&
+			CHECK_STOCK == '1' &&
+			$curr_order_status != $d["order_status"]
+			) {
 			// Get the order items and update the stock level
 			// to the number before the order was placed
 			$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='".$d["order_id"]."'";
@@ -177,7 +181,18 @@ class ps_order {
 				$dbu->query( $q );
 			}
 		}
-
+		// Update the Order Items' status
+		$q = "SELECT order_item_id FROM #__{vm}_order_item WHERE order_id=".$d['order_id'];
+		$db->query($q);
+		$dbu = new ps_DB;
+		while ($db->next_record()) {
+			$item_id = $db->f("order_item_id");
+			$q  = "UPDATE #__{vm}_order_item SET order_status='".$d["order_status"]."'"
+			. "\n, mdate='" . $timestamp . "' "
+			. "\n WHERE order_item_id=".$item_id;
+			$dbu->query( $q );
+		}
+		
 		if (ENABLE_DOWNLOADS == '1') {
 			##################
 			## DOWNLOAD MOD
@@ -223,7 +238,7 @@ class ps_order {
 				$q = "SELECT * FROM #__{vm}_vendor ";
 				$q .= "WHERE vendor_id='1'";
 				$dbv->query($q);
-				$dbv->next_record();				
+				$dbv->next_record();
 
 				$db = new ps_DB;
 				$q="SELECT first_name,last_name, user_email FROM #__{vm}_user_info WHERE user_id = '$userid' AND address_type='BT'";
@@ -251,10 +266,10 @@ class ps_order {
 
 				$mail_Body = $message;
 				$mail_Subject = $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_SUBJ;
-				
+
 				$result = vmMail( $dbv->f("contact_email"), $dbv->f("vendor_name"), 
 						$db->f("user_email"), $mail_Subject, $mail_Body, '' );
-				
+
 				if ($result) {
 					$vmLogger->info( $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("user_email") );
 				}
@@ -312,7 +327,7 @@ class ps_order {
 
 		if( !empty($d['include_comment']) && !empty($d['order_comment']) ) {
 			$message .= $VM_LANG->_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL.":\n";
-			$message .= $d['order_comment'];
+			$message .= stripslashes( $d['order_comment'] );
 			$message .= "\n____________________________________________________________\n\n";
 		}
 
@@ -434,23 +449,23 @@ class ps_order {
 				// dump anything in the buffer
 				@ob_end_clean();
 
-                                header('Content-Type: ' . $mime_type);
-                                header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-                                header('Content-Length: ' . filesize($datei) );
-                                
-                                if ($UserBrowser == 'IE') {
-                                        header('Content-Disposition: attachment; filename="' . $file_name . '"');
+				header('Content-Type: ' . $mime_type);
+				header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+				header('Content-Length: ' . filesize($datei) );
+
+				if ($UserBrowser == 'IE') {
+					header('Content-Disposition: attachment; filename="' . $file_name . '"');
 					header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 					header('Pragma: public');
 				} else {
 					header('Content-Disposition: attachment; filename="' . $file_name . '"');
-                                        header('Pragma: no-cache');
-                                }
-                                /*** Now send the file!! ***/
-                                vmReadFileChunked( $datei );
+					header('Pragma: no-cache');
+				}
+				/*** Now send the file!! ***/
+				vmReadFileChunked( $datei );
 
-                                exit();
-                        }
+				exit();
+			}
 			else {
 				$vmLogger->err( "Sorry, but the requested file can't be read from the Server" );
 				return false;
@@ -506,7 +521,7 @@ class ps_order {
 		}
 		$q .= "ORDER BY cdate DESC";
 		$count .= $q;
-		
+
 		$db->query($count);
 		$db->next_record();
 		$num_rows = $db->f('num_rows');
@@ -515,12 +530,12 @@ class ps_order {
 			return;
 		}
 		$pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
-		
+
 		$list .= $q .= " LIMIT ".$pageNav->limitstart.", $limit ";
 		$db->query( $list );
-		
-		$listObj = new listFactory( $pageNav );	
-		
+
+		$listObj = new listFactory( $pageNav );
+
 		if( $num_rows > 0 ) {
 			// print out the search field and a list heading
 			$listObj->writeSearchHeader( '', '', 'account', 'index');
@@ -534,17 +549,17 @@ class ps_order {
 			$dbs->query( "SELECT order_status_name FROM #__{vm}_order_status WHERE order_status_code='".$db->f("order_status")."'");
 			$dbs->next_record();
 			$order_status = $dbs->f("order_status_name");
-			
+
 			$listObj->newRow();
-			
+
 			$tmp_cell = "<a href=\"". $sess->url( $mm_action_url."index.php?page=account.order_details&order_id=".$db->f("order_id") )."\">\n";
 			$tmp_cell .= "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ORDER_LINK."\" />&nbsp;".$VM_LANG->_PHPSHOP_VIEW."</a><br />";
 			$listObj->addCell( $tmp_cell );
-			
+
 			$tmp_cell = "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":</strong> " . strftime("%d. %B %Y", $db->f("cdate"));
 			$tmp_cell .= "<br /><strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL.":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"));
 			$listObj->addCell( $tmp_cell );
-			
+
 			$tmp_cell = "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.":</strong> ".$order_status;
 			$tmp_cell .= "<br /><strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER.":</strong> " . sprintf("%08d", $db->f("order_id"));
 			$listObj->addCell( $tmp_cell );
@@ -554,7 +569,7 @@ class ps_order {
 		if( $num_rows > 0 ) {
 			$listObj->writeFooter( $keyword );
 		}
-		
+
 	}
 
 	/********************************************************************

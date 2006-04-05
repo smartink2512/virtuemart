@@ -208,14 +208,14 @@ else {
     } else {
         $tax_total = 0;
     }
-        if( $auth['show_price_including_tax']) {
-                $tax_total *= $discount_factor;
-        }
+	if( $auth['show_price_including_tax']) {
+		$tax_total *= $discount_factor;
+	}
     $tax_total += $shipping_tax;
     $tax_total = round( $tax_total, 2 );
     $tax_display = $CURRENCY_DISPLAY->getFullValue($tax_total); 
-                
-        $tax_display .= ps_checkout::show_tax_details( $order_tax_details );
+    		
+	$tax_display .= ps_checkout::show_tax_details( $order_tax_details );
   }
     
   if ( PAYMENT_DISCOUNT_BEFORE != '1') { 

@@ -99,6 +99,10 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		<tr>
 			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL ?></td>
 			<td><?php
+				echo '<input type="checkbox" value="Y" name="use_price_access" onclick="document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled = document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled ? false : true;" id="use_price_access"';
+				if( VM_PRICE_ACCESS_LEVEL != '0' ) { echo ' checked="checked"'; }
+				echo ' />';
+				echo '<label for="use_price_access"><strong>Enable this feature</strong></label><br />';
 				echo $access_group_list;
 				?>
 			</td>
@@ -935,4 +939,9 @@ var count = document.adminForm.shippingMethodCount.value;
 var elem = eval( 'document.adminForm.sh' + count );
 unCheckAndDisable( elem.checked );
 if(document.adminForm.conf_CHECK_STOCK.checked) { document.getElementById('cs1').style.visibility='visible';document.getElementById('cs2').style.visibility='visible';document.getElementById('cs3').style.visibility='visible';} else {document.getElementById('cs1').style.visibility='hidden';document.getElementById('cs2').style.visibility='hidden';document.getElementById('cs3').style.visibility='hidden';}
+<?php
+if( VM_PRICE_ACCESS_LEVEL == '0' ) { ?>
+document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled = true;
+<?php
+} ?>
 </script>

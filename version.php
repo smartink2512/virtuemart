@@ -15,7 +15,16 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-
+if( class_exists( 'vmVersion' ) ) {
+	$VMVERSION =& new vmVersion();
+	
+	$shortversion = $VMVERSION->PRODUCT . " " . $VMVERSION->RELEASE . " " . $VMVERSION->DEV_STATUS. " ";
+		
+	$myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
+	. $VMVERSION->RELTIME . " " . $VMVERSION->RELTZ;
+	return;
+}
+if( !class_exists( 'vmVersion' ) ) {
 /** Version information */
 class vmVersion {
 	/** @var string Product */
@@ -36,7 +45,7 @@ class vmVersion {
 	/** @var string Copyright Text */
 	var $COPYRIGHT = 'Copyright (C) 2005-2006 Soeren Eberhardt. All rights reserved.'; 
 	/** @var string URL */
-	var $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Mambo released under the GNU/GPL License.';
+	var $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla!/Mambo released under the GNU/GPL License.';
 }
 $VMVERSION =& new vmVersion();
 
@@ -45,5 +54,6 @@ $shortversion = $VMVERSION->PRODUCT . " " . $VMVERSION->RELEASE . " " . $VMVERSI
 $myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
 	. $VMVERSION->RELTIME . " " . $VMVERSION->RELTZ;
 	
+}
 
 ?>

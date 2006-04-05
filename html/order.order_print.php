@@ -65,13 +65,13 @@ else {
 		  </td>
 		  <td valign="top" width="65%">
 			<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-                        <?php
-                        $tab = new mShopTabs( 0, 1, "myTab");
-                        $tab->startPane( "order_change_pane" );
-                        $tab->startTab( "Order Status Change", "order_change_page" );
-                        ?>
-                        <table class="adminlist">
-                         <tr>
+			<?php
+			$tab = new mShopTabs( 0, 1, "myTab");
+			$tab->startPane( "order_change_pane" );
+			$tab->startTab( "Order Status Change", "order_change_page" );
+			?>
+			<table class="adminlist">
+			 <tr>
 			  <th colspan="3"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE ?></th>
 			 </tr>
 			 <tr>
@@ -98,13 +98,13 @@ else {
 				</form>
 			  </td>
 			 </tr>
-                        </table>
-                                <?php
-                                $tab->endTab();
-                                $tab->startTab( $VM_LANG->_PHPSHOP_ORDER_HISTORY, "order_history_page" );
-                                ?>
-                        <table class="adminlist">
-                         <tr >
+			</table>
+				<?php
+				$tab->endTab();
+				$tab->startTab( $VM_LANG->_PHPSHOP_ORDER_HISTORY, "order_history_page" );
+				?>
+			<table class="adminlist">
+			 <tr >
 			  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_DATE_ADDED ?></th>
 			  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED ?></th>
 			  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_STATUS ?></th>
@@ -435,18 +435,18 @@ else {
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL ?>:</div> </strong></td>
-                                <td width="19%"><div align="right"><strong><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_total")); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></strong>
-                                  </td>
-                          </tr>
-                          <tr>
-                                <td width="5%">&nbsp;</td>
-                                <td width="42%">&nbsp;</td>
-                                <td colspan="3">&nbsp;</td>
-                                <td width="19%"><?php echo ps_checkout::show_tax_details( $db->f('order_tax_details') ); ?></td>
-                          </tr>
-                          </table>
-                  </td>
-                </tr>
+				<td width="19%"><div align="right"><strong><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_total")); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></strong>
+				  </td>
+			  </tr>
+			  <tr>
+				<td width="5%">&nbsp;</td>
+				<td width="42%">&nbsp;</td>
+				<td colspan="3">&nbsp;</td>
+				<td width="19%"><?php echo ps_checkout::show_tax_details( $db->f('order_tax_details') ); ?></td>
+			  </tr>
+			  </table>
+		  </td>
+		</tr>
 		<tr>
 		<td colspan="2">
 		 <table width="100%">
