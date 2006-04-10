@@ -134,6 +134,9 @@ class ps_tax {
 		$q .= $timestamp . "')";
 		$db->query($q);
 		$db->next_record();
+		
+		$_REQUEST['tax_rate_id'] = $db->last_insert_id();
+		
 		return True;
 
 	}

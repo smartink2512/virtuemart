@@ -124,7 +124,9 @@ class ps_product_type {
 			$q .= $list_order . "')";
 			$db->setQuery($q);
 			$db->query();
-
+			
+			$_REQUEST['product_type_id'] = $product_type_id;
+			
 			// Make new table product_type_<id>
 			$q = "CREATE TABLE `#__{vm}_product_type_";
 			$q .= $product_type_id . "` (";
@@ -133,7 +135,7 @@ class ps_product_type {
 			$q .= ") TYPE=MyISAM;";
 			$db->setQuery($q);
 			$db->query();
-
+			
 			return $product_type_id;
 		}
 		else {

@@ -113,6 +113,7 @@ class ps_shipping {
 
 		$db->query($q);
 		$db->next_record();
+		$_REQUEST['shipping_carrier_id'] = $db->last_insert_id();
 		return True;
 
 	}
@@ -362,6 +363,7 @@ class ps_shipping {
 		$q .= $d["shipping_rate_list_order"] . "')";
 		$db->query($q);
 		$db->next_record();
+		$_REQUEST['shipping_rate_id'] = $db->last_insert_id();
 		return True;
 	}
 

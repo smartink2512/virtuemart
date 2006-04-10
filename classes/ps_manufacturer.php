@@ -138,9 +138,9 @@ class ps_manufacturer {
 		$q .= $d["mf_desc"] . "','";
 		$q .= $d["mf_category_id"] . "','";
 		$q .= $d["mf_url"] . "')";
-		$db->setQuery($q);
-		$db->query();
+		$db->query( $q );
 		$db->next_record();
+		$_REQUEST['manufacturer_id'] = $db->last_insert_id();
 		return True;
 
 	}

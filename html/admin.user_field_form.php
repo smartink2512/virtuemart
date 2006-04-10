@@ -44,6 +44,16 @@ $types[] = mosHTML::makeOption( 'radio', 'Radio Button' );
 $types[] = mosHTML::makeOption( 'webaddress', 'Web Address' );
 $types[] = mosHTML::makeOption( 'delimiter', 'Fieldset delimiter' );
 
+if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {
+	$types[] = mosHTML::makeOption( 'yanc_subscription', 'YaNC Newsletter Subscription' );
+}
+if( file_exists($mosConfig_absolute_path.'/components/com_anjel/anjel.php')) {
+	$types[] = mosHTML::makeOption( 'anjel_subscription', 'ANJEL Newsletter Subscription' );
+}
+if( file_exists($mosConfig_absolute_path.'/components/com_letterman/letterman.php')) {
+	$types[] = mosHTML::makeOption( 'letterman_subscription', 'Letterman Newsletter Subscription' );
+}
+
 $webaddrtypes = array();
 
 $webaddrtypes[] = mosHTML::makeOption( '0', 'URL only' );
@@ -341,7 +351,7 @@ $formObj->finishForm( 'userfieldSave', $modulename.'.user_field_list', $option )
         elem.style.visibility = 'visible';
         elem.style.display = 'block';
       break;
-
+	  	
       case 'delimiter':
       default: 
         disableAll();

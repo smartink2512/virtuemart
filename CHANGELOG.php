@@ -33,6 +33,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+10-04-2006 soeren
+
++ added the famous "Apply" button to all Save/Cancel forms, now it shows: Save / Apply / Cancel
+# user fields not allowing userUpdate
+# user form not working on Mambo 4.6.0
+! DATABASE STRUCTURE CHANGED !
+	- some non-critical INDEX corrections
+	
+04-04-2006 soeren
+
++ added "Newsletter subscription" to field type list. You can now allow users to subscribe to your newsletter 
+	at the time of registration. Currently possible: Letterman subscription (YaNC, ANJEL - who knows how to hook in there?)
+^ uploaded images get "real" file names now using product_name,category_name or vendor_name (before it was a random md5 hash)
+
 02-04-2006 soeren
 
 # Task #632 - get_flypage doesn't take into consideration parent products (ps_product.php)

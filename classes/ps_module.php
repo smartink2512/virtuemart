@@ -141,9 +141,9 @@ class ps_module {
     $q .= $d[ 'module_perms' ] . "','";
     $q .= $d[ 'module_publish' ] . "','";
     $q .= $d[ 'list_order' ] . "' )";
+    $db->query( $q );
     
-    $db->setQuery($q);
-    $db->query();
+	$_REQUEST['module_id'] = $db->last_insert_id();
     return True;
 
   }

@@ -15,9 +15,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-if( !class_exists( "mosMenuBar"))
+if( !class_exists( "mosMenuBar")) {
 	require_once( $mosConfig_absolute_path."/administrator/includes/menubar.html.php" );
-	
+}
+
+if( !class_exists('jtoolbar')) {
+	class JToolBar {
+		function getInstance($text) {
+			return new JToolBar();
+		}
+		function appendButton( $type, $html ) {
+			echo $html;
+		}
+	}
+}
+
 class vmMenuBar extends mosMenuBar {
 	
 	/**
@@ -26,15 +38,17 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function addNew( $task='new', $page, $alt='New', $formName="adminForm" ) {
-		$image = mosAdminMenus::ImageCheckAdmin( 'new.png', '/administrator/images/', NULL, NULL, $alt, "new" );
-		$image2 = mosAdminMenus::ImageCheckAdmin( 'new_f2.png', '/administrator/images/', NULL, NULL, $alt, "new", 0 );
+		global $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
+		$image = '<img src="'.$vmIcons['new_icon'].'" alt="'.$alt.'" border="0" name="new" />';
+		$image2 = $vmIcons['new_icon2'];
 		
-		echo '<td>
+		$bar->appendButton('Custom', '<td>
 			<a class="toolbar" href="javascript:vm_submitButton(\''.$task.'\',\''.$formName.'\',\''.$page.'\');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task. '\',\'\',\''. $image2 .'\',1);">'
 			. $image.'<br/>'
 			. $alt
 		.'</a>
-		</td>';
+		</td>');
 
 	}
 	/**
@@ -44,17 +58,37 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function save( $task='save', $alt='Save' ) {
-		$image = mosAdminMenus::ImageCheckAdmin( 'save.png', '/administrator/images/', NULL, NULL, $alt, $task );
-		$image2 = mosAdminMenus::ImageCheckAdmin( 'save_f2.png', '/administrator/images/', NULL, NULL, $alt, $task, 0 );
-		?>
-		<td>
-		<a class="toolbar" href="javascript:submitbutton('<?php echo $task;?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
-		<?php 
-		echo $image.'<br/>';
-		echo $alt;?>
+		global $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
+		$image = '<img src="'.$vmIcons['save_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
+		$image2 = $vmIcons['save_icon2'];
+		
+		$bar->appendButton('Custom', '<td>
+		<a class="toolbar" href="javascript:submitbutton(\''. $task.'\');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task. '\',\'\',\''. $image2.'\',1);">
+		'. $image.'<br/>'
+		. $alt .'
 		</a>
-		</td>
-		<?php
+		</td>' );
+		
+	}
+	
+	/**
+	* Writes a save button for a given option
+	* Save operation leads to a save and then close action
+	* @param string An override for the task
+	* @param string An override for the alt text
+	*/
+	function apply( $task='apply', $alt='Apply' ) {
+		global $page, $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
+		$image = '<img src="'.$vmIcons['apply_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
+		$image2 = $vmIcons['apply_icon2'];
+		
+		$bar->appendButton('Custom', "<td>
+		<a class=\"toolbar\" href=\"javascript:vm_submitButton('$task', 'adminForm', '$page');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$task','','$image2',1);\">
+		$image<br/>$alt</a>
+		</td>" );
+		
 	}
 	/**
 	* Writes a common 'publish' button for a list of records
@@ -62,17 +96,18 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function publishList( $func, $task='publish', $alt='Publish' ) {
-		$image = mosAdminMenus::ImageCheckAdmin( 'publish.png', '/administrator/images/', NULL, NULL, $alt, $task );
-		$image2 = mosAdminMenus::ImageCheckAdmin( 'publish_f2.png', '/administrator/images/', NULL, NULL, $alt, $task, 0 );
-		?>
-     	<td>
-		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to publish'); } else {vm_submitListFunc('<?php echo $task;?>', 'adminForm', '<?php echo $func;?>');}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
-		<?php 
-		echo $image.'<br/>';
-		echo $alt; ?>
+		global $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
+		$image = '<img src="'.$vmIcons['publish_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
+		$image2 = $vmIcons['publish_icon2'];
+		
+     	$bar->appendButton( 'Custom', '<td>
+		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to publish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task .'\',\'\',\''. $image2 .'\',1);">
+		'. $image.'<br/>'
+		 . $alt .'
 		</a>
-		</td>
-     	<?php
+		</td>' );
+     	
 	}
 	/**
 	* Writes a common 'unpublish' button for a list of records
@@ -80,16 +115,17 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function unpublishList( $func, $task='unpublish', $alt='Unpublish' ) {
-		$image = mosAdminMenus::ImageCheckAdmin( 'unpublish.png', '/administrator/images/', NULL, NULL, $alt, $task );
-		$image2 = mosAdminMenus::ImageCheckAdmin( 'unpublish_f2.png', '/administrator/images/', NULL, NULL, $alt, $task, 0 );
-		?>
-		<td>
-		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to unpublish'); } else {vm_submitListFunc('<?php echo $task;?>', 'adminForm', '<?php echo $func;?>' );}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);" >
-		<?php 
-		echo $image .'<br/>';
-		echo $alt; ?>
-		</a></td>
-		<?php
+		global $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
+		$image = '<img src="'.$vmIcons['unpublish_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
+		$image2 = $vmIcons['unpublish_icon2'];
+		
+     	$bar->appendButton( 'Custom', '<td>
+		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to unpublish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task .'\',\'\',\''. $image2 .'\',1);">
+		'. $image.'<br/>'
+		 . $alt .'
+		</a>
+		</td>' );
 	}
 	/**
 	* Writes a common 'delete' button for a list of records
@@ -98,15 +134,16 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function deleteList( $func, $task='remove', $alt='Delete' ) {
-		$image = mosAdminMenus::ImageCheckAdmin( 'delete.png', '/administrator/images/', NULL, NULL, $alt, $task );
-		$image2 = mosAdminMenus::ImageCheckAdmin( 'delete_f2.png', '/administrator/images/', NULL, NULL, $alt, $task, 0 );
-		?>
-		<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to delete'); } else if (confirm('Are you sure you want to delete selected items?')){ vm_submitListFunc('<?php echo $task;?>', 'adminForm', '<?php echo $func;?>' );}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
-		<?php 
-		echo $image .'<br/>';
-		echo $alt; ?>
-		</a></td>
-		<?php
+		global $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
+		$image = '<img src="'.$vmIcons['delete_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
+		$image2 = $vmIcons['delete_icon2'];
+		
+		$bar->appendButton( 'Custom', '<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to delete\'); } else if (confirm(\'Are you sure you want to delete selected items?\')){ vm_submitListFunc(\''. $task.'\', \'adminForm\', \''. $func.'\' );}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task.'\',\'\',\''. $image2 .'\',1);">
+			'. $image .'<br/>'
+			. $alt .'
+		</a></td>' );
+		
 	}
 	
 	/**
@@ -115,8 +152,8 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function cancel( $task='cancel', $alt='Cancel' ) {
-		global $page;
-
+		global $page, $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
 		if ($page == "store.store_form")
 			$my_page = "store.index";
 		elseif ($page == "admin.user_address_form")
@@ -126,16 +163,15 @@ class vmMenuBar extends mosMenuBar {
 		else
 			$my_page = str_replace('form','list',$page);
 		
-		$image = mosAdminMenus::ImageCheckAdmin( 'cancel.png', '/administrator/images/', NULL, NULL, $alt, $task, 1 );
-		$image2 = mosAdminMenus::ImageCheckAdmin( 'cancel_f2.png', '/administrator/images/', NULL, NULL, $alt, $task, 0 );
-		?>
-		<td>
-			<a class="toolbar" href="javascript:vm_submitButton('<?php echo $task;?>', 'adminForm', '<?php echo $my_page ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $task;?>','','<?php echo $image2; ?>',1);">
-			<?php 
-			echo $image .'<br />';
-			echo $alt;?></a>
-		</td>
-		<?php
+		$image = '<img src="'.$vmIcons['cancel_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
+		$image2 = $vmIcons['cancel_icon2'];
+		
+		$bar->appendButton( 'Custom', "<td>
+			<a class=\"toolbar\" href=\"javascript:vm_submitButton('$task', 'adminForm', '$my_page');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$task','','$image2',1);\">
+			 $image<br />
+			$alt</a>
+		</td>" );
+		
 	}
 	
 	/**
@@ -147,38 +183,32 @@ class vmMenuBar extends mosMenuBar {
 	* @param boolean True if required to check that a standard list item is checked
 	*/
 	function custom( $task='', $page, $icon='', $iconOver='', $alt='', $listSelect=true, $formName="adminForm", $func = "" ) {
+		$bar = & JToolBar::getInstance('JComponent');
 		if ($listSelect) {
 			if( empty( $func ))
 				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to $alt');}else{vm_submitButton('$task','$formName', '$page')}";
 			else
 				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to $alt');}else{vm_submitListFunc('$task','$formName', '$func')}";
-		} else {
-			$href = "javascript:vm_submitButton('$task','$formName', '$page')";
-		}
-		if( empty( $task )) {
-			$image_name = uniqid( "img_" );
-		}
-		else {
-			$image_name  = $task;
-		}
-		if ($icon && $iconOver) {
-			?>
-			<td>
-			<a class="toolbar" href="<?php echo $href;?>" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $image_name;?>','','<?php echo $iconOver;?>',1);">
-			<img name="<?php echo $image_name;?>" src="<?php echo $icon;?>" alt="<?php echo $alt;?>" border="0" align="middle" />
-			&nbsp;<br/>
-			<?php echo $alt; ?></a>
-			</td>
-			<?php
+                } else {
+                        $href = "javascript:vm_submitButton('$task','$formName', '$page')";
+                }
+                if( empty( $task )) {
+                        $image_name = uniqid( "img_" );
+                }
+                else {
+                        $image_name  = $task;
+                }
+                if ($icon && $iconOver) {
+					$bar->appendButton('Custom', "<td>
+						<a class=\"toolbar\" href=\"$href\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$image_name','','$iconOver',1);\">
+						<img name=\"$image_name\" src=\"$icon\" alt=\"$alt\" border=\"0\" align=\"middle\" />
+						&nbsp;<br/>$alt</a>
+						</td>" );
+			
 		} 
 		else {
-			?>
-			<td>
-			<a class="toolbar" href="<?php echo $href;?>">
-			&nbsp;
-			<?php echo $alt; ?></a>
-			</td>
-			<?php
+			// The button is just a link then!
+			$bar->appendButton('Custom', "<td><a class=\"toolbar\" href=\"$href\">&nbsp;$alt</a></td>" );
 		}
 	}
 		/**
@@ -190,25 +220,16 @@ class vmMenuBar extends mosMenuBar {
 	* @param boolean True if required to check that a standard list item is checked
 	*/
 	function customHref( $href='', $icon='', $iconOver='', $alt='' ) {
-		
+		$bar = & JToolBar::getInstance('JComponent');
 		if ($icon && $iconOver) {
-			?>
-			<td>
-			<a class="toolbar" href="<?php echo $href;?>" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('<?php echo $alt;?>','','<?php echo $iconOver;?>',1);">
-			<img name="<?php echo $alt;?>" src="<?php echo $icon;?>" alt="<?php echo $alt;?>" border="0" align="middle" />
-			&nbsp;<br/>
-			<?php echo $alt; ?></a>
-			</td>
-			<?php
+			$bar->appendButton('Custom', "<td>
+			<a class=\"toolbar\" href=\"$href\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$alt','','$iconOver',1);\">
+			<img name=\"$alt\" src=\"$icon\" alt=\"$alt\" border=\"0\" align=\"middle\" />
+			&nbsp;<br/>$alt</a></td>" );
+			
 		}
 		else {
-			?>
-			<td>
-			<a class="toolbar" href="<?php echo $href;?>">
-			&nbsp;
-			<?php echo $alt; ?></a>
-			</td>
-			<?php
+			$bar->appendButton('Custom', "<td><a class=\"toolbar\" href=\"$href\">&nbsp;$alt</a></td>" );
 		}
 	}
 }

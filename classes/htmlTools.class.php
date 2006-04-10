@@ -401,10 +401,12 @@ class vmCommonHTML extends mosHTML {
 	
 	function getYesNoIcon( $condition, $pos_alt = "Published", $neg_alt = "Unpublished" ) {
 		global $mosConfig_live_site;
-		if( $condition===true || strtoupper( $condition ) == "Y" )
+		if( $condition===true || strtoupper( $condition ) == "Y" || $condition == '1' ) {
 			return '<img src="'.$mosConfig_live_site.'/administrator/images/tick.png" border="0" alt="'.$pos_alt.'" />';
-		else
+		}
+		else {
 			return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
+		}
 	}
 	/*
 	* Loads all necessary files for JS Overlib tooltips

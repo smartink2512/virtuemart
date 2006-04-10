@@ -52,6 +52,7 @@ $_REQUEST['cid'][0] = $user_id;
 $_REQUEST['task'] = 'edit';
 $GLOBALS['option'] = 'com_users'; // Cheat Joomla 1.1
 $mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
+require_once( $mainframe->_path->admin_html );
 $mainframe->_path->class = $mosConfig_absolute_path.'/administrator/components/com_users/users.class.php';
 ob_start();
 require( $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.php' );
@@ -79,8 +80,8 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
                 <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td> 
                 <td width="62%" > 
                         <?php
-                        if( !isset( $ps_user)) { $ps_user = new ps_user(); }
-                        $ps_user->list_perms("perms", $db->sf("perms"));
+                        if( !isset( $ps_perms)) { $ps_perms = new ps_perm(); }
+                        $ps_perms->list_perms("perms", $db->sf("perms"));
                         ?> 
                 </td> 
         </tr> 

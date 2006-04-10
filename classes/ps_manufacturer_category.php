@@ -127,9 +127,9 @@ class ps_manufacturer_category {
 		$q .= " VALUES ('";
 		$q .= $d["mf_category_name"] . "','";
 		$q .= $d["mf_category_desc"]. "')";
-		$db->setQuery($q);
-		$db->query();
+		$db->query( $q );
 		$db->next_record();
+		$_REQUEST['mf_category_id'] = $db->last_insert_id();
 		return True;
 
 	}

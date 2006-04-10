@@ -142,6 +142,7 @@ class ps_zone {
     $q .= $d["zone_tax_rate"] . "')";
     $db->query($q);
     $db->next_record();
+    $_REQUEST['zone_id'] = $db->last_insert_id();
     return True;
 
   }

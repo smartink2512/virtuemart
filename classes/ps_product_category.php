@@ -263,7 +263,7 @@ class ps_product_category extends vmAbstractObject {
 			$db->setQuery($q);
 			$db->query();
 
-			$category_id = $db->last_insert_id();
+			$category_id = $_REQUEST['category_id'] = $db->last_insert_id();
 
 			$q = "INSERT into #__{vm}_category_xref ";
 			$q .= "(category_parent_id, category_child_id) ";

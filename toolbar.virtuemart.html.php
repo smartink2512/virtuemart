@@ -27,6 +27,14 @@ $vmIcons['new_icon'] = $mosConfig_live_site."/administrator/images/new.png";
 $vmIcons['new_icon2'] = $mosConfig_live_site."/administrator/images/new_f2.png";
 $vmIcons['save_icon'] = $mosConfig_live_site."/administrator/images/save.png";
 $vmIcons['save_icon2'] = $mosConfig_live_site."/administrator/images/save_f2.png";
+$vmIcons['delete_icon'] = $mosConfig_live_site."/administrator/images/delete.png";
+$vmIcons['delete_icon2'] = $mosConfig_live_site."/administrator/images/delete_f2.png";
+$vmIcons['publish_icon'] = $mosConfig_live_site."/administrator/images/publish.png";
+$vmIcons['publish_icon2'] = $mosConfig_live_site."/administrator/images/publish_f2.png";	
+$vmIcons['unpublish_icon'] = $mosConfig_live_site."/administrator/images/unpublish.png";
+$vmIcons['unpublish_icon2'] = $mosConfig_live_site."/administrator/images/unpublish_f2.png";	
+$vmIcons['apply_icon'] = $mosConfig_live_site."/administrator/images/apply.png";
+$vmIcons['apply_icon2'] = $mosConfig_live_site."/administrator/images/apply_f2.png";
 
 class MENU_virtuemart {
 	/**
@@ -34,9 +42,9 @@ class MENU_virtuemart {
 	* not responsible for lists!
 	*/
     function FORMS_MENU_SAVE_CANCEL() {     
-        global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_lang, $VM_LANG, $page, $limitstart,
-				$mosConfig_editor, $vmIcons;
-				
+        global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_lang, $VM_LANG, 
+        		$page, $limitstart,	$mosConfig_editor, $vmIcons;
+		$bar = & JToolBar::getInstance('JComponent');
         $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id', 0 );
         $product_id = mosGetParam( $_REQUEST, 'product_id' );
 		if( is_array( $product_id ))
@@ -55,25 +63,31 @@ class MENU_virtuemart {
 		$editor1 = isset($editor1_array[$page]) ? $editor1_array[$page] : '';
 		$editor2 = isset($editor2_array[$page]) ? $editor2_array[$page] : '';
 		
-        ?>
-		<script type="text/javascript">
+		$script = '<script type="text/javascript">
         	function submitbutton(pressbutton) {
 			var form = document.adminForm;
-			if (pressbutton == 'cancel') {
+			if (pressbutton == \'cancel\') {
 				submitform( pressbutton );
 				return;
 			}
-              <?php 
-		if ($editor1 != '')
+			';
+              
+		if ($editor1 != '') {
+			ob_start();
 			getEditorContents( 'editor1', $editor1 );
-		echo "\n";
-		if ($editor2 != '')
-			getEditorContents( 'editor2', $editor2 ) ; 
-		?>
+			$script .= ob_get_contents(); ob_end_clean();
+		}
+		if ($editor2 != '') {
+			ob_start();
+			getEditorContents( 'editor1', $editor1 );
+			$script .= ob_get_contents(); ob_end_clean();
+		}
+		$script .= '
 			submitform( pressbutton );
 		}
-		</script>
-		<?php
+		</script>';
+		
+        $bar->appendButton( 'Custom', $script );		
 		
 		vmMenuBar::startTable();
 		
@@ -138,18 +152,11 @@ class MENU_virtuemart {
 		
 		vmMenuBar::save( 'save', _E_SAVE );
 		
-        vmMenuBar::spacer();
+		vmMenuBar::spacer();
 		
-		if(empty($my_page)) {
-			if ($page == "store.store_form")
-				$my_page = "store.index";
-			elseif ($page == "admin.user_address_form")
-				$my_page = "admin.user_list";
-			else
-				$my_page = str_replace('form','list',$page);
-		}
-		if ($page == "admin.show_cfg")
-				$my_page = "store.index";
+		vmMenuBar::apply( 'apply', _E_APPLY );
+		
+        vmMenuBar::spacer();
 		
 		vmMenuBar::cancel();
 

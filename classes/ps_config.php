@@ -27,7 +27,7 @@ class ps_config {
 	****************************************************************************/
 
 	function writeconfig(&$d) {
-		global $my, $db;
+		global $my, $db, $page, $vmLogger, $VM_LANG;
 
 		$group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
 		$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
@@ -201,7 +201,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config.= " );\n";
 				}
 				else {
-					$config .= "define('".$key."', '".$d[$value]."');\n";
+					$config .= "define('".$key."', '".@$d[$value]."');\n";
 				}
 			}
 
@@ -211,11 +211,13 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 				fputs($fp, $config, strlen($config));
 				fclose ($fp);
 
-				mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
-
+				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				return true;
 			} else {
-				mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", sprintf( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE, ADMINPATH ."virtuemart.cfg.php" ) );
+				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE, ADMINPATH ."virtuemart.cfg.php" );
+				return false;
 			}
+			
 		}
 	} // end function writeconfig
 

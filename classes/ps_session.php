@@ -134,7 +134,7 @@ class ps_session {
 			$module = $pagearr[0];
 			// When it is not necessary to stay in https mode, we leave it here
 			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) === false ) {
-				mosRedirect( $this->url( URL.'index.php?'.$_SERVER['QUERY_STRING'] ));
+				mosRedirect( $this->url( URL.'index.php?'.$_SERVER['QUERY_STRING'], true ));
 			}
 		}
 		
@@ -171,11 +171,11 @@ class ps_session {
 				file_put_contents( $sessionFile, $session_contents );
 				
 				// Redirect and send the Cookie Values within the variable martID
-				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID") );
+				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID", true ) );
 			}
 			// do nothing but redirect
 			elseif( $_SERVER['SERVER_PORT'] != 443 ) {
-				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING']) );
+				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING']), true );
 			}
 		}
 		/**
@@ -221,7 +221,7 @@ class ps_session {
 					// Prevent the martID from being displayed in the URL
 					if( !empty( $_GET['martID'] )) {
 						$query_string = substr_replace( $_SERVER['QUERY_STRING'], '', strpos( $_SERVER['QUERY_STRING'], '&martID'));
-						mosRedirect( $this->url(SECUREURL . "index.php?$query_string&cartReset=N") );
+						mosRedirect( $this->url(SECUREURL . "index.php?$query_string&cartReset=N", true) );
 					}
 	
 				}
@@ -301,10 +301,11 @@ class ps_session {
 	 * where XX is the Id of an entry in the table mos_menu with "link: option=com_virtuemart"
 	 * It also calls sefRelToAbs to apply SEF formatting
 	 * 
-	 * @param strong $text THE URL
+	 * @param string $text THE URL
+	 * @param boolean False: Create a URI like /joomla/index.php?....; True: Create a URI like http://www.domain.com/index.php?....
 	 * @return string The reformatted URL
 	 */
-	function url($text) {
+	function url($text, $createAbsoluteURI = false) {
 		global $mm_action_url, $page;
 		
 		if( !defined( '_PSHOP_ADMIN' )) {
@@ -347,8 +348,9 @@ class ps_session {
 	
 					$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
 					$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
-					
-					$appendix = URL . $appendix;
+					if( $createAbsoluteURI ) {
+						$appendix = URL . $appendix;
+					}
 					
 				}
 				elseif( $_SERVER['SERVER_PORT'] == 443 ) {

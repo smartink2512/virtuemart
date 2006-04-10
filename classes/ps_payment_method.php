@@ -218,7 +218,7 @@ class ps_payment_method extends vmAbstractObject {
 		$q .= "'" . $d['payment_extrainfo'] . "')";
 
 		$db->query($q);
-
+		$_REQUEST['payment_method_id'] = $db->last_insert_id();
 		return True;
 
 	}

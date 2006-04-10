@@ -89,6 +89,7 @@ class ps_coupon {
         $q = "INSERT INTO #__{vm}_coupons ( coupon_code, percent_or_total, coupon_type, coupon_value ) ";
         $q .= "VALUES ( '".$d['coupon_code']."', '".$d['percent_or_total']."', '".$d['coupon_type']."', '".$d['coupon_value']."' ) ";
         $coupon_db->query($q);
+        $_REQUEST['coupon_id'] = $db->last_insert_id();
         return true;
         
      

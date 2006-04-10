@@ -105,7 +105,8 @@ class ps_product_price {
 		$q .= "'$timestamp','$timestamp', '".$d["price_quantity_start"]."','".$d["price_quantity_end"]."')";
 
 		$db->query($q);
-
+		$_REQUEST['product_price_id'] = $db->last_insert_id();
+		
 		return true;
 	}
 

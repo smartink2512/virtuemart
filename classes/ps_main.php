@@ -98,7 +98,15 @@ function validate_image(&$d,$field_name,$table_name) {
 			}
 			$vmLogger->debug( 'The resized Thumbnail will have extension '.$noimgif.$ext );
 			/* Generate Image Destination File Name */
-			$to_file_thumb = md5(uniqid("VirtueMart"));
+			if( !empty( $d[$table_name.'_name'] )) {
+				$filename = substr( $d[$table_name.'_name'], 0, 16 );
+				$filename = vmSafeFileName( $filename );
+			}
+			else {
+				$filename = md5( 'virtuemart' );
+			}
+			$to_file_thumb = uniqid( $filename.'_' );
+			
 			$fileout = IMAGEPATH."/product/resized/".$to_file_thumb."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
 			$neu = new Img2Thumb( $full_file, PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT, $fileout, 0, 255, 255, 255 );
 			$vmLogger->debug( 'Finished creating the thumbnail' );
@@ -200,8 +208,15 @@ function validate_image(&$d,$field_name,$table_name) {
 		return false;
 	}
 
-	// Generate Image Destination File Name
-	$to_file = md5(uniqid("VirtueMart"));
+	/* Generate Image Destination File Name */
+	if( !empty( $d[$table_name.'_name'] )) {
+		$filename = substr( $d[$table_name.'_name'], 0, 16 );
+		$filename = vmSafeFileName( $filename );
+	}
+	else {
+		$filename = md5( 'virtuemart' );
+	}
+	$to_file = uniqid( $filename.'_' );
 
 	/* Check image file format */
 	if( $orig_file != "none" ) {
@@ -961,6 +976,7 @@ function vmHtmlEntityDecode($string, $quote_style = ENT_COMPAT, $charset = null)
  *
  * @param string $string The string to strip slashes from
  * @return string
+ * @since 1.1.0
  */
 function vmGetUnEscaped( $string ) {
 	if (get_magic_quotes_gpc()==1) {
@@ -976,6 +992,7 @@ function vmGetUnEscaped( $string ) {
  * This should overcome memory problems
  * http://www.php.net/manual/en/function.readfile.php#54295
  *
+ * @since 1.0.3
  * @param string $filename
  * @param boolean $retbytes
  * @return mixed
@@ -1008,6 +1025,7 @@ function vmReadFileChunked($filename,$retbytes=true) {
  * Returns the charset string from the global _ISO constant
  *
  * @return string UTF-8 by default
+ * @since 1.0.5
  */
 function vmGetCharset() {
 	$iso = explode( '=', _ISO );
@@ -1018,5 +1036,28 @@ function vmGetCharset() {
 		return 'UTF-8';
 	}
 }
-
+/**
+ * Create a file system - safe file name
+ *
+ * @param string $filename
+ * @since 1.1.0
+ */
+function vmSafeFileName( $filename ) {
+	
+	$filename = str_replace(' ', '_', $filename );
+	$filename = str_replace('/', '-', $filename );
+	$filename = str_replace('\\', '-', $filename );
+	$filename = str_replace('`', '', $filename );
+	$filename = str_replace('´', '', $filename );
+	$filename = str_replace('\'', '', $filename );
+	$filename = str_replace(':', '-', $filename );
+	$filename = str_replace('?', '-', $filename );
+	$filename = str_replace('*', '-', $filename );
+	$filename = str_replace('"', '-', $filename );
+	$filename = str_replace('<', '-', $filename );
+	$filename = str_replace('>', '-', $filename );
+	$filename = str_replace('|', '-', $filename );
+	
+	return $filename;
+}
 ?>

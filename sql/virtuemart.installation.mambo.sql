@@ -1394,7 +1394,8 @@ CREATE TABLE IF NOT EXISTS `mos_vm_product_reviews` (
   `time` int(11) NOT NULL default '0',
   `user_rating` tinyint(1) NOT NULL default '0',
   `review_ok` int(11) NOT NULL default '0',
-  `review_votes` int(11) NOT NULL default '0'
+  `review_votes` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`product_id`,`userid`)
 ) TYPE=MyISAM;
 
 ## 
@@ -1462,7 +1463,8 @@ CREATE TABLE IF NOT EXISTS `mos_vm_product_votes` (
   `votes` text NOT NULL,
   `allvotes` int(11) NOT NULL default '0',
   `rating` tinyint(1) NOT NULL default '0',
-  `lastip` varchar(50) NOT NULL default '0'
+  `lastip` varchar(50) NOT NULL default '0',
+  PRIMARY KEY ( `product_id` )
 ) TYPE=MyISAM COMMENT='Stores all votes for a product';
 
 ## 
@@ -2054,8 +2056,7 @@ CREATE TABLE IF NOT EXISTS `mos_vm_zone_shipping` (
   `zone_limit` decimal(10,2) default NULL,
   `zone_description` text NOT NULL,
   `zone_tax_rate` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`zone_id`),
-  KEY `zone_id` (`zone_id`)
+  PRIMARY KEY  (`zone_id`)
 ) TYPE=MyISAM COMMENT='The Zones managed by the Zone Shipping Module';
 
 INSERT INTO `mos_components` (name, parent, params ) VALUES ( 'virtuemart_version', 9999, 'RELEASE=1.1.0\nDEV_STATUS=alpha');

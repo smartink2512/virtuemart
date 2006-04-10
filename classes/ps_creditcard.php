@@ -137,7 +137,7 @@ class ps_creditcard {
 		$q .= $d["creditcard_code"] . "')";
 
 		$db->query( $q );
-
+		$_REQUEST['creditcard_id'] = $db->last_insert_id();
 		return true;
 
 	}

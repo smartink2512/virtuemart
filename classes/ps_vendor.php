@@ -206,13 +206,7 @@ class ps_vendor {
 		$db->next_record();
 
 		// Get the assigned vendor_id //
-		$q  = "SELECT vendor_id FROM #__{vm}_vendor ";
-		$q .= "WHERE vendor_name = '" . $d["vendor_name"] . "' ";
-		$q .= "AND cdate = $timestamp";
-		addslashes($q);
-		$db->query($q);
-		$db->next_record();
-		$d["vendor_id"] = $db->f("vendor_id");
+		$_REQUEST['vendor_id'] = $db->last_insert_id();
 
 		/* Insert default- shopper group */
 		$q = "INSERT INTO #__{vm}_shopper_group (";
@@ -223,7 +217,7 @@ class ps_vendor {
 		$q .= "'-default-',";
 		$q .= "'Default shopper group for ".$d["vendor_name"]."','1')";
 		$db->query($q);
-
+		
 		return True;
 	}
 

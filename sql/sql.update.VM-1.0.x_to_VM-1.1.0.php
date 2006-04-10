@@ -146,4 +146,10 @@ VALUES
     ('St. Barthelemy', 'XSB', 'XB'),
     ('St. Eustatius', 'XSE', 'XU'),
     ('Canary Islands', 'XCA', 'XC');");
+
+# 10.04.2006
+$db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD PRIMARY KEY ( `product_id` , `userid` ) ");
+$db->query( "ALTER TABLE `#__{vm}_product_votes` ADD PRIMARY KEY ( `product_id` )");
+$db->query( "ALTER TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id` ");
+
 ?>

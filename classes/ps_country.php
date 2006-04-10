@@ -146,6 +146,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     $db->setQuery($q);
     $db->query();
     $db->next_record();
+    $_REQUEST['country_id'] = $db->last_insert_id();
+    
     return True;
 
   }

@@ -1336,7 +1336,7 @@ Order Total: '.$order_total.'
 						
 					// Here we need to re-calculate the Discount
 					// because we assume the Discount is "including Tax"
-					$discounted_total = $d['order_subtotal_withtax'] - $_SESSION['coupon_discount'] - $d['payment_discount'];
+					$discounted_total = $d['order_subtotal_withtax'] - @$_SESSION['coupon_discount'] - $d['payment_discount'];
 					
 					if( $discounted_total != $d['order_subtotal_withtax'] ) {
 						$discount_factor = $discounted_total / $d['order_subtotal_withtax'];

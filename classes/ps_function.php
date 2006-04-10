@@ -165,9 +165,9 @@ class ps_function {
 		$q .= $d["function_method"] . "','";
 		$q .= $d["function_perms"] . "','";
 		$q .= $d["function_description"] . "')";
-		$db->setQuery($q);
-		$db->query();
+		$db->query( $q );
 		$db->next_record();
+		$_REQUEST['function_id'] = $db->last_insert_id();
 		return True;
 
 	}

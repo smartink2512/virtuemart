@@ -886,7 +886,7 @@ $formObj->hiddenField( 'myname', 'Jabba Binks' );
 
 // Write your form with mixed tags and text fields
 // and finally close the form:
-$formObj->finishForm( 'writeConfig', $modulename.'.index', $option );
+$formObj->finishForm( 'writeConfig', 'store.index', $option );
 ?>   
 
 <script type="text/javascript">

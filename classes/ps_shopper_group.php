@@ -111,7 +111,7 @@ class ps_shopper_group {
 	* returns:
 	**************************************************************************/
 	function add(&$d) {
-		global $perm;
+		global $perm, $vmLogger;
 		$hash_secret = "virtuemart";
 		if( $perm->check( "admin" ) ) {
 			$vendor_id = $d["vendor_id"];
@@ -138,17 +138,11 @@ class ps_shopper_group {
 			$db->query($q);
 			$db->next_record();
 
-			$q = "SELECT * from #__{vm}_shopper_group where";
-			$q .= " shopper_group_name='";
-			$q .= $d["shopper_group_name"] . "' ";
-			$q .= "AND shopper_group_desc='" . $d["shopper_group_desc"] ."'";
-			$q .= "AND vendor_id='$vendor_id'";
-			$db->query($q);
-			$db->next_record();
-			return $db->f("shopper_group_id");
+			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
+			return $_REQUEST['shopper_group_id'];
 		}
 		else {
-			$d["error"]=$this->error;
+			$vmLogger->err( $this->error );
 			return False;
 		}
 	}

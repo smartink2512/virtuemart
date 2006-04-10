@@ -264,6 +264,7 @@ class ps_product_files {
 		$db->setQuery($q);
 		$db->query();
 
+		$_REQUEST['file_id'] = $db->last_insert_id();
 		return True;
 
 	}

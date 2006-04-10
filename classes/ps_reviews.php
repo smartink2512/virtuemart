@@ -270,7 +270,7 @@ class ps_reviews {
   }
   
   function process_review( &$d ) {
-      global $db, $my, $VM_LANG;
+      global $db, $my, $VM_LANG, $vmLogger;
       
       if (PSHOP_ALLOW_REVIEWS == "1" && !empty($my->id) ) {
           if( strlen( $d["comment"] ) < 100 ) {
@@ -304,10 +304,10 @@ class ps_reviews {
             $this->process_vote( $d );
           } 
           else {
-            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_REVIEW_ALREADYDONE;
+            $vmLogger->info( $VM_LANG->_PHPSHOP_REVIEW_ALREADYDONE );
           }
           
-          $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_REVIEW_THANKYOU;
+          $vmLogger->info( $VM_LANG->_PHPSHOP_REVIEW_THANKYOU );
       }
       return true;
   }

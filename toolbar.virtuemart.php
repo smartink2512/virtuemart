@@ -22,9 +22,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-if( stristr( $_SERVER['PHP_SELF'], 'administrator'))
-        @define( '_PSHOP_ADMIN', '1' );
-        
+if( stristr( $_SERVER['PHP_SELF'], 'administrator')) {
+	@define( '_PSHOP_ADMIN', '1' );
+}
+
 global $page, $sess;
 if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
     // We parse the phpShop main code before loading the toolbar,

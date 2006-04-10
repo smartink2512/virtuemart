@@ -36,6 +36,12 @@ class ps_userfield extends vmAbstractObject {
 			case 'multicheckbox':
 				$d['cType']='MEDIUMTEXT';
 				break;	
+			case 'letterman_subscription':
+			case 'yanc_subscription':
+			case 'anjel_subscription':
+				// Set params = 
+				$d['params'] = 'newsletter='.substr($d['type'],0,strpos($d['type'], '_') )."\n";
+				$d['type'] = 'checkbox';
 			case 'checkbox':
 				$d['cType']='TINYINT';
 				break;			
@@ -122,6 +128,7 @@ class ps_userfield extends vmAbstractObject {
 					\''.$d['account'].'\', \''.$d['readonly'].'\', \''.$d['calculated'].'\', \''.$_SESSION['ps_vendor_id'].'\', \''.$d['params'].'\'
 					)';
 			$db->query( $q );
+			$_REQUEST['fieldid'] = $db->last_insert_id();
 			if( $d['type'] != 'delimiter') {
 				$this->changeColumn( $d['name'], $d['cType'], 'add');
 			}

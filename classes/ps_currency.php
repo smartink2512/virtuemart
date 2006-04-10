@@ -115,9 +115,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     $q .= " VALUES ('";
     $q .= $d["currency_name"] . "','";
     $q .= $d["currency_code"] . "')";
-    $db->setQuery($q);
-    $db->query();
+    $db->query( $q );
     $db->next_record();
+	$_REQUEST['currency_id'] = $db->last_insert_id();
+    
     return True;
 
   }

@@ -270,7 +270,7 @@ class ps_product extends vmAbstractObject {
 
 		$db->setQuery($q); $db->query();
 
-		$d["product_id"] = $db->last_insert_id();
+		$d["product_id"] = $_REQUEST['product_id'] = $db->last_insert_id();
 
 		// If is Item, add attributes from parent //
 		if ($d["product_parent_id"]) {
@@ -1523,7 +1523,7 @@ class ps_product extends vmAbstractObject {
 	 * @param boolean $check_multiple_prices Check if the product has more than one price for that shopper group?
 	 * @return array The product price information
 	 */
-	function get_price($product_id, $check_multiple_prices=false) {
+	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='') {
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 

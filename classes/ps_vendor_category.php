@@ -101,6 +101,7 @@ class ps_vendor_category {
     $q .= $d["vendor_category_desc"] . "')";
     $db->query($q);
     $db->next_record();
+    $_REQUEST['vendor_category_id'] = $db->last_insert_id();
     return True;
     
   }
