@@ -70,7 +70,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 class listFactory {
 
-	/** @var int the number of rows in the table */
+	/** @var int the number of columns in the table */
 	var $columnCount = 0;
 	/** @var array css classes for alternating rows (row0 and row1 ) */
 	var $alternateColors;
@@ -126,8 +126,12 @@ class listFactory {
 		}
 	}
 	
-	function newRow() {
+	function newRow( $attributes='' ) {
 		$this->y++;
+		if( $attributes ) {
+			$this->cells[$this->y]["attributes"] = $attributes;
+		}
+		
 		$this->x = 0;
 	}
 	
@@ -152,8 +156,9 @@ class listFactory {
 		else {
 			$i = 0;
 			foreach( $this->cells as $row ) {
-				echo "<tr class=\"".$this->alternateColors[$i]."\">\n";
+				echo "<tr class=\"".$this->alternateColors[$i]."\" ".@$row['attributes'].">\n";
 				foreach( $row as $cell ) {
+					if( $cell['data'] == 'i' && !isset($cell['data'])) continue;
 					$value = $cell["data"];
 					$attributes = $cell["attributes"];
 					echo "<td  $attributes>$value</td>\n";
@@ -381,6 +386,95 @@ class mShopTabs {
 	}
 }
 
+class vmMooFxAccordeon {
+	
+	var $numAccordeons = -1;
+	var $accordeons = array();
+	var $clickonElementName = 'stretcher';
+	var $stretchingElementName = 'stretchtoggle';
+	
+	/** @var string Shall we use the class name to identify the elements? Can be class or id  */
+	var $mode = 'id';
+	
+	function vmMooFxAccordeon() {
+		vmCommonHTML::loadMooFX();
+	}
+	function addAccordeon() {
+		$numAccordeons++;		
+	}
+	function getDivsName() {
+		return $this->divsName;
+	}
+	function getLinksName() {
+		return $this->linksName;
+	}	
+	function setDivsName( $name ) {
+		$this->divsName = $name;
+	}	
+	function setLinksName( $name ) {
+		return $this->linksName = $name;
+	}
+	/**
+	 * This adds the ID of the element to the $clickonElements array
+	 * for creating a clickon effect later on
+	 *
+	 * @param string $id
+	 */
+	function addClickon( $id ) {
+		$this->accordeons[$this->numAccordeons]['clickonElements'][] = $id;
+	}
+	/**
+	 * This adds the ID of the element to the $stretchingElements array
+	 * for creating a clickon effect later on
+	 *
+	 * @param string $id
+	 */
+	function addStretcher( $id ) {
+		$this->accordeons[$this->numAccordeons]['stretchingElements'][] = $id;
+	}
+	
+	function finish() {
+		echo '<script type="text/javascript">';
+		$i = 0;
+		foreach( $this->accordeons as $accordeon ) {
+			if( $this->mode == 'class') {
+				echo '
+		var myDivs'.$i.' = document.getElementsByClassName(\''.$this->divsName.'\');
+		var myLinks'.$i.' = document.getElementsByClassName(\''.$this->linksName.'\');
+	';
+			}
+			else {
+				echo 'var myLinks'.$i.'=Array(';
+				$i = count( $accordeon['clickonElements'] );
+				foreach( $accordeon['clickonElements'] as $elementId ) {
+					echo "document.getElementById('$elementId')";
+					if( $i-- > 1) echo ',';
+				}
+				echo ");\n";
+				
+				echo 'var myDivs'.$i.'=Array(';
+				$i = count( $accordeon['stretchingElements'] );
+				foreach( $accordeon['stretchingElements'] as $elementId ) {
+					echo "document.getElementById('$elementId')";
+					if( $i-- > 1) echo ',';
+				}
+				echo ");\n";
+			}
+		
+			echo '
+	//then we create the effect.
+	var myAccordion'.$i.' = new fx.Accordion(myLinks'.$i.', myDivs'.$i.', {opacity: true});
+	';
+			$i++;
+		}
+		echo '</script>';
+	}
+}
+
+/**
+ * This is the class offering functions for common HTML tasks
+ *
+ */
 class vmCommonHTML extends mosHTML {
 
 	/**
@@ -421,6 +515,40 @@ class vmCommonHTML extends mosHTML {
 			define ( "_OVERLIB_LOADED", "1" );
 		}
 	}
+	/**
+	* Loads all necessary script files for Moo.Ajax
+	* @static 
+	* @since VirtueMart 1.1.0
+	*/
+	function loadMooAjax() {
+		global $mosConfig_live_site, $option;
+		if( !defined( "_MOOAJAX_LOADED" )) {
+			?>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/prototype.lite.js"></script>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/moo.ajax.js"></script>
+			<?php
+			define ( "_MOOAJAX_LOADED", "1" );
+		}
+	}
+	/**
+	 * Function to include the MooFx JS scripts in the HTML document
+	 * @static 
+	 * @since VirtueMart 1.1.0
+	 *
+	 */
+	function loadMooFX() {
+		global $mosConfig_live_site, $option;
+		if( !defined( "_MOOFX_LOADED" )) {
+			?>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/prototype.lite.js"></script>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/moo.fx.js"></script>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/moo.fx.pack.js"></script>
+			<?php
+			define ( "_MOOFX_LOADED", "1" );
+		}
+		
+	}
+	
 	/**
 	 * Returns a div element of the class "shop_error" 
 	 * containing $msg to print out an error
@@ -841,12 +969,24 @@ function mm_writeWithJS( $textToWrap, $noscriptText ) {
     }
     return $text;
 }
+
 /**
-* A function to create a XHTML compliant and JS-disabled-safe pop-up link
-*/
-function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='_blank', $title='' ) {
-	
-	$jslink = "<a href=\"javascript:void window.open('$link', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no');\" title=\"$title\">$text</a>";
+ * A function to create a XHTML compliant and JS-disabled-safe pop-up link
+ *
+ * @param string $link The HREF attribute
+ * @param string $text The link text
+ * @param int $popupWidth
+ * @param int $popupHeight
+ * @param string $target The value of the target attribute
+ * @param string $title
+ * @param string $windowAttributes
+ * @return string
+ */
+function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='_blank', $title='', $windowAttributes='' ) {
+	if( $windowAttributes ) {
+		$windowAttributes = ','.$windowAttributes;
+	}
+	$jslink = "<a href=\"javascript:void window.open('$link', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');\" title=\"$title\">$text</a>";
 	$noscriptlink = "<a href=\"$link\" target=\"$target\" title=\"$title\">$text</a>";
 	return mm_writeWithJS( $jslink, $noscriptlink );
 }

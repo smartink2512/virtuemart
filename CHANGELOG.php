@@ -34,7 +34,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 10-04-2006 soeren
-
+^ product list now opens a new window to display the product form. Forms are to be "ajaxified" soon.
 + added the famous "Apply" button to all Save/Cancel forms, now it shows: Save / Apply / Cancel
 # user fields not allowing userUpdate
 # user form not working on Mambo 4.6.0

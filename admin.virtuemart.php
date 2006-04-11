@@ -74,6 +74,12 @@ $pagename = $my_page[1];
 
 $_SESSION['last_page'] = $page;
 
+if( !defined('_VM_TOOLBAR_LOADED') & $no_menu == 1 ) {
+	echo '<div align="right" class="menudottedline">';
+	include( ADMINPATH.'toolbar.virtuemart.php');
+	echo '</div>';
+}
+
 if( $no_menu != 1 ) {
 	include(ADMINPATH.'header.php');
 }
@@ -96,11 +102,12 @@ if( empty( $_REQUEST['no_menu'])) {
                 .$VMVERSION->PRODUCT.' '.$VMVERSION->RELEASE
                 .' (<a href="http://virtuemart.net/index2.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" onclick="javascript:void window.open(\'http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE .'\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no\'); return false;" title="VirtueMart Version Check" target="_blank">Check for latest version</a>)</div>';
 }
-if( DEBUG == '1' ) {
+if( DEBUG == '1' && $no_menu != 1 ) {
         // Load PAGE
 	include( PAGEPATH."shop.debug.php" );
 }
 if( defined( 'vmToolTipCalled')) {
 	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
 }
+
 ?>

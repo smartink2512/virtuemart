@@ -1018,8 +1018,9 @@ class ps_product_category extends vmAbstractObject {
 	 * @param int $size The size of the select element
 	 * @param boolean $toplevel List only top-level categories?
 	 * @param boolean $multiple Allow multiple selections?
+	 * @param array The category IDs which are to be disabled in the select list
 	 */
-	function list_all($name, $category_id, $selected_categories=Array(), $size=1, $toplevel=true, $multiple=false) {
+	function list_all($name, $category_id, $selected_categories=Array(), $size=1, $toplevel=true, $multiple=false, $disabledFields=array() ) {
 
 		$db = new ps_DB;
 
@@ -1086,7 +1087,7 @@ class ps_product_category extends vmAbstractObject {
 	 * @param int $level Internally used for recursion
 	 * @param array $selected_categories All category IDs that will be pre-selected
 	 */
-	function list_tree($category_id="", $cid='0', $level='0', $selected_categories=Array() ) {
+	function list_tree($category_id="", $cid='0', $level='0', $selected_categories=Array(), $disabledFields=Array() ) {
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;

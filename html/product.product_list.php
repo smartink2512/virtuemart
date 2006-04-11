@@ -271,14 +271,20 @@ if ($num_rows > 0) {
 
 		// The Checkbox
 		$listObj->addCell( mosHTML::idBox( $i, $db->f("product_id"), false, "product_id" ) );
+		
+		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=$keyword&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1" );
+		$link = defined('_PSHOP_ADMIN') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
+		$text = $db->f("product_name");
 
 		// The link to the product form / to the child products
-		$tmpcell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=$keyword&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id )."\">".$db->f("product_name"). "</a>";
+		$tmpcell = vmPopupLink( $link, $text, 800, 540, '_blank', '', 'screenX=100,screenY=100' );
+		
 		if( $ps_product->parent_has_children( $db->f("product_id") ) ) {
 			$tmpcell .= "&nbsp;&nbsp;&nbsp;<a href=\"";
 			$tmpcell .= $sess->url($_SERVER['PHP_SELF'] . "?page=$modulename.product_list&product_parent_id=" . $db->f("product_id"));
 			$tmpcell .=  "\">[ ".$VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL. " ]</a>";
 		}
+		
 		$listObj->addCell( $tmpcell );
 
 		// The product sku

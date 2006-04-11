@@ -153,21 +153,25 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function cancel( $task='cancel', $alt='Cancel' ) {
 		global $page, $vmIcons;
+		$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
 		$bar = & JToolBar::getInstance('JComponent');
-		if ($page == "store.store_form")
-			$my_page = "store.index";
-		elseif ($page == "admin.user_address_form")
-			$my_page = "admin.user_list";
-		elseif ($page == "admin.show_cfg")
-			$my_page = "store.index";
-		else
-			$my_page = str_replace('form','list',$page);
+		
+		if ($page == "store.store_form") { $my_page = "store.index"; }
+		elseif ($page == "admin.user_address_form") { $my_page = "admin.user_list"; }
+		elseif ($page == "admin.show_cfg") { $my_page = "store.index"; }
+		else { $my_page = str_replace('form','list',$page); }
 		
 		$image = '<img src="'.$vmIcons['cancel_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
 		$image2 = $vmIcons['cancel_icon2'];
 		
+		if( $no_menu ) {
+			$js = "window.close();";
+		}
+		else {
+			$js = "vm_submitButton('$task', 'adminForm', '$my_page');";
+		}
 		$bar->appendButton( 'Custom', "<td>
-			<a class=\"toolbar\" href=\"javascript:vm_submitButton('$task', 'adminForm', '$my_page');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$task','','$image2',1);\">
+			<a class=\"toolbar\" href=\"javascript:$js\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$task','','$image2',1);\">
 			 $image<br />
 			$alt</a>
 		</td>" );
