@@ -3,7 +3,7 @@
 <table border="0" style="width: 100%;">
   <tbody>
 	<tr>
-	  <td rowspan="4" valign="top" style="text-align:center;"><br/>{product_image}<br/><br/>{more_images}</td>
+	  <td rowspan="5" valign="top" style="text-align:center;"><br/>{product_image}<br/><br/>{more_images}</td>
 	  <td rowspan="1" colspan="2">
 	  <h1>{product_name} {edit_link}</h1>
 	  </td>
@@ -14,6 +14,9 @@
 	<tr>
       <td width="33%" valign="top" align="left">{product_price}<br /></td>
       <td valign="top">{product_packaging}<br /></td>
+	</tr>
+	<tr>
+	  <td colspan="2">{ask_seller}</td>
 	</tr>
 	<tr style="font-style: italic;">
 	  <td rowspan="1" colspan="2"><hr />{product_description}<br/><span style="font-style: italic;">{file_list}</span></td>

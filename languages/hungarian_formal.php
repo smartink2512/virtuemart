@@ -1021,11 +1021,11 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Legyen az elsõ, aki szemlét ír errõl a termékrõl!';
 	var $_PHPSHOP_REVIEW_LOGIN = 'Kérem, jelentkezzen be és írjon egy szemlét.';
 	var $_PHPSHOP_REVIEW_ERR_RATE = 'Kérem értékelje a terméket, hogy kiegészítse a szemléjét!';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Kérjük, írjon még valamit a szemlébe. Legalább 100 karakter a megengedett alsó határ!';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Kérjük, rövidítse le a szemlét. Maximálisan 2000 karakter terjedelem van megengedve.';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Kérjük, írjon még valamit a szemlébe. Legalább %s karakter a megengedett alsó határ!';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Kérjük, rövidítse le a szemlét. Maximálisan %s karakter terjedelem van megengedve.';
 	var $_PHPSHOP_WRITE_REVIEW = 'Írjon egy szemlét errõl a termékrõl!';
 	var $_PHPSHOP_REVIEW_RATE = 'Elsõ lépésben értékelje a terméket. Kérem, válasszon egy értéket 5 (lehetõ legjobb) és 0 (nagyon gyenge) között.';
-	var $_PHPSHOP_REVIEW_COMMENT = 'Kérjük, írjon egy (rövid) szemlét. (legalább 100, legtöbb 2000 karakter)';
+	var $_PHPSHOP_REVIEW_COMMENT = 'Kérjük, írjon egy (rövid) szemlét. (legalább %s, legtöbb %s karakter)';
 	var $_PHPSHOP_REVIEW_COUNT = 'Beírt karakterszám: ';
 	var $_PHPSHOP_REVIEW_SUBMIT = 'Szemle beküldése';
 	var $_PHPSHOP_REVIEW_ALREADYDONE = 'Ön már írt szemlét errõl a termékrõl. Köszönjük.';
@@ -1517,6 +1517,19 @@ It has to be valid PHP Code!
 	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
 	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
 	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
+	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
+	var $_VM_REVIEW_FORM_LBL = 'Add Review';
+	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
+	var $_PHPSHOP_REVIEW_MODIFIED = 'The review has been updated.';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Comment Minimum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'This is the amount of characters that MUST at least be written by a customer before the review can be submitted.';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
+';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
+	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
         
 }
 class phpShopLanguage extends vmLanguage { }

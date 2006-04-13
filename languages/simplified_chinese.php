@@ -1030,11 +1030,11 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_WRITE_FIRST_REVIEW = '您是第一个为此商品撰写评论的顾客。';
 	var $_PHPSHOP_REVIEW_LOGIN = '请登陆以撰写评论。';
 	var $_PHPSHOP_REVIEW_ERR_RATE = '请评价此产品以完成您的评论';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = '请再多写几句评论，最少字数: 100';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = '请简化您的评论，最多字数: 2000';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = '请再多写几句评论，最少字数: %s';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = '请简化您的评论，最多字数: %s';
 	var $_PHPSHOP_WRITE_REVIEW = '为此商品撰写评论';
 	var $_PHPSHOP_REVIEW_RATE = '首先: 请对此商品做出评价。请在0(最差)到5(最好)之间做出评价。';
-	var $_PHPSHOP_REVIEW_COMMENT = '现在请做出一个评论。(最少字数 100，最多字数:2000 ) ';
+	var $_PHPSHOP_REVIEW_COMMENT = '现在请做出一个评论。(最少字数 %s，最多字数:%s ) ';
 	var $_PHPSHOP_REVIEW_COUNT = '字数: ';
 	var $_PHPSHOP_REVIEW_SUBMIT = '提交评论';
 	var $_PHPSHOP_REVIEW_ALREADYDONE = '感谢您撰写了此商品的评论。';
@@ -1526,6 +1526,19 @@ It has to be valid PHP Code!
 	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
 	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
 	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
+	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
+	var $_VM_REVIEW_FORM_LBL = 'Add Review';
+	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
+	var $_PHPSHOP_REVIEW_MODIFIED = 'The review has been updated.';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Comment Minimum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'This is the amount of characters that MUST at least be written by a customer before the review can be submitted.';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
+';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
+	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
         
 }
 class phpShopLanguage extends vmLanguage { }

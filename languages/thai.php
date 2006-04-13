@@ -998,11 +998,11 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'เชิญแสดงความคิดเห็น...';
 	var $_PHPSHOP_REVIEW_LOGIN = 'กรุณาเข้าสู่ระบบก่อนแสดงความคิดเห็น';
 	var $_PHPSHOP_REVIEW_ERR_RATE = 'กรุณาให้คะแนนโหวตด้วย';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'โปรดบันทึกความคิดเห็นของท่าน อย่างน้อย 100 ตัวอักษร';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'กรุณาแสดงความคิดเห็นไม่เกิน 2000 ตัวอักษร';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'โปรดบันทึกความคิดเห็นของท่าน อย่างน้อย %s ตัวอักษร';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'กรุณาแสดงความคิดเห็นไม่เกิน %s ตัวอักษร';
 	var $_PHPSHOP_WRITE_REVIEW = 'แสดงความคิดเห็นสำหรับสินค้านี้!';
 	var $_PHPSHOP_REVIEW_RATE = 'ขั้นแรก: ให้คะแนนสินค้า โปรดระบุคะแนนระหว่าง 0 (แย่มาก) ถึง 5 ดาว (ดีเยี่ยม).';
-	var $_PHPSHOP_REVIEW_COMMENT = 'กรุณาแสดงความคิดเห็น....(อย่างน้อย 100 ตัวอักษร, สูงสุด 2000 ตัวอักษร) ';
+	var $_PHPSHOP_REVIEW_COMMENT = 'กรุณาแสดงความคิดเห็น....(อย่างน้อย %s ตัวอักษร, สูงสุด %s ตัวอักษร) ';
 	var $_PHPSHOP_REVIEW_COUNT = 'จำนวนตัวอักษร: ';
 	var $_PHPSHOP_REVIEW_SUBMIT = 'ตกลง';
 	var $_PHPSHOP_REVIEW_ALREADYDONE = 'ท่านได้แสดงความคิดเห็นสำหรับสินค้านี้แล้ว';
@@ -1484,6 +1484,19 @@ It has to be valid PHP Code!
 	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
 	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
 	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
+	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
+	var $_VM_REVIEW_FORM_LBL = 'Add Review';
+	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
+	var $_PHPSHOP_REVIEW_MODIFIED = 'The review has been updated.';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Comment Minimum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'This is the amount of characters that MUST at least be written by a customer before the review can be submitted.';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
+';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
+	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
         
 }
 class phpShopLanguage extends vmLanguage { }

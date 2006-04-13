@@ -62,7 +62,6 @@ General Formatting
 	background-image: url( ../shop_image/ps_image/log_error.png );
 	background-repeat: no-repeat;
 	background-position: top left;
-	background-color: white;
 }
 .shop_warning {
 	color:		#993300;
@@ -97,5 +96,4 @@ General Formatting
 	background-image: url( ../shop_image/ps_image/log_critical.png );
 	background-repeat: no-repeat;
 	background-position: top left;
-	background-color: white;
 }

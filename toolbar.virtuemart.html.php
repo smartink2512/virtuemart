@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 $_REQUEST['keyword'] = urldecode(mosgetparam($_REQUEST, 'keyword', 0));
 $keyword = $_REQUEST['keyword'];
+$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
 
 global $vmIcons;
 $vmIcons['back_icon'] = $mosConfig_live_site."/administrator/images/back.png";
@@ -44,11 +45,16 @@ class MENU_virtuemart {
     function FORMS_MENU_SAVE_CANCEL() {     
         global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_lang, $VM_LANG, 
         		$page, $limitstart,	$mosConfig_editor, $vmIcons;
+
 		$bar = & JToolBar::getInstance('JComponent');
+		
+        $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
         $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id', 0 );
         $product_id = mosGetParam( $_REQUEST, 'product_id' );
-		if( is_array( $product_id ))
+        
+		if( is_array( $product_id )) {
 			$product_id = "";
+		}
 		// These editor arrays tell the toolbar to load correct "getEditorContents" script parts
 		// This is necessary for WYSIWYG Editors like TinyMCE / mosCE / FCKEditor
         $editor1_array = Array('product.product_form' => 'product_desc', 'shopper.shopper_group_form' => 'shopper_group_desc',
@@ -59,10 +65,16 @@ class MENU_virtuemart {
 								'vendor.vendor_form' => 'vendor_store_desc');
         $editor2_array = Array('store.store_form' => 'vendor_terms_of_service',
 								'vendor.vendor_form' => 'vendor_terms_of_service');
-								
+		
 		$editor1 = isset($editor1_array[$page]) ? $editor1_array[$page] : '';
 		$editor2 = isset($editor2_array[$page]) ? $editor2_array[$page] : '';
-		
+		if( $no_menu ) {
+			vmCommonHTML::loadLightbox();
+			vmCommonHTML::loadYahooConnection();
+			echo '<div id="statusBox" align="middle" style="display:none">Loading ...<br />
+			<img src="'.$mosConfig_live_site.'/components/com_virtuemart/js/lightbox/loading.gif" align="middle" alt="Loading image" /><br /><br />
+			</div>';
+		}
 		$script = '<script type="text/javascript">
         	function submitbutton(pressbutton) {
 			var form = document.adminForm;
@@ -82,10 +94,34 @@ class MENU_virtuemart {
 			getEditorContents( 'editor1', $editor1 );
 			$script .= ob_get_contents(); ob_end_clean();
 		}
-		$script .= '
-			submitform( pressbutton );
+		if( $no_menu ) {
+			$admin = defined('_PSHOP_ADMIN') ? '/administrator' : '';
+			$script .= "
+			var responseSuccess = function(o){ 
+									document.getElementById('statusBox').innerHTML = o.responseText; 
+								  }
+			var responseFailure = function(o){ 
+									alert('An error has occured: \\nThe server did not respond.');
+								  }
+
+			var callback =
+			{
+				success:responseSuccess,
+				failure:responseFailure
+			}
+			new Lightbox.base('statusBox', { closeOnOverlayClick : true })
+			YAHOO.util.Connect.setForm('adminForm');
+			var cObj = YAHOO.util.Connect.asyncRequest('POST', '$mosConfig_live_site".$admin."/index2.php', callback);
+			setTimeout( 'Lightbox.hideAll()', 3000 );
+			//setTimeout( 'window.close()', 3400 );\n";
+
 		}
-		</script>';
+		else {
+			$script .= "\n\t\t\tsubmitform( pressbutton );\n";
+		}
+		
+		$script .= "\t\t}
+		</script>";
 		
         $bar->appendButton( 'Custom', $script );		
 		
@@ -151,11 +187,11 @@ class MENU_virtuemart {
 		vmMenuBar::spacer();
 		
 		vmMenuBar::save( 'save', _E_SAVE );
-		
-		vmMenuBar::spacer();
-		
-		vmMenuBar::apply( 'apply', _E_APPLY );
-		
+		if( $no_menu == 0 ) {
+			vmMenuBar::spacer();
+			
+			vmMenuBar::apply( 'apply', _E_APPLY );
+		}
         vmMenuBar::spacer();
 		
 		vmMenuBar::cancel();

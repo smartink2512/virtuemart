@@ -1559,7 +1559,7 @@ Order Total: '.$order_total.'
 		$dboi->query($q_oi);
 
 		$db_payment = new ps_DB;
-		$q  = "SELECT payment_method_name FROM #__{vm}_order_payment as op, #__{vm}_payment_method as pm
+		$q  = "SELECT payment_method_id, payment_method_name FROM #__{vm}_order_payment as op, #__{vm}_payment_method as pm
               WHERE order_id='$order_id' AND op.payment_method_id=pm.payment_method_id";
 		$db_payment->query($q);
 		$db_payment->next_record();
@@ -1658,7 +1658,7 @@ Order Total: '.$order_total.'
 		
 		$dbos = new ps_DB;
 
-		$q = "SELECT order_status_name FROM `#__{vm}_order_status` WHERE order_status_code='".$db->f("order_status")."'";
+		$q = "SELECT order_status_id, order_status_name FROM `#__{vm}_order_status` WHERE order_status_code='".$db->f("order_status")."'";
 		$dbos->query($q);
 		$dbos->next_record();
 		

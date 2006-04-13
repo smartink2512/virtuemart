@@ -546,7 +546,7 @@ class ps_order {
 		$listObj->writeTableHeader( 3 );
 
 		while ($db->next_record()) {
-			$dbs->query( "SELECT order_status_name FROM #__{vm}_order_status WHERE order_status_code='".$db->f("order_status")."'");
+			$dbs->query( "SELECT order_status_id, order_status_name FROM #__{vm}_order_status WHERE order_status_code='".$db->f("order_status")."'");
 			$dbs->next_record();
 			$order_status = $dbs->f("order_status_name");
 

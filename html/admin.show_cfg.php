@@ -191,6 +191,52 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			?></td>
 		</tr>
 		
+		<tr>
+			<td class="labelcell">
+				<label for="conf_LEAVE_BANK_DATA"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK ?>
+				</label>
+				
+			</td>
+			<td>
+				<input type="checkbox" name="conf_LEAVE_BANK_DATA" id="conf_LEAVE_BANK_DATA" class="inputbox" <?php if (LEAVE_BANK_DATA == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="labelcell">
+				<label for="conf_CAN_SELECT_STATES"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE ?>
+				</label>
+				
+			</td>
+			<td>
+				<input type="checkbox" id="conf_CAN_SELECT_STATES" name="conf_CAN_SELECT_STATES" class="inputbox" <?php if (CAN_SELECT_STATES == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="labelcell">
+				<label for="conf_MUST_AGREE_TO_TOS"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS ?></label>
+				
+			</td>
+			<td>
+				<input type="checkbox" id="conf_MUST_AGREE_TO_TOS" name="conf_MUST_AGREE_TO_TOS" class="inputbox" <?php if (MUST_AGREE_TO_TOS == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="labelcell">
+				<label for="conf_PSHOP_AGREE_TO_TOS_ONORDER"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER ?></label>
+				
+			</td>
+			<td>
+				<input type="checkbox" id="conf_PSHOP_AGREE_TO_TOS_ONORDER" name="conf_PSHOP_AGREE_TO_TOS_ONORDER" class="inputbox" <?php if (PSHOP_AGREE_TO_TOS_ONORDER == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN ?>
+			</td>
+		</tr>
 	</table>
 </fieldset>
 <br/>
@@ -275,48 +321,24 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_LEAVE_BANK_DATA"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK ?>
-				</label>
+				<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo $VM_LANG->_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH ?></label>
 				
 			</td>
 			<td>
-				<input type="checkbox" name="conf_LEAVE_BANK_DATA" id="conf_LEAVE_BANK_DATA" class="inputbox" <?php if (LEAVE_BANK_DATA == '1') echo "checked=\"checked\""; ?> value="1" />
+				<input type="text" size="6" id="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH" name="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH" class="inputbox" value="<?php echo @intval(VM_REVIEWS_MINIMUM_COMMENT_LENGTH); ?>" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN ?>
+			<td><?php echo $VM_LANG->_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_CAN_SELECT_STATES"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE ?>
-				</label>
+				<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo $VM_LANG->_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH ?></label>
 				
 			</td>
 			<td>
-				<input type="checkbox" id="conf_CAN_SELECT_STATES" name="conf_CAN_SELECT_STATES" class="inputbox" <?php if (CAN_SELECT_STATES == '1') echo "checked=\"checked\""; ?> value="1" />
+				<input type="text" size="6" id="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH" name="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH" class="inputbox" value="<?php echo @intval(VM_REVIEWS_MAXIMUM_COMMENT_LENGTH); ?>" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="labelcell">
-				<label for="conf_MUST_AGREE_TO_TOS"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS ?></label>
-				
-			</td>
-			<td>
-				<input type="checkbox" id="conf_MUST_AGREE_TO_TOS" name="conf_MUST_AGREE_TO_TOS" class="inputbox" <?php if (MUST_AGREE_TO_TOS == '1') echo "checked=\"checked\""; ?> value="1" />
-			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="labelcell">
-				<label for="conf_PSHOP_AGREE_TO_TOS_ONORDER"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER ?></label>
-				
-			</td>
-			<td>
-				<input type="checkbox" id="conf_PSHOP_AGREE_TO_TOS_ONORDER" name="conf_PSHOP_AGREE_TO_TOS_ONORDER" class="inputbox" <?php if (PSHOP_AGREE_TO_TOS_ONORDER == '1') echo "checked=\"checked\""; ?> value="1" />
-			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN ?>
+			<td><?php echo $VM_LANG->_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP ?>
 			</td>
 		</tr>
 	</table>
@@ -498,20 +520,33 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 
 <table class="adminform">
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON ?></td>
+        <td class="labelcell"><label for="conf_PSHOP_PDF_BUTTON_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON ?></label></td>
         <td>
-        <input type="checkbox" name="conf_PSHOP_PDF_BUTTON_ENABLE" class="inputbox" <?php if (PSHOP_PDF_BUTTON_ENABLE == 1) echo "checked=\"checked\""; ?> value="1" />
+        <input type="checkbox" id="conf_PSHOP_PDF_BUTTON_ENABLE" name="conf_PSHOP_PDF_BUTTON_ENABLE" class="inputbox" <?php if (PSHOP_PDF_BUTTON_ENABLE == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN ?></td>
+    </tr>    
+    <tr>
+        <td class="labelcell"><label for="conf_VM_SHOW_EMAILFRIEND"><?php echo $VM_LANG->_VM_ADMIN_SHOW_EMAILFRIEND ?></label></td>
+        <td>
+        	<input type="checkbox" id="conf_VM_SHOW_EMAILFRIEND" name="conf_VM_SHOW_EMAILFRIEND" class="inputbox" <?php if (@VM_SHOW_EMAILFRIEND == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
+        <td><?php echo $VM_LANG->_VM_ADMIN_SHOW_EMAILFRIEND_TIP ?></td>
     </tr>
+    <tr>
+        <td class="labelcell"><label for="conf_VM_SHOW_PRINTICON"><?php echo $VM_LANG->_VM_ADMIN_SHOW_PRINTICON ?></label></td>
+        <td>
+        	<input type="checkbox" id="conf_VM_SHOW_PRINTICON" name="conf_VM_SHOW_PRINTICON" class="inputbox" <?php if (@VM_SHOW_PRINTICON == 1) echo "checked=\"checked\""; ?> value="1" />
+        </td>
+        <td><?php echo $VM_LANG->_VM_ADMIN_SHOW_PRINTICON_TIP ?></td>
+    </tr>
+    
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE ?></td>
         <td>
             <input type="text" name="conf_FLYPAGE" class="inputbox" value="<?php echo FLYPAGE ?>" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ?>
-        </td>
+        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ?></td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE ?></td>

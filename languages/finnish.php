@@ -1035,11 +1035,11 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Be the first to write a review...';
 	var $_PHPSHOP_REVIEW_LOGIN = 'Please log in to write a review.';
 	var $_PHPSHOP_REVIEW_ERR_RATE = 'Please rate the product to complete your review!';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Please write down some more words for your review. Mininum characters allowed: 100';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Please shorten your review. Maximum characters allowed: 2000';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Please write down some more words for your review. Mininum characters allowed: %s';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Please shorten your review. Maximum characters allowed: %s';
 	var $_PHPSHOP_WRITE_REVIEW = 'Write a review for this product!';
 	var $_PHPSHOP_REVIEW_RATE = 'First: Rate the product. Please select a rating between 0 (poorest) and 5 stars (best).';
-	var $_PHPSHOP_REVIEW_COMMENT = 'Now please write a (short) review....(min. 100, max. 2000 characters) ';
+	var $_PHPSHOP_REVIEW_COMMENT = 'Now please write a (short) review....(min. %s, max. %s characters) ';
 	var $_PHPSHOP_REVIEW_COUNT = 'Characters written: ';
 	var $_PHPSHOP_REVIEW_SUBMIT = 'Submit Review';
 	var $_PHPSHOP_REVIEW_ALREADYDONE = 'You already have written a review for this product. Thank you.';
@@ -1531,6 +1531,19 @@ It has to be valid PHP Code!
 	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
 	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
 	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
+	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
+	var $_VM_REVIEW_FORM_LBL = 'Add Review';
+	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
+	var $_PHPSHOP_REVIEW_MODIFIED = 'The review has been updated.';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Comment Minimum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'This is the amount of characters that MUST at least be written by a customer before the review can be submitted.';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
+';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
+	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
         
 }
 class phpShopLanguage extends vmLanguage { }

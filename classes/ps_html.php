@@ -483,11 +483,9 @@ class ps_html {
 	 */
 	function writePanelIcon( $image, $link, $text ) {
 		echo '<div class="icon" style="float:left;">
-			<a href="'.$link.'">
-				<div class="iconimage">
-					<img src="'.$image.'" alt="'.$text.'" align="middle" name="image" border="0" />
-				</div>
-			'.$text.'</a>
+			<div class="iconimage"><a href="'.$link.'">
+					<img src="'.$image.'" alt="'.$text.'" name="image" border="0" /><br />
+			'.$text.'</a></div>
 		</div>';
 
 	}

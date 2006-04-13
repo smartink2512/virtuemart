@@ -337,12 +337,14 @@ if ($num_rows > 0) {
 		$db_cat->query("SELECT count(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='".$db->f("product_id")."'");
 		$db_cat->next_record();
 		if ($db_cat->f("num_rows")) {
-			$tmp_cell = $db_cat->f("num_rows")."&nbsp;";
+			$tmpcell = $db_cat->f("num_rows")."&nbsp;";
 			$tmpcell .= "<a href=\"".$_SERVER["PHP_SELF"]."?option=com_virtuemart&page=product.review_list&product_id=".$db->f("product_id")."\">";
 			$tmpcell .= "[".$VM_LANG->_PHPSHOP_SHOW."]</a>";
 		}
 		else {
-			$tmpcell = " - ";
+			$link = $sess->url( $_SERVER['PHP_SELF'].'?page=product.review_form&product_id='.$db->f('product_id'));
+			$text = '['.$VM_LANG->_VM_REVIEW_FORM_LBL.']';
+			$tmpcell = " - <a href=\"$link\">$text</a>\n";
 		}
 		$listObj->addCell( $tmpcell );
 

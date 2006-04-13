@@ -1175,9 +1175,11 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product` (
 ## 
 
 $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_attribute` (
+  `attribute_id` INT NOT NULL AUTO_INCREMENT
   `product_id` int(11) NOT NULL default '0',
   `attribute_name` char(255) NOT NULL default '',
   `attribute_value` char(255) NOT NULL default '',
+  PRIMARY KEY  (`attribute_id`),
   KEY `idx_product_attribute_product_id` (`product_id`),
   KEY `idx_product_attribute_name` (`attribute_name`)
 ) TYPE=MyISAM COMMENT='Stores attributes + their specific values for Child Products'; ");
@@ -1386,6 +1388,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_relations` (
 ## 
 
 $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_reviews` (
+  `review_id` int(11) NOT NULL auto_increment,
   `product_id` varchar(255) NOT NULL default '',
   `comment` text NOT NULL,
   `userid` int(11) NOT NULL default '0',
@@ -1393,7 +1396,9 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_reviews` (
   `user_rating` tinyint(1) NOT NULL default '0',
   `review_ok` int(11) NOT NULL default '0',
   `review_votes` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`product_id`,`userid`)
+  `published` char(1) NOT NULL default 'Y',
+  PRIMARY KEY  (`review_id`),
+  UNIQUE KEY `product_id` (`product_id`,`userid`)
 ) TYPE=MyISAM ;");
 
 ## 

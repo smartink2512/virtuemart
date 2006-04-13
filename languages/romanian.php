@@ -1037,11 +1037,11 @@ produs';
 	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Fiti primul care scrie un comentariu...';
 	var $_PHPSHOP_REVIEW_LOGIN = 'Va rugam sa va logati pentru a scrie un comentariu.';
 	var $_PHPSHOP_REVIEW_ERR_RATE = 'Va rugam sa evaluati produsul pentru a completa comentariul dvs!';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Va rugam adaugati mai multe cuvinte la comentariul dvs. Numarul minim de caractere permise: 100';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Va rugam scurtati comentariul. Numarul maxim de caractere permise: 2000';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Va rugam adaugati mai multe cuvinte la comentariul dvs. Numarul minim de caractere permise: %s';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Va rugam scurtati comentariul. Numarul maxim de caractere permise: %s';
 	var $_PHPSHOP_WRITE_REVIEW = 'Scrieti un comentariu pentru acest produs!';
 	var $_PHPSHOP_REVIEW_RATE = 'Mai intai evaluati produsul> Va rugam sa evaluati intre 0 (cel mai slab)si 5 stele (cel mai bun).';
-	var $_PHPSHOP_REVIEW_COMMENT = 'Acum scrieti un scurt comentariu....(min. 100, max. 2000 caractere) ';
+	var $_PHPSHOP_REVIEW_COMMENT = 'Acum scrieti un scurt comentariu....(min. %s, max. %s caractere) ';
 	var $_PHPSHOP_REVIEW_COUNT = 'Caractere: ';
 	var $_PHPSHOP_REVIEW_SUBMIT = 'Propune comentarii';
 	var $_PHPSHOP_REVIEW_ALREADYDONE = 'Deja ati facut comentarii in legatura cu acest produs.Multumim.';
@@ -1533,6 +1533,19 @@ It has to be valid PHP Code!
 	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
 	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
 	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
+	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
+	var $_VM_REVIEW_FORM_LBL = 'Add Review';
+	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
+	var $_PHPSHOP_REVIEW_MODIFIED = 'The review has been updated.';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Comment Minimum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'This is the amount of characters that MUST at least be written by a customer before the review can be submitted.';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
+';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
+	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
         
 }
 class phpShopLanguage extends vmLanguage { }

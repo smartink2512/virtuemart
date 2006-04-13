@@ -93,34 +93,33 @@ else {
 	|| stristr($page, "cfg")
 	|| stristr($page, "print")
 	|| stristr($page, "display"))
-	&& ($perm->check("admin,storeadmin")
+	&& $perm->check("admin,storeadmin")
 		&& ((!stristr($my->usertype, "admin") ^ PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '' )
 			|| stristr($my->usertype, "admin")
 			)
 		&& !stristr($page, "shop.")
-		)
-	&& $no_menu != "1"
 	) {
-		define( '_FRONTEND_ADMIN_LOADED', '1' );
-		$mainframe->loadEditor = 1;
-		require_once( $mosConfig_absolute_path."/editor/editor.php" );
-		initEditor();
-
-		$editor1_array = Array('product.product_form' => 'product_desc',
-		'product.product_category_form' => 'category_description',
-		'store.store_form' => 'vendor_store_desc',
-		'vendor.vendor_form' => 'vendor_store_desc');
-		$editor2_array = Array('store.store_form' => 'vendor_terms_of_service',
-		'vendor.vendor_form' => 'vendor_terms_of_service');
-		editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
-		?>
-		<link type="text/css" rel="stylesheet" media="screen, projection" href="components/<?php echo $option ?>/css/admin.css" />
-		<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/functions.js"></script>
-		<?php
-
-		// The admin header with dropdown menu
-		include( ADMINPATH."header.php" );
-
+		
+			define( '_FRONTEND_ADMIN_LOADED', '1' );
+			$mainframe->loadEditor = 1;
+			require_once( $mosConfig_absolute_path."/editor/editor.php" );
+			initEditor();
+	
+			$editor1_array = Array('product.product_form' => 'product_desc',
+			'product.product_category_form' => 'category_description',
+			'store.store_form' => 'vendor_store_desc',
+			'vendor.vendor_form' => 'vendor_store_desc');
+			$editor2_array = Array('store.store_form' => 'vendor_terms_of_service',
+			'vendor.vendor_form' => 'vendor_terms_of_service');
+			editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
+			?>
+			<link type="text/css" rel="stylesheet" media="screen, projection" href="components/<?php echo $option ?>/css/admin.css" />
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/functions.js"></script>
+			<?php
+		if( $no_menu != "1" ) {
+			// The admin header with dropdown menu
+			include( ADMINPATH."header.php" );
+		}
 		include( ADMINPATH."toolbar.virtuemart.php" );
 		echo '<br style="clear:both;" />';
 
@@ -207,10 +206,13 @@ else {
       <?php
 			}
 
-			// Show the PDF Button?
-			if( PSHOP_PDF_BUTTON_ENABLE=='1' && !isset($_REQUEST['output']) && ($page=="shop.browse" || $page=="shop.product_details")) {
-				echo "<table align=\"right\"><tr><td><a title=\"PDF\" target=\"_blank\" href=\"index2.php?option=$option&page=shop.pdf_output&showpage=$page&pop=1&output=pdf&product_id=$product_id&category_id=$category_id\">
-            <img src=\"".IMAGEURL."ps_image/acroread.png\" alt=\"PDF\" height=\"32\" width=\"32\" border=\"0\" /></a></td></tr></table>";
+			if( !isset($_REQUEST['output']) && ($page=="shop.browse" || $page=="shop.product_details")) {
+				echo '<div style="margin:10px;width:20%;float:right;">';
+				$pdf_link = "index2.php?option=$option&page=shop.pdf_output&showpage=$page&pop=1&output=pdf&product_id=$product_id&category_id=$category_id";
+				echo vmCommonHTML::PdfIcon( $pdf_link );
+				echo vmCommonHTML::PrintIcon();
+				echo vmCommonHTML::EmailIcon($product_id);
+				echo '</div>';
 			}
 			// Load requested PAGE
 			if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
@@ -219,15 +221,15 @@ else {
 			elseif( file_exists( PAGEPATH . HOMEPAGE.'.php' )) {
 				include( PAGEPATH . HOMEPAGE.'.php' );
 			}
-                        else {
-                                include( PAGEPATH.'shop.index.php');
-                        }
-                        if ( !empty($mosConfig_caching) && $vmDoCaching) {
-                                echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span';
-                        }
-                        if (SHOWVERSION) {
-                                include(PAGEPATH ."footer.php");
-                        }
+		    else {
+		        include( PAGEPATH.'shop.index.php');
+		    }
+		    if ( !empty($mosConfig_caching) && $vmDoCaching) {
+		        echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span';
+		    }
+		    if(SHOWVERSION && !mosGetParam( $_REQUEST, 'pop' )) {
+				include(PAGEPATH ."footer.php");
+		    }
 
 			// Set debug option on/off
 			if (DEBUG) {

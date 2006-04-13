@@ -1021,11 +1021,11 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_WRITE_FIRST_REVIEW = 'Напишете първия коментар!';
 	var $_PHPSHOP_REVIEW_LOGIN = 'Моля, влезте в системата с потебителско име и парола, за да оставите коментар.';
 	var $_PHPSHOP_REVIEW_ERR_RATE = 'Моля, дайте Вашата оценка за този продукт!';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Моля, бъдете по-подробни - минималния брой символи е 100, а максималния - 2000.';
-	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Моля, съкратете Вашия коментар - минималния брой символи е 100, а максималния - 2000.';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT1 = 'Моля, бъдете по-подробни - минималния брой символи е %s, а максималния - %s.';
+	var $_PHPSHOP_REVIEW_ERR_COMMENT2 = 'Моля, съкратете Вашия коментар - минималния брой символи е %s, а максималния - %s.';
 	var $_PHPSHOP_WRITE_REVIEW = 'Изпратете ни Вашето мнение за този продукт!';
 	var $_PHPSHOP_REVIEW_RATE = 'Оценете този продукт. Моля, изберете оценка между 5 (най-висока) и 0 (най-ниска).';
-	var $_PHPSHOP_REVIEW_COMMENT = 'Изпратете ни Вашия коментар... (100-2000 символи) ';
+	var $_PHPSHOP_REVIEW_COMMENT = 'Изпратете ни Вашия коментар... (%s-%s символи) ';
 	var $_PHPSHOP_REVIEW_COUNT = 'Въведени символи: ';
 	var $_PHPSHOP_REVIEW_SUBMIT = 'Изпращане';
 	var $_PHPSHOP_REVIEW_ALREADYDONE = 'Вече сте коментирали този продукт. Благодарим Ви!';
@@ -1510,6 +1510,19 @@ It has to be valid PHP Code!
 	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
 	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
 	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
+	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
+	var $_VM_REVIEW_FORM_LBL = 'Add Review';
+	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
+	var $_PHPSHOP_REVIEW_MODIFIED = 'The review has been updated.';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Comment Minimum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'This is the amount of characters that MUST at least be written by a customer before the review can be submitted.';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
+';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
+	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
         
 }
 class phpShopLanguage extends vmLanguage { }

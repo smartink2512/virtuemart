@@ -300,12 +300,16 @@ class formFactory {
 	* and closes the form
 	*/
 	function finishForm( $func, $page, $option='com_virtuemart' ) {
-	
+		$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
+		
 		$html = '
 		<input type="hidden" name="func" value="'.$func.'" />
         <input type="hidden" name="page" value="'.$page.'" />
         <input type="hidden" name="task" value="" />
         <input type="hidden" name="option" value="'.$option.'" />';
+		if( $no_menu ) {
+			$html .= '<input type="hidden" name="ajax_request" value="1" />';
+		}
         if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  )
           $html .= '<input type="hidden" name="pshop_admin" value="admin" />';
         $html .= '
@@ -385,6 +389,7 @@ class mShopTabs {
 		echo "</div>";
 	}
 }
+	
 
 class vmMooFxAccordeon {
 	
@@ -548,7 +553,41 @@ class vmCommonHTML extends mosHTML {
 		}
 		
 	}
-	
+	/**
+	 * Function to include the Lightbox JS scripts in the HTML document
+	 * @static 
+	 * @since VirtueMart 1.1.0
+	 *
+	 */
+	function loadLightbox() {
+		global $mosConfig_live_site, $option;
+		if( !defined( "_LIGHTBOX_LOADED" )) {
+			?>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/prototype/prototype.js"></script>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/lightbox/lightbox.js"></script>
+			<link type="text/css" rel="stylesheet" href="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/lightbox/lightbox.css" />
+			<?php
+			define ( "_LIGHTBOX_LOADED", "1" );
+		}
+		
+	}
+	/**
+	 * Function to include the Yahoo! asynchronous connection scripts in the HTML document
+	 * @static 
+	 * @since VirtueMart 1.1.0
+	 *
+	 */
+	function loadYahooConnection() {
+		global $mosConfig_live_site, $option;
+		if( !defined( "_YAHOOCONNECTION_LOADED" )) {
+			?>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/YahooConnection/YAHOO.js"></script>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/YahooConnection/connection.js"></script>
+			<?php
+			define ( "_YAHOOCONNECTION_LOADED", "1" );
+		}
+		
+	}
 	/**
 	 * Returns a div element of the class "shop_error" 
 	 * containing $msg to print out an error
@@ -575,6 +614,71 @@ class vmCommonHTML extends mosHTML {
 		$html = '<div class="shop_info">'.$msg.'</div>';
 		return $html;
 	}
+	
+	/**
+	 * Writes a PDF icon
+	 *
+	 * @param string $link
+	 * @param boolean $use_icon
+	 */
+	function PdfIcon( $link, $use_icon=true ) {
+		global $mosConfig_live_site;
+		if ( PSHOP_PDF_BUTTON_ENABLE == '1' && !mosGetParam( $_REQUEST, 'pop' )  ) {
+			$link .= '&amp;pop=1';
+			if ( $use_icon ) {
+				$text = mosAdminMenus::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, _CMN_PDF, _CMN_PDF );
+			} else {
+				$text = _CMN_PDF .'&nbsp;';
+			}
+			return vmPopupLink($link, $text, 640, 480, '_blank', _CMN_PDF);
+		}
+	}
+
+	/**
+	 * Writes an Email icon
+	 *
+	 * @param string $link
+	 * @param boolean $use_icon
+	 */
+	function EmailIcon( $product_id, $use_icon=true ) {
+		global $mosConfig_live_site, $sess;
+		if ( @VM_SHOW_EMAILFRIEND == '1' && !mosGetParam( $_REQUEST, 'pop' ) && $product_id > 0  ) {
+			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1' );
+			if ( $use_icon ) {
+				$text = mosAdminMenus::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, _CMN_EMAIL, _CMN_EMAIL );
+			} else {
+				$text = '&nbsp;'. _CMN_EMAIL;
+			}
+			return vmPopupLink($link, $text, 640, 480, '_blank', _CMN_EMAIL, 'screenX=100,screenY=200');
+		}
+	}
+	
+	function PrintIcon( $link='', $use_icon=true ) {
+		global $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
+		if ( @VM_SHOW_PRINTICON == '1' ) {
+			if( !$link ) {
+				$link = 'index2.php?'.$_SERVER['QUERY_STRING'].'&amp;pop=1';
+			}
+			// checks template image directory for image, if non found default are loaded
+			if ( $use_icon ) {
+				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, _CMN_PRINT, _CMN_PRINT );
+			} else {
+				$text = _ICON_SEP .'&nbsp;'. _CMN_PRINT. '&nbsp;'. _ICON_SEP;
+			}
+			$isPopup = mosGetParam( $_GET, 'pop' );
+			if ( $isPopup ) {
+				// Print Preview button - used when viewing page
+				$html = '<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. _CMN_PRINT.'">
+				'. $text .'
+				</a>';
+				return $html;
+			} else {
+				// Print Button - used in pop-up window
+				return vmPopupLink($link, $text, 640, 480, '_blank', _CMN_PRINT);
+			}
+		}
+	}
+	
 	/**
 	 * Prints a JS function to validate all fields
 	 * given in the array $required_fields
@@ -877,12 +981,18 @@ class vmCommonHTML extends mosHTML {
 }
 
 /**
-* Utility function to provide ToolTips
-* @param string ToolTip text
-* @param string Box title
-* @returns HTML code for ToolTip
-*/
-function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) {
+ * Utility function to provide ToolTips
+ *
+ * @param string $tooltip ToolTip text
+ * @param string $title The Box title
+ * @param string $image
+ * @param int $width
+ * @param string $text
+ * @param string $href
+ * @param string $link
+ * @return string HTML code for ToolTip
+ */
+function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) {
 	global $mosConfig_live_site;
 	
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
@@ -915,7 +1025,17 @@ function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/im
 
 	return $tip;
 }
+/**
+ * @deprecated 
+ */
+function mm_ToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) { return vmToolTip( $tooltip, $title, $image, $width, $text, $href, $link ); }
 
+/**
+ * Utility function to provide persistant HelpToolTips
+ *
+ * @param unknown_type $tip
+ * @param unknown_type $linktext
+ */
 function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
         global $mosConfig_live_site;
 
@@ -941,7 +1061,7 @@ function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
 // borrowed from mambo.php
 function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) {
 	
-	$string = htmlspecialchars( $string, $quote_style );
+	$string = htmlspecialchars( $string, $quote_style, vmGetCharset() );
 	return $string;
 }
 

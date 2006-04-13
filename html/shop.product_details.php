@@ -280,8 +280,13 @@ $images->images = $db->f("images");
   // This is the place where it shows: 
   // Availability: 24h, In Stock: 5 etc.
   // You can make changes to this functionality in the file: classes/ps_product.php
-  if( @$_REQUEST['output'] != "pdf" )
-    $product_availability = $ps_product->get_availability($product_id); 
+  if( @$_REQUEST['output'] != "pdf" ) {
+  	$product_availability = $ps_product->get_availability($product_id); 
+  }
+  
+/** Ask seller a question **/
+    $ask_seller = '<a class="button" href="'.$sess->url( $mosConfig_live_site.'/index.php?page=shop.ask&flypage='.@$_REQUEST['flypage']."&product_id=$product_id&category_id=$category_id&set=1" ). '">';
+    $ask_seller .= $VM_LANG->_VM_PRODUCT_ENQUIRY_LBL.'</a>';
     
 /* SHOW RATING */
   $product_rating = "";
@@ -378,7 +383,7 @@ $template = str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $templat
 $template = str_replace( "{related_products}", $related_product_html, $template );
 $template = str_replace( "{product_type}", $product_type, $template ); // Changed Product Type
 $template = str_replace( "{product_packaging}", $product_packaging, $template ); // Changed Packaging
-
+$template = str_replace( "{ask_seller}", $ask_seller, $template ); // Product Enquiry!
 /* 
   Really cool regular expression that let's you easily translate the flypage 
   Usage:

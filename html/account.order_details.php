@@ -137,7 +137,7 @@ if ( $db->f("order_status") == "P" ) {
   <tr> 
     <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</td>
     <td><?php
-    $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status WHERE ";
+    $q = "SELECT order_status_id, order_status_name,order_status_code FROM #__{vm}_order_status WHERE ";
     $q .= "order_status_code = '" . $db->f("order_status") . "'";
     $dbos = new ps_DB;
     $dbos->query($q);

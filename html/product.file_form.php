@@ -45,7 +45,7 @@ if( !empty($file_id) ) {
   $selected_type[1] = $db->f("file_is_image")==0 ? "checked=\"checked\"" : "";
 }
 else {
-	$default["file_title"] = "My Title";
+	$default["file_title"] = $db->f('product_name');
 	$default["file_published"] = "1";
 }
 

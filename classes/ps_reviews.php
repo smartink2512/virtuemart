@@ -36,6 +36,27 @@ class ps_reviews {
       echo ps_reviews::reviewform( $product_id );
   }
   
+  function average( $product_id ) {
+      global $db, $my, $VM_LANG;
+      
+      if (PSHOP_ALLOW_REVIEWS == "1") {
+          
+          $q = "SELECT votes, allvotes, rating FROM #__{vm}_product_votes "
+                  . "WHERE product_id='$product_id' ";
+
+          $db->query( $q );
+          $allvotes = 0;
+          $rating=0;
+          if ( $db->next_record() ) {
+            $allvotes = $db->f("allvotes");
+            $rating = $db->f("rating");
+          }
+          $html = "<img src=\"".IMAGEURL."stars/$GLOBALS[design_prefix]$rating.gif\" align=\"middle\" border=\"0\" alt=\"$rating stars\" />";
+          return $html;
+      }
+  
+  }
+  
   function allvotes( $product_id ) {
       global $db, $my, $VM_LANG;
       
@@ -126,6 +147,32 @@ class ps_reviews {
       return $html;
   }
   
+  function update( &$d ) {
+      global $VM_LANG, $vmLogger, $perm, $my, $mosConfig_offset;
+      $db = new ps_DB;
+      
+      $d["comment"] = $db->getEscaped( trim(stripslashes($d["comment"])) );
+      if( strlen( $d["comment"] ) < VM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
+          $vmLogger->err( sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1, VM_REVIEWS_MINIMUM_COMMENT_LENGTH ));
+          return false;
+      }
+      if( strlen ( $d["comment"] ) > VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) {
+          $vmLogger->err( sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT2, VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) );
+          return false;
+      }
+      $time = time() + $mosConfig_offset*60*60;
+      $q = "REPLACE INTO #__{vm}_product_reviews (`product_id`, `userid`, `comment`, `user_rating`, `time` ) 
+      			VALUES (".$d['product_id'].", ".$d['userid'] . ", '".$d['comment']."', ".$d['user_rating'].", $time )";
+      $db->query($q);
+      $db->next_record();
+      
+      $this->process_vote( $d );
+      
+      $vmLogger->info( $VM_LANG->_PHPSHOP_REVIEW_MODIFIED );
+      
+      return true;
+  }
+  
   function reviewform( $product_id ) {
       global $db, $my, $page, $VM_LANG, $option;
       $html = "";
@@ -133,6 +180,8 @@ class ps_reviews {
       $db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid='".$my->id."'");
       $db->next_record();
       $alreadycommented = $db->num_rows() > 0;
+	  
+      $review_comment = sprintf( $VM_LANG->_PHPSHOP_REVIEW_COMMENT, VM_REVIEWS_MINIMUM_COMMENT_LENGTH, VM_REVIEWS_MAXIMUM_COMMENT_LENGTH );
 	  
       if (PSHOP_ALLOW_REVIEWS == "1" && !empty($my->id) && !$alreadycommented) { 
         $html = "<script language=\"JavaScript\" type=\"text/javascript\">//<![CDATA[
@@ -147,12 +196,12 @@ class ps_reviews {
               alert('".html_entity_decode($VM_LANG->_PHPSHOP_REVIEW_ERR_RATE) ."');
               return false;
             }
-            else if (form.comment.value.length < 100) {
-              alert('". html_entity_decode($VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1) ."');
+            else if (form.comment.value.length < ".VM_REVIEWS_MINIMUM_COMMENT_LENGTH.") {
+              alert('". html_entity_decode(sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1,VM_REVIEWS_MINIMUM_COMMENT_LENGTH )) ."');
               return false;
             }
-            else if (form.comment.value.length > 2000) {
-              alert('". html_entity_decode($VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT2) ."');
+            else if (form.comment.value.length > ".VM_REVIEWS_MAXIMUM_COMMENT_LENGTH.") {
+              alert('". html_entity_decode(sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1, VM_REVIEWS_MAXIMUM_COMMENT_LENGTH )) ."');
               return false;
             }
             else {
@@ -209,8 +258,8 @@ class ps_reviews {
                 </td>
               </tr>
             </table>
-            <br /><br />". $VM_LANG->_PHPSHOP_REVIEW_COMMENT ."<br />
-            <textarea title=\"".$VM_LANG->_PHPSHOP_REVIEW_COMMENT."\" class=\"inputbox\" id=\"comment\" onblur=\"refresh_counter();\" onfocus=\"refresh_counter();\" onkeypress=\"refresh_counter();\" name=\"comment\" rows=\"10\" cols=\"55\"></textarea>
+            <br /><br />". $review_comment ."<br />
+            <textarea title=\"".$review_comment."\" class=\"inputbox\" id=\"comment\" onblur=\"refresh_counter();\" onfocus=\"refresh_counter();\" onkeypress=\"refresh_counter();\" name=\"comment\" rows=\"10\" cols=\"55\"></textarea>
             <br />
             <input class=\"button\" type=\"submit\" onclick=\"return( check_reviewform());\" name=\"submit_review\" title=\"". $VM_LANG->_PHPSHOP_REVIEW_SUBMIT ."\" value=\"". $VM_LANG->_PHPSHOP_REVIEW_SUBMIT ."\" />
             
@@ -273,16 +322,17 @@ class ps_reviews {
       global $db, $my, $VM_LANG, $vmLogger;
       
       if (PSHOP_ALLOW_REVIEWS == "1" && !empty($my->id) ) {
-          if( strlen( $d["comment"] ) < 100 ) {
-            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1;
+          $d["comment"] = trim($d["comment"]);
+          if( strlen( $d["comment"] ) < VM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
+            $vmLogger->err($VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1);
             return true;
           }
-          if( strlen ( $d["comment"] ) > 2000 ) {
-            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT2;
+          if( strlen ( $d["comment"] ) > VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) {
+            $vmLogger->err($VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT2);
             return true;
           }
           if( empty( $d["user_rating"] ) || intval( $d["user_rating"] ) < 0 || intval( $d["user_rating"] ) > 5) {
-            $_REQUEST['mosmsg'] = $VM_LANG->_PHPSHOP_REVIEW_ERR_RATE;
+            $vmLogger->err($VM_LANG->_PHPSHOP_REVIEW_ERR_RATE);
             return true;
           }
           $commented=false;
@@ -302,12 +352,11 @@ class ps_reviews {
                       ('".$d["product_id"]."', '$comment', '".$my->id."', '".time()."', '".$d["user_rating"]."')";
             $db->query( $sql );
             $this->process_vote( $d );
+            $vmLogger->info($VM_LANG->_PHPSHOP_REVIEW_THANKYOU);
           } 
           else {
             $vmLogger->info( $VM_LANG->_PHPSHOP_REVIEW_ALREADYDONE );
           }
-          
-          $vmLogger->info( $VM_LANG->_PHPSHOP_REVIEW_THANKYOU );
       }
       return true;
   }
@@ -317,7 +366,7 @@ class ps_reviews {
 	*/
 	function delete_review( &$d ) {
 	
-		$record_id = $d["userid"];
+		$record_id = $d["review_id"];
 		
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {
@@ -336,9 +385,9 @@ class ps_reviews {
 	function delete_record( $record_id, &$d ) {
 	
       global $db, $my;
-      
+      $record_id = intval($record_id);
       $db->query("SELECT user_rating FROM #__{vm}_product_reviews "
-                                        ."WHERE product_id='".$d["product_id"]."' AND userid='$record_id'");
+                                        ."WHERE review_id=".$record_id);
       $db->next_record();
       $user_rating = $db->f("user_rating");
       
@@ -357,16 +406,23 @@ class ps_reviews {
       }
       $votes_arr=explode(",", $votes);
       $votes_count=array_sum($votes_arr);
-	  if( ( $allvotes )-1 < 1 )
+	  if( ( $allvotes )-1 < 1 ) {
 		$newrating=0;
-	  else 
+	  } else {
 		$newrating=$votes_count / ( ( $allvotes )-1 );
+	  }
       $newrating = round( $newrating );
-      $db->query("UPDATE #__{vm}_product_votes SET allvotes=allvotes-1, votes = '$votes', rating='$newrating'"
+      if( !empty( $votes )) {
+      	$db->query("UPDATE #__{vm}_product_votes SET allvotes=allvotes-1, votes = '$votes', rating='$newrating'"
                                         ." WHERE product_id='".$d["product_id"]."'");
-      
+      }
+      else {
+      	// If there are no votes and reviews left, we can delete the vote record
+      	$db->query("DELETE FROM #__{vm}_product_votes 
+      					WHERE product_id='".$d["product_id"]."'");
+      }
       /** Now delete the review ***/
-      $db->query("DELETE FROM #__{vm}_product_reviews WHERE userid='$record_id' AND product_id='".$d["product_id"]."'");
+      $db->query("DELETE FROM #__{vm}_product_reviews WHERE review_id=$record_id" );
       
       return true;
   }

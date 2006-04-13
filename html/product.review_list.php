@@ -24,11 +24,12 @@ $product_id = mosgetparam($_REQUEST, 'product_id', 0);
 
 $q = "";
 $count = "SELECT COUNT(*) AS num_rows ";
-$list = "SELECT comment, user_rating,userid,username,time ";
+$list = "SELECT review_id, comment, user_rating,userid,username,time,published ";
 $q .= "FROM #__{vm}_product_reviews,#__users ";
 $q .= "WHERE product_id = '$product_id' AND #__users.id=#__{vm}_product_reviews.userid ";
-if( !empty( $keyword ))
+if( !empty( $keyword )) {
 	$q .= "AND ( comment LIKE '%$keyword%' OR username LIKE '%$keyword%' ) ";
+}
 $q .= "ORDER BY userid "; 
 $list .= $q ." LIMIT $limitstart, $limit";
 $count .= $q;
@@ -57,6 +58,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					"Name/Date" => 'width="15%"',
 					$VM_LANG->_PHPSHOP_REVIEW_COMMENT => 'width="45%"',
 					$VM_LANG->_PHPSHOP_RATE_NOM => 'width="25%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="25%"',
 					_E_REMOVE => 'width="10%"'
 				);
 $listObj->writeTableHeader( $columns );
@@ -71,13 +73,28 @@ while ($db->next_record()) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("userid"), false, "userid" ) );
-
-	$listObj->addCell( $db->f("username")."</strong><br />(".date("Y-m-d", $db->f("time")).")" );
+	$listObj->addCell( mosHTML::idBox( $i, $db->f("review_id"), false, "review_id" ) );
+	
+	$text = $db->f("username")."</strong><br />(".date("Y-m-d", $db->f("time")).")";
+	if( $perm->check('admin')) {
+		$text = '<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.review_form&amp;review_id='.$db->f('review_id')).'">'.$text.'</a>';
+	}
+	$listObj->addCell( $text );
 	$listObj->addCell( substr($db->f("comment"), 0 , 500) );
 	$listObj->addCell( '<img src="'. IMAGEURL.'stars/'.$db->f("user_rating").'.gif" border="0" alt="stars" />' );
 	
-	$listObj->addCell( $ps_html->deleteButton( "userid", $db->f("userid"), "productReviewDelete", $keyword, $limitstart, "&product_id=$product_id" ) );
+	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.review_list&product_id=$product_id&review_id=".$db->f('review_id')."&func=changePublishState" );
+	if ($db->f("published")=='N') {
+		$tmpcell .= "&task=publish\">";
+	}
+	else {
+		$tmpcell .= "&task=unpublish\">";
+	}
+	$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("published"), "Publish", "Unpublish" );
+	$tmpcell .= "</a>";
+	$listObj->addCell( $tmpcell );
+		
+	$listObj->addCell( $ps_html->deleteButton( "review_id", $db->f("review_id"), "productReviewDelete", $keyword, $limitstart ) );
 
 	$i++;
 	

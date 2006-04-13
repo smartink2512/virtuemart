@@ -42,6 +42,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	
 	$page = mosgetparam($_REQUEST, 'page', "");
 	$func = mosgetparam($_REQUEST, 'func', "");
+	$ajax_request = mosgetparam($_REQUEST, 'ajax_request', "0" );
 	
 	if( $my->id > 0 ) {
 		// This is necessary to get the real GID
@@ -293,6 +294,16 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		if( isset( $my->_model )) {
 			$my = $my->_model;
 		}
+	}
+		
+	// If this is an asynchronous page load,
+	// we clear the output buffer and just send the log messages.
+	// the variable named 'ajax_request' has to be set to 1.
+	if( $func && $ajax_request) {
+		require_once( CLASSPATH . 'connectionTools.class.php' );
+		vmConnector::sendHeaderAndContent( 200 );
+		$vmLogger->printLog();
+		exit;
 	}
 	
 	// the Log object holds all error messages

@@ -97,11 +97,14 @@ $db->query( "INSERT INTO `#__{vm}_userfield_values` VALUES (1, 25, '_PHPSHOP_ACC
 $db->query( "INSERT INTO `#__{vm}_userfield_values` VALUES (2, 25, '_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING', 'Business Checking', 2, 1);" );
 $db->query( "INSERT INTO `#__{vm}_userfield_values` VALUES (3, 25, '_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_SAVINGS', 'Savings', 3, 1);" );
 
-
+## New functions, required for using the new features
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'userfieldSave', 'ps_userfield', 'savefield', 'add or edit a user field', 'admin');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');" );
+
+# http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=17143.0
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 7, 'productAsk', 'ps_ask', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');" );
 
 $db->query( "ALTER TABLE `#__{vm}_payment_method` ADD `payment_method_discount_is_percent` TINYINT( 1 ) NOT NULL AFTER `payment_method_discount` ,
 ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,
@@ -148,8 +151,14 @@ VALUES
     ('Canary Islands', 'XCA', 'XC');");
 
 # 10.04.2006
-$db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD PRIMARY KEY ( `product_id` , `userid` ) ");
+$db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;");
+$db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';");
+$db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD UNIQUE ( `product_id` , `userid` ); ");
+
 $db->query( "ALTER TABLE `#__{vm}_product_votes` ADD PRIMARY KEY ( `product_id` )");
-$db->query( "ALTER TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id` ");
+$db->query( "ALTER TABLE `#__{vm}_zone_shipping` DROP INDEX `zone_id` ");
+
+$db->query( "ALTER TABLE `#__{vm}_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;");
+
 
 ?>

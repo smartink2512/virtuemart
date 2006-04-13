@@ -33,6 +33,25 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12-04-2006 soeren
+
++ new configuration parameters for the review system (minium/maximum comment length...) 
+! DATABASE STRUCTURE CHANGED
+	^ JoomFish compatibility requires the field "attribute_id" for the table jos_vm_product_attribute, so here it is:
+		Thanks, Steven and spookstaz http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=16124.msg38407#msg38407
+	########
+	ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;	
+	# Ask a question!
+	INSERT INTO `jos_vm_function` VALUES ('', 7, 'productAsk', 'ps_ask', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');	
+	# Prevent auto-publishing of product reviews
+	ALTER TABLE `jos_vm_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+	ALTER TABLE `jos_vm_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';
+	#########
+	
++ "ask a question" - enquiry mod by macallf (http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=17143.0)
++ new Lightbox javascript added to have a cool modal window during an Ajax request! => http://blog.feedmarker.com/2006/02/12/how-to-make-better-modal-windows-with-lightbox/
++ added Yahoo Connection Manager javascript to provide XMLHttpRequest services (aka Ajax)
+
 10-04-2006 soeren
 ^ product list now opens a new window to display the product form. Forms are to be "ajaxified" soon.
 + added the famous "Apply" button to all Save/Cancel forms, now it shows: Save / Apply / Cancel

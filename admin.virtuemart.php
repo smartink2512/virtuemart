@@ -109,5 +109,4 @@ if( DEBUG == '1' && $no_menu != 1 ) {
 if( defined( 'vmToolTipCalled')) {
 	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
 }
-
 ?>

@@ -270,8 +270,8 @@ class vmAbstractObject {
 	 */
 	function handlePublishState( $d ) {
 		global $vmLogger;
-		
-		if( !empty($d['product_id'])) {
+		$has_vendor = true;
+		if( !empty($d['product_id']) && empty( $d['review_id'])) {
 				$table_name = "#__{vm}_product";
 				$publish_field_name = 'product_publish';
 				$field_name = 'product_id';
@@ -290,6 +290,12 @@ class vmAbstractObject {
 				$table_name = "#__{vm}_order_export";
 				$publish_field_name = 'export_enabled';
 				$field_name = 'order_export_id';
+		}
+		elseif( !empty( $d['review_id'])) {
+				$table_name = "#__{vm}_product_reviews";
+				$publish_field_name = 'published';
+				$field_name = 'review_id';
+				$has_vendor = false;
 		}		
 		elseif( !empty( $d['fieldid'])) {
 				$table_name = "#__{vm}_userfield";
@@ -301,7 +307,7 @@ class vmAbstractObject {
 			return false;
 		}
 		
-		return $this->changePublishState( $d[$field_name], $d['task'], $table_name, $publish_field_name, $field_name );
+		return $this->changePublishState( $d[$field_name], $d['task'], $table_name, $publish_field_name, $field_name, $has_vendor );
 		
 	}
 	/**
@@ -315,7 +321,7 @@ class vmAbstractObject {
 	 * @param string $field_name
 	 * @return boolean
 	 */
-	function changePublishState( $itemId, $task, $table_name, $publish_field_name, $field_name ) {
+	function changePublishState( $itemId, $task, $table_name, $publish_field_name, $field_name, $has_vendor ) {
 		global $vmLogger;
 		
 		$db = new ps_DB();
@@ -336,7 +342,9 @@ class vmAbstractObject {
 		
 		$q = "UPDATE `$table_name` SET `$publish_field_name` = '$value' ";
 		$q .= "WHERE FIND_IN_SET( `$field_name`, '$set' )";
-		$q .= " AND `vendor_id`=".$_SESSION['ps_vendor_id'];
+		if( $has_vendor ) {
+			$q .= " AND `vendor_id`=".$_SESSION['ps_vendor_id'];
+		}
 		$db->query( $q );
 		
 		$vmLogger->info($field_name.'(s) '.$set.' was/were '.$task.'ed.' );

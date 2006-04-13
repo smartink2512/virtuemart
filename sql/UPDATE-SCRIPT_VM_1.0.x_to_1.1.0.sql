@@ -140,6 +140,17 @@ VALUES
     ('Canary Islands', 'XCA', 'XC');
     
 # 10.04.2006
-ALTER TABLE `jos_vm_product_reviews` ADD PRIMARY KEY ( `product_id` , `userid` );
+ALTER TABLE `jos_vm_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+ALTER TABLE `jos_vm_product_reviews` ADD UNIQUE ( `product_id` , `userid` );
+
 ALTER TABLE `jos_vm_product_votes` ADD PRIMARY KEY ( `product_id` ) ;
 ALTER TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id` 
+
+# 13.04.2006 for JoomFish
+ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+# Ask a question!
+INSERT INTO `jos_vm_function` VALUES ('', 7, 'productAsk', 'ps_ask', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');
+INSERT INTO `jos_vm_function` VALUES ('', 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin');
+
+# Prevent auto-publishing of product reviews
+ALTER TABLE `jos_vm_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';
