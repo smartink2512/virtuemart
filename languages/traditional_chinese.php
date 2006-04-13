@@ -1543,6 +1543,44 @@ It has to be valid PHP Code!
 	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
 	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
 	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
+	var $_VM_REVIEWS_AUTOPUBLISH = 'Auto-Publish Reviews?';
+	var $_VM_REVIEWS_AUTOPUBLISH_TIP = 'If checked, reviews are automatically published after being posted. If not, the administrator must approve/publish them.';
+	var $_VM_RECOMMEND_FORM_MESSAGE = 'Your message';
+	var $_VM_RECOMMEND_MESSAGE = 'Hello,
+
+i\'ve found this great product on %s that might be of interest for you.
+
+You can find it here:
+%s
+
+Regards.';
+	var $_VM_REGISTER_BEFORE = 'Please register to use this facillity';
+	var $_VM_RECOMMEND_MESSAGE_PREFACE = 'The following recommendation from the "%s" website has been sent to you by %s (%s).
+
+_____________________';
+	var $_VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT = '%s - Confirmation of your enquiry';
+	var $_VM_ENQUIRY_VENDOR_EMAIL_SUBJECT = '%s - Product enquiry for Product Name: %s';
+	var $_VM_ENQUIRY_SHOPPER_EMAIL_MESSAGE = 'Confirmation of receipt of your enquiry
+
+Thank you for enquiry with {vendor_name} regarding:
+Product Name: {product_name}
+Product SKU: {product_sku}
+Product Link: {product_url}
+
+We will contact you soon regarding your enquiry.
+(Please do not reply to this email)';
+	var $_VM_ENQUIRY_VENDOR_EMAIL_MESSAGE = 'You have received a product enquiry from {shopper_name} regarding the following product: 
+Product Name: {product_name}
+Product SKU : {product_sku}
+
+Enquiry: {shopper_message}
+URL: {product_url}
+
+Mail mailto: {shopper_email}';
+	var $_VM_RECOMMEND_FORM_LBL = 'Recommend this product to a friend';
+	var $_VM_RECOMMEND_SUBJECT = 'Product recommendation at %s';
+	var $_VM_RECOMMEND_DONE = 'Recommendation sent successfully!';
+	var $_VM_RECOMMEND_FAILED = 'Recommendation could not be sent!';
         
 }
 class phpShopLanguage extends vmLanguage { }

@@ -104,7 +104,8 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'changeordering', 'vm
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');" );
 
 # http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=17143.0
-$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 7, 'productAsk', 'ps_ask', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none');" );
 
 $db->query( "ALTER TABLE `#__{vm}_payment_method` ADD `payment_method_discount_is_percent` TINYINT( 1 ) NOT NULL AFTER `payment_method_discount` ,
 ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,

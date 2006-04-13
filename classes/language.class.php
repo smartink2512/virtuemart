@@ -81,7 +81,7 @@ class vmAbstractLanguage {
 		}
 		// This converts the currency symbol from HTML entity to the utf-8 symbol
 		// example:  &euro; => €
-		$text = vmHtmlEntityDecode( $text, null, 'utf-8' );
+		$text = vmHtmlEntityDecode( $text, null, vmGetCharset() );
 		
 		return $text;
 	}

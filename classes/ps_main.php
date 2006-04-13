@@ -869,7 +869,7 @@ function vmCreateMail( $from='', $fromname='', $subject='', $body='' ) {
 * @param string/array Attachment file name(s)
 * @return boolean Mail send success
 */
-function vmMail($from, $fromname, $recipient, $subject, $body, $Altbody, $mode=false, $cc=NULL, $bcc=NULL, $images=null, $attachment=null ) {
+function vmMail($from, $fromname, $recipient, $subject, $body, $Altbody='', $mode=false, $cc=NULL, $bcc=NULL, $images=null, $attachment=null ) {
 	global $mosConfig_debug;
 	$mail = vmCreateMail( $from, $fromname, $subject, $body );
 	

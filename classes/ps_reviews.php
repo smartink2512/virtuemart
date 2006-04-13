@@ -112,8 +112,8 @@ class ps_reviews {
 		  $html = "<h4>".$VM_LANG->_PHPSHOP_REVIEWS.":</h4>";      
 		  $dbc = &new ps_DB;
           $showall = mosgetparam( $_REQUEST, 'showall', 0);
-          $q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews WHERE product_id='$product_id' ORDER BY `time` DESC ";
-          $count = "SELECT COUNT(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='$product_id'";
+          $q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND published='Y' ORDER BY `time` DESC ";
+          $count = "SELECT COUNT(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND published='Y'";
            
           if( $limit > 0 ) {
           	$q .= " LIMIT ".intval($limit);
@@ -348,8 +348,9 @@ class ps_reviews {
 		  }
           if ($commented==false) {
             $comment=$db->getEscaped( nl2br(htmlspecialchars(strip_tags($d["comment"]))) );
-            $sql="INSERT INTO #__{vm}_product_reviews (product_id, comment, userid, time, user_rating) VALUES 
-                      ('".$d["product_id"]."', '$comment', '".$my->id."', '".time()."', '".$d["user_rating"]."')";
+            $published = VM_REVIEWS_AUTOPUBLISH ? 'Y' : 'N';
+            $sql="INSERT INTO #__{vm}_product_reviews (product_id, comment, userid, time, user_rating, published) VALUES 
+                      ('".$d["product_id"]."', '$comment', '".$my->id."', '".time()."', '".$d["user_rating"]."', '$published')";
             $db->query( $sql );
             $this->process_vote( $d );
             $vmLogger->info($VM_LANG->_PHPSHOP_REVIEW_THANKYOU);

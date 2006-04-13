@@ -319,6 +319,18 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN ?>
 			</td>
 		</tr>
+		
+		<tr>
+			<td class="labelcell">
+				<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo $VM_LANG->_VM_REVIEWS_AUTOPUBLISH ?></label>
+				
+			</td>
+			<td>
+				<input type="checkbox" id="conf_VM_REVIEWS_AUTOPUBLISH" name="conf_VM_REVIEWS_AUTOPUBLISH" class="inputbox" <?php if (VM_REVIEWS_AUTOPUBLISH == '1') echo "checked='checked'"; ?> value="1" />
+			</td>
+			<td><?php echo $VM_LANG->_VM_REVIEWS_AUTOPUBLISH_TIP ?>
+			</td>
+		</tr>
 		<tr>
 			<td class="labelcell">
 				<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo $VM_LANG->_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH ?></label>

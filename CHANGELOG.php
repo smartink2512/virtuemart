@@ -35,6 +35,7 @@ VirtueMart 1.1.x
 *************************************
 12-04-2006 soeren
 
++ "recommend this product to a friend" mod by Benjamin (codename-matrix)
 + new configuration parameters for the review system (minium/maximum comment length...) 
 ! DATABASE STRUCTURE CHANGED
 	^ JoomFish compatibility requires the field "attribute_id" for the table jos_vm_product_attribute, so here it is:
@@ -42,7 +43,7 @@ VirtueMart 1.1.x
 	########
 	ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;	
 	# Ask a question!
-	INSERT INTO `jos_vm_function` VALUES ('', 7, 'productAsk', 'ps_ask', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');	
+	INSERT INTO `jos_vm_function` VALUES ('', 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');	
 	# Prevent auto-publishing of product reviews
 	ALTER TABLE `jos_vm_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
 	ALTER TABLE `jos_vm_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';

@@ -61,10 +61,10 @@ $name = "";
 $email = "";
 if ($set <> 0 ) {
 	if ($my->id) {
-		$db->query("SELECT name,email FROM #__users WHERE id='".$my->id."'");
-		$db->next_record();
-		$name = $db->f("name");
-		$email = $db->f("email");
+		$theUser = new mosUser( $database );
+		$theUser->load( $my->id );
+		$name = $theUser->name;
+		$email = $theUser->email;
 		$set = 1;
 	}
 	else {
@@ -109,7 +109,7 @@ if ( $set == 0 ) { // set not set so display confirmation
    <?php echo _THANK_MESSAGE ?>
   
   <br /><p>
-  <?php echo $VM_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $email .'</strong>'?><br />
+  <?php echo $VM_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $vendor_mail .'</strong>'?><br />
   </p>
   <?php 
   echo "<br /><br />".$return_seller;
@@ -117,7 +117,7 @@ if ( $set == 0 ) { // set not set so display confirmation
 elseif($set == 2 ) {
  ?>
    <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" height="48" width="48" align="center" alt="Success" border="0" />
-   <?php echo "Please register to use this facillity "?>
+   <?php echo $VM_LANG->_VM_REGISTER_BEFORE ?>
   
   <br /><br />
   

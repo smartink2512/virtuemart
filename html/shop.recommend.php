@@ -16,15 +16,28 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+global $ok;
 $product_id = mosgetparam( $_REQUEST, 'product_id', null);
 
-include_once(CLASSPATH.'ps_recommend.php');
-$ps_recommend = new ps_recommend;
+include_once(CLASSPATH.'ps_communication.php');
 
-echo '<h3>'.$VM_LANG->_PHPSHOP_RECOMMEND_TITLE.'</h3>';
+$mainframe->addCustomHeadTag( '<link rel="stylesheet" href="templates/'. $mainframe->getTemplate() .'/css/template_css.css" type="text/css" />' );
 
-$ps_recommend->show_form($product_id);
-
+if( empty( $_POST ) || !$ok ) {
+	$mainframe->setPageTitle( $VM_LANG->_VM_RECOMMEND_FORM_LBL );
+	echo '<h3>'.$VM_LANG->_VM_RECOMMEND_FORM_LBL.'</h3>';
+	
+	ps_communication::showRecommendForm($product_id);
+}
+else {
+	$mainframe->setPageTitle( $VM_LANG->_VM_RECOMMEND_FORM_LBL );
+	echo '<span class="contentheading">'. _EMAIL_SENT.' '. $_POST['recipient_mail'].'</span> <br />
+		<br />
+		<br />
+		<a href="javascript:window.close();">
+		<span class="small">'. _PROMPT_CLOSE .'</span>
+		</a>';
+	
+}
 
 ?>
