@@ -96,7 +96,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
             <td ><?php
                         include_class('shopper');
                         $sg_id = $ps_shopper_group->get_shoppergroup_by_id($db->f("user_id"));
-                        $ps_shopper_group->list_shopper_groups("shopper_group_id",$sg_id["shopper_group_id"]);?>
+                        echo ps_shopper_group::list_shopper_groups("shopper_group_id",$sg_id["shopper_group_id"]);?>
                         </td>
                 </tr>
 </table> 
@@ -165,6 +165,7 @@ $count = "SELECT count(*) as num_rows FROM #__{vm}_orders ";
 $q .= "WHERE  #__{vm}_orders.vendor_id='".$_SESSION['ps_vendor_id']."' AND #__{vm}_orders.user_id=".$user_id." ";
 $q .= "ORDER BY #__{vm}_orders.cdate DESC ";
 $count .= $q;
+$list .= $q;
 
 $db->query($count);
 $db->next_record();
@@ -194,33 +195,33 @@ $db->query($list);
 $i = 0;
 while ($db->next_record()) { 
     
-        $listObj->newRow();
-        
-        // The row number
-        $listObj->addCell( $pageNav->rowNumber( $i ) );
-        
-        $url = $_SERVER['PHP_SELF']."?page=order.order_print&limitstart=$limitstart&keyword=$keyword&order_id=". $db->f("order_id");
-        $tmp_cell = "<a href=\"" . $sess->url($url) . "\">".sprintf("%08d", $db->f("order_id"))."</a><br />";
-        $listObj->addCell( $tmp_cell );
-        
-        $details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1");
+    $listObj->newRow();
+    
+    // The row number
+    $listObj->addCell( $pageNav->rowNumber( $i ) );
+    
+    $url = $_SERVER['PHP_SELF']."?page=order.order_print&limitstart=$limitstart&keyword=$keyword&order_id=". $db->f("order_id");
+    $tmp_cell = "<a href=\"" . $sess->url($url) . "\">".sprintf("%08d", $db->f("order_id"))."</a><br />";
+    $listObj->addCell( $tmp_cell );
+    
+    $details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1");
     $details_url = stristr( $_SERVER['PHP_SELF'], "index2.php" ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
         
     $details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
     $details_link .= "<img src=\"$mosConfig_live_site/images/M_images/printButton.png\" align=\"center\" height=\"16\" width=\"16\" border=\"0\" /></a>"; 
     $listObj->addCell( $details_link );
 
-        $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("cdate")));
+    $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("cdate")));
     $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("mdate")));
 
-        $listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
-        
-        $listObj->addCell(  $ps_order_status->getOrderStatusName($db->f("order_status")));
-        
+    $listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
     
-        $listObj->addCell( $ps_html->deleteButton( "order_id", $db->f("order_id"), "orderDelete", $keyword, $limitstart ) );
+    $listObj->addCell(  $ps_order_status->getOrderStatusName($db->f("order_status")));
+    
 
-        $i++; 
+    $listObj->addCell( $ps_html->deleteButton( "order_id", $db->f("order_id"), "orderDelete", $keyword, $limitstart ) );
+
+    $i++; 
 }
 
 $listObj->writeTable();

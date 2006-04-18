@@ -71,9 +71,7 @@ class MENU_virtuemart {
 		if( $no_menu ) {
 			vmCommonHTML::loadLightbox();
 			vmCommonHTML::loadYahooConnection();
-			echo '<div id="statusBox" align="middle" style="display:none">Loading ...<br />
-			<img src="'.$mosConfig_live_site.'/components/com_virtuemart/js/lightbox/loading.gif" align="middle" alt="Loading image" /><br /><br />
-			</div>';
+			echo '<div id="statusBox" align="middle" style="display:none"></div>';
 		}
 		$script = '<script type="text/javascript">
         	function submitbutton(pressbutton) {
@@ -109,6 +107,7 @@ class MENU_virtuemart {
 				success:responseSuccess,
 				failure:responseFailure
 			}
+			document.getElementById('statusBox').innerHTML = 'Loading ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
 			new Lightbox.base('statusBox', { closeOnOverlayClick : true })
 			YAHOO.util.Connect.setForm('adminForm');
 			var cObj = YAHOO.util.Connect.asyncRequest('POST', '$mosConfig_live_site".$admin."/index2.php', callback);
@@ -130,31 +129,31 @@ class MENU_virtuemart {
 		if ($page == "product.product_form" && !empty($product_id)) {
 			if( empty($product_parent_id) ) { 
 				// add new attribute
-				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_attribute_form&product_id=". $product_id ."&limitstart=". $limitstart;
+				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_attribute_form&product_id=". $product_id ."&limitstart=". $limitstart."&no_menu=$no_menu";
 				$alt = "&nbsp;". $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_MNU;
 				vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 				vmMenuBar::spacer();
 			}
 			else {
                 // back to parent product
-				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_id=$product_parent_id&limitstart=".$limitstart;
+				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_id=$product_parent_id&limitstart=".$limitstart."&no_menu=$no_menu";
 				$alt = "&nbsp;". $VM_LANG->_PHPSHOP_PRODUCT_FORM_RETURN_LBL;
 				vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], $alt );
 				vmMenuBar::spacer();
 				// new child product
-				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_parent_id=$product_parent_id&limitstart=". $limitstart;
+				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_parent_id=$product_parent_id&limitstart=". $limitstart."&no_menu=$no_menu";
 				$alt = "&nbsp;". $VM_LANG->_PHPSHOP_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU;
 				vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 				vmMenuBar::spacer();
 			} 
 			// Go to Price list
-			$href = $_SERVER['PHP_SELF']."?page=product.product_price_list&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart&return_args=&option=com_virtuemart";
+			$href = $_SERVER['PHP_SELF']."?page=product.product_price_list&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart&return_args=&option=com_virtuemart&no_menu=$no_menu";
 			$alt = "&nbsp;". $VM_LANG->_PHPSHOP_PRICE_LIST_MNU;
 			vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 			vmMenuBar::spacer();
 	
 			// add product type
-			$href= $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_product_type_form&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart";
+			$href= $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_product_type_form&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart&no_menu=$no_menu";
 			$alt = "&nbsp;". $VM_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU;
 			vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 			vmMenuBar::spacer();
@@ -162,7 +161,7 @@ class MENU_virtuemart {
 			/*** Adding an item is only pssible, if the product has attributes ***/
 			if (ps_product::product_has_attributes( $product_id ) ) { 
 				// Add Item
-				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_parent_id=$product_id&limitstart=<?php echo $limitstart";
+				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_parent_id=$product_id&limitstart=$limitstart&no_menu=$no_menu";
 				$alt = "&nbsp;". $VM_LANG->_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL;
 				vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 				vmMenuBar::spacer();
@@ -171,12 +170,12 @@ class MENU_virtuemart {
 		}
 		elseif( $page == "admin.country_form" ) {
             if( !empty( $_REQUEST['country_id'] )) {
-				$href= $_SERVER['PHP_SELF'] ."?option=com_virtuemart&page=admin.country_state_form&country_id=". $_REQUEST['country_id'] ."&limitstart=". $limitstart;
+				$href= $_SERVER['PHP_SELF'] ."?option=com_virtuemart&page=admin.country_state_form&country_id=". $_REQUEST['country_id'] ."&limitstart=$limitstart&no_menu=$no_menu";
 				$alt = "&nbsp;".$VM_LANG->_PHPSHOP_ADD_STATE;
 				vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 				vmMenuBar::spacer();
 				
-				$href = $_SERVER['PHP_SELF'] ."?option=com_virtuemart&page=admin.country_state_list&country_id=". $_REQUEST['country_id'] ."&limitstart=". $limitstart;
+				$href = $_SERVER['PHP_SELF'] ."?option=com_virtuemart&page=admin.country_state_list&country_id=". $_REQUEST['country_id'] ."&limitstart=$limitstart&no_menu=$no_menu";
 				$alt = "&nbsp;".$VM_LANG->_PHPSHOP_LIST_STATES;
 				vmMenuBar::customHref( $href, $vmIcons['new_icon'], $vmIcons['new_icon2'], $alt );
 				vmMenuBar::spacer();
@@ -192,8 +191,12 @@ class MENU_virtuemart {
 			
 			vmMenuBar::apply( 'apply', _E_APPLY );
 		}
+		if( (strstr( $_SERVER['HTTP_REFERER'], $page ) || strstr( $_SERVER['HTTP_REFERER'], $_SERVER['PHP_SELF'] )) && $no_menu ) {
+			// offer a back button
+			vmMenuBar::spacer();
+			vmMenuBar::back();
+		}
         vmMenuBar::spacer();
-		
 		vmMenuBar::cancel();
 
 		vmMenuBar::spacer();

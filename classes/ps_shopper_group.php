@@ -249,9 +249,6 @@ class ps_shopper_group {
 		global $perm;
 		$db = new ps_DB;
 
-		echo "<select class=\"inputbox\" name=\"$name\">\n";
-
-
 		if( !$perm->check("admin")) {
 			$q  = "SELECT shopper_group_id,shopper_group_name,vendor_id,'' AS vendor_name FROM #__{vm}_shopper_group ";
 			$q .= "WHERE vendor_id = '$ps_vendor_id' ";
@@ -263,17 +260,9 @@ class ps_shopper_group {
 		$q .= "ORDER BY shopper_group_name";
 		$db->query($q);
 		while ($db->next_record()) {
-			if ($db->f("shopper_group_id") == $shopper_group_id) {
-				$selected= ' selected="selected"';
-			}
-			else {
-				$selected = '';
-			}
-			echo "<option value=\"" . $db->f("shopper_group_id")  . "\"$selected>";
-			echo $db->f("shopper_group_name") . '; '.$db->f('vendor_name').' (Vendor ID: '.$db->f('vendor_id').")</option>\n";
-			
+			$shopper_groups[$db->f("shopper_group_id")] = $db->f("shopper_group_name") . '; '.$db->f('vendor_name').' (Vendor ID: '.$db->f('vendor_id').")";			
 		}
-		echo "</select>\n";
+		return ps_html::selectList( $name, $shopper_group_id, $shopper_groups );
 	}
 
 	/**************************************************************************

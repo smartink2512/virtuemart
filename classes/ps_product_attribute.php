@@ -284,14 +284,15 @@ class ps_product_attribute {
 	 * @return string HTML code containing Drop Down Lists with Labels
 	 */
 	function list_advanced_attribute($product_id) {
-		global $CURRENCY_DISPLAY;
+		global $CURRENCY_DISPLAY, $ps_product;
 		$db = new ps_DB;
 		$auth = $_SESSION['auth'];
 		
 		$q = "SELECT product_id, attribute FROM #__{vm}_product WHERE product_id='$product_id'";
 		$db->query($q);
 		$db->next_record();
-
+		$productPrice = $ps_product->get_price($product_id);
+		
 		$advanced_attribute_list=$db->f("attribute");
 		if ($advanced_attribute_list) {
 			$has_advanced_attributes=1;
@@ -318,7 +319,7 @@ class ps_product_attribute {
 						}
 						// Apply shopper group discount
 						$price *= 1 - ($auth["shopper_group_discount"]/100);
-						
+						$price = convertECB( $price, $productPrice['product_original_currency'] );
 						if ($price=="0") {
 							$attribut_hint = "test";
 						}

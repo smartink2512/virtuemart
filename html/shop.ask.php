@@ -65,11 +65,8 @@ if ($set <> 0 ) {
 		$theUser->load( $my->id );
 		$name = $theUser->name;
 		$email = $theUser->email;
-		$set = 1;
 	}
-	else {
-		$set=2;
-	}
+	$set = 1;
 }
 // if set then display email form
 
@@ -113,19 +110,6 @@ if ( $set == 0 ) { // set not set so display confirmation
   </p>
   <?php 
   echo "<br /><br />".$return_seller;
-}
-elseif($set == 2 ) {
- ?>
-   <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" height="48" width="48" align="center" alt="Success" border="0" />
-   <?php echo $VM_LANG->_VM_REGISTER_BEFORE ?>
-  
-  <br /><br />
-  
-  <?php 
-
-
-  echo "<br /><br />".$return_seller;
-
 }
 else {
 	echo '<br />';

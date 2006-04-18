@@ -115,7 +115,8 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
     </tr>
     <tr class="row0"> 
       <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_SHOPPER_GROUP ?>:</td>
-      <td width="69%" ><?php $ps_shopper_group->list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id")) ?> 
+      <td width="69%" ><?php 
+      		echo ps_shopper_group::list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id")) ?> 
       </td>
     </tr>
     <tr class="row1"> 

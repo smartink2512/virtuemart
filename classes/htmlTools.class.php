@@ -191,6 +191,7 @@ class listFactory {
 			$keyword = "";
 		}
 		$category_id = mosGetParam( $_REQUEST, 'category_id', null);
+		$no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
 		$search_date = mosGetParam( $_REQUEST, 'search_date', null);
 		$show = mosGetParam( $_REQUEST, "show", "" );
 		
@@ -199,6 +200,7 @@ class listFactory {
 					<input type=\"hidden\" name=\"page\" value=\"". $modulename . "." . $pagename . "\" />
 					<input type=\"hidden\" name=\"task\" value=\"\" />\n
 					<input type=\"hidden\" name=\"func\" value=\"\" />\n
+					<input type=\"hidden\" name=\"no_menu\" value=\"$no_menu\" />\n
 					<input type=\"hidden\" name=\"boxchecked\" />\n";
 		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  )
             $header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
@@ -309,9 +311,11 @@ class formFactory {
         <input type="hidden" name="option" value="'.$option.'" />';
 		if( $no_menu ) {
 			$html .= '<input type="hidden" name="ajax_request" value="1" />';
+			$html .= '<input type="hidden" name="no_menu" value="1" />';
 		}
-        if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  )
-          $html .= '<input type="hidden" name="pshop_admin" value="admin" />';
+        if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
+        	$html .= '<input type="hidden" name="pshop_admin" value="admin" />';
+        }
         $html .= '
 		</form>
 		';

@@ -34,29 +34,31 @@ class ps_product_price {
 	** returns:
 	***************************************************************************/
 	function validate(&$d) {
+		global $vmLogger;
 		$valid = true;
-		$d["error"] = "";
+		
 		if (!isset($d["product_price"])) {
-			$d["error"] .= "ERROR: A price must be entered.";
+			$vmLogger->err( "A price must be entered." );
 			$valid = false;
 		}
 		if (empty($d["product_id"])) {
-			$d["error"] .= "ERROR: A product ID is missing.";
+			$vmLogger->err(  "A product ID is missing." );
 			$valid = false;
 		}
 		// convert all "," in prices to decimal points.
-		if (stristr($d["product_price"],","))
-		$d['product_price'] = str_replace(',', '.', $d["product_price"]);
+		if (stristr($d["product_price"],",")) {
+			$d['product_price'] = str_replace(',', '.', $d["product_price"]);
+		}
 
 		if (!$d["product_currency"]) {
-			$d["error"] .= "ERROR: A currency must be entered.";
+			$vmLogger->err( "A currency must be entered." );
 			$valid = false;
 		}
 		$d["price_quantity_start"] = intval($d["price_quantity_start"]);
 		$d["price_quantity_end"] = intval($d["price_quantity_end"]);
 
 		if ($d["price_quantity_end"] < $d["price_quantity_start"]) {
-			$d["error"] .= "ERROR: The entered Quantity End is less than the Quantity Start.";
+			$vmLogger->err(  "The entered Quantity End is less than the Quantity Start." );
 			$valid = false;
 		}
 
@@ -73,7 +75,7 @@ class ps_product_price {
 		$db->query( $q ); $db->next_record();
 
 		if ($db->f("num_rows") > 0) {
-			$d["error"] .= "ERROR: This product already has a price for the selected Shopper Group and the specified Quantity Range.";
+			$vmLogger->err(  "This product already has a price for the selected Shopper Group and the specified Quantity Range." );
 			$valid = false;
 		}
 		return $valid;
@@ -87,6 +89,7 @@ class ps_product_price {
 	** returns:
 	***************************************************************************/
 	function add(&$d) {
+		global $vmLogger;
 		if (!$this->validate($d)) {
 			return false;
 		}
@@ -106,7 +109,7 @@ class ps_product_price {
 
 		$db->query($q);
 		$_REQUEST['product_price_id'] = $db->last_insert_id();
-		
+		$vmLogger->info( 'The new product price has been added.');
 		return true;
 	}
 
@@ -118,6 +121,7 @@ class ps_product_price {
 	** returns:
 	***************************************************************************/
 	function update(&$d) {
+		global $vmLogger;
 		if (!$this->validate($d)) {
 			return false;
 		}
@@ -141,7 +145,7 @@ class ps_product_price {
 		$q .= "WHERE product_price_id='" . $d["product_price_id"] . "' ";
 
 		$db->query($q);
-
+		$vmLogger->info( 'The product price has been updated.' );
 		return true;
 	}
 

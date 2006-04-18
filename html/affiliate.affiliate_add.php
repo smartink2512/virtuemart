@@ -75,7 +75,7 @@ if (isset($user_id)) {
           <tr> 
             <td width="24%" nowrap align="right" > <?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_GROUP ?>:</td>
             <td width="76%" ><?php
-                $ps_shopper_group->list_shopper_groups("shopper_group_id",$db->sf("shopper_group_id")); ?> 
+                echo ps_shopper_group::list_shopper_groups("shopper_group_id",$db->sf("shopper_group_id")); ?> 
             </td>
           </tr>
           <tr> 

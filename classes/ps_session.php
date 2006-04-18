@@ -39,7 +39,13 @@ class ps_session {
      */
 	function initSession() {
 		global $vmLogger, $mainframe;
-		if( empty($_SESSION)) {
+		
+		// Some servers start the session before we can, so close those and start again		
+		if( !defined('_PSHOP_ADMIN') && !empty($_SESSION)) {
+			session_write_close();
+			unset( $_SESSION );
+		}
+		if( empty( $_SESSION )) {
 			// Session not yet started!			
 			session_name( $this->_session_name );
 			
@@ -47,7 +53,7 @@ class ps_session {
 			    ob_start();
 			}
 			@session_start();
-			
+		
 			if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
 				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
 			}
@@ -55,9 +61,6 @@ class ps_session {
 				$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
 			}
 		}
-		elseif( !defined('_PSHOP_ADMIN')) {
-			$vmLogger->debug( 'A Session had already been started...you seem to be using SMF, phpBB or another Sesson based Software.' );
-		}	
 	}
 		
 	/**

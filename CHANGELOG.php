@@ -33,6 +33,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18-04-2006 soeren
+
++ Currency Converter implemented. From now on the store converts currencies when necessary.
+	If the product price currency is "USD" and the store currency is "EUR", all prices are
+	converted using an XML file with the latest rates from the European Currency Bank (ECB, function convertECB).
+	The XML file is cached and refreshed regularly. See /classes/currency_convert.php.
+	You can change the displayed currency in the frontend by adding the parameter "product_currency" to the URL:
+	
+	index.php?option=com_virtuemart&page=shop.browse&category_id=3&product_currency=EUR
+	
+	A module to allow changing the displayed currency by selecting one from a list will follow.
+	
+# Task #705 - Product Type Pagelinks are not working due to wrong $num_rows (product.product_type_list.php)
+
 12-04-2006 soeren
 
 + "recommend this product to a friend" mod by Benjamin (codename-matrix)

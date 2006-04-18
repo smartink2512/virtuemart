@@ -22,6 +22,10 @@ class ps_html {
 	var $classname = "ps_html";
 
 
+	function dropdown_display($name, $value, $arr, $size=1, $multiple="", $extra="") {
+		echo ps_html::selectList($name, $value, $arr, $size, $multiple, $extra );
+	}
+
 	/**
 	 * Prints an HTML dropdown box named $name using $arr to
 	 * load the drop down.  If $value is in $arr, then $value
@@ -36,11 +40,10 @@ class ps_html {
 	 * @param string $multiple use "multiple=\"multiple\" to have a multiple choice select list
 	 * @param string $extra More attributes when needed
 	 * @return string HTML drop-down list
-	 */
-	function dropdown_display($name, $value, $arr, $size=1, $multiple="", $extra="") {
-
+	 */	
+	function selectList($name, $value, $arr, $size=1, $multiple="", $extra="") {
 		if( !empty( $arr ) ) {
-			echo "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
+			$html = "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
 
 			while (list($key, $val) = each($arr)) {
 				$selected = "";
@@ -54,13 +57,13 @@ class ps_html {
 						$selected = "selected=\"selected\"";
 					}
 				}
-				echo "<option value=\"$key\" $selected>$val";
-				echo "</option>\n";
+				$html .= "<option value=\"$key\" $selected>$val";
+				$html .= "</option>\n";
 			}
 
-			echo "</select>\n";
+			$html .= "</select>\n";
 		}
-		return True;
+		return $html;
 	}
 
 
@@ -140,6 +143,10 @@ class ps_html {
 	}
 
 
+	function list_country($list_name, $value="", $extra="") {
+		echo ps_html::getCountryList($list_name, $value, $extra);
+	}
+
 	/**
 	 * Creates a drop-down list for all countries
 	 *
@@ -147,25 +154,21 @@ class ps_html {
 	 * @param string $value The value of the pre-selected option
 	 * @param string $extra More attributes for the select element when needed
 	 * @return string The HTML code for the select list
-	 */
-	function list_country($list_name, $value="", $extra="") {
+	 */	
+	function getCountryList($list_name, $value="", $extra="") {
 		global $VM_LANG;
 
 		$db = new ps_DB;
 
-		$q = "SELECT * from #__{vm}_country ORDER BY country_name ASC";
+		$q = "SELECT country_id, country_name, country_3_code from #__{vm}_country ORDER BY country_name ASC";
 		$db->query($q);
-		echo "<select class=\"inputbox\" name=\"$list_name\" $extra>\n";
-		echo "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
+		$countries[''] = $VM_LANG->_PHPSHOP_SELECT;
+		
 		while ($db->next_record()) {
-			echo "<option value=\"" . $db->f("country_3_code")."\"";
-			if ($value == $db->f("country_3_code")) {
-				echo " selected=\"selected\"";
-			}
-			echo ">" . $db->f("country_name") . "</option>\n";
+			$countries[$db->f("country_3_code")] = $db->f("country_name");
 		}
-		echo "</select>\n";
-		return True;
+		
+		return ps_html::selectList( $list_name, $value, $countries );
 	}
 	
 	/**
@@ -288,33 +291,9 @@ class ps_html {
 		return 1;
 	}
 
-
-	/**
-	 * Creates a drop-down list for currencies. The currency code is used as option value
-	 *
-	 * @param string $list_name The name of the select element
-	 * @param string $value The value of the pre-selected option
-	 * @return HTML code with the drop-down list
-	 */
 	function list_currency($list_name, $value="") {
-		global $VM_LANG;
-		$db = new ps_DB;
-
-		$q = "SELECT * from #__{vm}_currency ORDER BY currency_name ASC";
-		$db->query($q);
-		echo "<select class=\"inputbox\" name=\"$list_name\">\n";
-		echo "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
-		while ($db->next_record()) {
-			echo "<option value=" . $db->f("currency_code");
-			if ($value == $db->f("currency_code")) {
-				echo " selected=\"selected\"";
-			}
-			echo ">" . $db->f("currency_name") . "</option>\n";
-		}
-		echo "</select>\n";
-		return True;
+		echo ps_html::getCurrencyList($list_name, $value, 'currency_code');
 	}
-
 	/**
 	 * Creates a drop-down list for currencies. The currency ID is used as option value
 	 *
@@ -323,23 +302,32 @@ class ps_html {
 	 * @return HTML code with the drop-down list
 	 */
 	function list_currency_id($list_name, $value="") {
+		echo ps_html::getCurrencyList($list_name, $value, 'currency_id');
+	}
+	
+	/**
+	 * Creates a drop-down list for currencies.
+	 *
+	 * @param string $list_name The name of the select element
+	 * @param string $value The value of the pre-selected option
+	 * @param string $key The name of the field that will be the array index [curreny_code|currency_id]
+	 * @return HTML code with the drop-down list
+	 */	
+	function getCurrencyList($list_name, $value="", $key='currency_code') {
 		global $VM_LANG;
 		$db = new ps_DB;
 
-		$q = "SELECT * from #__{vm}_currency ORDER BY currency_name ASC";
+		$q = "SELECT `currency_id`, `currency_code`, `currency_name` FROM `#__{vm}_currency` ORDER BY `currency_name` ASC";
 		$db->query($q);
-		echo "<select class=\"inputbox\" name=\"$list_name\">\n";
-		echo "<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
+		
+		$currencies[''] = $VM_LANG->_PHPSHOP_SELECT;
 		while ($db->next_record()) {
-			echo "<option value=" . $db->f("currency_id");
-			if ($value == $db->f("currency_id")) {
-				echo " selected=\"selected\"";
-			}
-			echo ">" . $db->f("currency_name") . "</option>\n";
+			$currencies[$db->f($key)] = $db->f("currency_name");
 		}
-		echo "</select>\n";
-		return True;
+		
+		return ps_html::selectList( $list_name, $value, $currencies );
 	}
+
 
 	/**
 	 * This is the equivalent to mosCommonHTML::idBox

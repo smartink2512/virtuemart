@@ -147,6 +147,10 @@ if( !empty( $product_id )) {
 	</a>
 	<?php
 }
+elseif(!empty($product_parent_id)) {
+	$parent_product_name = $ps_product->get_field($product_parent_id, 'product_name');
+	$title .= ' :: <a href="' .$sess->url( $_SERVER['PHP_SELF'].'?page=product.product_form&product_id='.$product_parent_id).'">'.$parent_product_name.'</a>';
+}
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $title );
 //Then Start the form
@@ -239,8 +243,9 @@ else {
                 <input type="hidden" name="product_price_id" value="<?php echo @$price["product_price_id"] ?>" />
             </td>
             <td><?php
-              if(empty($price["product_currency"]))
-                $price["product_currency"] = $vendor_currency;
+              if(empty($price["product_currency"])) {
+              	$price["product_currency"] = $vendor_currency;
+              }
               $ps_html->list_currency("product_currency",$price["product_currency"]) ?>
             </td>
             <td>&nbsp;<?php

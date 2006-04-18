@@ -89,6 +89,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	require_once(CLASSPATH."ps_perm.php");
 	require_once(CLASSPATH."ps_shopper_group.php");
 	require_once(CLASSPATH."vmAbstractObject.class.php");
+	require_once(CLASSPATH.'currency_convert.php');
 	require_once(CLASSPATH."htmlTools.class.php");
 	require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
 	require_once(CLASSPATH."Log/Log.php");
@@ -145,11 +146,20 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 
-	// the global file for PHPShop
+	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 
-	$currency_display = vendor_currency_display_style( $vendor_currency_display_style );
+	if( isset( $_REQUEST['product_currency']) ) {
+		$GLOBALS['product_currency'] = $_SESSION['product_currency'] = mosGetParam($_REQUEST, 'product_currency' );
+	}
+	else {
+		$GLOBALS['product_currency'] = mosGetParam($_SESSION, 'product_currency', $vendor_currency);
+	}
 	
+	$currency_display = vendor_currency_display_style( $vendor_currency_display_style );
+	if( $GLOBALS['product_currency'] != $vendor_currency ) {
+		$currency_display["symbol"] = $GLOBALS['product_currency'];
+	}
 	/** load Currency Display Class **/
 	require_once( CLASSPATH.'class_currency_display.php' );
 	/** @global CurrencyDisplay $CURRENCY_DISPLAY */

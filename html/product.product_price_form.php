@@ -100,7 +100,7 @@ $formObj->startForm();
       </td>
       <td width="77%" height="10" >
           <?php 
-            ps_shopper_group::list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id"),$db->sf("product_id"));
+            echo ps_shopper_group::list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id"),$db->sf("product_id"));
           ?>
       </td>
     </tr>

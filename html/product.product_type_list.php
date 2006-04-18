@@ -24,13 +24,15 @@ $q .= $category_id . "' AND ";
 $q .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
 $q .= "AND #__{vm}_category.vendor_id = $ps_vendor_id ";*/
 $q .= "ORDER BY product_type_list_order asc ";
-$q .= "LIMIT $limitstart, $limit";
-$db->setQuery($q);   
-$db->query();
+
+$db->query( $q );
 $num_rows = $db->num_rows();
 
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
+
+$q .= "LIMIT {$pageNav->limitstart}, {$pageNav->limit}";
+$db->query( $q );
 
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );
@@ -53,7 +55,6 @@ $columns = Array(  "#" => "width=\"20\"",
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
-
 
 $i = 0;
 while ($db->next_record()) {

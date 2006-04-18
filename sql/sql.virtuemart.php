@@ -788,8 +788,9 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES (1, 1, 'userAdd', 'ps_user', 
 (169, 1, 'userfieldSave', 'ps_userfield', 'savefield', 'add or edit a user field', 'admin'),
 (170, 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin'),
 (171, 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin'),
-(172, 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');" );
-
+(172, 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin'),
+(173, 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'none'),
+(174, 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none');" );
 ## --------------------------------------------------------
 
 ## 

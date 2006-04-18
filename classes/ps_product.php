@@ -1149,10 +1149,11 @@ class ps_product extends vmAbstractObject {
 
                         WHERE `#__{vm}_product`.`product_id`='$productParentId'
                         ";
-
+				$productParentId = $db->f("product_parent_id");
 				$db->query($q);
 				$db->next_record();
-			} while( $db->f("product_parent_id") && !$db->f("category_flypage"));
+			} 
+			while( $db->f("product_parent_id") && !$db->f("category_flypage"));
 
 			if ($db->f("category_flypage")) {
 				$_SESSION['product_sess'][$product_id]['flypage'] = $db->f("category_flypage");
@@ -1523,7 +1524,12 @@ class ps_product extends vmAbstractObject {
 	 * @param boolean $check_multiple_prices Check if the product has more than one price for that shopper group?
 	 * @return array The product price information
 	 */
-	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='') {
+	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='', $currency_code='') {
+		global $vendor_currency;
+		if( $currency_code == '' ) {
+			$currency_code = $GLOBALS['product_currency'];
+		}
+		
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 
@@ -1598,13 +1604,14 @@ class ps_product extends vmAbstractObject {
 				$q .= "shopper_group_id='$shopper_group_id' $volume_quantity_sql";
 				$db->setQuery($q); $db->query();
 				if ($db->next_record()) {
-					$price_info["product_price"]= $db->f("product_price");
+					$price_info["product_price"]= convertECB( $db->f("product_price"), $db->f("product_currency"), $currency_code );
+					$price_info["product_currency"] = $currency_code;
+					$price_info["product_original_currency"] = $db->f("product_currency");
 					if( $check_multiple_prices ) {
 						$price_info["product_base_price"]= $db->f("product_price");
 						$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
 					}
-					$price_info["product_price_id"]=$db->f("product_price_id");
-					$price_info["product_currency"]=$db->f("product_currency");
+					$price_info["product_price_id"] = $db->f("product_price_id");					
 					$price_info["item"]=true;
 					$GLOBALS['product_info'][$product_id]['price'] = $price_info;
 					return $GLOBALS['product_info'][$product_id]['price'];
@@ -1616,12 +1623,14 @@ class ps_product extends vmAbstractObject {
 			$db->setQuery($q); $db->query();
 			if ($db->next_record()) {
 				$price_info["product_price"]=$db->f("product_price") * ((100 - $shopper_group_discount)/100);
+				$price_info["product_price"]= convertECB( $price_info["product_price"], $db->f("product_currency"), $currency_code );
+				$price_info["product_currency"] = $currency_code;
+				$price_info["product_original_currency"] = $db->f("product_currency");
 				if( $check_multiple_prices ) {
 					$price_info["product_base_price"]= $price_info["product_price"];
 					$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
 				}
 				$price_info["product_price_id"]=$db->f("product_price_id");
-				$price_info["product_currency"] = $db->f("product_currency");
 				$price_info["item"] = true;
 				$GLOBALS['product_info'][$product_id]['price'] = $price_info;
 				return $GLOBALS['product_info'][$product_id]['price'];
@@ -1633,13 +1642,14 @@ class ps_product extends vmAbstractObject {
 				$q .= "shopper_group_id='$shopper_group_id' $volume_quantity_sql";
 				$db->setQuery($q); $db->query();
 				if ($db->next_record()) {
-					$price_info["product_price"]=$db->f("product_price");
+					$price_info["product_price"]= convertECB( $db->f("product_price"), $db->f("product_currency"), $currency_code );
+					$price_info["product_currency"] = $currency_code;
+					$price_info["product_original_currency"] = $db->f("product_currency");
 					if( $check_multiple_prices ) {
 						$price_info["product_base_price"]= $db->f("product_price");
 						$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
 					}
 					$price_info["product_price_id"]=$db->f("product_price_id");
-					$price_info["product_currency"] = $db->f("product_currency");
 					$GLOBALS['product_info'][$product_id]['price'] = $price_info;
 					return $GLOBALS['product_info'][$product_id]['price'];
 				}
@@ -1649,12 +1659,14 @@ class ps_product extends vmAbstractObject {
 			$db->setQuery($q); $db->query();
 			if ($db->next_record()) {
 				$price_info["product_price"]=$db->f("product_price") * ((100 - $shopper_group_discount)/100);
+				$price_info["product_price"]= convertECB( $price_info["product_price"], $db->f("product_currency"), $currency_code );
+				$price_info["product_currency"] = $currency_code;
+				$price_info["product_original_currency"] = $db->f("product_currency");
 				if( $check_multiple_prices ) {
 					$price_info["product_base_price"]= $price_info["product_price"];
 					$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
 				}
 				$price_info["product_price_id"]=$db->f("product_price_id");
-				$price_info["product_currency"] = $db->f("product_currency");
 				$GLOBALS['product_info'][$product_id]['price'] = $price_info;
 				return $GLOBALS['product_info'][$product_id]['price'];
 			}
@@ -1761,6 +1773,7 @@ class ps_product extends vmAbstractObject {
 
 						// if we have a number, allow the adjustment
 						if (true == is_numeric($my_mod) ) {
+							$my_mod = convertECB( $my_mod, $price['product_original_currency'], $GLOBALS['product_currency'] );
 							// Now add or sub the modifier on
 							if ($oper=="+") {
 								$adjustment += $my_mod;
@@ -1814,7 +1827,6 @@ class ps_product extends vmAbstractObject {
 			if( $auth["show_price_including_tax"] == 1 ) {
 				switch( $discount_info["is_percent"] ) {
 					case 0: $price["product_price"] = (($price["product_price"]*($my_taxrate+1))-$discount_info["amount"])/($my_taxrate+1); break;
-					//case 1: $price["product_price"] = ($price["product_price"]*($my_taxrate+1) - $discount_info["amount"]/100*$price["product_price"])/($my_taxrate+1); break;
 					case 1: $price["product_price"] = ($price["product_price"] - $discount_info["amount"]/100*$price["product_price"]); break;
 				}
 			}
@@ -1918,7 +1930,7 @@ class ps_product extends vmAbstractObject {
 					}
 
 					$value_notax = substr($my_mod,1);
-
+					$value_notax = convertECB( $value_notax, $price['product_original_currency'], $GLOBALS['product_currency'] );
 					if( abs($value_notax) >0 ) {
 						$value_taxed = $value_notax * ($my_taxrate+1);
 
@@ -2006,7 +2018,9 @@ class ps_product extends vmAbstractObject {
 		if( $auth['show_prices'] ) {
 			// Get the DISCOUNT AMOUNT
 			$discount_info = $this->get_discount( $product_id );
-
+			if( !$discount_info["is_percent"] && $discount_info["amount"] != 0 ) {
+				$discount_info["amount"] = convertECB($discount_info["amount"]);
+			}
 			// Get the Price according to the quantity in the Cart
 			$price_info = $this->get_price( $product_id );
 			// Get the Base Price of the Product
@@ -2060,17 +2074,19 @@ class ps_product extends vmAbstractObject {
 				if(!empty($discount_info["amount"])) {
 					$html .= "<br />";
 					$html .= $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_SAVE.": ";
-					if($discount_info["is_percent"]==1)
-					$html .= $discount_info["amount"]."%";
-					else
-					$html .= $CURRENCY_DISPLAY->getFullValue($discount_info["amount"]);
+					if($discount_info["is_percent"]==1) {
+						$html .= $discount_info["amount"]."%";
+					}
+					else {
+						$html .= $CURRENCY_DISPLAY->getFullValue($discount_info["amount"]);
+					}
 				}
 
 				// Check if we need to display a Table with all Quantity <=> Price Relationships
 				if( $base_price_info["product_has_multiple_prices"] && !$hide_tax ) {
 					$db = new ps_DB;
 					// Quantity Discount Table
-					$q = "SELECT product_price, price_quantity_start, price_quantity_end FROM #__{vm}_product_price
+					$q = "SELECT product_price, product_currency, price_quantity_start, price_quantity_end FROM #__{vm}_product_price
 				  WHERE product_id='$product_id' AND shopper_group_id='".$auth["shopper_group_id"]."' ORDER BY price_quantity_start";
 					$db->query( $q );
 
@@ -2083,13 +2099,15 @@ class ps_product extends vmAbstractObject {
 					  <tbody>";
 					$i = 1;
 					while( $db->next_record() ) {
-
+						$price = convertECB( $db->f("product_price"), $db->f("product_currency") );
 						$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>";
 						$prices_table .= "<td>";
-						if (!empty($my_taxrate))
-						$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$db->f("product_price") );
-						else
-						$prices_table .= $CURRENCY_DISPLAY->getFullValue( $db->f("product_price") );
+						if (!empty($my_taxrate)) {
+							$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$price );
+						}
+						else {
+							$prices_table .= $CURRENCY_DISPLAY->getFullValue( $price );
+						}
 						$prices_table .= "</td></tr>";
 						$i == 1 ? $i++ : $i--;
 					}

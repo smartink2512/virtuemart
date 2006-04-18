@@ -272,8 +272,10 @@ class ps_authorize {
 		$auth = $_SESSION['auth'];
 		$ps_checkout = new ps_checkout;
 
-		/*** Get the Configuration File for authorize.net ***/
+		// Get the Configuration File for authorize.net
 		require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
+		// connector class
+		require_once(CLASSPATH ."connectionTools.class.php");
 
 		// Get the Transaction Key securely from the database
 		$database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
@@ -302,9 +304,6 @@ class ps_authorize {
 			$dbst = $dbbt;
 		}
 
-		$host = "secure.authorize.net";
-		$port = 443;
-		$path = "/gateway/transact.dll";
 		// Option to send email to merchant from gateway
 		if (AN_EMAIL_MERCHANT == 'NO') {
 				$vendor_mail = "";
@@ -390,80 +389,12 @@ class ps_authorize {
 		}
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
-
-		if( function_exists( "curl_init" )) {
-
-			$vmLogger->debug( 'Using the cURL library for communicating with '.$host );
-
-			$CR = curl_init();
-			curl_setopt($CR, CURLOPT_URL, "https://".$host.$path);
-			curl_setopt($CR, CURLOPT_POST, 1);
-			curl_setopt($CR, CURLOPT_FAILONERROR, true);
-			curl_setopt($CR, CURLOPT_POSTFIELDS, $poststring);
-			curl_setopt($CR, CURLOPT_RETURNTRANSFER, 1);
-
-			// No PEER certificate validation...as we don't have
-			// a certificate file for it to authenticate the host www.ups.com against!
-			curl_setopt($CR, CURLOPT_SSL_VERIFYPEER, 0);
-			//curl_setopt($CR, CURLOPT_SSLCERT , "/usr/locale/xxxx/clientcertificate.pem");
-
-			$result = curl_exec( $CR );
-
-			$error = curl_error( $CR );
-			if( !empty( $error )) {
-				$vmLogger->err( $error );
-				$html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
-				return false;
-			}
-			else {
-				//echo $result; exit();
-			}
-			curl_close( $CR );
-		}
-		else {
-			$vmLogger->debug( 'Starting communication with '.$host.' without cURL library.');
-
-			$fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
-			if(!$fp){
-				//error tell us
-				$vmLogger->err( "Possible server error! - $errstr ($errno)\n" );
-			}
-			else {
-				$vmLogger->debug( 'Connection opened to '.$host.', now posting the variables.');
-
-				//send the server request
-				fputs($fp, "POST $path HTTP/1.1\r\n");
-				fputs($fp, "Host: $host\r\n");
-				fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-				fputs($fp, "Content-length: ".strlen($poststring)."\r\n");
-				fputs($fp, "Connection: close\r\n\r\n");
-				fputs($fp, $poststring . "\r\n\r\n");
-
-				//Get the response header from the server
-				$str = '';
-				while(!feof($fp) && !stristr($str, 'content-length')) {
-					$str = fgets($fp, 4096);
-				}
-				// If didnt get content-lenght, something is wrong, return false.
-				if (!stristr($str, 'content-length')) {
-					$vmLogger->err('An error occured while communicating with the authorize.net server. It didn\'t reply (correctly). Please try again later, thank you.' );
-					return false;
-				}
-				$data = "";
-				while (!feof($fp)) {
-					$data .= fgets ($fp, 1024);
-				}
-				$result = trim( $data );
-				/*
-				// Get length of data to be received.
-				$length = trim(substr($str,strpos($str,'content-length') + 15));
-				// Get buffer (blank data before real data)
-				fgets($fp, 4096);
-				// Get real data
-				$data = fgets($fp, $length);
-				fclose($fp);*/
-
-			}
+		
+		$result = vmConnector::handleCommunication( "https://secure.authorize.net:443/gateway/transact.dll", $poststring );
+		
+		if( !$result ) {
+			$vmLogger->err('We\'re sorry, but an error has occured trying to communicate with the authorize.net server. Please try again later, thank you.' );
+			return false;
 		}
 		$response = explode("|", $result);
 		// Strip off quotes from the first response field
@@ -526,9 +457,8 @@ class ps_authorize {
 		global $vendor_mail, $vendor_currency, $VM_LANG, $vmLogger;
 		$database = new ps_DB();
 
-		$host = "secure.authorize.net";
-		$port = 443;
-		$path = "/gateway/transact.dll";
+		require_once(CLASSPATH ."connectionTools.class.php");
+		
 		/*CERTIFICATION
 		Visa Test Account           4007000000027
 		Amex Test Account           370000000000002
@@ -665,76 +595,13 @@ class ps_authorize {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 
-		if( function_exists( "curl_init" )) {
-
-			$CR = curl_init();
-			curl_setopt($CR, CURLOPT_URL, "https://".$host.$path);
-			curl_setopt($CR, CURLOPT_POST, 1);
-			curl_setopt($CR, CURLOPT_FAILONERROR, true);
-			curl_setopt($CR, CURLOPT_POSTFIELDS, $poststring);
-			curl_setopt($CR, CURLOPT_RETURNTRANSFER, 1);
-
-			// No PEER certificate validation...as we don't have
-			// a certificate file for it to authenticate the host www.ups.com against!
-			curl_setopt($CR, CURLOPT_SSL_VERIFYPEER, 0);
-			//curl_setopt($CR, CURLOPT_SSLCERT , "/usr/locale/xxxx/clientcertificate.pem");
-
-			$result = curl_exec( $CR );
-
-			$error = curl_error( $CR );
-			if( !empty( $error )) {
-				$vmLogger->err( curl_error( $CR ) );
-				$html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
-				return false;
-			}
-			else {
-				//echo $result; exit();
-			}
-			curl_close( $CR );
+		$result = vmConnector::handleCommunication( 'https://secure.authorize.net:443/gateway/transact.dll', $poststring );
+		
+		if( !$result ) {
+			$vmLogger->err('We\'re sorry, but an error has occured when we tried to communicate with the authorize.net server. Please try again later, thank you.' );
+			return false;
 		}
-		else {
-
-			$fp = fsockopen("ssl://".$host, $port, $errno, $errstr, $timeout = 60);
-			if(!$fp){
-				//error tell us
-				$vmLogger->err("$errstr ($errno)");
-			}
-			else {
-
-				//send the server request
-				fputs($fp, "POST $path HTTP/1.1\r\n");
-				fputs($fp, "Host: $host\r\n");
-				fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-				fputs($fp, "Content-length: ".strlen($poststring)."\r\n");
-				fputs($fp, "Connection: close\r\n\r\n");
-				fputs($fp, $poststring . "\r\n\r\n");
-
-				//Get the response header from the server
-				$str = '';
-				while(!feof($fp) && !stristr($str, 'content-length')) {
-					$str = fgets($fp, 4096);
-				}
-				// If didnt get content-lenght, something is wrong, return false.
-				if (!stristr($str, 'content-length')) {
-					return false;
-
-				}
-				$data = "";
-				while (!feof($fp)) {
-					$data .= fgets ($fp, 1024);
-				}
-				$result = trim( $data );
-				/*
-				// Get length of data to be received.
-				$length = trim(substr($str,strpos($str,'content-length') + 15));
-				// Get buffer (blank data before real data)
-				fgets($fp, 4096);
-				// Get real data
-				$data = fgets($fp, $length);
-				fclose($fp);*/
-
-			}
-		}
+		
 		$response = explode("|", $result);
 
 		// Approved - Success!
