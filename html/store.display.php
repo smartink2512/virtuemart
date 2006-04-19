@@ -21,7 +21,7 @@ mm_showMyFileName( __FILE__ );
 <br />
 <table>
 <tr>
-<td width="60"><img src="<?php echo IMAGEURL ?>ps_image/store.gif" border="0" /></td>
+<td width="60"><img src="<?php echo IMAGEURL ?>ps_image/home.png" border="0" /></td>
 <td align="left"><span class="sectionname"><?php echo $VM_LANG->_PHPSHOP_STORE_MOD ?></span></td>
 </tr>
 </table>

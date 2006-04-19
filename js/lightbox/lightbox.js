@@ -15,7 +15,8 @@ var Lightbox = {
 		)
 		if ($('overlay')){
 			Element.remove('overlay');
-			}
+		}
+		showSelectBoxes();
 	}
 }
 Lightbox.base = Class.create();
@@ -54,7 +55,7 @@ Element.addClassName(this.element, this.options.lightboxClassName)
 		if (this.options.externalControl){
 			Event.observe($(this.options.externalControl), 'click', this.hideBox.bindAsEventListener(this) );
 		}
-				
+		hideSelectBoxes();
 		this.showBox();	
 	},
 	
@@ -75,7 +76,9 @@ Element.addClassName(this.element, this.options.lightboxClassName)
 		Element.hide(this.element);
 		//remove the overlay element from the DOM completely
 		Element.remove('overlay');
+		showSelectBoxes();
 		return false;
+		
 	},
 		
 	center : function(){
@@ -124,7 +127,20 @@ Element.addClassName(this.element, this.options.lightboxClassName)
 		this.element.style.top  = setY + "px";
 		
 	}
-
-	
 }
 
+function showSelectBoxes(){
+	selects = document.getElementsByTagName("select");
+	for (i = 0; i != selects.length; i++) {
+		selects[i].style.visibility = "visible";
+	}
+}
+
+// ---------------------------------------------------
+
+function hideSelectBoxes(){
+	selects = document.getElementsByTagName("select");
+	for (i = 0; i != selects.length; i++) {
+		selects[i].style.visibility = "hidden";
+	}
+}

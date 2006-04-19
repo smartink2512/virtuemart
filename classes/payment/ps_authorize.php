@@ -393,7 +393,7 @@ class ps_authorize {
 		$result = vmConnector::handleCommunication( "https://secure.authorize.net:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
-			$vmLogger->err('We\'re sorry, but an error has occured trying to communicate with the authorize.net server. Please try again later, thank you.' );
+			$vmLogger->err('The transaction could not be completed.' );
 			return false;
 		}
 		$response = explode("|", $result);

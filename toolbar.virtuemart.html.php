@@ -71,7 +71,7 @@ class MENU_virtuemart {
 		if( $no_menu ) {
 			vmCommonHTML::loadLightbox();
 			vmCommonHTML::loadYahooConnection();
-			echo '<div id="statusBox" align="middle" style="display:none"></div>';
+			echo '<div id="statusBox" style="text-align:center;display:none;"></div>';
 		}
 		$script = '<script type="text/javascript">
         	function submitbutton(pressbutton) {
@@ -97,9 +97,11 @@ class MENU_virtuemart {
 			$script .= "
 			var responseSuccess = function(o){ 
 									document.getElementById('statusBox').innerHTML = o.responseText; 
+									setTimeout( 'Lightbox.hideAll()', 2000 );
 								  }
 			var responseFailure = function(o){ 
-									alert('An error has occured: \\nThe server did not respond.');
+									document.getElementById('statusBox').innerHTML = '<div class=\"shop_error\">Error: The server did not respond.</div>';
+									setTimeout( 'Lightbox.hideAll()', 2000 );
 								  }
 
 			var callback =
@@ -111,8 +113,7 @@ class MENU_virtuemart {
 			new Lightbox.base('statusBox', { closeOnOverlayClick : true })
 			YAHOO.util.Connect.setForm('adminForm');
 			var cObj = YAHOO.util.Connect.asyncRequest('POST', '$mosConfig_live_site".$admin."/index2.php', callback);
-			setTimeout( 'Lightbox.hideAll()', 3000 );
-			//setTimeout( 'window.close()', 3400 );\n";
+			\n";
 
 		}
 		else {
@@ -191,7 +192,7 @@ class MENU_virtuemart {
 			
 			vmMenuBar::apply( 'apply', _E_APPLY );
 		}
-		if( (strstr( $_SERVER['HTTP_REFERER'], $page ) || strstr( $_SERVER['HTTP_REFERER'], $_SERVER['PHP_SELF'] )) && $no_menu ) {
+		if( (strstr( @$_SERVER['HTTP_REFERER'], $page ) || strstr( @$_SERVER['HTTP_REFERER'], $_SERVER['PHP_SELF'] )) && $no_menu ) {
 			// offer a back button
 			vmMenuBar::spacer();
 			vmMenuBar::back();

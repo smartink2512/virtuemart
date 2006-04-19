@@ -27,7 +27,7 @@ class ps_config {
 	****************************************************************************/
 
 	function writeconfig(&$d) {
-		global $my, $db, $page, $vmLogger, $VM_LANG;
+		global $my, $db, $option, $page, $vmLogger, $VM_LANG;
 
 		$group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
 		$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
@@ -69,6 +69,10 @@ class ps_config {
 			"VM_SHOW_PRINTICON"  =>      "conf_VM_SHOW_PRINTICON",
 			"VM_SHOW_EMAILFRIEND"  =>      "conf_VM_SHOW_EMAILFRIEND",
 			"VM_REVIEWS_AUTOPUBLISH"  =>      "conf_VM_REVIEWS_AUTOPUBLISH",
+			"VM_PROXY_URL"  =>      "conf_VM_PROXY_URL",
+			"VM_PROXY_PORT"  =>      "conf_VM_PROXY_PORT",
+			"VM_PROXY_USER"  =>      "conf_VM_PROXY_USER",
+			"VM_PROXY_PASS"  =>      "conf_VM_PROXY_PASS",
 			"ENABLE_DOWNLOADS"  =>      "conf_ENABLE_DOWNLOADS",
 			"DOWNLOAD_MAX"  =>      "conf_DOWNLOAD_MAX",
 			"DOWNLOAD_EXPIRE"  =>      "conf_DOWNLOAD_EXPIRE",
@@ -121,7 +125,7 @@ class ps_config {
 
 			$config = "<?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-/**
+/**return true;
 * The configuration file for VirtueMart
 *
 * @package VirtueMart
@@ -216,11 +220,9 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 				fputs($fp, $config, strlen($config));
 				fclose ($fp);
 
-				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
-				return true;
+				mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
 			} else {
-				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE, ADMINPATH ."virtuemart.cfg.php" );
-				return false;
+				mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. ADMINPATH ."virtuemart.cfg.php)" );
 			}
 			
 		}

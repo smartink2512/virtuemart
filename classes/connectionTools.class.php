@@ -46,9 +46,34 @@ class vmConnector {
 			echo $content;
 		}
 	}
+	/**
+	 * This is a general function to safely open a connection to a server,
+	 * post data when needed and read the result.
+	 * 
+	 * @static 
+	 * @param string $url
+	 * @param string $postData
+	 * @return mixed
+	 */
 	function handleCommunication( $url, $postData='') {
 		global $vmLogger;
+
 		$urlParts = parse_url( $url );
+		if( !isset( $urlParts['port'] )) $urlParts['port'] = 80;
+		if( !isset( $urlParts['scheme'] )) $urlParts['scheme'] = 'http';
+		
+		// Check proxy
+		if( trim( @VM_PROXY_URL ) != '') {
+			if( !stristr(VM_PROXY_URL, 'http')) {
+				$proxyURL['host'] = VM_PROXY_URL;
+				$proxyURL['scheme'] = 'http';
+			} else {
+				$proxyURL = parse_url(VM_PROXY_URL);
+			}
+		}
+		else {
+			$proxyURL = '';
+		}		
 		
 		if( function_exists( "curl_init" )) {
 
@@ -57,12 +82,28 @@ class vmConnector {
 			$CR = curl_init();
 			curl_setopt($CR, CURLOPT_URL, $urlParts['scheme'].'://'.$urlParts['host'].':'.$urlParts['port'].$urlParts['path']);
 			
+			// just to get sure the script doesn't die			
+			curl_setopt($CR, CURLOPT_TIMEOUT, 30 );
+			
 			curl_setopt($CR, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($CR, CURLOPT_FAILONERROR, true);
 			if( $postData ) {
 				curl_setopt($CR, CURLOPT_POSTFIELDS, $postData );
 				curl_setopt($CR, CURLOPT_POST, 1);
 			}
+			// Do we need to set up the proxy?
+			if( !empty($proxyURL) ) {
+				$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.VM_PROXY_PORT );
+				//curl_setopt($CR, CURLOPT_HTTPPROXYTUNNEL, true);
+				curl_setopt($CR, CURLOPT_PROXY, $proxyURL['host'] );
+				curl_setopt($CR, CURLOPT_PROXYPORT, VM_PROXY_PORT );
+				// Check if the proxy needs authentication
+				if( trim( @VM_PROXY_USER ) != '') {
+					$vmLogger->debug( 'Using proxy authentication!' );
+					curl_setopt($CR, CURLOPT_PROXYUSERPWD, VM_PROXY_USER.':'.VM_PROXY_PASS );
+				}
+			}
+			
 			if( $urlParts['scheme'] == 'https') {
 				// No PEER certificate validation...as we don't have
 				// a certificate file for it to authenticate the host www.ups.com against!
@@ -71,6 +112,12 @@ class vmConnector {
 			}
 			$result = curl_exec( $CR );
 			$error = curl_error( $CR );
+			if( !empty( $error ) && stristr( $error, '502') && !empty( $proxyURL )) {
+				$vmLogger->debug( 'Switching to NTLM authenticaton.');
+				curl_setopt( $CR, CURLOPT_PROXYAUTH, CURLAUTH_NTLM );
+				$result = curl_exec( $CR );
+				$error = curl_error( $CR );
+			}
 			curl_close( $CR );
 			
 			if( !empty( $error )) {
@@ -82,18 +129,37 @@ class vmConnector {
 			}
 		}
 		else {
-			if( $postData ) {
-				if( $urlParts['scheme'] == 'https'){
-					$protocol = 'ssl';
+			if( $postData ) { 				
+				if( !empty( $proxyURL )) {
+					// If we have something to post we need to write into a socket
+					if( $proxyURL['scheme'] == 'https'){
+						$protocol = 'ssl';
+					}
+					else {
+						$protocol = 'http';
+					}
+					$fp = fsockopen("$protocol://".$proxyURL['host'], VM_PROXY_PORT, $errno, $errstr, $timeout = 30);
 				}
 				else {
-					$protocol = $urlParts['scheme'];
+					// If we have something to post we need to write into a socket
+					if( $urlParts['scheme'] == 'https'){
+						$protocol = 'ssl';
+					}
+					else {
+						$protocol = $urlParts['scheme'];
+					}
+					$fp = fsockopen("$protocol://".$urlParts['host'], $urlParts['port'], $errno, $errstr, $timeout = 30);
 				}
-				$fp = fsockopen("$protocol://".$urlParts['host'], $urlParts['port'], $errno, $errstr, $timeout = 30);
 			}
 			else {
-				// Do a read-only fopen transaction
-				$fp = fopen( $urlParts['scheme'].'://'.$urlParts['host'].':'.$urlParts['port'].$urlParts['path'], 'r' );
+				if( !empty( $proxyURL )) {
+					// Do a read-only fopen transaction
+					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.VM_PROXY_PORT, 'rb' );					
+				}
+				else {
+					// Do a read-only fopen transaction
+					$fp = fopen( $urlParts['scheme'].'://'.$urlParts['host'].':'.$urlParts['port'].$urlParts['path'], 'rb' );
+				}
 			}
 			if(!$fp){
 				//error tell us
@@ -106,22 +172,44 @@ class vmConnector {
 			if( $postData ) {
 				$vmLogger->debug('Now posting the variables.' );
 				//send the server request
-				fputs($fp, 'POST '.$urlParts['path']." HTTP/1.1\r\n");
-				fputs($fp, 'Host:'. $urlParts['host']."\r\n");
+				if( !empty( $proxyURL )) {
+				   	fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
+				   	fputs($fp, "Host: ".$proxyURL['host']."\r\n");
+				   	if( trim( @VM_PROXY_USER )!= '') {
+				   		fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
+				   	}
+				}
+				else {
+					fputs($fp, 'POST '.$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, 'Host:'. $urlParts['host']."\r\n");
+				}
 				fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
 				fputs($fp, "Content-length: ".strlen($postData)."\r\n");
 				fputs($fp, "Connection: close\r\n\r\n");
 				fputs($fp, $postData . "\r\n\r\n");
 			}
-
+			else {
+				if( !empty( $proxyURL )) {
+				   	fputs($fp, "GET ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
+				   	fputs($fp, "Host: ".$proxyURL['host']."\r\n");
+				   	if( trim( @VM_PROXY_USER )!= '') {
+				   		fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
+				   	}
+				}
+				else {
+					fputs($fp, 'GET '.$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, 'Host:'. $urlParts['host']."\r\n");
+				}
+			}
 			$data = "";
 			while (!feof($fp)) {
 				$data .= fgets ($fp, 4096);
 			}
+			fclose( $fp );
 			
 			// If didnt get content-lenght, something is wrong, return false.
 			if (!stristr($data, 'content-length')) {
-				$vmLogger->err('An error occured while communicating with the authorize.net server. It didn\'t reply (correctly). Please try again later, thank you.' );
+				$vmLogger->err('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
 				return false;
 			}
 			$result = trim( $data );

@@ -1582,6 +1582,16 @@ Mail mailto: {shopper_email}';
 	var $_VM_RECOMMEND_SUBJECT = 'Product recommendation at %s';
 	var $_VM_RECOMMEND_DONE = 'Recommendation sent successfully!';
 	var $_VM_RECOMMEND_FAILED = 'Recommendation could not be sent!';
+	var $_VM_ADMIN_CFG_PROXY_SETTINGS = 'Global Proxy Settings';
+	var $_VM_ADMIN_CFG_PROXY_URL = 'URL of the proxy server';
+	var $_VM_ADMIN_CFG_PROXY_URL_TIP = 'Example: <strong>http://10.42.21.1</strong>.<br />
+Leave empty if you\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).';
+	var $_VM_ADMIN_CFG_PROXY_PORT = 'Proxy Port';
+	var $_VM_ADMIN_CFG_PROXY_PORT_TIP = 'The port used for communication with the proxy server (mostly <b>80</b> or <b>8080</b>).';
+	var $_VM_ADMIN_CFG_PROXY_USER = 'Proxy username';
+	var $_VM_ADMIN_CFG_PROXY_USER_TIP = 'If the proxy requires authentication please fill in your username here.';
+	var $_VM_ADMIN_CFG_PROXY_PASS = 'Proxy password';
+	var $_VM_ADMIN_CFG_PROXY_PASS_TIP = 'If the proxy requires authentication please fill in the correct password here.';
         
 }
 class phpShopLanguage extends vmLanguage { }

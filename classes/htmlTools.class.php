@@ -575,6 +575,22 @@ class vmCommonHTML extends mosHTML {
 		}
 		
 	}
+	
+	/**
+	 * Function to include the Yahoo! asynchronous connection scripts in the HTML document
+	 * @static 
+	 * @since VirtueMart 1.1.0
+	 *
+	 */
+	function loadBehaviourJS() {
+		global $mosConfig_live_site, $option;
+		if( !defined( "_BEHAVIOURJS_LOADED" )) {
+			?>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/prototype/behaviour.js"></script>
+			<?php
+			define ( "_BEHAVIOURJS_LOADED", "1" );
+		}		
+	}
 	/**
 	 * Function to include the Yahoo! asynchronous connection scripts in the HTML document
 	 * @static 
@@ -589,8 +605,7 @@ class vmCommonHTML extends mosHTML {
 			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/YahooConnection/connection.js"></script>
 			<?php
 			define ( "_YAHOOCONNECTION_LOADED", "1" );
-		}
-		
+		}		
 	}
 	/**
 	 * Returns a div element of the class "shop_error" 

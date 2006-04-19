@@ -55,6 +55,15 @@ define('VM_SILENT_REGISTRATION', '1');
 define('VM_BROWSE_ORDERBY_FIELD', 'product_name');
 define('VM_GENERALLY_PREVENT_HTTPS', '1');
 define('VM_SHOW_REMEMBER_ME_BOX', '');
+define('VM_REVIEWS_MINIMUM_COMMENT_LENGTH', '100');
+define('VM_REVIEWS_MAXIMUM_COMMENT_LENGTH', '2000');
+define('VM_SHOW_PRINTICON', '1');
+define('VM_SHOW_EMAILFRIEND', '1');
+define('VM_REVIEWS_AUTOPUBLISH', '');
+define('VM_PROXY_URL', '');
+define('VM_PROXY_PORT', '');
+define('VM_PROXY_USER', '');
+define('VM_PROXY_PASS', '');
 define('PSHOP_IS_OFFLINE', '');
 define('PSHOP_OFFLINE_MESSAGE', '<h2>Our Shop is currently down for maintenance.</h2> Please check back again soon.');
 define('USE_AS_CATALOGUE', '');
@@ -104,8 +113,6 @@ define('PSHOP_PDF_BUTTON_ENABLE', '1');
 define('PSHOP_SHOW_PRODUCTS_IN_CATEGORY', '1');
 define('PSHOP_SHOW_TOP_PAGENAV', '1');
 define('PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS', '1');
-define('VM_REVIEWS_MINIMUM_COMMENT_LENGTH', '100');
-define('VM_REVIEWS_MAXIMUM_COMMENT_LENGTH', '2000');
 
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;

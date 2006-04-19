@@ -470,11 +470,11 @@ class ps_html {
 	 * @param string $text The text / label for the link
 	 */
 	function writePanelIcon( $image, $link, $text ) {
-		echo '<div class="icon" style="float:left;">
-			<div class="iconimage"><a href="'.$link.'">
-					<img src="'.$image.'" alt="'.$text.'" name="image" border="0" /><br />
-			'.$text.'</a></div>
-		</div>';
+		echo '<div style="float:left;"><div class="icon">
+			<a title="'.$text.'" href="'.$link.'">
+					<img src="'.$image.'" alt="'.$text.'" align="middle" name="image" border="0" /><br />
+			'.$text.'</a></div></div>
+			';
 
 	}
 }

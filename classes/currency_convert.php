@@ -18,22 +18,27 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 $GLOBALS['converter_array'] = '';
 
+/**
+ * Converts an amount from one currency into another using
+ * the rate conversion table from the European Central Bank
+ *
+ * @param float $amountA
+ * @param string $currA defaults to $vendor_currency
+ * @param string $currB defaults to $GLOBALS['product_currency'] (and that defaults to $vendor_currency)
+ * @return mixed The converted amount when successful, false on failure
+ */
 function convertECB( $amountA, $currA='', $currB='' ) {
 	global $mosConfig_cachepath, $mosConfig_live_site, $mosConfig_absolute_path,
-			$vendor_currency, $vmLogger;
-	/* variables:
-	* $amountA 	- amount to convert
-	* $currA 	- currency to covert from
-	* $currB	- currency to convert to
-	* $do_date	- if set, check only date
-	*/
+			$mosConfig_offset, $vendor_currency, $vmLogger;
+
+	// global $vendor_currency is DEFAULT!
 	if( !$currA ) {
 		$currA = $vendor_currency;
 	}
 	if( !$currB ) {
 		$currB = $GLOBALS['product_currency'];
 	}
-	$vmLogger->debug('Converting '.$amountA.' from '.$currA.' to '.$currB);
+	// If both currency codes match, do nothing
 	if( $currA == $currB ) {		
 		return $amountA;
 	}
@@ -59,11 +64,21 @@ function convertECB( $amountA, $currA='', $currB='' ) {
 		$val = '';
 		$archive = 'yes';
 	
-		if(file_exists($archivefile_name)) {
+		if(file_exists($archivefile_name) && filesize( $archivefile_name ) > 0 ) {
 		  	// timestamp for the Filename
 		  	$file_datestamp = date('Ymd', filemtime($archivefile_name)); 
-		  	$curr_filename = $archivefile_name;
-		  	$archive = '';
+	    	// check if today is a weekday - no updates on weekends
+	    	if( date( 'w' ) > 0 && date( 'w' ) < 6 
+	    		// compare filedate and actual date
+	    		&& $file_datestamp != $date_now_local
+	    		// if localtime is greater then ecb-update-time go on to update and write files
+	    		&& $time_now_local > $time_ecb_update) {
+	    		$curr_filename = $ecb_filename;	
+	    	}
+	    	else {
+			  	$curr_filename = $archivefile_name;
+			  	$archive = '';	
+	    	}
 		}
 		else {
 			$curr_filename = $ecb_filename;
@@ -73,8 +88,14 @@ function convertECB( $amountA, $currA='', $currB='' ) {
 		  $archive = '';
 		  $vmLogger->debug( "The file $archivefile_name can't be created. The directory $store_path is not writable" );
 		}
-		
-		$contents = @file_get_contents( $curr_filename );
+		if( $curr_filename == $ecb_filename ) {
+			// Fetch the file from the internet
+			require_once( CLASSPATH.'connectionTools.class.php');
+			$contents = vmConnector::handleCommunication( $curr_filename );
+		}
+		else {
+			$contents = @file_get_contents( $curr_filename );
+		}
 		if( $contents ) {
 			// if archivefile does not exist
 			if($archive == 'yes') {
@@ -116,6 +137,7 @@ function convertECB( $amountA, $currA='', $currB='' ) {
 	else {
 		$val = 0;
 	}
+	$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
 	
 	return $val;
 } // end function convertecb

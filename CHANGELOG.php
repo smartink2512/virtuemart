@@ -35,9 +35,12 @@ VirtueMart 1.1.x
 *************************************
 18-04-2006 soeren
 
++ Possibility to enter Proxy information. This is espcically useful when trying to use
+	UPS/USPS on godaddy servers.
+	New configuration parameters: VM_PROXY_URL, VM_PROXY_PORT, VM_PROXY_USER, VM_PROXY_PASS
 + Currency Converter implemented. From now on the store converts currencies when necessary.
 	If the product price currency is "USD" and the store currency is "EUR", all prices are
-	converted using an XML file with the latest rates from the European Currency Bank (ECB, function convertECB).
+	converted using an XML file with the latest rates from the European Central Bank (ECB, function convertECB).
 	The XML file is cached and refreshed regularly. See /classes/currency_convert.php.
 	You can change the displayed currency in the frontend by adding the parameter "product_currency" to the URL:
 	

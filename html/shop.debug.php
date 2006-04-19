@@ -27,8 +27,8 @@ if( !empty( $database->_log )) {
   }
 }
 include_once(ADMINPATH ."version.php");
-$tabs = new mShopTabs(0, 1, "_main");
-$tabs->startPane("content-pane");
+$tabs = new mShopTabs(0, 1, "_debug");
+$tabs->startPane("debug-pane");
 $tabs->startTab( "Shop Core Variables", "shop-variables" );
 ?>
       <table width="100%" border="0" cellspacing="5" cellpadding="2" >

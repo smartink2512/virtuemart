@@ -39,7 +39,10 @@ General Formatting
 	vertical-align: top;
 	width: 30%;
 }
-
+.iconcell {
+	vertical-align: top;
+	width: 5%;
+}
 /**
 * Errors, Warnings and Info formatting
 */

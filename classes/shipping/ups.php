@@ -258,7 +258,9 @@ class ups {
 		  $shipment[$i]["TransportationCharges"] = $currNode->childNodes[2];
 		  $shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->getElementsByTagName("MonetaryValue");
 		  $shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->item(0);
-		  $shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->getText();
+		  if( is_callable( array( $shipment[$i]["TransportationCharges"], 'gettext' ) ) ) {
+		  	$shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->getText();
+		  }
 		  
 		  // Fourth Element: ServiceOptionsCharges
 		  $shipment[$i]["ServiceOptionsCharges"] = $currNode->childNodes[3];
