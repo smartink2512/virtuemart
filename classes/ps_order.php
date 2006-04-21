@@ -63,8 +63,7 @@ class ps_order {
 			$notify_customer=0;
 		}
 
-		$d['order_comment'] = empty($d['order_comment']) ? "" : $d['order_comment'];
-		$d['order_comment'] = $db->getEscaped( $d['order_comment'] );
+		$d['order_comment'] = empty($d['order_comment']) ? "" : $db->getEscaped( $d['order_comment'] );
 		
 		// When the order is set to "confirmed", we can capture
 		// the Payment with authorize.net

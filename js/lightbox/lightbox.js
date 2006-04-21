@@ -30,13 +30,14 @@ Lightbox.base.prototype = {
 		this.options = Object.extend({
 			lightboxClassName : 'lightbox',
 			closeOnOverlayClick : false,
+			showOverlay : true,
 			externalControl : false
 		}, options || {} )
 
 		//create the overlay
 		new Insertion.Before(this.element, "<div id='overlay' style='display:none;'></div>");
 		
-Element.addClassName(this.element, this.options.lightboxClassName)
+		//Element.addClassName(this.element, this.options.lightboxClassName)
 	
 		//also add a default lbox class to the lightbox div so we can find and close all lightboxes if we need to
 		Element.addClassName(this.element, 'lbox')
@@ -60,9 +61,10 @@ Element.addClassName(this.element, this.options.lightboxClassName)
 	},
 	
 	showBox : function(){
-		//show the overlay
-	   Element.show('overlay');
-
+		if( this.options.showOverlay ) {
+			//show the overlay
+			Element.show('overlay');
+		}
 		//center the lightbox
 	   this.center();
 	   
@@ -130,17 +132,21 @@ Element.addClassName(this.element, this.options.lightboxClassName)
 }
 
 function showSelectBoxes(){
-	selects = document.getElementsByTagName("select");
-	for (i = 0; i != selects.length; i++) {
-		selects[i].style.visibility = "visible";
+	if (navigator.platform == "Win32" && navigator.appName == "Microsoft Internet Explorer") {
+		selects = document.getElementsByTagName("select");
+		for (i = 0; i != selects.length; i++) {
+			selects[i].style.visibility = "visible";
+		}
 	}
 }
 
 // ---------------------------------------------------
 
 function hideSelectBoxes(){
-	selects = document.getElementsByTagName("select");
-	for (i = 0; i != selects.length; i++) {
-		selects[i].style.visibility = "hidden";
+	if (navigator.platform == "Win32" && navigator.appName == "Microsoft Internet Explorer") {
+		selects = document.getElementsByTagName("select");
+		for (i = 0; i != selects.length; i++) {
+			selects[i].style.visibility = "hidden";
+		}
 	}
 }

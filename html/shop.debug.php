@@ -104,7 +104,7 @@ $tabs->startTab( "Shop Core Variables", "shop-variables" );
         <tr><td>&nbsp;</td></tr>
         <tr class="sectiontableentry1"> 
           <td align="right" valign="top"><b><?php echo '<strong>'.$_VERSION->PRODUCT.' Session ID:</strong>'; ?></b></td>
-          <td colspan="3" valign="top"><?php echo $mainframe->_session->session_id; ?>&nbsp;</td>
+          <td colspan="3" valign="top"><?php echo $sess->getSessionId(); ?>&nbsp;</td>
         </tr>
         <tr class="sectiontableentry2"> 
           <td  align="right" valign="top"><b>VirtueMart Session ID:</b></td>

@@ -31,12 +31,16 @@ switch( $task ) {
 		include_class('product');
 		$shopper_group_id = intval( mosGetParam( $_REQUEST, 'shopper_group_id', 5 ));
 		$product_id = intval( mosGetParam( $_REQUEST, 'product_id' ));
-		$price = $ps_product->get_price( $product_id, false, $shopper_group_id );
-		vmConnector::sendHeaderAndContent( 200, $price['product_price'] );
+		$price = $ps_product->getPriceByShopperGroup( $product_id, $shopper_group_id );
+		$formatPrice = mosGetParam( $_REQUEST, 'formatPrice', 0 );
+		if( $formatPrice ) {
+			$price['product_price'] = '<span onclick="getPriceForm(this);">'.$CURRENCY_DISPLAY->getFullValue( $price['product_price'] ).'</span>';
+		}
+		vmConnector::sendHeaderAndContent( 200, @$price['product_price'] );
 		break;
 		
 	case 'getcurrencylist':
-		$currency_code = mosGetParam( $_REQUEST, 'product_currency', $vendor_country_3_code );
+		$currency_code = mosGetParam( $_REQUEST, 'product_currency', $vendor_currency );
 		vmConnector::sendHeaderAndContent( 200, ps_html::getCurrencyList( 'product_currency', $currency_code ) );
 		break;
 	
@@ -45,16 +49,25 @@ switch( $task ) {
 		include_class('product');
 		$shopper_group_id = intval( mosGetParam( $_REQUEST, 'shopper_group_id', 5 ));
 		$product_id = intval( mosGetParam( $_REQUEST, 'product_id' ));
-		$currency_code = mosGetParam( $_REQUEST, 'product_currency', $vendor_country_3_code );
-		$price = $ps_product->get_price( $product_id, false, $shopper_group_id );
-		$content = '<form action="index2.php" method="post" name="priceForm">';
-		$content .= $VM_LANG->_PHPSHOP_PRICE_FORM_PRICE. ': <input type="text" name="product_price" value="'.$price['product_price'].'" /><br />';
-		$content .= $VM_LANG->_PHPSHOP_PRICE_FORM_CURRENCY.' '.ps_html::getCurrencyList( 'product_currency', $currency_code ).'<br />';
-		$content .= $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP.': '.$ps_shopper_group->list_shopper_groups().'<br />';
-		$content .= '<input type="hidden" name="product_price_id" value="'.$price['product_price_id'].'" />';
-		$content .= '<input type="hidden" name="func" value="productPriceUpdate" />';
+		$currency_code = mosGetParam( $_REQUEST, 'product_currency', $vendor_currency );
+		$price = $ps_product->getPriceByShopperGroup( $product_id, $shopper_group_id );
+		if( isset( $price['product_currency'] )) {
+			$currency_code = $price['product_currency'];
+			$currency_code = $price['product_currency'];
+		}
+		$formName = uniqid('priceForm');
+		$content = '<div id="'.$formName.'">';
+		$content .= '<strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_PRICE.':</strong> <input type="text" name="product_price" value="'.$price['product_price'].'" class="inputbox" id="product_price_'.$formName.'" size="11" /><br />';
+		$content .= '<strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_GROUP.':</strong> '.$ps_shopper_group->list_shopper_groups('shopper_group_id', $shopper_group_id, '', 'onchange="reloadForm( \''.$product_id.'\', \'shopper_group_id\', this.options[this.selectedIndex].value);"' ).'<br />';
+		$content .= '<strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_CURRENCY.':</strong> '.ps_html::getCurrencyList( 'product_currency', $currency_code, 'currency_code', 'style="max-width:120px;"' ).'<br />';
+		$content .= '<input type="hidden" name="product_price_id" value="'.$price['product_price_id'].'" id="product_price_id_'.$formName.'" />';
+		$content .= '<input type="hidden" name="product_id" value="'.$product_id.'" />';
+		$content .= '<input type="hidden" name="func" value="'. (empty($price['product_price_id']) ? 'productPriceAdd' : 'productPriceUpdate') . '" />';
+		$content .= '<input type="hidden" name="ajax_request" value="1" />';
 		$content .= '<input type="hidden" name="option" value="'.$option.'" />';
-		$content .= '</form>';
+		$content .= '<input type="button" id="priceFormSubmit" name="submit" value="'._E_SAVE.'" onclick="submitPriceForm(\''.$formName.'\');" class="button" /> ';
+		$content .= '<input type="button" id="priceFormCancel" name="submit" value="'._CMN_CANCEL.'" onclick="cancelPriceForm(\''.$product_id.'\');" class="button" />';
+		$content .= '</div>';
 		vmConnector::sendHeaderAndContent( 200, $content );
 		break;
 		

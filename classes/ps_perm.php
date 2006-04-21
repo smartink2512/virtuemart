@@ -121,7 +121,7 @@ class ps_perm {
 				else {
 					$auth["perms"]  = "shopper"; // DEFAULT
 				}
-				$auth["shopper_group_id"] = 0;
+				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
 				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
 				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
 				$auth["default_shopper_group"] = 1;
@@ -255,7 +255,10 @@ class ps_perm {
 		else {
 		*/
 			$db_check = new ps_DB;
-			$q  = "SELECT id, user_id from #__users, #__{vm}_user_info WHERE id='" . $user_id . "' AND id=user_id AND address_type='BT' AND first_name != '' AND last_name != '' AND city != ''";
+			$q  = "SELECT #__users.id, #__{vm}_user_info.user_id from #__users, #__{vm}_user_info 
+					WHERE #__users.id='" . $user_id . "' AND #__users.id=#__{vm}_user_info.user_id 
+					AND #__{vm}_user_info.address_type='BT' AND #__{vm}_user_info.first_name != '' 
+					AND #__{vm}_user_info.last_name != '' AND #__{vm}_user_info.city != ''";
 			$db_check->query($q);
 			
 			// Query failed or not?

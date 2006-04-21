@@ -313,7 +313,7 @@ class ps_html {
 	 * @param string $key The name of the field that will be the array index [curreny_code|currency_id]
 	 * @return HTML code with the drop-down list
 	 */	
-	function getCurrencyList($list_name, $value="", $key='currency_code') {
+	function getCurrencyList($list_name, $value="", $key='currency_code', $extra='') {
 		global $VM_LANG;
 		$db = new ps_DB;
 
@@ -325,7 +325,7 @@ class ps_html {
 			$currencies[$db->f($key)] = $db->f("currency_name");
 		}
 		
-		return ps_html::selectList( $list_name, $value, $currencies );
+		return ps_html::selectList( $list_name, $value, $currencies, 1, '', $extra );
 	}
 
 

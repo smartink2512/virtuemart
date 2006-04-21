@@ -33,6 +33,10 @@ $search_type = @$_REQUEST["search_type"] ? $_REQUEST["search_type"] : "product";
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
+// uuuh, we're using modern methods.
+vmCommonHTML::loadMooAjax(); // Fetch the dynamic forms and post their data back
+vmCommonHTML::loadLightbox(); // Having a modal window is good
+vmCommonHTML::loadBehaviourJS(); // Apply Javascript to styles
 ?>
 <div align="right">
 
@@ -58,7 +62,7 @@ require_once( CLASSPATH . "htmlTools.class.php" );
         ?>
          </select>
          <?php 
-         echo mm_ToolTip( $VM_LANG->_VM_PRODUCT_LIST_REORDER_TIP );
+         echo vmToolTip( $VM_LANG->_VM_PRODUCT_LIST_REORDER_TIP );
          ?>
 	</form>
 	<br/>
@@ -235,23 +239,24 @@ $listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_LIST_LBL, IMAGEURL."ps_im
 $listObj->startTable();
 
 // these are the columns in the table
-$columns = Array(  "#" => "",
-"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
-$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => "width=\"30%\"",
-$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => "width=\"15%\"",
-$VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE => "width=\"15%\"",
-$VM_LANG->_PHPSHOP_CATEGORY => "width=\"15%\"" );
+$columns = Array(  '#' => '',
+				"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
+				$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => "width=\"30%\"",
+				$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => "width=\"15%\"",
+				$VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE => "width=\"15%\"",
+				$VM_LANG->_PHPSHOP_CATEGORY => "width=\"15%\"" );
 
 // Only show reordering fields when a category ID is selected!
 if( $category_id ) {
 	$columns[$VM_LANG->_VM_FIELDMANAGER_REORDER] ="width=\"5%\"";
 	$columns[vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' )] ='width="8%"';
 }
-$columns[$VM_LANG->_PHPSHOP_VENDOR_MOD] ="width=\"15%\"";
+$columns[$VM_LANG->_PHPSHOP_MANUFACTURER_MOD] ="width=\"15%\"";
 $columns[$VM_LANG->_PHPSHOP_REVIEWS] ="width=\"10%\"";
 $columns[$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH] ="width=\"5%\"";
 $columns[$VM_LANG->_PHPSHOP_PRODUCT_CLONE] = "";
 $columns[_E_REMOVE] = "width=\"5%\"";
+$columns['Id'] = '';
 
 $listObj->writeTableHeader( $columns );
 
@@ -268,7 +273,7 @@ if ($num_rows > 0) {
 
 		// The row number
 		$listObj->addCell( $pageNav->rowNumber( $i ) );
-
+		
 		// The Checkbox
 		$listObj->addCell( mosHTML::idBox( $i, $db->f("product_id"), false, "product_id" ) );
 		
@@ -289,20 +294,12 @@ if ($num_rows > 0) {
 
 		// The product sku
 		$listObj->addCell( $db->f("product_sku") );
+
+		$price = $ps_product->getPriceByShopperGroup( $db->f('product_id'), '');
+		$tmp_cell = '<span onclick="getPriceForm(this);">'.$CURRENCY_DISPLAY->getFullValue( $price['product_price']);
+		$tmp_cell .= '&nbsp;&nbsp;&nbsp;</span>';
 		
-		$price = $ps_product->calcEndUserprice( $db->f('product_id'), $auth['default_shopper_group']);
-		$tmp_cell = $CURRENCY_DISPLAY->getFullValue( $price['product_price']);
-		$tip = '';
-		if( isset( $price['tax_rate'] )) {
-			$tip = $price['tax_rate'];
-		}
-		if( isset( $price['discount_info'] )) {
-			$tip .= '<br/>'.$price['discount_info'];
-		}
-		if( $tip ) {
-			$tmp_cell .= '&nbsp;&nbsp;&nbsp;'.mm_ToolTip( $tip );
-		}
-		$listObj->addCell( $tmp_cell );
+		$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" style="cursor:pointer;" title="'.$VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'"' );
 		
 		// The Categories or the parent product's name
 		$tmpcell = "";
@@ -332,7 +329,7 @@ if ($num_rows > 0) {
 
 			$listObj->addCell( vmCommonHTML::getOrderingField( $db->f('product_list') ) );
 		}
-		$listObj->addCell( $ps_product->getVendorName($db->f("vendor_id")) );
+		$listObj->addCell( $ps_product->get_mf_name($db->f("vendor_id")) );
 
 		$db_cat->query("SELECT count(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='".$db->f("product_id")."'");
 		$db_cat->next_record();
@@ -369,6 +366,7 @@ if ($num_rows > 0) {
 
 		$listObj->addCell( $ps_html->deleteButton( "product_id", $db->f("product_id"), "productDelete", $keyword, $limitstart ) );
 
+		$listObj->addCell( $db->f('product_id') );
 		$i++;
 	}
 }
@@ -379,4 +377,44 @@ $listObj->endTable();
 
 $listObj->writeFooter( $keyword,  "&product_parent_id=$product_parent_id&category_id=$category_id&product_type_id=$product_type_id&search_date$search_date");
 
+$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
 ?>
+<script type="text/javascript">
+function getPriceForm(elem) {
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+elem.parentNode.id, {
+		method: 'get', 
+		update: elem.parentNode
+	});
+}
+
+function submitPriceForm(formId) {	
+	$('statusBox').innerHTML = 'Loading ...<br /><img src=\"<?php echo $mosConfig_live_site ?>/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
+	new Lightbox.base('statusBox', { closeOnOverlayClick : true, showOverlay: false })
+	
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php', {
+		pseudoForm: formId,
+		update: $('statusBox'),
+		onComplete: lightBoxTimeout
+	});
+}
+function cancelPriceForm(id) {
+	updatePriceField( id );
+}
+function updatePriceField( id ) {	
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id, {
+		method: 'get', 
+		update: id
+	});
+}
+function reloadForm( parentId, keyName, keyValue ) {	
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+parentId+'&'+keyName+'='+keyValue, {
+		method: 'get',
+		update: parentId
+	});	
+}
+function lightBoxTimeout() {
+	setTimeout( 'Lightbox.hideAll()', 1000 );
+}
+
+</script>
+<div id="statusBox" style="text-align:center;display:none;"></div>

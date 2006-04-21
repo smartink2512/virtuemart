@@ -51,10 +51,12 @@ class MENU_virtuemart {
         $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
         $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id', 0 );
         $product_id = mosGetParam( $_REQUEST, 'product_id' );
+        $script = '';
         
 		if( is_array( $product_id )) {
 			$product_id = "";
 		}
+		
 		// These editor arrays tell the toolbar to load correct "getEditorContents" script parts
 		// This is necessary for WYSIWYG Editors like TinyMCE / mosCE / FCKEditor
         $editor1_array = Array('product.product_form' => 'product_desc', 'shopper.shopper_group_form' => 'shopper_group_desc',
@@ -70,10 +72,10 @@ class MENU_virtuemart {
 		$editor2 = isset($editor2_array[$page]) ? $editor2_array[$page] : '';
 		if( $no_menu ) {
 			vmCommonHTML::loadLightbox();
-			vmCommonHTML::loadYahooConnection();
-			echo '<div id="statusBox" style="text-align:center;display:none;"></div>';
+			vmCommonHTML::loadMooAjax();
+			$script .= '<div id="statusBox" style="text-align:center;display:none;"></div>';
 		}
-		$script = '<script type="text/javascript">
+		$script .= '<script type="text/javascript">
         	function submitbutton(pressbutton) {
 			var form = document.adminForm;
 			if (pressbutton == \'cancel\') {
@@ -95,24 +97,19 @@ class MENU_virtuemart {
 		if( $no_menu ) {
 			$admin = defined('_PSHOP_ADMIN') ? '/administrator' : '';
 			$script .= "
-			var responseSuccess = function(o){ 
-									document.getElementById('statusBox').innerHTML = o.responseText; 
-									setTimeout( 'Lightbox.hideAll()', 2000 );
-								  }
-			var responseFailure = function(o){ 
-									document.getElementById('statusBox').innerHTML = '<div class=\"shop_error\">Error: The server did not respond.</div>';
-									setTimeout( 'Lightbox.hideAll()', 2000 );
-								  }
-
-			var callback =
-			{
-				success:responseSuccess,
-				failure:responseFailure
+			
+			function responseSuccess(o){ 
+				document.getElementById('statusBox').innerHTML = o.responseText; 
+				setTimeout( 'Lightbox.hideAll()', 2000 );
+				setTimeout( 'Element.hide(\$(\'statusBox\'))', 2000 );
 			}
-			document.getElementById('statusBox').innerHTML = 'Loading ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
+
+			$('statusBox').innerHTML = 'Loading ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
 			new Lightbox.base('statusBox', { closeOnOverlayClick : true })
-			YAHOO.util.Connect.setForm('adminForm');
-			var cObj = YAHOO.util.Connect.asyncRequest('POST', '$mosConfig_live_site".$admin."/index2.php', callback);
+			new ajax( '$mosConfig_live_site".$admin."/index2.php', {
+				formName: 'adminForm',
+				onComplete: responseSuccess
+				});
 			\n";
 
 		}

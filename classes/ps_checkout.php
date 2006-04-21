@@ -1321,7 +1321,7 @@ Order Total: '.$order_total.'
 						if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
 							&& PAYMENT_DISCOUNT_BEFORE == '1' ) {
 							// Reduce the product subtotals by the factor the complete subtotal is reduced/raised by the discounts
-							$factor = (100 * ($_SESSION['coupon_discount'] + $d['payment_discount'])) / $this->_subtotal;
+							$factor = (100 * (@$_SESSION['coupon_discount'] + @$d['payment_discount'])) / $this->_subtotal;
 							$price["product_price"] = $price["product_price"] - ($factor * $price["product_price"] / 100);
 							@$order_tax_details[$tax_rate] += $price["product_price"] * $tax_rate * $cart[$i]["quantity"];
 						}
@@ -2125,7 +2125,7 @@ Order Total: '.$order_total.'
 		}
 
 		unset( $row );
-		if( $order_total > 0.00 ) {
+		if( !isset($order_total) || $order_total > 0.00 ) {
 			$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id' );
 			
 			$db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'");

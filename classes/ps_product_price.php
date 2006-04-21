@@ -93,7 +93,10 @@ class ps_product_price {
 		if (!$this->validate($d)) {
 			return false;
 		}
-
+		if( $d["product_price"] === '') {
+			$vmLogger->err( 'You have entered no price.');
+			return false;
+		}
 		$timestamp = time();
 		if (empty($d["product_price_vdate"])) $d["product_price_vdate"] = '';
 		if (empty($d["product_price_edate"])) $d["product_price_edate"] = '';
@@ -125,7 +128,9 @@ class ps_product_price {
 		if (!$this->validate($d)) {
 			return false;
 		}
-
+		if( $d["product_price"] === '') {
+			return $this->delete( $d );
+		}
 		$timestamp = time();
 
 		$db = new ps_DB;
@@ -171,11 +176,11 @@ class ps_product_price {
 	* Deletes one Record.
 	*/
 	function delete_record( $record_id, &$d ) {
-		global $db;
+		global $db, $vmLogger;
 		$q  = "DELETE FROM #__{vm}_product_price ";
-		$q .= "WHERE product_price_id = '$record_id' ";
+		$q .= "WHERE product_price_id =".intval($record_id);
 		$db->query($q);
-
+		$vmLogger->info( 'The product price has been deleted.' );
 		return True;
 	}
 

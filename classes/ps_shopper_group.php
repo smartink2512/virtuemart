@@ -244,7 +244,7 @@ class ps_shopper_group {
 	** parameters:
 	** returns:
 	***************************************************************************/
-	function list_shopper_groups($name,$shopper_group_id='0',$product_id='0') {
+	function list_shopper_groups($name,$shopper_group_id='0',$product_id='0', $extra='') {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		global $perm;
 		$db = new ps_DB;
@@ -260,9 +260,9 @@ class ps_shopper_group {
 		$q .= "ORDER BY shopper_group_name";
 		$db->query($q);
 		while ($db->next_record()) {
-			$shopper_groups[$db->f("shopper_group_id")] = $db->f("shopper_group_name") . '; '.$db->f('vendor_name').' (Vendor ID: '.$db->f('vendor_id').")";			
+			$shopper_groups[$db->f("shopper_group_id")] = $db->f("shopper_group_name"); // . '; '.$db->f('vendor_name').' (Vendor ID: '.$db->f('vendor_id').")";			
 		}
-		return ps_html::selectList( $name, $shopper_group_id, $shopper_groups );
+		return ps_html::selectList( $name, $shopper_group_id, $shopper_groups, 1, '', $extra );
 	}
 
 	/**************************************************************************
@@ -350,6 +350,25 @@ class ps_shopper_group {
 	    	
         }
     	return $group;
+  	}
+  	/**
+  	 * Creates superglobals with the information regarding the default shopper group
+  	 *
+  	 */
+  	function makeDefaultShopperGroupInfo() {
+  		$vendor_id  =$_SESSION['ps_vendor_id'];
+  		
+		if( empty($GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id']) ) {
+			$db = new ps_DB;
+			// Get the default shopper group id for this vendor
+			$q = "SELECT shopper_group_id,shopper_group_discount FROM #__{vm}_shopper_group WHERE ";
+			$q .= "vendor_id='$vendor_id' AND `default`='1'";
+			$db->query( $q );
+			$db->next_record();
+			$GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id'] = $default_shopper_group_id = $db->f("shopper_group_id");
+			$GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_discount']= $default_shopper_group_discount = $db->f("shopper_group_discount");
+			unset( $db );
+		}
   	}
 	/**************************************************************************
 	** name: get_customer_num

@@ -342,8 +342,9 @@ class ps_product extends vmAbstractObject {
 		// ADD A PRICE, IF NOT EMPTY ADD 0
 		if (!empty($d['product_price'])) {
 
-			if(empty($d['product_currency']))
-			$d['product_currency'] = $_SESSION['vendor_currency'];
+			if(empty($d['product_currency'])) {
+				$d['product_currency'] = $_SESSION['vendor_currency'];
+			}
 
 			$d["price_quantity_start"] = 0;
 			$d["price_quantity_end"] = "";
@@ -389,8 +390,8 @@ class ps_product extends vmAbstractObject {
 					$new_product_id = $db->last_insert_id();
 
 					$q = "INSERT INTO #__{vm}_product_attribute
-                  SELECT '$new_product_id', attribute_name, attribute_value
-                  FROM #__{vm}_product_attribute WHERE product_id='$child_id'";
+			                  SELECT '$new_product_id', attribute_name, attribute_value
+			                  FROM #__{vm}_product_attribute WHERE product_id='$child_id'";
 					$db->query( $q );
 
 					$price_fields["product_price_id"] = "''";
@@ -1524,11 +1525,7 @@ class ps_product extends vmAbstractObject {
 	 * @param boolean $check_multiple_prices Check if the product has more than one price for that shopper group?
 	 * @return array The product price information
 	 */
-	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='', $currency_code='') {
-		global $vendor_currency;
-		if( $currency_code == '' ) {
-			$currency_code = $GLOBALS['product_currency'];
-		}
+	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='' ) {
 		
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
@@ -1557,19 +1554,9 @@ class ps_product extends vmAbstractObject {
 				$shopper_group_id = $overrideShopperGroup;
 				$shopper_group_discount = 0;
 			}
-			if( empty($GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id']) ) {
-				// Get the default shopper group id for this vendor
-				$q = "SELECT shopper_group_id,shopper_group_discount FROM #__{vm}_shopper_group WHERE ";
-				$q .= "vendor_id='$vendor_id' AND `default`='1'";
-				$db->setQuery($q); $db->query();
-				$db->next_record();
-				$GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id'] = $default_shopper_group_id = $db->f("shopper_group_id");
-				$GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_discount']= $default_shopper_group_discount = $db->f("shopper_group_discount");
-			}
-			else {
-				$default_shopper_group_id = $GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id'];
-				$default_shopper_group_discount = $GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_discount'];
-			}
+			
+			ps_shopper_group::makeDefaultShopperGroupInfo();
+			
 			// Get the product_parent_id for this product/item
 			$product_parent_id = $this->get_field($product_id, "product_parent_id");
 
@@ -1594,91 +1581,65 @@ class ps_product extends vmAbstractObject {
 			else {
 				$volume_quantity_sql = " ORDER BY price_quantity_start";
 			}
-
-			// Getting prices
-			//
-			// If the shopper group has a price then show it, otherwise
-			// show the default price.
-			if( !empty($shopper_group_id) ) {
-				$q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_id' AND ";
-				$q .= "shopper_group_id='$shopper_group_id' $volume_quantity_sql";
-				$db->setQuery($q); $db->query();
-				if ($db->next_record()) {
-					$price_info["product_price"]= convertECB( $db->f("product_price"), $db->f("product_currency"), $currency_code );
-					$price_info["product_currency"] = $currency_code;
-					$price_info["product_original_currency"] = $db->f("product_currency");
-					if( $check_multiple_prices ) {
-						$price_info["product_base_price"]= $db->f("product_price");
-						$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
-					}
-					$price_info["product_price_id"] = $db->f("product_price_id");					
-					$price_info["item"]=true;
-					$GLOBALS['product_info'][$product_id]['price'] = $price_info;
-					return $GLOBALS['product_info'][$product_id]['price'];
+			
+			// Get the price array
+			$price = $this->getPriceByShopperGroup( $product_id, $shopper_group_id, $check_multiple_prices, $volume_quantity_sql );
+			if( !$price && $product_parent_id ) {
+				// If this is a child product and it has not price, get the price of the parent product
+				$price = $this->getPriceByShopperGroup( $product_parent_id, $shopper_group_id, $check_multiple_prices, $volume_quantity_sql );
+				if( !$price ) {
+					$price = $this->getPriceByShopperGroup( $product_parent_id, $GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id'], $check_multiple_prices, $volume_quantity_sql );
 				}
 			}
-			// Get default price
-			$q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_id' AND ";
-			$q .= "shopper_group_id='$default_shopper_group_id' $volume_quantity_sql";
-			$db->setQuery($q); $db->query();
-			if ($db->next_record()) {
-				$price_info["product_price"]=$db->f("product_price") * ((100 - $shopper_group_discount)/100);
-				$price_info["product_price"]= convertECB( $price_info["product_price"], $db->f("product_currency"), $currency_code );
-				$price_info["product_currency"] = $currency_code;
-				$price_info["product_original_currency"] = $db->f("product_currency");
-				if( $check_multiple_prices ) {
-					$price_info["product_base_price"]= $price_info["product_price"];
-					$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
-				}
-				$price_info["product_price_id"]=$db->f("product_price_id");
-				$price_info["item"] = true;
-				$GLOBALS['product_info'][$product_id]['price'] = $price_info;
-				return $GLOBALS['product_info'][$product_id]['price'];
+			elseif( !$price ) {
+				$price = $this->getPriceByShopperGroup( $product_id, $GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id'], $check_multiple_prices, $volume_quantity_sql );
 			}
-
-			// Maybe its an item with no price, check again with product_parent_id
-			if( !empty($shopper_group_id) ) {
-				$q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_parent_id' AND ";
-				$q .= "shopper_group_id='$shopper_group_id' $volume_quantity_sql";
-				$db->setQuery($q); $db->query();
-				if ($db->next_record()) {
-					$price_info["product_price"]= convertECB( $db->f("product_price"), $db->f("product_currency"), $currency_code );
-					$price_info["product_currency"] = $currency_code;
-					$price_info["product_original_currency"] = $db->f("product_currency");
-					if( $check_multiple_prices ) {
-						$price_info["product_base_price"]= $db->f("product_price");
-						$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
-					}
-					$price_info["product_price_id"]=$db->f("product_price_id");
-					$GLOBALS['product_info'][$product_id]['price'] = $price_info;
-					return $GLOBALS['product_info'][$product_id]['price'];
-				}
-			}
-			$q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_parent_id' AND ";
-			$q .= "shopper_group_id='$default_shopper_group_id' $volume_quantity_sql";
-			$db->setQuery($q); $db->query();
-			if ($db->next_record()) {
-				$price_info["product_price"]=$db->f("product_price") * ((100 - $shopper_group_discount)/100);
-				$price_info["product_price"]= convertECB( $price_info["product_price"], $db->f("product_currency"), $currency_code );
-				$price_info["product_currency"] = $currency_code;
-				$price_info["product_original_currency"] = $db->f("product_currency");
-				if( $check_multiple_prices ) {
-					$price_info["product_base_price"]= $price_info["product_price"];
-					$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
-				}
-				$price_info["product_price_id"]=$db->f("product_price_id");
-				$GLOBALS['product_info'][$product_id]['price'] = $price_info;
-				return $GLOBALS['product_info'][$product_id]['price'];
-			}
-			// No price found
-			$GLOBALS['product_info'][$product_id]['price'] = false;
-			return $GLOBALS['product_info'][$product_id]['price'];
+			return $price;
 		}
 		else {
 			return $GLOBALS['product_info'][$product_id]['price'];
 		}
 	}
+	/**
+	 * Returns the price for a specific shopper group,
+	 * Returns nothing, when the shopper group has no price
+	 *
+	 * @param int $product_id
+	 * @param int $shopper_group_id
+	 * @param boolean $check_multiple_prices
+	 * @param string $additionalSQL
+	 * @return mixed
+	 */
+	function getPriceByShopperGroup( $product_id, $shopper_group_id, $check_multiple_prices=false, $additionalSQL='' ) {
+		$db = new ps_DB;
+		$vendor_id = $_SESSION['ps_vendor_id'];
+		if( empty( $shopper_group_id )) {
+			ps_shopper_group::makeDefaultShopperGroupInfo();
+			$shopper_group_id = $GLOBALS['vendor_info'][$vendor_id]['default_shopper_group_id'];
+		}
+	
+		$whereClause='WHERE product_id=%s AND shopper_group_id=%s ';
+		$whereClause = sprintf( $whereClause, intval($product_id), intval($shopper_group_id) );
 
+		$q = "SELECT `product_price`, `product_price_id`, `product_currency` FROM `#__{vm}_product_price` $whereClause $additionalSQL";
+		$db->setQuery($q); $db->query();
+		
+		if ($db->next_record()) {
+			$price_info["product_price"]= $db->f("product_price");
+			$price_info["product_currency"] = $db->f("product_currency");
+			if( $check_multiple_prices ) {
+				$price_info["product_base_price"]= $db->f("product_price");
+				$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
+			}
+			$price_info["product_price_id"] = $db->f("product_price_id");					
+			$price_info["item"]=true;
+			$GLOBALS['product_info'][$product_id]['price'] = $price_info;
+			return $GLOBALS['product_info'][$product_id]['price'];
+		}
+		else {
+			return;
+		}
+	}
 	/**
 	 * Adjusts the price from get_price for the selected attributes
 	 * @author Nathan Hyde <nhyde@bigDrift.com>
@@ -2025,13 +1986,18 @@ class ps_product extends vmAbstractObject {
 			$price_info = $this->get_price( $product_id );
 			// Get the Base Price of the Product
 			$base_price_info = $this->get_price($product_id, true );
-
+			if( $price_info === false ) {
+				$price_info = $base_price_info;
+			}
 			$html = "";
 			$undiscounted_price = 0;
 			if (isset($price_info["product_price_id"])) {
-
-				$base_price = $base_price_info["product_price"];
-				$price = $price_info["product_price"];
+				if( $base_price_info["product_price"]== $price_info["product_price"] ) {
+					$price = $base_price = convertECB( $base_price_info["product_price"], $price_info['product_currency'] );
+				} else {
+					$base_price = convertECB( $base_price_info["product_price"], $price_info['product_currency'] );
+					$price = convertECB( $price_info["product_price"], $price_info['product_currency'] );	
+				}
 
 				if ($auth["show_price_including_tax"] == 1) {
 					$my_taxrate = $this->get_product_taxrate($product_id);

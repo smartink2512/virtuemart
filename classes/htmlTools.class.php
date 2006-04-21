@@ -526,6 +526,7 @@ class vmCommonHTML extends mosHTML {
 	}
 	/**
 	* Loads all necessary script files for Moo.Ajax
+	* http://moofx.mad4milk.net/documentation/#mooajax
 	* @static 
 	* @since VirtueMart 1.1.0
 	*/
@@ -541,6 +542,7 @@ class vmCommonHTML extends mosHTML {
 	}
 	/**
 	 * Function to include the MooFx JS scripts in the HTML document
+	 * http://moofx.mad4milk.net
 	 * @static 
 	 * @since VirtueMart 1.1.0
 	 *
@@ -559,6 +561,7 @@ class vmCommonHTML extends mosHTML {
 	}
 	/**
 	 * Function to include the Lightbox JS scripts in the HTML document
+	 * Source: http://blog.feedmarker.com/2006/02/12/how-to-make-better-modal-windows-with-lightbox/
 	 * @static 
 	 * @since VirtueMart 1.1.0
 	 *
@@ -577,7 +580,8 @@ class vmCommonHTML extends mosHTML {
 	}
 	
 	/**
-	 * Function to include the Yahoo! asynchronous connection scripts in the HTML document
+	 * Function to include the behaviour scripts in the HTML document
+	 * Behaviour: http://bennolan.com/behaviour/
 	 * @static 
 	 * @since VirtueMart 1.1.0
 	 *
@@ -591,22 +595,7 @@ class vmCommonHTML extends mosHTML {
 			define ( "_BEHAVIOURJS_LOADED", "1" );
 		}		
 	}
-	/**
-	 * Function to include the Yahoo! asynchronous connection scripts in the HTML document
-	 * @static 
-	 * @since VirtueMart 1.1.0
-	 *
-	 */
-	function loadYahooConnection() {
-		global $mosConfig_live_site, $option;
-		if( !defined( "_YAHOOCONNECTION_LOADED" )) {
-			?>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/YahooConnection/YAHOO.js"></script>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/YahooConnection/connection.js"></script>
-			<?php
-			define ( "_YAHOOCONNECTION_LOADED", "1" );
-		}		
-	}
+
 	/**
 	 * Returns a div element of the class "shop_error" 
 	 * containing $msg to print out an error

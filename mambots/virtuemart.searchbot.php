@@ -73,7 +73,7 @@ function botSearchVM( $text, $phrase='', $ordering='' ) {
 			break;
 	}
   
-  $database->setQuery( " SELECT id, name FROM  `#__menu` WHERE link LIKE '%com_virtuemart%' AND published=1");
+  $database->setQuery( " SELECT id, name FROM  `#__menu` WHERE link LIKE '%com_virtuemart%' AND published=1 AND access=0");
   $database->loadObject( $Item );
   $ItemName = !empty( $Item->name ) ? $Item->name : "Shop";
   $Itemid = !empty( $Item->id ) ? $Item->id : "1";

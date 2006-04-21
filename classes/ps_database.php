@@ -96,7 +96,8 @@ class ps_DB extends database {
 		$this->record = null;
 		$this->record = Array(0);
 
-		if (strtoupper(substr( $this->_sql , 0, 6 )) == "SELECT" ) {
+		if (strtoupper(substr( $this->_sql , 0, 6 )) == "SELECT" 
+			|| strtoupper(substr( $this->_sql , 0, 4 )) == 'SHOW' ) {
 			$this->record = $this->_database->loadObjectList();
 		}
 		else {

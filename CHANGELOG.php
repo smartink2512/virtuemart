@@ -33,8 +33,23 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-18-04-2006 soeren
+20-04-2006 soeren
+# Task #722 - Undefined index: coupon_discount in ps_checkout.php
+# Task #721 - Trying to get property of non-object in shop.debug.php
+# Task #560 - Clone Product with Child Products (added "SHOW" as result-returning-case ps_database.php)
+# Task #675 - No permissions to view products after search (virtuemart.searchbot.php)
+# Task #698 - Lost password link uses relative link instead of absolute (mod_virtuemart.php)
+# Task #707 - Payment method at the end of the checkout is not shown (ps_checkout.php)
+# Lightbox fixes for IE
++ dynamic price form in the product list (Click on a price and it loads!)
+^ admin product list now showing the prices of the default shopper group
 
+18-04-2006 soeren
++ new vmConnector class (vmConnector.class.php). It can be used to retrieve remote URLs and documents. It tries to 
+	use cURL to do the communication when available. When a proxy has been set, the proxy is
+	used for all outgoing calls.
+	The new function vmconnector::handleCommunication( $url, $postData='' ) is to be used by
+	payment and shipping modules. No need anymore to handle that transaction part in the module itself.
 + Possibility to enter Proxy information. This is espcically useful when trying to use
 	UPS/USPS on godaddy servers.
 	New configuration parameters: VM_PROXY_URL, VM_PROXY_PORT, VM_PROXY_USER, VM_PROXY_PASS
@@ -68,7 +83,7 @@ VirtueMart 1.1.x
 	
 + "ask a question" - enquiry mod by macallf (http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=17143.0)
 + new Lightbox javascript added to have a cool modal window during an Ajax request! => http://blog.feedmarker.com/2006/02/12/how-to-make-better-modal-windows-with-lightbox/
-+ added Yahoo Connection Manager javascript to provide XMLHttpRequest services (aka Ajax)
++ added Moo.Ajax javascript to provide XMLHttpRequest services (aka Ajax)
 
 10-04-2006 soeren
 ^ product list now opens a new window to display the product form. Forms are to be "ajaxified" soon.

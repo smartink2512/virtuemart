@@ -24,8 +24,8 @@ if (!$acl->acl_check( 'administration', 'manage', 'users', $my->usertype, 'compo
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$list  = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id";
-$count = "SELECT COUNT(id) as num_rows FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id";
+$list  = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON u.id=ui.user_id";
+$count = "SELECT COUNT(id) as num_rows FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON u.id=ui.user_id";
 $q = " WHERE ";
 if ( !empty($keyword) ) {	
 	$q .= " (u.username LIKE '%$keyword%' OR ";

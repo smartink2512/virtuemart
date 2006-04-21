@@ -118,7 +118,7 @@ if ($checkout) {
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
     <input type="hidden" name="user_id" value="<?php echo $my->id ?>" />
-    <?php		
+    <?php
 	    $label = "\$lbl = \$VM_LANG->_PHPSHOP_CHECKOUT_MSG_$checkout_this_step;";
 	    eval($label);
 	    echo "<h4>".$lbl."</h4>";

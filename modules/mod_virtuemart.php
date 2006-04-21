@@ -187,7 +187,7 @@ if ( $show_login_form == "yes" ) {
 		</tr>
 		<tr>
 		  <td colspan="2">
-			<a href="<?php echo sefRelToAbs( SECUREURL.'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$_REQUEST['Itemid'] ); ?>">
+			<a href="<?php echo sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$_REQUEST['Itemid'] ); ?>">
 			<?php echo _LOST_PASSWORD; ?>
 			</a>
 		  </td>
