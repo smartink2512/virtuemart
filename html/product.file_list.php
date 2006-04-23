@@ -44,10 +44,11 @@ $q .= "ORDER BY file_is_image ";
 $db->query($q);
 $db->next_record();
 if( $db->num_rows() < 1 && $task != "cancel" ) {
-  mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.file_form&product_id=$product_id" );
+  	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.file_form&product_id=$product_id&no_menu=".$no_menu );
 }
-else
+else {
 	$num_rows = $db->num_rows();
+}
 	
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );

@@ -319,12 +319,17 @@ class ps_product_attribute {
 						}
 						// Apply shopper group discount
 						$price *= 1 - ($auth["shopper_group_discount"]/100);
-						$price = convertECB( $price, $productPrice['product_original_currency'] );
+						$price = convertECB( $price, $productPrice['product_currency'] );
 						if ($price=="0") {
 							$attribut_hint = "test";
 						}
 						$base_var=str_replace(" ","_",$base_value);
-						$html.="<option value=\"$base_var\">$attribtxt&nbsp;(&nbsp;".$vorzeichen."&nbsp;".$CURRENCY_DISPLAY->getFullValue($price)."&nbsp;)</option>";
+						$html.="<option value=\"$base_var\">$attribtxt";
+						if( $_SESSION['auth']['show_prices'] ) {
+							$html .= "&nbsp;(&nbsp;".$vorzeichen."&nbsp;".$CURRENCY_DISPLAY->getFullValue($price)."&nbsp;)";
+						}
+						$html .= "</option>";
+
 					}
 					else {
 						$base_var=str_replace(" ","_",$base_value);

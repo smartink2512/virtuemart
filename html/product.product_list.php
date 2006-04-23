@@ -16,6 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+require_once( CLASSPATH .'ps_product_files.php');
 global $ps_product, $ps_product_category;
 
 $keyword = mosgetparam($_REQUEST, 'keyword' );
@@ -242,8 +243,9 @@ $listObj->startTable();
 $columns = Array(  '#' => '',
 				"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
 				$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => "width=\"30%\"",
+				'Media' => 'width="5%"',
 				$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => "width=\"15%\"",
-				$VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE => "width=\"15%\"",
+				$VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE => "width=\"10%\"",
 				$VM_LANG->_PHPSHOP_CATEGORY => "width=\"15%\"" );
 
 // Only show reordering fields when a category ID is selected!
@@ -251,9 +253,9 @@ if( $category_id ) {
 	$columns[$VM_LANG->_VM_FIELDMANAGER_REORDER] ="width=\"5%\"";
 	$columns[vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' )] ='width="8%"';
 }
-$columns[$VM_LANG->_PHPSHOP_MANUFACTURER_MOD] ="width=\"15%\"";
+$columns[$VM_LANG->_PHPSHOP_MANUFACTURER_MOD] ="width=\"10%\"";
 $columns[$VM_LANG->_PHPSHOP_REVIEWS] ="width=\"10%\"";
-$columns[$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH] ="width=\"5%\"";
+$columns[$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH] ="";
 $columns[$VM_LANG->_PHPSHOP_PRODUCT_CLONE] = "";
 $columns[_E_REMOVE] = "width=\"5%\"";
 $columns['Id'] = '';
@@ -289,12 +291,19 @@ if ($num_rows > 0) {
 			$tmpcell .= $sess->url($_SERVER['PHP_SELF'] . "?page=$modulename.product_list&product_parent_id=" . $db->f("product_id"));
 			$tmpcell .=  "\">[ ".$VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL. " ]</a>";
 		}
-		
 		$listObj->addCell( $tmpcell );
-
+		
+		// Product Media Link
+		$numFiles = ps_product_files::countFilesForProduct($db->f('product_id'));
+		$link = $sess->url( $_SERVER['PHP_SELF']. '?page=product.file_list&product_id='.$db->f('product_id').'&no_menu=1' );
+		$link = defined('_PSHOP_ADMIN') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
+		$text = '<img src="'.$mosConfig_live_site.'/includes/js/ThemeOffice/media.png" align="middle" border="0" />&nbsp;('.$numFiles.')';
+		$tmpcell = vmPopupLink( $link, $text, 800, 540, '_blank', '', 'screenX=100,screenY=100' );
+		$listObj->addCell( $tmpcell );
+		
 		// The product sku
 		$listObj->addCell( $db->f("product_sku") );
-
+		
 		$price = $ps_product->getPriceByShopperGroup( $db->f('product_id'), '');
 		$tmp_cell = '<span onclick="getPriceForm(this);">'.$CURRENCY_DISPLAY->getFullValue( $price['product_price']);
 		$tmp_cell .= '&nbsp;&nbsp;&nbsp;</span>';

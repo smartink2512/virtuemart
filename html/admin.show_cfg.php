@@ -564,32 +564,31 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 <?php
   $tabs->endTab();
   $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE . $spacer, "site-page");
-    $subtabs2 = new mShopTabs(0, 0, "_layout");
-    $subtabs2->startPane("layout-pane");
-    $subtabs2->startTab( "Display", "layout-1-page");
 ?>
 
-<table class="adminform">
+<fieldset style="width:48%;float:left;">
+	<legend>Display</legend>
+<table class="adminlist">
     <tr>
         <td class="labelcell"><label for="conf_PSHOP_PDF_BUTTON_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON ?></label></td>
         <td>
         <input type="checkbox" id="conf_PSHOP_PDF_BUTTON_ENABLE" name="conf_PSHOP_PDF_BUTTON_ENABLE" class="inputbox" <?php if (PSHOP_PDF_BUTTON_ENABLE == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN ) ?></td>
     </tr>    
     <tr>
         <td class="labelcell"><label for="conf_VM_SHOW_EMAILFRIEND"><?php echo $VM_LANG->_VM_ADMIN_SHOW_EMAILFRIEND ?></label></td>
         <td>
         	<input type="checkbox" id="conf_VM_SHOW_EMAILFRIEND" name="conf_VM_SHOW_EMAILFRIEND" class="inputbox" <?php if (@VM_SHOW_EMAILFRIEND == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_VM_ADMIN_SHOW_EMAILFRIEND_TIP ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_SHOW_EMAILFRIEND_TIP ) ?></td>
     </tr>
     <tr>
         <td class="labelcell"><label for="conf_VM_SHOW_PRINTICON"><?php echo $VM_LANG->_VM_ADMIN_SHOW_PRINTICON ?></label></td>
         <td>
         	<input type="checkbox" id="conf_VM_SHOW_PRINTICON" name="conf_VM_SHOW_PRINTICON" class="inputbox" <?php if (@VM_SHOW_PRINTICON == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_VM_ADMIN_SHOW_PRINTICON_TIP ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_SHOW_PRINTICON_TIP ) ?></td>
     </tr>
     
     <tr>
@@ -597,14 +596,22 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td>
             <input type="text" name="conf_FLYPAGE" class="inputbox" value="<?php echo FLYPAGE ?>" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ) ?></td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE ?></td>
         <td>
             <input type="text" name="conf_CATEGORY_TEMPLATE" class="inputbox" value="<?php echo CATEGORY_TEMPLATE ?>" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN ?>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN ) ?>
+        </td>
+    </tr>
+    <tr>
+        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW ?></td>
+        <td>
+            <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo PRODUCTS_PER_ROW ?>" />
+        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN ) ?>
         </td>
     </tr>
     <tr>
@@ -612,7 +619,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td>
             <input type="checkbox" name="conf_PSHOP_SHOW_TOP_PAGENAV" class="inputbox" <?php if (PSHOP_SHOW_TOP_PAGENAV == '1') echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NAV_AT_TOP_TIP ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_NAV_AT_TOP_TIP ) ?></td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL ?></td>
@@ -624,7 +631,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
                         <option value="product_cdate" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_cdate') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_LATEST ?></option>
             </select>
         </td>
-        <td><?php echo $VM_LANG->_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP ) ?></td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_VM_BROWSE_ORDERBY_FIELDS_LBL ?></td>
@@ -642,29 +649,21 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
                         <label for="conf_VM_BROWSE_ORDERBY_FIELDS4"><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></label>
                         
         </td>
-        <td><?php echo $VM_LANG->_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP ) ?></td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT ?></td>
         <td>
             <input type="checkbox" name="conf_PSHOP_SHOW_PRODUCTS_IN_CATEGORY" class="inputbox" <?php if (PSHOP_SHOW_PRODUCTS_IN_CATEGORY == '1') echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP ?></td>
-    </tr>
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW ?></td>
-        <td>
-            <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo PRODUCTS_PER_ROW ?>" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN ?>
-        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP ) ?></td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE ?></td>
         <td>
             <input type="text" name="conf_NO_IMAGE" class="inputbox" value="<?php echo NO_IMAGE ?>" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN ?>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN ) ?>
         </td>
     </tr>
     <tr>
@@ -672,15 +671,15 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td>
             <input type="checkbox" name="conf_SHOWVERSION" class="inputbox" <?php if (SHOWVERSION == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN ?>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN ) ?>
         </td>
     </tr>
 </table>
-<?php
-    $subtabs2->endTab();
-    $subtabs2->startTab( "Layout", "layout-2-page");
-?>
-<table class="adminform">
+</fieldset>
+
+<fieldset style="width:48%;float:right;">
+<legend>Layout</legend>
+<table class="adminlist">
     <tr>
         <td valign="top"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ADDTOCART_STYLE ?></strong></td>
         <td valign="middle" colspan="2"><?php
@@ -709,24 +708,21 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 	        <td width="15%" valign="top">
 	            <input type="checkbox" name="conf_PSHOP_IMG_RESIZE_ENABLE" class="inputbox" <?php if (PSHOP_IMG_RESIZE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
 	        </td>
-	        <td width="55%"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP ?></td>
+	        <td width="55%"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP ) ?></td>
 	    </tr>
 	    <tr>
 	        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH ?></td>
 	        <td>
 	            <input type="text" name="conf_PSHOP_IMG_WIDTH" class="inputbox" value="<?php echo PSHOP_IMG_WIDTH ?>" />
 	        </td>
-	        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP ?></td>
+	        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP ) ?></td>
 	    </tr>
 	    <tr>
 	        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT ?></td>
 	        <td>
 	            <input type="text" name="conf_PSHOP_IMG_HEIGHT" class="inputbox" value="<?php echo PSHOP_IMG_HEIGHT ?>" />
 	        </td>
-	        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP ?></td>
-	    </tr>
-	    <tr>
-	        <td colspan="3"><hr />&nbsp;</td>
+	        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP ) ?></td>
 	    </tr>
 	    <?php
     }
@@ -736,27 +732,11 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
     	echo '<input type="hidden" name="conf_PSHOP_IMG_HEIGHT" value="'. PSHOP_IMG_HEIGHT .'" />';
     }
     ?>
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 ?></td>
-        <td>
-            <input type="text" name="conf_SEARCH_COLOR_1" class="inputbox" value="<?php echo SEARCH_COLOR_1 ?>" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN ?>
-        </td>
-    </tr>
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 ?></td>
-        <td>
-            <input type="text" name="conf_SEARCH_COLOR_2" class="inputbox" value="<?php echo SEARCH_COLOR_2 ?>" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN ?>
-        </td>
-    </tr>
+    
 </table>
-
+</fieldset>
+<br style="clear:both;" />
 <?php
-    $subtabs2->endTab();
-    $subtabs2->endPane();
   $tabs->endTab();
   
   $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING . $spacer, "shipping-page");

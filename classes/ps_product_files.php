@@ -40,11 +40,11 @@ class ps_product_files {
 		$db = new ps_DB;
 
 		if (empty($_FILES["file_upload"]["name"]) && empty($d['file_url'])) {
-			$GLOBALS['vmLogger']->log( "You must either Upload a File or provide a File URL.", PEAR_LOG_ERR );
+			$GLOBALS['vmLogger']->err( "You must either Upload a File or provide a File URL." );
 			return False;
 		}
 		if (empty($d["product_id"])) {
-			$GLOBALS['vmLogger']->log( "A product ID must be specified.", PEAR_LOG_ERR );
+			$GLOBALS['vmLogger']->err( "A product ID must be specified." );
 			return False;
 		}
 
@@ -571,7 +571,28 @@ class ps_product_files {
 		}
 		return $html;
 	}
-
+	/**
+	 * Returns the number of files AND images which are assigned to $pid
+	 *
+	 * @param int $pid
+	 * @param string $type Filter the query by file_is_image: [files|images|(empty)]
+	 * @return int
+	 */
+	function countFilesForProduct( $pid, $type = '' ) {
+		$db = new ps_DB();
+		switch( $type ) {
+			case 'files': $type_sql = 'AND file_is_image=0'; break;
+			case 'images': $type_sql = 'AND file_is_image=1'; break;
+			default: $type_sql = ''; break;
+		}
+		$db->query( "SELECT COUNT(file_id) AS files FROM #__{vm}_product_files WHERE file_product_id=".intval($pid)." $type_sql" );
+		$db->next_record();
+		$files = $db->f('files');
+		unset( $db );
+		
+		return $files;
+	}
+	
 	/**************************************************************************
 	* name: send_file()
 	* created by: soeren
@@ -582,7 +603,7 @@ class ps_product_files {
 	* returns:
 	**************************************************************************/
 	function send_file( $file_id, $product_id ) {
-		global $VM_LANG, $vmLogger;
+		global $VM_LANG, $vmLogger, $mosConfig_absolute_path;
 		$dbf = new ps_DB;
 		$html = "";
 		
@@ -600,18 +621,34 @@ class ps_product_files {
 		
 		$dbf->setQuery($sql);
 		$dbf->query();
-		if( $dbf->next_record() && is_readable($dbf->f("file_name") ) ) {
-			// dump anything in the buffer
-			while( @ob_end_clean() );
+		if( !$dbf->next_record() ) {
+			$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_NOT_FOUND );
+			return false;
+		}
+		
+		// dump anything in the buffer
+		while( @ob_end_clean() );
+		
+		if( strtolower(substr($dbf->f("file_name"),0,4))=='http') {
+			mosRedirect( $dbf->f('filename') );
+		}
+		if( !stristr($dbf->f('filename'), $mosConfig_absolute_path)) {
+			// it's the relative path?
+			$filename = $mosConfig_absolute_path.'/'.$dbf->f('filename');
+		}
+		else {
+			$filename = $dbf->f('filename');
+		}
+		if( $filename ) {
 
 			header('Content-Type: ' . $dbf->f("file_mimetype"));
-			
+
 			$ext = $dbf->f('file_extension');
 			if(!stristr($dbf->f("file_mimetype"), "pdf") && $ext != 'pdf') {
-				header('Content-Disposition: attachment; filename="' . basename($dbf->f("file_name")) . '"');
+				header('Content-Disposition: attachment; filename="' . basename($filename) . '"');
 			}
 			/*** Now send the file!! ***/
-			readfile( $dbf->f("file_name") );
+			readfile( $filename );
 
 			exit();
 		}

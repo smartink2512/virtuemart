@@ -66,7 +66,7 @@ $db_product->query( $q );
 
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
-  mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+  	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 if( empty($product_id)) {
 	$product_id = $db_product->f('product_id');
@@ -78,16 +78,15 @@ if ($product_parent_id != 0) {
 	$dbp->next_record();
 }
 
+$images = new stdClass();
 // Let's have a look wether the product has images.
 if( $product_parent_id != 0 ) {
-	  $db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id=$product_parent_id AND file_is_image=1" );
+	$images->images = ps_product_files::countFilesForProduct( $product_parent_id, 'images' );  
 }
 else {
-  	$db->query( "SELECT COUNT(file_id) AS images FROM #__{vm}_product_files WHERE file_product_id=$product_id AND file_is_image=1" );
+  	$images->images = ps_product_files::countFilesForProduct( $product_id, 'images' );  
 }
-$db->next_record();
-$images = new stdClass();
-$images->images = $db->f("images");
+
 
 // Let's have a look wether the product has related products.
   $q = "SELECT product_sku, related_products FROM #__{vm}_product,#__{vm}_product_relations ";

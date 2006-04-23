@@ -33,6 +33,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+23-04-2006 soeren
+
+# hiding attribute price modifiers when the user has no permission to view prices
+
 20-04-2006 soeren
 # Task #722 - Undefined index: coupon_discount in ps_checkout.php
 # Task #721 - Trying to get property of non-object in shop.debug.php

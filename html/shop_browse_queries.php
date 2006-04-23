@@ -285,7 +285,7 @@ elseif (empty($manufacturer_id)) {
 
 /*** GET ALL PUBLISHED PRODUCTS FROM THAT MANUFACTURER ***/
 elseif (!empty($manufacturer_id)) {
-	$list  = "SELECT DISTINCT * FROM (`#__{vm}_product`, `#__{vm}_product_mf_xref`,`#__{vm}_shopper_group` ";
+	$list  = "SELECT DISTINCT *,`#__{vm}_product`.`product_id` FROM (`#__{vm}_product`, `#__{vm}_product_mf_xref`,`#__{vm}_shopper_group` ";
 	$count  = "SELECT $count_name FROM (`#__{vm}_product`, `#__{vm}_product_mf_xref`,`#__{vm}_shopper_group` ";
 	$q  = " manufacturer_id='".$manufacturer_id."' ";
 	$q .= "\n AND `#__{vm}_product`.`product_id`=`#__{vm}_product_mf_xref`.`product_id` ";
