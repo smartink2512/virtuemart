@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 /**
  * Provides general tools to handle connections (http, headers, ... )
+ * 
  * @author soeren
  * @since VirtueMart 1.1.0
  */
@@ -27,7 +28,7 @@ class vmConnector {
 	
 	/**
 	 * Clears the output buffer, sends a http status code and a content if given
-	 *
+	 * @static 
 	 * @param int $http_status
 	 * @param string $mime_type
 	 * @param string $content
@@ -49,7 +50,8 @@ class vmConnector {
 	/**
 	 * This is a general function to safely open a connection to a server,
 	 * post data when needed and read the result.
-	 * 
+	 * Tries using cURL and switches to fopen/fsockopen if cURL is not available
+	 * @since VirtueMart 1.1.0
 	 * @static 
 	 * @param string $url
 	 * @param string $postData

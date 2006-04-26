@@ -28,28 +28,66 @@ global $option;
 $product_id = mosGetParam($_REQUEST, 'product_id' );
 $task = mosGetParam($_REQUEST, 'task' );
 
-$q  = "SELECT product_name FROM #__{vm}_product WHERE product_id = '$product_id'";
+$q = "SELECT product_id, product_name, product_full_image as file_name, product_thumb_image, product_publish FROM #__{vm}_product WHERE product_id=".intval($product_id); 
 $db->query($q);
 $db->next_record();
-$product_name = '<a href="'.$_SERVER['PHP_SELF'].'?option='.$option.'&amp;product_id='.$product_id.'&amp;page=product.product_form">'.$db->f("product_name").'</a>';
+$product_name = $db->f("product_name");
+
+$files = array();
+if( $db->f('file_name')) {
+	 $file = new stdClass();
+	 $file->file_id = 'product_images';
+	 $file->file_name = IMAGEPATH.'product/'.$db->f('file_name');
+	 $file->product_name = $db->f('product_name');
+	 $file->file_url = IMAGEURL.'product/'.$db->f('file_name');
+	 $file->product_thumb_image = $db->f('product_thumb_image');
+	 $file->file_title = $db->f('file_name');
+	 $file->file_is_image = 1;
+	 $file->file_product_id = $product_id;
+	 $file->file_extension = strrchr($db->f('file_name'), '.');
+	 $file->file_published = $db->f('product_publish');
+	 $files[] = $file;
+}
 
 $dbf = new ps_DB;
 $sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';
 $dbf->query( $sql );
-$dbf->next_record();
-	
+$downloadFiles = array();
+while( $dbf->next_record() ) {
+	$downloadFiles[] = $dbf->f('attribute_value');
+}
+
 $q = "SELECT file_id, file_is_image, file_product_id, file_extension, file_url, file_published, file_name, file_title FROM #__{vm}_product_files  ";
 $q .= "WHERE file_product_id = '$product_id' ";
-$q .= "ORDER BY file_is_image ";
+$q .= "ORDER BY file_is_image DESC";
 $db->query($q);
 $db->next_record();
+if( !empty( $files)) {
+	$db->record = array_merge( $files, $db->record );
+}
+
 if( $db->num_rows() < 1 && $task != "cancel" ) {
-  	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.file_form&product_id=$product_id&no_menu=".$no_menu );
+  	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.file_form&product_id=$product_id&no_menu=".@$_REQUEST['no_menu'] );
 }
-else {
-	$num_rows = $db->num_rows();
-}
+$db->reset();
+$arr = array(); $arr2 = array();
+while ($db->next_record()) {
 	
+	// Reorder the whole recordset and put pay-download files at the top
+	$filename = $mosConfig_absolute_path. str_replace($mosConfig_absolute_path, '', $db->f("file_name") );
+	$isProductDownload = in_array( basename($filename), $downloadFiles ) ? true : false;
+	if( $isProductDownload ) {
+		$arr[] = $db->getCurrentRow();
+	}
+	else {
+		$arr2[] = $db->getCurrentRow();
+	}
+}
+
+$db->record = array_merge( $arr, $arr2 );
+
+$num_rows = $db->num_rows();
+
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 
@@ -66,51 +104,81 @@ $listObj->startTable();
 $columns = Array(  "#" => 'width="20"', 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll($num_rows)\" />" => 'width="20"',
 					$VM_LANG->_PHPSHOP_FILES_LIST_FILENAME => '',
+					'Role' => '',
 					$VM_LANG->_PHPSHOP_VIEW => '',
 					$VM_LANG->_PHPSHOP_FILES_LIST_FILETITLE => '',
-					$VM_LANG->_PHPSHOP_UPDATE => '',
 					$VM_LANG->_PHPSHOP_FILES_LIST_FILETYPE => '',
 					$VM_LANG->_PHPSHOP_FILEMANAGER_PUBLISHED => '',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
+$roles= array( 'isDownlodable' => IMAGEURL.'ps_image/downloadable.gif',
+				'isImage' => IMAGEURL.'ps_image/image.gif',
+				'isProductImage' => IMAGEURL.'ps_image/image.png',
+				'isFile' => IMAGEURL.'ps_image/attachment.gif',
+				'isRemoteFile' => IMAGEURL.'ps_image/url.gif'
+		);
 // Reset Result pointer
-$db->called=false;
+$db->reset();
 
 $i = 0;
 while ($db->next_record()) {
-	
+	$filename = $mosConfig_absolute_path. str_replace($mosConfig_absolute_path, '', $db->f("file_name") );
 	$listObj->newRow();
 	
 	// The row number
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
-	$isProductDownload = $db->f("file_title") == $dbf->f("attribute_value") ? true : false;
+	$isProductDownload = in_array( basename($filename), $downloadFiles ) ? true : false;
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("file_id"), $isProductDownload, "file_id" ) );
+	$listObj->addCell( mosHTML::idBox( $i, $db->f("file_id"), false, "file_id" ) );
+
+	$tmp_cell = '';
 	
-	if($db->f("file_name")) 
-		$tmp_cell = basename($db->f("file_name"));
-	else
-		$tmp_cell = basename($db->f("file_url"));
+	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'._E_EDIT.'">';
+	$style = '';
+	if($filename) {
+		$role = $db->f("file_is_image") ? 'isImage' : 'isFile';
+		if( $db->f('product_name')) {
+			$role = 'isProductImage';
+			$style = 'style="font-weight:bold;"';
+		}
+		if( $isProductDownload ) $role = 'isDownlodable';
+		$tmp_cell .= basename($filename);
+	}
+	else {
+		$role = 'isRemoteFile';
+		$tmp_cell .= basename($db->f("file_url"));
+	}
+	$tmp_cell .= "</a>&nbsp;";
+	
+	$listObj->addCell( $tmp_cell, $style );	
+	
+	$tmp_cell = '<img src="'.$roles[$role].'" align="middle" title="'.$role.'" alt="'.$role.'" />';
 	$listObj->addCell( $tmp_cell );	
 	
-	$tmp_cell = "";
+	$tmp_cell = '';
 	if( $db->f("file_is_image")) {
-		$fullimg = $db->f("file_name");
+		$fullimg = $filename;
 		$info = pathinfo( $fullimg );
-		$thumb = $info["dirname"] ."/resized/". basename($db->f("file_name"),".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
-		$thumburl = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $thumb );
 		if( is_file( $fullimg ) ) {
 			$tmp_cell .= $VM_LANG->_PHPSHOP_FILES_LIST_FULL_IMG.": ";
-			$tmp_cell .= mm_ToolTip( '&nbsp;<img src="'.$db->f("file_url") . '" alt="Full Image" />', $VM_LANG->_PHPSHOP_FILES_LIST_FULL_IMG, '{mosConfig_live_site}/images/M_images/con_info.png', '', '[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]' ); 
+			$tmp_cell .= '<a onclick="document.getElementById(\'file_form_iframe\').src=\''.$db->f("file_url") . '\';" href="#file_form" title="Click me!">[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]</a>'; 
 		}
-		$tmp_cell .= '<br/>';
+		$tmp_cell .= '<br />';
+		if( $db->f('product_thumb_image')) {
+			$thumb = IMAGEPATH.'product/'.$db->f('product_thumb_image');
+			$thumburl = IMAGEURL.'product/'.$db->f('product_thumb_image');
+		}
+		else {
+			$thumb = $info["dirname"] ."/resized/". basename($filename,".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
+			$thumburl = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $thumb );
+		}
 		if( is_file( $thumb ) ) {
 			$tmp_cell .= $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG.": ";
-			$tmp_cell .= mm_ToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG, '{mosConfig_live_site}/images/M_images/con_info.png', '', '[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]' ); 
+			$tmp_cell .= mm_ToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG, '', '', '[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]' ); 
 		}
 		if( !$db->f("file_name") ) {
 			$tmp_cell = "&nbsp;<a target=\"_blank\" href=\"".$db->f("file_url"). "\">[ ".$VM_LANG->_PHPSHOP_VIEW . " ]</a><br/>"; 
@@ -119,17 +187,6 @@ while ($db->next_record()) {
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $db->f("file_title"));
-	   
-	if( !$isProductDownload )
-		$tmp_cell = "<a href=\"". $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.file_form&product_id=$product_id&file_id=".$db->f("file_id") ."\">"
-				. $VM_LANG->_PHPSHOP_FILES_LIST_EDITFILE 
-				."</a>&nbsp;";
-	else
-		$tmp_cell = " - ";
-		
-    $listObj->addCell( $tmp_cell );	  
-	
-
 
 	$listObj->addCell( $db->f("file_extension") );
 
@@ -141,10 +198,8 @@ while ($db->next_record()) {
 		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/tick.png" border="0" alt="Unpublish" />';
 	} 
 	$listObj->addCell( $tmp_cell );
-	if( !$isProductDownload )
-		$listObj->addCell( $ps_html->deleteButton( "file_id", $db->f("file_id"), "deleteProductFile", $keyword, $limitstart, "&product_id=$product_id" ) );
-	else
-		$listObj->addCell( "" );
+	
+	$listObj->addCell( $ps_html->deleteButton( "file_id", $db->f("file_id"), "deleteProductFile", $keyword, $limitstart, "&product_id=$product_id" ) );
 		
 	$i++;
 
@@ -156,3 +211,9 @@ $listObj->endTable();
 $listObj->writeFooter( $keyword,"&product_id=$product_id" );
 
 ?>
+<br /><br />
+<a name="file_form" href="#listheader">
+<div id="file_form_container">
+	<img align="middle" src="<?php echo $mosConfig_live_site ?>/administrator/images/restore_f2.png" border="0" alt="Go Up" /> Up</a>
+	<iframe id="file_form_iframe" src="" style="height: 1000px;" frameborder="0" width="100%"></iframe>
+</div>

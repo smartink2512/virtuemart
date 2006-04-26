@@ -165,7 +165,7 @@ class vmMenuBar extends mosMenuBar {
 		$image2 = $vmIcons['cancel_icon2'];
 		
 		if( $no_menu ) {
-			$js = "window.close();";
+			$js = "vm_windowClose();";
 		}
 		else {
 			$js = "vm_submitButton('$task', 'adminForm', '$my_page');";

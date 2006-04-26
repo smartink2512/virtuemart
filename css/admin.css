@@ -184,3 +184,8 @@ table.adminform td.editor {
 	font-size: 12px;
 	color: #254D78;
 }
+iframe.hidden {
+	visibility: hidden;
+	width:0px;
+	height:0px;
+}

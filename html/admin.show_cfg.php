@@ -251,7 +251,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 	</table>
 </fieldset>
 <br style="clear:both;" />
-<fieldset style="width:48%;float:right;">
+<fieldset>
 	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_USER_REGISTRATION_SETTINGS ?></legend>
 	<table class="adminform">
 		<tr>
@@ -279,10 +279,10 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		</tr>
 		
 		<tr>
-			<td class="labelcell" colspan="2"><?php
+			<td class="labelcell"><?php
 				echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION;
 			?></td>
-			<td><?php
+			<td colspan="2"><?php
 			if( $mosConfig_allowUserRegistration == '1' ) {
 				echo '<span style="color:green;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_YES.'</span>';
 			}
@@ -293,10 +293,10 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			?></td>
 		</tr>
 		<tr>
-			<td class="labelcell" colspan="2"><?php
+			<td class="labelcell"><?php
 				echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION;
 			?></td>
-			<td><?php
+			<td colspan="2"><?php
 			if( $mosConfig_useractivation == '0' ) {
 				echo '<span style="color:green;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_NO.'</span>';
 			}
@@ -345,7 +345,6 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		<tr>
 			<td class="labelcell">
 				<label for="conf_PSHOP_AGREE_TO_TOS_ONORDER"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER ?></label>
-				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_PSHOP_AGREE_TO_TOS_ONORDER" name="conf_PSHOP_AGREE_TO_TOS_ONORDER" class="inputbox" <?php if (PSHOP_AGREE_TO_TOS_ONORDER == '1') echo "checked=\"checked\""; ?> value="1" />
@@ -353,7 +352,48 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN ) ?>
 			</td>
 		</tr>
-	</table>
+		<tr>
+			<td class="labelcell">
+				<label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo $VM_LANG->_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO ?></label>
+			</td>
+			<td>
+				<input type="checkbox" id="conf_VM_ONCHECKOUT_SHOW_LEGALINFO" name="conf_VM_ONCHECKOUT_SHOW_LEGALINFO" class="inputbox" <?php if (@VM_ONCHECKOUT_SHOW_LEGALINFO == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP ) ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="labelcell">
+				<label for="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT"><?php echo $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT ?></label>
+			</td>
+			<td>
+				<textarea rows="6" cols="40" id="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT" name="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT" class="inputbox"><?php if( @VM_ONCHECKOUT_LEGALINFO_SHORTTEXT=='' || !defined('VM_ONCHECKOUT_LEGALINFO_SHORTTEXT')) {echo $VM_LANG->_VM_LEGALINFO_SHORTTEXT;} else {echo @VM_ONCHECKOUT_LEGALINFO_SHORTTEXT;} ?></textarea>
+			</td>
+			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP ) ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="labelcell">
+				<label for="conf_VM_ONCHECKOUT_LEGALINFO_LINK"><?php echo $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK ?></label>
+			</td>
+			<td>
+			<?php
+				$database->setQuery( "SELECT id AS value, CONCAT( title, ' (', title_alias, ')' ) AS text FROM #__content ORDER BY id" );
+				$content = $database->loadObjectList( );
+				$select =  "<select size=\"5\" name=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" id=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" class=\"inputbox\">\n"; 
+				foreach($content as $objElement) { 
+					$selected = @VM_ONCHECKOUT_LEGALINFO_LINK == $objElement->value ? 'selected="selected"' : '';
+					$select .= "<option value=\"{$objElement->value}\" $selected>{$objElement->text}</option>\n"; 
+				} 
+				$select .=  "</select>\n"; 
+				echo $select;
+			?>
+			</td>
+			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP ) ?>
+			</td>
+		</tr>
+		
+		</table>
 </fieldset>
 
 
@@ -453,7 +493,7 @@ $tabs->endTab();
 $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "pathandurl-page");
 ?>
 
-<fieldset>
+<fieldset style="width:48%;float:left;">
 	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE ?></legend>
 	<table class="adminform">
 		<tr>
@@ -490,7 +530,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 		</table>
 </fieldset>
 <br />
-<fieldset>
+<fieldset style="width:48%;float:right;">
 	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS ?></legend>
 	<table class="adminform">
 		<tr>
@@ -498,7 +538,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 			<td>
 				<input size="40" type="text" name="conf_VM_TABLEPREFIX" class="inputbox" value="<?php echo VM_TABLEPREFIX ?>" readonly="readonly" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TABLEPREFIX_TIP ?>
+			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_TABLEPREFIX_TIP ) ?>
 			</td>
 		</tr>
 		<tr>
@@ -509,7 +549,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 			<td>
 				<input type="text" name="conf_HOMEPAGE" class="inputbox" value="<?php echo HOMEPAGE ?>" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN ?>
+			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN ) ?>
 			</td>
 		</tr>
 		<tr>
@@ -517,13 +557,13 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 			<td>
 				<input type="text" name="conf_ERRORPAGE" class="inputbox" value="<?php echo ERRORPAGE ?>" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN ?>
+			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN) ?>
 			</td>
 		</tr>
 	</table>
 </fieldset>
 <br />
-<fieldset>
+<fieldset style="width:48%;float:left;">
 	<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_PROXY_SETTINGS ?></legend>
 	<table class="adminform">
 		<tr>
@@ -560,7 +600,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 		</tr>
 	</table>
 </fieldset>
-
+<br style="clear:both" />
 <?php
   $tabs->endTab();
   $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE . $spacer, "site-page");

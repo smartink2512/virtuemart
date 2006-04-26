@@ -36,15 +36,17 @@ ajax.prototype = {
 	},
 
 	onStateChange: function(){
-		if (this.transport.readyState == 4 && this.transport.status == 200) {
-			if (this.onComplete) 
-				setTimeout(function(){this.onComplete(this.transport);}.bind(this), 10);
-			if (this.update) {// changed!! Erased 'innerHTML' in the line below
-				this.update.innerHTML = this.transport.responseText;
-				setTimeout(function(){eval('this.update.' + this.property + ' = this.transport.responseText')}.bind(this), 10);
+		try {
+			if (this.transport.readyState == 4 && this.transport.status == 200) {
+				if (this.onComplete) 
+					setTimeout(function(){this.onComplete(this.transport);}.bind(this), 10);
+				if (this.update) {// changed!! Erased 'innerHTML' in the line below
+					this.update.innerHTML = this.transport.responseText;
+					setTimeout(function(){eval('this.update.' + this.property + ' = this.transport.responseText')}.bind(this), 10);
+				}
+				this.transport.onreadystatechange = function(){};
 			}
-			this.transport.onreadystatechange = function(){};
-		}
+		}catch(e){}
 	},
   /**
    * This method assembles the form label and value pairs and

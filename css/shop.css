@@ -34,10 +34,12 @@ General Formatting
 
 .labelcell {
 	margin-left: auto;
-	text-align: right;
 	font-weight: bold;
 	vertical-align: top;
 	width: 30%;
+}
+table.adminform td.labelcell {
+	text-align: right;
 }
 .iconcell {
 	vertical-align: top;
@@ -99,4 +101,10 @@ General Formatting
 	background-image: url( ../shop_image/ps_image/log_critical.png );
 	background-repeat: no-repeat;
 	background-position: top left;
+}
+.legalinfo {
+	background: lightgray;
+	border: 2px solid gray;
+	margin: 10px;
+	padding: 0px 0px 10px 10px;
 }

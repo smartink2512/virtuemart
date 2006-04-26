@@ -49,6 +49,7 @@ class MENU_virtuemart {
 		$bar = & JToolBar::getInstance('JComponent');
 		
         $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
+        $is_iframe = mosGetParam( $_REQUEST, 'is_iframe', 0 );
         $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id', 0 );
         $product_id = mosGetParam( $_REQUEST, 'product_id' );
         $script = '';
@@ -102,6 +103,9 @@ class MENU_virtuemart {
 				document.getElementById('statusBox').innerHTML = o.responseText; 
 				setTimeout( 'Lightbox.hideAll()', 2000 );
 				setTimeout( 'Element.hide(\$(\'statusBox\'))', 2000 );
+				try {
+					onResponseSuccess(o);
+				} catch(e) {}
 			}
 
 			$('statusBox').innerHTML = 'Loading ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
@@ -189,7 +193,7 @@ class MENU_virtuemart {
 			
 			vmMenuBar::apply( 'apply', _E_APPLY );
 		}
-		if( (strstr( @$_SERVER['HTTP_REFERER'], $page ) || strstr( @$_SERVER['HTTP_REFERER'], $_SERVER['PHP_SELF'] )) && $no_menu ) {
+		if( (strstr( @$_SERVER['HTTP_REFERER'], $page ) || strstr( @$_SERVER['HTTP_REFERER'], $_SERVER['PHP_SELF'] )) && $no_menu && !$is_iframe ) {
 			// offer a back button
 			vmMenuBar::spacer();
 			vmMenuBar::back();
@@ -218,10 +222,9 @@ class MENU_virtuemart {
 			vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], '&nbsp;'.$VM_LANG->_PHPSHOP_BACK_TO_COUNTRY );
         }
         elseif ($page == 'product.file_list') {
-			// Back to the file manager
+			// Close the window
 			vmMenuBar::divider();
-			$href = $_SERVER['PHP_SELF']. "?option=com_virtuemart&page=product.filemanager";
-			vmMenuBar::customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], '&nbsp;'.$VM_LANG->_PHPSHOP_BACK_TO_FILEMANAGER );
+			vmMenuBar::cancel();
         }
    
         vmMenuBar::spacer();

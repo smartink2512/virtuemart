@@ -91,11 +91,6 @@ class ps_product extends vmAbstractObject {
 				$valid = false;
 			}
 		}
-		if( !empty($d['downloadable']) && (empty($_FILES['file_upload']['name'] ) && empty($d['filename']))) {
-			$vmLogger->err( "Please specify a Product File for Download!" );
-			$valid =  false;
-		}
-
 		/** Image Upload Validation **/
 
 		// do we have an image URL or an image File Upload?
@@ -305,30 +300,6 @@ class ps_product extends vmAbstractObject {
 		$q .= "'".$d['product_id']."', '".$d['manufacturer_id']."')";
 		$db->setQuery($q); $db->query();
 
-		// Handle "Downloadable Product" Queries and File copying
-		if (@$d['downloadable'] == "Y") {
-			if( !empty( $_FILES['file_upload']['name'] )) {
-				require_once(  CLASSPATH.'ps_product_files.php' );
-				$ps_product_files =& new ps_product_files();
-				// Set file-add values
-				$d["file_published"] = "1";
-				$d["upload_dir"] = "DOWNLOADPATH";
-				$d["file_title"] = $_FILES['file_upload']['name'];
-				$d["file_url"] = "";
-				if( !$ps_product_files->add( $d ) ) {
-					$d['error'] = 'Error: Failed to upload the downloadable file.';
-				}
-			}
-			else {
-				$d["file_title"] = $d["file_name"];
-			}
-			// Insert an attribute called "download", attribute_value: filename
-			$q2  = "INSERT INTO #__{vm}_product_attribute ";
-			$q2 .= "(product_id,attribute_name,attribute_value) ";
-			$q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["file_title"]."')";
-			$db->setQuery($q2);
-			$db->query();
-		}
 		if( !empty($d["related_products"])) {
 			/* Insert Pipe separated Related Product IDs */
 			$related_products = implode( "|", $d["related_products"] );
@@ -489,94 +460,6 @@ class ps_product extends vmAbstractObject {
 			$zw_waiting_list = new zw_waiting_list;
 			$zw_waiting_list->notify_list($d["product_id"]);
 		}
-
-		// Check for download
-		$q_dl = "SELECT attribute_name,attribute_value FROM #__{vm}_product_attribute WHERE ";
-		$q_dl .= "product_id='".$d["product_id"]."' AND attribute_name='download' ";
-		$db->query($q_dl);
-		$db->next_record();
-		if ($db->num_rows() > 0) { // found one
-			$q_dl = "SELECT file_id from #__{vm}_product_files WHERE ";
-			$q_dl .= "file_product_id='".$d["product_id"]."' AND file_title='".$GLOBALS['vmInputFilter']->safeSQL( $db->f("attribute_value"))."'";
-			$db->query($q_dl);
-			$db->next_record();
-			$d["file_id"] = $db->f("file_id");
-
-			if ( @$d['downloadable'] != "Y" ) {
-
-				// delete the attribute
-				$q_del = "DELETE FROM #__{vm}_product_attribute WHERE ";
-				$q_del .= "product_id='".$d["product_id"]."' AND attribute_name='download'";
-				$db->query($q_del);
-
-				if( !empty($d["file_id"])) {
-					require_once(  CLASSPATH.'ps_product_files.php' );
-					$ps_product_files =& new ps_product_files();
-					// Delete the existing file entry
-					$ps_product_files->delete( $d );
-				}
-			}
-			else { // update the attribute
-
-				require_once(  CLASSPATH.'ps_product_files.php' );
-				$ps_product_files =& new ps_product_files();
-
-				if( !empty($_FILES['file_upload']['name'])) {
-					// Set file-add values
-					$d["file_published"] = "1";
-					$d["upload_dir"] = "DOWNLOADPATH";
-					$d["file_title"] = $_FILES['file_upload']['name'];
-					$d["file_url"] = "";
-
-					$ps_product_files->add( $d );
-					$qu = "UPDATE #__{vm}_product_attribute ";
-					$qu.= "SET attribute_value = '". $d["file_title"] ."' ";
-					$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
-					$db->query($qu);
-				}
-				else {
-					$d["file_id"] = "";
-					$qu = "UPDATE #__{vm}_product_attribute ";
-					$qu.= "SET attribute_value = '". $d['filename'] ."' ";
-					$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download'";
-					$db->query($qu);
-				}
-
-				if( !empty($d["file_id"])) {
-					// Now: Delete the existing file entry
-					$ps_product_files->delete( $d );
-				}
-
-			}
-		}
-		else {  // found none
-			require_once(  CLASSPATH.'ps_product_files.php' );
-			$ps_product_files =& new ps_product_files();
-			if ( @$d['downloadable'] == "Y" && !empty($_FILES['file_upload']['name'])) {
-				// Set file-add values
-				$d["file_published"] = "1";
-				$d["upload_dir"] = "DOWNLOADPATH";
-				$d["file_title"] = $_FILES['file_upload']['name'];
-				$d["file_url"] = "";
-				$ps_product_files->add( $d );
-
-				// Insert an attribute called "download", attribute_value: filename
-				$q2  = "INSERT INTO #__{vm}_product_attribute ";
-				$q2 .= "(product_id,attribute_name,attribute_value) ";
-				$q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["file_title"]."')";
-				$db->setQuery($q2);
-				$db->query();
-			}
-			elseif ( @$d['downloadable'] == "Y" ) {
-				// Insert an attribute called "download", attribute_value: filename
-				$q2  = "INSERT INTO #__{vm}_product_attribute ";
-				$q2 .= "(product_id,attribute_name,attribute_value) ";
-				$q2 .= "VALUES ('" . $d["product_id"] . "','download','".$d["filename"]."')";
-				$db->setQuery($q2);
-				$db->query();
-			}
-		}
-		// End download check
 
 		$q = "UPDATE #__{vm}_product_mf_xref SET ";
 		$q .= "manufacturer_id='".$d['manufacturer_id']."' ";

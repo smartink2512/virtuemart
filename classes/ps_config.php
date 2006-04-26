@@ -73,6 +73,9 @@ class ps_config {
 			"VM_PROXY_PORT"  =>      "conf_VM_PROXY_PORT",
 			"VM_PROXY_USER"  =>      "conf_VM_PROXY_USER",
 			"VM_PROXY_PASS"  =>      "conf_VM_PROXY_PASS",
+			"VM_ONCHECKOUT_SHOW_LEGALINFO"  =>      "conf_VM_ONCHECKOUT_SHOW_LEGALINFO",
+			"VM_ONCHECKOUT_LEGALINFO_SHORTTEXT"  =>      "conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT",
+			"VM_ONCHECKOUT_LEGALINFO_LINK"  =>      "conf_VM_ONCHECKOUT_LEGALINFO_LINK",
 			"ENABLE_DOWNLOADS"  =>      "conf_ENABLE_DOWNLOADS",
 			"DOWNLOAD_MAX"  =>      "conf_DOWNLOAD_MAX",
 			"DOWNLOAD_EXPIRE"  =>      "conf_DOWNLOAD_EXPIRE",
@@ -210,7 +213,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config.= " );\n";
 				}
 				else {
-					$config .= "define('".$key."', '".@$d[$value]."');\n";
+					$config .= "define('".$key."', '".stripslashes(@$d[$value])."');\n";
 				}
 			}
 

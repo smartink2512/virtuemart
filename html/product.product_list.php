@@ -37,7 +37,6 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 // uuuh, we're using modern methods.
 vmCommonHTML::loadMooAjax(); // Fetch the dynamic forms and post their data back
 vmCommonHTML::loadLightbox(); // Having a modal window is good
-vmCommonHTML::loadBehaviourJS(); // Apply Javascript to styles
 ?>
 <div align="right">
 
@@ -295,6 +294,8 @@ if ($num_rows > 0) {
 		
 		// Product Media Link
 		$numFiles = ps_product_files::countFilesForProduct($db->f('product_id'));
+		if( $db->f('product_full_image')) $numFiles++;
+		if( $db->f('product_thumb_image')) $numFiles++;
 		$link = $sess->url( $_SERVER['PHP_SELF']. '?page=product.file_list&product_id='.$db->f('product_id').'&no_menu=1' );
 		$link = defined('_PSHOP_ADMIN') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
 		$text = '<img src="'.$mosConfig_live_site.'/includes/js/ThemeOffice/media.png" align="middle" border="0" />&nbsp;('.$numFiles.')';

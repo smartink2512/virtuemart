@@ -16,37 +16,57 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+require_once( CLASSPATH . "ps_product_files.php" );
 
+$file_id= mosgetparam( $_REQUEST, 'file_id' );
 $product_id= mosgetparam( $_REQUEST, 'product_id');
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $selected_type = Array();
 
-$q = "SELECT product_name FROM #__{vm}_product WHERE product_id='$product_id' "; 
+$q = "SELECT product_id, product_name, product_full_image as file_name, product_thumb_image as file_name2 FROM #__{vm}_product WHERE product_id=".intval($product_id); 
 $db->query($q);  
 $db->next_record();
-$selected_type[0] = "checked=\"checked\"";
-$selected_type[1] = "";
+$selected_type = array( "selected=\"selected\"", '', '', '', '','' );
+
 $product_name = '<a href="'.$_SERVER['PHP_SELF'].'?option='.$option.'&amp;product_id='.$product_id.'&amp;page=product.product_form">'.$db->f("product_name").'</a>';
 
 $title ='<img src="'. $mosConfig_live_site .'/administrator/images/mediamanager.png" width="48" height="48" align="center" alt="Product List" border="0" />'
 		. $VM_LANG->_PHPSHOP_FILES_FORM . ": ". $product_name ;
 
 
-$file_id= mosgetparam( $_REQUEST, 'file_id' );
-
+$attribute_id = '';
 if( !empty($file_id) ) {
-  $q = "SELECT file_name,file_url,file_is_image,file_published,file_title 
-  FROM #__{vm}_product_files 
-  WHERE file_id='$file_id'"; 
-  $db->query($q);  
-  $db->next_record();
-  $selected_type[0] = $db->f("file_is_image")==1 ? "checked=\"checked\"" : "";
-  $selected_type[1] = $db->f("file_is_image")==0 ? "checked=\"checked\"" : "";
+	if( (int)$file_id > 0 ) {
+		$isProductDownload = ps_product_files::isProductDownloadFile( $file_id, $product_id );
+	  	$q = "SELECT file_name,file_url,file_is_image,file_published,file_title 
+			  FROM #__{vm}_product_files 
+			  WHERE file_id='$file_id'"; 
+	  	$db->query($q);
+	  	if( $db->next_record() ) {
+	  		if( $isProductDownload ) {
+	  			$dbf = new ps_DB();
+	  			$dbf->query('SELECT attribute_id FROM `#__{vm}_product_attribute` WHERE attribute_name=\'download\' AND attribute_value=\''.$db->f('file_title').'\' AND product_id=\''.$product_id.'\'');
+	  			$dbf->next_record();
+	  			$attribute_id = $dbf->f('attribute_id');
+	  			vmCommonHTML::setSelectedArray( $selected_type, 3, 'selected', array(0,1,2,4) );
+	  		}
+	  		else {
+				$index = $db->f("file_is_image")==1 ? 4 : 5;
+				$disableArr = $db->f("file_is_image")==1 ? array(3,5) : array(0,1,2,4);
+				vmCommonHTML::setSelectedArray( $selected_type, $index, 'selected', $disableArr );
+	  		}
+	  	}
+	}
+	else {
+		vmCommonHTML::setSelectedArray( $selected_type, 0, 'selected', array(3,5) );
+	}
 }
 else {
+	$isProductDownload = false;
 	$default["file_title"] = $db->f('product_name');
 	$default["file_published"] = "1";
+	unset( $db->record );
 }
 
 //First create the object and let it print a form heading
@@ -57,76 +77,125 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 ?>
 <br />
   <table class="adminform">
-  <?php if( $file_id ) { ?>
+  <?php 
+  	if( $file_id ) { ?>
     <tr> 
-      <td><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_CURRENT_FILE ?>:</strong></div></td>
-      <td><?php echo $db->f("file_name") ?></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_CURRENT_FILE ?>:</td>
+      <td><?php 
+      	echo $file_id == 'product_images' ? 
+      		$db->f("file_name").'<br />'.$db->f("file_name2")
+      		: $db->f("file_name");
+      		?></td>
     </tr>
-    <?php } ?>
+    <?php 
+  	} ?>
     <tr> 
-      <td><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE ?>:</strong></div></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_LIST_FILENAME ?>:</td>
       <td> 
         <input type="file" class="inputbox" name="file_upload" size="32" />
       </td>
     </tr>
+    <tr id="filename2">
+    	<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_LIST_FILENAME ?>:</td>
+    	<td><?php 
+    		$downloadRootFiles = mosReadDirectory(DOWNLOADROOT);
+    		$mappedDownloadRootFiles = array();
+    		foreach( $downloadRootFiles as $file ) {
+    			if( is_file(DOWNLOADROOT.$file)) {
+    				$mappedDownloadRootFiles[$file] = $file;
+    			}
+    		}
+	    	echo $ps_html->selectList('downloadable_file', basename($db->f("file_name")), $mappedDownloadRootFiles ) 
+    		?>
+    	</td>
+    </tr>
     <tr> 
-      <td valign="top"><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_LIST_FILETYPE ?>:</strong></div></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_LIST_FILETYPE ?>:</td>
       <td> 
-        <input type="radio" onchange="checkThumbnailing();" <?php echo $selected_type[0] ?> class="inputbox" id="file_type0" name="file_type" value="image" >
-        <label for="file_type0"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_IMAGE ?></label><br/>
-        <input type="radio" onchange="checkThumbnailing();" <?php echo $selected_type[1] ?> class="inputbox" id="file_type1" name="file_type" value="file">
-        <label for="file_type1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE ?></label>
+        <select name="file_type" onchange="checkThumbnailing();" class="inputbox">
+        	<option value="product_images" <?php echo $selected_type[0] ?>><?php echo 'Product Image (full and thumb)' ?></option>
+	        <option value="product_full_image" <?php echo $selected_type[1] ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_FULL_IMAGE ?></option>
+	        <option value="product_thumb_image" <?php echo $selected_type[2] ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE ?></option>
+	        <option value="downlodable_file" <?php echo $selected_type[3] ?>><?php echo 'Downloadable Product File (to be sold!)' ?></option>
+	        <option value="image" <?php echo $selected_type[4] ?>><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_IMAGE ?></option>
+	        <option value="file" <?php echo $selected_type[5] ?>><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE ?></option>
+        </select>
       </td>
     </tr>
     <tr> 
-      <td valign="top"><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_TO ?>:</strong></div></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_TO ?>:</td>
       <td> 
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir0" checked="checked" value="IMAGEPATH" />
         <label for="upload_dir0"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH ?></label><br/><br/>
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir1" value="FILEPATH" />
         <label for="upload_dir1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH ?></label>:
-        &nbsp;&nbsp;&nbsp;<input type="text" class="inputbox" name="file_path" size="40" value="<?php echo $mosConfig_absolute_path ?>/media/" /><br/><br/>
+        &nbsp;&nbsp;&nbsp;<strong><?php echo $mosConfig_absolute_path ?></strong>&nbsp;<input type="text" class="inputbox" name="file_path" size="40" value="/media/" /><br/><br/>
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir2" value="DOWNLOADPATH" />
         <label for="upload_dir2"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH ?></label>
       </td>
     </tr>
     <tr> 
-      <td><div align="right"><strong>
+      <td class="labelcell">
+      		<label for="file_resize_fullimage"><?php echo 'Resize Full Image File?' ?></label>
+      	</td>
+      <td> 
+        <input type="checkbox" class="inputbox" id="file_resize_fullimage" name="file_resize_fullimage" checked="checked" value="1" />
+        <div id="fullsizes">&nbsp;&nbsp;&nbsp;
+        Height: <input type="text" name="fullimage_height" value="500" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        Width: <input type="text" name="fullimage_width" value="500" class="inputbox" /></div>
+      </td>
+    </tr>
+    <tr> 
+      <td class="labelcell">
       		<label for="file_create_thumbnail"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL ?></label>
-      	</strong></div></td>
+      	</td>
       <td> 
         <input type="checkbox" class="inputbox" id="file_create_thumbnail" name="file_create_thumbnail" checked="checked" value="1" />
-      </td>
+        <div id="thumbsizes">&nbsp;&nbsp;&nbsp;
+        Height: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        Width: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
+        </td>
     </tr>
 
     <tr> 
-      <td><div align="right" ><strong>
+      <td class="labelcell">
       		<label for="file_published"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_PUBLISHED ?></label>
-      	</strong></div></td>
+      	</td>
       <td> 
         <input type="checkbox" class="inputbox" id="file_published" name="file_published" value="1" <?php if($db->sf("file_published")==1) echo "checked=\"checked\"" ?> size="16" />
       </td>
     </tr>
     <tr> 
-      <td><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_TITLE ?>:</strong></div></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_TITLE ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="file_title" size="32" value="<?php $db->sp("file_title") ?>" />
       </td>
     </tr>
     <tr> 
-      <td><div align="right" ><strong><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_URL ?>:</strong></div></td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_URL ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="file_url" value="<?php $db->sp("file_url") ?>" size="32" />
       </td>
     </tr>
-    <tr align="center">
-      <td colspan="2" >&nbsp;</td>
+    <tr >
+      <td colspan="2" align="center">
+      <?php 
+      if( $only_page ) {
+      	echo '<input type="button" name="submit" onclick="submitFileForm();" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" /> ';
+      	echo '<input type="button" name="cancel" onclick="toggleContainer();" value="'._CMN_CANCEL.'" />';
+      }
+      else {
+      	echo '&nbsp;';
+      }
+      ?>
+      </td>
     </tr>
   </table>
 <?php
 // Add necessary hidden fields
 $formObj->hiddenField( 'file_id', $file_id );
 $formObj->hiddenField( 'product_id', $product_id );
+$formObj->hiddenField( 'attribute_id', $attribute_id );
 
 $funcname = empty($file_id) ? "uploadProductFile" : "updateProductFile";
 
@@ -135,23 +204,76 @@ $funcname = empty($file_id) ? "uploadProductFile" : "updateProductFile";
 $formObj->finishForm( $funcname, $modulename.'.file_list', $option );
 ?>
 <script type="text/javascript">
+function submitbutton(pressbutton) {
+	document.adminForm.ajax_request.value='0';
+	submitform(pressbutton);
+}
+function vm_windowClose() {
+	vm_submitButton('cancel', 'adminForm', 'product.file_list');
+}
 function checkThumbnailing() {
-  if( document.adminForm.file_type[0].checked==false ) {
-    document.adminForm.file_create_thumbnail.checked=false;
-    document.adminForm.file_create_thumbnail.disabled=true;
-    document.adminForm.upload_dir[0].disabled=true;
-    document.adminForm.upload_dir[0].checked=false;
-    document.adminForm.upload_dir[1].checked=true;
-    document.adminForm.upload_dir[2].checked=false;
+	
+  if( document.adminForm.file_type[0].selected || document.adminForm.file_type[1].selected 
+  	|| document.adminForm.file_type[2].selected || document.adminForm.file_type[4].selected
+  ) {
+  	document.adminForm.file_create_thumbnail.checked=true;
+    document.adminForm.file_create_thumbnail.disabled=false;
+    document.adminForm.file_resize_fullimage.checked=true;
+    document.adminForm.file_resize_fullimage.disabled=false;
+    $('thumbsizes').style.display = 'block';
+    $('fullsizes').style.display = 'block';
+    $('filename2').style.display = 'none';
+    if( document.adminForm.file_type[4].selected == false ) {
+    	
+    	if( document.adminForm.file_type[1].selected ) { // product full image selected
+    		document.adminForm.file_create_thumbnail.disabled=true;
+    		$('thumbsizes').style.display = 'none';
+    	}
+    	if( document.adminForm.file_type[2].selected ) { // product thumb image selected
+    		document.adminForm.file_resize_fullimage.disabled=true;
+    		$('fullsizes').style.display = 'none';
+    	}
+	  	document.adminForm.upload_dir[0].disabled=false;
+		document.adminForm.upload_dir[0].checked=true;
+		document.adminForm.upload_dir[1].disabled=true;
+		document.adminForm.upload_dir[2].disabled=true;
+		document.adminForm.file_published.disabled=false;    	
+    }
+    else { // additional image selected
+	  	document.adminForm.upload_dir[0].disabled=false;
+		document.adminForm.upload_dir[0].checked=true;
+		document.adminForm.upload_dir[1].disabled=false;
+		document.adminForm.upload_dir[2].disabled=false;
+		document.adminForm.file_published.disabled=false;
+    }
   }
   else {
-    document.adminForm.file_create_thumbnail.checked=true;
-    document.adminForm.file_create_thumbnail.disabled=false;
-    document.adminForm.upload_dir[0].disabled=false;
-    document.adminForm.upload_dir[0].checked=true;
-    document.adminForm.upload_dir[1].checked=false;
-    document.adminForm.upload_dir[2].checked=false;
+  	document.adminForm.file_create_thumbnail.checked=false;
+    document.adminForm.file_create_thumbnail.disabled=true;
+    document.adminForm.file_resize_fullimage.checked=false;
+    document.adminForm.file_resize_fullimage.disabled=true;
+    $('thumbsizes').style.display = 'none';
+    $('fullsizes').style.display = 'none';
+  	if( document.adminForm.file_type[5].selected == true) { // additional file
+  		$('filename2').style.display = 'none';
+  		document.adminForm.upload_dir[0].disabled=true;
+	    document.adminForm.upload_dir[0].checked=false;
+	    document.adminForm.upload_dir[1].checked=true;
+	    document.adminForm.upload_dir[1].disabled=false;
+	    document.adminForm.upload_dir[2].checked=false;
+	    document.adminForm.file_published.disabled=false;
+	}
+	else {
+		// pay-download selected
+		$('filename2').style.display = '';
+  		document.adminForm.upload_dir[0].disabled=true;
+	    document.adminForm.upload_dir[1].disabled=true;
+	    document.adminForm.upload_dir[2].disabled=false;
+	    document.adminForm.upload_dir[2].checked=true;
+	    document.adminForm.file_published.disabled=true;
+	}
   }
 }
 checkThumbnailing();
+
 </script>

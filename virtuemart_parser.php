@@ -312,6 +312,16 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	if( $func && $ajax_request) {
 		require_once( CLASSPATH . 'connectionTools.class.php' );
 		vmConnector::sendHeaderAndContent( 200 );
+		// Send an indicator wether the function call return true or false
+		echo '<div id="successIndicator" style="display:none;">';
+		if( $ok) { 
+			echo 'Success'; 
+		}
+		else {
+			echo 'Failure';
+		}
+		echo '</div>';
+		
 		$vmLogger->printLog();
 		exit;
 	}

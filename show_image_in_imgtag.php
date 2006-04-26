@@ -5,7 +5,7 @@
 * @author Andreas Martens <heyn@plautdietsch.de>
 * @author Patrick Teague <webdude@veslach.com>
 *
-* @version $Id: show_image_in_imgtag.php,v 1.4 2005/09/29 20:20:58 soeren_nb Exp $
+* @version $Id: show_image_in_imgtag.php,v 1.5 2005/10/27 19:42:53 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,8 +25,9 @@ include_once("../../administrator/components/com_virtuemart/virtuemart.cfg.php")
 //	Image2Thumbnail - Klasse einbinden 
 include( CLASSPATH . "class.img2thumb.php");
 
-$filename = @basename(urldecode($_REQUEST['filename']));
-$filename = IMAGEPATH."product/".$filename;
+$basefilename = @basename(urldecode($_REQUEST['filename']));
+$filename = IMAGEPATH."product/".$basefilename;
+$filename2 = IMAGEPATH."product/resized/".$basefilename;
 $newxsize = @$_REQUEST['newxsize'];
 $newysize = @$_REQUEST['newysize'];
 $maxsize = false;
@@ -42,7 +43,9 @@ if( !isset($maxsize) )
 */
 
 /* Minimum security */
-file_exists( $filename ) or exit();
+if( !file_exists( $filename ) && !file_exists( $filename2 )) {
+	die('File does not exist');
+}
 
 $fileinfo = pathinfo( $filename );
 $file = str_replace(".".$fileinfo['extension'], "", $fileinfo['basename']);
@@ -65,7 +68,11 @@ else {
   $noimgif="";
 }
 
-$fileout = IMAGEPATH."/product/resized/".$file."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
+if( file_exists($filename2)) { 
+	$fileout = $filename2;
+} else {
+	$fileout = IMAGEPATH."/product/resized/".$file."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
+}
 
 if( file_exists( $fileout ) ) {
   /* We already have a resized image

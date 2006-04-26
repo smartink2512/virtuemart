@@ -132,7 +132,11 @@ class ps_session {
 				$ssl_redirect = 1;
 			}
 		}		
-		if( VM_GENERALLY_PREVENT_HTTPS == '1' && ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' ) && $ssl_redirect == 0 ) {
+		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
+			&& ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' ) 
+			&& $ssl_redirect == 0 
+			&& @$_REQUEST['option']=='com_virtuemart') {
+				
 			$pagearr = explode( '.', $page );
 			$module = $pagearr[0];
 			// When it is not necessary to stay in https mode, we leave it here
@@ -357,10 +361,12 @@ class ps_session {
 					
 				}
 				elseif( $_SERVER['SERVER_PORT'] == 443 ) {
-					$appendix = SECUREURL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
+					$script = strstr($_SERVER['PHP_SELF'], 'index2.php') ? 'index2.php' : 'index3.php';
+					$appendix = SECUREURL."administrator/$script".substr($text, $limiter, strlen($text)-1).$appendix;
 				}
 				else {
-					$appendix = URL."administrator/index2.php".substr($text, $limiter, strlen($text)-1).$appendix;
+					$script = strstr($_SERVER['PHP_SELF'], 'index2.php') ? 'index2.php' : 'index3.php';
+					$appendix = URL."administrator/$script".substr($text, $limiter, strlen($text)-1).$appendix;
 				}
 	
 				if ( stristr($text, SECUREURL)) {

@@ -33,6 +33,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26-04-2006 soeren
+
+- pay-download form removed from product form
++ allowing multiple pay-download files per product now
++ allowing the file manager to manage product (main) images
+
 23-04-2006 soeren
 
 # hiding attribute price modifiers when the user has no permission to view prices

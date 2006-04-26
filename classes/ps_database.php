@@ -259,7 +259,14 @@ class ps_DB extends database {
 		$this->called = false;
 
 	}
-
+	/**
+	 * Returns the current row of the recordset
+	 * @since VirtueMart 1.1.0
+	 * @return array
+	 */
+	function getCurrentRow() {
+		return $this->record[$this->row];
+	}
 	///////////////////////////////
 	// Parental Database functions
 	// We must overwrite them because

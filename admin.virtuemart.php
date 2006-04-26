@@ -19,6 +19,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
 
 $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
+// Display just the naked page without toolbar, menu and footer?
+$only_page = mosGetParam( $_REQUEST, 'only_page', 0 );
+
 global $VM_LANG;
 /*** INSTALLER SECTION ***/
 include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.virtuemart.php' );
@@ -90,6 +93,11 @@ echo '<script type="text/javascript" src="../components/'.$option.'/js/functions
 
 // Load PAGE
 if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
+	if( $only_page) {
+		while( @ob_end_clean());
+		include( PAGEPATH.$modulename.".".$pagename.".php" );
+		exit;
+	}
 	include( PAGEPATH.$modulename.".".$pagename.".php" );
 }
 else {

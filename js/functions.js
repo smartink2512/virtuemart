@@ -62,3 +62,6 @@ function vm_submitListFunc( pressbutton, frmName, funcName ) {
 	catch(e){}
 	f.submit();
 }
+function vm_windowClose() {
+	window.close();
+}

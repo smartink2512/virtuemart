@@ -305,13 +305,35 @@ function process_images(&$d) {
 	return true;
 }
 
-/**************************************************************************
-** name: process_date_time
-** created by: jep
-** description:
-** parameters:
-** returns:
-***************************************************************************/
+/**
+ * Resizes an image to a given size
+ * 
+ * @since VirtueMart 1.1.0
+ * 
+ * @param string $sourceFile
+ * @param string $resizedFile
+ * @param int $width
+ * @param int $height
+ * @return boolean
+ */
+function vmResizeImage($sourceFile, $resizedFile, $height, $width ) {
+	global $vmLogger;
+	if( $width <= 0 || $height <= 0 ) {
+		if( is_callable(array($vmLogger,'err'))) {
+			$vmLogger->err( 'An invalid image height or weight was specified!');
+			return false;
+		}
+	}
+	//	Class for resizing Thumbnails
+	require_once( CLASSPATH . "class.img2thumb.php");
+	$Img2Thumb = new Img2Thumb( $sourceFile, $width, $height, $resizedFile, 0, 255, 255, 255 );
+	if( is_file( $resizedFile )) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 /**
  * This function validates a given date and creates a timestamp
  * @deprecated 
@@ -419,8 +441,9 @@ function mShop_validateEUVat( $euvat ){
 	$VAT = $r[2];
 	$query = "Lang=EN&MS=$CountryCode&ISO=$CountryCode&VAT=$VAT";
 	$ret = mShop_post($eurl, $query);
-	if (ereg("Yes, valid VAT number", $ret))
-	return true;
+	if (ereg("Yes, valid VAT number", $ret)) {
+		return true;
+	}
 	return false;
 
 }

@@ -103,8 +103,8 @@ class listFactory {
 		<script type="text/javascript"><!--
 		function MM_swapImgRestore() { //v3.0
 			var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
-		}
-		//--></script>
+		} //-->
+		</script>
 		<table class="adminlist" width="100%">
 		<?php
 	}
@@ -208,6 +208,7 @@ class listFactory {
         	$style = ($image != '') ? 'style="background-image:url('.$image.');"' : '';
         	$header .= "<h2 class=\"adminListHeader\" $style>$title</h2>\n";
         }
+        $header .= '<a name="listheader"></a>';
 		if( !empty( $pagename )) 
 			$header .= "<div align=\"right\"><br/>
 			<input class=\"inputbox\" type=\"text\" size=\"25\" name=\"keyword\" value=\"$keyword\" />
@@ -394,90 +395,135 @@ class mShopTabs {
 	}
 }
 	
+class vmMooAjax {
 
-class vmMooFxAccordeon {
-	
-	var $numAccordeons = -1;
-	var $accordeons = array();
-	var $clickonElementName = 'stretcher';
-	var $stretchingElementName = 'stretchtoggle';
-	
-	/** @var string Shall we use the class name to identify the elements? Can be class or id  */
-	var $mode = 'id';
-	
-	function vmMooFxAccordeon() {
-		vmCommonHTML::loadMooFX();
-	}
-	function addAccordeon() {
-		$numAccordeons++;		
-	}
-	function getDivsName() {
-		return $this->divsName;
-	}
-	function getLinksName() {
-		return $this->linksName;
-	}	
-	function setDivsName( $name ) {
-		$this->divsName = $name;
-	}	
-	function setLinksName( $name ) {
-		return $this->linksName = $name;
-	}
 	/**
-	 * This adds the ID of the element to the $clickonElements array
-	 * for creating a clickon effect later on
+	 * This is used to print out Javascript code for the moo.ajax script
 	 *
-	 * @param string $id
+	 * @param string $url
+	 * @param string $updateId
+	 * @param string $onComplete A JS function name to be called after the HTTP transport has been finished
+	 * @param array $options
+	 * @param string $varName The name of a variable the ajax object is assigned to
 	 */
-	function addClickon( $id ) {
-		$this->accordeons[$this->numAccordeons]['clickonElements'][] = $id;
-	}
-	/**
-	 * This adds the ID of the element to the $stretchingElements array
-	 * for creating a clickon effect later on
-	 *
-	 * @param string $id
-	 */
-	function addStretcher( $id ) {
-		$this->accordeons[$this->numAccordeons]['stretchingElements'][] = $id;
-	}
-	
-	function finish() {
-		echo '<script type="text/javascript">';
-		$i = 0;
-		foreach( $this->accordeons as $accordeon ) {
-			if( $this->mode == 'class') {
-				echo '
-		var myDivs'.$i.' = document.getElementsByClassName(\''.$this->divsName.'\');
-		var myLinks'.$i.' = document.getElementsByClassName(\''.$this->linksName.'\');
-	';
-			}
-			else {
-				echo 'var myLinks'.$i.'=Array(';
-				$i = count( $accordeon['clickonElements'] );
-				foreach( $accordeon['clickonElements'] as $elementId ) {
-					echo "document.getElementById('$elementId')";
-					if( $i-- > 1) echo ',';
-				}
-				echo ");\n";
-				
-				echo 'var myDivs'.$i.'=Array(';
-				$i = count( $accordeon['stretchingElements'] );
-				foreach( $accordeon['stretchingElements'] as $elementId ) {
-					echo "document.getElementById('$elementId')";
-					if( $i-- > 1) echo ',';
-				}
-				echo ");\n";
-			}
-		
-			echo '
-	//then we create the effect.
-	var myAccordion'.$i.' = new fx.Accordion(myLinks'.$i.', myDivs'.$i.', {opacity: true});
-	';
-			$i++;
+	function writeAjaxUpdater( $url, $updateId, $onComplete, $method='post', $options=array(), $varName='' ) {
+		global $mosConfig_live_site;
+		$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
+		$options['method'] = $method;
+		if( $varName ) {
+			echo 'var '.$varName.' = ';
 		}
-		echo '</script>';
+		if( !strstr( $url, $mosConfig_live_site) && !strstr($url, 'http' )) {
+			$url = $mosConfig_live_site.$path.$url;
+		}
+		echo "new ajax('$url', {\n";
+		foreach ($options as $key => $val) {
+			echo "$key: '$val',\n";
+		}
+		if( $updateId != '' ) {
+			echo "update: '$updateId'";
+			if( $onComplete ) { echo ",\n"; }
+		}
+		if( $onComplete ) {
+			echo "onComplete: $onComplete";
+		}
+		echo '
+		});';
 	}
+}
+/**
+ * Heavily modified (why just for PHP5???) version of this class:
+ * http://www.phpclasses.org/browse/package/3050.html
+ * @author Hasin Hayder
+ * @author soeren
+ * @since VirtueMart 1.1.0
+ */
+class mooFxGenerator {
+	
+	/**
+	 * general effect generator function
+	 * @static 
+	 * @param string $effectType
+	 */
+	function generate( $effectType, $element='', $eventObjectClass='', $duration=false, $transition=false, $opacity=false, $height=false, $width=false, $unit=false) {
+		vmCommonHTML::loadMooFX();
+		
+		echo "<script type=\"text/javascript\">\n";
+
+		$fxEffectObject = "m_" . (strtotime("now")+mt_rand(0,1000000));
+		$fxToggleFunction = "mt_" . (strtotime("now")+mt_rand(0,1000000));
+		if( !$effectType == 'fxAccordion') {
+			echo "function {$fxToggleFunction}()\n";
+			echo "{\n";
+			switch( $effectType ) {
+				case "fxText":
+					echo "	{$fxEffectObject}.increase();\n";
+				
+				case "fxScroll":
+					echo "	{$fxEffectObject}.scrollTo(\"$element\");\n";
+				
+				default:
+					echo "	{$fxEffectObject}.toggle();\n";
+			}
+			echo "}\n";
+		}
+		switch( $effectType ) {
+			
+			case "fxHeight":
+				echo "var {$fxEffectObject} = new fx.Height(\"$element\", {duration: $duration})\n";
+				break;
+				
+			case "fxOpacity":
+				echo "var {$fxEffectObject} = new fx.Opacity(\"$element\", {duration: $duration})\n";
+				break;
+				
+			case "fxText":
+				echo "var {$fxEffectObject} = new fx.Text(\"$element\", {unit:$unit})\n";
+				break;
+				
+			case "fxWidth":
+				echo "var {$fxEffectObject} = new fx.Width(\"$element\", {duration: $duration})\n";
+				break;
+				
+			case "fxScroll":
+				$effectString = "";
+				if ($transition()) $effectString.=", transition: $transition";
+				echo "var {$fxEffectObject} = new fx.Scroll({duration: $duration{$effectString}})\n";
+				break;
+				
+			case "fxCombo":
+				$effectString = "";
+				if ($height) $effectString .= ", height: true";
+				if ($width) $effectString .= ", width: true";
+				if ($opacity) $effectString .= ", opacity: true";
+				echo "var {$fxEffectObject} = new fx.Combo(\"$element\", {duration: $duration{$effectString}})\n";
+				break;
+				
+			case "fxAccordion":
+		
+				$effectString = "";
+				if ($height) $effectString .= ", height: true";
+				if ($width) $effectString .= ", width: true";
+				if ($opacity) $effectString .= ", opacity: true";
+				if ($transition) $effectString .= ", transition: $transition";
+	
+				echo "m_stretchers = document.getElementsByClassName(\"$eventObjectClass\");\n";
+				echo "m_stretched = document.getElementsByClassName(\"$element\");\n";
+				echo "var {$fxEffectObject} = new fx.Accordion(m_stretchers, m_stretched ,{duration: $duration{$effectString}});\n";
+				break;
+		}
+
+		if( $effectType != "fxAccordion" && $eventObjectClass != '' ) {
+			echo "m_$eventObjectClass = $(\"$eventObjectClass\");\n";
+			echo "m_$eventObjectClass.onclick={$fxToggleFunction};\n";
+		}
+		echo "</script>\n";
+		
+		$return['function'] = $fxToggleFunction;
+		$return['object'] = $fxEffectObject;
+		return $return;
+	}
+
 }
 
 /**
@@ -509,6 +555,29 @@ class vmCommonHTML extends mosHTML {
 		}
 		else {
 			return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
+		}
+	}
+	/**
+	 * Manipulates an array and fills the $index with selected="selected"
+	 * Indexes within $disableArr will be filled with disabled="disabled"
+	 *
+	 * @param array $arr
+	 * @param int $index
+	 * @param string $att
+	 * @param array $disableArr
+	 */
+	function setSelectedArray( &$arr, $index, $att='selected', $disableArr=array() ) {
+		if( !isset($arr[$index])) {
+			return;
+		}
+		foreach( $arr as $key => $val ) {
+			$arr[$key] = '';
+			if( $key == $index ) {
+				$arr[$key] = $att.'="'.$att.'"';
+			}
+			elseif( in_array( $key, $disableArr )) {
+				$arr[$key] = 'disabled="disabled"';
+			}
 		}
 	}
 	/*
@@ -1114,7 +1183,7 @@ function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='
 	if( $windowAttributes ) {
 		$windowAttributes = ','.$windowAttributes;
 	}
-	$jslink = "<a href=\"javascript:void window.open('$link', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');\" title=\"$title\">$text</a>";
+	$jslink = "<a href=\"javascript:void window.open('$link', '$target', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');\" title=\"$title\">$text</a>";
 	$noscriptlink = "<a href=\"$link\" target=\"$target\" title=\"$title\">$text</a>";
 	return mm_writeWithJS( $jslink, $noscriptlink );
 }

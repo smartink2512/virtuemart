@@ -82,13 +82,15 @@ if( !empty($product_id) ) {
     }
     $show_img = $dbi->record[0];
     if( $show_img ) {
-      $src = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $show_img->file_name );
-      if( strstr( $src, $mosConfig_live_site.$show_img->file_name))
-        $src = str_replace( $mosConfig_live_site.$show_img->file_name, $mosConfig_live_site."/".$show_img->file_name, $src );
-      $alt = $show_img->file_title;
-      $height = $show_img->file_image_height; 
-      $width = $show_img->file_image_width;
-      echo "<div style=\"text-align:center;overflow:auto;\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" border=\"0\" /></div>";
+    	$filename = $mosConfig_absolute_path.str_replace( $mosConfig_absolute_path, '', $show_img->file_name );
+      	$src = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $filename );
+      	if( strstr( $src, $mosConfig_live_site.$show_img->file_name)) {
+      		$src = str_replace( $mosConfig_live_site.$show_img->file_name, $mosConfig_live_site."/".$show_img->file_name, $src );
+      	}
+      	$alt = $show_img->file_title;
+      	$height = $show_img->file_image_height; 
+      	$width = $show_img->file_image_width;
+      	echo "<div style=\"text-align:center;overflow:auto;\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" border=\"0\" /></div>";
     }
     else {
       echo $VM_LANG->_PHPSHOP_IMAGE_NOT_FOUND;
