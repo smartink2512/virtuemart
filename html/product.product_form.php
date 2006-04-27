@@ -20,8 +20,9 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH.'ps_product_discount.php' );
 
 $product_id = mosGetParam( $_REQUEST, 'product_id');
-if( is_array( $product_id ))
+if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
+}
 	
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
@@ -151,7 +152,6 @@ $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
 $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" width=\"16\" height=\"16\" border=\"0\" />&nbsp;$info_label", "info-page");
 ?>
-
 <table class="adminform">
   <tr> 
    <td valign="top">
@@ -211,7 +211,7 @@ else {
     <tr class="row0"> 
       <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
        <?php echo $VM_LANG->_PHPSHOP_CATEGORIES ?>:<br/><br/>
-       <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_MULTISELECT ) ?></div>
+       <?php echo vmToolTip( $VM_LANG->_PHPSHOP_MULTISELECT ) ?></div>
        </td>
       <td width="71%" ><?php 
         $ps_product_category->list_all("product_categories[]", "", $my_categories, 10, false, true); ?></td>
@@ -240,7 +240,7 @@ else {
               $ps_html->list_currency("product_currency",$price["product_currency"]) ?>
             </td>
             <td>&nbsp;<?php
-                echo mm_ToolTip( $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP . ": ".$shopper_db->f("shopper_group_name")); ?>               
+                echo vmToolTip( $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP . ": ".$shopper_db->f("shopper_group_name")); ?>               
                 <input type="hidden" name="shopper_group_id" value="<?php echo $my_shopper_group_id ?>" />
              </td>
             </tr>
@@ -276,7 +276,7 @@ else {
       </td>
       <td width="79%" >
                 <input type="text" size="10" name="discounted_price_override" onkeyup="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
-                <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP ) ?>
+                <?php echo vmToolTip( $VM_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP ) ?>
         </td>
     </tr>
     <tr class="row1"><td colspan="2">&nbsp;</td></tr>
@@ -340,7 +340,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
       <td width="79%" >
         <input type="text" class="inputbox" name="product_availability" value="<?php $db->sp("product_availability"); ?>" />
       <?php
-      echo mm_ToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1); ?>
+      echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1); ?>
       <br /><br />
         <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo IMAGEURL ?>availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo $mosConfig_live_site ?>/images/stories/noimage.png'}">
           <option value="">Select Image</option><?php
@@ -356,7 +356,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
                 }
             }  ?>
         </select>&nbsp;
-        <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2);?>
+        <?php echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2);?>
         &nbsp;&nbsp;&nbsp;
         <img src="<?php echo $db->f("product_availability") ? IMAGEURL."availability/".$db->sf("product_availability") : $mosConfig_live_site ."/images/stories/noimage.png"; ?>" name="imagelib" border="0" alt="Preview" />
       </td>
@@ -583,7 +583,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
       </td>
       <td width="21%" > 
         <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $db->f("product_packaging") & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo mm_ToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION); ?>
+        echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION); ?>
       </td>
     </tr>
             <tr class="row1">
@@ -592,7 +592,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
       </td>
       <td width="21%" > 
         <input type="text" class="inputbox"  name="product_box" value="<?php echo ($db->f("product_packaging")>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo mm_ToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION); ?>
+        echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION); ?>
       </td>
     </tr>
     <!-- Changed Packaging - End -->
@@ -735,7 +735,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/related.png\" width=\"16\" h
                         <td width="21%" valign="top">
                                 <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_INFO_MSG_PLEASE_SELECT ?>:</div>
                                 <br/><br/>
-				<?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?>
+				<?php echo vmToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?>
 			</td>
 			<td width="79%"><?php 
 				echo $ps_html->list_products("related_products[]", $related_products, $product_id, false ); 
@@ -748,6 +748,19 @@ $tabs->endTab();
 
   // Get Product Types
   $dba = new ps_DB;
+  
+  ################################
+  # Alatis Mod
+  #
+  # New Product based on specified Product Type
+  ################################
+  $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
+  if ($product_type_id > 0) {
+    $q = "SELECT * FROM #__{vm}_product_type WHERE product_type_id=$product_type_id";
+    $dba->query($q);
+    echo "<input type=\"hidden\" name=\"product_type_id\" value=\"$product_type_id\" />";
+  } else {
+  // Get Product Types
   $q  = "SELECT * FROM #__{vm}_product_product_type_xref,#__{vm}_product_type WHERE ";
   $q .= "#__{vm}_product_product_type_xref.product_type_id=#__{vm}_product_type.product_type_id ";
   $q .= "AND product_id='$product_id' ";
@@ -759,6 +772,10 @@ $tabs->endTab();
   }*/
   $q .= "ORDER BY product_type_list_order";
   $dba->query($q);
+  }
+  #################################
+  # / Alatis Mod
+  #################################
   
   $dbpt = new ps_DB;
   $dbp = new ps_DB;
@@ -786,16 +803,11 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
 
     <?php 
     $i = 0;
-        while ($dbpt->next_record()) {
-                if ($dbpt->f("parameter_type")!="B") {
-                        echo "<tr class=\"row".$i++ % 2 . "\">\n  <td width=\"21%\" height=\"2\" valign=\"top\"><div style=\"text-align:right;font-weight:bold;\">";
-                        echo $dbpt->f("parameter_label");
-                        
-                        if ($dbpt->f("parameter_description")) {
-				echo "&nbsp;";
-				echo mm_ToolTip($dbpt->f("parameter_description"));
-			}
-			echo "&nbsp;:</div>\n  </td>\n  <td width=\"79%\" height=\"2\" >";
+    while ($dbpt->next_record()) {
+       if ($dbpt->f("parameter_type")!="B") {
+            echo "<tr class=\"row".$i++ % 2 . "\">\n  <td width=\"21%\" height=\"2\" valign=\"top\"><div style=\"text-align:right;font-weight:bold;\">";
+            echo $dbpt->f("parameter_label");
+			echo ":</div>\n  </td>\n  <td width=\"79%\" valign=\"top\" >";
 			
 			$parameter_values=$dbpt->f("parameter_values");
 			if (!empty($parameter_values)) { // List of values
@@ -827,24 +839,24 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
 			}
 			else { // Input field
 				switch( $dbpt->f("parameter_type") ) {
-					case "I": // Integer
-					case "F": // Float
-					case "D": // Date & Time
-					case "A": // Date
-					case "M": // Time
-						echo "    <input type=\"text\" class=\"inputbox\"  name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
-					break;
-					case "T": // Text
-					case "S": // Short Text
-						echo "<textarea class=\"inputbox\" name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" cols=\"35\" rows=\"6\" >";
-						echo $dbp->sf($dbpt->f("parameter_name"))."</textarea>";
-					break;
-					case "C": // Char
-						echo "    <input type=\"text\" class=\"inputbox\"  name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"5\" />";
-					break;
-					case "V": // Multiple Values
-						echo "    <input type=\"text\" class=\"inputbox\"  name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
-						
+				case "I": // Integer
+				case "F": // Float
+				case "D": // Date & Time
+				case "A": // Date
+				case "M": // Time
+					echo "    <input type=\"text\" class=\"inputbox\"  name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
+				break;
+				case "T": // Text
+				case "S": // Short Text
+					echo "<textarea class=\"inputbox\" name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" cols=\"35\" rows=\"6\" >";
+					echo $dbp->sf($dbpt->f("parameter_name"))."</textarea>";
+				break;
+				case "C": // Char
+					echo "    <input type=\"text\" class=\"inputbox\"  name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"5\" />";
+				break;
+				case "V": // Multiple Values
+					echo "    <input type=\"text\" class=\"inputbox\"  name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
+					
 // 						$fields=explode(";",$parameter_values);
 // 						echo "<select class=\"inputbox\" name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name");
 // 						if ($db->f("parameter_multiselect")=="Y") {
@@ -867,10 +879,15 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
 // 							}
 // 						}
 // 						echo "</select>";
-						break;
-					default: // Default type Short Text
-						echo "    <input type=\"text\" class=\"inputbox\" name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
+					break;
+				default: // Default type Short Text
+					echo "    <input type=\"text\" class=\"inputbox\" name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
 				}
+			}
+			
+            if ($dbpt->f("parameter_description")) {
+				echo "&nbsp;";
+				echo vmToolTip($dbpt->f("parameter_description"));
 			}
 			echo " ".$dbpt->f("parameter_unit");
 			if ($dbpt->f("parameter_default")) {
@@ -896,7 +913,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
 					break;
 				case "V": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE; break; 	// Multiple Value
 			}
-			echo " ]";
+			echo " ] ";
 		}
 		else {
 			echo "<tr>\n  <td colspan=\"2\" height=\"2\" ><hr/>";
@@ -942,6 +959,7 @@ $tabs->endPane();
 // Add necessary hidden fields
 $formObj->hiddenField( 'product_id', $product_id );
 $formObj->hiddenField( 'product_parent_id', $product_parent_id );
+$formObj->hiddenField( 'pshop_mode', 'admin' );
 
 $funcname = !empty($product_id) ? "productUpdate" : "productAdd";
 

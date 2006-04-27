@@ -214,7 +214,7 @@ class ps_product_category extends vmAbstractObject {
 	function add( &$d ) {
 		global $vmLogger;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-		
+
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -272,7 +272,7 @@ class ps_product_category extends vmAbstractObject {
 			$q .= $category_id . "')";
 			$db->setQuery($q);
 			$db->query();
-			
+
 			$vmLogger->info( "Successfully added new category: ".$d['category_name'].'.');
 			return $category_id;
 		}
@@ -387,9 +387,9 @@ class ps_product_category extends vmAbstractObject {
 				$q = "UPDATE #__{vm}_category SET list_order=".$db->f("list_order")."+1 WHERE category_id='".$d["category_id"]."'";
 				$db->query( $q );
 			}
-			
+
 			$vmLogger->info( "Successfully updated category: ".$d['category_name'].'.' );
-			
+
 			return True;
 		}
 		else {
@@ -533,9 +533,9 @@ class ps_product_category extends vmAbstractObject {
 	 * @return string HTML code with the link list
 	 */
 	function get_category_tree( $category_id=0,
-								$links_css_class="mainlevel",
-								$list_css_class="mm123",
-								$highlighted_style="font-style:italic;" ) {
+	$links_css_class="mainlevel",
+	$list_css_class="mm123",
+	$highlighted_style="font-style:italic;" ) {
 		global $sess;
 
 		$categories = ps_product_category::getCategoryTreeArray();
@@ -621,11 +621,11 @@ class ps_product_category extends vmAbstractObject {
 		for($n = 0 ; $n < $nrows ; $n++) {
 
 			if( !isset( $row_list[$n] ) || !isset( $category_tmp[$row_list[$n]]["category_child_id"] ) )
-				continue;
+			continue;
 			if( $category_id == $category_tmp[$row_list[$n]]["category_child_id"] )
-				$style = $highlighted_style;
+			$style = $highlighted_style;
 			else
-				$style = "";
+			$style = "";
 
 			$allowed = false;
 			if( $depth_list[$n] > 0 ) {
@@ -638,16 +638,16 @@ class ps_product_category extends vmAbstractObject {
 				}
 			}
 			else
-				$allowed = true;
+			$allowed = true;
 			$append = "";
 			if( $allowed ) {
 				if( $style == $highlighted_style ) {
 					$append = 'id="active_menu"';
 				}
 				if( $depth_list[$n] > 0 )
-					$css_class = "sublevel";
+				$css_class = "sublevel";
 				else
-					$css_class = $links_css_class;
+				$css_class = $links_css_class;
 
 				$catname = shopMakeHtmlSafe( $category_tmp[$row_list[$n]]["category_name"] );
 
@@ -695,9 +695,9 @@ class ps_product_category extends vmAbstractObject {
 		while ($db->next_record()) {
 			$product_count = $this->product_count($db->f("category_child_id"));
 			if ($level % 2)
-				$bgcolor=SEARCH_COLOR_1;
+			$bgcolor=SEARCH_COLOR_1;
 			else
-				$bgcolor=SEARCH_COLOR_2;
+			$bgcolor=SEARCH_COLOR_2;
 			$ibg++;
 			echo "<tr bgcolor=\"$bgcolor\">\n";
 			echo "<td><input style=\"display:none;\" id=\"cb$ibg\" name=\"cb[]\" value=\"".$db->f("category_id")."\" type=\"checkbox\" />&nbsp;$ibg</td><td>";
@@ -961,7 +961,7 @@ class ps_product_category extends vmAbstractObject {
 
 		return $html;
 	}
-	
+
 	/**
 	 * Shows the Number of Products in category $category_id
 	 *
@@ -1025,20 +1025,21 @@ class ps_product_category extends vmAbstractObject {
 		$db = new ps_DB;
 
 		$q  = "SELECT category_parent_id FROM #__{vm}_category_xref ";
-		if( $category_id )
-		$q .= "WHERE category_child_id='$category_id'";
-		$db->setQuery($q);   $db->query();
+		if( $category_id ) {
+			$q .= "WHERE category_child_id='$category_id'";
+		}
+		$db->query( $q );
 		$db->next_record();
 		$category_id=$db->f("category_parent_id");
 		$multiple = $multiple ? "multiple=\"multiple\"" : "";
-
-		echo "<select class=\"inputbox\" size=\"$size\" $multiple name=\"$name\">\n";
-                if( $toplevel ) {
-                        echo "<option value=\"0\">Default-Top Level</option>\n";
-                }
-                $this->list_tree($category_id, '0', '0', $selected_categories, $disabledFields );
-                echo "</select>\n";
-        }
+		$id = str_replace('[]', '', $name );
+		echo "<select class=\"inputbox\" size=\"$size\" $multiple name=\"$name\" id=\"$id\">\n";
+		if( $toplevel ) {
+			echo "<option value=\"0\">Default-Top Level</option>\n";
+		}
+		$this->list_tree($category_id, '0', '0', $selected_categories, $disabledFields );
+		echo "</select>\n";
+	}
 
 	/**
 	 * Returns a drop-down list with all child categories of a given category $category_parent_id
@@ -1071,8 +1072,8 @@ class ps_product_category extends vmAbstractObject {
 					$selected = "";
 				}
 				$html .= "<option value=\"".$db->f("list_order")."\" $selected>"
-					.$db->f("list_order").". ".$db->f("category_name")
-					."</option>\n";
+				.$db->f("list_order").". ".$db->f("category_name")
+				."</option>\n";
 			}
 			$html .= "</select>\n";
 			return $html;
@@ -1105,24 +1106,24 @@ class ps_product_category extends vmAbstractObject {
 			$child_id = $db->f("category_child_id");
 			if ($child_id != $cid) {
 				$selected = ($child_id == $category_id) ? "selected=\"selected\"" : "";
-                                if( $selected == "" && @$selected_categories[$child_id] == "1") {
-                                        $selected = "selected=\"selected\"";
-                                }
-                                $disabled = '';
-                                if( in_array( $child_id, $disabledFields )) {
-                                        $disabled = 'disabled="disabled"';
-                                }
-                                echo "<option $selected $disabled value=\"$child_id\">\n";
-                        }
-                        for ($i=0;$i<$level;$i++) {
-                                echo "&#151;";
-                        }
-                        echo "|$level|";
-                        echo "&nbsp;" . $db->f("category_name") . "</option>";
-                        $this->list_tree($category_id, $child_id, $level, $selected_categories, $disabledFields);
-                }
-        }
-        /**
+				if( $selected == "" && @$selected_categories[$child_id] == "1") {
+					$selected = "selected=\"selected\"";
+				}
+				$disabled = '';
+				if( in_array( $child_id, $disabledFields )) {
+					$disabled = 'disabled="disabled"';
+				}
+				echo "<option $selected $disabled value=\"$child_id\">\n";
+			}
+			for ($i=0;$i<$level;$i++) {
+				echo "&#151;";
+			}
+			echo "|$level|";
+			echo "&nbsp;" . $db->f("category_name") . "</option>";
+			$this->list_tree($category_id, $child_id, $level, $selected_categories, $disabledFields);
+		}
+	}
+	/**
 	 * Returns the category name of the first category product $product_id is assigned
 	 *
 	 * @param int $product_id
@@ -1204,7 +1205,7 @@ class ps_product_category extends vmAbstractObject {
 	function navigation_list($category_id) {
 		echo $this->get_navigation_list($category_id);
 	}
-	
+
 	/**
 	 * Creates navigation list of categories
 	 * @author pablo
@@ -1246,7 +1247,7 @@ class ps_product_category extends vmAbstractObject {
 
 		return $html;
 	}
-	
+
 	/**
 	 * Changes the category List Order
 	 * @author soeren
@@ -1262,83 +1263,83 @@ class ps_product_category extends vmAbstractObject {
 
 			switch( $d["task"] ) {
 				case "orderup":
-				$q = "SELECT list_order,category_parent_id FROM #__{vm}_category,#__{vm}_category_xref ";
-				$q .= "WHERE category_id='".$cid[0]."' ";
-				$q .= "AND category_child_id='".$cid[0]."' ";
-				$db->query($q);
-				$db->next_record();
-				$currentpos = $db->f("list_order");
-				$category_parent_id = $db->f("category_parent_id");
+					$q = "SELECT list_order,category_parent_id FROM #__{vm}_category,#__{vm}_category_xref ";
+					$q .= "WHERE category_id='".$cid[0]."' ";
+					$q .= "AND category_child_id='".$cid[0]."' ";
+					$db->query($q);
+					$db->next_record();
+					$currentpos = $db->f("list_order");
+					$category_parent_id = $db->f("category_parent_id");
 
-				// Get the (former) predecessor and update it
-				$q = "SELECT list_order,#__{vm}_category.category_id FROM #__{vm}_category, #__{vm}_category_xref ";
-				$q .= "WHERE #__{vm}_category_xref.category_parent_id='$category_parent_id' ";
-				$q .= "AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id ";
-				$q .= "AND list_order='". intval($currentpos - 1) . "'";
-				$db->query($q);
-				$db->next_record();
-				$pred = $db->f("category_id");
+					// Get the (former) predecessor and update it
+					$q = "SELECT list_order,#__{vm}_category.category_id FROM #__{vm}_category, #__{vm}_category_xref ";
+					$q .= "WHERE #__{vm}_category_xref.category_parent_id='$category_parent_id' ";
+					$q .= "AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id ";
+					$q .= "AND list_order='". intval($currentpos - 1) . "'";
+					$db->query($q);
+					$db->next_record();
+					$pred = $db->f("category_id");
 
-				// Update the category and decrease the list_order
-				$q = "UPDATE #__{vm}_category ";
-				$q .= "SET list_order=list_order-1 ";
-				$q .= "WHERE category_id='".$cid[0]."'";
-				$db->query($q);
+					// Update the category and decrease the list_order
+					$q = "UPDATE #__{vm}_category ";
+					$q .= "SET list_order=list_order-1 ";
+					$q .= "WHERE category_id='".$cid[0]."'";
+					$db->query($q);
 
-				$q = "UPDATE #__{vm}_category ";
-				$q .= "SET list_order=list_order+1 ";
-				$q .= "WHERE category_id='$pred'";
-				$db->query($q);
+					$q = "UPDATE #__{vm}_category ";
+					$q .= "SET list_order=list_order+1 ";
+					$q .= "WHERE category_id='$pred'";
+					$db->query($q);
 
-				break;
+					break;
 
 				case "orderdown":
-				$q = "SELECT list_order,category_parent_id FROM #__{vm}_category,#__{vm}_category_xref ";
-				$q .= "WHERE category_id='".$cid[0]."' ";
-				$q .= "AND category_child_id='".$cid[0]."' ";
-				$db->query($q);
-				$db->next_record();
-				$currentpos = $db->f("list_order");
-				$category_parent_id = $db->f("category_parent_id");
-
-				// Get the (former) successor and update it
-				$q = "SELECT list_order,#__{vm}_category.category_id FROM #__{vm}_category, #__{vm}_category_xref ";
-				$q .= "WHERE #__{vm}_category_xref.category_parent_id='$category_parent_id' ";
-				$q .= "AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id ";
-				$q .= "AND list_order='". intval($currentpos + 1) . "'";
-				$db->query($q);
-				$db->next_record();
-				$succ = $db->f("category_id");
-
-				$q = "UPDATE #__{vm}_category ";
-				$q .= "SET list_order=list_order+1 ";
-				$q .= "WHERE category_id='".$cid[0]."' ";
-				$db->query($q);
-
-				$q = "UPDATE #__{vm}_category ";
-				$q .= "SET list_order=list_order-1 ";
-				$q .= "WHERE category_id='$succ'";
-				$db->query($q);
-
-				break;
-				case "saveorder":
-				$i = 0;
-				foreach( $d['category_id'] as $category_id ) {
-					if( !is_numeric( $d['order'][$i] ) ) {
-						$d['error'] = "Error: Please use numbers only for ordering the list!";
-						return false;
-					}
-					$i++;
-				}
-				$i = 0;
-				foreach( $d['category_id'] as $category_id ) {
-					$q = "UPDATE #__{vm}_category ";
-					$q .= "SET list_order= ".$d['order'][$i];
-					$q .= " WHERE category_id='".$category_id."' ";
+					$q = "SELECT list_order,category_parent_id FROM #__{vm}_category,#__{vm}_category_xref ";
+					$q .= "WHERE category_id='".$cid[0]."' ";
+					$q .= "AND category_child_id='".$cid[0]."' ";
 					$db->query($q);
-					$i++;
-				}
-				break;
+					$db->next_record();
+					$currentpos = $db->f("list_order");
+					$category_parent_id = $db->f("category_parent_id");
+
+					// Get the (former) successor and update it
+					$q = "SELECT list_order,#__{vm}_category.category_id FROM #__{vm}_category, #__{vm}_category_xref ";
+					$q .= "WHERE #__{vm}_category_xref.category_parent_id='$category_parent_id' ";
+					$q .= "AND #__{vm}_category_xref.category_child_id=#__{vm}_category.category_id ";
+					$q .= "AND list_order='". intval($currentpos + 1) . "'";
+					$db->query($q);
+					$db->next_record();
+					$succ = $db->f("category_id");
+
+					$q = "UPDATE #__{vm}_category ";
+					$q .= "SET list_order=list_order+1 ";
+					$q .= "WHERE category_id='".$cid[0]."' ";
+					$db->query($q);
+
+					$q = "UPDATE #__{vm}_category ";
+					$q .= "SET list_order=list_order-1 ";
+					$q .= "WHERE category_id='$succ'";
+					$db->query($q);
+
+					break;
+				case "saveorder":
+					$i = 0;
+					foreach( $d['category_id'] as $category_id ) {
+						if( !is_numeric( $d['order'][$i] ) ) {
+							$d['error'] = "Error: Please use numbers only for ordering the list!";
+							return false;
+						}
+						$i++;
+					}
+					$i = 0;
+					foreach( $d['category_id'] as $category_id ) {
+						$q = "UPDATE #__{vm}_category ";
+						$q .= "SET list_order= ".$d['order'][$i];
+						$q .= " WHERE category_id='".$category_id."' ";
+						$db->query($q);
+						$i++;
+					}
+					break;
 			}
 		}
 		return true;

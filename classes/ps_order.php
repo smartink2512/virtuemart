@@ -221,21 +221,20 @@ class ps_order {
 
 		if ($d["order_status"]==ENABLE_DOWNLOAD_STATUS) {
 			$dbw = new ps_DB;
-			$dbw_2 = new ps_DB;
-			$q = "SELECT * FROM #__{vm}_product_download WHERE";
+			
+			$q = "SELECT order_id,user_id,download_id,file_name FROM #__{vm}_product_download WHERE";
 			$q .= " order_id = '" . $d["order_id"] . "'";
 			$dbw->query($q);
 			$dbw->next_record();
 			$userid = $dbw->f("user_id");
 			$download_id = $dbw->f("download_id");
 			$datei=$dbw->f("file_name");
-			$dbw_2->query($q);
+			$dbw->reset();
 
 			if ($download_id) {
 
 				$dbv = new ps_DB;
-				$q = "SELECT * FROM #__{vm}_vendor ";
-				$q .= "WHERE vendor_id='1'";
+				$q = "SELECT * FROM #__{vm}_vendor WHERE vendor_id='1'";
 				$dbv->query($q);
 				$dbv->next_record();
 
@@ -248,9 +247,9 @@ class ps_order {
 				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_1.".\n";
 				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_2."\n\n";
 
-				while($dbw_2->next_record()) {
-					$message .= $dbw_2->f("file_name").": ".$dbw_2->f("download_id")
-					. "\n$url&download_id=".$dbw_2->f("download_id")."\n\n";
+				while($dbw->next_record()) {
+					$message .= $dbw->f("file_name").": ".$dbw->f("download_id")
+					. "\n$url&download_id=".$dbw->f("download_id")."\n\n";
 				}
 
 				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_3 . DOWNLOAD_MAX."\n";

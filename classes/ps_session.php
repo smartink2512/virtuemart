@@ -134,7 +134,7 @@ class ps_session {
 		}		
 		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
 			&& ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' ) 
-			&& $ssl_redirect == 0 
+			&& $ssl_redirect == 0 && !vmIsAdminMode()
 			&& @$_REQUEST['option']=='com_virtuemart') {
 				
 			$pagearr = explode( '.', $page );
@@ -355,7 +355,8 @@ class ps_session {
 	
 					$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
 					$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
-					if( $createAbsoluteURI ) {
+
+					if( $createAbsoluteURI && substr($appendix,0,4)!='http' ) {
 						$appendix = URL . $appendix;
 					}
 					
@@ -371,6 +372,9 @@ class ps_session {
 	
 				if ( stristr($text, SECUREURL)) {
 					$appendix = str_replace(URL, SECUREURL, $appendix);
+				}
+				elseif( stristr($text, URL) && $createAbsoluteURI ) {
+					$appendix = str_replace(SECUREURL, URL, $appendix);
 				}
 	
 				$text = $appendix;

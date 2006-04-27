@@ -882,12 +882,14 @@ Order Total: '.$order_total.'
 		* Insert the User Billto & Shipto Info
 		*/
 		// Bill To Address
-		$q = "INSERT INTO `#__{vm}_order_user_info` ";
+		$q = "INSERT INTO `#__{vm}_order_user_info` 
+			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type) ";
 		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
 		$db->query( $q );
 
 		// Ship to Address if applicable
-		$q = "INSERT INTO `#__{vm}_order_user_info` ";
+		$q = "INSERT INTO `#__{vm}_order_user_info` 
+			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type) ";
 		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
 		$db->query( $q );
 
@@ -983,14 +985,13 @@ Order Total: '.$order_total.'
 				$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
 				$dl .= " AND attribute_name='download'";
 				$db->query($dl);
-				$db->next_record();
 
-				if ($db->f("attribute_name") =="download") {
+				while($db->next_record()) {
 
 					$str = $order_id;
-					$str .=$cart[$i]["product_id"];
-					$str .=$dlnum;
-					$str .=time();
+					$str .= $cart[$i]["product_id"];
+					$str .= $dlnum++;
+					$str .= time();
 
 					$download_id = md5($str);
 
@@ -1517,7 +1518,7 @@ Order Total: '.$order_total.'
 		global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY, $vmLogger,
 		$mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_mailfrom,
 		$mosConfig_fromname, $mosConfig_smtpauth, $mosConfig_mailer, $mosConfig_lang,
-		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
+		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost, $database;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$auth = $_SESSION["auth"];
@@ -1559,7 +1560,7 @@ Order Total: '.$order_total.'
 		$dboi->query($q_oi);
 
 		$db_payment = new ps_DB;
-		$q  = "SELECT payment_method_id, payment_method_name FROM #__{vm}_order_payment as op, #__{vm}_payment_method as pm
+		$q  = "SELECT op.payment_method_id, pm.payment_method_name FROM #__{vm}_order_payment as op, #__{vm}_payment_method as pm
               WHERE order_id='$order_id' AND op.payment_method_id=pm.payment_method_id";
 		$db_payment->query($q);
 		$db_payment->next_record();
@@ -1617,20 +1618,45 @@ Order Total: '.$order_total.'
 		// ******************************
 		// Shopper Header
 		$shopper_header = $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1."\n";
-
+		
+		// Get the legal information about the returns/order cancellation policy
+		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' ) {
+			$article = intval(@VM_ONCHECKOUT_LEGALINFO_LINK);
+			if( $article > 0 ) {
+				$content = new mosContent( $database );
+				$content->load( $article );
+				if( $content->introtext != '' ) {
+					$legal_info_title = $content->title;
+					$legal_info_text = strip_tags( str_replace( '<br />', "\n", $content->introtext ));
+					$legal_info_html = $content->introtext;
+				}
+			}
+		}
 		//Shopper Footer
 		$shopper_footer = "\n\n".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2."\n";
 		$shopper_footer .= "\n\n".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\n";
 		$shopper_footer .= $shopper_order_link;
 		$shopper_footer .= "\n\n".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3."\n";
 		$shopper_footer .= "Email: " . $from_email;
-
+		// New in version 1.0.5
+		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
+			$shopper_footer .= "\n\n____________________________________________\n";
+			$shopper_footer .= $legal_info_title."\n";
+			$shopper_footer .= $legal_info_text."\n";
+		}
+		
 		$shopper_footer_html = "<br /><br />".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2."<br />";
 		$shopper_footer_html .= "<br /><a title=\"".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\" href=\"$shopper_order_link\">"
 		. $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."</a>";
 		$shopper_footer_html .= "<br /><br />".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3."<br />";
 		$shopper_footer_html .= _CMN_EMAIL.": <a href=\"mailto:" . $from_email."\">".$from_email."</a>";
-
+		// New in version 1.0.5
+		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
+			$shopper_footer_html .= "<br /><br />____________________________________________<br />";
+			$shopper_footer_html .= '<h5>'.$legal_info_title.'</h5>';
+			$shopper_footer_html .= $legal_info_html.'<br />';
+		}
+		
 		// Vendor Header
 		$vendor_header = $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4."\n";
 
@@ -1962,7 +1988,6 @@ Order Total: '.$order_total.'
 			$html = str_replace('{phpShopVendorCity}',$v_ci,$html);
 			$html = str_replace('{phpShopVendorState}',$v_st,$html);
 			$html = str_replace('{phpShopVendorImage}',$v_vfi,$html);
-			$html = str_replace('{phpShopOrderHeaderMsg}',$shopper_header,$html);
 			$html = str_replace('{phpShopOrderHeader}',$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL,$html);
 			$html = str_replace('{phpShopOrderNumber}',$v_oi,$html);
 			$html = str_replace('{phpShopOrderDate}',strftime( _DATE_FORMAT_LC, $db->f("cdate")),$html);
@@ -2015,9 +2040,12 @@ Order Total: '.$order_total.'
 			else {
 				$html = str_replace('{SHIPPING_INFO_DETAILS}', " ./. ", $html);
 			}
-
-			$shopper_html = str_replace('{phpShopOrderClosingMsg}',$shopper_footer_html,$html);
-			$vendor_html = str_replace('{phpShopOrderClosingMsg}',$vendor_footer_html,$html);
+			
+			$shopper_html = str_replace('{phpShopOrderHeaderMsg}',$shopper_header, $html);
+			$shopper_html = str_replace('{phpShopOrderClosingMsg}',$shopper_footer_html, $shopper_html);
+			
+			$vendor_html = str_replace('{phpShopOrderHeaderMsg}',$vendor_header, $html);
+			$vendor_html = str_replace('{phpShopOrderClosingMsg}',$vendor_footer_html,$vendor_html);
 			$html = $shopper_html;
 
 			/*

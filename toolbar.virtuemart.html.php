@@ -108,7 +108,7 @@ class MENU_virtuemart {
 				} catch(e) {}
 			}
 
-			$('statusBox').innerHTML = 'Loading ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
+			$('statusBox').innerHTML = 'Saving ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
 			new Lightbox.base('statusBox', { closeOnOverlayClick : true })
 			new ajax( '$mosConfig_live_site".$admin."/index2.php', {
 				formName: 'adminForm',

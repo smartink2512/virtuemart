@@ -35,12 +35,21 @@ VirtueMart 1.1.x
 *************************************
 26-04-2006 soeren
 
+# Task #729 - additional address links in admin (admin.user_form.php)
+# Task #733 - Discount causes error message in Order Details page
++ added the possibility to add a product by product type
+# product type form&list missing an object
 - pay-download form removed from product form
-+ allowing multiple pay-download files per product now
++ allowing multiple pay-download files per product now (useful when the file size is so large that you need to split up the file)
 + allowing the file manager to manage product (main) images
+- FileManager product list
 
 23-04-2006 soeren
 
++ Now it is possible to easily inform your customers about their order cancellation right
+	and your returns policy (as required by law in most european countries!)
+	=> added 3 new configuration parameters
+	! Update your configuration when updating from an earlier version
 # hiding attribute price modifiers when the user has no permission to view prices
 
 20-04-2006 soeren

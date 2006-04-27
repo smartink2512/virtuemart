@@ -123,7 +123,7 @@ if( $db->f("user_id") ) {
 			}
 			else {
 			  while ($dbt->next_record()) {
-				$url = SECUREURL . "?page=$modulename.user_address_form&user_id=$user_id&user_info_id=" . $dbt->f("user_info_id");
+				$url = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.user_address_form&user_id=$user_id&user_info_id=" . $dbt->f("user_info_id"));
 				echo '&raquo; <a href="' . $sess->url($url) . '">';
 				echo $dbt->f("address_type_name") . "</a><br/>";
 			  }

@@ -1083,4 +1083,13 @@ function vmSafeFileName( $filename ) {
 	
 	return $filename;
 }
+function vmIsAdminMode() {
+	global $page;
+	return ( @$_REQUEST['pshop_mode'] == 'admin' 
+	|| stristr($page,"form")
+	|| stristr($page, "list")
+	|| stristr($page, "cfg")
+	|| stristr($page, "print")
+	|| stristr($page, "display"));
+}
 ?>

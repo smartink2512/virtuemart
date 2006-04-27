@@ -517,10 +517,13 @@ if( PAYMENT_DISCOUNT_BEFORE == '1') {
                 ?>:
               </td> 
               <td align="right"><?php
-              if ($db->f("order_discount") > 0 )
-              echo "- ".$CURRENCY_DISPLAY->getFullValue(abs());
-              elseif ($db->f("order_discount") < 0 )
-                 echo "+ ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount"))); ?>
+              if ($db->f("order_discount") > 0 ) {
+              	echo "- ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")));
+              }
+              elseif ($db->f("order_discount") < 0 )  {
+              	echo "+ ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")));
+              } 
+              ?>
               &nbsp;&nbsp;&nbsp;</td>
           </tr>
         

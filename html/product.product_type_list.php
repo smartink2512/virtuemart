@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
-
+global $ps_product_type;
 $q = "SELECT * FROM #__{vm}_product_type ";
 /*    $q .= "WHERE #__{vm}_category_xref.category_parent_id='";
 $q .= $category_id . "' AND ";

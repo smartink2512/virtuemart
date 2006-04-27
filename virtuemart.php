@@ -87,13 +87,8 @@ else {
 	** FRONTEND ADMIN - MOD
 	**/
 	$pshop_mode = mosgetparam($_REQUEST, 'pshop_mode', "");
-	if (($pshop_mode == "admin"
-	|| stristr($page,"form")
-	|| stristr($page, "list")
-	|| stristr($page, "cfg")
-	|| stristr($page, "print")
-	|| stristr($page, "display"))
-	&& $perm->check("admin,storeadmin")
+	if ( vmIsAdminMode()
+		&& $perm->check("admin,storeadmin")
 		&& ((!stristr($my->usertype, "admin") ^ PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '' )
 			|| stristr($my->usertype, "admin")
 			)

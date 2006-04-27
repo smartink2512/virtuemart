@@ -27,6 +27,7 @@ $selected_type = Array();
 $q = "SELECT product_id, product_name, product_full_image as file_name, product_thumb_image as file_name2 FROM #__{vm}_product WHERE product_id=".intval($product_id); 
 $db->query($q);  
 $db->next_record();
+$hasProductImages = $db->f('file_name2') != '';
 $selected_type = array( "selected=\"selected\"", '', '', '', '','' );
 
 $product_name = '<a href="'.$_SERVER['PHP_SELF'].'?option='.$option.'&amp;product_id='.$product_id.'&amp;page=product.product_form">'.$db->f("product_name").'</a>';
@@ -63,6 +64,9 @@ if( !empty($file_id) ) {
 	}
 }
 else {
+	if( $hasProductImages ) {
+		vmCommonHTML::setSelectedArray( $selected_type, 4, 'selected', array(0,1,2) );
+	}
 	$isProductDownload = false;
 	$default["file_title"] = $db->f('product_name');
 	$default["file_published"] = "1";
@@ -116,7 +120,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
         	<option value="product_images" <?php echo $selected_type[0] ?>><?php echo 'Product Image (full and thumb)' ?></option>
 	        <option value="product_full_image" <?php echo $selected_type[1] ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_FULL_IMAGE ?></option>
 	        <option value="product_thumb_image" <?php echo $selected_type[2] ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE ?></option>
-	        <option value="downlodable_file" <?php echo $selected_type[3] ?>><?php echo 'Downloadable Product File (to be sold!)' ?></option>
+	        <option value="downloadable_file" <?php echo $selected_type[3] ?>><?php echo 'Downloadable Product File (to be sold!)' ?></option>
 	        <option value="image" <?php echo $selected_type[4] ?>><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_IMAGE ?></option>
 	        <option value="file" <?php echo $selected_type[5] ?>><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE ?></option>
         </select>
@@ -129,7 +133,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
         <label for="upload_dir0"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_IMAGEPATH ?></label><br/><br/>
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir1" value="FILEPATH" />
         <label for="upload_dir1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_OWNPATH ?></label>:
-        &nbsp;&nbsp;&nbsp;<strong><?php echo $mosConfig_absolute_path ?></strong>&nbsp;<input type="text" class="inputbox" name="file_path" size="40" value="/media/" /><br/><br/>
+        &nbsp;&nbsp;&nbsp;<strong><?php echo $mosConfig_absolute_path ?></strong>&nbsp;<input type="text" class="inputbox" name="file_path" size="25" value="/media/" /><br/><br/>
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir2" value="DOWNLOADPATH" />
         <label for="upload_dir2"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_UPLOAD_DOWNLOADPATH ?></label>
       </td>
@@ -178,17 +182,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
       </td>
     </tr>
     <tr >
-      <td colspan="2" align="center">
-      <?php 
-      if( $only_page ) {
-      	echo '<input type="button" name="submit" onclick="submitFileForm();" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" /> ';
-      	echo '<input type="button" name="cancel" onclick="toggleContainer();" value="'._CMN_CANCEL.'" />';
-      }
-      else {
-      	echo '&nbsp;';
-      }
-      ?>
-      </td>
+      <td colspan="2" align="center">&nbsp;</td>
     </tr>
   </table>
 <?php

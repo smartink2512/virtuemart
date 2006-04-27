@@ -186,7 +186,7 @@ class ps_product_files {
 		else {
 			// erase $mosConfig_absolute_path to have a relative path
 			$filename = str_replace( $mosConfig_absolute_path, '', $filename );
-			if( $d['file_type'] == 'downlodable_file') {
+			if( $d['file_type'] == 'downloadable_file') {
 				// Insert an attribute called "download", attribute_value: filename
 				$q2  = "INSERT INTO #__{vm}_product_attribute ";
 				$q2 .= "(product_id,attribute_name,attribute_value) ";
@@ -235,6 +235,7 @@ class ps_product_files {
 		$db->query($q_dl);
 
 		if( $db->next_record() ) {
+			
 			$old_attribute = $db->f('attribute_value', false);
 			$is_download_attribute = true;
 			if( !empty($_FILES['file_upload']['name']) && $d['file_type']== 'downloadable_file') {
@@ -244,7 +245,7 @@ class ps_product_files {
 				$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download' AND attribute_value='".$old_attribute."'";
 				$db->query($qu);
 			}
-			elseif($d['file_type']!= 'downloadable_file') {
+			elseif($d['file_type'] != 'downloadable_file') {
 				$qu = "DELETE FROM #__{vm}_product_attribute ";
 				$qu .= "WHERE attribute_value = '$old_attribute' ";
 				$qu .= "AND product_id='".$d["product_id"]."' AND attribute_name='download'";
@@ -276,7 +277,7 @@ class ps_product_files {
 			}
 			if( !empty($d['file_url'])) {
 				$filename = '';
-			} elseif( $d['file_type'] == 'downloadable_file') {
+			} elseif( $d['file_type'] == 'downloadable_file' && !empty($old_attribute)) {
 				
 				$filename = DOWNLOADROOT.@$d['downloadable_file'];
 				$d["file_title"] = $db->getEscaped(basename( @$d['downloadable_file'] ));
@@ -292,7 +293,7 @@ class ps_product_files {
 		}
 
 		$q = "UPDATE #__{vm}_product_files SET ";
-		if( $filename) {
+		if( !empty($filename)) {
 			$q .= "file_name='" . $filename."', ";
 		}
 		$q .= "file_title='" . $d["file_title"]."', ";
@@ -448,7 +449,7 @@ class ps_product_files {
 
 		// This plays a role when a file is added from the ps_product class
 		// on adding and updating a downloadable product
-		if( $d['file_type'] == 'downlodable_file' ) {
+		if( $d['file_type'] == 'downloadable_file' ) {
 			$d["file_title"] = $d['filename'];
 		}
 

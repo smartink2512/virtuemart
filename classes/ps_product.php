@@ -323,7 +323,16 @@ class ps_product extends vmAbstractObject {
 			$my_price = new ps_product_price;
 			$my_price->add($d);
 		}
-
+		
+		if( !empty( $d['product_type_id'])) {
+			require_once( CLASSPATH.'ps_product_product_type.php' );
+			$ps_product_product_type = new ps_product_product_type();
+			$ps_product_product_type->add( $d );
+				
+			// Product Type Parameters!
+			$this->handleParameters( $d );
+		}
+		
 		// CLONE PRODUCT additional code
 		if( $d["clone_product"] == "Y" ) {
 
@@ -580,11 +589,25 @@ class ps_product extends vmAbstractObject {
 			}
 		}
 
-		/** Product Type - Begin */
-		$product_id=$d["product_id"];
+		// Product Type Parameters!
+		$this->handleParameters( $d );
+		 
+		$vmLogger->info( "Product was successfully updated" );
+		return true;
+	}
+	
+	/**
+	 * Handles adding or updating parameter values for a product an its product types
+	 * @since VirtueMart 1.1.0
+	 * @param array $d
+	 */
+	function handleParameters( &$d ) {
+		global $db;
+		
+		$product_id= intval( $d["product_id"] );
 
-		$q  = "SELECT * FROM #__{vm}_product_product_type_xref WHERE ";
-		$q .= "product_id='$product_id' ";
+		$q  = "SELECT `product_type_id` FROM `#__{vm}_product_product_type_xref` WHERE ";
+		$q .= "`product_id`=$product_id";
 		$db->query($q);
 
 		$dbpt = new ps_DB;
@@ -599,14 +622,15 @@ class ps_product extends vmAbstractObject {
 			$q .= "ORDER BY parameter_list_order";
 			$dbpt->query($q);
 
-			/*      $q  = "SELECT * FROM #__{vm}_product_type_$product_type_id WHERE ";
+			$q  = "SELECT COUNT(`product_id`) as num_rows FROM `#__{vm}_product_type_$product_type_id` WHERE ";
 			$q .= "product_id='$product_id'";
-			$dbp->query($q);
-			if (!$dbp->next_record()) {  // Add record if not exist (Items)
-			$q  = "INSERT INTO #__{vm}_product_type_$product_type_id (product_id) ";
-			$q .= "VALUES ('$product_id')";
-			$dbp->setQuery($q); $dbp->query();
-			}*/
+			$dbp->query($q); $dbp->next_record();
+			
+			if ( $dbp->f('num_rows') == 0 ) {  // Add record if not exist (Items)
+				$q  = "INSERT INTO #__{vm}_product_type_$product_type_id (product_id) ";
+				$q .= "VALUES ('$product_id')";
+				$dbp->query($q);
+			}
 
 			// Update record
 			$q  = "UPDATE #__{vm}_product_type_$product_type_id SET ";
@@ -625,12 +649,9 @@ class ps_product extends vmAbstractObject {
 			$q .= " WHERE product_id = '".$d['product_id']."'";
 			$dbp->setQuery($q); $dbp->query();
 		}
-		/** Product Type - End */
-		$vmLogger->info( "Product was successfully updated" );
-		return true;
+
 	}
-
-
+	
 	/**
 	 * Function to delete product(s) $d['product_id'] from the product table
 	 *

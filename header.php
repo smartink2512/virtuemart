@@ -143,15 +143,35 @@ for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules
                         } ?>
                         ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_MNU ?>'],
                         ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_MNU ?>'],
-                        _cmSplit,
-                        ['<img src="<?php echo $my_path ?>media.png" />','<?php echo $VM_LANG->_PHPSHOP_FILEMANAGER ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.filemanager"); ?>',null,'<?php echo $VM_LANG->_PHPSHOP_FILEMANAGER ?>'
-                        <?php 
-                        if( !empty($recent_product_id) ) { ?>
-                            ,['<img src="<?php echo $my_path ?>media.png" />','<?php echo $VM_LANG->_PHPSHOP_FILEMANAGER_ADD ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.file_form&product_id=$recent_product_id"); ?>',null,'<?php echo $VM_LANG->_PHPSHOP_FILEMANAGER_ADD ?>']],
-                        <?php 
-                        }
-                        else echo "],";
-                        ?>
+                            <?php
+                            ############################
+                            # Alatis Mod
+                            #
+                            # Menu to Select Product-Type when creating new Product from Menu
+                            ############################
+                            $dbpt = new ps_DB;
+
+                            $q = "SELECT product_type_id,product_type_name FROM #__{vm}_product_type ";
+                            $q .= "ORDER BY product_type_list_order ASC ";
+                            $dbpt->query($q);
+
+                            while ($dbpt->next_record()) {
+                            	$typetitle = $VM_LANG->_PHPSHOP_PRODUCT_FORM_MNU.' ('.strtoupper($dbpt->f("product_type_name")).') ';
+                               	echo "['<img src=\"".$my_path."edit.png\" />',";
+                               	echo "'$typetitle','";
+                               	$sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_form&product_type_id=".$dbpt->f("product_type_id"));
+                               	echo "',null,'$typetitle']";
+                                  
+                               	if (!$dbpt->is_last_record()) {
+                               		echo ",\n";
+                               	}
+                            }
+                            #############################
+                            # / Alatis Mod
+                            #############################
+                            ?>
+                        ,
+
                         _cmSplit,
                         ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $VM_LANG->_PHPSHOP_OTHER_LISTS ?>',null,null,'Inventory, Featured Products, Product Folders',
                             ['<img src="<?php echo $my_path ?>install.png" />','<?php echo $VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_inventory"); ?>',null,'<?php echo $VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_MNU ?>'],
