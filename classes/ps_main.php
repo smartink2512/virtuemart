@@ -314,9 +314,10 @@ function process_images(&$d) {
  * @param string $resizedFile
  * @param int $width
  * @param int $height
+ * @param boolean $enlargeSmallerImg
  * @return boolean
  */
-function vmResizeImage($sourceFile, $resizedFile, $height, $width ) {
+function vmResizeImage($sourceFile, $resizedFile, $height, $width, $enlargeSmallerImg=false ) {
 	global $vmLogger;
 	if( $width <= 0 || $height <= 0 ) {
 		if( is_callable(array($vmLogger,'err'))) {
@@ -324,6 +325,18 @@ function vmResizeImage($sourceFile, $resizedFile, $height, $width ) {
 			return false;
 		}
 	}
+	// We must take care of images which are already smaller than the size they are to be resized to
+	// In most case it is not wanted to enlarge them
+	$imgArr = @getimagesize( $sourceFile );
+	$isSmallerThanResizeto = $imgArr[0] < $width && $imgArr[1] < $height;
+	if( $isSmallerThanResizeto && !$enlargeSmallerImg ) {
+		if( $sourceFile != $resizedFile ) {
+			@copy( $sourceFile, $resizedFile );
+		}
+		$vmLogger->debug( 'The image '.basename( $sourceFile ).' was not resized because would have been enlarged.');
+		return false;
+	}
+	
 	//	Class for resizing Thumbnails
 	require_once( CLASSPATH . "class.img2thumb.php");
 	$Img2Thumb = new Img2Thumb( $sourceFile, $width, $height, $resizedFile, 0, 255, 255, 255 );

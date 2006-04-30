@@ -33,6 +33,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+29-04-2006 soeren
+
+^ changed the tree script to TigraTree for the "Product Folders" list. 
+	It builds the tree much faster than the JSCookTree and dTree script and even works with 10.000+ items.
++ Tigra Tree Menu Javacript
+
+
 26-04-2006 soeren
 
 # Task #729 - additional address links in admin (admin.user_form.php)

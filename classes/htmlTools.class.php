@@ -647,7 +647,21 @@ class vmCommonHTML extends mosHTML {
 		}
 		
 	}
-	
+	/**
+	* Loads all necessary script files for Tigra Tree Menu
+	* @static 
+	* @since VirtueMart 1.1.0
+	*/
+	function loadTigraTree() {
+		global $mosConfig_live_site, $option;
+		if( !defined( "_TIGRATREE_LOADED" )) {
+			?>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/tigratree/tree_tpl.js.php"></script>
+			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/tigratree/tree.js"></script>
+			<?php
+			define ( "_TIGRATREE_LOADED", "1" );
+		}
+	}
 	/**
 	 * Function to include the behaviour scripts in the HTML document
 	 * Behaviour: http://bennolan.com/behaviour/

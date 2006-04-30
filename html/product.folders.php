@@ -18,51 +18,32 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-mm_showMyFileName( __FILE__ );
-
-$jscook_theme = "ThemeXP";
-$jscook_tree = "ctThemeXP1";
-    
+mm_showMyFileName( __FILE__ );   
     
 /*********************************************************
-************* CATEGORY TREE ******************************
+************* PRODUCT & CATEGORY TREE ******************************
 */
 
-$phpShopmenu = new phpShopmenu();
-  
-// create a unique tree identifier, in case multiple trees are used 
-// (max one per module)
-$treename = "JSCook".uniqid( "Tree_" );
+$vmFoldersMenu = new vmFoldersMenu();
 
-$menu_htmlcode = "<br/><br/>
-<a onclick=\"javascript: ctExpandTree('div_$treename',99);\" style=\"cursor:pointer\">".$VM_LANG->_PHPSHOP_EXPAND_TREE."</a>
-&nbsp;&nbsp;|&nbsp;&nbsp;
-<a onclick=\"javascript: ctCollapseTree('div_$treename');\" style=\"cursor:pointer\">".$VM_LANG->_PHPSHOP_COLLAPSE_TREE."</a>
-<br/>
-<div style=\"margin-left:50px;\" id=\"div_$treename\"></div>
-<br/><br/>
+vmCommonHTML::loadTigraTree();
+
+$menu_htmlcode = "<br /><div style=\"text-align:left;margin-left:200px;\">
 <script type=\"text/javascript\"><!--
-var $treename = 
-[
+var TREE_ITEMS = [
+['{$VM_LANG->_PHPSHOP_STORE_MOD}', '{$_SERVER['PHP_SELF']}',
 ";
-$phpShopmenu->traverse_tree_down($menu_htmlcode);
+$vmFoldersMenu->traverse_tree_down($menu_htmlcode);
   
-$menu_htmlcode .= "];
-var treeindex = ctDraw ('div_$treename', $treename, $jscook_tree, '$jscook_theme', 0, 0);
---></script>";
-
-
-echo "
-<script language=\"JavaScript\" type=\"text/javascript\" src=\"$mosConfig_live_site/components/com_virtuemart/js/JSCookTree.js\"></script>
-<link rel=\"stylesheet\" href=\"$mosConfig_live_site/components/com_virtuemart/js/$jscook_theme/theme.css\" type=\"text/css\" />
-<script type=\"text/javascript\">var ctThemeXPBase = '$mosConfig_live_site/components/com_virtuemart/js/ThemeXP/';</script>
-<script language=\"JavaScript\" type=\"text/javascript\" src=\"$mosConfig_live_site/components/com_virtuemart/js/$jscook_theme/theme.js\"></script>
-";
+$menu_htmlcode .= "]];
+new tree(TREE_ITEMS, TREE_TPL);
+--></script>
+</div>";
 
 echo $menu_htmlcode;
 
 
-class phpShopmenu {
+class vmFoldersMenu {
     /***************************************************
     * function traverse_tree_down
     */
@@ -81,13 +62,16 @@ class phpShopmenu {
         
         if( !( $categories==null ) ) {
           $i = 1;
+          $numCategories = count( $categories );
           foreach ($categories as $category) {
             $ibg++;
             $Treeid = $ibg == 0 ? 1 : $ibg;
             $itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
-            $mymenu_content.= ",\n[null,'".$category->cname;
+            $mymenu_content.= str_repeat("\t", $level-1);
+            if( $level > 1 && $i == 1 ) { $mymenu_content.= ","; }
+            $mymenu_content.= "['".$category->cname;
             $mymenu_content.= ps_product_category::products_in_category( $category->cid );
-            $mymenu_content.= "','".$_SERVER['PHP_SELF'].'?option=com_virtuemart&page=product.product_category_form&category_id='.$category->cid."','_self','".$category->cname."'\n ";
+            $mymenu_content.= "','".$_SERVER['PHP_SELF'].'?option=com_virtuemart&page=product.product_category_form&category_id='.$category->cid."'\n ";
             
             $q = "SELECT #__{vm}_product.product_name,#__{vm}_product.product_id FROM #__{vm}_product, #__{vm}_product_category_xref ";
             $q .= "WHERE #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
@@ -96,11 +80,14 @@ class phpShopmenu {
             $db->query( $q );
             $products = $db->record;
             $xx = 1;
+            if( count( $products > 0 )) {
+            	$mymenu_content .= ",\n";
+            }
             foreach( $products as $product ) {
               // get name and link (just to save space in the code later on)
-              $mymenu_content.= ",\n[null,'".$product->product_name;
+              $mymenu_content.= str_repeat("\t", $level)."['".$product->product_name;
               $url = $_SERVER['PHP_SELF'].'?option=com_virtuemart&page=product.product_form&product_id='.$product->product_id;
-              $mymenu_content .= "','".$url."','_self','".$product->product_name."']";
+              $mymenu_content .= "','".$url."']";
               if( $xx++ < sizeof( $products ))
                 $mymenu_content .= ",\n";
               else
@@ -109,12 +96,14 @@ class phpShopmenu {
                 
               /* recurse through the subcategories */
               $this->traverse_tree_down($mymenu_content, $category->ccid, $level);
-              
+              $mymenu_content .= str_repeat("\t", $level-1);
               /* let's see if the loop has reached its end */
-              if ( $i == sizeof( $categories ) && $level == 1)
-                $mymenu_content.= "]";
-              else
-                $mymenu_content.= "]";
+              if ( $i == sizeof( $categories ) && $level == 1) {
+              	$mymenu_content.= "]\n";
+              }
+              else {
+              	$mymenu_content.= "],\n";
+              }
               $i++;
               
                 
