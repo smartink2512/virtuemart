@@ -156,3 +156,6 @@ INSERT INTO `jos_vm_function` VALUES ('', 7, 'recommendProduct', 'ps_communicati
 
 # Prevent auto-publishing of product reviews
 ALTER TABLE `jos_vm_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';
+
+# 02.05.2006 Multi-Currency Feature
+ALTER TABLE `jos_vm_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL ;

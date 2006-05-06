@@ -149,12 +149,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 	
-	if( !defined('_PSHOP_ADMIN') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
-		if( isset( $_REQUEST['product_currency']) ) {
-			$GLOBALS['product_currency'] = $_SESSION['product_currency'] = mosGetParam($_REQUEST, 'product_currency' );
-		}
-	}
-	$GLOBALS['product_currency'] = mosGetParam($_SESSION, 'product_currency', $vendor_currency);
+	// see /classes/currency_convert.php
+	vmSetGlobalCurrency();
 	
 	$currency_display = vendor_currency_display_style( $vendor_currency_display_style );
 	if( $GLOBALS['product_currency'] != $vendor_currency ) {

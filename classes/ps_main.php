@@ -202,7 +202,7 @@ function validate_image(&$d,$field_name,$table_name) {
 	// Check permissions to read temp file
 	if (!is_readable($temp_file)) {
 		$vmLogger->err( 'Cannot read uploaded '.$image_type.' temp file: '.$temp_file.'.
-    					One common reason for this that the upload path cannot be accessed 
+    					One common reason for this: the upload path cannot be accessed 
     					because of the open_basedir settings in the php.ini. Or maybe the 
     					directory for temporary upload files on this server is not readable.' );
 		return false;

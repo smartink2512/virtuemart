@@ -41,7 +41,17 @@ switch( $task ) {
 		
 	case 'getcurrencylist':
 		$currency_code = mosGetParam( $_REQUEST, 'product_currency', $vendor_currency );
-		vmConnector::sendHeaderAndContent( 200, ps_html::getCurrencyList( 'product_currency', $currency_code ) );
+		if( strstr($currency_code, ',')) {
+			$currency_code = explode( ',', $currency_code );
+		}
+		elseif( empty( $currency_code)) {
+			$currency_code = $vendor_currency;
+		}
+		$selectSize = intval( mosGetParam( $_REQUEST, 'selectSize', 1 ) );
+		$elementName = urldecode( mosGetParam( $_REQUEST, 'elementName', 'product_currency'));
+		$multiple = intval( mosGetParam( $_REQUEST, 'multiple', 0 ) );
+		if( $multiple ) { $multiple = 'multiple="multiple"'; } else { $multiple = ''; }
+		vmConnector::sendHeaderAndContent( 200, ps_html::getCurrencyList( $elementName, $currency_code, 'currency_code', '', $selectSize, $multiple ) );
 		break;
 	
 	case 'getpriceform':

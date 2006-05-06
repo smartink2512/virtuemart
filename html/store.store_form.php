@@ -136,7 +136,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 			      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FREE_SHIPPING_AMOUNT ?>: </td>
 			      <td width="78%" > 
 			        <input type="text" class="inputbox" name="vendor_freeshipping" value="<?php $db->sp("vendor_freeshipping") ?>" size="6" />
-			      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP ) ?>
+			      <?php echo vmToolTip( $VM_LANG->_PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP ) ?>
 			      </td>
 			    </tr>
 		      </table>
@@ -217,24 +217,24 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 		      <td>
 		        <input type="hidden" name="display_style[0]" value="<?php echo $ps_vendor_id; ?>" />
 		        <input type="text" name="display_style[1]" value="<?php echo htmlspecialchars( $currency_display['symbol'] ); ?>" size="8" />
-		        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP) ?>
+		        <?php echo vmToolTip( $VM_LANG->_PHPSHOP_CURRENCY_SYMBOL_TOOLTIP) ?>
 		      </td>
 		    </tr>
 		    <tr>
 		      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_DECIMALS ?> : </td>
 		      <td><input type="text" name="display_style[2]" value="<?php echo $currency_display['nbdecimal']; ?>" size="1" />
-		      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP ) ?>
+		      <?php echo vmToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALS_TOOLTIP ) ?>
 		      </td>
 		    </tr>
 		    <tr>
 		      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_DECIMALSYMBOL ?> : </td>
 		      <td><input type="text" name="display_style[3]" value="<?php echo $currency_display['sdecimal']; ?>" size="1" />
-		      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP ) ?></td>
+		      <?php echo vmToolTip( $VM_LANG->_PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP ) ?></td>
 		    </tr>
 		    <tr>
 		      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_THOUSANDS ?> : </td>
 		      <td><input type="text" name="display_style[4]" value="<?php echo $currency_display['thousands']; ?>" size="1" />
-		      <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP )?></td>
+		      <?php echo vmToolTip( $VM_LANG->_PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP )?></td>
 		    </tr>
 		    <tr>
 		      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY ?> : </td>
@@ -245,7 +245,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 			   		<option value="2"<?php if ($currency_display['positive']=='2') echo ' selected=\"selected\" ';?>>Symb00</option>
 				   	<option value="3"<?php if ($currency_display['positive']=='3') echo ' selected=\"selected\" ';?>>Symb 00</option>
 		        </select>
-		        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP ) ?>
+		        <?php echo vmToolTip( $VM_LANG->_PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP ) ?>
 		      </td>
 		    </tr>
 		    <tr>
@@ -269,8 +269,16 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 				   	<option value="14"<?php if ($currency_display['negative']=='14') echo ' selected=\"selected\" ';?>>(Symb 00)</option>
 				   	<option value="15"<?php if ($currency_display['negative']=='15') echo ' selected=\"selected\" ';?>>(00 Symb)</option>
 		        </select>
-		        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP ) ?>
+		        <?php echo vmToolTip( $VM_LANG->_PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP ) ?>
 		      </td>
+		    </tr>
+		    <tr>
+			    <td class="labelcell"><?php echo $VM_LANG->_VM_STORE_FORM_ACCEPTED_CURRENCIES ?>:</td>
+			    <td><?php 
+			    	$currencies = $db->f('vendor_accepted_currencies') ? $db->f('vendor_accepted_currencies') : $vendor_currency;
+			    	echo $ps_html->getCurrencyList('vendor_accepted_currencies[]', explode(',', $currencies), 'currency_code', '', 10, 'multiple="multiple"');
+			    	echo ' '.vmToolTip( $VM_LANG->_VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP );
+			     ?></td>
 		    </tr>
 		    </table>
 		    </fieldset>

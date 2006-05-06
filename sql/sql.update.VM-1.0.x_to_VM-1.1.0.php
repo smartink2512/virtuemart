@@ -161,5 +161,7 @@ $db->query( "ALTER TABLE `#__{vm}_zone_shipping` DROP INDEX `zone_id` ");
 
 $db->query( "ALTER TABLE `#__{vm}_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;");
 
+# 02.05.2006 Multi-Currency Feature
+$db->query( "ALTER TABLE `#__{vm}_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL " );
 
 ?>

@@ -231,7 +231,7 @@ class ps_cart {
 				// modified for the advanced attribute modification
 				if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
 				&&
-				($_SESSION['cart'][$i]["description"] == $d["description"] )
+				($_SESSION['cart'][$i]["description"] == stripslashes($d["description"]) )
 				) {
 					$_SESSION['cart'][$i]["quantity"] = $quantity;
 				}

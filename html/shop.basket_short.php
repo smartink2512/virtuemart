@@ -42,7 +42,8 @@ $auth = $_SESSION['auth'];
 
       $price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"],$cart[$i]["description"]);
       $amount += $cart[$i]["quantity"];
-
+	  $price['product_price'] = convertECB( $price['product_price'], $price['product_currency'] );
+	  
       if (@$auth["show_price_including_tax"] == 1) {
         $my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
         $price["product_price"] *= ($my_taxrate+1);

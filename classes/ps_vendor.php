@@ -151,6 +151,7 @@ class ps_vendor {
 	* returns:
 	**************************************************************************/
 	function add(&$d) {
+		global $vendor_currency;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -164,7 +165,11 @@ class ps_vendor {
 		$d['display_style'][1] = ps_vendor::checkCurrencySymbol( $d['display_style'][1] );
 		
 		$d['display_style'] = implode("|", $d['display_style'] );
-
+		
+		if( empty( $d['vendor_accepted_currencies'] )) {
+			$d['vendor_accepted_currencies'] = array( $vendor_currency );
+		}
+		
 		$q = "INSERT INTO #__{vm}_vendor (";
 		$q .= "vendor_name,contact_last_name,contact_first_name,";
 		$q .= "contact_middle_name,contact_title,contact_phone_1,";
@@ -174,7 +179,8 @@ class ps_vendor {
 		$q .= "vendor_store_name,vendor_store_desc,vendor_category_id,";
 		$q .= "vendor_image_path,vendor_thumb_image,vendor_full_image,";
 		$q .= "vendor_currency,cdate,mdate,vendor_terms_of_service,";
-		$q .= "vendor_url,vendor_currency_display_style, vendor_freeshipping) VALUES ('";
+		$q .= "vendor_url,vendor_currency_display_style, vendor_freeshipping, vendor_accepted_currencies) 
+			VALUES ('";
 		$q .= $d["vendor_name"] . "','";
 		$q .= $d["contact_last_name"] . "','";
 		$q .= $d["contact_first_name"] . "','";
@@ -201,7 +207,9 @@ class ps_vendor {
 		$q .= "$timestamp','$timestamp','";
 		$q .= $d['vendor_terms_of_service']."','";
 		$q .= $d['vendor_url']."','";
-		$q .= $d['display_style']."','".$d['vendor_freeshipping']."')";
+		$q .= $d['display_style']."','";
+		$q .= $d['vendor_freeshipping']."', '";
+		$q .= implode( ',', $d['vendor_accepted_currencies'] )."')";
 		$db->query($q);
 		$db->next_record();
 
@@ -229,6 +237,7 @@ class ps_vendor {
 	* returns:
 	**************************************************************************/
 	function update(&$d) {
+		global $vendor_currency;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -245,9 +254,12 @@ class ps_vendor {
 		}
 		
 		$d['display_style'][1] = ps_vendor::checkCurrencySymbol( $d['display_style'][1] );
-		
 		$d['display_style'] = implode("|", $d['display_style'] );
-
+		
+		if( empty( $d['vendor_accepted_currencies'] )) {
+			$d['vendor_accepted_currencies'] = array( $vendor_currency );
+		}
+		
 		$q = "UPDATE #__{vm}_vendor set vendor_name='" . $d["vendor_name"] . "',";
 		$q .= "contact_last_name='" . $d["contact_last_name"] . "',";
 		$q .= "contact_first_name='" . $d["contact_first_name"] . "',";
@@ -278,7 +290,8 @@ class ps_vendor {
 		$q .= "vendor_terms_of_service='" . $d["vendor_terms_of_service"] . "', ";
 		$q .= "vendor_min_pov='" . $d["vendor_min_pov"] . "', ";
 		$q .= "vendor_currency_display_style='" . $d["display_style"] . "', ";
-		$q .= "vendor_freeshipping='" . $d['vendor_freeshipping'] . "' ";
+		$q .= "vendor_freeshipping='" . $d['vendor_freeshipping'] . "', ";
+		$q .= "vendor_accepted_currencies='" . implode( ',', $d['vendor_accepted_currencies'] ). "' ";
 		$q .= "WHERE vendor_id='" . $d["vendor_id"] . "'";
 
 		$db->query($q);

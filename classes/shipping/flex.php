@@ -50,16 +50,16 @@ class flex {
 		}
 
 		//Charge minimum up to this value in cart
-		$base_ship = FLEX_BASE_AMOUNT;
+		$base_ship = convertECB( FLEX_BASE_AMOUNT );
 
 		//Flat rate shipping charge up to minimum value
-		$flat_charge = FLEX_MIN_CHG;
+		$flat_charge = convertECB( FLEX_MIN_CHG );
 
 		//Charge this percentage if cart value is greater than base amount
 		$ship_rate_perc = (FLEX_SHIP_PERC / 100);
 
 		//Flat rate handling fee
-		$handling_fee = FLEX_HAND_FEE;
+		$handling_fee = convertECB( FLEX_HAND_FEE );
 
 
 		if($order_total < $base_ship) {
@@ -107,8 +107,9 @@ class flex {
 		/** Read current Configuration ***/
 		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 
-		if( intval(FLEX_TAX_CLASS)== 0 )
-		return( 0 );
+		if( intval(FLEX_TAX_CLASS)== 0 ) {
+			return( 0 );
+		}
 		else {
 			require_once( CLASSPATH. "ps_tax.php" );
 			$tax_rate = ps_tax::get_taxrate_by_id( intval(FLEX_TAX_CLASS) );

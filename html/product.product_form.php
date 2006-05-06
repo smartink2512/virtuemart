@@ -512,7 +512,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
     echo "<h2>$dim_weight_label</h2>";
 ?>      
    <table class="adminform">
-            <tr class="row1"> 
+    <tr class="row1"> 
       <td width="21%" valign="top" > 
         <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_LENGTH ?>:</div>
       </td>
@@ -520,7 +520,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
         <input type="text" class="inputbox"  name="product_length" value="<?php $db->sp("product_length"); ?>" size="15" maxlength="15" />
       </td>
     </tr>
-            <tr class="row0"> 
+    <tr class="row0"> 
       <td width="21%" valign="top" > 
         <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_WIDTH ?>:</div>
       </td>
@@ -528,7 +528,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
         <input type="text" class="inputbox"  name="product_width" value="<?php $db->sp("product_width"); ?>" size="15" maxlength="15" />
       </td>
     </tr>
-            <tr class="row1"> 
+    <tr class="row1"> 
       <td width="21%" valign="top" > 
         <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_HEIGHT ?>:</div>
       </td>
@@ -536,7 +536,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
         <input type="text" class="inputbox"  name="product_height" value="<?php $db->sp("product_height"); ?>" size="15" maxlength="15" />
       </td>
     </tr>
-            <tr class="row0"> 
+    <tr class="row0"> 
       <td width="21%" valign="top" > 
         <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM ?>:</div>
       </td>
@@ -544,11 +544,11 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
         <input type="text" class="inputbox"  name="product_lwh_uom" value="<?php $db->sp("product_lwh_uom"); ?>" size="8" maxlength="32" />
       </td>
     </tr>
-            <tr class="row1"> 
+    <tr class="row1"> 
       <td width="21%" valign="top" >&nbsp;</td>
       <td width="79%" >&nbsp;</td>
     </tr>
-            <tr class="row0"> 
+    <tr class="row0"> 
       <td width="21%" valign="top" > 
         <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT ?>:</div>
       </td>
@@ -556,7 +556,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
         <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php $db->sp("product_weight"); ?>" />
       </td>
     </tr>
-            <tr class="row1"> 
+    <tr class="row1"> 
       <td width="21%" valign="top" > 
         <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM ?>:</div>
       </td>
@@ -565,11 +565,11 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
       </td>
     </tr>
     <!-- Changed Packaging - Begin -->
-            <tr class="row0"> 
+    <tr class="row0"> 
       <td width="21%" valign="top" >&nbsp;</td>
       <td width="21%" >&nbsp;</td>
     </tr>
-            <tr class="row1"> 
+    <tr class="row1"> 
       <td width="21%" valign="top" > 
         <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_UNIT ?>:</strong></div>
       </td>
@@ -577,7 +577,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
         <input type="text" class="inputbox"  name="product_unit" size="15" maxlength="15" value="<?php $db->sp("product_unit"); ?>" />
       </td>
     </tr>
-            <tr class="row0">
+    <tr class="row0">
       <td width="21%" valign="top" > 
         <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING ?>:</strong></div>
       </td>
@@ -586,7 +586,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" heig
         echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION); ?>
       </td>
     </tr>
-            <tr class="row1">
+    <tr class="row1">
       <td width="21%" valign="top" > 
         <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_BOX ?>:</strong></div>
       </td>
@@ -604,13 +604,7 @@ $tabs->endTab();
 if( @$_REQUEST['no_menu'] != '1') {
 	$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/image.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;$images_label", "images-page");
 	
-	if( !stristr( $db->f("product_thumb_image"), "http") && $clone_product != "1" )
-	  echo "<input type=\"hidden\" name=\"product_thumb_image_curr\" value=\"". $db->f("product_thumb_image") ."\" />";
-	
-	if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" )
-	  echo "<input type=\"hidden\" name=\"product_full_image_curr\" value=\"". $db->f("product_full_image") ."\" />";
-	  
-	 $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resized") );
+	$ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resized") );
 	 
 	 ?>
 	  <table class="adminform" >
@@ -961,6 +955,13 @@ $formObj->hiddenField( 'product_id', $product_id );
 $formObj->hiddenField( 'product_parent_id', $product_parent_id );
 $formObj->hiddenField( 'pshop_mode', 'admin' );
 
+if( !stristr( $db->f("product_thumb_image"), "http") && $clone_product != "1" ) {
+	$formObj->hiddenField( 'product_thumb_image_curr', $db->f("product_thumb_image") );
+}
+if( !stristr( $db->f("product_full_image"), "http") && $clone_product != "1" ) {
+	$formObj->hiddenField( 'product_full_image_curr', $db->f("product_full_image") );
+}
+	  
 $funcname = !empty($product_id) ? "productUpdate" : "productAdd";
 
 // finally close the form:

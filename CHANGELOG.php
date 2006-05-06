@@ -33,12 +33,24 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+04-05-2006 soeren
+
+^ featured products module now accepts more than one category ID (comma-separated list possible), thanks to Ben (deneb!)
+^ featured products module now randomly sorting featured products
+
+02-05-2006 soeren
+
+! DATABASE STRUCTURE CHANGED: table 'jos_vm_vendor' gets a new field !
+	# 02.05.2006 Multi-Currency Feature
+	ALTER TABLE `jos_vm_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL ;
+	
+	
 29-04-2006 soeren
 
 ^ changed the tree script to TigraTree for the "Product Folders" list. 
 	It builds the tree much faster than the JSCookTree and dTree script and even works with 10.000+ items.
 + Tigra Tree Menu Javacript
-
+# Task #73 - Order Confirm E-Mail - Plain text & html text of Message differ (ps_checkout.php)
 
 26-04-2006 soeren
 

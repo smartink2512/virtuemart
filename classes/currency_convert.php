@@ -19,6 +19,35 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 $GLOBALS['converter_array'] = '';
 
 /**
+ * This function creates the superglobal variable $product_currency
+ * This variable is used for currency conversion
+ *
+ */
+function vmSetGlobalCurrency(){
+	global $vendor_accepted_currencies, $vendor_currency;
+	
+	if( !defined('_PSHOP_ADMIN') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
+		if( isset( $_REQUEST['product_currency']) ) {
+			$GLOBALS['product_currency'] = $_SESSION['product_currency'] = mosGetParam($_REQUEST, 'product_currency' );
+		}
+	}
+	$GLOBALS['product_currency'] = mosGetParam($_SESSION, 'product_currency', $vendor_currency);
+	
+	// Check if the selected currency is accepted! (the vendor currency is always accepted)
+	if( $GLOBALS['product_currency'] != $vendor_currency ) {
+		if( empty( $vendor_accepted_currencies )) {
+			$vendor_accepted_currencies = $vendor_currency;
+		}
+		
+		$acceptedCurrencies = explode(',', $vendor_accepted_currencies );
+		if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies)) {
+			// Fallback to global vendor currency (as set in the store form)
+			$GLOBALS['product_currency'] = $vendor_currency;
+		}
+	}
+}
+
+/**
  * Converts an amount from one currency into another using
  * the rate conversion table from the European Central Bank
  *

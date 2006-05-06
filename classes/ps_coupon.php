@@ -188,7 +188,7 @@ class ps_coupon {
             else
             {
                 /* dollar */
-                $_SESSION['coupon_discount'] = ($coupon_db->f("coupon_value"));
+                $_SESSION['coupon_discount'] = convertECB( $coupon_db->f("coupon_value") );
                 
             }
             

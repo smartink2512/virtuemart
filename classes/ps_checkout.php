@@ -821,7 +821,7 @@ Order Total: '.$order_total.'
 		$q .= $order_shipping_tax . "', '";
 		$q .= $payment_discount . "', '";
 		$q .= $coupon_discount . "', '";
-		$q .= $_SESSION['vendor_currency']."', "; /* Currency is at the product level - line item */
+		$q .= $GLOBALS['product_currency']."', "; /* Currency is at the product level - line item */
 		$q .= "'P', '";
 		$q .= $timestamp . "', '";
 		$q .= $timestamp. "', '";
@@ -932,8 +932,6 @@ Order Total: '.$order_total.'
 
 			$vendor_id = $ps_vendor_id;
 
-			$product_currency = $product_price_arr["product_currency"];
-
 			$q = "INSERT INTO #__{vm}_order_item ";
 			$q .= "(order_id, user_info_id, vendor_id, product_id, order_item_sku, order_item_name, ";
 			$q .= "product_quantity, product_item_price, product_final_price, ";
@@ -948,7 +946,7 @@ Order Total: '.$order_total.'
 			$q .= $cart[$i]["quantity"] . "', '";
 			$q .= $product_price . "', '";
 			$q .= $product_final_price . "', '";
-			$q .= $product_currency . "', ";
+			$q .= $GLOBALS['product_currency'] . "', ";
 			$q .= "'P','";
 			// added for advanced attribute storage
 			$q .= addslashes( $description ) . "', '";
@@ -1163,7 +1161,8 @@ Order Total: '.$order_total.'
 		for($i = 0; $i < $cart["idx"]; $i++) {
 			$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
 			$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-			$product_price = $price["product_price"];
+			$product_price = $product_price_tmp = convertECB( $price["product_price"], $price["product_currency"] );
+			
 			if( $auth["show_price_including_tax"] == 1 ) {
 				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
 				$product_price *= $cart[$i]["quantity"];
@@ -1184,7 +1183,7 @@ Order Total: '.$order_total.'
 				if( !isset( $order_tax_details[$my_taxrate] )) {
 					$order_tax_details[$my_taxrate] = 0;
 				}
-				$order_tax_details[$my_taxrate] += $price["product_price"]*$my_taxrate*$cart[$i]["quantity"];
+				$order_tax_details[$my_taxrate] += $product_price_tmp*$my_taxrate*$cart[$i]["quantity"];
 			}
 		}
 
@@ -1213,7 +1212,7 @@ Order Total: '.$order_total.'
 
 		for($i = 0; $i < $cart["idx"]; $i++) {
 			$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-			$product_price = $price["product_price"];
+			$product_price = convertECB( $price["product_price"], $price['product_currency'] );
 			$item_weight = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
 
 			if ($item_weight != 0 or TAX_VIRTUAL=='1') {
@@ -1478,7 +1477,7 @@ Order Total: '.$order_total.'
 		if( !$is_percent ) {
 			// Standard method: absolute amount
 			if (!empty($discount)) {
-				return(floatval($discount));
+				return(floatval( convertECB($discount)));
 			}
 			else {
 				return(0);

@@ -1638,7 +1638,7 @@ class ps_product extends vmAbstractObject {
 
 						// if we have a number, allow the adjustment
 						if (true == is_numeric($my_mod) ) {
-							$my_mod = convertECB( $my_mod, $price['product_original_currency'], $GLOBALS['product_currency'] );
+							$my_mod = convertECB( $my_mod, $price['product_currency'], $GLOBALS['product_currency'] );
 							// Now add or sub the modifier on
 							if ($oper=="+") {
 								$adjustment += $my_mod;
@@ -1795,7 +1795,7 @@ class ps_product extends vmAbstractObject {
 					}
 
 					$value_notax = substr($my_mod,1);
-					$value_notax = convertECB( $value_notax, $price['product_original_currency'], $GLOBALS['product_currency'] );
+					$value_notax = convertECB( $value_notax );
 					if( abs($value_notax) >0 ) {
 						$value_taxed = $value_notax * ($my_taxrate+1);
 

@@ -18,7 +18,7 @@ mm_showMyFileName( __FILE__ );
 global $header_bgcolor, $leftbar_title_bgcolor, $leftbar_font_color,$vendor_image,$vendor_country_2_code ,$vendor_country_3_code ,
         $vendor_image_url, $vendor_name, $vendor_address, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name,
         $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping,
-        $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image;
+        $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image, $vendor_accepted_currencies;
 
 # Global links
 $search_box_title = $VM_LANG->_PHPSHOP_SEARCH_TITLE;
@@ -40,7 +40,8 @@ $_SESSION["ps_vendor_id"] = $ps_vendor_id = $default_vendor;
 
 $q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, vendor_freeshipping,
 			vendor_address_1, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
-			vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style
+			vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style,
+			vendor_accepted_currencies
 		FROM (`#__{vm}_vendor`, `#__{vm}_country`)
 		WHERE `vendor_id`=$default_vendor
 		AND (vendor_country=country_2_code OR vendor_country=country_3_code);";
@@ -68,6 +69,7 @@ $vendor_phone = $db->f("vendor_phone");
 $vendor_store_desc = $db->f("vendor_store_desc");
 $vendor_currency = $db->f("vendor_currency");
 $vendor_currency_display_style = $db->f("vendor_currency_display_style");
+$vendor_accepted_currencies = $db->f("vendor_accepted_currencies");
 $_SESSION["vendor_currency"] = $vendor_currency;
 
 ?>

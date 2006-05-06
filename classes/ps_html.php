@@ -313,19 +313,21 @@ class ps_html {
 	 * @param string $key The name of the field that will be the array index [curreny_code|currency_id]
 	 * @return HTML code with the drop-down list
 	 */	
-	function getCurrencyList($list_name, $value="", $key='currency_code', $extra='') {
+	function getCurrencyList($list_name, $value="", $key='currency_code', $extra='', $size=1, $multiple='') {
 		global $VM_LANG;
 		$db = new ps_DB;
 
 		$q = "SELECT `currency_id`, `currency_code`, `currency_name` FROM `#__{vm}_currency` ORDER BY `currency_name` ASC";
 		$db->query($q);
 		
-		$currencies[''] = $VM_LANG->_PHPSHOP_SELECT;
+		if( $size == 1 ) {
+			$currencies[''] = $VM_LANG->_PHPSHOP_SELECT;
+		}
 		while ($db->next_record()) {
 			$currencies[$db->f($key)] = $db->f("currency_name");
 		}
 		
-		return ps_html::selectList( $list_name, $value, $currencies, 1, '', $extra );
+		return ps_html::selectList( $list_name, $value, $currencies, $size, $multiple, $extra );
 	}
 
 

@@ -40,26 +40,30 @@ class ps_session {
 	function initSession() {
 		global $vmLogger, $mainframe;
 		
-		// Some servers start the session before we can, so close those and start again		
-		if( !defined('_PSHOP_ADMIN') && !empty($_SESSION)) {
-			session_write_close();
-			unset( $_SESSION );
-		}
-		if( empty( $_SESSION )) {
-			// Session not yet started!			
-			session_name( $this->_session_name );
+		if( !defined('_VM_SESSIONSTART') ) {
+			// Some servers start the session before we can, so close those and start again		
+			if( !defined('_PSHOP_ADMIN') && !empty($_SESSION)) {
+				session_write_close();
+				unset( $_SESSION );
+				
+			}
+			if( empty( $_SESSION ) ) {
+				// Session not yet started!			
+				session_name( $this->_session_name );
+				
+				if( @$_REQUEST['option'] == 'com_virtuemart' ) {
+				    ob_start();
+				}
+				@session_start();
 			
-			if( @$_REQUEST['option'] == 'com_virtuemart' ) {
-			    ob_start();
+				if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
+					$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
+				}
+				else {
+					$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
+				}
 			}
-			@session_start();
-		
-			if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
-				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
-			}
-			else {
-				$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
-			}
+			define('_VM_SESSIONSTART', 1 );
 		}
 	}
 		

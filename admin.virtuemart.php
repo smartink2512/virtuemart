@@ -59,8 +59,19 @@ elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$opti
 /* Load the virtuemart main parse code */
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
-if( empty( $page )) {
-	$page = 'store.index';
+if( empty( $page ) || empty( $_REQUEST['page'])) {
+	if( !empty($_REQUEST['amp;page'])) {
+		$page = $_REQUEST['amp;page'];
+		foreach( $_REQUEST as $key => $val ) {
+			if( strstr( $key, 'amp;')) {
+				$key = str_replace( 'amp;', '', $key );
+				$_REQUEST[$key] = $val;
+			}
+		}
+	}
+	else {
+		$page = 'store.index';
+	}
 }
 
 $limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
