@@ -33,6 +33,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07-06-2006 soeren
+
+# "only variables should be assigned by reference..." errors in the file menuBar.class.php
+
 04-05-2006 soeren
 
 ^ featured products module now accepts more than one category ID (comma-separated list possible), thanks to Ben (deneb!)

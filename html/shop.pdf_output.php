@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: shop.pdf_output.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.pdf_output.php,v 1.3.2.2 2006/05/06 10:05:27 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,12 +25,13 @@ $category_id = mosGetParam( $_REQUEST, 'category_id');
 /* Who cares for Safe Mode ? Not me! */
 if (@file_exists( "/usr/bin/htmldoc" )) {
 	
-	$load_page = $mosConfig_live_site . "/index2.php?option=com_virtuemart&page=$page&flypage=$flypage&product_id=$product_id&category_id=$category_id&pop=1&hide_js=1&output=pdf";
+	$load_page = $mosConfig_live_site . "/index2.php?option=com_virtuemart&page=$showpage&flypage=$flypage&product_id=$product_id&category_id=$category_id&pop=1&hide_js=1&output=pdf";
 	header( "Content-Type: application/pdf" );
 	header( "Content-Disposition: inline; filename=\"pdf-mambo.pdf\"" );
 	flush();
 	//following line for Linux only - windows may need the path as well...
-	passthru( "/usr/bin/htmldoc --no-localfiles --no-compression -t pdf14 --jpeg --webpage --header t.D --footer ./. --size letter --left 0.5in '$load_page'" );
+	passthru( "/usr/bin/htmldoc --no-localfiles --quiet -t pdf14 --jpeg --webpage --header t.D --footer ./. --size letter --left 0.5in '$load_page'" );
+	exit;
 } 
 else {
 	freePDF( $showpage, $flypage, $product_id, $category_id );

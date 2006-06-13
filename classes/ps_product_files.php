@@ -546,7 +546,7 @@ class ps_product_files {
 	 * @return mixed
 	 */
 	function get_file_list( $product_id ) {
-		global $mosConfig_absolute_path;
+		global $mosConfig_absolute_path, $sess;
 		$dbf = new ps_DB;
 		$html = "";
 		$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';
@@ -573,7 +573,8 @@ class ps_product_files {
 			}
 			// Show pdf in a new Window, other file types will be offered as download
 			$target = stristr($dbf->f("file_mimetype"), "pdf") ? "_blank" : "_self";
-			$html .= "<a target=\"$target\" href=\"index.php?option=com_virtuemart&page=shop.getfile&file_id=".$dbf->f("file_id")."&product_id=$product_id\" title=\"".$dbf->f("file_title")."\">\n";
+			$link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.getfile&amp;file_id='.$dbf->f("file_id")."&amp;product_id=$product_id" );
+			$html .= "<a target=\"$target\" href=\"$link\" title=\"".$dbf->f("file_title")."\">\n";
 			$html .= $dbf->f("file_title") . $filesize_display. "</a><br/>\n" ;
 		}
 		return $html;

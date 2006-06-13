@@ -280,7 +280,7 @@ class ps_session {
 
 		if( empty( $_REQUEST['shopItemid'] )) {
 			$db = new ps_DB;
-			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published='1'");
+			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published=1 AND access=0");
 			if( $db->next_record() ) {
 				$_REQUEST['shopItemid'] = $db->f("id");
 			}

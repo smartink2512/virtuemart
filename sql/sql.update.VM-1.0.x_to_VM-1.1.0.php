@@ -164,4 +164,5 @@ $db->query( "ALTER TABLE `#__{vm}_product_attribute` ADD `attribute_id` INT NOT 
 # 02.05.2006 Multi-Currency Feature
 $db->query( "ALTER TABLE `#__{vm}_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL " );
 
+$db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'")
 ?>

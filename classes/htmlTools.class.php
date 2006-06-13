@@ -1089,10 +1089,10 @@ function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/ima
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
 	if( function_exists('mysql_real_escape_string')) {
-		$tooltip = htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
+		$tooltip = @htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
 	}
 	else {
-		$tooltip = htmlentities( mysql_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
+		$tooltip = @htmlentities( mysql_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
 	}
 	
 	if ( !empty($width) ) {
@@ -1139,7 +1139,7 @@ function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
                         str_replace( "&lt;", "<", 
                         str_replace( "&gt;", ">", 
                         str_replace( "&amp;", "&", 
-                        htmlentities( $tip, ENT_QUOTES )))));
+                        @htmlentities( $tip, ENT_QUOTES )))));
         $varname = 'a'.md5( $tip );
         echo '<script type="text/javascript">//<![CDATA[
         var '.$varname.' = \''.$tip.'\';

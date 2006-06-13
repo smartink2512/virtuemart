@@ -1601,6 +1601,9 @@ delivered to you. Items should be returned in their original packaging.
 For more information on cancelling orders and returning items, see the <a href="%s" onclick="%s" target="_blank">Our Returns Policy</a> page.';
 	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES = 'List of accepted currencies';
 	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP = 'This list defines all those currencies you accept when people are buying something in your store. <strong>Note:</strong> All currencies selected here can be used at checkout! If you don\'t want that, just select your country\'s currency (=default).';
+	var $_PHPSHOP_ORDER_LIST_PRINT_LABEL = 'Print Label';
+	var $_PHPSHOP_ORDER_LIST_VOID_LABEL = 'Void Label';
+	var $_PHPSHOP_ORDER_LIST_TRACK = 'Track';
         
 }
 class phpShopLanguage extends vmLanguage { }

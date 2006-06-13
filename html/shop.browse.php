@@ -104,7 +104,7 @@ if( $limitstart > 0 && $limit >= $num_rows) {
 if ($num_rows == 0 && !empty($keyword)) {
 	echo $VM_LANG->_PHPSHOP_NO_SEARCH_RESULT;
 }
-elseif( $num_rows == 0 && empty($product_type_id) ) {
+elseif( $num_rows == 0 && empty($product_type_id) && !empty($child_list)) {
 	echo _EMPTY_CATEGORY;
 }
 /*** NOW START THE PRODUCT LIST ***/

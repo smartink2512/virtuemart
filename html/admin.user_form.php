@@ -49,7 +49,7 @@ $tabs->startPane("userform-pane");
 $tabs->startTab( 'General User Information', "userform-page");
 
 $_REQUEST['cid'][0] = $user_id;
-$_REQUEST['task'] = 'edit';
+$_REQUEST['task'] = $task = 'edit';
 $GLOBALS['option'] = 'com_users'; // Cheat Joomla 1.1
 $mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
 require_once( $mainframe->_path->admin_html );

@@ -151,8 +151,8 @@ else {
 	$vars["total"] = $total;
 	$subtotal_display = $CURRENCY_DISPLAY->getFullValue($total);
 
-	if (!empty($_POST["do_coupon"]) || (($func == 'cartadd' || $func == 'cartupdate') && !empty($_SESSION['coupon_discount'])) ) {
-		/* process the coupon */
+    if (!empty($_POST["do_coupon"]) || ((strtolower($func) == 'cartadd' || strtolower($func) == 'cartupdate') && !empty($_SESSION['coupon_discount'])) ) {
+        /* process the coupon */
 
 		// make sure they arent trying to run it twice
 		if (@$_SESSION['coupon_redeemed'] == true && $page != 'shop.cart') {
