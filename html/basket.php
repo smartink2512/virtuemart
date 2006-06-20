@@ -96,14 +96,15 @@ else {
 		$tax = $my_taxrate * 100;
 
 		$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-
+		$price["product_price"] = convertECB( $price["product_price"], $price["product_currency"] );
+		
 		if( $auth["show_price_including_tax"] == 1 ) {
 			$product_price = $price["product_price"] * ($my_taxrate+1);
 		} else {
 			$product_price = $price["product_price"];
 		}
 
-		$product_price = convertECB( round( $product_price, 2 ), $price['product_currency'] );
+		$product_price = round( $product_price, 2 );
 		$product_rows[$i]['product_price'] = $CURRENCY_DISPLAY->getFullValue($product_price);
 
 		/* Quantity Box */

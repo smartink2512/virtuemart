@@ -117,7 +117,7 @@ $ps_product_category = new ps_product_category();
 	while( $db->next_record() ) {
 	
 		// get name and link (just to save space in the code later on)
-		$name = $db->f("category_name", false). ps_product_category::products_in_category( $db->f("category_id") );
+		$name = htmlentities( $db->f("category_name"), ENT_QUOTES, vmGetCharset() ). ps_product_category::products_in_category( $db->f("category_id") );
 		$url = $sess->url($mm_action_url."index.php?page=shop.browse&category_id=".$db->f("category_id"));
 		$menu_htmlcode .= "$tree.add(\"".$db->f("category_id")."\",\"".$db->f("category_parent_id")."\",\"$name\",\"$url\",\"\",\"$target\");\n";
 	  

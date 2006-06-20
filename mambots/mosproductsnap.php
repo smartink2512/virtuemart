@@ -21,7 +21,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * VirtueMart Show-Product-Snapshop Mambot
 *
 * <b>Usage:</b>
-* <code>{product_snapshot:id=XX,showprice,showdesc,sowaddtocart,align}</code>
+* <code>{product_snapshot:id=XX,showprice,showdesc,showaddtocart,align}</code>
 * int id (product_id)
 * boolean showprice (show the product price?)
 * boolean showdesc (show the product short description?)

@@ -33,6 +33,8 @@ $mod_dir = dirname( __FILE__ );
 $show_login_form = $params->get( 'show_login_form', 'no' );
 $show_categories = $params->get( 'show_categories', 'yes' );
 $show_listall = $params->get( 'show_listall', 'yes' );
+$show_adminlink = $params->get('show_adminlink', 'yes' );
+$show_accountlink = $params->get('show_accountlink', 'yes' );
 $show_minicart = $params->get( 'show_minicart', 'yes' );
 $show_productsearch = $params->get( 'show_productsearch', 'yes' );
 $show_product_parameter_search = $params->get( 'show_product_parameter_search', 'no' );
@@ -131,13 +133,14 @@ if ($perm->check("admin,storeadmin")
       && ((!stristr($my->usertype, "admin") ^ PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '' ) 
           || stristr($my->usertype, "admin")
       )
+      && $show_adminlink == 'yes'
     ) { ?>
     <tr> 
       <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index&pshop_mode=admin");
       echo "\">".$VM_LANG->_PHPSHOP_ADMIN_MOD; ?></a></td>
     </tr>
   <?php }
-   if ($perm->is_registered_customer($auth["user_id"])) {
+   if ($perm->is_registered_customer($auth["user_id"]) && $show_accountlink == 'yes') {
   ?> 
     <tr> 
       <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=account.index");?>">

@@ -159,8 +159,14 @@ class ps_csv {
 		$product_log = array();
 		$csv_log = array();
 		
+		if( $enclosure != '' ) {
+			$data = fgetcsv( $fp, 4096, $delim, $enclosure );
+		}
+		else {
+			$data = fgetcsv( $fp, 4096, $delim );
+		}
 		// Run through each line of file
-		while( $data = fgetcsv( $fp, 4096, $delim, $enclosure ) ) {
+		while( $data ) {
 			if( $skip_first_line ) {
 				// IF the first line is to be skipped, set the flag to false and continue with the second line
 				$skip_first_line = false;
@@ -523,7 +529,12 @@ class ps_csv {
 			$line++;
 			
 			$d['csv_lines_processed']++;
-			
+			if( $enclosure != '' ) {
+				$data = fgetcsv( $fp, 4096, $delim, $enclosure );
+			}
+			else {
+				$data = fgetcsv( $fp, 4096, $delim );
+			}
 		} // End while
 		$vars['product_log'] =& $product_log;
 		$vars['error_log'] =& $error_log;		
@@ -576,7 +587,13 @@ class ps_csv {
 		$line = 0;
 		
 		// Run through each line of file
-		while( $data = fgetcsv($fp, 4096, $delim, $enclosure) ) {
+		if( $enclosure != '' ) {
+			$data = fgetcsv( $fp, 4096, $delim, $enclosure );
+		}
+		else {
+			$data = fgetcsv( $fp, 4096, $delim );
+		}
+		while( $data ) {
 			
 			if( $skip_first_line ) {
 				// IF the first line is to be skipped, set the flag to false and continue with the second line
@@ -746,8 +763,13 @@ class ps_csv {
 
 			}
 			$line++;
-
 			
+			if( $enclosure != '' ) {
+				$data = fgetcsv( $fp, 4096, $delim, $enclosure );
+			}
+			else {
+				$data = fgetcsv( $fp, 4096, $delim );
+			}
 		} // End while
 		$vars['product_log'] =& $product_log;
 		$vars['error_log'] =& $error_log;

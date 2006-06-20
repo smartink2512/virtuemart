@@ -37,27 +37,50 @@ $ps_product = new ps_product;
 $db = new ps_DB;
 
 if ( $category_id ) {
-	$q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
-	$q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') ";
-	$q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
-	$q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
-	$q .= "AND #__{vm}_category.category_id='$category_id'";
-	$q .= "AND #__{vm}_product.product_publish='Y' ";
-	$q .= "AND #__{vm}_product.product_special='Y' ";
-	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
-		$q .= " AND product_in_stock > 0 ";
+	// BEGIN - MultiCategory Display - deneb
+	$cat_ids = explode(",",$category_id);
+	if (count($cat_ids) > 1){
+		$multi_cats = 1;
 	}
-	$q .= "ORDER BY product_name ASC LIMIT 0, $max_items";
+	// END - MultiCategory Display - deneb
+
+	$q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE \n";
+	$q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') \n";
+	$q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id \n";
+	$q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id \n";
+	// BEGIN - MultiCategory Display - deneb
+	if ($multi_cats){
+		$i = 1;
+		$q .= "AND (";
+		foreach ($cat_ids as $cat_id){
+			if ($i == count($cat_ids)){
+				$q .= "(#__{vm}_category.category_id='$cat_id')";
+			} else {
+				$q .= "(#__{vm}_category.category_id='$cat_id') OR \n";
+			}
+			$i++;
+		}
+		$q .= ")  \n";
+	} else {
+		$q .= "AND #__{vm}_category.category_id='$category_id' \n";
+	}
+	// END - MultiCategory Display - deneb
+	$q .= "AND #__{vm}_product.product_publish='Y' \n";
+	$q .= "AND #__{vm}_product.product_special='Y' \n";
+	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+		$q .= " AND product_in_stock > 0 \n";
+	}
+	$q .= "ORDER BY RAND() LIMIT 0, $max_items";
 }
 else {
 	$q  = "SELECT DISTINCT product_sku FROM #__{vm}_product WHERE ";
-	$q .= "product_parent_id='' AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
+	$q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
 	$q .= "AND #__{vm}_product.product_publish='Y' ";
 	$q .= "AND #__{vm}_product.product_special='Y' ";
 	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 		$q .= " AND product_in_stock > 0 ";
 	}
-	$q .= "ORDER BY product_name ASC LIMIT 0, $max_items";
+	$q .= "ORDER BY RAND() LIMIT 0, $max_items";
 }
 $db->query($q);
 if( $db->num_rows() > 0 ) {

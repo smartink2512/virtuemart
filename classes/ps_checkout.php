@@ -55,8 +55,8 @@ class ps_checkout {
 		*/
 
 		$this->_subtotal = $this->get_order_subtotal($vars);
-
-		if( $vendor_freeshipping > 0 && $this->_subtotal > $vendor_freeshipping) {
+		
+		if( $vendor_freeshipping > 0 && $vars['order_subtotal_withtax'] > $vendor_freeshipping) {
 			$PSHOP_SHIPPING_MODULES = Array( "free_shipping" );
 			include_once( CLASSPATH. "shipping/free_shipping.php" );
 			$this->_SHIPPING =& new free_shipping();
@@ -907,7 +907,7 @@ Order Total: '.$order_total.'
 			$dboi->next_record();
 
 			$product_price_arr = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-			$product_price = $product_price_arr["product_price"];
+			$product_price = convertECB( $product_price_arr["product_price"], $product_price_arr["product_currency"] );
 
 			if( empty( $_SESSION['product_sess'][$cart[$i]["product_id"]]['tax_rate'] )) {
 				$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
@@ -1125,7 +1125,7 @@ Order Total: '.$order_total.'
          */
 	function get_order_subtotal( &$d ) {
 
-		if(     $this->_subtotal === null ) {
+		if( $this->_subtotal === null ) {
 			$this->_subtotal = $this->calc_order_subtotal( $d );
 		}
 		else {
@@ -1166,9 +1166,11 @@ Order Total: '.$order_total.'
 			if( $auth["show_price_including_tax"] == 1 ) {
 				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
 				$product_price *= $cart[$i]["quantity"];
+				
 				$d['order_subtotal_withtax'] += $product_price;
 				$product_price = $product_price /($my_taxrate+1);
 				$order_subtotal += $product_price;
+				
 			}
 			else {
 				$order_subtotal += $product_price * $cart[$i]["quantity"];
@@ -1316,6 +1318,7 @@ Order Total: '.$order_total.'
 
 					if ($item_weight !=0 or TAX_VIRTUAL) {
 						$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
+						$price['product_price'] = convertECB( $price['product_price'], $price['product_currency']);
 						$tax_rate = $ps_product->get_product_taxrate($cart[$i]["product_id"]);
 						
 						if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))

@@ -68,7 +68,17 @@
         <option value="yes">Yes</option>
         <option value="no">No</option>
       </param>
-      
+    <param name="show_adminlink" type="radio" default="yes" label="Show Administrator Link?"
+      description="Defines wether the administrator link is displayed under the product browser." >
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </param>
+     
+      <param name="show_accountlink" type="radio" default="yes" label="Show Account Link?"
+      description="Defines wether the account link is displayed under the product browser." >
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </param>
       <param name="show_minicart" type="radio" default="yes" label="Show Mini Cart?"
       description="Defines wether the mini cart with a link to the cart and the actual total $ is displayed or not." >
         <option value="yes">Yes</option>

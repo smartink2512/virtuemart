@@ -84,7 +84,7 @@ class ps_payment_method extends vmAbstractObject {
 		}
 
 		$d['payment_extrainfo'] = mosGetParam( $_POST, 'payment_extrainfo', '', _MOS_ALLOWHTML );
-		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
+		if( !get_magic_quotes_gpc() ) {
 			$d['payment_extrainfo'] = addslashes( $d['payment_extrainfo'] );
 		}
 
@@ -132,7 +132,7 @@ class ps_payment_method extends vmAbstractObject {
 		}
 
 		$d['payment_extrainfo'] = mosGetParam( $_POST, 'payment_extrainfo', '', _MOS_ALLOWHTML );
-		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
+		if( !get_magic_quotes_gpc() ) {
 			$d['payment_extrainfo'] = addslashes( $d['payment_extrainfo'] );
 		}
 
