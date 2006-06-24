@@ -20,19 +20,19 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__{vm}_order_export WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__{vm}_order_export WHERE ";
-	$q  = "(#__{vm}_order_export.order_export_name LIKE '%$keyword%' ";
-	$q .= "AND #__{vm}_order_export.vendor_id='$ps_vendor_id' ";
+	$list  = "SELECT * FROM #__{vm}_export WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_export WHERE ";
+	$q  = "(#__{vm}_export.export_name LIKE '%$keyword%' ";
+	$q .= "AND #__{vm}_export.vendor_id='$ps_vendor_id' ";
 	$q .= ") ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 	$count .= $q;
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__{vm}_order_export WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__{vm}_order_export WHERE ";
-	$q .= "#__{vm}_order_export.vendor_id='$ps_vendor_id' ";
+	$list  = "SELECT * FROM #__{vm}_export WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_export WHERE ";
+	$q .= "#__{vm}_export.vendor_id='$ps_vendor_id' ";
 	$list .= $q;
 	$list .= "LIMIT $limitstart, " . $limit;
 	$count .= $q;
@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_LBL, IMAGEURL."ps_image/modules.gif", $modulename, "order_export_list");
+$listObj->writeSearchHeader($VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_LBL, IMAGEURL."ps_image/modules.gif", $modulename, "export_list");
 
 // start the list table
 $listObj->startTable();
@@ -73,15 +73,15 @@ while ($db->next_record()) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("order_export_id"), false, "order_export_id" ) );
+	$listObj->addCell( mosHTML::idBox( $i, $db->f("export_id"), false, "export_id" ) );
 
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.order_export_form&limitstart=$limitstart&keyword=$keyword&order_export_id=".$db->f("order_export_id");
-	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f('order_export_name')."</a>";
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.export_form&limitstart=$limitstart&keyword=$keyword&export_id=".$db->f("export_id");
+	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f('export_name')."</a>";
 	$listObj->addCell( $tmp_cell );
 
-	$listObj->addCell( $db->f('order_export_desc') );
+	$listObj->addCell( $db->f('export_desc') );
 
-	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=$page&order_export_id=".$db->f("order_export_id")."&func=changePublishState" );
+	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=$page&export_id=".$db->f("export_id")."&func=changePublishState" );
 	if ($db->f("export_enabled")=='N') {
 		$tmpcell .= "&task=publish\">";
 	}
@@ -92,7 +92,7 @@ while ($db->next_record()) {
 	$tmpcell .= "</a>";
 	$listObj->addCell( $tmpcell );
 
-	$listObj->addCell( $ps_html->deleteButton( "order_export_id", $db->f("order_export_id"), "orderExportDelete", $keyword, $limitstart ) );
+	$listObj->addCell( $ps_html->deleteButton( "export_id", $db->f("export_id"), "ExportDelete", $keyword, $limitstart ) );
 
 	$i++;
 }

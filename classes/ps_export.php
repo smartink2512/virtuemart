@@ -17,8 +17,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 
-class ps_order_export {
-	var $classname = 'ps_order_export';
+class ps_export {
+	var $classname = 'ps_export';
 
 	/**
 	* validate order export module add
@@ -30,20 +30,23 @@ class ps_order_export {
 		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 
-		if (!$d['order_export_name']) {
-			$d['error'] = 'ERROR:  There is already a module with the same name.';
+		if (!$d['export_name']) {
+			$d['error'] = 'ERROR:  Module name cannot be empty';
 			return False;
 		}
 		if (empty($d['export_enabled'])) {
 			$d['export_enabled'] = 'N';
 		}
-		if(!file_exists( CLASSPATH.'export/'.$d['order_export_class'].'.php' ) ) {
+		if(empty($d['export_class'])) {
+			$d['export_class'] = 'ps_xmlexport';
+		}
+		if(!file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
 			$d['error'] = 'ERROR: Export Class does not exist.';
 			return false;
 		}
-		$d['order_export_config'] = mosGetParam( $_POST, 'order_export_config', '', _MOS_ALLOWHTML );
+		$d['export_config'] = mosGetParam( $_POST, 'export_config', '', _MOS_ALLOWHTML );
 		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
-			$d['order_export_config'] = addslashes( $d['order_export_config'] );
+			$d['export_config'] = addslashes( $d['export_config'] );
 		}
 		return True;
 	}
@@ -55,7 +58,7 @@ class ps_order_export {
 	*/
 	function validate_delete($d) {
 		global $vmLogger, $VM_LANG;
-		if (!$d['order_export_id']) {
+		if (!$d['export_id']) {
 			$d['error'] = 'ERROR:  Please select an export module to delete.';
 			return False;
 		}
@@ -74,21 +77,21 @@ class ps_order_export {
 		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 
-		if (!$d['order_export_id']) {
+		if (!$d['export_id']) {
 			$d['error'] = 'ERROR:  You must select an export module to update.';
 			return False;
 		}
-		if (!$d['order_export_name']) {
+		if (!$d['export_name']) {
 			$d['error'] = 'ERROR:  You must enter a name for the order export module.';
 			return False;
 		}
-		if(!file_exists( CLASSPATH.'export/'.$d['order_export_class'].'.php' ) ) {
+		if(!file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
 			$d['error'] = 'ERROR: Export Class does not exist.';
 			return false;
 		}
-		$d['order_export_config'] = mosGetParam( $_POST, 'order_export_config', '', _MOS_ALLOWHTML );
+		$d['export_config'] = mosGetParam( $_POST, 'export_config', '', _MOS_ALLOWHTML );
 		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
-			$d['order_export_config'] = addslashes( $d['order_export_config'] );
+			$d['export_config'] = addslashes( $d['export_config'] );
 		}
 		return True;
 	}
@@ -109,12 +112,12 @@ class ps_order_export {
 		if (!$this->validate_add($d)) {
 			return False;
 		}
-		if ( !empty($d['order_export_class']) ) {
+		if ( !empty($d['export_class']) ) {
 			// Here we have a custom export class
-			if( file_exists( CLASSPATH.'export/'.$d['order_export_class'].'.php' ) ) {
+			if( file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
 				// Include the class code and create an instance of this class
-				include( CLASSPATH.'export/'.$d['order_export_class'].'.php' );
-				eval( "\$_EXPORT = new ".$d['order_export_class']."();");
+				include( CLASSPATH.'export/'.$d['export_class'].'.php' );
+				eval( "\$_EXPORT = new ".$d['export_class']."();");
 			}
 		}
 		else {
@@ -126,15 +129,15 @@ class ps_order_export {
 			$_EXPORT->write_configuration( $d );
 		}
 
-		$q = 'INSERT INTO #__{vm}_order_export (vendor_id, order_export_name,';
-		$q .= 'order_export_desc, order_export_class, export_enabled, order_export_config, iscore) ';
+		$q = 'INSERT INTO #__{vm}_export (vendor_id, export_name,';
+		$q .= 'export_desc, export_class, export_enabled, export_config, iscore) ';
 		$q .= 'VALUES (';
 		$q .= "'$ps_vendor_id','";
-		$q .= $d['order_export_name'] . "','";
-		$q .= $d['order_export_desc'] . "','";
-		$q .= $d['order_export_class'] . "','";
+		$q .= $d['export_name'] . "','";
+		$q .= $d['export_desc'] . "','";
+		$q .= $d['export_class'] . "','";
 		$q .= $d['export_enabled'] . "','";
-		$q .= $d['order_export_config'] . "','";
+		$q .= $d['export_config'] . "','";
 		$q .= "0')";
 		$db->query($q);
 		$db->next_record();
@@ -158,9 +161,9 @@ class ps_order_export {
 			return False;
 		}
 
-		if ( !empty($d['order_export_class']) ) {
-			if (include( CLASSPATH.'export/'.$d['order_export_class'].'.php' ))
-			eval( "\$_EXPORT = new ".$d['order_export_class']."();");
+		if ( !empty($d['export_class']) ) {
+			if (include( CLASSPATH.'export/'.$d['export_class'].'.php' ))
+			eval( "\$_EXPORT = new ".$d['export_class']."();");
 		}
 		else {
 			include( CLASSPATH.'export/ps_xmlexport.php' );
@@ -175,15 +178,15 @@ class ps_order_export {
 			return false;
 		}
 
-		$q = 'UPDATE #__{vm}_order_export SET ';
+		$q = 'UPDATE #__{vm}_export SET ';
 		if(!$d['iscore']) {
-			$q .= "order_export_name='" . $d['order_export_name'];
-			$q .= "',order_export_desc='" . $d['order_export_desc'];
-			$q .= "',order_export_class='" . $d['order_export_class'];
+			$q .= "export_name='" . $d['export_name'];
+			$q .= "',export_desc='" . $d['export_desc'];
+			$q .= "',export_class='" . $d['export_class'];
 		}
-		$q .= "',order_export_config='" . $d['order_export_config'];
+		$q .= "',export_config='" . $d['export_config'];
 		$q .= "',export_enabled='" . $d['export_enabled'];
-		$q .= "' WHERE order_export_id='" . $d['order_export_id'] . "'";
+		$q .= "' WHERE export_id='" . $d['export_id'] . "'";
 		$q .= " AND vendor_id='$ps_vendor_id'";
 		$db->query($q);
 		$db->next_record();
@@ -202,7 +205,7 @@ class ps_order_export {
 		if (!$this->validate_delete($d)) {
 			return False;
 		}
-		echo $record_id = $d['order_export_id'];
+		$record_id = $d['export_id'];
 
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {
@@ -226,7 +229,7 @@ class ps_order_export {
 		global $db;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
 
-		$q = "DELETE from #__{vm}_order_export WHERE order_export_id='$record_id'";
+		$q = "DELETE from #__{vm}_export WHERE export_id='$record_id'";
 		$q .= " AND vendor_id='$ps_vendor_id'";
 		$db->query($q);
 		return True;

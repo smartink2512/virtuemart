@@ -247,7 +247,11 @@ for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules
                 ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_LBL."', '". $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.shipping_modules") ?>',null,'Shipping Method List'],                        
                         _cmSplit,
                         ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_CREDITCARD_LIST_LBL ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.creditcard_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_CREDITCARD_LIST_LBL ?>'],
-                        ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_CREDITCARD_FORM_LBL ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.creditcard_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_CREDITCARD_FORM_LBL ?>']
+                        ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_CREDITCARD_FORM_LBL ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.creditcard_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_CREDITCARD_FORM_LBL ?>'],
+                        _cmSplit,
+                    ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.export_list") ?>',null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?>'],
+                    ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.export_form") ?>',null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_FORM_MNU ?>']
+                
                         
                         <?php break;
                         
@@ -281,10 +285,7 @@ for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules
                             ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_status_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_LIST_MNU ?>'],
                             ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_status_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_MNU ?>']
                         ],
-                 ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT ?>',null,null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT ?>',
-                    ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_export_list") ?>',null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?>'],
-                    ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_export_form") ?>',null,'<?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_FORM_MNU ?>']
-                ],
+                 
                         <?php break;
                         
                 case "shipping":

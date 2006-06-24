@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.martlanguages.php,v 1.4 2005/10/15 15:26:14 soeren_nb Exp $
+* @version $Id: admin.martlanguages.php,v 1.6 2006/01/15 19:42:45 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -1510,22 +1510,22 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_FEDEX_URI = 'FedEx Server Address';
 	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
 <br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
-	var $_VM_ORDER_EXPORT = 'Bestell Export';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'Bestell Export Module auflisten';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Bestell Export Module auflisten';
+	var $_VM_ORDER_EXPORT = 'Export Module';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'Export Module auflisten';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Export Module auflisten';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_NAME = 'Name';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_DESC = 'Beschreibung';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Neu: Bestell Export Modul';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Bestell Export Modul Formular';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Neu: Export Modul';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Export Modul Formular';
 	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name des Export Moduls';
 	var $_VM_ORDER_EXPORT_MODULE_FORM_DESC = 'Beschreibung';
 	var $_VM_ORDER_EXPORT_CLASS_NAME = 'Export Modul Klassen Name';
 	var $_VM_ORDER_EXPORT_CLASS_NAME_TIP = '(z.B. <strong>ps_olsi</strong>) :<br />
 standard: ps_xmlexport<br />
 <i>Leer lassen, wenn Sie sich nicht sicher sind was Sie eingeben sollen!</i>';
-	var $_VM_ORDER_EXPORT_CONFIG = 'Bestell Export Konfiguration';
-	var $_VM_ORDER_EXPORT_CONFIG_TIP = 'Here you can configure your order export.
-It has to be valid PHP Code!
+	var $_VM_ORDER_EXPORT_CONFIG = 'Export Konfiguration';
+	var $_VM_ORDER_EXPORT_CONFIG_TIP = 'Hier können Sie das Export Modul konfigurieren.
+Es muss gültiger PHP Code sein!
 ';
 	var $_VM_TAXDETAILS_LABEL = 'Tax Total contains';
 	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL = 'Default product sort order';
