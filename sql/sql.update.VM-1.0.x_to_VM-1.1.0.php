@@ -107,6 +107,10 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 2, 'moveProduct', 'ps_pr
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'none');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none');" );
 
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');" );
+
 $db->query( "ALTER TABLE `#__{vm}_payment_method` ADD `payment_method_discount_is_percent` TINYINT( 1 ) NOT NULL AFTER `payment_method_discount` ,
 ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,
 ADD `payment_method_discount_min_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_max_amount` ;");
@@ -132,6 +136,19 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__vm_shipping_label` (
 	`signature_image` blob default NULL,
 	PRIMARY KEY (`order_id`)
 ) TYPE=MyISAM COMMENT='Stores information used in generating shipping labels'; ");
+
+## Export Modules
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_export` (
+  `export_id` int(11) NOT NULL auto_increment,
+  `vendor_id` int(11) default NULL,
+  `export_name` varchar(255) default NULL,
+  `export_desc` text NOT NULL,
+  `export_class` varchar(50) NOT NULL,
+  `export_enabled` char(1) NOT NULL default 'N',
+  `export_config` text NOT NULL,
+  `iscore` tinyint(3) NOT NULL default '0',
+  PRIMARY KEY  (`export_id`),
+) ENGINE=MyISAM COMMENT='Export Modules';");
 
 # NEW States
 $db->query( "INSERT INTO `#__{vm}_state` (country_id, state_name, state_3_code, state_2_code)

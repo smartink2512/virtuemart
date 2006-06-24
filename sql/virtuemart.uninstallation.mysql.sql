@@ -23,6 +23,8 @@ DROP TABLE IF EXISTS  `jos_vm_csv`;
 
 DROP TABLE IF EXISTS  `jos_vm_currency`;
 
+DROP TABLE IF EXISTS  `jos_vm_export`;
+
 DROP TABLE IF EXISTS  `jos_vm_function`;
 
 DROP TABLE IF EXISTS `jos_vm_manufacturer`;

@@ -642,6 +642,24 @@ $db->query( "INSERT INTO `#__{vm}_currency` VALUES (1, 'Andorran Peseta', 'ADP')
 ## --------------------------------------------------------
 
 ## 
+## Tabellenstruktur für Tabelle `#__{vm}_export`
+## 
+
+$db->query( "CREATE TABLE IF NOT EXISTS `jos_vm_export` (
+  `export_id` int(11) NOT NULL auto_increment,
+  `vendor_id` int(11) default NULL,
+  `export_name` varchar(255) default NULL,
+  `export_desc` text NOT NULL,
+  `export_class` varchar(50) NOT NULL,
+  `export_enabled` char(1) NOT NULL default 'N',
+  `export_config` text NOT NULL,
+  `iscore` tinyint(3) NOT NULL default '0',
+  PRIMARY KEY  (`export_id`),
+) ENGINE=MyISAM COMMENT='Export Modules';");
+
+## --------------------------------------------------------
+
+## 
 ## Table structure for table `#__{vm}_function`
 ## 
 
@@ -790,7 +808,10 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES (1, 1, 'userAdd', 'ps_user', 
 (171, 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin'),
 (172, 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin'),
 (173, 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'none'),
-(174, 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none');" );
+(174, 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none'),
+(175, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin'),
+(176, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin'),
+(177, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');" );
 ## --------------------------------------------------------
 
 ## 

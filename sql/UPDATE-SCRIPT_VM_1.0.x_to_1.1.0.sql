@@ -121,6 +121,22 @@ CREATE TABLE IF NOT EXISTS `jos_vm_shipping_label` (
 	PRIMARY KEY (`order_id`)
 ) TYPE=MyISAM COMMENT='Stores information used in generating shipping labels';
 
+
+
+## Export Modules
+CREATE TABLE IF NOT EXISTS `jos_vm_export` (
+  `export_id` int(11) NOT NULL auto_increment,
+  `vendor_id` int(11) default NULL,
+  `export_name` varchar(255) default NULL,
+  `export_desc` text NOT NULL,
+  `export_class` varchar(50) NOT NULL,
+  `export_enabled` char(1) NOT NULL default 'N',
+  `export_config` text NOT NULL,
+  `iscore` tinyint(3) NOT NULL default '0',
+  PRIMARY KEY  (`export_id`),
+) ENGINE=MyISAM COMMENT='Export Modules';
+
+
 # NEW States
 INSERT INTO `jos_vm_state` (country_id, state_name, state_3_code, state_2_code)
 VALUES
@@ -152,6 +168,9 @@ ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCR
 INSERT INTO `jos_vm_function` VALUES ('', 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');
 INSERT INTO `jos_vm_function` VALUES ('', 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin');
 INSERT INTO `jos_vm_function` VALUES ('', 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none');
+INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin');
+INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin');
+INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
 
 
 # Prevent auto-publishing of product reviews

@@ -645,6 +645,25 @@ INSERT INTO `jos_vm_currency` VALUES (1, 'Andorran Peseta', 'ADP'),
 ## --------------------------------------------------------
 
 ## 
+## Tabellenstruktur für Tabelle `jos_vm_export`
+## 
+
+CREATE TABLE `jos_vm_export` (
+  `export_id` int(11) NOT NULL auto_increment,
+  `vendor_id` int(11) default NULL,
+  `export_name` varchar(255) default NULL,
+  `export_desc` text NOT NULL,
+  `export_class` varchar(50) NOT NULL,
+  `export_enabled` char(1) NOT NULL default 'N',
+  `export_config` text NOT NULL,
+  `iscore` tinyint(3) NOT NULL default '0',
+  PRIMARY KEY  (`export_id`),
+) ENGINE=MyISAM COMMENT='Export Modules';
+
+## --------------------------------------------------------
+
+
+## 
 ## Table structure for table `jos_vm_function`
 ## 
 
@@ -791,7 +810,10 @@ INSERT INTO `jos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (169, 1, 'userfieldSave', 'ps_userfield', 'savefield', 'add or edit a user field', 'admin'),
 (170, 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin'),
 (171, 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin'),
-(172, 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin');
+(172, 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin'),
+(173, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin'),
+(174, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin'),
+(175, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
 
 ## --------------------------------------------------------
 
