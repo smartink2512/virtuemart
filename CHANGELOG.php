@@ -33,6 +33,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+28-06-2006 soeren
+# Task #780 - VM don't send the confirmation order to user or admin, update status order don't run (ps_affiliate.php)
+# Task #817 - relative url is missing server base (ps_product_attribute.php)
+# 2Checkout order_total number format corrected
+# Task #814 - mysql_escape_string issues (class.inputfilter.php, htmltools.class.php)
+# Task #816 - missing "alt" attribute in category images on shop.index.php
+^ adjusted login procedure to comply with Joomla 1.0.10 (ps_main.php, checkout.login_form, mod_virtuemart.php)
+	+ added new functions called "vmSpoofValue" and "vmSpoofCheck" as used in Joomla 1.0.10
+	
+22-06-2006 soeren
+
+^ Product Scroller now scrolls left and right with all the products in 1 row
+
+
 07-06-2006 soeren
 
 # "only variables should be assigned by reference..." errors in the file menuBar.class.php

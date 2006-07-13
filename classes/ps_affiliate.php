@@ -255,7 +255,7 @@ class ps_affiliate {
     $db = new ps_DB;
    
    //get the affiliate id from affiliate table for this user
-	$q =  "SELECT * FROM #__{vm}_affiliate, #__users";
+	$q =  "SELECT affiliate_id,rate,company,user_email FROM `#__{vm}_affiliate`, `#__{vm}_user_info`";
 	$q .= " WHERE #__{vm}_affiliate.user_id = #__{vm}_user_info.user_info_id";
 	if(!$affiliate_id){
 		$q .= " AND #__{vm}_user_info.user_id = '".$auth["user_id"]."'";

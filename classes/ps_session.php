@@ -124,6 +124,7 @@ class ps_session {
 		global $mainframe, $my, $mosConfig_secret, $_VERSION, $page, $VM_MODULES_FORCE_HTTPS;
 
 		$ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
+		$redirected = mosGetParam( $_GET, "redirected", 0 );
 		$martID = mosGetParam( $_GET, 'martID', null );
 		$ssl_domain = "";
 		
@@ -185,8 +186,8 @@ class ps_session {
 				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID", true ) );
 			}
 			// do nothing but redirect
-			elseif( $_SERVER['SERVER_PORT'] != 443 ) {
-				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING']), true );
+			elseif( $_SERVER['SERVER_PORT'] != 443 && $redirected == 0 ) {
+				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING'].'&redirected=1'), true );
 			}
 		}
 		/**

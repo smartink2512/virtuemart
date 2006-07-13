@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 $registration_enabled = $mosConfig_allowUserRegistration;
 $return = mosGetParam( $_SERVER, 'REQUEST_URI', null );
-// converts & to &amp; for xtml compliance
+// converts & to &amp; for xhtml compliance
 $return = str_replace( '&', '&amp;', $return );
 $return = str_replace( 'option', '&amp;option', $return );
 ?>
@@ -52,11 +52,16 @@ $return = str_replace( 'option', '&amp;option', $return );
         	echo '<input type="hidden" name="remember" value="yes" />';
         }
         ?>
-  </div>
+  	</div>
   
-  <input type="hidden" name="op2" value="login" />
+  	<input type="hidden" name="op2" value="login" />
   
-  <input type="hidden" name="lang" value="<?php echo $mosConfig_lang; ?>" />
-  <input type="hidden" name="return" value="<?php echo $return ?>" />
+  	<input type="hidden" name="lang" value="<?php echo $mosConfig_lang; ?>" />
+  	<input type="hidden" name="return" value="<?php echo $return ?>" />
+  	<?php
+  	// used for spoof hardening
+	$validate = vmSpoofValue(1);
+	?>
+	<input type="hidden" name="<?php echo $validate; ?>" value="1" />
 </form>
 

@@ -269,7 +269,7 @@ include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser
 	// Finally insert the version number into the database
 	include_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/version.php' );
 	global $VMVERSION;
-	
+	$VMVERSION= new vmVersion();
 	$database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
 	$old_version =  $database->loadResult();
 	if( $old_version ) {

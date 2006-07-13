@@ -1,7 +1,7 @@
 <?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
-* @version $Id: class.inputfilter.php,v 1.4 2005/10/04 18:30:34 soeren_nb Exp $
+* @version $Id: class.inputfilter.php,v 1.5.2.1 2005/11/28 17:57:00 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage phpInputFilter
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -335,14 +335,8 @@ class vmInputFilter {
 	  * @return String $source
 	  */
 	function escapeString($string, &$connection) {
-		// depreciated function
-		if (version_compare(phpversion(),"4.3.0", "<")) {
-			return mysql_escape_string($string);
-		}
-		// current function
-		else {
-			return mysql_real_escape_string($string, $connection );
-		}
+		global $database;
+		return $database->getEscaped( $string );
 		
 	}
 }

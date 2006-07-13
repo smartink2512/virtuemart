@@ -1084,16 +1084,11 @@ class vmCommonHTML extends mosHTML {
  * @return string HTML code for ToolTip
  */
 function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) {
-	global $mosConfig_live_site;
+	global $mosConfig_live_site, $database;
 	
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
-	if( function_exists('mysql_real_escape_string')) {
-		$tooltip = @htmlentities( mysql_real_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
-	}
-	else {
-		$tooltip = @htmlentities( mysql_escape_string($tooltip), ENT_QUOTES, vmGetCharset() );
-	}
+	$tooltip = @htmlentities( $database->getEscaped($tooltip), ENT_QUOTES, vmGetCharset() );
 	
 	if ( !empty($width) ) {
 		$width = 'this.T_WIDTH=\''.$width .'\';';

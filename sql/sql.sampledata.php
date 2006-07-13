@@ -51,15 +51,15 @@ $db->query( "INSERT INTO `#__{vm}_product` VALUES (14, 1, 2, 'L01', '', '', '', 
 $db->query( "INSERT INTO `#__{vm}_product` VALUES (15, 1, 2, 'L02', '', '', '', '', 'Y', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 0, '', '', 0, NULL, 962351165, 962351165, 'Wooden Ladder', 0, NULL, '', 0, '', 0);");
 $db->query( "INSERT INTO `#__{vm}_product` VALUES (16, 1, 2, 'L03', '', '', '', '', 'Y', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 0, '', '', 0, NULL, 962351180, 962351180, 'Plastic Ladder', 0, NULL, '', 0, '', 0);");
  
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (11, 'Color', 'Red');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (12, 'Color', 'Green');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (13, 'Color', 'Blue');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (11, 'Size', 'Small');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (12, 'Size', 'Medium');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (13, 'Size', 'Large');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (14, 'Material', 'Metal');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (15, 'Material', 'Wood');");
-$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (16, 'Material', 'Plastic');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (1, 11, 'Color', 'Red');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (2, 12, 'Color', 'Green');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (3, 13, 'Color', 'Blue');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (4, 11, 'Size', 'Small');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (5, 12, 'Size', 'Medium');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (6, 13, 'Size', 'Large');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (7, 14, 'Material', 'Metal');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (8, 15, 'Material', 'Wood');");
+$db->query( "INSERT INTO `#__{vm}_product_attribute` VALUES (9, 16, 'Material', 'Plastic');");
 
 $db->query( "INSERT INTO `#__{vm}_product_attribute_sku` VALUES (1, 'Color', 1);");
 $db->query( "INSERT INTO `#__{vm}_product_attribute_sku` VALUES (1, 'Size', 2);");
