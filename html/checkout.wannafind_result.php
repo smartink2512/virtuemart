@@ -27,26 +27,20 @@ $cookievals = base64_decode( $sessionid );
 $orderID = substr( $cookievals, 0, 8 );
 $order_id = intval( $orderID );
 $virtuemartcookie = substr( $cookievals, 8, 32 );
-$sessioncookie = substr( $cookievals, 40, 32 );
+$remote_ip_md5 = substr( $cookievals, 40, 32 );
 $md5_check = substr( $cookievals, 72, 32 );
 
 // Check Validity of the Page Load using the MD5 Check
-$submitted_hashbase = $orderID . $virtuemartcookie . $sessioncookie;
+$submitted_hashbase = $orderID . $virtuemartcookie . $remote_ip_md5;
 
 // OK! VALID...
-if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) {
-
-  session_id( $virtuemartcookie );
-  session_name( 'virtuemart' );
-  @session_start();
-  
-  $session = new mosSession( $database );
-  if ($session->load( $sessioncookie )) {
-      // Session cookie exists, update time in session table
-      $session->time = time();
-      $session->update();
-      $mainframe->_session = $session;
-      $my = $mainframe->getUser();
+if( !$my->id ) {
+	mosNotAuth();
+	echo '<br />';
+	include( PAGEPATH. 'checkout.login_form.php');
+	echo '<br /><br />';
+}
+elseif( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) {
   
       $qv = "SELECT order_id, order_number FROM #__{vm}_orders ";
       $qv .= "WHERE order_id='".$order_id."' AND user_id='".$my->id."'";
@@ -130,12 +124,6 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
         <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (Order not found)</span><?php
       }
   }
-  else {
-        ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (Session not found)</span><?php
-  }
-}
 else{
         ?>
         <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />

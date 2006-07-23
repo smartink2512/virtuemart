@@ -38,11 +38,11 @@ class ps_session {
      *
      */
 	function initSession() {
-		global $vmLogger, $mainframe;
+		global $vmLogger, $mainframe, $_VERSION;
 		
 		if( !defined('_VM_SESSIONSTART') ) {
 			// Some servers start the session before we can, so close those and start again		
-			if( !defined('_PSHOP_ADMIN') && !empty($_SESSION)) {
+			if( !defined('_PSHOP_ADMIN') && !empty($_SESSION) && !vmIsJoomla() ) {
 				session_write_close();
 				unset( $_SESSION );
 				
@@ -69,7 +69,7 @@ class ps_session {
 		
 	/**
 	 * Returns the Joomla/Mambo Session ID
-	 *
+	 * @static 
 	 */
 	function getSessionId() {
 		global $mainframe;
@@ -94,6 +94,51 @@ class ps_session {
 			return $mainframe->_session->session_id;
 		}
 	}
+	/**
+	 * This function returns a base64_encoded string:
+	 * VMsessionId|JsessionID
+	 *
+	 */
+	function getMartId() {
+		global $my, $mosConfig_secret;
+		
+		// Get the Joomla! / Mambo session ID
+		$sessionId = ps_session::getSessionId();
+		
+		$userNameSeed = '';
+		if( $my->id ) {
+			$userNameSeed = '|'.md5( $my->username . $my->password . $mosConfig_secret );
+		}
+		
+		$martID = base64_encode( mosHash($_COOKIE[$this->_session_name] . $sessionId) . $userNameSeed );
+		return $martID;
+	}
+	/**
+	 * Saves the session contents to a file (so they the session can be continued later on) and does a redirect
+	 *
+	 * @param boolean $toSecure Redirect to a https or http domain?
+	 */
+	function saveSessionAndRedirect( $toSecure = true ) {
+		$martID = $this->getMartId();
+				
+		$sessionFile = IMAGEPATH. md5( $martID ).'.sess';
+		$session_contents = session_encode();
+		if( file_exists( ADMINPATH.'install.copy.php')) {
+			require_once( ADMINPATH.'install.copy.php');
+		}
+		
+		file_put_contents( $sessionFile, $session_contents );
+		
+		$url = $toSecure ? SECUREURL : URL;
+		
+		// Redirect and send the Cookie Values within the variable martID
+		mosRedirect( $this->url( $url . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID&redirected=1", true ) );
+	}
+	/**
+	 * It does what the name says. It starts a session again (with a certain ID when a $sid is given)
+	 *
+	 * @param string $sid
+	 */
 	function restartSession( $sid = '') {
 		
 		// Save the session data and close the session
@@ -108,6 +153,7 @@ class ps_session {
 		session_start();
 		
 	}
+	
 	function emptySession() {
 		global $mainframe;
 		$_SESSION = array();
@@ -121,11 +167,11 @@ class ps_session {
 	 * The function is called on each page load.
 	 */
 	function prepare_SSL_Session() {
-		global $mainframe, $my, $mosConfig_secret, $_VERSION, $page, $VM_MODULES_FORCE_HTTPS;
+		global $mainframe, $my, $database, $mosConfig_secret, $_VERSION, $page, $VM_MODULES_FORCE_HTTPS;
 
 		$ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
 		$redirected = mosGetParam( $_GET, "redirected", 0 );
-		$martID = mosGetParam( $_GET, 'martID', null );
+		$martID = mosGetParam( $_GET, 'martID', '' );
 		$ssl_domain = "";
 		
 		if (!empty( $VM_MODULES_FORCE_HTTPS )) {
@@ -133,19 +179,26 @@ class ps_session {
 			$module = $pagearr[0];
 			// When NOT in https mode, but the called page is part of a shop module that is
 			// forced to use https, we prepare the redirection to https here
-			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) !== false && ($_SERVER['SERVER_PORT'] != 443 || @$_SERVER['HTTPS'] != 'on' )) {
+			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) !== false 
+				&& !vmIsHttpsMode()
+				&& $this->check_Shared_SSL( $ssl_domain ) ) {
+					
 				$ssl_redirect = 1;
 			}
 		}		
 		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
-			&& ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' ) 
+			&& vmIsHttpsMode()
 			&& $ssl_redirect == 0 && !vmIsAdminMode()
 			&& @$_REQUEST['option']=='com_virtuemart') {
 				
 			$pagearr = explode( '.', $page );
 			$module = $pagearr[0];
+			
 			// When it is not necessary to stay in https mode, we leave it here
 			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) === false ) {
+				if( $this->check_Shared_SSL($ssl_domain)) {
+					$this->saveSessionAndRedirect( false );
+				}
 				mosRedirect( $this->url( URL.'index.php?'.$_SERVER['QUERY_STRING'], true ));
 			}
 		}
@@ -158,36 +211,18 @@ class ps_session {
         * is must be active! This has nothing to do with SSL / Shared SSL or whatever
         */
 		if( $ssl_redirect == 1 ) {
+			
+			$_SERVER['QUERY_STRING'] = str_replace('&ssl_redirect=1', '', $_SERVER['QUERY_STRING'] );
 			// check_Shared_SSL compares the normal http domain name
 			// and the https Domain Name. If both do not match, we move on
 			// else we leave this function.
-			if( $this->check_Shared_SSL( $ssl_domain ) && $_SERVER['SERVER_PORT'] != 443) {
+			if( $this->check_Shared_SSL( $ssl_domain ) && !vmIsHttpsMode()) {
 				
-				$sessionId = $this->getSessionId();
-				
-				if( !empty($my->id)) {
-					// User is already logged in
-					// We need to transfer the usercookie if present
-					$martID = @base64_encode( $_COOKIE[$this->_session_name]."|".$sessionId."|".$_COOKIE['usercookie']['password']."|".$_COOKIE['usercookie']['username'] );
-
-				}
-				else {
-					// User is not logged in, but has Cart Contents
-					$martID = base64_encode( $_COOKIE[$this->_session_name]."|".$sessionId );
-				}
-				$sessionFile = IMAGEPATH. md5( $martID ).'.sess';
-				$session_contents = session_encode();
-				if( file_exists( ADMINPATH.'install.copy.php')) {
-					require_once( ADMINPATH.'install.copy.php');
-				}
-				file_put_contents( $sessionFile, $session_contents );
-				
-				// Redirect and send the Cookie Values within the variable martID
-				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID", true ) );
+				$this->saveSessionAndRedirect( true );
 			}
 			// do nothing but redirect
-			elseif( $_SERVER['SERVER_PORT'] != 443 && $redirected == 0 ) {
-				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING'].'&redirected=1'), true );
+			elseif( !vmIsHttpsMode() && $redirected == 0 ) {
+				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING'].'&redirected=1', true ) );
 			}
 		}
 		/**
@@ -198,23 +233,11 @@ class ps_session {
         * othwerwise: do nothing.
         */
 		if( !empty( $martID ) ) {
+			
 			if( $this->check_Shared_SSL( $ssl_domain ) ) {
 	
 				// We now need to copy the Session Data to the SSL Domain
-				if( $martID ) {
-					$cookievals = base64_decode( $martID );
-	
-					$id_array = explode( "|", $cookievals );
-	
-					$virtuemartcookie = $id_array[0];
-					$sessioncookie = $id_array[1];
-					$usercookie["password"] = @$id_array[2];
-					$usercookie["username"] = @$id_array[3];
-	
-					// Log the user in with his username
-					if( !empty( $usercookie["username"]) && !empty( $usercookie["password"] )) {
-						$mainframe->login( $usercookie["username"], $usercookie["password"] );
-					}
+				if( $martID ) {					
 					
 					require_once( ADMINPATH.'install.copy.php');
 					
@@ -226,14 +249,40 @@ class ps_session {
 					unlink( $sessionFile );
 					
 					// Read the session data into $_SESSION
+					// From now on, we can use all the data in $_SESSION
 					session_decode( $session_data );
+					
+					$check = base64_decode( $martID );
+					$checkValArr = explode( "|", $check );
+					
+					// Check if the user was logged in in the http domain
+					// and is not yet logged in at the Shared SSL domain
+					if( isset( $checkValArr[1] ) && !$my->id ) {
+						// user should expect to be logged in,
+						// we can use the values from $_SESSION['auth'] now
+						$username = $database->getEscaped( trim( $_SESSION['auth']['user_name'] ) );
+						if( !empty( $username )) {
+							$database->setQuery('SELECT username, password FROM `#__users` WHERE `username` = \''.$username.'\';');
+							$database->loadObject( $user );
+							if( is_object( $user )) {
+								// a last security check using the transmitted md5 hash and the rebuilt hash
+								$check = md5( $user->username . $user->password . $mosConfig_secret );
+								if( $check === $checkValArr[1] ) {
+									// Log the user in with his username
+									$mainframe->login( $user->username, $user->password );
+								}
+							}
+							
+						}
+					}				
 					
 					session_write_close();
 					
 					// Prevent the martID from being displayed in the URL
 					if( !empty( $_GET['martID'] )) {
 						$query_string = substr_replace( $_SERVER['QUERY_STRING'], '', strpos( $_SERVER['QUERY_STRING'], '&martID'));
-						mosRedirect( $this->url(SECUREURL . "index.php?$query_string&cartReset=N", true) );
+						$url = vmIsHttpsMode() ? SECUREURL : URL;
+						mosRedirect( $this->url( $url . "index.php?$query_string&cartReset=N", true) );
 					}
 	
 				}

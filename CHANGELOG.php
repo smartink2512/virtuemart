@@ -33,6 +33,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18-07-2006 soeren
+
+# various stability fixes to the "Shared SSL"-Redirect functions.
+	It's now possible to jump from https to http and back without loosing
+	session information (=cart and login)
+
 28-06-2006 soeren
 # Task #780 - VM don't send the confirmation order to user or admin, update status order don't run (ps_affiliate.php)
 # Task #817 - relative url is missing server base (ps_product_attribute.php)

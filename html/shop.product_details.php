@@ -386,7 +386,7 @@ $template = str_replace( "{ask_seller}", $ask_seller, $template ); // Product En
 /* 
   Really cool regular expression that let's you easily translate the flypage 
   Usage:
-   {vm_lang:_PHPSHOP__PHPSHOP_ACCOUNT_TITLE} 
+   {vm_lang:_PHPSHOP_ACCOUNT_TITLE} 
    will print the content of $VM_LANG->_PHPSHOP_ACCOUNT_TITLE
    from the current language
 */

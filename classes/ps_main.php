@@ -1106,6 +1106,12 @@ function vmIsAdminMode() {
 	|| stristr($page, "display"));
 }
 
+if( !function_exists( 'moshash' )) {
+	function mosHash( $seed ) {
+	    return md5( $GLOBALS['mosConfig_secret'] . md5( $seed ) );
+	}
+}
+
 /**
  * Equivalent to Joomla's josSpoofCheck function
  * @author Joomla core team
@@ -1184,5 +1190,13 @@ function vmSpoofValue($alt=NULL) {
 	$validate 	= mosHash( $mainframe->getCfg( 'db' ) . $random );
 	
 	return $validate;
+}
+
+function vmIsJoomla() {
+	global $_VERSION;
+	return (bool)stristr( $_VERSION->PRODUCT, 'Joomla' );
+}
+function vmIsHttpsMode() {
+	return ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on');
 }
 ?>
