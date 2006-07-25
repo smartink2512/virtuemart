@@ -38,7 +38,7 @@ class ps_session {
      *
      */
 	function initSession() {
-		global $vmLogger, $mainframe, $_VERSION;
+		global $vmLogger, $mainframe, $_VERSION, $mosConfig_absolute_path;
 		
 		if( !defined('_VM_SESSIONSTART') ) {
 			// Some servers start the session before we can, so close those and start again		
@@ -47,6 +47,12 @@ class ps_session {
 				unset( $_SESSION );
 				
 			}
+		
+			if( !is_writable( session_save_path()) ) {
+				$vmLogger->debug( 'The Session Save Path '.session_save_path().' is not writable. Please correct this! The shop is temporarily trying to use the global cache path instead.');
+				session_save_path( $mosConfig_absolute_path. '/cache' );
+			}
+		
 			if( empty( $_SESSION ) ) {
 				// Session not yet started!			
 				session_name( $this->_session_name );

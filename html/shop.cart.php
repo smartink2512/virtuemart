@@ -51,28 +51,24 @@ if ($cart["idx"]) {
         
         if( $continue_link != '') {
  ?>
-     <h3><a href="<?php echo $continue_link ?>">
-     <img src="<?php echo IMAGEURL ?>ps_image/back.png" align="middle" width="32" height="32" alt="Back" border="0" />
-      <?php echo $VM_LANG->_PHPSHOP_CONTINUE_SHOPPING; ?>
-     </a></h3>
+     <a href="<?php echo $continue_link ?>" class="continue_link">
+     	<?php echo $VM_LANG->_PHPSHOP_CONTINUE_SHOPPING; ?>
+     </a>
  <?php
         }
         echo '</div>';
         
    if (!defined('_MIN_POV_REACHED')) { ?>
-       <div style="text-align:center;width:40%;float:left;">
-       <br /><br />
+
            <span style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV2 . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></span>
-       </div><?php
+       <?php
    }
    else {
- ?><br />
- <div style="text-align:center;width:40%;float:left;">
-     <h3><a href="<?php $sess->purl( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1"); ?>">
-     <img src="<?php echo IMAGEURL ?>ps_image/forward.png" align="middle" width="32" height="32" alt="Forward" border="0" />
-      <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ?>
-     </a></h3>
- </div>
+ ?>
+     <a href="<?php $sess->purl( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1"); ?>" class="checkout_link">
+           <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ?>
+     </a>
+
  
  <?php
  }

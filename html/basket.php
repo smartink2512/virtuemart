@@ -96,7 +96,7 @@ else {
 		$tax = $my_taxrate * 100;
 
 		$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-		$price["product_price"] = convertECB( $price["product_price"], $price["product_currency"] );
+		$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
 		
 		if( $auth["show_price_including_tax"] == 1 ) {
 			$product_price = $price["product_price"] * ($my_taxrate+1);
@@ -170,7 +170,7 @@ else {
 	if( !empty($shipping_rate_id) && (CHECKOUT_STYLE =='1' || CHECKOUT_STYLE=='3')) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
-		$shipping_total = round( convertECB($ps_checkout->_SHIPPING->get_rate ( $vars )), 2 );
+		$shipping_total = round( $GLOBALS['CURRENCY']->convert($ps_checkout->_SHIPPING->get_rate ( $vars )), 2 );
 		$shipping_taxrate = $ps_checkout->_SHIPPING->get_tax_rate();
 
 		// When the Shipping rate is shown including Tax
@@ -238,7 +238,7 @@ else {
 
 	/* check if the minimum purchase order value has already been reached */
 	if (round($_SESSION['minimum_pov'], 2) > 0.00) {
-		if ($total_undiscounted >= convertECB( $_SESSION['minimum_pov'] )) {
+		if ($total_undiscounted >= $GLOBALS['CURRENCY']->convert( $_SESSION['minimum_pov'] )) {
 			// OKAY!
 			define ('_MIN_POV_REACHED', '1');
 		}
@@ -249,10 +249,10 @@ else {
 	$order_total_display = $CURRENCY_DISPLAY->getFullValue($order_total);
 	if( $show_basket ) {
 		if( $auth["show_price_including_tax"] == 1) {
-			include (PAGEPATH."templates/basket/basket_b2c.html.php");
+			include (VM_THEMEPATH."templates/basket/basket_b2c.html.php");
 		}
 		else {
-			include (PAGEPATH."templates/basket/basket_b2b.html.php");
+			include (VM_THEMEPATH."templates/basket/basket_b2b.html.php");
 		}
 	}
 	/* Input Field for the Coupon Code */

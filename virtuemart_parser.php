@@ -60,11 +60,24 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	require_once( CLASSPATH."language.class.php" );
 
 	// load the Language File
-	if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' ))
+	if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' )) {
 		require_once( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' );
-	else
+	}
+	else {
 		require_once( ADMINPATH. 'languages/english.php' );
-
+	}
+	if (file_exists( CLASSPATH.'currency/'.VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
+		$module_filename = VM_CURRENCY_CONVERTER_MODULE;
+		require_once(CLASSPATH.'currency/'.VM_CURRENCY_CONVERTER_MODULE.'.php');
+		if( class_exists( $module_filename )) {
+			$GLOBALS['CURRENCY'] = $CURRENCY = new $module_filename();
+		}
+	}
+	else {
+		require_once(CLASSPATH.'currency/convertECB.php');
+		$GLOBALS['CURRENCY'] = $CURRENCY = new convertECB();
+	}
+	
 	/** @global vmLanguage $VM_LANG */
 	$GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
 
@@ -89,7 +102,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	require_once(CLASSPATH."ps_perm.php");
 	require_once(CLASSPATH."ps_shopper_group.php");
 	require_once(CLASSPATH."vmAbstractObject.class.php");
-	require_once(CLASSPATH.'currency_convert.php');
 	require_once(CLASSPATH."htmlTools.class.php");
 	require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
 	require_once(CLASSPATH."Log/Log.php");
@@ -157,7 +169,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$currency_display["symbol"] = $GLOBALS['product_currency'];
 	}
 	/** load Currency Display Class **/
-	require_once( CLASSPATH.'class_currency_display.php' );
+	require_once( CLASSPATH.'currency/class_currency_display.php' );
 	/** @global CurrencyDisplay $CURRENCY_DISPLAY */
 	$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
 

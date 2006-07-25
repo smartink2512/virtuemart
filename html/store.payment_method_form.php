@@ -26,6 +26,7 @@ $payment_method_id = mosgetparam($_REQUEST, 'payment_method_id', "");
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $vars['payment_enabled'] = "Y";
+$default['payment_class'] = 'ps_payment';
 
 if (!empty($payment_method_id)) {
     $q = "SELECT * FROM #__{vm}_payment_method WHERE vendor_id='$ps_vendor_id' AND ";
@@ -78,8 +79,9 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
           ?>
       </td>
       <td width="69%">
-      	<input type="text" class="inputbox" name="payment_class" value="<?php $db->sp("payment_class") ?>" />
-      	<?php echo mm_ToolTip( $VM_LANG->_VM_PAYMENT_CLASS_NAME_TIP ); ?>
+      	<?php 
+      	echo ps_payment_method::list_available_classes( '', $db->sf("payment_class") );
+      	echo mm_ToolTip( $VM_LANG->_VM_PAYMENT_CLASS_NAME_TIP ); ?>
       </td>
     </tr>
     <tr class="row0"> 

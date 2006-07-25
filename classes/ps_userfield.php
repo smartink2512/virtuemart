@@ -200,7 +200,7 @@ class ps_userfield extends vmAbstractObject {
 			$d['fieldid'] = array( $d['fieldid']);
 		}
 		if ( count( @$d['fieldid'] ) < 1) {
-			echo "<script type=\"text/javascript\"> alert('Select an item to delete'); window.history.go(-1);</script>\n";
+			echo "<script type=\"text/javascript\">alert('Select an item to delete'); window.history.go(-1);</script>\n";
 			exit;
 		}
 
@@ -274,10 +274,14 @@ class ps_userfield extends vmAbstractObject {
 		<form action="<?php echo $mm_action_url ?>index.php" method="post" name="adminForm">
 			
 		<div style="width:90%;">
-			<div style="padding:5px;text-align:center;"><strong>(* = <?php echo _CMN_REQUIRED ?>)</strong></div>
+			
 		   <?php
-	   $delimiter = 0;
-	   foreach( $rowFields as $field) {
+		if( !empty( $required_fields ))  {
+			echo '<div style="padding:5px;text-align:center;"><strong>(* = '._CMN_REQUIRED.')</strong></div>';
+		  	 
+		}
+		$delimiter = 0;
+	   	foreach( $rowFields as $field) {
 	   		$default[$field->name] = $field->default;
 	   		
 	   		if( in_array( $field->name, $skipFields )) {
@@ -483,17 +487,26 @@ class ps_userfield extends vmAbstractObject {
 		$db = new ps_DB();
 		
 		$q = "SELECT f.* FROM `#__{vm}_userfield` f"
-			. "\n WHERE f.published=1 AND f.`$section`=1 AND f.type != 'delimiter' ";
+			. "\n WHERE f.published=1";
+		if( $section != 'bank') {
+			$q .= "\n AND f.`$section`=1";
+		}
+		else {
+			$q .= "\n AND f.name LIKE '%bank%'";
+		}
+		if( $exclude_delimiters ) {
+			$q .= "\n AND f.type != 'delimiter' ";
+			}
 		if( $required_only ) {
-			$q .= " AND f.required=1";
+			$q .= "\n AND f.required=1";
 		}
 		if( $sys !== '') {
-			if( $sys == '1') { $q .= " AND f.sys=1"; }
-			elseif( $sys == '0') { $q .= " AND f.sys=0"; }
+			if( $sys == '1') { $q .= "\n AND f.sys=1"; }
+			elseif( $sys == '0') { $q .= "\n AND f.sys=0"; }
 		}
-		$q .= " OR ( FIND_IN_SET( f.name, '".implode(',', ps_userfield::getSkipFields())."') = 0 AND f.published=1 ";
+		/*$q .= " OR ( FIND_IN_SET( f.name, '".implode(',', ps_userfield::getSkipFields())."') = 0 AND f.published=1 ";
 		$q .= $exclude_delimiters ? "AND f.type != 'delimiter' " : '';
-		$q .= $required_only ? 'AND f.required=1)' : ')';
+		$q .= $required_only ? 'AND f.required=1)' : ')';*/
 		$q .= "\n ORDER BY f.ordering";
 		
 		$db->setQuery( $q );

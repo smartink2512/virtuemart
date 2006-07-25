@@ -36,7 +36,7 @@ if ($perm->is_registered_customer($auth['user_id'])) {
       <td>
       <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.billing") ?>">
           <?php 
-          echo "<img src=\"".IMAGEURL."ps_image/identity.png\" align=\"middle\" height=\"48\" width=\"48\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\" />&nbsp;";
+          echo "<img src=\"".VM_THEMEURL."images/identity.png\" align=\"middle\" height=\"48\" width=\"48\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\" />&nbsp;";
           echo $VM_LANG->_PHPSHOP_ACC_ACCOUNT_INFO ?></a></strong>
           <br /><?php echo $VM_LANG->_PHPSHOP_ACC_UPD_BILL ?>
       </td>
@@ -49,7 +49,7 @@ if ($perm->is_registered_customer($auth['user_id'])) {
 		<tr>
 		  <td><hr />
 		  <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipping") ?>"><?php
-                  echo "<img src=\"".IMAGEURL."ps_image/web.png\" align=\"middle\" border=\"0\" height=\"32\" width=\"32\" alt=\"".$VM_LANG->_PHPSHOP_ACC_SHIP_INFO."\" />&nbsp;&nbsp;&nbsp;";
+                  echo "<img src=\"".VM_THEMEURL."images/web.png\" align=\"middle\" border=\"0\" height=\"32\" width=\"32\" alt=\"".$VM_LANG->_PHPSHOP_ACC_SHIP_INFO."\" />&nbsp;&nbsp;&nbsp;";
                   echo $VM_LANG->_PHPSHOP_ACC_SHIP_INFO ?></a></strong>
                         <br />
                         <?php echo $VM_LANG->_PHPSHOP_ACC_UPD_SHIP ?>
@@ -64,7 +64,7 @@ if ($perm->is_registered_customer($auth['user_id'])) {
       <td>
       	<hr />
       	<strong><?php 
-	      echo "<img src=\"".IMAGEURL."ps_image/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
+	      echo "<img src=\"".VM_THEMEURL."images/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
 	      echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?>
 	    </strong>
         <?php $ps_order->list_order("A", "1" ); ?>

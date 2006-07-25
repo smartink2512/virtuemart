@@ -1638,7 +1638,7 @@ class ps_product extends vmAbstractObject {
 
 						// if we have a number, allow the adjustment
 						if (true == is_numeric($my_mod) ) {
-							$my_mod = convertECB( $my_mod, $price['product_currency'], $GLOBALS['product_currency'] );
+							$my_mod = $GLOBALS['CURRENCY']->convert( $my_mod, $price['product_currency'], $GLOBALS['product_currency'] );
 							// Now add or sub the modifier on
 							if ($oper=="+") {
 								$adjustment += $my_mod;
@@ -1795,7 +1795,7 @@ class ps_product extends vmAbstractObject {
 					}
 
 					$value_notax = substr($my_mod,1);
-					$value_notax = convertECB( $value_notax );
+					$value_notax = $GLOBALS['CURRENCY']->convert( $value_notax );
 					if( abs($value_notax) >0 ) {
 						$value_taxed = $value_notax * ($my_taxrate+1);
 
@@ -1884,7 +1884,7 @@ class ps_product extends vmAbstractObject {
 			// Get the DISCOUNT AMOUNT
 			$discount_info = $this->get_discount( $product_id );
 			if( !$discount_info["is_percent"] && $discount_info["amount"] != 0 ) {
-				$discount_info["amount"] = convertECB($discount_info["amount"]);
+				$discount_info["amount"] = $GLOBALS['CURRENCY']->convert($discount_info["amount"]);
 			}
 			// Get the Price according to the quantity in the Cart
 			$price_info = $this->get_price( $product_id );
@@ -1897,10 +1897,10 @@ class ps_product extends vmAbstractObject {
 			$undiscounted_price = 0;
 			if (isset($price_info["product_price_id"])) {
 				if( $base_price_info["product_price"]== $price_info["product_price"] ) {
-					$price = $base_price = convertECB( $base_price_info["product_price"], $price_info['product_currency'] );
+					$price = $base_price = $GLOBALS['CURRENCY']->convert( $base_price_info["product_price"], $price_info['product_currency'] );
 				} else {
-					$base_price = convertECB( $base_price_info["product_price"], $price_info['product_currency'] );
-					$price = convertECB( $price_info["product_price"], $price_info['product_currency'] );	
+					$base_price = $GLOBALS['CURRENCY']->convert( $base_price_info["product_price"], $price_info['product_currency'] );
+					$price = $GLOBALS['CURRENCY']->convert( $price_info["product_price"], $price_info['product_currency'] );	
 				}
 
 				if ($auth["show_price_including_tax"] == 1) {
@@ -1969,7 +1969,7 @@ class ps_product extends vmAbstractObject {
 					  <tbody>";
 					$i = 1;
 					while( $db->next_record() ) {
-						$price = convertECB( $db->f("product_price"), $db->f("product_currency") );
+						$price = $GLOBALS['CURRENCY']->convert( $db->f("product_price"), $db->f("product_currency") );
 						$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>";
 						$prices_table .= "<td>";
 						if (!empty($my_taxrate)) {
@@ -2288,7 +2288,7 @@ class ps_product extends vmAbstractObject {
 				if (stristr($pav, "gif") || stristr($pav, "jpg") || stristr($pav, "png")) {
 					// we think it's a pic then...
 					$html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_DELIVERY_TIME.": </span><br /><br />";
-					$html .= "<img align=\"middle\" src=\"".IMAGEURL."availability/".$pav."\" border=\"0\" alt=\"$pav\" />";
+					$html .= "<img align=\"middle\" src=\"".VM_THEMEURL."images/availability/".$pav."\" border=\"0\" alt=\"$pav\" />";
 				}
 				else {
 					$html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_DELIVERY_TIME.": </span>";

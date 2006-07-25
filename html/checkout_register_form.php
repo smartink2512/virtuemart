@@ -30,7 +30,7 @@ if ($mosConfig_allowUserRegistration == "0") {
 	mosNotAuth();
 	return;
 }
-$fields = ps_userfield::getUserFields();
+$fields = ps_userfield::getUserFields('registration', false, '', false );
 if ( VM_SILENT_REGISTRATION == '1' && $page == 'checkout.index' ) {
 	// A listing of fields that are NOT shown
 	$skip_fields = array( 'username', 'password', 'password2' );

@@ -104,7 +104,7 @@ class ps_checkout {
 		// CSS style for the <td> tag of the cell which is actually highlighted
 		$highlighted_style = 'style="font-weight: bold;"';
 		echo '
-		<table style="background: url('. IMAGEURL .'ps_image/checkout'. $step_count.'_'.$highlighted_step .'.png) right; background-repeat: no-repeat; height:85px;text-align:center;" border="0" cellspacing="0" cellpadding="0">
+		<table style="background: url( '. VM_THEMEURL .'images/checkout/checkout'. $step_count.'_'.$highlighted_step .'.png ) right; background-repeat: no-repeat; height:85px;text-align:center;" border="0" cellspacing="0" cellpadding="0">
           <tr>';
 
 
@@ -112,7 +112,7 @@ class ps_checkout {
 
 			echo '<td '.(($highlighted_step==$i) ? $highlighted_style : '') .' width="119" align="center" valign="bottom">';
 			if ($highlighted_step > $i) {
-				echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&option=com_virtuemart&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".@$shipping_rate_id."&checkout_next_step=".$steps_to_do[$i-1]) .'">';
+				echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&amp;option=com_virtuemart&amp;ship_to_info_id=$ship_to_info_id&amp;shipping_rate_id=".@$shipping_rate_id."&amp;checkout_next_step=".$steps_to_do[$i-1]) .'">';
 				echo $step_msg[$i-1] .'</a>';
 			}
 			else {
@@ -298,12 +298,13 @@ class ps_checkout {
 
 		// Now Check if all needed Payment Information are entered
 		// Bank Information is found in the User_Info
-		$w  = "SELECT enable_processor FROM #__{vm}_payment_method WHERE ";
+		$w  = "SELECT `enable_processor` FROM `#__{vm}_payment_method` WHERE ";
 		$w .= "payment_method_id = '" .  $d["payment_method_id"] . "' ";
 		$dbp->query($w);
 		$dbp->next_record();
-		if (($dbp->f("enable_processor") == "Y") ||
-		($dbp->f("enable_processor") == "")) {
+		
+		if (($dbp->f("enable_processor") == "Y") 
+			|| ($dbp->f("enable_processor") == "")) {
 
 			/*** Creditcard ***/
 			if (empty( $_SESSION['ccdata']['creditcard_code']) ) {
@@ -907,7 +908,7 @@ Order Total: '.$order_total.'
 			$dboi->next_record();
 
 			$product_price_arr = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-			$product_price = convertECB( $product_price_arr["product_price"], $product_price_arr["product_currency"] );
+			$product_price = $GLOBALS['CURRENCY']->convert( $product_price_arr["product_price"], $product_price_arr["product_currency"] );
 
 			if( empty( $_SESSION['product_sess'][$cart[$i]["product_id"]]['tax_rate'] )) {
 				$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
@@ -1161,7 +1162,7 @@ Order Total: '.$order_total.'
 		for($i = 0; $i < $cart["idx"]; $i++) {
 			$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
 			$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-			$product_price = $product_price_tmp = convertECB( $price["product_price"], $price["product_currency"] );
+			$product_price = $product_price_tmp = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
 			
 			if( $auth["show_price_including_tax"] == 1 ) {
 				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
@@ -1214,7 +1215,7 @@ Order Total: '.$order_total.'
 
 		for($i = 0; $i < $cart["idx"]; $i++) {
 			$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-			$product_price = convertECB( $price["product_price"], $price['product_currency'] );
+			$product_price = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price['product_currency'] );
 			$item_weight = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
 
 			if ($item_weight != 0 or TAX_VIRTUAL=='1') {
@@ -1318,7 +1319,7 @@ Order Total: '.$order_total.'
 
 					if ($item_weight !=0 or TAX_VIRTUAL) {
 						$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-						$price['product_price'] = convertECB( $price['product_price'], $price['product_currency']);
+						$price['product_price'] = $GLOBALS['CURRENCY']->convert( $price['product_price'], $price['product_currency']);
 						$tax_rate = $ps_product->get_product_taxrate($cart[$i]["product_id"]);
 						
 						if( (!empty( $_SESSION['coupon_discount'] ) || !empty( $d['payment_discount'] ))
@@ -1480,7 +1481,7 @@ Order Total: '.$order_total.'
 		if( !$is_percent ) {
 			// Standard method: absolute amount
 			if (!empty($discount)) {
-				return(floatval( convertECB($discount)));
+				return(floatval( $GLOBALS['CURRENCY']->convert($discount)));
 			}
 			else {
 				return(0);
@@ -1958,14 +1959,14 @@ Order Total: '.$order_total.'
 			}
 
 			// open the HTML file and read it into $html
-			if (file_exists(PAGEPATH."templates/order_emails/email_".$mosConfig_lang.".html")) {
-				$html_file = fopen(PAGEPATH."templates/order_emails/email_".$mosConfig_lang.".html","r");
+			if (file_exists(VM_THEMEPATH."templates/order_emails/email_".$mosConfig_lang.".html")) {
+				$html_file = fopen(VM_THEMEPATH."templates/order_emails/email_".$mosConfig_lang.".html","r");
 			}
-			elseif(file_exists(ADMINPATH."email_".$mosConfig_lang.".html")) {
-				$html_file = fopen(ADMINPATH."email_".$mosConfig_lang.".html","r");
+			elseif(file_exists(VM_THEMEPATH."email_".$mosConfig_lang.".html")) {
+				$html_file = fopen(VM_THEMEPATH."email_".$mosConfig_lang.".html","r");
 			}
 			else {
-				$html_file = fopen(PAGEPATH."templates/order_emails/email_english.html","r");
+				$html_file = fopen(VM_THEMEPATH."templates/order_emails/email_english.html","r");
 			}
 
 			$html = "";
@@ -2131,11 +2132,11 @@ Order Total: '.$order_total.'
 		// Begin with Shipping Address
 		if(CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='2') {
 
-			$db->query("SELECT * FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
+			$db->query("SELECT `first_name`,`last_name`,`address_1`,`zip`,`city` FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
 			$db->next_record();
 
 			echo "<strong>".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 . ":</strong>&nbsp;";
-			echo $db->f("first_name")." ".$db->f("last_name").", ".$db->f("address_1").", ".$db->f("zip")." ".$db->F("city");
+			echo $db->f("first_name")." ".$db->f("last_name").", ".$db->f("address_1").", ".$db->f("zip")." ".$db->f("city");
 			echo "<br /><br />";
 		}
 

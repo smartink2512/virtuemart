@@ -75,6 +75,7 @@ if (!empty($category_id) ) {
     * CATEGORY DESCRIPTION
     */
 	$desc =  $ps_product_category->get_description($category_id);
+	$desc = vmParseContentByPlugins( $desc );
 	/* Prepend Product Short Description Meta Tag "description" when applicable */
 	if( @$_REQUEST['output'] != "pdf") {
 		$mainframe->prependMetaTag( "description", substr(strip_tags($desc ), 0, 255) );
@@ -131,7 +132,7 @@ else {
 	if (!empty($product_type_id) && @$_REQUEST['output'] != "pdf") {
     ?>
     <div align="right">
-    <form action="<?php echo $mm_action_url."index.php?option=com_virtuemart&page=shop.parameter_search_form&product_type_id=$product_type_id&Itemid=" . $_REQUEST['Itemid'] ?>" method="post" name="back">
+    <form action="<?php echo $mm_action_url."index.php?option=com_virtuemart&amp;page=shop.parameter_search_form&amp;product_type_id=$product_type_id&amp;Itemid=" . $_REQUEST['Itemid'] ?>" method="post" name="back">
         <?php 
         echo $ps_product_type->get_parameter_form($product_type_id);
         ?>	  
@@ -148,16 +149,16 @@ else {
 			require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
 			$pagenav = new mosPageNav( $num_rows, $limitstart, $limit);
 
-			$search_string = $mm_action_url."index.php?option=com_virtuemart&page=$modulename.browse&category_id=$category_id&keyword=".urlencode( $keyword )."&manufacturer_id=$manufacturer_id&Itemid=$Itemid";
-			$search_string .= !empty($orderby) ? "&orderby=".urlencode($orderby) : "";
+			$search_string = $mm_action_url."index.php?option=com_virtuemart&amp;page=$modulename.browse&amp;category_id=$category_id&amp;keyword=".urlencode( $keyword )."&amp;manufacturer_id=$manufacturer_id&amp;Itemid=$Itemid";
+			$search_string .= !empty($orderby) ? "&amp;orderby=".urlencode($orderby) : "";
 
 			if (!empty($keyword1)) {
-				$search_string.="&keyword1=".urlencode($keyword1);
-				$search_string.="&search_category=$search_category";
-				$search_string.="&search_limiter=$search_limiter";
+				$search_string.="&amp;keyword1=".urlencode($keyword1);
+				$search_string.="&amp;search_category=$search_category";
+				$search_string.="&amp;search_limiter=$search_limiter";
 				if (!empty($keyword2)) {
-					$search_string.="&keyword2=".urlencode($keyword2);
-					$search_string.="&search_op=$search_op";
+					$search_string.="&amp;keyword2=".urlencode($keyword2);
+					$search_string.="&amp;search_op=$search_op";
 				}
 			}
 		}
@@ -276,8 +277,7 @@ else {
 		$templatefile = "browse_lite_pdf";
 	}
 
-	$template = read_file( PAGEPATH."templates/browse/$templatefile.php",
-	PAGEPATH."templates/browse/".CATEGORY_TEMPLATE.".php");
+	$template = read_file( VM_THEMEPATH."templates/browse/$templatefile.php", VM_THEMEPATH."templates/browse/".CATEGORY_TEMPLATE.".php");
 	$db_browse->reset();
 
 	/*** Start printing out all products (in that category) ***/
@@ -298,7 +298,7 @@ else {
                         $flypage = FLYPAGE;
                 }
                 
-                $url = $sess->url( $mm_action_url."index.php?page=shop.product_details&flypage=$flypage&product_id=" . $db_browse->f("product_id") . "&category_id=" . $db_browse->f("category_id"). "&manufacturer_id=" . $manufacturer_id);
+                $url = $sess->url( $mm_action_url."index.php?page=shop.product_details&amp;flypage=$flypage&amp;product_id=" . $db_browse->f("product_id") . "&amp;category_id=" . $db_browse->f("category_id"). "&amp;manufacturer_id=" . $manufacturer_id);
 
                 if( $db_browse->f("product_thumb_image") ) {
                         $product_thumb_image = $db_browse->f("product_thumb_image");
@@ -314,7 +314,7 @@ else {
 		if( $product_thumb_image ) {
 			if( substr( $product_thumb_image, 0, 4) != "http" ) {
 				if(PSHOP_IMG_RESIZE_ENABLE == '1') {
-					$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&newxsize=".PSHOP_IMG_WIDTH."&newysize=".PSHOP_IMG_HEIGHT."&fileout=";
+					$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 				}
 				else {
 					if( file_exists( IMAGEPATH."product/".$product_thumb_image )) {
@@ -388,7 +388,7 @@ else {
 			$form_addtocart = "<form action=\"". $mm_action_url ."index.php\" method=\"post\" name=\"addtocart\" id=\"addtocart".$i."\">\n
                 <label for=\"quantity_".$i."\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":</label>\n
                 <input id=\"quantity_".$i."\" class=\"inputbox\" type=\"text\" size=\"3\" name=\"quantity\" value=\"1\" />
-                <input type=\"submit\" style=\"text-align:center;background-position:bottom left;width:160px;height:35px;cursor:pointer;border:none;font-weight:bold;font-family:inherit;background: url('". IMAGEURL ."ps_image/".PSHOP_ADD_TO_CART_STYLE ."') no-repeat left center transparent;vertical-align: middle;overflow:hidden;\" value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO ."\" title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" />
+                <input type=\"submit\" class=\"addtocart_button\" value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO ."\" title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" />
                 <input type=\"hidden\" name=\"category_id\" value=\"". @$_REQUEST['category_id'] ."\" />\n
                 <input type=\"hidden\" name=\"product_id\" value=\"". $db_browse->f("product_id") ."\" />\n
                 <input type=\"hidden\" name=\"page\" value=\"shop.cart\" />\n

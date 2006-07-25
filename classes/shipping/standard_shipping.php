@@ -88,7 +88,7 @@ class standard_shipping {
 					$taxrate = $this->get_tax_rate( $dbr->f("shipping_rate_id") ) + 1;
 				}
 				$total_shipping_handling = $dbr->f("shipping_rate_value") + $dbr->f("shipping_rate_package_fee");
-				$total_shipping_handling = convertECB( $total_shipping_handling );
+				$total_shipping_handling = $GLOBALS['CURRENCY']->convert( $total_shipping_handling );
 				$total_shipping_handling *= $taxrate;
 				$show_shipping_handling = $CURRENCY_DISPLAY->getFullValue($total_shipping_handling);
 				

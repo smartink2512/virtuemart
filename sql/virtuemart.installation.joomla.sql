@@ -811,9 +811,12 @@ INSERT INTO `jos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (170, 1, 'userfieldDelete', 'ps_userfield', 'deletefield', '', 'admin'),
 (171, 1, 'changeordering', 'vmAbstractObject.class', 'handleordering', '', 'admin'),
 (172, 2, 'moveProduct', 'ps_product', 'move', 'Move products from one category to another.', 'admin,storeadmin'),
-(173, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin'),
-(174, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin'),
-(175, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
+(173, 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'none'),
+(174, 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none'),
+(175, 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin'),
+(176, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin'),
+(177, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin'),
+(178, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
 
 ## --------------------------------------------------------
 
@@ -1922,13 +1925,13 @@ INSERT INTO `jos_vm_userfield` VALUES (16, 'state', '_PHPSHOP_SHOPPER_FORM_STATE
 INSERT INTO `jos_vm_userfield` VALUES (17, 'phone_1', '_PHPSHOP_SHOPPER_FORM_PHONE', '', 'text', 32, 30, 1, 18, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
 INSERT INTO `jos_vm_userfield` VALUES (18, 'phone_2', '_PHPSHOP_SHOPPER_FORM_PHONE2', '', 'text', 32, 30, 0, 19, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
 INSERT INTO `jos_vm_userfield` VALUES (19, 'fax', '_PHPSHOP_SHOPPER_FORM_FAX', '', 'text', 32, 30, 0, 20, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
-INSERT INTO `jos_vm_userfield` VALUES (20, 'delimiter_bankaccount', '_PHPSHOP_ACCOUNT_BANK_TITLE', '', 'delimiter', 25, 30, 0, 21, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 0, 1, NULL);
-INSERT INTO `jos_vm_userfield` VALUES (21, 'bank_account_holder', '_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER', '', 'text', 48, 30, 0, 22, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
-INSERT INTO `jos_vm_userfield` VALUES (22, 'bank_account_nr', '_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR', '', 'text', 32, 30, 0, 23, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
-INSERT INTO `jos_vm_userfield` VALUES (23, 'bank_sort_code', '_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE', '', 'text', 16, 30, 0, 24, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
-INSERT INTO `jos_vm_userfield` VALUES (24, 'bank_name', '_PHPSHOP_ACCOUNT_LBL_BANK_NAME', '', 'text', 32, 30, 0, 25, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
-INSERT INTO `jos_vm_userfield` VALUES (25, 'bank_account_type', '_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE', '', 'select', 0, 0, 0, 26, 0, 0, '', 0, 1, 1, 1, 1, 0, 1, 1, '');
-INSERT INTO `jos_vm_userfield` VALUES (26, 'bank_iban', '_PHPSHOP_ACCOUNT_LBL_BANK_IBAN', '', 'text', 64, 30, 0, 27, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 1, 1, NULL);
+INSERT INTO `jos_vm_userfield` VALUES (20, 'delimiter_bankaccount', '_PHPSHOP_ACCOUNT_BANK_TITLE', '', 'delimiter', 25, 30, 0, 21, NULL, NULL, NULL, NULL, 1, 0, 1, 0, 0, 0, 1, NULL);
+INSERT INTO `jos_vm_userfield` VALUES (21, 'bank_account_holder', '_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER', '', 'text', 48, 30, 0, 22, NULL, NULL, NULL, NULL, 1, 0, 1, 0, 0, 1, 1, NULL);
+INSERT INTO `jos_vm_userfield` VALUES (22, 'bank_account_nr', '_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR', '', 'text', 32, 30, 0, 23, NULL, NULL, NULL, NULL, 1, 0, 1, 0, 0, 1, 1, NULL);
+INSERT INTO `jos_vm_userfield` VALUES (23, 'bank_sort_code', '_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE', '', 'text', 16, 30, 0, 24, NULL, NULL, NULL, NULL, 1, 0, 1, 0, 0, 1, 1, NULL);
+INSERT INTO `jos_vm_userfield` VALUES (24, 'bank_name', '_PHPSHOP_ACCOUNT_LBL_BANK_NAME', '', 'text', 32, 30, 0, 25, NULL, NULL, NULL, NULL, 1, 0, 1, 0, 0, 1, 1, NULL);
+INSERT INTO `jos_vm_userfield` VALUES (25, 'bank_account_type', '_PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE', '', 'select', 0, 0, 0, 26, 0, 0, '', 0, 1, 0, 1, 1, 0, 1, 1, '');
+INSERT INTO `jos_vm_userfield` VALUES (26, 'bank_iban', '_PHPSHOP_ACCOUNT_LBL_BANK_IBAN', '', 'text', 64, 30, 0, 27, NULL, NULL, NULL, NULL, 1, 0, 1, 0, 0, 1, 1, NULL);
 INSERT INTO `jos_vm_userfield` VALUES (27, 'delimiter_sendregistration', '_BUTTON_SEND_REG', '', 'delimiter', 25, 30, 0, 28, NULL, NULL, NULL, NULL, 1, 1, 0, 0, 0, 0, 1, NULL);
 INSERT INTO `jos_vm_userfield` VALUES (28, 'agreed', '_PHPSHOP_I_AGREE_TO_TOS', '', 'checkbox', NULL, NULL, 1, 29, NULL, NULL, NULL, NULL, 1, 1, 0, 0, 0, 1, 1, NULL);
 INSERT INTO `jos_vm_userfield` VALUES (29, 'delimiter_userinfo', '_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL', '', 'delimiter', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 0, 0, 1, NULL);

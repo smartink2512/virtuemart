@@ -93,15 +93,17 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
       <td colspan="2"><br /></td>
     </tr>
     <tr>
-      <td><div align="right">Category Browse Page: </div></td>
-      <td valign="top">
-      <input type="text" class="inputbox" name="category_browsepage" value="<?php $db->sp("category_browsepage"); ?>" />
-      </td>
-    </tr>
-    <tr>
       <td ><div align="right">Show x products per row: </div></td>
       <td valign="top">
       <input type="text" class="inputbox" size="3" name="products_per_row" value="<?php $db->sp("products_per_row"); ?>" />
+      </td>
+    </tr>
+    <tr>
+      <td><div align="right">Category Browse Page: </div></td>
+      <td valign="top">
+      <?php
+      echo vmCommonHTML::list_template_files( "category_browsepage", 'browse', $db->sf("category_browsepage") );
+      ?>
       </td>
     </tr>
     <tr>
@@ -109,10 +111,12 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
     </tr>
      <tr>
       <td ><div align="right">
-        <?php echo $VM_LANG->_PHPSHOP_CATEGORY_FORM_FLYPAGE ." ". $VM_LANG->_PHPSHOP_LEAVE_BLANK ?>:</div>
+        <?php echo $VM_LANG->_PHPSHOP_CATEGORY_FORM_FLYPAGE ?>:</div>
       </td>
       <td valign="top">
-      <input type="text" class="inputbox" name="category_flypage" value="<?php $db->sp("category_flypage"); ?>" />
+          <?php
+	      echo vmCommonHTML::list_template_files( "category_flypage", 'product_details', str_replace('shop.', '', $db->sf("category_flypage")) );
+	      ?>
       </td>
     </tr>
 </table>

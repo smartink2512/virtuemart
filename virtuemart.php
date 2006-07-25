@@ -36,7 +36,7 @@ $search_category= intval( mosGetParam( $_REQUEST, 'search_category', null ) );
 $product_type_id = intval( mosgetparam($_REQUEST, 'product_type_id', null) );
 
 if( PSHOP_IS_OFFLINE == "1" ) {
-        echo PSHOP_OFFLINE_MESSAGE;
+    echo PSHOP_OFFLINE_MESSAGE;
 }
 else {
 
@@ -108,7 +108,7 @@ else {
 			'vendor.vendor_form' => 'vendor_terms_of_service');
 			editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
 			?>
-			<link type="text/css" rel="stylesheet" media="screen, projection" href="components/<?php echo $option ?>/css/admin.css" />
+			<link type="text/css" rel="stylesheet" media="screen, projection" href="<?php echo VM_THEMEURL ?>admin.css" />
 			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/functions.js"></script>
 			<?php
 		if( $no_menu != "1" ) {
@@ -192,12 +192,12 @@ else {
                         if( is_callable( array("mosMainFrame", "addCustomHeadTag" ) ) && !stristr( $_SERVER['PHP_SELF'], "index2.php") ) {
                                 $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleight.js\"></script>
 <script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleightbg.js\"></script>
-<link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"$mosConfig_live_site/components/$option/css/shop.css\" />" );
+<link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"".VM_THEMEURL."theme.css\" />" );
                         } else {
       ?>
       <script type="text/javascript" src="<?php echo "$mosConfig_live_site/components/$option" ?>/js/sleight.js"></script>
       <script type="text/javascript" src="<?php echo "$mosConfig_live_site/components/$option" ?>/js/sleightbg.js"></script>
-	<link type="text/css" rel="stylesheet" media="screen, projection" href="components/<?php echo $option ?>/css/shop.css" />
+	<link type="text/css" rel="stylesheet" media="screen, projection" href="<?php echo VM_THEMEURL ?>theme.css" />
       <?php
 			}
 

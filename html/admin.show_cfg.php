@@ -140,6 +140,17 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
+				<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CONTENT_PLUGINS_ENABLE ?></label>
+				
+			</td>
+			<td>
+				<input type="checkbox" id="conf_VM_CONTENT_PLUGINS_ENABLE" name="conf_VM_CONTENT_PLUGINS_ENABLE" class="inputbox" <?php if (@VM_CONTENT_PLUGINS_ENABLE == '1') echo "checked='checked'"; ?> value="1" />
+			</td>
+			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CONTENT_PLUGINS_ENABLE_TIP ) ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="labelcell">
 				<label for="conf_PSHOP_COUPONS_ENABLE"><?php echo $VM_LANG->_PHPSHOP_COUPONS_ENABLE ?></label>
 				
 			</td>
@@ -309,18 +320,6 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		
 		<tr>
 			<td class="labelcell">
-				<label for="conf_LEAVE_BANK_DATA"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK ?>
-				</label>
-				
-			</td>
-			<td>
-				<input type="checkbox" name="conf_LEAVE_BANK_DATA" id="conf_LEAVE_BANK_DATA" class="inputbox" <?php if (LEAVE_BANK_DATA == '1') echo "checked=\"checked\""; ?> value="1" />
-			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_CAN_BE_BLANK_EXPLAIN ) ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="labelcell">
 				<label for="conf_CAN_SELECT_STATES"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE ?>
 				</label>
 				
@@ -422,6 +421,29 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 				</div>
 			</td>
 		</tr>
+		<tr>
+			<td class="labelcell">
+				<label for="conf__VM_CURRENCY_CONVERTER_MODULE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CURRENCY_MODULE ?></label>
+				
+			</td>
+			<td>
+				<select id="conf__VM_CURRENCY_CONVERTER_MODULE" name="conf__VM_CURRENCY_CONVERTER_MODULE" class="inputbox">
+					<?php 
+				$files = mosReadDirectory( CLASSPATH."currency/", "convert?.", true, true);
+	            foreach ($files as $file) { 
+	                $file_info = pathinfo($file);
+	                $filename = $file_info['basename'];
+	                $checked = ($filename == _VM_CURRENCY_CONVERTER_MODULE) ? "checked=\"checked\"" : "";
+	                echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>";
+	            }
+	            ?>
+				</select>
+			</td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CURRENCY_MODULE_EXPLAIN ) ?>
+			</td>
+		</tr>
+		<tr>
+		
 		<tr>
 			<td class="labelcell">
 				<label for="conf_AFFILIATE_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE ?></label>
@@ -610,6 +632,15 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 	<legend>Display</legend>
 <table class="adminlist">
     <tr>
+        <td class="labelcell"><label for="conf_THEME"><?php echo $VM_LANG->_VM_SELECT_THEME ?></label></td>
+        <td>
+        <?php 
+        	echo vmCommonHTML::list_themes( 'conf_THEME');
+        ?>
+        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
+    </tr> 
+    <tr>
         <td class="labelcell"><label for="conf_PSHOP_PDF_BUTTON_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON ?></label></td>
         <td>
         <input type="checkbox" id="conf_PSHOP_PDF_BUTTON_ENABLE" name="conf_PSHOP_PDF_BUTTON_ENABLE" class="inputbox" <?php if (PSHOP_PDF_BUTTON_ENABLE == 1) echo "checked=\"checked\""; ?> value="1" />
@@ -634,14 +665,18 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE ?></td>
         <td>
-            <input type="text" name="conf_FLYPAGE" class="inputbox" value="<?php echo FLYPAGE ?>" />
+        	<?php
+        	echo vmCommonHTML::list_template_files( "conf_FLYPAGE", 'product_details', str_replace('shop.', '', FLYPAGE ) );
+        	?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ) ?></td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE ?></td>
         <td>
-            <input type="text" name="conf_CATEGORY_TEMPLATE" class="inputbox" value="<?php echo CATEGORY_TEMPLATE ?>" />
+        <?php
+        echo vmCommonHTML::list_template_files( "conf_CATEGORY_TEMPLATE", 'browse', CATEGORY_TEMPLATE );
+        ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN ) ?>
         </td>

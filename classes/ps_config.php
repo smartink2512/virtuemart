@@ -103,7 +103,6 @@ class ps_config {
 			"PSHOP_ALLOW_REVIEWS" => "conf_PSHOP_ALLOW_REVIEWS",
 			"MUST_AGREE_TO_TOS" =>      "conf_MUST_AGREE_TO_TOS",
 			"PSHOP_AGREE_TO_TOS_ONORDER" =>      "conf_PSHOP_AGREE_TO_TOS_ONORDER",
-			"LEAVE_BANK_DATA" =>      "conf_LEAVE_BANK_DATA",
 			"CAN_SELECT_STATES" =>      "conf_CAN_SELECT_STATES",
 			"SHOW_CHECKOUT_BAR"	=>	"conf_SHOW_CHECKOUT_BAR",
 			"CHECKOUT_STYLE"	=>	"conf_CHECKOUT_STYLE",
@@ -121,6 +120,10 @@ class ps_config {
 			"PSHOP_SHOW_PRODUCTS_IN_CATEGORY" => "conf_PSHOP_SHOW_PRODUCTS_IN_CATEGORY",
 			"PSHOP_SHOW_TOP_PAGENAV"            =>      "conf_PSHOP_SHOW_TOP_PAGENAV",
 			"PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS"          =>      "conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS",
+			"VM_CURRENCY_CONVERTER_MODULE" => "conf__VM_CURRENCY_CONVERTER_MODULE",
+			"VM_CONTENT_PLUGINS_ENABLE" => "conf_VM_CONTENT_PLUGINS_ENABLE",
+			
+			
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
 			"VM_MODULES_FORCE_HTTPS"          =>      "conf_VM_MODULES_FORCE_HTTPS",
 			"PSHOP_SHIPPING_MODULE"     =>      "conf_SHIPPING"
@@ -167,6 +170,9 @@ if ( @\$_SERVER['HTTPS'] == 'on' ) {
 } else {
 	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
 }
+define( 'VM_THEMEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/themes/".$d['conf_THEME']."/' );
+define( 'VM_THEMEURL', 'components/com_virtuemart/themes/".$d['conf_THEME']."/' );
+
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_virtuemart/' );
 define( 'CLASSPATH', ADMINPATH.'classes/' );

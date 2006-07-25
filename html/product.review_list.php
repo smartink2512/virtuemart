@@ -81,7 +81,7 @@ while ($db->next_record()) {
 	}
 	$listObj->addCell( $text );
 	$listObj->addCell( substr($db->f("comment"), 0 , 500) );
-	$listObj->addCell( '<img src="'. IMAGEURL.'stars/'.$db->f("user_rating").'.gif" border="0" alt="stars" />' );
+	$listObj->addCell( '<img src="'. VM_THEMEURL.'images/stars/'.$db->f("user_rating").'.gif" border="0" alt="stars" />' );
 	
 	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.review_list&product_id=$product_id&review_id=".$db->f('review_id')."&func=changePublishState" );
 	if ($db->f("published")=='N') {

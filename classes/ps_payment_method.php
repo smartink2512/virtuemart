@@ -421,9 +421,10 @@ class ps_payment_method extends vmAbstractObject {
 
 		$q .= "ORDER BY list_order";
 		$db->query($q);
-
+		$has_result = false;
 		// Start radio list
 		while ($db->next_record()) {
+			$has_result = true;
 			echo "<input type=\"radio\" name=\"payment_method_id\" id=\"".$db->f("payment_method_name")."\" value=\"".$db->f("payment_method_id")."\" ";
 			if( $selector == "' OR enable_processor='Y" ) {
 				echo "onchange=\"javascript: changeCreditCardList();\" ";
@@ -449,6 +450,7 @@ class ps_payment_method extends vmAbstractObject {
 				echo("<br />");
 			}
 		}
+		return $has_result;
 	}
 
 	/**************************************************************************
@@ -485,7 +487,12 @@ class ps_payment_method extends vmAbstractObject {
 	** returns:
 	***************************************************************************/
 	function list_bank($payment_method_id, $horiz) {
-		$this->list_payment_radio("B",$payment_method_id, $horiz); //A bit easier :-)
+		$has_bank_methods = $this->list_payment_radio("B", $payment_method_id, $horiz); //A bit easier :-)
+		if( $has_bank_methods ) {
+			echo '<br />';
+			require_once( CLASSPATH . 'ps_userfield.php');
+			ps_userfield::listUserFields( ps_userfield::getUserfields( 'bank' ) );
+		}
 	}
 
 	/**************************************************************************
@@ -845,6 +852,18 @@ class ps_payment_method extends vmAbstractObject {
 		}
 		return $nstr;
 	}
-
+	
+	function list_available_classes( $name, $preselected='ps_payment' ) {
+		
+		$files = mosReadDirectory( CLASSPATH."payment/", ".php", true, true);
+		$array = array();
+        foreach ($files as $file) { 
+            $file_info = pathinfo($file);
+            $filename = $file_info['basename'];
+            if( stristr($filename, '.cfg')) { continue; }
+            $array[basename($filename, '.php' )] = basename($filename, '.php' );
+        }
+        return ps_html::selectList( $name, $preselected, $array );
+	}
 }
 ?>

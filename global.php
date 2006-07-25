@@ -35,6 +35,7 @@ if( $my->id ) {
 		$default_vendor = $db->f( 'vendor_id' );
 	}
 }
+$GLOBALS['converter_array'] = '';
 
 $_SESSION["ps_vendor_id"] = $ps_vendor_id = $default_vendor;
 

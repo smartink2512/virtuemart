@@ -344,7 +344,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
       <br /><br />
         <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo IMAGEURL ?>availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo $mosConfig_live_site ?>/images/stories/noimage.png'}">
           <option value="">Select Image</option><?php
-            $path = IMAGEPATH."availability";
+            $path = VM_THEMEPATH."images/availability";
             $files = mosReadDirectory( "$path", ".", true, true);
             foreach ($files as $file) { 
                 $file_info = pathinfo($file);

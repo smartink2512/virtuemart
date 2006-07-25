@@ -244,12 +244,11 @@ class ups {
 		// UPS returns Charges in USD ONLY.
 		// So we have to convert from USD to Vendor Currency if necessary
 		if( $_SESSION['vendor_currency'] != "USD" ) {
-
-			require_once( CLASSPATH. "currency_convert.php" );
 			$convert = true;
 		}
-		else
-		$convert = false;
+		else {
+			$convert = false;
+		}
 
 		if ( $_SESSION['auth']['show_price_including_tax'] != 1 ) {
 			$taxrate = 1;
@@ -260,7 +259,7 @@ class ups {
 
 		foreach( $shipment as $key => $value ) {
 			if( $convert ) {
-				$tmp = convertECB( $value['TransportationCharges'], "USD", $vendor_currency );
+				$tmp = $GLOBALS['CURRENCY']->convert( $value['TransportationCharges'], "USD", $vendor_currency );
 
 				// tmp is empty when the Vendor Currency could not be converted!!!!
 				if( !empty( $tmp )) {

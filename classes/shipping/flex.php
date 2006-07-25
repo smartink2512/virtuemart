@@ -50,16 +50,16 @@ class flex {
 		}
 
 		//Charge minimum up to this value in cart
-		$base_ship = convertECB( FLEX_BASE_AMOUNT );
+		$base_ship = $GLOBALS['CURRENCY']->convert( FLEX_BASE_AMOUNT );
 
 		//Flat rate shipping charge up to minimum value
-		$flat_charge = convertECB( FLEX_MIN_CHG );
+		$flat_charge = $GLOBALS['CURRENCY']->convert( FLEX_MIN_CHG );
 
 		//Charge this percentage if cart value is greater than base amount
 		$ship_rate_perc = (FLEX_SHIP_PERC / 100);
 
 		//Flat rate handling fee
-		$handling_fee = convertECB( FLEX_HAND_FEE );
+		$handling_fee = $GLOBALS['CURRENCY']->convert( FLEX_HAND_FEE );
 
 
 		if($order_total < $base_ship) {

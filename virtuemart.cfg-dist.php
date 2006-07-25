@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 	
-global $mosConfig_absolute_path,$mosConfig_live_site;
+global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_secret;
 if( stristr( $_SERVER['PHP_SELF'], 'administrator' )) {
 	// Our location: /administrator/index2.php
 	include_once( '../configuration.php' );
@@ -79,7 +79,7 @@ define('DOWNLOADROOT', $mosConfig_absolute_path.'/');
 define('_SHOW_PRICES', '1');
 define('ORDER_MAIL_HTML', '1');
 define('HOMEPAGE', 'shop.index');
-define('FLYPAGE', 'shop.flypage');
+define('FLYPAGE', 'flypage');
 define('CATEGORY_TEMPLATE', 'browse_1');
 define('PRODUCTS_PER_ROW', '1');
 define('ERRORPAGE', 'shop.error');
@@ -98,12 +98,11 @@ define('PAYMENT_DISCOUNT_BEFORE', '');
 define('PSHOP_ALLOW_REVIEWS', '1');
 define('MUST_AGREE_TO_TOS', '1');
 define('PSHOP_AGREE_TO_TOS_ONORDER', '');
-define('LEAVE_BANK_DATA', '');
 define('CAN_SELECT_STATES', '');
 define('SHOW_CHECKOUT_BAR', '1');
 define('CHECKOUT_STYLE', '1');
 define('CHECK_STOCK', '');
-define('ENCODE_KEY', 'VirtueMart_IsCool');
+define('ENCODE_KEY', md5( rand() . $mosConfig_secret ) );
 define('NO_SHIPPING', '');
 define('NO_SHIPTO', '');
 define('AFFILIATE_ENABLE', '');
@@ -116,6 +115,8 @@ define('PSHOP_PDF_BUTTON_ENABLE', '1');
 define('PSHOP_SHOW_PRODUCTS_IN_CATEGORY', '');
 define('PSHOP_SHOW_TOP_PAGENAV', '1');
 define('PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS', '1');
+define('VM_CURRENCY_CONVERTER_MODULE', 'convertECB');
+define('VM_CONTENT_PLUGINS_ENABLE', '');
 
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;

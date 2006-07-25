@@ -876,20 +876,20 @@ class vmCommonHTML extends mosHTML {
                         }';
                 }
                 if( in_array( 'password', $required_fields )) {
-                        if( $page != 'checkout.index') {
+					if( $page == 'checkout.index') {
                         echo '
-                        if (form.password.value.length < 6) {
-                                alert( "'. html_entity_decode( _REGWARN_PASS ).'" );
-				return false;
+                        if (form.password.value.length < 6 ) {
+                                alert( "1'. html_entity_decode( _REGWARN_PASS ).'" );
+								return false;
                         } else if (form.password2.value == "") {
-                                alert( "'.html_entity_decode( _REGWARN_VPASS1).'" );
+                                alert( "2'.html_entity_decode( _REGWARN_VPASS1).'" );
                                 return false;
                         } else if (r.exec(form.password.value)) {
-                                alert( "'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
+                                alert( "3'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
                                 return false;
                         }';
-                }
-                        echo '
+                	}
+                    echo '
                         if ((form.password.value != "") && (form.password.value != form.password2.value)){
                                 alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
                                 return false;
@@ -1068,7 +1068,39 @@ class vmCommonHTML extends mosHTML {
                         }
                 }
                 return $return;
-        } // end class vmCommonHTML, thanks folks!
+	}
+	
+	function list_themes( $name, $preselected='default' ) {
+		global $mosConfig_absolute_path;
+		$themes = mosReadDirectory( $mosConfig_absolute_path . "/components/com_virtuemart/themes", "" );
+		$array = array();
+		foreach ($themes as $theme ) {
+			$array[$theme] = $theme;
+		}
+		return ps_html::selectList( $name, $preselected, $array );
+	}
+	
+	/**
+	 * Funtion to create a select list holding all files for a special template section (e.g. order_emails)
+	 *
+	 * @param string $name
+	 * @param string $section
+	 * @param string $preselected
+	 * @return string
+	 */
+	function list_template_files( $name, $section, $preselected='' ) {
+		
+		$files = mosReadDirectory( VM_THEMEPATH . "templates/$section/", "", true, true);
+		$array = array();
+        foreach ($files as $file) {
+            $file_info = pathinfo($file);
+            $filename = $file_info['basename'];
+            if( $filename == 'index.html' ) { continue; }
+            $array[basename($filename, '.'.$file_info['extension'] )] = basename($filename, '.'.$file_info['extension'] );
+        }
+        return ps_html::selectList( $name, $preselected, $array );
+	} 
+	// end class vmCommonHTML, thanks folks!
 }
 
 /**

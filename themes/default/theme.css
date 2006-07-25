@@ -1,0 +1,140 @@
+/* < ?php // Fools phpDocumentor into parsing this file
+/* Shop Styles here please
+*/
+
+.addtocart_button {
+	text-align:center;
+	background-position:bottom left;
+	width:160px;height:35px;
+	cursor:pointer;
+	border:none;
+	font-weight:bold;
+	font-family:inherit;
+	background: url( 'images/add-to-cart.gif' ) no-repeat left center transparent;
+	vertical-align: middle;
+	overflow:hidden;
+}
+/* The quantity box beneath the "add to cart" button  */
+.quantity_box {
+	vertical-align: middle;
+}
+
+/* This is the text box informing customers about your returns policy */
+.legalinfo {
+	background: lightgray;
+	border: 2px solid gray;
+	margin: 10px;
+	padding: 0px 0px 10px 10px;
+} 
+.continue_link, .checkout_link {
+	margin: 2px;
+	padding: 2px 0px 2px 40px;
+	vertical-align: middle;
+	font-weight: bold;
+	font-size: 1.4em;
+	width: 40%;
+}
+.checkout_link {
+	background: url( 'images/forward.png' ) no-repeat left;
+}
+.continue_link {
+	background: url( 'images/back.png' ) no-repeat left;
+}
+/*
+General Form Styling
+*/
+.formLabel {
+	float:left;
+	width:30%;
+	text-align:right;
+	font-weight: bold;
+	margin: 2px;
+	white-space: nowrap;
+	clear: left;
+}
+
+.formField {
+	float:left;
+	width:60%;
+	margin: 2px;
+		
+}
+/**
+* Administration Styles
+*/
+.adminListHeader {
+	float:left; height: 48px; background-repeat: no-repeat;
+	text-align: left; font-size: 18px; font-weight: bold;
+	padding-left: 80px;	
+}
+
+.labelcell {
+	margin-left: auto;
+	font-weight: bold;
+	vertical-align: top;
+	width: 30%;
+}
+table.adminform td.labelcell {
+	text-align: right;
+}
+.iconcell {
+	vertical-align: top;
+	width: 5%;
+}
+/**
+* Errors, Warnings and Info formatting
+*/
+.shop_error, .shop_warning, .shop_info, .shop_debug, .shop_critical, .shop_tip {
+	font-family : "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-style: italic;
+	font-size : 14px;
+	
+	text-align: left;
+	vertical-align: middle;
+	
+	margin: 10px 0px 0px 20px;
+	padding-left: 20px;
+
+	line-height: 20px;
+}
+.shop_error {
+	color:		red;
+	background-image: url( images/log_error.png );
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+.shop_warning {
+	color:		#993300;
+	background-image: url( images/log_warning.png );
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+.shop_info {
+
+	color:		#003399;
+	background-image: url( images/log_info.png );
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+.shop_tip {
+	background-image: url( images/info.png );
+	background-repeat: no-repeat;
+	background-position: top left;
+
+}
+.shop_debug {
+
+	color:		#003399;
+	background-image: url( images/log_debug.png );
+	background-repeat: no-repeat;
+	background-position: top left;
+
+}
+.shop_critical {
+	color:		red;
+	font-weight: bold;
+	background-image: url( images/log_critical.png );
+	background-repeat: no-repeat;
+	background-position: top left;
+}

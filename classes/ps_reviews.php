@@ -51,7 +51,7 @@ class ps_reviews {
             $allvotes = $db->f("allvotes");
             $rating = $db->f("rating");
           }
-          $html = "<img src=\"".IMAGEURL."stars/$GLOBALS[design_prefix]$rating.gif\" align=\"middle\" border=\"0\" alt=\"$rating stars\" />";
+          $html = "<img src=\"".VM_THEMEURL."images/stars/$GLOBALS[design_prefix]$rating.gif\" align=\"middle\" border=\"0\" alt=\"$rating stars\" />";
           return $html;
       }
   
@@ -72,7 +72,7 @@ class ps_reviews {
             $allvotes = $db->f("allvotes");
             $rating = $db->f("rating");
           }
-          $html = "<img src=\"".IMAGEURL."stars/$rating.gif\" align=\"middle\" border=\"0\" alt=\"$rating stars\" />&nbsp;";
+          $html = "<img src=\"".VM_THEMEURL."images/stars/$rating.gif\" align=\"middle\" border=\"0\" alt=\"$rating stars\" />&nbsp;";
           $html .= $VM_LANG->_PHPSHOP_TOTAL_VOTES.": ". $allvotes;
           return $html;
       }
@@ -131,7 +131,7 @@ class ps_reviews {
 				$db->query("SELECT name FROM #__users WHERE id='".$dbc->f("userid")."'");
 				$db->next_record();
 				$html .= "<strong>". $db->f("name")."&nbsp;&nbsp;(". strftime (_DATE_FORMAT_LC, $dbc->f("time")).")</strong><br />";
-				$html .= $VM_LANG->_PHPSHOP_RATE_NOM.": <img src=\"".IMAGEURL."stars/".$dbc->f("user_rating").".gif\" border=\"0\" alt=\"".$dbc->f("user_rating")."\" />";
+				$html .= $VM_LANG->_PHPSHOP_RATE_NOM.": <img src=\"".VM_THEMEURL."images/stars/".$dbc->f("user_rating").".gif\" border=\"0\" alt=\"".$dbc->f("user_rating")."\" />";
 				$html .= "<br />".$dbc->f("comment")."<br /><br />";
           }
           if( $num_rows < 1 ) {
@@ -219,22 +219,22 @@ class ps_reviews {
             <table cellpadding=\"5\" summary=\"".$VM_LANG->_PHPSHOP_REVIEW_RATE."\">
               <tr>
                 <th id=\"five_stars\">
-                	<label for=\"user_rating5\"><img alt=\"5 stars\" src=\"".IMAGEURL."stars/5.gif\" border=\"0\" /></label>
+                	<label for=\"user_rating5\"><img alt=\"5 stars\" src=\"".VM_THEMEURL."images/stars/5.gif\" border=\"0\" /></label>
                 </th>
                 <th id=\"four_stars\">
-                	<label for=\"user_rating4\"><img alt=\"4 stars\" src=\"".IMAGEURL."stars/4.gif\" border=\"0\" /></label>
+                	<label for=\"user_rating4\"><img alt=\"4 stars\" src=\"".VM_THEMEURL."images/stars/4.gif\" border=\"0\" /></label>
                 </th>
                 <th id=\"three_stars\">
-                	<label for=\"user_rating3\"><img alt=\"3 stars\" src=\"".IMAGEURL."stars/3.gif\" border=\"0\" /></label>
+                	<label for=\"user_rating3\"><img alt=\"3 stars\" src=\"".VM_THEMEURL."images/stars/3.gif\" border=\"0\" /></label>
                 </th>
                 <th id=\"two_stars\">
-                	<label for=\"user_rating2\"><img alt=\"2 stars\" src=\"".IMAGEURL."stars/2.gif\" border=\"0\" /></label>
+                	<label for=\"user_rating2\"><img alt=\"2 stars\" src=\"".VM_THEMEURL."images/stars/2.gif\" border=\"0\" /></label>
                 </th>
                 <th id=\"one_star\">
-                	<label for=\"user_rating1\"><img alt=\"1 star\" src=\"".IMAGEURL."stars/1.gif\" border=\"0\" /></label>
+                	<label for=\"user_rating1\"><img alt=\"1 star\" src=\"".VM_THEMEURL."images/stars/1.gif\" border=\"0\" /></label>
                 </th>
                 <th id=\"null_stars\">
-                	<label for=\"user_rating0\"><img alt=\"0 stars\" src=\"".IMAGEURL."stars/0.gif\" border=\"0\" /></label>
+                	<label for=\"user_rating0\"><img alt=\"0 stars\" src=\"".VM_THEMEURL."images/stars/0.gif\" border=\"0\" /></label>
                 </th>
               </tr>
               <tr>

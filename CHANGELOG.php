@@ -33,6 +33,38 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+25-07-2006 soeren
+
+^ started working on Theming support for VirtueMart. the first steps were
+	* created a new directory "components/com_virtuemart/themes" with a "default" theme
+	  for the start. Each theme has its own subdirectory with separate directories css, templates and images
+	* themes hold a central CSS file called "theme.css", images for "checkout", "availability" and "stars" (more to follow)
+	* the file admin.css controls the look of admin styles, mainly used for frontend administration
+	* themes can be switched in the shop configuration -
+	* the URL and path of the selected theme is stored in two new configuration constants called
+		VM_THEMEURL and VM_THEMEPATH
+	* all the "template files" have been moved from "administrator/components/com_virtuemart/html/templates" to "components/com_virtuemart/themes/default/templates" where they have the same dir structure as before
+	* references from the old image URLs to the new theme-based image URLs have be updated
+
++ Content Mambots can be used now to parse product and category descriptions 
+	=> new configuration constant "VM_CONTENT_PLUGINS_ENABLE"; default: disabled
+	
+^ Bank account information is only requested now at the "payment method selection" step
+	Removed the global configuration switch
+^ changed all text input fields for template names (like "shop.flypage") to dropdown lists
+	where you can select the right template file.
+^ changed the "payment class" input field to a dropdown list where you can select one of the 
+	available payment method classes
+	
++ added a new directory "currency" for holding different currency converter modules
+	the globally used converter is controlled by the constant "VM_CURRENCY_CONVERTER_MODULE"
+	the default setting is "convertECB"
+
+22-07-2006 soeren
+
++ added a workaround for installations where the "Session Save Path" is not writable. 
+	VM will try using the global cache path for storing session files instead.
+
 18-07-2006 soeren
 
 # various stability fixes to the "Shared SSL"-Redirect functions.

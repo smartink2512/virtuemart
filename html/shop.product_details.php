@@ -53,7 +53,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&amp;keyword={$_SESSION['keyword']}&amp;category_id={$_SESSION['category_id']}&amp;limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 
 if( !$perm->check("admin,storeadmin") ) {
@@ -66,7 +66,7 @@ $db_product->query( $q );
 
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
-  	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+  	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&amp;keyword={$_SESSION['keyword']}&amp;category_id={$_SESSION['category_id']}&amp;limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 if( empty($product_id)) {
 	$product_id = $db_product->f('product_id');
@@ -119,6 +119,7 @@ else {
   if( (str_replace("<br />", "" , $product_description)=='') && ($product_parent_id!=0) ) {
     $product_description = $dbp->f("product_desc"); // Use product_desc from Parent Product
   }
+  $product_description = vmParseContentByPlugins( $product_description );
   
 /** Get the CATEGORY NAVIGATION **/
   $navigation_pathway = "";
@@ -160,7 +161,7 @@ else {
 
 /** Show an "Edit PRODUCT"-Link ***/
   if ($perm->check("admin,storeadmin")) {
-    $edit_link = "<a href=\"". sefRelToAbs($mosConfig_live_site."/index.php?page=product.product_form&next_page=shop.product_details&product_id=$product_id&option=com_virtuemart&Itemid=$Itemid")."\">
+    $edit_link = "<a href=\"". sefRelToAbs($mosConfig_live_site."/index.php?page=product.product_form&amp;next_page=shop.product_details&amp;product_id=$product_id&amp;option=com_virtuemart&amp;Itemid=$Itemid")."\">
       <img src=\"images/M_images/edit.png\" width=\"16\" height=\"16\" alt=\"". $VM_LANG->_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT ."\" border=\"0\" /></a>";
   }
   else {
@@ -268,8 +269,8 @@ else {
     $more_images = "";
   if( !empty($images->images) ) {
     /* Build the JavaScript Link */
-    $more_images = "<a href=\"$mosConfig_live_site/index.php?option=com_virtuemart&page=shop.view_images&flypage=".@$_REQUEST['flypage']."&product_id=$product_id&category_id=$category_id&Itemid=$Itemid\">";
-    $more_images .= "<img src=\"".IMAGEURL."ps_image/more_images.png\" width=\"16\" height=\"16\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_MORE_IMAGES ." (".$images->images.")\" />";
+    $more_images = "<a href=\"$mosConfig_live_site/index.php?option=com_virtuemart&amp;page=shop.view_images&amp;flypage=".@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id&amp;Itemid=$Itemid\">";
+    $more_images .= "<img src=\"".VM_THEMEURL."images/more_images.png\" width=\"16\" height=\"16\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_MORE_IMAGES ." (".$images->images.")\" />";
     $more_images .= "<br />".$VM_LANG->_PHPSHOP_MORE_IMAGES." (".$images->images.")</a>";
   }
   /* Files? */
@@ -284,7 +285,7 @@ else {
   }
   
 /** Ask seller a question **/
-    $ask_seller = '<a class="button" href="'.$sess->url( $mosConfig_live_site.'/index.php?page=shop.ask&flypage='.@$_REQUEST['flypage']."&product_id=$product_id&category_id=$category_id&set=1" ). '">';
+    $ask_seller = '<a class="button" href="'.$sess->url( $mosConfig_live_site.'/index.php?page=shop.ask&amp;flypage='.@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id&amp;set=1" ). '">';
     $ask_seller .= $VM_LANG->_VM_PRODUCT_ENQUIRY_LBL.'</a>';
     
 /* SHOW RATING */
@@ -305,11 +306,9 @@ else {
           // end added for custom attribute modification
 	if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )) { 
 		$addtocart .= "
-        <p><label for=\"quantity\" style=\"vertical-align: middle;\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":</label>
-            <input type=\"text\" class=\"inputbox\" size=\"4\" id=\"quantity\" name=\"quantity\" value=\"1\" style=\"vertical-align: middle;\" />&nbsp;
-            <input type=\"submit\" ";
-		$addtocart .= "style=\"text-align:center;background-position:bottom left;width:160px;height:35px;cursor:pointer;border:none;font-weight:bold;font-family:inherit;background: url('". IMAGEURL ."ps_image/".PSHOP_ADD_TO_CART_STYLE ."') no-repeat left center transparent;vertical-align: middle;\" ";
-		$addtocart .= "value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO ."\" title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" />
+        <p><label for=\"quantity\" class=\"quantity_box\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":</label>
+            <input type=\"text\" class=\"inputbox\" size=\"4\" id=\"quantity\" name=\"quantity\" value=\"1\" />&nbsp;
+            <input type=\"submit\" class=\"addtocart_button\" value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO ."\" title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" />
           </p>
       <input type=\"hidden\" name=\"flypage\" value=\"shop.$flypage\" />
       <input type=\"hidden\" name=\"page\" value=\"shop.cart\" />
@@ -356,7 +355,7 @@ else {
 *   Then replace the placeholders with HTML formatted product details
 *
 * function read_file( $file, $defaultfile='') ***/
-$template = read_file( PAGEPATH."templates/product_details/$flypage.php", PAGEPATH."templates/product_details/flypage.php");
+$template = read_file( VM_THEMEPATH."templates/product_details/$flypage.php", VM_THEMEPATH."templates/product_details/flypage.php");
 
 /** NOW LET'S BEGIN AND FILL THE TEMPLATE **/
 $template = str_replace( "{navigation_pathway}", $navigation_pathway, $template );

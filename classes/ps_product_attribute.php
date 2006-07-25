@@ -259,6 +259,7 @@ class ps_product_attribute {
 				// Now get item price
 				if( $_SESSION['auth']['show_prices'] ) {
 					$price = $ps_product->get_price($db->f("product_id"));
+					$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
 					if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
 						$tax_rate = 1 + $ps_product->get_product_taxrate($db->f("product_id"));
 						$price['product_price'] *= $tax_rate;
@@ -319,7 +320,7 @@ class ps_product_attribute {
 						}
 						// Apply shopper group discount
 						$price *= 1 - ($auth["shopper_group_discount"]/100);
-						$price = convertECB( $price, $productPrice['product_currency'] );
+						$price = $GLOBALS['CURRENCY']->convert( $price, $productPrice['product_currency'] );
 						if ($price=="0") {
 							$attribut_hint = "test";
 						}

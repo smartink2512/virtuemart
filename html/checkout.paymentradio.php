@@ -69,7 +69,7 @@ elseif( $order_total <= 0.00 ) {
 	mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99"),"");
 }
 if( $nocc_payments &&  $cc_payments ) {
-	echo '<table><tr valign="top"><td width="50%">';
+	echo '<table width="100%"><tr valign="top"><td width="50%">';
 }
         
 if ($cc_payments==true) { 
@@ -172,6 +172,7 @@ if ($nocc_payments==true) {
 	</fieldset>
 	<?php
 }
+
 if( $nocc_payments &&  $cc_payments ) {
 	echo '</td></tr><table>';
 }
