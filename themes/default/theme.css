@@ -40,6 +40,12 @@
 .continue_link {
 	background: url( 'images/back.png' ) no-repeat left;
 }
+
+div.buttons_heading {
+	margin:10px;
+	width:20%;
+	float:right;
+}
 /*
 General Form Styling
 */

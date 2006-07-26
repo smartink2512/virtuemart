@@ -79,7 +79,7 @@ define('DOWNLOADROOT', $mosConfig_absolute_path.'/');
 define('_SHOW_PRICES', '1');
 define('ORDER_MAIL_HTML', '1');
 define('HOMEPAGE', 'shop.index');
-define('FLYPAGE', 'flypage');
+define('FLYPAGE', 'flypage.tpl');
 define('CATEGORY_TEMPLATE', 'browse_1');
 define('PRODUCTS_PER_ROW', '1');
 define('ERRORPAGE', 'shop.error');

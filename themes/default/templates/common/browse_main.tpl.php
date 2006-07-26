@@ -1,0 +1,41 @@
+<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
+
+<?php echo $browsepage_header // The heading, the category description ?>
+<?php echo $parameter_form // The Parameter search form ?>
+<?php echo $orderby_form // The sort-by, order-by form PLUS top page navigation ?>
+
+<?php
+$data =array(); // Holds the rows of products
+$i = 1; $row = 0; // Counters
+foreach( $products as $product ) {
+		
+		foreach( $product as $attr => $val ) {
+			// Using this we make all the variables available in the template
+			// translated example: $this->set( 'product_name', $product_name );
+			$this->set( $attr, $val );
+		}
+		
+		// Parse the product template (usually 'browse_x') for each product
+		// and store it in our $data array 
+		$data[$row][] = $this->fetch_cache( 'browse/'.$templatefile .'.php' );
+		
+		// Start a new row ?
+		if ( ($i % $products_per_row) == 0) {
+			$row++;
+		}
+		$i++;
+		
+}
+// Creates a new HTML_Table object that will help us
+// to build a table holding all the products
+$table =& new HTML_Table('width="100%"');
+
+// Loop through each row and build the table
+foreach($data as $key => $value) {
+	$table->addRow($data[$key] );
+}
+// Display the table
+echo $table->toHtml();
+?>
+<br class="clr" /><br />
+<?php echo $browsepage_footer ?>

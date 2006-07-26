@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -80,7 +80,7 @@ else {
 	// For there's no errorpage to display the error,
 	// we must echo it before the page is loaded
 	if (!empty($error) && $page != ERRORPAGE) {
-		echo "<span class=\"shop_error\">".$error."</span>";
+		echo '<span class="shop_error">'.$error.'</span>';
 	}
 
 	/*****************************
@@ -125,7 +125,7 @@ else {
 
 	/*****************************
 	** BEGIN affiliate additions
-	** by nhyde <nhyde@bigDrift.com> for virtuemart v0.6.1
+	** by nhyde <nhyde@bigDrift.com> for phpShop v0.6.1
 	*/
 	if (AFFILIATE_ENABLE == '1') {
 		$unset_affiliate = false;
@@ -176,88 +176,37 @@ else {
         // cacheable that way.
         // It's just an "include" statement which loads the page
         $vmDoCaching = ($page=="shop.browse" || $page=="shop.product_details") 
-                        && class_exists("mosCache")
                         && (empty($keyword) && empty($keyword1) && empty($keyword2));
 
-        if( !function_exists( "load_that_shop_page" )) {
-                function load_that_shop_page( $modulename, $pagename) {
-                        global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $page, $database,$mosConfig_absolute_path, $cart, $start, $option, $vmLogger, $vmDoCaching,
-                        $product_id,$VM_LANG, $PHPSHOP_LANG, $sess,$vendor_image,$vendor_country_2_code, $vendor_country_3_code , $vendor_image_url, $PSHOP_SHIPPING_MODULES,
-                        $_VERSION, $vendor_name, $vendor_address, $vendor_city,$vendor_country,$vendor_mail, $category_id, $mainframe, $mosConfig_list_limit, $limitstart, $limit,
-                        $vendor_store_name, $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping, $ps_shipping, $ps_order_status,
-                        $module_description, $vendor_currency_display_style, $vendor_full_image, $mosConfig_live_site, $vendor_id, $CURRENCY_DISPLAY, $keyword, $mm_action_url,
-                        $ps_payment_method,$ps_zone,$ps_product, $ps_product_category, $ps_order, $sess, $page, $func, $pagename, $modulename, $vars, $cmd, $ok, $mosConfig_lang, $mosConfig_useractivation,
-                        $auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list, $mosConfig_allowUserRegistration, $mosConfig_caching;
-
-                        if( is_callable( array("mosMainFrame", "addCustomHeadTag" ) ) && !stristr( $_SERVER['PHP_SELF'], "index2.php") ) {
-                                $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleight.js\"></script>
+        $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleight.js\"></script>
 <script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleightbg.js\"></script>
 <link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"".VM_THEMEURL."theme.css\" />" );
-                        } else {
-      ?>
-      <script type="text/javascript" src="<?php echo "$mosConfig_live_site/components/$option" ?>/js/sleight.js"></script>
-      <script type="text/javascript" src="<?php echo "$mosConfig_live_site/components/$option" ?>/js/sleightbg.js"></script>
-	<link type="text/css" rel="stylesheet" media="screen, projection" href="<?php echo VM_THEMEURL ?>theme.css" />
-      <?php
-			}
-
-			if( !isset($_REQUEST['output']) && ($page=="shop.browse" || $page=="shop.product_details")) {
-				echo '<div style="margin:10px;width:20%;float:right;">';
-				$pdf_link = "index2.php?option=$option&page=shop.pdf_output&showpage=$page&pop=1&output=pdf&product_id=$product_id&category_id=$category_id";
-				echo vmCommonHTML::PdfIcon( $pdf_link );
-				echo vmCommonHTML::PrintIcon();
-				echo vmCommonHTML::EmailIcon($product_id);
-				echo '</div>';
-			}
-			// Load requested PAGE
-			if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
-				include( PAGEPATH.$modulename.".".$pagename.".php" );
-			}
-			elseif( file_exists( PAGEPATH . HOMEPAGE.'.php' )) {
-				include( PAGEPATH . HOMEPAGE.'.php' );
-			}
-		    else {
-		        include( PAGEPATH.'shop.index.php');
-		    }
-		    if ( !empty($mosConfig_caching) && $vmDoCaching) {
-		        echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span>';
-		    }
-		    if(SHOWVERSION && !mosGetParam( $_REQUEST, 'pop' )) {
-				include(PAGEPATH ."footer.php");
-		    }
-
-			// Set debug option on/off
-			if (DEBUG) {
-				$end = utime();
-				$runtime = $end - $start;
-				
-				include( PAGEPATH . "shop.debug.php" );
-			}
-			return $mainframe;
+		
+		// Load requested PAGE
+		if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
+			include( PAGEPATH.$modulename.".".$pagename.".php" );
 		}
-	}
-	// Caching is a sensible thing. We may cache only those pages 
-        // that look the same again and again
-        // Currently this are two pages: shop.browse, shop.product_details
-        // when no keyword is submitted!
-        if ( !empty($mosConfig_caching) && $vmDoCaching) {
+		elseif( file_exists( PAGEPATH . HOMEPAGE.'.php' )) {
+			include( PAGEPATH . HOMEPAGE.'.php' );
+		}
+	    else {
+	        include( PAGEPATH.'shop.index.php');
+	    }
+	    if ( !empty($mosConfig_caching) && $vmDoCaching) {
+	        echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span>';
+	    }
+	    if(SHOWVERSION && !mosGetParam( $_REQUEST, 'pop' )) {
+			include(PAGEPATH ."footer.php");
+	    }
 
-                // Get the Cache_Lite_Function object
-                $cache =& mosCache::getCache( 'com_content' );
+		// Set debug option on/off
+		if (DEBUG) {
+			$end = utime();
+			$runtime = $end - $start;
+			
+			include( PAGEPATH . "shop.debug.php" );
+		}
 
-		// The function we let call remotely here has only two arguments: the Modulename(shop) and the Pagename(browse or product_details),
-		// But Cache_Lite takes the arguments for identifying common calls to cacheable functions.
-                // The Page will change with every different parameter / argument, so provide this for identification
-                // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
-                // or the caching time range has expired
-                $return = $cache->call('load_that_shop_page', $modulename, $pagename, $product_id, $category_id, $manufacturer_id, $auth["shopper_group_id"], $limitstart, $limit, @$_REQUEST['orderby'], @$_REQUEST['DescOrderBy'] );
-                if( get_class( $return ) == "mosMainFrame" ) {
-                        $mainframe = $return;
-                }
-	}
-	else {
-		load_that_shop_page( $modulename, $pagename);
-	}
 }
 if( defined( 'vmToolTipCalled')) {
 	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';

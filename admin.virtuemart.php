@@ -99,7 +99,8 @@ if( $no_menu != 1 ) {
 }
 // Include the Stylesheet
 echo '<link rel="stylesheet" href="components/'.$option.'/admin.styles.css" type="text/css" />';
-echo '<link href="'.VM_THEMEURL.'theme.css" type="text/css" rel="stylesheet" media="screen, projection" />';
+echo '<link href="../'.VM_THEMEURL.'admin.css" type="text/css" rel="stylesheet" media="screen, projection" />';
+echo '<link href="../'.VM_THEMEURL.'theme.css" type="text/css" rel="stylesheet" media="screen, projection" />';
 echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
 
 // Load PAGE

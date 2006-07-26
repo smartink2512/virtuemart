@@ -859,9 +859,8 @@ class ps_product_category extends vmAbstractObject {
 		global $sess, $ps_product, $VM_LANG;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
-
-		$html = "";
-
+		$childs = array();
+		
 		$q = "SELECT category_id, category_thumb_image, category_child_id,category_name FROM #__{vm}_category,#__{vm}_category_xref ";
 		$q .= "WHERE #__{vm}_category_xref.category_parent_id='$category_id' ";
 		$q .= "AND #__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
@@ -871,46 +870,15 @@ class ps_product_category extends vmAbstractObject {
 		$db->setQuery($q);
 		$db->query();
 
-		if( $db->num_rows() > 0 ) {
-			$iCol = 1;
-			$categories_per_row = 4;
-			$cellwidth = intval( 100 / $categories_per_row );
-			$html .= $VM_LANG->_PHPSHOP_MORE_CATEGORIES.'<br/>';
-			$html .= '<table width="100%" cellspacing="0" cellpadding="0">';
-
-			while($db->next_record()) {
-				if ($iCol == 1) {
-					$html.= "<tr>\n";
-				}
-				$html.= '<td align="center" width="'. $cellwidth .'%" ><br/>
-            <a title="'. $db->f("category_name").'" href="'. $sess->url(URL."index.php?option=com_virtuemart&amp;page=shop.browse&amp;category_id=".$db->f("category_id")) .'">'; 
-
-				if ( $db->f("category_thumb_image") ) {
-					$html.= $ps_product->image_tag( $db->f("category_thumb_image"), "alt=\"".$db->f("category_name")."\"", 0, "category");
-					$html.= "<br /><br/>";
-				}
-				$html.= $db->f("category_name");
-				$html.= ps_product_category::products_in_category( $db->f("category_id") );
-
-				$html.= "</a><br/>\n";
-				$html .= "</td>\n";
-
-				if ($iCol == $categories_per_row) {
-					$html.= "</tr>\n";
-					$iCol = 1;
-				}
-				else {
-					$iCol++;
-				}
-			}
-			if ($db->num_rows() < $categories_per_row) {
-				$html.= "</tr>\n";
-			}
-			$html.= "</table>";
+		while( $db->next_record() ) {
+			$childs[] = array (
+							'category_name' =>  $db->f("category_name"),
+							'category_id' => $db->f("category_id"),
+							'category_thumb_image' => $db->f("category_thumb_image"),
+							'number_of_products' => ps_product_category::products_in_category( $db->f("category_id")),
+						);
 		}
-
-		return $html;
-
+		return $childs;
 	}
 
 	/**
@@ -991,6 +959,7 @@ class ps_product_category extends vmAbstractObject {
 	/**
 	 * tests for template/default pathway arrow separator
 	 * @author FTW Stroker
+	 * @static 
 	 * @return string The separator for the pathway breadcrumbs
 	 */
 	function pathway_separator() {
@@ -1217,35 +1186,21 @@ class ps_product_category extends vmAbstractObject {
 		$db = new ps_DB;
 
 		static $i=0;
-		static $html = "";
+		static $category_list;
 		$q = "SELECT category_id, category_name,category_parent_id FROM #__{vm}_category, #__{vm}_category_xref WHERE ";
 		$q .= "#__{vm}_category_xref.category_child_id='$category_id' ";
 		$q .= "AND #__{vm}_category.category_id='$category_id'";
 		$db->setQuery($q);   $db->query();
 		$db->next_record();
+		
+		$category_list[$i]['category_id'] = $db->f("category_id");
+		$category_list[$i]['category_name'] = $db->f("category_name");
 		if ($db->f("category_parent_id")) {
-			$link = "<a class=\"pathway\" href=\"";
-			$link .= $sess->url($_SERVER['PHP_SELF'] . "?page=shop.browse&category_id=$category_id");
-			$link .= "\">";
-			$link .= $db->f("category_name");
-			$link .= "</a>";
-			$category_list[$i++] = " ".$this->pathway_separator()." ". $link;
+			$i++;
 			$this->get_navigation_list($db->f("category_parent_id"));
 		}
-		else {
-			$link = "<a class=\"pathway\" href=\"";
-			$link .= $sess->url($_SERVER['PHP_SELF'] . "?page=shop.browse&category_id=$category_id");
-			$link .= "\">";
-			$link .= $db->f("category_name");
-			$link .= "</a>";
-			$category_list[$i++] = $link;
-
-		}
-		while (list(, $value) = each($category_list)) {
-			$html .= $value;
-		}
-
-		return $html;
+		
+		return $category_list;
 	}
 
 	/**

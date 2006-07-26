@@ -1,19 +1,19 @@
 <div style="width:100%;padding: 0px 3px 3px 3px;">
   <h2>
-  <a style="font-size:16px; font-weight:bold;" href="{product_flypage}">{product_name}</a>
+  <a style="font-size:16px; font-weight:bold;" href="<?php echo $product_flypage ?>"><?php echo $product_name ?></a>
   </h2>
-    <div style="float:left;width:32%" ><a href="{product_flypage}">
-          <img src="{product_thumb_image}" {image_height} {image_width} border="0" alt="{product_name}" /></a>
+    <div style="float:left;width:32%" ><a href="<?php echo $product_flypage ?>">
+          <img src="<?php echo $product_thumb_image ?>" <?php echo $image_height ?> <?php echo $image_width ?> border="0" alt="<?php echo $product_name ?>" /></a>
     </div>
-    <div style="float:left;width:60%">{product_s_desc}<br />
-      <a href="{product_flypage}">[{product_details...}...]</a>
+    <div style="float:left;width:60%"><?php echo $product_s_desc ?><br />
+      <a href="<?php echo $product_flypage ?>">[<?php echo $product_details ?>...]</a>
     </div>
   <br style="clear:both;" />
-  <p>{product_price}</p>
+  <p><?php echo $product_price ?></p>
   <div style="float:left;width:60%">
-      {product_rating}
+      <?php echo $product_rating ?>
   </div>
-  <div style="float:left;width:32%">{form_addtocart}
+  <div style="float:left;width:32%"><?php echo $form_addtocart ?>
   </div>
   <br style="clear:both;" />
 </div>

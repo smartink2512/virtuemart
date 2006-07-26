@@ -24,7 +24,7 @@ $product_sku = $db->getEscaped( mosgetparam($_REQUEST, "sku", '' ) );
 $category_id = mosgetparam($_REQUEST, "category_id", null);
 $set = mosgetparam($_REQUEST, "set", 0 );
 $Itemid = mosgetparam($_REQUEST, "Itemid", 0 );
-$flypage = mosgetparam($_REQUEST, "flypage", 0 );
+$flypage = mosgetparam($_REQUEST, "flypage", '' );
 
 $db_product = new ps_DB;
 // Get the product info from the database

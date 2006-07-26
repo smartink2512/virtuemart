@@ -66,7 +66,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
     <tr> 
       <td width="21%" valign="top" nowrap><div  align="right"><?php echo $VM_LANG->_PHPSHOP_CATEGORY_FORM_DESCRIPTION ?>:</div></td>
       <td width="79%" valign="top"><?php
-        editorArea( 'editor1', $db->f("category_description"), 'category_description', '400', '150', '100', '10' ) ?>
+        editorArea( 'editor1', $db->f("category_description"), 'category_description', '800', '300', '110', '40' ) ?>
       </td>
     </tr>
     <tr>

@@ -1876,10 +1876,15 @@ class ps_product extends vmAbstractObject {
 	function show_price( $product_id, $hide_tax = false ) {
 		global $VM_LANG, $CURRENCY_DISPLAY,$vendor_mail;
 		$auth = $_SESSION['auth'];
-
+		
+		$tpl = new vmTemplate();
+		
 		$product_name = htmlentities( $this->get_field($product_id, 'product_name'), ENT_QUOTES );
-		$no_price_html = "&nbsp;<a href=\"mailto:$vendor_mail?subject=".$VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name\">".$VM_LANG->_PHPSHOP_PRODUCT_CALL."</a>";
-
+		$tpl->set( 'product_name', $product_name );
+		$tpl->set( 'vendor_mail', $vendor_mail );
+		$discount_info = $base_price = array();
+		$text_including_tax = '';
+		
 		if( $auth['show_prices'] ) {
 			// Get the DISCOUNT AMOUNT
 			$discount_info = $this->get_discount( $product_id );
@@ -1888,8 +1893,11 @@ class ps_product extends vmAbstractObject {
 			}
 			// Get the Price according to the quantity in the Cart
 			$price_info = $this->get_price( $product_id );
+			$tpl->set( 'price_info', $price_info );
+			
 			// Get the Base Price of the Product
 			$base_price_info = $this->get_price($product_id, true );
+			$tpl->set( 'base_price_info', $base_price_info );
 			if( $price_info === false ) {
 				$price_info = $base_price_info;
 			}
@@ -1929,35 +1937,16 @@ class ps_product extends vmAbstractObject {
 
 					}
 				}
-				if(!empty($discount_info["amount"])) {
-					$html .= "<span style=\"color:red;\">\n<strike>";
-					$html .= $CURRENCY_DISPLAY->getFullValue($undiscounted_price);
-					$html .= "</strike> $text_including_tax</span>\n<br/>";
-				}
-
-				$html .= "<span style=\"font-weight:bold\">\n";
-				$html .= $CURRENCY_DISPLAY->getFullValue($base_price);
-				$html .= "</span>\n ";
-
-				$html .= $text_including_tax;
-
-				if(!empty($discount_info["amount"])) {
-					$html .= "<br />";
-					$html .= $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_SAVE.": ";
-					if($discount_info["is_percent"]==1) {
-						$html .= $discount_info["amount"]."%";
-					}
-					else {
-						$html .= $CURRENCY_DISPLAY->getFullValue($discount_info["amount"]);
-					}
-				}
 
 				// Check if we need to display a Table with all Quantity <=> Price Relationships
 				if( $base_price_info["product_has_multiple_prices"] && !$hide_tax ) {
 					$db = new ps_DB;
 					// Quantity Discount Table
-					$q = "SELECT product_price, product_currency, price_quantity_start, price_quantity_end FROM #__{vm}_product_price
-				  WHERE product_id='$product_id' AND shopper_group_id='".$auth["shopper_group_id"]."' ORDER BY price_quantity_start";
+					$q = "SELECT product_price, product_currency, price_quantity_start, price_quantity_end 
+							FROM #__{vm}_product_price
+				  			WHERE product_id='$product_id' 
+				  			AND shopper_group_id='".$auth["shopper_group_id"]."' 
+				  			ORDER BY price_quantity_start";
 					$db->query( $q );
 
 					//         $prices_table = "<table align=\"right\">
@@ -1989,14 +1978,13 @@ class ps_product extends vmAbstractObject {
 					$html .= $prices_table;
 				}
 			}
-			// No price, so display "Call for pricing"
-			else {
-				$html = $no_price_html;
-			}
-			return $html;
 		}
-		else
-		return $no_price_html;
+		$tpl->set( 'discount_info', $discount_info );
+		$tpl->set( 'text_including_tax', $text_including_tax );
+		$tpl->set( 'undiscounted_price', @$undiscounted_price );
+		$tpl->set( 'base_price', $base_price );
+		return $tpl->fetch_cache( 'common/price.tpl.php');
+
 	}
 
 	/**************************************************************************
@@ -2081,14 +2069,16 @@ class ps_product extends vmAbstractObject {
 
 		$q = "SELECT product_id, product_name, product_parent_id, product_thumb_image FROM #__{vm}_product WHERE product_sku='$product_sku'";
 		$db->query( $q );
-		$html = "";
+
 		if ($db->next_record()) {
+			$product_id = $db->f("product_id" );
+			$tpl = new vmTemplate();
+			
+			$cid = $ps_product_category->get_cid( $product_id );
 
-			$cid = $ps_product_category->get_cid( $db->f("product_id" ) );
-
-			$html .= "<span style=\"font-weight:bold;\">".$db->f("product_name")."</span>\n";
-			$html .= "<br />\n";
-
+			$tpl->set( 'product_id', $product_id);
+			$tpl->set( 'product_name', $db->f("product_name"));
+			
 			if ($db->f("product_parent_id")) {
 				$url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_parent_id"));
 				$url .= "&product_id=" . $db->f("product_parent_id");
@@ -2096,22 +2086,25 @@ class ps_product extends vmAbstractObject {
 				$url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_id"));
 				$url .= "&product_id=" . $db->f("product_id");
 			}
-			$html .= "<a title=\"".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url. "index.php" . $url)."\">";
-			$html .= $this->image_tag($db->f("product_thumb_image"), "alt=\"".$db->f("product_name")."\"");
-			$html .= "</a><br />\n";
+			$product_link = $sess->url($mm_action_url. "index.php" . $url);
+			$tpl->set( 'product_link', $product_link );
+			$tpl->set( 'product_thumb_image', $db->f("product_thumb_image"), "alt=\"".$db->f("product_name")."\"");
 
 			if (_SHOW_PRICES == '1' && $show_price) {
 				// Show price, but without "including X% tax"
-				$html .= $this->show_price( $db->f("product_id"), true );
+				$price = $this->show_price( $db->f("product_id"), true );
+				$tpl->set( 'price', $price );
 			}
-			if (USE_AS_CATALOGUE != 1 && $show_addtocart && !strstr( $html, $VM_LANG->_PHPSHOP_PRODUCT_CALL)) {
-				$html .= "<br />\n";
+			if (USE_AS_CATALOGUE != 1 && $show_addtocart && isset( $GLOBALS['product_info'][$product_id]['price']['product_price_id'] )) {
 				$url = "?page=shop.cart&func=cartAdd&product_id=" .  $db->f("product_id");
-				$html .= "<a title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO.": ".$db->f("product_name")."\" href=\"". $sess->url($mm_action_url . "index.php" . $url)."\">".$VM_LANG->_PHPSHOP_CART_ADD_TO."</a><br />\n";
+				$addtocart_link = $sess->url($mm_action_url. "index.php" . $url);
+				$tpl->set( 'addtocart_link', $addtocart_link );
 			}
+			return $tpl->fetch_cache( 'common/productsnapshot.tpl.php');
 		}
-
-		return $html;
+		
+		return;
+		
 	}
 
 	/**

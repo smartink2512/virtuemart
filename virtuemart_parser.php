@@ -102,6 +102,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	require_once(CLASSPATH."ps_perm.php");
 	require_once(CLASSPATH."ps_shopper_group.php");
 	require_once(CLASSPATH."vmAbstractObject.class.php");
+	require_once(CLASSPATH.'template.class.php' );
 	require_once(CLASSPATH."htmlTools.class.php");
 	require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
 	require_once(CLASSPATH."Log/Log.php");
@@ -115,6 +116,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	 */
 	$vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
 	$GLOBALS['vmLogger'] =& $vmLogger;
+	
 	// Instantiate the DB class
 	$db = new ps_DB();
 	
@@ -313,6 +315,10 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$my = $my->_model;
 		}
 	}
+    // The Page will change with every different parameter / argument, so provide this for identification
+    // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
+    // or the caching time range has expired
+	$GLOBALS['cache_id'] = 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
 		
 	// If this is an asynchronous page load,
 	// we clear the output buffer and just send the log messages.

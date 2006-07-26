@@ -135,7 +135,7 @@ else {
     <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
     <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
     <input type=\"hidden\" name=\"description\" value=\"". stripslashes($cart[$i]["description"])."\" />
-    <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  alt=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
+    <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". VM_THEMEURL ."images/edit_f2.gif\" border=\"0\"  alt=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
   </form>";
 		$product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" >
     <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
