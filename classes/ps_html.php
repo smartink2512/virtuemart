@@ -378,13 +378,15 @@ class ps_html {
 
 	/**
 	 * Creates a drop-down list for Extra fields
-	 *
+	 * @deprecated 
 	 * @param string $t The pre-selected value
 	 * @param string $extra Additional attributes for the select element
 	 */
 	function list_extra_field_4($t, $extra="") {
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 
+		$vmLogger->debug( 'The function '.__CLASS__.'::'.__FUNCTION__.' is deprecated. Use the userfield manager instead please.' );
+		
 		$title = array(array('Y',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1),
 		array('N',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2));
 
@@ -399,13 +401,15 @@ class ps_html {
 	}
 	/**
 	 * Creates a drop-down list for Extra fields
-	 *
+	 * @deprecated 
 	 * @param string $t The pre-selected value
 	 * @param string $extra Additional attributes for the select element
 	 */
 	function list_extra_field_5($t, $extra="") {
-		global $VM_LANG;
-
+		global $VM_LANG, $vmLogger;
+		
+		$vmLogger->debug( 'The function '.__CLASS__.'::'.__FUNCTION__.' is deprecated. Use the userfield manager instead please.' );
+		
 		$title = array(array('A',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1),
 		array('B',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2),
 		array('C',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3));
@@ -419,7 +423,49 @@ class ps_html {
 		}
 		echo "</select>\n";
 	}
-
+	/**
+	 * Lists all available themes for this VirtueMart installation
+	 *
+	 * @param string $name
+	 * @param string $preselected
+	 * @return string
+	 */
+	function list_themes( $name, $preselected='default' ) {
+		global $mosConfig_absolute_path;
+		$themes = mosReadDirectory( $mosConfig_absolute_path . "/components/com_virtuemart/themes", "", false, true );
+		$array = array();
+		foreach ($themes as $theme ) {
+			if( file_exists($theme.'/theme.php' ) ) {
+				$array[basename($theme)] = basename( $theme );
+			}
+		}
+		return ps_html::selectList( $name, $preselected, $array );
+	}
+	
+	/**
+	 * Funtion to create a select list holding all files for a special template section (e.g. order_emails)
+	 *
+	 * @param string $name
+	 * @param string $section
+	 * @param string $preselected
+	 * @return string
+	 */
+	function list_template_files( $name, $section='browse', $preselected='' ) {
+		
+		$files = mosReadDirectory( VM_THEMEPATH . "templates/$section/" );
+		$array = array();
+        foreach ($files as $file) {
+        	if( is_dir( $file ) ) continue;
+            $file_info = pathinfo($file);
+            $filename = $file_info['basename'];
+            if( $filename == 'index.html' ) { continue; }
+            $array[basename($filename, '.'.$file_info['extension'] )] = basename($filename, '.'.$file_info['extension'] );
+        }
+        if( $section == 'browse') {
+        	$array = array_merge( array('managed' => 'managed'), $array );
+        }
+        return ps_html::selectList( $name, $preselected, $array );
+	} 
 
 	/**
 	* Writes a box containing an information about the write access to a file

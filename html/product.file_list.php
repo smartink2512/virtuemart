@@ -176,9 +176,10 @@ while ($db->next_record()) {
 			$thumb = $info["dirname"] ."/resized/". basename($filename,".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
 			$thumburl = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $thumb );
 		}
+		
 		if( is_file( $thumb ) ) {
 			$tmp_cell .= $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG.": ";
-			$tmp_cell .= mm_ToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG, '', '', '[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]' ); 
+			$tmp_cell .= vmToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG, '', '', '[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]' ); 
 		}
 		if( !$db->f("file_name") ) {
 			$tmp_cell = "&nbsp;<a target=\"_blank\" href=\"".$db->f("file_url"). "\">[ ".$VM_LANG->_PHPSHOP_VIEW . " ]</a><br/>"; 

@@ -26,7 +26,9 @@ require_once (CLASSPATH."ps_product.php");
 $ps_product = new ps_product;
 require_once (CLASSPATH."ps_product_category.php");
 $ps_product_category = new ps_product_category;
+require_once (CLASSPATH."ps_product_files.php");
 require_once (CLASSPATH."ps_reviews.php");
+require_once (CLASSPATH."imageTools.class.php");
 require_once (CLASSPATH."PEAR/Table.php");
 
 $Itemid = mosgetparam($_REQUEST, "Itemid", null);
@@ -87,7 +89,7 @@ else {
 		$mainframe->setPageTitle( $db->f("category_name") );
 		
 		$desc =  $ps_product_category->get_description($category_id);
-		$desc = vmParseContentByPlugins( $desc );
+		$desc = vmCommonHTML::ParseContentByPlugins( $desc );
 				
 		$tpl->set( 'desc', $desc );
 			
@@ -109,7 +111,7 @@ else {
 		
 		$mainframe->appendPathWay( $navigation_pathway );
 		
-		$browsepage_header = $tpl->fetch_cache( 'common/browse_header_category.tpl.php' );
+		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_category.tpl.php' );
 		
 	}
 	elseif( $manufacturer_id) {
@@ -119,28 +121,28 @@ else {
 		
 		$browsepage_lbl = shopMakeHtmlSafe( $db->f("mf_name") );
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
-		$browsepage_header = $tpl->fetch_cache( 'common/browse_header_manufacturer.tpl.php' );
+		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_manufacturer.tpl.php' );
 	}
 	elseif( $keyword ) {
 		$mainframe->setPageTitle( html_entity_decode( $VM_LANG->_PHPSHOP_SEARCH_TITLE ) );
 		$browsepage_lbl = $VM_LANG->_PHPSHOP_SEARCH_TITLE .': '.shopMakeHtmlSafe( $keyword );
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
 		
-		$browsepage_header = $tpl->fetch_cache( 'common/browse_header_keyword.tpl.php' );
+		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_keyword.tpl.php' );
 	}
 	else {
 		$mainframe->setPageTitle( html_entity_decode($VM_LANG->_PHPSHOP_BROWSE_LBL) );#
 		$browsepage_lbl = $VM_LANG->_PHPSHOP_BROWSE_LBL;
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
 		
-		$browsepage_header = $tpl->fetch_cache( 'common/browse_header_all.tpl.php' );
+		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_all.tpl.php' );
 	}
 	$tpl->set( 'browsepage_header', $browsepage_header );
 	
 	if (!empty($product_type_id) && @$_REQUEST['output'] != "pdf") {
 		$tpl->set( 'ps_product_type', $ps_product_type);
 		$tpl->set( 'product_type_id', $product_type_id);
-		$parameter_form = $tpl->fetch_cache( 'common/browse_searchparameterform.tpl.php' );
+		$parameter_form = $tpl->fetch_cache( 'browse/includes/browse_searchparameterform.tpl.php' );
 	}
 	else {
 		$parameter_form = '';
@@ -198,7 +200,7 @@ else {
 		else {
 			$tpl->set( 'show_top_navigation', false );
 		}
-		$orderby_form = $tpl->fetch_cache( 'common/browse_orderbyform.tpl.php' );
+		$orderby_form = $tpl->fetch_cache( 'browse/includes/browse_orderbyform.tpl.php' );
 		$tpl->set( 'orderby_form', $orderby_form );
     }
     else {
@@ -219,11 +221,17 @@ else {
 	 **/
 	if(@$_REQUEST['output'] != "pdf") {
 		$templatefile = (!empty($category_id)) ? $db_browse->f("category_browsepage") : CATEGORY_TEMPLATE;
+		if( $templatefile == 'managed' ) {
+			// automatically select the browse template with the best match for the number of products per row
+			$templatefile = file_exists(VM_THEMEPATH.'templates/browse/browse_'.$products_per_row.'.php' ) 
+								? 'browse_'.$products_per_row
+								: 'browse_5';					
+		}
 	}
 	else {
 		$templatefile = "browse_lite_pdf";
 	}
-	$tpl->set('products_per_row', $products_per_row );
+	$tpl->set('products_per_row', 2 );
 	$tpl->set('templatefile', $templatefile );
 	
 	$db_browse->reset();
@@ -299,6 +307,11 @@ else {
 		else {
 			$full_image_width = $full_image_height = "";
 		}
+		
+		$files = ps_product_files::getFilesForProduct( $db_browse->f('product_id') );
+		$products[$i]['files'] = $files['files'];
+		$products[$i]['images'] = $files['images'];
+		
 		$product_name = $db_browse->f("product_name");
 		if( $db_browse->f("product_publish") == "N" ) {
 			$product_name .= " (".vmHtmlEntityDecode(_CMN_UNPUBLISHED).")";
@@ -335,14 +348,18 @@ else {
 		}
 
 		/*** Add-to-Cart Button ***/
-		if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )) {
+		if (USE_AS_CATALOGUE != '1' && $product_price != "" 
+			&& !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )
+			&& !ps_product::product_has_attributes( $db_browse->f('product_id')) ) {
 			$tpl->set( 'i', $i );
 			$tpl->set( 'product_id', $db_browse->f('product_id') );
 			
-			$form_addtocart = $tpl->fetch( 'common/addtocart_form.tpl.php' );
+			$products[$i]['form_addtocart'] = $tpl->fetch( 'common/addtocart_form.tpl.php' );
+			$products[$i]['has_addtocart'] = true;
 		}
 		else {
-			$form_addtocart = "";
+			$products[$i]['form_addtocart'] = '';
+			$products[$i]['has_addtocart'] = false;
 		}
 
 		/*** Now fill the template
@@ -368,31 +385,12 @@ else {
 		else {
 			$products[$i]['image_url'] = IMAGEURL;
 		}
-
-		if( PSHOP_IMG_RESIZE_ENABLE=='1' ) {
-			$products[$i]['image_width'] = PSHOP_IMG_WIDTH;
-			$products[$i]['image_height'] = PSHOP_IMG_HEIGHT;
-		}
-		else {
-			if( file_exists( str_replace( IMAGEURL, IMAGEPATH, $product_thumb_image))) {
-				$arr = @getimagesize( str_replace( IMAGEURL, IMAGEPATH, $product_thumb_image));
-				$height_greater = $arr[0] < $arr[1];
-			}
-			if( @$height_greater === false ) {
-				$products[$i]['image_width'] = "width=\"".PSHOP_IMG_WIDTH."\"";
-				$products[$i]['image_height'] = "";
-			}
-			else {
-				$products[$i]['image_width'] = "";
-				$products[$i]['image_height'] = "height=\"".PSHOP_IMG_HEIGHT."\"";
-			}
-		}
+		
 		$products[$i]['product_name'] = shopMakeHtmlSafe( $product_name );
 		$products[$i]['product_s_desc'] = $product_s_desc;
 		$products[$i]['product_details'] = $product_details;
 		$products[$i]['product_rating'] = $product_rating;
 		$products[$i]['product_price'] = $product_price;
-		$products[$i]['form_addtocart'] = $form_addtocart;
 		$products[$i]['product_sku'] = $db_browse->f("product_sku");
 
 		$i++;
@@ -417,9 +415,9 @@ if( $num_rows > 5 && @$_REQUEST['output'] != "pdf") {
 else {
 	$tpl->set( 'show_limitbox', false );
 }
-$browsepage_footer = $tpl->fetch_cache( 'common/browse_pagenav.tpl.php' );
+$browsepage_footer = $tpl->fetch_cache( 'browse/includes/browse_pagenav.tpl.php' );
 $tpl->set( 'browsepage_footer', $browsepage_footer );
 
-echo $tpl->fetch_cache( 'common/browse_main.tpl.php' );
+echo $tpl->fetch_cache( 'browse/includes/browse_listtable.tpl.php' );
 }
 ?>

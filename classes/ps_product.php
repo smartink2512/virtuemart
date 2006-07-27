@@ -33,6 +33,8 @@ class ps_product extends vmAbstractObject {
 	 */
 	function validate(&$d) {
 		global $vmLogger, $database, $perm;
+		require_once(CLASSPATH . 'imageTools.class.php' );
+		
 		$valid = true;
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -105,7 +107,7 @@ class ps_product extends vmAbstractObject {
 			if( $db->f("product_thumb_image") && substr( $db->f("product_thumb_image"), 0, 4) != "http") {
 				$_REQUEST["product_thumb_image_curr"] = $db->f("product_thumb_image");
 				$d["product_thumb_image_action"] = "delete";
-				if (!validate_image($d,"product_thumb_image","product")) {
+				if (!vmImageTools::validate_image($d,"product_thumb_image","product")) {
 					return false;
 				}
 			}
@@ -113,7 +115,7 @@ class ps_product extends vmAbstractObject {
 		}
 		else {
 			// File Upload
-			if (!validate_image($d,"product_thumb_image","product")) {
+			if (!vmImageTools::validate_image($d,"product_thumb_image","product")) {
 				$valid = false;
 			}
 		}
@@ -128,7 +130,7 @@ class ps_product extends vmAbstractObject {
 			if( $db->f("product_full_image") && substr( $db->f("product_thumb_image"), 0, 4) != "http") {
 				$_REQUEST["product_full_image_curr"] = $db->f("product_full_image");
 				$d["product_full_image_action"] = "delete";
-				if (!validate_image($d,"product_full_image","product")) {
+				if (!vmImageTools::validate_image($d,"product_full_image","product")) {
 					return false;
 				}
 			}
@@ -136,14 +138,15 @@ class ps_product extends vmAbstractObject {
 		}
 		else {
 			// File Upload
-			if (!validate_image($d,"product_full_image","product")) {
+			if (!vmImageTools::validate_image($d,"product_full_image","product")) {
 				$valid = false;
 			}
 		}
 
 		foreach ($d as $key => $value) {
-			if (!is_array($value))
-			$d[$key] = addslashes($value);
+			if (!is_array($value)) {
+				$d[$key] = addslashes($value);
+			}
 		}
 		return $valid;
 	}
@@ -156,6 +159,7 @@ class ps_product extends vmAbstractObject {
 	 */
 	function validate_delete( $product_id, &$d ) {
 		global $vmLogger;
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		/* Check that ps_vendor_id and product_id match
 		if (!$this->check_vendor($d)) {
 		$d["error"] = "ERROR: Cannot delete product. Wrong product or vendor." ;
@@ -177,7 +181,7 @@ class ps_product extends vmAbstractObject {
 		if( !stristr( $db->f("product_thumb_image"), "http") ) {
 			$_REQUEST["product_thumb_image_curr"] = $db->f("product_thumb_image");
 			$d["product_thumb_image_action"] = "delete";
-			if (!validate_image($d,"product_thumb_image","product")) {
+			if (!vmImageTools::validate_image($d,"product_thumb_image","product")) {
 				$vmLogger->err( "Failed deleting Product Images!" );
 				return false;
 			}
@@ -186,7 +190,7 @@ class ps_product extends vmAbstractObject {
 		if( !stristr( $db->f("product_full_image"), "http") ) {
 			$_REQUEST["product_full_image_curr"] = $db->f("product_full_image");
 			$d["product_full_image_action"] = "delete";
-			if (!validate_image($d,"product_full_image","product")) {
+			if (!vmImageTools::validate_image($d,"product_full_image","product")) {
 				return false;
 			}
 		}
@@ -208,7 +212,7 @@ class ps_product extends vmAbstractObject {
 			return false;
 		}
 
-		if (!process_images($d)) {
+		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
 
@@ -408,7 +412,7 @@ class ps_product extends vmAbstractObject {
 			return false;
 		}
 
-		if (!process_images($d)) {
+		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
 
@@ -764,7 +768,7 @@ class ps_product extends vmAbstractObject {
 		$db->setQuery($q); $db->query();
 
 		/* Delete Image files */
-		if (!process_images($d)) {
+		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
 		/* Delete other Files and Images files */
@@ -1209,52 +1213,42 @@ class ps_product extends vmAbstractObject {
 	 */
 	function image_tag($image, $args="", $resize=1, $path_appendix="product") {
 		global $mosConfig_live_site;
-
+		require_once( CLASSPATH . 'imageTools.class.php');
+		
 		$border="";
-		if( !strpos( $args, "border=" ))
-		$border="border=\"0\"";
-
+		if( !strpos( $args, "border=" )) {
+			$border = 'border="0"';
+		}
+		$height = $width = '';
+		
 		if ($image != "") {
 			// URL
-			if( substr( $image, 0, 4) == "http" )
-			$url = $image;
-
+			if( substr( $image, 0, 4) == "http" ) {
+				$url = $image;
+			}
 			// local image file
 			else {
-				if(PSHOP_IMG_RESIZE_ENABLE == '1' && $resize==1)
-				$url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&newxsize=".PSHOP_IMG_WIDTH."&newysize=".PSHOP_IMG_HEIGHT."&fileout=";
-				else
-				$url = IMAGEURL.$path_appendix."/".$image;
+				if(PSHOP_IMG_RESIZE_ENABLE == '1' && $resize==1) {
+					$url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
+					if( !strpos( $args, "height=" )) {
+						$arr = @getimagesize( vmImageTools::getresizedfilename( $image, $path_appendix ) );
+						$width = $arr[0]; $height = $arr[1];
+					}
+				}
+				else {
+					$url = IMAGEURL.$path_appendix."/".$image;
+					if( !strpos( $args, "height=" )) {
+						$arr = @getimagesize( str_replace( IMAGEURL, IMAGEPATH, $image ) );
+						$width = $arr[0]; $height = $arr[1];
+					}
+				}
 			}
 		}
 		else {
 			$url = IMAGEURL.NO_IMAGE;
 		}
-		$html_height_width = "";
-		$height_greater = false;
-		if( file_exists(IMAGEPATH.$path_appendix."/".$image)) {
-			$arr = @getimagesize( IMAGEPATH.$path_appendix."/".$image );
-			$html_height_width = $arr[3];
-			$height_greater = $arr[0] < $arr[1];
-			if( (PSHOP_IMG_WIDTH < $arr[0] || PSHOP_IMG_HEIGHT < $arr[1]) && $resize != 0 ) {
-				if( $height_greater ) {
-					$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
-				}
-				else {
-					$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
-				}
-			}
-		}
-		if((PSHOP_IMG_RESIZE_ENABLE != '1') && ($resize==1) ) {
-			if( $height_greater ) {
-				$html_height_width = " height=\"".PSHOP_IMG_HEIGHT."\"";
-			}
-			else {
-				$html_height_width = " width=\"".PSHOP_IMG_WIDTH."\"";
-			}
-		}
-
-		return "<img src=\"$url\" $html_height_width $args $border />";
+		
+		return vmCommonHTML::imageTag( $url, '', '', $height, $width, '', '', $args.$border );
 
 	}
 

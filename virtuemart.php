@@ -35,6 +35,18 @@ $manufacturer_id = intval( mosGetParam( $_REQUEST, 'manufacturer_id', null ) );
 $search_category= intval( mosGetParam( $_REQUEST, 'search_category', null ) );
 $product_type_id = intval( mosgetparam($_REQUEST, 'product_type_id', null) );
 
+// Include the theme
+if( file_exists( VM_THEMEPATH.'theme.php' )) {
+	include( VM_THEMEPATH.'theme.php' );
+}
+elseif( file_exists( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' )) {
+	include( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' );
+}
+else {
+	echo 'Theme file not found.';
+	return;
+}
+
 if( PSHOP_IS_OFFLINE == "1" ) {
     echo PSHOP_OFFLINE_MESSAGE;
 }
@@ -177,11 +189,11 @@ else {
         // It's just an "include" statement which loads the page
         $vmDoCaching = ($page=="shop.browse" || $page=="shop.product_details") 
                         && (empty($keyword) && empty($keyword1) && empty($keyword2));
-
-        $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleight.js\"></script>
-<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleightbg.js\"></script>
-<link type=\"text/css\" rel=\"stylesheet\" media=\"screen, projection\" href=\"".VM_THEMEURL."theme.css\" />" );
 		
+        // IE6 PNG transparency fix
+        $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleight.js\"></script>
+<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleightbg.js\"></script>" );
+		        
 		// Load requested PAGE
 		if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
 			include( PAGEPATH.$modulename.".".$pagename.".php" );

@@ -531,7 +531,54 @@ class mooFxGenerator {
  *
  */
 class vmCommonHTML extends mosHTML {
-
+	/**
+	 * function to create a hyperlink
+	 *
+	 * @param string $link
+	 * @param string $text
+	 * @param string $target
+	 * @param string $title
+	 * @param string $attributes
+	 * @return string
+	 */
+	function hyperLink( $link, $text, $target='', $title='', $attributes='' ) {
+	
+		if( $target ) {
+			$target = ' target="'.$target.'"';
+		}
+		if( $title ) {
+			$title = ' title="'.$title.'"';
+		}
+		if( $attributes ) {
+			$attributes = ' ' . $attributes;
+		}
+		return '<a href="'.$link.'"'.$target.$title.$attributes.'>'.$text.'</a>';
+	}
+	/**
+	 * Function to create an image tag
+	 *
+	 * @param string $src
+	 * @param string $alt
+	 * @param int $height
+	 * @param int $width
+	 * @param string $title
+	 * @param int $border
+	 * @param string $attributes
+	 * @return string
+	 */
+	function imageTag( $src, $alt='', $align='', $height='', $width='', $title='', $border='0', $attributes='' ) {
+		
+		$alt = ' alt="'.$alt.'"';
+		if( $align ) { $align = ' align="'.$align.'"'; }
+		if( $height ) { $height = ' height="'.$height.'"'; }
+		if( $width ) { $width = ' width="'.$width.'"'; }
+		if( $title ) { $title = ' title="'.$title.'"'; }
+		if( $attributes ) {	$attributes = ' ' . $attributes; }
+		
+		$border = ' border="'.$border.'"';
+		
+		return '<img src="'.$src.'"'.$alt.$align.$title.$height.$width.$border.$attributes.' />';
+	}
 	/**
 	* Writes a "Save Ordering" Button
 	* @param int the number of rows
@@ -769,149 +816,27 @@ class vmCommonHTML extends mosHTML {
 			}
 		}
 	}
-	
 	/**
-	 * Prints a JS function to validate all fields
-	 * given in the array $required_fields
-	 * Does only test if non-empty (or if no options are selected)
-	 * Includes a check for a valid email-address
+	 * this function parses all the text through all content plugins
 	 *
-	 * @param array $required_fields The list of form elements that are to be validated
-	 * @param string $formname The name for the form element
-	 * @param string $div_id_postfix The ID postfix to identify the label for the field
+	 * @param string $text
+	 * @param string $type
 	 */
-	function printJS_formvalidation( $required_fields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
-                global $VM_LANG, $page;
-                echo '
-                <script language="javascript" type="text/javascript">//<![CDATA[
-                function '.$functioname.'() {
-                        var form = document.'.$formname.';
-                        var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
-                        var isvalid = true;
-                        var required_fields = new Array(\'';
-                
-                $field_list = implode( "','", $required_fields );
-                $field_list = str_replace( "'email',", '', $field_list );
-                $field_list = str_replace( "'username',", '', $field_list );
-                $field_list = str_replace( "'password',", '', $field_list );
-                $field_list = str_replace( "'password2',", '', $field_list );
-                echo $field_list;
-                echo '\');
-                for (var i=0; i < required_fields.length; i++) {
-                        formelement = eval( \'form.\' + required_fields[i] );
-                        ';
-                echo "
-                        if( !formelement ) { 
-                                formelement = document.getElementById( required_fields[i]+'_field0' );
-                                var loopIds = true;
-                        }
-                        if( !formelement ) { continue; }
-                        if (formelement.type == 'radio' || formelement.type == 'checkbox') {
-                                if( loopIds ) {
-                                        var rOptions = new Array();
-                                        for(var j=0; j<30; j++ ) {
-                                                rOptions[j] = document.getElementById( required_fields[i] + '_field' + j );
-                                                if( !rOptions[j] ) { break; }
-                                        }
-                                } else {
-                                        var rOptions = form[formelement.getAttribute('name')];
-                                }
-                                var rChecked = 0;
-                                if(rOptions.length > 1) {
-                                        for (var r=0; r < rOptions.length; r++) {
-                                                if( !rOptions[r] ) { continue; }
-                                                if (rOptions[r].checked) {      rChecked=1; }
-                                        }
-                                } else {
-                                        if (formelement.checked) {
-                                                rChecked=1;
-                                        }
-                                }
-                                if(rChecked==0) {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
-                                isvalid = false;
-                        }
-                                else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
-                                }                               
-                        }
-                        else if( formelement.options ) {
-                                if(formelement.selectedIndex.value == '') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
-                                        isvalid = false;
-                                } 
-                                else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
-                                }
-                        }
-                        else {
-                                if (formelement.value == '') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
-                                        isvalid = false;
-                                }
-                                else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
-                        }
-                }
-                }
-                ";
-                        
-                // We have skipped email in the first loop above!
-                // Now let's handle email address validation
-                if( in_array( 'email', $required_fields)) {
-                
-                        echo '
-			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
-				alert( \''. html_entity_decode( _REGWARN_MAIL ).'\');
-				return false;
-			}';
-
-		}
-		if( in_array( 'username', $required_fields )) {
+	function ParseContentByPlugins( $text, $type = 'content' ) {
+		global $_MAMBOTS;
+		if( VM_CONTENT_PLUGINS_ENABLE == '1') {
+			$_MAMBOTS->loadBotGroup( $type );
+			$row = new stdClass();
+			$row->text = $text;
+			$params = new mosParameters('');
 			
-			echo '
-			if (r.exec(form.username.value) || form.username.value.length < 3) {
-				alert( "'. html_entity_decode( sprintf(_VALID_AZ09, _PROMPT_UNAME, 2)) .'" );
-				return false;
-                        }';
-                }
-                if( in_array( 'password', $required_fields )) {
-					if( $page == 'checkout.index') {
-                        echo '
-                        if (form.password.value.length < 6 ) {
-                                alert( "1'. html_entity_decode( _REGWARN_PASS ).'" );
-								return false;
-                        } else if (form.password2.value == "") {
-                                alert( "2'.html_entity_decode( _REGWARN_VPASS1).'" );
-                                return false;
-                        } else if (r.exec(form.password.value)) {
-                                alert( "3'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
-                                return false;
-                        }';
-                	}
-                    echo '
-                        if ((form.password.value != "") && (form.password.value != form.password2.value)){
-                                alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
-                                return false;
-                        }';
-                }
-                if( in_array( 'agreed', $required_fields )) {
-                        echo '
-                        if (!form.agreed.checked) {
-				alert( "'. $VM_LANG->_PHPSHOP_AGREE_TO_TOS .'" );
-				return false;
-			}';
+			$_MAMBOTS->trigger( 'onPrepareContent', array( &$row, &$params, 0 ), true );
+			$text = $row->text;
+			
+			return $text;
 		}
-		// Finish the validation function
-		echo '
-			if( !isvalid) {
-				alert("'.addslashes( html_entity_decode(_CONTACT_FORM_NC) ).'" );
-			}
-			return isvalid;
-		}
-                //]]>
-                </script>';
-        }
+	}
+
         /**
          * This class allows us to create fieldsets like in Community builder
          * @author Copyright 2004 - 2005 MamboJoe/JoomlaJoe, Beat and CB team
@@ -1070,36 +995,7 @@ class vmCommonHTML extends mosHTML {
                 return $return;
 	}
 	
-	function list_themes( $name, $preselected='default' ) {
-		global $mosConfig_absolute_path;
-		$themes = mosReadDirectory( $mosConfig_absolute_path . "/components/com_virtuemart/themes", "" );
-		$array = array();
-		foreach ($themes as $theme ) {
-			$array[$theme] = $theme;
-		}
-		return ps_html::selectList( $name, $preselected, $array );
-	}
-	
-	/**
-	 * Funtion to create a select list holding all files for a special template section (e.g. order_emails)
-	 *
-	 * @param string $name
-	 * @param string $section
-	 * @param string $preselected
-	 * @return string
-	 */
-	function list_template_files( $name, $section, $preselected='' ) {
-		
-		$files = mosReadDirectory( VM_THEMEPATH . "templates/$section/", "", true, true);
-		$array = array();
-        foreach ($files as $file) {
-            $file_info = pathinfo($file);
-            $filename = $file_info['basename'];
-            if( $filename == 'index.html' ) { continue; }
-            $array[basename($filename, '.'.$file_info['extension'] )] = basename($filename, '.'.$file_info['extension'] );
-        }
-        return ps_html::selectList( $name, $preselected, $array );
-	} 
+
 	// end class vmCommonHTML, thanks folks!
 }
 
@@ -1129,14 +1025,16 @@ function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/ima
 		$title = 'this.T_TITLE=\''.$title .'\';';
 	}
 	$image = str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $image);
-	$text 	= '<img src="'. $image .'" align="middle" border="0" />&nbsp;'.$text;
+	if( $image != '' ) {
+		$text 	= vmCommonHTML::imageTag( $image, '', 'middle' ). '&nbsp;'.$text;
+	}
 	
 	$style = 'style="text-decoration: none; color: #333;"';
 	if ( $href ) {
 		$style = '';
 	}
 	if ( $link ) {
-		$tip = "<a href=\"". $href ."\" onmouseover=\"return escape( '$tooltip' );\" ". $style .">". $text ."</a>";
+		$tip = vmCommonHTML::hyperLink( $href, $text, '','', "onmouseover=\"return escape( '$tooltip' );\" ". $style );
 	} else {
 		$tip = "<span onmouseover=\"$width $title return escape( '$tooltip' );\" ". $style .">". $text ."</span>";
 	}
@@ -1186,7 +1084,7 @@ function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) 
 function mm_showMyFileName( $filename ) {
     
     if (DEBUG == '1' ) {
-        echo mm_ToolTip( '<div class=\'inputbox\'>Begin of File: '. $filename.'</div>');
+        echo vmToolTip( '<div class=\'inputbox\'>Begin of File: '. $filename.'</div>');
     }
 }
 /**
@@ -1224,8 +1122,9 @@ function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='
 	if( $windowAttributes ) {
 		$windowAttributes = ','.$windowAttributes;
 	}
-	$jslink = "<a href=\"javascript:void window.open('$link', '$target', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');\" title=\"$title\">$text</a>";
-	$noscriptlink = "<a href=\"$link\" target=\"$target\" title=\"$title\">$text</a>";
+	$jslink = vmCommonHTML::hyperLink( "javascript:void window.open('$link', '$target', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');", $text, '', $title );
+	$noscriptlink = vmCommonHTML::hyperLink( $link, $text, $target, $title );
+	
 	return mm_writeWithJS( $jslink, $noscriptlink );
 }
 

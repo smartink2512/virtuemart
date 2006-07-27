@@ -635,7 +635,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td class="labelcell"><label for="conf_THEME"><?php echo $VM_LANG->_VM_SELECT_THEME ?></label></td>
         <td>
         <?php 
-        	echo vmCommonHTML::list_themes( 'conf_THEME');
+        	echo ps_html::list_themes( 'conf_THEME');
         ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
@@ -666,7 +666,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE ?></td>
         <td>
         	<?php
-        	echo vmCommonHTML::list_template_files( "conf_FLYPAGE", 'product_details', str_replace('shop.', '', FLYPAGE ) );
+        	echo ps_html::list_template_files( "conf_FLYPAGE", 'product_details', str_replace('shop.', '', FLYPAGE ) );
         	?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ) ?></td>
@@ -675,7 +675,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE ?></td>
         <td>
         <?php
-        echo vmCommonHTML::list_template_files( "conf_CATEGORY_TEMPLATE", 'browse', CATEGORY_TEMPLATE );
+        echo ps_html::list_template_files( "conf_CATEGORY_TEMPLATE", 'browse', CATEGORY_TEMPLATE );
         ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN ) ?>
@@ -755,26 +755,8 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 <fieldset style="width:48%;float:right;">
 <legend>Layout</legend>
 <table class="adminlist">
-    <tr>
-        <td valign="top"><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ADDTOCART_STYLE ?></strong></td>
-        <td valign="middle" colspan="2"><?php
-                    $path = IMAGEPATH."ps_image";
-            $files = mosReadDirectory( "$path", "add-to-cart_?.", true, true);
-            foreach ($files as $file) { 
-                $file_info = pathinfo($file);
-                $filename = $file_info['basename'];
-                $checked = ($filename == PSHOP_ADD_TO_CART_STYLE) ? "checked=\"checked\"" : "";
-                echo "<input type=\"radio\" name=\"conf_PSHOP_ADD_TO_CART_STYLE\" value=\"$filename\" $checked />&nbsp;&nbsp;";
-                echo "<img align=\"center\" src=\"".IMAGEURL."ps_image/$filename\" border=\"0\" alt=\"$filename\" />";
-                echo "&nbsp;&nbsp;($filename)<br />";
-            }
-        ?></td>
-    </tr>
-    <tr>
-        <td colspan="3"><hr />&nbsp;</td>
-    </tr>
     <?php
-    if( function_exists('imagecreatefromjpeg')) {
+    if( function_exists('imagecreatefromjpeg') ) {
     	?>
     
 	    <tr>
@@ -802,6 +784,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 	    <?php
     }
     else {
+    	echo '<strong>Dynamic Image Resizing is not available. The GD library seems to be missing.</strong>';
     	echo '<input type="hidden" name="conf_PSHOP_IMG_RESIZE_ENABLE" value="0" />';
     	echo '<input type="hidden" name="conf_PSHOP_IMG_WIDTH" value="'. PSHOP_IMG_WIDTH .'" />';
     	echo '<input type="hidden" name="conf_PSHOP_IMG_HEIGHT" value="'. PSHOP_IMG_HEIGHT .'" />';

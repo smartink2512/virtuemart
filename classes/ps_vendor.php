@@ -32,11 +32,12 @@ class ps_vendor {
 		global $vmLogger;
 		
 		$db = new ps_DB;
-
-		if (!validate_image($d,"vendor_thumb_image","vendor")) {
+		require_once(CLASSPATH . 'vmImageTools.class.php' );
+		
+		if (!vmImageTools::validate_image($d,"vendor_thumb_image","vendor")) {
 			return false;
 		}
-		if (!validate_image($d,"vendor_full_image","vendor")) {
+		if (!vmImageTools::validate_image($d,"vendor_full_image","vendor")) {
 			return false;
 		}
 		if (!$d["vendor_name"]) {
@@ -86,18 +87,19 @@ class ps_vendor {
 		$q .= "WHERE vendor_id='$vendor_id'";
 		$db->query($q);
 		$db->next_record();
-
+		
+		require_once(CLASSPATH . 'vmImageTools.class.php' );
 		/* Validate vendor_thumb_image */
 		$d["vendor_thumb_image_curr"] = $db->f("vendor_thumb_image");
 		$d["vendor_thumb_image_name"] = "none";
-		if (!validate_image($d,"vendor_thumb_image","vendor")) {
+		if (!vmImageTools::validate_image($d,"vendor_thumb_image","vendor")) {
 			return false;
 		}
 
 		/* Validate vendor_full_image */
 		$d["vendor_full_image_curr"] = $db->f("vendor_full_image");
 		$d["vendor_full_image_name"] = "none";
-		if (!validate_image($d,"vendor_full_image","vendor")) {
+		if (!vmImageTools::validate_image($d,"vendor_full_image","vendor")) {
 			return false;
 		}
 
@@ -113,11 +115,11 @@ class ps_vendor {
 	***************************************************************************/
 	function validate_update(&$d) {
 		global $vmLogger;
-
-		if (!validate_image($d,"vendor_thumb_image","vendor")) {
+		require_once(CLASSPATH . 'vmImageTools.class.php' );
+		if (!vmImageTools::validate_image($d,"vendor_thumb_image","vendor")) {
 			return false;
 		}
-		if (!validate_image($d,"vendor_full_image","vendor")) {
+		if (!vmImageTools::validate_image($d,"vendor_full_image","vendor")) {
 			return false;
 		}
 
@@ -158,8 +160,8 @@ class ps_vendor {
 		if (!$this->validate_add($d)) {
 			return False;
 		}
-
-		if (!process_images($d)) {
+		
+		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
 		$d['display_style'][1] = ps_vendor::checkCurrencySymbol( $d['display_style'][1] );
@@ -245,7 +247,7 @@ class ps_vendor {
 			return False;
 		}
 
-		if (!process_images($d)) {
+		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
 		foreach ($d as $key => $value) {
@@ -335,7 +337,7 @@ class ps_vendor {
 		}
 
 		/* Delete Image files */
-		if (!process_images($d)) {
+		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
 

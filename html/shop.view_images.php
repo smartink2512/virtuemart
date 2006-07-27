@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+$pop = mosGetParam($_REQUEST, "pop", 0 );
 $flypage = mosGetParam($_REQUEST, "flypage", FLYPAGE);
 $product_id = intval(mosgetparam($_REQUEST, "product_id"));
 $page = mosgetparam($_REQUEST, "page", null);
@@ -31,19 +32,32 @@ if( !empty($product_id) ) {
 // Get the default full and thumb image
   $db->query( "SELECT product_name,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_id='$product_id'" );
   $db->next_record();
+  
   echo "<h3>".$VM_LANG->_PHPSHOP_AVAILABLE_IMAGES." ".$db->f("product_name")."</h3>\n";
-  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid\">"
-      . $VM_LANG->_PHPSHOP_BACK_TO_DETAILS."</a>\n<br/><br/><br/>";
+  
+  if( !$pop ) {
+  	echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid\">"
+      . $VM_LANG->_PHPSHOP_BACK_TO_DETAILS."</a>";
+  }
+  else {
+  	echo '<a href="#" onclick="javascript: window.close();">'._PROMPT_CLOSE.'</a>';
+  }
+  
+  echo '<br/><br/><br/>';
   
   $alt = $db->f("product_name");
   $height = PSHOP_IMG_HEIGHT;
   $width = PSHOP_IMG_WIDTH;
   $border = ($image_id == "product") ? "4" : "1";
-  $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&product_id=$product_id&image_id=product&Itemid=".$Itemid;
+  $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&amp;page=$page&amp;product_id=$product_id&amp;image_id=product&amp;Itemid=".$Itemid.'&amp;pop='.$pop;
   $title = $db->f("product_name");
+  
+  
   echo "<a href=\"$href\" target=\"_self\" title=\"$title\">\n";
   $ps_product->show_image( $db->f("product_thumb_image"), "alt=\"$alt\" align=\"center\" border=\"$border\"");
   echo "</a>&nbsp;&nbsp;&nbsp;";
+  
+  
   $dbi = new ps_DB();
 // Let's have a look wether the product has more images.
   $dbi->query( "SELECT * FROM #__{vm}_product_files WHERE file_product_id='$product_id' AND file_is_image='1'" );
@@ -58,7 +72,7 @@ if( !empty($product_id) ) {
     $width = empty($image->file_image_thumb_width) ? PSHOP_IMG_WIDTH : $image->file_image_thumb_width; 
     
     $border = ($image->file_id == $image_id) ? "4" : "1";
-    $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&product_id=$product_id&image_id=".$image->file_id."&Itemid=".$Itemid;
+    $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&product_id=$product_id&image_id=".$image->file_id."&Itemid=".$Itemid.'&amp;pop='.$pop;
     $title = $image->file_title;
     echo "<a href=\"$href\" target=\"_self\" title=\"$title\"><img src=\"$src\" alt=\"$alt\" align=\"center\" width=\"$width\" border=\"$border\" /></a>\n&nbsp;&nbsp;&nbsp;";
     // Break Row when needed

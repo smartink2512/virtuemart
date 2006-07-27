@@ -33,6 +33,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+27-07-2006 soeren
+
+^ moved the functions "validate_image" and "process_images" from the ps_main.php to the new
+	class file "imageTools.class.php", class "vmImageTools"
+	
 25-07-2006 soeren
 
 ^ started working on Theming support for VirtueMart. the first steps were
@@ -771,7 +777,7 @@ ALTER TABLE `mos_vm_order_item` CHANGE `product_item_price` `product_item_price`
 	marks required fields. This prepares the integration of	a form & field management 
 	component! You can already now easily re-arrange the fields by changing their order.
 + Added complete JS validation to the registration / billto forms
-	Uses vmCommonHTML::printJS_formvalidation() to print a JS form validation function
+	Uses ps_userfield::printJS_formvalidation() to print a JS form validation function
 	
 11-10-2005 soeren
 # fixed a bug in the shopper-registration of a registered user

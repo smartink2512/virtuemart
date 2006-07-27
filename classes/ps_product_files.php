@@ -433,7 +433,7 @@ class ps_product_files {
 	 */
 	function handleFileUpload( &$d ) {
 		global $vmLogger, $VM_LANG, $mosConfig_absolute_path;
-		
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		// Uploaded file branch
 		$upload_success = false;
 		$fileinfo = pathinfo( $_FILES['file_upload']['name'] );
@@ -521,7 +521,7 @@ class ps_product_files {
 					$height = intval( $d['fullimage_height'] );
 					$width = intval( $d['fullimage_width'] );
 					
-					vmResizeImage( $uploaddir.$d['filename'], $uploaddir.$d['filename'], $width, $height );
+					vmImageTools::resizeImage( $uploaddir.$d['filename'], $uploaddir.$d['filename'], $width, $height );
 					
 					$fullimg = getimagesize( $uploaddir.$d['filename'] );
 					$d['file_image_width'] = $fullimg[0];
@@ -594,12 +594,35 @@ class ps_product_files {
 			case 'images': $type_sql = 'AND file_is_image=1'; break;
 			default: $type_sql = ''; break;
 		}
-		$db->query( "SELECT COUNT(file_id) AS files FROM #__{vm}_product_files WHERE file_product_id=".intval($pid)." $type_sql" );
+		$db->query( "SELECT COUNT(file_id) AS files FROM #__{vm}_product_files WHERE file_product_id=".intval($pid)." AND file_published=1 $type_sql" );
 		$db->next_record();
 		$files = $db->f('files');
 		unset( $db );
 		
 		return $files;
+	}
+	/**
+	 * Returns an array holding all the files and images of the specified product
+	 * $files['files'] holds all files as objects
+	 * $files['images'] holds all images as objects
+	 *
+	 * @param unknown_type $pid
+	 * @return unknown
+	 */
+	function getFilesForProduct( $pid ) {
+		$db= new ps_DB();
+		$files['images'] = array();
+		$files['files'] = array();
+		$db->query( "SELECT * FROM `#__{vm}_product_files` WHERE `file_product_id`=".intval($pid)." AND `file_published`=1" );
+		while( $db->next_record() ) {
+			switch( $db->f('file_is_image') ) {
+				case 0: $files['files'][] = $db->get_row(); break;
+				case 1: $files['images'][] = $db->get_row(); break;
+			}
+		}
+		
+		return $files;
+		
 	}
 	/**
 	 * Checks if a file is a restricted downloadable product file
@@ -748,7 +771,7 @@ class ps_product_files {
 	 * @return string
 	 */
 	function createThumbImage( $fileName, $section='product', $height=PSHOP_IMG_HEIGHT, $width=PSHOP_IMG_WIDTH) {
-
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		/* Generate Image Destination File Name */
 		$pathinfo = pathinfo( $fileName );
 		
@@ -756,7 +779,7 @@ class ps_product_files {
 		
 		$fileout = IMAGEPATH."$section/resized/".$to_file_thumb;
 		
-		vmResizeImage( $fileName, $fileout, $height, $width );
+		vmImageTools::ResizeImage( $fileName, $fileout, $height, $width );
 		
 		return $fileout;
 			

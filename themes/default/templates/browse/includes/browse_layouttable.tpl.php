@@ -31,7 +31,7 @@ foreach( $products as $product ) {
 $table =& new HTML_Table('width="100%"');
 
 // Loop through each row and build the table
-foreach($data as $key => $value) {
+foreach($data as $key => $value ) {
 	$table->addRow($data[$key] );
 }
 // Display the table

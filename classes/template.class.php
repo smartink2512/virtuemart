@@ -67,7 +67,7 @@ class vmTemplate {
 	
 	/**
     * Test to see whether the currently loaded cache_id has a valid
-    * corrosponding cache file.
+    * corresponding cache file.
     *
     * @return bool
     */

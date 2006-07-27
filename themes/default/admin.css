@@ -1,3 +1,9 @@
+/**
+* This file holds styles for the frontend administration
+* (most of the were copied from the default backend template in J! 1.0.x)
+* This file is not to be included in the frontend main site (index.php), but in the
+* "frontend without modules and stuff" - index2.php
+*/
 table#toolbar {
 	margin-right: 10px;
 	margin-bottom: 10px;

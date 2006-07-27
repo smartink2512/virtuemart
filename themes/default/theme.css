@@ -1,7 +1,11 @@
-/* < ?php // Fools phpDocumentor into parsing this file
-/* Shop Styles here please
+/** 
+* Main CSS file for the "default" theme for VirtueMart
+* @copyright 2006 Soeren Eberhardt, Anne-Katrin Merz
+* @license GNU/GPL
+*
 */
 
+/* General Shop Styles here please */
 .addtocart_button {
 	text-align:center;
 	background-position:bottom left;
@@ -13,6 +17,10 @@
 	background: url( 'images/add-to-cart.gif' ) no-repeat left center transparent;
 	vertical-align: middle;
 	overflow:hidden;
+}
+.addtocart_form {
+	display: inline;
+	white-space: nowrap;
 }
 /* The quantity box beneath the "add to cart" button  */
 .quantity_box {
@@ -40,12 +48,55 @@
 .continue_link {
 	background: url( 'images/back.png' ) no-repeat left;
 }
-
+/* The PDF, Email and Print buttons */
 div.buttons_heading {
 	margin:10px;
 	width:20%;
 	float:right;
 }
+
+/** BROWSE PRODUCTS STYLES **/
+.browseProductContainer {
+	width:100%;
+	padding: 0px 3px 3px 3px;
+}
+.browseProductImage {
+	margin: 3px;
+}
+.browseProductDetailsContainer {
+	float: right;
+	width: 70%;
+}
+.browseProductTitle {
+	float: left;
+	width: 50%;
+	font-size: 16px; 
+	font-weight: bold;
+	padding: 3px;
+}
+.browseProductDescription {
+	width:80%;
+}
+.browsePriceContainer {
+	width:30%;
+}
+.browseAddToCartContainer {
+	width:30%;
+	text-align:center
+}
+.browseRatingContainer {
+	width:30%;
+	white-space: nowrap;
+}
+
+/** Flypage Styles **/
+.thumbnailListContainer {
+	text-align: center;
+	width: 200px;
+	height: 200px;
+	overflow: auto;
+}
+
 /*
 General Form Styling
 */

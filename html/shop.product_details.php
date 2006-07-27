@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 require_once(CLASSPATH . 'ps_product_files.php' );
+require_once(CLASSPATH . 'imageTools.class.php' );
 require_once(CLASSPATH . 'ps_product.php' );
 $ps_product = new ps_product;
 
@@ -118,7 +119,7 @@ $product_description = $db_product->f("product_desc");
 if( (str_replace("<br />", "" , $product_description)=='') && ($product_parent_id!=0) ) {
 	$product_description = $dbp->f("product_desc"); // Use product_desc from Parent Product
 }
-$product_description = vmParseContentByPlugins( $product_description );
+$product_description = vmCommonHTML::ParseContentByPlugins( $product_description );
 
 /** Get the CATEGORY NAVIGATION **/
 $navigation_pathway = "";
@@ -274,12 +275,11 @@ elseif( !$db_product->f("product_url") ) {
 }
 
 /* MORE IMAGES ??? */
+$files = ps_product_files::getFilesForProduct( $product_id );
+
 $more_images = "";
-if( !empty($images->images) ) {
-	/* Build the JavaScript Link */
-	$more_images = "<a href=\"$mosConfig_live_site/index.php?option=com_virtuemart&amp;page=shop.view_images&amp;flypage=".@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id&amp;Itemid=$Itemid\">";
-	$more_images .= "<img src=\"".VM_THEMEURL."images/more_images.png\" width=\"16\" height=\"16\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_MORE_IMAGES ." (".$images->images.")\" />";
-	$more_images .= "<br />".$VM_LANG->_PHPSHOP_MORE_IMAGES." (".$images->images.")</a>";
+if( !empty($files['images']) ) {
+	$more_images = vmMoreImagesLink( $files['images'] );
 }
 /* Files? */
 $file_list = ps_product_files::get_file_list( $product_id );
@@ -369,11 +369,14 @@ else {
 * with the value of $product_name
 * 
 * */
+$tpl->set( "product_id", $product_id );
 $tpl->set( "product_name", $product_name );
 $tpl->set( "product_image", $product_image );
 $tpl->set( "full_image", $full_image ); // to display the full image on flypage
 $tpl->set( "product_thumb_image", $product_thumb_image );
 $tpl->set( "more_images", $more_images );
+$tpl->set( "images", $files['images'] );
+$tpl->set( "files", $files['files'] );
 $tpl->set( "file_list", $file_list );
 $tpl->set( "edit_link", $edit_link );
 $tpl->set( "manufacturer_link", $manufacturer_link );

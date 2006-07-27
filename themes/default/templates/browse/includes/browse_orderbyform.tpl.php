@@ -5,7 +5,7 @@
 
 <?php
 if( !empty( $VM_BROWSE_ORDERBY_FIELDS )) {
-	echo $this->fetch_cache( 'common/browse_orderbyfields.tpl.php');
+	echo $this->fetch_cache( 'browse/includes/browse_orderbyfields.tpl.php');
 }
 // This is the toggle button for Descending / Ascending Order
 // It is wrapped into a JS function with a noscript area to keep it accessible

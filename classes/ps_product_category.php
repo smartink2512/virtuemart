@@ -32,6 +32,7 @@ class ps_product_category extends vmAbstractObject {
 	 */
 	function validate_add(&$d) {
 		global $vmLogger;
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		$valid = true;
 		if (!$d["category_name"]) {
 			$vmLogger->err( "You must enter a name for the category.");
@@ -52,7 +53,7 @@ class ps_product_category extends vmAbstractObject {
 		}
 		else {
 			// File Upload
-			if (!validate_image( $d, "category_thumb_image", "category")) {
+			if (!vmImageTools::validate_image( $d, "category_thumb_image", "category")) {
 				$valid = false;
 			}
 		}
@@ -67,7 +68,7 @@ class ps_product_category extends vmAbstractObject {
 		}
 		else {
 			// File Upload
-			if (!validate_image( $d, "category_full_image", "category")) {
+			if (!vmImageTools::validate_image( $d, "category_full_image", "category")) {
 				$valid = false;
 			}
 		}
@@ -86,7 +87,7 @@ class ps_product_category extends vmAbstractObject {
 	function validate_update(&$d) {
 		global $vmLogger;
 		$valid = true;
-
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		if (!$d["category_name"]) {
 			$vmLogger->err( "You must enter a name for the category." );
 			$valid = False;
@@ -114,7 +115,7 @@ class ps_product_category extends vmAbstractObject {
 			if( $db->f("category_thumb_image") && substr( $db->f("category_thumb_image"), 0, 4) != "http") {
 				$_REQUEST["category_thumb_image_curr"] = $db->f("product_thumb_image");
 				$d["category_thumb_image_action"] = "delete";
-				if (!validate_image( $d, "product_thumb_image", "category")) {
+				if (!vmImageTools::validate_image( $d, "product_thumb_image", "category")) {
 					return false;
 				}
 			}
@@ -137,7 +138,7 @@ class ps_product_category extends vmAbstractObject {
 			if( $db->f("category_full_image") && substr( $db->f("category_thumb_image"), 0, 4) != "http") {
 				$_REQUEST["category_full_image_curr"] = $db->f("category_full_image");
 				$d["category_full_image_action"] = "delete";
-				if (!validate_image( $d, "category_full_image", "category")) {
+				if (!vmImageTools::validate_image( $d, "category_full_image", "category")) {
 					return false;
 				}
 			}
@@ -145,7 +146,7 @@ class ps_product_category extends vmAbstractObject {
 		}
 		else {
 			// File Upload
-			if (!validate_image( $d, "category_full_image", "category")) {
+			if (!vmImageTools::validate_image( $d, "category_full_image", "category")) {
 				$valid = false;
 			}
 		}
@@ -165,7 +166,7 @@ class ps_product_category extends vmAbstractObject {
 	function validate_delete( $category_id, &$d) {
 		global $vmLogger;
 		$db = new ps_DB;
-
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		if (empty( $category_id )) {
 			$vmLogger->err( "Please select a category to delete." );
 			return False;
@@ -186,7 +187,7 @@ class ps_product_category extends vmAbstractObject {
 		if( !stristr( $db->f("category_thumb_image"), "http") ) {
 			$_REQUEST["category_thumb_image_curr"] = $db->f("category_thumb_image");
 			$d["category_thumb_image_action"] = "delete";
-			if (!validate_image($d,"category_thumb_image","category")) {
+			if (!vmImageTools::validate_image($d,"category_thumb_image","category")) {
 				$vmLogger->err( "Failed deleting Category Images!" );
 				return false;
 			}
@@ -195,7 +196,7 @@ class ps_product_category extends vmAbstractObject {
 		if( !stristr( $db->f("category_full_image"), "http") ) {
 			$_REQUEST["category_full_image_curr"] = $db->f("category_full_image");
 			$d["category_full_image_action"] = "delete";
-			if (!validate_image($d,"category_full_image","category")) {
+			if (!vmImageTools::validate_image($d,"category_full_image","category")) {
 				return false;
 			}
 		}
@@ -220,7 +221,7 @@ class ps_product_category extends vmAbstractObject {
 
 		if ($this->validate_add($d)) {
 
-			if (!process_images($d)) {
+			if (!vmImageTools::process_images($d)) {
 				return false;
 			}
 
@@ -304,7 +305,7 @@ class ps_product_category extends vmAbstractObject {
 			$d[$key] = addslashes($value);
 		}
 		if ($this->validate_update($d)) {
-			if (!process_images($d)) {
+			if (!vmImageTools::process_images($d)) {
 				return false;
 			}
 			$q = "UPDATE #__{vm}_category SET ";
@@ -468,7 +469,7 @@ class ps_product_category extends vmAbstractObject {
 		$db->setQuery($q);   $db->query();
 
 		/* Delete Image files */
-		if (!process_images($d)) {
+		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
 		$vmLogger->info( "Successfully deleted category ID: $record_id." );

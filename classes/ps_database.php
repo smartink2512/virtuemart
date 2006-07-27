@@ -221,7 +221,15 @@ class ps_DB extends database {
 	function sp($field_name, $stripslashes=true) {
 		echo $this->sf( $field_name, $stripslashes);
 	}
-
+	/**
+	 * Returns the object of the current row in the rowset
+	 *
+	 * @return mixed
+	 */
+	function get_row() {
+		return $this->record[$this->row];
+	}
+	
 	/**
 	 * Returns the number of rows in the RecordSet from a query.
 	 * @return int
