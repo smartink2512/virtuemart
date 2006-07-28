@@ -140,13 +140,13 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CONTENT_PLUGINS_ENABLE ?></label>
+				<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo $VM_LANG->_VM_CFG_CONTENT_PLUGINS_ENABLE ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_CONTENT_PLUGINS_ENABLE" name="conf_VM_CONTENT_PLUGINS_ENABLE" class="inputbox" <?php if (@VM_CONTENT_PLUGINS_ENABLE == '1') echo "checked='checked'"; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CONTENT_PLUGINS_ENABLE_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP ) ?>
 			</td>
 		</tr>
 		<tr>
@@ -423,7 +423,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf__VM_CURRENCY_CONVERTER_MODULE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CURRENCY_MODULE ?></label>
+				<label for="conf__VM_CURRENCY_CONVERTER_MODULE"><?php echo $VM_LANG->_VM_CFG_CURRENCY_MODULE ?></label>
 				
 			</td>
 			<td>
@@ -439,7 +439,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 	            ?>
 				</select>
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CURRENCY_MODULE_EXPLAIN ) ?>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_CFG_CURRENCY_MODULE_TIP ) ?>
 			</td>
 		</tr>
 		<tr>
@@ -632,15 +632,6 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 	<legend>Display</legend>
 <table class="adminlist">
     <tr>
-        <td class="labelcell"><label for="conf_THEME"><?php echo $VM_LANG->_VM_SELECT_THEME ?></label></td>
-        <td>
-        <?php 
-        	echo ps_html::list_themes( 'conf_THEME');
-        ?>
-        </td>
-        <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
-    </tr> 
-    <tr>
         <td class="labelcell"><label for="conf_PSHOP_PDF_BUTTON_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON ?></label></td>
         <td>
         <input type="checkbox" id="conf_PSHOP_PDF_BUTTON_ENABLE" name="conf_PSHOP_PDF_BUTTON_ENABLE" class="inputbox" <?php if (PSHOP_PDF_BUTTON_ENABLE == 1) echo "checked=\"checked\""; ?> value="1" />
@@ -660,34 +651,6 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         	<input type="checkbox" id="conf_VM_SHOW_PRINTICON" name="conf_VM_SHOW_PRINTICON" class="inputbox" <?php if (@VM_SHOW_PRINTICON == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_SHOW_PRINTICON_TIP ) ?></td>
-    </tr>
-    
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE ?></td>
-        <td>
-        	<?php
-        	echo ps_html::list_template_files( "conf_FLYPAGE", 'product_details', str_replace('shop.', '', FLYPAGE ) );
-        	?>
-        </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ) ?></td>
-    </tr>
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE ?></td>
-        <td>
-        <?php
-        echo ps_html::list_template_files( "conf_CATEGORY_TEMPLATE", 'browse', CATEGORY_TEMPLATE );
-        ?>
-        </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN ) ?>
-        </td>
-    </tr>
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW ?></td>
-        <td>
-            <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo PRODUCTS_PER_ROW ?>" />
-        </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN ) ?>
-        </td>
     </tr>
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NAV_AT_TOP ?></td>
@@ -755,6 +718,53 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 <fieldset style="width:48%;float:right;">
 <legend>Layout</legend>
 <table class="adminlist">
+    <tr>
+        <td class="labelcell"><label for="conf_THEME"><?php echo $VM_LANG->_VM_SELECT_THEME ?></label></td>
+        <td>
+        <?php 
+        	echo ps_html::list_themes( 'conf_THEME');
+        ?>
+        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
+    </tr> 
+    
+    <tr>
+        <td class="labelcell"><?php echo $VM_LANG->_VM_CFG_BROWSE_STYLE ?></td>
+        <td>
+        <?php
+        echo ps_html::list_browse_styles( "conf_VM_BROWSE_STYLE", @VM_BROWSE_STYLE );
+        ?>
+        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_VM_CFG_BROWSE_STYLE_TIP ) ?>
+        </td>
+    </tr>
+    <tr>
+        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW ?></td>
+        <td>
+            <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo PRODUCTS_PER_ROW ?>" />
+        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN ) ?>
+        </td>
+    </tr>
+    <tr>
+        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE ?></td>
+        <td>
+        <?php
+        echo ps_html::list_template_files( "conf_CATEGORY_TEMPLATE", 'browse', CATEGORY_TEMPLATE );
+        ?>
+        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN ) ?>
+        </td>
+    </tr>
+   	<tr>
+        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE ?></td>
+        <td>
+        	<?php
+        	echo ps_html::list_template_files( "conf_FLYPAGE", 'product_details', str_replace('shop.', '', FLYPAGE ) );
+        	?>
+        </td>
+        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ) ?></td>
+    </tr>
     <?php
     if( function_exists('imagecreatefromjpeg') ) {
     	?>

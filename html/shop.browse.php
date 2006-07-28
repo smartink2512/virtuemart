@@ -426,6 +426,6 @@ else {
 $browsepage_footer = $tpl->fetch_cache( 'browse/includes/browse_pagenav.tpl.php' );
 $tpl->set( 'browsepage_footer', $browsepage_footer );
 
-echo $tpl->fetch_cache( 'browse/includes/browse_notables.tpl.php' );
+echo $tpl->fetch_cache( 'browse/includes/'.VM_BROWSE_STYLE );
 }
 ?>

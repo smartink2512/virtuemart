@@ -1595,6 +1595,14 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_PHPSHOP_ORDER_LIST_PRINT_LABEL = 'Print Label';
 	var $_PHPSHOP_ORDER_LIST_VOID_LABEL = 'Void Label';
 	var $_PHPSHOP_ORDER_LIST_TRACK = 'Track';
+	var $_VM_SELECT_THEME = 'Select the theme for your Shop';
+	var $_VM_SELECT_THEME_TIP = 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\'t installed more themes.';
+	var $_VM_CFG_BROWSE_STYLE = 'Select a product listing style';
+	var $_VM_CFG_BROWSE_STYLE_TIP = 'Change the overall style of the product list with this setting.<br />The tableless layout is perfect for your tableless XHTML/CSS powered site. Try the other ones if your layout is screwed up.';
+	var $_VM_CFG_CONTENT_PLUGINS_ENABLE = 'Enable content mambots / plugins in descriptions?';
+	var $_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP = 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.';
+	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
+	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
         
 }
 class phpShopLanguage extends vmLanguage { }
