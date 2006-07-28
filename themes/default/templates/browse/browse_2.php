@@ -2,8 +2,10 @@
   <h2>
   <a style="font-size:16px; font-weight:bold;" href="<?php echo $product_flypage ?>"><?php echo $product_name ?></a>
   </h2>
-    <div style="float:left;width:32%" ><a href="<?php echo $product_flypage ?>">
-          <img src="<?php echo $product_thumb_image ?>" <?php echo $image_height ?> <?php echo $image_width ?> border="0" alt="<?php echo $product_name ?>" /></a>
+    <div style="float:left;width:32%" >
+    	<a href="<?php echo $product_flypage ?>">
+          <?php echo ps_product::image_tag( $product_thumb_image, 'class="browseProductImage" border="0" title="'.$product_name.'" alt="'.$product_name .'"' ) ?>
+       </a>
     </div>
     <div style="float:left;width:60%"><?php echo $product_s_desc ?><br />
       <a href="<?php echo $product_flypage ?>">[<?php echo $product_details ?>...]</a>

@@ -1,5 +1,7 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
 
+<?php echo $buttons_header // The PDF, Email and Print buttons ?>
+
 <p><?php echo $navigation_pathway ?></p>
 <p><?php echo $navigation_childlist ?></p>
 <table border="0" align="center" style="width: 100%;">

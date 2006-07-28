@@ -1,5 +1,7 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
 
+<?php echo $buttons_header // The PDF, Email and Print buttons ?>
+
 <?php echo $navigation_pathway ?>
 <br/>
 <table border="0" style="width: 100%;">
@@ -8,11 +10,14 @@
 	  <td rowspan="5" valign="top" style="text-align:center;"><br/>
 	  	<?php echo $product_image ?>
 	  	<br/><br/>
-	  	<div class="thumbnailListContainer">
-	  		<?php 
-				echo vmListAdditionalImages( $product_id, $images );
-	  		?>
-	  	</div>
+	  	<?php if( !empty($images)) { ?>
+		  	<div class="thumbnailListContainer">
+		  		<h5><?php echo $VM_LANG->_PHPSHOP_MORE_IMAGES ?></h5>
+		  		<?php 
+					echo vmListAdditionalImages( $product_id, $images );
+		  		?>
+		  	</div>
+		 <?php } 	?>
 	  </td>
 	  <td rowspan="1" colspan="2">
 	  <h1><?php echo $product_name ?> <?php echo $edit_link ?></h1>

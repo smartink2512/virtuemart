@@ -2,7 +2,7 @@
 
 <div class="buttons_heading">
 <?php 
-$pdf_link = "index2.php?option=$option&page=shop.pdf_output&showpage=$page&pop=1&output=pdf&product_id=$product_id&category_id=$category_id";
+$pdf_link = "index2.php?option=$option&page=shop.pdf_output&amp;showpage=$page&amp;pop=1&amp;output=pdf&amp;product_id=$product_id&amp;category_id=$category_id";
 ?>
 <?php echo vmCommonHTML::PdfIcon( $pdf_link ); ?>
 <?php echo vmCommonHTML::PrintIcon(); ?>

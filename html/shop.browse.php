@@ -150,6 +150,14 @@ else {
 	$tpl->set( 'parameter_form', $parameter_form );
 	
 	if ( $num_rows > 1 && @$_REQUEST['output'] != "pdf") {
+		
+		// Show the PDF, Email and Print buttons
+		$tpl->set('option', $option);
+		$tpl->set('category_id', $category_id );
+		$tpl->set('product_id', $product_id );
+		$buttons_header = $tpl->fetch( 'common/buttons.tpl.php' );
+		$tpl->set( 'buttons_header', $buttons_header );
+		
 		// Prepare Page Navigation
 		if ( $num_rows > $limit  || $num_rows > 5 ) {
 			require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
@@ -168,7 +176,6 @@ else {
 				}
 			}
 		}
-    
 
 		$tpl->set( 'VM_BROWSE_ORDERBY_FIELDS', $VM_BROWSE_ORDERBY_FIELDS);
 	    
@@ -211,6 +218,7 @@ else {
 	$db_browse->next_record();
 
 	$products_per_row = (!empty($category_id)) ? $db_browse->f("products_per_row") : PRODUCTS_PER_ROW;
+
 	if( $products_per_row < 1 ) {
 		$products_per_row = 1;
 	}
@@ -231,7 +239,7 @@ else {
 	else {
 		$templatefile = "browse_lite_pdf";
 	}
-	$tpl->set('products_per_row', 2 );
+	$tpl->set('products_per_row', $products_per_row );
 	$tpl->set('templatefile', $templatefile );
 	
 	$db_browse->reset();
@@ -418,6 +426,6 @@ else {
 $browsepage_footer = $tpl->fetch_cache( 'browse/includes/browse_pagenav.tpl.php' );
 $tpl->set( 'browsepage_footer', $browsepage_footer );
 
-echo $tpl->fetch_cache( 'browse/includes/browse_listtable.tpl.php' );
+echo $tpl->fetch_cache( 'browse/includes/browse_notables.tpl.php' );
 }
 ?>

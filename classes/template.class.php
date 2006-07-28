@@ -47,13 +47,14 @@ class vmTemplate {
     */
 	function vmTemplate($path='', $cacheId = null, $expire = 0 ) {
 		global $mosConfig_cachepath, $mosConfig_cachetime, $mosConfig_live_site, 
-			$mosConfig_absolute_path, $VM_LANG, $vmLogger, $sess, $auth, $my,
+			$mosConfig_absolute_path, $VM_LANG, $vmLogger, $page, $sess, $auth, $my,
 			$CURRENCY_DISPLAY, $CURRENCY, $mm_action_url;
 		$this->path = empty($path) ?  VM_THEMEPATH.'templates/' : $path;
 		$this->vars = array('VM_LANG' => $VM_LANG, 
 							'CURRENCY_DISPLAY' => $CURRENCY_DISPLAY,
 							'CURRENCY' => $CURRENCY,
 							'vmLogger' => $vmLogger,
+							'page' => $page,
 							'sess' => $sess,
 							'mm_action_url' => $mm_action_url,
 							'auth' => $auth,

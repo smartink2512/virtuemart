@@ -1,5 +1,6 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
 
+<?php echo $buttons_header // The PDF, Email and Print buttons ?>
 <?php echo $browsepage_header // The heading, the category description ?>
 <?php echo $parameter_form // The Parameter search form ?>
 <?php echo $orderby_form // The sort-by, order-by form PLUS top page navigation ?>

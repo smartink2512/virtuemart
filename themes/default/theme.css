@@ -58,7 +58,7 @@ div.buttons_heading {
 /** BROWSE PRODUCTS STYLES **/
 .browseProductContainer {
 	width:100%;
-	padding: 0px 3px 3px 3px;
+	padding: 3px 3px 3px 3px;
 }
 .browseProductImage {
 	margin: 3px;

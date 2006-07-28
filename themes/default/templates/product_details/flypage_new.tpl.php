@@ -1,6 +1,8 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
 
- <?php echo $navigation_pathway ?>
+<?php echo $buttons_header // The PDF, Email and Print buttons ?>
+
+<?php echo $navigation_pathway ?>
 <br/>
 <table border="0" style="width: 100%;">
   <tbody>

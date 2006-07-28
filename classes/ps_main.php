@@ -850,7 +850,8 @@ function vmSetGlobalCurrency(){
 		}
 		
 		$acceptedCurrencies = explode(',', $vendor_accepted_currencies );
-		if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies) && (stristr( $page, 'checkout.') || stristr( $page, 'shop.cart')) ) {
+		if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies) 
+				&& (stristr( $page, 'checkout.') || stristr( $page, 'account.') || stristr( $page, 'shop.cart')) ) {
 			// Fallback to global vendor currency (as set in the store form)
 			$GLOBALS['product_currency'] = $vendor_currency;
 		}

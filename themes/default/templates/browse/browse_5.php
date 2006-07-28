@@ -9,7 +9,8 @@
   </tr>
   <tr>
     <td ><a href="<?php echo $product_flypage ?>">
-          <img src="<?php echo $product_thumb_image ?>" <?php echo $image_height ?> <?php echo $image_width ?> border="0" alt="<?php echo $product_name ?>" /></a>
+          <?php echo ps_product::image_tag( $product_thumb_image, 'class="browseProductImage" border="0" title="'.$product_name.'" alt="'.$product_name .'"' ) ?>
+       </a>
     </td>
   </tr>
   <tr>
@@ -22,11 +23,5 @@
   </tr>
   <tr>
     <td ><?php echo $product_rating ?></td>
-  </tr>
-  <tr>
-    <td ><hr /></td>
-  </tr>
-  <tr>
-    <td align="center"><?php echo $form_addtocart ?></td>
   </tr>
 </table>

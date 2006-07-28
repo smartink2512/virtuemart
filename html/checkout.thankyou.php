@@ -53,7 +53,7 @@ if ($db->next_record()) {
  <p>
  <?php 
  if( empty($vars['error'])) { ?>
-   <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
+   <?php echo vmCommonHTML::imageTag( VM_THEMEURL .'images/button_ok.png', 'Success', 'center', '48', '48' ); ?>
    <?php echo $VM_LANG->_PHPSHOP_THANKYOU_SUCCESS?>
   
   <br /><br />

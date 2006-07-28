@@ -760,10 +760,10 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
     	?>
     
 	    <tr>
-	        <td width="30%" valign="top" align="right">
-			<strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING ?></strong></td>
-	        <td width="15%" valign="top">
-	            <input type="checkbox" name="conf_PSHOP_IMG_RESIZE_ENABLE" class="inputbox" <?php if (PSHOP_IMG_RESIZE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
+	        <td class="labelcell">
+	        	<label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING ?></label></td>
+	        <td>
+	            <input type="checkbox" name="conf_PSHOP_IMG_RESIZE_ENABLE" id="conf_PSHOP_IMG_RESIZE_ENABLE" class="inputbox" <?php if (PSHOP_IMG_RESIZE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
 	        </td>
 	        <td width="55%"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP ) ?></td>
 	    </tr>

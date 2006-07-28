@@ -79,16 +79,6 @@ if ($product_parent_id != 0) {
 	$dbp->next_record();
 }
 
-$images = new stdClass();
-// Let's have a look wether the product has images.
-if( $product_parent_id != 0 ) {
-	$images->images = ps_product_files::countFilesForProduct( $product_parent_id, 'images' );
-}
-else {
-	$images->images = ps_product_files::countFilesForProduct( $product_id, 'images' );
-}
-
-
 /* Create the template object */
 $tpl = new vmTemplate();
 
@@ -284,11 +274,19 @@ if( !empty($files['images']) ) {
 /* Files? */
 $file_list = ps_product_files::get_file_list( $product_id );
 
-/** AVAILABILITY **/
-// This is the place where it shows:
-// Availability: 24h, In Stock: 5 etc.
-// You can make changes to this functionality in the file: classes/ps_product.php
 if( @$_REQUEST['output'] != "pdf" ) {
+	
+	// Show the PDF, Email and Print buttons
+	$tpl->set('option', $option);
+	$tpl->set('category_id', $category_id );
+	$tpl->set('product_id', $product_id );
+	$buttons_header = $tpl->fetch( 'common/buttons.tpl.php' );
+	$tpl->set( 'buttons_header', $buttons_header );
+	
+	/** AVAILABILITY **/
+	// This is the place where it shows:
+	// Availability: 24h, In Stock: 5 etc.
+	// You can make changes to this functionality in the file: classes/ps_product.php
 	$product_availability = $ps_product->get_availability($product_id);
 }
 

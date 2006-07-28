@@ -24,12 +24,12 @@ $form_code = "";
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$list  = "SELECT order_id,order_status, #__{vm}_orders.cdate,#__{vm}_orders.mdate,order_total,#__{vm}_orders.user_id,";
-$list .= "first_name, last_name FROM #__{vm}_orders, #__{vm}_user_info WHERE ";
-$count = "SELECT count(*) as num_rows FROM #__{vm}_orders, #__{vm}_user_info WHERE ";
-$q = '';
+$list  = "SELECT #__{vm}_orders.order_id,order_status, #__{vm}_orders.cdate,#__{vm}_orders.mdate,order_total,#__{vm}_orders.user_id,";
+$list .= "first_name, last_name FROM #__{vm}_orders, #__{vm}_order_user_info WHERE ";
+$count = "SELECT count(*) as num_rows FROM #__{vm}_orders, #__{vm}_order_user_info WHERE ";
+$q = "address_type = 'BT' AND ";
 if (!empty($keyword)) {
-        $q  = "(#__{vm}_orders.order_id LIKE '%$keyword%' ";
+        $q  .= "(#__{vm}_orders.order_id LIKE '%$keyword%' ";
         $q .= "OR #__{vm}_orders.order_status LIKE '%$keyword%' ";
         $q .= "OR first_name LIKE '%$keyword%' ";
         $q .= "OR last_name LIKE '%$keyword%' ";
@@ -39,7 +39,7 @@ if (!empty($keyword)) {
 if (!empty($show)) {
 	$q .= "order_status = '$show' AND ";
 }
-$q .= "(#__{vm}_orders.user_id=#__{vm}_user_info.user_id) ";
+$q .= "(#__{vm}_orders.order_id=#__{vm}_order_user_info.order_id) ";
 $q .= "AND #__{vm}_orders.vendor_id='".$_SESSION['ps_vendor_id']."' ";
 $q .= "ORDER BY #__{vm}_orders.cdate DESC ";
 $list .= $q . " LIMIT $limitstart, " . $limit;

@@ -36,6 +36,8 @@ VirtueMart 1.1.x
 
 27-07-2006 soeren
 
+# Task #850 - Order list not showing all orders
+
 ^ moved the functions "validate_image" and "process_images" from the ps_main.php to the new
 	class file "imageTools.class.php", class "vmImageTools"
 	
