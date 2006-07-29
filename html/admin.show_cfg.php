@@ -723,21 +723,12 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td>
         <?php 
         	echo ps_html::list_themes( 'conf_THEME');
+        	echo vmCommonHTML::hyperlink($sess->url($_SERVER['PHP_SELF'].'?page=admin.theme_config_form'), $VM_LANG->_PHPSHOP_CONFIG );
         ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
     </tr> 
-    
-    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_VM_CFG_BROWSE_STYLE ?></td>
-        <td>
-        <?php
-        echo ps_html::list_browse_styles( "conf_VM_BROWSE_STYLE", @VM_BROWSE_STYLE );
-        ?>
-        </td>
-        <td><?php echo vmToolTip( $VM_LANG->_VM_CFG_BROWSE_STYLE_TIP ) ?>
-        </td>
-    </tr>
+  
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW ?></td>
         <td>

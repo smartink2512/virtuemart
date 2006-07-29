@@ -16,16 +16,19 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
+/**
+ * The configuration file handler class
+ *
+ */
 class ps_config {
 
-	/****************************************************************************
-	*    function: writeconfig
-	*  created by: soeren
-	* description: writes the virtuemart.cfg.php
-	*  parameters: passed by html from
-	*     returns: true if successful
-	****************************************************************************/
-
+	/**
+	 * writes the virtuemart.cfg.php
+	 * @author soeren
+	 * @static 
+	 * @param array $d
+	 * @return boolean
+	 */
 	function writeconfig(&$d) {
 		global $my, $db, $option, $page, $vmLogger, $VM_LANG;
 
@@ -34,8 +37,9 @@ class ps_config {
 		$db->next_record();
 		$d['conf_VM_PRICE_ACCESS_LEVEL'] = $db->f('name');
 
-		if ($_POST['myname'] != "Jabba Binks")
-		return false;
+		if ($_POST['myname'] != "Jabba Binks") {
+			return false;
+		}
 		else {
 			if ($d['conf_CHECKOUT_STYLE']=='3' || $d['conf_CHECKOUT_STYLE']=='4') {
 				$d['conf_NO_SHIPTO'] = '1';
@@ -86,7 +90,6 @@ class ps_config {
 			"_SHOW_PRICES"      =>      "conf__SHOW_PRICES",
 			"ORDER_MAIL_HTML"   =>      "conf_ORDER_MAIL_HTML",
 			"HOMEPAGE"		=>	"conf_HOMEPAGE",
-			"VM_BROWSE_STYLE"		=>	"conf_VM_BROWSE_STYLE",
 			"CATEGORY_TEMPLATE"		=>	"conf_CATEGORY_TEMPLATE",
 			"FLYPAGE"		=>	"conf_FLYPAGE",
 			"PRODUCTS_PER_ROW"		=>	"conf_PRODUCTS_PER_ROW",
@@ -237,5 +240,66 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 		}
 	} // end function writeconfig
 
+	/**
+	 * Writes the configuration file of the current theme
+	 *
+	 * @param array $d
+	 */
+	function writeThemeConfig( &$d ) {
+		global $page, $option, $VM_LANG;
+		
+		$my_config_array = array();
+		$config = "<?php
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+/**
+* The configuration file for the ".basename( VM_THEMEPATH )." theme
+*
+* @package VirtueMart
+* @subpackage themes
+* @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
+*/
+?>
+";
+		$params = mosGetParam( $_POST, 'params', '' );
+		if (is_array( $params )) {
+			$txt = array();
+			foreach ($params as $k=>$v) {
+				$txt[] = "$k=$v";
+			}
+			if( is_callable(array('mosParameters', 'textareaHandling'))) {
+				$_POST['params'] = mosParameters::textareaHandling( $txt );
+			}
+			else {
+				
+				$total = count( $txt );
+				for( $i=0; $i < $total; $i++ ) {
+					if ( strstr( $txt[$i], "\n" ) ) {
+						$txt[$i] = str_replace( "\n", '<br />', $txt[$i] );
+					}
+				}
+				$_POST['params'] = implode( "\n", $txt );
+		
+			}
+		}
+		$config .= $_POST['params'];
+		
+		if ($fp = fopen(VM_THEMEPATH ."theme.config.php", "w")) {
+			fputs($fp, $config, strlen($config));
+			fclose ($fp);
+
+			mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+		} else {
+			mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. VM_THEMEPATH ."theme.config.php)" );
+		}
+	}
+	
 } // end class ps_config
 ?>

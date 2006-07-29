@@ -32,6 +32,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class vmTemplate {
 	var $vars; /// Holds all the template variables
 	var $path; /// Path to the templates
+	/**
+	 * Stores the them configuration
+	 *
+	 * @var mosparameters
+	 */
+	var $config;
 	var $cache_id;
 	var $expire;
 	var $cached;
@@ -49,6 +55,7 @@ class vmTemplate {
 		global $mosConfig_cachepath, $mosConfig_cachetime, $mosConfig_live_site, 
 			$mosConfig_absolute_path, $VM_LANG, $vmLogger, $page, $sess, $auth, $my,
 			$CURRENCY_DISPLAY, $CURRENCY, $mm_action_url;
+			
 		$this->path = empty($path) ?  VM_THEMEPATH.'templates/' : $path;
 		$this->vars = array('VM_LANG' => $VM_LANG, 
 							'CURRENCY_DISPLAY' => $CURRENCY_DISPLAY,
@@ -64,6 +71,10 @@ class vmTemplate {
 							);
 		$this->cache_id = $cacheId ? $mosConfig_cachepath.'/' . $cacheId : $mosConfig_cachepath.'/' . $GLOBALS['cache_id'];
 		$this->expire   = $expire == 0 ? $mosConfig_cachetime : $expire;
+		
+		// the theme configuration needs to be available to to the templates
+		$this->config =& new mosParameters( @file_get_contents(VM_THEMEPATH.'theme.config.php'), VM_THEMEPATH.'theme.xml', 'theme');
+		
 	}
 	
 	/**
@@ -140,7 +151,31 @@ class vmTemplate {
 			if(is_array($vars)) $this->vars = array_merge($this->vars, $vars);
 		}
 	}
-
+	/**
+	 * Returns the value of a configuration parameter of this theme
+	 *
+	 * @param string $var
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	function get_cfg( $var, $default='' ) {
+		if( is_a( $this->config, 'mosparameters' )) {
+			return $this->config->get( $var );
+		}
+	}
+	
+	/**
+	 * Sets the configuration parameter of this theme
+	 *
+	 * @param string $var
+	 * @param mixed $value
+	 */
+	function set_cfg( $var, $value ) {
+		if( is_a( $this->config, 'mosparameters' )) {
+			$this->config->set( $var, $value );
+		}
+	}
+	
 	/**
     * Open, parse, and return the template file.
     *

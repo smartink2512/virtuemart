@@ -441,15 +441,6 @@ class ps_html {
 		}
 		return ps_html::selectList( $name, $preselected, $array );
 	}
-	// FIXME!!
-	function list_browse_styles( $name, $preselected='browse_layouttable.tpl.php' ) {
-		
-		$list = array( 'browse_layouttable.tpl.php' => 'Product Listing with a table (default)',
-					 	'browse_listtable.tpl.php' => 'Flat Product List (fixed to 1 product per row, using a table)',
-					 	'browse_notables.tpl.php' => 'Product List (no table, div-based)'
-				);
-		return ps_html::selectList( $name, $preselected, $list );
-	}
 	
 	/**
 	 * Funtion to create a select list holding all files for a special template section (e.g. order_emails)
@@ -484,12 +475,12 @@ class ps_html {
 	* @param string A path to a file or directory
 	* @return string Prints a div element
 	*/
-	function writableIndicator( $folder ) {
+	function writableIndicator( $folder, $style='text-align:left;margin-left:20px;' ) {
                 global $VM_LANG;
 		if( !is_array( $folder)) {
 			$folder = array($folder);
 		}
-		echo '<div class="quote" style="text-align:left;margin-left:20px;" >';
+		echo '<div class="quote" style="'.$style.'">';
         foreach( $folder as $dir ) {
             echo $dir . ' :: ';
             echo is_writable( $dir )

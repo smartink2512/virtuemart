@@ -80,7 +80,6 @@ define('DOWNLOADROOT', $mosConfig_absolute_path.'/');
 define('_SHOW_PRICES', '1');
 define('ORDER_MAIL_HTML', '1');
 define('HOMEPAGE', 'shop.index');
-define('VM_BROWSE_STYLE', 'browse_layouttable.tpl.php');
 define('CATEGORY_TEMPLATE', 'managed');
 define('FLYPAGE', 'flypage.tpl');
 define('PRODUCTS_PER_ROW', '1');

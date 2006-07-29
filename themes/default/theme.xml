@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<mosinstall type="theme">
+    <name>default</name>
+    <version>1.0.0</version>
+    <creationDate>29.07.2006</creationDate>
+    <author>soeren</author>
+    <authorEmail>soeren@virtuemart.net</authorEmail>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright><![CDATA[&copy; 2006 S&ouml;ren]]></copyright>
+    <license>GNU/GPL</license>
+    <description>
+    The default theme is a clean and basic layout for VirtueMart.
+    </description>
+    <params>
+		<param name="productListStyle" type="list" default="browse/includes/browse_layouttable.tpl.php" label="Product List Style" description="Select the style of the product listings (=browse page)">
+			<option value="browse/includes/browse_layouttable.tpl.php">Product Listing with a table (default)</option>
+			<option value="browse/includes/browse_listtable.tpl.php">Flat Product List (fixed to 1 product per row, using a table)</option>
+			<option value="browse/includes/browse_notables.tpl.php">Product List (no table, div-based)</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		
+		<param name="showVendorLink" type="radio" default="1" label="Show Vendor Link?" description="Show/Hide the link to the vendor of a product">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="showManufacturerLink" type="radio" default="1" label="Show Manufacturer Link?" description="Show/Hide the link to the manufacturer of a product">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		
+		<param name="showAddtocartButtonOnProductList" type="radio" default="1" label="Show the Add-to-cart Button on the product list?" description="Show/Hide the add-to-cart button on the main product listings. Customers will then be able to purchase the product from the details page only.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+    </params>
+</mosinstall>
