@@ -5,7 +5,7 @@
 *	
 */
 
-var Lightbox = {
+var LightboxGW = {
 	/* hideAll - closes all open lightbox windows */
 	hideAll: function(){
 		lboxes = document.getElementsByClassName('lbox')
@@ -19,12 +19,12 @@ var Lightbox = {
 		showSelectBoxes();
 	}
 }
-Lightbox.base = Class.create();
-Lightbox.base.prototype = {
+LightboxGW.base = Class.create();
+LightboxGW.base.prototype = {
 
 	initialize: function(element, options){
 		//start by hiding all lightboxes
-		Lightbox.hideAll();
+		LightboxGW.hideAll();
 	
 		this.element = $(element);
 		this.options = Object.extend({

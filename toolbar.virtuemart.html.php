@@ -72,7 +72,7 @@ class MENU_virtuemart {
 		$editor1 = isset($editor1_array[$page]) ? $editor1_array[$page] : '';
 		$editor2 = isset($editor2_array[$page]) ? $editor2_array[$page] : '';
 		if( $no_menu ) {
-			vmCommonHTML::loadLightbox();
+			vmCommonHTML::loadLightbox( '_gw');
 			vmCommonHTML::loadMooAjax();
 			$script .= '<div id="statusBox" style="text-align:center;display:none;"></div>';
 		}
@@ -101,15 +101,15 @@ class MENU_virtuemart {
 			
 			function responseSuccess(o){ 
 				document.getElementById('statusBox').innerHTML = o.responseText; 
-				setTimeout( 'Lightbox.hideAll()', 2000 );
+				setTimeout( 'LightboxGW.hideAll()', 2000 );
 				setTimeout( 'Element.hide(\$(\'statusBox\'))', 2000 );
 				try {
 					onResponseSuccess(o);
 				} catch(e) {}
 			}
 
-			$('statusBox').innerHTML = 'Saving ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
-			new Lightbox.base('statusBox', { closeOnOverlayClick : true })
+			$('statusBox').innerHTML = 'Saving ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox_gw/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
+			new LightboxGW.base('statusBox', { closeOnOverlayClick : true })
 			new ajax( '$mosConfig_live_site".$admin."/index2.php', {
 				formName: 'adminForm',
 				onComplete: responseSuccess

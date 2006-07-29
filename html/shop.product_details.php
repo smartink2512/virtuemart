@@ -211,58 +211,10 @@ else {
 /** Change Packaging - End */
 
 /** PRODUCT IMAGE **/
-$product_image = "";
-
-$full_image = $product_parent_id!=0 && !$db_product->f("product_full_image") ?
+$product_full_image = $product_parent_id!=0 && !$db_product->f("product_full_image") ?
 					$dbp->f("product_full_image") : $db_product->f("product_full_image"); // Change
 $product_thumb_image = $product_parent_id!=0 && !$db_product->f("product_thumb_image") ?
 					$dbp->f("product_thumb_image") : $db_product->f("product_thumb_image"); // Change
-
-/* Wrap the Image into an URL when applicable */
-if ( $db_product->f("product_url") ) {
-	$product_image = "<a href=\"". $db_product->f("product_url")."\" title=\"".$product_name."\" target=\"_blank\">";
-	$product_image .= $ps_product->image_tag($full_image, "alt=\"".$product_name."\"", 0);
-	$product_image .= "</a>";
-}
-/* Show the Thumbnail with a Link to the full IMAGE */
-elseif( !$db_product->f("product_url") ) {
-	if( empty($full_image ) ) {
-		$product_image = "<img src=\"".IMAGEURL.NO_IMAGE."\" alt=\"".$product_name."\" border=\"0\" />";
-	}
-	else {
-		// file_exists doesn't work on remote files,
-		// so returns false on remote files
-		// This should fix the "Long Page generation bug"
-		if( file_exists( IMAGEPATH."product/$full_image" )) {
-
-			/* Get image width and height */
-			if( $image_info = @getimagesize(IMAGEPATH."product/$full_image") ) {
-				$width = $image_info[0] + 20;
-				$height = $image_info[1] + 20;
-			}
-		}
-		else {
-			$width = 640;
-			$height= 480;
-		}
-		if( stristr( $full_image, "http" ) ) {
-			$imageurl = $full_image;
-		}
-		else {
-			$imageurl = IMAGEURL."product/$full_image";
-		}
-		/* Build the "See Bigger Image" Link */
-		if( @$_REQUEST['output'] != "pdf" ) {
-			$link = $imageurl;
-			$text = $ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
-			// vmPopupLink can be found in: htmlTools.class.php
-			$product_image = vmPopupLink( $link, $text, $width, $height );
-		}
-		else {
-			$product_image = "<a href=\"$imageurl\" target=\"_blank\">".$ps_product->image_tag($product_thumb_image, "alt=\"".$product_name."\"", 1)."</a>";
-		}
-	}
-}
 
 /* MORE IMAGES ??? */
 $files = ps_product_files::getFilesForProduct( $product_id );
@@ -367,11 +319,24 @@ else {
 * with the value of $product_name
 * 
 * */
+
+// This part allows us to copy ALL properties from the product table
+// into the template
+$productData = $db_product->get_row();
+$productArray = get_object_vars( $productData );
+
+$productArray["product_full_image"] = $product_full_image; // to display the full image on flypage
+$productArray["product_thumb_image"] = $product_thumb_image;
+
+$tpl->set( 'productArray', $productArray );
+foreach( $productArray as $property => $value ) {
+	$tpl->set( $property, $value);
+}
+$product_image = vmBuildFullImageLink( $productArray );
+
 $tpl->set( "product_id", $product_id );
 $tpl->set( "product_name", $product_name );
 $tpl->set( "product_image", $product_image );
-$tpl->set( "full_image", $full_image ); // to display the full image on flypage
-$tpl->set( "product_thumb_image", $product_thumb_image );
 $tpl->set( "more_images", $more_images );
 $tpl->set( "images", $files['images'] );
 $tpl->set( "files", $files['files'] );
@@ -380,19 +345,7 @@ $tpl->set( "edit_link", $edit_link );
 $tpl->set( "manufacturer_link", $manufacturer_link );
 $tpl->set( "product_price", $product_price );
 $tpl->set( "product_price_lbl", $product_price_lbl );
-$tpl->set( "product_s_desc", $db_product->f("product_s_desc") );
 $tpl->set( "product_description", $product_description );
-$tpl->set( "product_full_image", $db->f('product_full_image') );
-$tpl->set( "product_weight", $db_product->f("product_weight") );
-$tpl->set( "product_height", $db_product->f("product_height") );
-$tpl->set( "product_width", $db_product->f("product_width") );
-$tpl->set( "product_lwh_oum", $db_product->f("product_lwh_oum") );
-$tpl->set( "product_weight_oum", $db_product->f("product_weight_oum") );
-$tpl->set( "product_sku", $db_product->f("product_sku") );
-$tpl->set( "product_in_stock", $db_product->f("product_in_stock") );
-$tpl->set( "product_available_date", $db_product->f("product_available_date") );
-$tpl->set( "product_special", $db_product->f("product_special") );
-$tpl->set( "product_unit", $db_product->f("product_unit") );
 
 $tpl->set( "addtocart", $addtocart );
 // Those come from separate template files
@@ -404,7 +357,6 @@ $tpl->set( "product_availability", $product_availability );
 
 $tpl->set( "related_products", $related_products );
 $tpl->set( "vendor_link", $vendor_link );
-$tpl->set( "mosConfig_live_site", $mosConfig_live_site );
 $tpl->set( "product_type", $product_type ); // Changed Product Type
 $tpl->set( "product_packaging", $product_packaging ); // Changed Packaging
 $tpl->set( "ask_seller", $ask_seller ); // Product Enquiry!

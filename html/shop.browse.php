@@ -150,14 +150,7 @@ else {
 	$tpl->set( 'parameter_form', $parameter_form );
 	
 	if ( $num_rows > 1 && @$_REQUEST['output'] != "pdf") {
-		
-		// Show the PDF, Email and Print buttons
-		$tpl->set('option', $option);
-		$tpl->set('category_id', $category_id );
-		$tpl->set('product_id', $product_id );
-		$buttons_header = $tpl->fetch( 'common/buttons.tpl.php' );
-		$tpl->set( 'buttons_header', $buttons_header );
-		
+						
 		// Prepare Page Navigation
 		if ( $num_rows > $limit  || $num_rows > 5 ) {
 			require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
@@ -213,7 +206,7 @@ else {
     else {
     	$tpl->set( 'orderby_form', '' );
     }
-
+	
 	$db_browse->query( $list );
 	$db_browse->next_record();
 
@@ -222,12 +215,19 @@ else {
 	if( $products_per_row < 1 ) {
 		$products_per_row = 1;
 	}
-	
+	$buttons_header = '';
 	/**
 	 *   Start caching all product details for a later loop
 	 *
 	 **/
 	if(@$_REQUEST['output'] != "pdf") {
+		
+		// Show the PDF, Email and Print buttons
+		$tpl->set('option', $option);
+		$tpl->set('category_id', $category_id );
+		$tpl->set('product_id', $product_id );
+		$buttons_header = $tpl->fetch( 'common/buttons.tpl.php' );
+				
 		$templatefile = (!empty($category_id)) ? $db_browse->f("category_browsepage") : CATEGORY_TEMPLATE;
 		if( $templatefile == 'managed' ) {
 			// automatically select the browse template with the best match for the number of products per row
@@ -239,6 +239,8 @@ else {
 	else {
 		$templatefile = "browse_lite_pdf";
 	}
+	$tpl->set( 'buttons_header', $buttons_header );
+	
 	$tpl->set('products_per_row', $products_per_row );
 	$tpl->set('templatefile', $templatefile );
 	

@@ -631,12 +631,16 @@ class vmCommonHTML extends mosHTML {
 	* Loads all necessary files for JS Overlib tooltips
 	*/
 	function loadOverlib() {
-		global  $mosConfig_live_site;
+		global  $mosConfig_live_site, $mainframe;
 		if( !defined( "_OVERLIB_LOADED" )) {
-			?>
-			<script language="Javascript" type="text/javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
-			<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
-			<?php
+			$scripttag = '<script language="Javascript" type="text/javascript" src="'.$mosConfig_live_site.'/includes/js/overlib_mini.js"></script>
+			<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>';
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
 			define ( "_OVERLIB_LOADED", "1" );
 		}
 	}
@@ -647,12 +651,16 @@ class vmCommonHTML extends mosHTML {
 	* @since VirtueMart 1.1.0
 	*/
 	function loadMooAjax() {
-		global $mosConfig_live_site, $option;
+		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_MOOAJAX_LOADED" )) {
-			?>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/prototype.lite.js"></script>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/moo.ajax.js"></script>
-			<?php
+			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js"></script>
+			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.ajax.js"></script>';
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
 			define ( "_MOOAJAX_LOADED", "1" );
 		}
 	}
@@ -664,32 +672,47 @@ class vmCommonHTML extends mosHTML {
 	 *
 	 */
 	function loadMooFX() {
-		global $mosConfig_live_site, $option;
+		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_MOOFX_LOADED" )) {
-			?>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/prototype.lite.js"></script>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/moo.fx.js"></script>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/moo.fx/moo.fx.pack.js"></script>
-			<?php
+			
+			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js"></script>
+			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.js"></script>
+			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.pack.js"></script>';
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
 			define ( "_MOOFX_LOADED", "1" );
 		}
 		
 	}
 	/**
 	 * Function to include the Lightbox JS scripts in the HTML document
-	 * Source: http://blog.feedmarker.com/2006/02/12/how-to-make-better-modal-windows-with-lightbox/
+	 * Type '2' => Source: http://www.huddletogether.com/projects/lightbox2/
+	 * Type '_gw' => Source: http://blog.feedmarker.com/2006/02/12/how-to-make-better-modal-windows-with-lightbox/
+
 	 * @static 
 	 * @since VirtueMart 1.1.0
 	 *
 	 */
-	function loadLightbox() {
-		global $mosConfig_live_site, $option;
+	function loadLightbox( $type = '2') {
+		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_LIGHTBOX_LOADED" )) {
-			?>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/prototype/prototype.js"></script>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/lightbox/lightbox.js"></script>
-			<link type="text/css" rel="stylesheet" href="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/lightbox/lightbox.css" />
-			<?php
+			
+			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/prototype/prototype.js"></script>
+			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.js"></script>
+			<link type="text/css" rel="stylesheet" href="'. $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.css" />';
+			if( $type== '2')  {
+				$scripttag .= '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/lightbox2/js/scriptaculous.js?load=effects"></script>';
+			}
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
 			define ( "_LIGHTBOX_LOADED", "1" );
 		}
 		
@@ -700,12 +723,18 @@ class vmCommonHTML extends mosHTML {
 	* @since VirtueMart 1.1.0
 	*/
 	function loadTigraTree() {
-		global $mosConfig_live_site, $option;
+		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_TIGRATREE_LOADED" )) {
-			?>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/tigratree/tree_tpl.js.php"></script>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/tigratree/tree.js"></script>
-			<?php
+			
+			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree_tpl.js.php"></script>
+			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree.js"></script>';
+			
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
 			define ( "_TIGRATREE_LOADED", "1" );
 		}
 	}
@@ -717,11 +746,17 @@ class vmCommonHTML extends mosHTML {
 	 *
 	 */
 	function loadBehaviourJS() {
-		global $mosConfig_live_site, $option;
+		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_BEHAVIOURJS_LOADED" )) {
-			?>
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/prototype/behaviour.js"></script>
-			<?php
+			
+			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/prototype/behaviour.js"></script>';
+
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
 			define ( "_BEHAVIOURJS_LOADED", "1" );
 		}		
 	}

@@ -22,6 +22,63 @@ global $mainframe;
 // include the stylesheet for this template
 $mainframe->addCustomHeadTag( '<link type="text/css" href="'.VM_THEMEURL.'theme.css" rel="stylesheet" media="screen, projection" />' );
 
+function vmBuildFullImageLink( $product ) {
+	global $VM_LANG;
+	
+	$product_image = '';
+	
+	$img_attributes= 'alt="'.$product['product_name'].'"';
+	
+	/* Wrap the Image into an URL when applicable */
+	if ( $product["product_url"] ) {
+		$product_image = "<a href=\"". $product["product_url"]."\" title=\"".$product['product_name']."\" target=\"_blank\">";
+		$product_image .= ps_product::image_tag($product['product_full_image'], $img_attributes, 0);
+		$product_image .= "</a>";
+	}
+	/* Show the Thumbnail with a Link to the full IMAGE */
+	else {
+		if( empty($product['product_full_image'] ) ) {
+			$product_image = "<img src=\"".IMAGEURL.NO_IMAGE."\" alt=\"".$product['product_name']."\" border=\"0\" />";
+		}
+		else {
+			// file_exists doesn't work on remote files,
+			// so returns false on remote files
+			// This should fix the "Long Page generation bug"
+			if( file_exists( IMAGEPATH.'product/'.$product['product_full_image'] )) {
+	
+				/* Get image width and height */
+				if( $image_info = @getimagesize(IMAGEPATH.'product/'.$product['product_full_image'] ) ) {
+					$width = $image_info[0] + 20;
+					$height = $image_info[1] + 20;
+				}
+			}
+			else {
+				$width = 640;
+				$height= 480;
+			}
+			if( stristr( $product['product_full_image'], "http" ) ) {
+				$imageurl = $product['product_full_image'];
+			}
+			else {
+				$imageurl = IMAGEURL.'product/'.$product['product_full_image'];
+			}
+			/* Build the "See Bigger Image" Link */
+			if( @$_REQUEST['output'] != "pdf" ) {
+				$link = $imageurl;
+				$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
+				// vmPopupLink can be found in: htmlTools.class.php
+				$product_image = vmPopupLink( $link, $text, $width, $height );
+			}
+			else {
+				$product_image = "<a href=\"$imageurl\" target=\"_blank\">"
+								. ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)
+								. "</a>";
+			}
+		}
+	}
+	return $product_image;
+}
+
 /**
  * Builds a list of all additional images
  *
