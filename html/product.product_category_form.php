@@ -115,7 +115,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
       </td>
       <td valign="top">
           <?php
-	      echo vmCommonHTML::list_template_files( "category_flypage", 'product_details', str_replace('shop.', '', $db->sf("category_flypage")) );
+	      echo ps_html::list_template_files( "category_flypage", 'product_details', str_replace('shop.', '', $db->sf("category_flypage")) );
 	      ?>
       </td>
     </tr>
