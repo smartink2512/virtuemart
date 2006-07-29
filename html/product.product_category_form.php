@@ -102,7 +102,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
       <td><div align="right">Category Browse Page: </div></td>
       <td valign="top">
       <?php
-      echo vmCommonHTML::list_template_files( "category_browsepage", 'browse', $db->sf("category_browsepage") );
+      echo ps_html::list_template_files( "category_browsepage", 'browse', $db->sf("category_browsepage") );
       ?>
       </td>
     </tr>
