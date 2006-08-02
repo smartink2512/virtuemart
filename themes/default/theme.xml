@@ -42,6 +42,10 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
+		<param name="showPathway" type="radio" default="0" label="Show additional Pathway on the Product Page?" description="Show/Hide the pathway on the product details page (The global pathway is updated anyway)">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
 		
     </params>
 </mosinstall>

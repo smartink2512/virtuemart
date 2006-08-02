@@ -17,7 +17,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 ?>
 productListStyle=browse/includes/browse_notables.tpl.php
-showAddtocartButtonOnProductList=0
+showAddtocartButtonOnProductList=1
 showVendorLink=0
 showManufacturerLink=0
 showAvailability=1
+showPathway=0
