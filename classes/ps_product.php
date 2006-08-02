@@ -2240,6 +2240,8 @@ class ps_product extends vmAbstractObject {
 
 		$is_parent = $this->parent_has_children( $prod_id );
 		if( !$is_parent ) {
+			$tpl = new vmTemplate();
+			
 			$db = new ps_DB;
 
 			$q = "SELECT product_available_date,product_availability,product_in_stock  FROM #__{vm}_product WHERE ";
@@ -2249,42 +2251,12 @@ class ps_product extends vmAbstractObject {
 			$db->next_record();
 			$pad = $db->f("product_available_date");
 			$pav = $db->f("product_availability");
-
-			$heading = "<div style=\"text-decoration:underline;font-weight:bold;\">".$VM_LANG->_PHPSHOP_AVAILABILITY."</div><br />";
-
-			if (CHECK_STOCK == '1') {
-				if ($db->f("product_in_stock") < 1) {
-					$html .= $VM_LANG->_PHPSHOP_CURRENTLY_NOT_AVAILABLE."<br />";
-					if($pad > time()) {
-						$html .= $VM_LANG->_PHPSHOP_PRODUCT_AVAILABLE_AGAIN;
-						$html .= date("d.m.Y", $pad). "<br /><br />";
-						define('_PHSHOP_PRODUCT_NOT_AVAILABLE', '1');
-					}
-				}
-				elseif($pad > time()) {
-					$html .= $VM_LANG->_PHPSHOP_CURRENTLY_NOT_AVAILABLE."<br />";
-					$html .= $VM_LANG->_PHPSHOP_PRODUCT_AVAILABLE_AGAIN;
-					$html .= date("d.m.Y", $pad). "<br /><br />";
-					define('_PHSHOP_PRODUCT_NOT_AVAILABLE', '1');
-				}
-				else {
-					$html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_PRODUCT_FORM_IN_STOCK.": </span>".$db->f("product_in_stock")."<br /><br />";
-				}
-			}
-			if (!empty($pav)) {
-				if (stristr($pav, "gif") || stristr($pav, "jpg") || stristr($pav, "png")) {
-					// we think it's a pic then...
-					$html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_DELIVERY_TIME.": </span><br /><br />";
-					$html .= "<img align=\"middle\" src=\"".VM_THEMEURL."images/availability/".$pav."\" border=\"0\" alt=\"$pav\" />";
-				}
-				else {
-					$html .= "<span style=\"font-weight:bold;\">".$VM_LANG->_PHPSHOP_DELIVERY_TIME.": </span>";
-					$html .= $pav;
-				}
-			}
-			if (!empty($html)) {
-				$html = $heading.$html;
-			}
+			
+			$tpl->set( 'product_id', $prod_id );
+			$tpl->set( 'product_available_date', $db->f('product_available_date') );
+			$tpl->set( 'product_availability', $db->f('product_availability') );
+			$tpl->set( 'product_in_stock', $db->f('product_in_stock') );
+			$html = $tpl->fetch( 'common/availability.tpl.php');
 		}
 		return $html;
 

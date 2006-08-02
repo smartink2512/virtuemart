@@ -59,33 +59,43 @@ div.buttons_heading {
 .browseProductContainer {
 	width:100%;
 	padding: 3px 3px 3px 3px;
+	vertical-align: top;
 }
-.browseProductImage {
-	margin: 3px;
-}
-.browseProductDetailsContainer {
-	float: right;
-	width: 70%;
-}
+
 .browseProductTitle {
-	float: left;
-	width: 50%;
 	font-size: 16px; 
 	font-weight: bold;
 	padding: 3px;
+	margin-top: 3px;
+	width: 30%;
+	float: left;
+}
+.browseProductImageContainer {
+	float: left;
+	width: auto;
+	margin: 3px;
+}
+.browseProductDetailsContainer {
+	float: left;
+	width: 70%;
 }
 .browseProductDescription {
-	width:80%;
+	margin-top: 40px;
+	width:50%;
 }
 .browsePriceContainer {
-	width:30%;
+	float: left;
+	margin: 5px;
+	width:20%;
 }
 .browseAddToCartContainer {
 	width:30%;
 	text-align:center
 }
 .browseRatingContainer {
-	width:30%;
+	float: left;
+	width:25%;
+	margin: 3px;
 	white-space: nowrap;
 }
 

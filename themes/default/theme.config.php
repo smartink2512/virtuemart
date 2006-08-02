@@ -16,6 +16,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 ?>
-productListStyle=browse/includes/browse_layouttable.tpl.php
+productListStyle=browse/includes/browse_notables.tpl.php
+showAddtocartButtonOnProductList=0
 showVendorLink=0
-showManufacturerLink=1
+showManufacturerLink=0
+showAvailability=1

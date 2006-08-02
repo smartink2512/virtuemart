@@ -17,8 +17,18 @@
 			<option value="browse/includes/browse_listtable.tpl.php">Flat Product List (fixed to 1 product per row, using a table)</option>
 			<option value="browse/includes/browse_notables.tpl.php">Product List (no table, div-based)</option>
 		</param>
+		
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		
+		<!-- Begin Product Listing Configuration -->
+		<param name="showAddtocartButtonOnProductList" type="radio" default="1" label="Show the Add-to-cart Button on the product list?" description="Show/Hide the add-to-cart button on the main product listings. Customers will then be able to purchase the product from the details page only.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		
+		<!-- Begin Product Details Configuration -->
 		<param name="showVendorLink" type="radio" default="1" label="Show Vendor Link?" description="Show/Hide the link to the vendor of a product">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
@@ -27,10 +37,11 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		
-		<param name="showAddtocartButtonOnProductList" type="radio" default="1" label="Show the Add-to-cart Button on the product list?" description="Show/Hide the add-to-cart button on the main product listings. Customers will then be able to purchase the product from the details page only.">
+
+		<param name="showAvailability" type="radio" default="1" label="Show Availability Information?" description="Show/Hide the availability information of a product">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
+		
     </params>
 </mosinstall>

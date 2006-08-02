@@ -338,11 +338,10 @@ else {
 
 		if (PSHOP_ALLOW_REVIEWS == '1' && @$_REQUEST['output'] != "pdf") {
 			/**
-        *   Average customer rating: xxxxx
-        *   Total votes: x
-        */
-			$product_rating = $VM_LANG->_PHPSHOP_CUSTOMER_RATING .": <br />";
-			$product_rating .= ps_reviews::allvotes( $db_browse->f("product_id") );
+	        *   Average customer rating: xxxxx
+	        *   Total votes: x
+	        */
+			$product_rating = ps_reviews::allvotes( $db_browse->f("product_id") );
 		}
 		else {
 			$product_rating = "";
@@ -360,7 +359,9 @@ else {
 		/*** Add-to-Cart Button ***/
 		if (USE_AS_CATALOGUE != '1' && $product_price != "" 
 			&& !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )
-			&& !ps_product::product_has_attributes( $db_browse->f('product_id')) ) {
+			&& !ps_product::product_has_attributes( $db_browse->f('product_id'))
+			&& $tpl->get_cfg( 'showAddtocartButtonOnProductList' ) ) {
+				
 			$tpl->set( 'i', $i );
 			$tpl->set( 'product_id', $db_browse->f('product_id') );
 			

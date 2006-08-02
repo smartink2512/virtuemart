@@ -13,9 +13,11 @@
 	  <h1><?php echo $product_name ?> <?php echo $edit_link ?></h1>
 	  </td>
 	</tr>
-	<tr>
-	  <td rowspan="1" colspan="2"><?php echo $manufacturer_link ?><br /></td>
-	</tr>
+	<?php if( $this->get_cfg('showManufacturerLink')) { ?>
+		<tr>
+		  <td rowspan="1" colspan="2"><?php echo $manufacturer_link ?><br /></td>
+		</tr>
+	<?php } ?>
 	<tr>
       <td width="33%" valign="top" align="left">
       	<?php echo $product_price_lbl ?>
@@ -32,7 +34,12 @@
 	  </td>
 	</tr>
 	<tr>
-	  <td><?php echo $product_availability ?><br /></td>
+	  <td><?php 
+	  		if( $this->get_cfg( 'showAvailability' )) {
+	  			echo $product_availability; 
+	  		}
+	  		?><br />
+	  </td>
 	  <td colspan="2"><br /><?php echo $addtocart ?></td>
 	</tr>
 	<tr>
@@ -48,9 +55,11 @@
 	  <td colspan="3"><?php echo $related_products ?><br />
 	   </td>
 	</tr>
-	<tr>
-	  <td colspan="3"><div style="text-align: center;"><?php echo $vendor_link ?><br /></div><br /></td>
-	</tr>
+	<?php if( $this->get_cfg('showVendorLink')) { ?>
+		<tr>
+		  <td colspan="3"><div style="text-align: center;"><?php echo $vendor_link ?><br /></div><br /></td>
+		</tr>
+	<?php  } ?>
   </tbody>
 </table>
 <?php if( !empty( $navigation_childlist )) { ?>

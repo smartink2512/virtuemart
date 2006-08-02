@@ -22,59 +22,10 @@ $ps_order = new ps_order;
 
 /* Set Dynamic Page Title when applicable */
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE );
-    
-if ($perm->is_registered_customer($auth['user_id'])) {
 
+$tpl = new vmTemplate();
+
+$tpl->set( 'ps_order', $ps_order );
+
+echo $tpl->fetch( 'pages/account.index.tpl.php' );
 ?>
-  <strong><?php echo $VM_LANG->_PHPSHOP_ACC_CUSTOMER_ACCOUNT ?></strong>
-  <?php  echo $auth["first_name"] . " " . $auth["last_name"] . "<br />";?>
-  <br />
-  <table border="0" cellspacing="0" cellpadding="10" width="100%" align="center">
-  
-          
-    <tr>
-      <td>
-      <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.billing") ?>">
-          <?php 
-          echo "<img src=\"".VM_THEMEURL."images/identity.png\" align=\"middle\" height=\"48\" width=\"48\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\" />&nbsp;";
-          echo $VM_LANG->_PHPSHOP_ACC_ACCOUNT_INFO ?></a></strong>
-          <br /><?php echo $VM_LANG->_PHPSHOP_ACC_UPD_BILL ?>
-      </td>
-    </tr>
-    <?php
-    if(CHECKOUT_STYLE == 1 || CHECKOUT_STYLE == 2) {
-	?>
-		<tr><td>&nbsp;</td></tr>
-		
-		<tr>
-		  <td><hr />
-		  <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipping") ?>"><?php
-                  echo "<img src=\"".VM_THEMEURL."images/web.png\" align=\"middle\" border=\"0\" height=\"32\" width=\"32\" alt=\"".$VM_LANG->_PHPSHOP_ACC_SHIP_INFO."\" />&nbsp;&nbsp;&nbsp;";
-                  echo $VM_LANG->_PHPSHOP_ACC_SHIP_INFO ?></a></strong>
-                        <br />
-                        <?php echo $VM_LANG->_PHPSHOP_ACC_UPD_SHIP ?>
-                  </td>
-                </tr>
-                <?php
-	}
-	?>
-    <tr><td>&nbsp;</td></tr>
-    
-    <tr>
-      <td>
-      	<hr />
-      	<strong><?php 
-	      echo "<img src=\"".VM_THEMEURL."images/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
-	      echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?>
-	    </strong>
-        <?php $ps_order->list_order("A", "1" ); ?>
-      </td>
-    </tr>
-    
-</table>
-<!-- Body ends here -->
-<?php } 
-else { 
-    echo _LOGIN_TEXT .'<br/><br/><br/>';
-    include(PAGEPATH.'checkout.login_form.php');
-} ?>

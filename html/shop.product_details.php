@@ -249,8 +249,7 @@ $ask_seller .= $VM_LANG->_VM_PRODUCT_ENQUIRY_LBL.'</a>';
 /* SHOW RATING */
 $product_rating = "";
 if (PSHOP_ALLOW_REVIEWS == '1') {
-	$product_rating = "<span class=\"contentheading\">".$VM_LANG->_PHPSHOP_CUSTOMER_RATING.":</span><br />";
-	$product_rating .= ps_reviews::allvotes( $product_id );
+	$product_rating = ps_reviews::allvotes( $product_id );
 }
 
 /* ADD-TO-CART */
@@ -284,7 +283,9 @@ if (PSHOP_ALLOW_REVIEWS == '1') {
 	/*** Show all reviews available ***/
 	$product_reviews = ps_reviews::product_reviews( $product_id );
 	/*** Show a form for writing a review ***/
-	$product_reviewform = ps_reviews::reviewform( $product_id );
+	if( $my->id ) {
+		$product_reviewform = ps_reviews::reviewform( $product_id );
+	}
 }
 else {
 	$product_reviews = $product_reviewform = "";

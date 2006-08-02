@@ -52,28 +52,23 @@ class vmTemplate {
     * @return void
     */
 	function vmTemplate($path='', $cacheId = null, $expire = 0 ) {
-		global $mosConfig_cachepath, $mosConfig_cachetime, $mosConfig_live_site, 
-			$mosConfig_absolute_path, $VM_LANG, $vmLogger, $page, $sess, $auth, $my,
-			$CURRENCY_DISPLAY, $CURRENCY, $mm_action_url;
+		global $mosConfig_cachepath, $mosConfig_cachetime;
 			
 		$this->path = empty($path) ?  VM_THEMEPATH.'templates/' : $path;
-		$this->vars = array('VM_LANG' => $VM_LANG, 
-							'CURRENCY_DISPLAY' => $CURRENCY_DISPLAY,
-							'CURRENCY' => $CURRENCY,
-							'vmLogger' => $vmLogger,
-							'page' => $page,
-							'sess' => $sess,
-							'mm_action_url' => $mm_action_url,
-							'auth' => $auth,
-							'my' => $my,
-							'mosConfig_live_site' => $mosConfig_live_site,
-							'mosConfig_absolute_path' => $mosConfig_absolute_path
-							);
+		$globalsArray = vmGetGlobalsArray();
+		foreach( $globalsArray as $global ) {
+			global $$global;
+			$this->vars[$global] = $GLOBALS[$global];
+		}
 		$this->cache_id = $cacheId ? $mosConfig_cachepath.'/' . $cacheId : $mosConfig_cachepath.'/' . $GLOBALS['cache_id'];
 		$this->expire   = $expire == 0 ? $mosConfig_cachetime : $expire;
 		
-		// the theme configuration needs to be available to to the templates
-		$this->config =& new mosParameters( @file_get_contents(VM_THEMEPATH.'theme.config.php'), VM_THEMEPATH.'theme.xml', 'theme');
+		// the theme configuration needs to be available to the templates! (so you can use $this->get_cfg('showManufacturerLink') for example )
+		if( empty( $GLOBALS['vmThemeConfig'] ) || !empty( $_REQUEST['vmThemeConfig'])) {
+			$GLOBALS['vmThemeConfig'] =& new mosParameters( @file_get_contents(VM_THEMEPATH.'theme.config.php'), VM_THEMEPATH.'theme.xml', 'theme');
+
+		}
+		$this->config =& $GLOBALS['vmThemeConfig'];
 		
 	}
 	
@@ -159,9 +154,8 @@ class vmTemplate {
 	 * @return mixed
 	 */
 	function get_cfg( $var, $default='' ) {
-		if( is_a( $this->config, 'mosparameters' )) {
-			return $this->config->get( $var );
-		}
+
+		return $this->config->get( $var );
 	}
 	
 	/**

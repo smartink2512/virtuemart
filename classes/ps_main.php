@@ -866,5 +866,14 @@ function vmIsHttpsMode() {
 	return ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on');
 }
 
+function vmGetGlobalsArray() {
+	return array(  'perm', 'page', 'sess', 'func', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 'VM_MODULES_FORCE_HTTPS',
+					'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 'ps_vendor_id', 'keyword',
+					'ps_payment_method', 'pagename', 'modulename', 'vars', 'mosConfig_lang',
+					'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 'vendor_image_url', 'vendor_name', 
+					'vendor_address', 'vendor_city','vendor_country','vendor_mail','vendor_store_name', 'vendor_state', 'vendor_zip', 'vendor_phone', 'vendor_currency', 'vendor_store_desc', 'vendor_freeshipping', 'vendor_currency_display_style', 'vendor_freeshipping', 
+					'mm_action_url', 'limit', 'limitstart', 'mainframe', 'vmInputFilter',
+					'option', 'my', 'mosConfig_live_site', 'mosConfig_absolute_path' );
+}
 
 ?>

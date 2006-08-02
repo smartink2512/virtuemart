@@ -33,6 +33,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02-08-2006 soeren
+
++ template files for the product rating and review part
++ added theme configuration, based on the mosParameters specification
+	Themes have a configuration file now: theme.config.php.
 
 27-07-2006 soeren
 
