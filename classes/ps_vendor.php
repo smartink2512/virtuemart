@@ -32,7 +32,7 @@ class ps_vendor {
 		global $vmLogger;
 		
 		$db = new ps_DB;
-		require_once(CLASSPATH . 'vmImageTools.class.php' );
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		
 		if (!vmImageTools::validate_image($d,"vendor_thumb_image","vendor")) {
 			return false;
@@ -88,7 +88,7 @@ class ps_vendor {
 		$db->query($q);
 		$db->next_record();
 		
-		require_once(CLASSPATH . 'vmImageTools.class.php' );
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		/* Validate vendor_thumb_image */
 		$d["vendor_thumb_image_curr"] = $db->f("vendor_thumb_image");
 		$d["vendor_thumb_image_name"] = "none";
@@ -115,7 +115,7 @@ class ps_vendor {
 	***************************************************************************/
 	function validate_update(&$d) {
 		global $vmLogger;
-		require_once(CLASSPATH . 'vmImageTools.class.php' );
+		require_once(CLASSPATH . 'imageTools.class.php' );
 		if (!vmImageTools::validate_image($d,"vendor_thumb_image","vendor")) {
 			return false;
 		}
