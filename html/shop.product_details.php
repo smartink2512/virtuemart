@@ -278,6 +278,7 @@ if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price,
 $addtocart .= "</form>
     </div>";
 
+$product_reviews = $product_reviewform = "";
 /* LIST ALL REVIEWS **/
 if (PSHOP_ALLOW_REVIEWS == '1') {
 	/*** Show all reviews available ***/
@@ -287,9 +288,7 @@ if (PSHOP_ALLOW_REVIEWS == '1') {
 		$product_reviewform = ps_reviews::reviewform( $product_id );
 	}
 }
-else {
-	$product_reviews = $product_reviewform = "";
-}
+
 /* LINK TO VENDOR-INFO POP-UP **/
 $vend_id = $ps_product->get_vendor_id($product_id);
 $vend_name = $ps_product->get_vendorname($product_id);

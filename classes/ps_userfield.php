@@ -297,11 +297,14 @@ class ps_userfield extends vmAbstractObject {
 	   		}
 	   		if( $field->name == 'agreed') {
 	   					$field->title = '<script type="text/javascript">//<![CDATA[
-				document.write(\'<label for="agreed_field"><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
-				document.write(\''.htmlspecialchars( $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS, ENT_QUOTES ) .'</a></label>\');
+				document.write(\'<label for="agreed_field">'.htmlspecialchars( $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS, ENT_QUOTES ).'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
+				document.write(\' ('.$VM_LANG->_PHPSHOP_STORE_FORM_TOS .')</a>\');
 				//]]></script>
-				<noscript><label for="agreed_field"><a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&page=shop.tos" title="'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'">
-				'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'</a></label></noscript>';
+				<noscript>
+					<label for="agreed_field">'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'</label>
+					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&page=shop.tos" title="'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'">
+					 ('.$VM_LANG->_PHPSHOP_STORE_FORM_TOS.')
+					</a></noscript>';
 	   		}
 	   		// a delimiter marks the beginning of a new fieldset and
 	   		// the end of a previous fieldset

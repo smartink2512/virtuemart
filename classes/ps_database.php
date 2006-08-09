@@ -275,6 +275,70 @@ class ps_DB extends database {
 	function getCurrentRow() {
 		return $this->record[$this->row];
 	}
+	
+	/**
+	 * Query Builder Functions
+	 * @author soeren
+	 * @since VirtueMart 1.1.0
+	 * 
+	 * @param string $type Either INSERT or UPDATE
+	 * @param string $table Example: #__{vm}_user_info
+	 * @param array $values Array of the format array( FieldName => Value ), Example: array( 'user_info_id' => md5( $hash ) )
+	 * @param string $whereClause
+	 *
+	 */
+	function buildQuery( $type='INSERT', $table, $values, $whereClause='' ) {
+		global $vmLogger;
+		
+		if( empty($table) || empty($values)) {
+			return;
+		}
+		$type = strtoupper($type);
+		
+		switch( $type ) {
+			
+			case 'INSERT':
+				
+				$q = "INSERT INTO `$table` (`";
+				$q .= implode( "`,\n`", array_keys($values) );
+				
+				$q .= "`) VALUES (\n";
+				$count = count( $values );
+				$i = 1;
+				foreach ( $values as $value ) {
+					$q .= '\'' . $this->getEscaped($value)."'\n";
+					if( $i++ < $count ) {
+						$q.= ',';
+					}
+				}
+				$q .= ')';
+				break;
+				
+			case 'UPDATE':
+				
+				$q = "UPDATE `$table` SET ";
+				$count = count( $values );
+				$i = 1;
+				foreach ( $values as $key => $value ) {
+					$q .= "`$key` = '" . $this->getEscaped($value)."'";
+					if( $i++ < $count ) {
+						$q.= ",\n";
+					}
+				}
+				$q .= "\n$whereClause";
+				
+				break;
+				
+				
+			default:
+				$vmLogger->debug( 'Function '.__FUNCTION__.' can\'t build a query of the type "'.$type.'"' );
+				return;
+		}
+		
+		$this->setQuery( $q );
+
+	}
+	
 	///////////////////////////////
 	// Parental Database functions
 	// We must overwrite them because

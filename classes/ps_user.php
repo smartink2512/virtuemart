@@ -139,36 +139,21 @@ class ps_user {
 		$userFields = ps_userfield::getUserFields();
 
 		// Insert billto;
-
-		// Building the query: PART ONE
-		// The first 7 fields are FIX and not built dynamically
-		$q = "INSERT INTO #__{vm}_user_info (`user_info_id`, `user_id`, `address_type`, `address_type_name`, `cdate`, `mdate`, `perms`, ";
 		$fields = array();
-		foreach( $userFields as $userField ) {
-			$fields[] = "`".$userField->name."`";
-		}
-		$q .= str_replace( '`email`', '`user_email`', implode( ',', $fields ));
-
-		// Building the query: PART TWO, listing all values
-		$q .= ") VALUES (\n";
-		$q .= "'" . md5(uniqid( $hash_secret)) . "',";
-		$q .= "'" . $uid . "',";
-		$q .= "'BT',";
-		$q .= "'-default-',";
-		$q .= "'" .$timestamp . "',";
-		$q .= "'" .$timestamp . "',";
-		$q .= "'".$d['perms']."', ";
+		
+		$fields['user_email'] = md5(uniqid( $hash_secret));
+		$fields['user_info_id'] = md5(uniqid( $hash_secret));
+		$fields['user_id'] =  $uid;
+		$fields['address_type'] =  'BT';
+		$fields['address_type_name'] =  '-default-';
+		$fields['cdate'] =  $timestamp;
+		$fields['mdate'] =  $timestamp;
+		$fields['perms'] =  $d['perms'];
 
 		$values = array();
 		foreach( $userFields as $userField ) {
-			$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
-			$values[] = "'".$d[$userField->name]."'";
+			$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
 		}
-		$q .= implode( ',', $values );
-		$q .= ") ";
-
-		// Run the query now!
-		$db->query($q);
 
 		if( $perm->check("admin")) {
 			$vendor_id = $d['vendor_id'];
@@ -485,6 +470,52 @@ class ps_user {
 					$d["error"] = $obj->getError();
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Returns the information from the user_info table for a specific user
+	 *
+	 * @param int $user_id
+	 * @param array $fields
+	 * @return ps_DB
+	 */
+	function getUserInfo( $user_id, $fields=array() ) {
+		$user_id = intval( $user_id );
+		if( empty( $fields )) {
+			$selector = '*';
+		}
+		else {
+			$selector = '`'. implode( '`,`', $fields ) . '`';
+		}
+		$db = new ps_DB();
+		$q = 'SELECT '.$selector.' FROM `#__{vm}_user_info` WHERE `user_id`='.$user_id;
+		$db->query( $q );
+		$db->next_record();
+		
+		return $db;
+	}
+	
+	/**
+	 * Inserts or Updates the user information
+	 *
+	 * @param array $user_info
+	 * @param int $user_id
+	 */
+	function setUserInfo( $user_info, $user_id=0 ) {
+		$db = new ps_DB;
+		
+		if( empty( $user_id ) ) { // INSERT NEW USER
+			
+			$db->buildQuery( 'INSERT', '#__{vm}_user_info', $user_info );
+			// Run the query now!
+			$db->query();
+		}
+		else { // UPDATE EXISTING USER
+			
+			$db->buildQuery( 'UPDATE', '#__{vm}_user_info', $user_info, 'WHERE `user_id`='.$user_id );
+			// Run the query now!
+			$db->query();
 		}
 	}
 }

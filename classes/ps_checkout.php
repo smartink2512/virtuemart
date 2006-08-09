@@ -361,13 +361,27 @@ class ps_checkout {
 		}
 		elseif ($dbp->f("enable_processor") == "B") {
 			$_SESSION['ccdata']['creditcard_code'] = "";
-			// Bankeinzug
-			$dbu = new ps_DB; //DB User
-			$q  = "SELECT bank_account_holder,bank_iban,bank_account_nr,bank_sort_code,bank_name FROM #__{vm}_user_info WHERE user_id = '" . $d["user_id"] . "'";
-			$dbu->query($q);
-			if (!$dbu->next_record()) {
-				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA );
-				return False;
+			// Bank Account
+			require_once( CLASSPATH . 'ps_user.php' );
+			$dbu =& ps_user::getUserInfo( $auth["user_id"], array( 'bank_account_holder','bank_iban','bank_account_nr','bank_sort_code','bank_name' ) ); 
+
+			if ( $dbu->f("bank_account_holder") == "" || $dbu->f("bank_account_nr") =="" ) {
+				if( !empty($d['bank_account_holder']) && !empty($d['bank_account_nr'])) {
+					// Insert the given data
+					$fields = array( 'bank_account_holder' => $d['bank_account_holder'],
+							'bank_account_nr' => $d['bank_account_nr'],
+							'bank_sort_code' => $d['bank_sort_code'],
+							'bank_name' => $d['bank_name'],
+							'bank_iban' => $d['bank_iban']
+							);
+					ps_user::setUserInfo( $fields, $auth["user_id"] );
+
+					$dbu =& ps_user::getUserInfo( $auth["user_id"], array( 'bank_account_holder','bank_iban','bank_account_nr','bank_sort_code','bank_name' ) ); 
+				}
+				else {
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA );
+					return False;
+				}
 			}
 			if ($dbu->f("bank_account_holder") == ""){
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME );

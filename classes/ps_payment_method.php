@@ -489,9 +489,13 @@ class ps_payment_method extends vmAbstractObject {
 	function list_bank($payment_method_id, $horiz) {
 		$has_bank_methods = $this->list_payment_radio("B", $payment_method_id, $horiz); //A bit easier :-)
 		if( $has_bank_methods ) {
-			echo '<br />';
-			require_once( CLASSPATH . 'ps_userfield.php');
-			ps_userfield::listUserFields( ps_userfield::getUserfields( 'bank' ) );
+			require_once( CLASSPATH . 'ps_user.php' );
+			$dbu =& ps_user::getUserInfo( $_SESSION['auth']['user_id'], array( 'bank_account_holder','bank_iban','bank_account_nr','bank_sort_code','bank_name' ) ); 
+			if( !$dbu->f('bank_account_holder') || !$dbu->f('bank_account_nr') || !$dbu->f('bank_sort_code')) {
+				echo '<br />';
+				require_once( CLASSPATH . 'ps_userfield.php');
+				ps_userfield::listUserFields( ps_userfield::getUserfields( 'bank' ), array(), $dbu );
+			}
 		}
 	}
 

@@ -37,8 +37,9 @@ if (!empty($payment_method_id)) {
 
 if ( $db->f("payment_class") ) {
 
-    if (include_once( CLASSPATH."payment/".$db->f("payment_class").".php" ))
-        eval( "\$_PAYMENT = new ".$db->f("payment_class")."();");
+    if (include_once( CLASSPATH."payment/".$db->f("payment_class").".php" )) {
+    	eval( "\$_PAYMENT = new ".$db->f("payment_class")."();");
+    }
 }
 else {
     include( CLASSPATH."payment/ps_payment.php" );

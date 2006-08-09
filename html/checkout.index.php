@@ -338,6 +338,8 @@ if ($checkout) {
 <?php      }
     }
 }
-else mosRedirect('index.php?option=com_virtuemart', $VM_LANG->_PHPSHOP_EMPTY_CART);
+else {
+	mosRedirect( $sess->url( URL ), $VM_LANG->_PHPSHOP_EMPTY_CART);
+}
 
 ?>

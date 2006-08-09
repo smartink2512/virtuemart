@@ -166,7 +166,7 @@ class ps_echeck {
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         
-        global $vendor_mail, $vendor_currency, $VM_LAN, $vmLogger;
+        global $vendor_mail, $vendor_currency, $VM_LANG, $vmLogger;
         $database = new ps_DB();
       
         $ps_vendor_id = $_SESSION["ps_vendor_id"];

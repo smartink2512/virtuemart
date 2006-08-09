@@ -384,10 +384,10 @@ class ps_session {
 
 		switch ($text) {
 			case SECUREURL:
-				$text =  SECUREURL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
+				$text =  SECUREURL.basename( $_SERVER['PHP_SELF'] )."?".$this->component_name.$Itemid;
 				break;
 			case URL:
-				$text =  URL.$_SERVER['PHP_SELF']."?".$this->component_name.$Itemid;
+				$text =  URL.basename( $_SERVER['PHP_SELF'] )."?".$this->component_name.$Itemid;
 				break;
 				
 			default:
