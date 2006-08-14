@@ -21,7 +21,7 @@ require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 
-$order_id = mosgetparam( $_REQUEST, 'order_id', null);
+$order_id = mosgetparam( $_REQUEST, 'order_id', 0);
 $dbc = new ps_DB;
 if (!is_numeric($order_id))
     die ('Please provide a valid Order ID!');
@@ -248,7 +248,7 @@ $db->next_record();
                     ?>
                 </td>
                 <td><?php 
-                    echo $CURRENCY_DISPLAY->getFullValue($details[3]); 
+                    echo $CURRENCY_DISPLAY->getFullValue($details[3], '', $db->f('order_currency')); 
                     ?>
                 </td>
               </tr>
@@ -295,12 +295,12 @@ $db->next_record();
                 $price = $ps_product->get_price($dbcart->f("product_id"));
                 $item_price = $price["product_price"]; */
                 $item_price = $dbcart->f("product_item_price");
-               echo $CURRENCY_DISPLAY->getFullValue($item_price);
+               echo $CURRENCY_DISPLAY->getFullValue($item_price, '', $db->f('order_currency'));
                
            ?></td>
           <td align="right"><?php $total = $dbcart->f("product_quantity") * $item_price; 
                 $subtotal += $total;
-                echo $CURRENCY_DISPLAY->getFullValue($total);
+                echo $CURRENCY_DISPLAY->getFullValue($total, '', $db->f('order_currency'));
            ?>&nbsp;&nbsp;&nbsp;</td>
         </tr><?php
       }
@@ -311,7 +311,7 @@ $db->next_record();
         </tr>
         <tr> 
           <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL ?> :</td>
-          <td align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($subtotal) ?>&nbsp;&nbsp;&nbsp;</td>
+          <td align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($subtotal, '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;</td>
         </tr>
 <?php 
       /* COUPON DISCOUNT */
@@ -324,7 +324,7 @@ $db->next_record();
           <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
           </td> 
           <td align="right"><?php
-            echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount ); ?>&nbsp;&nbsp;&nbsp;
+            echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;
           </td>
         </tr>
       <?php
@@ -340,9 +340,9 @@ $db->next_record();
             </td> 
             <td align="right"><?php
           if ($db->f("order_discount") > 0 )
-               echo "- ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")));
+               echo "- ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency'));
           elseif ($db->f("order_discount") < 0 )
-               echo "+ ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount"))); ?>
+               echo "+ ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency')); ?>
             &nbsp;&nbsp;&nbsp;</td>
         </tr>
         
@@ -354,7 +354,7 @@ $db->next_record();
           <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?> :</td>
           <td align="right"><?php 
             $shipping_total = $db->f("order_shipping");
-            echo $CURRENCY_DISPLAY->getFullValue($shipping_total);
+            echo $CURRENCY_DISPLAY->getFullValue($shipping_total, '', $db->f('order_currency'));
             
             ?>&nbsp;&nbsp;&nbsp;</td>
         </tr>
@@ -362,7 +362,7 @@ $db->next_record();
           <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?> :</td>
           <td align="right"><?php 
             $tax_total = $db->f("order_tax")+ $db->f("order_shipping_tax");
-            echo $CURRENCY_DISPLAY->getFullValue($tax_total);
+            echo $CURRENCY_DISPLAY->getFullValue($tax_total, '', $db->f('order_currency'));
             
             ?>&nbsp;&nbsp;&nbsp;</td>
         </tr>
@@ -376,11 +376,11 @@ $db->next_record();
           <td align="right"><?php 
           if (PAYMENT_DISCOUNT_BEFORE == '1') { ?><strong><?php  
             $total = $db->f("order_total");
-            echo $CURRENCY_DISPLAY->getFullValue($total);
+            echo $CURRENCY_DISPLAY->getFullValue($total, '', $db->f('order_currency'));
           }
           else {
             $total = $db->f("order_subtotal") + $db->f("order_tax") + $db->f("order_shipping");
-            echo $CURRENCY_DISPLAY->getFullValue($total);
+            echo $CURRENCY_DISPLAY->getFullValue($total, '', $db->f('order_currency'));
           }
           if (PAYMENT_DISCOUNT_BEFORE == '1') { ?></strong><?php } ?>&nbsp;&nbsp;&nbsp;</td>
         </tr>
@@ -396,15 +396,15 @@ $db->next_record();
         </td> 
         <td align="right"><?php
           if ($db->f("order_discount") > 0 )
-               echo "- ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")));
+               echo "- ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency'));
           elseif ($db->f("order_discount") < 0 )
-               echo "+ ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")));
+               echo "+ ".$CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency'));
                ?>&nbsp;&nbsp;&nbsp;
         </td>
         </tr>
         <tr>
             <td colspan="4" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL ?>: </strong></td>
-        <td align="right"><strong><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_total")); ?>
+        <td align="right"><strong><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_total"), '', $db->f('order_currency')); ?>
         </strong>&nbsp;&nbsp;&nbsp;
           </td>
         </tr>
@@ -413,7 +413,7 @@ $db->next_record();
         ?>
         <tr>
             <td colspan="4" align="right">&nbsp;</td>
-        <td align="right"><strong><?php echo ps_checkout::show_tax_details( $db->f('order_tax_details') ); ?>
+        <td align="right"><strong><?php echo ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ); ?>
         </strong>&nbsp;&nbsp;&nbsp;
           </td>
         </tr>            

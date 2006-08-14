@@ -1408,7 +1408,9 @@ Order Total: '.$order_total.'
 			$d['shipping_tax'] = $shipping_total * $shipping_taxrate;
 			$d['shipping_total'] = $shipping_total;
 		}
-
+		$d['shipping_tax'] = $GLOBALS['CURRENCY']->convert( $d['shipping_tax'] );
+		$d['shipping_total'] = $GLOBALS['CURRENCY']->convert( $d['shipping_total'] );
+		
 		return $d['shipping_total'];
 	}
 
@@ -1537,7 +1539,7 @@ Order Total: '.$order_total.'
 		$mosConfig_fromname, $mosConfig_smtpauth, $mosConfig_mailer, $mosConfig_lang,
 		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost, $database;
 
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		$ps_vendor_id = mosGetParam( $_SESSION, 'ps_vendor_id', 1 );
 		$auth = $_SESSION["auth"];
 
 		require_once(CLASSPATH.'ps_product.php');
@@ -1565,7 +1567,7 @@ Order Total: '.$order_total.'
 		$dbv = new ps_DB;
 		$qt = "SELECT * from #__{vm}_vendor ";
 		/* Need to decide on vendor_id <=> order relationship */
-		$qt .= "WHERE vendor_id = '".$_SESSION['ps_vendor_id']."'";
+		$qt .= "WHERE vendor_id = '".$ps_vendor_id."'";
 		$dbv->query($qt);
 		$dbv->next_record();
 
@@ -1785,73 +1787,73 @@ Order Total: '.$order_total.'
 			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_PRICE."    = ";
 			if ($auth["show_price_including_tax"] == 1) {
 				$sub_total += ($dboi->f("product_quantity") * $dboi->f("product_final_price"));
-				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($dboi->f("product_final_price"));
+				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($dboi->f("product_final_price"), '', $db->f('order_currency'));
 			} else {
 				$sub_total += ($dboi->f("product_quantity") * $dboi->f("product_final_price"));
-				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($dboi->f("product_item_price"));
+				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($dboi->f("product_item_price"), '', $db->f('order_currency'));
 			}
 		}
 
 		$shopper_message .= "\n\n";
 
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL." = ";
-		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($sub_total)."\n";
+		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($sub_total, '', $db->f('order_currency'))."\n";
 
 		if ( PAYMENT_DISCOUNT_BEFORE == '1') {
 			if( !empty($order_discount)) {
 				if ($order_discount > 0) {
 					$shopper_message .= $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT." = ";
-					$shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
+					$shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				} else {
 					$shopper_message .= $VM_LANG->_PHPSHOP_FEE." = ";
-					$shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
+					$shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				}
 			}
 			if( !empty($coupon_discount)) {
 				/* following 2 lines added by Erich for coupon hack */
 				$shopper_message .= $VM_LANG->_PHPSHOP_COUPON_DISCOUNT . ": ";
-				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount) . "\n";
+				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount, '', $db->f('order_currency')) . "\n";
 			}
 		}
 
 		if ($auth["show_price_including_tax"] != 1) {
 			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
-			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax) . "\n";
+			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax, '', $db->f('order_currency')) . "\n";
 		}
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING." = ";
-		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping) . "\n";
+		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping, '', $db->f('order_currency')) . "\n";
 		if( !empty($order_shipping_tax)) {
 			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_TAX."   = ";
-			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping_tax);
+			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping_tax, '', $db->f('order_currency'));
 		}
 		$shopper_message .= "\n\n";
 		if ( PAYMENT_DISCOUNT_BEFORE != '1') {
 			if( !empty($order_discount)) {
 				if ($order_discount > 0) {
 					$shopper_message .= $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT." = ";
-					$shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
+					$shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				} else {
 					$shopper_message .= $VM_LANG->_PHPSHOP_FEE." = ";
-					$shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount)) . "\n";
+					$shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				}
 			}
 			if( !empty($coupon_discount)) {
 				/* following 2 lines added by Erich for coupon hack */
 				$shopper_message .= $VM_LANG->_PHPSHOP_COUPON_DISCOUNT . ": ";
-				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount) . "\n";
+				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount, '', $db->f('order_currency')) . "\n";
 			}
 		}
 		$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL."    = ";
-		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_total);
+		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_total, '', $db->f('order_currency'));
 
 		if ($auth["show_price_including_tax"] == 1) {
 			$shopper_message .= "\n---------------";
 			$shopper_message .= "\n";
 			$shopper_message .= $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX."      = ";
-			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax) . "\n";
+			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax, '', $db->f('order_currency')) . "\n";
 		}
 		if( $db->f('order_tax_details') ) {
-			$shopper_message .= str_replace( '<br />', "\n", ps_checkout::show_tax_details( $db->f('order_tax_details') ) );
+			$shopper_message .= str_replace( '<br />', "\n", ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ));
 		}
 		// Payment Details
 		$shopper_message .= "\n\n------------------------------------------------------------------------\n";
@@ -1922,15 +1924,15 @@ Order Total: '.$order_total.'
 				$order_items .= "<td>".$ps_product->get_field($dboi->f("product_id"), "product_sku") . "</td>";
 				if ($auth["show_price_including_tax"] == 1) {
 					$price = $dboi->f("product_final_price");
-					$my_price = $CURRENCY_DISPLAY->getFullValue($dboi->f("product_final_price"));
+					$my_price = $CURRENCY_DISPLAY->getFullValue($dboi->f("product_final_price"), '', $db->f('order_currency'));
 				} else {
 					$price = $dboi->f("product_item_price");
-					$my_price = $CURRENCY_DISPLAY->getFullValue($dboi->f("product_item_price"));
+					$my_price = $CURRENCY_DISPLAY->getFullValue($dboi->f("product_item_price"), '', $db->f('order_currency'));
 				}
 				$order_items .= "<td>".$my_price. "</td>";
 				$my_subtotal = $my_qty * $price;
 				$sub_total += $my_subtotal;
-				$order_items .= "<td>".$CURRENCY_DISPLAY->getFullValue($my_subtotal)."</td></tr>";
+				$order_items .= "<td>".$CURRENCY_DISPLAY->getFullValue($my_subtotal, '', $db->f('order_currency'))."</td></tr>";
 			}
 			// DISCOUNT HANDLING
 			$order_disc1 = $order_disc2 = $order_disc3 ="";
@@ -1939,36 +1941,36 @@ Order Total: '.$order_total.'
 				if ($order_discount > 0 || $order_discount < 0) {
 					if ($order_discount > 0) {
 						$order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT.": </td>";
-						$order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td>";
+						$order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td>";
 					}
 					elseif ($order_discount < 0) {
 						$order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_FEE.": </td>";
-						$order_disc1 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td></tr>";
+						$order_disc1 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td></tr>";
 					}
 				}
 				if ($coupon_discount > 0 || $coupon_discount < 0) {
 					$order_disc1 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_COUPON_DISCOUNT.": </td>";
 					if ($coupon_discount > 0)
-					$order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount))."</td>";
+					$order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td>";
 					elseif ($coupon_discount < 0)
-					$order_disc1 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount))."</td></tr>";
+					$order_disc1 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td></tr>";
 				}
 			}
 			elseif ( PAYMENT_DISCOUNT_BEFORE != '1') {
 				if ($order_discount > 0) {
 					$order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT.": </td>";
-					$order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td>";
+					$order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td>";
 				}
 				elseif ($order_discount < 0) {
 					$order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_FEE.": </td>";
-					$order_disc2 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount))."</td></tr>";
+					$order_disc2 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td></tr>";
 				}
 				if ($coupon_discount > 0 || $coupon_discount < 0) {
 					$order_disc2 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_PHPSHOP_COUPON_DISCOUNT.": </td>";
 					if ($coupon_discount > 0)
-					$order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount))."</td>";
+					$order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td>";
 					elseif ($coupon_discount < 0)
-					$order_disc2 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount))."</td></tr>";
+					$order_disc2 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td></tr>";
 				}
 			}
 
@@ -2035,11 +2037,11 @@ Order Total: '.$order_total.'
 
 			$html = str_replace('{phpShopOrderItems}',$order_items,$html);
 
-			$html = str_replace('{phpShopOrderSubtotal}',$CURRENCY_DISPLAY->getFullValue($sub_total),$html);
-			$html = str_replace('{phpShopOrderShipping}',$CURRENCY_DISPLAY->getFullValue($order_shipping),$html);
-			$html = str_replace('{phpShopOrderTax}',$CURRENCY_DISPLAY->getFullValue($order_tax). ps_checkout::show_tax_details( $db->f('order_tax_details') ), $html );
+			$html = str_replace('{phpShopOrderSubtotal}',$CURRENCY_DISPLAY->getFullValue($sub_total, '', $db->f('order_currency')),$html);
+			$html = str_replace('{phpShopOrderShipping}',$CURRENCY_DISPLAY->getFullValue($order_shipping, '', $db->f('order_currency')),$html);
+			$html = str_replace('{phpShopOrderTax}',$CURRENCY_DISPLAY->getFullValue($order_tax, '', $db->f('order_currency')). ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ), $html );
 
-			$html = str_replace('{phpShopOrderTotal}',$CURRENCY_DISPLAY->getFullValue($order_total),$html);
+			$html = str_replace('{phpShopOrderTotal}',$CURRENCY_DISPLAY->getFullValue($order_total, '', $db->f('order_currency')),$html);
 
 			$html = str_replace('{phpShopOrderDisc1}',$order_disc1, $html);
 			$html = str_replace('{phpShopOrderDisc2}',$order_disc2, $html);
@@ -2186,7 +2188,7 @@ Order Total: '.$order_total.'
 	 * @param mixed $details
 	 * @return string
 	 */
-	function show_tax_details( $details ) {
+	function show_tax_details( $details, $currency = ''  ) {
 		global $discount_factor, $CURRENCY_DISPLAY, $VM_LANG;
 		
 		if( !isset( $discount_factor) || !empty($_REQUEST['discount_factor'])) {
@@ -2208,7 +2210,7 @@ Order Total: '.$order_total.'
 					$value /= $discount_factor;
 				}
 				$rate = str_replace( '-', $CURRENCY_DISPLAY->decimal, $rate )*100;
-				$html .= $CURRENCY_DISPLAY->getFullValue( $value, 5 ).' ('.$rate.'% '.$VM_LANG->_PHPSHOP_CART_TAX.')<br />';
+				$html .= $CURRENCY_DISPLAY->getFullValue( $value, 5, $currency ).' ('.$rate.'% '.$VM_LANG->_PHPSHOP_CART_TAX.')<br />';
 			}
 		}
 		return $html;

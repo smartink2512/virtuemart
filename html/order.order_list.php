@@ -24,7 +24,7 @@ $form_code = "";
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$list  = "SELECT #__{vm}_orders.order_id,order_status, #__{vm}_orders.cdate,#__{vm}_orders.mdate,order_total,#__{vm}_orders.user_id,";
+$list  = "SELECT #__{vm}_orders.order_id,order_status, #__{vm}_orders.cdate,#__{vm}_orders.mdate,order_total,order_currency,#__{vm}_orders.user_id,";
 $list .= "first_name, last_name FROM #__{vm}_orders, #__{vm}_order_user_info WHERE ";
 $count = "SELECT count(*) as num_rows FROM #__{vm}_orders, #__{vm}_order_user_info WHERE ";
 $q = "address_type = 'BT' AND ";
@@ -225,7 +225,7 @@ while ($db->next_record()) {
 						.$VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY .'<br />
 					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY_ERR .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="Update Status" />' );
 
-	$listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
+	$listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total"), '', $db->f('order_currency')));
 	
 	$form_code .= '<form style="float:left;" method="post" action="'. $_SERVER['PHP_SELF'] .'" name="adminForm'. $i .'">';
 	$form_code .= $ps_order_status->getOrderStatus($db->f("order_status"), "style=\"visibility:hidden;\" onchange=\"document.adminForm$i.changed.value='1'\"");

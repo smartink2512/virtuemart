@@ -120,101 +120,109 @@ if(!defined("_CLASS_CURRENCY_DISPLAY_LOADED")) {
 	}
 
 	// ================
-	function getFullValue($nb, $decimals=''){
+	function getFullValue($nb, $decimals='', $symbol = '') {
+		global $vendor_currency;
 		$res = "";
+		if( $symbol != '' && $symbol != $vendor_currency ) {
+			$old_symbol = $this->symbol;
+			$this->symbol = $symbol;
+		}
 		// Currency symbol position
 		if ($nb == abs($nb)){
 			$res=$this->getValue($nb, $decimals);
 			// Positive number
 			switch ($this->positivePos){
-			case 0:
-				// 0 = '00Symb'
-				$res=$res.$this->symbol;
-			break;
-			case 2:
-				// 2 = 'Symb00'
-				$res=$this->symbol.$res;
-			break;
-			case 3:
-				// 3 = 'Symb 00'
-				$res=$this->symbol.' '.$res;
-			break;
-			case 1:
-			default :
-				// 1 = '00 Symb'
-				$res=$res.' '.$this->symbol;
-			break;
+				case 0:
+					// 0 = '00Symb'
+					$res=$res.$this->symbol;
+					break;
+				case 2:
+					// 2 = 'Symb00'
+					$res=$this->symbol.$res;
+				break;
+				case 3:
+					// 3 = 'Symb 00'
+					$res=$this->symbol.' '.$res;
+					break;
+				case 1:
+				default :
+					// 1 = '00 Symb'
+					$res=$res.' '.$this->symbol;
+					break;
 			}
 		} else {
 			// Negative number
 			$res=$this->getValue(abs($nb), $decimals);
 			switch ($this->negativePos){
-			case 0:
-				// 0 = '(Symb00)'
-				$res='('.$this->symbol.$res.')';
-			break;
-			case 1:
-				// 1 = '-Symb00'
-				$res='-'.$this->symbol.$res;
-			break;
-			case 2:
-				// 2 = 'Symb-00'
-				$res=$this->symbol.'-'.$res;
-			break;
-			case 3:
-				// 3 = 'Symb00-'
-				$res=$this->symbol.$res.'-';
-			break;
-			case 4:
-				// 4 = '(00Symb)'
-				$res='('.$res.$this->symbol.')';
-			break;
-			case 5:
-				// 5 = '-00Symb'
-				$res='-'.$res.$this->symbol;
-			break;
-			case 6:
-				// 6 = '00-Symb'
-				$res=$res.'-'.$this->symbol;
-			break;
-			case 7:
-				// 7 = '00Symb-'
-				$res=$res.$this->symbol.'-';
-			break;
-			case 9:
-				// 9 = '-Symb 00'
-				$res='-'.$this->symbol.' '.$res;
-			break;
-			case 10:
-				// 10 = '00 Symb-'
-				$res=$res.' '.$this->symbol.'-';
-			break;
-			case 11:
-				// 11 = 'Symb 00-'
-				$res=$this->symbol.' '.$res.'-';
-			break;
-			case 12:
-				// 12 = 'Symb -00'
-				$res=$this->symbol.' -'.$res;
-			break;
-			case 13:
-				// 13 = '00- Symb'
-				$res=$res.'- '.$this->symbol;
-			break;
-			case 14:
-				// 14 = '(Symb 00)'
-				$res='('.$this->symbol.' '.$res.')';
-			break;
-			case 15:
-				// 15 = '(00 Symb)'
-				$res='('.$res.' '.$this->symbol.')';
-			break;
-			case 8:
-			default :
-				// 8 = '-00 Symb'
-				$res='-'.$res.' '.$this->symbol;
-			break;
+				case 0:
+					// 0 = '(Symb00)'
+					$res='('.$this->symbol.$res.')';
+					break;
+				case 1:
+					// 1 = '-Symb00'
+					$res='-'.$this->symbol.$res;
+					break;
+				case 2:
+					// 2 = 'Symb-00'
+					$res=$this->symbol.'-'.$res;
+					break;
+				case 3:
+					// 3 = 'Symb00-'
+					$res=$this->symbol.$res.'-';
+					break;
+				case 4:
+					// 4 = '(00Symb)'
+					$res='('.$res.$this->symbol.')';
+					break;
+				case 5:
+					// 5 = '-00Symb'
+					$res='-'.$res.$this->symbol;
+					break;
+				case 6:
+					// 6 = '00-Symb'
+					$res=$res.'-'.$this->symbol;
+					break;
+				case 7:
+					// 7 = '00Symb-'
+					$res=$res.$this->symbol.'-';
+					break;
+				case 9:
+					// 9 = '-Symb 00'
+					$res='-'.$this->symbol.' '.$res;
+					break;
+				case 10:
+					// 10 = '00 Symb-'
+					$res=$res.' '.$this->symbol.'-';
+					break;
+				case 11:
+					// 11 = 'Symb 00-'
+					$res=$this->symbol.' '.$res.'-';
+					break;
+				case 12:
+					// 12 = 'Symb -00'
+					$res=$this->symbol.' -'.$res;
+					break;
+				case 13:
+					// 13 = '00- Symb'
+					$res=$res.'- '.$this->symbol;
+					break;
+				case 14:
+					// 14 = '(Symb 00)'
+					$res='('.$this->symbol.' '.$res.')';
+					break;
+				case 15:
+					// 15 = '(00 Symb)'
+					$res='('.$res.' '.$this->symbol.')';
+					break;
+				case 8:
+				default :
+					// 8 = '-00 Symb'
+					$res='-'.$res.' '.$this->symbol;
+					break;
 			}
+		}
+		if( $symbol != '' && $symbol != $vendor_currency) {
+			$this->symbol = $old_symbol;
 		}
 		return($res);
 	}

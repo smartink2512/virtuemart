@@ -63,7 +63,7 @@ class ps_order {
 			$notify_customer=0;
 		}
 
-		$d['order_comment'] = empty($d['order_comment']) ? "" : $db->getEscaped( $d['order_comment'] );
+		$d['order_comment'] = empty($d['order_comment']) ? "" : $d['order_comment'];
 		
 		// When the order is set to "confirmed", we can capture
 		// the Payment with authorize.net
@@ -159,7 +159,7 @@ class ps_order {
 		// Update the Order History.
 		$q = "INSERT INTO #__{vm}_order_history ";
 		$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
-		$q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', '$mysqlDatetime', '$notify_customer', '".$d['order_comment']."')";
+		$q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', '$mysqlDatetime', '$notify_customer', '".$db->getEscaped( $d['order_comment'] )."')";
 		$db->query($q);
 
 		// Do we need to re-update the Stock Level?
@@ -504,7 +504,7 @@ class ps_order {
 		$db = new ps_DB;
 		$dbs = new ps_DB;
 		$i = 0;
-		$listfields = 'cdate,order_total,order_status,order_id';
+		$listfields = 'cdate,order_total,order_status,order_id,order_currency';
 		$countfields = 'count(*) as num_rows';
 		$count = "SELECT $countfields FROM #__{vm}_orders ";
 		$list = "SELECT $listfields FROM #__{vm}_orders ";
@@ -558,7 +558,7 @@ class ps_order {
 			$listObj->addCell( $tmp_cell );
 
 			$tmp_cell = "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE.":</strong> " . strftime("%d. %B %Y", $db->f("cdate"));
-			$tmp_cell .= "<br /><strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL.":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"));
+			$tmp_cell .= "<br /><strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL.":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"), '', $db->f('order_currency'));
 			$listObj->addCell( $tmp_cell );
 
 			$tmp_cell = "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS.":</strong> ".$order_status;

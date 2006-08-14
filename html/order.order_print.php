@@ -316,11 +316,11 @@ else {
 				</td>
 				<td width="9%"><?php  $dbt->p("order_item_sku") ?>&nbsp;</td>
 				<td width="12%" align="right"><?php 
-					echo $CURRENCY_DISPLAY->getFullValue($dbt->f("product_item_price"), 5);  
+					echo $CURRENCY_DISPLAY->getFullValue($dbt->f("product_item_price"), 5, $db->f('order_currency'));  
 					
 					?></td>
-				<td width="12%" align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($dbt->f("product_final_price"));  ?></td>
-				<td width="19%" align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($t); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td width="12%" align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($dbt->f("product_final_price"), '', $db->f('order_currency'));  ?></td>
+				<td width="19%" align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($t, '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			  </tr>
 			  <?php 
 			  } 
@@ -332,7 +332,7 @@ else {
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong> <?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL ?>: </strong></div></td>
-				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_subtotal"), 5); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_subtotal"), 5, $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 	  <?php
 			  /* COUPON DISCOUNT */
@@ -353,9 +353,9 @@ else {
 					?>:</div></strong></td>
 				<td width="19%"><div  align="right"><?php
 					  if ($db->f("order_discount") > 0 )
-					 echo "-" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")));
+					 echo "-" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency'));
 				elseif ($db->f("order_discount") < 0 )
-					 echo "+" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount"))); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+					 echo "+" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 				  </td>
 			  </tr>
 			  
@@ -367,7 +367,7 @@ else {
 				<td colspan="5"><div align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div>
 				</td> 
 				<td><div align="right"><?php
-				  echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				  echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 				</td>
 			  </tr>
 			  <?php
@@ -379,19 +379,19 @@ else {
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </div></strong></td>
-				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_tax")) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 			  <tr> 
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </div></strong></td>
-				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_shipping")) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_shipping"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 			  <tr> 
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_TAX ?>: </div></strong></td>
-				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_shipping_tax")) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+				<td width="19%"><div align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_shipping_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 			  </tr>
 	  <?php
 			if( PAYMENT_DISCOUNT_BEFORE != '1') {
@@ -408,9 +408,9 @@ else {
 					?>:</strong></div></td>
 				<td width="19%"><div align="right"><?php
 					  if ($db->f("order_discount") > 0 )
-					 echo "-" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")));
+					 echo "-" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency'));
 				elseif ($db->f("order_discount") < 0 )
-					 echo "+" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount"))); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+					 echo "+" . $CURRENCY_DISPLAY->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 				  </td>
 			  </tr>
 			  
@@ -424,7 +424,7 @@ else {
 				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div></strong>
 				</td> 
 				<td><div align="right"><?php
-				  echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				  echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 				</td>
 			  </tr>
 			  <?php
@@ -435,14 +435,14 @@ else {
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL ?>:</div> </strong></td>
-				<td width="19%"><div align="right"><strong><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_total")); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></strong>
+				<td width="19%"><div align="right"><strong><?php echo $CURRENCY_DISPLAY->getFullValue($db->f("order_total"), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></strong>
 				  </td>
 			  </tr>
 			  <tr>
 				<td width="5%">&nbsp;</td>
 				<td width="42%">&nbsp;</td>
 				<td colspan="3">&nbsp;</td>
-				<td width="19%"><?php echo ps_checkout::show_tax_details( $db->f('order_tax_details') ); ?></td>
+				<td width="19%"><?php echo ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ); ?></td>
 			  </tr>
 			  </table>
 		  </td>
@@ -475,7 +475,7 @@ else {
 				  <tr>
 					<td width="50%">
 					  <strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL ?>: </strong>
-					<?php echo $CURRENCY_DISPLAY->getFullValue($details[3]); ?>
+					<?php echo $CURRENCY_DISPLAY->getFullValue($details[3], '', $db->f('order_currency')); ?>
 					</td>
 				  </tr>
 				</table>

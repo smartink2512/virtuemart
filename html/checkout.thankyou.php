@@ -30,7 +30,7 @@ $order_id = $GLOBALS['vmInputFilter']->process( $vars["order_id"] );
 $print = mosgetparam( $_REQUEST, 'print', 0);
 
 /** Retrieve User Email **/
-$q  = "SELECT * FROM #__{vm}_order_user_info WHERE order_id='$order_id' AND address_type='BT'";
+$q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE `order_id`='$order_id' AND `address_type`='BT'";
 $db->query( $q );
 $db->next_record();
 $user = $db->record[0];

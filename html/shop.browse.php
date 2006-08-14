@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: shop.browse.php,v 1.9 2005/11/02 20:06:59 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -373,17 +373,6 @@ else {
 			$products[$i]['has_addtocart'] = false;
 		}
 
-		/*** Now fill the template
-		* Customizing:
-		*   a. Define your own placeholders(e.g. {product_weight} )
-		*   b. Add a line below like this (must be below first str_replace call!):
-		$tpl->set( 'product_weight'] = $db_browse->f("product_weight") );
-		*   c. put the placeholder {product_weight} somewhere in the template (/html/templates)
-		<tr><td>Product Weight: {product_weight}</td></tr>
-		*   d. save the template file under a new name (e.g. browse_weight.php )
-		*   e. Assign the browse page "browse_weight" to the categories,
-		*       you want to have using that template file (do that in the category form!)
-		**/
 		$products[$i]['product_flypage'] = $url;
 		$products[$i]['product_thumb_image'] = $product_thumb_image;
 		$products[$i]['product_full_image'] = $product_full_image;
@@ -403,6 +392,17 @@ else {
 		$products[$i]['product_rating'] = $product_rating;
 		$products[$i]['product_price'] = $product_price;
 		$products[$i]['product_sku'] = $db_browse->f("product_sku");
+		$products[$i]['product_weight'] = $db_browse->f("product_weight");
+		$products[$i]['product_weight_uom'] = $db_browse->f("product_weight_uom");
+		$products[$i]['product_length'] = $db_browse->f("product_length");
+		$products[$i]['product_width'] = $db_browse->f("product_width");
+		$products[$i]['product_height'] = $db_browse->f("product_height");
+		$products[$i]['product_lwh_uom'] = $db_browse->f("product_lwh_uom");
+		$products[$i]['product_in_stock'] = $db_browse->f("product_in_stock");
+		$products[$i]['product_availability_date'] = $db_browse->f("product_availability_date");
+		$products[$i]['product_availability'] = $db_browse->f("product_availability");
+		$products[$i]['cdate'] = $db_browse->f("cdate");
+		$products[$i]['mdate'] = $db_browse->f("mdate");
 
 		$i++;
 

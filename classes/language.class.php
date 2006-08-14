@@ -38,7 +38,7 @@ class vmAbstractLanguage {
 	    $key = strtoupper( $var );
 	    if (isset($this->$key)) {
 			if( $htmlentities )
-				return htmlentities( $this->$key, ENT_QUOTES, 'utf-8' );
+				return htmlentities( $this->$key, ENT_QUOTES, vmGetCharset() );
 			else
 				return $this->$key;
 		} 

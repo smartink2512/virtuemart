@@ -33,6 +33,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14-08-2006 soeren
+
++ finished feature to allow customers order in a different currency
+# Task #804 - On status change text showing 'rn' instead of CR (ps_order.php)
+
 02-08-2006 soeren
 
 + template files for the product rating and review part

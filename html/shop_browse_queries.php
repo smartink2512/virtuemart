@@ -7,7 +7,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id: shop_browse_queries.php,v 1.6.2.3 2006/03/28 19:40:15 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -23,7 +23,9 @@ mm_showMyFileName( __FILE__ );
 *
 */
 // These are the names of all fields we fetch data from
-$fieldnames = "`product_name`,`products_per_row`,`category_browsepage`,`category_flypage`,`#__{vm}_product`.`product_id`,`#__{vm}_category`.`category_id`,`product_full_image`,`product_thumb_image`,`product_s_desc`,`product_parent_id`,`product_publish`,`product_in_stock`,`product_sku`";
+$fieldnames = "`product_name`,`products_per_row`,`category_browsepage`,`category_flypage`,`#__{vm}_category`.`category_id`,
+				`#__{vm}_product`.`product_id`,`product_full_image`,`product_thumb_image`,`product_s_desc`,`product_parent_id`,`product_publish`,`product_in_stock`,`product_sku`, `product_url`,
+				`product_weight`,`product_weight_uom`,`product_length`,`product_width`,`product_height`,`product_lwh_uom`,`product_in_stock`,`product_available_date`,`product_availability`,`#__{vm}_product`.`mdate`, `#__{vm}_product`.`cdate`";
 $count_name = "COUNT(DISTINCT `#__{vm}_product`.`product_sku`) as num_rows";
 
 switch( $orderby ) {

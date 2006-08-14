@@ -20,8 +20,8 @@ mm_showMyFileName( __FILE__ );
 $db = new ps_DB;
 $ps_vendor_id = $_SESSION['ps_vendor_id'];
 
-$q = "SELECT vendor_terms_of_service FROM #__{vm}_vendor ";
-$q .= "WHERE vendor_id='".$ps_vendor_id."'";
+$q = "SELECT `vendor_id`, `vendor_terms_of_service` FROM `#__{vm}_vendor` ";
+$q .= "WHERE `vendor_id`='".$ps_vendor_id."'";
 
 $db->query($q);
 $db->next_record();

@@ -1,5 +1,5 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id: shop.manufacturer_page.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
@@ -20,16 +20,16 @@ mm_showMyFileName( __FILE__ );
 $manufacturer_id = intval( mosGetParam( $_GET, 'manufacturer_id' ));
 
 if( !empty( $manufacturer_id ) ) {
-  $q  = "SELECT mf_name,mf_email,mf_desc,mf_url FROM #__{vm}_manufacturer WHERE ";
-  $q .= "manufacturer_id=$manufacturer_id";
-  $db->query($q);
-  $db->next_record();
-  
-	$mf_name=$db->f("mf_name"); 
-  $mf_email=$db->f("mf_email");
-  $mf_desc=$db->f("mf_desc");
-	$mf_url = $db->f("mf_url");  
-  
+	$q  = "SELECT `manufacturer_id`,`mf_name`,`mf_email`,`mf_desc`,`mf_url` FROM `#__{vm}_manufacturer` WHERE ";
+	$q .= "`manufacturer_id`=$manufacturer_id";
+	$db->query($q);
+	$db->next_record();
+
+	$mf_name=$db->f("mf_name");
+	$mf_email=$db->f("mf_email");
+	$mf_desc=$db->f("mf_desc");
+	$mf_url = $db->f("mf_url");
+
   ?><h3><?php echo $mf_name;?></h3>
   
   <table align="center"cellspacing="0" cellpadding="0" border="0">
