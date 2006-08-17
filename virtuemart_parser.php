@@ -75,10 +75,13 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	}
 	else {
 		require_once(CLASSPATH.'currency/convertECB.php');
+		/**
+		 * @global convertECB $GLOBALS['CURRENCY']
+		 */
 		$GLOBALS['CURRENCY'] = $CURRENCY = new convertECB();
 	}
 	
-	/** @global vmLanguage $VM_LANG */
+	/** @global vmLanguage $GLOBALS['VM_LANG'] */
 	$GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
 
 	/** @global Array $product_info: Stores Product Information for re-use */
@@ -112,7 +115,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	/**
 	 * This Log Object will help us log messages and errors
 	 * See http://pear.php.net/package/Log
-	 * @global Log vmLogger
+	 * @global vmLog $GLOBALS['vmLogger']
 	 */
 	$vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
 	$GLOBALS['vmLogger'] =& $vmLogger;
@@ -172,7 +175,10 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	}
 	/** load Currency Display Class **/
 	require_once( CLASSPATH.'currency/class_currency_display.php' );
-	/** @global CurrencyDisplay $CURRENCY_DISPLAY */
+	/**
+	 *  @global CurrencyDisplay $GLOBALS['CURRENCY_DISPLAY']
+	 *  @global CurrencyDisplay $CURRENCY_DISPLAY
+	 */
 	$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
 
 	if( $option == "com_virtuemart" ) {

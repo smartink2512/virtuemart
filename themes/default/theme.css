@@ -152,56 +152,46 @@ table.adminform td.labelcell {
 * Errors, Warnings and Info formatting
 */
 .shop_error, .shop_warning, .shop_info, .shop_debug, .shop_critical, .shop_tip {
-	font-family : "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	font-style: italic;
-	font-size : 14px;
-	
-	text-align: left;
-	vertical-align: middle;
-	
-	margin: 10px 0px 0px 20px;
-	padding-left: 20px;
-
-	line-height: 20px;
+	font-size: 120%;
+  	margin-top: 0.8em;
+  	margin-left: auto;
+  	margin-right: auto;
+  	width: 70% !important;
+  	clear: both;
+  	text-align: justify;
+  	vertical-align: middle;
+  	border-collapse: collapse;
+  	padding: 15px 20px 15px 80px;
+  	background-position: 20px 50%;
+  	background-repeat: no-repeat;
+  	-moz-border-radius: 20px;
+  	-khtml-border-radius: 20px;
+  	border-radius: 20px;
 }
 .shop_error {
-	color:		red;
+  	background-color: #fdd;
 	background-image: url( images/log_error.png );
-	background-repeat: no-repeat;
-	background-position: top left;
 }
 .shop_warning {
-	color:		#993300;
+  	background-color: #ffc;
 	background-image: url( images/log_warning.png );
-	background-repeat: no-repeat;
-	background-position: top left;
 }
 .shop_info {
 
-	color:		#003399;
-	background-image: url( images/log_info.png );
-	background-repeat: no-repeat;
-	background-position: top left;
+  	background-color: #eef;
+  	background-image: url( images/log_info.png );
 }
 .shop_tip {
 	background-image: url( images/info.png );
-	background-repeat: no-repeat;
-	background-position: top left;
-
+  	background-color: #dfd;
 }
 .shop_debug {
-
-	color:		#003399;
+	background-color: #F0F8FF;
 	background-image: url( images/log_debug.png );
-	background-repeat: no-repeat;
-	background-position: top left;
 
 }
 .shop_critical {
-	color:		red;
+	background-color: salmon;
 	font-weight: bold;
 	background-image: url( images/log_critical.png );
-	background-repeat: no-repeat;
-	background-position: top left;
 }

@@ -17,10 +17,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-global $acl;
-if (!$acl->acl_check( 'administration', 'manage', 'users', $my->usertype, 'components', 'com_users' )) {
-	mosRedirect( $_SERVER['PHP_SELF'], _NOT_AUTH );
-}
 global $ps_shopper_group;
 include_class( 'shopper' );
 

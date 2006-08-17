@@ -586,8 +586,12 @@ class vmCommonHTML extends mosHTML {
 	function getSaveOrderButton( $num_rows, $funcname='reorder') {
 		global $mosConfig_live_site;
 		$n = $num_rows-1;
-		return '<a href="javascript: document.adminForm.func.value = \''.$funcname.'\'; saveorder( '.$n.' );">
+		$html = '<a href="javascript: document.adminForm.func.value = \''.$funcname.'\'; saveorder( '.$n.' );">
 				<img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="Save Order" /></a>';
+		$html .= '<a href="javascript: if( confirm( \'Are you sure to sort this list alphabetically? This cannot be undone.\')) { document.adminForm.func.value = \''.$funcname.'\'; document.adminForm.task.value=\'sort_alphabetically\'; document.adminForm.submit(); }">
+				<img src="'.IMAGEURL.'/ps_image/sort_a-z.gif" border="0" width="16" height="16" alt="Sort Alphabetically" /></a>';
+		
+		return $html;
 	}
 	function getOrderingField( $ordering ) {
 

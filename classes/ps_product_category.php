@@ -534,9 +534,9 @@ class ps_product_category extends vmAbstractObject {
 	 * @return string HTML code with the link list
 	 */
 	function get_category_tree( $category_id=0,
-	$links_css_class="mainlevel",
-	$list_css_class="mm123",
-	$highlighted_style="font-style:italic;" ) {
+				$links_css_class="mainlevel",
+				$list_css_class="mm123",
+				$highlighted_style="font-style:italic;" ) {
 		global $sess;
 
 		$categories = ps_product_category::getCategoryTreeArray();
@@ -545,8 +545,9 @@ class ps_product_category extends vmAbstractObject {
 		$key = array_keys($categories);
 		$size = sizeOf($key);
 		$category_tmp = Array();
-		for ($i=0; $i<$size; $i++)
-		$category_tmp[$i] = &$categories[$key[$i]];
+		for ($i=0; $i<$size; $i++) {
+			$category_tmp[$i] = &$categories[$key[$i]];
+		}
 
 		$html = "";
 		/** FIRST STEP
@@ -558,17 +559,16 @@ class ps_product_category extends vmAbstractObject {
 		$row_list = array();
 		$depth_list = array();
 
-		for($n = 0 ; $n < $nrows ; $n++)
-		if($category_tmp[$n]["category_parent_id"] == 0)
-		{ array_push($id_list,$category_tmp[$n]["category_child_id"]);
-		array_push($row_list,$n);
-		array_push($depth_list,0);
+		for($n = 0 ; $n < $nrows ; $n++) {
+			if($category_tmp[$n]["category_parent_id"] == 0) { 
+				array_push($id_list,$category_tmp[$n]["category_child_id"]);
+				array_push($row_list,$n);
+				array_push($depth_list,0);
+			}
 		}
-
 		$loop_count = 0;
 		while(count($id_list) < $nrows) {
-			if( $loop_count > $nrows )
-			break;
+			if( $loop_count > $nrows ) { break; }
 			$id_temp = array();
 			$row_temp = array();
 			$depth_temp = array();
@@ -579,13 +579,15 @@ class ps_product_category extends vmAbstractObject {
 				array_push($id_temp,$id);
 				array_push($row_temp,$row);
 				array_push($depth_temp,$depth);
-				for($j = 0 ; $j < $nrows ; $j++)
-				if(($category_tmp[$j]["category_parent_id"] == $id)
-				&& (array_search($category_tmp[$j]["category_child_id"],$id_list) == NULL))
-				{ array_push($id_temp,$category_tmp[$j]["category_child_id"]);
-				array_push($row_temp,$j);
-				array_push($depth_temp,$depth + 1);
+				for($j = 0 ; $j < $nrows ; $j++) {
+					if(($category_tmp[$j]["category_parent_id"] == $id)
+						&& (array_search($category_tmp[$j]["category_child_id"],$id_list) == NULL)) { 
+							array_push($id_temp,$category_tmp[$j]["category_child_id"]);
+							array_push($row_temp,$j);
+							array_push($depth_temp,$depth + 1);
+					}
 				}
+				if (array_key_exists($j, $category_tmp)) 
 				if( empty( $categories[@$category_tmp[$j]["category_parent_id"]] )) {
 
 					array_push($id_temp,"");
@@ -645,10 +647,12 @@ class ps_product_category extends vmAbstractObject {
 				if( $style == $highlighted_style ) {
 					$append = 'id="active_menu"';
 				}
-				if( $depth_list[$n] > 0 )
-				$css_class = "sublevel";
-				else
-				$css_class = $links_css_class;
+				if( $depth_list[$n] > 0 ) {
+					$css_class = "sublevel";
+				}
+				else {
+					$css_class = $links_css_class;
+				}
 
 				$catname = shopMakeHtmlSafe( $category_tmp[$row_list[$n]]["category_name"] );
 
@@ -671,9 +675,9 @@ class ps_product_category extends vmAbstractObject {
 	 * This is VERY recursive...
 	 * @deprecated 
 	 * 
-	 * @param unknown_type $class
-	 * @param unknown_type $category_id
-	 * @param unknown_type $level
+	 * @param string $class
+	 * @param int $category_id
+	 * @param int $level
 	 */
 	function traverse_tree_down($class="",$category_id="0", $level="0") {
 		static $ibg = 0;
@@ -695,10 +699,12 @@ class ps_product_category extends vmAbstractObject {
 
 		while ($db->next_record()) {
 			$product_count = $this->product_count($db->f("category_child_id"));
-			if ($level % 2)
-			$bgcolor=SEARCH_COLOR_1;
-			else
-			$bgcolor=SEARCH_COLOR_2;
+			if ($level % 2) {
+				$bgcolor=SEARCH_COLOR_1;
+			}
+			else {
+				$bgcolor=SEARCH_COLOR_2;
+			}
 			$ibg++;
 			echo "<tr bgcolor=\"$bgcolor\">\n";
 			echo "<td><input style=\"display:none;\" id=\"cb$ibg\" name=\"cb[]\" value=\"".$db->f("category_id")."\" type=\"checkbox\" />&nbsp;$ibg</td><td>";
@@ -938,7 +944,7 @@ class ps_product_category extends vmAbstractObject {
 	 * @return string The number in brackets
 	 */
 	function products_in_category( $category_id ) {
-		if( PSHOP_SHOW_PRODUCTS_IN_CATEGORY == '1' ) {
+		if( PSHOP_SHOW_PRODUCTS_IN_CATEGORY == '1' || vmIsAdminMode() ) {
 			$num = ps_product_category::product_count($category_id);
 			if( empty($num) && ps_product_category::has_childs( $category_id )) {
 				$db = new ps_DB;
@@ -1208,14 +1214,15 @@ class ps_product_category extends vmAbstractObject {
 	 * Changes the category List Order
 	 * @author soeren
 	 * 
-	 * @param unknown_type $d
-	 * @return unknown
+	 * @param array $d
+	 * @return boolean
 	 */
 	function reorder( &$d ) {
-		global $db;
+		global $db, $page;
 
-		if( !empty( $d['category_id'] )) {
-			$cid = $d['category_id'][0];
+		if( !empty( $d['category_id'] ) || $page == 'product.product_category_list') {
+					
+			$cid = @$d['category_id'][0];
 
 			switch( $d["task"] ) {
 				case "orderup":
@@ -1296,9 +1303,53 @@ class ps_product_category extends vmAbstractObject {
 						$i++;
 					}
 					break;
+					
+				case 'sort_alphabetically':
+					$this->sort_alphabetically();
+					break;
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Sorts ALL categories in the store alphabetically
+	 * This is VERY recursive...
+	 * @author soeren
+	 * 
+	 * @param int $category_id
+	 * @param int $level
+	 */
+	function sort_alphabetically( $category_id=0, $level=0 ) {
+		static $ibg = 0;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		$db = new ps_DB;
+
+		$level++;
+
+		$q = "SELECT `c`.`category_id`, `cx`.`category_child_id`, `cx`.`category_parent_id` as cpid 
+				FROM `#__{vm}_category` as `c`,`#__{vm}_category_xref` as `cx` ";
+		$q .= "WHERE `c`.`category_id`=`cx`.`category_child_id` AND `cx`.`category_parent_id`=$category_id ";
+		$q .= "AND `c`.`vendor_id`=$ps_vendor_id ";
+		$q .= "ORDER BY `category_name` ASC ";
+		$db->query($q);
+		$i = 1;
+		while ($db->next_record()) {
+			// Update the categories in this level
+			$fields = array( 'category_list' => $i );
+			$dbu = new ps_DB;
+			$dbu->buildQuery( 'UPDATE', '#__{vm}_category_xref', $fields, 'WHERE `category_child_id`='.$db->f('category_child_id') );
+			$dbu->query();
+			
+			$fields = array( 'list_order' => $i );
+			$dbu->buildQuery( 'UPDATE', '#__{vm}_category', $fields, 'WHERE `category_id`='.$db->f('category_child_id') );
+			$dbu->query();
+			// Traverse the tree down
+			$this->sort_alphabetically( $db->f('category_child_id'), $level );
+			
+			$i++;
+			
+		}
 	}
 
 }

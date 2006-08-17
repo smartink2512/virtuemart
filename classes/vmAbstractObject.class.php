@@ -83,27 +83,31 @@ class vmAbstractObject {
 	 * @param array $d The $_REQUEST array
 	 */
 	function handleOrdering( &$d ) {
+		global $vmLogger, $page;
 		$where = '';
 		
-		if( !empty($d['product_id'])) {
+		if( $page == 'product.product_list' ) {
 				$table_name = "#__{vm}_product_category_xref";
+				$table2_name = "#__{vm}_product";
 				$order_field_name = 'product_list';
 				$field_name = 'product_id';
+				$entity_name = 'product_name';
 				$where = '`category_id`='.intval($d['category_id']);
 		}
 		elseif( !empty( $d['fieldid'])) {
 				$table_name = "#__{vm}_userfield";
 				$order_field_name = 'ordering';
+				$entity_name = 'name';
 				$field_name = 'fieldid';
 		}
 		else {
 			$vmLogger->err( 'Could not determine the item type that is to be reordered.');
 			return false;
 		}
-		return $this->changeOrdering( $table_name, $order_field_name, $field_name, $where );
+		return $this->changeOrdering( $table_name, $order_field_name, $field_name, $entity_name, $where, $table2_name );
 	}
 	
-	function changeOrdering( $table, $name, $k, $where='' ) {
+	function changeOrdering( $table, $name, $k, $entity_name, $where='', $table2_name='' ) {
 		global $db, $vmLogger;
 		
 		if( strtolower(@$_REQUEST['task']) == 'saveorder') {
@@ -115,6 +119,27 @@ class vmAbstractObject {
 				$i++;
 			}
 			$this->fixOrdering($table, $name, $k, $where );
+		}
+		elseif( strtolower(@$_REQUEST['task']) == 'sort_alphabetically') {
+			$select_where = $where;
+			$q = 'SELECT `'.$name.'`, `'.$table.'`.`'.$k.'`, `'.$entity_name.'` FROM `'.$table.'`';
+			if( $table2_name != '' ) {
+				$q .= $table2_name != '' ? ',`'.$table2_name.'`' : '';
+				$select_where = $where . "\n AND `$table`.`$k`=`$table2_name`.`$k`";
+			}
+			$q .= ' WHERE '.$select_where.' ORDER BY `'.$entity_name.'`';
+			$db->query( $q );
+			$i = 1;
+			$dbu = new ps_DB();
+			while( $db->next_record() ) {
+				$fields = array( $name => $i,);
+				$where_query = "WHERE `$k`=".intval($db->f( $k ) );
+				$where_query .= ($where ? "\n	AND $where" : '');
+				$dbu->buildQuery( 'UPDATE', $table, $fields, $where_query );
+				//echo $dbu->_sql;
+				$dbu->query();
+				$i++;
+			}
 		}
 		else {
 			$item = intval( $_REQUEST[$k][0] );
