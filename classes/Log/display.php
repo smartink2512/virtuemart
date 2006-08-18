@@ -174,17 +174,22 @@ class Log_display extends vmLog
 			// Wrap the messages into a scrollable div field
 			$output .= '<div style="width:90%; overflow:auto; height:150px;">';
 		}
+		$i = 0;
+		$message_tmp = '';
 		foreach( $this->_messages as $message ) {
 			if( ( $priority === null || $priority <= $message['priority'] )
 				&& $message['priority'] !== PEAR_LOG_DEBUG
 				|| ( $message['priority'] === PEAR_LOG_DEBUG && DEBUG == '1')) {
-				$output .= $this->formatOutput(
-			             '<b>' . ucfirst($this->priorityToString($message['priority'])) . '</b>: '.
-			             nl2br(htmlspecialchars($message['message'])) 
-			             . $this->_linebreak,
-			             $message['priority']
-			           );
+					
+				$message_tmp .= '<b>' . ucfirst($this->priorityToString($message['priority'])) . '</b>: '
+								. nl2br(htmlspecialchars($message['message'])) 
+			             		. $this->_linebreak;
+			    if( @$this->_messages[$i+1]['priority'] != $message['priority'] ) {
+					$output .= $this->formatOutput( $message_tmp, $message['priority'] );
+					$message_tmp = '';
+			    }
 			}
+			$i++;
 		}
 		if( $this->_count > 10 ) {
 			$output .= '</div>';
