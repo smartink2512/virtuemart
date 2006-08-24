@@ -67,7 +67,7 @@ class ps_cart {
  	* @param array $d
  	*/
 	function add(&$d) {
-		global $sess, $VM_LANG, $cart, $option, $vmLogger;
+		global $sess, $VM_LANG, $cart, $option, $vmLogger, $page;
 
 		include_class("product");
 
@@ -103,7 +103,9 @@ class ps_cart {
 				eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
 				
 				$vmLogger->tip( $msg );
-				$GLOBALS['page'] = 'shop.waiting_list';
+				if( $page != 'shop.basket_short' ) {
+					$page = 'shop.waiting_list';
+				}
 				return true;
 			}
 		}
@@ -119,8 +121,9 @@ class ps_cart {
 		}
 
 		// If no quantity sent them assume 1
-		if ($quantity == "")
-		$quantity = 1;
+		if ($quantity == "") {
+			$quantity = 1;
+		}
 
 
 		// Check to see if we already have it
@@ -130,8 +133,10 @@ class ps_cart {
 		
 		if ( ($result["attribute_given"] == false && !empty( $result["advanced_attribute_list"] ))
 		|| ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )) ) {
-			$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
-			$GLOBALS['page'] = 'shop.product_details';
+			if( $page != 'shop.basket_short' ) {
+				$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
+				$GLOBALS['page'] = 'shop.product_details';
+			}
 			$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
 			return true;
 		}
@@ -156,6 +161,7 @@ class ps_cart {
 			// added for the advanced attribute modification
 			$_SESSION['cart'][$k]["description"] = $d["description"];
 			$_SESSION['cart']["idx"]++;
+			$vmLogger->info( 'The product was added to your cart.' );
 		}
 		else {
 			$this->update( $d );
@@ -179,7 +185,7 @@ class ps_cart {
 	 * @return boolean result of the update
 	 */
 	function update(&$d) {
-		global $sess,$VM_LANG, $vmLogger;
+		global $sess,$VM_LANG, $func, $vmLogger, $page;
 
 		include_class("product");
 
@@ -199,25 +205,6 @@ class ps_cart {
 			return False;
 		}
 
-		// Check to see if checking stock quantity
-		if (CHECK_STOCK) {
-			$q = "SELECT product_in_stock ";
-			$q .= "FROM #__{vm}_product where product_id=";
-			$q .= $product_id;
-			$db->query($q);
-			$db->next_record();
-			$product_in_stock = $db->f("product_in_stock");
-			if (empty($product_in_stock)) $product_in_stock = 0;
-			if ($quantity > $product_in_stock) {
-				$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
-				eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
-				
-				$vmLogger->tip( $msg );
-				$GLOBALS['page'] = 'shop.waiting_list';
-				return true;
-			}
-		}
-
 		if (!$product_id) {
 			return false;
 		}
@@ -233,7 +220,31 @@ class ps_cart {
 				&&
 				($_SESSION['cart'][$i]["description"] == stripslashes($d["description"]) )
 				) {
+					if( $func == 'cartadd' ) {
+						$quantity += $_SESSION['cart'][$i]["quantity"];
+					}
+					// Check to see if checking stock quantity
+					if (CHECK_STOCK) {
+						$q = "SELECT product_in_stock ";
+						$q .= "FROM #__{vm}_product where product_id=";
+						$q .= $product_id;
+						$db->query($q);
+						$db->next_record();
+						$product_in_stock = $db->f("product_in_stock");
+						if (empty($product_in_stock)) $product_in_stock = 0;
+						if (($quantity) > $product_in_stock) {
+							$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
+							eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
+							
+							$vmLogger->tip( $msg );
+							if( $page != 'shop.basket_short' ) {
+								$page = 'shop.waiting_list';
+							}
+							return true;
+						}
+					}
 					$_SESSION['cart'][$i]["quantity"] = $quantity;
+					$vmLogger->info( 'The product quantity has been updated.' );
 				}
 			}
 		}
@@ -252,7 +263,8 @@ class ps_cart {
 	 * @return boolan Result of the deletion
 	 */
 	function delete($d) {
-
+		global $vmLogger;
+		
 		$temp = array();
 		$product_id = $d["product_id"];
 
@@ -274,7 +286,9 @@ class ps_cart {
 		}
 		$temp["idx"] = $j;
 		$_SESSION['cart'] = $temp;
-
+		
+		$vmLogger->info( 'The product was removed from your cart');
+		
 		if( !empty( $_SESSION['coupon_discount'] )) {
 			// Update the Coupon Discount !!
 			require_once( CLASSPATH . "ps_coupon.php" );

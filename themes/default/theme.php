@@ -20,7 +20,7 @@
 global $mainframe;
 
 // include the stylesheet for this template
-$mainframe->addCustomHeadTag( '<link type="text/css" href="'.VM_THEMEURL.'theme.css" rel="stylesheet" media="screen, projection" />' );
+$mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL.'theme.css' ));
 
 function vmBuildFullImageLink( $product ) {
 	global $VM_LANG;
@@ -67,7 +67,8 @@ function vmBuildFullImageLink( $product ) {
 				$link = $imageurl;
 				$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
 				// vmPopupLink can be found in: htmlTools.class.php
-				$product_image = vmPopupLink( $link, $text, $width, $height );
+				//$product_image = vmPopupLink( $link, $text, $width, $height );'
+				$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'] );
 			}
 			else {
 				$product_image = "<a href=\"$imageurl\" target=\"_blank\">"
@@ -93,7 +94,8 @@ function vmlistAdditionalImages( $product_id, $images, $limit=1000 ) {
 	foreach( $images as $image ) { 
 		$thumbtag = ps_product::image_tag( vmImageTools::getResizedFilename($image->file_name ), 'class="browseProductImage"' );
 		$fulladdress = $sess->url( 'index2.php?page=shop.view_images&amp;image_id='.$image->file_id.'&amp;product_id='.$product_id.'&amp;pop=1' );
-		$html .= vmPopupLink( $fulladdress, $thumbtag, 640, 550 );
+		//$html .= vmPopupLink( $fulladdress, $thumbtag, 640, 550 );
+		$html .= vmCommonHTML::getLightboxImageLink( $image->file_url, $thumbtag, '', 'product'.$product_id );
 		if( ++$i > $limit ) break;
 	}
 	return $html;

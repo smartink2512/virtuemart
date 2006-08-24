@@ -15,6 +15,7 @@
 		</form>
 	<?php
 	}
+	echo $pagenav->writeLeafsCounter();
 	?>
 </div>
 <!-- END PAGE NAVIGATION -->

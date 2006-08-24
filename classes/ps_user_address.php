@@ -89,7 +89,7 @@ class ps_user_address {
 		$q  = "SELECT user_id from #__{vm}_user_info ";
 		$q .= "WHERE address_type_name='" . $d["address_type_name"] . "' ";
 		$q .= "AND address_type='" . $d["address_type"] . "' ";
-		$q .= "AND user_id != '" . $d["user_id"] . "'";
+		$q .= "AND user_id = '" . $d["user_id"] . "'";
 		$db->query($q);
 
 		if ($db->next_record()) {
@@ -97,6 +97,7 @@ class ps_user_address {
 			$vmLogger->warning( "The given address label already exists." );
 			$valid = false;
 		}
+		
 		return $valid;
 	}
 

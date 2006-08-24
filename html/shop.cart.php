@@ -37,46 +37,15 @@ elseif( !empty( $manufacturer_id )) {
 
 $show_basket = true;
 
-echo '<h2>'. $VM_LANG->_PHPSHOP_CART_TITLE .'</h2>
-<!-- Cart Begins here -->
-';
-include(PAGEPATH. 'basket.php');
+$tpl = new vmTemplate();
+$tpl->set('show_basket', $show_basket );
+$tpl->set('continue_link', $continue_link );
+$tpl->set('category_id', $category_id );
+$tpl->set('product_id', $product_id );
+$tpl->set('manufacturer_id', $manufacturer_id );
+$tpl->set('cart', $cart );
 
-echo '<!-- End Cart -->
-';
+echo $tpl->fetch( "pages/$page.tpl.php" );
 
-if ($cart["idx"]) {
-        echo '<br />
- <div style="text-align:center;width:40%;float:left;">&nbsp;';
-        
-        if( $continue_link != '') {
- ?>
-     <a href="<?php echo $continue_link ?>" class="continue_link">
-     	<?php echo $VM_LANG->_PHPSHOP_CONTINUE_SHOPPING; ?>
-     </a>
- <?php
-        }
-        echo '</div>';
-        
-   if (!defined('_MIN_POV_REACHED')) { ?>
-
-           <span style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV2 . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></span>
-       <?php
-   }
-   else {
- ?>
-     <a href="<?php $sess->purl( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1"); ?>" class="checkout_link">
-           <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ?>
-     </a>
-
- 
- <?php
- }
- ?>
-<br style="clear:both;" /><br/>
-
-<?php
-// End if statement
-}
 ?>
 

@@ -578,7 +578,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION = 'Kategoriebeschreibung';
 	var $_PHPSHOP_HELP_MOD = 'Hilfe';
 	var $_PHPSHOP_CART_ACTION = 'Aktionen';
-	var $_PHPSHOP_CART_UPDATE = 'aktualisieren';
+	var $_PHPSHOP_CART_UPDATE = 'Aktualisieren';
 	var $_PHPSHOP_CART_DELETE = 'Löschen';
 	var $_PHPSHOP_PRODUCT_PRICETAG = 'Preis';
 	var $_PHPSHOP_PRODUCT_CALL = 'Preis bitte erfragen';
@@ -780,7 +780,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CART_STOCK_1 = 'Die von Ihnen angegebene Menge ist leider nicht vorhanden.';
 	var $_PHPSHOP_CART_STOCK_2 = 'Wir haben zur Zeit $product_in_stock Artikel dieses Produktes auf Lager.';
 	var $_PHPSHOP_CART_STOCK_3 = 'Bitte klicken Sie hier, um auf eine Warteliste für dieses Produkt gesetzt zu werden.';
-	var $_PHPSHOP_CART_SELECT_ITEM = 'Bitte wählen Sie einen Artikel von der Detailseite aus!';
+	var $_PHPSHOP_CART_SELECT_ITEM = 'Bitte wählen Sie zunächst eine Produktvariante über die Detailseite aus';
 	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'keiner';
 	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Herr';
 	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Frau';

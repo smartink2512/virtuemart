@@ -1,8 +1,8 @@
 //based on prototype's ajax class
 //to be used with prototype.lite, moofx.mad4milk.net.
 //setForm added by soeren from yahoo! connection manager
-ajax = Class.create();
-ajax.prototype = {
+mooajax = Class.create();
+mooajax.prototype = {
 	initialize: function(url, options){
 		this.transport = this.getTransport();
 		this.postBody = options.postBody || '';
@@ -19,7 +19,10 @@ ajax.prototype = {
 		if( this.formName ) {
 			this.setForm( this.formName );
 		}
-		if( this.pseudoForm ) {
+		if( this.formId ) {
+			this.setForm( this.formId );
+		}
+		if( this.pseudoForm ) { // Pseudo Forms are just collections of input/select/radio elements, it is need to handle nested forms (which is not allowed, *ups*)
 			this.setPseudoForm( this.pseudoForm );
 		}
 		this.request(url);
@@ -59,7 +62,12 @@ ajax.prototype = {
    */
 	setForm: function(formName)	{ // added by soeren
 		this.postBody = '';
-		var oForm = document.forms[formName];
+		if( document.forms[formName] ) {
+			var oForm = document.forms[formName];
+		}
+		else {
+			var oForm = $(formName);
+		}
 		var oElement, elName, elValue;
 		// iterate over the form elements collection to construct the
 		// label-value pairs.

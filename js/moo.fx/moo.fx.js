@@ -131,3 +131,7 @@ fx.cubic = function(pos){
 fx.circ = function(pos){
 	return Math.sqrt(pos);
 }
+
+function toggleFx( obj ) {
+	obj.toggle();
+}

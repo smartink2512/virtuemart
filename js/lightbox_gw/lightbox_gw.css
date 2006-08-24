@@ -13,10 +13,10 @@ body {
     -moz-opacity: 0.8;
     opacity:.80;
     filter: alpha(opacity=80);
-    }
+}
 #overlay[id]{ /* IE6 and below Can't See This */
     position:fixed;
-    }
+}
 
 
 .lbox{

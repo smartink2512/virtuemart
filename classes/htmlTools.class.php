@@ -407,28 +407,40 @@ class vmMooAjax {
 	 * @param string $varName The name of a variable the ajax object is assigned to
 	 */
 	function writeAjaxUpdater( $url, $updateId, $onComplete, $method='post', $options=array(), $varName='' ) {
+		echo vmMooAjax::getAjaxUpdater($url, $updateId, $onComplete, $method, $options, $varName);
+	}
+	
+	function getAjaxUpdater( $url, $updateId, $onComplete, $method='post', $options=array(), $varName='' ) {
 		global $mosConfig_live_site;
 		$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
 		$options['method'] = $method;
+		$html = '';
 		if( $varName ) {
-			echo 'var '.$varName.' = ';
+			$html .= 'var '.$varName.' = ';
 		}
 		if( !strstr( $url, $mosConfig_live_site) && !strstr($url, 'http' )) {
 			$url = $mosConfig_live_site.$path.$url;
 		}
-		echo "new ajax('$url', {\n";
+		$html .= "new mooajax('$url', {\n";
 		foreach ($options as $key => $val) {
-			echo "$key: '$val',\n";
+			if( strstr( $val, '.')) {
+				$html .= "$key: $val,\n";
+			}
+			else {
+				$html .= "$key: '$val',\n";
+			}
 		}
 		if( $updateId != '' ) {
-			echo "update: '$updateId'";
-			if( $onComplete ) { echo ",\n"; }
+			$html .= "update: '$updateId'";
+			if( $onComplete ) { $html .= ",\n"; }
 		}
 		if( $onComplete ) {
-			echo "onComplete: $onComplete";
+			$html .= "onComplete: $onComplete";
 		}
-		echo '
+		$html .= '
 		});';
+		
+		return $html;
 	}
 }
 /**
@@ -580,6 +592,80 @@ class vmCommonHTML extends mosHTML {
 		return '<img src="'.$src.'"'.$alt.$align.$title.$height.$width.$border.$attributes.' />';
 	}
 	/**
+	 * Returns a properly formatted XHTML List
+	 *
+	 * @param array $listitems
+	 * @param string $type Can be ul, ol, ...
+	 * @param string $style
+	 * @return string
+	 */
+	function getList( $listitems, $type = 'ul', $style='' ) {
+		if( $style ) {
+			$style = 'style="'.$style.'"';
+		}
+		$html  = '<' . $type ." $style>\n";
+		foreach( $listitems as $item ) {
+			$html .= '<li>' . $item . "</li>\n";
+		}
+		$html  .= '</' . $type .">\n";
+		
+		return $html;
+	}
+	/**
+	 * Returns a script tag. The referenced script will be fetched by a 
+	 * PHP script called "fetchscript.php"
+	 * That allows use gzip compression, so bigger Javascripts don't steal our bandwith
+	 *
+	 * @param string $src The script src reference
+	 * @param string $content A Javascript Text to include in a script tag
+	 * @return string
+	 */
+	function scriptTag( $src='', $content = '' ) {
+		global $mosConfig_gzip, $mosConfig_live_site;
+		if( $src == '' && $content == '' ) return;
+		
+		if( $src ) {
+			$urlpos = strpos( $src, '?' );			
+			$url_params = '';
+			
+			if( $urlpos ) {
+				$url_params = '&amp;'.substr( $src, $urlpos );
+				$src = substr( $src, 0, $urlpos);
+			}
+			if( stristr( $src, 'com_virtuemart' ) && !stristr( $src, '.php' )) {
+				$base_source = str_replace( $mosConfig_live_site, '', $src );
+				$base_source = str_replace( '/components/com_virtuemart', '', $base_source);
+				$base_source = str_replace( 'components/com_virtuemart', '', $base_source);
+				$src = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir='.dirname( $base_source ) . '&amp;file=' . basename( $src );
+			}
+			
+			return '<script src="'.$src.@$url_params.'" type="text/javascript"></script>'."\n";
+		}
+		
+		if( $content ) {
+			return "<script type=\"text/javascript\">\n".$content."\n</script>\n";
+		}
+		
+	}
+	/**
+	 * Returns a link tag
+	 *
+	 * @param string $href
+	 * @param string $type
+	 * @param string $rel
+	 * @return string
+	 */
+	function linkTag( $href, $type='text/css', $rel = 'stylesheet', $media="screen, projection" ) {
+		global $mosConfig_gzip, $mosConfig_live_site;
+		if( stristr( $href, 'com_virtuemart' )) {
+			$base_href = str_replace( $mosConfig_live_site, '', $href );
+			$base_href = str_replace( 'components/com_virtuemart/', '', $base_href);
+			$href = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir='.dirname( $base_href ) . '&amp;file=' . basename( $href );
+		}
+		return '<link type="'.$type.'" href="'.$href.'" rel="'.$rel.'" media="'.$media.'" />'."\n";
+		
+	}
+	/**
 	* Writes a "Save Ordering" Button
 	* @param int the number of rows
 	*/
@@ -657,8 +743,9 @@ class vmCommonHTML extends mosHTML {
 	function loadMooAjax() {
 		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_MOOAJAX_LOADED" )) {
-			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js"></script>
-			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.ajax.js"></script>';
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.ajax.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/vmAjax.js' );
 			if( defined('_PSHOP_ADMIN')) {
 				echo $scripttag;
 			}
@@ -678,10 +765,12 @@ class vmCommonHTML extends mosHTML {
 	function loadMooFX() {
 		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_MOOFX_LOADED" )) {
-			
-			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js"></script>
-			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.js"></script>
-			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.pack.js"></script>';
+			$scripttag = '';
+			if( !defined( "_PROTOTYPE_LOADED" )) {
+				$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js' );
+			}
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.pack.js' );
 			if( defined('_PSHOP_ADMIN')) {
 				echo $scripttag;
 			}
@@ -703,13 +792,13 @@ class vmCommonHTML extends mosHTML {
 	 */
 	function loadLightbox( $type = '2') {
 		global $mosConfig_live_site, $option, $mainframe;
-		if( !defined( "_LIGHTBOX_LOADED" )) {
+		if( !defined( '_LIGHTBOX'.$type.'_LOADED' )) {
 			
-			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/prototype/prototype.js"></script>
-			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.js"></script>
-			<link type="text/css" rel="stylesheet" href="'. $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.css" />';
+			$scripttag = vmCommonHTML::scriptTag( '', 'var lightboxurl = \''.$mosConfig_live_site.'/components/com_virtuemart/js/lightbox'.$type.'/\';');
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.css' );
 			if( $type== '2')  {
-				$scripttag .= '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/lightbox2/js/scriptaculous.js?load=effects"></script>';
+				vmCommonHTML::loadScriptaculous();
 			}
 			if( defined('_PSHOP_ADMIN')) {
 				echo $scripttag;
@@ -717,10 +806,92 @@ class vmCommonHTML extends mosHTML {
 			else {
 				$mainframe->addCustomHeadTag( $scripttag );
 			}
-			define ( "_LIGHTBOX_LOADED", "1" );
-		}
-		
+			define ( '_LIGHTBOX'.$type.'_LOADED', '1' );
+		}	
 	}
+	/**
+	 * Loads a part of the scriptaculous script library
+	 * @author http://script.aculo.us/
+	 * @license http://wiki.script.aculo.us/scriptaculous/show/License
+	 * 
+	 * @param array $library The name of the script to load
+	 */
+	function loadScriptaculous( $library=array( 'effects') ) {
+		global $mainframe, $option, $mosConfig_live_site;
+		$scripttag = '';
+		
+		foreach( $library as $script ) {
+			if( !defined( '_SCRIPTACULOUS_'.$script.'_LOADED' )) {
+				$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/scriptaculous/'.$script.'.js' );
+				define( '_SCRIPTACULOUS_'.$script.'_LOADED', 1 );
+			}
+		}
+		if( defined('_PSHOP_ADMIN') &&  $scripttag != '') {
+			vmCommonHTML::loadPrototype();
+			echo $scripttag;
+		}
+		elseif( $scripttag != '' ) {
+			vmCommonHTML::loadPrototype();
+			$mainframe->addCustomHeadTag( $scripttag );
+		}
+	}
+	/**
+	 * Prototype is a Javascript framework
+	 * @author http://prototype.conio.net/
+	 *
+	 */
+	function loadPrototype() {
+		global $mainframe, $option, $mosConfig_live_site;
+		if( !defined( "_PROTOTYPE_LOADED" )) {
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/prototype/prototype.js' );
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			elseif( $scripttag != '' ) {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+		}
+	}
+	/**
+	 * Loads the CSS and Javascripts needed to run the Thickbox
+	 * Source: http://codylindley.com/Javascript/257/thickbox-one-box-to-rule-them-all
+	 *
+	 */
+	function loadThickbox() {
+		global $mosConfig_live_site, $option, $mainframe;
+		if( !defined( '_THICKBOX_LOADED' )) {
+			vmCommonHTML::loadjQuery();
+			$scripttag = vmCommonHTML::scriptTag( '', 'var thickboxURL = \''.$mosConfig_live_site .'/components/'. $option .'/js/thickbox\';' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.css' );
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+			define ( '_THICKBOX_LOADED', '1' );
+		}
+	}
+	/**
+	 * Loads the jQuery Javascript
+	 * Source: http://jquery.com/
+	 *
+	 */
+	function loadjQuery() {
+		global $mosConfig_live_site, $option, $mainframe;
+		if( !defined( '_JQUERY_LOADED' )) {			
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/jquery-compressed.js' );
+			if( defined('_PSHOP_ADMIN')) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+			define ( '_JQUERY_LOADED', '1' );
+		}
+	}
+
 	/**
 	* Loads all necessary script files for Tigra Tree Menu
 	* @static 
@@ -730,8 +901,8 @@ class vmCommonHTML extends mosHTML {
 		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_TIGRATREE_LOADED" )) {
 			
-			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree_tpl.js.php"></script>
-			<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree.js"></script>';
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree_tpl.js.php' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree.js' );
 			
 			if( defined('_PSHOP_ADMIN')) {
 				echo $scripttag;
@@ -753,7 +924,8 @@ class vmCommonHTML extends mosHTML {
 		global $mosConfig_live_site, $option, $mainframe;
 		if( !defined( "_BEHAVIOURJS_LOADED" )) {
 			
-			$scripttag = '<script type="text/javascript" src="'. $mosConfig_live_site .'/components/'. $option .'/js/prototype/behaviour.js"></script>';
+			vmCommonHTML::loadPrototype();
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/prototype/behaviour.js' );
 
 			if( defined('_PSHOP_ADMIN')) {
 				echo $scripttag;
@@ -766,19 +938,35 @@ class vmCommonHTML extends mosHTML {
 	}
 
 	/**
-	 * Returns a div element of the class "shop_error" 
-	 * containing $msg to print out an error
+	 * Returns a properly formatted image link that opens a LightBox2
 	 *
-	 * @param string $msg
-	 * @return string HTML code
+	 * @param string $image_link Can be the image src or a complete image tag
+	 * @param string $text The Link Text, e.g. 'Click here!'
+	 * @param string $title The Link title, will be used as Image Caption
+	 * @param string $image_group The image group name when you want to use the gallery functionality
+	 * @return string
 	 */
-	function getErrorField( $msg ) {
+	function getLightboxImageLink( $image_link, $text, $title='', $image_group='' ) {
+		vmCommonHTML::loadLightbox();
 		
-		$html = '<div class="shop_error">'.$msg.'</div>';
-		return $html;
+		if( $image_group ) {
+			$image_group = '['.$image_group.']';
+		}
+		$link = vmCommonHTML::hyperLink( $image_link, $text, '', $title, 'rel="lightbox'.$image_group.'"' );
+		
+		return $link;
 	}
-
-
+	
+	function getThickboxPopUpLink( $url, $text, $target='_blank', $title='', $height=640, $width=480, $use_iframe=false ) {
+		vmCommonHTML::loadThickbox();
+		$url_appendix = '&amp;height='.$height.'&amp;width='.$width;
+		if( $use_iframe ) {
+			$url_appendix .= '&amp;TB_iframe=true';
+		}
+		$link = vmCommonHTML::hyperLink( $url . $url_appendix, $text, $target, $title, 'class="thickbox"' );
+		
+		return $link;
+	}
 	/**
 	 * Returns a div element of the class "shop_error" 
 	 * containing $msg to print out an error
@@ -791,7 +979,39 @@ class vmCommonHTML extends mosHTML {
 		$html = '<div class="shop_info">'.$msg.'</div>';
 		return $html;
 	}
-	
+	/**
+	 * Returns a div element to indicate success or failure of a function execution after an ajax call
+	 * and a div element with all the log messages
+	 *
+	 * @param boolean $success
+	 * @param Log_Display $vmLogger
+	 */
+	function getSuccessIndicator( $success, $vmLogger ) {
+
+		echo '<div id="successIndicator" style="display:none;">';
+		if( $success) { 
+			echo 'Success'; 
+		}
+		else {
+			echo 'Failure';
+		}
+		echo '</div>';
+		echo '<div id="logContainer" style="display:none;">';
+		$vmLogger->printLog();
+		echo '</div>';
+	}
+	/**
+	 * Returns a div element of the class "shop_error" 
+	 * containing $msg to print out an error
+	 *
+	 * @param string $msg
+	 * @return string HTML code
+	 */
+	function getErrorField( $msg ) {
+		
+		$html = '<div class="shop_error">'.$msg.'</div>';
+		return $html;
+	}
 	/**
 	 * Writes a PDF icon
 	 *

@@ -333,24 +333,19 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		require_once( CLASSPATH . 'connectionTools.class.php' );
 		vmConnector::sendHeaderAndContent( 200 );
 		// Send an indicator wether the function call return true or false
-		echo '<div id="successIndicator" style="display:none;">';
-		if( $ok) { 
-			echo 'Success'; 
-		}
-		else {
-			echo 'Failure';
-		}
-		echo '</div>';
-		
+		echo vmCommonHTML::getSuccessIndicator( $ok );
 		$vmLogger->printLog();
 		exit;
 	}
 	
-	// the Log object holds all error messages
-	// here we flush the buffer and print out all messages
-	$vmLogger->printLog();
-	// Now we can switch to implicit flushing
-	$vmLogger->_buffering = false;
+	if( empty($_REQUEST['only_page']) ) {
+		// the Log object holds all error messages
+		// here we flush the buffer and print out all messages
+		$vmLogger->printLog();
+		
+		// Now we can switch to implicit flushing
+		$vmLogger->_buffering = false;
+	}
 	
 	define( '_VM_PARSER_LOADED', 1 );
 }

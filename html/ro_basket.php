@@ -63,10 +63,10 @@ else {
 
 		// Build URL based on whether item or product
 		if ($product_parent_id) {
-			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
+			$url = $sess->url(URL .basename($_SERVER['PHP_SELF']). "?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
 		}
 		else {
-			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
+			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
 		}
 
 		$product_rows[$i]['product_name'] = "<a href=\"$url\"><strong>"
@@ -122,7 +122,7 @@ else {
 		}
 
 		/* UPDATE CART / DELETE FROM CART */
-		$action_url = $_SERVER['SERVER_PORT']=="443" ? SECUREURL : URL . "index.php";
+		$action_url = $_SERVER['SERVER_PORT']=="443" ? SECUREURL : URL . basename($_SERVER['PHP_SELF']);
 		$product_rows[$i]['update_form'] = "<input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
         <input type=\"hidden\" name=\"func\" value=\"cartUpdate\" />
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
@@ -164,10 +164,12 @@ else {
 	if ( PAYMENT_DISCOUNT_BEFORE == '1') {
 		if( $payment_discount != 0.00 ) {
 			$payment_discount_before = true;
-			if( $payment_discount > 0.00 )
-			$discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
-			else
-			$discount_word = $VM_LANG->_PHPSHOP_FEE;
+			if( $payment_discount > 0.00 ) {
+				$discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+			}
+			else {
+				$discount_word = $VM_LANG->_PHPSHOP_FEE;
+			}
 
 			$total -= $payment_discount;
 			$payment_discount_display = $CURRENCY_DISPLAY->getFullValue($payment_discount-($payment_discount*2));
@@ -204,7 +206,7 @@ else {
 	if (!empty($_REQUEST['ship_to_info_id']) || $auth["show_price_including_tax"] == 1) {
 		$tax = true;
 
-		if ($weight_total != 0 or TAX_VIRTUAL=='1') {
+		if( ($weight_total != 0 || TAX_VIRTUAL=='1') && $total > 0 ) {
 			$order_taxable = $ps_checkout->calc_order_taxable($vars);
 			$vars['payment_discount'] = $payment_discount;
 			$tax_total = $ps_checkout->calc_order_tax($order_taxable, $vars);
@@ -224,10 +226,12 @@ else {
 	if ( PAYMENT_DISCOUNT_BEFORE != '1') {
 		if( $payment_discount != 0.00 ) {
 			$payment_discount_after = true;
-			if( $payment_discount > 0.00 )
-			$discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
-			else
-			$discount_word = $VM_LANG->_PHPSHOP_FEE;
+			if( $payment_discount > 0.00 ) {
+				$discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+			}
+			else {
+				$discount_word = $VM_LANG->_PHPSHOP_FEE;
+			}
 			$total -= $payment_discount;
 			$payment_discount_display = $CURRENCY_DISPLAY->getFullValue($payment_discount-($payment_discount*2));
 		}

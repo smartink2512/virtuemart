@@ -123,7 +123,7 @@ class ps_product_category extends vmAbstractObject {
 		}
 		else {
 			// File Upload
-			if (!validate_image( $d, "category_thumb_image", "category")) {
+			if (!vmImageTools::validate_image( $d, "category_thumb_image", "category")) {
 				$valid = false;
 			}
 		}

@@ -71,7 +71,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Danke für Deine Bestellung.';
 	var $_PHPSHOP_NOT_SHIPPED = 'Noch nicht geliefert.';
 	var $_PHPSHOP_EMAIL_SENDTO = 'Eine Bestätigungs-email wurde versandt an';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Es existiert kein MOS-user, <br />den Du zur com_phpshop Nutzerliste hinzufügen könntest.';
 	var $_PHPSHOP_ERROR = 'FEHLER';
 	var $_PHPSHOP_MOD_NOT_REG = 'Modul ist nicht registriert.';
 	var $_PHPSHOP_MOD_ISNO_REG = ' ist kein gültiges Shop Modul.';
@@ -780,7 +779,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CART_STOCK_1 = 'Die angegebene Menge ist leider nicht vorhanden.';
 	var $_PHPSHOP_CART_STOCK_2 = 'Wir haben zur Zeit $product_in_stock Artikel dieses Produktes auf Lager.';
 	var $_PHPSHOP_CART_STOCK_3 = 'Bitte klicke hier, um auf eine Warteliste für dieses Produkt gesetzt zu werden.';
-	var $_PHPSHOP_CART_SELECT_ITEM = 'Bitte wähle einen Artikel von der Detailseite aus!';
+	var $_PHPSHOP_CART_SELECT_ITEM = 'Bitte wähle zunächst eine Produktvariante über die Detailseite aus';
 	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'keiner';
 	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Herr';
 	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Frau';
@@ -1287,10 +1286,10 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PARAMETERS_LBL = 'Parameter';
 	var $_PHPSHOP_PRODUCT_TYPE_LBL = 'Produkttyp';
 	var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = 'Produkttypenliste';
-	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Add/Edit Produkttyp';
+	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Produkttyp hinzufügen / ändern';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = 'Produkttyp-Liste für';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = 'Produkttypen auflisten';
-	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Produkttyp hinzufügen for';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Produkttyp hinzufügen für';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = 'Produkttyp hinzufügen';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = 'Produkttyp';
 	var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = 'Produkttyp - Name';

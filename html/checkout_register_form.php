@@ -42,10 +42,11 @@ if ( VM_SILENT_REGISTRATION == '1' && $page == 'checkout.index' ) {
 if (MUST_AGREE_TO_TOS != '1') {
 	$skip_fields[] = 'agreed';
 }
+// This is the part that prints out ALL registration fields!
 ps_userfield::listUserFields( $fields, $skip_fields );
 
-    echo '
-	<div align="center">';
+echo '
+<div align="center">';
     
 	if( !$mosConfig_useractivation && @VM_SHOW_REMEMBER_ME_BOX && VM_SILENT_REGISTRATION != '1') {
 		echo '<input type="checkbox" name="remember" value="yes" id="remember_login2" checked="checked" />

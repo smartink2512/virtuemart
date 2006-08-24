@@ -33,6 +33,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+22-08-2006 soeren
+
+^ moved /html/coupon.coupon_field.php to /templates/common/couponField.tpl.php
+^ products that are already in the cart are increased in quantity now
+
++ added a PHP script called "fetchscript" that allows us to send gzip-compressed javascripts and stylesheets (when gzip = 1)
+	All new Javascripts and Stylesheets are called using fetchscript.php now.
++ added Lighbox2 image links to Flypage + "more images"
++ added waiting list to product form, the storeadmin can decide to notify users about the stock level change or not.
+
 14-08-2006 soeren
 
 + finished feature to allow customers order in a different currency

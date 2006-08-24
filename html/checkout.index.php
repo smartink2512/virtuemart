@@ -111,7 +111,7 @@ if ($checkout) {
     // We have something in the Card so move on
     if ($perm->is_registered_customer($auth['user_id'])) { // user is logged in and a registered customer
             ?>
-<form action="<?php echo SECUREURL ?>index.php" method="post" name="adminForm">
+<form action="<?php echo SECUREURL.basename($_SERVER['PHP_SELF']) ?>" method="post" name="adminForm">
     <input type="hidden" name="checkout_next_step" value="<?php echo $checkout_next_step ?>" />
     <input type="hidden" name="checkout_this_step" value="<?php echo $checkout_this_step ?>" />
     <input type="hidden" name="zone_qty" value="<?php echo $zone_qty ?>" />
@@ -142,7 +142,7 @@ if ($checkout) {
             <tr>
                 <td colspan="2">
                 <?php echo $VM_LANG->_PHPSHOP_ADD_SHIPTO_1 ?>
-                <a href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipto&next_page=checkout.index");?>">
+                <a href="<?php $sess->purl(SECUREURL .basename($_SERVER['PHP_SELF']). "?page=account.shipto&next_page=checkout.index");?>">
                 <?php echo $VM_LANG->_PHPSHOP_ADD_SHIPTO_2 ?></a>.
                 </td>
             </tr>

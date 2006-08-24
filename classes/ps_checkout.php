@@ -809,49 +809,42 @@ Order Total: '.$order_total.'
 			include_once( CLASSPATH.'ps_coupon.php' );
 			ps_coupon::remove_coupon_code( $d );
 		}
-
-		/* Insert the main order information */
-		$q = "INSERT INTO #__{vm}_orders \n";
-		$q .= "(user_id, vendor_id, order_number, user_info_id, ship_method_id, \n";
-		$q .= "order_total, order_subtotal, order_tax, order_tax_details, order_shipping, \n";
-		$q .= "order_shipping_tax, order_discount, coupon_discount,order_currency, order_status, cdate, \n";
-		$q .= "mdate,customer_note,ip_address) \n";
-		$q .= "VALUES (";
-		$q .= "'" . $auth["user_id"] . "', ";
-		$q .= $ps_vendor_id . ", ";
-		$q .= "'" . $order_number . "', '";
-		$q .= $d["ship_to_info_id"] . "', '";
-
-		if (!empty($d["shipping_rate_id"])) {
-			$q .= urldecode($d["shipping_rate_id"]) . "', '";
-		}
-		else {
-			$q .= "', '";
-		}
-		$q .= $order_total . "', '";
-		$q .= $order_subtotal . "', '";
-		$q .= $order_tax . "', '";
-		$q .= serialize($order_tax_details). "', '";
-		$q .= $order_shipping . "', '";
-		$q .= $order_shipping_tax . "', '";
-		$q .= $payment_discount . "', '";
-		$q .= $coupon_discount . "', '";
-		$q .= $GLOBALS['product_currency']."', "; /* Currency is at the product level - line item */
-		$q .= "'P', '";
-		$q .= $timestamp . "', '";
-		$q .= $timestamp. "', '";
-		$q .= htmlspecialchars(strip_tags($d['customer_note'])) . "', '";
+		
+		// Get the IP Address
 		if (!empty($_SERVER['REMOTE_ADDR'])) {
-			$q .= $_SERVER['REMOTE_ADDR'] . "') ";
+			$ip = $_SERVER['REMOTE_ADDR'];
 		}
 		else {
-			$q .= "unknown') ";
+			$ip = 'unknown';
 		}
-		$db->query($q);
-		$db->next_record();
+		// Collect all fields and values to store them!
+		$fields = array(
+			'user_id' => $auth["user_id"], 
+			'vendor_id' => $ps_vendor_id, 
+			'order_number' => $order_number, 
+			'user_info_id' =>  $d["ship_to_info_id"], 
+			'ship_method_id' => @urldecode($d["shipping_rate_id"]),
+			'order_total' => $order_total, 
+			'order_subtotal' => $order_subtotal, 
+			'order_tax' => $order_tax, 
+			'order_tax_details' => serialize($order_tax_details), 
+			'order_shipping' => $order_shipping,
+			'order_shipping_tax' => $order_shipping_tax, 
+			'order_discount' => $payment_discount, 
+			'coupon_discount' => $coupon_discount,
+			'order_currency' => $GLOBALS['product_currency'], 
+			'order_status' => 'P', 
+			'cdate' => $timestamp,
+			'mdate' => $timestamp,
+			'customer_note' => htmlspecialchars(strip_tags($d['customer_note'])),
+			'ip_address' => $ip
+			);
 
-		/* Get the order id just stored */
+		// Insert the main order information
+		$db->buildQuery( 'INSERT', '#__{vm}_orders', $fields );
+		$db->query();
 
+		// Get the order id just stored
 		$q = "SELECT order_id FROM #__{vm}_orders WHERE order_number = ";
 		$q .= "'" . $order_number . "'";
 
@@ -860,15 +853,19 @@ Order Total: '.$order_total.'
 
 		$d["order_id"] = $order_id = $db->f("order_id");
 
-		/**
-	    * Insert the initial Order History.
-	    */
+
+	    // Insert the initial Order History.	    
 		$mysqlDatetime = date("Y-m-d G:i:s", $timestamp);
 		
-		$q = "INSERT INTO #__{vm}_order_history ";
-		$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
-		$q .= "'$order_id', 'P', '" . $mysqlDatetime . "', 1, '')";
-		$db->query($q);
+		$fields = array(
+					'order_id' => $order_id,
+					'order_status_code' => 'P',
+					'date_added' => $mysqlDatetime,
+					'customer_notified' => 1,
+					'comments' => ''
+				  );
+		$db->buildQuery( 'INSERT', '#__{vm}_order_history', $fields );
+		$db->query();
 
 		/**
 	    * Insert the Order payment info 
@@ -878,20 +875,18 @@ Order Total: '.$order_total.'
 		$d["order_payment_code"] = @$_SESSION['ccdata']['credit_card_code'];
 
 		// Payment number is encrypted using mySQL ENCODE function.
-		$q = "INSERT INTO #__{vm}_order_payment ";
-		$q .= "(order_id, order_payment_code, payment_method_id, order_payment_number, ";
-		$q .= "order_payment_expire, order_payment_log, order_payment_name, order_payment_trans_id) ";
-		$q .= "VALUES ('$order_id', ";
-		$q .= "'" . $d["order_payment_code"] . "', ";
-		$q .= "'" . $d["payment_method_id"] . "', ";
-		$q .= "ENCODE(\"$payment_number\",\"" . ENCODE_KEY . "\"), ";
-		$q .= "'" . @$_SESSION["ccdata"]["order_payment_expire"] . "',";
-		$q .= "'" . @$d["order_payment_log"] . "',";
-		$q .= "'" . @$_SESSION["ccdata"]["order_payment_name"] . "',";
-		$q .= "'" . $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] ). "'";
-		$q .= ")";
-		$db->query($q);
-		$db->next_record();
+		$fields = array(
+					'order_id' => $order_id, 
+					'order_payment_code' => $d["order_payment_code"], 
+					'payment_method_id' => $d["payment_method_id"], 
+					'order_payment_number' => "ENCODE( \"$payment_number\",\"" . ENCODE_KEY . "\")",
+					'order_payment_expire' => @$_SESSION["ccdata"]["order_payment_expire"], 
+					'order_payment_log' => @$d["order_payment_log"], 
+					'order_payment_name' => @$_SESSION["ccdata"]["order_payment_name"], 
+					'order_payment_trans_id' => $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] )
+				  );
+		$db->buildQuery( 'INSERT', '#__{vm}_order_payment', $fields, '', array('order_payment_number') );
+		$db->query();
 
 		/**
 		* Insert the User Billto & Shipto Info
@@ -909,9 +904,9 @@ Order Total: '.$order_total.'
 		$db->query( $q );
 
 		/**
-    * Insert all Products from the Cart into order line items; 
-    * one row per product in the cart 
-    */
+    	* Insert all Products from the Cart into order line items; 
+    	* one row per product in the cart 
+    	*/
 		$dboi = new ps_DB;
 
 		for($i = 0; $i < $cart["idx"]; $i++) {
@@ -1018,6 +1013,14 @@ Order Total: '.$order_total.'
 					$q .= DOWNLOAD_MAX . "', '";
 					$q .= $download_id . "', '";
 					$q .= $GLOBALS['vmInputFilter']->safeSQL( $db->f("attribute_value")) . "')";
+					$db->query($q);
+					$db->next_record();
+				}
+				if( @VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL == '1' ) {
+					// Update the product stock level back to where it was.
+					$q = "UPDATE #__{vm}_product ";
+					$q .= "SET product_in_stock = product_in_stock + ".$cart[$i]["quantity"];
+					$q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
 					$db->query($q);
 					$db->next_record();
 				}
@@ -1461,6 +1464,10 @@ Order Total: '.$order_total.'
 	**          0 if nothing is found
 	***************************************************************************/
 	function get_payment_discount( $payment_method_id, $subtotal = '' ) {
+		
+		if( empty( $payment_method_id )) {
+			return 0;
+		}
 		$db = new ps_DB();
 		//MOD ei
 		// There is a special payment method, which fee is depend on subtotal

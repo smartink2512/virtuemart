@@ -19,6 +19,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
 
 $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
+$no_toolbar = mosGetParam( $_REQUEST, 'no_toolbar', 0 );
 // Display just the naked page without toolbar, menu and footer?
 $only_page = mosGetParam( $_REQUEST, 'only_page', 0 );
 
@@ -106,6 +107,7 @@ echo '<script type="text/javascript" src="../components/'.$option.'/js/functions
 if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
 	if( $only_page) {
 		while( @ob_end_clean());
+		if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok );
 		include( PAGEPATH.$modulename.".".$pagename.".php" );
 		exit;
 	}
@@ -116,7 +118,7 @@ else {
 }
 include_once( ADMINPATH. 'version.php' );
 
-if( empty( $_REQUEST['no_menu'])) {
+if( empty( $no_menu )) {
 	echo '<br style="clear:both;"/><div class="smallgrey" align="center">'
                 .$VMVERSION->PRODUCT.' '.$VMVERSION->RELEASE
                 .' (<a href="http://virtuemart.net/index2.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" onclick="javascript:void window.open(\'http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE .'\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no\'); return false;" title="VirtueMart Version Check" target="_blank">Check for latest version</a>)</div>';

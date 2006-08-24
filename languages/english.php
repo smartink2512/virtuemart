@@ -779,7 +779,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CART_STOCK_1 = 'The selected quantity exceeds available stock. ';
 	var $_PHPSHOP_CART_STOCK_2 = 'We currently have $product_in_stock items available. ';
 	var $_PHPSHOP_CART_STOCK_3 = 'Click Here to be placed on our waiting list.';
-	var $_PHPSHOP_CART_SELECT_ITEM = 'Please select a special item.';
+	var $_PHPSHOP_CART_SELECT_ITEM = 'To add this product into your cart you have to select a product variant on the details page.';
 	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'none';
 	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Mr.';
 	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Mrs.';

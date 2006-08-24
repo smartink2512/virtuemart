@@ -257,15 +257,7 @@ class vmImageTools {
 		}
 	
 		/* Command to move uploaded file into destination directory */
-		$d["image_commands"][] = "\$ret = copy(\"".addslashes(realpath($temp_file))."\", \"".$path.$to_file."\");";
-		
-		$d["image_commands"][] = "if( file_exists( realpath(\"$temp_file\") )) {
-									\$ret = @unlink(\"".addslashes(realpath($temp_file))."\" );
-								  }
-								  else {
-								  	\$ret = true;
-								  }";
-		
+		$d["image_commands"][] = "\$ret = ps_product_files::moveUploadedFile( \"$field_name\", \"$path"."$to_file\" );";	
 	
 		/* Return new image file name */
 		$d[$field_name] = $to_file;

@@ -77,6 +77,7 @@ define('DOWNLOAD_EXPIRE', '432000');
 define('ENABLE_DOWNLOAD_STATUS', 'C');
 define('DISABLE_DOWNLOAD_STATUS', 'X');
 define('DOWNLOADROOT', $mosConfig_absolute_path.'/');
+define('VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL', '');
 define('_SHOW_PRICES', '1');
 define('ORDER_MAIL_HTML', '1');
 define('HOMEPAGE', 'shop.index');

@@ -11,13 +11,14 @@
 	background-position:bottom left;
 	width:160px;height:35px;
 	cursor:pointer;
-	border:none;
+	border: none;
 	font-weight:bold;
 	font-family:inherit;
-	background: url( 'images/add-to-cart.gif' ) no-repeat left center transparent;
+	background: url( 'images/add-to-cart.gif' ) no-repeat 10px center transparent;
 	vertical-align: middle;
 	overflow:hidden;
 }
+
 .addtocart_form {
 	display: inline;
 	white-space: nowrap;
@@ -27,13 +28,6 @@
 	vertical-align: middle;
 }
 
-/* This is the text box informing customers about your returns policy */
-.legalinfo {
-	background: lightgray;
-	border: 2px solid gray;
-	margin: 10px;
-	padding: 0px 0px 10px 10px;
-} 
 .continue_link, .checkout_link {
 	margin: 2px;
 	padding: 2px 0px 2px 40px;
@@ -43,11 +37,20 @@
 	width: 40%;
 }
 .checkout_link {
+	margin-left: 40px;
 	background: url( 'images/forward.png' ) no-repeat left;
 }
 .continue_link {
 	background: url( 'images/back.png' ) no-repeat left;
 }
+/* This is the text box informing customers about your returns policy */
+.legalinfo {
+	background: lightgray;
+	border: 2px solid gray;
+	margin: 10px;
+	padding: 0px 0px 10px 10px;
+} 
+
 /* The PDF, Email and Print buttons */
 div.buttons_heading {
 	margin:10px;
@@ -55,6 +58,13 @@ div.buttons_heading {
 	float:right;
 }
 
+.productPrice {
+	font-weight:bold
+}
+.product-Old-Price {
+	color:red;
+	text-decoration:line-through;
+}
 /** BROWSE PRODUCTS STYLES **/
 .browseProductContainer {
 	width:100%;

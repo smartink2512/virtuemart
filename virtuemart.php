@@ -34,6 +34,8 @@ $limitstart = intval( $mainframe->getUserStateFromRequest( "view{$keyword}{$cate
 $manufacturer_id = intval( mosGetParam( $_REQUEST, 'manufacturer_id', null ) );
 $search_category= intval( mosGetParam( $_REQUEST, 'search_category', null ) );
 $product_type_id = intval( mosgetparam($_REQUEST, 'product_type_id', null) );
+// Display just the naked page without toolbar, menu and footer?
+$only_page = mosGetParam( $_REQUEST, 'only_page', 0 );
 
 // Include the theme
 if( file_exists( VM_THEMEPATH.'theme.php' )) {
@@ -107,22 +109,22 @@ else {
 		&& !stristr($page, "shop.")
 	) {
 		
-			define( '_FRONTEND_ADMIN_LOADED', '1' );
-			$mainframe->loadEditor = 1;
-			require_once( $mosConfig_absolute_path."/editor/editor.php" );
-			initEditor();
-	
-			$editor1_array = Array('product.product_form' => 'product_desc',
-			'product.product_category_form' => 'category_description',
-			'store.store_form' => 'vendor_store_desc',
-			'vendor.vendor_form' => 'vendor_store_desc');
-			$editor2_array = Array('store.store_form' => 'vendor_terms_of_service',
-			'vendor.vendor_form' => 'vendor_terms_of_service');
-			editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
-			?>
-			<link type="text/css" rel="stylesheet" media="screen, projection" href="<?php echo VM_THEMEURL ?>admin.css" />
-			<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/components/<?php echo $option ?>/js/functions.js"></script>
-			<?php
+		define( '_FRONTEND_ADMIN_LOADED', '1' );
+		$mainframe->loadEditor = 1;
+		require_once( $mosConfig_absolute_path."/editor/editor.php" );
+		initEditor();
+
+		$editor1_array = Array('product.product_form' => 'product_desc',
+		'product.product_category_form' => 'category_description',
+		'store.store_form' => 'vendor_store_desc',
+		'vendor.vendor_form' => 'vendor_store_desc');
+		$editor2_array = Array('store.store_form' => 'vendor_terms_of_service',
+		'vendor.vendor_form' => 'vendor_terms_of_service');
+		editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
+		
+		$mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL .'admin.css' ));
+		$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/functions.js" ));
+
 		if( $no_menu != "1" ) {
 			// The admin header with dropdown menu
 			include( ADMINPATH."header.php" );
@@ -191,11 +193,19 @@ else {
                         && (empty($keyword) && empty($keyword1) && empty($keyword2));
 		
         // IE6 PNG transparency fix
-        $mainframe->addCustomHeadTag( "<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleight.js\"></script>
-<script type=\"text/javascript\" src=\"$mosConfig_live_site/components/$option/js/sleightbg.js\"></script>" );
-		        
+        $mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/sleight.js" ));
+		$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/sleightbg.js" ));
+
+		echo '<div id="vmMainPage">'."\n";
+		
 		// Load requested PAGE
 		if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
+			if( $only_page) {
+				while( @ob_end_clean());
+				if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
+				include( PAGEPATH.$modulename.".".$pagename.".php" );
+				exit;
+			}
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
 		}
 		elseif( file_exists( PAGEPATH . HOMEPAGE.'.php' )) {
@@ -207,6 +217,9 @@ else {
 	    if ( !empty($mosConfig_caching) && $vmDoCaching) {
 	        echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span>';
 	    }
+	    
+	    echo "\n</div>\n";
+	    
 	    if(SHOWVERSION && !mosGetParam( $_REQUEST, 'pop' )) {
 			include(PAGEPATH ."footer.php");
 	    }
@@ -221,6 +234,7 @@ else {
 
 }
 if( defined( 'vmToolTipCalled')) {
-	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
+	echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
 }
+
 ?>

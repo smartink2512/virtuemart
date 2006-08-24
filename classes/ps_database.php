@@ -287,7 +287,7 @@ class ps_DB extends database {
 	 * @param string $whereClause
 	 *
 	 */
-	function buildQuery( $type='INSERT', $table, $values, $whereClause='' ) {
+	function buildQuery( $type='INSERT', $table, $values, $whereClause='', $doNotEnclose=array() ) {
 		global $vmLogger;
 		
 		if( empty($table) || empty($values)) {
@@ -305,8 +305,14 @@ class ps_DB extends database {
 				$q .= "`) VALUES (\n";
 				$count = count( $values );
 				$i = 1;
-				foreach ( $values as $value ) {
-					$q .= '\'' . $this->getEscaped($value)."'\n";
+				foreach ( $values as $key => $value ) {
+					if( isset( $doNotEnclose[$key])) {
+						// Important when using MySQL functions like "ENCODE", "REPLACE" or such
+						$q .= $value;
+					} 
+					else {
+						$q .= '\'' . $this->getEscaped($value)."'\n";
+					}
 					if( $i++ < $count ) {
 						$q.= ',';
 					}

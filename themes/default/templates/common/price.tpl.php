@@ -3,12 +3,9 @@
 <?php
 // User is not allowed to see a price or there is no price
 if( !$auth['show_prices'] || !isset($price_info["product_price_id"] )) {
-	?>
-	&nbsp;
-	<a href="mailto:<?php echo $vendor_mail ?>?subject=<?php echo $VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name" ?>">
-		<?php echo $VM_LANG->_PHPSHOP_PRODUCT_CALL ?>
-	</a>
-	<?php
+	
+	$link = $vendor_mail.'?subject='. $VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name";
+	echo @mosHTML::emailCloaking( $link, 1, $VM_LANG->_PHPSHOP_PRODUCT_CALL );
 }
 ?>
 
@@ -16,7 +13,7 @@ if( !$auth['show_prices'] || !isset($price_info["product_price_id"] )) {
 // DISCOUNT: Show old price!
 if(!empty($discount_info["amount"])) {
 	?>
-	<span style="color:red;text-decoration:line-through;">
+	<span class="product-Old-Price">
 		<?php echo $CURRENCY_DISPLAY->getFullValue($undiscounted_price); ?></span>
 	
 	<br/>
@@ -25,7 +22,7 @@ if(!empty($discount_info["amount"])) {
 ?>
 <?php
 if( !empty( $price_info["product_price_id"] )) { ?>
-	<span style="font-weight:bold">
+	<span class="productPrice">
 		<?php echo $CURRENCY_DISPLAY->getFullValue($base_price) ?>
 		<?php echo $text_including_tax ?>
 	</span>

@@ -247,7 +247,7 @@ $funcname = !empty($category_id) ? "productCategoryUpdate" : "productCategoryAdd
 $formObj->finishForm( $funcname, $modulename.'.product_category_list', $option );
 
 ?>
-<script language="javascript">
+<script type="text/javascript">
 <!--
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
   if( !disableOnChecked ) {

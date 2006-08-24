@@ -359,13 +359,13 @@ else {
 		/*** Add-to-Cart Button ***/
 		if (USE_AS_CATALOGUE != '1' && $product_price != "" 
 			&& !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )
-			&& !ps_product::product_has_attributes( $db_browse->f('product_id'))
+			&& !ps_product::product_has_attributes( $db_browse->f('product_id'), true )
 			&& $tpl->get_cfg( 'showAddtocartButtonOnProductList' ) ) {
 				
 			$tpl->set( 'i', $i );
 			$tpl->set( 'product_id', $db_browse->f('product_id') );
 			
-			$products[$i]['form_addtocart'] = $tpl->fetch( 'common/addtocart_form.tpl.php' );
+			$products[$i]['form_addtocart'] = $tpl->fetch( 'browse/includes/addtocart_form.tpl.php' );
 			$products[$i]['has_addtocart'] = true;
 		}
 		else {

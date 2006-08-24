@@ -46,63 +46,18 @@ $q .= "AND #__{vm}_payment_method.payment_method_id=#__{vm}_order_payment.paymen
 $q .= "AND #__{vm}_orders.user_id='" . $auth["user_id"] . "' ";
 $q .= "AND #__{vm}_orders.order_id='$order_id' ";
 $db->query($q);
+
 if ($db->next_record()) {
 
-?>
-<h3><?php echo $VM_LANG->_PHPSHOP_THANKYOU ?></h3>
- <p>
- <?php 
- if( empty($vars['error'])) { ?>
-   <?php echo vmCommonHTML::imageTag( VM_THEMEURL .'images/button_ok.png', 'Success', 'center', '48', '48' ); ?>
-   <?php echo $VM_LANG->_PHPSHOP_THANKYOU_SUCCESS?>
-  
-  <br /><br />
-  <?php echo $VM_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $user->user_email; ?></strong><br />
-  </p>
-  <?php 
- } ?>
-  
-<!-- Begin Payment Information -->
-<?php
-
-if ($db->f("order_status") == "P" ) {
-	// Copy the db object to prevent it gets altered
-	$db_temp = ps_DB::_clone( $db );
- /** Start printing out HTML Form code (Payment Extra Info) **/ ?>
- <br />
-<table width="100%">
-  <tr>
-    <td width="100%" align="center">
-    <?php 
-    /* Try to get PayPal/PayMate/Worldpay/whatever Configuration File */
-    @include( CLASSPATH."payment/".$db->f("payment_class").".cfg.php" );
-    
-	echo DEBUG ? vmCommonHTML::getInfoField('Beginning to parse the payment extra info code...' ) : '';
+	$tpl = new vmTemplate();
+	$tpl->set( 'order_id', $order_id );
+	$tpl->set( 'ps_product', $ps_product );
+	$tpl->set( 'vendor_currency', $vendor_currency );
+	$tpl->set( 'user', $user );
+	$tpl->set( 'dbbt', $dbbt );
+	$tpl->set( 'db', $db );
 	
-    // Here's the place where the Payment Extra Form Code is included
-    // Thanks to Steve for this solution (why make it complicated...?)
-    if( eval('?>' . $db->f("payment_extrainfo") . '<?php ') === false ) {
-    	echo vmCommonHTML::getErrorField( "Error: The code of the payment method ".$db->f( 'payment_method_name').' ('.$db->f('payment_method_code').') '
-    	.'contains a Parse Error!<br />Please correct that first' );
-    }
-    else {
-    	echo DEBUG ? vmCommonHTML::getInfoField('Successfully parsed the payment extra info code.' ) : '';
-    }
-    /** END printing out HTML Form code (Payment Extra Info) **/
-
-      ?>
-    </td>
-  </tr>
-</table>
-<br />
-<?php
-$db = $db_temp;
-}
-?>
- <p><a href="<?php $sess->purl(SECUREURL."index.php?page=account.order_details&order_id=". $order_id) ?>">
- <?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?></a>
- </p>
- <?php
+	echo $tpl->fetch( "pages/$page.tpl.php" );
 
 } /* End of security check */
 ?>

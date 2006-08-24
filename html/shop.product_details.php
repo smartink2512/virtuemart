@@ -252,32 +252,6 @@ if (PSHOP_ALLOW_REVIEWS == '1') {
 	$product_rating = ps_reviews::allvotes( $product_id );
 }
 
-/* ADD-TO-CART */
-$addtocart = "<div>
-    <form action=\"". $mm_action_url."index.php\" method=\"post\" name=\"addtocart\" id=\"addtocart\">"
-.$ps_product_attribute->list_attribute($product_id)
-// added for the advanced attribute modification
-.$ps_product_attribute->list_advanced_attribute($product_id)
-// end added for advanced attribute modification
-.$ps_product_attribute->list_custom_attribute($product_id);
-// end added for custom attribute modification
-if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )) {
-	$addtocart .= "
-        <p><label for=\"quantity\" class=\"quantity_box\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":</label>
-            <input type=\"text\" class=\"inputbox\" size=\"4\" id=\"quantity\" name=\"quantity\" value=\"1\" />&nbsp;
-            <input type=\"submit\" class=\"addtocart_button\" value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO ."\" title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" />
-          </p>
-      <input type=\"hidden\" name=\"flypage\" value=\"shop.$flypage\" />
-      <input type=\"hidden\" name=\"page\" value=\"shop.cart\" />
-      <input type=\"hidden\" name=\"manufacturer_id\" value=\"$manufacturer_id\" />
-      <input type=\"hidden\" name=\"category_id\" value=\"$category_id\" />
-      <input type=\"hidden\" name=\"func\" value=\"cartAdd\" />
-      <input type=\"hidden\" name=\"option\" value=\"$option\" />
-      <input type=\"hidden\" name=\"Itemid\" value=\"$Itemid\" />";
-}
-$addtocart .= "</form>
-    </div>";
-
 $product_reviews = $product_reviewform = "";
 /* LIST ALL REVIEWS **/
 if (PSHOP_ALLOW_REVIEWS == '1') {
@@ -346,6 +320,12 @@ $tpl->set( "manufacturer_link", $manufacturer_link );
 $tpl->set( "product_price", $product_price );
 $tpl->set( "product_price_lbl", $product_price_lbl );
 $tpl->set( "product_description", $product_description );
+
+/* ADD-TO-CART */
+$tpl->set( 'manufacturer_id', $manufacturer_id );
+$tpl->set( 'flypage', $flypage );
+$tpl->set( 'ps_product_attribute', $ps_product_attribute );
+$addtocart = $tpl->fetch('product_details/includes/addtocart_form.tpl.php' );
 
 $tpl->set( "addtocart", $addtocart );
 // Those come from separate template files

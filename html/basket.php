@@ -65,10 +65,10 @@ else {
 
 		// Build URL based on whether item or product
 		if ($product_parent_id) {
-			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
+			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
 		}
 		else {
-			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
+			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
 		}
 
 		$product_rows[$i]['product_name'] = "<a href=\"$url\"><strong>"
@@ -129,7 +129,7 @@ else {
 		}
 
 		/* UPDATE CART / DELETE FROM CART */
-		$action_url = $mm_action_url."index.php";
+		$action_url = $mm_action_url.basename($_SERVER['PHP_SELF']);
 		$product_rows[$i]['update_form'] = "<input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
     <input type=\"hidden\" name=\"func\" value=\"cartUpdate\" />
     <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
@@ -264,7 +264,8 @@ else {
 			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_METHOD && CHECKOUT_STYLE == 3
 			)
 	) {
-		include (PAGEPATH."coupon.coupon_field.php");
+		$tpl = new vmTemplate();
+		echo $tpl->fetch_cache( 'common/couponField.tpl.php' );
 	}
 }
 

@@ -468,7 +468,7 @@ class ps_product extends vmAbstractObject {
 
 		/* notify the shoppers that the product is here */
 		/* see zw_waiting_list */
-		if ($d["product_in_stock"] > "0") {
+		if ($d["product_in_stock"] > "0" && $d['notify_users'] == '1' ) {
 			require_once( CLASSPATH . 'zw_waiting_list.php');
 			$zw_waiting_list = new zw_waiting_list;
 			$zw_waiting_list->notify_list($d["product_id"]);
@@ -978,16 +978,26 @@ class ps_product extends vmAbstractObject {
 	 * @param int $pid The id of the product to check
 	 * @return boolean True when the product has attributes, false when not
 	 */
-	function product_has_attributes($pid) {
-		if( is_array($pid)) {
+	function product_has_attributes($pid, $checkSimpleAttributes=false ) {
+		if( is_array($pid) || empty($pid)) {
 			return false;
 		}
+		$pid = intval( $pid );
 		$db = new ps_DB;
 		if( empty($GLOBALS['product_info'][$pid]["product_has_attributes"] )) {
-			$q  = "SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id='$pid' ";
-			$db->setQuery($q); $db->query();
+			$db->query( "SELECT `product_id` FROM `#__{vm}_product_attribute_sku` WHERE `product_id`=$pid");
 			if ($db->next_record()) {
 				$GLOBALS['product_info'][$pid]["product_has_attributes"] = True;
+			}
+			elseif( $checkSimpleAttributes ) {
+				$db->query( "SELECT `attribute` FROM `#__{vm}_product` WHERE `product_id`=$pid");
+				$db->next_record();
+				if( $db->f('attribute')) {
+					$GLOBALS['product_info'][$pid]["product_has_attributes"] = True;
+				}
+				else {
+					$GLOBALS['product_info'][$pid]["product_has_attributes"] = False;
+				}
 			}
 			else {
 				$GLOBALS['product_info'][$pid]["product_has_attributes"] = False;

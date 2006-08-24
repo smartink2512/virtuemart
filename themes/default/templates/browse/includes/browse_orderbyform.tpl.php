@@ -39,11 +39,15 @@ if( $show_top_navigation ) {
 	
     <!-- PAGE NAVIGATION AT THE TOP -->
     <br/>
-    <div style="text-align:center;">
-    	<?php echo $pagenav->writePagesLinks( $search_string ); ?>
+    <div style="text-align:center;"><?php 
+    	echo $pagenav->writePagesLinks( $search_string );
+    	echo '<br />';
+    	echo $pagenav->writeLeafsCounter();
+      ?>
     </div>
-    <br/>
+    
 	<?php
+	
 }
 ?>
 </form>

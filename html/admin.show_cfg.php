@@ -999,7 +999,15 @@ foreach( $rows as $row ) {
         <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN ?>
         </td>
     </tr>
-  </table>  
+    <tr>
+      <td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL ?></td>
+        <td>
+            <input name="conf_VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL" class="checkbox" value="1" <?php if( @conf_VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL ) echo 'checked="checked"' ?> />
+        </td>
+        <td><?php echo $VM_LANG->_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP ?>
+        </td>
+    </tr>
+    </table>  
 
 <?php
   $tabs->endTab();

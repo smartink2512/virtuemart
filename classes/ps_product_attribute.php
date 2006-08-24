@@ -199,8 +199,9 @@ class ps_product_attribute {
 	 */
 	function list_attribute($product_id) {
 
-		global $VM_LANG, $CURRENCY_DISPLAY;
-
+		global $VM_LANG, $CURRENCY_DISPLAY, $mm_action_url;
+		vmCommonHTML::loadMooAjax();
+		
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
 		$Itemid = mosGetParam( $_REQUEST, 'Itemid', "" );
@@ -228,7 +229,7 @@ class ps_product_attribute {
 		if( $db->num_rows() > 0 ) {
 			$flypage = $ps_product->get_flypage( $product_id );
 			$html .= "<label for=\"product_id_field\">".$VM_LANG->_PHPSHOP_PLEASE_SEL_ITEM."</label>: <br />";
-			$html .= "<select class=\"inputbox\" onchange=\"var id = document.getElementById('product_id_field')[selectedIndex].value; if(id != '') {window.location='". $_SERVER['PHP_SELF'] ."?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id } ;\" id=\"product_id_field\" name=\"product_id\">\n";
+			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&only_page=1category_id=$category_id&product_id=' + id ); }\" id=\"product_id_field\" name=\"product_id\">\n";
 			$html .= "<option value=\"$product_id\">".$VM_LANG->_PHPSHOP_SELECT."</option>";
 			while ($db->next_record()) {
 				$selected = isset($child_id) ? ($db->f("product_id")==$child_id ? "selected=\"selected\"" : "") : "";

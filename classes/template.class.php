@@ -155,7 +155,7 @@ class vmTemplate {
 	 */
 	function get_cfg( $var, $default='' ) {
 
-		return $this->config->get( $var );
+		return $this->config->get( $var, $default );
 	}
 	
 	/**

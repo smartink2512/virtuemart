@@ -35,20 +35,13 @@ LightboxGW.base.prototype = {
 		}, options || {} )
 
 		//create the overlay
-		new Insertion.Before(this.element, "<div id='overlay' style='display:none;'></div>");
+		new Insertion.Before(this.element, "<div id='overlay' style='display:none;visibility:hidden;'></div>");
 		
 		//Element.addClassName(this.element, this.options.lightboxClassName)
-	
 		//also add a default lbox class to the lightbox div so we can find and close all lightboxes if we need to
 		Element.addClassName(this.element, 'lbox')
 		
-		//Tip: make sure the path to the close.gif image below is correct for your setup
-		closer = '<img id="close" src="../components/com_virtuemart/js/lightbox/close.gif" alt="Close" title="Close this window" />'
-
-		//insert the closer image into the div
-		new Insertion.Top(this.element, closer);
-		
-		Event.observe($('close'), 'click', this.hideBox.bindAsEventListener(this) );
+		this.addCloser();
 		
 		if (this.options.closeOnOverlayClick){
 			Event.observe($('overlay'), 'click', this.hideBox.bindAsEventListener(this) );
@@ -60,22 +53,56 @@ LightboxGW.base.prototype = {
 		this.showBox();	
 	},
 	
-	showBox : function(){
-		if( this.options.showOverlay ) {
-			//show the overlay
-			Element.show('overlay');
-		}
+	addCloser : function() {
+		
+		//Tip: make sure the path to the close.gif image below is correct for your setup
+		closer = '<img id="close" src="' + lightboxurl + 'images/close.gif" alt="Close" title="Close this window" />'
+
+		//insert the closer image into the div
+		new Insertion.Top(this.element, closer);
+		
+		Event.observe($('close'), 'click', this.hideBox.bindAsEventListener(this) );
+	},
+	
+	showBox : function() {
+
 		//center the lightbox
 	   this.center();
-	   
-	   	//show the lightbox
-	   Element.show(this.element);
+	   if( this.options.fadeIn ) {
+			if( this.options.showOverlay ) {
+				//show the overlay
+		   		var faderOL = new fx.Opacity( 'overlay', { duration: 4200  } );
+		   		faderOL.toggle();
+			}
+	   		var fader = new fx.Opacity( this.element.id, { 	transition: fx.cubic, 
+	   														duration: 200,
+	   														onComplete:function() {
+	   															this.options.duration= 3500
+															    this.toggle();
+															    this.options.onComplete = '';
+															  } } );
+	
+	   		Element.show( this.element.id );
+	   		fader.hide();
+	   		fader.toggle();
+	   		
+	   		
+	   } else {
+			if( this.options.showOverlay ) {
+				//show the overlay
+				Element.show('overlay');
+			}
+		   	//show the lightbox
+		   Element.show(this.element);
+	   }
 	   return false;
 	},
 	
 	hideBox : function(evt){	
 		Element.removeClassName(this.element, this.options.lightboxClassName)
-		Element.hide(this.element);
+
+	   	Element.hide(this.element);
+	   
 		//remove the overlay element from the DOM completely
 		Element.remove('overlay');
 		showSelectBoxes();
@@ -128,7 +155,16 @@ LightboxGW.base.prototype = {
 		this.element.style.left = setX + "px";
 		this.element.style.top  = setY + "px";
 		
+	},
+	
+	setInnerHTML : function( html ) {
+		this.element.innerHTML = html;
+		this.addCloser();
 	}
+}
+
+function lightBoxTimeout() {
+	setTimeout( 'LightboxGW.hideAll()', 2000 );
 }
 
 function showSelectBoxes(){
@@ -148,5 +184,19 @@ function hideSelectBoxes(){
 		for (i = 0; i != selects.length; i++) {
 			selects[i].style.visibility = "hidden";
 		}
+	}
+}
+function showLoadingLightbox() {
+	var lb = new LightboxGW.base('statusBox', { showOverlay: false });
+	lb.setInnerHTML( '<img src="'+lightboxurl+'images/loading.gif" border="0" align="middle" alt="Loading..." />' );	
+}
+
+function showMessagesinLightBox() {
+	if( $('logContainer').innerHTML != '' ) {
+		if( !lb ) {
+			var lb = new LightboxGW.base('statusBox', { showOverlay: false, fadeIn: true });
+		}
+		lb.setInnerHTML( $('logContainer').innerHTML );
+		//lightBoxTimeout();
 	}
 }
