@@ -29,7 +29,8 @@ if( count( $currencies ) < count( $vendor_accepted_currencies )) {
 }
 $currencies = explode( ',', $vendor_accepted_currencies );
 
-$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` WHERE FIND_IN_SET(`currency_code`, \''.implode(',',$currencies).'\') ORDER BY `currency_name`' );
+//$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` WHERE FIND_IN_SET(`currency_code`, \''.implode(',',$currencies).'\') ORDER BY `currency_name`' );
+$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` ORDER BY `currency_name`' );
 unset( $currencies );
 
 while( $db->next_record()) {
@@ -55,7 +56,7 @@ $sess = new ps_session;
 			echo "<input type=\"hidden\" name=\"$key\" value=\"$val\" />\n";
 		}
 	}
-	echo $ps_html->selectList( 'product_currency', $GLOBALS['product_currency'], $currencies );
+	echo $ps_html->selectList( 'product_currency', $GLOBALS['product_currency'], $currencies, 1, '', 'style="width:130px;"' );
 	?>
     <input class="button" type="submit" name="submit" value="<?php echo 'Change Currency' ?>" />
 </form>

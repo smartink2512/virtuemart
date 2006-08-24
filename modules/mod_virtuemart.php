@@ -185,6 +185,11 @@ if ( $show_login_form == "yes" ) {
 			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $_SERVER['QUERY_STRING']); ?>" name="return" />
 		  <br/>
 			<input type="submit" value="<?php echo _BUTTON_LOGIN ?>" class="button" name="Login" />
+			<?php
+		  	// used for spoof hardening
+			$validate = vmSpoofValue(1);
+			?>
+			<input type="hidden" name="<?php echo $validate; ?>" value="1" />
 			</form>
 		  </td>
 		</tr>

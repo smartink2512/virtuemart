@@ -7,7 +7,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2004 Soeren Eberhardt
+* @copyright (C) 2004-2006 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
@@ -18,16 +18,28 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /* Load the virtuemart main parse code */
 require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
-global $VM_LANG, $sess, $mm_action_url;
+global $VM_LANG, $sess, $mm_action_url, $option;
 
-?><table width="100%">
-        <tr>
-            <td>
-                <a class="mainlevel" href="<?php echo $sess->url($mm_action_url."index.php?page=shop.cart")?>">
-                <?php echo $VM_LANG->_PHPSHOP_CART_SHOW ?></a>
-            </td>
-        </tr>
-        <tr>
-            <td><?php include (PAGEPATH.'shop.basket_short.php') ?></td>
-        </tr>
-    </table>
+$moduleID = $params->get('moduleID', 'vmCartModule' );
+
+if( $params->get('useThickBox', 0)) {
+	$scripttag = vmCommonHTML::scriptTag( '', 'var thickboxURL = \''.$mosConfig_live_site .'/components/'. $option .'/js/thickbox\';' );
+	$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/jquery-compressed.js' );
+	$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.js' );
+	$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.css' );
+	
+	echo $scripttag;
+	
+	echo vmCommonHTML::getThickboxPopUpLink( $sess->url($mm_action_url."index2.php?page=shop.cart"), $VM_LANG->_PHPSHOP_CART_SHOW, '', '', 640, 600, true );
+}
+else {
+	echo '<a class="mainlevel'.$params->get('class_sfx') .'" href="'.$sess->url($mm_action_url."index.php?page=shop.cart").'">
+		'. $VM_LANG->_PHPSHOP_CART_SHOW .'
+	</a>';
+}
+
+echo "<div id=\"$moduleID\">";
+include (PAGEPATH.'shop.basket_short.php');
+echo '</div>'; 
+
+?>
