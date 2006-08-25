@@ -79,12 +79,20 @@
         <option value="yes">Yes</option>
         <option value="no">No</option>
       </param>
+      <param name="useGreyBox_accountlink" type="radio" default="0" label="Open the Account Maintenance in a GreyBox?" description="GreyBox is a webpage UI dialog widget. It opens the page in a new inline-window and hides the other part of the website under a gray overlay.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+	   </param>
       <param name="show_minicart" type="radio" default="yes" label="Show Mini Cart?"
       description="Defines wether the mini cart with a link to the cart and the actual total $ is displayed or not." >
         <option value="yes">Yes</option>
         <option value="no">No</option>
       </param>
-      
+	<param name="useGreyBox_cartlink" type="radio" default="0" label="Open the Cart in a GreyBox?" description="GreyBox is a webpage UI dialog widget. It opens the page in a new inline-window and hides the other part of the website under a gray overlay.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+	   </param>
+	   
       <param name="show_productsearch" type="radio" default="yes" label="Show Product Search Field?"
       description="Defines wether a product search field is displayed or not.">
         <option value="yes">Yes</option>

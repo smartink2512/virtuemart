@@ -182,7 +182,7 @@ class listFactory {
 	*/
 	function writeSearchHeader( $title, $image="", $modulename, $pagename) {
 	
-		global $sess, $keyword, $VM_LANG, $option;
+		global $sess, $keyword, $VM_LANG, $vmDir;
 	  
 		if( !empty( $keyword )) {
 			$keyword = urldecode( $keyword );
@@ -196,7 +196,7 @@ class listFactory {
 		$show = mosGetParam( $_REQUEST, "show", "" );
 		
 		$header = "<form name=\"adminForm\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">
-					<input type=\"hidden\" name=\"option\" value=\"$option\" />
+					<input type=\"hidden\" name=\"option\" value=\"$vmDir\" />
 					<input type=\"hidden\" name=\"page\" value=\"". $modulename . "." . $pagename . "\" />
 					<input type=\"hidden\" name=\"task\" value=\"\" />\n
 					<input type=\"hidden\" name=\"func\" value=\"\" />\n
@@ -271,7 +271,7 @@ class listFactory {
 * 
 * // Write your form with mixed tags and text fields
 * // and finally close the form:
-* $formObj->finishForm( $funcname, $modulename.'.country_list', $option );
+* $formObj->finishForm( $funcname, $modulename.'.country_list', $vmDir );
 *
 * @package virtuemart
 * @subpackage Core
@@ -302,14 +302,14 @@ class formFactory {
 	* Writes necessary hidden input fields
 	* and closes the form
 	*/
-	function finishForm( $func, $page, $option='com_virtuemart' ) {
+	function finishForm( $func, $page, $vmDir='com_virtuemart' ) {
 		$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
 		
 		$html = '
 		<input type="hidden" name="func" value="'.$func.'" />
         <input type="hidden" name="page" value="'.$page.'" />
         <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="'.$option.'" />';
+        <input type="hidden" name="option" value="'.$vmDir.'" />';
 		if( $no_menu ) {
 			$html .= '<input type="hidden" name="ajax_request" value="1" />';
 			$html .= '<input type="hidden" name="no_menu" value="1" />';
@@ -403,17 +403,17 @@ class vmMooAjax {
 	 * @param string $url
 	 * @param string $updateId
 	 * @param string $onComplete A JS function name to be called after the HTTP transport has been finished
-	 * @param array $options
+	 * @param array $vmDirs
 	 * @param string $varName The name of a variable the ajax object is assigned to
 	 */
-	function writeAjaxUpdater( $url, $updateId, $onComplete, $method='post', $options=array(), $varName='' ) {
-		echo vmMooAjax::getAjaxUpdater($url, $updateId, $onComplete, $method, $options, $varName);
+	function writeAjaxUpdater( $url, $updateId, $onComplete, $method='post', $vmDirs=array(), $varName='' ) {
+		echo vmMooAjax::getAjaxUpdater($url, $updateId, $onComplete, $method, $vmDirs, $varName);
 	}
 	
-	function getAjaxUpdater( $url, $updateId, $onComplete, $method='post', $options=array(), $varName='' ) {
+	function getAjaxUpdater( $url, $updateId, $onComplete, $method='post', $vmDirs=array(), $varName='' ) {
 		global $mosConfig_live_site;
 		$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
-		$options['method'] = $method;
+		$vmDirs['method'] = $method;
 		$html = '';
 		if( $varName ) {
 			$html .= 'var '.$varName.' = ';
@@ -421,8 +421,8 @@ class vmMooAjax {
 		if( !strstr( $url, $mosConfig_live_site) && !strstr($url, 'http' )) {
 			$url = $mosConfig_live_site.$path.$url;
 		}
-		$html .= "new mooajax('$url', {\n";
-		foreach ($options as $key => $val) {
+		$html .= "new ajax('$url', {\n";
+		foreach ($vmDirs as $key => $val) {
 			if( strstr( $val, '.')) {
 				$html .= "$key: $val,\n";
 			}
@@ -740,13 +740,13 @@ class vmCommonHTML extends mosHTML {
 	* @static 
 	* @since VirtueMart 1.1.0
 	*/
-	function loadMooAjax() {
-		global $mosConfig_live_site, $option, $mainframe;
+	function loadMooAjax( $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( "_MOOAJAX_LOADED" )) {
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.ajax.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/vmAjax.js' );
-			if( defined('_PSHOP_ADMIN')) {
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/prototype.lite.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.ajax.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/vmAjax.js' );
+			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
 			}
 			else {
@@ -762,16 +762,16 @@ class vmCommonHTML extends mosHTML {
 	 * @since VirtueMart 1.1.0
 	 *
 	 */
-	function loadMooFX() {
-		global $mosConfig_live_site, $option, $mainframe;
+	function loadMooFX( $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( "_MOOFX_LOADED" )) {
 			$scripttag = '';
 			if( !defined( "_PROTOTYPE_LOADED" )) {
-				$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/prototype.lite.js' );
+				$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/prototype.lite.js' );
 			}
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/moo.fx/moo.fx.pack.js' );
-			if( defined('_PSHOP_ADMIN')) {
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.fx.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.fx.pack.js' );
+			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
 			}
 			else {
@@ -790,17 +790,17 @@ class vmCommonHTML extends mosHTML {
 	 * @since VirtueMart 1.1.0
 	 *
 	 */
-	function loadLightbox( $type = '2') {
-		global $mosConfig_live_site, $option, $mainframe;
+	function loadLightbox( $type = '2', $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( '_LIGHTBOX'.$type.'_LOADED' )) {
 			
 			$scripttag = vmCommonHTML::scriptTag( '', 'var lightboxurl = \''.$mosConfig_live_site.'/components/com_virtuemart/js/lightbox'.$type.'/\';');
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.js' );
-			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $option .'/js/lightbox'.$type.'/lightbox'.$type.'.css' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/lightbox'.$type.'/lightbox'.$type.'.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/lightbox'.$type.'/lightbox'.$type.'.css' );
 			if( $type== '2')  {
-				vmCommonHTML::loadScriptaculous();
+				vmCommonHTML::loadScriptaculous( array('effects'), $print );
 			}
-			if( defined('_PSHOP_ADMIN')) {
+			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
 			}
 			else {
@@ -816,22 +816,22 @@ class vmCommonHTML extends mosHTML {
 	 * 
 	 * @param array $library The name of the script to load
 	 */
-	function loadScriptaculous( $library=array( 'effects') ) {
-		global $mainframe, $option, $mosConfig_live_site;
+	function loadScriptaculous( $library=array( 'effects'), $print=false  ) {
+		global $mainframe, $vmDir, $mosConfig_live_site;
 		$scripttag = '';
 		
 		foreach( $library as $script ) {
 			if( !defined( '_SCRIPTACULOUS_'.$script.'_LOADED' )) {
-				$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/scriptaculous/'.$script.'.js' );
+				$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/scriptaculous/'.$script.'.js' );
 				define( '_SCRIPTACULOUS_'.$script.'_LOADED', 1 );
 			}
 		}
-		if( defined('_PSHOP_ADMIN') &&  $scripttag != '') {
-			vmCommonHTML::loadPrototype();
+		if( (defined('_PSHOP_ADMIN') || $print) &&  $scripttag != '' ) {
+			vmCommonHTML::loadPrototype( $print );
 			echo $scripttag;
 		}
 		elseif( $scripttag != '' ) {
-			vmCommonHTML::loadPrototype();
+			vmCommonHTML::loadPrototype( $print );
 			$mainframe->addCustomHeadTag( $scripttag );
 		}
 	}
@@ -840,11 +840,11 @@ class vmCommonHTML extends mosHTML {
 	 * @author http://prototype.conio.net/
 	 *
 	 */
-	function loadPrototype() {
-		global $mainframe, $option, $mosConfig_live_site;
+	function loadPrototype( $print=false ) {
+		global $mainframe, $vmDir, $mosConfig_live_site;
 		if( !defined( "_PROTOTYPE_LOADED" )) {
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/prototype/prototype.js' );
-			if( defined('_PSHOP_ADMIN')) {
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/prototype/prototype.js' );
+			if( defined('_PSHOP_ADMIN') || $print) {
 				echo $scripttag;
 			}
 			elseif( $scripttag != '' ) {
@@ -853,42 +853,25 @@ class vmCommonHTML extends mosHTML {
 		}
 	}
 	/**
-	 * Loads the CSS and Javascripts needed to run the Thickbox
-	 * Source: http://codylindley.com/Javascript/257/thickbox-one-box-to-rule-them-all
+	 * Loads the CSS and Javascripts needed to run the Greybox
+	 * Source: http://orangoo.com/labs/?page_id=5
 	 *
 	 */
-	function loadThickbox() {
-		global $mosConfig_live_site, $option, $mainframe;
-		if( !defined( '_THICKBOX_LOADED' )) {
-			vmCommonHTML::loadjQuery();
-			$scripttag = vmCommonHTML::scriptTag( '', 'var thickboxURL = \''.$mosConfig_live_site .'/components/'. $option .'/js/thickbox\';' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.js' );
-			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.css' );
-			if( defined('_PSHOP_ADMIN')) {
+	function loadGreybox( $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
+		if( !defined( '_GREYBOX_LOADED' )) {
+
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/AJS.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/greybox.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/greybox.css' );
+			$scripttag .= vmCommonHTML::scriptTag( '', 'var GB_IMG_DIR = \''.$mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/\'; GreyBox.preloadGreyBoxImages();' );
+			if( defined('_PSHOP_ADMIN') || $print) {
 				echo $scripttag;
 			}
 			else {
 				$mainframe->addCustomHeadTag( $scripttag );
 			}
-			define ( '_THICKBOX_LOADED', '1' );
-		}
-	}
-	/**
-	 * Loads the jQuery Javascript
-	 * Source: http://jquery.com/
-	 *
-	 */
-	function loadjQuery() {
-		global $mosConfig_live_site, $option, $mainframe;
-		if( !defined( '_JQUERY_LOADED' )) {			
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/jquery-compressed.js' );
-			if( defined('_PSHOP_ADMIN')) {
-				echo $scripttag;
-			}
-			else {
-				$mainframe->addCustomHeadTag( $scripttag );
-			}
-			define ( '_JQUERY_LOADED', '1' );
+			define ( '_GREYBOX_LOADED', '1' );
 		}
 	}
 
@@ -897,14 +880,14 @@ class vmCommonHTML extends mosHTML {
 	* @static 
 	* @since VirtueMart 1.1.0
 	*/
-	function loadTigraTree() {
-		global $mosConfig_live_site, $option, $mainframe;
+	function loadTigraTree( $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( "_TIGRATREE_LOADED" )) {
 			
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree_tpl.js.php' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/tigratree/tree.js' );
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/tigratree/tree_tpl.js.php' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/tigratree/tree.js' );
 			
-			if( defined('_PSHOP_ADMIN')) {
+			if( defined('_PSHOP_ADMIN') || $print) {
 				echo $scripttag;
 			}
 			else {
@@ -920,14 +903,14 @@ class vmCommonHTML extends mosHTML {
 	 * @since VirtueMart 1.1.0
 	 *
 	 */
-	function loadBehaviourJS() {
-		global $mosConfig_live_site, $option, $mainframe;
+	function loadBehaviourJS( $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( "_BEHAVIOURJS_LOADED" )) {
 			
-			vmCommonHTML::loadPrototype();
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/prototype/behaviour.js' );
+			vmCommonHTML::loadPrototype( $print );
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/prototype/behaviour.js' );
 
-			if( defined('_PSHOP_ADMIN')) {
+			if( defined('_PSHOP_ADMIN') || $print) {
 				echo $scripttag;
 			}
 			else {
@@ -957,13 +940,12 @@ class vmCommonHTML extends mosHTML {
 		return $link;
 	}
 	
-	function getThickboxPopUpLink( $url, $text, $target='_blank', $title='', $height=640, $width=480, $use_iframe=false ) {
-		vmCommonHTML::loadThickbox();
-		$url_appendix = '&amp;height='.$height.'&amp;width='.$width;
-		if( $use_iframe ) {
-			$url_appendix .= '&amp;TB_iframe=true';
+	function getGreyboxPopUpLink( $url, $text, $target='_blank', $title='', $attributes='', $height=500, $width=600, $no_js_url='' ) {
+		vmCommonHTML::loadGreybox();
+		if( $no_js_url == '') {
+			$no_js_url = $url;
 		}
-		$link = vmCommonHTML::hyperLink( $url . $url_appendix, $text, $target, $title, 'class="thickbox"' );
+		$link = vmCommonHTML::hyperLink( $no_js_url, $text, $target, $title, $attributes.' onclick="try{ if( !parent.GB ) return GB_show(\''.$title.'\', \''.$url.'\', '.$height.', '.$width.');} catch(e) { }"' );
 		
 		return $link;
 	}

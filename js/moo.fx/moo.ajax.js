@@ -1,8 +1,8 @@
 //based on prototype's ajax class
 //to be used with prototype.lite, moofx.mad4milk.net.
 //setForm added by soeren from yahoo! connection manager
-mooajax = Class.create();
-mooajax.prototype = {
+ajax = Class.create();
+ajax.prototype = {
 	initialize: function(url, options){
 		this.transport = this.getTransport();
 		this.postBody = options.postBody || '';
@@ -10,11 +10,20 @@ mooajax.prototype = {
 		this.pseudoForm = $(options.pseudoForm) || ''; //Added by soeren
 		this.method = options.method || 'post';
 		this.onComplete = options.onComplete || null;
+		this.update = null;
 		if( $(options.update) ) {
 			this.update = $(options.update);
-		} else if( options.update ) {
-			this.update = options.update;
-		} else { this.update = null;}
+		} 
+		else {
+			var clsel = document.getElementsByClassName( options.update );
+			if( clsel ) {
+				this.update = clsel;
+			}
+			else if( options.update ) {
+				this.update = options.update;
+			}
+		}
+		
 		this.property =  options.property || 'innerHTML';//Added by soeren
 		if( this.formName ) {
 			this.setForm( this.formName );
@@ -44,8 +53,16 @@ mooajax.prototype = {
 				if (this.onComplete) 
 					setTimeout(function(){this.onComplete(this.transport);}.bind(this), 10);
 				if (this.update) {// changed!! Erased 'innerHTML' in the line below
-					this.update.innerHTML = this.transport.responseText;
-					setTimeout(function(){eval('this.update.' + this.property + ' = this.transport.responseText')}.bind(this), 10);
+					if( this.update.length ) {
+						for (var i=0; i<this.update.length; i++){
+							this.update[i].innerHTML = this.transport.responseText;
+							//setTimeout(function(){eval('this.update['+ i + '].' + this.property + ' = this.transport.responseText')}.bind(this), 10);
+						}
+					}
+					else {
+						this.update.innerHTML = this.transport.responseText;
+						setTimeout(function(){eval('this.update.' + this.property + ' = this.transport.responseText')}.bind(this), 10);
+					}
 				}
 				this.transport.onreadystatechange = function(){};
 			}

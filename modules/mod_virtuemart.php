@@ -35,7 +35,9 @@ $show_categories = $params->get( 'show_categories', 'yes' );
 $show_listall = $params->get( 'show_listall', 'yes' );
 $show_adminlink = $params->get('show_adminlink', 'yes' );
 $show_accountlink = $params->get('show_accountlink', 'yes' );
+$useGreyBox_accountlink = $params->get('useGreyBox_accountlink', '0' );
 $show_minicart = $params->get( 'show_minicart', 'yes' );
+$useGreyBox_cartlink = $params->get( 'useGreyBox_cartlink', '0' );
 $show_productsearch = $params->get( 'show_productsearch', 'yes' );
 $show_product_parameter_search = $params->get( 'show_product_parameter_search', 'no' );
 $menutype = $params->get( 'menutype', "links" );
@@ -129,6 +131,7 @@ if ( $show_productsearch == 'yes' ) { ?>
 }
   
 $perm = new ps_perm;
+// Show the Frontend ADMINISTRATION Link
 if ($perm->check("admin,storeadmin") 
       && ((!stristr($my->usertype, "admin") ^ PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '' ) 
           || stristr($my->usertype, "admin")
@@ -136,11 +139,17 @@ if ($perm->check("admin,storeadmin")
       && $show_adminlink == 'yes'
     ) { ?>
     <tr> 
-      <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index&pshop_mode=admin");
-      echo "\">".$VM_LANG->_PHPSHOP_ADMIN_MOD; ?></a></td>
+      <td colspan="2">
+      	<a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index&pshop_mode=admin") ?>">
+      	<?php echo $VM_LANG->_PHPSHOP_ADMIN_MOD; ?>
+      	</a>
+      </td>
     </tr>
-  <?php }
-   if ($perm->is_registered_customer($auth["user_id"]) && $show_accountlink == 'yes') {
+  <?php 
+}
+
+// Show the Account Maintenance Link
+if ($perm->is_registered_customer($auth["user_id"]) && $show_accountlink == 'yes') {
   ?> 
     <tr> 
       <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=account.index");?>">
@@ -148,10 +157,9 @@ if ($perm->check("admin,storeadmin")
     </tr><?php 
 }
 
+// SHOW LOGOUT FORM IF USER'S LOGGED IN
 if ( $show_login_form == "yes" ) {
-	/*
-	START - HACK BY TOM TO SHOW MAMBO PHPSHOP LOGOUT FORM IF USER'S LOGGED IN
-	*/
+	
     if ($my->id) {
 ?>	  
 	<tr>
@@ -215,14 +223,10 @@ if ( $show_login_form == "yes" ) {
 			<?php
 		}
 	}
-	/*
-	END - HACK BY TOM TO SHOW MAMBO PHPSHOP LOGIN FORM IF USER'S NOT LOGGED IN
-	*/
   }
   
-/*********************
-** DOWNLOAD MOD
-**/
+
+// Show DOWNLOAD Link
 if (ENABLE_DOWNLOADS == '1') { ?>
   <tr> 
     <td colspan="2">
@@ -232,19 +236,33 @@ if (ENABLE_DOWNLOADS == '1') { ?>
     </td>
   </tr><?php
 }
-/**
-** END DOWNLOAD MOD
-/*********************/
-  
+
+// Show a link to the cart and show the mini cart
 if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes') {
 ?>
     <tr>
         <td colspan="2">
-		<a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl($mm_action_url."index.php?page=shop.cart")?>"><?php echo $VM_LANG->_PHPSHOP_CART_SHOW ?></a>
-	</td>
+        	<?php
+	        $class_att = 'class="'. $class_mainlevel .'"';
+	        $href = $sess->url($mm_action_url."index.php?page=shop.cart");
+	        $href2 = $sess->url($mm_action_url."index2.php?page=shop.cart");
+	        $text = $VM_LANG->_PHPSHOP_CART_SHOW;
+	        if( $useGreyBox_cartlink ) {
+	        	echo vmCommonHTML::getGreyboxPopUpLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
+	        }
+	        else {
+	        	echo vmCommonHTML::hyperlink( $href, $text, '', $text, $class_att );
+			}
+			?>
+		</td>
     </tr>
     <tr>
-        <td colspan="2"><?php include (PAGEPATH.'shop.basket_short.php') ?></td>
+        <td colspan="2" class="vmCartModule">
+        	<?php //				^ Do not change this class name!! It is used to update this cell after a cart action 
+        	// This is the 'mini cart' file
+        	include (PAGEPATH.'shop.basket_short.php');
+        	?>
+        </td>
     </tr>
         <?php 
 } ?> 
@@ -252,4 +270,5 @@ if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes') {
 </table>
 <?php
 // Just for SIMPLEBOARD compatibility !
-if (@$_REQUEST['option'] != "com_virtuemart") $db = array();   ?>
+if (@$_REQUEST['option'] != "com_virtuemart") $db = array(); 
+?>

@@ -66,7 +66,13 @@ if( $this->get_cfg( 'showPathway' )) {
 	<?php  } ?>
   </tbody>
 </table>
-<?php if( !empty( $navigation_childlist )) { ?>
+<?php 
+if( !empty( $navigation_childlist )) { ?>
 	<?php echo $VM_LANG->_PHPSHOP_MORE_CATEGORIES ?><br />
 	<?php echo $navigation_childlist ?><br style="clear:both"/>
-<?php } ?>
+<?php 
+} ?>
+
+<?php
+echo vmThemeAjaxSubmitter( '', 'addtocart' );
+?>

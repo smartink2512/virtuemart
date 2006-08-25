@@ -33,6 +33,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+25-08-2006 soeren
+
+^ moved a lot of global declarations from virtuemart_parser.php to global.php (what do we have this file for if not for globals ;-) ?)
++ added global variable $vmDir for being able to track different installations of VM in the same Joomla installation
+	(this is to be implemented laaaaater on)
++ added function writeThemeConfig to SQL installation/update scripts
+
 22-08-2006 soeren
 
 ^ moved /html/coupon.coupon_field.php to /templates/common/couponField.tpl.php

@@ -171,6 +171,7 @@ INSERT INTO `jos_vm_function` VALUES ('', 7, 'recommendProduct', 'ps_communicati
 INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin');
 INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin');
 INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
+INSERT INTO `jos_vm_function` VALUES ('', 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin');
 
 
 # Prevent auto-publishing of product reviews

@@ -74,7 +74,7 @@ $db = $db_temp;
 }
 ?>
 <p>
-	<a href="<?php $sess->purl(SECUREURL."index.php?page=account.order_details&order_id=". $order_id) ?>">
+	<a href="<?php $sess->purl(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=account.order_details&order_id=". $order_id) ?>" onclick="if( parent.parent.location ) { parent.parent.location = this.href.replace(/index2.php/, 'index.php' ); };">
  		<?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?>
  	</a>
 </p>

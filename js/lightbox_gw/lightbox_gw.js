@@ -192,11 +192,14 @@ function showLoadingLightbox() {
 }
 
 function showMessagesinLightBox() {
-	if( $('logContainer').innerHTML != '' ) {
-		if( !lb ) {
-			var lb = new LightboxGW.base('statusBox', { showOverlay: false, fadeIn: true });
+	if( $('logContainer') ) {
+		if( $('logContainer').innerHTML != '' ) {
+		
+			if( !lb ) {
+				var lb = new LightboxGW.base('statusBox', { showOverlay: false, fadeIn: true });
+			}
+			lb.setInnerHTML( $('logContainer').innerHTML );
+			//lightBoxTimeout();
 		}
-		lb.setInnerHTML( $('logContainer').innerHTML );
-		//lightBoxTimeout();
 	}
 }

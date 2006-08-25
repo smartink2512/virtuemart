@@ -220,7 +220,7 @@ class ps_cart {
 				&&
 				($_SESSION['cart'][$i]["description"] == stripslashes($d["description"]) )
 				) {
-					if( $func == 'cartadd' ) {
+					if( strtolower( $func ) == 'cartadd' ) {
 						$quantity += $_SESSION['cart'][$i]["quantity"];
 					}
 					// Check to see if checking stock quantity

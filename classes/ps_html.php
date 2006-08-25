@@ -77,9 +77,9 @@ class ps_html {
 		global $VM_LANG;
 
 		$title = array($VM_LANG->_PHPSHOP_REGISTRATION_FORM_MR,
-		$VM_LANG->_PHPSHOP_REGISTRATION_FORM_MRS,
-		$VM_LANG->_PHPSHOP_REGISTRATION_FORM_DR,
-		$VM_LANG->_PHPSHOP_REGISTRATION_FORM_PROF);
+						$VM_LANG->_PHPSHOP_REGISTRATION_FORM_MRS,
+						$VM_LANG->_PHPSHOP_REGISTRATION_FORM_DR,
+						$VM_LANG->_PHPSHOP_REGISTRATION_FORM_PROF);
 		echo "<select class=\"inputbox\" name=\"title\" $extra>\n";
 		echo "<option value=\"\">".$VM_LANG->_PHPSHOP_REGISTRATION_FORM_NONE."</option>\n";
 		for ($i=0;$i<count($title);$i++) {

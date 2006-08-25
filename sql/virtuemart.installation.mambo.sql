@@ -817,7 +817,8 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (175, 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin'),
 (176, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin'),
 (177, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin'),
-(178, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
+(178, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin'),
+(179, 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin');
 
 ## --------------------------------------------------------
 

@@ -5,5 +5,5 @@
 
 
 function loadNewPage( el, url ) {
-	new mooajax( url, { update: el } );
+	new ajax( url + '&only_page=1', { update: el } );
 }

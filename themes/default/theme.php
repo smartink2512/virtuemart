@@ -115,6 +115,39 @@ function vmMoreImagesLink( $images ) {
 	return vmPopupLink( $url, $image.'<br />'.$text, 640, 550, '_blank', '', 'screenX=100,screenY=100' );
 }
 
+
+function vmThemeAjaxSubmitter( $class='', $id='', $showLoadingLightBox=true ) {
+	global $mm_action_url, $sess;
+	if( $id ) {
+		$element = '#'.$id;
+	}
+	else {
+		$element = $class;
+	}
+	vmCommonHTML::loadMooAjax();
+	vmCommonHTML::loadMooFx();
+	vmCommonHTML::loadLightBox('_gw');
+	vmCommonHTML::loadBehaviourJS();
+	$script = "var myrules = {
+		'$element' : function(element){
+			element.onsubmit = function(){
+				showLoadingLightbox();
+				var cForm = $(this.id);
+				cForm.page.value = 'shop.basket_short';
+				";
+	$cartUpdateURL = $sess->url( $mm_action_url.'index.php?only_page=1' );
+	$script .= vmMooAjax::getAjaxUpdater( $cartUpdateURL, 'vmCartModule', 'showMessagesinLightBox', 'post', array( 'formName' => 'element.id' ) );
+	$script .= "		
+				return false;
+			}
+		}
+	};
+	Behaviour.register( myrules );";
+	
+	echo vmCommonHTML::scriptTag('', $script );
+}
+
 // Your code here please...
+
 
 ?>

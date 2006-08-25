@@ -42,11 +42,13 @@ if ($cart["idx"]) {
        <?php
    }
    else {
- 		?>
-     	<a href="<?php $sess->purl( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1"); ?>" class="checkout_link">
-           <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ?>
-     	</a> 
- 		<?php
+   		$href = $sess->url( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1");
+   		$href2 = $sess->url( $mm_action_url . "index2.php?page=checkout.index&ssl_redirect=1");
+   		$class_att = 'class="checkout_link"';
+   		$text = $VM_LANG->_PHPSHOP_CHECKOUT_TITLE;
+ 		
+   		//echo vmCommonHTML::hyperlink( $href, $text, '', $text, $class_att );
+   		echo vmCommonHTML::getGreyBoxPopupLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
  	}
 	?>
 	</div>

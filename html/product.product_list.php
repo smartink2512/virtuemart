@@ -391,7 +391,7 @@ $path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
 ?>
 <script type="text/javascript">
 function getPriceForm(elem) {
-	new mooajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+elem.parentNode.id, {
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+elem.parentNode.id, {
 		method: 'get', 
 		update: elem.parentNode
 	});
@@ -401,7 +401,7 @@ function submitPriceForm(formId) {
 	$('statusBox').innerHTML = 'Loading ...<br /><img src=\"<?php echo $mosConfig_live_site ?>/components/com_virtuemart/js/lightbox_gw/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
 	new LightboxGW.base('statusBox', { closeOnOverlayClick : true, showOverlay: false })
 	
-	new mooajax ('<?php echo $mosConfig_live_site.$path ?>index2.php', {
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php', {
 		pseudoForm: formId,
 		update: $('statusBox'),
 		onComplete: lightBoxTimeout
@@ -411,13 +411,13 @@ function cancelPriceForm(id) {
 	updatePriceField( id );
 }
 function updatePriceField( id ) {	
-	new mooajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id, {
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id, {
 		method: 'get', 
 		update: id
 	});
 }
 function reloadForm( parentId, keyName, keyValue ) {	
-	new mooajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+parentId+'&'+keyName+'='+keyValue, {
+	new ajax ('<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+parentId+'&'+keyName+'='+keyValue, {
 		method: 'get',
 		update: parentId
 	});	

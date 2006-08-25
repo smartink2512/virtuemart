@@ -80,3 +80,7 @@ if( $this->get_cfg( 'showPathway' )) {
 	<?php echo $VM_LANG->_PHPSHOP_MORE_CATEGORIES ?><br />
 	<?php echo $navigation_childlist ?><br style="clear:both"/>
 <?php } ?>
+
+<?php
+vmThemeAjaxSubmitter( 'form.addtocart_form' );
+?>

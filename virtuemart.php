@@ -218,7 +218,7 @@ else {
 	        echo '<span class="small">'._LAST_UPDATED.': '.strftime( _DATE_FORMAT_LC2 ).'</span>';
 	    }
 	    
-	    echo "\n</div>\n";
+	    echo "\n<div id=\"statusBox\" style=\"text-align:center;display:none;visibility:hidden;\"></div></div>\n";
 	    
 	    if(SHOWVERSION && !mosGetParam( $_REQUEST, 'pop' )) {
 			include(PAGEPATH ."footer.php");

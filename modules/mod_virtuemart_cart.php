@@ -20,17 +20,12 @@ require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_pa
 
 global $VM_LANG, $sess, $mm_action_url, $option;
 
-$moduleID = $params->get('moduleID', 'vmCartModule' );
-
-if( $params->get('useThickBox', 0)) {
-	$scripttag = vmCommonHTML::scriptTag( '', 'var thickboxURL = \''.$mosConfig_live_site .'/components/'. $option .'/js/thickbox\';' );
-	$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/jquery-compressed.js' );
-	$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.js' );
-	$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $option .'/js/thickbox/thickbox.css' );
+if( $params->get('useGreyBox', 0)) {
 	
-	echo $scripttag;
-	
-	echo vmCommonHTML::getThickboxPopUpLink( $sess->url($mm_action_url."index2.php?page=shop.cart"), $VM_LANG->_PHPSHOP_CART_SHOW, '', '', 640, 600, true );
+	vmCommonHTML::loadGreyBox( true );
+	$href = $sess->url($mm_action_url."index.php?page=shop.cart");
+	$href2 = $sess->url($mm_action_url."index2.php?page=shop.cart");
+	echo vmCommonHTML::getGreyboxPopUpLink( $href2, $VM_LANG->_PHPSHOP_CART_SHOW, '', $VM_LANG->_PHPSHOP_CART_TITLE, 'class="mainlevel'.$params->get('class_sfx') .'"', 500, 600, $href );
 }
 else {
 	echo '<a class="mainlevel'.$params->get('class_sfx') .'" href="'.$sess->url($mm_action_url."index.php?page=shop.cart").'">
@@ -38,7 +33,7 @@ else {
 	</a>';
 }
 
-echo "<div id=\"$moduleID\">";
+echo '<div class="vmCartModule">';
 include (PAGEPATH.'shop.basket_short.php');
 echo '</div>'; 
 

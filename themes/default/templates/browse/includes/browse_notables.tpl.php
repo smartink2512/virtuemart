@@ -59,27 +59,6 @@ foreach( $products as $product ) {
 <?php 
 echo $browsepage_footer;
 
-vmCommonHTML::loadMooAjax();
-vmCommonHTML::loadMooFx();
-vmCommonHTML::loadLightBox('_gw');
-vmCommonHTML::loadBehaviourJS();
-$script = "var myrules = {
-	'form.addtocart_form' : function(element){
-		element.onsubmit = function(){
-			showLoadingLightbox();
-			var cForm = $(this.id);
-			cForm.page.value = 'shop.basket_short';
-			";
-$cartUpdateURL = $sess->url( $mm_action_url.'index.php?only_page=1' );
-$script .= vmMooAjax::getAjaxUpdater( $cartUpdateURL, 'vmCartModule', 'showMessagesinLightBox', 'post', array( 'formName' => 'element.id' ) );
-$script .= "		
-			return false;
-		}
-	}
-};
-Behaviour.register( myrules );";
-
-echo vmCommonHTML::scriptTag('', $script );
+vmThemeAjaxSubmitter( 'form.addtocart_form' );
 
 ?>
-<div id="statusBox" style="text-align:center;display:none;visibility:hidden;"></div>

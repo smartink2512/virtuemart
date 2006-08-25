@@ -24,13 +24,16 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  */
 class ps_session {
 
-	var $component_name = "option=com_virtuemart";
+	var $component_name;
 	var $_session_name = 'virtuemart';
 	/**
      * Initialize the Session environment for VirtueMart
      *
      */
 	function ps_session() {
+		
+		$this->component_name = 'option='.$GLOBALS['vmDir'];
+		
 		$this->initSession();
 	}
 	/**

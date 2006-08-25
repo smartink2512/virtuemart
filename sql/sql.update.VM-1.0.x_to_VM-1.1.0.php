@@ -110,6 +110,7 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 7, 'recommendProduct', '
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin');" );
 $db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');" );
+$db->query( "INSERT INTO `#__{vm}_function` VALUES ('', 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin');" );
 
 $db->query( "ALTER TABLE `#__{vm}_payment_method` ADD `payment_method_discount_is_percent` TINYINT( 1 ) NOT NULL AFTER `payment_method_discount` ,
 ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,
