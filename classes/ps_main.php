@@ -816,7 +816,7 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
  * @return string Validation Hash
  */
 function vmSpoofValue($alt=NULL) {
-	global $mainframe;
+	global $mainframe, $_VERSION;
 	
 	if ($alt) {
 		$random		= date( 'Ymd' );
@@ -824,6 +824,9 @@ function vmSpoofValue($alt=NULL) {
 		$random		= date( 'dmY' );
 	}
 	$validate 	= mosHash( $mainframe->getCfg( 'db' ) . $random );
+	if( $_VERSION->DEV_LEVEL >= 11 ) {
+		$validate 	= 'j'.mosHash( $mainframe->getCfg( 'db' ) . $random );
+	}
 	
 	return $validate;
 }

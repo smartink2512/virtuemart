@@ -27,10 +27,10 @@ $currencies = $params->get( 'product_currency', $vendor_accepted_currencies );
 if( count( $currencies ) < count( $vendor_accepted_currencies )) {
 	$currencies = $vendor_accepted_currencies;
 }
-$currencies = explode( ',', $vendor_accepted_currencies );
 
-//$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` WHERE FIND_IN_SET(`currency_code`, \''.implode(',',$currencies).'\') ORDER BY `currency_name`' );
-$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` ORDER BY `currency_name`' );
+$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` WHERE FIND_IN_SET(`currency_code`, \''.implode(',',$currencies).'\') ORDER BY `currency_name`' );
+//$currencies = explode( ',', $currencies );
+//$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` ORDER BY `currency_name`' );
 unset( $currencies );
 
 while( $db->next_record()) {

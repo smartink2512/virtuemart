@@ -271,7 +271,7 @@ class ps_userfield extends vmAbstractObject {
 		?>
 		<script type="text/javascript" src="includes/js/mambojavascript.js"></script>
 		
-		<form action="<?php echo $mm_action_url ?>index.php" method="post" name="adminForm">
+		<form action="<?php echo $mm_action_url .basename($_SERVER['PHP_SELF']) ?>" method="post" name="adminForm">
 			
 		<div style="width:90%;">
 			

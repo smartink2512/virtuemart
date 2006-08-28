@@ -794,6 +794,8 @@ class vmCommonHTML extends mosHTML {
 		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( '_LIGHTBOX'.$type.'_LOADED' )) {
 			
+			vmCommonHTML::loadPrototype( $print );
+			
 			$scripttag = vmCommonHTML::scriptTag( '', 'var lightboxurl = \''.$mosConfig_live_site.'/components/com_virtuemart/js/lightbox'.$type.'/\';');
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/lightbox'.$type.'/lightbox'.$type.'.js' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/lightbox'.$type.'/lightbox'.$type.'.css' );

@@ -60,7 +60,12 @@ $i = 0;
           $sectioncolor = "sectiontableentry1";
           $i -= 1;
       } 
-      $flypage = $db->f('category_flypage');
+      if( !$db->f('category_flypage') ) {
+      	$flypage = ps_product::get_flypage( $db->f('product_id'));
+      }
+      else {
+      	$flypage = $db->f('category_flypage');
+      }
       $tt_item++;
       $pid = $db->f("product_parent_id") ? $db->f("product_parent_id") : $db->f("product_id");
 

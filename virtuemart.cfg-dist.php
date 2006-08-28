@@ -47,6 +47,9 @@ define( 'CLASSPATH', ADMINPATH.'classes/' );
 define( 'PAGEPATH', ADMINPATH.'html/' );
 define( 'IMAGEPATH', $mosConfig_absolute_path.'/components/com_virtuemart/shop_image/' );
 
+define( 'VM_THEMEPATH', $mosConfig_absolute_path.'/components/com_virtuemart/themes/default/' );
+define( 'VM_THEMEURL', 'components/com_virtuemart/themes/default/' );
+
 @define('VM_TABLEPREFIX', 'vm' );
 define('VM_PRICE_SHOW_PACKAGING_PRICELABEL', '1' );
 define('VM_PRICE_SHOW_INCLUDINGTAX', '' );

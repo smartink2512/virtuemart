@@ -107,7 +107,7 @@ echo '<script type="text/javascript" src="../components/'.$option.'/js/functions
 if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
 	if( $only_page) {
 		while( @ob_end_clean());
-		if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok );
+		if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
 		include( PAGEPATH.$modulename.".".$pagename.".php" );
 		exit;
 	}

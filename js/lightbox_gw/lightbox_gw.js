@@ -74,10 +74,12 @@ LightboxGW.base.prototype = {
 		   		var faderOL = new fx.Opacity( 'overlay', { duration: 4200  } );
 		   		faderOL.toggle();
 			}
+			var fadeIn = 200;
+			var fadeOut = 3500;
 	   		var fader = new fx.Opacity( this.element.id, { 	transition: fx.cubic, 
-	   														duration: 200,
+	   														duration: fadeIn,
 	   														onComplete:function() {
-	   															this.options.duration= 3500
+	   															this.options.duration= fadeOut
 															    this.toggle();
 															    this.options.onComplete = '';
 															  } } );
@@ -86,6 +88,7 @@ LightboxGW.base.prototype = {
 	   		fader.hide();
 	   		fader.toggle();
 	   		
+	   		setTimeout( 'LightboxGW.hideAll()', fadeIn + fadeOut );
 	   		
 	   } else {
 			if( this.options.showOverlay ) {

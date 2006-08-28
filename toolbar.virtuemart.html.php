@@ -110,7 +110,7 @@ class MENU_virtuemart {
 
 			$('statusBox').innerHTML = 'Saving ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox_gw/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
 			new LightboxGW.base('statusBox', { closeOnOverlayClick : true })
-			new moo.ajax( '$mosConfig_live_site".$admin."/index2.php', {
+			new ajax( '$mosConfig_live_site".$admin."/index2.php', {
 				formName: 'adminForm',
 				onComplete: responseSuccess
 				});
