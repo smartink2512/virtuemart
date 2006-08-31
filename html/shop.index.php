@@ -21,7 +21,7 @@ $ps_product_category = new ps_product_category();
 
 // Show only top level categories and categories that are
 // being published
-$tpl = new vmTemplate();
+$tpl = new $GLOBALS['VM_THEMECLASS']();
 $category_childs = $ps_product_category->get_child_list($category_id);
 $tpl->set( 'categories', $category_childs );
 

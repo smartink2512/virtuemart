@@ -191,7 +191,7 @@ class ps_cart {
 
 		$db = new ps_DB;
 		$product_id = $d["product_id"];
-		$quantity = $d["quantity"];
+		$quantity = isset($d["quantity"]) ? $d["quantity"] : 1;
 		$_SESSION['last_page'] = "shop.cart";
 
 		// Check for negative quantity

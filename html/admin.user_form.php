@@ -44,9 +44,9 @@ $tabs = new mShopTabs(0, 1, "_userform");
 $tabs->startPane("userform-pane");
 $tabs->startTab( 'General User Information', "userform-page");
 
-$_REQUEST['cid'][0] = $user_id;
+$_POST['cid'][0] = $_REQUEST['cid'][0] = $user_id; // Cheat Joomla!
 $_REQUEST['task'] = $task = 'edit';
-$GLOBALS['option'] = 'com_users'; // Cheat Joomla 1.1
+$GLOBALS['option'] = 'com_users'; // Cheat Joomla 1.5
 $mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
 require_once( $mainframe->_path->admin_html );
 $mainframe->_path->class = $mosConfig_absolute_path.'/administrator/components/com_users/users.class.php';

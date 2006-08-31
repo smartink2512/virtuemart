@@ -18,7 +18,7 @@ if( $this->get_cfg( 'showPathway' )) {
 		  	<div class="thumbnailListContainer">
 		  		<h5><?php echo $VM_LANG->_PHPSHOP_MORE_IMAGES ?></h5>
 		  		<?php 
-					echo vmListAdditionalImages( $product_id, $images );
+					echo $this->vmListAdditionalImages( $product_id, $images );
 		  		?>
 		  	</div>
 		 <?php } 	?>
@@ -82,5 +82,5 @@ if( $this->get_cfg( 'showPathway' )) {
 <?php } ?>
 
 <?php
-vmThemeAjaxSubmitter( 'form.addtocart_form' );
+$this->vmThemeAjaxSubmitter( 'form.addtocart_form' );
 ?>

@@ -23,7 +23,7 @@ $ps_order = new ps_order;
 /* Set Dynamic Page Title when applicable */
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE );
 
-$tpl = new vmTemplate();
+$tpl = new $GLOBALS['VM_THEMECLASS']();
 
 $tpl->set( 'ps_order', $ps_order );
 

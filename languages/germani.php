@@ -846,8 +846,10 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = 'Basierend auf der Lieferadresse';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = 'Basierend auf der Betreiberadresse';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = 'Hiermit wird bestimmt, welche Steuerrate zur Anwendung kommt:<br />
-                                                                                    <ul><li>die, die dem Herkunftsland des Kunden entspricht</li><br/>
-                                                                                    <li>die, die dem Herkunftsland des Shop-Betreibers entspricht</li></ul>';
+                                                                                    <ul><li>die, die dem Herkunftsland des Kunden entspricht</li>
+                                                                                    <li>die, die dem Herkunftsland des Shop-Betreibers entspricht</li>
+																					<li>oder "EU Modus", bei dem ein pro-Produkt-Steuersatz verwendet wird wenn der Kunde aus der Europäischen Union stammt, ansonsten aber - falls vorhanden! - der Steuersatz des Landes verwendet wird, aus dem der Kunde kommt.</li>
+																					</ul>';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = 'Mehrere Steuerraten benutzen?';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = 'Wenn aktiviert, können verschiedene Produkte jeweils eigene Steuerraten erhalten (z.B. 7% für Bücher, 16% für andere Waren)';
 	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = 'Rabatt für Zahlungarten vor Steuern und Lieferkosten abziehen?';
@@ -1624,6 +1626,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP = 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.';
 	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
         
 }
 class phpShopLanguage extends vmLanguage { }

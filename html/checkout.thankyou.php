@@ -49,7 +49,7 @@ $db->query($q);
 
 if ($db->next_record()) {
 
-	$tpl = new vmTemplate();
+	$tpl = new $GLOBALS['VM_THEMECLASS']();
 	$tpl->set( 'order_id', $order_id );
 	$tpl->set( 'ps_product', $ps_product );
 	$tpl->set( 'vendor_currency', $vendor_currency );

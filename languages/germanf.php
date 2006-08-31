@@ -71,7 +71,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Danke für Ihre Bestellung.';
 	var $_PHPSHOP_NOT_SHIPPED = 'Noch nicht geliefert.';
 	var $_PHPSHOP_EMAIL_SENDTO = 'Eine Bestätigungs-email wurde versandt an';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Es existiert kein MOS-user, <br />den Sie zur com_phpshop Nutzerliste hinzufügen könnten.';
+	var $_PHPSHOP_NO_USER_TO_SELECT = 'Es existiert kein Nutzer, <br />den Sie zur Nutzerliste hinzufügen könnten.';
 	var $_PHPSHOP_ERROR = 'FEHLER';
 	var $_PHPSHOP_MOD_NOT_REG = 'Modul ist nicht registriert.';
 	var $_PHPSHOP_MOD_ISNO_REG = ' ist kein gültiges Shop-Modul.';
@@ -847,8 +847,10 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = 'Basierend auf der Lieferadresse';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = 'Basierend auf der Betreiberadresse';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = 'Hiermit wird bestimmt, welche Steuerrate zur Anwendung kommt:<br />
-                                                                                    <ul><li>die, die dem Herkunftsland des Kunden entspricht</li><br/>
-                                                                                    <li>die, die dem Herkunftsland des Shop-Betreibers entspricht</li></ul>';
+                                                                                    <ul><li>die, die dem Herkunftsland des Kunden entspricht</li>
+                                                                                    <li>die, die dem Herkunftsland des Shop-Betreibers entspricht</li>
+																					<li>oder "EU Modus", bei dem ein pro-Produkt-Steuersatz verwendet wird wenn der Kunde aus der Europäischen Union stammt, ansonsten aber - falls vorhanden! - der Steuersatz des Landes verwendet wird, aus dem der Kunde kommt.</li>
+																					</ul>';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = 'Mehrere Steuerraten benutzen?';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = 'Wenn aktiviert, können verschiedene Produkte jeweils eigene Steuerraten erhalten (z.B. 7% für Bücher, 16% für andere Waren)';
 	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = 'Rabatt für Zahlungarten vor Steuern und Lieferkosten abziehen?';
@@ -1287,10 +1289,10 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PARAMETERS_LBL = 'Parameter';
 	var $_PHPSHOP_PRODUCT_TYPE_LBL = 'Produkttyp';
 	var $_PHPSHOP_PRODUCT_TYPE_LIST_LBL = 'Produkttypenliste';
-	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Add/Edit Produkttyp';
+	var $_PHPSHOP_PRODUCT_TYPE_ADDEDIT = 'Ändern/Hinzufügen von Produkttypen';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL = 'Produkttyp-Liste für';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU = 'Produkttypen auflisten';
-	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Produkttyp hinzufügen for';
+	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL = 'Produkttyp hinzufügen für';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU = 'Produkttyp hinzufügen';
 	var $_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE = 'Produkttyp';
 	var $_PHPSHOP_PRODUCT_TYPE_FORM_NAME = 'Produkttyp - Name';
@@ -1625,6 +1627,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP = 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.';
 	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
         
 }
 class phpShopLanguage extends vmLanguage { }

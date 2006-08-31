@@ -42,7 +42,7 @@ class ps_reviews {
 	 */
 	function allvotes( $product_id ) {
 		global $db;
-		$tpl = new vmTemplate();
+		$tpl = new $GLOBALS['VM_THEMECLASS']();
 		
 		$q = "SELECT votes, allvotes, rating FROM #__{vm}_product_votes "
 			. "WHERE product_id='$product_id' ";
@@ -69,7 +69,7 @@ class ps_reviews {
 	 */
 	function voteform( $product_id ) {
 		
-		$tpl = new vmTemplate();
+		$tpl = new $GLOBALS['VM_THEMECLASS']();
 		$tpl->set( 'product_id', $product_id );
 		
 		return $tpl->fetch( 'common/voteform.tpl.php' );
@@ -85,7 +85,7 @@ class ps_reviews {
 	function product_reviews( $product_id, $limit=0 ) {
 		global $db, $my, $VM_LANG;
 
-		$tpl = new vmTemplate();
+		$tpl = new $GLOBALS['VM_THEMECLASS']();
 
 		$dbc = &new ps_DB;
 		$showall = mosgetparam( $_REQUEST, 'showall', 0);
@@ -157,7 +157,7 @@ class ps_reviews {
 	function reviewform( $product_id ) {
 		global $db, $my, $VM_LANG;
 		
-		$tpl = new vmTemplate();
+		$tpl = new $GLOBALS['VM_THEMECLASS']();
 
 		$db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid='".$my->id."'");
 		$db->next_record();

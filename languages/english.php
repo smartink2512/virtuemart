@@ -71,7 +71,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Thank you for your order.';
 	var $_PHPSHOP_NOT_SHIPPED = 'Not Shipped Yet';
 	var $_PHPSHOP_EMAIL_SENDTO = 'A confirmation email has been sent to';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Sorry, there\'s no MOS - user that you could add to the com_virtuemart userlist';
+	var $_PHPSHOP_NO_USER_TO_SELECT = 'Sorry, there\'s no user that you could add to the com_virtuemart userlist';
 	var $_PHPSHOP_ERROR = 'ERROR';
 	var $_PHPSHOP_MOD_NOT_REG = 'Module Not Registered.';
 	var $_PHPSHOP_MOD_ISNO_REG = 'is not a valid VirtueMart core module.';
@@ -846,8 +846,9 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP = 'Based on shipping address';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR = 'Based on vendor address';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = 'This determines which tax rate is taken for calculating taxes:<br />
-                                                <ul><li>the one from the state / country the store owner comes from</li><br/>
-                                                <li>or the one from where the shopper comes from.</li></ul>';
+                                                <ul><li>the one from the state / country the store owner comes from</li>
+                                                <li>or the one from where the shopper comes from.</li>
+                                                <li>or "EU mode", where a per-product tax rate is used if the shopper is in the European Union, otherwise the tax rate is based on the shopper\'s address.</li></ul>';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = 'Enable multiple tax rates?';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = 'Check this, if you have products with different tax rates (e.g. 7% for books and food, 16% for other stuff)';
 	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = 'Subtract payment discount before tax/shipping?';
@@ -1617,6 +1618,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP = 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.';
 	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
         
 }
 class phpShopLanguage extends vmLanguage { }

@@ -100,7 +100,8 @@ class MENU_virtuemart {
 			$script .= "
 			
 			function responseSuccess(o){ 
-				document.getElementById('statusBox').innerHTML = o.responseText; 
+				$('statusBox').innerHTML = o.responseText; 
+				$('statusBox').innerHTML = $('logContainer').innerHTML; 
 				setTimeout( 'LightboxGW.hideAll()', 2000 );
 				setTimeout( 'Element.hide(\$(\'statusBox\'))', 2000 );
 				try {
@@ -108,8 +109,8 @@ class MENU_virtuemart {
 				} catch(e) {}
 			}
 
-			$('statusBox').innerHTML = 'Saving ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox_gw/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
-			new LightboxGW.base('statusBox', { closeOnOverlayClick : true })
+			$('statusBox').innerHTML = 'Saving ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox_gw/images/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
+			new LightboxGW.base('statusBox', { showOverlay: true, closeOnOverlayClick : true })
 			new ajax( '$mosConfig_live_site".$admin."/index2.php', {
 				formName: 'adminForm',
 				onComplete: responseSuccess

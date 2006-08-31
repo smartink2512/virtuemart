@@ -37,7 +37,7 @@ elseif( !empty( $manufacturer_id )) {
 
 $show_basket = true;
 
-$tpl = new vmTemplate();
+$tpl = new $GLOBALS['VM_THEMECLASS']();
 $tpl->set('show_basket', $show_basket );
 $tpl->set('continue_link', $continue_link );
 $tpl->set('category_id', $category_id );

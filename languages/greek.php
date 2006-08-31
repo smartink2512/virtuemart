@@ -1618,6 +1618,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP = 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.';
 	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
         
 }
 class phpShopLanguage extends vmLanguage { }

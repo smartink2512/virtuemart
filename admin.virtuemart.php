@@ -128,6 +128,9 @@ if( DEBUG == '1' && $no_menu != 1 ) {
 	include( PAGEPATH."shop.debug.php" );
 }
 if( defined( 'vmToolTipCalled')) {
-	echo '<script language="Javascript" type="text/javascript" src="'. $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js"></script>';
+	echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
+}
+if( defined( '_LITEBOX_LOADED')) {
+	echo vmCommonHTML::scriptTag( '', 'initLightbox();' );
 }
 ?>

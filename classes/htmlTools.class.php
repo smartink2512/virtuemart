@@ -744,6 +744,7 @@ class vmCommonHTML extends mosHTML {
 		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( "_MOOAJAX_LOADED" )) {
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/prototype.lite.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.dom.js' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.ajax.js' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/vmAjax.js' );
 			if( defined('_PSHOP_ADMIN') || $print ) {
@@ -782,6 +783,32 @@ class vmCommonHTML extends mosHTML {
 		
 	}
 	/**
+	 * Function to load the javascript and stylsheet files for Litebox,
+	 * a Lightbox derivate with moo.fx and prototype.lite
+	 * http://www.doknowevil.net/litebox/
+	 *
+	 * @param boolean $print
+	 */
+	function loadLiteBox( $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
+		if( !defined( '_LITEBOX_LOADED' )) {
+			
+			vmCommonHTML::loadMooFx( $print );
+			
+			$scripttag = vmCommonHTML::scriptTag( '', 'var liteboxurl = \''.$mosConfig_live_site.'/components/'. $vmDir .'/js/litebox/\';');
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/litebox/litebox.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/litebox/litebox.css' );
+					
+			if( defined('_PSHOP_ADMIN') || $print ) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+			define ( '_LITEBOX_LOADED', '1' );
+		}	
+	}
+	/**
 	 * Function to include the Lightbox JS scripts in the HTML document
 	 * Type '2' => Source: http://www.huddletogether.com/projects/lightbox2/
 	 * Type '_gw' => Source: http://blog.feedmarker.com/2006/02/12/how-to-make-better-modal-windows-with-lightbox/
@@ -796,7 +823,7 @@ class vmCommonHTML extends mosHTML {
 			
 			vmCommonHTML::loadPrototype( $print );
 			
-			$scripttag = vmCommonHTML::scriptTag( '', 'var lightboxurl = \''.$mosConfig_live_site.'/components/com_virtuemart/js/lightbox'.$type.'/\';');
+			$scripttag = vmCommonHTML::scriptTag( '', 'var lightboxurl = \''.$mosConfig_live_site.'/components/'. $vmDir .'/js/lightbox'.$type.'/\';');
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/lightbox'.$type.'/lightbox'.$type.'.js' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/lightbox'.$type.'/lightbox'.$type.'.css' );
 			if( $type== '2')  {
@@ -852,7 +879,9 @@ class vmCommonHTML extends mosHTML {
 			elseif( $scripttag != '' ) {
 				$mainframe->addCustomHeadTag( $scripttag );
 			}
+			define( '_PROTOTYPE_LOADED', 1 );
 		}
+
 	}
 	/**
 	 * Loads the CSS and Javascripts needed to run the Greybox
@@ -931,8 +960,12 @@ class vmCommonHTML extends mosHTML {
 	 * @param string $image_group The image group name when you want to use the gallery functionality
 	 * @return string
 	 */
-	function getLightboxImageLink( $image_link, $text, $title='', $image_group='' ) {
-		vmCommonHTML::loadLightbox();
+	function getLightboxImageLink( $image_link, $text, $title='', $image_group='', $lite=true ) {
+		if( $lite ) {
+			vmCommonHTML::loadLitebox();
+		} else {
+			vmCommonHTML::loadLightbox();
+		}
 		
 		if( $image_group ) {
 			$image_group = '['.$image_group.']';
@@ -1078,6 +1111,7 @@ class vmCommonHTML extends mosHTML {
 			
 			return $text;
 		}
+		return '';
 	}
 
         /**

@@ -48,7 +48,7 @@ class ps_vendor {
 			$vmLogger->err( 'You must enter an email address for the vendor contact.');
 			return False;
 		}
-		if (!mShop_validateEmail($d["contact_email"])) {
+		if (!vmValidateEmail($d["contact_email"])) {
 			$vmLogger->err( 'Please provide a valide email address for the vendor contact.' );
 			return False;
 		}
@@ -136,7 +136,7 @@ class ps_vendor {
 			$vmLogger->err( 'You must enter an email address for the vendor contact.');
 			return False;
 		}
-		if (!mShop_validateEmail($d["contact_email"])) {
+		if (!vmValidateEmail($d["contact_email"])) {
 			$vmLogger->err( 'Please provide a valide email address for the vendor contact.' );
 			return False;
 		}

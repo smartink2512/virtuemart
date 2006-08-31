@@ -72,7 +72,7 @@ elseif( $num_rows == 0 && empty($product_type_id) && !empty($child_list)) {
 /*** NOW START THE PRODUCT LIST ***/
 else {
 
-	$tpl = new vmTemplate();
+	$tpl = new $GLOBALS['VM_THEMECLASS']();
 	
 	if( $category_id ) {
 		/**

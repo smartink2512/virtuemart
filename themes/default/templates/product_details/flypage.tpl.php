@@ -74,5 +74,5 @@ if( !empty( $navigation_childlist )) { ?>
 } ?>
 
 <?php
-echo vmThemeAjaxSubmitter( '', 'addtocart' );
+$this->vmThemeAjaxSubmitter( '', 'addtocart' );
 ?>

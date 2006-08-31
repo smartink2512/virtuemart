@@ -226,11 +226,14 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE ?></td>
 			<td>
 				<select name="conf_TAX_MODE" class="inputbox">
-					<option value="0" <?php if (TAX_MODE == 0) echo "selected"; ?>>
+					<option value="0" <?php if (TAX_MODE == 0) echo 'selected="selected"'; ?>>
 					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP ?>
 					</option>
-					<option value="1" <?php if (TAX_MODE == 1) echo "selected"; ?>>
+					<option value="1" <?php if (TAX_MODE == 1) echo 'selected="selected"'; ?>>
 					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR ?>
+					</option>
+					<option value="17749" <?php if (TAX_MODE == 17749) echo 'selected="selected"'; ?>>
+					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE_EU ?>
 					</option>
 				</select>
 			</td>

@@ -44,7 +44,7 @@ class zw_waiting_list {
 			$d["error"] .= "You must enter an e-mail address to be on the waiting list.";
 			return False;
 		}
-		if (!mShop_validateEmail($d["notify_email"])) {
+		if (!vmValidateEmail($d["notify_email"])) {
 			$d["error"] .= "Please provide a valid email address.";
 			return False;
 		}
@@ -61,7 +61,7 @@ class zw_waiting_list {
 			$d["error"] = "ERROR:  Please select a waiting list id to delete.";
 			return False;
 		}
-		if (!mShop_validateEmail($d["notify_email"])) {
+		if (!vmValidateEmail($d["notify_email"])) {
 			$d["error"] .= "Please provide a valid email address.";
 			return False;
 		}

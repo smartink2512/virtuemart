@@ -74,10 +74,17 @@ if( file_exists($filename2)) {
 	$fileout = IMAGEPATH."/product/resized/".$file."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
 }
 
+// Tell the user agent to cache this script/stylesheet for an hour
+$age = 3600;
+header( 'Expires: '.gmdate( 'D, d M Y H:i:s', time()+ $age ) . ' GMT' );
+header( 'Cache-Control: max-age='.$age.', must-revalidate' );
+
 if( file_exists( $fileout ) ) {
   /* We already have a resized image
   * So send the file to the browser */
-  switch($ext)
+  
+	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', @filemtime( $fileout ) ) . ' GMT' );
+  	switch($ext)
 		{
 			case ".gif":
 				header ("Content-type: image/gif");
@@ -94,11 +101,13 @@ if( file_exists( $fileout ) ) {
 		}
 }
 else {
-  /* We need to resize the image and Save the new one (all done in the constructor) */
-  $neu = new Img2Thumb($filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
-  
-  /* Send the file to the browser */
-  switch($ext)
+ 	/* We need to resize the image and Save the new one (all done in the constructor) */
+  	$neu = new Img2Thumb($filename,$newxsize,$newysize,$fileout,$maxsize,$bgred,$bggreen,$bgblue);
+  	
+  	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', @filemtime( $fileout ) ) . ' GMT' );
+  	
+  	/* Send the file to the browser */
+  	switch($ext)
 		{
 			case ".gif":
 				header ("Content-type: image/gif");

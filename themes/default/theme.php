@@ -22,132 +22,141 @@ global $mainframe;
 // include the stylesheet for this template
 $mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL.'theme.css' ));
 
-function vmBuildFullImageLink( $product ) {
-	global $VM_LANG;
+class vmTemplate_default extends vmTemplate  {
 	
-	$product_image = '';
-	
-	$img_attributes= 'alt="'.$product['product_name'].'"';
-	
-	/* Wrap the Image into an URL when applicable */
-	if ( $product["product_url"] ) {
-		$product_image = "<a href=\"". $product["product_url"]."\" title=\"".$product['product_name']."\" target=\"_blank\">";
-		$product_image .= ps_product::image_tag($product['product_full_image'], $img_attributes, 0);
-		$product_image .= "</a>";
+	function vmTemplate_default() {
+		parent::vmTemplate();
 	}
-	/* Show the Thumbnail with a Link to the full IMAGE */
-	else {
-		if( empty($product['product_full_image'] ) ) {
-			$product_image = "<img src=\"".IMAGEURL.NO_IMAGE."\" alt=\"".$product['product_name']."\" border=\"0\" />";
-		}
-		else {
-			// file_exists doesn't work on remote files,
-			// so returns false on remote files
-			// This should fix the "Long Page generation bug"
-			if( file_exists( IMAGEPATH.'product/'.$product['product_full_image'] )) {
 	
-				/* Get image width and height */
-				if( $image_info = @getimagesize(IMAGEPATH.'product/'.$product['product_full_image'] ) ) {
-					$width = $image_info[0] + 20;
-					$height = $image_info[1] + 20;
+	function vmBuildFullImageLink( $product ) {
+		global $VM_LANG;
+		
+		$product_image = '';
+		
+		$img_attributes= 'alt="'.$product['product_name'].'"';
+		
+		/* Wrap the Image into an URL when applicable */
+		if ( $product["product_url"] ) {
+			$product_image = "<a href=\"". $product["product_url"]."\" title=\"".$product['product_name']."\" target=\"_blank\">";
+			$product_image .= ps_product::image_tag($product['product_full_image'], $img_attributes, 0);
+			$product_image .= "</a>";
+		}
+		/* Show the Thumbnail with a Link to the full IMAGE */
+		else {
+			if( empty($product['product_full_image'] ) ) {
+				$product_image = "<img src=\"".IMAGEURL.NO_IMAGE."\" alt=\"".$product['product_name']."\" border=\"0\" />";
+			}
+			else {
+				// file_exists doesn't work on remote files,
+				// so returns false on remote files
+				// This should fix the "Long Page generation bug"
+				if( file_exists( IMAGEPATH.'product/'.$product['product_full_image'] )) {
+		
+					/* Get image width and height */
+					if( $image_info = @getimagesize(IMAGEPATH.'product/'.$product['product_full_image'] ) ) {
+						$width = $image_info[0] + 20;
+						$height = $image_info[1] + 20;
+					}
+				}
+				else {
+					$width = 640;
+					$height= 480;
+				}
+				if( stristr( $product['product_full_image'], "http" ) ) {
+					$imageurl = $product['product_full_image'];
+				}
+				else {
+					$imageurl = IMAGEURL.'product/'.$product['product_full_image'];
+				}
+				/* Build the "See Bigger Image" Link */
+				if( @$_REQUEST['output'] != "pdf" ) {
+					$link = $imageurl;
+					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
+					// vmPopupLink can be found in: htmlTools.class.php
+					//$product_image = vmPopupLink( $link, $text, $width, $height );
+					$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'] );
+				}
+				else {
+					$product_image = "<a href=\"$imageurl\" target=\"_blank\">"
+									. ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)
+									. "</a>";
 				}
 			}
-			else {
-				$width = 640;
-				$height= 480;
-			}
-			if( stristr( $product['product_full_image'], "http" ) ) {
-				$imageurl = $product['product_full_image'];
-			}
-			else {
-				$imageurl = IMAGEURL.'product/'.$product['product_full_image'];
-			}
-			/* Build the "See Bigger Image" Link */
-			if( @$_REQUEST['output'] != "pdf" ) {
-				$link = $imageurl;
-				$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
-				// vmPopupLink can be found in: htmlTools.class.php
-				//$product_image = vmPopupLink( $link, $text, $width, $height );'
-				$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'] );
-			}
-			else {
-				$product_image = "<a href=\"$imageurl\" target=\"_blank\">"
-								. ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)
-								. "</a>";
-			}
 		}
+		return $product_image;
 	}
-	return $product_image;
-}
-
-/**
- * Builds a list of all additional images
- *
- * @param int $product_id
- * @param array $images
- * @return string
- */
-function vmlistAdditionalImages( $product_id, $images, $limit=1000 ) {
-	global $sess;
-	$html = '';
-	$i = 0;
-	foreach( $images as $image ) { 
-		$thumbtag = ps_product::image_tag( vmImageTools::getResizedFilename($image->file_name ), 'class="browseProductImage"' );
-		$fulladdress = $sess->url( 'index2.php?page=shop.view_images&amp;image_id='.$image->file_id.'&amp;product_id='.$product_id.'&amp;pop=1' );
-		//$html .= vmPopupLink( $fulladdress, $thumbtag, 640, 550 );
-		$html .= vmCommonHTML::getLightboxImageLink( $image->file_url, $thumbtag, '', 'product'.$product_id );
-		if( ++$i > $limit ) break;
-	}
-	return $html;
-}
-/**
- * Builds the "more images" link
- *
- * @param array $images
- */
-function vmMoreImagesLink( $images ) {
-	global $mosConfig_live_site, $VM_LANG, $sess;
-	/* Build the JavaScript Link */
-	$url = $sess->url( "index2.php?page=shop.view_images&amp;flypage=".@$_REQUEST['flypage']."&amp;product_id=".@$_REQUEST['product_id']."&amp;category_id=".@$_REQUEST['category_id']."&amp;pop=1" );
-	$text = $VM_LANG->_PHPSHOP_MORE_IMAGES.'('.count($images).')';
-	$image = vmCommonHTML::imageTag( VM_THEMEURL.'images/more_images.png', $text, '', '16', '16' );
 	
-	return vmPopupLink( $url, $image.'<br />'.$text, 640, 550, '_blank', '', 'screenX=100,screenY=100' );
-}
-
-
-function vmThemeAjaxSubmitter( $class='', $id='', $showLoadingLightBox=true ) {
-	global $mm_action_url, $sess;
-	if( $id ) {
-		$element = '#'.$id;
-	}
-	else {
-		$element = $class;
-	}
-	vmCommonHTML::loadMooAjax();
-	vmCommonHTML::loadMooFx();
-	vmCommonHTML::loadLightBox('_gw');
-	vmCommonHTML::loadBehaviourJS();
-	$script = "var myrules = {
-		'$element' : function(element){
-			element.onsubmit = function(){
-				showLoadingLightbox();
-				var cForm = $(this.id);
-				cForm.page.value = 'shop.basket_short';
-				";
-	$cartUpdateURL = $sess->url( $mm_action_url.'index.php?only_page=1' );
-	$script .= vmMooAjax::getAjaxUpdater( $cartUpdateURL, 'vmCartModule', 'showMessagesinLightBox', 'post', array( 'formName' => 'element.id' ) );
-	$script .= "		
-				return false;
+	/**
+	 * Builds a list of all additional images
+	 *
+	 * @param int $product_id
+	 * @param array $images
+	 * @return string
+	 */
+	function vmlistAdditionalImages( $product_id, $images, $limit=1000 ) {
+		global $sess;
+		$html = '';
+		$i = 0;
+		foreach( $images as $image ) { 
+			$thumbtag = ps_product::image_tag( vmImageTools::getResizedFilename($image->file_name ), 'class="browseProductImage"' );
+			$fulladdress = $sess->url( 'index2.php?page=shop.view_images&amp;image_id='.$image->file_id.'&amp;product_id='.$product_id.'&amp;pop=1' );
+			
+			if( $this->get_cfg('useLightBoxImages', 1 )) {
+				$html .= vmCommonHTML::getLightboxImageLink( $image->file_url, $thumbtag, '', 'product'.$product_id );
 			}
+			else {
+				$html .= vmPopupLink( $fulladdress, $thumbtag, 640, 550 );
+			}
+			
+			if( ++$i > $limit ) break;
 		}
-	};
-	Behaviour.register( myrules );";
+		return $html;
+	}
+	/**
+	 * Builds the "more images" link
+	 *
+	 * @param array $images
+	 */
+	function vmMoreImagesLink( $images ) {
+		global $mosConfig_live_site, $VM_LANG, $sess;
+		/* Build the JavaScript Link */
+		$url = $sess->url( "index2.php?page=shop.view_images&amp;flypage=".@$_REQUEST['flypage']."&amp;product_id=".@$_REQUEST['product_id']."&amp;category_id=".@$_REQUEST['category_id']."&amp;pop=1" );
+		$text = $VM_LANG->_PHPSHOP_MORE_IMAGES.'('.count($images).')';
+		$image = vmCommonHTML::imageTag( VM_THEMEURL.'images/more_images.png', $text, '', '16', '16' );
+		
+		return vmPopupLink( $url, $image.'<br />'.$text, 640, 550, '_blank', '', 'screenX=100,screenY=100' );
+	}
 	
-	echo vmCommonHTML::scriptTag('', $script );
+	
+	function vmThemeAjaxSubmitter( $class='', $id='', $showLoadingLightBox=true ) {
+		global $mm_action_url, $sess;
+		if( $id ) {
+			$element = '#'.$id;
+		}
+		else {
+			$element = $class;
+		}
+		vmCommonHTML::loadMooAjax();
+		vmCommonHTML::loadMooFx();
+		vmCommonHTML::loadLightBox('_gw');
+		$script = "\$S('$element').action( {
+				onsubmit: function(){
+					showLoadingLightbox();
+					var cForm = $(this.id);
+					cForm.page.value = 'shop.basket_short';
+					";
+		$cartUpdateURL = $sess->url( $mm_action_url.'index.php?only_page=1' );
+		$script .= vmMooAjax::getAjaxUpdater( $cartUpdateURL, 'vmCartModule', 'showMessagesinLightBox', 'post', array( 'formName' => 'cForm.id' ) );
+		$script .= "		
+					return false;
+				}
+			} );
+		";
+		
+		echo vmCommonHTML::scriptTag('', $script );
+	}
+	
+	// Your code here please...
+
 }
-
-// Your code here please...
-
-
 ?>

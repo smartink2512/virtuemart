@@ -9,7 +9,7 @@
     <?php 
     while( $products->next_record() ) { ?>
       	<td valign="top">
-      		<?php $ps_product->product_snapshot( $products->f('product_sku') ) ?>
+      		<?php echo $ps_product->product_snapshot( $products->f('product_sku') ) ?>
       	</td>
 	<?php 
     }

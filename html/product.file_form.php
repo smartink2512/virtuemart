@@ -172,7 +172,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
     <tr> 
       <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_FILE_TITLE ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="file_title" size="32" value="<?php $db->sp("file_title") ?>" />
+        <input type="text" class="inputbox" name="file_title" size="32" value="<?php echo shopMakeHtmlSafe( $db->sf("file_title") ) ?>" />
       </td>
     </tr>
     <tr> 

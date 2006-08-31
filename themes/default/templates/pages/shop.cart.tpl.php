@@ -47,8 +47,12 @@ if ($cart["idx"]) {
    		$class_att = 'class="checkout_link"';
    		$text = $VM_LANG->_PHPSHOP_CHECKOUT_TITLE;
  		
-   		//echo vmCommonHTML::hyperlink( $href, $text, '', $text, $class_att );
-   		echo vmCommonHTML::getGreyBoxPopupLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
+   		if( $this->get_cfg('useGreyBoxOnCheckout', 1)) {
+   			echo vmCommonHTML::getGreyBoxPopupLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
+   		}
+   		else {
+   			echo vmCommonHTML::hyperlink( $href, $text, '', $text, $class_att );
+   		}
  	}
 	?>
 	</div>

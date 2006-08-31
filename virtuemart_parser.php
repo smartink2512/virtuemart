@@ -214,8 +214,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		require_once( CLASSPATH . 'connectionTools.class.php' );
 		vmConnector::sendHeaderAndContent( 200 );
 		// Send an indicator wether the function call return true or false
-		echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
-		$vmLogger->printLog();
+		vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
+		
 		exit;
 	}
 	

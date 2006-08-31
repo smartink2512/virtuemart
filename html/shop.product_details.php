@@ -80,7 +80,7 @@ if ($product_parent_id != 0) {
 }
 
 /* Create the template object */
-$tpl = new vmTemplate();
+$tpl = new $GLOBALS['VM_THEMECLASS']();
 
 
 // Let's have a look wether the product has related products.
@@ -96,6 +96,7 @@ $q .= "ORDER BY RAND() LIMIT 0, 4";
 $db->query( $q );*/
 $related_products = '';
 if( $db->num_rows() > 0 ) {
+	$tpl->set( 'ps_product', $ps_product );
 	$tpl->set( 'products', $db );
 	$related_products = $tpl->fetch( '/common/relatedProducts.tpl.php' );
 }
@@ -306,7 +307,9 @@ $tpl->set( 'productArray', $productArray );
 foreach( $productArray as $property => $value ) {
 	$tpl->set( $property, $value);
 }
-$product_image = vmBuildFullImageLink( $productArray );
+// Assemble the thumbnail image as a link to the full image
+// This function is defined in the theme (theme.php)
+$product_image = $tpl->vmBuildFullImageLink( $productArray );
 
 $tpl->set( "product_id", $product_id );
 $tpl->set( "product_name", $product_name );

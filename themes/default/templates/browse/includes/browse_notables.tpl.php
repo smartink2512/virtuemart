@@ -59,6 +59,6 @@ foreach( $products as $product ) {
 <?php 
 echo $browsepage_footer;
 
-vmThemeAjaxSubmitter( 'form.addtocart_form' );
+$this->vmThemeAjaxSubmitter( 'form.addtocart_form' );
 
 ?>

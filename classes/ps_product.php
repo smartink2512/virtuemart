@@ -1278,7 +1278,8 @@ class ps_product extends vmAbstractObject {
 
 			if ($auth["show_price_including_tax"] == 1) {
 
-				if (TAX_MODE == '0') {
+				require_once( CLASSPATH . 'ps_checkout.php' );
+				if (! ps_checkout::tax_based_on_vendor_address ()) {
 					if( $auth["user_id"] > 0 ) {
 
 						$q = "SELECT state, country FROM #__{vm}_user_info WHERE user_id='". $auth["user_id"] . "'";
@@ -1305,7 +1306,7 @@ class ps_product extends vmAbstractObject {
 					}
 
 				}
-				elseif (TAX_MODE == '1') {
+				else {
 					if( empty( $_SESSION['taxrate'][$ps_vendor_id] )) {
 						// let's get the store's tax rate
 						$q = "SELECT `tax_rate` FROM #__{vm}_vendor, #__{vm}_tax_rate ";
@@ -1345,16 +1346,18 @@ class ps_product extends vmAbstractObject {
 	 */
 	function get_product_taxrate( $product_id, $weight_subtotal=0 ) {
 
-		if (($weight_subtotal != 0 or TAX_VIRTUAL=='1') && TAX_MODE =='0') {
+		require_once( CLASSPATH . 'ps_checkout.php' );
+
+		if (($weight_subtotal != 0 or TAX_VIRTUAL=='1') && !ps_checkout::tax_based_on_vendor_address() ) {
 			$_SESSION['product_sess'][$product_id]['tax_rate'] = $this->get_taxrate();
 			return $_SESSION['product_sess'][$product_id]['tax_rate'];
 		}
-		elseif( ($weight_subtotal == 0 or TAX_VIRTUAL != '1' ) && TAX_MODE =='0') {
+		elseif( ($weight_subtotal == 0 or TAX_VIRTUAL != '1' ) && !ps_checkout::tax_based_on_vendor_address() ) {
 			$_SESSION['product_sess'][$product_id]['tax_rate'] = 0;
 			return $_SESSION['product_sess'][$product_id]['tax_rate'];
 		}
 
-		elseif( TAX_MODE == '1' ) {
+		elseif( ps_checkout::tax_based_on_vendor_address () ) {
 
 			if( empty( $_SESSION['product_sess'][$product_id]['tax_rate'] ) ) {
 				$db = new ps_DB;
@@ -1678,7 +1681,9 @@ class ps_product extends vmAbstractObject {
 			// add the base price to the price set in the attributes
 			// then subtract the adjustment amount
 			// we could also just add the set_price to the adjustment... not sure on that one.
-			// $setprice += $adjustment;
+			if (!empty($adjustment)) {
+				$setprice += $adjustment;
+			}
 			$setprice *= 1 - ($auth["shopper_group_discount"]/100);
 			$price["product_price"] = $setprice;
 		}
@@ -1802,8 +1807,8 @@ class ps_product extends vmAbstractObject {
 					$value_notax = $GLOBALS['CURRENCY']->convert( $value_notax );
 					if( abs($value_notax) >0 ) {
 						$value_taxed = $value_notax * ($my_taxrate+1);
-
-						$description = str_replace( $value_notax, $CURRENCY_DISPLAY->getFullValue( $value_taxed ), $description);
+							$temp_desc_new  = str_replace( $my_mod, $my_mod[0].' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ), $temp_desc );
+							$description = str_replace( $temp_desc, $temp_desc_new, $description);
 					}
 					elseif( $my_mod === "+0" || $my_mod === '-0') {
 						$description = str_replace( "[".$my_mod."]", '', $description);
@@ -1881,7 +1886,7 @@ class ps_product extends vmAbstractObject {
 		global $VM_LANG, $CURRENCY_DISPLAY,$vendor_mail;
 		$auth = $_SESSION['auth'];
 		
-		$tpl = new vmTemplate();
+		$tpl = new $GLOBALS['VM_THEMECLASS']();
 		
 		$product_name = htmlentities( $this->get_field($product_id, 'product_name'), ENT_QUOTES );
 		$tpl->set( 'product_name', $product_name );
@@ -2076,7 +2081,7 @@ class ps_product extends vmAbstractObject {
 
 		if ($db->next_record()) {
 			$product_id = $db->f("product_id" );
-			$tpl = new vmTemplate();
+			$tpl = new $GLOBALS['VM_THEMECLASS']();
 			
 			$cid = $ps_product_category->get_cid( $product_id );
 
@@ -2250,7 +2255,7 @@ class ps_product extends vmAbstractObject {
 
 		$is_parent = $this->parent_has_children( $prod_id );
 		if( !$is_parent ) {
-			$tpl = new vmTemplate();
+			$tpl = new $GLOBALS['VM_THEMECLASS']();
 			
 			$db = new ps_DB;
 

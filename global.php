@@ -45,6 +45,7 @@ else {
 	 */
 	$GLOBALS['CURRENCY'] = $CURRENCY = new convertECB();
 }
+
 // stores the exchange rate array
 $GLOBALS['converter_array'] = '';
 
@@ -192,6 +193,18 @@ require_once( CLASSPATH.'currency/class_currency_display.php' );
  */
 $GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
 	
+// Include the theme
+if( file_exists( VM_THEMEPATH.'theme.php' )) {
+	include( VM_THEMEPATH.'theme.php' );
+}
+elseif( file_exists( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' )) {
+	include( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' );
+}
+else {
+	$vmLogger->crit( 'Theme file not found.' );
+	return;
+}
+$GLOBALS['VM_THEMECLASS'] = 'vmTemplate_'.basename(VM_THEMEPATH);
 
 /**
  * Returns the variable names of all global variables in VM

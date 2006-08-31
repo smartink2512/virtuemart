@@ -198,7 +198,7 @@ else {
 	}
 
 	/* SHOW TAX */
-	if (!empty($_REQUEST['ship_to_info_id']) || TAX_MODE == '1') {
+	if (!empty($_REQUEST['ship_to_info_id']) || ps_checkout::tax_based_on_vendor_address() ) {
 
 		$show_tax = true;
 
@@ -264,7 +264,7 @@ else {
 			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_METHOD && CHECKOUT_STYLE == 3
 			)
 	) {
-		$tpl = new vmTemplate();
+		$tpl = new $GLOBALS['VM_THEMECLASS']();
 		echo $tpl->fetch_cache( 'common/couponField.tpl.php' );
 	}
 }

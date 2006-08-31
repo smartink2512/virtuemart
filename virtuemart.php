@@ -37,18 +37,6 @@ $product_type_id = intval( mosgetparam($_REQUEST, 'product_type_id', null) );
 // Display just the naked page without toolbar, menu and footer?
 $only_page = mosGetParam( $_REQUEST, 'only_page', 0 );
 
-// Include the theme
-if( file_exists( VM_THEMEPATH.'theme.php' )) {
-	include( VM_THEMEPATH.'theme.php' );
-}
-elseif( file_exists( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' )) {
-	include( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' );
-}
-else {
-	echo 'Theme file not found.';
-	return;
-}
-
 if( PSHOP_IS_OFFLINE == "1" ) {
     echo PSHOP_OFFLINE_MESSAGE;
 }
@@ -236,5 +224,7 @@ else {
 if( defined( 'vmToolTipCalled')) {
 	echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
 }
-
+if( defined( '_LITEBOX_LOADED')) {
+	echo vmCommonHTML::scriptTag( '', 'initLightbox();' );
+}
 ?>

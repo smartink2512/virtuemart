@@ -33,8 +33,34 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-25-08-2006 soeren
+31-08-2006 soeren
 
+^ switched from Behaviour JS to moo.dom to attach events to various elements (http://www.mad4milk.net/entry/moo.dom-easily-target-html-elements)
+
++ made the usage of the Lightbox for product images optional (see theme configuration!)
++ made the Greybox checkout optional (see theme configuration!)
++ added the LiteBox script to the available Javascripts. 
+	Litebox is a lightweight Lightbox derivate using just moo.fx and prototype.lite (see http://www.doknowevil.net/litebox/)
+
+# Task #887 - Minimum Amount for Free Shipping (ps_main.php)
+^ EU tax mode implementation by Sam Morris <sam@robots.org.uk>
+	(http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=21124.msg52587#msg52587)
+	affected files: ps_checkout.php, ps_product.php, basket.php, admin.show_cfg.php, all language files
+# possible errors in tax total calculation when coupons are used in vendor-based tax mode
+
+29-08-2006 soeren
+
+# Task #901 - FileManager's pics > Commas in Tittle bug.
+# Task #735 - attributes errors (ps_product.php) - (double currency symbols and price modifiers not adding up when one "price setter" is selected in the attributes)
+# Task #839 - "Add to Cart" twice for same product removes product (ps_cart.php)
++ added cache-control / expire / last-modified headers in fetchscript.php and show_image_in_imgtag.php to 
+	increase performance by using client caching capabilities
+	
+^ updated the vmnValidateEmail function to check for correct email addresses (ps_main.php)
++ added name & subject checks for email sending (J! 1.0.11) (ps_main.php)
+^ changed the vmSpoofValue function to work with J! 1.0.11 (ps_main.php)
+
+25-08-2006 soeren
 # fixed hidden select boxes on "display lightbox"  staying hidden
 
 ^ moved a lot of global declarations from virtuemart_parser.php to global.php (what do we have this file for if not for globals ;-) ?)
