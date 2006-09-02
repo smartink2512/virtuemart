@@ -89,7 +89,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_USER_LIST_GROUP = 'Gruppe';
 	var $_PHPSHOP_USER_FORM_MNU = 'Neu: Nutzer';
 	var $_PHPSHOP_USER_FORM_LBL = 'Hinzufügen/Aktualisieren von Nutzern';
-	var $_PHPSHOP_USER_FORM_BILLTO_LBL = 'Rechungsinformation';
+	var $_PHPSHOP_USER_FORM_BILLTO_LBL = 'Rechnungsinformation';
 	var $_PHPSHOP_USER_FORM_SHIPTO_LBL = 'Lieferadressen';
 	var $_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL = 'Eine Adresse hinzufügen';
 	var $_PHPSHOP_USER_FORM_NO_SHIPPING_ADDRESSES = 'Keine Lieferadressen.';
@@ -215,7 +215,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL = 'Kundeninformation';
 	var $_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL = 'Rechnungsinformation';
 	var $_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL = 'Informationen zur Lieferung';
-	var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = 'Rechungsadresse';
+	var $_PHPSHOP_ORDER_PRINT_BILL_TO_LBL = 'Rechnungsadresse';
 	var $_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL = 'Lieferadresse';
 	var $_PHPSHOP_ORDER_PRINT_NAME = 'Name';
 	var $_PHPSHOP_ORDER_PRINT_COMPANY = 'Firma';
@@ -410,7 +410,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_SHOPPER_LIST_GROUP = 'Gruppe';
 	var $_PHPSHOP_SHOPPER_FORM_MNU = 'Kunden hinzufügen';
 	var $_PHPSHOP_SHOPPER_FORM_LBL = 'Kundeninformation';
-	var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = 'Informationen zur Rechungsadresse';
+	var $_PHPSHOP_SHOPPER_FORM_BILLTO_LBL = 'Informationen zur Rechnungsadresse';
 	var $_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL = 'Information';
 	var $_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL = 'Informationen zur Lieferadresse';
 	var $_PHPSHOP_SHOPPER_FORM_ADD_SHIPTO_LBL = 'Neue Adresse';
@@ -588,7 +588,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CART_TOTAL = 'Endsumme';
 	var $_PHPSHOP_CHECKOUT_NEXT = 'Weiter';
 	var $_PHPSHOP_CHECKOUT_REGISTER = 'REGISTRIEREN';
-	var $_PHPSHOP_CHECKOUT_CONF_BILLINFO = 'Rechungsinformationen';
+	var $_PHPSHOP_CHECKOUT_CONF_BILLINFO = 'Rechnungsinformationen';
 	var $_PHPSHOP_CHECKOUT_CONF_COMPANY = 'Firma';
 	var $_PHPSHOP_CHECKOUT_CONF_NAME = 'Name';
 	var $_PHPSHOP_CHECKOUT_CONF_ADDRESS = 'Adresse';
@@ -635,9 +635,9 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_NEW_CUSTOMER = 'Neu hier? Dann füllen Sie bitte nachfolgende Felder aus. Die Angaben werden gespeichert und ersparen Ihnen eine Neueingabe. Als registrierter Benutzer haben Sie auch Zugriff auf Ihre Bestellinformationen.';
 	var $_PHPSHOP_ACC_CUSTOMER_ACCOUNT = 'Kundeninformationen von:';
 	var $_PHPSHOP_ACC_ORDER_INFO = 'Bestellungen';
-	var $_PHPSHOP_ACC_UPD_BILL = 'Hier kannst Du Deine Rechungsadressdaten ändern';
+	var $_PHPSHOP_ACC_UPD_BILL = 'Hier kannst Du Deine Rechnungsadressdaten ändern';
 	var $_PHPSHOP_ACC_UPD_SHIP = 'Hier kannst Du Lieferadressen hinzufügen oder vorhandene ändern.';
-	var $_PHPSHOP_ACC_ACCOUNT_INFO = 'Rechungsadresse';
+	var $_PHPSHOP_ACC_ACCOUNT_INFO = 'Rechnungsadresse';
 	var $_PHPSHOP_ACC_SHIP_INFO = 'Lieferadressen';
 	var $_PHPSHOP_ACC_NO_ORDERS = 'keine Bestellungen vorhanden';
 	var $_PHPSHOP_ACC_BILL_DEF = '- Standard (wie Rechnungsadresse)';

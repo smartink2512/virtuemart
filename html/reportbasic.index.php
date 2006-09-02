@@ -20,6 +20,10 @@ $nh_report = new nh_report();
 $show_products = mosGetParam( $_REQUEST, "show_products" );
 $interval = mosGetParam( $_REQUEST, "interval", "byMonth" );
 
+foreach (array ('thisMonth', 'lastMonth', 'last60', 'last90', 'sbmt') as $button_name) {
+	$$button_name = mosGetParam( $_REQUEST, $button_name );
+}
+
 $selected_begin["day"] = $sday = mosGetParam( $_REQUEST, "sday", 1 );
 $selected_begin["month"] = $smonth = mosGetParam( $_REQUEST, "smonth", date("m"));
 $selected_begin["year"] = $syear = mosGetParam( $_REQUEST, "syear", date("Y"));
@@ -37,6 +41,7 @@ $i=0;
     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <input type="hidden" name="page" value="reportbasic.index" />
     <input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="pshop_mode" value="admin" />
     <table class="adminform" width="100%" border="0" cellspacing="0" cellpadding="1">
         <tr>
           <td><?php echo $VM_LANG->_PHPSHOP_VIEW ?></td>
@@ -226,7 +231,7 @@ if (!empty($show_products)) {
  ?>
     <h4><?php 
     echo $VM_LANG->_PHPSHOP_RB_REPORT_FOR ." ";
-    echo date("M j, Y", $start_date)." --&gt;.". date("M j, Y", $end_date); 
+    echo date("M j, Y", $start_date)." --&gt; ". date("M j, Y", $end_date); 
     ?></h4>
 
     <table class="adminlist">

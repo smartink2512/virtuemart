@@ -222,7 +222,7 @@ $files = ps_product_files::getFilesForProduct( $product_id );
 
 $more_images = "";
 if( !empty($files['images']) ) {
-	$more_images = vmMoreImagesLink( $files['images'] );
+	$more_images = $tpl->vmMoreImagesLink( $files['images'] );
 }
 /* Files? */
 $file_list = ps_product_files::get_file_list( $product_id );

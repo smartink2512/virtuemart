@@ -62,7 +62,7 @@ class vmImageTools {
 		require_once( CLASSPATH . "class.img2thumb.php");
 				
 		if( @$d[$tmp_field_name.'_action'] == 'auto_resize'
-			&& empty($d['resizing_prepared'])
+			&& !empty( $d[str_replace( 'full', 'thumb', $field_name )])			
 		) {
 			// Resize the Full Image
 			if( !empty ( $_FILES[$tmp_field_name]["tmp_name"] )) {
@@ -109,16 +109,47 @@ class vmImageTools {
 				
 				$fileout = IMAGEPATH."/product/resized/".$to_file_thumb."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
 				$neu = new Img2Thumb( $full_file, PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT, $fileout, 0, 255, 255, 255 );
-				$vmLogger->debug( 'Finished creating the thumbnail' );
+				$thumbname = 'resized/'.basename( $fileout );
+				$vmLogger->debug( 'Finished creating the thumbnail '.$thumbname );
 							
 				if( isset($tmp_file_from_url) ) unlink( realpath($tmp_file_from_url) );
 				$tmp_field_name = str_replace( "full", "thumb", $tmp_field_name );
 				$tmp_field_name = str_replace( "_url", "", $tmp_field_name );
 				$_FILES[$tmp_field_name]['tmp_name'] = $fileout;
-				$_FILES[$tmp_field_name]['name'] = basename($fileout);
-				$d[$tmp_field_name] = basename($fileout);
-	
-				$d['resizing_prepared'] = "1";
+				$_FILES[$tmp_field_name]['name'] = $thumbname;
+				$d[$tmp_field_name] = $thumbname;
+				
+				$curr_file = isset($_REQUEST[$tmp_field_name."_curr"]) ? $_REQUEST[$tmp_field_name."_curr"] : "";
+		
+				if (!empty($curr_file)) {
+					
+					$delete = str_replace("\\", "/", realpath($path."/".$curr_file));
+					$d["image_commands"][] = "if( file_exists( \"$delete\" ) ) {
+												\$ret = unlink(\"$delete\");
+												}
+												else {
+													\$ret = true;
+												}";
+					
+					$vmLogger->debug( 'Preparing: delete old thumbnail image: '.$delete );
+					/* Remove the resized image if exists */
+					if( PSHOP_IMG_RESIZE_ENABLE=="1" ) {
+						$pathinfo = pathinfo( $delete );
+						isset($pathinfo["dirname"]) or $pathinfo["dirname"] = "";
+						isset($pathinfo["extension"]) or $pathinfo["extension"] = "";
+						$filehash = basename( $delete, ".".$pathinfo["extension"] );
+						$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
+						
+						$d["image_commands"][] = "if( file_exists(\"$resizedfilename\")) {
+													\$ret = unlink(\"$resizedfilename\");
+												}
+												else {
+													\$ret = true;
+												}";
+						$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
+						
+					}
+				}
 			}
 		}
 	
@@ -127,7 +158,6 @@ class vmImageTools {
 	
 		$orig_file = isset($_FILES[$field_name]["name"]) ? $_FILES[$field_name]['name'] : "";
 		$curr_file = isset($_REQUEST[$field_name."_curr"]) ? $_REQUEST[$field_name."_curr"] : "";
-		
 		/**
 		 * The commands to be executed by the process_images
 		 * function are returned as a string here.  The
@@ -177,7 +207,6 @@ class vmImageTools {
 					$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
 					
 				}
-	
 			}
 			$d[$field_name] = "";
 			return true;
@@ -190,7 +219,7 @@ class vmImageTools {
 	
 		else {
 			// If nothing was entered in the Upload box, there is no image to process
-			if (!$orig_file) {
+			if (!$orig_file )  {
 				$d[$field_name] = $curr_file;
 				return true;
 			}
@@ -258,9 +287,12 @@ class vmImageTools {
 	
 		/* Command to move uploaded file into destination directory */
 		$d["image_commands"][] = "\$ret = ps_product_files::moveUploadedFile( \"$field_name\", \"$path"."$to_file\" );";	
+		
+		if( empty( $d[$field_name] )) {	
+			/* Return new image file name */
+			$d[$field_name] = $to_file;
+		}
 	
-		/* Return new image file name */
-		$d[$field_name] = $to_file;
 		return true;
 	}
 	

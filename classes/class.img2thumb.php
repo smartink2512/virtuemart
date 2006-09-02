@@ -127,8 +127,8 @@ class Img2Thumb	{
 		}
 		$this->fileout = $fileout;
 		
-		// free some memory
-		clearstatcache();
+		// get some memory
+		vmRaiseMemoryLimit( '32M' );
 		
 		switch($type)
 		{

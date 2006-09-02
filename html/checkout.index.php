@@ -339,7 +339,7 @@ if ($checkout) {
     }
 }
 else {
-	mosRedirect( $sess->url( URL ), $VM_LANG->_PHPSHOP_EMPTY_CART);
+	mosRedirect( $sess->url( 'index.php?page=shop.cart' ) );
 }
 
 ?>

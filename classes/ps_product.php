@@ -468,7 +468,7 @@ class ps_product extends vmAbstractObject {
 
 		/* notify the shoppers that the product is here */
 		/* see zw_waiting_list */
-		if ($d["product_in_stock"] > "0" && $d['notify_users'] == '1' ) {
+		if ($d["product_in_stock"] > "0" && $d['notify_users'] == '1' && $d['product_in_stock_old'] == '0') {
 			require_once( CLASSPATH . 'zw_waiting_list.php');
 			$zw_waiting_list = new zw_waiting_list;
 			$zw_waiting_list->notify_list($d["product_id"]);

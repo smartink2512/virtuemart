@@ -213,11 +213,11 @@ class ps_order {
 	**************************************************************************/
 	function mail_download_id( &$d ){
 
-		global $mosConfig_live_site, $mosConfig_absolute_path, $db,
+		global $mosConfig_live_site, $mosConfig_absolute_path, $db, $sess,
 		$VM_LANG, $mosConfig_smtpauth, $mosConfig_mailer, $vmLogger,
 		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
 
-		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads";
+		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 
 		if ($d["order_status"]==ENABLE_DOWNLOAD_STATUS) {
 			$dbw = new ps_DB;
@@ -298,11 +298,11 @@ class ps_order {
 	**************************************************************************/
 	function notify_customer( &$d ){
 
-		global $mosConfig_live_site, $mosConfig_absolute_path,
+		global $mosConfig_live_site, $mosConfig_absolute_path, $sess,
 		$VM_LANG, $mosConfig_smtpauth, $mosConfig_mailer, $vmLogger,
 		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
 
-		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=account.order_details&order_id=".$d["order_id"];
+		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=account.order_details&order_id=".$d["order_id"].'&Itemid='.$sess->getShopItemid();
 
 		$db = new ps_DB;
 		$dbv = new ps_DB;

@@ -147,7 +147,7 @@ class ps_shopper {
 	* Function to add a new Shopper into the Shop and Joomla
         */
 	function add( &$d ) {
-		global $my, $ps_user, $mainframe, $mosConfig_absolute_path,
+		global $my, $ps_user, $mainframe, $mosConfig_absolute_path, $sess,
 		$VM_LANG, $vmLogger, $database, $option, $mosConfig_useractivation;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -292,13 +292,13 @@ class ps_shopper {
 		
 		if( !$my->id && $mosConfig_useractivation == '0') {
 			$mainframe->login($d['username'], md5( $d['password'] ));
-			mosRedirect( "index.php?option=$option&page=checkout.index" );
+			mosRedirect( $sess->url( 'index.php?page=checkout.index' ) );
 		}
 		elseif( $my->id ) {
-			mosRedirect( "index.php?option=$option&page=checkout.index" );
+			mosRedirect( $sess->url( 'index.php?page=checkout.index' ) );
 		}
 		else {
-			mosRedirect( "index.php?option=$option&page=shop.index", _REG_COMPLETE_ACTIVATE );
+			mosRedirect( $sess->url( 'index.php?page=shop.index' ), _REG_COMPLETE_ACTIVATE );
 		}
 
 		return true;

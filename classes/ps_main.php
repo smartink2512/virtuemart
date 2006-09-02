@@ -919,5 +919,31 @@ function vmIsJoomla() {
 function vmIsHttpsMode() {
 	return ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on');
 }
-
+/**
+ * Raise the memory limit when it is lower than the needed value
+ *
+ * @param string $setLimit Example: 16M
+ */
+function vmRaiseMemoryLimit( $setLimit ) {
+	
+	$memLimit = @ini_get('memory_limit');
+	
+	if( stristr( $memLimit, 'k') ) {
+		$memLimit = str_replace( 'k', '', str_replace( 'K', '', $memLimit )) * 1024;
+	}
+	elseif( stristr( $memLimit, 'm') ) {
+		$memLimit = str_replace( 'm', '', str_replace( 'M', '', $memLimit )) * 1024 * 1024;
+	}
+	
+	if( stristr( $setLimit, 'k') ) {
+		$setLimitB = str_replace( 'k', '', str_replace( 'K', '', $setLimit )) * 1024;
+	}
+	elseif( stristr( $setLimit, 'm') ) {
+		$setLimitB = str_replace( 'm', '', str_replace( 'M', '', $setLimit )) * 1024 * 1024;
+	}
+	
+	if( $memLimit < $setLimitB ) {
+		@ini_set('memory_limit', $setLimit );
+	}	
+}
 ?>

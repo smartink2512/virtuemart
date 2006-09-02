@@ -33,10 +33,18 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02-09-2006 gregdev
+
+# Task #933 - Reports fail with RG_EMULATION=0
+# Task #870 - Wrong template used for Order Status Change link (ps_order.php)
+# Task #868 - missing pathway's style class in Account Maintenance (account.billing.php, account.order_details.php, account.shipto.php, account.shipping.php)
+# Task #867 - errors in german language-file
+# Task #861 - Control panel when press any button on frontend administration are not displayed. (reportbasic.index.php)
+
 31-08-2006 soeren
 
 ^ switched from Behaviour JS to moo.dom to attach events to various elements (http://www.mad4milk.net/entry/moo.dom-easily-target-html-elements)
-
+		(it is much much much smaller by filesize!!)
 + made the usage of the Lightbox for product images optional (see theme configuration!)
 + made the Greybox checkout optional (see theme configuration!)
 + added the LiteBox script to the available Javascripts. 

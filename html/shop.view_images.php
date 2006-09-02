@@ -66,15 +66,18 @@ if( !empty($product_id) ) {
   foreach( $images as $image ) {
     $info = pathinfo( $image->file_name );
     
-    $src = dirname($image->file_url) ."/resized/". basename($image->file_name, ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
+	$base_filename = basename($image->file_name, ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
+	$thumb = $info["dirname"] ."/resized/". $base_filename;
+	$thumburl = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $thumb );
+	
     $alt = $image->file_title;
     $height = empty($image->file_image_thumb_height) ? PSHOP_IMG_HEIGHT : $image->file_image_thumb_height; 
     $width = empty($image->file_image_thumb_width) ? PSHOP_IMG_WIDTH : $image->file_image_thumb_width; 
     
     $border = ($image->file_id == $image_id) ? "4" : "1";
-    $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&page=$page&product_id=$product_id&image_id=".$image->file_id."&Itemid=".$Itemid.'&amp;pop='.$pop;
+    $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&amp;page=$page&amp;product_id=$product_id&amp;image_id=".$image->file_id."&amp;Itemid=".$Itemid.'&amp;pop='.$pop;
     $title = $image->file_title;
-    echo "<a href=\"$href\" target=\"_self\" title=\"$title\"><img src=\"$src\" alt=\"$alt\" align=\"center\" width=\"$width\" border=\"$border\" /></a>\n&nbsp;&nbsp;&nbsp;";
+    echo "<a href=\"$href\" target=\"_self\" title=\"$title\"><img src=\"$thumburl\" alt=\"$alt\" align=\"center\" width=\"$width\" border=\"$border\" /></a>\n&nbsp;&nbsp;&nbsp;";
     // Break Row when needed
     //if( $i++ >= 4 ) { $i=0; echo "<br/><br/>"; }
   }

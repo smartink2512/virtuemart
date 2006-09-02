@@ -131,6 +131,7 @@ if( defined( 'vmToolTipCalled')) {
 	echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
 }
 if( defined( '_LITEBOX_LOADED')) {
-	echo vmCommonHTML::scriptTag( '', 'initLightbox();' );
+	echo vmCommonHTML::scriptTag( '', 'var prev_onload = document.body.onload; 
+										window.onload = function() { if( prev_onload ) prev_onload(); initLightbox(); }' );
 }
 ?>
