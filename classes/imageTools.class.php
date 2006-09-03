@@ -61,9 +61,7 @@ class vmImageTools {
 		//	Class for resizing Thumbnails
 		require_once( CLASSPATH . "class.img2thumb.php");
 				
-		if( @$d[$tmp_field_name.'_action'] == 'auto_resize'
-			&& !empty( $d[str_replace( 'full', 'thumb', $field_name )])			
-		) {
+		if( @$d[$tmp_field_name.'_action'] == 'auto_resize' ) {
 			// Resize the Full Image
 			if( !empty ( $_FILES[$tmp_field_name]["tmp_name"] )) {
 				$full_file = $_FILES[$tmp_field_name]["tmp_name"];
@@ -111,7 +109,7 @@ class vmImageTools {
 				$neu = new Img2Thumb( $full_file, PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT, $fileout, 0, 255, 255, 255 );
 				$thumbname = 'resized/'.basename( $fileout );
 				$vmLogger->debug( 'Finished creating the thumbnail '.$thumbname );
-							
+				
 				if( isset($tmp_file_from_url) ) unlink( realpath($tmp_file_from_url) );
 				$tmp_field_name = str_replace( "full", "thumb", $tmp_field_name );
 				$tmp_field_name = str_replace( "_url", "", $tmp_field_name );
