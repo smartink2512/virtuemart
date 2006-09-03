@@ -724,6 +724,8 @@ function vmReadFileChunked($filename,$retbytes=true) {
 	while (!feof($handle)) {
 		$buffer = fread($handle, $chunksize);
 		echo $buffer;
+		sleep(1);
+		ob_flush();
 		flush();
 		if ($retbytes) {
 			$cnt += strlen($buffer);

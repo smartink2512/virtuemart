@@ -725,8 +725,8 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td class="labelcell"><label for="conf_THEME"><?php echo $VM_LANG->_VM_SELECT_THEME ?></label></td>
         <td>
         <?php 
-        	echo ps_html::list_themes( 'conf_THEME');
-        	echo vmCommonHTML::hyperlink($sess->url($_SERVER['PHP_SELF'].'?page=admin.theme_config_form'), $VM_LANG->_PHPSHOP_CONFIG );
+        	echo ps_html::list_themes( 'conf_THEME', basename(VM_THEMEURL) );
+        	echo vmCommonHTML::hyperlink($sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&theme='.basename(VM_THEMEURL) ), $VM_LANG->_PHPSHOP_CONFIG );
         ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>

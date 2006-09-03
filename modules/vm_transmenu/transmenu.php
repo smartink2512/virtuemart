@@ -71,7 +71,7 @@ class TransMenu {
 	}
 	function genMenuItem(&$row, $level, $pos){
 
-		global $Itemid, $mosConfig_live_site, $mainframe;
+		global $Itemid, $mosConfig_live_site, $mainframe, $sess;
 		$txt = '';
 		$Itemid = mosGetParam( $_REQUEST, "Itemid", "");
 		switch ($row->type) {
@@ -91,7 +91,7 @@ class TransMenu {
 			break;
 			case 'content_typed':
 			default:
-			$row->link .= '&Itemid='. $Itemid;
+				$row->link .= '&Itemid='. $sess->getShopItemid();
 			break;
 		}
 
@@ -125,7 +125,7 @@ class TransMenu {
 	}
 
 	function getFirstLevelItem( $mitem ) {
-		global $Itemid, $mosConfig_live_site, $mainframe;
+		global $Itemid, $mosConfig_live_site, $mainframe, $sess;
 		$txt = '';
 
 		switch ($mitem->type) {
@@ -145,7 +145,7 @@ class TransMenu {
 			break;
 			case 'content_typed':
 			default:
-			$mitem->link .= '&Itemid='. $mitem->id;
+			$mitem->link .= '&Itemid='. $sess->getShopItemid();
 			break;
 		}
 

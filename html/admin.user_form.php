@@ -209,11 +209,10 @@ while ($db->next_record()) {
 
     $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("cdate")));
     $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("mdate")));
-
-    $listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
     
     $listObj->addCell(  $ps_order_status->getOrderStatusName($db->f("order_status")));
     
+    $listObj->addCell( $CURRENCY_DISPLAY->getFullValue($db->f("order_total")));
 
     $listObj->addCell( $ps_html->deleteButton( "order_id", $db->f("order_id"), "orderDelete", $keyword, $limitstart ) );
 

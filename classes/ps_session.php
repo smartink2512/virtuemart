@@ -47,15 +47,26 @@ class ps_session {
 			// Some servers start the session before we can, so close those and start again		
 			if( !defined('_PSHOP_ADMIN') && !empty($_SESSION) && !vmIsJoomla() ) {
 				session_write_close();
-				unset( $_SESSION );
-				
+				unset( $_SESSION );				
 			}
 		
 			if( !is_writable( session_save_path()) ) {
-				$vmLogger->debug( 'The Session Save Path '.session_save_path().' is not writable. Please correct this! The shop is temporarily trying to use the global cache path instead.');
-				session_save_path( $mosConfig_absolute_path. '/cache' );
+				$try_these_paths = array( 'Cache Path' => $mosConfig_absolute_path. '/cache',
+											'Media Directory' => $mosConfig_absolute_path.'/media',
+											'Shop Image Directory' => IMAGEPATH );
+				foreach( $try_these_paths as $name => $session_save_path ) {
+					if( is_writable( $session_save_path )) {
+						$vmLogger->debug( 'The Session Save Path '.session_save_path().' is not writable. Please correct this! The shop is temporarily trying to use the '.$name.' instead.');
+						session_save_path( $session_save_path );
+						break;
+					}
+				}
 			}
-		
+			// If the path is STILL not writable, generate an error
+			if( !is_writable( session_save_path()) ) {
+				$vmLogger->err( 'The directory to store session data is not writable. Please correct this or contact your provider.');
+			}
+			
 			if( empty( $_SESSION ) ) {
 				// Session not yet started!			
 				session_name( $this->_session_name );

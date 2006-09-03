@@ -33,8 +33,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-02-09-2006 gregdev
+03-09-2006 soeren
 
+# Problem downloading larger files, e.g. >16MB (ps_main.php) (http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=20481.msg53015#msg53015)
+
+02-09-2006 gregdev
+# Task #938 - Product list select statement causes MySql out of memory error
+# Task #734 - transmenu.php wrong itemid in a first menu level
 # Task #933 - Reports fail with RG_EMULATION=0
 # Task #870 - Wrong template used for Order Status Change link (ps_order.php)
 # Task #868 - missing pathway's style class in Account Maintenance (account.billing.php, account.order_details.php, account.shipto.php, account.shipping.php)
