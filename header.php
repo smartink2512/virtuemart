@@ -33,10 +33,11 @@ $mod = array();
 $q = "SELECT module_name,module_perms from #__{vm}_module WHERE module_publish='Y' ";
 $q .= "AND module_name <> 'checkout' ORDER BY list_order ASC";
 $db->query($q);
+
 while ($db->next_record()) {
-        if ($perm->check($db->f("module_perms"))) {
-                $mod[] = $db->f("module_name");
-}
+    if ($perm->check($db->f("module_perms"))) {
+            $mod[] = $db->f("module_name");
+	}
 }
 if (!defined('_PSHOP_ADMIN')) {
   $my_path = "includes/js/ThemeOffice/";
@@ -380,3 +381,4 @@ cmDraw ('vmMenuID', vmMenu, 'hbr', cmThemeOffice, 'ThemeOffice');
 </script>
 
 
+<?php $db = new ps_DB(); ?>

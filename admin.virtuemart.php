@@ -83,12 +83,12 @@ if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
 }
 
 // renew Page-Information
-$my_page= explode ( '.', $page );
-$modulename = $my_page[0];
-$pagename = $my_page[1];
-
-$_SESSION['last_page'] = $page;
-
+if( $pagePermissionsOK ) {
+	$my_page= explode ( '.', $page );
+	$modulename = $my_page[0];
+	$pagename = $my_page[1];
+	$_SESSION['last_page'] = $page;
+}
 if( !defined('_VM_TOOLBAR_LOADED') & $no_menu == 1 ) {
 	echo '<div align="right" class="menudottedline">';
 	include( ADMINPATH.'toolbar.virtuemart.php');
@@ -104,7 +104,12 @@ echo '<link href="../'.VM_THEMEURL.'theme.css" type="text/css" rel="stylesheet" 
 echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
 
 // Load PAGE
+if( !$pagePermissionsOK ) {
+	include( PAGEPATH. ERRORPAGE .'.php');
+	return;
+}
 if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
+	
 	if( $only_page) {
 		while( @ob_end_clean());
 		if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );

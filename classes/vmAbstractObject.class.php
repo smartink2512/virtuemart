@@ -28,6 +28,11 @@ class vmAbstractObject {
 	/** @var array An array holding the names of all required fields */
 	var $_required_fields = array();
 	
+	/** @var array An array holding the names of fields that are UNIQUE => means those must be checked onAdd and onUpdate for occurences of entities with the same value */
+	var $_unique_fields = array();
+	/** @var string The name of the databaser table for this entity */
+	var $_table_name = '';
+	
 	/**
 	 * This function validates the input values against the _key and all required fields
 	 * @abstract 
@@ -35,8 +40,8 @@ class vmAbstractObject {
 	 * @return unknown
 	 */
 	function validate( &$d ) {
+		global $vmLogger, $db;
 		
-		global $vmLogger;
 		if( empty( $d[$this->_key])) {
 			$vmLogger->err( 'Please specify an ID to validate');
 			return false;
@@ -45,6 +50,19 @@ class vmAbstractObject {
 		foreach( $this->_required_fields as $field ) {
 			if( empty( $d[$field])) {
 				$vmLogger->err( 'A value for the field '.$field.' is missing.');
+				$valid = false;
+			}
+		}
+		foreach( $this->_unique_fields as $field ) {
+			$q = "SELECT COUNT(`$field`) AS rowcnt FROM `{$this->_table_name}` WHERE";
+			$q .= " `$field`='" .  $d[$field] . "'";
+			if( !empty( $d[$this->_key]) ) {
+				$q.= " AND `".$this->_key."` != ".$db->getEscaped( $d[$this->_key] );
+			}
+			$db->query($q);
+			$db->next_record();
+			if ($db->f("rowcnt") > 0) {
+				$vmLogger->err = "A record with the same value for '".$field."' already exists. Please choose another value.";
 				$valid = false;
 			}
 		}
@@ -85,8 +103,15 @@ class vmAbstractObject {
 	function handleOrdering( &$d ) {
 		global $vmLogger, $page;
 		$where = '';
+		$table2_name = '';
 		
-		if( $page == 'product.product_list' ) {
+		if( $page == 'admin.module_list' ) {
+				$table_name = "#__{vm}_module";
+				$order_field_name = 'list_order';
+				$entity_name = 'module_name';
+				$field_name = 'module_id';
+		}
+		elseif( $page == 'product.product_list' ) {
 				$table_name = "#__{vm}_product_category_xref";
 				$table2_name = "#__{vm}_product";
 				$order_field_name = 'product_list';

@@ -36,9 +36,10 @@ $q =  "SELECT * FROM #__users, #__{vm}_user_info
 $db->query($q);
 $db->next_record();
 
-echo "<div><a class=\"pathway\"  href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
+$pathway = "<a class=\"pathway\"  href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
       .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> -&gt; "
-      .$VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL."</div><br/>";
+      .$VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL;
+echo "<div>$pathway</div><br/>";
  $mainframe->appendPathWay( $pathway );
 ?>      
 <div style="float:left;width:90%;text-align:right;"> 

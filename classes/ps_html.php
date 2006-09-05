@@ -168,7 +168,7 @@ class ps_html {
 			$countries[$db->f("country_3_code")] = $db->f("country_name");
 		}
 		
-		return ps_html::selectList( $list_name, $value, $countries );
+		return ps_html::selectList( $list_name, $value, $countries, 1, '', $extra );
 	}
 	
 	/**

@@ -44,19 +44,21 @@ $formObj->startForm();
     <tr> 
       <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_CLASS ?>:</td>
       <td width="76%"> 
-        <input type="text" class="inputbox" name="function_class" value="<?php $db->sp("function_class") ?>" />
+        <?php echo $ps_module->list_classes( 'function_class', $db->sf("function_class") ) ?>
       </td>
     </tr>
     <tr> 
       <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_METHOD ?>:</td>
-      <td width="76%"> 
-        <input type="text" class="inputbox" name="function_method" value="<?php $db->sp("function_method") ?>" />
+      <td width="76%">
+      	<div id="function_method_container">
+        <input type="text" class="inputbox" id="function_method" name="function_method" value="<?php $db->sp("function_method") ?>" />
+        </div>
       </td>
     </tr>
     <tr> 
       <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_PERMS ?>:</td>
       <td width="76%"> 
-        <input type="text" class="inputbox" name="function_perms" value="<?php $db->sp("function_perms") ?>" />
+        <?php $perm->list_perms( 'function_perms', explode( ',', $db->sf("function_perms")), 5, true ) ?>
       </td>
     </tr>
     <tr> 
@@ -84,4 +86,16 @@ $funcname = (!empty( $function_id )) ? "functionUpdate" : "functionAdd";
 // and finally close the form:
 $formObj->finishForm( $funcname, 'admin.function_list', $option );
 
+$script = "var updateFunc = function(){
+			var el = $('function_class' );
+			";
+$updateURL = $sess->url( 'index2.php?page=admin.ajax_tools&task=get_class_methods&class=\' + el.options[el.selectedIndex].value + \'&function=\' + document.adminForm.function_method.value + \'' );
+$script .= vmMooAjax::getAjaxUpdater( $updateURL, 'function_method_container', '' );
+$script .= "		
+			return false;
+		}
+		
+		\$S('#function_class').action( { onchange: updateFunc, initialize: updateFunc } );
+";
+echo vmCommonHTML::scriptTag('', $script );
 ?>

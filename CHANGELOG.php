@@ -33,6 +33,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05-09-2006 soeren
+
+# state list not updating when country selection changed
+^ user permission groups are listed in a multi-select box now (function_form and module_form)
+^ core function form enhancements: 
+	* all available class are listed in a drop-down list
+	* function method list is fetched dynamically using ajax, so all available methods of the selected class are listed
+
+
 03-09-2006 soeren
 
 # Problem downloading larger files, e.g. >16MB (ps_main.php) (http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=20481.msg53015#msg53015)

@@ -412,6 +412,9 @@ class vmMooAjax {
 	
 	function getAjaxUpdater( $url, $updateId, $onComplete, $method='post', $vmDirs=array(), $varName='' ) {
 		global $mosConfig_live_site;
+		
+		vmCommonHTML::loadMooAjax();
+		
 		$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
 		$vmDirs['method'] = $method;
 		$html = '';

@@ -17,10 +17,15 @@ echo $ps_product_attribute->list_custom_attribute($product_id);
 
 if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )) {
 	?>
-    <p><label for="quantity" class="quantity_box"><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?>:</label>
-        <input type="text" class="inputbox" size="4" id="quantity" name="quantity" value="1" />&nbsp;
-        <input type="submit" class="addtocart_button" value="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" title="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" />
-    </p>
+    <label for="quantity" class="quantity_box"><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?>:</label>
+    <input type="text" class="inputbox" size="4" id="quantity" name="quantity" value="<?php echo mosGetParam( $_REQUEST, 'quantity', 1 ); ?>" />
+
+	<input type="button" style="width:10px;height:10px;background: url( <?php echo VM_THEMEURL ?>images/up_small.gif ) no-repeat center;" onclick="var qty_el = document.getElementById('quantity'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" />
+	<input type="button" style="width:10px;height:10px;background: url( <?php echo VM_THEMEURL ?>images/down_small.gif ) no-repeat center;" onclick="var qty_el = document.getElementById('quantity'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;return false;" />
+        
+	&nbsp;
+    <input type="submit" class="addtocart_button" value="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" title="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" />
+    
     <input type="hidden" name="flypage" value="shop.<?php echo $flypage ?>" />
 	<input type="hidden" name="page" value="shop.cart" />
     <input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" />

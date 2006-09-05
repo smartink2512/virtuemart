@@ -60,7 +60,8 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_MODULE_LIST_NAME => "",
 					$VM_LANG->_PHPSHOP_MODULE_LIST_PERMS => "",
 					$VM_LANG->_PHPSHOP_MODULE_LIST_FUNCTIONS => "",
-					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => "",
+					$VM_LANG->_VM_FIELDMANAGER_REORDER =>"width=\"5%\"",
+					vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ) =>'width="8%"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -83,10 +84,17 @@ while ($db->next_record()) {
 	
     $listObj->addCell( $db->f("module_perms") );
 	
-	$tmp_cell = "<a href=\"".$sess->url($_SERVER['PHP_SELF']."?page=$modulename.function_list&module_id=" . $db->f("module_id"))."\">". $VM_LANG->_PHPSHOP_LIST ."</a>";
+	$tmp_cell = "<a href=\"".$sess->url($_SERVER['PHP_SELF']."?page=$modulename.function_list&module_id=" . $db->f("module_id"))."\">". $VM_LANG->_PHPSHOP_FUNCTION_LIST_LBL ."</a>";
     $listObj->addCell( $tmp_cell );
-	
-    $listObj->addCell( $db->f("list_order") );
+    
+	$tmp_cell = "<div align=\"center\">"
+	. $pageNav->orderUpIcon( $i, $i > 0, "orderup", "Order Up", $page, "changeordering" )
+	. "\n&nbsp;"
+	. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', 'Move down', $page, "changeordering" )
+	. "</div>";
+	$listObj->addCell( $tmp_cell );
+			
+    $listObj->addCell( vmCommonHTML::getOrderingField( $db->f('list_order') ) );
 	
 	$listObj->addCell( $ps_html->deleteButton( "module_id", $db->f("module_id"), "moduleDelete", $keyword, $limitstart ) );
 

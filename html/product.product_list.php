@@ -85,7 +85,7 @@ $search_sql .= ") \n";
 // Check to see if this is a search or a browse by category
 // Default is to show all products
 if (!empty($category_id)) {
-	$list  = "SELECT #__{vm}_category.category_name,#__{vm}_product.product_id,#__{vm}_product.product_name,#__{vm}_product.product_sku,#__{vm}_product.vendor_id,product_publish, product_list";
+	$list  = "SELECT #__{vm}_category.category_name,#__{vm}_product.product_id,#__{vm}_product.product_name,#__{vm}_product.product_sku,#__{vm}_product.vendor_id,product_publish, product_list, product_full_image, product_thumb_image";
 	$list .= " FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
 	$count  = "SELECT count(*) as num_rows FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
 

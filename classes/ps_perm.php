@@ -25,13 +25,20 @@ class ps_perm {
 	// Can be easily extended
 	// Another permissions array must then
 	// be changed in ps_user.php!!
-	var $permissions = array(
-		"shopper" 	=>  "1",
-		"demo" 	=>  "2",
-		"storeadmin" =>  "4",
-		"admin" 	=>  "8"
-		);
+	var $permissions;
 	
+	function ps_perm() {
+		$this->permissions = array(
+								"shopper" 	=>  "1",
+								"demo" 	=>  "2",
+								"storeadmin" =>  "4",
+								"admin" 	=>  "8"
+								);
+	}
+	
+	function getPermissionGroups() {
+		return $this->permissions;
+	}
 	/**
 	* This function does the basic authentication
 	* for a user in the shop.
@@ -207,27 +214,36 @@ class ps_perm {
 	 * @param string $name The name of the select element
 	 * @param string $group_name The preselected key
 	 */
-	function list_perms( $name, $group_name ) {
+	function list_perms( $name, $group_name, $size=1, $multi=false ) {
 		global $VM_LANG;
 		$auth = $_SESSION['auth'];
-			
+		if( $multi ) {
+			$multi = 'multiple="multiple"';
+		}
 		$db = new ps_DB;
 	  
 		// Get users current permission value 
 		$dvalue = $this->permissions[$auth["perms"]];
-		echo "<select class=\"inputbox\" name=\"$name\">\n";
-		echo "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT ."</option>\n";
-		while( list($key,$value) = each($this->permissions) ) {
-			// Display only those permission that this user can set
-			if ($value <= $dvalue)
-				if ($key == $group_name) {
-					echo "<option value=\"".$key."\" selected=\"selected\">$key</option>\n";
-				}
-				else {
-					echo "<option value=\"$key\">$key</option>\n";
-				}
+		
+		$perms = $this->getPermissionGroups();
+		arsort( $perms );
+		
+		if( $size==1 ) {
+			$values[0] = $VM_LANG->_PHPSHOP_SELECT;
 		}
-		echo "</select>\n";
+		while( list($key,$value) = each( $perms ) ) {
+			// Display only those permission that this user can set
+			if ($value <= $dvalue) {
+				$values[$key] = $key;
+			}
+		}
+		
+		if( $size > 1 ) {
+			$name .= '[]';
+			$values['none'] = 'No Restriction';
+		}
+		
+		echo ps_html::selectList( $name, $group_name, $values, $size, $multi );
 	}
 	
 	

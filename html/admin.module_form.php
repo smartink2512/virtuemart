@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+global $perm;
 $module_id = mosGetParam( $_REQUEST, 'module_id' );
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
@@ -25,6 +25,7 @@ if (!empty( $module_id )) {
   $db->query($q);
   $db->next_record();
 }
+
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $VM_LANG->_PHPSHOP_MODULE_FORM_LBL );
 //Then Start the form
@@ -34,13 +35,16 @@ $formObj->startForm();
     <tr> 
       <td width="24%" align="right" ><?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_NAME ?>:</td>
       <td width="76%" > 
-        <input type="text" class="inputbox" name="module_name" value="<?php echo $db->sf("module_name") ?>" size="32" />
+        <input type="text" class="inputbox" name="module_name" value="<?php echo $db->sf("module_name") ?>" size="32" <?php if( $ps_module->is_core( $db->f("module_name"))) { echo 'readonly="readonly"'; } ?> />
       </td>
     </tr>
     <tr> 
       <td width="24%" align="right" ><?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_PERMS ?>:</td>
       <td width="76%" > 
-        <input type="text" class="inputbox" name="module_perms" value="<?php $db->sp("module_perms") ?>" />
+        <?php
+        $module_perms = explode( ',', $db->sf("module_perms") );
+        $perm->list_perms( 'module_perms', $module_perms, 5, true );
+        ?>
       </td>
     </tr>
     <tr> 

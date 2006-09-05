@@ -69,12 +69,17 @@ class vmTemplate_default extends vmTemplate  {
 					$imageurl = IMAGEURL.'product/'.$product['product_full_image'];
 				}
 				/* Build the "See Bigger Image" Link */
-				if( @$_REQUEST['output'] != "pdf" ) {
+				if( @$_REQUEST['output'] != "pdf" && $this->get_cfg('useLightBoxImages', 1 ) ) {
+					$link = $imageurl;
+					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
+
+					$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'] );
+				}
+				elseif( @$_REQUEST['output'] != "pdf" ) {
 					$link = $imageurl;
 					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
 					// vmPopupLink can be found in: htmlTools.class.php
-					//$product_image = vmPopupLink( $link, $text, $width, $height );
-					$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'] );
+					$product_image = vmPopupLink( $link, $text, $width, $height );
 				}
 				else {
 					$product_image = "<a href=\"$imageurl\" target=\"_blank\">"

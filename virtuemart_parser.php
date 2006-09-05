@@ -24,16 +24,7 @@ global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vend
 
 // Raise memory_limit to 16M when it is too low
 // Especially the product section needs much memory
-$memLimit = @ini_get('memory_limit');
-if( stristr( $memLimit, 'k') ) {
-	$memLimit = str_replace( 'k', '', str_replace( 'K', '', $memLimit )) * 1024;
-}
-elseif( stristr( $memLimit, 'm') ) {
-	$memLimit = str_replace( 'm', '', str_replace( 'M', '', $memLimit )) * 1024 * 1024;
-}
-if( $memLimit < 16777216 ) {
-	@ini_set('memory_limit', '16M');
-}
+
 
 $option = mosGetParam( $_REQUEST, 'option' );
 
@@ -59,6 +50,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 
+	vmRaiseMemoryLimit( '16M' );
+	
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 

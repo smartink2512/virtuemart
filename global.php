@@ -65,6 +65,7 @@ $GLOBALS['vendor_info'] = Array();
 // CLASSPATH is defined in the config file
 require_once(CLASSPATH."ps_database.php");
 require_once(CLASSPATH."ps_main.php");
+require_once(CLASSPATH."vmAbstractObject.class.php");
 require_once(CLASSPATH."ps_cart.php");
 require_once(CLASSPATH."ps_html.php");
 require_once(CLASSPATH."ps_session.php");
@@ -72,7 +73,6 @@ require_once(CLASSPATH."ps_function.php");
 require_once(CLASSPATH."ps_module.php");
 require_once(CLASSPATH."ps_perm.php");
 require_once(CLASSPATH."ps_shopper_group.php");
-require_once(CLASSPATH."vmAbstractObject.class.php");
 require_once(CLASSPATH.'template.class.php' );
 require_once(CLASSPATH."htmlTools.class.php");
 require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
