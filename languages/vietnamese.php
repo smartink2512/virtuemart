@@ -1614,6 +1614,13 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
+	var $_VM_EXPORT_MODULE_FORM_LBL = 'Export Module Form';
+	var $_VM_EXPORT_MODULE_FORM_NAME = 'Export Module Name';
+	var $_VM_EXPORT_MODULE_FORM_DESC = 'Description';
+	var $_VM_EXPORT_CLASS_NAME = 'Export Class Name';
+	var $_VM_EXPORT_CONFIG = 'Export Extra Configuration';
+	var $_VM_EXPORT_CONFIG_TIP = 'Define Export configuration for user-defined export modules or define additional configuration. Code must be valid PHP-Code.';
+	var $_VM_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\'re not sure what to fill in!</i>';
         
 }
 class phpShopLanguage extends vmLanguage { }
