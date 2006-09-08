@@ -336,10 +336,10 @@ class vmAbstractObject {
 				$publish_field_name = 'payment_enabled';
 				$field_name = 'payment_method_id';
 		}	
-		elseif( !empty( $d['order_export_id'])) {
-				$table_name = "#__{vm}_order_export";
+		elseif( !empty( $d['export_id'])) {
+				$table_name = "#__{vm}_export";
 				$publish_field_name = 'export_enabled';
-				$field_name = 'order_export_id';
+				$field_name = 'export_id';
 		}
 		elseif( !empty( $d['review_id'])) {
 				$table_name = "#__{vm}_product_reviews";
