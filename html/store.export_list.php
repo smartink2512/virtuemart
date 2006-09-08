@@ -79,7 +79,8 @@ while ($db->next_record()) {
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f('export_name')."</a>";
 	$listObj->addCell( $tmp_cell );
 
-	$listObj->addCell( $db->f('export_desc') );
+	$description = explode("\n", $db->f('export_desc'));
+	$listObj->addCell( $description[0] );
 
 	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=$page&export_id=".$db->f("export_id")."&func=changePublishState" );
 	if ($db->f("export_enabled")=='N') {

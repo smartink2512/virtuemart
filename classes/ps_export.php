@@ -104,27 +104,32 @@ class ps_export {
 	* @author Manfred Dennerlein Rodelo <manni@zapto.de>
 	*/
 	function add(&$d) {
-		global $vmLogger, $VM_LANG;
+		global $vmLogger, $VM_LANG,  $mosConfig_absolute_path;
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
 		$timestamp = time();
 
-		if (!$this->validate_add($d)) {
-			return False;
-		}
 		if ( !empty($d['export_class']) ) {
 			// Here we have a custom export class
 			if( file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
 				// Include the class code and create an instance of this class
-				include( CLASSPATH.'export/'.$d['export_class'].'.php' );
+				include_once( CLASSPATH.'export/'.$d['export_class'].'.php' );
 				eval( "\$_EXPORT = new ".$d['export_class']."();");
 			}
-		}
-		else {
+		} else {
 			// ps_xmlexport is the default export method handler
-			include( CLASSPATH."export/ps_xmlexport.php" );
-			$_EXPORT = new ps_payment();
+			include_once( CLASSPATH."export/ps_xmlexport.php" );
+			$_EXPORT = new ps_xmlexport();
 		}
+		
+		if(method_exists($_EXPORT, 'process_installation')) {
+			$d = $_EXPORT->process_installation($d);
+		}
+		
+		if (!$this->validate_add($d)) {
+			return False;
+		}
+		
 		if( $_EXPORT->configfile_writeable() ) {
 			$_EXPORT->write_configuration( $d );
 		}
@@ -162,11 +167,11 @@ class ps_export {
 		}
 
 		if ( !empty($d['export_class']) ) {
-			if (include( CLASSPATH.'export/'.$d['export_class'].'.php' ))
+			if (include_once( CLASSPATH.'export/'.$d['export_class'].'.php' ))
 			eval( "\$_EXPORT = new ".$d['export_class']."();");
 		}
 		else {
-			include( CLASSPATH.'export/ps_xmlexport.php' );
+			include_once( CLASSPATH.'export/ps_xmlexport.php' );
 			$_EXPORT = new ps_xmlexport();
 		}
 		if( $_EXPORT->configfile_writeable() ) {
@@ -235,7 +240,24 @@ class ps_export {
 		return True;
 	}
 
+/**
+ * Enter description here...
+ *
+ * @param unknown_type $name
+ * @param unknown_type $preselected
+ * @return unknown
+ */
+	function list_available_classes( $name, $preselected='ps_xmlexport' ) {
 
-
+		$files = mosReadDirectory( CLASSPATH."export/", ".php", true, true);
+		$array = array();
+		foreach ($files as $file) {
+			$file_info = pathinfo($file);
+			$filename = $file_info['basename'];
+			if( stristr($filename, '.cfg')) { continue; }
+			$array[basename($filename, '.php' )] = basename($filename, '.php' );
+		}
+		return ps_html::selectList( $name, $preselected, $array );
+	}
 }
 ?>

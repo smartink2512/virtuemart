@@ -16,11 +16,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+require_once( CLASSPATH . 'ps_export.php' );
 
 $export_id = mosgetparam($_REQUEST, 'export_id', "");
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $vars['export_enabled'] = "Y";
+$default['export_class'] = 'ps_xmlexport';
 
 if (!empty($export_id)) {
 	$q = "SELECT * FROM #__{vm}_export WHERE vendor_id='$ps_vendor_id' AND ";
@@ -31,11 +33,10 @@ if (!empty($export_id)) {
 
 if ( $db->f("export_class") ) {
 
-	if (include( CLASSPATH."export/".$db->f("export_class").".php" ))
+	if (include_once( CLASSPATH."export/".$db->f("export_class").".php" ))
 	eval( "\$_EXPORT = new ".$db->f("export_class")."();");
-}
-else {
-	include( CLASSPATH."export/ps_xmlexport.php" );
+} else {
+	include_once( CLASSPATH."export/ps_xmlexport.php" );
 	$_EXPORT = new ps_xmlexport();
 }
 //First create the object and let it print a form heading
@@ -69,7 +70,7 @@ $tabs->startTab( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL, 'global-page');
       <td class="labelcell"><?php echo $VM_LANG->_VM_EXPORT_MODULE_FORM_DESC ?>:</td>
       <td width="69%" > 
       <?php if ($db->f('iscore')) {
-      	echo  $db->sf('export_desc');
+      	echo  nl2br($db->sf('export_desc'));
       } else { ?>
         <textarea class="inputbox" name="export_desc" cols="40" rows="8"><?php echo htmlspecialchars( $db->sf('export_desc') ); ?></textarea>
         <?php } ?>
@@ -83,9 +84,9 @@ $tabs->startTab( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL, 'global-page');
       <td width="69%">
       <?php if ($db->f('iscore')) {
       	$db->sp('export_class');
-      } else { ?>
-      	<input type="text" class="inputbox" name="export_class" value="<?php $db->sp('export_class') ?>" />
-      	<?php echo mm_ToolTip( $VM_LANG->_VM_EXPORT_CLASS_NAME_TIP ); 
+      } else { 
+      	echo ps_export::list_available_classes( 'export_class', ($db->sf("export_class") ? $db->sf("export_class") : $default['export_class']) );
+      	echo mm_ToolTip( $VM_LANG->_VM_EXPORT_CLASS_NAME_TIP ); 
       }?>
       </td>
     </tr>

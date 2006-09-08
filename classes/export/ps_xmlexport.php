@@ -25,65 +25,86 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 class ps_xmlexport {
 
-    var $classname = 'ps_xmlexport';
-  
-    /**
+	var $classname = 'ps_xmlexport';
+
+	/**
     * Show all configuration parameters for this export method
     * @returns boolean False when the export method has no configration
     */
-    function show_configuration() {
-      /* ... */
-    }
-    
-    function has_configuration() {
-      // return false if there's no configuration
-      return false;
-   }
-   
-  /**
+	function show_configuration() {
+		/* ... */
+	}
+
+	function has_configuration() {
+		// return false if there's no configuration
+		return false;
+	}
+
+	/**
 	* Returns the "is_writeable" status of the configuration file
 	* @param void
 	* @returns boolean True when the configuration file is writeable, false when not
 	*/
-   function configfile_writeable() {
-      return true;
-   }
-   
-  /**
+	function configfile_writeable() {
+		return true;
+	}
+
+	/**
 	* Returns the "is_readable" status of the configuration file
 	* @param void
 	* @returns boolean True when the configuration file is writeable, false when not
 	*/
-   function configfile_readable() {
-      return true;
-   }
-   
-  /**
+	function configfile_readable() {
+		return true;
+	}
+
+	/**
 	* Writes the configuration file for this payment method
 	* @param array An array of objects
 	* @return boolean True when writing was successful
 	*/
-   function write_configuration( &$d ) {
-      /* ... */
-      return true;
-   }
-   
-  /**
+	function write_configuration( &$d ) {
+		/* ... */
+		return true;
+	}
+	
+	/**
+	 * Load default configuration for module into form-fields
+	 *
+	 *
+	 * @param array $d
+	 * @return array
+	 */
+	function process_installation ($d) {
+		return $d;
+	}
+	
+	/**
+	 * Process authentication method
+	 *
+	 * @return boolean Authentication success or error
+	 */
+	function process_authentication () {
+		//no authentication required, so simply return true;
+	return true;
+	}
+
+	/**
   * process export
   * @name process_export
   * @param Filterstatement to select orders
   * @param db-object
   * @return bool true/false
   */
-   function process_export($filter = '', &$d) {
-        return true;
-    }
-    
-    /**
+	function process_export(&$db) {
+		return true;
+	}
+
+	/**
     * output of export
     * @return bool true/false
     */
-    function output_export() {
-    	return true;
-    }
+	function output_export() {
+		return true;
+	}
 }
