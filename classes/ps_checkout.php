@@ -690,7 +690,7 @@ class ps_checkout {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
-		$d["error"] = "";
+
 		require_once(CLASSPATH. 'ps_payment_method.php' );
 		$ps_payment_method = new ps_payment_method;
 		require_once(CLASSPATH. 'ps_product.php' );
@@ -988,7 +988,7 @@ Order Total: '.$order_total.'
 		######## BEGIN DOWNLOAD MOD ###############
 		if( ENABLE_DOWNLOADS == "1" ) {
 			for($i = 0; $i < $cart["idx"]; $i++) {
-				$dlnum=0;
+				
 				$dl = "SELECT attribute_name,attribute_value ";
 				$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
 				$dl .= " AND attribute_name='download'";
@@ -998,6 +998,7 @@ Order Total: '.$order_total.'
 
 					$str = $order_id;
 					$str .= $cart[$i]["product_id"];
+				    $str .=uniqid('download_');
 					$str .= $dlnum++;
 					$str .= time();
 

@@ -41,22 +41,17 @@ class ps_session {
      *
      */
 	function initSession() {
-		global $vmLogger, $mainframe, $_VERSION, $mosConfig_absolute_path;
-		
-		if( !defined('_VM_SESSIONSTART') ) {
-			// Some servers start the session before we can, so close those and start again		
-			if( !defined('_PSHOP_ADMIN') && !empty($_SESSION) && !vmIsJoomla() ) {
-				session_write_close();
-				unset( $_SESSION );				
-			}
-		
+		global $vmLogger, $mainframe, $mosConfig_absolute_path, $VM_LANG;
+		// We only care for the session if it is not started!
+		if( empty( $_SESSION ) || session_id() == '') {
+			// Check if the session_save_path is writable
 			if( !is_writable( session_save_path()) ) {
 				$try_these_paths = array( 'Cache Path' => $mosConfig_absolute_path. '/cache',
 											'Media Directory' => $mosConfig_absolute_path.'/media',
 											'Shop Image Directory' => IMAGEPATH );
 				foreach( $try_these_paths as $name => $session_save_path ) {
 					if( is_writable( $session_save_path )) {
-						$vmLogger->debug( 'The Session Save Path '.session_save_path().' is not writable. Please correct this! The shop is temporarily trying to use the '.$name.' instead.');
+						$vmLogger->debug( sprintf( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX, session_save_path(), $name));
 						session_save_path( $session_save_path );
 						break;
 					}
@@ -64,26 +59,49 @@ class ps_session {
 			}
 			// If the path is STILL not writable, generate an error
 			if( !is_writable( session_save_path()) ) {
-				$vmLogger->err( 'The directory to store session data is not writable. Please correct this or contact your provider.');
+				$vmLogger->err( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE );
 			}
+		
+			session_name( $this->_session_name );
 			
-			if( empty( $_SESSION ) ) {
-				// Session not yet started!			
-				session_name( $this->_session_name );
-				
+			if( @$_REQUEST['option'] == 'com_virtuemart' ) {
+				ob_start();// Fix for the issue that printed the shop contents BEFORE the page begin
+			}
+			@session_start();
+			
+			if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
+				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
+			}
+			else {
 				if( @$_REQUEST['option'] == 'com_virtuemart' ) {
-				    ob_start();
+					$this->doCookieCheck(); // Introduced to check if the user-agent accepts cookies
 				}
-				@session_start();
-			
-				if( !empty($_SESSION) && !empty($_COOKIE[$this->_session_name])) {
-					$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
-				}
-				else {
-					$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
-				}
+				$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
 			}
-			define('_VM_SESSIONSTART', 1 );
+		}
+	}
+	/**
+	 * Checks if the user-agent accepts cookies
+	 * @since VirtueMart 1.0.7
+	 * @author soeren
+	 */
+	function doCookieCheck() {
+		global $mm_action_url, $VM_LANG;
+		
+		$doCheck = mosGetParam( $_REQUEST, 'vmcchk', 0 );
+		
+		if( $doCheck ) {
+			$isOK = mosGetParam( $_COOKIE, 'VMCHECK' );
+			if( $isOK != 'OK' ) {
+				$GLOBALS['vmLogger']->info( $VM_LANG->_VM_SESSION_COOKIES_NOT_ACCEPTED_TIP );
+			} else {
+				// Delete the cookie
+				setcookie( 'VMCHECK', '', false );
+			}
+		}
+		else {
+			setcookie( 'VMCHECK', 'OK' );
+			mosRedirect($mm_action_url . 'index.php?' . $_SERVER['QUERY_STRING'].'&vmcchk=1');
 		}
 	}
 		

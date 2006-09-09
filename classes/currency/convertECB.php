@@ -153,7 +153,7 @@ class convertECB {
 		else {
 			$val = 0;
 		}
-		$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
+		//$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
 		
 		return $val;
 	} // end function convertecb

@@ -2,6 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
+
 * @version $Id$
 * @package VirtueMart
 * @subpackage languages
@@ -1614,6 +1615,11 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
+<<<<<<< vietnamese.php
+	var $_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX = 'The directory to store session data is not writable. Please correct this or contact your provider.';
+	var $_VM_SESSION_SAVEPATH_UNWRITABLE = 'The Session Save Path %s is not writable. Please correct this! The shop is temporarily trying to use the %s instead.';
+	var $_VM_SESSION_COOKIES_NOT_ACCEPTED_TIP = 'Your browser does not accept cookies. To put products into your cart and purchase them you need to enable cookies.';
+=======
 	var $_VM_EXPORT_MODULE_FORM_LBL = 'Export Module Form';
 	var $_VM_EXPORT_MODULE_FORM_NAME = 'Export Module Name';
 	var $_VM_EXPORT_MODULE_FORM_DESC = 'Description';
@@ -1621,6 +1627,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_EXPORT_CONFIG = 'Export Extra Configuration';
 	var $_VM_EXPORT_CONFIG_TIP = 'Define Export configuration for user-defined export modules or define additional configuration. Code must be valid PHP-Code.';
 	var $_VM_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\'re not sure what to fill in!</i>';
+>>>>>>> 1.17
         
 }
 class phpShopLanguage extends vmLanguage { }
