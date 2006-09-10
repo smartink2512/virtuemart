@@ -52,6 +52,7 @@
         <filename>version.php</filename>
         <filename>worldpay_notify.php</filename>
         <filename>x-click-but21.gif</filename>
+        <filename>export.php</filename>
       </files>
     </administration>
 </mosinstall>
