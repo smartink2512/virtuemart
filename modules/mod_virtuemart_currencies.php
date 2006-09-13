@@ -23,12 +23,14 @@ global $mosConfig_absolute_path, $sess, $option, $page, $ps_html, $db, $vendor_a
 require_once( $mosConfig_absolute_path."/components/com_virtuemart/virtuemart_parser.php");
 
 $text_before = $params->get( 'text_before', '');
-$currencies = $params->get( 'product_currency', $vendor_accepted_currencies );
-if( count( $currencies ) < count( $vendor_accepted_currencies )) {
-	$currencies = $vendor_accepted_currencies;
+$currencies = @explode( ',', $params->get( 'product_currency', $vendor_accepted_currencies ) );
+$vendor_currencies = @explode( ',', $vendor_accepted_currencies );
+if( count( $currencies ) < count( $vendor_currencies )) {
+	$currencies = $vendor_currencies;
 }
 
-$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` WHERE FIND_IN_SET(`currency_code`, \''.implode(',',$currencies).'\') ORDER BY `currency_name`' );
+$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` WHERE FIND_IN_SET(`currency_code`, \''.implode(',',$currencies).'\') ORDER BY `currency_name`' );#
+
 //$currencies = explode( ',', $currencies );
 //$db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` ORDER BY `currency_name`' );
 unset( $currencies );
