@@ -155,7 +155,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 
 				if ($ok == false) {
 					$no_last = 1;
-					if( $_SESSION['last_page'] != HOMEPAGE ) {
+					if( $_SESSION['last_page'] != HOMEPAGE && empty($_REQUEST['ignore_last_page']) ) {
 						$page = $_SESSION['last_page'];
 					}
 					$my_page= explode ( '.', $page );

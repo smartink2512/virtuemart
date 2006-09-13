@@ -44,23 +44,9 @@ class ps_session {
 		global $vmLogger, $mainframe, $mosConfig_absolute_path, $VM_LANG;
 		// We only care for the session if it is not started!
 		if( empty( $_SESSION ) || session_id() == '') {
+			
 			// Check if the session_save_path is writable
-			if( !is_writable( session_save_path()) ) {
-				$try_these_paths = array( 'Cache Path' => $mosConfig_absolute_path. '/cache',
-											'Media Directory' => $mosConfig_absolute_path.'/media',
-											'Shop Image Directory' => IMAGEPATH );
-				foreach( $try_these_paths as $name => $session_save_path ) {
-					if( is_writable( $session_save_path )) {
-						$vmLogger->debug( sprintf( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX, session_save_path(), $name));
-						session_save_path( $session_save_path );
-						break;
-					}
-				}
-			}
-			// If the path is STILL not writable, generate an error
-			if( !is_writable( session_save_path()) ) {
-				$vmLogger->err( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE );
-			}
+			$this->checkSessionSavePath();
 		
 			session_name( $this->_session_name );
 			
@@ -357,7 +343,63 @@ class ps_session {
 
 		return $ssl_redirect;
 	}
-	
+	/**
+	 * Correct the session save path if necessary
+	 * or generate an error if the save path can't be corrected
+	 *
+	 * @return mixed
+	 */
+	function checkSessionSavePath() {
+		global $mosConfig_absolute_path, $VM_LANG, $vmLogger;
+		
+		if( !@is_writable( session_save_path()) ) {
+			// If the session save path is not writable this can have different
+			// reasons. One reason is that the open_basedir directive is set, but
+			// doesn't include the session_save_path
+			$open_basedir = @ini_get('open_basedir'); // Get the list of allowed directories
+			if( !empty($open_basedir)) {
+				switch( substr( strtoupper( PHP_OS ), 0, 3 ) ) {
+					case "WIN":
+						$basedirs = explode(';', $open_basedir );
+						break;
+					case "MAC": // fallthrough
+					case "DAR": // Does PHP_OS return 'Macintosh' or 'Darwin' ?
+					default: // change nothing
+						$basedirs = explode(':', $open_basedir );
+						break;
+					break;
+				}
+				$session_save_path_is_allowed_directory = false;
+				foreach ( $basedirs as $basedir ) {
+					$basedir_strlen = strlen( $basedir );
+					// If the session save path is a subdirectory of a directory allowed by open_basedir
+					// we need to do further investigation
+					if( strtolower( substr( session_save_path(), 0, $basedir_strlen )) == $basedir ) {
+						$session_save_path_is_allowed_directory = true;
+					}
+				}
+				if( !$session_save_path_is_allowed_directory) {
+					// PHP Sessions can be stored in a session save path which is not
+					// allowed through open_basedir!
+					return true;
+				}
+			}
+			$try_these_paths = array( 'Cache Path' => $mosConfig_absolute_path. '/cache',
+										'Media Directory' => $mosConfig_absolute_path.'/media',
+										'Shop Image Directory' => IMAGEPATH );
+			foreach( $try_these_paths as $name => $session_save_path ) {
+				if( @is_writable( $session_save_path )) {
+					$vmLogger->debug( sprintf( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX, session_save_path(), $name));
+					session_save_path( $session_save_path );
+					break;
+				}
+			}
+		}
+		// If the path is STILL not writable, generate an error
+		if( !@is_writable( session_save_path()) ) {
+			$vmLogger->err( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE );
+		}
+	}
 	/**
      * Gets the Itemid for the com_virtuemart Component
      * and stores it in a global Variable

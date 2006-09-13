@@ -180,4 +180,11 @@ ALTER TABLE `jos_vm_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 
 # 02.05.2006 Multi-Currency Feature
 ALTER TABLE `jos_vm_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL ;
 
+# 12.09.2006 improve category listing performance
+ALTER TABLE `jos_vm_category_xref` DROP INDEX `category_xref_category_child_id` ;
+ALTER TABLE `jos_vm_category_xref` ADD PRIMARY KEY ( `category_child_id` ) ;
+
+# 13.09.2006 Allow Order Status Descriptions
+ALTER TABLE `jos_vm_order_status` ADD `order_status_description` TEXT NOT NULL AFTER `order_status_name`;
+
 UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';

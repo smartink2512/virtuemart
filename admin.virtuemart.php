@@ -108,6 +108,7 @@ if( !$pagePermissionsOK ) {
 	include( PAGEPATH. ERRORPAGE .'.php');
 	return;
 }
+	
 if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
 	
 	if( $only_page) {

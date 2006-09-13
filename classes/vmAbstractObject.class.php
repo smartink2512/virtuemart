@@ -33,6 +33,27 @@ class vmAbstractObject {
 	/** @var string The name of the databaser table for this entity */
 	var $_table_name = '';
 	
+	
+	function addRequiredField( $required_field ) {
+		if( is_array( $required_field )) {
+			foreach ( $required_field as $fieldname ) {
+				$this->_required_fields[] = $fieldname;
+			}
+		}
+		else {
+			$this->_required_fields[] = $required_field;
+		}
+	}
+	function addUniqueField( $unique_field ) {
+		if( is_array( $unique_field )) {
+			foreach ( $unique_field as $fieldname ) {
+				$this->_unique_fields[] = $fieldname;
+			}
+		}
+		else {
+			$this->_unique_fields[] = $unique_field;
+		}		
+	}
 	/**
 	 * This function validates the input values against the _key and all required fields
 	 * @abstract 
@@ -42,7 +63,7 @@ class vmAbstractObject {
 	function validate( &$d ) {
 		global $vmLogger, $db;
 		
-		if( empty( $d[$this->_key])) {
+		if( !isset( $d[$this->_key])) {
 			$vmLogger->err( 'Please specify an ID to validate');
 			return false;
 		}
@@ -62,7 +83,7 @@ class vmAbstractObject {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$vmLogger->err = "A record with the same value for '".$field."' already exists. Please choose another value.";
+				$vmLogger->err( "A record with the same value \"{$d[$field]}\" for '".$field."' already exists. Please choose another value." );
 				$valid = false;
 			}
 		}
@@ -336,10 +357,10 @@ class vmAbstractObject {
 				$publish_field_name = 'payment_enabled';
 				$field_name = 'payment_method_id';
 		}	
-		elseif( !empty( $d['export_id'])) {
-				$table_name = "#__{vm}_export";
+		elseif( !empty( $d['order_export_id'])) {
+				$table_name = "#__{vm}_order_export";
 				$publish_field_name = 'export_enabled';
-				$field_name = 'export_id';
+				$field_name = 'order_export_id';
 		}
 		elseif( !empty( $d['review_id'])) {
 				$table_name = "#__{vm}_product_reviews";

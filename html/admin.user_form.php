@@ -240,8 +240,8 @@ $formObj->finishForm( $funcname, 'admin.user_list', $option );
 ?>
 <script type="text/javascript">
 function submitbutton( button ) {
-        if( submitregistration() ) {
-                document.adminForm.submit();
-        }
+    if( submitregistration() ) {
+            document.adminForm.submit();
+    }
 }
 </script>

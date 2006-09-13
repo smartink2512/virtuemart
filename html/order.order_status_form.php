@@ -25,31 +25,39 @@ $formObj = &new formFactory( $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL );
 //Then Start the form
 $formObj->startForm();
 
+$readonly = '';
+
 if (!empty($order_status_id)) {
-  $q = "SELECT * FROM #__{vm}_order_status WHERE order_status_id='$order_status_id'"; 
-  $db->query($q);  
-  $db->next_record();
-}  
+  	$q = "SELECT * FROM #__{vm}_order_status WHERE order_status_id='$order_status_id'"; 
+  	$db->query($q);  
+  	$db->next_record();
+  	if( in_array( $db->f('order_status_code'), $ps_order_status->_protected_status_codes ) ) {
+	  	$readonly = 'readonly="readonly"';
+  	}
+}
 ?><br />
 <table class="adminform">
+
     <tr> 
-      <td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL ?></strong></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td align="right" ><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_CODE ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_CODE ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="order_status_code" value="<?php $db->sp("order_status_code") ?>" size="2" maxlength="1" />
+        <input type="text" class="inputbox" name="order_status_code" value="<?php $db->sp('order_status_code') ?>" size="4" maxlength="1" <?php echo $readonly ?> />
       </td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_NAME ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_NAME ?>:</td>
       <td> 
-        <input type="text" class="inputbox" name="order_status_name" value="<?php $db->sp("order_status_name") ?>" size="16" />
+        <input type="text" class="inputbox" name="order_status_name" value="<?php $db->sp("order_status_name") ?>" size="25" />
       </td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION ?>:</td>
+      <td> 
+       	<?php editorArea( 'order_status_description', $db->sf("order_status_description"), 'order_status_description', 500, 250, 75, 25 ); ?>
+      </td>
+    </tr>
+    <tr> 
+      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="list_order" value="<?php $db->sp("list_order") ?>" size="3" maxlength="3" />
       </td>

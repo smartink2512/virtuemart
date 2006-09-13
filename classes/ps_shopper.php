@@ -39,7 +39,7 @@ class ps_shopper {
 		$missing = "";
 
 		require_once( CLASSPATH . 'ps_userfield.php' );
-		$requiredFields = ps_userfield::getUserFields( 'registration', true );
+		$registrationFields = ps_userfield::getUserFields( 'registration', false, '', true );
 
 		if( VM_SILENT_REGISTRATION == '1') {
 			$skipFields = array( 'username', 'password', 'password2');
@@ -47,7 +47,8 @@ class ps_shopper {
 		if( $my->id ) {
 			$skipFields[] = 'email';
 		}
-		foreach( $requiredFields as $field )  {
+		foreach( $registrationFields as $field ) {
+			if( $field->required == 0 ) continue;
 			if( in_array( $field->name, $skipFields )) {
 				continue;
 			}
@@ -61,11 +62,23 @@ class ps_shopper {
 			$_REQUEST['missing'] = $missing;
 			return false;
 		}
-
+		$d['isValidVATID'] = false;
+		foreach( $registrationFields as $field ) {
+			if( $field->type == 'euvatid' ) {
+				if( empty( $d[$field->name])) break; // Do nothing when the EU VAT ID field was left empty
+				else {
+					// Check the VAT ID against the validation server of the European Union
+					$d['isValidVATID'] = vmValidateEUVat( $d[$field->name] );
+					
+					break; // We don't need to go further in the loop
+				}
+				
+			}
+		}
 		$d['user_email'] = @$d['email'];
 		$d['perms'] = 'shopper';
 
-		return $provided_required;
+		return true;
 	}
 
 	/**************************************************************************
@@ -89,7 +102,7 @@ class ps_shopper {
 		$missing = "";
 
 		require_once( CLASSPATH . 'ps_userfield.php' );
-		$requiredFields = ps_userfield::getUserFields( 'account', true );
+		$accountFields = ps_userfield::getUserFields( 'account', false, '', true );
 
 		if( VM_SILENT_REGISTRATION == '1') {
 			$skipFields = array( 'username', 'password', 'password2');
@@ -97,7 +110,8 @@ class ps_shopper {
 		if( $my->id ) {
 			$skipFields[] = 'email';
 		}
-		foreach( $requiredFields as $field )  {
+		foreach( $accountFields as $field )  {
+			if( $field->required == 0 ) continue;
 			if( in_array( $field->name, $skipFields )) {
 				continue;
 			}
@@ -111,11 +125,24 @@ class ps_shopper {
 			$_REQUEST['missing'] = $missing;
 			return false;
 		}
-
+		
+		$d['isValidVATID'] = false;
+		foreach( $accountFields as $field ) {
+			if( $field->type == 'euvatid' ) {
+				if( empty( $d[$field->name])) break; // Do nothing when the EU VAT ID field was left empty
+				else {
+					// Check the VAT ID against the validation server of the European Union
+					$d['isValidVATID'] = vmValidateEUVat( $d[$field->name] );
+					$d['__euvatid_field'] = $field;
+					break; // We don't need to go further in the loop
+				}
+				
+			}
+		}
 		$d['user_email'] = @$d['email'];
 		$d['perms'] = 'shopper';
 
-		return $provided_required;
+		return true;
 
 	}
 
@@ -142,10 +169,12 @@ class ps_shopper {
 		}
 	}
 
-
 	/**
-	* Function to add a new Shopper into the Shop and Joomla
-        */
+	 * Function to add a new Shopper into the Shop and Joomla
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add( &$d ) {
 		global $my, $ps_user, $mainframe, $mosConfig_absolute_path, $sess,
 		$VM_LANG, $vmLogger, $database, $option, $mosConfig_useractivation;
@@ -203,49 +232,38 @@ class ps_shopper {
 		
 		// Insert billto;
 
-		// Building the query: PART ONE
 		// The first 7 fields are FIX and not built dynamically
-		$q = "INSERT INTO #__{vm}_user_info (`user_info_id`, `user_id`, `address_type`, `address_type_name`, `cdate`, `mdate`, `perms`, ";
-		$fields = array();
+		$fields = array( 'user_info_id' => md5(uniqid( $hash_secret)), 
+						'user_id' => $uid, 
+						'address_type' => 'BT', 
+						'address_type_name' => '-default-', 
+						'cdate' => $timestamp, 
+						'mdate' => $timestamp, 
+						'perms' => 'shopper'
+						);
 		
 		foreach( $userFields as $userField ) {
 			if( !in_array($userField->name, $skipFields )) {
 				
-				$fields[] = "`".$userField->name."`";
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
 				
 				// Catch a newsletter registration!
 				if( stristr( $userField->params, 'newsletter' )) {
 					if( !empty($d[$userField->name])) {
 						$subscribeTo = new mosParameters( $userField->params );
+						$vmLogger->debug( 'Adding the user to the Newsletter.');
 					}
 				}
 				
 			}
 		}
-		$q .= str_replace( '`email`', '`user_email`', implode( ',', $fields ));
+		$fields['user_email'] = $fields['email'];
+		unset($fields['email']);
 
-		// Building the query: PART TWO, listing all values
-		$q .= ") VALUES (\n";
-		$q .= "'" . md5(uniqid( $hash_secret)) . "',";
-		$q .= "'" . $uid . "',";
-		$q .= "'BT',";
-		$q .= "'-default-',";
-		$q .= "'" .$timestamp . "',";
-		$q .= "'" .$timestamp . "',";
-		$q .= "'shopper', ";
-
-		$values = array();
-		foreach( $userFields as $userField ) {
-			if( !in_array($userField->name, $skipFields )) {
-				$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
-				$values[] = "'".$d[$userField->name]."'";
-			}
-		}
-		$q .= implode( ',', $values );
-		$q .= ") ";
+		$db->buildQuery('INSERT', '#__{vm}_user_info', $fields );
 
 		// Run the query now!
-		$db->query($q);
+		$db->query();
 
 		// Insert vendor relationship
 		$q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
@@ -253,29 +271,39 @@ class ps_shopper {
 		$q .= "('" . $uid . "','";
 		$q .= $ps_vendor_id . "') ";
 		$db->query($q);
-
-		// Insert Shopper -ShopperGroup - Relationship
-		$q =  "SELECT shopper_group_id from #__{vm}_shopper_group WHERE ";
-		$q .= "`default`='1' ";
-
-		$db->query($q);
-		if (!$db->num_rows()) {  // take the first in the table
-
-			$q =  "SELECT shopper_group_id from #__{vm}_shopper_group";
-			$db->query($q);
+		
+		$d['shopper_group_id'] = '';
+		
+		// Get the ID of the shopper group for this customer
+		if( $d['isValidVATID']) {
+			if( trim($d['__euvatid_field']->params) != '' ) {
+				$shopper_group = new mosParameters( $d['__euvatid_field']->params );
+				$d['shopper_group_id'] = $shopper_group->get('shopper_group_id');
+			}
 		}
-		$db->next_record();
-		$d['shopper_group_id'] = $db->f("shopper_group_id");
+		if( empty($d['shopper_group_id'])) {
+			$q =  "SELECT shopper_group_id from #__{vm}_shopper_group WHERE ";
+			$q .= "`default`='1' ";
 
+			$db->query($q);
+			if (!$db->num_rows()) {  // take the first in the table
+	
+				$q =  "SELECT shopper_group_id from #__{vm}_shopper_group";
+				$db->query($q);
+			}
+			$db->next_record();
+			$d['shopper_group_id'] = $db->f("shopper_group_id");
+		}
+		
 		$customer_nr = uniqid( rand() );
-
+		// Insert Shopper -ShopperGroup - Relationship
 		$q  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
 		$q .= "(user_id,vendor_id,shopper_group_id,customer_number) ";
 		$q .= "VALUES ('$uid', '$ps_vendor_id','".$d['shopper_group_id']."', '$customer_nr')";
 		$db->query($q);
 		
-		// Process the NEwsletter subscription
-		if( !empty( $subscribeTo ) && get_class($subscribeTo)=='mosparameters') {
+		// Process the Newsletter subscription		
+		if( !empty( $subscribeTo ) && strtolower(get_class($subscribeTo))=='mosparameters') {
 			switch( $subscribeTo->get('newsletter', 'letterman')) {
 				// TODO:
 				// case 'yanc':
@@ -286,7 +314,6 @@ class ps_shopper {
 						$db->query( "INSERT INTO `#__letterman_subscribers` (`user_id`, `subscriber_name`, `subscriber_email`, `confirmed`, `subscribe_date`)
 										VALUES('$uid','".$d['first_name']." ". $d['last_name']."','".$d['email']."', '1', NOW())");
 					}
-
 			}
 		}
 		

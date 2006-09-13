@@ -76,11 +76,11 @@ while( $db->next_record() ) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 		
 	// The Checkbox
-	if( $db->f('sys') ) {
+	/*if( $db->f('sys') ) {
 		$listObj->addCell( '<input type="hidden" name="fieldid[]" id="cb'.$i.'" value="'.$db->f("fieldid").'" />' );
-	}else {
+	}else {*/
 		$listObj->addCell( mosHTML::idBox( $i, $db->f("fieldid"), 0, "fieldid" ) );
-	}
+	//}
 	
 	$listObj->addCell( '<a href="'.$sess->url($_SERVER['PHP_SELF'].'?page=admin.user_field_form&fieldid='.$db->f('fieldid')).'">'.$db->f('name').'</a>' );
 	$listObj->addCell( $db->f('title') );

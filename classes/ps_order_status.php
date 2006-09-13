@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id: ps_order_status.php,v 1.3 2005/09/27 17:48:50 soeren_nb Exp $
@@ -16,121 +16,115 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
+/**
+ * The class for managing order status entries
+ *
+ */
+class ps_order_status extends vmAbstractObject {
 
-class ps_order_status {
-  var $classname = "ps_order_status";
-  
-  /*
-  ** VALIDATION FUNCTIONS
-  **
-  */
+	var $_key = 'order_status_id';
+	var $_table_name = '#__{vm}_order_status';
+	
+	var $_protected_status_codes = array( 'P', 'C', 'X' );
+	
+	function ps_order_status() {
+		$this->addRequiredField( array( 'order_status_code', 'order_status_name') );
+		$this->addUniqueField( 'order_status_code');
+	}
+	
+	/*
+	** VALIDATION FUNCTIONS
+	**
+	*/
 
-  function validate_add(&$d) {
-    
-    $db = new ps_DB;
-   
-    if (!$d["order_status_code"]) {
-      $d["error"] = "ERROR:  You this order status type is already defined.";
-      return False;
-    } 
+	function validate_add(&$d) {
 
-    return True;    
-  }
-  
-  function validate_delete($d) {
-    
-    if (!$d["order_status_id"]) {
-      $d["error"] = "ERROR:  Please select an order status type to delete.";
-      return False;
-    }
-    else {
-      return True;
-    }
-  }
-  
-  function validate_update(&$d) {
-    $db = new ps_DB;
+		return $this->validate( $d );
+	}
 
-    if (!$d["order_status_id"]) {
-      $d["error"] = "ERROR:  You must select an order status to update.";
-      return False;
-    }
-    if (!$d["order_status_code"]) {
-      $d["error"] = "ERROR:  You must enter a order status code.";
-      return False;
-    }
-    return True;
-  }
-  
-  
-  /**************************************************************************
-   * name: add()
-   * created by: pablo
-   * description: creates a new tax rate record
-   * parameters:
-   * returns:
-   **************************************************************************/
-  function add(&$d) {
-    $db = new ps_DB; 
-    $ps_vendor_id = $_SESSION["ps_vendor_id"];
-    $timestamp = time();
-    
-    if (!$this->validate_add($d)) {
-      return False;
-    }
-    $q = "INSERT INTO #__{vm}_order_status (vendor_id, order_status_code,";
-    $q .= "order_status_name, list_order) ";
-    $q .= "VALUES (";
-    $q .= "'$ps_vendor_id','";
-    $q .= $d["order_status_code"] . "','";
-    $q .= $d["order_status_name"] . "','";
-    $q .= $d["list_order"] . "')";
-    $db->query($q);
-    $db->next_record();
-    return True;
+	function validate_update(&$d) {
+		
+		return $this->validate( $d );
+	}
 
-  }
-  
-  /**************************************************************************
-   * name: update()
-   * created by: pablo
-   * description: updates function information
-   * parameters:
-   * returns:
-   **************************************************************************/
-  function update(&$d) {
-    $db = new ps_DB; 
-    $ps_vendor_id = $_SESSION["ps_vendor_id"];
-    $timestamp = time();
+	function validate_delete($d) {
 
-    if (!$this->validate_update($d)) {
-      return False;	
-    }
-    $q = "UPDATE #__{vm}_order_status SET ";
-    $q .= "order_status_code='" . $d["order_status_code"];
-    $q .= "',order_status_name='" . $d["order_status_name"];
-    $q .= "',list_order='" . $d["list_order"];
-    $q .= "' WHERE order_status_id='" . $d["order_status_id"] . "'";
-    $q .= " AND vendor_id='$ps_vendor_id'";
-    $db->query($q);
-    $db->next_record();
-    return True;
-  }
+		if (empty($d["order_status_id"])) {
+			$vmLogger->err( 'Please select an order status type to delete.' );
+			return False;
+		}
+		if( in_array( $d['order_status_code'], $this->_protected_status_codes ) ) {
+			$vmLogger->err( 'This Order Status cannot be deleted, it is one of the core status codes.' );
+			return False;
+		}
+		
+		return True;
 
-  	/**
+	}
+
+	/**
+	 * creates a new Order Status
+	 * @author soeren, pablo
+	 * @param array $d
+	 * @return boolean
+	 */
+	function add(&$d) {
+		$db = new ps_DB;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		$timestamp = time();
+
+		if (!$this->validate_add($d)) {
+			return False;
+		}
+		$fields = array( 'vendor_id' => $ps_vendor_id,
+						'order_status_code' => $d["order_status_code"],
+						'order_status_name' => $d["order_status_name"],
+						'order_status_description' => $d["order_status_description"],
+						'list_order' => $d["list_order"]
+					);
+		$db->buildQuery( 'INSERT', $this->_table_name, $fields );
+	
+		return $db->query();
+
+	}
+
+	/**
+	 * Updates an Order Status
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
+	function update(&$d) {
+		$db = new ps_DB;
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+
+		if (!$this->validate_update($d)) {
+			return False;
+		}
+		$fields = array( 'order_status_code' => $d["order_status_code"],
+						'order_status_name' => $d["order_status_name"],
+						'order_status_description' => $d["order_status_description"],
+						'list_order' => $d["list_order"]
+					);
+		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, "WHERE order_status_id=".(int)$d["order_status_id"]." AND vendor_id=$ps_vendor_id" );
+		
+		return $db->query();
+	}
+
+	/**
 	* Controller for Deleting Records.
 	*/
 	function delete(&$d) {
-	
+
 		if (!$this->validate_delete($d)) {
-		  return False;
+			return False;
 		}
 		$record_id = $d["order_status_id"];
-		
+
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {
 				if( !$this->delete_record( $record, $d ))
-					return false;
+				return false;
 			}
 			return true;
 		}
@@ -144,40 +138,43 @@ class ps_order_status {
 	function delete_record( $record_id, &$d ) {
 		global $db;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-		
-		$q = "DELETE from #__{vm}_order_status WHERE order_status_id='$record_id'";
+
+		$q = "DELETE FROM `{$this->_table_name}` WHERE order_status_id='$record_id'";
 		$q .= " AND vendor_id='$ps_vendor_id'";
-		$db->query($q);
-		return True;
-  }
+		
+		return $db->query($q);
+	}
 
 
 	function list_order_status($order_status_code, $extra="") {
 		echo $this->getOrderStatus( $order_status_code, $extra );
 	}
-	
+	/**
+	 * Returns a DropDown List of all available Order Status Codes
+	 *
+	 * @param string $order_status_code
+	 * @param string $extra
+	 * @return string
+	 */
 	function getOrderStatus( $order_status_code, $extra="") {
 		$db = new ps_DB;
-		
+
 		$q = "SELECT order_status_id, order_status_code, order_status_name FROM #__{vm}_order_status ORDER BY list_order";
 		$db->query($q);
-		$html = "<select name=\"order_status\" class=\"inputbox\" $extra>\n";
 		while ($db->next_record()) {
-		  $html .= "<option value=\"" . $db->f("order_status_code")."\"";
-		  if ($order_status_code == $db->f("order_status_code")) 
-			 $html .= " selected=\"selected\">";
-		  else
-			 $html .= ">";
-		  $html .= $db->f("order_status_name") . "</option>\n";
+			$array[$db->f("order_status_code")] = $db->f("order_status_name");
 		}
-		$html .= "</select>\n";
-		
-		return $html;
+		return ps_html::selectList( 'order_status', $order_status_code, $array, 1, '', $extra );
 	}
-	
+	/**
+	 * Returns the order status name for a given order status code
+	 *
+	 * @param string $order_status_code
+	 * @return string
+	 */
 	function getOrderStatusName( $order_status_code ) {
 		$db = new ps_DB;
-		
+
 		$q = "SELECT order_status_id, order_status_name FROM #__{vm}_order_status WHERE `order_status_code`='".$order_status_code."'";
 		$db->query($q);
 		$db->next_record();

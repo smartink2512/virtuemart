@@ -182,5 +182,12 @@ $db->query( "ALTER TABLE `#__{vm}_product_attribute` ADD `attribute_id` INT NOT 
 # 02.05.2006 Multi-Currency Feature
 $db->query( "ALTER TABLE `#__{vm}_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL " );
 
+# 12.09.2006 improve category listing performance
+$db->query( "ALTER TABLE `#__{vm}_category_xref` DROP INDEX `category_xref_category_child_id`;" );
+$db->query( "ALTER TABLE `#__{vm}_category_xref` ADD PRIMARY KEY ( `category_child_id` ) ;" );
+
+#13.09.2006 Allow Order Status Descriptions
+$db->query( "ALTER TABLE `#__{vm}_order_status` ADD `order_status_description` TEXT NOT NULL AFTER `order_status_name`");
+
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'")
 ?>

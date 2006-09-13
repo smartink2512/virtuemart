@@ -97,15 +97,25 @@ class ps_DB extends database {
 		$this->record = Array(0);
 
 		if (strtoupper(substr( $this->_sql , 0, 6 )) == "SELECT" 
-			|| strtoupper(substr( $this->_sql , 0, 4 )) == 'SHOW' ) {
+			|| strtoupper(substr( $this->_sql , 0, 4 ))=='SHOW' 
+			|| strtoupper(substr( $this->_sql , 0, 7 ))=='EXPLAIN' 
+			|| strtoupper(substr( $this->_sql , 0, 8 ))=='DESCRIBE' 
+			) {
 			$this->record = $this->_database->loadObjectList();
+			
+			if( $this->record === false ) {
+				$result = false;
+			}
 		}
 		else {
-			$this->_database->query();
+			$result = $this->_database->query();
 		}
 
 		$this->_query_set = false;
-
+		
+		if( isset( $result )) {
+			return $result;
+		}
 	}
 
 	/**

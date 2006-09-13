@@ -17,9 +17,17 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+vmCommonHTML::loadMooFx();
+
 require_once( CLASSPATH . 'ps_userfield.php' );
+require_once( CLASSPATH . 'ps_shopper_group.php' );
+
+$ps_shopper_group = new ps_shopper_group();
 
 $fieldid = mosgetparam($_REQUEST, 'fieldid', 0);
+if( is_array( $fieldid )) {
+	$fieldid = $fieldid[0];
+}
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
@@ -28,53 +36,64 @@ $formObj = &new formFactory( $VM_LANG->_VM_USERFIELD_FORM_LBL );
 $formObj->startForm();
 
 $lists = array();
-$types = array();
 
-$types[] = mosHTML::makeOption( 'text', 'Text Field' );
-$types[] = mosHTML::makeOption( 'checkbox', 'Check Box (Single)' );
-$types[] = mosHTML::makeOption( 'multicheckbox', 'Check Box (Muliple)' );
-$types[] = mosHTML::makeOption( 'date', 'Date' );
-$types[] = mosHTML::makeOption( 'select', 'Drop Down (Single Select)' );
-$types[] = mosHTML::makeOption( 'multiselect', 'Drop Down (Multi-Select)' );
-$types[] = mosHTML::makeOption( 'emailaddress', 'Email Address' );	
-//$types[] = mosHTML::makeOption( 'password', 'Password Field' );
-$types[] = mosHTML::makeOption( 'editorta', 'Editor Text Area' );
-$types[] = mosHTML::makeOption( 'textarea', 'Text Area' );
-$types[] = mosHTML::makeOption( 'radio', 'Radio Button' );
-$types[] = mosHTML::makeOption( 'webaddress', 'Web Address' );
-$types[] = mosHTML::makeOption( 'delimiter', 'Fieldset delimiter' );
-
-if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {
-	$types[] = mosHTML::makeOption( 'yanc_subscription', 'YaNC Newsletter Subscription' );
-}
-if( file_exists($mosConfig_absolute_path.'/components/com_anjel/anjel.php')) {
-	$types[] = mosHTML::makeOption( 'anjel_subscription', 'ANJEL Newsletter Subscription' );
-}
-if( file_exists($mosConfig_absolute_path.'/components/com_letterman/letterman.php')) {
-	$types[] = mosHTML::makeOption( 'letterman_subscription', 'Letterman Newsletter Subscription' );
-}
+$params = '';
 
 $webaddrtypes = array();
 
 $webaddrtypes[] = mosHTML::makeOption( '0', 'URL only' );
 $webaddrtypes[] = mosHTML::makeOption( '2', 'Hypertext and URL' );
 
-$db->query( "SELECT `fieldtitle`, `fieldvalue` "
+$fieldvalues = array();
+
+if (!empty($fieldid)) {
+	$db->query( "SELECT `fieldtitle`, `fieldvalue` "
 	. "\n FROM `#__{vm}_userfield_values`"
 	. "\n WHERE `fieldid`=$fieldid"
 	. "\n ORDER BY ordering" );
-$fieldvalues = $db->loadObjectList();
+	$fieldvalues = $db->loadObjectList();
 
-if (!empty($fieldid)) {
     $q = "SELECT * FROM #__{vm}_userfield WHERE fieldid=$fieldid"; 
     $db->query($q);  
     $db->next_record();
+    if( $db->f('params') ) {
+    	$params = new mosParameters( $db->f('params') );
+    }
+	$lists['type'] = '<input type="hidden" value="'.$db->f('type').'" name="type" />'.$db->f('type');
+}
+else {
+	$types = array();
+	
+	$types[] = mosHTML::makeOption( 'text', 'Text Field' );
+	$types[] = mosHTML::makeOption( 'checkbox', 'Check Box (Single)' );
+	$types[] = mosHTML::makeOption( 'multicheckbox', 'Check Box (Muliple)' );
+	$types[] = mosHTML::makeOption( 'date', 'Date' );
+	$types[] = mosHTML::makeOption( 'select', 'Drop Down (Single Select)' );
+	$types[] = mosHTML::makeOption( 'multiselect', 'Drop Down (Multi-Select)' );
+	$types[] = mosHTML::makeOption( 'emailaddress', 'Email Address' );	
+	$types[] = mosHTML::makeOption( 'euvatid', 'EU VAT ID' );	
+	//$types[] = mosHTML::makeOption( 'password', 'Password Field' );
+	$types[] = mosHTML::makeOption( 'editorta', 'Editor Text Area' );
+	$types[] = mosHTML::makeOption( 'textarea', 'Text Area' );
+	$types[] = mosHTML::makeOption( 'radio', 'Radio Button' );
+	$types[] = mosHTML::makeOption( 'webaddress', 'Web Address' );
+	$types[] = mosHTML::makeOption( 'delimiter', '=== Fieldset delimiter ===' );
+	
+	if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {
+		$types[] = mosHTML::makeOption( 'yanc_subscription', 'YaNC Newsletter Subscription' );
+	}
+	if( file_exists($mosConfig_absolute_path.'/components/com_anjel/anjel.php')) {
+		$types[] = mosHTML::makeOption( 'anjel_subscription', 'ANJEL Newsletter Subscription' );
+	}
+	if( file_exists($mosConfig_absolute_path.'/components/com_letterman/letterman.php')) {
+		$types[] = mosHTML::makeOption( 'letterman_subscription', 'Letterman Newsletter Subscription' );
+	}
+	
+	$lists['type'] = mosHTML::selectList( $types, 'type', 'class="inputbox" size="1" onchange="selType(this.options[this.selectedIndex].value);"', 'value', 'text', $db->f('type') );
 }
 
 $lists['webaddresstypes'] = mosHTML::selectList( $webaddrtypes, 'webaddresstypes', 'class="inputbox" size="1"', 'value', 'text', $db->f('rows') );
 	
-$lists['type'] = mosHTML::selectList( $types, 'type', 'class="inputbox" size="1" onchange="selType(this.options[this.selectedIndex].value);"', 'value', 'text', $db->f('type') );
-
 $lists['required'] = mosHTML::yesnoSelectList( 'required', 'class="inputbox" size="1"', $db->sf('required') );
 
 $lists['published'] = mosHTML::yesnoSelectList( 'published', 'class="inputbox" size="1"', $db->sf('published') );
@@ -146,80 +165,94 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 			<td>&nbsp;</td>
 		</tr>
 		</table>
-		<div id=page1  class="pagetext">
+		<div id="page1"></div>
 		
+		<div id="divText">
+			<table class="adminform">
+			<tr class="row0">
+				<td width="20%">Max Length:</td>
+				<td width="20%"><input type="text" name="maxlength" mosLabel="Max Length" class="inputbox" value="<?php echo $db->f('maxlength'); ?>" /></td>
+				<td>&nbsp;</td>
+			</tr>
+			</table>
 		</div>
-		<div id=divText  class="pagetext">
-		<table class="adminform">
-		<tr class="row0">
-			<td width="20%">Max Length:</td>
-			<td width="20%"><input type="text" name="maxlength" mosLabel="Max Length" class="inputbox" value="<?php echo $db->f('maxlength'); ?>" /></td>
-			<td>&nbsp;</td>
-		</tr>
-		</table>
+		<div id="divColsRows">
+			<table class="adminform">
+			<tr class="row0">
+				<td width="20%">Cols:</td>
+				<td width="20%"><input type="text" name="cols" mosLabel="Cols" class="inputbox" value="<?php echo $db->f('cols'); ?>" /></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr class="row1">
+				<td width="20%">Rows:</td>
+				<td width="20%"><input type="text" name="rows"  mosLabel="Rows" class="inputbox" value="<?php echo $db->f('rows'); ?>" /></td>
+				<td>&nbsp;</td>
+			</tr>
+			</table>
 		</div>
-		<div id=divColsRows  class="pagetext">
-		<table class="adminform">
-		<tr class="row0">
-			<td width="20%">Cols:</td>
-			<td width="20%"><input type="text" name="cols" mosLabel="Cols" class="inputbox" value="<?php echo $db->f('cols'); ?>" /></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr class="row1">
-			<td width="20%">Rows:</td>
-			<td width="20%"><input type="text" name="rows"  mosLabel="Rows" class="inputbox" value="<?php echo $db->f('rows'); ?>" /></td>
-			<td>&nbsp;</td>
-		</tr>
-		</table>
+		<div id="divShopperGroups" >
+			<table class="adminform">
+	          <tr class="row1"> 
+	        	<td class="labelcell">Move the customer into the following shopper group
+	        	upon successful validation of the EU VAT ID :</td>
+	            <td ><?php
+	            	$sg_id = is_a( $params, 'mosparameters' ) ? $params->get( 'shopper_group_id', 5 ) : '';
+                   	echo ps_shopper_group::list_shopper_groups( "shopper_group_id", $sg_id );
+                   ?>
+                 </td>
+                </tr>
+			</table>
 		</div>
-		<div id=divWeb  class="pagetext">
-		<table cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform">
-		<tr>
-			<td width="20%">Type:</td>
-			<td width="20%"><?php echo $lists['webaddresstypes']; ?></td>
-			<td>&nbsp;</td>
-		</tr>
-		</table>
+		
+		<div id="divWeb">
+			<table cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform">
+			<tr class="row1">
+				<td width="20%">Type:</td>
+				<td width="20%"><?php echo $lists['webaddresstypes']; ?></td>
+				<td>&nbsp;</td>
+			</tr>
+			</table>
 		</div>
-		<div id=divValues style="text-align:left;">
-		Use the table below to add new values.<br />
-		<input type=button onclick="insertRow();" value="Add a Value" />
-		<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" >
-		<thead>
-			<th class="title" width="20%">Title</th>
-			<th class="title" width="80%">Value</th>
-		</thead>
-		<tbody id="fieldValuesBody">
-		<tr>
-			<td></td>
-		</tr>
-	<?php	
-		//echo "count:".count( $fieldvalues );
-		//print_r (array_values($fieldvalues));
-		$n=count( $fieldvalues );
-		for ($i=0; $i < $n; $i++) {
-			//print "count:".$i;
-			$fieldvalue = $fieldvalues[$i];
-			if ($i==0) $req =1;
-			else $req = 0;
-			echo "<tr>\n<td width=\"20%\"><input type=\"text\" value=\"".stripslashes(@$fieldvalue->fieldtitle)."\" name=\"vNames[".$i."]\" /></td>\n";
-			echo "\n<td width=\"80%\"><input type=\"text\" value=\"".stripslashes(@$fieldvalue->fieldvalue)."\" name=\"vValues[".$i."]\" /></td></tr>\n";
-		}
-		if(count( $fieldvalues )< 1) {
-			echo "<tr>\n<td width=\"20%\"><input type=\"text\" value=\"\" name=\"vNames[0]\" /></td>\n";
-			echo "\n<td width=\"80%\"><input type=\"text\" value=\"\" name=\"vValues[0]\" /></td></tr>\n";
-			$i=0;
-		}
-	?>
-		</tbody>
-		</table>
+		
+		<div id="divValues" style="text-align:left;">
+			Use the table below to add new values.<br />
+			<input type="button" class="button" onclick="insertRow();" value="Add a Value" />
+			<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" >
+			<thead>
+				<th class="title" width="20%">Title</th>
+				<th class="title" width="80%">Value</th>
+			</thead>
+			<tbody id="fieldValuesBody">
+			<tr>
+				<td></td>
+			</tr>
+			<?php	
+			//echo "count:".count( $fieldvalues );
+			//print_r (array_values($fieldvalues));
+			$n=count( $fieldvalues );
+			for ($i=0; $i < $n; $i++) {
+				//print "count:".$i;
+				$fieldvalue = $fieldvalues[$i];
+				if ($i==0) $req =1;
+				else $req = 0;
+				echo "<tr>\n<td width=\"20%\"><input type=\"text\" value=\"".stripslashes(@$fieldvalue->fieldtitle)."\" name=\"vNames[".$i."]\" /></td>\n";
+				echo "\n<td width=\"80%\"><input type=\"text\" value=\"".stripslashes(@$fieldvalue->fieldvalue)."\" name=\"vValues[".$i."]\" /></td></tr>\n";
+			}
+			if(count( $fieldvalues )< 1) {
+				echo "<tr>\n<td width=\"20%\"><input type=\"text\" value=\"\" name=\"vNames[0]\" /></td>\n";
+				echo "\n<td width=\"80%\"><input type=\"text\" value=\"\" name=\"vValues[0]\" /></td></tr>\n";
+				$i=0;
+			}
+			?>
+			</tbody>
+			</table>
 		</div>
-  <table class="adminform">
-		<tr>
-			<td colspan="3">&nbsp;</td>
-		</tr>
-
-  </table>
+	  <table class="adminform">
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+	
+	  </table>
  <?php
 // Add necessary hidden fields
 $formObj->hiddenField( 'fieldid', $fieldid );
@@ -229,6 +262,9 @@ $formObj->hiddenField( 'ordering', $db->f('ordering') );
 // Write your form with mixed tags and text fields
 // and finally close the form:
 $formObj->finishForm( 'userfieldSave', $modulename.'.user_field_list', $option );
+
+
+$duration = 500;
 ?>
 <script type="text/javascript">
   function getObject(obj) {
@@ -279,53 +315,47 @@ $formObj->finishForm( 'userfieldSave', $modulename.'.user_field_list', $option )
 
   function disableAll() {
     var elem;
-    elem=getObject('divValues');
-    elem.style.visibility = 'hidden';
-    elem.style.display = 'none';
-    elem=getObject('divColsRows');
-    elem.style.visibility = 'hidden';
-    elem.style.display = 'none';
-    elem=getObject('divWeb');
-    elem.style.visibility = 'hidden';
-    elem.style.display = 'none';
-    elem=getObject('divText');
-    elem.style.visibility = 'hidden';
-    elem.style.display = 'none';
+    try{ 
+    	if (divValues.el.offsetHeight > 0) divValues.custom(divValues.el.offsetHeight, 0); 
+    	if (divColsRows.el.offsetHeight > 0) divColsRows.custom(divColsRows.el.offsetHeight, 0); 
+    	if (divWeb.el.offsetHeight > 0) divWeb.custom(divWeb.el.offsetHeight, 0); 
+    	if (divShopperGroups.el.offsetHeight > 0) divShopperGroups.custom(divShopperGroups.el.offsetHeight, 0); 
+    	if (divText.el.offsetHeight > 0) divText.custom(divText.el.offsetHeight, 0); 
+    
+    } catch(e){ }
     if (elem=getObject('vNames[0]')) {
       elem.setAttribute('mosReq',0);
     }
   }
-  
+  function toggleType( type ) {
+	disableAll();
+	setTimeout( 'selType( \'' + type + '\' )', <?php echo ( $duration + 50 ) ?> );
+  }
   function selType(sType) {
     var elem;
     //alert(sType);
     switch (sType) {
       case 'editorta':
       case 'textarea':
-        disableAll();
-        elem=getObject('divText');
-        elem.style.visibility = 'visible';
-        elem.style.display = 'block';
-        elem=getObject('divColsRows');
-        elem.style.visibility = 'visible';
-        elem.style.display = 'block';
+        
+        divText.toggle();
+        divColsRows.toggle();
       break;
       
+      case 'euvatid':
+      	divShopperGroups.toggle();
+        // fallthrough
       case 'emailaddress':
       case 'password':
       case 'text':
-        disableAll();
-        elem=getObject('divText');
-        elem.style.visibility = 'visible';
-        elem.style.display = 'block';
+        
+        divText.toggle();
       break;
       
       case 'select':
       case 'multiselect':
-        disableAll();
-        elem=getObject('divValues');
-        elem.style.visibility = 'visible';
-        elem.style.display = 'block';
+
+        divValues.toggle();
         if (elem=getObject('vNames[0]')) {
           elem.setAttribute('mosReq',1);
         }
@@ -333,44 +363,38 @@ $formObj->finishForm( 'userfieldSave', $modulename.'.user_field_list', $option )
       
       case 'radio':
       case 'multicheckbox':
-        disableAll();
-        elem=getObject('divColsRows');
-        elem.style.visibility = 'visible';
-        elem.style.display = 'block';
-        elem=getObject('divValues');
-        elem.style.visibility = 'visible';
-        elem.style.display = 'block';
+        divColsRows.toggle();
+        divValues.toggle();
         if (elem=getObject('vNames[0]')) {
           elem.setAttribute('mosReq',1);
         }
       break;
 
       case 'webaddress':
-        disableAll();
-        elem=getObject('divWeb');
-        elem.style.visibility = 'visible';
-        elem.style.display = 'block';
+        divWeb.toggle();
       break;
 	  	
       case 'delimiter':
       default: 
-        disableAll();
+        
     }
   }
 
   function prep4SQL(o){
 	if(o.value!='') {
 		o.value=o.value.replace('vm_','');
-    		o.value='vm_' + o.value.replace(/[^a-zA-Z]+/g,'');
+    	o.value='vm_' + o.value.replace(/[^a-zA-Z]+/g,'');
 	}
   }
 
 </script>  
 <?php 
 	if($fieldid > 0) {
-		print "<script type=\"text/javascript\"> document.adminForm.name.readOnly=true; </script>";	
-		print "<script type=\"text/javascript\"> document.adminForm.type.disabled=true; </script>";		
+		echo vmCommonHTML::scriptTag( '', 'document.adminForm.name.readOnly=true;' );
 	}
-	print "<script type=\"text/javascript\"> disableAll(); </script>";
-	print "<script type=\"text/javascript\"> selType('".$db->f('type')."'); </script>";	
+	echo vmCommonHTML::scriptTag( '', "		var divValues = new fx.Height('divValues' , {duration: $duration } );
+		var divColsRows = new fx.Height('divColsRows' , {duration: $duration } );
+		var divWeb = new fx.Height('divWeb' , {duration: $duration } );
+		var divShopperGroups = new fx.Height('divShopperGroups' , {duration: $duration } );
+		var divText = new fx.Height('divText' , {duration: $duration } ); toggleType('".$db->f('type')."');" );	
 ?>

@@ -111,8 +111,8 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_category_xref` (
   `category_parent_id` int(11) NOT NULL default '0',
   `category_child_id` int(11) NOT NULL default '0',
   `category_list` int(11) default NULL,
+  PRIMARY KEY (`category_child_id`),
   KEY `category_xref_category_parent_id` (`category_parent_id`),
-  KEY `category_xref_category_child_id` (`category_child_id`),
   KEY `idx_category_xref_category_list` (`category_list`)
 ) TYPE=MyISAM COMMENT='Category child-parent relation list'; ");
 
@@ -983,6 +983,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_status` (
   `order_status_id` int(11) NOT NULL auto_increment,
   `order_status_code` char(1) NOT NULL default '',
   `order_status_name` varchar(64) default NULL,
+   `order_status_description` TEXT NOT NULL,
   `list_order` int(11) default NULL,
   `vendor_id` int(11) default NULL,
   PRIMARY KEY  (`order_status_id`),

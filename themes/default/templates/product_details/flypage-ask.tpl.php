@@ -22,7 +22,7 @@
 	    <td colspan=2><hr style="width: 100%; height: 2px;" /></td>
     </tr>
     <tr>
-        <td align="left" valign="top" width=220px>
+        <td align="left" valign="top" width="220">
             <div float:left><?php echo $product_image ?></div>
         </td>
         <td valign="top">

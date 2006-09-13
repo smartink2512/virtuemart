@@ -33,6 +33,30 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+13-09-2006 soeren
+
++ added the user field type "euvatid", you can now publish such a field and assign users
+	who provide a valid EU VAT ID into a different shopper group (than default)
+^ the order status codes 'P' (Pending), 'C' (Confirmed) and 'X' (Cancelled) have been declared as "protected order status codes". The code can't be changed or deleted (but the order status name can still be changed, of course!)
+
++ added an order status description field to the order status form
+!!! Database Structure Changed !!!
+	######
+	# 13.09.2006 Allow Order Status Descriptions
+	ALTER TABLE `jos_vm_order_status` ADD `order_status_description` TEXT NOT NULL AFTER `order_status_name`;
+	######
+	
+	
+12-09-2006 soeren
+
+!! Small Database Change: Changed an "INDEX" Key to a "PRIMARY" Key in the table jos_vm_category_xref
+	# http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=21452.msg53368#msg53368
+	# 12.09.2006 improve category listing performance
+	ALTER TABLE `jos_vm_category_xref` DROP INDEX `category_xref_category_child_id` ;
+	ALTER TABLE `jos_vm_category_xref` ADD PRIMARY KEY ( `category_child_id` ) ;
+		
+
+
 05-09-2006 soeren
 
 # state list not updating when country selection changed

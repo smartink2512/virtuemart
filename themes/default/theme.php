@@ -133,7 +133,7 @@ class vmTemplate_default extends vmTemplate  {
 	}
 	
 	
-	function vmThemeAjaxSubmitter( $class='', $id='', $showLoadingLightBox=true ) {
+	function vmThemeAjaxSubmitter( $class='', $id='', $updateElement='vmCartModule', $onComplete='showMessagesinLightBox' ) {
 		global $mm_action_url, $sess;
 		if( $id ) {
 			$element = '#'.$id;
@@ -150,8 +150,8 @@ class vmTemplate_default extends vmTemplate  {
 					var cForm = $(this.id);
 					cForm.page.value = 'shop.basket_short';
 					";
-		$cartUpdateURL = $sess->url( $mm_action_url.'index.php?only_page=1' );
-		$script .= vmMooAjax::getAjaxUpdater( $cartUpdateURL, 'vmCartModule', 'showMessagesinLightBox', 'post', array( 'formName' => 'cForm.id' ) );
+		$cartUpdateURL = $sess->url( $mm_action_url.'index.php?only_page=1&ignore_last_page=1' );
+		$script .= vmMooAjax::getAjaxUpdater( $cartUpdateURL, $updateElement, $onComplete, 'post', array( 'formName' => 'cForm.id' ) );
 		$script .= "		
 					return false;
 				}

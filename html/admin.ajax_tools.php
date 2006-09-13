@@ -22,13 +22,15 @@ require_once( CLASSPATH.'connectionTools.class.php');
 
 switch( $task ) {
 	case 'get_class_methods':
-		$classfile = basename( mosGetParam( $_REQUEST, 'class' ) ).'.php';
+		$class = mosGetParam( $_REQUEST, 'class' );
+		$classfile = basename( $class ).'.php';
 		$function = mosGetParam( $_REQUEST, 'function' );
 		
 		if( file_exists(CLASSPATH. $classfile )) {
 			require_once( CLASSPATH.$classfile);
 			$class = str_replace( '.class', '', $class );
 			$methods = get_class_methods( $class );
+			
 			if( empty( $methods )) {
 				$methods = get_class_methods( 'vm'.$class );	
 			}

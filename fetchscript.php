@@ -146,7 +146,7 @@ switch ( $fileinfo['extension']) {
 		$mime_type = 'text/javascript'; 
 		header( 'Content-Type: '.$mime_type.';');
 		
-		include( $file );
+		readfile( $file );
 		
 		break;
 		

@@ -53,7 +53,7 @@ class ps_html {
 					}
 				}
 				else {
-					if(strcmp($value, $key) == 0) {
+					if(strtolower($value) == strtolower($key) ) {
 						$selected = "selected=\"selected\"";
 					}
 				}

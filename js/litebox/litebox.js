@@ -139,6 +139,7 @@ Lightbox.prototype = {
 		
 		var objOverlay = document.createElement("div");
 		objOverlay.setAttribute('id','overlay');
+		objOverlay.style.visibility = 'hidden';
 		objOverlay.onclick = function() { myLightbox.end(); return false; }
 		objBody.appendChild(objOverlay);
 		

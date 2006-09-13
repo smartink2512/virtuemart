@@ -44,7 +44,9 @@ class ps_userfield extends vmAbstractObject {
 				$d['type'] = 'checkbox';
 			case 'checkbox':
 				$d['cType']='TINYINT';
-				break;			
+				break;
+			case 'euvatid':
+				$d['params'] = 'shopper_group_id='.$d['shopper_group_id']."\n";
 			default:
 				$d['cType']='VARCHAR(255)';
 				break;
@@ -68,7 +70,6 @@ class ps_userfield extends vmAbstractObject {
 		global $my, $mosConfig_live_site;
 		
 		$db = new ps_DB();
-		$d = $GLOBALS['vmInputFilter']->process( $d );
 		
 		if ($d['type'] == 'webaddress') {
 			$d['rows'] = $d['webaddresstypes'];
@@ -85,27 +86,29 @@ class ps_userfield extends vmAbstractObject {
 
 		if( !empty($d['fieldid']) ) {
 			// existing record
-			$q = 'UPDATE `#__{vm}_userfield` SET
-					`name` = \''.$d['name'].'\', 
-					`title` = \''.$d['title'].'\', 
-					`description` = \''.$d['description'].'\', 
-					`type` = \''.$d['type'].'\', 
-					`maxlength` = \''.$d['maxlength'].'\', 
-					`size` = \''.$d['size'].'\', 
-					`required` = \''.$d['required'].'\', 
-					`ordering` = \''.$d['ordering'].'\', 
-					`cols` = \''.$d['cols'].'\', 
-					`rows` = \''.$d['rows'].'\', 
-					`value` = \''.@$d['value'].'\', 
-					`default` = \''.@$d['default'].'\', 
-					`published` = \''.$d['published'].'\', 
-					`registration` = \''.$d['registration'].'\', 
-					`account` = \''.@$d['account'].'\', 
-					`readonly` = \''.$d['readonly'].'\', 
-					`calculated` = \''.@$d['calculated'].'\', 
-					`params` = \''.@$d['params'].'\'
-					 WHERE `fieldid` ='. intval($d['fieldid']);
-			$db->query( $q );
+			$fields = array(
+					'name' => $d['name'], 
+					'title' => $d['title'], 
+					'description' => $d['description'], 
+					'type' => $d['type'], 
+					'maxlength' => $d['maxlength'], 
+					'size' => $d['size'], 
+					'required' => $d['required'], 
+					'ordering' => $d['ordering'], 
+					'cols' => $d['cols'], 
+					'rows' => $d['rows'], 
+					'value' => @$d['value'], 
+					'default' => @$d['default'], 
+					'published' => $d['published'], 
+					'registration' => $d['registration'], 
+					'account' => @$d['account'], 
+					'readonly' => $d['readonly'], 
+					'calculated' => @$d['calculated'], 
+					'params' => @$d['params']
+					 );
+			$db->buildQuery( 'UPDATE', '#__{vm}_userfield', $fields ,'WHERE `fieldid` ='. intval($d['fieldid'] ) );
+			$db->query();
+			
 			if( $d['type'] != 'delimiter') {
 				$this->changeColumn( $d['name'], $d['cType'], 'update');
 			}
@@ -116,18 +119,29 @@ class ps_userfield extends vmAbstractObject {
 			$db->query($sql); $db->next_record();
 			$d['ordering'] = $db->f('max')+1;
 			
-			$q = 'INSERT INTO `#__{vm}_userfield` 
-					(`name`,`title`,`description`,`type`,`maxlength`,`size`,`required`,
-					`ordering`,`cols`,`rows`,`value`,`default`,`published`,`registration`,
-					`account`,`readonly`,`calculated`,`sys`,`vendor_id`, `params`) 
-					VALUES(
-					\''.$d['name'].'\', \''.$d['title'].'\', \''.$d['description'].'\', 
-					\''.$d['type'].'\', \''.$d['maxlength'].'\', \''.$d['size'].'\', \''.$d['required'].'\', 
-					\''.$d['ordering'].'\', \''.$d['cols'].'\', \''.$d['rows'].'\', \''.$d['value'].'\', 
-					\''.$d['default'].'\', \''.$d['published'].'\', \''.$d['registration'].'\', \''.$d[''].'\', 
-					\''.$d['account'].'\', \''.$d['readonly'].'\', \''.$d['calculated'].'\', \''.$_SESSION['ps_vendor_id'].'\', \''.$d['params'].'\'
-					)';
-			$db->query( $q );
+			$fields = array(
+					'name' => $d['name'], 
+					'title' => $d['title'], 
+					'description' => $d['description'], 
+					'type' => $d['type'], 
+					'maxlength' => $d['maxlength'], 
+					'size' => $d['size'], 
+					'required' => $d['required'], 
+					'ordering' => $d['ordering'], 
+					'cols' => $d['cols'], 
+					'rows' => $d['rows'], 
+					'value' => @$d['value'], 
+					'default' => @$d['default'], 
+					'published' => $d['published'], 
+					'registration' => $d['registration'], 
+					'account' => @$d['account'], 
+					'readonly' => $d['readonly'], 
+					'calculated' => @$d['calculated'], 
+					'params' => @$d['params']
+					 );
+			$db->buildQuery( 'INSERT', '#__{vm}_userfield', $fields );
+			$db->query();
+			
 			$_REQUEST['fieldid'] = $db->last_insert_id();
 			if( $d['type'] != 'delimiter') {
 				$this->changeColumn( $d['name'], $d['cType'], 'add');
@@ -165,7 +179,6 @@ class ps_userfield extends vmAbstractObject {
 	 * @param string $action Can be: add, update or delete
 	 */
 	function changeColumn( $column, $type, $action) {
-		global $vmLogger;
 		
 		switch( $action ) {
 			case 'add': $action = 'ADD'; break;
@@ -184,7 +197,7 @@ class ps_userfield extends vmAbstractObject {
 		$sql="ALTER TABLE `#__{vm}_user_info` $action `$column` $special $type";
 		$db->query($sql);
 		// The table where the shopper information at the time of an order is stored
-		$sql="ALTER TABLE `#__{vm}_order_user_info` $action `$column` $type";
+		$sql="ALTER TABLE `#__{vm}_order_user_info` $action `$column` $special $type";
 		$db->query($sql);
 		
 	}
@@ -195,7 +208,7 @@ class ps_userfield extends vmAbstractObject {
 	 * @return boolean The result of the delete action
 	 */
 	function deleteField( &$d ) {
-		global $db;
+		global $db, $vmLogger;
 		if( !is_array( @$d['fieldid'] )) {
 			$d['fieldid'] = array( $d['fieldid']);
 		}
@@ -236,7 +249,7 @@ class ps_userfield extends vmAbstractObject {
 	 * @param ps_DB $db A ps_DB object holding ovalues for the fields
 	 */
 	function listUserFields( $rowFields, $skipFields=array(), $db = null ) {
-		global $mm_action_url, $ps_html, $VM_LANG, $my, $default, 
+		global $mm_action_url, $ps_html, $VM_LANG, $my, $default, $mainframe,
 			$vendor_country_3_code, $mosConfig_live_site, $page;
 		
 		$dbf = new ps_DB();
@@ -251,14 +264,12 @@ class ps_userfield extends vmAbstractObject {
 		
 		$label_div_style = 'float:left;width:30%;text-align:right;vertical-align:bottom;font-weight: bold;padding-right: 5px;';
 		$field_div_style = 'float:left;width:60%;';
-		/**
-		 * This section will be changed in future releases of VirtueMart,
-		 * when we have a registration form manager
-		 */
+
+		// collect all required fields
 		$required_fields = Array(); 
 		foreach( $rowFields as $field ) {
 			if( $field->required == 1 ) {
-				$required_fields[$field->name] = $field->name;
+				$required_fields[$field->name] = $field->type;
 			}
 			$allfields[$field->name] = $field->name;
 		}
@@ -267,9 +278,9 @@ class ps_userfield extends vmAbstractObject {
 		}
 		
 		// Form validation function
-		ps_userfield::printJS_formvalidation( $required_fields );
-		?>
-		<script type="text/javascript" src="includes/js/mambojavascript.js"></script>
+		ps_userfield::printJS_formvalidation( $required_fields, $rowFields );
+		$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'includes/js/mambojavascript.js' ) );
+		?>		
 		
 		<form action="<?php echo $mm_action_url .basename($_SERVER['PHP_SELF']) ?>" method="post" name="adminForm">
 			
@@ -328,7 +339,7 @@ class ps_userfield extends vmAbstractObject {
 	   		}
 	   		echo '">';
 	        echo '<label for="'.$field->name.'_field">'.$field->title.'</label>';
-	        if( in_array( $field->name, $required_fields)) {
+	        if( isset( $required_fields[$field->name] )) {
 	        	echo '<strong>* </strong>';
 	        }
 	      	echo ' </div>
@@ -370,20 +381,23 @@ class ps_userfield extends vmAbstractObject {
 	   			default:
 	   				
 	   				switch( $field->type ) {
+	   					case 'text':
 	   					case 'date':
 	   					case 'emailaddress':
 	   					case 'webaddress':
-	   					case 'text':
-	   						
+	   					case 'euvatid':	   						
 	   						$maxlength = $field->maxlength ? 'maxlength="'.$field->maxlength.'"' : '';
-					        echo '<input type="text" id="'.$field->name.'_field" name="'.$field->name.'" size="'.$field->size.'" value="'. $db->sf($field->name) .'" class="inputbox" '.$maxlength.' />'."\n";
+					        echo '<input type="text" id="'.$field->name.'_field" name="'.$field->name.'" size="'.$field->size.'" value="'. ($db->sf($field->name)?$db->sf($field->name):'') .'" class="inputbox" '.$maxlength.' />'."\n";
 				   			break;
+				   			
 						case 'textarea':
 							echo '<textarea name="'.$field->name.'" id="'.$field->name.'_field" cols="'.$field->cols.'" rows="'.$field->rows.'">'.$db->sf($field->name).'</textarea>';
 							break;
+							
 						case 'editorta':
 							editorArea( $field->name, $db->sf($field->name), $field->name, '300', '150', $field->cols, $field->rows );			
 							break;
+							
 						case 'checkbox':
 							echo '<input type="checkbox" name="'.$field->name.'" id="'.$field->name.'_field" value="1" />';
 							break;
@@ -536,126 +550,141 @@ class ps_userfield extends vmAbstractObject {
 	 * @param string $formname The name for the form element
 	 * @param string $div_id_postfix The ID postfix to identify the label for the field
 	 */
-	function printJS_formValidation( $required_fields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
-                global $VM_LANG, $page;
-                echo '
-                <script language="javascript" type="text/javascript">//<![CDATA[
-                function '.$functioname.'() {
-                        var form = document.'.$formname.';
-                        var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
-                        var isvalid = true;
-                        var required_fields = new Array(\'';
-                
-                $field_list = implode( "','", $required_fields );
-                $field_list = str_replace( "'email',", '', $field_list );
-                $field_list = str_replace( "'username',", '', $field_list );
-                $field_list = str_replace( "'password',", '', $field_list );
-                $field_list = str_replace( "'password2',", '', $field_list );
-                echo $field_list;
-                echo '\');
-                for (var i=0; i < required_fields.length; i++) {
-                        formelement = eval( \'form.\' + required_fields[i] );
-                        ';
-                echo "
-                        if( !formelement ) { 
-                                formelement = document.getElementById( required_fields[i]+'_field0' );
-                                var loopIds = true;
+	function printJS_formValidation( $required_fields, $allfields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
+        global $VM_LANG, $page, $mainframe;
+        
+        $field_list = implode( "','", array_keys( $required_fields ) );
+        $field_list = str_replace( "'email',", '', $field_list );
+        $field_list = str_replace( "'username',", '', $field_list );
+        $field_list = str_replace( "'password',", '', $field_list );
+        $field_list = str_replace( "'password2',", '', $field_list );
+        
+        echo '
+            <script language="javascript" type="text/javascript">//<![CDATA[
+            function '.$functioname.'() {
+                var form = document.'.$formname.';
+                var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
+                var isvalid = true;
+                var required_fields = new Array(\''. $field_list.'\');
+            	for (var i=0; i < required_fields.length; i++) {
+                    formelement = eval( \'form.\' + required_fields[i] );
+                    ';
+       	echo "
+                    if( !formelement ) { 
+                            formelement = document.getElementById( required_fields[i]+'_field0' );
+                            var loopIds = true;
+                    }
+                    if( !formelement ) { continue; }
+                    if (formelement.type == 'radio' || formelement.type == 'checkbox') {
+                        if( loopIds ) {
+                                var rOptions = new Array();
+                                for(var j=0; j<30; j++ ) {
+                                        rOptions[j] = document.getElementById( required_fields[i] + '_field' + j );
+                                        if( !rOptions[j] ) { break; }
+                                }
+                        } else {
+                                var rOptions = form[formelement.getAttribute('name')];
                         }
-                        if( !formelement ) { continue; }
-                        if (formelement.type == 'radio' || formelement.type == 'checkbox') {
-                                if( loopIds ) {
-                                        var rOptions = new Array();
-                                        for(var j=0; j<30; j++ ) {
-                                                rOptions[j] = document.getElementById( required_fields[i] + '_field' + j );
-                                                if( !rOptions[j] ) { break; }
-                                        }
-                                } else {
-                                        var rOptions = form[formelement.getAttribute('name')];
+                        var rChecked = 0;
+                        if(rOptions.length > 1) {
+                                for (var r=0; r < rOptions.length; r++) {
+                                        if( !rOptions[r] ) { continue; }
+                                        if (rOptions[r].checked) {      rChecked=1; }
                                 }
-                                var rChecked = 0;
-                                if(rOptions.length > 1) {
-                                        for (var r=0; r < rOptions.length; r++) {
-                                                if( !rOptions[r] ) { continue; }
-                                                if (rOptions[r].checked) {      rChecked=1; }
-                                        }
-                                } else {
-                                        if (formelement.checked) {
-                                                rChecked=1;
-                                        }
+                        } else {
+                                if (formelement.checked) {
+                                        rChecked=1;
                                 }
-                                if(rChecked==0) {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+                        }
+                        if(rChecked==0) {
+                        	document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+                            isvalid = false;
+                    	}
+                    	else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+                        }                               
+                    }
+                    else if( formelement.options ) {
+                        if(formelement.selectedIndex.value == '') {
+                                document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
                                 isvalid = false;
+                        } 
+                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
+                                document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
                         }
-                                else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
-                                }                               
+                    }
+                    else {
+                        if (formelement.value == '') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+                            isvalid = false;
                         }
-                        else if( formelement.options ) {
-                                if(formelement.selectedIndex.value == '') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
-                                        isvalid = false;
-                                } 
-                                else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
-                                }
-                        }
-                        else {
-                                if (formelement.value == '') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
-                                        isvalid = false;
-                                }
-                                else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                                        document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
-                        }
-                }
-                }
-                ";
-                        
-                // We have skipped email in the first loop above!
-                // Now let's handle email address validation
-                if( in_array( 'email', $required_fields)) {
-                
-                        echo '
+                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+	                    }
+    	        	}
+	            }
+            ";
+                    
+	    // We have skipped email in the first loop above!
+	    // Now let's handle email address validation
+	    if( isset( $required_fields['email'] )) {
+	    
+	   		echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
 				alert( \''. html_entity_decode( _REGWARN_MAIL ).'\');
 				return false;
 			}';
 
 		}
-		if( in_array( 'username', $required_fields )) {
-			
+		if( isset( $required_fields['username'] )) {
+		
 			echo '
 			if (r.exec(form.username.value) || form.username.value.length < 3) {
 				alert( "'. html_entity_decode( sprintf(_VALID_AZ09, _PROMPT_UNAME, 2)) .'" );
 				return false;
-                        }';
-                }
-                if( in_array( 'password', $required_fields )) {
-					if( $page == 'checkout.index') {
-                        echo '
-                        if (form.password.value.length < 6 ) {
-                                alert( "1'. html_entity_decode( _REGWARN_PASS ).'" );
-								return false;
-                        } else if (form.password2.value == "") {
-                                alert( "2'.html_entity_decode( _REGWARN_VPASS1).'" );
-                                return false;
-                        } else if (r.exec(form.password.value)) {
-                                alert( "3'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
-                                return false;
-                        }';
-                	}
-                    echo '
-                        if ((form.password.value != "") && (form.password.value != form.password2.value)){
-                                alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
-                                return false;
-                        }';
-                }
-                if( in_array( 'agreed', $required_fields )) {
-                        echo '
-                        if (!form.agreed.checked) {
+            }';
+        }
+        if( isset($required_fields['password']) ) {
+			if( $page == 'checkout.index') {
+                echo '
+                if (form.password.value.length < 6 ) {
+                    alert( "1'. html_entity_decode( _REGWARN_PASS ).'" );
+					return false;
+                } else if (form.password2.value == "") {
+                    alert( "2'.html_entity_decode( _REGWARN_VPASS1).'" );
+                    return false;
+                } else if (r.exec(form.password.value)) {
+                    alert( "3'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
+                    return false;
+                }';
+        	}
+            echo '
+                if ((form.password.value != "") && (form.password.value != form.password2.value)){
+                    alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
+                    return false;
+                }';
+        }
+        if( isset( $required_fields['agreed'] )) {
+			echo '
+            if (!form.agreed.checked) {
 				alert( "'. $VM_LANG->_PHPSHOP_AGREE_TO_TOS .'" );
 				return false;
+			}';
+		}
+		foreach( $allfields as $field ) {		
+			if(  $field->type == 'euvatid' ) {
+				$euvatid = $field->name;
+				break;
+			}			
+		}
+		if( $euvatid ) {
+			$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'components/'.$GLOBALS['vmDir'].'/js/euvat_check.js'));
+			echo '
+			if( form.'.$euvatid.'.value != \'\' ) {
+				if( !isValidVATID( form.'.$euvatid.'.value )) {
+					alert( \'Please enter a valid EU VAT ID\' );
+					return false;
+				}
 			}';
 		}
 		// Finish the validation function
@@ -665,8 +694,8 @@ class ps_userfield extends vmAbstractObject {
 			}
 			return isvalid;
 		}
-                //]]>
-                </script>';
-        }
+	            //]]>
+	    </script>';
+	}
 }
 ?>

@@ -23,12 +23,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  */
 class ps_function extends vmAbstractObject {
 	
-	var $classname = "ps_function";
 	var $_table_name = "#__{vm}_function";
-	var $_required_fields = array('function_name', 'module_id', 'function_class', 'function_method', 'function_perms');
-	var $_unique_fields = array('function_name');
 	var $_key = 'function_id';
 
+	function ps_function() {
+		$this->addRequiredField( array('function_name', 'module_id', 'function_class', 'function_method', 'function_perms') );
+		$this->addUniqueField( 'function_name' );
+	}
 	/**
     * Validates adding a function to a module.
     *
@@ -66,13 +67,13 @@ class ps_function extends vmAbstractObject {
 		}
 		else {
 			$db = new ps_DB();
-			$db->query( 'SELECT module_perms, function_perms FROM `#__{vm_}_function` f, `#__{vm_}_module` m 
+			$db->query( 'SELECT module_perms, function_perms FROM `#__{vm}_function` f, `#__{vm}_module` m 
 							WHERE `function_id` = '.(int)$d["function_id"]
-							. 'AND `f`.`module_id` = `m`.`module_id`' );
+							. ' AND `f`.`module_id` = `m`.`module_id`' );
 			$db->next_record();
 			
-			if( !$perm->check( $db->f('module_perms')) || $perm->check($db->f('function_perms'))) {
-				$vmLogger->err( 'You are not allowed to delete this function.' );
+			if( !$perm->check( $db->f('module_perms')) || !$perm->check($db->f('function_perms'))) {
+				$vmLogger->err( 'You are not allowed to delete this function (Module Perms: '.$db->f('module_perms').', Function Perms: '.$db->f('function_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
 				return false;
 			}
 		}
@@ -101,8 +102,11 @@ class ps_function extends vmAbstractObject {
 						'function_class'=> $d["function_class"],
 						'function_method' => $d["function_method"],
 						'function_perms' => $d["function_perms"],
+						'module_id' => $d["module_id"],
 						'function_description'=> $d["function_description"] );
 		$db->buildQuery( 'INSERT', '#__{vm}_function', $fields );
+		
+		$db->query();
 		
 		$_REQUEST['function_id'] = $db->last_insert_id();
 		return True;
@@ -148,7 +152,6 @@ class ps_function extends vmAbstractObject {
 		$db = new ps_DB;
 
 		if (!$this->validate_delete($d)) {
-			$d["error"]=$this->error;
 			return False;
 		}
 
