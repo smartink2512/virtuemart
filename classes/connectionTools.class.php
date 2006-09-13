@@ -210,7 +210,7 @@ class vmConnector {
 			fclose( $fp );
 			
 			// If didnt get content-lenght, something is wrong, return false.
-			if (!stristr($data, 'content-length')) {
+			if ( trim($data) == '' ) {
 				$vmLogger->err('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
 				return false;
 			}
