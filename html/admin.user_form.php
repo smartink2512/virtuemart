@@ -42,71 +42,73 @@ $formObj->startForm();
 
 $tabs = new mShopTabs(0, 1, "_userform");
 $tabs->startPane("userform-pane");
-$tabs->startTab( 'General User Information', "userform-page");
-
-$_POST['cid'][0] = $_REQUEST['cid'][0] = $user_id; // Cheat Joomla!
-$_REQUEST['task'] = $task = 'edit';
-$GLOBALS['option'] = 'com_users'; // Cheat Joomla 1.5
-$mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
-require_once( $mainframe->_path->admin_html );
-$mainframe->_path->class = $mosConfig_absolute_path.'/administrator/components/com_users/users.class.php';
-ob_start();
-require( $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.php' );
-$userform = ob_get_contents();
-ob_end_clean();
-
-$userform = str_replace( '<form action="index2.php" method="post" name="adminForm">', '', $userform );
-$userform = str_replace( '</form>', '', $userform );
-$userform = str_replace( '<div id="editcell">', '', $userform );
-$userform = str_replace( '</table>
-                </div>', '</table>', $userform );
-echo $userform;
-
-$_REQUEST['option'] = $GLOBALS['option'] = 'com_virtuemart';
-
-$tabs->endTab();
+if( $_VERSION->RELEASE < 1.1 ) {
+	$tabs->startTab( 'General User Information', "userform-page");
+	
+	$_POST['cid'][0] = $_REQUEST['cid'][0] = $user_id; // Cheat Joomla!
+	$_REQUEST['task'] = $task = 'edit';
+	$GLOBALS['option'] = 'com_users'; 
+	$mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
+	require_once( $mainframe->_path->admin_html );
+	$mainframe->_path->class = $mosConfig_absolute_path.'/administrator/components/com_users/users.class.php';
+	ob_start();
+	require( $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.php' );
+	$userform = ob_get_contents();
+	ob_end_clean();
+	
+	$userform = str_replace( '<form action="index2.php" method="post" name="adminForm">', '', $userform );
+	$userform = str_replace( '</form>', '', $userform );
+	$userform = str_replace( '<div id="editcell">', '', $userform );
+	$userform = str_replace( '</table>
+	                </div>', '</table>', $userform );
+	echo $userform;
+	
+	$_REQUEST['option'] = $GLOBALS['option'] = 'com_virtuemart';
+	
+	$tabs->endTab();
+}
 $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
 ?>
+<fieldset style="width:48%;"><legend><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL ?></legend>
 <table class="adminform">  
-        <tr> 
-                <td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</td>
-                <td><?php $ps_product->list_vendor($db->f("vendor_id"));  ?></td>
-        </tr>
+    <tr> 
+        <td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</td>
+        <td><?php $ps_product->list_vendor($db->f("vendor_id"));  ?></td>
+    </tr>
 	<tr> 
-                <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td> 
-                <td width="62%" > 
-                        <?php
-                        if( !isset( $ps_perms)) { $ps_perms = new ps_perm(); }
-                        $ps_perms->list_perms("perms", $db->sf("perms"));
-                        ?> 
-                </td> 
-        </tr> 
-          <tr> 
-        <td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_CUSTOMER_NUMBER ?>:</td>
-            <td > 
-          <input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo $ps_shopper_group->get_customer_num($db->f("user_id")) ?>" />
-            </td>
-          </tr>
-          <tr> 
-        <td style="text-align:right;"> <?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_GROUP ?>:</td>
-            <td ><?php
-                        include_class('shopper');
-                        $sg_id = $ps_shopper_group->get_shoppergroup_by_id($db->f("user_id"));
-                        echo ps_shopper_group::list_shopper_groups("shopper_group_id",$sg_id["shopper_group_id"]);?>
-                        </td>
-                </tr>
+        <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td> 
+        <td width="62%" > 
+                <?php
+                if( !isset( $ps_perms)) { $ps_perms = new ps_perm(); }
+                $ps_perms->list_perms("perms", $db->sf("perms"));
+                ?> 
+        </td> 
+    </tr> 
+      <tr> 
+    	<td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_CUSTOMER_NUMBER ?>:</td>
+        <td > 
+      	<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo $ps_shopper_group->get_customer_num($db->f("user_id")) ?>" />
+        </td>
+     </tr>
+     <tr> 
+    	<td style="text-align:right;"> <?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_GROUP ?>:</td>
+        <td ><?php
+            include_class('shopper');
+            $sg_id = $ps_shopper_group->get_shoppergroup_by_id($db->f("user_id"));
+            echo ps_shopper_group::list_shopper_groups("shopper_group_id",$sg_id["shopper_group_id"]);?>
+        </td>
+    </tr>
 </table> 
-       
+</fieldset>
        
 <?php 
 if( $db->f("user_id") ) { 
 ?> 
-     
-         <h3><?php echo $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL ?>
-
-		<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?page=$modulename.user_address_form&amp;user_id=$user_id") ?>" >
-		(<?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?>)</a></h3> 
-       
+    <fieldset><legend><?php echo $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL ?></legend>
+    
+    <a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?page=$modulename.user_address_form&amp;user_id=$user_id") ?>" >
+	(<?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?>)</a></h3> 
+	
 	<table class="adminlist"> 
 		<tr> 
 			<td > 
@@ -126,13 +128,10 @@ if( $db->f("user_id") ) {
 			} ?> 
 			</td> 
 		</tr> 
-	</table> 
+	</table>
+	</fieldset>
          <?php 
 }
-
-$tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL, "billto-page");
-
 
 require_once( CLASSPATH.'ps_userfield.php');
 // Get only those fields that are NOT system fields
@@ -231,7 +230,7 @@ $formObj->hiddenField( 'address_type', 'BT' );
 $formObj->hiddenField( 'address_type_name', '-default-' );
 $formObj->hiddenField( 'user_id', $user_id );
 
-$funcname = $db->f("user_id") ? "userUpdate" : "userAdd";
+$funcname = $user_id ? "userUpdate" : "userAdd";
 
 // Write your form with mixed tags and text fields
 // and finally close the form:

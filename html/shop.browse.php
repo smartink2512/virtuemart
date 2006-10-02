@@ -31,7 +31,7 @@ require_once (CLASSPATH."ps_reviews.php");
 require_once (CLASSPATH."imageTools.class.php");
 require_once (CLASSPATH."PEAR/Table.php");
 
-$Itemid = mosgetparam($_REQUEST, "Itemid", null);
+$Itemid = $sess->getShopItemid();
 $keyword1 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword1', null )));
 $keyword2 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword2', null )));
 // possible values: [ASC|DESC]

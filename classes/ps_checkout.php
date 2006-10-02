@@ -879,13 +879,18 @@ Order Total: '.$order_total.'
 					'order_id' => $order_id, 
 					'order_payment_code' => $d["order_payment_code"], 
 					'payment_method_id' => $d["payment_method_id"], 
-					'order_payment_number' => "ENCODE( \"$payment_number\",\"" . ENCODE_KEY . "\")",
 					'order_payment_expire' => @$_SESSION["ccdata"]["order_payment_expire"], 
 					'order_payment_log' => @$d["order_payment_log"], 
 					'order_payment_name' => @$_SESSION["ccdata"]["order_payment_name"], 
 					'order_payment_trans_id' => $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] )
 				  );
-		$db->buildQuery( 'INSERT', '#__{vm}_order_payment', $fields, '', array('order_payment_number') );
+		if( !empty( $payment_number )) {
+			$fields['order_payment_number'] = "ENCODE( \"$payment_number\",\"" . ENCODE_KEY . "\")";
+			$specialfield = array('order_payment_number');
+		} else {
+			$specialfield = array();
+		}
+		$db->buildQuery( 'INSERT', '#__{vm}_order_payment', $fields, '', $specialfield );
 		$db->query();
 
 		/**

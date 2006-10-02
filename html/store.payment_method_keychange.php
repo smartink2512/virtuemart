@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 $payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
 $passkey = mosGetParam( $_POST, 'passkey', null );
-$Itemid = mosGetParam( $_REQUEST, 'Itemid', null );
+$Itemid = $sess->getShopItemid();
 $task = mosGetParam( $_POST, 'task', null );
 
 if ( $payment_method_id ) {

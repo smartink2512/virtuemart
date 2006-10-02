@@ -127,7 +127,7 @@ class ps_communication {
  	*/    
 	function mail_question(&$d) {
 		global $database, $vmLogger, $mosConfig_sitename,  $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_db, $Itemid, $_SESSION;
-		global $VM_LANG,$mosConfig_live_site,$mosConfig_lang;
+		global $VM_LANG,$mosConfig_live_site,$mosConfig_lang, $sess;
 
 		$db = new ps_DB;
 
@@ -142,7 +142,7 @@ class ps_communication {
 			mosErrorAlert( _NOT_AUTH );
 		}
 		
-		$Itemid = mosgetparam($_REQUEST, "Itemid", null);
+		$Itemid = $sess->getShopItemid();
 		$flypage = mosgetparam($_REQUEST, "flypage", null);
 		// product url
 		$product_url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid";

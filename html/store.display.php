@@ -19,12 +19,9 @@ mm_showMyFileName( __FILE__ );
 
 ?>
 <br />
-<table>
-<tr>
-<td width="60"><img src="<?php echo IMAGEURL ?>ps_image/home.png" border="0" /></td>
-<td align="left"><span class="sectionname"><?php echo $VM_LANG->_PHPSHOP_STORE_MOD ?></span></td>
-</tr>
-</table>
+<img src="<?php echo IMAGEURL ?>ps_image/home.png" border="0" align="left" alt="Store Home" />
+<h2 class="adminListHeader"><?php echo $VM_LANG->_PHPSHOP_STORE_MOD ?></h2>
+
 <br /><br />
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 

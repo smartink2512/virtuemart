@@ -23,7 +23,7 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL );
       
 $next_page = mosGetParam( $_REQUEST, "next_page", "account.index");
-$Itemid = mosGetParam( $_REQUEST, "Itemid", null);
+$Itemid = $sess->getShopItemid();
 
 $missing = mosGetParam( $vars, 'missing' );
 if (!empty($missing)) {

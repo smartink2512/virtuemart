@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Paramater search for phpShop
 * @author Zdenek Dvorak (zdenek.dvorak@seznam.cz)
 *
-* @version $Id: shop.parameter_search_form.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id: shop.parameter_search_form.php,v 1.3 2005/09/29 20:02:18 soeren_nb Exp $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -37,7 +37,7 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 		echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY.": ".$db->f("product_type_name");
 		// Reset form
 		echo "</td><td align=\"center\">";
-		echo "<form action=\"".$_SERVER['PHP_SELF']. "?option=com_virtuemart&page=shop.parameter_search_form&product_type_id=". $product_type_id. "&Itemid=" .$_REQUEST['Itemid']. "\" method=\"post\" name=\"reset\">\n";
+		echo "<form action=\"".$sess->url( $mm_action_url.basename($_SERVER['PHP_SELF']). "?page=shop.parameter_search_form&product_type_id=". $product_type_id ). "\" method=\"post\" name=\"reset\">\n";
 		echo "<input type=\"submit\" class=\"button\" name=\"reset\" value=\"";
 		echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_RESET_FORM ."\">\n</form>";
 		echo "</td><td width=\"40%\">&nbsp;</td></tr></table>\n";
@@ -48,7 +48,7 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="page" value="shop.browse" />
 <input type="hidden" name="product_type_id" value="<?php echo $product_type_id ?>" />
-<input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid'] ?>" />
+<input type="hidden" name="Itemid" value="<?php echo $sess->getShopItemid() ?>" />
 <BR>
 
 <?php 

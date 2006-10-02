@@ -20,7 +20,7 @@ mm_showMyFileName( __FILE__ );
 require_once(CLASSPATH . 'ps_product_files.php' );
 require_once(CLASSPATH . 'imageTools.class.php' );
 require_once(CLASSPATH . 'ps_product.php' );
-$ps_product = new ps_product;
+$ps_product = $GLOBALS['ps_product'] = new ps_product;
 
 require_once(CLASSPATH . 'ps_product_category.php' );
 $ps_product_category = new ps_product_category;
@@ -42,7 +42,7 @@ $product_id = intval( mosgetparam($_REQUEST, "product_id", null) );
 $product_sku = $db->getEscaped( mosgetparam($_REQUEST, "sku", '' ) );
 $category_id = mosgetparam($_REQUEST, "category_id", null);
 $manufacturer_id = mosgetparam($_REQUEST, "manufacturer_id", null);
-$Itemid = mosgetparam($_REQUEST, "Itemid", null);
+$Itemid = $sess->getShopItemid();
 $db_product = new ps_DB;
 
 // Get the product info from the database
@@ -259,6 +259,7 @@ if (PSHOP_ALLOW_REVIEWS == '1') {
 	/*** Show all reviews available ***/
 	$product_reviews = ps_reviews::product_reviews( $product_id );
 	/*** Show a form for writing a review ***/
+	
 	if( $my->id ) {
 		$product_reviewform = ps_reviews::reviewform( $product_id );
 	}

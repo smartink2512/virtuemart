@@ -71,7 +71,7 @@ class ps_cart {
 
 		include_class("product");
 
-		$Itemid = mosgetparam($_REQUEST, "Itemid", null);
+		$Itemid = $sess->getShopItemid();
 		$db = new ps_DB;
 		$product_id = $d["product_id"];
 		$quantity = isset($d["quantity"]) ? $d["quantity"] : 1;

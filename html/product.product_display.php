@@ -97,7 +97,7 @@ $db->next_record();
 	<br style="clear:both;"/>
 	<br style="clear:both;"/>
 		<div class="formLabel"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?>:</div>
-		<div class="formField"><?php echo $CURRENCY_DISPLAY->getFullValue( $price['product_price'] ); ?></div>
+		<div class="formField"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue( $price['product_price'] ); ?></div>
 	<br style="clear:both;" />
 	<br style="clear:both;" />
 		<div class="formLabel" > <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_S_DESC ?>:</div>

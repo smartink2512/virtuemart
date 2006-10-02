@@ -305,7 +305,7 @@ if ($num_rows > 0) {
 		$listObj->addCell( $db->f("product_sku") );
 		
 		$price = $ps_product->getPriceByShopperGroup( $db->f('product_id'), '');
-		$tmp_cell = '<span onclick="getPriceForm(this);">'.$CURRENCY_DISPLAY->getValue( $price['product_price']).' '.$price['product_currency'];
+		$tmp_cell = '<span onclick="getPriceForm(this);">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'];
 		$tmp_cell .= '&nbsp;&nbsp;&nbsp;</span>';
 		
 		$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" style="cursor:pointer;" title="'.$VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'"' );

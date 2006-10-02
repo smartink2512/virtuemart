@@ -65,16 +65,19 @@ class ps_shopper {
 		$d['isValidVATID'] = false;
 		foreach( $registrationFields as $field ) {
 			if( $field->type == 'euvatid' ) {
+				
 				if( empty( $d[$field->name])) break; // Do nothing when the EU VAT ID field was left empty
 				else {
 					// Check the VAT ID against the validation server of the European Union
 					$d['isValidVATID'] = vmValidateEUVat( $d[$field->name] );
+					$d['__euvatid_field'] = $field;
 					
 					break; // We don't need to go further in the loop
 				}
 				
 			}
 		}
+		
 		$d['user_email'] = @$d['email'];
 		$d['perms'] = 'shopper';
 
@@ -187,6 +190,7 @@ class ps_shopper {
 		if (!$this->validate_add($d)) {
 			return False;
 		}
+		
 		// Use InputFilter class to prevent SQL injection or HTML tags
 		$d = $GLOBALS['vmInputFilter']->safeSQL( $d );
 
@@ -207,6 +211,7 @@ class ps_shopper {
 				$_POST['password2'] = $_POST['password'];
 			}
 			// Process Mambo/Joomla registration stuff
+			
 			if( !$this->saveRegistration() ) {
 				return false;
 			}
@@ -214,6 +219,7 @@ class ps_shopper {
 			$database->setQuery( "SELECT id FROM #__users WHERE username='".$d['username']."'" );
 			$database->loadObject( $userid );
 			$uid = $userid->id;
+			
 		}
 		else {
 			$uid = $my->id;
@@ -261,7 +267,7 @@ class ps_shopper {
 		unset($fields['email']);
 
 		$db->buildQuery('INSERT', '#__{vm}_user_info', $fields );
-
+		
 		// Run the query now!
 		$db->query();
 
@@ -275,7 +281,8 @@ class ps_shopper {
 		$d['shopper_group_id'] = '';
 		
 		// Get the ID of the shopper group for this customer
-		if( $d['isValidVATID']) {
+		if( $d['isValidVATID'] ) {
+			
 			if( trim($d['__euvatid_field']->params) != '' ) {
 				$shopper_group = new mosParameters( $d['__euvatid_field']->params );
 				$d['shopper_group_id'] = $shopper_group->get('shopper_group_id');
@@ -318,7 +325,11 @@ class ps_shopper {
 		}
 		
 		if( !$my->id && $mosConfig_useractivation == '0') {
-			$mainframe->login($d['username'], md5( $d['password'] ));
+			if( defined( '_JEXEC' )) {
+				$mainframe->login($d['username'], $d['password'] );
+			} else {
+				$mainframe->login($d['username'], md5( $d['password'] ));
+			}
 			mosRedirect( $sess->url( 'index.php?page=checkout.index' ) );
 		}
 		elseif( $my->id ) {

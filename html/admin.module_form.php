@@ -51,8 +51,8 @@ $formObj->startForm();
       <td width="24%" align="right" ><?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_MENU ?>:</td>
       <td width="76%" > 
         <select class="inputbox" name="module_publish">
-          <option value="y" <?php if ($db->f("module_publish")=="y") echo "selected=\"selected\""?>><?php echo _CMN_YES ?></option>
-          <option value="n" <?php if ($db->f("module_publish")=="n") echo "selected=\"selected\""?>><?php echo _CMN_NO ?></option>
+          <option value="y" <?php if ($db->f("module_publish")=="y") echo "selected=\"selected\""?>><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+          <option value="n" <?php if ($db->f("module_publish")=="n") echo "selected=\"selected\""?>><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
         </select>
       </td>
     </tr>

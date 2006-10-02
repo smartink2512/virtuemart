@@ -105,7 +105,7 @@ function vmValidateName( $string ) {
 function vmValidateEUVat( $euvat ){
 	require_once( CLASSPATH . 'connectionTools.class.php' );
 	
-	$eurl = "www.europa.eu.int/comm/taxation_customs/vies/cgi-bin/viesquer";
+	$eurl = "http://ec.europa.eu/taxation_customs/vies/cgi-bin/viesquer";
 	if(!ereg("([a-zA-Z][a-zA-Z])[- ]*([0-9]*)", $euvat, $r)){
 		return false;
 	}
@@ -115,7 +115,7 @@ function vmValidateEUVat( $euvat ){
 	
 	$ret = vmConnector::handleCommunication($eurl, $query);
 	
-	if (ereg("Yes, valid VAT number", $ret)) {
+	if (strstr( $ret, "Yes, valid VAT number" )) {
 		return true;
 	}
 	return false;

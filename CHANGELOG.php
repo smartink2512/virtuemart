@@ -1,5 +1,7 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Restricted access' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 /**
 *
 * @version $Id$
@@ -33,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+02-10-2006 soeren
+
+^ various changes for Joomla! 1.5 compatibility
+!# fixed various non-critical XSS vulnerabilities though Itemid parameter
+
 13-09-2006 soeren
 
 + added the user field type "euvatid", you can now publish such a field and assign users

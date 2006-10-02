@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ADD_SHIPTO_1 ." ".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 );
       
-$Itemid = mosGetParam( $_REQUEST, "Itemid", null );
+$Itemid = $sess->getShopItemid();
 $next_page = mosGetParam( $_REQUEST, "next_page", "account.shipping" );
 $user_info_id = mosGetParam( $_REQUEST, "user_info_id", "" );
 

@@ -284,7 +284,7 @@ class formFactory {
 	*/
 	function formFactory( $title = '' ) {
 		if( $title != "" ) {
-			echo "<div class=\"sectionname\">$title</div>";
+			echo "<div class=\"adminListHeader\">$title</div>";
 		}
 	}
 	/** 

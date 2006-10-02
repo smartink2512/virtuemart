@@ -480,7 +480,7 @@ class ps_html {
 		if( !is_array( $folder)) {
 			$folder = array($folder);
 		}
-		echo '<div class="quote" style="'.$style.'">';
+		echo '<div class="vmquote" style="'.$style.'">';
         foreach( $folder as $dir ) {
             echo $dir . ' :: ';
             echo is_writable( $dir )

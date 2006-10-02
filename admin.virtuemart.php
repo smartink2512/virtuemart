@@ -1,5 +1,7 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 /**
 *
 * @version $Id$
@@ -17,6 +19,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
+
+include( dirname(__FILE__).'/compat.joomla1.5.php');
 
 $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
 $no_toolbar = mosGetParam( $_REQUEST, 'no_toolbar', 0 );
@@ -89,7 +93,7 @@ if( $pagePermissionsOK ) {
 	$pagename = $my_page[1];
 	$_SESSION['last_page'] = $page;
 }
-if( !defined('_VM_TOOLBAR_LOADED') & $no_menu == 1 ) {
+if( !defined('_VM_TOOLBAR_LOADED') && $no_menu == 1 ) {
 	echo '<div align="right" class="menudottedline">';
 	include( ADMINPATH.'toolbar.virtuemart.php');
 	echo '</div>';

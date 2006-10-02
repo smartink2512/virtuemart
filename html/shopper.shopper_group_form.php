@@ -86,8 +86,8 @@ if (!empty($shopper_group_id)) {
       </td>
       <td width="77%" > 
         <select class="inputbox" name="show_price_including_tax">
-          <option <?php echo $selected[0] ?> value="0"><?php echo _CMN_NO ?></option>
-          <option <?php echo $selected[1] ?> value="1"><?php echo _CMN_YES ?></option>
+          <option <?php echo $selected[0] ?> value="0"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+          <option <?php echo $selected[1] ?> value="1"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
         </select>&nbsp;
         <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN ); ?>
       </td>

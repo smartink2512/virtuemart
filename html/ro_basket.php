@@ -97,7 +97,7 @@ else {
 			$product_price = $price["product_price"];
 		}
 		$product_price = round( $product_price, 2 );
-		$product_rows[$i]['product_price'] = $CURRENCY_DISPLAY->getFullValue($product_price);
+		$product_rows[$i]['product_price'] = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($product_price);
 
 		/* Quantity Box */
 		$product_rows[$i]['quantity'] = $cart[$i]["quantity"];
@@ -110,7 +110,7 @@ else {
 		$subtotal = $product_price * $cart[$i]["quantity"];
 
 		$total += $subtotal;
-		$product_rows[$i]['subtotal'] = $CURRENCY_DISPLAY->getFullValue($subtotal);
+		$product_rows[$i]['subtotal'] = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($subtotal);
 		if (!empty($my_taxrate) && MULTIPLE_TAXRATES_ENABLE=='1') {
 			if( $auth["show_price_including_tax"] == 1 ) {
 				eval( "\$message = \"".$VM_LANG->_PHPSHOP_INCLUDING_TAX."\";" );
@@ -126,14 +126,14 @@ else {
 		$product_rows[$i]['update_form'] = "<input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
         <input type=\"hidden\" name=\"func\" value=\"cartUpdate\" />
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
-        <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
+        <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
         <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  value=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
       </form>";
 		$product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" />
         <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
         <input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
-        <input type=\"hidden\" name=\"Itemid\" value=\"". @$_REQUEST['Itemid'] ."\" />
+        <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
         <input type=\"hidden\" name=\"func\" value=\"cartDelete\" />
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
@@ -142,7 +142,7 @@ else {
 	} // End of for loop through the Cart
 
 	$total = $total_undiscounted = round($total, 2);
-	$subtotal_display = $CURRENCY_DISPLAY->getFullValue($total);
+	$subtotal_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($total);
 
 
 	if ($_REQUEST["page"] == "checkout.index" && !empty($_POST["do_coupon"])) {
@@ -172,13 +172,13 @@ else {
 			}
 
 			$total -= $payment_discount;
-			$payment_discount_display = $CURRENCY_DISPLAY->getFullValue($payment_discount-($payment_discount*2));
+			$payment_discount_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($payment_discount-($payment_discount*2));
 		}
 		/* COUPON DISCOUNT */
 		if( PSHOP_COUPONS_ENABLE=='1' && @$_SESSION['coupon_redeemed']==true ) {
 			$total -= $_SESSION['coupon_discount'];
 			$coupon_discount_before = true;
-			$coupon_display = "- ".$CURRENCY_DISPLAY->getFullValue( $_SESSION['coupon_discount'] );
+			$coupon_display = "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $_SESSION['coupon_discount'] );
 		}
 	}
 	/* SHOW SHIPPING COSTS */
@@ -196,7 +196,7 @@ else {
 		else {
 			$shipping_tax = round( $shipping_total * $shipping_taxrate, 2);
 		}
-		$shipping_display = $CURRENCY_DISPLAY->getFullValue($shipping_total);
+		$shipping_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($shipping_total);
 	}
 	else {
 		$shipping_total = 0;
@@ -218,7 +218,7 @@ else {
 		}
 		$tax_total += $shipping_tax;
 		$tax_total = round( $tax_total, 2 );
-		$tax_display = $CURRENCY_DISPLAY->getFullValue($tax_total);
+		$tax_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($tax_total);
 
 		$tax_display .= ps_checkout::show_tax_details( $order_tax_details );
 	}
@@ -233,13 +233,13 @@ else {
 				$discount_word = $VM_LANG->_PHPSHOP_FEE;
 			}
 			$total -= $payment_discount;
-			$payment_discount_display = $CURRENCY_DISPLAY->getFullValue($payment_discount-($payment_discount*2));
+			$payment_discount_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($payment_discount-($payment_discount*2));
 		}
 		/* COUPON DISCOUNT */
 		if( PSHOP_COUPONS_ENABLE=='1' && @$_SESSION['coupon_redeemed']==true ) {
 			$total -= $_SESSION['coupon_discount'];
 			$coupon_discount_after = true;
-			$coupon_display = "- ".$CURRENCY_DISPLAY->getFullValue( $_SESSION['coupon_discount'] );
+			$coupon_display = "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $_SESSION['coupon_discount'] );
 		}
 	}
 
@@ -261,7 +261,7 @@ else {
 	} else
 	define ('_MIN_POV_REACHED', '1');
 
-	$order_total_display = $CURRENCY_DISPLAY->getFullValue($order_total);
+	$order_total_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($order_total);
 
 	if( $auth["show_price_including_tax"] == 1) {
 		include (VM_THEMEPATH."templates/basket/ro_basket_b2c.html.php");

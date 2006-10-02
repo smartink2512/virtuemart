@@ -24,6 +24,8 @@ $ps_product_category = new ps_product_category;
 require_once(CLASSPATH . 'ps_product_attribute.php');
 $ps_product_attribute = new ps_product_attribute;
 
+$vendor_id = mosGetParam($_GET, 'vendor_id', 1 );
+
 ?><h3><?php echo " " . $ps_product->get_vend_idname($vendor_id);?></h3>
 
 

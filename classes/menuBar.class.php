@@ -39,7 +39,7 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function addNew( $task='new', $page, $alt='New', $formName="adminForm" ) {
 		global $vmIcons;
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		$image = '<img src="'.$vmIcons['new_icon'].'" alt="'.$alt.'" border="0" name="new" />';
 		$image2 = $vmIcons['new_icon2'];
 		
@@ -59,7 +59,7 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function save( $task='save', $alt='Save' ) {
 		global $vmIcons;
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		$image = '<img src="'.$vmIcons['save_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
 		$image2 = $vmIcons['save_icon2'];
 		
@@ -80,7 +80,7 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function apply( $task='apply', $alt='Apply' ) {
 		global $page, $vmIcons;
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		$image = '<img src="'.$vmIcons['apply_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
 		$image2 = $vmIcons['apply_icon2'];
 		
@@ -97,7 +97,7 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function publishList( $func, $task='publish', $alt='Publish' ) {
 		global $vmIcons;
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		$image = '<img src="'.$vmIcons['publish_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
 		$image2 = $vmIcons['publish_icon2'];
 		
@@ -116,7 +116,7 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function unpublishList( $func, $task='unpublish', $alt='Unpublish' ) {
 		global $vmIcons;
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		$image = '<img src="'.$vmIcons['unpublish_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
 		$image2 = $vmIcons['unpublish_icon2'];
 		
@@ -135,7 +135,7 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function deleteList( $func, $task='remove', $alt='Delete' ) {
 		global $vmIcons;
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		$image = '<img src="'.$vmIcons['delete_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
 		$image2 = $vmIcons['delete_icon2'];
 		
@@ -154,7 +154,7 @@ class vmMenuBar extends mosMenuBar {
 	function cancel( $task='cancel', $alt='Cancel' ) {
 		global $page, $vmIcons;
 		$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		
 		if ($page == "store.store_form") { $my_page = "store.index"; }
 		elseif ($page == "admin.user_address_form") { $my_page = "admin.user_list"; }
@@ -187,7 +187,7 @@ class vmMenuBar extends mosMenuBar {
 	* @param boolean True if required to check that a standard list item is checked
 	*/
 	function custom( $task='', $page, $icon='', $iconOver='', $alt='', $listSelect=true, $formName="adminForm", $func = "" ) {
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		if ($listSelect) {
 			if( empty( $func ))
 				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to $alt');}else{vm_submitButton('$task','$formName', '$page')}";
@@ -224,7 +224,7 @@ class vmMenuBar extends mosMenuBar {
 	* @param boolean True if required to check that a standard list item is checked
 	*/
 	function customHref( $href='', $icon='', $iconOver='', $alt='' ) {
-		$bar = JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('JComponent');
 		if ($icon && $iconOver) {
 			$bar->appendButton('Custom', "<td>
 			<a class=\"toolbar\" href=\"$href\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$alt','','$iconOver',1);\">

@@ -1,5 +1,7 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 /**
 * Header file for the shop administration.
 * shows all modules that are available to the user in a dropdown menu
@@ -40,23 +42,23 @@ while ($db->next_record()) {
 	}
 }
 if (!defined('_PSHOP_ADMIN')) {
-  $my_path = "includes/js/ThemeOffice/";
-  if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
-	echo '<script type="text/javascript" src="includes/js/mambojavascript.js"></script>
-	<a href="index.php" title="Back"><h3>&nbsp;&nbsp;&gt;&gt; '.$VM_LANG->_PHPSHOP_BACK_TO_MAIN_SITE.' &lt;&lt;</h3></a>';
-  }
-  // We need the admin template css now, but which one? - so check here
-  $adminTemplate = $_VERSION->PRODUCT == 'Joomla!' ? 'joomla_admin' : 'mambo_admin_blue';
-?>
-<link rel="stylesheet" href="<?php echo $my_path ?>theme.css" type="text/css" />
-<link rel="stylesheet" href="administrator/templates/<?php echo $adminTemplate; ?>/css/template_css.css" type="text/css" />
-<script language="JavaScript" src="includes/js/JSCookMenu.js" type="text/javascript"></script>
-<script language="JavaScript" src="<?php echo $my_path ?>theme.js" type="text/javascript"></script>
-        <?php 
+  	$my_path = "includes/js/ThemeOffice/";
+  	if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
+		echo '<script type="text/javascript" src="includes/js/mambojavascript.js"></script>
+		<a href="index.php" title="Back"><h3>&nbsp;&nbsp;&gt;&gt; '.$VM_LANG->_PHPSHOP_BACK_TO_MAIN_SITE.' &lt;&lt;</h3></a>';
+  	}
+  	// We need the admin template css now, but which one? - so check here
+  	$adminTemplate = $_VERSION->PRODUCT == 'Joomla!' ? 'joomla_admin' : 'mambo_admin_blue';
+	?>
+	<link rel="stylesheet" href="administrator/templates/<?php echo $adminTemplate; ?>/css/template_css.css" type="text/css" />
+    <?php 
 }
-    else {
-      $my_path = "../includes/js/ThemeOffice/";
-    }
+else {
+  $my_path = "../includes/js/ThemeOffice/";
+}
+echo vmCommonHTML::linkTag( $my_path .'theme.css' );
+echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/includes/js/JSCookMenu.js' );
+echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/ThemeOffice/theme.js' );
     ?>
 <script language="JavaScript" type="text/javascript">
 var vmMenu =

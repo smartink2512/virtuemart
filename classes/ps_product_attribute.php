@@ -199,12 +199,12 @@ class ps_product_attribute {
 	 */
 	function list_attribute($product_id) {
 
-		global $VM_LANG, $CURRENCY_DISPLAY, $mm_action_url;
+		global $VM_LANG, $CURRENCY_DISPLAY, $mm_action_url, $sess;
 		vmCommonHTML::loadMooAjax();
 		
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
-		$Itemid = mosGetParam( $_REQUEST, 'Itemid', "" );
+		$Itemid = $sess->getShopItemid();
 		$category_id = mosGetParam( $_REQUEST, 'category_id', "" );
 		$db = new ps_DB;
 		$db_sku = new ps_DB;

@@ -677,7 +677,7 @@ class ps_userfield extends vmAbstractObject {
 				break;
 			}			
 		}
-		if( $euvatid ) {
+		if( !empty($euvatid) ) {
 			$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'components/'.$GLOBALS['vmDir'].'/js/euvat_check.js'));
 			echo '
 			if( form.'.$euvatid.'.value != \'\' ) {

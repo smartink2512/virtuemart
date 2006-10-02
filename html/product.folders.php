@@ -66,7 +66,7 @@ class vmFoldersMenu {
           foreach ($categories as $category) {
             $ibg++;
             $Treeid = $ibg == 0 ? 1 : $ibg;
-            $itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
+            $itemid = isset($_REQUEST['Itemid']) ? '&Itemid='.intval($_REQUEST['Itemid'] ) : "";
             $mymenu_content.= str_repeat("\t", $level-1);
             if( $level > 1 && $i == 1 ) { $mymenu_content.= ","; }
             $mymenu_content.= "['".$category->cname;

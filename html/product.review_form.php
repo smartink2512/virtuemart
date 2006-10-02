@@ -46,7 +46,7 @@ $formObj->hiddenField( 'pshop_mode', 'admin' );
 $rating_table = "<table cellpadding=\"5\" summary=\"".$VM_LANG->_PHPSHOP_REVIEW_RATE."\">
               <tr>
                 <th id=\"five_stars\">
-                	<label for=\"user_rating5\"><img alt=\"5 stars\" src=\"".VM_VM_THEMEURL."images/stars/5.gif\" border=\"0\" /></label>
+                	<label for=\"user_rating5\"><img alt=\"5 stars\" src=\"".VM_THEMEURL."images/stars/5.gif\" border=\"0\" /></label>
                 </th>
                 <th id=\"four_stars\">
                 	<label for=\"user_rating4\"><img alt=\"4 stars\" src=\"".VM_THEMEURL."images/stars/4.gif\" border=\"0\" /></label>

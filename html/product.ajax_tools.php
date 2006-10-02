@@ -34,7 +34,7 @@ switch( $task ) {
 		$price = $ps_product->getPriceByShopperGroup( $product_id, $shopper_group_id );
 		$formatPrice = mosGetParam( $_REQUEST, 'formatPrice', 0 );
 		if( $formatPrice ) {
-			$price['product_price'] = '<span onclick="getPriceForm(this);">'.$CURRENCY_DISPLAY->getValue( $price['product_price']).' '.$price['product_currency'].'</span>';
+			$price['product_price'] = '<span onclick="getPriceForm(this);">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'].'</span>';
 		}
 		vmConnector::sendHeaderAndContent( 200, @$price['product_price'] );
 		break;

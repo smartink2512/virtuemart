@@ -1,4 +1,7 @@
 <?php
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 /**
 * @version $Id$
 * @package VirtueMart
@@ -13,8 +16,6 @@
 * http://virtuemart.net
 */
 
-// no direct access
-defined( '_VALID_MOS' ) or die( 'Restricted access' );
 ?>
 <pre><strong>Copyright:</strong>
 
@@ -36,7 +37,7 @@ VirtueMart includes or is derivative of works distributed under the following co
 
 CreditCard Class
 ---
-Copyright:	Daniel Fróz Costa
+Copyright:	Daniel Frï¿½z Costa
 License:	Public Domain
 
 Currency Converter Module

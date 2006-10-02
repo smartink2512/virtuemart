@@ -74,9 +74,9 @@ while($db->next_record())
 if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table>";
 ?>
 <div class="main">
-	<div class="sectionname">
-              <img src="<?php echo IMAGEURL ?>ps_image/Desktop.gif" width="48px" height="48px" align="center" alt="Desktop" border="0"/>
-              <?php echo $VM_LANG->_PHPSHOP_YOUR_STORE."::".$VM_LANG->_PHPSHOP_CONTROL_PANEL; ?>
+	<div class="adminListHeader">
+      <img src="<?php echo IMAGEURL ?>ps_image/Desktop.gif" width="48" height="48" align="center" alt="Desktop" border="0" />
+      <?php echo $VM_LANG->_PHPSHOP_YOUR_STORE."::".$VM_LANG->_PHPSHOP_CONTROL_PANEL; ?>
 	</div>
 	<br style="clear:both;" />
       <table width="100%" class="adminlist">
@@ -145,7 +145,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		        $tabs->startPane("content-pane");
 		        $tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS, "statistic-page");
 		    ?>
-			<table style="width:95%;">
+			<table class="adminlist" style="width:95%;">
 				<tr> 
 				  <th colspan="2" class="title"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_STATISTICS ?></th>
 				</tr>
@@ -176,7 +176,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		$tabs->endTab();
 		$tabs->startTab( $VM_LANG->_PHPSHOP_ORDER_MOD, "order-page");
 		?>
-			<table style="width:95%;">
+			<table class="adminlist" style="width:95%;">
 				<tr> 
 				  <th colspan="2" class="title"><?php 
 					  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list\">"
@@ -201,7 +201,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		$tabs->endTab();
 		$tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS, "neworder-page");
 		?>
-			<table style="width:95%;">
+			<table class="adminlist" style="width:95%;">
 				<tr>
 					<th colspan="2" class="title"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_ORDERS ?></th>
 				</tr>
@@ -222,7 +222,7 @@ if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table
 		if (defined( "_PSHOP_ADMIN" ) ) {
 		$tabs->startTab( $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS, "newcustomer-page");
 		?>
-			<table style="width:95%;">
+			<table class="adminlist" style="width:95%;">
 				<tr> 
 				  <th colspan="2" class="title"><?php echo $VM_LANG->_PHPSHOP_STATISTIC_NEW_CUSTOMERS ?></th>
 				</tr>

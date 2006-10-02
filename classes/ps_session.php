@@ -416,7 +416,7 @@ class ps_session {
 			}
 			else {
 				if( !empty( $_REQUEST['Itemid'] )) {
-					$_REQUEST['shopItemid'] = $_REQUEST['Itemid'];
+					$_REQUEST['shopItemid'] = intval( $_REQUEST['Itemid'] );
 				}
 				else {
 					$_REQUEST['shopItemid'] = 1;
@@ -473,7 +473,9 @@ class ps_session {
 					$appendix .= "&" . $this->component_name;
 				}
 				$appendix .= $Itemid;
-	
+				
+				$script = basename( $_SERVER['PHP_SELF'] );
+				
 				if (!defined( '_PSHOP_ADMIN' )) {
 	
 					// be sure that we have the correct PHP_SELF in front of the url
@@ -488,7 +490,9 @@ class ps_session {
 					}
 	
 					$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
-					$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
+					if( function_exists('sefRelToAbs')) {
+						$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
+					}
 
 					if( $createAbsoluteURI && substr($appendix,0,4)!='http' ) {
 						$appendix = URL . $appendix;
@@ -496,11 +500,12 @@ class ps_session {
 					
 				}
 				elseif( $_SERVER['SERVER_PORT'] == 443 ) {
-					$script = strstr($_SERVER['PHP_SELF'], 'index2.php') ? 'index2.php' : 'index3.php';
+					//$script = strstr($_SERVER['PHP_SELF'], 'index2.php') ? 'index2.php' : 'index3.php';
+					
 					$appendix = SECUREURL."administrator/$script".substr($text, $limiter, strlen($text)-1).$appendix;
 				}
 				else {
-					$script = strstr($_SERVER['PHP_SELF'], 'index2.php') ? 'index2.php' : 'index3.php';
+					//$script = strstr($_SERVER['PHP_SELF'], 'index2.php') ? 'index2.php' : 'index3.php';
 					$appendix = URL."administrator/$script".substr($text, $limiter, strlen($text)-1).$appendix;
 				}
 	

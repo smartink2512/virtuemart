@@ -91,7 +91,7 @@ while ($db->next_record()) {
 		$tmp_cell = $db->f("payment_method_discount").'%';
 	}
 	else {
-		$tmp_cell = $CURRENCY_DISPLAY->getFullValue( $db->f("payment_method_discount") );
+		$tmp_cell = $GLOBALS['CURRENCY_DISPLAY']->getFullValue( $db->f("payment_method_discount") );
 	}
 	$listObj->addCell( $tmp_cell );
     $listObj->addCell(  $db->f("shopper_group_name"));

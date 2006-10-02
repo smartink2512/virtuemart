@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+global $ps_product, $ps_product_category;
 require_once( CLASSPATH.'ps_product_discount.php' );
 
 $product_id = mosGetParam( $_REQUEST, 'product_id');

@@ -22,7 +22,7 @@ $zone_qty = mosgetparam( $_REQUEST, 'zone_qty');
 $ship_to_info_id = mosgetparam( $_REQUEST, 'ship_to_info_id');
 $shipping_rate_id = urldecode(mosGetParam( $_REQUEST, "shipping_rate_id", null ));
 $payment_method_id = mosgetparam( $_REQUEST, 'payment_method_id');
-$Itemid = mosgetparam( $_REQUEST, 'Itemid', null);
+$Itemid = $sess->getShopItemid();
 $checkout_next_step = mosgetparam( $_REQUEST, 'checkout_next_step', 2);
 $checkout_this_step = mosgetparam( $_REQUEST, 'checkout_this_step', 2);
 if( empty( $vars["error"] ) ) {
@@ -238,7 +238,7 @@ if ($checkout) {
 	                    <br />
 	                  	<input type="checkbox" name="agreed" value="1" class="inputbox" />&nbsp;&nbsp;
 	                  	<?php 
-	                  	$link = $mosConfig_live_site .'/index2.php?option=com_virtuemart&amp;page=shop.tos&amp;pop=1&amp;Itemid='. $_REQUEST['Itemid'];
+	                  	$link = $mosConfig_live_site .'/index2.php?option=com_virtuemart&amp;page=shop.tos&amp;pop=1&amp;Itemid='. $Itemid;
 						$text = $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS;
 						echo vmPopupLink( $link, $text );
 	                    echo '<br />';

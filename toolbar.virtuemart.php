@@ -1,5 +1,7 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 /**
 * This file is the Toolbar controller for VirtueMart
 *
@@ -26,6 +28,8 @@ if( stristr( $_SERVER['PHP_SELF'], 'administrator')) {
 	@define( '_PSHOP_ADMIN', '1' );
 }
 define('_VM_TOOLBAR_LOADED', 1 );
+
+include( dirname(__FILE__).'/compat.joomla1.5.php');
 
 global $page, $sess;
 if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
