@@ -26,6 +26,7 @@ $ps_product_category =& new ps_product_category();
 global $module, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $VM_LANG, $sess, $mm_action_url;
 
 $category_id = mosGetParam( $_REQUEST, 'category_id' );
+$Itemid = $sess->getShopItemid();
 
 $mod_dir = dirname( __FILE__ );
 
@@ -109,7 +110,7 @@ if ( $show_productsearch == 'yes' ) { ?>
       <form action="<?php echo $mm_action_url."index.php" ?>" method="get">
         <input id="shop_search_field" title="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" class="inputbox" type="text" size="12" name="keyword" />
         <input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
-		<input type="hidden" name="Itemid" value="<?php echo intval(@$_REQUEST['Itemid']) ?>" />
+		<input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="page" value="shop.browse" />
 	  </form>
@@ -190,7 +191,8 @@ if ( $show_login_form == "yes" ) {
 			<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="yes" name="remember" />
-			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $_SERVER['QUERY_STRING']); ?>" name="return" />
+			<?php $query_string = mosGetParam($_SERVER, 'QUERY_STRING', ''); ?>
+			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $query_string); ?>" name="return" />
 		  <br/>
 			<input type="submit" value="<?php echo _BUTTON_LOGIN ?>" class="button" name="Login" />
 			<?php
@@ -203,7 +205,7 @@ if ( $show_login_form == "yes" ) {
 		</tr>
 		<tr>
 		  <td colspan="2">
-			<a href="<?php echo sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$_REQUEST['Itemid'] ); ?>">
+			<a href="<?php echo sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$Itemid ); ?>">
 			<?php echo _LOST_PASSWORD; ?>
 			</a>
 		  </td>

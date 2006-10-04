@@ -55,7 +55,7 @@ class ps_paypal {
         <tr class="row1">
         <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL ?></strong></td>
             <td>
-                <input type="text" name="PAYPAL_EMAIL" class="inputbox" value="<?  echo PAYPAL_EMAIL ?>" />
+                <input type="text" name="PAYPAL_EMAIL" class="inputbox" value="<?php  echo PAYPAL_EMAIL ?>" />
             </td>
             <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN ?>
             </td>

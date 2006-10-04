@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+04-10-2006 gregdev
+
+#  Task #978 — PHP Short-Tag used in ps_paypal.php
+!# fixed various non-critical XSS vulnerabilities QUERY_STRING and shopItemid
 
 02-10-2006 soeren
 
