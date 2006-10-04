@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 04-10-2006 gregdev
 
+#  Task #962 — skip_fields not initialized in checkout_register_form.php
 #  Task #978 — PHP Short-Tag used in ps_paypal.php
 !# fixed various non-critical XSS vulnerabilities QUERY_STRING and shopItemid
 
