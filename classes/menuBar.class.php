@@ -21,8 +21,9 @@ if( !class_exists( "mosMenuBar")) {
 
 if( !class_exists('jtoolbar')) {
 	class JToolBar {
-		function getInstance($text) {
-			return new JToolBar();
+		function &getInstance($text) {
+			$tb = new JToolBar();
+			return $tb;
 		}
 		function appendButton( $type, $html ) {
 			echo $html;
