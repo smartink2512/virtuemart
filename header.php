@@ -56,10 +56,12 @@ if (!defined('_PSHOP_ADMIN')) {
 else {
   $my_path = "../includes/js/ThemeOffice/";
 }
-echo vmCommonHTML::linkTag( $my_path .'theme.css' );
-echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/includes/js/JSCookMenu.js' );
-echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/ThemeOffice/theme.js' );
-    ?>
+if( class_exists('jversion')) {
+	echo vmCommonHTML::linkTag( $my_path .'theme.css' );
+	echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/includes/js/JSCookMenu.js' );
+	echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/ThemeOffice/theme.js' );
+}
+?>
 <script language="JavaScript" type="text/javascript">
 var vmMenu =
 [  <?php 
