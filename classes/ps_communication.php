@@ -199,14 +199,14 @@ class ps_communication {
 		elseif (ORDER_MAIL_HTML == '1') {
 			// Mail receipt to the vendor
 			// open the HTML file and read it into $html
-			if (file_exists(PAGEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html")) {
-				$html_file = fopen(PAGEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html","r");
+			if (file_exists(VM_THEMEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html")) {
+				$html_file = fopen(VM_THEMEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html","r");
 			}
-			elseif(file_exists(ADMINPATH."enquiry_".$mosConfig_lang.".html")) {
-				$html_file = fopen(ADMINPATH."enquiry_".$mosConfig_lang.".html","r");
-			}
-			else {
-				$html_file = fopen(PAGEPATH."templates/order_emails/enquiry_english.html","r");
+			elseif(file_exists(VM_THEMEPATH."templates/order_emails/enquiry_english.html")) {
+				$html_file = fopen(VM_THEMEPATH."templates/order_emails/enquiry_english.html","r");
+			} else {
+				$vmLogger->err( 'Enquiry template file not found!' );
+				return false;
 			}
 
 			$vhtml = "";
