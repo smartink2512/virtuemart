@@ -73,7 +73,7 @@ if ($set <> 0 ) {
 // get current user name and email
 
 // Set up form for email details
-$send_mail = "<form action=\"".$mm_action_url."index.php\" method=\"post\" name=\"emailForm\" target=\"_top\" id=\"emailForm\">\n";
+$send_mail = "<form action=\"".$mm_action_url."index.php\" method=\"post\" name=\"emailForm\" id=\"emailForm\">\n";
 $send_mail .= "<label for=\"contact_name\">"._NAME_PROMPT."</label />\n";
 $send_mail .= "<br><input type=\"text\" name=\"name\" id=\"contact_name\" size=\"80\" class=\"inputbox\" value=\"".$name."\"><br><br />\n";
 $send_mail .= "<label for=\"contact_mail\">"._EMAIL_PROMPT."</label />\n";
