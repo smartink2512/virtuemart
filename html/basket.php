@@ -130,7 +130,7 @@ else {
 
 		/* UPDATE CART / DELETE FROM CART */
 		$action_url = $mm_action_url.basename($_SERVER['PHP_SELF']);
-		$product_rows[$i]['update_form'] = "<input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
+		$product_rows[$i]['update_form'] = "<input type=\"hidden\" name=\"page\" value=\"". $page ."\" />
     <input type=\"hidden\" name=\"func\" value=\"cartUpdate\" />
     <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
     <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
@@ -139,7 +139,7 @@ else {
   </form>";
 		$product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" >
     <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
-    <input type=\"hidden\" name=\"page\" value=\"". $_REQUEST['page'] ."\" />
+    <input type=\"hidden\" name=\"page\" value=\"". $page ."\" />
     <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
     <input type=\"hidden\" name=\"func\" value=\"cartDelete\" />
     <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
