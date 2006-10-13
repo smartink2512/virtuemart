@@ -32,7 +32,7 @@ $pathway = "<a class=\"pathway\" href=\"".$sess->url( SECUREURL ."index.php?page
 $mainframe->appendPathWay( $pathway );
 echo "<div>$pathway</div><br/>";
 
-$vars['country'] = empty( $_REQUEST['country'] ) ? $vendor_country : $_REQUEST['country'];
+$vars['country'] = empty( $_REQUEST['country'] ) ? $vendor_country : mosGetParam($_REQUEST, 'country');
 $missing = mosGetParam( $vars, 'missing' );
 $missing_style = "color: Red; font-weight: Bold;";
 
