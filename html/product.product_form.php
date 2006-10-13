@@ -931,11 +931,11 @@ while ($dba->next_record()) {
 if( $clone_product == "1" ) {
 	$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/copy_f2.gif\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />Clone Product Otions", "clone-page" );
 	echo '<input type="hidden" name="clone_product" value="Y" />';
-	echo '<input type="hidden" name="old_product_id" value="'.$_REQUEST['product_id'].'" />';
+	echo '<input type="hidden" name="old_product_id" value="'.mosGetParam($_REQUEST, 'product_id').'" />';
 	$db_att = new ps_DB;
 	$db->query( "SELECT product_id, product_name
                 FROM #__{vm}_product
-                WHERE product_parent_id='".$_REQUEST['product_id']."' " );
+                WHERE product_parent_id='".mosGetParam($_REQUEST, 'product_id')."' " );
 	if( $db->num_rows() > 0 ) {
 		echo "<h3>Also clone these Child Items:</h3>";
 	}
