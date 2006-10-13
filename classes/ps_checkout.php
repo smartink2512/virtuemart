@@ -1264,6 +1264,8 @@ Order Total: '.$order_total.'
 		$auth = $_SESSION['auth'];
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
+		$ship_to_info_id = mosGetParam( $_REQUEST, 'ship_to_info_id');
+		
 		
 		require_once(CLASSPATH.'ps_tax.php');
 		$ps_tax = new ps_tax;
@@ -1273,7 +1275,7 @@ Order Total: '.$order_total.'
 		// Shipping address based TAX
 		if ( !ps_checkout::tax_based_on_vendor_address () ) {
 			$q = "SELECT state, country FROM #__{vm}_user_info ";
-			$q .= "WHERE user_info_id='".@$_REQUEST["ship_to_info_id"] . "'";
+			$q .= "WHERE user_info_id='".$ship_to_info_id. "'";
 			$db->query($q);
 			$db->next_record();
 			$state = $db->f("state");
