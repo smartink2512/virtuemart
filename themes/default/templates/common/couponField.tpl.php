@@ -25,17 +25,17 @@ mm_showMyFileName( __FILE__ );
 		<td width="100%">
 <?php
 if (@$_SESSION['invalid_coupon'] == true) {
-	echo "<strong>" . $VM_LANG->_PHPSHOP_COUPON_CODE_INVALID . "</strong><br/>";
+	echo "<strong>" . $VM_LANG->_PHPSHOP_COUPON_CODE_INVALID . "</strong><br />";
 }
 if( !empty($_REQUEST['coupon_error']) ) {
-	echo $_REQUEST['coupon_error']."<br/>";
+	echo mosGetParam($_REQUEST, 'coupon_error', '')."<br />";
 }
 // If you have a coupon code, please enter it here:
-echo $VM_LANG->_PHPSHOP_COUPON_ENTER_HERE . '<br/>';
+echo $VM_LANG->_PHPSHOP_COUPON_ENTER_HERE . '<br />';
 ?>  
 	    <form action="<?php echo $mm_action_url ?>index.php" method="post">
 			<input type="text" name="coupon_code" width="10" maxlength="30" class="inputbox" />
-			<input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid']?>" />
+			<input type="hidden" name="Itemid" value="<?php echo @intval($_REQUEST['Itemid'])?>" />
 			<input type="hidden" name="do_coupon" value="yes" />
 			<input type="hidden" name="option" value="<?php echo $option ?>" />
 			<input type="hidden" name="page" value="<?php echo $page ?>" />
