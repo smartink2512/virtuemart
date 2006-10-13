@@ -19,6 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL );
 
+$user_id = mosGetParam( $_REQUEST, 'user_id' );
 $user_info_id = mosGetParam( $_REQUEST, 'user_info_id' );
 $missing = mosGetParam( $vars, 'missing' );
 $missing_style = "color: Red; font-weight: Bold;";
@@ -218,8 +219,8 @@ echo "<br />".$VM_LANG->_PHPSHOP_SHIPTO_TEXT. "<br /><br /><br />";
   <input type="hidden" name="page" value="<?php echo $modulename ?>.user_form"  />
   <input type="hidden" name="cache" value="0" />
   <input type="hidden" name="task" value="" />
-  <input type="hidden" name="user_id" value="<?php echo $_REQUEST['user_id']; ?>" />
-  <input type="hidden" name="cid[0]" value="<?php echo $_REQUEST['user_id']; ?>" />
+  <input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
+  <input type="hidden" name="cid[0]" value="<?php echo $user_id; ?>" />
   </form>
   </fieldset>
 </div>
