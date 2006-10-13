@@ -182,7 +182,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "field_list" );
         </td>
         <td><?php
         if( !in_array( $db->f( "field_name"), $ps_csv->reserved_words )) { ?>
-            <a class="toolbar" href="index2.php?option=com_virtuemart&page=<?php echo $_REQUEST['page'] ?>&func=csvFieldDelete&field_id=<?php echo $db->f("field_id") ?>" onclick="return confirm('<?php echo $VM_LANG->_PHPSHOP_DELETE_MSG ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('Delete<?php echo $i ?>','','<?php echo IMAGEURL ?>ps_image/delete_f2.gif',1);"><img src="<?php echo IMAGEURL ?>ps_image/delete.gif" alt="Delete this record" name="Delete<?php echo $i ?>" align="middle" border="0"/>
+            <a class="toolbar" href="index2.php?option=com_virtuemart&page=<?php echo mosGetParam($_REQUEST, 'page'); ?>&func=csvFieldDelete&field_id=<?php echo $db->f("field_id") ?>" onclick="return confirm('<?php echo $VM_LANG->_PHPSHOP_DELETE_MSG ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('Delete<?php echo $i ?>','','<?php echo IMAGEURL ?>ps_image/delete_f2.gif',1);"><img src="<?php echo IMAGEURL ?>ps_image/delete.gif" alt="Delete this record" name="Delete<?php echo $i ?>" align="middle" border="0"/>
             </a>
         <?php
         } 
