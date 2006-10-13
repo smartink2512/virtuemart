@@ -169,7 +169,7 @@ if( !stristr( $db->f("category_full_image"), "http") )
               if( stristr($db->f("category_full_image"), "http") )
                 $category_full_image_url = $db->f("category_full_image");
               else if(!empty($_REQUEST['category_full_image_url']))
-                $category_full_image_url = $_REQUEST['category_full_image_url'];
+                $category_full_image_url = mosGetParam($_REQUEST, 'category_full_image_url');
               else
                 $category_full_image_url = "";
               ?>
@@ -215,7 +215,7 @@ if( !stristr( $db->f("category_full_image"), "http") )
               if( stristr($db->f("category_thumb_image"), "http") )
                 $category_thumb_image_url = $db->f("category_thumb_image");
               else if(!empty($_REQUEST['category_thumb_image_url']))
-                $category_thumb_image_url = $_REQUEST['category_thumb_image_url'];
+                $category_thumb_image_url = mosGetParam($_REQUEST, 'category_thumb_image_url');
               else
                 $category_thumb_image_url = "";
               ?>
