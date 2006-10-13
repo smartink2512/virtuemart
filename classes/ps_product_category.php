@@ -682,6 +682,7 @@ class ps_product_category extends vmAbstractObject {
 	function traverse_tree_down($class="",$category_id="0", $level="0") {
 		static $ibg = 0;
 		global $sess, $mosConfig_live_site, $VM_LANG;
+		$page = mosGetParam($_REQUEST, 'page');
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 		$class = "maintext";
@@ -732,7 +733,7 @@ class ps_product_category extends vmAbstractObject {
 			echo mShop_orderUpIcon( $db->row, $db->num_rows(), $ibg ) . "\n&nbsp;" . mShop_orderDownIcon( $db->row, $db->num_rows(), $ibg );
 			echo "</div></td>\n";
 			echo "<td width=\"5%\">";
-			echo "<a class=\"toolbar\" href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=".$_REQUEST['page'] ."&func= productCategoryDelete&category_id=". $db->f("category_id") ."\"";
+			echo "<a class=\"toolbar\" href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=".$page ."&func= productCategoryDelete&category_id=". $db->f("category_id") ."\"";
 			echo " onclick=\"return confirm('". $VM_LANG->_PHPSHOP_DELETE_MSG ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('Delete$ibg','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
 			echo "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$ibg\" align=\"middle\" border=\"0\" /></a></td>\n";
 			$this->traverse_tree_down($class, $db->f("category_child_id"), $level);
