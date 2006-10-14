@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+13-10-2006 gregdev
+
+!# fixed various non-critical XSS vulnerabilities
+
 04-10-2006 gregdev
 
 #  Task #962 — skip_fields not initialized in checkout_register_form.php

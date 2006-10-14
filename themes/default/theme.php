@@ -124,8 +124,11 @@ class vmTemplate_default extends vmTemplate  {
 	 */
 	function vmMoreImagesLink( $images ) {
 		global $mosConfig_live_site, $VM_LANG, $sess;
+		$flypage = mosGetParam($_REQUEST, 'flypage');
+		$product_id = mosGetParam($_REQUEST, 'product_id');
+		$category_id = mosGetParam($_REQUEST, 'category_id', 0);
 		/* Build the JavaScript Link */
-		$url = $sess->url( "index2.php?page=shop.view_images&amp;flypage=".@$_REQUEST['flypage']."&amp;product_id=".@$_REQUEST['product_id']."&amp;category_id=".@$_REQUEST['category_id']."&amp;pop=1" );
+		$url = $sess->url( "index2.php?page=shop.view_images&amp;flypage=".$flypage."&amp;product_id=".$product_id."&amp;category_id=".$category_id."&amp;pop=1" );
 		$text = $VM_LANG->_PHPSHOP_MORE_IMAGES.'('.count($images).')';
 		$image = vmCommonHTML::imageTag( VM_THEMEURL.'images/more_images.png', $text, '', '16', '16' );
 		

@@ -5,7 +5,7 @@
     <input id="quantity_<?php echo $i ?>" class="inputbox" type="text" size="3" name="quantity" value="<?php echo mosGetParam( $_REQUEST, 'quantity', 1 ); ?>" />
     <br />
 	<input type="submit" class="addtocart_button" value="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO  ?>" title="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" />
-    <input type="hidden" name="category_id" value="<?php echo  @$_REQUEST['category_id'] ?>" />
+    <input type="hidden" name="category_id" value="<?php echo  @intval($_REQUEST['category_id']); ?>" />
     <input type="hidden" name="product_id" value="<?php echo $product_id ?>" />
     <input type="hidden" name="page" value="shop.cart" />
     <input type="hidden" name="func" value="cartadd" />

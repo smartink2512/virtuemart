@@ -16,7 +16,7 @@
     <input type="hidden" name="product_id" value="$product_id" />
     <input type="hidden" name="option" value="$option" />
     <input type="hidden" name="page" value="$page" />
-    <input type="hidden" name="category_id" value="". @$_REQUEST['category_id'] ."" />
-    <input type="hidden" name="Itemid" value="". @$_REQUEST['Itemid'] ."" />
+    <input type="hidden" name="category_id" value="". @intval($_REQUEST['category_id']) ."" />
+    <input type="hidden" name="Itemid" value="". @intval($_REQUEST['Itemid']) ."" />
     <input type="hidden" name="func" value="addVote" />
 </form>

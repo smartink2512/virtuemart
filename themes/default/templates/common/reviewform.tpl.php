@@ -91,7 +91,7 @@ if (!$alreadycommented) {
     <input type="hidden" name="product_id" value="<?php echo $product_id ?>" />
     <input type="hidden" name="option" value="<?php echo $option ?>" />
     <input type="hidden" name="page" value="<?php echo $page ?>" />
-    <input type="hidden" name="category_id" value="<?php echo @$_REQUEST['category_id']  ?>" />
+    <input type="hidden" name="category_id" value="<?php echo @intval($_REQUEST['category_id'])  ?>" />
     <input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid']  ?>" />
     <input type="hidden" name="func" value="addReview" />
 </form>
