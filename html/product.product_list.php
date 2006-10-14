@@ -28,8 +28,13 @@ $search_date = mosgetparam($_REQUEST, 'search_date', null); // Changed search by
 
 $now = getdate();
 $nowstring = $now["hours"].":".$now["minutes"]." ".$now["mday"].".".$now["mon"].".".$now["year"];
-$search_order = @$_REQUEST["search_order"] ? $_REQUEST["search_order"] : "<";
-$search_type = @$_REQUEST["search_type"] ? $_REQUEST["search_type"] : "product";
+if(isset($_REQUEST['search_order']) && @$_REQUEST['search_order'] == '<') {
+	$search_order = '<';
+}
+else {
+	$search_order = '>';
+}
+$search_type = mosGetParam($_REQUEST, 'search_type', 'product');
 
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
