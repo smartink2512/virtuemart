@@ -447,7 +447,7 @@ class ps_userfield extends vmAbstractObject {
 	   			echo mm_ToolTip( $field->description );
 	   		}
 	   		echo '</div>
-				      <br/><br/>';
+				      <br style="clear:both;" /><br />';
 	   }
 	   echo '</fieldset>';
 	}
