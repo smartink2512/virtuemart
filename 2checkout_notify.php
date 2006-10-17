@@ -3,7 +3,7 @@
 * We need this file to redirect from 2Checkout 
 * to our Order Confirmation Handler
 *
-* @version $Id: 2checkout_notify.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

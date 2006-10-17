@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: product.product_type_parameter_form.php,v 1.3 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @author Zdenek Dvorak <Zdenek.Dvorak@seznam.cz>

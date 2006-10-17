@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file lists all shipping modules. It's in a file that's not called shipping_module_list
 * because we currently can't add or remove shipping modules automatically!
 *
-* @version $Id: store.shipping_modules.php,v 1.4 2005/10/07 14:29:57 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

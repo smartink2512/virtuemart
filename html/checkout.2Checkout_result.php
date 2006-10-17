@@ -3,7 +3,7 @@
 *
 * 2Checkout Order Confirmation Handler
 *
-* @version $Id: checkout.2Checkout_result.php,v 1.2 2005/09/27 17:51:26 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

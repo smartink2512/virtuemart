@@ -8,7 +8,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @author Tomas V.V.Cox <cox@idecnet.com>
 *
 *
-* @version $Id: PEAR.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -41,7 +41,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 // |          Tomas V.V.Cox <cox@idecnet.com>                           |
 // +--------------------------------------------------------------------+
 //
-// $Id: PEAR.php,v 1.2 2005/09/27 17:48:50 soeren_nb Exp $
+// $Id$
 //
 
 define('PEAR_ERROR_RETURN',     1);

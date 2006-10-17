@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * This file provides compatibility for VirtueMart on Joomla! 1.0.x and Joomla! 1.5
 *
 *
-* @version $Id: toolbar.virtuemart.php 313 2006-06-24 03:22:59 +0200 (Sa, 24 Jun 2006) mdennerlein $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

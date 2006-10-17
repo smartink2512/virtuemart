@@ -2,7 +2,7 @@
 /**
 * mambo-phpShop Show-Product-Snapshop Mambot XTD
 *
-* @version $Id: mosproductsnap_xtd.php,v 1.2 2005/03/08 19:26:05 soeren_nb Exp $
+* @version $Id$
 * @package mambo-phpShop
 * @subpackage mambots
 *

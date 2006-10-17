@@ -2,7 +2,7 @@
 /**
 * VirtueMart Show-Product-Snapshop Mambot
 *
-* @version $Id: mosproductsnap.php,v 1.3 2005/11/01 18:39:46 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage mambots
 *
