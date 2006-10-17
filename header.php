@@ -23,6 +23,7 @@ mm_showMyFileName( __FILE__ );
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 global $error, $page, $ps_product, $ps_product_category;
 $product_id = mosGetParam( $_REQUEST, 'product_id' );
+$module_id = mosGetParam( $_REQUEST, 'module_id', '' );
 
 if( is_array( $product_id )) {
     $recent_product_id = "";
@@ -101,10 +102,10 @@ for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules
                             ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_MODULE_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.module_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_MODULE_LIST_MNU ?>'],
                             ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.module_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_MNU ?>']
                         ],
-                        <?php if (!empty($_REQUEST['module_id'])) { ?>
+                        <?php if (!empty($module_id)) { ?>
                             ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $VM_LANG->_PHPSHOP_FUNCTIONS ?>',null,null,'<?php echo $VM_LANG->_PHPSHOP_FUNCTIONS ?>',
-                                ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_FUNCTION_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.function_list&module_id=".$_REQUEST['module_id']) ?>',null,'<?php echo $VM_LANG->_PHPSHOP_FUNCTION_LIST_MNU ?>'],
-                                ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.function_form&module_id=".$_REQUEST['module_id']) ?>',null,'<?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_MNU ?>']
+                                ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_FUNCTION_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.function_list&module_id=".$module_id) ?>',null,'<?php echo $VM_LANG->_PHPSHOP_FUNCTION_LIST_MNU ?>'],
+                                ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.function_form&module_id=".$module_id) ?>',null,'<?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_MNU ?>']
                             ]
                 
                         <?php } ?>

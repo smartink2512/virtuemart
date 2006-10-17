@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17-10-2006 gregdev
+
+!# fixed various non-critical XSS vulnerabilities
+
 13-10-2006 gregdev
 
 !# fixed various non-critical XSS vulnerabilities

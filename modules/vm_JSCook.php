@@ -83,7 +83,7 @@ class MamboMartTree {
 	*/
 	function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
 		static $ibg = -1;
-		global $module, $mosConfig_live_site;
+		global $module, $mosConfig_live_site, $sess;
 		$db = new ps_DB();
 		$level++;
 		$query = "SELECT category_name, category_id, category_child_id "
@@ -96,7 +96,7 @@ class MamboMartTree {
 		while( $db->next_record() ) {
 			$ibg++;
 			$Treeid = $ibg == 0 ? 1 : $ibg;
-			$itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
+			$itemid = '&Itemid='.$sess->getShopItemid();
 			$mymenu_content.= ",\n[null,'".$db->f("category_name");
 			$mymenu_content.= ps_product_category::products_in_category( $db->f("category_id") );
 			$mymenu_content.= "','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("category_id").$itemid."&TreeId=$Treeid")."','_self','".$db->f("category_name")."'\n ";
@@ -119,7 +119,7 @@ class MamboMartMenu {
 	*/
 	function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
 		static $ibg = 0;
-		global $module, $mosConfig_live_site;
+		global $module, $mosConfig_live_site, $sess;
 		$level++;
 		$query = "SELECT category_name, category_id, category_child_id "
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
@@ -130,7 +130,7 @@ class MamboMartMenu {
 		$db->query( $query );
 
 		while($db->next_record()) {
-			$itemid = isset($_REQUEST['itemid']) ? '&itemid='.$_REQUEST['itemid'] : "";
+			$itemid = '&Itemid='.$sess->getShopItemid();
 			if( $ibg != 0 )
 			$mymenu_content.= ",";
 
