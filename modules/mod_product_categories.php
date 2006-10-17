@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * www.virtuemart.net
 */
-global $jscook_type;
+global $jscook_type, $jscookMenu_style, $jscookTree_style;
 
 $category_id = mosGetParam( $_REQUEST, 'category_id');
 
