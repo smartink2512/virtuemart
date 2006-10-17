@@ -1038,7 +1038,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CONTINUE_SHOPPING = 'Verder Winkelen';
 	var $_PHPSHOP_THANKYOU_SUCCESS = 'Uw bestelling is succesvol geplaatst';
 	var $_PHPSHOP_ORDER_LINK = 'Klik hier om de details van uw bestelling te zien.';
-	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = 'De status van uw order nr. (order_id) is gewijzigd.';
+	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1 = 'De status van uw order nr. {order_id} is gewijzigd.';
 	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2 = 'De nieuwe status is:';
 	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3 = 'Om de details van uw bestelling te zien, klik hier (of kopieer het in uw browser):';
 	var $_PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ = 'Bestelling status wijziging: Uw bestelling {order_id}';
