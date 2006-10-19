@@ -43,11 +43,11 @@ function botSearchVM( $text, $phrase='', $ordering='' ) {
 			$wheres = array();
 			foreach ($words as $word) {
 				$wheres2 = array();
-				$wheres2[] = "LOWER(product_name) LIKE '%$text%'";
-				$wheres2[] = "LOWER(product_sku) LIKE '%$text%'";
-				$wheres2[] = "LOWER(product_desc) LIKE '%$text%'";
-				$wheres2[] = "LOWER(product_s_desc) LIKE '%$text%'";
-				$wheres2[] = "LOWER(product_url) LIKE '%$text%'";
+				$wheres2[] = "LOWER(product_name) LIKE '%$word%'";
+				$wheres2[] = "LOWER(product_sku) LIKE '%$word%'";
+				$wheres2[] = "LOWER(product_desc) LIKE '%$word%'";
+				$wheres2[] = "LOWER(product_s_desc) LIKE '%$word%'";
+				$wheres2[] = "LOWER(product_url) LIKE '%$word%'";
 				$wheres[] = implode( ' OR ', $wheres2 );
 			}
 			$where = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
