@@ -37,6 +37,8 @@ VirtueMart 1.1.x
 *************************************
 17-10-2006 gregdev
 
+#  Task #969 — order_id error in Dutch language file VM vs. 1.0.7
+#  Task #973 — Error in mod_product_categories
 !# fixed various non-critical XSS vulnerabilities
 
 13-10-2006 gregdev
