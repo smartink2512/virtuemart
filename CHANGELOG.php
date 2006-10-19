@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18-10-2006 gregdev
+
+#  Task #959 — Virtuemart search bot not working properly
+
 17-10-2006 gregdev
 
 #  Task #969 — order_id error in Dutch language file VM vs. 1.0.7
