@@ -2,8 +2,90 @@
  * AJAX FUNCTIONS 
  * 
  */
-
-
 function loadNewPage( el, url ) {
-	new ajax( url + '&only_page=1', { update: el } );
+	
+	var theEl = $(el);
+	var callback = {
+		success : function(o) {
+			theEl.innerHTML = o.responseText;
+		}
+	}
+	var opt = {
+	    // Use POST
+	    method: 'post',
+	    // Handle successful response
+	    onSuccess: callback.success,
+	    // Handle 404
+	    on404: function(t) {
+	        alert('Error 404 ('+ t.statusText + '):\nThe requested URL could not be found!' );
+	    }
+	}
+	new Ajax.Request( url + '&only_page=1', opt );
+}
+
+function handleGoToCart() { document.location = 'index.php?option=com_virtuemart&page=shop.cart&product_id=' + formCartAdd.product_id.value ; }
+
+function handleAddToCart( formId, parameters ) {
+	formCartAdd = document.getElementById( formId );
+	
+	var callback = {
+		success : function(o) {
+			
+			dlg = Dialog.confirm(o.responseText, 
+				{windowParameters: {className:"mac_os_x", 
+									width:440, modal: false,
+									showEffect: Element.show }, 
+				okLabel: " "+ ok_lbl +" ", 
+				cancelLabel: " " + cart_title +" ", 
+				buttonClass: "button", 
+				id: 'confirmDialog', 
+				cancel: handleGoToCart
+				});
+			dlg.setTitle( notice_lbl );
+			setTimeout( 'dlg.hide()', 3000 );
+			
+		},
+		failure : function(o) {
+			Dialog.alert( 'Error: connection failed.' , 
+							{windowParameters: {className: "mac_os_x", width:440}, 
+							okLabel: "Close",
+							id: 'failureInfo'
+							});
+		}
+	}
+	
+	var opt = {
+	    // Use POST
+	    method: 'post',
+	    // Send this lovely data
+	    postBody: Form.Methods.serialize( formId ),
+	    // Handle successful response
+	    onSuccess: callback.success,
+	    // Handle 404
+	    on404: function(t) {
+	        alert('Error 404 ('+ t.statusText + '):\nThe requested URL could not be found!' );
+	    },
+	    // Handle other errors
+	    onFailure: callback.failure
+	}
+
+	new Ajax.Request('index2.php?ajax_request=1', opt);
+}
+
+function protoPop( url, parameters ) {
+	
+	parameters = parameters || {};
+	popTitle = parameters.title || '';
+	popWidth = parameters.width || 700;
+	popHeight = parameters.height || 600;
+	popModal = parameters.modal || false;
+	
+	window_id = new Window('window_id', {className: "mac_os_x", 
+										title: popTitle,
+										showEffect: Element.show,
+										hideEffect: Element.hide,
+										width: popWidth, height: popHeight}); 
+	window_id.setAjaxContent( url, {}, true, modal );
+	window_id.setCookie('window_size');
+	window_id.setDestroyOnClose();
 }

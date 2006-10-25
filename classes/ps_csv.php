@@ -37,7 +37,7 @@ class ps_csv {
 	function getFields() {
 		// Get row positions of each element as set in csv table
 		$db = new ps_DB;
-		$q = "SELECT * FROM `#__{vm}_csv` ORDER BY `field_ordering`";
+		$q = "SELECT field_id,field_name,field_ordering,field_default_value,field_required FROM `#__{vm}_csv` ";
 		$db->query($q);
 
 		$csv_fields = Array();
@@ -412,7 +412,9 @@ class ps_csv {
 					$q .= ") ";
 					$q = str_replace( ",)", ")", $q );
 
-					$dbu->query($q);
+					if( !$dbu->query($q) ) {
+						continue;
+					}
 
 					$product_id = $dbu->last_insert_id();
 
@@ -612,18 +614,7 @@ class ps_csv {
 				$line++;
 				continue;
 			}
-			
-			// This will prevent importing weird data because of wrong exports
-			// Previous versions of this class exported an additional field (product_special), which is not wanted here
-			if( $csv_fields['product_available_date']['ordering'] == 13
-			&& $csv_fields['product_discount_id']['ordering'] == 14
-			&& ( @$data[13] == 'N' || @$data[13] == 'Y' || (empty($data[13]) && @$data[13]!==0 && @$data[13]!=='0'))
-			) {
-				$max = count( $data )-1;
-				for( $i = 13; $i < $max; $i++ ) {
-					$data[$i] = @$data[$i+1];
-				}
-			}
+
 			if( !defined( '_VM_CSV_FIRST_LINE_READ' )) {
 				$csv_log['first_line_raw'] = $enclosure . implode( $enclosure.$delim.$enclosure, $data ) . $enclosure;
 				$csv_log['first_line_array'] = $data;
@@ -872,17 +863,18 @@ class ps_csv {
 									  // add more here if needed
 									  );
 
-		$allowed_mime_types_arr = array(0 => 'text/html'
-										,1 => 'text/plain'
-										,2 => 'application/octet-stream'
-										,3 => 'application/x-octet-stream'
-										,4 => 'application/vnd.ms-excel'
-										,5 => 'application/force-download'
-										,6 => 'text/comma-separated-values'
-										,7 => 'text/x-csv'
-										,8 => 'text/x-comma-separated-values'
-										// add more here if needed
-										);
+		$allowed_mime_types_arr = array('text/html',
+									'text/plain',
+									'text/csv',
+									'application/octet-stream',
+									'application/x-octet-stream',
+									'application/vnd.ms-excel',
+									'application/force-download',
+									'text/comma-separated-values',
+									'text/x-csv',
+									'text/x-comma-separated-values'
+									// add more here if needed
+									);
 
 		$error = "";
 		if( !empty($d['csv_file'])) {
@@ -1072,53 +1064,57 @@ class ps_csv {
 			}
 
 			if( $use_standard_order == "Y" ) {
-				$contents .= $encl . $db->f("product_sku"). $encl
-				. $delim . $encl . str_replace("\r", "", str_replace("\n", "", str_replace("\r\n", "", addslashes( $db->f("product_s_desc"))))) . $encl
-				. $delim . $encl . str_replace("\r", "", str_replace("\n", "", str_replace("\r\n", "", addslashes($db->f("product_desc"))))) . $encl
-				. $delim . $encl . addslashes( $db->f("product_thumb_image")) . $encl
-				. $delim . $encl . addslashes( $db->f("product_full_image")) . $encl
-				. $delim . $encl . $db->f("product_weight") . $encl
-				. $delim . $encl . $db->f("product_weight_uom") . $encl
-				. $delim . $encl . $db->f("product_length") . $encl
-				. $delim . $encl . $db->f("product_width") . $encl
-				. $delim . $encl . $db->f("product_height") . $encl
-				. $delim . $encl . addslashes( $db->f("product_lwh_uom")) . $encl
-				. $delim . $encl . $db->f("product_in_stock") . $encl
-				. $delim . $encl . $db->f("product_available_date") . $encl
-				//. $delim . $encl . $db->f("product_special") . $encl
-				. $delim . $encl . $db->f("product_discount_id") . $encl
-				. $delim . $encl . addslashes( $db->f("product_name")) . $encl
-				. $delim . $encl . $db->f("product_price") . $encl
-				. $delim . $encl . addslashes( $this->get_category_path( $db->f("product_id") ) ). $encl
-				. $delim . $encl . $db->f("manufacturer_id") . $encl
-				. $delim . $encl . $db->f("product_tax_id") . $encl
-				. $delim . $encl . $db->f("product_sales") . $encl
-				. $delim . $encl . $export_sku . $encl
-				. $delim . $encl . addslashes( $db->f("attribute") ). $encl
-				. $delim . $encl . addslashes( $db->f("custom_attribute") ). $encl
-				. $delim . $encl . addslashes( $attributes ). $encl
-				. $delim . $encl . addslashes( $attribute_values ). $encl ."\n";
+				$contents .= 	$encl . $db->f("product_sku"). 	$encl
+					. $delim .	$encl . addslashes( $db->f("product_name")) . $encl
+					. $delim . 	$encl . addslashes( $this->get_category_path( $db->f("product_id") ) ). $encl
+					. $delim . 	$encl . $db->f("product_price") . $encl
+					. $delim . 	$encl . trim( addslashes( $db->f("product_s_desc"))) . $encl
+					. $delim . 	$encl . trim( addslashes($db->f("product_desc"))) . $encl
+					. $delim . 	$encl . addslashes( $db->f("product_thumb_image")) . $encl
+					. $delim . 	$encl . addslashes( $db->f("product_full_image")) . $encl
+					. $delim . 	$encl . $db->f("product_weight") . $encl
+					. $delim . 	$encl . $db->f("product_weight_uom") . $encl
+					. $delim . 	$encl . $db->f("product_length") . $encl
+					. $delim . 	$encl . $db->f("product_width") . $encl
+					. $delim . 	$encl . $db->f("product_height") . $encl
+					. $delim . 	$encl . addslashes( $db->f("product_lwh_uom")) . $encl
+					. $delim . 	$encl . $db->f("product_in_stock") . $encl
+					. $delim . 	$encl . $db->f("product_available_date") . $encl
+					. $delim . 	$encl . $db->f("product_discount_id") . $encl
+					. $delim . 	$encl . $db->f("manufacturer_id") . $encl
+					. $delim . 	$encl . $db->f("product_tax_id") . $encl
+					. $delim . 	$encl . $db->f("product_sales") . $encl
+					. $delim . 	$encl . $export_sku . $encl
+					. $delim . 	$encl . addslashes( $db->f("attribute") ). $encl
+					. $delim . 	$encl . addslashes( $db->f("custom_attribute") ). $encl
+					. $delim . 	$encl . addslashes( $attributes ). $encl
+					. $delim . 	$encl . addslashes( $attribute_values ). $encl ."\n";
 			}
 			else {
 				$num = sizeof( $csv_ordering );
 				for( $i = 1; $i <= $num; $i++ ) {
-					if( $csv_ordering[$i] == "category_path" )
-					$contents .= $encl . addslashes( $this->get_category_path( $db->f("product_id") ) ). $encl;
-					elseif( $csv_ordering[$i] == "attributes" )
-					$contents .= $encl . addslashes( $attributes ) . $encl;
-					elseif( $csv_ordering[$i] == "attribute_values" )
-					$contents .= $encl . addslashes( $attribute_values ). $encl;
+					if( $csv_ordering[$i] == "category_path" ) {
+						$contents .= $encl . addslashes( $this->get_category_path( $db->f("product_id") ) ). $encl;
+					}
+					elseif( $csv_ordering[$i] == "attributes" ) {
+						$contents .= $encl . addslashes( $attributes ) . $encl;
+					}
+					elseif( $csv_ordering[$i] == "attribute_values" ) {
+						$contents .= $encl . addslashes( $attribute_values ). $encl;
+					}
 					// PROBLEM: when exporting the Product Parent ID we can't be sure
 					// that the Parent Product gets the same ID on re-import
 					// So we just take the Parent Product's SKU!
 					elseif( $csv_ordering[$i] == "product_parent_id" ) {
 						$contents .= $encl . $export_sku . $encl;
 					}
-					else
-					$contents .= $encl . str_replace("\r", "", str_replace("\n", "", str_replace("\r\n", "", addslashes( $db->f($csv_ordering[$i]))))) . $encl;
+					else {
+						$contents .= $encl . trim( addslashes( $db->f($csv_ordering[$i] ) )) . $encl;
+					}
 					// Add delimiter (if not line end)
-					if( $i < $num )
-					$contents .= $delim;
+					if( $i < $num ) {
+						$contents .= $delim;
+					}
 				}
 				// Finish line
 				$contents .=  "\n";
@@ -1126,7 +1122,7 @@ class ps_csv {
 
 		}
 
-		$filename = "VirtueMart_" .date("jmYHis"). ".csv";
+		$filename = "CSV_Export_" .date("j-m-Y_H.i"). ".csv";
 
 		if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
 			$UserBrowser = "Opera";

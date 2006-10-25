@@ -43,46 +43,35 @@ resizeDuration = (11 - resizeSpeed) * 100;
 //	Additional methods for Element added by SU, Couloir
 //	- further additions by Lokesh Dhakar (huddletogether.com)
 //
-Object.extend(Element, {
+
+
+Element.extend({
 	hide: function() {
-		for (var i = 0; i < arguments.length; i++) {
-			var element = $(arguments[i]);
-			element.style.display = 'none';
-		}
+		this.setStyle( 'display', 'none' );
 	},
 	show: function() {
-		for (var i = 0; i < arguments.length; i++) {
-			var element = $(arguments[i]);
-			element.style.display = '';
-		}
+		this.setStyle( 'display', '' );
 	},
-	getWidth: function(element) {
-	   	element = $(element);
-	   	return element.offsetWidth; 
+	getWidth: function() {
+	   	return this.offsetWidth; 
 	},
-	setWidth: function(element,w) {
-	   	element = $(element);
-		element.style.width = w +"px";
+	setWidth: function(w) {
+	   	this.setStyle('width', w +"px" );
 	},
-	getHeight: function(element) {
-		element = $(element);
-		return element.offsetHeight;
+	getHeight: function() {
+		return this.offsetHeight;
 	},
-	setHeight: function(element,h) {
-   		element = $(element);
-		element.style.height = h +"px";
+	setHeight: function(h) {
+   		this.setStyle('height', h +"px" );
 	},
-	setTop: function(element,t) {
-	   	element = $(element);
-		element.style.top = t +"px";
+	setTop: function(t) {
+	   	this.setStyle( 'top', t +"px" );
 	},
-	setSrc: function(element,src) {
-		element = $(element);
-		element.src = src; 
+	setSrc: function(src) {
+		this.src = src; 
 	},
-	setInnerHTML: function(element,content) {
-		element = $(element);
-		element.innerHTML = content;
+	setInnerHTML: function(content) {
+		this.innerHTML = content;
 	}
 });
 
@@ -109,9 +98,7 @@ Array.prototype.empty = function () {
 //
 //	Structuring of code inspired by Scott Upton (http://www.uptonic.com/)
 //
-var Lightbox = Class.create();
-
-Lightbox.prototype = {
+var Lightbox = new Class({
 	
 	// initialize()
 	// Constructor runs on completion of the DOM loading. Loops through anchor tags looking for 
@@ -223,16 +210,16 @@ Lightbox.prototype = {
 		objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
 		objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
 		
-		overlayEffect = new fx.Opacity(objOverlay, { duration: 300 });	
+		overlayEffect = new Fx.Opacity(objOverlay, { duration: 300 });	
 		overlayEffect.hide();
 		
-		imageEffect = new fx.Opacity(objLightboxImage, { duration: 350, onComplete: function() { imageDetailsEffect.custom(0,1); }});
+		imageEffect = new Fx.Opacity(objLightboxImage, { duration: 350, onComplete: function() { imageDetailsEffect.custom(0,1); }});
 		imageEffect.hide();
 		
-		imageDetailsEffect = new fx.Opacity('imageDataContainer', { duration: 400, onComplete: function() { navEffect.custom(0,1); }}); 
+		imageDetailsEffect = new Fx.Opacity('imageDataContainer', { duration: 400, onComplete: function() { navEffect.custom(0,1); }}); 
 		imageDetailsEffect.hide();
 		
-		navEffect = new fx.Opacity('hoverNav', { duration: 100 });
+		navEffect = new Fx.Opacity('hoverNav', { duration: 100 });
 		navEffect.hide();
 	},
 	
@@ -246,7 +233,7 @@ Lightbox.prototype = {
 
 		// stretch overlay to fill page and fade in
 		var arrayPageSize = getPageSize();
-		Element.setHeight('overlay', arrayPageSize[1]);
+		$('overlay').setHeight( arrayPageSize[1]);
 		overlayEffect.custom(0,0.8);
 		
 		imageArray = [];
@@ -278,8 +265,8 @@ Lightbox.prototype = {
 		var arrayPageScroll = getPageScroll();
 		var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 15);
 
-		Element.setTop('lightbox', lightboxTop);
-		Element.show('lightbox');
+		$('lightbox').setTop(lightboxTop);
+		$('lightbox').show();
 		this.changeImage(imageNum);
 	},
 
@@ -292,18 +279,18 @@ Lightbox.prototype = {
 		activeImage = imageNum;	// update global var
 
 		// hide elements during transition
-		Element.show('loading');
+		$('loading').show();
 		imageDetailsEffect.hide();
 		imageEffect.hide();
 		navEffect.hide();
-		Element.hide('prevLink');
-		Element.hide('nextLink');
-		Element.hide('numberDisplay');
+		$('prevLink').hide();
+		$('nextLink').hide();
+		$('numberDisplay').hide();
 		
 		imgPreloader = new Image();
 		// once image is preloaded, resize image container
 		imgPreloader.onload=function(){
-			Element.setSrc('lightboxImage', imageArray[activeImage][0]);
+			$('lightboxImage').setSrc( imageArray[activeImage][0]);
 			myLightbox.resizeImageContainer(imgPreloader.width, imgPreloader.height);
 		}
 		imgPreloader.src = imageArray[activeImage][0];
@@ -315,18 +302,18 @@ Lightbox.prototype = {
 	resizeImageContainer: function( imgWidth, imgHeight) {
 
 		// get current height and width
-		this.wCur = Element.getWidth('outerImageContainer');
-		this.hCur = Element.getHeight('outerImageContainer');
+		this.wCur = $('outerImageContainer').getWidth();
+		this.hCur = $('outerImageContainer').getHeight();
 
 		// calculate size difference between new and old image, and resize if necessary
 		wDiff = (this.wCur - borderSize * 2) - imgWidth;
 		hDiff = (this.hCur - borderSize * 2) - imgHeight;
 		
 		// Resize the outerImageContainer very sexy like
-		reHeight = new fx.Height('outerImageContainer', { duration: resizeDuration });
-		reHeight.custom(Element.getHeight('outerImageContainer'),imgHeight+(borderSize*2)); 
-		reWidth = new fx.Width('outerImageContainer', { duration: resizeDuration, onComplete: function() { imageEffect.custom(0,1); }});
-		reWidth.custom(Element.getWidth('outerImageContainer'),imgWidth+(borderSize*2));
+		reHeight = new Fx.Height('outerImageContainer', { duration: resizeDuration });
+		reHeight.custom($('outerImageContainer').getHeight(),imgHeight+(borderSize*2)); 
+		reWidth = new Fx.Width('outerImageContainer', { duration: resizeDuration, onComplete: function() { imageEffect.custom(0,1); }});
+		reWidth.custom($('outerImageContainer').getWidth(),imgWidth+(borderSize*2));
 
 		// if new and old image are same size and no scaling transition is necessary, 
 		// do a quick pause to prevent image flicker.
@@ -334,10 +321,10 @@ Lightbox.prototype = {
 			if (navigator.appVersion.indexOf("MSIE")!=-1){ pause(250); } else { pause(100);} 
 		}
 
-		Element.setHeight('prevLink', imgHeight);
-		Element.setHeight('nextLink', imgHeight);
-		Element.setWidth( 'imageDataContainer', imgWidth + (borderSize * 2));
-		Element.setWidth( 'hoverNav', imgWidth + (borderSize * 2));
+		$('prevLink').setHeight( imgHeight);
+		$('nextLink').setHeight( imgHeight);
+		$('imageDataContainer').setWidth( imgWidth + (borderSize * 2));
+		$('hoverNav').setWidth( imgWidth + (borderSize * 2));
 		
 		this.showImage();
 	},
@@ -347,7 +334,7 @@ Lightbox.prototype = {
 	//	Display image and begin preloading neighbors.
 	//
 	showImage: function(){
-		Element.hide('loading');
+		$('loading').hide();
 		myLightbox.updateDetails(); 
 		this.preloadNeighborImages();
 	},
@@ -358,13 +345,13 @@ Lightbox.prototype = {
 	//
 	updateDetails: function() {
 
-		Element.show('caption');
-		Element.setInnerHTML( 'caption', imageArray[activeImage][1]);
+		$('caption').show();
+		$('caption').setInnerHTML( imageArray[activeImage][1]);
 		
 		// if image is part of set display 'Image x of x' 
 		if(imageArray.length > 1){
-			Element.show('numberDisplay');
-			Element.setInnerHTML( 'numberDisplay', "Image " + eval(activeImage + 1) + " of " + imageArray.length);
+			$('numberDisplay').show();
+			$('numberDisplay').setInnerHTML( "Image " + eval(activeImage + 1) + " of " + imageArray.length);
 		}
 
 		myLightbox.updateNav();
@@ -377,7 +364,7 @@ Lightbox.prototype = {
 
 		// if not first image in set, display prev image button
 		if(activeImage != 0){
-			Element.show('prevLink');
+			$('prevLink').show();
 			document.getElementById('prevLink').onclick = function() {
 				myLightbox.changeImage(activeImage - 1); return false;
 			}
@@ -385,8 +372,8 @@ Lightbox.prototype = {
 
 		// if not last image in set, display next image button
 		if(activeImage != (imageArray.length - 1)){
-			Element.show('nextLink');
-			document.getElementById('nextLink').onclick = function() {
+			$('nextLink').show();
+			$('nextLink').onclick = function() {
 				myLightbox.changeImage(activeImage + 1); return false;
 			}
 		}
@@ -457,12 +444,12 @@ Lightbox.prototype = {
 	//
 	end: function() {
 		this.disableKeyboardNav();
-		Element.hide('lightbox');
+		$('lightbox').hide();
 		imageEffect.toggle();
 		overlayEffect.custom(0.8,0);
 		showSelectBoxes();
 	}
-}
+});
 
 // -----------------------------------------------------------------------------------
 

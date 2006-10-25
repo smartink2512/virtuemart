@@ -72,7 +72,3 @@ if( !empty( $navigation_childlist )) { ?>
 	<?php echo $navigation_childlist ?><br style="clear:both"/>
 <?php 
 } ?>
-
-<?php
-$this->vmThemeAjaxSubmitter( '', 'addtocart' );
-?>

@@ -909,7 +909,7 @@ class vmCommonHTML extends mosHTML {
 		if( !defined( "_WINDOWSJS_LOADED" )) {
 			vmCommonHTML::loadPrototype( $print );
 			vmCommonHTML::loadScriptaculous( array('effects'), $print );
-			$scripttag = vmCommonHTML::scriptTag( '', 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'._CMN_CONTINUE.'";var cancel_lbl="'._CMN_CANCEL.'";' );
+			$scripttag = vmCommonHTML::scriptTag( '', 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'.$VM_LANG->_CMN_CONTINUE.'";var cancel_lbl="'.$VM_LANG->_CMN_CANCEL.'";var notice_lbl="'.$VM_LANG->_PEAR_LOG_NOTICE.'";' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/window.js' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/vmAjax.js' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/mac_os_x.css' );
@@ -1148,10 +1148,9 @@ class vmCommonHTML extends mosHTML {
 			
 			$_MAMBOTS->trigger( 'onPrepareContent', array( &$row, &$params, 0 ), true );
 			$text = $row->text;
-			
-			return $text;
 		}
-		return '';
+		return $text;
+		
 	}
 
         /**

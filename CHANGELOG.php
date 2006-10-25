@@ -35,6 +35,22 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+24-10-2006 soeren
+
+^ moved the deprecated Mambo 4.5.x/Joomla 1.0.x language constants to the language files
++ cart action notices are put into the language files now
+# added a header "Content-type: " to the connectiontools class to allow correct character encoding 
+	when sending ajaxed content
+^ changed the "lightbox" message-windows to these new prototype Windows
+^ changed most Ajax-based functions to use Prototype
++ added WindowJS javascript functions: http://prototype-window.xilinus.com/index.html
+	these windows look great and work better than the LightBox Windows,
+	they can even use effects/animation from scriptaculous
++ added MooTools javascripts
+- removed Moo.Fx javascripts
+# bug in vmCommonHTML::parseContentByMambots, returns an empty text when this feature is turned off
+
 18-10-2006 gregdev
 
 #  Task #959 — Virtuemart search bot not working properly

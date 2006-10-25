@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 }
 /**
 *
-* @version $Id$
+* @version $Id:toolbar.virtuemart.html.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -17,9 +17,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
-$_REQUEST['keyword'] = urldecode(mosgetparam($_REQUEST, 'keyword', 0));
+$_REQUEST['keyword'] = urldecode(mosgetparam($_REQUEST, 'keyword', ''));
 $keyword = $_REQUEST['keyword'];
-$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
+$no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
 
 global $vmIcons;
 $vmIcons['back_icon'] = $mosConfig_live_site."/administrator/images/back.png";
@@ -74,9 +74,7 @@ class MENU_virtuemart {
 		$editor1 = isset($editor1_array[$page]) ? $editor1_array[$page] : '';
 		$editor2 = isset($editor2_array[$page]) ? $editor2_array[$page] : '';
 		if( $no_menu ) {
-			vmCommonHTML::loadLightbox( '_gw');
-			vmCommonHTML::loadMooAjax();
-			$script .= '<div id="statusBox" style="text-align:center;display:none;"></div>';
+			vmCommonHTML::loadWindowsJS();
 		}
 		$script .= '<script type="text/javascript">
         	function submitbutton(pressbutton) {
@@ -101,22 +99,17 @@ class MENU_virtuemart {
 			$admin = defined('_PSHOP_ADMIN') ? '/administrator' : '';
 			$script .= "
 			
-			function responseSuccess(o){ 
-				$('statusBox').innerHTML = o.responseText; 
-				$('statusBox').innerHTML = $('logContainer').innerHTML; 
-				setTimeout( 'LightboxGW.hideAll()', 2000 );
-				setTimeout( 'Element.hide(\$(\'statusBox\'))', 2000 );
-				try {
-					onResponseSuccess(o);
-				} catch(e) {}
-			}
+	var loadingText = 'Saving...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox_gw/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
 
-			$('statusBox').innerHTML = 'Saving ...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox_gw/images/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
-			new LightboxGW.base('statusBox', { showOverlay: true, closeOnOverlayClick : true })
-			new ajax( '$mosConfig_live_site".$admin."/index2.php', {
-				formName: 'adminForm',
-				onComplete: responseSuccess
-				});
+	dlg = Dialog.alert( {url: 'index2.php', options: { postBody: Form.Methods.serialize(form), method: 'post' }}, 
+			{windowParameters: {className:'mac_os_x', title:  '{$VM_LANG->_PEAR_LOG_NOTICE}',
+								width:440, modal: true, 
+								showEffect: Element.show },
+			buttonClass: 'button',
+			id: 'alertDialog',
+			autoclose: 2000
+			});
+	
 			\n";
 
 		}

@@ -1,7 +1,7 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
 
 <div>
-    <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart" class="addtocart_form">
+    <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart" class="addtocart_form" onsubmit="handleAddToCart( this.id );return false;">
 
 <?php
 

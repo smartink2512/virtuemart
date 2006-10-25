@@ -161,7 +161,7 @@ class ps_cart {
 			// added for the advanced attribute modification
 			$_SESSION['cart'][$k]["description"] = $d["description"];
 			$_SESSION['cart']["idx"]++;
-			$vmLogger->info( 'The product was added to your cart.' );
+			$vmLogger->info( $VM_LANG->_VM_CART_PRODUCT_ADDED );
 		}
 		else {
 			$this->update( $d );
@@ -244,7 +244,7 @@ class ps_cart {
 						}
 					}
 					$_SESSION['cart'][$i]["quantity"] = $quantity;
-					$vmLogger->info( 'The product quantity has been updated.' );
+					$vmLogger->info( $VM_LANG->_VM_CART_PRODUCT_UPDATED );
 				}
 			}
 		}
@@ -263,7 +263,7 @@ class ps_cart {
 	 * @return boolan Result of the deletion
 	 */
 	function delete($d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		
 		$temp = array();
 		$product_id = $d["product_id"];
@@ -287,7 +287,7 @@ class ps_cart {
 		$temp["idx"] = $j;
 		$_SESSION['cart'] = $temp;
 		
-		$vmLogger->info( 'The product was removed from your cart');
+		$vmLogger->info( $VM_LANG->_VM_CART_PRODUCT_REMOVED );
 		
 		if( !empty( $_SESSION['coupon_discount'] )) {
 			// Update the Coupon Discount !!
