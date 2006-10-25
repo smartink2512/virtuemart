@@ -2,10 +2,10 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id$
+* @version $Id:sql.virtuemart.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -452,22 +452,22 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_csv` (
 ## 
 
 $db->query( "INSERT INTO `#__{vm}_csv` VALUES (1, 'product_sku', '', 1, 'Y'),
-(2, 'product_s_desc', '', 2, 'N'),
-(3, 'product_desc', '', 3, 'N'),
-(4, 'product_thumb_image', '', 4, 'N'),
-(5, 'product_full_image', '', 5, 'N'),
-(6, 'product_weight', '', 6, 'N'),
-(7, 'product_weight_uom', 'KG', 7, 'N'),
-(8, 'product_length', '', 8, 'N'),
-(9, 'product_width', '', 9, 'N'),
-(10, 'product_height', '', 10, 'N'),
-(11, 'product_lwh_uom', '', 11, 'N'),
-(12, 'product_in_stock', '0', 12, 'N'),
-(13, 'product_available_date', '', 13, 'N'),
-(14, 'product_discount_id', '', 14, 'N'),
-(15, 'product_name', '', 15, 'Y'),
-(16, 'product_price', '', 16, 'N'),
-(17, 'category_path', '', 17, 'Y'),
+(2, 'product_s_desc', '', 5, 'N'),
+(3, 'product_desc', '', 6, 'N'),
+(4, 'product_thumb_image', '', 7, 'N'),
+(5, 'product_full_image', '', 8, 'N'),
+(6, 'product_weight', '', 9, 'N'),
+(7, 'product_weight_uom', 'KG', 10, 'N'),
+(8, 'product_length', '', 11, 'N'),
+(9, 'product_width', '', 12, 'N'),
+(10, 'product_height', '', 13, 'N'),
+(11, 'product_lwh_uom', '', 14, 'N'),
+(12, 'product_in_stock', '0', 15, 'N'),
+(13, 'product_available_date', '', 16, 'N'),
+(14, 'product_discount_id', '', 17, 'N'),
+(15, 'product_name', '', 2, 'Y'),
+(16, 'product_price', '', 4, 'N'),
+(17, 'category_path', '', 3, 'Y'),
 (18, 'manufacturer_id', '', 18, 'N'),
 (19, 'product_tax_id', '', 19, 'N'),
 (20, 'product_sales', '', 20, 'N'),
