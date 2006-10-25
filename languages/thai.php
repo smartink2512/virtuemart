@@ -1572,11 +1572,9 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
-
 	var $_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX = 'The directory to store session data is not writable. Please correct this or contact your provider.';
 	var $_VM_SESSION_SAVEPATH_UNWRITABLE = 'The Session Save Path %s is not writable. Please correct this! The shop is temporarily trying to use the %s instead.';
 	var $_VM_SESSION_COOKIES_NOT_ACCEPTED_TIP = 'Your browser does not accept cookies. To put products into your cart and purchase them you need to enable cookies.';
-
 	var $_VM_EXPORT_MODULE_FORM_LBL = 'Export Module Form';
 	var $_VM_EXPORT_MODULE_FORM_NAME = 'Export Module Name';
 	var $_VM_EXPORT_MODULE_FORM_DESC = 'Description';
@@ -1584,6 +1582,62 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_EXPORT_CONFIG = 'Export Extra Configuration';
 	var $_VM_EXPORT_CONFIG_TIP = 'Define Export configuration for user-defined export modules or define additional configuration. Code must be valid PHP-Code.';
 	var $_VM_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\'re not sure what to fill in!</i>';
+	var $_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL = 'Keep Product Stock Level on Purchase?';
+	var $_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP = 'When enabled, the stock level for a downloadable product is not lowered although it was purchased by customers.';
+	var $_BUTTON_SEND_REG = 'Send Registration';
+	var $_CONTACT_FORM_NC = 'Please make sure the form is complete and valid.';
+	var $_CMN_REQUIRED = 'Required';
+	var $_CMN_NEW = 'New';
+	var $_CMN_SAVE = 'Save';
+	var $_CMN_NEW_ITEM_LAST = 'New items default to the last place. Ordering can be changed after this item is saved.';
+	var $_CMN_OPTIONAL = 'Optional';
+	var $_E_APPLY = 'Apply';
+	var $_E_IMAGES = 'Images';
+	var $_URL = 'URL:';
+	var $_SEL_CATEGORY = 'Select a category';
+	var $_E_REMOVE = 'Remove';
+	var $_PN_LT = '<';
+	var $_PN_RT = '>';
+	var $_PN_PAGE = 'Page';
+	var $_PN_OF = 'of';
+	var $_PN_START = 'Start';
+	var $_PN_PREVIOUS = 'Prev';
+	var $_PN_NEXT = 'Next';
+	var $_PN_END = 'End';
+	var $_PN_DISPLAY_NR = 'Display #';
+	var $_PN_RESULTS = 'Results';
+	var $_CMN_PRINT = 'Print';
+	var $_CMN_PDF = 'PDF';
+	var $_CMN_EMAIL = 'E-mail';
+	var $_BACK = 'Back';
+	var $_USERNAME = 'Username';
+	var $_PASSWORD = 'Password';
+	var $_BUTTON_LOGIN = 'Login';
+	var $_REGISTER_UNAME = 'Username';
+	var $_REGISTER_EMAIL = 'Email';
+	var $_REGWARN_NAME = 'Please enter your name.';
+	var $_REGWARN_UNAME = 'Please enter a user name.';
+	var $_REGWARN_MAIL = 'Please enter a valid e-mail address.';
+	var $_SEND_SUB = 'Account details for %s at %s';
+	var $_ASEND_MSG = 'Hello %s,
+	
+	A new user has registered at %s.
+	This email contains their details:
+	
+	Name - %s
+	e-mail - %s
+	Username - %s
+	
+	Please do not respond to this message as it is automatically generated and is for information purposes only';
+	var $_REG_COMPLETE = '<div class="componentheading">Registration Complete!</div><br />You may now login.';
+	var $_REG_COMPLETE_ACTIVATE = '<div class="componentheading">Registration Complete!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.';
+	var $_DATE_FORMAT_LC = '%A, %d %B %Y';
+	var $_VM_CART_PRODUCT_ADDED = 'The product was added to your cart.';
+	var $_VM_CART_PRODUCT_UPDATED = 'The product quantity has been updated.';
+	var $_VM_CART_PRODUCT_REMOVED = 'The product was removed from your cart';
+	var $_CMN_OK = 'Ok';
+	var $_CMN_CONTINUE = 'Continue';
+	var $_CMN_CANCEL = 'Cancel';
         
 }
 class phpShopLanguage extends vmLanguage { }
