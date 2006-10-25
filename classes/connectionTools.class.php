@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id$
+* @version $Id:connectionTools.class.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -41,7 +41,9 @@ class vmConnector {
 		$http_status = intval( $http_status );
 		header("HTTP/1.0 $http_status");
 		if( $mime_type ) {
-			header( "Content-type: $mime_type");
+			header( "Content-type: $mime_type; "._ISO );
+		} else {
+			header( "Content-type: text/html; ". _ISO );
 		}
 		if( $content ) {
 			echo $content;
