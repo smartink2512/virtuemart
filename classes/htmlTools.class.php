@@ -284,7 +284,7 @@ class formFactory {
 	*/
 	function formFactory( $title = '' ) {
 		if( $title != "" ) {
-			echo "<div class=\"adminListHeader\">$title</div>";
+			echo "<div class=\"adminListHeader\">$title</div><br style=\"clear:both;\" />";
 		}
 	}
 	/** 
@@ -449,6 +449,7 @@ class vmMooAjax {
 /**
  * Heavily modified (why just for PHP5???) version of this class:
  * http://www.phpclasses.org/browse/package/3050.html
+ * To easily create mootools effects
  * @author Hasin Hayder
  * @author soeren
  * @since VirtueMart 1.1.0
@@ -485,25 +486,25 @@ class mooFxGenerator {
 		switch( $effectType ) {
 			
 			case "fxHeight":
-				echo "var {$fxEffectObject} = new fx.Height(\"$element\", {duration: $duration})\n";
+				echo "var {$fxEffectObject} = new Fx.Height(\"$element\", {duration: $duration})\n";
 				break;
 				
 			case "fxOpacity":
-				echo "var {$fxEffectObject} = new fx.Opacity(\"$element\", {duration: $duration})\n";
+				echo "var {$fxEffectObject} = new Fx.Opacity(\"$element\", {duration: $duration})\n";
 				break;
 				
 			case "fxText":
-				echo "var {$fxEffectObject} = new fx.Text(\"$element\", {unit:$unit})\n";
+				echo "var {$fxEffectObject} = new Fx.Text(\"$element\", {unit:$unit})\n";
 				break;
 				
 			case "fxWidth":
-				echo "var {$fxEffectObject} = new fx.Width(\"$element\", {duration: $duration})\n";
+				echo "var {$fxEffectObject} = new Fx.Width(\"$element\", {duration: $duration})\n";
 				break;
 				
 			case "fxScroll":
 				$effectString = "";
 				if ($transition()) $effectString.=", transition: $transition";
-				echo "var {$fxEffectObject} = new fx.Scroll({duration: $duration{$effectString}})\n";
+				echo "var {$fxEffectObject} = new Fx.Scroll({duration: $duration{$effectString}})\n";
 				break;
 				
 			case "fxCombo":
@@ -511,7 +512,7 @@ class mooFxGenerator {
 				if ($height) $effectString .= ", height: true";
 				if ($width) $effectString .= ", width: true";
 				if ($opacity) $effectString .= ", opacity: true";
-				echo "var {$fxEffectObject} = new fx.Combo(\"$element\", {duration: $duration{$effectString}})\n";
+				echo "var {$fxEffectObject} = new Fx.Combo(\"$element\", {duration: $duration{$effectString}})\n";
 				break;
 				
 			case "fxAccordion":
@@ -524,7 +525,7 @@ class mooFxGenerator {
 	
 				echo "m_stretchers = document.getElementsByClassName(\"$eventObjectClass\");\n";
 				echo "m_stretched = document.getElementsByClassName(\"$element\");\n";
-				echo "var {$fxEffectObject} = new fx.Accordion(m_stretchers, m_stretched ,{duration: $duration{$effectString}});\n";
+				echo "var {$fxEffectObject} = new Fx.Accordion(m_stretchers, m_stretched ,{duration: $duration{$effectString}});\n";
 				break;
 		}
 
@@ -739,16 +740,16 @@ class vmCommonHTML extends mosHTML {
 	}
 	/**
 	* Loads all necessary script files for Moo.Ajax
-	* http://moofx.mad4milk.net/documentation/#mooajax
+	* http://docs.mootools.net/files/Addons/Ajax-js.html
 	* @static 
 	* @since VirtueMart 1.1.0
 	*/
 	function loadMooAjax( $print=false ) {
 		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( "_MOOAJAX_LOADED" )) {
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/prototype.lite.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.dom.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.ajax.js' );
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.base.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.dom.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.ajax.js' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/vmAjax.js' );
 			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
@@ -760,34 +761,36 @@ class vmCommonHTML extends mosHTML {
 		}
 	}
 	/**
-	 * Function to include the MooFx JS scripts in the HTML document
-	 * http://moofx.mad4milk.net
+	 * Function to include the MooTools Fx JS scripts in the HTML document
+	 * http://mootools.net
 	 * @static 
 	 * @since VirtueMart 1.1.0
 	 *
 	 */
 	function loadMooFX( $print=false ) {
 		global $mosConfig_live_site, $vmDir, $mainframe;
-		if( !defined( "_MOOFX_LOADED" )) {
+		if( !defined( "_MOOTOOLSFX_LOADED" )) {
 			$scripttag = '';
-			if( !defined( "_PROTOTYPE_LOADED" )) {
-				$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/prototype.lite.js' );
-			}
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.fx.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/moo.fx/moo.fx.pack.js' );
+		
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.base.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fx.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fxpack.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fxutils.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fxtransitions.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.accordion.js' );
 			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
 			}
 			else {
 				$mainframe->addCustomHeadTag( $scripttag );
 			}
-			define ( "_MOOFX_LOADED", "1" );
+			define ( "_MOOTOOLSFX_LOADED", "1" );
 		}
 		
 	}
 	/**
 	 * Function to load the javascript and stylsheet files for Litebox,
-	 * a Lightbox derivate with moo.fx and prototype.lite
+	 * a Lightbox derivate with mootools and prototype.lite
 	 * http://www.doknowevil.net/litebox/
 	 *
 	 * @param boolean $print
@@ -886,6 +889,42 @@ class vmCommonHTML extends mosHTML {
 		}
 
 	}
+	function loadRico( $print=false ) {
+		global $mainframe, $vmDir, $mosConfig_live_site;
+		if( !defined( "_RICO_LOADED" )) {
+			vmCommonHTML::loadPrototype( $print );
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/rico.js' );
+			if( defined('_PSHOP_ADMIN') || $print) {
+				echo $scripttag;
+			}
+			elseif( $scripttag != '' ) {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+			define ( "_RICO_LOADED", "1" );
+		}
+		
+	}
+	function loadWindowsJS( $print=false ) {
+		global $mainframe, $vmDir, $mosConfig_live_site, $VM_LANG;
+		if( !defined( "_WINDOWSJS_LOADED" )) {
+			vmCommonHTML::loadPrototype( $print );
+			vmCommonHTML::loadScriptaculous( array('effects'), $print );
+			$scripttag = vmCommonHTML::scriptTag( '', 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'._CMN_CONTINUE.'";var cancel_lbl="'._CMN_CANCEL.'";' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/window.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/vmAjax.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/mac_os_x.css' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/alphacube.css' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/default.css' );
+			
+			if( defined('_PSHOP_ADMIN') || $print) {
+				echo $scripttag;
+			}
+			elseif( $scripttag != '' ) {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+			define ( "_WINDOWSJS_LOADED", "1" );
+		}		
+	}
 	/**
 	 * Loads the CSS and Javascripts needed to run the Greybox
 	 * Source: http://orangoo.com/labs/?page_id=5
@@ -963,7 +1002,7 @@ class vmCommonHTML extends mosHTML {
 	 * @param string $image_group The image group name when you want to use the gallery functionality
 	 * @return string
 	 */
-	function getLightboxImageLink( $image_link, $text, $title='', $image_group='', $lite=true ) {
+	function getLightboxImageLink( $image_link, $text, $title='', $image_group='', $lite=false ) {
 		if( $lite ) {
 			vmCommonHTML::loadLitebox();
 		} else {
@@ -1016,9 +1055,7 @@ class vmCommonHTML extends mosHTML {
 			echo 'Failure';
 		}
 		echo '</div>';
-		echo '<div id="logContainer" style="display:none;">';
 		$vmLogger->printLog();
-		echo '</div>';
 	}
 	/**
 	 * Returns a div element of the class "shop_error" 
