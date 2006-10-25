@@ -19,7 +19,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// VERSION 0.96.3
+// VERSION 0.96.3 modified by soeren!
+// Note: Don't just update to a newer version from xilinus.com!
+// This version has some modifications which an update will break
 
 var Window = Class.create();
 Window.prototype = {
@@ -31,7 +33,7 @@ Window.prototype = {
 	  		//alert("Window " + id + " is already register is the DOM!!, be sure to use setDestroyOnClose()")
 	  		try{
 	  			$(id).hide();
-	  		} catch(e) { alert('Hide fehlgeschlagen!'); }
+	  		} catch(e) { alert('Hide failed!'); }
 	  	}
 	    
 		this.hasEffectLib = String.prototype.parseColor != null;
@@ -366,17 +368,17 @@ Window.prototype = {
 		
 		// Release event observing
 		Event.stopObserving(document, "mouseup", this.eventMouseUp,false);
-    Event.stopObserving(document, "mousemove", this.eventMouseMove, false);
+    	Event.stopObserving(document, "mousemove", this.eventMouseMove, false);
 
 		// Store new location/size if need be
 		this._saveCookie()
 
-    Event.stop(event);
-    
-    // Restore selection
-    document.body.ondrag = null;
-    document.body.onselectstart = null;
-  },
+	    Event.stop(event);
+	    
+	    // Restore selection
+	    document.body.ondrag = null;
+	    document.body.onselectstart = null;
+	  },
 
 	_keyPress: function(event) {
 		//Dialog.cancelCallback();
@@ -897,11 +899,11 @@ var Windows = {
 };
 
 var Dialog = {
-  dialogId: null,
+  	dialogId: null,
  	win: null,
-  onCompleteFunc: null,
-  callFunc: null, 
-  parameters: null, 
+  	onCompleteFunc: null,
+  	callFunc: null, 
+  	parameters: null, 
     
 	confirm: function(content, parameters) {
 	  // Get Ajax return before
@@ -933,7 +935,6 @@ var Dialog = {
 	alert: function(content, parameters) {
 	  // Get Ajax return before
 	  if (typeof content != "string") {
-	    Dialog._runAjaxRequest(content, parameters, Dialog.alert);
 	    Dialog._runAjaxRequest(content, parameters, Dialog.alert);
 	    return 
 	  }
@@ -1013,7 +1014,10 @@ var Dialog = {
 
 		this.win.cancelCallback = parameters.cancel;
 		this.win.okCallback = parameters.ok;
-		
+		if( parameters.autoclose ) {
+			windowDialog = this.win;
+			setTimeout( 'windowDialog.hide()', parameters.autoclose );
+		}
 		return this.win;		
 	},
 	
@@ -1025,10 +1029,11 @@ var Dialog = {
     if (message.options == null)
 	    message.options ={}  
 	  Dialog.onCompleteFunc = message.options.onComplete;
+	 
     Dialog.parameters = parameters;
     Dialog.callFunc = callFunc;
     
-	  message.options.onComplete = Dialog._getAjaxContent;
+	message.options.onComplete = Dialog._getAjaxContent;
     new Ajax.Request(message.url, message.options);
   },
   
