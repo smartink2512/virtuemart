@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27-10-2006 soeren
+
++ re-integrated the "mini cart" ajax updater on any cart event
+^ moved /js/vmAjax.js to /themes/default/theme.js
 
 24-10-2006 soeren
 
