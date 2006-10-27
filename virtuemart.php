@@ -182,7 +182,6 @@ else {
 		
         // IE6 PNG transparency fix
         $mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/sleight.js" ));
-		$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/sleightbg.js" ));
 
 		echo '<div id="vmMainPage">'."\n";
 		
