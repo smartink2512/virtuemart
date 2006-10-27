@@ -30,7 +30,7 @@ function handleAddToCart( formId, parameters ) {
 	
 	var callback = {
 		success : function(o) {
-			
+			updateMiniCarts();
 			dlg = Dialog.confirm(o.responseText, 
 				{windowParameters: {className:"mac_os_x", 
 									width:440, modal: false,
@@ -71,7 +71,32 @@ function handleAddToCart( formId, parameters ) {
 
 	new Ajax.Request('index2.php?ajax_request=1', opt);
 }
-
+/**
+* This function searches for all elements with the class name "vmCartModule" and
+* updates them with the contents of the page "shop.basket_short" after a cart modification event
+*/
+function updateMiniCarts() {
+		var callbackCart = {  
+			success : function(o) {
+				carts = document.getElementsByClassName( 'vmCartModule' );
+				if( carts ) {
+						for (var i=0; i<carts.length; i++){
+								carts[i].innerHTML = o.responseText;
+						}
+				}
+			},
+			failure : function( hxr ) { alert( hxr.statusText ) }
+		}
+		option = { method: 'get', onSuccess: callbackCart.success,onFailure: callbackCart.failure }
+		new Ajax.Request('index2.php?only_page=1&page=shop.basket_short&option=com_virtuemart', option);
+		
+}
+/**
+* This function allows you to present contents of a URL in a really nice stylish dhtml Window
+* It uses the WindowJS, so make sure you have called
+* vmCommonHTML::loadWindowsJS();
+* before
+*/
 function protoPop( url, parameters ) {
 	
 	parameters = parameters || {};
