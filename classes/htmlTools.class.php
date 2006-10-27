@@ -750,7 +750,6 @@ class vmCommonHTML extends mosHTML {
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.base.js' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.dom.js' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.ajax.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/vmAjax.js' );
 			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
 			}
@@ -911,7 +910,6 @@ class vmCommonHTML extends mosHTML {
 			vmCommonHTML::loadScriptaculous( array('effects'), $print );
 			$scripttag = vmCommonHTML::scriptTag( '', 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'.$VM_LANG->_CMN_CONTINUE.'";var cancel_lbl="'.$VM_LANG->_CMN_CANCEL.'";var notice_lbl="'.$VM_LANG->_PEAR_LOG_NOTICE.'";' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/window.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/vmAjax.js' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/mac_os_x.css' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/alphacube.css' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/default.css' );
