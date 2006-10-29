@@ -479,7 +479,7 @@ class ps_session {
 				if (!defined( '_PSHOP_ADMIN' )) {
 	
 					// be sure that we have the correct PHP_SELF in front of the url
-					if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
+					if( stristr( $_SERVER['PHP_SELF'], "index2.php" ) && !stristr( $text, "shop.cart")) {
 						$prep = "index2.php";
 					}
 					else {

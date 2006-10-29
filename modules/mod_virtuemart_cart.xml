@@ -46,5 +46,9 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+        <param name="vmEnableGreyBox" type="radio" default="0" label="Display Cart in Grey Box" description="Select whether to display the cart in a grey box">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </mosinstall>
