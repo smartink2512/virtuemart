@@ -29,6 +29,7 @@ global $VM_LANG, $sess, $mm_action_url;
         $_SESSION['vmShowLogo'] = $params->get( 'vmShowLogo');
         $_SESSION['vmAlignPrice'] = $params->get( 'vmAlignPrice');
         $_SESSION['vmUseGreyBox'] = $params->get( 'vmEnableGreyBox');
+        $_SESSION['vmCartDirection'] = $params->get( 'vmCartDirection');
         include (PAGEPATH.'shop.basket_short.php') ; 
 ?>
            

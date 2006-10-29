@@ -59,11 +59,21 @@ $auth = $_SESSION['auth'];
     $amount = 0;
     $weight_total = 0;
     $html=""; 
-    // Default output is last entered item is displayed at the top, for the last added item to be displayed at the bottom of the list
-    // Uncoment the next line and comment out the following line
-    //for($i=0;$i<$cart["idx"];$i++) {
-    for ($i=$cart["idx"]-1;$i!=-1;$i--) {
-        //If we are not showing the minicart start the styleing of the individual products
+    
+    // Determiine the cart direction and set vars
+    if (@$_SESSION['vmCartDirection']) {
+        $i=0;
+        $up_limit = $cart["idx"] ;
+        }
+    else {
+        $i=$cart["idx"]-1;
+        $up_limit = -1;
+        }
+        
+    //Start loop through cart
+    do
+        {
+        //If we are not showing the minicart start the styling of the individual products
         if(!$_SESSION['vmMiniCart'])
     	    echo "<div style=\"float: left;\">";
 
@@ -120,7 +130,13 @@ $auth = $_SESSION['auth'];
             if(!@$_SESSION['vmShowAttrib'] && !$_SESSION['vmMiniCart']) 
         	    echo  "<br/ style=\"clear: both;\">";
         }
-    }
+    if(@$_SESSION['vmCartDirection'])
+        $i++;
+    else
+        $i--;
+    } while ($i != $up_limit);
+    //End loop through cart
+    
     if(!$_SESSION['vmMiniCart']) {
         if(!@$_SESSION['vmShowAttrib'])
     	    echo "<hr/>";
