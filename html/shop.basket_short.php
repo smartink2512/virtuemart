@@ -162,7 +162,7 @@ $auth = $_SESSION['auth'];
 	        $href2 = $sess->url($mm_action_url."index2.php?page=shop.cart");
 	        $text = $VM_LANG->_PHPSHOP_CART_SHOW;
 	        if( $_SESSION['vmUseGreyBox'] ) {
-	        	echo vmCommonHTML::getGreyboxPopUpLink( $href2, $text." pop", '', $text, $class_att, 500, 600, $href );
+	        	echo vmCommonHTML::getGreyboxPopUpLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
 	        }
 	        else {
 	        	echo vmCommonHTML::hyperlink( $href, $text, '', $text, $class_att );
