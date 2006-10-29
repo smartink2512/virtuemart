@@ -26,7 +26,6 @@ $ps_product_category =& new ps_product_category();
 global $module, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $VM_LANG, $sess, $mm_action_url;
 
 $category_id = mosGetParam( $_REQUEST, 'category_id' );
-$Itemid = $sess->getShopItemid();
 
 $mod_dir = dirname( __FILE__ );
 
@@ -51,7 +50,7 @@ $menu_orientation = $params->get( 'menu_orientation', 'hbr' );
 $_REQUEST['root_label'] = $params->get( 'root_label', 'Shop' );
 
 $class_mainlevel = "mainlevel".$class_sfx;
-
+$db = new ps_DB();
 // This is "Categories:" by default. Change it in the Module Parameters Form
 echo $pretext;
 
@@ -110,7 +109,7 @@ if ( $show_productsearch == 'yes' ) { ?>
       <form action="<?php echo $mm_action_url."index.php" ?>" method="get">
         <input id="shop_search_field" title="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" class="inputbox" type="text" size="12" name="keyword" />
         <input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
-		<input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
+		<input type="hidden" name="Itemid" value="<?php echo intval(@$_REQUEST['Itemid']) ?>" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="page" value="shop.browse" />
 	  </form>
@@ -191,8 +190,7 @@ if ( $show_login_form == "yes" ) {
 			<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="yes" name="remember" />
-			<?php $query_string = mosGetParam($_SERVER, 'QUERY_STRING', ''); ?>
-			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $query_string); ?>" name="return" />
+			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $_SERVER['QUERY_STRING']); ?>" name="return" />
 		  <br/>
 			<input type="submit" value="<?php echo _BUTTON_LOGIN ?>" class="button" name="Login" />
 			<?php
@@ -205,7 +203,7 @@ if ( $show_login_form == "yes" ) {
 		</tr>
 		<tr>
 		  <td colspan="2">
-			<a href="<?php echo sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$Itemid ); ?>">
+			<a href="<?php echo sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$_REQUEST['Itemid'] ); ?>">
 			<?php echo _LOST_PASSWORD; ?>
 			</a>
 		  </td>
@@ -240,7 +238,12 @@ if (ENABLE_DOWNLOADS == '1') { ?>
 }
 
 // Show a link to the cart and show the mini cart
-if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes') {
+// Check to see if minicart module is published, if it is prevent the minicart displaying in the VM module
+$q="SELECT published FROM #__modules WHERE module='mod_virtuemart_cart'";
+$db->query( $q );
+
+if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes'  && !$db->f("published")  ) {
+	$_SESSION['vmMiniCart'] = true;
 ?>
     <tr>
         <td colspan="2">
@@ -267,7 +270,10 @@ if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes') {
         </td>
     </tr>
         <?php 
-} ?> 
+} else {
+	$_SESSION['vmMiniCart'] = false;
+	 
+}?>
    
 </table>
 <?php

@@ -1,23 +1,50 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
     <name>Your Cart Module</name>
-    <creationDate>23.08.2006</creationDate>
-    <author><![CDATA[S&ouml;ren Eberhardt]]></author>
+    <creationDate>22.03.2005</creationDate>
+    <author>Soeren Eberhardt</author>
     <copyright>GNU/GPLicense</copyright>
     <authorEmail>soeren@virtuemart.net</authorEmail>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <version>1.3</version>
+    <version>1.2</version>
     <description>Shows the Cart for your Customers</description>
      <files>
          <filename module="mod_virtuemart_cart">mod_virtuemart_cart.php</filename>
      </files>
 	<params>
-		<param name="useGreyBox" type="radio" default="0" label="Open the cart in a ThickBox?" description="ThickBox is a webpage UI dialog widget. It opens the cart in a new inline-window and hides the other part of the website under a gray overlay.">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 		<param name="class_sfx" type="text" default="" label="Menu Class Suffix" description="A suffix to be applied to the css class of the menu items" />
+        <param name="vmShowQuantity" type="radio" default="0" label="Display Quantity" description="Select whether to Display the quantity">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        <param name="vmShowName" type="radio" default="0" label="Display Name" description="Select whether to Display the name">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        <param name="vmShowAttrib" type="radio" default="0" label="Display Attributes" description="Select whether to Display the Attributes">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        <param name="vmShowPrice" type="radio" default="0" label="Display Price" description="Select whether to Display the Price">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        <param name="vmAlignPrice" type="radio" default="1" label="Align Price to the right" description="Select whether to Align the Price">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        <param name="vmShowEmptyCart" type="radio" default="0" label="Display - Your cart is empty" description="Select whether to Display your cart is empty">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        <param name="vmShowLogo" type="radio" default="0" label="Display VirtueMart Logo on empty cart" description="Select whether to Display VirtueMart logo includes link to VirtueMart site">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+        </param>
+        <param name="vmEnableEmptyCart" type="radio" default="0" label="Enable function to empty cart" description="Select whether to enable empty cart feature">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </mosinstall>
