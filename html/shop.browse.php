@@ -59,10 +59,25 @@ if( $limitstart > 0 && $limit >= $num_rows) {
 	
 	$list = str_replace( 'LIMIT '.$limitstart, 'LIMIT 0', $list );
 }
-
+if( $category_id ) {
+	/**
+    * CATEGORY DESCRIPTION
+    */
+	$db->query( "SELECT category_id, category_name FROM #__{vm}_category WHERE category_id='$category_id'");
+	$db->next_record();
+	$category_name = shopMakeHtmlSafe( $db->f('category_name') );
+	
+	/* Set Dynamic Page Title */
+	$mainframe->setPageTitle( $db->f("category_name") );
+	
+	$desc =  $ps_product_category->get_description($category_id);
+	$desc = vmCommonHTML::ParseContentByPlugins( $desc );	
+	/* Prepend Product Short Description Meta Tag "description" when applicable */	
+	$mainframe->prependMetaTag( "description", substr(strip_tags($desc ), 0, 255) );
+	
+}	
 /*** when nothing has been found
 * we tell this here and say goodbye */
-
 if ($num_rows == 0 && !empty($keyword)) {
 	echo $VM_LANG->_PHPSHOP_NO_SEARCH_RESULT;
 }
@@ -77,20 +92,10 @@ else {
 	if( $category_id ) {
 		/**
 	    * CATEGORY DESCRIPTION
-	    */
-		$db->query( "SELECT category_id, category_name FROM #__{vm}_category WHERE category_id='$category_id'");
-		$db->next_record();
-		$category_name = shopMakeHtmlSafe( $db->f('category_name') );
-		
+	    */		
 		$browsepage_lbl = $category_name;
-		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
+		$tpl->set( 'browsepage_lbl', $browsepage_lbl );		
 		
-		/* Set Dynamic Page Title */
-		$mainframe->setPageTitle( $db->f("category_name") );
-		
-		$desc =  $ps_product_category->get_description($category_id);
-		$desc = vmCommonHTML::ParseContentByPlugins( $desc );
-				
 		$tpl->set( 'desc', $desc );
 			
 		$category_childs = $ps_product_category->get_child_list($category_id);
@@ -103,12 +108,7 @@ else {
 		$nav_list = $ps_product_category->get_navigation_list($category_id);
 		$tpl->set( 'category_list', $nav_list );
 		$tpl->set( 'category_name', $category_name );
-		$navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');
-		
-	
-		/* Prepend Product Short Description Meta Tag "description" when applicable */	
-		$mainframe->prependMetaTag( "description", substr(strip_tags($desc ), 0, 255) );
-		
+		$navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');		
 		$mainframe->appendPathWay( $navigation_pathway );
 		
 		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_category.tpl.php' );

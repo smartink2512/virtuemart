@@ -1889,6 +1889,7 @@ class ps_product extends vmAbstractObject {
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
 		
 		$product_name = htmlentities( $this->get_field($product_id, 'product_name'), ENT_QUOTES );
+		$tpl->set( 'product_id', $product_id );
 		$tpl->set( 'product_name', $product_name );
 		$tpl->set( 'vendor_mail', $vendor_mail );
 		$discount_info = $base_price = array();

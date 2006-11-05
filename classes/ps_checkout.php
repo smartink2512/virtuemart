@@ -1185,7 +1185,7 @@ Order Total: '.$order_total.'
 		for($i = 0; $i < $cart["idx"]; $i++) {
 			$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
 			$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-			$product_price = $product_price_tmp = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
+			$product_price = $product_price_tmp = $GLOBALS['CURRENCY']->convert( $price["product_price"], @$price["product_currency"] );
 			
 			if( $auth["show_price_including_tax"] == 1 ) {
 				$product_price = round( ($product_price *($my_taxrate+1)), 2 );

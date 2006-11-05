@@ -93,13 +93,13 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$nrows.")\" />" => "width=\"20\"",
+					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$pageNav->limit.")\" />" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_CATEGORY_FORM_NAME => 'width="25%"',
 					$VM_LANG->_PHPSHOP_CATEGORY_FORM_DESCRIPTION => 'width="30%"',
 					$VM_LANG->_PHPSHOP_PRODUCTS_LBL => 'width="10%"',
 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
 					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="7%"',
-					vmCommonHTML::getSaveOrderButton( $nrows ) => 'width="8%"',
+					vmCommonHTML::getSaveOrderButton( $pageNav->limit ) => 'width="8%"',
 					_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

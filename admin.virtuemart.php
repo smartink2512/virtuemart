@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 }
 /**
 *
-* @version $Id$
+* @version $Id:admin.virtuemart.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -104,7 +104,7 @@ if( $no_menu != 1 ) {
 }
 // Include the Stylesheet
 echo '<link rel="stylesheet" href="components/'.$option.'/admin.styles.css" type="text/css" />';
-echo '<link href="../'.VM_THEMEURL.'theme.css" type="text/css" rel="stylesheet" media="screen, projection" />';
+echo '<link href="'.VM_THEMEURL.'theme.css" type="text/css" rel="stylesheet" media="screen, projection" />';
 echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
 
 // Load PAGE

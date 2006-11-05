@@ -75,7 +75,7 @@ class vmTemplate_default extends vmTemplate  {
 					$link = $imageurl;
 					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
 
-					$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'] );
+					$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'], 'product'.$product['product_id'] );
 				}
 				elseif( @$_REQUEST['output'] != "pdf" ) {
 					$link = $imageurl;
@@ -100,16 +100,16 @@ class vmTemplate_default extends vmTemplate  {
 	 * @param array $images
 	 * @return string
 	 */
-	function vmlistAdditionalImages( $product_id, $images, $limit=1000 ) {
+	function vmlistAdditionalImages( $product_id, $images, $title='', $limit=1000 ) {
 		global $sess;
 		$html = '';
 		$i = 0;
 		foreach( $images as $image ) { 
-			$thumbtag = ps_product::image_tag( vmImageTools::getResizedFilename($image->file_name ), 'class="browseProductImage"' );
+			$thumbtag = ps_product::image_tag( $image->file_name, 'class="browseProductImage"' );
 			$fulladdress = $sess->url( 'index2.php?page=shop.view_images&amp;image_id='.$image->file_id.'&amp;product_id='.$product_id.'&amp;pop=1' );
 			
 			if( $this->get_cfg('useLightBoxImages', 1 )) {
-				$html .= vmCommonHTML::getLightboxImageLink( $image->file_url, $thumbtag, '', 'product'.$product_id );
+				$html .= vmCommonHTML::getLightboxImageLink( $image->file_url, $thumbtag, $title, 'product'.$product_id );
 			}
 			else {
 				$html .= vmPopupLink( $fulladdress, $thumbtag, 640, 550 );

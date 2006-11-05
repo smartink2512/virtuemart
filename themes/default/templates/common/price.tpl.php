@@ -4,8 +4,8 @@
 // User is not allowed to see a price or there is no price
 if( !$auth['show_prices'] || !isset($price_info["product_price_id"] )) {
 	
-	$link = $vendor_mail.'?subject='. $VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name";
-	echo @mosHTML::emailCloaking( $link, 1, $VM_LANG->_PHPSHOP_PRODUCT_CALL );
+	$link = $sess->url( $mm_action_url.'?page=shop.ask&amp;product_id='.$product_id.'&amp;subject='. urlencode( $VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name") );
+	echo vmCommonHTML::hyperLink( $link, $VM_LANG->_PHPSHOP_PRODUCT_CALL );
 }
 ?>
 

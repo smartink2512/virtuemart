@@ -35,7 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-27-10-2006 soeren
+30.10.2006 soeren
+
+# no title tag displayed for empty categories (shop.browse.php)
+
+
+27.10.2006 soeren
 
 + re-integrated the "mini cart" ajax updater on any cart event
 ^ moved /js/vmAjax.js to /themes/default/theme.js

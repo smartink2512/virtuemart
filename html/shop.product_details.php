@@ -34,7 +34,9 @@ require_once(CLASSPATH . 'ps_reviews.php' );
 
 /* Flypage Parameter has old page syntax: shop.flypage
 * so let's get the second part - flypage */
-$flypage = mosGetParam($_REQUEST, "flypage", FLYPAGE);
+$flypage = mosGetParam($_REQUEST, "flypage" );
+if( empty( $flypage )) $flypage = FLYPAGE;
+
 $flypage = str_replace( 'shop.', '', $flypage);
 $flypage = stristr( $flypage, '.tpl') ? $flypage : $flypage . '.tpl';
 
@@ -244,8 +246,9 @@ if( @$_REQUEST['output'] != "pdf" ) {
 }
 
 /** Ask seller a question **/
-$ask_seller = '<a class="button" href="'.$sess->url( $mosConfig_live_site.'/index.php?page=shop.ask&amp;flypage='.@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id&amp;set=1" ). '">';
-$ask_seller .= $VM_LANG->_VM_PRODUCT_ENQUIRY_LBL.'</a>';
+$ask_seller_href = $sess->url( $mosConfig_live_site.'/index.php?page=shop.ask&amp;flypage='.@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id" );
+$ask_seller_text = $VM_LANG->_VM_PRODUCT_ENQUIRY_LBL;
+$ask_seller = '<a class="button" href="'. $ask_seller_href .'">'. $ask_seller_text .'</a>';
 
 /* SHOW RATING */
 $product_rating = "";
@@ -301,6 +304,7 @@ else {
 $productData = $db_product->get_row();
 $productArray = get_object_vars( $productData );
 
+$productArray["product_id"] = $product_id;
 $productArray["product_full_image"] = $product_full_image; // to display the full image on flypage
 $productArray["product_thumb_image"] = $product_thumb_image;
 
@@ -343,6 +347,8 @@ $tpl->set( "related_products", $related_products );
 $tpl->set( "vendor_link", $vendor_link );
 $tpl->set( "product_type", $product_type ); // Changed Product Type
 $tpl->set( "product_packaging", $product_packaging ); // Changed Packaging
+$tpl->set( "ask_seller_href", $ask_seller_href ); // Product Enquiry!
+$tpl->set( "ask_seller_text", $ask_seller_text ); // Product Enquiry!
 $tpl->set( "ask_seller", $ask_seller ); // Product Enquiry!
 
 /* Finish and Print out the Page */

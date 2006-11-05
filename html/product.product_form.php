@@ -27,7 +27,7 @@ if( is_array( $product_id )) {
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
-$clone_product = mosGetParam( $_REQUEST, 'clone_product', "0" );
+$clone_product = mosGetParam( $_REQUEST, 'clone_product', 0 );
 
 $dl_checked = "";
 $curr_filename = "";
@@ -415,7 +415,7 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
     <tr class="row0"> 
       <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_NAME ?></td>
       <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_SKU ?></td>
-      <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE ?></td>
+      <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?></td>
       <?php
       $db_heading = $ps_product->attribute_sql("",$product_id);
       while ($db_heading->next_record()) {

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id$
+* @version $Id:shop.ask.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -25,6 +25,7 @@ $category_id = mosgetparam($_REQUEST, "category_id", null);
 $set = mosgetparam($_REQUEST, "set", 0 );
 $Itemid = $sess->getShopItemid();
 $flypage = mosgetparam($_REQUEST, "flypage", '' );
+$subject = substr( urldecode( mosGetParam( $_REQUEST, 'subject')), 0, 150 );
 
 $db_product = new ps_DB;
 // Get the product info from the database
@@ -59,15 +60,14 @@ $return_seller = "<a class=\"button\" href=\"$mosConfig_live_site/index.php?opti
 $return_seller .= "Return to product</a>";
 $name = "";
 $email = "";
-if ($set <> 0 ) {
-	if ($my->id) {
-		$theUser = new mosUser( $database );
-		$theUser->load( $my->id );
-		$name = $theUser->name;
-		$email = $theUser->email;
-	}
-	$set = 1;
+
+if ($my->id) {
+	$theUser = new mosUser( $database );
+	$theUser->load( $my->id );
+	$name = $theUser->name;
+	$email = $theUser->email;
 }
+
 // if set then display email form
 
 // get current user name and email
@@ -79,13 +79,13 @@ $send_mail .= "<br><input type=\"text\" name=\"name\" id=\"contact_name\" size=\
 $send_mail .= "<label for=\"contact_mail\">"._EMAIL_PROMPT."</label />\n";
 $send_mail .= "<br><input type=\"text\" id=\"contact_mail\" name=\"email\" size=\"80\" label=\"Your email\" class=\"inputbox\" value=\"".$email."\"><br><br />\n";
 $send_mail .= "<label for=\"contact_text\">"._MESSAGE_PROMPT."</label><br />\n";
-$send_mail .= "<textarea rows=\"10\" cols=\"60\" name=\"text\" id=\"contact_text\" class=\"inputbox\" value=\"\"></textarea><br />\n";
+$send_mail .= "<textarea rows=\"10\" cols=\"60\" name=\"text\" id=\"contact_text\" class=\"inputbox\">$subject</textarea><br />\n";
 $send_mail .=  "<input type=\"button\" name=\"send\" value=\""._SEND_BUTTON."\" class=\"button\" onclick=\"validateForm()\" />\n";
 
 // Set up product variables for product ask
 $send_mail .= "<input type=\"hidden\" name=\"product_id\" value=\"". $db_product->f("product_id") ."\" />\n";
 $send_mail .= "<input type=\"hidden\" name=\"product_sku\" value=\"". $db_product->f("product_sku") ."\" />\n";
-$send_mail .= "<input type=\"hidden\" name=\"set\" value=\"".$set."\" />\n";
+$send_mail .= "<input type=\"hidden\" name=\"set\" value=\"1\" />\n";
 
 // set up required fields for virtuemart function
 $send_mail .= "<input type=\"hidden\" name=\"func\" value=\"productAsk\" />\n";
@@ -100,9 +100,9 @@ $send_mail .= "</form>";
 //output javascript for form validation
 vmViewContact();
 
-if ( $set == 0 ) { // set not set so display confirmation
+if ( $set == 1 ) { // set not set so display confirmation
   ?>
-   <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
+   <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
    <?php echo _THANK_MESSAGE ?>
   
   <br /><p>
@@ -126,10 +126,9 @@ function vmViewContact() {
 	global $mosConfig_live_site;
 	global $mainframe, $Itemid;
 
-					?>
-	<script language="JavaScript" type="text/javascript">
-	<!--
-	function validateForm(){
+	?>
+	<script language="JavaScript" type="text/javascript"><!--
+	window.validateForm = function(){
 		if ( ( document.emailForm.text.value == "" ) || ( document.emailForm.email.value.search("@") == -1 ) || ( document.emailForm.email.value.search("[.*]" ) == -1 ) ) {
 			alert( "<?php echo _CONTACT_FORM_NC; ?>" );
 		} else if ( ( document.emailForm.email.value.search(";") != -1 ) || ( document.emailForm.email.value.search(",") != -1 ) || ( document.emailForm.email.value.search(" ") != -1 ) ) {
@@ -139,8 +138,7 @@ function vmViewContact() {
 			document.emailForm.submit();
 		}
 	}
-	//-->
-	</script>
+	--></script>
 		
 <?php
 }

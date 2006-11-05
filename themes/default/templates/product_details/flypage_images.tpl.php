@@ -39,7 +39,9 @@ if( $this->get_cfg( 'showPathway' )) {
       <td valign="top"><?php echo $product_packaging ?><br /></td>
 	</tr>
 	<tr>
-	  <td colspan="2"><?php echo $ask_seller ?></td>
+	  <td colspan="2">
+	  	<a class="button" onclick="protoPop( this.href.replace(/index.php/, 'index2.php' ) + '&only_page=1', { modal: true,width:640,height:480 } );return false;" href="<?php echo $ask_seller_href ?>"><?php echo $ask_seller_text ?></a>
+	  </td>
 	</tr>
 	<tr>
 	  <td rowspan="1" colspan="2"><hr />

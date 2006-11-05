@@ -100,7 +100,6 @@
 	overflow:auto;
 	color: #222;
 	font-family: Tahoma, Arial, sans-serif;
-
 	background:#FFF;
 	
 }
@@ -113,54 +112,54 @@
 * html .mac_os_x_nw {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/TL_Main.png", sizingMethod="crop");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/TL_Main.png", sizingMethod="crop");
 }
 
 * html .mac_os_x_n {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/T_Main.png", sizingMethod="scale");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/T_Main.png", sizingMethod="scale");
 }
 
 * html .mac_os_x_ne {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/TR_Main.png", sizingMethod="crop");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/TR_Main.png", sizingMethod="crop");
 }
 
 * html .mac_os_x_w {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/L_Main.png", sizingMethod="scale");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/L_Main.png", sizingMethod="scale");
 }
 
 * html .mac_os_x_e {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/R_Main.png", sizingMethod="scale");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/R_Main.png", sizingMethod="scale");
 }
 
 * html .mac_os_x_sw {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/BL_Main.png", sizingMethod="crop");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/BL_Main.png", sizingMethod="crop");
 }
 
 * html .mac_os_x_s {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/B_Main.png", sizingMethod="scale");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/B_Main.png", sizingMethod="scale");
 }
 
 * html .mac_os_x_se {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/BR_Main.png", sizingMethod="crop");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/BR_Main.png", sizingMethod="crop");
 }
 
 * html .mac_os_x_sizer {
 	background-color: transparent;
 	background-image: none;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_phpshop/js/windows_js/themes/mac_os_x/BR_Main.png", sizingMethod="crop");
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="components/com_virtuemart/js/windows_js/themes/mac_os_x/BR_Main.png", sizingMethod="crop");
 }
 

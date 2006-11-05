@@ -219,6 +219,7 @@ Window.prototype = {
 	},
 	
 	_setAjaxContent: function(originalRequest) {
+	  originalRequest.responseText.evalScripts();
 	  this.getContent().innerHTML = originalRequest.responseText;
 	  if (this.onComplete)
 	    this.onComplete(originalRequest);
@@ -1169,7 +1170,7 @@ var WindowUtilities = {
 
 			// make select boxes visible
 			if (isIE) {
-        $$('select').each(function(element) {element.style.visibility = "visible"});
+        		$$('select').each(function(element) {element.style.visibility = "visible"});
 			}
 			objOverlay.parentNode.removeChild(objOverlay);
 		}

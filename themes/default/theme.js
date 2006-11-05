@@ -1,7 +1,9 @@
 /**
- * AJAX FUNCTIONS 
+ * This file holds javscript functions that are used by the templates in the Theme
  * 
  */
+ 
+ // AJAX FUNCTIONS 
 function loadNewPage( el, url ) {
 	
 	var theEl = $(el);
@@ -82,6 +84,7 @@ function updateMiniCarts() {
 				if( carts ) {
 						for (var i=0; i<carts.length; i++){
 								carts[i].innerHTML = o.responseText;
+								new Effect.Highlight( carts[i] );
 						}
 				}
 			},
@@ -110,7 +113,7 @@ function protoPop( url, parameters ) {
 										showEffect: Element.show,
 										hideEffect: Element.hide,
 										width: popWidth, height: popHeight}); 
-	window_id.setAjaxContent( url, {}, true, modal );
+	window_id.setAjaxContent( url, {evalScripts:true}, true, popModal );
 	window_id.setCookie('window_size');
 	window_id.setDestroyOnClose();
 }

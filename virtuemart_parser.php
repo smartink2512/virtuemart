@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file prepares the VirtueMart framework
 * It should be included whenever a VirtueMart function is needed
 *
-* @version $Id$
+* @version $Id:virtuemart_parser.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -141,6 +141,10 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$db->next_record();
 			$class = $db->f('function_class');
 			if( file_exists( CLASSPATH."$class.php" ) ) {
+				if( $ajax_request ) {
+					require_once( CLASSPATH . 'connectionTools.class.php' );
+					vmConnector::sendHeaderAndContent( 200 );
+				}
 				// Load class definition file
 				require_once( CLASSPATH.$db->f("function_class").".php" );
 				$classname = str_replace( '.class', '', $funcParams["class"]);
@@ -183,7 +187,16 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$no_last = 0;
 			//$error="";
 		}
-
+	
+		// If this is an asynchronous page load,
+		// we clear the output buffer and just send the log messages.
+		// the variable named 'ajax_request' has to be set to 1.
+		if( $func && $ajax_request) {
+			// Send an indicator wether the function call return true or false
+			vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );		
+			exit;
+		}
+		
 		if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE')) {
 			$_SESSION['last_page'] = $page;
 		}
@@ -199,18 +212,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
     // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
     // or the caching time range has expired
 	$GLOBALS['cache_id'] = 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
-		
-	// If this is an asynchronous page load,
-	// we clear the output buffer and just send the log messages.
-	// the variable named 'ajax_request' has to be set to 1.
-	if( $func && $ajax_request) {
-		require_once( CLASSPATH . 'connectionTools.class.php' );
-		vmConnector::sendHeaderAndContent( 200 );
-		// Send an indicator wether the function call return true or false
-		vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
-		
-		exit;
-	}
 	
 	if( empty($_REQUEST['only_page']) ) {
 		// the Log object holds all error messages
