@@ -17,6 +17,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+vmCommonHTML::loadScriptaculous();
+
 $csv_lines_to_import = mosGetParam( $_REQUEST, 'csv_lines_to_import', 300 );
 	
 if( empty($vars['do_import'])) {
@@ -28,37 +30,48 @@ if( empty( $vars['csv_import_finished'])) {
 	
 	$vars['csv_start_at'] = @$vars['csv_start_at'] + @$vars['csv_lines_processed'] + 1;
 	echo '<tr>
-	<td style="padding-left:100px;" colspan="2"><br /><form method="post" action="'. $_SERVER['PHP_SELF'] .'" name="adminForm" >';
+	<td style="padding-left:100px;">
+		<br />
+		<form method="post" action="'. $_SERVER['PHP_SELF'] .'" name="adminForm" onsubmit="doImport( this );return false;">';
 	foreach ( $_POST as $postvar => $value ) {
-		echo "<input type=\"hidden\" name=\"$postvar\" value=\"".htmlspecialchars(stripslashes($value),ENT_QUOTES)."\" />\n";
+		if( $postvar != 'csv_start_at' && $postvar != 'csv_lines_to_import') {
+			echo "<input type=\"hidden\" name=\"$postvar\" value=\"".htmlspecialchars(stripslashes($value),ENT_QUOTES)."\" />\n";
+		}
 	}
 	if( !isset($vars['total_lines'])) {
 		echo "<input type=\"hidden\" name=\"total_lines\" value=\"".$vars['csv_log']['total_lines']."\" />\n";
 	}
-	echo "<label for=\"csv_start_at\">".$VM_LANG->_VM_CSV_UPLOAD_START_AT.": </label><input class=\"inputbox\" type=\"text\" id=\"csv_start_at\" name=\"csv_start_at\" value=\"".intval( $vars['csv_start_at'] )."\" size=\"6\" /><br/><br/>";
-	echo "<label for=\"csv_lines_to_import\">".$VM_LANG->_VM_CSV_UPLOAD_LINES_TO_PROCESS.": </label><input class=\"inputbox\" type=\"text\" id=\"csv_lines_to_import\" name=\"csv_lines_to_import\" value=\"$csv_lines_to_import\" size=\"6\" /><br/><br/>";
+	echo "<label for=\"csv_start_at\">".$VM_LANG->_VM_CSV_UPLOAD_START_AT.": </label>
+			<input class=\"inputbox\" type=\"text\" id=\"csv_start_at\" name=\"csv_start_at\" value=\"".intval( $vars['csv_start_at'] )."\" size=\"6\" />
+			<br /><br />";
+	echo "<label for=\"csv_lines_to_import\">".$VM_LANG->_VM_CSV_UPLOAD_LINES_TO_PROCESS.": </label>
+			<input class=\"inputbox\" type=\"text\" id=\"csv_lines_to_import\" name=\"csv_lines_to_import\" value=\"$csv_lines_to_import\" size=\"6\" />
+			<br /><br /><img id=\"indicator\" style=\"display:none;\" src=\"".VM_THEMEURL."images/indicator.gif\" alt=\"Indicator\" align=\"absmiddle\" />&nbsp;&nbsp;";
 	
 	echo "<input class=\"button\" type=\"submit\" name=\"do_import\" value=\"".$VM_LANG->_VM_CSV_UPLOAD_IMPORTNOW."\" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n";
 	echo "<input class=\"button\" type=\"button\" name=\"cancel\" value=\""._E_CANCEL."\" onclick=\"document.location='".$sess->url($_SERVER['PHP_SELF']."?page=product.csv_upload")."';\" />\n";
-	echo '</form><br /><br /></td>
+	echo '</form><br /><br />
+	</td>
+	<td id="importmsg"></td>
 	</tr>';
 }
 echo '<tr><td width="50%">
 ';	
 
 if( !empty( $vars['error_log'] ) && is_array($vars['error_log'])) {
-	echo '<h3>Error Log</h3>';
+	echo '<fieldset><legend>Error Log</legend>';
 	echo '<ul>';
 	foreach( $vars['error_log'] as $line => $message) {
 		echo "<li><img src=\"$mosConfig_live_site/administrator/images/publish_x.png\" hspace=\"5\" alt=\"failure\" />$message</li>\n";
 	}
-	echo '</ul>';
+	echo '</ul></fieldset>';
 }
 else {
 	echo '<h3><img src="'.$mosConfig_live_site.'/administrator/images/tick.png" hspace="5" alt="ok" />'.$VM_LANG->_VM_CSV_UPLOAD_NO_ERRORS.'</h3>';
 }
 
-echo '<td valign="top" width="50%" rowspan="2"><h3>'.$VM_LANG->_VM_CSV_UPLOAD_DETAILS_ANALYSIS.'</h3>';
+echo '<td valign="top" width="50%" rowspan="2">
+		<fieldset><legend>'.$VM_LANG->_VM_CSV_UPLOAD_DETAILS_ANALYSIS.'</legend>';
 if( empty( $vars['do_import'])) {
 	echo '<strong>'.$VM_LANG->_VM_CSV_UPLOAD_TOTAL_LINES.': '.$vars['csv_log']['total_lines'].'</strong><br/><br />';
 }
@@ -76,14 +89,14 @@ foreach( $vars['csv_log']['csv_fields'] as $field => $details ) {
 }
 echo '</ol>';
 
-echo '</td></tr>
+echo '</fieldset></td>
+</tr>
 <tr><td width="50%">';
 
-echo '<br />';
-echo '<h3>'.$VM_LANG->_VM_PRODUCT_IMPORT_LOG.'</h3>';
+echo '<fieldset><legend>'.$VM_LANG->_VM_PRODUCT_IMPORT_LOG.'</legend>';
 echo '<div style="height:500px;overflow:auto;">';
 foreach( $vars['product_log'] as $line => $product) {
-	echo '<strong>'.ucfirst( $product['action'] ).':</strong> '.$product['product_name'].'&nbsp;&nbsp;&nbsp;';
+	echo '<strong>Line '.$line.', '.ucfirst( $product['action'] ).':</strong> '.$product['product_name'].'&nbsp;&nbsp;&nbsp;';
 	$tip = '';
 	foreach( $product as $field => $value) {
 		
@@ -100,9 +113,22 @@ foreach( $vars['product_log'] as $line => $product) {
 	echo vmHelpToolTip( $tip );
 	echo "<br />\n";
 }
-echo "</div>\n";	
+echo "</div></fieldset>\n";	
 echo '</td></tr></table>';
 
 ?>
+<script type="text/javascript">
+function doImport( form ) {
+	$('indicator').show();
+	var options = {
+		postBody: Form.Methods.serialize( form ) + '&ajax_request=1',
+		method: 'post',
+		//onSuccess: function(o) { alert(o.responseText);},
+		evalScripts: true
+	}
+	new Ajax.Updater( 'importmsg', 'index2.php', options );
+	
+}
+</script>
 <br />
 <br />

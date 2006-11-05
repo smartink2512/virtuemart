@@ -69,9 +69,7 @@ class ps_csv {
 		global $database, $mosConfig_secret;
 		
 		// Raise the memory limit to 20M
-		if( intval(substr(ini_get('memory_limit'),0,2))<20) {
-			@ini_set( 'memory_limit', '20M' );
-		}
+		vmRaiseMemoryLimit('20M');
 		
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
 		$GLOBALS[$ps_vendor_id]["default_shopper_group"] = "";
@@ -124,7 +122,7 @@ class ps_csv {
 	 * @param boolean $greater43 Is this PHP version greater or equal than 4.3.0 ?
 	 * @param boolean $skip_first_line Skip the first line in the file?
 	 */
-	function doImport( $fp, $delim, $enclosure, $skip_first_line, &$d ) {
+	function doImport( &$fp, $delim, $enclosure, $skip_first_line, &$d ) {
 		global $vmLogger, $vars, $ps_vendor_id;
 		
 		$d['csv_lines_processed'] = 0;
@@ -132,7 +130,9 @@ class ps_csv {
 		// But this is line 0 in here
 		$d['csv_start_at']--;
 		
-		$dbc = new ps_DB;
+		$dbu = new ps_DB; $dbp = new ps_DB; $dbpp = new ps_DB;
+		$dbcat = new ps_DB; $dbsg = new ps_DB; $dbc = new ps_DB;
+		
 		$q = "SELECT `vendor_currency` FROM `#__{vm}_vendor` WHERE `vendor_id`='$ps_vendor_id' ";
 		$dbc->query($q);
 		$dbc->next_record();
@@ -141,12 +141,6 @@ class ps_csv {
 		require_once( CLASSPATH."ps_manufacturer.php" );
 		$ps_manufacturer =& new ps_manufacturer();
 		$manufacturers = Array();
-		
-		$dbu = new ps_DB;
-		$dbp = new ps_DB;
-		$dbpp = new ps_DB;
-		$dbcat = new ps_DB;
-		$dbsg = new ps_DB;
 		
 		$line = 0;
 		$this_error = "";
@@ -159,45 +153,29 @@ class ps_csv {
 		$product_log = array();
 		$csv_log = array();
 		
-		if( $enclosure != '' ) {
-			$data = fgetcsv( $fp, 4096, $delim, $enclosure );
-		}
-		else {
-			$data = fgetcsv( $fp, 4096, $delim );
-		}
+		$data = $this->fgetcsvline( $fp, $delim, $enclosure );
+		
 		// Run through each line of file
 		while( $data ) {
 			if( $skip_first_line ) {
 				// IF the first line is to be skipped, set the flag to false and continue with the second line
 				$skip_first_line = false;
-
+				// jump to next line
 				$line++;
 				$d['csv_start_at']++;
-				// jump to next line
-				//$vmLogger->info( 'skipping first line' );
+				
+				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
+				
 				continue;
 			}
 			// Jump forward until we reach the line we start from
 			if( ++$line <= $d['csv_start_at'] ) {
-				//$vmLogger->info( 'skipping line '. $line.' until '.$d['csv_start_at'] );
+				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
 				continue;
 			}
-			
 			// When we have processed X lines, break out of the loop
-			if( $d['csv_lines_processed'] >= $d['csv_lines_to_import']) {
+			if( $d['csv_lines_processed'] >= $d['csv_lines_to_import']) {				
 				break;
-			}
-			
-			// This will prevent importing weird data because of wrong exports
-			// Previous versions of this class exported an additional field (product_special), which is not wanted here
-			if( $csv_fields['product_available_date']['ordering'] == 13
-			&& $csv_fields['product_discount_id']['ordering'] == 14
-			&& ( $data[13] == 'N' || $data[13] == 'Y' || (empty($data[13]) && $data[13]!==0 && $data[13]!=='0'))
-			) {
-				$max = count( $data )-1;
-				for( $i = 13; $i < $max; $i++ ) {
-					$data[$i] = $data[$i+1];
-				}
 			}
 
 			if( !defined( '_VM_CSV_FIRST_LINE_READ' )) {
@@ -210,11 +188,12 @@ class ps_csv {
 			// Check for required Fields
 			foreach( $required_fields as $fieldname => $ordering ) {
 
-				if (!$data[$ordering-1]) {
+				if (!@$data[$ordering-1]) {
+					
 					// If no category path is there, let's check if it's an item
 					if( $fieldname == "category_path" ) {
 						// It's an item, when Parent SKU and Product SKU do no match
-						if( $data[$csv_fields["product_parent_id"]["ordering"]-1] == $data[$csv_fields["product_sku"]["ordering"]-1]) {
+						if( @$data[$csv_fields["product_parent_id"]["ordering"]-1] == @$data[$csv_fields["product_sku"]["ordering"]-1]) {
 							$this_error .= "No $fieldname, ";
 						}
 					}
@@ -267,7 +246,7 @@ class ps_csv {
 				if ($dbp->next_record()) { // SKU exists - update product
 					// Update product information
 					$product_log[$line]['action'] = 'updating';
-					$q = "UPDATE #__{vm}_product SET ";
+					
 					foreach( $csv_fields as $fieldname ) {
 
 						if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
@@ -275,24 +254,25 @@ class ps_csv {
 							if( empty($data[$fieldname["ordering"]-1]) ) {
 								$data[$fieldname["ordering"]-1] = $csv_fields[$fieldname["name"]]["default_value"];
 							}
-							$q .= $fieldname["name"] . " = '" . $data[$fieldname["ordering"]-1] . "',";
+							$queryFields[$fieldname["name"]] = $data[$fieldname["ordering"]-1];
 							$product_log[$line][$fieldname["name"]] = $data[$fieldname["ordering"]-1];
 						}
 					}
-					$q .= "product_name='" . $product_name . "', ";
-					$q .= "mdate='" . $timestamp . "' ";
-					$q .= "WHERE product_sku='" . $product_sku . "'";
-
-					$dbu->query($q);
+					$queryFields['product_name'] = $product_name;
+					$queryFields['mdate'] = $timestamp;
+					
+					$where_clause = "WHERE product_sku='" . $product_sku . "'";
+					$dbu->buildQuery('UPDATE', '#__{vm}_product', $queryFields, $where_clause );
+					$dbu->query();
 					
 					$product_log[$line]['product_name'] = $product_name;
 					$product_log[$line]['product_sku'] = $product_sku;
 
 					/** ATTRIBUTE HANDLING
-                * Let's first search for Attributes 
-                * which are then added to this Product
-                * Syntax:   attribute_name::list_order|attribute_name::list_order......
-                */
+	                * Let's first search for Attributes 
+	                * which are then added to this Product
+	                * Syntax:   attribute_name::list_order|attribute_name::list_order......
+	                */
 					if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
 						$attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
 						$i = 0;
@@ -311,10 +291,10 @@ class ps_csv {
 
 					}
 					/**
-                * Now let's search for Attribute Values
-                * which are then added to this Child Product
-                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
-                */
+	                * Now let's search for Attribute Values
+	                * which are then added to this Child Product
+	                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
+	                */
 					if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
 						$attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
 						$i = 0;
@@ -347,13 +327,15 @@ class ps_csv {
 						}
 
 						// Update product price for default shopper group
-						$q = "UPDATE #__{vm}_product_price SET ";
-						$q .= "product_price='" . $data[$csv_fields["product_price"]["ordering"]-1] . "',";
-						$q .= "product_currency='" . $product_currency . "',";
-						$q .= "shopper_group_id='" . $GLOBALS[$ps_vendor_id]["default_shopper_group"] . "', ";
-						$q .= "mdate='" . $timestamp . "' ";
-						$q .= "WHERE product_id='" . $dbp->f("product_id") . "'";
-						$dbpp->query($q);
+						$queryFields = array();
+						$queryFields['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1];
+						$queryFields['product_currency='] = $product_currency;
+						$queryFields['shopper_group_id='] = $GLOBALS[$ps_vendor_id]["default_shopper_group"];
+						$queryFields['mdate='] = $timestamp;
+						$where_clause = "WHERE product_id='" . $dbp->f("product_id") . "'";
+						
+						$dbpp->buildQuery('UPDATE', '#__{vm}_product_price', $queryFields, $where_clause );
+						$dbpp->query();
 
 						$product_log[$line]['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1] . " ". $product_currency;
 						
@@ -384,35 +366,30 @@ class ps_csv {
 					** SKU does not exist - add new product
 					** Add product information ***********
 					**************************************/
-					$product_log[$line]['action'] = 'adding';
-					
-					$q  = "INSERT INTO #__{vm}_product (vendor_id,product_sku,product_name,cdate,mdate,product_publish,";
-					$x = 1;
-					foreach( $csv_fields as $fieldname ) {
+					$product_log[$line]['action'] = 'adding';					
 
-						if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
-							$q .= $fieldname["name"].",";
-						}
-						
-					}
-					$q .= ") ";
-					$q .= "VALUES ('$ps_vendor_id','";
-					$q .= $data[$csv_fields["product_sku"]["ordering"]-1] . "','" . $data[$csv_fields["product_name"]["ordering"]-1] . "'";
-					$q .= ",'$timestamp','$timestamp', 'Y',";
-					$x = 1;
+					$queryFields = array('vendor_id' => $ps_vendor_id,
+										'product_sku' => $data[$csv_fields["product_sku"]["ordering"]-1],
+										'product_name' => $data[$csv_fields["product_name"]["ordering"]-1],
+										'cdate' => $timestamp,
+										'mdate' => $timestamp,
+										'product_publish' => 'Y',
+										);
+
 					foreach( $csv_fields as $fieldname ) {
 						if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
 							if( empty($data[$fieldname["ordering"]-1]) ) {
 								$data[$fieldname["ordering"]-1] = $csv_fields[$fieldname["name"]]["default_value"];
 							}
-							$q .= "'".$data[$fieldname["ordering"]-1] . "',";
+							$queryFields[$fieldname["name"]] = $data[$fieldname["ordering"]-1];
 						}
-						$product_log[$line][$fieldname["name"]] = $data[$fieldname["ordering"]-1];
+						$product_log[$line][$fieldname["name"]] = @$data[$fieldname["ordering"]-1];
 					}
-					$q .= ") ";
-					$q = str_replace( ",)", ")", $q );
-
+					$dbu->buildQuery('INSERT', '#__{vm}_product', $queryFields );
 					if( !$dbu->query($q) ) {
+						$data = $this->fgetcsvline( $fp, $delim, $enclosure );
+						$line++;						
+						$d['csv_lines_processed']++;
 						continue;
 					}
 
@@ -484,10 +461,10 @@ class ps_csv {
 					}
 
 					/** ATTRIBUTE HANDLING
-                * Let's first search for Attributes 
-                * which are then added to this Product
-                * Syntax:   attribute_name::list_order|attribute_name::list_order......
-                */
+	                * Let's first search for Attributes 
+	                * which are then added to this Product
+	                * Syntax:   attribute_name::list_order|attribute_name::list_order......
+	                */
 					if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
 						$attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
 						$i = 0;
@@ -504,10 +481,10 @@ class ps_csv {
 
 					}
 					/**
-                * Now let's search for Attribute Values
-                * which are then added to this Child Product
-                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
-                */
+	                * Now let's search for Attribute Values
+	                * which are then added to this Child Product
+	                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
+	                */
 					if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
 						$attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
 						$i = 0;
@@ -520,28 +497,35 @@ class ps_csv {
 							
 							$dbu->query( "INSERT INTO #__{vm}_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
                                     VALUES ('".$product_id."', '".$values[0]."', '".$values[1]."' )");
-							$i++;
-							
+							$i++;							
 						}
-
 					}
-
 				}
 			}
 			$line++;
 			
 			$d['csv_lines_processed']++;
-			if( $enclosure != '' ) {
-				$data = fgetcsv( $fp, 4096, $delim, $enclosure );
-			}
-			else {
-				$data = fgetcsv( $fp, 4096, $delim );
-			}
+			
+			$data = $this->fgetcsvline( $fp, $delim, $enclosure );
+			
 		} // End while
 		$vars['product_log'] =& $product_log;
 		$vars['error_log'] =& $error_log;		
 		$vars['csv_log'] =& $csv_log;
 		
+		$d['csv_newstart_at'] = $d['csv_start_at'] + $d['csv_lines_processed'] + 1;
+		
+		$vmLogger->info( 'CSV Import: processed '.($d['csv_newstart_at']-1).' of '. $d['total_lines']. ' products.');
+
+		if( @$d['ajax_request'] && $d['csv_newstart_at'] < $d['total_lines'] ) {
+			echo vmCommonHTML::scriptTag('', '
+			document.adminForm.csv_start_at.value='.(int)$d['csv_newstart_at'] .';
+			document.adminForm.onsubmit();');
+		} elseif( $d['csv_newstart_at'] >= $d['total_lines'] ) {
+			echo vmCommonHTML::scriptTag('', '$(\'indicator\').hide();new Effect.Highlight(\'importmsg\', {duration: 3 } );' );
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -553,7 +537,7 @@ class ps_csv {
 	 * @param boolean $greater43 Is this PHP version greater or equal than 4.3.0 ?
 	 * @param boolean $skip_first_line Skip the first line in the file?
 	 */
-	function simulateImport( $fp, $delim, $enclosure, $skip_first_line ) {
+	function simulateImport( &$fp, $delim, $enclosure, $skip_first_line ) {
 		global $vmLogger, $ps_vendor_id, $vars;
 		
 		$dbc = new ps_DB;
@@ -589,12 +573,8 @@ class ps_csv {
 		$line = 0;
 		
 		// Run through each line of file
-		if( $enclosure != '' ) {
-			$data = fgetcsv( $fp, 4096, $delim, $enclosure );
-		}
-		else {
-			$data = fgetcsv( $fp, 4096, $delim );
-		}
+		$data = $this->fgetcsvline( $fp, $delim, $enclosure );
+		
 		while( $data ) {
 			
 			if( $skip_first_line ) {
@@ -605,6 +585,7 @@ class ps_csv {
 				
 				$line++;
 				// Read the next line
+				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
 				continue;
 			}
 			
@@ -612,6 +593,7 @@ class ps_csv {
 				// just count all the lines
 				// and do nothing more or less
 				$line++;
+				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
 				continue;
 			}
 
@@ -754,13 +736,8 @@ class ps_csv {
 
 			}
 			$line++;
-			
-			if( $enclosure != '' ) {
-				$data = fgetcsv( $fp, 4096, $delim, $enclosure );
-			}
-			else {
-				$data = fgetcsv( $fp, 4096, $delim );
-			}
+			$data = $this->fgetcsvline( $fp, $delim, $enclosure );
+
 		} // End while
 		$vars['product_log'] =& $product_log;
 		$vars['error_log'] =& $error_log;
@@ -939,36 +916,14 @@ class ps_csv {
 	  * @returns array $matches
     * The first field contains the whole line
 	  */
-	function fgetcsvfromline ($line, $columnCount, $delimiterChar = ',', $enclosureChar = '"') {
-		$regExpSpecialChars = array (
-		"|" => "\\|",
-		"&" => "\\&",
-		"$" => "\\$",
-		"(" => "\\(",
-		")" => "\\)",
-		"^" => "\\^",
-		"[" => "\\[",
-		"]" => "\\]",
-		"{" => "\\{",
-		"}" => "\\}",
-		"." => "\\.",
-		"*" => "\\*",
-		"\\" => "\\\\",
-		"/" => "\\/"
-		);
-		$matches = array();
-		$delimiterChar = strtr($delimiterChar, $regExpSpecialChars);
-		$enclosureChar = strtr($enclosureChar, $regExpSpecialChars);
-		$cutpoint = strlen($delimiterChar)+1;
-		$regExp = "/^";
-		for ($i = 0; $i < $columnCount; $i++) {
-			$regExp .= $enclosureChar.'?(.*?)'.$enclosureChar.'?'.$delimiterChar;
+	function fgetcsvline( &$fp, $delim, $enclosure='') {
+		if( $enclosure != '' ) {
+			$data = fgetcsv( $fp, 4096, $delim, $enclosure );
 		}
-		$regExp = substr($regExp,0,-$cutpoint).'/';
-		if (preg_match($regExp, $line, $matches)) {
-			return $matches;
+		else {
+			$data = fgetcsv( $fp, 4096, $delim );
 		}
-		return 0;
+		return $data;
 	}
 
 	/**
@@ -1068,8 +1023,8 @@ class ps_csv {
 					. $delim .	$encl . addslashes( $db->f("product_name")) . $encl
 					. $delim . 	$encl . addslashes( $this->get_category_path( $db->f("product_id") ) ). $encl
 					. $delim . 	$encl . $db->f("product_price") . $encl
-					. $delim . 	$encl . trim( addslashes( $db->f("product_s_desc"))) . $encl
-					. $delim . 	$encl . trim( addslashes($db->f("product_desc"))) . $encl
+					. $delim . 	$encl . $this->cleanString( addslashes( $db->f("product_s_desc"))) . $encl
+					. $delim . 	$encl . $this->cleanString( addslashes($db->f("product_desc"))) . $encl
 					. $delim . 	$encl . addslashes( $db->f("product_thumb_image")) . $encl
 					. $delim . 	$encl . addslashes( $db->f("product_full_image")) . $encl
 					. $delim . 	$encl . $db->f("product_weight") . $encl
@@ -1109,7 +1064,7 @@ class ps_csv {
 						$contents .= $encl . $export_sku . $encl;
 					}
 					else {
-						$contents .= $encl . trim( addslashes( $db->f($csv_ordering[$i] ) )) . $encl;
+						$contents .= $encl . $this->cleanString( addslashes( $db->f($csv_ordering[$i] ) )) . $encl;
 					}
 					// Add delimiter (if not line end)
 					if( $i < $num ) {
@@ -1233,7 +1188,11 @@ class ps_csv {
 		return $category_path;
 	}
 
-
+	function cleanString( $str ) {
+		return str_replace(
+				"\r", '',
+				str_replace( "\n", '', trim($str) ));
+	}
 
 	/**************************************************************************
 	** name: validate_add()
