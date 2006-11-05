@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id$
+* @version $Id:couponField.tpl.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage themes
 * @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.
@@ -33,16 +33,23 @@ if( !empty($_REQUEST['coupon_error']) ) {
 // If you have a coupon code, please enter it here:
 echo $VM_LANG->_PHPSHOP_COUPON_ENTER_HERE . '<br />';
 ?>  
-	    <form action="<?php echo $mm_action_url ?>index.php" method="post">
-			<input type="text" name="coupon_code" width="10" maxlength="30" class="inputbox" />
+	    <form action="<?php echo $mm_action_url ?>index.php" method="post" onsubmit="return checkCouponField(this);">
+			<input type="text" name="coupon_code" id="coupon_code" width="10" maxlength="30" class="inputbox" />
 			<input type="hidden" name="Itemid" value="<?php echo @intval($_REQUEST['Itemid'])?>" />
 			<input type="hidden" name="do_coupon" value="yes" />
 			<input type="hidden" name="option" value="<?php echo $option ?>" />
 			<input type="hidden" name="page" value="<?php echo $page ?>" />
 			<input type="submit" value="<?php echo $VM_LANG->_PHPSHOP_COUPON_SUBMIT_BUTTON ?>" class="button" />
-		</form>
-			
-		
+		</form>		
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+function checkCouponField(form) {
+	if(form.coupon_code.value == '') {
+		new Effect.Highlight('coupon_code');
+		return false;
+	}
+	return true;
+}
+</script>
