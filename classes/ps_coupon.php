@@ -157,13 +157,14 @@ class ps_coupon {
         $d['coupon_code'] = trim(mosGetParam( $_REQUEST, 'coupon_code' ));
         $coupon_id = mosGetParam( $_SESSION, 'coupon_id', null );
         
+        $q = 'SELECT coupon_id, coupon_code, percent_or_total, coupon_value, coupon_type FROM #__{vm}_coupons WHERE ';
         if( $coupon_id ) {
             /* the query to select the coupon coupon_code */
-            $q = "SELECT coupon_id, percent_or_total, coupon_value, coupon_type FROM #__{vm}_coupons WHERE coupon_id = '".$coupon_id."' ";
+            $q .= 'coupon_id = '.intval($coupon_id);
         }
         else {
             /* the query to select the coupon coupon_code */
-            $q = "SELECT coupon_id, percent_or_total, coupon_value, coupon_type FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
+            $q .= 'coupon_code = \''.$coupon_db->getEscaped( $d['coupon_code'] ).'\'';
         }
         /* make the query */
         $coupon_db->query($q);
@@ -195,6 +196,7 @@ class ps_coupon {
             /* mark this order as having used a coupon so people cant go and use coupons over and over */
             $_SESSION['coupon_redeemed'] = true;
             $_SESSION['coupon_id'] = $coupon_db->f("coupon_id");
+            $_SESSION['coupon_code'] = $coupon_db->f("coupon_code");
             $_SESSION['coupon_type'] = $coupon_db->f("coupon_type");
                 
             

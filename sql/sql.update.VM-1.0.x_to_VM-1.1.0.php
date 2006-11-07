@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id$
+* @version $Id:sql.update.VM-1.0.x_to_VM-1.1.0.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -188,6 +188,9 @@ $db->query( "ALTER TABLE `#__{vm}_category_xref` ADD PRIMARY KEY ( `category_chi
 
 #13.09.2006 Allow Order Status Descriptions
 $db->query( "ALTER TABLE `#__{vm}_order_status` ADD `order_status_description` TEXT NOT NULL AFTER `order_status_name`");
+
+# 06.11.2006 Allow coupon code tracking
+$db->query( "ALTER TABLE `#__{vm}_orders` ADD `coupon_code` VARCHAR( 32 ) NULL AFTER `coupon_discount`");
 
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'")
 ?>

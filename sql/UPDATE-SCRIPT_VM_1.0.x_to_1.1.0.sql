@@ -187,4 +187,7 @@ ALTER TABLE `jos_vm_category_xref` ADD PRIMARY KEY ( `category_child_id` ) ;
 # 13.09.2006 Allow Order Status Descriptions
 ALTER TABLE `jos_vm_order_status` ADD `order_status_description` TEXT NOT NULL AFTER `order_status_name`;
 
+# 06.11.2006 Track coupon code used to order
+ALTER TABLE `jos_vm_orders` ADD `coupon_code` VARCHAR( 32 ) NULL AFTER `coupon_discount` ;
+
 UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';

@@ -832,6 +832,7 @@ Order Total: '.$order_total.'
 			'order_shipping_tax' => $order_shipping_tax, 
 			'order_discount' => $payment_discount, 
 			'coupon_discount' => $coupon_discount,
+			'coupon_code' => @$_SESSION['coupon_code'],
 			'order_currency' => $GLOBALS['product_currency'], 
 			'order_status' => 'P', 
 			'cdate' => $timestamp,
