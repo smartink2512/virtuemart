@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+global $ps_order_status;
 require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
@@ -63,17 +63,18 @@ $db->next_record();
   </tr>
   <tr> 
     <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</td>
-    <td><?php
-         $q = "SELECT order_status_name FROM #__{vm}_order_status WHERE ";
-         $q .= "order_status_code = '" . $db->f("order_status") . "'";
-         $dbos = new ps_DB;
-         $dbos->query($q);
-         $dbos->next_record();
-         echo $dbos->f("order_status_name");
-         ?>
-
-</td>
+    <td><?php echo $ps_order_status->getOrderStatusName( $db->f("order_status") )   ?></td>
   </tr>
+  <?php
+  // Print the coupon code when available
+  if( $db->f("coupon_code") ) { ?>
+	  <tr>
+		  <td><strong><?php echo $VM_LANG->_PHPSHOP_COUPON_COUPON_HEADER ?>:</strong></td>
+		  <td><?php $db->p("coupon_code"); ?></td>
+	  </tr>
+	  <?php 
+  }
+  ?>
   <!-- End Customer Information --> 
   <!-- Begin 2 column bill-ship to --> 
   <tr class="sectiontableheader"> 

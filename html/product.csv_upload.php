@@ -37,7 +37,7 @@ $tabs = new mShopTabs(0, 1, "_csv");
 $tabs->startPane("uploadform-pane");
 $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" ); 
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" enctype="multipart/form-data">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" enctype="multipart/form-data" onsubmit="return checkForm(this);">
 
 <table class="adminform" border="0">
     <tr>
@@ -49,43 +49,56 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
           
               <input type="hidden" name="func" value="product_csv" />
               <input type="hidden" name="task" value="" />
+              <input type="hidden" name="do_import" value="0" />
               <input type="hidden" name="page" value="product.mycsv" />
               <input type="hidden" name="option" value="com_virtuemart" />
               <input type="hidden" name="no_html" value="0" />
-              <?php 
-              echo $VM_LANG->_PHPSHOP_CSV_DELIMITER.': ';
-              $checked_1 = (stripslashes(@$vars['csv_delimiter']) == ',') ? 'checked="checked"' : '';
-              $checked_2 = (stripslashes(@$vars['csv_delimiter']) == ';' || empty($vars['csv_delimiter']) ) ? 'checked="checked"' : '';
-               ?>
+              <?php echo $VM_LANG->_PHPSHOP_CSV_DELIMITER ?>:
             </td>
             <td valign="top" width="5%">
-              <input type="radio" name="csv_delimiter" <?php echo $checked_1 ?> value="," />
+              <input type="radio" class="inputbox" name="csv_delimiter" checked="checked" value=";" />
+                <span class="sectionname">;</span><br />
+              <input type="radio" class="inputbox" name="csv_delimiter" value="," />
                 <span class="sectionname">,</span><br />
-              <input type="radio" name="csv_delimiter" <?php echo $checked_2 ?> value=";" />
-                <span class="sectionname">;</span>
+              <input type="radio" class="inputbox" name="csv_delimiter" value="^" />
+                <span class="sectionname">^</span><br />
+			 <input type="radio" class="inputbox" name="csv_delimiter" id="csv_delimiter_custom" value="" />
+			 <input type="text" class="inputbox" name="csv_delimiter_custom" id="csv_delimiter_custom_el" onfocus="document.getElementById('csv_delimiter_custom').checked=true;" value="" size="4" />
             </td>
             <?php
-            if( $show_fec ) {
-                                $checked_1 = (@$vars['csv_enclosurechar'] == '&quote;' || !isset($vars['csv_delimiter'])) ? 'checked="checked"' : '';
-                    $checked_2 = (@$vars['csv_enclosurechar'] == '&#039;' ) ? 'checked="checked"' : '';
-                    $checked_3 = (@$vars['csv_enclosurechar'] == '' ) ? 'checked="checked"' : '';
-      ?>
+            if( $show_fec ) { ?>
               <td valign="top" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_CSV_ENCLOSURE ?>:</td>
               <td valign="top" width="15%">
-                  <input type="radio" name="csv_enclosurechar" <?php echo $checked_1 ?> value="&quot;" />
+                  <input type="radio" class="inputbox" name="csv_enclosurechar" checked="checked" value='"' />
                     <span class="sectionname">&quot;</span><br />
-                  <input type="radio" name="csv_enclosurechar" <?php echo $checked_2 ?>value="&#039;" />
+                  <input type="radio" class="inputbox" name="csv_enclosurechar" value="'" />
                     <span class="sectionname">&#039;</span><br />
-                  <input type="radio" name="csv_enclosurechar" <?php echo $checked_3 ?> value="" />
-                    (<?php echo $VM_LANG->_PHPSHOP_NONE ?>)
+				<input type="radio" class="inputbox" name="csv_enclosurechar" value='~' />
+                    <span class="sectionname">~</span><br />
+                <input type="radio" class="inputbox" name="csv_enclosurechar" id="csv_enclosurechar_custom" value="" />
+                	<input type="text" name="csv_enclosurechar_custom" id="csv_enclosurechar_custom_el" onfocus="document.getElementById('csv_enclosurechar_custom').checked=true;" class="inputbox" value="" size="4" />
+                    
               </td>
               <?php 
             }
               ?>
             </tr>
-            <tr>
-              <td colspan="<?php echo $cols; ?>"><input type="checkbox" id="skip_first_line" name="skip_first_line" value="Y" /><label for="skip_first_line">Skip first line</label>
-              </td>
+            <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_UPLOAD_SETTINGS ?></th></tr>
+		  <tr>
+              <td colspan="<?php echo $cols/2; ?>">
+		    		<input type="checkbox" id="skip_first_line" name="skip_first_line" value="Y" /><label for="skip_first_line"><?php echo $VM_LANG->_PHPSHOP_CSV_SKIP_FIRST_LINE; ?></label>
+		    </td>
+		    <td colspan="<?php echo $cols/2; ?>">
+		    		<input type="checkbox" id="skip_default_value" name="skip_default_value" value="Y" /><label for="skip_default_value"><?php echo $VM_LANG->_PHPSHOP_CSV_SKIP_DEFAULT_VALUE; ?></label>
+		    </td>
+            </tr>
+		  <tr>
+              <td colspan="<?php echo $cols/2; ?>">
+		    		<input type="checkbox" id="overwrite_existing_data" name="overwrite_existing_data" value="Y" checked="checked"/><label for="overwrite_existing_data"><?php echo $VM_LANG->_PHPSHOP_CSV_OVERWRITE_EXISTING_DATA; ?></label>
+		    </td>
+		    <td colspan="<?php echo $cols/2; ?>">
+		    		
+		    </td>
             </tr>
             <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_UPLOAD_FILE ?></th></tr>
             <tr>
@@ -120,7 +133,9 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
         <td valign="top"><strong><?php echo $VM_LANG->_PHPSHOP_CSV_SELECT_FIELD_ORDERING ?></strong><br/><br/>
           <input type="radio" id="use_standard_order_yes" name="use_standard_order" value="Y" /><label for="use_standard_order_yes"><?php echo $VM_LANG->_PHPSHOP_CSV_DEFAULT_ORDERING ?></label>&nbsp;&nbsp;
           <input type="radio" id="use_standard_order_no" name="use_standard_order" checked="checked" value="N" /><label for="use_standard_order_no"><?php echo $VM_LANG->_PHPSHOP_CSV_CUSTOMIZED_ORDERING ?></label>
-          <br/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;
+          <br/><br />
+		<input type="checkbox" id="include_column_headers" name="include_column_headers" value="Y" /><label for="include_column_headers"><?php echo $VM_LANG->_PHPSHOP_CSV_INCLUDE_COLUMN_HEADERS; ?></label>
+		<br/><br />
           <a href="#" onclick="javascript: document.adminForm.func.value='export_csv'; document.adminForm.no_html.value='1';submitbutton();" >
           <img alt="Export" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/images/backup.png" align="center" /><?php echo $VM_LANG->_PHPSHOP_CSV_SUBMIT_EXPORT ?></a>
         </td>
@@ -248,6 +263,43 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_DOCUMENTATION, "doc-page" );
   You can add new fields to the list of CSV fields, but please note that the field name must
   match a name of a field in the table <strong>mos_{vm}_csv</strong>!<br/>
   You can change the ordering of all the fields just as you need it.
+
+	<div style="font-size: 1.3em; text-align: center; margin-bottom: 1em;"><?php echo $VM_LANG->_PHPSHOP_CSV_MINIMAL_FIELDS; ?></div>
+	<div style="font-size: 1.3em;"><?php echo $VM_LANG->_PHPSHOP_CSV_AVAILABLE_FIELDS_USE; ?></div>
+	<?php
+	$not_available_fields = array();
+	$not_available_fields = $ps_csv->fixed_fields;
+	$not_available_fields[] = "product_id";
+	$not_available_fields[] = "product_discount_id";
+	
+	// These are fields that are only used for special cases
+	$extra_fields = array();
+	$extra_fields["product_delete"] = "product_delete";
+	$extra_fields["product_box"] = "product_box";
+	$extra_fields["product_packaging"] = "product_packaging";
+	$extra_fields["product_discount"] = "product_discount";
+	
+	// Explanation of the fields
+	$available_fields = new ps_DB;
+	$product_fields = $available_fields->getTableFields(array("#__{vm}_product"));
+	$product_fields["#__{vm}_product"] = $product_fields["#__{vm}_product"] + $extra_fields;
+	ksort($product_fields["#__{vm}_product"]);
+	foreach ($product_fields["#__{vm}_product"] as $fieldname => $type) {
+		if (!in_array($fieldname, $not_available_fields)) {
+			echo "<hr>";
+			echo "<div style=\"color: #FF0000; font-size: 1.2em;\">";
+				echo $fieldname;
+			echo "</div>";
+			echo "<div>";
+			$string = strtoupper("_PHPSHOP_CSV_EXPLANATION_".$fieldname);
+			if (isset($VM_LANG->$string)) {
+				echo $VM_LANG->$string;
+			}
+			echo "</div>";
+		}
+	}
+	?>
+
 </div>
 <?php 
 $tabs->endTab();
@@ -273,4 +325,14 @@ function addField() {
 }
 var called = false;
 var fieldNum = 0;
+function checkForm( form ) {
+	if( document.getElementById('csv_delimiter_custom').checked ) {
+		document.getElementById('csv_delimiter_custom').value = document.getElementById('csv_delimiter_custom_el').value;
+	}
+	
+	if( document.getElementById('csv_enclosurechar_custom').checked ) {
+		document.getElementById('csv_enclosurechar_custom').value = document.getElementById('csv_enclosurechar_custom_el').value;
+	}
+	
+}
 </script>

@@ -25,9 +25,24 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_csv {
 	var $classname = "ps_csv";
 	/** @var Array  Contains all fieldnames that are required on CSV Upload */
-	var $reserved_words = Array( "product_sku", "product_name", "category_path" );
+	var $reserved_words = array( "product_sku", "product_name", "category_path" );
 	/** @var Array  Contains all fieldnames for the mos_{vm}_products table which are not to be filled dynamically */
-	var $dont_use_in_query = Array( "product_sku", "product_name", "product_price", "category_path", "manufacturer_id", "attributes", "attribute_values" );
+	var $dont_use_in_query = array("product_id",
+	"cdate",
+	"mdate",
+	"product_sku",
+	"product_price",
+	"category_path",
+	"manufacturer_id",
+	"attributes",
+	"attribute_values",
+	"product_delete",
+	"product_discount_id",
+	"product_discount_date_start",
+	"product_discount_date_end");
+	/** @var Array  Contains all fieldnames for the mos_{vm}_products table which are pre-filled by the system */
+	var $fixed_fields = array("cdate","mdate","vendor_id");
+
 
 	/**
 	 * This function retrieves information about all CSV upload fields
@@ -52,11 +67,11 @@ class ps_csv {
 				$required_fields[$db->f("field_name")] = $db->f("field_ordering");
 			}
 		}
-		
-		return array( 'csv_fields' => $csv_fields, 
-					  'required_fields' => $required_fields );
+
+		return array( 'csv_fields' => $csv_fields,
+		'required_fields' => $required_fields );
 	}
-	
+
 	/**
 	 * Imports product information into the database
 	 * @author soeren
@@ -66,12 +81,13 @@ class ps_csv {
 	 * @return boolean True on success, false on failure
 	 */
 	function upload_csv(&$d) {
-		global $database, $mosConfig_secret;
-		
+		global $database, $mosConfig_secret, $reserved_words;
+
 		// Raise the memory limit to 20M
 		vmRaiseMemoryLimit('20M');
-		
+
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
+		if ($ps_vendor_id < 1 ) $ps_vendor_id = 1;
 		$GLOBALS[$ps_vendor_id]["default_shopper_group"] = "";
 
 		// Get sure everything is safe about the upload here
@@ -84,31 +100,31 @@ class ps_csv {
 		$fp = fopen ($file,"r");
 		$line=1;
 		$enclosure = stripslashes(html_entity_decode( @$d['csv_enclosurechar']));
-		
+
 		$delim = stripslashes( $d['csv_delimiter'] );
-		
+
 		$skip_first_line = false;
 		if(!empty($d['skip_first_line'])) {
 			$skip_first_line = true;
 		}
+
+		$simulate = !(bool)$d['do_import'];
+		if( $simulate ) $_POST['do_import'] = 1;
+		if( !isset( $d['csv_start_at'])) $d['csv_start_at'] = 0;
+		if( !isset( $d['csv_lines_to_import'])) $d['csv_lines_to_import'] = 300;
 		
-		if( empty( $d['do_import'])) {
-			$this->simulateImport(  $fp, $delim, $enclosure, $skip_first_line );
-			$_POST['csv_file'] = $d['csv_file'];
-			$_POST['csv_filenamehash'] = md5( $mosConfig_secret . $d['csv_file'] );
+		$this->doImport( $fp, $delim, $enclosure, $simulate, $skip_first_line, $d );
+
+		$_POST['csv_file'] = $d['csv_file'];
+		$_POST['csv_filenamehash'] = $d['csv_filenamehash'] = md5( $mosConfig_secret . $d['csv_file'] );
+		if( md5( $mosConfig_secret.$d['csv_file']) == $d['csv_filenamehash']
+		&& $d['csv_start_at'] + $d['csv_lines_to_import'] >= $d['total_lines'] ) {
+			unlink( $d['csv_file'] );
+			$d['csv_import_finished'] = '1';
 		}
-		else {
-			$this->doImport( $fp, $delim, $enclosure, $skip_first_line, $d );
-			if( md5( $mosConfig_secret.$d['csv_file']) == $d['csv_filenamehash']
-			 	&& $d['csv_start_at'] + $d['csv_lines_to_import'] >= $d['total_lines'] ) {
-				unlink( $d['csv_file'] );
-				$d['csv_import_finished'] = '1';
-			}
-			
-		}
-		
+
 		fclose( $fp );
-		
+
 		return True;
 
 	} //End function upload_csv
@@ -122,17 +138,17 @@ class ps_csv {
 	 * @param boolean $greater43 Is this PHP version greater or equal than 4.3.0 ?
 	 * @param boolean $skip_first_line Skip the first line in the file?
 	 */
-	function doImport( &$fp, $delim, $enclosure, $skip_first_line, &$d ) {
-		global $vmLogger, $vars, $ps_vendor_id;
-		
+	function doImport( &$fp, $delim, $enclosure, $simulate, $skip_first_line, &$d ) {
+		global $vmLogger, $vars, $ps_vendor_id, $VM_LANG;
+
 		$d['csv_lines_processed'] = 0;
 		// When the user wants to start from line 1, he means the first line!
 		// But this is line 0 in here
 		$d['csv_start_at']--;
-		
+
 		$dbu = new ps_DB; $dbp = new ps_DB; $dbpp = new ps_DB;
 		$dbcat = new ps_DB; $dbsg = new ps_DB; $dbc = new ps_DB;
-		
+
 		$q = "SELECT `vendor_currency` FROM `#__{vm}_vendor` WHERE `vendor_id`='$ps_vendor_id' ";
 		$dbc->query($q);
 		$dbc->next_record();
@@ -141,458 +157,55 @@ class ps_csv {
 		require_once( CLASSPATH."ps_manufacturer.php" );
 		$ps_manufacturer =& new ps_manufacturer();
 		$manufacturers = Array();
-		
+
 		$line = 0;
 		$this_error = "";
-		
+		// simulate the product import of how many lines?
+		$simulate_lines = 300;
+
 		$fields = $this->getFields();
 		$csv_fields = $fields['csv_fields'];
 		$required_fields = $fields['required_fields'];
-		
+
+		// Check if the user has specified the product_publish field
+		$no_product_publish = false;
+		if (!in_array("product_publish", $required_fields)) $no_product_publish = true;
+
 		$error_log = array();
 		$product_log = array();
 		$csv_log = array();
-		
+
 		$data = $this->fgetcsvline( $fp, $delim, $enclosure );
-		
+
 		// Run through each line of file
 		while( $data ) {
+			
 			if( $skip_first_line ) {
 				// IF the first line is to be skipped, set the flag to false and continue with the second line
 				$skip_first_line = false;
 				// jump to next line
 				$line++;
 				$d['csv_start_at']++;
-				
+
 				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
-				
+
 				continue;
 			}
 			// Jump forward until we reach the line we start from
-			if( ++$line <= $d['csv_start_at'] ) {
+			if( $line <= $d['csv_start_at'] ) {
+				$line++;				
 				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
 				continue;
 			}
 			// When we have processed X lines, break out of the loop
-			if( $d['csv_lines_processed'] >= $d['csv_lines_to_import']) {				
+			if( $d['csv_lines_processed'] >= $d['csv_lines_to_import'] && !$simulate) {
 				break;
 			}
-
-			if( !defined( '_VM_CSV_FIRST_LINE_READ' )) {
-				$csv_log['first_line_raw'] = $enclosure . implode( $enclosure.$delim.$enclosure, $data ) . $enclosure;
-				$csv_log['first_line_array'] = $data;
-				define( '_VM_CSV_FIRST_LINE_READ', 1 );
-			}
-			$csv_log['csv_fields'] = $csv_fields;
-			
-			// Check for required Fields
-			foreach( $required_fields as $fieldname => $ordering ) {
-
-				if (!@$data[$ordering-1]) {
-					
-					// If no category path is there, let's check if it's an item
-					if( $fieldname == "category_path" ) {
-						// It's an item, when Parent SKU and Product SKU do no match
-						if( @$data[$csv_fields["product_parent_id"]["ordering"]-1] == @$data[$csv_fields["product_sku"]["ordering"]-1]) {
-							$this_error .= "No $fieldname, ";
-						}
-					}
-					else {
-						$this_error .= "No $fieldname, ";
-					}
-				}
-				else {
-					// $data[$ordering-1] holds a fieldname
-					// example: When the fieldname is 'product_name'
-					// $$fieldname becomes $product_name
-					$$fieldname = $data[$ordering-1]; // This is a cool trick with dynamic variable names
-				}
-			}
-
-
-			// Check for Manufacturer ID and set to 1 if omitted
-			if( empty($data[$csv_fields["manufacturer_id"]["ordering"]-1])) {
-				$data[$csv_fields["manufacturer_id"]["ordering"]-1] = $csv_fields["manufacturer_id"]["default_value"];
-			}
-			// If a required field was missing, add to error to main message and start next line
-			// Otherwise add or update product
-			if (!empty($this_error)) {
-				$error_log[$line] = "Line $line: $this_error";
-				$this_error = "";
-			}
-			else {
-				$timestamp = time();
-
-				// See if sku exists. If so, update product - otherwise add product
-				$q = "SELECT `product_id` FROM #__{vm}_product ";
-				$q .= "WHERE product_sku='$product_sku'";
-				$dbp->query($q);
-
-				// When the Product is an Item, we must get the ID of the Parent Product
-				// This assumes that the Parent Product already has been added
-				if( $data[$csv_fields["product_parent_id"]["ordering"]-1] != $data[$csv_fields["product_sku"]["ordering"]-1] ) {
-					$q = "SELECT product_id FROM #__{vm}_product WHERE product_sku='".$data[$csv_fields["product_parent_id"]["ordering"]-1]."'";
-					$dbu->query( $q );
-					$dbu->next_record();
-					$data[$csv_fields["product_parent_id"]["ordering"]-1] = $dbu->f("product_id");
-				}
-				else {
-					$data[$csv_fields["product_parent_id"]["ordering"]-1] = 0;
-				}
-
-				/****************************
-				** UPDATE PRODUCT ***********
-				*****************************/
-				if ($dbp->next_record()) { // SKU exists - update product
-					// Update product information
-					$product_log[$line]['action'] = 'updating';
-					
-					foreach( $csv_fields as $fieldname ) {
-
-						if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
-							// Use the default value, when the CSV file contains an empty value
-							if( empty($data[$fieldname["ordering"]-1]) ) {
-								$data[$fieldname["ordering"]-1] = $csv_fields[$fieldname["name"]]["default_value"];
-							}
-							$queryFields[$fieldname["name"]] = $data[$fieldname["ordering"]-1];
-							$product_log[$line][$fieldname["name"]] = $data[$fieldname["ordering"]-1];
-						}
-					}
-					$queryFields['product_name'] = $product_name;
-					$queryFields['mdate'] = $timestamp;
-					
-					$where_clause = "WHERE product_sku='" . $product_sku . "'";
-					$dbu->buildQuery('UPDATE', '#__{vm}_product', $queryFields, $where_clause );
-					$dbu->query();
-					
-					$product_log[$line]['product_name'] = $product_name;
-					$product_log[$line]['product_sku'] = $product_sku;
-
-					/** ATTRIBUTE HANDLING
-	                * Let's first search for Attributes 
-	                * which are then added to this Product
-	                * Syntax:   attribute_name::list_order|attribute_name::list_order......
-	                */
-					if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
-						$attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
-						$i = 0;
-						$dbu->query( "DELETE FROM #__{vm}_product_attribute_sku WHERE product_id ='".$dbp->f("product_id")."'");
-						while(list(,$val) = each($attributes)) {
-							$values = explode( "::", $val );
-							if( empty( $values[1] )) {
-								$values[1] = $i;
-							}
-							$product_log[$line]['attributes'][] = $values[0];
-							
-							$dbu->query( "INSERT INTO #__{vm}_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
-                                    VALUES ('".$dbp->f("product_id")."', '".$values[0]."', '".$values[1]."' )");
-							$i++;
-						}
-
-					}
-					/**
-	                * Now let's search for Attribute Values
-	                * which are then added to this Child Product
-	                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
-	                */
-					if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
-						$attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
-						$i = 0;
-						$dbu->query( "DELETE FROM #__{vm}_product_attribute WHERE product_id ='".$dbp->f("product_id")."'");
-						while(list(,$val) = each($attribute_values)) {
-							$values = explode( "::", $val );
-							if( empty( $values[1] )) {
-								$values[1] = "";
-							}			
-							$dbu->query( "INSERT INTO #__{vm}_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
-                                    VALUES ('".$dbp->f("product_id")."', '".$values[0]."', '".$values[1]."' )");
-							
-							$product_log[$line]['attribute_values'][$values[0]] = $values[0]."', '".$values[1];
-							
-							$i++;
-						}
-
-					}
-
-					// PRODUCT PRICE
-					if( !empty($data[$csv_fields["product_price"]["ordering"]-1])) {
-						// Get default shopper group ID
-						if( empty( $GLOBALS[$ps_vendor_id]["default_shopper_group"] )) {
-							$q = "SELECT shopper_group_id FROM #__{vm}_shopper_group ";
-							$q .= "WHERE `default`='1' and vendor_id='$ps_vendor_id'";
-							$dbsg = new ps_DB;
-							$dbsg->query($q);
-							$dbsg->next_record();
-							$GLOBALS[$ps_vendor_id]["default_shopper_group"] =$dbsg->f("shopper_group_id");
-						}
-
-						// Update product price for default shopper group
-						$queryFields = array();
-						$queryFields['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1];
-						$queryFields['product_currency='] = $product_currency;
-						$queryFields['shopper_group_id='] = $GLOBALS[$ps_vendor_id]["default_shopper_group"];
-						$queryFields['mdate='] = $timestamp;
-						$where_clause = "WHERE product_id='" . $dbp->f("product_id") . "'";
-						
-						$dbpp->buildQuery('UPDATE', '#__{vm}_product_price', $queryFields, $where_clause );
-						$dbpp->query();
-
-						$product_log[$line]['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1] . " ". $product_currency;
-						
-					}
-					// CATEGORY PATH
-					if( empty($data[$csv_fields["product_parent_id"]["ordering"]-1])) {
-						// Use csv_category() method to confirm/add category tree for this product
-						// Modification: $category_id now is an array
-						$category_id = $this->csv_category($data[$csv_fields["category_path"]["ordering"]-1]);
-
-						// Delete old entries
-						$q  = "DELETE FROM #__{vm}_product_category_xref WHERE product_id =";
-						$q .= " '".$dbp->f("product_id")."'";
-						$dbcat->query($q);
-
-						// Insert new product/category relationships
-						foreach( $category_id as $value ) {
-							$q  = "INSERT INTO #__{vm}_product_category_xref (category_id, product_id ) VALUES (";
-							$q .= "'$value', '".$dbp->f("product_id")."')";
-							$dbcat->query($q);
-						}
-						$product_log[$line]['category_path'] = $data[$csv_fields["category_path"]["ordering"]-1];
-					}
-					
-				}
-				else {
-					/*************************************
-					** SKU does not exist - add new product
-					** Add product information ***********
-					**************************************/
-					$product_log[$line]['action'] = 'adding';					
-
-					$queryFields = array('vendor_id' => $ps_vendor_id,
-										'product_sku' => $data[$csv_fields["product_sku"]["ordering"]-1],
-										'product_name' => $data[$csv_fields["product_name"]["ordering"]-1],
-										'cdate' => $timestamp,
-										'mdate' => $timestamp,
-										'product_publish' => 'Y',
-										);
-
-					foreach( $csv_fields as $fieldname ) {
-						if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
-							if( empty($data[$fieldname["ordering"]-1]) ) {
-								$data[$fieldname["ordering"]-1] = $csv_fields[$fieldname["name"]]["default_value"];
-							}
-							$queryFields[$fieldname["name"]] = $data[$fieldname["ordering"]-1];
-						}
-						$product_log[$line][$fieldname["name"]] = @$data[$fieldname["ordering"]-1];
-					}
-					$dbu->buildQuery('INSERT', '#__{vm}_product', $queryFields );
-					if( !$dbu->query($q) ) {
-						$data = $this->fgetcsvline( $fp, $delim, $enclosure );
-						$line++;						
-						$d['csv_lines_processed']++;
-						continue;
-					}
-
-					$product_id = $dbu->last_insert_id();
-
-					// Store the manufacturer ID and create a
-					// product <-> manufacturer relationship
-					$q = "INSERT INTO #__{vm}_product_mf_xref VALUES (";
-					$q .= "'$product_id', '".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."')";
-					$dbcat->setQuery($q);  $dbcat->query();
-
-					// Care for the Manufacturer Entry
-					if( empty( $manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] )) {
-						// Must Search for the Manufacturer ID
-						$q = "SELECT manufacturer_id,mf_name FROM #__{vm}_manufacturer WHERE manufacturer_id='".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."'";
-						$dbcat->query( $q );
-						if( $dbcat->next_record() ) {
-							$manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] = 1;
-							$d['mf_name'] =$dbcat->f('mf_name');
-						}
-						// Add The Manufacturer
-						else {
-							$d['mf_name'] = uniqid( "Generic Manufacturer_" );
-							$d['mf_category_id'] = 1;
-							$d['mf_desc'] = $d['mf_email'] = $d['mf_url'] = "";
-							$ps_manufacturer->add( $d );
-							$manufacturers[$dbcat->_database->insertid()] = 1;
-						}
-					}
-					$product_log[$line]['manufacturer']['id'] = $data[$csv_fields["manufacturer_id"]["ordering"]-1];
-					$product_log[$line]['manufacturer']['name'] = $d['mf_name'];
-					
-					// Use csv_category() method to confirm/add category tree for this product
-					if( !empty($data[$csv_fields["category_path"]["ordering"]-1])) {
-						$category_id = $this->csv_category($data[$csv_fields["category_path"]["ordering"]-1]);
-						$product_log[$line]['category_path'] = $data[$csv_fields["category_path"]["ordering"]-1];
-					}
-
-					if( empty($data[$csv_fields["product_parent_id"]["ordering"]-1])) {
-						// Insert new product/category relationships
-						foreach( $category_id as $value ) {
-							$q  = "INSERT INTO #__{vm}_product_category_xref (category_id, product_id ) VALUES (";
-							$q .= "'$value', '$product_id')";
-							$dbcat->query($q);
-						}
-					}
-					if( !empty($data[$csv_fields["product_price"]["ordering"]-1])) {
-						// Get default shopper group ID
-						if( empty( $GLOBALS[$ps_vendor_id]["default_shopper_group"] )) {
-							$q = "SELECT shopper_group_id FROM #__{vm}_shopper_group ";
-							$q .= "WHERE `default`='1' AND vendor_id='$ps_vendor_id'";
-							$dbsg->query($q);
-							$dbsg->next_record();
-							$GLOBALS[$ps_vendor_id]["default_shopper_group"] = $dbsg->f("shopper_group_id");
-						}
-						// Add  product price for default shopper group
-						$q = "INSERT INTO #__{vm}_product_price ";
-						$q .= "(product_price,product_currency,product_id,shopper_group_id,mdate) ";
-						$q .= "VALUES ('";
-						$q .= $data[$csv_fields["product_price"]["ordering"]-1] . "','";
-						$q .= $product_currency . "','";
-						$q .= $product_id . "','";
-						$q .= $GLOBALS[$ps_vendor_id]["default_shopper_group"] . "','";
-						$q .= $timestamp . "') ";
-						$dbpp = new ps_DB;
-						$dbpp->query($q);
-						
-						$product_log[$line]['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1] . " ". $product_currency;
-					}
-
-					/** ATTRIBUTE HANDLING
-	                * Let's first search for Attributes 
-	                * which are then added to this Product
-	                * Syntax:   attribute_name::list_order|attribute_name::list_order......
-	                */
-					if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
-						$attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
-						$i = 0;
-						while(list(,$val) = each($attributes)) {
-							$values = explode( "::", $val );
-							if( empty( $values[1] )) {
-								$values[1] = $i;
-							}						
-							$dbu->query( "INSERT INTO #__{vm}_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
-                                    VALUES ('".$product_id."', '".$values[0]."', '".$values[1]."' )");
-							$product_log[$line]['attributes'] = $values[0];
-							$i++;
-						}
-
-					}
-					/**
-	                * Now let's search for Attribute Values
-	                * which are then added to this Child Product
-	                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
-	                */
-					if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
-						$attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
-						$i = 0;
-						while(list(,$val) = each($attribute_values)) {
-							$values = explode( "::", $val );
-							if( empty( $values[1] )) {
-								$values[1] = "";
-							}
-							$product_log[$line]['attribute_values'][$values[0]] = $values[0]."', '".$values[1];
-							
-							$dbu->query( "INSERT INTO #__{vm}_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
-                                    VALUES ('".$product_id."', '".$values[0]."', '".$values[1]."' )");
-							$i++;							
-						}
-					}
-				}
-			}
-			$line++;
-			
-			$d['csv_lines_processed']++;
-			
-			$data = $this->fgetcsvline( $fp, $delim, $enclosure );
-			
-		} // End while
-		$vars['product_log'] =& $product_log;
-		$vars['error_log'] =& $error_log;		
-		$vars['csv_log'] =& $csv_log;
-		
-		$d['csv_newstart_at'] = $d['csv_start_at'] + $d['csv_lines_processed'] + 1;
-		
-		$vmLogger->info( 'CSV Import: processed '.($d['csv_newstart_at']-1).' of '. $d['total_lines']. ' products.');
-
-		if( @$d['ajax_request'] && $d['csv_newstart_at'] < $d['total_lines'] ) {
-			echo vmCommonHTML::scriptTag('', '
-			document.adminForm.csv_start_at.value='.(int)$d['csv_newstart_at'] .';
-			document.adminForm.onsubmit();');
-		} elseif( $d['csv_newstart_at'] >= $d['total_lines'] ) {
-			echo vmCommonHTML::scriptTag('', '$(\'indicator\').hide();new Effect.Highlight(\'importmsg\', {duration: 3 } );' );
-		}
-		
-		return true;
-	}
-	
-	/**
-	 * Simulates an import of the products from a CSV file
-	 *
-	 * @param resource $fp A valid file pointer to a CSV file
-	 * @param string $delim ( , or ; )
-	 * @param string $enclosure (can be: ', " or empty)
-	 * @param boolean $greater43 Is this PHP version greater or equal than 4.3.0 ?
-	 * @param boolean $skip_first_line Skip the first line in the file?
-	 */
-	function simulateImport( &$fp, $delim, $enclosure, $skip_first_line ) {
-		global $vmLogger, $ps_vendor_id, $vars;
-		
-		$dbc = new ps_DB;
-		$q = "SELECT `vendor_currency` FROM `#__{vm}_vendor` WHERE `vendor_id`='$ps_vendor_id' ";
-		$dbc->query($q);
-		$dbc->next_record();
-		$product_currency = $dbc->f("vendor_currency");
-
-		require_once( CLASSPATH."ps_manufacturer.php" );
-		$ps_manufacturer =& new ps_manufacturer();
-		$manufacturers = Array();
-		
-		$dbu = new ps_DB;
-		$dbp = new ps_DB;
-		$dbpp = new ps_DB;
-		$dbcat = new ps_DB;
-		$dbsg = new ps_DB;
-		
-		$fields = $this->getFields();
-		$csv_fields = $fields['csv_fields'];
-		$required_fields = $fields['required_fields'];
-		
-		$error_log = array();
-		$product_log = array();
-		$csv_log = array();
-		
-		$this_error = "";
-		
-		// simulate the product import of how many lines?
-		$simulate_lines = 300;
-		
-		// The recent line
-		$line = 0;
-		
-		// Run through each line of file
-		$data = $this->fgetcsvline( $fp, $delim, $enclosure );
-		
-		while( $data ) {
-			
-			if( $skip_first_line ) {
-				// IF the first line is to be skipped, set the flag to false and continue with the second line
-				$skip_first_line = false;
-				
-				$simulate_lines++;
-				
-				$line++;
-				// Read the next line
-				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
-				continue;
-			}
-			
-			if( $line >= $simulate_lines ) {
+			if( $line >= $simulate_lines && $simulate ) {
 				// just count all the lines
 				// and do nothing more or less
 				$line++;
+				
 				$data = $this->fgetcsvline( $fp, $delim, $enclosure );
 				continue;
 			}
@@ -603,152 +216,600 @@ class ps_csv {
 				define( '_VM_CSV_FIRST_LINE_READ', 1 );
 			}
 			$csv_log['csv_fields'] = $csv_fields;
-			
-			// Check for required Fields
-			foreach( $required_fields as $fieldname => $ordering ) {
-
-				if (empty($data[$ordering-1])) {
-					// If no category path is there, let's check if it's an item
-					if( $fieldname == "category_path" ) {
-						// It's an item, when Parent SKU and Product SKU do no match
-						if( @$data[$csv_fields["product_parent_id"]["ordering"]-1] == @$data[$csv_fields["product_sku"]["ordering"]-1]) {
+			// Check if the number of configured fields is the same as the number of fields in the CSV file
+			if (count($required_fields) > count($data)) {
+				$this_error .= "<strong>Incorrect column count</strong><br />";
+			}
+			else {
+				// Check for required fields, allow empty values
+				foreach( $required_fields as $fieldname => $ordering ) {
+					if (!trim(@$data[$ordering-1]) && in_array($fieldname, $this->reserved_words)) {
+						// If no category path is there, let's check if it's an item
+						if( $fieldname == "category_path" ) {
+							// It's an item, when Parent SKU and Product SKU do no match
+							if( trim(@$data[$csv_fields["product_parent_id"]["ordering"]-1]) == trim(@$data[$csv_fields["product_sku"]["ordering"]-1])) {
+								$this_error .= "No $fieldname, ";
+							}
+						}
+						else {
 							$this_error .= "No $fieldname, ";
 						}
 					}
 					else {
-						$this_error .= "No $fieldname, ";
-					}
-				}
-				else {
-					// $data[$ordering-1] holds a fieldname
-					// example: When the fieldname is 'product_name'
-					// $$fieldname becomes $product_name
-					$$fieldname = $data[$ordering-1]; // This is a cool trick with dynamic variable names
-				}
-			}
-
-			// Check for Manufacturer ID and set to 1 if omitted
-			if( empty($data[$csv_fields["manufacturer_id"]["ordering"]-1])) {
-				$data[$csv_fields["manufacturer_id"]["ordering"]-1] = $csv_fields["manufacturer_id"]["default_value"];
-			}
-			// If a required field was missing, add to error to main message and start next line
-			// Otherwise add or update product
-			if (!empty($this_error)) {
-				$error_log[$line] = "Line $line: $this_error";
-				$this_error = "";
-			}
-			else {
-				$timestamp = time();
-
-				// See if sku exists. If so, update product - otherwise add product
-				$q = "SELECT `product_id` FROM #__{vm}_product ";
-				$q .= "WHERE product_sku='$product_sku'";
-				$dbp->query($q);
-
-				// When the Product is an Item, we must get the ID of the Parent Product
-				// This assumes that the Parent Product already has been added
-				if( $data[$csv_fields["product_parent_id"]["ordering"]-1] != $data[$csv_fields["product_sku"]["ordering"]-1] ) {
-					$q = "SELECT product_id FROM #__{vm}_product WHERE product_sku='".$data[$csv_fields["product_parent_id"]["ordering"]-1]."'";
-					$dbu->query( $q );
-					$dbu->next_record();
-					$data[$csv_fields["product_parent_id"]["ordering"]-1] = $dbu->f("product_id");
-				}
-				else {
-					$data[$csv_fields["product_parent_id"]["ordering"]-1] = 0;
-				}
-
-				/****************************
-				** UPDATE PRODUCT ***********
-				*****************************/
-				if ($dbp->next_record()) { 
-					// Update product information
-					$product_log[$line]['action'] = 'updating';
-				}
-				else {
-					$product_log[$line]['action'] = 'adding';
-				}
-				foreach( $csv_fields as $fieldname ) {
-
-					if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
-						// Use the default value, when the CSV file contains an empty value
-						if( empty($data[$fieldname["ordering"]-1]) ) {
-							$data[$fieldname["ordering"]-1] = $csv_fields[$fieldname["name"]]["default_value"];
+						if (!trim($data[$ordering-1]) && $fieldname == "product_publish") $data[$ordering-1] = "Y";
+						if (!trim($data[$ordering-1]) && $fieldname == "vendor_id") $data[$ordering-1] = $ps_vendor_id;
+						// Check if it is a number, if so, replace the , with a period
+						if (!empty($data[$ordering-1]) && is_numeric($data[$ordering-1]{0})) {
+							$data[$ordering-1] = str_replace(",",".",$data[$ordering-1]);
 						}
-						$product_log[$line][$fieldname["name"]] = $data[$fieldname["ordering"]-1];
+						$$fieldname = trim($data[$ordering-1]); // This is a cool trick with dynamic variable names
 					}
 				}
-				$product_log[$line]['product_name'] = $product_name;
-				$product_log[$line]['product_sku'] = $product_sku;
+				// Check for Manufacturer ID and set to 1 if omitted
+				if( empty($data[$csv_fields["manufacturer_id"]["ordering"]-1])) {
+					$data[$csv_fields["manufacturer_id"]["ordering"]-1] = $csv_fields["manufacturer_id"]["default_value"];
+				}
+				// If a required field was missing, add to error to main message and start next line
+				// Otherwise add or update product
+				if (!empty($this_error)) {
+					$error_log[$line] = "Line $line: $this_error";
+					$this_error = "";
+				}
+				else {
+					$timestamp = time();
 
-				/** ATTRIBUTE HANDLING
-                * Let's first search for Attributes 
-                * which are then added to this Product
-                * Syntax:   attribute_name::list_order|attribute_name::list_order......
-                */
-				if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
-					$attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
-					while(list(,$val) = each($attributes)) {
-						$values = explode( "::", $val );
-						$product_log[$line]['attributes'][] = $values[0];
+					// See if sku exists. If so, update product - otherwise add product
+					$q = "SELECT `product_id` FROM #__{vm}_product ";
+					$q .= "WHERE product_sku='$product_sku'";
+					$dbp->query($q);
+
+					// When the Product is an Item, we must get the ID of the Parent Product
+					// This assumes that the Parent Product already has been added
+					if( $data[$csv_fields["product_parent_id"]["ordering"]-1] != $data[$csv_fields["product_sku"]["ordering"]-1] ) {
+						$q = "SELECT product_id FROM #__{vm}_product WHERE product_sku='".$data[$csv_fields["product_parent_id"]["ordering"]-1]."'";
+						$dbu->query( $q );
+						$dbu->next_record();
+						$data[$csv_fields["product_parent_id"]["ordering"]-1] = $dbu->f("product_id");
 					}
-				}
-				/**
-                * Now let's search for Attribute Values
-                * which are then added to this Child Product
-                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
-                */
-				if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
-					$attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
-					while(list(,$val) = each($attribute_values)) {
-						$values = explode( "::", $val );
-						$product_log[$line]['attribute_values'][$values[0]] = $values[0]."', '".$values[1];
-					}
-				}
-
-				if( !empty($data[$csv_fields["product_price"]["ordering"]-1])) {
-					$product_log[$line]['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1] . " ". $product_currency;
-				}
-				if( empty($data[$csv_fields["product_parent_id"]["ordering"]-1])) {
-					// Use csv_category() method to confirm/add category tree for this product
-					// Modification: $category_id now is an array
-					$product_log[$line]['category_path'] = $data[$csv_fields["category_path"]["ordering"]-1];
-				}
-
-				$product_log[$line]['manufacturer']['id'] = $data[$csv_fields["manufacturer_id"]["ordering"]-1];
-
-
-				// Care for the Manufacturer Entry
-				if( empty( $manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] )) {
-					// Must Search for the Manufacturer ID
-					$q = "SELECT manufacturer_id, mf_name FROM #__{vm}_manufacturer WHERE manufacturer_id='".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."'";
-					$dbcat->query( $q );
-					if( $dbcat->next_record() ) {
-						$manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] = 1;
-						$d['mf_name'] = $dbcat->f('mf_name');
-					}
-					// Add The Manufacturer
 					else {
-						$d['mf_name'] = uniqid( "Generic Manufacturer_" );
-						$manufacturers[0] = 1;
+						$data[$csv_fields["product_parent_id"]["ordering"]-1] = 0;
+					}
+					// Check if the SKU exists
+					if ($dbp->next_record()) {
+						// Check if the user wants to overwrite existing data
+						/*************************************
+						** OVERWRITE EXISTING DATA ***********
+						*************************************/
+						if ( empty($d['overwrite_existing_data']) ) {
+							$product_log[$line]['action'] = 'skipping';
+						}
+						else {
+							// Check if the user wants the product to be deleted
+							/****************************
+							** DELETE PRODUCT ***********
+							****************************/
+							if (isset($csv_fields["product_delete"]) && strtoupper(trim($data[$csv_fields["product_delete"]["ordering"]-1])) == "Y") {
+
+								if( !$simulate ) {
+									$d["product_id"][0] = $dbp->f('product_id');
+								
+									$delete_product= new ps_product;
+									$res = $delete_product->delete($d);
+									if ($res) {
+										$product_log[$line]['action'] = 'removing';
+									}
+								}
+							}
+							else {
+								/****************************
+								** UPDATE PRODUCT ***********
+								****************************/
+								// Update product information
+								$product_log[$line]['action'] = 'updating';
+
+								foreach( $csv_fields as $fieldname ) {
+									if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
+										// Exceptions to the database layout of the product table
+										switch ($fieldname["name"]) {
+											case "product_available_date" :
+												// Date must be in the format of day/month/year
+												$new_date = str_replace('-', '/', $data[$fieldname["ordering"]-1]);
+												$date_parts = explode('/', $new_date);
+												if ((count($date_parts) == 3) && ($date_parts[1] > 0 && $date_parts[1] < 32 && $date_parts[0] > 0 && $date_parts[0] < 13)) {
+													$data[$fieldname["ordering"]-1] = mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]);
+												}
+												else $data[$fieldname["ordering"]-1] = "";
+												break;
+											case "product_box" :
+												if (isset($csv_fields["product_packaging"])) continue 2;
+												else {
+													$fieldname["name"] = "product_packaging";
+													// If the product_packaging does not exist
+													$data[$fieldname["ordering"]-1] = (($data[$fieldname["ordering"]-1]<<16) | ($data[$csv_fields["product_packaging"]["ordering"]-1] & 0xFFFF));
+												}
+												break;
+											case "product_packaging" :
+												// Set the value for property box
+												// If the product_box does not exist set value to 0
+												if (!isset($csv_fields["product_box"])) $product_box = 0;
+												else $product_box = $data[$csv_fields["product_box"]["ordering"]-1];
+												$data[$fieldname["ordering"]-1] = (($product_box<<16) | ($data[$fieldname["ordering"]-1] & 0xFFFF));
+												break;
+											case "product_discount" :
+												// product_discount cannot have an empty value
+												if (empty($data[$fieldname["ordering"]-1])) continue 2;
+												if (substr($data[$fieldname["ordering"]-1],-1,1) == "%") {
+													$data[$fieldname["ordering"]-1] = substr($data[$fieldname["ordering"]-1], 0, -1);
+													$d['is_percent'] = "1";
+												}
+												else $d['is_percent'] = "0";
+												// Date must be in the format of day/month/year
+												// To pass the date to the discount object it must be in the format of year/month/day
+												$new_date = "";
+												$query_start_date = "0";
+												$query_end_date = "0";
+												if (!empty($data[$csv_fields["product_discount_date_start"]["ordering"]-1])) {
+													$new_date = str_replace('-', '/', $data[$csv_fields["product_discount_date_start"]["ordering"]-1]);
+													$date_parts = explode('/', $new_date);
+													$query_start_date = mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]);
+													$d['start_date'] = date('Y-m-d',mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]));
+												}
+												if (!empty($data[$csv_fields["product_discount_date_end"]["ordering"]-1])) {
+													$new_date = str_replace('-', '/', $data[$csv_fields["product_discount_date_end"]["ordering"]-1]);
+													$date_parts = explode('/', $new_date);
+													$query_end_date = mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]);
+													$d['end_date'] = date('Y-m-d',mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]));
+												}
+
+												$d['amount'] = $data[$fieldname["ordering"]-1];
+												// Check if the amount exists in the database
+												$q_discount = "SELECT COUNT(discount_id) AS total_discount_ids FROM #__{vm}_product_discount WHERE amount = '".$data[$fieldname["ordering"]-1]."' ";
+												$q_discount .= "AND is_percent = '".$d['is_percent']."' ";
+												$q_discount .= "AND start_date = '".$query_start_date."' ";
+												$q_discount .= "AND end_date = '".$query_end_date."'";
+												$ddc = new ps_DB;
+												$ddc->query($q_discount);
+												if ($ddc->f('total_discount_ids') > 0) {
+													print "pass";
+													$q_discount = "SELECT MIN(discount_id) AS discount_id FROM #__{vm}_product_discount WHERE amount = '".$data[$fieldname["ordering"]-1]."' ";
+													$q_discount .= "AND is_percent = '".$d['is_percent']."' ";
+													$q_discount .= "AND start_date = '".$query_start_date."' ";
+													$q_discount .= "AND end_date = '".$query_end_date."'";
+													$ddc->query($q_discount);
+													$data[$fieldname["ordering"]-1] = $ddc->f('discount_id');
+												}
+												else {
+													require_once( CLASSPATH. 'ps_product_discount.php' );
+													$ps_product_discount = new ps_product_discount;
+													$ps_product_discount->add( $d );
+													$d['product_discount_id'] = $database->insertid();
+													$data[$fieldname["ordering"]-1] = $d['product_discount_id'];
+												}
+												$fieldname["name"] = "product_discount_id";
+												break;
+											default :
+												break;
+										}
+										// If the field is not passed in the CSV file, don't handle it
+										// If the user set to skip the default value don't update the field
+										if (!isset($data[$fieldname["ordering"]-1]) || !empty($d['skip_default_value'])) continue;
+										// Use the default value, when the CSV file contains an empty value
+										elseif( empty($data[$fieldname["ordering"]-1]) ) {
+											$data[$fieldname["ordering"]-1] = $csv_fields[$fieldname["name"]]["default_value"];
+										}
+										$queryFields[$fieldname["name"]] = $data[$fieldname["ordering"]-1];
+										$product_log[$line][$fieldname["name"]] = $data[$fieldname["ordering"]-1];
+									}
+								}
+								$queryFields['product_name'] = $product_name;
+								$queryFields['mdate'] = $timestamp;
+								// If the user is not using the product publish field, we set it to yes
+								if ($no_product_publish) $queryFields['product_publish'] ='Y';
+
+								$where_clause = "WHERE product_sku='" . $product_sku . "'";
+								if( !$simulate ) {
+									$dbu->buildQuery('UPDATE', '#__{vm}_product', $queryFields, $where_clause );
+									$dbu->query();
+								}
+								$product_log[$line]['product_name'] = $product_name;
+								$product_log[$line]['product_sku'] = $product_sku;
+
+								/** ATTRIBUTE HANDLING
+				                * Let's first search for Attributes 
+				                * which are then added to this Product
+				                * Syntax:   attribute_name::list_order|attribute_name::list_order......
+				                */
+								if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
+									$attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
+									$i = 0;
+									if( !$simulate ) {
+										$dbu->query( "DELETE FROM #__{vm}_product_attribute_sku WHERE product_id ='".$dbp->f("product_id")."'");
+									}
+									while(list(,$val) = each($attributes)) {
+										$values = explode( "::", $val );
+										if( empty( $values[1] )) {
+											$values[1] = $i;
+										}
+										$product_log[$line]['attributes'][] = $values[0];
+
+										if( !$simulate ) {
+											$dbu->query( "INSERT INTO #__{vm}_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
+                                    						VALUES ('".$dbp->f("product_id")."', '".$values[0]."', '".$values[1]."' )");
+										}
+										$i++;
+									}
+
+								}
+								/**
+				                * Now let's search for Attribute Values
+				                * which are then added to this Child Product
+				                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
+				                */
+								if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
+									$attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
+									$i = 0;
+									if( !$simulate ) {
+										$dbu->query( "DELETE FROM #__{vm}_product_attribute WHERE product_id ='".$dbp->f("product_id")."'");
+									}
+									while(list(,$val) = each($attribute_values)) {
+										$values = explode( "::", $val );
+										if( empty( $values[1] )) {
+											$values[1] = "";
+										}
+										if( !$simulate ) {
+											$dbu->query( "INSERT INTO #__{vm}_product_attribute (`product_id`, `attribute_name`, `attribute_value`) 
+															VALUES ('".$dbp->f("product_id")."', '".$values[0]."', '".$values[1]."' )");
+										}
+
+										$product_log[$line]['attribute_values'][$values[0]] = $values[0]."', '".$values[1];
+
+										$i++;
+									}
+
+								}
+
+								// PRODUCT PRICE
+								if( !empty($data[$csv_fields["product_price"]["ordering"]-1])) {
+									// Get default shopper group ID
+									if( empty( $GLOBALS[$ps_vendor_id]["default_shopper_group"] )) {
+										$q = "SELECT shopper_group_id FROM #__{vm}_shopper_group ";
+										$q .= "WHERE `default`='1' and vendor_id='$ps_vendor_id'";
+										$dbsg = new ps_DB;
+										$dbsg->query($q);
+										$dbsg->next_record();
+										$GLOBALS[$ps_vendor_id]["default_shopper_group"] =$dbsg->f("shopper_group_id");
+									}
+
+									// Update product price for default shopper group
+									$queryFields = array();
+									$queryFields['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1];
+									$queryFields['product_currency='] = $product_currency;
+									$queryFields['shopper_group_id='] = $GLOBALS[$ps_vendor_id]["default_shopper_group"];
+									$queryFields['mdate='] = $timestamp;
+									$where_clause = "WHERE product_id='" . $dbp->f("product_id") . "'";
+
+									if( !$simulate ) {
+										$dbpp->buildQuery('UPDATE', '#__{vm}_product_price', $queryFields, $where_clause );
+										$dbpp->query();
+									}
+									$product_log[$line]['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1] . " ". $product_currency;
+
+								}
+								// CATEGORY PATH
+								if( empty($data[$csv_fields["product_parent_id"]["ordering"]-1])) {
+									// Use csv_category() method to confirm/add category tree for this product
+									// Modification: $category_id now is an array
+									if( !$simulate ) {
+										$category_id = $this->csv_category($data[$csv_fields["category_path"]["ordering"]-1]);
+									}
+
+									// Delete old entries
+									$q  = "DELETE FROM #__{vm}_product_category_xref WHERE product_id =";
+									$q .= " '".$dbp->f("product_id")."'";
+									if( !$simulate ) {
+										$dbcat->query($q);
+									
+
+										// Insert new product/category relationships
+										foreach( $category_id as $value ) {
+											$q  = "INSERT INTO #__{vm}_product_category_xref (category_id, product_id ) VALUES (";
+											$q .= "'$value', '".$dbp->f("product_id")."')";
+											$dbcat->query($q);
+										}
+									}
+									$product_log[$line]['category_path'] = $data[$csv_fields["category_path"]["ordering"]-1];
+								}
+							}
+						}
+					}
+					else {
+						/*************************************
+						** SKU does not exist - add new product
+						** Add product information ***********
+						**************************************/
+						$product_log[$line]['action'] = 'adding';
+
+						$queryFields = array('vendor_id' => $ps_vendor_id,
+						'product_sku' => $data[$csv_fields["product_sku"]["ordering"]-1],
+						'product_name' => $data[$csv_fields["product_name"]["ordering"]-1],
+						'cdate' => $timestamp,
+						'mdate' => $timestamp,
+						'product_publish' => 'Y',
+						);
+
+						foreach( $csv_fields as $fieldname ) {
+							if( !in_array( $fieldname["name"], $this->dont_use_in_query )) {
+								switch ($fieldname["name"]) {
+									case "product_available_date" :
+										// Date must be in the format of day/month/year
+										$new_date = str_replace('-', '/', $data[$fieldname["ordering"]-1]);
+										$date_parts = explode('/', $new_date);
+										if ((count($date_parts) == 3) && ($date_parts[1] > 0 && $date_parts[1] < 32 && $date_parts[0] > 0 && $date_parts[0] < 13)) {
+											$data[$fieldname["ordering"]-1] = mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]);
+										}
+										else $data[$fieldname["ordering"]-1] = "";
+										break;
+									case "product_box" :
+										if (isset($csv_fields["product_packaging"])) continue 2;
+										else {
+											$fieldname["name"] = "product_packaging,";
+											// If the product_packaging does not exist
+											$data[$fieldname["ordering"]-1] = (($data[$fieldname["ordering"]-1]<<16) | ($data[$csv_fields["product_packaging"]["ordering"]-1] & 0xFFFF));
+										}
+										break;
+									case "product_packaging" :
+										// Set the value for property box
+										// If the product_box does not exist set value to 0
+										if (!isset($csv_fields["product_box"])) $product_box = 0;
+										else $product_box = $data[$csv_fields["product_box"]["ordering"]-1];
+										$data[$fieldname["ordering"]-1] = (($product_box<<16) | ($data[$fieldname["ordering"]-1] & 0xFFFF));
+										break;
+									case "product_discount" :
+										// product_discount cannot have an empty value
+										if (empty($data[$fieldname["ordering"]-1])) continue 2;
+										if (substr($data[$fieldname["ordering"]-1],-1,1) == "%") {
+											$data[$fieldname["ordering"]-1] = substr($data[$fieldname["ordering"]-1], 0, -1);
+											$d['is_percent'] = "1";
+										}
+										else $d['is_percent'] = "0";
+										// Date must be in the format of day/month/year
+										// To pass the date to the discount object it must be in the format of year/month/day
+										$new_date = "";
+										$query_start_date = "0";
+										$query_end_date = "0";
+										if (!empty($data[$csv_fields["product_discount_date_start"]["ordering"]-1])) {
+											$new_date = str_replace('-', '/', $data[$csv_fields["product_discount_date_start"]["ordering"]-1]);
+											$date_parts = explode('/', $new_date);
+											$query_start_date = mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]);
+											$d['start_date'] = date('Y-m-d',mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]));
+										}
+										if (!empty($data[$csv_fields["product_discount_date_end"]["ordering"]-1])) {
+											$new_date = str_replace('-', '/', $data[$csv_fields["product_discount_date_end"]["ordering"]-1]);
+											$date_parts = explode('/', $new_date);
+											$query_end_date = mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]);
+											$d['end_date'] = date('Y-m-d',mktime(0,0,0,$date_parts[1],$date_parts[0],$date_parts[2]));
+										}
+
+										$d['amount'] = $data[$fieldname["ordering"]-1];
+										// Check if the amount exists in the database
+										$q_discount = "SELECT COUNT(discount_id) AS total_discount_ids FROM #__{vm}_product_discount WHERE amount = '".$data[$fieldname["ordering"]-1]."' ";
+										$q_discount .= "AND is_percent = '".$d['is_percent']."' ";
+										$q_discount .= "AND start_date = '".$query_start_date."' ";
+										$q_discount .= "AND end_date = '".$query_end_date."'";
+										$ddc = new ps_DB;
+										$ddc->query($q_discount);
+										if ($ddc->f('total_discount_ids') > 0) {
+											$q_discount = "SELECT MIN(discount_id) AS discount_id FROM #__{vm}_product_discount WHERE amount = '".$data[$fieldname["ordering"]-1]."' ";
+											$q_discount .= "AND is_percent = '".$d['is_percent']."' ";
+											$q_discount .= "AND start_date = '".$query_start_date."' ";
+											$q_discount .= "AND end_date = '".$query_end_date."'";
+											$ddc->query($q_discount);
+											$data[$fieldname["ordering"]-1] = $ddc->f('discount_id');
+										}
+										else {
+											require_once( CLASSPATH. 'ps_product_discount.php' );
+											$ps_product_discount = new ps_product_discount;
+											$ps_product_discount->add( $d );
+											$d['product_discount_id'] = $database->insertid();
+											$data[$fieldname["ordering"]-1] = $d['product_discount_id'];
+										}
+										$fieldname["name"] = "product_discount_id";
+										break;
+									default :
+										break;
+								}
+								// If the field is not passed in the CSV file, don't handle it
+								// If the user set to skip the default value don't update the field
+								if (!isset($data[$fieldname["ordering"]-1]) || !empty($d['skip_default_value'])) continue;
+								// Use the default value, when the CSV file contains an empty value
+								elseif (empty($data[$fieldname["ordering"]-1])) {
+									$data[$fieldname["ordering"]-1] = $dbu->getEscaped($csv_fields[$fieldname["name"]]["default_value"]);
+								}
+								
+								$queryFields[$fieldname["name"]] = $data[$fieldname["ordering"]-1];
+							}
+							$product_log[$line][$fieldname["name"]] = @$data[$fieldname["ordering"]-1];
+						}
+
+
+						if ($no_product_publish) $queryFields['product_publish'] = 'Y';
+						if( !$simulate ) {
+							$dbu->buildQuery('INSERT', '#__{vm}_product', $queryFields );
+						
+							if( !$dbu->query() ) {
+								$error_log[$line] = 'Line '.$line.': Failed to add the product "'.$product_sku.'"';
+								$data = $this->fgetcsvline( $fp, $delim, $enclosure );
+								$line++;
+								
+								continue;
+							}
+							$product_id = $dbu->last_insert_id();
+						}
+						if( !$simulate ) {
+							// Store the manufacturer ID and create a
+							// product <-> manufacturer relationship
+							$q = "INSERT INTO #__{vm}_product_mf_xref VALUES (";
+							$q .= "'$product_id', '".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."')";
+							$dbcat->setQuery($q);  $dbcat->query();
+						}
+	
+						// Care for the Manufacturer Entry
+						if( empty( $manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] ) ) {
+							// Must Search for the Manufacturer ID
+							$q = "SELECT manufacturer_id,mf_name FROM #__{vm}_manufacturer WHERE manufacturer_id='".$data[$csv_fields["manufacturer_id"]["ordering"]-1]."'";
+							$dbcat->query( $q );
+							if( $dbcat->next_record() ) {
+								$manufacturers[$data[$csv_fields["manufacturer_id"]["ordering"]-1]] = 1;
+								$d['mf_name'] =$dbcat->f('mf_name');
+							}
+							// Add The Manufacturer
+							else {
+								$d['mf_name'] = uniqid( "Generic Manufacturer_" );
+								$d['mf_category_id'] = 1;
+								$d['mf_desc'] = $d['mf_email'] = $d['mf_url'] = "";
+								if( !$simulate ) {
+									$ps_manufacturer->add( $d );
+									$manufacturers[$dbcat->_database->insertid()] = 1;
+								}
+							}
+						}
+						$product_log[$line]['manufacturer']['id'] = $data[$csv_fields["manufacturer_id"]["ordering"]-1];
+						$product_log[$line]['manufacturer']['name'] = @$d['mf_name'];
+	
+						// Use csv_category() method to confirm/add category tree for this product
+						if( !empty($data[$csv_fields["category_path"]["ordering"]-1])) {
+							if( !$simulate ) {
+								$category_id = $this->csv_category($data[$csv_fields["category_path"]["ordering"]-1]);
+							}
+							$product_log[$line]['category_path'] = $data[$csv_fields["category_path"]["ordering"]-1];
+						}
+	
+						if( empty($data[$csv_fields["product_parent_id"]["ordering"]-1]) && !$simulate ) {
+							// Insert new product/category relationships
+							foreach( $category_id as $value ) {
+								$q  = "INSERT INTO #__{vm}_product_category_xref (category_id, product_id ) VALUES (";
+								$q .= "'$value', '$product_id')";
+								$dbcat->query($q);
+							}
+						}
+						if( !empty($data[$csv_fields["product_price"]["ordering"]-1]) ) {
+							if( !$simulate ) {
+								// Get default shopper group ID
+							
+								if( empty( $GLOBALS[$ps_vendor_id]["default_shopper_group"] )) {
+									$q = "SELECT shopper_group_id FROM #__{vm}_shopper_group ";
+									$q .= "WHERE `default`='1' AND vendor_id='$ps_vendor_id'";
+									$dbsg->query($q);
+									$dbsg->next_record();
+									$GLOBALS[$ps_vendor_id]["default_shopper_group"] = $dbsg->f("shopper_group_id");
+								}
+								// Add  product price for default shopper group
+								$q = "INSERT INTO #__{vm}_product_price ";
+								$q .= "(product_price,product_currency,product_id,shopper_group_id,mdate) ";
+								$q .= "VALUES ('";
+								$q .= str_replace(",", ".", $data[$csv_fields["product_price"]["ordering"]-1] ). "','";
+								$q .= $product_currency . "','";
+								$q .= $product_id . "','";
+								$q .= $GLOBALS[$ps_vendor_id]["default_shopper_group"] . "','";
+								$q .= $timestamp . "') ";
+								$dbpp = new ps_DB;
+								$dbpp->query($q);
+							}
+							$product_log[$line]['product_price'] = $data[$csv_fields["product_price"]["ordering"]-1] . " ". $product_currency;
+						}
+	
+						/** ATTRIBUTE HANDLING
+		                * Let's first search for Attributes 
+		                * which are then added to this Product
+		                * Syntax:   attribute_name::list_order|attribute_name::list_order......
+		                */
+						if( !empty($data[$csv_fields["attributes"]["ordering"]-1])) {
+							$attributes = explode( "|", $data[$csv_fields["attributes"]["ordering"]-1] );
+							$i = 0;
+							while(list(,$val) = each($attributes)) {
+								$values = explode( "::", $val );
+								if( empty( $values[1] )) {
+									$values[1] = $i;
+								}
+								if( !$simulate ) {
+									$dbu->query( "INSERT INTO #__{vm}_product_attribute_sku (`product_id`, `attribute_name`, `attribute_list`)
+									                VALUES ('".$product_id."', '".$values[0]."', '".$values[1]."' )");
+								}
+								$product_log[$line]['attributes'] = $values[0];
+								$i++;
+							}
+	
+						}
+						/**
+		                * Now let's search for Attribute Values
+		                * which are then added to this Child Product
+		                * Syntax:   attribute_name::attribute_value|attribute_name::attribute_value.....
+		                */
+						if( !empty($data[$csv_fields["attribute_values"]["ordering"]-1])) {
+							$attribute_values = explode( "|", $data[$csv_fields["attribute_values"]["ordering"]-1] );
+							$i = 0;
+							while(list(,$val) = each($attribute_values)) {
+								$values = explode( "::", $val );
+								if( empty( $values[1] )) {
+									$values[1] = "";
+								}
+								$product_log[$line]['attribute_values'][$values[0]] = $values[0]."', '".$values[1];
+	
+								if( !$simulate ) {
+									$dbu->query( "INSERT INTO #__{vm}_product_attribute (`product_id`, `attribute_name`, `attribute_value`)
+									                 VALUES ('".$product_id."', '".$values[0]."', '".$values[1]."' )");
+								}
+								$i++;
+							}
+						}
 					}
 				}
-				$product_log[$line]['manufacturer']['name'] = $d['mf_name'];
-
 			}
 			$line++;
+
+			$d['csv_lines_processed']++;
+
 			$data = $this->fgetcsvline( $fp, $delim, $enclosure );
 
 		} // End while
 		$vars['product_log'] =& $product_log;
 		$vars['error_log'] =& $error_log;
-		
-		$csv_log['total_lines'] = $line;
-		
 		$vars['csv_log'] =& $csv_log;
+
+		$d['csv_newstart_at'] = $d['csv_start_at'] + $d['csv_lines_processed'] + 1;
 		
+		if( empty( $d['total_lines'])) $vars['csv_log']['total_lines'] = $_POST['total_lines'] = $d['total_lines'] =$line;
+		
+		if( !$simulate ) {
+			$vmLogger->info( 'CSV Import: processed '.($d['csv_newstart_at']-1).' of '. $d['total_lines']. ' products.');
+		}
+		
+		if( @$d['ajax_request'] && $d['csv_newstart_at'] < $d['total_lines'] ) {
+			$logMsg = '';
+			if( !empty($error_log)) {
+				$logMsg = $this->cleanString(str_replace( '\'', '&#039;', implode('<br />', $error_log )) );
+			}
+			foreach ($product_log as $line => $entry ) {
+				$logMsg .= $this->cleanString(str_replace( '\'', '&#039;', 'Line '.$line.', '.$entry['action'].': '.$entry['product_name'].' ['.$entry['product_sku'].']' )).'<br />';
+			}
+			
+			echo vmCommonHTML::scriptTag('', 'new Effect.Highlight(\'importmsg\' );
+			document.adminForm.csv_start_at.value='.(int)$d['csv_newstart_at'] .';
+			$(\'importstats\').innerHTML += \''.$logMsg.'\';
+			document.adminForm.onsubmit();');
+		} elseif( $d['csv_newstart_at'] >= $d['total_lines'] && @$d['ajax_request'] ) {
+			echo vmCommonHTML::scriptTag('', '$(\'indicator\').hide();
+				//new Effect.BlindUp(\'importstats\');
+				$(\'msgcontrol\').innerHTML = \'<a href="#" onclick="$(\\\'importstats\\\').toggle();">[ Show / Hide Messages ]</a>\';
+				new Effect.Highlight(\'importmsg\', {duration: 3 } );
+				document.adminForm.submit.remove();
+				document.adminForm.cancel.value = \' '.$VM_LANG->_CMN_OK.' \';
+				' );
+		}
+
 		return true;
 	}
-	
+
 	/**************************************************************************
 	** name: csv_category()
 	** created by: John Syben
@@ -836,22 +897,22 @@ class ps_csv {
 	function handle_csv_upload(&$d) {
 		global $vmLogger, $mosConfig_cachepath, $mosConfig_secret;
 		$allowed_suffixes_arr = array( 0 => 'csv'
-									  ,1 => 'txt'
-									  // add more here if needed
-									  );
+		,1 => 'txt'
+		// add more here if needed
+		);
 
 		$allowed_mime_types_arr = array('text/html',
-									'text/plain',
-									'text/csv',
-									'application/octet-stream',
-									'application/x-octet-stream',
-									'application/vnd.ms-excel',
-									'application/force-download',
-									'text/comma-separated-values',
-									'text/x-csv',
-									'text/x-comma-separated-values'
-									// add more here if needed
-									);
+		'text/plain',
+		'text/csv',
+		'application/octet-stream',
+		'application/x-octet-stream',
+		'application/vnd.ms-excel',
+		'application/force-download',
+		'text/comma-separated-values',
+		'text/x-csv',
+		'text/x-comma-separated-values'
+		// add more here if needed
+		);
 
 		$error = "";
 		if( !empty($d['csv_file'])) {
@@ -881,11 +942,11 @@ class ps_csv {
 			}
 			$fileinfo = pathinfo($_FILES["file"]["name"]);
 			$extension = $fileinfo["extension"];
-		
+
 			if (!in_array($extension, $allowed_suffixes_arr) ) {
 				$vmLogger->err( "Suffix not allowed. Valid suffixes are: " . join(", ",$allowed_suffixes_arr) );
 				return False;
-			}	
+			}
 			// do the moovin here :)
 			if( !is_writable($mosConfig_cachepath)) {
 				if( !chmod( $mosConfig_cachepath, 0777 )) {
@@ -893,14 +954,14 @@ class ps_csv {
 					return false;
 				}
 			}
-	      	if( move_uploaded_file($d["csv_file"], $mosConfig_cachepath.'/'.$_FILES["file"]["name"])) {
-	      		$d["csv_file"] = $mosConfig_cachepath.'/'.$_FILES["file"]["name"];
-	      	}
-	      	else {
-	      		$vmLogger->err( 'Failed to move the uploaded CSV file.');
-	      		return false;
-	      	}
-	      	
+			if( move_uploaded_file($d["csv_file"], $mosConfig_cachepath.'/'.$_FILES["file"]["name"])) {
+				$d["csv_file"] = $mosConfig_cachepath.'/'.$_FILES["file"]["name"];
+			}
+			else {
+				$vmLogger->err( 'Failed to move the uploaded CSV file.');
+				return false;
+			}
+
 		}
 
 		return True;
@@ -950,7 +1011,7 @@ class ps_csv {
 
 		// Get row positions of each element as set in csv table
 		$db = new ps_DB;
-		$q = "SELECT * FROM #__{vm}_csv ";
+		$q = "SELECT * FROM #__{vm}_csv ORDER BY field_ordering";
 		$db->query($q);
 
 		$csv_ordering = Array();
@@ -971,15 +1032,35 @@ class ps_csv {
         		ORDER BY product_parent_id ASC , #__{vm}_product.product_id ASC';
 
 		$db->query( $sql );
+		// Check if the user has entered a custom delimeter
+		if (!$d['csv_delimiter']) $delim = $d['csv_delimiter_custom'];
+		else $delim = $d['csv_delimiter'];
 
-		$delim = $d['csv_delimiter'];
-		$encl = stripslashes(@$d['csv_enclosurechar']);
+		// Check if the user has entered a custom enclosure char
+		if (!$d['csv_enclosurechar']) $encl = stripslashes(@$d['csv_enclosurechar_custom']);
+		else $encl = stripslashes(@$d['csv_enclosurechar']);
 
 		if(empty($encl) && !isset($d['csv_enclosurechar'])) $encl = "\"";
+
+		// Check if the user has chosen to add column headers
+		$include_column_headers = false;
+		if(!empty($d['include_column_headers'])) {
+			$include_column_headers = true;
+		}
 
 		$contents = "";
 		$db_attributes = new ps_DB;
 		$db_attribute_values = new ps_DB;
+
+		// Add the column headers if user choose them
+		if ($include_column_headers) {
+			foreach($csv_ordering as $id => $column_name) {
+				$contents .=  $encl.$column_name.$encl;
+				if ($id != count($csv_ordering)) $contents .= $delim;
+				else $contents .= "\n";
+			}
+		}
+
 		/** Loop through all records
         * and create the csv file - line after line ***/
 		while( $db->next_record() ) {
@@ -1014,36 +1095,36 @@ class ps_csv {
 					}
 				}
 				$database->query( "SELECT product_sku FROM #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'" );
-            $database->next_record();
-            $export_sku = $database->f('product_sku');
+				$database->next_record();
+				$export_sku = $database->f('product_sku');
 			}
 
 			if( $use_standard_order == "Y" ) {
 				$contents .= 	$encl . $db->f("product_sku"). 	$encl
-					. $delim .	$encl . addslashes( $db->f("product_name")) . $encl
-					. $delim . 	$encl . addslashes( $this->get_category_path( $db->f("product_id") ) ). $encl
-					. $delim . 	$encl . $db->f("product_price") . $encl
-					. $delim . 	$encl . $this->cleanString( addslashes( $db->f("product_s_desc"))) . $encl
-					. $delim . 	$encl . $this->cleanString( addslashes($db->f("product_desc"))) . $encl
-					. $delim . 	$encl . addslashes( $db->f("product_thumb_image")) . $encl
-					. $delim . 	$encl . addslashes( $db->f("product_full_image")) . $encl
-					. $delim . 	$encl . $db->f("product_weight") . $encl
-					. $delim . 	$encl . $db->f("product_weight_uom") . $encl
-					. $delim . 	$encl . $db->f("product_length") . $encl
-					. $delim . 	$encl . $db->f("product_width") . $encl
-					. $delim . 	$encl . $db->f("product_height") . $encl
-					. $delim . 	$encl . addslashes( $db->f("product_lwh_uom")) . $encl
-					. $delim . 	$encl . $db->f("product_in_stock") . $encl
-					. $delim . 	$encl . $db->f("product_available_date") . $encl
-					. $delim . 	$encl . $db->f("product_discount_id") . $encl
-					. $delim . 	$encl . $db->f("manufacturer_id") . $encl
-					. $delim . 	$encl . $db->f("product_tax_id") . $encl
-					. $delim . 	$encl . $db->f("product_sales") . $encl
-					. $delim . 	$encl . $export_sku . $encl
-					. $delim . 	$encl . addslashes( $db->f("attribute") ). $encl
-					. $delim . 	$encl . addslashes( $db->f("custom_attribute") ). $encl
-					. $delim . 	$encl . addslashes( $attributes ). $encl
-					. $delim . 	$encl . addslashes( $attribute_values ). $encl ."\n";
+				. $delim .	$encl . addslashes( $db->f("product_name")) . $encl
+				. $delim . 	$encl . addslashes( $this->get_category_path( $db->f("product_id") ) ). $encl
+				. $delim . 	$encl . $db->f("product_price") . $encl
+				. $delim . 	$encl . $this->cleanString( addslashes( $db->f("product_s_desc"))) . $encl
+				. $delim . 	$encl . $this->cleanString( addslashes($db->f("product_desc"))) . $encl
+				. $delim . 	$encl . addslashes( $db->f("product_thumb_image")) . $encl
+				. $delim . 	$encl . addslashes( $db->f("product_full_image")) . $encl
+				. $delim . 	$encl . $db->f("product_weight") . $encl
+				. $delim . 	$encl . $db->f("product_weight_uom") . $encl
+				. $delim . 	$encl . $db->f("product_length") . $encl
+				. $delim . 	$encl . $db->f("product_width") . $encl
+				. $delim . 	$encl . $db->f("product_height") . $encl
+				. $delim . 	$encl . addslashes( $db->f("product_lwh_uom")) . $encl
+				. $delim . 	$encl . $db->f("product_in_stock") . $encl
+				. $delim . 	$encl . $db->f("product_available_date") . $encl
+				. $delim . 	$encl . $db->f("product_discount_id") . $encl
+				. $delim . 	$encl . $db->f("manufacturer_id") . $encl
+				. $delim . 	$encl . $db->f("product_tax_id") . $encl
+				. $delim . 	$encl . $db->f("product_sales") . $encl
+				. $delim . 	$encl . $export_sku . $encl
+				. $delim . 	$encl . addslashes( $db->f("attribute") ). $encl
+				. $delim . 	$encl . addslashes( $db->f("custom_attribute") ). $encl
+				. $delim . 	$encl . addslashes( $attributes ). $encl
+				. $delim . 	$encl . addslashes( $attribute_values ). $encl ."\n";
 			}
 			else {
 				$num = sizeof( $csv_ordering );
@@ -1063,8 +1144,14 @@ class ps_csv {
 					elseif( $csv_ordering[$i] == "product_parent_id" ) {
 						$contents .= $encl . $export_sku . $encl;
 					}
+					// To be able to import the date again, we need to make sure it
+					// is human readable again
+					elseif( $csv_ordering[$i] == "product_available_date" ) {
+						$date_parts = getdate(trim($db->f($csv_ordering[$i])));
+						$contents .= $encl . $date_parts["mday"]."/".$date_parts["mon"]."/".$date_parts["year"] . $encl;
+					}
 					else {
-						$contents .= $encl . $this->cleanString( addslashes( $db->f($csv_ordering[$i] ) )) . $encl;
+						$contents .= $encl . $this->cleanString( $db->getEscaped( $db->f($csv_ordering[$i] ) ) ) . $encl;
 					}
 					// Add delimiter (if not line end)
 					if( $i < $num ) {
@@ -1187,11 +1274,16 @@ class ps_csv {
 		}
 		return $category_path;
 	}
-
+	/**
+	 * Strips all line endings from a string
+	 *
+	 * @param unknown_type $str
+	 * @return unknown
+	 */
 	function cleanString( $str ) {
 		return str_replace(
-				"\r", '',
-				str_replace( "\n", '', trim($str) ));
+		"\r", '',
+		str_replace( "\n", '', trim($str) ));
 	}
 
 	/**************************************************************************
@@ -1206,9 +1298,13 @@ class ps_csv {
 		$db = new ps_DB;
 
 		foreach( $d["field"] as $field ) {
+			if ($field["_ordering"] == 0) {
+				$this->error = "The order position cannot be 0";
+				return false;
+			}
 			if (!$field["_name"]) {
 				$this->error = "ERROR:  You must enter a name for the Field.";
-				return False;
+				return false;
 			}
 			$q = "SELECT count(*) as rowcnt from #__{vm}_csv where";
 			$q .= " field_name='" .  $field["_name"] . "'";
@@ -1217,10 +1313,10 @@ class ps_csv {
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
 				$this->error = "The given field name already exists.";
-				return False;
+				return false;
 			}
 		}
-		return True;
+		return true;
 	}
 
 	/**************************************************************************
@@ -1287,7 +1383,7 @@ class ps_csv {
 		global $db;
 
 		if (!$this->validate_add($d)) {
-			return False;
+			return false;
 		}
 
 		foreach( $d['field'] as $field ) {

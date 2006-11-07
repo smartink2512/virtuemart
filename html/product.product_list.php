@@ -232,6 +232,11 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $limitstart = $pageNav->limitstart;
 $list .= $q . " LIMIT $limitstart, " . $limit;
 
+if ($num_rows > 0) {
+	$db->query($list);
+	$num_rows = $db->num_rows();
+}
+
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );
 
@@ -266,7 +271,6 @@ $listObj->writeTableHeader( $columns );
 
 if ($num_rows > 0) {
 
-	$db->query($list);
 	$i = 0;
 	$db_cat = new ps_DB;
 	$tmpcell = "";
@@ -309,10 +313,10 @@ if ($num_rows > 0) {
 		$listObj->addCell( $db->f("product_sku") );
 		
 		$price = $ps_product->getPriceByShopperGroup( $db->f('product_id'), '');
-		$tmp_cell = '<span onclick="getPriceForm(this);">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'];
+		$tmp_cell = '<span class="editable" onclick="getPriceForm(this);">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'];
 		$tmp_cell .= '&nbsp;&nbsp;&nbsp;</span>';
 		
-		$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" style="cursor:pointer;" title="'.$VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'"' );
+		$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" title="'.$VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'"' );
 		
 		// The Categories or the parent product's name
 		$tmpcell = "";

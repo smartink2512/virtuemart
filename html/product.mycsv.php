@@ -42,17 +42,21 @@ if( empty( $vars['csv_import_finished'])) {
 		echo "<input type=\"hidden\" name=\"total_lines\" value=\"".$vars['csv_log']['total_lines']."\" />\n";
 	}
 	echo "<label for=\"csv_start_at\">".$VM_LANG->_VM_CSV_UPLOAD_START_AT.": </label>
-			<input class=\"inputbox\" type=\"text\" id=\"csv_start_at\" name=\"csv_start_at\" value=\"".intval( $vars['csv_start_at'] )."\" size=\"6\" />
+			<input class=\"inputbox\" type=\"text\" id=\"csv_start_at\" name=\"csv_start_at\" value=\"0\" size=\"6\" />
 			<br /><br />";
 	echo "<label for=\"csv_lines_to_import\">".$VM_LANG->_VM_CSV_UPLOAD_LINES_TO_PROCESS.": </label>
 			<input class=\"inputbox\" type=\"text\" id=\"csv_lines_to_import\" name=\"csv_lines_to_import\" value=\"$csv_lines_to_import\" size=\"6\" />
 			<br /><br /><img id=\"indicator\" style=\"display:none;\" src=\"".VM_THEMEURL."images/indicator.gif\" alt=\"Indicator\" align=\"absmiddle\" />&nbsp;&nbsp;";
 	
-	echo "<input class=\"button\" type=\"submit\" name=\"do_import\" value=\"".$VM_LANG->_VM_CSV_UPLOAD_IMPORTNOW."\" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n";
+	echo "<input class=\"button\" type=\"submit\" name=\"submit\" value=\"".$VM_LANG->_VM_CSV_UPLOAD_IMPORTNOW."\" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n";
 	echo "<input class=\"button\" type=\"button\" name=\"cancel\" value=\""._E_CANCEL."\" onclick=\"document.location='".$sess->url($_SERVER['PHP_SELF']."?page=product.csv_upload")."';\" />\n";
+	echo '<input type="hidden" name="do_import" value="1" />';
 	echo '</form><br /><br />
 	</td>
-	<td id="importmsg"></td>
+		<td><div id="importmsg"></div><br />
+			<div id="msgcontrol"></div>
+			<div style="height: 500px;overflow:auto;display:none;" id="importstats"></div>
+		</td>
 	</tr>';
 }
 echo '<tr><td width="50%">
@@ -64,7 +68,8 @@ if( !empty( $vars['error_log'] ) && is_array($vars['error_log'])) {
 	foreach( $vars['error_log'] as $line => $message) {
 		echo "<li><img src=\"$mosConfig_live_site/administrator/images/publish_x.png\" hspace=\"5\" alt=\"failure\" />$message</li>\n";
 	}
-	echo '</ul></fieldset>';
+	echo '</ul>';
+	echo '</fieldset>';
 }
 else {
 	echo '<h3><img src="'.$mosConfig_live_site.'/administrator/images/tick.png" hspace="5" alt="ok" />'.$VM_LANG->_VM_CSV_UPLOAD_NO_ERRORS.'</h3>';
@@ -119,6 +124,7 @@ echo '</td></tr></table>';
 ?>
 <script type="text/javascript">
 function doImport( form ) {
+	
 	$('indicator').show();
 	var options = {
 		postBody: Form.Methods.serialize( form ) + '&ajax_request=1',

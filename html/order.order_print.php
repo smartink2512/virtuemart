@@ -62,6 +62,10 @@ else {
 			  <td><strong>IP-ADDRESS:</strong></td>
 			  <td><?php $db->p("ip_address"); ?></td>
 			  </tr>
+			  <tr>
+			  <td><strong><?php echo $VM_LANG->_PHPSHOP_COUPON_COUPON_HEADER ?>:</strong></td>
+			  <td><?php if( $db->f("coupon_code") ) $db->p("coupon_code"); else echo '-'; ?></td>
+			  </tr>
 			</table>
 		  </td>
 		  <td valign="top" width="65%">

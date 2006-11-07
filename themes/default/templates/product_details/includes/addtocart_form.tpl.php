@@ -14,7 +14,7 @@ echo $ps_product_attribute->list_attribute($product_id);
 echo $ps_product_attribute->list_advanced_attribute($product_id);
 // This function lists the "custom" simple attributes
 echo $ps_product_attribute->list_custom_attribute($product_id);
-
+echo '<br />';
 if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )) {
 	?>
     <label for="quantity" class="quantity_box"><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?>:</label>

@@ -382,10 +382,10 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<?php
 				$database->setQuery( "SELECT id AS value, CONCAT( title, ' (', title_alias, ')' ) AS text FROM #__content ORDER BY id" );
 				$content = $database->loadObjectList( );
-				$select =  "<select size=\"5\" name=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" id=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" class=\"inputbox\">\n"; 
+				$select =  "<select size=\"5\" name=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" id=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" class=\"inputbox\" style=\"width: 300px;\">\n"; 
 				foreach($content as $objElement) { 
 					$selected = @VM_ONCHECKOUT_LEGALINFO_LINK == $objElement->value ? 'selected="selected"' : '';
-					$select .= "<option value=\"{$objElement->value}\" $selected>{$objElement->text}</option>\n"; 
+					$select .= "<option title=\"{$objElement->text}\" value=\"{$objElement->value}\" $selected>{$objElement->text}</option>\n"; 
 				} 
 				$select .=  "</select>\n"; 
 				echo $select;

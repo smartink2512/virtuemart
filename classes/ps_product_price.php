@@ -54,8 +54,8 @@ class ps_product_price {
 			$vmLogger->err( "A currency must be entered." );
 			$valid = false;
 		}
-		$d["price_quantity_start"] = intval($d["price_quantity_start"]);
-		$d["price_quantity_end"] = intval($d["price_quantity_end"]);
+		$d["price_quantity_start"] = intval(@$d["price_quantity_start"]);
+		$d["price_quantity_end"] = intval(@$d["price_quantity_end"]);
 
 		if ($d["price_quantity_end"] < $d["price_quantity_start"]) {
 			$vmLogger->err(  "The entered Quantity End is less than the Quantity Start." );

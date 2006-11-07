@@ -42,3 +42,7 @@
 	text-align: left; font-size: 18px; font-weight: bold;
 	padding-left: 80px;	
 }
+.editable {
+	background: #ffff33;
+	cursor: pointer;
+}

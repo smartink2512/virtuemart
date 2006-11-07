@@ -35,6 +35,17 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+06.11.2006 soeren
+
++ coupon code used for the order is stored now and displayed in the admin order details listing
+!! DATABASE STRUCTURE CHANGED !!
+	# adding coupon code tracking for orders
+	ALTER TABLE `jos_vm_orders` ADD `coupon_code` VARCHAR( 32 ) NULL AFTER `coupon_discount` ;
+	
+# fixed a bug which prevented ordering in product list
+^ coloured the editable price fields in the product list: added a CSS class "editable" to the admin.styles.css
+^ merged the CSV improvements by RolandH into the CSV files
+
 30.10.2006 soeren
 
 # no title tag displayed for empty categories (shop.browse.php)
