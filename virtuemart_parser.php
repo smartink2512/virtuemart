@@ -146,8 +146,11 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 					vmConnector::sendHeaderAndContent( 200 );
 				}
 				// Load class definition file
-				require_once( CLASSPATH.$db->f("function_class").".php" );
+				require_once( CLASSPATH."$class.php" );
 				$classname = str_replace( '.class', '', $funcParams["class"]);
+				if( !class_exists(strtolower($classname))) {
+					$classname = 'vm'.$classname;
+				}
 				// create an object
 				$string = "\$$classname = new $classname;";
 				eval( $string );
