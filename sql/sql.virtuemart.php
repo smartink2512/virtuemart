@@ -48,10 +48,22 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_affiliate_sale` (
   PRIMARY KEY  (`order_id`)
 ) TYPE=MyISAM COMMENT='Stores orders that affiliates have placed'; ");
 
-## 
-## Dumping data for table `#__{vm}_affiliate_sale`
-## 
+# 08.11.2006 Allowing new user groups
+$db->query( "CREATE TABLE #__{vm}_auth_group` (
+	  `group_id` int(11) NOT NULL auto_increment,
+	  `group_name` varchar(128) default NULL,
+	  `group_level` int(11) default NULL,
+	  PRIMARY KEY  (`group_id`)
+	) TYPE=MyISAM AUTO_INCREMENT=5 COMMENT='Holds all the user groups' ;");
 
+# these are the default user groups
+$db->query( "INSERT INTO `#__{vm}_auth_group` (`group_id`, `group_name`, `group_level`) VALUES (1, 'admin', 0),(2, 'storeadmin', 250),(3, 'shopper', 500),(4, 'demo', 750);" );
+		
+$db->query( "CREATE TABLE `#__{vm}_auth_user_group` (
+	  `user_id` int(11) NOT NULL default '0',
+	  `group_id` int(11) default NULL,
+	  PRIMARY KEY  (`user_id`)
+	) TYPE=MyISAM COMMENT='Maps the user to user groups';");
 
 ## --------------------------------------------------------
 
@@ -813,7 +825,10 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES (1, 1, 'userAdd', 'ps_user', 
 (176, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin'),
 (177, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin'),
 (178, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin'),
-(179, 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin');" );
+(179, 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin'),
+(180, 1, 'usergroupAdd', 'usergroup.class', 'add', 'Add a new user group', 'admin'),
+(181, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
+(182, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');" );
 ## --------------------------------------------------------
 
 ## 
@@ -995,11 +1010,11 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_order_status` (
 ## Dumping data for table `#__{vm}_order_status`
 ## 
 
-$db->query( "INSERT INTO `#__{vm}_order_status` VALUES (1, 'P', 'Pending', 1, 1),
-(2, 'C', 'Confirmed', 2, 1),
-(3, 'X', 'Cancelled', 3, 1),
-(4, 'R', 'Refunded', 4, 1),
-(5, 'S', 'Shipped', 5, 1);");
+$db->query( "INSERT INTO `#__{vm}_order_status` VALUES (1, 'P', 'Pending', '', 1, 1),
+(2, 'C', 'Confirmed', '', 2, 1),
+(3, 'X', 'Cancelled', '', 3, 1),
+(4, 'R', 'Refunded', '', 4, 1),
+(5, 'S', 'Shipped', '', 5, 1);");
 
 ## --------------------------------------------------------
 
@@ -2111,6 +2126,19 @@ foreach( $row as $user) {
 	$db->query( "INSERT INTO `#__{vm}_user_info` (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate`,`user_email` )
 					VALUES( '".md5(uniqid('virtuemart'))."','".$user->id."','BT', UNIX_TIMESTAMP('".$user->registerDate."'),UNIX_TIMESTAMP('".$user->lastvisitDate."'),'".$user->email."');" );
 }
+
+# insert the user <=> group relationship
+$db->query( "INSERT INTO `#__{vm}_auth_user_group` 
+				SELECT user_id, 
+					CASE `perms` 
+					    WHEN 'admin' THEN 0
+					    WHEN 'storeadmin' THEN 1
+					    WHEN 'shopper' THEN 2
+					    WHEN 'demo' THEN 3
+					    ELSE 2 
+					END
+				FROM #__{vm}_user_info
+				WHERE address_type='BT';");
 
 $db->query( "INSERT INTO `#__{vm}_manufacturer` VALUES ('1', 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', '1', 'http://www.a-url.com');" );
 $db->query( "INSERT INTO `#__{vm}_manufacturer_category` VALUES ('1', '-default-', 'This is the default manufacturer category');" );

@@ -22,22 +22,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  */
 class ps_perm {
 
-	// Can be easily extended
-	// Another permissions array must then
-	// be changed in ps_user.php!!
-	var $permissions;
+	var $user_groups;	
 	
 	function ps_perm() {
-		$this->permissions = array(
-								"shopper" 	=>  "1",
-								"demo" 	=>  "2",
-								"storeadmin" =>  "4",
-								"admin" 	=>  "8"
-								);
+		$this->getUserGroups();
 	}
 	
-	function getPermissionGroups() {
-		return $this->permissions;
+	function getUserGroups() {
+		if( empty( $this->user_groups )) {			
+			$db = new ps_DB();
+			$db->query('SELECT group_id,group_name,group_level FROM `#__{vm}_auth_group` ORDER BY group_level');
+			while( $db->next_record() ) {
+				$this->user_groups[$db->f('group_name')] = $db->f('group_level');
+			}
+		}
+		return $this->user_groups;
 	}
 	/**
 	* This function does the basic authentication
@@ -198,8 +197,8 @@ class ps_perm {
 	 */
 	function hasHigherPerms( $perm ) {
 		$auth = $_SESSION["auth"];
-
-		if( $this->permissions[$perm] <= $this->permissions[$auth['perms']] ) {
+		
+		if( $this->user_groups[$perm] >= $this->user_groups[$auth['perms']] ) {
 			return true;	
 		}
 		else {
@@ -223,9 +222,9 @@ class ps_perm {
 		$db = new ps_DB;
 	  
 		// Get users current permission value 
-		$dvalue = $this->permissions[$auth["perms"]];
+		$dvalue = $this->user_groups[$auth["perms"]];
 		
-		$perms = $this->getPermissionGroups();
+		$perms = $this->getUserGroups();
 		arsort( $perms );
 		
 		if( $size==1 ) {
@@ -233,7 +232,7 @@ class ps_perm {
 		}
 		while( list($key,$value) = each( $perms ) ) {
 			// Display only those permission that this user can set
-			if ($value <= $dvalue) {
+			if ($value >= $dvalue) {
 				$values[$key] = $key;
 			}
 		}

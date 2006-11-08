@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `jos_vm_export` (
   `export_config` text NOT NULL,
   `iscore` tinyint(3) NOT NULL default '0',
   PRIMARY KEY  (`export_id`),
-) ENGINE=MyISAM COMMENT='Export Modules';
+) TYPE=MyISAM COMMENT='Export Modules';
 
 
 # NEW States
@@ -165,13 +165,13 @@ ALTER TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id`
 # 13.04.2006 for JoomFish
 ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
 # Ask a question!
-INSERT INTO `jos_vm_function` VALUES ('', 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');
-INSERT INTO `jos_vm_function` VALUES ('', 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin');
-INSERT INTO `jos_vm_function` VALUES ('', 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none');
-INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin');
-INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin');
-INSERT INTO `jos_vm_function` VALUES ('', 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
-INSERT INTO `jos_vm_function` VALUES ('', 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin');
+INSERT INTO `jos_vm_function` VALUES (NULL, 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');
+INSERT INTO `jos_vm_function` VALUES (NULL, 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin');
+INSERT INTO `jos_vm_function` VALUES (NULL, 7, 'recommendProduct', 'ps_communication', 'sendRecommendation', 'Lets the customer send a recommendation about a specific product to a friend.', 'none');
+INSERT INTO `jos_vm_function` VALUES (NULL, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin');
+INSERT INTO `jos_vm_function` VALUES (NULL, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin');
+INSERT INTO `jos_vm_function` VALUES (NULL, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin');
+INSERT INTO `jos_vm_function` VALUES (NULL, 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin');
 
 
 # Prevent auto-publishing of product reviews
@@ -189,5 +189,38 @@ ALTER TABLE `jos_vm_order_status` ADD `order_status_description` TEXT NOT NULL A
 
 # 06.11.2006 Track coupon code used to order
 ALTER TABLE `jos_vm_orders` ADD `coupon_code` VARCHAR( 32 ) NULL AFTER `coupon_discount` ;
+
+# 08.11.2006 Allowing new user groups
+CREATE TABLE `jos_vm_auth_group` (
+	  `group_id` int(11) NOT NULL auto_increment,
+	  `group_name` varchar(128) default NULL,
+	  `group_level` int(11) default NULL,
+	  PRIMARY KEY  (`group_id`)
+	) TYPE=MyISAM AUTO_INCREMENT=5 COMMENT='Holds all the user groups' ;
+
+# these are the default user groups
+INSERT INTO `jos_vm_auth_group` (`group_id`, `group_name`, `group_level`) VALUES (1, 'admin', 0),(2, 'storeadmin', 250),(3, 'shopper', 500),(4, 'demo', 750);
+		
+CREATE TABLE `jos_vm_auth_user_group` (
+	  `user_id` int(11) NOT NULL default '0',
+	  `group_id` int(11) default NULL,
+	  PRIMARY KEY  (`user_id`)
+	) TYPE=MyISAM COMMENT='Maps the user to user groups';
+	
+INSERT INTO `jos_vm_auth_user_group` 
+				SELECT user_id, 
+					CASE `perms` 
+					    WHEN 'admin' THEN 0
+					    WHEN 'storeadmin' THEN 1
+					    WHEN 'shopper' THEN 2
+					    WHEN 'demo' THEN 3
+					    ELSE 2 
+					END
+				FROM jos_vm_user_info
+				WHERE address_type='BT';
+INSERT INTO `jos_vm_function` VALUES 
+	(NULL, 1, 'usergroupAdd', 'usergroup.class', 'add', 'Add a new user group', 'admin'),
+	(NULL, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
+	(NULL, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');
 
 UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';

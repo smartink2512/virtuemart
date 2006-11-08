@@ -51,10 +51,22 @@ CREATE TABLE IF NOT EXISTS `mos_vm_affiliate_sale` (
   PRIMARY KEY  (`order_id`)
 ) TYPE=MyISAM COMMENT='Stores orders that affiliates have placed';
 
-## 
-## Dumping data for table `mos_vm_affiliate_sale`
-## 
+# 08.11.2006 Allowing new user groups
+CREATE TABLE `mos_vm_auth_group` (
+	  `group_id` int(11) NOT NULL auto_increment,
+	  `group_name` varchar(128) default NULL,
+	  `group_level` int(11) default NULL,
+	  PRIMARY KEY  (`group_id`)
+	) TYPE=MyISAM AUTO_INCREMENT=5 COMMENT='Holds all the user groups' ;
 
+# these are the default user groups
+INSERT INTO `mos_vm_auth_group` (`group_id`, `group_name`, `group_level`) VALUES (1, 'admin', 0),(2, 'storeadmin', 250),(3, 'shopper', 500),(4, 'demo', 750);
+		
+CREATE TABLE `mos_vm_auth_user_group` (
+	  `user_id` int(11) NOT NULL default '0',
+	  `group_id` int(11) default NULL,
+	  PRIMARY KEY  (`user_id`)
+	) TYPE=MyISAM COMMENT='Maps the user to user groups';
 
 ## --------------------------------------------------------
 
@@ -818,7 +830,10 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (176, 8, 'ExportUpdate', 'ps_export', 'update', '', 'admin,storeadmin'),
 (177, 8, 'ExportAdd', 'ps_export', 'add', '', 'admin,storeadmin'),
 (178, 8, 'ExportDelete', 'ps_export', 'delete', '', 'admin,storeadmin'),
-(179, 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin');
+(179, 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin'),
+(180, 1, 'usergroupAdd', 'usergroup.class', 'add', 'Add a new user group', 'admin'),
+(181, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
+(182, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');
 
 ## --------------------------------------------------------
 
@@ -1001,11 +1016,11 @@ CREATE TABLE IF NOT EXISTS `mos_vm_order_status` (
 ## Dumping data for table `mos_vm_order_status`
 ## 
 
-INSERT INTO `mos_vm_order_status` VALUES (1, 'P', 'Pending', 1, 1),
-(2, 'C', 'Confirmed', 2, 1),
-(3, 'X', 'Cancelled', 3, 1),
-(4, 'R', 'Refunded', 4, 1),
-(5, 'S', 'Shipped', 5, 1);
+INSERT INTO `mos_vm_order_status` VALUES (1, 'P', 'Pending', '', 1, 1),
+(2, 'C', 'Confirmed', '', 2, 1),
+(3, 'X', 'Cancelled', '', 3, 1),
+(4, 'R', 'Refunded', '', 4, 1),
+(5, 'S', 'Shipped', '', 5, 1);
 
 ## --------------------------------------------------------
 

@@ -9,7 +9,9 @@
 DROP TABLE IF EXISTS `jos_vm_affiliate_sale`;
 DROP TABLE IF EXISTS `jos_vm_affiliate`;
 
-DROP TABLE IF EXISTS  `jos_vm_auth_user_vendor`;
+DROP TABLE IF EXISTS `jos_vm_auth_group`;
+DROP TABLE IF EXISTS `jos_vm_auth_user_group`;
+DROP TABLE IF EXISTS `jos_vm_auth_user_vendor`;
 
 DROP TABLE IF EXISTS  `jos_vm_category`;
 

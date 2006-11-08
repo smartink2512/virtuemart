@@ -35,8 +35,36 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.11.2006 soeren
+
+!! Database Structure changed !!
+	###########################
+	# Making User Groups dynamic
+	###########################
+	CREATE TABLE `jos_vm_auth_group` (
+	  `group_id` int(11) NOT NULL auto_increment,
+	  `group_name` varchar(128) default NULL,
+	  `group_level` int(11) default NULL,
+	  PRIMARY KEY  (`group_id`)
+	) TYPE=MyISAM AUTO_INCREMENT=5 COMMENT='Holds all the user groups' ;
+	# these are the default user groups
+	INSERT INTO `jos_vm_auth_group` (`group_id`, `group_name`, `group_level`) VALUES (1, 'admin', 0),(2, 'storeadmin', 250),(3, 'shopper', 500),(4, 'demo', 750);
+		
+	CREATE TABLE `jos_vm_auth_user_group` (
+	  `user_id` int(11) NOT NULL default '0',
+	  `group_id` int(11) default NULL,
+	  PRIMARY KEY  (`user_id`)
+	) TYPE=MyISAM COMMENT='Maps the user to user groups';
+	INSERT INTO `jos_vm_function` VALUES 
+		(NULL, 1, 'usergroupAdd', 'usergroup.class', 'add', 'Add a new user group', 'admin'),
+		(NULL, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
+		(NULL, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');
+		
++ new user group management (admin.usergroup_form.php, admin.usergroup_list.php)
+	
 06.11.2006 soeren
 
+# fixed the function form to work with the prototype ajax object
 + coupon code used for the order is stored now and displayed in the admin order details listing
 !! DATABASE STRUCTURE CHANGED !!
 	# adding coupon code tracking for orders

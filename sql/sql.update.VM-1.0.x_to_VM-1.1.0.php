@@ -192,5 +192,39 @@ $db->query( "ALTER TABLE `#__{vm}_order_status` ADD `order_status_description` T
 # 06.11.2006 Allow coupon code tracking
 $db->query( "ALTER TABLE `#__{vm}_orders` ADD `coupon_code` VARCHAR( 32 ) NULL AFTER `coupon_discount`");
 
+# 08.11.2006 Allowing new user groups
+$db->query( "CREATE TABLE `#__{vm}_auth_group` (
+	  `group_id` int(11) NOT NULL auto_increment,
+	  `group_name` varchar(128) default NULL,
+	  `group_level` int(11) default NULL,
+	  PRIMARY KEY  (`group_id`)
+	) TYPE=MyISAM AUTO_INCREMENT=5 COMMENT='Holds all the user groups' ;");
+
+# these are the default user groups
+$db->query( "INSERT INTO `#__{vm}_auth_group` (`group_id`, `group_name`, `group_level`) VALUES (1, 'admin', 0),(2, 'storeadmin', 250),(3, 'shopper', 500),(4, 'demo', 750);" );
+		
+$db->query( "CREATE TABLE `#__{vm}_auth_user_group` (
+	  `user_id` int(11) NOT NULL default '0',
+	  `group_id` int(11) default NULL,
+	  PRIMARY KEY  (`user_id`)
+	) TYPE=MyISAM COMMENT='Maps the user to user groups';");
+# insert the user <=> group relationship
+$db->query( "INSERT INTO `#__{vm}_auth_user_group` 
+				SELECT user_id, 
+					CASE `perms` 
+					    WHEN 'admin' THEN 0
+					    WHEN 'storeadmin' THEN 1
+					    WHEN 'shopper' THEN 2
+					    WHEN 'demo' THEN 3
+					    ELSE 2 
+					END
+				FROM #__{vm}_user_info
+				WHERE address_type='BT';");
+
+$db->query( "INSERT INTO `#__{vm}_function` VALUES 
+	(NULL, 1, 'usergroupAdd', 'usergroup.class', 'add', 'Add a new user group', 'admin'),
+	(NULL, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
+	(NULL, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');" );
+
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'")
 ?>

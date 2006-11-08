@@ -86,9 +86,11 @@ for ($i=0;$i < sizeof($mod);$i++) {  // recurse through all modules
                         _cmSplit,
                         <?php if (defined('_PSHOP_ADMIN')) { ?>
                         ['<img src="<?php echo $my_path ?>users.png" />','<?php echo $VM_LANG->_PHPSHOP_USERS ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_USERS ?>'],
-                ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_VM_MANAGE_USER_FIELDS ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_field_list") ?>',null,'<?php echo $VM_LANG->_VM_MANAGE_USER_FIELDS ?>'],
+                		<?php } ?>
+                		['<img src="<?php echo $my_path ?>users.png" />', '<?php echo $VM_LANG->_VM_USERGROUP_LBL ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.usergroup_list") ?>',null, '<?php echo $VM_LANG->_VM_USERGROUP_LBL ?>'],
+                		['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_VM_MANAGE_USER_FIELDS ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_field_list") ?>',null,'<?php echo $VM_LANG->_VM_MANAGE_USER_FIELDS ?>'],
                         _cmSplit,
-                        <?php } ?>
+                        
                         ['<img src="<?php echo $my_path ?>sections.png" />','<?php echo $VM_LANG->_PHPSHOP_USER_FORM_COUNTRY ?>',null,null,'<?php echo $VM_LANG->_PHPSHOP_USER_FORM_COUNTRY ?>',
                             ['<img src="<?php echo $my_path ?>content.png" />','<?php echo $VM_LANG->_PHPSHOP_COUNTRY_LIST_MNU ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.country_list") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_COUNTRY_LIST_MNU ?>'],
                             ['<img src="<?php echo $my_path ?>edit.png" />','<?php echo $VM_LANG->_PHPSHOP_COUNTRY_LIST_ADD ?>','<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.country_form") ?>',null,'<?php echo $VM_LANG->_PHPSHOP_COUNTRY_LIST_ADD ?>']
