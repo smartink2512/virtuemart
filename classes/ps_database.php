@@ -145,15 +145,20 @@ class ps_DB extends database {
 		}
 	}
 
-
+	function nextRow() {
+		return isset( $this->record[$this->row + 1] ) ? $this->record[$this->row + 1] : false;
+	}
+	function previousRow() {
+		return isset( $this->record[$this->row - 1] ) ? $this->record[$this->row - 1] : false;
+	}
 	/**
-  *  Returns the value of the given field name for the current
-  *  record in the RecordSet. 
-  * f == field
-  * @param string  The field name
-  * @param boolean Strip slashes from the data?
-  * @return string the value of the field $field_name in the recent row of the record set
-  */
+	 * Returns the value of the given field name for the current
+	 * record in the RecordSet. 
+	 * f == fetch
+	 * @param string  The field name
+	 * @param boolean Strip slashes from the data?
+	 * @return string the value of the field $field_name in the recent row of the record set
+	 */
 	function f($field_name, $stripslashes=true) {
 		if (isset($this->record[$this->row]->$field_name)) {
 
@@ -172,7 +177,7 @@ class ps_DB extends database {
 	 * record in the RecordSet.  Useful for handling forms that have
 	 * been submitted with errors.  This way, fields retain the values 
 	 * sent in the $vars variable (user input) instead of the database values.
-	 * sf == selective field
+	 * sf == selective fetch
 	 * @param string  The field name
 	 * @param boolean Strip slashes from the data?
 	 * @return string the value of the field $field_name in the recent row of the record set

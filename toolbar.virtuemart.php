@@ -58,6 +58,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 								"admin.module_list" => "moduleDelete",
 								"admin.user_list" => "userDelete",
                                 "admin.user_field_list" => "userfieldDelete",
+                                "admin.usergroup_list" => "usergroupDelete",
 								"affiliate.affiliate_list" => "affiliateDelete",
 								"coupon.coupon_list" => "couponDelete",
 								"store.creditcard_list" => "creditcardDelete",
@@ -124,7 +125,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
          vmMenuBar::startTable();
          vmMenuBar::custom( 'save', 'product.product_list', $vmIcons['save_icon'], $vmIcons['save_icon2'], 'Move Products', false, "adminForm", 'productMove' );
          vmMenuBar::spacer();
-         vmMenuBar::customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), $vmIcons['cancel_icon'], $vmIcons['cancel_icon2'], _CMN_CANCEL );
+         vmMenuBar::customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), $vmIcons['cancel_icon'], $vmIcons['cancel_icon2'], $VM_LANG->_CMN_CANCEL );
          vmMenuBar::spacer();
          vmMenuBar::endTable();
      }

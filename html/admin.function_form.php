@@ -17,6 +17,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+vmCommonHTML::loadPrototype();
+
 $function_id = mosGetParam( $_REQUEST, 'function_id');
 $module_id = mosGetParam( $_REQUEST, 'module_id');
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
@@ -88,14 +90,15 @@ $formObj->finishForm( $funcname, 'admin.function_list', $option );
 
 $script = "var updateFunc = function(){
 			var el = $('function_class' );
+			opts= { postBody: Form.Methods.serialize( document.adminForm ) + '&page=admin.ajax_tools&task=get_class_methods&class=' + el.options[el.selectedIndex].value + '&function=' + document.adminForm.function_method.value }
 			";
-$updateURL = $sess->url( 'index2.php?page=admin.ajax_tools&task=get_class_methods&class=\' + el.options[el.selectedIndex].value + \'&function=\' + document.adminForm.function_method.value + \'' );
-$script .= vmMooAjax::getAjaxUpdater( $updateURL, 'function_method_container', '' );
-$script .= "		
+$script .= "new Ajax.Updater( 'function_method_container', 'index2.php', opts );
+
 			return false;
 		}
 		
-		\$S('#function_class').action( { onchange: updateFunc, initialize: updateFunc } );
+		$('function_class').onchange = function() { updateFunc() };
+		updateFunc();
 ";
 echo vmCommonHTML::scriptTag('', $script );
 ?>

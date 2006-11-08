@@ -183,11 +183,11 @@ class MENU_virtuemart {
 		}
 		vmMenuBar::spacer();
 		
-		vmMenuBar::save( 'save', _E_SAVE );
+		vmMenuBar::save( 'save', $VM_LANG->_CMN_SAVE );
 		if( $no_menu == 0 ) {
 			vmMenuBar::spacer();
 			
-			vmMenuBar::apply( 'apply', _E_APPLY );
+			vmMenuBar::apply( 'apply', $VM_LANG->_E_APPLY );
 		}
 		if( (strstr( @$_SERVER['HTTP_REFERER'], $page ) || strstr( @$_SERVER['HTTP_REFERER'], $_SERVER['PHP_SELF'] )) && $no_menu && !$is_iframe ) {
 			// offer a back button
@@ -209,7 +209,7 @@ class MENU_virtuemart {
 
         $my_page = str_replace('list','form',$page);
 		
-        vmMenuBar::addNew( "new", $my_page, _CMN_NEW );
+        vmMenuBar::addNew( "new", $my_page, $VM_LANG->_CMN_NEW );
 		
         if ($page == 'admin.country_state_list') {
 			// Back to the country

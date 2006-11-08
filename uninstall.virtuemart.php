@@ -43,6 +43,8 @@ function com_uninstall() {
 	
 	$db->query( 'DROP TABLE `#__{vm}_affiliate`;' );
 	$db->query( 'DROP TABLE `#__{vm}_affiliate_sale`;' );
+	$db->query( 'DROP TABLE `#__{vm}_auth_group`;' );
+	$db->query( 'DROP TABLE `#__{vm}_auth_user_group`;' );
 	$db->query( 'DROP TABLE `#__{vm}_auth_user_vendor`;' );
 	$db->query( 'DROP TABLE `#__{vm}_category`;' );
 	$db->query( 'DROP TABLE `#__{vm}_category_xref`;' );
