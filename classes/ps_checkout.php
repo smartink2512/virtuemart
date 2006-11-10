@@ -473,7 +473,8 @@ class ps_checkout {
 	
 				// The User has choosen a Shipping address
 				if (empty($d["ship_to_info_id"])) {
-					$d["error"] = $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO;
+					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO );
+					$_REQUEST['checkout_next_step'] = CHECK_OUT_GET_SHIPPING_ADDR;
 					return False;
 				}
 				break;

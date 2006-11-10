@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+10.11.2006 gregdev
+
+#  Fixed duplicate error message when no shipping address is chosen during checkout (Task #972).
+
 08.11.2006 soeren
 
 !! Database Structure changed !!
