@@ -133,6 +133,7 @@ else {
 		$product_rows[$i]['update_form'] = "<input type=\"hidden\" name=\"page\" value=\"". $page ."\" />
     <input type=\"hidden\" name=\"func\" value=\"cartUpdate\" />
     <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
+    <input type=\"hidden\" name=\"prod_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
     <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
     <input type=\"hidden\" name=\"description\" value=\"". stripslashes($cart[$i]["description"])."\" />
     <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". VM_THEMEURL ."images/update_quantity_cart.png\" border=\"0\"  alt=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
