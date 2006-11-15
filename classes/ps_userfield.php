@@ -288,7 +288,7 @@ class ps_userfield extends vmAbstractObject {
 			
 		   <?php
 		if( !empty( $required_fields ))  {
-			echo '<div style="padding:5px;text-align:center;"><strong>(* = '._CMN_REQUIRED.')</strong></div>';
+			echo '<div style="padding:5px;text-align:center;"><strong>(* = '.$VM_LANG->_CMN_REQUIRED.')</strong></div>';
 		  	 
 		}
 		$delimiter = 0;

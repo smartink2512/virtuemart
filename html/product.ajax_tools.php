@@ -75,8 +75,8 @@ switch( $task ) {
 		$content .= '<input type="hidden" name="func" value="'. (empty($price['product_price_id']) ? 'productPriceAdd' : 'productPriceUpdate') . '" />';
 		$content .= '<input type="hidden" name="ajax_request" value="1" />';
 		$content .= '<input type="hidden" name="option" value="'.$option.'" />';
-		$content .= '<input type="button" id="priceFormSubmit" name="submit" value="'._E_SAVE.'" onclick="submitPriceForm(\''.$formName.'\');" class="button" /> ';
-		$content .= '<input type="button" id="priceFormCancel" name="submit" value="'._CMN_CANCEL.'" onclick="cancelPriceForm(\''.$product_id.'\');" class="button" />';
+		$content .= '<input type="button" id="priceFormSubmit" name="submit" value="'.$VM_LANG->_CMN_SAVE.'" onclick="submitPriceForm(\''.$formName.'\');" class="button" /> ';
+		$content .= '<input type="button" id="priceFormCancel" name="submit" value="'.$VM_LANG->_CMN_CANCEL.'" onclick="cancelPriceForm(\''.$product_id.'\');" class="button" />';
 		$content .= '</div>';
 		vmConnector::sendHeaderAndContent( 200, $content );
 		break;

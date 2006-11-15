@@ -226,14 +226,6 @@ class vmImageTools {
 			$vmLogger->err( 'The File Upload was not successful: there\'s no uploaded temporary file!' );
 			return false;
 		}
-		// Check permissions to read temp file
-		if (!is_readable($temp_file)) {
-			$vmLogger->err( 'Cannot read uploaded '.$image_type.' temp file: '.$temp_file.'.
-	    					One common reason for this: the upload path cannot be accessed 
-	    					because of the open_basedir settings in the php.ini. Or maybe the 
-	    					directory for temporary upload files on this server is not readable.' );
-			return false;
-		}
 	
 		/* Generate Image Destination File Name */
 		if( !empty( $d[$table_name.'_name'] )) {

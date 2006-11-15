@@ -315,7 +315,7 @@ class ps_communication {
     <input type="hidden" name="product_id" value="'.$product_id.'" />
     <input type="hidden" name="'.mosHash( $mosConfig_db ).'" value="1" />
     <input type="hidden" name="func" value="recommendProduct" />
-    <input class="button" type="submit" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" />
+    <input class="button" type="submit" name="submit" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" />
     <input class="button" type="button" onclick="window.close();" value="'._CMN_CANCEL.'" />
     </form>
     ';

@@ -1247,11 +1247,23 @@ class ps_product extends vmAbstractObject {
 				}
 				else {
 					$url = IMAGEURL.$path_appendix."/".$image;
-					if( !strpos( $args, "height=" )) {
-						$arr = @getimagesize( str_replace( IMAGEURL, IMAGEPATH, $image ) );
+					
+					if( !strpos( $args, "height=" ) ) {
+						$arr = getimagesize( str_replace( IMAGEURL, IMAGEPATH, $url ) );
 						$width = $arr[0]; $height = $arr[1];
+						
+					}
+					if( $resize ) {
+						if( $height < $width ) {
+							$width = round($width / ($height / PSHOP_IMG_HEIGHT));
+							$height = PSHOP_IMG_HEIGHT;
+						} else {
+							$height = round($height / ($width / PSHOP_IMG_WIDTH ));
+							$width = PSHOP_IMG_WIDTH;
+						}
 					}
 				}
+				
 			}
 		}
 		else {

@@ -914,9 +914,13 @@ function vmSetGlobalCurrency(){
 	}
 }
 
-function vmIsJoomla() {
+function vmIsJoomla($version='') {
 	global $_VERSION;
-	return (bool)stristr( $_VERSION->PRODUCT, 'Joomla' );
+	if( $version != '') {
+		return (bool)stristr( $_VERSION->PRODUCT, 'Joomla' ) && $_VERSION->RELEASE == (float)$version;
+	} else {
+		return (bool)stristr( $_VERSION->PRODUCT, 'Joomla' );
+	}
 }
 function vmIsHttpsMode() {
 	return ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on');

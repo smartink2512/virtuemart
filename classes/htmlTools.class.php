@@ -1074,15 +1074,15 @@ class vmCommonHTML extends mosHTML {
 	 * @param boolean $use_icon
 	 */
 	function PdfIcon( $link, $use_icon=true ) {
-		global $mosConfig_live_site;
+		global $VM_LANG, $mosConfig_live_site;
 		if ( PSHOP_PDF_BUTTON_ENABLE == '1' && !mosGetParam( $_REQUEST, 'pop' )  ) {
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, _CMN_PDF, _CMN_PDF );
+				$text = mosAdminMenus::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_PDF, $VM_LANG->_CMN_PDF );
 			} else {
-				$text = _CMN_PDF .'&nbsp;';
+				$text = $VM_LANG->_CMN_PDF .'&nbsp;';
 			}
-			return vmPopupLink($link, $text, 640, 480, '_blank', _CMN_PDF);
+			return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_CMN_PDF);
 		}
 	}
 
@@ -1093,40 +1093,40 @@ class vmCommonHTML extends mosHTML {
 	 * @param boolean $use_icon
 	 */
 	function EmailIcon( $product_id, $use_icon=true ) {
-		global $mosConfig_live_site, $sess;
+		global $VM_LANG, $mosConfig_live_site, $sess;
 		if ( @VM_SHOW_EMAILFRIEND == '1' && !mosGetParam( $_REQUEST, 'pop' ) && $product_id > 0  ) {
 			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1' );
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, _CMN_EMAIL, _CMN_EMAIL );
+				$text = mosAdminMenus::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_EMAIL, $VM_LANG->_CMN_EMAIL );
 			} else {
-				$text = '&nbsp;'. _CMN_EMAIL;
+				$text = '&nbsp;'. $VM_LANG->_CMN_EMAIL;
 			}
-			return vmPopupLink($link, $text, 640, 480, '_blank', _CMN_EMAIL, 'screenX=100,screenY=200');
+			return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_CMN_EMAIL, 'screenX=100,screenY=200');
 		}
 	}
 	
 	function PrintIcon( $link='', $use_icon=true ) {
-		global $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
+		global $VM_LANG, $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
 		if ( @VM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
 				$link = 'index2.php?'.$_SERVER['QUERY_STRING'].'&amp;pop=1';
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, _CMN_PRINT, _CMN_PRINT );
+				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_PRINT, $VM_LANG->_CMN_PRINT );
 			} else {
-				$text = _ICON_SEP .'&nbsp;'. _CMN_PRINT. '&nbsp;'. _ICON_SEP;
+				$text = _ICON_SEP .'&nbsp;'. $VM_LANG->_CMN_PRINT. '&nbsp;'. _ICON_SEP;
 			}
 			$isPopup = mosGetParam( $_GET, 'pop' );
 			if ( $isPopup ) {
 				// Print Preview button - used when viewing page
-				$html = '<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. _CMN_PRINT.'">
+				$html = '<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. $VM_LANG->_CMN_PRINT.'">
 				'. $text .'
 				</a>';
 				return $html;
 			} else {
 				// Print Button - used in pop-up window
-				return vmPopupLink($link, $text, 640, 480, '_blank', _CMN_PRINT);
+				return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_CMN_PRINT);
 			}
 		}
 	}

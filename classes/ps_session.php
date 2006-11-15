@@ -59,10 +59,12 @@ class ps_session {
 				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
 			}
 			else {
-				if( @$_REQUEST['option'] == 'com_virtuemart' ) {
+				if( @$_REQUEST['option'] == 'com_virtuemart' && USE_AS_CATALOGUE == '' ) {
 					$this->doCookieCheck(); // Introduced to check if the user-agent accepts cookies
 				}
-				$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
+				if( USE_AS_CATALOGUE == '' ) {
+					$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );
+				}
 			}
 		}
 	}

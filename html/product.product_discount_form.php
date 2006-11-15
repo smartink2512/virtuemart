@@ -33,9 +33,10 @@ if ( !empty($discount_id) ) {
 ?> 
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $mosConfig_live_site ?>/includes/js/calendar/calendar-mos.css" title="green" />
 <!-- import the calendar script -->
-<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/calendar/calendar.js"></script>
+<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/jscalendar-1.0/calendar_stripped.js"></script>
+<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/jscalendar-1.0/calendar-setup_stripped.js"></script>
 <!-- import the language module -->
-<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/jscalendar-1.0/lang/calendar-en.js"></script>
 
 <table class="adminform">
     <tr> 

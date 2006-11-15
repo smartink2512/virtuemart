@@ -23,7 +23,7 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 $missing = mosGetParam( $_REQUEST, "missing", "" );
 
 if (!empty( $missing )) {
-	echo "<script type=\"text/javascript\">alert('"._CONTACT_FORM_NC."'); </script>\n";
+	echo "<script type=\"text/javascript\">alert('".$VM_LANG->_CONTACT_FORM_NC."'); </script>\n";
 }
 
 if ($mosConfig_allowUserRegistration == "0") {
@@ -51,13 +51,13 @@ echo '
     
 	if( !$mosConfig_useractivation && @VM_SHOW_REMEMBER_ME_BOX && VM_SILENT_REGISTRATION != '1') {
 		echo '<input type="checkbox" name="remember" value="yes" id="remember_login2" checked="checked" />
-		<label for="remember_login2">'. _REMEMBER_ME .'</label><br /><br />';
+		<label for="remember_login2">'. $VM_LANG->_REMEMBER_ME .'</label><br /><br />';
 	}
 	else {
 		echo '<input type="hidden" name="remember" value="yes" />';
 	}
 	echo '
-		<input type="submit" value="'. _BUTTON_SEND_REG . '" class="button" onclick="return( submitregistration());" />
+		<input type="submit" value="'. $VM_LANG->_BUTTON_SEND_REG . '" class="button" onclick="return( submitregistration());" />
 	</div>
 	<input type="hidden" name="Itemid" value="'. $sess->getShopItemid() .'" />
 	<input type="hidden" name="gid" value="'. $my->gid .'" />

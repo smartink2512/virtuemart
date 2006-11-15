@@ -300,7 +300,7 @@ if ($checkout) {
         }
         
         else {
-
+			
           if (!empty($my->id)) {
             // USER IS LOGGED IN, BUT NO REGISTERED CUSTOMER
             // WE NEED SOME ADDITIONAL INFORMATION HERE,

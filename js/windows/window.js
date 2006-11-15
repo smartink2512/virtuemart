@@ -19,7 +19,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// VERSION 0.96.3 modified by soeren!
+// VERSION 0.97 modified by soeren!
 // Note: Don't just update to a newer version from xilinus.com!
 // This version has some modifications which an update will break
 
@@ -58,7 +58,8 @@ Window.prototype = {
       	onload:            Prototype.emptyFunction,
       	width:             200,
       	height:            300,
-      	opacity:           1
+        opacity:           1,
+        recenterAuto:      true
     }, arguments[1] || {});
     		
 	  if (this.options.effectOptions) {
@@ -77,6 +78,7 @@ Window.prototype = {
   	this.eventKeyPress  = this._keyPress.bindAsEventListener(this);
   	this.eventOnLoad    = this._getWindowBorderSize.bindAsEventListener(this);
     this.eventMouseDownContent = this.toFront.bindAsEventListener(this);
+    if (this.options.recenterAuto)
     this.eventResize = this._recenter.bindAsEventListener(this);
  
 	this.topbar = $(this.element.id + "_top");
@@ -87,8 +89,10 @@ Window.prototype = {
 	Event.observe(this.bottombar, "mousedown", this.eventMouseDown);
 	Event.observe(this.content, "mousedown", this.eventMouseDownContent);
 	Event.observe(window, "load", this.eventOnLoad);
+    if (this.options.recenterAuto) {
 	Event.observe(window, "resize", this.eventResize);
   	Event.observe(window, "scroll", this.eventResize);
+	  }
   	
 	if (this.options.draggable)  {
 		this.bottombar.addClassName("bottom_draggable");
@@ -139,6 +143,7 @@ Window.prototype = {
     this._getWindowBorderSize();
     this.width = this.options.width;
     this.height = this.options.height;
+    this.visible = false;
     
     if (this.width && this.height)
 		  this.setSize(this.options.width, this.options.height);
@@ -154,10 +159,25 @@ Window.prototype = {
   	Event.stopObserving(this.content, "mousedown", this.eventMouseDownContent);
     
 	Event.stopObserving(window, "load", this.eventOnLoad);
+		if (this.options.recenterAuto) {
 	Event.stopObserving(window, "resize", this.eventResize);
   	Event.stopObserving(window, "scroll", this.eventResize);
+	  }
 		
 	Event.stopObserving(this.content, "load", this.options.onload);
+
+		if (this._oldParent) {
+			var content = this.getContent();
+			var originalContent = null;
+			for(var i = 0; i < content.childNodes.length; i++) {
+				originalContent = content.childNodes[i];
+				if (Node.ELEMENT_NODE == originalContent.nodeType) break;
+				originalContent = null;
+			}
+			if (originalContent)
+			  this._oldParent.appendChild(originalContent);
+			this._oldParent = null;
+		}
 
 	if (this.sizer)
 		Event.stopObserving(this.sizer, "mousedown", this.eventMouseDown);
@@ -189,17 +209,21 @@ Window.prototype = {
 	
 	// Sets the content with an element id
 	setContent: function(id, autoresize, autoposition) {
+		var element = $(id);
+		if (null == element) throw "Unable to find element '" + id + "' in DOM";
+		this._oldParent = element.parentNode;
+
 		var d = null;
 		var p = null;
 
 		if (autoresize) 
-			d = Element.getDimensions(id);
+			d = Element.getDimensions(element);
 		if (autoposition) 
-			p = Position.cumulativeOffset($(id));
+			p = Position.cumulativeOffset(element);
 
 		var content = this.getContent()
-		content.appendChild($(id));
-		$(id).show();
+		content.appendChild(element);
+		element.show();
 		if (autoresize) 
 			this.setSize(d.width, d.height);
 		if (autoposition) 
@@ -219,8 +243,7 @@ Window.prototype = {
 	},
 	
 	_setAjaxContent: function(originalRequest) {
-	  originalRequest.responseText.evalScripts();
-	  this.getContent().innerHTML = originalRequest.responseText;
+	  Element.update(this.getContent(), originalRequest.responseText);
 	  if (this.onComplete)
 	    this.onComplete(originalRequest);
 	  this[this.showFunction](this.showModal)
@@ -398,9 +421,9 @@ Window.prototype = {
 		else
 			content ="<div id=\"" + id + "_content\" class=\"" +className + "_content\"> </div>";
 			
-		var closeDiv = this.options.closable ? "<div class='"+ className +"_close' id='"+ id +"_close' onclick='Windows.close(event, \""+ id +"\")'> </div>" : "";
-		var minDiv = this.options.minimizable ? "<div class='"+ className + "_minimize' id='"+ id +"_minimize' onclick='Windows.minimize(event, \""+ id +"\")'> </div>" : "";
-		var maxDiv = this.options.maximizable ? "<div class='"+ className + "_maximize' id='"+ id +"_maximize' onclick='Windows.maximize(event, \""+ id +"\")'> </div>" : "";
+		var closeDiv = this.options.closable ? "<div class='"+ className +"_close' id='"+ id +"_close' onclick='Windows.close(\""+ id +"\", event)'> </div>" : "";
+		var minDiv = this.options.minimizable ? "<div class='"+ className + "_minimize' id='"+ id +"_minimize' onclick='Windows.minimize(\""+ id +"\", event)'> </div>" : "";
+		var maxDiv = this.options.maximizable ? "<div class='"+ className + "_maximize' id='"+ id +"_maximize' onclick='Windows.maximize(\""+ id +"\", event)'> </div>" : "";
 		var seAttributes = this.options.resizable ? "class='" + className + "_sizer' id='" + id + "_sizer'" : "class='"  + className + "_se'";
 		
     win.innerHTML = closeDiv + minDiv + maxDiv + "\
@@ -414,7 +437,7 @@ Window.prototype = {
       <table id='"+ id +"_row2' class=\"mid table_window\">\
         <tr>\
           <td class='"+ className +"_w'></td>\
-            <td id='"+ id +"_table_content' class='"+ className +"_content' valign='top'>"+ content +"</td>\
+            <td id='"+ id +"_table_content' class='"+ className +"_content' valign='top'>" + content + "</td>\
           <td class='"+ className +"_e'></td>\
         </tr>\
       </table>\
@@ -426,7 +449,6 @@ Window.prototype = {
         </tr>\
       </table>\
     ";
-    
 		Element.hide(win);
 		this.options.parent.insertBefore(win, this.options.parent.firstChild);
 		Event.observe($(id + "_content"), "load", this.options.onload);
@@ -488,7 +510,7 @@ Window.prototype = {
 		this.element.setStyle({height: height  + this.heightN + this.heightS + "px"})
 
 		// Update content height
-		var content = $(this.element.id + '_content')
+		var content = $(this.element.id + '_content');
 		content.setStyle({height: height  + 'px'});
 		content.setStyle({width: width  + 'px'});
 	},
@@ -512,7 +534,8 @@ Window.prototype = {
 	// Displays window modal state or not
 	show: function(modal) {
 		if (modal) {
-			WindowUtilities.disableScreen(this.options.className, 'overlay_modal', this.getId());
+		  Windows.addModalWindow(this)
+			
 			this.modal = true;			
 			this.setZIndex(Windows.maxZIndex + 20);
 			Windows.unsetOverflow(this);
@@ -541,6 +564,7 @@ Window.prototype = {
 			this.options.showEffect(this.element);	
 			
     this._checkIEOverlapping();
+    this.visible = true;
     Windows.notify("onShow", this);    
 	},
 	
@@ -554,7 +578,7 @@ Window.prototype = {
 	},
 	
 	isVisible: function() {
-	  return this.element.visible();
+	  return this.visible;
 	},
 	
 	_center: function(top, left) {
@@ -574,22 +598,22 @@ Window.prototype = {
 	},
 	
 	_recenter: function(event) {
-	  if (this.modal) {
+	  if (this.modal && this.centered) {
   		var pageSize = WindowUtilities.getPageSize();
   		// set height of Overlay to take up whole page and show
   		if ($('overlay_modal')) {
   		  $('overlay_modal').style.height = (pageSize.pageHeight + 'px');
   		  $('overlay_modal').style.width = (pageSize.pageWidth + 'px');
       }		
-  		if (this.centered)
   		  this._center(this.centerTop, this.centerLeft);		
 	  }
 	},
 	
 	// Hides window
 	hide: function() {
+	  this.visible = false;
 		if (this.modal) {
-			WindowUtilities.enableScreen();
+		  Windows.removeModalWindow(this);
 			Windows.resetOverflow();
 			Event.stopObserving(document, "keypress", this.eventKeyPress);			
 		}
@@ -803,6 +827,7 @@ Window.prototype = {
 // Windows containers, register all page windows
 var Windows = {
   windows: [],
+  modalWindows: [],
   observers: [],
   focusedWindow: null,
   maxZIndex: 0,
@@ -834,6 +859,36 @@ var Windows = {
   register: function(win) {
     this.windows.push(win);
   },
+    
+  // Add a modal window in the stack
+  addModalWindow: function(win) {
+    // Disable screen if first modal window
+    if (this.modalWindows.length == 0)
+      WindowUtilities.disableScreen(win.options.className, 'overlay_modal', win.getId());
+    else {
+      // Hide current modal window
+      this.modalWindows.last().element.hide();
+      // Fucking IE select issue
+      if (isIE)
+        $$('#'+win.getId()+' select').each(function(element) {element.style.visibility = "visible"});
+    }      
+    this.modalWindows.push(win);    
+  },
+  
+  removeModalWindow: function(win) {
+    this.modalWindows.pop();
+    
+    // No more modal windows
+    if (this.modalWindows.length == 0)
+      WindowUtilities.enableScreen(); 		
+    else 
+      this.modalWindows.last().element.show();
+  },
+
+  // Registers a new window (called by Windows constructor)
+  register: function(win) {
+    this.windows.push(win);
+  },
   
   // Unregisters a window (called by Windows destructor)
   unregister: function(win) {
@@ -841,19 +896,12 @@ var Windows = {
   }, 
 
   // Closes a window with its id
-  close: function(event, id) {
+  close: function(id, event) {
   	var win = this.getWindow(id);
   	// Asks delegate if exists
-    if (win) {
+    if (win && win.visible) {
 	  	if (win.getDelegate() && ! win.getDelegate().canClose(win)) 
 	  		return;
-	      if ($(id + "_close"))
-	        $(id + "_close").onclick = null;
-	      if ($(id + "_minimize"))
-	        $(id + "_minimize").onclick = null;	        
-	      if ($(id + "_maximize"))
-	        $(id + "_maximize").onclick = null;	      
-	      
   			this.notify("onClose", win);
   			win.hide();
   	}
@@ -866,18 +914,23 @@ var Windows = {
     this.windows.each( function(w) {Windows.close(w.getId())} );
   },
   
+  closeAllModalWindows: function() {
+    WindowUtilities.enableScreen(); 		
+    
+    this.modalWindows.each( function(win) {win.hide()});    
+  },
   // Minimizes a window with its id
-  minimize: function(event, id) {
+  minimize: function(id, event) {
   	var win = this.getWindow(id)
-  	if (win)
+  	if (win && win.visible)
   	  win.minimize();
 	  Event.stop(event);
   },
   
   // Maximizes a window with its id
-  maximize: function(event, id) {
+  maximize: function(id, event) {
   	var win = this.getWindow(id)
-  	if (win)
+  	if (win && win.visible)
   	  win.maximize();
 	  Event.stop(event);
   },
@@ -901,7 +954,6 @@ var Windows = {
 
 var Dialog = {
   	dialogId: null,
- 	win: null,
   	onCompleteFunc: null,
   	callFunc: null, 
   	parameters: null, 
@@ -920,8 +972,8 @@ var Dialog = {
 		var windowParam = parameters.windowParameters || {};
 		windowParam.className = windowParam.className || "alert";
 
-    okButtonClass = "class ='" + (parameters.buttonClass ? parameters.buttonClass + " " : "") + " ok_button'" 
-    cancelButtonClass = "class ='" + (parameters.buttonClass ? parameters.buttonClass + " " : "") + " cancel_button'" 
+    var okButtonClass = "class ='" + (parameters.buttonClass ? parameters.buttonClass + " " : "") + " ok_button'" 
+    var cancelButtonClass = "class ='" + (parameters.buttonClass ? parameters.buttonClass + " " : "") + " cancel_button'" 
 		var content = "\
 			<div class='" + windowParam.className + "_message'>" + content  + "</div>\
 				<div class='" + windowParam.className + "_buttons'>\
@@ -929,8 +981,7 @@ var Dialog = {
 					<input type='button' value='" + cancelLabel + "' onclick='Dialog.cancelCallback()' " + cancelButtonClass + "/>\
 				</div>\
 		";
-	  this._openDialog(content, parameters)
-	  return this.win
+	  return this._openDialog(content, parameters)
 	},
 	
 	alert: function(content, parameters) {
@@ -946,7 +997,7 @@ var Dialog = {
 		var windowParam = parameters.windowParameters || {};
 		windowParam.className = windowParam.className || "alert";
 
-    okButtonClass = "class ='" + (parameters.buttonClass ? parameters.buttonClass + " " : "") + " ok_button'" 
+    var okButtonClass = "class ='" + (parameters.buttonClass ? parameters.buttonClass + " " : "") + " ok_button'" 
 		var content = "\
 			<div class='" + windowParam.className + "_message'>" + content  + "</div>\
 				<div class='" + windowParam.className + "_buttons'>\
@@ -983,14 +1034,19 @@ var Dialog = {
 	},
 	
 	closeInfo: function() {
-		Windows.close(null, this.dialogId);
+		Windows.close(this.dialogId);
 	},
 	
 	_openDialog: function(content, parameters) {
 	    if (! parameters.windowParameters.height && ! parameters.windowParameters.width) {
 	      parameters.windowParameters.width = WindowUtilities.getPageSize().pageWidth / 2;
 	    }
-	    this.dialogId = parameters.id ? parameters.id : 'modal_dialog';
+    if (parameters.id)
+      this.dialogId = parameters.id;
+    else { 
+      var t = new Date();
+      this.dialogId = 'modal_dialog_' + t.getTime();
+    }
 
 	    // compute height or width if need be
 	    if (! parameters.windowParameters.height || ! parameters.windowParameters.width) {
@@ -1008,18 +1064,18 @@ var Dialog = {
 	    windowParam.maximizable = false;
 	    windowParam.closable = false;
 	    windowParam.modal = windowParam.modal && true;
-		this.win = new Window(this.dialogId, windowParam);
-		this.win.getContent().innerHTML = content;
-	  	this.win.showCenter(windowParam.modal, parameters.top, parameters.left);	
-		this.win.setDestroyOnClose();
+		var win = new Window(this.dialogId, windowParam);
+		win.getContent().innerHTML = content;
+	  	win.showCenter(windowParam.modal, parameters.top, parameters.left);	
+		win.setDestroyOnClose();
 
-		this.win.cancelCallback = parameters.cancel;
-		this.win.okCallback = parameters.ok;
+		win.cancelCallback = parameters.cancel;
+		win.okCallback = parameters.ok;
 		if( parameters.autoclose ) {
-			windowDialog = this.win;
+			windowDialog = win;
 			setTimeout( 'windowDialog.hide()', parameters.autoclose );
 		}
-		return this.win;		
+		return win;		
 	},
 	
 	_getAjaxContent: function(originalRequest)  {
@@ -1030,7 +1086,6 @@ var Dialog = {
     if (message.options == null)
 	    message.options ={}  
 	  Dialog.onCompleteFunc = message.options.onComplete;
-	 
     Dialog.parameters = parameters;
     Dialog.callFunc = callFunc;
     
@@ -1039,14 +1094,21 @@ var Dialog = {
   },
   
 	okCallback: function() {
-		if (!this.win.okCallback || this.win.okCallback(this.win))
-	    this.win.hide();
+	  var win = Windows.focusedWindow;
+		if (!win.okCallback || win.okCallback(win)) {
+	        // Remove onclick on button
+	        $$("#" + win.getId()+" input").each(function(element) {element.onclick=null;})
+	        win.hide();
+        }
 	},
 
 	cancelCallback: function() {
-		this.win.hide();
-		if (this.win.cancelCallback)
-			this.win.cancelCallback(this.win);
+	  var win = Windows.focusedWindow;
+	  // Remove onclick on button
+	  $$("#" + win.getId()+" input").each(function(element) {element.onclick=null})
+		win.hide();
+		if (win.cancelCallback)
+			win.cancelCallback(win);
 	}
 }
 /*
@@ -1149,9 +1211,14 @@ var WindowUtilities = {
 
 		var pageSize = WindowUtilities.getPageSize();
 
-		// Hide select boxes as they will 'peek' through the image in IE
+		// Hide select boxes as they will 'peek' through the image in IE, store old value
 		if (contentId && isIE) {
-      $$('select').each(function(element) {element.style.visibility = "hidden"});
+      $$('select').each(function(element) {
+        if (! element.oldVisibility) {
+          element.oldVisibility = element.style.visibility;
+          element.style.visibility = "hidden";
+        }
+      });
 	    $$('#'+contentId+' select').each(function(element) {element.style.visibility = "visible"});
 		}	
 	
@@ -1168,9 +1235,12 @@ var WindowUtilities = {
 			// hide lightbox and overlay
 			objOverlay.style.display = 'none';
 
-			// make select boxes visible
+			// make select boxes visible using old value
 			if (isIE) {
-        		$$('select').each(function(element) {element.style.visibility = "visible"});
+        $$('select').each(function(element) {
+          element.style.visibility = element.oldVisibility;
+          element.oldVisibility = null;          
+        });
 			}
 			objOverlay.parentNode.removeChild(objOverlay);
 		}
@@ -1227,6 +1297,22 @@ var WindowUtilities = {
     return unescape(dc.substring(begin + prefix.length, end));
   },
   
+  addCss: function(event,cssFile){
+		if ((typeof(cssFile) == "undefined") || (typeof(cssFile) == "string" && cssFile.length == 0)) cssFile = "default.css";
+		if (typeof(cssPath) == "undefined") cssPath = "";
+		var h = $A(document.getElementsByTagName("link"));
+		var bAddCss = true;
+		h.each(function(lnk) {if (lnk.href == cssFile || lnk.href == cssPath+cssFile) bAddCss = false; });
+		if (bAddCss) {
+			var l=document.createElement("link");
+			l.setAttribute("type","text/css");
+			l.setAttribute("rel","stylesheet");
+			l.setAttribute("href",cssPath + cssFile);
+			l.setAttribute("media","screen");
+			document.getElementsByTagName("head")[0].appendChild(l);
+	  }
+	},
+	
   _computeSize: function(content, id, width, height, margin) {
     if (margin == null)
       margin = 5;
@@ -1253,10 +1339,11 @@ var WindowUtilities = {
   	  size = $(id).getDimensions().width + margin;
     else
       size = $(id).getDimensions().height + margin;
-  	objBody.removeChild(tmpObj);
     
+  	objBody.removeChild(tmpObj);
   	return size;
   }	
 }
+Event.observe(window, "load", WindowUtilities.addCss);
 
 

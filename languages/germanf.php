@@ -1447,190 +1447,190 @@ Passwort - %s
 	var $_PEAR_LOG_EMERG = 'Notfall';
 	var $_PEAR_LOG_NOTICE = 'Mitteilung';
 	var $_PEAR_LOG_DEBUG = 'Debug';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP = 'Enable PayFlow Pro payment?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_EXPLAIN = 'Check to use VeriSign\'s PayFlow Pro with VirtueMart.';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE = 'Test mode ?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
-	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNER = 'VeriSign processing Partner ID';
-	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP = 'PayFlow Pro payment aktivieren?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_EXPLAIN = 'Um VeriSign\'s PayFlow Pro mit VirtueMart zu nutzen, bitte markieren.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE = 'Test modus ?';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN = 'Wähen Sie \'Ja\' während des Testens. Wählen Sie \'nein\', um das System scharf zu schalten.';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNER = 'VeriSign Processing Partner ID';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'Die Partner ID, die Ihnen durch den authorisierten VeriSign Reseller übergeben wurde, der Sie für den PayFlow Pro service registert hat';
 	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME = 'PayFlow Pro Login ID';
-	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME_EXPLAIN = 'This is your PayFlow Pro Login ID';
-	var $_VM_MANAGE_USER_FIELDS = 'Manage User Fields';
-	var $_VM_FIELDMANAGER_NAME = 'Field name';
-	var $_VM_FIELDMANAGER_TITLE = 'Field title';
-	var $_VM_FIELDMANAGER_TYPE = 'Field type';
-	var $_VM_FIELDMANAGER_REQUIRED = 'Required';
-	var $_VM_FIELDMANAGER_PUBLISHED = 'Published';
-	var $_VM_FIELDMANAGER_SHOW_ON_REGISTRATION = 'Show in registration form';
-	var $_VM_FIELDMANAGER_SHOW_ON_ACCOUNT = 'Show in account maintenance';
-	var $_VM_FIELDMANAGER_REORDER = 'Reorder';
-	var $_VM_USERFIELD_FORM_LBL = 'Add / Edit User Fields';
-	var $_VM_PRODUCTS_MOVE_TOOLBAR = 'Move Products';
-	var $_VM_PRODUCTS_MOVE_LBL = 'Move products from one category to another';
-	var $_VM_PRODUCTS_MOVE_LIST = 'You have chosen to move the following %s products';
-	var $_VM_PRODUCTS_MOVE_TO_CATEGORY = 'Move to the following category';
-	var $_VM_PAYMENT_CLASS_NAME = 'Payment class name';
-	var $_VM_PAYMENT_CLASS_NAME_TIP = '(e.g. <strong>ps_netbanx</strong>) :<br />
-default: ps_payment<br />
-<i>Leave blank if you\'re not sure what to fill in!</i>';
-	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.';
-	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
-	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';
-	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>';
-	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction. 
-The transaction was not cancelled in this case, but it is just pending and waiting for completion.';
-	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Order Status for Pending Payments';
-	var $_VM_SHIPPING_MODULE_LIST_LBL = 'Shipping Module List';
-	var $_VM_ENABLED = 'enabled';
-	var $_VM_DISABLED = 'disabled';
-	var $_VM_ABOUT = 'About';
-	var $_VM_HELP_TOPICS = 'Help Topics';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME_EXPLAIN = 'Ihre PayFlow Pro Login ID';
+	var $_VM_MANAGE_USER_FIELDS = 'Nutzerfelder verwalten';
+	var $_VM_FIELDMANAGER_NAME = 'Feldname';
+	var $_VM_FIELDMANAGER_TITLE = 'Feldtitel';
+	var $_VM_FIELDMANAGER_TYPE = 'Feldtyp';
+	var $_VM_FIELDMANAGER_REQUIRED = 'Pflichtfeld';
+	var $_VM_FIELDMANAGER_PUBLISHED = 'Veröffentlicht';
+	var $_VM_FIELDMANAGER_SHOW_ON_REGISTRATION = 'Im Registrierungsformular anzeigen';
+	var $_VM_FIELDMANAGER_SHOW_ON_ACCOUNT = 'In der Accountverwaltung anzeigen';
+	var $_VM_FIELDMANAGER_REORDER = 'Umsortieren';
+	var $_VM_USERFIELD_FORM_LBL = 'Hinzufügen / Ändern von Nutzerfeldern';
+	var $_VM_PRODUCTS_MOVE_TOOLBAR = 'Produkte verschieben';
+	var $_VM_PRODUCTS_MOVE_LBL = 'Verschieben von Produkten von einer Kategorie in eine andere';
+	var $_VM_PRODUCTS_MOVE_LIST = 'Die folgenden %s Produkte sollen verschoben werden';
+	var $_VM_PRODUCTS_MOVE_TO_CATEGORY = 'In die folgende Kategorie verschieben';
+	var $_VM_PAYMENT_CLASS_NAME = 'Klassenname des Bezahlmoduls';
+	var $_VM_PAYMENT_CLASS_NAME_TIP = '(Beispiel <strong>ps_netbanx</strong>) :<br />
+Standard: ps_payment<br />
+<i>Im Zweifelsfall einfach leerlassen!</i>';
+	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Wird auf der Bestellbestätigungseite/-übersicht angezeigt. Möglich ist HTML (Formular-)Code vom Bezahlsystemanbieter, Hinweise an den Kunden, etc.';
+	var $_VM_PAYMENT_EXTRAINFO = 'Extra-Informationen zum Bezahlmodul';
+	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Akzeptierte Kreditkartentypen';
+	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'Falls aktiviert, lässt sich das "Notify Script" %s über das Testformular <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">(www.eliteweaver.co.uk/testing/ipntest.php)</a> testen.';
+	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'Der Bestellstatus auf den Bestellungen gesetzt werden, bei denen die Transaktion noch nicht vollständig durchgeführt wurde.
+Die Transaktion ist in diesem Fall nicht abgewiesen, sondern in einem Wartestatus.';
+	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Bestellstatus für wartende Bezahlungen.';
+	var $_VM_SHIPPING_MODULE_LIST_LBL = 'Versandmodul-Liste';
+	var $_VM_ENABLED = 'aktiviert';
+	var $_VM_DISABLED = 'deaktiviert';
+	var $_VM_ABOUT = 'Über';
+	var $_VM_HELP_TOPICS = 'Hilfe';
 	var $_VM_COMMUNITY_FORUM = 'Forum';
-	var $_VM_CSV_UPLOAD_SIMULATION_RESULTS_LBL = 'CSV Upload Simulation Results';
-	var $_VM_CSV_UPLOAD_IMPORTNOW = 'Import Now!';
-	var $_VM_CSV_UPLOAD_RESULTS = 'CSV Upload Results';
-	var $_VM_CSV_UPLOAD_START_AT = 'Start reading from line';
-	var $_VM_CSV_UPLOAD_LINES_TO_PROCESS = 'No. of lines to import';
-	var $_VM_CSV_UPLOAD_NO_ERRORS = 'No errors found during CSV import simulation.';
-	var $_VM_CSV_UPLOAD_TOTAL_LINES = 'Total lines found';
-	var $_VM_CSV_UPLOAD_FIRST_LINE = 'First line read';
-	var $_VM_CSV_UPLOAD_FIELD_EXPLANATION = 'Field Ordering used => Values found';
-	var $_VM_PRODUCT_IMPORT_LOG = 'Product Import Log';
-	var $_VM_CSV_UPLOAD_DETAILS_ANALYSIS = 'CSV Upload Details / Analysis';
-	var $_VM_CONFIGURATION_CHANGE_SUCCESS = 'The configuration details have been updated!';
-	var $_VM_CONFIGURATION_CHANGE_FAILURE = 'Unable to write into the configuration file %s!';
-	var $_VM_PAYMENT_METHOD_DISCOUNT_TIP = 'To turn the discount into a fee, use a negative value here (Example: <strong>-2.00</strong>).';
-	var $_VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT = 'Maximum discount amount';
-	var $_VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT = 'Minimum discount amount';
-	var $_VM_PAYMENT_FORM_FORMBASED = 'HTML-Form based (e.g. PayPal)';
-	var $_VM_WRITABLE = 'Writeable';
-	var $_VM_UNWRITABLE = 'Unwriteable';
-	var $_VM_PRODUCT_LIST_REORDER_TIP = 'Select a product category to reorder products in a category';
-	var $_VM_FEDEX_ACCOUNT_NUMBER = 'FedEx Account Number';
-	var $_VM_FEDEX_METER_NUMBER = 'FedEx Meter Number';
-	var $_VM_FEDEX_METER_NUMBER_TIP = 'The meter number you have received from FedEx';
-	var $_VM_FEDEX_URI = 'FedEx Server Address';
-	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
-<br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
-	var $_VM_ORDER_EXPORT = 'Export Module';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'Export Module auflisten';
-	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Export Module auflisten';
+	var $_VM_CSV_UPLOAD_SIMULATION_RESULTS_LBL = 'Ergebnis der CSV Import Simulation';
+	var $_VM_CSV_UPLOAD_IMPORTNOW = 'Importiere jetzt!';
+	var $_VM_CSV_UPLOAD_RESULTS = 'CSV import Resultate';
+	var $_VM_CSV_UPLOAD_START_AT = 'Starte von Zeile';
+	var $_VM_CSV_UPLOAD_LINES_TO_PROCESS = 'Anzahl der zu importierenden Zeilen';
+	var $_VM_CSV_UPLOAD_NO_ERRORS = 'Während der CSV Import-Simulation wurden keine Fehler gefunden.';
+	var $_VM_CSV_UPLOAD_TOTAL_LINES = 'Anzahl aller Zeilen in der CSV-Datei';
+	var $_VM_CSV_UPLOAD_FIRST_LINE = 'Erste gelesene Zeile';
+	var $_VM_CSV_UPLOAD_FIELD_EXPLANATION = 'Feldreihenfolge => gefundene/zugeordnete Werte';
+	var $_VM_PRODUCT_IMPORT_LOG = 'Produktimport Ergebnis';
+	var $_VM_CSV_UPLOAD_DETAILS_ANALYSIS = 'CSV Import-Details / Analyse';
+	var $_VM_CONFIGURATION_CHANGE_SUCCESS = 'Die Konfigurationsdetails wurden aktualisiert!';
+	var $_VM_CONFIGURATION_CHANGE_FAILURE = 'Die Konfigurationsdatei %s ist nicht beschreibbar!';
+	var $_VM_PAYMENT_METHOD_DISCOUNT_TIP = 'Um anstatt eines Rabattes eine Gebühr einzurichten, bitte hier einfach einen negativen Wert eintragen. (Beispiel: <strong>-2.00</strong>).';
+	var $_VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT = 'Höchstgrenze';
+	var $_VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT = 'Mindestgrenze';
+	var $_VM_PAYMENT_FORM_FORMBASED = 'HTML-Formular basiert (z.B. PayPal)';
+	var $_VM_WRITABLE = 'beschreibbar';
+	var $_VM_UNWRITABLE = 'nicht beschreibbar';
+	var $_VM_PRODUCT_LIST_REORDER_TIP = 'Wählen Sie eine Produktkategorie aus, um die Produktanordnung ändern zu können.';
+	var $_VM_FEDEX_ACCOUNT_NUMBER = 'FedEx Account Nummer';
+	var $_VM_FEDEX_METER_NUMBER = 'FedEx Meter Nummer';
+	var $_VM_FEDEX_METER_NUMBER_TIP = 'Die "meter nummer", die Sie von FedEx erhalten haben.';
+	var $_VM_FEDEX_URI = 'FedEx Server Adresse';
+	var $_VM_FEDEX_URI_TIP = 'Auf  Nachfrage von FedEx werden die Serveradressen in der Standardinstallation nicht vorgegeben (FEDEX_URI). Bitte melden Sie sich bei FedEx an, um diese Information zu erhalten (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
+<br/>Standard-Testserver ist: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
+	var $_VM_ORDER_EXPORT = 'Exportmodule';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'Exportmodule auflisten';
+	var $_VM_ORDER_EXPORT_MODULE_LIST_LBL = 'Exportmodule auflisten';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_NAME = 'Name';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_DESC = 'Beschreibung';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Neu: Export Modul';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Export Modul Formular';
-	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name des Export Moduls';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_MNU = 'Neues Exportmodul';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_LBL = 'Exportmodul-Formular';
+	var $_VM_ORDER_EXPORT_MODULE_FORM_NAME = 'Name des Exportmoduls';
 	var $_VM_ORDER_EXPORT_MODULE_FORM_DESC = 'Beschreibung';
-	var $_VM_ORDER_EXPORT_CLASS_NAME = 'Export Modul Klassen Name';
+	var $_VM_ORDER_EXPORT_CLASS_NAME = 'Exportmodul-Klassenname';
 	var $_VM_ORDER_EXPORT_CLASS_NAME_TIP = '(z.B. <strong>ps_olsi</strong>) :<br />
 standard: ps_xmlexport<br />
-<i>Leer lassen, wenn Sie sich nicht sicher sind was Sie eingeben sollen!</i>';
-	var $_VM_ORDER_EXPORT_CONFIG = 'Export Konfiguration';
-	var $_VM_ORDER_EXPORT_CONFIG_TIP = 'Hier können Sie das Export Modul konfigurieren.
+<i>Leerlassen, wenn Sie sich nicht sicher sind was Sie eingeben sollen!</i>';
+	var $_VM_ORDER_EXPORT_CONFIG = 'Export-Konfiguration';
+	var $_VM_ORDER_EXPORT_CONFIG_TIP = 'Hier können Sie das Exportmodul konfigurieren.
 Es muss gültiger PHP Code sein!
 ';
-	var $_VM_TAXDETAILS_LABEL = 'Tax Total contains';
-	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL = 'Default product sort order';
-	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP = 'Defines by which field products are ordered by default on the browse pages';
-	var $_VM_BROWSE_ORDERBY_FIELDS_LBL = 'Available "Sort-by" fields';
-	var $_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP = 'Choose the "Sort-by" fields for the browse page. Each one defines a sort method for the product browse page. If you deselect all, the Order-By-Form will not be shown.';
-	var $_VM_GENERALLY_PREVENT_HTTPS = 'Generally prevent https connections?';
-	var $_VM_GENERALLY_PREVENT_HTTPS_TIP = 'When checked, the shopper is redirected to the <strong>http</strong> URL when not browsing in those shop areas, which are forced to use https.';
-	var $_VM_MODULES_FORCE_HTTPS = 'Shop areas which must use https';
-	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
-	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
-	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
-	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
-	var $_VM_REVIEW_FORM_LBL = 'Add Review';
-	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
-	var $_PHPSHOP_REVIEW_MODIFIED = 'The review has been updated.';
-	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Comment Minimum Length';
-	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'This is the amount of characters that MUST at least be written by a customer before the review can be submitted.';
-	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
-	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
-';
-	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
-	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
-	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
-	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
-	var $_VM_REVIEWS_AUTOPUBLISH = 'Auto-Publish Reviews?';
-	var $_VM_REVIEWS_AUTOPUBLISH_TIP = 'If checked, reviews are automatically published after being posted. If not, the administrator must approve/publish them.';
-	var $_VM_RECOMMEND_FORM_MESSAGE = 'Your message';
-	var $_VM_RECOMMEND_MESSAGE = 'Hello,
+	var $_VM_TAXDETAILS_LABEL = 'USt.-Betrag enthält';
+	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL = 'standardmäßige Produktsortierung';
+	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP = 'Legt fest, welches Kriterium für die Sortierung von Produkten auf der Übersichtsseite verwendet wird.';
+	var $_VM_BROWSE_ORDERBY_FIELDS_LBL = 'Verfügbare "Sortiere-nach" Felder';
+	var $_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP = 'Wählen Sie die "Sortiere-nach" Felder aus, die angezeigt werden sollen. Jedes Feld definiert ein Sortierkriterium.';
+	var $_VM_GENERALLY_PREVENT_HTTPS = 'Sichere https Verbindungen vermeiden?';
+	var $_VM_GENERALLY_PREVENT_HTTPS_TIP = 'Falls diese Option aktiviert ist, werden https Verbindungen vermieden, falls sie nicht notwendig sind (Geschwindigkeitssteigerung). So wird ein Kunde zur <strong>http</strong> URL weitergeleitet, falls er nicht in Bereichen des Shops surft, die https erfordern.';
+	var $_VM_MODULES_FORCE_HTTPS = 'Shop-Bereiche, in denen https Verbindungen erforderlich sind.';
+	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Tragen Sie hier die Shopmodule ein, die https Verbindungen erzwingen (Siehe "Administrator" => "Module auflisten", Standard: "account,checkout").';
+	var $_VM_SHOW_REMEMBER_ME_BOX = 'Anzeigen der "Angemeldet bleiben" Box bei der Anmeldung?';
+	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'Falls ausgewählt, kann der Kunde sich entscheiden, ob seine Anmeldung in einem Cookie gespeichert wird. Das Aktivieren dieser Option ist nicht empfohlen, falls die SSL-Verbindung über einen zentralen, auch von anderen genutzten Server läuft. Grund: der evtl. fehlende Cookie führt dazu, dass sich der Kunden zweimal anmelden muss.';
+	var $_VM_PRODUCT_ENQUIRY_LBL = 'Stellen Sie eine Frage zu diesem Produkt';
+	var $_VM_REVIEW_FORM_LBL = 'Rezension hinzufügen';
+	var $_PHPSHOP_REVIEW_EDIT = 'Rezension hinzufügen/ändern';
+	var $_PHPSHOP_REVIEW_MODIFIED = 'Die Rezension wurde aktualisiert.';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH = 'Mindestlänge für die Rezension';
+	var $_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP = 'Die ist die Menge von Zeichen, die mindestens vom Kunden eingegeben werden muss, bevor die Rezension abgesendet werden kann.';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Maximallänge für die Rezension';
+	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'Die ist die Menge von Zeichen, die maximal vom Kunden eingegeben werden kann.';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Anzeigen der Verknüpfung "Einem Freund empfehlen"?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'Falls aktiviert, wird eine kleine Verknüpfung angezeigt, die es Kunden ermöglicht, Produkte an Bekannte per E-Mail zu empfehlen.';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Anzeigen der Verknüpfung "Ausdrucken"?';
+	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'Falls aktiviert, wird eine kleine Verknüpfung angezeigt, die es Kunden ermöglicht, die aktuelle Seite auszudrucken.';
+	var $_VM_REVIEWS_AUTOPUBLISH = 'Rezensionen automatisch veröffentlichen?';
+	var $_VM_REVIEWS_AUTOPUBLISH_TIP = 'Falls aktiviert, werden Kundenrezensionen automatisch veröffentlicht, sobald sie eingesendet wurden. Ansonsten müssen Rezensionen manuell freigegeben werden.';
+	var $_VM_RECOMMEND_FORM_MESSAGE = 'Ihre Nachricht';
+	var $_VM_RECOMMEND_MESSAGE = 'Hallo,
 
-i\'ve found this great product on %s that might be of interest for you.
+ich habe dieses empfehlenswerte Produkt gefunden, welches Sie interessieren könnte.
 
-You can find it here:
+Details zum Produkt können hier eingesehen werden:
 %s
 
-Regards.';
-	var $_VM_REGISTER_BEFORE = 'Please register to use this facillity';
-	var $_VM_RECOMMEND_MESSAGE_PREFACE = 'The following recommendation from the "%s" website has been sent to you by %s (%s).
+Mit besten Grüßen.';
+	var $_VM_REGISTER_BEFORE = 'Bitte melden Sie sich an, um diese Funktionalität zu nutzen.';
+	var $_VM_RECOMMEND_MESSAGE_PREFACE = 'Die folgende Empfehlung von der Webseite "%s"  wurde Ihnen von %s (%s) gesendet.
 
 _____________________';
-	var $_VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT = '%s - Confirmation of your enquiry';
-	var $_VM_ENQUIRY_VENDOR_EMAIL_SUBJECT = '%s - Product enquiry for Product Name: %s';
-	var $_VM_ENQUIRY_SHOPPER_EMAIL_MESSAGE = 'Confirmation of receipt of your enquiry
+	var $_VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT = '%s - Bestätigung Ihrer Anfrage';
+	var $_VM_ENQUIRY_VENDOR_EMAIL_SUBJECT = '%s - Anfrage zum Product: %s';
+	var $_VM_ENQUIRY_SHOPPER_EMAIL_MESSAGE = 'Bestätigung Ihrer Anfrage
 
-Thank you for enquiry with {vendor_name} regarding:
-Product Name: {product_name}
-Product SKU: {product_sku}
-Product Link: {product_url}
+Vielen Dank. Wir haben Ihre Anfrage zu folgendem Produkt erhalten:
+Liefrerant: {vendor_name}
+Produktname: {product_name}
+Artikelnummer: {product_sku}
+Produktlink: {product_url}
 
-We will contact you soon regarding your enquiry.
-(Please do not reply to this email)';
-	var $_VM_ENQUIRY_VENDOR_EMAIL_MESSAGE = 'You have received a product enquiry from {shopper_name} regarding the following product: 
-Product Name: {product_name}
-Product SKU : {product_sku}
+Wir werden uns so schnell wie möglich mit Ihnen in Verbindung setzen, um die Anfrage zu beanworten.
+(Bitte antworten Sie nicht auf diese E-Mail)';
+	var $_VM_ENQUIRY_VENDOR_EMAIL_MESSAGE = 'Sie haben eine Produktanfrage von {shopper_name} zu folgendem Produkt erhalten:
+Produktname: {product_name}
+Artikelnummer: {product_sku}
+Produktlink: {product_url}
 
-Enquiry: {shopper_message}
-URL: {product_url}
+Anfrage: {shopper_message}
 
-Mail mailto: {shopper_email}';
-	var $_VM_RECOMMEND_FORM_LBL = 'Recommend this product to a friend';
-	var $_VM_RECOMMEND_SUBJECT = 'Product recommendation at %s';
-	var $_VM_RECOMMEND_DONE = 'Recommendation sent successfully!';
-	var $_VM_RECOMMEND_FAILED = 'Recommendation could not be sent!';
-	var $_VM_ADMIN_CFG_PROXY_SETTINGS = 'Global Proxy Settings';
-	var $_VM_ADMIN_CFG_PROXY_URL = 'URL of the proxy server';
-	var $_VM_ADMIN_CFG_PROXY_URL_TIP = 'Example: <strong>http://10.42.21.1</strong>.<br />
-Leave empty if you\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).';
+Anfrage von: <{shopper_name}> {shopper_email}';
+	var $_VM_RECOMMEND_FORM_LBL = 'Empfehlen Sie dieses Produkt weiter';
+	var $_VM_RECOMMEND_SUBJECT = 'Produktempfehlung von %s';
+	var $_VM_RECOMMEND_DONE = 'Die Empfehlung wurde erfolgreich versendet!';
+	var $_VM_RECOMMEND_FAILED = 'Die Empfehlung konnte nicht versendet werden!';
+	var $_VM_ADMIN_CFG_PROXY_SETTINGS = 'Globale Proxy Einstellungen';
+	var $_VM_ADMIN_CFG_PROXY_URL = 'URL des Proxy-Servers';
+	var $_VM_ADMIN_CFG_PROXY_URL_TIP = 'Beispiel: <strong>http://10.42.21.1</strong>.<br />
+Im Zweifelsfall leerlassen.</strong> Dieser Wert wird verwendet, um von dem Shopserver ins Internet kommunizieren zu können (z.B. um Versandkosten live abzufragen).';
 	var $_VM_ADMIN_CFG_PROXY_PORT = 'Proxy Port';
-	var $_VM_ADMIN_CFG_PROXY_PORT_TIP = 'The port used for communication with the proxy server (mostly <b>80</b> or <b>8080</b>).';
-	var $_VM_ADMIN_CFG_PROXY_USER = 'Proxy username';
-	var $_VM_ADMIN_CFG_PROXY_USER_TIP = 'If the proxy requires authentication please fill in your username here.';
-	var $_VM_ADMIN_CFG_PROXY_PASS = 'Proxy password';
-	var $_VM_ADMIN_CFG_PROXY_PASS_TIP = 'If the proxy requires authentication please fill in the correct password here.';
-	var $_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO = 'Show information about "Return Policy" on the order confirmation page?';
-	var $_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP = 'Store owners are required by law to inform their customers about return and order cancellation policies in most european countries. So this should be enabled in most cases.';
-	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT = 'Legal information text (short version).';
-	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP = 'This text instructs your customers in short about your return and order cancellation policy. It is shown on the last page of checkout, just above the "Confirm Order" button.';
-	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK = 'Link to the long version the return policy.';
-	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP = 'Please add a new content item about the details of your return and order cancellation policy.
-Afterwards you can select it here.';
-	var $_VM_LEGALINFO_SHORTTEXT = '<h5>Returns Policy</h5>
-
-You can cancel this order within two weeks after we have received it.
-You can return new, unopened items from a cancelled order within 2 weeks after they have been 
-delivered to you. Items should be returned in their original packaging.
-For more information on cancelling orders and returning items, see the <a href="%s" onclick="%s" target="_blank">Our Returns Policy</a> page.';
-	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES = 'List of accepted currencies';
-	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP = 'This list defines all those currencies you accept when people are buying something in your store. <strong>Note:</strong> All currencies selected here can be used at checkout! If you don\'t want that, just select your country\'s currency (=default).';
-	var $_PHPSHOP_ORDER_LIST_PRINT_LABEL = 'Print Label';
-	var $_PHPSHOP_ORDER_LIST_VOID_LABEL = 'Void Label';
-	var $_PHPSHOP_ORDER_LIST_TRACK = 'Track';
-	var $_VM_SELECT_THEME = 'Select the theme for your Shop';
-	var $_VM_SELECT_THEME_TIP = 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\'t installed more themes.';
-	var $_VM_CFG_BROWSE_STYLE = 'Select a product listing style';
+	var $_VM_ADMIN_CFG_PROXY_PORT_TIP = 'Der Port, der für die Kommunikation mit dem Proxy Server genutzt werden soll (meistens <b>80</b> oder <b>8080</b>).';
+	var $_VM_ADMIN_CFG_PROXY_USER = 'Proxy Nutzername';
+	var $_VM_ADMIN_CFG_PROXY_USER_TIP = 'Sollte der Proxy eine Authentifizierung erfordern, bitte hier den Nutzernamen eintragen.';
+	var $_VM_ADMIN_CFG_PROXY_PASS = 'Proxy Passwort';
+	var $_VM_ADMIN_CFG_PROXY_PASS_TIP = 'Sollte der Proxy eine Authentifizierung erfordern, bitte hier das Passwort eintragen.';
+	var $_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO = 'Verbraucherhinweis zum Widerrufs- oder Rückgaberecht anzeigen?';
+	var $_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP = 'In Deutschland besteht die Verpflichtung, den Verbraucher bereits vor Abschluss eines unter ausschließlicher Verwendung von Fernkommunikationsmitteln geschlossenen Vertrages auf sein unabdingbares Rückgabe- bzw Widerrufsrecht hinzuweisen. Daher sollte dieser Konfigurationspunkt unbedingt aktiviert werden.';
+	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT = 'Widerrufs- und Rückgabebelehrung (Kurzversion).';
+	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP = 'Dieser Text informiert den Kunden über dessen Widerrufs- und Rückgaberecht (wird über der Schaltfläche "Bestellung absenden" auf der letzten Seite des Bestellvorgangs angezeigt).';
+	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK = 'Ausführliche Version der Widerrufs- und Rückgabebelehrung (Link zu einem Artikel).';
+	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP = 'Hier kann ein Artikel ausgewählt werden, der den Kunden ausführlich über dessen Widerrufs- und Rückgaberecht informiert.
+Bitte hier einen Artikel auswählen!';
+	var $_VM_LEGALINFO_SHORTTEXT = '<strong>Ihr Widerrufs- und Rückgaberecht:</strong><br />
+Sie können diese Bestellung innerhalb von zwei Wochen ohne Angabe von Gründen 
+schriftlich widerrufen. Bereits ausgelieferte Ware können Sie innerhalb von zwei Wochen ab 
+Erhalt der Lieferung ohne Angabe von Gründen an uns zurücksenden. Detaillierte Informationen zu 
+Ihrem Widerrufs- und Rückgaberecht finden Sie <a href="%s" onclick="%s" target="_blank">hier</a> und in der Bestätigungs-Mail, die Ihnen wenige 
+Minuten nach dem Absenden dieser Bestellung zugehen wird.';
+	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES = 'Liste der akzeptierten Währungen';
+	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP = 'Alle in dieser Liste ausgewählten Währungen werden bei der Bestellung durch Kunden akzeptiert. <strong>Beachten Sie:</strong> Alle hier ausgewählten Währungen werden tatsächliche Bestellwährung, falls vom Kunden gewünscht! Im Zweifelsfall einfach nur die Standardwährung auswählen.';
+	var $_PHPSHOP_ORDER_LIST_PRINT_LABEL = 'Label ausdrucken';
+	var $_PHPSHOP_ORDER_LIST_VOID_LABEL = 'Labe erstellenl';
+	var $_PHPSHOP_ORDER_LIST_TRACK = 'Nachverfolgen';
+	var $_VM_SELECT_THEME = 'Wählen Sie das Thema/Stil für den Shop';
+	var $_VM_SELECT_THEME_TIP = 'Themen erlauben das Anpassen und Verändern des Seitenlayouts für den Shop.';
+	var $_VM_CFG_BROWSE_STYLE = 'Wählen Sie den Produktlistenstil aus';
 	var $_VM_CFG_BROWSE_STYLE_TIP = 'Change the overall style of the product list with this setting.<br />The tableless layout is perfect for your tableless XHTML/CSS powered site. Try the other ones if your layout is screwed up.';
-	var $_VM_CFG_CONTENT_PLUGINS_ENABLE = 'Enable content mambots / plugins in descriptions?';
+	var $_VM_CFG_CONTENT_PLUGINS_ENABLE = 'Mambots/Plugins in Beschreibungen aktivieren?';
 	var $_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP = 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.';
-	var $_VM_CFG_CURRENCY_MODULE = 'Select a currency converter module';
+	var $_VM_CFG_CURRENCY_MODULE = 'Wählen Sie ein Währungsumrechungsmodul aus';
 	var $_VM_CFG_CURRENCY_MODULE_TIP = 'This allows you to select a certain currency converter module. Such modules fetch exchange rates from a server and convert one currency into another.';
-	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'European Union mode';
-	var $_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX = 'The directory to store session data is not writable. Please correct this or contact your provider.';
-	var $_VM_SESSION_SAVEPATH_UNWRITABLE = 'The Session Save Path %s is not writable. Please correct this! The shop is temporarily trying to use the %s instead.';
-	var $_VM_SESSION_COOKIES_NOT_ACCEPTED_TIP = 'Your browser does not accept cookies. To put products into your cart and purchase them you need to enable cookies.';
+	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EU = 'EU-Modus';
+	var $_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX = 'Das Verzeichnis zum Speichern von Sitzungsdaten ist nicht beschreibbar. Bitte korrigieren Sie das oder kontaktieren Sie Ihren Administrator.';
+	var $_VM_SESSION_SAVEPATH_UNWRITABLE = 'Das Verzeichnis zum Speichern von Sitzungsdaten %s ist nicht beschreibbar. Bitte korrigieren Sie das! Es wird ersatzweise das Verzeichnis %s genutzt.';
+	var $_VM_SESSION_COOKIES_NOT_ACCEPTED_TIP = 'Ihr Browser akzeptiert keine sog. Cookies. Um Produkte in den Warenkorb legen zu können und zu bestellen muss ein Cookie von dieser Seite angenommen werden.';
 	var $_VM_EXPORT_MODULE_FORM_LBL = 'Export Module Form';
 	var $_VM_EXPORT_MODULE_FORM_NAME = 'Export Module Name';
 	var $_VM_EXPORT_MODULE_FORM_DESC = 'Description';
@@ -1640,75 +1640,75 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\'re not sure what to fill in!</i>';
 	var $_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL = 'Keep Product Stock Level on Purchase?';
 	var $_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP = 'When enabled, the stock level for a downloadable product is not lowered although it was purchased by customers.';
-	var $_BUTTON_SEND_REG = 'Send Registration';
-	var $_CONTACT_FORM_NC = 'Please make sure the form is complete and valid.';
-	var $_CMN_REQUIRED = 'Required';
-	var $_CMN_NEW = 'New';
-	var $_CMN_SAVE = 'Save';
-	var $_CMN_NEW_ITEM_LAST = 'New items default to the last place. Ordering can be changed after this item is saved.';
+	var $_BUTTON_SEND_REG = 'Registrierung absenden';
+	var $_CONTACT_FORM_NC = 'Bitte überprüfen Sie, ob das Formular komplett und richtig ausgefüllt ist.';
+	var $_CMN_REQUIRED = 'Pflichtfeld';
+	var $_CMN_NEW = 'Neu';
+	var $_CMN_SAVE = 'Speichern';
+	var $_CMN_NEW_ITEM_LAST = 'Neue Beiträge standardmäßig am Ende. Reihenfolge kann geändert werden, nachdem der Begriff gespeichert wurde.';
 	var $_CMN_OPTIONAL = 'Optional';
-	var $_E_APPLY = 'Apply';
-	var $_E_IMAGES = 'Images';
+	var $_E_APPLY = 'Anwenden';
+	var $_E_IMAGES = 'Bilder';
 	var $_URL = 'URL:';
-	var $_SEL_CATEGORY = 'Select a category';
-	var $_E_REMOVE = 'Remove';
+	var $_SEL_CATEGORY = 'Kategorie auswählen';
+	var $_E_REMOVE = 'Löschen';
 	var $_PN_LT = '<';
 	var $_PN_RT = '>';
-	var $_PN_PAGE = 'Page';
-	var $_PN_OF = 'of';
-	var $_PN_START = 'Start';
-	var $_PN_PREVIOUS = 'Prev';
-	var $_PN_NEXT = 'Next';
-	var $_PN_END = 'End';
-	var $_PN_DISPLAY_NR = 'Display #';
-	var $_PN_RESULTS = 'Results';
-	var $_CMN_PRINT = 'Print';
+	var $_PN_PAGE = 'Seite';
+	var $_PN_OF = 'von';
+	var $_PN_START = 'Anfang';
+	var $_PN_PREVIOUS = 'vorherige';
+	var $_PN_NEXT = 'nächste';
+	var $_PN_END = 'Ende';
+	var $_PN_DISPLAY_NR = 'Resultate pro Seite #';
+	var $_PN_RESULTS = 'Ergebnisse';
+	var $_CMN_PRINT = 'Ausdrucken';
 	var $_CMN_PDF = 'PDF';
-	var $_CMN_EMAIL = 'E-mail';
-	var $_BACK = 'Back';
-	var $_USERNAME = 'Username';
-	var $_PASSWORD = 'Password';
-	var $_BUTTON_LOGIN = 'Login';
-	var $_REGISTER_UNAME = 'Username';
-	var $_REGISTER_EMAIL = 'Email';
-	var $_REGWARN_NAME = 'Please enter your name.';
-	var $_REGWARN_UNAME = 'Please enter a user name.';
-	var $_REGWARN_MAIL = 'Please enter a valid e-mail address.';
-	var $_SEND_SUB = 'Account details for %s at %s';
-	var $_ASEND_MSG = 'Hello %s,
-	
-	A new user has registered at %s.
-	This email contains their details:
-	
-	Name - %s
-	e-mail - %s
-	Username - %s
-	
-	Please do not respond to this message as it is automatically generated and is for information purposes only';
-	var $_REG_COMPLETE = '<div class="componentheading">Registration Complete!</div><br />You may now login.';
-	var $_REG_COMPLETE_ACTIVATE = '<div class="componentheading">Registration Complete!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.';
+	var $_CMN_EMAIL = 'E-Mail';
+	var $_BACK = 'zurück';
+	var $_USERNAME = 'Nutzername';
+	var $_PASSWORD = 'Passwort';
+	var $_BUTTON_LOGIN = 'Anmelden';
+	var $_REGISTER_UNAME = 'Nutzername';
+	var $_REGISTER_EMAIL = 'E-Mail';
+	var $_REGWARN_NAME = 'Bitte geben Sie Ihren Namen an.';
+	var $_REGWARN_UNAME = 'Bitte geben Sie einen Nutzernamen an.';
+	var $_REGWARN_MAIL = 'Bitte geben Sie eine gültige E-Mail-Adresse an.';
+	var $_SEND_SUB = 'Benutzerdetails für %s auf %s';
+	var $_ASEND_MSG = 'Hallo %s,
+
+Ein neuer Benutzer wurde auf %s registriert.
+Diese E-Mail enth&auml;lt die Anmeldedaten:
+
+Name - %s
+E-Mail - %s
+Benutzername - %s
+
+Bitte nicht auf diese Nachricht antworten, da sie automatisch generiert wurde und nur Ihrer Information dient';
+	var $_REG_COMPLETE = '<div class="componentheading">Registrierung erfolgreich!</div><br />Sie können sich jetzt anmelden.';
+	var $_REG_COMPLETE_ACTIVATE = '<div class="componentheading">Registrierung abgeschlossen!</div><br />Ihr Benutzerkonto wurde erstellt und ein Aktivierungs- Link wurde zu der von Ihnen angegebenen E-Mail Adresse zugesandt. Sie müssen nach dem Erhalt dieser E-Mail durch Klick auf den Aktivierungs- Link Ihr Benutzerkonto freischalten, bevor Sie sich mit Ihren Benutzerdaten anmelden können.';
 	var $_DATE_FORMAT_LC = '%A, %d %B %Y';
-	var $_VM_CART_PRODUCT_ADDED = 'The product was added to your cart.';
-	var $_VM_CART_PRODUCT_UPDATED = 'The product quantity has been updated.';
-	var $_VM_CART_PRODUCT_REMOVED = 'The product was removed from your cart';
+	var $_VM_CART_PRODUCT_ADDED = 'Das Produkt wurde zum Warenkorb hinzugefügt.';
+	var $_VM_CART_PRODUCT_UPDATED = 'Die Produktmenge wurde aktualisiert.';
+	var $_VM_CART_PRODUCT_REMOVED = 'Das Produkt wurde aus dem Warenkorb entfernt.';
 	var $_CMN_OK = 'Ok';
-	var $_CMN_CONTINUE = 'Continue';
-	var $_CMN_CANCEL = 'Cancel';
-	var $_PHPSHOP_CSV_SKIP_FIRST_LINE = 'Skip first line';
-	var $_PHPSHOP_CSV_SKIP_DEFAULT_VALUE = 'Skip default value';
-	var $_PHPSHOP_CSV_OVERWRITE_EXISTING_DATA = 'Overwrite existing data';
-	var $_PHPSHOP_CSV_INCLUDE_COLUMN_HEADERS = 'Include column headers';
-	var $_PHPSHOP_CSV_UPLOAD_SETTINGS = 'Upload Settings';
-	var $_PHPSHOP_CSV_AVAILABLE_FIELDS = 'Available Fields';
-	var $_PHPSHOP_CSV_OUTPUT_CSV_UPLOAD_MESSAGES = 'CSV upload messages:';
-	var $_PHPSHOP_CSV_OUTPUT_COUNT = 'Count';
-	var $_PHPSHOP_CSV_OUTPUT_TOTAL = 'Total';
-	var $_PHPSHOP_CSV_OUTPUT_FILE_IMPORTED = 'CSV File Imported';
-	var $_PHPSHOP_CSV_OUTPUT_UPDATED = 'Updated';
-	var $_PHPSHOP_CSV_OUTPUT_DELETED = 'Deleted';
-	var $_PHPSHOP_CSV_OUTPUT_ADDED = 'Added';
-	var $_PHPSHOP_CSV_OUTPUT_SKIPPED = 'Skipped';
-	var $_PHPSHOP_CSV_OUTPUT_INCORRECT = 'Incorrect';
+	var $_CMN_CONTINUE = 'Weiter';
+	var $_CMN_CANCEL = 'Abbrechen';
+	var $_PHPSHOP_CSV_SKIP_FIRST_LINE = 'Erste Zeile überspringen';
+	var $_PHPSHOP_CSV_SKIP_DEFAULT_VALUE = 'Standardwert ignorieren';
+	var $_PHPSHOP_CSV_OVERWRITE_EXISTING_DATA = 'vorhandene Daten überschreiben';
+	var $_PHPSHOP_CSV_INCLUDE_COLUMN_HEADERS = 'Spaltenüberschriften einbinden';
+	var $_PHPSHOP_CSV_UPLOAD_SETTINGS = 'Einstellungen';
+	var $_PHPSHOP_CSV_AVAILABLE_FIELDS = 'verfügbare Felder';
+	var $_PHPSHOP_CSV_OUTPUT_CSV_UPLOAD_MESSAGES = 'CSV-Import-Nachrichten:';
+	var $_PHPSHOP_CSV_OUTPUT_COUNT = 'Anzahl';
+	var $_PHPSHOP_CSV_OUTPUT_TOTAL = 'insgesamt';
+	var $_PHPSHOP_CSV_OUTPUT_FILE_IMPORTED = 'CSV-Datei importiert';
+	var $_PHPSHOP_CSV_OUTPUT_UPDATED = 'Aktualisiert';
+	var $_PHPSHOP_CSV_OUTPUT_DELETED = 'Gelöscht';
+	var $_PHPSHOP_CSV_OUTPUT_ADDED = 'Hinzugefügt';
+	var $_PHPSHOP_CSV_OUTPUT_SKIPPED = 'Übersprungen';
+	var $_PHPSHOP_CSV_OUTPUT_INCORRECT = 'Fehlerhaft';
 	var $_PHPSHOP_CSV_AVAILABLE_FIELDS_USE = 'The following fields are available for your use to import or export.';
 	var $_PHPSHOP_CSV_MINIMAL_FIELDS = 'The minimal required fields are product_sku, product_name and category_path. Except for the product_sku, the other two fields are not unique.';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_SKU = 'The unique identifier for a product.<br /.>Values:<ul><li>Number</li><li>Letters</li></ul>';
@@ -1730,12 +1730,12 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_PACKAGING = 'Specify the number of items in the package.<br />Usage:<ol><li>Add the the name "product_packaging" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the package.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_BOX = 'Specify the number of items in the box.<br />Usage:<ol><li>Add the the name "product_box" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the box.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_DISCOUNT = 'Specify the amount or percentage of discount the product has. The values entered are exact values, no calculation is made. This is the same as if you are filling in a discount via the Product Discount List. If the discount already exists, it will not be added to the database but the product will be linked to the existing discount. The criteria for determining if a discount already exists the following values have to be exactly the same:<ol><li>Amount, be it a total or percentage</li><li>Start date</li><li>End date</li></ol>This prevents from filling the database with a huge number of the same discounts.<br /><br />Usage:<ol><li>Add the the name "product_discount" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Optional: Add the the name "product_discount_date_start" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Optional: Add the the name "product_discount_date_end" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add the chosen columns to your CSV file with the corresponding values.</li></ol><br /.>Values:<ul><li>product_discount</li><ul><li>Number<br />e.g. 10</li><li>Percentage: Must include the % sign<br />e.g. 10%</li></ul><li>product_discount_date_start</li><ul><li>Date: day/month/year or day-month-year<br />Day and month can be a 1 or 2 digit notation.<br />Year can be a 2 or 4 digit notation.</li></ul><li>product_discount_date_end</li><ul><li>Date: day/month/year or day-month-year<br />Day and month can be a 1 or 2 digit notation.<br />Year can be a 2 or 4 digit notation.</li></ul></ul>';
-	var $_VM_USERGROUP_FORM_LBL = 'Add/Edit a User Group';
-	var $_VM_USERGROUP_NAME = 'User Group Name';
-	var $_VM_USERGROUP_LEVEL = 'User Group Level';
-	var $_VM_USERGROUP_LBL = 'User Groups';
-	var $_VM_USERGROUP_LIST_LBL = 'User Group List';
-	var $_VM_USERGROUP_LEVEL_TIP = 'Important! A bigger number means <b>less</b> permissions. The <b>admin</b> group is <em>level 0</em>, storeadmin is level 250, users are level 500.';
+	var $_VM_USERGROUP_FORM_LBL = 'Hinzufügen/Ändern einer Nutzergruppe';
+	var $_VM_USERGROUP_NAME = 'Name der Nutzergruppe';
+	var $_VM_USERGROUP_LEVEL = 'Berechtigungsebene der Nutzergruppe';
+	var $_VM_USERGROUP_LBL = 'Nutzergruppen';
+	var $_VM_USERGROUP_LIST_LBL = 'Nutzergruppenliste';
+	var $_VM_USERGROUP_LEVEL_TIP = 'Wichtig! Ein größerer Wert bedeutet <b>weniger</b> Berechtigungen als Gruppen mit niedrigerem Wert. Die <b>admin</b> Gruppe ist <em>level 0</em>, storeadmin ist level 250, users ist level 500.';
         
 }
 class phpShopLanguage extends vmLanguage { }

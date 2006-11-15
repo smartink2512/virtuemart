@@ -85,7 +85,7 @@ class vmTemplate {
 		if(!$this->cache_id) return false;
 
 		// Cache file exists?
-		if(!file_exists($this->cache_id)) return false;
+		if(!@file_exists($this->cache_id)) return false;
 
 		// Can get the time of the file?
 		if(!($mtime = filemtime($this->cache_id))) return false;

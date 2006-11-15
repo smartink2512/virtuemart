@@ -24,7 +24,7 @@ if( isset($_VERSION)) {
 if ($perm->check("admin,storeadmin,shopper")) { ?>
 
 	<h3><?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_TITLE ?></h3>
-    <img src="<?php echo IMAGEURL ?>ps_image/downloads.gif" alt="downloads" border="0" align="center" />
+    <img src="<?php echo VM_THEMEURL ?>images/downloads.gif" alt="downloads" border="0" align="center" />
     <br/>
     <br/>
     <?php

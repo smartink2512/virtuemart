@@ -23,7 +23,7 @@ include_once(CLASSPATH.'ps_communication.php');
 
 $mainframe->addCustomHeadTag( '<link rel="stylesheet" href="templates/'. $mainframe->getTemplate() .'/css/template_css.css" type="text/css" />' );
 
-if( empty( $_POST ) || !$ok ) {
+if( empty( $_POST['submit'] ) || !$ok ) {
 	$mainframe->setPageTitle( $VM_LANG->_VM_RECOMMEND_FORM_LBL );
 	echo '<h3>'.$VM_LANG->_VM_RECOMMEND_FORM_LBL.'</h3>';
 	
@@ -31,11 +31,11 @@ if( empty( $_POST ) || !$ok ) {
 }
 else {
 	$mainframe->setPageTitle( $VM_LANG->_VM_RECOMMEND_FORM_LBL );
-	echo '<span class="contentheading">'. _EMAIL_SENT.' '. $_POST['recipient_mail'].'</span> <br />
+	echo '<span class="contentheading">'. $VM_LANG->_EMAIL_SENT.' '. $_POST['recipient_mail'].'</span> <br />
 		<br />
 		<br />
 		<a href="javascript:window.close();">
-		<span class="small">'. _PROMPT_CLOSE .'</span>
+		<span class="small">'. $VM_LANG->_PROMPT_CLOSE .'</span>
 		</a>';
 	
 }

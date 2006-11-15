@@ -1827,7 +1827,50 @@ INSERT INTO `mos_vm_state` VALUES (1, 223, 'Alabama', 'ALA', 'AL'),
 (168, 104, 'Other', 'OTH', 'OT'),
 (169, 151, 'St. Maarten', 'STM', 'SM'),
 (170, 151, 'Bonaire', 'BNR', 'BN'),
-(171, 151, 'Curacao', 'CUR', 'CR');
+(171, 151, 'Curacao', 'CUR', 'CR'),
+(170, 151, 'Bonaire', 'BNR', 'BN'),
+(171, 151, 'Curacao', 'CUR', 'CR'),
+(172, 175, 'Alba', 'ABA', 'AB'),
+(NULL, 175, 'Arad', 'ARD', 'AR'),
+(NULL, 175, 'Arges', 'ARG', 'AG'),
+(NULL, 175, 'Bacau', 'BAC', 'BC'),
+(NULL, 175, 'Bihor', 'BIH', 'BH'),
+(NULL, 175, 'Bistrita-Nasaud', 'BIS', 'BN'),
+(NULL, 175, 'Botosani', 'BOT', 'BT'),
+(NULL, 175, 'Braila', 'BRL', 'BL'),
+(NULL, 175, 'Brasov', 'BRA', 'BR'),
+(NULL, 175, 'Bucuresti', 'BUC', 'IF'),
+(NULL, 175, 'Buzau', 'BUZ', 'BU'),
+(NULL, 175, 'Calarasi', 'CAL', 'CL'),
+(NULL, 175, 'Caras Severin', 'CRS', 'CS'),
+(NULL, 175, 'Cluj', 'CLJ', 'CJ'),
+(NULL, 175, 'Constanta', 'CST', 'CT'),
+(NULL, 175, 'Covasna', 'COV', 'CV'),
+(NULL, 175, 'Dambovita', 'DAM', 'DV'),
+(NULL, 175, 'Dolj', 'DLJ', 'DJ'),
+(NULL, 175, 'Galati', 'GAL', 'GL'),
+(NULL, 175, 'Giurgiu', 'GIU', 'GR'),
+(NULL, 175, 'Hargita', 'HRG', 'HR'),
+(NULL, 175, 'Hunedoara', 'HUN', 'HN'),
+(NULL, 175, 'Ialomita', 'IAL', 'IL'),
+(NULL, 175, 'Iasi', 'IAS', 'IS'),
+(NULL, 175, 'Ilfov', 'ILF', 'IF'),
+(NULL, 175, 'Maramures', 'MAR', 'MM'),
+(NULL, 175, 'Mehedinti', 'MEH', 'MH'),
+(NULL, 175, 'Mures', 'MUR', 'MS'),
+(NULL, 175, 'Neamt', 'NEM', 'NT'),
+(NULL, 175, 'Olt', 'OLT', 'OT'),
+(NULL, 175, 'Prahova', 'PRA', 'PR'),
+(NULL, 175, 'Salaj', 'SAL', 'SJ'),
+(NULL, 175, 'Satu Mare', 'SAT', 'ST'),
+(NULL, 175, 'Sibiu', 'SIB', 'SB'),
+(NULL, 175, 'Suceava', 'SUC', 'SV'),
+(NULL, 175, 'Teleorman', 'TEL', 'TL'),
+(NULL, 175, 'Timis', 'TIM', 'TM'),
+(NULL, 175, 'Tulcea', 'TUL', 'TL'),
+(NULL, 175, 'Valcea', 'VAL', 'VL'),
+(NULL, 175, 'Vaslui', 'VAS', 'VS'),
+(NULL, 175, 'Vreancea', 'VRA', 'VR');
 
 ## --------------------------------------------------------
 
@@ -2026,7 +2069,7 @@ CREATE TABLE IF NOT EXISTS `mos_vm_vendor` (
 ## Dumping data for table `mos_vm_vendor`
 ## 
 
-INSERT INTO `mos_vm_vendor` VALUES (1, 'Washupito''s Tiendita', 'Owner', 'Demo', 'Store', 'Mr.', '555-555-1212', '555-555-1212', '555-555-1212', 'demo_order@virtuemart.net', '555-555-1212', '100 Washupito Avenue, N.W.', '', 'Lake Forest', 'CA', 'USA', '92630', 'Washupito''s Tiendita', '<p>We have the best tools for do-it-yourselfers.  Check us out! </p>\r\n		<p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p>\r\n		<p>You can easily find products selecting the category you would like to browse above.</p>', 0, '', 'c19970d6f2970cb0d1b13bea3af3144a.gif', 'USD', 950302468, 968309845, 'shop_image/', '<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_phpshop>here</a> to change this text.</h5>', 'http://virtuemart.net', 0.00, 0.00, '1|$|2|.| |2|1');
+INSERT INTO `mos_vm_vendor` VALUES (1, 'Washupito''s Tiendita', 'Owner', 'Demo', 'Store', 'Mr.', '555-555-1212', '555-555-1212', '555-555-1212', 'demo_order@virtuemart.net', '555-555-1212', '100 Washupito Avenue, N.W.', '', 'Lake Forest', 'CA', 'USA', '92630', 'Washupito''s Tiendita', '<p>We have the best tools for do-it-yourselfers.  Check us out! </p>\r\n		<p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p>\r\n		<p>You can easily find products selecting the category you would like to browse above.</p>', 0, '', 'c19970d6f2970cb0d1b13bea3af3144a.gif', 'USD', 950302468, 968309845, 'shop_image/', '<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_phpshop>here</a> to change this text.</h5>', 'http://virtuemart.net', 0.00, 0.00, '1|$|2|.| |2|1', 'USD');
 
 ## --------------------------------------------------------
 
