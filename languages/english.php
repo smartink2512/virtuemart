@@ -1463,7 +1463,7 @@ Password - %s
 	var $_VM_PAYMENT_CLASS_NAME = 'Payment class name';
 	var $_VM_PAYMENT_CLASS_NAME_TIP = '(e.g. <strong>ps_netbanx</strong>) :<br />
 default: ps_payment<br />
-<i>Leave blank if you\'re not sure what to fill in!</i>';
+<i>Choose ps_payment if you\'re not sure what to choose!</i>';
 	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.';
 	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
 	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';

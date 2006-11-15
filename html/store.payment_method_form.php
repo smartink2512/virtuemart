@@ -81,7 +81,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_PAYMENT_METHOD_FORM_LBL, "global-page");
       </td>
       <td width="69%">
       	<?php 
-      	echo ps_payment_method::list_available_classes( 'payment_class', $db->sf("payment_class") );
+      	echo ps_payment_method::list_available_classes( 'payment_class', $db->sf("payment_class") ? $db->sf("payment_class") : 'ps_payment' );
       	echo mm_ToolTip( $VM_LANG->_VM_PAYMENT_CLASS_NAME_TIP ); ?>
       </td>
     </tr>

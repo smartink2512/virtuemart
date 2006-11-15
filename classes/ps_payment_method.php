@@ -248,7 +248,7 @@ class ps_payment_method extends vmAbstractObject {
 			include( CLASSPATH."payment/ps_payment.php" );
 			$_PAYMENT = new ps_payment();
 		}
-		if( $_PAYMENT->configfile_writeable() ) {
+		if( $_PAYMENT->configfile_writeable() || $_PAYMENT->classname == 'ps_payment' ) {
 			$_PAYMENT->write_configuration( $d );
 			$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
 		}
