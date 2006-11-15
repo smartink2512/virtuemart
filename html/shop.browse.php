@@ -30,6 +30,8 @@ require_once (CLASSPATH."ps_product_files.php");
 require_once (CLASSPATH."ps_reviews.php");
 require_once (CLASSPATH."imageTools.class.php");
 require_once (CLASSPATH."PEAR/Table.php");
+require_once(CLASSPATH . 'ps_product_attribute.php' );
+$ps_product_attribute = new ps_product_attribute;
 
 $Itemid = $sess->getShopItemid();
 $keyword1 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword1', null )));
@@ -364,7 +366,7 @@ else {
 				
 			$tpl->set( 'i', $i );
 			$tpl->set( 'product_id', $db_browse->f('product_id') );
-			
+			$tpl->set( 'ps_product_attribute', $ps_product_attribute );
 			$products[$i]['form_addtocart'] = $tpl->fetch( 'browse/includes/addtocart_form.tpl.php' );
 			$products[$i]['has_addtocart'] = true;
 		}
