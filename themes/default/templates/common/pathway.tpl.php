@@ -22,8 +22,12 @@ foreach( $category_list as $category ) { ?>
 		
 	}
 	$catcount++;
-}	?>
-<?php 
+}
+if(isset($return_link)) {
+    
+    echo $return_link;
+}
+ 
 // Print the Product Name if it is available
 echo isset($product_name) ? $product_name : ''; 
 ?>

@@ -9,24 +9,48 @@
 .addtocart_button {
 	text-align:center;
 	background-position:bottom left;
-	width:160px;height:35px;
+	width:160px;height:30px;
 	cursor:pointer;
 	border: none;
 	font-weight:bold;
 	font-family:inherit;
-	background: url( 'images/add-to-cart.gif' ) no-repeat 10px center transparent;
+	background: url( 'images/add-to-cart_blue.gif' ) no-repeat  center transparent;
 	vertical-align: middle;
 	overflow:hidden;
+	
+}
+
+.addtocart_button_module {
+	text-align:center;
+	background-position:bottom left;
+	width:160px;height:30px;
+	cursor:pointer;
+	color: #000000;
+	border: none;
+	font-weight:bold;
+	font-family:inherit;
+	background: url( 'images/transparent.gif' ) no-repeat  center transparent;
+	vertical-align: middle;
+	overflow:hidden;
+	
+}
+
+input.addtocart_button_module:hover  {
+	color: #333333;	
 }
 
 .addtocart_form {
+	width: 100%
 	display: inline;
 	white-space: nowrap;
 }
+
 /* The quantity box beneath the "add to cart" button  */
-.quantity_box {
+.quantity_box {	
 	vertical-align: middle;
 }
+
+
 
 .continue_link, .checkout_link {
 	margin: 2px;
@@ -54,9 +78,11 @@
 /* The PDF, Email and Print buttons */
 div.buttons_heading {
 	margin:10px;
-	width:20%;
+	width:10%;
 	float:right;
 }
+
+
 
 .productPrice {
 	font-weight:bold
@@ -128,6 +154,10 @@ General Form Styling
 	margin: 2px;
 	white-space: nowrap;
 	clear: left;
+	vertical-align: middle;
+	
+	margin-top: 8px;
+
 }
 
 .formField {
@@ -204,4 +234,226 @@ table.adminform td.labelcell {
 	background-color: salmon;
 	font-weight: bold;
 	background-image: url( images/log_critical.png );
+}
+/**
+* Addtocart detail Styles
+*/
+.vmCartContainer { /* Cart Container */
+	width: 100%;
+	float: left;
+	background: lightblue;
+	border: 1px solid #000;
+	padding: 3px;
+}
+
+.vmCartChildHeading { /* Header for the cart */
+	font-size: 14px;
+	font-weight: bold;
+	padding-bottom: 3px;
+	text-align: left;
+}
+
+.vmCartChild { /* Container for the Child Product */
+	
+	vertical-align: middle;
+	border: 1px solid #000;
+	padding-left: 2px;
+	padding-right: 2px;
+	margin-bottom: 2px;
+	float:left;	
+}
+
+.vmChildDetail { /* Child Detail, description , attributes ,price, quantity etc */
+	vertical-align: middle;
+	margin-top: 6px;
+}
+
+.vmCartChildElement { /* Individual element styling */
+	width: 100%;
+	vertical-align: middle ;
+	height: 25px;
+	text-align: left;
+	
+}
+
+.vmCartAttributes { /* Attributes Div*/
+	
+	margin-top:8px;
+	width:100%;
+}
+
+.vmAttribChildDetail {  /* Product Attributes Styling */
+	
+}
+	
+
+.vmMultiple {
+	height:35px;
+}
+
+
+
+.vmChildType { /* Product type div*/
+
+width: 100%;
+}
+
+.vmClearDetail { /*Clear the divs afer child types*/
+	clear: both;
+}
+
+.vmClearAttribs { /*Clear the divs before the attributes*/
+	clear:both;
+}
+.vmRowOne { /* Odd Row One styling */
+	background: lightgray;	
+}
+
+.vmRowTwo { /* Even Row Styling */
+	background: white;
+}
+
+/* Link Details for link to child*/
+.vmChildDetail a, .vmChildDetail a:link {
+	cursor: pointer;
+  font-size        : 11px;
+  color            : #000000;
+  text-decoration  : none;
+  font-weight      : bold;
+}
+.vmChildDetail a:hover {
+  font-size        : 11px;
+  color            : #333333;
+  text-decoration  : none;
+  font-weight      : bold;
+}
+/* Styling for the form elements to enable correct Line Up  */
+.inputboxquantity {
+	margin-top: 3px;
+	vertical-align: middle;
+}
+
+.inputboxattrib {
+	float: left;
+	margin-top: 0px;
+	vertical-align: middle;
+	margin-bottom: 2px;
+}
+
+.quantitycheckbox {
+	margin-top: 6px;
+	vertical-align: middle;
+}	
+
+/**
+* Addtocart detail Styles for placing attributes beside product_types
+*/
+.vmCartContainer_2up { /* Cart Container */
+	width: 100%;
+	float: left;
+	background: lightblue;
+	border: 1px solid #000;
+	padding: 3px;
+}
+
+.vmCartChildHeading_2up { /* Header for the cart */
+	font-size: 14px;
+	font-weight: bold;
+	padding-bottom: 3px;
+	text-align: left;
+}
+
+.vmCartChild_2up { /* Container for the Child Product */
+	
+	vertical-align: middle;
+	border: 1px solid #000;
+	padding-left: 2px;
+	padding-right: 2px;
+	
+	margin-bottom: 2px;
+	float:left;	
+}
+
+.vmChildDetail_2up { /* Child Detail, description , attributes ,price, quantity etc */
+	vertical-align: middle;
+	margin-top: 6px;
+}
+
+.vmCartChildElement_2up { /* Individual element styling */
+	width: 100%;
+	vertical-align: middle ;
+	height: 25px;
+	text-align: left;
+	
+}
+
+.vmCartAttributes_2up { /* Attributes Div*/
+	float: left;
+	padding: 0px 5px 5px 5px;
+	margin: 0px 5px 5px 5px;
+	width:50%;
+}
+
+.vmAttribChildDetail_2up {  /* Product Attributes Styling */
+	
+}
+	
+
+.vmMultiple {
+	height:35px;
+}
+
+
+
+.vmChildType_2up { /* Product type div*/
+	background: lightblue;
+	padding: 0px 5px 5px 5px;
+	margin: 0px 5px 5px 5px;
+	float: left;
+	width: 40%;
+	border: 1px solid #000;
+}
+
+.vmClearDetail_2up { /*Clear the divs afer child types*/
+	
+}
+
+.vmClearAttribs_2up { /*Clear the divs before the attributes*/
+	clear:both;
+}
+.vmRowOne_2up { /* Odd Row One styling */
+	background: lightgray;	
+}
+
+.vmRowTwo_2up { /* Even Row Styling */
+	background: white;
+}
+
+/* Link Details for link to child*/
+.vmChildDetail_2up a, .vmChildDetail_2up a:link {
+	cursor: pointer;
+  font-size        : 11px;
+  color            : #000000;
+  text-decoration  : none;
+  font-weight      : bold;
+}
+.vmChildDetail_2up a:hover {
+  font-size        : 11px;
+  color            : #333333;
+  text-decoration  : none;
+  font-weight      : bold;
+}
+
+.vmCartModuleList  {
+  cursor : pointer;
+  font-size        : 11px;
+  color            : #000000;
+  text-decoration  : none;
+  font-weight      : bold;
+}
+.vmCartModuleList:hover {
+  font-size        : 11px;
+  color            : #333333;
+  text-decoration  : none;
+  font-weight      : bold;
 }
