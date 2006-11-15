@@ -138,7 +138,24 @@ if (empty($category_id))  {
 $category_list = $ps_product_category->get_navigation_list($category_id);
 $tpl->set( 'category_list', $category_list );
 $tpl->set( 'product_name', $product_name );
+$parent_id_link = $db_product->f("product_parent_id");
+  $return_link = "";
+  if ($parent_id_link <> 0 ) {
+    $q = "SELECT product_name FROM #__{vm}_product WHERE product_id = '$product_parent_id' LIMIT 0,1";
+    $db->query( $q );
+    $db->next_record();
+    $product_parent_name = $db->f("product_name");
+    $return_link = "&nbsp;<a class=\"pathway\" href=\"";
+    $return_link .= $sess->url($_SERVER['PHP_SELF'] . "?page=shop.product_details&product_id=$parent_id_link");
+    $return_link .= "\">";
+    $return_link .= $product_parent_name;
+    $return_link .= "</a>";
+    $return_link .= " ".$ps_product_category->pathway_separator()." ";      
+    }
+$tpl->set( 'return_link', $return_link );
 $navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');
+
+
 
 if ($ps_product_category->has_childs($category_id) ) {
 	$category_childs = $ps_product_category->get_child_list($category_id);
@@ -189,6 +206,7 @@ if (_SHOW_PRICES == '1') { /** Change - Begin */
 	$product_price = $ps_product->show_price( $product_id );
 }
 else {
+    $product_price_lbl = "";
 	$product_price = "";
 }
 
