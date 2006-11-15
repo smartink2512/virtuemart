@@ -37,6 +37,7 @@ if( class_exists('jversion')) {
 	$mosConfig_smtphost = $mainframe->getCfg('smtphost' );
 	$mosConfig_debug = $mainframe->getCfg('debug' );
 	$mosConfig_caching = $mainframe->getCfg('caching' );
+	$mosConfig_cachepath = $mainframe->getCfg('cachepath' );
 	$mosConfig_cachetime = $mainframe->getCfg('cachetime' );
 	$mosConfig_secret = $mainframe->getCfg('secret' );
 	$mosConfig_editor = $mainframe->getCfg('editor' );

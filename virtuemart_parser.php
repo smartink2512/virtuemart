@@ -206,9 +206,13 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	}
 	// I don't get it, why Joomla uses masked gid values!
 	if( !defined( '_PSHOP_ADMIN' )) {
-		$my = $mainframe->getUser();
-		if( isset( $my->_model )) {
-			$my = $my->_model;
+		if( class_exists('jfactory')) {
+			$my =& JFactory::getUser();
+		} else {
+			$my = $mainframe->getUser();
+		}
+		if( isset( $my->_table )) {
+			$my = $my->_table;
 		}
 	}
     // The Page will change with every different parameter / argument, so provide this for identification

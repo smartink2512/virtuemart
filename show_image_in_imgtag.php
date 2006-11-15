@@ -20,6 +20,11 @@
 */
 define('_VALID_MOS', 1);
 include_once("../../configuration.php");
+if( class_exists( 'JConfig' )) {
+	$conf = new JConfig;
+	$mosConfig_live_site = $conf->live_site;
+	$mosConfig_absolute_path = $conf->absolute_path;
+}
 include_once("../../administrator/components/com_virtuemart/virtuemart.cfg.php");
 
 //	Image2Thumbnail - Klasse einbinden 
