@@ -49,7 +49,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_affiliate_sale` (
 ) TYPE=MyISAM COMMENT='Stores orders that affiliates have placed'; ");
 
 # 08.11.2006 Allowing new user groups
-$db->query( "CREATE TABLE #__{vm}_auth_group` (
+$db->query( "CREATE TABLE `#__{vm}_auth_group` (
 	  `group_id` int(11) NOT NULL auto_increment,
 	  `group_name` varchar(128) default NULL,
 	  `group_level` int(11) default NULL,
