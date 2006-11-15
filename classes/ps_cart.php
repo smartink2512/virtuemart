@@ -67,114 +67,191 @@ class ps_cart {
  	* @param array $d
  	*/
 	function add(&$d) {
-		global $sess, $VM_LANG, $cart, $option, $vmLogger, $page;
+		global $sess, $VM_LANG, $cart, $option, $vmLogger,$func;
 
 		include_class("product");
-
-		$Itemid = $sess->getShopItemid();
+        require_once (CLASSPATH . 'ps_product_attribute.php' );
+        $ps_product_attribute = new ps_product_attribute;
+		$Itemid = mosgetparam($_REQUEST, "Itemid", null);
 		$db = new ps_DB;
-		$product_id = $d["product_id"];
-		$quantity = isset($d["quantity"]) ? $d["quantity"] : 1;
+        $ci = 0;
+        $request_stock = "";
+        $total_quantity = 0;
+        $total_updated = 0;
+        $total_deleted = 0;
 		$_SESSION['last_page'] = "shop.product_details";
+        
+        //Check to see if a prod_id has been set
+        if (!isset($d["prod_id"]))
+            return true;
+        $multiple_products = sizeof($d["prod_id"]);
+        //Iterate through the prod_id's and perform an add to cart for each one
+        $mult = sizeof($d["prod_id"]);
+        for ($ikey = 0; $ikey < sizeof($d["prod_id"]); $ikey++) {
+        
+            // Create single array from multi array
+            $key_fields=array_keys($d);
+            foreach($key_fields as $key) {
+                if(is_array($d[$key]))
+                    $e[$key] = @$d[$key][$ikey];
+                else
+                    $e[$key] = $d[$key];               
+            }
+            
+           if ($mult > 1 )
+            $func = "cartUpdate";
+           $e['product_id'] = $d['product_id'];
+            $e['Itemdid'] = $d['Itemid'];
+            // Standard ps_cart.php with $d changed to $e
+            $product_id = $e["prod_id"];           
+            $quantity = isset($e["quantity"]) ? $e["quantity"] : 0;
 
-		// Check for negative quantity
-		if ($quantity < 0) {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
-			return False;
-		}
+		    // Check for negative quantity
+		    if ($quantity < 0) {
+    			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
+    			return False;
+    		}
 
-		if (!ereg("^[0-9]*$", $quantity)) {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
-			return False;
-		}
+    		if (!ereg("^[0-9]*$", $quantity)) {
+    			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
+    			return False;
+    		}
+    		// Check to see if checking stock quantity
+    		if (CHECK_STOCK) {
+    			$q = "SELECT product_in_stock ";
+    			$q .= "FROM #__{vm}_product where product_id='$product_id'";
+    			$db->query($q);
+    			$db->next_record();
+    			$product_in_stock = $db->f("product_in_stock");
+    			if (empty($product_in_stock)) {
+    				$product_in_stock = 0;
+    			}
+    			if ($quantity > $product_in_stock) {
+    				//Create an array for out of stock items and continue to next item
+                    $request_stock[$ci]['product_id'] = $product_id;
+                    $request_stock[$ci]['quantity'] = $quantity;
+                    $ci++;
+                    continue;
+    			}
+    		}
 
-		// Check to see if checking stock quantity
-		if (CHECK_STOCK) {
-			$q = "SELECT product_in_stock ";
-			$q .= "FROM #__{vm}_product where product_id='$product_id'";
-			$db->query($q);
-			$db->next_record();
-			$product_in_stock = $db->f("product_in_stock");
-			if (empty($product_in_stock)) {
-				$product_in_stock = 0;
-			}
-			if ($quantity > $product_in_stock) {
-				$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
-				eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
-				
-				$vmLogger->tip( $msg );
-				if( $page != 'shop.basket_short' ) {
-					$page = 'shop.waiting_list';
-				}
-				return true;
-			}
-		}
+    		// Quick add of item
+    		$q = "SELECT product_id FROM #__{vm}_product WHERE ";
+    		$q .= "product_parent_id = '".$product_id."'";
+    		$db->query ( $q );
 
-		// Quick add of item
-		$q = "SELECT product_id FROM #__{vm}_product WHERE ";
-		$q .= "product_parent_id = '".$d['product_id']."'";
-		$db->query ( $q );
+    		if ( $db->num_rows()) {
+    			$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+    			return false;
+    		}
 
-		if ( $db->num_rows()) {
-			$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
-			return false;
-		}
-
-		// If no quantity sent them assume 1
-		if ($quantity == "") {
-			$quantity = 1;
-		}
+    		// If no quantity sent them assume 1
+    		if ($quantity == "")
+    		$quantity = 1;
 
 
-		// Check to see if we already have it
-		$updated = 0;
-		
-		$result = ps_product_attribute::cartGetAttributes( $d );
-		
-		if ( ($result["attribute_given"] == false && !empty( $result["advanced_attribute_list"] ))
-		|| ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )) ) {
-			if( $page != 'shop.basket_short' ) {
-				$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
-				$GLOBALS['page'] = 'shop.product_details';
-			}
-			$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
-			return true;
-		}
+    		// Check to see if we already have it
+    		$updated = 0;
 
-		// Check for duplicate and do not add to current quantity
-		for ($i=0;$i<$_SESSION["cart"]["idx"];$i++) {
-			// modified for advanced attributes
-			if ($_SESSION['cart'][$i]["product_id"] == $product_id
-			&&
-			$_SESSION['cart'][$i]["description"] == $d["description"]
-			) {
-				$updated = 1;
-			}
-		}
-		// If we did not update then add the item
-		if (!$updated) {
+    		$result = ps_product_attribute::cartGetAttributes( $e);
+            
+    		if ( ($result["attribute_given"] == false && !empty( $result["advanced_attribute_list"] ))
+    		|| ($multiple_products == 1 && ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] ))) ) {
+    			$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
+    			$GLOBALS['page'] = 'shop.product_details';
+    			$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+    			return true;
+            }
 
-			$k = $_SESSION['cart']["idx"];
+            //Check for empty custom field and quantity>0 for multiple addto
+            //Normally means no info added to a custom field, but once added to a cart the quantity is automatically placed
+            //If another item is added and the custom field is left blank for another product already added this will just ignore that item
+            if ($multiple_products != 1 && $quantity != 0 && ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )))  {
+                $vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+                continue;
+            }
 
-			$_SESSION['cart'][$k]["quantity"] = $quantity;
-			$_SESSION['cart'][$k]["product_id"] = $product_id;
-			// added for the advanced attribute modification
-			$_SESSION['cart'][$k]["description"] = $d["description"];
-			$_SESSION['cart']["idx"]++;
-			$vmLogger->info( $VM_LANG->_VM_CART_PRODUCT_ADDED );
-		}
-		else {
-			$this->update( $d );
-		}
+    		// Check for duplicate and do not add to current quantity
+    		for ($i=0;$i<$_SESSION["cart"]["idx"];$i++) {
+    			// modified for advanced attributes
+    			if ($_SESSION['cart'][$i]["product_id"] == $product_id
+    			&&
+    			$_SESSION['cart'][$i]["description"] == $e["description"]
+    			) {
+    				$updated = 1;
+    			} 
+    		}
+            list($min,$max) = ps_product::product_order_levels($product_id);
+            If ($min!= 0 && $quantity !=0 && $quantity < $min) {
+                eval( "\$msg = \"".$VM_LANG->_VM_CART_MIN_ORDER."\";" );
+                $vmLogger->warning( $msg );
+                continue;
+            }
+            if ($max !=0 && $quantity !=0 && $quantity>$max) {
+                eval( "\$msg = \"".$VM_LANG->_VM_CART_MAX_ORDER."\";" );
+                $vmLogger->warning( $msg );
+                continue;
+            }
+            
+    		// If we did not update then add the item
+    		if ((!$updated) && ($quantity)){
+                list($min,$max) = ps_product::product_order_levels($product_id);
+    			$k = $_SESSION['cart']["idx"];
 
-		/* next 3 lines added by Erich for coupon code */
-		/* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
-		if( !empty( $_SESSION['coupon_discount'] )) {
-			// Update the Coupon Discount !!
-			$_POST['do_coupon'] = 'yes';
-		}
+	    		$_SESSION['cart'][$k]["quantity"] = $quantity;
+    			$_SESSION['cart'][$k]["product_id"] = $product_id;
+                $_SESSION['cart'][$k]["parent_id"] = $e["product_id"];
+    			// added for the advanced attribute modification
+	    		$_SESSION['cart'][$k]["description"] = $e["description"];
+	    		$_SESSION['cart']["idx"]++;
+                $total_quantity += $quantity;
+	    	}
+    		else {
+    			list($updated_prod,$deleted_prod) = $this->update( $e );
+                $total_updated += $updated_prod;
+                $total_deleted += $deleted_prod;
+    		}
 
+    		/* next 3 lines added by Erich for coupon code */
+    		/* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
+    		if( !empty( $_SESSION['coupon_discount'] )) {
+    			// Update the Coupon Discount !!
+    			$_POST['do_coupon'] = 'yes';
+    		}
+        } // End Iteration through Prod id's
 		$cart = $_SESSION['cart'];
+
+        // Ouput info message with cart update details /*
+        if($total_quantity !=0 || $total_updated !=0 || $total_deleted !=0) {
+            $msg = "Cart Updated - ";
+            if($total_quantity !=0)
+                $msg .= "Added: ".$total_quantity." ";
+            if($total_updated !=0)
+                $msg .= "Updated: ".$total_updated."  ";
+            if($total_deleted !=0)
+                $msg .= "Deleted: ".$total_deleted." ";
+            $msg .= "Product/s";
+        // Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
+        $vmLogger->info( $msg );
+        }
+        // end cart update message */
+        
+        // Perform notification of out of stock items        
+        if (@$request_stock) {
+            Global $notify;
+            $_SESSION['notify'] = array();
+            $_SESSION['notify']['idx'] = 0;
+            $k=0;
+            $notify = $_SESSION['notify'];
+            foreach($request_stock as $request) {
+                $_SESSION['notify'][$k]["prod_id"] = $request['product_id'];
+                $_SESSION['notify'][$k]["quantity"] = $request['quantity'];
+                $_SESSION['notify']['idx']++;
+                $k++;
+            }
+            $GLOBALS['page'] = 'shop.waiting_list';
+        }
+        
 		return True;
 	}
 
@@ -185,13 +262,13 @@ class ps_cart {
 	 * @return boolean result of the update
 	 */
 	function update(&$d) {
-		global $sess,$VM_LANG, $func, $vmLogger, $page;
+		global $sess,$VM_LANG, $vmLogger, $func, $page;
 
 		include_class("product");
 
 		$db = new ps_DB;
-		$product_id = $d["product_id"];
-		$quantity = isset($d["quantity"]) ? $d["quantity"] : 1;
+		$product_id = $d["prod_id"];
+		$quantity = $d["quantity"];
 		$_SESSION['last_page'] = "shop.cart";
 
 		// Check for negative quantity
@@ -208,12 +285,12 @@ class ps_cart {
 		if (!$product_id) {
 			return false;
 		}
-
+        $deleted_prod = 0;
+        $updated_prod = 0;
 		if ($quantity == 0) {
-			$this->delete($d);
+			$deleted_prod = $this->delete($d);
 		}
 		else {
-
 			for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
 				// modified for the advanced attribute modification
 				if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
@@ -223,6 +300,19 @@ class ps_cart {
 					if( strtolower( $func ) == 'cartadd' ) {
 						$quantity += $_SESSION['cart'][$i]["quantity"];
 					}
+                    // Get min and max order levels
+                    list($min,$max) = ps_product::product_order_levels($product_id);
+                    If ($min!= 0 && $quantity < $min) {
+                        eval( "\$msg = \"".$VM_LANG->_VM_CART_MIN_ORDER."\";" );
+                        $vmLogger->warning( $msg );
+                        return false;
+                    }
+                    if ($max !=0 && $quantity>$max) {
+                        eval( "\$msg = \"".$VM_LANG->_VM_CART_MAX_ORDER."\";" );
+                        $vmLogger->warning( $msg );
+                        return false;
+                    }
+
 					// Check to see if checking stock quantity
 					if (CHECK_STOCK) {
 						$q = "SELECT product_in_stock ";
@@ -233,18 +323,22 @@ class ps_cart {
 						$product_in_stock = $db->f("product_in_stock");
 						if (empty($product_in_stock)) $product_in_stock = 0;
 						if (($quantity) > $product_in_stock) {
-							$msg = $VM_LANG->_PHPSHOP_CART_STOCK_1;
-							eval( "\$msg .= \"".$VM_LANG->_PHPSHOP_CART_STOCK_2."\";" );
+							Global $notify;
+                            $_SESSION['notify'] = array();
+                            $_SESSION['notify']['idx'] = 0;
+                            $k=0;
+                            $notify = $_SESSION['notify'];
+                            $_SESSION['notify'][$k]["prod_id"] = $product_id;
+                            $_SESSION['notify'][$k]["quantity"] = $quantity;
+                            $_SESSION['notify']['idx']++;
+                
+							$page = 'shop.waiting_list';
 							
-							$vmLogger->tip( $msg );
-							if( $page != 'shop.basket_short' ) {
-								$page = 'shop.waiting_list';
-							}
 							return true;
 						}
 					}
 					$_SESSION['cart'][$i]["quantity"] = $quantity;
-					$vmLogger->info( $VM_LANG->_VM_CART_PRODUCT_UPDATED );
+                    $updated_prod++;
 				}
 			}
 		}
@@ -253,7 +347,7 @@ class ps_cart {
 			$_POST['do_coupon'] = 'yes';
 		}
 		$_SESSION["cart"]=$_SESSION['cart'];
-		return True;
+		return array($updated_prod,$deleted_prod);
 	}
 
 	/**
@@ -263,11 +357,10 @@ class ps_cart {
 	 * @return boolan Result of the deletion
 	 */
 	function delete($d) {
-		global $vmLogger, $VM_LANG;
-		
-		$temp = array();
-		$product_id = $d["product_id"];
 
+		$temp = array();
+		$product_id = $d["prod_id"];
+        $deleted = 0;
 		if (!$product_id) {
 			$_SESSION['last_page'] = "shop.cart";
 			return False;
@@ -276,6 +369,12 @@ class ps_cart {
 		$j = 0;
 		for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
 			// modified for the advanced attribute modification
+            if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
+            &&
+            ($_SESSION['cart'][$i]["description"] == stripslashes($d["description"]) )
+            ) {
+                $deleted = $_SESSION['cart'][$i]['quantity'];
+            }
 			if (
 			($_SESSION['cart'][$i]["product_id"] != $product_id)
 			||
@@ -283,19 +382,18 @@ class ps_cart {
 			) {
 				$temp[$j++] = $_SESSION['cart'][$i];
 			}
+            
 		}
 		$temp["idx"] = $j;
 		$_SESSION['cart'] = $temp;
-		
-		$vmLogger->info( $VM_LANG->_VM_CART_PRODUCT_REMOVED );
-		
+
 		if( !empty( $_SESSION['coupon_discount'] )) {
 			// Update the Coupon Discount !!
 			require_once( CLASSPATH . "ps_coupon.php" );
 			ps_coupon::process_coupon_code( $d );
 		}
 
-		return True;
+		return $deleted;
 	}
 
 
