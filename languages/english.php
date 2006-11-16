@@ -16,6 +16,25 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 class vmLanguage extends vmAbstractLanguage {
+    var $_VM_PRODUCT_FORM_MIN_ORDER ='Minimum Purchase Quantity';
+    var $_VM_PRODUCT_FORM_MAX_ORDER ='Maximum Purchase Quantity';
+    var $_VM_DISPLAY_TABLE_HEADER = 'Display Table Header';
+    var $_VM_DISPLAY_LINK_TO_CHILD = 'Link to child product from list';
+    var $_VM_DISPLAY_INCLUDE_PRODUCT_TYPE = 'Include Product Type With Child';
+    var $_VM_DISPLAY_USE_LIST_BOX = 'Use List box for child products';
+    var $_VM_DISPLAY_LIST_STYLE = 'List Style';
+    var $_VM_DISPLAY_USE_PARENT_LABEL = 'Use Parent Settings:';
+    var $_VM_DISPLAY_LIST_TYPE = 'List:';
+    var $_VM_DISPLAY_QUANTITY_LABEL = 'Quantity:';
+    var $_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL = 'Drop Down Box Values';
+    var $_VM_DISPLAY_CHILD_DESCRIPTION = 'Display Child Description';
+    var $_VM_DISPLAY_DESC_WIDTH = 'Child Description Width';
+    var $_VM_DISPLAY_ATTRIB_WIDTH = 'Child Attribute Width';
+    var $_VM_DISPLAY_CHILD_SUFFIX = 'Child Class Suffix';
+    var $_VM_INCLUDED_PRODUCT_ID = 'Product IDs to include';
+    var $_VM_EXTRA_PRODUCT_ID = 'Extra IDs';
+    var $_PHPSHOP_DISPLAY_RADIOBOX = 'Use Radio Box';
+    var $_PHPSHOP_EMPTY_YOUR_CART = 'Empty Cart';
 	var $_PHPSHOP_MENU = 'Menu';
 	var $_PHPSHOP_CATEGORY = 'Category';
 	var $_PHPSHOP_CATEGORIES = 'Categories';
@@ -56,6 +75,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_DESC_TITLE = 'Description';
 	var $_PHPSHOP_CART_SHOW = 'Show Cart';
 	var $_PHPSHOP_CART_ADD_TO = 'Add to Cart';
+    var $_PHPSHOP_CART_UPDATE_TEXT = 'Upadte Cart';
 	var $_PHPSHOP_CART_NAME = 'Name';
 	var $_PHPSHOP_CART_SKU = 'SKU';
 	var $_PHPSHOP_CART_PRICE = 'Price';
@@ -291,6 +311,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = 'New Item';
 	var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = 'Update Item';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = 'Item Information';
+    var $_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL = 'Display Options';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = 'Item Status';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = 'Item Dimensions and Weight';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = 'Item Images';
@@ -780,6 +801,8 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CART_STOCK_2 = 'We currently have $product_in_stock items available. ';
 	var $_PHPSHOP_CART_STOCK_3 = 'Click Here to be placed on our waiting list.';
 	var $_PHPSHOP_CART_SELECT_ITEM = 'To add this product into your cart you have to select a product variant on the details page.';
+    var $_VM_CART_MIN_ORDER ='The minimum order level for this product is $min items.';
+    var $_VM_CART_MAX_ORDER ='The maximum order level for this product is $max items.';
 	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'none';
 	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Mr.';
 	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Mrs.';
@@ -836,6 +859,8 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = 'Payments';
 	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = 'Use only as catalogue';
 	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = 'If you check this, you disable all cart functionalities.';
+    var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD = 'Dont show cart on add to cart';
+    var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD_EXPLAIN = 'If you select this the cart is not displayed when you add a product.';
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = 'Show Prices';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = 'Show Prices including tax?';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = 'Sets the flag whether the shoppers sees prices including tax or excluding tax.';
@@ -1247,6 +1272,16 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_RELATED_PRODUCTS_HEADING = 'You may also be interested in this/these product(s)';
 	var $_PHPSHOP_IMAGE_ACTION = 'Image Action';
 	var $_PHPSHOP_NONE = 'none';
+    var $_PHPSHOP_DISPLAY_USE_PARENT = 'Override Child products Display Values and use parents';
+    var $_PHPSHOP_DISPLAY_NORMAL = 'Standard Quantity Box';
+    var $_PHPSHOP_DISPLAY_HIDE = 'Hide Quantity Box';
+    var $_PHPSHOP_DISPLAY_DROPDOWN = 'Use Dropdown Box';
+    var $_PHPSHOP_DISPLAY_CHECKBOX = 'Use Check Box';
+    var $_PHPSHOP_DISPLAY_ONE = 'One Add to Cart Button';
+    var $_PHPSHOP_DISPLAY_MANY = 'Add to Cart Button for each Child';
+    var $_PHPSHOP_DISPLAY_START = 'Start Value';
+    var $_PHPSHOP_DISPLAY_END = 'End Value';
+    var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
 	var $_PHPSHOP_ORDER_HISTORY = 'Order History';
 	var $_PHPSHOP_ORDER_HISTORY_COMMENT = 'Comment';
 	var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = 'Comments on your Order';
