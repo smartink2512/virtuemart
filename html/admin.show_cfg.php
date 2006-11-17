@@ -1017,7 +1017,6 @@ foreach( $rows as $row ) {
   $tabs->endPane();
   
 // Add necessary hidden fields
-$formObj->hiddenField( 'conf_SEARCH_ROWS', $mosConfig_list_limit );
 $formObj->hiddenField( 'myname', 'Jabba Binks' );
 
 // Write your form with mixed tags and text fields

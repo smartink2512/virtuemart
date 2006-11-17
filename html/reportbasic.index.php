@@ -249,13 +249,13 @@ if (!empty($show_products)) {
     $dbis->next_record();
     
     if ($i++ % 2) {
-      $bgcolor=SEARCH_COLOR_1;
+      $bgcolor='row0';
     }
     else {
-      $bgcolor=SEARCH_COLOR_2;
+      $bgcolor='row1';
     }
         ?> 
-    <tr bgcolor="<?php echo $bgcolor ?>"> 
+    <tr class="<?php echo $bgcolor ?>"> 
       <td><?php $db->p("order_date"); ?></td>
       <td><?php $db->p("number_of_orders"); ?></td>
       <td><?php $dbis->p("items_sold"); ?></td>

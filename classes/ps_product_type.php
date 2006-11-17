@@ -583,10 +583,10 @@ class ps_product_type {
 			$i=0;
 			while ($dba->next_record()) {
 				if ($i++ % 2)
-				$bgcolor=SEARCH_COLOR_1;
+				$bgcolor='row0';
 				else
-				$bgcolor=SEARCH_COLOR_2;
-				$html .= "<tr bgcolor=\"$bgcolor\" height=\"18\">\n";
+				$bgcolor='row1';
+				$html .= "<tr class=\"$bgcolor\" height=\"18\">\n";
 				$html .= "<td width=\"30%\">".$dba->f("parameter_label");
 				$parameter_description = $dba->f("parameter_description");
 				if (!empty($parameter_description)) {

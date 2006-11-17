@@ -96,9 +96,6 @@ class ps_config {
 			"PRODUCTS_PER_ROW"		=>	"conf_PRODUCTS_PER_ROW",
 			"ERRORPAGE"		=>	"conf_ERRORPAGE",
 			"NO_IMAGE"		=>	"conf_NO_IMAGE",
-			"SEARCH_ROWS"	=>	"conf_SEARCH_ROWS",
-			"SEARCH_COLOR_1"	=>	"conf_SEARCH_COLOR_1",
-			"SEARCH_COLOR_2"	=>	"conf_SEARCH_COLOR_2",
 			"DEBUG"		=>	"conf_DEBUG",
 			"SHOWVERSION"	=>  	"conf_SHOWVERSION",
 			"TAX_VIRTUAL" 	=>      "conf_TAX_VIRTUAL",
@@ -125,9 +122,7 @@ class ps_config {
 			"PSHOP_SHOW_TOP_PAGENAV"            =>      "conf_PSHOP_SHOW_TOP_PAGENAV",
 			"PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS"          =>      "conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS",
 			"VM_CURRENCY_CONVERTER_MODULE" => "conf__VM_CURRENCY_CONVERTER_MODULE",
-			"VM_CONTENT_PLUGINS_ENABLE" => "conf_VM_CONTENT_PLUGINS_ENABLE",
-			
-			
+			"VM_CONTENT_PLUGINS_ENABLE" => "conf_VM_CONTENT_PLUGINS_ENABLE",			
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
 			"VM_MODULES_FORCE_HTTPS"          =>      "conf_VM_MODULES_FORCE_HTTPS",
 			"PSHOP_SHIPPING_MODULE"     =>      "conf_SHIPPING"

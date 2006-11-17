@@ -39,7 +39,7 @@ mm_showMyFileName( __FILE__ );
      $q .= ") ";
      $q .= "AND #__{vm}_shopper_group.shopper_group_id=#__{vm}_shopper_vendor_xref.shopper_group_id ";
      $q .= "ORDER BY #__users.username "; 
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+     $list .= $q . " LIMIT $limitstart, " . $limit;
      $count .= $q;   
   }
   else
@@ -55,7 +55,7 @@ mm_showMyFileName( __FILE__ );
      $q .=   "OR #__users.perms = 'anonymous') "; 
      $q .= "AND #__{vm}_shopper_group.shopper_group_id=#__{vm}_shopper_vendor_xref.shopper_group_id ";
      $q .= "ORDER BY #__users.username "; 
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+     $list .= $q . " LIMIT $limitstart, " . $limit;
      $count .= $q;   
   }
   $db->query($count);
@@ -80,11 +80,11 @@ $i=0;
 
 while ($db->next_record()) { 
              if ($i++ % 2) 
-                $bgcolor=SEARCH_COLOR_1;
+                $bgcolor='row0';
              else
-                $bgcolor=SEARCH_COLOR_2;
+                $bgcolor='row1';
 ?> 
-  <tr bgcolor=<?php echo $bgcolor ?> nowrap> 
+  <tr class="<?php echo $bgcolor ?>"> 
     <td width="23%"><?php
         $url = SECUREURL . "?page=affiliate.affiliate_list&user_info_id=" . $db->f("user_info_id")."&func=affiliateadd";
         echo "<a href=\"" . $sess->url($url) . "\">";

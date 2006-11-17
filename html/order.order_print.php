@@ -307,13 +307,13 @@ else {
 			  
 			  while ($dbt->next_record()){
 				if ($i++ % 2) 
-				   $bgcolor=SEARCH_COLOR_1;
+				   $bgcolor='row0';
 				else
-				  $bgcolor=SEARCH_COLOR_2;
+				  $bgcolor='row1';
 				$t = $dbt->f("product_quantity") * $dbt->f("product_final_price");
 				
 			  ?>
-			  <tr bgcolor="<?php echo $bgcolor; ?>" valign="top"> 
+			  <tr class="<?php echo $bgcolor; ?>" valign="top"> 
 				<td width="5%"> <?php $dbt->p("product_quantity") ?></td>
 				<td width="42%"><?php $dbt->p("order_item_name"); 
 				  echo "<br /><font size=\"-2\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</font>"; 

@@ -30,7 +30,7 @@ $limitstart = mosgetparam( $_REQUEST, 'limitstart', 0);
      $q .= "vendor_store_desc LIKE '%$keyword%'";
      $q .= ") ";
      $q .= "ORDER BY vendor_name ASC ";
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+     $list .= $q . " LIMIT $limitstart, " . $limit;
      $count .= $q;   
   }
 
@@ -41,7 +41,7 @@ $limitstart = mosgetparam( $_REQUEST, 'limitstart', 0);
      $count="SELECT count(*) as num_rows FROM #__{vm}_vendor,#__{vm}_vendor_category WHERE "; 
      $q = "#__{vm}_vendor.vendor_category_id=#__{vm}_vendor_category.vendor_category_id ";
      $q .= "ORDER BY #__{vm}_vendor.vendor_name ASC ";
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+     $list .= $q . " LIMIT $limitstart, " . $limit;
      $count .= $q;   
   }
   else 
@@ -52,7 +52,7 @@ $limitstart = mosgetparam( $_REQUEST, 'limitstart', 0);
      $list .= " AND #__users.id = '".$auth["user_id"]."'";
 	 $list .= " ORDER BY company ASC";
      $count = "SELECT count(*) as num_rows FROM #__{vm}_affiliate"; 
-     $list .= $q . " LIMIT $limitstart, " . SEARCH_ROWS;
+     $list .= $q . " LIMIT $limitstart, " . $limit;
      $count .= $q;   
   }
   $db->query($count);
@@ -82,18 +82,18 @@ $i = 0;
 
 while ($db->next_record()) {
   if ($i++ % 2) 
-     $bgcolor=SEARCH_COLOR_1;
+     $bgcolor='row0';
   else
-     $bgcolor=SEARCH_COLOR_2;
+     $bgcolor='row1';
 ?>
-  <tr BGCOLOR=<?php echo $bgcolor ?>> 
+  <tr class="<?php echo $bgcolor ?>"> 
     <td width="28%" nowrap>
    <?php
     $url = SECUREURL . "?page=$modulename.affiliate_form&affiliate_id=";
     $url .= $db->f("affiliate_id");
-    echo "<A HREF=" . $sess->url($url) . ">";
+    echo '<a href="' . $sess->url($url) . '">';
     echo $db->f("company");
-    echo "</A><BR>";
+    echo "</a><br />";
    ?>
    </td>
     <td width="12%"><?php
