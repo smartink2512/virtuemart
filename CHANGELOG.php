@@ -35,6 +35,24 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.11.2006 soeren
+
+
+# cleaned up some old deprecated constants and language tokens
++ added extended javascript-based "simple attribute" handler by Tobias (alias eaxs, http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=22445.0)
+
+
+16.11.2006 markcallf
+
+!! DATABASE STRUCTURE CHANGED !!!
+	# Marks Child list options
+	ALTER TABLE `jos_vm_product` ADD `child_options` varchar(45) default NULL;
+	ALTER TABLE `jos_vm_product` ADD `quantity_options` varchar(45) default NULL;
+	ALTER TABLE `jos_vm_product` ADD  `child_option_ids` varchar(45) default NULL;
+	ALTER TABLE `jos_vm_product` ADD  `product_order_levels` varchar(45) default NULL;
++ added child product list options
+
+
 10.11.2006 gregdev
 
 #  Fixed duplicate error message when no shipping address is chosen during checkout (Task #972).

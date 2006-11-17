@@ -175,7 +175,7 @@ class vmImageTools {
 		}
 		
 		/* If User types "none" in Image Upload Field */
-		if ($d[$field_name."_action"] == "delete") {
+		if ( @$d[$field_name."_action"] == "delete") {
 			/* If there is a current image file */
 			if (!empty($curr_file)) {
 				
