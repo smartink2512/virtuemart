@@ -286,14 +286,9 @@ else {
 				if(PSHOP_IMG_RESIZE_ENABLE == '1') {
 					$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 				}
-				else {
-					if( file_exists( IMAGEPATH."product/".$product_thumb_image )) {
-                        $product_thumb_image = IMAGEURL."product/".$product_thumb_image;
-                    }
-                    else {
-                        $product_thumb_image = IMAGEURL.NO_IMAGE;
-                    }
-				}
+				elseif( !file_exists( IMAGEPATH."product/".$product_thumb_image )) {
+                    $product_thumb_image = IMAGEURL.NO_IMAGE;
+                }
 			}
 		}
 		else {

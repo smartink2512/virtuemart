@@ -701,13 +701,13 @@ class ps_product_category extends vmAbstractObject {
 		while ($db->next_record()) {
 			$product_count = $this->product_count($db->f("category_child_id"));
 			if ($level % 2) {
-				$bgcolor=SEARCH_COLOR_1;
+				$bgcolor='row0';
 			}
 			else {
-				$bgcolor=SEARCH_COLOR_2;
+				$bgcolor='row1';
 			}
 			$ibg++;
-			echo "<tr bgcolor=\"$bgcolor\">\n";
+			echo "<tr class=\"$bgcolor\">\n";
 			echo "<td><input style=\"display:none;\" id=\"cb$ibg\" name=\"cb[]\" value=\"".$db->f("category_id")."\" type=\"checkbox\" />&nbsp;$ibg</td><td>";
 			for ($i=0; $i<$level; $i++) {
 				echo "&nbsp;&nbsp;&nbsp;";

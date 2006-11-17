@@ -226,5 +226,12 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES
 	(NULL, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
 	(NULL, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');" );
 
+# Marks Child list options
+$db->query( "ALTER TABLE `#__{vm}_product` ADD `child_options` varchar(45) default NULL" );
+$db->query( "ALTER TABLE `#__{vm}_product` ADD `quantity_options` varchar(45) default NULL" );
+$db->query( "ALTER TABLE `#__{vm}_product` ADD  `child_option_ids` varchar(45) default NULL" );
+$db->query( "ALTER TABLE `#__{vm}_product` ADD  `product_order_levels` varchar(45) default NULL" );
+
+
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'")
 ?>

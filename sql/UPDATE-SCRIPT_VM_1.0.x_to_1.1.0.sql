@@ -223,4 +223,11 @@ INSERT INTO `jos_vm_function` VALUES
 	(NULL, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
 	(NULL, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');
 
+# Marks Child list options
+ALTER TABLE `jos_vm_product` ADD `child_options` varchar(45) default NULL;
+ALTER TABLE `jos_vm_product` ADD `quantity_options` varchar(45) default NULL;
+ALTER TABLE `jos_vm_product` ADD  `child_option_ids` varchar(45) default NULL;
+ALTER TABLE `jos_vm_product` ADD  `product_order_levels` varchar(45) default NULL;
+
+
 UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';

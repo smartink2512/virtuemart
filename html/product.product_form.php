@@ -24,6 +24,8 @@ if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
 }
 
+echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/com_virtuemart/js/product_attributes.js');
+
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
@@ -46,7 +48,7 @@ $max_order="";
 
 $display_use_parent_disabled = false;
 if($product_parent_id !=0)
-    $display_use_parent_disabled = true;
+$display_use_parent_disabled = true;
 $list = Array();
 $my_categories = array();
 $related_products = Array();
@@ -87,80 +89,82 @@ $display_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL;
 if (!empty($product_id)) {
 	$price = $ps_product->get_retail_price($product_id);
 }
-
+$quantity_start = 0;
+$quantity_end = 0;
+$quantity_step = 1;
 if (!empty($product_id)) {
-  // get the Database object we're filling the product form with
-  $db = $ps_product->sql($product_id); 
-  $db->next_record();
-  //get quantity options
- $q_field = $db->f("quantity_options");
-    if($q_field) {
-        $fields=explode(",",$q_field);
-        $q_type=array_shift($fields);
-        $quantity_start=array_shift($fields);
-        $quantity_end=array_shift($fields);
-        $quantity_step=array_shift($fields);
-        } 
-  //get list style
-  $l_field = $db->f("child_options");
-     if($l_field) {
-        $fields=explode(",",$l_field);
-        $display_use_parent=array_shift($fields);
-        $product_list=array_shift($fields);
-        $display_header=array_shift($fields);
-        $product_list_child=array_shift($fields);
-        $product_list_type=array_shift($fields);
-        $display_desc=array_shift($fields);
-        $desc_width=array_shift($fields);
-        $attrib_width=array_shift($fields);
-        $child_class_sfx=array_shift($fields);
-        } 
-  //Get min max order levels
-  $order_levels = $db->f("product_order_levels");
-  if($order_levels) {
-    $levels = explode(",",$order_levels);
-    $min_order = array_shift($levels);
-    $max_order = array_shift($levels);
-  }
-  
-  // Get category IDs
-  $db2 = new ps_DB;
-  $q = "SELECT category_id FROM #__{vm}_product_category_xref WHERE product_id='$product_id'";
-  $db2->query($q);
-  while ($db2->next_record()) {
-      $my_categories[$db2->f("category_id")] = "1";
-  }
-  
-  // Get the Manufacturer ID
-  $db2->query("SELECT manufacturer_id FROM #__{vm}_product_mf_xref WHERE product_id='$product_id'");
-  $db2->next_record();
-  $manufacturer_id = $db2->f("manufacturer_id");
-    
-  // Get the Related Products
-  $db2->query("SELECT related_products FROM #__{vm}_product_relations WHERE product_id='$product_id'");
-  if($db2->next_record()) {
-  	$related_products = explode("|", $db2->f("related_products"));
-  }
-    
-  // Look if the Product is downloadable
-  $q_dl = "SELECT attribute_name,attribute_value AS filename FROM #__{vm}_product_attribute WHERE ";
-  $q_dl .= "product_id='$product_id' AND attribute_name='download'";
-  $db2->query($q_dl);
-  if ($db2->next_record()) 
-    $dl_checked = "checked=\"checked\"";
-  $curr_filename = $db2->f("filename");
+	// get the Database object we're filling the product form with
+	$db = $ps_product->sql($product_id);
+	$db->next_record();
+	//get quantity options
+	$q_field = $db->f("quantity_options");
+	if($q_field) {
+		$fields=explode(",",$q_field);
+		$q_type=array_shift($fields);
+		$quantity_start=array_shift($fields);
+		$quantity_end=array_shift($fields);
+		$quantity_step=array_shift($fields);
+	}
+	//get list style
+	$l_field = $db->f("child_options");
+	if($l_field) {
+		$fields=explode(",",$l_field);
+		$display_use_parent=array_shift($fields);
+		$product_list=array_shift($fields);
+		$display_header=array_shift($fields);
+		$product_list_child=array_shift($fields);
+		$product_list_type=array_shift($fields);
+		$display_desc=array_shift($fields);
+		$desc_width=array_shift($fields);
+		$attrib_width=array_shift($fields);
+		$child_class_sfx=array_shift($fields);
+	}
+	//Get min max order levels
+	$order_levels = $db->f("product_order_levels");
+	if($order_levels) {
+		$levels = explode(",",$order_levels);
+		$min_order = array_shift($levels);
+		$max_order = array_shift($levels);
+	}
 
-  //Get quantity_box details
+	// Get category IDs
+	$db2 = new ps_DB;
+	$q = "SELECT category_id FROM #__{vm}_product_category_xref WHERE product_id='$product_id'";
+	$db2->query($q);
+	while ($db2->next_record()) {
+		$my_categories[$db2->f("category_id")] = "1";
+	}
+
+	// Get the Manufacturer ID
+	$db2->query("SELECT manufacturer_id FROM #__{vm}_product_mf_xref WHERE product_id='$product_id'");
+	$db2->next_record();
+	$manufacturer_id = $db2->f("manufacturer_id");
+
+	// Get the Related Products
+	$db2->query("SELECT related_products FROM #__{vm}_product_relations WHERE product_id='$product_id'");
+	if($db2->next_record()) {
+		$related_products = explode("|", $db2->f("related_products"));
+	}
+
+	// Look if the Product is downloadable
+	$q_dl = "SELECT attribute_name,attribute_value AS filename FROM #__{vm}_product_attribute WHERE ";
+	$q_dl .= "product_id='$product_id' AND attribute_name='download'";
+	$db2->query($q_dl);
+	if ($db2->next_record())
+	$dl_checked = "checked=\"checked\"";
+	$curr_filename = $db2->f("filename");
+
+	//Get quantity_box details
 
 
-  
+
 }
 elseif (empty($vars["error"])) {
-  $default["product_publish"] = "Y";
-  $default["product_weight_uom"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT;
-  $default["product_lwh_uom"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT;
-  $default["product_unit"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT;
-  $default["product_available_date"] = time();
+	$default["product_publish"] = "Y";
+	$default["product_weight_uom"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT;
+	$default["product_lwh_uom"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT;
+	$default["product_unit"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT;
+	$default["product_available_date"] = time();
 }
 // get the default shopper group
 $shopper_db = new ps_DB;
@@ -378,7 +382,10 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
       <td width="79%" style="vertical-align: middle;" colspan="2"><input type="checkbox" class="checkbox"  id="display_use_parent" name="display_use_parent" value="Y"
       <?php 
       if (@$display_use_parent == "Y" && !$display_use_parent_disabled) echo "checked=\"checked\"";
-        else if($display_use_parent_disabled) echo "disabled=\"true\"";   ?> 
+        else if($display_use_parent_disabled) {
+        	echo ' disabled="disabled" ';
+        }   ?> 
+
       />
       <label for="display_use_parent" ><?php echo $VM_LANG->_PHPSHOP_DISPLAY_USE_PARENT; ?></label><br/>
       </td>
@@ -387,47 +394,35 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
       <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_VM_DISPLAY_LIST_TYPE; ?></div>
       </td>
       <td width="20%"  style="vertical-align: top;"> <?php  
-    echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_check\" name=\"product_list\" value=\"Y\"  
-    onClick=\"javascript: if(this.checked==true) 
-    {document.getElementById('product_list_child').disabled = false;
-    
-    document.getElementById('list_style0').disabled = false;
-    document.getElementById('list_style1').disabled = false;
-    document.getElementById('product_list_type').disabled = false;}   
-    else {
-    document.getElementById('product_list_type').disabled = true;
-    document.getElementById('product_list_type').checked = false;
-    document.getElementById('product_list_child').disabled=true;
-    document.getElementById('product_list_child').checked=false;
-    
-    document.getElementById('list_style0').disabled = true;
-    document.getElementById('list_style1').disabled = true;}\" ";
+      echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_check\" name=\"product_list\" value=\"Y\" onclick=\"javascript: toggleProductList( this.checked);\" ";
 
- if (@$product_list =="Y" || @$product_list =="YM" ) { 
-    echo "checked=\"checked\" ";
-} 
+      if (@$product_list =="Y" || @$product_list =="YM" ) {
+      	echo "checked=\"checked\" ";
+      }
 
-if($product_parent_id !=0)
-    echo " disabled=\"true\" ";
-echo "/>".$VM_LANG->_VM_DISPLAY_USE_LIST_BOX;
-//Formatting Code
+      if($product_parent_id !=0) {
+      	echo ' disabled="disabled" ';
+      }
+      echo '/><label for="product_list_check">'.$VM_LANG->_VM_DISPLAY_USE_LIST_BOX.'</label>';
+      //Formatting Code
 ?> <br>
       
        <?php 
-      echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_desc\" name=\"display_desc\" value=\"Y\" ";
-      if ($display_desc)
-        echo "checked=\"checked\" ";
-    echo "/>".$VM_LANG->_VM_DISPLAY_CHILD_DESCRIPTION; ?><br>
+       echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_desc\" name=\"display_desc\" value=\"Y\" ";
+       if ($display_desc) {
+       	echo "checked=\"checked\" ";
+       }
+    echo '/><label for="display_desc">'.$VM_LANG->_VM_DISPLAY_CHILD_DESCRIPTION.'</label>'; ?><br>
     <?php 
-      echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"desc_width\" name=\"desc_width\" value=\"$desc_width\"  ";
+    echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"desc_width\" name=\"desc_width\" value=\"$desc_width\"  ";
     echo "/> ".$VM_LANG->_VM_DISPLAY_DESC_WIDTH; ?>
     <br>
     <?php 
-      echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"attrib_width\" name=\"attrib_width\" value=\"$attrib_width\"  ";
+    echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"attrib_width\" name=\"attrib_width\" value=\"$attrib_width\"  ";
     echo "/> ".$VM_LANG->_VM_DISPLAY_ATTRIB_WIDTH; ?>
     <br>
     <?php 
-      echo $VM_LANG->_VM_DISPLAY_CHILD_SUFFIX."<br><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
+    echo $VM_LANG->_VM_DISPLAY_CHILD_SUFFIX."<br><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
     echo "/> "; ?>
     <br>
       </td>
@@ -438,55 +433,59 @@ echo "/>".$VM_LANG->_VM_DISPLAY_USE_LIST_BOX;
         
         <input type="radio" class="radio" style="vertical-align: middle;" id="list_style0" name="list_style" value="one" 
         <?php if (@$product_list == "Y") echo "checked=\"checked\""; 
-        if($product_parent_id !=0 || @$product_list =="" || @$product_list =="N")
-    echo " disabled=\"true\" ";
+        if($product_parent_id !=0 || @$product_list =="" || @$product_list =="N") {
+        	echo ' disabled="disabled" ';
+        }
         ?> 
         />
         <label for="list_style0" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_ONE; ?></label><br/>
         <input type="radio" class="radio" style="vertical-align: middle;" id="list_style1" name="list_style" value="many" 
-        <?php if (@$product_list == "YM") echo "checked=\"checked\""; 
-        if($product_parent_id !=0 || @$product_list =="" || @$product_list =="N")
-    echo " disabled=\"true\" ";
+        <?php 
+        if (@$product_list == "YM") echo "checked=\"checked\""; 
+        if($product_parent_id !=0 || @$product_list =="" || @$product_list =="N") {
+        	echo ' disabled="disabled" ';
+        }
         ?> 
         />
         <label for="list_style1" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_MANY ?> </label><br />
         <?php if (@$display_header =="Y" && (@$product_list =="Y" || @$product_list =="YM" )) { 
-    echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_headers\" name=\"display_headers\" value=\"Y\" checked=\"checked\" ";
-    } 
-else {
-    echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_headers\" name=\"display_headers\" value=\"Y\" ";
-}
-if (@$product_list =="Y" || @$product_list =="YM" )
-    echo " />";
-else
-    echo " disabled=true />";
-    echo $VM_LANG->_VM_DISPLAY_TABLE_HEADER;
+        	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_headers\" name=\"display_headers\" value=\"Y\" checked=\"checked\" ";
+        }
+        else {
+        	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_headers\" name=\"display_headers\" value=\"Y\" ";
+        }
+        if (@$product_list =="Y"  || @$product_list =="YM" ) {
+        	echo ' disabled="disabled"';
+        }        
+        echo " />";
+        echo $VM_LANG->_VM_DISPLAY_TABLE_HEADER;
 ?> <br />
 
         <?php if (@$product_list_child =="Y" && (@$product_list =="Y"  || @$product_list =="YM" )) { 
-    echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_child\" name=\"product_list_child\" value=\"Y\" checked=\"checked\" ";
-    } 
-else {
-    echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_child\" name=\"product_list_child\" value=\"Y\" ";
-}
-if (@$product_list =="Y"  || @$product_list =="YM" )
-    echo " />";
-else
-    echo " disabled=true />";
-    echo $VM_LANG->_VM_DISPLAY_LINK_TO_CHILD."<br />";
+        	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_child\" name=\"product_list_child\" value=\"Y\" checked=\"checked\" ";
+        }
+        else {
+        	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_child\" name=\"product_list_child\" value=\"Y\" ";
+        }
+        if (@$product_list =="Y"  || @$product_list =="YM" ) {
+        	echo ' disabled="disabled"';
+        }        
+        echo " />";
+        
+        echo $VM_LANG->_VM_DISPLAY_LINK_TO_CHILD."<br />";
 ?> 
 
         <?php if (@$product_list_type =="Y" && (@$product_list =="Y"  || @$product_list =="YM" )) { 
-    echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_type\" name=\"product_list_type\" value=\"Y\" checked=\"checked\" ";
-    } 
-else {
-    echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_type\" name=\"product_list_type\" value=\"Y\" ";
-}
-if (@$product_list =="Y"  || @$product_list =="YM" )
-    echo " />";
-else
-    echo " disabled=true />";
-    echo $VM_LANG->_VM_DISPLAY_INCLUDE_PRODUCT_TYPE;
+        	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_type\" name=\"product_list_type\" value=\"Y\" checked=\"checked\" ";
+        }
+        else {
+        	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_type\" name=\"product_list_type\" value=\"Y\" ";
+        }
+        if (@$product_list =="Y"  || @$product_list =="YM" )
+        echo " />";
+        else
+        echo " disabled=true />";
+        echo $VM_LANG->_VM_DISPLAY_INCLUDE_PRODUCT_TYPE;
 ?> 
 
         </fieldset>
@@ -531,8 +530,8 @@ else
             
         </td>
         <td width="20%" style="vertical-align: top;">
-            <FIELDSET>
-                <LEGEND><?php echo $VM_LANG->_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL ?></LEGEND>
+            <fieldset>
+                <legend><?php echo $VM_LANG->_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL ?></legend>
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_start" name="quantity_start" size="4" value="<?php echo $quantity_start; ?>">
             <label for="quantity_start" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_START ?> </label><br />
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_end" name="quantity_end" size="4" value="<?php echo $quantity_end; ?>">
@@ -613,7 +612,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
         </select>&nbsp;
         <?php echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2);?>
         &nbsp;&nbsp;&nbsp;
-        <img src="<?php echo $db->f("product_availability") ? IMAGEURL."availability/".$db->sf("product_availability") : $mosConfig_live_site ."/images/stories/noimage.png"; ?>" name="imagelib" border="0" alt="Preview" />
+        <img src="<?php echo $db->f("product_availability") ? VM_THEMEURL."images/availability/".$db->sf("product_availability") : $mosConfig_live_site ."/images/stories/noimage.png"; ?>" name="imagelib" border="0" alt="Preview" />
       </td>
     </tr>
     <tr class="row1"> 
@@ -633,8 +632,11 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
     </tr>
     <tr class="row0">
         <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST ?>:</div></td> 
-        <td width="79%" >
-        <input class="inputbox" type="text" name="product_advanced_attribute" value="<?php $db->sp("attribute"); ?>" size="64" />
+		<td width="79%" id="attribute_container">
+			<?php 
+			// ATTRIBUTE EXTENSION by Tobias (eaxs)
+			ps_product_attribute::loadAttributeExtension($db->f("attribute"));
+			?>
     </tr>
     <tr class="row0">
     <td>&nbsp;</td>
@@ -1134,9 +1136,9 @@ while ($dba->next_record()) {
     				// 						}
     				// 						echo "</select>";
     				break;
-    				default: // Default type Short Text
-    				echo "    <input type=\"text\" class=\"inputbox\" name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
-    			}
+    					default: // Default type Short Text
+    					echo "    <input type=\"text\" class=\"inputbox\" name=\"product_type_".$product_type_id."_".$dbpt->f("parameter_name")."\" value=\"".$dbp->f($dbpt->f("parameter_name"))."\" size=\"20\" />";
+    				}
     		}
 
     		if ($dbpt->f("parameter_description")) {
@@ -1216,7 +1218,7 @@ if( $product_id ) {
 					WHERE `product_id`=' . $product_id );
 	if( $dbw->num_rows() > 0 ) {
 		$tabs->startTab( '<img src="'. IMAGEURL .'ps_image/queue.png" align="center" border="0" />Waiting List', 'waiting-list-tab' );
-	
+
 		echo '<h2>Users waiting to be notified when this product is back in stock:</h2>';
 		echo '<input type="hidden" value="'.$db->f('product_in_stock').'" name="product_in_stock_old" />';
 		echo '<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /><label for="notify_users">Notify these users now (when you have updated the number of products stock)</label><br /><br />';
@@ -1224,7 +1226,7 @@ if( $product_id ) {
 			$waitinglist[] = $dbw->f('name') . ' ('.$dbw->f('username') . ')';
 		}
 		echo vmCommonHTML::getList( $waitinglist );
-	
+
 		$tabs->endTab();
 	}
 }
@@ -1346,7 +1348,22 @@ function updateDiscountedPrice() {
 		catch( e ) { }
 	}
 }
-
+function toggleProductList( enable ) {
+	if(enable) {
+		document.getElementById('product_list_child').disabled = false;
+    	document.getElementById('list_style0').disabled = false;
+    	document.getElementById('list_style1').disabled = false;
+    	document.getElementById('product_list_type').disabled = false;
+	}
+    else {
+    	document.getElementById('product_list_type').disabled = true;
+    	document.getElementById('product_list_type').checked = false;
+    	document.getElementById('product_list_child').disabled=true;
+    	document.getElementById('product_list_child').checked=false;
+    	document.getElementById('list_style0').disabled = true;
+    	document.getElementById('list_style1').disabled = true;
+	}
+}
 updateGross();
 updateDiscountedPrice();
 <?php

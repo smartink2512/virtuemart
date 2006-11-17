@@ -281,38 +281,46 @@ class ps_product extends vmAbstractObject {
             $child_options .= ",".$d['display_desc'].",".$d['desc_width'].",".$d['attrib_width'].",".$d['child_class_sfx'];
         }
         $order_levels = $d['min_order_level'].",".$d['max_order_level'];
+        
         // Insert into DB
-		$q  = "INSERT INTO #__{vm}_product (vendor_id,product_parent_id,product_sku,";
-		$q .= "product_name,product_desc,product_s_desc,";
-		$q .= "product_thumb_image,product_full_image,";
-		$q .= "product_publish,product_weight,product_weight_uom,";
-		$q .= "product_length,product_width,product_height,product_lwh_uom,";
-		$q .= "product_unit,product_packaging,"; // Changed Packaging - Added
-		$q .= "product_url,product_in_stock,";
-		$q .= "attribute,custom_attribute,";
-		$q .= "product_available_date,product_availability,product_special,child_options,quantity_options,product_discount_id,";
-		$q .= "cdate,mdate,product_tax_id,child_option_ids,product_order_levels) ";
-		$q .= "VALUES ('";
-		$q .= $d['vendor_id'] . "','" . $d["product_parent_id"] . "','";
-		$q .= $d["product_sku"] . "','" . $d["product_name"] . "','";
-		$q .= $d["product_desc"] . "','" . $d["product_s_desc"] . "','";
-		$q .= $d["product_thumb_image"] . "','";
-		$q .= $d["product_full_image"] . "','" . $d["product_publish"] . "','";
-		$q .= $d["product_weight"] . "','" . $d["product_weight_uom"] . "','";
-		$q .= $d["product_length"] . "','" . $d["product_width"] . "','";
-		$q .= $d["product_height"] . "','" . $d["product_lwh_uom"] . "','";
-		$q .= $d["product_unit"] . "','" . (($d["product_box"] << 16) | ($d["product_packaging"]&0xFFFF)) . "','"; // Changed Packaging - Added
-		$q .= $d["product_url"] . "','" . $d["product_in_stock"] . "','";
-		$q .= $d["product_advanced_attribute"]."','";
-		$q .= $d["product_custom_attribute"]."','";
-		$q .= $d["product_available_date_timestamp"] . "','";
-		$q .= $d["product_availability"] . "','";
-		$q .= $child_options . "','";
-        $q .= $quantity_options . "','";
-		$q .= $d["product_special"] . "','";
-		$q .= $d["product_discount_id"] . "','$timestamp','$timestamp','".$d["product_tax_id"].",".$d["included_product_id"].",".$oders_levels."')";
+		$fields = array ( 'vendor_id' => $d['vendor_id'],
+						'product_parent_id' => $d["product_parent_id"],
+						'product_sku' => $d["product_sku"],
+						'product_name' => $d['product_name'],
+						'product_desc' => $d['product_desc'],
+						'product_s_desc' => $d['product_s_desc'],
+						'product_thumb_image' => $d['product_thumb_image'],
+						'product_full_image' => $d['product_full_image'],
+						'product_publish' => $d['product_publish'],
+						'product_weight' => $d['product_weight'],
+						'product_weight_uom' => $d['product_weight_uom'],
+						'product_length' => $d['product_length'],
+						'product_width' => $d['product_width'],
+						'product_height' => $d['product_height'],
+						'product_lwh_uom' => $d['product_lwh_uom'],
+						'product_unit' => $d['product_unit'],
+						'product_packaging' => (($d["product_box"] << 16) | ($d["product_packaging"]&0xFFFF)),
+						'product_url' => $d['product_url'],
+						'product_in_stock' => $d['product_in_stock'],
+						'attribute' => ps_product_attribute::formatAttributeX(),
+						'custom_attribute' => $d['product_custom_attribute'],
+						'product_available_date' => $d['product_available_date_timestamp'],
+						'product_availability' => $d['product_availability'],
+						'product_special' => $d['product_special'],
+						'child_options' => $child_options,
+						'quantity_options' => $quantity_options,
+						'product_discount_id' => $d['product_discount_id'],
+						'cdate' => $timestamp,
+						'mdate' => $timestamp,
+						'product_tax_id' => $d['product_tax_id'],
+						'child_option_ids' => $d['included_product_id'],
+						'product_order_levels' => $order_levels );
 
-		$db->setQuery($q); $db->query();
+		$db->buildQuery('INSERT', '#__{vm}_product', $fields );
+		if( !$db->query() ) {
+			$vmLogger->err( 'Something went wrong when trying to add the product!' );
+			return false;
+		}
 
 		$d["product_id"] = $_REQUEST['product_id'] = $db->last_insert_id();
 
@@ -466,7 +474,7 @@ class ps_product extends vmAbstractObject {
 
 		// added for the advanced attribute hack
 		// strips the trailing semi-colon from an attribute
-		if (';' == substr($d["product_advanced_attribute"], strlen($d["product_advanced_attribute"])-1,1) ) {
+		if (';' == substr(@$d["product_advanced_attribute"], strlen(@$d["product_advanced_attribute"])-1,1) ) {
 			$d["product_advanced_attribute"] =substr($d["product_advanced_attribute"], 0, strlen($d["product_advanced_attribute"])-1);
 		}
 		// added for the custom attribute hack
@@ -520,43 +528,40 @@ class ps_product extends vmAbstractObject {
             $child_options .= ",".$d['display_desc'].",".$d['desc_width'].",".$d['attrib_width'].",".$d['child_class_sfx'];
         }
         $order_levels = $d['min_order_level'].",".$d['max_order_level'];
-
-		$q  = "UPDATE `#__{vm}_product` SET ";
-		$q .= "product_sku='" . $d["product_sku"] . "',";
-		$q .= "vendor_id='" . $d["vendor_id"] . "',";
-		$q .= "product_name='" . $d["product_name"] . "',";
-		$q .= "product_s_desc='" . $d["product_s_desc"] . "',";
-		$q .= "product_desc='" . $d["product_desc"] . "',";
-		$q .= "product_publish='" . $d["product_publish"] . "',";
-		$q .= "product_weight='" . $d["product_weight"] . "',";
-		$q .= "product_weight_uom='" . $d["product_weight_uom"] . "',";
-		$q .= "product_length='" . $d["product_length"] . "',";
-		$q .= "product_width='" . $d["product_width"] . "',";
-		$q .= "product_height='" . $d["product_height"] . "',";
-		$q .= "product_lwh_uom='" . $d["product_lwh_uom"] . "',";
-		$q .= "product_unit='" . $d["product_unit"] . "',"; // Changed Packaging - Added
-		$q .= "product_packaging='" . (($d["product_box"]<<16) | ($d["product_packaging"] & 0xFFFF)) . "',"; // Changed Packaging - Added
-		$q .= "product_url='" . $d["product_url"] . "',";
-		$q .= "product_in_stock='" . $d["product_in_stock"] . "',";
-		$q .= "product_available_date='";
-		$q .= $d["product_available_date_timestamp"] . "',";
-		$q .= "product_availability='" . $d["product_availability"] . "',";
-		$q .= "product_special='" . $d["product_special"] . "',";
-		$q .= "product_discount_id='" . $d["product_discount_id"] . "',";
-		$q .= "product_thumb_image='" . $d["product_thumb_image"] . "',";
-		$q .= "product_full_image='" . $d["product_full_image"] . "',";
-		$q .= "attribute='".str_replace( '"', '\'', $d["product_advanced_attribute"])."',";
-		$q .= "custom_attribute='".str_replace( '"', '\'', $d["product_custom_attribute"])."',";
-		$q .= "product_tax_id='".$d["product_tax_id"]."',";
-        $q .= "quantity_options='".$quantity_options."',";
-        $q .= "child_options='".$child_options."',";
-        $q .= "child_option_ids='".$d["included_product_id"]."',";
-        $q .= "product_order_levels='".$order_levels."',";
-		$q .= "mdate='$timestamp' ";
-		$q .= "WHERE product_id='" . $d["product_id"] . "'";
-		//$q .= "AND vendor_id='" . $d['vendor_id'] . "'";
-
-		$db->setQuery($q); $db->query();
+        
+		$fields = array ( 'vendor_id' => $d['vendor_id'],
+						'product_sku' => $d["product_sku"],
+						'product_name' => $d['product_name'],
+						'product_desc' => $d['product_desc'],
+						'product_s_desc' => $d['product_s_desc'],
+						'product_thumb_image' => $d['product_thumb_image'],
+						'product_full_image' => $d['product_full_image'],
+						'product_publish' => $d['product_publish'],
+						'product_weight' => $d['product_weight'],
+						'product_weight_uom' => $d['product_weight_uom'],
+						'product_length' => $d['product_length'],
+						'product_width' => $d['product_width'],
+						'product_height' => $d['product_height'],
+						'product_lwh_uom' => $d['product_lwh_uom'],
+						'product_unit' => $d['product_unit'],
+						'product_packaging' => (($d["product_box"] << 16) | ($d["product_packaging"]&0xFFFF)),
+						'product_url' => $d['product_url'],
+						'product_in_stock' => $d['product_in_stock'],
+						'attribute' => ps_product_attribute::formatAttributeX(),
+						'custom_attribute' => $d['product_custom_attribute'],
+						'product_available_date' => $d['product_available_date_timestamp'],
+						'product_availability' => $d['product_availability'],
+						'product_special' => $d['product_special'],
+						'child_options' => $child_options,
+						'quantity_options' => $quantity_options,
+						'product_discount_id' => $d['product_discount_id'],
+						'mdate' => $timestamp,
+						'product_tax_id' => $d['product_tax_id'],
+						'child_option_ids' => $d['included_product_id'],
+						'product_order_levels' => $order_levels );
+						
+		$db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  'WHERE product_id='. (int)$d["product_id"] . ' AND vendor_id=' . (int)$d['vendor_id'] );
+		$db->query();
 
 		/* notify the shoppers that the product is here */
 		/* see zw_waiting_list */
@@ -1588,22 +1593,24 @@ class ps_product extends vmAbstractObject {
 				$db->setQuery($q); 
                 $db->query();
 				if ($db->next_record()) {
-                    $parent = true;
-                    }
-                    else {
+                	$parent = true;
+                }
+                else {
                     $parent = false; 
                 }
                 for ($i=0;$i<$cart["idx"];$i++) {
                     if ($cart[$i]["product_id"] == $product_id) {
-                        if ($parent)
-                            $parent_id  = $cart[$i]["parent_id"];
-                        else
-                            $quantity += $cart[$i]["quantity"];
+                        if ($parent) {
+                        	$parent_id  = $cart[$i]["parent_id"];
+                        }
+                        else {
+                        	$quantity += $cart[$i]["quantity"];
+                        }
                     }
                 }
                 if ($parent) {
                     for ($i=0;$i<$cart["idx"];$i++) {
-                        if ($cart[$i]['parent_id'] == $parent_id) {
+                        if (@$cart[$i]['parent_id'] == $parent_id) {
                             $quantity  += $cart[$i]["quantity"];
                         }
                     }

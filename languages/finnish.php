@@ -72,7 +72,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Kiitoksia Tilauksestasi.';
 	var $_PHPSHOP_NOT_SHIPPED = 'L‰hett‰m‰tˆn';
 	var $_PHPSHOP_EMAIL_SENDTO = 'Vahvistus on l‰hetetty s‰hkˆpostilla';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Valitan, mutta ei ole MOS ñ k‰ytt‰j‰‰ jonka voisit lis‰t‰ com_phpshop k‰ytt‰j‰luotteloon';
 	var $_PHPSHOP_ERROR = 'VIRHE';
 	var $_PHPSHOP_MOD_NOT_REG = 'Moduulia ei ole rekisterˆity.';
 	var $_PHPSHOP_MOD_ISNO_REG = 'ei ole k‰yp‰ phpShop moduuli.';
@@ -876,22 +875,9 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Salli Frontend-Administraatio  ei-Backend k‰ytt‰jille?';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'T‰ll‰ asetuksella voit mahdollistaa Frontend Administraation k‰ytt‰jille 
                                                                                               jotka ovat kauppa-admineja mutta joilla ei ole Mambo Backend oikeuksia (e.g. Registered / Editor).';
-	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
-	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'The URL sivuillesi. Yleens‰ identtinen Mambo URL:in kanssa(kauttaviiva per‰ss‰!)';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'SECUREURL';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'Suojattu URL sivuillesi. (https - kauttaviiva per‰ss‰!)';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'COMPONENTURL';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'URL mambo-phpShop componentiin. (kauttaviiva per‰ss‰!)';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'IMAGEURL';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'URL mambo-phpShop componentin kuvahakemistoon.(kauttaviiva per‰ss‰!)';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'ADMINPATH';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'Polku mambo-phpShop component hakemistoon.';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'CLASSPATH';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'Polku mambo-phpShop classes hakemistoon.';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'PAGEPATH';
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'Polku mambo-phpShop html hakemistoon.';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'IMAGEPATH';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'Polku mambo-phpShop shop_image hakemistoon.';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'HOMEPAGE';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'T‰m‰ sivu ladataan oletuksena.';
 	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'ERRORPAGE';
@@ -911,14 +897,6 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                                       Esimerkki: Jos astetat m‰‰r‰ksi 4, kategoria mallinnus n‰ytt‰‰ 4 tuotetta per rivi';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"no image" image';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'T‰m‰ kuva n‰kyy kun tuotteelle ei ole m‰‰ritelty kuvaa.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'SEARCH ROWS';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'M‰‰rittelee rivim‰‰r‰n per sivu kun etsint‰ tulokset esitet‰‰n luettelona.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = 'SEARCH COLOR 1';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = 'M‰‰ritt‰‰ parittomien rivien v‰rin etsint‰ tuloksia esitett‰ess‰ luettelona.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = 'SEARCH COLOR 2';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = 'M‰‰ritt‰‰ parillisten rivien v‰rin etsint‰ tuloksia esitett‰ess‰ luettelona.';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'MAXIMUM ROWS';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Asettaa rivim‰‰r‰n mik‰ n‰ytet‰‰n j‰rjestysluettelon valintalaatikossa.';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'N‰yt‰ footer ';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'N‰ytt‰‰  powered-by-mambo-phpShop kuvan.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Valitse kauppasi huolintatapa';
@@ -1727,6 +1705,41 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_USERGROUP_LBL = 'User Groups';
 	var $_VM_USERGROUP_LIST_LBL = 'User Group List';
 	var $_VM_USERGROUP_LEVEL_TIP = 'Important! A bigger number means <b>less</b> permissions. The <b>admin</b> group is <em>level 0</em>, storeadmin is level 250, users are level 500.';
+	var $_VM_PRODUCT_FORM_MIN_ORDER = 'Minimum Purchase Quantity';
+	var $_VM_PRODUCT_FORM_MAX_ORDER = 'Maximum Purchase Quantity';
+	var $_VM_DISPLAY_TABLE_HEADER = 'Display Table Header';
+	var $_VM_DISPLAY_LINK_TO_CHILD = 'Link to child product from list';
+	var $_VM_DISPLAY_INCLUDE_PRODUCT_TYPE = 'Include Product Type With Child';
+	var $_VM_DISPLAY_USE_LIST_BOX = 'Use List box for child products';
+	var $_VM_DISPLAY_LIST_STYLE = 'List Style';
+	var $_VM_DISPLAY_USE_PARENT_LABEL = 'Use Parent Settings:';
+	var $_VM_DISPLAY_LIST_TYPE = 'List:';
+	var $_VM_DISPLAY_QUANTITY_LABEL = 'Quantity:';
+	var $_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL = 'Drop Down Box Values';
+	var $_VM_DISPLAY_CHILD_DESCRIPTION = 'Display Child Description';
+	var $_VM_DISPLAY_DESC_WIDTH = 'Child Description Width';
+	var $_VM_DISPLAY_ATTRIB_WIDTH = 'Child Attribute Width';
+	var $_VM_DISPLAY_CHILD_SUFFIX = 'Child Class Suffix';
+	var $_VM_INCLUDED_PRODUCT_ID = 'Product IDs to include';
+	var $_VM_EXTRA_PRODUCT_ID = 'Extra IDs';
+	var $_PHPSHOP_DISPLAY_RADIOBOX = 'Use Radio Box';
+	var $_PHPSHOP_EMPTY_YOUR_CART = 'Empty Cart';
+	var $_PHPSHOP_CART_UPDATE_TEXT = 'Update Cart';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL = 'Display Options';
+	var $_VM_CART_MIN_ORDER = 'The minimum order level for this product is $min items.';
+	var $_VM_CART_MAX_ORDER = 'The maximum order level for this product is $max items.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD = 'Dont show cart on add to cart';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD_EXPLAIN = 'If you select this the cart is not displayed when you add a product.';
+	var $_PHPSHOP_DISPLAY_USE_PARENT = 'Override Child products Display Values and use parents';
+	var $_PHPSHOP_DISPLAY_NORMAL = 'Standard Quantity Box';
+	var $_PHPSHOP_DISPLAY_HIDE = 'Hide Quantity Box';
+	var $_PHPSHOP_DISPLAY_DROPDOWN = 'Use Dropdown Box';
+	var $_PHPSHOP_DISPLAY_CHECKBOX = 'Use Check Box';
+	var $_PHPSHOP_DISPLAY_ONE = 'One Add to Cart Button';
+	var $_PHPSHOP_DISPLAY_MANY = 'Add to Cart Button for each Child';
+	var $_PHPSHOP_DISPLAY_START = 'Start Value';
+	var $_PHPSHOP_DISPLAY_END = 'End Value';
+	var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
         
 }
 class phpShopLanguage extends vmLanguage { }

@@ -71,8 +71,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Σας ευχαριστούμε για την παραγγελία σας.';
 	var $_PHPSHOP_NOT_SHIPPED = 'Δεν Έχει Αποσταλεί Ακόμη';
 	var $_PHPSHOP_EMAIL_SENDTO = 'Ένα e-mail Επιβεβαίωσης, στάλθηκε προς';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Συγγνώμη, δεν υπάρχει χρήστης του site που θα μπορούσατε
-    να προσθέσετε στους πελάτες του καταστήματος';
 	var $_PHPSHOP_ERROR = 'ΣΦΑΛΜΑ';
 	var $_PHPSHOP_MOD_NOT_REG = 'Το module δεν έχει καταγραφεί.';
 	var $_PHPSHOP_MOD_ISNO_REG = 'δεν είναι ένα έγκυρο module του phpShop.';
@@ -876,22 +874,9 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                         <li>ή html email με εικόνες.</li></ul>';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Να επιτρέπεται η διαχείριση του Frontend από χρήστης που δεν έχουν πρόσβαση στο Backend;';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'Με αυτήν την ρύθμιση μπορείτε να επιτρέψετε την πρόσβαση στους διαχειριστές του ηλεκτρονικού καταστήματος, αλλά όχι ταυτόχρονη πρόσβαση στη διαχείριση του Mambo (e.g. Registered / Editor).';
-	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
-	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'Το URL για τον δικτυακό σας τόπο.Συνήθως πανομοιότυπος με το URL του Mambo  (με το σημείο / στο τέλος!)';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'Ασφαλές URL';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'Το  URL ασφαλείας του δικτυακού  σας τόπου. (https - με το σημείο / στο τέλος!)';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'Το URL για τα component ';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'Το URL για τα component του mambo-phpShop. (με το σημείο / στο τέλος!)';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'URL εικόνων';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'Το URL για το mambo-phpShop component (φάκελος εικόνων) (με το σημείο / στο τέλος!)';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'Φάκελος ADMIN';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'Η Διαδρομή προς το φάκελο component mambo-phpShop.';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'Φάκελος CLASS';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'Η Διαδρομή προς το φάκελο classes του mambo-phpShop.';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'Φάκελος  mambo-phpShop';
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'Η Διαδρομή προς το φάκελο html mambo-phpShop.';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'Φάκελος εικόνων';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'Η Διαδρομή προς το φάκελο εικόνων mambo-phpShop shop.';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'Αρχική σελίδα';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'Αυτή είναι η σελίδα που θα φορτώνεται σαν προεπιλεγμένη.';
 	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'Απεικόνιση σελίδων λάθους';
@@ -911,14 +896,6 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                                       Παράδειγμα: Αν επιλέξετε  4, η κατηγορία template  θα προβάλει  4 προϊόντα ανά γραμμή';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"καμία εικόνα" εικόνα';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Αυτή η εικόνα θα  απεικονίζεται όταν δεν υπάρχει διαθέσιμη εικόνα προϊόντος.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'Αναζήτηση γραμμών';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Καθορίζει των αριθμό των γραμμών  ανα σελίδα όταν τα αποτελέσματα αναζήτησης απεικονίζονται σε λίστα.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = 'Αναζήτηση χρώμα 1';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = 'Καθορίζει  το χρώμα των μονών αριθμών γραμμών σε μία λίστα αποτελεσμάτων.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = 'Αναζήτηση χρώμα 2';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = 'Καθορίζει  το χρώμα των ζυγών αριθμών γραμμών σε μία λίστα αποτελεσμάτων.';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'Μέγιστος αριθμός γραμμών';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Ρυθμίζει τον αριθμό των γραμμών  που προβάλεται σε order list select box.';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Προβολή "powered by mambo-phpShop" ?';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Προβάλει την εικόνα στο κάτω μέρος a powered-by-mambo-phpShop .';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Επιλέξτε τη μέθοδο που το κατάστημα σας θα αποστέλει τα προϊόντα.';
@@ -1727,6 +1704,41 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_USERGROUP_LBL = 'User Groups';
 	var $_VM_USERGROUP_LIST_LBL = 'User Group List';
 	var $_VM_USERGROUP_LEVEL_TIP = 'Important! A bigger number means <b>less</b> permissions. The <b>admin</b> group is <em>level 0</em>, storeadmin is level 250, users are level 500.';
+	var $_VM_PRODUCT_FORM_MIN_ORDER = 'Minimum Purchase Quantity';
+	var $_VM_PRODUCT_FORM_MAX_ORDER = 'Maximum Purchase Quantity';
+	var $_VM_DISPLAY_TABLE_HEADER = 'Display Table Header';
+	var $_VM_DISPLAY_LINK_TO_CHILD = 'Link to child product from list';
+	var $_VM_DISPLAY_INCLUDE_PRODUCT_TYPE = 'Include Product Type With Child';
+	var $_VM_DISPLAY_USE_LIST_BOX = 'Use List box for child products';
+	var $_VM_DISPLAY_LIST_STYLE = 'List Style';
+	var $_VM_DISPLAY_USE_PARENT_LABEL = 'Use Parent Settings:';
+	var $_VM_DISPLAY_LIST_TYPE = 'List:';
+	var $_VM_DISPLAY_QUANTITY_LABEL = 'Quantity:';
+	var $_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL = 'Drop Down Box Values';
+	var $_VM_DISPLAY_CHILD_DESCRIPTION = 'Display Child Description';
+	var $_VM_DISPLAY_DESC_WIDTH = 'Child Description Width';
+	var $_VM_DISPLAY_ATTRIB_WIDTH = 'Child Attribute Width';
+	var $_VM_DISPLAY_CHILD_SUFFIX = 'Child Class Suffix';
+	var $_VM_INCLUDED_PRODUCT_ID = 'Product IDs to include';
+	var $_VM_EXTRA_PRODUCT_ID = 'Extra IDs';
+	var $_PHPSHOP_DISPLAY_RADIOBOX = 'Use Radio Box';
+	var $_PHPSHOP_EMPTY_YOUR_CART = 'Empty Cart';
+	var $_PHPSHOP_CART_UPDATE_TEXT = 'Update Cart';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL = 'Display Options';
+	var $_VM_CART_MIN_ORDER = 'The minimum order level for this product is $min items.';
+	var $_VM_CART_MAX_ORDER = 'The maximum order level for this product is $max items.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD = 'Dont show cart on add to cart';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD_EXPLAIN = 'If you select this the cart is not displayed when you add a product.';
+	var $_PHPSHOP_DISPLAY_USE_PARENT = 'Override Child products Display Values and use parents';
+	var $_PHPSHOP_DISPLAY_NORMAL = 'Standard Quantity Box';
+	var $_PHPSHOP_DISPLAY_HIDE = 'Hide Quantity Box';
+	var $_PHPSHOP_DISPLAY_DROPDOWN = 'Use Dropdown Box';
+	var $_PHPSHOP_DISPLAY_CHECKBOX = 'Use Check Box';
+	var $_PHPSHOP_DISPLAY_ONE = 'One Add to Cart Button';
+	var $_PHPSHOP_DISPLAY_MANY = 'Add to Cart Button for each Child';
+	var $_PHPSHOP_DISPLAY_START = 'Start Value';
+	var $_PHPSHOP_DISPLAY_END = 'End Value';
+	var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
         
 }
 class phpShopLanguage extends vmLanguage { }

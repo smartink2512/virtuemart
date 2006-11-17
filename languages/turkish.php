@@ -71,7 +71,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Sipariþiniz için teþekkürler.';
 	var $_PHPSHOP_NOT_SHIPPED = 'Henüz gönderilmedi';
 	var $_PHPSHOP_EMAIL_SENDTO = 'Teyit iletisinin gönderildiði e-posta adresi';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Üzgünüz, com_phpshop kullanýcý listesine ekleyebileceðiniz MOS - kullanýcýsý yoktur.';
 	var $_PHPSHOP_ERROR = 'HATA';
 	var $_PHPSHOP_MOD_NOT_REG = 'Modül kaydedilmemiþtir.';
 	var $_PHPSHOP_MOD_ISNO_REG = ' Geçerli bir phpShop modülü deðil.';
@@ -875,22 +874,9 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Kullanýcýlara admin kullanýmýna izin ver';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'Bu seçenekle mambo kullanýcýsý olmayan fakat 
                                                                                               maðaza admini olan kullanýcýlara mambo adminliði hakký verilir.';
-	var $_PHPSHOP_ADMIN_CFG_URL = 'Link';
-	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'Sitenizin internet adresi. Mambo linki ile ayný olmalýdýr (sonu / ile bitmelidir).';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'Güvenli Alan';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'Sitenize güvenli adres (https: þeklinde , sonu / ile bitmelidir)';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'PARÇA LÝNKÝ';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'mambo-phpShop Site bileþenlerinin baðlantýlarý. (sonu / ile bitmelidir)';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'Resim Linki';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'mambo-phpShop Resim klasörünün baðlantýsýdýr.(sonu / ile bitmelidir)';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'Yönetici Yolu';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'mambo-phpShop klasörü yolu.';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'Sýnýf Yolu';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'phpShop sýnýflarýnýn klasörü.';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'Sayfa Yolu';
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'phpShop html klasörünün yolu.';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'Resim yolu';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'phpShop shop_image klasörü resim yolu.';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'Ana Sayfa';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'Varsayýlan olarak bu sayfa yüklenecektir.';
 	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'Hata Sayfasý';
@@ -910,14 +896,6 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                                       Örneðin: Üç olarak(3) belirlerseniz, kategori þablonu her satýrda 3 ürün gösterir';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\'no image\' resmi';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Eðer ürünle ilgili hiçbir resim yoksa bu resim gösterilir.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'Satýr Arama';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Arama sonunda gösteilecek satýr sayýsý.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = 'Arama Rengi  1';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = 'Sonuç listesindeki tek sayý olarak numaralanmýþ sayýlarýn rengini belirler.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = 'Arama Rengi 2';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = 'Sonuç listesindeki çift sayý olarak numaralanmýþ sayýlarýn rengini belirler.';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'Azami Sýra';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Sipariþ listesi kutusunda gösterilecek azami sýra sayýsý .';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'En altta \'powered by mambo-phpShop\' gösterilsin mi?';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Seçilmesi halinde en altta ..powered-by-mambo-phpShop.. resmi gösterilir.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Maðazanýzýn nakliye türünü seçiniz.';
@@ -1724,6 +1702,41 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_USERGROUP_LBL = 'User Groups';
 	var $_VM_USERGROUP_LIST_LBL = 'User Group List';
 	var $_VM_USERGROUP_LEVEL_TIP = 'Important! A bigger number means <b>less</b> permissions. The <b>admin</b> group is <em>level 0</em>, storeadmin is level 250, users are level 500.';
+	var $_VM_PRODUCT_FORM_MIN_ORDER = 'Minimum Purchase Quantity';
+	var $_VM_PRODUCT_FORM_MAX_ORDER = 'Maximum Purchase Quantity';
+	var $_VM_DISPLAY_TABLE_HEADER = 'Display Table Header';
+	var $_VM_DISPLAY_LINK_TO_CHILD = 'Link to child product from list';
+	var $_VM_DISPLAY_INCLUDE_PRODUCT_TYPE = 'Include Product Type With Child';
+	var $_VM_DISPLAY_USE_LIST_BOX = 'Use List box for child products';
+	var $_VM_DISPLAY_LIST_STYLE = 'List Style';
+	var $_VM_DISPLAY_USE_PARENT_LABEL = 'Use Parent Settings:';
+	var $_VM_DISPLAY_LIST_TYPE = 'List:';
+	var $_VM_DISPLAY_QUANTITY_LABEL = 'Quantity:';
+	var $_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL = 'Drop Down Box Values';
+	var $_VM_DISPLAY_CHILD_DESCRIPTION = 'Display Child Description';
+	var $_VM_DISPLAY_DESC_WIDTH = 'Child Description Width';
+	var $_VM_DISPLAY_ATTRIB_WIDTH = 'Child Attribute Width';
+	var $_VM_DISPLAY_CHILD_SUFFIX = 'Child Class Suffix';
+	var $_VM_INCLUDED_PRODUCT_ID = 'Product IDs to include';
+	var $_VM_EXTRA_PRODUCT_ID = 'Extra IDs';
+	var $_PHPSHOP_DISPLAY_RADIOBOX = 'Use Radio Box';
+	var $_PHPSHOP_EMPTY_YOUR_CART = 'Empty Cart';
+	var $_PHPSHOP_CART_UPDATE_TEXT = 'Update Cart';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL = 'Display Options';
+	var $_VM_CART_MIN_ORDER = 'The minimum order level for this product is $min items.';
+	var $_VM_CART_MAX_ORDER = 'The maximum order level for this product is $max items.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD = 'Dont show cart on add to cart';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD_EXPLAIN = 'If you select this the cart is not displayed when you add a product.';
+	var $_PHPSHOP_DISPLAY_USE_PARENT = 'Override Child products Display Values and use parents';
+	var $_PHPSHOP_DISPLAY_NORMAL = 'Standard Quantity Box';
+	var $_PHPSHOP_DISPLAY_HIDE = 'Hide Quantity Box';
+	var $_PHPSHOP_DISPLAY_DROPDOWN = 'Use Dropdown Box';
+	var $_PHPSHOP_DISPLAY_CHECKBOX = 'Use Check Box';
+	var $_PHPSHOP_DISPLAY_ONE = 'One Add to Cart Button';
+	var $_PHPSHOP_DISPLAY_MANY = 'Add to Cart Button for each Child';
+	var $_PHPSHOP_DISPLAY_START = 'Start Value';
+	var $_PHPSHOP_DISPLAY_END = 'End Value';
+	var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
         
 }
 class phpShopLanguage extends vmLanguage { }

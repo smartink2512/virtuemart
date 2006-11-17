@@ -223,16 +223,17 @@ class ps_cart {
 
         // Ouput info message with cart update details /*
         if($total_quantity !=0 || $total_updated !=0 || $total_deleted !=0) {
-            $msg = "Cart Updated - ";
-            if($total_quantity !=0)
+            $msg = $VM_LANG->_VM_CART_PRODUCT_UPDATED;
+            /*if($total_quantity !=0)
                 $msg .= "Added: ".$total_quantity." ";
             if($total_updated !=0)
                 $msg .= "Updated: ".$total_updated."  ";
             if($total_deleted !=0)
                 $msg .= "Deleted: ".$total_deleted." ";
             $msg .= "Product/s";
-        // Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
-        $vmLogger->info( $msg );
+            */
+	        // Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
+	        $vmLogger->info( $msg );
         }
         // end cart update message */
         

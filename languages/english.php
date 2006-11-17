@@ -16,25 +16,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 class vmLanguage extends vmAbstractLanguage {
-    var $_VM_PRODUCT_FORM_MIN_ORDER ='Minimum Purchase Quantity';
-    var $_VM_PRODUCT_FORM_MAX_ORDER ='Maximum Purchase Quantity';
-    var $_VM_DISPLAY_TABLE_HEADER = 'Display Table Header';
-    var $_VM_DISPLAY_LINK_TO_CHILD = 'Link to child product from list';
-    var $_VM_DISPLAY_INCLUDE_PRODUCT_TYPE = 'Include Product Type With Child';
-    var $_VM_DISPLAY_USE_LIST_BOX = 'Use List box for child products';
-    var $_VM_DISPLAY_LIST_STYLE = 'List Style';
-    var $_VM_DISPLAY_USE_PARENT_LABEL = 'Use Parent Settings:';
-    var $_VM_DISPLAY_LIST_TYPE = 'List:';
-    var $_VM_DISPLAY_QUANTITY_LABEL = 'Quantity:';
-    var $_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL = 'Drop Down Box Values';
-    var $_VM_DISPLAY_CHILD_DESCRIPTION = 'Display Child Description';
-    var $_VM_DISPLAY_DESC_WIDTH = 'Child Description Width';
-    var $_VM_DISPLAY_ATTRIB_WIDTH = 'Child Attribute Width';
-    var $_VM_DISPLAY_CHILD_SUFFIX = 'Child Class Suffix';
-    var $_VM_INCLUDED_PRODUCT_ID = 'Product IDs to include';
-    var $_VM_EXTRA_PRODUCT_ID = 'Extra IDs';
-    var $_PHPSHOP_DISPLAY_RADIOBOX = 'Use Radio Box';
-    var $_PHPSHOP_EMPTY_YOUR_CART = 'Empty Cart';
 	var $_PHPSHOP_MENU = 'Menu';
 	var $_PHPSHOP_CATEGORY = 'Category';
 	var $_PHPSHOP_CATEGORIES = 'Categories';
@@ -75,7 +56,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_DESC_TITLE = 'Description';
 	var $_PHPSHOP_CART_SHOW = 'Show Cart';
 	var $_PHPSHOP_CART_ADD_TO = 'Add to Cart';
-    var $_PHPSHOP_CART_UPDATE_TEXT = 'Upadte Cart';
 	var $_PHPSHOP_CART_NAME = 'Name';
 	var $_PHPSHOP_CART_SKU = 'SKU';
 	var $_PHPSHOP_CART_PRICE = 'Price';
@@ -91,7 +71,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_THANKYOU = 'Thank you for your order.';
 	var $_PHPSHOP_NOT_SHIPPED = 'Not Shipped Yet';
 	var $_PHPSHOP_EMAIL_SENDTO = 'A confirmation email has been sent to';
-	var $_PHPSHOP_NO_USER_TO_SELECT = 'Sorry, there\'s no user that you could add to the com_virtuemart userlist';
 	var $_PHPSHOP_ERROR = 'ERROR';
 	var $_PHPSHOP_MOD_NOT_REG = 'Module Not Registered.';
 	var $_PHPSHOP_MOD_ISNO_REG = 'is not a valid VirtueMart core module.';
@@ -311,7 +290,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL = 'New Item';
 	var $_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL = 'Update Item';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL = 'Item Information';
-    var $_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL = 'Display Options';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL = 'Item Status';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL = 'Item Dimensions and Weight';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL = 'Item Images';
@@ -801,8 +779,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CART_STOCK_2 = 'We currently have $product_in_stock items available. ';
 	var $_PHPSHOP_CART_STOCK_3 = 'Click Here to be placed on our waiting list.';
 	var $_PHPSHOP_CART_SELECT_ITEM = 'To add this product into your cart you have to select a product variant on the details page.';
-    var $_VM_CART_MIN_ORDER ='The minimum order level for this product is $min items.';
-    var $_VM_CART_MAX_ORDER ='The maximum order level for this product is $max items.';
 	var $_PHPSHOP_REGISTRATION_FORM_NONE = 'none';
 	var $_PHPSHOP_REGISTRATION_FORM_MR = 'Mr.';
 	var $_PHPSHOP_REGISTRATION_FORM_MRS = 'Mrs.';
@@ -859,8 +835,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PAYEMENTOPTIONS = 'Payments';
 	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE = 'Use only as catalogue';
 	var $_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN = 'If you check this, you disable all cart functionalities.';
-    var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD = 'Dont show cart on add to cart';
-    var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD_EXPLAIN = 'If you select this the cart is not displayed when you add a product.';
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = 'Show Prices';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = 'Show Prices including tax?';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = 'Sets the flag whether the shoppers sees prices including tax or excluding tax.';
@@ -901,22 +875,9 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Allow Frontend-Administration for non-Backend Users?';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'With this setting you can enable the Frontend Administration for users who 
                                                                                               are storeadmins, but can\'t access the Mambo Backend (e.g. Registered / Editor).';
-	var $_PHPSHOP_ADMIN_CFG_URL = 'URL';
-	var $_PHPSHOP_ADMIN_CFG_URL_EXPLAIN = 'The URL to your site. Usually identical to your Mambo URL (with trailing slash at the end!)';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'SECUREURL';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'The secure URL to your site. (https - with trailing slash at the end!)';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT = 'COMPONENTURL';
-	var $_PHPSHOP_ADMIN_CFG_URLCOMPONENT_EXPLAIN = 'The URL to the VirtueMart component. (with trailing slash at the end!)';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE = 'IMAGEURL';
-	var $_PHPSHOP_ADMIN_CFG_URLIMAGE_EXPLAIN = 'The URL to the VirtueMart component image directory.(with trailing slash at the end!)';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH = 'ADMINPATH';
-	var $_PHPSHOP_ADMIN_CFG_ADMINPATH_EXPLAIN = 'The path to your VirtueMart component directory.';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH = 'CLASSPATH';
-	var $_PHPSHOP_ADMIN_CFG_CLASSPATH_EXPLAIN = 'The path to your phpShop classes directory.';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'PAGEPATH';
-	var $_PHPSHOP_ADMIN_CFG_PAGEPATH_EXPLAIN = 'The path to your phpShop html directory.';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH = 'IMAGEPATH';
-	var $_PHPSHOP_ADMIN_CFG_IMAGEPATH_EXPLAIN = 'The path to your phpShop shop_image directory.';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE = 'HOMEPAGE';
 	var $_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN = 'This is the page which will be loaded by default.';
 	var $_PHPSHOP_ADMIN_CFG_ERRORPAGE = 'ERRORPAGE';
@@ -936,14 +897,6 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                                       Example: If you set it to 4, the category template will display 4 products per row';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"no image" image';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'This image will be shown when no product image is available.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS = 'SEARCH ROWS';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHROWS_EXPLAIN = 'Determines the number of rows per page when search results are displayed in a list.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1 = 'SEARCH COLOR 1';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR1_EXPLAIN = 'Specifies the color of the odd numbered rows in a result list.';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2 = 'SEARCH COLOR 2';
-	var $_PHPSHOP_ADMIN_CFG_SEARCHCOLOR2_EXPLAIN = 'Specifies the color of the even numbered rows in a result list.';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS = 'MAXIMUM ROWS';
-	var $_PHPSHOP_ADMIN_CFG_MAXIMUMROWS_EXPLAIN = 'Sets the number of rows to show in the order list select box.';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Show footer ';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Displays a powered-by-VirtueMart footer image.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Choose your store\'s shipping method';
@@ -1272,16 +1225,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_RELATED_PRODUCTS_HEADING = 'You may also be interested in this/these product(s)';
 	var $_PHPSHOP_IMAGE_ACTION = 'Image Action';
 	var $_PHPSHOP_NONE = 'none';
-    var $_PHPSHOP_DISPLAY_USE_PARENT = 'Override Child products Display Values and use parents';
-    var $_PHPSHOP_DISPLAY_NORMAL = 'Standard Quantity Box';
-    var $_PHPSHOP_DISPLAY_HIDE = 'Hide Quantity Box';
-    var $_PHPSHOP_DISPLAY_DROPDOWN = 'Use Dropdown Box';
-    var $_PHPSHOP_DISPLAY_CHECKBOX = 'Use Check Box';
-    var $_PHPSHOP_DISPLAY_ONE = 'One Add to Cart Button';
-    var $_PHPSHOP_DISPLAY_MANY = 'Add to Cart Button for each Child';
-    var $_PHPSHOP_DISPLAY_START = 'Start Value';
-    var $_PHPSHOP_DISPLAY_END = 'End Value';
-    var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
 	var $_PHPSHOP_ORDER_HISTORY = 'Order History';
 	var $_PHPSHOP_ORDER_HISTORY_COMMENT = 'Comment';
 	var $_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL = 'Comments on your Order';
@@ -1498,7 +1441,7 @@ Password - %s
 	var $_VM_PAYMENT_CLASS_NAME = 'Payment class name';
 	var $_VM_PAYMENT_CLASS_NAME_TIP = '(e.g. <strong>ps_netbanx</strong>) :<br />
 default: ps_payment<br />
-<i>Choose ps_payment if you\'re not sure what to choose!</i>';
+<em>Choose ps_payment if you\'re not sure what to choose!</em>';
 	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.';
 	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
 	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';
@@ -1762,6 +1705,41 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_USERGROUP_LBL = 'User Groups';
 	var $_VM_USERGROUP_LIST_LBL = 'User Group List';
 	var $_VM_USERGROUP_LEVEL_TIP = 'Important! A bigger number means <b>less</b> permissions. The <b>admin</b> group is <em>level 0</em>, storeadmin is level 250, users are level 500.';
+	var $_VM_PRODUCT_FORM_MIN_ORDER = 'Minimum Purchase Quantity';
+	var $_VM_PRODUCT_FORM_MAX_ORDER = 'Maximum Purchase Quantity';
+	var $_VM_DISPLAY_TABLE_HEADER = 'Display Table Header';
+	var $_VM_DISPLAY_LINK_TO_CHILD = 'Link to child product from list';
+	var $_VM_DISPLAY_INCLUDE_PRODUCT_TYPE = 'Include Product Type With Child';
+	var $_VM_DISPLAY_USE_LIST_BOX = 'Use List box for child products';
+	var $_VM_DISPLAY_LIST_STYLE = 'List Style';
+	var $_VM_DISPLAY_USE_PARENT_LABEL = 'Use Parent Settings:';
+	var $_VM_DISPLAY_LIST_TYPE = 'List:';
+	var $_VM_DISPLAY_QUANTITY_LABEL = 'Quantity:';
+	var $_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL = 'Drop Down Box Values';
+	var $_VM_DISPLAY_CHILD_DESCRIPTION = 'Display Child Description';
+	var $_VM_DISPLAY_DESC_WIDTH = 'Child Description Width';
+	var $_VM_DISPLAY_ATTRIB_WIDTH = 'Child Attribute Width';
+	var $_VM_DISPLAY_CHILD_SUFFIX = 'Child Class Suffix';
+	var $_VM_INCLUDED_PRODUCT_ID = 'Product IDs to include';
+	var $_VM_EXTRA_PRODUCT_ID = 'Extra IDs';
+	var $_PHPSHOP_DISPLAY_RADIOBOX = 'Use Radio Box';
+	var $_PHPSHOP_EMPTY_YOUR_CART = 'Empty Cart';
+	var $_PHPSHOP_CART_UPDATE_TEXT = 'Update Cart';
+	var $_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL = 'Display Options';
+	var $_VM_CART_MIN_ORDER = 'The minimum order level for this product is $min items.';
+	var $_VM_CART_MAX_ORDER = 'The maximum order level for this product is $max items.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD = 'Dont show cart on add to cart';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_CART_ON_ADD_EXPLAIN = 'If you select this the cart is not displayed when you add a product.';
+	var $_PHPSHOP_DISPLAY_USE_PARENT = 'Override Child products Display Values and use parents';
+	var $_PHPSHOP_DISPLAY_NORMAL = 'Standard Quantity Box';
+	var $_PHPSHOP_DISPLAY_HIDE = 'Hide Quantity Box';
+	var $_PHPSHOP_DISPLAY_DROPDOWN = 'Use Dropdown Box';
+	var $_PHPSHOP_DISPLAY_CHECKBOX = 'Use Check Box';
+	var $_PHPSHOP_DISPLAY_ONE = 'One Add to Cart Button';
+	var $_PHPSHOP_DISPLAY_MANY = 'Add to Cart Button for each Child';
+	var $_PHPSHOP_DISPLAY_START = 'Start Value';
+	var $_PHPSHOP_DISPLAY_END = 'End Value';
+	var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
         
 }
 class phpShopLanguage extends vmLanguage { }
