@@ -43,7 +43,8 @@ if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price,
 }
 if ($children != "multi") { ?>
 	</form></div>
-<?php } 
+<?php 
+} 
     if($children == "radio") {?>
     
     <script language="JavaScript" type="text/javascript">//<![CDATA[

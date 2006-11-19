@@ -279,9 +279,10 @@ class ps_product_attribute {
 		$db_item = new ps_DB;
 
 		$html = "";
-		$html .= "<div class=\"vmCartDetails$cls_suffix\" width=\"100%\" />\n";
-		if(USE_AS_CATALOGUE != '1' && $this->list_advanced_attribute($product_id, $db->f("product_id")) != "" || $this->list_custom_attribute($product_id, $db->f("product_id")) !="")
-		$html .= "<div class=\"vmCartChild$cls_suffix vmRowTwo$cls_suffix\" />\n";
+		$html .= "<div class=\"vmCartDetails$cls_suffix\" width=\"100%\">\n";
+		if(USE_AS_CATALOGUE != '1' && $this->list_advanced_attribute($product_id, $db->f("product_id")) != "" || $this->list_custom_attribute($product_id, $db->f("product_id")) !="") {
+			$html .= "<div class=\"vmCartChild$cls_suffix vmRowTwo$cls_suffix\">\n";
+		}
 		// Get list of children
 		$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND product_publish='Y'";
 		$db->setQuery($q);
@@ -342,7 +343,7 @@ class ps_product_attribute {
 				}
 				$html .= "</option>\n";
 			}
-			$html .= "</select></div >\n";
+			$html .= "</select>\n";
 		}
 		else {
 			$html .= "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />\n";
@@ -352,14 +353,18 @@ class ps_product_attribute {
 		if (USE_AS_CATALOGUE != '1') {
 			$check_advanced = $this->list_advanced_attribute($product_id, $db->f("product_id"));
 			$check_custom = $this->list_custom_attribute($product_id, $db->f("product_id"));
-			if($check_advanced != "" || $check_custom != "")
-			$html .= "<div class=\"vmCartAttributes$cls_suffix\">";
-			if($check_advanced != "")
-			$html .= $check_advanced;
-			if($check_custom != "")
-			$html .= $check_custom;
-			if($check_advanced != "" || $check_custom != "")
-			$html .= "</div style=\"clear:both;\">";
+			if($check_advanced != "" || $check_custom != "") {
+				$html .= "<div class=\"vmCartAttributes$cls_suffix\">";
+			}
+			if($check_advanced != "") {
+				$html .= $check_advanced;
+			}
+			if($check_custom != "") {
+				$html .= $check_custom;
+			}
+			if($check_advanced != "" || $check_custom != "") {
+				$html .= "</div>";
+			}
 		}
 
 		$html .="</div>";
@@ -425,7 +430,7 @@ class ps_product_attribute {
 		}
 		if(( $db->num_rows() > 0 ) ) {
 
-			$html .= "<div class=\"vmCartDetails$cls_sfuffix\" width=\"100%\" />\n";
+			$html .= "<div class=\"vmCartDetails$cls_sfuffix\" width=\"100%\">\n";
 			$ci=0;
 			while ($db->next_record()) {
 				$parent_id= $db->f("product_parent_id");
@@ -437,7 +442,7 @@ class ps_product_attribute {
 				// Start row for this child
 				// Show Header row and create headings for all attributes
 
-				$html_header = "<div class=\"vmCartChildHeading$cls_sfuffix\" />\n";
+				$html_header = "<div class=\"vmCartChildHeading$cls_sfuffix\">\n";
 				if($dd == "Y") {
 					$html_header .= "<span style=\"float: left;width: $dw;\">$VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE</span />";
 				}
@@ -462,31 +467,32 @@ class ps_product_attribute {
 						$attrib_value[] = $db_item->f("attribute_value");
 					}
 				}
-				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES)
+				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
 				//$html_header .= "<span style=\"float: right;text-align: center;\" />$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$VM_LANG->_PHPSHOP_CART_QUANTITY</span>";
-
+				}
 				$html_header .= "</div><br>";
 
 				if($display_header == "Y" && $ci == 0) {
 					$html .= $html_header;
 				}
 				// End show Header Row
-				if ($ci++ % 2)
-				$bgcolor="vmRowOne";
-				else
-				$bgcolor="vmRowTwo";
+				if ($ci++ % 2) {
+					$bgcolor="vmRowOne";
+				} else {
+					$bgcolor="vmRowTwo";
+				}
 				$flypage = $ps_product->get_flypage( $product_id );
 
-				$html .= "<div class=\"vmCartChild$cls_sfuffix $bgcolor$cls_sfuffix\" />\n";
-				$html .= "<div class=\"vmCartChildElement$cls_sfuffix\" />\n";
-				$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"".$db->f("product_id") ."\">";
+				$html .= "<div class=\"vmCartChild$cls_sfuffix $bgcolor$cls_sfuffix\">\n";
+				$html .= "<div class=\"vmCartChildElement$cls_sfuffix\">\n";
+				$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"".$db->f("product_id") ."\" />";
 				// If this is a child of a parent set the correct product_id for page return
 				if (@$child_id && $pp) {
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$db->f("product_id")."\">";
+					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$db->f("product_id")."\" />";
 				}
 				else {
 					$master_id = $parent_id;
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$parent_id."\">";
+					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$parent_id."\" />";
 				}
 
 				//Check for displaying description
@@ -560,29 +566,34 @@ class ps_product_attribute {
 					$product_id = $db->f("product_parent_id");
 					$check_advanced = $this->list_advanced_attribute($product_id, $db->f("product_id"));
 					$check_custom = $this->list_custom_attribute($product_id, $db->f("product_id"));
-					if($check_advanced != "" || $check_custom != "")
-					$html .= "</div class=\"vmClearAttribs$cls_sfuffix\"><div class=\"vmCartAttributes$cls_sfuffix\">";
-					if($check_advanced != "")
-					$html .= $check_advanced;
-					if($check_custom != "")
-					$html .= $check_custom;
-					$html .= "</div style=\"clear:both;\">";
+					if($check_advanced != "" || $check_custom != "") {
+						$html .= "</div><div class=\"vmCartAttributes$cls_sfuffix\">";
+					}
+					if($check_advanced != "") {
+						$html .= $check_advanced;
+					}
+					if($check_custom != "") {
+						$html .= $check_custom;
+					}
+					$html .= "</div>";
 				}
 				else {
-					$html .= "</div class=\"vmClearAttribs$cls_sfuffix\">";
+					$html .= "</div>";
 				}
 
-				$html .="</div style=\"clear: both;\">";
+				$html .="</div>";
 
 			}
 			$html .= "<input type=\"hidden\" name=\"set_price[]\" value=\"\" />
             <input type=\"hidden\" name=\"adjust_price[]\" value=\"\" />
             <input type=\"hidden\" name=\"master_product[]\" value=\"\" />";
 			$html .= "</div >";
-			if($display_type == "radio")
-			$list_type = "radio";
-			else
-			$list_type = "list";
+			if($display_type == "radio") {
+				$list_type = "radio";
+			}
+			else {
+				$list_type = "list";
+			}
 		}
 		else {
 
@@ -608,8 +619,8 @@ class ps_product_attribute {
 	 */
 
 	function list_attribute_multi($product_id,$display_use_parent,$display_header,$child_link,$dd,$dw,$aw,$pt,$cls_suffix,$child_ids,$product_price) {
-		global $VM_LANG, $CURRENCY_DISPLAY,$mm_action_url,$sess,$auth;
-		global $mainframe;
+		global $mainframe, $VM_LANG, $CURRENCY_DISPLAY,$mm_action_url,$sess,$auth;
+
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
 		require_once(CLASSPATH . 'ps_product_type.php' );
@@ -626,18 +637,23 @@ class ps_product_attribute {
 		$html = "";
 		// Get list of children
 		$pp = $ps_product->parent_has_children($product_id);
-		if($pp)
-		$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND product_parent_id='$product_id'  ";
-		else
-		$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND product_id='$product_id'  ";
-		if($child_ids)
-		$q .= "UNION ALL SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND  product_id IN ($child_ids)";
+		if($pp) {
+			$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND product_parent_id='$product_id'  ";
+		}
+		else {
+			$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND product_id='$product_id'  ";
+		}
+		if($child_ids) {
+			$q .= "UNION ALL SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND  product_id IN ($child_ids)";
+		}
 		$db->setQuery($q);
 		$db->query();
-		if($pp)
-		$master_id = $product_id;
-		else
-		$master_id = $db->f("product_id");
+		if($pp) {
+			$master_id = $product_id;
+		}
+		else {
+			$master_id = $db->f("product_id");
+		}
 		if( $db->num_rows() < 1 ) {
 			// Try to Get list of sisters & brothers
 			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
@@ -652,18 +668,19 @@ class ps_product_attribute {
 		}
 		if(( $db->num_rows() > 0 ) ) {
 
-			$html .= "<div class=\"vmCartDetails$cls_suffix\" width=\"100%\" />\n";
+			$html .= "<div class=\"vmCartDetails$cls_suffix\" width=\"100%\">\n";
 			$ci=0;
 			while ($db->next_record()) {
 				$parent_id= $db->f("product_parent_id");
 				$selected = isset($child_id) ? ($db->f("product_id")==$child_id ? "selected=\"selected\"" : "") : "";
 
-				if (($db->f("product_id") <> $curr_product) && @$child_id)
-				continue;
+				if (($db->f("product_id") <> $curr_product) && @$child_id) {
+					continue;
+				}
 				// Start row for this child
 				// Show Header row and create headings for all attributes
 
-				$html_header = "<div class=\"vmCartChildHeading$cls_suffix\" />\n";
+				$html_header = "<div class=\"vmCartChildHeading$cls_suffix\">\n";
 				if($dd == "Y")
 				$html_header .= "<span style=\"float: left;width: $dw;\">$VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE</span />";
 				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku ";
@@ -682,27 +699,30 @@ class ps_product_attribute {
 						$attrib_value[] = $db_item->f("attribute_value");
 					}
 				}
-				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES)
-				//$html_header .= "<span style=\"float: right;text-align: center;\" />$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$VM_LANG->_PHPSHOP_CART_QUANTITY</span>";
-				$html_header .= "</div><br>";
+				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
+					//$html_header .= "<span style=\"float: right;text-align: center;\" />$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$VM_LANG->_PHPSHOP_CART_QUANTITY</span>";
+				}
+				$html_header .= "</div><br />";
 
 				if($display_header == "Y" && $ci == 0)
 				$html .= $html_header;
 				// End show Header Row
-				if ($ci++ % 2)
-				$bgcolor="vmRowOne";
-				else
-				$bgcolor="vmRowTwo";
-				$html .= "<div class=\"vmCartChild$cls_suffix $bgcolor$cls_suffix\" />\n";
+				if ($ci++ % 2) {
+					$bgcolor="vmRowOne";
+				}
+				else {
+					$bgcolor="vmRowTwo";
+				}
+				$html .= "<div class=\"vmCartChild$cls_suffix $bgcolor$cls_suffix\">\n";
 				$html .= "<form action=\"". $mm_action_url."index.php\" method=\"post\" name=\"addtocart\" id=\"addtocart".$db->f("product_id") ."\" class=\"addtocart_form\" onsubmit=\"handleAddToCart( this.id );return false;\">";
 				$html .= "<div class=\"vmCartChildElement$cls_suffix\" />\n";
-				$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"".$db->f("product_id") ."\">";
+				$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"".$db->f("product_id") ."\" />";
 				if (@$child_id && $pp) {
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$db->f("product_id")."\">";
+					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$db->f("product_id")."\" />";
 				}
 				else {
 					$master_id = $parent_id;
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$parent_id."\">";
+					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$parent_id."\" />";
 				}
 				$flypage = $ps_product->get_flypage( $product_id );
 				if($dd == "Y") {
@@ -778,15 +798,16 @@ class ps_product_attribute {
 					$check_advanced = $this->list_advanced_attribute($master_id, $db->f("product_id"));
 					$check_custom = $this->list_custom_attribute($master_id, $db->f("product_id"));
 					if($check_advanced != "" || $check_custom != "")
-					$html .= "</div class=\"vmClearAttribs$cls_suffix\"><div class=\"vmCartAttributes$cls_suffix\">";
+					$html .= "</div><div class=\"vmCartAttributes$cls_suffix\">";
 					if($check_advanced != "")
 					$html .= $check_advanced;
 					if($check_custom != "")
 					$html .= $check_custom;
-					$html .= "</div style=\"clear: both;\">";
+					$html .= "</div>";
 				}
-				else
-				$html .= "</div class=\"vmClearAttribs$cls_suffix\">";
+				else {
+					$html .= "</div>";
+				}
 				$html .="</div></form>";
 			}
 			$html .= "</div>";
@@ -870,7 +891,7 @@ class ps_product_attribute {
 						$html.="<option value=\"$base_var\">$base_value</option>";
 					}
 				}
-				$html.="</select></div><br style=\"clear:both;\"/>\n";
+				$html.="</select></div><br style=\"clear:both;\" />\n";
 				//$html .= "</span><br style=\"clear:both;\">";
 			}
 			//$html.="</table>";
@@ -1022,8 +1043,8 @@ class ps_product_attribute {
 	}
 
 	function show_radio_quantity_box() {
-		$html ="<input type=\"text\" class=\"inputboxquantity\"\" size=\"4\" id=\"quantity_adjust\"
-            name=\"quantity_adjust\" value=\"1\" style=\"vertical-align: middle;\" onChange=\"alterQuantity(this.form)\"/>";
+		$html ="<input type=\"text\" class=\"inputboxquantity\"\" size=\"4\" id=\"quantity_adjust\" "
+           ." name=\"quantity_adjust\" value=\"1\" style=\"vertical-align: middle;\" onchange=\"alterQuantity(this.form)\"/>";
 		$html .="<input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: url(".VM_THEMEURL."images/up_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity_adjust'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;alterQuantity(this.form);return false;\" />
             <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: url(".VM_THEMEURL."images/down_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity_adjust'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;alterQuantity(this.form);return false;\" />
             ";
@@ -1069,19 +1090,21 @@ class ps_product_attribute {
 		//Start output of quantity
 		//Check for incompatabilities and reset to normal
 
-		if(!@$display_type || (@$display_type == "hide" && $child == 'Y') || (@$display_type == "radio" && $child == 'YM') || (@$display_type == "radio" && !$child))
-		$display_type = "none";
+		if(!@$display_type || (@$display_type == "hide" && $child == 'Y') || (@$display_type == "radio" && $child == 'YM') || (@$display_type == "radio" && !$child)) {
+			$display_type = "none";
+		}
 		switch($display_type) {
 			case "radio" : //Radio Box
-			$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"".$quantity."\" />";
-			$html .= "<input type=\"radio\" class=\"quantitycheckbox\" id=\"selItem".$prod_id."\" name=\"selItem\" value=\"0\" ";
-			if ($quantity > 0 )
-			$html .= "checked=\"checked\" ";
-			$html .= "onClick=\"alterQuantity(this.form)\" />";
-			break;
+				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"".$quantity."\" />";
+				$html .= "<input type=\"radio\" class=\"quantitycheckbox\" id=\"selItem".$prod_id."\" name=\"selItem\" value=\"0\" ";
+				if ($quantity > 0 ) {
+					$html .= "checked=\"checked\" ";
+				}
+				$html .= "onClick=\"alterQuantity(this.form)\" />";
+				break;
 			case "hide" : // Hide box - but set quantity to 1!
-			$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"1\" />";
-			break;
+				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"1\" />";
+				break;
 			case "check" :
 				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"".$quantity."\" style=\"vertical-align: middle;\"/>
                 <input type=\"checkbox\" class=\"quantitycheckbox\" id =\"check$id\" name=\"check[]\" ";
