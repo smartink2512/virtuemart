@@ -42,6 +42,7 @@ class ps_html {
 	 * @return string HTML drop-down list
 	 */	
 	function selectList($name, $value, $arr, $size=1, $multiple="", $extra="") {
+		$html = '';
 		if( !empty( $arr ) ) {
 			$html = "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
 

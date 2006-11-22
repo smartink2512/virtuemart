@@ -33,7 +33,7 @@ if( !empty($_REQUEST['coupon_error']) ) {
 // If you have a coupon code, please enter it here:
 echo $VM_LANG->_PHPSHOP_COUPON_ENTER_HERE . '<br />';
 ?>  
-	    <form action="<?php echo $mm_action_url ?>index.php" method="post" onsubmit="return checkCouponField(this);">
+	    <form action="<?php echo $mm_action_url . basename( $_SERVER['PHP_SELF']) ?>" method="post" onsubmit="return checkCouponField(this);">
 			<input type="text" name="coupon_code" id="coupon_code" width="10" maxlength="30" class="inputbox" />
 			<input type="hidden" name="Itemid" value="<?php echo @intval($_REQUEST['Itemid'])?>" />
 			<input type="hidden" name="do_coupon" value="yes" />

@@ -360,7 +360,11 @@ class ps_cart {
 	function delete($d) {
 
 		$temp = array();
-		$product_id = $d["prod_id"];
+		if( !empty( $d["prod_id"])) {
+			$product_id = (int)$d["prod_id"];
+		} else {
+			$product_id = (int)$d["product_id"];
+		}
         $deleted = 0;
 		if (!$product_id) {
 			$_SESSION['last_page'] = "shop.cart";

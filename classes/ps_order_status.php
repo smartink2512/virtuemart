@@ -161,6 +161,7 @@ class ps_order_status extends vmAbstractObject {
 
 		$q = "SELECT order_status_id, order_status_code, order_status_name FROM #__{vm}_order_status ORDER BY list_order";
 		$db->query($q);
+		$array = array();
 		while ($db->next_record()) {
 			$array[$db->f("order_status_code")] = $db->f("order_status_name");
 		}
