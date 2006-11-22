@@ -1082,6 +1082,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_orders` (
   `order_shipping` decimal(10,2) default NULL,
   `order_shipping_tax` decimal(10,2) default NULL,
   `coupon_discount` decimal(12,2) NOT NULL default '0.00',
+  `coupon_code` VARCHAR( 32 ) NULL,
   `order_discount` decimal(12,2) NOT NULL default '0.00',
   `order_currency` varchar(16) default NULL,
   `order_status` char(1) default NULL,
