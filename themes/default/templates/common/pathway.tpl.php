@@ -18,7 +18,7 @@ foreach( $category_list as $category ) { ?>
 	if( $catcount < $count || isset( $product_name )) {
 		// This prints the separator image (uses the one from the template if available!)
 		// Cat1 * Cat2 * ...
-		echo ps_product_category::pathway_separator();
+		echo vmCommonHTML::pathway_separator();
 		
 	}
 	$catcount++;

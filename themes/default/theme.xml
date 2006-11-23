@@ -58,6 +58,9 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		
+		<param name="useAjaxCartActions" type="radio" default="1" label="Use Ajax to add, update or delete products from the cart?" description="When enabled, the customer can put products into his/her cart without being redirected to a new page. Customers who have disabled Javascript will still be able to add/update/delete products to/from the cart.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
     </params>
 </mosinstall>

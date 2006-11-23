@@ -105,6 +105,18 @@ class ps_paypal {
             <td><?php echo $VM_LANG->_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN ?></td>
         </tr>
         <tr class="row0">
+        <td><strong>Accept only verified buyers?</strong></td>
+            <td>
+                <select name="PAYPAL_VERIFIED_ONLY" class="inputbox" >
+	                <option <?php if (@PAYPAL_VERIFIED_ONLY != '1') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+	                <option <?php if (@PAYPAL_VERIFIED_ONLY == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                </select>
+            </td>
+            <td>Here you can choose if you only want to accept payments from buyers with a
+            <strong>verified</strong> PayPal account (when an account is not verified, PayPal does transfer the funds, but they do not fully guarantee the validity of the sale).
+            </td>
+        </tr>
+        <tr class="row1">
             <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED ?></strong></td>
             <td>
                 <select name="PAYPAL_INVALID_STATUS" class="inputbox" >
@@ -159,6 +171,7 @@ class ps_paypal {
       $my_config_array = array(
                               "PAYPAL_DEBUG" => $d['PAYPAL_DEBUG'],
                               "PAYPAL_EMAIL" => $d['PAYPAL_EMAIL'],
+                              "PAYPAL_VERIFIED_ONLY" => $d['PAYPAL_VERIFIED_ONLY'],
                               "PAYPAL_VERIFIED_STATUS" => $d['PAYPAL_VERIFIED_STATUS'],
                               "PAYPAL_PENDING_STATUS" => $d['PAYPAL_PENDING_STATUS'],
                               "PAYPAL_INVALID_STATUS" => $d['PAYPAL_INVALID_STATUS']

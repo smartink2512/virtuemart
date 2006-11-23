@@ -48,15 +48,43 @@ if ($_POST) {
         }
         else
             die( "Joomla Configuration File not found!" );
-                        
-        require_once($mosConfig_absolute_path. '/includes/database.php');
-        $database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
+        
+        include_once( $my_path.'/compat.joomla1.5.php' );
+        
+        if( class_exists( 'jconfig')) {
+			define( '_JEXEC', 1 );
+			define('JPATH_BASE', $mosConfig_absolute_path );
+			
+			require_once ( JPATH_BASE .'/includes/defines.php' );
+			require_once ( JPATH_BASE .'/includes/application.php' );
+			require_once ( JPATH_BASE. '/includes/database.php');
+			// create the mainframe object
+			$mainframe = new JSite();
+			
+			// set the configuration
+			$mainframe->setConfiguration(JPATH_CONFIGURATION . DS . 'configuration.php');
+			
+			// load system plugin group
+			JPluginHelper::importPlugin( 'system' );
+			
+			// trigger the onStart events
+			$mainframe->triggerEvent( 'onBeforeStart' );
+			
+			// create the session
+			$mainframe->setSession( $mainframe->getCfg('live_site').$mainframe->getClientId() );
+			$database =& JFactory::getDBO();
+        }
+        else {
+        	
+        	require_once($mosConfig_absolute_path. '/includes/database.php');
+        	$database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
+        }
         
         // load Joomla Language File
         if (file_exists( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' )) {
             require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
         }
-        else {
+        elseif (file_exists( $mosConfig_absolute_path. '/language/english.php' )) {
             require_once( $mosConfig_absolute_path. '/language/english.php' );
         }
     /*** END of Joomla config ***/
@@ -67,11 +95,22 @@ if ($_POST) {
         require_once( CLASSPATH. 'ps_main.php');
         
 		require_once( CLASSPATH. "language.class.php" );
-	
-        require_once( $mosConfig_absolute_path . '/includes/phpmailer/class.phpmailer.php');
-        $mail = new mosPHPMailer();
-        $mail->PluginDir = $mosConfig_absolute_path . '/includes/phpmailer/';
-        $mail->SetLanguage("en", $mosConfig_absolute_path . '/includes/phpmailer/language/');
+		require_once(CLASSPATH."Log/Log.php");
+		$vmLoggerConf = array(
+			'buffering' => true
+			);
+		/**
+		 * This Log Object will help us log messages and errors
+		 * See http://pear.php.net/package/Log
+		 * @global Log vmLogger
+		 */
+		$vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
+		$GLOBALS['vmLogger'] =& $vmLogger;
+		
+        require_once( CLASSPATH . 'phpmailer/class.phpmailer.php');
+        $mail = new vmPHPMailer();
+        $mail->PluginDir = CLASSPATH . 'phpmailer/';
+        $mail->SetLanguage("en", CLASSPATH . 'phpmailer/language/');
               
         /* load the VirtueMart Language File */
         if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' ))
@@ -91,7 +130,11 @@ if ($_POST) {
 		else {
 			$debug_email_address = PAYPAL_EMAIL;
 		}
-                        
+	    // restart session
+	    require_once(CLASSPATH."ps_session.php");
+	
+	    // Constructor initializes the session!
+	    $sess = new ps_session();                        
     /*** END VirtueMart part ***/
     
     debug_msg( "1. Finished Initialization of the notify.php script" );
@@ -131,20 +174,32 @@ if ($_POST) {
     
     
     $paypal_receiver_email = PAYPAL_EMAIL;
+    $business = trim(stripslashes($_POST['business'])); 
     $item_name = trim(stripslashes($_POST['item_name']));
     $item_number = trim(stripslashes($_POST['item_number']));
     $payment_status = trim(stripslashes($_POST['payment_status']));
-    $payment_gross = trim(stripslashes($_POST['payment_gross']));
+    
+    // The order total amount including taxes, shipping and discounts
+    $mc_gross = trim(stripslashes($_POST['mc_gross']));
+    
+    // Can be USD, GBP, EUR, CAD, JPY
+    $currency_code =  trim(stripslashes($_POST['mc_currency']));
+    
     $txn_id = trim(stripslashes($_POST['txn_id']));
     $receiver_email = trim(stripslashes($_POST['receiver_email']));
     $payer_email = trim(stripslashes($_POST['payer_email']));
     $payment_date = trim(stripslashes($_POST['payment_date']));
+    
+    // The Order Number (not order_id !)
     $invoice =  trim(stripslashes($_POST['invoice']));
+    
     $amount =  trim(stripslashes($_POST['amount']));
-    $currency_code =  trim(stripslashes($_POST['currency_code']));
+    
     $quantity = trim(stripslashes($_POST['quantity']));
     $pending_reason = trim(stripslashes($_POST['pending_reason']));
     $payment_method = trim(stripslashes($_POST['payment_method']));
+    
+    // Billto
     $first_name = trim(stripslashes($_POST['first_name']));
     $last_name = trim(stripslashes($_POST['last_name']));
     $address_street = trim(stripslashes($_POST['address_street']));
@@ -152,12 +207,13 @@ if ($_POST) {
     $address_state = trim(stripslashes($_POST['address_state']));
     $address_zipcode = trim(stripslashes($_POST['address_zip']));
     $address_country = trim(stripslashes($_POST['address_country']));
+    
     $payer_email = trim(stripslashes($_POST['payer_email']));
     $address_status = trim(stripslashes($_POST['address_status']));
+    
     $payer_status = trim(stripslashes($_POST['payer_status']));
     $notify_version = trim(stripslashes($_POST['notify_version'])); 
     $verify_sign = trim(stripslashes($_POST['verify_sign'])); 
-    $business = trim(stripslashes($_POST['business'])); 
     $custom = trim(stripslashes($_POST['custom'])); 
     $txn_type = trim(stripslashes($_POST['txn_type'])); 
     
@@ -168,9 +224,11 @@ if ($_POST) {
     }  
     */
     if( PAYPAL_DEBUG != "1" ) {
-    
+    	// Get the list of IP addresses for www.paypal.com and notify.paypal.com
         $paypal_iplist = gethostbynamel('www.paypal.com');
-        
+		$paypal_iplist2 = gethostbynamel('notify.paypal.com');
+        $paypal_iplist = array_merge( $paypal_iplist, $paypal_iplist2 );
+
         $paypal_sandbox_hostname = 'ipn.sandbox.paypal.com';
         $remote_hostname = gethostbyaddr( $_SERVER['REMOTE_ADDR'] );
         
@@ -182,13 +240,19 @@ if ($_POST) {
         }
         else {
             $ips = "";
+            // Loop through all allowed IPs and test if the remote IP connected here
+            // is a valid IP address
             foreach( $paypal_iplist as $ip ) {
-                $ips .= "$ip,";
+                $ips .= "$ip,\n";
                 $parts = explode( ".", $ip );
                 $first_three = $parts[0].".".$parts[1].".".$parts[2];
                 if( preg_match("/^$first_three/", $_SERVER['REMOTE_ADDR']) ) {
                     $valid_ip = true;
-                    $hostname = "www.paypal.com";
+                    if( in_array( $ip, $paypal_iplist2 ) ) {
+                        $hostname = "notify.paypal.com";
+                    } else {
+                        $hostname = "www.paypal.com";
+                    }
                 }
             }
         }
@@ -285,11 +349,11 @@ if ($_POST) {
       debug_msg( "5. $error_description ");
       
       // Get the Order Details from the database      
-      $qv = "SELECT `order_id`, `order_number`, `user_id`, `order_subtotal`
-                                `order_total`, `order_currency`, `order_tax`, 
-                                `order_shipping_tax`, `coupon_discount`, `order_discount`
-                        FROM `#__{vm}_orders` 
-                        WHERE `order_number`='".$invoice."'";
+      $qv = "SELECT `order_id`, `order_number`, `user_id`, `order_subtotal`,
+                    `order_total`, `order_currency`, `order_tax`, 
+                    `order_shipping_tax`, `coupon_discount`, `order_discount`
+                FROM `#__{vm}_orders` 
+                WHERE `order_number`='".$invoice."'";
       $db = new ps_DB;
       $db->query($qv);
       $db->next_record();
@@ -305,7 +369,7 @@ if ($_POST) {
       // ...read the results of the verification...
       // If VERIFIED = continue to process the TX...
       //-------------------------------------------
-        if (eregi ( "VERIFIED", $res)) {
+        if (eregi ( "VERIFIED", $res) || @PAYPAL_VERIFIED_ONLY == '0' ) {
             //----------------------------------------------------------------------
             // If the payment_status is Completed... Get the password for the product
             // from the DB and email it to the customer.
@@ -318,37 +382,30 @@ if ($_POST) {
                     $mail->AddAddress($debug_email_address);
                     $mail->Subject = "PayPal IPN Transaction on your site: Order ID not found";
                     $mail->Body = "The right order_id wasn't found during a PayPal transaction on your website.
-                    The Order ID received was: $invoice";
+                    The Order ID received was: $invoice\n".$qv."\n".$db->_sql."\n".print_r( $db->record, true );
                     $mail->Send();
                     exit();
                 }
-                /*$tax_total = $db->f("order_tax") + $db->f("order_shipping_tax");
-                                $discount_total = $db->f("coupon_discount") + $db->f("order_discount");
-                                $amount_check = round( $db->f("order_subtotal")+$tax_total-$discount_total, 2);
+                
+                // AMOUNT and CURRENCY CODE CHECK
+				$amount_check = $db->f("order_total");
                                 
-                if( $amount != $amount_check 
-                        || $currency_code != $db->f('order_currency')
-                                ) {
+                if( $mc_gross != $amount_check 
+                   || $currency_code != $db->f('order_currency') ) {
                     $mail->From = $mosConfig_mailfrom;
                     $mail->FromName = $mosConfig_fromname;
                     $mail->AddAddress($debug_email_address);
-                    $mail->Subject = "PayPal IPN Transaction on your site: Received Amount not correct";
+                    $mail->Subject = "PayPal IPN Error: Order Total/Currency Check failed";
                     $mail->Body = "During a paypal transaction on your site the received amount didn't match the order total.
+                    Order ID: ".$db->f('order_id').".
                     Order Number: $invoice.
-                    The amount received was: $amount.
-                    It should be:
-                                   ".$db->f("order_tax")." (Order Tax)
-                                 + ".$db->f("order_shipping_tax")." (Order shipping tax)
-                                 - ".$db->f("coupon_discount")." (Coupon Discount)
-                                 - ".$db->f("order_discount")." (Payment Discount)
-                                 + ".$db->f("order_subtotal")." (Order Subtotal)
-                                 ----------------------------------------------
-                                 = ".$amount_check;
+                    The amount received was: $mc_gross $currency_code.
+                    It should be: $amount_check ".$db->f("order_currency").".";
                     
                     $mail->Send();
                     exit();
                 }
-                */
+                
                 // UPDATE THE ORDER STATUS to 'Completed'
                 if(eregi ("Completed", $payment_status)) {
                     $d['order_status'] = PAYPAL_VERIFIED_STATUS;                    

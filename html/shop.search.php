@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ADVANCED_SEARCH );
+$mainframe->appendPathWay( $VM_LANG->_PHPSHOP_ADVANCED_SEARCH );
 
 ?>
 <h2><?php echo $VM_LANG->_PHPSHOP_ADVANCED_SEARCH ?></h2>

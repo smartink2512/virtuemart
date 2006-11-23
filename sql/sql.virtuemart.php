@@ -389,7 +389,7 @@ $db->query( "INSERT INTO `#__{vm}_country` VALUES (1, 1, 'Afghanistan', 'AFG', '
 (234, 1, 'Western Sahara', 'ESH', 'EH'),
 (235, 1, 'Yemen', 'YEM', 'YE'),
 (236, 1, 'Yugoslavia', 'YUG', 'YU'),
-(237, 1, 'Zaire', 'ZAR', 'ZR'),
+(237, 1, 'The Democratic Republic of Congo', 'DRC', 'DC'),
 (238, 1, 'Zambia', 'ZMB', 'ZM'),
 (239, 1, 'Zimbabwe', 'ZWE', 'ZW'),
 (240, 1, 'East Timor', 'XET', 'XE'),

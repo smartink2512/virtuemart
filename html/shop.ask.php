@@ -53,13 +53,17 @@ if( !$db_product->next_record() ) {
 
 
 /* Set Dynamic Page Title */
-$mainframe->setPageTitle( _ENQUIRY.' - '.substr($db_product->f('product_name'), 0, 60 ) );
+$pagetitle = _ENQUIRY.' - '.substr($db_product->f('product_name'), 0, 60 );
+$mainframe->setPageTitle(  );
 
 // set up return to product link
-$return_seller = "<a class=\"button\" href=\"$mosConfig_live_site/index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$category_id&Itemid=$Itemid\">";
-$return_seller .= "Return to product</a>";
+$product_link = $sess->url( $mm_action_url.basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=$product_id&category_id=$category_id" );
+$return_seller = "<a class=\"button\" href=\"". $product_link ."\">";
+$return_seller .= $VM_LANG->_VM_RETURN_TO_PRODUCT."</a>";
 $name = "";
 $email = "";
+
+$mainframe->appendPathWay( vmCommonHTML::hyperLink( $product_link,$db_product->f('product_name') ) . vmCommonHTML::pathway_separator() . $pagetitle );
 
 if ($my->id) {
 	$theUser = new mosUser( $database );

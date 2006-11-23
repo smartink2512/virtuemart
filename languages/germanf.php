@@ -1749,6 +1749,7 @@ Bitte nicht auf diese Nachricht antworten, da sie automatisch generiert wurde un
 	var $_PHPSHOP_DISPLAY_START = 'Start Value';
 	var $_PHPSHOP_DISPLAY_END = 'End Value';
 	var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
+	var $_VM_RETURN_TO_PRODUCT = 'Return to product';
         
 }
 class phpShopLanguage extends vmLanguage { }

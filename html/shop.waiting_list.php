@@ -46,7 +46,7 @@ if ($auth["user_id"]) {
  } 
  else {
  	?> 
-	<input type="text" class="inputbox" name="notify_email"><br />
+	<input type="text" class="inputbox" name="notify_email" /><br />
 	<?php
 }
 ?>

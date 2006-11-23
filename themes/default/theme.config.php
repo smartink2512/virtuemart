@@ -24,3 +24,4 @@ showAvailability=1
 showPathway=0
 useGreyBoxOnCheckout=1
 useLightBoxImages=1
+useAjaxCartActions=1

@@ -26,7 +26,10 @@ $q .= "AND product_type_publish='Y'";
 $db->query($q);
 
 $browsepage = $db->f("product_type_browsepage");
-	
+
+$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_PARAMETER_SEARCH );
+$mainframe->appendPathWay( $VM_LANG->_PHPSHOP_PARAMETER_SEARCH );
+
 echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 
 	if (!$db->next_record()) { // There is no published Product Type

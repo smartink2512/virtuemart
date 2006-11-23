@@ -1731,6 +1731,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_PHPSHOP_DISPLAY_START = 'Start Value';
 	var $_PHPSHOP_DISPLAY_END = 'End Value';
 	var $_PHPSHOP_DISPLAY_STEP = 'Step Value';
+	var $_VM_RETURN_TO_PRODUCT = 'Return to product';
         
 }
 class phpShopLanguage extends vmLanguage { }

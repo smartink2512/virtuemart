@@ -19,45 +19,46 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
-if( class_exists('jversion')) {
-	global $mainframe;
-
-	$mosConfig_host = $mainframe->getCfg('host' );
-	$mosConfig_user = $mainframe->getCfg('user' );
-	$mosConfig_password = $mainframe->getCfg('password' );
-	$mosConfig_db = $mainframe->getCfg('db' );
-	$mosConfig_dbprefix = $mainframe->getCfg('dbprefix' );
-	$mosConfig_mailer = $mainframe->getCfg('mailer' );
-	$mosConfig_mailfrom = $mainframe->getCfg('mailfrom' );
-	$mosConfig_fromname = $mainframe->getCfg('fromname' );
-	$mosConfig_sendmail = $mainframe->getCfg('sendmail' );
-	$mosConfig_smtpauth = $mainframe->getCfg('smtpauth' );
-	$mosConfig_smtpuser = $mainframe->getCfg('smtpuser' );
-	$mosConfig_smtppass = $mainframe->getCfg('smtppass' );
-	$mosConfig_smtphost = $mainframe->getCfg('smtphost' );
-	$mosConfig_debug = $mainframe->getCfg('debug' );
-	$mosConfig_caching = $mainframe->getCfg('caching' );
-	$mosConfig_cachepath = $mainframe->getCfg('cachepath' );
-	$mosConfig_cachetime = $mainframe->getCfg('cachetime' );
-	$mosConfig_secret = $mainframe->getCfg('secret' );
-	$mosConfig_editor = $mainframe->getCfg('editor' );
-	$mosConfig_offset = $mainframe->getCfg('offset' );
-	$mosConfig_lifetime = $mainframe->getCfg('lifetime' );
-	$mosConfig_sitename = $mainframe->getCfg('sitename' );
-	$mosConfig_list_limit = $mainframe->getCfg('list_limit' );
-	$mosConfig_gzip = $mainframe->getCfg('gzip' );
-	$mosConfig_lang = $mainframe->getCfg('lang' );
-	$mosConfig_allowUserRegistration = $mainframe->getCfg('allowUserRegistration' );
-	$mosConfig_useractivation = $mainframe->getCfg('useractivation' );
-	$mosConfig_sef = $mainframe->getCfg('sef' );
-	$mosConfig_hidePdf = $mainframe->getCfg('hidePdf' );
-	$mosConfig_hidePrint = $mainframe->getCfg('hidePrint' );
-	$mosConfig_hideEmail = $mainframe->getCfg('hideEmail' );
-	$mosConfig_icons = $mainframe->getCfg('icons' );
-	$mosConfig_live_site = $mainframe->getCfg('live_site' );
-	$mosConfig_absolute_path = $mainframe->getCfg('absolute_path' );
-
-	$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
+if( class_exists('jconfig')) {
+	
+	$jconfig = new jconfig();
+	$mosConfig_host = $jconfig->host;
+	$mosConfig_user = $jconfig->user;
+	$mosConfig_password = $jconfig->password;
+	$mosConfig_db = $jconfig->db;
+	$mosConfig_dbprefix = $jconfig->dbprefix;
+	$mosConfig_mailer = $jconfig->mailer;
+	$mosConfig_mailfrom = $jconfig->mailfrom;
+	$mosConfig_fromname = $jconfig->fromname;
+	$mosConfig_sendmail = $jconfig->sendmail;
+	$mosConfig_smtpauth = $jconfig->smtpauth;
+	$mosConfig_smtpuser = $jconfig->smtpuser;
+	$mosConfig_smtppass = $jconfig->smtppass;
+	$mosConfig_smtphost = $jconfig->smtphost;
+	$mosConfig_debug = $jconfig->debug;
+	$mosConfig_caching = $jconfig->caching;
+	$mosConfig_cachepath = $jconfig->cachepath;
+	$mosConfig_cachetime = $jconfig->cachetime;
+	$mosConfig_secret = $jconfig->secret;
+	$mosConfig_editor = $jconfig->editor;
+	$mosConfig_offset = $jconfig->offset;
+	$mosConfig_lifetime = $jconfig->lifetime;
+	$mosConfig_sitename = $jconfig->sitename;
+	$mosConfig_list_limit = $jconfig->list_limit;
+	$mosConfig_gzip = $jconfig->gzip;
+	$mosConfig_lang = $jconfig->lang;
+	$mosConfig_allowUserRegistration = $jconfig->allowUserRegistration;
+	$mosConfig_useractivation = $jconfig->useractivation;
+	$mosConfig_sef = $jconfig->sef;
+	$mosConfig_hidePdf = $jconfig->hidePdf;
+	$mosConfig_hidePrint = $jconfig->hidePrint;
+	$mosConfig_hideEmail = $jconfig->hideEmail;
+	$mosConfig_icons = $jconfig->icons;
+	$mosConfig_live_site = $jconfig->live_site;
+	$mosConfig_absolute_path = $jconfig->absolute_path;
+	if( class_exists( 'jversion' )) {
+		$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
+	}
 	
 	@DEFINE('_BUTTON_SEND_REG','Send Registration');
 	@DEFINE('_CONTACT_FORM_NC','Please make sure the form is complete and valid.');

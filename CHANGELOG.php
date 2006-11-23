@@ -35,8 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-17.11.2006 soeren
+23.11.2006 soeren
 
++ added pathways and pagetitles to various pages
+^ moved the function ps_product_category::pathway_separator() to the vmCommonHTML class, call it by using vmCommonHTML::pathway_separator() now!
+
+17.11.2006 soeren
 
 # cleaned up some old deprecated constants and language tokens
 + added extended javascript-based "simple attribute" handler by Tobias (alias eaxs, http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=22445.0)

@@ -965,28 +965,6 @@ class ps_product_category extends vmAbstractObject {
 	}
 
 	/**
-	 * tests for template/default pathway arrow separator
-	 * @author FTW Stroker
-	 * @static 
-	 * @return string The separator for the pathway breadcrumbs
-	 */
-	function pathway_separator() {
-		global $mainframe, $mosConfig_absolute_path, $mosConfig_live_site;
-		$imgPath =  'templates/' . $mainframe->getTemplate() . '/images/arrow.png';
-		if (file_exists( "$mosConfig_absolute_path/$imgPath" )){
-			$img = '<img src="' . $mosConfig_live_site . '/' . $imgPath . '" height="9" width="9" border="0" alt="arrow" />';
-		} else {
-			$imgPath = '/images/M_images/arrow.png';
-			if (file_exists( $mosConfig_absolute_path . $imgPath )){
-				$img = '<img src="' . $mosConfig_live_site . '/images/M_images/arrow.png" height="9" width="9" alt="arrow" />';
-			} else {
-				$img = '&gt;';
-			}
-		}
-		return $img;
-	}
-
-	/**
 	 * Lists all categories in a drop-down list
 	 * 
 	 * @param string $name The name of the select element

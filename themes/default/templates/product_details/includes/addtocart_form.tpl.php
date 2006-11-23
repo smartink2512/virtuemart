@@ -11,7 +11,7 @@ list($html,$children) = $ps_product_attribute->list_attribute($product_id,$produ
 
 if ($children != "multi") { 
 ?>
-    <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart" class="addtocart_form" onsubmit="handleAddToCart( this.id );return false;">
+    <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 )) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
 
 <?php
 }

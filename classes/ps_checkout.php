@@ -278,7 +278,7 @@ class ps_checkout {
 		// the user has no order total he should pay
 		if( empty( $_REQUEST['order_total'])) {
 			
-			if( !empty( $d['order_total'])) {
+			if( isset( $d['order_total'])) {
 				if( $d['order_total'] <= 0.00 ) {
 					return true;
 				}
@@ -1351,7 +1351,7 @@ Order Total: '.$order_total.'
 					// because we assume the Discount is "including Tax"
 					$discounted_total = $d['order_subtotal_withtax'] - @$_SESSION['coupon_discount'] - $d['payment_discount'];
 					
-					if( $discounted_total != $d['order_subtotal_withtax'] ) {
+					if( $discounted_total != $d['order_subtotal_withtax'] && $d['order_subtotal_withtax'] > 0.00) {
 						$discount_factor = $discounted_total / $d['order_subtotal_withtax'];
 						
 						foreach( $order_tax_details as $rate => $value ) {
