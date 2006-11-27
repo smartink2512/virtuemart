@@ -35,8 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-23.11.2006 soeren
+27.11.2006 soeren
 
+# Task #1011 - Cancelled Products get added to Top Ten Module (ps_order.php)
+
+24.11.2006 soeren
+# Task #1027 - Error in stock handling (ps_checkout.php)
+# Task #1015 - Pathway duplicated in account.billing, account.shipping, account.shipto
+
+23.11.2006 soeren
+# Task #1014 - Authorize.net test mode error
 + added pathways and pagetitles to various pages
 ^ moved the function ps_product_category::pathway_separator() to the vmCommonHTML class, call it by using vmCommonHTML::pathway_separator() now!
 

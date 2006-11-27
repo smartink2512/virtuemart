@@ -135,6 +135,11 @@ if ($_POST) {
 	
 	    // Constructor initializes the session!
 	    $sess = new ps_session();                        
+	    
+	    // Include globals; for this, $db is needed, as is htmlTools.class.php
+	    $db = new ps_DB;
+	    require_once( CLASSPATH. 'htmlTools.class.php' );
+	    require_once( ADMINPATH. 'global.php' );
     /*** END VirtueMart part ***/
     
     debug_msg( "1. Finished Initialization of the notify.php script" );
@@ -176,7 +181,7 @@ if ($_POST) {
     $paypal_receiver_email = PAYPAL_EMAIL;
     $business = trim(stripslashes($_POST['business'])); 
     $item_name = trim(stripslashes($_POST['item_name']));
-    $item_number = trim(stripslashes($_POST['item_number']));
+    $item_number = trim(stripslashes(@$_POST['item_number']));
     $payment_status = trim(stripslashes($_POST['payment_status']));
     
     // The order total amount including taxes, shipping and discounts
@@ -193,28 +198,29 @@ if ($_POST) {
     // The Order Number (not order_id !)
     $invoice =  trim(stripslashes($_POST['invoice']));
     
-    $amount =  trim(stripslashes($_POST['amount']));
+    $amount =  trim(stripslashes(@$_POST['amount']));
     
     $quantity = trim(stripslashes($_POST['quantity']));
-    $pending_reason = trim(stripslashes($_POST['pending_reason']));
-    $payment_method = trim(stripslashes($_POST['payment_method']));
+    $pending_reason = trim(stripslashes(@$_POST['pending_reason']));
+    $payment_method = trim(stripslashes(@$_POST['payment_method'])); // deprecated
+    $payment_type = trim(stripslashes(@$_POST['payment_type']));
     
     // Billto
     $first_name = trim(stripslashes($_POST['first_name']));
     $last_name = trim(stripslashes($_POST['last_name']));
-    $address_street = trim(stripslashes($_POST['address_street']));
-    $address_city = trim(stripslashes($_POST['address_city']));
-    $address_state = trim(stripslashes($_POST['address_state']));
-    $address_zipcode = trim(stripslashes($_POST['address_zip']));
-    $address_country = trim(stripslashes($_POST['address_country']));
+    $address_street = trim(stripslashes(@$_POST['address_street']));
+    $address_city = trim(stripslashes(@$_POST['address_city']));
+    $address_state = trim(stripslashes(@$_POST['address_state']));
+    $address_zipcode = trim(stripslashes(@$_POST['address_zip']));
+    $address_country = trim(stripslashes(@$_POST['address_country']));
+    $residence_country = trim(stripslashes(@$_POST['residence_country']));
     
-    $payer_email = trim(stripslashes($_POST['payer_email']));
-    $address_status = trim(stripslashes($_POST['address_status']));
+    $address_status = trim(stripslashes(@$_POST['address_status']));
     
     $payer_status = trim(stripslashes($_POST['payer_status']));
     $notify_version = trim(stripslashes($_POST['notify_version'])); 
     $verify_sign = trim(stripslashes($_POST['verify_sign'])); 
-    $custom = trim(stripslashes($_POST['custom'])); 
+    $custom = trim(stripslashes(@$_POST['custom'])); 
     $txn_type = trim(stripslashes($_POST['txn_type'])); 
     
     /*
@@ -248,13 +254,9 @@ if ($_POST) {
                 $first_three = $parts[0].".".$parts[1].".".$parts[2];
                 if( preg_match("/^$first_three/", $_SERVER['REMOTE_ADDR']) ) {
                     $valid_ip = true;
-                    if( in_array( $ip, $paypal_iplist2 ) ) {
-                        $hostname = "notify.paypal.com";
-                    } else {
-                        $hostname = "www.paypal.com";
-                    }
                 }
             }
+            $hostname = $_SERVER['REMOTE_ADDR'];
         }
         
         if( !$valid_ip ) {
@@ -361,7 +363,7 @@ if ($_POST) {
      
       $d['order_id'] = $order_id;
       $d['notify_customer'] = "Y";
-	  
+
       // remove post headers if present.
       $res = preg_replace("'Content-type: text/plain'si","",$res);
       
@@ -382,7 +384,7 @@ if ($_POST) {
                     $mail->AddAddress($debug_email_address);
                     $mail->Subject = "PayPal IPN Transaction on your site: Order ID not found";
                     $mail->Body = "The right order_id wasn't found during a PayPal transaction on your website.
-                    The Order ID received was: $invoice\n".$qv."\n".$db->_sql."\n".print_r( $db->record, true );
+                    The Order ID received was: $invoice";
                     $mail->Send();
                     exit();
                 }
