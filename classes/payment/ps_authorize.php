@@ -390,7 +390,13 @@ class ps_authorize {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 		
-		$result = vmConnector::handleCommunication( "https://secure.authorize.net:443/gateway/transact.dll", $poststring );
+		if(AN_TEST_REQUEST) {
+			$host = 'test.authorize.net';
+		} else  {
+			$host = "secure.authorize.net";
+		}
+		
+		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -594,8 +600,14 @@ class ps_authorize {
 		}
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
-
-		$result = vmConnector::handleCommunication( 'https://secure.authorize.net:443/gateway/transact.dll', $poststring );
+		
+		if(AN_TEST_REQUEST) {
+			$host = 'test.authorize.net';
+		} else  {
+			$host = "secure.authorize.net";
+		}
+		
+		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
 			$vmLogger->err('We\'re sorry, but an error has occured when we tried to communicate with the authorize.net server. Please try again later, thank you.' );
