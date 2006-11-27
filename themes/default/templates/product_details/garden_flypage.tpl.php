@@ -2,7 +2,10 @@
 
 <?php echo $buttons_header // The PDF, Email and Print buttons ?>
 
-<p><?php echo $navigation_pathway ?></p>
+<p><?php 
+if( $this->get_cfg( 'showPathway' )) {
+	echo $navigation_pathway;
+} ?></p>
 <p><?php echo $navigation_childlist ?></p>
 <table border="0" align="center" style="width: 100%;">
   <tbody>
