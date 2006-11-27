@@ -73,7 +73,7 @@ else {
 			<?php
 			$tab = new mShopTabs( 0, 1, "myTab");
 			$tab->startPane( "order_change_pane" );
-			$tab->startTab( "Order Status Change", "order_change_page" );
+			$tab->startTab(  $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE, "order_change_page" );
 			?>
 			<table class="adminlist">
 			 <tr>
@@ -82,7 +82,7 @@ else {
 			 <tr>
 			  <td colspan="3"><?php echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS .": </strong>";
 				  $ps_order_status->list_order_status($db->f("order_status")); ?>
-					<input type="submit" class="button" name="Submit" value="Update Status" />
+					<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_PHPSHOP_UPDATE ?>" />
 					<input type="hidden" name="page" value="order.order_print" />
 					<input type="hidden" name="func" value="orderStatusSet" />
 					<input type="hidden" name="option" value="com_virtuemart" />
@@ -97,9 +97,11 @@ else {
 				<textarea name="order_comment" rows="4" cols="35"></textarea>
 			  </td>
 			  <td>
-				<input type="checkbox" name="notify_customer" checked="checked" value="Y" /> <?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY ?>
+				<input type="checkbox" name="notify_customer" id="notify_customer" checked="checked" value="Y" /> 
+					<label for="notify_customer"><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY ?></label>
 				<br/>
-				<input type="checkbox" name="include_comment" checked="checked" value="Y" /> <?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT ?>
+				<input type="checkbox" name="include_comment" id="include_comment" checked="checked" value="Y" /> 
+					<label for="include_comment"><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT ?></label>
 				</form>
 			  </td>
 			 </tr>

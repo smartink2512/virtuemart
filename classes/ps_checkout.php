@@ -975,14 +975,12 @@ Order Total: '.$order_total.'
 			$db->query($q);
 			$db->next_record();
 
-			/* Update Stock Level and Product Sales */
-			if ($dboi->f("product_in_stock")) {
-				$q = "UPDATE #__{vm}_product ";
-				$q .= "SET product_in_stock = product_in_stock - ".$cart[$i]["quantity"];
-				$q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
-				$db->query($q);
-				$db->next_record();
-			}
+			// Update Stock Level and Product Sales, decrease - no matter if in stock or not!
+			$q = "UPDATE #__{vm}_product ";
+			$q .= "SET product_in_stock = product_in_stock - ".$cart[$i]["quantity"];
+			$q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
+			$db->query($q);
+			$db->next_record();
 
 			$q = "UPDATE #__{vm}_product ";
 			$q .= "SET product_sales= product_sales + ".$cart[$i]["quantity"];

@@ -165,7 +165,7 @@ class ps_order {
 		// Do we need to re-update the Stock Level?
 		if( ($d["order_status"] == "X" || $d["order_status"]=="R" ||
 			$d["order_status"] == "x" || $d["order_status"]=="r") &&
-			CHECK_STOCK == '1' &&
+			//CHECK_STOCK == '1' &&
 			$curr_order_status != $d["order_status"]
 			) {
 			// Get the order items and update the stock level
@@ -175,8 +175,10 @@ class ps_order {
 			$dbu = new ps_DB;
 			// Now update each ordered product
 			while( $db->next_record() ) {
-				$q = "UPDATE #__{vm}_product SET product_in_stock=product_in_stock+".$db->f("product_quantity")
-				.",product_sales=product_sales-".$db->f("product_quantity")." WHERE product_id='".$db->f("product_id")."'";
+				$q = "UPDATE #__{vm}_product 
+						SET product_in_stock=product_in_stock+".$db->f("product_quantity").",
+							product_sales=product_sales-".$db->f("product_quantity")." 
+						WHERE product_id='".$db->f("product_id")."'";
 				$dbu->query( $q );
 			}
 		}
@@ -589,19 +591,19 @@ class ps_order {
 			$this->error = "Unable to delete without the order id.";
 			return False;
 		}
-		if( CHECK_STOCK == '1' ) {
-			// Get the order items and update the stock level
-			// to the number before the order was placed
-			$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='$order_id'";
-			$db->query( $q );
-			$dbu = new ps_DB;
-			// Now update each ordered product
-			while( $db->next_record() ) {
-				$q = "UPDATE #__{vm}_product SET product_in_stock=product_in_stock+".$db->f("product_quantity")
-				.",product_sales=product_sales-".$db->f("product_quantity")." WHERE product_id='".$db->f("product_id")."'";
-				$dbu->query( $q );
-			}
+		
+		// Get the order items and update the stock level
+		// to the number before the order was placed
+		$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='$order_id'";
+		$db->query( $q );
+		$dbu = new ps_DB;
+		// Now update each ordered product
+		while( $db->next_record() ) {
+			$q = "UPDATE #__{vm}_product SET product_in_stock=product_in_stock+".$db->f("product_quantity")
+			.",product_sales=product_sales-".$db->f("product_quantity")." WHERE product_id='".$db->f("product_id")."'";
+			$dbu->query( $q );
 		}
+
 		return True;
 	}
 
@@ -658,7 +660,7 @@ class ps_order {
 	}
 
 	function order_print_navigation( $order_id=1 ) {
-		global $sess, $modulename;
+		global $sess, $modulename, $VM_LANG;
 
 		$navi_db =& new ps_DB;
 
@@ -670,9 +672,9 @@ class ps_order {
 		if ($navi_db->f("order_id")) {
 			$url = $_SERVER['PHP_SELF'] . "?page=$modulename.order_print&order_id=";
 			$url .= $navi_db->f("order_id");
-			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) . "\">" ._ITEM_PREVIOUS."</a> | ";
+			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) . "\">&lt; " ._ITEM_PREVIOUS."</a> | ";
 		} else
-		$navigation .= "<span class=\"pagenav\">" ._ITEM_PREVIOUS." | </span>";
+		$navigation .= "<span class=\"pagenav\">&lt; " .$VM_LANG->_ITEM_PREVIOUS." | </span>";
 
 		$q = "SELECT order_id FROM #__{vm}_orders WHERE ";
 		$q .= "order_id > '$order_id' ORDER BY order_id";
@@ -681,9 +683,10 @@ class ps_order {
 		if ($navi_db->f("order_id")) {
 			$url = $_SERVER['PHP_SELF'] . "?page=$modulename.order_print&order_id=";
 			$url .= $navi_db->f("order_id");
-			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) ."\">". _ITEM_NEXT."</a>";
-		} else
-		$navigation .= "<span class=\"pagenav\">"._ITEM_NEXT."</span>";
+			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) ."\">". _ITEM_NEXT."  &gt;</a>";
+		} else {
+			$navigation .= "<span class=\"pagenav\">".$VM_LANG->_ITEM_NEXT." &gt;</span>";
+		}
 
 		$navigation .= "\n<strong>\n</div>\n";
 
