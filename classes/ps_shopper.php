@@ -40,7 +40,9 @@ class ps_shopper {
 
 		require_once( CLASSPATH . 'ps_userfield.php' );
 		$registrationFields = ps_userfield::getUserFields( 'registration', false, '', true );
-
+		
+		$skipFields = array();
+		
 		if( VM_SILENT_REGISTRATION == '1') {
 			$skipFields = array( 'username', 'password', 'password2');
 		}
