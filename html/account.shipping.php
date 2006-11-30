@@ -19,9 +19,8 @@ mm_showMyFileName( __FILE__ );
 
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL );
 
-require_once( CLASSPATH.'ps_product_category.php');
 $pathway = "<a class=\"pathway\" href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".ps_product_category::pathway_separator().' '
+      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
       .$VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL;
 $mainframe->appendPathWay( $pathway );
 echo "<div>$pathway</div><br/>";
