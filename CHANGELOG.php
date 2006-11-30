@@ -35,6 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+29.11.2006 gregdev
+
+# Adjusted so that updating an existing shipping address does not require a new address name (ps_user_address.php)
+# Task #842 - fixed preselected country when editing an existing shipping address  (account.shipto.php)
+# Adjusted add and update functions to save billing info for new users and Joomla only (not yet VM) users (ps_user.php)
+# Adjustments to account.billing, account.shipping, acount.shipto files to use proper pathway_separator function.
+
 27.11.2006 soeren
 
 # Task #1011 - Cancelled Products get added to Top Ten Module (ps_order.php)
