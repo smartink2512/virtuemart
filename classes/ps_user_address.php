@@ -85,17 +85,19 @@ class ps_user_address {
 			$valid = false;
 		}
 
-		$db = new ps_DB;
-		$q  = "SELECT user_id from #__{vm}_user_info ";
-		$q .= "WHERE address_type_name='" . $d["address_type_name"] . "' ";
-		$q .= "AND address_type='" . $d["address_type"] . "' ";
-		$q .= "AND user_id = '" . $d["user_id"] . "'";
-		$db->query($q);
-
-		if ($db->next_record()) {
-			$d['missing'] .= "address_type_name";
-			$vmLogger->warning( "The given address label already exists." );
-			$valid = false;
+		if(!isset($d['user_info_id'])) {
+			$db = new ps_DB;
+			$q  = "SELECT user_id from #__{vm}_user_info ";
+			$q .= "WHERE address_type_name='" . $d["address_type_name"] . "' ";
+			$q .= "AND address_type='" . $d["address_type"] . "' ";
+			$q .= "AND user_id = '" . $d["user_id"] . "'";
+			$db->query($q);
+	
+			if ($db->next_record()) {
+				$d['missing'] .= "address_type_name";
+				$vmLogger->warning( "The given address label already exists." );
+				$valid = false;
+			}
 		}
 		
 		return $valid;
