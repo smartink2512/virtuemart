@@ -23,16 +23,14 @@ $Itemid = $sess->getShopItemid();
 $next_page = mosGetParam( $_REQUEST, "next_page", "account.shipping" );
 $user_info_id = mosGetParam( $_REQUEST, "user_info_id", "" );
 
-require_once( CLASSPATH.'ps_product_category.php');
 $pathway = "<a class=\"pathway\" href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".ps_product_category::pathway_separator().' '
+      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
       ."<a class=\"pathway\" href=\"".$sess->url( SECUREURL."index.php?page=$next_page")."\" title=\"".$VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL."\">"
-      .$VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL."</a> ".ps_product_category::pathway_separator().' '
+      .$VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL."</a> ".vmCommonHTML::pathway_separator().' '
       .$VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL;
 $mainframe->appendPathWay( $pathway );
 echo "<div>$pathway</div><br/>";
 
-$vars['country'] = empty( $_REQUEST['country'] ) ? $vendor_country : mosGetParam($_REQUEST, 'country');
 $missing = mosGetParam( $vars, 'missing' );
 $missing_style = "color: Red; font-weight: Bold;";
 
@@ -46,6 +44,10 @@ if (!empty($user_info_id)) {
   $q .=  " AND address_type='ST'";
   $db->query($q);
   $db->next_record();
+}
+
+if( !$db->num_rows()) {
+	$vars['country'] = empty( $_REQUEST['country'] ) ? $vendor_country : mosGetParam($_REQUEST, 'country');
 }
 
 /*****************************
