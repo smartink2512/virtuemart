@@ -136,12 +136,12 @@ class ps_user {
 		}
 		
 		// Get all fields which where shown to the user
-		$userFields = ps_userfield::getUserFields();
-
+		$userFields = ps_userfield::getUserFields('registration', false, '', true);
+		$skipFields = ps_userfield::getSkipFields();
+		
 		// Insert billto;
 		$fields = array();
 		
-		$fields['user_email'] = md5(uniqid( $hash_secret));
 		$fields['user_info_id'] = md5(uniqid( $hash_secret));
 		$fields['user_id'] =  $uid;
 		$fields['address_type'] =  'BT';
@@ -152,9 +152,17 @@ class ps_user {
 
 		$values = array();
 		foreach( $userFields as $userField ) {
-			$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+			if( !in_array($userField->name, $skipFields )) {
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+			}
 		}
-
+		
+		$fields['user_email'] = $fields['email'];
+		unset($fields['email']);
+		
+		$db->buildQuery( 'INSERT', '#__{vm}_user_info', $fields );
+		$db->query();
+		
 		if( $perm->check("admin")) {
 			$vendor_id = $d['vendor_id'];
 		}
@@ -209,23 +217,30 @@ class ps_user {
 
 		// Building the query: PART ONE
 		// The first 7 fields are FIX and not built dynamically
-		$q = "UPDATE #__{vm}_user_info SET
-                                `mdate` = '".time()."',
-                                `perms` = '".$d['perms']."', ";
-		$fields = array();
-		$skip_fields = ps_userfield::getSkipFields();
-		foreach( $userFields as $userField ) {
-			if( !in_array($userField->name,$skip_fields)) {
-				$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
-				$fields[] = "`".$userField->name."`='".$d[$userField->name]."'";
-			}
+		$db->query( "SELECT COUNT(user_info_id) AS num_rows FROM #__{vm}_user_info WHERE user_id='" . $user_id . "'" );
+		if( $db->f('num_rows') < 1 ) {
+			// The user is registered in Joomla, but not in VirtueMart; so, insert the bill to information
+			return $this->add(&$d);
 		}
-		$q .= str_replace( '`email`', '`user_email`', implode( ",\n", $fields ));
-
-		$q .= " WHERE user_id=".$user_id." AND address_type='BT'";
-
-		// Run the query now!
-		$db->query($q);
+		else {
+			$q = "UPDATE #__{vm}_user_info SET
+	                                `mdate` = '".time()."',
+	                                `perms` = '".$d['perms']."', ";
+			$fields = array();
+			$skip_fields = ps_userfield::getSkipFields();
+			foreach( $userFields as $userField ) {
+				if( !in_array($userField->name,$skip_fields)) {
+					$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+					$fields[] = "`".$userField->name."`='".$d[$userField->name]."'";
+				}
+			}
+			$q .= str_replace( '`email`', '`user_email`', implode( ",\n", $fields ));
+	
+			$q .= " WHERE user_id=".$user_id." AND address_type='BT'";
+	
+			// Run the query now!
+			$db->query($q);
+		}
 
 		if( $perm->check("admin")) {
 			$vendor_id = $d['vendor_id'];
