@@ -37,7 +37,7 @@ $db->query($q);
 $db->next_record();
 
 $pathway = "<a class=\"pathway\"  href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> -&gt; "
+      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
       .$VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL;
 echo "<div>$pathway</div><br/>";
  $mainframe->appendPathWay( $pathway );
