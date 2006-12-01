@@ -41,7 +41,7 @@ if ($db->next_record()) {
 	$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO.' : '.$VM_LANG->_PHPSHOP_ORDER_LIST_ID.' '.$db->f('order_id'));
 	require_once( CLASSPATH.'ps_product_category.php');
 	$pathway = "<a href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-	      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".ps_product_category::pathway_separator().' '
+	      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
 	      .$VM_LANG->_PHPSHOP_ACC_ORDER_INFO;
 	$mainframe->appendPathWay( $pathway );
 	
