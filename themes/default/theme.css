@@ -164,7 +164,9 @@ General Form Styling
 	float:left;
 	width:60%;
 	margin: 2px;
-		
+	vertical-align: middle;
+	margin-top: 8px;
+	
 }
 /**
 * Administration Styles

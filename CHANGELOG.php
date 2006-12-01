@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.12.2006 gregdev
+
+# Change css class formField to match formLabel (theme.css)
+# Use proper pathway_separator function (account.order_details)
+
 29.11.2006 gregdev
 
 # Adjusted so that updating an existing shipping address does not require a new address name (ps_user_address.php)
