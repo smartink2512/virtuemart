@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.12.2006 gregdev
+
+# Task #988 - fixed path to noimage file; also changed to use VM_THEMEURL for availability images (product.product_form.php)
+
 01.12.2006 gregdev
 
 # Change css class formField to match formLabel (theme.css)
