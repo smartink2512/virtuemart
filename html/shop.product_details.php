@@ -56,7 +56,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 
 if( !$perm->check("admin,storeadmin") ) {
@@ -69,15 +69,16 @@ $db_product->query( $q );
 
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
-	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	$vmLogger->err( $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	return;
 }
 if( empty($product_id)) {
 	$product_id = $db_product->f('product_id');
 }
-$product_parent_id = $db_product->f("product_parent_id");
+$product_parent_id = (int)$db_product->f("product_parent_id");
 if ($product_parent_id != 0) {
 	$dbp= new ps_DB;
-	$dbp->query("SELECT * FROM #__{vm}_product WHERE product_id='$product_parent_id'" );
+	$dbp->query('SELECT * FROM `#__{vm}_product` WHERE `product_id`='.$product_parent_id );
 	$dbp->next_record();
 }
 
