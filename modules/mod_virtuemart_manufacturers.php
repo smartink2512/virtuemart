@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.virtuemart.net
 */
 
-global $mosConfig_absolute_path, $sess, $VM_LANG;
+global $mosConfig_absolute_path, $sess;
 
 $text_before = $params->get( 'text_before', '');
 $show_dropdown = $params->get( 'show_dropdown', 1);
@@ -30,16 +30,18 @@ $category_id = mosGetParam( $_REQUEST, 'category_id', '' );
 require_once( $mosConfig_absolute_path."/components/com_virtuemart/virtuemart_parser.php");
 $sess = new ps_session;
 
-$query  = "SELECT distinct a.manufacturer_id,a.mf_name FROM #__{vm}_manufacturer AS a ";
 if ($auto == 1 && !empty( $category_id ) ) {
-    $query .= ", #__{vm}_product_category_xref AS d, "
-    . " #__{vm}_product AS b, "
-    . " #__{vm}_product_mf_xref AS c "
-    . " WHERE d.category_id='$category_id'"
-    . " AND d.product_id = b.product_id "
-    . " AND b.product_id = c.product_id AND c.manufacturer_id = a.manufacturer_id ";
+	$query  = "SELECT distinct a.manufacturer_id,a.mf_name FROM #__{vm}_manufacturer AS a, ";
+    $query .= "\n#__{vm}_product AS b,"
+    . "\n#__{vm}_product_mf_xref AS c,"
+    . "\n#__{vm}_product_category_xref AS d, "
+    . "\nWHERE d.category_id='$category_id'"
+    . "\n AND d.product_id = b.product_id "
+    . "\n AND b.product_id = c.product_id AND c.manufacturer_id = a.manufacturer_id ";
+} else {
+	$query  = "SELECT a.manufacturer_id,a.mf_name FROM #__{vm}_manufacturer AS a ";
 }
-$query .= "ORDER BY mf_name ASC";
+$query .= "ORDER BY a.mf_name ASC";
 $db = new ps_DB;
 $db->query( $query );
 
@@ -79,7 +81,7 @@ if( $show_dropdown == 1 ) { ?>
         <input type="hidden" name="page" value="shop.browse" />
         <br/>
         <select class="inputbox" name="manufacturer_id">
-            <option value=""><?php echo $VM_LANG->_PHPSHOP_SELECT ?></option>
+            <option value=""><?php echo _CMN_SELECT ?></option>
         <?php  
                         foreach ($res as $manufacturer) { 
                                 $selected = '';
@@ -95,7 +97,7 @@ if( $show_dropdown == 1 ) { ?>
   </tr>
   <tr>
       <td>
-          <input class="button" type="submit" name="manufacturerSearch" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
+          <input class="button" type="submit" name="manufacturerSearch" value="<?php echo _SEARCH_TITLE ?>" />
       </td>
   </tr>
 <?php 
