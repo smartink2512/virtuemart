@@ -35,6 +35,7 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
 02.12.2006 gregdev
 
 # Task #988 - fixed path to noimage file; also changed to use VM_THEMEURL for availability images (product.product_form.php)
@@ -43,6 +44,11 @@ VirtueMart 1.1.x
 
 # Change css class formField to match formLabel (theme.css)
 # Use proper pathway_separator function (account.order_details)
+
+01.12.2006 soeren
+
+# Task #1035 - Sorry, but the Product you\'ve requested wasn\'t found! (shop.product_details.php)
+# Task #1012 - Manufacturers in Manufacturer Module List not Alpha sorted
 
 29.11.2006 gregdev
 

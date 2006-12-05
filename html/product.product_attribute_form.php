@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+global $ps_product;
 $product_id = $vars["product_id"];
 
 if( is_array( $product_id ))
