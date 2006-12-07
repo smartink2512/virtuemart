@@ -22,7 +22,7 @@ class ps_html {
 	var $classname = "ps_html";
 
 
-	function dropdown_display($name, $value, $arr, $size=1, $multiple="", $extra="") {
+	function dropdown_display($name, $value, &$arr, $size=1, $multiple="", $extra="") {
 		echo ps_html::selectList($name, $value, $arr, $size, $multiple, $extra );
 	}
 
@@ -41,7 +41,7 @@ class ps_html {
 	 * @param string $extra More attributes when needed
 	 * @return string HTML drop-down list
 	 */	
-	function selectList($name, $value, $arr, $size=1, $multiple="", $extra="") {
+	function selectList($name, $value, &$arr, $size=1, $multiple="", $extra="") {
 		$html = '';
 		if( !empty( $arr ) ) {
 			$html = "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
