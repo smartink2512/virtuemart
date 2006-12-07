@@ -31,14 +31,14 @@ $ps_product = new ps_product;
 // change the number of items you wanna haved listed via module parameters
 $num_topsellers = $params->get ('num_topsellers', 10);
 
-$list  = "SELECT #__{vm}_product.product_id, product_parent_id,product_name, #__{vm}_category.category_id, category_flypage ";
-$list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
-$q = "#__{vm}_product.product_publish='Y' AND ";
-$q .= "#__{vm}_product_category_xref.product_id = #__{vm}_product.product_id AND ";
-$q .= "#__{vm}_product_category_xref.category_id = #__{vm}_category.category_id AND ";
-$q .= "#__{vm}_product.product_sales>0 ";
-$q .= "GROUP BY #__{vm}_product.product_id ";
-$q .= "ORDER BY #__{vm}_product.product_sales DESC";
+$list  = "SELECT p.product_id, p.product_sales as sales, p.product_parent_id, p.product_name, c.category_id, c.category_flypage ";
+$list .= "FROM #__{vm}_product p, #__{vm}_product_category_xref pc, #__{vm}_category c WHERE ";
+$q = "p.product_publish='Y' AND ";
+$q .= "pc.product_id = p.product_id AND ";
+$q .= "pc.category_id = c.category_id AND ";
+$q .= "p.product_sales > 0 ";
+$q .= "GROUP BY p.product_id ";
+$q .= "ORDER BY sales DESC, p.product_name ";
 $list .= $q . " LIMIT 0, $num_topsellers "; 
 
 $db = new ps_DB;
