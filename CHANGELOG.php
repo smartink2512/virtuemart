@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.12.2006 gregdev
+
+^ Added values (all NULL) to sample data install queries for new child-products fields.
 
 02.12.2006 gregdev
 
