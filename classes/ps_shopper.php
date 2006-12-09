@@ -332,13 +332,18 @@ class ps_shopper {
 			} else {
 				$mainframe->login($d['username'], md5( $d['password'] ));
 			}
-			mosRedirect( $sess->url( 'index.php?page=checkout.index' ) );
+			if( !empty( $_SESSION['cart']['idx'])) {
+				$redirect_to_page = 'checkout.index';
+			} else {
+				$redirect_to_page = HOMEPAGE;
+			}
+			mosRedirect( $sess->url( 'index.php?page='.$redirect_to_page ), $VM_LANG->_REG_COMPLETE );
 		}
 		elseif( $my->id ) {
 			mosRedirect( $sess->url( 'index.php?page=checkout.index' ) );
 		}
 		else {
-			mosRedirect( $sess->url( 'index.php?page=shop.index' ), _REG_COMPLETE_ACTIVATE );
+			mosRedirect( $sess->url( 'index.php?page=shop.index' ), $VM_LANG->_REG_COMPLETE_ACTIVATE );
 		}
 
 		return true;
