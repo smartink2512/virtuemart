@@ -35,9 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+09.12.2006 soeren
+# Task #1045 - ps_product_category::get_navigation_list cannot be called twice! (ps_product_category.php)
+# Task #1040 - Redirect after registration (ps_shopper.php)
+- removed the PayFlow Pro payment class, it can be downloaded including the necessary SDK from virtuemart.net
+
 07.12.2006 gregdev
 
 ^ Added values (all NULL) to sample data install queries for new child-products fields.
+
 
 02.12.2006 gregdev
 
