@@ -59,58 +59,5 @@ if( class_exists('jconfig')) {
 	if( class_exists( 'jversion' )) {
 		$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
 	}
-	
-	@DEFINE('_BUTTON_SEND_REG','Send Registration');
-	@DEFINE('_CONTACT_FORM_NC','Please make sure the form is complete and valid.');
-	@define( '_CMN_REQUIRED', 'Required' );
-	@define( "_MOS_NOTRIM", 0x0001 );
-	@define( "_MOS_ALLOWHTML", 0x0002 );
-	@define( "_MOS_ALLOWRAW", 0x0004 );
-	@define( '_CMN_NEW', 'New');
-	@define( '_E_SAVE', 'Save');
-	@define( '_CMN_SAVE', 'Save');
-	@define( '_E_APPLY', 'Apply');
-	@define( '_E_IMAGES', 'Images');
-	@DEFINE('_CMN_NEW_ITEM_LAST','New items default to the last place. Ordering can be changed after this item is saved.');
-	@DEFINE('_URL','URL:');
-	@DEFINE('_CMN_OPTIONAL','Optional');
-	@define('_SEL_CATEGORY', 'Select a category');
-	@define( '_E_REMOVE', 'Remove');
-	@DEFINE('_PN_LT','&lt;');
-	@DEFINE('_PN_RT','&gt;');
-	@DEFINE('_PN_PAGE','Page');
-	@DEFINE('_PN_OF','of');
-	@DEFINE('_PN_START','Start');
-	@DEFINE('_PN_PREVIOUS','Prev');
-	@DEFINE('_PN_NEXT','Next');
-	@DEFINE('_PN_END','End');
-	@DEFINE('_PN_DISPLAY_NR','Display #');
-	@DEFINE('_PN_RESULTS','Results');
-	@DEFINE('_CMN_PRINT','Print');
-	@DEFINE('_CMN_PDF','PDF');
-	@DEFINE('_CMN_EMAIL','E-mail');
-	@DEFINE('_BACK','Back');
-	@DEFINE('_USERNAME','Username');
-	@DEFINE('_PASSWORD','Password');
-	@DEFINE('_BUTTON_LOGIN','Login');
-	@DEFINE('_REGISTER_UNAME','Username');
-	@DEFINE('_REGISTER_EMAIL','Email');
-	@DEFINE('_REGWARN_NAME','Please enter your name.');
-	@DEFINE('_REGWARN_UNAME','Please enter a user name.');
-	@DEFINE('_REGWARN_MAIL','Please enter a valid e-mail address.');
-	@DEFINE('_SEND_SUB','Account details for %s at %s');
-	@DEFINE('_ASEND_MSG','Hello %s,
-	
-	A new user has registered at %s.
-	This email contains their details:
-	
-	Name - %s
-	e-mail - %s
-	Username - %s
-	
-	Please do not respond to this message as it is automatically generated and is for information purposes only');
-	@DEFINE('_REG_COMPLETE', '<div class="componentheading">Registration Complete!</div><br />You may now login.');
-	@DEFINE('_REG_COMPLETE_ACTIVATE', '<div class="componentheading">Registration Complete!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.');
-	@DEFINE('_DATE_FORMAT_LC',"%A, %d %B %Y");
 }
 ?>
