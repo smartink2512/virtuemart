@@ -64,144 +64,150 @@ class ps_order {
 		}
 
 		$d['order_comment'] = empty($d['order_comment']) ? "" : $d['order_comment'];
-		
-		// When the order is set to "confirmed", we can capture
-		// the Payment with authorize.net
-		if( $curr_order_status=="P" && $d["order_status"]=="C") {
-			$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
-			$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
-			$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
-			$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
-			$db->query( $q );
-			$db->next_record();
-			$payment_class = $db->f("payment_class");
-			if( $payment_class=="ps_authorize" ) {
-				require_once( CLASSPATH."payment/ps_authorize.cfg.php");
-				if( AN_TYPE == 'AUTH_ONLY' ) {
-					require_once( CLASSPATH."payment/ps_authorize.php");
-					$authorize =& new ps_authorize();
-					$d["order_number"] = $db->f("order_number");
-					if( !$authorize->capture_payment( $d )) {
-						return false;
+		if( empty($d['order_item_id']) ) {
+			// When the order is set to "confirmed", we can capture
+			// the Payment with authorize.net
+			if( $curr_order_status=="P" && $d["order_status"]=="C") {
+				$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
+				$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
+				$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+				$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
+				$db->query( $q );
+				$db->next_record();
+				$payment_class = $db->f("payment_class");
+				if( $payment_class=="ps_authorize" ) {
+					require_once( CLASSPATH."payment/ps_authorize.cfg.php");
+					if( AN_TYPE == 'AUTH_ONLY' ) {
+						require_once( CLASSPATH."payment/ps_authorize.php");
+						$authorize =& new ps_authorize();
+						$d["order_number"] = $db->f("order_number");
+						if( !$authorize->capture_payment( $d )) {
+							return false;
+						}
 					}
 				}
 			}
-		}
-		/*
-		 * This is like the test above for delayed capture only
-		 * we (well, I - durian) don't think the credit card
-		 * should be captured until the item(s) are shipped.
-		 * In fact, VeriSign says not to capture the cards until
-		 * the item ships.  Maybe this behavior should be a
-		 * configurable item?
-		 *
-		 * When the order changes from Confirmed or Pending to
-		 * Shipped, perform the delayed capture.
-		 *
-		 * Restricted to PayFlow Pro for now.
-		 */
-		if( ($curr_order_status=="P" || $curr_order_status="C") && $d["order_status"]=="S") {
-			$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
-			$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
-			$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
-			$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
-			$db->query( $q );
-			$db->next_record();
-			$payment_class = $db->f("payment_class");
-			if( $payment_class=="ps_pfp" ) {
-				require_once( CLASSPATH."payment/ps_pfp.cfg.php");
-				if( PFP_TYPE == 'A' ) {
-					require_once( CLASSPATH."payment/ps_pfp.php");
-					$pfp =& new ps_pfp();
-					$d["order_number"] = $db->f("order_number");
-					if( !$pfp->capture_payment( $d )) {
-						return false;
+			/*
+			 * This is like the test above for delayed capture only
+			 * we (well, I - durian) don't think the credit card
+			 * should be captured until the item(s) are shipped.
+			 * In fact, VeriSign says not to capture the cards until
+			 * the item ships.  Maybe this behavior should be a
+			 * configurable item?
+			 *
+			 * When the order changes from Confirmed or Pending to
+			 * Shipped, perform the delayed capture.
+			 *
+			 * Restricted to PayFlow Pro for now.
+			 */
+			if( ($curr_order_status=="P" || $curr_order_status="C") && $d["order_status"]=="S") {
+				$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
+				$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
+				$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+				$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
+				$db->query( $q );
+				$db->next_record();
+				$payment_class = $db->f("payment_class");
+				if( $payment_class=="ps_pfp" ) {
+					require_once( CLASSPATH."payment/ps_pfp.cfg.php");
+					if( PFP_TYPE == 'A' ) {
+						require_once( CLASSPATH."payment/ps_pfp.php");
+						$pfp =& new ps_pfp();
+						$d["order_number"] = $db->f("order_number");
+						if( !$pfp->capture_payment( $d )) {
+							return false;
+						}
 					}
 				}
 			}
-		}
-
-		/*
-		 * If a pending order gets cancelled, void the authorization.
-		 *
-		 * It might work on captured cards too, if we want to
-		 * void shipped orders.
-		 *
-		 * Restricted to PayFlow Pro for now.
-		 */
-		if( $curr_order_status=="P" && $d["order_status"]=="X") {
-			$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
-			$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
-			$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
-			$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
-			$db->query( $q );
-			$db->next_record();
-			$payment_class = $db->f("payment_class");
-			if( $payment_class=="ps_pfp" ) {
-				require_once( CLASSPATH."payment/ps_pfp.cfg.php");
-				if( PFP_TYPE == 'A' ) {
-					require_once( CLASSPATH."payment/ps_pfp.php");
-					$pfp =& new ps_pfp();
-					$d["order_number"] = $db->f("order_number");
-					if( !$pfp->void_authorization( $d )) {
-						return false;
+	
+			/*
+			 * If a pending order gets cancelled, void the authorization.
+			 *
+			 * It might work on captured cards too, if we want to
+			 * void shipped orders.
+			 *
+			 * Restricted to PayFlow Pro for now.
+			 */
+			if( $curr_order_status=="P" && $d["order_status"]=="X") {
+				$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
+				$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
+				$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+				$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
+				$db->query( $q );
+				$db->next_record();
+				$payment_class = $db->f("payment_class");
+				if( $payment_class=="ps_pfp" ) {
+					require_once( CLASSPATH."payment/ps_pfp.cfg.php");
+					if( PFP_TYPE == 'A' ) {
+						require_once( CLASSPATH."payment/ps_pfp.php");
+						$pfp =& new ps_pfp();
+						$d["order_number"] = $db->f("order_number");
+						if( !$pfp->void_authorization( $d )) {
+							return false;
+						}
 					}
 				}
 			}
-		}
-
-		$q = "UPDATE #__{vm}_orders SET";
-		$q .= " order_status='" . $d["order_status"] . "' ";
-		$q .= ", mdate='" . $timestamp . "' ";
-		$q .= "WHERE order_id='" . $d["order_id"] . "'";
-		$db->query($q);
-
-		// Update the Order History.
-		$q = "INSERT INTO #__{vm}_order_history ";
-		$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
-		$q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', '$mysqlDatetime', '$notify_customer', '".$db->getEscaped( $d['order_comment'] )."')";
-		$db->query($q);
-
-		// Do we need to re-update the Stock Level?
-		if( ($d["order_status"] == "X" || $d["order_status"]=="R" ||
-			$d["order_status"] == "x" || $d["order_status"]=="r") &&
-			//CHECK_STOCK == '1' &&
-			$curr_order_status != $d["order_status"]
-			) {
-			// Get the order items and update the stock level
-			// to the number before the order was placed
-			$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='".$d["order_id"]."'";
-			$db->query( $q );
+	
+			$q = "UPDATE #__{vm}_orders SET";
+			$q .= " order_status='" . $d["order_status"] . "' ";
+			$q .= ", mdate='" . $timestamp . "' ";
+			$q .= "WHERE order_id='" . $d["order_id"] . "'";
+			$db->query($q);
+	
+			// Update the Order History.
+			$q = "INSERT INTO #__{vm}_order_history ";
+			$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
+			$q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', '$mysqlDatetime', '$notify_customer', '".$db->getEscaped( $d['order_comment'] )."')";
+			$db->query($q);
+	
+			// Do we need to re-update the Stock Level?
+			if( ($d["order_status"] == "X" || $d["order_status"]=="R" ||
+				$d["order_status"] == "x" || $d["order_status"]=="r") &&
+				//CHECK_STOCK == '1' &&
+				$curr_order_status != $d["order_status"]
+				) {
+				// Get the order items and update the stock level
+				// to the number before the order was placed
+				$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='".$d["order_id"]."'";
+				$db->query( $q );
+				$dbu = new ps_DB;
+				// Now update each ordered product
+				while( $db->next_record() ) {
+					$q = "UPDATE #__{vm}_product 
+							SET product_in_stock=product_in_stock+".$db->f("product_quantity").",
+								product_sales=product_sales-".$db->f("product_quantity")." 
+							WHERE product_id='".$db->f("product_id")."'";
+					$dbu->query( $q );
+				}
+			}
+			// Update the Order Items' status
+			$q = "SELECT order_item_id FROM #__{vm}_order_item WHERE order_id=".$d['order_id'];
+			$db->query($q);
 			$dbu = new ps_DB;
-			// Now update each ordered product
-			while( $db->next_record() ) {
-				$q = "UPDATE #__{vm}_product 
-						SET product_in_stock=product_in_stock+".$db->f("product_quantity").",
-							product_sales=product_sales-".$db->f("product_quantity")." 
-						WHERE product_id='".$db->f("product_id")."'";
+			while ($db->next_record()) {
+				$item_id = $db->f("order_item_id");
+				$q  = "UPDATE #__{vm}_order_item SET order_status='".$d["order_status"]."'"
+				. "\n, mdate='" . $timestamp . "' "
+				. "\n WHERE order_item_id=".$item_id;
 				$dbu->query( $q );
 			}
-		}
-		// Update the Order Items' status
-		$q = "SELECT order_item_id FROM #__{vm}_order_item WHERE order_id=".$d['order_id'];
-		$db->query($q);
-		$dbu = new ps_DB;
-		while ($db->next_record()) {
-			$item_id = $db->f("order_item_id");
-			$q  = "UPDATE #__{vm}_order_item SET order_status='".$d["order_status"]."'"
-			. "\n, mdate='" . $timestamp . "' "
-			. "\n WHERE order_item_id=".$item_id;
-			$dbu->query( $q );
-		}
-		
-		if (ENABLE_DOWNLOADS == '1') {
-			##################
-			## DOWNLOAD MOD
-			$this->mail_download_id( $d );
-		}
-
-		if( !empty($notify_customer) ) {
-			$this->notify_customer( $d );
+			
+			if (ENABLE_DOWNLOADS == '1') {
+				##################
+				## DOWNLOAD MOD
+				$this->mail_download_id( $d );
+			}
+	
+			if( !empty($notify_customer) ) {
+				$this->notify_customer( $d );
+			}
+		} elseif( !empty($d['order_item_id'])) {
+				$q  = "UPDATE #__{vm}_order_item SET order_status='".$d["order_status"]."'"
+				. "\n, mdate='" . $timestamp . "' "
+				. "\n WHERE order_item_id=".intval( $d['order_item_id'] );
+				return $db->query( $q );
 		}
 		return true;
 	}

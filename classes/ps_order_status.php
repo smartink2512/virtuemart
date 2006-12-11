@@ -83,8 +83,11 @@ class ps_order_status extends vmAbstractObject {
 						'list_order' => $d["list_order"]
 					);
 		$db->buildQuery( 'INSERT', $this->_table_name, $fields );
-	
-		return $db->query();
+		$result = $db->query();
+		
+		$d["order_status_id"] = $_REQUEST['order_status_id'] = $db->last_insert_id();
+		
+		return $result;
 
 	}
 
