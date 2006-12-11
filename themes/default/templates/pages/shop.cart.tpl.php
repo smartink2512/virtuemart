@@ -42,8 +42,8 @@ if ($cart["idx"]) {
        <?php
    }
    else {
-   		$href = $sess->url( $mm_action_url . "index.php?page=checkout.index&ssl_redirect=1");
-   		$href2 = $sess->url( $mm_action_url . "index2.php?page=checkout.index&ssl_redirect=1");
+   		$href = $sess->url( $mm_action_url . "/index.php?page=checkout.index&ssl_redirect=1", true);
+   		$href2 = $sess->url( $mm_action_url . "/index2.php?page=checkout.index&ssl_redirect=1", true);
    		$class_att = 'class="checkout_link"';
    		$text = $VM_LANG->_PHPSHOP_CHECKOUT_TITLE;
  		

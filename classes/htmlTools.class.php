@@ -413,7 +413,7 @@ class vmMooAjax {
 	function getAjaxUpdater( $url, $updateId, $onComplete, $method='post', $vmDirs=array(), $varName='' ) {
 		global $mosConfig_live_site;
 		
-		vmCommonHTML::loadMooAjax();
+		vmCommonHTML::loadMooTools();
 		
 		$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
 		$vmDirs['method'] = $method;
@@ -761,52 +761,31 @@ class vmCommonHTML extends mosHTML {
 			define ( "_OVERLIB_LOADED", "1" );
 		}
 	}
+
 	/**
-	* Loads all necessary script files for Moo.Ajax
-	* http://docs.mootools.net/files/Addons/Ajax-js.html
-	* @static 
-	* @since VirtueMart 1.1.0
-	*/
-	function loadMooAjax( $print=false ) {
-		global $mosConfig_live_site, $vmDir, $mainframe;
-		if( !defined( "_MOOAJAX_LOADED" )) {
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.base.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.dom.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.ajax.js' );
-			if( defined('_PSHOP_ADMIN') || $print ) {
-				echo $scripttag;
-			}
-			else {
-				$mainframe->addCustomHeadTag( $scripttag );
-			}
-			define ( "_MOOAJAX_LOADED", "1" );
-		}
-	}
-	/**
-	 * Function to include the MooTools Fx JS scripts in the HTML document
+	 * Function to include the MooTools JS scripts in the HTML document
 	 * http://mootools.net
 	 * @static 
 	 * @since VirtueMart 1.1.0
 	 *
 	 */
-	function loadMooFX( $print=false ) {
-		global $mosConfig_live_site, $vmDir, $mainframe;
-		if( !defined( "_MOOTOOLSFX_LOADED" )) {
-			$scripttag = '';
-		
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.base.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fx.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fxpack.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fxutils.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.fxtransitions.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mootools.accordion.js' );
+	function loadMooTools( $version='', $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe, $VM_LANG;
+		if( !defined( "_MOOTOOLS_LOADED" )) {
+			if( $version  == '' ) {
+				$version = 'mootools.svn.87.js';
+			}
+			$scripttag = vmCommonHTML::scriptTag( '', 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'.$VM_LANG->_CMN_CONTINUE.'";var cancel_lbl="'.$VM_LANG->_CMN_CANCEL.'";var notice_lbl="'.$VM_LANG->_PEAR_LOG_NOTICE.'";' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/'.$version );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mooPrompt.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/mootools/mooPrompt.css' );
 			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
 			}
 			else {
 				$mainframe->addCustomHeadTag( $scripttag );
 			}
-			define ( "_MOOTOOLSFX_LOADED", "1" );
+			define ( "_MOOTOOLS_LOADED", "1" );
 		}
 		
 	}
@@ -817,15 +796,15 @@ class vmCommonHTML extends mosHTML {
 	 *
 	 * @param boolean $print
 	 */
-	function loadLiteBox( $print=false ) {
+	function loadSlimBox( $print=false ) {
 		global $mosConfig_live_site, $vmDir, $mainframe;
-		if( !defined( '_LITEBOX_LOADED' )) {
+		if( !defined( '_SLIMBOX_LOADED' )) {
 			
-			vmCommonHTML::loadMooFx( $print );
+			vmCommonHTML::loadMooTools( '', $print );
 			
-			$scripttag = vmCommonHTML::scriptTag( '', 'var liteboxurl = \''.$mosConfig_live_site.'/components/'. $vmDir .'/js/litebox/\';');
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/litebox/litebox.js' );
-			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/litebox/litebox.css' );
+			$scripttag = vmCommonHTML::scriptTag( '', 'var slimboxurl = \''.$mosConfig_live_site.'/components/'. $vmDir .'/js/slimbox/\';');
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/slimbox/js/slimbox.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/slimbox/css/slimbox.css' );
 					
 			if( defined('_PSHOP_ADMIN') || $print ) {
 				echo $scripttag;
@@ -833,7 +812,7 @@ class vmCommonHTML extends mosHTML {
 			else {
 				$mainframe->addCustomHeadTag( $scripttag );
 			}
-			define ( '_LITEBOX_LOADED', '1' );
+			define ( '_SLIMBOX_LOADED', '1' );
 		}	
 	}
 	/**
@@ -1015,17 +994,18 @@ class vmCommonHTML extends mosHTML {
 	}
 
 	/**
-	 * Returns a properly formatted image link that opens a LightBox2
+	 * Returns a properly formatted image link that opens a LightBox2/Slimbox
 	 *
 	 * @param string $image_link Can be the image src or a complete image tag
 	 * @param string $text The Link Text, e.g. 'Click here!'
 	 * @param string $title The Link title, will be used as Image Caption
 	 * @param string $image_group The image group name when you want to use the gallery functionality
+	 * @param string $mootools Set to 'true' if you're using slimbox or another MooTools based image viewing library
 	 * @return string
 	 */
-	function getLightboxImageLink( $image_link, $text, $title='', $image_group='', $lite=false ) {
-		if( $lite ) {
-			vmCommonHTML::loadLitebox();
+	function getLightboxImageLink( $image_link, $text, $title='', $image_group='', $mootools=false ) {
+		if( $mootools ) {
+			vmCommonHTML::loadSlimBox();
 		} else {
 			vmCommonHTML::loadLightbox();
 		}

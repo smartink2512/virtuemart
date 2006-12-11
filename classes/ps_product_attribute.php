@@ -268,7 +268,7 @@ class ps_product_attribute {
 	function list_attribute_drop($product_id,$cls_suffix) {
 
 		global $VM_LANG, $CURRENCY_DISPLAY, $mm_action_url, $sess;
-		vmCommonHTML::loadPrototype();
+		//vmCommonHTML::loadPrototype();
 
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
