@@ -122,10 +122,11 @@ else {
 			  echo "<tr>";
 			  echo "<td>".$order_event->date_added."</td>\n";
 			  echo "<td align=\"center\"><img alt=\"Status Icon\" src=\"$mosConfig_live_site/administrator/images/";
-			  if( $order_event->customer_notified == 1 )
-				echo "tick.png";
-			  else
-				echo "publish_x.png";
+			  if( $order_event->customer_notified == 1 ) {
+			  	echo "tick.png";
+			  } else {
+			  	echo "publish_x.png";
+			  }
 			  echo "\" border=\"0\" align=\"center\" /></td>\n";
 			  echo "<td>".$order_event->order_status_code."</td>\n";
 			  echo "<td>".$order_event->comments."</td>\n";
@@ -135,6 +136,10 @@ else {
 			</table>
 			<?php
 			$tab->endTab();
+			$tab->startTab( $VM_LANG->_VM_ORDER_EDIT, "order_edit_page" ); 
+				require_once(CLASSPATH.'ps_order_edit.php');
+			$tab->endTab();
+
 			$tab->endPane();
 			?>
 		  </td>
@@ -292,16 +297,17 @@ else {
 		  <td colspan="2"> 
 			<table  class="adminlist">
 			  <tr > 
-				<th width="5%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_QUANTITY ?></th>
-				<th width="42%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?></th>
-				<th width="9%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SKU ?></th>
-				<th width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?></th>
-				<th width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?></th>
-				<th width="19%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?></th>
+				<th class="title" width="5%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_QUANTITY ?></th>
+				<th class="title" width="32%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?></th>
+				<th class="title" width="9%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SKU ?></th>
+				<th class="title" width="10%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?></th>
+				<th class="title" width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?></th>
+				<th class="title" width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?></th>
+				<th class="title" width="19%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?></th>
 			  </tr>
 			  <?php
 			  $dbt = new ps_DB;
-			  $qt  = "SELECT product_quantity,order_item_name,order_item_sku,product_id,product_item_price,product_final_price, product_attribute
+			  $qt  = "SELECT order_item_id, product_quantity,order_item_name,order_item_sku,product_id,product_item_price,product_final_price, product_attribute, order_status
 						FROM `#__{vm}_order_item`
 						WHERE #__{vm}_order_item.order_id='$order_id' ";
 			  $dbt->query($qt);
@@ -317,11 +323,24 @@ else {
 			  ?>
 			  <tr class="<?php echo $bgcolor; ?>" valign="top"> 
 				<td width="5%"> <?php $dbt->p("product_quantity") ?></td>
-				<td width="42%"><?php $dbt->p("order_item_name"); 
+				<td width="32%"><?php $dbt->p("order_item_name"); 
 				  echo "<br /><font size=\"-2\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</font>"; 
 				  ?>
 				</td>
 				<td width="9%"><?php  $dbt->p("order_item_sku") ?>&nbsp;</td>
+				<td width="10%">
+					<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+					<?php echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS .": </strong>";
+				 	 $ps_order_status->list_order_status($dbt->f("order_status")); ?>
+					<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_PHPSHOP_UPDATE ?>" />
+					<input type="hidden" name="page" value="order.order_print" />
+					<input type="hidden" name="func" value="orderStatusSet" />
+					<input type="hidden" name="option" value="com_virtuemart" />
+					<input type="hidden" name="current_order_status" value="<?php $dbt->p("order_status") ?>" />
+					<input type="hidden" name="order_id" value="<?php echo $order_id ?>" />
+					<input type="hidden" name="order_item_id" value="<?php $dbt->p("order_item_id") ?>" />
+					</form>
+				</td>
 				<td width="12%" align="right"><?php 
 					echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($dbt->f("product_item_price"), 5, $db->f('order_currency'));  
 					

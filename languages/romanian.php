@@ -1745,6 +1745,17 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_RETURN_TO_PRODUCT = 'Return to product';
 	var $_ITEM_PREVIOUS = 'previous';
 	var $_ITEM_NEXT = 'next';
+	var $_VM_ORDER_EDIT_ACTIONS = 'Actions';
+	var $_VM_ORDER_EDIT = 'Modify Order';
+	var $_PHPSHOP_ORDER_EDIT_ADD = 'Add';
+	var $_VM_ORDER_EDIT_ADD_PRODUCT = 'Add product';
+	var $_VM_ORDER_EDIT_EDIT_ORDER = 'Modify order';
+	var $_VM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0 = 'The quantity has to be more than 0';
+	var $_VM_ORDER_EDIT_PRODUCT_ADDED = 'Product successfully added to the order';
+	var $_VM_ORDER_EDIT_PRODUCT_DELETED = 'Product successfully removed from the order';
+	var $_VM_ORDER_EDIT_QUANTITY_UPDATED = 'Quantity successfully updated';
+	var $_VM_ORDER_EDIT_RETURN_PARENTS = 'Back to the parent product';
+	var $_VM_ORDER_EDIT_CHOOSE_PRODUCT = 'Choose a product';
         
 }
 class phpShopLanguage extends vmLanguage { }
