@@ -35,7 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+11.12.2006 soeren
 
++ added the order edit extension by nfischer, nico and rolf: http://virtuemart.net/index.php?option=com_flyspray&Itemid=91&do=details&task_id=27
+	It allows to modify orders and order items after the order has been placed.
+	
 09.12.2006 soeren
 # Task #1045 - ps_product_category::get_navigation_list cannot be called twice! (ps_product_category.php)
 # Task #1040 - Redirect after registration (ps_shopper.php)
