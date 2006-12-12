@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.12.2006 gregdev
+
+^ Added line to virtuemart.xml for the new favicon.ico file.
+
 11.12.2006 soeren
 
 + added the order edit extension by nfischer, nico and rolf: http://virtuemart.net/index.php?option=com_flyspray&Itemid=91&do=details&task_id=27
