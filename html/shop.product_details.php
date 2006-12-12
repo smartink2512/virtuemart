@@ -151,7 +151,7 @@ $parent_id_link = $db_product->f("product_parent_id");
     $return_link .= "\">";
     $return_link .= $product_parent_name;
     $return_link .= "</a>";
-    $return_link .= " ".$ps_product_category->pathway_separator()." ";      
+    $return_link .= " ".vmCommonHTML::pathway_separator()." ";      
     }
 $tpl->set( 'return_link', $return_link );
 $navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');
