@@ -4,11 +4,12 @@ var MooPrompt = box = new Class({
 			buttons: 1,
 			width: 300, // Set width of the box
 			height: 0, // Set height of the box (0 = sized to content)
-			maxHeight: 500, // Maximum height of the dialog box
+			maxHeight:100, // Maximum height of the dialog box
 			vertical: 'middle', // top middle bottom
 			horizontal: 'center', // left center right
 			delay: 0, // Delay before closing (0=no delay)
 			overlay: true, // Cover the page
+			showCloseBtn: true,
 			effect: 'grow'
 				// 'grow' - Expands box from a middle point and fades in content
 				// 'slide' - Slides in the box from the nearest side.
@@ -32,15 +33,24 @@ var MooPrompt = box = new Class({
 		this.container.setStyles({
 			'position': 'absolute', 'visibility': 'hidden'
 		}).injectInside(document.body);
+		
 		this.box = new Element('div').setProperty('class', 'cbBox');
 		this.box.setStyles({
 			'width': this.options.width+'px',
 			'overflow': 'auto'
 		}).injectInside(this.container);
+		
 		if (this.box.getStyle('background-color') == '' || this.box.getStyle('background-color') == 'transparent') {
 			this.box.setStyle('background-color', this.container.getStyle('background-color'));
 		}
+		if( this.options.showCloseBtn ) {
+			this.closeBtn = new Element('div').setProperty('class', 'cbCloseButton');
+			this.closeBtn.onclick = this.close.pass(['close'], this);
+			this.closeBtn.injectInside(this.box);
+		}
+		
 		this.header = new Element('h3').setProperty('class', 'cbHeader').appendText(this.title).injectInside(this.box);
+				
 		this.content = new Element('div').setProperty('class', 'cbContent').injectInside(this.box);
 		if ($type(content) == 'element' ) {
 			content.injectInside(this.content);
@@ -64,7 +74,7 @@ var MooPrompt = box = new Class({
 			if (typeof(this.options['button'+i]) == 'undefined') {
 				this.options['onButton'+i] = Class.empty;
 			}
-			this['button'+i].setProperty('class', 'button');
+			this['button'+i].setProperty('class', 'button cbButton');
 			this['button'+i].onclick = this.close.pass([this.options['onButton'+i]], this);
 		}
 		this.boxHeight = (this.box.offsetHeight < this.options.maxHeight) ? this.box.offsetHeight : this.options.maxHeight;
@@ -74,7 +84,7 @@ var MooPrompt = box = new Class({
 		window.addEvent('scroll', this.eventPosition).addEvent('resize', this.eventPosition);
 		this.box.setStyle('display', 'none');
 		if (this.options.overlay) {
-			this.fx1 = new Fx.Style(this.overlay, 'opacity', {duration:500}).custom(0, .8);
+			this.fx1 = new Fx.Style(this.overlay, 'opacity', {duration:100}).custom(0, .8);
 		}
 		if (this.options.effect == 'grow') {
 			this.container.setStyle('top', (Window.getScrollTop()+(Window.getHeight()/2))+'px');
@@ -89,7 +99,7 @@ var MooPrompt = box = new Class({
 			}
 			this.container.setStyles(style);
 			this.container.setStyle('visibility', '');
-			this.fx2 = new Fx.Styles(this.container, {duration: 500});
+			this.fx2 = new Fx.Styles(this.container, {duration:100});
 			this.fx2.custom({
 				'width': [0, this.options.width], 'margin-left': [0, -this.options.width/2], 'margin-right': [0, -this.options.width/2],
 				'height': [0, this.boxHeight], 'margin-top': [0, -this.boxHeight/2], 'margin-bottom': [0, -this.boxHeight/2]
@@ -97,7 +107,7 @@ var MooPrompt = box = new Class({
 				this.box.setStyles({
 					'visibility': 'hidden', 'display': '', 'height': this.boxHeight+'px'
 				});
-				new fx.Style(this.box, 'opacity', {duration: 500}).custom(0, 1).chain(function() {
+				new fx.Style(this.box, 'opacity', {duration:100}).custom(0, 1).chain(function() {
 					if (this.options.delay > 0) {
 						var fn = function () {
 							this.close()
@@ -113,7 +123,7 @@ var MooPrompt = box = new Class({
 			this.box.setStyles({
 				'visibility': '', 'display': '', 'height': this.boxHeight+'px'
 			});
-			this.fx2 = new Fx.Styles(this.container, {duration: 500});
+			this.fx2 = new Fx.Styles(this.container, {duration:100});
 			var special = {};
 			if (this.options.horizontal != 'center') {
 				special[this.options.horizontal] = [-this.options.width, 0];

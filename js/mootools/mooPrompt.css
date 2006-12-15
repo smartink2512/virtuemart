@@ -6,24 +6,30 @@
 	padding:5px;
 	background-color:white;
 	border: 2px solid gray;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-khtml-border-radius: 10px;
 }
 .cbBox h3 {
 	font-size:1.4em;
-	padding:2px;
+	margin-top:0px;
+	padding-top: 3px;
+	vertical-align: middle;
 	text-align:center;
 	background-color:#ccc;
+	background-image: url( header-background.png );
 }
 .cbBox p {
 	margin:3px;
 }
-.cbBox .cbButtons {
+.cbBox, .cbButtons {
 	text-align:center;
 }
-.closeButton {
+.cbButton {
+	margin: 3px;
+}
+.cbCloseButton {
+	background: url( close.gif ) no-repeat;
+	width: 16px; height: 16px;
 	position:absolute;
-	top:10px;
-	right:10px;
+	top: 9px;
+	right:5px;
+	cursor: pointer;
 }
