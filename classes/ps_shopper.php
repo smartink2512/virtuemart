@@ -327,7 +327,7 @@ class ps_shopper {
 		}
 		
 		if( !$my->id && $mosConfig_useractivation == '0') {
-			if( defined( '_JEXEC' )) {
+			if( defined( '_JEXEC' ) || class_exists('mambocore') ) {
 				$mainframe->login($d['username'], $d['password'] );
 			} else {
 				$mainframe->login($d['username'], md5( $d['password'] ));

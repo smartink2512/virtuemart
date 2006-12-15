@@ -847,16 +847,6 @@ class ps_product_category extends vmAbstractObject {
 		return True;
 	}
 
-
-	/**
-	 * Prints a bulleted of the childen of this category if they exist.
-	 * @author soeren
-	 * @param unknown_type $category_id
-	 */
-	function print_child_list($category_id) {
-		echo $this->get_child_list($category_id);
-	}
-
 	/**
 	 * creates a bulleted of the childen of this category if they exist
 	 * @author pablo
