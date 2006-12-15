@@ -106,7 +106,7 @@ if (!empty($shopper_group_id)) {
       <?php echo $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DESC ?>:</div></strong>
       </td>
       <td width="77%" valign="top" >
-      <?php editorArea( 'editor1', $db->f('shopper_group_desc'), 'shopper_group_desc', '300', '100', '60', '4' ) ?>
+      <?php editorArea( 'editor1', $db->f('shopper_group_desc'), 'shopper_group_desc', 500, 250, 75, 25 ) ?>
       </td>
     </tr>
     <tr> 

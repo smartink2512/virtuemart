@@ -36,7 +36,9 @@ if( !empty($user_id) ) {
 }
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_USER_FORM_LBL );
+$formObj = &new formFactory( vmCommonHTML::imageTag(VM_THEMEURL.'images/administration/header/icon-48-user.png', 'User Icon', 'absmiddle' ) 
+							.'&nbsp;&nbsp;&nbsp;' 
+							. $VM_LANG->_PHPSHOP_USER_FORM_LBL );
 //Then Start the form
 $formObj->startForm();
 

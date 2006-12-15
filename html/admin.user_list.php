@@ -53,7 +53,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_USER_LIST_LBL, $mosConfig_live_site.'/administrator/images/user.png', $modulename, "user_list");
+$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_USER_LIST_LBL, VM_THEMEURL.'images/administration/header/icon-48-user.png', $modulename, "user_list");
 
 // start the list table
 $listObj->startTable();

@@ -32,24 +32,22 @@ if( !class_exists('jtoolbar')) {
 }
 
 class vmMenuBar extends mosMenuBar {
-	
+
 	/**
 	* Writes the common 'new' icon for the button bar
 	* @param string An override for the task
 	* @param string An override for the alt text
 	*/
 	function addNew( $task='new', $page, $alt='', $formName="adminForm" ) {
-		global $vmIcons, $VM_LANG;
+		global $VM_LANG;
 		if( $alt == '') {
 			$alt = $VM_LANG->_CMN_NEW;
 		}
 		$bar =& JToolBar::getInstance('JComponent');
-		$image = '<img src="'.$vmIcons['new_icon'].'" alt="'.$alt.'" border="0" name="new" />';
-		$image2 = $vmIcons['new_icon2'];
 		
 		$bar->appendButton('Custom', '<td>
-			<a class="toolbar" href="javascript:vm_submitButton(\''.$task.'\',\''.$formName.'\',\''.$page.'\');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task. '\',\'\',\''. $image2 .'\',1);">'
-			. $image.'<br/>'
+			<a class="toolbar" href="javascript:vm_submitButton(\''.$task.'\',\''.$formName.'\',\''.$page.'\');">'
+			. '<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 			. $alt
 		.'</a>
 		</td>');
@@ -62,17 +60,15 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function save( $task='save', $alt='' ) {
-		global $vmIcons, $VM_LANG;
+		global $VM_LANG;
 		if( $alt == '') {
 			$alt = $VM_LANG->_CMN_SAVE;
 		}
 		$bar =& JToolBar::getInstance('JComponent');
-		$image = '<img src="'.$vmIcons['save_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
-		$image2 = $vmIcons['save_icon2'];
 		
-		$bar->appendButton('Custom', '<td>
-		<a class="toolbar" href="javascript:submitbutton(\''. $task.'\');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task. '\',\'\',\''. $image2.'\',1);">
-		'. $image.'<br/>'
+		$bar->appendButton('Custom', '<td class="button">
+		<a class="toolbar" href="javascript:submitbutton(\''. $task.'\');">
+		<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 		. $alt .'
 		</a>
 		</td>' );
@@ -86,17 +82,16 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function apply( $task='apply', $alt='' ) {
-		global $page, $vmIcons, $VM_LANG;
+		global $page, $VM_LANG;
 		if( $alt == '') {
 			$alt = $VM_LANG->_E_APPLY;
 		}
 		$bar =& JToolBar::getInstance('JComponent');
-		$image = '<img src="'.$vmIcons['apply_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
-		$image2 = $vmIcons['apply_icon2'];
 		
 		$bar->appendButton('Custom', "<td>
-		<a class=\"toolbar\" href=\"javascript:vm_submitButton('$task', 'adminForm', '$page');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$task','','$image2',1);\">
-		$image<br/>$alt</a>
+		<a class=\"toolbar\" href=\"javascript:vm_submitButton('$task', 'adminForm', '$page');\">
+		<div class=\"vmicon-32-$task\" type=\"Standard\"></div>
+		$alt</a>
 		</td>" );
 		
 	}
@@ -106,15 +101,13 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function publishList( $func, $task='publish', $alt='Publish' ) {
-		global $vmIcons, $VM_LANG;
+		global $VM_LANG;
 
 		$bar =& JToolBar::getInstance('JComponent');
-		$image = '<img src="'.$vmIcons['publish_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
-		$image2 = $vmIcons['publish_icon2'];
 		
      	$bar->appendButton( 'Custom', '<td>
-		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to publish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task .'\',\'\',\''. $image2 .'\',1);">
-		'. $image.'<br/>'
+		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to publish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
+		<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 		 . $alt .'
 		</a>
 		</td>' );
@@ -126,14 +119,12 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function unpublishList( $func, $task='unpublish', $alt='Unpublish' ) {
-		global $vmIcons;
+
 		$bar =& JToolBar::getInstance('JComponent');
-		$image = '<img src="'.$vmIcons['unpublish_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
-		$image2 = $vmIcons['unpublish_icon2'];
 		
      	$bar->appendButton( 'Custom', '<td>
-		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to unpublish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task .'\',\'\',\''. $image2 .'\',1);">
-		'. $image.'<br/>'
+		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to unpublish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
+		<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 		 . $alt .'
 		</a>
 		</td>' );
@@ -145,16 +136,14 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function deleteList( $func, $task='remove', $alt='' ) {
-		global $vmIcons, $VM_LANG;
+		global $VM_LANG;
 		if( $alt == '') {
 			$alt = $VM_LANG->_E_REMOVE;
 		}
 		$bar =& JToolBar::getInstance('JComponent');
-		$image = '<img src="'.$vmIcons['delete_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
-		$image2 = $vmIcons['delete_icon2'];
 		
-		$bar->appendButton( 'Custom', '<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to delete\'); } else if (confirm(\'Are you sure you want to delete selected items?\')){ vm_submitListFunc(\''. $task.'\', \'adminForm\', \''. $func.'\' );}" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\''. $task.'\',\'\',\''. $image2 .'\',1);">
-			'. $image .'<br/>'
+		$bar->appendButton( 'Custom', '<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to delete\'); } else if (confirm(\'Are you sure you want to delete selected items?\')){ vm_submitListFunc(\''. $task.'\', \'adminForm\', \''. $func.'\' );}">
+			<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 			. $alt .'
 		</a></td>' );
 		
@@ -166,7 +155,7 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function cancel( $task='cancel', $alt='' ) {
-		global $page, $vmIcons, $VM_LANG;
+		global $page, $VM_LANG;
 		if( $alt == '') {
 			$alt = $VM_LANG->_CMN_CANCEL;
 		}
@@ -178,8 +167,6 @@ class vmMenuBar extends mosMenuBar {
 		elseif ($page == "admin.show_cfg") { $my_page = "store.index"; }
 		else { $my_page = str_replace('form','list',$page); }
 		
-		$image = '<img src="'.$vmIcons['cancel_icon'].'" alt="'.$alt.'" border="0" name="'.$task.'" />';
-		$image2 = $vmIcons['cancel_icon2'];
 		
 		if( $no_menu ) {
 			$js = "vm_windowClose();";
@@ -188,8 +175,8 @@ class vmMenuBar extends mosMenuBar {
 			$js = "vm_submitButton('$task', 'adminForm', '$my_page');";
 		}
 		$bar->appendButton( 'Custom', "<td>
-			<a class=\"toolbar\" href=\"javascript:$js\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$task','','$image2',1);\">
-			 $image<br />
+			<a class=\"toolbar\" href=\"javascript:$js\" >
+			 <div class=\"vmicon-32-$task\" type=\"Standard\"></div>
 			$alt</a>
 		</td>" );
 		

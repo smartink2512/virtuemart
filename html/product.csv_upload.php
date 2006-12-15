@@ -29,7 +29,7 @@ else {
   $cols = 2;
 }
 ?>
-<img src="<?php echo IMAGEURL ?>ps_image/csv.gif" alt="CSV Upload" border="0" />
+<img src="<?php echo IMAGEURL ?>ps_image/csv.gif" alt="CSV Upload" border="0" align="absmiddle" />
 <span class="sectionname"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_CSV_UPLOAD ?></span><br /><br />
 
 <?php 
@@ -105,8 +105,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
               <td align="center" colspan="<?php echo $cols; ?>">
                     <input type="file" name="file" size="40" />
                     <br />
-                    <a href="#" onclick="javascript: document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';document.adminForm.local_csv_file.value='';submitbutton();" >
-                    <img alt="Import" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png" align="center" /><?php echo $VM_LANG->_PHPSHOP_CSV_SUBMIT_FILE ?></a>
+                    <input type="submit" onclick="document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';document.adminForm.local_csv_file.value='';submitbutton();"style="background: url(<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png) no-repeat; height: 35px; text-indent: 35px;" value="<?php echo $VM_LANG->_PHPSHOP_CSV_SUBMIT_FILE ?>" />
               </td>
             </tr>
             <tr>
@@ -120,8 +119,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
             <tr>
               <td align="center" colspan="<?php echo $cols; ?>">
                     <input type="text" size="60" value="<?php echo realpath($mosConfig_absolute_path."/media") ?>" name="local_csv_file" /><br />
-                    <a href="#" onclick="javascript: document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';submitbutton();" >
-                    <img alt="Import" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png" align="center" /><?php echo $VM_LANG->_PHPSHOP_CSV_FROM_SERVER ?></a>
+                    <input id="load_from_server" type="submit" onclick="document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';submitbutton();" style="background: url(<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png) no-repeat; height: 35px; text-indent: 35px;" value="<?php echo $VM_LANG->_PHPSHOP_CSV_FROM_SERVER ?>" />
   
               </td>
             </tr>

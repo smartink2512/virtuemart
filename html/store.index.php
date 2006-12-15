@@ -71,7 +71,6 @@ $db->query('SELECT id,first_name, last_name, username FROM #__users, #__{vm}_use
 while($db->next_record())
   $new_customers[$db->f("id")] = $db->f('username') ." (" . $db->f('first_name')." ".$db->f('last_name').")";
 
-if( defined( '_PSHOP_ADMIN' ) && !defined( '_RELEASE' )) echo "</td></tr></table>";
 ?>
 <div class="main">
 	<div class="adminListHeader">

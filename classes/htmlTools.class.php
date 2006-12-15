@@ -195,26 +195,32 @@ class listFactory {
 		$search_date = mosGetParam( $_REQUEST, 'search_date', null);
 		$show = mosGetParam( $_REQUEST, "show", "" );
 		
-		$header = "<form name=\"adminForm\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">
-					<input type=\"hidden\" name=\"option\" value=\"$vmDir\" />
-					<input type=\"hidden\" name=\"page\" value=\"". $modulename . "." . $pagename . "\" />
-					<input type=\"hidden\" name=\"task\" value=\"\" />\n
-					<input type=\"hidden\" name=\"func\" value=\"\" />\n
-					<input type=\"hidden\" name=\"no_menu\" value=\"$no_menu\" />\n
-					<input type=\"hidden\" name=\"boxchecked\" />\n";
-		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  )
-            $header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
+		$header = '<a name="listheader"></a>';
+		$header .= '<form name="adminForm" action="'.$_SERVER['PHP_SELF'].'" method="post">
+					<div class="toolbar-box">
+        			<div class="toolbar-pad">
+					<input type="hidden" name="option" value="'.$vmDir.'" />
+					<input type="hidden" name="page" value="'. $modulename . '.' . $pagename . '" />
+					<input type="hidden" name="task" value="" />
+					<input type="hidden" name="func" value="" />
+					<input type="hidden" name="no_menu" value="'.$no_menu.'" />
+					<input type="hidden" name="boxchecked" />';
+		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
+			$header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
+		}
+		$header .= '<table><tr><td>';
         if( $title != "" ) {
-        	$style = ($image != '') ? 'style="background-image:url('.$image.');"' : '';
-        	$header .= "<h2 class=\"adminListHeader\" $style>$title</h2>\n";
+        	$style = ($image != '') ? 'style="background:url('.$image.') no-repeat;text-indent: 30px;line-height: 50px;"' : '';
+        	$header .= '<div class="header" '.$style.'><h2 style="margin: 0px;">'.$title.'</h2></div></td>'."\n";
         }
-        $header .= '<a name="listheader"></a>';
+        
 		if( !empty( $pagename )) 
-			$header .= "<div align=\"right\"><br/>
+			$header .= "<td width=\"20%\">
 			<input class=\"inputbox\" type=\"text\" size=\"25\" name=\"keyword\" value=\"$keyword\" />
 			<input class=\"button\" type=\"submit\" name=\"search\" value=\"".$VM_LANG->_PHPSHOP_SEARCH_TITLE."\" />
-			</div>";
-		$header .= "<br style=\"clear:both;\" />";
+			</td>";
+			
+		$header .= "</tr></table></div></div><br style=\"clear:both;\" />";
 		
 		if ( !empty($search_date) ) // Changed search by date
 			$header .= "<input type=\"hidden\" name=\"search_date\" value=\"$search_date\" />\n";
@@ -284,7 +290,11 @@ class formFactory {
 	*/
 	function formFactory( $title = '' ) {
 		if( $title != "" ) {
-			echo "<div class=\"adminListHeader\">$title</div><br style=\"clear:both;\" />";
+			echo '<div class="toolbar-box">
+        			<div class="toolbar-pad">
+        				<div class="header"><h2 style="margin: 0px;">'.$title.'</h2></div>
+        			</div>
+        		</div>';
 		}
 	}
 	/** 

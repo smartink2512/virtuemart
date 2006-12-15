@@ -33,7 +33,7 @@ $db->next_record();
 $gtree = ps_perm::getGroupChildrenTree( null, 'USERS', false );
 $access_group_list = mosHTML::selectList( $gtree, 'conf_VM_PRICE_ACCESS_LEVEL', 'size="4"', 'value', 'text', $db->f($fieldname) );
                 
-$title = '&nbsp;&nbsp;<img src="'. IMAGEURL .'ps_image/settings.png" align="middle" width="32" height="32" border="0" />&nbsp;';
+$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="absmiddle" border="0" />&nbsp;';
 $title .= $VM_LANG->_PHPSHOP_CONFIG;
 
 //First create the object and let it print a form heading

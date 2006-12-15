@@ -98,15 +98,18 @@ if( !defined('_VM_TOOLBAR_LOADED') && $no_menu == 1 ) {
 	include( ADMINPATH.'toolbar.virtuemart.php');
 	echo '</div>';
 }
-
-if( $no_menu != 1 ) {
-	include(ADMINPATH.'header.php');
-}
 // Include the Stylesheet
 echo '<link rel="stylesheet" href="components/'.$option.'/admin.styles.css" type="text/css" />';
 echo '<link href="'.VM_THEMEURL.'theme.css" type="text/css" rel="stylesheet" media="screen, projection" />';
 echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
 
+echo '<table width="100%" align="left"><tr>';
+if( $no_menu != 1 ) {
+	echo '<td valign="top" width="15%">';
+	include(ADMINPATH.'header.php');
+	echo '</td>';
+}
+echo '<td width="80%" valign="top" style="border: 1px solid silver;padding:4px;">';
 // Load PAGE
 if( !$pagePermissionsOK ) {
 	include( PAGEPATH. ERRORPAGE .'.php');
@@ -144,4 +147,6 @@ if( defined( '_LITEBOX_LOADED')) {
 	echo vmCommonHTML::scriptTag( '', 'var prev_onload = document.body.onload; 
 										window.onload = function() { if( prev_onload ) prev_onload(); initLightbox(); }' );
 }
+
+echo '</td></tr></table>';
 ?>
