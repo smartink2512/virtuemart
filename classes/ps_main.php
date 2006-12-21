@@ -721,11 +721,21 @@ function vmReadFileChunked($filename,$retbytes=true) {
 	if ($handle === false) {
 		return false;
 	}
+	// Prevent time outs on big files
+	@set_time_limit(0);
+	// PHP on Windows has a useless "usleep" function until 5.0.0
+	if( substr( strtoupper( PHP_OS ), 0, 3 ) == 'WIN' && version_compare( phpversion(), '5.0' ) < 0 ) {
+		$sleepfunc = 'sleep';
+		$time = 1; // sec.
+	} else {
+		$sleepfunc = 'usleep';
+		$time = 100; // msec.
+	}
 	while (!feof($handle)) {
 		$buffer = fread($handle, $chunksize);
 		echo $buffer;
-		sleep(1);
-		ob_flush();
+		$sleepfunc($time);
+		@ob_flush();
 		flush();
 		if ($retbytes) {
 			$cnt += strlen($buffer);
