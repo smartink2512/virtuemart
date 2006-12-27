@@ -55,7 +55,6 @@ $formObj->startForm();
       <td width="24%"><div align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_COUPON_HEADER ?>:</div></td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="coupon_code" value="<?php $db->sp("coupon_code") ?>" />
-        <?php echo mm_ToolTip( $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNT_TIP ); ?>
       </td>
     </tr>
     <tr> 
