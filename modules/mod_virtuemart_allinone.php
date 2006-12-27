@@ -8,7 +8,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
     Special Products ManagerM
     (All Modules originally designed by Mr PHP)
 *
-* @version $Id$
+* @version $Id: mod_virtuemart_allinone.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage modules
 *

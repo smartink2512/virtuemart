@@ -1,5 +1,5 @@
 README
-$Id$
+$Id: README 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 
 This PHP library provides an interface to FedEx's Ship Manager Direct API.  Using this
 class you will be able to send and receive data to any of FedEx's Ship Manager Direct API

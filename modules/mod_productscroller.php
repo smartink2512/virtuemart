@@ -3,7 +3,7 @@
 * VirtueMart Product Scroller Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED VirtueMart COMPONENT!
 *
-* @version $Id$
+* @version $Id: mod_productscroller.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage modules
 * 

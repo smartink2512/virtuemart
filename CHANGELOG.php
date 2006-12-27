@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 }
 /**
 *
-* @version $Id$
+* @version $Id: CHANGELOG.php 570 2006-12-12 13:45:24Z gregdev $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

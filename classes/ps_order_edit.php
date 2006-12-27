@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id$
+* @version $Id: ps_order_edit.php 560 2006-12-11 09:40:28Z soeren_nb $
 * @author nfischer
 * @copyright Copyright (C) 2006 Ingemar F�llman. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL

@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * mambo-phphop Product Categories Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
-* @version $Id$
+* @version $Id: mod_product_categories.php 434 2006-10-17 23:12:52 +0200 (Di, 17 Okt 2006) gregdev $
 * @package VirtueMart
 * @subpackage modules
 * 

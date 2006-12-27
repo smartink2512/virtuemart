@@ -2,7 +2,7 @@
 /**
 * This file contains the lanuages handler class
 *
-* @version $Id$
+* @version $Id: language.class.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @copyright Copyright (C) 2005 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php

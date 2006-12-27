@@ -1,4 +1,4 @@
-# $Id$
+# $Id: virtuemart.uninstallation.mysql.sql 474 2006-11-08 20:59:17 +0100 (Mi, 08 Nov 2006) soeren_nb $
 # SQL Uninstall script for VirtueMart
 #
 #
