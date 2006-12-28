@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.show_cfg.php 577 2006-12-15 21:27:06Z soeren_nb $
+* @version $Id: admin.show_cfg.php 500 2006-11-17 20:30:39 +0100 (Fr, 17 Nov 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -807,7 +807,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 
 <fieldset>
 	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD ?></legend>
-	<table class="adminform">
+	<table class="adminform" onclick="validateForm();">
 <?php
 require_once( CLASSPATH. "ps_shipping_method.php" );
 $ps_shipping_method = new ps_shipping_method;
@@ -816,44 +816,44 @@ $i = 0;
 foreach( $rows as $row ) { 
     if( $row['filename'] == "standard_shipping.php" ) { ?>
                 <tr>
-                        <td>
-                                <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('standard_shipping', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="standard_shipping" />
-                        </td>
-                        <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD ?></label>
-                        </td>
+                    <td>
+                        <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('standard_shipping', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="standard_shipping" />
+                    </td>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD ?></label>
+                    </td>
                 </tr><?php  
                 }
 		elseif( $row['filename'] == "zone_shipping.php" ) { ?>
-		<tr>
-                        <td valign="top">
-                                <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('zone_shipping', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="zone_shipping" />
-                        </td>
-                        <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE ?></label>
-                        </td>
+				<tr>
+                    <td valign="top">
+                        <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('zone_shipping', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="zone_shipping" />
+                    </td>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE ?></label>
+                    </td>
                 </tr><?php  
                 }
 		elseif( $row['filename'] == "ups.php" ) { ?>
-		<tr>
-                        <td>
-                                <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('ups', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="ups" />
-                        </td>
-                        <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS ?></label>
-                        </td>
+				<tr>
+                    <td>
+                        <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('ups', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="ups" />
+                    </td>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS ?></label>
+                    </td>
                 </tr><?php  
                 }
 		elseif( $row['filename'] == "intershipper.php" ) { ?>
-		<tr>
-                        <td>
-                                <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('intershipper', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="intershipper" />
-                        </td>
-                        <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER ?></label>
-                        </td>
+			<tr>
+                    <td>
+                        <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('intershipper', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="intershipper" />
+                    </td>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER ?></label>
+                    </td>
                 </tr><?php  
                 }
-		elseif( $row['filename'] != "no_shipping.php" ) {
-	?><tr>
+		elseif( $row['filename'] != "no_shipping.php" ) { ?>
+			<tr>
                 <td>
-                        <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search(basename($row['filename'], ".php"), $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="<?php echo basename($row['filename'], ".php") ?>" />
+                    <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search(basename($row['filename'], ".php"), $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="<?php echo basename($row['filename'], ".php") ?>" />
                 </td>
                 <td><label for="sh<?php echo $i ?>"><?php echo $row["description"]; ?></label></td>
                 </tr><?php    
@@ -863,13 +863,13 @@ foreach( $rows as $row ) {
 	echo "<input type=\"hidden\" name=\"shippingMethodCount\" value=\"".count($rows)."\" />";
 		?>
 		<tr><td colspan="2"><hr/></td></tr>
-		<tr>
-                        <td>
-                                <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" onclick="unCheckAndDisable( this.checked );" <?php if (NO_SHIPPING == '1') echo "checked=\"checked\""; ?> value="no_shipping" />
-                        </td>
-                        <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE ?></label>
-                        </td>
-                </tr>
+			<tr>
+                <td>
+                    <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" onclick="unCheckAndDisable( this.checked );" <?php if (NO_SHIPPING == '1') echo "checked=\"checked\""; ?> value="no_shipping" />
+                </td>
+                <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE ?></label>
+                </td>
+            </tr>
         </table>
 </fieldset>
 <?php
@@ -1048,7 +1048,8 @@ function unCheckAndDisable( disable ) {
             }
         }
 }
-function submitbutton(pressbutton) {
+
+function validateForm(pressbutton) {
     var form = document.adminForm;
     
     /* Shipping Configuration */
@@ -1064,11 +1065,10 @@ function submitbutton(pressbutton) {
                 correct = true;
         }
     }
-    if(!correct)
-        alert('<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION ?>');
+    if(!correct) {
+    	alert('<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION ?>');
+    }
 
-    else
-        submitform( pressbutton );
 }
 function toggleVisibility( makeVisible, ID ) {
 	element = document.getElementById( ID );

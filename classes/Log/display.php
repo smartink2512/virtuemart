@@ -169,11 +169,12 @@ class Log_display extends vmLog
      * @author Soeren Eberhardt
      */
 	function printLog( $priority = null ) {
-		$output = "";
+		$output = '<div ';
 		if( $this->_count > 10 && DEBUG) {
 			// Wrap the messages into a scrollable div field
-			$output .= '<div style="width:90%; overflow:auto; height:150px;">';
+			$output .= 'style="width:90%; overflow:auto; height:150px;"';
 		}
+		$output .= '>';
 		$i = 0;
 		$message_tmp = '';
 		foreach( $this->_messages as $message ) {
@@ -191,13 +192,12 @@ class Log_display extends vmLog
 			}
 			$i++;
 		}
-		if( $this->_count > 10 ) {
-			$output .= '</div>';
-		}
+		
+		$output .= '</div>';
 		$this->_count = 0;
 		$this->_messages = array();
 		if( $output ) {
-			echo $output .  $this->_linebreak;
+			echo $output;// .  $this->_linebreak;
 		}
 	}
 }

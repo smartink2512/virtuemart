@@ -358,21 +358,27 @@ class ps_html {
 
 		$db =& new ps_DB;
 
-		$q = "SELECT product_id, product_name FROM #__{vm}_product ";
+		$q = "SELECT #__{vm}_product.product_id,category_name,product_name
+			FROM #__{vm}_product,#__{vm}_product_category_xref,#__{vm}_category ";
 		if( !$show_items ) {
-			$q .= "WHERE product_parent_id='0' AND product_id <> '$product_id'";
+			$q .= "WHERE product_parent_id='0'
+					AND #__{vm}_product.product_id <> '$product_id' 
+					AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id
+					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";
 		}
 		else {
-			$q .= "WHERE product_id <> '$product_id'";
+			$q .= "WHERE #__{vm}_product.product_id <> '$product_id' 
+					AND  #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id 
+					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";;
 		}
-		$q .= ' AND product_publish=\'Y\'';
+		$q .= ' ORDER BY category_name,#__{vm}_category.category_id,product_name';
 		// This is necessary, because so much products are difficult to handle!
 		$q .= ' LIMIT 0, 2000';
 		
 		$db->query( $q );
 		$products = Array();
 		while( $db->next_record() ) {
-			$products[$db->f("product_id")] = $db->f("product_name");
+			$products[$db->f("product_id")] = $db->f("category_name")." =&gt; ".$db->f("product_name");
 		}
 		$this->dropdown_display($list_name, $values, $products, $size=20, "multiple=\"multiple\"");
 	}

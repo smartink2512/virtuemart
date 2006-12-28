@@ -290,7 +290,11 @@ if ($num_rows > 0) {
 		$text = $db->f("product_name");
 
 		// The link to the product form / to the child products
-		$tmpcell = vmPopupLink( $link, $text, 800, 540, '_blank', '', 'screenX=100,screenY=100' );
+		if( $vmLayout == 'standard') {
+			$tmpcell = vmPopupLink( $link, $text, 800, 540, '_blank', '', 'screenX=100,screenY=100' );
+		} else {
+			$tmpcell = vmCommonHTML::hyperLink($link, $text, '', 'Edit: '.$text, 'onclick="parent.addSimplePanel( \''.$db->getEscaped($text).'\', \''.$link.'\' );return false;"');
+		}
 		
 		if( $ps_product->parent_has_children( $db->f("product_id") ) ) {
 			$tmpcell .= "&nbsp;&nbsp;&nbsp;<a href=\"";

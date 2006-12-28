@@ -111,12 +111,17 @@ else {
 		editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
 		
 		$mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL .'admin.css' ));
+		$mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL .'admin.styles.css' ));
 		$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/functions.js" ));
-
+		echo '<table width="100%" align="left"><tr>';
 		if( $no_menu != "1" ) {
+			$vmLayout = 'standard';
+			echo '<td valign="top" width="15%">';
 			// The admin header with dropdown menu
 			include( ADMINPATH."header.php" );
+			echo '</td>';
 		}
+		echo '<td width="80%" valign="top" style="border: 1px solid silver;padding:4px;">';
 		include( ADMINPATH."toolbar.virtuemart.php" );
 		echo '<br style="clear:both;" />';
 

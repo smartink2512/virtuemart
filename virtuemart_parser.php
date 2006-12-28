@@ -22,10 +22,6 @@ global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vend
 	$auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list,
 	$vendor_currency_display_style, $vendor_freeshipping, $mm_action_url, $limit, $limitstart, $mainframe;
 
-// Raise memory_limit to 16M when it is too low
-// Especially the product section needs much memory
-
-
 $option = mosGetParam( $_REQUEST, 'option' );
 
 if( !defined( '_VM_PARSER_LOADED' )) {
@@ -50,6 +46,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 
+	// Raise memory_limit to 16M when it is too low
+	// Especially the product section needs much memory
 	vmRaiseMemoryLimit( '16M' );
 	
 	// This makes it possible to use Shared SSL
@@ -71,8 +69,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	
 		unset( $_REQUEST["error"] );
 		$user_id = intval( mosgetparam($_REQUEST, 'user_id', 0) );
-		$_SESSION['session_userstate']['product_id'] = $product_id = $_REQUEST['product_id'] = intval( mosgetparam($_REQUEST, 'product_id', 0) );
-		$_SESSION['session_userstate']['category_id'] = $category_id = $_REQUEST['category_id'] = intval( mosgetparam($_REQUEST, 'category_id', 0) );
+		$_SESSION['session_userstate']['product_id'] = $product_id = intval( mosgetparam($_REQUEST, 'product_id', 0) );
+		$_SESSION['session_userstate']['category_id'] = $category_id = intval( mosgetparam($_REQUEST, 'category_id', 0) );
 		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
 
 		$myInsecureArray = array('keyword' => $keyword,

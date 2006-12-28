@@ -24,9 +24,10 @@ $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$op
 
 if (!empty( $group_id )) {
   $db = $usergroup->get_group($group_id);
+} else {
 }
 
-$funcname = !empty($group_details) ? "usergroupUpdate" : "usergroupAdd";
+$funcname = !empty($group_id) ? "usergroupUpdate" : "usergroupAdd";
 
 // Create the Form Control Object
 $formObj = &new formFactory( $VM_LANG->_VM_USERGROUP_FORM_LBL );

@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+19.12.2006 soeren
+^ updated the GreyBox script from version 3.45 to 5.16 (check it out: http://orangoo.com/labs/GreyBox/)
+
 12.12.2006 gregdev
 
 ^ Added line to virtuemart.xml for the new favicon.ico file.

@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Header file for the shop administration.
 * shows all modules that are available to the user in a dropdown menu
 *
-* @version $Id: header.php 577 2006-12-15 21:27:06Z soeren_nb $
+* @version $Id: header.php 474 2006-11-08 19:59:17Z soeren_nb $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
@@ -40,55 +40,36 @@ while ($db->next_record()) {
         $mod[] = $db->f("module_name");
 	}
 }
-/*
-if (!defined('_PSHOP_ADMIN')) {
-  	$my_path = "includes/js/ThemeOffice/";
-  	if( stristr( $_SERVER['PHP_SELF'], "index2.php" )) {
-		echo '<script type="text/javascript" src="includes/js/mambojavascript.js"></script>
-		<a href="index.php" title="Back"><h3>&nbsp;&nbsp;&gt;&gt; '.$VM_LANG->_PHPSHOP_BACK_TO_MAIN_SITE.' &lt;&lt;</h3></a>';
-  	}
-  	// We need the admin template css now, but which one? - so check here
-  	$adminTemplate = $_VERSION->PRODUCT == 'Joomla!' ? 'joomla_admin' : 'mambo_admin_blue';
-	?>
-	<link rel="stylesheet" href="administrator/templates/<?php echo $adminTemplate; ?>/css/template_css.css" type="text/css" />
-    <?php 
-}
-else {
-  $my_path = "../includes/js/ThemeOffice/";
-}
-*/
 
 $mainframe->addCustomHeadTag('<link rel="stylesheet" type="text/css" href="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/css/menu.css" />');
-$mainframe->addCustomHeadTag('<link rel="stylesheet" type="text/css" href="'.VM_THEMEURL.'admin.styles.css" />');
 $mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/virtuemart_menu.js"></script>');
 $mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/nifty.js"></script>');
 $mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js"></script>');
 $mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/functions.js"></script>');
-
-?>
-<script type="text/javascript">
-window.onload=function(){
-	Fat.fade_all();
-	if(!NiftyCheck()) alert("hello");
-	Rounded("div.sidemenu-box","all","#fff","#f7f7f7","border #ccc");
-	Rounded("div.element-box","all","#fff","#fff","border #ccc");
-	Rounded("div.toolbar-box","all","#fff","#fbfbfb","border #ccc");
-	Rounded("div.submenu-box","all","#fff","#f2f2f2","border #ccc");
-
+if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
+	echo $mainframe->getHead();
 }
-</script>
-
+?>
 <div id="content-box2">
 <div id="content-pad">
   <div class="sidemenu-box">
     <div class="sidemenu-pad">
 		<center>
-			<a href="http://virtuemart.net" target="_blank"><img align="middle" hspace="15" src="<?php echo IMAGEURL ?>ps_image/menu_logo.gif" alt="VirtueMart Cart Logo" /></a>
-		</center>
-		<center>
-			<h2>
-			<?php echo $VM_LANG->_PHPSHOP_ADMIN	?>
-			</h2>
+		<?php if( $vmLayout == 'standard') {
+			?>
+			[ <strong>Simple Layout</strong> | <a href="<?php echo $_SERVER['PHP_SELF'].'?'.( !empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=extended">Extended Layout</a> ]<br />
+			<?php
+		} else { 
+			?>
+			[ <a href="<?php echo $_SERVER['PHP_SELF'].'?'.(!empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=standard">Simple Layout</a> | <strong>Extended Layout</strong> ]<br />
+			<?php
+		}
+		?><br />
+			<a href="http://virtuemart.net" target="_blank">
+				<img align="middle" hspace="15" src="<?php echo IMAGEURL ?>ps_image/menu_logo.gif" alt="VirtueMart Cart Logo" />
+			</a>
+		
+			<h2><?php echo $VM_LANG->_PHPSHOP_ADMIN	?></h2>
 		</center>
 		<div class="status-divider">
 		</div>

@@ -228,9 +228,11 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 				fputs($fp, $config, strlen($config));
 				fclose ($fp);
 
-				mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				return true;
 			} else {
-				mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. ADMINPATH ."virtuemart.cfg.php)" );
+				$vmLogger->err( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. ADMINPATH ."virtuemart.cfg.php)" );
+				return false;
 			}
 			
 		}
@@ -291,9 +293,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
 
-			mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			return true;
 		} else {
-			mosRedirect($_SERVER['PHP_SELF']."?page=$page&option=$option", $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. VM_THEMEPATH ."theme.config.php)" );
+			$vmLogger->err( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. VM_THEMEPATH ."theme.config.php)" );
+			return false;
 		}
 	}
 	

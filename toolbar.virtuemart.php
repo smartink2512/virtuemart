@@ -27,7 +27,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 if( stristr( $_SERVER['PHP_SELF'], 'administrator')) {
 	@define( '_PSHOP_ADMIN', '1' );
 }
-define('_VM_TOOLBAR_LOADED', 1 );
+defined('_VM_TOOLBAR_LOADED' ) or define('_VM_TOOLBAR_LOADED', 1 );
 
 include( dirname(__FILE__).'/compat.joomla1.5.php');
 

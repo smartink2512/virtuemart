@@ -42,7 +42,7 @@ elseif (empty($vars["error"])) {
   
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("category-pane");
-$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" width=\"16\" height=\"16\" border=\"0\" />&nbsp;".$VM_LANG->_PHPSHOP_CATEGORY_FORM_LBL, "info-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' width='16' height='16' border='0' /> ".$VM_LANG->_PHPSHOP_CATEGORY_FORM_LBL, "info-page");
 ?> 
 <table class="adminform">
     <tr> 
@@ -122,7 +122,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
 </table>
 <?php
 $tabs->endTab();
-$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/image.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;"._E_IMAGES, "status-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/image.png' width='16' height='16' align='absmiddle' border='0' /> "._E_IMAGES, "status-page");
 
 if( !stristr( $db->f("category_thumb_image"), "http") )
   echo "<input type=\"hidden\" name=\"category_thumb_image_curr\" value=\"". $db->f("category_thumb_image") ."\" />";
@@ -247,8 +247,7 @@ $funcname = !empty($category_id) ? "productCategoryUpdate" : "productCategoryAdd
 $formObj->finishForm( $funcname, $modulename.'.product_category_list', $option );
 
 ?>
-<script type="text/javascript">
-<!--
+<script type="text/javascript">//<!--
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
   if( !disableOnChecked ) {
     if(elementOnChecked.checked==true) {
@@ -269,5 +268,5 @@ function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
 }
 
 toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );
--->
+//-->
 </script>

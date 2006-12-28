@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php 577 2006-12-15 21:27:06Z soeren_nb $
+* @version $Id: htmlTools.class.php 510 2006-11-23 20:09:06 +0100 (Do, 23 Nov 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
@@ -99,8 +99,7 @@ class listFactory {
 	* Writes the start of the button bar table
 	*/
 	function startTable() {
-		?>
-		<script type="text/javascript"><!--
+		?><script type="text/javascript"><!--
 		function MM_swapImgRestore() { //v3.0
 			var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
 		} //-->
@@ -197,13 +196,14 @@ class listFactory {
 		
 		$header = '<a name="listheader"></a>';
 		$header .= '<form name="adminForm" action="'.$_SERVER['PHP_SELF'].'" method="post">
-					<div class="toolbar-box">
-        			<div class="toolbar-pad">
+					
 					<input type="hidden" name="option" value="'.$vmDir.'" />
 					<input type="hidden" name="page" value="'. $modulename . '.' . $pagename . '" />
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="func" value="" />
 					<input type="hidden" name="no_menu" value="'.$no_menu.'" />
+					<input type="hidden" name="no_toolbar" value="'.mosGetParam($_REQUEST,'no_toolbar',0).'" />
+					<input type="hidden" name="only_page" value="'.mosGetParam($_REQUEST,'only_page',0).'" />
 					<input type="hidden" name="boxchecked" />';
 		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
 			$header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
@@ -220,7 +220,7 @@ class listFactory {
 			<input class=\"button\" type=\"submit\" name=\"search\" value=\"".$VM_LANG->_PHPSHOP_SEARCH_TITLE."\" />
 			</td>";
 			
-		$header .= "</tr></table></div></div><br style=\"clear:both;\" />";
+		$header .= "</tr></table><br style=\"clear:both;\" />";
 		
 		if ( !empty($search_date) ) // Changed search by date
 			$header .= "<input type=\"hidden\" name=\"search_date\" value=\"$search_date\" />\n";
@@ -290,18 +290,14 @@ class formFactory {
 	*/
 	function formFactory( $title = '' ) {
 		if( $title != "" ) {
-			echo '<div class="toolbar-box">
-        			<div class="toolbar-pad">
-        				<div class="header"><h2 style="margin: 0px;">'.$title.'</h2></div>
-        			</div>
-        		</div>';
+			echo '<div class="header"><h2 style="margin: 0px;">'.$title."</h2></div>\n";
 		}
 	}
 	/** 
 	* Writes the form start tag
 	*/
 	function startForm( $formname = 'adminForm', $extra = "" ) {
-		echo '<form method="post" action="'. $_SERVER['PHP_SELF'] .'" name="'.$formname.'" '.$extra.'>';
+		echo '<form method="post" action="'. $_SERVER['PHP_SELF'] .'" name="'.$formname.'" '.$extra.' target="_self">';
 	}
 	
 	function hiddenField( $name, $value ) {
@@ -322,8 +318,11 @@ class formFactory {
         <input type="hidden" name="option" value="'.$vmDir.'" />';
 		if( $no_menu ) {
 			$html .= '<input type="hidden" name="ajax_request" value="1" />';
-			$html .= '<input type="hidden" name="no_menu" value="1" />';
 		}
+		$html .= '<input type="hidden" name="no_menu" value="'.$no_menu.'" />';
+		$html .= '<input type="hidden" name="no_toolbar" value="'.mosGetParam($_REQUEST,'no_toolbar',0).'" />';
+		$html .= '<input type="hidden" name="only_page" value="'.mosGetParam($_REQUEST,'only_page',0).'" />';
+		
         if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
         	$html .= '<input type="hidden" name="pshop_admin" value="admin" />';
         }
@@ -349,6 +348,7 @@ class mShopTabs {
     
     /** @var string Panel ID */
     var $panel_id;
+    var $tabs;
     
 	/**
 	* Constructor
@@ -356,25 +356,20 @@ class mShopTabs {
 	* @param int useCookies, if set to 1 cookie will hold last used tab between page refreshes
 	* @param int show_js, if set to 1 the Javascript Link and Stylesheet will not be printed
 	*/
-	function mShopTabs($useCookies, $show_js, $panel_id) {
-		global $mosConfig_live_site;
-        if( $show_js == 1 ) {
-            echo "<link id=\"tab-style-sheet\" type=\"text/css\" rel=\"stylesheet\" href=\"" . $mosConfig_live_site. "/components/com_virtuemart/js/tabs/mm_tabpane.css\" />";
-            echo "<script type=\"text/javascript\" src=\"". $mosConfig_live_site. "/components/com_virtuemart/js/tabs/mm_tabpane.js\"></script>";
-        }
+	function mShopTabs($useCookies, $show_js, $panel_id) {		
+		vmCommonHTML::loadYUIEXT();
         $this->useCookies = $useCookies;
         $this->panel_id = $panel_id;
+        $this->tabs = array();
 	}
 
 	/**
 	* creates a tab pane and creates JS obj
 	* @param string The Tab Pane Name
 	*/
-	function startPane($id){
+	function startPane($id) {		
 		echo "<div class=\"tab-page\" id=\"".$id."\">";
-		echo "<script type=\"text/javascript\">\n";
-		echo "   var tabPane1".$this->panel_id." = new WebFXTabPane( document.getElementById( \"".$id."\" ), ".$this->useCookies." )\n";
-		echo "</script>\n";
+		$this->pane_id = $id;
 	}
 
 	/**
@@ -382,6 +377,15 @@ class mShopTabs {
 	*/
 	function endPane() {
 		echo "</div>";
+		$scripttag = "var tabs_{$this->panel_id} = new YAHOO.ext.TabPanel('{$this->pane_id}');\n";
+		foreach ( $this->tabs as $id => $title ) {
+			$scripttag .= "tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
+		}
+		reset($this->tabs);
+		$scripttag .= "tabs_{$this->panel_id}.activate('".key($this->tabs)."');";
+		
+		echo vmCommonHTML::scriptTag('', $scripttag );
+
 	}
 
 	/*
@@ -390,11 +394,8 @@ class mShopTabs {
 	* @param paneid - This is the parent pane to build this tab on
 	*/
 	function startTab( $tabText, $paneid ) {
-		echo "<div class=\"tab-page\" id=\"".$paneid."\">";
-		echo "<h2 class=\"tab\">".$tabText."</h2>";
-		echo "<script type=\"text/javascript\">\n";
-		echo "  tabPane1".$this->panel_id.".addTabPage( document.getElementById( \"".$paneid."\" ) );";
-		echo "</script>";
+		echo "<div class=\"tab-page\" id=\"".$paneid."\" title=\"$tabText\">";
+		$this->tabs[$paneid] = $tabText;
 	}
 
 	/*
@@ -944,10 +945,11 @@ class vmCommonHTML extends mosHTML {
 		global $mosConfig_live_site, $vmDir, $mainframe;
 		if( !defined( '_GREYBOX_LOADED' )) {
 
-			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/AJS.js' );
-			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/greybox.js' );
-			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/greybox.css' );
-			$scripttag .= vmCommonHTML::scriptTag( '', 'var GB_IMG_DIR = \''.$mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/\'; GreyBox.preloadGreyBoxImages();' );
+			$scripttag = vmCommonHTML::scriptTag( '', 'var GB_ROOT_DIR = \''.$mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/\';' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/AJS.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/AJS_fx.js' );
+			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/gb_scripts.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/gb_styles.css' );
 			if( defined('_PSHOP_ADMIN') || $print) {
 				echo $scripttag;
 			}
@@ -1002,7 +1004,39 @@ class vmCommonHTML extends mosHTML {
 			define ( "_BEHAVIOURJS_LOADED", "1" );
 		}		
 	}
+	function loadYUI( $print=false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
+		if( !defined( "_YUI_LOADED" )) {
+			
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/utilities/utilities.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/container/assets/container.css' );
 
+			if( defined('_PSHOP_ADMIN') || $print) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+			define ( "_YUI_LOADED", "1" );
+		}
+	}
+	function loadYUIEXT( $print = false ) {
+		global $mosConfig_live_site, $vmDir, $mainframe;
+		vmCommonHTML::loadYUI($print);
+		if( !defined( "_YUIEXT_LOADED" )) {
+			
+			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/ext/yui-ext.js' );
+			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/ext/yui-ext.css' );
+
+			if( defined('_PSHOP_ADMIN') || $print) {
+				echo $scripttag;
+			}
+			else {
+				$mainframe->addCustomHeadTag( $scripttag );
+			}
+			define ( "_YUIEXT_LOADED", "1" );
+		}
+	}
 	/**
 	 * Returns a properly formatted image link that opens a LightBox2/Slimbox
 	 *
@@ -1033,7 +1067,7 @@ class vmCommonHTML extends mosHTML {
 		if( $no_js_url == '') {
 			$no_js_url = $url;
 		}
-		$link = vmCommonHTML::hyperLink( $no_js_url, $text, $target, $title, $attributes.' onclick="try{ if( !parent.GB ) return GB_show(\''.$title.'\', \''.$url.'\', '.$height.', '.$width.');} catch(e) { }"' );
+		$link = vmCommonHTML::hyperLink( $no_js_url, $text, $target, $title, $attributes.' onclick="try{ if( !parent.GB ) return GB_showCenter(\''.$title.'\', \''.$url.'\', '.$height.', '.$width.');} catch(e) { }"' );
 		
 		return $link;
 	}
@@ -1066,7 +1100,10 @@ class vmCommonHTML extends mosHTML {
 			echo 'Failure';
 		}
 		echo '</div>';
+		echo '<div id="vmLogResult">';
 		$vmLogger->printLog();
+		echo '</div>';
+		
 	}
 	/**
 	 * Returns a div element of the class "shop_error" 

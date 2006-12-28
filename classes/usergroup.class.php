@@ -51,7 +51,7 @@ class vmUserGroup extends vmAbstractObject {
 	 */
 	function validate_update($d) {
 		global $vmLogger;
-		$db = $this->get_group($group);
+		$db = $this->get_group($d['group_id']);
 		
 		if( in_array( $db->f('group_name'), $this->_protected_groups ))  {
 			$vmLogger->err( 'The group '.$db->f('group_name').' cannot be renamed!' );
@@ -92,7 +92,7 @@ class vmUserGroup extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function add(&$d) {
-			
+		global $vmLogger;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -105,7 +105,9 @@ class vmUserGroup extends vmAbstractObject {
 						);
 		$db->buildQuery( 'INSERT', $this->_table_name, $fields );
 		
-		$db->query();
+		if( $db->query() ) {
+			$vmLogger->info('The new user group has been added.');
+		}
 		
 		$_REQUEST['function_id'] = $db->last_insert_id();
 		return True;
@@ -120,7 +122,7 @@ class vmUserGroup extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function update(&$d) {
-		
+		global $vmLogger;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -131,8 +133,9 @@ class vmUserGroup extends vmAbstractObject {
 						'group_level' => (int)$d["group_level"]
 						);
 		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, 'WHERE '.$this->_key.'='.(int)$d[$this->_key] );
-		$db->query();
-		
+		if( $db->query() ) {
+			$vmLogger->info('The user group has been updated.');
+		}
 		return True;
 	}
 

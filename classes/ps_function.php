@@ -155,7 +155,7 @@ class ps_function extends vmAbstractObject {
 			return False;
 		}
 
-		$record_id = $d["function_id"];
+		$record_id = (int)$d["function_id"];
 
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {

@@ -69,6 +69,8 @@ else {
 			</table>
 		  </td>
 		  <td valign="top" width="65%">
+		  <div>
+		  <div>
 			<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
 			<?php
 			$tab = new mShopTabs( 0, 1, "myTab");
@@ -122,12 +124,9 @@ else {
 			  echo "<tr>";
 			  echo "<td>".$order_event->date_added."</td>\n";
 			  echo "<td align=\"center\"><img alt=\"Status Icon\" src=\"$mosConfig_live_site/administrator/images/";
-			  if( $order_event->customer_notified == 1 ) {
-			  	echo "tick.png";
-			  } else {
-			  	echo "publish_x.png";
-			  }
-			  echo "\" border=\"0\" align=\"center\" /></td>\n";
+			  echo $order_event->customer_notified == 1 ? 'tick.png' : 'publish_x.png';
+			  
+			  echo "\" border=\"0\" align=\"absmiddle\" /></td>\n";
 			  echo "<td>".$order_event->order_status_code."</td>\n";
 			  echo "<td>".$order_event->comments."</td>\n";
 			  echo "</tr>\n";
@@ -142,6 +141,8 @@ else {
 
 			$tab->endPane();
 			?>
+			</div>
+			</div>
 		  </td>
 		</tr>
 	  </table>

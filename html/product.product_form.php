@@ -212,7 +212,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
-$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" width=\"16\" height=\"16\" border=\"0\" />&nbsp;$info_label", "info-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='center' width='16' height='16' border='0' align='absmiddle' /> $info_label", "info-page");
 ?>
 <table class="adminform">
   <tr> 
@@ -370,7 +370,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/edit.png\" align=\"center\" 
   
 <?php
 $tabs->endTab();
-$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;$display_label", "display-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' height='16' align='absmiddle' border='0' /> $display_label", "display-page");
 ?>
   <table class="adminform">
     <tr> 
@@ -546,7 +546,7 @@ $tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" h
   </table>
 <?php
 $tabs->endTab();
-$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/options.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;$status_label", "status-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' height='16' align='absmiddle' border='0' /> $status_label", "status-page");
 ?>
 
   <table class="adminform">
@@ -761,7 +761,7 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
 }
 
 $tabs->endTab();
-$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" alt=\"info\" />&nbsp;$dim_weight_label", "about-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/info.png' width='16' height='16' align='absmiddle' border='0' alt='info' /> $dim_weight_label", "about-page");
 
 ?>
 
@@ -858,125 +858,124 @@ echo "<h2>$dim_weight_label</h2>";
 <?php
 $tabs->endTab();
 
-if( @$_REQUEST['no_menu'] != '1') {
-	$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/image.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;$images_label", "images-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/image.png' width='16' height='16' align='absmiddle' border='0' /> $images_label", "images-page");
 
-	$ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resized") );
+$ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resized") );
 
-	 ?>
-	  <table class="adminform" >
-	    <tr> 
-	      <td valign="top" width="50%" style="border-right: 1px solid black;">
-	        <h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_FULL_IMAGE ?></h2>
-	        <table class="adminform">
-	          <tr class="row0"> 
-	            <td colspan="2" ><?php 
-	            if ($product_id) {
-	                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br />"; } ?> 
-	              <input type="file" class="inputbox" name="product_full_image" onchange="document.adminForm.product_full_image_url.value='';document.adminForm.product_full_image_action[1].checked=true;" size="50" maxlength="255" />
-	            </td>
-	          </tr>
-	          <tr class="row1"> 
-	            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
-	              <input type="radio" class="inputbox" id="product_full_image_action0" name="product_full_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-	              <label for="product_full_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE; ?></label><br/>
-	              <?php
-	              // Check if GD library is available
-	              if( function_exists('imagecreatefromjpeg')) { ?>
-		              <input type="radio" class="inputbox" id="product_full_image_action1" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-		              <label for="product_full_image_action1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL . "</label><br />"; 
-	              }
-	              if ($product_id and $db->f("product_full_image")) { ?>
-	                <input type="radio" class="inputbox" id="product_full_image_action2" name="product_full_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-	                <label for="product_full_image_action2"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
-	              } ?> 
-	            </td>
-	          </tr>
-	          <tr class="row0"><td colspan="2">&nbsp;</td></tr>
-	          <tr class="row0"> 
-	            <td width="21%" ><?php echo _URL." ("._CMN_OPTIONAL."!)&nbsp;"; ?></td>
-	            <td width="79%" >
-	              <?php 
-	              if( stristr($db->f("product_full_image"), "http") )
-	              $product_full_image_url = $db->f("product_full_image");
-	              else if(!empty($_REQUEST['product_full_image_url']))
-	              $product_full_image_url = mosGetParam($_REQUEST, 'product_full_image_url');
-	              else
-	              $product_full_image_url = "";
-	              ?>
-	              <input type="text" class="inputbox" size="50" name="product_full_image_url" value="<?php echo $product_full_image_url ?>" onchange="if( this.value.length>0) document.adminForm.product_full_image_action[1].checked=false; else document.adminForm.product_full_image_action[1].checked=true; toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );" />
-	            </td>
-	          </tr>
-	          <tr class="row1"><td colspan="2">&nbsp;</td></tr>
-	          <tr class="row1"> 
-	            <td colspan="2" >
-	              <div style="overflow:auto;">
-	                <?php 
-	                if( $clone_product != "1" ) {
-	                	echo $ps_product->image_tag($db->f("product_full_image"), "", 0);
-	                }
-	                ?>
-	              </div>
-	            </td>
-	          </tr>
-	        </table>
-	      </td>
-	
-	      <td valign="top" width="50%">
-	        <h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE ?></h2>
-	        <table class="adminform">
-	          <tr class="row0"> 
-	            <td colspan="2" ><?php if ($product_id) {
-	                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br>"; } ?> 
-	              <input type="file" class="inputbox" name="product_thumb_image" size="50" maxlength="255" onchange="if(document.adminForm.product_thumb_image.value!='') document.adminForm.product_thumb_image_url.value='';" />
-	            </td>
-	          </tr>
-	          <tr class="row1"> 
-	            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
-	              <input type="radio" class="inputbox" id="product_thumb_image_action0" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-	              <label for="product_thumb_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE ?></label><br/>
-	              <?php 
-	              if ($product_id and $db->f("product_thumb_image")) { ?>
-	                <input type="radio" class="inputbox" id="product_thumb_image_action1" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-	                <label for="product_thumb_image_action1"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
-	              } ?> 
-	            </td>
-	          </tr>
-	          <tr class="row0"><td colspan="2">&nbsp;</td></tr>
-	          <tr class="row0"> 
-	            <td width="21%" ><?php echo _URL." ("._CMN_OPTIONAL.")&nbsp;"; ?></td>
-	            <td width="79%" >
-	              <?php 
-	              if( stristr($db->f("product_thumb_image"), "http") )
-	              $product_thumb_image_url = $db->f("product_thumb_image");
-	              else if(!empty($_REQUEST['product_thumb_image_url']))
-	              $product_thumb_image_url = mosGetParam($_REQUEST, 'product_thumb_image_url');
-	              else
-	              $product_thumb_image_url = "";
-	              ?>
-	              <input type="text" class="inputbox" size="50" name="product_thumb_image_url" value="<?php echo $product_thumb_image_url ?>" />
-	            </td>
-	          </tr>
-	          <tr class="row1"><td colspan="2">&nbsp;</td></tr>
-	          <tr class="row1">
-	            <td colspan="2" >
-	              <div style="overflow:auto;">
-	                <?php 
-	                if( $clone_product != "1" )
-	                echo $ps_product->image_tag($db->f("product_thumb_image"), "", 0)
-	                ?>
-	              </div>
-	            </td>
-	          </tr>
-	        </table>
-	      </td>
-	    </tr>
-	  </table>
-	
-	<?php
-	$tabs->endTab();
-}
-$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/related.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;".$VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
+ ?>
+  <table class="adminform" >
+    <tr> 
+      <td valign="top" width="50%" style="border-right: 1px solid black;">
+        <h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_FULL_IMAGE ?></h2>
+        <table class="adminform">
+          <tr class="row0"> 
+            <td colspan="2" ><?php 
+            if ($product_id) {
+                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br />"; } ?> 
+              <input type="file" class="inputbox" name="product_full_image" onchange="document.adminForm.product_full_image_url.value='';document.adminForm.product_full_image_action[1].checked=true;" size="50" maxlength="255" />
+            </td>
+          </tr>
+          <tr class="row1"> 
+            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
+              <input type="radio" class="inputbox" id="product_full_image_action0" name="product_full_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+              <label for="product_full_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE; ?></label><br/>
+              <?php
+              // Check if GD library is available
+              if( function_exists('imagecreatefromjpeg')) { ?>
+	              <input type="radio" class="inputbox" id="product_full_image_action1" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+	              <label for="product_full_image_action1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL . "</label><br />"; 
+              }
+              if ($product_id and $db->f("product_full_image")) { ?>
+                <input type="radio" class="inputbox" id="product_full_image_action2" name="product_full_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+                <label for="product_full_image_action2"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
+              } ?> 
+            </td>
+          </tr>
+          <tr class="row0"><td colspan="2">&nbsp;</td></tr>
+          <tr class="row0"> 
+            <td width="21%" ><?php echo _URL." ("._CMN_OPTIONAL."!)&nbsp;"; ?></td>
+            <td width="79%" >
+              <?php 
+              if( stristr($db->f("product_full_image"), "http") )
+              $product_full_image_url = $db->f("product_full_image");
+              else if(!empty($_REQUEST['product_full_image_url']))
+              $product_full_image_url = mosGetParam($_REQUEST, 'product_full_image_url');
+              else
+              $product_full_image_url = "";
+              ?>
+              <input type="text" class="inputbox" size="50" name="product_full_image_url" value="<?php echo $product_full_image_url ?>" onchange="if( this.value.length>0) document.adminForm.product_full_image_action[1].checked=false; else document.adminForm.product_full_image_action[1].checked=true; toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );" />
+            </td>
+          </tr>
+          <tr class="row1"><td colspan="2">&nbsp;</td></tr>
+          <tr class="row1"> 
+            <td colspan="2" >
+              <div style="overflow:auto;">
+                <?php 
+                if( $clone_product != "1" ) {
+                	echo $ps_product->image_tag($db->f("product_full_image"), "", 0);
+                }
+                ?>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+
+      <td valign="top" width="50%">
+        <h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE ?></h2>
+        <table class="adminform">
+          <tr class="row0"> 
+            <td colspan="2" ><?php if ($product_id) {
+                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br>"; } ?> 
+              <input type="file" class="inputbox" name="product_thumb_image" size="50" maxlength="255" onchange="if(document.adminForm.product_thumb_image.value!='') document.adminForm.product_thumb_image_url.value='';" />
+            </td>
+          </tr>
+          <tr class="row1"> 
+            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
+              <input type="radio" class="inputbox" id="product_thumb_image_action0" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+              <label for="product_thumb_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE ?></label><br/>
+              <?php 
+              if ($product_id and $db->f("product_thumb_image")) { ?>
+                <input type="radio" class="inputbox" id="product_thumb_image_action1" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
+                <label for="product_thumb_image_action1"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
+              } ?> 
+            </td>
+          </tr>
+          <tr class="row0"><td colspan="2">&nbsp;</td></tr>
+          <tr class="row0"> 
+            <td width="21%" ><?php echo _URL." ("._CMN_OPTIONAL.")&nbsp;"; ?></td>
+            <td width="79%" >
+              <?php 
+              if( stristr($db->f("product_thumb_image"), "http") )
+              $product_thumb_image_url = $db->f("product_thumb_image");
+              else if(!empty($_REQUEST['product_thumb_image_url']))
+              $product_thumb_image_url = mosGetParam($_REQUEST, 'product_thumb_image_url');
+              else
+              $product_thumb_image_url = "";
+              ?>
+              <input type="text" class="inputbox" size="50" name="product_thumb_image_url" value="<?php echo $product_thumb_image_url ?>" />
+            </td>
+          </tr>
+          <tr class="row1"><td colspan="2">&nbsp;</td></tr>
+          <tr class="row1">
+            <td colspan="2" >
+              <div style="overflow:auto;">
+                <?php 
+                if( $clone_product != "1" )
+                echo $ps_product->image_tag($db->f("product_thumb_image"), "", 0)
+                ?>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+<?php
+$tabs->endTab();
+
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/related.png' width='16' height='16' align='absmiddle' border='0' /> ".$VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
 ?>
         <table class="adminform">
                 <tr class="row0">

@@ -441,7 +441,7 @@ class ps_product_files {
 
 		if( $this->fileexists ) {
 			// must rename uploaded file!
-			$d['filename'] = uniqid(substr(basename($_FILES['file_upload']['name'], ".$ext" )));
+			$d['filename'] = uniqid(substr(basename($_FILES['file_upload']['name']), 0, 20 )) .".$ext";
 		}
 		else {
 			$d['filename'] = $_FILES['file_upload']['name'];

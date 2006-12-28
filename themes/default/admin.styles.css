@@ -153,14 +153,24 @@ div.toolbar {
 	border-bottom: 1px solid #ccc;
 	text-decoration: none;
 }
-
+#vm-toolbar .vmbutton {
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	padding-left:18px;
+	padding-top:1px;
+	width:auto;
+	display:block;
+}
 .button {
 	border: 0 !important;
 }
 
 /** menu icons **/
+.vmicon-16-apply 	{ background: url(images/administration/menu/icon-16-apply.png) 50% 0 no-repeat ; }
 .vmicon-16-archive	{ background: url(images/administration/menu/icon-16-archive.png) no-repeat ; }
 .vmicon-16-article	{ background: url(images/administration/menu/icon-16-article.png) no-repeat ; }
+.vmicon-16-back		{ background: url(images/administration/menu/icon-16-back.png) 50% 0 no-repeat ; }
+.vmicon-16-cancel 	{ background: url(images/administration/menu/icon-16-cancel.png) 50% 0 no-repeat ; }
 .vmicon-16-category 	{ background: url(images/administration/menu/icon-16-category.png) no-repeat ; }
 .vmicon-16-checkin	{ background: url(images/administration/menu/icon-16-checkin.png) no-repeat ; }
 .vmicon-16-component	{ background: url(images/administration/menu/icon-16-component.png) no-repeat ; }
@@ -176,20 +186,24 @@ div.toolbar {
 .vmicon-16-install 	{ background: url(images/administration/menu/icon-16-install.png) no-repeat ;}
 .vmicon-16-language 	{ background: url(images/administration/menu/icon-16-language.png) no-repeat ;}
 .vmicon-16-logout 	{ background: url(images/administration/menu/icon-16-logout.png) no-repeat ;}
+.vmicon-16-new 		{ background: url(images/administration/menu/icon-16-new.png) 50% 0 no-repeat ; }
 .vmicon-16-massmail 	{ background: url(images/administration/menu/icon-16-massmail.png) no-repeat ; }
 .vmicon-16-media 	{ background: url(images/administration/menu/icon-16-media.png) no-repeat ;}
 .vmicon-16-menu 	{ background: url(images/administration/menu/icon-16-menu.png) no-repeat ; }
 .vmicon-16-menumgr 	{ background: url(images/administration/menu/icon-16-menumgr.png) no-repeat ; }
 .vmicon-16-messages 	{ background: url(images/administration/menu/icon-16-messages.png) no-repeat ; }
 .vmicon-16-module 	{ background: url(images/administration/menu/icon-16-module.png) no-repeat ; }
+.vmicon-16-move 	{ background: url(images/administration/menu/icon-16-move.png) 50% 0 no-repeat ; }
 .vmicon-16-plugin 	{ background: url(images/administration/menu/icon-16-plugin.png) no-repeat ; }
+.vmicon-16-publish 	{ background: url(images/administration/menu/icon-16-publish.png) 50% 0 no-repeat ; }
+.vmicon-16-save 	{ background: url(images/administration/menu/icon-16-save.png) 50% 0 no-repeat ; }
 .vmicon-16-section 	{ background: url(images/administration/menu/icon-16-section.png) no-repeat ; }
 .vmicon-16-static 	{ background: url(images/administration/menu/icon-16-static.png) no-repeat ; }
 .vmicon-16-stats 	{ background: url(images/administration/menu/icon-16-stats.png) no-repeat ; }
 .vmicon-16-themes 	{ background: url(images/administration/menu/icon-16-themes.png) no-repeat ; }
 .vmicon-16-remove,.vmicon-16-trash 	{ background: url(images/administration/menu/icon-16-trash.png) no-repeat ; }
+.vmicon-16-unpublish 	{ background: url(images/administration/menu/icon-16-unpublish.png) 50% 0 no-repeat ;}
 .vmicon-16-user 	{ background: url(images/administration/menu/icon-16-user.png) no-repeat ; }
-
 
 /** toolbar icons **/
 .vmicon-32-send 	{ background: url(images/administration/toolbar/icon-32-send.png) 50% 0 no-repeat ; }

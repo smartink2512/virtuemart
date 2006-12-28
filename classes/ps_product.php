@@ -815,8 +815,8 @@ class ps_product extends vmAbstractObject {
 	 * @return boolean True on success, false on error
 	 */
 	function delete_product( $product_id, &$d ) {
-		global $db, $vmLogger;
-
+		global $vmLogger;
+		$db = new ps_DB;
 		if (!$this->validate_delete($product_id, $d)) {
 			return false;
 		}

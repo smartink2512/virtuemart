@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: admin.user_form.php 577 2006-12-15 21:27:06Z soeren_nb $
+* @version $Id: admin.user_form.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -17,11 +17,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-global $ps_shopper_group;
+global $ps_shopper_group, $ps_product;
 include_class( 'shopper' );
+include_class( 'product' );
 
 if( !isset($ps_shopper_group)) {
-        $ps_shopper_group = new ps_shopper_group();
+    $ps_shopper_group = new ps_shopper_group();
 }
 
 $user_id = intval( mosGetParam( $_REQUEST, 'user_id' ));
