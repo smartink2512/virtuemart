@@ -41,8 +41,12 @@ function vm_submitForm(pressbutton, frmName, pageName){
 
 	var f = eval( "document."+frmName );
 	if( pressbutton == "cancel" ) {
+		if( parent.closePanel ){
+			parent.closePanel( getURLParam('panelid') );
+		}
 		f.func.value = "";
 	}
+	f.target = '_self';
 	f.task.value = pressbutton;
 	f.page.value = pageName;
 	try {
@@ -96,4 +100,46 @@ function MM_preloadImages() { //v3.0
 	var i,j=d.MM_p.length,a=MM_preloadImages.arguments;
 	for(i=0; i<a.length; i++)
 	if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+function getURLParam( strParamName, myWindow){
+	if( !myWindow ){
+		myWindow = window;
+	}
+  var strReturn = "";
+  var strHref = myWindow.location.href;
+  if ( strHref.indexOf("?") > -1 ){
+    var strQueryString = strHref.substr(strHref.indexOf("?")).toLowerCase();
+    var aQueryString = strQueryString.split("&");
+    for ( var iParam = 0; iParam < aQueryString.length; iParam++ ){
+      if ( aQueryString[iParam].indexOf(strParamName + "=") > -1 ){
+        var aParam = aQueryString[iParam].split("=");        
+        strReturn = aParam[1];
+        break;
+      }
+    }
+  }
+  return strReturn;
+}
+function addSimplePanel( title, link ) {
+	if( typeof vmLayout != 'undefined') {
+		myId = title.replace( /\W/, '' );
+		if( getEl( myId )) {
+			vmLayout.layout.showPanel( getEl( myId ) );
+			return false;
+		}
+		var iframe = YAHOO.ext.DomHelper.append(document.body, {tag: 'iframe', frameBorder: 0 });	
+		var panel = new YAHOO.ext.ContentPanel( iframe, {title: title, fitToFrame:true, closable:true });	
+		vmLayout.layout.add('center', panel);
+		iframe.src= link + '&panelId=' + panel.getId();
+		vmLayout.layout.showPanel(panel);
+		return false;
+	}
+	return true;
+}
+function closePanel( id ) {
+	if( typeof vmLayout != 'undefined') {
+		vmLayout.layout.remove('center', id );
+	} else {
+		submitbutton( 'cancel' );
+	}
 }
