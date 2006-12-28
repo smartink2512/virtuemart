@@ -8,8 +8,8 @@ function loadNewPage( el, url ) {
 	
 	var theEl = $(el);
 	var callback = {
-		success : function(o) {
-			theEl.innerHTML = o.responseText;
+		success : function(responseText) {
+			theEl.innerHTML = responseText;
 		}
 	}
 	var opt = {
