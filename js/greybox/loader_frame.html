@@ -1,15 +1,20 @@
 <!--
-Notice:
-  I feel so dirty doing this, but its the only way to make it cross browser.
+Notice: I feel so dirty doing this, but its the only way to make it cross browser.
 -->
 <html>
 <head>
+  <script>
+    var GB = parent.GB_CURRENT;
+    document.write('<script type="text/javascript" src="AJS.js"><\/script>');
+    if(parent.AJS.fx) {
+        document.write('<script type="text/javascript" src="AJS_fx.js"><\/script>');
+    }
+  </script>
   <style>
     body {
       padding: 0;
       margin: 0;
       overflow: hidden;
-      font-family: helvetica, verdana, sans-serif;
     }
 
     #GB_frame {
@@ -19,26 +24,23 @@ Notice:
     }
 
     #loading {
-      padding-top: 10px;
+      padding-top: 50px;
       position: absolute;
       width: 100%;
       top: 0;
-      font-size: 25px;
       text-align: center;
-      color: #616161;
+      vertical-align: middle;
     }
   </style>
 </head>
 <body>
 
 <div id="loading">
-  <img src="indicator.gif" style="padding-bottom: 10px"><br />
-  LOADING
+  <img src="indicator.gif">
 </div>
 
-<script type="text/javascript">
-var GB = parent.GB_CURRENT;
-
+<script>
+var loading = AJS.$('loading');
 var gb_type = GB.type;
 var gb_url = GB.url;
 
@@ -47,34 +49,37 @@ if(gb_type == "page") {
   document.write('<iframe id="GB_frame" src="' + gb_url + '" frameborder="0"></iframe>');
 }
 else {
-  var img_holder;
-  img_holder = new Image();
+  var img_holder = new Image();
   img_holder.src = gb_url;
   document.write('<img id="GB_frame" src="' + gb_url + '">');
 }
+var frame = AJS.$('GB_frame');
+AJS.setOpacity(frame, 0);
 </script>
 
-<script type="text/javascript">
-var old_onload = window.onload;
-window.onload = function (e) {
-  var frame = document.getElementById('GB_frame');
-  var loading = document.getElementById('loading');
-
-  loading.style.display = "none";
-  frame.style.visibility = "visible";
-
-  if(gb_type == "image") {
-    if(img_holder.width != 0 && img_holder.height != 0) {
-      GB.setDimension(img_holder.width, img_holder.height);
-      GB.setTopNLeft();
-      //Safari render bug fix
-      GB.overlay.innerHTML = GB.overlay.innerHTML + "&nbsp;";
-      GB.setWidthNHeight();
-    }
-  }
-  if(old_onload)
-    old_onload(e);
-};
-</script>
 </body>
+<script>
+AJS.AEV(window, 'load', function(e) {
+    AJS.removeElement(loading);
+    frame.style.visibility = 'visible';
+    if(gb_type == "image") {
+        if(img_holder.width != 0 && img_holder.height != 0) {
+            GB.width = img_holder.width;
+            GB.height = img_holder.height;
+            GB.overlay.innerHTML += "&nbsp;";
+            if(AJS.fx)
+                AJS.fx.fadeIn(frame);
+            else
+                AJS.setOpacity(frame, 1);
+        }
+    }
+    else {
+        GB.width = frame.offsetWidth;
+        GB.height = frame.offsetHeight;
+        AJS.setOpacity(frame, 1);
+    }
+    GB.setFrameSize();
+    GB.setWindowPosition();
+});
+</script>
 </html>
