@@ -1112,7 +1112,9 @@ Element.Methods = {
 
   remove: function(element) {
     element = $(element);
-    element.parentNode.removeChild(element);
+    if( element.parentNode ) {
+    	element.parentNode.removeChild(element);
+    }
     return element;
   },
 
