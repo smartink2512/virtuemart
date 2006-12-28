@@ -1,0 +1,399 @@
+ html.display-mask select{
+	visibility:hidden !important;
+ }
+ 
+ #layout-sky{
+    position:absolute;
+    z-index:9999;
+    top:0;
+    left:0;
+    text-align:left;
+    right:0;
+ }
+ 
+ 
+ #layout-cloud{
+    position:absolute;
+    z-index:9998;
+    top:0;
+    left:0;
+    xxxwidth:100%;
+    right:0;
+	text-align:left;
+ }
+
+ #layout-sky div.passive{
+	position:absolute;
+	top:0;
+	left:0;	
+	background:#333300;
+    opacity:0.5;
+    filter:alpha(opacity:50);
+	cursor:not-allowed;
+    right:0;
+    height:0;
+    display:block;
+    overflow:hidden;
+ }
+ 
+ #layout-cloud div.mask{
+    display:none;
+	/*
+	position:absolute;
+	top:0;
+	left:0;	
+	background:#333300;
+    opacity:0.5;
+    filter:alpha(opacity:50);
+	cursor:not-allowed;
+    right:0;
+    height:0;
+    display:block;
+    overflow:hidden;
+	*/
+ }
+
+ 
+ .yui-simple-dialog{
+      
+    position:absolute;
+    background:white;
+    top:-5000px;
+    left:-5000px;
+}
+
+.yui-simple-dialog-opac .opac-bg{
+    display:none;
+}
+
+.yui-simple-dialog-opac .opac-bg{
+    display:block;
+    position:absolute;
+    height:auto;
+    width:auto;
+    z-index:-1;
+    left:0;    
+    top:0;
+    right:0;
+    bottom:0px;
+    background:#fff;
+    font:0/0 Arial;    
+ }
+ 
+
+ 
+ .yui-simple-dialog .ysd-cmd-0,  .yui-simple-dialog .ysd-cmd-1{
+    min-height:6px;
+    min-width:6px;
+    _height:12px;
+    min-height:12px;
+   
+   
+ }
+ 
+ .yui-simple-dialog .ysd-cmd-0 .yui-dialog-btn{
+    position:absolute;
+    right:2px;
+    top:1px;
+ }
+ 
+ .yui-simple-dialog .ysd-cmd-0 .yui-dialog-btn span{
+	padding:0 2px;
+	display:inline-block;
+}
+
+ .yui-simple-dialog .ysd-cmd-0 .yui-dialog-btn{
+	margin:0 3px 0 0;
+	display:inline-block;
+	font:0/0 Arial;
+	text-indent:-5000px;
+	padding:0;
+	background:white url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui_dialog_close.gif) left bottom repeat-x;
+	width:17px;
+	height:13px;	
+	border:none;
+    
+}
+ 
+.yui-simple-dialog .ysd-cmd-0{
+   
+    padding:2px;    
+ }
+ 
+ 
+ .yui-simple-dialog .ysd-cmd-1{
+    text-align:center;
+    padding:2px 0;
+   
+   
+ }
+ 
+ .yui-simple-dialog  .ysd-cmd-dd{
+	background:#cdcdcd url(http://us.i1.yimg.com/us.yimg.com/i/us/pim/dclient/d/img/md5/5b8e02a2c3cd2e2f18766798c3ee0c3a_1.gif) left bottom;
+    cursor:move;
+    border:solid 2px white;
+    -moz-border-radius:5px;
+	border-radius:3px;
+}
+ 
+ 
+ .yui-simple-dialog .ysd-cmd-1 a{/*hidden auto focus*/
+    float:left;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+    text-decoration:none;
+    outline:none;
+ }
+ 
+ .yui-simple-dialog .ysd-cmd-1 .yui-dialog-box-resize-ctrl span{
+ 
+	display:block;
+	width:0;
+	height:0;
+	font:0/0 Arial;
+	position:relative;
+	right:2px;
+	top:2px;
+	border:solid 8px ButtonFace;
+	border-top-color:#fff;
+	border-left-color:#fff;
+	overflow:hidden;
+	cursor:nw-resize;
+	float:right;
+}
+
+.yui-dialog-box-resize-frame{
+	position:absolute;
+	border:solid 3px #6A674D;
+	font:0/0 Arial;
+	line-height:0;
+	top:-4000px;
+}
+
+html.yui-simple-dialog-has-mask .yui-dialog-box-resize-frame b{
+	position:absolute;
+	width:400px;
+	height:400px;
+	cursor:nw-resize;
+	right:-200px;
+	bottom:-200px;
+	
+	background:url() no-repeat; 
+	*background:transparent;
+	*display:none;
+}
+
+html.yui-simple-dialog-has-mask .yui-dialog-box-proxy b{
+	position:absolute;
+	top:-50px;
+	left:-50px;
+	right:-50px;
+	bottom:-50px;
+	height:400px;
+	cursor:move;
+	background:url() no-repeat; 
+	*background:transparent;
+	*display:none;
+}	
+
+ 
+.yui-simple-dialog .ysd-bd{
+    position:relative;
+    width:100%;
+    
+    _height:100%;
+    _overflow-y:hidden;
+}
+
+.yui-simple-dialog .ysd-title{
+    text-align:left;  
+    width:90%;
+    overflow:hidden;
+    font-weight:bold;
+    position:relative;
+    top:-4px;
+}
+
+
+.yui-simple-dialog .ysd-scroll{
+   
+    height:auto;
+    width:auto;
+    margin-left:-2px;
+    scrollbar-3dlight-color:#b1ac96;
+	scrollbar-arrow-color:#ffffff;
+	scrollbar-base-color:#ffffff;
+	scrollbar-darkshadow-color:#e7e3d0;
+	scrollbar-face-color:#e7e3d0;
+	scrollbar-highlight-color:#f7f5ed;
+	scrollbar-shadow-color:#c5c0a0;
+	scrollbar-track-color: #e7e3d0; 
+}
+
+
+
+
+.yui-simple-dialog .cr{
+    position:absolute;
+    overflow:hidden;
+    z-index:9999;
+    _background:transparent !important;
+}
+
+.yui-simple-dialog .ysd-nw{
+	width:8px;
+	height:9px;
+    left:-8px;
+    top:-9px;    
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-nw.png) no-repeat; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-nw.png', sizingMethod=scale);
+}
+
+.yui-simple-dialog .ysd-n{
+	width:100%;
+	height:9px;
+    left:0;
+    right:0;
+    top:-9px;    
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-n.png) repeat-x; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-n.png', sizingMethod=scale);
+}
+
+
+
+.yui-simple-dialog .ysd-ne{
+	width:9px;
+	height:9px;    
+    right:-9px;
+    top:-9px;
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-ne.png) 100% 0 no-repeat; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-ne.png', sizingMethod=scale);
+}
+
+.yui-simple-dialog .ysd-e{
+	width:9px;
+	height:100%;
+    _height:4000px;    
+    right:-9px;
+    top:0;
+    bottom:0;
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-e.png) 0 0 repeat-y; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-e.png', sizingMethod=scale);
+}
+
+.yui-simple-dialog .ysd-w{
+	width:8px;
+	height:100%;
+    _height:4000px;    
+    left:-8px;
+    top:0;
+    bottom:0;
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-w.png) 100% 0 repeat-y; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-w.png', sizingMethod=scale);
+}
+
+.yui-simple-dialog .ysd-s{
+	width:100%;
+	height:16px;
+    left:0;
+    right:0;
+    z-index:-1;
+    bottom:-15px;  
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-s.png) repeat-x; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-s.png', sizingMethod=scale);
+}
+
+.yui-simple-dialog .ysd-se{
+	width:9px;
+	height:16px;
+    right:-9px;
+    bottom:-15px;  
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-se.png) no-repeat; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-se.png', sizingMethod=scale);
+}
+
+.yui-simple-dialog .ysd-sw{
+	width:8px;
+	height:16px;
+    left:-8px;
+    bottom:-15px;  
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-sw.png) no-repeat; 
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-rc-sw.png', sizingMethod=scale);
+}
+
+
+.yui-simple-dialog .ysd-cxt{
+    padding:0 12px;
+    background:white;
+    zoom:1;
+}
+
+
+.yui-simple-dialog .ysd-cxt:after{
+    content:'';
+    display:block;
+    clear:both;
+}
+
+.yui-simple-dialog .ysd-clr{
+    clear:both;
+    display:block;
+}
+
+.yui-simple-dialog iframe.select-free{
+    height:4000px;
+    position:absolute;
+    top:0px;
+    left:0;
+    width:100%;
+    z-index:-1;
+}
+
+.yui-simple-dialog .yui-dialog-btn{
+	padding:0;
+	cursor:pointer;
+	margin:1px 2px 0 2px;
+	background:url(http://us.i1.yimg.com/us.yimg.com/i/ww/t4/fd-grd.gif) left bottom repeat-x;
+	font:78%/1.2 Arial;
+	border:solid 1px #aaaaaa;
+	color:#16387C;
+	border-top-color:#dee6e9;
+	border-right-color:#586b7a;
+	border-bottom-color:#586b7a	;
+	border-left-color:#dee6e9;
+    display:-moz-inline-box;
+	display:inline-block;
+    _height:22px;
+    _font-size:11px;
+}
+
+.yui-simple-dialog .yui-dialog-btn span{
+	padding:0.1em 0.6em 0 0.6em;	
+	display:-moz-inline-box;
+	display:inline-block;
+}
+
+.yui-simple-dialog .type-alert, .yui-simple-dialog .type-notify, .yui-simple-dialog .type-confirm{
+    background:url(http://us.i1.yimg.com/us.yimg.com/i/nt/ic/ut/bsc/warn28_1.gif) 6px 8px no-repeat;
+	padding-left:39px;
+	_height:45px;
+	min-height:45px;
+} 
+
+.yui-simple-dialog .type-notify{
+	background-image:url(http://us.i1.yimg.com/us.yimg.com/i/nt/ic/ut/bsc/info28_1.gif);
+}
+
+.yui-simple-dialog .arrow-s{
+	display:block;
+	height:20px;
+	position:absolute;
+	bottom:-22px;
+	left:30px;
+	width:20px;
+	background:url(http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-ar-s.png) 0 0 no-repeat;
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://us.js2.yimg.com/us.js.yimg.com/lib/my/ui-dialog-ar-s.png', sizingMethod=scale);
+	_background:transparent;
+}
+
