@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+04.01.2007 gregdev
+# Fixed check for authorize.net test mode (ps_authorize.php).
+
 19.12.2006 soeren
 ^ updated the GreyBox script from version 3.45 to 5.16 (check it out: http://orangoo.com/labs/GreyBox/)
 

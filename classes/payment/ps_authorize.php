@@ -390,10 +390,10 @@ class ps_authorize {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 		
-		if(AN_TEST_REQUEST) {
+		if(AN_TEST_REQUEST=='TRUE') {
 			$host = 'test.authorize.net';
 		} else  {
-			$host = "secure.authorize.net";
+			$host = 'secure.authorize.net';
 		}
 		
 		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
@@ -601,10 +601,10 @@ class ps_authorize {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 		
-		if(AN_TEST_REQUEST) {
+		if(AN_TEST_REQUEST=='TRUE') {
 			$host = 'test.authorize.net';
 		} else  {
-			$host = "secure.authorize.net";
+			$host = 'secure.authorize.net';
 		}
 		
 		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
