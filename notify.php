@@ -242,7 +242,7 @@ if ($_POST) {
         
         if( $paypal_sandbox_hostname == $remote_hostname ) {
             $valid_ip = true;
-            $hostname = "www.sandbox.paypal.com";
+            $hostname = 'www.sandbox.paypal.com';
         }
         else {
             $ips = "";
@@ -256,7 +256,7 @@ if ($_POST) {
                     $valid_ip = true;
                 }
             }
-            $hostname = $_SERVER['REMOTE_ADDR'];
+            $hostname = 'www.paypal.com';
         }
         
         if( !$valid_ip ) {
