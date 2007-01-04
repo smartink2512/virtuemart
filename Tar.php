@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @author Vincent Blavet <vincent@blavet.net>
 *
 *
-* @version $Id: Tar.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -46,7 +46,7 @@ define ('ARCHIVE_TAR_ATT_SEPARATOR', 90001);
 * Creates a (compressed) Tar archive
 *
 * @author   Vincent Blavet <vincent@blavet.net>
-* @version  $Revision: 431 $
+* @version  $Revision$
 * @package  Archive
 */
 class Archive_Tar extends PEAR

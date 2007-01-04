@@ -69,8 +69,18 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	
 		unset( $_REQUEST["error"] );
 		$user_id = intval( mosgetparam($_REQUEST, 'user_id', 0) );
-		$_SESSION['session_userstate']['product_id'] = $product_id = intval( mosgetparam($_REQUEST, 'product_id', 0) );
-		$_SESSION['session_userstate']['category_id'] = $category_id = intval( mosgetparam($_REQUEST, 'category_id', 0) );
+		if( !empty($_REQUEST['product_id']) && is_array($_REQUEST['product_id']) ) {
+			mosArrayToInts( $_REQUEST['product_id']);
+		} else {
+			$_REQUEST['product_id'] = intval( mosgetparam($_REQUEST, 'product_id', 0) );
+		}
+		if( !empty($_REQUEST['category_id']) && is_array($_REQUEST['category_id']) ) {
+			mosArrayToInts( $_REQUEST['category_id']);
+		} else {
+			$_REQUEST['category_id'] = intval( mosgetparam($_REQUEST, 'category_id', 0) );
+		}
+		$_SESSION['session_userstate']['product_id'] = $product_id = $_REQUEST['product_id'];
+		$_SESSION['session_userstate']['category_id'] = $category_id = $_REQUEST['category_id'];
 		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
 
 		$myInsecureArray = array('keyword' => $keyword,

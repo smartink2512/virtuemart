@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @author Soeren Eberhardt
 * @ Uses dTree Javascript: http://www.destroydrop.com/javascripts/tree/
 *
-* @version $Id: product.folders.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

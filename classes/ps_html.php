@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This Class provides some utility functions
 * to easily create drop-down lists
 *
-* @version $Id: ps_html.php 545 2006-12-07 21:58:35Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

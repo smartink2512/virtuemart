@@ -91,7 +91,7 @@ and sets up files mode $chmod
  * @package	 PHP_Compat
  * @link		http://php.net/function.file_get_contents
  * @author	  Aidan Lister <aidan@php.net>
- * @version	 $Revision: 431 $
+ * @version	 $Revision$
  * @internal	resource_context is not supported
  * @since		PHP 5
  * @require	 PHP 4.0.1 (trigger_error)
@@ -134,7 +134,7 @@ if (!defined('FILE_APPEND')) {
  * @package	 PHP_Compat
  * @link		http://php.net/function.file_put_contents
  * @author	  Aidan Lister <aidan@php.net>
- * @version	 $Revision: 431 $
+ * @version	 $Revision$
  * @internal	resource_context is not supported
  * @since		PHP 5
  * @require	 PHP 4.0.1 (trigger_error)

@@ -1,7 +1,7 @@
 <?php
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 /*
- * @version $Id: order.label_signature.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage html
  */

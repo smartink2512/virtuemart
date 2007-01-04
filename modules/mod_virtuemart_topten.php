@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /*
 * Best selling Products module for VirtueMart
-* @version $Id: mod_virtuemart_topten.php 544 2006-12-07 21:57:43Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage modules
 *

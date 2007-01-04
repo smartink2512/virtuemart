@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php 510 2006-11-23 20:09:06 +0100 (Do, 23 Nov 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.

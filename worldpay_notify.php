@@ -1,6 +1,6 @@
 <?php
 /*
-* @version $Id: worldpay_notify.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage Payment
 *

@@ -7,7 +7,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This version of the basket allows to change quantities and delete products from the cart
 * The ro_basket (=read only) doesn't allow that.
 * 
-* @version $Id: basket.php 489 2006-11-16 00:50:33 +0100 (Do, 16 Nov 2006) macallf $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.

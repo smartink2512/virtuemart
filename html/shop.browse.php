@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is the Main Product Listing File!
 *
-* @version $Id: shop.browse.php 499 2006-11-17 20:29:53 +0100 (Fr, 17 Nov 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.

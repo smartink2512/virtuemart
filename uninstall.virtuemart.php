@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 }
 /**
 *
-* @version $Id: uninstall.virtuemart.php 475 2006-11-08 21:02:07 +0100 (Mi, 08 Nov 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

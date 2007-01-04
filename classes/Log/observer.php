@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: observer.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage Log
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
@@ -20,7 +20,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * $Header$
  * $Horde: horde/lib/Log/observer.php,v 1.5 2000/06/28 21:36:13 jon Exp $
  *
- * @version $Revision: 431 $
+ * @version $Revision$
  * @package Log
  */
 

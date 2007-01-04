@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @ JSCookTree VirtueMart menu created by Soeren
 * @ modified by soeren
 * @ Uses JSCookTree Javascript: http://www.cs.ucla.edu/~heng/JSCookTree/
-* @ version $Id: vm_JSCook.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @ version $Id$
 *
 * This file is included by the virtuemart module if the module parameter
 * MenuType is set to jscooktree

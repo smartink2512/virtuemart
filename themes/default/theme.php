@@ -4,7 +4,7 @@
 * It allows you to declare additional functions and classes
 * that may be used in your templates 
 *
-* @version $Id: theme.php 565 2006-12-11 21:20:39Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage themes
 * @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.

@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
-* @version $Id: ps_session.php 497 2006-11-16 01:02:21 +0100 (Do, 16 Nov 2006) macallf $
+* @version $Id$
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.

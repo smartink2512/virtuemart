@@ -3,7 +3,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
-* @version $Id: ps_main.php 585 2006-12-21 18:03:46Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
