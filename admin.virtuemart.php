@@ -174,7 +174,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			
 			layout.beginUpdate();
 			//layout.add('north', new CP('wrapper', 'North'));
-			layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
+			//layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
 			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'{$_SERVER['PHP_SELF']}\'>Back to Joomla! Administration</a>'}));
 			layout.add('center', new CP('vmPage', {title: 'VirtueMart Administration Panel', closable: false, fitToFrame:true, tabPosition: 'top'}));
 			layout.getRegion('center').showPanel('center');

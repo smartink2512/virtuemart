@@ -293,7 +293,9 @@ class ps_userfield extends vmAbstractObject {
 		}
 		$delimiter = 0;
 	   	foreach( $rowFields as $field) {
-	   		$default[$field->name] = $field->default;
+	   		if( !isset( $default[$field->name] )) {
+	   			$default[$field->name] = $field->default;
+	   		}
 	   		
 	   		if( in_array( $field->name, $skipFields )) {
 	   			continue;

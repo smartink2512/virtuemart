@@ -790,6 +790,9 @@ class ps_product_files {
 			$remote_fetching = ini_get( "allow_url_fopen");
 			if( $remote_fetching ) {
 				$handle = fopen( $url , "rb" );
+				if( $handle === false ) {
+					return false;
+				}
 				$data = "";
 				while( !feof( $handle )) {
 					$data .= fread( $handle, 4096 );

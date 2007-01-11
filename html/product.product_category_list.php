@@ -75,12 +75,13 @@ while(count($id_list) < $nrows) {
 	$depth_list = $depth_temp;
 	$loop_count++;
 }
-for($n = $limitstart ; $n < $nrows ; $n++) {
-	@$levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]]++;
-}
 
 // Create the Page Navigation
 $pageNav = new vmPageNav( $nrows, $limitstart, $limit );
+
+for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
+	@$levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]]++;
+}
 
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );
@@ -99,18 +100,18 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_PRODUCTS_LBL => 'width="10%"',
 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
 					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="7%"',
-					vmCommonHTML::getSaveOrderButton( $pageNav->limit ) => 'width="8%"',
-					_E_REMOVE => "width=\"5%\""
+					vmCommonHTML::getSaveOrderButton( min($nrows - $pageNav->limitstart, $pageNav->limit ) ) => 'width="8%"',
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
 $ibg = 0;
-if( $limit < $nrows )
-	if( $limitstart+$limit < $nrows ) {
-		$nrows = $limitstart + $limit;
+if( $pageNav->limit < $nrows )
+	if( $pageNav->limitstart+$pageNav->limit < $nrows ) {
+		$nrows = $pageNav->limitstart + $pageNav->limit;
 	}
 
-for($n = $limitstart ; $n < $nrows ; $n++) {
+for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 	$catname = shopMakeHtmlSafe( $category_tmp[$row_list[$n]]["category_name"] );
 	
 	$listObj->newRow();
@@ -130,9 +131,10 @@ for($n = $limitstart ; $n < $nrows ; $n++) {
 				. "</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$listObj->addCell( "&nbsp;&nbsp;". $category_tmp[$row_list[$n]]["category_description"] );
+	$desc = strlen( $category_tmp[$row_list[$n]]["category_description"] ) > 255 ? mm_ToolTip( $category_tmp[$row_list[$n]]["category_description"], $VM_LANG->_PHPSHOP_CATEGORY_FORM_DESCRIPTION ) :$category_tmp[$row_list[$n]]["category_description"];
+	$listObj->addCell( "&nbsp;&nbsp;". $desc );
 	
-	$listObj->addCell( ps_product_category::products_in_category( $category_tmp[$row_list[$n]]["category_child_id"] )
+	$listObj->addCell( ps_product_category::product_count( $category_tmp[$row_list[$n]]["category_child_id"] )
 						."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $category_tmp[$row_list[$n]]["category_child_id"]."&option=com_virtuemart"
 						. "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>"
 					);

@@ -874,7 +874,7 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                         <li>or as a html email with images.</li></ul>';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Allow Frontend-Administration for non-Backend Users?';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'With this setting you can enable the Frontend Administration for users who 
-                                                                                              are storeadmins, but can\'t access the Mambo Backend (e.g. Registered / Editor).';
+                                                                                              are storeadmins, but can\'t access the Backend (e.g. Registered / Editor).';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'SECUREURL';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'The secure URL to your site. (https - with trailing slash at the end!)';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'PAGEPATH';
