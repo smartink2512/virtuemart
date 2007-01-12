@@ -50,8 +50,6 @@ input.addtocart_button_module:hover  {
 	vertical-align: middle;
 }
 
-
-
 .continue_link, .checkout_link {
 	margin: 2px;
 	padding: 2px 0px 2px 40px;
@@ -81,8 +79,6 @@ div.buttons_heading {
 	width:10%;
 	float:right;
 }
-
-
 
 .productPrice {
 	font-weight:bold
@@ -317,7 +313,6 @@ width: 100%;
 
 /* Link Details for link to child*/
 .vmChildDetail a, .vmChildDetail a:link {
-	cursor: pointer;
   font-size        : 11px;
   color            : #000000;
   text-decoration  : none;
@@ -433,7 +428,6 @@ width: 100%;
 
 /* Link Details for link to child*/
 .vmChildDetail_2up a, .vmChildDetail_2up a:link {
-	cursor: pointer;
   font-size        : 11px;
   color            : #000000;
   text-decoration  : none;
@@ -466,4 +460,8 @@ width: 100%;
 	padding: 10px;
 	font-size: 12px;
 	color: #254D78;
+}
+.editable {
+	background: #ffff33;
+	cursor: pointer;
 }

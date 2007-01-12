@@ -36,7 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 12.01.2007 soeren
-
+# updated the YUI library to version 0.12.2
 # Fixed the thumbnail creation and naming according to Fedor's post: http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=24388.msg66188#msg66188
 
 
