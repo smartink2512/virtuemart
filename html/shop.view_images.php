@@ -66,8 +66,8 @@ if( !empty($product_id) ) {
   foreach( $images as $image ) {
     $info = pathinfo( $image->file_name );
     
-	$base_filename = basename($image->file_name, ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
-	$thumb = $info["dirname"] ."/resized/". $base_filename;
+	$base_filename = basename($image->file_name, ".".$info["extension"])."_".$image->file_image_thumb_height."x".$image->file_image_thumb_width.".".$info["extension"];
+	$thumb = $mosConfig_absolute_path.'/'.$info["dirname"] ."/resized/". $base_filename;
 	$thumburl = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $thumb );
 	
     $alt = $image->file_title;

@@ -57,7 +57,7 @@ while( $dbf->next_record() ) {
 	$downloadFiles[] = $dbf->f('attribute_value');
 }
 
-$q = "SELECT file_id, file_is_image, file_product_id, file_extension, file_url, file_published, file_name, file_title FROM #__{vm}_product_files  ";
+$q = "SELECT file_id, file_is_image, file_product_id, file_extension, file_url, file_published, file_name, file_title, file_image_thumb_height, file_image_thumb_width FROM #__{vm}_product_files  ";
 $q .= "WHERE file_product_id = '$product_id' ";
 $q .= "ORDER BY file_is_image DESC";
 $db->query($q);
@@ -173,7 +173,7 @@ while ($db->next_record()) {
 			$thumburl = IMAGEURL.'product/'.$db->f('product_thumb_image');
 		}
 		else {
-			$thumb = $info["dirname"] ."/resized/". basename($filename,".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
+			$thumb = $info["dirname"] ."/resized/". basename($filename,".".$info["extension"])."_".$db->f("file_image_thumb_height")."x".$db->f("file_image_thumb_width").".".$info["extension"];
 			$thumburl = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $thumb );
 		}
 		

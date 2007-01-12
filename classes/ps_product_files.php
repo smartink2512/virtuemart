@@ -347,7 +347,7 @@ class ps_product_files {
 			return $this->deleteProductImages($d);
 		}
 		else {
-			$q = "SELECT file_id,file_product_id, file_name,file_is_image FROM `#__{vm}_product_files` WHERE file_id='$record_id'";
+			$q = "SELECT file_id,file_product_id, file_name,file_is_image, file_image_thumb_height, file_image_thumb_width FROM `#__{vm}_product_files` WHERE file_id='$record_id'";
 			$dbf->query($q);
 			$dbf->next_record();
 		}
@@ -366,7 +366,7 @@ class ps_product_files {
 				$vmLogger->info( $VM_LANG->_PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS );
 			}
 
-			$thumb = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$info["extension"];
+			$thumb = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".$dbf->f("file_image_thumb_height")."x".$dbf->f("file_image_thumb_width").".".$info["extension"];
 			if( file_exists($thumb) ) {
 				if( !@unlink( realpath($thumb) ) ) {	
 					$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE." ". $thumb );
@@ -494,8 +494,8 @@ class ps_product_files {
 				$d["file_url"] = IMAGEURL."product/".$d['filename'];
 
 				if( !empty($d["file_create_thumbnail"]) ) {
+				    $tmp_filename = $uploaddir . $d['filename'];
 					## RESIZE THE IMAGE ####
-					$tmp_filename = $uploaddir . $d['filename'];
 					$height = intval( $d['thumbimage_height'] );
 					$width = intval( $d['thumbimage_width'] );
 					$d['fileout'] = $fileout = $this->createThumbImage($tmp_filename, 'product', $height, $width );
@@ -505,6 +505,14 @@ class ps_product_files {
 						$thumbimg = getimagesize( $fileout );
 						$d['file_image_thumb_width'] = $thumbimg[0];
 						$d['file_image_thumb_height'] = $thumbimg[1];
+						//a25
+						$ss_str_wh_in = '_'.$height.'x'.$width.'.';
+						$ss_str_wh_out = '_'.$d['file_image_thumb_height'].'x'.$d['file_image_thumb_width'].'.';
+						$ss_new_fileout = str_replace($ss_str_wh_in, $ss_str_wh_out, $fileout);
+						rename($fileout, $ss_new_fileout);
+						$d['fileout'] = str_replace($ss_str_wh_in, $ss_str_wh_out, $d['fileout']);
+//						echo $ss_str_wh_in.'|-|'.$ss_str_wh_out.'|-|'.$fileout.'|-|'.$ss_new_fileout;
+						///a25
 					}
 					else {
 						$vmLogger->warning( $VM_LANG->_PHPSHOP_FILES_IMAGE_RESIZE_FAILURE );

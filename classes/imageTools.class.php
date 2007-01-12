@@ -374,13 +374,17 @@ class vmImageTools {
 	 * @param string $ext
 	 * @return string
 	 */
-	function getResizedFilename( $filename, $section='product', $ext='' ) {
+	function getResizedFilename( $filename, $section='product', $ext='', $height=0, $width=0 ) {
 		$fileinfo = pathinfo( $filename );
 		if( $ext == '' ) {
 			$ext = $fileinfo['extension'];
 		}
-		$basename = str_replace( "_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT, '', basename( $filename, '.'.$ext ) );
-		return IMAGEPATH.$section.'/resized/'.$basename."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.'.'.$ext;
+		
+		$width = ( $width > 0 ) ? (int)$width : PSHOP_IMG_WIDTH;
+		$height = ( $height > 0 ) ? (int)$height : PSHOP_IMG_HEIGHT;
+		
+		$basename = str_replace( "_".$height."x".$width, '', basename( $filename, '.'.$ext ) );
+		return IMAGEPATH.$section.'/resized/'.$basename."_".$height."x".$width.'.'.$ext;
 		
 	}
 }

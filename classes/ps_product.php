@@ -1318,7 +1318,7 @@ class ps_product extends vmAbstractObject {
 	 * @param string $path_appendix The path to be appended to IMAGEURL / IMAGEPATH
 	 * @return The HTML code of the img tag
 	 */
-	function image_tag($image, $args="", $resize=1, $path_appendix="product") {
+	function image_tag($image, $args="", $resize=1, $path_appendix='product', $thumb_width=0, $thumb_height=0 ) {
 		global $mosConfig_live_site;
 		require_once( CLASSPATH . 'imageTools.class.php');
 		
@@ -1338,7 +1338,7 @@ class ps_product extends vmAbstractObject {
 				if(PSHOP_IMG_RESIZE_ENABLE == '1' && $resize==1) {
 					$url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 					if( !strpos( $args, "height=" )) {
-						$arr = @getimagesize( vmImageTools::getresizedfilename( $image, $path_appendix ) );
+						$arr = @getimagesize( vmImageTools::getresizedfilename( $image, $path_appendix, '', $thumb_width, $thumb_height ) );
 						$width = $arr[0]; $height = $arr[1];
 					}
 				}

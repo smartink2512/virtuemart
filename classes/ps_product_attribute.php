@@ -1158,7 +1158,7 @@ class ps_product_attribute {
 			     <td width="10%" align="left">Property</td>
 			     <td align="left" width="20%"><input type="text" name="attributeX[0][value][]" value="" size="40"/></td>
 			     <td align="left" width="5%">Price</td>
-			     <td align="left" width="60%"><input type="text" name="attributeX[0][price][]" size="5" value=""/></td>
+			     <td align="left" width="60%"><input type="text" name="attributeX[0][price][]" size="10" value=""/></td>
 			   </tr>
 			   </tbody>
 			</table>   

@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.01.2007 soeren
+
+# Fixed the thumbnail creation and naming according to Fedor's post: http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=24388.msg66188#msg66188
+
+
 04.01.2007 gregdev
 # Fixed check for authorize.net test mode (ps_authorize.php).
 
