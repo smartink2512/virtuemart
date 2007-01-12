@@ -102,13 +102,14 @@ if( $pagePermissionsOK ) {
 	$_SESSION['last_page'] = $page;
 }
 if( !defined('_VM_TOOLBAR_LOADED') && $no_toolbar != 1 ) {
-	echo '<div align="right" class="menudottedline">';
 	if( $vmLayout == 'standard' ) {
+		echo '<div align="right" class="menudottedline">';
 		include( ADMINPATH.'toolbar.virtuemart.php');
+		echo '</div>';
 	} else {
 		include( ADMINPATH.'toolbar.php');
 	}
-	echo '</div>';
+	
 }
 // Include the Stylesheet
 echo '<link rel="stylesheet" href="'.VM_THEMEURL.'admin.styles.css" type="text/css" />';
@@ -205,8 +206,9 @@ YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 			$bar =& vmToolBar::getInstance('virtuemart');
 			$bar->render();
 		}
+		echo '<div id="vmPage">';
 	} else {
-		echo '<table width="78%"><tr><td>';
+		echo '<table width="78%"><tr><td id="vmPage">';
 	}
 	// Load PAGE
 	if( !$pagePermissionsOK ) {
@@ -247,7 +249,18 @@ YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 											window.onload = function() { if( prev_onload ) prev_onload(); initLightbox(); }' );
 	}
 	if( $vmLayout == 'extended' ) {
-		echo '</div>';	
+		echo '</div>';
+		if( stristr($page, '_list')) {
+			echo vmCommonHTML::scriptTag('', 'var listItemClicked = function(e){
+        // find the <a> element that was clicked
+        var a = e.findTarget(null, "a");
+        if(a && typeof a.onclick == "undefined" && a.href.indexOf("javascript:") == -1 ) {
+            e.preventDefault();
+            parent.addSimplePanel( a.title != "" ? a.title : a.innerHTML, a.href );
+        }  
+	};
+	getEl("vmPage").mon("click", listItemClicked );');
+		}
 	} else {
 		echo '</td></tr></table>';
 	}

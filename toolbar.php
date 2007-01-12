@@ -3,7 +3,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 }
 /**
-* This file is the Toolbar controller for VirtueMart
+* This file is the YUI Toolbar controller for VirtueMart
 *
 * There are three main Toolbar cases:
 * - a List Toolbar with "New / Delete / Publish"
@@ -11,7 +11,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * - no toolbar
 *
 *
-* @version $Id$
+* @version $Id:toolbar.php 617 2007-01-04 19:43:08Z soeren_nb $
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.

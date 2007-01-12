@@ -251,6 +251,7 @@ var submitbutton = function(pressbutton){
 	*/
 	function LISTS_SPECIAL_TASKS( $page ) {
 		global $mosConfig_live_site, $VM_LANG, $product_id;
+		
 		$bar = & vmToolBar::getInstance('virtuemart');
 		switch( $page ) {
 		
