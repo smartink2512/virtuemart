@@ -402,14 +402,14 @@ $path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
 ?>
 <script type="text/javascript">
 function getPriceForm(elem) {
-	new Ajax.Updater( elem.parentNode, '<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+elem.parentNode.id, 
+	new Ajax.Updater( elem.parentNode, '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+elem.parentNode.id, 
 						{
 							method: 'get' 
 						});
 }
 
 function submitPriceForm(formId) {	
-	var loadingText = 'Loading ...<br /><img src=\"<?php echo $mosConfig_live_site ?>/components/com_virtuemart/js/lightbox_gw/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
+	var loadingText = '<div align="center">Loading ...<br /><img src=\"<?php echo $mosConfig_live_site ?>/components/com_virtuemart/js/lightbox_gw/images/loading.gif\" align=\"middle\" alt=\"Loading image\" /></div>';
 
 	dlg = Dialog.alert( loadingText, 
 		{windowParameters: {className:"mac_os_x", 
@@ -419,9 +419,9 @@ function submitPriceForm(formId) {
 		id: 'alertDialog'
 		});
 	dlg.setTitle( '<?php echo $VM_LANG->_PEAR_LOG_NOTICE ?>' );
-	dlg.setAjaxContent('<?php echo $mosConfig_live_site.$path ?>index2.php', 
+	dlg.setAjaxContent('<?php echo $mosConfig_live_site.$path ?>index3.php', 
 								{ 
-									postBody: Form.Methods.serialize(formId), 
+									postBody: Form.serializeElements(Form.Methods.getElements(formId)),
 									method: 'post', 
 									onComplete: function() { setTimeout( 'dlg.hide()', 3000 ); } 
 								} );
@@ -432,12 +432,12 @@ function cancelPriceForm(id) {
 	updatePriceField( id );
 }
 function updatePriceField( id ) {	
-	new Ajax.Updater( id, '<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id, {
+	new Ajax.Updater( id, '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id, {
 		method: 'get', 
 	});
 }
 function reloadForm( parentId, keyName, keyValue ) {	
-	new Ajax.Updater( parentId, '<?php echo $mosConfig_live_site.$path ?>index2.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+parentId+'&'+keyName+'='+keyValue, {
+	new Ajax.Updater( parentId, '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+parentId+'&'+keyName+'='+keyValue, {
 		method: 'get',
 	});	
 }

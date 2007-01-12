@@ -24,8 +24,8 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-global $option;
-$product_id = mosGetParam($_REQUEST, 'product_id' );
+global $option, $product_id;
+
 $task = mosGetParam($_REQUEST, 'task' );
 
 $q = "SELECT product_id, product_name, product_full_image as file_name, product_thumb_image, product_publish FROM #__{vm}_product WHERE product_id=".intval($product_id); 
@@ -50,7 +50,7 @@ if( $db->f('file_name')) {
 }
 
 $dbf = new ps_DB;
-$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';
+$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = '.$product_id.' AND attribute_name=\'download\'';
 $dbf->query( $sql );
 $downloadFiles = array();
 while( $dbf->next_record() ) {
