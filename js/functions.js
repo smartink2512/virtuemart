@@ -120,17 +120,20 @@ function getURLParam( strParamName, myWindow){
   }
   return strReturn;
 }
+var panelArr = new Object();
+
 function addSimplePanel( title, link ) {
 	if( typeof vmLayout != 'undefined') {
 		myId = title.replace( /\W/, '' );
-		if( getEl( myId )) {
-			vmLayout.layout.showPanel( getEl( myId ) );
+		if( vmLayout.layout.showPanel( panelArr[myId] ) ) {
 			return false;
 		}
 		var iframe = YAHOO.ext.DomHelper.append(document.body, {tag: 'iframe', frameBorder: 0 });	
 		var panel = new YAHOO.ext.ContentPanel( iframe, {title: title, fitToFrame:true, closable:true });	
 		vmLayout.layout.add('center', panel);
 		iframe.src= link + '&panelId=' + panel.getId();
+		panelArr[myId] = panel.getId();
+		
 		vmLayout.layout.showPanel(panel);
 		return false;
 	}
