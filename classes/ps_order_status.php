@@ -84,7 +84,7 @@ class ps_order_status extends vmAbstractObject {
 					);
 		$db->buildQuery( 'INSERT', $this->_table_name, $fields );
 		$result = $db->query();
-		
+		$GLOBALS['vmLogger']->info('The Order Status Type has been added.');
 		$d["order_status_id"] = $_REQUEST['order_status_id'] = $db->last_insert_id();
 		
 		return $result;
@@ -110,7 +110,7 @@ class ps_order_status extends vmAbstractObject {
 						'list_order' => $d["list_order"]
 					);
 		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, "WHERE order_status_id=".(int)$d["order_status_id"]." AND vendor_id=$ps_vendor_id" );
-		
+		$GLOBALS['vmLogger']->info('The Order Status Type has been updated.');
 		return $db->query();
 	}
 
@@ -142,7 +142,7 @@ class ps_order_status extends vmAbstractObject {
 		global $db;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
-		$q = "DELETE FROM `{$this->_table_name}` WHERE order_status_id='$record_id'";
+		$q = 'DELETE FROM `'.$this->_table_name.'` WHERE order_status_id='.(int)$record_id;
 		$q .= " AND vendor_id='$ps_vendor_id'";
 		
 		return $db->query($q);

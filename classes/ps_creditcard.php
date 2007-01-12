@@ -49,26 +49,25 @@ class ps_creditcard {
 	** returns:
 	***************************************************************************/
 	function validate_add($d) {
-
+		global $vmLogger;
 		$db = new ps_DB;
 
 		if (!$d["creditcard_name"]) {
-			$this->error = "ERROR:  You must enter a name for the Credit Card.";
+			$vmLogger->err( 'You must enter a name for the Credit Card.' );
 			return False;
 		}
 		if (!$d["creditcard_code"]) {
-			$this->error = "ERROR:  You must enter a code for the Credit Card.";
+			$vmLogger->err( 'You must enter a code for the Credit Card.' );
 			return False;
 		}
 
 		$q = "SELECT count(*) as rowcnt from #__{vm}_creditcard where";
 		$q .= " creditcard_name='" .  $d["creditcard_name"] . "' OR ";
 		$q .= " creditcard_code='" .  $d["creditcard_code"] . "'";
-		$db->setQuery($q);
-		$db->query();
+		$db->query( $q );
 		$db->next_record();
 		if ($db->f("rowcnt") > 0) {
-			$this->error = "The given Credit Card Name/Code already exists.";
+			$vmLogger->err( 'The given Credit Card Name/Code already exists.' );
 			return False;
 		}
 		return True;
@@ -84,7 +83,7 @@ class ps_creditcard {
 	function validate_delete($d) {
 
 		if (!$d["creditcard_id"]) {
-			$this->error = "ERROR:  Please select a Credit Card Type to delete.";
+			$GLOBALS['vmLogger']->err( 'Please select a Credit Card Type to delete.' );
 			return False;
 		}
 		else {
@@ -102,11 +101,11 @@ class ps_creditcard {
 	function validate_update($d) {
 
 		if (!$d["creditcard_name"]) {
-			$this->error = "ERROR:  You must enter a name for the Credit Card Type.";
+			$GLOBALS['vmLogger']->err( 'You must enter a name for the Credit Card Type.');
 			return False;
 		}
 		if (!$d["creditcard_code"]) {
-			$this->error = "ERROR:  You must enter a code for the Credit Card Type.";
+			$GLOBALS['vmLogger']->err( 'You must enter a code for the Credit Card Type.' );
 			return False;
 		}
 
@@ -122,24 +121,24 @@ class ps_creditcard {
 	* returns:
 	**************************************************************************/
 	function add(&$d) {
-		$hash_secret="PHPShopIsCool";
+		$hash_secret="VMisCool";
 		$db = new ps_DB;
 		$timestamp = time();
 
 		if (!$this->validate_add($d)) {
-			$d["error"] = $this->error;
 			return False;
 		}
-		$q = "INSERT INTO #__{vm}_creditcard (vendor_id, creditcard_name, creditcard_code)";
-		$q .= " VALUES ('";
-		$q .= $_SESSION["ps_vendor_id"] . "','";
-		$q .= $d["creditcard_name"] . "','";
-		$q .= $d["creditcard_code"] . "')";
-
-		$db->query( $q );
-		$_REQUEST['creditcard_id'] = $db->last_insert_id();
-		return true;
-
+		$fields = array( 'vendor_id' => $_SESSION["ps_vendor_id"],
+					'creditcard_name' => $d["creditcard_name"],
+					'creditcard_code' => $d["creditcard_code"],
+		);
+		$db->buildQuery('INSERT', '#__{vm}_creditcard', $fields );
+		if( $db->query() ) {
+			$GLOBALS['vmLogger']->info('The Credit Card Type has been added.');
+			$_REQUEST['creditcard_id'] = $db->last_insert_id();
+			return true;	
+		}
+		return false;
 	}
 
 	/**************************************************************************
@@ -157,14 +156,17 @@ class ps_creditcard {
 			$d["error"] = $this->error;
 			return False;
 		}
-		$q = "UPDATE #__{vm}_creditcard set ";
-		$q .= "creditcard_name='" . $d["creditcard_name"];
-		$q .= "',creditcard_code='" . $d["creditcard_code"]."' ";
-		$q .= "WHERE creditcard_id='".$d["creditcard_id"]."'";
-		$db->setQuery($q);
-		$db->query();
-		$db->next_record();
-		return True;
+		$fields = array( 'vendor_id' => $_SESSION["ps_vendor_id"],
+					'creditcard_name' => $d["creditcard_name"],
+					'creditcard_code' => $d["creditcard_code"],
+		);
+		$db->buildQuery('UPDATE', '#__{vm}_creditcard', $fields, 'WHERE creditcard_id='.(int)$d["creditcard_id"]);
+		if( $db->query() ) {
+			$GLOBALS['vmLogger']->info('The Credit Card Type has been updated.');
+			$_REQUEST['creditcard_id'] = $db->last_insert_id();
+			return true;	
+		}
+		return false;
 	}
 
 	/**
@@ -195,7 +197,7 @@ class ps_creditcard {
 			$d["error"]=$this->error;
 			return False;
 		}
-		$q = "DELETE FROM #__{vm}_creditcard WHERE creditcard_id='" . $creditcard_id . "'";
+		$q = "DELETE FROM #__{vm}_creditcard WHERE creditcard_id=" . (int)$creditcard_id . "'";
 		$db->query($q);
 		return True;
 	}
@@ -223,7 +225,7 @@ class ps_creditcard {
 		while( $db->next_record() ) {
 			$html .= "<input type=\"checkbox\" name=\"creditcard[]\"  id=\"creditcard$i\" value=\"".$db->f("creditcard_id")."\" class=\"inputbox\" ";
 			if (in_array($db->f("creditcard_id"), $selected_arr)) {
-				$html .= "checked=\checked\"";
+				$html .= "checked=\"checked\"";
 			}
 			$html .= "/>";
 			$html .= "<label for=\"creditcard$i\">".$db->f("creditcard_name")."</label><br/>";
@@ -250,7 +252,7 @@ class ps_creditcard {
 		}
 		/*** Get only accepted credit cards records ***/
 		else {
-			$q = "SELECT accepted_creditcards FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'";
+			$q = 'SELECT accepted_creditcards FROM #__{vm}_payment_method WHERE payment_method_id='.(int)$payment_method_id;
 			$db->query( $q );
 			$db->next_record();
 			$cc_array = explode( ",", $db->f("accepted_creditcards"));
@@ -262,15 +264,11 @@ class ps_creditcard {
 			}
 		}
 		$db->query( $q );
-		$html = "<select name=\"creditcard_code\" class=\"inputbox\">";
 
 		while( $db->next_record() ) {
-			$html .= "<option value=\"".$db->f("creditcard_code")."\">";
-			$html .= $db->f("creditcard_name")."</option>";
+			$array[$db->f("creditcard_code")] = $db->f("creditcard_name");
 		}
-		$html .= "</select>";
-
-		echo $html;
+		echo ps_html::selectList('creditcard_code', '', $array );
 	}
 
 

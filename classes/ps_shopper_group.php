@@ -33,7 +33,7 @@ class ps_shopper_group {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
 		if (empty($d["shopper_group_name"])) {
-			$this->error = "ERROR:  You must enter a shopper group name.";
+			$GLOBALS['vmLogger']->err('You must enter a shopper group name.' );
 			return False;
 		}
 		else {
@@ -44,7 +44,7 @@ class ps_shopper_group {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("num_rows") > 0) {
-				$this->error = "ERROR:  Shopper group already exists for this vendor.";
+				$GLOBALS['vmLogger']->err('Shopper group already exists for this vendor.' );
 				return False;
 			}
 			else {
@@ -66,7 +66,7 @@ class ps_shopper_group {
 	function validate_update($d) {
 
 		if (!$d["shopper_group_name"]) {
-			$this->error = "ERROR:  You must enter a shopper group name.";
+			$GLOBALS['vmLogger']->err('You must enter a shopper group name.' );
 			return False;
 		}
 		if (empty($d["shopper_group_discount"])) {
@@ -88,15 +88,15 @@ class ps_shopper_group {
 		$db = new ps_DB;
 
 		if (!$shopper_group_id) {
-			$d["error"] = "ERROR:  Please select a shopper group to delete.";
+			$GLOBALS['vmLogger']->err('Please select a shopper group to delete.' );
 			return False;
 		}
 
-		$q = "SELECT * FROM #__{vm}_shopper_group WHERE shopper_group_id='";
+		$q = "SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE shopper_group_id='";
 		$q .= $shopper_group_id . "' AND `default`='1'";
 		$db->query($q);
 		if ($db->next_record()) {
-			$d["error"] = "ERROR:  Cannot delete the default shopper group.";
+			$GLOBALS['vmLogger']->err('Cannot delete the default shopper group.' );
 			return False;
 		}
 
@@ -124,27 +124,24 @@ class ps_shopper_group {
 		$timestamp = time();
 		$default = @$d["default"]=="1" ? "1" : "0";
 
-		if ($this->validate_add($d)) {
-			$user_id=md5(uniqid($hash_secret));
-
-			$q = "INSERT INTO #__{vm}_shopper_group (shopper_group_name, shopper_group_desc, shopper_group_discount, vendor_id, show_price_including_tax, `default`) ";
-			$q .= "VALUES ('";
-			$q .= $d["shopper_group_name"] . "','";
-			$q .= $d["shopper_group_desc"] . "','";
-			$q .= $d["shopper_group_discount"] . "','";
-			$q .= $vendor_id."', '";
-			$q .= $d["show_price_including_tax"]."','";
-			$q .= $default . "')";
-			$db->query($q);
-			$db->next_record();
-
-			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
-			return $_REQUEST['shopper_group_id'];
-		}
-		else {
-			$vmLogger->err( $this->error );
+		if (!$this->validate_add($d)) {
 			return False;
 		}
+		$user_id=md5(uniqid($hash_secret));
+		$fields = array('vendor_id' => $vendor_id,
+						'shopper_group_name' => $d["shopper_group_name"],
+						'shopper_group_desc' => $d["shopper_group_desc"],
+						'shopper_group_discount' => $d["shopper_group_discount"],
+						'show_price_including_tax' => $d["show_price_including_tax"],
+						'default' => $default
+					);
+		$db->buildQuery( 'INSERT', '#__{vm}_shopper_group', $fields );
+		if( $db->query() ) {
+			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
+			$GLOBALS['vmLogger']->info('The Shopper Group has been added.');
+			return $_REQUEST['shopper_group_id'];
+		}
+		return false;
 	}
 
 	/**************************************************************************
@@ -167,17 +164,21 @@ class ps_shopper_group {
 		$timestamp = time();
 		$default = @$d["default"]=="1" ? "1" : "0";
 
-		if ($this->validate_update($d)) {
-
-			$q = "UPDATE #__{vm}_shopper_group set shopper_group_name='" . $d["shopper_group_name"] . "', ";
-			$q .= "shopper_group_desc='" . $d["shopper_group_desc"] . "', ";
-			$q .= "shopper_group_discount='" . $d["shopper_group_discount"] . "', ";
-			$q .= "show_price_including_tax='" . $d["show_price_including_tax"] . "', ";
-			$q .= "vendor_id='$vendor_id', ";
-			$q .= "`default`='" . $default . "' ";
-			$q .= "WHERE shopper_group_id='" . $d["shopper_group_id"] . "'";
-			$db->query($q);
-			$db->next_record();
+		if (!$this->validate_update($d)) {
+			return false;
+		}
+		$fields = array('vendor_id' => $vendor_id,
+						'shopper_group_name' => $d["shopper_group_name"],
+						'shopper_group_desc' => $d["shopper_group_desc"],
+						'shopper_group_discount' => $d["shopper_group_discount"],
+						'show_price_including_tax' => $d["show_price_including_tax"],
+						'default' => $default
+					);
+		$db->buildQuery( 'UPDATE', '#__{vm}_shopper_group', $fields, 'WHERE shopper_group_id=' . (int)$d["shopper_group_id"] );
+		if( $db->query() ) {
+			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
+			$GLOBALS['vmLogger']->info('The Shopper Group has been updated.');
+			
 			if ($default == "1") {
 				$q = "UPDATE #__{vm}_shopper_group ";
 				$q .= "SET `default`='0' ";
@@ -188,10 +189,7 @@ class ps_shopper_group {
 			}
 			return true;
 		}
-		else {
-			$d["error"] = $this->error;
-			return False;
-		}
+		return false;
 	}
 
 	/**

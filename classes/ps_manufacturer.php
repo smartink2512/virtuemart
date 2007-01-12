@@ -38,22 +38,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 *************************************************************************/
 class ps_manufacturer {
-	var $classname = "ps_manufacturer";
-	var $error;
 
-	/**************************************************************************
-	** name: validate_add()
-	** created by: soeren
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	
 	function validate_add($d) {
 
 		$db = new ps_DB;
 
 		if (!$d["mf_name"]) {
-			$this->error = "ERROR:  You must enter a name for the manufacturer.";
+			$GLOBALS['vmLogger']->err( 'You must enter a name for the manufacturer.' );
 			return False;
 		}
 		else {
@@ -63,37 +55,23 @@ class ps_manufacturer {
 			$db->query();
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$this->error = "The given manufacturer name already exists.";
+				$GLOBALS['vmLogger']->err( 'The given manufacturer name already exists.' );
 				return False;
 			}
 		}
 		return True;
 	}
 
-	/**************************************************************************
-	** name: validate_update
-	** created by: soeren
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
 	function validate_update($d) {
 
 		if (!$d["mf_name"]) {
-			$this->error = "ERROR:  You must enter a name for the manufacturer.";
+			$GLOBALS['vmLogger']->err( 'You must enter a name for the manufacturer.' );
 			return False;
 		}
 
 		return true;
 	}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by: soeren
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
 	function validate_delete($mf_id) {
 		global $db;
 
@@ -106,7 +84,7 @@ class ps_manufacturer {
 						WHERE manufacturer_id =".intval($mf_id)."
 						AND jos_vm_product.product_id = jos_vm_product_mf_xref.product_id" );
 		if( $db->num_rows() > 0 ) {
-			$this->error = "Error: This Manufacturer still has products assigned to it.";
+			$GLOBALS['vmLogger']->err( 'This Manufacturer still has products assigned to it.' );
 			return false;
 		}
 		return True;
@@ -128,20 +106,21 @@ class ps_manufacturer {
 		$GLOBALS['vmInputFilter']->safeSQL( $d );
 		
 		if (!$this->validate_add($d)) {
-			$d["error"] = $this->error;
 			return false;
 		}
-		$q = "INSERT INTO #__{vm}_manufacturer (mf_name, mf_email, mf_desc, mf_category_id, mf_url)";
-		$q .= " VALUES ('";
-		$q .= $d["mf_name"] . "','";
-		$q .= $d["mf_email"] . "','";
-		$q .= $d["mf_desc"] . "','";
-		$q .= $d["mf_category_id"] . "','";
-		$q .= $d["mf_url"] . "')";
-		$db->query( $q );
-		$db->next_record();
-		$_REQUEST['manufacturer_id'] = $db->last_insert_id();
-		return True;
+		$fields = array( 'mf_name' => $d['mf_name'],
+					'mf_email' => $d["mf_email"],
+					'mf_desc' => $d["mf_desc"],
+					'mf_category_id' => $d["mf_category_id"],
+					'mf_url' => $d["mf_url"]
+		);
+		$db->buildQuery('INSERT', '#__{vm}_manufacturer', $fields );
+		if( $db->query() ) {
+			$GLOBALS['vmLogger']->info('The Manufacturer has been added.');
+			$_REQUEST['manufacturer_id'] = $db->last_insert_id();
+			return true;	
+		}
+		return false;
 
 	}
 
@@ -159,20 +138,20 @@ class ps_manufacturer {
 		$GLOBALS['vmInputFilter']->safeSQL( $d );
 		
 		if (!$this->validate_update($d)) {
-			$d["error"] = $this->error;
 			return False;
 		}
-		$q = "UPDATE #__{vm}_manufacturer set ";
-		$q .= "mf_name='" . $d["mf_name"]."',";
-		$q .= "mf_email='" .$d["mf_email"] . "',";
-		$q .= "mf_desc='" .$d["mf_desc"] . "',";
-		$q .= "mf_category_id='" .$d["mf_category_id"] . "',";
-		$q .= "mf_url='" .$d["mf_url"] . "' ";
-		$q .= "WHERE manufacturer_id='".$d["manufacturer_id"]."'";
-		$db->setQuery($q);
-		$db->query();
-		$db->next_record();
-		return True;
+		$fields = array( 'mf_name' => $d['mf_name'],
+					'mf_email' => $d["mf_email"],
+					'mf_desc' => $d["mf_desc"],
+					'mf_category_id' => $d["mf_category_id"],
+					'mf_url' => $d["mf_url"]
+		);
+		$db->buildQuery('UPDATE', '#__{vm}_manufacturer', $fields, 'WHERE manufacturer_id='.(int)$d["manufacturer_id"] );
+		if( $db->query() ) {
+			$GLOBALS['vmLogger']->info('The Manufacturer has been updated.');
+			return true;	
+		}
+		return false;
 	}
 
 	/**
@@ -202,9 +181,9 @@ class ps_manufacturer {
 			$d["error"]=$this->error;
 			return False;
 		}
-		$q = "DELETE from #__{vm}_product_mf_xref WHERE manufacturer_id='$record_id'";
+		$q = 'DELETE from #__{vm}_product_mf_xref WHERE manufacturer_id='.(int)$record_id;
 		$db->query($q);
-		$q = "DELETE from #__{vm}_manufacturer WHERE manufacturer_id='$record_id'";
+		$q = 'DELETE from #__{vm}_manufacturer WHERE manufacturer_id='.(int)$record_id;
 		$db->query($q);
 		return True;
 	}

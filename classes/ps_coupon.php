@@ -53,7 +53,7 @@ class ps_coupon {
         
     }
     function validate_update( &$d ) {
-        global $VM_LANG;
+        global $VM_LANG, $vmLogger;
         /* init the database */
         $coupon_db =& new ps_DB;
         $valid = true;
@@ -62,15 +62,15 @@ class ps_coupon {
         $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' AND coupon_id <> '".$d['coupon_id']."'";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $d["error"] = $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS;
+            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS );
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS;
+            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS );
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $d['error'] .= $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER;
+            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER );
             $valid = false;
         }
         return $valid;
@@ -79,19 +79,25 @@ class ps_coupon {
     /* function to add a coupon coupon_code to the database */
     function add_coupon_code( &$d )
     {
-     
+     	global $vmLogger;
         $coupon_db =& new ps_DB;
 
         if( !$this->validate_add( $d ) ) {
             return false;
         }
-        
-        $q = "INSERT INTO #__{vm}_coupons ( coupon_code, percent_or_total, coupon_type, coupon_value ) ";
-        $q .= "VALUES ( '".$d['coupon_code']."', '".$d['percent_or_total']."', '".$d['coupon_type']."', '".$d['coupon_value']."' ) ";
-        $coupon_db->query($q);
-        $_REQUEST['coupon_id'] = $db->last_insert_id();
-        return true;
-        
+        $fields = array(
+        'coupon_code' => $d['coupon_code'],
+        'percent_or_total' => $d['percent_or_total'],
+        'coupon_type' => $d['coupon_type'],
+        'coupon_value' => (float)$d['coupon_value']
+        );
+        $coupon_db->buildQuery( 'INSERT', '#__{vm}_coupons', $fields );
+        if( $coupon_db->query() ) {
+	        $_REQUEST['coupon_id'] = $db->last_insert_id();
+	        $vmLogger->info('A new coupon has been added.');
+	        return true;
+        }
+        return false;
      
     }
     
@@ -108,15 +114,19 @@ class ps_coupon {
         /* init the database */
         $coupon_db = new ps_DB;
         
-        $q = "UPDATE #__{vm}_coupons SET ";
-        $q .= "coupon_code = '".$d["coupon_code"]."', ";
-        $q .= "percent_or_total = '".$d["percent_or_total"]."', ";
-        $q .= "coupon_type = '".$d["coupon_type"]."', ";
-        $q .= "coupon_value = '".$d["coupon_value"]."' ";
-        $q .= "WHERE coupon_id = '".$d['coupon_id']."'";
-        $coupon_db->query($q);
-        
-        return true;
+        $fields = array(
+        'coupon_code' => $d['coupon_code'],
+        'percent_or_total' => $d['percent_or_total'],
+        'coupon_type' => $d['coupon_type'],
+        'coupon_value' => (float)$d['coupon_value']
+        );
+        $coupon_db->buildQuery( 'UPDATE', '#__{vm}_coupons', $fields, 'WHERE coupon_id = '.(int)$d['coupon_id'] );
+        if( $coupon_db->query() ) {
+	        $_REQUEST['coupon_id'] = $db->last_insert_id();
+	        $vmLogger->info('The coupon has been updated.');
+	        return true;
+        }
+        return false;
     }
     
         
@@ -130,12 +140,12 @@ class ps_coupon {
         $coupon_db = new ps_DB;
 		if( is_array($d['coupon_id'] )) {
 			foreach( $d['coupon_id'] as $coupon ) {
-				$q = "DELETE FROM #__{vm}_coupons WHERE coupon_id = '$coupon' ";
+				$q = 'DELETE FROM #__{vm}_coupons WHERE coupon_id = '.(int)$coupon;
 				$coupon_db->query($q);			
 			}
 		}
 		else {
-			$q = "DELETE FROM #__{vm}_coupons WHERE coupon_id = '".$d['coupon_id']."' ";
+			$q = 'DELETE FROM #__{vm}_coupons WHERE coupon_id = '.(int)$d['coupon_id'];
 			$coupon_db->query($q);
 		}
         $_SESSION['coupon_discount'] =    0;
