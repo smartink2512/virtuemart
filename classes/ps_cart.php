@@ -68,7 +68,9 @@ class ps_cart {
  	*/
 	function add(&$d) {
 		global $sess, $VM_LANG, $cart, $option, $vmLogger,$func;
-
+		
+		$d = $GLOBALS['vmInputFilter']->process( $d );
+		
 		include_class("product");
 		require_once (CLASSPATH . 'ps_product_attribute.php' );
 		$ps_product_attribute = new ps_product_attribute;
@@ -270,7 +272,7 @@ class ps_cart {
 	 */
 	function update(&$d) {
 		global $sess,$VM_LANG, $vmLogger, $func, $page;
-
+		$d = $GLOBALS['vmInputFilter']->process( $d );
 		include_class("product");
 
 		$db = new ps_DB;
