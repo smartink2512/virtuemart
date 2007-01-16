@@ -1149,8 +1149,8 @@ class ps_product_attribute {
 			    <input type="text" name="attributeX[0][name]" value="" size="60"/>
 			    </td>
 			    <td colspan="3" align="left">
-			    <a href="#" onclick="newAttribute(1)">New Attribute</a> | 
-			    <a href="#" onclick="newProperty(0)">New Property</a>
+			    <a href="javascript: newAttribute(1)">New Attribute</a> | 
+			    <a href="javascript: newProperty(0)">New Property</a>
 			    </td>
 			  </tr>
 			  <tr id="attributeX_tr_0_0">
@@ -1181,9 +1181,9 @@ class ps_product_attribute {
 			    <input type="text" name="attributeX[<?php echo $i;?>][name]" value="<?php echo $dropdown_name;?>" size="60"/>
 			    </td>
 			    <td colspan="3" align="left">
-			    <a href="#" onclick="newAttribute(<?php echo ($i+1);?>)">New Attribute</a> | 
-			    <?php if ($i != 0) { ?><a href="#" onclick="deleteAttribute(<?php echo ($i);?>)">Delete Attribute</a> | <?php }?>
-			    <a href="#" onclick="newProperty(<?php echo ($i);?>)">New Property</a>
+			    <a href="javascript:newAttribute(<?php echo ($i+1);?>)">New Attribute</a> | 
+			    <?php if ($i != 0) { ?><a href="javascript:deleteAttribute(<?php echo ($i);?>)">Delete Attribute</a> | <?php }?>
+			    <a href="javascript:newProperty(<?php echo ($i);?>)">New Property</a>
 			    </td>
 			  </tr>
 			  <?php
@@ -1199,7 +1199,7 @@ class ps_product_attribute {
 			          <td width="10%" align="left">Property</td>
 			          <td align="left" width="20%"><input type="text" name="attributeX[<?php echo $i;?>][value][]" value="<?php echo $value_price[0];?>" size="40"/></td>
 			          <td align="left" width="5%">Price</td>
-			          <td align="left" width="60%"><input type="text" name="attributeX[<?php echo $i;?>][price][]" size="5" value="<?php echo str_replace(']','',@$value_price[1]);?>"/><a href='#' onclick="deleteProperty(<?php echo ($i);?>,'<?php echo $i."_".$i2;?>');">X</a></td>
+			          <td align="left" width="60%"><input type="text" name="attributeX[<?php echo $i;?>][price][]" size="5" value="<?php echo str_replace(']','',@$value_price[1]);?>"/><a href="javascript:deleteProperty(<?php echo ($i);?>,'<?php echo $i."_".$i2;?>');">X</a></td>
 			        </tr>
 			  	  <?php
 			  	}
@@ -1210,7 +1210,7 @@ class ps_product_attribute {
 			        <td width="10%" align="left">Property</td>
 			        <td align="left" width="20%"><input type="text" name="attributeX[<?php echo $i;?>][value][]" value="<?php echo $value;?>" size="40"/></td>
 			        <td align="left" width="5%">Price</td>
-			        <td align="left" width="60%"><input type="text" name="attributeX[<?php echo $i;?>][price][]" size="5"/><a href='#' onclick="deleteProperty(<?php echo ($i);?>,'<?php echo $i."_".$i2;?>');">X</a></td>
+			        <td align="left" width="60%"><input type="text" name="attributeX[<?php echo $i;?>][price][]" size="5"/><a href="javascript:deleteProperty(<?php echo ($i);?>,'<?php echo $i."_".$i2;?>');">X</a></td>
 			      </tr>
 			  	  <?php
 			  	}
