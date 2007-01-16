@@ -166,7 +166,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					<hr />
 					</li>
 					<li class="item-smenu vmicon-16-content">
-					<a href="<?php $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=store.shipping_modules") ?>"><?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_LBL ?></a>
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=store.shipping_modules") ?>"><?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_LBL ?></a>
 					<hr />
 					</li>
 					<li class="item-smenu vmicon-16-content">
@@ -177,7 +177,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					<hr />
 					</li>
 					<li class="item-smenu vmicon-16-content">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=store.export_list") ?>>"><?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?></a>
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=store.export_list") ?>"><?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?></a>
 					</li>
 					<li class="item-smenu vmicon-16-editadd">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=store.export_form") ?>"><?php echo $VM_LANG->_VM_ORDER_EXPORT_MODULE_LIST_MNU ?></a>
@@ -383,6 +383,13 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					</li>
 					</ul>
 					</div>
+				<?php 
+				$modCount++;
+				break;
+				
+				
+				case 'tax':
+					?>
 					<h3 class="title-smenu" title="tax" onclick="SwitchMenu('<?php echo $modCount ?>')">
 					<?php echo $VM_LANG->_PHPSHOP_TAX_MOD
 					?>
@@ -400,8 +407,57 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 				<?php 
 				$modCount++;
 				break;
-				
-				
+
+                case "shipping":
+                    ?>
+					<h3 class="title-smenu" title="report" onclick="SwitchMenu('<?php echo $modCount ?>')">
+					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_MOD
+					?>
+					</h3>
+					<div class="section-smenu">
+					<ul>
+                        <li class="item-smenu vmicon-16-content">
+							<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=shipping.carrier_list") ?>"><?php echo $VM_LANG->_PHPSHOP_CARRIER_LIST_MNU ?></a>
+						</li>
+                        <li class="item-smenu vmicon-16-editadd">
+							<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=shipping.carrier_form") ?>"><?php echo $VM_LANG->_PHPSHOP_CARRIER_FORM_MNU ?></a>
+                    	</li>
+                        <li class="item-smenu vmicon-16-content">
+							<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=shipping.rate_list") ?>"><?php echo $VM_LANG->_PHPSHOP_RATE_LIST_MNU ?></a>
+						</li>
+                        <li class="item-smenu vmicon-16-editadd">
+							<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=shipping.rate_form") ?>"><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_MNU ?></a>
+						</li>
+					</ul>
+				</div>
+				<?php 
+				$modCount++;
+				break;
+                        
+                case "zone":
+                    ?>
+					<h3 class="title-smenu" title="report" onclick="SwitchMenu('<?php echo $modCount ?>')">
+					<?php echo $VM_LANG->_PHPSHOP_ZONE_MOD
+					?>
+					</h3>
+					<div class="section-smenu">
+					<ul>
+                        <li class="item-smenu vmicon-16-content">
+                        	<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=zone.assign_zones") ?>"><?php echo $VM_LANG->_PHPSHOP_ZONE_ASSIGN_MNU ?></a>
+						</li>
+                        <li class="item-smenu vmicon-16-content">
+                        	<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=zone.zone_list") ?>"><?php echo $VM_LANG->_PHPSHOP_ZONE_LIST_MNU ?></a>
+						</li>
+                        <li class="item-smenu vmicon-16-editadd">
+							<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=zone.zone_form") ?>"><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_MNU ?></a>
+						</li>
+                    
+					</ul>
+				</div>
+				<?php 
+				$modCount++;
+				break;
+
 				case 'coupon':
 					?>
 					<h3 class="title-smenu" title="coupon" onclick="SwitchMenu('<?php echo $modCount ?>')">
@@ -458,7 +514,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					<div class="section-smenu">
 					<ul>
 						<li class="item-smenu vmicon-16-info">
-						<a href="<?php echo $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=help.about");?>"><?php echo $VM_LANG->_VM_ABOUT ?></a>
+						<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=help.about");?>"><?php echo $VM_LANG->_VM_ABOUT ?></a>
 						</li>
 						<li class="item-smenu vmicon-16-help">
 						<a href="http://virtuemart.net/documentation/User_Manual/index.html"><?php echo $VM_LANG->_VM_HELP_TOPICS ?></a>
