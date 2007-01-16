@@ -1439,9 +1439,12 @@ function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
 }
 
 // borrowed from mambo.php
-function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $exclude_keys='' ) {
-	
-	$string = htmlspecialchars( $string, $quote_style, vmGetCharset() );
+function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $only_special_chars=false ) {
+	if( $only_special_chars ) {
+		$string = htmlspecialchars( $string, $quote_style, vmGetCharset() );
+	} else {
+		$string = htmlentities( $string, $quote_style, vmGetCharset() );
+	}
 	return $string;
 }
 
