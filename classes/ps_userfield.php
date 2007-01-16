@@ -502,15 +502,15 @@ class ps_userfield extends vmAbstractObject {
 	 * @param mixed $sys When left empty, doesn't filter by sys
 	 * @return array
 	 */
-	function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false ) {
+	function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false, $exclude_skipfields=false ) {
 		$db = new ps_DB();
 		
 		$q = "SELECT f.* FROM `#__{vm}_userfield` f"
 			. "\n WHERE f.published=1";
-		if( $section != 'bank') {
+		if( $section != 'bank' && $section != '') {
 			$q .= "\n AND f.`$section`=1";
 		}
-		else {
+		elseif( $section == 'bank' ) {
 			$q .= "\n AND f.name LIKE '%bank%'";
 		}
 		if( $exclude_delimiters ) {
@@ -523,9 +523,9 @@ class ps_userfield extends vmAbstractObject {
 			if( $sys == '1') { $q .= "\n AND f.sys=1"; }
 			elseif( $sys == '0') { $q .= "\n AND f.sys=0"; }
 		}
-		/*$q .= " OR ( FIND_IN_SET( f.name, '".implode(',', ps_userfield::getSkipFields())."') = 0 AND f.published=1 ";
-		$q .= $exclude_delimiters ? "AND f.type != 'delimiter' " : '';
-		$q .= $required_only ? 'AND f.required=1)' : ')';*/
+		if( $exclude_skipfields ) {
+			$q .= "\n AND FIND_IN_SET( f.name, '".implode(',', ps_userfield::getSkipFields())."') = 0 ";
+		}
 		$q .= "\n ORDER BY f.ordering";
 		
 		$db->setQuery( $q );
@@ -539,8 +539,7 @@ class ps_userfield extends vmAbstractObject {
 	 * @return array Field names which are to be skipped by VirtueMart db functions
 	 */
 	function getSkipFields() {
-		$skipFields = array( 'username', 'password', 'password2', 'agreed' );
-		return $skipFields;
+		return array( 'username', 'password', 'password2', 'agreed' );
 	}
 	/**
 	 * Prints a JS function to validate all fields

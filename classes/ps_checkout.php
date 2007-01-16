@@ -838,7 +838,7 @@ Order Total: '.$order_total.'
 			'order_status' => 'P', 
 			'cdate' => $timestamp,
 			'mdate' => $timestamp,
-			'customer_note' => htmlspecialchars(strip_tags($d['customer_note'])),
+			'customer_note' => htmlspecialchars(strip_tags($d['customer_note']), ENT_QUOTES ),
 			'ip_address' => $ip
 			);
 
@@ -898,16 +898,24 @@ Order Total: '.$order_total.'
 		/**
 		* Insert the User Billto & Shipto Info
 		*/
-		// Bill To Address
+		// First: get all the fields from the user field list to copy them from user_info into the order_user_info
+		$fields = array();
+		require_once( CLASSPATH . 'ps_userfield.php' );
+		$userfields = ps_userfield::getUserFields('', false, '', true, true );
+		foreach ( $userfields as $field ) {
+			$fields[] = $field->name;
+		}
+		$fieldstr = str_replace( 'email', 'user_email', implode( ',', $fields ));
+		// Save current Bill To Address
 		$q = "INSERT INTO `#__{vm}_order_user_info` 
-			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type) ";
-		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
+			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, ".$fieldstr.") ";
+		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, ".$fieldstr." FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
 		$db->query( $q );
 
-		// Ship to Address if applicable
+		// Save current Ship to Address if applicable
 		$q = "INSERT INTO `#__{vm}_order_user_info` 
-			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type) ";
-		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, company, title, last_name, first_name, middle_name, phone_1, phone_2, fax, address_1, address_2, city, state, country, zip, user_email, extra_field_1, extra_field_2, extra_field_3, extra_field_4, extra_field_5,bank_account_nr,bank_name,bank_sort_code,bank_iban,bank_account_holder,bank_account_type FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
+			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, ".$fieldstr.") ";
+		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, ".$fieldstr." FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
 		$db->query( $q );
 
 		/**
