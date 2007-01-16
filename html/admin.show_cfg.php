@@ -33,7 +33,7 @@ $db->next_record();
 $gtree = ps_perm::getGroupChildrenTree( null, 'USERS', false );
 $access_group_list = mosHTML::selectList( $gtree, 'conf_VM_PRICE_ACCESS_LEVEL', 'size="4"', 'value', 'text', $db->f($fieldname) );
                 
-$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="absmiddle" border="0" />&nbsp;';
+$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_PHPSHOP_CONFIG.'" />&nbsp;';
 $title .= $VM_LANG->_PHPSHOP_CONFIG;
 
 //First create the object and let it print a form heading
@@ -68,7 +68,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		<tr>
 			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOP_OFFLINE_MSG ?>:</td>
 			<td colspan="2">
-				<textarea rows="6" cols="40" name="conf_PSHOP_OFFLINE_MESSAGE"><?php echo stripslashes(PSHOP_OFFLINE_MESSAGE); ?></textarea>
+				<textarea rows="6" cols="40" name="conf_PSHOP_OFFLINE_MESSAGE"><?php echo shopMakeHtmlSafe(stripslashes(PSHOP_OFFLINE_MESSAGE)); ?></textarea>
 			</td>
 		</tr>  
 		<tr>
@@ -436,8 +436,8 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 	            foreach ($files as $file) { 
 	                $file_info = pathinfo($file);
 	                $filename = $file_info['basename'];
-	                $checked = ($filename == _VM_CURRENCY_CONVERTER_MODULE) ? "checked=\"checked\"" : "";
-	                echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>";
+	                $checked = ($filename == VM_CURRENCY_CONVERTER_MODULE) ? 'selected="selected"' : "";
+	                echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>\n";
 	            }
 	            ?>
 				</select>
@@ -445,12 +445,10 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_CFG_CURRENCY_MODULE_TIP ) ?>
 			</td>
 		</tr>
-		<tr>
 		
 		<tr>
 			<td class="labelcell">
 				<label for="conf_AFFILIATE_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE ?></label>
-				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_AFFILIATE_ENABLE" name="conf_AFFILIATE_ENABLE" class="inputbox" <?php if (AFFILIATE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
@@ -462,10 +460,10 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MAIL_FORMAT ?></td>
 			<td>
 				<select name="conf_ORDER_MAIL_HTML" class="inputbox">
-				<option value="0" <?php if (ORDER_MAIL_HTML == '0') echo "selected"; ?>>
+				<option value="0" <?php if (ORDER_MAIL_HTML == '0') echo 'selected="selected"'; ?>>
 			   <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT ?>
 				</option>
-				<option value="1" <?php if (ORDER_MAIL_HTML == '1') echo "selected"; ?>>
+				<option value="1" <?php if (ORDER_MAIL_HTML == '1') echo 'selected="selected"'; ?>>
 				<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML ?>
 				</option>
 				</select>
@@ -722,11 +720,11 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 <legend>Layout</legend>
 <table class="adminlist">
     <tr>
-        <td class="labelcell"><label for="conf_THEME"><?php echo $VM_LANG->_VM_SELECT_THEME ?></label></td>
+        <td class="labelcell"><?php echo $VM_LANG->_VM_SELECT_THEME ?></td>
         <td>
         <?php 
         	echo ps_html::list_themes( 'conf_THEME', basename(VM_THEMEURL) );
-        	echo vmCommonHTML::hyperlink($sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&theme='.basename(VM_THEMEURL) ), $VM_LANG->_PHPSHOP_CONFIG );
+        	echo vmCommonHTML::hyperlink($sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL) ), $VM_LANG->_PHPSHOP_CONFIG );
         ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
@@ -804,15 +802,17 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
   $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING . $spacer, "shipping-page");
 ?>
 
-
-<fieldset>
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD ?></legend>
-	<table class="adminform" onclick="validateForm();">
 <?php
 require_once( CLASSPATH. "ps_shipping_method.php" );
 $ps_shipping_method = new ps_shipping_method;
 $rows = $ps_shipping_method->method_list();
 $i = 0;
+echo '<input type="hidden" name="shippingMethodCount" value="'.count($rows).'" />';
+?>
+<fieldset>
+	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD ?></legend>
+	<table class="adminform" onclick="validateForm();">
+<?php
 foreach( $rows as $row ) { 
     if( $row['filename'] == "standard_shipping.php" ) { ?>
                 <tr>
@@ -860,9 +860,9 @@ foreach( $rows as $row ) {
                 }
                 $i++;
 	}
-	echo "<input type=\"hidden\" name=\"shippingMethodCount\" value=\"".count($rows)."\" />";
+	
 		?>
-		<tr><td colspan="2"><hr/></td></tr>
+		<tr><td colspan="2"><hr /></td></tr>
 			<tr>
                 <td>
                     <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" onclick="unCheckAndDisable( this.checked );" <?php if (NO_SHIPPING == '1') echo "checked=\"checked\""; ?> value="no_shipping" />
@@ -887,7 +887,7 @@ foreach( $rows as $row ) {
         </td>
     </tr>
     <tr>
-        <td rowspan="4" valign="top"><div align="right"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS ?></td>
+        <td rowspan="4" valign="top"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS ?></td>
         <td width="40" valign="top">
             <input type="radio" name="conf_CHECKOUT_STYLE" <?php if (CHECKOUT_STYLE == '1') echo "checked=\"checked\""; ?> value="1" />
         </td>
