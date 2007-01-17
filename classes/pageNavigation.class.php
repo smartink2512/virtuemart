@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -76,7 +76,7 @@ class vmPageNav {
 			$to_result = $this->total;
 		}
 		if ($this->total > 0) {
-			$html .= $VM_LANG->_PN_RESULTS." $from_result - $to_result ".$VM_LANG->_PN_OF." $this->total";
+			$html .= $GLOBALS['VM_LANG']->_PN_RESULTS." $from_result - $to_result ".$GLOBALS['VM_LANG']->_PN_OF." $this->total";
 		} else {
 			//$html .= "\nNo records found.";
 		}
@@ -142,7 +142,7 @@ class vmPageNav {
 			$html .= $this->getPagesLinks();
 			$html .= '</th></tr>';
 	    }
-		$html .= '<tr><td nowrap="true" width="48%" align="right">'.$VM_LANG->_PN_DISPLAY_NR.'</td>';
+		$html .= '<tr><td nowrap="true" width="48%" align="right">'.$GLOBALS['VM_LANG']->_PN_DISPLAY_NR.'</td>';
 		$html .= '<td>' .$this->getLimitBox() . '</td>';
 		$html .= '<td nowrap="true" width="48%" align="left">' . $this->getPagesCounter() . '</td>';
 		$html .= '</tr></table>';
