@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
         <name>VirtueMart</name>
-        <creationDate>09.12.2006</creationDate>
+        <creationDate>17.01.2006</creationDate>
         <author>Soeren Eberhardt &amp; the VirtueMart dev team</author>
         <copyright>released under GNU General Public License</copyright>
         <authorEmail>soeren@virtuemart.net</authorEmail>
@@ -9,7 +9,7 @@
         <version>1.1.0 alpha</version>
         <description>Online-Shop / E-Commerce Component</description>
   <files>
-      <filename>frontend_files.tar.gz~</filename>
+      <filename>frontend_files.tar.gz</filename>
   </files>
   <install>
       <queries>
@@ -27,7 +27,7 @@
     <menu>VirtueMart</menu>
       <files>
         <filename>2checkout_notify.php</filename>
-        <filename>admin_files.tar.gz~</filename>
+        <filename>admin_files.tar.gz</filename>
         <filename>admin.virtuemart.php</filename>
         <filename>admin.styles.css</filename>
         <filename>cart.gif</filename>
@@ -49,6 +49,8 @@
         <filename>virtuemart.cfg-dist.php</filename>
         <filename>Tar.php</filename>
         <filename>TODO.php</filename>
+        <filename>toolbar.html.php</filename>
+        <filename>toolbar.php</filename>
         <filename>toolbar.virtuemart.html.php</filename>
         <filename>toolbar.virtuemart.php</filename>
         <filename>version.php</filename>

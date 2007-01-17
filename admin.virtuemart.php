@@ -58,7 +58,7 @@ elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$opti
 /* Load the virtuemart main parse code */
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
-$vmLayout = $_SESSION['vmLayout'] = mosGetParam( $_SESSION, 'vmLayout', 'extended' );
+$vmLayout = $_SESSION['vmLayout'] = mosGetParam( $_SESSION, 'vmLayout', 'standard' );
 
 if( !empty( $_GET['vmLayout'])) {
 	$vmLayout = $_SESSION['vmLayout'] = $_GET['vmLayout'] == 'standard' ? $_GET['vmLayout'] : 'extended';
@@ -137,6 +137,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	};
     return {
 	    init : function(){
+	    	try{ getEl('header-box').hide(); } catch(e) {} // Hide the Admin Menu under Joomla! 1.5
 	    	var layout = new YAHOO.ext.BorderLayout(document.body, {
 			    /*north: {
 			        split:true,
@@ -192,7 +193,9 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 		},
 
         loadPage : function(page){
-            getEl('vmPage').dom.src = page.replace(/index2.php/, 'index3.php') + '&only_page=1&no_menu=1';
+        	php_self = page.replace(/index2.php/, 'index3.php');
+        	php_self = page.replace(/index.php/, 'index3.php');
+            getEl('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';
         }
 	}
 }();
