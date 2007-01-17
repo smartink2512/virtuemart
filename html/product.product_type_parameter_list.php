@@ -58,7 +58,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME => 'width="20%"',
 					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="40%"',
 					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="5%"',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

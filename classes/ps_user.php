@@ -326,7 +326,7 @@ class ps_user {
         * into Joomla
         */
 	function saveUser( &$d ) {
-		global $database, $my, $_VERSION;
+		global $database, $my, $_VERSION, $VM_LANG;
 		global $mosConfig_live_site, $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_sitename;
 
 		$aro_id = 'aro_id';
@@ -364,7 +364,7 @@ class ps_user {
 			} else {
 				if( !empty( $_POST['password'] )) {
 					if( $row->password != @$_POST['password2'] ) {
-						$d['error'] = vmHtmlEntityDecode(_REGWARN_VPASS2);
+						$d['error'] = vmHtmlEntityDecode($VM_LANG->_REGWARN_VPASS2);
 						return false;
 					}
 				}
@@ -435,8 +435,8 @@ class ps_user {
 			$database->setQuery( $query );
 			$adminEmail = $database->loadResult();
 
-			$subject = _NEW_USER_MESSAGE_SUBJECT;
-			$message = sprintf ( _NEW_USER_MESSAGE, $row->name, $mosConfig_sitename, $mosConfig_live_site, $row->username, $pwd );
+			$subject = $VM_LANG->_NEW_USER_MESSAGE_SUBJECT;
+			$message = sprintf ( $VM_LANG->_NEW_USER_MESSAGE, $row->name, $mosConfig_sitename, $mosConfig_live_site, $row->username, $pwd );
 
 			if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
 				$adminName 	= $mosConfig_fromname;

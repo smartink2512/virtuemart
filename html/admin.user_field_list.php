@@ -54,7 +54,7 @@ $columns = Array(  "#" => "",
 					$VM_LANG->_VM_FIELDMANAGER_SHOW_ON_ACCOUNT => "width=\"5%\"",
 					$VM_LANG->_VM_FIELDMANAGER_REORDER => "width=\"5%\"",
 					vmCommonHTML::getSaveOrderButton( $total, 'changeordering' ) => 'width="8%"',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

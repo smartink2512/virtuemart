@@ -25,7 +25,7 @@ $missing = mosGetParam( $vars, 'missing' );
 $missing_style = "color: Red; font-weight: Bold;";
 
 if (!empty( $missing )) {
-    echo "<script type=\"text/javascript\">alert('"._CONTACT_FORM_NC."'); </script>\n";
+    echo "<script type=\"text/javascript\">alert('".$VM_LANG->_CONTACT_FORM_NC."'); </script>\n";
 }
 ?>
 <h2><?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?></h2>

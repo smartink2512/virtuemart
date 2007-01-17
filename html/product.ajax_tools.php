@@ -15,7 +15,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-
+global $ps_product;
 $task = strtolower( mosGetParam( $_REQUEST, 'task' ));
 $option = strtolower( mosGetParam( $_REQUEST, 'option' ));
 require_once( CLASSPATH.'connectionTools.class.php');

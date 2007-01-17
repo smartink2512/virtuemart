@@ -62,7 +62,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_MODULE_LIST_FUNCTIONS => "",
 					$VM_LANG->_VM_FIELDMANAGER_REORDER =>"width=\"5%\"",
 					vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ) =>'width="8%"',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

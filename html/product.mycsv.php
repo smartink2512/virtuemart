@@ -49,7 +49,7 @@ if( empty( $vars['csv_import_finished'])) {
 			<br /><br /><img id=\"indicator\" style=\"display:none;\" src=\"".VM_THEMEURL."images/indicator.gif\" alt=\"Indicator\" align=\"absmiddle\" />&nbsp;&nbsp;";
 	
 	echo "<input class=\"button\" type=\"submit\" name=\"submit\" value=\"".$VM_LANG->_VM_CSV_UPLOAD_IMPORTNOW."\" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n";
-	echo "<input class=\"button\" type=\"button\" name=\"cancel\" value=\""._E_CANCEL."\" onclick=\"document.location='".$sess->url($_SERVER['PHP_SELF']."?page=product.csv_upload")."';\" />\n";
+	echo "<input class=\"button\" type=\"button\" name=\"cancel\" value=\"".$VM_LANG->_E_CANCEL."\" onclick=\"document.location='".$sess->url($_SERVER['PHP_SELF']."?page=product.csv_upload")."';\" />\n";
 	echo '<input type="hidden" name="do_import" value="1" />';
 	echo '</form><br /><br />
 	</td>

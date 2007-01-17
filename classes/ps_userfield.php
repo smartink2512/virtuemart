@@ -632,7 +632,7 @@ class ps_userfield extends vmAbstractObject {
 	    
 	   		echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
-				alert( \''. html_entity_decode( _REGWARN_MAIL ).'\');
+				alert( \''. html_entity_decode( $VM_LANG->_REGWARN_MAIL ).'\');
 				return false;
 			}';
 
@@ -641,7 +641,7 @@ class ps_userfield extends vmAbstractObject {
 		
 			echo '
 			if (r.exec(form.username.value) || form.username.value.length < 3) {
-				alert( "'. html_entity_decode( sprintf(_VALID_AZ09, _PROMPT_UNAME, 2)) .'" );
+				alert( "'. html_entity_decode( sprintf($VM_LANG->_VALID_AZ09, $VM_LANG->_PROMPT_UNAME, 2)) .'" );
 				return false;
             }';
         }
@@ -649,19 +649,19 @@ class ps_userfield extends vmAbstractObject {
 			if( $page == 'checkout.index') {
                 echo '
                 if (form.password.value.length < 6 ) {
-                    alert( "1'. html_entity_decode( _REGWARN_PASS ).'" );
+                    alert( "1'. html_entity_decode( $VM_LANG->_REGWARN_PASS ).'" );
 					return false;
                 } else if (form.password2.value == "") {
-                    alert( "2'.html_entity_decode( _REGWARN_VPASS1).'" );
+                    alert( "2'.html_entity_decode( $VM_LANG->_REGWARN_VPASS1).'" );
                     return false;
                 } else if (r.exec(form.password.value)) {
-                    alert( "3'. html_entity_decode(sprintf( _VALID_AZ09, _REGISTER_PASS, 6 )) .'" );
+                    alert( "3'. html_entity_decode(sprintf( $VM_LANG->_VALID_AZ09, $VM_LANG->_REGISTER_PASS, 6 )) .'" );
                     return false;
                 }';
         	}
             echo '
                 if ((form.password.value != "") && (form.password.value != form.password2.value)){
-                    alert( "'. html_entity_decode(_REGWARN_VPASS2).'" );
+                    alert( "'. html_entity_decode($VM_LANG->_REGWARN_VPASS2).'" );
                     return false;
                 }';
         }
@@ -691,7 +691,7 @@ class ps_userfield extends vmAbstractObject {
 		// Finish the validation function
 		echo '
 			if( !isvalid) {
-				alert("'.addslashes( html_entity_decode(_CONTACT_FORM_NC) ).'" );
+				alert("'.addslashes( html_entity_decode($VM_LANG->_CONTACT_FORM_NC) ).'" );
 			}
 			return isvalid;
 		}

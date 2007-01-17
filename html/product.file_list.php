@@ -109,7 +109,7 @@ $columns = Array(  "#" => 'width="20"',
 					$VM_LANG->_PHPSHOP_FILES_LIST_FILETITLE => '',
 					$VM_LANG->_PHPSHOP_FILES_LIST_FILETYPE => '',
 					$VM_LANG->_PHPSHOP_FILEMANAGER_PUBLISHED => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -137,7 +137,7 @@ while ($db->next_record()) {
 
 	$tmp_cell = '';
 	
-	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'._E_EDIT.'">';
+	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_E_EDIT.'">';
 	$style = '';
 	if($filename) {
 		$role = $db->f("file_is_image") ? 'isImage' : 'isFile';

@@ -66,7 +66,7 @@ $columns = Array(  "#" => "",
 					$VM_LANG->_PHPSHOP_STATE_LIST_NAME => "",
 					$VM_LANG->_PHPSHOP_STATE_LIST_3_CODE => "",
 					$VM_LANG->_PHPSHOP_STATE_LIST_2_CODE => "",
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

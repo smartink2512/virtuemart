@@ -44,12 +44,12 @@ else {
     <tr> 
       <th width="20">#</th>
       <th width="20"><?php echo ucfirst($VM_LANG->_VM_ENABLED).'?' ?></th>
-      <th class="title"><?php echo _NAME ?></th>
-      <th class="title"><?php echo _E_VERSION ?></th>
-      <th class="title"><?php echo _HEADER_AUTHOR ?></th>
-      <th class="title"><?php echo _URL ?></th>
-      <th class="title"><?php echo _EMAIL ?></th>
-      <th><?php echo _CMN_DESCRIPTION ?></th>
+      <th class="title"><?php echo $VM_LANG->_NAME ?></th>
+      <th class="title"><?php echo $VM_LANG->_E_VERSION ?></th>
+      <th class="title"><?php echo $VM_LANG->_HEADER_AUTHOR ?></th>
+      <th class="title"><?php echo $VM_LANG->_URL ?></th>
+      <th class="title"><?php echo $VM_LANG->_CMN_EMAIL ?></th>
+      <th><?php echo $VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE ?></th>
     </tr>
 <?php
     $i = 0;

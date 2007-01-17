@@ -410,10 +410,10 @@ class ps_shopper {
 		$email 		= $row->email;
 		$username 	= $row->username;
 
-		$subject 	= sprintf (_SEND_SUB, $name, $mosConfig_sitename);
+		$subject 	= sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
 		$subject 	= vmHtmlEntityDecode($subject, ENT_QUOTES);
 		if ($mosConfig_useractivation=="1"){
-			$message = sprintf (_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $mosConfig_live_site."/index.php?option=com_registration&task=activate&activation=".$row->activation, $mosConfig_live_site, $username, $pwd);
+			$message = sprintf ($VM_LANG->_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $mosConfig_live_site."/index.php?option=com_registration&task=activate&activation=".$row->activation, $mosConfig_live_site, $username, $pwd);
 		} else {
 			$message = sprintf ($VM_LANG->_PHPSHOP_USER_SEND_REGISTRATION_DETAILS, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
 		}
@@ -439,8 +439,8 @@ class ps_shopper {
 		mosMail($adminEmail2, $adminName2, $email, $subject, $message);
 
 		// Send notification to all administrators
-		$subject2 = sprintf (_SEND_SUB, $name, $mosConfig_sitename);
-		$message2 = sprintf (_ASEND_MSG, $adminName2, $mosConfig_sitename, $row->name, $email, $username);
+		$subject2 = sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
+		$message2 = sprintf ($VM_LANG->_ASEND_MSG, $adminName2, $mosConfig_sitename, $row->name, $email, $username);
 		$subject2 = vmHtmlEntityDecode($subject2, ENT_QUOTES);
 		$message2 = vmHtmlEntityDecode($message2, ENT_QUOTES);
 
@@ -463,9 +463,9 @@ class ps_shopper {
 		}
 
 		if ( $mosConfig_useractivation == 1 ){
-			echo _REG_COMPLETE_ACTIVATE;
+			echo $VM_LANG->_REG_COMPLETE_ACTIVATE;
 		} else {
-			echo _REG_COMPLETE;
+			echo $VM_LANG->_REG_COMPLETE;
 		}
 		return true;
 	}

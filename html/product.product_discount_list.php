@@ -60,7 +60,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE => '',
 					$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_STARTDATE => '',
 					$VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ENDDATE => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

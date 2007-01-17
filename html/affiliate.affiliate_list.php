@@ -78,7 +78,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION => "",
 					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_RATE => "",
 					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_ORDERS => "",
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

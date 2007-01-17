@@ -27,8 +27,8 @@ class TOOLBAR_virtuemart {
 	*/
     function FORMS_MENU_SAVE_CANCEL() {     
         global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_lang, $VM_LANG, 
-        		$page, $limitstart,	$mosConfig_editor, $no_menu;
-
+        		$page, $limitstart,	$mosConfig_editor;
+		$no_menu = (int)$_REQUEST['no_menu'];
 		$bar = & vmToolBar::getInstance('virtuemart');		
         
         $is_iframe = mosGetParam( $_REQUEST, 'is_iframe', 0 );

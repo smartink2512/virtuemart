@@ -362,13 +362,15 @@ class ps_payment_method extends vmAbstractObject {
 
 		// Start drop down list
 		echo "<select class=\"inputbox\" name=\"payment_method_id\">\n";
-		echo "<option value=\"0\">"._PHPSHOP_SELECT."</option>\n";
+		echo "<option value=\"0\">".$GLOBALS['VM_LANG']->_PHPSHOP_SELECT."</option>\n";
 		while ($db->next_record()) {
 			echo "<option value=" . $db->f("payment_method_id") . " ";
-			if ($db->f("payment_method_id") == $payment_method_id)
-			echo "selected=\"selected\">\n";
-			else
-			echo ">\n";
+			if ($db->f("payment_method_id") == $payment_method_id) {
+				echo "selected=\"selected\">\n";
+			}
+			else {
+				echo ">\n";
+			}
 			echo $db->f("payment_method_name") . "</option>\n";
 		}
 

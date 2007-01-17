@@ -65,7 +65,7 @@ $columns = Array(  "#" => 'width="20"',
 					$VM_LANG->_PHPSHOP_USER_LIST_FULL_NAME => "",
 					$VM_LANG->_PHPSHOP_USER_LIST_GROUP => "",
 					$VM_LANG->_PHPSHOP_SHOPPER_FORM_GROUP => "",
-					_E_REMOVE => 'width="5%"'
+					$VM_LANG->_E_REMOVE => 'width="5%"'
 				);
 $listObj->writeTableHeader( $columns );
 

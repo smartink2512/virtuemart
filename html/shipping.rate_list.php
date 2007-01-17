@@ -58,7 +58,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME => '',
 					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART => '',
 					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

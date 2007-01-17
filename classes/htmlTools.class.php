@@ -873,7 +873,7 @@ class vmCommonHTML extends mosHTML {
 				define( '_SCRIPTACULOUS_'.$script.'_LOADED', 1 );
 			}
 		}
-		if( (defined('_PSHOP_ADMIN') || $print) &&  $scripttag != '' ) {
+		if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5) || $print) &&  $scripttag != '' ) {
 			vmCommonHTML::loadPrototype( $print );
 			echo $scripttag;
 		}
@@ -891,7 +891,7 @@ class vmCommonHTML extends mosHTML {
 		global $mainframe, $vmDir, $mosConfig_live_site;
 		if( !defined( "_PROTOTYPE_LOADED" )) {
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/prototype/prototype.js' );
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			elseif( $scripttag != '' ) {
@@ -906,7 +906,7 @@ class vmCommonHTML extends mosHTML {
 		if( !defined( "_RICO_LOADED" )) {
 			vmCommonHTML::loadPrototype( $print );
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/rico.js' );
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			elseif( $scripttag != '' ) {
@@ -927,7 +927,7 @@ class vmCommonHTML extends mosHTML {
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/alphacube.css' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/windows/themes/default.css' );
 			
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			elseif( $scripttag != '' ) {
@@ -950,7 +950,7 @@ class vmCommonHTML extends mosHTML {
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/AJS_fx.js' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/gb_scripts.js' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/greybox/gb_styles.css' );
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			else {
@@ -972,7 +972,7 @@ class vmCommonHTML extends mosHTML {
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/tigratree/tree_tpl.js.php' );
 			$scripttag .= vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/tigratree/tree.js' );
 			
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			else {
@@ -995,7 +995,7 @@ class vmCommonHTML extends mosHTML {
 			vmCommonHTML::loadPrototype( $print );
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/prototype/behaviour.js' );
 
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			else {
@@ -1011,7 +1011,7 @@ class vmCommonHTML extends mosHTML {
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/utilities/utilities.js' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/container/assets/container.css' );
 
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			else {
@@ -1028,7 +1028,7 @@ class vmCommonHTML extends mosHTML {
 			$scripttag = vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/ext/yui-ext.js' );
 			$scripttag .= vmCommonHTML::linkTag( $mosConfig_live_site .'/components/'. $vmDir .'/js/yui/ext/yui-ext.css' );
 
-			if( defined('_PSHOP_ADMIN') || $print) {
+			if( (defined('_PSHOP_ADMIN') && !vmIsJoomla(1.5)) || $print) {
 				echo $scripttag;
 			}
 			else {
@@ -1165,7 +1165,7 @@ class vmCommonHTML extends mosHTML {
 			if ( $use_icon ) {
 				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_PRINT, $VM_LANG->_CMN_PRINT );
 			} else {
-				$text = _ICON_SEP .'&nbsp;'. $VM_LANG->_CMN_PRINT. '&nbsp;'. _ICON_SEP;
+				$text = '|&nbsp;'. $VM_LANG->_CMN_PRINT. '&nbsp;|';
 			}
 			$isPopup = mosGetParam( $_GET, 'pop' );
 			if ( $isPopup ) {

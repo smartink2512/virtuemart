@@ -84,7 +84,7 @@ if ($num_rows == 0 && !empty($keyword)) {
 	echo $VM_LANG->_PHPSHOP_NO_SEARCH_RESULT;
 }
 elseif( $num_rows == 0 && empty($product_type_id) && !empty($child_list)) {
-	echo _EMPTY_CATEGORY;
+	echo $VM_LANG->_EMPTY_CATEGORY;
 }
 /*** NOW START THE PRODUCT LIST ***/
 else {
@@ -321,7 +321,7 @@ else {
 		
 		$product_name = $db_browse->f("product_name");
 		if( $db_browse->f("product_publish") == "N" ) {
-			$product_name .= " (".vmHtmlEntityDecode(_CMN_UNPUBLISHED).")";
+			$product_name .= " (".vmHtmlEntityDecode($VM_LANG->_CMN_UNPUBLISHED).")";
 		}
 
 		if( empty($product_name) && $product_parent_id!=0 ) {

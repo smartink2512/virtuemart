@@ -60,7 +60,7 @@ vmCommonHTML::loadWindowsJS(); // Having a modal window is good
           <input class="button" type="submit" name="search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE?>" />
 		  <br/>
          <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.product_list&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
-		<option value=""><?php echo _SEL_CATEGORY ?></option>
+		<option value=""><?php echo $VM_LANG->_SEL_CATEGORY ?></option>
 		<?php
 		$ps_product_category->list_tree( $category_id );
         ?>
@@ -264,7 +264,7 @@ $columns[$VM_LANG->_PHPSHOP_MANUFACTURER_MOD] ="width=\"10%\"";
 $columns[$VM_LANG->_PHPSHOP_REVIEWS] ="width=\"10%\"";
 $columns[$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH] ="";
 $columns[$VM_LANG->_PHPSHOP_PRODUCT_CLONE] = "";
-$columns[_E_REMOVE] = "width=\"5%\"";
+$columns[$VM_LANG->_E_REMOVE] = "width=\"5%\"";
 $columns['Id'] = '';
 
 $listObj->writeTableHeader( $columns );

@@ -35,7 +35,7 @@ if ($perm->check("admin,storeadmin,shopper")) { ?>
 		  	<div align="center">
 			    <input type="text" class="inputbox" value="<?php echo @$_GET['download_id'] ?>" size="32" name="download_id" />
 			    <br /><br />
-			    <input type="submit" onclick="if( document.downloadForm.download_id.value < 12) { alert('<?php echo _CONTACT_FORM_NC ?>');return false;} else return true;" class="button" value="<?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_START ?>" />
+			    <input type="submit" onclick="if( document.downloadForm.download_id.value < 12) { alert('<?php echo $VM_LANG->_CONTACT_FORM_NC ?>');return false;} else return true;" class="button" value="<?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_START ?>" />
 			 </div>
 		    <input type="hidden" name="func" value="downloadRequest" />
 		    <input type="hidden" name="option" value="com_virtuemart" />
@@ -45,7 +45,7 @@ if ($perm->check("admin,storeadmin,shopper")) { ?>
 	}
 }
 else {
-	$vmLogger->info( _NOT_AUTH."; "._DO_LOGIN );
+	$vmLogger->info( $VM_LANG->_NOT_AUTH."; ".$VM_LANG->_DO_LOGIN );
 }
 
 ?>

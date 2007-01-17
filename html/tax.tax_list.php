@@ -59,7 +59,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_TAX_LIST_COUNTRY => 'width="44%"',
 					$VM_LANG->_PHPSHOP_TAX_LIST_STATE => 'width="38%"',
 					$VM_LANG->_PHPSHOP_TAX_LIST_RATE => 'width="18%"',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

@@ -53,7 +53,7 @@ if( !$db_product->next_record() ) {
 
 
 /* Set Dynamic Page Title */
-$pagetitle = _ENQUIRY.' - '.substr($db_product->f('product_name'), 0, 60 );
+$pagetitle = $VM_LANG->_ENQUIRY.' - '.substr($db_product->f('product_name'), 0, 60 );
 $mainframe->setPageTitle(  );
 
 // set up return to product link
@@ -78,13 +78,13 @@ if ($my->id) {
 
 // Set up form for email details
 $send_mail = "<form action=\"".$mm_action_url."index.php\" method=\"post\" name=\"emailForm\" id=\"emailForm\">\n";
-$send_mail .= "<label for=\"contact_name\">"._NAME_PROMPT."</label />\n";
+$send_mail .= "<label for=\"contact_name\">".$VM_LANG->_NAME_PROMPT."</label />\n";
 $send_mail .= "<br><input type=\"text\" name=\"name\" id=\"contact_name\" size=\"80\" class=\"inputbox\" value=\"".$name."\"><br><br />\n";
-$send_mail .= "<label for=\"contact_mail\">"._EMAIL_PROMPT."</label />\n";
+$send_mail .= "<label for=\"contact_mail\">".$VM_LANG->_EMAIL_PROMPT."</label />\n";
 $send_mail .= "<br><input type=\"text\" id=\"contact_mail\" name=\"email\" size=\"80\" label=\"Your email\" class=\"inputbox\" value=\"".$email."\"><br><br />\n";
-$send_mail .= "<label for=\"contact_text\">"._MESSAGE_PROMPT."</label><br />\n";
+$send_mail .= "<label for=\"contact_text\">".$VM_LANG->_MESSAGE_PROMPT."</label><br />\n";
 $send_mail .= "<textarea rows=\"10\" cols=\"60\" name=\"text\" id=\"contact_text\" class=\"inputbox\">$subject</textarea><br />\n";
-$send_mail .=  "<input type=\"button\" name=\"send\" value=\""._SEND_BUTTON."\" class=\"button\" onclick=\"validateForm()\" />\n";
+$send_mail .=  "<input type=\"button\" name=\"send\" value=\"".$VM_LANG->_SEND_BUTTON."\" class=\"button\" onclick=\"validateForm()\" />\n";
 
 // Set up product variables for product ask
 $send_mail .= "<input type=\"hidden\" name=\"product_id\" value=\"". $db_product->f("product_id") ."\" />\n";
@@ -107,7 +107,7 @@ vmViewContact();
 if ( $set == 1 ) { // set not set so display confirmation
   ?>
    <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
-   <?php echo _THANK_MESSAGE ?>
+   <?php echo $VM_LANG->_THANK_MESSAGE ?>
   
   <br /><p>
   <?php echo $VM_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $vendor_mail .'</strong>'?><br />
@@ -134,7 +134,7 @@ function vmViewContact() {
 	<script language="JavaScript" type="text/javascript"><!--
 	window.validateForm = function(){
 		if ( ( document.emailForm.text.value == "" ) || ( document.emailForm.email.value.search("@") == -1 ) || ( document.emailForm.email.value.search("[.*]" ) == -1 ) ) {
-			alert( "<?php echo _CONTACT_FORM_NC; ?>" );
+			alert( "<?php echo $VM_LANG->_CONTACT_FORM_NC; ?>" );
 		} else if ( ( document.emailForm.email.value.search(";") != -1 ) || ( document.emailForm.email.value.search(",") != -1 ) || ( document.emailForm.email.value.search(" ") != -1 ) ) {
 			alert( "You cannot enter more than one email address" );
 		} else {

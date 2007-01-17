@@ -71,7 +71,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					'ID' => 'width="5%"',
 					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME => 'width="45%"',
 					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN => 'width="45%"',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

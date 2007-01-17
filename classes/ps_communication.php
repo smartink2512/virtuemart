@@ -38,12 +38,12 @@ class ps_communication {
 		global $vmLogger, $VM_LANG, $mosConfig_db, $mosConfig_sitename;
 
 		if (empty($d['sender_name']) || empty($d['recipient_name'])) {
-			$vmLogger->err( _CONTACT_FORM_NC );
+			$vmLogger->err( $VM_LANG->_CONTACT_FORM_NC );
 			return false;
 		}
 
 		if (empty($d['sender_mail']) || empty($d['recipient_mail'])) {
-			$vmLogger->err( _EMAIL_ERR_NOINFO );
+			$vmLogger->err( $VM_LANG->_EMAIL_ERR_NOINFO );
 			return false;
 		}
 
@@ -51,11 +51,11 @@ class ps_communication {
 
 		// probably a spoofing attack
 		if (!$validate) {
-			mosErrorAlert( 'not valid'._NOT_AUTH );
+			mosErrorAlert( 'not valid'.$VM_LANG->_NOT_AUTH );
 		}
 
 		if (!$_SERVER['REQUEST_METHOD'] == 'POST' ) {
-			mosErrorAlert( _NOT_AUTH );
+			mosErrorAlert( $VM_LANG->_NOT_AUTH );
 		}
 
 		// Attempt to defend against header injections:
@@ -72,7 +72,7 @@ class ps_communication {
 		foreach ($_POST as $k => $v){
 			foreach ($badStrings as $v2) {
 				if (strpos( $v, $v2 ) !== false) {
-					mosErrorAlert( _NOT_AUTH );
+					mosErrorAlert( $VM_LANG->_NOT_AUTH );
 				}
 			}
 		}
@@ -81,7 +81,7 @@ class ps_communication {
 		// and continue rest of script:
 		unset($k, $v, $v2, $badStrings);
 
-		$default 	= $mosConfig_sitename.' '. _ENQUIRY;
+		$default 	= $mosConfig_sitename.' '. $VM_LANG->_ENQUIRY;
 		$email 		= mosGetParam( $_POST, 'email', 		'' );
 		$text 		= mosGetParam( $_POST, 'text', 			'' );
 		$name 		= mosGetParam( $_POST, 'name', 			'' );
@@ -97,7 +97,7 @@ class ps_communication {
 		$sessioncookie 		= mosGetParam( $_COOKIE, 'virtuemart', null );
 
 		if ( !(strlen($sessioncookie) == 32 || $sessioncookie == '-') ) {
-			mosErrorAlert( _NOT_AUTH );
+			mosErrorAlert( $VM_LANG->_NOT_AUTH );
 		}
 
 		// test to ensure that only one email address is entered
@@ -107,16 +107,16 @@ class ps_communication {
 		}
 
 		if ( (!$email&&!$sender_mail) || (!$text&&!$message)  ) {
-			mosErrorAlert( _CONTACT_FORM_NC );
+			mosErrorAlert( $VM_LANG->_CONTACT_FORM_NC );
 		}
 		if( !empty( $email )) {
 			if( ps_communication::is_email( $email ) == false ) {
-				mosErrorAlert( _REGWARN_MAIL );
+				mosErrorAlert( $VM_LANG->_REGWARN_MAIL );
 			}
 		}
 		if( !empty($sender_mail)) {
 			if( !ps_communication::is_email( $sender_mail ) || !ps_communication::is_email( $recipient_mail ) ) {
-				mosErrorAlert( _EMAIL_ERR_NOINFO );
+				mosErrorAlert( $VM_LANG->_EMAIL_ERR_NOINFO );
 			}
 		}
 		return true;
@@ -136,10 +136,10 @@ class ps_communication {
 		$q="SELECT * FROM #__{vm}_product WHERE product_id='$product_id'";
 		$db->query($q);
 		if ( !$db->next_record() ) {
-			mosErrorAlert( _NOT_AUTH );
+			mosErrorAlert( $VM_LANG->_NOT_AUTH );
 		}
 		if ($db->f("product_sku") <> @$d["product_sku"] ) {
-			mosErrorAlert( _NOT_AUTH );
+			mosErrorAlert( $VM_LANG->_NOT_AUTH );
 		}
 		
 		$Itemid = $sess->getShopItemid();
@@ -275,19 +275,19 @@ class ps_communication {
     
     <table border="0" cellspacing="2" cellpadding="1" width="80%">
       <tr>
-        <td>'._EMAIL_FRIEND.'</td>
+        <td>'.$VM_LANG->_EMAIL_FRIEND.'</td>
         <td><input type="text" name="recipient_name" size="50" value="'.(!empty($recipient_name)?$recipient_name:'').'" /></td>
       </tr>
       <tr>
-        <td>'._EMAIL_FRIEND_ADDR.'</td>
+        <td>'.$VM_LANG->_EMAIL_FRIEND_ADDR.'</td>
         <td><input type="text" name="recipient_mail" size="50" value="'.(!empty($recipient_mail)?$recipient_mail:'').'" /></td>
       </tr>
       <tr>
-        <td>'._EMAIL_YOUR_NAME.'</td>
+        <td>'.$VM_LANG->_EMAIL_YOUR_NAME.'</td>
         <td><input type="text" name="sender_name" size="50" value="'.(!empty($sender_name)?$sender_name:'').'" /></td>
       </tr>
       <tr>
-        <td>'._EMAIL_YOUR_MAIL.'</td>
+        <td>'.$VM_LANG->_EMAIL_YOUR_MAIL.'</td>
         <td><input type="text" name="sender_mail" size="50" value="'.(!empty($sender_mail)?$sender_mail:'').'" /></td>
       </tr>
       <tr>
@@ -316,7 +316,7 @@ class ps_communication {
     <input type="hidden" name="'.mosHash( $mosConfig_db ).'" value="1" />
     <input type="hidden" name="func" value="recommendProduct" />
     <input class="button" type="submit" name="submit" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" />
-    <input class="button" type="button" onclick="window.close();" value="'._CMN_CANCEL.'" />
+    <input class="button" type="button" onclick="window.close();" value="'.$VM_LANG->_CMN_CANCEL.'" />
     </form>
     ';
   }

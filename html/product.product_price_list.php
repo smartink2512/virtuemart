@@ -71,7 +71,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_CURRENCY => '',
 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_START => 'width="50"',
 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_END => 'width="50"',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

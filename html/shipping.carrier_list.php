@@ -56,7 +56,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_CARRIER_LIST_NAME_LBL => '',
 					$VM_LANG->_PHPSHOP_CARRIER_LIST_ORDER_LBL => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
   

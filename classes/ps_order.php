@@ -251,7 +251,7 @@ class ps_order {
 				$db->query($q);
 				$db->next_record();
 
-				$message = _HI . $db->f("first_name") . " " . $db->f("last_name") . "\n\n";
+				$message = $VM_LANG->_HI . $db->f("first_name") . " " . $db->f("last_name") . "\n\n";
 				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_1.".\n";
 				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_2."\n\n";
 
@@ -328,7 +328,7 @@ class ps_order {
 		$db->next_record();
 
 		/* MAIL BODY */
-		$message = _HI . $db->f("first_name") . " " . $db->f("last_name") . ",\n\n";
+		$message = $VM_LANG->_HI . $db->f("first_name") . " " . $db->f("last_name") . ",\n\n";
 		$message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1."\n\n";
 
 		if( !empty($d['include_comment']) && !empty($d['order_comment']) ) {
@@ -689,7 +689,7 @@ class ps_order {
 		if ($navi_db->f("order_id")) {
 			$url = $_SERVER['PHP_SELF'] . "?page=$modulename.order_print&order_id=";
 			$url .= $navi_db->f("order_id");
-			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) ."\">". _ITEM_NEXT."  &gt;</a>";
+			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) ."\">". $VM_LANG->_ITEM_NEXT."  &gt;</a>";
 		} else {
 			$navigation .= "<span class=\"pagenav\">".$VM_LANG->_ITEM_NEXT." &gt;</span>";
 		}

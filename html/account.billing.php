@@ -27,7 +27,7 @@ $Itemid = $sess->getShopItemid();
 
 $missing = mosGetParam( $vars, 'missing' );
 if (!empty($missing)) {
-	echo "<script type=\"text/javascript\"> alert('"._CONTACT_FORM_NC."'); </script>\n";
+	echo "<script type=\"text/javascript\"> alert('".$VM_LANG->_CONTACT_FORM_NC."'); </script>\n";
 }
 $q =  "SELECT * FROM #__users, #__{vm}_user_info 
 		WHERE user_id='" . $auth["user_id"] . "' 
@@ -45,12 +45,12 @@ echo "<div>$pathway</div><br/>";
 <div style="float:left;width:90%;text-align:right;"> 
     <span>
     	<a href="#" onclick="if( submitregistration() ) { document.adminForm.submit();}">
-    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo _E_SAVE ?>" />
+    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo $VM_LANG->_E_SAVE ?>" />
     	</a>
     </span>
     <span style="margin-left:10px;">
     	<a href="<?php $sess->purl( SECUREURL."index.php?page=account.index") ?>">
-    		<img src="administrator/images/back_f2.png" alt="<?php echo _BACK ?>" border="0" />
+    		<img src="administrator/images/back_f2.png" alt="<?php echo $VM_LANG->_BACK ?>" border="0" />
     	</a>
     </span>
 </div>
@@ -59,7 +59,7 @@ $fields = ps_userfield::getUserFields( 'account' );
 ps_userfield::listUserFields( $fields, array(), $db );
 ?>
 <div align="center">	
-	<input type="submit" value="<?php echo _CMN_SAVE ?>" class="button" onclick="return( submitregistration());" />
+	<input type="submit" value="<?php echo $VM_LANG->_CMN_SAVE ?>" class="button" onclick="return( submitregistration());" />
 </div>
   <input type="hidden" name="option" value="<?php echo $option ?>" />
   <input type="hidden" name="page" value="<?php echo $next_page; ?>" />

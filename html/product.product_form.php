@@ -893,7 +893,7 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
           </tr>
           <tr class="row0"><td colspan="2">&nbsp;</td></tr>
           <tr class="row0"> 
-            <td width="21%" ><?php echo _URL." ("._CMN_OPTIONAL."!)&nbsp;"; ?></td>
+            <td width="21%" ><?php echo $VM_LANG->_URL." (".$VM_LANG->_CMN_OPTIONAL."!)&nbsp;"; ?></td>
             <td width="79%" >
               <?php 
               if( stristr($db->f("product_full_image"), "http") )
@@ -943,7 +943,7 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
           </tr>
           <tr class="row0"><td colspan="2">&nbsp;</td></tr>
           <tr class="row0"> 
-            <td width="21%" ><?php echo _URL." ("._CMN_OPTIONAL.")&nbsp;"; ?></td>
+            <td width="21%" ><?php echo $VM_LANG->_URL." (".$VM_LANG->_CMN_OPTIONAL.")&nbsp;"; ?></td>
             <td width="79%" >
               <?php 
               if( stristr($db->f("product_thumb_image"), "http") )
@@ -1051,7 +1051,7 @@ while ($dba->next_record()) {
       <td colspan="2"><h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_LBL.': '.$dba->f("product_type_name") ?></h2>
       
       <?php
-      echo '<h3>'._E_REMOVE.' =&gt; '.$ps_html->deleteButton( "product_type_id", $product_type_id, "productProductTypeDelete", $keyword, $limitstart, "&product_id=$product_id&product_parent_id=$product_parent_id&next_page=$next_page" ) . '</h3>';
+      echo '<h3>'.$VM_LANG->_E_REMOVE.' =&gt; '.$ps_html->deleteButton( "product_type_id", $product_type_id, "productProductTypeDelete", $keyword, $limitstart, "&product_id=$product_id&product_parent_id=$product_parent_id&next_page=$next_page" ) . '</h3>';
       ?>
       </td>
     </tr>

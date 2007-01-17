@@ -40,7 +40,7 @@ if( !empty($product_id) ) {
       . $VM_LANG->_PHPSHOP_BACK_TO_DETAILS."</a>";
   }
   else {
-  	echo '<a href="#" onclick="javascript: window.close();">'._PROMPT_CLOSE.'</a>';
+  	echo '<a href="#" onclick="javascript: window.close();">'.$VM_LANG->_PROMPT_CLOSE.'</a>';
   }
   
   echo '<br/><br/><br/>';

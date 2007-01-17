@@ -58,7 +58,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_ZONE_LIST_DESC_LBL => '',
 					$VM_LANG->_PHPSHOP_ZONE_LIST_COST_PER_LBL => '',
 					$VM_LANG->_PHPSHOP_ZONE_LIST_COST_LIMIT_LBL => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

@@ -67,7 +67,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR => '',
 					$VM_LANG->_PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION => '',
 					$VM_LANG->_PHPSHOP_DEFAULT => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

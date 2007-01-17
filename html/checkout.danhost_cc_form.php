@@ -91,7 +91,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
         return false;
       }      
       else if(document.checkout_pbscc_payment.cvc.value.length < 3 ) {
-        alert('<?php echo _CONTACT_FORM_NC ?>');
+        alert('<?php echo $VM_LANG->_CONTACT_FORM_NC ?>');
         return false;
       }
       return true;

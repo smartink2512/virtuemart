@@ -436,7 +436,7 @@ class ps_product_type_parameter {
 
     $db = new ps_DB;
     if (!$parameter_name) {
-      return _CMN_NEW_ITEM_LAST;
+      return $GLOBALS['VM_LANG']->_CMN_NEW_ITEM_LAST;
     }
     else {
         

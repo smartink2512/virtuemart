@@ -185,7 +185,7 @@ $columns = Array(  "#" => "width=\"20\"",
                                         $VM_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
                                         $VM_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
                                         $VM_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
-                                        _E_REMOVE => "width=\"5%\""
+                                        $VM_LANG->_E_REMOVE => "width=\"5%\""
                                 );
 $listObj->writeTableHeader( $columns );
 

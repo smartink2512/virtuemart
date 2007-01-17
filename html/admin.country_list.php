@@ -59,7 +59,7 @@ $columns = Array(  "#" => "",
 					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL => "width=\"25%\"",
 					$VM_LANG->_PHPSHOP_COUNTRY_LIST_3_CODE => "width=\"20%\"",
 					$VM_LANG->_PHPSHOP_COUNTRY_LIST_2_CODE => "width=\"20%\"",
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

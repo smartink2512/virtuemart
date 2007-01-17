@@ -107,7 +107,7 @@ if( $db->num_rows() > 0 ) {
 /** GET THE PRODUCT NAME **/
 $product_name = shopMakeHtmlSafe( $db_product->f("product_name") );
 if( $db_product->f("product_publish") == "N" ) {
-	$product_name .= " ("._CMN_UNPUBLISHED.")";
+	$product_name .= " (".$VM_LANG->_CMN_UNPUBLISHED.")";
 }
 $product_description = $db_product->f("product_desc");
 if( (str_replace("<br />", "" , $product_description)=='') && ($product_parent_id!=0) ) {

@@ -66,7 +66,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP => '',
 					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR => '',
 					$VM_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

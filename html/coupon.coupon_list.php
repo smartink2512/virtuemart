@@ -60,7 +60,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_COUPON_PERCENT_TOTAL => '',
 					$VM_LANG->_PHPSHOP_COUPON_TYPE => '',
 					$VM_LANG->_PHPSHOP_COUPON_VALUE_HEADER => '',
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

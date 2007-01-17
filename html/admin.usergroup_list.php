@@ -56,7 +56,7 @@ $columns = Array(  "#" => "",
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
 					$VM_LANG->_VM_USERGROUP_NAME => "width=\"40%\"",
 					$VM_LANG->_VM_USERGROUP_LEVEL => "width=\"20%\"",
-					_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

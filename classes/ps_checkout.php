@@ -1673,7 +1673,7 @@ Order Total: '.$order_total.'
 		$shopper_footer_html .= "<br /><a title=\"".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."\" href=\"$shopper_order_link\">"
 		. $VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5."</a>";
 		$shopper_footer_html .= "<br /><br />".$VM_LANG->_PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3."<br />";
-		$shopper_footer_html .= _CMN_EMAIL.": <a href=\"mailto:" . $from_email."\">".$from_email."</a>";
+		$shopper_footer_html .= $VM_LANG->_CMN_EMAIL.": <a href=\"mailto:" . $from_email."\">".$from_email."</a>";
 		// New in version 1.0.5
 		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
 			$shopper_footer_html .= "<br /><br />____________________________________________<br />";
