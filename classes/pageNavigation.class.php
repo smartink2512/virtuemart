@@ -92,6 +92,7 @@ class vmPageNav {
 	* @return string The html links for pages, eg, previous, next, 1 2 3 ... x
 	*/
 	function getPagesLinks() {
+		global $VM_LANG;
 	    $html = '';
 		$displayed_pages = 10;
 		$total_pages = ceil( $this->total / $this->limit );

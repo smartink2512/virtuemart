@@ -22,7 +22,7 @@ require_once( CLASSPATH.'connectionTools.class.php');
 
 switch( $task ) {
 	case 'get_class_methods':
-		$class = mosGetParam( $_REQUEST, 'class' );
+		$class = mosGetParam( $_REQUEST, 'class', 'ps_product' );
 		$classfile = basename( $class ).'.php';
 		$function = mosGetParam( $_REQUEST, 'function' );
 		

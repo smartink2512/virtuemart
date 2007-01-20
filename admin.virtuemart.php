@@ -194,7 +194,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 
         loadPage : function(page){
         	php_self = page.replace(/index2.php/, 'index3.php');
-        	php_self = page.replace(/index.php/, 'index3.php');
+        	php_self = php_self.replace(/index.php/, 'index3.php');
             getEl('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';
         }
 	}

@@ -90,7 +90,7 @@ $formObj->finishForm( $funcname, 'admin.function_list', $option );
 
 $script = "var updateFunc = function(){
 			var el = $('function_class' );
-			opts= { postBody: Form.Methods.serialize( document.adminForm ) + '&page=admin.ajax_tools&task=get_class_methods&class=' + el.options[el.selectedIndex].value + '&function=' + document.adminForm.function_method.value }
+			opts= { postBody: Form.Methods.serialize( document.adminForm ) + '&func=&page=admin.ajax_tools&task=get_class_methods&class=' + el.options[el.selectedIndex].value + '&function=' + document.adminForm.function_method.value }
 			";
 $script .= "new Ajax.Updater( 'function_method_container', 'index2.php', opts );
 

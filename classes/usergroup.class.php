@@ -75,9 +75,17 @@ class vmUserGroup extends vmAbstractObject {
 			return False;
 		}
 		$db = $this->get_group($group);
+		$group_name = $db->f('group_name');
 		
-		if( in_array( $db->f('group_name'), $this->_protected_groups ))  {
-			$vmLogger->err( 'The group '.$db->f('group_name').' cannot be removed or modified!' );
+		if( in_array( $group_name, $this->_protected_groups ))  {
+			$vmLogger->err( 'The group '.$group_name.' cannot be removed or modified!' );
+			return false;
+		}
+		
+		$db = new ps_DB;
+		$db->query('SELECT user_id FROM #__{vm}_user_info WHERE FIND_IN_SET( \''.$group_name.'\', perms ) > 0' );
+		if( $db->next_record() ) {
+			$vmLogger->err( 'The group '.$group_name.' still has users assigned to it and cannot be removed!' );
 			return false;
 		}
 		return true;
@@ -197,6 +205,18 @@ class vmUserGroup extends vmAbstractObject {
 		$db->query( $query );
 		$db->next_record();
 		return $db;
+	}
+	/**
+	 * Retrieves a list of available user groups and returns the ps_DB object
+	 *
+	 * @return ps_DB
+	 */
+	function get_groups() {
+		$db = new ps_DB;
+		$query ='SELECT group_id,group_name,group_level FROM `'.$this->_table_name.'` ORDER BY group_level ASC';
+		$db->query( $query );
+		return $db;
+		
 	}
 
 }

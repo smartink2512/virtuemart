@@ -19,6 +19,8 @@ mm_showMyFileName( __FILE__ );
 
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
+require_once( CLASSPATH . "usergroup.class.php" );
+$vmUserGroup = new vmUserGroup();
 
 // Get module ID
 $module_id = mosgetparam( $_REQUEST, 'module_id', 0 );
@@ -49,6 +51,8 @@ $db->query($count);
 $db->next_record();
 $num_rows = $db->f("num_rows");
 
+$db->query($list);
+
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 
@@ -63,16 +67,24 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
+					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".count($db->record) .")\" />" => "width=\"20\"",
 					$VM_LANG->_PHPSHOP_FUNCTION_LIST_NAME => "",
 					$VM_LANG->_PHPSHOP_FUNCTION_LIST_CLASS => "",
-					$VM_LANG->_PHPSHOP_FUNCTION_LIST_METHOD => "",
-					$VM_LANG->_PHPSHOP_FUNCTION_LIST_PERMS => "",
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
-				);
+					$VM_LANG->_PHPSHOP_FUNCTION_LIST_METHOD => "" );
+$usergroups = $vmUserGroup->get_groups();
+
+while($usergroups->next_record()) {
+	$columns[$usergroups->f('group_name')] = 'width="5%"';
+	$groupArray[] = $usergroups->f('group_name');
+}
+$columns['none'] = 'width="5%"';
+$usergroups->reset();
+$columns['<a href="javascript: document.adminForm.func.value = \'setFunctionPermissions\'; saveorder( '.(count($db->record)-1) .' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="Save Permissions" align="left"/>Save Permissions</a>'] = '';
+
+$columns[$VM_LANG->_E_REMOVE] = "width=\"5%\"";
+
 $listObj->writeTableHeader( $columns );
 
-$db->query($list);
 $i = 0;
 
 while ($db->next_record()) {
@@ -91,7 +103,18 @@ while ($db->next_record()) {
 	
 	$listObj->addCell( $db->f("function_class") );
 	$listObj->addCell( $db->f("function_method") );
-	$listObj->addCell( $db->f("function_perms") );
+	$function_perms = explode(',', $db->f("function_perms") );
+	while($usergroups->next_record()) {
+		
+		$checked = in_array( $usergroups->f('group_name'), $function_perms ) ? 'checked="checked"' : '';
+		$listObj->addCell( '<input type="checkbox" name="function_perms['.$i.']['.$usergroups->f('group_name').']" value="1" '.$checked.' />' );
+	}
+	
+		$checked = in_array( 'none', $function_perms ) ? 'checked="checked"' : '';
+		$listObj->addCell( '<input type="checkbox" name="function_perms['.$i.'][none]" value="1" '.$checked.' />' );
+		
+	$listObj->addCell('');
+	$usergroups->reset();
 
 	$listObj->addCell( $ps_html->deleteButton( "function_id", $db->f("function_id"), "functionDelete", $keyword, $limitstart, "&module_id=$module_id" ) );
 

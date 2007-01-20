@@ -833,7 +833,9 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (179, 1, 'writeThemeConfig', 'ps_config', 'writeThemeConfig', 'Writes a theme configuration file.', 'admin'),
 (180, 1, 'usergroupAdd', 'usergroup.class', 'add', 'Add a new user group', 'admin'),
 (181, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
-(182, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');
+(182, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin'),
+(183, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
+(184, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin');
 
 ## --------------------------------------------------------
 

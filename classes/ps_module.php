@@ -131,8 +131,6 @@ class ps_module {
 	function add(&$d) {
 		global $db;
 
-		$hash_secret="VMIsCool";
-
 		$timestamp = time();
 
 		if (!$this->validate_add($d)) {
@@ -228,7 +226,20 @@ class ps_module {
 		return true;
 
 	}
-
+	
+	function update_permissions( &$d ) {
+		$db = new ps_DB;
+		$i = 0;
+		foreach( $d['module_perms'] as $module ) {
+			$modules = implode(',', array_keys($module) );
+			$module_id=(int)$d['module_id'][$i];
+			$db->buildQuery('UPDATE', '#__{vm}_module', array('module_perms' => $modules ), 'WHERE module_id='.$module_id );
+			$db->query();
+			$i++;
+		}
+		return true;
+	}
+	
 	function is_core( $module ) {
 		return( $module == "shop" || $module == "vendor" || $module == "product" || $module == "store" || $module == "order" || $module == "admin"
 		|| $module == "checkout" || $module == "account" );
@@ -254,6 +265,39 @@ class ps_module {
 		}
 		else {
 			return false;
+		}
+	}
+	function get_modules( $order_by='module_name' ) {
+		switch ($order_by) {
+			case'module_name':
+			case'module_id':
+			case'list_order':
+				break;
+			default:
+				$order_by = 'module_name';
+		}
+		$db = new ps_DB();
+		$db->query('SELECT module_id, module_name FROM #__{vm}_module ORDER BY '.$order_by);
+		return $db;
+	}
+	/**
+	 * This function returns a drop down list of all available core modules in VirtueMart
+	 * @since 1.1.0
+	 * @param string $list_name
+	 * @param mixed $module
+	 * @param boolean $multiple
+	 * @return string
+	 */
+	function list_modules( $list_name, $module='', $multiple=false ) {
+		$db = & ps_module::get_modules();
+		$array = array();
+		while( $db->next_record() ) {
+			$array[$db->f('module_name')] = $db->f('module_name');
+		}
+		if( $multiple ) {
+			return ps_html::selectList( $list_name, $module, $array, 4, 'multiple="multiple"' );
+		} else {
+			return ps_html::selectList( $list_name, $module, $array );
 		}
 	}
 	/**

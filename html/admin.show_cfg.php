@@ -25,7 +25,7 @@ $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$op
 
 // Compose the Access DropDown List, for the first time used for setting Price Acess
 $fieldname = 'group_id';
-if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.1 ) {
+if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.5 ) {
         $fieldname = 'id';
 }
 $db->query( 'SELECT `'.$fieldname.'` FROM #__core_acl_aro_groups WHERE name=\''.VM_PRICE_ACCESS_LEVEL.'\'' );
@@ -529,11 +529,12 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_MODULES_FORCE_HTTPS"><?php echo $VM_LANG->_VM_MODULES_FORCE_HTTPS ?></label>
-				
+				<?php echo $VM_LANG->_VM_MODULES_FORCE_HTTPS ?>				
 			</td>
 			<td>
-				<input type="text" id="conf_VM_MODULES_FORCE_HTTPS" name="conf_VM_MODULES_FORCE_HTTPS" class="inputbox" value="<?php echo implode(',', $VM_MODULES_FORCE_HTTPS ); ?>" />
+				<?php
+				echo ps_module::list_modules( 'conf_VM_MODULES_FORCE_HTTPS[]', $VM_MODULES_FORCE_HTTPS, true );
+				?>
 			</td>
 			<td><?php echo vmToolTip( $VM_LANG->_VM_MODULES_FORCE_HTTPS_TIP ) ?>
 			</td>

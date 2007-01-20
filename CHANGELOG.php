@@ -35,6 +35,17 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+19.01.2007 soeren
+! two new function have been added to the function list: setModulePermissions and setFunctionPermissions
+	INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
+	VALUES 
+	(null, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
+	(null, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin');	
+	
++ added a function <=> user group matrix to the function list, so access restrictions can quickly be changed
++ added a module <=> user group matrix to the module list, so access restrictions can quickly be changed
+^ changed the input field "Force HTTPS on which modules?" in the configuration to a multi-select list with all module listed
+
 16.01.2007 soeren
 # Task #1100 - Make Manufacturers module work on "Select -> xx" rather than having to click [Search] button (mod_virtuemart_manufacturers.php)
 # fixed an XSS vulnerability (ps_cart.php)

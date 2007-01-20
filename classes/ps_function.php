@@ -243,6 +243,24 @@ class ps_function extends vmAbstractObject {
 		return true;
 		
 	}
+	/**
+	 * Updates the function permissions for all functions given
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
+	function update_permissions( &$d ) {
+		$db = new ps_DB;
+		$i = 0;
+		foreach( $d['function_perms'] as $function ) {
+			$functions = implode(',', array_keys($function) );
+			$function_id=(int)$d['function_id'][$i];
+			$db->buildQuery('UPDATE', '#__{vm}_function', array('function_perms' => $functions ), 'WHERE function_id='.$function_id );
+			$db->query();
+			$i++;
+		}
+		return true;
+	}
 }
 
 ?>
