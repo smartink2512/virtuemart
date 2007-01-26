@@ -137,7 +137,7 @@ while ($db->next_record()) {
 
 	$tmp_cell = '';
 	
-	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_E_EDIT.'">';
+	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN.'">';
 	$style = '';
 	if($filename) {
 		$role = $db->f("file_is_image") ? 'isImage' : 'isFile';

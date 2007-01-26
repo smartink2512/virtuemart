@@ -165,6 +165,7 @@ class ps_reviews {
 
 		$review_comment = sprintf( $VM_LANG->_PHPSHOP_REVIEW_COMMENT, VM_REVIEWS_MINIMUM_COMMENT_LENGTH, VM_REVIEWS_MAXIMUM_COMMENT_LENGTH );
 		
+		$tpl->set( 'product_id', $product_id );
 		$tpl->set( 'alreadycommented', $alreadycommented );
 		$tpl->set( 'review_comment', $review_comment );
 

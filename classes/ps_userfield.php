@@ -641,7 +641,7 @@ class ps_userfield extends vmAbstractObject {
 		
 			echo '
 			if (r.exec(form.username.value) || form.username.value.length < 3) {
-				alert( "'. html_entity_decode( sprintf($VM_LANG->_VALID_AZ09, $VM_LANG->_PROMPT_UNAME, 2)) .'" );
+				alert( "'. html_entity_decode( sprintf($VM_LANG->_VALID_AZ09, $VM_LANG->_USERNAME, 2)) .'" );
 				return false;
             }';
         }

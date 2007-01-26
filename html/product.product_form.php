@@ -47,8 +47,9 @@ $min_order="";
 $max_order="";
 
 $display_use_parent_disabled = false;
-if($product_parent_id !=0)
-$display_use_parent_disabled = true;
+if($product_parent_id !=0) {
+	$display_use_parent_disabled = true;
+}
 $list = Array();
 $my_categories = array();
 $related_products = Array();
@@ -961,8 +962,9 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
             <td colspan="2" >
               <div style="overflow:auto;">
                 <?php 
-                if( $clone_product != "1" )
-                echo $ps_product->image_tag($db->f("product_thumb_image"), "", 0)
+                if( $clone_product != "1" ) {
+                	echo $ps_product->image_tag($db->f("product_thumb_image"), "", 0);
+                }
                 ?>
               </div>
             </td>
@@ -1034,7 +1036,7 @@ while ($dba->next_record()) {
 
 	$product_type_id = $dba->f("product_type_id");
 
-	$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/info.png\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />&nbsp;".$dba->f("product_type_name"), "parameter-page-$product_type_id");
+	$tabs->startTab( "<img src='". IMAGEURL ."ps_image/info.png' width='16' height='16' align='center' border='0' /> ".$dba->f('product_type_name'), "parameter-page-$product_type_id");
 
 	$q  = "SELECT * FROM #__{vm}_product_type_parameter WHERE ";
 	$q .= "product_type_id='$product_type_id' ";
@@ -1185,7 +1187,7 @@ while ($dba->next_record()) {
   //<!-- Changed Product Type - End -->
 }
 if( $clone_product == "1" ) {
-	$tabs->startTab( "<img src=\"". IMAGEURL ."ps_image/copy_f2.gif\" width=\"16\" height=\"16\" align=\"center\" border=\"0\" />Clone Product Otions", "clone-page" );
+	
 	echo '<input type="hidden" name="clone_product" value="Y" />';
 	echo '<input type="hidden" name="old_product_id" value="'.mosGetParam($_REQUEST, 'product_id').'" />';
 	$db_att = new ps_DB;
@@ -1193,20 +1195,22 @@ if( $clone_product == "1" ) {
                 FROM #__{vm}_product
                 WHERE product_parent_id='".mosGetParam($_REQUEST, 'product_id')."' " );
 	if( $db->num_rows() > 0 ) {
+		$tabs->startTab( "<img src='". IMAGEURL ."ps_image/copy_f2.gif' width='16' height='16' align='absmiddle' border='0' />Clone Product Otions", 'clone-page' );
 		echo "<h3>Also clone these Child Items:</h3>";
-	}
-	while( $db->next_record() ) {
-		$db_att->query( "SELECT attribute_name, attribute_value FROM #__{vm}_product_attribute
-                      WHERE product_id ='".$db->f("product_id")."'" );
-		echo '<input type="checkbox" checked="checked" name="child_items[]" value="'.$db->f("product_id").'" id="child_'.$db->f("product_id").'" />
-    <label for="child_'.$db->f("product_id").'">'.$db->f("product_name").' (';
-		while( $db_att->next_record() ) {
-			echo $db_att->f("attribute_name").": ".$db_att->f("attribute_value")."; ";
+	
+		while( $db->next_record() ) {
+			$db_att->query( "SELECT attribute_name, attribute_value FROM #__{vm}_product_attribute
+	                      WHERE product_id ='".$db->f("product_id")."'" );
+			echo '<input type="checkbox" checked="checked" name="child_items[]" value="'.$db->f("product_id").'" id="child_'.$db->f("product_id").'" />
+	    <label for="child_'.$db->f("product_id").'">'.$db->f("product_name").' (';
+			while( $db_att->next_record() ) {
+				echo $db_att->f("attribute_name").": ".$db_att->f("attribute_value")."; ";
+			}
+			echo ')</label><br/>';
 		}
-		echo ')</label><br/>';
-	}
 
-	$tabs->endTab();
+		$tabs->endTab();
+	}
 }
 
 if( $product_id ) {

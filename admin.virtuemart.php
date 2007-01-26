@@ -58,16 +58,19 @@ elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$opti
 /* Load the virtuemart main parse code */
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
+// Get the Layout Type from the session
 $vmLayout = $_SESSION['vmLayout'] = mosGetParam( $_SESSION, 'vmLayout', 'standard' );
-
+// Change the Layout Type if it is provided through GET
 if( !empty( $_GET['vmLayout'])) {
 	$vmLayout = $_SESSION['vmLayout'] = $_GET['vmLayout'] == 'standard' ? $_GET['vmLayout'] : 'extended';
 }
-
+// pages, which are called through index3.php are PopUps, they should not need a menu (but it can be overridden by $_REQUEST['no_menu'])
 $no_menu_default = strstr( $_SERVER['PHP_SELF'], 'index3.php') ? 1 : 0;
 $no_menu = $_REQUEST['no_menu'] = mosGetParam( $_REQUEST, 'no_menu', $no_menu_default );
 
+// Display the toolbar?
 $no_toolbar = mosGetParam( $_REQUEST, 'no_toolbar', 0 );
+
 // Display just the naked page without toolbar, menu and footer?
 $only_page_default = strstr( $_SERVER['PHP_SELF'], 'index3.php') ? 1 : 0;
 $only_page = $_REQUEST['only_page'] = mosGetParam( $_REQUEST, 'only_page', $only_page_default );
@@ -102,9 +105,9 @@ if( $pagePermissionsOK ) {
 	$_SESSION['last_page'] = $page;
 }
 if( !defined('_VM_TOOLBAR_LOADED') && $no_toolbar != 1 ) {
-	if( $vmLayout == 'standard' ) {
+	if( $vmLayout == 'standard' && strstr($_SERVER['PHP_SELF'], 'index3.php')) {
 		echo '<div align="right" class="menudottedline">';
-		include( ADMINPATH.'toolbar.virtuemart.php');
+		include_once( ADMINPATH.'toolbar.virtuemart.php');
 		echo '</div>';
 	} else {
 		include( ADMINPATH.'toolbar.php');
@@ -132,6 +135,8 @@ if( $only_page != 1 && $vmLayout == 'extended') {
         var a = e.findTarget(null, 'a');
         if(a){
             e.preventDefault();
+            
+            vmLayout.layout.showPanel('vmPage');
             vmLayout.loadPage(a.href );
         }  
 	};
@@ -253,11 +258,11 @@ YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 	}
 	if( $vmLayout == 'extended' ) {
 		echo '</div>';
-		if( stristr($page, '_list')) {
+		if( stristr($page, '_list') && $page != 'product.file_list' ) {
 			echo vmCommonHTML::scriptTag('', 'var listItemClicked = function(e){
         // find the <a> element that was clicked
         var a = e.findTarget(null, "a");
-        if(a && typeof a.onclick == "undefined" && a.href.indexOf("javascript:") == -1 ) {
+        if(a && typeof a.onclick == "undefined" && a.href.indexOf("javascript:") == -1 && a.href.indexOf("func=") == -1 ) {
             e.preventDefault();
             parent.addSimplePanel( a.title != "" ? a.title : a.innerHTML, a.href );
         }  

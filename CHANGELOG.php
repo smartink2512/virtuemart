@@ -35,6 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.01.2007 soeren
+# UPS: renamed "UPS Express Saver" to "UPS Saver"
+# UPS: merged Deneb's improvements for the UPS module to the trunk
+# product changed type parameters subtab at product.froduct_form (thanks Steelrat)
+
+26.01.2007 eaxs
+# YUI-EXT stylesheet not displaying Tab Text in IE7
+^ some improvements to the "advanced attributes" javascript and system
+
+
 19.01.2007 soeren
 ! two new function have been added to the function list: setModulePermissions and setFunctionPermissions
 	INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 

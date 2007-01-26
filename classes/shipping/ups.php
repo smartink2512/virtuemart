@@ -47,255 +47,361 @@ class ups {
 		$dbv->next_record();
 
 		$order_weight = $d['weight'];
-
-		if($order_weight <= 0) {
-			return true;
-		}
-		if( $order_weight > 150.00 ) {
-			$order_weight = 150.00;
-		}
-		//Access code for online tools at ups.com
-		$ups_access_code = UPS_ACCESS_CODE;
-
-		//Username from registering for online tools at ups.com
-		$ups_user_id = UPS_USER_ID;
-
-		//Password from registering for online tools at ups.com
-		$ups_user_password = UPS_PASSWORD;
-
-		//Title for your request
-		$request_title = "Shipping Estimate";
-
-		//The zip that you are shipping from
-		$source_zip = $dbv->f("vendor_zip");
-
-		//The zip that you are shipping to
-		$dest_country = $db->f("country_2_code");
-		$dest_zip = $db->f("zip");
-
-		//LBS  = Pounds
-		//KGS  = Kilograms
-		$weight_measure = (WEIGHT_UOM == 'KG') ? "KGS" : "LBS";
-
-		// The XML that will be posted to UPS
-		$xmlPost  = "<?xml version=\"1.0\"?>";
-		$xmlPost .= "<AccessRequest xml:lang=\"en-US\">";
-		$xmlPost .= " <AccessLicenseNumber>".$ups_access_code."</AccessLicenseNumber>";
-		$xmlPost .= " <UserId>".$ups_user_id."</UserId>";
-		$xmlPost .= " <Password>".$ups_user_password."</Password>";
-		$xmlPost .= "</AccessRequest>";
-		$xmlPost .= "<?xml version=\"1.0\"?>";
-		$xmlPost .= "<RatingServiceSelectionRequest xml:lang=\"en-US\">";
-		$xmlPost .= " <Request>";
-		$xmlPost .= "  <TransactionReference>";
-		$xmlPost .= "  <CustomerContext>".$request_title."</CustomerContext>";
-		$xmlPost .= "  <XpciVersion>1.0001</XpciVersion>";
-		$xmlPost .= "  </TransactionReference>";
-		$xmlPost .= "  <RequestAction>rate</RequestAction>";
-		$xmlPost .= "  <RequestOption>shop</RequestOption>";
-		$xmlPost .= " </Request>";
-		$xmlPost .= " <PickupType>";
-		$xmlPost .= "  <Code>".UPS_PICKUP_TYPE."</Code>";
-		$xmlPost .= " </PickupType>";
-		$xmlPost .= " <Shipment>";
-		$xmlPost .= "  <Shipper>";
-		$xmlPost .= "   <Address>";
-		$xmlPost .= "    <PostalCode>".$source_zip."</PostalCode>";
-		$xmlPost .= "    <CountryCode>$vendor_country_2_code</CountryCode>";
-		$xmlPost .= "   </Address>";
-		$xmlPost .= "  </Shipper>";
-		$xmlPost .= "  <ShipTo>";
-		$xmlPost .= "   <Address>";
-		$xmlPost .= "    <PostalCode>".$dest_zip."</PostalCode>";
-		$xmlPost .= "    <CountryCode>$dest_country</CountryCode>";
-		if( UPS_RESIDENTIAL=="yes" ) {
-			$xmlPost .= "    <ResidentialAddressIndicator/>";
-		}
-		$xmlPost .= "   </Address>";
-		$xmlPost .= "  </ShipTo>";
-		$xmlPost .= "  <ShipFrom>";
-		$xmlPost .= "   <Address>";
-		$xmlPost .= "    <PostalCode>".$source_zip."</PostalCode>";
-		$xmlPost .= "    <CountryCode>$vendor_country_2_code</CountryCode>";
-		$xmlPost .= "   </Address>";
-		$xmlPost .= "  </ShipFrom>";
-
-		// Service is only required, if the Tag "RequestOption" contains the value "rate"
-		// We don't want a specific servive, but ALL Rates
-		//$xmlPost .= "  <Service>";
-		//$xmlPost .= "   <Code>".$shipping_type."</Code>";
-		//$xmlPost .= "  </Service>";
-
-		$xmlPost .= "  <Package>";
-		$xmlPost .= "   <PackagingType>";
-		$xmlPost .= "    <Code>".UPS_PACKAGE_TYPE."</Code>";
-		$xmlPost .= "   </PackagingType>";
-		$xmlPost .= "   <PackageWeight>";
-		$xmlPost .= "    <UnitOfMeasurement>";
-		$xmlPost .= "     <Code>".$weight_measure."</Code>";
-		$xmlPost .= "    </UnitOfMeasurement>";
-		$xmlPost .= "    <Weight>".(int)$order_weight."</Weight>";
-		$xmlPost .= "   </PackageWeight>";
-		$xmlPost .= "  </Package>";
-		$xmlPost .= " </Shipment>";
-		$xmlPost .= "</RatingServiceSelectionRequest>";
-
-		// echo htmlentities( $xmlPost );
-		$upsURL = "https://www.ups.com:443/ups.app/xml/Rate";
-		require_once( CLASSPATH.'connectionTools.class.php');
-
-		$error = false;
-
-		$xmlResult = vmConnector::handleCommunication($upsURL, $xmlPost );
-
-		if( !$xmlResult) {
-			$vmLogger->err( $VM_LANG->_PHPSHOP_INTERNAL_ERROR." UPS.com" );
-			$error = true;
-		}
-		else {
-			/* XML Parsing */
-			require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
-			$xmlDoc =& new DOMIT_Lite_Document();
-			$xmlDoc->parseXML( $xmlResult, false, true );
-
-			/* Let's check wether the response from UPS is Success or Failure ! */
-			if( strstr( $xmlResult, "Failure" ) ) {
-				$error = true;
-				$error_code = $xmlDoc->getElementsByTagName( "ErrorCode" );
-				$error_code = $error_code->item(0);
-				$error_code = $error_code->getText();
-
-				$error_desc = $xmlDoc->getElementsByTagName( "ErrorDescription" );
-				$error_desc = $error_desc->item(0);
-				$error_desc = $error_desc->getText();
-
-				$vmLogger->err( $VM_LANG->_PHPSHOP_UPS_RESPONSE_ERROR.'. '
-				. $VM_LANG->_PHPSHOP_ERROR_CODE.": ".$error_code .', '
-				. $VM_LANG->_PHPSHOP_ERROR_DESC.": ".$error_desc);
-			}
-
-		}
-
-		if( $error ) {
-			// Switch to StandardShipping on Error !!!
-			require_once( CLASSPATH . 'shipping/standard_shipping.php' );
-			$shipping =& new standard_shipping();
-			$shipping->list_rates( $d );
-			return;
-		}
-		// retrieve the list of all "RatedShipment" Elements
-		$rate_list =& $xmlDoc->getElementsByTagName( "RatedShipment" );
-
-		// Loop through the rate List
-		for ($i = 0; $i < $rate_list->getLength(); $i++) {
-			$currNode =& $rate_list->item($i);
-
-			// First Element: Service Code
-			$shipment[$i]["ServiceCode"] = $currNode->childNodes[0]->getText();
-
-			// Second Element: BillingWeight
-			$shipment[$i]["BillingWeight"] = $currNode->childNodes[1];
-
-			// Third Element: TransportationCharges
-			$shipment[$i]["TransportationCharges"] = $currNode->childNodes[2];
-			$shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->getElementsByTagName("MonetaryValue");
-			$shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->item(0);
-			if( is_object( $shipment[$i]["TransportationCharges"]) ) {
-				$shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->getText();
-			}
-
-			// Fourth Element: ServiceOptionsCharges
-			$shipment[$i]["ServiceOptionsCharges"] = $currNode->childNodes[3];
-
-			// Fifth Element: TotalCharges
-			$shipment[$i]["TotalCharges"] = $currNode->childNodes[4];
-
-			// Sixth Element: GuarenteedDaysToDelivery
-			$shipment[$i]["GuaranteedDaysToDelivery"] = $currNode->childNodes[5]->getText();
-
-			// Seventh Element: ScheduledDeliveryTime
-			$shipment[$i]["ScheduledDeliveryTime"] = $currNode->childNodes[6]->getText();
-
-			// Eighth Element: RatedPackage
-			$shipment[$i]["RatedPackage"] = $currNode->childNodes[7];
-
-			// map ServiceCode to ServiceName
-			switch( $shipment[$i]["ServiceCode"] ) {
-
-				case "01": $shipment[$i]["ServiceName"] = "UPS Next Day Air"; break;
-				case "02": $shipment[$i]["ServiceName"] = "UPS 2nd Day Air"; break;
-				case "03": $shipment[$i]["ServiceName"] = "UPS Ground"; break;
-				case "07": $shipment[$i]["ServiceName"] = "UPS Worldwide Express SM"; break;
-				case "08": $shipment[$i]["ServiceName"] = "UPS Worldwide Expedited SM"; break;
-				case "11": $shipment[$i]["ServiceName"] = "UPS Standard"; break;
-				case "12": $shipment[$i]["ServiceName"] = "UPS 3 Day Select"; break;
-				case "13": $shipment[$i]["ServiceName"] = "UPS Next Day Air Saver"; break;
-				case "14": $shipment[$i]["ServiceName"] = "UPS Next Day Air Early A.M."; break;
-				case "54": $shipment[$i]["ServiceName"] = "UPS Worldwide Express Plus SM"; break;
-				case "59": $shipment[$i]["ServiceName"] = "UPS 2nd Day Air A.M."; break;
-				case "64": $shipment[$i]["ServiceName"] = "n/a"; break;
-				case "65": $shipment[$i]["ServiceName"] = "UPS Express Saver"; break;
-
-			}
-			unset( $currNode );
-		}
 		$html = "";
+		if($order_weight > 0) {
 
-		// UPS returns Charges in USD ONLY.
-		// So we have to convert from USD to Vendor Currency if necessary
-		if( $_SESSION['vendor_currency'] != "USD" ) {
-			$convert = true;
-		}
-		else {
-			$convert = false;
-		}
+			if( $order_weight < 1 ) {
+				$order_weight = 1;
+			}
+			if( $order_weight > 150.00 ) {
+				$order_weight = 150.00;
+			}
+			//Access code for online tools at ups.com
+			$ups_access_code = UPS_ACCESS_CODE;
 
-		if ( $_SESSION['auth']['show_price_including_tax'] != 1 ) {
-			$taxrate = 1;
-		}
-		else {
-			$taxrate = $this->get_tax_rate() + 1;
-		}
+			//Username from registering for online tools at ups.com
+			$ups_user_id = UPS_USER_ID;
 
-		foreach( $shipment as $key => $value ) {
-			if( $convert ) {
-				$tmp = $GLOBALS['CURRENCY']->convert( $value['TransportationCharges'], "USD", $vendor_currency );
+			//Password from registering for online tools at ups.com
+			$ups_user_password = UPS_PASSWORD;
 
-				// tmp is empty when the Vendor Currency could not be converted!!!!
-				if( !empty( $tmp )) {
-					// add Handling Fee
-					$charge = $tmp + intval( UPS_HANDLING_FEE );
-					$value['TransportationCharges'] = $CURRENCY_DISPLAY->getFullValue($tmp);
-				}
-				// So let's show the value in $$$$
-				else {
-					$charge = $value['TransportationCharges'] + intval( UPS_HANDLING_FEE );
-					$charge *= $taxrate;
-					$value['TransportationCharges'] = $value['TransportationCharges']. " USD";
-				}
+			//Title for your request
+			$request_title = "Shipping Estimate";
 
+			//The zip that you are shipping from
+			// Add ability to override vendor zip code as source ship from...
+			if (Override_Source_Zip != "" OR Override_Source_Zip != NULL) {
+				$source_zip = Override_Source_Zip;
 			}
 			else {
-				$charge = $value['TransportationCharges'] + intval( UPS_HANDLING_FEE );
-				$charge *= $taxrate;
-				$value['TransportationCharges'] = $CURRENCY_DISPLAY->getFullValue($charge);
+				$source_zip = $dbv->f("vendor_zip");
 			}
-			$shipping_rate_id = urlencode($this->classname."|UPS|".$value['ServiceName']."|".$charge);
-			$checked = (@$d["shipping_rate_id"] == $value) ? "checked=\"checked\"" : "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" />\n";
 
-			$_SESSION[$shipping_rate_id] = 1;
+			//The zip that you are shipping to
+			$dest_country = $db->f("country_2_code");
+			$dest_zip = $db->f("zip");
 
-			$html .= $value['ServiceName']." ";
-			$html .= "<strong>(".$value['TransportationCharges'].")</strong>";
-			if( !empty($value['GuaranteedDaysToDelivery'])) {
-				$html .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".$VM_LANG->_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS;
+			//LBS  = Pounds
+			//KGS  = Kilograms
+			$weight_measure = (WEIGHT_UOM == 'KG') ? "KGS" : "LBS";
+
+			// The XML that will be posted to UPS
+			$xmlPost  = "<?xml version=\"1.0\"?>";
+			$xmlPost .= "<AccessRequest xml:lang=\"en-US\">";
+			$xmlPost .= " <AccessLicenseNumber>".$ups_access_code."</AccessLicenseNumber>";
+			$xmlPost .= " <UserId>".$ups_user_id."</UserId>";
+			$xmlPost .= " <Password>".$ups_user_password."</Password>";
+			$xmlPost .= "</AccessRequest>";
+			$xmlPost .= "<?xml version=\"1.0\"?>";
+			$xmlPost .= "<RatingServiceSelectionRequest xml:lang=\"en-US\">";
+			$xmlPost .= " <Request>";
+			$xmlPost .= "  <TransactionReference>";
+			$xmlPost .= "  <CustomerContext>".$request_title."</CustomerContext>";
+			$xmlPost .= "  <XpciVersion>1.0001</XpciVersion>";
+			$xmlPost .= "  </TransactionReference>";
+			$xmlPost .= "  <RequestAction>rate</RequestAction>";
+			$xmlPost .= "  <RequestOption>shop</RequestOption>";
+			$xmlPost .= " </Request>";
+			$xmlPost .= " <PickupType>";
+			$xmlPost .= "  <Code>".UPS_PICKUP_TYPE."</Code>";
+			$xmlPost .= " </PickupType>";
+			$xmlPost .= " <Shipment>";
+			$xmlPost .= "  <Shipper>";
+			$xmlPost .= "   <Address>";
+			$xmlPost .= "    <PostalCode>".$source_zip."</PostalCode>";
+			$xmlPost .= "    <CountryCode>$vendor_country_2_code</CountryCode>";
+			$xmlPost .= "   </Address>";
+			$xmlPost .= "  </Shipper>";
+			$xmlPost .= "  <ShipTo>";
+			$xmlPost .= "   <Address>";
+			$xmlPost .= "    <PostalCode>".$dest_zip."</PostalCode>";
+			$xmlPost .= "    <CountryCode>$dest_country</CountryCode>";
+			if( UPS_RESIDENTIAL=="yes" ) {
+				$xmlPost .= "    <ResidentialAddressIndicator/>";
 			}
-			$html .= "<br />";
+			$xmlPost .= "   </Address>";
+			$xmlPost .= "  </ShipTo>";
+			$xmlPost .= "  <ShipFrom>";
+			$xmlPost .= "   <Address>";
+			$xmlPost .= "    <PostalCode>".$source_zip."</PostalCode>";
+			$xmlPost .= "    <CountryCode>$vendor_country_2_code</CountryCode>";
+			$xmlPost .= "   </Address>";
+			$xmlPost .= "  </ShipFrom>";
 
+			// Service is only required, if the Tag "RequestOption" contains the value "rate"
+			// We don't want a specific servive, but ALL Rates
+			//$xmlPost .= "  <Service>";
+			//$xmlPost .= "   <Code>".$shipping_type."</Code>";
+			//$xmlPost .= "  </Service>";
+
+			$xmlPost .= "  <Package>";
+			$xmlPost .= "   <PackagingType>";
+			$xmlPost .= "    <Code>".UPS_PACKAGE_TYPE."</Code>";
+			$xmlPost .= "   </PackagingType>";
+			$xmlPost .= "   <PackageWeight>";
+			$xmlPost .= "    <UnitOfMeasurement>";
+			$xmlPost .= "     <Code>".$weight_measure."</Code>";
+			$xmlPost .= "    </UnitOfMeasurement>";
+			$xmlPost .= "    <Weight>".$order_weight."</Weight>";
+			$xmlPost .= "   </PackageWeight>";
+			$xmlPost .= "  </Package>";
+			$xmlPost .= " </Shipment>";
+			$xmlPost .= "</RatingServiceSelectionRequest>";
+
+			// echo htmlentities( $xmlPost );
+			$upsURL = "https://www.ups.com:443/ups.app/xml/Rate";
+			require_once( CLASSPATH.'connectionTools.class.php');
+
+			$error = false;
+
+			$xmlResult = vmConnector::handleCommunication($upsURL, $xmlPost );
+
+			if( !$xmlResult) {
+				$vmLogger->err( $VM_LANG->_PHPSHOP_INTERNAL_ERROR." UPS.com" );
+				$error = true;
+			}
+			else {
+				/* XML Parsing */
+				require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
+				$xmlDoc =& new DOMIT_Lite_Document();
+				$xmlDoc->parseXML( $xmlResult, false, true );
+
+				/* Let's check wether the response from UPS is Success or Failure ! */
+				if( strstr( $xmlResult, "Failure" ) ) {
+					$error = true;
+					$error_code = $xmlDoc->getElementsByTagName( "ErrorCode" );
+					$error_code = $error_code->item(0);
+					$error_code = $error_code->getText();
+
+					$error_desc = $xmlDoc->getElementsByTagName( "ErrorDescription" );
+					$error_desc = $error_desc->item(0);
+					$error_desc = $error_desc->getText();
+
+					$vmLogger->err( $VM_LANG->_PHPSHOP_UPS_RESPONSE_ERROR.'. '
+					. $VM_LANG->_PHPSHOP_ERROR_CODE.": ".$error_code .', '
+					. $VM_LANG->_PHPSHOP_ERROR_DESC.": ".$error_desc);
+				}
+
+			}
+
+			if( $error ) {
+				// Switch to StandardShipping on Error !!!
+				require_once( CLASSPATH . 'shipping/standard_shipping.php' );
+				$shipping =& new standard_shipping();
+				$shipping->list_rates( $d );
+				return;
+			}
+			// retrieve the list of all "RatedShipment" Elements
+			$rate_list =& $xmlDoc->getElementsByTagName( "RatedShipment" );
+			$allservicecodes = array("UPS_Next_Day_Air",
+			"UPS_2nd_Day_Air",
+			"UPS_Ground",
+			"UPS_Worldwide_Express_SM",
+			"UPS_Worldwide_Expedited_SM",
+			"UPS_Standard",
+			"UPS_3_Day_Select",
+			"UPS_Next_Day_Air_Saver",
+			"UPS_Next_Day_Air_Early_AM",
+			"UPS_Worldwide_Express_Plus_SM",
+			"UPS_2nd_Day_Air_AM",
+			"UPS_Saver",
+			"na");
+			$myservicecodes = array();
+			foreach ($allservicecodes as $servicecode){
+				if (constant($servicecode) != '' || constant($servicecode) != 0) {
+					$myservicecodes[] = constant($servicecode);
+				}
+			}
+			if (DEBUG){
+				echo "Cart Contents: ".$order_weight. " ".$weight_measure."<br><br>\n";
+				echo "XML Post: <br>";
+				echo "<textarea cols='80'>".$xmlPost."</textarea>";
+				echo "<br>";
+				echo "XML Result: <br>";
+				echo "<textarea cols='80' rows='10'>".$xmlResult."</textarea>";
+				echo "<br>";
+			}
+			// Loop through the rate List
+			for ($i = 0; $i < $rate_list->getLength(); $i++) {
+				$currNode =& $rate_list->item($i);
+				if ( in_array($currNode->childNodes[0]->getText(),$myservicecodes) )  {
+					$e = 0;
+					// First Element: Service Code
+					$shipment[$i]["ServiceCode"] = $currNode->childNodes[$e++]->getText();
+
+					// Second Element: BillingWeight
+					if( $currNode->childNodes[$e]->nodeName == 'RatedShipmentWarning') {
+						$e++;
+					}
+					$shipment[$i]["BillingWeight"] = $currNode->childNodes[$e++];
+
+					// Third Element: TransportationCharges
+					$shipment[$i]["TransportationCharges"] = $currNode->childNodes[$e++];
+					$shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->getElementsByTagName("MonetaryValue");
+					$shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->item(0);
+					if( is_object( $shipment[$i]["TransportationCharges"]) ) {
+						$shipment[$i]["TransportationCharges"] = $shipment[$i]["TransportationCharges"]->getText();
+					}
+
+					// Fourth Element: ServiceOptionsCharges
+					$shipment[$i]["ServiceOptionsCharges"] = $currNode->childNodes[$e++];
+
+					// Fifth Element: TotalCharges
+					$shipment[$i]["TotalCharges"] = $currNode->childNodes[$e++];
+
+					// Sixth Element: GuarenteedDaysToDelivery
+					$shipment[$i]["GuaranteedDaysToDelivery"] = $currNode->childNodes[$e++]->getText();
+
+					// Seventh Element: ScheduledDeliveryTime
+					$shipment[$i]["ScheduledDeliveryTime"] = $currNode->childNodes[$e++]->getText();
+
+					// Eighth Element: RatedPackage
+					$shipment[$i]["RatedPackage"] = $currNode->childNodes[$e++];
+
+					// map ServiceCode to ServiceName
+					switch( $shipment[$i]["ServiceCode"] ) {
+
+						case "01": $shipment[$i]["ServiceName"] = "UPS Next Day Air"; break;
+						case "02": $shipment[$i]["ServiceName"] = "UPS 2nd Day Air"; break;
+						case "03": $shipment[$i]["ServiceName"] = "UPS Ground"; break;
+						case "07": $shipment[$i]["ServiceName"] = "UPS Worldwide Express SM"; break;
+						case "08": $shipment[$i]["ServiceName"] = "UPS Worldwide Expedited SM"; break;
+						case "11": $shipment[$i]["ServiceName"] = "UPS Standard"; break;
+						case "12": $shipment[$i]["ServiceName"] = "UPS 3 Day Select"; break;
+						case "13": $shipment[$i]["ServiceName"] = "UPS Next Day Air Saver"; break;
+						case "14": $shipment[$i]["ServiceName"] = "UPS Next Day Air Early A.M."; break;
+						case "54": $shipment[$i]["ServiceName"] = "UPS Worldwide Express Plus SM"; break;
+						case "59": $shipment[$i]["ServiceName"] = "UPS 2nd Day Air A.M."; break;
+						case "64": $shipment[$i]["ServiceName"] = "n/a"; break;
+						case "65": $shipment[$i]["ServiceName"] = "UPS Saver"; break;
+
+					}
+					unset( $currNode );
+				}
+			}
+			if (!$shipment ) {
+				//$vmLogger->err( "Error processing the Request to UPS.com" );
+				/*$vmLogger->err( "We could not find a UPS shipping rate.
+				Please make sure you have entered a valid shipping address.
+				Or choose a rate below." );
+				// Switch to StandardShipping on Error !!!
+				require_once( CLASSPATH . 'shipping/standard_shipping.php' );
+				$shipping =& new standard_shipping();
+				$shipping->list_rates( $d );*/
+				return;
+			}
+
+			// UPS returns Charges in USD ONLY.
+			// So we have to convert from USD to Vendor Currency if necessary
+			if( $_SESSION['vendor_currency'] != "USD" ) {
+				$convert = true;
+			}
+			else {
+				$convert = false;
+			}
+
+			if ( $_SESSION['auth']['show_price_including_tax'] != 1 ) {
+				$taxrate = 1;
+			}
+			else {
+				$taxrate = $this->get_tax_rate() + 1;
+			}
+
+			foreach( $shipment as $key => $value ) {
+
+				//Get the Fuel SurCharge rate, defined in config.
+				$fsc = $value['ServiceName']."_FSC";
+				$fsc = str_replace(" ","_",str_replace(".","",str_replace("/","",$fsc)));
+				$fsc = constant($fsc);
+				if( $fsc == 0 )
+				$fsc_rate = 1;
+				else {
+					$fsc_rate = $fsc / 100;
+					$fsc_rate = $fsc_rate + 1;
+				}
+
+
+				if( $convert ) {
+					$tmp = $GLOBALS['CURRENCY']->convert( $value['TransportationCharges'], "USD", $vendor_currency );
+
+					// tmp is empty when the Vendor Currency could not be converted!!!!
+					if( !empty( $tmp )) {
+						$charge = $tmp;
+						// add Fuel SurCharge
+						$charge *= $fsc_rate;
+						// add Handling Fee
+						$charge += UPS_HANDLING_FEE;
+						$charge *= $taxrate;
+						$value['TransportationCharges'] = $CURRENCY_DISPLAY->getFullValue($tmp);
+					}
+					// So let's show the value in $$$$
+					else {
+						$charge = $value['TransportationCharges'] + intval( UPS_HANDLING_FEE );
+						// add Fuel SurCharge
+						$charge *= $fsc_rate;
+						// add Handling Fee
+						$charge += UPS_HANDLING_FEE;
+						$charge *= $taxrate;
+						$value['TransportationCharges'] = $value['TransportationCharges']. " USD";
+					}
+
+				}
+				else {
+					$charge = $charge_unrated = $value['TransportationCharges'];
+					// add Fuel SurCharge
+					$charge *= $fsc_rate;
+					// add Handling Fee
+					$charge += UPS_HANDLING_FEE;
+					$charge *= $taxrate;
+					$value['TransportationCharges'] = $CURRENCY_DISPLAY->getFullValue($charge);
+				}
+				$shipping_rate_id = urlencode($this->classname."|UPS|".$value['ServiceName']."|".$charge);
+				$checked = (@$d["shipping_rate_id"] == $value) ? "checked=\"checked\"" : "";
+				if (count($shipment) == 1 ) {
+					$checked = "checked=\"checked\"";
+				}
+				$html .= '<label for="'.$shipping_rate_id.'">'."\n<input type=\"radio\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+
+				$_SESSION[$shipping_rate_id] = 1;
+
+				$html .= $value['ServiceName'].' ';
+				$html .= "<strong>(".$value['TransportationCharges'].")</strong>";
+				if (DEBUG) {
+					$html .= " - ".$VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT.": ".$order_weight." ". $weight_measure.
+					", ".$VM_LANG->_PHPSHOP_RATE_FORM_VALUE.": [[".$charge_unrated."(".$fsc_rate.")]+".UPS_HANDLING_FEE."](".$taxrate.")]";
+				}
+				// DELIVERY QUOTE
+				if (Show_Delivery_Days_Quote == 1) {
+					if( !empty($value['GuaranteedDaysToDelivery'])) {
+						$html .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".$VM_LANG->_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS;
+					}
+				}
+				if (Show_Delivery_ETA_Quote == 1) {
+					if( !empty($value['ScheduledDeliveryTime'])) {
+						$html .= "&nbsp;(ETA:&nbsp;".$value['ScheduledDeliveryTime'].")";
+					}
+				}
+				if (Show_Delivery_Warning == 1 && !empty($value['RatedShipmentWarning'])) {
+					$html .= "</label><br/>\n&nbsp;&nbsp;&nbsp;*&nbsp;<em>".$value['RatedShipmentWarning']."</em>\n";
+				}
+				$html .= "<br />\n";
+			}
 		}
-
 		echo $html;
+		//DEBUG
+		if (DEBUG){
+			/*
+			echo "My Services: <br>";
+			print_r($myservicecodes);
+			echo "<br>";
+			echo "All Services: <br>";
+			print_r($allservicecodes);
+			echo "<br>";
+			echo "XML Result: <br>";
+			echo "<textarea cols='80' rows='10'>".$xmlResult."</textarea>";
+			echo "<br>";
+			*/
+		}
 		return true;
 	}
 
@@ -350,37 +456,37 @@ class ups {
 		/** Read current Configuration ***/
 		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
     ?>
-      <table>
-    <tr>
+      <table class="adminform">
+    <tr class="row0">
         <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE ?></strong></td>
 		<td>
-            <input type="text" name="UPS_ACCESS_CODE" class="inputbox" value="<? echo UPS_ACCESS_CODE ?>" />
+            <input type="text" name="UPS_ACCESS_CODE" class="inputbox" value="<?php echo UPS_ACCESS_CODE ?>" />
 		</td>
 		<td>
           <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN) ?>
         </td>
     </tr>
-    <tr>
+    <tr class="row1">
         <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID ?></strong>
 		</td>
 		<td>
-            <input type="text" name="UPS_USER_ID" class="inputbox" value="<? echo UPS_USER_ID ?>" />
+            <input type="text" name="UPS_USER_ID" class="inputbox" value="<?php echo UPS_USER_ID ?>" />
 		</td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN) ?>
         </td>
     </tr>
-    <tr>
+    <tr class="row0">
         <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD ?></strong>
 		</td>
 		<td>
-            <input type="text" name="UPS_PASSWORD" class="inputbox" value="<? echo UPS_PASSWORD ?>" />
+            <input type="text" name="UPS_PASSWORD" class="inputbox" value="<?php echo UPS_PASSWORD ?>" />
 		</td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN) ?>
         </td>
     </tr>
-	<tr>
+	<tr class="row1">
 	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_PICKUP_METHOD ?></strong></td>
 	  <td>
 		<select class="inputbox" name="pickup_type">
@@ -409,7 +515,7 @@ class ups {
 	  </td>
 	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP) ?></td>
 	</tr>
-	<tr>
+	<tr class="row0">
 	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TYPE_RESIDENTIAL ?></strong></td>
 	  <td>
 		<select class="inputbox" name="residential">
@@ -419,24 +525,178 @@ class ups {
 	  </td>
 	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP) ?></td>
 	</tr>
-	<tr>
+	<tr class="row1">
 	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_HANDLING_FEE ?></strong></td>
 	  <td><input class="inputbox" type="text" name="handling_fee" value="<?php echo UPS_HANDLING_FEE ?>" /></td>
 	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP) ?></td>
 	</tr>
-	<tr>
+	<tr class="row0">
 	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
 	  <td>
         <?php
         require_once(CLASSPATH.'ps_tax.php');
         ps_tax::list_tax_value("tax_class", UPS_TAX_CLASS) ?>
 	  </td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?></td>
 	</tr>	
+<?php // BEGIN CUSTOM CODE ?>
+	<tr class="row1">
+	  <td><strong>Ship From Zip Code</strong></td>
+	  <td><input class="inputbox" type="text" name="Override_Source_Zip" value="<?php echo Override_Source_Zip ?>" /></td>
+	  <td><?php echo mm_ToolTip("Enter a zip code to override the Vendor ship from zip code") ?></td>
+	</tr>
+	<tr class="row0">
+	  <td><strong>Show Delivery Days Quote?</strong></td>
+	  <td><input class="inputbox" type="checkbox" name="Show_Delivery_Days_Quote" <?php if (Show_Delivery_Days_Quote == 1) echo "checked=\"checked\""; ?> value="1" /></td>
+	  <td><?php echo mm_ToolTip("Enable the Quote-to-Delivery Note next to each Shipping Method that shows the days.") ?></td>
+	</tr>
+	<tr class="row1">
+	  <td><strong>Show Delivery ETA Quote?</strong></td>
+	  <td><input class="inputbox" type="checkbox" name="Show_Delivery_ETA_Quote" <?php if (Show_Delivery_ETA_Quote == 1) echo "checked=\"checked\""; ?> value="1" /></td>
+	  <td><?php echo mm_ToolTip("Enable the Quote-to-Delivery Note next to each Shipping Method that shows the ETA, or Estimated Time of Arrival.") ?></td>
+	</tr>
+	<tr class="row0">
+	  <td><strong>Show Delivery Warning?</strong></td>
+	  <td><input class="inputbox" type="checkbox" name="Show_Delivery_Warning" <?php if (Show_Delivery_Warning == 1) echo "checked=\"checked\""; ?> value="1" /></td>
+	  <td><?php echo mm_ToolTip("Enable the Quote-to-Delivery Warning under each Shipping Method that shows the message from the shipper.") ?></td>
+	</tr>
+	<tr class="row1">
+	  <td colspan="3">
+	  	<table>
+			<tr class="row0">
+			  <td colspan="2"><strong>Select Authorized Shipping Methods</strong></td>
+			  <td><?php echo mm_ToolTip("Enable each UPS shipping method you would like to offer to customers. Then enter a Fuel Surcharge Rate in percent. (ex. 12.50%)") ?></td>
+			</tr>
+			<tr class="row1">
+			  <td><div align="left"><strong>Shipping Method</strong></div></td>
+			  <td><div align="left"><strong>Enable?</strong></div></td>
+			  <td><div align="left"><strong>Fuel SurCharge Rate(%)</strong><?php echo mm_ToolTip("A percent of the base charge for each method is added for extra fuel charges. Leave blank or zero to remove the surcharge.") ?></div></td>
+			</tr>
+			<tr class="row0">
+			  <td>UPS Next Day Air</td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Next_Day_Air" class="inputbox" <?php if (UPS_Next_Day_Air == 01) echo "checked=\"checked\""; ?> value="01" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Next_Day_Air_FSC" value="<?php echo UPS_Next_Day_Air_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row1">
+			  <td>UPS 2nd Day Air</td>
+			  <td>
+				<div align="center">
+				  <input type="checkbox" name="UPS_2nd_Day_Air" class="inputbox" <?php if (UPS_2nd_Day_Air == 02) echo "checked=\"checked\""; ?> value="02" />
+		  	    </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_2nd_Day_Air_FSC" value="<?php echo UPS_2nd_Day_Air_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row0">
+			  <td>UPS Ground</td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Ground" class="inputbox" <?php if (UPS_Ground == 03) echo "checked=\"checked\""; ?> value="03" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Ground_FSC" value="<?php echo UPS_Ground_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row1">
+			  <td>UPS Worldwide Express SM</td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Worldwide_Express_SM" class="inputbox" <?php if (UPS_Worldwide_Express_SM == 07) echo "checked=\"checked\""; ?> value="07" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Worldwide_Express_SM_FSC" value="<?php echo UPS_Worldwide_Express_SM_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row0">
+			  <td>UPS Worldwide Expedited SM</td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Worldwide_Expedited_SM" class="inputbox" <?php if (UPS_Worldwide_Expedited_SM == '08') echo "checked=\"checked\""; ?> value="08" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Worldwide_Expedited_SM_FSC" value="<?php echo UPS_Worldwide_Expedited_SM_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row1">
+			  <td>UPS Standard </td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Standard" class="inputbox" <?php if (UPS_Standard == 11) echo "checked=\"checked\""; ?> value="11" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Standard_FSC" value="<?php echo UPS_Standard_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row0">
+			  <td>UPS 3 Day Select </td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_3_Day_Select" class="inputbox" <?php if (UPS_3_Day_Select == 12) echo "checked=\"checked\""; ?> value="12" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_3_Day_Select_FSC" value="<?php echo UPS_3_Day_Select_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row1">
+			  <td>UPS Next Day Air Saver</td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Next_Day_Air_Saver" class="inputbox" <?php if (UPS_Next_Day_Air_Saver == 13) echo "checked=\"checked\""; ?> value="13" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Next_Day_Air_Saver_FSC" value="<?php echo UPS_Next_Day_Air_Saver_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row0">
+			  <td>UPS Next Day Air Early A.M. </td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Next_Day_Air_Early_AM" class="inputbox" <?php if (UPS_Next_Day_Air_Early_AM == 14) echo "checked=\"checked\""; ?> value="14" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Next_Day_Air_Early_AM_FSC" value="<?php echo UPS_Next_Day_Air_Early_AM_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row1">
+			  <td>UPS Worldwide Express Plus SM</td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Worldwide_Express_Plus_SM" class="inputbox" <?php if (UPS_Worldwide_Express_Plus_SM == 54) echo "checked=\"checked\""; ?> value="54" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Worldwide_Express_Plus_SM_FSC" value="<?php echo UPS_Worldwide_Express_Plus_SM_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row0">
+			  <td>UPS 2nd Day Air A.M</td>
+			  <td>
+				<div align="center">
+				  <input type="checkbox" name="UPS_2nd_Day_Air_AM" class="inputbox" <?php if (UPS_2nd_Day_Air_AM == 59) echo "checked=\"checked\""; ?> value="59" />		
+			    </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_2nd_Day_Air_AM_FSC" value="<?php echo UPS_2nd_Day_Air_AM_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row1">
+			  <td>UPS Express Saver</td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="UPS_Saver" class="inputbox" <?php if (UPS_Saver == 65) echo "checked=\"checked\""; ?> value="65" />
+			      </div></td>
+			  <td><input class="inputbox" type="text" name="UPS_Saver_FSC" value="<?php echo UPS_Saver_FSC; ?>" />
+			  </td>
+			</tr>
+			<tr class="row0">
+			  <td>n/a </td>
+			  <td>
+			    <div align="center">
+			      <input type="checkbox" name="na" class="inputbox" <?php if (na == 64) echo "checked=\"checked\""; ?> value="64" />
+			      </div></td>
+			  <td>&nbsp;
+			  </td>
+			</tr>
+		  </table>
+	  </td>
+	</tr>
+<?php // END CUSTOM CODE ?>		
 	</table>
    <?php
-	   // return false if there's no configuration
-	   return true;
+   // return false if there's no configuration
+   return true;
 	}
 	/**
   * Returns the "is_writeable" status of the configuration file
@@ -463,6 +723,38 @@ class ups {
 		"UPS_RESIDENTIAL" => $d['residential'],
 		"UPS_HANDLING_FEE" => $d['handling_fee'],
 		"UPS_TAX_CLASS" => $d['tax_class']
+		// BEGIN CUSTOM CODE
+		,"Override_Source_Zip" => $d['Override_Source_Zip'],
+		"Show_Delivery_Days_Quote" => $d['Show_Delivery_Days_Quote'],
+		"Show_Delivery_ETA_Quote" => $d['Show_Delivery_ETA_Quote'],
+		"Show_Delivery_Warning" => $d['Show_Delivery_Warning'],
+		"UPS_Next_Day_Air" => $d['UPS_Next_Day_Air'],
+		"UPS_Next_Day_Air_FSC" => $d['UPS_Next_Day_Air_FSC'],
+		"UPS_2nd_Day_Air" => $d['UPS_2nd_Day_Air'],
+		"UPS_2nd_Day_Air_FSC" => $d['UPS_2nd_Day_Air_FSC'],
+		"UPS_Ground" => $d['UPS_Ground'],
+		"UPS_Ground_FSC" => $d['UPS_Ground_FSC'],
+		"UPS_Worldwide_Express_SM" => $d['UPS_Worldwide_Express_SM'],
+		"UPS_Worldwide_Express_SM_FSC" => $d['UPS_Worldwide_Express_SM_FSC'],
+		"UPS_Worldwide_Expedited_SM" => $d['UPS_Worldwide_Expedited_SM'],
+		"UPS_Worldwide_Expedited_SM_FSC" => $d['UPS_Worldwide_Expedited_SM_FSC'],
+		"UPS_Standard" => $d['UPS_Standard'],
+		"UPS_Standard_FSC" => $d['UPS_Standard_FSC'],
+		"UPS_3_Day_Select" => $d['UPS_3_Day_Select'],
+		"UPS_3_Day_Select_FSC" => $d['UPS_3_Day_Select_FSC'],
+		"UPS_Next_Day_Air_Saver" => $d['UPS_Next_Day_Air_Saver'],
+		"UPS_Next_Day_Air_Saver_FSC" => $d['UPS_Next_Day_Air_Saver_FSC'],
+		"UPS_Next_Day_Air_Early_AM" => $d['UPS_Next_Day_Air_Early_AM'],
+		"UPS_Next_Day_Air_Early_AM_FSC" => $d['UPS_Next_Day_Air_Early_AM_FSC'],
+		"UPS_Worldwide_Express_Plus_SM" => $d['UPS_Worldwide_Express_Plus_SM'],
+		"UPS_Worldwide_Express_Plus_SM_FSC" => $d['UPS_Worldwide_Express_Plus_SM_FSC'],
+		"UPS_2nd_Day_Air_AM" => $d['UPS_2nd_Day_Air_AM'],
+		"UPS_2nd_Day_Air_AM_FSC" => $d['UPS_2nd_Day_Air_AM_FSC'],
+		"UPS_Saver" => $d['UPS_Saver'],
+		"UPS_Saver_FSC" => $d['UPS_Saver_FSC'],
+		"na" => $d['na']
+
+		// END CUSTOM CODE
 		);
 		$config = "<?php\n";
 		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";

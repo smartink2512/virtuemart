@@ -5,7 +5,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -1754,6 +1755,68 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_ORDER_EDIT_QUANTITY_UPDATED = 'Quantity successfully updated';
 	var $_VM_ORDER_EDIT_RETURN_PARENTS = 'Back to the parent product';
 	var $_VM_ORDER_EDIT_CHOOSE_PRODUCT = 'Choose a product';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_NEW = 'New Attribute';
+	var $_PHPSHOP_PRODUCT_FORM_PROPERTY_NEW = 'New Property';
+	var $_PHPSHOP_PRODUCT_FORM_PROPERTY = 'Property';
+	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_DELETE = 'Delete Attribute';
+	var $_LAST_UPDATED = 'Last Updated';
+	var $_NOT_AUTH = 'You are not authorized to view this resource.';
+	var $_DO_LOGIN = 'You need to login.';
+	var $_VALID_AZ09 = 'Please enter a valid %s.  No spaces, more than %d characters and contain 0-9,a-z,A-Z';
+	var $_CMN_PUBLISHED = 'Published';
+	var $_CMN_UNPUBLISHED = 'Unpublished';
+	var $_MORE = 'More...';
+	var $_EMPTY_CATEGORY = 'This Category is currently empty.';
+	var $_BUTTON_LOGOUT = 'Logout';
+	var $_NO_ACCOUNT = 'No account yet?';
+	var $_CREATE_ACCOUNT = 'Register';
+	var $_REGWARN_PASS = 'Please enter a valid password.  No spaces, more than 6 characters and contain 0-9,a-z,A-Z';
+	var $_REGWARN_VPASS1 = 'Please verify the password.';
+	var $_REGWARN_VPASS2 = 'Password and verification do not match, please try again.';
+	var $_USEND_MSG_ACTIVATE = 'Hello %s,
+
+Thank you for registering at %s. Your account is created and must be activated before you can use it.
+To activate the account click on the following link or copy-paste it in your browser:
+%s
+
+After activation you may login to %s using the following username and password:
+
+Username - %s
+Password - %s';
+	var $_USEND_MSG = 'Hello %s,
+
+Thank you for registering at %s.
+
+You may now login to %s using the username and password you registered with.';
+	var $_PROMPT_PASSWORD = 'Lost your Password?';
+	var $_HI = 'Hi';
+	var $_NEW_USER_MESSAGE_SUBJECT = 'New User Details';
+	var $_NEW_USER_MESSAGE = 'Hello %s,
+
+
+You have been added as a user to %s by an Administrator.
+
+This email contains your username and password to log into the %s
+
+Username - %s
+Password - %s
+
+
+Please do not respond to this message as it is automatically generated and is for information purposes only';
+	var $_REMEMBER_ME = 'Remember me';
+	var $_REGISTER_TITLE = 'Registration';
+	var $_JAN = 'January';
+	var $_FEB = 'February';
+	var $_MAR = 'March';
+	var $_APR = 'April';
+	var $_MAY = 'May';
+	var $_JUN = 'June';
+	var $_JUL = 'July';
+	var $_AUG = 'August';
+	var $_SEP = 'September';
+	var $_OCT = 'October';
+	var $_NOV = 'November';
+	var $_DEC = 'December';
         
 }
 class phpShopLanguage extends vmLanguage { }

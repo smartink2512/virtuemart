@@ -1006,7 +1006,7 @@ Order Total: '.$order_total.'
 				$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
 				$dl .= " AND attribute_name='download'";
 				$db->query($dl);
-
+				$dlnum = 0;
 				while($db->next_record()) {
 
 					$str = $order_id;

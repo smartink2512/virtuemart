@@ -212,21 +212,25 @@ while ($db->next_record()) {
 	$details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1");
     $details_url = defined( '_PSHOP_ADMIN' ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
 	
+    // Print View Icon
     $details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
     $details_link .= "<img src=\"$mosConfig_live_site/images/M_images/printButton.png\" align=\"center\" height=\"16\" width=\"16\" border=\"0\" /></a>"; 
     $listObj->addCell( $details_link );
-
+	// Creation Date
 	$listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("cdate")));
+	// Last Modified Date
     $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("mdate")));
 	
+    // Order Status Drop Down List
 	$listObj->addCell( $ps_order_status->getOrderStatus($db->f("order_status"), "onchange=\"document.adminForm$i.order_status.selectedIndex = this.selectedIndex;document.adminForm$i.changed.value='1'\""));
 	
+	// Notify Customer checkbox
 	$listObj->addCell( '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.value = \'Y\';} else {document.adminForm'. $i .'.notify_customer.value = \'N\';}" value="Y" />'
 						.$VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY .'<br />
 					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY_ERR .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="Update Status" />' );
 
 	$listObj->addCell( $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')));
-	
+	// Change Order Status form
 	$form_code .= '<form style="float:left;" method="post" action="'. $_SERVER['PHP_SELF'] .'" name="adminForm'. $i .'">';
 	$form_code .= $ps_order_status->getOrderStatus($db->f("order_status"), "style=\"visibility:hidden;\" onchange=\"document.adminForm$i.changed.value='1'\"");
 	$form_code .= '<input type="hidden" class="inputbox" name="notify_customer" value="N" />
@@ -237,7 +241,8 @@ while ($db->next_record()) {
 		<input type="hidden" name="order_id" value="'. $db->f("order_id") .'" />
 		<input type="hidden" name="current_order_status" value="'. $db->f("order_status").'" />
 		</form>';
-    
+	
+    // Delete Order Button
 	$listObj->addCell( $ps_html->deleteButton( "order_id", $db->f("order_id"), "orderDelete", $keyword, $limitstart ) );
 
 	$i++; 

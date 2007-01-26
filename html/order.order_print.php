@@ -52,7 +52,7 @@ else {
 			  </tr>
 			  <tr> 
 				<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE ?>:</strong></td>
-				<td><?php echo date("d-M-Y:H:i", $db->f("cdate"));?></td>
+				<td><?php echo date("d-M-Y, H:i", $db->f("cdate")+$mosConfig_offset);?></td>
 			  </tr>
 			  <tr> 
 				<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</strong></td>
@@ -136,6 +136,10 @@ else {
 			<?php
 			$tab->endTab();
 			$tab->startTab( $VM_LANG->_VM_ORDER_EDIT, "order_edit_page" ); 
+				/**
+				 * This is the Order Edit Addon
+				 * @since 1.1.0
+				 */
 				require_once(CLASSPATH.'ps_order_edit.php');
 			$tab->endTab();
 
@@ -313,19 +317,51 @@ else {
 						WHERE #__{vm}_order_item.order_id='$order_id' ";
 			  $dbt->query($qt);
 			  $i = 0;
-			  
+			  $dbd = new ps_DB();
 			  while ($dbt->next_record()){
-				if ($i++ % 2) 
-				   $bgcolor='row0';
-				else
-				  $bgcolor='row1';
+				if ($i++ % 2) {
+					$bgcolor='row0';
+				} else {
+					$bgcolor='row1';
+				}
 				$t = $dbt->f("product_quantity") * $dbt->f("product_final_price");
-				
+				// Check if it's a downloadable product
+				$downloadable = false;
+				$files = array();
+				$dbd->query('SELECT product_id, attribute_name
+								FROM `#__{vm}_product_attribute`
+								WHERE product_id='.$dbt->f('product_id').' AND attribute_name=\'download\'' );
+				if( $dbd->next_record() ) {
+					$downloadable = true;
+					$dbd->query('SELECT product_id, end_date, download_max, download_id, file_name
+								FROM `#__{vm}_product_download`
+								WHERE product_id='.$dbt->f('product_id').' AND order_id=\''.$order_id .'\'' );
+					while( $dbd->next_record() ) {
+						$files[] = $dbd->get_row();
+					}
+				}
 			  ?>
 			  <tr class="<?php echo $bgcolor; ?>" valign="top"> 
 				<td width="5%"> <?php $dbt->p("product_quantity") ?></td>
 				<td width="32%"><?php $dbt->p("order_item_name"); 
-				  echo "<br /><font size=\"-2\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</font>"; 
+				  echo "<br /><span style=\"font-size: smaller;\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</span>"; 
+				  if( $downloadable ) {
+				  	echo '<br /><br />
+				  			<div style="font-weight:bold;">DOWNLOAD STATS</div>';
+				  	if( empty( $files )) {
+				  		echo '<em>- no downloads remaining -</em>';
+				  	} else {
+				  		foreach( $files as $file ) {
+				  			echo '<em>'
+				  					.'<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$dbt->f('product_id').'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN.'">'
+				  					.$file->file_name.'</a></em><br />';
+				  			echo '<ul>';
+				  			echo '<li>Remaining Downloads: '.$file->download_max.'</li>';
+				  			echo '<li>End Date: '.date("d-M-Y, H:i", $file->end_date + $mosConfig_offset ).'</li>';
+				  			echo '</ul>';
+				  		}				  		
+				  	}
+				  }
 				  ?>
 				</td>
 				<td width="9%"><?php  $dbt->p("order_item_sku") ?>&nbsp;</td>

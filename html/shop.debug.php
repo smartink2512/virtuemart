@@ -26,6 +26,8 @@ if( !empty( $database->_log )) {
       $i++;
   }
 }
+echo '<br style="clear:both;" />';
+
 include_once(ADMINPATH ."version.php");
 $tabs = new mShopTabs(0, 1, "_debug");
 $tabs->startPane("debug-pane");
