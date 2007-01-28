@@ -235,6 +235,10 @@ $db->query( "ALTER TABLE `#__{vm}_product` ADD  `product_order_levels` varchar(4
 $db->query( "INSERT INTO `#__{vm}_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES (null, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
 (null, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin')");
 
+# Re-enable downloads and resend Download ID
+$db->query( "INSERT INTO `#__{vm}_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
+(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');" );
+
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'");
 
 ?>

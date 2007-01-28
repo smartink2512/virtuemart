@@ -835,7 +835,9 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (181, 1, 'usergroupUpdate', 'usergroup.class', 'update', 'Update an user group', 'admin'),
 (182, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin'),
 (183, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
-(184, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin');
+(184, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin'),
+(185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
+(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');
 
 ## --------------------------------------------------------
 

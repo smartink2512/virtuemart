@@ -347,19 +347,41 @@ else {
 				  echo "<br /><span style=\"font-size: smaller;\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</span>"; 
 				  if( $downloadable ) {
 				  	echo '<br /><br />
-				  			<div style="font-weight:bold;">DOWNLOAD STATS</div>';
+				  			<div style="font-weight:bold;">'.$VM_LANG->_VM_DOWNLOAD_STATS .'</div>';
 				  	if( empty( $files )) {
-				  		echo '<em>- no downloads remaining -</em>';
+				  		echo '<em>- '.$VM_LANG->_VM_DOWNLOAD_NOTHING_LEFT .' -</em>';
+				  		$enable_download_function = $ps_function->get_function('insertDownloadsForProduct');
+				  		if( $perm->check( $enable_download_function['perms'] ) ) {
+				  			echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">				  		
+				  			<input type="hidden" name="page" value="'.$page.'" />
+				  			<input type="hidden" name="order_id" value="'.$order_id.'" />
+				  			<input type="hidden" name="product_id" value="'.$dbt->f('product_id').'" />
+				  			<input type="hidden" name="user_id" value="'.$dbt->f('user_id').'" />
+				  			<input type="hidden" name="func" value="insertDownloadsForProduct" />
+				  			<input type="hidden" name="option" value="'.$option.'" />
+				  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_VM_DOWNLOAD_REENABLE.'" />
+				  			</form>';
+				  		}
 				  	} else {
 				  		foreach( $files as $file ) {
 				  			echo '<em>'
 				  					.'<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$dbt->f('product_id').'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN.'">'
 				  					.$file->file_name.'</a></em><br />';
 				  			echo '<ul>';
-				  			echo '<li>Remaining Downloads: '.$file->download_max.'</li>';
-				  			echo '<li>End Date: '.date("d-M-Y, H:i", $file->end_date + $mosConfig_offset ).'</li>';
+				  			echo '<li>'.$VM_LANG->_VM_DOWNLOAD_REMAINING_DOWNLOADS .': '.$file->download_max.'</li>';
+				  			if( $file->end_date > 0 ) {
+				  				echo '<li>'.$VM_LANG->_VM_EXPIRY.': '.date("d-M-Y, H:i", $file->end_date + $mosConfig_offset ).'</li>';
+				  			}
 				  			echo '</ul>';
-				  		}				  		
+				  			echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">				  		
+				  			<input type="hidden" name="order_id" value="'.$order_id.'" />
+				  			<input type="hidden" name="page" value="'.$page.'" />
+				  			<input type="hidden" name="func" value="mailDownloadId" />
+				  			<input type="hidden" name="option" value="'.$option.'" />
+				  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_VM_DOWNLOAD_RESEND_ID.'" />
+				  			</form>';
+				  		}
+				  		
 				  	}
 				  }
 				  ?>

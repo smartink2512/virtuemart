@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+28.01.2007 soeren
++ added new functions to resend the Download ID and re-enable expired or max-downloaded downloads
+! two new function have been added to the function list: insertDownloadsForProduct and mailDownloadId
+	####		
+	INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
+	(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');
+	####
+	
 26.01.2007 soeren
 # UPS: renamed "UPS Express Saver" to "UPS Saver"
 # UPS: merged Deneb's improvements for the UPS module to the trunk
@@ -47,10 +55,11 @@ VirtueMart 1.1.x
 
 19.01.2007 soeren
 ! two new function have been added to the function list: setModulePermissions and setFunctionPermissions
+	####
 	INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
-	VALUES 
-	(null, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
+	VALUES (null, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
 	(null, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin');	
+	####
 	
 + added a function <=> user group matrix to the function list, so access restrictions can quickly be changed
 + added a module <=> user group matrix to the module list, so access restrictions can quickly be changed

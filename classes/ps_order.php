@@ -221,17 +221,21 @@ class ps_order {
 	**************************************************************************/
 	function mail_download_id( &$d ){
 
-		global $mosConfig_live_site, $mosConfig_absolute_path, $db, $sess,
+		global $mosConfig_live_site, $mosConfig_absolute_path, $sess,
 		$VM_LANG, $mosConfig_smtpauth, $mosConfig_mailer, $vmLogger,
 		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
 
 		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
-
-		if ($d["order_status"]==ENABLE_DOWNLOAD_STATUS) {
+		
+		$db = new ps_DB();
+		$db->query( 'SELECT order_status FROM #__{vm}_orders WHERE order_id='.(int)$d['order_id'] );
+		$db->next_record();
+		
+		if ($db->f("order_status")==ENABLE_DOWNLOAD_STATUS) {
 			$dbw = new ps_DB;
 			
 			$q = "SELECT order_id,user_id,download_id,file_name FROM #__{vm}_product_download WHERE";
-			$q .= " order_id = '" . $d["order_id"] . "'";
+			$q .= " order_id = '" . (int)$d["order_id"] . "'";
 			$dbw->query($q);
 			$dbw->next_record();
 			$userid = $dbw->f("user_id");
@@ -283,6 +287,8 @@ class ps_order {
 				else {
 					$vmLogger->warning( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("user_email")." (". $mail->ErrorInfo.")" );
 				}
+			} else {
+				$vmLogger->warning( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX );
 			}
 		}
 
@@ -368,8 +374,49 @@ class ps_order {
 			$vmLogger->warning( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND.' '. $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("user_email")." (". $result->ErrorInfo.")" );
 		}
 	}
+	/**
+	 * This function inserts the DOWNLOAD IDs for all files associated with this product
+	 * so the customer can later download the purchased files
+	 * @static 
+	 * @since 1.1.0
+	 * @param int $product_id
+	 * @param int $order_id
+	 * @param int $user_id
+	 */
+	function insert_downloads_for_product( &$d ) {
+		$db = new ps_DB();
+		$dbd = new ps_DB();
+		if( empty( $d['product_id'] ) || empty( $d['order_id'] )) {
+			return false;
+		}
+		print_r( $d );
+		$dl = "SELECT attribute_name,attribute_value ";
+		$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$d['product_id']."'";
+		$dl .= " AND attribute_name='download'";
+		$db->query($dl);
+		$dlnum = 0;
+		while($db->next_record()) {
 
+			$str = (int)$d['order_id'];
+			$str .= $d['product_id'];
+		    $str .= uniqid('download_');
+			$str .= $dlnum++;
+			$str .= time();
 
+			$download_id = md5($str);
+
+			$fields = array('product_id' => $d['product_id'], 
+							'user_id' => (int)$d['user_id'], 
+							'order_id' => (int)$d['order_id'], 
+							'end_date' => '0', 
+							'download_max' => DOWNLOAD_MAX, 
+							'download_id' => $download_id, 
+							'file_name' => $db->f("attribute_value")
+							);
+			$dbd->buildQuery('INSERT', '#__{vm}_product_download', $fields );
+			$dbd->query();
+		}
+	}
 	/**************************************************************************
 	* name: download_request
 	* created by: uli
@@ -476,13 +523,13 @@ class ps_order {
 				exit();
 			}
 			else {
-				$vmLogger->err( "Sorry, but the requested file can't be read from the Server" );
+				$vmLogger->err( $VM_LANG->_VM_DOWNLOAD_FILE_NOTREADABLE );
 				return false;
 				//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 			}
 		}
 		else {
-			$vmLogger->err( "Sorry, but the requested file wasn't found. Possible Cause: Wrong path" );
+			$vmLogger->err( $VM_LANG->_VM_DOWNLOAD_FILE_NOTFOUND );
 			return false;
 			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}

@@ -234,4 +234,8 @@ INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `fun
 	(null, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
 	(null, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin');
 
+	
+INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
+(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');
+
 UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';

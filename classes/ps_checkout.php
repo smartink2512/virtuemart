@@ -1000,36 +1000,12 @@ Order Total: '.$order_total.'
 
 		######## BEGIN DOWNLOAD MOD ###############
 		if( ENABLE_DOWNLOADS == "1" ) {
+			require_once( CLASSPATH.'ps_order.php');
 			for($i = 0; $i < $cart["idx"]; $i++) {
 				
-				$dl = "SELECT attribute_name,attribute_value ";
-				$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$cart[$i]["product_id"]."'";
-				$dl .= " AND attribute_name='download'";
-				$db->query($dl);
-				$dlnum = 0;
-				while($db->next_record()) {
-
-					$str = $order_id;
-					$str .= $cart[$i]["product_id"];
-				    $str .=uniqid('download_');
-					$str .= $dlnum++;
-					$str .= time();
-
-					$download_id = md5($str);
-
-					$q = "INSERT INTO #__{vm}_product_download ";
-					$q .= "(product_id, user_id, order_id, end_date, download_max, download_id, file_name)";
-					$q .= " VALUES ('";
-					$q .= $cart[$i]["product_id"] . "', '";
-					$q .= $auth["user_id"] . "', '";
-					$q .= $order_id . "', '";
-					$q .= " 0" . "', '";
-					$q .= DOWNLOAD_MAX . "', '";
-					$q .= $download_id . "', '";
-					$q .= $GLOBALS['vmInputFilter']->safeSQL( $db->f("attribute_value")) . "')";
-					$db->query($q);
-					$db->next_record();
-				}
+				$params = array('product_id' => $cart[$i]["product_id"], 'order_id' => $order_id, 'user_id' => $auth["user_id"] );
+				ps_order::insert_downloads_for_product( $params );
+				
 				if( @VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL == '1' ) {
 					// Update the product stock level back to where it was.
 					$q = "UPDATE #__{vm}_product ";

@@ -1819,6 +1819,14 @@ Please do not respond to this message as it is automatically generated and is fo
 	var $_OCT = 'October';
 	var $_NOV = 'November';
 	var $_DEC = 'December';
+	var $_VM_DOWNLOAD_STATS = 'DOWNLOAD STATS';
+	var $_VM_DOWNLOAD_NOTHING_LEFT = 'no downloads remaining';
+	var $_VM_DOWNLOAD_REENABLE = 'Re-Enable Download';
+	var $_VM_DOWNLOAD_REMAINING_DOWNLOADS = 'Remaining Downloads';
+	var $_VM_DOWNLOAD_RESEND_ID = 'Resend Download ID';
+	var $_VM_EXPIRY = 'Expiry';
+	var $_VM_DOWNLOAD_FILE_NOTREADABLE = 'Sorry, but the requested file can\'t be read from the Server';
+	var $_VM_DOWNLOAD_FILE_NOTFOUND = 'Sorry, but the requested file wasn\'t found. Possible Cause: Wrong path';
         
 }
 class phpShopLanguage extends vmLanguage { }

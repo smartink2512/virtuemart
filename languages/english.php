@@ -752,8 +752,8 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_DOWNLOADS_TITLE = 'Download Area';
 	var $_PHPSHOP_DOWNLOADS_START = 'Start Download';
 	var $_PHPSHOP_DOWNLOADS_INFO = 'Please enter the Download-ID you\'ve got in the e-mail and click \'Start Download\'.';
-	var $_PHPSHOP_DOWNLOADS_ERR_EXP = 'Sorry, but your Download has expired';
-	var $_PHPSHOP_DOWNLOADS_ERR_MAX = 'Sorry, but your maximum number of downloads has been reached';
+	var $_PHPSHOP_DOWNLOADS_ERR_EXP = 'Sorry, but this Download has expired';
+	var $_PHPSHOP_DOWNLOADS_ERR_MAX = 'Sorry, but the maximum number of downloads has been reached';
 	var $_PHPSHOP_DOWNLOADS_ERR_INV = 'Invalid Download-ID!';
 	var $_PHPSHOP_DOWNLOADS_ERR_SEND = 'Could not send a message to ';
 	var $_PHPSHOP_DOWNLOADS_SEND_MSG = 'Message sent to ';
@@ -1817,6 +1817,14 @@ Please do not respond to this message as it is automatically generated and is fo
 	var $_OCT = 'October';
 	var $_NOV = 'November';
 	var $_DEC = 'December';
+	var $_VM_DOWNLOAD_STATS = 'DOWNLOAD STATS';
+	var $_VM_DOWNLOAD_NOTHING_LEFT = 'no downloads remaining';
+	var $_VM_DOWNLOAD_REENABLE = 'Re-Enable Download';
+	var $_VM_DOWNLOAD_REMAINING_DOWNLOADS = 'Remaining Downloads';
+	var $_VM_DOWNLOAD_RESEND_ID = 'Resend Download ID';
+	var $_VM_EXPIRY = 'Expiry';
+	var $_VM_DOWNLOAD_FILE_NOTREADABLE = 'Sorry, but the requested file can\'t be read from the Server';
+	var $_VM_DOWNLOAD_FILE_NOTFOUND = 'Sorry, but the requested file wasn\'t found. Possible Cause: Wrong path';
         
 }
 class phpShopLanguage extends vmLanguage { }
