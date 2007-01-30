@@ -59,7 +59,7 @@ class vmConnector {
 	 * @param string $postData
 	 * @return mixed
 	 */
-	function handleCommunication( $url, $postData='') {
+	function handleCommunication( $url, $postData='', $headers=array() ) {
 		global $vmLogger;
 
 		$urlParts = parse_url( $url );
@@ -88,7 +88,10 @@ class vmConnector {
 			
 			// just to get sure the script doesn't die			
 			curl_setopt($CR, CURLOPT_TIMEOUT, 30 );
-			
+			if( !empty( $headers )) {
+				// Add additional headers if provided
+				curl_setopt($CR, CURLOPT_HTTPHEADER, $headers);
+			}
 			curl_setopt($CR, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($CR, CURLOPT_FAILONERROR, true);
 			if( $postData ) {
@@ -179,6 +182,7 @@ class vmConnector {
 				if( !empty( $proxyURL )) {
 				   	fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
 				   	fputs($fp, "Host: ".$proxyURL['host']."\r\n");
+
 				   	if( trim( @VM_PROXY_USER )!= '') {
 				   		fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
 				   	}
@@ -205,9 +209,13 @@ class vmConnector {
 					fputs($fp, 'Host:'. $urlParts['host']."\r\n");
 				}
 			}
+			// Add additional headers if provided
+		   	foreach( $headers as $header ) {
+		   		fputs($fp, $header."\r\n");
+		   	}
 			$data = "";
 			while (!feof($fp)) {
-				$data .= fgets ($fp, 4096);
+				$data .= @fgets ($fp, 4096);
 			}
 			fclose( $fp );
 			

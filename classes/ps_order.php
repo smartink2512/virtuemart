@@ -287,9 +287,7 @@ class ps_order {
 				else {
 					$vmLogger->warning( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("user_email")." (". $mail->ErrorInfo.")" );
 				}
-			} else {
-				$vmLogger->warning( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX );
-			}
+			} 
 		}
 
 		##---------------------------updated 03/28/2004-----------------------------------
@@ -389,7 +387,7 @@ class ps_order {
 		if( empty( $d['product_id'] ) || empty( $d['order_id'] )) {
 			return false;
 		}
-		print_r( $d );
+		
 		$dl = "SELECT attribute_name,attribute_value ";
 		$dl .= "FROM #__{vm}_product_attribute WHERE product_id='".$d['product_id']."'";
 		$dl .= " AND attribute_name='download'";
