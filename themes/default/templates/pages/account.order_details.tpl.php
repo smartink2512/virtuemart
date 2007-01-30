@@ -628,9 +628,10 @@ if( $db->f('order_number')) {
 	
 		  	// DECODE Account Number
 		  	$dbaccount = new ps_DB;
-		  	$q = "SELECT DECODE(\"". $dbpm->f("order_payment_number")."\",\"".ENCODE_KEY."\") as account_number FROM #__{vm}_order_payment WHERE order_id='".$order_id."'";
+		  	$q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') as account_number FROM #__{vm}_order_payment WHERE order_id='".$order_id."'";
 		  	$dbaccount->query($q);
-	        $dbaccount->next_record(); ?>
+	        $dbaccount->next_record();
+	         ?>
 	      <tr> 
 	        <td width="10%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME ?> :</td>
 	        <td><?php $dbpm->p("order_payment_name"); ?> </td>

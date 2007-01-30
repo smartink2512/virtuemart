@@ -321,7 +321,7 @@ class ps_DB extends database {
 				$count = count( $values );
 				$i = 1;
 				foreach ( $values as $key => $value ) {
-					if( isset( $doNotEnclose[$key])) {
+					if( in_array( $key, $doNotEnclose )) {
 						// Important when using MySQL functions like "ENCODE", "REPLACE" or such
 						$q .= $value;
 					} 

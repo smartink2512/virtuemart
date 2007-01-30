@@ -887,7 +887,7 @@ Order Total: '.$order_total.'
 					'order_payment_trans_id' => $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] )
 				  );
 		if( !empty( $payment_number )) {
-			$fields['order_payment_number'] = "ENCODE( \"$payment_number\",\"" . ENCODE_KEY . "\")";
+			$fields['order_payment_number'] = "ENCODE( '$payment_number','" . ENCODE_KEY . "')";
 			$specialfield = array('order_payment_number');
 		} else {
 			$specialfield = array();

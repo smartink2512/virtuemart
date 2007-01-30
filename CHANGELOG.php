@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.01.2007 soeren
++ added a new PayFlow Pro class that doesn't need the Payflow Pro SDK installed on the server
+# fixed an error that prevented correct storage of the CC number
+
 28.01.2007 soeren
 + added new functions to resend the Download ID and re-enable expired or max-downloaded downloads
 ! two new function have been added to the function list: insertDownloadsForProduct and mailDownloadId
