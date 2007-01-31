@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-Global $return,$option,$option2,$product_id,$category_id,$Itemid,$flypage,$Itemid;
+Global $return,$option,$option2,$product_id,$category_id,$Itemid,$flypage;
 require_once(CLASSPATH. 'ps_cart.php' );
 $ps_cart =& new ps_cart;
 
@@ -27,7 +27,7 @@ $set = $ps_cart->reset();
 if( $option2 != "com_virtuemart") {
     mosRedirect($loc); }
 else {
-    mosredirect( $_SERVER['PHP_SELF']."?page=$return&option=com_virtuemart&product_id=$product_id&category_id=$category_id&flypage=$flypage&Itemid=$Itemid");
+    mosredirect( $sess->url( $_SERVER['PHP_SELF']."?page=$return&product_id=$product_id&category_id=$category_id&flypage=$flypage", false, false ));
 
   // 
 }

@@ -279,9 +279,11 @@ class ps_product_attribute {
 		$db_item = new ps_DB;
 
 		$html = "";
-		$html .= "<div class=\"vmCartDetails$cls_suffix\" width=\"100%\">\n";
+		$html .= "<div class=\"vmCartDetails$cls_suffix\">\n";
+		$close_child_div = false;
 		if(USE_AS_CATALOGUE != '1' && $this->list_advanced_attribute($product_id, $db->f("product_id")) != "" || $this->list_custom_attribute($product_id, $db->f("product_id")) !="") {
 			$html .= "<div class=\"vmCartChild$cls_suffix vmRowTwo$cls_suffix\">\n";
+			$close_child_div = true;
 		}
 		// Get list of children
 		$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND product_publish='Y'";
@@ -303,7 +305,7 @@ class ps_product_attribute {
 			$flypage = $ps_product->get_flypage( $product_id );
 			$html .= "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />\n";
 			$html .= "<label for=\"product_id_field\">".$VM_LANG->_PHPSHOP_PLEASE_SEL_ITEM."</label>: <br />";
-			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n";
+			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n";
 			$html .= "<option value=\"$product_id\">".$VM_LANG->_PHPSHOP_SELECT."</option>";
 			while ($db->next_record()) {
 				$selected = isset($child_id) ? ($db->f("product_id")==$child_id ? "selected=\"selected\"" : "") : "";
@@ -366,8 +368,11 @@ class ps_product_attribute {
 				$html .= "</div>";
 			}
 		}
-
+		if( $close_child_div ) {
+			$html .="</div>\n";
+		}
 		$html .="</div>";
+		
 		return array($html,"drop");
 	}
 
@@ -430,7 +435,7 @@ class ps_product_attribute {
 		}
 		if(( $db->num_rows() > 0 ) ) {
 
-			$html .= "<div class=\"vmCartDetails$cls_sfuffix\" width=\"100%\">\n";
+			$html .= "<div class=\"vmCartDetails$cls_sfuffix\">\n";
 			$ci=0;
 			while ($db->next_record()) {
 				$parent_id= $db->f("product_parent_id");
@@ -668,7 +673,7 @@ class ps_product_attribute {
 		}
 		if(( $db->num_rows() > 0 ) ) {
 
-			$html .= "<div class=\"vmCartDetails$cls_suffix\" width=\"100%\">\n";
+			$html .= "<div class=\"vmCartDetails$cls_suffix\">\n";
 			$ci=0;
 			while ($db->next_record()) {
 				$parent_id= $db->f("product_parent_id");
@@ -1085,7 +1090,7 @@ class ps_product_attribute {
 		//Determine if label to be used
 		$html = "";
 		if(!$child) {
-			$html ="<label for=\"quantity\" class=\"quantity_box\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":&nbsp;</label>";
+			$html ="<label for=\"quantity$prod_id\" class=\"quantity_box\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":&nbsp;</label>";
 		}
 		//Start output of quantity
 		//Check for incompatabilities and reset to normal
@@ -1100,7 +1105,7 @@ class ps_product_attribute {
 				if ($quantity > 0 ) {
 					$html .= "checked=\"checked\" ";
 				}
-				$html .= "onClick=\"alterQuantity(this.form)\" />";
+				$html .= "onclick=\"alterQuantity(this.form)\" />";
 				break;
 			case "hide" : // Hide box - but set quantity to 1!
 				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"1\" />";

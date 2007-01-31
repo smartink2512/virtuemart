@@ -22,7 +22,7 @@ if( in_array( 'product_sku', $VM_BROWSE_ORDERBY_FIELDS)) { ?>
         <?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE ?></option><?php 
   } 
   // SORT BY PRODUCT CREATION DATE
-if( in_array( 'product_cdate', $VM_BROWSE_ORDERBY_FIELDS)) { ?>?>
+if( in_array( 'product_cdate', $VM_BROWSE_ORDERBY_FIELDS)) { ?>
         <option value="product_cdate" <?php echo $orderby=="product_cdate" ? "selected=\"selected\"" : "";?>>
         <?php echo $VM_LANG->_PHPSHOP_LATEST ?></option>
         <?php

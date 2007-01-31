@@ -40,5 +40,5 @@ if( !$my->id ) {
 <?php
 }
 else {
-	mosRedirect( $sess->url( URL.'index.php?page='.HOMEPAGE ) );
+	mosRedirect( $sess->url( URL.'index.php?page='.HOMEPAGE, false, false ) );
 }

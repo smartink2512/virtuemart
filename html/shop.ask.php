@@ -37,7 +37,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	mosRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", false, false), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 if( !$perm->check("admin,storeadmin") ) {
 	$q .= " AND `product_publish`='Y'";
@@ -48,7 +48,7 @@ if( !$perm->check("admin,storeadmin") ) {
 $db_product->query( $q );
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
-	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	mosRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword={$_SESSION['keyword']}&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 
 

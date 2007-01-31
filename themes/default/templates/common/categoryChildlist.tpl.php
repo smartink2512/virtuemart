@@ -6,6 +6,9 @@ if( !isset( $categories_per_row )) {
 }
 $cellwidth = intval( 100 / $categories_per_row );
 
+if( empty( $categories )) {
+	return; // Do nothing, if there are no child categories!
+}
 ?>
 <br/>
 <table width="100%" cellspacing="0" cellpadding="0">

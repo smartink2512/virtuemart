@@ -23,7 +23,7 @@ foreach( $reviews as $review ) { // Loop through all reviews
 	<?php echo $VM_LANG->_PHPSHOP_RATE_NOM // "Rating:" ?>: 
 		<img src="<?php echo VM_THEMEURL ?>images/stars/<?php echo $review["user_rating"] ?>.gif" border="0" alt="<?php echo $review["user_rating"] ?>"" />
 	<br />
-	<blockquote><?php echo $review['comment'] ?></blockquote>
+	<blockquote><div><?php echo $review['comment'] ?></div></blockquote>
 	
 	<br /><br />
 	

@@ -58,7 +58,7 @@ if ( $payment_method_id ) {
 	$q .= "SET payment_passkey = ENCODE('$passkey','" . ENCODE_KEY . "')\n";
 	$q .= "WHERE payment_method_id='$payment_method_id';";
 	$db->query( $q );
-	mosRedirect( $sess->url($_SERVER['PHP_SELF']."?page=store.payment_method_form&payment_method_id=$payment_method_id"), $VM_LANG->_PHPSHOP_CHANGE_PASSKEY_SUCCESS);
+	mosRedirect( $sess->url($_SERVER['PHP_SELF']."?page=store.payment_method_form&payment_method_id=$payment_method_id", false, false), $VM_LANG->_PHPSHOP_CHANGE_PASSKEY_SUCCESS);
   }
   // not authenticated
   else {	

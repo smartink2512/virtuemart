@@ -22,11 +22,11 @@ if( $this->get_cfg( 'showPathway' )) {
 	    </td>
     </tr>
     <tr>
-	    <td colspan=2><hr style="width: 100%; height: 2px;" /></td>
+	    <td colspan="2"><hr style="width: 100%; height: 2px;" /></td>
     </tr>
     <tr>
         <td align="left" valign="top" width="220">
-            <div float:left><?php echo $product_image ?></div>
+            <div><?php echo $product_image ?></div>
         </td>
         <td valign="top">
             <div style="text-align: center;">
@@ -45,16 +45,17 @@ if( $this->get_cfg( 'showPathway' )) {
 	  <td ><?php echo $ask_seller ?></td>
 	</tr>
 	<tr>
-	    <td rowspan="1" colspan=2>
+	    <td rowspan="1" colspan="2">
             <hr style="width: 100%; height: 2px;" />
             <?php echo $product_description ?>
 	        <br/><span style="font-style: italic;"><?php echo $file_list ?></span>
         </td>
 	</tr>
-	<tr><hr style="width: 100%; height: 2px;" />
-	    <td colspan="2"><?php 
-	    	echo $related_products
-	    	?><br />
+	<tr>
+	    <td colspan="2">
+	    <hr style="width: 100%; height: 2px;" />
+	    <?php  echo $related_products ?>
+	    <br />
 	    </td>
 	</tr>
     <tr>

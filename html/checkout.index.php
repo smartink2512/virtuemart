@@ -339,7 +339,7 @@ if ($checkout) {
     }
 }
 else {
-	mosRedirect( $sess->url( 'index.php?page=shop.cart' ) );
+	mosRedirect( $sess->url( 'index.php?page=shop.cart', false, false ) );
 }
 
 ?>

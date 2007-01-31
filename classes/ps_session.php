@@ -158,7 +158,7 @@ class ps_session {
 		$url = $toSecure ? SECUREURL : URL;
 		
 		// Redirect and send the Cookie Values within the variable martID
-		mosRedirect( $this->url( $url . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID&redirected=1", true ) );
+		mosRedirect( $this->url( $url . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID&redirected=1", true, false ) );
 	}
 	/**
 	 * It does what the name says. It starts a session again (with a certain ID when a $sid is given)
@@ -225,7 +225,7 @@ class ps_session {
 				if( $this->check_Shared_SSL($ssl_domain)) {
 					$this->saveSessionAndRedirect( false );
 				}
-				mosRedirect( $this->url( URL.'index.php?'.$_SERVER['QUERY_STRING'], true ));
+				mosRedirect( $this->url( URL.'index.php?'.$_SERVER['QUERY_STRING'], true, false ));
 			}
 		}
 		
@@ -248,7 +248,7 @@ class ps_session {
 			}
 			// do nothing but redirect
 			elseif( !vmIsHttpsMode() && $redirected == 0 ) {
-				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING'].'&redirected=1', true ) );
+				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING'].'&redirected=1', true, false ) );
 			}
 		}
 		/**
@@ -308,7 +308,7 @@ class ps_session {
 					if( !empty( $_GET['martID'] )) {
 						$query_string = substr_replace( $_SERVER['QUERY_STRING'], '', strpos( $_SERVER['QUERY_STRING'], '&martID'));
 						$url = vmIsHttpsMode() ? SECUREURL : URL;
-						mosRedirect( $this->url( $url . "index.php?$query_string&cartReset=N", true) );
+						mosRedirect( $this->url( $url . "index.php?$query_string&cartReset=N", true, false) );
 					}
 	
 				}
@@ -448,7 +448,7 @@ class ps_session {
 	 * @param boolean False: Create a URI like /joomla/index.php?....; True: Create a URI like http://www.domain.com/index.php?....
 	 * @return string The reformatted URL
 	 */
-	function url($text, $createAbsoluteURI = false) {
+	function url($text, $createAbsoluteURI=false, $encodeAmpersands=true ) {
 		global $mm_action_url, $page;
 		
 		if( !defined( '_PSHOP_ADMIN' )) {
@@ -522,14 +522,10 @@ class ps_session {
 	
 				break;
 		}
-		/**
-	    ** This has to be redone, because it doesn't work with mosRedirect
-	
-	    if (!defined( '_PSHOP_ADMIN' ) && $pshop_mode != "admin") {
-	        $text = str_replace( "&", "&amp;", $text );
-	        $text = str_replace( "&amp;amp;", "&amp;", $text );
+		if( $encodeAmpersands ) {
+	        $text = ampReplace( $text );
 	    } 
-	    */
+	    
 		return $text;
 	}
 

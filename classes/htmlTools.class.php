@@ -579,7 +579,7 @@ class vmCommonHTML extends mosHTML {
 		if( $attributes ) {
 			$attributes = ' ' . $attributes;
 		}
-		return '<a href="'.$link.'"'.$target.$title.$attributes.'>'.$text.'</a>';
+		return '<a href="'.ampReplace($link).'"'.$target.$title.$attributes.'>'.$text.'</a>';
 	}
 	/**
 	 * Function to create an image tag
@@ -595,14 +595,18 @@ class vmCommonHTML extends mosHTML {
 	 */
 	function imageTag( $src, $alt='', $align='', $height='', $width='', $title='', $border='0', $attributes='' ) {
 		
-		$alt = ' alt="'.$alt.'"';
 		if( $align ) { $align = ' align="'.$align.'"'; }
 		if( $height ) { $height = ' height="'.$height.'"'; }
 		if( $width ) { $width = ' width="'.$width.'"'; }
 		if( $title ) { $title = ' title="'.$title.'"'; }
 		if( $attributes ) {	$attributes = ' ' . $attributes; }
 		
-		$border = ' border="'.$border.'"';
+		if( !strpos($attributes, 'border=')) {
+			$border = ' border="'.$border.'"';
+		} // Prevent doubled attributes
+		if( !strpos($attributes, 'alt=')) {
+			$alt = ' alt="'.$alt.'"';
+		}
 		
 		return '<img src="'.$src.'"'.$alt.$align.$title.$height.$width.$border.$attributes.' />';
 	}
@@ -1159,7 +1163,7 @@ class vmCommonHTML extends mosHTML {
 		global $VM_LANG, $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
 		if ( @VM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
-				$link = 'index2.php?'.$_SERVER['QUERY_STRING'].'&amp;pop=1';
+				$link = 'index2.php?'.ampReplace(mosGetParam($_SERVER,'QUERY_STRING')).'&amp;pop=1';
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {

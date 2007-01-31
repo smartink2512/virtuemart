@@ -62,11 +62,11 @@ else {
 }
 /** This redirect has lead to critics  **/
 if ($count <= 1 && $cc_payments==false) {
-	mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99"),"");
+	mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false ),"");
 }
 elseif( $order_total <= 0.00 ) {
 	// In case the order total is less than or equal zero, we don't need a payment method
-	mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99"),"");
+	mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false),"");
 }
 if( $nocc_payments &&  $cc_payments ) {
 	echo '<table width="100%"><tr valign="top"><td width="50%">';

@@ -42,10 +42,10 @@ if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price,
     <?php
 }
 if ($children != "multi") { ?>
-	</form></div>
+	</form>
 <?php 
 } 
-    if($children == "radio") {?>
+    if($children == "radio") { ?>
     
     <script language="JavaScript" type="text/javascript">//<![CDATA[
     function alterQuantity(myForm) {
@@ -61,7 +61,7 @@ if ($children != "multi") { ?>
             }
         }
     }
-//]]>   
-</script>
+	//]]>   
+	</script>
 <?php } ?>
 </div>

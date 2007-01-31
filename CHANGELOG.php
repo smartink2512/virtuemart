@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+31.01.2007 soeren
+# various XHTML standards compliancy fixes 
+	* added ampReplace function to URL functions in ps_session.php, plus new parameter: encodeAmpersands (default:true) )
+	* fixed various wrong tags, missing closing tags and unencoded ampersands
+	
 30.01.2007 soeren
 + added a new PayFlow Pro class that doesn't need the Payflow Pro SDK installed on the server
 # fixed an error that prevented correct storage of the CC number

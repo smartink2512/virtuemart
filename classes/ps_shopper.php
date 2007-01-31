@@ -337,13 +337,13 @@ class ps_shopper {
 			} else {
 				$redirect_to_page = HOMEPAGE;
 			}
-			mosRedirect( $sess->url( 'index.php?page='.$redirect_to_page ), $VM_LANG->_REG_COMPLETE );
+			mosRedirect( $sess->url( 'index.php?page='.$redirect_to_page, false, false ), $VM_LANG->_REG_COMPLETE );
 		}
 		elseif( $my->id ) {
-			mosRedirect( $sess->url( 'index.php?page=checkout.index' ) );
+			mosRedirect( $sess->url( 'index.php?page=checkout.index', false, false ) );
 		}
 		else {
-			mosRedirect( $sess->url( 'index.php?page=shop.index' ), $VM_LANG->_REG_COMPLETE_ACTIVATE );
+			mosRedirect( $sess->url( 'index.php?page=shop.index', false, false ), $VM_LANG->_REG_COMPLETE_ACTIVATE );
 		}
 
 		return true;
