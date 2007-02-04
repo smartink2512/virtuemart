@@ -34,7 +34,7 @@ if ($auto == 1 && !empty( $category_id ) ) {
 	$query  = "SELECT distinct a.manufacturer_id,a.mf_name FROM #__{vm}_manufacturer AS a, ";
     $query .= "\n#__{vm}_product AS b,"
     . "\n#__{vm}_product_mf_xref AS c,"
-    . "\n#__{vm}_product_category_xref AS d, "
+    . "\n#__{vm}_product_category_xref AS d "
     . "\nWHERE d.category_id='$category_id'"
     . "\n AND d.product_id = b.product_id "
     . "\n AND b.product_id = c.product_id AND c.manufacturer_id = a.manufacturer_id ";
