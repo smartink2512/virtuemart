@@ -62,8 +62,8 @@ function updateMiniCarts() {
 		if( carts ) {
 			for (var i=0; i<carts.length; i++){
 				carts[i].innerHTML = responseText;
-				var fxc = new Fx.Color(carts[i], 'color', {duration: 1000});
-				fxc.fromColor( '#eee' );							
+				var fxs = new Fx.Style(carts[i], 'color', {duration: 1000});
+				fxs.start( '#eee', $(carts[i]).getStyle('color') );
 			}
 		}
 	}

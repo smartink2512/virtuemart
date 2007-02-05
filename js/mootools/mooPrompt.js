@@ -107,7 +107,7 @@ var MooPrompt = box = new Class({
 				this.box.setStyles({
 					'visibility': 'hidden', 'display': '', 'height': this.boxHeight+'px'
 				});
-				new fx.Style(this.box, 'opacity', {duration:100}).custom(0, 1).chain(function() {
+				new Fx.Style(this.box, 'opacity', {duration:100}).custom(0, 1).chain(function() {
 					if (this.options.delay > 0) {
 						var fn = function () {
 							this.close()
@@ -187,8 +187,8 @@ var MooPrompt = box = new Class({
 		if (typeof(fn) == 'function') {
 			fn();
 		}
-		if (this.options.overlay) {new fx.Style(this.overlay, 'opacity', {duration:250}).custom(.8, 0);}
-		new fx.Style(this.container, 'opacity', {
+		if (this.options.overlay) {new Fx.Style(this.overlay, 'opacity', {duration:250}).custom(.8, 0);}
+		new Fx.Style(this.container, 'opacity', {
 			duration:250,
 			onComplete: function() {
 				window.removeEvent('scroll', this.eventPosition).removeEvent('resize', this.eventPosition);
