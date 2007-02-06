@@ -220,7 +220,7 @@ class ps_user {
 		$db->query( "SELECT COUNT(user_info_id) AS num_rows FROM #__{vm}_user_info WHERE user_id='" . $user_id . "'" );
 		if( $db->f('num_rows') < 1 ) {
 			// The user is registered in Joomla, but not in VirtueMart; so, insert the bill to information
-			return $this->add(&$d);
+			return $this->add($d);
 		}
 		else {
 			$q = "UPDATE #__{vm}_user_info SET
