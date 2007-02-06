@@ -140,7 +140,7 @@ class usps {
 			$dest_country = $db->f("country_2_code");
 			$dest_country_name = $db->f("country_name");
 			$dest_state = $db->f("state");
-			$dest_zip = $db->f("zip");
+			$dest_zip = substr($db->f("zip"), 0, 5); // Make sure the ZIP is 5 chars long
 			//$weight_measure
 			$shipping_pounds_intl = ceil ($order_weight);
 			$shipping_pounds = floor ($order_weight);

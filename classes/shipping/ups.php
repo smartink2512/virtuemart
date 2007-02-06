@@ -79,7 +79,7 @@ class ups {
 
 			//The zip that you are shipping to
 			$dest_country = $db->f("country_2_code");
-			$dest_zip = $db->f("zip");
+			$dest_zip = substr($db->f("zip"), 0, 5); // Make sure the ZIP is 5 chars long
 
 			//LBS  = Pounds
 			//KGS  = Kilograms
