@@ -189,15 +189,18 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 
             var vmMenu = getEl('masterdiv2');
             vmMenu.mon('click', classClicked);
-            var page = window.location.href.split('#')[1];
-            if(!page){
-                page = 'index3.php?option=com_virtuemart';
+            if( getURLParam('page') != '' ) {
+            	page = '$mosConfig_live_site/administrator/index3.php?option=com_virtuemart&page=' + getURLParam('page');
             }
+            else {
+                page = '$mosConfig_live_site/administrator/index3.php?option=com_virtuemart&page={$_SESSION['last_page']}';
+            }            
             this.loadPage(page);
             this.layout = layout;
 		},
 
         loadPage : function(page){
+
         	php_self = page.replace(/index2.php/, 'index3.php');
         	php_self = php_self.replace(/index.php/, 'index3.php');
             getEl('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';

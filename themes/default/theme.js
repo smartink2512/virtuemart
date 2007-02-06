@@ -62,8 +62,26 @@ function updateMiniCarts() {
 		if( carts ) {
 			for (var i=0; i<carts.length; i++){
 				carts[i].innerHTML = responseText;
-				var fxs = new Fx.Style(carts[i], 'color', {duration: 1000});
-				fxs.start( '#eee', $(carts[i]).getStyle('color') );
+				color = carts[i].getStyle( 'color' );
+				bgcolor = carts[i].getStyle( 'background-color' );
+				if( bgcolor == 'transparent' ) {
+					// If the current element has no background color, it is transparent.
+					// We can't make a highlight without knowing about the real background color,
+					// so let's loop up to the next parent that has a BG Color
+					parent = carts[i].getParent();
+					while( parent && bgcolor == 'transparent' ) {
+						bgcolor = parent.getStyle( 'background-color' );
+						parent = parent.getParent();
+					}
+				}
+				var fxc = new Fx.Style(carts[i], 'color', {duration: 1000});
+				var fxbgc = new Fx.Style(carts[i], 'background-color', {duration: 1000});
+
+				fxc.start( '#222', color );							
+				fxbgc.start( '#fff68f', bgcolor );
+				if( parent ) {
+					setTimeout( "carts[" + i + "].setStyle( 'background-color', 'transparent' )", 1000 );
+				}
 			}
 		}
 	}

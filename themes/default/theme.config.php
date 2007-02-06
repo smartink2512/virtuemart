@@ -22,6 +22,6 @@ showVendorLink=0
 showManufacturerLink=0
 showAvailability=1
 showPathway=0
-useGreyBoxOnCheckout=1
 useLightBoxImages=1
+useGreyBoxOnCheckout=0
 useAjaxCartActions=1
