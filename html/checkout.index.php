@@ -69,6 +69,7 @@ $theme->set_vars( // Import these values into the template files
 			'ship_to_info_id' => $ship_to_info_id,
 			'shipping_rate_id' => $shipping_rate_id,
 			'payment_method_id' => $payment_method_id,
+			'weight_total' => $weight_total,
 			'Itemid' => $Itemid
 			)
 	);

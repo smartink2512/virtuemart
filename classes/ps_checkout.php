@@ -176,11 +176,12 @@ class ps_checkout {
 	    				$step_msg = $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER;
 	    				break;
 	    		}
-	    		$steps_to_do[$i] = array('step_name' => $step_name,
+	    		$steps_to_do[$i][] = array('step_name' => $step_name,
 	    								'step_msg' => $step_msg,
 	    								'step_order' => key($steps_tmp) );
-				next( $steps_tmp );
+			
 	    	}
+    		next( $steps_tmp );
 	    	$i++;
 	    }
 	      
@@ -664,6 +665,8 @@ class ps_checkout {
 	}
 	
 	function list_shipping_methods( $ship_to_info_id=null, $shipping_method_id=null ) {
+		global $PSHOP_SHIPPING_MODULES, $vmLogger, $my, $weight_total;
+		
 		if( empty( $ship_to_info_id )) {
 		    // Get the Bill to user_info_id
 		    $database->setQuery( "SELECT user_info_id FROM #__users WHERE id='".$my->id."'" );
@@ -680,6 +683,7 @@ class ps_checkout {
 		    echo "<br/><hr/>";
 		}
 	}
+	
 	function list_payment_methods( $payment_method_id=0 ) {
 		global $order_total, $sess;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];

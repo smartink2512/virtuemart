@@ -27,13 +27,18 @@ echo '
 
 foreach ($steps_to_do as $step ) {
 
-	echo '<td '.(($highlighted_step==$step['step_order']) ? $highlighted_style : '') .' width="119" align="center" valign="bottom">';
-	if ($highlighted_step > $step['step_order']) {
-		echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&amp;option=com_virtuemart&amp;ship_to_info_id=$ship_to_info_id&amp;shipping_rate_id=".@$shipping_rate_id."&amp;checkout_stage=".$step['step_order'] ).'">';
-		echo $step['step_msg'] .'</a>';
+	echo '<td '.(($highlighted_step==$step[0]['step_order']) ? $highlighted_style : '') .' width="119" align="center" valign="bottom">';
+	if ($highlighted_step > $step[0]['step_order'] ) {
+		echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&amp;option=com_virtuemart&amp;ship_to_info_id=$ship_to_info_id&amp;shipping_rate_id=".@$shipping_rate_id."&amp;checkout_stage=".$step[0]['step_order'] ).'">';
+		foreach( $step as $substep ) {
+			echo $substep['step_msg'].'<br />';
+		}
+		echo '</a>';
 	}
 	else {
-		echo $step['step_msg'];
+		foreach( $step as $substep ) {
+			echo $substep['step_msg'].'<br />';
+		}
 	}
 	echo '</td>';
 }

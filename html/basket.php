@@ -32,7 +32,7 @@ global $weight_total, $total, $tax_total, $order_tax_details, $discount_factor, 
 
 /* make sure this is the checkout screen */
 if ($cart["idx"] == 0) {
-	echo $VM_LANG->_PHPSHOP_EMPTY_CART;
+	$basket_html = $VM_LANG->_PHPSHOP_EMPTY_CART;
 	$checkout = False;
 }
 else {
@@ -248,7 +248,6 @@ else {
 			define ('_MIN_POV_REACHED', '1');
 		}
 	}
-	$basket_html = '';
 	
 	$order_total_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($order_total);
 	if( $show_basket ) {
