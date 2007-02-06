@@ -35,7 +35,7 @@ if ($perm->is_registered_customer($auth['user_id'])) {
       </td>
     </tr>
     <?php
-    if(CHECKOUT_STYLE == 1 || CHECKOUT_STYLE == 2) {
+    if(NO_SHIPTO != '1') {
 	?>
 		<tr><td>&nbsp;</td></tr>
 		

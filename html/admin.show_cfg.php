@@ -16,10 +16,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+require_once(CLASSPATH.'ps_checkout.php');
 
 global $acl, $VM_BROWSE_ORDERBY_FIELDS, $VM_MODULES_FORCE_HTTPS;
 if( !isset( $VM_BROWSE_ORDERBY_FIELDS )) { $VM_BROWSE_ORDERBY_FIELDS = array(); }
 if( !isset( $VM_MODULES_FORCE_HTTPS )) { $VM_MODULES_FORCE_HTTPS = array('account','checkout'); }
+if( !isset( $VM_CHECKOUT_MODULES )) { 
+	$VM_CHECKOUT_MODULES = array('CHECK_OUT_GET_SHIPPING_ADDR' => array('order' => 1,'enabled'=>1),
+								'CHECK_OUT_GET_SHIPPING_METHOD' => array('order' => 2,'enabled'=>1),
+								'CHECK_OUT_GET_PAYMENT_METHOD' => array('order' => 3,'enabled'=>1),
+								'CHECK_OUT_GET_FINAL_CONFIRMATION' => array('order' => 4,'enabled'=>1)
+							);
+}
 
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
@@ -884,37 +892,40 @@ foreach( $rows as $row ) {
         <td>
             <input type="checkbox" name="conf_SHOW_CHECKOUT_BAR" class="inputbox" <?php if (SHOW_CHECKOUT_BAR == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN ?>
+        <td width="30%"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN ?>
         </td>
     </tr>
     <tr>
-        <td rowspan="4" valign="top"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS ?></td>
-        <td width="40" valign="top">
-            <input type="radio" name="conf_CHECKOUT_STYLE" <?php if (CHECKOUT_STYLE == '1') echo "checked=\"checked\""; ?> value="1" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD ?>
-        </td>
-    </tr>
-    <tr>
+        <td valign="top"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS ?></td>
         <td valign="top">
-            <input type="radio" name="conf_CHECKOUT_STYLE" <?php if (CHECKOUT_STYLE == '2') echo "checked=\"checked\""; ?> value="2" />
+            <?php
+            $checkout_names = array_keys( $VM_CHECKOUT_MODULES );
+            foreach( $VM_CHECKOUT_MODULES as $step ) {
+            	$stepname = current($checkout_names);
+            	$label = "_PHPSHOP_CHECKOUT_MSG_".constant($stepname);
+            	$readonly = $checked = '';
+            	if( $step['enabled'] > 0 ) {
+            		$checked = ' checked="checked"';
+            	}
+            	if( $stepname == 'CHECK_OUT_GET_PAYMENT_METHOD' || $stepname == 'CHECK_OUT_GET_FINAL_CONFIRMATION') {
+            		$readonly = 'disabled="disabled"';
+            		$checked = ' checked="checked"';
+            	}
+            	echo '<input type="checkbox" name="VM_CHECKOUT_MODULES['.$stepname.'][enabled]" id="VM_CHECKOUT_MODULES_'.$stepname.'" value="1" '.$readonly.$checked.'/>
+            			<label for="VM_CHECKOUT_MODULES_'.$stepname.'"><strong>&quot;'.$VM_LANG->$label.'&quot;</strong></label><br />
+            			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            			Show on Step: <input type="text" name="VM_CHECKOUT_MODULES['.$stepname.'][order]" value="'.$step['order'].'" class="inputbox" size="2" /> of the checkout process.
+            			<input type="hidden" name="VM_CHECKOUT_MODULES['.$stepname.'][name]" value="'.$stepname.'" />
+            			<br /><br />';
+            	next($checkout_names);
+            }
+            ?>
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_2 ?>
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">
-            <input type="radio" name="conf_CHECKOUT_STYLE" <?php if (CHECKOUT_STYLE == '3') echo "checked=\"checked\""; ?> value="3" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_3 ?>
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">
-            <input type="radio" name="conf_CHECKOUT_STYLE" <?php if (CHECKOUT_STYLE == '4') echo "checked=\"checked\""; ?> value="4" />
-        </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_4 ?>
-        </td>
+        <td width="30%" valign="top"><?php // TODO
+        echo vmToolTip( 'Here you can enable, disable and reorder certain Checkout Steps. You can show multiple Steps
+        				on one Page by giving them the same Step Number.' );
+        			?>
+        	</td>
     </tr>
   </table>
 

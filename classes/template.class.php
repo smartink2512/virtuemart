@@ -52,9 +52,11 @@ class vmTemplate {
     * @return void
     */
 	function vmTemplate($path='', $cacheId = null, $expire = 0 ) {
-		global $mosConfig_cachepath, $mosConfig_cachetime;
+		global $mosConfig_live_site, $mosConfig_cachepath, $mosConfig_cachetime;
 			
 		$this->path = empty($path) ?  VM_THEMEPATH.'templates/' : $path;
+		$this->default_path = $mosConfig_live_site.'/components/com_virtuemart/themes/default/templates/';
+		
 		$globalsArray = vmGetGlobalsArray();
 		foreach( $globalsArray as $global ) {
 			global $$global;
@@ -143,7 +145,9 @@ class vmTemplate {
 			$this->vars = $vars;
 		}
 		else {
-			if(is_array($vars)) $this->vars = array_merge($this->vars, $vars);
+			if(is_array($vars)) {
+				$this->vars = array_merge($this->vars, $vars);
+			}
 		}
 	}
 	/**
@@ -182,6 +186,8 @@ class vmTemplate {
 		ob_start();                    // Start output buffering
 		if( file_exists( $this->path . $file ) ) {
 			include($this->path . $file);  // Include the file
+		} elseif( file_exists( $this->default_path . $file ) ) {
+			include( $this->default_path . $file );
 		}
 		$contents = ob_get_contents(); // Get the contents of the buffer
 		ob_end_clean();                // End buffering and discard

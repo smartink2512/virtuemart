@@ -28,7 +28,7 @@ require_once(CLASSPATH. 'ps_checkout.php' );
 $ps_checkout = new ps_checkout;
 require_once(CLASSPATH . 'ps_shipping_method.php' );
 
-global $weight_total, $total, $tax_total, $order_tax_details, $discount_factor;
+global $weight_total, $total, $tax_total, $order_tax_details, $discount_factor, $cart;
 
 /* make sure this is the checkout screen */
 if ($cart["idx"] == 0) {
@@ -107,9 +107,6 @@ else {
 		$product_price = round( $product_price, 2 );
 		$product_rows[$i]['product_price'] = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($product_price);
 
-		/* Quantity Box */
-		$product_rows[$i]['quantity_box'] = "<input type=\"text\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" class=\"inputbox\" size=\"4\" maxlength=\"4\" name=\"quantity\" value=\"".$cart[$i]["quantity"]."\" />";
-
 		/* SUBTOTAL CALCULATION */
 		$subtotal = $product_price * $cart[$i]["quantity"];
 
@@ -130,23 +127,26 @@ else {
 
 		/* UPDATE CART / DELETE FROM CART */
 		$action_url = $mm_action_url.basename($_SERVER['PHP_SELF']);
-		$product_rows[$i]['update_form'] = "<input type=\"hidden\" name=\"page\" value=\"". $page ."\" />
-    <input type=\"hidden\" name=\"func\" value=\"cartUpdate\" />
-    <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
-    <input type=\"hidden\" name=\"prod_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
-    <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
-    <input type=\"hidden\" name=\"description\" value=\"". stripslashes($cart[$i]["description"])."\" />
-    <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". VM_THEMEURL ."images/update_quantity_cart.png\" border=\"0\"  alt=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
-  </form>";
-		$product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" >
-    <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
-    <input type=\"hidden\" name=\"page\" value=\"". $page ."\" />
-    <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
-    <input type=\"hidden\" name=\"func\" value=\"cartDelete\" />
-    <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
-    <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
-  	<input type=\"image\" name=\"delete\" title=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" src=\"". VM_THEMEURL ."images/remove_from_cart.png\" border=\"0\" alt=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" />
-  </form>";
+		$product_rows[$i]['update_form'] = '<form action="'. $action_url .'" method="post" style="display: inline;">
+		<input type="hidden" name="option" value="com_virtuemart" />
+		<input type="text" title="'. $VM_LANG->_PHPSHOP_CART_UPDATE .'" class="inputbox" size="4" maxlength="4" name="quantity" value="'.$cart[$i]["quantity"].'" />
+		<input type="hidden" name="page" value="'. $page .'" />
+    <input type="hidden" name="func" value="cartUpdate" />
+    <input type="hidden" name="product_id" value="'. $_SESSION['cart'][$i]["product_id"] .'" />
+    <input type="hidden" name="prod_id" value="'. $_SESSION['cart'][$i]["product_id"] .'" />
+    <input type="hidden" name="Itemid" value="'. $sess->getShopItemid() .'" />
+    <input type="hidden" name="description" value="'. stripslashes($cart[$i]["description"]).'" />
+    <input type="image" name="update" title="'. $VM_LANG->_PHPSHOP_CART_UPDATE .'" src="'. VM_THEMEURL .'images/update_quantity_cart.png" border="0"  alt="'. $VM_LANG->_PHPSHOP_UPDATE .'" align="absmiddle" />
+  </form>';
+		$product_rows[$i]['delete_form'] = '<form action="'.$action_url.'" method="post" name="delete" style="display: inline;">
+    <input type="hidden" name="option" value="com_virtuemart" />
+    <input type="hidden" name="page" value="'. $page .'" />
+    <input type="hidden" name="Itemid" value="'. $sess->getShopItemid() .'" />
+    <input type="hidden" name="func" value="cartDelete" />
+    <input type="hidden" name="product_id" value="'. $_SESSION['cart'][$i]["product_id"] .'" />
+    <input type="hidden" name="description" value="'. $cart[$i]["description"].'" />
+  	<input type="image" name="delete" title="'. $VM_LANG->_PHPSHOP_CART_DELETE .'" src="'. VM_THEMEURL .'images/remove_from_cart.png" border="0" alt="'. $VM_LANG->_PHPSHOP_CART_DELETE .'" align="absmiddle" />
+  </form>';
 	} // End of for loop through the Cart
 
 	$total = $total_undiscounted = round($total, 2);
@@ -168,7 +168,7 @@ else {
 	}
 
 	/* HANDLE SHIPPING COSTS */
-	if( !empty($shipping_rate_id) && (CHECKOUT_STYLE =='1' || CHECKOUT_STYLE=='3')) {
+	if( !empty($shipping_rate_id) && (NO_SHIPPING =='')) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
 		$shipping_total = round( $GLOBALS['CURRENCY']->convert($ps_checkout->_SHIPPING->get_rate ( $vars )), 2 );
@@ -238,35 +238,37 @@ else {
 
 
 	/* check if the minimum purchase order value has already been reached */
-	if (round($_SESSION['minimum_pov'], 2) > 0.00) {
-		if ($total_undiscounted >= $GLOBALS['CURRENCY']->convert( $_SESSION['minimum_pov'] )) {
-			// OKAY!
+	if( !defined( '_MIN_POV_REACHED' )) {
+		if (round($_SESSION['minimum_pov'], 2) > 0.00) {
+			if ($total_undiscounted >= $GLOBALS['CURRENCY']->convert( $_SESSION['minimum_pov'] )) {
+				// OKAY!
+				define ('_MIN_POV_REACHED', '1');
+			}
+		} else {
 			define ('_MIN_POV_REACHED', '1');
 		}
-	} else {
-		define ('_MIN_POV_REACHED', '1');
 	}
-
+	$basket_html = '';
+	
 	$order_total_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($order_total);
 	if( $show_basket ) {
+		ob_start();
 		if( $auth["show_price_including_tax"] == 1) {
-			include (VM_THEMEPATH."templates/basket/basket_b2c.html.php");
+			include (VM_THEMEPATH."templates/basket/basket_b2c.html.php");			
 		}
 		else {
 			include (VM_THEMEPATH."templates/basket/basket_b2b.html.php");
 		}
+		$basket_html = ob_get_contents();
+		ob_end_clean();
 	}
 	/* Input Field for the Coupon Code */
 	if( PSHOP_COUPONS_ENABLE=='1'
 		&& !@$_SESSION['coupon_redeemed']
-		&& ($page == "shop.cart"
-			|| @$checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD
-			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_ADDR && CHECKOUT_STYLE != 3
-			|| @$checkout_this_step == CHECK_OUT_GET_SHIPPING_METHOD && CHECKOUT_STYLE == 3
-			)
+		&& ($page == "shop.cart" )
 	) {
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
-		echo $tpl->fetch_cache( 'common/couponField.tpl.php' );
+		$basket_html .= $tpl->fetch_cache( 'common/couponField.tpl.php' );
 	}
 }
 

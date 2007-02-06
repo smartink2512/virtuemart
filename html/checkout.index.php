@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,6 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+
 require_once( CLASSPATH . "ps_checkout.php" );
 
 $zone_qty = mosgetparam( $_REQUEST, 'zone_qty');
@@ -23,31 +24,7 @@ $ship_to_info_id = mosgetparam( $_REQUEST, 'ship_to_info_id');
 $shipping_rate_id = urldecode(mosGetParam( $_REQUEST, "shipping_rate_id", null ));
 $payment_method_id = mosgetparam( $_REQUEST, 'payment_method_id');
 $Itemid = $sess->getShopItemid();
-$checkout_next_step = mosgetparam( $_REQUEST, 'checkout_next_step', 2);
-$checkout_this_step = mosgetparam( $_REQUEST, 'checkout_this_step', 2);
-if( empty( $vars["error"] ) ) {
-	$checkout_this_step = $checkout_next_step;
-}
-if( empty( $checkout_this_step )) {
-	$checkout_this_step = 2;
-}
 
-echo '<h3>'. $VM_LANG->_PHPSHOP_CHECKOUT_TITLE .'</h3>';
-
-/*****************************
-** Checkout Bar Feature
-**/
-if (SHOW_CHECKOUT_BAR == '1') {
-    
-    // This is the file, where the checkout symbols are displayed
-    // 1 - 2 - 3 - 4 , you know ;-)
-    include( PAGEPATH . 'checkout_bar.php'); 
-    
-}
-/**
-** End Checkout Bar Feature
-*****************************/
-	
 /* Decide, which Checkout Step is the next one 
 * $checkout_this_step controls the step thru the checkout process
 * we have the following steps
@@ -64,235 +41,120 @@ if (SHOW_CHECKOUT_BAR == '1') {
 * -CHECK_OUT_GET_FINAL_CONFIRMATION
 * shows a total summary including all payments, taxes, fees etc. and let the user confirm
 */
-if( $checkout_this_step == CHECK_OUT_GET_SHIPPING_ADDR ) {
-    if (CHECKOUT_STYLE == '1')
-        $checkout_next_step = CHECK_OUT_GET_SHIPPING_METHOD;
-    elseif (CHECKOUT_STYLE == '2') {
-        $checkout_next_step = CHECK_OUT_GET_PAYMENT_METHOD;
-    }
-    elseif (CHECKOUT_STYLE == '3') {
-        $checkout_this_step = CHECK_OUT_GET_SHIPPING_METHOD;
-        $checkout_next_step = CHECK_OUT_GET_PAYMENT_METHOD;
-    }
-    elseif (CHECKOUT_STYLE == '4') {
-        $checkout_this_step = CHECK_OUT_GET_PAYMENT_METHOD;
-        $checkout_next_step = CHECK_OUT_GET_FINAL_CONFIRMATION;
-    }
-    else
-        $checkout_next_step = CHECK_OUT_GET_SHIPPING_METHOD;
+if( $my->id ) {
+	$show_basket = true;
+} else {
+	$show_basket = false;
 }
-elseif  ($checkout_this_step == CHECK_OUT_GET_SHIPPING_METHOD) {
-      $checkout_next_step = CHECK_OUT_GET_PAYMENT_METHOD;
-}
-elseif ($checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD) {
-    $checkout_next_step = CHECK_OUT_GET_FINAL_CONFIRMATION;
-}
-if ($checkout_this_step == CHECK_OUT_GET_FINAL_CONFIRMATION) {
-    $checkout_next_step = "";
-    include(PAGEPATH . 'ro_basket.php');
-}
-else {
-    if( $my->id > 0 ){
-    	$show_basket = true;
-    }
-    else {
-    	$show_basket = false;
-    }
-        
-    include(PAGEPATH . 'basket.php');
+$current_stage = ps_checkout::get_current_stage();
 
+$checkout_steps = ps_checkout::get_checkout_steps();
+
+if( in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {
+    $next_page = 'checkout.thankyou';
+    if( sizeof($checkout_steps[$current_stage]) > 1 ) {
+    	include_once( PAGEPATH . 'basket.php' );
+    } else {
+    	include_once( PAGEPATH . 'ro_basket.php' );
+    }
+} else {
+	$next_page = 'checkout.index';	
+	include_once( PAGEPATH . 'basket.php' );
 }
 
-echo '<br />';
+$theme = new $GLOBALS['VM_THEMECLASS']();
+
+$theme->set_vars( // Import these values into the template files
+	array( 'zone_qty' => $zone_qty,
+			'ship_to_info_id' => $ship_to_info_id,
+			'shipping_rate_id' => $shipping_rate_id,
+			'payment_method_id' => $payment_method_id,
+			'Itemid' => $Itemid
+			)
+	);
+	
+if ($cart["idx"] > 0) {
+	
+	echo '<h3>'. $VM_LANG->_PHPSHOP_CHECKOUT_TITLE .'</h3>';
+	
+    if (!defined('_MIN_POV_REACHED')) {
+    	echo $basket_html;
+    	?>
+        <div align="center">
+            <script type="text/javascript">alert('<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV ?>');</script>
+            <strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV ?></strong><br />
+            <strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV2 . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></strong>
+        </div><?php
+        return;
+    }
     
-
-
-if ($checkout) {
     // We have something in the Card so move on
     if ($perm->is_registered_customer($auth['user_id'])) { // user is logged in and a registered customer
-            ?>
-<form action="<?php echo SECUREURL.basename($_SERVER['PHP_SELF']) ?>" method="post" name="adminForm">
-    <input type="hidden" name="checkout_next_step" value="<?php echo $checkout_next_step ?>" />
-    <input type="hidden" name="checkout_this_step" value="<?php echo $checkout_this_step ?>" />
-    <input type="hidden" name="zone_qty" value="<?php echo $zone_qty ?>" />
-    <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
-    <input type="hidden" name="user_id" value="<?php echo $my->id ?>" />
-    <?php
-	    $label = "\$lbl = \$VM_LANG->_PHPSHOP_CHECKOUT_MSG_$checkout_this_step;";
-	    eval($label);
-	    echo "<h4>".$lbl."</h4>";
+		$basket_html .= '<form action="'. SECUREURL.basename($_SERVER['PHP_SELF']) .'" method="post" name="adminForm">
+		
+	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="Itemid" value="'. $Itemid .'" />
+	<input type="hidden" name="user_id" value="'. $my->id .'" />
+	<input type="hidden" name="page" value="'. $next_page .'" />
+	<input type="hidden" name="func" value="checkoutProcess" />
+		
+	<input type="hidden" name="zone_qty" value="'. $zone_qty .'" />
+        <input type="hidden" name="ship_to_info_id" value="'. $ship_to_info_id .'" />
+        <input type="hidden" name="shipping_rate_id" value="'. urlencode($shipping_rate_id) .'" />
+        <input type="hidden" name="payment_method_id" value="'. $payment_method_id .'" />
+        <input type="hidden" name="checkout_last_step" value="'. $current_stage .'" />';
+		
+		$theme->set( 'basket_html', $basket_html );
+		
 	    /* Set Dynamic Page Title when applicable */
-	    $mainframe->setPageTitle( $lbl );
+	    $mainframe->setPageTitle( 'Checkout Step: '.$current_stage.' of '.count($checkout_steps) );
+	    
+	    // CHECK_OUT_GET_SHIPPING_ADDR
+	    // Lets the user pick or add an alternative Shipping Address
+	    if( in_array('CHECK_OUT_GET_SHIPPING_ADDR', $checkout_steps[$current_stage]) ) {
 
-       
-        if ($checkout_this_step == CHECK_OUT_GET_SHIPPING_ADDR) {
-            // CHECK_OUT_GET_SHIPPING_ADDR
-            // let the user choose a shipto address
-            include(PAGEPATH . 'checkout.customer_info.php');
-            ?>
-        <!-- Customer Ship To -->
-        <input type="hidden" name="page" value="checkout.index" />
-        <input type="hidden" name="func" value="checkoutProcess" />
-        <table border="0" cellspacing="0" cellpadding="2" width="100%">
-            <tr class="sectiontableheader">
-                <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL ?> :
-                </th>
-            </tr>
-            <tr>
-                <td colspan="2">
-                <?php echo $VM_LANG->_PHPSHOP_ADD_SHIPTO_1 ?>
-                <a href="<?php $sess->purl(SECUREURL .basename($_SERVER['PHP_SELF']). "?page=account.shipto&next_page=checkout.index");?>">
-                <?php echo $VM_LANG->_PHPSHOP_ADD_SHIPTO_2 ?></a>.
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                <?php $ps_checkout->ship_to_addresses_radio($auth["user_id"], "ship_to_info_id", $ship_to_info_id);
-                ?>
-                </td>
-            </tr>
-        </table>
-        <!-- END Customer Ship To -->
-        <br />
-<?php
+			echo $theme->fetch( 'checkout/get_shipping_address.tpl.php');
+			$theme->set('basket_html', '');
         }
-            
-        elseif ($checkout_this_step == CHECK_OUT_GET_SHIPPING_METHOD) { 
-        
-            if( empty( $ship_to_info_id )) {
-                // Get the Bill to user_info_id
-                $database->setQuery( "SELECT user_info_id FROM #__users WHERE id='".$my->id."'" );
-                $vars["ship_to_info_id"] = $ship_to_info_id = $database->loadResult();
-            }
-            $vars["weight"] = $weight_total;
-            $i = 0;
-            
-            foreach( $PSHOP_SHIPPING_MODULES as $shipping_module ) {
-                $vmLogger->debug( 'Starting Shipping module: '.$shipping_module );
-                include_once( CLASSPATH. "shipping/".$shipping_module.".php" );
-                eval( "\$SHIPPING =& new ".$shipping_module."();");
-                $SHIPPING->list_rates( $vars );
-                echo "<br/><hr/>";
-            }
-            ?>
-            <input type="hidden" name="page" value="checkout.index" />
-            <input type="hidden" name="func" value="checkoutProcess" />
-            <input type="hidden" name="ship_to_info_id" value="<?php echo $ship_to_info_id ?>" />
-            <?php 
+        // CHECK_OUT_GET_SHIPPING_METHOD
+        // Let the user pick a shipping method
+        if( in_array('CHECK_OUT_GET_SHIPPING_METHOD', $checkout_steps[$current_stage]) ) {   
+        	
+        	echo $theme->fetch( 'checkout/get_shipping_method.tpl.php');
+			$theme->set('basket_html', '');
         }
         
-        /*** -CHECK_OUT_GET_PAYMENT_METHOD
-        * let the user choose a payment method  ***/
-        elseif ($checkout_this_step == CHECK_OUT_GET_PAYMENT_METHOD) {
-
-            require_once(CLASSPATH . 'ps_payment_method.php');
-            $ps_payment_method = new ps_payment_method;
-            include(PAGEPATH . 'checkout.paymentradio.php');  ?>
-            
-            <input type="hidden" name="page" value="checkout.index" />
-            <input type="hidden" name="func" value="checkoutprocess" />
-            <input type="hidden" name="ship_to_info_id" value="<?php echo $ship_to_info_id ?>" />
-            <input type="hidden" name="shipping_rate_id" value="<?php echo urlencode($shipping_rate_id) ?>" />
-            <?php
+        // -CHECK_OUT_GET_PAYMENT_METHOD
+        // let the user choose a payment method
+        if( in_array('CHECK_OUT_GET_PAYMENT_METHOD', $checkout_steps[$current_stage]) ) {   
+        	
+        	echo $theme->fetch( 'checkout/get_payment_method.tpl.php');
+			$theme->set('basket_html', '');
         } 
-        
-        
-        elseif ($checkout_this_step == CHECK_OUT_GET_FINAL_CONFIRMATION) {
-            // -CHECK_OUT_GET_FINAL_CONFIRMATION
-            // shows a total summary including all payments, taxes, fees etc. 
-            // Now llet the user confirm
-            ?>
-            <input type="hidden" name="page" value="<?php echo $modulename ?>.thankyou" />
-            <input type="hidden" name="func" value="checkoutprocess" />
-            <input type="hidden" name="ship_to_info_id" value="<?php echo $ship_to_info_id ?>" />
-            <input type="hidden" name="shipping_rate_id" value="<?php echo urlencode($shipping_rate_id) ?>" />
-            <input type="hidden" name="payment_method_id" value="<?php echo $payment_method_id ?>" />
-            <?php 
-            // include(PAGEPATH.'ro_basket.php');
-        } 
- ?>
-    <br />
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr >
-            <td><?php 
-            if (!defined('_MIN_POV_REACHED')) { ?>
-                <div align="center">
-                    <script type="text/javascript">alert('<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV ?>');</script>
-                    <strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV ?></strong><br />
-                    <strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV2 . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></strong>
-                </div><?php
-            }
+        // -CHECK_OUT_GET_FINAL_CONFIRMATION
+        // shows a total summary including all payments, taxes, fees etc. 
+        if( in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {   
+		// Now let the user confirm
+		echo $theme->fetch( 'checkout/get_final_confirmation.tpl.php');
+		$theme->set('basket_html', '');
+        }
+        ?>
+    <br /><?php 
+	foreach( $checkout_steps[$current_stage] as $this_step ) {	
+		echo '<input type="hidden" name="checkout_this_step[]" value="'.$this_step.'" />';
+	}
             
-            
-            elseif ($checkout_this_step == CHECK_OUT_GET_FINAL_CONFIRMATION) { 
-                ps_checkout::final_info();
-                ?>
-                <br />
-                <div align="center">
-	                <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CUSTOMER_NOTE ?>:<br />
-	                <textarea title="<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CUSTOMER_NOTE ?>" cols="50" rows="5" name="customer_note"></textarea>
-	                <br />
-	                <?php
-	                if (PSHOP_AGREE_TO_TOS_ONORDER == '1') { ?>
-	                    <br />
-	                  	<input type="checkbox" name="agreed" value="1" class="inputbox" />&nbsp;&nbsp;
-	                  	<?php 
-	                  	$link = $mosConfig_live_site .'/index2.php?option=com_virtuemart&amp;page=shop.tos&amp;pop=1&amp;Itemid='. $Itemid;
-						$text = $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS;
-						echo vmPopupLink( $link, $text );
-	                    echo '<br />';
-	                }
-	                ?>
-                </div>
-                <?php
-                if( VM_ONCHECKOUT_SHOW_LEGALINFO == '1' ) {
-                	$link =  sefRelToAbs('index2.php?option=com_content&amp;task=view&amp;id='.VM_ONCHECKOUT_LEGALINFO_LINK );
-                	$jslink = "window.open('$link', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;";
-               		if( @VM_ONCHECKOUT_LEGALINFO_SHORTTEXT=='' || !defined('VM_ONCHECKOUT_LEGALINFO_SHORTTEXT')) {
-                		$text = $VM_LANG->_VM_LEGALINFO_SHORTTEXT;
-                	} else {
-                		$text = VM_ONCHECKOUT_LEGALINFO_SHORTTEXT;
-                	}
-                	?>
-	                <div class="legalinfo"><?php
-	                	echo sprintf( $text, $link, $jslink );
-	                	?>
-	                </div><br />
-	                <?php
-	           	}
-	                ?>
-                <div align="center">
-                <input type="submit" onclick="return( submit_order( this.form ) );" class="button" name="submit" value="<?php echo $VM_LANG->_PHPSHOP_ORDER_CONFIRM_MNU ?>" />
-                </div>
-            <?php 
-            } 
-            elseif ($checkout_this_step != CHECK_OUT_GET_FINAL_CONFIRMATION) { ?>
+         if( !in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {
+         	?>
                 <div align="center">
                 <input type="submit" class="button" name="submit" value="<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_NEXT;?> &gt;&gt;" />
                 </div>
             <?php 
             } ?>
-            </td>
-        </tr>
-    </table>
 </form>
 <!-- Body ends here -->
 <?php
-            if ($checkout_this_step == CHECK_OUT_GET_FINAL_CONFIRMATION && PSHOP_AGREE_TO_TOS_ONORDER == '1') {
-                echo "<script type=\"text/javascript\"><!--
-                    function submit_order( form ) {
-                        if (!form.agreed.checked) {
-                            alert( \"". $VM_LANG->_PHPSHOP_AGREE_TO_TOS ."\" );
-                            return false;
-                        }
-                        else {
-                            return true;
-                        }
-                    }
-                    --></script>";
-            }
-            else {
+         if( !in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {
                 echo "<script type=\"text/javascript\"><!--
                     function submit_order( form ) { return true; }
                     --></script>";
@@ -305,13 +167,8 @@ if ($checkout) {
             // USER IS LOGGED IN, BUT NO REGISTERED CUSTOMER
             // WE NEED SOME ADDITIONAL INFORMATION HERE,
             // SO REDIRECT HIM TO shop/shopper_add
-      ?>
-            <table width="100%">
-                <tr class="sectiontableheader">
-                        <th><?php echo $VM_LANG->_PHPSHOP_NO_CUSTOMER ?></th>
-            </tr>
-            </table>
-      <?php 
+      		$vmLogger->info( $VM_LANG->_PHPSHOP_NO_CUSTOMER );
+      
             include(PAGEPATH. 'checkout_register_form.php');
           }
       

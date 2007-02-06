@@ -52,7 +52,7 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 <input type="hidden" name="page" value="shop.browse" />
 <input type="hidden" name="product_type_id" value="<?php echo $product_type_id ?>" />
 <input type="hidden" name="Itemid" value="<?php echo $sess->getShopItemid() ?>" />
-<BR>
+<br />
 
 <?php 
 	$q  = "SELECT * FROM #__{vm}_product_type_parameter ";

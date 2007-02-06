@@ -35,8 +35,23 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.02.2007 soeren
+^! completely revised the Checkout Process (WIP!)
+	* created templates for all checkout stages
+	* allowed to bundle steps to a stage (e.g. ShipTo and Shipping Method or all steps on the same page)
+	* removed "CHECKOUT_STYLE" configuration constant, added a new configuration array "VM_CHECKOUT_MODULES"
+	* moved customer_info, listing shipping methods, listing payment methods to function inside ps_checkout
+		that use templates from the "/templates/checkout" folder
+	* fixed the cartUpdate forms in the basket (works now and is standards compliant)
+	* jumping between "checkout stages" is possible by using the parameter "checkout_stage".
+	
+^ added FXX, ROM and BUL to the list of European Countries (function country_in_eu_common_vat_zone, ps_checkout.php)
+# fixed some issues with the new mootools and the cart highlighting function
+^ Updated Mootools to release v1.00
+^ Updated SlimBox to version 1.3
+
 31.01.2007 soeren
-# various XHTML standards compliancy fixes 
+# various XHTML standards compliance fixes 
 	* added ampReplace function to URL functions in ps_session.php, plus new parameter: encodeAmpersands (default:true) )
 	* fixed various wrong tags, missing closing tags and unencoded ampersands
 	

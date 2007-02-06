@@ -21,7 +21,7 @@ echo '<h2>'. $VM_LANG->_PHPSHOP_CART_TITLE .'</h2>
 <!-- Cart Begins here -->
 ';
 include(PAGEPATH. 'basket.php');
-
+echo $basket_html;
 echo '<!-- End Cart --><br />
 ';
 

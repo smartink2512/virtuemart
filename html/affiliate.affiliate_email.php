@@ -54,7 +54,7 @@ mm_showMyFileName( __FILE__ );
   <tr>
       <td nowrap valign="top" width="30%">
           <?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_CONTENT ?>
-          <br><br><br> 
+          <br /><br /><br /> 
       </td>
       <td nowrap width="70%">
           <div align="left"><textarea name="email" cols="40" rows="5" wrap="physical"></textarea></div>

@@ -41,14 +41,15 @@ class ps_config {
 			return false;
 		}
 		else {
-			if ($d['conf_CHECKOUT_STYLE']=='3' || $d['conf_CHECKOUT_STYLE']=='4') {
+			if ( empty($d['VM_CHECKOUT_MODULES']['CHECK_OUT_GET_SHIPPING_ADDR']['enabled']) ) {
 				$d['conf_NO_SHIPTO'] = '1';
 			}
 			else {
 				$d['conf_NO_SHIPTO'] = '';
 			}
-			if( $d['conf_SHIPPING'][0] == "no_shipping" )
-			$d['conf_NO_SHIPPING'] = '1';
+			if( $d['conf_SHIPPING'][0] == "no_shipping" || empty($d['VM_CHECKOUT_MODULES']['CHECK_OUT_GET_SHIPPING_METHOD']['enabled']) ) {
+				$d['conf_NO_SHIPPING'] = '1';
+			}
 
 			$d['conf_PSHOP_OFFLINE_MESSAGE'] = addslashes( stripslashes($d['conf_PSHOP_OFFLINE_MESSAGE']));
 
@@ -107,7 +108,6 @@ class ps_config {
 			"PSHOP_AGREE_TO_TOS_ONORDER" =>      "conf_PSHOP_AGREE_TO_TOS_ONORDER",
 			"CAN_SELECT_STATES" =>      "conf_CAN_SELECT_STATES",
 			"SHOW_CHECKOUT_BAR"	=>	"conf_SHOW_CHECKOUT_BAR",
-			"CHECKOUT_STYLE"	=>	"conf_CHECKOUT_STYLE",
 			"CHECK_STOCK"	=>	"conf_CHECK_STOCK",
 			"ENCODE_KEY"	=>	"conf_ENCODE_KEY",
 			"NO_SHIPPING"    	=>      "conf_NO_SHIPPING",
@@ -125,6 +125,7 @@ class ps_config {
 			"VM_CONTENT_PLUGINS_ENABLE" => "conf_VM_CONTENT_PLUGINS_ENABLE",			
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
 			"VM_MODULES_FORCE_HTTPS"          =>      "conf_VM_MODULES_FORCE_HTTPS",
+			"VM_CHECKOUT_MODULES"	=>	"VM_CHECKOUT_MODULES",
 			"PSHOP_SHIPPING_MODULE"     =>      "conf_SHIPPING"
 			);
 
@@ -215,6 +216,20 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					}
 					$config.= " );\n";
 				}
+				elseif( $key == 'VM_CHECKOUT_MODULES' ) {
+					$config .= "\n// Checkout Steps and their order\nglobal \$VM_CHECKOUT_MODULES;\n";
+					$config .= "\$VM_CHECKOUT_MODULES = array( ";
+					$i= 0;
+					foreach( $d['VM_CHECKOUT_MODULES'] as $step ) {
+						$enabled = !empty($step['enabled']) || $step['name'] == 'CHECK_OUT_GET_PAYMENT_METHOD' || $step['name'] == 'CHECK_OUT_GET_FINAL_CONFIRMATION';
+						$config.= "'".$step['name']."'=>array('order'=>".(int)$step['order'].",'enabled'=>".(int)$enabled.")";
+						if( $i+1 < sizeof( $d['VM_CHECKOUT_MODULES'] )) {
+							$config .= ",\n";
+						}
+						$i++;
+					}
+					$config.= " );\n";
+				}
 				elseif( $key == 'PSHOP_OFFLINE_MESSAGE' ) {
 					$value = get_magic_quotes_gpc() ? stripslashes(@$d[$value]) : @$d[$value];
 					$value = $db->getEscaped( $value );
@@ -247,7 +262,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 	 * @param array $d
 	 */
 	function writeThemeConfig( &$d ) {
-		global $page, $option, $VM_LANG;
+		global $page, $option, $VM_LANG, $vmLogger;
 		
 		$my_config_array = array();
 		$config = "<?php
@@ -257,7 +272,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * @package VirtueMart
 * @subpackage themes
-* @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or

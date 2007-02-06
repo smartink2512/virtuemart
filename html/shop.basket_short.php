@@ -33,8 +33,6 @@ $Itemid = mosgetparam($_REQUEST, "Itemid", null);
 $option = mosgetparam($_REQUEST, "option", null);
 $page =mosGetParam( $_REQUEST, 'page', null );
 
-//Start of routine output correct div to enable ajax update to display correctly
-echo '<div class="vmCartModule">';
 $cart = $_SESSION['cart'];
 $auth = $_SESSION['auth'];
 if ($cart["idx"] == 0) {
@@ -42,7 +40,7 @@ if ($cart["idx"] == 0) {
 	if (@$_SESSION['vmShowEmptyCart'] && !@$_SESSION['vmMiniCart']) {
 		if (@$_SESSION['vmShowLogo']) {
 			echo "<a href='http://virtuemart.net/' target='_blank'><img src=\"".$mm_action_url.'components/com_virtuemart/shop_image/ps_image/menu_logo.gif'."\" alt=\"VirtueMart\" width=\"80\" border=\"0\" valign=\"center\" align=\"center\" /></a>";
-			echo "<br>";
+			echo "<br/>";
 		}
 
 		echo $VM_LANG->_PHPSHOP_EMPTY_CART;
@@ -181,7 +179,7 @@ else {
 	}
 	// Display show cart button
 	if ($cart["idx"] != 0 && !$_SESSION['vmMiniCart']) {
-		echo '<br><br style="clear:both" /><div align="center">';
+		echo '<br/><br style="clear:both" /><div align="center">';
 		$class_att = 'class="button"';
 		$href = $sess->url($mm_action_url."index.php?page=shop.cart");
 		$href2 = $sess->url($mm_action_url."index2.php?page=shop.cart");
@@ -192,8 +190,7 @@ else {
 		else {
 			echo vmCommonHTML::hyperlink( $href, $text, '', $text, $class_att );
 		}
-		echo '</div><br>';
+		echo '</div><br/>';
 	}
 }
-echo "</div>";
 ?>

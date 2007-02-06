@@ -22,21 +22,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
         <th><?php echo $VM_LANG->_PHPSHOP_CART_NAME ?></th>
         <th><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></th>
 	<th><?php echo $VM_LANG->_PHPSHOP_CART_PRICE ?></th>
-	<th><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?></th>
+	<th><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?> / <?php echo $VM_LANG->_PHPSHOP_CART_ACTION ?></th>
 	<th><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?></th>
-	<th colspan="2" align="center"><?php echo $VM_LANG->_PHPSHOP_CART_ACTION ?></th>
   </tr>
 <?php foreach( $product_rows as $product ) { ?>
   <tr valign="top" class="<?php echo $product['row_color'] ?>">
-	<form action="<?php echo $action_url ?>" method="post">
-	<input type="hidden" name="option" value="com_virtuemart" />
 	<td><?php echo $product['product_name'] . $product['product_attributes'] ?></td>
-    <td><?php echo $product['product_sku'] ?></td>
-    <td><?php echo $product['product_price'] ?></td>
-    <td><?php echo $product['quantity_box'] ?></td>
+	<td><?php echo $product['product_sku'] ?></td>
+	<td><?php echo $product['product_price'] ?></td>
+	<td><?php echo $product['update_form'] ?>
+		<?php echo $product['delete_form'] ?>
+	</td>
     <td><?php echo $product['subtotal'] ?></td>
-    <td><?php echo $product['update_form'] ?></td>
-    <td><?php echo $product['delete_form'] ?></td>
   </tr>
 <?php } ?>
 <!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->

@@ -2377,10 +2377,10 @@ class ps_product extends vmAbstractObject {
 
 		$db = new ps_DB;
 
-		$q = "SELECT product_weight FROM #__{vm}_product WHERE product_id='". $prod_id ."'";
+		$q = "SELECT product_weight FROM #__{vm}_product WHERE product_id=". (int)$prod_id ."";
 		$db->query($q);
 		$db->next_record();
-		return $db->f("product_weight");
+		return (float)$db->f("product_weight");
 
 	}
 	/**

@@ -9,7 +9,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2007 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
@@ -46,63 +46,49 @@ $db = new ps_DB;
 $db->query( $query );
 
 $res = $db->record;
-    
+if( empty( $res )) {
+	echo 'No manufacturers defined!';
+	return;
+}
 ?>
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-
-<table cellpadding="1" cellspacing="1" border="0" width="80%">
-
 <?php if( $show_linklist == 1 ) { ?>
   <!--BEGIN manufacturer DropDown List --> 
-  <tr> 
-    <td colspan="2">
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td><?php echo $text_before ?></td>
-        </tr>
-        <tr><td>&nbsp;</td></tr>
+	<?php echo $text_before ?><br />
+     
         <?php foreach( $res as $manufacturer) { ?>
-            <tr>
-                <td><a href="<?php echo $sess->url( URL."index.php?option=com_virtuemart&page=shop.browse&manufacturer_id=". $manufacturer->manufacturer_id ) ?>">
+            <div><a href="<?php echo $sess->url( URL."index.php?option=com_virtuemart&page=shop.browse&manufacturer_id=". $manufacturer->manufacturer_id ) ?>">
                     <?php echo $manufacturer->mf_name; ?>
                     </a>
-                </td>
-            </tr>
+            </div>
         <?php } ?>
-      </table>
-    </td>
-  </tr>
+
 <?php 
 }
 if( $show_dropdown == 1 ) { ?>
-  <tr> 
-    <td colspan="2"> 
-        <input type="hidden" name="option" value="com_virtuemart" />
-        <input type="hidden" name="page" value="shop.browse" />
+  <div> 
+  	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="vm_manufacturer">
         <br/>
-        <select class="inputbox" name="manufacturer_id">
+        <select class="inputbox" name="manufacturer_id" onchange="document.vm_manufacturer.submit()">
             <option value=""><?php echo _CMN_SELECT ?></option>
         <?php  
-                        foreach ($res as $manufacturer) { 
-                                $selected = '';
-                                if( @$_REQUEST['manufacturer_id'] == $manufacturer->manufacturer_id ) {
-                                        $selected = 'selected="selected"';      
-                                }
-                                echo "<option value=\"".$manufacturer->manufacturer_id ."\" $selected>". $manufacturer->mf_name ."</option>\n";
-          
-                        } 
+        foreach ($res as $manufacturer) { 
+                $selected = '';
+                if( @$_REQUEST['manufacturer_id'] == $manufacturer->manufacturer_id ) {
+                        $selected = 'selected="selected"';      
+                }
+                echo "<option value=\"".$manufacturer->manufacturer_id ."\" $selected>". $manufacturer->mf_name ."</option>\n";
+
+        } 
         ?>
         </select>
-    </td>
-  </tr>
-  <tr>
-      <td>
-          <input class="button" type="submit" name="manufacturerSearch" value="<?php echo _SEARCH_TITLE ?>" />
-      </td>
-  </tr>
+    <br />
+      <input class="button" type="submit" name="manufacturerSearch" value="<?php echo _SEARCH_TITLE ?>" />
+	    <input type="hidden" name="option" value="com_virtuemart" />
+	    <input type="hidden" name="page" value="shop.browse" />
+	    <input type="hidden" name="Itemid" value="<?php echo $sess->getShopItemid() ?>" />
+      </form>
+  </div>
 <?php 
 } 
 ?>
 <!-- End Manufacturer Module --> 
-</table>
-</form>

@@ -37,9 +37,9 @@ $page_name = "Order Maintenance";
 <tr>
    <td>
    <b><?php echo $VM_LANG->_("Order Information") ?></b>
-   <br>
+   <br />
 	<?php $ps_order->list_order("A","1"); ?>
-   <br>
+   <br />
    <input type="submit" class="button" name="submit" value="<?php echo $VM_LANG->_PHPSHOP_VIEW ?>" />
    </td>
 </tr>

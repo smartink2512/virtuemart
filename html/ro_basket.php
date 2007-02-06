@@ -182,7 +182,7 @@ else {
 		}
 	}
 	/* SHOW SHIPPING COSTS */
-	if( !empty($shipping_rate_id) && (CHECKOUT_STYLE =='1' || CHECKOUT_STYLE=='3')) {
+	if( !empty($shipping_rate_id) && (NO_SHIPPING != '1')) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
 		$shipping_total = round( $GLOBALS['CURRENCY']->convert( $ps_checkout->_SHIPPING->get_rate ( $vars )), 2 );
@@ -262,13 +262,14 @@ else {
 	define ('_MIN_POV_REACHED', '1');
 
 	$order_total_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($order_total);
-
+	ob_start();
 	if( $auth["show_price_including_tax"] == 1) {
 		include (VM_THEMEPATH."templates/basket/ro_basket_b2c.html.php");
 	}
 	else {
 		include (VM_THEMEPATH."templates/basket/ro_basket_b2b.html.php");
 	}
-
+	$basket_html = ob_get_contents();
+	ob_end_clean();
 }
 ?>

@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -68,11 +68,13 @@ class ps_checkout {
 			// which holds the Class Name of the Shipping Module
 			$rate_array = explode( "|", urldecode($_REQUEST['shipping_rate_id']) );
 			$filename = basename( $rate_array[0] );
-			include_once( CLASSPATH. "shipping/".$filename.".php" );
-			eval( "\$this->_SHIPPING =& new ".$filename."();");
-
+			if( $filename != '' ) {
+				include_once( CLASSPATH. "shipping/".$filename.".php" );
+				eval( "\$this->_SHIPPING =& new ".$filename."();");
+			}
 		}
-		if(empty($_REQUEST['ship_to_info_id']) && (CHECKOUT_STYLE=='3' || CHECKOUT_STYLE=='4')) {
+		$steps = ps_checkout::get_checkout_steps();
+		if(empty($_REQUEST['ship_to_info_id']) && NO_SHIPTO=='1') {
 
 			$db = new ps_DB();
 
@@ -88,7 +90,56 @@ class ps_checkout {
 			$_REQUEST['ship_to_info_id'] = $db->f("user_info_id");
 		}
 	}
-
+	function get_checkout_steps() {
+		global $VM_CHECKOUT_MODULES;
+		$stepnames = array_keys( $VM_CHECKOUT_MODULES );
+		$steps = array();
+		$i = 0;
+		$last_order = 0;
+		foreach( $VM_CHECKOUT_MODULES as $step ) {
+			// Get the stepname from the array key
+			$stepname = current($stepnames);
+			next($stepnames);
+			
+			if( $step['enabled'] == 1 ) {
+				$steps[$step['order']][] = $stepname;
+			}
+			
+		}
+		ksort( $steps );
+		
+		return $steps;
+	}
+	
+	function get_current_stage() {
+		$steps = ps_checkout::get_checkout_steps();
+		$stage = 1;
+		// First check the REQUEST parameters for other steps
+		if( !empty( $_REQUEST['checkout_last_step'] ) && empty( $_POST['checkout_this_step'] )) {
+			// Make sure we have an integer (max 4)
+			$checkout_step = abs( min( $_REQUEST['checkout_last_step'], 4 ) );
+			if( isset( $steps[$checkout_step] )) {
+				return $checkout_step; // it's a valid step
+			}
+		}
+		$checkout_step = (int)mosGetParam( $_REQUEST, 'checkout_stage' );
+		if( isset( $steps[$checkout_step] )) {
+			return $checkout_step; // it's a valid step
+		}
+		// Else: we have no alternative steps given by REQUEST
+		foreach( $steps as $step ) {
+			if( !empty($_POST['checkout_this_step']) )  {
+				foreach( $step as $stepname ) {
+					if( in_array( $stepname, $_POST['checkout_this_step'])) {
+						next($steps);
+						return key($steps);
+					}
+				}
+			}
+			next($steps);
+		}
+		return $stage;
+	}
 	/**
 	 * Enter description here...
 	 *
@@ -97,35 +148,55 @@ class ps_checkout {
 	 * @param int $step_count Number of steps to make
 	 * @param int $highlighted_step The index of the recent step
 	 */
-	function show_checkout_bar($steps_to_do, $step_msg, $step_count, $highlighted_step) {
+	function show_checkout_bar() {
 
-		global $sess, $ship_to_info_id, $shipping_rate_id;
-
-		// CSS style for the <td> tag of the cell which is actually highlighted
-		$highlighted_style = 'style="font-weight: bold;"';
-		echo '
-		<table style="background: url( '. VM_THEMEURL .'images/checkout/checkout'. $step_count.'_'.$highlighted_step .'.png ) right; background-repeat: no-repeat; height:85px;text-align:center;" border="0" cellspacing="0" cellpadding="0">
-          <tr>';
-
-
-		for ($i = 1; $i <= $step_count; $i++) {
-
-			echo '<td '.(($highlighted_step==$i) ? $highlighted_style : '') .' width="119" align="center" valign="bottom">';
-			if ($highlighted_step > $i) {
-				echo '<a href="'. $sess->url(SECUREURL."index.php?page=checkout.index&amp;option=com_virtuemart&amp;ship_to_info_id=$ship_to_info_id&amp;shipping_rate_id=".@$shipping_rate_id."&amp;checkout_next_step=".$steps_to_do[$i-1]) .'">';
-				echo $step_msg[$i-1] .'</a>';
-			}
-			else {
-				echo $step_msg[$i-1];
-			}
-			echo '</td>';
-
+		global $sess, $ship_to_info_id, $shipping_rate_id, $VM_LANG;
+		
+		if (SHOW_CHECKOUT_BAR != '1' || defined('VM_CHECKOUT_BAR_LOADED')) {
+			return;
 		}
-		echo '
-          </tr>
-        </table>
-        <br />';
-
+	    // Let's assemble the steps
+	    $steps = ps_checkout::get_checkout_steps();
+	    $step_count = sizeof( $steps );
+	    $steps_tmp = $steps;
+	    $i = 0;
+	    foreach( $steps as $step ) {	    	
+	    	foreach( $step as $step_name ) {
+	    		switch ( $step_name ) {
+	    			case 'CHECK_OUT_GET_SHIPPING_ADDR':
+	    				$step_msg = $VM_LANG->_PHPSHOP_ADD_SHIPTO_2;
+	    				break;
+	    			case 'CHECK_OUT_GET_SHIPPING_METHOD':
+	    				$step_msg = $VM_LANG->_PHPSHOP_ISSHIP_LIST_CARRIER_LBL;
+	    				break;
+	    			case 'CHECK_OUT_GET_PAYMENT_METHOD':
+	    				$step_msg = $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL;
+	    				break;
+	    			case 'CHECK_OUT_GET_FINAL_CONFIRMATION':
+	    				$step_msg = $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER;
+	    				break;
+	    		}
+	    		$steps_to_do[$i] = array('step_name' => $step_name,
+	    								'step_msg' => $step_msg,
+	    								'step_order' => key($steps_tmp) );
+				next( $steps_tmp );
+	    	}
+	    	$i++;
+	    }
+	      
+      	$highlighted_step = ps_checkout::get_current_stage(); 
+    	
+    	$theme = new $GLOBALS['VM_THEMECLASS']();
+    	$theme->set_vars( array( 'step_count' => $step_count,
+    							'steps_to_do' => $steps_to_do,
+    							'steps' => $steps,
+    							'highlighted_step' => $highlighted_step,
+    							'ship_to_info_id' => mosGetParam($_REQUEST, 'ship_to_info_id'),
+    							'shipping_rate_id' => mosGetParam( $_REQUEST, 'shipping_rate_id')
+    						) );
+    						
+		echo $theme->fetch( 'checkout/checkout_bar.tpl.php');
+		define('VM_CHECKOUT_BAR_LOADED', 1 );
 	}
 
 	/**
@@ -160,7 +231,7 @@ class ps_checkout {
 			}
 		}
 
-		if ( NO_SHIPPING != "1" && (CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='3') ) {
+		if ( NO_SHIPPING != '1' ) {
 			if ( !$this->validate_shipping_method($d) ) {
 				return False;
 			}
@@ -306,14 +377,14 @@ class ps_checkout {
 		if (($dbp->f("enable_processor") == "Y") 
 			|| ($dbp->f("enable_processor") == "")) {
 
-			/*** Creditcard ***/
+			// Creditcard
 			if (empty( $_SESSION['ccdata']['creditcard_code']) ) {
 				$vmLogger->err( "Credit Card Type not found." );
 				return false;
 			}
 
-			/*** $_SESSION['ccdata'] = $ccdata;
-			* The Data should be in the session ***/
+			// $_SESSION['ccdata'] = $ccdata;
+			// The Data should be in the session
 			if (!isset($_SESSION['ccdata'])) { //Not? Then Error
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATA );
 				return False;
@@ -324,8 +395,8 @@ class ps_checkout {
 				return False;
 			}
 
-			/** CREDIT CARD NUMBER CHECK
-        ** USING THE CREDIT CARD CLASS in ps_payment **/
+			// CREDIT CARD NUMBER CHECK
+			// USING THE CREDIT CARD CLASS in ps_payment
 			if(!$ps_payment_method->validate_payment( $_SESSION['ccdata']['creditcard_code'], $_SESSION['ccdata']['order_payment_number'])) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE );
 				return False;
@@ -453,77 +524,65 @@ class ps_checkout {
 		global $checkout_this_step, $sess,$VM_LANG, $vmLogger;
 		$ccdata = array();
 
-		if (!$d["checkout_this_step"]) {
+		if( empty($d["checkout_this_step"]) || !is_array(@$d["checkout_this_step"])) {
 			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP );
 			return false;
 		}
-		switch ($d["checkout_this_step"]) {
-
-			case CHECK_OUT_GET_FINAL_BASKET :
-	
-				// The User has finished his works on the Basket, now the next steps
-				$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_ADDR;
-				$checkout_this_step = CHECK_OUT_GET_SHIPPING_ADDR;
-				break;
-
-			case CHECK_OUT_GET_SHIPPING_ADDR :
-
-				$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
-				$checkout_this_step = CHECK_OUT_GET_SHIPPING_METHOD;
-	
-				// The User has choosen a Shipping address
-				if (empty($d["ship_to_info_id"])) {
-					$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO );
-					$_REQUEST['checkout_next_step'] = CHECK_OUT_GET_SHIPPING_ADDR;
-					return False;
-				}
-				break;
-
-			case CHECK_OUT_GET_SHIPPING_METHOD:
-
-				$d["checkout_this_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
-				$checkout_this_step = CHECK_OUT_GET_PAYMENT_METHOD;
-				// The User has choosen a Shipping method
-				if (!$this->validate_shipping_method($d)) {
-					$d["checkout_this_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
-					$_REQUEST["checkout_next_step"] = CHECK_OUT_GET_SHIPPING_METHOD;
-					return false;
-				}
-				break;
-
-			case CHECK_OUT_GET_PAYMENT_METHOD:
-
-				$d["checkout_this_step"] = CHECK_OUT_GET_FINAL_CONFIRMATION;
-				$checkout_this_step = CHECK_OUT_GET_FINAL_CONFIRMATION;
+		
+		foreach($d["checkout_this_step"] as $checkout_this_step) {
+		
+			switch($checkout_this_step) {
 				
-				// The User has choosen a payment method
-				$_SESSION['ccdata']['order_payment_name'] = @$d['order_payment_name'];
-				// VISA, AMEX, DISCOVER....
-				$_SESSION['ccdata']['creditcard_code'] = @$d['creditcard_code'];
-				$_SESSION['ccdata']['order_payment_number'] = @$d['order_payment_number'];
-				$_SESSION['ccdata']['order_payment_expire_month'] = @$d['order_payment_expire_month'];
-				$_SESSION['ccdata']['order_payment_expire_year'] = @$d['order_payment_expire_year'];
-				// 3-digit Security Code (CVV)
-				$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
+				case 'CHECK_OUT_GET_FINAL_BASKET' :
+					break;
 	
-				if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber
-					$d["checkout_this_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
-					$_REQUEST["checkout_next_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
+				case 'CHECK_OUT_GET_SHIPPING_ADDR' :		
+					// The User has choosen a Shipping address
+					if (empty($d["ship_to_info_id"])) {
+						$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO );
+						unset( $_POST['checkout_this_step']);
+						return False;
+					}
+					break;
+	
+				case 'CHECK_OUT_GET_SHIPPING_METHOD':
+					// The User has choosen a Shipping method
+					if (!$this->validate_shipping_method($d)) {
+						unset( $_POST['checkout_this_step']);
+						return false;
+					}
+					break;
+	
+				case 'CHECK_OUT_GET_PAYMENT_METHOD':
+					
+					// The User has choosen a payment method
+					$_SESSION['ccdata']['order_payment_name'] = @$d['order_payment_name'];
+					// VISA, AMEX, DISCOVER....
+					$_SESSION['ccdata']['creditcard_code'] = @$d['creditcard_code'];
+					$_SESSION['ccdata']['order_payment_number'] = @$d['order_payment_number'];
+					$_SESSION['ccdata']['order_payment_expire_month'] = @$d['order_payment_expire_month'];
+					$_SESSION['ccdata']['order_payment_expire_year'] = @$d['order_payment_expire_year'];
+					// 3-digit Security Code (CVV)
+					$_SESSION['ccdata']['credit_card_code'] = @$d['credit_card_code'];
+		
+					if (!$this->validate_payment_method($d, false)) { //Change false to true to Let the user play with the VISA Testnumber
+						unset( $_POST['checkout_this_step']);
+						return false;
+					}
+					
+					break;
+	
+				case 'CHECK_OUT_GET_FINAL_CONFIRMATION':
+	
+					// The User wants to order now, validate everything, if OK than Add immeditialtly
+					return( $this->add( $d ) );
+	
+				default:
+					$vmLogger->crit( "CheckOut step ($checkout_this_step) is undefined!" );
 					return false;
-				}
-				
-				break;
-
-			case CHECK_OUT_GET_FINAL_CONFIRMATION:
-
-				// The User wants to order now, validate everything, if OK than Add immeditialtly
-				return( $this->add( $d ) );
-
-			default:
-				$vmLogger->crit( "CheckOut step ($checkout_this_step) is undefined!" );
-				return false;
-
-		} // end switch
+	
+			} // end switch
+		}
 		return true;
 	} // end function process
 
@@ -540,6 +599,10 @@ class ps_checkout {
 	** returns:  Prints html radio element to standard out
 	***************************************************************************/
 	function ship_to_addresses_radio($user_id, $name, $value) {
+		echo ps_checkout::list_addresses( $user_id, $name, $value );
+	}
+	
+	function list_addresses( $user_id, $name, $value ) {
 		global $sess,$VM_LANG;
 
 		$db = new ps_DB;
@@ -565,118 +628,131 @@ class ps_checkout {
 		$q .= "ORDER by address_type_name, mdate DESC";
 
 		$db->query($q);
+		
+		$theme = new $GLOBALS['VM_THEMECLASS']();
+		$theme->set_vars(array('db' => $db,
+								'user_id' => $user_id,
+								'name' => $name,
+								'value' => $value,
+								'bt_user_info_id' => $bt_user_info_id,
+						 	)
+						 );
 
-		echo "<table border=\"0\" width=\"100%\" cellpadding=\"2\" cellspacing=\"0\">\n";
-		echo "<tr class=\"sectiontableentry1\">\n";
-		echo "<td>\n";
-		if ($db->num_rows() and $bt_user_info_id != $value) {
-			echo "<input type=\"radio\" name=\"$name\" value=\"$bt_user_info_id\" />\n";
-		} else {
-			echo "<input type=\"radio\" name=\"$name\" value=\"$bt_user_info_id\" checked=\"checked\" />\n";
-		}
-		echo "</td>\n";
-		echo "<td>\n";
-		echo $VM_LANG->_PHPSHOP_ACC_BILL_DEF."\n";
-		echo "</td>\n";
-		echo "</tr>\n";
-		$i = 2;
-		while($db->next_record()) {
-			echo "<tr class=\"sectiontableentry$i\">\n";
-			echo "<td>\n";
-			if (!strcmp($value, $db->f("user_info_id"))) {
-				echo "<input type=\"radio\" name=\"$name\" value=\"" . $db->f("user_info_id") . "\" checked=\"checked\">\n";
-			}
-			else {
-				echo "<input type=\"radio\" name=\"$name\" value=\"" . $db->f("user_info_id") . "\">\n";
-			}
-			echo "</td>\n";
-			echo "<td>\n";
-			echo "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"1\">\n";
-			echo "<tr>\n";
-			echo "<td>\n";
-			echo "<strong>" . $db->f("address_type_name") . "</strong> ";
-			$url = SECUREURL . "index.php?page=account.shipto&user_info_id=" . $db->f('user_info_id');
-			$url .= "&next_page=checkout.index";
-			echo "(<a href=\"".$sess->url($url)."\">".$VM_LANG->_PHPSHOP_UDATE_ADDRESS."</a>)\n";
-			echo "<br />\n";
-			echo $db->f("title") . " ";
-			echo $db->f("first_name") . " ";
-			echo $db->f("middle_name") . " ";
-			echo $db->f("last_name") . "\n";
-			echo "<br />\n";
-			if ($db->f("company")) {
-				echo $db->f("company") . "<br />\n";
-			}
-			echo $db->f("address_1") . "\n";
-			if ($db->f("address_2")) {
-				echo "<br />". $db->f("address_2"). "\n";
-			}
-			echo "<br />\n";
-			echo $db->f("city");
-			echo ", ";
-			echo $db->f("state") . " ";
-			echo $db->f("zip") . "<br />\n";
-			echo "Phone:". $db->f("phone_1") . "\n";
-			echo "<br />\n";
-			echo "Fax:".$db->f("fax") . "\n";
-			echo "</td></tr>\n";
-			echo "</table></td></tr>\n";
-			if($i == 1) $i++;
-			elseif($i == 2) $i--;
-		}
-
-		echo "</td>\n";
-		echo "</tr>\n";
-		echo "</table>\n";
-
-		return(true);
+		echo $theme->fetch( 'checkout/list_shipto_addresses.tpl.php');
 	}
 
-	/**************************************************************************
-	** name: display_address()
-	** created by: gday
-	** description:  Print an HTML table displaying the user_info record
-	**               for the specified $user_info_id and $address_type.
-	** parameters: $user_info_id - user info id to display
-	**             $address_type - address type (BT or ST)
-	** returns: Prints HTML table displaying the address information
-	***************************************************************************/
-	function display_address($user_info_id) {
+	/**
+	 * Fetches the address information for the currently logged in user
+	 *
+	 * @param string $address_type Can be BT (Bill To) or ST (Shipto address)
+	 */
+	function display_address($address_type='BT') {
+		$auth = $_SESSION['auth'];
+		
+		$address_type = $address_type == 'BT' ? $address_type : 'ST';
+		
 		$db = new ps_DB;
-
-		$q = "SELECT address_type_name, company, title, last_name, ";
-		$q .= "first_name, middle_name, phone_1, phone_2, fax, ";
-		$q .= "address_1, address_2, city, state, country, zip ";
-		$q .= "FROM #__{vm}_user_info ";
-		$q .= "WHERE user_info_id = '$user_info_id'";
-
+		$q  = "SELECT * FROM #__{vm}_user_info WHERE user_id='" . $auth["user_id"] . "' ";
+		$q .= "AND address_type='BT'";
 		$db->query($q);
-
-		if($db->next_record()) {
-			echo "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"1\">\n";
-			echo "<tr><td align=\"center\">";
-			if ($db->f("address_type_name") != "-default-") {
-				echo "<strong>" . $db->f("address_type_name") . "</strong><br />";
-			}
-			echo $db->f("title") . " ". $db->f("first_name") . " ". $db->f("middle_name") . " ". $db->f("last_name") . " ";
-			echo "<br />";
-			if ($db->f("company")) {
-				echo $db->f("company");
-				echo "<br />";
-			}
-			echo $db->f("address_1");
-			if ($db->f("address_2")) {
-				echo "<br />";
-				echo $db->f("address_2");
-			}
-			echo "<br />". $db->f("city"). ", ". $db->f("state") . " ". $db->f("zip"). "<br />";
-			echo "Phone:". $db->f("phone_1"). "<br />";
-			echo "Fax:". $db->f("fax"). "</td></tr></table>";
-		}
-
-		return True;
+		$db->next_record();
+		$theme = new $GLOBALS['VM_THEMECLASS']();
+		$theme->set('db', $db );
+		
+		return $theme->fetch('checkout/customer_info.tpl.php');
+		
 	}
+	
+	function list_shipping_methods( $ship_to_info_id=null, $shipping_method_id=null ) {
+		if( empty( $ship_to_info_id )) {
+		    // Get the Bill to user_info_id
+		    $database->setQuery( "SELECT user_info_id FROM #__users WHERE id='".$my->id."'" );
+		    $vars["ship_to_info_id"] = $ship_to_info_id = $database->loadResult();
+		}
+		$vars["weight"] = $weight_total;
+		$i = 0;
+		
+		foreach( $PSHOP_SHIPPING_MODULES as $shipping_module ) {
+		    $vmLogger->debug( 'Starting Shipping module: '.$shipping_module );
+		    include_once( CLASSPATH. "shipping/".$shipping_module.".php" );
+		    eval( "\$SHIPPING =& new ".$shipping_module."();");
+		    $SHIPPING->list_rates( $vars );
+		    echo "<br/><hr/>";
+		}
+	}
+	function list_payment_methods( $payment_method_id=0 ) {
+		global $order_total, $sess;
+		$ps_vendor_id = $_SESSION['ps_vendor_id'];
+		$auth = $_SESSION['auth'];
+		
+        require_once(CLASSPATH . 'ps_payment_method.php');
+        $ps_payment_method = new ps_payment_method;
+		require_once( CLASSPATH. 'ps_creditcard.php' );
+	    $ps_creditcard = new ps_creditcard();
+	    
+		// Do we have Credit Card Payments?
+		$db_cc  = new ps_DB;
+		$q = "SELECT * from #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+		$q .= "#__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
+		$q .= "AND (#__{vm}_payment_method.shopper_group_id='".$auth['shopper_group_id']."' ";
+		$q .= "OR #__{vm}_shopper_group.default='1') ";
+		$q .= "AND (enable_processor='' OR enable_processor='Y') ";
+		$q .= "AND payment_enabled='Y' ";
+		$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
+		$q .= " ORDER BY list_order";
+		$db_cc->query($q);
+		
+		if ($db_cc->num_rows()) {
+		    $cc_payments=true;
+		}
+		else {
+		    $cc_payments=false;
+		}
+		$count = 0;
+		$db_nocc  = new ps_DB;
+		$q = "SELECT * from #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+		$q .= "#__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
+		$q .= "AND (#__{vm}_payment_method.shopper_group_id='".$auth['shopper_group_id']."' ";
+		$q .= "OR #__{vm}_shopper_group.default='1') ";
+		$q .= "AND (enable_processor='B' OR enable_processor='N' OR enable_processor='P') ";
+		$q .= "AND payment_enabled='Y' ";
+		$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
+		$q .= " ORDER BY list_order";
+		$db_nocc->query($q);
+		if ($db_nocc->next_record()) {
+		    $nocc_payments=true;
+		    $first_payment_method_id = $db_nocc->f("payment_method_id");
+		    $count = $db_nocc->num_rows();
+		    $db_nocc->reset();
+		}
+		else {
+		    $nocc_payments=false;
+		}
+        /** This redirect has lead to critics  **/
+		if ($count <= 1 && $cc_payments==false) {
+			mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false ),"");
+		}
+		elseif( $order_total <= 0.00 ) {
+			// In case the order total is less than or equal zero, we don't need a payment method
+			mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false),"");
+		}
+		
+		$theme = new $GLOBALS['VM_THEMECLASS']();
+		$theme->set_vars(array('db_nocc' => $db_nocc,
+								'db_cc' => $db_cc,
+								'nocc_payments' => $nocc_payments,
+								'payment_method_id' => $payment_method_id,
+								'first_payment_method_id' => $first_payment_method_id,
+								'count' => $count,
+								'cc_payments' => $cc_payments,
+								'ps_creditcard' => $ps_creditcard,
+								'ps_payment_method' => $ps_payment_method
+						 	)
+						 );
 
+		echo $theme->fetch( 'checkout/list_payment_methods.tpl.php');
+		
+	}
 	/**
 	 * This is the main function which stores the order information in the database
 	 * 
@@ -2127,7 +2203,7 @@ Order Total: '.$order_total.'
 		global $VM_LANG, $CURRENCY_DISPLAY, $order_total;
 		$db = new ps_DB;
 		// Begin with Shipping Address
-		if(CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='2') {
+		if(NO_SHIPTO=='') {
 
 			$db->query("SELECT `first_name`,`last_name`,`address_1`,`zip`,`city` FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
 			$db->next_record();
@@ -2138,7 +2214,7 @@ Order Total: '.$order_total.'
 		}
 
 		// Print out the Selected Shipping Method
-		if((CHECKOUT_STYLE=='1' || CHECKOUT_STYLE=='3')) {
+		if(NO_SHIPPING=='') {
 
 			echo "<strong>".$VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . ":</strong>&nbsp;";
 			$rate_details = explode( "|", urldecode(urldecode($_REQUEST['shipping_rate_id'])) );
@@ -2258,7 +2334,9 @@ Order Total: '.$order_total.'
 	}
 	
 	function country_in_eu_common_vat_zone ($country) {
-		$eu_countries = array ('AUT', 'BEL', 'CYP', 'CZE', 'DNK', 'EST', 'FIN', 'FRA', 'DEU', 'GRC', 'HUN', 'IRL', 'ITA', 'LVA', 'LTU', 'LUX', 'MLT', 'POL', 'PRT', 'SVK', 'SVN', 'ESP', 'SWE', 'NLD', 'GBR');
+		$eu_countries = array ('AUT', 'BGR', 'BEL', 'CYP', 'CZE', 'DEU', 'DNK', 'ESP', 'EST', 
+								'FIN', 'FRA', 'FXX', 'GBR', 'GRC', 'HUN', 'IRL', 'ITA', 'LVA', 'LTU', 
+								'LUX', 'MLT', 'NLD', 'POL', 'PRT', 'ROM', 'SVK', 'SVN', 'SWE');
 		return in_array ($country, $eu_countries);
 	}
 }

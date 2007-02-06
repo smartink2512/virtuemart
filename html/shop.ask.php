@@ -79,9 +79,9 @@ if ($my->id) {
 // Set up form for email details
 $send_mail = "<form action=\"".$mm_action_url."index.php\" method=\"post\" name=\"emailForm\" id=\"emailForm\">\n";
 $send_mail .= "<label for=\"contact_name\">".$VM_LANG->_NAME_PROMPT."</label />\n";
-$send_mail .= "<br><input type=\"text\" name=\"name\" id=\"contact_name\" size=\"80\" class=\"inputbox\" value=\"".$name."\"><br><br />\n";
+$send_mail .= "<br /><input type=\"text\" name=\"name\" id=\"contact_name\" size=\"80\" class=\"inputbox\" value=\"".$name."\"><br /><br />\n";
 $send_mail .= "<label for=\"contact_mail\">".$VM_LANG->_EMAIL_PROMPT."</label />\n";
-$send_mail .= "<br><input type=\"text\" id=\"contact_mail\" name=\"email\" size=\"80\" label=\"Your email\" class=\"inputbox\" value=\"".$email."\"><br><br />\n";
+$send_mail .= "<br /><input type=\"text\" id=\"contact_mail\" name=\"email\" size=\"80\" label=\"Your email\" class=\"inputbox\" value=\"".$email."\"><br /><br />\n";
 $send_mail .= "<label for=\"contact_text\">".$VM_LANG->_MESSAGE_PROMPT."</label><br />\n";
 $send_mail .= "<textarea rows=\"10\" cols=\"60\" name=\"text\" id=\"contact_text\" class=\"inputbox\">$subject</textarea><br />\n";
 $send_mail .=  "<input type=\"button\" name=\"send\" value=\"".$VM_LANG->_SEND_BUTTON."\" class=\"button\" onclick=\"validateForm()\" />\n";

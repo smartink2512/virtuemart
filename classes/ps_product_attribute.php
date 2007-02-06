@@ -475,7 +475,7 @@ class ps_product_attribute {
 				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
 				//$html_header .= "<span style=\"float: right;text-align: center;\" />$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$VM_LANG->_PHPSHOP_CART_QUANTITY</span>";
 				}
-				$html_header .= "</div><br>";
+				$html_header .= "</div><br />";
 
 				if($display_header == "Y" && $ci == 0) {
 					$html .= $html_header;

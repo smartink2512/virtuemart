@@ -221,8 +221,8 @@ include(PAGEPATH."/checkout.shipping_selected.php");
     </TR>
   </TABLE>
 <!-- End payment information -->
-<BR><br />
-*<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO ?>.<br /><br /><br />
+<BR>
+*<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO ?>.
 <table width=100% border=0 cellspacing=0 cellpadding=0>
 <tr align=center>
   <td><input type=submit class="button" name=submit value="<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER ?>"></TD>

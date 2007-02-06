@@ -406,26 +406,26 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' heigh
       }
       echo '/><label for="product_list_check">'.$VM_LANG->_VM_DISPLAY_USE_LIST_BOX.'</label>';
       //Formatting Code
-?> <br>
+?> <br />
       
        <?php 
        echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_desc\" name=\"display_desc\" value=\"Y\" ";
        if ($display_desc) {
        	echo "checked=\"checked\" ";
        }
-    echo '/><label for="display_desc">'.$VM_LANG->_VM_DISPLAY_CHILD_DESCRIPTION.'</label>'; ?><br>
+    echo '/><label for="display_desc">'.$VM_LANG->_VM_DISPLAY_CHILD_DESCRIPTION.'</label>'; ?><br />
     <?php 
     echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"desc_width\" name=\"desc_width\" value=\"$desc_width\"  ";
     echo "/> ".$VM_LANG->_VM_DISPLAY_DESC_WIDTH; ?>
-    <br>
+    <br />
     <?php 
     echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"attrib_width\" name=\"attrib_width\" value=\"$attrib_width\"  ";
     echo "/> ".$VM_LANG->_VM_DISPLAY_ATTRIB_WIDTH; ?>
-    <br>
+    <br />
     <?php 
-    echo $VM_LANG->_VM_DISPLAY_CHILD_SUFFIX."<br><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
+    echo $VM_LANG->_VM_DISPLAY_CHILD_SUFFIX."<br /><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
     echo "/> "; ?>
-    <br>
+    <br />
       </td>
         
         <td width="20%" >
@@ -927,7 +927,7 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
         <table class="adminform">
           <tr class="row0"> 
             <td colspan="2" ><?php if ($product_id) {
-                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br>"; } ?> 
+                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br />"; } ?> 
               <input type="file" class="inputbox" name="product_thumb_image" size="50" maxlength="255" onchange="if(document.adminForm.product_thumb_image.value!='') document.adminForm.product_thumb_image_url.value='';" />
             </td>
           </tr>

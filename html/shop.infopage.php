@@ -78,7 +78,7 @@ $vendor_id = mosGetParam($_GET, 'vendor_id', 1 );
         </tr>
         <tr>
       <td valign="top" align="left" colspan="2">
-          <br><?php $db->p("vendor_store_desc") ?><br />
+          <br /><?php $db->p("vendor_store_desc") ?><br />
       </td>
         </tr>
 </table>
