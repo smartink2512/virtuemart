@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.02.2007 soeren
+
++ added a configuration variable to enable and disable the cookie check (it seems not to be very search-engine friendly)
+
 05.02.2007 soeren
 ^! completely revised the Checkout Process (WIP!)
 	* created templates for all checkout stages
