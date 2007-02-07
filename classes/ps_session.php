@@ -59,7 +59,7 @@ class ps_session {
 				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
 			}
 			else {
-				if( @$_REQUEST['option'] == 'com_virtuemart' && USE_AS_CATALOGUE == '' ) {
+				if( @$_REQUEST['option'] == 'com_virtuemart' && USE_AS_CATALOGUE == '' && VM_ENABLE_COOKIE_CHECK == '1') {
 					$this->doCookieCheck(); // Introduced to check if the user-agent accepts cookies
 				}
 				if( USE_AS_CATALOGUE == '' ) {

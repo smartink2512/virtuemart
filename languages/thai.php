@@ -1778,6 +1778,9 @@ Please do not respond to this message as it is automatically generated and is fo
 	var $_VM_EXPIRY = 'Expiry';
 	var $_VM_DOWNLOAD_FILE_NOTREADABLE = 'Sorry, but the requested file can\'t be read from the Server';
 	var $_VM_DOWNLOAD_FILE_NOTFOUND = 'Sorry, but the requested file wasn\'t found. Possible Cause: Wrong path';
+	var $_VM_ADMIN_CFG_COOKIE_CHECK = 'Enable the Cookie Check?';
+	var $_VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN = 'If enabled, VirtueMart checks wether the browser of the customer accepts cookies or not. This is user-friendly, but it can have negative consequences on the Search-Engine-Friendlyness of your shop.';
+	var $_VM_CHECKOUT_TITLE_TAG = 'Checkout: Step %s of %s';
         
 }
 class phpShopLanguage extends vmLanguage { }

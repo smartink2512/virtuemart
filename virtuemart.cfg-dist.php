@@ -105,7 +105,6 @@ define('MUST_AGREE_TO_TOS', '1');
 define('PSHOP_AGREE_TO_TOS_ONORDER', '');
 define('CAN_SELECT_STATES', '');
 define('SHOW_CHECKOUT_BAR', '1');
-define('CHECKOUT_STYLE', '1');
 define('CHECK_STOCK', '');
 define('ENCODE_KEY', md5( rand() . $mosConfig_secret ) );
 define('NO_SHIPPING', '');
@@ -121,6 +120,7 @@ define('PSHOP_SHOW_TOP_PAGENAV', '1');
 define('PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS', '1');
 define('VM_CURRENCY_CONVERTER_MODULE', 'convertECB');
 define('VM_CONTENT_PLUGINS_ENABLE', '');
+define('VM_ENABLE_COOKIE_CHECK', '1');
 
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;
@@ -130,6 +130,13 @@ $VM_BROWSE_ORDERBY_FIELDS = array( 'product_name', 'product_price', 'product_cda
 global $VM_MODULES_FORCE_HTTPS;
 $VM_MODULES_FORCE_HTTPS = array( 'account','checkout' );
 
+global $VM_CHECKOUT_MODULES;
+$VM_CHECKOUT_MODULES = array('CHECK_OUT_GET_SHIPPING_ADDR' => array('order' => 1,'enabled'=>1),
+		'CHECK_OUT_GET_SHIPPING_METHOD' => array('order' => 2,'enabled'=>1),
+		'CHECK_OUT_GET_PAYMENT_METHOD' => array('order' => 3,'enabled'=>1),
+		'CHECK_OUT_GET_FINAL_CONFIRMATION' => array('order' => 4,'enabled'=>1)
+	);
+							
 /* Shipping Methods Definition */
 global $PSHOP_SHIPPING_MODULES;
 $PSHOP_SHIPPING_MODULES[0] = "flex";

@@ -122,7 +122,10 @@ class ps_config {
 			"PSHOP_SHOW_TOP_PAGENAV"            =>      "conf_PSHOP_SHOW_TOP_PAGENAV",
 			"PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS"          =>      "conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS",
 			"VM_CURRENCY_CONVERTER_MODULE" => "conf__VM_CURRENCY_CONVERTER_MODULE",
-			"VM_CONTENT_PLUGINS_ENABLE" => "conf_VM_CONTENT_PLUGINS_ENABLE",			
+			"VM_CONTENT_PLUGINS_ENABLE" => "conf_VM_CONTENT_PLUGINS_ENABLE",
+			"VM_ENABLE_COOKIE_CHECK" => "conf_VM_ENABLE_COOKIE_CHECK",
+			
+			// Begin Arrays
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
 			"VM_MODULES_FORCE_HTTPS"          =>      "conf_VM_MODULES_FORCE_HTTPS",
 			"VM_CHECKOUT_MODULES"	=>	"VM_CHECKOUT_MODULES",
@@ -220,7 +223,12 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config .= "\n// Checkout Steps and their order\nglobal \$VM_CHECKOUT_MODULES;\n";
 					$config .= "\$VM_CHECKOUT_MODULES = array( ";
 					$i= 0;
+					$max = 0;
 					foreach( $d['VM_CHECKOUT_MODULES'] as $step ) {
+						$max = (int)$step['order'] > $max ? (int)$step['order'] : $max;
+						if( $step['name'] == 'CHECK_OUT_GET_FINAL_CONFIRMATION' ) {
+							$step['order'] = max( $max, $step['order'] ); // In case someone wants the final confirmation not as last step (so we force it to be the last step)
+						}
 						$enabled = !empty($step['enabled']) || $step['name'] == 'CHECK_OUT_GET_PAYMENT_METHOD' || $step['name'] == 'CHECK_OUT_GET_FINAL_CONFIRMATION';
 						$config.= "'".$step['name']."'=>array('order'=>".(int)$step['order'].",'enabled'=>".(int)$enabled.")";
 						if( $i+1 < sizeof( $d['VM_CHECKOUT_MODULES'] )) {
