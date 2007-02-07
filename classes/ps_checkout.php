@@ -113,7 +113,7 @@ class ps_checkout {
 	
 	function get_current_stage() {
 		$steps = ps_checkout::get_checkout_steps();
-		$stage = 1;
+		$stage = key( $steps ); // $steps is sorted by key, so the first key is the first stage
 		// First check the REQUEST parameters for other steps
 		if( !empty( $_REQUEST['checkout_last_step'] ) && empty( $_POST['checkout_this_step'] )) {
 			// Make sure we have an integer (max 4)
@@ -669,23 +669,25 @@ class ps_checkout {
 		
 		if( empty( $ship_to_info_id )) {
 		    // Get the Bill to user_info_id
-		    $database->setQuery( "SELECT user_info_id FROM #__users WHERE id='".$my->id."'" );
+		    $database = new ps_DB();
+		    $database->setQuery( "SELECT user_info_id FROM #__{vm}_user_info WHERE user_id='".$my->id."'" );
 		    $vars["ship_to_info_id"] = $ship_to_info_id = $database->loadResult();
 		}
 		$vars["weight"] = $weight_total;
 		$i = 0;
+
+		$theme = new $GLOBALS['VM_THEMECLASS']();
+		$theme->set_vars(array('vars' => $vars,
+								'PSHOP_SHIPPING_MODULES' => $PSHOP_SHIPPING_MODULES
+						 	)
+						 );
+
+		echo $theme->fetch( 'checkout/list_shipping_methods.tpl.php');
 		
-		foreach( $PSHOP_SHIPPING_MODULES as $shipping_module ) {
-		    $vmLogger->debug( 'Starting Shipping module: '.$shipping_module );
-		    include_once( CLASSPATH. "shipping/".$shipping_module.".php" );
-		    eval( "\$SHIPPING =& new ".$shipping_module."();");
-		    $SHIPPING->list_rates( $vars );
-		    echo "<br/><hr/>";
-		}
 	}
 	
 	function list_payment_methods( $payment_method_id=0 ) {
-		global $order_total, $sess;
+		global $order_total, $sess, $VM_CHECKOUT_MODULES;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
 		$auth = $_SESSION['auth'];
 		
@@ -732,15 +734,16 @@ class ps_checkout {
 		else {
 		    $nocc_payments=false;
 		}
-        /** This redirect has lead to critics  **/
-		if ($count <= 1 && $cc_payments==false) {
-			mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false ),"");
+        // Redirect to the last step when there's only one payment method
+		if( $VM_CHECKOUT_MODULES['CHECK_OUT_GET_PAYMENT_METHOD']['order'] != $VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'] ) {
+			if ($count <= 1 && $cc_payments==false) {
+				mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false ),"");
+			}
+			elseif( $order_total <= 0.00 ) {
+				// In case the order total is less than or equal zero, we don't need a payment method
+				mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false),"");
+			}
 		}
-		elseif( $order_total <= 0.00 ) {
-			// In case the order total is less than or equal zero, we don't need a payment method
-			mosRedirect($sess->url(SECUREURL."index.php?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_this_step=99&checkout_next_step=99", false, false),"");
-		}
-		
 		$theme = new $GLOBALS['VM_THEMECLASS']();
 		$theme->set_vars(array('db_nocc' => $db_nocc,
 								'db_cc' => $db_cc,

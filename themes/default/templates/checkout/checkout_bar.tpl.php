@@ -37,7 +37,7 @@ foreach ($steps_to_do as $step ) {
 	}
 	else {
 		foreach( $step as $substep ) {
-			echo $substep['step_msg'].'<br />';
+			echo '<a href="#'.$substep['step_name'].'">'.$substep['step_msg'].'</a><br />';
 		}
 	}
 	echo '</td>';

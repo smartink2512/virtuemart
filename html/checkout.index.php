@@ -107,20 +107,20 @@ if ($cart["idx"] > 0) {
 		
 		$theme->set( 'basket_html', $basket_html );
 		
-	    /* Set Dynamic Page Title when applicable */
-	    $mainframe->setPageTitle( 'Checkout Step: '.$current_stage.' of '.count($checkout_steps) );
+	    // Set Dynamic Page Title: "Checkout: Step x of x"
+	    $mainframe->setPageTitle( sprintf( $VM_LANG->_VM_CHECKOUT_TITLE_TAG, $current_stage, count($checkout_steps) ));
 	    
 	    // CHECK_OUT_GET_SHIPPING_ADDR
 	    // Lets the user pick or add an alternative Shipping Address
 	    if( in_array('CHECK_OUT_GET_SHIPPING_ADDR', $checkout_steps[$current_stage]) ) {
-
+			echo '<a name="CHECK_OUT_GET_SHIPPING_ADDR"></a>';
 			echo $theme->fetch( 'checkout/get_shipping_address.tpl.php');
 			$theme->set('basket_html', '');
         }
         // CHECK_OUT_GET_SHIPPING_METHOD
         // Let the user pick a shipping method
         if( in_array('CHECK_OUT_GET_SHIPPING_METHOD', $checkout_steps[$current_stage]) ) {   
-        	
+        	echo '<a name="CHECK_OUT_GET_SHIPPING_METHOD"></a>';
         	echo $theme->fetch( 'checkout/get_shipping_method.tpl.php');
 			$theme->set('basket_html', '');
         }
@@ -128,16 +128,17 @@ if ($cart["idx"] > 0) {
         // -CHECK_OUT_GET_PAYMENT_METHOD
         // let the user choose a payment method
         if( in_array('CHECK_OUT_GET_PAYMENT_METHOD', $checkout_steps[$current_stage]) ) {   
-        	
+        	echo '<a name="CHECK_OUT_GET_PAYMENT_METHOD"></a>';
         	echo $theme->fetch( 'checkout/get_payment_method.tpl.php');
 			$theme->set('basket_html', '');
         } 
         // -CHECK_OUT_GET_FINAL_CONFIRMATION
         // shows a total summary including all payments, taxes, fees etc. 
         if( in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {   
-		// Now let the user confirm
-		echo $theme->fetch( 'checkout/get_final_confirmation.tpl.php');
-		$theme->set('basket_html', '');
+        	echo '<a name="CHECK_OUT_GET_FINAL_CONFIRMATION"></a>';
+			// Now let the user confirm
+			echo $theme->fetch( 'checkout/get_final_confirmation.tpl.php');
+			$theme->set('basket_html', '');
         }
         ?>
     <br /><?php 
