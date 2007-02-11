@@ -70,80 +70,80 @@ class shipvalue {
 			$flat_charge1 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship1."|".$flat_charge1);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge1);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge1).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship2) {
 			$flat_charge2 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship2."|".$flat_charge2);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge2);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge2).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship3) {
 			$flat_charge3 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship3."|".$flat_charge3);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge3);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge3).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship4) {
 			$flat_charge4 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship4."|".$flat_charge4);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge4);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge4).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship5) {
 			$flat_charge5 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship5."|".$flat_charge5);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge5);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge5).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship6) {
 			$flat_charge6 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship6."|".$flat_charge6);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge6);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge6).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship7) {
 			$flat_charge7 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship7."|".$flat_charge7);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge7);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge7).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship8) {
 			$flat_charge8 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship8."|".$flat_charge8);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge8);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge8).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship9) {
 			$flat_charge9 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship9."|".$flat_charge9);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge9);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge9).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 		else if($order_total < $base_ship10) {
 			$flat_charge10 *= $taxrate;
 			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship10."|".$flat_charge10);
 			$html = "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
-			$html .= "Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge10);
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
+			$html .= "<label for=\"$shipping_rate_id\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge10).'</label>';
 			$_SESSION[$shipping_rate_id] = 1;
 		}
 

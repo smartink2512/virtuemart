@@ -22,7 +22,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 $highlighted_style = 'style="font-weight: bold;"';
 
 echo '
-<table style="background: url( '. VM_THEMEURL .'images/checkout/checkout'. $step_count.'_'.min( count($steps_to_do), $highlighted_step ) .'.png ) right; background-repeat: no-repeat; height:85px;text-align:center;" border="0" cellspacing="0" cellpadding="0" align="center">
+<table style="background: url( '. VM_THEMEURL .'images/checkout/checkout'. $step_count.'_'.min( count($steps_to_do), $highlighted_step ) .'.png ) top right; background-repeat: no-repeat; height:115px;text-align:center;" border="0" cellspacing="0" cellpadding="0" align="center">
   <tr>';
 
 foreach ($steps_to_do as $step ) {

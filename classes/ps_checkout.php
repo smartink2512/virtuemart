@@ -56,7 +56,7 @@ class ps_checkout {
 
 		$this->_subtotal = $this->get_order_subtotal($vars);
 		
-		if( $vendor_freeshipping > 0 && $vars['order_subtotal_withtax'] > $vendor_freeshipping) {
+		if( $vendor_freeshipping > 0 && $vars['order_subtotal_withtax'] >= $vendor_freeshipping) {
 			$PSHOP_SHIPPING_MODULES = Array( "free_shipping" );
 			include_once( CLASSPATH. "shipping/free_shipping.php" );
 			$this->_SHIPPING =& new free_shipping();
@@ -670,8 +670,8 @@ class ps_checkout {
 		if( empty( $ship_to_info_id )) {
 		    // Get the Bill to user_info_id
 		    $database = new ps_DB();
-		    $database->setQuery( "SELECT user_info_id FROM #__{vm}_user_info WHERE user_id='".$my->id."'" );
-		    $vars["ship_to_info_id"] = $ship_to_info_id = $database->loadResult();
+		    $database->setQuery( "SELECT user_info_id FROM #__{vm}_user_info WHERE user_id=".$my->id." AND address_type='BT'" );
+		    $vars["ship_to_info_id"] = $_REQUEST['ship_to_info_id'] = $database->loadResult();
 		}
 		$vars["weight"] = $weight_total;
 		$i = 0;

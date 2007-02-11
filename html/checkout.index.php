@@ -176,29 +176,50 @@ if ($cart["idx"] > 0) {
       
           else { // user is not logged in
   ?>
-            <fieldset>
-                <legend><span class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_RETURN_LOGIN ?></span></legend>
-                <br />
+        	<input type="radio" name="togglerchecker" id="toggler1" class="toggler" checked="checked" />
+        	<label for="toggler1"><?php echo $VM_LANG->_PHPSHOP_RETURN_LOGIN ?></label>
+            <br /><br />
+                <div class="stretcher" id="login_stetcher">
             <?php 
-                        include(PAGEPATH.'checkout.login_form.php');
+                echo $theme->fetch('common/login_form.tpl.php');
             ?>
-                <br />
-            </fieldset><br />
+                </div><br />
             <?php
           
           
           ?><br />
-            <div class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></div>
-                <br /><?php
+          	<input type="radio" name="togglerchecker" id="toggler2" class="toggler" />
+         	<label for="toggler2"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></label>
+            <br />
+                <div class="stretcher" id="register_stretcher"><?php
           
                 include(PAGEPATH. 'checkout_register_form.php');
 ?>
-                <br />
-<?php      }
+               </div>
+               <br />
+<?php
+          }
     }
 }
 else {
 	mosRedirect( $sess->url( 'index.php?page=shop.cart', false, false ) );
 }
 
+echo vmCommonHTML::scriptTag('', 'Window.onDomReady(function() {
+	
+	// get accordion elements
+	myStretch = document.getElementsByClassName(\'toggler\');
+	myStretcher = document.getElementsByClassName(\'stretcher\');
+	
+
+	
+	// Create the accordion
+	myAccordion = new Fx.Accordion(myStretch, myStretcher, 
+		{
+			/*fixedHeight: 125,*/
+			opacity : true,
+			display: 0
+		});
+
+});');
 ?>
