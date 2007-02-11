@@ -22,9 +22,10 @@ if( !$my->id ) {
             <fieldset>
                 <legend><span class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_RETURN_LOGIN ?></span></legend>
                 <br />
-            <?php 
-                        include(PAGEPATH.'checkout.login_form.php');
-            ?>
+	            <?php 
+	            $theme = new $GLOBALS['VM_THEMECLASS']();
+	            echo $theme->fetch('common/login_form.tpl.php');
+	            ?>
                 <br />
             </fieldset><br />
             <?php
