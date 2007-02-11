@@ -517,27 +517,27 @@ class ps_shopper {
 
 		// Get all fields which where shown to the user
 		$userFields = ps_userfield::getUserFields( 'account', false, '', true );
-
-		// Insert billto;
-
-		// Building the query: PART ONE
-		// The first 7 fields are FIX and not built dynamically
-		$q = "UPDATE #__{vm}_user_info SET
-                                `mdate` = '".time()."', ";
-		$fields = array();
 		$skip_fields = ps_userfield::getSkipFields();
+		
+		$fields = array( 
+						'mdate' => time()
+						);
+		
 		foreach( $userFields as $userField ) {
-			if( !in_array($userField->name,$skip_fields)) {
-				$d[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
-				$fields[] = "`".$userField->name."`='".$d[$userField->name]."'";
+			if( !in_array($userField->name, $skipFields )) {
+				
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+				
 			}
 		}
-		$q .= str_replace( '`email`', '`user_email`', implode( ',', $fields ));
+		
+		$fields['user_email'] = $fields['email'];
+		unset($fields['email']);
 
-		$q .= " WHERE user_id=".$user_id." AND address_type='BT'";
+		$db->buildQuery('UPDATE', '#__{vm}_user_info', $fields, " WHERE user_id=".$user_id." AND address_type='BT'" );
 
 		// Run the query!
-		$db->query($q);
+		$db->query();
 
 		// UPDATE #__{vm}_shopper group relationship
 		$q = "SELECT shopper_group_id FROM #__{vm}_shopper_vendor_xref ";

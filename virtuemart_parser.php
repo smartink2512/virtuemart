@@ -53,6 +53,12 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 
+	// Get default and this users's Shopper Group
+	$shopper_group = $ps_shopper_group->get_shoppergroup_by_id( $my->id );
+
+	// User authentication
+	$auth = $perm->doAuthentication( $shopper_group );
+	
 	if( $option == "com_virtuemart" ) {
 
 		// Get sure that we have float values with a decimal point!
@@ -66,23 +72,24 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
 		$keyword = substr( urldecode(mosgetparam($_REQUEST, 'keyword', '')), 0, 50 );
+		$user_info_id = mosgetparam($_REQUEST, 'user_info_id' );
 	
 		unset( $_REQUEST["error"] );
-		$user_id = intval( mosgetparam($_REQUEST, 'user_id', 0) );
-		if( !empty($_REQUEST['product_id']) && is_array($_REQUEST['product_id']) ) {
-			mosArrayToInts( $_REQUEST['product_id']);
-		} else {
-			$_REQUEST['product_id'] = intval( mosgetparam($_REQUEST, 'product_id', 0) );
+		
+		// Cast all the following fields to INT
+		$parseToIntFields = array('user_id','product_id','category_id','manufacturer_id','id','cid','vendor_id','country_id','currency_id',
+								'order_id','module_id','function_id','payment_method_id','coupon_id') ;
+		foreach( $parseToIntFields as $intField ) {
+			if( !empty($_REQUEST[$intField]) && is_array($_REQUEST[$intField]) ) {
+				mosArrayToInts( $_REQUEST[$intField]);
+			} else {
+				$_REQUEST[$intField] = $$intField = intval( mosgetparam($_REQUEST, $intField, 0) );
+			}
 		}
-		if( !empty($_REQUEST['category_id']) && is_array($_REQUEST['category_id']) ) {
-			mosArrayToInts( $_REQUEST['category_id']);
-		} else {
-			$_REQUEST['category_id'] = intval( mosgetparam($_REQUEST, 'category_id', 0) );
-		}
+		
 		$_SESSION['session_userstate']['product_id'] = $product_id = $_REQUEST['product_id'];
 		$_SESSION['session_userstate']['category_id'] = $category_id = $_REQUEST['category_id'];
-		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
-
+		
 		$myInsecureArray = array('keyword' => $keyword,
 									'user_info_id' => $user_info_id,
 									'page' => $page,
@@ -92,26 +99,25 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		 * This InputFiler Object will help us filter malicious variable contents
 		 * @global vmInputFiler vmInputFiler
 		 */
-		$GLOBALS['vmInputFilter'] = new vmInputFilter();
+		$GLOBALS['vmInputFilter'] = $vmInputFilter = new vmInputFilter();
 		// prevent SQL injection
-		$myInsecureArray = $GLOBALS['vmInputFilter']->safeSQL( $myInsecureArray );
-		// Re-insert the escaped strings into $_REQUEST
-		foreach( $myInsecureArray as $requestvar => $requestval) {
-				$_REQUEST[$requestvar] = $requestval;
+		if( $perm->check('admin,storeadmin') ) {
+			$myInsecureArray = $vmInputFilter->safeSQL( $myInsecureArray );
+			$myInsecureArray = $vmInputFilter->process( $myInsecureArray );
+			// Re-insert the escaped strings into $_REQUEST
+			foreach( $myInsecureArray as $requestvar => $requestval) {
+					$_REQUEST[$requestvar] = $requestval;
+			}
+		} else {
+			// Strip all tags from all input values
+			$_REQUEST = $vmInputFilter->process( $_REQUEST );
+			$_REQUEST = $vmInputFilter->safeSQL( $_REQUEST );
 		}
 		// Limit the keyword (=search string) length to 50
 		$_SESSION['session_userstate']['keyword'] = $keyword = substr(mosgetparam($_REQUEST, 'keyword', ''), 0, 50);
 		
-		$user_info_id = mosgetparam($_REQUEST, 'user_info_id', 0);
-		
 		$vars = $_REQUEST;
 	}
-
-	// Get default and this users's Shopper Group
-	$shopper_group = $ps_shopper_group->get_shoppergroup_by_id( $my->id );
-
-	// User authentication
-	$auth = $perm->doAuthentication( $shopper_group );
 
 	if( $option == "com_virtuemart" ) {
 		// Check if we have to run a Shop Function
