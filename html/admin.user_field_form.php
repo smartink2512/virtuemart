@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-vmCommonHTML::loadMooFx();
+vmCommonHTML::loadMooTools();
 
 require_once( CLASSPATH . 'ps_userfield.php' );
 require_once( CLASSPATH . 'ps_shopper_group.php' );
@@ -89,7 +89,7 @@ else {
 		$types[] = mosHTML::makeOption( 'letterman_subscription', 'Letterman Newsletter Subscription' );
 	}
 	
-	$lists['type'] = mosHTML::selectList( $types, 'type', 'class="inputbox" size="1" onchange="selType(this.options[this.selectedIndex].value);"', 'value', 'text', $db->f('type') );
+	$lists['type'] = mosHTML::selectList( $types, 'type', 'class="inputbox" size="1" onchange="toggleType(this.options[this.selectedIndex].value);"', 'value', 'text', $db->f('type') );
 }
 
 $lists['webaddresstypes'] = mosHTML::selectList( $webaddrtypes, 'webaddresstypes', 'class="inputbox" size="1"', 'value', 'text', $db->f('rows') );
@@ -316,11 +316,11 @@ $duration = 500;
   function disableAll() {
     var elem;
     try{ 
-    	if (divValues.el.offsetHeight > 0) divValues.custom(divValues.el.offsetHeight, 0); 
-    	if (divColsRows.el.offsetHeight > 0) divColsRows.custom(divColsRows.el.offsetHeight, 0); 
-    	if (divWeb.el.offsetHeight > 0) divWeb.custom(divWeb.el.offsetHeight, 0); 
-    	if (divShopperGroups.el.offsetHeight > 0) divShopperGroups.custom(divShopperGroups.el.offsetHeight, 0); 
-    	if (divText.el.offsetHeight > 0) divText.custom(divText.el.offsetHeight, 0); 
+    	divValues.slideOut();
+    	divColsRows.slideOut();
+    	divWeb.slideOut();
+    	divShopperGroups.slideOut();
+    	divText.slideOut();
     
     } catch(e){ }
     if (elem=getObject('vNames[0]')) {
@@ -392,9 +392,9 @@ $duration = 500;
 	if($fieldid > 0) {
 		echo vmCommonHTML::scriptTag( '', 'document.adminForm.name.readOnly=true;' );
 	}
-	echo vmCommonHTML::scriptTag( '', "		var divValues = new fx.Height('divValues' , {duration: $duration } );
-		var divColsRows = new fx.Height('divColsRows' , {duration: $duration } );
-		var divWeb = new fx.Height('divWeb' , {duration: $duration } );
-		var divShopperGroups = new fx.Height('divShopperGroups' , {duration: $duration } );
-		var divText = new fx.Height('divText' , {duration: $duration } ); toggleType('".$db->f('type')."');" );	
+	echo vmCommonHTML::scriptTag( '', "		var divValues = new Fx.Slide('divValues' , {duration: $duration } );
+		var divColsRows = new Fx.Slide('divColsRows' , {duration: $duration } );
+		var divWeb = new Fx.Slide('divWeb' , {duration: $duration } );
+		var divShopperGroups = new Fx.Slide('divShopperGroups' , {duration: $duration } );
+		var divText = new Fx.Slide('divText' , {duration: $duration } ); toggleType('".$db->f('type')."');" );	
 ?>

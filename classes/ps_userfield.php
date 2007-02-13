@@ -250,7 +250,7 @@ class ps_userfield extends vmAbstractObject {
 	 */
 	function listUserFields( $rowFields, $skipFields=array(), $db = null ) {
 		global $mm_action_url, $ps_html, $VM_LANG, $my, $default, $mainframe,
-			$vendor_country_3_code, $mosConfig_live_site, $page;
+			$vendor_country_3_code, $mosConfig_live_site, $mosConfig_absolute_path, $page;
 		
 		$dbf = new ps_DB();
 		
@@ -259,11 +259,7 @@ class ps_userfield extends vmAbstractObject {
 		}
 		$default['country'] = $vendor_country_3_code;
 		
-		$missing = mosGetParam( $_REQUEST, "missing", "" );
-		$missing_style = "color:red; font-weight:bold;";	
-		
-		$label_div_style = 'float:left;width:30%;text-align:right;vertical-align:bottom;font-weight: bold;padding-right: 5px;';
-		$field_div_style = 'float:left;width:60%;';
+		$missing = mosGetParam( $_REQUEST, "missing", "" );		
 
 		// collect all required fields
 		$required_fields = Array(); 
@@ -279,7 +275,9 @@ class ps_userfield extends vmAbstractObject {
 		
 		// Form validation function
 		ps_userfield::printJS_formvalidation( $required_fields, $rowFields );
-		$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'includes/js/mambojavascript.js' ) );
+		if( file_exists( $mosConfig_absolute_path .'/includes/js/mambojavascript.js') ) {
+			$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'includes/js/mambojavascript.js' ) );
+		}
 		?>		
 		
 		<form action="<?php echo $mm_action_url .basename($_SERVER['PHP_SELF']) ?>" method="post" name="adminForm">
@@ -319,25 +317,34 @@ class ps_userfield extends vmAbstractObject {
 					 ('.$VM_LANG->_PHPSHOP_STORE_FORM_TOS.')
 					</a></noscript>';
 	   		}
+	   		if( $field->name == 'username' && VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' ) {
+				echo '<div class="formLabel">
+						<input type="checkbox" id="register_account" name="register_account" value="1" class="inputbox" onchange="showFields( this.checked, new Array(\'username\', \'password\', \'password2\') );if( this.checked ) { document.adminForm.remember.value=\'yes\'; } else { document.adminForm.remember.value=\'yes\'; }" checked="checked" />
+					</div>
+					<div class="formField">
+						<label for="register_account">'.$VM_LANG->_VM_REGISTER_ACCOUNT.'</label>
+					</div>
+					';
+			}
 	   		// a delimiter marks the beginning of a new fieldset and
 	   		// the end of a previous fieldset
 	   		if( $field->type == 'delimiter') {
 	   			if( $delimiter > 0) {
 	   				echo "</fieldset>\n";
 	   			}
-	   			if( VM_SILENT_REGISTRATION == '1' && $field->title == $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL && $page == 'checkout.index' ) {
+	   			if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' && $field->title == $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL && $page == 'checkout.index' ) {
 	   				continue;
 	   			}
 	   			echo '<fieldset>
 				     <legend class="sectiontableheader">'.$field->title.'</legend>
-				     ';
+';
 	   			$delimiter++;
 	   			continue;
 	   		}
 	   		
-	   		echo '<div id="'.$field->name.'_div" style="'.$label_div_style;
+	   		echo '<div id="'.$field->name.'_div" class="formLabel ';
 	   		if (stristr($missing,$field->name)) {
-	   			echo $missing_style;
+	   			echo 'missing';
 	   		}
 	   		echo '">';
 	        echo '<label for="'.$field->name.'_field">'.$field->title.'</label>';
@@ -345,7 +352,7 @@ class ps_userfield extends vmAbstractObject {
 	        	echo '<strong>* </strong>';
 	        }
 	      	echo ' </div>
-	      <div style="'.$field_div_style.'">'."\n";
+	      <div class="formField" id="'.$field->name.'_input">'."\n";
 	      	
 	      	/**
 	      	 * This is the most important part of this file
@@ -379,7 +386,7 @@ class ps_userfield extends vmAbstractObject {
 				case 'password2':
 					echo '<input type="password" id="'.$field->name.'_field" name="'.$field->name.'" size="30" class="inputbox" />'."\n";
 		   			break;
-		   		
+					
 	   			default:
 	   				
 	   				switch( $field->type ) {
@@ -448,10 +455,28 @@ class ps_userfield extends vmAbstractObject {
 	   		if( $field->description != '') {
 	   			echo mm_ToolTip( $field->description );
 	   		}
-	   		echo '</div>
-				      <br style="clear:both;" /><br />';
+	   		echo '<br /></div>
+				      <br style="clear:both;" />';
 	   }
 	   echo '</fieldset>';
+	   if( VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
+		   	echo '<script type="text/javascript">
+		   function showFields( show, fields ) {
+		   	if( fields ) {
+		   		for (i=0; i<fields.length;i++) {
+		   			if( show ) {
+		   				document.getElementById( fields[i] + \'_div\' ).style.display = \'\';
+		   				document.getElementById( fields[i] + \'_input\' ).style.display = \'\';
+		   			} else {
+		   				document.getElementById( fields[i] + \'_div\' ).style.display = \'none\';
+		   				document.getElementById( fields[i] + \'_input\' ).style.display = \'none\';
+		   			}
+		   		}
+		   	}
+		   }
+		   showFields( document.getElementById( \'register_account\').checked, new Array(\'username\', \'password\', \'password2\') )
+		   </script>';
+	   }
 	}
 	
 	function prepareFieldDataSave($fieldType,$fieldName,$value=null) {
@@ -598,29 +623,29 @@ class ps_userfield extends vmAbstractObject {
                                 }
                         }
                         if(rChecked==0) {
-                        	document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+                        	document.getElementById(required_fields[i]+'$div_id_postfix').className += ' missing';
                             isvalid = false;
                     	}
-                    	else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                            document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+                    	else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
                         }                               
                     }
                     else if( formelement.options ) {
                         if(formelement.selectedIndex.value == '') {
-                                document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+                                document.getElementById(required_fields[i]+'$div_id_postfix').className += ' missing';
                                 isvalid = false;
                         } 
-                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                                document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
+                                document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
                         }
                     }
                     else {
                         if (formelement.value == '') {
-                            document.getElementById(required_fields[i]+'$div_id_postfix').style.color = 'red';
+                            document.getElementById(required_fields[i]+'$div_id_postfix').className += ' missing';
                             isvalid = false;
                         }
-                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').style.color.slice(0,3)=='red') {
-                            document.getElementById(required_fields[i]+'$div_id_postfix').style.color = '';
+                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
 	                    }
     	        	}
 	            }
@@ -655,7 +680,7 @@ class ps_userfield extends vmAbstractObject {
                     alert( "2'.html_entity_decode( $VM_LANG->_REGWARN_VPASS1).'" );
                     return false;
                 } else if (r.exec(form.password.value)) {
-                    alert( "3'. html_entity_decode(sprintf( $VM_LANG->_VALID_AZ09, $VM_LANG->_REGISTER_PASS, 6 )) .'" );
+                    alert( "3'. html_entity_decode(sprintf( $VM_LANG->_VALID_AZ09, $VM_LANG->_PASSWORD, 6 )) .'" );
                     return false;
                 }';
         	}
@@ -683,7 +708,7 @@ class ps_userfield extends vmAbstractObject {
 			echo '
 			if( form.'.$euvatid.'.value != \'\' ) {
 				if( !isValidVATID( form.'.$euvatid.'.value )) {
-					alert( \'Please enter a valid EU VAT ID\' );
+					alert( \''.addslashes($VM_LANG->_VALID_EUVATID).'\' );
 					return false;
 				}
 			}';

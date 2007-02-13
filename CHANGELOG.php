@@ -35,6 +35,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+13.02.2007 soeren
++ implemented new User Registration Types: "Normal Account Creation", "Silent Account Creation", "Optional Account Creation" and "No Account Creation"
+	This allows a customer to check out without the need to create an account
+	
+# fixed the vmcheck redirection not being SEF issue (ps_session.php)
+# fixed the user field form and made it compliant to MooTools v1.00
+
+
+11.02.2007 soeren
+
+^ added input filter ("process" and "safeSQL") to all REQUEST variables when user is no admin or storeadmin
++ added an INT Cast to all variables that can't have other value types than INT or ARRAY(INT)
+
+
 07.02.2007 soeren
 
 + added a configuration variable to enable and disable the cookie check (it seems not to be very search-engine friendly)

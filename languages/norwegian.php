@@ -1847,6 +1847,25 @@ Please do not respond to this message as it is automatically generated and is fo
 	var $_VM_ADMIN_CFG_COOKIE_CHECK = 'Enable the Cookie Check?';
 	var $_VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN = 'If enabled, VirtueMart checks wether the browser of the customer accepts cookies or not. This is user-friendly, but it can have negative consequences on the Search-Engine-Friendlyness of your shop.';
 	var $_VM_CHECKOUT_TITLE_TAG = 'Checkout: Step %s of %s';
+	var $_VM_CFG_REGISTRATION_TYPE = 'User Registration Type';
+	var $_VM_CFG_REGISTRATION_TYPE_TIP = 'Choose the type of User Registration for your store!<br />
+<strong>Normal Registration</strong><br />
+This is the standard registration type where the customer must register and choose an username and password<br /><br />
+<strong>Silent Registration</strong><br />
+Silent Registration means the customer doesn\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
+<br /><br />
+<strong>Optional Registration</strong><br />
+Opotional Registration let\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
+<br /><br />
+<strong>No Registration</strong><br />
+Customers don\'t need to and are not able to register in this type of registration.';
+	var $_VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION = 'Normal Account Creation';
+	var $_VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION = 'Silent Account Creation';
+	var $_VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION = 'Optional Account Creation';
+	var $_VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION = 'No Account Creation';
+	var $_VALID_EUVATID = 'Please enter a valid EU VAT ID';
+	var $_VM_REGISTER_ACCOUNT = 'Register an Account?<br />
+An Account allows you to come back to this shop and view all the orders you have made.';
         
 }
 class phpShopLanguage extends vmLanguage { }

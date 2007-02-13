@@ -32,7 +32,7 @@ if ($mosConfig_allowUserRegistration == "0") {
 }
 $fields = ps_userfield::getUserFields('registration', false, '', false );
 $skip_fields = array();
-if ( VM_SILENT_REGISTRATION == '1' && $page == 'checkout.index' ) {
+if ( VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' && $page == 'checkout.index' ) {
 	// A listing of fields that are NOT shown
 	$skip_fields = array( 'username', 'password', 'password2' );
 	if( $my->id ) {
@@ -49,12 +49,17 @@ ps_userfield::listUserFields( $fields, $skip_fields );
 echo '
 <div align="center">';
     
-	if( !$mosConfig_useractivation && @VM_SHOW_REMEMBER_ME_BOX && VM_SILENT_REGISTRATION != '1') {
+	if( !$mosConfig_useractivation && @VM_SHOW_REMEMBER_ME_BOX && VM_REGISTRATION_TYPE == 'NORMAL_REGISTRATION' ) {
 		echo '<input type="checkbox" name="remember" value="yes" id="remember_login2" checked="checked" />
 		<label for="remember_login2">'. $VM_LANG->_REMEMBER_ME .'</label><br /><br />';
 	}
 	else {
-		echo '<input type="hidden" name="remember" value="yes" />';
+		if( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' ) {
+			$rmbr = '';
+		} else {
+			$rmbr = 'yes';
+		}
+		echo '<input type="hidden" name="remember" value="'.$rmbr.'" />';
 	}
 	echo '
 		<input type="submit" value="'. $VM_LANG->_BUTTON_SEND_REG . '" class="button" onclick="return( submitregistration());" />

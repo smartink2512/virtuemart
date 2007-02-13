@@ -49,13 +49,14 @@ $sess = new ps_session;
 	if( !empty( $_POST )) {
 		foreach( $_POST as $key => $val ) {
 			if( $key == 'product_currency' ) continue;
-			echo "<input type=\"hidden\" name=\"$key\" value=\"$val\" />\n";
+			if( $val ) $var = htmlspecialchars($val);
+			echo "<input type=\"hidden\" name=\"$key\" value=\"$var\" />\n";
 		}
 	}
 	elseif( !empty( $_GET )) {
 		foreach( $_GET as $key => $val ) {
 			if( $key == 'product_currency' ) continue;
-			echo "<input type=\"hidden\" name=\"$key\" value=\"$val\" />\n";
+			echo "<input type=\"hidden\" name=\"$key\" value=\"".htmlspecialchars($val)."\" />\n";
 		}
 	}
 	echo $ps_html->selectList( 'product_currency', $GLOBALS['product_currency'], $currencies, 1, '', 'style="width:130px;"' );

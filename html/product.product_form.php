@@ -658,7 +658,11 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' heigh
   </table>
 
 <?php
-$db_items = $ps_product->items_sql($product_id);
+if( !empty( $product_id )) {
+	$db_items = $ps_product->items_sql($product_id);
+} else {
+	$db_items = new ps_DB();
+}
 if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
 ?> 
   <table class="adminform">

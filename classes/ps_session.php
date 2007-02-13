@@ -74,7 +74,7 @@ class ps_session {
 	 * @author soeren
 	 */
 	function doCookieCheck() {
-		global $mm_action_url, $VM_LANG;
+		global $sess, $mm_action_url, $VM_LANG;
 		
 		$doCheck = mosGetParam( $_REQUEST, 'vmcchk', 0 );
 		
@@ -89,7 +89,7 @@ class ps_session {
 		}
 		else {
 			setcookie( 'VMCHECK', 'OK' );
-			mosRedirect($mm_action_url . 'index.php?' . $_SERVER['QUERY_STRING'].'&vmcchk=1');
+			mosRedirect( $sess->url( $mm_action_url . 'index.php?' . mosGetParam($_SERVER,'QUERY_STRING').'&vmcchk=1', true, false ));
 		}
 	}
 		

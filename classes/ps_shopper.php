@@ -43,7 +43,8 @@ class ps_shopper {
 		
 		$skipFields = array();
 		
-		if( VM_SILENT_REGISTRATION == '1') {
+		if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION'
+			|| (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account']))) {
 			$skipFields = array( 'username', 'password', 'password2');
 		}
 		if( $my->id ) {
@@ -192,14 +193,13 @@ class ps_shopper {
 		if (!$this->validate_add($d)) {
 			return False;
 		}
-		
-		// Use InputFilter class to prevent SQL injection or HTML tags
-		$d = $GLOBALS['vmInputFilter']->safeSQL( $d );
 
 		if( empty( $my->id ) ) {
 
-			$_POST['name'] = $d['first_name']." ".$d['last_name'];
-			if( VM_SILENT_REGISTRATION == '1' ) {
+			$_POST['name'] = mosGetParam($d,'first_name','First Name' )." ".mosGetParam($d,'last_name','Last Name' );
+			if( VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' || (VM_REGISTRATION_TYPE=='OPTIONAL_REGISTRATION' && empty($d['register_account'])) ) {
+				// Silent Registration, Optional Registration with no account wanted and No Registration
+				// means we need to create a hidden user
 				$silent_username = substr( str_replace( '-', '_', $d['email'] ), 0, 25 );
 				$db->query( 'SELECT username FROM `#__users` WHERE username=\''.$silent_username.'\'');
 				$i = 0;
@@ -253,7 +253,7 @@ class ps_shopper {
 		foreach( $userFields as $userField ) {
 			if( !in_array($userField->name, $skipFields )) {
 				
-				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, mosGetParam($d, $userField->name, strtoupper($userField->name) ) );
 				
 				// Catch a newsletter registration!
 				if( stristr( $userField->params, 'newsletter' )) {
@@ -435,8 +435,9 @@ class ps_shopper {
 			$adminName2 	= $row2->name;
 			$adminEmail2 	= $row2->email;
 		}
-
-		mosMail($adminEmail2, $adminName2, $email, $subject, $message);
+		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && !empty($d['register_account']))) {
+			mosMail($adminEmail2, $adminName2, $email, $subject, $message);
+		}
 
 		// Send notification to all administrators
 		$subject2 = sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);

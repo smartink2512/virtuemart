@@ -164,6 +164,11 @@ General Form Styling
 	margin-top: 8px;
 	
 }
+.missing {
+	color:red;
+	font-weight:bold;
+}
+
 /**
 * Administration Styles
 */

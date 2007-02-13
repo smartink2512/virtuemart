@@ -255,7 +255,7 @@ class ps_order {
 				$db->query($q);
 				$db->next_record();
 
-				$message = $VM_LANG->_HI . $db->f("first_name") . " " . $db->f("last_name") . "\n\n";
+				$message = $VM_LANG->_HI .' '. $db->f("first_name") . " " . $db->f("last_name") . ",\n\n";
 				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_1.".\n";
 				$message .= $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_2."\n\n";
 
@@ -332,7 +332,7 @@ class ps_order {
 		$db->next_record();
 
 		/* MAIL BODY */
-		$message = $VM_LANG->_HI . $db->f("first_name") . " " . $db->f("last_name") . ",\n\n";
+		$message = $VM_LANG->_HI .' '. $db->f("first_name") . " " . $db->f("last_name") . ",\n\n";
 		$message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1."\n\n";
 
 		if( !empty($d['include_comment']) && !empty($d['order_comment']) ) {

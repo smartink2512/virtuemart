@@ -54,7 +54,7 @@ define( 'VM_THEMEURL', $mosConfig_live_site.'/components/com_virtuemart/themes/d
 define('VM_PRICE_SHOW_PACKAGING_PRICELABEL', '1' );
 define('VM_PRICE_SHOW_INCLUDINGTAX', '' );
 define('VM_PRICE_ACCESS_LEVEL', 'Public Frontend' );
-define('VM_SILENT_REGISTRATION', '1');
+define('VM_REGISTRATION_TYPE', 'NORMAL_REGISTRATION' );
 define('VM_BROWSE_ORDERBY_FIELD', 'product_name');
 define('VM_GENERALLY_PREVENT_HTTPS', '1');
 define('VM_SHOW_REMEMBER_ME_BOX', '');

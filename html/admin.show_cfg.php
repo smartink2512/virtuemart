@@ -289,13 +289,18 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_SILENT_REGISTRATION"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION ?></label>
+				<label for="conf_VM_REGISTRATION_TYPE"><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE ?></label>
 				
 			</td>
 			<td>
-				<input type="checkbox" id="conf_VM_SILENT_REGISTRATION" name="conf_VM_SILENT_REGISTRATION" class="inputbox" <?php if (@VM_SILENT_REGISTRATION == "1") echo "checked=\"checked\""; ?> value="1" />
+				<select id="conf_VM_REGISTRATION_TYPE" name="conf_VM_REGISTRATION_TYPE" class="inputbox">
+					<option value="NORMAL_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'NORMAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION ?></option>
+					<option value="SILENT_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION ?></option>
+					<option value="OPTIONAL_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION ?></option>
+					<option value="NO_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'NO_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION ?></option>
+				</select>
 			</td> 
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_VM_CFG_REGISTRATION_TYPE_TIP ) ?>
 			</td>
 		</tr>
 		

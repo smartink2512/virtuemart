@@ -176,21 +176,21 @@ if ($cart["idx"] > 0) {
       
           else { // user is not logged in
   ?>
-        	<input type="radio" name="togglerchecker" id="toggler1" class="toggler" checked="checked" />
+        	<h4><input type="radio" name="togglerchecker" id="toggler1" class="toggler" checked="checked" />
         	<label for="toggler1"><?php echo $VM_LANG->_PHPSHOP_RETURN_LOGIN ?></label>
-            <br /><br />
+            </h4>
                 <div class="stretcher" id="login_stetcher">
             <?php 
                 echo $theme->fetch('common/login_form.tpl.php');
             ?>
-                </div><br />
+                </div>
             <?php
           
           
           ?><br />
-          	<input type="radio" name="togglerchecker" id="toggler2" class="toggler" />
+          	<h4><input type="radio" name="togglerchecker" id="toggler2" class="toggler" />
          	<label for="toggler2"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></label>
-            <br />
+            </h4>
                 <div class="stretcher" id="register_stretcher"><?php
           
                 include(PAGEPATH. 'checkout_register_form.php');
