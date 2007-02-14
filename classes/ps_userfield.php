@@ -654,7 +654,10 @@ class ps_userfield extends vmAbstractObject {
     	        	}
 	            }
             ";
-                    
+       	$optional_check = '';
+		if( VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
+			$optional_check = '&& form.register_account.checked';
+		}
 	    // We have skipped email in the first loop above!
 	    // Now let's handle email address validation
 	    if( isset( $required_fields['email'] )) {
@@ -669,7 +672,7 @@ class ps_userfield extends vmAbstractObject {
 		if( isset( $required_fields['username'] )) {
 		
 			echo '
-			if (r.exec(form.username.value) || form.username.value.length < 3) {
+			if ((r.exec(form.username.value) || form.username.value.length < 3)'.$optional_check.') {
 				alert( "'. html_entity_decode( sprintf($VM_LANG->_VALID_AZ09, $VM_LANG->_USERNAME, 2)) .'" );
 				return false;
             }';
@@ -677,19 +680,19 @@ class ps_userfield extends vmAbstractObject {
         if( isset($required_fields['password']) ) {
 			if( $page == 'checkout.index') {
                 echo '
-                if (form.password.value.length < 6 ) {
+                if (form.password.value.length < 6 '.$optional_check.') {
                     alert( "1'. html_entity_decode( $VM_LANG->_REGWARN_PASS ).'" );
 					return false;
-                } else if (form.password2.value == "") {
+                } else if (form.password2.value == ""'.$optional_check.') {
                     alert( "2'.html_entity_decode( $VM_LANG->_REGWARN_VPASS1).'" );
                     return false;
-                } else if (r.exec(form.password.value)) {
+                } else if (r.exec(form.password.value)'.$optional_check.') {
                     alert( "3'. html_entity_decode(sprintf( $VM_LANG->_VALID_AZ09, $VM_LANG->_PASSWORD, 6 )) .'" );
                     return false;
                 }';
         	}
             echo '
-                if ((form.password.value != "") && (form.password.value != form.password2.value)){
+                if ((form.password.value != "") && (form.password.value != form.password2.value)'.$optional_check.'){
                     alert( "'. html_entity_decode($VM_LANG->_REGWARN_VPASS2).'" );
                     return false;
                 }';
