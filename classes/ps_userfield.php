@@ -274,7 +274,11 @@ class ps_userfield extends vmAbstractObject {
 		}
 		
 		// Form validation function
-		ps_userfield::printJS_formvalidation( $required_fields, $rowFields );
+		if( !defined( '_PSHOP_ADMIN') ) {
+			ps_userfield::printJS_formvalidation( $required_fields, $rowFields );
+		} else {
+			echo vmCommonHTML::scriptTag('', 'function submitregistration() { return true }');
+		}
 		if( file_exists( $mosConfig_absolute_path .'/includes/js/mambojavascript.js') ) {
 			$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'includes/js/mambojavascript.js' ) );
 		}

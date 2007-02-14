@@ -20,8 +20,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * http://virtuemart.net
 */
 if( class_exists('jconfig')) {
+	$usersConfig = &JComponentHelper::getParams( 'com_users' );
+	$contentConfig = &JComponentHelper::getParams( 'com_content' );	
 	
 	$jconfig = new jconfig();
+	$mosConfig_live_site = $jconfig->live_site;
+	$mosConfig_absolute_path = $jconfig->absolute_path;
 	$mosConfig_host = $jconfig->host;
 	$mosConfig_user = $jconfig->user;
 	$mosConfig_password = $jconfig->password;
@@ -37,7 +41,7 @@ if( class_exists('jconfig')) {
 	$mosConfig_smtphost = $jconfig->smtphost;
 	$mosConfig_debug = $jconfig->debug;
 	$mosConfig_caching = $jconfig->caching;
-	$mosConfig_cachepath = $jconfig->cachepath;
+	$mosConfig_cachepath = $mosConfig_absolute_path.'/cache';
 	$mosConfig_cachetime = $jconfig->cachetime;
 	$mosConfig_secret = $jconfig->secret;
 	$mosConfig_editor = $jconfig->editor;
@@ -47,15 +51,13 @@ if( class_exists('jconfig')) {
 	$mosConfig_list_limit = $jconfig->list_limit;
 	$mosConfig_gzip = $jconfig->gzip;
 	$mosConfig_lang = $jconfig->lang;
-	$mosConfig_allowUserRegistration = $jconfig->allowUserRegistration;
-	$mosConfig_useractivation = $jconfig->useractivation;
+	$mosConfig_allowUserRegistration = $usersConfig->get('allowUserRegistration');
+	$mosConfig_useractivation = $usersConfig->get('useractivation');
 	$mosConfig_sef = $jconfig->sef;
-	$mosConfig_hidePdf = $jconfig->hidePdf;
-	$mosConfig_hidePrint = $jconfig->hidePrint;
-	$mosConfig_hideEmail = $jconfig->hideEmail;
-	$mosConfig_icons = $jconfig->icons;
-	$mosConfig_live_site = $jconfig->live_site;
-	$mosConfig_absolute_path = $jconfig->absolute_path;
+	$mosConfig_hidePdf = $contentConfig->get('hidePdf');
+	$mosConfig_hidePrint = $contentConfig->get('hidePrint');
+	$mosConfig_hideEmail = $contentConfig->get('hideEmail');
+	$mosConfig_icons = $contentConfig->get('icons');
 	if( class_exists( 'jversion' )) {
 		$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
 	}

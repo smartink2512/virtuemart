@@ -67,16 +67,51 @@ class ps_function extends vmAbstractObject {
 		}
 		else {
 			$db = new ps_DB();
-			$db->query( 'SELECT module_perms, function_perms FROM `#__{vm}_function` f, `#__{vm}_module` m 
+			if( is_array( $d["function_id"] )) {
+				foreach( $d["function_id"] as $function ) {
+					$db->query( 'SELECT module_perms, function_perms FROM `#__{vm}_function` f, `#__{vm}_module` m 
+							WHERE `function_id` = '.(int)$function
+							. ' AND `f`.`module_id` = `m`.`module_id`' );
+					$db->next_record();
+				
+					$module_perms = explode(',', $db->f('module_perms') );
+					$function_perms = explode(',', $db->f('function_perms') );
+					foreach( $module_perms as $permisson ) {
+						if( !$perm->hashigherPerms( $permisson )) {
+							$vmLogger->err( 'You are not allowed to delete this function (Module Restrictions: '.$db->f('module_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+							return false;
+						}
+					}
+					foreach( $function_perms as $permisson ) {
+						if( !$perm->hashigherPerms( $permisson )) {
+							$vmLogger->err( 'You are not allowed to delete this function (Function Restrictions: '.$db->f('function_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+							return false;
+						}
+					}
+				}
+			} else {
+				$db->query( 'SELECT module_perms, function_perms FROM `#__{vm}_function` f, `#__{vm}_module` m 
 							WHERE `function_id` = '.(int)$d["function_id"]
 							. ' AND `f`.`module_id` = `m`.`module_id`' );
-			$db->next_record();
-			
-			if( !$perm->check( $db->f('module_perms')) || !$perm->check($db->f('function_perms'))) {
-				$vmLogger->err( 'You are not allowed to delete this function (Module Perms: '.$db->f('module_perms').', Function Perms: '.$db->f('function_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
-				return false;
+							
+				$db->next_record();
+				$module_perms = explode(',', $db->f('module_perms') );
+				$function_perms = explode(',', $db->f('function_perms') );
+				foreach( $module_perms as $permisson ) {
+					if( !$perm->hashigherPerms( $permisson )) {
+						$vmLogger->err( 'You are not allowed to delete this function (Module Restrictions: '.$db->f('module_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+						return false;
+					}
+				}
+				foreach( $function_perms as $permisson ) {
+					if( !$perm->hashigherPerms( $permisson )) {
+						$vmLogger->err( 'You are not allowed to delete this function (Function Restrictions: '.$db->f('function_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+						return false;
+					}
+				}
 			}
 		}
+		return true;
 	}
 
 
@@ -155,17 +190,17 @@ class ps_function extends vmAbstractObject {
 			return False;
 		}
 
-		$record_id = (int)$d["function_id"];
+		$record_id = $d["function_id"];
 
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {
-				if( !$this->delete_record( $record, $d ))
+				if( !$this->delete_record( (int)$record, $d ))
 				return false;
 			}
 			return true;
 		}
 		else {
-			return $this->delete_record( $record_id, $d );
+			return $this->delete_record( (int)$record_id, $d );
 		}
 	}
 	/**
@@ -174,8 +209,7 @@ class ps_function extends vmAbstractObject {
 	function delete_record( $record_id, &$d ) {
 		global $db;
 		$q = "DELETE from #__{vm}_function where function_id='$record_id'";
-		$db->query($q);
-		return True;
+		return $db->query($q);
 	}
 
 	/**

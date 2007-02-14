@@ -214,7 +214,7 @@ $GLOBALS['VM_THEMECLASS'] = 'vmTemplate_'.basename(VM_THEMEPATH);
  * @return array
  */
 function vmGetGlobalsArray() {
-	return array(  'perm', 'page', 'sess', 'func', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 'VM_MODULES_FORCE_HTTPS',
+	return array(  'perm', 'page', 'sess', 'func', 'cart', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 'VM_MODULES_FORCE_HTTPS',
 					'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 'ps_vendor_id', 'keyword', 'Itemid',
 					'ps_payment_method', 'pagename', 'modulename', 'vars', 'mosConfig_lang', 'vmDir',
 					'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 'vendor_image_url', 'vendor_name', 

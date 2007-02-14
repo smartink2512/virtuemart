@@ -67,6 +67,9 @@ class ps_session {
 				}
 			}
 		}
+		else {
+			$vmLogger->debug( 'Using existing Session '.session_name().', ID: '.session_id().'.');
+		}
 	}
 	/**
 	 * Checks if the user-agent accepts cookies

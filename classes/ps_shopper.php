@@ -110,7 +110,7 @@ class ps_shopper {
 		require_once( CLASSPATH . 'ps_userfield.php' );
 		$accountFields = ps_userfield::getUserFields( 'account', false, '', true );
 
-		if( VM_SILENT_REGISTRATION == '1') {
+		if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
 			$skipFields = array( 'username', 'password', 'password2');
 		}
 		if( $my->id ) {
@@ -145,7 +145,7 @@ class ps_shopper {
 				
 			}
 		}
-		$d['user_email'] = @$d['email'];
+		$d['user_email'] = mosGetParam( $d, 'email', $my->email );
 		$d['perms'] = 'shopper';
 
 		return true;
@@ -226,6 +226,7 @@ class ps_shopper {
 		else {
 			$uid = $my->id;
 			$d['email'] = $_POST['email'] = $my->email;
+			$d['username'] = $_POST['username'] = $my->username;
 
 		}
 		$db->query( 'SELECT user_id FROM #__{vm}_user_info WHERE user_id='.$my->id );
@@ -480,10 +481,7 @@ class ps_shopper {
 		global $my, $perm, $sess, $vmLogger;
 
 		$auth = $_SESSION['auth'];
-
 		$db = new ps_DB;
-
-		$d = $GLOBALS['vmInputFilter']->safeSQL( $d );
 
 		if (@$d["user_id"] != $my->id && $auth["perms"] != "admin") {
 			$vmLogger->crit( "Tricky tricky, but we know about this one." );
@@ -525,7 +523,7 @@ class ps_shopper {
 						);
 		
 		foreach( $userFields as $userField ) {
-			if( !in_array($userField->name, $skipFields )) {
+			if( !in_array($userField->name, $skip_fields )) {
 				
 				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
 				
