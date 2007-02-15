@@ -135,7 +135,7 @@ else {
 		else {
 			$i--;
 		}
-		echo '</div>';
+		//echo '</div>';
 		
 	} while ($i != $up_limit);
 	//End loop through cart
@@ -170,7 +170,7 @@ else {
 	// Display clear cart
 	if(@$_SESSION['vmEnableEmptyCart'] && !$_SESSION['vmMiniCart']) {
 		// Output the empty cart button
-		echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
+		//echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
 		$empty_cart = "<a href=\"".$_SERVER['PHP_SELF'] . "?page=shop.cart_reset&option=com_virtuemart&option2=$option&product_id=$prodid&category_id=$catid&return=$page&flypage=$flypage&Itemid=$Itemid\" title=\"". $VM_LANG->_PHPSHOP_EMPTY_YOUR_CART ." \"><img src=\"". $mosConfig_live_site ."/images/cancel_f2.png\" width=\"12\"border=\"0\" style=\"float: right;vertical-align: middle;\"   alt=\"". $VM_LANG->_PHPSHOP_EMPTY_YOUR_CART ." \" />
       </a>"; 
 		$html1 = vmToolTip("Clear the cart of all contents", "Empty Cart",'','',$empty_cart,true);
