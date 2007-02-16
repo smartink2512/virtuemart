@@ -211,11 +211,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		if( $func && $ajax_request) {
 			// Send an indicator wether the function call return true or false
 			vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );		
-			if( is_callable( array( $mainframe, 'close' ) ) ) {				
-				$mainframe->close();
-			} else {
-				exit;
-			}
+			$vm_mainframe->close(true);//die
 		}
 		
 		if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE')) {

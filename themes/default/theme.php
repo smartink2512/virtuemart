@@ -20,8 +20,8 @@
 global $mainframe;
 
 // include the stylesheet for this template
-$mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL.'theme.css' ));
-$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( VM_THEMEURL.'theme.js' ));
+$vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
+$vm_mainframe->addScript( VM_THEMEURL.'theme.js' );
 
 class vmTemplate_default extends vmTemplate  {
 	

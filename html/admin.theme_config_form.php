@@ -37,7 +37,7 @@ $parameter_xml_file = $themepath.'/theme.xml';
 
 // get params definitions
 $params = new mosParameters( $current_config, $parameter_xml_file, 'theme' );
-vmCommonHTML::loadOverlib();
+mosCommonHTML::loadOverlib();
 ?>
 
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="adminForm">

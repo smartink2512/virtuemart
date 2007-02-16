@@ -29,28 +29,8 @@ $ps_product = new ps_product;
 <br />
 <br />
 
-<?php
-if ($auth["user_id"]) {
-
-    $q =  "SELECT user_email FROM #__{vm}_user_info WHERE ";
-    $q .= "user_id='" . $auth["user_id"] . "' ";
-    $q .= "AND address_type='BT' ";
-    $db->query($q);
-    $db->next_record();
-    $shopper_email = $db->f("user_email");
-	?>
-	<input type="hidden" name="user_id" value="<?php echo $auth["user_id"]; ?>" />
-	<input type="text" class="inputbox" name="notify_email" value="<?php echo $shopper_email ?>" />
-	<br />
-	<?php
- } 
- else {
- 	?> 
-	<input type="text" class="inputbox" name="notify_email" /><br />
-	<?php
-}
-?>
-
+<input type="text" class="inputbox" name="notify_email" value="<?php echo $my->email ?>" />
+&nbsp;&nbsp;
 
 <input type="submit" class="button" name="waitinglistadd" value="<?php echo $VM_LANG->_PHPSHOP_WAITING_LIST_NOTIFY_ME ?>" />
 

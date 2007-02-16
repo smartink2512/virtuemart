@@ -35,6 +35,18 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+16.02.2007 soeren
++ added an algorithm to re-encode encrypted cc numbers and passkeys when the ENCODE_KEY is changed
+# fixed the currency converter module to reset the selected alternative currency and return the correct amount
+	when failing to retrieve the currency conversion table
++ created a new "vmMainFrame" class to handle stylesheets and scripts and bundle them for "fetchscript.php"
+	This way we can remarkably reduce the number of GET Requests for linked scripts and stylesheets
+	An instance of the vmMainFrame class is available globally: $vm_mainframe.
+	
+^ changed the simple attributes' price modifier handling from user-submitted prices to price modifiers retrieved from
+	the product's attribute field in the DB. So the [+3.99] price modifiers are not longer part of the
+	drop down list, but just the attribute values like "red" or "big".
+
 13.02.2007 soeren
 
 # several fixes for making VirtueMart work with the latest Joomla! 1.5 SVN version

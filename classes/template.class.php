@@ -55,7 +55,7 @@ class vmTemplate {
 		global $mosConfig_live_site, $mosConfig_cachepath, $mosConfig_cachetime;
 			
 		$this->path = empty($path) ?  VM_THEMEPATH.'templates/' : $path;
-		$this->default_path = $mosConfig_live_site.'/components/com_virtuemart/themes/default/templates/';
+		$this->default_path = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/themes/default/templates/';
 		
 		$globalsArray = vmGetGlobalsArray();
 		foreach( $globalsArray as $global ) {

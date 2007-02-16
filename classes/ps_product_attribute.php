@@ -784,8 +784,9 @@ class ps_product_attribute {
 					}
 					$html .= "</span>\n";
 				}
-				else
-				$html .= "<span class=\"vmChildDetail$cls_suffix\" style=\"float: right;text-align: right;padding-right:5px;\" ></span>";
+				else {
+					$html .= "<span class=\"vmChildDetail$cls_suffix\" style=\"float: right;text-align: right;padding-right:5px;\" ></span>";
+				}
 				// Format quantity box if this is not a catalogue and user is authorised to see prices
 				// Ouput Product Type
 				if($pt == "Y") {
@@ -795,7 +796,7 @@ class ps_product_attribute {
 					else {
 						$product_type = $ps_product_type->list_product_type($db->f("product_id"));
 					}
-					$html .="</div class=\"vmClearDetail$cls_suffix\"><div class=\"vmChildType$cls_suffix\">";
+					$html .="</div><div class=\"vmChildType$cls_suffix\">";
 					$html .= $product_type;
 				}
 				// Output Advanced Attributes
@@ -884,6 +885,7 @@ class ps_product_attribute {
 							$attribut_hint = "test";
 						}
 						$base_var=str_replace(" ","_",$base_value);
+						$base_var=substr($base_var,0,strrpos($base_var, '['));
 						$html.="<option value=\"$base_var\">$attribtxt";
 						if( $_SESSION['auth']['show_prices'] ) {
 							$html .= "&nbsp;(&nbsp;".$vorzeichen."&nbsp;".$CURRENCY_DISPLAY->getFullValue($price)."&nbsp;)";
@@ -939,7 +941,7 @@ class ps_product_attribute {
 				$html .= "<label for=\"".$titlevar."_field\">$title</label>:</div>";
 				$html .= "<div class=\"vmAttribChildDetail\" style=\"float:left;width:60%;margin:3px;\">";
 				$html .= "<input type=\"text\" class=\"inputboxattrib\" id=\"".$titlevar."_field\" size=\"30\" name=\"$titlevar$prod_index\" />";
-				$html.="</div><br style=\"clear: both;\">\n";
+				$html.="</div><br style=\"clear: both;\" />\n";
 				$html .= "<input type=\"hidden\" name=\"custom_attribute_fields[]\" value=\"$titlevar$prod_index\" />\n";
 				$html .= "<input type=\"hidden\" name=\"custom_attribute_fields_check[$titlevar$prod_index]\" value=\"".md5($mosConfig_secret. $titlevar.$prod_index )."\" />\n";
 			}
@@ -949,9 +951,81 @@ class ps_product_attribute {
 			return $html;
 		}
 	}
-
 	/**
-   * This checks if attributes value were chosen by the user
+	 * This function returns an array with all "advanced" attributes of the product specified by
+	 * $product_id
+	 *
+	 * @param int $product_id
+	 */
+	function getAdvancedAttributes( $product_id ) {
+		global $ps_product;
+		if( is_null( $ps_product )) {
+			$ps_product = new ps_product();
+		}
+		$attributes_array = array();
+		$attributes = $ps_product->get_field( $product_id, 'attribute' );
+		// Get each of the attributes into an array
+		$product_attribute_keys = explode( ";", $attributes );
+		foreach( $product_attribute_keys as $attribute ) {
+			$attribute_name = substr( $attribute, 0, strpos($attribute, ",") );
+			$attribute_values = substr( $attribute, strpos($attribute, ",")+1 );
+			$attributes_array[$attribute_name]['name'] = $attribute_name;
+			// Read the different attribute values into an array
+			$attribute_values = explode(',', $attribute_values );
+			$operand = '';
+			$my_mod = 0;
+			foreach( $attribute_values as $value ) {
+
+				// Get the price modification for this attribute value
+				$start = strpos($value, "[");
+				$finish = strpos($value,"]", $start);
+
+				$o = substr_count ($value, "[");
+				$c = substr_count ($value, "]");	
+				// check to see if we have a bracket (means: a price modifier)
+				if (True == is_int($finish) ) {
+					$length = $finish-$start;
+
+					// We found a pair of brackets (price modifier?)
+					if ($length > 1) {
+						$my_mod=substr($value, $start+1, $length-1);
+						//echo "before: ".$my_mod."<br>\n";
+						if ($o != $c) { // skip the tests if we don't have to process the string
+							if ($o < $c ) {
+								$char = "]";
+								$offset = $start;
+							}
+							else {
+								$char = "[";
+								$offset = $finish;
+							}
+							$s = substr_count($my_mod, $char);
+							for ($r=1;$r<$s;$r++) {
+								$pos = strrpos($my_mod, $char);
+								$my_mod = substr($my_mod, $pos+1);
+							}
+						}
+						$operand=substr($my_mod,0,1);
+
+						$my_mod=substr($my_mod,1);
+
+						
+					}
+				}
+				if( $start > 0 ) {
+					$value = substr($value, 0, $start);
+				}
+				$attributes_array[$attribute_name]['values'][$value]['name'] = $value;
+				$attributes_array[$attribute_name]['values'][$value]['operand'] = $operand;
+				$attributes_array[$attribute_name]['values'][$value]['adjustment'] = $my_mod;
+			}
+			
+		}
+		return $attributes_array;
+		
+	}
+	/**
+   * This checks if attributes values were chosen by the user
    * onCartAdd
    *
    * @param array $d
@@ -1068,13 +1142,16 @@ class ps_product_attribute {
 				}
 			}
 		}
-		else
-		$quantity = mosGetParam( $_REQUEST, 'quantity', 1 );
+		else {
+			$quantity = mosGetParam( $_REQUEST, 'quantity', 1 );
+		}
 		// Detremine which style to use
-		if($use_parent == "Y")
-		$id = $product_id;
-		else
-		$id = $prod_id;
+		if($use_parent == "Y") {
+			$id = $product_id;
+		}
+		else {
+			$id = $prod_id;
+		}
 		//Get style to use
 		$db = new PS_db;
 		$q = "SELECT quantity_options,product_parent_id FROM #__{vm}_product WHERE product_id='$id'";

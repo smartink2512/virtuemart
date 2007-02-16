@@ -121,38 +121,53 @@ function cssUrl( $ref, $subdir ) {
 initGzip();
 
 $base_dir = dirname( __FILE__ );
-$subdir = $_GET['subdir'];
-$dir = realpath( $base_dir . '/' .  $subdir );
-
-$file = $dir . '/' . basename( $_GET['file'] );
-
-if( !file_exists( $file ) || !stristr( $dir, $base_dir )) {
-	die();
+$subdirs = @$_GET['subdir'];
+if( !is_array( $subdirs ) && !empty( $subdirs )) {
+	$subdirs = array( $subdirs );
 }
 
-$fileinfo = pathinfo( $file );
-switch ( $fileinfo['extension']) {
-	case 'css': 
-		$mime_type = 'text/css'; 
-		header( 'Content-Type: '.$mime_type.';');
-		$css = implode( '', file( $file ));
-		
-		$str_css =   preg_replace("/url\((.+?)\)/ie","cssUrl('\\1', '$subdir')", $css);
-		echo $str_css;
-		
-		break;
-		
-	case 'js': 
-		$mime_type = 'text/javascript'; 
-		header( 'Content-Type: '.$mime_type.';');
-		
-		readfile( $file );
-		
-		break;
-		
-	default: 
-		die();
+$files = @$_GET['file'];
+if( !is_array( $files ) && !empty( $files )) {
+	$files = array( $files );
+}
+if( empty( $files ) || sizeof($files) != sizeof( $subdirs )) {
+	die();
+}
+for( $i = 0; $i < sizeof($files); $i++ ) {
+	$file = $files[$i];
+	$subdir = $subdirs[$i];
 	
+	$dir = realpath( $base_dir . '/' .  $subdir );
+	$file = $dir . '/' . basename( $file );
+	
+	if( !file_exists( $file ) || !stristr( $dir, $base_dir )) {
+		continue;
+	}
+	
+	$fileinfo = pathinfo( $file );
+	switch ( $fileinfo['extension']) {
+		case 'css': 
+			$mime_type = 'text/css'; 
+			header( 'Content-Type: '.$mime_type.';');
+			$css = implode( '', file( $file ));
+			
+			$str_css =   preg_replace("/url\((.+?)\)/ie","cssUrl('\\1', '$subdir')", $css);
+			echo $str_css;
+			
+			break;
+			
+		case 'js': 
+			$mime_type = 'text/javascript'; 
+			header( 'Content-Type: '.$mime_type.';');
+			
+			readfile( $file );
+			
+			break;
+			
+		default: 
+			continue;
+		
+	}
 }
 // Tell the user agent to cache this script/stylesheet for an hour
 $age = 3600;

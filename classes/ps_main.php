@@ -900,7 +900,7 @@ function vmSpoofValue($alt=NULL) {
  *
  */
 function vmSetGlobalCurrency(){
-	global $page, $vendor_accepted_currencies, $vendor_currency;
+	global $page, $vendor_accepted_currencies, $vendor_currency, $vmLogger;
 
 	if( !defined('_PSHOP_ADMIN') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
 		if( isset( $_REQUEST['product_currency']) ) {
@@ -919,6 +919,7 @@ function vmSetGlobalCurrency(){
 		if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies) 
 				&& (stristr( $page, 'checkout.') || stristr( $page, 'account.') || stristr( $page, 'shop.cart')) ) {
 			// Fallback to global vendor currency (as set in the store form)
+			$vmLogger->warning( 'The Currency you had selected ('.$GLOBALS['product_currency'].') is not accepted for Checkout.');
 			$GLOBALS['product_currency'] = $vendor_currency;
 		}
 	}

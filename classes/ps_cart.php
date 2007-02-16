@@ -67,7 +67,7 @@ class ps_cart {
  	* @param array $d
  	*/
 	function add(&$d) {
-		global $sess, $VM_LANG, $cart, $option, $vmLogger,$func;
+		global $sess, $VM_LANG, $cart, $option, $vmLogger,$func, $mm_action_url;
 		
 		$d = $GLOBALS['vmInputFilter']->process( $d );
 		
@@ -95,10 +95,12 @@ class ps_cart {
 			// Create single array from multi array
 			$key_fields=array_keys($d);
 			foreach($key_fields as $key) {
-				if(is_array($d[$key]))
-				$e[$key] = @$d[$key][$ikey];
-				else
-				$e[$key] = $d[$key];
+				if(is_array($d[$key])) {
+					$e[$key] = @$d[$key][$ikey];
+				}
+				else {
+					$e[$key] = $d[$key];
+				}
 			}
 
 			if ($mult > 1 ) {
@@ -108,7 +110,7 @@ class ps_cart {
 			$e['Itemdid'] = $d['Itemid'];
 			// Standard ps_cart.php with $d changed to $e
 			$product_id = $e["prod_id"];
-			$quantity = isset($e["quantity"]) ? $e["quantity"] : 0;
+			$quantity = (int)@$e['quantity'];
 
 			// Check for negative quantity
 			if ($quantity < 0) {
@@ -148,11 +150,6 @@ class ps_cart {
 				$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
 				return false;
 			}
-
-			// If no quantity sent them assume 1
-			if ($quantity == "")
-			$quantity = 1;
-
 
 			// Check to see if we already have it
 			$updated = 0;
@@ -258,7 +255,7 @@ class ps_cart {
 				$_SESSION['notify']['idx']++;
 				$k++;
 			}
-			$GLOBALS['page'] = 'shop.waiting_list';
+			$GLOBALS['vm_mainframe']->scriptRedirect( $sess->url( 'index.php?page=shop.waiting_list&product_id='.$product_id, true, false ) );
 		}
 
 		return True;

@@ -197,7 +197,8 @@ else {
 				vmConnector::sendHeaderAndContent( 200 );
 				if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
 				include( PAGEPATH.$modulename.".".$pagename.".php" );
-				exit;
+				// Exit gracefully
+				$vm_mainframe->close(true);
 			}
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
 		}
@@ -226,11 +227,5 @@ else {
 		}
 
 }
-if( defined( 'vmToolTipCalled')) {
-	echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
-}
-if( defined( '_LITEBOX_LOADED')) {
-	echo vmCommonHTML::scriptTag( '', 'var prev_onload = document.body.onload; 
-										window.onload = function() { if( prev_onload ) prev_onload(); initLightbox(); }' );
-}
+$vm_mainframe->close();
 ?>

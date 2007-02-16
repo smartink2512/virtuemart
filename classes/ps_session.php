@@ -32,7 +32,7 @@ class ps_session {
      */
 	function ps_session() {
 		
-		$this->component_name = 'option='.$GLOBALS['vmDir'];
+		$this->component_name = 'option='.VM_COMPONENT_NAME;
 		
 		$this->initSession();
 	}
@@ -479,24 +479,19 @@ class ps_session {
 				}
 				$appendix .= $Itemid;
 				
-				$script = basename( $_SERVER['PHP_SELF'] );
+				$script = basename( substr( $text, 0, $limiter ));
+				if( $script == '' ) {
+					$script = basename( $_SERVER['PHP_SELF'] );
+				}
 				
 				if (!defined( '_PSHOP_ADMIN' )) {
-	
-					// be sure that we have the correct PHP_SELF in front of the url
-					if( stristr( $_SERVER['PHP_SELF'], "index2.php" ) && !stristr( $text, "shop.cart")  && !stristr( $text, "shop.product_details") && !stristr( $text, "shop.browse")) {
-						$prep = "index2.php";
-					}
-					else {
-						$prep = "index.php";
-					}
-					if( stristr( $text, "index2.php" ) && !stristr( $text, "shop.cart")  && !stristr( $text, "shop.product_details") && !stristr( $text, "shop.browse")) {
-						$prep = "index2.php";
+					if( $script == 'index3.php') {
+						$script = 'index2.php'; // index3.php is not available in the frontend!
 					}
 	
-					$appendix = $prep.substr($text, $limiter, strlen($text)-1).$appendix;
+					$appendix = $script.substr($text, $limiter, strlen($text)-1).$appendix;
 					if( function_exists('sefRelToAbs')) {
-						$appendix = sefRelToAbs( str_replace( $prep.'&', $prep.'?', $appendix ) );
+						$appendix = sefRelToAbs( str_replace( $script.'&', $script.'?', $appendix ) );
 					}
 
 					if( $createAbsoluteURI && substr($appendix,0,4)!='http' ) {

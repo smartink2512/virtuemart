@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,11 +17,11 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 */
 
 global $vendor_image,$vendor_country_2_code ,$vendor_country_3_code, $vendor_image_url, $vendor_name, 
-		$vendor_address, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name, $vmDir,
+		$vendor_address, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name, $vm_mainframe,
         $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping,
         $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image, $vendor_accepted_currencies;
 
-$vmDir = 'com_virtuemart';
+define( 'VM_COMPONENT_NAME', 'com_virtuemart' );
 
 // The abstract language class
 require_once( CLASSPATH."language.class.php" );
@@ -33,6 +33,10 @@ if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' )) {
 else {
 	require_once( ADMINPATH. 'languages/english.php' );
 }
+// Instantiate the MainFrame class for VirtueMart
+require_once( CLASSPATH."mainframe.class.php" );
+$vm_mainframe = new vmMainFrame();
+
 if (file_exists( CLASSPATH.'currency/'.VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
 	$module_filename = VM_CURRENCY_CONVERTER_MODULE;
 	require_once(CLASSPATH.'currency/'.VM_CURRENCY_CONVERTER_MODULE.'.php');
@@ -216,7 +220,7 @@ $GLOBALS['VM_THEMECLASS'] = 'vmTemplate_'.basename(VM_THEMEPATH);
 function vmGetGlobalsArray() {
 	return array(  'perm', 'page', 'sess', 'func', 'cart', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 'VM_MODULES_FORCE_HTTPS',
 					'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 'ps_vendor_id', 'keyword', 'Itemid',
-					'ps_payment_method', 'pagename', 'modulename', 'vars', 'mosConfig_lang', 'vmDir',
+					'ps_payment_method', 'pagename', 'modulename', 'vars', 'mosConfig_lang',
 					'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 'vendor_image_url', 'vendor_name', 
 					'vendor_address', 'vendor_city','vendor_country','vendor_mail','vendor_store_name', 'vendor_state', 'vendor_zip', 'vendor_phone', 'vendor_currency', 'vendor_store_desc', 'vendor_freeshipping', 'vendor_currency_display_style', 'vendor_freeshipping', 
 					'mm_action_url', 'limit', 'limitstart', 'mainframe', 'vmInputFilter',

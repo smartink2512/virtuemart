@@ -47,7 +47,9 @@ function handleAddToCart( formId, parameters ) {
 	    // Send this lovely data
 	    postBody: $(formId),
 	    // Handle successful response
-	    onComplete: callback
+	    onComplete: callback,
+	    
+	    evalScripts: true
 	}
 
 	new Ajax('index2.php?ajax_request=1', opt).request();

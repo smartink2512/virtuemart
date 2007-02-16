@@ -249,7 +249,7 @@ class ps_userfield extends vmAbstractObject {
 	 * @param ps_DB $db A ps_DB object holding ovalues for the fields
 	 */
 	function listUserFields( $rowFields, $skipFields=array(), $db = null ) {
-		global $mm_action_url, $ps_html, $VM_LANG, $my, $default, $mainframe,
+		global $mm_action_url, $ps_html, $VM_LANG, $my, $default, $mainframe, $vm_mainframe,
 			$vendor_country_3_code, $mosConfig_live_site, $mosConfig_absolute_path, $page;
 		
 		$dbf = new ps_DB();
@@ -280,7 +280,7 @@ class ps_userfield extends vmAbstractObject {
 			echo vmCommonHTML::scriptTag('', 'function submitregistration() { return true }');
 		}
 		if( file_exists( $mosConfig_absolute_path .'/includes/js/mambojavascript.js') ) {
-			$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'includes/js/mambojavascript.js' ) );
+			$vm_mainframe->addScript( 'includes/js/mambojavascript.js' );
 		}
 		?>		
 		
@@ -711,7 +711,7 @@ class ps_userfield extends vmAbstractObject {
 			}			
 		}
 		if( !empty($euvatid) ) {
-			$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( 'components/'.$GLOBALS['vmDir'].'/js/euvat_check.js'));
+			$vm_mainframe->addScript( 'components/'.$GLOBALS['vmDir'].'/js/euvat_check.js');
 			echo '
 			if( form.'.$euvatid.'.value != \'\' ) {
 				if( !isValidVATID( form.'.$euvatid.'.value )) {

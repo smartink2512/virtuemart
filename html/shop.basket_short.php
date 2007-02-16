@@ -105,11 +105,16 @@ else {
 			echo  $prod_url." ";
 		}
 		if (@$_SESSION['vmShowPrice'] && !$_SESSION['vmMiniCart']) {
-			If(@$_SESSION['vmAlignPrice']) //Align price to the right
-			echo "</div><div style=\"float: right;\">";
+			If(@$_SESSION['vmAlignPrice']) {
+				//Align price to the right
+				echo "<div style=\"float: right;\">";
+			}
 			echo  $CURRENCY_DISPLAY->getFullValue( $subtotal );
-			If(@$_SESSION['vmAlignPrice']) //End align price to the right
-			echo "</div>";
+			If(@$_SESSION['vmAlignPrice']) {
+				//End align price to the right
+				echo "</div>";
+			}
+						
 		}
 		if (@$_SESSION['vmShowAttrib'] && !$_SESSION['vmMiniCart']) {
 			$html = $ps_product->getDescriptionWithTax( $_SESSION['cart'][$i]["description"], $_SESSION['cart'][$i]["product_id"] )." ";
@@ -124,8 +129,6 @@ else {
 		}
 
 		if(!$_SESSION['vmMiniCart']) {
-			If(!@$_SESSION['vmAlignPrice'])
-			echo "</div>";
 			if(!@$_SESSION['vmShowAttrib'] && !$_SESSION['vmMiniCart'])
 			echo  "<br style=\"clear: both;\" />";
 		}
@@ -135,7 +138,7 @@ else {
 		else {
 			$i--;
 		}
-		//echo '</div>';
+		echo '</div>';
 		
 	} while ($i != $up_limit);
 	//End loop through cart

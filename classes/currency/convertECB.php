@@ -126,7 +126,8 @@ class convertECB {
 				$xmlDoc =& new DOMIT_Lite_Document();
 				if( !$xmlDoc->parseXML( $contents, false, true ) ) {
 					$vmLogger->err( 'Failed to parse the Currency Converter XML document.');
-					return false;
+					$GLOBALS['product_currency'] = $vendor_currency;
+					return $amountA;
 				}
 				
 				$currency_list = $xmlDoc->getElementsByTagName( "Cube" );
@@ -141,18 +142,14 @@ class convertECB {
 			else {
 				$GLOBALS['converter_array'] = -1;
 				$vmLogger->err( 'Failed to retrieve the Currency Converter XML document.');
-				return false;
+				$GLOBALS['product_currency'] = $vendor_currency;
+				return $amountA;
 			}
 		}
 		$valA = isset( $GLOBALS['converter_array'][$currA] ) ? $GLOBALS['converter_array'][$currA] : 1;
 		$valB = isset( $GLOBALS['converter_array'][$currB] ) ? $GLOBALS['converter_array'][$currB] : 1;
 		
-		if ($valA) {
-			$val = $amountA * $valB / $valA;
-		} 
-		else {
-			$val = 0;
-		}
+		$val = $amountA * $valB / $valA;
 		//$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
 		
 		return $val;

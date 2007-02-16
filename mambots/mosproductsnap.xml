@@ -2,12 +2,12 @@
 <mosinstall type="mambot" group="content">
 	<name>mosproductsnap</name>
 	<author>soeren</author>
-	<creationDate>January 2007</creationDate>
+	<creationDate>March 2005</creationDate>
 	<copyright>Soeren</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>soeren@VirtueMart.net</authorEmail>
 	<authorUrl>www.virtuemart.net</authorUrl>
-	<version>1.2</version>
+	<version>1.1</version>
 	<description>Show Product Snapshots in Content</description>
 	<files>
 		<filename mambot="mosproductsnap">mosproductsnap.php</filename>

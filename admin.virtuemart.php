@@ -115,9 +115,9 @@ if( !defined('_VM_TOOLBAR_LOADED') && $no_toolbar != 1 ) {
 	
 }
 // Include the Stylesheet
-echo '<link rel="stylesheet" href="'.VM_THEMEURL.'admin.styles.css" type="text/css" />';
-echo '<link href="'.VM_THEMEURL.'theme.css" type="text/css" rel="stylesheet" media="screen, projection" />';
-echo '<script type="text/javascript" src="../components/'.$option.'/js/functions.js"></script>';
+$vm_mainframe->addStyleSheet( VM_THEMEURL.'admin.styles.css' );
+$vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
+$vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/functions.js' );
 
 if( $no_menu != 1 ) {
 	echo '<div id="vmMenu">';	
@@ -233,7 +233,9 @@ YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 			if( @$_REQUEST['format'] == 'raw' ) while( @ob_end_clean());
 			if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
-			if( @$_REQUEST['format'] == 'raw' ) exit;
+			if( @$_REQUEST['format'] == 'raw' ) {
+				$vm_mainframe->close(true);
+			}
 		} else {
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
 		}
@@ -252,13 +254,6 @@ YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 	        // Load PAGE
 		include( PAGEPATH."shop.debug.php" );
 	}
-	if( defined( 'vmToolTipCalled')) {
-		echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
-	}
-	if( defined( '_LITEBOX_LOADED')) {
-		echo vmCommonHTML::scriptTag( '', 'var prev_onload = document.body.onload; 
-											window.onload = function() { if( prev_onload ) prev_onload(); initLightbox(); }' );
-	}
 	if( $vmLayout == 'extended' ) {
 		echo '</div>';
 		if( stristr($page, '_list') && $page != 'product.file_list' ) {
@@ -276,4 +271,5 @@ YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 		echo '</td></tr></table>';
 	}
 }
+$vm_mainframe->close();
 ?>
