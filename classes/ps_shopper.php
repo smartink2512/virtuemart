@@ -81,7 +81,7 @@ class ps_shopper {
 			}
 		}
 		
-		$d['user_email'] = @$d['email'];
+		$d['user_email'] = mosGetParam( $d, 'email', $my->email );
 		$d['perms'] = 'shopper';
 
 		return true;

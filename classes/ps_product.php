@@ -1323,7 +1323,7 @@ class ps_product extends vmAbstractObject {
 		require_once( CLASSPATH . 'imageTools.class.php');
 		
 		$border="";
-		if( !strpos( $args, "border=" )) {
+		if( strpos( $args, "border=" )===false ) {
 			$border = 'border="0"';
 		}
 		$height = $width = '';

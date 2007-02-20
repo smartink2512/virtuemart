@@ -548,6 +548,19 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
    
    
 <?php 
+if( $vmLayout == 'standard') {
+	echo '<script type="text/javascript">
+		window.onload=function(){
+			Fat.fade_all();
+			NiftyCheck();
+			Rounded("div.sidemenu-box","all","#fff","#f7f7f7","border #ccc");
+			Rounded("div.element-box","all","#fff","#fff","border #ccc");
+			Rounded("div.toolbar-box","all","#fff","#fbfbfb","border #ccc");
+			Rounded("div.submenu-box","all","#fff","#f2f2f2","border #ccc");
+	
+		}
+	</script>';
+}
 if (!empty($error) && ($page != ERRORPAGE)) {
      echo '<br /><div class="message">'. $error.'</div><br />';
 }

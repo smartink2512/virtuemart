@@ -601,10 +601,10 @@ class vmCommonHTML extends mosHTML {
 		if( $title ) { $title = ' title="'.$title.'"'; }
 		if( $attributes ) {	$attributes = ' ' . $attributes; }
 		
-		if( !strpos($attributes, 'border=')) {
+		if( strpos($attributes, 'border=')===false) {
 			$border = ' border="'.$border.'"';
 		} // Prevent doubled attributes
-		if( !strpos($attributes, 'alt=')) {
+		if( strpos($attributes, 'alt=')===false) {
 			$alt = ' alt="'.$alt.'"';
 		}
 		

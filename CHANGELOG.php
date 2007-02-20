@@ -36,7 +36,10 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 19.02.2007 soeren
+# Task #1147 - shop.parameter_search_form.php error with template...
 # Task #1161 - Updated PS_Linkpoint should be included in future releases
+# Task #1160 - Registration - Empty state list + Fix (ps_html.php)
+# Task #1150 - vmcchk=1 breaks SEO URL
 # fixed the Product Enquiry Form and split it up into code and template (+added missing language tokens)
 
 16.02.2007 soeren
