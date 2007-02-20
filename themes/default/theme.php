@@ -20,9 +20,17 @@
 global $mainframe;
 
 // include the stylesheet for this template
-$vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
-$vm_mainframe->addScript( VM_THEMEURL.'theme.js' );
 
+if( vmIsJoomla(1.0) && mosGetParam($_REQUEST,'option') != VM_COMPONENT_NAME) {
+	// This can only be a call from a module or mambot
+	// In Joomla 1.0 it is not possible to add a JS or CSS into the HEAD from a module or content mambot,
+	// using addcustomheadtag, that's why we just print the tags here
+	echo vmCommonHTML::scriptTag(VM_THEMEURL.'theme.js');
+	echo vmCommonHTML::linkTag(VM_THEMEURL.'theme.css');
+} else {
+	$vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
+	$vm_mainframe->addScript( VM_THEMEURL.'theme.js' );
+}
 class vmTemplate_default extends vmTemplate  {
 	
 	function vmTemplate_default() {

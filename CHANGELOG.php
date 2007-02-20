@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+19.02.2007 soeren
+# Task #1161 - Updated PS_Linkpoint should be included in future releases
+# fixed the Product Enquiry Form and split it up into code and template (+added missing language tokens)
+
 16.02.2007 soeren
 + added an algorithm to re-encode encrypted cc numbers and passkeys when the ENCODE_KEY is changed
 # fixed the currency converter module to reset the selected alternative currency and return the correct amount

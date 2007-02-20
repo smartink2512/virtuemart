@@ -16,6 +16,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
+/* modified by Atlanticom to overcome ampersand issues and provide human friendly linkpoint order numbers 
+*  and overcome duplicate order number issue with linkpoint
+*  Requires an additional table added to the database called (mos or) jos_vm_linkpoint with two fields
+*  Id   type int()
+*  Last Attempt   type varchar(11)
+*
+*  Then add 1 record to the table, with an Id of 1, and Last Attempt of WEB-xxx (where xxx is your last good order number)
+*/
+
 
 /**
 * The ps_linkpoint class, containing the payment processing code
@@ -33,6 +42,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * Any questions, email jimmy@freshstation.org
 * @copyright (C) 2005 James McMillan
 */
+
+define ('LP_VERIFIED_STATUS', 'C');
+
 class ps_linkpoint {
 
     var $payment_code = "LP";
@@ -147,7 +159,7 @@ class ps_linkpoint {
                               "LP_KEYFILE" => $d['LP_KEYFILE'],
                               "LP_CHECK_CARD_CODE" => $d['LP_CHECK_CARD_CODE'],
                               "LP_RECURRING" => $d['LP_RECURRING'],
-							  "LP_PREAUTH" => $d['LP_PREAUTH']
+                              "LP_PREAUTH" => $d['LP_PREAUTH']
                             );
       $config = "<?php\n";
       $config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
@@ -178,8 +190,8 @@ class ps_linkpoint {
       global $vmLogger;
 
 	  // We must include the yourpay/linkpoint api file. 
-	  require( CLASSPATH . "payment/lphp.php" );
-	  
+	  require( CLASSPATH ."payment/lphp.php" );
+
 	  // Declare new linkpoint php class
 	  $mylphp =& new lphp();
 
@@ -187,6 +199,7 @@ class ps_linkpoint {
 
         $ps_vendor_id = $_SESSION["ps_vendor_id"];
         $auth = $_SESSION['auth'];
+        
         $ps_checkout = new ps_checkout;
 
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
@@ -201,7 +214,7 @@ class ps_linkpoint {
         if( $user_info_id != $d["ship_to_info_id"]) {
             // Get user billing information
             $dbst =& new ps_DB;
-            $qt = "SELECT * FROM `#__{vm}_user_info` WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }
@@ -209,25 +222,32 @@ class ps_linkpoint {
             $dbst = $dbbt;
         }
 
-// Start gathering the information needed for the XML transaction
+
+        // Start gathering the information needed for the XML transaction
         $cuname = substr($dbbt->f("first_name"), 0, 25) . " " . substr($dbbt->f("last_name"), 0, 25);
-// The following should be static for linkpoint, if not, change to the specified host
+
+        // The following should be static for linkpoint, if not, change to the specified host (secure/staging.linkpt.net)
         $myorder["host"]       = "secure.linkpt.net";
         $myorder["port"]       = "1129";
         $myorder["keyfile"]    = LP_KEYFILE;
         $myorder["configfile"] = LP_LOGIN; 
 
-        $myorder["name"]     = $cuname;
-        $myorder["company"]  = substr($dbbt->f("company"), 0, 50);
-        $myorder["address1"] = substr($dbbt->f("address_1"), 0, 60);
-        $myorder["address2"] = substr($dbbt->f("address_2"), 0, 60);
-        $myorder["city"]     = substr($dbbt->f("city"), 0, 40);
-        $myorder["state"]    = substr($dbbt->f("state"), 0, 40);
-        $myorder["zip"]      = substr($dbbt->f("zip"), 0, 20);
-        $myorder["country"]  = substr($dbbt->f("country"), 0, 60);
-        $myorder["phone"]    = substr($dbbt->f("phone_1"), 0, 25);
-        $myorder["fax"]      = substr($dbbt->f("fax"), 0, 25);
-        $myorder["email"]    = $dbbt->f("email");
+//Atlanticom Mod - Adding substitution for ampersand sign to correct
+//XML rejection of linkpoint transactions including same (usually in company name).
+
+        $myorder["name"]     = str_replace("&","",$cuname);
+        $myorder["company"]  = str_replace("&","",substr($dbbt->f("company"), 0, 50));
+        $myorder["address1"] = str_replace("&","",substr($dbbt->f("address_1"), 0, 60));
+        $myorder["address2"] = str_replace("&","",substr($dbbt->f("address_2"), 0, 60));
+        $myorder["city"]     = str_replace("&","",substr($dbbt->f("city"), 0, 40));
+        $myorder["state"]    = str_replace("&","",substr($dbbt->f("state"), 0, 40));
+        $myorder["zip"]      = str_replace("&","",substr($dbbt->f("zip"), 0, 20));
+        $myorder["country"]  = str_replace("&","",substr($dbbt->f("country"), 0, 60));
+        $myorder["phone"]    = str_replace("&","",substr($dbbt->f("phone_1"), 0, 25));
+        $myorder["fax"]      = str_replace("&","",substr($dbbt->f("fax"), 0, 25));
+        $myorder["email"]    = str_replace("&","",$dbbt->f("email"));
+
+//End Atlanticom Mod
 
         $myorder["cardnumber"]    = $_SESSION['ccdata']['order_payment_number'];
         $myorder["cardexpmonth"]  = $_SESSION['ccdata']['order_payment_expire_month'];
@@ -236,14 +256,59 @@ class ps_linkpoint {
         $myorder["cvmvalue"]      = $_SESSION['ccdata']['credit_card_code'];
         $myorder["chargetotal"]   = $order_total;
 
-  // Working on a fix for this orderid, this process seems to send "Duplicate transaction"
-  // if the user made a typo the first time they entered their card number.  All in all, it works
-  // but their could ba a change.
-        $myorder["oid"]           = $order_number; // need to clean this up, no offence Soeren, but those order numbers are a mess.
+//Atlanticom Mod: Let's anticipate the next order_id (an auto increment field) that will be used for this
+//payment if it is successful, and what the heck... let's append the word WEB to it.
 
+        // Get last attempt
+        $dbLP = new ps_DB;
+        $qt = "SELECT * FROM #__{vm}_linkpoint WHERE Id=1";
+        $dbLP->query($qt);
+        $dbLP->next_record();
+        $LP_LastAttempt = $dbLP->f("LastAttempt");
+        $LP_LastAttemptParts = explode("-",$LP_LastAttempt);
+        if($LP_LastAttemptParts[2] == "")
+          $LP_next_suffix = "a";
+        else {
+          $this_char = ord($LP_LastAttemptParts[2]);
+          $LP_next_suffix = chr($this_char + 1);
+        }
 
-        // Let me see the output.
+        $dbord = new ps_DB;
+        $qord = "SELECT MAX(order_id)+1 As expected_order_id FROM #__{vm}_orders";
+        $dbord->query($qord);
+        $dbord->next_record();
+        $expected_order_id = $dbord->f("expected_order_id");
+        //has this order # already been attempted and failed?
+        if($LP_LastAttemptParts[1] == $expected_order_id){
+          //we need to increment the attempt.
+          $this_order_id = "WEB-" . $expected_order_id . "-" . $LP_next_suffix;
+        } else {
+          //it's a new order number
+           $this_order_id = "WEB-" . $expected_order_id;       
+        }
+        $myorder["oid"] = $this_order_id;
+
+        //save this attempt to the database
+        $q = "UPDATE #__{vm}_linkpoint SET LastAttempt = '" . $this_order_id . "' WHERE Id=1";
+        $dbLP->query($q);
+
+//old code
+        // Working on a fix for this orderid, this process seems to send "Duplicate transaction"
+        // if the user made a typo the first time they entered their card number.  All in all, it works
+        // but their could ba a change.
+        // $myorder["oid"] = $order_number; // need to clean this up, no offence Soeren, but those order numbers are a mess.
+//end old code
+
+//END MOD
+
+// Debugging - Let me see the output.
         //$myorder["debugging"]="true";
+// debugging (can move this block around to force result)
+//			$vmLogger->err( "Credit Card Processing Under Test" );
+//			$d["order_payment_log"] = "Credit Card Processing Under Test";
+//			$d["order_payment_log"] .= "Please Call In Your Order";
+//			$d["order_payment_trans_id"] = "test1";
+//			return False;
 
 
 	  if (LP_RECURRING == "YES") {
@@ -295,30 +360,29 @@ class ps_linkpoint {
 		}
 	  }
 	  else{
-		// Not recurring, just plain old sale.
-		$myorder["ordertype"]     = "SALE";
-	  }
+  		// Not recurring, just plain old sale.
+  		$myorder["ordertype"]     = "SALE";
 
-// If everything worked out fine, then process the order.
-	  $result = $mylphp->curl_process($myorder);
+      // If everything worked out fine, then process the order.
+  	  $result = $mylphp->curl_process($myorder);
 
-	  if ($result["r_approved"] != "APPROVED")    // transaction failed, print the reason
-	  {
-		 $vmLogger->err( $result["r_error"] );
-		 $d["order_payment_log"] = $result["r_error"];
-		 $d["order_payment_log"] .= $result["r_message"];
-		 $d["order_payment_trans_id"] = $result["r_ordernum"];
-		 return False;
-	  }
-	  else    // Success, let's return
-	  {
-		 $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
-		 $d["order_payment_log"] = $result["r_approved"];
-		 // Catch Transaction ID
-		 $d["order_payment_trans_id"] = $result["r_ordernum"];
-		 return True;
-	  }
-
-   }
-
-}
+  	  if ($result["r_approved"] != "APPROVED")    // transaction failed, print the reason
+  	  {
+  		 $vmLogger->err( $result["r_error"] . "\n" . $result["r_message"] );
+  		 $d["order_payment_log"] = $result["r_error"];
+  		 $d["order_payment_log"] .= $result["r_message"];
+  		 $d["order_payment_trans_id"] = $result["r_ordernum"];
+  		 return False;
+  	  }
+  	  else    // Success, let's return
+  	  {
+  		 $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+  		 $d["order_payment_log"] = $result["r_approved"];
+  		 // Catch Transaction ID
+  		 $d["order_payment_trans_id"] = $result["r_ordernum"];
+  		 return True;
+  	  }
+    } //close recurring or normal
+  }//close function
+} //close class
+?>

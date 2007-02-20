@@ -130,8 +130,6 @@ class ps_communication {
 		global $VM_LANG,$mosConfig_live_site,$mosConfig_lang, $sess;
 
 		$db = new ps_DB;
-
-		$d["set"] = 0;
 		$product_id = $d["product_id"];
 		$q="SELECT * FROM #__{vm}_product WHERE product_id='$product_id'";
 		$db->query($q);
@@ -200,22 +198,16 @@ class ps_communication {
 			// Mail receipt to the vendor
 			// open the HTML file and read it into $html
 			if (file_exists(VM_THEMEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html")) {
-				$html_file = fopen(VM_THEMEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html","r");
+				$html_file = VM_THEMEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html";
 			}
 			elseif(file_exists(VM_THEMEPATH."templates/order_emails/enquiry_english.html")) {
-				$html_file = fopen(VM_THEMEPATH."templates/order_emails/enquiry_english.html","r");
+				$html_file = VM_THEMEPATH."templates/order_emails/enquiry_english.html";
 			} else {
 				$vmLogger->err( 'Enquiry template file not found!' );
 				return false;
 			}
 
-			$vhtml = "";
-
-			while (!feof($html_file)) {
-				$buffer = fgets($html_file, 1024);
-				$vhtml .= $buffer;
-			}
-			fclose ($html_file);
+			$vhtml = file_get_contents($html_file);
 
 			$v_vfi = "<img src=\"cid:product_image\" alt=\"product_image\" border=\"0\" />";
 			$vhtml = str_replace('{VendorName}',$dbv->f("vendor_name"),$vhtml);
@@ -254,8 +246,6 @@ class ps_communication {
 			}
 		}
 
-		$link = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.ask&flypage=".@$_REQUEST['flypage']."&product_id=$product_id&set=0&Itemid=$Itemid";
-		mosRedirect( $link, "" );
 		return true;
 
 

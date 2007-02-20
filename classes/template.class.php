@@ -33,9 +33,9 @@ class vmTemplate {
 	var $vars; /// Holds all the template variables
 	var $path; /// Path to the templates
 	/**
-	 * Stores the them configuration
+	 * Stores the theme configuration
 	 *
-	 * @var mosparameters
+	 * @var $config
 	 */
 	var $config;
 	var $cache_id;
@@ -73,7 +73,14 @@ class vmTemplate {
 		$this->config =& $GLOBALS['vmThemeConfig'];
 		
 	}
-	
+	/**
+	 * @static 
+	 *
+	 * @return vmTemplate
+	 */
+	function getInstance() {
+		return new $GLOBALS['VM_THEMECLASS']();
+	}
 	/**
     * Test to see whether the currently loaded cache_id has a valid
     * corresponding cache file.

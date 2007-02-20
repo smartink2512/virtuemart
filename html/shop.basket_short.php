@@ -124,12 +124,12 @@ else {
 					$html .= $db_detail->f("attribute_value") . " ";
 				}
 			}
-			if($html != "")
-			echo "<br style=\"clear: both;\" />".$html;
+			if($html != "") {
+				echo "<br style=\"clear: both;\" />".$html;
+			}
 		}
 
-		if(!$_SESSION['vmMiniCart']) {
-			if(!@$_SESSION['vmShowAttrib'] && !$_SESSION['vmMiniCart'])
+		if(!@$_SESSION['vmShowAttrib'] && !$_SESSION['vmMiniCart']) {
 			echo  "<br style=\"clear: both;\" />";
 		}
 		if(@$_SESSION['vmCartDirection']) {
@@ -144,12 +144,7 @@ else {
 	//End loop through cart
 
 	if(!$_SESSION['vmMiniCart']) {
-		if(!@$_SESSION['vmShowAttrib']) {
-			echo "<hr />\n";
-		}
-		else {
-			echo "<hr style=\"clear: both;\" />\n";
-		}
+		echo "<hr style=\"clear: both;\" />\n";
 	}
 	if( !empty($_SESSION['coupon_discount']) ) {
 		$total -= $_SESSION['coupon_discount'];

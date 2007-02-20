@@ -185,11 +185,13 @@ class ps_html {
 		global $VM_LANG;
 
 		$db =& new ps_DB;
-		$q = "SELECT country_name, state_name, state_3_code , state_2_code FROM #__{vm}_state, #__{vm}_country ";
-		$q .= "WHERE #__{vm}_state.country_id = #__{vm}_country.country_id ";
-		if( !empty( $country_id ))
-		$q .= " AND country_id='$country_id' ";
-		$q .= "ORDER BY country_name, state_name";
+		$q = "SELECT country_name, state_name, state_3_code , state_2_code 
+				FROM #__{vm}_state s, #__{vm}_country c 
+				WHERE s.country_id = c.country_id ";
+		if( !empty( $country_id )) {
+			$q .= " AND c.country_id=".(int)$country_id;
+		}
+		$q .= "\nORDER BY country_name, state_name";
 		$db->query( $q );
 		$list = Array();
 		$list["0"] = $VM_LANG->_PHPSHOP_SELECT;

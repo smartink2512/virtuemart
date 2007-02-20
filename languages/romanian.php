@@ -1849,6 +1849,12 @@ Customers don\'t need to and are not able to register in this type of registrati
 	var $_VALID_EUVATID = 'Please enter a valid EU VAT ID';
 	var $_VM_REGISTER_ACCOUNT = 'Register an Account?<br />
 An Account allows you to come back to this shop and view all the orders you have made.';
+	var $_ENQUIRY = 'Enquiry';
+	var $_NAME_PROMPT = 'Enter your Name';
+	var $_EMAIL_PROMPT = 'E-mail Address';
+	var $_MESSAGE_PROMPT = 'Enter your Message';
+	var $_SEND_BUTTON = 'Send';
+	var $_THANK_MESSAGE = 'Thank you for your Enquiry. We will contact you as soon as possible.';
         
 }
 class phpShopLanguage extends vmLanguage { }
