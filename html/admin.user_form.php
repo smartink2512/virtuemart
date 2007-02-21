@@ -47,7 +47,9 @@ $tabs = new mShopTabs(0, 1, "_userform");
 $tabs->startPane("userform-pane");
 if( $_VERSION->RELEASE < 1.1 ) {
 	$tabs->startTab( 'General User Information', "userform-page");
-	
+    
+	$_POST = array();
+    $_REQUEST = array();	
 	$_POST['cid'][0] = $_REQUEST['cid'][0] = $user_id; // Cheat Joomla!
 	$_REQUEST['task'] = $task = 'edit';
 	$GLOBALS['option'] = 'com_users'; 
