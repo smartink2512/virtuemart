@@ -86,17 +86,17 @@ function return_snapshot($productsnap_params) {
 	$showprice = @$productsnap_params[1]=='true' ? true : false;
 	$showdesc = @$productsnap_params[2]=='true' ? true : false;
 	$showaddtocart = @$productsnap_params[3]=='true' ? true : false;
-	$container_align  = mosGetParam( @$productsnap_params, 4, 'none' );
-	$container_width = (int)mosGetParam( @$productsnap_params, 5, 150 );
-	$container_margin = (int)mosGetParam( @$productsnap_params, 6, 2 );
-	$container_padding = (int)mosGetParam( @$productsnap_params, 7, 2 );
-	$text_align = mosGetParam( @$productsnap_params, 8, 'left' );
-	$image_align = mosGetParam( @$productsnap_params, 9, '' );
-	$vspace = (int)mosGetParam( @$productsnap_params, 10, 5 );
-	$hspace = (int)mosGetParam( @$productsnap_params, 11, 5 );
-	$border_width = (int)mosGetParam( @$productsnap_params, 12, '' );
-	$border_color = mosGetParam( @$productsnap_params, 13, 'black' );
-	$border_style = mosGetParam( @$productsnap_params, 14, 'solid' );
+	$container_align  = mosGetParam( $productsnap_params, 4, 'none' );
+	$container_width = (int)mosGetParam( $productsnap_params, 5, 150 );
+	$container_margin = (int)mosGetParam( $productsnap_params, 6, 2 );
+	$container_padding = (int)mosGetParam( $productsnap_params, 7, 2 );
+	$text_align = mosGetParam( $productsnap_params, 8, 'left' );
+	$image_align = mosGetParam( $productsnap_params, 9, '' );
+	$vspace = (int)mosGetParam( $productsnap_params, 10, 5 );
+	$hspace = (int)mosGetParam( $productsnap_params, 11, 5 );
+	$border_width = (int)mosGetParam( $productsnap_params, 12, '' );
+	$border_color = mosGetParam( $productsnap_params, 13, 'black' );
+	$border_style = mosGetParam( $productsnap_params, 14, 'solid' );
 	
 	$q = "SELECT product_name,product_id,product_parent_id,product_thumb_image,product_s_desc
 			FROM #__{vm}_product WHERE product_id=$product_id ";
