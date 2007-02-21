@@ -78,7 +78,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		
 		// Cast all the following fields to INT
 		$parseToIntFields = array('user_id','product_id','category_id','manufacturer_id','id','cid','vendor_id','country_id','currency_id',
-								'order_id','module_id','function_id','payment_method_id','coupon_id') ;
+								'order_id','module_id','function_id','payment_method_id','coupon_id','product_type_id') ;
 		foreach( $parseToIntFields as $intField ) {
 			if( !empty($_REQUEST[$intField]) && is_array($_REQUEST[$intField]) ) {
 				mosArrayToInts( $_REQUEST[$intField]);

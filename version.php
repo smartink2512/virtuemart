@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -34,18 +34,20 @@ class vmVersion {
 	/** @var int Release Number */
 	var $RELEASE = '1.1.0';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'alpha';
+	var $DEV_STATUS = 'beta';
 	/** @var string Codename */
-	// Big Walter Hornton was an US-american blues musician
-	var $CODENAME = 'Big Walter Horton';
+	// Title of Episode 1, Season 3 of Grey's Anatomy
+	var $CODENAME = 'Time Has Come Today';
 	/** @var string Date */
-	var $RELDATE = '14/03/2006';
+	var $RELDATE = '21/02/2007';
 	/** @var string Time */
-	var $RELTIME = '20:53';
+	var $RELTIME = '14:00';
 	/** @var string Timezone */
 	var $RELTZ = 'GMT';
+	/** @var string Revision */
+	var $REVISION = '$Revision: $';
 	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Copyright (C) 2005-2006 Soeren Eberhardt. All rights reserved.'; 
+	var $COPYRIGHT = 'Copyright (C) 2005-2007 Soeren Eberhardt. All rights reserved.'; 
 	/** @var string URL */
 	var $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla!/Mambo released under the GNU/GPL License.';
 }
