@@ -54,7 +54,14 @@ if( $category_id ) {
 	$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=`#__{vm}_category`.`category_id`";
 	$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
 }
-
+if( strtoupper(mosGetParam($_REQUEST, 'featured', 'N' )) == 'Y' ) {
+	// Filter all except Featured Products (="on special")
+	$where_clause[] = '`#__{vm}_product`.`product_special`=\'Y\'';
+}
+if( strtoupper(mosGetParam($_REQUEST, 'discounted', 'N' )) == 'Y' ) {
+	// Filter all except Discounted Products
+	$where_clause[] = '`#__{vm}_product`.`product_discount_id` > 0';
+}
 // This is the "normal" search
 if( !empty($keyword) ) {
 	$sq = "(";
