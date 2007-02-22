@@ -244,6 +244,7 @@ class ps_product_attribute {
 		if($db->f("child_option_ids") && $product_list == "N") {
 			$product_list = "Y";
 		}
+        
 		switch( $product_list ) {
 			case "Y" :
 				return $this->list_attribute_list($product_id,$display_use_parent,$display_header,$product_list_child,$display_type,$ddesc,$dw,$aw,$product_list_type,$class_suffix,$db->f("child_option_ids"));
@@ -268,7 +269,6 @@ class ps_product_attribute {
 	function list_attribute_drop($product_id,$cls_suffix) {
 
 		global $VM_LANG, $CURRENCY_DISPLAY, $mm_action_url, $sess;
-		//vmCommonHTML::loadPrototype();
 
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
@@ -277,14 +277,12 @@ class ps_product_attribute {
 		$db = new ps_DB;
 		$db_sku = new ps_DB;
 		$db_item = new ps_DB;
-
-		$html = "";
-		$html .= "<div class=\"vmCartDetails$cls_suffix\">\n";
-		$close_child_div = false;
-		if(USE_AS_CATALOGUE != '1' && $this->list_advanced_attribute($product_id, $db->f("product_id")) != "" || $this->list_custom_attribute($product_id, $db->f("product_id")) !="") {
-			$html .= "<div class=\"vmCartChild$cls_suffix vmRowTwo$cls_suffix\">\n";
-			$close_child_div = true;
-		}
+        $tpl = new $GLOBALS['VM_THEMECLASS']();
+        $tpl->set( "cls_suffix", $cls_suffix );
+        $tpl->set( "product_id", $product_id );
+        // Set Advanced Attributes
+        $tpl->set("advanced_attribute", $this->list_advanced_attribute($product_id, $db->f("product_id")));
+        $tpl->set("custom_attribute" , $this->list_custom_attribute($product_id, $db->f("product_id")));
 		// Get list of children
 		$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND product_publish='Y'";
 		$db->setQuery($q);
@@ -301,10 +299,9 @@ class ps_product_attribute {
 			$db->query();
 		}
 		if( $db->num_rows() > 0 ) {
-
 			$flypage = $ps_product->get_flypage( $product_id );
-			$html .= "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />\n";
-			$html .= "<label for=\"product_id_field\">".$VM_LANG->_PHPSHOP_PLEASE_SEL_ITEM."</label>: <br />";
+            $html = "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />";
+            $html .= "<label for=\"product_id_field\">".$VM_LANG->_PHPSHOP_PLEASE_SEL_ITEM."</label>: <br />";
 			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n";
 			$html .= "<option value=\"$product_id\">".$VM_LANG->_PHPSHOP_SELECT."</option>";
 			while ($db->next_record()) {
@@ -346,33 +343,14 @@ class ps_product_attribute {
 				$html .= "</option>\n";
 			}
 			$html .= "</select>\n";
+            $tpl->set("drop_down", $html);
 		}
 		else {
-			$html .= "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />\n";
+			$html = "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />\n";
 			$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"$product_id\" />\n";
+            $tpl->set("drop_down", $html);
 		}
-		// Output Advanced Attributes
-		if (USE_AS_CATALOGUE != '1') {
-			$check_advanced = $this->list_advanced_attribute($product_id, $db->f("product_id"));
-			$check_custom = $this->list_custom_attribute($product_id, $db->f("product_id"));
-			if($check_advanced != "" || $check_custom != "") {
-				$html .= "<div class=\"vmCartAttributes$cls_suffix\">";
-			}
-			if($check_advanced != "") {
-				$html .= $check_advanced;
-			}
-			if($check_custom != "") {
-				$html .= $check_custom;
-			}
-			if($check_advanced != "" || $check_custom != "") {
-				$html .= "</div>";
-			}
-		}
-		if( $close_child_div ) {
-			$html .="</div>\n";
-		}
-		$html .="</div>";
-		
+		$html = $tpl->fetch_cache( 'product_details/includes/addtocart_drop.tpl.php');
 		return array($html,"drop");
 	}
 
@@ -1038,7 +1016,9 @@ class ps_product_attribute {
 		// added for the advanced attributes modification
 		//get listing of titles for attributes (Sean Tobin)
 		$attributes = array();
-
+        if(!isset($d["prod_id"])) {
+            $d["prod_id"] = $d["product_id"];
+        }
 		$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='".$d["prod_id"]."'";
 		$db->query($q);
 
