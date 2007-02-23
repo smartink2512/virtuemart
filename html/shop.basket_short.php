@@ -91,11 +91,12 @@ else {
 		$weight_subtotal = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]["quantity"];
 		$weight_total += $weight_subtotal;
 		$flypage = $ps_product->get_flypage($cart[$i]["product_id"]);
+        $category_id=$cart[$i]["category_id"];
 		if ($product_parent_id) {
-			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
+			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id&category_id=$category_id");
 		}
 		else {
-			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
+			$url = $sess->url(URL . "index.php?page=shop.product_details&flypage=$flypage&category_id=$category_id&product_id=" . $_SESSION['cart'][$i]["product_id"]);
 		}
 		$prod_url = "<a href=\"$url\">".$ps_product->get_field($_SESSION['cart'][$i]["product_id"], "product_name")."</a>";
 		if (@$_SESSION['vmShowQuantity'] && !$_SESSION['vmMiniCart']) {
