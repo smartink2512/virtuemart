@@ -202,6 +202,7 @@ class ps_cart {
 				$_SESSION['cart'][$k]["quantity"] = $quantity;
 				$_SESSION['cart'][$k]["product_id"] = $product_id;
 				$_SESSION['cart'][$k]["parent_id"] = $e["product_id"];
+                $_SESSION['cart'][$k]["category_id"] = $e["category_id"];
 				// added for the advanced attribute modification
 				$_SESSION['cart'][$k]["description"] = $e["description"];
 				$_SESSION['cart']["idx"]++;
