@@ -28,11 +28,11 @@ if( !isset($ps_shopper_group)) {
 $user_id = intval( mosGetParam( $_REQUEST, 'user_id' ));
 
 if( !empty($user_id) ) {
-        $q = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id ";
-        $q .= "WHERE id=$user_id ";
-        $q .= "AND (address_type='BT' OR address_type IS NULL ) ";
-        $q .= "AND gid <= ".$my->gid;
-        $db->query($q);
+    $q = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id ";
+    $q .= "WHERE id=$user_id ";
+    $q .= "AND (address_type='BT' OR address_type IS NULL ) ";
+    $q .= "AND gid <= ".$my->gid;
+    $db->query($q);
 	$db->next_record();
 }
 
@@ -47,10 +47,8 @@ $tabs = new mShopTabs(0, 1, "_userform");
 $tabs->startPane("userform-pane");
 if( $_VERSION->RELEASE < 1.1 ) {
 	$tabs->startTab( 'General User Information', "userform-page");
-    
-	$_POST = array();
-    $_REQUEST = array();	
-	$_POST['cid'][0] = $_REQUEST['cid'][0] = $user_id; // Cheat Joomla!
+
+	$_POST['cid'] = $_REQUEST['cid'] = array($user_id); // Cheat Joomla!
 	$_REQUEST['task'] = $task = 'edit';
 	$GLOBALS['option'] = 'com_users'; 
 	$mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
