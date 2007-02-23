@@ -244,7 +244,7 @@ class ps_product_attribute {
 		if($db->f("child_option_ids") && $product_list == "N") {
 			$product_list = "Y";
 		}
-        
+        print "here";
 		switch( $product_list ) {
 			case "Y" :
 				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$db->f("child_option_ids"),$dw,$aw,$display_header,$product_list_type);
@@ -353,7 +353,6 @@ class ps_product_attribute {
 		$html = $tpl->fetch_cache( 'product_details/includes/addtocart_drop.tpl.php');
 		return array($html,"drop");
 	}
-
 
 
 	/**
@@ -685,6 +684,7 @@ class ps_product_attribute {
 				$flypage = $ps_product->get_flypage( $product_id );
 
                 $products[$ci]['product_id'] = $db->f("product_id");
+                $products[$ci]['category_id'] = $category_id;
 				// If this is a child of a parent set the correct product_id for page return
 				if (@$child_id && $pp) {
                     $products[$ci]['parent_id'] = $db->f("product_id");

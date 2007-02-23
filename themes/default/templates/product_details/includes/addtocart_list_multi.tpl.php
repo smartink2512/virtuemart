@@ -63,6 +63,7 @@ if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
 
 </div><br style="clear: both;">
 <input type="hidden" name="flypage" value="shop.<?php echo $product['flypage'] ?>" />
+<input type="hidden" name="category_id" value="<?php echo $product['category_id'] ?>" />
 <input type="hidden" name="page" value="shop.cart" />
 <input type="hidden" name="func" value="cartAdd" />
 <input type="hidden" name="option" value="com_virtuemart" />
