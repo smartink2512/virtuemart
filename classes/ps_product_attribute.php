@@ -460,11 +460,11 @@ class ps_product_attribute {
 					$bgcolor="vmRowTwo";
 				}
                 $products[$ci]['bgcolor'] = $bgcolor;
-				$flypage = $ps_product->get_flypage( $product_id );
+				
 
                 $products[$ci]['product_id'] = $db->f("product_id");
                 $products[$ci]["category_id"] = $category_id;
-                $products[$ci]["flypage"] = $flypage;
+                
                 $products[$ci]["Itemid"] = $Itemid;
 				// If this is a child of a parent set the correct product_id for page return
 				if (@$child_id && $pp) {
@@ -474,6 +474,8 @@ class ps_product_attribute {
 					$master_id = $parent_id;
                     $products[$ci]['parent_id'] = $parent_id;
 				}
+                $flypage = $ps_product->get_flypage( $products[$ci]['parent_id']);
+                $products[$ci]["flypage"] = $flypage;
                 // Images
                 // If it is item get parent:
 		        $product_parent_id = $db->f("product_parent_id");
@@ -501,6 +503,7 @@ class ps_product_attribute {
                 $product_image = $tpl->vmBuildFullImageLink( $productArray );
                 $products[$ci]['product_image'] = $product_image;
                 //Product Description
+                $link ="";
                 if(($child_link == "Y" ) && !@$child_id) {
 						$link = "<input type=\"hidden\" id=\"index_id".$db->f("product_id")."\" value=\"".$db->f("product_id")."\" />\n";
 						$link .="<a name=\"".$db->f("product_name").$db->f("product_id")."\"  onclick=\"var id = $('index_id".$db->f("product_id")."').value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >";
