@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
+define ('PFP_CLIENT_CERTIFICATION_ID', 'bea46ef28cd8693d8b191d2d011b7fd1');
 
 class payflow_pro {
 
@@ -78,14 +79,6 @@ class payflow_pro {
                 <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="Set / Change the Password" class="button" /><a/>
             </td>
             <td>&nbsp;</td>
-        </tr>
-      <tr>
-            <td><strong>Client Certification ID</strong></td>
-            <td>
-                <input type="text" name="PFP_CLIENT_CERTIFICATION_ID" class="inputbox" value="<?php echo PFP_CLIENT_CERTIFICATION_ID ?>" />
-            </td>
-            <td>This is the ID for your Server to identify against the PayFlow Pro Server
-            </td>
         </tr>
         <tr>
             <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
@@ -184,7 +177,6 @@ class payflow_pro {
 		"PFP_PARTNER" => $d['PFP_PARTNER'],
 		"PFP_VENDOR" => $d['PFP_VENDOR'],
 		"PFP_USER" => $d['PFP_USER'],
-		"PFP_CLIENT_CERTIFICATION_ID" => $d['PFP_CLIENT_CERTIFICATION_ID'],
 		"PFP_CHECK_CARD_CODE" => $d['PFP_CHECK_CARD_CODE'],
 		"PFP_VERIFIED_STATUS" => $d['PFP_VERIFIED_STATUS'],
 		"PFP_INVALID_STATUS" => $d['PFP_INVALID_STATUS']
