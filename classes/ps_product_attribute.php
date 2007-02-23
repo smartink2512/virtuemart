@@ -516,7 +516,7 @@ class ps_product_attribute {
 				}
 
 				//Show the quantity Box
-                $products[$ci]['quantity_box'] = $this->show_quantity_box($master_id,$db->f("product_id"),"Y",$display_use_parent);
+                $products[$ci]['quantity_box'] = $this->show_quantity_box($master_id,$db->f("product_id"),$product_list,$display_use_parent);
 				// Attributes for this item are done.
 				// Now get item price
 				$price = $ps_product->get_price($db->f("product_id"));
