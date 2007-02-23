@@ -796,6 +796,7 @@ class ps_product_attribute {
 		global $CURRENCY_DISPLAY, $ps_product;
 		$db = new ps_DB;
 		$auth = $_SESSION['auth'];
+        $tpl = new $GLOBALS['VM_THEMECLASS']();
 		if($product_id == 0)
 		$product_id = $prod_id;
 		$q = "SELECT product_id, attribute FROM #__{vm}_product WHERE product_id='$product_id'";
@@ -807,20 +808,20 @@ class ps_product_attribute {
 		if ($advanced_attribute_list) {
 			$has_advanced_attributes=1;
 			$fields=explode(";",$advanced_attribute_list);
-			$html = "";
+			
+            $attributes =array();
+            $i = 0;
 			foreach($fields as $field) {
-
+                $html = "";
 				$base=explode(",",$field);
 				$title=array_shift($base);
 				$titlevar=str_replace(" ","_",$title);
 				$prod_index = $product_id;
 				if ($prod_id)
 				$prod_index = $prod_id;
-				//$html .="<span style=\"float: right;width: 90%;\">";
-				$html .= "<div class=\"vmAttribChildDetail\" style=\"float: left;width:30%;text-align:right;margin:3px;\">";
-				$html .= "<label for=\"".$titlevar."_field\">$title</label>:</div>";
-				$html .= "<div class=\"vmAttribChildDetail\" style=\"float:left;width:60%;margin:3px;\">
-                <select class=\"inputboxattrib\" id=\"".$titlevar."_field\" name=\"$titlevar$prod_index\">";
+                $attributes[$i]['product_id'] = $prod_index;
+                $attributes[$i]['title'] = $title;
+                $attributes[$i]['titlevar'] = $titlevar;
 				foreach ($base as $base_value) {
 					// the Option Text
 					$attribtxt=substr($base_value,0,strrpos($base_value, '['));
@@ -852,14 +853,14 @@ class ps_product_attribute {
 						$html.="<option value=\"$base_var\">$base_value</option>";
 					}
 				}
-				$html.="</select></div><br style=\"clear:both;\" />\n";
-				//$html .= "</span><br style=\"clear:both;\">";
+                $attributes[$i]['options_list'] = $html;
+                $i++;
 			}
-			//$html.="</table>";
 		}
 
 		if ($advanced_attribute_list) {
-			return $html;
+            $tpl->set( 'attributes', $attributes );
+            return $tpl->fetch_cache( 'product_details/includes/addtocart_advanced_attribute.tpl.php');
 		}
 	}
 
@@ -872,6 +873,7 @@ class ps_product_attribute {
 	function list_custom_attribute($product_id,$prod_id = null) {
 		global $mosConfig_secret;
 		$db = new ps_DB;
+        $tpl = new $GLOBALS['VM_THEMECLASS']();
 		if($product_id == 0)
 		$product_id = $prod_id;
 
@@ -887,22 +889,22 @@ class ps_product_attribute {
 			$prod_index = $product_id;
 			if ($prod_id)
 			$prod_index = $prod_id;
+            $attributes =array();
+            $i = 0;
 			foreach($fields as $field)
 			{
 				$titlevar=str_replace(" ","_",$field);
 				$title=ucfirst($field);
-				$html .= "<div class=\"vmAttribChildDetail\" style=\"float: left;width:30%;text-align:right;margin:3px;\">";
-				$html .= "<label for=\"".$titlevar."_field\">$title</label>:</div>";
-				$html .= "<div class=\"vmAttribChildDetail\" style=\"float:left;width:60%;margin:3px;\">";
-				$html .= "<input type=\"text\" class=\"inputboxattrib\" id=\"".$titlevar."_field\" size=\"30\" name=\"$titlevar$prod_index\" />";
-				$html.="</div><br style=\"clear: both;\" />\n";
-				$html .= "<input type=\"hidden\" name=\"custom_attribute_fields[]\" value=\"$titlevar$prod_index\" />\n";
-				$html .= "<input type=\"hidden\" name=\"custom_attribute_fields_check[$titlevar$prod_index]\" value=\"".md5($mosConfig_secret. $titlevar.$prod_index )."\" />\n";
+                $attributes[$i]['product_id'] = $prod_index;
+                $attributes[$i]['title'] = $title;
+                $attributes[$i]['titlevar'] = $titlevar;
+				$i++;
 			}
 		}
 
 		if ($custom_attr_list) {
-			return $html;
+            $tpl->set( 'attributes', $attributes );
+            return $tpl->fetch_cache( 'product_details/includes/addtocart_custom_attribute.tpl.php');
 		}
 	}
 	/**
