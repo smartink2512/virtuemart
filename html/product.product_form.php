@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 global $ps_product, $ps_product_category;
 require_once( CLASSPATH.'ps_product_discount.php' );
-require_once( CLASSPATH.'ps_product_price_table.php' );
+
 $product_id = mosGetParam( $_REQUEST, 'product_id');
 if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
@@ -316,12 +316,6 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='center' widt
       </td>
       <td width="71%" ><input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" /></td>
     </tr>
-    <tr class="row1"> 
-      <td width="29%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?>:</div>
-      </td>
-      <td width="71%" ><?php ps_product_price_table::list_price_table(true,ps_product_price_table::get_table_id($product_id)) ?></td>
-    </tr>
     <tr class="row0">
       <td width="29%" ><div style="text-align:right;font-weight:bold;">
         <?php echo $VM_LANG->_PHPSHOP_RATE_FORM_VAT_ID ?>:</div></td>
@@ -464,7 +458,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' heigh
         if (@$product_list =="Y"  || @$product_list =="YM" ) {
             echo " />"; }
         else {
-            echo ' disabled=true';
+            echo ' disabled=true />';
         }        
         echo $VM_LANG->_VM_DISPLAY_TABLE_HEADER;
 ?> <br />
@@ -478,7 +472,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' heigh
         if (@$product_list =="Y"  || @$product_list =="YM" ) {
             echo " />"; }
         else {
-            echo ' disabled=true';
+            echo ' disabled=true />';
         }    
         
         echo $VM_LANG->_VM_DISPLAY_LINK_TO_CHILD."<br />";

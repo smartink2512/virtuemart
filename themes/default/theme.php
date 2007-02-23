@@ -46,7 +46,7 @@ class vmTemplate_default extends vmTemplate  {
 		$img_attributes= 'alt="'.$product['product_name'].'"';
 		
 		/* Wrap the Image into an URL when applicable */
-		if ( $product["product_url"] ) {
+		if ( @$product["product_url"] ) {
 			$product_image = "<a href=\"". $product["product_url"]."\" title=\"".$product['product_name']."\" target=\"_blank\">";
 			$product_image .= ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0);
 			$product_image .= "</a>";

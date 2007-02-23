@@ -244,9 +244,11 @@ class ps_product_attribute {
 		if($db->f("child_option_ids") && $product_list == "N") {
 			$product_list = "Y";
 		}
-        print "here";
 		switch( $product_list ) {
-			case "Y" || "YM" :
+			case "Y" :
+				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$db->f("child_option_ids"),$dw,$aw,$display_header,$product_list_type,$product_list,$product_price);
+				break;
+            case  "YM" :
 				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$db->f("child_option_ids"),$dw,$aw,$display_header,$product_list_type,$product_list,$product_price);
 				break;
 			case "N" :
