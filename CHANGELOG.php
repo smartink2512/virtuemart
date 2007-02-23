@@ -37,6 +37,9 @@ VirtueMart 1.1.x
 *************************************
 23.02.2007 soeren
 
+^ updated YUI to version 2.2.0
+^ updated Scriptaculous to version 1.7.0
+^ updated Prototype to version 1.5.0
 # changing the ENCODE_KEY would re-encode the encrpyted data even if writing the configuration file fails and the old ENCODE_KEY is NOT changed due to missing file permissions
 ^ moved Login/Registration Form during Checkout into a template
 # submit_form() is not defined on last step in checkout
