@@ -329,6 +329,8 @@ class ps_userfield extends vmAbstractObject {
 						<label for="register_account">'.$VM_LANG->_VM_REGISTER_ACCOUNT.'</label>
 					</div>
 					';
+			} elseif( $field->name == 'username' ) {
+				echo '<input type="hidden" id="register_account" name="register_account" value="1" />';
 			}
 	   		// a delimiter marks the beginning of a new fieldset and
 	   		// the end of a previous fieldset
@@ -478,7 +480,9 @@ class ps_userfield extends vmAbstractObject {
 		   		}
 		   	}
 		   }
-		   showFields( document.getElementById( \'register_account\').checked, new Array(\'username\', \'password\', \'password2\') )
+		   try {
+		   	showFields( document.getElementById( \'register_account\').checked, new Array(\'username\', \'password\', \'password2\') );
+		   } catch(e){}
 		   </script>';
 	   }
 	}
