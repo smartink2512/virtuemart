@@ -775,7 +775,9 @@ class ps_order_edit {
 				$add_product_validate = 0;
 			}
 		}
-
+        if(!isset($d['order_subtotal_withtax'] )) {
+            $d['order_subtotal_withtax'] = 0;
+        }
 		if ($add_product_validate == 1) {
 			$result_attributes = $ps_product_attribute->cartGetAttributes(&$d);
          
@@ -845,7 +847,7 @@ class ps_order_edit {
 			$price_change = $quantity * $product_final_price;
 			$order_subtotal = 0;		
 		
-			if( $auth["show_price_including_tax"] == 1 ) {
+			if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
 				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
             $product_price *= $quantity;
             $d['order_subtotal_withtax'] += $product_price;
