@@ -463,6 +463,9 @@ class ps_product_attribute {
 				$flypage = $ps_product->get_flypage( $product_id );
 
                 $products[$ci]['product_id'] = $db->f("product_id");
+                $products[$ci]["category_id"] = $category_id;
+                $products[$ci]["flypage"] = $flypage;
+                $products[$ci]["Itemid"] = $Itemid;
 				// If this is a child of a parent set the correct product_id for page return
 				if (@$child_id && $pp) {
                     $products[$ci]['parent_id'] = $db->f("product_id");
