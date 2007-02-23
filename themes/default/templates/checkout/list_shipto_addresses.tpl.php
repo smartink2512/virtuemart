@@ -22,8 +22,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 		<td>
 		<?php
 		$checked = '';
-		if( $bt_user_info_id == $value ) {
+		if( $bt_user_info_id == $value || empty($value)) {
 			$checked = 'checked="checked" ';
+		}
+		if( $db->num_rows() > 0 ) {
+			$checked .= 'onchange="document.adminForm.submit();" ';
 		}
 		echo '<input type="radio" name="'.$name.'" id="'.$bt_user_info_id.'" value="'.$bt_user_info_id.'" '.$checked.'/>'."\n";
 	
@@ -35,10 +38,11 @@ $i = 2;
 while($db->next_record()) {
 	echo '<tr class="sectiontableentry'.$i.'">'."\n";
 	echo '<td width="5%">'."\n";
-	if (!strcmp($value, $db->f("user_info_id"))) {
+	$checked = '';
+	if ( $value == $db->f("user_info_id")) {
 		$checked = 'checked="checked" ';
 	}
-	echo '<input type="radio" name="'.$name.'" id="' . $db->f("user_info_id") . '" value="' . $db->f("user_info_id") . '" '.$checked.'/>'."\n";
+	echo '<input type="radio" name="'.$name.'" id="' . $db->f("user_info_id") . '" value="' . $db->f("user_info_id") . '" '.$checked.' onchange="document.adminForm.submit();" />'."\n";
 	
 	echo '</td>'."\n";
 	echo '<td>'."\n";

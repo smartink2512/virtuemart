@@ -666,7 +666,9 @@ if (!defined('ENT_QUOTES')) {
  * @require     PHP 4.0.0 (user_error)
  */
 function vmHtmlEntityDecode($string, $quote_style = ENT_COMPAT, $charset = null) {
-	
+	if( function_exists('html_entity_decode')) {
+		return html_entity_decode( $string, $quote_style, $charset );
+	}
     if (!is_int($quote_style) && !is_null($quote_style)) {
         user_error(__FUNCTION__.'() expects parameter 2 to be long, ' .
             gettype($quote_style) . ' given', E_USER_WARNING);

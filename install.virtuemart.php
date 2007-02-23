@@ -19,7 +19,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 function virtuemart_is_installed() {
 	global $database, $mosConfig_absolute_path, $mosConfig_dbprefix, 
 		$VMVERSION, $shortversion, $myVersion, $version_info;
-
+	if( is_null( $database ) && class_exists('jfactory')) {
+		$database = JFactory::getDBO();
+	}
 	//add VirtueMart admin menu image
 	$database->setQuery( "UPDATE #__components SET admin_menu_img = '../administrator/components/com_virtuemart/favicon.ico' WHERE admin_menu_link = 'option=com_virtuemart'");
 	$database->query();
@@ -82,6 +84,9 @@ function com_install() {
 	}
 	// Check for old mambo-phpShop Tables. When they exist,
 	// offer an Upgrade
+	if( is_null( $database ) && class_exists('jfactory')) {
+		$database = JFactory::getDBO();
+	}
 	$database->setQuery( "SHOW TABLES LIKE '".$mosConfig_dbprefix."pshop_%'" );
 	$pshop_tables = $database->loadObjectList();
 	

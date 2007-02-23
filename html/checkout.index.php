@@ -142,17 +142,17 @@ if ($cart["idx"] > 0) {
         }
         ?>
     <br /><?php 
-	foreach( $checkout_steps[$current_stage] as $this_step ) {	
-		echo '<input type="hidden" name="checkout_this_step[]" value="'.$this_step.'" />';
-	}
+		foreach( $checkout_steps[$current_stage] as $this_step ) {	
+			echo '<input type="hidden" name="checkout_this_step[]" value="'.$this_step.'" />';
+		}
             
-         if( !in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {
+        if( !in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {
          	?>
                 <div align="center">
-                <input type="submit" class="button" name="submit" value="<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_NEXT;?> &gt;&gt;" />
+                <input type="submit" class="button" name="formSubmit" value="<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_NEXT;?> &gt;&gt;" />
                 </div>
             <?php 
-            } ?>
+		} ?>
 </form>
 <!-- Body ends here -->
 <?php
@@ -174,30 +174,9 @@ if ($cart["idx"] > 0) {
             include(PAGEPATH. 'checkout_register_form.php');
           }
       
-          else { // user is not logged in
-  ?>
-        	<h4><input type="radio" name="togglerchecker" id="toggler1" class="toggler" checked="checked" />
-        	<label for="toggler1"><?php echo $VM_LANG->_PHPSHOP_RETURN_LOGIN ?></label>
-            </h4>
-                <div class="stretcher" id="login_stetcher">
-            <?php 
-                echo $theme->fetch('common/login_form.tpl.php');
-            ?>
-                </div>
-            <?php
-          
-          
-          ?><br />
-          	<h4><input type="radio" name="togglerchecker" id="toggler2" class="toggler" />
-         	<label for="toggler2"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></label>
-            </h4>
-                <div class="stretcher" id="register_stretcher"><?php
-          
-                include(PAGEPATH. 'checkout_register_form.php');
-?>
-               </div>
-               <br />
-<?php
+          else { 
+          	// user is not logged in
+			echo $theme->fetch( 'checkout/login_registration.tpl.php' );
           }
     }
 }
@@ -205,21 +184,4 @@ else {
 	mosRedirect( $sess->url( 'index.php?page=shop.cart', false, false ) );
 }
 
-echo vmCommonHTML::scriptTag('', 'Window.onDomReady(function() {
-	
-	// get accordion elements
-	myStretch = document.getElementsByClassName(\'toggler\');
-	myStretcher = document.getElementsByClassName(\'stretcher\');
-	
-
-	
-	// Create the accordion
-	myAccordion = new Fx.Accordion(myStretch, myStretcher, 
-		{
-			/*fixedHeight: 125,*/
-			opacity : true,
-			display: 0
-		});
-
-});');
 ?>

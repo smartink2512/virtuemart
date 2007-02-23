@@ -35,6 +35,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+23.02.2007 soeren
+
+# changing the ENCODE_KEY would re-encode the encrpyted data even if writing the configuration file fails and the old ENCODE_KEY is NOT changed due to missing file permissions
+^ moved Login/Registration Form during Checkout into a template
+# submit_form() is not defined on last step in checkout
+^ moved Shipping Address form into template
+
+--- VirtueMart 1.1.0 beta1 released (21.02.2007, Rev. 692) ---
+
 21.02.2007 soeren
 # mosproductsnap - Fatal Error (only variables should be passed by reference)
 + added "featured=y" and "discounted=y" parameters for the browse page to allow to filter by featured or discounted products

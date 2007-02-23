@@ -26,7 +26,7 @@ if (!empty( $missing )) {
 	echo "<script type=\"text/javascript\">alert('".$VM_LANG->_CONTACT_FORM_NC."'); </script>\n";
 }
 
-if ($mosConfig_allowUserRegistration == "0") {
+if ($GLOBALS['mosConfig_allowUserRegistration'] == "0") {
 	mosNotAuth();
 	return;
 }

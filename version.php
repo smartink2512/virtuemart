@@ -45,7 +45,7 @@ class vmVersion {
 	/** @var string Timezone */
 	var $RELTZ = 'GMT';
 	/** @var string Revision */
-	var $REVISION = '$Revision: $';
+	var $REVISION = '$Revision$';
 	/** @var string Copyright Text */
 	var $COPYRIGHT = 'Copyright (C) 2005-2007 Soeren Eberhardt. All rights reserved.'; 
 	/** @var string URL */

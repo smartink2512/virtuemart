@@ -62,12 +62,11 @@ if( VM_ONCHECKOUT_SHOW_LEGALINFO == '1' ) {
 	}
     ?>
 <div align="center">
-<input type="submit" onclick="return( submit_order( this.form ) );" class="button" name="submit" value="<?php echo $VM_LANG->_PHPSHOP_ORDER_CONFIRM_MNU ?>" />
+<input type="submit" onclick="return( submit_order( this.form ) );" class="button" name="formSubmit" value="<?php echo $VM_LANG->_PHPSHOP_ORDER_CONFIRM_MNU ?>" />
 </div>
 <?php
 if(  PSHOP_AGREE_TO_TOS_ONORDER == '1' ) {
-	echo "<script type=\"text/javascript\"><!--
-function submit_order( form ) {
+	echo vmCommonHTML::scriptTag('', "function submit_order( form ) {
     if (!form.agreed.checked) {
         alert( \"". $VM_LANG->_PHPSHOP_AGREE_TO_TOS ."\" );
         return false;
@@ -75,7 +74,8 @@ function submit_order( form ) {
     else {
         return true;
     }
-}
---></script>";
+}" );
+} else {
+	echo vmCommonHTML::scriptTag('', "function submit_order( form ) { return true;  }" );
 }
 ?>

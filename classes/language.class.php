@@ -73,11 +73,8 @@ class vmAbstractLanguage {
 	 */
 	function safe_utf8_encode( $text, $charset ) {
 		if( strtolower($charset) == 'utf-8') {
-			// when the virtuemart language file is not
-			// utf-8_encoded, we must encode it
-			if( !vmAbstractLanguage::seems_utf8($text)) {
-				$text = utf8_encode($text);
-			}
+			// safely decode and reencode the string
+			$text = utf8_encode(utf8_decode($text));
 		}
 		// This converts the currency symbol from HTML entity to the utf-8 symbol
 		// example:  &euro; => €

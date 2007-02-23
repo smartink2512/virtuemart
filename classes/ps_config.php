@@ -36,7 +36,12 @@ class ps_config {
 		$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
 		$db->next_record();
 		$d['conf_VM_PRICE_ACCESS_LEVEL'] = $db->f('name');
-
+		
+		if (!$fp = fopen(ADMINPATH ."virtuemart.cfg.php", "w")) {			
+			$vmLogger->err( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. ADMINPATH ."virtuemart.cfg.php)" );
+			return false;
+		}
+			
 		if ($_POST['myname'] != "Jabba Binks") {
 			return false;
 		}
@@ -257,16 +262,12 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 
 			$config .= "?>";
 
-			if ($fp = fopen(ADMINPATH ."virtuemart.cfg.php", "w")) {
-				fputs($fp, $config, strlen($config));
-				fclose ($fp);
+			
+			fputs($fp, $config, strlen($config));
+			fclose ($fp);
 
-				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
-				return true;
-			} else {
-				$vmLogger->err( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. ADMINPATH ."virtuemart.cfg.php)" );
-				return false;
-			}
+			$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			return true;
 			
 		}
 	} // end function writeconfig
