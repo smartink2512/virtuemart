@@ -247,7 +247,7 @@ class ps_product_attribute {
         
 		switch( $product_list ) {
 			case "Y" :
-				return $this->list_attribute_list($product_id,$display_use_parent,$display_header,$product_list_child,$display_type,$ddesc,$dw,$aw,$product_list_type,$class_suffix,$db->f("child_option_ids"));
+				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$db->f("child_option_ids"),$dw,$aw,$display_header,$product_list_type);
 				break;
 			case "YM" :
 				return $this->list_attribute_multi($product_id,$display_use_parent,$display_header,$product_list_child,$ddesc,$dw,$aw,$product_list_type,$class_suffix,$db->f("child_option_ids"),$product_price);
@@ -363,7 +363,7 @@ class ps_product_attribute {
 	 * @return string HTML code with Items, attributes & price
 	 */
 
-	function list_attribute_list($product_id, $display_use_parent,$display_header,$child_link,$display_type,$dd,$dw,$aw,$pt,$cls_sfuffix,$child_ids) {
+	function list_attribute_list($product_id, $display_use_parent,$child_link,$display_type,$cls_sfuffix,$child_ids,$dw,$aw,$display_header,$product_list_type) {
 		global $VM_LANG, $CURRENCY_DISPLAY,$mm_action_url,$sess,$auth;
 		global $mainframe;
 		require_once (CLASSPATH . 'ps_product.php' );
@@ -378,18 +378,22 @@ class ps_product_attribute {
 		$db = new ps_DB;
 		$db_sku = new ps_DB;
 		$db_item = new ps_DB;
-
+        $tpl = new $GLOBALS['VM_THEMECLASS']();
+        $tpl->set( "cls_suffix", $cls_sfuffix );
+        $tpl->set( "product_id", $product_id );
+        $tpl->set( "display_header", $display_header);
+        $tpl->set( "display_product_type", $product_list_type);
 		$html = "";
 		// Get list of children
 		$pp = $ps_product->parent_has_children($product_id);
 		if($pp) {
-			$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND product_parent_id='$product_id'  ";
+			$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_publish='Y' AND product_parent_id='$product_id'  ";
 		}
 		else {
-			$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND product_id='$product_id'  ";
+			$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_publish='Y' AND product_id='$product_id'  ";
 		}
 		if($child_ids) {
-			$q .= "UNION ALL SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock FROM #__{vm}_product WHERE product_publish='Y' AND  product_id IN ($child_ids)";
+			$q .= "UNION ALL SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_publish='Y' AND  product_id IN ($child_ids)";
 		}
 		$db->setQuery($q);
 		$db->query();
@@ -412,8 +416,10 @@ class ps_product_attribute {
 			$db->query();
 		}
 		if(( $db->num_rows() > 0 ) ) {
+        $products = array();
+        $headings = array();
+	    $i = 0;
 
-			$html .= "<div class=\"vmCartDetails$cls_sfuffix\">\n";
 			$ci=0;
 			while ($db->next_record()) {
 				$parent_id= $db->f("product_parent_id");
@@ -423,12 +429,6 @@ class ps_product_attribute {
 					continue;
 				}
 				// Start row for this child
-				// Show Header row and create headings for all attributes
-
-				$html_header = "<div class=\"vmCartChildHeading$cls_sfuffix\">\n";
-				if($dd == "Y") {
-					$html_header .= "<span style=\"float: left;width: $dw;\">$VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE</span />";
-				}
 				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku ";
 				if($pp) {
 					$q .= "WHERE product_id='$product_id' ORDER BY attribute_list ASC";
@@ -438,6 +438,7 @@ class ps_product_attribute {
 				}
 				$db_sku->setQuery($q);  $db_sku->query();
 				$attrib_value = array();
+                $attrib_heading = array();
 				while ($db_sku->next_record()) {
 					$q = "SELECT attribute_name,attribute_value ";
 					$q .= "FROM #__{vm}_product_attribute WHERE ";
@@ -445,138 +446,116 @@ class ps_product_attribute {
 					$q .= "attribute_name='" . $db_sku->f("attribute_name") . "'";
 					$db_item->setQuery($q);  $db_item->query();
 					while ($db_item->next_record()) {
-						$html_header .=  "<span style=\"float: left;width: $aw;\" />";
+                    
+						$html_header =  "<span style=\"float: left;width: 20%;\" />";
 						$html_header .= " " . $db_item->f("attribute_name") . "</span />\n";
+                        $attrib_heading[] = $db_item->f("attribute_name");
 						$attrib_value[] = $db_item->f("attribute_value");
 					}
 				}
-				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
-				//$html_header .= "<span style=\"float: right;text-align: center;\" />$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$VM_LANG->_PHPSHOP_CART_QUANTITY</span>";
-				}
-				$html_header .= "</div><br />";
-
-				if($display_header == "Y" && $ci == 0) {
-					$html .= $html_header;
-				}
+                $tpl->set('headings', $attrib_heading);
+                $tpl->set('desc_width',$dw);
+                $tpl->set('attrib_width',$aw);
 				// End show Header Row
-				if ($ci++ % 2) {
+				if ($ci % 2) {
 					$bgcolor="vmRowOne";
 				} else {
 					$bgcolor="vmRowTwo";
 				}
+                $products[$ci]['bgcolor'] = $bgcolor;
 				$flypage = $ps_product->get_flypage( $product_id );
 
-				$html .= "<div class=\"vmCartChild$cls_sfuffix $bgcolor$cls_sfuffix\">\n";
-				$html .= "<div class=\"vmCartChildElement$cls_sfuffix\">\n";
-				$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"".$db->f("product_id") ."\" />";
+                $products[$ci]['product_id'] = $db->f("product_id");
 				// If this is a child of a parent set the correct product_id for page return
 				if (@$child_id && $pp) {
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$db->f("product_id")."\" />";
+                    $products[$ci]['parent_id'] = $db->f("product_id");
 				}
 				else {
 					$master_id = $parent_id;
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$parent_id."\" />";
+                    $products[$ci]['parent_id'] = $parent_id;
 				}
+                // Images
+                // If it is item get parent:
+		        $product_parent_id = $db->f("product_parent_id");
+                if ($product_parent_id != 0) {
+                    $dbp = new PS_db;
+			        $dbp->query("SELECT product_full_image,product_thumb_image,product_name,product_s_desc FROM #__{vm}_product WHERE product_id='$product_parent_id'" );
+			        $dbp->next_record();
+		        }
+                $product_full_image = $parent_id!=0 && !$db->f("product_full_image") ?
+					$dbp->f("product_full_image") : $db->f("product_full_image"); // Change
+                $product_thumb_image = $parent_id!=0 && !$db->f("product_thumb_image") ?
+					$dbp->f("product_thumb_image") : $db->f("product_thumb_image"); // Change
+                $productData = $db->get_row();
+                $productArray = get_object_vars( $productData );
+                $productArray["product_id"] = $db->f("product_id");
+                $productArray["product_full_image"] = $product_full_image; // to display the full image on flypage
+                $productArray["product_thumb_image"] = $product_thumb_image;
 
-				//Check for displaying description
-				if($dd == "Y") {
-					$html .= "<span class=\"vmChildDetail$cls_sfuffix\" style=\"float: left;width :$dw;\" />";
-					//Check for link to child and build url
-					if(($child_link == "Y" ) && !@$child_id) {
-						$html .= "<input type=\"hidden\" id=\"index_id".$db->f("product_id")."\" value=\"".$db->f("product_id")."\" />\n";
-						$html .="<a name=\"".$db->f("product_name").$db->f("product_id")."\"  onclick=\"var id = $('index_id".$db->f("product_id")."').value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >";
-					}
-					$html .= $db->f("product_name");
-					if(($child_link == "Y" ) && !@$child_id)
-					$html .= "</a>";
-					$html .= "</span>\n";
-				}
+                $tpl->set( 'productArray', $productArray );
+                foreach( $productArray as $property => $value ) {
+	                $tpl->set( $property, $value);
+                }
+                // Assemble the thumbnail image as a link to the full image
+                // This function is defined in the theme (theme.php)
+                $product_image = $tpl->vmBuildFullImageLink( $productArray );
+                $products[$ci]['product_image'] = $product_image;
+                //Product Description
+                if(($child_link == "Y" ) && !@$child_id) {
+						$link = "<input type=\"hidden\" id=\"index_id".$db->f("product_id")."\" value=\"".$db->f("product_id")."\" />\n";
+						$link .="<a name=\"".$db->f("product_name").$db->f("product_id")."\"  onclick=\"var id = $('index_id".$db->f("product_id")."').value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >";
+                }
+                $html1 = $db->f("product_name");
+                if(($child_link == "Y" ) && !@$child_id) {
+                    $html1 .= "</a>";
+                }
+                $products[$ci]['product_title'] = $link.$html1;
 				// For each child get attribute values by looping through attribute list
 				foreach($attrib_value as $attribute) {
-					$html .=  "<span class=\"vmChildDetail$cls_sfuffix\" style=\"float: left;width :$aw;\" />";
-					$html .= " " . $attribute . "</span>\n";
+                    $products[$ci]['attrib_value'][] = $attribute;
 				}
 
 				//Show the quantity Box
-				if (USE_AS_CATALOGUE != '1' ) {
-					$html .= "<span style=\"float: right;: right;padding-right:5px;\">".$this->show_quantity_box($master_id,$db->f("product_id"),"Y",$display_use_parent)."</span>";
-				}
+                $products[$ci]['quantity_box'] = $this->show_quantity_box($master_id,$db->f("product_id"),"Y",$display_use_parent);
 				// Attributes for this item are done.
 				// Now get item price
-				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
-					$price = $ps_product->get_price($db->f("product_id"));
-					$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
-					$actual_price = $ps_product->get_adjusted_attribute_price($db->f("product_id"));
-					$actual_price["product_price"] = $GLOBALS['CURRENCY']->convert( $actual_price["product_price"], $actual_price["product_currency"] );
-					if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
-						$tax_rate = 1 + $ps_product->get_product_taxrate($db->f("product_id"));
-						$price['product_price'] *= $tax_rate;
-						$actual_price['product_price'] *= $tax_rate;
-					}
-					$html .= "<span class=\"vmChildDetail$cls_sfuffix\" style=\"float: right;text-align: right;padding-right:5px;\" >";
-					if($price['product_price'] != $actual_price['product_price']) {
-						$html .= "<span class=\"product-Old-Price\">";
-						$html .= $CURRENCY_DISPLAY->getFullValue($price["product_price"])."</span>&nbsp;";
-						$html .= $CURRENCY_DISPLAY->getFullValue($actual_price["product_price"])."&nbsp;";
-					}
-					else {
-						$html .= $CURRENCY_DISPLAY->getFullValue($price["product_price"])."&nbsp;</span>";
-					}
-					$html .= "</span>\n";
-				}  // Format quantity box if this is not a catalogue and user is authorised to see prices
-				else
-				$html .= "<span class=\"vmChildDetail$cls_sfuffix\" style=\"float: right;text-align: right;padding-right:5px;\" ></span>";
+				$price = $ps_product->get_price($db->f("product_id"));
+				$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
+				$actual_price = $ps_product->get_adjusted_attribute_price($db->f("product_id"));
+				$actual_price["product_price"] = $GLOBALS['CURRENCY']->convert( $actual_price["product_price"], $actual_price["product_currency"] );
+				if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
+					$tax_rate = 1 + $ps_product->get_product_taxrate($db->f("product_id"));
+					$price['product_price'] *= $tax_rate;
+					$actual_price['product_price'] *= $tax_rate;
+				}
+                $products[$ci]['price'] = $CURRENCY_DISPLAY->getFullValue($price["product_price"]);
+                $products[$ci]['actual_price'] = $CURRENCY_DISPLAY->getFullValue($actual_price["product_price"]);
 
-				$html .= "</span>\n";
 				// Ouput Product Type
 				if($db->f("product_parent_id") != $product_id)
 				$product_id = $db->f("product_parent_id");
-				if($pt == "Y") {
-					if ($product_id!=0 && !$ps_product_type->product_in_product_type($db->f("product_id"))) {
-						$product_type = $ps_product_type->list_product_type($product_id);
-					}
-					else {
-						$product_type = $ps_product_type->list_product_type($db->f("product_id"));
-					}
-					if ($product_type != "") {
-						$html .="</div class=\"vmClearDetail$cls_sfuffix\"><div class=\"vmChildType$cls_sfuffix\">";
-						$html .= $product_type;
-					}
-				}
-				// Output Advanced Attributes
-				if (USE_AS_CATALOGUE != '1') {
-					if($db->f("product_parent_id") != $product_id)
-					$product_id = $db->f("product_parent_id");
-					$check_advanced = $this->list_advanced_attribute($product_id, $db->f("product_id"));
-					$check_custom = $this->list_custom_attribute($product_id, $db->f("product_id"));
-					if($check_advanced != "" || $check_custom != "") {
-						$html .= "</div><div class=\"vmCartAttributes$cls_sfuffix\">";
-					}
-					if($check_advanced != "") {
-						$html .= $check_advanced;
-					}
-					if($check_custom != "") {
-						$html .= $check_custom;
-					}
-					$html .= "</div>";
+                $product_type = "";
+                if ($product_id!=0 && !$ps_product_type->product_in_product_type($db->f("product_id"))) {
+					$product_type = $ps_product_type->list_product_type($product_id);
 				}
 				else {
-					$html .= "</div>";
+					$product_type = $ps_product_type->list_product_type($db->f("product_id"));
 				}
-
-				$html .="</div>";
-
+                $products[$ci]['product_type'] = $product_type;
+				// Output Advanced Attributes
+                $products[$ci]['advanced_attribute'] = $this->list_advanced_attribute($product_id, $db->f("product_id"));
+				$products[$ci]['custom_attribute'] = $this->list_custom_attribute($product_id, $db->f("product_id"));
+                $ci++;
 			}
-			$html .= "<input type=\"hidden\" name=\"set_price[]\" value=\"\" />
-            <input type=\"hidden\" name=\"adjust_price[]\" value=\"\" />
-            <input type=\"hidden\" name=\"master_product[]\" value=\"\" />";
-			$html .= "</div >";
 			if($display_type == "radio") {
 				$list_type = "radio";
 			}
 			else {
 				$list_type = "list";
 			}
+            // Get template and fill
+            $tpl->set( 'products', $products );
+            $html = $tpl->fetch_cache( 'product_details/includes/addtocart_list_single.tpl.php');
 		}
 		else {
 
@@ -616,6 +595,12 @@ class ps_product_attribute {
 		$db = new ps_DB;
 		$db_sku = new ps_DB;
 		$db_item = new ps_DB;
+        $tpl = new $GLOBALS['VM_THEMECLASS']();
+        $tpl->set( "cls_suffix", $cls_suffix );
+        $tpl->set( "product_id", $product_id );
+        $tpl->set( "display_header", $display_header);
+        $tpl->set( "display_product_type", $pt);
+        $tpl->set( "product_price", $product_price);
 
 		$html = "";
 		// Get list of children
@@ -650,8 +635,10 @@ class ps_product_attribute {
 			$db->query();
 		}
 		if(( $db->num_rows() > 0 ) ) {
+        $products = array();
+        $headings = array();
+	    $i = 0;
 
-			$html .= "<div class=\"vmCartDetails$cls_suffix\">\n";
 			$ci=0;
 			while ($db->next_record()) {
 				$parent_id= $db->f("product_parent_id");
@@ -661,15 +648,16 @@ class ps_product_attribute {
 					continue;
 				}
 				// Start row for this child
-				// Show Header row and create headings for all attributes
-
-				$html_header = "<div class=\"vmCartChildHeading$cls_suffix\">\n";
-				if($dd == "Y")
-				$html_header .= "<span style=\"float: left;width: $dw;\">$VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE</span />";
 				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku ";
-				$q .= "WHERE product_id='$product_id' ORDER BY attribute_list ASC";
+				if($pp) {
+					$q .= "WHERE product_id='$product_id' ORDER BY attribute_list ASC";
+				}
+				else {
+					$q .= "WHERE product_id='".$db->f("product_parent_id")."' ORDER BY attribute_list ASC";
+				}
 				$db_sku->setQuery($q);  $db_sku->query();
 				$attrib_value = array();
+                $attrib_heading = array();
 				while ($db_sku->next_record()) {
 					$q = "SELECT attribute_name,attribute_value ";
 					$q .= "FROM #__{vm}_product_attribute WHERE ";
@@ -677,125 +665,113 @@ class ps_product_attribute {
 					$q .= "attribute_name='" . $db_sku->f("attribute_name") . "'";
 					$db_item->setQuery($q);  $db_item->query();
 					while ($db_item->next_record()) {
-						$html_header .=  "<span style=\"float: left;width: $aw;\" />";
+                    
+						$html_header =  "<span style=\"float: left;width: 20%;\" />";
 						$html_header .= " " . $db_item->f("attribute_name") . "</span />\n";
+                        $attrib_heading[] = $db_item->f("attribute_name");
 						$attrib_value[] = $db_item->f("attribute_value");
 					}
 				}
-				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
-					//$html_header .= "<span style=\"float: right;text-align: center;\" />$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$VM_LANG->_PHPSHOP_CART_QUANTITY</span>";
-				}
-				$html_header .= "</div><br />";
-
-				if($display_header == "Y" && $ci == 0)
-				$html .= $html_header;
+                $tpl->set('headings', $attrib_heading);
+                $tpl->set('desc_width',$dw);
+                $tpl->set('attrib_width',$aw);
 				// End show Header Row
-				if ($ci++ % 2) {
+				if ($ci % 2) {
 					$bgcolor="vmRowOne";
-				}
-				else {
+				} else {
 					$bgcolor="vmRowTwo";
 				}
-				$html .= "<div class=\"vmCartChild$cls_suffix $bgcolor$cls_suffix\">\n";
-				$html .= "<form action=\"". $mm_action_url."index.php\" method=\"post\" name=\"addtocart\" id=\"addtocart".$db->f("product_id") ."\" class=\"addtocart_form\" onsubmit=\"handleAddToCart( this.id );return false;\">";
-				$html .= "<div class=\"vmCartChildElement$cls_suffix\" />\n";
-				$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"".$db->f("product_id") ."\" />";
+                $products[$ci]['bgcolor'] = $bgcolor;
+				$flypage = $ps_product->get_flypage( $product_id );
+
+                $products[$ci]['product_id'] = $db->f("product_id");
+				// If this is a child of a parent set the correct product_id for page return
 				if (@$child_id && $pp) {
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$db->f("product_id")."\" />";
+                    $products[$ci]['parent_id'] = $db->f("product_id");
 				}
 				else {
 					$master_id = $parent_id;
-					$html .= "<input type=\"hidden\" name=\"product_id\" value=\"".$parent_id."\" />";
+                    $products[$ci]['parent_id'] = $parent_id;
 				}
-				$flypage = $ps_product->get_flypage( $product_id );
-				if($dd == "Y") {
-					$html .= "<span class=\"vmChildDetail$cls_suffix\" style=\"float: left;width: $dw;\" />";
-					// If this is a child of a parent set the correct product_id for page return
-					//Check for link to child and build url
-					if(($child_link == "Y" ) && !@$child_id) {
-						$html .= "<input type=\"hidden\" id=\"index_id".$db->f("product_id")."\" value=\"".$db->f("product_id")."\" />\n";
-						$html .="<a name=\"".$db->f("product_name").$db->f("product_id")."\"  onclick=\"var id = $('index_id".$db->f("product_id")."').value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >";
-					}
-					$html .= $db->f("product_name");
-					if(($child_link == "Y" ) && !@$child_id)
-					$html .= "</a>";
-					$html .= "</span>\n";
-				}
+                // Images
+                // If it is item get parent:
+		        $product_parent_id = $db->f("product_parent_id");
+                if ($product_parent_id != 0) {
+                    $dbp = new PS_db;
+			        $dbp->query("SELECT product_full_image,product_thumb_image,product_name,product_s_desc FROM #__{vm}_product WHERE product_id='$product_parent_id'" );
+			        $dbp->next_record();
+		        }
+                $product_full_image = $parent_id!=0 && !$db->f("product_full_image") ?
+					$dbp->f("product_full_image") : $db->f("product_full_image"); // Change
+                $product_thumb_image = $parent_id!=0 && !$db->f("product_thumb_image") ?
+					$dbp->f("product_thumb_image") : $db->f("product_thumb_image"); // Change
+                $productData = $db->get_row();
+                $productArray = get_object_vars( $productData );
+                $productArray["product_id"] = $db->f("product_id");
+                $productArray["product_full_image"] = $product_full_image; // to display the full image on flypage
+                $productArray["product_thumb_image"] = $product_thumb_image;
+
+                $tpl->set( 'productArray', $productArray );
+                foreach( $productArray as $property => $value ) {
+	                $tpl->set( $property, $value);
+                }
+                // Assemble the thumbnail image as a link to the full image
+                // This function is defined in the theme (theme.php)
+                $product_image = $tpl->vmBuildFullImageLink( $productArray );
+                $products[$ci]['product_image'] = $product_image;
+                //Product Description
+                if(($child_link == "Y" ) && !@$child_id) {
+						$link = "<input type=\"hidden\" id=\"index_id".$db->f("product_id")."\" value=\"".$db->f("product_id")."\" />\n";
+						$link .="<a name=\"".$db->f("product_name").$db->f("product_id")."\"  onclick=\"var id = $('index_id".$db->f("product_id")."').value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >";
+                }
+                $html1 = $db->f("product_name");
+                if(($child_link == "Y" ) && !@$child_id) {
+                    $html1 .= "</a>";
+                }
+                $products[$ci]['product_title'] = $link.$html1;
 				// For each child get attribute values by looping through attribute list
 				foreach($attrib_value as $attribute) {
-					$html .=  "<span class=\"vmChildDetail$cls_suffix\" style=\"float: left;width :$aw;\" />";
-					$html .= " " . $attribute . "</span>\n";
+                    $products[$ci]['attrib_value'][] = $attribute;
 				}
 
+				//Show the quantity Box
+                $products[$ci]['quantity_box'] = $this->show_quantity_box($master_id,$db->f("product_id"),"Y",$display_use_parent);
 				// Attributes for this item are done.
 				// Now get item price
-				if (USE_AS_CATALOGUE != '1'  && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL)) {
-					$html .= "<span class=\"vmChildDetail$cls_suffix\" style=\"float: right;text-align: right;margin-top: 0px;\">".$this->show_quantity_box($master_id,$db->f("product_id"),"YM",$display_use_parent)."\n";
-					$html .= "<input type=\"submit\" class=\"addtocart_button\" value=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" title=\"".$VM_LANG->_PHPSHOP_CART_ADD_TO."\" /></span>
-                            <input type=\"hidden\" name=\"flypage\" value=\"shop.$flypage\" />
-                            <input type=\"hidden\" name=\"page\" value=\"shop.cart\" />
-                            <input type=\"hidden\" name=\"func\" value=\"cartAdd\" />
-                            <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
-                            <input type=\"hidden\" name=\"Itemid\" value=\"$Itemid\" />";
-					$html .= "<input type=\"hidden\" name=\"set_price[]\" value=\"\" />
-                            <input type=\"hidden\" name=\"adjust_price[]\" value=\"\" />
-                            <input type=\"hidden\" name=\"master_product[]\" value=\"\" />";
+				$price = $ps_product->get_price($db->f("product_id"));
+				$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
+				$actual_price = $ps_product->get_adjusted_attribute_price($db->f("product_id"));
+				$actual_price["product_price"] = $GLOBALS['CURRENCY']->convert( $actual_price["product_price"], $actual_price["product_currency"] );
+				if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
+					$tax_rate = 1 + $ps_product->get_product_taxrate($db->f("product_id"));
+					$price['product_price'] *= $tax_rate;
+					$actual_price['product_price'] *= $tax_rate;
 				}
-				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
-					$price = $ps_product->get_price($db->f("product_id"));
-					$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
-					$actual_price = $ps_product->get_adjusted_attribute_price($db->f("product_id"));
-					$actual_price["product_price"] = $GLOBALS['CURRENCY']->convert( $actual_price["product_price"], $actual_price["product_currency"] );
-					if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
-						$tax_rate = 1 + $ps_product->get_product_taxrate($db->f("product_id"));
-						$price['product_price'] *= $tax_rate;
-						$actual_price['product_price'] *= $tax_rate;
-					}
-					$html .= "<span class=\"vmChildDetail$cls_suffix\" style=\"float: right;;text-align: right;\" >";
-					if($price['product_price'] != $actual_price['product_price']) {
-						$html .= "<span class=\"product-Old-Price\">";
-						$html .= $CURRENCY_DISPLAY->getFullValue($price["product_price"])."</span>&nbsp;";
-						$html .= $CURRENCY_DISPLAY->getFullValue($actual_price["product_price"])."&nbsp;";
-					}
-					else {
-						$html .= $CURRENCY_DISPLAY->getFullValue($price["product_price"])."&nbsp;";
-					}
-					$html .= "</span>\n";
-				}
-				else {
-					$html .= "<span class=\"vmChildDetail$cls_suffix\" style=\"float: right;text-align: right;padding-right:5px;\" ></span>";
-				}
-				// Format quantity box if this is not a catalogue and user is authorised to see prices
+                $products[$ci]['price'] = $CURRENCY_DISPLAY->getFullValue($price["product_price"]);
+                $products[$ci]['actual_price'] = $CURRENCY_DISPLAY->getFullValue($actual_price["product_price"]);
+
 				// Ouput Product Type
-				if($pt == "Y") {
-					if ($product_id!=0 && !$ps_product_type->product_in_product_type($db->f("product_id"))) {
-						$product_type = $ps_product_type->list_product_type($product_id);
-					}
-					else {
-						$product_type = $ps_product_type->list_product_type($db->f("product_id"));
-					}
-					$html .="</div><div class=\"vmChildType$cls_suffix\">";
-					$html .= $product_type;
-				}
-				// Output Advanced Attributes
-				if (USE_AS_CATALOGUE != '1') {
-					$check_advanced = $this->list_advanced_attribute($master_id, $db->f("product_id"));
-					$check_custom = $this->list_custom_attribute($master_id, $db->f("product_id"));
-					if($check_advanced != "" || $check_custom != "")
-					$html .= "</div><div class=\"vmCartAttributes$cls_suffix\">";
-					if($check_advanced != "")
-					$html .= $check_advanced;
-					if($check_custom != "")
-					$html .= $check_custom;
-					$html .= "</div>";
+				if($db->f("product_parent_id") != $product_id)
+				$product_id = $db->f("product_parent_id");
+                $product_type = "";
+                if ($product_id!=0 && !$ps_product_type->product_in_product_type($db->f("product_id"))) {
+					$product_type = $ps_product_type->list_product_type($product_id);
 				}
 				else {
-					$html .= "</div>";
+					$product_type = $ps_product_type->list_product_type($db->f("product_id"));
 				}
-				$html .="</div></form>";
+                $products[$ci]['product_type'] = $product_type;
+				// Output Advanced Attributes
+                $products[$ci]['advanced_attribute'] = $this->list_advanced_attribute($product_id, $db->f("product_id"));
+				$products[$ci]['custom_attribute'] = $this->list_custom_attribute($product_id, $db->f("product_id"));
+                $products[$ci]['flypage'] = $flypage;
+                $products[$ci]['Itemid'] = $Itemid;
+                $ci++;
 			}
-			$html .= "</div>";
 			$list_type = "multi";
+            // Get template and fill
+            $tpl->set( 'products', $products );
+            $html = $tpl->fetch_cache( 'product_details/includes/addtocart_list_multi.tpl.php');
 		}
 		else {
 			$html = "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />\n";
