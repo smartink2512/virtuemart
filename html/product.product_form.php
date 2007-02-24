@@ -1361,6 +1361,7 @@ function updateDiscountedPrice() {
 function toggleProductList( enable ) {
 	if(enable) {		
     	document.getElementById('list_style0').disabled = false;
+       document.getElementById('list_style0').checked = true;
     	document.getElementById('list_style1').disabled = false;
        document.getElementById('display_headers').disabled = false;
     	document.getElementById('product_list_child').disabled = false;
