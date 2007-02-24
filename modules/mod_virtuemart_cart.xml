@@ -13,42 +13,9 @@
      </files>
 	<params>
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="class_sfx" type="text" default="" label="Menu Class Suffix" description="A suffix to be applied to the css class of the menu items" />
         <param name="vmCartDirection" type="radio" default="0" label="Cart Direction" description="Select whether the newest product is displayed first or last in the cart.">
 			<option value="0">First</option>
 			<option value="1">Last</option>
-		</param>
-        <param name="vmShowQuantity" type="radio" default="0" label="Display Quantity" description="Select whether to Display the quantity">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-        <param name="vmShowName" type="radio" default="0" label="Display Name" description="Select whether to Display the name">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-        <param name="vmShowAttrib" type="radio" default="0" label="Display Attributes" description="Select whether to Display the Attributes">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-        <param name="vmShowPrice" type="radio" default="0" label="Display Price" description="Select whether to Display the Price">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-        <param name="vmAlignPrice" type="radio" default="1" label="Align Price to the right" description="Select whether to Align the Price">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-        <param name="vmShowEmptyCart" type="radio" default="0" label="Display - Your cart is empty" description="Select whether to Display your cart is empty">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-        <param name="vmShowLogo" type="radio" default="0" label="Display VirtueMart Logo on empty cart" description="Select whether to Display VirtueMart logo includes link to VirtueMart site">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-        </param>
-        <param name="vmEnableEmptyCart" type="radio" default="0" label="Enable function to empty cart" description="Select whether to enable empty cart feature">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
 		</param>
         <param name="vmEnableGreyBox" type="radio" default="0" label="Display Cart in Grey Box" description="Select whether to display the cart in a grey box">
 			<option value="0">No</option>

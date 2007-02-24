@@ -503,7 +503,7 @@ class ps_product_attribute {
                 $product_image = $tpl->vmBuildFullImageLink( $productArray );
                 $products[$ci]['product_image'] = $product_image;
                 //Product Description
-                $link ="";
+                $link = "";
                 if(($child_link == "Y" ) && !@$child_id) {
 						$link = "<input type=\"hidden\" id=\"index_id".$db->f("product_id")."\" value=\"".$db->f("product_id")."\" />\n";
 						$link .="<a name=\"".$db->f("product_name").$db->f("product_id")."\"  onclick=\"var id = $('index_id".$db->f("product_id")."').value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >";

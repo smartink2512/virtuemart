@@ -1741,20 +1741,22 @@ class ps_product extends vmAbstractObject {
 						continue;
 					}
 				}
-				
+                
+				$this_value=str_replace("_"," ",$this_value);
 				if( isset( $product_attributes[$this_key]['values'][$this_value] )) {
 					$modifier = $product_attributes[$this_key]['values'][$this_value]['adjustment'];
 					$operand = $product_attributes[$this_key]['values'][$this_value]['operand'];
 
 					// if we have a number, allow the adjustment
 					if (true == is_numeric($modifier) ) {
+                    
 						$modifier = $GLOBALS['CURRENCY']->convert( $modifier, $price['product_currency'], $GLOBALS['product_currency'] );
 						// Now add or sub the modifier on
 						if ($operand=="+") {
 							$adjustment += $modifier;
 						}
 						else if ($operand=="-") {
-							$adjustment -= $modifier;
+						$adjustment -= $modifier;
 						}
 						else if ($operand=='=') {
 							// NOTE: the +=, so if we have 2 sets they get added
@@ -1832,6 +1834,7 @@ class ps_product extends vmAbstractObject {
 		
 		$auth = $_SESSION['auth'];
 		$description = stripslashes($description);
+        $description = str_replace("_"," ",$description);
 		// if we've been given a description to deal with, get the adjusted price
 		if ($description != '' && $auth["show_price_including_tax"] == 1 && $product_id != 0 ) {
 			$my_taxrate = $this->get_product_taxrate($product_id);
@@ -1873,6 +1876,7 @@ class ps_product extends vmAbstractObject {
 					continue;
 				}
 			}
+            $this_value = str_replace("_"," ",$this_value);
 			if( isset( $product_attributes[$this_key]['values'][$this_value] )) {
 				$modifier = $product_attributes[$this_key]['values'][$this_value]['adjustment'];
 				$operand = $product_attributes[$this_key]['values'][$this_value]['operand'];
@@ -1881,14 +1885,17 @@ class ps_product extends vmAbstractObject {
 				if( abs($value_notax) >0 ) {
 					$value_taxed = $value_notax * ($my_taxrate+1);
 						$temp_desc_new  = str_replace( $operand.$modifier, $operand.' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ), $temp_desc );
+                        
 						$description = str_replace( $this_key.':'.$this_value, 
-													$this_key.':'.$this_value.' ('.$operand.' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ).')', 
+													 $this_key.':'.$this_value.' ('.$operand.' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ).')',
 														$description);
+
 				}
 				$temp_desc = substr($temp_desc, $finish+1);
 			}
 			
 		}
+        $description = str_replace("_"," ",$description);
 		$description = str_replace( $CURRENCY_DISPLAY->symbol, '@saved@', $description );
 		$description = str_replace( "[", " (", $description );
 		$description = str_replace( "]", ")", $description );

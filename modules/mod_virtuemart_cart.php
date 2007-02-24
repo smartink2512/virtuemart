@@ -22,15 +22,7 @@ require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_pa
 echo '<div class="vmCartModule">';
 
 global $VM_LANG, $sess, $mm_action_url;
-//$_SESSION['cart_module_active'] = true;
-$_SESSION['vmShowQuantity'] = $params->get( 'vmShowQuantity' );
-$_SESSION['vmShowName'] = $params->get( 'vmShowName' );
-$_SESSION['vmShowAttrib'] = $params->get( 'vmShowAttrib' );
-$_SESSION['vmShowPrice'] = $params->get( 'vmShowPrice' );
-$_SESSION['vmShowEmptyCart'] = $params->get( 'vmShowEmptyCart');
-$_SESSION['vmEnableEmptyCart'] = $params->get( 'vmEnableEmptyCart');
-$_SESSION['vmShowLogo'] = $params->get( 'vmShowLogo');
-$_SESSION['vmAlignPrice'] = $params->get( 'vmAlignPrice');
+
 $_SESSION['vmUseGreyBox'] = $params->get( 'vmEnableGreyBox');
 $_SESSION['vmCartDirection'] = $params->get( 'vmCartDirection');
 
