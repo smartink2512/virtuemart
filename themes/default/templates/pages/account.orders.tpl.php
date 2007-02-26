@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id: account.orders.tpl.php 663 2007-02-06 06:52:29 -0700 (Tue, 06 Feb 2007) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
