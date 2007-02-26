@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -40,33 +40,17 @@ $pathway = "<a class=\"pathway\"  href=\"".$sess->url( SECUREURL ."index.php?pag
       .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
       .$VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL;
 echo "<div>$pathway</div><br/>";
- $mainframe->appendPathWay( $pathway );
-?>      
-<div style="float:left;width:90%;text-align:right;"> 
-    <span>
-    	<a href="#" onclick="if( submitregistration() ) { document.adminForm.submit();}">
-    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo $VM_LANG->_E_SAVE ?>" />
-    	</a>
-    </span>
-    <span style="margin-left:10px;">
-    	<a href="<?php $sess->purl( SECUREURL."index.php?page=account.index") ?>">
-    		<img src="administrator/images/back_f2.png" alt="<?php echo $VM_LANG->_BACK ?>" border="0" />
-    	</a>
-    </span>
-</div>
-<?php
+$mainframe->appendPathWay( $pathway );
+
 $fields = ps_userfield::getUserFields( 'account' );
-ps_userfield::listUserFields( $fields, array(), $db );
-?>
-<div align="center">	
-	<input type="submit" value="<?php echo $VM_LANG->_CMN_SAVE ?>" class="button" onclick="return( submitregistration());" />
-</div>
-  <input type="hidden" name="option" value="<?php echo $option ?>" />
-  <input type="hidden" name="page" value="<?php echo $next_page; ?>" />
-  <input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
-  <input type="hidden" name="func" value="shopperupdate" />
-  <input type="hidden" name="user_info_id" value="<?php $db->p("user_info_id"); ?>" />
-  <input type="hidden" name="id" value="<?php echo $auth["user_id"] ?>" />
-  <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
-  <input type="hidden" name="address_type" value="BT" />
-</form>
+
+$theme = vmTemplate::getInstance();
+$theme->set_vars( array(
+					'fields' => $fields,
+					'db' => $db,
+					'next_page' => $next_page,
+					'missing' => $missing,
+					'Itemid' => $Itemid
+					));
+echo $theme->fetch('pages/'.$page.'.tpl.php');
+?>      

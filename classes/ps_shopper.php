@@ -480,7 +480,7 @@ class ps_shopper {
 	* (uses who have perms='shopper')
 	*/
 	function update(&$d) {
-		global $my, $perm, $sess, $vmLogger;
+		global $my, $perm, $sess, $vmLogger, $page;
 
 		$auth = $_SESSION['auth'];
 		$db = new ps_DB;
@@ -509,7 +509,7 @@ class ps_shopper {
 		}
 
 		if (!$this->validate_update($d)) {
-			$_SESSION['last_page'] = "checkout.index";
+			$_SESSION['last_page'] = $page;
 			return false;
 		}
 		$user_id = $auth["user_id"];

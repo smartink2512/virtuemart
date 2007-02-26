@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.02.2007 gregdev
+
+^ moved account.billing, account.orders, and account.shipping into templates
+# changed ps_shopper->update to return to $page on error, rather than just checkout.index 
+
 23.02.2007 soeren
 
 ^ updated YUI to version 2.2.0
