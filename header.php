@@ -41,16 +41,11 @@ while ($db->next_record()) {
 	}
 }
 
-//$vm_mainframe->addStyleSheet( $mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/css/menu.css');
-//$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/virtuemart_menu.js');
-//$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/nifty.js');
-//$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js');
-//$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/functions.js');
-$mainframe->addCustomHeadTag('<link rel="stylesheet" type="text/css" href="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/css/menu.css" />');
-$mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/virtuemart_menu.js"></script>');
-$mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/nifty.js"></script>');
-$mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js"></script>');
-$mainframe->addCustomHeadTag('<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/functions.js"></script>');
+$vm_mainframe->addStyleSheet( $mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/css/menu.css');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/virtuemart_menu.js');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/nifty.js');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/functions.js');
 
 if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 	echo $mainframe->getHead();
