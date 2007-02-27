@@ -115,6 +115,9 @@ class ps_shopper {
 		if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
 			$skipFields = array( 'username', 'password', 'password2');
 		}
+        if ( $my->id > 0 || (VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION')) {
+            $skipFields = array( 'username', 'password', 'password2');
+        }
 		if( $my->id ) {
 			$skipFields[] = 'email';
 		}
