@@ -59,7 +59,7 @@ class ps_session {
 				$vmLogger->debug( 'A Session called '.$this->_session_name.' (ID: '.session_id().') was successfully started!' );
 			}
 			else {
-				if( @$_REQUEST['option'] == 'com_virtuemart' && USE_AS_CATALOGUE == '' && VM_ENABLE_COOKIE_CHECK == '1') {
+				if( @$_REQUEST['option'] == 'com_virtuemart' && empty($_GET['martID']) && USE_AS_CATALOGUE != '1' && VM_ENABLE_COOKIE_CHECK == '1') {
 					$this->doCookieCheck(); // Introduced to check if the user-agent accepts cookies
 				}
 				if( USE_AS_CATALOGUE == '' ) {
@@ -161,7 +161,7 @@ class ps_session {
 		$url = $toSecure ? SECUREURL : URL;
 		
 		// Redirect and send the Cookie Values within the variable martID
-		mosRedirect( $this->url( $url . "index.php?".$_SERVER['QUERY_STRING']."&martID=$martID&redirected=1", true, false ) );
+		mosRedirect( $this->url( $url . "index.php?".mosGetParam($_SERVER,'QUERY_STRING')."&martID=$martID&redirected=1", true, false ) );
 	}
 	/**
 	 * It does what the name says. It starts a session again (with a certain ID when a $sid is given)
