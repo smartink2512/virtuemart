@@ -655,7 +655,7 @@ class vmCommonHTML extends mosHTML {
 				$base_source = str_replace( $mosConfig_live_site, '', $src );
 				$base_source = str_replace( '/components/com_virtuemart', '', $base_source);
 				$base_source = str_replace( 'components/com_virtuemart', '', $base_source);
-				$src = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir='.dirname( $base_source ) . '&amp;file=' . basename( $src );
+				$src = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir[0]='.dirname( $base_source ) . '&amp;file[0]=' . basename( $src );
 			}
 			
 			return '<script src="'.$src.@$url_params.'" type="text/javascript"></script>'."\n";
@@ -679,7 +679,7 @@ class vmCommonHTML extends mosHTML {
 		if( stristr( $href, 'com_virtuemart' )) {
 			$base_href = str_replace( $mosConfig_live_site, '', $href );
 			$base_href = str_replace( 'components/com_virtuemart/', '', $base_href);
-			$href = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir='.dirname( $base_href ) . '&amp;file=' . basename( $href );
+			$href = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir[0]='.dirname( $base_href ) . '&amp;file[0]=' . basename( $href );
 		}
 		return '<link type="'.$type.'" href="'.$href.'" rel="'.$rel.'" media="'.$media.'" />'."\n";
 		
