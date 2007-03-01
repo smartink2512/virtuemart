@@ -47,11 +47,10 @@ switch( $orderby ) {
 		$orderbyField = '`#__{vm}_product`.`product_name`'; break;
 }
 
-
+$where_clause[] = "`#__{vm}_product_category_xref`.`product_id`=`#__{vm}_product`.`product_id`";
+$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=`#__{vm}_category`.`category_id`";
 // Filter Products by Category
 if( $category_id ) {
-	$where_clause[] = "`#__{vm}_product_category_xref`.`product_id`=`#__{vm}_product`.`product_id`";
-	$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=`#__{vm}_category`.`category_id`";
 	$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
 }
 if( strtoupper(mosGetParam($_REQUEST, 'featured', 'N' )) == 'Y' ) {
