@@ -50,7 +50,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
            <td width="90%">
            <?php
              $db->p("city");
-             echo ",";
+             echo ", ";
              $db->p("state");
              echo " ";
              $db->p("zip");

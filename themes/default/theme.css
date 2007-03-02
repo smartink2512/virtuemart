@@ -40,7 +40,7 @@ input.addtocart_button_module:hover  {
 }
 
 .addtocart_form {
-	width: 100%
+	width: 100%;
 	display: inline;
 	white-space: nowrap;
 }
