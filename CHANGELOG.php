@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.03.2007 gregdev
+^ optimized category tree creation
+ 
 26.02.2007 gregdev
 
 ^ moved account.billing, account.orders, and account.shipping into templates

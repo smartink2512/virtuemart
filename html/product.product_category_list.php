@@ -40,6 +40,12 @@ $row_list = Array();
 $depth_list = Array();
 $levelcounter = Array();
 
+$children = array();
+$parent_ids = array();
+for($k = 0 ; $k < $nrows ; $k++) {
+	$parent_ids[$k] = $category_tmp[$k]['category_parent_id'];
+}
+
 for($n = 0 ; $n < $nrows ; $n++)
 	if($category_tmp[$n]["category_parent_id"] == 0) { 
 		array_push($id_list,$category_tmp[$n]["category_child_id"]);
@@ -60,15 +66,17 @@ while(count($id_list) < $nrows) {
 		array_push($id_temp,$id);
 		array_push($row_temp,$row);
 		array_push($depth_temp,$depth);
-		for($j = 0 ; $j < $nrows ; $j++) {
-			if(($category_tmp[$j]["category_parent_id"] == $id)
-			&& (array_search($category_tmp[$j]["category_child_id"],$id_list) == NULL)) { 
-				array_push($id_temp,$category_tmp[$j]["category_child_id"]);
-				array_push($row_temp,$j);
+
+		$pattern = '/\b'.$id.'\b/';
+		$children = preg_grep( $pattern, $parent_ids );
+
+		foreach($children as $key => $value) {
+			if( array_search($category_tmp[$key]["category_child_id"],$id_list) == NULL) {
+				array_push($id_temp,$category_tmp[$key]["category_child_id"]);
+				array_push($row_temp,$key);
 				array_push($depth_temp,$depth + 1);
 			}
 		}
-		
 	}
 	$id_list = $id_temp;
 	$row_list = $row_temp;
