@@ -754,7 +754,7 @@ class ps_order_edit {
 	 * returns:
 	 **************************************************************************/
 	function add_product() {
-		global $VM_LANG, $vmLogger;
+		global $VM_LANG, $vmLogger, $mosConfig_offset;
 		
 		require_once(CLASSPATH . 'ps_product_attribute.php');
 		require_once(CLASSPATH . 'ps_product.php');
@@ -779,7 +779,7 @@ class ps_order_edit {
             $d['order_subtotal_withtax'] = 0;
         }
 		if ($add_product_validate == 1) {
-			$result_attributes = $ps_product_attribute->cartGetAttributes(&$d);
+			$result_attributes = $ps_product_attribute->cartGetAttributes($d);
          
          $dbp = new ps_DB;
 			$q = "SELECT vendor_id, product_in_stock,product_sales,product_parent_id, product_sku, product_name FROM #__{vm}_product WHERE product_id='$product_id'";

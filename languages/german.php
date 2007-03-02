@@ -1755,7 +1755,7 @@ Bitte nicht auf diese Nachricht antworten, da sie automatisch generiert wurde un
 	var $_ITEM_NEXT = 'next';
 	var $_VM_ORDER_EDIT_ACTIONS = 'Actions';
 	var $_VM_ORDER_EDIT = 'Modify Order';
-	var $_PHPSHOP_ORDER_EDIT_ADD = 'Add';
+	var $_VM_ORDER_EDIT_ADD = 'Add';
 	var $_VM_ORDER_EDIT_ADD_PRODUCT = 'Add product';
 	var $_VM_ORDER_EDIT_EDIT_ORDER = 'Modify order';
 	var $_VM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0 = 'The quantity has to be more than 0';
