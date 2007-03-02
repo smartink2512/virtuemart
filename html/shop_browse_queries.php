@@ -115,10 +115,10 @@ elseif( !empty($keyword1) ) {
 	if ( !empty($keyword2) ) {
 		$sq .= "\n $search_op (";
 		if ($search_limiter=="name") {
-			$sq .= "\n `#__{vm}_product`.product_name LIKE '%$keyword2%' ";
+			$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$keyword2%' ";
 		}
 		elseif ($search_limiter=="cp") {
-			$sq .= "\n `#__{vm}_product`.product_url LIKE '%$keyword2%' ";
+			$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$keyword2%' ";
 		}
 		elseif ($search_limiter=="desc") {
 			$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$keyword2%' OR ";
@@ -129,7 +129,7 @@ elseif( !empty($keyword1) ) {
 			$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$keyword2%' OR ";
 			$sq .= "\n `#__{vm}_category`.`category_name` LIKE '%$keyword2%' OR ";
 			$sq .= "\n `#__{vm}_product`.`product_sku` LIKE '%$keyword2%' OR ";
-			$sq .= "\n `#__{vm}_product`.product_s_desc` LIKE '%$keyword2%' OR ";
+			$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$keyword2%' OR ";
 			$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$keyword2%'";
 		}
 		$sq .= "\n ) ";
