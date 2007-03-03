@@ -82,6 +82,11 @@ if( $show_categories == "yes" ) {
       include( $mod_dir.'/vm_JSCook.php' );
     
   }
+  elseif( $menutype == "tigratree" ) {
+      /* TigraTree script to display structured categories */
+      include( $mosConfig_absolute_path . '/modules/vm_tigratree.php' );
+  }
+
 }
 ?>
 <table cellpadding="1" cellspacing="1" border="0" width="100%">

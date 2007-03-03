@@ -13,6 +13,7 @@
          <filename module="mod_virtuemart">mod_virtuemart.php</filename>
          <filename>vm_dtree.php</filename>
          <filename>vm_JSCook.php</filename>
+         <filename>vm_tigratree.php</filename>
          <filename>vm_transmenu.php</filename>
         <filename>dtree/dtree.css</filename> 
         <filename>dtree/dtree.js</filename> 
@@ -108,8 +109,9 @@
       <param name="menutype" type="list" default="links" label="Category display type"
       description="You can set the display type to *links* to have the default display type: a link list. If you set it to *dTree*, the categories will be displayed in a dTree structure.">
         <option value="links">Link List</option>
+        <option value="tigratree">TigraTree</option>
         <option value="jscook">JSCook</option> 
-	<option value="transmenu">TransMenu</option>
+		<option value="transmenu">TransMenu</option>
         <option value="dtree">dTree</option>
       </param>
       <param name="jscook_type" type="list" default="menu" label="JSCook Type" description="The Style for Displaying the categories: Menu or Tree">

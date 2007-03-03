@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.03.2007 gregdev
++ Added Tigra Tree category menu
+
 01.03.2007 gregdev
 ^ optimized category tree creation
  
