@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * VirtueMart TigraTree menu
 * @author Greg Perkins
 * @ Uses TigraTree Javascript: http://www.softcomplex.com/
-* @version $Id: vm_tigratree.php 617 2007-01-04 12:43:08 -0700 (Thu, 04 Jan 2007) gregdev $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
