@@ -61,14 +61,18 @@ else {
 		$product_parent_id=$ps_product->get_field($cart[$i]["product_id"],"product_parent_id");
 
 		// Get flypage for this product
-		$flypage = $ps_product->get_flypage($cart[$i]["product_id"]);
-
+        $flypage_id = $product_parent_id;
+        if($flypage_id == 0) {
+            $flypage_id = $cart[$i]["product_id"];
+        }
+		$flypage = $ps_product->get_flypage($flypage_id);
+        $category_id=$cart[$i]["category_id"];
 		// Build URL based on whether item or product
 		if ($product_parent_id) {
-			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id");
+			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id&category_id=$category_id");
 		}
 		else {
-			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]);
+			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=" . $_SESSION['cart'][$i]["product_id"]."&category_id=$category_id");
 		}
 
 		$product_rows[$i]['product_name'] = "<a href=\"$url\"><strong>"
