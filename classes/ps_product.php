@@ -229,14 +229,18 @@ class ps_product extends vmAbstractObject {
 
 		// added for advanced attribute modification
 		// strips the trailing semi-colon from an attribute
-		if (';' == substr($d["product_advanced_attribute"], strlen($d["product_advanced_attribute"])-1,1) ) {
-			$d["product_advanced_attribute"] =substr($d["product_advanced_attribute"], 0, strlen($d["product_advanced_attribute"])-1);
-		}
+        if(isset($d["product_advanced_attribute"])) {
+		    if (';' == substr($d["product_advanced_attribute"], strlen($d["product_advanced_attribute"])-1,1) ) {
+			    $d["product_advanced_attribute"] =substr($d["product_advanced_attribute"], 0, strlen($d["product_advanced_attribute"])-1);
+		    }
+        }
 		// added for custom attribute modification
 		// strips the trailing semi-colon from an attribute
-		if (';' == substr($d["product_custom_attribute"], strlen($d["product_custom_attribute"])-1,1) ) {
-			$d["product_custom_attribute"] =substr($d["product_custom_attribute"], 0, strlen($d["product_custom_attribute"])-1);
-		}
+        if(isset($d["product_custom_attribute"])) {
+		    if (';' == substr($d["product_custom_attribute"], strlen($d["product_custom_attribute"])-1,1) ) {
+			    $d["product_custom_attribute"] =substr($d["product_custom_attribute"], 0, strlen($d["product_custom_attribute"])-1);
+		    }
+        }
 		$d["product_special"] = empty($d["product_special"]) ? "N" : "Y";
         //parse quantity and child options
         if (@$d['display_headers'] =="Y") {
@@ -336,7 +340,8 @@ class ps_product extends vmAbstractObject {
 			$i = 0;
 			while($db->next_record()) {
 				$i++;
-				$q = "INSERT INTO #__{vm}_product_attribute VALUES ";
+                
+				$q = "INSERT INTO #__{vm}_product_attribute (`product_id`,`attribute_name`,`attribute_value`) VALUES ";
 				$q .= "('".$d["product_id"]."', '".$db->f("attribute_name")."', '".$d["attribute_$i"]."')";
 				$db2->query( $q );
 			}
