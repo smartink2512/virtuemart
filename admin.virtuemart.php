@@ -126,7 +126,7 @@ if( $no_menu != 1 ) {
 }
 if( $only_page != 1 && $vmLayout == 'extended') {
 	
-	echo '<iframe id="vmPage" name="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;min-height:800px; border: 1px solid silver;padding:4px;"></iframe>';
+	echo '<iframe id="vmPage" name="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
 	vmCommonHTML::loadYUIEXT();
 	echo vmCommonHTML::scriptTag('',"var vmLayout = function(){
     var layout, center;

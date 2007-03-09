@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.03.2007 soeren
+
+# Prevention for negative cart values upon using a constant value coupon (ps_coupon.php, http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=20840.msg51002#msg51002)
+
 03.03.2007 gregdev
 + Added Tigra Tree category menu
 

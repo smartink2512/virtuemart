@@ -157,7 +157,7 @@ class ps_coupon {
     
     /* function to process a coupon_code entered by a user */ 
     function process_coupon_code( $d ) {
-        global $VM_LANG;
+        global $VM_LANG, $vmLogger;
         /* init the database */
         $coupon_db =& new ps_DB;
         
@@ -194,12 +194,16 @@ class ps_coupon {
                 /* take the subtotal for calculation of the discount */
                 //$_SESSION['coupon_discount'] = round( ($subtotal * $coupon_db->f("coupon_value") / 100), 2);
                 $_SESSION['coupon_discount'] = round( ($d["total"] * $coupon_db->f("coupon_value") / 100), 2);
-                
             }
             else
             {
-                /* dollar */
-                $_SESSION['coupon_discount'] = $GLOBALS['CURRENCY']->convert( $coupon_db->f("coupon_value") );
+            	$coupon_value = $coupon_db->f("coupon_value");
+                /* Total Amount */
+                if( $d["total"] > $coupon_value ) {
+                  	$coupon_value = (float)$d['total'];
+                  	$vmLogger->info( 'The Value of the Coupon is greater than the current Order Total, so the Coupon Value was temporarily set to '.$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ) );
+                }
+                $_SESSION['coupon_discount'] = $GLOBALS['CURRENCY']->convert( $coupon_value );
                 
             }
             
