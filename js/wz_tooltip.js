@@ -1,18 +1,18 @@
 /* This notice must be untouched at all times.
 
-wz_tooltip.js    v. 3.34
+wz_tooltip.js    v. 3.45
 
 The latest version is available at
 http://www.walterzorn.com
 or http://www.devira.com
 or http://www.walterzorn.de
 
-Copyright (c) 2002-2004 Walter Zorn. All rights reserved.
+Copyright (c) 2002-2005 Walter Zorn. All rights reserved.
 Created 1. 12. 2002 by Walter Zorn (Web: http://www.walterzorn.com )
-Last modified: 9. 9. 2005
+Last modified: 17. 2. 2007
 
 Cross-browser tooltips working even in Opera 5 and 6,
-as well as in NN 4, Gecko-Browsers, IE4+, Opera 7 and Konqueror.
+as well as in NN 4, Gecko-Browsers, IE4+, Opera 7+ and Konqueror.
 No onmouseouts required.
 Appearance of tooltips can be individually configured
 via commands within the onmouseovers.
@@ -40,7 +40,8 @@ var ttBgColor     = "#e6ecff";
 var ttBgImg       = "";           // path to background image;
 var ttBorderColor = "#003399";
 var ttBorderWidth = 1;
-var ttDelay       = 200;          // time span until tooltip shows up [milliseconds]
+var ttClickClose  = false;
+var ttDelay       = 500;          // time span until tooltip shows up [milliseconds]
 var ttFontColor   = "#000066";
 var ttFontFace    = "arial,helvetica,sans-serif";
 var ttFontSize    = "11px";
@@ -64,14 +65,14 @@ var ttWidth       = 300;
 
 //////////////  TAGS WITH TOOLTIP FUNCTIONALITY  ////////////////////
 // List may be extended or shortened:
-var tt_tags = new Array("a","area","b","big","caption","center","code","dd","div","dl","dt","em","h1","h2","h3","h4","h5","h6","i","img","input","li","map","ol","p","pre","s","small","span","strike","strong","sub","sup","table","td","th","tr","tt","u","var","ul","layer");
+var tt_tags = new Array("a","area","b","big","caption","center","code","dd","div","dl","dt","em","h1","h2","h3","h4","h5","h6","i","img","input","li","map","ol","p","pre","s", "select", "small","span","strike","strong","sub","sup","table","td","textarea","th","tr","tt","u","var","ul","layer");
 /////////////////////////////////////////////////////////////////////
 
 
 
 ///////// DON'T CHANGE ANYTHING BELOW THIS LINE /////////////////////
-var tt_obj,                // current tooltip
-tt_ifrm,                   // iframe to cover windowed controls in IE
+var tt_obj = null,         // current tooltip
+tt_ifrm = null,            // iframe to cover windowed controls in IE
 tt_objW = 0, tt_objH = 0,  // width and height of tt_obj
 tt_objX = 0, tt_objY = 0,
 tt_offX = 0, tt_offY = 0,
@@ -82,7 +83,7 @@ tt_wait = false,
 tt_act = false,            // tooltip visibility flag
 tt_sub = false,            // true while tooltip below mousepointer
 tt_u = "undefined",
-tt_mf,                     // stores previous mousemove evthandler
+tt_mf = null,              // stores previous mousemove evthandler
 // Opera: disable href when hovering <a>
 tt_tag = null;             // stores hovered dom node, href and previous statusbar txt
 
@@ -95,10 +96,12 @@ var tt_op = !!(window.opera && document.getElementById),
 tt_op6 = tt_op && !document.defaultView,
 tt_op7 = tt_op && !tt_op6,
 tt_ie = tt_n.indexOf("msie") != -1 && document.all && tt_db && !tt_op,
-tt_ie6 = tt_ie && parseFloat(tt_nv.substring(tt_nv.indexOf("MSIE")+5)) >= 5.5;
+tt_ie7 = tt_ie && typeof document.body.style.maxHeight != tt_u,
+tt_ie6 = tt_ie && !tt_ie7 && parseFloat(tt_nv.substring(tt_nv.indexOf("MSIE")+5)) >= 5.5,
 tt_n4 = (document.layers && typeof document.classes != tt_u),
 tt_n6 = (!tt_op && document.defaultView && typeof document.defaultView.getComputedStyle != tt_u),
-tt_w3c = !tt_ie && !tt_n6 && !tt_op && document.getElementById;
+tt_w3c = !tt_ie && !tt_n6 && !tt_op && document.getElementById,
+tt_ce = document.captureEvents && !tt_n6;
 
 function tt_Int(t_x)
 {
@@ -147,7 +150,7 @@ function tt_Htm(tt, t_id, txt)
 	t_w       = (typeof tt.T_WIDTH != tt_u)? tt.T_WIDTH  : ttWidth;
 	if(t_shc || t_shw)
 	{
-		t_shc = t_shc || "#cccccc";
+		t_shc = t_shc || "#c0c0c0";
 		t_shw = t_shw || 5;
 	}
 	if(tt_n4 && (t_fsz == "10px" || t_fsz == "11px")) t_fsz = "12px";
@@ -160,7 +163,7 @@ function tt_Htm(tt, t_id, txt)
 	{
 		t_y += '<tr><td style="padding-left:3px;padding-right:3px;" align="'+t_algn+'"><font color="'+t_titc+'" face="'+t_ff+'" ' +
 			'style="color:'+t_titc+';font-family:'+t_ff+';font-size:'+t_fsz+';"><b>' +
-			(tt_n4? '&nbsp;' : '')+t_tit+'<\/b><\/font><\/td><\/tr>';
+			(tt_n4? '&nbsp;' : '')+t_tit+'</b></font></td></tr>';
 	}
 	t_y += '<tr><td><table border="0" cellpadding="'+t_padd+'" cellspacing="'+t_bw+'" width="100%">' +
 		'<tr><td'+(t_bgc? (' bgcolor="'+t_bgc+'"') : '')+(t_bgimg? ' background="'+t_bgimg+'"' : '')+' style="text-align:'+t_algn+';';
@@ -169,25 +172,24 @@ function tt_Htm(tt, t_id, txt)
 		' style="color:'+t_fc+';font-family:'+t_ff+';font-size:'+t_fsz+';font-weight:'+t_fwght+';">';
 	if(t_fwght == 'bold') t_y += '<b>';
 	t_y += txt;
-	if(t_fwght == 'bold') t_y += '<\/b>';
-	t_y += '<\/font><\/td><\/tr><\/table><\/td><\/tr><\/table>';
+	if(t_fwght == 'bold') t_y += '</b>';
+	t_y += '</font></td></tr></table></td></tr></table>';
 	if(t_shw)
 	{
 		var t_spct = Math.round(t_shw*1.3);
 		if(tt_n4)
 		{
-			t_y += '<layer bgcolor="'+t_shc+'" left="'+t_w+'" top="'+t_spct+'" width="'+t_shw+'" height="0"><\/layer>' +
-				'<layer bgcolor="'+t_shc+'" left="'+t_spct+'" align="bottom" width="'+(t_w-t_spct)+'" height="'+t_shw+'"><\/layer>';
+			t_y += '<layer bgcolor="'+t_shc+'" left="'+t_w+'" top="'+t_spct+'" width="'+t_shw+'" height="0"></layer>' +
+				'<layer bgcolor="'+t_shc+'" left="'+t_spct+'" align="bottom" width="'+(t_w-t_spct)+'" height="'+t_shw+'"></layer>';
 		}
 		else
 		{
 			t_optx = tt_n6? '-moz-opacity:0.85;' : tt_ie? 'filter:Alpha(opacity=85);' : 'opacity:0.85;';
-			t_y += '<div id="'+t_id+'R" style="position:absolute;background:'+t_shc+';left:'+t_w+'px;top:'+t_spct+'px;width:'+t_shw+'px;height:1px;overflow:hidden;'+t_optx+'"><\/div>' +
-				'<div style="position:relative;background:'+t_shc+';left:'+t_spct+'px;top:0px;width:'+(t_w-t_spct)+'px;height:'+t_shw+'px;overflow:hidden;'+t_optx+'"><\/div>';
+			t_y += '<div id="'+t_id+'R" style="position:absolute;background:'+t_shc+';left:'+t_w+'px;top:'+t_spct+'px;width:'+t_shw+'px;height:1px;overflow:hidden;'+t_optx+'"></div>' +
+				'<div style="position:relative;background:'+t_shc+';left:'+t_spct+'px;top:0px;width:'+(t_w-t_spct)+'px;height:'+t_shw+'px;overflow:hidden;'+t_optx+'"></div>';
 		}
 	}
-	return(t_y+'<\/div>' +
-		(tt_ie6 ? '<iframe id="TTiEiFrM" src="javascript:false" scrolling="no" frameborder="0" style="filter:Alpha(opacity=0);position:absolute;top:0px;left:0px;display:none;"><\/iframe>' : ''));
+	return(t_y+'</div>');
 }
 function tt_EvX(t_e)
 {
@@ -201,9 +203,12 @@ function tt_EvX(t_e)
 }
 function tt_EvY(t_e)
 {
+	var t_y2;
+
 	var t_y = tt_Int(t_e.pageY || t_e.clientY || 0) +
 		tt_Int(tt_ie? tt_db.scrollTop : 0);
-	if(tt_sup) t_y -= (tt_objH + tt_offY - 15);
+	if(tt_sup && (t_y2 = t_y - (tt_objH + tt_offY - 15)) >= tt_Int(window.pageYOffset || (tt_db? tt_db.scrollTop : 0) || 0))
+		t_y -= (tt_objH + tt_offY - 15);
 	else if(t_y > ylim || !tt_sub && t_y > ylim-24)
 	{
 		t_y -= (tt_objH + 5);
@@ -220,20 +225,17 @@ function tt_ReleasMov()
 {
 	if(document.onmousemove == tt_Move)
 	{
-		if(!tt_mf && document.releaseEvents) document.releaseEvents(Event.MOUSEMOVE);
+		if(!tt_mf && tt_ce) document.releaseEvents(Event.MOUSEMOVE);
 		document.onmousemove = tt_mf;
 	}
 }
 function tt_ShowIfrm(t_x)
 {
-	if(!tt_ie6 || !tt_obj) return;
-	tt_ifrm = document.getElementById("TTiEiFrM");
-	//tt_obj.style.display = t_x? "block" : "none";
+	if(!tt_obj || !tt_ifrm) return;
 	if(t_x)
 	{
 		tt_ifrm.style.width = tt_objW+'px';
 		tt_ifrm.style.height = tt_objH+'px';
-		tt_ifrm.style.zIndex = tt_obj.style.zIndex - 1;
 		tt_ifrm.style.display = "block";
 	}
 	else tt_ifrm.style.display = "none";
@@ -250,14 +252,14 @@ function tt_GetDivW()
 {
 	return tt_Int(
 		tt_n4? tt_obj.clip.width
-		: (tt_obj.style.pixelWidth || tt_obj.offsetWidth)
+		: (tt_obj.offsetWidth || tt_obj.style.pixelWidth)
 	);
 }
 function tt_GetDivH()
 {
 	return tt_Int(
 		tt_n4? tt_obj.clip.height
-		: (tt_obj.style.pixelHeight || tt_obj.offsetHeight)
+		: (tt_obj.offsetHeight || tt_obj.style.pixelHeight)
 	);
 }
 
@@ -265,8 +267,12 @@ function tt_GetDivH()
 function tt_SetDivZ()
 {
 	var t_i = tt_obj.style || tt_obj;
-	if(window.dd && dd.z)
-		t_i.zIndex = Math.max(dd.z+1, t_i.zIndex);
+	if(t_i)
+	{
+		if(window.dd && dd.z)
+			t_i.zIndex = Math.max(dd.z+1, t_i.zIndex);
+		if(tt_ifrm) tt_ifrm.style.zIndex = t_i.zIndex-1;
+	}
 }
 function tt_SetDivPos(t_x, t_y)
 {
@@ -274,7 +280,8 @@ function tt_SetDivPos(t_x, t_y)
 	var t_px = (tt_op6 || tt_n4)? '' : 'px';
 	t_i.left = (tt_objX = t_x) + t_px;
 	t_i.top = (tt_objY = t_y) + t_px;
-	if(tt_ifrm)
+	//  window... to circumvent the FireFox Alzheimer Bug
+	if(window.tt_ifrm)
 	{
 		tt_ifrm.style.left = t_i.left;
 		tt_ifrm.style.top = t_i.top;
@@ -282,33 +289,47 @@ function tt_SetDivPos(t_x, t_y)
 }
 function tt_ShowDiv(t_x)
 {
+	tt_ShowIfrm(t_x);
 	if(tt_n4) tt_obj.visibility = t_x? 'show' : 'hide';
 	else tt_obj.style.visibility = t_x? 'visible' : 'hidden';
 	tt_act = t_x;
-	tt_ShowIfrm(t_x);
+}
+function tt_DeAlt(t_tag)
+{
+	if(t_tag)
+	{
+		if(t_tag.alt) t_tag.alt = "";
+		if(t_tag.title) t_tag.title = "";
+		var t_c = t_tag.children || t_tag.childNodes || null;
+		if(t_c)
+		{
+			for(var t_i = t_c.length; t_i; )
+				tt_DeAlt(t_c[--t_i]);
+		}
+	}
 }
 function tt_OpDeHref(t_e)
 {
-		var t_tag;
+	var t_tag;
 	if(t_e)
+	{
+		t_tag = t_e.target;
+		while(t_tag)
 		{
-				t_tag = t_e.target;
-				while(t_tag)
-				{
-						if(t_tag.hasAttribute("href"))
-					{
-						tt_tag = t_tag
-						tt_tag.t_href = tt_tag.getAttribute("href");
-						tt_tag.removeAttribute("href");
-						tt_tag.style.cursor = "hand";
-						tt_tag.onmousedown = tt_OpReHref;
-						tt_tag.stats = window.status;
-						window.status = tt_tag.t_href;
-						break;
-					}
-					t_tag = t_tag.parentElement;
-				}
+			if(t_tag.hasAttribute("href"))
+			{
+				tt_tag = t_tag
+				tt_tag.t_href = tt_tag.getAttribute("href");
+				tt_tag.removeAttribute("href");
+				tt_tag.style.cursor = "hand";
+				tt_tag.onmousedown = tt_OpReHref;
+				tt_tag.stats = window.status;
+				window.status = tt_tag.t_href;
+				break;
+			}
+			t_tag = t_tag.parentElement;
 		}
+	}
 }
 function tt_OpReHref()
 {
@@ -319,13 +340,12 @@ function tt_OpReHref()
 		tt_tag = null;
 	}
 }
-function tt_Show(t_e, t_id, t_sup, t_delay, t_fix, t_left, t_offx, t_offy, t_static, t_sticky, t_temp)
+function tt_Show(t_e, t_id, t_sup, t_clk, t_delay, t_fix, t_left, t_offx, t_offy, t_static, t_sticky, t_temp)
 {
 	if(tt_obj) tt_Hide();
 	tt_mf = document.onmousemove || null;
 	if(window.dd && (window.DRAG && tt_mf == DRAG || window.RESIZE && tt_mf == RESIZE)) return;
-	var t_uf = document.onmouseup || null, t_sh, t_h;
-	if(tt_mf && t_uf) t_uf(t_e);
+	var t_sh, t_h;
 
 	tt_obj = tt_GetDiv(t_id);
 	if(tt_obj)
@@ -372,9 +392,9 @@ function tt_Show(t_e, t_id, t_sup, t_delay, t_fix, t_left, t_offx, t_offy, t_sta
 		var t_txt = 'tt_ShowDiv(\'true\');';
 		if(t_sticky) t_txt += '{'+
 				'tt_ReleasMov();'+
-				'window.tt_upFunc = document.onmouseup || null;'+
-				'if(document.captureEvents) document.captureEvents(Event.MOUSEUP);'+
-				'document.onmouseup = new Function("window.setTimeout(\'tt_Hide();\', 10);");'+
+				(t_clk? ('window.tt_upFunc = document.onmouseup || null;'+
+				'if(tt_ce) document.captureEvents(Event.MOUSEUP);'+
+				'document.onmouseup = new Function("window.setTimeout(\'tt_Hide();\', 10);");') : '')+
 			'}';
 		else if(t_static) t_txt += 'tt_ReleasMov();';
 		if(t_temp > 0) t_txt += 'window.tt_rtm = window.setTimeout(\'tt_sticky = false; tt_Hide();\','+t_temp+');';
@@ -382,7 +402,7 @@ function tt_Show(t_e, t_id, t_sup, t_delay, t_fix, t_left, t_offx, t_offy, t_sta
 
 		if(!t_fix)
 		{
-			if(document.captureEvents) document.captureEvents(Event.MOUSEMOVE);
+			if(tt_ce) document.captureEvents(Event.MOUSEMOVE);
 			document.onmousemove = tt_Move;
 		}
 	}
@@ -399,7 +419,7 @@ function tt_Move(t_ev)
 	}
 	var t_e = t_ev || window.event;
 	tt_SetDivPos(tt_EvX(t_e), tt_EvY(t_e));
-	if(tt_op6)
+	if(window.tt_op6)
 	{
 		if(tt_area && t_e.target.tagName != 'AREA') tt_Hide();
 		else if(t_e.target.tagName == 'AREA') tt_area = true;
@@ -428,20 +448,21 @@ function tt_Init()
 {
 	if(!(tt_op || tt_n4 || tt_n6 || tt_ie || tt_w3c)) return;
 
-	var htm = tt_n4? '<div style="position:absolute;"><\/div>' : '',
+	var htm = tt_n4? '<div style="position:absolute;"></div>' : '',
 	tags,
 	t_tj,
 	over,
+	t_b,
 	esc = 'return escape(';
-	var i = tt_tags.length; while(i--)
-	{
+	for(var i = tt_tags.length; i;)
+	{--i;
 		tags = tt_ie? (document.all.tags(tt_tags[i]) || 1)
 			: document.getElementsByTagName? (document.getElementsByTagName(tt_tags[i]) || 1)
 			: (!tt_n4 && tt_tags[i]=="a")? document.links
 			: 1;
 		if(tt_n4 && (tt_tags[i] == "a" || tt_tags[i] == "layer")) tags = tt_N4Tags(tt_tags[i]);
-		var j = tags.length; while(j--)
-		{
+		for(var j = tags.length; j;)
+		{--j;
 			if(typeof (t_tj = tags[j]).onmouseover == "function" && t_tj.onmouseover.toString().indexOf(esc) != -1 && !tt_n6 || tt_n6 && (over = t_tj.getAttribute("onmouseover")) && over.indexOf(esc) != -1)
 			{
 				if(over) t_tj.onmouseover = new Function(over);
@@ -451,11 +472,12 @@ function tt_Init()
 					"tOoLtIp"+i+""+j,
 					txt.wzReplace("& ","&")
 				);
-
+				// window. to circumvent the FF Alzheimer Bug
 				t_tj.onmouseover = new Function('e',
-					'tt_Show(e,'+
+					'if(window.tt_Show && tt_Show) tt_Show(e,'+
 					'"tOoLtIp' +i+''+j+ '",'+
 					((typeof t_tj.T_ABOVE != tt_u)? t_tj.T_ABOVE : ttAbove)+','+
+					((typeof t_tj.T_CLICKCLOSE != tt_u)? t_tj.T_CLICKCLOSE : ttClickClose)+','+
 					((typeof t_tj.T_DELAY != tt_u)? t_tj.T_DELAY : ttDelay)+','+
 					((typeof t_tj.T_FIX != tt_u)? '"'+t_tj.T_FIX+'"' : '""')+','+
 					((typeof t_tj.T_LEFT != tt_u)? t_tj.T_LEFT : ttLeft)+','+
@@ -467,11 +489,21 @@ function tt_Init()
 					');'
 				);
 				t_tj.onmouseout = tt_Hide;
-				if(t_tj.alt) t_tj.alt = "";
-				if(t_tj.title) t_tj.title = "";
+				tt_DeAlt(t_tj);
 			}
 		}
 	}
-	document.write(htm);
+	if(tt_ie6) htm += '<iframe id="TTiEiFrM" src="javascript:false" scrolling="no" frameborder="0" style="filter:Alpha(opacity=0);position:absolute;top:0px;left:0px;display:none;"></iframe>';
+	t_b = document.getElementsByTagName? document.getElementsByTagName("body")[0] : tt_db;
+	if(t_b && t_b.insertAdjacentHTML) t_b.insertAdjacentHTML("AfterBegin", htm);
+	else if(t_b && typeof t_b.innerHTML != tt_u && document.createElement && t_b.appendChild)
+	{
+		var t_el = document.createElement("div");
+		t_b.appendChild(t_el);
+		t_el.innerHTML = htm;
+	}
+	else
+		document.write(htm);
+	if(document.getElementById) tt_ifrm = document.getElementById("TTiEiFrM");
 }
 tt_Init();
