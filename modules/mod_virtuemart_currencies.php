@@ -48,9 +48,9 @@ $sess = new ps_session;
 	<?php
 	if( !empty( $_POST )) {
 		foreach( $_POST as $key => $val ) {
-			if( $key == 'product_currency' ) continue;
-			if( $val ) $var = htmlspecialchars($val);
-			echo "<input type=\"hidden\" name=\"$key\" value=\"$var\" />\n";
+			if( $key == 'product_currency' || is_array($val) ) continue;
+			$val = htmlspecialchars($val);
+			echo "<input type=\"hidden\" name=\"$key\" value=\"$val\" />\n";
 		}
 	}
 	elseif( !empty( $_GET )) {
