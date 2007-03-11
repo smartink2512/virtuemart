@@ -271,14 +271,14 @@ class vmToolBar {
 	}
 	
 	function appendButton( $text, $action_name, $click_action ) {
-		$this->buttons .=  "vmTb.addButton({text: '$text', className: 'vmicon-16-$action_name vmbutton', click: new Function('".addslashes($click_action)."')});\n";
+		$this->buttons .=  "vmTb.addButton({text: '$text', cls: 'vmicon-16-$action_name vmbutton', handler: new Function('".addslashes($click_action)."')});\n";
 	}
 	function render() {
-		vmCommonHTML::loadYUIEXT();
+		vmCommonHTML::loadExtjs();
 		if( $this->buttons != '' ) {
-			$this->buttons = "var vmTb = new YAHOO.ext.Toolbar('vm-toolbar');\n"
+			$this->buttons = "var vmTb = new Ext.Toolbar('vm-toolbar');\n"
 							. $this->buttons
-							. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '{$GLOBALS['VM_LANG']->_BACK}', className: 'vmicon-16-back vmbutton', click: new Function('history.back();') }); }";
+							. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '{$GLOBALS['VM_LANG']->_BACK}', cls: 'vmicon-16-back vmbutton', handler: new Function('history.back();') }); }";
 		}
 		echo vmCommonHTML::scriptTag('', $this->buttons );
 	}

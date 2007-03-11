@@ -357,7 +357,7 @@ class mShopTabs {
 	* @param int show_js, if set to 1 the Javascript Link and Stylesheet will not be printed
 	*/
 	function mShopTabs($useCookies, $show_js, $panel_id) {		
-		vmCommonHTML::loadYUIEXT();
+		vmCommonHTML::loadExtjs();
         $this->useCookies = $useCookies;
         $this->panel_id = $panel_id;
         $this->tabs = array();
@@ -377,7 +377,7 @@ class mShopTabs {
 	*/
 	function endPane() {
 		echo "</div>";
-		$scripttag = "var tabs_{$this->panel_id} = new YAHOO.ext.TabPanel('{$this->pane_id}');\n";
+		$scripttag = "var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
 		foreach ( $this->tabs as $id => $title ) {
 			$scripttag .= "tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
 		}
@@ -942,14 +942,16 @@ class vmCommonHTML extends mosHTML {
 			define ( "_YUI_LOADED", "1" );
 		}
 	}
-	function loadYUIEXT() {
+	function loadExtjs() {
 		global $mosConfig_live_site, $vm_mainframe;
 		vmCommonHTML::loadYUI();
-		if( !defined( "_YUIEXT_LOADED" )) {
+		if( !defined( "_EXTJS_LOADED" )) {
 			
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/yui/ext/yui-ext.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/yui/ext/yui-ext.css' );
-			define ( "_YUIEXT_LOADED", "1" );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/ext-yui-adapter.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/ext-all.js' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/css/ext-all.css' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/css/ytheme-gray.css' );
+			define ( "_EXTJS_LOADED", "1" );
 		}
 	}
 	/**
