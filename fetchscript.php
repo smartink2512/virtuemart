@@ -115,7 +115,7 @@ function cssUrl( $ref, $subdir ) {
 	if( $subdir[0] == '/' ) {
 		$subdir = substr( $subdir, 1 );
 	}
-	return 'url( "'. $subdir.'/'.str_replace( '../', '', $ref ).'" )';
+	return 'url( "'. $subdir.'/'.$ref.'" )';
 }
 
 initGzip();
@@ -172,7 +172,7 @@ for( $i = 0; $i < sizeof($files); $i++ ) {
 // Tell the user agent to cache this script/stylesheet for an hour
 $age = 3600;
 header( 'Expires: '.gmdate( 'D, d M Y H:i:s', time()+ $age ) . ' GMT' );
-header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $file ) ) . ' GMT' );
+header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', @filemtime( $file ) ) . ' GMT' );
 header( 'Cache-Control: max-age='.$age.', must-revalidate' );
 
 doGzip();

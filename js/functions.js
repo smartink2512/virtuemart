@@ -128,8 +128,8 @@ function addSimplePanel( title, link ) {
 		if( vmLayout.layout.showPanel( panelArr[myId] ) ) {
 			return false;
 		}
-		var iframe = YAHOO.ext.DomHelper.append(document.body, {tag: 'iframe', frameBorder: 0 });	
-		var panel = new YAHOO.ext.ContentPanel( iframe, {title: title, fitToFrame:true, closable:true });	
+		var iframe = Ext.DomHelper.append(document.body, {tag: 'iframe', frameBorder: 0 });	
+		var panel = new Ext.ContentPanel( iframe, {title: title, fitToFrame:true, closable:true });	
 		vmLayout.layout.add('center', panel);
 		iframe.src= link + '&panelId=' + panel.getId();
 		panelArr[myId] = panel.getId();
