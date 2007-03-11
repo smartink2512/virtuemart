@@ -127,12 +127,12 @@ if( $no_menu != 1 ) {
 if( $only_page != 1 && $vmLayout == 'extended') {
 	
 	echo '<iframe id="vmPage" name="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
-	vmCommonHTML::loadYUIEXT();
+	vmCommonHTML::loadExtjs();
 	echo vmCommonHTML::scriptTag('',"var vmLayout = function(){
     var layout, center;
     var classClicked = function(e){
         // find the 'a' element that was clicked
-        var a = e.findTarget(null, 'a');
+        var a = e.getTarget(null, 'a');
         if(a){
             e.preventDefault();
             
@@ -142,8 +142,8 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	};
     return {
 	    init : function(){
-	    	try{ getEl('header-box').hide(); } catch(e) {} // Hide the Admin Menu under Joomla! 1.5
-	    	var layout = new YAHOO.ext.BorderLayout(document.body, {
+	    	try{ Ext.get('header-box').hide(); } catch(e) {} // Hide the Admin Menu under Joomla! 1.5
+	    	var layout = new Ext.BorderLayout(document.body, {
 			    /*north: {
 			        split:true,
 			        initialSize: 75,
@@ -177,7 +177,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			    }
 			});
 			// shorthand
-			var CP = YAHOO.ext.ContentPanel;
+			var CP = Ext.ContentPanel;
 			
 			layout.beginUpdate();
 			//layout.add('north', new CP('wrapper', 'North'));
@@ -187,7 +187,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			layout.getRegion('center').showPanel('center');
 			layout.endUpdate();
 
-            var vmMenu = getEl('masterdiv2');
+            var vmMenu = Ext.get('masterdiv2');
             vmMenu.mon('click', classClicked);
             if( getURLParam('page') != '' ) {
             	page = '$mosConfig_live_site/administrator/index3.php?option=com_virtuemart&page=' + getURLParam('page');
@@ -203,11 +203,11 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 
         	php_self = page.replace(/index2.php/, 'index3.php');
         	php_self = php_self.replace(/index.php/, 'index3.php');
-            getEl('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';
+            Ext.get('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';
         }
 	}
 }();
-YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
+Ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 	
 } else {
 	if( $vmLayout == 'extended' ) {
@@ -259,13 +259,15 @@ YAHOO.ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
 		if( stristr($page, '_list') && $page != 'product.file_list' ) {
 			echo vmCommonHTML::scriptTag('', 'var listItemClicked = function(e){
         // find the <a> element that was clicked
-        var a = e.findTarget(null, "a");
-        if(a && typeof a.onclick == "undefined" && a.href.indexOf("javascript:") == -1 && a.href.indexOf("func=") == -1 ) {
-            e.preventDefault();
-            parent.addSimplePanel( a.title != "" ? a.title : a.innerHTML, a.href );
-        }  
+        var a = e.getTarget(null, "a");
+        try {
+	        if(a && typeof a.onclick == "undefined" && a.href.indexOf("javascript:") == -1 && a.href.indexOf("func=") == -1 ) {
+	            e.preventDefault();
+	            parent.addSimplePanel( a.title != "" ? a.title : a.innerHTML, a.href );
+	        }  
+	     } catch(e) {}
 	};
-	getEl("vmPage").mon("click", listItemClicked );');
+	Ext.get("vmPage").mon("click", listItemClicked );');
 		}
 	} else {
 		echo '</td></tr></table>';

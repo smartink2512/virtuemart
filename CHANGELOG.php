@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+11.03.2007 soeren
+^ changed the product list price form to use nice MessageBoxes from ExtJS
+^ changed from YUI-EXT 0.33 to new ExtJS (1.0 alpha3 Rev 1, by same author)
+
 08.03.2007 soeren
 
 # Prevention for negative cart values upon using a constant value coupon (ps_coupon.php, http://virtuemart.net/index.php?option=com_smf&Itemid=71&topic=20840.msg51002#msg51002)

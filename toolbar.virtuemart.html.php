@@ -74,7 +74,7 @@ class MENU_virtuemart {
 		$editor1 = isset($editor1_array[$page]) ? $editor1_array[$page] : '';
 		$editor2 = isset($editor2_array[$page]) ? $editor2_array[$page] : '';
 		if( $no_menu ) {
-			vmCommonHTML::loadWindowsJS();
+			vmCommonHTML::loadExtjs();
 		}
 		$script .= '<script type="text/javascript">
         	function submitbutton(pressbutton) {
@@ -99,16 +99,45 @@ class MENU_virtuemart {
 			$admin = defined('_PSHOP_ADMIN') ? '/administrator' : '';
 			$script .= "
 			
-	var loadingText = 'Saving...<br /><img src=\"$mosConfig_live_site/components/com_virtuemart/js/lightbox_gw/loading.gif\" align=\"middle\" alt=\"Loading image\" /><br /><br />';
+    // define some private variables
+    var dialog, showBtn;
 
-	dlg = Dialog.alert( {url: 'index2.php', options: { postBody: Form.Methods.serialize(form), method: 'post' }}, 
-			{windowParameters: {className:'mac_os_x', title:  '{$VM_LANG->_PEAR_LOG_NOTICE}',
-								width:440, modal: true, 
-								showEffect: Element.show },
-			buttonClass: 'button',
-			id: 'alertDialog',
-			autoclose: 2000
-			});
+   // the second argument is true to indicate file upload.
+   YAHOO.util.Connect.setForm(form, true);
+   
+    var showDialog = function( content ) {
+    	Ext.MessageBox.show( { 
+            		title: '{$VM_LANG->_PEAR_LOG_NOTICE}',
+            		msg: content,
+            		autoCreate: true,
+                    width:400,
+                    height:180,
+                    modal: false,
+                    resizable: false,
+                    buttons: Ext.MessageBox.OK,
+                    shadow:true,
+                    animEl:Ext.get( 'vm-toolbar' )
+            });
+        setTimeout('Ext.MessageBox.hide()', 3000);
+    };
+    
+    // return a public interface
+    var callback = {
+    	success: function(o) {
+    		//Ext.DomHelper.insertHtml( document.body, o.responseText );
+    		showDialog( o.responseText );
+    	},
+    	failure: function(o) {
+    		Ext.DomHelper.append( document.body, { tag: 'div', id: 'vmLogResult', html: 'Save action failed: ' + o.statusText } );
+    		showDialog( o.responseText );
+    	},
+        upload : function(o){
+            //Ext.DomHelper.insertHtml( 'beforeEnd', document.body, o.responseText );
+    		showDialog( o.responseText );
+        }
+    };
+    
+   	var cObj = YAHOO.util.Connect.asyncRequest('POST', '{$_SERVER['PHP_SELF']}', callback);
 	
 			\n";
 

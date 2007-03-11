@@ -90,38 +90,34 @@ var submitbutton = function(pressbutton){
    // the second argument is true to indicate file upload.
    YAHOO.util.Connect.setForm(form, true);
    
-    var showDialog = function( content ) {        	
-        if(!dialog){ // lazy initialize the dialog and only create it once
-            dialog = new YAHOO.ext.BasicDialog('vmdidiadolog', { 
+    var showDialog = function( content ) {
+    	Ext.MessageBox.show( { 
             		title: '{$VM_LANG->_PEAR_LOG_NOTICE}',
-            		content: content,
-            		autoCreate: true, 
-                    modal:true,
+            		msg: content,
+            		autoCreate: true,
                     width:400,
                     height:180,
-                    draggable: false,
+                    modal: false,
                     resizable: false,
-                    shadow:true
+                    buttons: Ext.MessageBox.OK,
+                    shadow:true,
+                    animEl:Ext.get( 'vm-toolbar' )
             });
-            dialog.addKeyListener(27, dialog.destroy, dialog);
-            dialog.addButton('Close', new Function( 'this.hide(); this.destroy(true);'), dialog);
-        }
-        // Show the Button and animate it from the tool bar
-        dialog.show(getEl( 'vm-toolbar' ) );
+        setTimeout('Ext.MessageBox.hide()', 3000);
     };
     
     // return a public interface
     var callback = {
     	success: function(o) {
-    		//YAHOO.ext.DomHelper.insertHtml( document.body, o.responseText );
+    		//Ext.DomHelper.insertHtml( document.body, o.responseText );
     		showDialog( o.responseText );
     	},
     	failure: function(o) {
-    		YAHOO.ext.DomHelper.append( document.body, { tag: 'div', id: 'vmLogResult', html: 'Save action failed: ' + o.statusText } );
+    		Ext.DomHelper.append( document.body, { tag: 'div', id: 'vmLogResult', html: 'Save action failed: ' + o.statusText } );
     		showDialog( o.responseText );
     	},
         upload : function(o){
-            //YAHOO.ext.DomHelper.insertHtml( 'beforeEnd', document.body, o.responseText );
+            //Ext.DomHelper.insertHtml( 'beforeEnd', document.body, o.responseText );
     		showDialog( o.responseText );
         }
     };
