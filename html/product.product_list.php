@@ -40,7 +40,7 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 // uuuh, we're using modern methods.
-vmCommonHTML::loadWindowsJS(); // Having a modal window is good
+vmCommonHTML::loadExtjs(); // Having a modal window is good
 ?>
 <div align="right">
 
@@ -316,11 +316,12 @@ if ($num_rows > 0) {
 		// The product sku
 		$listObj->addCell( $db->f("product_sku") );
 		
+		// The product Price
 		$price = $ps_product->getPriceByShopperGroup( $db->f('product_id'), '');
-		$tmp_cell = '<span class="editable" onclick="getPriceForm(this);">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'];
+		$tmp_cell = '<span class="editable priceform">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'];
 		$tmp_cell .= '&nbsp;&nbsp;&nbsp;</span>';
 		
-		$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" title="'.$VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'"' );
+		$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" onclick="showPriceForm(this.id)" title="'.$VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'"' );
 		
 		// The Categories or the parent product's name
 		$tmpcell = "";
@@ -401,44 +402,91 @@ $listObj->writeFooter( $keyword,  "&product_parent_id=$product_parent_id&categor
 $path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
 ?>
 <script type="text/javascript">
-function getPriceForm(elem) {
-	new Ajax.Updater( elem.parentNode, '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+elem.parentNode.id, 
-						{
-							method: 'get' 
-						});
+var priceDlg = null;
+function showPriceForm(prodId) {
+    
+    // define some private variables
+    var showBtn;
+    
+	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getPriceForm&product_id=' + prodId;
+	callback = { success : function(o) { 
+		
+				        priceDlg = Ext.MessageBox.show({
+				           title:'<?php echo $VM_LANG->_PHPSHOP_PRICE_FORM_LBL ?>',
+				           msg: o.responseText,
+				           buttons: Ext.MessageBox.OKCANCEL,
+				           fn: handleResult
+				       });
+	}};	
+	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
 
+function handleResult( btn ) {
+	switch( btn ) {
+		case 'ok':
+			submitPriceForm( 'priceForm' );
+			break;
+		case 'cancel':
+			break;
+	}
+}
 function submitPriceForm(formId) {	
-	var loadingText = '<div align="center">Loading ...<br /><img src=\"<?php echo $mosConfig_live_site ?>/components/com_virtuemart/js/lightbox_gw/images/loading.gif\" align=\"middle\" alt=\"Loading image\" /></div>';
+    // define some private variables
+    var dialog, showBtn;
 
-	dlg = Dialog.alert( loadingText, 
-		{windowParameters: {className:"mac_os_x", 
-							width:440, modal: false,
-							showEffect: Element.show },
-		buttonClass: "button",
-		id: 'alertDialog'
-		});
-	dlg.setTitle( '<?php echo $VM_LANG->_PEAR_LOG_NOTICE ?>' );
-	dlg.setAjaxContent('<?php echo $mosConfig_live_site.$path ?>index3.php', 
-								{ 
-									postBody: Form.serializeElements(Form.Methods.getElements(formId)),
-									method: 'post', 
-									onComplete: function() { setTimeout( 'dlg.hide()', 3000 ); } 
-								} );
-	
+   // the second argument is true to indicate file upload.
+   YAHOO.util.Connect.setForm(formId, true);
+   
+    var showDialog = function( content ) {
+    	Ext.MessageBox.show( { 
+            		title: '<?php echo $VM_LANG->_PEAR_LOG_NOTICE ?>',
+            		msg: content,
+            		autoCreate: true,
+                    width:300,
+                    height:150,
+                    modal: false,
+                    resizable: false,
+                    buttons: Ext.MessageBox.OK,
+                    shadow:true,
+                    animEl:Ext.get( 'vm-toolbar' )
+            });
+        setTimeout('Ext.MessageBox.hide()', 3000);
+    };
+    
+    // return a public interface
+    var callback = {
+    	success: function(o) {
+    		//Ext.DomHelper.insertHtml( document.body, o.responseText );
+    		showDialog( o.responseText );
+    	},
+    	failure: function(o) {
+    		Ext.DomHelper.append( document.body, { tag: 'div', id: 'vmLogResult', html: 'Save action failed: ' + o.statusText } );
+    		showDialog( o.responseText );
+    	},
+        upload : function(o){
+            //Ext.DomHelper.insertHtml( 'beforeEnd', document.body, o.responseText );
+    		showDialog( o.responseText );
+        }
+    };
+    
+   	var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo $_SERVER['PHP_SELF'] ?>', callback);
 	
 }
 function cancelPriceForm(id) {
 	updatePriceField( id );
 }
 function updatePriceField( id ) {	
-	new Ajax.Updater( id, '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id, {
-		method: 'get', 
-	});
+	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id;
+	callback = { success : function(o) { Ext.get("priceform-dlg").innerHTML = o.responseText;	}};
+	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
-function reloadForm( parentId, keyName, keyValue ) {	
-	new Ajax.Updater( parentId, '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceform&product_id='+parentId+'&'+keyName+'='+keyValue, {
-		method: 'get',
-	});	
+function reloadForm( parentId, keyName, keyValue ) {
+	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getPriceForm&product_id='+parentId+'&'+keyName+'='+keyValue;
+	callback = { success : function(o) { priceDlg.updateText( o.responseText) }};
+	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
 </script>
+<?php 
+$formName = uniqid('priceForm');
+?>
+<div id="priceform-dlg"></div>

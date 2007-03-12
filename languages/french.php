@@ -1839,6 +1839,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_MESSAGE_PROMPT = 'Enter your Message';
 	var $_SEND_BUTTON = 'Send';
 	var $_THANK_MESSAGE = 'Thank you for your Enquiry. We will contact you as soon as possible.';
+	var $_RELOAD = 'Reload';
         
 }
 class phpShopLanguage extends vmLanguage { }

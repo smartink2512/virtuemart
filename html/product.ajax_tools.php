@@ -65,19 +65,17 @@ switch( $task ) {
 			$currency_code = $price['product_currency'];
 			$currency_code = $price['product_currency'];
 		}
-		$formName = uniqid('priceForm');
-		$content = '<div id="'.$formName.'">';
-		$content .= '<strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_PRICE.':</strong> <input type="text" name="product_price" value="'.$price['product_price'].'" class="inputbox" id="product_price_'.$formName.'" size="11" /><br />';
-		$content .= '<strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_GROUP.':</strong> '.$ps_shopper_group->list_shopper_groups('shopper_group_id', $shopper_group_id, '', 'onchange="reloadForm( \''.$product_id.'\', \'shopper_group_id\', this.options[this.selectedIndex].value);"' ).'<br />';
-		$content .= '<strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_CURRENCY.':</strong> '.ps_html::getCurrencyList( 'product_currency', $currency_code, 'currency_code', 'style="max-width:120px;"' ).'<br />';
+		$formName = 'priceForm';
+		$content = '<form id="'.$formName.'" method="post" name="priceForm">';
+		$content .= '<table class="adminform"><tr><td><strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_PRICE.':</strong></td><td><input type="text" name="product_price" value="'.$price['product_price'].'" class="inputbox" id="product_price_'.$formName.'" size="11" /></td></tr>';
+		$content .= '<tr><td><strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_GROUP.':</strong></td><td>'.$ps_shopper_group->list_shopper_groups('shopper_group_id', $shopper_group_id, '', 'onchange="reloadForm( \''.$product_id.'\', \'shopper_group_id\', this.options[this.selectedIndex].value);"' ).'</td></tr>';
+		$content .= '<tr><td><strong>'.$VM_LANG->_PHPSHOP_PRICE_FORM_CURRENCY.':</strong></td><td>'.ps_html::getCurrencyList( 'product_currency', $currency_code, 'currency_code', 'style="max-width:120px;"' ).'</td></tr></table>';
 		$content .= '<input type="hidden" name="product_price_id" value="'.$price['product_price_id'].'" id="product_price_id_'.$formName.'" />';
 		$content .= '<input type="hidden" name="product_id" value="'.$product_id.'" />';
 		$content .= '<input type="hidden" name="func" value="'. (empty($price['product_price_id']) ? 'productPriceAdd' : 'productPriceUpdate') . '" />';
 		$content .= '<input type="hidden" name="ajax_request" value="1" />';
 		$content .= '<input type="hidden" name="option" value="'.$option.'" />';
-		$content .= '<input type="button" id="priceFormSubmit" name="submit" value="'.$VM_LANG->_CMN_SAVE.'" onclick="submitPriceForm(\''.$formName.'\');" class="button" /> ';
-		$content .= '<input type="button" id="priceFormCancel" name="submit" value="'.$VM_LANG->_CMN_CANCEL.'" onclick="cancelPriceForm(\''.$product_id.'\');" class="button" />';
-		$content .= '</div>';
+		$content .= '</form>';
 		vmConnector::sendHeaderAndContent( 200, $content );
 		break;
 		

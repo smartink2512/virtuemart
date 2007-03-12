@@ -1227,16 +1227,17 @@ if( $product_id ) {
 					LEFT JOIN `#__users` ON `user_id` = `id`
 					WHERE `product_id`=' . $product_id );
 	if( $dbw->num_rows() > 0 ) {
-		$tabs->startTab( '<img src="'. IMAGEURL .'ps_image/queue.png" align="center" border="0" />Waiting List', 'waiting-list-tab' );
+		$tabs->startTab( "<img src='". IMAGEURL ."ps_image/queue.png' border='0' align='absmiddle' />Waiting List", 'waiting-list-tab' );
 
-		echo '<h2>Users waiting to be notified when this product is back in stock:</h2>';
-		echo '<input type="hidden" value="'.$db->f('product_in_stock').'" name="product_in_stock_old" />';
-		echo '<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /><label for="notify_users">Notify these users now (when you have updated the number of products stock)</label><br /><br />';
+		echo '<table class="adminform"><tr><td><h2>Users waiting to be notified when this product is back in stock:</h2></td></tr>';
+		echo '<tr><td><input type="hidden" value="'.$db->f('product_in_stock').'" name="product_in_stock_old" />';
+		echo '<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /><label for="notify_users">Notify these users now (when you have updated the number of products stock)</label><br /><br /></td></tr>';
+		echo '<tr><td>';
 		while( $dbw->next_record() ) {
 			$waitinglist[] = $dbw->f('name') . ' ('.$dbw->f('username') . ')';
 		}
 		echo vmCommonHTML::getList( $waitinglist );
-
+		echo '</td></tr></table>';
 		$tabs->endTab();
 	}
 }

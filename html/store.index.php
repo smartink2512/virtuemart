@@ -77,7 +77,7 @@ $tabs->startTab('Control Panel', 'control-panel');
 ?>
 
 <div class="header">
-	<h2><img src="<?php echo IMAGEURL ?>ps_image/Desktop.gif" width="48" height="48" align="absmiddle" alt="Desktop" border="0" />
+	<h2><img src="<?php echo IMAGEURL ?>ps_image/Desktop.gif" width="48" height="48" align="middle" alt="Desktop" border="0" />
 		<?php echo $VM_LANG->_PHPSHOP_YOUR_STORE."::".$VM_LANG->_PHPSHOP_CONTROL_PANEL; ?></h2>
 </div>
 <br style="clear:both;" />

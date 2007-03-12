@@ -271,14 +271,17 @@ class vmToolBar {
 	}
 	
 	function appendButton( $text, $action_name, $click_action ) {
-		$this->buttons .=  "vmTb.addButton({text: '$text', cls: 'vmicon-16-$action_name vmbutton', handler: new Function('".addslashes($click_action)."')});\n";
+		$text = '<div style="float:left;background: url('.VM_THEMEURL.'images/administration/menu/icon-16-'.$action_name.'.png) 50% 0 no-repeat;height:17px;width:17px;" border="0" alt="'.$action_name.'">&nbsp;</div>&nbsp;' . $text;
+		$this->buttons .=  "vmTb.addButton({text: '$text', handler: new Function('".addslashes($click_action)."')});\n";
 	}
 	function render() {
 		vmCommonHTML::loadExtjs();
 		if( $this->buttons != '' ) {
 			$this->buttons = "var vmTb = new Ext.Toolbar('vm-toolbar');\n"
 							. $this->buttons
-							. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '{$GLOBALS['VM_LANG']->_BACK}', cls: 'vmicon-16-back vmbutton', handler: new Function('history.back();') }); }";
+							//. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '<div style=\"float:left;background: url(".VM_THEMEURL."images/administration/menu/icon-16-back.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"{$GLOBALS['VM_LANG']->_BACK}\">&nbsp;</div>{$GLOBALS['VM_LANG']->_BACK}', handler: new Function('history.back();') }); }"
+							. "\nvmTb.addSeparator();\n vmTb.addButton({text: '<div style=\"float:left;background: url(".VM_THEMEURL."images/administration/menu/icon-16-reload.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"{$GLOBALS['VM_LANG']->_RELOAD}\">&nbsp;</div>{$GLOBALS['VM_LANG']->_RELOAD}', handler: new Function('location.reload();') });"
+							;
 		}
 		echo vmCommonHTML::scriptTag('', $this->buttons );
 	}
