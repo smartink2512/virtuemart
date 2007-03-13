@@ -197,7 +197,7 @@ class ps_product_attribute {
     * @param int $product_id
     * @return string HTML code with Items, attributes & price
     */
-	function list_attribute($product_id,$product_price) {
+	function list_attribute($product_id,$product_price,$extra_ids) {
 		//Use product_id to determine what type of child this product has, if it has none use drop
 		$db = new PS_db;
 		$q = "SELECT quantity_options,child_options,product_parent_id,child_option_ids FROM #__{vm}_product WHERE product_id='$product_id'";
@@ -244,12 +244,15 @@ class ps_product_attribute {
 		if($db->f("child_option_ids") && $product_list == "N") {
 			$product_list = "Y";
 		}
+        $child_ids = $db->f("child_option_ids");
+        if($extra_ids)
+            $child_ids .= $child_ids ? ",".$extra_ids : $extra_ids;
 		switch( $product_list ) {
 			case "Y" :
-				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$db->f("child_option_ids"),$dw,$aw,$display_header,$product_list_type,$product_list,$product_price);
+				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$child_ids,$dw,$aw,$display_header,$product_list_type,$product_list,$product_price);
 				break;
             case  "YM" :
-				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$db->f("child_option_ids"),$dw,$aw,$display_header,$product_list_type,$product_list,$product_price);
+				return $this->list_attribute_list($product_id,$display_use_parent,$product_list_child,$display_type,$class_suffix,$child_ids,$dw,$aw,$display_header,$product_list_type,$product_list,$product_price);
 				break;
 			case "N" :
 			default:
@@ -358,6 +361,101 @@ class ps_product_attribute {
 	 * @param int $product_id
 	 * @return string HTML code with Items, attributes & price
 	 */
+	function list_attribute_drop_multi($product_id,$cls_suffix) {
+
+		global $VM_LANG, $CURRENCY_DISPLAY, $mm_action_url, $sess;
+
+		require_once (CLASSPATH . 'ps_product.php' );
+		$ps_product = new ps_product;
+		$Itemid = $sess->getShopItemid();
+		$category_id = mosGetParam( $_REQUEST, 'category_id', "" );
+		$db = new ps_DB;
+		$db_sku = new ps_DB;
+		$db_item = new ps_DB;
+        $tpl = new $GLOBALS['VM_THEMECLASS']();
+        $tpl->set( "cls_suffix", $cls_suffix );
+        $tpl->set( "product_id", $product_id );
+        // Set Advanced Attributes
+        $tpl->set("advanced_attribute", $this->list_advanced_attribute($product_id, $db->f("product_id")));
+        $tpl->set("custom_attribute" , $this->list_custom_attribute($product_id, $db->f("product_id")));
+		// Get list of children
+		$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND product_publish='Y'";
+		$db->setQuery($q);
+		$db->query();
+		if( $db->num_rows() < 1 ) {
+			// Try to Get list of sisters & brothers
+			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
+			$db->setQuery($q);
+			$db->query();
+			$child_id = $product_id;
+			$product_id = $db->f("product_parent_id")!="0" ? $db->f("product_parent_id") : $product_id;
+			$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='".$db->f("product_parent_id")."' AND product_parent_id<>0 AND product_publish='Y'";
+			$db->setQuery($q);
+			$db->query();
+		}
+		if( $db->num_rows() > 0 ) {
+			$flypage = $ps_product->get_flypage( $product_id );
+            $html = "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />";
+            $html .= "<label for=\"product_id_field\">".$VM_LANG->_PHPSHOP_PLEASE_SEL_ITEM."</label>: <br />";
+			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '". $mm_action_url ."index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n";
+			$html .= "<option value=\"$product_id\">".$VM_LANG->_PHPSHOP_SELECT."</option>";
+			while ($db->next_record()) {
+				$selected = isset($child_id) ? ($db->f("product_id")==$child_id ? "selected=\"selected\"" : "") : "";
+
+				// Start row for this child
+				$html .= "<option value=\"" . $db->f("product_id") . "\" $selected>";
+				$html .= $db->f("product_name") . " - ";
+
+				// For each child get attribute values by looping through attribute list
+				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku ";
+				$q .= "WHERE product_id='$product_id' ORDER BY attribute_list ASC";
+				$db_sku->setQuery($q);  $db_sku->query();
+
+				while ($db_sku->next_record()) {
+					$q = "SELECT attribute_name, attribute_value, product_id ";
+					$q .= "FROM #__{vm}_product_attribute WHERE ";
+					$q .= "product_id='" . $db->f("product_id") . "' AND ";
+					$q .= "attribute_name='" . $db_sku->f("attribute_name") . "'";
+					$db_item->setQuery($q);  $db_item->query();
+					while ($db_item->next_record()) {
+						$html .= $db_item->f("attribute_name") . " ";
+						$html .= "(" . $db_item->f("attribute_value") . ")";
+						if( !$db_sku->is_last_record() )
+						$html .= '; ';
+					}
+				}
+				// Attributes for this item are done.
+				// Now get item price
+				if( $_SESSION['auth']['show_prices'] ) {
+					$price = $ps_product->get_price($db->f("product_id"));
+					$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
+					if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
+						$tax_rate = 1 + $ps_product->get_product_taxrate($db->f("product_id"));
+						$price['product_price'] *= $tax_rate;
+					}
+					$html .= ' - '.$CURRENCY_DISPLAY->getFullValue($price["product_price"]);
+				}
+				$html .= "</option>\n";
+			}
+			$html .= "</select>\n";
+            $tpl->set("drop_down", $html);
+		}
+		else {
+			$html = "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />\n";
+			$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"$product_id\" />\n";
+            $tpl->set("drop_down", $html);
+		}
+		$html = $tpl->fetch_cache( 'product_details/includes/addtocart_drop.tpl.php');
+		return array($html,"drop");
+	}
+
+
+	/**
+	 * Lists all child/sister products of the given product
+	 *
+	 * @param int $product_id
+	 * @return string HTML code with Items, attributes & price
+	 */
 
 	function list_attribute_list($product_id, $display_use_parent,$child_link,$display_type,$cls_sfuffix,$child_ids,$dw,$aw,$display_header,$product_list_type,$product_list,$product_price) {
 		global $VM_LANG, $CURRENCY_DISPLAY,$mm_action_url,$sess,$auth;
@@ -389,8 +487,25 @@ class ps_product_attribute {
 		else {
 			$q = "SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_publish='Y' AND product_id='$product_id'  ";
 		}
-		if($child_ids) {
-			$q .= "UNION ALL SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_publish='Y' AND  product_id IN ($child_ids)";
+        if($child_ids) {
+            $ids=explode(",",$child_ids);
+            $child_array = array();
+            $parent_array = array();
+            foreach($ids as $extra_id) {
+                if($ps_product->parent_has_children($extra_id)) {
+                    $parent_array[] = $extra_id; }
+                else {
+                    $child_array[] = $extra_id;
+                }
+            }
+            $parent_ids = implode(',',$parent_array);
+            $child_ids =  implode(',',$child_array);
+		    if($child_ids) {
+			    $q .= "UNION ALL SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_publish='Y' AND  product_id IN ($child_ids) ";
+            }
+            if($parent_ids) {
+			    $q .= "UNION ALL SELECT product_id,product_name,product_parent_id,product_sku,product_in_stock,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_publish='Y' AND  product_parent_id IN ($parent_ids)";
+            }
 		}
 		$db->setQuery($q);
 		$db->query();
@@ -400,6 +515,8 @@ class ps_product_attribute {
 		else {
 			$master_id = $db->f("product_id");
 		}
+        $main_master = $master_id;
+        $master_child_count = 0;
 		if( $db->num_rows() < 1 ) {
 			// Try to Get list of sisters & brothers
 			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
@@ -416,26 +533,19 @@ class ps_product_attribute {
         $products = array();
         $headings = array();
 	    $i = 0;
-
+        $attrib_heading = array();
 			$ci=0;
 			while ($db->next_record()) {
 				$parent_id= $db->f("product_parent_id");
-				$selected = isset($child_id) ? ($db->f("product_id")==$child_id ? "selected=\"selected\"" : "") : "";
-
 				if (($db->f("product_id") <> $curr_product) && @$child_id) {
 					continue;
 				}
 				// Start row for this child
 				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku ";
-				if($pp) {
-					$q .= "WHERE product_id='$product_id' ORDER BY attribute_list ASC";
-				}
-				else {
-					$q .= "WHERE product_id='".$db->f("product_parent_id")."' ORDER BY attribute_list ASC";
-				}
+                $q .= "WHERE product_id='".$db->f("product_parent_id")."' ORDER BY attribute_list ASC";
 				$db_sku->setQuery($q);  $db_sku->query();
 				$attrib_value = array();
-                $attrib_heading = array();
+               
 				while ($db_sku->next_record()) {
 					$q = "SELECT attribute_name,attribute_value ";
 					$q .= "FROM #__{vm}_product_attribute WHERE ";
@@ -443,14 +553,15 @@ class ps_product_attribute {
 					$q .= "attribute_name='" . $db_sku->f("attribute_name") . "'";
 					$db_item->setQuery($q);  $db_item->query();
 					while ($db_item->next_record()) {
-                    
-						$html_header =  "<span style=\"float: left;width: 20%;\" />";
-						$html_header .= " " . $db_item->f("attribute_name") . "</span />\n";
-                        $attrib_heading[] = $db_item->f("attribute_name");
+                        if($ci == 0) {
+                            $attrib_heading[] = $db_item->f("attribute_name");
+                            $tpl->set('headings', $attrib_heading);
+                        }
 						$attrib_value[] = $db_item->f("attribute_value");
 					}
 				}
-                $tpl->set('headings', $attrib_heading);
+                if($main_master == $parent_id)
+                    $master_child_count++;
                 $tpl->set('desc_width',$dw);
                 $tpl->set('attrib_width',$aw);
 				// End show Header Row
@@ -558,6 +669,8 @@ class ps_product_attribute {
 			}
             // Get template and fill
             $tpl->set( 'products', $products );
+            $master_child_count = ($master_child_count == 0) ? 1 : $master_child_count;
+            $tpl->set( 'child_count',$master_child_count);
             if($product_list == "Y") {
                 $html = $tpl->fetch_cache( 'product_details/includes/addtocart_list_single.tpl.php'); }
             else {
@@ -717,6 +830,14 @@ class ps_product_attribute {
 		}
 		$attributes_array = array();
 		$attributes = $ps_product->get_field( $product_id, 'attribute' );
+        if(!$attributes) {
+            $db = new PS_db;
+            //get parent_id and try again
+            $q="SELECT product_parent_id FROM #__{vm}_product WHERE product_id=$product_id";
+            $db->query($q);
+            $db->next_record();
+            $attributes = $ps_product->get_field( $db->f("product_parent_id"), 'attribute' );
+        }
 		// Get each of the attributes into an array
 		$product_attribute_keys = explode( ";", $attributes );
 		foreach( $product_attribute_keys as $attribute ) {
@@ -965,8 +1086,8 @@ class ps_product_attribute {
 			case "none" :
 
 				$html .= "<input type=\"text\" class=\"inputboxquantity\" size=\"4\" id=\"quantity$prod_id\" name=\"quantity[]\" value=\"".$quantity."\" />
-	            <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: url(".VM_THEMEURL."images/up_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity".$prod_id."'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;\" />
-	            <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: url(".VM_THEMEURL."images/down_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity".$prod_id."'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;return false;\" />
+	            <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: #ffffff url(".VM_THEMEURL."images/up_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity".$prod_id."'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;\" />
+	            <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: #ffffff url(".VM_THEMEURL."images/down_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity".$prod_id."'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;return false;\" />
                 ";
 				break;
 		}
