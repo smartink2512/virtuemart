@@ -197,7 +197,7 @@ class ps_product_attribute {
     * @param int $product_id
     * @return string HTML code with Items, attributes & price
     */
-	function list_attribute($product_id,$product_price,$extra_ids) {
+	function list_attribute($product_id,$product_price,$extra_ids=null) {
 		//Use product_id to determine what type of child this product has, if it has none use drop
 		$db = new PS_db;
 		$q = "SELECT quantity_options,child_options,product_parent_id,child_option_ids FROM #__{vm}_product WHERE product_id='$product_id'";
