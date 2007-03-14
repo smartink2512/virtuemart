@@ -432,27 +432,37 @@ function handleResult( btn ) {
 }
 function submitPriceForm(formId) {	
     // define some private variables
-    var dialog, showBtn;
+    var dialog, showBtn, hideTask;
 
    // the second argument is true to indicate file upload.
    YAHOO.util.Connect.setForm(formId, true);
    
-    var showDialog = function( content ) {
-    	Ext.MessageBox.show( { 
+    function showDialog( content ) {
+    	var msgbox = Ext.MessageBox.show( { 
             		title: '<?php echo $VM_LANG->_PEAR_LOG_NOTICE ?>',
             		msg: content,
             		autoCreate: true,
                     width:300,
                     height:150,
+                    fn: msgBoxClick,
                     modal: false,
                     resizable: false,
                     buttons: Ext.MessageBox.OK,
                     shadow:true,
                     animEl:Ext.get( 'vm-toolbar' )
             });
-        setTimeout('Ext.MessageBox.hide()', 3000);
+	    // This Dialog shows the result of the price update. We want it to autohide after 3000 seconds
+	    // Here we need to use "DelayedTask" because we need to cancel the autohide function if the user clicked
+	    // the dialog away
+	    hideTask = new Ext.util.DelayedTask(msgbox.hide, msgbox);
+	    hideTask.delay( 3000 );
+    }
+
+    var msgBoxClick = function(result) {
+    	if( result == 'ok' ) {
+    		hideTask.cancel();
+    	}
     };
-    
     // return a public interface
     var callback = {
     	success: function(o) {

@@ -150,6 +150,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			    west: {
 			        split:true,
 			        initialSize: 225,
+			        animate: true,
 			        minSize: 150,
 			        maxSize: 400,
 			        titlebar: true,
