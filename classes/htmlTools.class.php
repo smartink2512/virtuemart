@@ -378,8 +378,11 @@ class mShopTabs {
 	function endPane() {
 		echo "</div>";
 		$scripttag = "var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
+		$num = 0;
 		foreach ( $this->tabs as $id => $title ) {
-			$scripttag .= "tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
+			$scripttag .= "tabItem$num = tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
+			$scripttag .= "tabItem$num.setTooltip( '".addslashes(strip_tags($title))."' );\n";
+			$num++;
 		}
 		reset($this->tabs);
 		$scripttag .= "tabs_{$this->panel_id}.activate('".key($this->tabs)."');";
