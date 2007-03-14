@@ -126,23 +126,20 @@ if( $no_menu != 1 ) {
 }
 if( $only_page != 1 && $vmLayout == 'extended') {
 	
-	echo '<iframe id="vmPage" name="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
 	vmCommonHTML::loadExtjs();
 	echo vmCommonHTML::scriptTag('',"var vmLayout = function(){
     var layout, center;
-    var classClicked = function(e){
-        // find the 'a' element that was clicked
-        var a = e.getTarget(null, 'a');
-        if(a){
-            e.preventDefault();
-            
-            vmLayout.layout.showPanel('vmPage');
-            vmLayout.loadPage(a.href );
-        }  
+    var classClicked = function(e, target){            
+        vmLayout.layout.showPanel('vmPage');
+        vmLayout.loadPage(target.href );
 	};
     return {
 	    init : function(){
 	    	try{ Ext.get('header-box').hide(); } catch(e) {} // Hide the Admin Menu under Joomla! 1.5
+            
+	    	// initialize state manager, we will use cookies
+            Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+            
 	    	var layout = new Ext.BorderLayout(document.body, {
 			    /*north: {
 			        split:true,
@@ -184,11 +181,13 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			//layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
 			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'{$_SERVER['PHP_SELF']}\'>Back to Joomla! Administration</a>'}));
 			layout.add('center', new CP('vmPage', {title: 'VirtueMart Administration Panel', closable: false, fitToFrame:true, tabPosition: 'top'}));
-			layout.getRegion('center').showPanel('center');
+			
+			layout.restoreState();
 			layout.endUpdate();
 
-            var vmMenu = Ext.get('masterdiv2');
-            vmMenu.mon('click', classClicked);
+            var vmMenuLinks = Ext.get('masterdiv2');
+            vmMenuLinks.on('click', classClicked, null, {delegate: 'a', stopEvent:true});
+            
             if( getURLParam('page') != '' ) {
             	page = '$mosConfig_live_site/administrator/index3.php?option=com_virtuemart&page=' + getURLParam('page');
             }
@@ -207,8 +206,18 @@ if( $only_page != 1 && $vmLayout == 'extended') {
         }
 	}
 }();
-Ext.EventManager.onDocumentReady(vmLayout.init, vmLayout, true);");
+if(Ext.isIE) { // AAAARGH! IE will drive us all mad someday: 'Operation aborted' BLABLABLA, WHAT SORT OF ERROR HANDLING IS THAT???
+	oldonload = window.onload;
+	window.onload = (function() {
+		if( typeof oldonload == 'function' ) oldonload();
+		vmLayout.init();
+	});
+} else {
+	Ext.onReady( vmLayout.init, vmLayout, true );
+}");
 	
+	echo '<iframe id="vmPage" name="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
+
 } else {
 	if( $vmLayout == 'extended' ) {
 		echo '<div id="vm-toolbar"></div>';

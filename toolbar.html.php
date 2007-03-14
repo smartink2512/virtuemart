@@ -54,7 +54,7 @@ class TOOLBAR_virtuemart {
 		$editor1 = isset($editor1_array[$page]) ? $editor1_array[$page] : '';
 		$editor2 = isset($editor2_array[$page]) ? $editor2_array[$page] : '';
 		if( $no_menu ) {
-			vmCommonHTML::loadWindowsJS();
+			vmCommonHTML::loadExtJS();
 		}
 		$script .= '
 var submitbutton = function(pressbutton){
