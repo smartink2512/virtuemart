@@ -1,6 +1,11 @@
 #$Id$
 Revision history for PHP class FedExDC
 
+----		14.March.2007 (Greg Perkins)
+			- Changed service type names in $FE_ST
+			- Added service types for international shipping ($FE_ST_INTL)
+			- Changed the function service_type to handle domestic and international service types
+
 1.02    08/29/2005
         - Added PEAR HTTP_Request functionality.  You need PEAR HTTP_Request 
           (http://pear.php.net/manual/en/package.http.http-request.php) installed 

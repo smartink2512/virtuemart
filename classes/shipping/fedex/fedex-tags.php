@@ -74,17 +74,26 @@ class FedExTags {
     * @access   public
     */
     var $FE_ST = array (
-        '01' => 'Express Priority Overnight',
-        '03' => 'Express Economy Two Day',
-        '05' => 'Express Standard Overnight',
-        '06' => 'Express First Overnight',
-        '20' => 'Express Saver',
-        '70' => 'Freight Overnight',
-        '80' => 'Freight Two Day',
-        '83' => 'Freight Express Saver',
-        '86' => 'Freight International Priority',
-        '90' => 'Ground Home Delivery',
-        '92' => 'Ground Business Delivery'
+        '01' => 'FedEx Priority Overnight',
+        '03' => 'FedEx 2Day',
+        '05' => 'FedEx Standard Overnight',
+        '06' => 'FedEx First Overnight',
+        '20' => 'FedEx Express Saver',
+        '70' => 'FedEx 1Day Freight',
+        '80' => 'FedEx 2Day Freight',
+        '83' => 'FedEx 3Day Freight',
+        '90' => 'FedEx Home Delivery',
+        '92' => 'FedEx Ground'
+    );
+    
+    var $FE_ST_INTL = array (
+        '01' => 'FedEx International Priority',
+        '03' => 'FedEx International Economy',
+        '06' => 'FedEx International First',
+        '57' => 'FedEx Europe First',
+        '70' => 'FedEx International Priority Freight',
+        '86' => 'FedEx International Economy Freight',
+        '92' => 'FedEx International Ground'
     );
 
     /**
@@ -625,8 +634,9 @@ class FedExTags {
     * @return   string
     * @access   public
     */
-    function service_type($in) {
-        foreach ($this->FE_ST as $key => $value) {
+    function service_type($in, $domestic = true) {
+        $fe_st = $domestic ? $this->FE_ST : $this->FE_ST_INTL; 
+        foreach ($fe_st as $key => $value) {
             if ($key==$in) {
                 return $value;
             }

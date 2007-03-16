@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage shipping
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,38 +24,76 @@ define('FEDEX_IMG_DIR', '/tmp/');
 class fedex {
 
     var $classname = 'fedex';
-    
+
+	// $config_array contains all variable names for the configuration page
+    var $config_array = array (
+				'FEDEX_ACCOUNT_NUMBER'
+				,'FEDEX_METER_NUMBER'
+				,'FEDEX_URI'
+				,'FEDEX_TAX_CLASS'
+				,'FEDEX_HANDLINGFEE'
+				,'FEDEX_SERVICES'
+				,'FEDEX_SIGNATURE_OPTION'
+				,'FEDEX_SORT_ORDER'
+    	);
+
+	/** 
+	 * Echos a formatted list of shipping rates.
+	 * 
+	 * @param array $d
+	 * @return boolean
+	 */
     function list_rates( &$d ) {
 		global $vendor_country_2_code, $vendor_currency, $vmLogger;
-		global $VM_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
+		global $VM_LANG, $CURRENCY_DISPLAY;
 		$db =& new ps_DB;
 		$dbv =& new ps_DB;
 
 		$cart = $_SESSION['cart'];
-
-		/** Read current Configuration ***/
+		
+		// Read the fedex configuration file
 		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 		
-		// Include the Main FedEx class
+		// Include the main FedEx class
 		require_once( CLASSPATH . 'shipping/fedex/fedexdc.php' );
 		
-		// The meter number is needed for all services except tracking
+		// Get the meter number
 		if( FEDEX_METER_NUMBER=='') {
 			if( !$this->update_meter_number() ) {
-				$vmLogger->err( 'Error updating the Meter Number.');
+				$vmLogger->err( $VM_LANG->_VM_FEDEX_ERR_METER_NUMBER );
 				return false;
 			}
 		}
 		
+		// Get the shopper's shipping address
 		$q  = "SELECT * FROM #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 		$db->query($q);
 		$db->next_record();
 
+		// Get the vendor address
 		$q  = "SELECT * FROM #__{vm}_vendor WHERE vendor_id='".$_SESSION['ps_vendor_id']."'";
 		$dbv->query($q);
 		$dbv->next_record();
 
+		// Is this a residential delivery?
+		$residential_delivery_flag = mosGetParam($_REQUEST, 'address_type', 'residential') == 'residential' ? 'Y' : 'N';
+		
+		// Is this a domestic delivery?
+		$recipient_country = $db->f('country_2_code');
+		$domestic_delivery = ($recipient_country == 'US' || $recipient_country == 'CA') ? true : false;
+
+		// Get the weight total
+		if( $d['weight'] > 150) {
+			$d['weight'] = 150;
+		}
+		if( $d['weight'] < 1) {
+			$d['weight'] = 1;
+		}
 		$order_weight = number_format( (float)$d['weight'], 1, '.', '' );
+		
+		// Set units
+		$weight_units = (WEIGHT_UOM == 'KG') ? 'KGS' : 'LBS';
+		$dimension_units = (WEIGHT_UOM == 'KG') ? 'C' : 'I';
 		
 		// config values
 		$fed_conf = array();
@@ -64,28 +102,36 @@ class fedex {
 		$meter_number = defined('FEDEX_METER_NUMBER_TEMP') ? FEDEX_METER_NUMBER_TEMP : FEDEX_METER_NUMBER;
 		$fed = new FedExDC( FEDEX_ACCOUNT_NUMBER, $meter_number, $fed_conf );
 		
-		// rate services example
-		// You can either pass the FedEx tag value or the field name in the
-		// $FE_RE array
-		$rate_Ret = $fed->services_rate (
-		    array(
-		        'weight_units' =>	WEIGHT_UOM.'S'
-		        ,8 => 	$dbv->f('vendor_state')// Sender State
-		        ,9 => 	$dbv->f('vendor_zip')//Sender Postal Code
-		        ,117 =>	$vendor_country_2_code// Sender Country Code
+		// Set up the rate request array.
+		// You can either use the FedEx tag value or the field name in the $FE_RE array
+		$request_array = 
+			array(
+		       	'carrier_code' => ''//FDXE or FDXG or blank for both
+
+		        ,'sender_state' => 	$dbv->f('vendor_state')
+		        ,'sender_postal_code' => 	$dbv->f('vendor_zip')
+		        ,'sender_country_code' =>	$vendor_country_2_code
 		        
-		        ,16=>   $db->f('state')// Recipient State
-		        ,17=>   $db->f('zip')//Recipient Postal Code
-		        ,50=>   $db->f('country_2_code')//Recipient Country Code
-		        
-		        ,57 =>	'12'//Dimensions: Height
-		        ,58 =>	'24'//Dimensions: Width
-		        ,59 =>	'10'//Dimensions: Length
-		        ,1116 =>	'IN'// Dimensions Unit of measure
-		        ,1401 =>	$order_weight//Total Package Weight/ Shipment total weight
-		        ,1333 =>	'1'//Drop Off Type
-		    )
-		);		
+		        ,'recipient_state' =>   $db->f('state')
+		        ,'recipient_postal_code' =>   $db->f('zip')
+		        ,'recipient_country' =>   $db->f('country_2_code')
+
+				,'residential_delivery_flag' => $residential_delivery_flag
+				,'signature_option' => FEDEX_SIGNATURE_OPTION		        
+
+//		        ,'dim_units' =>	$dimension_units
+//		        ,'dim_height' =>	'12'
+//		        ,'dim_width' =>	'24'
+//		        ,'dim_length' =>	'10'
+
+		        ,'weight_units' => $weight_units
+		        ,'total_package_weight' =>	$order_weight
+
+		        ,'drop_off_type' =>	'1'
+			);
+		
+		// Get the rate quote
+		$rate_Ret = $fed->services_rate ( $request_array );		
 		
 		if ($error = $fed->getError()) {
 		    $vmLogger->err( $error );
@@ -104,7 +150,7 @@ class fedex {
 		    echo "ZONE: ".$rate_Ret[1092]."\n\n";
 		
 		    for ($i=1; $i<=$rate_Ret[1133]; $i++) {
-		        echo "SERVICE : ".$fed->service_type($rate_Ret['1274-'.$i])."\n";
+		        echo "SERVICE : ".$fed->service_type($rate_Ret['1274-'.$i], $domestic_delivery)."\n";
 		        echo "SURCHARGE : ".$rate_Ret['1417-'.$i]."\n";
 		        echo "DISCOUNT : ".$rate_Ret['1418-'.$i]."\n";
 		        echo "NET CHARGE : ".$rate_Ret['1419-'.$i]."\n";
@@ -113,38 +159,91 @@ class fedex {
 		    }
 		    echo "</pre>";
 		}
+		
+		// Set the tax rate
 		if ( $_SESSION['auth']['show_price_including_tax'] != 1 ) {
 			$taxrate = 1;
 		}
 		else {
 			$taxrate = $this->get_tax_rate() + 1;
 		}
+		
+		// Write out the shipping rates
 		$html = '';
-		// Loop through all rates
-		for ($i=1; $i<=$rate_Ret[1133]; $i++) {
-			$charge = $rate_Ret['1419-'.$i] + floatval( FEDEX_HANDLINGFEE );
-			$charge *= $taxrate;
-			$surcharge = $CURRENCY_DISPLAY->getFullValue($charge);
-			
-			$shipping_rate_id = urlencode($this->classname."|FedEx|".$fed->service_type($rate_Ret['1274-'.$i])."|".$charge);
-			
-			$checked = (@$d["shipping_rate_id"] == $shipping_rate_id) ? "checked=\"checked\"" : "";
-			
-			$html .= "\n<input type=\"radio\" id=\"$shipping_rate_id\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" />\n";
-			  
-			$_SESSION[$shipping_rate_id] = 1;
-			  
-			$html .= "<label for=\"$shipping_rate_id\">".$fed->service_type($rate_Ret['1274-'.$i])." ";
-			$html .= "<strong>(".$surcharge.")</strong>";
-			if( !empty( $rate_Ret['194-'.$i] ) && !empty($rate_Ret['409-'.$i])) {
-				$html .= ", expected delivery: ".$rate_Ret['194-'.$i].', '.$rate_Ret['409-'.$i];
-			}
+?>
+		<table width="100%">
+			<tr class="sectiontableheader">
+				<th><?php echo $VM_LANG->_VM_FEDEX_LBL_METHOD ?></th>
+				<th style="text-align:right;"><?php echo $VM_LANG->_VM_FEDEX_LBL_PRICE ?></th>
+			</tr>
 
-			$html .= "</label><br />";
+<?php
+		
+		// Get a sort order array (by cost)
+		$cost_array = array();
+		for ($i=1; $i<=$rate_Ret[1133]; $i++) {
+			$cost_array[$i] = $rate_Ret['1419-'.$i];
+		}
+		if(FEDEX_SORT_ORDER == 'ASC') {
+			asort($cost_array, SORT_NUMERIC);
+		} else {
+			arsort($cost_array, SORT_NUMERIC);
+		}
+		
+		// Determine which services we can display
+		$selected_services = explode(',', FEDEX_SERVICES);
+		if($domestic_delivery) {
+			$selected_services = preg_grep( '/^d/', $selected_services );
+			array_walk($selected_services, create_function('&$v,$k', '$v = substr($v, 1);'));
+			
+			// If this is a residential delivery, then remove the business option; otherwise, remove the home delivery option.
+			if($residential_delivery_flag == 'Y') {
+				$remove = array("92");
+				$selected_services = array_diff( $selected_services, array("92") );
+			} else{
+				$remove = array("90");
+				$selected_services = array_diff( $selected_services, array("90") );
+			}
+		} else {
+			$selected_services = preg_grep( '/^i/', $selected_services );
+			array_walk($selected_services, create_function('&$v,$k', '$v = substr($v, 1);'));
+		}
+		
+		// Display each rate
+		foreach (array_keys($cost_array) as $i) {
+			if( in_array($rate_Ret['1274-'.$i], $selected_services) ) {
+				$charge = $rate_Ret['1419-'.$i] + floatval( FEDEX_HANDLINGFEE );
+				$charge *= $taxrate;
+				$charge_display = $CURRENCY_DISPLAY->getFullValue($charge);
+				
+				$shipping_rate_id = urlencode($this->classname."|FedEx|".$fed->service_type($rate_Ret['1274-'.$i], $domestic_delivery)."|".$charge);
+				
+				$checked = (@$d["shipping_rate_id"] == $shipping_rate_id) ? "checked=\"checked\"" : "";
+				
+				$html .= "\n<tr class=\"sectiontableentry".(2-$i%2)."\">";
+				$html .= "\n<td ><input type=\"radio\" id=\"$shipping_rate_id\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" />\n";
+				  
+				$_SESSION[$shipping_rate_id] = 1;
+				  
+				$html .= "<label for=\"$shipping_rate_id\">".$fed->service_type($rate_Ret['1274-'.$i], $domestic_delivery)." ";
+	//			if( !empty( $rate_Ret['194-'.$i] ) && !empty($rate_Ret['409-'.$i])) {
+	//				$html .= ", expected delivery: ".$rate_Ret['194-'.$i].', '.$rate_Ret['409-'.$i];
+	//			}
+	
+				$html .= "</label>";
+				$html .= "\n</td>";
+				$html .= "\n<td style=\"text-align:right;\">$charge_display</td>";
+//				$html .= "\n<td style=\"text-align:right;\" width=\"40%\">&nbsp;</td>";
+				$html .= "\n</tr>";
+			}
 		}
 		echo $html;
+?>
+		</table>
+<?php
 		return true;
     }
+    
  	/**
  	 * Return the rate amount
  	 *
@@ -203,55 +302,102 @@ class fedex {
 	function show_configuration() {
 
 		global $VM_LANG;
-		/** Read current Configuration ***/
+		
+		// Include the FedExTags class
+		require_once( CLASSPATH . 'shipping/fedex/fedex-tags.php' );
+		$fedextags = new FedExTags();
+
+		// Read the fedex configuration file
 		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+
 	    ?>
-		<table class="adminform">
-		    <tr>
-		        <td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_ACCOUNT_NUMBER ?></td>
-				<td>
-		            <input type="text" name="FEDEX_ACCOUNT_NUMBER" class="inputbox" value="<?php echo FEDEX_ACCOUNT_NUMBER ?>" />
-				</td>
-				<td>
-		          &nbsp;
-		        </td>
-		    </tr>
-		    <tr>
-		        <td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_METER_NUMBER ?></td>
-				<td>
-		            <input type="text" name="FEDEX_METER_NUMBER" class="inputbox" value="<?php echo FEDEX_METER_NUMBER ?>" />
-				</td>
-				<td>
-		            <?php echo mm_ToolTip($VM_LANG->_VM_FEDEX_METER_NUMBER_TIP) ?>
-		        </td>
-		    </tr>
-		    <tr>
-		        <td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_URI ?></td>
-				<td class="labelcell">
-		            <input type="text" name="FEDEX_URI" class="inputbox" value="<?php echo FEDEX_URI ?>" size="60" />
-				</td>
-				<td>
-		            <?php echo mm_ToolTip( $VM_LANG->_VM_FEDEX_URI_TIP ) ?>
-		        </td>
-		    </tr>
-			  <tr>
-				<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></td>
-				<td>
-				  <?php
-				  require_once(CLASSPATH.'ps_tax.php');
-				  ps_tax::list_tax_value("FEDEX_TAX_CLASS", FEDEX_TAX_CLASS) ?>
-				</td>
-				<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
-			  </tr>	
-				<tr>
-				  <td colspan="3"><hr /></td>
-				</tr>
-			<tr>
-			  <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_USPS_HANDLING_FEE ?></td>
-			  <td><input class="inputbox" type="text" name="FEDEX_HANDLINGFEE" value="<?php echo FEDEX_HANDLINGFEE ?>" /></td>
-			  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP) ?></td>
-			</tr>
-		</table>
+<div style="width:80%;padding:0 10px;">
+	<table class="adminform">
+		<th colspan="3"><?php echo $VM_LANG->_VM_FEDEX_ACCOUNT_SETTINGS ?></th>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_ACCOUNT_NUMBER ?></td>
+			<td><input type="text" name="FEDEX_ACCOUNT_NUMBER" class="inputbox" value="<?php echo FEDEX_ACCOUNT_NUMBER ?>" /></td>
+			<td style="width:5%;text-align:right;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_METER_NUMBER ?></td>
+			<td><input type="text" name="FEDEX_METER_NUMBER" class="inputbox" value="<?php echo FEDEX_METER_NUMBER ?>" /></td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_VM_FEDEX_METER_NUMBER_TIP) ?></td>
+		</tr>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_URI ?></td>
+			<td><input type="text" name="FEDEX_URI" class="inputbox" value="<?php echo FEDEX_URI ?>" size="60" /></td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip( $VM_LANG->_VM_FEDEX_URI_TIP ) ?></td>
+		</tr>
+	</table>
+	
+	<p></p>
+	
+	<table class="adminform">
+		<th colspan="3"><?php echo $VM_LANG->_VM_FEDEX_TAXES_FEES ?></th>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_TAX_CLASS ?></td>
+			<td>
+			 <?php
+			 require_once(CLASSPATH.'ps_tax.php');
+			ps_tax::list_tax_value("FEDEX_TAX_CLASS", FEDEX_TAX_CLASS) ?>
+			</td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_VM_FEDEX_TAX_CLASS_TOOLTIP) ?></td>
+		</tr>	
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_HANDLING_FEE ?></td>
+			<td><input class="inputbox" type="text" name="FEDEX_HANDLINGFEE" value="<?php echo FEDEX_HANDLINGFEE ?>" /></td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_VM_FEDEX_HANDLING_FEE_TOOLTIP) ?></td>
+		</tr>
+	</table>
+	
+	<p></p>
+	
+	<table class="adminform">
+		<th colspan="3"><?php echo $VM_LANG->_VM_FEDEX_ADDITIONAL_SETTINGS ?></th>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_SERVICES ?></td>
+			<td>
+				<select class="inputbox" name="FEDEX_SERVICES[]" multiple="multiple" size="<?php echo count($fedextags->FE_ST) + count($fedextags->FE_ST_INTL); ?>">
+<?php
+		$selected_services = explode(',', FEDEX_SERVICES);
+		foreach($fedextags->FE_ST as $tag => $name) {
+			$selected = in_array('d'.$tag, $selected_services) ? 'selected="selected"' : ''; 
+			echo "<option value=\"d$tag\" $selected>$name</option>\n";
+		}
+		foreach($fedextags->FE_ST_INTL as $tag => $name) {
+			$selected = in_array('i'.$tag, $selected_services) ? 'selected="selected"' : ''; 
+			echo "\t\t\t\t\t<option value=\"i$tag\" $selected>$name</option>\n";
+		}
+?>
+				</select>
+			</td>
+			<td style="width:5%;text-align:right;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION ?></td>
+			<td>
+				<select class="inputbox" name="FEDEX_SIGNATURE_OPTION">
+					<option value="1" <?php if (FEDEX_SIGNATURE_OPTION == '1') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_1 ?></option>
+					<option value="2" <?php if (FEDEX_SIGNATURE_OPTION == '2') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_2 ?></option>
+					<option value="3" <?php if (FEDEX_SIGNATURE_OPTION == '3') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_3 ?></option>
+					<option value="4" <?php if (FEDEX_SIGNATURE_OPTION == '4') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_4 ?></option>
+				</select>
+			</td>
+			<td style="width:5%;text-align:right;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_SORT_ORDER ?></td>
+			<td>
+				<select class="inputbox" name="FEDEX_SORT_ORDER">
+					<option value="ASC" <?php if (FEDEX_SORT_ORDER == 'ASC') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SORT_ASC ?></option>
+					<option value="DESC" <?php if (FEDEX_SORT_ORDER == 'DESC') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SORT_DESC ?></option>
+				</select>
+			</td>
+			<td style="width:5%;text-align:right;">&nbsp;</td>
+		</tr>
+	</table>
+</div>
 	   <?php
   		// return false if there's no configuration
    		return true;
@@ -274,16 +420,19 @@ class fedex {
 	function write_configuration( &$d ) {
 	    global $vmLogger;
 
-		$my_config_array = array("FEDEX_ACCOUNT_NUMBER" => $d['FEDEX_ACCOUNT_NUMBER']
-		,"FEDEX_METER_NUMBER" => $d['FEDEX_METER_NUMBER']
-		,"FEDEX_URI" => $d['FEDEX_URI']
-		,"FEDEX_TAX_CLASS" => $d['FEDEX_TAX_CLASS']
-		,"FEDEX_HANDLINGFEE" => $d['FEDEX_HANDLINGFEE']
-		);
+		$my_config_array = array();
+		foreach( $this->config_array as $config_key ) {
+			$my_config_array[$config_key] = isset($d[$config_key]) ? $d[$config_key] : '';
+		}
+
 		$config = "<?php\n";
 		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
 		foreach( $my_config_array as $key => $value ) {
-			$config .= "define ('$key', '$value');\n";
+			if($key == 'FEDEX_SERVICES' && is_array($value) ) {
+				$config .= "define ('$key', '".implode(',', $value)."');\n";
+			} else {
+				$config .= "define ('$key', '$value');\n";
+			}
 		}
 
 		$config .= "?>";
@@ -308,34 +457,36 @@ class fedex {
 		$db->query( ('SELECT `contact_first_name`, `contact_last_name` FROM `#__{vm}_vendor` WHERE `vendor_id` ='.intval($_SESSION['ps_vendor_id'])));
 		$db->next_record();
 	    $aRet = $fed->subscribe(
-	    array(
-	        1 => uniqid( 'vmFed_' ), // Don't really need this but can be used for ref
-	        4003 => $db->f('contact_first_name').' '.$db->f('contact_last_name'),
-	        4008 => $vendor_address,
-	        4011 => $vendor_city,
-	        4012 => $vendor_state,
-	        4013 => $vendor_zip,
-	        4014 => $vendor_country_2_code,
-	        4015 => $vendor_phone
-	    ));
+		    array(
+		        1 => uniqid( 'vmFed_' ), // Don't really need this but can be used for ref
+		        4003 => $db->f('contact_first_name').' '.$db->f('contact_last_name'),
+		        4008 => $vendor_address,
+		        4011 => $vendor_city,
+		        4012 => $vendor_state,
+		        4013 => $vendor_zip,
+		        4014 => $vendor_country_2_code,
+		        4015 => $vendor_phone
+		    )
+		);
 	    if ($error = $fed->getError() ) {
 		    $vmLogger->err( $error );
 		    return false;
 	    }
 	    $meter_number = $aRet[498];
 
-	    $d['FEDEX_ACCOUNT_NUMBER'] = FEDEX_ACCOUNT_NUMBER;
+		foreach( $this->config_array as $config_key ) {
+			$d[$config_key] = constant($config_key);
+		}
+
 	   	$d['FEDEX_METER_NUMBER'] = $meter_number;
-		$d['FEDEX_URI'] = FEDEX_URI;
-		$d['FEDEX_TAX_CLASS'] = FEDEX_TAX_CLASS;
-		$d['FEDEX_HANDLINGFEE'] = FEDEX_HANDLINGFEE;
-		
+
 		$this->write_configuration( $d );
 		
 		define( 'FEDEX_METER_NUMBER_TEMP', $meter_number );
 		
 		return true;
 	}
+	
 }
 
 ?>

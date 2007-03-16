@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+16.03.2007 gregdev
+^ Improved the FedEx shipping module.
+
 15.03.2007 soeren
 
 # JoomFish language setting is overwritten in virtuemart.cfg.php

@@ -6,7 +6,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
-* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -1869,6 +1868,25 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $VM_ADMIN_CFG_FEED_TITLE_CATEGORIES = 'Feed Title for Categories';
 	var $_VM_FEED_SUBSCRIBE_TITLE = 'Subscribe to the Feed of the latest Products!';
 	var $_VM_FEED_SUBSCRIBE_TOCATEGORY_TITLE = 'Subscribe to the Feed of the latest Products in this Category!';
+	var $_VM_FEDEX_ACCOUNT_SETTINGS = 'FedEx Account Settings';
+	var $_VM_FEDEX_TAXES_FEES = 'Taxes and Fees';
+	var $_VM_FEDEX_ADDITIONAL_SETTINGS = 'Additional Settings';
+	var $_VM_FEDEX_TAX_CLASS = 'Tax Class';
+	var $_VM_FEDEX_TAX_CLASS_TOOLTIP = 'This tax rate will be applied to the shipping fee.';
+	var $_VM_FEDEX_HANDLING_FEE = 'Handling Fee';
+	var $_VM_FEDEX_HANDLING_FEE_TOOLTIP = 'Specify an additional handling fee, if desired.';
+	var $_VM_FEDEX_SERVICES = 'Allowed Services';
+	var $_VM_FEDEX_SIGNATURE_OPTION = 'Signature Option';
+	var $_VM_FEDEX_SIGNATURE_OPTION_1 = 'Deliver without signature';
+	var $_VM_FEDEX_SIGNATURE_OPTION_2 = 'Indirect signature';
+	var $_VM_FEDEX_SIGNATURE_OPTION_3 = 'Direct signature';
+	var $_VM_FEDEX_SIGNATURE_OPTION_4 = 'Adult signature';
+	var $_VM_FEDEX_SORT_ORDER = 'Rate Display Order';
+	var $_VM_FEDEX_SORT_ASC = 'Ascending';
+	var $_VM_FEDEX_SORT_DESC = 'Descending';
+	var $_VM_FEDEX_ERR_METER_NUMBER = 'Error updating the Meter Number.';
+	var $_VM_FEDEX_LBL_METHOD = 'Shipping Method';
+	var $_VM_FEDEX_LBL_PRICE = 'Price';
         
 }
 class phpShopLanguage extends vmLanguage { }
