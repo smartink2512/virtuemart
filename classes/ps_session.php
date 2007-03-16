@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -152,6 +152,7 @@ class ps_session {
 				
 		$sessionFile = IMAGEPATH. md5( $martID ).'.sess';
 		$session_contents = session_encode();
+		
 		if( file_exists( ADMINPATH.'install.copy.php')) {
 			require_once( ADMINPATH.'install.copy.php');
 		}
@@ -216,7 +217,7 @@ class ps_session {
 			}
 		}		
 		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
-			&& vmIsHttpsMode()
+			&& vmIsHttpsMode() && $redirected != 1
 			&& $ssl_redirect == 0 && !vmIsAdminMode()
 			&& @$_REQUEST['option']=='com_virtuemart') {
 				
@@ -228,7 +229,7 @@ class ps_session {
 				if( $this->check_Shared_SSL($ssl_domain)) {
 					$this->saveSessionAndRedirect( false );
 				}
-				mosRedirect( $this->url( URL.'index.php?'.$_SERVER['QUERY_STRING'], true, false ));
+				mosRedirect( $this->url( URL.'index.php?'.mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ));
 			}
 		}
 		
@@ -251,7 +252,7 @@ class ps_session {
 			}
 			// do nothing but redirect
 			elseif( !vmIsHttpsMode() && $redirected == 0 ) {
-				mosRedirect( $this->url(SECUREURL . "index.php?".$_SERVER['QUERY_STRING'].'&redirected=1', true, false ) );
+				mosRedirect( $this->url(SECUREURL . "index.php?".mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ) );
 			}
 		}
 		/**
@@ -274,6 +275,7 @@ class ps_session {
 					
 					// Read the contents of the session file
 					$session_data = file_get_contents( $sessionFile );
+					
 					// Delete it for security and disk space reasons
 					unlink( $sessionFile );
 					
@@ -309,9 +311,9 @@ class ps_session {
 					
 					// Prevent the martID from being displayed in the URL
 					if( !empty( $_GET['martID'] )) {
-						$query_string = substr_replace( $_SERVER['QUERY_STRING'], '', strpos( $_SERVER['QUERY_STRING'], '&martID'));
+						$query_string = substr_replace( mosGetParam($_SERVER,'QUERY_STRING'), '', strpos( mosGetParam($_SERVER,'QUERY_STRING'), '&martID'));
 						$url = vmIsHttpsMode() ? SECUREURL : URL;
-						mosRedirect( $this->url( $url . "index.php?$query_string&cartReset=N", true, false) );
+						mosRedirect( $this->url( $url . "index.php?$query_string&cartReset=N&redirected=1", true, false) );
 					}
 	
 				}

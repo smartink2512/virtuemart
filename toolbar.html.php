@@ -103,7 +103,7 @@ var submitbutton = function(pressbutton){
                     shadow:true,
                     animEl:Ext.get( 'vm-toolbar' )
             });
-        setTimeout('Ext.MessageBox.hide()', 3000);
+        ".(DEBUG ? "" : "setTimeout('Ext.MessageBox.hide()', 3000);")."
     };
     
     // return a public interface

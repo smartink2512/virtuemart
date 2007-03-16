@@ -35,6 +35,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+15.03.2007 soeren
+
+# JoomFish language setting is overwritten in virtuemart.cfg.php
+# CSV Upload not recognising correct Mime Type due to case-sensitive equality check
++ added a Feed Icon to the category name in the browse page (can be toggled on/off in theme configuration)
++ added Product Syndication system that allows to provide "Product Feeds" to customers
+	The URL for the feed is "index.php?option=com_virtuemart&page=shop.feed". A category_id
+	can be specified in the URL to filter the syndicated products by a certain category
+
+13.03.2007 soeren
+
+# Task #1187 - Virtuemart does not redirect correctly if only 1 payment option is available. (ps_checkout.php)
+# Task #1200 - checkout.thankyou shows empty page when order_total is 0 (checkout.thankyou.php)
+
 11.03.2007 soeren
 ^ changed the product list price form to use nice MessageBoxes from ExtJS
 ^ changed from YUI-EXT 0.33 to new ExtJS (1.0 alpha3 Rev 1, by same author)

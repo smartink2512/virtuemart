@@ -157,18 +157,12 @@ else {
 	$vars["total"] = $total;
 	$subtotal_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($total);
 
-    if (!empty($_POST["do_coupon"]) || ((strtolower($func) == 'cartadd' || strtolower($func) == 'cartupdate') && !empty($_SESSION['coupon_discount'])) ) {
+    if ( !empty( $_POST['do_coupon']) || ((strtolower($func) == 'cartadd' || strtolower($func) == 'cartupdate') && !empty($_SESSION['coupon_discount'])) ) {
         /* process the coupon */
+		require_once( CLASSPATH . "ps_coupon.php" );
+		$vars["total"] = $total;
+		ps_coupon::process_coupon_code( $vars );
 
-		// make sure they arent trying to run it twice
-		if (@$_SESSION['coupon_redeemed'] == true && $page != 'shop.cart') {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_COUPON_ALREADY_REDEEMED );
-		}
-		else {
-			require_once( CLASSPATH . "ps_coupon.php" );
-			$vars["total"] = $total;
-			ps_coupon::process_coupon_code( $vars );
-		}
 	}
 
 	/* HANDLE SHIPPING COSTS */
@@ -254,6 +248,7 @@ else {
 	}
 	
 	$order_total_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($order_total);
+	$basket_html = '';
 	if( $show_basket ) {
 		ob_start();
 		if( $auth["show_price_including_tax"] == 1) {
@@ -268,7 +263,7 @@ else {
 	/* Input Field for the Coupon Code */
 	if( PSHOP_COUPONS_ENABLE=='1'
 		&& !@$_SESSION['coupon_redeemed']
-		&& ($page == "shop.cart" )
+		//&& ($page == "shop.cart" )
 	) {
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
 		$basket_html .= $tpl->fetch_cache( 'common/couponField.tpl.php' );

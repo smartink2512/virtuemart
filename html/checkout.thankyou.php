@@ -40,9 +40,10 @@ $user->email = $db->f("user_email");
 
 /** Retrieve Order & Payment Info **/
 $db = new ps_DB;
-$q  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_order_payment, #__{vm}_orders ";
+$q  = "SELECT * FROM #__{vm}_order_payment, #__{vm}_orders ";
+$q .= "LEFT JOIN #__{vm}_payment_method ";
+$q .= "ON #__{vm}_payment_method.payment_method_id  = payment_method_id ";
 $q .= "WHERE #__{vm}_order_payment.order_id='$order_id' ";
-$q .= "AND #__{vm}_payment_method.payment_method_id=#__{vm}_order_payment.payment_method_id ";
 $q .= "AND #__{vm}_orders.user_id='" . $auth["user_id"] . "' ";
 $q .= "AND #__{vm}_orders.order_id='$order_id' ";
 $db->query($q);

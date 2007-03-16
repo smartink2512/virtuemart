@@ -289,7 +289,7 @@ class ps_module {
 	 * @return string
 	 */
 	function list_modules( $list_name, $module='', $multiple=false ) {
-		$db = & ps_module::get_modules();
+		$db = ps_module::get_modules();
 		$array = array();
 		while( $db->next_record() ) {
 			$array[$db->f('module_name')] = $db->f('module_name');

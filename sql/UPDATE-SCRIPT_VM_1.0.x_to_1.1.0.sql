@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `jos_vm_export` (
   `export_enabled` char(1) NOT NULL default 'N',
   `export_config` text NOT NULL,
   `iscore` tinyint(3) NOT NULL default '0',
-  PRIMARY KEY  (`export_id`),
+  PRIMARY KEY  (`export_id`)
 ) TYPE=MyISAM COMMENT='Export Modules';
 
 

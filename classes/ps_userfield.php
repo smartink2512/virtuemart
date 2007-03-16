@@ -585,7 +585,7 @@ class ps_userfield extends vmAbstractObject {
 	 * @param string $div_id_postfix The ID postfix to identify the label for the field
 	 */
 	function printJS_formValidation( $required_fields, $allfields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
-        global $VM_LANG, $page, $mainframe;
+        global $VM_LANG, $page, $mainframe, $vm_mainframe;
         
         $field_list = implode( "','", array_keys( $required_fields ) );
         $field_list = str_replace( "'email',", '', $field_list );

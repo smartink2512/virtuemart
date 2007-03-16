@@ -936,7 +936,7 @@ class ps_csv {
 		else {
 			$d['csv_file'] = $_FILES["file"]["tmp_name"];
 			// test the mime type here
-			if (!in_array($_FILES["file"]["type"], $allowed_mime_types_arr) ) {
+			if (!in_array(strtolower($_FILES["file"]["type"]), $allowed_mime_types_arr) ) {
 				$vmLogger->err( "Mime type not accepted. Type for file uploaded: ".$_FILES["file"]["type"] );
 				return False;
 			}

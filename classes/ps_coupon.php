@@ -93,7 +93,7 @@ class ps_coupon {
         );
         $coupon_db->buildQuery( 'INSERT', '#__{vm}_coupons', $fields );
         if( $coupon_db->query() ) {
-	        $_REQUEST['coupon_id'] = $db->last_insert_id();
+	        $_REQUEST['coupon_id'] = $coupon_db->last_insert_id();
 	        $vmLogger->info('A new coupon has been added.');
 	        return true;
         }
@@ -107,7 +107,7 @@ class ps_coupon {
     /* function to update a coupon */
     function update_coupon( &$d )
     {
-      
+      	global $vmLogger;
         if( !$this->validate_update( $d ) ) {
             return false;
         }  
@@ -122,7 +122,7 @@ class ps_coupon {
         );
         $coupon_db->buildQuery( 'UPDATE', '#__{vm}_coupons', $fields, 'WHERE coupon_id = '.(int)$d['coupon_id'] );
         if( $coupon_db->query() ) {
-	        $_REQUEST['coupon_id'] = $db->last_insert_id();
+	        $_REQUEST['coupon_id'] = $coupon_db->last_insert_id();
 	        $vmLogger->info('The coupon has been updated.');
 	        return true;
         }
@@ -184,7 +184,6 @@ class ps_coupon {
         {
             /* we have a record */
             
-            
             /* see if we are calculating percent or dollar discount */
             if ($coupon_db->f("percent_or_total") == "percent")
             {
@@ -193,13 +192,20 @@ class ps_coupon {
                 
                 /* take the subtotal for calculation of the discount */
                 //$_SESSION['coupon_discount'] = round( ($subtotal * $coupon_db->f("coupon_value") / 100), 2);
-                $_SESSION['coupon_discount'] = round( ($d["total"] * $coupon_db->f("coupon_value") / 100), 2);
+                 $coupon_value = round( ($d["total"] * $coupon_db->f("coupon_value") / 100), 2);
+                 if( $d["total"] < $coupon_value ) {
+                  	$coupon_value = (float)$d['total'];
+                  	$vmLogger->info( 'The Value of the Coupon is greater than the current Order Total, so the Coupon Value was temporarily set to '.$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ) );
+                }
+                 $_SESSION['coupon_discount'] = $coupon_value;
             }
             else
             {
+            	
             	$coupon_value = $coupon_db->f("coupon_value");
+            	
                 /* Total Amount */
-                if( $d["total"] > $coupon_value ) {
+                if( $d["total"] < $coupon_value ) {
                   	$coupon_value = (float)$d['total'];
                   	$vmLogger->info( 'The Value of the Coupon is greater than the current Order Total, so the Coupon Value was temporarily set to '.$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ) );
                 }

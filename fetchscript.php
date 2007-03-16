@@ -5,13 +5,14 @@
 * It expects three parameters:
 * 
 * gzip (can be 1 or 0, for yes or no; default: 0)
-* subdir (relative directory from /components/com_virtuemart/js)
-* file (filename only)
-*
+* subdir[INDEX] (relative directory from /components/com_virtuemart/js)
+* file[INDEX] (filename only)
+* where INDEX is the actual number of the file to be included, so you can include multiple scripts at a time
+* 
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2006-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or

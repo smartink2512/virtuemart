@@ -105,7 +105,12 @@ class vmImageTools {
 				}
 				$to_file_thumb = uniqid( $filename.'_' );
 				
-				$fileout = IMAGEPATH."/product/resized/".$to_file_thumb."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
+				$fileout = IMAGEPATH."/$table_name/resized/".$to_file_thumb."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
+				
+				if( !file_exists( dirname( $fileout ))) {
+					mkdir( dirname( $fileout ));
+					$vmLogger->debug('Created Directory '.dirname( $fileout ));
+				}
 				$neu = new Img2Thumb( $full_file, PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT, $fileout, 0, 255, 255, 255 );
 				$thumbname = 'resized/'.basename( $fileout );
 				$vmLogger->debug( 'Finished creating the thumbnail '.$thumbname );

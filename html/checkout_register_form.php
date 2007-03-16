@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+global $mosConfig_allowUserRegistration, $mosConfig_useractivation;
 require_once( CLASSPATH . "ps_userfield.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
@@ -26,7 +26,7 @@ if (!empty( $missing )) {
 	echo "<script type=\"text/javascript\">alert('".$VM_LANG->_CONTACT_FORM_NC."'); </script>\n";
 }
 
-if ($GLOBALS['mosConfig_allowUserRegistration'] == "0") {
+if ($mosConfig_allowUserRegistration == "0") {
 	mosNotAuth();
 	return;
 }

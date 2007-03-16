@@ -148,8 +148,8 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_export` (
   `export_enabled` char(1) NOT NULL default 'N',
   `export_config` text NOT NULL,
   `iscore` tinyint(3) NOT NULL default '0',
-  PRIMARY KEY  (`export_id`),
-) ENGINE=MyISAM COMMENT='Export Modules';");
+  PRIMARY KEY  (`export_id`)
+) TYPE=MyISAM COMMENT='Export Modules';");
 
 # NEW States
 $db->query( "INSERT INTO `#__{vm}_state` (country_id, state_name, state_3_code, state_2_code)
