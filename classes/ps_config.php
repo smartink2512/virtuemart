@@ -129,6 +129,17 @@ class ps_config {
 			"VM_CURRENCY_CONVERTER_MODULE" => "conf__VM_CURRENCY_CONVERTER_MODULE",
 			"VM_CONTENT_PLUGINS_ENABLE" => "conf_VM_CONTENT_PLUGINS_ENABLE",
 			"VM_ENABLE_COOKIE_CHECK" => "conf_VM_ENABLE_COOKIE_CHECK",
+			'VM_FEED_ENABLED' => 'conf_VM_FEED_ENABLED',
+			'VM_FEED_CACHE' => 'conf_VM_FEED_CACHE',
+			'VM_FEED_CACHETIME' => 'conf_VM_FEED_CACHETIME',
+			'VM_FEED_TITLE' => 'conf_VM_FEED_TITLE',
+			'VM_FEED_TITLE_CATEGORIES' => 'conf_VM_FEED_TITLE_CATEGORIES',
+			'VM_FEED_SHOW_IMAGES' => 'conf_VM_FEED_SHOW_IMAGES',
+			'VM_FEED_SHOW_PRICES' => 'conf_VM_FEED_SHOW_PRICES',
+			'VM_FEED_SHOW_DESCRIPTION' => 'conf_VM_FEED_SHOW_DESCRIPTION',
+			'VM_FEED_DESCRIPTION_TYPE' => 'conf_VM_FEED_DESCRIPTION_TYPE',
+			'VM_FEED_LIMITTEXT' => 'conf_VM_FEED_LIMITTEXT',
+			'VM_FEED_MAX_TEXT_LENGTH' => 'conf_VM_FEED_MAX_TEXT_LENGTH',
 			
 			// Begin Arrays
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
@@ -156,12 +167,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 global \$mosConfig_absolute_path,\$mosConfig_live_site;
-
-if( stristr( \$_SERVER['PHP_SELF'], 'administrator' ))
-	@include_once( '../configuration.php' );
-else
-	@include_once( 'configuration.php' );
-
+if( !class_exists( 'jconfig' )) {
+	if( isset( \$GLOBALS['mosConfig_defaultLang'] ) && !isset( \$_REQUEST['mosConfig_defaultLang'] ) ) {
+		\$joomfish_lang = \$mosConfig_lang;
+	}
+	@include( dirname( __FILE__ ).'/../../../configuration.php' );
+	if( isset( \$GLOBALS['mosConfig_defaultLang'] ) && !isset( \$_REQUEST['mosConfig_defaultLang'] ) ) {
+		\$mosConfig_lang = \$joomfish_lang;
+	}
+}
 // Check for trailing slash
 if( \$mosConfig_live_site[strlen( \$mosConfig_live_site)-1] == '/' ) {
 	\$app = '';
@@ -169,7 +183,7 @@ if( \$mosConfig_live_site[strlen( \$mosConfig_live_site)-1] == '/' ) {
 else {
 	\$app = '/';
 }
-// these path and url definitions here are based on the mambo configuration
+// these path and url definitions here are based on the Joomla! Configuration
 define( 'URL', \$mosConfig_live_site.\$app );
 define( 'SECUREURL', '".$d['conf_SECUREURL']."' );
 
@@ -265,8 +279,11 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 			
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
-
-			$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			if( $_SESSION['vmLayout'] == 'extended') {
+				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			} else {
+				mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			}
 			return true;
 			
 		}

@@ -21,6 +21,10 @@
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		
 		<!-- Begin Product Listing Configuration -->
+		<param name="showFeedIcon" type="radio" default="1" label="Show the Feed Icon?" description="Show/Hide the Feed Icon Link so customers can subscribe for the Product News Syndication.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
 		<param name="showAddtocartButtonOnProductList" type="radio" default="1" label="Show the Add-to-cart Button on the product list?" description="Show/Hide the add-to-cart button on the main product listings. Customers will then be able to purchase the product from the details page only.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>

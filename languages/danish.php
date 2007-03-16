@@ -1851,6 +1851,30 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_SEND_BUTTON = 'Send';
 	var $_THANK_MESSAGE = 'Thank you for your Enquiry. We will contact you as soon as possible.';
 	var $_RELOAD = 'Reload';
+	var $_VM_ADMIN_CFG_FEED_CONFIGURATION = 'Feed Configuration';
+	var $_VM_ADMIN_CFG_FEED_ENABLE = 'Enable Product Feeds';
+	var $_VM_ADMIN_CFG_FEED_ENABLE_TIP = 'If enabled, customers can subscribe to a feed that provides the latest products (of all or of a certain category) in your store.';
+	var $_VM_ADMIN_CFG_FEED_CACHE = 'Feed Cache Settings';
+	var $_VM_ADMIN_CFG_FEED_CACHE_ENABLE = 'Enable Cache?';
+	var $_VM_ADMIN_CFG_FEED_CACHETIME = 'Cache Time (seconds)';
+	var $_VM_ADMIN_CFG_FEED_CACHE_TIP = 'Caching speeds up the feed delivery and reduces the server load, because the feed is only created once and saved to a file.';
+	var $_VM_ADMIN_CFG_FEED_SHOWPRICES = 'Include the Product Price into the description?';
+	var $_VM_ADMIN_CFG_FEED_SHOWPRICES_TIP = 'If enabled, the standard Product Price will be added to the Product Description';
+	var $_VM_ADMIN_CFG_FEED_SHOWDESC = 'Include the Product Description?';
+	var $_VM_ADMIN_CFG_FEED_SHOWDESC_TIP = 'If enabled, the Product Description will be added to the feed item';
+	var $_VM_ADMIN_CFG_FEED_SHOWIMAGES = 'Include Images into the feed?';
+	var $_VM_ADMIN_CFG_FEED_SHOWIMAGES_TIP = 'If enabled, the thumb images will be included with the feed item.';
+	var $_VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE = 'Type of Product Description';
+	var $_VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP = 'Choose the type of product description that will be included with the feed.';
+	var $_VM_ADMIN_CFG_FEED_LIMITTEXT = 'Limit the Description?';
+	var $_VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH = 'Maximum Description Length';
+	var $_VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP = 'This is the maximum length of the product description for each feed item.';
+	var $_VM_ADMIN_CFG_FEED_TITLE_TIP = 'Title of the Feed (the placeholder {storename} holds the name of your store)';
+	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP = 'Title of a Category Feed (\'{catname}\' is the placeholder for the category name, {storename} holds the name of your store)';
+	var $VM_ADMIN_CFG_FEED_TITLE = 'Feed Title';
+	var $VM_ADMIN_CFG_FEED_TITLE_CATEGORIES = 'Feed Title for Categories';
+	var $_VM_FEED_SUBSCRIBE_TITLE = 'Subscribe to the Feed of the latest Products!';
+	var $_VM_FEED_SUBSCRIBE_TOCATEGORY_TITLE = 'Subscribe to the Feed of the latest Products in this Category!';
         
 }
 class phpShopLanguage extends vmLanguage { }

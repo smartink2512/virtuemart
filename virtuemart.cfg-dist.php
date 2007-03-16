@@ -17,13 +17,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 	
 global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_secret;
-if( stristr( $_SERVER['PHP_SELF'], 'administrator' )) {
-	// Our location: /administrator/index2.php
-	include_once( '../configuration.php' );
-} 
-else {
-	// Our location: /index.php or /index2.php
-	include_once( 'configuration.php' );
+if( !class_exists( 'jconfig' )) {
+	if( isset( $GLOBALS['mosConfig_defaultLang'] ) && !isset( $_REQUEST['mosConfig_defaultLang'] ) ) {
+		$joomfish_lang = $mosConfig_lang;
+	}
+	@include( dirname( __FILE__ ).'/../../../configuration.php' );
+	if( isset( $GLOBALS['mosConfig_defaultLang'] ) && !isset( $_REQUEST['mosConfig_defaultLang'] ) ) {
+		$mosConfig_lang = $joomfish_lang;
+	}
 }
 // Check for trailing slash
 if( $mosConfig_live_site[strlen( $mosConfig_live_site)-1] == '/' ) {
@@ -121,6 +122,17 @@ define('PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS', '1');
 define('VM_CURRENCY_CONVERTER_MODULE', 'convertECB');
 define('VM_CONTENT_PLUGINS_ENABLE', '');
 define('VM_ENABLE_COOKIE_CHECK', '1');
+define('VM_FEED_ENABLED', '1');
+define('VM_FEED_CACHE', '1');
+define('VM_FEED_CACHETIME', '3600');
+define('VM_FEED_TITLE', 'Latest Products from {storename}');
+define('VM_FEED_TITLE_CATEGORIES', '{storename} - Latest Products from Category: {catname}');
+define('VM_FEED_SHOW_IMAGES', '1');
+define('VM_FEED_SHOW_PRICES', '1');
+define('VM_FEED_SHOW_DESCRIPTION', '1');
+define('VM_FEED_DESCRIPTION_TYPE', 'product_s_desc');
+define('VM_FEED_LIMITTEXT', '1');
+define('VM_FEED_MAX_TEXT_LENGTH', '250');
 
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;

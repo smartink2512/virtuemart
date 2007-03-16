@@ -1075,7 +1075,7 @@ class ps_product_category extends vmAbstractObject {
 	 * Returns the category name of the first category product $product_id is assigned
 	 *
 	 * @param int $product_id
-	 * @return string The categotry name
+	 * @return string The category name
 	 */
 	function get_name($product_id) {
 		$db = new ps_DB;
@@ -1088,6 +1088,22 @@ class ps_product_category extends vmAbstractObject {
 		$db->next_record();
 
 		return $db->f("category_name");
+	}
+	/**
+	 * Returns the category name of the category specified by $catid
+	 *
+	 * @param int $catid
+	 * @return string
+	 */
+	function get_name_by_catid($catid) {
+		$db = new ps_DB;
+
+		$q = "SELECT category_name FROM #__{vm}_category ";
+		$q .= "WHERE category_id = $catid ";
+		$db->query( $q );
+		$db->next_record();
+
+		return $db->f('category_name');
 	}
 	/**
 	* Returns the category ID of the first category

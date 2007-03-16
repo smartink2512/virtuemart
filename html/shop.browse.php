@@ -108,6 +108,7 @@ else {
 	    * PATHWAY - Navigation List
 	    */
 		$nav_list = $ps_product_category->get_navigation_list($category_id);
+		$tpl->set( 'category_id', $category_id );
 		$tpl->set( 'category_list', $nav_list );
 		$tpl->set( 'category_name', $category_name );
 		$navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');		

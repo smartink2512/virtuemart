@@ -1042,6 +1042,100 @@ foreach( $rows as $row ) {
 
 <?php
   $tabs->endTab();
+  $tabs->startTab( $spacer. $VM_LANG->_VM_ADMIN_CFG_FEED_CONFIGURATION . $spacer, "feed-page");
+  ?>
+  <table class="adminform">
+   <tr>
+        <td class="labelcell">&nbsp;</td>
+        <td>
+            <input type="checkbox" name="conf_VM_FEED_ENABLED" id="conf_VM_FEED_ENABLED" class="inputbox" <?php if (VM_FEED_ENABLED == 1) echo "checked=\"checked\""; ?> value="1" />
+            <label for="conf_VM_FEED_ENABLED"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_ENABLE ?></label>
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_ENABLE_TIP ) ?>
+        </td>
+    </tr>
+   <tr>
+        <td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_CACHE ?></td>
+        <td>
+            <input type="checkbox" name="conf_VM_FEED_CACHE" id="conf_VM_FEED_CACHE" class="inputbox" <?php if (VM_FEED_CACHE == 1) echo "checked=\"checked\""; ?> value="1" />
+            <label for="conf_VM_FEED_CACHE"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_CACHE_ENABLE ?></label><br />
+            <br />
+			<input type="text" size="10" value="<?php echo VM_FEED_CACHETIME ?>" name="conf_VM_FEED_CACHETIME" id="conf_VM_FEED_CACHETIME" />
+			<label for="conf_VM_FEED_CACHETIME"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_CACHETIME ?></label>
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_CACHE_TIP ) ?>
+        </td>
+    </tr>
+
+   <tr>
+        <td class="labelcell"><?php echo $VM_LANG->VM_ADMIN_CFG_FEED_TITLE ?></td>
+        <td>
+			<input type="text" size="40" value="<?php echo VM_FEED_TITLE ?>" name="conf_VM_FEED_TITLE" id="conf_VM_FEED_TITLE" /><br />
+			<label for="conf_VM_FEED_TITLE"><?php echo $VM_LANG->VM_ADMIN_CFG_FEED_TITLE ?></label><br />
+			<br />
+			<input type="text" size="40" value="<?php echo VM_FEED_TITLE_CATEGORIES ?>" name="conf_VM_FEED_TITLE_CATEGORIES" id="conf_VM_FEED_TITLE_CATEGORIES" /><br />
+			<label for="conf_VM_FEED_TITLE"><?php echo $VM_LANG->VM_ADMIN_CFG_FEED_TITLE_CATEGORIES ?></label><br />
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_TITLE_TIP) ?><br />
+			<br />
+			<?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP) ?>
+        </td>
+    </tr>
+   <tr>
+        <td class="labelcell">&nbsp;</td>
+        <td>
+            <input type="checkbox" name="conf_VM_FEED_SHOW_IMAGES" id="conf_VM_FEED_SHOW_IMAGES" class="inputbox" <?php if (VM_FEED_SHOW_IMAGES == 1) echo "checked=\"checked\""; ?> value="1" />
+            <label for="conf_VM_FEED_SHOW_IMAGES"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_SHOWIMAGES ?></label>
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_SHOWIMAGES_TIP ) ?>
+        </td>
+    </tr>
+   <tr>
+        <td class="labelcell">&nbsp;</td>
+        <td>
+            <input type="checkbox" name="conf_VM_FEED_SHOW_PRICES" id="conf_VM_FEED_SHOW_PRICES" class="inputbox" <?php if (VM_FEED_SHOW_PRICES == 1) echo "checked=\"checked\""; ?> value="1" />
+            <label for="conf_VM_FEED_SHOW_PRICES"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_SHOWPRICES ?></label>
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_SHOWPRICES_TIP ) ?>
+        </td>
+    </tr>
+   <tr>
+        <td class="labelcell">&nbsp;</td>
+        <td>
+            <input type="checkbox" name="conf_VM_FEED_SHOW_DESCRIPTION" id="conf_VM_FEED_SHOW_DESCRIPTION" class="inputbox" <?php if (VM_FEED_SHOW_DESCRIPTION == 1) echo "checked=\"checked\""; ?> value="1" />
+            <label for="conf_VM_FEED_SHOW_DESCRIPTION"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_SHOWDESC ?></label>
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_SHOWDESC_TIP ) ?>
+        </td>
+    </tr>
+   <tr>
+        <td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE ?></td>
+        <td>
+            <select name="conf_VM_FEED_DESCRIPTION_TYPE" id="conf_VM_FEED_DESCRIPTION_TYPE" class="inputbox">
+            	<option value="product_s_desc" <?php if (VM_FEED_DESCRIPTION_TYPE == 'product_s_desc') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_S_DESC ?></option>
+            	<option value="product_desc" <?php if (VM_FEED_DESCRIPTION_TYPE == 'product_desc') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DESCRIPTION ?></option>
+			</select>
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP ) ?>
+        </td>
+    </tr>
+   <tr>
+        <td class="labelcell">&nbsp;</td>
+        <td>
+            <input type="checkbox" name="conf_VM_FEED_LIMITTEXT" id="conf_VM_FEED_LIMITTEXT" class="inputbox" <?php if (VM_FEED_LIMITTEXT == 1) echo "checked=\"checked\""; ?> value="1" />
+            <label for="conf_VM_FEED_LIMITTEXT"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_LIMITTEXT ?></label><br />
+            <br />
+			<input type="text" size="10" value="<?php echo VM_FEED_MAX_TEXT_LENGTH ?>" name="conf_VM_FEED_MAX_TEXT_LENGTH" id="conf_VM_FEED_MAX_TEXT_LENGTH" />
+			<label for="conf_VM_FEED_MAX_TEXT_LENGTH"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH ?></label>
+        </td>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP ) ?>
+        </td>
+    </tr>
+    </table>
+  <?php
+  
+  $tabs->endTab();
+  
   $tabs->endPane();
   
 // Add necessary hidden fields

@@ -42,7 +42,7 @@ class vmConnector {
 		header("HTTP/1.0 $http_status");
 		if( $mime_type ) {
 			header( "Content-type: $mime_type; charset=".vmGetCharset() );
-		} else {
+		} elseif( $mime_type != '' ) {
 			header( "Content-type: text/html; charset=".vmGetCharset() );
 		}
 		if( $content ) {
