@@ -332,7 +332,7 @@ class ps_product_attribute {
 				}
 				// Attributes for this item are done.
 				// Now get item price
-				if( $_SESSION['auth']['show_prices'] ) {
+				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES ) {
 					$price = $ps_product->get_price($db->f("product_id"));
 					$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] );
 					if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {

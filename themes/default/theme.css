@@ -244,8 +244,6 @@ table.adminform td.labelcell {
 .vmCartContainer { /* Cart Container */
 	width: 100%;
 	float: left;
-	background: lightblue;
-	border: 1px solid #000;
 	padding: 3px;
 }
 
@@ -264,6 +262,7 @@ table.adminform td.labelcell {
 	padding-right: 2px;
 	margin-bottom: 2px;
 	float:left;	
+	width: 99%;
 }
 
 .vmChildDetail { /* Child Detail, description , attributes ,price, quantity etc */
