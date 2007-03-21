@@ -56,7 +56,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	mosRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword={$_SESSION['keyword']}&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	mosRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword=".urlencode($_SESSION['keyword'])."&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 
 if( !$perm->check("admin,storeadmin") ) {

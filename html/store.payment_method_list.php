@@ -82,7 +82,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("payment_method_id"), false, "payment_method_id" ) );
 
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.payment_method_form&limitstart=$limitstart&keyword=$keyword&payment_method_id=".$db->f("payment_method_id");
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.payment_method_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&payment_method_id=".$db->f("payment_method_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("payment_method_name")."</a>";
 	$listObj->addCell( $tmp_cell );
 	

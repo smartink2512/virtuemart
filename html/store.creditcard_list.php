@@ -72,7 +72,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("creditcard_id"), false, "creditcard_id" ) );
     
-    $tmp_cell = '<a href="'. $sess->url($_SERVER['PHP_SELF'] ."?page=store.creditcard_form&limitstart=$limitstart&keyword=$keyword&creditcard_id=".$db->f("creditcard_id")) .'">'.$db->f("creditcard_name")."</a>";
+    $tmp_cell = '<a href="'. $sess->url($_SERVER['PHP_SELF'] ."?page=store.creditcard_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&creditcard_id=".$db->f("creditcard_id")) .'">'.$db->f("creditcard_name")."</a>";
     $listObj->addCell( $tmp_cell );
 	
     $listObj->addCell( $db->f("creditcard_code"));

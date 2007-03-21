@@ -285,7 +285,7 @@ if ($num_rows > 0) {
 		// The Checkbox
 		$listObj->addCell( mosHTML::idBox( $i, $db->f("product_id"), false, "product_id" ) );
 		
-		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=$keyword&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1" );
+		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1" );
 		$link = defined('_PSHOP_ADMIN') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
 		$text = $db->f("product_name");
 
@@ -335,7 +335,7 @@ if ($num_rows > 0) {
 		}
 		else {
 			$tmpcell .= $VM_LANG->_PHPSHOP_CATEGORY_FORM_PARENT .": <a href=\"";
-			$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=$keyword&product_id=$product_parent_id";
+			$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=$product_parent_id";
 			$tmpcell .= $sess->url( $url );
 			$tmpcell .= "\">".$ps_product->get_field($product_parent_id,"product_name"). "</a>";
 		}
@@ -379,7 +379,7 @@ if ($num_rows > 0) {
 		$listObj->addCell( $tmpcell );
 
 		$tmpcell = "<a title=\"".$VM_LANG->_PHPSHOP_PRODUCT_CLONE."\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('copy_$i','','". IMAGEURL ."ps_image/copy_f2.gif',1);\" href=\"";
-		$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&clone_product=1&limitstart=$limitstart&keyword=$keyword&product_id=" . $db->f("product_id");
+		$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&clone_product=1&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id");
 		if( !empty($product_parent_id) )
 		$url .= "&product_parent_id=$product_parent_id";
 		$tmpcell .= $sess->url( $url );

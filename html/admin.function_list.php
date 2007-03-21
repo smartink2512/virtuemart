@@ -97,7 +97,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("function_id"), false, "function_id" ) );
 
-	$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']. "?page=admin.function_form&limitstart=$limitstart&keyword=$keyword&module_id=$module_id&function_id=" . $db->f("function_id")) ."\">";
+	$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']. "?page=admin.function_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&module_id=$module_id&function_id=" . $db->f("function_id")) ."\">";
     $tmp_cell .= $db->f("function_name"). "</a>";
 	$listObj->addCell( $tmp_cell );
 	

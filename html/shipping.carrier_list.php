@@ -72,7 +72,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("shipping_carrier_id"), false, "shipping_carrier_id" ) );
 
-    $url = $_SERVER['PHP_SELF'] . "?page=$modulename.carrier_form&limitstart=$limitstart&keyword=$keyword&shipping_carrier_id=". $db->f("shipping_carrier_id");
+    $url = $_SERVER['PHP_SELF'] . "?page=$modulename.carrier_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&shipping_carrier_id=". $db->f("shipping_carrier_id");
     $tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("shipping_carrier_name")."</a>";
 	$listObj->addCell( $tmp_cell );
 	

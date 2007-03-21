@@ -82,7 +82,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("state_id"), false, "state_id" ) );
 	
-	$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.country_state_form&limitstart=$limitstart&keyword=$keyword&state_id=".$db->f("state_id")."&country_id=".$country_id) ."\">";
+	$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.country_state_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&state_id=".$db->f("state_id")."&country_id=".$country_id) ."\">";
     $tmp_cell .=  $db->f("state_name") ."</a>";
 	$listObj->addCell( $tmp_cell );
 	

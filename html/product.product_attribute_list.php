@@ -68,7 +68,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, urlencode($db->f("attribute_name")), false, "attribute_name" ) );
 	
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_attribute_form&limitstart=$limitstart&keyword=$keyword&product_id=" . $product_id . "&attribute_name=" . urlencode($db->f("attribute_name")) . "&return_args=" . urlencode($return_args);
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_attribute_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $product_id . "&attribute_name=" . urlencode($db->f("attribute_name")) . "&return_args=" . urlencode($return_args);
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">$attribute_name</a>";
 	$listObj->addCell( $tmp_cell );
 	

@@ -77,7 +77,7 @@ while ($db->next_record()) {
 	if( in_array( $db->f('group_name'), $usergroup->_protected_groups ))  {
 		$tmp_cell = $db->f("group_name");
 	} else {
-		$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.usergroup_form&limitstart=$limitstart&keyword=$keyword&group_id=".$db->f("group_id")) ."\">";
+		$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.usergroup_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&group_id=".$db->f("group_id")) ."\">";
 		$tmp_cell .= $db->f("group_name") ."</a>";
 	}
 	$listObj->addCell( $tmp_cell );

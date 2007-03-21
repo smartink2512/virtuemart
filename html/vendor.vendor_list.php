@@ -88,7 +88,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("vendor_id"), false, "vendor_id" ) );
     
-	$url = $_SERVER['PHP_SELF']."?page=$modulename.vendor_form&limitstart=$limitstart&keyword=$keyword&vendor_id=". $db->f("vendor_id");
+	$url = $_SERVER['PHP_SELF']."?page=$modulename.vendor_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&vendor_id=". $db->f("vendor_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("vendor_name"). "</a>";
 	$listObj->addCell( $tmp_cell );
 	

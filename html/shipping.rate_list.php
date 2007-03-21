@@ -80,7 +80,7 @@ while ($db->next_record()) {
 	$cdb->next_record();
 	$listObj->addCell( $cdb->f("shipping_carrier_name"));
    
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.rate_form&limitstart=$limitstart&keyword=$keyword&shipping_rate_id=". $db->f("shipping_rate_id");
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.rate_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&shipping_rate_id=". $db->f("shipping_rate_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("shipping_rate_name")."</a>";
 	$listObj->addCell( $tmp_cell );
     

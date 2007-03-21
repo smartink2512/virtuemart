@@ -75,7 +75,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("currency_id"), false, "currency_id" ) );
 	
-    $tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.curr_form&limitstart=$limitstart&keyword=$keyword&currency_id=".$db->f("currency_id"))."\">";
+    $tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.curr_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&currency_id=".$db->f("currency_id"))."\">";
 	$tmp_cell .= $db->f("currency_name") ."</a>";
     $listObj->addCell( $tmp_cell );
 	

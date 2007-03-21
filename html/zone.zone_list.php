@@ -73,7 +73,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("product_id"), false, "product_id" ) );
         
-	$url = $_SERVER['PHP_SELF']."?page=$modulename.zone_form&limitstart=$limitstart&keyword=$keyword&zone_id=" . $db->f("zone_id");
+	$url = $_SERVER['PHP_SELF']."?page=$modulename.zone_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&zone_id=" . $db->f("zone_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("zone_name"). "</a>";
 	$listObj->addCell( $tmp_cell );
 	

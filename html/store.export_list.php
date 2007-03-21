@@ -75,7 +75,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("export_id"), false, "export_id" ) );
 
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.export_form&limitstart=$limitstart&keyword=$keyword&export_id=".$db->f("export_id");
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.export_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&export_id=".$db->f("export_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f('export_name')."</a>";
 	$listObj->addCell( $tmp_cell );
 

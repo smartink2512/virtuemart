@@ -21,7 +21,7 @@ global $ps_product_category;
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$categories = $ps_product_category->getCategoryTreeArray( false, $keyword );
+$categories = $ps_product_category->getCategoryTreeArray( false );
 
 // Copy the Array into an Array with auto_incrementing Indexes
 $key = array_keys($categories);
@@ -120,6 +120,12 @@ if( $pageNav->limit < $nrows )
 	}
 
 for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
+
+	if( $keyword != '' ) {
+		if( !stristr( $category_tmp[$row_list[$n]]["category_name"], $keyword )) {
+			continue;
+		}
+	}
 	$catname = shopMakeHtmlSafe( $category_tmp[$row_list[$n]]["category_name"] );
 	
 	$listObj->newRow();
@@ -157,42 +163,46 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 	$tmp_cell .= vmCommonHTML::getYesNoIcon ( $category_tmp[$row_list[$n]]["category_publish"] );
 	$tmp_cell .= "</a>";
 	$listObj->addCell( $tmp_cell );
-	
+
 	// Order Up and Down Icons
-	// This must be a big cheat, because we're working on sorted arrays,
-	// not on database information
-	// Check for predecessors and brothers and sisters
-	$upCondition = $downCondition = false;
-	if( !isset( $levels[$depth_list[$n]+1] ))
-		$levels[$depth_list[$n]+1] = 1;
-	if( $category_tmp[$row_list[$n]]["category_parent_id"] == @$category_tmp[$row_list[$n-1]]["category_parent_id"])
-		$upCondition = true;
-	if( $category_tmp[$row_list[$n]]["category_parent_id"] == @$category_tmp[$row_list[$n+1]]["category_parent_id"] )
-		$downCondition = true;
-	if( !$downCondition || !$upCondition ) {
-		
-		if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] > $levels[$depth_list[$n]+1] )
-			$downCondition = true;
-			if( $levels[$depth_list[$n]+1] > 1 )
-				$upCondition = true;
-		if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] == $levels[$depth_list[$n]+1] ) {
+	if( $keyword == '' ) {
+		// This must be a big cheat, because we're working on sorted arrays,
+		// not on database information
+		// Check for predecessors and brothers and sisters
+		$upCondition = $downCondition = false;
+		if( !isset( $levels[$depth_list[$n]+1] ))
+			$levels[$depth_list[$n]+1] = 1;
+		if( $category_tmp[$row_list[$n]]["category_parent_id"] == @$category_tmp[$row_list[$n-1]]["category_parent_id"])
 			$upCondition = true;
-			$downCondition = false;
+		if( $category_tmp[$row_list[$n]]["category_parent_id"] == @$category_tmp[$row_list[$n+1]]["category_parent_id"] )
+			$downCondition = true;
+		if( !$downCondition || !$upCondition ) {
+			
+			if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] > $levels[$depth_list[$n]+1] )
+				$downCondition = true;
+				if( $levels[$depth_list[$n]+1] > 1 )
+					$upCondition = true;
+			if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] == $levels[$depth_list[$n]+1] ) {
+				$upCondition = true;
+				$downCondition = false;
+			}
+			if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] < $levels[$depth_list[$n]+1] ) {
+				$downCondition = false;
+				$upCondition = false;
+			}
 		}
-		if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] < $levels[$depth_list[$n]+1] ) {
-			$downCondition = false;
-			$upCondition = false;
-		}
+		$levels[$depth_list[$n]+1]++;
+		
+		$listObj->addCell( $pageNav->orderUpIcon( $ibg, $upCondition, 'orderup', 'Order Down', $page, 'reorder' )
+							. '&nbsp;'
+							.$pageNav->orderDownIcon( $ibg, $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]], $downCondition, 'orderdown', 'Order Down', $page, 'reorder' )
+						);
+						
+		$listObj->addCell( vmCommonHTML::getOrderingField( $category_tmp[$row_list[$n]]["list_order"] ) );
+	} else {
+		$listObj->addCell( '&nbsp;' );
+		$listObj->addCell( '&nbsp;' );		
 	}
-	$levels[$depth_list[$n]+1]++;
-	
-	$listObj->addCell( $pageNav->orderUpIcon( $ibg, $upCondition, 'orderup', 'Order Down', $page, 'reorder' )
-						. '&nbsp;'
-						.$pageNav->orderDownIcon( $ibg, $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]], $downCondition, 'orderdown', 'Order Down', $page, 'reorder' )
-					);
-					
-	$listObj->addCell( vmCommonHTML::getOrderingField( $category_tmp[$row_list[$n]]["list_order"] ) );
-	
 	$listObj->addCell( $ps_html->deleteButton( "category_id", $category_tmp[$row_list[$n]]["category_child_id"], "productCategoryDelete", $keyword, $limitstart ) );
 	
 	$ibg++;

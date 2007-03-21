@@ -200,7 +200,7 @@ if( $num_rows ) {
 	    // The row number
 	    $listObj->addCell( $pageNav->rowNumber( $i ) );
 	    
-	    $url = $_SERVER['PHP_SELF']."?page=order.order_print&limitstart=$limitstart&keyword=$keyword&order_id=". $db->f("order_id");
+	    $url = $_SERVER['PHP_SELF']."?page=order.order_print&limitstart=$limitstart&keyword=".urlencode($keyword)."&order_id=". $db->f("order_id");
 	    $tmp_cell = "<a href=\"" . $sess->url($url) . "\">".sprintf("%08d", $db->f("order_id"))."</a><br />";
 	    $listObj->addCell( $tmp_cell );
 	    

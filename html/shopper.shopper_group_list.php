@@ -82,7 +82,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("shopper_group_id"), false, "shopper_group_id" ) );
 
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.shopper_group_form&limitstart=$limitstart&keyword=$keyword&shopper_group_id=". $db->f("shopper_group_id");
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.shopper_group_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&shopper_group_id=". $db->f("shopper_group_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">".$db->f("shopper_group_name")."</a>";
 	$listObj->addCell( $tmp_cell );
 	

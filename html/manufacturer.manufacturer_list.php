@@ -90,7 +90,7 @@ while ($db->next_record()) {
 	
 	$listObj->addCell( $db->f('manufacturer_id') );
 	
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.manufacturer_form&limitstart=$limitstart&keyword=$keyword&manufacturer_id=";
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.manufacturer_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&manufacturer_id=";
 	$url .= $db->f("manufacturer_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">"
 				. $db->f("mf_name")

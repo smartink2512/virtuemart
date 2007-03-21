@@ -75,7 +75,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("mf_category_id"), false, "mf_category_id" ) );
 	
-	$url = $_SERVER['PHP_SELF']."?page=$modulename.manufacturer_category_form&limitstart=$limitstart&keyword=$keyword&mf_category_id=";
+	$url = $_SERVER['PHP_SELF']."?page=$modulename.manufacturer_category_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&mf_category_id=";
 	$url .= $db->f("mf_category_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("mf_category_name")."</a><br />";
 	$listObj->addCell( $tmp_cell );

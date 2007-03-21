@@ -76,7 +76,7 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("coupon_id"), false, "coupon_id" ) );
     
-	$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=coupon.coupon_form&limitstart=$limitstart&keyword=$keyword&coupon_id=" . $db->f("coupon_id")) ."\">".$db->f("coupon_code")."</a>";
+	$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=coupon.coupon_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&coupon_id=" . $db->f("coupon_id")) ."\">".$db->f("coupon_code")."</a>";
 	$listObj->addCell( $tmp_cell );
     
 	$tmp_cell = $db->f("percent_or_total")=='total' ? $VM_LANG->_PHPSHOP_COUPON_TOTAL : $VM_LANG->_PHPSHOP_COUPON_PERCENT;

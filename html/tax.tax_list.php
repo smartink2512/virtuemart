@@ -75,13 +75,13 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("tax_rate_id"), false, "tax_rate_id" ) );
 	
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.tax_form&limitstart=$limitstart&keyword=$keyword&tax_rate_id=". $db->f("tax_rate_id");
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.tax_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&tax_rate_id=". $db->f("tax_rate_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("tax_country"). "</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $db->f("tax_state"));
     
-	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.tax_form&limitstart=$limitstart&keyword=$keyword&tax_rate_id=". $db->f("tax_rate_id");
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.tax_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&tax_rate_id=". $db->f("tax_rate_id");
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". sprintf("%8.4f", $db->f("tax_rate")). "</a>";
 	$listObj->addCell( $tmp_cell );
 	
