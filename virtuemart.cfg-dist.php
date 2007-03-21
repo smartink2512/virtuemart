@@ -18,13 +18,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	
 global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_secret;
 if( !class_exists( 'jconfig' )) {
-	if( isset( $GLOBALS['mosConfig_defaultLang'] ) && !isset( $_REQUEST['mosConfig_defaultLang'] ) ) {
-		$joomfish_lang = $mosConfig_lang;
-	}
+	$global_lang = $GLOBALS['mosConfig_lang'];
+	
 	@include( dirname( __FILE__ ).'/../../../configuration.php' );
-	if( isset( $GLOBALS['mosConfig_defaultLang'] ) && !isset( $_REQUEST['mosConfig_defaultLang'] ) ) {
-		$mosConfig_lang = $joomfish_lang;
-	}
+	
+	$GLOBALS['mosConfig_lang'] = $mosConfig_lang = $global_lang;
 }
 // Check for trailing slash
 if( $mosConfig_live_site[strlen( $mosConfig_live_site)-1] == '/' ) {
