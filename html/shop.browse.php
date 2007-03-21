@@ -237,6 +237,8 @@ else {
 			$templatefile = file_exists(VM_THEMEPATH.'templates/browse/browse_'.$products_per_row.'.php' ) 
 								? 'browse_'.$products_per_row
 								: 'browse_5';					
+		} elseif( !file_exists(VM_THEMEPATH.'templates/browse/'.$templatefile.'.php')) {
+			$templatefile = 'browse_5';
 		}
 	}
 	else {
