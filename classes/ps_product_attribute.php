@@ -752,7 +752,7 @@ class ps_product_attribute {
 						$base_var=str_replace(" ","_",$base_value);
 						$base_var=substr($base_var,0,strrpos($base_var, '['));
 						$html.="<option value=\"$base_var\">$attribtxt";
-						if( $_SESSION['auth']['show_prices'] ) {
+						if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
 							$html .= "&nbsp;(&nbsp;".$vorzeichen."&nbsp;".$CURRENCY_DISPLAY->getFullValue($price)."&nbsp;)";
 						}
 						$html .= "</option>";
