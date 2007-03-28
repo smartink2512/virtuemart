@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+28.03.2007 gregdev
+# Fixed task #1212: ship_to_info_id and shipping_rate_id were not being passed to the template.
+
 16.03.2007 gregdev
 ^ Improved the FedEx shipping module.
 

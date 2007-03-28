@@ -672,7 +672,10 @@ class ps_checkout {
 		    $database = new ps_DB();
 		    $database->setQuery( "SELECT user_info_id FROM #__{vm}_user_info WHERE user_id=".$my->id." AND address_type='BT'" );
 		    $vars["ship_to_info_id"] = $_REQUEST['ship_to_info_id'] = $database->loadResult();
+		} else {
+			$vars['ship_to_info_id'] = $ship_to_info_id;
 		}
+		$vars['shipping_rate_id'] = $shipping_method_id;
 		$vars["weight"] = $weight_total;
 		$i = 0;
 
