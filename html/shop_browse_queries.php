@@ -28,9 +28,7 @@ $fieldnames = "`product_name`,`products_per_row`,`category_browsepage`,`category
 				`product_weight`,`product_weight_uom`,`product_length`,`product_width`,`product_height`,`product_lwh_uom`,`product_in_stock`,`product_available_date`,`product_availability`,`#__{vm}_product`.`mdate`, `#__{vm}_product`.`cdate`";
 $count_name = "COUNT(DISTINCT `#__{vm}_product`.`product_sku`) as num_rows";
 $table_names = '`#__{vm}_product`, `#__{vm}_category`, `#__{vm}_product_category_xref`,`#__{vm}_shopper_group`';
-if( $perm->is_registered_customer($my->id) ) {
-	$table_names .= ',`#__{vm}_shopper_vendor_xref`';
-}
+
 $join_array = array( 'LEFT JOIN `#__{vm}_product_price` ON `#__{vm}_product`.`product_id` = `#__{vm}_product_price`.`product_id`' );
 $where_clause = array();
 
@@ -272,8 +270,7 @@ $count  = "SELECT $count_name FROM ($table_names) ";
 
 if( $perm->is_registered_customer($my->id) ) {	
 	$where_clause[] = "(`#__{vm}_product`.`product_id`=`#__{vm}_product_price`.`product_id` OR `#__{vm}_product_price`.`product_id` IS NULL) ";
-	$where_clause[] = "((`#__{vm}_shopper_vendor_xref`.`user_id` =".$my->id." AND `#__{vm}_shopper_vendor_xref`.`shopper_group_id`=`#__{vm}_shopper_group`.`shopper_group_id`) 
-							OR `#__{vm}_product_price`.`shopper_group_id` IS NULL) ";
+	$join_array[] = 'LEFT JOIN `#__{vm}_shopper_vendor_xref` ON (`#__{vm}_shopper_vendor_xref`.`user_id` ='.$my->id.' AND `#__{vm}_shopper_vendor_xref`.`shopper_group_id`=`#__{vm}_shopper_group`.`shopper_group_id`)';
 }
 else {
 	$where_clause[] = "((`#__{vm}_product`.`product_id`=`#__{vm}_product_price`.`product_id` AND `#__{vm}_shopper_group`.`shopper_group_id`=`#__{vm}_product_price`.`shopper_group_id`) OR `#__{vm}_product_price`.`product_id` IS NULL) ";

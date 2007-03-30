@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.03.2007 gregdev
+^ Changed shop_browse_queries.php to use a LEFT JOIN for #__{vm}_shopper_vendor_xref (fixes empty categories when table entry is missing).
+
 28.03.2007 gregdev
 # Fixed task #1212: ship_to_info_id and shipping_rate_id were not being passed to the template.
 
