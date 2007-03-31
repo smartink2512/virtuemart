@@ -212,6 +212,7 @@ class vmMainFrame {
 			}
 			$this->render();
 		} else {
+			session_write_close();
 			if( !empty( $this->_response_scripts )) {
 				echo vmCommonHTML::scriptTag('', implode("\n", $this->_response_scripts ));
 			}
