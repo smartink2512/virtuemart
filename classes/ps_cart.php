@@ -82,15 +82,21 @@ class ps_cart {
 		$total_updated = 0;
 		$total_deleted = 0;
 		$_SESSION['last_page'] = "shop.product_details";
-
+		if( !empty( $d['product_id']) && !isset($d["prod_id"])) {
+			if( empty( $d['prod_id'] )) $d['prod_id'] = array();
+			if( is_array($d['product_id'])) {
+				$d['prod_id'] = array_merge( $d['prod_id'], $d['product_id'] );
+			} else {
+				$d['prod_id'] = array_merge( $d['prod_id'], array( $d['product_id'] ) );
+			}
+		}
 		//Check to see if a prod_id has been set
 		if (!isset($d["prod_id"])) {
 			return true;
 		}
 		$multiple_products = sizeof($d["prod_id"]);
 		//Iterate through the prod_id's and perform an add to cart for each one
-		$mult = sizeof($d["prod_id"]);
-		for ($ikey = 0; $ikey < sizeof($d["prod_id"]); $ikey++) {
+		for ($ikey = 0; $ikey < $multiple_products; $ikey++) {
 
 			// Create single array from multi array
 			$key_fields=array_keys($d);
@@ -103,7 +109,7 @@ class ps_cart {
 				}
 			}
 
-			if ($mult > 1 ) {
+			if ($multiple_products > 1 ) {
 				$func = "cartUpdate";
 			}
 			$e['product_id'] = $d['product_id'];
@@ -141,9 +147,18 @@ class ps_cart {
 				}
 			}
 
+			// Check if product exists and is published
+			$q = "SELECT product_id FROM #__{vm}_product WHERE ";
+			$q .= "product_id = ".(int)$product_id .' AND product_publish=\'Y\'';
+			$db->query ( $q );
+
+			if ( $db->num_rows() < 1) {
+				$vmLogger->tip( 'The selected product does not exist.' );
+				return false;
+			}
 			// Quick add of item
 			$q = "SELECT product_id FROM #__{vm}_product WHERE ";
-			$q .= "product_parent_id = '".$product_id."'";
+			$q .= "product_parent_id = ".(int)$product_id;
 			$db->query ( $q );
 
 			if ( $db->num_rows()) {
@@ -198,7 +213,7 @@ class ps_cart {
 			if ((!$updated) && ($quantity)){
 				list($min,$max) = ps_product::product_order_levels($product_id);
 				$k = $_SESSION['cart']["idx"];
-
+				
 				$_SESSION['cart'][$k]["quantity"] = $quantity;
 				$_SESSION['cart'][$k]["product_id"] = $product_id;
 				$_SESSION['cart'][$k]["parent_id"] = $e["product_id"];
@@ -207,6 +222,7 @@ class ps_cart {
 				$_SESSION['cart'][$k]["description"] = $e["description"];
 				$_SESSION['cart']["idx"]++;
 				$total_quantity += $quantity;
+				$vmLogger->info(print_r($_SESSION['cart'], true));
 			}
 			else {
 				list($updated_prod,$deleted_prod) = $this->update( $e );
@@ -275,7 +291,7 @@ class ps_cart {
 
 		$db = new ps_DB;
 		$product_id = $d["prod_id"];
-		$quantity = $d["quantity"];
+		$quantity = isset($d["quantity"]) ? (int)$d["quantity"] : 1;
 		$_SESSION['last_page'] = "shop.cart";
 
 		// Check for negative quantity
