@@ -100,7 +100,7 @@ class ps_order {
 			 *
 			 * Restricted to PayFlow Pro for now.
 			 */
-			if( ($curr_order_status=="P" || $curr_order_status="C") && $d["order_status"]=="S") {
+			if( ($curr_order_status=="P" || $curr_order_status=="C") && $d["order_status"]=="S") {
 				$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
 				$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
 				$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
