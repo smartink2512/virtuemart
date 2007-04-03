@@ -2,11 +2,23 @@
 
 <?php echo $buttons_header // The PDF, Email and Print buttons ?>
 
-<p><?php 
+<?php 
 if( $this->get_cfg( 'showPathway' )) {
-	echo $navigation_pathway;
-} ?></p>
-<p><?php echo $navigation_childlist ?></p>
+	echo '<p>' . $navigation_pathway . '</p>';
+}
+?>
+<?php
+// 	< Previous	|	Next >
+if( $this->get_cfg( 'product_navigation', 1 )) {
+	if( !empty( $previous_product )) {
+		echo '<a class="previous_page" href="'.$sess->url( 'page='.$page.'&product_id='.$previous_product['product_id'] ).'">'.shopMakeHtmlSafe($previous_product['product_name']).'</a>';
+	}
+	if( !empty( $next_product )) {		
+		echo '<a class="next_page" href="'.$sess->url( 'page='.$page.'&product_id='.$next_product['product_id'] ).'">'.shopMakeHtmlSafe($next_product['product_name']).'</a>';
+	}
+}
+?>
+<p style="clear:both;"><?php echo $navigation_childlist ?></p>
 <table border="0" align="center" style="width: 100%;">
   <tbody>
 	<tr>

@@ -65,6 +65,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		// Get sure that we have float values with a decimal point!
 		@setlocale( LC_NUMERIC, 'en_US', 'en' );
 		
+		if( empty( $mainframe->_userstate )) {
+			$mainframe->_userstate = array();
+		}
 		// some input validation for limitstart
 		if (!empty($_REQUEST['limitstart'])) {
 			$_REQUEST['limitstart'] = intval( $_REQUEST['limitstart'] );
@@ -72,7 +75,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
-		$keyword = substr( urldecode(mosgetparam($_REQUEST, 'keyword', '')), 0, 50 );
 		$user_info_id = mosgetparam($_REQUEST, 'user_info_id' );
 	
 		unset( $_REQUEST["error"] );
@@ -87,9 +89,10 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 				$_REQUEST[$intField] = $$intField = intval( mosgetparam($_REQUEST, $intField, 0) );
 			}
 		}
-		
+				
 		$_SESSION['session_userstate']['product_id'] = $product_id = $_REQUEST['product_id'];
-		$_SESSION['session_userstate']['category_id'] = $category_id = $_REQUEST['category_id'];
+		$category_id = $mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
+		$manufacturer_id = $mainframe->getUserStateFromRequest( 'manufacturer_id', 'manufacturer_id' );
 		
 		$myInsecureArray = array('keyword' => $keyword,
 									'user_info_id' => $user_info_id,
@@ -114,8 +117,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$_REQUEST = $vmInputFilter->process( $_REQUEST );
 			$_REQUEST = $vmInputFilter->safeSQL( $_REQUEST );
 		}
+		
 		// Limit the keyword (=search string) length to 50
-		$_SESSION['session_userstate']['keyword'] = $keyword = substr(mosgetparam($_REQUEST, 'keyword', ''), 0, 50);
+		$keyword = substr( urldecode( mosGetParam( $_REQUEST, 'keyword' )), 0, 50 );
 		
 		$vars = $_REQUEST;
 	}

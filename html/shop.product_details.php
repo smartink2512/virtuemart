@@ -32,14 +32,6 @@ require_once(CLASSPATH . 'ps_product_type.php' );
 $ps_product_type = new ps_product_type;
 require_once(CLASSPATH . 'ps_reviews.php' );
 
-/* Flypage Parameter has old page syntax: shop.flypage
-* so let's get the second part - flypage */
-$flypage = mosGetParam($_REQUEST, "flypage" );
-if( empty( $flypage )) $flypage = FLYPAGE;
-
-$flypage = str_replace( 'shop.', '', $flypage);
-$flypage = stristr( $flypage, '.tpl') ? $flypage : $flypage . '.tpl';
-
 $product_id = intval( mosgetparam($_REQUEST, "product_id", null) );
 $product_sku = $db->getEscaped( mosgetparam($_REQUEST, "sku", '' ) );
 $category_id = mosgetparam($_REQUEST, "category_id", null);
@@ -56,7 +48,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	mosRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword=".urlencode($_SESSION['keyword'])."&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	mosRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword=".urlencode($keyword)."&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 
 if( !$perm->check("admin,storeadmin") ) {
@@ -119,8 +111,12 @@ $product_description = vmCommonHTML::ParseContentByPlugins( $product_description
 $navigation_pathway = "";
 $navigation_childlist = "";
 $pathway_appended = false;
-if (empty($category_id))  {
-	$q = "SELECT category_id FROM #__{vm}_product_category_xref WHERE product_id = '$product_id' LIMIT 0,1";
+
+$flypage = mosGetParam($_REQUEST, "flypage" );
+
+// Each Product is assigned to one or more Categories, if category_id was omitted, we must fetch it here
+if (empty($category_id) || empty( $flypage ))  {
+	$q = "SELECT cx.category_id, category_flypage FROM #__{vm}_category c, #__{vm}_product_category_xref cx WHERE product_id = '$product_id' AND c.category_id=cx.category_id LIMIT 0,1";
 	$db->query( $q );
 	$db->next_record();
 	if( !$db->f("category_id") ) {
@@ -130,33 +126,49 @@ if (empty($category_id))  {
 		$db->query( $q );
 		$db->next_record();
 
-		$q = "SELECT category_id FROM #__{vm}_product_category_xref WHERE product_id = '".$db->f("product_id")."' LIMIT 0,1";
+		$q = "SELECT cx.category_id, category_flypage FROM #__{vm}_category c, #__{vm}_product_category_xref cx WHERE product_id = '".$db->f("product_id")."' AND c.category_id=cx.category_id LIMIT 0,1";
 		$db->query( $q );
 		$db->next_record();
 	}
 	$_GET['category_id'] = $category_id = $db->f("category_id");
 }
+
+/* Flypage Parameter has old page syntax: shop.flypage
+* so let's get the second part - flypage */
+$default['category_flypage'] = FLYPAGE;
+if( empty( $flypage )) {
+	$flypage = $db->sf('category_flypage');
+}
+$flypage = str_replace( 'shop.', '', $flypage);
+$flypage = stristr( $flypage, '.tpl') ? $flypage : $flypage . '.tpl';
+
 $category_list = $ps_product_category->get_navigation_list($category_id);
 $tpl->set( 'category_list', $category_list );
 $tpl->set( 'product_name', $product_name );
+
+// Get the neighbor Products to allow navigation on product level
+$neighbors = $ps_product->get_neighbor_products( !empty( $product_parent_id ) ? $product_parent_id : $product_id );
+$next_product = $neighbors['next'];
+$previous_product = $neighbors['previous'];
+$tpl->set( 'next_product', $next_product );
+$tpl->set( 'previous_product', $previous_product );
+
 $parent_id_link = $db_product->f("product_parent_id");
-  $return_link = "";
-  if ($parent_id_link <> 0 ) {
-    $q = "SELECT product_name FROM #__{vm}_product WHERE product_id = '$product_parent_id' LIMIT 0,1";
-    $db->query( $q );
-    $db->next_record();
-    $product_parent_name = $db->f("product_name");
-    $return_link = "&nbsp;<a class=\"pathway\" href=\"";
-    $return_link .= $sess->url($_SERVER['PHP_SELF'] . "?page=shop.product_details&product_id=$parent_id_link");
-    $return_link .= "\">";
-    $return_link .= $product_parent_name;
-    $return_link .= "</a>";
-    $return_link .= " ".vmCommonHTML::pathway_separator()." ";      
-    }
+$return_link = "";
+if ($parent_id_link <> 0 ) {
+	$q = "SELECT product_name FROM #__{vm}_product WHERE product_id = '$product_parent_id' LIMIT 0,1";
+	$db->query( $q );
+	$db->next_record();
+	$product_parent_name = $db->f("product_name");
+	$return_link = "&nbsp;<a class=\"pathway\" href=\"";
+	$return_link .= $sess->url($_SERVER['PHP_SELF'] . "?page=shop.product_details&product_id=$parent_id_link");
+	$return_link .= "\">";
+	$return_link .= $product_parent_name;
+	$return_link .= "</a>";
+	$return_link .= " ".vmCommonHTML::pathway_separator()." ";
+}
 $tpl->set( 'return_link', $return_link );
 $navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');
-
-
 
 if ($ps_product_category->has_childs($category_id) ) {
 	$category_childs = $ps_product_category->get_child_list($category_id);
@@ -207,7 +219,7 @@ if (_SHOW_PRICES == '1') { /** Change - Begin */
 	$product_price = $ps_product->show_price( $product_id );
 }
 else {
-    $product_price_lbl = "";
+	$product_price_lbl = "";
 	$product_price = "";
 }
 
@@ -234,9 +246,9 @@ else {
 
 /** PRODUCT IMAGE **/
 $product_full_image = $product_parent_id!=0 && !$db_product->f("product_full_image") ?
-					$dbp->f("product_full_image") : $db_product->f("product_full_image"); // Change
+$dbp->f("product_full_image") : $db_product->f("product_full_image"); // Change
 $product_thumb_image = $product_parent_id!=0 && !$db_product->f("product_thumb_image") ?
-					$dbp->f("product_thumb_image") : $db_product->f("product_thumb_image"); // Change
+$dbp->f("product_thumb_image") : $db_product->f("product_thumb_image"); // Change
 
 /* MORE IMAGES ??? */
 $files = ps_product_files::getFilesForProduct( $product_id );
@@ -249,14 +261,14 @@ if( !empty($files['images']) ) {
 $file_list = ps_product_files::get_file_list( $product_id );
 
 if( @$_REQUEST['output'] != "pdf" ) {
-	
+
 	// Show the PDF, Email and Print buttons
 	$tpl->set('option', $option);
 	$tpl->set('category_id', $category_id );
 	$tpl->set('product_id', $product_id );
 	$buttons_header = $tpl->fetch( 'common/buttons.tpl.php' );
 	$tpl->set( 'buttons_header', $buttons_header );
-	
+
 	/** AVAILABILITY **/
 	// This is the place where it shows:
 	// Availability: 24h, In Stock: 5 etc.
@@ -281,7 +293,7 @@ if (PSHOP_ALLOW_REVIEWS == '1') {
 	/*** Show all reviews available ***/
 	$product_reviews = ps_reviews::product_reviews( $product_id );
 	/*** Show a form for writing a review ***/
-	
+
 	if( $my->id ) {
 		$product_reviewform = ps_reviews::reviewform( $product_id );
 	}

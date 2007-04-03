@@ -19,6 +19,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+// Descending or Ascending Order? possible values: [ASC|DESC]
+$DescOrderBy = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}DescOrderBy", 'DescOrderBy', "ASC" ) );
+
+// Sort by which factor? possible values: 
+// product_name, product_price, product_sku, product_cdate (=latest additions)
+$orderby = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}orderby", 'orderby', VM_BROWSE_ORDERBY_FIELD ));
+
 /** Prepare the SQL Queries
 *
 */
@@ -49,7 +56,11 @@ $where_clause[] = "`#__{vm}_product_category_xref`.`product_id`=`#__{vm}_product
 $where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=`#__{vm}_category`.`category_id`";
 // Filter Products by Category
 if( $category_id ) {
-	$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
+	if( !empty( $search_this_category ) && !empty( $keyword ) ) {
+		$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
+	} elseif( empty( $keyword )) {
+		$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
+	}
 }
 if( strtoupper(mosGetParam($_REQUEST, 'featured', 'N' )) == 'Y' ) {
 	// Filter all except Featured Products (="on special")

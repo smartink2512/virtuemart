@@ -65,6 +65,21 @@ input.addtocart_button_module:hover  {
 .continue_link {
 	background: url( 'images/back.png' ) no-repeat left;
 }
+.next_page {
+	background: url( 'images/next_16x16.png' ) no-repeat right;
+	padding-right: 30px;
+	line-height: 20px;
+	float: right;
+	width: auto;
+}
+.previous_page {
+	background: url( 'images/previous_16x16.png' ) no-repeat left;
+	padding-left: 30px;
+	line-height: 20px;
+	float: left;
+	width: auto;
+}
+
 /* This is the text box informing customers about your returns policy */
 .legalinfo {
 	background: lightgray;
@@ -244,6 +259,8 @@ table.adminform td.labelcell {
 .vmCartContainer { /* Cart Container */
 	width: 100%;
 	float: left;
+	background: lightblue;
+	border: 1px solid #000;
 	padding: 3px;
 }
 
@@ -262,7 +279,6 @@ table.adminform td.labelcell {
 	padding-right: 2px;
 	margin-bottom: 2px;
 	float:left;	
-	width: 99%;
 }
 
 .vmChildDetail { /* Child Detail, description , attributes ,price, quantity etc */

@@ -36,13 +36,9 @@ $ps_product_attribute = new ps_product_attribute;
 $Itemid = $sess->getShopItemid();
 $keyword1 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword1', null )));
 $keyword2 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword2', null )));
-// possible values: [ASC|DESC]
-$DescOrderBy = $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'DescOrderBy', "ASC" ));
-$search_limiter= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_limiter', null ));
+
 $search_op= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_op', null ));
-// possible values: 
-// product_name, product_price, product_sku, product_cdate (=latest additions)
-$orderby = $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'orderby', VM_BROWSE_ORDERBY_FIELD ));
+$search_limiter= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_limiter', null ));
 
 if (empty($category_id)) $category_id = $search_category;
 
@@ -270,8 +266,14 @@ else {
 		if (empty($flypage)) {
             $flypage = FLYPAGE;
         }
-        
-        $url = $sess->url( $mm_action_url."index.php?page=shop.product_details&amp;flypage=$flypage&amp;product_id=" . $db_browse->f("product_id") . "&amp;category_id=" . $db_browse->f("category_id"). "&amp;manufacturer_id=" . $manufacturer_id);
+        $url_parameters = "page=shop.product_details&amp;flypage=$flypage&amp;product_id=" . $db_browse->f("product_id") . "&amp;category_id=" . $db_browse->f("category_id");
+        if( $manufacturer_id ) {
+        	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
+        }
+        if( $keyword != '') {
+        	$url_parameters .= "&amp;keyword=".urlencode($keyword);
+        }
+        $url = $sess->url( $url_parameters );
 
         if( $db_browse->f("product_thumb_image") ) {
             $product_thumb_image = $db_browse->f("product_thumb_image");

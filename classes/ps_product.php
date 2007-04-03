@@ -1298,6 +1298,35 @@ class ps_product extends vmAbstractObject {
 			return "";
 		}
 	}
+	function get_neighbor_products( $product_id ) {
+		global $perm, $orderby, $my, $keyword, $DescOrderBy, $limit, $limitstart, 
+			$category_id, $manufacturer_id, $mainframe, $vmInputFilter;
+		
+		$db = new ps_DB();
+		include( PAGEPATH . 'shop_browse_queries.php' );
+		
+		$db->query( $list );
+		
+		$neighbors = array('previous'=>'',
+							'next'=>'');
+		
+		while( $db->next_record() ) {
+			if( $db->f( 'product_id' ) == $product_id ) {
+				$previous_row = $db->previousRow();
+				$next_row = $db->nextRow();
+				
+				if( !empty( $previous_row->product_id )) {
+					$neighbors['previous']['product_id'] = $previous_row->product_id;
+					$neighbors['previous']['product_name'] = $previous_row->product_name;
+				} 
+				if( !empty( $next_row->product_id )) {
+					$neighbors['next']['product_id'] = $next_row->product_id;
+					$neighbors['next']['product_name'] = $next_row->product_name;
+				}
+			}
+		}
+		return $neighbors;
+	}
 	/**
 	 * Prints the img tag for the given product image
 	 *
