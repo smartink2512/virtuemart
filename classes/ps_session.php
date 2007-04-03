@@ -473,7 +473,9 @@ class ps_session {
 				
 			default:
 				$limiter = strpos($text, '?');
-
+				if( !stristr( $text, $_SERVER['PHP_SELF']) && $limiter === false ) {
+					$text = '?'.$text;
+				}
 				$appendix = "";
 				// now append "&option=com_virtuemart&Itemid=XX"
 				if (!strstr($text, "option=")) {
@@ -491,7 +493,7 @@ class ps_session {
 						$script = 'index2.php'; // index3.php is not available in the frontend!
 					}
 	
-					$appendix = $script.substr($text, $limiter, strlen($text)-1).$appendix;
+					$appendix = $script.substr($text, $limiter, strlen($text)).$appendix;
 					if( function_exists('sefRelToAbs')) {
 						$appendix = sefRelToAbs( str_replace( $script.'&', $script.'?', $appendix ) );
 					}
