@@ -222,7 +222,6 @@ class ps_cart {
 				$_SESSION['cart'][$k]["description"] = $e["description"];
 				$_SESSION['cart']["idx"]++;
 				$total_quantity += $quantity;
-				$vmLogger->info(print_r($_SESSION['cart'], true));
 			}
 			else {
 				list($updated_prod,$deleted_prod) = $this->update( $e );

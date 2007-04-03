@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.04.2007 soeren
+
++ added page navigation on product level, so customers can go directly from one product to the next in that category/manufacturer/search result
+^ product details page automatically grabs the Flypage of the category of the product if the flypage parameter was omitted from the URL
+
+
 30.03.2007 gregdev
 ^ Changed shop_browse_queries.php to use a LEFT JOIN for #__{vm}_shopper_vendor_xref (fixes empty categories when table entry is missing).
 
