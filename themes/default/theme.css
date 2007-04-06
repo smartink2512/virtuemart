@@ -257,7 +257,7 @@ table.adminform td.labelcell {
 * Addtocart detail Styles
 */
 .vmCartContainer { /* Cart Container */
-	width: 100%;
+	width: auto;
 	float: left;
 	background: lightblue;
 	border: 1px solid #000;

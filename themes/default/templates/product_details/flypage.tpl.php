@@ -8,10 +8,10 @@ if( $this->get_cfg( 'showPathway' )) {
 }
 if( $this->get_cfg( 'product_navigation', 1 )) {
 	if( !empty( $previous_product )) {
-		echo '<a class="previous_page" href="'.$sess->url( 'page='.$page.'&product_id='.$previous_product['product_id'] ).'">'.shopMakeHtmlSafe($previous_product['product_name']).'</a>';
+		echo '<a class="previous_page" href="'.$previous_product_url.'">'.shopMakeHtmlSafe($previous_product['product_name']).'</a>';
 	}
 	if( !empty( $next_product )) {		
-		echo '<a class="next_page" href="'.$sess->url( 'page='.$page.'&product_id='.$next_product['product_id'] ).'">'.shopMakeHtmlSafe($next_product['product_name']).'</a>';
+		echo '<a class="next_page" href="'.$next_product_url.'">'.shopMakeHtmlSafe($next_product['product_name']).'</a>';
 	}
 }
 ?>
