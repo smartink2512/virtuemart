@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.04.2007 soeren
+
+^ changed "related products" form in product form to use Option Tansfer from one select list to another
+	for better overview what was selected as related (using OptionTransfer.js by Matt Kruse - mattkruse.com/javascript/optiontransfer )
+	You can even use double click to move products from one list to the other
+	
 03.04.2007 soeren
 
 + added page navigation on product level, so customers can go directly from one product to the next in that category/manufacturer/search result

@@ -6,6 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -1875,6 +1876,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_FEDEX_ERR_METER_NUMBER = 'Error updating the Meter Number.';
 	var $_VM_FEDEX_LBL_METHOD = 'Shipping Method';
 	var $_VM_FEDEX_LBL_PRICE = 'Price';
+	var $_PROMPT_CLOSE = 'Close';
         
 }
 class phpShopLanguage extends vmLanguage { }

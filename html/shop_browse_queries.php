@@ -56,9 +56,9 @@ $where_clause[] = "`#__{vm}_product_category_xref`.`product_id`=`#__{vm}_product
 $where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=`#__{vm}_category`.`category_id`";
 // Filter Products by Category
 if( $category_id ) {
-	if( !empty( $search_this_category ) && !empty( $keyword ) ) {
+	if( !empty( $search_this_category ) && (!empty( $keyword ) || !empty( $manufacturer_id ) )) {
 		$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
-	} elseif( empty( $keyword )) {
+	} elseif( empty( $keyword ) && empty( $manufacturer_id )) {
 		$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
 	}
 }
@@ -100,7 +100,7 @@ if( !empty($keyword) ) {
 }	
 // This is the "advanced" search, filter by Keyword1 and Keyword2
 elseif( !empty($keyword1) ) {
-	$sq .= "(";
+	$sq = "(";
 	if ($search_limiter=="name") {
 		$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$keyword1%' ";
 	}
@@ -294,7 +294,7 @@ if( !$perm->check("admin,storeadmin") ) {
 		$where_clause[] = 'product_in_stock > 0';
 	}
 }
-$q = implode("\n", $join_array ).' WHERE '. implode("\n AND", $where_clause );
+$q = implode("\n", $join_array ).' WHERE '. implode("\n AND ", $where_clause );
 $count .= $q;
 
 $q .= "\n GROUP BY `#__{vm}_product`.`product_sku` ";

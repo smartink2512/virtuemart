@@ -364,7 +364,7 @@ class ps_product extends vmAbstractObject {
 
 		if( !empty($d["related_products"])) {
 			/* Insert Pipe separated Related Product IDs */
-			$related_products = implode( "|", $d["related_products"] );
+			$related_products = mosGetParam( $d, "related_products" );
 
 			$q  = "INSERT INTO #__{vm}_product_relations ";
 			$q .= "(product_id, related_products) ";
@@ -641,7 +641,7 @@ class ps_product extends vmAbstractObject {
 
 		if( !empty($d["related_products"])) {
 			/* Insert Pipe separated Related Product IDs */
-			$related_products = implode( "|", $d["related_products"] );
+			$related_products = mosGetParam( $d, "related_products" );
 
 			$q  = "REPLACE INTO #__{vm}_product_relations (product_id, related_products)";
 			$q .= " VALUES( '".$d["product_id"]."', '$related_products') ";

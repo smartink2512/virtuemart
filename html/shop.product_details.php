@@ -150,8 +150,32 @@ $tpl->set( 'product_name', $product_name );
 $neighbors = $ps_product->get_neighbor_products( !empty( $product_parent_id ) ? $product_parent_id : $product_id );
 $next_product = $neighbors['next'];
 $previous_product = $neighbors['previous'];
+$next_product_url = $previous_product_url = '';
+if( !empty($next_product) ) {
+	$url_parameters = 'page='.$page.'&product_id='.$next_product['product_id'];
+    if( $manufacturer_id ) {
+    	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
+    }
+    if( $keyword != '') {
+    	$url_parameters .= "&amp;keyword=".urlencode($keyword);
+    }
+	$next_product_url = $sess->url( $url_parameters );
+}
+if( !empty($previous_product) ) {
+	$url_parameters = 'page='.$page.'&product_id='.$previous_product['product_id'];
+    if( $manufacturer_id ) {
+    	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
+    }
+    if( $keyword != '') {
+    	$url_parameters .= "&amp;keyword=".urlencode($keyword);
+    }
+	$previous_product_url = $sess->url( $url_parameters );
+}
+
 $tpl->set( 'next_product', $next_product );
+$tpl->set( 'next_product_url', $next_product_url );
 $tpl->set( 'previous_product', $previous_product );
+$tpl->set( 'previous_product_url', $previous_product_url );
 
 $parent_id_link = $db_product->f("product_parent_id");
 $return_link = "";

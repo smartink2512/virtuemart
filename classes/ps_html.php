@@ -43,27 +43,29 @@ class ps_html {
 	 */	
 	function selectList($name, $value, &$arr, $size=1, $multiple="", $extra="") {
 		$html = '';
-		if( !empty( $arr ) ) {
-			$html = "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
-
-			while (list($key, $val) = each($arr)) {
-				$selected = "";
-				if( is_array( $value )) {
-					if( in_array( $key, $value )) {
-						$selected = "selected=\"selected\"";
-					}
-				}
-				else {
-					if(strtolower($value) == strtolower($key) ) {
-						$selected = "selected=\"selected\"";
-					}
-				}
-				$html .= "<option value=\"$key\" $selected>$val";
-				$html .= "</option>\n";
-			}
-
-			$html .= "</select>\n";
+		if( empty( $arr ) ) {
+			$arr = array();
 		}
+		$html = "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
+
+		while (list($key, $val) = each($arr)) {
+			$selected = "";
+			if( is_array( $value )) {
+				if( in_array( $key, $value )) {
+					$selected = "selected=\"selected\"";
+				}
+			}
+			else {
+				if(strtolower($value) == strtolower($key) ) {
+					$selected = "selected=\"selected\"";
+				}
+			}
+			$html .= "<option value=\"$key\" $selected>$val";
+			$html .= "</option>\n";
+		}
+
+		$html .= "</select>\n";
+		
 		return $html;
 	}
 
@@ -382,9 +384,62 @@ class ps_html {
 		while( $db->next_record() ) {
 			$products[$db->f("product_id")] = $db->f("category_name")." =&gt; ".$db->f("product_name");
 		}
-		$this->dropdown_display($list_name, $values, $products, $size=20, "multiple=\"multiple\"");
+		$this->dropdown_display($list_name, $values, $products, 20, "multiple=\"multiple\"");
 	}
+	/**
+	 * Creates a multi-select list with all products except the given $product_id
+	 *
+	 * @param string $list_name The name of the select element
+	 * @param array $values Contains the IDs of all products which are pre-selected
+	 * @param int $product_id The product id that is excluded from the list
+	 * @param boolean $show_items Wether to show child products as well
+	 */
+	function related_product_lists($list_name, $values=array(), $product_id, $show_items=false ) {
+		global $VM_LANG;
+		$db =& new ps_DB;
 
+		$q = "SELECT #__{vm}_product.product_id,category_name,product_name
+			FROM #__{vm}_product,#__{vm}_product_category_xref,#__{vm}_category ";
+		if( !$show_items ) {
+			$q .= "WHERE product_parent_id='0'
+					AND #__{vm}_product.product_id <> '$product_id' 
+					AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id
+					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";
+		}
+		else {
+			$q .= "WHERE #__{vm}_product.product_id <> '$product_id' 
+					AND  #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id 
+					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";;
+		}
+		$q .= ' ORDER BY category_name,#__{vm}_category.category_id,product_name';
+		// This is necessary, because so much products are difficult to handle!
+		$q .= ' LIMIT 0, 2000';
+		
+		$db->query( $q );
+		$related_products = Array();
+		$other_products = Array();
+		while( $db->next_record() ) {
+			if( in_array( $db->f('product_id'), $values )) {
+				$related_products[$db->f("product_id")] = $db->f("category_name").'\\'.$db->f("product_name");
+			} else {
+				$other_products[$db->f("product_id")] = $db->f("category_name").'\\'.$db->f("product_name");
+			}
+		}
+		$this->dropdown_display('all_products', '', $other_products, 20, 'multiple="multiple" ondblclick="opt.transferRight()"');
+		echo '<div style="vertical-align: top;display:inline;width: 5%;">
+				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferRight();" value=" &gt; " />
+				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferLeft()" value=" &lt; " /></div>';
+		
+		$this->dropdown_display($list_name, '', $related_products, 20, 'multiple="multiple" ondblclick="opt.transferLeft()"');
+		echo '<input type="hidden" name="related_products" value="'.implode('|', $values ).'" />';
+		echo '<div style="vertical-align: top;display:inline;font-weight:bold;">'.$VM_LANG->_PHPSHOP_RELATED_PRODUCTS.'</div>';
+		echo vmCommonHTML::scriptTag('','var opt = new OptionTransfer("all_products","'.$list_name.'");
+//opt.setAutoSort(false);
+opt.setDelimiter(\'|\');
+opt.saveNewRightOptions( \'related_products\' );
+opt.init(document.adminForm);
+');
+	}
 	/**
 	 * Creates a drop-down list for Extra fields
 	 * @deprecated 

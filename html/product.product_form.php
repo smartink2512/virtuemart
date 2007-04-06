@@ -23,8 +23,8 @@ $product_id = mosGetParam( $_REQUEST, 'product_id');
 if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
 }
-
-echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/com_virtuemart/js/product_attributes.js');
+echo vmCommonHTML::scriptTag($mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/OptionTransfer.js');
+echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/product_attributes.js');
 
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
@@ -996,8 +996,8 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/related.png' width='16' heigh
                                 <br/><br/>
 				<?php echo vmToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?>
 			</td>
-			<td width="79%"><?php 
-			echo $ps_html->list_products("related_products[]", $related_products, $product_id, false );
+			<td width="79%" style="vertical-align:top;"><?php 
+			echo $ps_html->related_product_lists("related_product_list", $related_products, $product_id, false );
 			?></td>
 		</tr>
 	</table>
