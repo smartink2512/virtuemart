@@ -24,7 +24,11 @@ if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
 }
 echo vmCommonHTML::scriptTag($mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/OptionTransfer.js');
+echo vmCommonHTML::scriptTag($mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/filterlist.js');
 echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/product_attributes.js');
+echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/calendar.js');
+echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/lang/calendar-en.js');
+echo vmCommonHTML::linkTag( $mosConfig_live_site .'/includes/js/calendar/calendar-mos.css');
 
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
 $next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
@@ -182,14 +186,7 @@ $my_shopper_group_id = $shopper_db->f("shopper_group_id");
 if( $clone_product == "1" ) {
 	$product_id = "";
 }
-?>
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $mosConfig_live_site ?>/includes/js/calendar/calendar-mos.css" title="green" />
-<!-- import the calendar script -->
-<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/calendar/calendar.js"></script>
-<!-- import the language module -->
-<script type="text/javascript" src="<?php echo $mosConfig_live_site ?>/includes/js/calendar/lang/calendar-en.js"></script>
-<br />
-<?php
+
 $title = '<img src="'. IMAGEURL .'ps_image/product_code.png" border="0" align="center" alt="Product Form" />&nbsp;&nbsp;';
 $title .= $action;
 
@@ -988,17 +985,17 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/related.png' width='16' heigh
 ?>
         <table class="adminform">
                 <tr class="row0">
-                        <td colspan="2"><h2><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS ?></h2></td>
+                        <td>
+				<h2><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS ?>
+				<?php echo vmToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?></h2>
+			</td>
                 </tr>
                 <tr class="row1">
-                        <td width="21%" valign="top">
-                                <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_INFO_MSG_PLEASE_SELECT ?>:</div>
-                                <br/><br/>
-				<?php echo vmToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?>
-			</td>
-			<td width="79%" style="vertical-align:top;"><?php 
+			<td style="vertical-align:top;"><?php 
 			echo $ps_html->related_product_lists("related_product_list", $related_products, $product_id, false );
-			?></td>
+			?>
+			
+			</td>
 		</tr>
 	</table>
 <!-- Changed Product Type - Begin -->

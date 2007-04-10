@@ -425,15 +425,26 @@ class ps_html {
 				$other_products[$db->f("product_id")] = $db->f("category_name").'\\'.$db->f("product_name");
 			}
 		}
+		echo '<table width="100%"><tr><td width="35%">';
+		echo $VM_LANG->_PHPSHOP_FILTER.': <input type="text" name="filterrelated" size="20" onkeyup="relatedfilter.set( this.value );" /><br/>';
+		echo '<input type="checkbox" name="ignorecaseswitcher" id="ignorecaseswitcher" onchange="relatedfilter.set_ignore_case( !this.checked );"  />
+			<label for="ignorecaseswitcher">Case-sensitive filtering</label><br /><br />';
 		$this->dropdown_display('all_products', '', $other_products, 20, 'multiple="multiple" ondblclick="opt.transferRight()"');
-		echo '<div style="vertical-align: top;display:inline;width: 5%;">
-				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferRight();" value=" &gt; " />
-				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferLeft()" value=" &lt; " /></div>';
-		
+		echo '</td>
+			<td align="middle" valign="top" width="10%">
+				<br/><br/><br/>
+				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferRight();" value=" &gt; " /><br /><br />
+				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferLeft()" value=" &lt; " />
+			</td>
+			<td width="55%">';
+		echo '<strong>'.$VM_LANG->_PHPSHOP_RELATED_PRODUCTS.'</strong><br/>';
 		$this->dropdown_display($list_name, '', $related_products, 20, 'multiple="multiple" ondblclick="opt.transferLeft()"');
 		echo '<input type="hidden" name="related_products" value="'.implode('|', $values ).'" />';
-		echo '<div style="vertical-align: top;display:inline;font-weight:bold;">'.$VM_LANG->_PHPSHOP_RELATED_PRODUCTS.'</div>';
-		echo vmCommonHTML::scriptTag('','var opt = new OptionTransfer("all_products","'.$list_name.'");
+		
+		echo '</td></tr></table>';
+		echo vmCommonHTML::scriptTag('','
+var relatedfilter = new filterlist(document.adminForm.all_products);
+var opt = new OptionTransfer(\'all_products\',"'.$list_name.'");
 //opt.setAutoSort(false);
 opt.setDelimiter(\'|\');
 opt.saveNewRightOptions( \'related_products\' );
