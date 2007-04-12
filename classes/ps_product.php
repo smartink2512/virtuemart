@@ -465,7 +465,8 @@ class ps_product extends vmAbstractObject {
 	 */
 	function update( &$d ) {
 		global $vmLogger;
-
+		require_once(CLASSPATH.'ps_product_attribute.php');
+		
 		if (!$this->validate($d)) {
 			return false;
 		}

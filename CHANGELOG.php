@@ -35,6 +35,27 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.04.2007 soeren
+
++ added a new table "jos_vm_cart" to store the contents of the cart of logged-in users
+!!! DATABASE STRUCTURE CHANGED !!!
+	### Permanently store the cart contents for registered users
+	CREATE TABLE `jos_vm_cart` (
+	`user_id` INT( 11 ) NOT NULL ,
+	`cart_content` TEXT NOT NULL ,
+	`last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+	PRIMARY KEY ( `user_id` )
+	) TYPE = MYISAM COMMENT = 'Stores the cart contents of a user';
+	###
+
+	
+11.04.2007 soeren
+^ updated ExtJS from 1.0 alpha3 to 1.0 beta2
+
+10.04.2007 soeren
+
++ added a filtering option to the related product select list, so searching for products is easier now
+
 05.04.2007 soeren
 
 ^ changed "related products" form in product form to use Option Tansfer from one select list to another

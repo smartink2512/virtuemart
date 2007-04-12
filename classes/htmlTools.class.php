@@ -377,7 +377,8 @@ class mShopTabs {
 	*/
 	function endPane() {
 		echo "</div>";
-		$scripttag = "var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
+		$scripttag = "Ext.QuickTips.init();
+		var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
 		$num = 0;
 		foreach ( $this->tabs as $id => $title ) {
 			$scripttag .= "tabItem$num = tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
@@ -397,7 +398,7 @@ class mShopTabs {
 	* @param paneid - This is the parent pane to build this tab on
 	*/
 	function startTab( $tabText, $paneid ) {
-		echo "<div class=\"tab-page\" id=\"".$paneid."\" title=\"$tabText\">";
+		echo "<div class=\"tab-page\" id=\"".$paneid."\">";
 		$this->tabs[$paneid] = $tabText;
 	}
 

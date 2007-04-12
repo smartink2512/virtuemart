@@ -210,7 +210,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='center' width='16' height='16' border='0' align='absmiddle' /> $info_label", "info-page");
+$tabs->startTab( $info_label, "info-page");
 ?>
 <table class="adminform">
   <tr> 
@@ -368,7 +368,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='center' widt
   
 <?php
 $tabs->endTab();
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' height='16' align='absmiddle' border='0' /> $display_label", "display-page");
+$tabs->startTab( $display_label, "display-page");
 ?>
   <table class="adminform">
     <tr> 
@@ -547,7 +547,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' heigh
   </table>
 <?php
 $tabs->endTab();
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/options.png' width='16' height='16' align='absmiddle' border='0' /> $status_label", "status-page");
+$tabs->startTab( $status_label, "status-page");
 ?>
 
   <table class="adminform">
@@ -766,7 +766,7 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
 }
 
 $tabs->endTab();
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/info.png' width='16' height='16' align='absmiddle' border='0' alt='info' /> $dim_weight_label", "about-page");
+$tabs->startTab( $dim_weight_label, "about-page");
 
 ?>
 
@@ -863,7 +863,7 @@ echo "<h2>$dim_weight_label</h2>";
 <?php
 $tabs->endTab();
 
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/image.png' width='16' height='16' align='absmiddle' border='0' /> $images_label", "images-page");
+$tabs->startTab( $images_label, "images-page");
 
 $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resized") );
 
@@ -981,7 +981,7 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
 <?php
 $tabs->endTab();
 
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/related.png' width='16' height='16' align='absmiddle' border='0' /> ".$VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
+$tabs->startTab( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
 ?>
         <table class="adminform">
                 <tr class="row0">
@@ -1040,7 +1040,7 @@ while ($dba->next_record()) {
 
 	$product_type_id = $dba->f("product_type_id");
 
-	$tabs->startTab( "<img src='". IMAGEURL ."ps_image/info.png' width='16' height='16' align='center' border='0' /> ".$dba->f('product_type_name'), "parameter-page-$product_type_id");
+	$tabs->startTab( $dba->f('product_type_name'), "parameter-page-$product_type_id");
 
 	$q  = "SELECT * FROM #__{vm}_product_type_parameter WHERE ";
 	$q .= "product_type_id='$product_type_id' ";
@@ -1199,7 +1199,7 @@ if( $clone_product == "1" ) {
                 FROM #__{vm}_product
                 WHERE product_parent_id='".mosGetParam($_REQUEST, 'product_id')."' " );
 	if( $db->num_rows() > 0 ) {
-		$tabs->startTab( "<img src='". IMAGEURL ."ps_image/copy_f2.gif' width='16' height='16' align='absmiddle' border='0' />Clone Product Otions", 'clone-page' );
+		$tabs->startTab( 'Clone Product Otions', 'clone-page' );
 		echo "<h3>Also clone these Child Items:</h3>";
 	
 		while( $db->next_record() ) {
@@ -1224,7 +1224,7 @@ if( $product_id ) {
 					LEFT JOIN `#__users` ON `user_id` = `id`
 					WHERE `product_id`=' . $product_id );
 	if( $dbw->num_rows() > 0 ) {
-		$tabs->startTab( "<img src='". IMAGEURL ."ps_image/queue.png' border='0' align='absmiddle' />Waiting List", 'waiting-list-tab' );
+		$tabs->startTab( 'Waiting List', 'waiting-list-tab' );
 
 		echo '<table class="adminform"><tr><td><h2>Users waiting to be notified when this product is back in stock:</h2></td></tr>';
 		echo '<tr><td><input type="hidden" value="'.$db->f('product_in_stock').'" name="product_in_stock_old" />';

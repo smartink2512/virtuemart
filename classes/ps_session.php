@@ -526,8 +526,9 @@ class ps_session {
 		}
 		if( $encodeAmpersands ) {
 	        $text = ampReplace( $text );
-	    } 
-	    
+	    }  else {
+		$text = str_replace( '&amp;', '&', $text );
+	    }
 		return $text;
 	}
 

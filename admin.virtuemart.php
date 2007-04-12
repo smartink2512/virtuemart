@@ -157,14 +157,6 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			        collapsible: true,
 			        autoScroll:true
 			    },
-			    south: {
-			        split:true,
-			        initialSize: 50,
-			        minSize: 100,
-			        maxSize: 200,
-			        collapsible: true,
-			        autoScroll:true
-			    },
 			    center: {
 			        autoScroll:true,
 			        tabPosition: 'top',

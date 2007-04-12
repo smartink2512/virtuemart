@@ -195,7 +195,7 @@ var MooPrompt = box = new Class({
 				if (this.options.overlay) {
 					this.overlay.remove();
 					}
-				this.container.remove();
+				try{ this.container.remove(); } catch(e){}
 			}.bind(this)
 		}).custom(1, 0);
 	}

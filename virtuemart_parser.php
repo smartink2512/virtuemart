@@ -187,8 +187,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 					$my_page= explode ( '.', $page );
 					$modulename = $my_page[0];
 					$pagename = $my_page[1];
-					$_REQUEST['keyword']= $_SESSION['session_userstate']['keyword'];
-					$_REQUEST['category_id']= $_SESSION['session_userstate']['category_id'];
+					$_REQUEST['keyword']= mosGetParam($_SESSION['session_userstate'], 'keyword' );
+					$_REQUEST['category_id']= mosGetParam( $_SESSION['session_userstate'], 'category_id' );
 					$_REQUEST['product_id']=$product_id = $_SESSION['session_userstate']['product_id'];
 				}
 			}
