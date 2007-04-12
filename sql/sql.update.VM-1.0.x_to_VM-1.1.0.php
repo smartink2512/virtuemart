@@ -239,6 +239,14 @@ $db->query( "INSERT INTO `#__{vm}_function` (`function_id`, `module_id`, `functi
 $db->query( "INSERT INTO `#__{vm}_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
 (186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');" );
 
+# 12.04.2007 Cart Storage for registered users
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_cart` (
+`user_id` INT( 11 ) NOT NULL ,
+`cart_content` TEXT NOT NULL ,
+`last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+PRIMARY KEY ( `user_id` )
+) TYPE = MYISAM COMMENT = 'Stores the cart contents of a user'" );
+
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'");
 
 ?>

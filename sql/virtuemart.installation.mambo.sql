@@ -87,7 +87,13 @@ CREATE TABLE IF NOT EXISTS `mos_vm_auth_user_vendor` (
 
 
 ## --------------------------------------------------------
-
+CREATE TABLE IF NOT EXISTS `mos_vm_cart` (
+`user_id` INT( 11 ) NOT NULL ,
+`cart_content` TEXT NOT NULL ,
+`last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+PRIMARY KEY ( `user_id` )
+) TYPE = MYISAM COMMENT = 'Stores the cart contents of a user';
+	
 ## 
 ## Table structure for table `mos_vm_category`
 ## 

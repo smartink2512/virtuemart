@@ -84,7 +84,14 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_auth_user_vendor` (
 
 
 ## --------------------------------------------------------
-
+## 12.04.2007: Cart Storage for registered users
+$db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_cart` (
+`user_id` INT( 11 ) NOT NULL ,
+`cart_content` TEXT NOT NULL ,
+`last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+PRIMARY KEY ( `user_id` )
+) TYPE = MYISAM COMMENT = 'Stores the cart contents of a user'" );
+	
 ## 
 ## Table structure for table `#__{vm}_category`
 ## 

@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -34,15 +34,42 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *************************************************************************/
 
 class ps_cart {
-	var $classname="ps_cart";
 
 	/**
 	 * Calls the constructor
 	 *
-	 * @return array An empty cart
+	 * @return array A fresh, empty cart or the old cart of a registered user
 	 */
 	function initCart() {
 		global $my, $cart, $sess;
+
+		$db = new ps_DB();
+		// If the user is logged in, we can try to retrieve the current cart from the database
+		if( $my->id > 0 ) {
+			$q = 'SELECT `cart_content` FROM `#__{vm}_cart` WHERE `user_id`='.$my->id;
+			$db->query( $q );
+			if( $db->next_record() ) {
+				// Fill the cart from the contents of the field cart_content, which holds a serialized array
+				$contents = $db->f('cart_content');
+				$_SESSION['cart'] = unserialize( $contents );
+				// Now check if all products are still published and existant
+				$products_in_cart = array();
+				for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
+					$products_in_cart[$_SESSION['cart'][$i]['product_id']] = (int)$_SESSION['cart'][$i]['product_id'];
+				}
+				if( !empty( $products_in_cart )) {
+					$db->query('SELECT product_id FROM #__{vm}_product WHERE product_id IN('.implode(',', $products_in_cart ).') AND product_publish=\'Y\'' );
+					while( $db->next_record() ) {
+						unset( $products_in_cart[$db->f('product_id')] );
+					}
+					foreach ( $products_in_cart as $product_id ) {
+						// Delete those products who have been unpublished or deleted meanwhile
+						ps_cart::delete( array('product_id'=>$product_id, 'description'=>''), true);
+					}
+				}
+				return $_SESSION['cart'];
+			}
+		}
 		// Register the cart
 		if (empty($_SESSION['cart'])) {
 			$cart = array();
@@ -61,6 +88,7 @@ class ps_cart {
 		}
 		return $_SESSION['cart'];
 	}
+	
 	/**
  	* adds an item to the shopping cart
  	* @author pablo
@@ -237,6 +265,7 @@ class ps_cart {
 			}
 		} // End Iteration through Prod id's
 		$cart = $_SESSION['cart'];
+		ps_cart::saveCart();
 
 		// Ouput info message with cart update details /*
 		if($total_quantity !=0 || $total_updated !=0 || $total_deleted !=0) {
@@ -368,7 +397,7 @@ class ps_cart {
 			// Update the Coupon Discount !!
 			$_POST['do_coupon'] = 'yes';
 		}
-		$_SESSION["cart"]=$_SESSION['cart'];
+		ps_cart::saveCart();
 		return array($updated_prod,$deleted_prod);
 	}
 
@@ -376,9 +405,10 @@ class ps_cart {
 	 * deletes a given product_id from the cart
 	 *
 	 * @param array $d
+	 * @param boolean $force Force the deletion of a product_id regardless of the description (=selected attributes)
 	 * @return boolan Result of the deletion
 	 */
-	function delete($d) {
+	function delete($d, $force=false) {
 
 		$temp = array();
 		if( !empty( $d["prod_id"])) {
@@ -396,23 +426,24 @@ class ps_cart {
 		for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
 			// modified for the advanced attribute modification
 			if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
-			&&
-			($_SESSION['cart'][$i]["description"] == stripslashes($d["description"]) )
+			&& ($_SESSION['cart'][$i]["description"] == stripslashes($d["description"] || $force) )
 			) {
 				$deleted = $_SESSION['cart'][$i]['quantity'];
 			}
-			if (
-			($_SESSION['cart'][$i]["product_id"] != $product_id)
-			||
-			($_SESSION['cart'][$i]["description"] != stripslashes($d["description"]))
+			if ( ($_SESSION['cart'][$i]["product_id"] != $product_id
+			|| $_SESSION['cart'][$i]["description"] != stripslashes($d["description"] )
+			 )
 			) {
+				if( ($_SESSION['cart'][$i]["product_id"] == $product_id && $force )) {
+					continue;
+				}
 				$temp[$j++] = $_SESSION['cart'][$i];
 			}
 
 		}
 		$temp["idx"] = $j;
 		$_SESSION['cart'] = $temp;
-
+		ps_cart::saveCart();
 		if( !empty( $_SESSION['coupon_discount'] )) {
 			// Update the Coupon Discount !!
 			require_once( CLASSPATH . "ps_coupon.php" );
@@ -422,7 +453,20 @@ class ps_cart {
 		return $deleted;
 	}
 
-
+	/**
+	 * Saves the cart array into the table jos_vm_cart
+	 *
+	 */
+	function saveCart() {
+		global $db, $my, $mosConfig_lifetime, $func;
+		if( $my->id > 0 ) {
+			$cart_contents = serialize( $_SESSION['cart'] );
+			//$cart_contents = mysql_real_escape_string( $cart_contents );
+			$q = "REPLACE INTO `#__{vm}_cart` (`user_id`, `cart_content` ) VALUES ( ".$my->id.", '$cart_contents' )";
+			$db->query( $q );
+		}
+	}
+	
 	/**
 	 * Empties the cart
 	 * @author pablo
