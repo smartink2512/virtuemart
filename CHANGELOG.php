@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14.04.2007 macallf
+# Fixed task 1261: navigation pathway only showing last category.
+
 12.04.2007 soeren
 
 + added a new table "jos_vm_cart" to store the contents of the cart of logged-in users

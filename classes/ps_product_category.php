@@ -1181,7 +1181,7 @@ class ps_product_category extends vmAbstractObject {
 		$db = new ps_DB;
 
 		static $i=0;
-		$category_list = array();
+		static $category_list = array();
 		$q = "SELECT category_id, category_name,category_parent_id FROM #__{vm}_category, #__{vm}_category_xref WHERE ";
 		$q .= "#__{vm}_category_xref.category_child_id='$category_id' ";
 		$q .= "AND #__{vm}_category.category_id='$category_id'";
