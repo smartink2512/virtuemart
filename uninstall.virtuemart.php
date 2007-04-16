@@ -46,6 +46,7 @@ function com_uninstall() {
 	$db->query( 'DROP TABLE `#__{vm}_auth_group`;' );
 	$db->query( 'DROP TABLE `#__{vm}_auth_user_group`;' );
 	$db->query( 'DROP TABLE `#__{vm}_auth_user_vendor`;' );
+    $db->query( 'DROP TABLE `#__{vm}_cart`;' );
 	$db->query( 'DROP TABLE `#__{vm}_category`;' );
 	$db->query( 'DROP TABLE `#__{vm}_category_xref`;' );
 	$db->query( 'DROP TABLE `#__{vm}_country`;' );
@@ -53,6 +54,7 @@ function com_uninstall() {
 	$db->query( 'DROP TABLE `#__{vm}_creditcard`;' );
 	$db->query( 'DROP TABLE `#__{vm}_csv`;' );
 	$db->query( 'DROP TABLE `#__{vm}_currency`;' );
+    $db->query( 'DROP TABLE `#__{vm}_export`;' );
 	$db->query( 'DROP TABLE `#__{vm}_function`;' );
 	$db->query( 'DROP TABLE `#__{vm}_manufacturer`;' );
 	$db->query( 'DROP TABLE `#__{vm}_manufacturer_category`;' );

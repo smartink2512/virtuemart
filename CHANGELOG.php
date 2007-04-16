@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+16.04.2007 macallf
+# Fixed task 1265: uninstall doesn't drop all tables.
+
 14.04.2007 macallf
 # Fixed task 1261: navigation pathway only showing last category.
 
