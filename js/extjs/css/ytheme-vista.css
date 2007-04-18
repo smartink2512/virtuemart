@@ -1,5 +1,5 @@
 /*
- * Ext JS Library 1.0 Beta 2
+ * Ext JS Library 1.0
  * Copyright(c) 2006-2007, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -242,6 +242,10 @@
 }
 .x-tip .x-tip-bd-right {
 	background-image: url(../images/vista/qtip/tip-sprite.gif);
+}
+
+.x-tip .x-tip-bd-inner {
+    padding:2px;
 }
 
 /* BorderLayout */

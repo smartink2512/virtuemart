@@ -1,5 +1,5 @@
 /*
- * Ext JS Library 1.0 Beta 2
+ * Ext JS Library 1.0
  * Copyright(c) 2006-2007, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -2000,6 +2000,7 @@ body.x-body-masked .x-dlg select {
 	padding: 0;
 	vertical-align: middle;
 	width: 16px;
+    background-repeat: no-repeat;
 }
 .x-tree-node-collapsed .x-tree-node-icon, .x-tree-node-expanded .x-tree-node-icon, .x-tree-node-leaf .x-tree-node-icon{
 	border: 0 none;
@@ -2009,17 +2010,18 @@ body.x-body-masked .x-dlg select {
 	vertical-align: middle;
 	width: 16px;
 	background-position:center;
+    background-repeat: no-repeat;
 }
 
 
 .x-tree-node-collapsed .x-tree-node-icon{
-	background:transparent url(../images/default/tree/folder.gif);
+	background-image:url(../images/default/tree/folder.gif);
 }
 .x-tree-node-expanded .x-tree-node-icon{
-	background:transparent url(../images/default/tree/folder-open.gif);
+	background-image:url(../images/default/tree/folder-open.gif);
 }
 .x-tree-node-leaf .x-tree-node-icon{
-	background:transparent url(../images/default/tree/leaf.gif);
+	background-image:url(../images/default/tree/leaf.gif);
 }
 
 .x-tree-noicon .x-tree-node-icon{
@@ -2027,7 +2029,7 @@ body.x-body-masked .x-dlg select {
 }
 
 .x-tree-node-loading .x-tree-node-icon{
-	background:transparent url(../images/default/tree/loading.gif) !important;
+	background-image:url(../images/default/tree/loading.gif) !important;
 }
 .x-tree-node-loading a span{
 	 font-style: italic;
@@ -2036,25 +2038,25 @@ body.x-body-masked .x-dlg select {
 
 
 .x-tree-lines .x-tree-elbow{
-	background:transparent url(../images/default/tree/elbow.gif);
+	background-image:url(../images/default/tree/elbow.gif);
 }
 .x-tree-lines .x-tree-elbow-plus{
-	background:transparent url(../images/default/tree/elbow-plus.gif);
+	background-image:url(../images/default/tree/elbow-plus.gif);
 }
 .x-tree-lines .x-tree-elbow-minus{
-	background:transparent url(../images/default/tree/elbow-minus.gif);
+	background-image:url(../images/default/tree/elbow-minus.gif);
 }
 .x-tree-lines .x-tree-elbow-end{
-	background:transparent url(../images/default/tree/elbow-end.gif);
+	background-image:url(../images/default/tree/elbow-end.gif);
 }
 .x-tree-lines .x-tree-elbow-end-plus{
-	background:transparent url(../images/default/tree/elbow-end-plus.gif);
+	background-image:url(../images/default/tree/elbow-end-plus.gif);
 }
 .x-tree-lines .x-tree-elbow-end-minus{
-	background:transparent url(../images/default/tree/elbow-end-minus.gif);
+	background-image:url(../images/default/tree/elbow-end-minus.gif);
 }
 .x-tree-lines .x-tree-elbow-line{
-	background:transparent url(../images/default/tree/elbow-line.gif);
+	background-image:url(../images/default/tree/elbow-line.gif);
 }
 
 
@@ -2062,19 +2064,19 @@ body.x-body-masked .x-dlg select {
 	background:transparent;
 }
 .x-tree-no-lines .x-tree-elbow-plus{
-	background:transparent url(../images/default/tree/elbow-plus-nl.gif);
+	background-image:url(../images/default/tree/elbow-plus-nl.gif);
 }
 .x-tree-no-lines .x-tree-elbow-minus{
-	background:transparent url(../images/default/tree/elbow-minus-nl.gif);
+	background-image:url(../images/default/tree/elbow-minus-nl.gif);
 }
 .x-tree-no-lines .x-tree-elbow-end{
 	background:transparent;
 }
 .x-tree-no-lines .x-tree-elbow-end-plus{
-	background:transparent url(../images/default/tree/elbow-end-plus-nl.gif);
+	background-image:url(../images/default/tree/elbow-end-plus-nl.gif);
 }
 .x-tree-no-lines .x-tree-elbow-end-minus{
-	background:transparent url(../images/default/tree/elbow-end-minus-nl.gif);
+	background-image:url(../images/default/tree/elbow-end-minus-nl.gif);
 }
 .x-tree-no-lines .x-tree-elbow-line{
 	background:transparent;
@@ -2089,7 +2091,7 @@ body.x-body-masked .x-dlg select {
 }
 .x-tree-node{
 	color: black;
-	font: normal 11px arial, helvetica, sans-serif;
+	font: normal 11px arial, tahoma, helvetica, sans-serif;
 	white-space: nowrap;
 }
 .x-tree-node a, .x-dd-drag-ghost a{
@@ -2176,7 +2178,7 @@ body.x-body-masked .x-dlg select {
 	height: 15px;
 	float:right;
 	width: 15px;
-    margin:2px;
+    margin:0 0 2px 2px;
     cursor:pointer;
     display:none;
 }
@@ -2235,7 +2237,7 @@ body.x-body-masked .x-dlg select {
     margin:0 !important;
     line-height:14px;
     color:#222;
-    padding:2px 2px;
+    padding:0;
     float:left;
 }
 
@@ -2271,7 +2273,9 @@ body.x-body-masked .x-dlg select {
     padding-left:24px;
     background:transparent url(../images/default/form/exclamation.gif) no-repeat 2px 2px;
 }
-
+.x-form-invalid-tip .x-tip-bd-inner {
+    padding:2px;
+}
 .x-date-picker {
     border: 1px solid #1b376c;
     border-top:0 none;
