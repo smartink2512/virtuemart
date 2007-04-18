@@ -44,7 +44,7 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "", 
-					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$total.")\" />" => "",
+					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$pageNav->limit.")\" />" => "",
 					$VM_LANG->_VM_FIELDMANAGER_NAME => "width=\"20%\"",
 					$VM_LANG->_VM_FIELDMANAGER_TITLE => "width=\"20%\"",
 					$VM_LANG->_VM_FIELDMANAGER_TYPE => "width=\"10%\"",
@@ -53,7 +53,7 @@ $columns = Array(  "#" => "",
 					$VM_LANG->_VM_FIELDMANAGER_SHOW_ON_REGISTRATION => "width=\"5%\"",
 					$VM_LANG->_VM_FIELDMANAGER_SHOW_ON_ACCOUNT => "width=\"5%\"",
 					$VM_LANG->_VM_FIELDMANAGER_REORDER => "width=\"5%\"",
-					vmCommonHTML::getSaveOrderButton( $total, 'changeordering' ) => 'width="8%"',
+					vmCommonHTML::getSaveOrderButton( min($total - $pageNav->limitstart, $pageNav->limit ), 'changeordering' ) => 'width="8%"',
 					$VM_LANG->_E_REMOVE => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

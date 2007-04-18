@@ -67,7 +67,7 @@ $formObj->startForm();
 
 ?>
 
-<table class="adminForm">
+<table class="adminform">
     <tr> 
       <td valign="top" colspan="2"> 
         </td>

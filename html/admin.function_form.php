@@ -60,7 +60,7 @@ $formObj->startForm();
     <tr> 
       <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_PERMS ?>:</td>
       <td width="76%"> 
-        <?php $perm->list_perms( 'function_perms', explode( ',', $db->sf("function_perms")), 5, true ) ?>
+        <?php $perm->list_perms( 'function_perms', explode( ',', $db->f("function_perms")), 5, true ) ?>
       </td>
     </tr>
     <tr> 

@@ -31,7 +31,7 @@ if (!empty($shipping_carrier_id)) {
   $db->next_record();
 }
 ?><br />
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table class="adminform">
 	<tr>
 		<td width="21%" ><div align="right"><?php echo $VM_LANG->_PHPSHOP_CARRIER_FORM_NAME ?>:</div></td>
 		<td width="79%" ><input class="inputbox" type="text" name="shipping_carrier_name" size="32" maxlength="255" value="<?php $db->sp("shipping_carrier_name") ?>"></td>

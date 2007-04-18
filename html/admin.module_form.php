@@ -42,7 +42,7 @@ $formObj->startForm();
       <td width="24%" align="right" ><?php echo $VM_LANG->_PHPSHOP_MODULE_FORM_PERMS ?>:</td>
       <td width="76%" > 
         <?php
-        $module_perms = explode( ',', $db->sf("module_perms") );
+        $module_perms = explode( ',', $db->f("module_perms") );
         $perm->list_perms( 'module_perms', $module_perms, 5, true );
         ?>
       </td>
