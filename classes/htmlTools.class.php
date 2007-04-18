@@ -939,10 +939,7 @@ class vmCommonHTML extends mosHTML {
 	function loadYUI( ) {
 		global $mosConfig_live_site, $vm_mainframe;
 		if( !defined( "_YUI_LOADED" )) {
-			
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/yui/utilities/utilities.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/yui/container/assets/container.css' );
-
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/yui-utilities.js' );
 			define ( "_YUI_LOADED", "1" );
 		}
 	}
