@@ -377,8 +377,7 @@ class mShopTabs {
 	*/
 	function endPane() {
 		echo "</div>";
-		$scripttag = "Ext.QuickTips.init();
-		var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
+		$scripttag = "var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
 		$num = 0;
 		foreach ( $this->tabs as $id => $title ) {
 			$scripttag .= "tabItem$num = tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
