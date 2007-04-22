@@ -1898,6 +1898,13 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_FEDEX_LBL_METHOD = 'Shipping Method';
 	var $_VM_FEDEX_LBL_PRICE = 'Price';
 	var $_PROMPT_CLOSE = 'Close';
+    var $_VM_FEATURED_PRODUCT = "Featured Products";
+    var $_VM_LATEST_PRODUCT = "Latest Products";
+    var $_VM_RECENT_PRODUCTS = "Recently Viewed Products";
+    var $_VM_RECOVER_CART = 'Recover Saved Cart';
+    var $_VM_RECOVER_CART_REPLACE = 'Replace Cart with Saved Cart';
+    var $_VM_RECOVER_CART_MERGE = 'Add Saved Cart to Current Cart';
+    var $_VM_RECOVER_CART_DELETE = 'Delete Saved Cart';
         
 }
 class phpShopLanguage extends vmLanguage { }

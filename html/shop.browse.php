@@ -430,7 +430,9 @@ else {
 }
 $browsepage_footer = $tpl->fetch_cache( 'browse/includes/browse_pagenav.tpl.php' );
 $tpl->set( 'browsepage_footer', $browsepage_footer );
-
+$recent_products = $ps_product->recentProducts(null,$tpl->get_cfg('showRecent', 5));
+$tpl->set('recent_products',$recent_products);
+$tpl->set('ps_product',$ps_product);
 echo $tpl->fetch_cache( $tpl->config->get( 'productListStyle' ) );
 }
 ?>

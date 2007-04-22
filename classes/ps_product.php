@@ -2092,7 +2092,7 @@ class ps_product extends vmAbstractObject {
 						$i == 1 ? $i++ : $i--;
 					}
 					$prices_table .= "</tbody></table>";
-					if( @$_REQUEST['page'] == "shop.browse" ) {
+					if( @$_REQUEST['page'] != "shop.product_details" ) {
 						$html .= mm_ToolTip( $prices_table );
 					}
 					else
@@ -2104,6 +2104,7 @@ class ps_product extends vmAbstractObject {
 		$tpl->set( 'text_including_tax', $text_including_tax );
 		$tpl->set( 'undiscounted_price', @$undiscounted_price );
 		$tpl->set( 'base_price', $base_price );
+        $tpl->set( 'price_table', $html);
 		return $tpl->fetch_cache( 'common/price.tpl.php');
 
 	}
@@ -2448,7 +2449,187 @@ class ps_product extends vmAbstractObject {
         }
         return array($min_order,$max_order);
     }
+    
+    
+    function featuredProducts($random, $products, $categories) {
+    global $sess, $VM_LANG, $mm_action_url;
+    require_once( CLASSPATH . 'ps_product_attribute.php');
+    $ps_product_attribute = new ps_product_attribute();
+    $db = new ps_DB;
+    $tpl = new $GLOBALS['VM_THEMECLASS']();
+    $category_id = null;
+    if($categories) {
+        $category_id =  mosGetParam( $_REQUEST,'category_id', null);
+    }
+        if ( $category_id ) {
+	        $q  = "SELECT DISTINCT product_sku,#__{vm}_product.product_id,product_name,product_s_desc,product_thumb_image FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE \n";
+	        $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') \n";
+	        $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id \n";
+	        $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id \n";
+            $q .= "AND #__{vm}_category.category_id='$category_id' \n";
+	        $q .= "AND #__{vm}_product.product_publish='Y' \n";
+	        $q .= "AND #__{vm}_product.product_special='Y' \n";
+	        if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+		        $q .= " AND product_in_stock > 0 \n";
+	        }
+	        $q .= "ORDER BY RAND() LIMIT 0, $products";
+        }
+        else {
+	        $q  = "SELECT DISTINCT product_sku,product_id,product_name,product_s_desc,product_thumb_image FROM #__{vm}_product WHERE ";
+	        $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
+	        $q .= "AND #__{vm}_product.product_publish='Y' ";
+	        $q .= "AND #__{vm}_product.product_special='Y' ";
+	        if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
+		        $q .= " AND product_in_stock > 0 ";
+	        }
+	        $q .= "ORDER BY RAND() LIMIT 0, $products";
+        }
+        $db->query($q);
+        // Output using template
+        if( $db->num_rows() > 0 ) {
+	        $i = 0;
+            $featured_products = array();
+	        while($db->next_record()) {
+                $flypage = $this->get_flypage($db->f("product_id"));
+                $featured_products[$i]['product_sku'] = $db->f("product_sku");
+                $featured_products[$i]['product_name'] = $db->f("product_name");
+                $price = "";
+                if (_SHOW_PRICES == '1') {
+				    // Show price, but without "including X% tax"
+				    $price = $this->show_price( $db->f("product_id"), false );
+			    }
+                $featured_products[$i]['product_price'] = $price;
+                $featured_products[$i]['product_s_desc'] = $db->f("product_s_desc");
+                $featured_products[$i]['product_url'] = $db->f("product_name");
+                $featured_products[$i]['product_thumb'] = $db->f("product_thumb_image");
+                $featured_products[$i]['product_id'] = $db->f("product_id");
+                $featured_products[$i]['flypage'] = $flypage;
+                $featured_products[$i]['form_addtocart'] = "";
+                if (USE_AS_CATALOGUE != '1' && $price != "" 
+                && !stristr( $price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )
+                && !$this->product_has_attributes( $db->f('product_id'), true )
+                && $tpl->get_cfg( 'showAddtocartButtonOnProductList' ) ) {
+			        $tpl->set( 'i', $i );
+			        $tpl->set( 'product_id', $db->f('product_id') );
+			        $tpl->set( 'ps_product_attribute', $ps_product_attribute );
+			        $featured_products[$i]['form_addtocart'] = $tpl->fetch( 'browse/includes/addtocart_form.tpl.php' );
+			        $featured_products[$i]['has_addtocart'] = true;
+		        }
+		        $i++;
+	        }
+            $tpl->set( 'featured_products', $featured_products );
+            return $tpl->fetch_cache( 'common/featuredProducts.tpl.php'); 
+        }
+    }
+    
+    function latestProducts($random, $products) {
+    return "";
+    }
 
+    function addRecentProduct($product_id,$category_id,$maxviewed) {
+    	global $recentproducts;
+    	//Check to see if we alread have recent
+    	if($_SESSION['recent']['idx'] !=0) {
+    		for($i=0;$i<$_SESSION['recent']['idx'];$i++){
+    			//Check if it already exists and remove and reorder array
+    			if($_SESSION['recent'][$i]['product_id']==$product_id) {
+    				for($k=$i;$k<$_SESSION['recent']['idx']-1;$k++){
+    					$_SESSION['recent'][$k]=$_SESSION['recent'][$k+1];	
+    				}
+    				array_pop($_SESSION['recent']);
+    				$_SESSION['recent']['idx']--;
+    			}
+    		}
+    	}
+    	// add product to recently viewed
+    	$_SESSION['recent'][$_SESSION['recent']['idx']]['product_id'] = $product_id;
+    	$_SESSION['recent'][$_SESSION['recent']['idx']]['category_id'] = $category_id;
+    	$_SESSION['recent']['idx']++;
+    	//Check to see if we have reached are limit and remove first item
+    	if($_SESSION['recent']['idx'] > $maxviewed+1) {
+    		for($k=0;$k<$_SESSION['recent']['idx']-1;$k++){
+    			$_SESSION['recent'][$k]=$_SESSION['recent'][$k+1];	
+    		}
+    		array_pop($_SESSION['recent']);
+    		$_SESSION['recent']['idx']--;
+    	}
+    }
+    
+    function recentProducts($product_id,$maxitems) {
+    	global $db, $VM_LANG, $sess;
+    	$recentproducts = $_SESSION['recent'];
+    	//No recent products so return empty
+		if($recentproducts['idx'] == 0) {
+			//return "";
+		}
+    	$tpl = new $GLOBALS['VM_THEMECLASS']();
+		$db = new ps_DB;
+        $dbp = new ps_DB;
+		$k=0;
+		$recent = array();
+		// Iterate through loop backwards (newest to oldest)
+		for($i=$recentproducts['idx']-1;$i >= 0;$i--) {
+			//Check if on current product and don't display
+			if($recentproducts[$i]['product_id']== $product_id){
+				continue;
+			}
+			// If we have not reached max products add the next product
+			if($k < $maxitems+1) {
+				$prod_id = $recentproducts[$i]['product_id'];
+				$category_id = $recentproducts[$i]['category_id'];
+				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc,product_thumb_image ";
+				$q .= "FROM #__{vm}_product as p,#__{vm}_category as c,#__{vm}_product_category_xref as cx ";
+				$q .= "WHERE p.product_id = '$prod_id' ";
+				$q .= "AND c.category_id = '$category_id' ";
+				$q .= "AND p.product_id = cx.product_id ";
+				$q .= "AND c.category_id=cx.category_id LIMIT 0,1";
+				$db->query( $q );
+                if(!$this->is_product($prod_id )) {
+                    $prod_id_p = $this->get_field($prod_id,"product_parent_id");
+                    $q = "SELECT product_name,category_name, c.category_flypage,product_s_desc,product_thumb_image ";
+				    $q .= "FROM #__{vm}_product as p,#__{vm}_category as c,#__{vm}_product_category_xref as cx ";
+				    $q .= "WHERE p.product_id = '$prod_id_p' ";
+				    $q .= "AND c.category_id = '$category_id' ";
+				    $q .= "AND p.product_id = cx.product_id ";
+				    $q .= "AND c.category_id=cx.category_id LIMIT 0,1";
+                    $dbp->query( $q );
+                }
+				$recent[$k]['product_s_desc'] = $db->f("product_s_desc");
+                if($recent[$k]['product_s_desc']=="" && !empty($prod_id_p)) {
+                    $recent[$k]['product_s_desc'] = $dbp->f("product_s_desc");
+                }
+				$flypage = $db->f("category_flypage");  
+                if(empty($flypage) && !empty($prod_id_p))
+                    $flypage = $dbp->sf("category_flypage");
+				if( empty( $flypage )) {
+					$flypage = FLYPAGE;
+				}
+				$flypage = str_replace( 'shop.', '', $flypage);
+				$flypage = stristr( $flypage, '.tpl') ? $flypage : $flypage . '.tpl';
+				$recent[$k]['product_url'] = $sess->url("page=shop.product_details&amp;product_id=$prod_id&amp;category_id=$category_id&amp;flypage=$flypage");
+				$recent[$k]['category_url'] = $sess->url("page=shop.browse&amp;category_id=$category_id");
+				$recent[$k]['product_name'] = $db->f("product_name"); 
+                if($recent[$k]['product_name']=="" && !empty($prod_id_p)) {
+                    $recent[$k]['product_name'] = $dbp->f("product_name");
+                }
+				$recent[$k]['category_name'] = $db->f("category_name");
+                if($recent[$k]['category_name']=="" && !empty($prod_id_p)) {
+                    $recent[$k]['category_name'] = $dbp->f("category_name");
+                }
+				$recent[$k]['product_thumb_image'] = $db->f("product_thumb_image");
+				if($recent[$k]['product_thumb_image']=="" && !empty($prod_id_p)) {
+                    $recent[$k]['product_thumb_image'] = $dbp->f("product_thumb_image");
+                }
+				$k++;
+			}
+		}
+		if($k == 0) {
+			return "";
+		}
+		$tpl->set("recent_products",$recent);
+		return $tpl->fetch( 'common/recent.tpl.php' );
+    }
+    
 }  // ENd of CLASS ps_product
 
 ?>

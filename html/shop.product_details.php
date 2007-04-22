@@ -132,7 +132,7 @@ if (empty($category_id) || empty( $flypage ))  {
 	}
 	$_GET['category_id'] = $category_id = $db->f("category_id");
 }
-
+$ps_product->addRecentProduct($product_id,$category_id,$tpl->get_cfg('showRecent', 5));
 /* Flypage Parameter has old page syntax: shop.flypage
 * so let's get the second part - flypage */
 $default['category_flypage'] = FLYPAGE;
@@ -159,7 +159,7 @@ if( !empty($next_product) ) {
     if( $keyword != '') {
     	$url_parameters .= "&amp;keyword=".urlencode($keyword);
     }
-	$next_product_url = $sess->url( $url_parameters );
+	$next_product_url = str_replace("index2","index",$sess->url( $url_parameters ));
 }
 if( !empty($previous_product) ) {
 	$url_parameters = 'page='.$page.'&product_id='.$previous_product['product_id'].'&flypage='.$flypage;
@@ -169,7 +169,7 @@ if( !empty($previous_product) ) {
     if( $keyword != '') {
     	$url_parameters .= "&amp;keyword=".urlencode($keyword);
     }
-	$previous_product_url = $sess->url( $url_parameters );
+	$previous_product_url = str_replace("index2","index",$sess->url( $url_parameters ));
 }
 
 $tpl->set( 'next_product', $next_product );
@@ -342,6 +342,8 @@ else {
 	$product_type = $ps_product_type->list_product_type($product_id);
 }
 
+
+$recent_products = $ps_product->recentProducts($product_id,$tpl->get_cfg('showRecent', 5));
 /**
 * This has changed since VM 1.1.0  
 * Now we have a template object that can use all variables 
@@ -405,7 +407,7 @@ $tpl->set( "product_packaging", $product_packaging ); // Changed Packaging
 $tpl->set( "ask_seller_href", $ask_seller_href ); // Product Enquiry!
 $tpl->set( "ask_seller_text", $ask_seller_text ); // Product Enquiry!
 $tpl->set( "ask_seller", $ask_seller ); // Product Enquiry!
-
+$tpl->set( "recent_products", $recent_products); // Recent products
 /* Finish and Print out the Page */
 echo $tpl->fetch_cache( '/product_details/'.$flypage . '.php' );
 

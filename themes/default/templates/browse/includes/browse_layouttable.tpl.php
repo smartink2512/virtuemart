@@ -38,5 +38,13 @@ foreach($data as $key => $value ) {
 // Display the table
 echo $table->toHtml();
 ?>
-<br class="clr" /><br />
+<br class="clr" />
+<?php 
+// Show Featured Products
+if( $this->get_cfg( 'showFeatured', 1 )) {
+    /* featuredproducts(random, no_of_products,category_based) no_of_products 0 = all else numeric amount
+    edit featuredproduct.tpl.php to edit layout */
+    echo $ps_product->featuredProducts(true,10,true);
+} ?>
+<?php echo $recent_products ?>
 <?php echo $browsepage_footer ?>

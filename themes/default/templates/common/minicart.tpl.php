@@ -46,4 +46,7 @@ if(!$vmMinicart) { ?>
     <br/><br style="clear:both" /><div align="center">
     <?php echo $show_cart ?>
     </div><br/>
-<?php } ?>
+
+<?php } 
+echo $saved_cart;
+?>

@@ -45,17 +45,19 @@ class ps_cart {
 
 		$db = new ps_DB();
 		// If the user is logged in, we can try to retrieve the current cart from the database
-		if( $my->id > 0 ) {
+        // We store the items in a new SESSION var
+		if( $my->id > 0 && empty($_SESSION['savedcart'])) {
 			$q = 'SELECT `cart_content` FROM `#__{vm}_cart` WHERE `user_id`='.$my->id;
 			$db->query( $q );
 			if( $db->next_record() ) {
 				// Fill the cart from the contents of the field cart_content, which holds a serialized array
 				$contents = $db->f('cart_content');
-				$_SESSION['cart'] = unserialize( $contents );
+                $_SESSION['savedcart'] = array();
+				$_SESSION['savedcart'] = unserialize( $contents );
 				// Now check if all products are still published and existant
 				$products_in_cart = array();
-				for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
-					$products_in_cart[$_SESSION['cart'][$i]['product_id']] = (int)$_SESSION['cart'][$i]['product_id'];
+				for ($i=0;$i<$_SESSION['savedcart']["idx"];$i++) {
+					$products_in_cart[$_SESSION['savedcart'][$i]['product_id']] = (int)$_SESSION['savedcart'][$i]['product_id'];
 				}
 				if( !empty( $products_in_cart )) {
 					$db->query('SELECT product_id FROM #__{vm}_product WHERE product_id IN('.implode(',', $products_in_cart ).') AND product_publish=\'Y\'' );
@@ -64,9 +66,15 @@ class ps_cart {
 					}
 					foreach ( $products_in_cart as $product_id ) {
 						// Delete those products who have been unpublished or deleted meanwhile
-						ps_cart::delete( array('product_id'=>$product_id, 'description'=>''), true);
+						ps_cart::deleteSaved( array('product_id'=>$product_id,'description'=>''), true);
 					}
 				}
+                // If Current cart is empty populate with saved cart
+                if(@$_SESSION['cart']['idx'] == 0) {
+                    $_SESSION['cart'] = $_SESSION['savedcart'];
+                    $_SESSION['savedcart']['idx'] = 0;
+                    ps_cart::saveCart();
+                }
 				return $_SESSION['cart'];
 			}
 		}
@@ -239,9 +247,8 @@ class ps_cart {
 
 			// If we did not update then add the item
 			if ((!$updated) && ($quantity)){
-				list($min,$max) = ps_product::product_order_levels($product_id);
 				$k = $_SESSION['cart']["idx"];
-				
+
 				$_SESSION['cart'][$k]["quantity"] = $quantity;
 				$_SESSION['cart'][$k]["product_id"] = $product_id;
 				$_SESSION['cart'][$k]["parent_id"] = $e["product_id"];
@@ -452,6 +459,131 @@ class ps_cart {
 
 		return $deleted;
 	}
+    
+    /**
+	 * deletes a given product_id from the saved cart
+	 *
+	 * @param array $d
+	 * @return boolan Result of the deletion
+	 */
+	function deleteSaved($d,$force = false) {
+    
+		$temp = array();
+		if( !empty( $d["prod_id"])) {
+			$product_id = (int)$d["prod_id"];
+		} else {
+			$product_id = (int)$d["product_id"];
+		}
+		$deleted = 0;
+		if (!$product_id) {
+			$_SESSION['last_page'] = "shop.cart";
+			return False;
+		}
+
+		
+		$j = 0;
+		for ($i=0;$i<$_SESSION['savedcart']["idx"];$i++) {
+			// modified for the advanced attribute modification
+			if ( ($_SESSION['savedcart'][$i]["product_id"] != $product_id
+			|| $_SESSION['savedcart'][$i]["description"] != stripslashes($d["description"] )
+			 )
+			) {
+				if( ($_SESSION['savedcart'][$i]["product_id"] == $product_id && $force )) {
+					continue;
+				}
+				$temp[$j++] = $_SESSION['savedcart'][$i];
+			}
+
+		}
+		$temp["idx"] = $j;
+		$_SESSION['savedcart'] = $temp;
+
+		return true;
+	}
+    
+    	/**
+	 * updates the quantity of a product_id in the cart
+	 * @author pablo
+	 * @param array $d
+	 * @return boolean result of the update
+	 */
+	function updateSaved(&$d) {
+		global $sess,$VM_LANG, $vmLogger, $func, $page;
+		$d = $GLOBALS['vmInputFilter']->process( $d );
+		include_class("product");
+
+		$db = new ps_DB;
+		$product_id = $d["prod_id"];
+		$quantity = isset($d["quantity"]) ? (int)$d["quantity"] : 1;
+		$_SESSION['last_page'] = "shop.savedcart";
+
+		// Check for negative quantity
+		if ($quantity < 0) {
+			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
+			return False;
+		}
+
+		if (!ereg("^[0-9]*$", $quantity)) {
+			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
+			return False;
+		}
+
+		if (!$product_id) {
+			return false;
+		}
+		if ($quantity == 0) {
+			$deleted_prod = $this->deleteSaved($d);
+		}
+		else {
+			for ($i=0;$i<$_SESSION['savedcart']["idx"];$i++) {
+				// modified for the advanced attribute modification
+				if ( ($_SESSION['savedcart'][$i]["product_id"] == $product_id )
+				&&
+				($_SESSION['savedcart'][$i]["description"] == stripslashes($d["description"]) )
+				) {
+					// Get min and max order levels
+					list($min,$max) = ps_product::product_order_levels($product_id);
+					If ($min!= 0 && $quantity < $min) {
+						eval( "\$msg = \"".$VM_LANG->_VM_CART_MIN_ORDER."\";" );
+						$vmLogger->warning( $msg );
+						return false;
+					}
+					if ($max !=0 && $quantity>$max) {
+						eval( "\$msg = \"".$VM_LANG->_VM_CART_MAX_ORDER."\";" );
+						$vmLogger->warning( $msg );
+						return false;
+					}
+
+					// Check to see if checking stock quantity
+					if (CHECK_STOCK) {
+						$q = "SELECT product_in_stock ";
+						$q .= "FROM #__{vm}_product where product_id=";
+						$q .= $product_id;
+						$db->query($q);
+						$db->next_record();
+						$product_in_stock = $db->f("product_in_stock");
+						if (empty($product_in_stock)) $product_in_stock = 0;
+						if (($quantity) > $product_in_stock) {
+							Global $notify;
+							$_SESSION['notify'] = array();
+							$_SESSION['notify']['idx'] = 0;
+							$k=0;
+							$notify = $_SESSION['notify'];
+							$_SESSION['notify'][$k]["prod_id"] = $product_id;
+							$_SESSION['notify'][$k]["quantity"] = $quantity;
+							$_SESSION['notify']['idx']++;
+
+							$page = 'shop.waiting_list';
+
+							return true;
+						}
+					}
+					$_SESSION['savedcart'][$i]["quantity"] = $quantity;
+				}
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Saves the cart array into the table jos_vm_cart
@@ -464,6 +596,74 @@ class ps_cart {
 			//$cart_contents = mysql_real_escape_string( $cart_contents );
 			$q = "REPLACE INTO `#__{vm}_cart` (`user_id`, `cart_content` ) VALUES ( ".$my->id.", '$cart_contents' )";
 			$db->query( $q );
+		}
+	}
+    
+    /**
+	 * Replaces the cart array with the saved cart
+	 *
+	 */
+	function replaceCart(&$d) {
+		global $my, $cart,$page;
+		if( $my->id > 0 ) {
+			$this->reset();
+            $_SESSION['cart'] = $_SESSION['savedcart'];
+            $page = "shop.cart";
+            $_SESSION['savedcart']['idx']=0;
+            $cart = $_SESSION['cart'];
+            $this->saveCart();
+            return True;
+		}
+	}
+    
+    /**
+	 * Merges the cart array with the saved cart
+	 *
+	 */
+	function mergeSaved(&$d) {
+		global $my, $cart,$page,$func;
+		if( $my->id > 0 ) {
+            // Iterate through saved cart
+            for($i=0;$i<$_SESSION['savedcart']['idx'];$i++) {
+                $updated = false;
+                // iterate through actual cart
+                for($k=0;$k<$_SESSION['cart']['idx'];$k++) {
+                    // Check if it exists in actual cart
+                    if(($_SESSION['savedcart'][$i]['product_id'] == $_SESSION['cart'][$k]['product_id']) &&
+                    ($_SESSION['savedcart'][$i]["description"] == $_SESSION['cart'][$k]["description"] )) {
+                        $temp = array();
+                        $temp['prod_id'] = $_SESSION['savedcart'][$i]["product_id"];
+                        $temp['quantity'] = $_SESSION['savedcart'][$i]["quantity"];
+                        $temp['description'] = $_SESSION['savedcart'][$i]["description"];
+                        $func = 'cartadd';
+                        $this->update($temp);
+                        $updated = true;
+                    }
+                }
+                // If it hasn't been updated add to the current cart
+                if(!$updated) {
+                    $_SESSION['cart'][$_SESSION['cart']['idx']] = $_SESSION['savedcart'][$i];
+                    $_SESSION['cart']['idx']++;
+                }
+            }
+            $page = "shop.cart";
+            $_SESSION['savedcart']['idx']=0;
+            $cart = $_SESSION['cart'];
+            $this->saveCart();
+            return True;
+		}
+	}
+    
+    /**
+	 * merges the cart array with the saved cart
+	 *
+	 */
+	function deleteCart(&$d) {
+		global $my, $page;
+		if( $my->id > 0 ) {
+            $page = "shop.cart";
+            $_SESSION['savedcart']['idx']=0;
+            return True;
 		}
 	}
 	

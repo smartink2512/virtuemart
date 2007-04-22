@@ -18,15 +18,17 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 require_once( CLASSPATH . 'ps_product.php');
 require_once( CLASSPATH . 'ps_product_category.php');
 $ps_product_category = new ps_product_category();
-
+$ps_product = new ps_product();
 // Show only top level categories and categories that are
 // being published
 $tpl = new $GLOBALS['VM_THEMECLASS']();
 $category_childs = $ps_product_category->get_child_list($category_id);
 $tpl->set( 'categories', $category_childs );
-
-echo $tpl->fetch_cache( 'common/categoryChildlist.tpl.php');
-
-echo $vendor_store_desc;
-
+//echo $vendor_store_desc;
+$categories = $tpl->fetch_cache( 'common/categoryChildlist.tpl.php');
+$tpl->set( 'vendor_store_desc', $vendor_store_desc );
+$tpl->set( 'categories', $categories );
+$tpl->set('ps_product',$ps_product);
+$tpl->set('recent_products',$ps_product->recentProducts(null,$tpl->get_cfg('showRecent', 5)));
+echo $tpl->fetch_cache( 'common/shopIndex.tpl.php');
 ?>

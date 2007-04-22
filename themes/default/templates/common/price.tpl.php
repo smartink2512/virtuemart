@@ -28,6 +28,7 @@ if( !empty( $price_info["product_price_id"] )) { ?>
 	</span>
 <?php
 }
+echo $price_table;
 ?>
 
 

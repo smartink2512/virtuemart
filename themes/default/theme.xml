@@ -66,5 +66,18 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
+        
+        <param name="@spacer" type="spacer" default="" label="" description="" />
+        
+        <param name="showFeatured" type="radio" default="0" label="Show featured products on frontpage?" description="When enabled, featured products will be shown on the front page of VirtueMart.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+        <param name="showlatest" type="radio" default="0" label="Show the latest products on the frontpage?" description="When enabled, latest products will be shown on the front page of VirtueMart.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+        <param name="showRecent" type="text" default="5" label="Number of recent products to Display?" description="The number of recently viwed products to display on the browse and detail pages of VirtueMart.">
+		</param>
     </params>
 </mosinstall>

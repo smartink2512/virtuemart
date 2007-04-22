@@ -35,6 +35,21 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+macallf
+# Added multiple prices to price table
++ Recently viewed products
++ Featured products on shop.index
+^ shop.index.php changed to template system
++ added new functions 
+!!! Database Table - New Entries
+    Database table jos_vm_functions
+    (187, 7, 'replaceSavedCart', 'ps_cart', 'replaceCart', 'Replace cart with saved cart', 'none'),
+    (188, 7, 'mergeSavedCart', 'ps_cart', 'mergeSaved', 'Merge saved cart with cart', 'none'),
+    (189, 7, 'deleteSavedCart', 'ps_cart', 'deleteSaved', 'Delete saved cart', 'none'),
+    (190, 7, 'savedCartDelete', 'ps_cart', 'deleteSaved', 'Delete items from saved cart', 'none'),
+    (191, 7, 'savedCartUpdate', 'ps_cart', 'updateSaved', 'Update saved cart items', 'none');" );
+^ saved cart, now more comprehensive
+
 16.04.2007 macallf
 # Fixed task 1265: uninstall doesn't drop all tables.
 

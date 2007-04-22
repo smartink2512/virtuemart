@@ -417,7 +417,7 @@ class ps_session {
 
 		if( empty( $_REQUEST['shopItemid'] )) {
 			$db = new ps_DB;
-			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published=1 AND access=0");
+			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published=1");
 			if( $db->next_record() ) {
 				$_REQUEST['shopItemid'] = $db->f("id");
 			}
@@ -541,6 +541,18 @@ class ps_session {
 		return true;
 	}
 
+	function initRecentProducts() {
+		global $recentproducts, $sess;
+		// Register the recentproducts
+		if (empty($_SESSION['recent'])) {
+			$recentproducts = array();
+			$recentproducts['idx'] = 0;
+			$_SESSION['recent'] = $recentproducts;
+			return $recentproducts;
+		}
+		
+		return $_SESSION['recent'];
+	}
 
 } // end of class session
 ?>

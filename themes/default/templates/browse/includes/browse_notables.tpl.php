@@ -55,8 +55,15 @@ foreach( $products as $product ) {
 }
 ?>
 </div>
-<br class="clr" /><br />
+<br class="clr" />
 <?php 
+// Show Featured Products
+if( $this->get_cfg( 'showFeatured', 1 )) {
+    /* featuredproducts(random, no_of_products,category_based) no_of_products 0 = all else numeric amount
+    edit featuredproduct.tpl.php to edit layout */
+    echo $ps_product->featuredProducts(true,10,true);
+}
+echo $recent_products;
 echo $browsepage_footer;
 
 ?>

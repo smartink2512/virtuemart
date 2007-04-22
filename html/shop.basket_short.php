@@ -34,6 +34,7 @@ $option = mosgetparam($_REQUEST, "option", null);
 $page =mosGetParam( $_REQUEST, 'page', null );
 $tpl = new $GLOBALS['VM_THEMECLASS']();
 $cart = $_SESSION['cart'];
+$saved_cart = @$_SESSION['savedcart'];
 $auth = $_SESSION['auth'];
 $empty_cart = false;
 $minicart = array();
@@ -154,5 +155,10 @@ $tpl->set('vmMinicart', @$_SESSION['vmMiniCart']);
 $tpl->set('total_products', @$total_products);
 $tpl->set('total_price', @$total_price);
 $tpl->set('show_cart', @$show_cart);
+$saved_cart_text = "";
+if($saved_cart['idx'] != 0) {
+    $saved_cart_text = "<a href=\"".str_replace("Itemid=26","Itemid=34",$sess->url($mm_action_url."index.php?page=shop.savedcart"))."\" class=\"savedCart\">".$VM_LANG->_VM_RECOVER_CART."</a>";
+}
+$tpl->set('saved_cart',$saved_cart_text);
 echo $tpl->fetch_cache( 'common/minicart.tpl.php');
 ?>
