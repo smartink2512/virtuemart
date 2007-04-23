@@ -107,7 +107,8 @@ $sess = new ps_session();
 
 // Initialize the cart
 $cart = ps_cart::initCart();
-
+// Initialise Recent Products
+$recentproducts = ps_session::initRecentProducts();
 // Instantiate the module class
 $ps_module = new ps_module();
 // Instantiate the function class

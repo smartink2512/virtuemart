@@ -35,7 +35,7 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-macallf
+23.04.2007 macallf
 # Added multiple prices to price table
 + Recently viewed products
 + Featured products on shop.index
