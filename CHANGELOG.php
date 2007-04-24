@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.04.2007 gregdev
+# Fixed task #1264 - changed error reporting to use vmLogger; changed notification to use vmMail. 
+
 23.04.2007 macallf
 # Added multiple prices to price table
 + Recently viewed products

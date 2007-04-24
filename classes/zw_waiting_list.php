@@ -30,6 +30,7 @@ class zw_waiting_list {
 	*/
 
 	function validate_add(&$d) {
+		global $vmLogger;
 		$db = new ps_DB;
 		
 		$q = "SELECT waiting_list_id from #__{vm}_waiting_list WHERE ";
@@ -37,36 +38,37 @@ class zw_waiting_list {
 		$q .= "product_id='" . $d["product_id"] . "' AND notified='0'";
 		$db->query($q);
 		if ($db->next_record()) {
-			$d["error"] .= "You are already being notified of this product.";
+			$vmLogger->err('You are already being notified of this product.');
 			return False;
 		}
 		if (!$d["notify_email"]) {
-			$d["error"] .= "You must enter an e-mail address to be on the waiting list.";
+			$vmLogger->err('You must enter an e-mail address to be on the waiting list.');
 			return False;
 		}
 		if (!vmValidateEmail($d["notify_email"])) {
-			$d["error"] .= "Please provide a valid email address.";
+			$vmLogger->err('Please provide a valid email address.');
 			return False;
 		}
 		if (!$d["product_id"]) {
-			$d["error"] .= "You must enter a product to be on the waiting list.";
+			$vmLogger->err('You must enter a product to be on the waiting list.');
 			return False;
 		}
 		return True;
 	}
 
 	function validate_delete($d) {
+		global $vmLogger;
 
 		if (!$d["notify_email"]) {
-			$d["error"] = "ERROR:  Please select a waiting list id to delete.";
+			$vmLogger->err('Please select a waiting list id to delete.');
 			return False;
 		}
 		if (!vmValidateEmail($d["notify_email"])) {
-			$d["error"] .= "Please provide a valid email address.";
+			$vmLogger->err('Please provide a valid email address.');
 			return False;
 		}
 		if (!$d["product_id"]) {
-			$d["error"] .= "You must enter a product id!";
+			$vmLogger->err('You must enter a product id.');
 			return False;
 		}
 		return True;
@@ -143,7 +145,7 @@ class zw_waiting_list {
 	* returns: true
 	**************************************************************************/
 	function notify_list($product_id) {
-		global $sess;
+		global $sess,  $mosConfig_fromname;
 		
 		$option = mosGetParam( $_REQUEST, 'option' );
 		
@@ -188,8 +190,7 @@ class zw_waiting_list {
 
 			// send the e-mail
 			$shopper_email = $db->f("notify_email");
-			mail($shopper_email,
-			$notice_subject, $notice_body, "From: $from_email\n");
+			vmMail($from_email, $mosConfig_fromname, $shopper_email, $notice_subject, $notice_body, "");
 
 			$this->update( $shopper_email, $product_id);
 
