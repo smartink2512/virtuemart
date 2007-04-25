@@ -48,11 +48,12 @@ if( !defined( "_TIGRATREE_LOADED" )) {
 }
 
 // Create the menu output
-$menu_htmlcode = "<div class=\"mainlevel\" style=\"text-align:left;\">
+$menu_htmlcode = "<div class=\"$class_mainlevel\" style=\"text-align:left;\">
 <script type=\"text/javascript\"><!--
-var TREE_ITEMS_$varname = [
-['{$root_label}', '{$sess->url( $mm_action_url.'index.php?page='.HOMEPAGE )}',
-";
+var TREE_ITEMS_$varname = [\n";
+
+// Create the root node
+$menu_htmlcode .= "['".$root_label."', '".$sess->url( 'index.php?page='.HOMEPAGE )."',\n";
 
 // Get the actual category items
 $vmTigraTree->traverse_tree_down($menu_htmlcode);
