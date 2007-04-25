@@ -247,5 +247,7 @@ CREATE TABLE `jos_vm_cart` (
 `last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
 PRIMARY KEY ( `user_id` )
 ) TYPE = MYISAM COMMENT = 'Stores the cart contents of a user';
-	
+
+ALTER TABLE `jos_vm_product_reviews` CHANGE `product_id` `product_id` INT( 11 ) NOT NULL 
+
 UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';

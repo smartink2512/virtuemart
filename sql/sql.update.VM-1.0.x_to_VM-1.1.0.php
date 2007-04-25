@@ -247,6 +247,8 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_cart` (
 PRIMARY KEY ( `user_id` )
 ) TYPE = MYISAM COMMENT = 'Stores the cart contents of a user'" );
 
+$db->query( "ALTER TABLE `#__{vm}_product_reviews` CHANGE `product_id` `product_id` INT( 11 ) NOT NULL ");
+
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'");
 
 ?>
