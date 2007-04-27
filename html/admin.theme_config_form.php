@@ -67,6 +67,7 @@ mosCommonHTML::loadOverlib();
 		</table>
 	
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
+		<input type="hidden" name="ajax_request" value="1" />
 		<input type="hidden" name="func" value="writeThemeConfig" />
 		<input type="hidden" name="page" value="store.index" />
 		<input type="hidden" name="task" value="" />
