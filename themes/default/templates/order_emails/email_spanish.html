@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Your Order Confirmation</title>
+<title>Confirmaci&oacute;n de tu pedido</title>
 <style type="text/css">
 <!--
 .Stil1 {
@@ -10,7 +10,6 @@
 .Stil2 {font-family: Verdana, Arial, Helvetica, sans-serif}
 -->
 </style>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
 
@@ -37,19 +36,19 @@
 <table border=0 cellspacing=0 cellpadding=2 width=100%>
   <!-- begin customer information --> 
   <tr bgcolor="#CCCCCC" class="sectiontableheader"> 
-    <td colspan=2 class="Stil2"><font face="Verdana"><b>Thông tin hóa đơn</b></font></td>
+    <td colspan=2 class="Stil2"><b>Informaci&oacute;n del pedido</b></td>
   </tr>
   <tr class="Stil1"> 
-    <td>Số hóa đơn:</td>
+    <td>N&uacute;mero del pedido:</td>
     <td>{phpShopOrderNumber}</td>
   </tr>
    
   <tr class="Stil1"> 
-    <td>Ngày mua:</td>
+    <td>Fecha del pedido:</td>
     <td>{phpShopOrderDate}</td>
   </tr>
   <tr class="Stil1"> 
-    <td>Tình trạng:</td>
+    <td>Estado del pedido:</td>
     <td>{phpShopOrderStatus}
 </td>
   </tr>
@@ -59,45 +58,45 @@
     <td colspan=2>&nbsp;</td>
   </tr>
   <tr bgcolor="#CCCCCC" class="sectiontableheader"> 
-    <td colspan=2><b><font face="Verdana">Thông tin khách hàng</font></b></td>
+    <td colspan=2><b class="Stil2">Informaci&oacute;n del cliente</b></td>
   </tr>
   <tr valign=top> 
     <td width=50%> <!-- begin billto -->  
       <table width=100% cellspacing=0 cellpadding=2 border=0>
         <tr class="Stil1"> 
-          <td colspan=2><b>Khách hàng</b></td>
+          <td colspan=2><b class="Stil1">Facturar a:</b></td>
         </tr>
         <tr class="Stil1"> 
-          <td>Công ty:</td>
+          <td>Compa&ntilde;&iacute;a :</td>
           <td>{phpShopBTCompany}</td>
         </tr>
         <tr class="Stil1"> 
-          <td>Tên đầy đủ :</td>
+          <td>Nombre Completo :</td>
           <td>{phpShopBTName}</td>
         </tr>
         <tr valign=top class="Stil1"> 
-          <td>Địa chỉ :</td>
+          <td>Direcci&oacute;n :</td>
           <td><p>{phpShopBTStreet1}<br />{phpShopBTStreet2}<br>
           </p>          </td>
         </tr>
         <tr class="Stil1"> 
-          <td>Thành phố :</td>
+          <td>Ciudad :</td>
           <td>{phpShopBTCity}</td>
         </tr>
         <tr class="Stil1"> 
-          <td>Xã/Vùng :</td>
+          <td>Estado/Regi&oacute;n :</td>
           <td>{phpShopBTState}</td>
         </tr>
         <tr class="Stil1"> 
-          <td>Zip :</td>
+          <td>C&oacute;digo Postal :</td>
           <td>{phpShopBTZip}</td>
         </tr>
         <tr class="Stil1"> 
-          <td>Quốc gia :</td>
+          <td>Pa&iacute;s :</td>
           <td>{phpShopBTCountry}</td>
         </tr>
         <tr class="Stil1"> 
-          <td>Điện thoại :</td>
+          <td>Tel&eacute;fono :</td>
           <td>{phpShopBTPhone}</td>
         </tr>
         <tr class="Stil1"> 
@@ -115,39 +114,39 @@
     <!-- begin shipto -->  
       <table width=100% border=0 cellpadding=2 cellspacing=0 class="Stil1">
         <tr> 
-          <td colspan=2><b>Vận chuyển đến</b></td>
+          <td colspan=2><b>Enviar a</b></td>
         </tr>
          <tr> 
-          <td>Công ty:</td>
+          <td>Compa&ntilde;&iacute;a:</td>
           <td>{phpShopSTCompany}</td>
         </tr>
         <tr> 
-          <td>Tên đầy đủ :</td>
+          <td>Nombre Completo :</td>
           <td>{phpShopSTName}</td>
         </tr>
         <tr valign=top> 
-          <td>Địa chỉ :</td>
+          <td>Direcci&oacute;n :</td>
           <td>{phpShopSTStreet1}<br />
           {phpShopSTStreet2}<br></td>
         </tr>
         <tr> 
-          <td>Thành phố :</td>
+          <td>Ciudad :</td>
           <td>{phpShopSTCity}</td>
         </tr>
         <tr> 
-          <td>Xã/Vùng :</td>
+          <td>Estado/Regi&oacute;n :</td>
           <td>{phpShopSTState}</td>
         </tr>
         <tr> 
-          <td>Zip :</td>
+          <td>C&oacute;digo Postal :</td>
           <td>{phpShopSTZip}</td>
         </tr>
         <tr> 
-          <td>Quốc gia :</td>
+          <td>Pa&iacute;s :</td>
           <td>{phpShopSTCountry}</td>
         </tr>
         <tr> 
-          <td>Điện thoại :</td>
+          <td>Tel&eacute;fono :</td>
           <td>{phpShopSTPhone}</td>
         </tr>
         <tr> 
@@ -173,17 +172,17 @@
   </tr>
   <!-- begin order items information --> 
   <tr bgcolor="#CCCCCC" class="Stil2"> 
-    <td colspan=2><b>Danh sách hàng</b></td>
+    <td colspan=2><b>Productos del pedido</b></td>
   </tr>
   <tr> 
     <td colspan=2> 
       <table width=100% cellspacing=0 cellpadding=2 border=0>
         <tr align=left class="Stil1"> 
-          <th>Số lượng</th>
-          <th>Tên</th>
+          <th>Cantidad</th>
+          <th>Nombre</th>
           <th>SKU</th>
-          <th>Giá</th>
-          <th>Tổng cộng</th>
+          <th>Precio</th>
+          <th>Total</th>
         </tr>
          
         {phpShopOrderItems}
@@ -193,20 +192,20 @@
           <td>&nbsp;</td>
         </tr>
         <tr class="Stil1"> 
-          <td colspan=4 align=right>Tổng :</td>
+          <td colspan=4 align=right>Subtotal :</td>
           <td>{phpShopOrderSubtotal}</td>
         </tr>{phpShopOrderDisc1}
         <tr class="Stil1"> 
-          <td colspan=4 align=right>Vận chuyển :</td>
+          <td colspan=4 align=right>Gastos de env&iacute;o :</td>
           <td>{phpShopOrderShipping}</td>
         </tr>
         <tr class="Stil1"> 
-          <td colspan=4 align=right>Tiền thuế :</td>
+          <td colspan=4 align=right>Total impuestos :</td>
           <td>{phpShopOrderTax}</td>
         </tr>
         {phpShopOrderDisc2}
         <tr class="Stil1"> 
-          <td colspan=4 align=right><b>Số tiền phải trả:</b></td>
+          <td colspan=4 align=right><b>Total:</b></td>
           <td>{phpShopOrderTotal}</td>
         </tr>{phpShopOrderDisc3}
       </table>
@@ -218,7 +217,7 @@
     <td colspan=2>&nbsp;</td>
   </tr>
   <tr bgcolor="#CCCCCC" class="sectiontableheader">
-    <td colspan=2><font face="Verdana"><b>Lời nhắn khách hàng</b></font><b class="Stil2"><font face="Verdana">:</font></b></td>
+    <td colspan=2><b class="Stil2">Nota del cliente:</b></td>
   </tr>
   <tr>
     <td colspan=2>
