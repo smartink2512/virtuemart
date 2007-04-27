@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id:connectionTools.class.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
@@ -23,9 +23,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * @since VirtueMart 1.1.0
  */
 class vmConnector {
-	
+
 	var $handle = null;
-	
+
 	/**
 	 * Clears the output buffer, sends a http status code and a content if given
 	 * @static 
@@ -34,10 +34,10 @@ class vmConnector {
 	 * @param string $content
 	 */
 	function sendHeaderAndContent( $http_status=200, $content='', $mime_type='text/html' ) {
-	
+
 		// Clear all Joomla header and buffer stuff
 		while( @ob_end_clean() );
-		
+
 		$http_status = intval( $http_status );
 		header("HTTP/1.0 $http_status");
 		if( $mime_type ) {
@@ -65,7 +65,7 @@ class vmConnector {
 		$urlParts = parse_url( $url );
 		if( !isset( $urlParts['port'] )) $urlParts['port'] = 80;
 		if( !isset( $urlParts['scheme'] )) $urlParts['scheme'] = 'http';
-		
+
 		// Check proxy
 		if( trim( @VM_PROXY_URL ) != '') {
 			if( !stristr(VM_PROXY_URL, 'http')) {
@@ -77,16 +77,16 @@ class vmConnector {
 		}
 		else {
 			$proxyURL = '';
-		}		
-		
+		}
+
 		if( function_exists( "curl_init" )) {
 
 			$vmLogger->debug( 'Using the cURL library for communicating with '.$urlParts['host'] );
 
 			$CR = curl_init();
 			curl_setopt($CR, CURLOPT_URL, $urlParts['scheme'].'://'.$urlParts['host'].':'.$urlParts['port'].$urlParts['path']);
-			
-			// just to get sure the script doesn't die			
+
+			// just to get sure the script doesn't die
 			curl_setopt($CR, CURLOPT_TIMEOUT, 30 );
 			if( !empty( $headers )) {
 				// Add additional headers if provided
@@ -110,7 +110,7 @@ class vmConnector {
 					curl_setopt($CR, CURLOPT_PROXYUSERPWD, VM_PROXY_USER.':'.VM_PROXY_PASS );
 				}
 			}
-			
+
 			if( $urlParts['scheme'] == 'https') {
 				// No PEER certificate validation...as we don't have
 				// a certificate file for it to authenticate the host www.ups.com against!
@@ -126,7 +126,7 @@ class vmConnector {
 				$error = curl_error( $CR );
 			}
 			curl_close( $CR );
-			
+
 			if( !empty( $error )) {
 				$vmLogger->err( $error );
 				return false;
@@ -136,7 +136,7 @@ class vmConnector {
 			}
 		}
 		else {
-			if( $postData ) { 				
+			if( $postData ) {
 				if( !empty( $proxyURL )) {
 					// If we have something to post we need to write into a socket
 					if( $proxyURL['scheme'] == 'https'){
@@ -161,7 +161,7 @@ class vmConnector {
 			else {
 				if( !empty( $proxyURL )) {
 					// Do a read-only fopen transaction
-					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.VM_PROXY_PORT, 'rb' );					
+					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.VM_PROXY_PORT, 'rb' );
 				}
 				else {
 					// Do a read-only fopen transaction
@@ -180,12 +180,12 @@ class vmConnector {
 				$vmLogger->debug('Now posting the variables.' );
 				//send the server request
 				if( !empty( $proxyURL )) {
-				   	fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
-				   	fputs($fp, "Host: ".$proxyURL['host']."\r\n");
+					fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
 
-				   	if( trim( @VM_PROXY_USER )!= '') {
-				   		fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
-				   	}
+					if( trim( @VM_PROXY_USER )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
+					}
 				}
 				else {
 					fputs($fp, 'POST '.$urlParts['path']." HTTP/1.0\r\n");
@@ -198,11 +198,11 @@ class vmConnector {
 			}
 			else {
 				if( !empty( $proxyURL )) {
-				   	fputs($fp, "GET ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
-				   	fputs($fp, "Host: ".$proxyURL['host']."\r\n");
-				   	if( trim( @VM_PROXY_USER )!= '') {
-				   		fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
-				   	}
+					fputs($fp, "GET ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
+					if( trim( @VM_PROXY_USER )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
+					}
 				}
 				else {
 					fputs($fp, 'GET '.$urlParts['path']." HTTP/1.0\r\n");
@@ -210,24 +210,111 @@ class vmConnector {
 				}
 			}
 			// Add additional headers if provided
-		   	foreach( $headers as $header ) {
-		   		fputs($fp, $header."\r\n");
-		   	}
+			foreach( $headers as $header ) {
+				fputs($fp, $header."\r\n");
+			}
 			$data = "";
 			while (!feof($fp)) {
 				$data .= @fgets ($fp, 4096);
 			}
 			fclose( $fp );
-			
+
 			// If didnt get content-lenght, something is wrong, return false.
 			if ( trim($data) == '' ) {
 				$vmLogger->err('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
 				return false;
 			}
 			$result = trim( $data );
-			
+
 			return $result;
 		}
+	}
+	/**
+	* Set headers and send the file to the client
+	*
+	* @author Andreas Gohr <andi@splitbrain.org>
+	* @param string The full path to the file
+	* @param string The Mime Type of the file
+	*/
+	function sendFile($file,$mime){
+		global $vm_mainframe;
+		// send headers
+		header("Content-Type: $mime");
+		
+		list($start,$len) = vmConnector::http_rangeRequest(filesize($file));
+		
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Accept-Ranges: bytes');
+
+		//application mime type is downloadable
+		if(strtolower(substr($mime,0,11)) == 'application'){
+			header('Content-Disposition: attachment; filename="'.basename($file).'";');
+		}
+		
+		$chunksize = 1*(1024*1024);
+		// send file contents
+		$fp = @fopen($file,"rb");
+		if($fp){
+			fseek($fp,$start); //seek to start of range
+
+			$chunk = ($len > $chunksize) ? $chunksize : $len;
+			while (!feof($fp) && $chunk > 0) {
+				@set_time_limit(); // large files can take a lot of time
+				print fread($fp, $chunk);
+				flush();
+				$len -= $chunk;
+				$chunk = ($len > $chunksize) ? $chunksize : $len;
+			}
+			fclose($fp);
+		}else{
+			header("HTTP/1.0 500 Internal Server Error");
+			print "Could not read $file - bad permissions?";
+			$vm_mainframe->close(true);
+		}
+	}
+	/**
+	* Checks and sets headers to handle range requets
+	*
+	* @author  Andreas Gohr <andi@splitbrain.org>
+	* @return array The start byte and the amount of bytes to send
+	* @param int The file size
+	*/
+	function http_rangeRequest($size, $exitOnError=true ){
+		global $vm_mainframe;
+		if(!isset($_SERVER['HTTP_RANGE'])){
+			// no range requested - send the whole file
+			header("Content-Length: $size");
+			return array(0,$size);
+		}
+
+		$t = explode('=', $_SERVER['HTTP_RANGE']);
+		if (!$t[0]=='bytes') {
+			// we only understand byte ranges - send the whole file
+			header("Content-Length: $size");
+			return array(0,$size);
+		}
+
+		$r = explode('-', $t[1]);
+		$start = (int)$r[0];
+		$end = (int)$r[1];
+		if (!$end) $end = $size - 1;
+		if ($start > $end || $start > $size || $end > $size){
+			if( $exitOnError ) {
+				header('HTTP/1.1 416 Requested Range Not Satisfiable');
+				print 'Bad Range Request!';
+				$vm_mainframe->close(true);
+			} else {
+				return array(0,$size);
+			}
+		}
+
+		$tot = $end - $start + 1;
+		header('HTTP/1.1 206 Partial Content');
+		header("Content-Range: bytes {$start}-{$end}/{$size}");
+		header("Content-Length: $tot");
+
+		return array($start,$tot);
 	}
 }
 ?>

@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.04.2007 soeren
+# Task #1273 - Error in creation of HTML confimation Email if more than a specific amount of products was ordered
+# Task #1272 - Error in product attributes with attribute depending price modifier
++ all downloads from the shop can be paused and resumed now (this is extremely useful when downloading bigger files)
+
 24.04.2007 gregdev
 # Fixed task #1264 - changed error reporting to use vmLogger; changed notification to use vmMail.
 # Fixed incompatibility for PHP 4.x with complex quoted string.

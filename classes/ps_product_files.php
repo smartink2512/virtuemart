@@ -692,15 +692,9 @@ class ps_product_files {
 		}
 
 		if( $filename ) {
-
-			header('Content-Type: ' . $dbf->f("file_mimetype"));
-
-			$ext = $dbf->f('file_extension');
-			if(!stristr($dbf->f("file_mimetype"), "pdf") && $ext != 'pdf') {
-				header('Content-Disposition: attachment; filename="' . basename($filename) . '"');
-			}
-			/*** Now send the file!! ***/
-			readfile( $filename );
+			require_once( CLASSPATH.'connectionTools.class.php');
+			
+			vmConnector::sendFile( $filename, $dbf->f("file_mimetype"));
 
 			exit();
 		}

@@ -2124,7 +2124,7 @@ Order Total: '.$order_total.'
 
 			$html = str_replace('{SHIPPING_INFO_LBL}', $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL, $html);
 			if( $this->_SHIPPING ) {
-				$html = str_replace('{SHIPPING_INFO_DETAILS}', $shipping_arr[1]." (".$shipping_arr[2].")", $html);
+				$html = str_replace('{SHIPPING_INFO_DETAILS}', stripslashes($shipping_arr[1])." (".stripslashes($shipping_arr[2]).")", $html);
 			}
 			else {
 				$html = str_replace('{SHIPPING_INFO_DETAILS}', " ./. ", $html);

@@ -427,7 +427,7 @@ class ps_order {
 		$auth  = $_SESSION['auth'];
 
 		$db = new ps_DB;
-		$download_id = strip_tags( $d["download_id"] );
+		$download_id = mosGetParam( $d, "download_id" );
 
 		$q = "SELECT * FROM #__{vm}_product_download WHERE";
 		$q .= " download_id = '$download_id'";
@@ -437,6 +437,7 @@ class ps_order {
 
 		$download_id = $db->f("download_id");
 		$file_name = $db->f("file_name");
+		$datei = DOWNLOADROOT . $file_name;
 		$download_max = $db->f("download_max");
 		$end_date = $db->f("end_date");
 		$zeit=time();
@@ -449,7 +450,7 @@ class ps_order {
 
 		elseif ($download_max=="0") {
 			$q ="DELETE FROM #__{vm}_product_download";
-			$q .=" WHERE download_id = '" . $d["download_id"] . "'";
+			$q .=" WHERE download_id = '" . $download_id . "'";
 			$db->query($q);
 			$db->next_record();
 			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX );
@@ -458,79 +459,67 @@ class ps_order {
 		}
 
 		elseif ($end_date=="0") {
-			$end_date=time(u) + DOWNLOAD_EXPIRE;
+			$end_date=time('u') + DOWNLOAD_EXPIRE;
 			$q ="UPDATE #__{vm}_product_download SET";
 			$q .=" end_date=$end_date";
-			$q .=" WHERE download_id = '" . $d["download_id"] . "'";
+			$q .=" WHERE download_id = '" . $download_id . "'";
 			$db->query($q);
 			$db->next_record();
 		}
 
 		elseif ($zeit > $end_date) {
 			$q ="DELETE FROM #__{vm}_product_download";
-			$q .=" WHERE download_id = '" . $d["download_id"] . "'";
+			$q .=" WHERE download_id = '" . $download_id . "'";
 			$db->query($q);
 			$db->next_record();
 			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_EXP );
 			return false;
 			//mosredirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
-
-		$dl_max = $download_max - 1;
-
-		$q ="UPDATE #__{vm}_product_download SET";
-		$q .=" download_max=$dl_max";
-		$q .=" WHERE download_id = '" . $d["download_id"] . "'";
-		$db->query($q);
-		$db->next_record();
-
-		$datei = DOWNLOADROOT . $file_name;
+		require_once(CLASSPATH.'connectionTools.class.php');
+		// Check if this is a request for a special range of the file (=Resume Download)
+		$range_request = vmConnector::http_rangeRequest( filesize($datei), false );
+		if( $range_request[0] == 0 ) {
+			// If this is not a the request to resume a download,
+			// decrease the download_max to limit the number of downloads
+			$q ="UPDATE `#__{vm}_product_download` SET";
+			$q .=" `download_max`=`download_max` - 1";
+			$q .=" WHERE download_id = '" .$download_id. "'";
+			$db->query($q);
+			$db->next_record();
+		}
+		
 
 		// Check, if file path is correct
 		// and file is
-		if ( file_exists( $datei ) ){
-			if ( is_readable( $datei ) ) {
-				if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
-					$UserBrowser = "Opera";
-				}
-				elseif (ereg('MSIE ([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
-					$UserBrowser = "IE";
-				} else {
-					$UserBrowser = '';
-				}
-				$mime_type = ($UserBrowser == 'IE' || $UserBrowser == 'Opera') ? 'application/octetstream' : 'application/octet-stream';
-
-				// dump anything in the buffer
-				@ob_end_clean();
-
-				header('Content-Type: ' . $mime_type);
-				header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-				header('Content-Length: ' . filesize($datei) );
-
-				if ($UserBrowser == 'IE') {
-					header('Content-Disposition: attachment; filename="' . $file_name . '"');
-					header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-					header('Pragma: public');
-				} else {
-					header('Content-Disposition: attachment; filename="' . $file_name . '"');
-					header('Pragma: no-cache');
-				}
-				/*** Now send the file!! ***/
-				vmReadFileChunked( $datei );
-
-				exit();
-			}
-			else {
-				$vmLogger->err( $VM_LANG->_VM_DOWNLOAD_FILE_NOTREADABLE );
-				return false;
-				//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
-			}
-		}
-		else {
+		if ( !@file_exists( $datei ) ){
 			$vmLogger->err( $VM_LANG->_VM_DOWNLOAD_FILE_NOTFOUND );
 			return false;
 			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
+		if ( !@is_readable( $datei ) ) {
+			$vmLogger->err( $VM_LANG->_VM_DOWNLOAD_FILE_NOTREADABLE );
+			return false;
+			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+		}
+		
+		if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
+			$UserBrowser = "Opera";
+		}
+		elseif (ereg('MSIE ([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
+			$UserBrowser = "IE";
+		} else {
+			$UserBrowser = '';
+		}
+		$mime_type = ($UserBrowser == 'IE' || $UserBrowser == 'Opera') ? 'application/octetstream' : 'application/octet-stream';
+
+		// dump anything in the buffer
+		while( @ob_end_clean() );
+		
+		vmConnector::sendFile( $datei, $mime_type );
+
+		exit();
+			
 	}
 
 	/**************************************************************************

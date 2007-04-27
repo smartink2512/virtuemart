@@ -30,7 +30,7 @@ if ($perm->check("admin,storeadmin,shopper")) { ?>
     <?php
 
   	if (ENABLE_DOWNLOADS == '1') { ?>
-	  	<form method="post" action="<?php echo $mm_action_url ?>index.php" name="downloadForm">
+	  	<form method="get" action="<?php echo $mm_action_url ?>index.php" name="downloadForm">
 		  	<p><?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_INFO ?></p>
 		  	<div align="center">
 			    <input type="text" class="inputbox" value="<?php echo @$_GET['download_id'] ?>" size="32" name="download_id" />
@@ -38,7 +38,7 @@ if ($perm->check("admin,storeadmin,shopper")) { ?>
 			    <input type="submit" onclick="if( document.downloadForm.download_id.value < 12) { alert('<?php echo $VM_LANG->_CONTACT_FORM_NC ?>');return false;} else return true;" class="button" value="<?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_START ?>" />
 			 </div>
 		    <input type="hidden" name="func" value="downloadRequest" />
-		    <input type="hidden" name="option" value="com_virtuemart" />
+		    <input type="hidden" name="option" value="<?php echo VM_COMPONENT_NAME ?>" />
 		    <input type="hidden" name="page" value="shop.downloads" />
 		</form>
    		<?php
