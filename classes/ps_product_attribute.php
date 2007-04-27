@@ -831,7 +831,7 @@ class ps_product_attribute {
 		$attributes_array = array();
 		$attributes = $ps_product->get_field( $product_id, 'attribute' );
         if(!$attributes) {
-            $db = new PS_db;
+            $db = new ps_DB();
             //get parent_id and try again
             $q="SELECT product_parent_id FROM #__{vm}_product WHERE product_id=$product_id";
             $db->query($q);
@@ -892,6 +892,8 @@ class ps_product_attribute {
 				$attributes_array[$attribute_name]['values'][$value]['name'] = $value;
 				$attributes_array[$attribute_name]['values'][$value]['operand'] = $operand;
 				$attributes_array[$attribute_name]['values'][$value]['adjustment'] = $my_mod;
+				$operand = '';
+				$my_mod = 0;
 			}
 			
 		}
