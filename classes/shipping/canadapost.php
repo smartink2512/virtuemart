@@ -267,8 +267,8 @@ class canadapost {
 // print "<br><br>Return XML:<br><form><textarea style='width:100%;height:400px;background-color:#f2f2f2'>\n" . $this->xml_response . "\n\n</textarea></form>";
 ?>
 		<td colspan="4">
-		<?php echo "<SUP>1</SUP>La date de livraison est calculée en ajoutant les normes de livraison de Postes Canada au délai d’exécution des commandes.<BR>"; ?>
-		<?php echo "<SUP>2</SUP>Les frais d’expédition sont calculés en ajoutant les services de Postes Canada aux coûts de manutention. Taxes incluses.<BR>"; ?>
+		<?php echo "<SUP>1</SUP>La date de livraison est calculï¿½e en ajoutant les normes de livraison de Postes Canada au dï¿½lai dï¿½exï¿½cution des commandes.<BR>"; ?>
+		<?php echo "<SUP>2</SUP>Les frais dï¿½expï¿½dition sont calculï¿½s en ajoutant les services de Postes Canada aux coï¿½ts de manutention. Taxes incluses.<BR>"; ?>
 		</td>
 <?php
 		return True;
@@ -288,7 +288,7 @@ class canadapost {
 	}
 	
 	function get_rate( &$d ) {	
-	  $shipping_rate_id = $_REQUEST["shipping_rate_id"];
+	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
 	  $is_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
 	  $order_shipping = $is_arr[3];
 	  
@@ -312,7 +312,7 @@ class canadapost {
     * @returns boolean False when the Shipping method is not in the SESSION
     */
 	function validate( $d ) {
-	  $shipping_rate_id = $_REQUEST["shipping_rate_id"];
+	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
 	  
 	  if( array_key_exists( $shipping_rate_id, $_SESSION ))
 		return true;

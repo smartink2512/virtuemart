@@ -156,9 +156,9 @@ class standard_shipping {
 		$database = new ps_DB;
 
 		if( $shipping_rate_id == 0) {
-			$shipping_rate_id = $_REQUEST["shipping_rate_id"];
+			$shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
 			$ship_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
-			$shipping_rate_id = $ship_arr[4];
+			$shipping_rate_id = (int)$ship_arr[4];
 		}
 		$database->query( "SELECT tax_rate FROM #__{vm}_shipping_rate,#__{vm}_tax_rate WHERE shipping_rate_id='$shipping_rate_id' AND shipping_rate_vat_id=tax_rate_id" );
 		$database->next_record();

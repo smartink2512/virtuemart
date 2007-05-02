@@ -87,7 +87,7 @@ class zone_shipping {
     
   function get_rate( &$d ) {	
   
-	  $shipping_rate_id = $_REQUEST["shipping_rate_id"];
+	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
 	  $zone_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
 	  $order_shipping = $zone_arr[3];
 	  
@@ -99,9 +99,9 @@ class zone_shipping {
       $db = new ps_DB();
       
 	  if( $zone_id == 0 ) {
-          $shipping_rate_id = $_REQUEST["shipping_rate_id"];
+          $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
           $zone_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
-          $zone_id = $zone_arr[4];
+          $zone_id = (int)$zone_arr[4];
       }
 	  $db->query( "SELECT tax_rate FROM #__{vm}_zone_shipping,#__{vm}_tax_rate WHERE zone_id='$zone_id' AND zone_tax_rate=tax_rate_id" );
       $db->next_record();
@@ -116,7 +116,7 @@ class zone_shipping {
     * @returns boolean False when the Shipping method is not in the SESSION
     */
 	function validate( $d ) {
-	  $shipping_rate_id = $_REQUEST["shipping_rate_id"];
+	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
 	  
 	  if( array_key_exists( $shipping_rate_id, $_SESSION ))
 		return true;

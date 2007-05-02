@@ -338,7 +338,7 @@ class intershipper {
 	}
 	
 	function get_rate( &$d ) {	
-	  $shipping_rate_id = $_REQUEST["shipping_rate_id"];
+	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
 	  $is_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
 	  $order_shipping = $is_arr[3];
 	  
@@ -365,7 +365,7 @@ class intershipper {
     * @returns boolean False when the Shipping method is not in the SESSION
     */
 	function validate( $d ) {
-	  $shipping_rate_id = $_REQUEST["shipping_rate_id"];
+	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
 	  
 	  if( array_key_exists( $shipping_rate_id, $_SESSION ))
 		return true;
