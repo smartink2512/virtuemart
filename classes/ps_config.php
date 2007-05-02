@@ -262,9 +262,9 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					}
 					$config.= " );\n";
 				}
-				elseif( $key == 'PSHOP_OFFLINE_MESSAGE' ) {
+				elseif( $key == 'PSHOP_OFFLINE_MESSAGE' || $key == 'VM_ONCHECKOUT_LEGALINFO_SHORTTEXT'  ) {
 					$value = get_magic_quotes_gpc() ? stripslashes(@$d[$value]) : @$d[$value];
-					$value = $db->getEscaped( $value );
+					$value = str_replace("'","\'",$value);
 					$config .= "define('".$key."', '".$value."');\n";
 				}
 				else {

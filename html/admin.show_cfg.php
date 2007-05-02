@@ -1,5 +1,5 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id$
@@ -21,12 +21,12 @@ require_once(CLASSPATH.'ps_checkout.php');
 global $acl, $VM_BROWSE_ORDERBY_FIELDS, $VM_MODULES_FORCE_HTTPS;
 if( !isset( $VM_BROWSE_ORDERBY_FIELDS )) { $VM_BROWSE_ORDERBY_FIELDS = array(); }
 if( !isset( $VM_MODULES_FORCE_HTTPS )) { $VM_MODULES_FORCE_HTTPS = array('account','checkout'); }
-if( !isset( $VM_CHECKOUT_MODULES )) { 
+if( !isset( $VM_CHECKOUT_MODULES )) {
 	$VM_CHECKOUT_MODULES = array('CHECK_OUT_GET_SHIPPING_ADDR' => array('order' => 1,'enabled'=>1),
-								'CHECK_OUT_GET_SHIPPING_METHOD' => array('order' => 2,'enabled'=>1),
-								'CHECK_OUT_GET_PAYMENT_METHOD' => array('order' => 3,'enabled'=>1),
-								'CHECK_OUT_GET_FINAL_CONFIRMATION' => array('order' => 4,'enabled'=>1)
-							);
+	'CHECK_OUT_GET_SHIPPING_METHOD' => array('order' => 2,'enabled'=>1),
+	'CHECK_OUT_GET_PAYMENT_METHOD' => array('order' => 3,'enabled'=>1),
+	'CHECK_OUT_GET_FINAL_CONFIRMATION' => array('order' => 4,'enabled'=>1)
+	);
 }
 
 $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
@@ -34,13 +34,13 @@ $option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$op
 // Compose the Access DropDown List, for the first time used for setting Price Acess
 $fieldname = 'group_id';
 if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.5 ) {
-        $fieldname = 'id';
+	$fieldname = 'id';
 }
 $db->query( 'SELECT `'.$fieldname.'` FROM #__core_acl_aro_groups WHERE name=\''.VM_PRICE_ACCESS_LEVEL.'\'' );
 $db->next_record();
 $gtree = ps_perm::getGroupChildrenTree( null, 'USERS', false );
 $access_group_list = mosHTML::selectList( $gtree, 'conf_VM_PRICE_ACCESS_LEVEL', 'size="4"', 'value', 'text', $db->f($fieldname) );
-                
+
 $title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_PHPSHOP_CONFIG.'" />&nbsp;';
 $title .= $VM_LANG->_PHPSHOP_CONFIG;
 
@@ -49,7 +49,7 @@ $formObj = &new formFactory( $title );
 //Then Start the form
 $formObj->startForm();
 
-$ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php' ); 
+$ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php' );
 
 $spacer = '&nbsp;&nbsp;&nbsp;';
 $tabs = new mShopTabs(0, 1, "_main");
@@ -108,11 +108,11 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		<tr>
 			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL ?></td>
 			<td><?php
-				echo '<input type="checkbox" value="Y" name="use_price_access" onclick="document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled = document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled ? false : true;" id="use_price_access"';
-				if( VM_PRICE_ACCESS_LEVEL != '0' ) { echo ' checked="checked"'; }
-				echo ' />';
-				echo '<label for="use_price_access"><strong>Enable this feature</strong></label><br />';
-				echo $access_group_list;
+			echo '<input type="checkbox" value="Y" name="use_price_access" onclick="document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled = document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled ? false : true;" id="use_price_access"';
+			if( VM_PRICE_ACCESS_LEVEL != '0' ) { echo ' checked="checked"'; }
+			echo ' />';
+			echo '<label for="use_price_access"><strong>'.$VM_LANG->_VM_CFG_ENABLE_FEATURE .'</strong></label><br />';
+			echo $access_group_list;
 				?>
 			</td>
 			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP ) ?></td>
@@ -318,7 +318,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		
 		<tr>
 			<td class="labelcell"><?php
-				echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION;
+			echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION;
 			?></td>
 			<td colspan="2"><?php
 			if( $mosConfig_allowUserRegistration == '1' ) {
@@ -332,7 +332,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 		</tr>
 		<tr>
 			<td class="labelcell"><?php
-				echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION;
+			echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION;
 			?></td>
 			<td colspan="2"><?php
 			if( $mosConfig_useractivation == '0' ) {
@@ -404,15 +404,15 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			</td>
 			<td>
 			<?php
-				$database->setQuery( "SELECT id AS value, CONCAT( title, ' (', title_alias, ')' ) AS text FROM #__content ORDER BY id" );
-				$content = $database->loadObjectList( );
-				$select =  "<select size=\"5\" name=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" id=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" class=\"inputbox\" style=\"width: 300px;\">\n"; 
-				foreach($content as $objElement) { 
-					$selected = @VM_ONCHECKOUT_LEGALINFO_LINK == $objElement->value ? 'selected="selected"' : '';
-					$select .= "<option title=\"{$objElement->text}\" value=\"{$objElement->value}\" $selected>{$objElement->text}</option>\n"; 
-				} 
-				$select .=  "</select>\n"; 
-				echo $select;
+			$database->setQuery( "SELECT id AS value, CONCAT( title, ' (', title_alias, ')' ) AS text FROM #__content ORDER BY id" );
+			$content = $database->loadObjectList( );
+			$select =  "<select size=\"5\" name=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" id=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" class=\"inputbox\" style=\"width: 300px;\">\n";
+			foreach($content as $objElement) {
+				$selected = @VM_ONCHECKOUT_LEGALINFO_LINK == $objElement->value ? 'selected="selected"' : '';
+				$select .= "<option title=\"{$objElement->text}\" value=\"{$objElement->value}\" $selected>{$objElement->text}</option>\n";
+			}
+			$select .=  "</select>\n";
+			echo $select;
 			?>
 			</td>
 			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP ) ?>
@@ -467,13 +467,13 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			<td>
 				<select id="conf__VM_CURRENCY_CONVERTER_MODULE" name="conf__VM_CURRENCY_CONVERTER_MODULE" class="inputbox">
 					<?php 
-				$files = mosReadDirectory( CLASSPATH."currency/", "convert?.", true, true);
-	            foreach ($files as $file) { 
-	                $file_info = pathinfo($file);
-	                $filename = $file_info['basename'];
-	                $checked = ($filename == VM_CURRENCY_CONVERTER_MODULE) ? 'selected="selected"' : "";
-	                echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>\n";
-	            }
+					$files = mosReadDirectory( CLASSPATH."currency/", "convert?.", true, true);
+					foreach ($files as $file) {
+						$file_info = pathinfo($file);
+						$filename = $file_info['basename'];
+						$checked = ($filename == VM_CURRENCY_CONVERTER_MODULE) ? 'selected="selected"' : "";
+						echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>\n";
+					}
 	            ?>
 				</select>
 			</td>
@@ -537,11 +537,11 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 <?php
 
 $tabs->endTab();
-$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "pathandurl-page");
+$tabs->startTab( $spacer . $VM_LANG->_VM_ADMIN_SECURITY . $spacer, "security-page");
 ?>
 
 <fieldset style="width:48%;float:left;">
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE ?></legend>
+	<legend><?php echo $VM_LANG->_VM_ADMIN_SECURITY_SETTINGS ?></legend>
 	<table class="adminform">
 		<tr>
 			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE ?></td>
@@ -650,8 +650,8 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 </fieldset>
 <br style="clear:both" />
 <?php
-  $tabs->endTab();
-  $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE . $spacer, "site-page");
+$tabs->endTab();
+$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE . $spacer, "site-page");
 ?>
 
 <fieldset style="width:48%;float:left;">
@@ -748,8 +748,8 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
         <td class="labelcell"><?php echo $VM_LANG->_VM_SELECT_THEME ?></td>
         <td>
         <?php 
-        	echo ps_html::list_themes( 'conf_THEME', basename(VM_THEMEURL) );
-        	echo vmCommonHTML::hyperlink($sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL) ), $VM_LANG->_PHPSHOP_CONFIG );
+        echo ps_html::list_themes( 'conf_THEME', basename(VM_THEMEURL) );
+        echo vmCommonHTML::hyperlink($sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL) ), $VM_LANG->_PHPSHOP_CONFIG );
         ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
@@ -822,9 +822,9 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_PATHANDURL . $spacer, "p
 </fieldset>
 <br style="clear:both;" />
 <?php
-  $tabs->endTab();
-  
-  $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING . $spacer, "shipping-page");
+$tabs->endTab();
+
+$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING . $spacer, "shipping-page");
 ?>
 
 <?php
@@ -838,7 +838,7 @@ echo '<input type="hidden" name="shippingMethodCount" value="'.count($rows).'" /
 	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD ?></legend>
 	<table class="adminform" onclick="validateForm();">
 <?php
-foreach( $rows as $row ) { 
+foreach( $rows as $row ) {
     if( $row['filename'] == "standard_shipping.php" ) { ?>
                 <tr>
                     <td>
@@ -847,7 +847,7 @@ foreach( $rows as $row ) {
                     <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD ?></label>
                     </td>
                 </tr><?php  
-                }
+    }
 		elseif( $row['filename'] == "zone_shipping.php" ) { ?>
 				<tr>
                     <td valign="top">
@@ -856,7 +856,7 @@ foreach( $rows as $row ) {
                     <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE ?></label>
                     </td>
                 </tr><?php  
-                }
+		}
 		elseif( $row['filename'] == "ups.php" ) { ?>
 				<tr>
                     <td>
@@ -865,7 +865,7 @@ foreach( $rows as $row ) {
                     <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS ?></label>
                     </td>
                 </tr><?php  
-                }
+		}
 		elseif( $row['filename'] == "intershipper.php" ) { ?>
 			<tr>
                     <td>
@@ -874,7 +874,25 @@ foreach( $rows as $row ) {
                     <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER ?></label>
                     </td>
                 </tr><?php  
-                }
+		}		
+		elseif( $row['filename'] == "flex.php" ) { ?>
+			<tr>
+                    <td>
+                        <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('flex', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="<?php echo basename($row['filename'], ".php") ?>" />
+                    </td>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_FLEX ?></label>
+                    </td>
+                </tr><?php  
+		}		
+		elseif( $row['filename'] == "shipvalue.php" ) { ?>
+			<tr>
+                    <td>
+                        <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('shipvalue', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="<?php echo basename($row['filename'], ".php") ?>" />
+                    </td>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_SHIPVALUE ?></label>
+                    </td>
+                </tr><?php  
+		}
 		elseif( $row['filename'] != "no_shipping.php" ) { ?>
 			<tr>
                 <td>
@@ -882,10 +900,10 @@ foreach( $rows as $row ) {
                 </td>
                 <td><label for="sh<?php echo $i ?>"><?php echo $row["description"]; ?></label></td>
                 </tr><?php    
-                }
-                $i++;
-	}
-	
+		}
+		$i++;
+}
+
 		?>
 		<tr><td colspan="2"><hr /></td></tr>
 			<tr>
@@ -898,8 +916,8 @@ foreach( $rows as $row ) {
         </table>
 </fieldset>
 <?php
-  $tabs->endTab();
-  $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT . $spacer, "checkout-page");
+$tabs->endTab();
+$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT . $spacer, "checkout-page");
 ?>
 
 <table class="adminform">
@@ -930,24 +948,23 @@ foreach( $rows as $row ) {
             	echo '<input type="checkbox" name="VM_CHECKOUT_MODULES['.$stepname.'][enabled]" id="VM_CHECKOUT_MODULES_'.$stepname.'" value="1" '.$readonly.$checked.'/>
             			<label for="VM_CHECKOUT_MODULES_'.$stepname.'"><strong>&quot;'.$VM_LANG->$label.'&quot;</strong></label><br />
             			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            			Show on Step: <input type="text" name="VM_CHECKOUT_MODULES['.$stepname.'][order]" value="'.$step['order'].'" class="inputbox" size="2" /> of the checkout process.
-            			<input type="hidden" name="VM_CHECKOUT_MODULES['.$stepname.'][name]" value="'.$stepname.'" />
+            			'.sprintf( $VM_LANG->_VM_CFG_CHECKOUT_SHOWSTEPINCHECKOUT, '<input type="text" name="VM_CHECKOUT_MODULES['.$stepname.'][order]" value="'.$step['order'].'" class="inputbox" size="2" />' )
+            	.'<input type="hidden" name="VM_CHECKOUT_MODULES['.$stepname.'][name]" value="'.$stepname.'" />
             			<br /><br />';
             	next($checkout_names);
             }
             ?>
         </td>
-        <td width="30%" valign="top"><?php // TODO
-        echo vmToolTip( 'Here you can enable, disable and reorder certain Checkout Steps. You can show multiple Steps
-        				on one Page by giving them the same Step Number.' );
-        			?>
+        <td width="30%" valign="top"><?php 
+        echo vmToolTip( $VM_LANG->_VM_CFG_CHECKOUT_SHOWSTEP_TIP );
+        	?>
         	</td>
     </tr>
   </table>
 
 <?php
-  $tabs->endTab();
-  $tabs->startTab( $spacer. $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS . $spacer, "download-page");
+$tabs->endTab();
+$tabs->startTab( $spacer. $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS . $spacer, "download-page");
 ?>
 
   <table class="adminform">
@@ -964,24 +981,24 @@ foreach( $rows as $row ) {
         <td>
             <select name="conf_ENABLE_DOWNLOAD_STATUS" class="inputbox" >
             <?php
-                $db = new ps_DB;
-                $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
-                $db->query($q);
-                $order_status_code = Array();
-                $order_status_name = Array();
-                
-                while ($db->next_record()) {
-                  $order_status_code[] = $db->f("order_status_code");
-                  $order_status_name[] =  $db->f("order_status_name");
-                }
-                
-                for ($i = 0; $i < sizeof($order_status_code); $i++) {
-                  echo "<option value=\"" . $order_status_code[$i];
-                  if (ENABLE_DOWNLOAD_STATUS == $order_status_code[$i]) 
-                     echo "\" selected=\"selected\">";
-                  else
-                     echo "\">";
-                  echo $order_status_name[$i] . "</option>\n";
+            $db = new ps_DB;
+            $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
+            $db->query($q);
+            $order_status_code = Array();
+            $order_status_name = Array();
+
+            while ($db->next_record()) {
+            	$order_status_code[] = $db->f("order_status_code");
+            	$order_status_name[] =  $db->f("order_status_name");
+            }
+
+            for ($i = 0; $i < sizeof($order_status_code); $i++) {
+            	echo "<option value=\"" . $order_status_code[$i];
+            	if (ENABLE_DOWNLOAD_STATUS == $order_status_code[$i])
+            	echo "\" selected=\"selected\">";
+            	else
+            	echo "\">";
+            	echo $order_status_name[$i] . "</option>\n";
                 }?>
                 </select>
         </td>
@@ -993,13 +1010,13 @@ foreach( $rows as $row ) {
         <td>
             <select name="conf_DISABLE_DOWNLOAD_STATUS" class="inputbox" >
             <?php
-                for ($i = 0; $i < sizeof($order_status_code); $i++) {
-                  echo "<option value=\"" . $order_status_code[$i];
-                  if (DISABLE_DOWNLOAD_STATUS == $order_status_code[$i]) 
-                     echo "\" selected=\"selected\">";
-                  else
-                     echo "\">";
-                  echo $order_status_name[$i] . "</option>\n";
+            for ($i = 0; $i < sizeof($order_status_code); $i++) {
+            	echo "<option value=\"" . $order_status_code[$i];
+            	if (DISABLE_DOWNLOAD_STATUS == $order_status_code[$i])
+            	echo "\" selected=\"selected\">";
+            	else
+            	echo "\">";
+            	echo $order_status_name[$i] . "</option>\n";
                 }?>
                 </select>
         </td>
@@ -1041,8 +1058,8 @@ foreach( $rows as $row ) {
     </table>  
 
 <?php
-  $tabs->endTab();
-  $tabs->startTab( $spacer. $VM_LANG->_VM_ADMIN_CFG_FEED_CONFIGURATION . $spacer, "feed-page");
+$tabs->endTab();
+$tabs->startTab( $spacer. $VM_LANG->_VM_ADMIN_CFG_FEED_CONFIGURATION . $spacer, "feed-page");
   ?>
   <table class="adminform">
    <tr>
@@ -1133,63 +1150,63 @@ foreach( $rows as $row ) {
     </tr>
     </table>
   <?php
-  
-  $tabs->endTab();
-  
-  $tabs->endPane();
-  
-// Add necessary hidden fields
-$formObj->hiddenField( 'myname', 'Jabba Binks' );
 
-// Write your form with mixed tags and text fields
-// and finally close the form:
-$formObj->finishForm( 'writeConfig', 'store.index', $option );
+  $tabs->endTab();
+
+  $tabs->endPane();
+
+  // Add necessary hidden fields
+  $formObj->hiddenField( 'myname', 'Jabba Binks' );
+
+  // Write your form with mixed tags and text fields
+  // and finally close the form:
+  $formObj->finishForm( 'writeConfig', 'store.index', $option );
 ?>   
 <br style="clear:both;" />
 <script type="text/javascript">
 function unCheckAndDisable( disable ) {
 
-    var n = document.adminForm.shippingMethodCount.value;
-    var fldName = 'sh';
+	var n = document.adminForm.shippingMethodCount.value;
+	var fldName = 'sh';
 	var f = document.adminForm;
 	var n2 = 0;
-    if( disable )
-        for (i=0; i < n; i++) {
-            cb = eval( 'f.' + fldName + '' + i );
-            if (cb) {
-                cb.disabled = true;
-                n2++;
-            }
-        }
-    else
-        for (i=0; i < n; i++) {
-            cb = eval( 'f.' + fldName + '' + i );
-            if (cb) {
-                cb.disabled = false;
-                n2++;
-            }
-        }
+	if( disable )
+	for (i=0; i < n; i++) {
+		cb = eval( 'f.' + fldName + '' + i );
+		if (cb) {
+			cb.disabled = true;
+			n2++;
+		}
+	}
+	else
+	for (i=0; i < n; i++) {
+		cb = eval( 'f.' + fldName + '' + i );
+		if (cb) {
+			cb.disabled = false;
+			n2++;
+		}
+	}
 }
 
 function validateForm(pressbutton) {
-    var form = document.adminForm;
-    
-    /* Shipping Configuration */
-    var correct = false;
-    var n = document.adminForm.shippingMethodCount.value;
-    var fldName = 'sh';
+	var form = document.adminForm;
+
+	/* Shipping Configuration */
+	var correct = false;
+	var n = document.adminForm.shippingMethodCount.value;
+	var fldName = 'sh';
 	var f = document.adminForm;
 	var n2 = 0;
-    for (i=0; i <= n; i++) {
-        cb = eval( 'f.' + fldName + '' + i );
-        if (cb) {
-            if(cb.checked)
-                correct = true;
-        }
-    }
-    if(!correct) {
-    	alert('<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION ?>');
-    }
+	for (i=0; i <= n; i++) {
+		cb = eval( 'f.' + fldName + '' + i );
+		if (cb) {
+			if(cb.checked)
+			correct = true;
+		}
+	}
+	if(!correct) {
+		alert('<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION ?>');
+	}
 
 }
 function toggleVisibility( makeVisible, ID ) {

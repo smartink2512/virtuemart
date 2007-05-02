@@ -58,13 +58,13 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 		<center>
 		<?php if( $vmLayout == 'standard') {
 			?>
-			[ <strong>Simple Layout</strong> | 
-			<a href="<?php echo $_SERVER['PHP_SELF'].'?'.( !empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=extended">Extended Layout</a> ]<br />
+			[ <strong><?php echo $VM_LANG->_VM_ADMIN_SIMPLE_LAYOUT ?></strong> | 
+			<a href="<?php echo $_SERVER['PHP_SELF'].'?'.( !empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=extended"><?php echo $VM_LANG->_VM_ADMIN_EXTENDED_LAYOUT ?></a> ]<br />
 			<?php
 		} else { 
 			?>
-			[ <a href="<?php echo $_SERVER['PHP_SELF'].'?'.(!empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=standard">Simple Layout</a> 
-			| <strong>Extended Layout</strong> ]<br />
+			[ <a href="<?php echo $_SERVER['PHP_SELF'].'?'.(!empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=standard"><?php echo $VM_LANG->_VM_ADMIN_SIMPLE_LAYOUT ?></a> 
+			| <strong><?php echo $VM_LANG->_VM_ADMIN_EXTENDED_LAYOUT ?></strong> ]<br />
 			<?php
 		}
 		?><br />
@@ -535,7 +535,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 		?>
 	</div>
 	<center>
-	<b><?php echo 'Your Version' ?></b>
+	<b><?php echo $VM_LANG->_VM_YOUR_VERSION ?></b>
 	</center>
 	<center>
 	<?php echo $VMVERSION->PRODUCT .'&nbsp;' . $VMVERSION->RELEASE .'&nbsp;'. $VMVERSION->DEV_STATUS

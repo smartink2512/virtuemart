@@ -66,7 +66,7 @@ class ps_checkout {
 			// Create a Shipping Object and assign it to the _SHIPPING attribute
 			// We take the first Part of the Shipping Rate Id String
 			// which holds the Class Name of the Shipping Module
-			$rate_array = explode( "|", urldecode($_REQUEST['shipping_rate_id']) );
+			$rate_array = explode( "|", urldecode(mosGetParam($_REQUEST,"shipping_rate_id")) );
 			$filename = basename( $rate_array[0] );
 			if( $filename != '' ) {
 				include_once( CLASSPATH. "shipping/".$filename.".php" );
@@ -1040,7 +1040,7 @@ Order Total: '.$order_total.'
 				}
 			}
 			
-			$description .= $_SESSION['cart'][$i]["description"];
+			$description .= $ps_product->getDescriptionWithTax($_SESSION['cart'][$i]["description"], $dboi->f('product_id'));
 			
 			$product_final_price = round( ($product_price *($my_taxrate+1)), 2 );
 
@@ -1063,7 +1063,7 @@ Order Total: '.$order_total.'
 			$q .= $GLOBALS['product_currency'] . "', ";
 			$q .= "'P','";
 			// added for advanced attribute storage
-			$q .= addslashes( $description ) . "', '";
+			$q .= $db->getEscaped( $description ) . "', '";
 			// END advanced attribute modifications
 			$q .= $timestamp . "','";
 			$q .= $timestamp . "'";
@@ -1208,8 +1208,8 @@ Order Total: '.$order_total.'
 	function get_new_cart_hash() {
 
 		return md5( print_r( $_SESSION['cart'], true)
-		. @$_REQUEST['shipping_rate_id']
-		. @$_REQUEST['payment_method_id']
+		. mosGetParam($_REQUEST,'shipping_rate_id')
+		. mosGetParam($_REQUEST,'payment_method_id')
 		);
 
 	}
@@ -1701,7 +1701,7 @@ Order Total: '.$order_total.'
 		$payment_info_details_text = str_replace( '<br />', "\n", $payment_info_details );
 		
 		// Get the Shipping Details
-		$shipping_arr = explode("|", @urldecode($_REQUEST['shipping_rate_id']) );
+		$shipping_arr = explode("|", urldecode(mosGetParam($_REQUEST,"shipping_rate_id")) );
 		
 		// Headers and Footers
 		// ******************************
@@ -2230,7 +2230,7 @@ Order Total: '.$order_total.'
 		if(NO_SHIPPING=='') {
 
 			echo "<strong>".$VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . ":</strong>&nbsp;";
-			$rate_details = explode( "|", urldecode(urldecode($_REQUEST['shipping_rate_id'])) );
+			$rate_details = explode( "|", urldecode(urldecode(mosGetParam($_REQUEST,'shipping_rate_id'))) );
 			foreach( $rate_details as $k => $v ) {
 				if( $k == 3 ) {
 					echo $CURRENCY_DISPLAY->getFullValue( $v )."; ";

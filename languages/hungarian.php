@@ -1870,6 +1870,17 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_FEDEX_LBL_METHOD = 'Shipping Method';
 	var $_VM_FEDEX_LBL_PRICE = 'Price';
 	var $_PROMPT_CLOSE = 'Close';
+	var $_VM_ADMIN_SIMPLE_LAYOUT = 'Simple Layout';
+	var $_VM_ADMIN_EXTENDED_LAYOUT = 'Extended Layout';
+	var $_VM_YOUR_VERSION = 'Your Version';
+	var $_VM_ADMIN_SECURITY = 'Security';
+	var $_VM_ADMIN_SECURITY_SETTINGS = 'Security Settings';
+	var $_VM_CFG_ENABLE_FEATURE = 'Enable this Feature';
+	var $_VM_CFG_CHECKOUT_SHOWSTEP_TIP = 'Here you can enable, disable and reorder certain Checkout Steps. You can show multiple Steps on one Page by giving them the same Step Number.';
+	var $_VM_UPDATE_STATUS = 'Update Status';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_FLEX = 'Flex Shipping. Fixed shipping cost to set base value of order with percentage of total sale above base value';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_SHIPVALUE = 'Shipping based on order totals. Fixed shipping costs based on values entered in configuration.';
+	var $_VM_CFG_CHECKOUT_SHOWSTEPINCHECKOUT = 'Show on Step: %s of the Checkout Process.';
         
 }
 class phpShopLanguage extends vmLanguage { }

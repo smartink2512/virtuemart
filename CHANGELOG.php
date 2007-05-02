@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.05.2007 soeren
+
+# Task #1280 - Checkout Bar Wrong URL
+
 27.04.2007 soeren
 # Task #1273 - Error in creation of HTML confimation Email if more than a specific amount of products was ordered
 # Task #1272 - Error in product attributes with attribute depending price modifier

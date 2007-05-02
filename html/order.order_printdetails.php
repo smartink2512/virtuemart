@@ -497,3 +497,6 @@ $db->next_record();
   
 // } /* End of security check */
 ?>
+<script type="text/javascript"><!--
+window.document.title="<?php echo $VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW; ?>";
+--></script>
