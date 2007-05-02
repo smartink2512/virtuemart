@@ -37,7 +37,12 @@ foreach ($steps_to_do as $step ) {
 	}
 	else {
 		foreach( $step as $substep ) {
-			echo '<a href="#'.$substep['step_name'].'">'.$substep['step_msg'].'</a><br />';
+			if( $substep['step_order'] > $highlighted_step ) {
+				echo $substep['step_msg'];
+			} else {
+				echo '<a href="#'.$substep['step_name'].'">'.$substep['step_msg'].'</a>';
+			}
+			echo '<br />';
 		}
 	}
 	echo '</td>';

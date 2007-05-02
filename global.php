@@ -117,10 +117,10 @@ $ps_function = new ps_function();
 $ps_shopper_group = new ps_shopper_group();
 
 // Set the mosConfig_live_site to its' SSL equivalent
+$GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];
 if( $_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' || @strstr( $page, "checkout." )) {
 	// temporary solution until we have
 	// $mosConfig_secure_site
-	$GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];
 	$GLOBALS['mosConfig_live_site'] = ereg_replace('/$','',SECUREURL);
 	$mm_action_url = SECUREURL;
 }
