@@ -433,6 +433,10 @@ class ps_checkout {
 		}
 		elseif ($dbp->f("enable_processor") == "B") {
 			$_SESSION['ccdata']['creditcard_code'] = "";
+			$_SESSION['ccdata']['order_payment_name']  = "";
+			$_SESSION['ccdata']['order_payment_number']  = "";
+			$_SESSION['ccdata']['order_payment_expire_month'] = "";
+			$_SESSION['ccdata']['order_payment_expire_year'] = "";
 			// Bank Account
 			require_once( CLASSPATH . 'ps_user.php' );
 			$dbu =& ps_user::getUserInfo( $auth["user_id"], array( 'bank_account_holder','bank_iban','bank_account_nr','bank_sort_code','bank_name' ) ); 
@@ -481,6 +485,10 @@ class ps_checkout {
 		}
 		else {
 			$_SESSION['ccdata']['creditcard_code'] = '';
+			$_SESSION['ccdata']['order_payment_name']  = "";
+			$_SESSION['ccdata']['order_payment_number']  = "";
+			$_SESSION['ccdata']['order_payment_expire_month'] = "";
+			$_SESSION['ccdata']['order_payment_expire_year'] = "";
 		}
 		// Enter additional Payment check procedures here if neccessary
 
