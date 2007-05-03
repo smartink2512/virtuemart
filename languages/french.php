@@ -910,8 +910,6 @@ Votre adresse email ne sera en aucune manière cédée, vendue ou partagée de quelq
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = 'Le mot de passe de votre compte intershipper.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = 'Email InterShipper';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = 'Votre adresse email pour le compte intershipper.';
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = 'Clé de Cryptage';
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = 'Cette clé secrète est utlisée pour coder les données contenues dans la base de données.  Cela implique de protéger ce fichier à la vue de quiconque.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = 'Activer la Progression de Commande';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Cocher pour avoir une progression graphique lors du processus de commande ( 1 - 2 - 3 - 4  avec images).';
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'Sélectionner le type de processus de commande';
@@ -1895,6 +1893,10 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_FLEX = 'Flex Shipping. Fixed shipping cost to set base value of order with percentage of total sale above base value';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_SHIPVALUE = 'Shipping based on order totals. Fixed shipping costs based on values entered in configuration.';
 	var $_VM_CFG_CHECKOUT_SHOWSTEPINCHECKOUT = 'Show on Step: %s of the Checkout Process.';
+	var $_VM_ADMIN_ENCRYPTION_KEY = 'Encryption Key';
+	var $_VM_ADMIN_ENCRYPTION_KEY_TIP = 'Used to safely store and retrieve sensible data (like credit card information) encrypted in the database.';
+	var $_VM_ADMIN_STORE_CREDITCARD_DATA = 'Store Credit Card Information?';
+	var $_VM_ADMIN_STORE_CREDITCARD_DATA_TIP = 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>';
         
 }
 class phpShopLanguage extends vmLanguage { }

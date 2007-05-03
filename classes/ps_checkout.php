@@ -968,14 +968,15 @@ Order Total: '.$order_total.'
 		// Payment number is encrypted using mySQL ENCODE function.
 		$fields = array(
 					'order_id' => $order_id, 
-					'order_payment_code' => $d["order_payment_code"], 
 					'payment_method_id' => $d["payment_method_id"], 
-					'order_payment_expire' => @$_SESSION["ccdata"]["order_payment_expire"], 
 					'order_payment_log' => @$d["order_payment_log"], 
-					'order_payment_name' => @$_SESSION["ccdata"]["order_payment_name"], 
 					'order_payment_trans_id' => $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] )
 				  );
-		if( !empty( $payment_number )) {
+		if( !empty( $payment_number ) && VM_STORE_CREDITCARD_DATA == '1' ) {
+			// Store Credit Card Information only if the Store Owner has decided to do so
+			$fields['order_payment_code'] = $d["order_payment_code"];
+			$fields['order_payment_expire'] = @$_SESSION["ccdata"]["order_payment_expire"];
+			$fields['order_payment_name'] = @$_SESSION["ccdata"]["order_payment_name"];
 			$fields['order_payment_number'] = "ENCODE( '$payment_number','" . ENCODE_KEY . "')";
 			$specialfield = array('order_payment_number');
 		} else {

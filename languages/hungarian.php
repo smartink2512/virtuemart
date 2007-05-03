@@ -911,8 +911,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = 'Az intershipper &uuml;gyf&eacute;l jelszava.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = 'InterShipper e-mail';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = 'Az &ouml;n e-mail c&iacute;me az InterShipper &uuml;gyf&eacute;l-sz&aacute;ml&aacute;hoz.';
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = 'ENCODE KEY';
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = 'Az adatb&aacute;zisban r&ouml;gz&iacute;tett adatok titkos&iacute;t&aacute;s&aacute;ra haszn&aacute;lt kulcs. Azt jelenti, hogy ezt a f&aacute;jlt mindenkor v&eacute;deni kell a megtekint&eacute;stől.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = 'Megengedi a Kassza elj&aacute;r&aacute;s k&eacute;psor megjelen&iacute;t&eacute;s&eacute;t';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Jel&ouml;lje be, ha &oacute;hajtja a kassza elj&aacute;r&aacute;s k&eacute;psor  megjelen&iacute;t&eacute;s&eacute;t a megrendel&eacute;s v&eacute;gleges&iacute;t&eacute;se (kassza műveletsor) alatt ( 1 - 2 - 3 - 4 grafika).';
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'V&aacute;lassza ki az &uuml;zlet kassza folyamat&aacute;t';
@@ -1881,6 +1879,10 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_FLEX = 'Flex Shipping. Fixed shipping cost to set base value of order with percentage of total sale above base value';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_SHIPVALUE = 'Shipping based on order totals. Fixed shipping costs based on values entered in configuration.';
 	var $_VM_CFG_CHECKOUT_SHOWSTEPINCHECKOUT = 'Show on Step: %s of the Checkout Process.';
+	var $_VM_ADMIN_ENCRYPTION_KEY = 'Encryption Key';
+	var $_VM_ADMIN_ENCRYPTION_KEY_TIP = 'Used to safely store and retrieve sensible data (like credit card information) encrypted in the database.';
+	var $_VM_ADMIN_STORE_CREDITCARD_DATA = 'Store Credit Card Information?';
+	var $_VM_ADMIN_STORE_CREDITCARD_DATA_TIP = 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>';
         
 }
 class phpShopLanguage extends vmLanguage { }

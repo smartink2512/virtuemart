@@ -917,8 +917,6 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = '您的 intershipper 帳號的密碼.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = 'InterShipper email';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = '您的 email 給您的 intershipper 帳號.';
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY = '編碼鑰匙';
-	var $_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN = '在資料庫裡使用此鑰匙來加密資料. 這表示這個檔案任何時候都必須被保護不被看到.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = '啟用結帳櫃檯';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = '如果你想在顧客結賬過程中顯示結帳櫃檯(顯示1-2-3-4的圖片進度條)，選擇此項。';
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = '選擇您商店的結帳步驟';
@@ -1908,6 +1906,10 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_FLEX = 'Flex Shipping. Fixed shipping cost to set base value of order with percentage of total sale above base value';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_SHIPVALUE = 'Shipping based on order totals. Fixed shipping costs based on values entered in configuration.';
 	var $_VM_CFG_CHECKOUT_SHOWSTEPINCHECKOUT = 'Show on Step: %s of the Checkout Process.';
+	var $_VM_ADMIN_ENCRYPTION_KEY = 'Encryption Key';
+	var $_VM_ADMIN_ENCRYPTION_KEY_TIP = 'Used to safely store and retrieve sensible data (like credit card information) encrypted in the database.';
+	var $_VM_ADMIN_STORE_CREDITCARD_DATA = 'Store Credit Card Information?';
+	var $_VM_ADMIN_STORE_CREDITCARD_DATA_TIP = 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>';
         
 }
 class phpShopLanguage extends vmLanguage { }

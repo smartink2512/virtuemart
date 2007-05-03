@@ -496,32 +496,6 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY ?>&nbsp;&nbsp;</td>
-			<td>
-				<input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo ENCODE_KEY ?>" />
-			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_ENCODEKEY_EXPLAIN ); ?></td>
-		</tr>
-	<?php
-	  if (stristr($my->usertype, "admin")) { ?>
-		  <tr>
-			<td class="labelcell">
-				<label for="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN ?></label>
-				
-			</td>
-			<td>
-				<input type="checkbox" id="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" name="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" class="inputbox" <?php if (PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '1') echo "checked=\"checked\""; ?> value="1" />
-			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN ) ?>
-			</td>
-		</tr>
-	<?php
-	  }
-	  else {
-	  	echo '<input type="hidden" name="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" value="'.PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS.'" />';
-	  }
-	?>
-		<tr>
 			<td class="labelcell"><label for="conf_DEBUG"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DEBUG ?></label></td>
 			<td>
 				<input type="checkbox" id="conf_DEBUG" name="conf_DEBUG" class="inputbox" <?php if (DEBUG == 1) echo "checked=\"checked\""; ?> value="1" />
@@ -566,15 +540,54 @@ $tabs->startTab( $spacer . $VM_LANG->_VM_ADMIN_SECURITY . $spacer, "security-pag
 	
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_GENERALLY_PREVENT_HTTPS"><?php echo $VM_LANG->_VM_GENERALLY_PREVENT_HTTPS ?></label>
-				
+				<input type="checkbox" id="conf_VM_GENERALLY_PREVENT_HTTPS" name="conf_VM_GENERALLY_PREVENT_HTTPS" class="inputbox" <?php if (@VM_GENERALLY_PREVENT_HTTPS == '1') echo "checked=\"checked\""; ?> value="1" />				
 			</td>
 			<td>
-				<input type="checkbox" id="conf_VM_GENERALLY_PREVENT_HTTPS" name="conf_VM_GENERALLY_PREVENT_HTTPS" class="inputbox" <?php if (@VM_GENERALLY_PREVENT_HTTPS == '1') echo "checked=\"checked\""; ?> value="1" />
+				<label for="conf_VM_GENERALLY_PREVENT_HTTPS"><?php echo $VM_LANG->_VM_GENERALLY_PREVENT_HTTPS ?></label>
 			</td>
 			<td><?php echo vmToolTip( $VM_LANG->_VM_GENERALLY_PREVENT_HTTPS_TIP ) ?>
 			</td>
 		</tr>
+		<tr>
+			<td colspan="3"><hr />&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_ENCRYPTION_KEY ?>&nbsp;&nbsp;</td>
+			<td>
+				<input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo ENCODE_KEY ?>" />
+			</td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ENCRYPTION_KEY_TIP ); ?></td>
+		</tr>
+		<tr>
+			<td class="labelcell">
+				<input type="checkbox" name="conf_VM_STORE_CREDITCARD_DATA" id="conf_VM_STORE_CREDITCARD_DATA" class="inputbox" <?php if (@VM_STORE_CREDITCARD_DATA == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td>
+				<label for="conf_VM_STORE_CREDITCARD_DATA"><?php echo $VM_LANG->_VM_ADMIN_STORE_CREDITCARD_DATA ?>&nbsp;&nbsp;</label>
+			</td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_STORE_CREDITCARD_DATA_TIP ); ?></td>
+		</tr>	
+		<tr>
+			<td colspan="3"><hr />&nbsp;</td>
+		</tr>
+		<?php
+	  if (stristr($my->usertype, "admin")) { ?>
+		  <tr>
+			<td class="labelcell">
+			<input type="checkbox" id="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" name="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" class="inputbox" <?php if (PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '1') echo "checked=\"checked\""; ?> value="1" />
+			</td>
+			<td>
+				<label for="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN ?></label>
+			</td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN ) ?>
+			</td>
+		</tr>
+	<?php
+	  }
+	  else {
+	  	echo '<input type="hidden" name="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" value="'.PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS.'" />';
+	  }
+	?>
 		</table>
 </fieldset>
 <br />
