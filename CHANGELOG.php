@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.05.2007 soeren
++ new configuration parameter: VM_STORE_CREDITCARD_DATA (default=1), the store owner can choose wether credit card information shall be stored encrypted in the database or not
+# authorize.net: Test Mode didn't work. The host test.authorize.net is not used anymore. VM will use a POST var instead to indicate a test request.
+# authorize.net: Response Codes were not correctly recognized due to a wrong setting of the encapsulation character for the response string.
+
 02.05.2007 soeren
 
 # Task #1280 - Checkout Bar Wrong URL

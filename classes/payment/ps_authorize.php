@@ -319,7 +319,7 @@ class ps_authorize {
 		'x_version' => '3.1',
 		'x_login' => AN_LOGIN,
 		'x_tran_key' => $transaction->passkey,
-		'x_test_request' => AN_TEST_REQUEST,
+		'x_test_request' => strtoupper( AN_TEST_REQUEST ),
 
 		// Gateway Response Configuration
 		'x_delim_data' => 'TRUE',
@@ -390,12 +390,8 @@ class ps_authorize {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 		
-		if(AN_TEST_REQUEST=='TRUE') {
-			$host = 'test.authorize.net';
-		} else  {
-			$host = 'secure.authorize.net';
-		}
-		
+		$host = 'secure.authorize.net';
+				
 		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
@@ -529,7 +525,7 @@ class ps_authorize {
 		'x_version' => '3.1',
 		'x_login' => AN_LOGIN,
 		'x_tran_key' => $transaction->passkey,
-		'x_test_request' => AN_TEST_REQUEST,
+		'x_test_request' => strtoupper( AN_TEST_REQUEST ),
 
 		// Gateway Response Configuration
 		'x_delim_data' => 'TRUE',
@@ -601,11 +597,7 @@ class ps_authorize {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 		
-		if(AN_TEST_REQUEST=='TRUE') {
-			$host = 'test.authorize.net';
-		} else  {
-			$host = 'secure.authorize.net';
-		}
+		$host = 'secure.authorize.net';
 		
 		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
