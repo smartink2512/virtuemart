@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 03.05.2007 gregdev
 # Task #966 - Cleared credit card info when using non-credit card payment method.
+# Fixed a text size bug in the product scroller.
 
 03.05.2007 soeren
 + new configuration parameter: VM_STORE_CREDITCARD_DATA (default=1), the store owner can choose wether credit card information shall be stored encrypted in the database or not

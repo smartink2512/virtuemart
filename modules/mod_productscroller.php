@@ -7,7 +7,7 @@
 * @package VirtueMart
 * @subpackage modules
 * 
-* @copyright (C) 2005 Soeren Eberhardt
+* @copyright (C) 2005-2007 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
 * VirtueMart is Free Software.
@@ -189,7 +189,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
                         scrollamount=\"".$this->ScrollAmount."\"
                         scrolldelay=\"".$this->ScrollDelay."\"
                         truespeed=\"true\" onmouseover=\"this.stop()\" onmouseout=\"this.start()\"
-                        style=\"text-align: ".$this->ScrollTextAlign."; color: ".$this->ScrollTextColor."; font-weight: ".$this->ScrollTextWeight."; font-size: $txt_size\;\" >"; 
+                        style=\"text-align: ".$this->ScrollTextAlign."; color: ".$this->ScrollTextColor."; font-weight: ".$this->ScrollTextWeight."; font-size: $txt_size;\" >"; 
 			}
 			else {
 
