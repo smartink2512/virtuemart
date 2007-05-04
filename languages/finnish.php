@@ -1911,6 +1911,34 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_ADMIN_ENCRYPTION_KEY_TIP = 'Used to safely store and retrieve sensible data (like credit card information) encrypted in the database.';
 	var $_VM_ADMIN_STORE_CREDITCARD_DATA = 'Store Credit Card Information?';
 	var $_VM_ADMIN_STORE_CREDITCARD_DATA_TIP = 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>';
+	var $_VM_ADMIN_BACKTOJOOMLA = 'Back to Joomla! Administration';
+	var $_VM_ADMIN_PANELTITLE = 'VirtueMart Administration Panel';
+	var $_VM_VERSIONCHECK_TITLE = 'VirtueMart Version Check';
+	var $_VM_VERSIONCHECK_NOW = 'Check for latest version';
+	var $_VM_USERFIELDS_URL_ONLY = 'URL only';
+	var $_VM_USERFIELDS_HYPERTEXT_URL = 'Hypertext and URL';
+	var $_VM_FIELDS_TEXTFIELD = 'Text Field';
+	var $_VM_FIELDS_CHECKBOX_SINGLE = 'Check Box (Single)';
+	var $_VM_FIELDS_CHECKBOX_MULTIPLE = 'Check Box (Muliple)';
+	var $_VM_FIELDS_DATE = 'Date';
+	var $_VM_FIELDS_DROPDOWN_SINGLE = 'Drop Down (Single Select)';
+	var $_VM_FIELDS_DROPDOWN_MULTIPLE = 'Drop Down (Multi-Select)';
+	var $_VM_FIELDS_EMAIL = 'Email Address';
+	var $_VM_FIELDS_EUVATID = 'EU VAT ID';
+	var $_VM_FIELDS_EDITORAREA = 'Editor Text Area';
+	var $_VM_FIELDS_TEXTAREA = 'Text Area';
+	var $_VM_FIELDS_RADIOBUTTON = 'Radio Button';
+	var $_VM_FIELDS_WEBADDRESS = 'Web Address';
+	var $_VM_FIELDS_DELIMITER = '=== Fieldset delimiter ===';
+	var $_VM_FIELDS_NEWSLETTER = 'Newsletter Subscription';
+	var $_VM_USERFIELDS_READONLY = 'Read-Only';
+	var $_VM_USERFIELDS_SIZE = 'Field Size';
+	var $_VM_USERFIELDS_MAXLENGTH = 'Max Length';
+	var $_VM_USERFIELDS_DESCRIPTION = 'Description, field-tip: text or HTML';
+	var $_VM_USERFIELDS_COLUMNS = 'Columns';
+	var $_VM_USERFIELDS_ROWS = 'Rows';
+	var $_VM_USERFIELDS_EUVATID_MOVESHOPPER = 'Move the customer into the following shopper group upon successful validation of the EU VAT ID';
+	var $_VM_USERFIELDS_ADDVALUES_TIP = 'Use the table below to add new values.';
         
 }
 class phpShopLanguage extends vmLanguage { }

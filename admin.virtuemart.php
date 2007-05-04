@@ -23,7 +23,10 @@ defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
 include( dirname(__FILE__).'/compat.joomla1.5.php');
 
 global $VM_LANG;
-/*** INSTALLER SECTION ***/
+/***********************
+ * INSTALLER SECTION *
+ **********************
+ */
 include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.virtuemart.php' );
 
 if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
@@ -53,13 +56,16 @@ elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$opti
 	exit();
 	
 }
-/*** END INSTALLER ***/
+/***********************
+ * END INSTALLER SECTION *
+ **********************
+ */
 
-/* Load the virtuemart main parse code */
+// Load the virtuemart main parse code
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
 // Get the Layout Type from the session
-$vmLayout = $_SESSION['vmLayout'] = mosGetParam( $_SESSION, 'vmLayout', 'standard' );
+$vmLayout = $_SESSION['vmLayout'] = mosGetParam( $_SESSION, 'vmLayout', 'extended' );
 // Change the Layout Type if it is provided through GET
 if( !empty( $_GET['vmLayout'])) {
 	$vmLayout = $_SESSION['vmLayout'] = $_GET['vmLayout'] == 'standard' ? $_GET['vmLayout'] : 'extended';
@@ -172,8 +178,8 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			layout.beginUpdate();
 			//layout.add('north', new CP('wrapper', 'North'));
 			//layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
-			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'{$_SERVER['PHP_SELF']}\'>Back to Joomla! Administration</a>'}));
-			layout.add('center', new CP('vmPage', {title: 'VirtueMart Administration Panel', closable: false, fitToFrame:true, tabPosition: 'top'}));
+			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'{$_SERVER['PHP_SELF']}\'>{$VM_LANG->_VM_ADMIN_BACKTOJOOMLA}</a>'}));
+			layout.add('center', new CP('vmPage', {title: '{$VM_LANG->_VM_ADMIN_PANELTITLE}', closable: false, fitToFrame:true, tabPosition: 'top'}));
 			
 			layout.restoreState();
 			layout.endUpdate();
@@ -250,7 +256,7 @@ if(Ext.isIE) { // AAAARGH! IE will drive us all mad someday: 'Operation aborted'
 	if( empty( $no_menu )) {
 		echo '<br style="clear:both;"/><div class="smallgrey" align="center">'
 	                .$VMVERSION->PRODUCT.' '.$VMVERSION->RELEASE
-	                .' (<a href="http://virtuemart.net/index2.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" onclick="javascript:void window.open(\'http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE .'\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no\'); return false;" title="VirtueMart Version Check" target="_blank">Check for latest version</a>)</div>';
+	                .' (<a href="http://virtuemart.net/index2.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" onclick="javascript:void window.open(\'http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE .'\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no\'); return false;" title="'.$VM_LANG->_VM_VERSIONCHECK_TITLE.'" target="_blank">'.$VM_LANG->_VM_VERSIONCHECK_NOW.'</a>)</div>';
 	}
 	if( DEBUG == '1' && $no_menu != 1 ) {
 	        // Load PAGE
