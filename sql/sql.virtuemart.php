@@ -1450,7 +1450,7 @@ $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_relations` (
 
 $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_product_reviews` (
   `review_id` int(11) NOT NULL auto_increment,
-  `product_id` int(11) NOT NULL default '',
+  `product_id` int(11) NOT NULL default '0',
   `comment` text NOT NULL,
   `userid` int(11) NOT NULL default '0',
   `time` int(11) NOT NULL default '0',

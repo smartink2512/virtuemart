@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.05.2007 gregdev
+# Fixed DEFAULT value for product_id (#__{vm}_product_reviews) in sql installation files.
+  
 03.05.2007 gregdev
 # Task #966 - Cleared credit card info when using non-credit card payment method.
 # Fixed a text size bug in the product scroller.
