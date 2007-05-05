@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 05.05.2007 gregdev
 # Fixed DEFAULT value for product_id (#__{vm}_product_reviews) in sql installation files.
+^ Use _PN_DISPLAY_NR from VirtueMart language strings.
   
 03.05.2007 gregdev
 # Task #966 - Cleared credit card info when using non-credit card payment method.

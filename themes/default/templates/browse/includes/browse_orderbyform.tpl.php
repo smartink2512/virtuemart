@@ -32,7 +32,7 @@ if( !empty( $product_type_id )) {
 
 if( $show_top_navigation ) {
 	?>
-	&nbsp;&nbsp;&nbsp;&nbsp;<?php echo _PN_DISPLAY_NR ?>&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $VM_LANG->_PN_DISPLAY_NR ?>&nbsp;&nbsp;
 
 	<?php $pagenav->writeLimitBox( $search_string ); ?>
 	<noscript><input type="submit" value="<?php echo $VM_LANG->_PHPSHOP_SUBMIT ?>" /></noscript>
