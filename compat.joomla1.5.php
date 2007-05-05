@@ -23,7 +23,7 @@ if( class_exists('jconfig')) {
 	$usersConfig = &JComponentHelper::getParams( 'com_users' );
 	$contentConfig = &JComponentHelper::getParams( 'com_content' );	
 	
-	$jconfig = new jconfig();
+	$jconfig = new JConfig();
 	$mosConfig_live_site = $jconfig->live_site;
 	$mosConfig_absolute_path = $jconfig->absolute_path;
 	$mosConfig_host = $jconfig->host;
