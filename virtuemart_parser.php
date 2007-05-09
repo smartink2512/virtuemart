@@ -31,7 +31,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	$func = mosgetparam($_REQUEST, 'func', "");
 	$ajax_request = mosgetparam($_REQUEST, 'ajax_request', "0" );
 	// Filter the PHP_SELF var and clean it
-	$_SERVER['PHP_SELF'] = mosGetParam( $_SERVER, 'PHP_SELF' );
+	$_SERVER['PHP_SELF'] = htmlspecialchars( $_SERVER['PHP_SELF'], ENT_QUOTES );
 	if( $my->id > 0 ) {
 		// This is necessary to get the real GID
 		$my->load( $my->id );

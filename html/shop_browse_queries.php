@@ -85,7 +85,7 @@ if( !empty($keyword) ) {
 			if( $searchstring[strlen($searchstring)-1] == "\"" || $searchstring[strlen($searchstring)-1]=="'" ) {
 				$searchstring[strlen($searchstring)-1] = " ";
 			}
-			$searchstring = trim( $searchstring );
+			$searchstring = $db_browse->getEscaped( $searchstring );
 			$sq .= "\n (`#__{vm}_product`.`product_name` LIKE '%$searchstring%' OR ";
 			$sq .= "\n `#__{vm}_product`.`product_sku` LIKE '%$searchstring%' OR ";
 			$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$searchstring%' OR ";
