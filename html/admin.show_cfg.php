@@ -51,10 +51,9 @@ $formObj->startForm();
 
 $ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php' );
 
-$spacer = '&nbsp;&nbsp;&nbsp;';
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
-$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "global-page");
+$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 
 ?>
 <br />
@@ -511,7 +510,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL . $spacer, "globa
 <?php
 
 $tabs->endTab();
-$tabs->startTab( $spacer . $VM_LANG->_VM_ADMIN_SECURITY . $spacer, "security-page");
+$tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 ?>
 
 <fieldset style="width:48%;float:left;">
@@ -664,7 +663,7 @@ $tabs->startTab( $spacer . $VM_LANG->_VM_ADMIN_SECURITY . $spacer, "security-pag
 <br style="clear:both" />
 <?php
 $tabs->endTab();
-$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE . $spacer, "site-page");
+$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE, "site-page");
 ?>
 
 <fieldset style="width:48%;float:left;">
@@ -837,7 +836,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE . $spacer, "site-pa
 <?php
 $tabs->endTab();
 
-$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING . $spacer, "shipping-page");
+$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING, "shipping-page");
 ?>
 
 <?php
@@ -930,7 +929,7 @@ foreach( $rows as $row ) {
 </fieldset>
 <?php
 $tabs->endTab();
-$tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT . $spacer, "checkout-page");
+$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT, "checkout-page");
 ?>
 
 <table class="adminform">
@@ -977,7 +976,7 @@ $tabs->startTab( $spacer . $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT . $spacer, "che
 
 <?php
 $tabs->endTab();
-$tabs->startTab( $spacer. $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS . $spacer, "download-page");
+$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS, "download-page");
 ?>
 
   <table class="adminform">
@@ -1072,7 +1071,7 @@ $tabs->startTab( $spacer. $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS . $spac
 
 <?php
 $tabs->endTab();
-$tabs->startTab( $spacer. $VM_LANG->_VM_ADMIN_CFG_FEED_CONFIGURATION . $spacer, "feed-page");
+$tabs->startTab( $VM_LANG->_VM_ADMIN_CFG_FEED_CONFIGURATION, "feed-page");
   ?>
   <table class="adminform">
    <tr>
