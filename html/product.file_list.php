@@ -24,9 +24,10 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-global $option, $product_id;
+global $option;
 
 $task = mosGetParam($_REQUEST, 'task' );
+$product_id = mosGetParam($_REQUEST, 'product_id', 0 );
 
 $q = "SELECT product_id, product_name, product_full_image as file_name, product_thumb_image, product_publish FROM #__{vm}_product WHERE product_id=".intval($product_id); 
 $db->query($q);

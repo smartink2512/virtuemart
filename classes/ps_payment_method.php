@@ -592,7 +592,7 @@ class ps_payment_method extends vmAbstractObject {
 		return false;
 		}*/
 
-		if(!$this->mod10($this->number))
+		if(empty($this->number) || !$this->mod10($this->number))
 		{
 			$this->errno = CC_ENUMBER;
 			$d['error'] = $this->errno;

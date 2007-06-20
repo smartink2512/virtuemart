@@ -451,11 +451,6 @@ class ps_cart {
 		$temp["idx"] = $j;
 		$_SESSION['cart'] = $temp;
 		ps_cart::saveCart();
-		if( !empty( $_SESSION['coupon_discount'] )) {
-			// Update the Coupon Discount !!
-			require_once( CLASSPATH . "ps_coupon.php" );
-			ps_coupon::process_coupon_code( $d );
-		}
 
 		return $deleted;
 	}

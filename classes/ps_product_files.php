@@ -665,7 +665,7 @@ class ps_product_files {
 		$dbf = new ps_DB;
 		$html = "";
 		
-		$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.$product_id.'\' AND attribute_name=\'download\'';
+		$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.intval($product_id).'\' AND attribute_name=\'download\'';
 		$dbf->query( $sql );
 		$dbf->next_record();
 		$exclude_filename = $GLOBALS['vmInputFilter']->safeSQL( $dbf->f( "attribute_value" ) );

@@ -26,3 +26,6 @@ showPathway=0
 useLightBoxImages=1
 useGreyBoxOnCheckout=0
 useAjaxCartActions=1
+showFeatured=1
+showlatest=1
+showRecent=5

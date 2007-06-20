@@ -157,7 +157,7 @@ else {
 	$vars["total"] = $total;
 	$subtotal_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($total);
 
-    if ( !empty( $_POST['do_coupon']) || ((strtolower($func) == 'cartadd' || strtolower($func) == 'cartupdate') && !empty($_SESSION['coupon_discount'])) ) {
+    if (!empty($_POST["do_coupon"]) || (in_array( strtolower($func), array( 'cartadd', 'cartupdate', 'cartdelete' )) && !empty($_SESSION['coupon_redeemed'])) ) {
         /* process the coupon */
 		require_once( CLASSPATH . "ps_coupon.php" );
 		$vars["total"] = $total;

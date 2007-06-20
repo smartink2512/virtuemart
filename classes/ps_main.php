@@ -169,6 +169,10 @@ function read_file( $file, $defaultfile='' ) {
 	else {
 		return;
 	}
+	if( $html_file === false ) {
+		$GLOBALS['vmLogger']->err( 'Could not open '.basename( $file ).'.' );
+		return;
+	}
 	$html = "";
 
 	while (!feof($html_file)) {

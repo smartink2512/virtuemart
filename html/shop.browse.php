@@ -411,17 +411,16 @@ else {
 	} /*** END OF while loop ***/
 
 	$tpl->set( 'products', $products );
+	$tpl->set( 'search_string', $search_string );
 ?>
 
 <?php
-
-if ( $num_rows > $limit && @$_REQUEST['output'] != "pdf") {
-	if( !isset($pagenav) ) {
-        require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
-        $pagenav = new mosPageNav( $num_rows, $limitstart, $limit);
-    }
-    $tpl->set( 'pagenav', $pagenav );
+if( !isset($pagenav) ) {
+	require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
+	$pagenav = new mosPageNav( $num_rows, $limitstart, $limit);
 }
+$tpl->set( 'pagenav', $pagenav );
+
 if( $num_rows > 5 && @$_REQUEST['output'] != "pdf") {
 	$tpl->set( 'show_limitbox', true );
 }

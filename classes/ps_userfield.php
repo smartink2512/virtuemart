@@ -715,7 +715,7 @@ class ps_userfield extends vmAbstractObject {
 			}			
 		}
 		if( !empty($euvatid) ) {
-			$vm_mainframe->addScript( 'components/'.$GLOBALS['vmDir'].'/js/euvat_check.js');
+			$vm_mainframe->addScript( 'components/'.VM_COMPONENT_NAME.'/js/euvat_check.js');
 			echo '
 			if( form.'.$euvatid.'.value != \'\' ) {
 				if( !isValidVATID( form.'.$euvatid.'.value )) {

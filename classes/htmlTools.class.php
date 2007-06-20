@@ -124,14 +124,26 @@ class listFactory {
 			echo "</tr>\n";
 		}
 	}
-	
-	function newRow( $attributes='' ) {
+	/**
+	 * Adds a new row to the list
+	 *
+	 * @param string $class The additional CSS class name
+	 * @param string $id The ID of the HTML tr element
+	 * @param string $attributes Additional HTML attributes for the tr element
+	 */
+	function newRow( $class='', $id='', $attributes='') {
 		$this->y++;
-		if( $attributes ) {
-			$this->cells[$this->y]["attributes"] = $attributes;
+		$this->x = 0;
+		if( $class != '') {
+			$this->cells[$this->y]['class'];
+		}
+		if( $id != '') {
+			$this->cells[$this->y]['id'];
+		}
+		if( $attributes != '' ) {
+			$this->cells[$this->y]['attributes'];
 		}
 		
-		$this->x = 0;
 	}
 	
 	function addCell( $data, $attributes="" ) {
@@ -155,9 +167,20 @@ class listFactory {
 		else {
 			$i = 0;
 			foreach( $this->cells as $row ) {
-				echo "<tr class=\"".$this->alternateColors[$i]."\" ".@$row['attributes'].">\n";
+				echo "<tr class=\"".$this->alternateColors[$i];
+				if( !empty($row['class'])) {
+					echo ' '.$row['class'];
+				}
+				echo '"';
+				if( !empty($row['id'])) {
+					echo ' id="'.$row['id'].'" ';
+				}
+				if( !empty($row['attributes'])) {
+					echo $row['attributes'];
+				}
+				echo ">\n";
 				foreach( $row as $cell ) {
-					if( $cell['data'] == 'i' && !isset($cell['data'])) continue;
+					if( $cell["data"] == 'i' || !isset( $cell["data"] )) continue;
 					$value = $cell["data"];
 					$attributes = $cell["attributes"];
 					echo "<td  $attributes>$value</td>\n";

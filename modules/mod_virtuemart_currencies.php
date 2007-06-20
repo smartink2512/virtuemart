@@ -55,7 +55,7 @@ $sess = new ps_session;
 	}
 	elseif( !empty( $_GET )) {
 		foreach( $_GET as $key => $val ) {
-			if( $key == 'product_currency' ) continue;
+			if( $key == 'product_currency' || is_array($val) ) continue;
 			echo "<input type=\"hidden\" name=\"$key\" value=\"".htmlspecialchars($val)."\" />\n";
 		}
 	}

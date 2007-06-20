@@ -57,6 +57,8 @@ foreach( $products as $product ) {
 </div>
 <br class="clr" />
 <?php 
+echo $browsepage_footer;
+
 // Show Featured Products
 if( $this->get_cfg( 'showFeatured', 1 )) {
     /* featuredproducts(random, no_of_products,category_based) no_of_products 0 = all else numeric amount
@@ -64,6 +66,5 @@ if( $this->get_cfg( 'showFeatured', 1 )) {
     echo $ps_product->featuredProducts(true,10,true);
 }
 echo $recent_products;
-echo $browsepage_footer;
 
 ?>

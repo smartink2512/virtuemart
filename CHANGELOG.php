@@ -35,6 +35,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+20.06.2007 soeren
+# integrated patches to ExtJS for Konqueror Compatibility
+# Task #1306 - Page Navigation doesn't work after switching off the display at the top of the prod.listing frontend
+# fixed non-array error in mod_virtuemart_currencies.php
+
+19.06.2007 soeren
+# Task #1297 - Coupon discount total does not adjust after removing item from cart (basket.php, ps_cart.php)
+# Task #1299 - Credit card number accepts a string as valid (ps_payment_method.php)
+# Task #1319 - Lockup issue with permissions on browse_* files. (ps_main.php)
+
+13.06.2007 soeren
+
+# Task #1316 - When deleting orders, records in 'order_history' and 'order_user_info' are not deleted (ps_order.php)
+
 05.05.2007 gregdev
 # Fixed DEFAULT value for product_id (#__{vm}_product_reviews) in sql installation files.
 ^ Use _PN_DISPLAY_NR from VirtueMart language strings.

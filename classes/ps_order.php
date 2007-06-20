@@ -672,25 +672,26 @@ class ps_order {
 		global $db;
 		$record_id = intval( $record_id );
 		if ($this->validate_delete($record_id)) {
-			$q = "DELETE FROM #__{vm}_orders where order_id=$record_id";
+			$q = "DELETE from #__{vm}_orders where order_id='$record_id'";
 			$db->query($q);
-			$db->next_record();
 
-			$q = "DELETE FROM #__{vm}_order_item where order_id=$record_id";
+			$q = "DELETE from #__{vm}_order_item where order_id='$record_id'";
 			$db->query($q);
-			$db->next_record();
 
-			$q = "DELETE FROM #__{vm}_order_payment where order_id=$record_id";
+			$q = "DELETE from #__{vm}_order_payment where order_id='$record_id'";
 			$db->query($q);
-			$db->next_record();
 
-			$q = "DELETE FROM #__{vm}_product_download where order_id=$record_id";
+			$q = "DELETE from #__{vm}_product_download where order_id='$record_id'";
 			$db->query($q);
-			$db->next_record();
+			
+			$q = "DELETE from #__{vm}_order_history where order_id='$record_id'";
+			$db->query($q);
+			
+			$q = "DELETE from #__{vm}_order_user_info where order_id='$record_id'";
+			$db->query($q);
 			
 			$q = "DELETE FROM #__{vm}_shipping_label where order_id=$record_id";
 			$db->query($q);
-			$db->next_record();
 
 			return True;
 		}
