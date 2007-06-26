@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+25.06.2007 soeren
+
+^ Updated the USPS Shipping module to version 3.0 (thank you Corey!!)
+
 20.06.2007 soeren
 # integrated patches to ExtJS for Konqueror Compatibility
 # Task #1306 - Page Navigation doesn't work after switching off the display at the top of the prod.listing frontend
