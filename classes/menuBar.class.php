@@ -43,7 +43,7 @@ class vmMenuBar extends mosMenuBar {
 		if( $alt == '') {
 			$alt = $VM_LANG->_CMN_NEW;
 		}
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		
 		$bar->appendButton('Custom', '<td>
 			<a class="toolbar" href="javascript:vm_submitButton(\''.$task.'\',\''.$formName.'\',\''.$page.'\');">'
@@ -64,7 +64,7 @@ class vmMenuBar extends mosMenuBar {
 		if( $alt == '') {
 			$alt = $VM_LANG->_CMN_SAVE;
 		}
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		
 		$bar->appendButton('Custom', '<td class="button">
 		<a class="toolbar" href="javascript:submitbutton(\''. $task.'\');">
@@ -86,7 +86,7 @@ class vmMenuBar extends mosMenuBar {
 		if( $alt == '') {
 			$alt = $VM_LANG->_E_APPLY;
 		}
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		
 		$bar->appendButton('Custom', "<td>
 		<a class=\"toolbar\" href=\"javascript:vm_submitButton('$task', 'adminForm', '$page');\">
@@ -103,7 +103,7 @@ class vmMenuBar extends mosMenuBar {
 	function publishList( $func, $task='publish', $alt='Publish' ) {
 		global $VM_LANG;
 
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		
      	$bar->appendButton( 'Custom', '<td>
 		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to publish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
@@ -120,7 +120,7 @@ class vmMenuBar extends mosMenuBar {
 	*/
 	function unpublishList( $func, $task='unpublish', $alt='Unpublish' ) {
 
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		
      	$bar->appendButton( 'Custom', '<td>
 		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to unpublish\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
@@ -140,7 +140,7 @@ class vmMenuBar extends mosMenuBar {
 		if( $alt == '') {
 			$alt = $VM_LANG->_E_REMOVE;
 		}
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		
 		$bar->appendButton( 'Custom', '<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'Please make a selection from the list to delete\'); } else if (confirm(\'Are you sure you want to delete selected items?\')){ vm_submitListFunc(\''. $task.'\', \'adminForm\', \''. $func.'\' );}">
 			<div class="vmicon-32-'. $task.'" type="Standard"></div>'
@@ -160,7 +160,7 @@ class vmMenuBar extends mosMenuBar {
 			$alt = $VM_LANG->_CMN_CANCEL;
 		}
 		$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		
 		if ($page == "store.store_form") { $my_page = "store.index"; }
 		elseif ($page == "admin.user_address_form") { $my_page = "admin.user_list"; }
@@ -191,7 +191,7 @@ class vmMenuBar extends mosMenuBar {
 	* @param boolean True if required to check that a standard list item is checked
 	*/
 	function custom( $task='', $page, $icon='', $iconOver='', $alt='', $listSelect=true, $formName="adminForm", $func = "" ) {
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		if ($listSelect) {
 			if( empty( $func ))
 				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('Please make a selection from the list to $alt');}else{vm_submitButton('$task','$formName', '$page')}";
@@ -228,7 +228,7 @@ class vmMenuBar extends mosMenuBar {
 	* @param boolean True if required to check that a standard list item is checked
 	*/
 	function customHref( $href='', $icon='', $iconOver='', $alt='' ) {
-		$bar =& JToolBar::getInstance('JComponent');
+		$bar =& JToolBar::getInstance('toolbar');
 		if ($icon && $iconOver) {
 			$bar->appendButton('Custom', "<td>
 			<a class=\"toolbar\" href=\"$href\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('$alt','','$iconOver',1);\">
