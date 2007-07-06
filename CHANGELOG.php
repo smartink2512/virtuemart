@@ -35,7 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-26.06.2006 gregdev
+06.07.2007 gregdev
+# Check for set $_REQUEST entries before resetting values
+
+05.07.2007 gregdev
+# Corrected filename error in usps.ini
+
+26.06.2007 gregdev
 # Corrected PHP short tags in USPS shipping module
 
 25.06.2007 soeren

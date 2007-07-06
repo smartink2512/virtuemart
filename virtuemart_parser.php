@@ -85,7 +85,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		foreach( $parseToIntFields as $intField ) {
 			if( !empty($_REQUEST[$intField]) && is_array($_REQUEST[$intField]) ) {
 				mosArrayToInts( $_REQUEST[$intField]);
-			} else {
+			} elseif ( isset($_REQUEST[$intField]) ) {
 				$_REQUEST[$intField] = $$intField = intval( mosgetparam($_REQUEST, $intField, 0) );
 			}
 		}
