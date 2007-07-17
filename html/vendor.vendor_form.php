@@ -290,14 +290,14 @@ $currency_display =& vendor_currency_display_style( $db->f("vendor_currency_disp
     </tr>
     <tr> 
       <td width="22%" align="right"  valign="top"><?php echo $VM_LANG->_PHPSHOP_VENDOR_FORM_DESCRIPTION ?>:</td>
-      <td width="78%" ><?
+      <td width="78%" ><?php
 	  	  editorArea( 'editor1', $db->f("vendor_store_desc"), 'vendor_store_desc', '400', '200', '70', '15' )
 ?>
       </td>
     </tr>
             <tr> 
       <td width="22%" align="right"  valign="top"><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_TOS ?>:</td>
-      <td width="78%" ><?
+      <td width="78%" ><?php
 	  	  editorArea( 'editor2', $db->f("vendor_terms_of_service"), 'vendor_terms_of_service', '400', '200', '70', '15' )
 ?>
       </td>
