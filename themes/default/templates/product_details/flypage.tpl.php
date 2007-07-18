@@ -74,10 +74,13 @@ if( $this->get_cfg( 'product_navigation', 1 )) {
 	<?php  } ?>
   </tbody>
 </table>
-<div class="vmRecent">
-<?php echo $recent_products; ?>
-</div>
 <?php 
+if( !empty( $recent_products )) { ?>
+	<div class="vmRecent">
+	<?php echo $recent_products; ?>
+	</div>
+<?php 
+}
 if( !empty( $navigation_childlist )) { ?>
 	<?php echo $VM_LANG->_PHPSHOP_MORE_CATEGORIES ?><br />
 	<?php echo $navigation_childlist ?><br style="clear:both"/>
