@@ -147,7 +147,7 @@ else {
 		$parameter_form = '';
 	}
 	$tpl->set( 'parameter_form', $parameter_form );
-	
+	$search_string = '';
 	if ( $num_rows > 1 && @$_REQUEST['output'] != "pdf") {
 						
 		// Prepare Page Navigation

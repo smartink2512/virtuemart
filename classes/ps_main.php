@@ -795,7 +795,8 @@ function vmSafeFileName( $filename ) {
 }
 function vmIsAdminMode() {
 	global $page;
-	return ( @$_REQUEST['pshop_mode'] == 'admin' 
+	return ( defined( '_PSHOP_ADMIN' ) 
+	|| @$_REQUEST['pshop_mode'] == 'admin' 
 	|| stristr($page,"form")
 	|| stristr($page, "list")
 	|| stristr($page, "cfg")

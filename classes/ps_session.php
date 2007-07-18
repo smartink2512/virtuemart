@@ -198,7 +198,9 @@ class ps_session {
 	 */
 	function prepare_SSL_Session() {
 		global $mainframe, $my, $database, $mosConfig_secret, $_VERSION, $page, $VM_MODULES_FORCE_HTTPS;
-
+		if( vmIsAdminMode() ) {
+			return;
+		}
 		$ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
 		$redirected = mosGetParam( $_GET, "redirected", 0 );
 		$martID = mosGetParam( $_GET, 'martID', '' );

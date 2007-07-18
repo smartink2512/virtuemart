@@ -2557,6 +2557,8 @@ class ps_product extends vmAbstractObject {
     
     function recentProducts($product_id,$maxitems) {
     	global $db, $VM_LANG, $sess;
+    	if( $maxitems == 0 ) return;
+    	
     	$recentproducts = $_SESSION['recent'];
     	//No recent products so return empty
 		if($recentproducts['idx'] == 0) {

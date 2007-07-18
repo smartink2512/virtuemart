@@ -156,6 +156,7 @@ class vmMainFrame {
 			}
 			if( stristr( $src, VM_COMPONENT_NAME ) && !stristr( $src, '.php' )) {
 				$base_source = str_replace( $GLOBALS['real_mosConfig_live_site'], '', $src );
+				$base_source = str_replace( $GLOBALS['mosConfig_live_site'], '', $base_source );
 				$base_source = str_replace( '/components/'.VM_COMPONENT_NAME, '', $base_source);
 				$base_source = str_replace( 'components/'.VM_COMPONENT_NAME, '', $base_source);
 				$appendix .= '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $src );
@@ -185,6 +186,7 @@ class vmMainFrame {
 			}
 			if( stristr( $stylesheet['url'], VM_COMPONENT_NAME ) && !stristr( $stylesheet['url'], '.php' ) && $stylesheet['media'] == null ) {
 				$base_source = str_replace( $GLOBALS['real_mosConfig_live_site'], '', $stylesheet['url'] );
+				$base_source = str_replace( $GLOBALS['mosConfig_live_site'], '', $base_source );
 				$base_source = str_replace( '/components/'.VM_COMPONENT_NAME, '', $base_source);
 				$base_source = str_replace( 'components/'.VM_COMPONENT_NAME, '', $base_source);
 				$appendix .= '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $stylesheet['url'] );
