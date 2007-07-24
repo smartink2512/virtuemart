@@ -386,71 +386,7 @@ class ps_html {
 		}
 		$this->dropdown_display($list_name, $values, $products, 20, "multiple=\"multiple\"");
 	}
-	/**
-	 * Creates a multi-select list with all products except the given $product_id
-	 *
-	 * @param string $list_name The name of the select element
-	 * @param array $values Contains the IDs of all products which are pre-selected
-	 * @param int $product_id The product id that is excluded from the list
-	 * @param boolean $show_items Wether to show child products as well
-	 */
-	function related_product_lists($list_name, $values=array(), $product_id, $show_items=false ) {
-		global $VM_LANG;
-		$db =& new ps_DB;
 
-		$q = "SELECT #__{vm}_product.product_id,category_name,product_name
-			FROM #__{vm}_product,#__{vm}_product_category_xref,#__{vm}_category ";
-		if( !$show_items ) {
-			$q .= "WHERE product_parent_id='0'
-					AND #__{vm}_product.product_id <> '$product_id' 
-					AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id
-					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";
-		}
-		else {
-			$q .= "WHERE #__{vm}_product.product_id <> '$product_id' 
-					AND  #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id 
-					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";;
-		}
-		$q .= ' ORDER BY category_name,#__{vm}_category.category_id,product_name';
-		// This is necessary, because so much products are difficult to handle!
-		$q .= ' LIMIT 0, 2000';
-		
-		$db->query( $q );
-		$related_products = Array();
-		$other_products = Array();
-		while( $db->next_record() ) {
-			if( in_array( $db->f('product_id'), $values )) {
-				$related_products[$db->f("product_id")] = $db->f("category_name").'\\'.$db->f("product_name");
-			} else {
-				$other_products[$db->f("product_id")] = $db->f("category_name").'\\'.$db->f("product_name");
-			}
-		}
-		echo '<table width="100%"><tr><td width="35%">';
-		echo $VM_LANG->_PHPSHOP_FILTER.': <input type="text" name="filterrelated" size="20" onkeyup="relatedfilter.set( this.value );" /><br/>';
-		echo '<input type="checkbox" name="ignorecaseswitcher" id="ignorecaseswitcher" onchange="relatedfilter.set_ignore_case( !this.checked );"  />
-			<label for="ignorecaseswitcher">Case-sensitive filtering</label><br /><br />';
-		$this->dropdown_display('all_products', '', $other_products, 20, 'multiple="multiple" ondblclick="opt.transferRight()"');
-		echo '</td>
-			<td align="middle" valign="top" width="10%">
-				<br/><br/><br/>
-				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferRight();" value=" &gt; " /><br /><br />
-				<input type="button" style="font-weight:bold" onclick="javascript:opt.transferLeft()" value=" &lt; " />
-			</td>
-			<td width="55%">';
-		echo '<strong>'.$VM_LANG->_PHPSHOP_RELATED_PRODUCTS.'</strong><br/>';
-		$this->dropdown_display($list_name, '', $related_products, 20, 'multiple="multiple" ondblclick="opt.transferLeft()"');
-		echo '<input type="hidden" name="related_products" value="'.implode('|', $values ).'" />';
-		
-		echo '</td></tr></table>';
-		echo vmCommonHTML::scriptTag('','
-var relatedfilter = new filterlist(document.adminForm.all_products);
-var opt = new OptionTransfer(\'all_products\',"'.$list_name.'");
-//opt.setAutoSort(false);
-opt.setDelimiter(\'|\');
-opt.saveNewRightOptions( \'related_products\' );
-opt.init(document.adminForm);
-');
-	}
 	/**
 	 * Creates a drop-down list for Extra fields
 	 * @deprecated 

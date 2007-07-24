@@ -35,6 +35,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+24.07.2007 soeren 
+
+^ improved the related products selection screen - it features an auto-completing search field now
++ added new JSON class to send JSON encoded responses
+# fixes for Joomla! 1.0.13 compatibility
+^ changed Product Review List to show reviews from all products - ordered by posting time,  
+	not only filtered by one product; TODO: Notification of 
+
 16.07.2007 gregdev
 # Task #1328 - long php opening tags missing in vendor.vendor_form.php
 
@@ -44,7 +53,6 @@ VirtueMart 1.1.x
 05.07.2007 gregdev
 # Corrected filename error in usps.ini
 
-26.06.2007 gregdev
 # Corrected PHP short tags in USPS shipping module
 
 25.06.2007 soeren

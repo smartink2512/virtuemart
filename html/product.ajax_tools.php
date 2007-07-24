@@ -79,6 +79,45 @@ switch( $task ) {
 		vmConnector::sendHeaderAndContent( 200, $content );
 		break;
 		
+	case 'getproducts':
+		require_once(CLASSPATH . 'JSON.php');
+		$db =& new ps_DB;
+		$keyword = mosGetParam( $_REQUEST, 'query' );
+		$q = "SELECT #__{vm}_product.product_id,category_name,product_name
+			FROM #__{vm}_product,#__{vm}_product_category_xref,#__{vm}_category ";
+		if( empty($_REQUEST['show_items']) ) {
+			$q .= "WHERE product_parent_id='0'
+					AND #__{vm}_product.product_id <> '$product_id' 
+					AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id
+					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";
+		}
+		else {
+			$q .= "WHERE #__{vm}_product.product_id <> '$product_id' 
+					AND  #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id 
+					AND #__{vm}_product_category_xref.category_id=#__{vm}_category.category_id";
+		}
+		if( $keyword ) {
+			$q .= ' AND (product_name LIKE \'%'.$keyword.'%\'';
+			$q .= ' OR category_name LIKE \'%'.$keyword.'%\')';
+		}
+		$q .= ' ORDER BY category_name,#__{vm}_category.category_id,product_name';
+		$q .= ' LIMIT '.(int)$_REQUEST['start'].', '.$_REQUEST['limit'];
+		$db->query( $q );
+		$response['totalCount'] = $db->num_rows();
+		while( $db->next_record() ) {
+			$response['products'][] = array( 'product_id' => $db->f("product_id"),
+									'category' => htmlentities($db->f("category_name")),
+									'product' => htmlentities($db->f("product_name"))
+									);
+			
+		}
+		error_reporting(0);
+		while( @ob_end_clean() );
+		$json = new Services_JSON();
+		echo $json->encode( $response );
+		$vm_mainframe->close(true);
+		
+		break;
 	default:
 		exit;
 }

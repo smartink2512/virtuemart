@@ -29,23 +29,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 See Bugtracker:
 http://virtuemart.net/index.php?option=com_flyspray&Itemid=91
 
-Not logged:
 
-# Redirection to child product fails in Internet Explorer when SEF mode = On
-
-
- FEATURES
-##################
-* add a field "product_packing_unit" to mos_{vm}_product
+ FEATURES TO BE IMPLEMENTED
+############################
 
 * XML - Product Data Import/Export
 * XML - Order Data Import/Export
 
 * make Orders changeable afterwards
-* Multiple-Currency Support 
-  * changeable by the Customer in the Frontend
-  * fetches Exchange Rates from the Federal Bank of Germany
-* Order Reports per Customer
+* bulk update of order statuses
+* send Notification on new reviews
+* send Notifications to customer + store owner (config option)
+
 * Shipping Rate per Product
 * "Compare Products"
 * Tool to Remove all Products
@@ -72,9 +67,4 @@ Not logged:
   
 * XHTML - Compliance, make it Barrier-free
 * clean up checkout
-
- Open Payment Gateways
-######################
-
-* Payfuse
 </pre>

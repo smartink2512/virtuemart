@@ -23,8 +23,7 @@ $product_id = mosGetParam( $_REQUEST, 'product_id');
 if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
 }
-echo vmCommonHTML::scriptTag($mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/OptionTransfer.js');
-echo vmCommonHTML::scriptTag($mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/filterlist.js');
+vmCommonHTML::loadExtjs();
 echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/product_attributes.js');
 echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/calendar.js');
 echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/lang/calendar-en.js');
@@ -982,18 +981,95 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
 $tabs->endTab();
 
 $tabs->startTab( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
-?>
+
+?><br />
+<h2><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS ?></h2>
+<br />
         <table class="adminform">
-                <tr class="row0">
-                        <td>
-				<h2><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS ?>
-				<?php echo vmToolTip( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_TIP );  ?></h2>
+          <tr class="row1">
+			<td style="vertical-align:top;"><br />
+			Search for Products or Categories here:
+			<input type="text" size="40" name="search" id="relatedProductSearch" />
 			</td>
-                </tr>
-                <tr class="row1">
-			<td style="vertical-align:top;"><?php 
-			echo $ps_html->related_product_lists("related_product_list", $related_products, $product_id, false );
+			<td><input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection);" value="&nbsp; &lt; &nbsp;" /></td>
+			<td>
+			<?php
+			$relProducts = array();
+			foreach( $related_products as $relProd ) {
+				$relProducts[$relProd] = $ps_product->get_field( $relProd, 'product_name');
+			}
+			echo ps_html::selectList('relProds', '', $relProducts, 10, 'multiple="multiple"', 'id="relatedSelection" ondblclick="removeSelectedOptions(relatedSelection);"');
 			?>
+			<input type="hidden" name="related_products" value="<?php echo implode('|', $related_products ) ?>" />
+			</td>
+			<script type="text/javascript">
+			Ext.onReady(function(){
+
+			    var relds = new Ext.data.Store({
+			        proxy: new Ext.data.HttpProxy({
+			            url: '<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.ajax_tools&task=getproducts&product_id=<?php echo $product_id ?>',
+			            method: 'GET'
+			            
+			        }),
+			        reader: new Ext.data.JsonReader({
+			            root: 'products',
+			            totalProperty: 'totalCount',
+			            id: 'product_id'
+				        }, [
+				            {name: 'product'},
+				            {name: 'category'},
+				            {name: 'product_id'}
+				        ])
+			    });
+			    
+			
+			    // Custom rendering Template
+			    var resultTpl = new Ext.Template(
+			        '<div class="search-item">{category} / {product}</div>'
+			    );
+			    relatedSelection = document.getElementById('relatedSelection');
+			    related_products = document.adminForm.related_products;
+			    var search = new Ext.form.ComboBox({
+			        store: relds,
+			        displayField:'product',
+			        typeAhead: false,
+			        loadingText: 'Searching...',
+			        width: 270,
+			        pageSize:20,
+			        hideTrigger:true,
+			        tpl: resultTpl,
+			        onSelect: function(record) {
+			        	for(var i=0;i<relatedSelection.options.length;i++) {
+			        		if(relatedSelection.options[i].value==record.id) {
+			        			return;
+			        		}
+			        	}
+			        	o = new Option( record.data.product, record.id );
+			        	relatedSelection.options[relatedSelection.options.length] = o;
+			        	if( related_products.value != '') {
+			        		related_products.value += '|' + record.id;
+			        	} else {
+			        		related_products.value += record.id;
+			        	}
+			        }
+			    });
+			    // apply it to the exsting input element
+			    search.applyTo('relatedProductSearch');
+			});
+			function removeSelectedOptions(from) {
+				// Delete them from original
+				var newOptions = [];
+				for (var i=(from.options.length-1); i>=0; i--) {
+					var o = from.options[i];
+					if (o.selected) {
+						from.options[i] = null;
+					} else {
+						newOptions.push(o.value);
+					}
+				}
+				related_products.value = newOptions.join('|');
+			}
+			</script>
 			
 			</td>
 		</tr>
