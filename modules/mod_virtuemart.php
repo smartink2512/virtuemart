@@ -199,8 +199,12 @@ if ( $show_login_form == "yes" ) {
 		  <br/>
 			<input type="submit" value="<?php echo _BUTTON_LOGIN ?>" class="button" name="Login" />
 			<?php
-		  	// used for spoof hardening
-			$validate = vmSpoofValue(1);
+			if( function_exists('josspoofvalue')) {
+				$validate = josSpoofValue(1);
+			} else {
+			  	// used for spoof hardening
+				$validate = vmSpoofValue(1);
+			}
 			?>
 			<input type="hidden" name="<?php echo $validate; ?>" value="1" />
 			</form>

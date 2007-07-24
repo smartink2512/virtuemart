@@ -804,11 +804,11 @@ function vmIsAdminMode() {
 	|| stristr($page, "display"));
 }
 
-if( !function_exists( 'moshash' )) {
-	function mosHash( $seed ) {
-	    return md5( $GLOBALS['mosConfig_secret'] . md5( $seed ) );
-	}
+
+function vmCreateHash( $seed ) {
+    return md5( ENCODE_KEY . md5( $seed ) );
 }
+
 
 /**
  * Equivalent to Joomla's josSpoofCheck function
@@ -889,7 +889,7 @@ function vmSpoofValue($alt=NULL) {
 	} else {		
 		$random		= date( 'dmY' );
 	}
-	$validate 	= mosHash( $mainframe->getCfg( 'db' ) . $random );
+	$validate 	= vmCreateHash( $mainframe->getCfg( 'db' ) . $random );
 	
 	if( $_VERSION->DEV_LEVEL >= 11 ) {
 		// Joomla 1.0.11 compatibility workaround
