@@ -20,17 +20,23 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$product_id = mosgetparam($_REQUEST, 'product_id', 0);
-
 $q = "";
+$where = array();
 $count = "SELECT COUNT(*) AS num_rows ";
-$list = "SELECT review_id, comment, user_rating,userid,username,time,published ";
-$q .= "FROM #__{vm}_product_reviews,#__users ";
-$q .= "WHERE product_id = '$product_id' AND #__users.id=#__{vm}_product_reviews.userid ";
-if( !empty( $keyword )) {
-	$q .= "AND ( comment LIKE '%$keyword%' OR username LIKE '%$keyword%' ) ";
+$list = "SELECT product_name, p.product_id, review_id, comment, user_rating,userid,username,time,r.published ";
+$q .= "FROM #__{vm}_product p, #__{vm}_product_reviews r LEFT JOIN #__users ON #__users.id=r.userid ";
+if( !empty( $product_id )) {
+	$where[] = "r.product_id = $product_id";
 }
-$q .= "ORDER BY userid "; 
+$where[] = "p.product_id = r.product_id";
+
+if( !empty( $keyword )) {
+	$where[] = "( comment LIKE '%$keyword%' OR username LIKE '%$keyword%' )";
+}
+if( !empty( $where )) {
+	$q .= ' WHERE ' . implode(' AND ', $where );
+}
+$q .= ' ORDER BY time DESC'; 
 $list .= $q ." LIMIT $limitstart, $limit";
 $count .= $q;
 $db->query($count);
@@ -43,8 +49,6 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 $title = $VM_LANG->_PHPSHOP_REVIEWS;
-$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id";
-$title .= " :: [ <a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name"). "</a> ]";
 		  
 // print out the search field and a list heading
 $listObj->writeSearchHeader( $title, IMAGEURL."ps_image/reviews.gif", $modulename, "review_list");
@@ -55,10 +59,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
+					$VM_LANG->_PHPSHOP_PRODUCT_NAME_TITLE => 'width="20%"',
 					"Name/Date" => 'width="15%"',
-					$VM_LANG->_PHPSHOP_REVIEW_COMMENT => 'width="45%"',
-					$VM_LANG->_PHPSHOP_RATE_NOM => 'width="25%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="25%"',
+					$VM_LANG->_PHPSHOP_REVIEWS => 'width="35%"',
+					$VM_LANG->_PHPSHOP_RATE_NOM => 'width="15%"',
+					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
 					$VM_LANG->_E_REMOVE => 'width="10%"'
 				);
 $listObj->writeTableHeader( $columns );
@@ -74,6 +79,12 @@ while ($db->next_record()) {
 	
 	// The Checkbox
 	$listObj->addCell( mosHTML::idBox( $i, $db->f("review_id"), false, "review_id" ) );
+	
+	
+	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=".$db->f('product_id');
+	$link = "<a href=\"" . $sess->url($url) . "\">". $db->f('product_name'). "</a>";
+	// The Product Name
+	$listObj->addCell( $link );
 	
 	$text = $db->f("username")."</strong><br />(".date("Y-m-d", $db->f("time")).")";
 	if( $perm->check('admin')) {
