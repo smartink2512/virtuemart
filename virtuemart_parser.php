@@ -35,6 +35,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	if( $my->id > 0 ) {
 		// This is necessary to get the real GID
 		$my->load( $my->id );
+		$vmuser = $my;
 	}
 
 	if( !file_exists( $mosConfig_absolute_path. "/administrator/components/com_virtuemart/virtuemart.cfg.php" )) {

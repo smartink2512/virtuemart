@@ -47,7 +47,7 @@ class ps_communication {
 			return false;
 		}
 
-		$validate = mosGetParam( $_POST, mosHash( $mosConfig_db ), 0 );
+		$validate = mosGetParam( $_POST, vmCreateHash( $mosConfig_db ), 0 );
 
 		// probably a spoofing attack
 		if (!$validate) {
@@ -303,7 +303,7 @@ class ps_communication {
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="page" value="shop.recommend" />
     <input type="hidden" name="product_id" value="'.$product_id.'" />
-    <input type="hidden" name="'.mosHash( $mosConfig_db ).'" value="1" />
+    <input type="hidden" name="'.vmCreateHash( $mosConfig_db ).'" value="1" />
     <input type="hidden" name="func" value="recommendProduct" />
     <input class="button" type="submit" name="submit" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" />
     <input class="button" type="button" onclick="window.close();" value="'.$VM_LANG->_CMN_CANCEL.'" />

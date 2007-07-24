@@ -129,17 +129,23 @@ class ps_session {
 	 *
 	 */
 	function getMartId() {
-		global $my, $mosConfig_secret;
+		global $vmuser, $mosConfig_secret;
 		
 		// Get the Joomla! / Mambo session ID
 		$sessionId = ps_session::getSessionId();
 		
 		$userNameSeed = '';
-		if( $my->id ) {
-			$userNameSeed = '|'.md5( $my->username . $my->password . $mosConfig_secret );
+		if( $vmuser->id ) {
+			$userNameSeed = '|'.md5( $vmuser->username . $vmuser->password . $mosConfig_secret );
+			if( is_callable(array('mosMainFrame', 'remCookieName_User'))) {
+				if( !empty( $GLOBALS['real_mosConfig_live_site'] ) && empty( $_REQUEST['real_mosConfig_live_site'])) {
+					$GLOBALS['mosConfig_live_site'] = $GLOBALS['real_mosConfig_live_site'];
+				}
+				$userNameSeed .= '|' . mosGetParam( $_COOKIE, mosMainFrame::remCookieName_User(), '' );
+			}
 		}
 		
-		$martID = base64_encode( mosHash($_COOKIE[$this->_session_name] . $sessionId) . $userNameSeed );
+		$martID = base64_encode( vmCreateHash($_COOKIE[$this->_session_name] . $sessionId) . $userNameSeed );
 		return $martID;
 	}
 	/**
@@ -288,26 +294,44 @@ class ps_session {
 					$check = base64_decode( $martID );
 					$checkValArr = explode( "|", $check );
 					
-					// Check if the user was logged in in the http domain
-					// and is not yet logged in at the Shared SSL domain
-					if( isset( $checkValArr[1] ) && !$my->id ) {
-						// user should expect to be logged in,
-						// we can use the values from $_SESSION['auth'] now
-						$username = $database->getEscaped( trim( $_SESSION['auth']['user_name'] ) );
-						if( !empty( $username )) {
-							$database->setQuery('SELECT username, password FROM `#__users` WHERE `username` = \''.$username.'\';');
-							$database->loadObject( $user );
-							if( is_object( $user )) {
-								// a last security check using the transmitted md5 hash and the rebuilt hash
-								$check = md5( $user->username . $user->password . $mosConfig_secret );
-								if( $check === $checkValArr[1] ) {
-									// Log the user in with his username
-									$mainframe->login( $user->username, $user->password );
-								}
-							}
-							
+					if( defined('_JEXEC') ) {
+						//TODO
+					}
+					elseif( class_exists('mambocore')) {
+						//TODO
+					}
+					elseif( $GLOBALS['_VERSION']->RELEASE == '1.0' && (int)$GLOBALS['_VERSION']->DEV_LEVEL >= 13) {
+						if( !empty( $GLOBALS['real_mosConfig_live_site'] ) && empty( $_REQUEST['real_mosConfig_live_site'])) {
+							$GLOBALS['mosConfig_live_site'] = $GLOBALS['real_mosConfig_live_site'];
 						}
-					}				
+						if( !empty( $checkValArr[2] )) {
+							// Joomla! >= 1.0.13 can be cheated to log in a user who has previsously logged in and checked the "Remember me" box
+							setcookie( mosmainframe::remCookieName_User(), $checkValArr[2], false, '/' );
+							// there's no need to call "$mainframe->login"
+						}
+					} else {
+						// Check if the user was logged in in the http domain
+						// and is not yet logged in at the Shared SSL domain
+						if( isset( $checkValArr[1] ) && !$my->id ) {
+							// user should expect to be logged in,
+							// we can use the values from $_SESSION['auth'] now
+							$username = $database->getEscaped( trim( $_SESSION['auth']['user_name'] ) );
+							if( !empty( $username )) {
+								$database->setQuery('SELECT username, password FROM `#__users` WHERE `username` = \''.$username.'\';');
+								$database->loadObject( $user );
+								if( is_object( $user )) {
+									// a last security check using the transmitted md5 hash and the rebuilt hash
+									$check = md5( $user->username . $user->password . $mosConfig_secret );
+									if( $check === $checkValArr[1] ) {
+										// Log the user in with his username
+										$mainframe->login( $user->username, $user->password );
+									}
+								}
+								
+							}
+						}
+					}
+									
 					
 					session_write_close();
 					
