@@ -1300,8 +1300,14 @@ class ps_product extends vmAbstractObject {
 	function get_neighbor_products( $product_id ) {
 		global $perm, $orderby, $my, $keyword, $DescOrderBy, $limit, $limitstart, 
 			$category_id, $manufacturer_id, $mainframe, $vmInputFilter;
-		
+		$limit = 2000;
+		if( !empty( $_SESSION['last_browse_parameters'])) {
+			foreach( $_SESSION['last_browse_parameters'] as $paramName => $paramValue ) {
+				$$paramName = $paramValue;
+			}
+		}
 		$db = new ps_DB();
+		$db_browse = new ps_DB();
 		include( PAGEPATH . 'shop_browse_queries.php' );
 		
 		$db->query( $list );

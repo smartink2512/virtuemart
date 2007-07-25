@@ -62,14 +62,15 @@ if( $category_id ) {
 		$where_clause[] = "`#__{vm}_product_category_xref`.`category_id`=".$category_id;
 	}
 }
-if( strtoupper(mosGetParam($_REQUEST, 'featured', 'N' )) == 'Y' ) {
+if( strtoupper($featured) == 'Y' ) {
 	// Filter all except Featured Products (="on special")
 	$where_clause[] = '`#__{vm}_product`.`product_special`=\'Y\'';
 }
-if( strtoupper(mosGetParam($_REQUEST, 'discounted', 'N' )) == 'Y' ) {
+if( strtoupper($discounted) == 'Y' ) {
 	// Filter all except Discounted Products
 	$where_clause[] = '`#__{vm}_product`.`product_discount_id` > 0';
 }
+
 // This is the "normal" search
 if( !empty($keyword) ) {
 	$sq = "(";
@@ -154,6 +155,7 @@ if (!empty($manufacturer_id)) {
 	$where_clause[] = "`#__{vm}_product`.`product_id`=`#__{vm}_product_mf_xref`.`product_id` ";
 
 }
+
 // Filter Products by Product Type
 if (!empty($product_type_id)) {
 	require_once (CLASSPATH."ps_product_type.php");
@@ -300,6 +302,18 @@ $count .= $q;
 $q .= "\n GROUP BY `#__{vm}_product`.`product_sku` ";
 $q .= "\n ORDER BY $orderbyField $DescOrderBy";
 $list .= $q . " LIMIT $limitstart, " . $limit;
+
+// Store current GET parameters for usage on the product details page navigation
+$_SESSION['last_browse_parameters'] = array(
+											'category_id' => $category_id,
+											'manufacturer_id' => $manufacturer_id,
+											'product_type_id' => $product_type_id,
+											'keyword' => $keyword,
+											'keyword1' => $keyword1,
+											'keyword2' => $keyword2,
+											'featured' => $featured,
+											'discounted' => $discounted
+										);
 
 // BACK TO shop.browse.php !
 ?>

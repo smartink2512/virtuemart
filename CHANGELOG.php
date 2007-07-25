@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+25.07.2007 soeren
+# Task #1356 - problems with "implemented page navigation at product level"
 
 24.07.2007 soeren 
 
