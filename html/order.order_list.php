@@ -16,8 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-global $mosConfig_locale, $page, $ps_order_status;
-setlocale(LC_TIME,$mosConfig_locale);
+global $page, $ps_order_status;
 
 $show = mosGetParam( $_REQUEST, "show", "" );
 $form_code = "";

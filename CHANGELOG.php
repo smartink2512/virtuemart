@@ -36,10 +36,25 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 25.07.2007 soeren
+
+^ Task #1311 - Dates in order_print / order_printdetails not localized
+!!! DATABASE: TABLE STRUCTURE CHANGE
+		###
+		# 25.07.2007: Allow to set address and date format
+		ALTER TABLE `jos_vm_vendor` 
+				ADD `vendor_address_format` TEXT NOT NULL ,
+				ADD `vendor_date_format` VARCHAR( 255 ) NOT NULL;
+		UPDATE `jos_vm_vendor` SET
+			`vendor_address_format` = '{storename}\n{address_1}\n{address_2}\n{city}, {zip}',
+			`vendor_date_format` = '%A, %d %B %Y %H:%M'
+			WHERE vendor_id=1;
+		###
++ Global Address Format can be set in the Store Form now - as well as the global date format
 # Task #1356 - problems with "implemented page navigation at product level"
 
 24.07.2007 soeren 
 
+# Task #1344 - related product list too long, memory exausted
 ^ improved the related products selection screen - it features an auto-completing search field now
 + added new JSON class to send JSON encoded responses
 # fixes for Joomla! 1.0.13 compatibility

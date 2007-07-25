@@ -145,13 +145,12 @@ class ps_vendor {
 		
 	}
 
-	/**************************************************************************
-	* name: add()
-	* created by:
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Adds a Vendor Record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 		global $vendor_currency;
 		$db = new ps_DB;
@@ -171,53 +170,49 @@ class ps_vendor {
 		if( empty( $d['vendor_accepted_currencies'] )) {
 			$d['vendor_accepted_currencies'] = array( $vendor_currency );
 		}
-		
-		$q = "INSERT INTO #__{vm}_vendor (";
-		$q .= "vendor_name,contact_last_name,contact_first_name,";
-		$q .= "contact_middle_name,contact_title,contact_phone_1,";
-		$q .= "contact_phone_2,contact_fax,contact_email,";
-		$q .= "vendor_phone,vendor_address_1,vendor_address_2,";
-		$q .= "vendor_city,vendor_state,vendor_country,vendor_zip,";
-		$q .= "vendor_store_name,vendor_store_desc,vendor_category_id,";
-		$q .= "vendor_image_path,vendor_thumb_image,vendor_full_image,";
-		$q .= "vendor_currency,cdate,mdate,vendor_terms_of_service,";
-		$q .= "vendor_url,vendor_currency_display_style, vendor_freeshipping, vendor_accepted_currencies) 
-			VALUES ('";
-		$q .= $d["vendor_name"] . "','";
-		$q .= $d["contact_last_name"] . "','";
-		$q .= $d["contact_first_name"] . "','";
-		$q .= $d["contact_middle_name"] . "','";
-		$q .= $d["contact_title"] . "','";
-		$q .= $d["contact_phone_1"] . "','";
-		$q .= $d["contact_phone_2"] . "','";
-		$q .= $d["contact_fax"] . "','";
-		$q .= $d["contact_email"] . "','";
-		$q .= $d["vendor_phone"] . "','";
-		$q .= $d["vendor_address_1"] . "','";
-		$q .= $d["vendor_address_2"] . "','";
-		$q .= $d["vendor_city"] . "','";
-		$q .= $d["vendor_state"] . "','";
-		$q .= $d["vendor_country"] . "','";
-		$q .= $d["vendor_zip"] . "','";
-		$q .= $d["vendor_store_name"] . "','";
-		$q .= $d["vendor_store_desc"] . "','";
-		$q .= $d["vendor_category_id"] . "','";
-		$q .= $d["vendor_image_path"] . "','";
-		$q .= $d["vendor_thumb_image"] . "','";
-		$q .= $d["vendor_full_image"] . "','";
-		$q .= $d["vendor_currency"] . "','";
-		$q .= "$timestamp','$timestamp','";
-		$q .= $d['vendor_terms_of_service']."','";
-		$q .= $d['vendor_url']."','";
-		$q .= $d['display_style']."','";
-		$q .= $d['vendor_freeshipping']."', '";
-		$q .= implode( ',', $d['vendor_accepted_currencies'] )."')";
-		$db->query($q);
-		$db->next_record();
+		$fields = array( 'vendor_name' => $d["vendor_name"],
+						'contact_last_name' => $d["contact_last_name"],
+						'contact_first_name' => $d["contact_first_name"],
+						'contact_middle_name' => $d["contact_middle_name"],
+						'contact_title' => $d["contact_title"],
+						'contact_phone_1' => $d["contact_phone_1"],
+						'contact_phone_2' => $d["contact_phone_2"],
+						'contact_fax' => $d["contact_fax"],
+						'contact_email' => $d["contact_email"],
+						'vendor_phone' => $d["vendor_phone"],
+						'vendor_address_1' => $d["vendor_address_1"],
+						'vendor_address_2' => $d["vendor_address_2"],
+						'vendor_city' => $d["vendor_city"],
+						'vendor_state' => $d["vendor_state"],
+						'vendor_country' => $d["vendor_country"],
+						'vendor_zip' => $d["vendor_zip"],
+						'vendor_store_name' => $d["vendor_store_name"],
+						'vendor_store_desc' => $d["vendor_store_desc"],
+						'vendor_category_id' => $d["vendor_category_id"],
+						'vendor_image_path' => $d["vendor_image_path"],
+						'vendor_thumb_image' => $d["vendor_thumb_image"],
+						'vendor_full_image' => $d["vendor_full_image"],
+						'vendor_currency' => $d["vendor_currency"],
+						'vendor_url' => $d["vendor_url"],
+						'cdate' => $timestamp,
+						'mdate' => $timestamp,
+						'vendor_terms_of_service' => $d["vendor_terms_of_service"],
+						'vendor_min_pov' => $d["vendor_min_pov"],
+						'vendor_currency_display_style' => $d["display_style"],
+						'vendor_freeshipping' => $d['vendor_freeshipping'],
+						'vendor_accepted_currencies' => implode( ',', $d['vendor_accepted_currencies'] ),
+						'vendor_address_format' => $d['vendor_address_format'],
+						'vendor_date_format' => $d['vendor_date_format']
+						);
+						
+		$db->buildQuery('INSERT', '#__{vm}_vendor', $fields );
+		$db->query();
 
 		// Get the assigned vendor_id //
 		$_REQUEST['vendor_id'] = $db->last_insert_id();
-
+		
+		$GLOBALS['vmLogger']->info('The Vendor has been added.');
+		
 		/* Insert default- shopper group */
 		$q = "INSERT INTO #__{vm}_shopper_group (";
 		$q .= "`vendor_id`,";
@@ -230,14 +225,12 @@ class ps_vendor {
 		
 		return True;
 	}
-
-	/**************************************************************************
-	* name: update()
-	* created by:
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Updates a Vendor (and the Store) Record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		global $vendor_currency;
 		$db = new ps_DB;
@@ -261,43 +254,52 @@ class ps_vendor {
 		if( empty( $d['vendor_accepted_currencies'] )) {
 			$d['vendor_accepted_currencies'] = array( $vendor_currency );
 		}
+		$fields = array( 'vendor_name' => $d["vendor_name"],
+						'contact_last_name' => $d["contact_last_name"],
+						'contact_first_name' => $d["contact_first_name"],
+						'contact_middle_name' => $d["contact_middle_name"],
+						'contact_title' => $d["contact_title"],
+						'contact_phone_1' => $d["contact_phone_1"],
+						'contact_phone_2' => $d["contact_phone_2"],
+						'contact_fax' => $d["contact_fax"],
+						'contact_email' => $d["contact_email"],
+						'vendor_phone' => $d["vendor_phone"],
+						'vendor_address_1' => $d["vendor_address_1"],
+						'vendor_address_2' => $d["vendor_address_2"],
+						'vendor_city' => $d["vendor_city"],
+						'vendor_state' => $d["vendor_state"],
+						'vendor_country' => $d["vendor_country"],
+						'vendor_zip' => $d["vendor_zip"],
+						'vendor_store_name' => $d["vendor_store_name"],
+						'vendor_store_desc' => $d["vendor_store_desc"],
+						'vendor_thumb_image' => $d["vendor_thumb_image"],
+						'vendor_full_image' => $d["vendor_full_image"],
+						'vendor_currency' => $d["vendor_currency"],
+						'vendor_url' => $d["vendor_url"],
+						'mdate' => $timestamp,
+						'vendor_terms_of_service' => $d["vendor_terms_of_service"],
+						'vendor_min_pov' => $d["vendor_min_pov"],
+						'vendor_currency_display_style' => $d["display_style"],
+						'vendor_freeshipping' => $d['vendor_freeshipping'],
+						'vendor_accepted_currencies' => implode( ',', $d['vendor_accepted_currencies'] ),
+						'vendor_address_format' => $d['vendor_address_format'],
+						'vendor_date_format' => $d['vendor_date_format']
+						);
+		if (!empty($d["vendor_category_id"])) {
+			$fields['vendor_category_id'] = $d["vendor_category_id"];
+		}
+		if (!empty($d["vendor_image_path"])) {
+			$fields['vendor_image_path'] = $d["vendor_image_path"];
+		}
 		
-		$q = "UPDATE #__{vm}_vendor set vendor_name='" . $d["vendor_name"] . "',";
-		$q .= "contact_last_name='" . $d["contact_last_name"] . "',";
-		$q .= "contact_first_name='" . $d["contact_first_name"] . "',";
-		$q .= "contact_middle_name='" . $d["contact_middle_name"] . "',";
-		$q .= "contact_title='" . $d["contact_title"] . "',";
-		$q .= "contact_phone_1='" . $d["contact_phone_1"] . "',";
-		$q .= "contact_phone_2='" . $d["contact_phone_2"] . "',";
-		$q .= "contact_fax='" . $d["contact_fax"] . "',";
-		$q .= "contact_email='" . $d["contact_email"] . "',";
-		$q .= "vendor_phone='" . $d["vendor_phone"] . "',";
-		$q .= "vendor_address_1='" . $d["vendor_address_1"] . "',";
-		$q .= "vendor_address_2='" . $d["vendor_address_2"] . "',";
-		$q .= "vendor_city='" . $d["vendor_city"] . "',";
-		$q .= "vendor_state='" . $d["vendor_state"] . "',";
-		$q .= "vendor_country='" . $d["vendor_country"] . "',";
-		$q .= "vendor_zip='" . $d["vendor_zip"] . "',";
-		$q .= "vendor_store_name='" . $d["vendor_store_name"] . "',";
-		$q .= "vendor_store_desc='" . $d["vendor_store_desc"] . "',";
-		if (!empty($d["vendor_category_id"]))
-		$q .= "vendor_category_id='" . $d["vendor_category_id"] . "',";
-		if (!empty($d["vendor_image_path"]))
-		$q .= "vendor_image_path='" . $d["vendor_image_path"] . "',";
-		$q .= "vendor_thumb_image='" . $d["vendor_thumb_image"] . "',";
-		$q .= "vendor_full_image='" . $d["vendor_full_image"] . "',";
-		$q .= "vendor_currency='" . $d["vendor_currency"] . "',";
-		$q .= "vendor_url='" . $d["vendor_url"] . "',";
-		$q .= "mdate='$timestamp', ";
-		$q .= "vendor_terms_of_service='" . $d["vendor_terms_of_service"] . "', ";
-		$q .= "vendor_min_pov='" . $d["vendor_min_pov"] . "', ";
-		$q .= "vendor_currency_display_style='" . $d["display_style"] . "', ";
-		$q .= "vendor_freeshipping='" . $d['vendor_freeshipping'] . "', ";
-		$q .= "vendor_accepted_currencies='" . implode( ',', $d['vendor_accepted_currencies'] ). "' ";
-		$q .= "WHERE vendor_id='" . $d["vendor_id"] . "'";
-
-		$db->query($q);
-
+		$db->buildQuery( 'UPDATE', '#__{vm}_vendor', $fields, 'WHERE vendor_id = '.$d["vendor_id"] );
+		$db->query();
+		if( $d['vendor_id'] == 1 ) {
+			$GLOBALS['vmLogger']->info('Your Store has been updated.');
+		} else {
+			$GLOBALS['vmLogger']->info('The Vendor has been updated.');
+		}
+		
 		return True;
 	}
 
@@ -452,14 +454,13 @@ class ps_vendor {
 		return True;
 	}
 
-
-	/**************************************************************************
-	* name: listVendor()
-	* created by:
-	* description: Creates a list of SELECT recods using vendor name and vendor id.
-	* parameters:
-	* returns: array of values
-	**************************************************************************/
+	/**
+	 * Retrieves the name of a vendor specified by $vendor_id
+	 *
+	 * @param int $vendor_id
+	 * @param int $product_id
+	 * @return String
+	 */
 	function get_name($vendor_id,$product_id="") {
 
 		// Returns the vendor name corresponding to a vendor_id;
@@ -587,6 +588,76 @@ class ps_vendor {
 		echo "<img src=\"".$url ."\" ". $args ." />\n";
 
 		return True;
+	}
+	/**
+	* @param string The vendor_currency_display_code
+	*   FORMAT: 
+    1: id, 
+    2: CurrencySymbol, 
+    3: NumberOfDecimalsAfterDecimalSymbol,
+    4: DecimalSymbol,
+    5: Thousands separator
+    6: Currency symbol position with Positive values :
+									// 0 = '00Symb'
+									// 1 = '00 Symb'
+									// 2 = 'Symb00'
+									// 3 = 'Symb 00'
+    7: Currency symbol position with Negative values :
+									// 0 = '(Symb00)'
+									// 1 = '-Symb00'
+									// 2 = 'Symb-00'
+									// 3 = 'Symb00-'
+									// 4 = '(00Symb)'
+									// 5 = '-00Symb'
+									// 6 = '00-Symb'
+									// 7 = '00Symb-'
+									// 8 = '-00 Symb'
+									// 9 = '-Symb 00'
+									// 10 = '00 Symb-'
+									// 11 = 'Symb 00-'
+									// 12 = 'Symb -00'
+									// 13 = '00- Symb'
+									// 14 = '(Symb 00)'
+									// 15 = '(00 Symb)'
+    	EXAMPLE: ||&euro;|2|,||1|8
+	* @return string
+	*/
+	function get_currency_display_style( $style ) {
+	
+		$array = explode( "|", $style );
+		$display = Array();
+		$display["id"] = @$array[0];
+		$display["symbol"] = @$array[1];
+		$display["nbdecimal"] = @$array[2];
+		$display["sdecimal"] = @$array[3];
+		$display["thousands"] = @$array[4];
+		$display["positive"] = @$array[5];
+		$display["negative"] = @$array[6];
+		return $display;
+	}
+	/**
+	 * Returns the formatted Store Address
+	 *
+	 * @param boolean $use_html
+	 * @return String
+	 */
+	function formatted_store_address( $use_html=false ) {
+		global $vendor_store_name, $vendor_address, $vendor_address_2, $vendor_city,
+		$vendor_state, $vendor_zip, $vendor_phone, $vendor_fax, $vendor_mail, $vendor_country, $vendor_url;
+		
+		$address_details['name'] = $vendor_store_name;
+		$address_details['address_1'] = $vendor_address;
+		$address_details['address_2'] = $vendor_address_2;
+		$address_details['state'] = $vendor_state;
+		$address_details['city'] = $vendor_city;
+		$address_details['zip'] = $vendor_zip;
+		$address_details['country'] = $vendor_country;
+		$address_details['phone'] = $vendor_phone;
+		$address_details['email'] = $vendor_mail;
+		$address_details['fax'] = $vendor_fax;
+		$address_details['url'] = $vendor_url;
+		
+		return vmFormatAddress( $address_details, $use_html );
 	}
 }
 ?>

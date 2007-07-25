@@ -103,6 +103,34 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 			      </td>
 			    </tr>
 			    <tr> 
+			      <td class="labelcell">Store Address Format:<br />
+					<?php echo vmToolTip('You can use the following placeholders here:<br />
+			        		<strong>{storename}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_STORE_NAME.'<br />
+			        		<strong>{address_1}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_ADDRESS_1.'<br />
+			        		<strong>{address_2}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_ADDRESS_2.'<br />
+			        		<strong>{state}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_STATE.'<br />
+			        		<strong>{city}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_CITY.'<br />
+			        		<strong>{zip}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_ZIP.'<br />
+			        		<strong>{country}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_COUNTRY.'<br />
+			        		<strong>{phone}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_PHONE.'<br />
+			        		<strong>{fax}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_FAX.'<br />
+			        		<strong>{email}</strong>: '.$VM_LANG->_PHPSHOP_STORE_FORM_EMAIL.'<br />
+			        		<strong>{url}</strong>: '.$VM_LANG->_PHPSHOP_PRODUCT_FORM_URL.'<br />
+			        		');
+			        ?>
+			        </td>
+			      <td width="78%" valign="top"> 
+			        <textarea class="inputbox" name="vendor_address_format" rows="4" cols="40"><?php $db->sp("vendor_address_format") ?></textarea>
+			        
+			      </td>
+			    </tr>
+			    <tr> 
+			      <td class="labelcell">Store Date Format:</td>
+			      <td width="78%" > 
+			        <input type="text" class="inputbox" name="vendor_date_format" value="<?php $db->sp("vendor_date_format") ?>" size="32" />
+			      </td>
+			    </tr>
+			    <tr> 
 			      <td class="labelcell">&nbsp;</td>
 			      <td width="78%" > &nbsp;</td>
 			    </tr>
@@ -204,7 +232,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 	      <fieldset><legend><?php echo $VM_LANG->_PHPSHOP_CURRENCY_DISPLAY ?></legend>
 	      <table class="adminform"><?php
 				/* Decode vendor_currency_display_style */
-				$currency_display = vendor_currency_display_style( $db->f("vendor_currency_display_style") );
+				$currency_display = ps_vendor::get_currency_display_style( $db->f("vendor_currency_display_style") );
 				?>
 		    <tr> 
 		      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_CURRENCY ?>: </td>

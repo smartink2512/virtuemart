@@ -25,10 +25,10 @@ $tpl = new $GLOBALS['VM_THEMECLASS']();
 $category_childs = $ps_product_category->get_child_list($category_id);
 $tpl->set( 'categories', $category_childs );
 //echo $vendor_store_desc;
-$categories = $tpl->fetch_cache( 'common/categoryChildlist.tpl.php');
+$categories = $tpl->fetch( 'common/categoryChildlist.tpl.php');
 $tpl->set( 'vendor_store_desc', $vendor_store_desc );
 $tpl->set( 'categories', $categories );
 $tpl->set('ps_product',$ps_product);
 $tpl->set('recent_products',$ps_product->recentProducts(null,$tpl->get_cfg('showRecent', 5)));
-echo $tpl->fetch_cache( 'common/shopIndex.tpl.php');
+echo $tpl->fetch( 'common/shopIndex.tpl.php');
 ?>

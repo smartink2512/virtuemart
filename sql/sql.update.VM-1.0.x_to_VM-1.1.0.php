@@ -249,6 +249,14 @@ PRIMARY KEY ( `user_id` )
 
 $db->query( "ALTER TABLE `#__{vm}_product_reviews` CHANGE `product_id` `product_id` INT( 11 ) NOT NULL ");
 
+# 25.07.2007: Allow to set address and date format
+$db->query( "ALTER TABLE `#__{vm}_vendor` 
+				ADD `vendor_address_format` TEXT NOT NULL ,
+				ADD `vendor_date_format` VARCHAR( 255 ) NOT NULL ;" );
+$db->query( "UPDATE `#__{vm}_vendor` SET
+			`vendor_address_format` = '{storename}\n{address_1}\n{address_2}\n{city}, {zip}',
+			`vendor_date_format` = '%A, %d %B %Y %H:%M'
+			WHERE vendor_id=1;");
 $db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'");
 
 ?>

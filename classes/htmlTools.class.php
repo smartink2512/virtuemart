@@ -1434,5 +1434,31 @@ function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='
 	
 	return mm_writeWithJS( $jslink, $noscriptlink );
 }
-
+/**
+ * Creates a formatted address using the store address format
+ *
+ * @param array $address_details
+ */
+function vmFormatAddress( $address_details, $use_html=false ) {
+	global $vendor_address_format;
+	
+	$store_address = str_replace( '{storename}', @$address_details['name'], $vendor_address_format );
+	$store_address = str_replace( '{address_1}', @$address_details['address_1'], $store_address );
+	$store_address = str_replace( '{address_2}', @$address_details['address_2'], $store_address );
+	$store_address = str_replace( '{state}', @$address_details['state'], $store_address );
+	$store_address = str_replace( '{city}', @$address_details['city'], $store_address );
+	$store_address = str_replace( '{zip}', @$address_details['zip'], $store_address );
+	$store_address = str_replace( '{country}', @$address_details['country'], $store_address );
+	$store_address = str_replace( '{phone}', @$address_details['phone'], $store_address );
+	$store_address = str_replace( '{email}', @$address_details['email'], $store_address );
+	$store_address = str_replace( '{fax}', @$address_details['fax'], $store_address );
+	$store_address = str_replace( '{url}', @$address_details['url'], $store_address );
+	
+	if( $use_html ) {
+		$store_address = nl2br( $store_address );
+	} else {
+		$store_address = strip_tags( $store_address );
+	}
+	return $store_address;
+}
 ?>

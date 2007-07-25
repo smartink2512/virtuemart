@@ -40,14 +40,7 @@ if( $db->f('order_number')) {
 	  <tr>
 	    <td valign="top">
 	     <h2><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL ?></h2>
-	     <p><?php
-	     echo $vendor_name . "<br />";
-	     echo $vendor_address . "<br />";
-	     echo $vendor_city . ", ";
-	     if (CAN_SELECT_STATES == '1') {
-	     	echo $vendor_state . " ";
-	     }
-	     echo $vendor_zip; ?></p>
+	     <p><?php echo ps_vendor::formatted_store_address(true) ?></p>
 	    </td>
 	    <td valign="top" width="10%" align="right"><?php echo $vendor_image; ?></td>
 	  </tr>

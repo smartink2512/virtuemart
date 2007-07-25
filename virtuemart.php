@@ -209,7 +209,7 @@ else {
 	        include( PAGEPATH.'shop.index.php');
 	    }
 	    if ( !empty($mosConfig_caching) && $vmDoCaching) {
-	        echo '<span class="small">'.$VM_LANG->_LAST_UPDATED.': '.strftime( $VM_LANG->_DATE_FORMAT_LC2 ).'</span>';
+	        echo '<span class="small">'.$VM_LANG->_LAST_UPDATED.': '.strftime( $vendor_date_format ).'</span>';
 	    }
 	    
 	    echo "\n<div id=\"statusBox\" style=\"text-align:center;display:none;visibility:hidden;\"></div></div>\n";

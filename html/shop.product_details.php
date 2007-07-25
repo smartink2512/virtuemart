@@ -74,8 +74,8 @@ if ($product_parent_id != 0) {
 	$dbp->next_record();
 }
 
-/* Create the template object */
-$tpl = new $GLOBALS['VM_THEMECLASS']();
+// Create the template object
+$tpl = vmTemplate::getInstance();
 
 
 // Let's have a look wether the product has related products.
@@ -96,7 +96,7 @@ if( $db->num_rows() > 0 ) {
 	$related_products = $tpl->fetch( '/common/relatedProducts.tpl.php' );
 }
 
-/** GET THE PRODUCT NAME **/
+// GET THE PRODUCT NAME 
 $product_name = shopMakeHtmlSafe( $db_product->f("product_name") );
 if( $db_product->f("product_publish") == "N" ) {
 	$product_name .= " (".$VM_LANG->_CMN_UNPUBLISHED.")";
@@ -107,7 +107,7 @@ if( (str_replace("<br />", "" , $product_description)=='') && ($product_parent_i
 }
 $product_description = vmCommonHTML::ParseContentByPlugins( $product_description );
 
-/** Get the CATEGORY NAVIGATION **/
+// Get the CATEGORY NAVIGATION 
 $navigation_pathway = "";
 $navigation_childlist = "";
 $pathway_appended = false;
@@ -133,8 +133,8 @@ if (empty($category_id) || empty( $flypage ))  {
 	$_GET['category_id'] = $category_id = $db->f("category_id");
 }
 $ps_product->addRecentProduct($product_id,$category_id,$tpl->get_cfg('showRecent', 5));
-/* Flypage Parameter has old page syntax: shop.flypage
-* so let's get the second part - flypage */
+// Flypage Parameter has old page syntax: shop.flypage
+// so let's get the second part - flypage
 $default['category_flypage'] = FLYPAGE;
 if( empty( $flypage )) {
 	$flypage = $db->sf('category_flypage');
@@ -192,25 +192,25 @@ if ($parent_id_link <> 0 ) {
 	$return_link .= " ".vmCommonHTML::pathway_separator()." ";
 }
 $tpl->set( 'return_link', $return_link );
-$navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');
+$navigation_pathway = $tpl->fetch( 'common/pathway.tpl.php');
 
 if ($ps_product_category->has_childs($category_id) ) {
 	$category_childs = $ps_product_category->get_child_list($category_id);
 	$tpl->set( 'categories', $category_childs );
-	$navigation_childlist = $tpl->fetch_cache( 'common/categoryChildlist.tpl.php');
+	$navigation_childlist = $tpl->fetch( 'common/categoryChildlist.tpl.php');
 }
 
-/* Set Dynamic Pathway */
+// Set Dynamic Pathway
 $mainframe->appendPathWay( $navigation_pathway );
 
-/* Set Dynamic Page Title */
+// Set Dynamic Page Title
 $mainframe->setPageTitle( html_entity_decode( substr($product_name, 0, 60 ), ENT_QUOTES ));
 
-/* Prepend Product Short Description Meta Tag "description" */
+// Prepend Product Short Description Meta Tag "description"
 $mainframe->prependMetaTag( "description", strip_tags( $db_product->f("product_s_desc")) );
 
 
-/** Show an "Edit PRODUCT"-Link ***/
+// Show an "Edit PRODUCT"-Link
 if ($perm->check("admin,storeadmin")) {
 	$edit_link = "<a href=\"". sefRelToAbs($mosConfig_live_site."/index.php?page=product.product_form&amp;next_page=shop.product_details&amp;product_id=$product_id&amp;option=com_virtuemart&amp;Itemid=$Itemid")."\">
       <img src=\"images/M_images/edit.png\" width=\"16\" height=\"16\" alt=\"". $VM_LANG->_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT ."\" border=\"0\" /></a>";
@@ -219,7 +219,7 @@ else {
 	$edit_link = "";
 }
 
-/** LINK TO MANUFACTURER POP-UP **/
+// LINK TO MANUFACTURER POP-UP
 $manufacturer_id = $ps_product->get_manufacturer_id($product_id);
 $manufacturer_name = $ps_product->get_mf_name($product_id);
 $manufacturer_link = "";
@@ -232,12 +232,12 @@ if( $manufacturer_id && !empty($manufacturer_name) ) {
 	if( @$_REQUEST['output'] == "pdf" )
 	$manufacturer_link = "<a href=\"$link\" target=\"_blank\" title=\"$text\">$text</a>";
 }
-/** PRODUCT PRICE **/
-if (_SHOW_PRICES == '1') { /** Change - Begin */
+// PRODUCT PRICE
+if (_SHOW_PRICES == '1') { 
 	if( $db_product->f("product_unit") && VM_PRICE_SHOW_PACKAGING_PRICELABEL) {
 		$product_price_lbl = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE_PER_UNIT.' ('.$db_product->f("product_unit")."):</strong>";
 	}
-	else {/** Change - End */
+	else {
 		$product_price_lbl = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE. ": </strong>";
 	}
 	$product_price = $ps_product->show_price( $product_id );
@@ -409,6 +409,6 @@ $tpl->set( "ask_seller_text", $ask_seller_text ); // Product Enquiry!
 $tpl->set( "ask_seller", $ask_seller ); // Product Enquiry!
 $tpl->set( "recent_products", $recent_products); // Recent products
 /* Finish and Print out the Page */
-echo $tpl->fetch_cache( '/product_details/'.$flypage . '.php' );
+echo $tpl->fetch( '/product_details/'.$flypage . '.php' );
 
 ?>

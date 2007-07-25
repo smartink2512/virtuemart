@@ -87,7 +87,7 @@ elseif( $num_rows == 0 && empty($product_type_id) && !empty($child_list)) {
 /*** NOW START THE PRODUCT LIST ***/
 else {
 
-	$tpl = new $GLOBALS['VM_THEMECLASS']();
+	$tpl = vmTemplate::getInstance();
 	
 	if( $category_id ) {
 		/**
@@ -100,7 +100,7 @@ else {
 			
 		$category_childs = $ps_product_category->get_child_list($category_id);
 		$tpl->set( 'categories', $category_childs );
-		$navigation_childlist = $tpl->fetch_cache( 'common/categoryChildlist.tpl.php');
+		$navigation_childlist = $tpl->fetch( 'common/categoryChildlist.tpl.php');
 		$tpl->set( 'navigation_childlist', $navigation_childlist );
 	    /**
 	    * PATHWAY - Navigation List
@@ -109,10 +109,10 @@ else {
 		$tpl->set( 'category_id', $category_id );
 		$tpl->set( 'category_list', $nav_list );
 		$tpl->set( 'category_name', $category_name );
-		$navigation_pathway = $tpl->fetch_cache( 'common/pathway.tpl.php');		
+		$navigation_pathway = $tpl->fetch( 'common/pathway.tpl.php');		
 		$mainframe->appendPathWay( $navigation_pathway );
 		
-		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_category.tpl.php' );
+		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_category.tpl.php' );
 		
 	}
 	elseif( $manufacturer_id) {
@@ -122,28 +122,28 @@ else {
 		
 		$browsepage_lbl = shopMakeHtmlSafe( $db->f("mf_name") );
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
-		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_manufacturer.tpl.php' );
+		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_manufacturer.tpl.php' );
 	}
 	elseif( $keyword ) {
 		$mainframe->setPageTitle( html_entity_decode( $VM_LANG->_PHPSHOP_SEARCH_TITLE ) );
 		$browsepage_lbl = $VM_LANG->_PHPSHOP_SEARCH_TITLE .': '.shopMakeHtmlSafe( $keyword );
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
 		
-		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_keyword.tpl.php' );
+		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_keyword.tpl.php' );
 	}
 	else {
 		$mainframe->setPageTitle( html_entity_decode($VM_LANG->_PHPSHOP_BROWSE_LBL) );#
 		$browsepage_lbl = $VM_LANG->_PHPSHOP_BROWSE_LBL;
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
 		
-		$browsepage_header = $tpl->fetch_cache( 'browse/includes/browse_header_all.tpl.php' );
+		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_all.tpl.php' );
 	}
 	$tpl->set( 'browsepage_header', $browsepage_header );
 	
 	if (!empty($product_type_id) && @$_REQUEST['output'] != "pdf") {
 		$tpl->set( 'ps_product_type', $ps_product_type);
 		$tpl->set( 'product_type_id', $product_type_id);
-		$parameter_form = $tpl->fetch_cache( 'browse/includes/browse_searchparameterform.tpl.php' );
+		$parameter_form = $tpl->fetch( 'browse/includes/browse_searchparameterform.tpl.php' );
 	}
 	else {
 		$parameter_form = '';
@@ -201,7 +201,7 @@ else {
 		else {
 			$tpl->set( 'show_top_navigation', false );
 		}
-		$orderby_form = $tpl->fetch_cache( 'browse/includes/browse_orderbyform.tpl.php' );
+		$orderby_form = $tpl->fetch( 'browse/includes/browse_orderbyform.tpl.php' );
 		$tpl->set( 'orderby_form', $orderby_form );
     }
     else {
@@ -242,6 +242,7 @@ else {
 	else {
 		$templatefile = "browse_lite_pdf";
 	}
+	
 	$tpl->set( 'buttons_header', $buttons_header );
 	
 	$tpl->set('products_per_row', $products_per_row );
@@ -425,15 +426,17 @@ $tpl->set( 'pagenav', $pagenav );
 
 if( $num_rows > 5 && @$_REQUEST['output'] != "pdf") {
 	$tpl->set( 'show_limitbox', true );
-}
-else {
+} else {
 	$tpl->set( 'show_limitbox', false );
 }
-$browsepage_footer = $tpl->fetch_cache( 'browse/includes/browse_pagenav.tpl.php' );
+$browsepage_footer = $tpl->fetch( 'browse/includes/browse_pagenav.tpl.php' );
 $tpl->set( 'browsepage_footer', $browsepage_footer );
+
 $recent_products = $ps_product->recentProducts(null,$tpl->get_cfg('showRecent', 5));
 $tpl->set('recent_products',$recent_products);
+
 $tpl->set('ps_product',$ps_product);
-echo $tpl->fetch_cache( $tpl->config->get( 'productListStyle' ) );
+
+echo $tpl->fetch( $tpl->config->get( 'productListStyle' ) );
 }
 ?>

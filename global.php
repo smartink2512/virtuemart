@@ -19,7 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 global $vendor_image,$vendor_country_2_code ,$vendor_country_3_code, $vendor_image_url, $vendor_name, 
 		$vendor_address, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name, $vm_mainframe,
         $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping,
-        $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image, $vendor_accepted_currencies;
+        $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image, $vendor_accepted_currencies,
+        $vendor_address_format, $vendor_date_format;
 
 define( 'VM_COMPONENT_NAME', 'com_virtuemart' );
 
@@ -79,6 +80,7 @@ require_once(CLASSPATH."ps_function.php");
 require_once(CLASSPATH."ps_module.php");
 require_once(CLASSPATH."ps_perm.php");
 require_once(CLASSPATH."ps_shopper_group.php");
+require_once(CLASSPATH."ps_vendor.php");
 require_once(CLASSPATH.'template.class.php' );
 require_once(CLASSPATH."htmlTools.class.php");
 require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
@@ -153,7 +155,7 @@ $_SESSION["ps_vendor_id"] = $ps_vendor_id = $default_vendor;
 $q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, vendor_freeshipping,
 			vendor_address_1, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
 			vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style,
-			vendor_accepted_currencies
+			vendor_accepted_currencies, vendor_address_format, vendor_date_format
 		FROM (`#__{vm}_vendor`, `#__{vm}_country`)
 		WHERE `vendor_id`=$default_vendor
 		AND (vendor_country=country_2_code OR vendor_country=country_3_code);";
@@ -165,11 +167,13 @@ $_SESSION['minimum_pov'] = $db->f("vendor_min_pov");
 $vendor_name = $db->f("vendor_name");
 $vendor_store_name = $db->f("vendor_store_name");
 $vendor_mail = $db->f("contact_email");
+$vendor_url = $db->f("vendor_url");
 $vendor_freeshipping = $db->f("vendor_freeshipping");
 $vendor_image = "<img border=\"0\" src=\"" .IMAGEURL ."vendor/" . $db->f("vendor_full_image") . "\" />";
 $vendor_full_image = $db->f("vendor_full_image");
 $vendor_image_url = IMAGEURL."vendor/".$db->f("vendor_full_image");
 $vendor_address = $db->f("vendor_address_1");
+$vendor_address_2 = $db->f("vendor_address_2");
 $vendor_city = $db->f("vendor_city");
 $vendor_state = $db->f("vendor_state");
 $vendor_state = empty($vendor_state) ? "" : $db->f("vendor_state");
@@ -182,13 +186,15 @@ $vendor_store_desc = $db->f("vendor_store_desc");
 $vendor_currency = $db->f("vendor_currency");
 $vendor_currency_display_style = $db->f("vendor_currency_display_style");
 $vendor_accepted_currencies = $db->f("vendor_accepted_currencies");
+$vendor_address_format = $db->f('vendor_address_format');
+$vendor_date_format = $db->f('vendor_date_format');
 $_SESSION["vendor_currency"] = $vendor_currency;
 
 
 // see /classes/currency_convert.php
 vmSetGlobalCurrency();
 
-$currency_display = vendor_currency_display_style( $vendor_currency_display_style );
+$currency_display = ps_vendor::get_currency_display_style( $vendor_currency_display_style );
 if( $GLOBALS['product_currency'] != $vendor_currency ) {
 	$currency_display["symbol"] = $GLOBALS['product_currency'];
 }
@@ -219,12 +225,14 @@ $GLOBALS['VM_THEMECLASS'] = 'vmTemplate_'.basename(VM_THEMEPATH);
  * @return array
  */
 function vmGetGlobalsArray() {
-	return array(  'perm', 'page', 'sess', 'func', 'cart', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 'VM_MODULES_FORCE_HTTPS',
-					'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 'ps_vendor_id', 'keyword', 'Itemid',
-					'ps_payment_method', 'pagename', 'modulename', 'vars', 'mosConfig_lang',
-					'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 'vendor_image_url', 'vendor_name', 
-					'vendor_address', 'vendor_city','vendor_country','vendor_mail','vendor_store_name', 'vendor_state', 'vendor_zip', 'vendor_phone', 'vendor_currency', 'vendor_store_desc', 'vendor_freeshipping', 'vendor_currency_display_style', 'vendor_freeshipping', 
-					'mm_action_url', 'limit', 'limitstart', 'mainframe', 'vmInputFilter',
-					'option', 'my', 'mosConfig_live_site', 'mosConfig_absolute_path' );
+	return array(  'perm', 'page', 'sess', 'func', 'cart', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 
+					'VM_MODULES_FORCE_HTTPS', 'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 
+					'ps_vendor_id', 'keyword', 'ps_payment_method', 'pagename', 'modulename', 
+					'vars', 'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 
+					'vendor_image_url', 'vendor_name', 'vendor_address', 'vendor_address_2', 'vendor_city','vendor_country','vendor_mail',
+					'vendor_store_name', 'vendor_state', 'vendor_zip', 'vendor_phone', 'vendor_currency', 'vendor_store_desc', 
+					'vendor_freeshipping', 'vendor_currency_display_style', 'vendor_freeshipping', 'vendor_date_format', 'vendor_address_format',
+					'mm_action_url', 'limit', 'limitstart', 'vmInputFilter', 'mainframe', 'mosConfig_lang',
+					'option', 'my', 'Itemid', 'mosConfig_live_site', 'mosConfig_absolute_path' );
 }
 ?>

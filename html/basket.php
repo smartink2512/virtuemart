@@ -266,7 +266,7 @@ else {
 		//&& ($page == "shop.cart" )
 	) {
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
-		$basket_html .= $tpl->fetch_cache( 'common/couponField.tpl.php' );
+		$basket_html .= $tpl->fetch( 'common/couponField.tpl.php' );
 	}
 }
 

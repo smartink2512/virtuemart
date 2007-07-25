@@ -1877,10 +1877,12 @@ class ps_product extends vmAbstractObject {
 		// if we've been given a description to deal with, get the adjusted price
 		if ($description != '' && $auth["show_price_including_tax"] == 1 && $product_id != 0 ) {
 			$my_taxrate = $this->get_product_taxrate($product_id);
-			
+			$price = $this->get_price( $product_id );
+			$product_currency = $price['product_currency'];
 		}
 		else {
 			$my_taxrate = 0.00;
+			$product_currency = '';
 		}
 		// We must care for custom attribute fields! Their value can be freely given
 		// by the customer, so we mustn't include them into the price calculation
@@ -1920,14 +1922,14 @@ class ps_product extends vmAbstractObject {
 				$modifier = $product_attributes[$this_key]['values'][$this_value]['adjustment'];
 				$operand = $product_attributes[$this_key]['values'][$this_value]['operand'];
 
-				$value_notax = $GLOBALS['CURRENCY']->convert( $modifier );
+				$value_notax = $GLOBALS['CURRENCY']->convert( $modifier, $product_currency );
 				if( abs($value_notax) >0 ) {
 					$value_taxed = $value_notax * ($my_taxrate+1);
-						$temp_desc_new  = str_replace( $operand.$modifier, $operand.' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ), $temp_desc );
-                        
-						$description = str_replace( $this_key.':'.$this_value, 
-													 $this_key.':'.$this_value.' ('.$operand.' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ).')',
-														$description);
+					$temp_desc_new  = str_replace( $operand.$modifier, $operand.' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ), $temp_desc );
+                    
+					$description = str_replace( $this_key.':'.$this_value, 
+												 $this_key.':'.$this_value.' ('.$operand.' '.$CURRENCY_DISPLAY->getFullValue( $value_taxed ).')',
+													$description);
 
 				}
 				$temp_desc = substr($temp_desc, $finish+1);
@@ -2109,7 +2111,7 @@ class ps_product extends vmAbstractObject {
 		$tpl->set( 'undiscounted_price', @$undiscounted_price );
 		$tpl->set( 'base_price', $base_price );
         $tpl->set( 'price_table', $html);
-		return $tpl->fetch_cache( 'common/price.tpl.php');
+		return $tpl->fetch( 'common/price.tpl.php');
 
 	}
 
@@ -2242,7 +2244,7 @@ class ps_product extends vmAbstractObject {
 				$addtocart_link = $sess->url($mm_action_url. "index.php" . $url);
 				$tpl->set( 'addtocart_link', $addtocart_link );
 			}
-			return $tpl->fetch_cache( 'common/productsnapshot.tpl.php');
+			return $tpl->fetch( 'common/productsnapshot.tpl.php');
 		}
 		
 		return;
@@ -2522,7 +2524,7 @@ class ps_product extends vmAbstractObject {
 		        $i++;
 	        }
             $tpl->set( 'featured_products', $featured_products );
-            return $tpl->fetch_cache( 'common/featuredProducts.tpl.php'); 
+            return $tpl->fetch( 'common/featuredProducts.tpl.php'); 
         }
     }
     

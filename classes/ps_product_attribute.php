@@ -351,7 +351,7 @@ class ps_product_attribute {
 			$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"$product_id\" />\n";
             $tpl->set("drop_down", $html);
 		}
-		$html = $tpl->fetch_cache( 'product_details/includes/addtocart_drop.tpl.php');
+		$html = $tpl->fetch( 'product_details/includes/addtocart_drop.tpl.php');
 		return array($html,"drop");
 	}
 
@@ -445,7 +445,7 @@ class ps_product_attribute {
 			$html .= "<input type=\"hidden\" name=\"prod_id[]\" value=\"$product_id\" />\n";
             $tpl->set("drop_down", $html);
 		}
-		$html = $tpl->fetch_cache( 'product_details/includes/addtocart_drop.tpl.php');
+		$html = $tpl->fetch( 'product_details/includes/addtocart_drop.tpl.php');
 		return array($html,"drop");
 	}
 
@@ -672,10 +672,10 @@ class ps_product_attribute {
             $master_child_count = ($master_child_count == 0) ? 1 : $master_child_count;
             $tpl->set( 'child_count',$master_child_count);
             if($product_list == "Y") {
-                $html = $tpl->fetch_cache( 'product_details/includes/addtocart_list_single.tpl.php'); }
+                $html = $tpl->fetch( 'product_details/includes/addtocart_list_single.tpl.php'); }
             else {
                 $list_type = "multi";
-                $html = $tpl->fetch_cache( 'product_details/includes/addtocart_list_multi.tpl.php'); 
+                $html = $tpl->fetch( 'product_details/includes/addtocart_list_multi.tpl.php'); 
             }
 		}
 		else {
@@ -770,7 +770,7 @@ class ps_product_attribute {
 
 		if ($advanced_attribute_list) {
             $tpl->set( 'attributes', $attributes );
-            return $tpl->fetch_cache( 'product_details/includes/addtocart_advanced_attribute.tpl.php');
+            return $tpl->fetch( 'product_details/includes/addtocart_advanced_attribute.tpl.php');
 		}
 	}
 
@@ -814,7 +814,7 @@ class ps_product_attribute {
 
 		if ($custom_attr_list) {
             $tpl->set( 'attributes', $attributes );
-            return $tpl->fetch_cache( 'product_details/includes/addtocart_custom_attribute.tpl.php');
+            return $tpl->fetch( 'product_details/includes/addtocart_custom_attribute.tpl.php');
 		}
 	}
 	/**

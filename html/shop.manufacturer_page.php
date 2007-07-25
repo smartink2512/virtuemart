@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,46 +20,28 @@ mm_showMyFileName( __FILE__ );
 $manufacturer_id = intval( mosGetParam( $_GET, 'manufacturer_id' ));
 
 if( !empty( $manufacturer_id ) ) {
+
 	$q  = "SELECT `manufacturer_id`,`mf_name`,`mf_email`,`mf_desc`,`mf_url` FROM `#__{vm}_manufacturer` WHERE ";
 	$q .= "`manufacturer_id`=$manufacturer_id";
 	$db->query($q);
-	$db->next_record();
+	if( !$db->next_record() ) {
+		return;
+	}
 
 	$mf_name=$db->f("mf_name");
 	$mf_email=$db->f("mf_email");
 	$mf_desc=$db->f("mf_desc");
 	$mf_url = $db->f("mf_url");
+	
+	$tpl = vmTemplate::getInstance();
+	$tpl->set_vars(array('mf_name'=>$db->f("mf_name"),
+					'mf_email' => $db->f("mf_email"),
+					'mf_desc' => $db->f("mf_desc"),
+					'mf_url' => $db->f("mf_url"),
+					'db' => $db
+					)
+	);
+	echo $tpl->fetch('pages/shop.manufacturer.tpl.php');
 
-  ?><h3><?php echo $mf_name;?></h3>
-  
-  <table align="center"cellspacing="0" cellpadding="0" border="0">
-      <tr valign="top"> 
-        <th colspan="2" align="center"class="sectiontableheader">
-          <strong><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></strong>
-        </th>
-      </tr>
-      <tr valign="top">
-        <td align="center"colspan="2"><br />
-          <?php echo "&nbsp;" . $mf_name . "<br />"; ?>
-          <br /><br />
-        </td>
-      </tr>
-  
-      <tr>
-        <td valign="top" align="center"colspan="2">
-            <br /><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_EMAIL ?>:&nbsp;
-            <a href="mailto:<?php echo $mf_email; ?>"><?php echo $mf_email; ?></a>
-            <br />
-            <br /><a href="<?php echo $mf_url ?>" target="_blank"><?php echo $mf_url ?></a><br />
-        </td>
-      </tr>
-      <tr>
-        <td valign="top" align="left" colspan="2">
-            <br /><?php echo $mf_desc ?><br />
-        </td>
-      </tr>
-    
-  </table>
-  <?php
 }
 ?>

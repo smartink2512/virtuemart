@@ -65,6 +65,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 
 		// Get sure that we have float values with a decimal point!
 		@setlocale( LC_NUMERIC, 'en_US', 'en' );
+		@setlocale( LC_TIME, $mosConfig_locale );
 		
 		if( empty( $mainframe->_userstate )) {
 			$mainframe->_userstate = array();
@@ -91,7 +92,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			}
 		}
 				
-		$_SESSION['session_userstate']['product_id'] = $product_id = $_REQUEST['product_id'];
+		$_SESSION['session_userstate']['product_id'] = $product_id = @$_REQUEST['product_id'];
 		$category_id = $mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
 		$manufacturer_id = $mainframe->getUserStateFromRequest( 'manufacturer_id', 'manufacturer_id' );
 		

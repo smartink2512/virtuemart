@@ -75,6 +75,6 @@ $tpl->set_vars(array('product_id' => $product_id,
 					'db_product' => $db_product
 					)
 				);
-echo $tpl->fetch_cache('pages/shop.ask.tpl.php');
+echo $tpl->fetch('pages/shop.ask.tpl.php');
 
 ?>

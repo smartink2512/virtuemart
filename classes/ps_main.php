@@ -362,54 +362,6 @@ function include_class($module) {
 }
 
 /**
-* @param string The vendor_currency_display_code
-*   FORMAT: 
-    1: id, 
-    2: CurrencySymbol, 
-    3: NumberOfDecimalsAfterDecimalSymbol,
-    4: DecimalSymbol,
-    5: Thousands separator
-    6: Currency symbol position with Positive values :
-									// 0 = '00Symb'
-									// 1 = '00 Symb'
-									// 2 = 'Symb00'
-									// 3 = 'Symb 00'
-    7: Currency symbol position with Negative values :
-									// 0 = '(Symb00)'
-									// 1 = '-Symb00'
-									// 2 = 'Symb-00'
-									// 3 = 'Symb00-'
-									// 4 = '(00Symb)'
-									// 5 = '-00Symb'
-									// 6 = '00-Symb'
-									// 7 = '00Symb-'
-									// 8 = '-00 Symb'
-									// 9 = '-Symb 00'
-									// 10 = '00 Symb-'
-									// 11 = 'Symb 00-'
-									// 12 = 'Symb -00'
-									// 13 = '00- Symb'
-									// 14 = '(Symb 00)'
-									// 15 = '(00 Symb)'
-    EXAMPLE: ||&euro;|2|,||1|8
-* @return string
-*/
-function vendor_currency_display_style( $style ) {
-
-	$array = explode( "|", $style );
-	$display = Array();
-	$display["id"] = @$array[0];
-	$display["symbol"] = @$array[1];
-	$display["nbdecimal"] = @$array[2];
-	$display["sdecimal"] = @$array[3];
-	$display["thousands"] = @$array[4];
-	$display["positive"] = @$array[5];
-	$display["negative"] = @$array[6];
-	return $display;
-}
-
-
-/**
 * Login validation function
 *
 * Username and encoded password is compared to db entries in the mos_users
@@ -969,5 +921,22 @@ function vmRaiseMemoryLimit( $setLimit ) {
 	if( $memLimit < $setLimitB ) {
 		@ini_set('memory_limit', $setLimit );
 	}	
+}
+/**
+ * Returns a formatted date
+ *
+ * @param int $time TimeStamp format
+ * @param String $dateformat strftime Format String
+ * @return String
+ */
+function vmFormatDate( $time=0, $dateformat='' ) {
+	global $vendor_date_format;
+	if( empty($time)) $time = time();
+	
+	if( empty( $dateformat )) {
+		return strftime( $vendor_date_format, $time );
+	} else {
+		return strftime( $dateformat, $time );
+	}
 }
 ?>

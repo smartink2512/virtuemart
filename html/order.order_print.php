@@ -52,7 +52,7 @@ else {
 			  </tr>
 			  <tr> 
 				<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE ?>:</strong></td>
-				<td><?php echo date("d-M-Y, H:i", $db->f("cdate")+$mosConfig_offset);?></td>
+				<td><?php echo vmFormatDate( $db->f("cdate")+$mosConfig_offset);?></td>
 			  </tr>
 			  <tr> 
 				<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</strong></td>
@@ -370,7 +370,7 @@ else {
 				  			echo '<ul>';
 				  			echo '<li>'.$VM_LANG->_VM_DOWNLOAD_REMAINING_DOWNLOADS .': '.$file->download_max.'</li>';
 				  			if( $file->end_date > 0 ) {
-				  				echo '<li>'.$VM_LANG->_VM_EXPIRY.': '.date("d-M-Y, H:i", $file->end_date + $mosConfig_offset ).'</li>';
+				  				echo '<li>'.$VM_LANG->_VM_EXPIRY.': '.vmFormatDate( $file->end_date + $mosConfig_offset ).'</li>';
 				  			}
 				  			echo '</ul>';
 				  			echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">				  		
@@ -620,7 +620,7 @@ else {
 						echo '<br/>(CVV Code: '.$dbaccount->f('order_payment_code').') ';
 					}
 					?></td>
-					<td width="17%"><?php echo date("M-Y", $dbpm->f("order_payment_expire")); ?></td>
+					<td width="17%"><?php echo vmFormatDate( $dbpm->f("order_payment_expire"), '%b-%Y'); ?></td>
 				  </tr>
 				  <tr> 
 				  <tr class="sectiontableheader"> 

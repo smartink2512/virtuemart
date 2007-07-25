@@ -28,6 +28,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * The above copyright notice and this permission notice shall be included in
 * all copies or substantial portions of the Software.
 */
+require_once( CLASSPATH . 'parameters.class.php');
 
 class vmTemplate {
 	var $vars; /// Holds all the template variables
@@ -40,7 +41,7 @@ class vmTemplate {
 	var $config;
 	var $cache_id;
 	var $expire;
-	var $cached;
+	var $cached = false;
 	
 	/**
     * Constructor.
@@ -67,7 +68,7 @@ class vmTemplate {
 		
 		// the theme configuration needs to be available to the templates! (so you can use $this->get_cfg('showManufacturerLink') for example )
 		if( empty( $GLOBALS['vmThemeConfig'] ) || !empty( $_REQUEST['vmThemeConfig'])) {
-			$GLOBALS['vmThemeConfig'] =& new mosParameters( @file_get_contents(VM_THEMEPATH.'theme.config.php'), VM_THEMEPATH.'theme.xml', 'theme');
+			$GLOBALS['vmThemeConfig'] =& new vmParameters( @file_get_contents(VM_THEMEPATH.'theme.config.php'), VM_THEMEPATH.'theme.xml', 'theme');
 
 		}
 		$this->config =& $GLOBALS['vmThemeConfig'];
@@ -88,13 +89,16 @@ class vmTemplate {
     * @return bool
     */
 	function is_cached() {
-		if($this->cached) return true;
+		if($this->cached) {			
+			return true;
+		}
 
 		// Passed a cache_id?
 		if(!$this->cache_id) return false;
 
 		// Cache file exists?
 		if(!@file_exists($this->cache_id)) return false;
+		if( @filesize($this->cache_id) == 0) return false;
 
 		// Can get the time of the file?
 		if(!($mtime = filemtime($this->cache_id))) return false;
@@ -113,6 +117,7 @@ class vmTemplate {
             */
 			$this->cached = true;
 			return true;
+			//
 		}
 	}
 	
@@ -176,7 +181,7 @@ class vmTemplate {
 	 * @param mixed $value
 	 */
 	function set_cfg( $var, $value ) {
-		if( is_a( $this->config, 'mosparameters' )) {
+		if( is_a( $this->config, 'vmParameters' )) {
 			$this->config->set( $var, $value );
 		}
 	}
@@ -211,8 +216,8 @@ class vmTemplate {
     */
 	function fetch_cache($file) {
 		global $mosConfig_caching;
-		if($this->is_cached()) {
-			$fp = @fopen($this->cache_id, 'r');
+		if($this->is_cached() && $fp = @fopen($this->cache_id, 'r') ) {
+			
 			$contents = fread($fp, filesize($this->cache_id));
 			fclose($fp);
 			return $contents;

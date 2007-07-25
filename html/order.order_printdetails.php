@@ -36,12 +36,7 @@ $db->next_record();
   <tr>
     <td valign="top">
      <h2><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL ?></h2>
-     <p><?php
-        echo $vendor_name . "<br />";
-        echo $vendor_address . "<br />";
-        echo $vendor_city . ", ";
-        echo $vendor_state . " ";
-        echo $vendor_zip; ?></p>
+     <p><?php echo ps_vendor::formatted_store_address(true) ?></p>
     </td>
     <td valign="top" width="10%" align="right"><?php echo $vendor_image; ?></td>
   </tr>
@@ -59,7 +54,7 @@ $db->next_record();
 
   <tr> 
     <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE ?>:</td>
-    <td><?php echo date("d-M-Y H:i", $db->f("cdate")); ?></td>
+    <td><?php echo vmFormatDate( $db->f("cdate")); ?></td>
   </tr>
   <tr> 
     <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</td>
@@ -468,7 +463,7 @@ $db->next_record();
       </tr>
       <tr> 
         <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EXPIRE_DATE ?> :</td>
-        <td><?php echo date("M-Y", $dbpm->f("order_payment_expire")); ?> </td>
+        <td><?php echo vmFormatDate($dbpm->f("order_payment_expire"), '%b-%Y'); ?> </td>
       </tr>
           <?php } ?>
       <!-- end payment information --> 

@@ -250,4 +250,13 @@ PRIMARY KEY ( `user_id` )
 
 ALTER TABLE `jos_vm_product_reviews` CHANGE `product_id` `product_id` INT( 11 ) NOT NULL 
 
+# 25.07.2007: Allow to set address and date format
+ALTER TABLE `jos_vm_vendor` 
+				ADD `vendor_address_format` TEXT NOT NULL ,
+				ADD `vendor_date_format` VARCHAR( 255 ) NOT NULL;
+UPDATE `jos_vm_vendor` SET
+			`vendor_address_format` = '{storename}\n{address_1}\n{address_2}\n{city}, {zip}',
+			`vendor_date_format` = '%A, %d %B %Y %H:%M'
+			WHERE vendor_id=1;
+			
 UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';
