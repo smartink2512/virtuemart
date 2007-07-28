@@ -41,20 +41,20 @@ function dTree(objName,url) {
 		inOrder					: false
 	}
 	this.icon = {
-		root				: url+"/modules/dtree/img/base.gif",
-		folder			: url+"/modules/dtree/img/folder.gif",
-		folderOpen	: url+"/modules/dtree/img/folderopen.gif",
-		node				: url+"/modules/dtree/img/page.gif",
-		empty				: url+"/modules/dtree/img/empty.gif",
-		line				: url+"/modules/dtree/img/line.gif",
-		join				: url+"/modules/dtree/img/join.gif",
-		joinBottom	: url+"/modules/dtree/img/joinbottom.gif",
-		plus				: url+"/modules/dtree/img/plus.gif",
-		plusBottom	: url+"/modules/dtree/img/plusbottom.gif",
-		minus				: url+"/modules/dtree/img/minus.gif",
-		minusBottom	: url+"/modules/dtree/img/minusbottom.gif",
-		nlPlus			: url+"/modules/dtree/img/nolines_plus.gif",
-		nlMinus			: url+"/modules/dtree/img/nolines_minus.gif"
+		root				: url+"/dtree/img/base.gif",
+		folder			: url+"/dtree/img/folder.gif",
+		folderOpen	: url+"/dtree/img/folderopen.gif",
+		node				: url+"/dtree/img/page.gif",
+		empty				: url+"/dtree/img/empty.gif",
+		line				: url+"/dtree/img/line.gif",
+		join				: url+"/dtree/img/join.gif",
+		joinBottom	: url+"/dtree/img/joinbottom.gif",
+		plus				: url+"/dtree/img/plus.gif",
+		plusBottom	: url+"/dtree/img/plusbottom.gif",
+		minus				: url+"/dtree/img/minus.gif",
+		minusBottom	: url+"/dtree/img/minusbottom.gif",
+		nlPlus			: url+"/dtree/img/nolines_plus.gif",
+		nlMinus			: url+"/dtree/img/nolines_minus.gif"
 	};
 	this.obj = objName;
 	this.aNodes = [];

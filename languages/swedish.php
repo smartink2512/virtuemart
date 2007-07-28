@@ -6,7 +6,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
-* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -662,96 +661,10 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_RATE_FORM_CARRIER = 'Transportfirma';
 	var $_PHPSHOP_RATE_FORM_COUNTRY = 'Land';
 	var $_PHPSHOP_RATE_FORM_ZIP_START = 'Postnummer från';
-	var $_PHPSHOP_RATE_FORM_ZIP_END = %Postnummer till';
-	var $_PHPSHOP_RATE_FORM_WEIGHT_START = 'Lägsta vikt';
-	var $_PHPSHOP_RATE_FORM_WEIGHT_END = 'Högsta vikt';
-	var $_PHPSHOP_RATE_FORM_VALUE = 'Avgift';
-	var $_PHPSHOP_RATE_FORM_PACKAGE_FEE = 'Din paketavgift';
-	var $_PHPSHOP_RATE_FORM_CURRENCY = 'Valuta/betalningsmetod';
-	var $_PHPSHOP_RATE_FORM_VAT_ID = 'Momssats';
-	var $_PHPSHOP_RATE_FORM_LIST_ORDER = 'Listordning';
-	var $_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL = 'Transportfirma';
-	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME = 'Leveransmetodsbeskrivning';
-	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART = 'Vikt från ...';
-	var $_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND = '... till';
-	var $_PHPSHOP_CARRIER_FORM_NAME = 'Namn';
-	var $_PHPSHOP_CARRIER_FORM_LIST_ORDER = 'Listordning';
-	var $_PHPSHOP_ERR_MSG_CARRIER_EXIST = 'FEL: Transportfirma-ID finns redan.';
-	var $_PHPSHOP_ERR_MSG_CARRIER_ID_REQ = 'FEL: Välj en transportfirma.';
-	var $_PHPSHOP_ERR_MSG_CARRIER_INUSE = 'FEL: Minst en leveransmetod finns associerad med transportfirman. Ta bort dessa först.';
-	var $_PHPSHOP_ERR_MSG_CARRIER_NOTFOUND = 'FEL: Kunde inte hitta en transportfirma med detta ID.';
-	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = 'FEL: Välj en transportfirma.';
-	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = 'FEL: Kunde inte hitta en transportfirma med detta ID.';
-	var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = 'FEL: En leveransmetodsbeskrivning krävs.';
-	var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = 'FEL: Destinationslandet är ej godkänt. Flera länder kan avdelas med ";".';
-	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = 'FEL: En lägsta vikt är begärd';
-	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = 'FEL: En högsta vikt är begärd';
-	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = 'FEL: Den lägsta vikten måste vara lägre än den högsta vikten';
-	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ = 'FEL: En leveransmetod efterfrågas.';
-	var $_PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV = 'FEL: Välj en valuta/betalningsmetod';
-	var $_PHPSHOP_ERR_MSG_RATE_ID_REQ = 'FEL: En leveransmetod efterfrågas.';
-	var $_PHPSHOP_INFO_MSG_PLEASE_SELECT = 'vänligen välj';
-	var $_PHPSHOP_INFO_MSG_CARRIER = 'Transportfirma';
-	var $_PHPSHOP_INFO_MSG_SHIPPING_METHOD = 'Leveransmetod';
-	var $_PHPSHOP_INFO_MSG_SHIPPING_PRICE = 'Pris';
-	var $_PHPSHOP_INFO_MSG_VAT_ZERO_LBL = '0 (-ingen-)';
-	var $_PHPSHOP_PAYMENT_FORM_CC = 'Kreditkort';
-	var $_PHPSHOP_PAYMENT_FORM_USE_PP = 'Använder betalningshanterare';
-	var $_PHPSHOP_PAYMENT_FORM_BANK_DEBIT = 'Bankkort';
-	var $_PHPSHOP_PAYMENT_FORM_AO = 'Postförskott';
-	var $_PHPSHOP_CHECKOUT_MSG_2 = 'Vänligen välj en leveransadress!';
-	var $_PHPSHOP_CHECKOUT_MSG_3 = 'Vänligen välj en leveransmetod!';
-	var $_PHPSHOP_CHECKOUT_MSG_4 = 'vänligen välj en betalningsmetod!';
-	var $_PHPSHOP_CHECKOUT_MSG_99 = 'Gå igenom alla uppgifter och godkänn sedan köpet!';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIP = 'Vänligen välj en leveransmetod!';
-	var $_PHPSHOP_CHECKOUT_ERR_OTHER_SHIP = 'Vänligen välj ytterligare en leveransmetod!';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_PAYM = 'Vänligen välj en betalningsmetod.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR = 'Vänligen fyll i ditt kreditkortsnummer.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNAME = 'vänligen och fyll i namnet på kreditkortet.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATE = 'Kreditkortsnumret du angivit är inte godkänt.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCMON = 'Vänligen fyll i utgångsmånad för kreditkortet';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCYEAR = 'Vänligen fyll i utgångsår för kreditkortet.';
-	var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = 'Utgångsdatumet är ogiltigt.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = 'Vänligen välj en leveransadress.';
-	var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = 'Ogiltligt kontonummer.';
-	var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = 'Din varukorg är tom!';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = 'FEL: Vänligen väl en transportfirma!';
-	var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = 'FEL: Den valda fraktmetoden hittades ej!';
-	var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = 'FEL: Din levernasadress hittades ej!';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = 'FEL: det finns ingen kreditkortsdata...';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = 'FEL: Kreditkortsnummer hittades inte!';
-	var $_PHPSHOP_CHECKOUT_ERR_TEST = 'Kreditkortsnumret du har angivit är ett testnummer!';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = 'Användarnamnet finns inte i vår databas!';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = 'Du har inte angivit namnet på den person som är registrerad på bankkonto.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = 'Du har inte angivit ditt IBAN-nummer.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = 'Du har inte angivit ditt bankkontonummer.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = 'Du har inte angivit din/ditt clearingnummer.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = 'Du har inte angivit din banks namn.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = 'Utcheckningen kräver ett giltligt steg!';
-	var $_PHPSHOP_CHECKOUT_MSG_LOG = 'Betalningsmetod sparad för senare användning.<br />';
-	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = 'Du har inte kommit upp till lägsta ordervärde ännu.';
-	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV2 = 'Lägsta ordervärde är: xxxx';
-	var $_PHPSHOP_CHECKOUT_PAYMENT_CC = 'Kreditkortsbetalning';
-	var $_PHPSHOP_CHECKOUT_PAYMENT_OTHER = 'Annan betalningsmetod';
-	var $_PHPSHOP_CHECKOUT_PAYMENT_SELECT = 'Vänligen välj en betalningsmetod:';
-	var $_PHPSHOP_STORE_FORM_MPOV = 'Lägsta ordervärde för din affär';
-	var $_PHPSHOP_ACCOUNT_BANK_TITLE = 'Bankkontoinformation';
-	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR = 'Kontonummer';
-	var $_PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE = 'Clearingnummer';
-	var $_PHPSHOP_ACCOUNT_LBL_BANK_NAME = 'Banknamn';
-	var $_PHPSHOP_ACCOUNT_LBL_BANK_IBAN = 'IBAN';
-	var $_PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_HOLDER = 'Kontoansvarig';
-	var $_PHPSHOP_MODULES = 'Moduler';
-	var $_PHPSHOP_FUNCTIONS = 'Funktioner';
-	var $_PHPSHOP_SPECIAL_PRODUCTS = 'Specialprodukter';
-	var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = 'Vänligen fyll i övrig orderinformation. (valfritt)';
-	var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = 'Kundens notering';
-	var $_PHPSHOP_INCLUDING_TAX = '(inkl. $tax % moms)';
-	var $_PHPSHOP_PLEASE_SEL_ITEM = 'Vänligen välj en produkt';
-	var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = 'Produkt';
-	var $_PHPSHOP_DOWNLOADS_TITLE = 'Nedladdningsarea';
-	var $_PHPSHOP_DOWNLOADS_START = 'Starta nedladdning';
-	var $_PHPSHOP_DOWNLOADS_INFO = 'Vänligen ange din nedladdningskod och klicka på \'Starta nedladdning\'.';
+	var $_PHPSHOP_RATE_FORM_ZIP_END = ';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_START = ';
+	var $tax = ';
+	var $_PHPSHOP_PLEASE_SEL_ITEM = ';
 	var $_PHPSHOP_DOWNLOADS_ERR_EXP = 'Din nedladdningskod är tyvärr utgången.';
 	var $_PHPSHOP_DOWNLOADS_ERR_MAX = 'Du har tyvärr förbrukat tilldelat antal nedladdningar.';
 	var $_PHPSHOP_DOWNLOADS_ERR_INV = 'Ogiltlig nedladdningskod!';
@@ -1936,6 +1849,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_USERFIELDS_ROWS = 'Rows';
 	var $_VM_USERFIELDS_EUVATID_MOVESHOPPER = 'Move the customer into the following shopper group upon successful validation of the EU VAT ID';
 	var $_VM_USERFIELDS_ADDVALUES_TIP = 'Use the table below to add new values.';
+	var $_LOST_PASSWORD = 'Lost Password?';
         
 }
 class phpShopLanguage extends vmLanguage { }

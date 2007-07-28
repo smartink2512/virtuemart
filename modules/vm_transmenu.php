@@ -12,10 +12,21 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /**
 /* Loads main class file
 */	
+global $mosConfig_live_site, $mosConfig_absolute_path;
+
+if( vmIsJoomla(1.5) ) {
+	$live_module_dir = $mosConfig_live_site.'/modules/'.$module->module;
+	$absolute_module_dir = $mosConfig_absolute_path.'/modules/'.$module->module;
+} else {
+	$live_module_dir = $mosConfig_live_site.'/modules';
+	$absolute_module_dir = $mosConfig_absolute_path.'/modules';
+}
+
 $params->set( 'module_name', 'ShopMenu' );
 $params->set( 'module', 'vm_transmenu' );
-$params->set( 'absPath', $mosConfig_absolute_path . '/modules/' . $params->get( 'module' ) );
-$params->set( 'LSPath', $mosConfig_live_site . '/modules/' . $params->get( 'module' ) );
+$params->set( 'absPath', $absolute_module_dir . '/' . $params->get( 'module' ) );
+$params->set( 'LSPath', $live_module_dir . '/' . $params->get( 'module' ) );
+
 include_once( $params->get( 'absPath' ) .'/Shop_Menu.php' );
 
 global $my, $db;

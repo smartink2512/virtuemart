@@ -33,7 +33,12 @@ class ps_config {
 		global $my, $db, $option, $page, $vmLogger, $VM_LANG;
 
 		$group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
-		$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
+// TODO: (J! 1.5) Is there a better way to handle this difference between Joomla versions?
+		if( vmIsJoomla(1.5) ) {
+			$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE id=\''.$group_id.'\'' );
+		} else {
+			$db->query( 'SELECT name FROM #__core_acl_aro_groups WHERE group_id=\''.$group_id.'\'' );
+		}
 		$db->next_record();
 		$d['conf_VM_PRICE_ACCESS_LEVEL'] = $db->f('name');
 		

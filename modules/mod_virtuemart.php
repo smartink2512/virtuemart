@@ -18,12 +18,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 /* Load the virtuemart main parse code */
+global $mosConfig_absolute_path;
 require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 require_once(CLASSPATH.'ps_product_category.php');
 $ps_product_category =& new ps_product_category();
 
-global $module, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $VM_LANG, $sess, $mm_action_url;
+global $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $VM_LANG, $sess, $mm_action_url;
 
 $category_id = mosGetParam( $_REQUEST, 'category_id' );
 
@@ -84,7 +85,7 @@ if( $show_categories == "yes" ) {
   }
   elseif( $menutype == "tigratree" ) {
       /* TigraTree script to display structured categories */
-      include( $mosConfig_absolute_path . '/modules/vm_tigratree.php' );
+      include( $mod_dir . '/vm_tigratree.php' );
   }
 
 }
@@ -171,7 +172,7 @@ if ( $show_login_form == "yes" ) {
 	  <td colspan="2" valign="top">
 		<div align="left" style="margin: 0px; padding: 0px;">
 		  <form action="<?php echo $mm_action_url ?>index.php?option=logout" method="post" name="login" id="login">
-			<input type="submit" name="Submit" class="button" value="<?php echo _BUTTON_LOGOUT ?>" /><br /><hr />
+			<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_BUTTON_LOGOUT ?>" /><br /><hr />
 			<input type="hidden" name="op2" value="logout" />
 			<input type="hidden" name="return" value="<?php echo $mm_action_url ?>index.php" />
 			<input type="hidden" name="lang" value="english" />
@@ -188,16 +189,16 @@ if ( $show_login_form == "yes" ) {
 		<tr>
 		  <td colspan="2" align="left" valign="top" style="margin: 0px; padding: 0px;">
 			<form action="<?php echo $mm_action_url ?>index.php?option=login" method="post" name="login" id="login">
-			<label for="username_field"><?php echo _USERNAME ?></label><br/>
+			<label for="username_field"><?php echo $VM_LANG->_USERNAME ?></label><br/>
 			<input class="inputbox" type="text" id="username_field" size="12" name="username" />
 		  <br/>
-			<label for="password_field"><?php echo _PASSWORD ?></label><br/>
+			<label for="password_field"><?php echo $VM_LANG->_PASSWORD ?></label><br/>
 			<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="yes" name="remember" />
 			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $_SERVER['QUERY_STRING']); ?>" name="return" />
 		  <br/>
-			<input type="submit" value="<?php echo _BUTTON_LOGIN ?>" class="button" name="Login" />
+			<input type="submit" value="<?php echo $VM_LANG->_BUTTON_LOGIN ?>" class="button" name="Login" />
 			<?php
 			if( function_exists('josspoofvalue')) {
 				$validate = josSpoofValue(1);
@@ -213,7 +214,7 @@ if ( $show_login_form == "yes" ) {
 		<tr>
 		  <td colspan="2">
 			<a href="<?php echo sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$_REQUEST['Itemid'] ); ?>">
-			<?php echo _LOST_PASSWORD; ?>
+			<?php echo $VM_LANG->_LOST_PASSWORD; ?>
 			</a>
 		  </td>
 		</tr>
@@ -222,9 +223,9 @@ if ( $show_login_form == "yes" ) {
 		?>
 			<tr>
 			  <td colspan="2">
-				<?php echo _NO_ACCOUNT; ?>
+				<?php echo $VM_LANG->_NO_ACCOUNT; ?>
 				<a href="<?php $sess->purl( SECUREURL.'index.php?option=com_virtuemart&amp;page=shop.registration' ); ?>">
-				<?php echo _CREATE_ACCOUNT; ?>
+				<?php echo $VM_LANG->_CREATE_ACCOUNT; ?>
 				</a>
 				<hr />
 			  </td>

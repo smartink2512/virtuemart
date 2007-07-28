@@ -148,7 +148,7 @@ if( $_SESSION['vmUseGreyBox'] ) {
 else {
 	$show_cart = vmCommonHTML::hyperlink( $href, $text, '', $text, '' );
 }
-print @$_SESSION['vmMiniCart'];
+
 $tpl->set('minicart',$minicart);
 $tpl->set('empty_cart', $empty_cart);
 $tpl->set('vmMinicart', @$_SESSION['vmMiniCart']);

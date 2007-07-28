@@ -11,7 +11,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file is included by the virtuemart module if the module parameter
 * MenuType is set to jscooktree
 **/
-global $module, $mainframe, $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style, $ps_product_category;
+global $mosConfig_live_site, $mainframe, $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style, $ps_product_category;
 require_once( CLASSPATH . 'ps_product_category.php' );
 if( !isset( $ps_product_category )) $ps_product_category = new ps_product_category;
 $Itemid = mosGetParam( $_REQUEST, 'Itemid', "");
@@ -83,7 +83,7 @@ class MamboMartTree {
 	*/
 	function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
 		static $ibg = -1;
-		global $module, $mosConfig_live_site, $sess;
+		global $mosConfig_live_site, $sess;
 		$db = new ps_DB();
 		$level++;
 		$query = "SELECT category_name, category_id, category_child_id "
@@ -119,7 +119,7 @@ class MamboMartMenu {
 	*/
 	function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
 		static $ibg = 0;
-		global $module, $mosConfig_live_site, $sess;
+		global $mosConfig_live_site, $sess;
 		$level++;
 		$query = "SELECT category_name, category_id, category_child_id "
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "

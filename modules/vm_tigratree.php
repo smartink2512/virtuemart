@@ -79,7 +79,7 @@ class vmTigraTreeMenu {
     */
 	function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
 		static $ibg = 0;
-		global $db, $module, $mosConfig_live_site;
+		global $db, $mosConfig_live_site;
 		$level++;
 		$query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "

@@ -252,6 +252,9 @@ if(Ext.isIE) { // AAAARGH! IE will drive us all mad someday: 'Operation aborted'
 		include( PAGEPATH.'store.index.php' );
 	}
 	include_once( ADMINPATH. 'version.php' );
+	if( !isset( $VMVERSION ) ) {
+		$VMVERSION =& new vmVersion();
+	}
 	
 	if( empty( $no_menu )) {
 		echo '<br style="clear:both;"/><div class="smallgrey" align="center">'

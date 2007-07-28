@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.07.2007 gregdev
+^ Adjustments to Joomla! 1.5 compatibility file.
+^ Changes in modules for Joomla! 1.5 compatibility; added string to language file.
+# Removed debug code in shop.basket_short.php.
+
 25.07.2007 soeren
 
 ^ Task #1311 - Dates in order_print / order_printdetails not localized

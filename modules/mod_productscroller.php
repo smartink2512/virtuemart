@@ -15,7 +15,7 @@
 */
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 
-global $my;
+global $my, $mosConfig_absolute_path;
 
 /* Load the virtuemart main parse code */
 require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );

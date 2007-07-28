@@ -12,7 +12,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * MenuType is set to treemenu
 **/
 
-global $module, $root_label, $sess, $db;
+global $root_label, $sess, $db, $mosConfig_live_site;
+
+if( vmIsJoomla(1.5)  ) {
+	$live_module_dir = $mosConfig_live_site.'/modules/'.$module->module;
+} else {
+	$live_module_dir = $mosConfig_live_site.'/modules';
+}
+
 $Itemid = mosGetParam( $_REQUEST, 'Itemid', "");
 if( @get_class( $db ) != 'ps_DB' ) $db = new ps_DB();
 
@@ -70,13 +77,13 @@ $ps_product_category = new ps_product_category();
 	// start creating the content
 	// create left aligned table, load the CSS stylesheet and dTree code
 	$menu_htmlcode .= "<table border=\"0\" cellspacing=\"1\" cellpadding=\"0\" width=\"100%\"><tr><td align=\"left\">\n";
-	$menu_htmlcode .= "<link rel=\"stylesheet\" href=\"$mosConfig_live_site/modules/dtree/dtree.css\" type=\"text/css\" />\n";
-	$menu_htmlcode .= "<script type=\"text/javascript\" src=\"$mosConfig_live_site/modules/dtree/dtree.js\"></script>\n";
+	$menu_htmlcode .= "<link rel=\"stylesheet\" href=\"$live_module_dir/dtree.css\" type=\"text/css\" />\n";
+	$menu_htmlcode .= "<script type=\"text/javascript\" src=\"$live_module_dir/dtree/dtree.js\"></script>\n";
 	$menu_htmlcode .= "<script type=\"text/javascript\">\n";
 	
 	// create the tree, using the unique name
 	// pass the live_site parameter on so dTree can find the icons
-	$menu_htmlcode .= "$tree = new dTree('$tree',\"$mosConfig_live_site\");\n";
+	$menu_htmlcode .= "$tree = new dTree('$tree',\"$live_module_dir\");\n";
 	
 	// pass on the dTree API parameters
 	$menu_htmlcode .= "$tree.config.useSelection=".$useSelection.";\n";
