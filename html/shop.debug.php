@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-global $page, $last_page, $error, $database, $funcParams, $pagePermissionsOK;
+global $page, $last_page, $error, $database, $funcParams, $pagePermissionsOK, $_VERSION;
 $return_to_page = mosGetParam( $_REQUEST, 'return_to_page' );
 $i = 0;
 if( !empty( $database->_log )) {

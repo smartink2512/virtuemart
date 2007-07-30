@@ -204,7 +204,7 @@ require_once( CLASSPATH.'currency/class_currency_display.php' );
  *  @global CurrencyDisplay $GLOBALS['CURRENCY_DISPLAY']
  *  @global CurrencyDisplay $CURRENCY_DISPLAY
  */
-$GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
+$CURRENCY_DISPLAY = $GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
 	
 // Include the theme
 if( file_exists( VM_THEMEPATH.'theme.php' )) {

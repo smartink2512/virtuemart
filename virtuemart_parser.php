@@ -77,8 +77,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
-		$user_info_id = mosgetparam($_REQUEST, 'user_info_id' );
-	
 		unset( $_REQUEST["error"] );
 		
 		// Cast all the following fields to INT
@@ -96,6 +94,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$category_id = $mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
 		$manufacturer_id = $mainframe->getUserStateFromRequest( 'manufacturer_id', 'manufacturer_id' );
 		
+		$user_info_id = mosGetParam($_REQUEST, 'user_info_id' );
+		$keyword = substr( urldecode(mosGetParam($_REQUEST, 'keyword', '')), 0, 50 );
+
 		$myInsecureArray = array('keyword' => $keyword,
 									'user_info_id' => $user_info_id,
 									'page' => $page,

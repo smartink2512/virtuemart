@@ -37,7 +37,10 @@ VirtueMart 1.1.x
 *************************************
 30.07.2007 gregdev
 ^ Joomla! 1.5 compatibility: TigraTree product category module
-^ Adjustments to Joomla! 1.5 compatibility file.
+^ Adjustments to Joomla! 1.5 compatibility file
+^ Joomla! 1.5 compatibility: Set local version of $CURRENCY_DISPLAY in global.php
++ Get $keyword from the $_REQUEST before cleaning it (virtuemart_parser.php)
++ Joomla! 1.5 compatibility: Added $_VERSION to globals in shop.debug.php
 
 27.07.2007 gregdev
 ^ Adjustments to Joomla! 1.5 compatibility file.
