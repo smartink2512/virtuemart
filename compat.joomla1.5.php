@@ -77,9 +77,9 @@ if( class_exists( 'jconfig' ) ) {
 
 		// Paths
 		// These are in the legacy plugin as globals, but we need them locally too
-//		$mosConfig_live_site = $GLOBALS['mosConfig_live_site'];
+		$mosConfig_live_site = $GLOBALS['mosConfig_live_site'];
 		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path'];
-//		$mosConfig_cachepath = $mosConfig_absolute_path.'/cache';
+		$mosConfig_cachepath = $mosConfig_absolute_path.'/cache';
 
 		// Icon display settings
 		// hide pdf, etc has been changed to show pdf, etc in J! 1.5

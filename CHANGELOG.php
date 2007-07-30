@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.07.2007 gregdev
+^ Joomla! 1.5 compatibility: TigraTree product category module
+^ Adjustments to Joomla! 1.5 compatibility file.
+
 27.07.2007 gregdev
 ^ Adjustments to Joomla! 1.5 compatibility file.
 ^ Changes in modules for Joomla! 1.5 compatibility; added string to language file.

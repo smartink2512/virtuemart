@@ -22,7 +22,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 **/
 mm_showMyFileName( __FILE__ );   
 
-global $sess;
+global $sess, $mosConfig_live_site;
 
 // Decide which node to open (if any)
 $Treeid = (int) mosGetParam($_REQUEST, 'Treeid', 0);
