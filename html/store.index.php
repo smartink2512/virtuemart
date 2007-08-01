@@ -137,6 +137,7 @@ $tabs->startTab('Control Panel', 'control-panel');
 		
 		?>
 	</div>
+	<br style="clear:both;" />
 		
 <?php
 $tabs->endTab();

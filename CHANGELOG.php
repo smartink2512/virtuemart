@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.08.2007 gregdev
++ Added a cleared <br /> element so that the floated divs fill the container
+ 
 30.07.2007 gregdev
 ^ Joomla! 1.5 compatibility: TigraTree product category module
 ^ Adjustments to Joomla! 1.5 compatibility file
