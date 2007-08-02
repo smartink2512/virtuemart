@@ -486,7 +486,19 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 				<?php 
 				$modCount++;
 				break;
-				
+				case 'export':
+					?>
+					<h3 class="title-smenu" title="coupon" onclick="SwitchMenu('<?php echo $modCount ?>')">Export</h3>
+					<div class="section-smenu">
+					<ul>
+					<li class="item-smenu vmicon vmicon-16-content">
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=export.index") ?>">Export Manager</a>
+					</li>
+					</ul>
+					</div>
+				<?php 
+				$modCount++;
+				break;
 				
 				case 'manufacturer':
 					?>

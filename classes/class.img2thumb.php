@@ -24,7 +24,7 @@
 *
 * @author     Andreas Martens <heyn@plautdietsch.de>
 * @author     Patrick Teague <webdude@veslach.com>
-* @author     Soeren Eberhardt <soeren@virtuemart.net>
+* @author     Soeren Eberhardt <soeren|at|virtuemart.net>
 *@version	1.0b
 *@date       modified 11/22/2004
 *@modifications 
