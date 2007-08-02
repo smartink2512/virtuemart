@@ -973,7 +973,7 @@ class vmCommonHTML extends mosHTML {
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/ext-yui-adapter.js' );
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/ext-all.js' );
 			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/css/ext-all.css' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/css/ytheme-gray.css' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/css/xtheme-gray.css' );
 			define ( "_EXTJS_LOADED", "1" );
 		}
 	}
