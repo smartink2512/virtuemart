@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.08.2007 gregdev
+^ Switched to use month names from VirtueMart language file, rather than from the Joomla language file.
+
 01.08.2007 gregdev
 + Added a cleared <br /> element so that the floated divs fill the container
  

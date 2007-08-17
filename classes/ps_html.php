@@ -114,18 +114,18 @@ class ps_html {
 	function list_month($list_name, $selected_item="") {
 		global $VM_LANG;
 		$list = array("Month",
-		"01" => _JAN,
-		"02" => _FEB,
-		"03" => _MAR,
-		"04" => _APR,
-		"05" => _MAY,
-		"06" => _JUN,
-		"07" => _JUL,
-		"08" => _AUG,
-		"09" => _SEP,
-		"10" => _OCT,
-		"11" => _NOV,
-		"12" => _DEC);
+		"01" => $VM_LANG->_JAN,
+		"02" => $VM_LANG->_FEB,
+		"03" => $VM_LANG->_MAR,
+		"04" => $VM_LANG->_APR,
+		"05" => $VM_LANG->_MAY,
+		"06" => $VM_LANG->_JUN,
+		"07" => $VM_LANG->_JUL,
+		"08" => $VM_LANG->_AUG,
+		"09" => $VM_LANG->_SEP,
+		"10" => $VM_LANG->_OCT,
+		"11" => $VM_LANG->_NOV,
+		"12" => $VM_LANG->_DEC);
 		$this->dropdown_display($list_name, $selected_item, $list);
 		return 1;
 	}
