@@ -65,7 +65,7 @@ else {
 
 		if( !$pagePermissionsOK && defined('_VM_PAGE_NOT_AUTH') ) {
 			$page = 'checkout.login_form';
-			echo '<br/><br/>'._DO_LOGIN.'<br/><br/>';
+			echo '<br/><br/>'.$VM_LANG->_DO_LOGIN.'<br/><br/>';
 		}
 		elseif( !$pagePermissionsOK && defined('_VM_PAGE_NOT_FOUND') ) {
 			$page = HOMEPAGE;
