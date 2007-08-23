@@ -39,7 +39,7 @@ if( class_exists( 'jconfig' ) ) {
 		$url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$mosConfig_live_site = $GLOBALS['mosConfig_live_site']		= substr_replace($url, '', -1, 1);
 		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
-		$mosConfig_cachepath = $mosConfig_absolute_path.'/cache';
+		$mosConfig_cachepath = $GLOBALS['mosConfig_cache_path'] = JPATH_BASE.DS.'cache';
 	
 		// The selected language
 		$lang =& JFactory::getLanguage();
@@ -49,12 +49,13 @@ if( class_exists( 'jconfig' ) ) {
 		$mosConfig_allowUserRegistration = $usersConfig->get('allowUserRegistration');
 		$mosConfig_useractivation = $usersConfig->get('useractivation');
 		
+		// TODO: Do we need these? They are set in the template.
 		// Icon display settings
 		// (hide pdf, etc has been changed to *show* pdf, etc in J! 1.5)
-		$mosConfig_hidePdf = 1- $contentConfig->get('show_pdf_icon');
-		$mosConfig_hidePrint = 1- $contentConfig->get('show_print_icon');
-		$mosConfig_hideEmail = 1- $contentConfig->get('show_email_icon');
 		$mosConfig_icons = $contentConfig->get('show_icons');
+		$mosConfig_hidePdf = 1- intval( $contentConfig->get('show_pdf_icon') );
+		$mosConfig_hidePrint = 1- intval( $contentConfig->get('show_print_icon') );
+		$mosConfig_hideEmail = 1- intval( $contentConfig->get('show_email_icon') );
 		
 		// TODO: we'll need a $database object
 //		$GLOBALS['database'] = new database($jconfig->host, $jconfig->user, $jconfig->password, $jconfig->db, $jconfig->dbprefix);
@@ -75,18 +76,32 @@ if( class_exists( 'jconfig' ) ) {
 	} else {
 		// We need these even when the Joomla! 1.5 legacy plugin is enabled
 
+		// We need to set these when we don't enter as a component or module (like in notify.php)
+		if( !isset( $usersConfig ) ) {
+			$usersConfig = &JComponentHelper::getParams( 'com_users' );	
+		}
+		if( !isset( $contentConfig ) ) {
+			$contentConfig = &JComponentHelper::getParams( 'com_content' );
+		}	
+
 		// Paths
 		// These are in the legacy plugin as globals, but we need them locally too
 		$mosConfig_live_site = $GLOBALS['mosConfig_live_site'];
 		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path'];
-		$mosConfig_cachepath = $mosConfig_absolute_path.'/cache';
+		$mosConfig_cachepath = $GLOBALS['mosConfig_cache_path'];
 
+		// TODO: Do we need these? They are set in the template.
 		// Icon display settings
 		// hide pdf, etc has been changed to show pdf, etc in J! 1.5
-		$mosConfig_hidePdf = 1- $contentConfig->get('show_pdf_icon');
-		$mosConfig_hidePrint = 1- $contentConfig->get('show_print_icon');
-		$mosConfig_hideEmail = 1- $contentConfig->get('show_email_icon');
 		$mosConfig_icons = $contentConfig->get('show_icons');
+		$mosConfig_hidePdf = 1- intval( $contentConfig->get('show_pdf_icon') );
+		$mosConfig_hidePrint = 1- intval( $contentConfig->get('show_print_icon') );
+		$mosConfig_hideEmail = 1- intval( $contentConfig->get('show_email_icon') );
+		
+		// Adjust the time offset
+		$server_time 			= date( 'O' ) / 100;
+		$offset 				= $mosConfig_offset_user - $server_time;
+		$GLOBALS['mosConfig_offset'] = $offset;
 
 		// Version information
 		$_VERSION = $GLOBALS['_VERSION'];

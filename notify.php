@@ -29,40 +29,46 @@ function debug_msg( $msg ) {
 }
 	
 if ($_POST) {
-    header("Status: 200 OK");
-    define('_VALID_MOS', '1');
+	header("Status: 200 OK");
+
     global $mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_lang, $database,
     $mosConfig_mailfrom, $mosConfig_fromname;
     
-    /*** access Joomla's configuration file ***/
+        /*** access Joomla's configuration file ***/
         $my_path = dirname(__FILE__);
         
         if( file_exists($my_path."/../../../configuration.php")) {
+            $absolute_path = dirname( $my_path."/../../../configuration.php" );
             require_once($my_path."/../../../configuration.php");
         }
         elseif( file_exists($my_path."/../../configuration.php")){
+            $absolute_path = dirname( $my_path."/../../configuration.php" );
             require_once($my_path."/../../configuration.php");
         }
         elseif( file_exists($my_path."/configuration.php")){
+            $absolute_path = dirname( $my_path."/configuration.php" );
             require_once( $my_path."/configuration.php" );
         }
-        else
+        else {
             die( "Joomla Configuration File not found!" );
+        }
         
-        include_once( $my_path.'/compat.joomla1.5.php' );
-        
-        if( class_exists( 'jconfig')) {
+        // Set up the appropriate CMS framework
+        if( class_exists( 'jconfig' ) ) {
 			define( '_JEXEC', 1 );
-			define('JPATH_BASE', $mosConfig_absolute_path );
+			define( 'JPATH_BASE', $absolute_path );
+			define( 'DS', DIRECTORY_SEPARATOR );
 			
-			require_once ( JPATH_BASE .'/includes/defines.php' );
-			require_once ( JPATH_BASE .'/includes/application.php' );
-			require_once ( JPATH_BASE. '/includes/database.php');
+			// Load the framework
+			require_once ( JPATH_BASE . DS . 'includes' . DS . 'defines.php' );
+			require_once ( JPATH_BASE . DS . 'includes' . DS . 'framework.php' );
+			require_once ( JPATH_BASE . DS . 'includes' . DS . 'application.php' );
+
 			// create the mainframe object
 			$mainframe = new JSite();
 			
 			// set the configuration
-			$mainframe->setConfiguration(JPATH_CONFIGURATION . DS . 'configuration.php');
+			$mainframe->loadConfiguration( JPATH_CONFIGURATION . DS . 'configuration.php' );
 			
 			// load system plugin group
 			JPluginHelper::importPlugin( 'system' );
@@ -71,15 +77,18 @@ if ($_POST) {
 			$mainframe->triggerEvent( 'onBeforeStart' );
 			
 			// create the session
-			$mainframe->setSession( $mainframe->getCfg('live_site').$mainframe->getClientId() );
-			$database =& JFactory::getDBO();
-        }
-        else {
-        	
+			$mainframe->loadSession( JUtility::getHash( $mainframe->getName() ) );
+			
+			// Adjust the live site path
+			$mosConfig_live_site = str_replace('/administrator/components/com_virtuemart', '', $mosConfig_live_site); 
+			
+        } else {
+        	define('_VALID_MOS', '1');
+        	require_once($mosConfig_absolute_path. '/includes/joomla.php');
         	require_once($mosConfig_absolute_path. '/includes/database.php');
         	$database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
         }
-        
+
         // load Joomla Language File
         if (file_exists( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' )) {
             require_once( $mosConfig_absolute_path. '/language/'.$mosConfig_lang.'.php' );
@@ -92,10 +101,9 @@ if ($_POST) {
     
     /*** VirtueMart part ***/        
         require_once($mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php');
-        require_once( CLASSPATH. 'ps_main.php');
+        include_once( ADMINPATH.'/compat.joomla1.5.php' );
+        require_once( ADMINPATH. 'global.php' );
         
-		require_once( CLASSPATH. "language.class.php" );
-		require_once(CLASSPATH."Log/Log.php");
 		$vmLoggerConf = array(
 			'buffering' => true
 			);
@@ -112,17 +120,8 @@ if ($_POST) {
         $mail->PluginDir = CLASSPATH . 'phpmailer/';
         $mail->SetLanguage("en", CLASSPATH . 'phpmailer/language/');
               
-        /* load the VirtueMart Language File */
-        if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' ))
-          require_once( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' );
-        else
-          require_once( ADMINPATH. 'languages/english.php' );
-        
         /* Load the PayPal Configuration File */ 
         require_once( CLASSPATH. 'payment/ps_paypal.cfg.php' );
-        
-        /* Load the VirtueMart database class */
-        require_once( CLASSPATH. 'ps_database.php' );
         
 		if( PAYPAL_DEBUG == "1" ) {
 			$debug_email_address = $mosConfig_mailfrom;
@@ -131,15 +130,9 @@ if ($_POST) {
 			$debug_email_address = PAYPAL_EMAIL;
 		}
 	    // restart session
-	    require_once(CLASSPATH."ps_session.php");
-	
 	    // Constructor initializes the session!
 	    $sess = new ps_session();                        
 	    
-	    // Include globals; for this, $db is needed, as is htmlTools.class.php
-	    $db = new ps_DB;
-	    require_once( CLASSPATH. 'htmlTools.class.php' );
-	    require_once( ADMINPATH. 'global.php' );
     /*** END VirtueMart part ***/
     
     debug_msg( "1. Finished Initialization of the notify.php script" );

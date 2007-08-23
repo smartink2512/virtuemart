@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+23.08.2007 gregdev
+^ Joomla! 1.5 compatibility: change in the compatability file
+^ Joomla! 1.5 compatibility: PayPal IPN script updated (notify.php)
+
 17.08.2007 gregdev
 ^ Use month names and _DO_LOGIN from VirtueMart language file.
 
