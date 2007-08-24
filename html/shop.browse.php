@@ -39,8 +39,6 @@ $keyword2 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword2
 
 $search_op= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_op', null ));
 $search_limiter= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_limiter', null ));
-$featured = mosGetParam($_REQUEST, 'featured', 'N' );
-$discounted = mosGetParam($_REQUEST, 'discounted', 'N' );
 
 if (empty($category_id)) $category_id = $search_category;
 

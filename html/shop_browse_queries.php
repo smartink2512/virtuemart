@@ -26,6 +26,10 @@ $DescOrderBy = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "br
 // product_name, product_price, product_sku, product_cdate (=latest additions)
 $orderby = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}orderby", 'orderby', VM_BROWSE_ORDERBY_FIELD ));
 
+
+$featured = mosGetParam($_REQUEST, 'featured', 'N' );
+$discounted = mosGetParam($_REQUEST, 'discounted', 'N' );
+
 /** Prepare the SQL Queries
 *
 */

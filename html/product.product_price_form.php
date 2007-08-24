@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH.'ps_vendor.php');
 require_once( CLASSPATH.'ps_shopper_group.php');
-global $ps_html;
+global $ps_html, $ps_product;
 $title = $VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'<br/>';
 
 $product_id = mosgetparam($_REQUEST, 'product_id', 0);
