@@ -57,7 +57,11 @@ if( vmIsJoomla(1.5)) {
   	<input type="hidden" name="return" value="<?php echo $return ?>" />
   	<?php
   	// used for spoof hardening
-	$validate = vmSpoofValue(1);
+  	if( function_exists('josspoofvalue')) {
+  		$validate = josSpoofValue(1);
+  	} else {
+  		$validate = vmSpoofValue(1);
+  	}
 	?>
 	<input type="hidden" name="<?php echo $validate; ?>" value="1" />
 </form>

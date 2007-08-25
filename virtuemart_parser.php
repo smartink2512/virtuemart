@@ -48,10 +48,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 
-	// Raise memory_limit to 16M when it is too low
-	// Especially the product section needs much memory
-	vmRaiseMemoryLimit( '16M' );
-	
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 

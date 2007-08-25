@@ -22,7 +22,7 @@ echo $basket_html;
 
 echo '<br />';
 $varname = '_PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_SHIPPING_METHOD;
-echo '<h5>'. $VM_LANG->$varname . '</h5>';
+echo '<h4>'. $VM_LANG->$varname . '</h4>';
 
 ps_checkout::list_shipping_methods($ship_to_info_id, $shipping_rate_id );
 
