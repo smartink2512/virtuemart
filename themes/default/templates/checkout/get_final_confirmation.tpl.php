@@ -23,9 +23,56 @@ echo '<br />';
 
 $varname = '_PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_FINAL_CONFIRMATION;
 echo '<h5>'. $VM_LANG->$varname . '</h5>';
+$db = new ps_DB();
 
-ps_checkout::final_info();
+echo '<table>';
+// Begin with Shipping Address
+if(NO_SHIPTO=='') {
 
+	$db->query("SELECT * FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
+	$db->next_record();
+
+	echo '<tr><td valign="top"><strong>'.$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 . ":</strong></td>";
+	echo '<td>';
+	echo vmFormatAddress( array('name' => $db->f("first_name")." ".$db->f("last_name"),
+        								'address_1' => $db->f("address_1"),
+        								'address_2' => $db->f("address_2"),
+        								'state' => $db->f("state"),
+        								'zip' => $db->f("zip"),
+        								'city' => $db->f("city")
+        							), true );
+	
+	echo "</td></tr>";
+}
+
+// Print out the Selected Shipping Method
+if(NO_SHIPPING=='') {
+
+	echo '<tr><td valign="top"><strong>'.$VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . ":</strong></td>";
+	$rate_details = explode( "|", urldecode(urldecode(mosGetParam($_REQUEST,'shipping_rate_id'))) );
+	echo '<td>';
+	foreach( $rate_details as $k => $v ) {
+		if( $k == 3 ) {
+			echo $CURRENCY_DISPLAY->getFullValue( $v )."; ";
+		} elseif( $k > 0 && $k < 4) {
+			echo "$v; ";
+		}
+	}
+	echo "</td></tr>";
+}
+
+unset( $row );
+if( !isset($order_total) || $order_total > 0.00 ) {
+	$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id' );
+	
+	$db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'");
+	$db->next_record();
+	echo '<tr><td valign="top"><strong>'.$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong></td>";
+	echo '<td>';
+	echo $db->f("payment_method_name");
+	echo "</td></tr>";
+}
+echo '</table>';
 ?>
 <br />
 <div align="center">

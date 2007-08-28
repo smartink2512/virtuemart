@@ -1095,14 +1095,14 @@ if ($product_type_id > 0) {
 	// Get Product Types
 	$q  = "SELECT * FROM #__{vm}_product_product_type_xref,#__{vm}_product_type WHERE ";
 	$q .= "#__{vm}_product_product_type_xref.product_type_id=#__{vm}_product_type.product_type_id ";
-	$q .= "AND product_id='$product_id' ";
+	$q .= 'AND product_id='.(int)$product_id;
 	/*  if (!$product_parent_id) {
 	$q .= "AND product_id='$product_id' ";
 	}
 	else {
 	$q .= "AND product_id='$product_parent_id' ";
 	}*/
-	$q .= "ORDER BY product_type_list_order";
+	$q .= ' ORDER BY product_type_list_order';
 	$dba->query($q);
 }
 #################################

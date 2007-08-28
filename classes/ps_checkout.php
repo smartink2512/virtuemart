@@ -2216,51 +2216,6 @@ Order Total: '.$order_total.'
 		return($str);
 	}
 
-	/**************************************************************************
-	* function final_info
-	* @author soeren
-	* @desc Shows all collected Checkout information on the confirmation Screen
-	**************************************************************************/
-	function final_info() {
-		global $VM_LANG, $CURRENCY_DISPLAY, $order_total;
-		$db = new ps_DB;
-		// Begin with Shipping Address
-		if(NO_SHIPTO=='') {
-
-			$db->query("SELECT `first_name`,`last_name`,`address_1`,`zip`,`city` FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
-			$db->next_record();
-
-			echo "<strong>".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 . ":</strong>&nbsp;";
-			echo $db->f("first_name")." ".$db->f("last_name").", ".$db->f("address_1").", ".$db->f("zip")." ".$db->f("city");
-			echo "<br /><br />";
-		}
-
-		// Print out the Selected Shipping Method
-		if(NO_SHIPPING=='') {
-
-			echo "<strong>".$VM_LANG->_PHPSHOP_INFO_MSG_SHIPPING_METHOD . ":</strong>&nbsp;";
-			$rate_details = explode( "|", urldecode(urldecode(mosGetParam($_REQUEST,'shipping_rate_id'))) );
-			foreach( $rate_details as $k => $v ) {
-				if( $k == 3 ) {
-					echo $CURRENCY_DISPLAY->getFullValue( $v )."; ";
-				} elseif( $k > 0 && $k < 4) {
-					echo "$v; ";
-				}
-			}
-			echo "<br /><br />";
-		}
-
-		unset( $row );
-		if( !isset($order_total) || $order_total > 0.00 ) {
-			$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id' );
-			
-			$db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'");
-			$db->next_record();
-			echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL . ":</strong>&nbsp;";
-			echo $db->f("payment_method_name");
-			echo "<br />";
-		}
-	}
 	/**
 	 * Displays the order_tax_details array when it contains
 	 * more than one 

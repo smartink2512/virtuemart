@@ -940,7 +940,7 @@ class ps_product extends vmAbstractObject {
 	function sql($product_id) {
 		$db = new ps_DB;
 
-		$q  = "SELECT * FROM #__{vm}_product WHERE product_id='$product_id' ";
+		$q  = 'SELECT * FROM #__{vm}_product WHERE product_id=' . (int)$product_id;
 
 		$db->setQuery($q); $db->query();
 		return $db;
@@ -955,9 +955,11 @@ class ps_product extends vmAbstractObject {
 	 */
 	function items_sql($product_id) {
 		$db = new ps_DB;
-
+		if( empty($product_id) ) {
+			return $db;
+		}
 		$q  = "SELECT * FROM #__{vm}_product ";
-		$q .= "WHERE product_parent_id='$product_id' ";
+		$q .= "WHERE product_parent_id=".(int)$product_id.' ';
 		$q .= "ORDER BY product_name";
 
 		$db->setQuery($q); $db->query();
@@ -1015,7 +1017,7 @@ class ps_product extends vmAbstractObject {
 			}
 		} elseif ($product_id) {
 			$q  = "SELECT * FROM #__{vm}_product_attribute_sku ";
-			$q .= "WHERE product_id ='$product_id' ";
+			$q .= "WHERE product_id =".(int)$product_id.' ';
 			if ($attribute_name) {
 				$q .= "AND #__{vm}_product_attribute.attribute_name = $attribute_name ";
 			}
