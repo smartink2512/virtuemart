@@ -6,6 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @translator 
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -1918,6 +1919,11 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_USERFIELDS_EUVATID_MOVESHOPPER = 'Move the customer into the following shopper group upon successful validation of the EU VAT ID';
 	var $_VM_USERFIELDS_ADDVALUES_TIP = 'Use the table below to add new values.';
 	var $_LOST_PASSWORD = 'Lost Password?';
+	var $_VM_SHIPPING_MODULE_LIST_NAME = 'Name';
+	var $_VM_SHIPPING_MODULE_LIST_E_VERSION = 'Version';
+	var $_VM_SHIPPING_MODULE_LIST_HEADER_AUTHOR = 'Author';
+	var $_PHPSHOP_USPS_PADDING = 'Percent to pad weight for shipping package. (Include %)';
+	var $_PHPSHOP_USPS_PADDING_TOOLTIP = 'Pad the shipping weight to allow additional weight for shipping box and packing. Using this allows you to put actual weight in your items weight settings.  Requires you to have the % sign included.  Example 15%';
         
 }
 class phpShopLanguage extends vmLanguage { }

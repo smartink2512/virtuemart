@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+29.08.2007 gregdev
+# Added Shipping module language variables
+
 25.08.2007 soeren
 # Task #1357 - Performance problems creating new products
 # Task #1394 - Change of heading level required in get_shipping_method.tpl.php
