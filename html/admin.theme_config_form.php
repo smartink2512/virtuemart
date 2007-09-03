@@ -38,25 +38,24 @@ $parameter_xml_file = $themepath.'/theme.xml';
 // get params definitions
 $params = new mosParameters( $current_config, $parameter_xml_file, 'theme' );
 mosCommonHTML::loadOverlib();
+
+$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_VM_ADMIN_CFG_THEME_SETTINGS.'" />&nbsp;';
+$title .= $VM_LANG->_VM_ADMIN_CFG_THEME_SETTINGS;
+
+//First create the object and let it print a form heading
+$formObj = &new formFactory( $title );
+//Then Start the form
+$formObj->startForm();
+
+$ps_html->writableIndicator( $themepath . '/theme.config.php', 'text-align:left;width:78%;' );
+
+vmCommonHTML::loadExtjs();
+
 ?>
 
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="adminForm">
-		<table class="adminheading">
-		<tr>
-			<th>
-			Theme Settings
-			</th>
-		</tr>
-		</table>
-
-		<?php ps_html::writableIndicator( $themepath . '/theme.config.php', 'text-align:left;width:78%;' ); ?>
-
-		<table style="width:80%;" class="adminform">
-		<tr>
-			<th>
-			Parameters
-			</th>
-		</tr>
+	<fieldset style="width: 80%">
+		<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_THEME_PARAMETERS ?></legend>
+		<table class="adminform">
 		<tr>
 			<td>
 			<?php
@@ -65,10 +64,12 @@ mosCommonHTML::loadOverlib();
 			</td>
 		</tr>
 		</table>
+	</fieldset>
 	
-		<input type="hidden" name="option" value="<?php echo $option; ?>" />
-		<input type="hidden" name="ajax_request" value="1" />
-		<input type="hidden" name="func" value="writeThemeConfig" />
-		<input type="hidden" name="page" value="store.index" />
-		<input type="hidden" name="task" value="" />
-</form>
+<?php
+// Add necessary hidden fields
+$formObj->hiddenField( 'ajax_request', '1' );
+
+// Close the form 
+$formObj->finishForm( 'writeThemeConfig', 'store.index', $option );
+?>

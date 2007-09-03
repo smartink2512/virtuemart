@@ -1933,6 +1933,8 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_USPS_PADDING_TOOLTIP = 'Pad the shipping weight to allow additional weight for shipping box and packing. Using this allows you to put actual weight in your items weight settings.  Requires you to have the % sign included.  Example 15%';
 	var $_VM_ADMIN_CFG_DISPLAY = 'Display';
 	var $_VM_ADMIN_CFG_LAYOUT = 'Layout';
+	var $_VM_ADMIN_CFG_THEME_SETTINGS = 'Theme Settings';
+	var $_VM_ADMIN_CFG_THEME_PARAMETERS = 'Parameters';
         
 }
 class phpShopLanguage extends vmLanguage { }

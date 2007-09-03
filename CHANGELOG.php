@@ -37,7 +37,7 @@ VirtueMart 1.1.x
 *************************************
 03.09.2007 gregdev
 # Task #1387 - admin.theme_config_list.php missing
-# Fixed hardcoded strings in admin.show_cfg.php.
+# Fixed hardcoded strings in admin.show_cfg.php and admin.theme_config_form.php.
 ^ Joomla! 1.5 compatibility: Added $ps_product to list of globals in virtuemart_parser.php
 ^ Joomla! 1.5 compatibility: change in the compatibility file
 ^ Joomla! 1.5 compatibility: tigratree template change to support new JApplication structure
