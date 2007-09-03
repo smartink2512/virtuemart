@@ -348,7 +348,19 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
 
-			$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			if( $_SESSION['vmLayout'] == 'extended') {
+				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			} else {
+				$task = mosGetParam( $_REQUEST, 'task', '');
+				if( $task == 'apply' ) {
+					$page = 'admin.theme_config_form';
+					$theme = '&theme=' . basename(VM_THEMEURL);
+				} else {
+					$page = 'admin.show_cfg';
+					$theme = '';
+				}
+				mosRedirect( $_SERVER['PHP_SELF']."?page=$page$theme&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			}
 			return true;
 		} else {
 			$vmLogger->err( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. VM_THEMEPATH ."theme.config.php)" );

@@ -667,7 +667,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE, "site-page");
 ?>
 
 <fieldset style="width:48%;float:left;">
-	<legend>Display</legend>
+	<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_DISPLAY ?></legend>
 <table class="adminlist">
     <tr>
         <td class="labelcell"><label for="conf_PSHOP_PDF_BUTTON_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON ?></label></td>
@@ -754,14 +754,24 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE, "site-page");
 </fieldset>
 
 <fieldset style="width:48%;float:right;">
-<legend>Layout</legend>
+<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_LAYOUT ?></legend>
 <table class="adminlist">
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_VM_SELECT_THEME ?></td>
         <td>
         <?php 
         echo ps_html::list_themes( 'conf_THEME', basename(VM_THEMEURL) );
-        echo vmCommonHTML::hyperlink($sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL) ), $VM_LANG->_PHPSHOP_CONFIG );
+
+        if( $vmLayout == 'standard') {
+	        $link = $sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL) );
+	        $text = $VM_LANG->_PHPSHOP_CONFIG;
+			echo vmCommonHTML::hyperlink($link, $VM_LANG->_PHPSHOP_CONFIG );
+		} else {
+	        $link = $sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL).'&amp;no_menu=1' );
+	        $text = $VM_LANG->_PHPSHOP_CONFIG;
+			echo vmCommonHTML::hyperLink($link, $text, '', 'Edit: '.$text, 'onclick="parent.addSimplePanel( \''.$db->getEscaped($text).'\', \''.$link.'\' );return false;"');
+		}
+        
         ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
