@@ -17,7 +17,10 @@ if( isset( $mosConfig_live_site ) ) {
 	// Initialize the framework
 	require_once ( JPATH_BASE . DS . 'includes' . DS . 'defines.php' );
 	require_once ( JPATH_BASE . DS . 'includes' . DS . 'framework.php' );
-	require_once ( JPATH_BASE .DS.'includes'.DS.'application.php' );
+	
+	// Load JApplication for use by the JSite class
+	jimport( 'joomla.application.application');
+	require_once ( JPATH_BASE . DS . 'includes' . DS . 'application.php' );
 	
 	// Get a $mainframe
 	$mainframe = new JSite();

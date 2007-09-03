@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.09.2007 gregdev
+^ Joomla! 1.5 compatibility: change in the compatibility file
+^ Joomla! 1.5 compatibility: tigratree template change to support new JApplication structure
+
 29.08.2007 gregdev
 # Added Shipping module language variables
 

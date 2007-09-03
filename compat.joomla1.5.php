@@ -98,10 +98,11 @@ if( class_exists( 'jconfig' ) ) {
 		$mosConfig_hidePrint = 1- intval( $contentConfig->get('show_print_icon') );
 		$mosConfig_hideEmail = 1- intval( $contentConfig->get('show_email_icon') );
 		
+		// TODO: Do we still need this in the latest J! 1.5 SVN?
 		// Adjust the time offset
-		$server_time 			= date( 'O' ) / 100;
-		$offset 				= $mosConfig_offset_user - $server_time;
-		$GLOBALS['mosConfig_offset'] = $offset;
+//		$server_time = date( 'O' ) / 100;
+//		$offset = $mosConfig_offset - $server_time;
+//		$GLOBALS['mosConfig_offset'] = $offset;
 
 		// Version information
 		$_VERSION = $GLOBALS['_VERSION'];
