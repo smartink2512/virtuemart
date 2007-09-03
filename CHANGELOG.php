@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 03.09.2007 gregdev
+^ Joomla! 1.5 compatibility: Added $ps_product to list of globals in virtuemart_parser.php
 ^ Joomla! 1.5 compatibility: change in the compatibility file
 ^ Joomla! 1.5 compatibility: tigratree template change to support new JApplication structure
 
