@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 04.09.2007 gregdev
 ^ Added DHL shipping method strings to the language files (thanks to aravot!)
+# Fixed blank page after payment confirmation (corrected the LEFT JOIN)
 
 03.09.2007 gregdev
 # Task #1387 - admin.theme_config_list.php missing
