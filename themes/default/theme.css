@@ -166,9 +166,11 @@ General Form Styling
 	white-space: nowrap;
 	clear: left;
 	vertical-align: middle;
-	
 	margin-top: 8px;
+}
 
+#agreed_div {
+	white-space: normal;
 }
 
 .formField {
