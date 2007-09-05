@@ -281,17 +281,13 @@ class ps_cart {
 			} else {
 				$msg = $VM_LANG->_VM_CART_PRODUCT_UPDATED;
 			}
-			/*if($total_quantity !=0)
-			$msg .= "Added: ".$total_quantity." ";
-			if($total_updated !=0)
-			$msg .= "Updated: ".$total_updated."  ";
-			if($total_deleted !=0)
-			$msg .= "Deleted: ".$total_deleted." ";
-			$msg .= "Product/s";
-			*/
+			
 			// Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
 			$vmLogger->info( $msg );
 		}
+        else {
+            $vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+        }
 		// end cart update message */
 
 		// Perform notification of out of stock items

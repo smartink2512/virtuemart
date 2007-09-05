@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.09.2007 macallf
+# Task #1401 ps_cart.php fixed to display tip when adding 0 products to the cart using childlist
+
 04.09.2007 gregdev
 ^ Added DHL shipping method strings to the language files (thanks to aravot!)
 # Fixed blank page after payment confirmation (corrected the LEFT JOIN)
