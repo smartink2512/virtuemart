@@ -98,9 +98,15 @@ else {
 	) {
 		
 		define( '_FRONTEND_ADMIN_LOADED', '1' );
-		$mainframe->loadEditor = 1;
-		require_once( $mosConfig_absolute_path."/editor/editor.php" );
-		initEditor();
+		
+		if( vmIsJoomla(1.5) ) {
+			$editor =& JFactory::getEditor();
+			echo $editor->initialise();
+		} else {
+			$mainframe->loadEditor = 1;
+			require_once( $mosConfig_absolute_path."/editor/editor.php" );
+			initEditor();
+		}
 
 		$editor1_array = Array('product.product_form' => 'product_desc',
 		'product.product_category_form' => 'category_description',

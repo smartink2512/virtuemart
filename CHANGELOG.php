@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.09.2007 gregdev
+# Joomla! 1.5 compatibility: Task #1410 - initialize editor correctly for front-end admin 
+
 05.09.2007 macallf
 # Task #1400 ps_cart.php fixed to display tip when adding 0 products to the cart using childlist
 
