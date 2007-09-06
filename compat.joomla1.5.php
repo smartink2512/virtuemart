@@ -39,7 +39,7 @@ if( class_exists( 'jconfig' ) ) {
 		$url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$mosConfig_live_site = $GLOBALS['mosConfig_live_site']		= substr_replace($url, '', -1, 1);
 		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
-		$mosConfig_cachepath = $GLOBALS['mosConfig_cache_path'] = JPATH_BASE.DS.'cache';
+		$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'] = JPATH_BASE.DS.'cache';
 	
 		// The selected language
 		$lang =& JFactory::getLanguage();
@@ -88,7 +88,7 @@ if( class_exists( 'jconfig' ) ) {
 		// These are in the legacy plugin as globals, but we need them locally too
 		$mosConfig_live_site = $GLOBALS['mosConfig_live_site'];
 		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path'];
-		$mosConfig_cachepath = $GLOBALS['mosConfig_cache_path'];
+		$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'];
 
 		// TODO: Do we need these? They are set in the template.
 		// Icon display settings

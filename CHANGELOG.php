@@ -36,6 +36,9 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 06.09.2007
+# Joomla! 1.5 compatibility: Task #1419 - adjusted mosConfig_cachepath
+
+06.09.2007 macallf
 # Task #1386 implemented page navigation at product level. Corrected get_neighbour_product in ps_product.php
 
 06.09.2007
