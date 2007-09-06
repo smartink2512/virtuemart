@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+06.09.2007
+# Task #1389 Saved cart reappears after checkout. ps_checkout.php edited to delete saved cart.
+# Delete saved cart pointed to wrong function. sql.virtuemart.php Corrected with the correct functio name.
+
 05.09.2007 gregdev
 # Joomla! 1.5 compatibility: Task #1410 - initialize editor correctly for front-end admin
 # Task #1411 - changed to use string from Virtuemart language file

@@ -1155,6 +1155,8 @@ Order Total: '.$order_total.'
 
 		// Reset the cart (=empty it)
 		$ps_cart->reset();
+        $_SESSION['savedcart']['idx']=0;
+        $ps_cart->saveCart();
 
 		// Unset the payment_method variables
 		$d["payment_method_id"] = "";

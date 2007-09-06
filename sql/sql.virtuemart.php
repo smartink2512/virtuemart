@@ -842,7 +842,7 @@ $db->query( "INSERT INTO `#__{vm}_function` VALUES (1, 1, 'userAdd', 'ps_user', 
 (186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin'), 
 (187, 7, 'replaceSavedCart', 'ps_cart', 'replaceCart', 'Replace cart with saved cart', 'none'),
 (188, 7, 'mergeSavedCart', 'ps_cart', 'mergeSaved', 'Merge saved cart with cart', 'none'),
-(189, 7, 'deleteSavedCart', 'ps_cart', 'deleteSaved', 'Delete saved cart', 'none'),
+(189, 7, 'deleteSavedCart', 'ps_cart', 'deleteCart', 'Delete saved cart', 'none'),
 (190, 7, 'savedCartDelete', 'ps_cart', 'deleteSaved', 'Delete items from saved cart', 'none'),
 (191, 7, 'savedCartUpdate', 'ps_cart', 'updateSaved', 'Update saved cart items', 'none');" );
 ## --------------------------------------------------------
