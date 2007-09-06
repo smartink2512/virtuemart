@@ -1303,6 +1303,7 @@ class ps_product extends vmAbstractObject {
 		global $perm, $orderby, $my, $keyword, $DescOrderBy, $limit, $limitstart, 
 			$category_id, $manufacturer_id, $mainframe, $vmInputFilter, $product_type_id, $keyword1, $keyword2;
 		$limit = 2000;
+        $limitstart = 0;
 		if( !empty( $_SESSION['last_browse_parameters'])) {
 			foreach( $_SESSION['last_browse_parameters'] as $paramName => $paramValue ) {
 				$$paramName = $paramValue;

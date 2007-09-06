@@ -36,6 +36,9 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 06.09.2007
+# Task #1386 implemented page navigation at product level. Corrected get_neighbour_product in ps_product.php
+
+06.09.2007
 # Task #1389 Saved cart reappears after checkout. ps_checkout.php edited to delete saved cart.
 # Delete saved cart pointed to wrong function. sql.virtuemart.php Corrected with the correct functio name.
 
