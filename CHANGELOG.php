@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 06.09.2007 macallf
++ Added autofill of user name and email address for logged in user when using email to a friend.
 ^ Added index2.php to the available pages for adding a stylesheet in function addStyleSheet - mainframe.class.php 
 
 06.09.2007

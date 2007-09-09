@@ -252,7 +252,7 @@ class ps_communication {
 
 	}
   function showRecommendForm( $product_id ) {
-    global $VM_LANG, $mosConfig_sitename, $sess, $mosConfig_db;
+    global $VM_LANG, $mosConfig_sitename, $sess, $mosConfig_db,$my;
     
     $sender_name = mosgetparam( $_REQUEST, 'sender_name', null);
     $sender_mail = mosgetparam( $_REQUEST, 'sender_mail', null);
@@ -274,11 +274,11 @@ class ps_communication {
       </tr>
       <tr>
         <td>'.$VM_LANG->_EMAIL_YOUR_NAME.'</td>
-        <td><input type="text" name="sender_name" size="50" value="'.(!empty($sender_name)?$sender_name:'').'" /></td>
+        <td><input type="text" name="sender_name" size="50" value="'.(!empty($sender_name)?$sender_name:$my->name).'" /></td>
       </tr>
       <tr>
         <td>'.$VM_LANG->_EMAIL_YOUR_MAIL.'</td>
-        <td><input type="text" name="sender_mail" size="50" value="'.(!empty($sender_mail)?$sender_mail:'').'" /></td>
+        <td><input type="text" name="sender_mail" size="50" value="'.(!empty($sender_mail)?$sender_mail:$my->email).'" /></td>
       </tr>
       <tr>
         <td colspan="2">'.$VM_LANG->_VM_RECOMMEND_FORM_MESSAGE.'</td>
