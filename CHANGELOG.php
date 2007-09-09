@@ -35,13 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+06.09.2007 macallf
+^ Added index2.php to the available pages for adding a stylesheet in function addStyleSheet - mainframe.class.php 
+
 06.09.2007
 # Joomla! 1.5 compatibility: Task #1419 - adjusted mosConfig_cachepath
 
 06.09.2007 macallf
 # Task #1386 implemented page navigation at product level. Corrected get_neighbour_product in ps_product.php
 
-06.09.2007
+06.09.2007 macallf
 # Task #1389 Saved cart reappears after checkout. ps_checkout.php edited to delete saved cart.
 # Delete saved cart pointed to wrong function. sql.virtuemart.php Corrected with the correct functio name.
 

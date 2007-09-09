@@ -97,7 +97,7 @@ class vmMainFrame {
 	 */
 	function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = array())
 	{
-		if( vmIsJoomla(1.0) && strstr($_SERVER['PHP_SELF'],'index3.php')) {
+		if( vmIsJoomla(1.0) && (strstr($_SERVER['PHP_SELF'],'index3.php') || strstr($_SERVER['PHP_SELF'],'index2.php')) ) {
 			echo vmCommonHTML::linkTag($url, $type, 'stylesheet', $media );
 			return;
 		}
