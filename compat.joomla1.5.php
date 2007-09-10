@@ -89,6 +89,10 @@ if( class_exists( 'jconfig' ) ) {
 		$mosConfig_live_site = $GLOBALS['mosConfig_live_site'];
 		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path'];
 		$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'];
+		
+		// User registration settings
+		$mosConfig_allowUserRegistration = $GLOBALS['mosConfig_allowUserRegistration'] = $usersConfig->get('allowUserRegistration');
+		$mosConfig_useractivation = $GLOBALS['mosConfig_useractivation'] = $usersConfig->get('useractivation');
 
 		// TODO: Do we need these? They are set in the template.
 		// Icon display settings

@@ -35,11 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+10.09.2007 gregdev
+^ Joomla! 1.5 compatibility: load compat file in virtuemart_parser (for use in modules, etc); added global user registration settings
+
 06.09.2007 macallf
 + Added autofill of user name and email address for logged in user when using email to a friend.
 ^ Added index2.php to the available pages for adding a stylesheet in function addStyleSheet - mainframe.class.php 
 
-06.09.2007
+06.09.2007 gregdev
 # Joomla! 1.5 compatibility: Task #1419 - adjusted mosConfig_cachepath
 
 06.09.2007 macallf
