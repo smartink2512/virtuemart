@@ -18,12 +18,8 @@ if( isset( $mosConfig_live_site ) ) {
 	require_once ( JPATH_BASE . DS . 'includes' . DS . 'defines.php' );
 	require_once ( JPATH_BASE . DS . 'includes' . DS . 'framework.php' );
 	
-	// Load JApplication for use by the JSite class
-	jimport( 'joomla.application.application');
-	require_once ( JPATH_BASE . DS . 'includes' . DS . 'application.php' );
-	
 	// Get a $mainframe
-	$mainframe = new JSite();
+	$mainframe = & JFactory::getApplication( 'site' );
 
 	// Get the appropriate url	
 	$url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
