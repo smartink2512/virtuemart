@@ -305,7 +305,13 @@ $count .= $q;
 
 $q .= "\n GROUP BY `#__{vm}_product`.`product_sku` ";
 $q .= "\n ORDER BY $orderbyField $DescOrderBy";
-$list .= $q . " LIMIT $limitstart, " . $limit;
+
+// Joomla! 1.5 supports listing "All" items, which means $limit == 0
+if( vmIsJoomla(1.5) && $limit == 0 ) {
+	$list .= $q;
+} else {
+	$list .= $q . " LIMIT $limitstart, " . $limit;
+}
 
 // Store current GET parameters for usage on the product details page navigation
 $_SESSION['last_browse_parameters'] = array(
