@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 10.09.2007 gregdev
 ^ Joomla! 1.5 compatibility: load compat file in virtuemart_parser (for use in modules, etc); added global user registration settings
+# Joomla! 1.5 compatibility: Task #1423 - Fixed login/logout from mod_virtuemart.
 
 06.09.2007 macallf
 + Added autofill of user name and email address for logged in user when using email to a friend.

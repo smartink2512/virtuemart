@@ -167,14 +167,29 @@ if ($perm->is_registered_customer($auth["user_id"]) && $show_accountlink == 'yes
 if ( $show_login_form == "yes" ) {
 	
     if ($my->id) {
+		if( vmIsJoomla(1.5) ) {
+			// Logout URL
+			$action =  $mm_action_url . 'index.php?option=com_user&task=logout';
+
+			// Logout return URL
+			$uri = JFactory::getURI();
+			$url = $uri->toString();
+			$return = base64_encode( $url );
+		} else {
+			// Logout URL
+			$action = $mm_action_url . 'index.php?option=logout';
+
+			// Logout return URL
+			$return = $mm_action_url . 'index.php';
+		}
 ?>	  
 	<tr>
 	  <td colspan="2" valign="top">
 		<div align="left" style="margin: 0px; padding: 0px;">
-		  <form action="<?php echo $mm_action_url ?>index.php?option=logout" method="post" name="login" id="login">
+		  <form action="<?php echo $action ?>" method="post" name="login" id="login">
 			<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_BUTTON_LOGOUT ?>" /><br /><hr />
 			<input type="hidden" name="op2" value="logout" />
-			<input type="hidden" name="return" value="<?php echo $mm_action_url ?>index.php" />
+			<input type="hidden" name="return" value="<?php echo $return ?>" />
 			<input type="hidden" name="lang" value="english" />
 			<input type="hidden" name="message" value="0" />
 		  </form>
@@ -185,10 +200,31 @@ if ( $show_login_form == "yes" ) {
 	}
 	else
 	{
+		if( vmIsJoomla(1.5) ) {
+			// Login URL
+			$action =  $mm_action_url . 'index.php?option=com_user&task=login';
+			
+			// Login return URL
+			$uri = JFactory::getURI();
+			$url = $uri->toString();
+			$return = base64_encode( $url );
+			
+			// Lost password
+			$reset = JRoute::_( 'index.php?option=com_user&view=reset' );
+		} else {
+			// Login URL
+			$action = $mm_action_url . 'index.php?option=login';
+
+			// Login return URL
+			$return = $sess->url( $mm_action_url . 'index.php?'. $_SERVER['QUERY_STRING'] );
+			
+			// Lost password url
+			$reset = sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.(int)mosGetParam($_REQUEST, 'Itemid', 0) );
+		}
 		?> 	  
 		<tr>
 		  <td colspan="2" align="left" valign="top" style="margin: 0px; padding: 0px;">
-			<form action="<?php echo $mm_action_url ?>index.php?option=login" method="post" name="login" id="login">
+			<form action="<?php echo $action ?>" method="post" name="login" id="login">
 			<label for="username_field"><?php echo $VM_LANG->_USERNAME ?></label><br/>
 			<input class="inputbox" type="text" id="username_field" size="12" name="username" />
 		  <br/>
@@ -196,11 +232,14 @@ if ( $show_login_form == "yes" ) {
 			<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="yes" name="remember" />
-			<input type="hidden" value="<?php $sess->purl($mm_action_url . "index.php?". $_SERVER['QUERY_STRING']); ?>" name="return" />
+			<input type="hidden" value="<?php echo $return ?>" name="return" />
 		  <br/>
 			<input type="submit" value="<?php echo $VM_LANG->_BUTTON_LOGIN ?>" class="button" name="Login" />
 			<?php
-			if( function_exists('josspoofvalue')) {
+			if( vmIsJoomla(1.5) ) {
+				$validate = JUtility::getToken();
+			}
+			elseif( function_exists('josspoofvalue')) {
 				$validate = josSpoofValue(1);
 			} else {
 			  	// used for spoof hardening
@@ -213,7 +252,7 @@ if ( $show_login_form == "yes" ) {
 		</tr>
 		<tr>
 		  <td colspan="2">
-			<a href="<?php echo sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.$_REQUEST['Itemid'] ); ?>">
+			<a href="<?php echo $reset ?>">
 			<?php echo $VM_LANG->_LOST_PASSWORD; ?>
 			</a>
 		  </td>
