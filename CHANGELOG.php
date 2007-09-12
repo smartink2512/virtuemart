@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.09.2007 gregdev
++ Added a separate VirtueMart login module.
+
 10.09.2007 gregdev
 ^ Joomla! 1.5 compatibility: load compat file in virtuemart_parser (for use in modules, etc); added global user registration settings
 # Joomla! 1.5 compatibility: Task #1423 - Fixed login/logout from mod_virtuemart.

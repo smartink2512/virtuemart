@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<mosinstall type="module">
+	<name>VirtueMart Login</name>
+	<author>Greg Perkins</author>
+	<creationDate>September 2007</creationDate>
+	<copyright>(C) 2007 Greg Perkins. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>greg|at|virtuemart.net</authorEmail>
+	<authorUrl>www.virtuemart.net</authorUrl>
+	<version>1.0</version>
+	<description>This module provieds login/logout functionality for VirtueMart .</description>
+	<files>
+		<filename module="mod_virtuemart_login">mod_virtuemart_login.php</filename>
+	</files>
+	<params>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module, this allows individual module styling" />
+		<param name="pretext" type="textarea" cols="30" rows="5" default="" label="Pre-text" description="This is the text or HTML that is displayed above the Login form" />
+		<param name="posttext" type="textarea" cols="30" rows="5" label="Post-text" description="This is the text or HTML that is displayed below the Login form" />
+		<param name="greeting" type="radio" default="1" label="Greeting" description="Show/Hide the simple greeting text">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="name" type="list" default="0" label="Name/Username">
+			<option value="0">Username</option>
+			<option value="1">Name</option>
+		</param>
+	</params>
+</mosinstall>
