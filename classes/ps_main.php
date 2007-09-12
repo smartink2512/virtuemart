@@ -368,19 +368,35 @@ function include_class($module) {
 * table. A successful validation returns true, otherwise false
 */
 function mShop_checkpass() {
-	global $database, $perm, $my;
+	global $database, $perm, $my, $mainframe;
 
 	// only allow access to admins or storeadmins
 	if( $perm->check("admin,storeadmin")) {
 
 		$username = $my->username;
-		$passwd = trim( mosGetParam( $_POST, 'passwd', '' ) );
+		$passwd_plain = $passwd = trim( mosGetParam( $_POST, 'passwd', '' ) );
 		$passwd = md5( $passwd );
 		$bypost = 1;
 		if (!$username || !$passwd || $_REQUEST['option'] != "com_virtuemart") {
 			return false;
-		}
-		else {
+		} elseif( vmIsJoomla(1.5) ) {
+			$credentials = array();
+			$credentials['username'] = $username;
+			$credentials['password'] = $passwd_plain;
+			
+			$options = array();
+			
+			jimport( 'joomla.user.authentication');
+			$authenticate = & JAuthentication::getInstance();
+			$response	  = $authenticate->authenticate($credentials, $options);
+	
+			if ($response->status === JAUTHENTICATE_STATUS_SUCCESS) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} else {
 			$database->setQuery( "SELECT id, gid, block, usertype"
 			. "\nFROM #__users"
 			. "\nWHERE username='$username' AND password='$passwd'"

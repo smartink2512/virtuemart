@@ -20,7 +20,7 @@
 ( defined(  '_VALID_MOS' ) || defined( '_JEXEC' ) ) or die( 'Direct access to this location is not allowed.' );
 
 // TODO: Joomla! 1.5 compatibility - does this global var depend on the legacy plugin?
-global $mosConfig_absolute_path;
+global $mosConfig_absolute_path, $mosConfig_allowUserRegistration;
 
 // Load the VirtueMart parser
 require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );

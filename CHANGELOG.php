@@ -37,6 +37,8 @@ VirtueMart 1.1.x
 *************************************
 12.09.2007 gregdev
 + Added a separate VirtueMart login module.
+^ Joomla! 1.5 compatibility: fixed password check on payment methods
+# Fixed missing global $mosConfig_allowUserRegistration in VirtueMart login module
 
 10.09.2007 gregdev
 ^ Joomla! 1.5 compatibility: load compat file in virtuemart_parser (for use in modules, etc); added global user registration settings
