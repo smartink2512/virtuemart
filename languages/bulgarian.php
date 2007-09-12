@@ -2016,6 +2016,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_GAR = 'GAR Garage';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LOF = 'LOF Left per Letter on File at Station';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LPN = 'LPN Left per Signed not or Attempted Delivery Notice';
+	var $_FORGOT_YOUR_USERNAME = 'Forgot your username?';
         
 }
 class phpShopLanguage extends vmLanguage { }
