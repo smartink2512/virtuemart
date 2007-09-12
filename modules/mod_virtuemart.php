@@ -211,6 +211,9 @@ if ( $show_login_form == "yes" ) {
 			
 			// Lost password
 			$reset = JRoute::_( 'index.php?option=com_user&view=reset' );
+
+			// User name reminder (Joomla 1.5 only)
+			$remind_url = JRoute::_( 'index.php?option=com_user&view=remind' );
 		} else {
 			// Login URL
 			$action = $mm_action_url . 'index.php?option=login';
@@ -220,6 +223,9 @@ if ( $show_login_form == "yes" ) {
 			
 			// Lost password url
 			$reset = sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.(int)mosGetParam($_REQUEST, 'Itemid', 0) );
+
+			// Set user name reminder to nothing
+			$remind_url = '';
 		}
 		?> 	  
 		<tr>
@@ -257,20 +263,29 @@ if ( $show_login_form == "yes" ) {
 			</a>
 		  </td>
 		</tr>
-		<?php
-		if( $mosConfig_allowUserRegistration == '1' ) {
-		?>
+		<?php if( $remind_url ) : ?>
+		<tr>
+		  <td colspan="2">
+			<a href="<?php echo $remind_url ?>"><?php echo $VM_LANG->_FORGOT_YOUR_USERNAME ?></a>
+		  </td>
+		</tr>
+		<? endif; ?>
+		<?php if( $mosConfig_allowUserRegistration == '1' ) : ?>
 			<tr>
 			  <td colspan="2">
 				<?php echo $VM_LANG->_NO_ACCOUNT; ?>
 				<a href="<?php $sess->purl( SECUREURL.'index.php?option=com_virtuemart&amp;page=shop.registration' ); ?>">
 				<?php echo $VM_LANG->_CREATE_ACCOUNT; ?>
 				</a>
+			  </td>
+			</tr>
+			<?php endif; ?>
+			<tr>
+			  <td colspan="2">
 				<hr />
 			  </td>
 			</tr>
-			<?php
-		}
+<?php
 	}
   }
   
