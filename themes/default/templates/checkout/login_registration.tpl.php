@@ -21,7 +21,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 </h4>
     <div class="stretcher" id="login_stetcher">
 <?php 
-    echo $this->fetch('common/login_form.tpl.php');
+    include( PAGEPATH . 'checkout.login_form.php' );
 ?>
     </div>
 <?php

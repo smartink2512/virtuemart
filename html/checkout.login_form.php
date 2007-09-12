@@ -17,3 +17,46 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
+// Determine settings based on CMS version
+if( vmIsJoomla(1.5) ) {
+	// Post action
+	$action =  'index.php?option=com_user&amp;task=login';
+
+	// Return URL
+	$uri = JFactory::getURI();
+	$url = $uri->toString();
+	$return_url = base64_encode( $url );
+
+	// Set the validation value
+	$validate = JUtility::getToken();
+	
+} else {
+	// Post action
+	$action = 'index.php?option=login';
+
+	// Return URL
+	$return_url = mosGetParam( $_SERVER, 'REQUEST_URI', null );
+
+	// Convert & to &amp; for xhtml compliance
+	$return_url = str_replace( '&', '&amp;', $return_url );
+	$return_url = str_replace( 'option', '&amp;option', $return_url );
+
+	// Set the validation value
+	if( function_exists( 'josspoofvalue' ) ) {
+		$validate = josSpoofValue(1);
+	} else {
+		$validate = vmSpoofValue(1);
+	}
+}
+
+$theme = vmTemplate::getInstance();
+
+$theme->set_vars( array(
+						'action' => $action,
+						'return_url' => $return_url,
+						'validate' => $validate,
+						'VM_LANG' => $VM_LANG,
+						'mosConfig_lang' => $mosConfig_lang
+					));
+
+echo $theme->fetch('common/login_form.tpl.php');

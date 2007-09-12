@@ -39,7 +39,10 @@ VirtueMart 1.1.x
 + Added a separate VirtueMart login module.
 ^ Joomla! 1.5 compatibility: fixed password check on payment methods
 # Fixed missing global $mosConfig_allowUserRegistration in VirtueMart login module
-^ Joomla! 1.5 compatibility: Added 'Forgot your password' option to the VirtueMart module 
+^ Joomla! 1.5 compatibility: Added 'Forgot your password' option to the VirtueMart module
+^ Joomla! 1.5 compatibility: login/registration forms
+^ Removed the login form from the the shop.registration
+^ Moved logic from the template (login_form.tpl.php) to checkout.login_form.php
 
 10.09.2007 gregdev
 ^ Joomla! 1.5 compatibility: load compat file in virtuemart_parser (for use in modules, etc); added global user registration settings

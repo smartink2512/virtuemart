@@ -18,28 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 if( !$my->id ) {
-  ?>
-            <fieldset>
-                <legend><span class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_RETURN_LOGIN ?></span></legend>
-                <br />
-	            <?php 
-	            $theme = new $GLOBALS['VM_THEMECLASS']();
-	            echo $theme->fetch('common/login_form.tpl.php');
-	            ?>
-                <br />
-            </fieldset><br />
-            <?php
-          
-          
-          ?><br />
-            <div class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></div>
-                <br /><?php
-          
-                include(PAGEPATH. 'checkout_register_form.php');
-?>
-                <br />
-<?php
-}
-else {
+	include( PAGEPATH . 'checkout_register_form.php' );
+} else {
 	mosRedirect( $sess->url( URL.'index.php?page='.HOMEPAGE, false, false ) );
 }
