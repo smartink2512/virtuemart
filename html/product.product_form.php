@@ -1002,7 +1002,6 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
 			?>
 			<input type="hidden" name="related_products" value="<?php echo implode('|', $related_products ) ?>" />
 			</td>			
-			</td>
 		</tr>
 	</table>
 <!-- Changed Product Type - Begin -->
