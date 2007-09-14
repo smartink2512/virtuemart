@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 ?>
+<div class="pathway"><?php echo $vmPathway; ?></div>
 <div style="float:left;width:90%;text-align:right;"> 
     <span>
     	<a href="#" onclick="if( submitregistration() ) { document.adminForm.submit();}">

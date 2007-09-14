@@ -100,15 +100,14 @@ else {
 		$tpl->set( 'categories', $category_childs );
 		$navigation_childlist = $tpl->fetch( 'common/categoryChildlist.tpl.php');
 		$tpl->set( 'navigation_childlist', $navigation_childlist );
-	    /**
-	    * PATHWAY - Navigation List
-	    */
-		$nav_list = $ps_product_category->get_navigation_list($category_id);
+
+		// Set up the CMS pathway
+		$category_list = array_reverse( $ps_product_category->get_navigation_list($category_id) );
+		$pathway = $ps_product_category->getPathway( $category_list );
+		$vm_mainframe->vmAppendPathway( $pathway );
+
 		$tpl->set( 'category_id', $category_id );
-		$tpl->set( 'category_list', $nav_list );
 		$tpl->set( 'category_name', $category_name );
-		$navigation_pathway = $tpl->fetch( 'common/pathway.tpl.php');		
-		$mainframe->appendPathWay( $navigation_pathway );
 		
 		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_category.tpl.php' );
 		

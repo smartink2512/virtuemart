@@ -18,24 +18,16 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 if( $db->f('order_number')) {
-	
+?>	
 
-	if (empty( $print )) { ?>
-	  <a href="<?php $sess->purl(SECUREURL.'index.php?page=account.index'); ?>">
-	  <img src="<?php echo IMAGEURL ?>ps_image/undo.png" alt="Back"  height="32" width="32" border="0" align="left" />
-	  </a>
-	    <br />
-	    <script type="text/javascript">
-	    document.write('<a href="javascript:void window.open(\'<?php echo $mosConfig_live_site."/index2.php?page=account.order_details&order_id=$order_id&pop=1&option=com_virtuemart&print=1" ?>\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=yes,resizable=yes,width=640,height=480,directories=no,location=no\');">');
-	    </script>
-	    <noscript><a href="<?php echo $mosConfig_live_site."/index2.php?page=account.order_details&order_id=$order_id&pop=1&option=com_virtuemart&print=1" ?>" target="_blank"></noscript>
-	    <?php echo $VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW ?>
-	    </a>
-	    <br /><br />
-	  <?php 
-	  }
-	?>
-	  
+	<div class="pathway"><?php echo $vmPathway; ?></div>
+	<?php if (empty( $print )) : ?>
+	<div class="buttons_heading">
+	<?php echo vmCommonHTML::PrintIcon(); ?>
+	</div>
+	<br /><br />
+	 <?php endif; ?>
+
 	<table width="100%" align="center" border="0" cellspacing="0" cellpadding="2">
 	  <tr>
 	    <td valign="top">

@@ -1169,6 +1169,28 @@ class ps_product_category extends vmAbstractObject {
 	function navigation_list($category_id) {
 		echo $this->get_navigation_list($category_id);
 	}
+	
+	/**
+	 * Creates the category pathway array
+	 *
+	 * @param	array  $category_list	List of category IDs and names
+	 * @return	array	$pathway_items	Array of objects ($name, $link)
+	 * @access   public
+	 */
+	function getPathway( $category_list ) {
+		global $sess;
+		
+		$pathway_items = array();
+		
+		foreach( $category_list as $category ) {
+			$item = new stdClass();
+			$item->name = vmHtmlEntityDecode( $category['category_name'] );
+			$item->link = $sess->url($_SERVER['PHP_SELF'] . "?page=shop.browse&category_id=$category[category_id]");
+			$pathway_items[] = $item;
+		}
+		
+		return $pathway_items;
+	}
 
 	/**
 	 * Creates navigation list of categories

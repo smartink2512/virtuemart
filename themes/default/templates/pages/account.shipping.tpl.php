@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 ?>
+<div class="pathway"><?php echo $vmPathway; ?></div>
 <fieldset>
    <legend class="sectiontableheader"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL ?></legend>
    <br/><br/>

@@ -225,4 +225,46 @@ class vmMainFrame {
 			}
 		}
 	}
+
+	/**
+	 * Appends items to the CMS pathway
+	 *
+	 * @param	string  $pathway_items	Array of pathway objects ($name, $link)
+	 * @access   public
+	 */
+	function vmAppendPathway( $pathway ) {
+		global $mainframe;
+		
+		// Remove the link on the last pathway item
+		$pathway[ count($pathway) - 1 ]->link = '';
+
+		if( vmIsJoomla(1.5) ) {
+			$cmsPathway =& $mainframe->getPathway();
+			foreach( $pathway AS $item) {
+				$cmsPathway->addItem( $item->name, $item->link );
+			}
+		} else {
+			$tpl = vmTemplate::getInstance();
+			$tpl->set( 'pathway', $pathway );
+			$vmPathway = $tpl->fetch( 'common/pathway.tpl.php' );
+			$mainframe->appendPathWay( $vmPathway );
+		}
+	}
+
+	/**
+	 * Returns a pathway item
+	 *
+	 * @param	string	$name
+	 * @param	string	$link
+	 * @access   public
+	 * @return	object	A pathway item object
+	 */
+	function vmPathwayItem( $name, $link = '' ) {
+		$item = new stdClass();
+		$item->name = vmHtmlEntityDecode( $name );
+		$item->link = $link;
+		
+		return $item;
+	}
+	
 }

@@ -36,21 +36,33 @@ $q =  "SELECT * FROM #__users, #__{vm}_user_info
 $db->query($q);
 $db->next_record();
 
-$pathway = "<a class=\"pathway\"  href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
-      .$VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL;
-echo "<div>$pathway</div><br/>";
-$mainframe->appendPathWay( $pathway );
+// Set the CMS pathway
+$pathway = array();
+if( stristr( $next_page, 'checkout' ) !== false ) {
+	// We are in the checkout process
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_CHECKOUT_TITLE, $sess->url( SECUREURL."index.php?page=$next_page") );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL );	
+} else {
+	// We are in account maintenance
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'index.php?page=account.index' ) );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_USER_FORM_BILLTO_LBL );
+}
+$vm_mainframe->vmAppendPathway( $pathway );
+
+// Set the internal VirtueMart pathway
+$tpl = vmTemplate::getInstance();
+$tpl->set( 'pathway', $pathway );
+$vmPathway = $tpl->fetch( 'common/pathway.tpl.php' );
+$tpl->set( 'vmPathway', $vmPathway );
 
 $fields = ps_userfield::getUserFields( 'account' );
 
-$theme = vmTemplate::getInstance();
-$theme->set_vars( array(
+$tpl->set_vars( array(
 					'fields' => $fields,
 					'db' => $db,
 					'next_page' => $next_page,
 					'missing' => $missing,
 					'Itemid' => $Itemid
 					));
-echo $theme->fetch('pages/'.$page.'.tpl.php');
+echo $tpl->fetch('pages/'.$page.'.tpl.php');
 ?>      

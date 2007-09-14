@@ -142,8 +142,23 @@ if( empty( $flypage )) {
 $flypage = str_replace( 'shop.', '', $flypage);
 $flypage = stristr( $flypage, '.tpl') ? $flypage : $flypage . '.tpl';
 
-$category_list = $ps_product_category->get_navigation_list($category_id);
-$tpl->set( 'category_list', $category_list );
+// Set up the pathway
+// Retrieve the pathway items for this product's category
+$category_list = array_reverse( $ps_product_category->get_navigation_list( $category_id ) );
+$pathway = $ps_product_category->getPathway( $category_list );
+
+// Add this product's name to the pathway, with no link
+$item = new stdClass();
+$item->name = $product_name;
+$item->link = '';
+$pathway[] = $item;
+
+// Set the CMS pathway
+$vm_mainframe->vmAppendPathway( $pathway );
+
+// Set the pathway for our template
+$tpl->set( 'pathway', $pathway );
+
 $tpl->set( 'product_name', $product_name );
 
 // Get the neighbor Products to allow navigation on product level
@@ -192,6 +207,8 @@ if ($parent_id_link <> 0 ) {
 	$return_link .= " ".vmCommonHTML::pathway_separator()." ";
 }
 $tpl->set( 'return_link', $return_link );
+
+// Create the pathway for our template
 $navigation_pathway = $tpl->fetch( 'common/pathway.tpl.php');
 
 if ($ps_product_category->has_childs($category_id) ) {
@@ -199,9 +216,6 @@ if ($ps_product_category->has_childs($category_id) ) {
 	$tpl->set( 'categories', $category_childs );
 	$navigation_childlist = $tpl->fetch( 'common/categoryChildlist.tpl.php');
 }
-
-// Set Dynamic Pathway
-$mainframe->appendPathWay( $navigation_pathway );
 
 // Set Dynamic Page Title
 $mainframe->setPageTitle( html_entity_decode( substr($product_name, 0, 60 ), ENT_QUOTES ));

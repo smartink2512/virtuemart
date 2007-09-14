@@ -86,7 +86,15 @@ input.addtocart_button_module:hover  {
 	border: 2px solid gray;
 	margin: 10px;
 	padding: 0px 0px 10px 10px;
-} 
+}
+
+div.pathway {
+	margin-bottom: 1em;
+}
+
+div.pathway img {
+	padding: 0 2px;
+}
 
 /* The PDF, Email and Print buttons */
 div.buttons_heading {

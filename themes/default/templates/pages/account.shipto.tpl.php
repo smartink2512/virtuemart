@@ -18,6 +18,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 /*****************************
 ** Checkout Bar Feature
 **/
+?>
+<div class="pathway"><?php echo $vmPathway; ?></div>
+<?php
  if ( $next_page=="checkout.index") {
     
      echo "<h3>". $VM_LANG->_PHPSHOP_CHECKOUT_TITLE ."</h3>";    

@@ -35,8 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-14.09.2007 soeren
+14.09.2007 gregdev
+^ Joomla! 1.5 compatibility: fixed Joomla! pathways
+^ Adjusted internal VirtueMart pathways (account maintenance, shop.browse, shop.product_details)
+^ Added pathway handling functions in vmMainFrame class
+^ Added ps_product_category->getPathway function (supports creating the category URLs)
 
+14.09.2007 soeren
 # Task #1441 - In extended layout view when saving shipping module, save message is populated by shipping module
 # Task #1438 - Adding product not working in IE ("Operation aborted" Error in IE when loading the product form)
 

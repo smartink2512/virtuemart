@@ -23,13 +23,25 @@ $Itemid = $sess->getShopItemid();
 $next_page = mosGetParam( $_REQUEST, "next_page", "account.shipping" );
 $user_info_id = mosGetParam( $_REQUEST, "user_info_id", "" );
 
-$pathway = "<a class=\"pathway\" href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
-      ."<a class=\"pathway\" href=\"".$sess->url( SECUREURL."index.php?page=$next_page")."\" title=\"".$VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL."\">"
-      .$VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL."</a> ".vmCommonHTML::pathway_separator().' '
-      .$VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL;
-$mainframe->appendPathWay( $pathway );
-echo "<div>$pathway</div><br/>";
+// Set the CMS pathway
+$pathway = array();
+if( stristr( $next_page, 'checkout' ) !== false ) {
+	// We are in the checkout process
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_CHECKOUT_TITLE, $sess->url( SECUREURL."index.php?page=$next_page") );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL );	
+} else {
+	// We are in account maintenance
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'index.php?page=account.index' ) );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL, $sess->url( SECUREURL."index.php?page=$next_page") );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL );
+}
+$vm_mainframe->vmAppendPathway( $pathway );
+
+// Set the internal VirtueMart pathway
+$tpl = vmTemplate::getInstance();
+$tpl->set( 'pathway', $pathway );
+$vmPathway = $tpl->fetch( 'common/pathway.tpl.php' );
+$tpl->set( 'vmPathway', $vmPathway );
 
 $missing = mosGetParam( $vars, 'missing' );
 
@@ -49,13 +61,12 @@ if( !$db->num_rows()) {
 	$vars['country'] = mosGetParam($_REQUEST, 'country', $vendor_country);
 }
 
-$theme = vmTemplate::getInstance();
-$theme->set_vars( array('next_page' => $next_page,
+$tpl->set_vars( array('next_page' => $next_page,
 					'missing' => $missing,
 					'vars' => $vars,
 					'db' => $db,
 					'user_info_id' => $user_info_id
 					));
-echo $theme->fetch('pages/'.$page.'.tpl.php');
+echo $tpl->fetch('pages/'.$page.'.tpl.php');
 
 ?>

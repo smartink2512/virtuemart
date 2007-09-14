@@ -4,7 +4,7 @@
 
 <?php 
 if( $this->get_cfg( 'showPathway' )) {
-	echo '<p>' . $navigation_pathway . '</p>';
+	echo '<p><div class="pathway"' . $navigation_pathway . '</div></p>';
 }
 ?>
 <?php

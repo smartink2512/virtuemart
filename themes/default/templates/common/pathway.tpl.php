@@ -2,20 +2,21 @@
 
 <?php 
 $catcount = 1;
-$count = count( $category_list );
-if( $count > 1 ) {
-	$category_list = array_reverse( $category_list );
-}
+$count = count( $pathway );
 
+// Remove the link on the last pathway item
+$pathway[ $count - 1 ]->link = '';
 
-foreach( $category_list as $category ) { ?>
-	<a class="pathway" href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?page=shop.browse&category_id=$category[category_id]")?>">
-		<?php
-			echo $category['category_name']
-		?> 
-	</a>
-	<?php
-	if( $catcount < $count || isset( $product_name )) {
+foreach( $pathway as $item ) { ?>
+	<?php if( !empty( $item->link ) ) : ?>
+	<a class="pathway" href="<?php echo $item->link ?>"><?php echo $item->name ?></a>
+	<?php else: ?>
+	<?php echo $item->name ?>
+	<?php endif; ?>
+
+<?php
+
+	if( $catcount < $count || $item->link != '') {
 		// This prints the separator image (uses the one from the template if available!)
 		// Cat1 * Cat2 * ...
 		echo vmCommonHTML::pathway_separator();
@@ -23,11 +24,7 @@ foreach( $category_list as $category ) { ?>
 	}
 	$catcount++;
 }
-if(isset($return_link)) {
-    
+if( isset( $return_link ) && !empty( $return_link ) ) {
     echo $return_link;
 }
- 
-// Print the Product Name if it is available
-echo isset($product_name) ? $product_name : ''; 
-?>
+ ?>

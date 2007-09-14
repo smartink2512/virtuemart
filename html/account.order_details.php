@@ -40,11 +40,18 @@ if ($db->next_record()) {
 	
 	$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO.' : '.$VM_LANG->_PHPSHOP_ORDER_LIST_ID.' '.$db->f('order_id'));
 	require_once( CLASSPATH.'ps_product_category.php');
-	$pathway = "<a href=\"".$sess->url( SECUREURL ."index.php?page=account.index")."\" title=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\">"
-	      .$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."</a> ".vmCommonHTML::pathway_separator().' '
-	      .$VM_LANG->_PHPSHOP_ACC_ORDER_INFO;
-	$mainframe->appendPathWay( $pathway );
 	
+	// Set the CMS pathway
+	$pathway = array();
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'index.php?page=account.index' ) );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO );
+	$vm_mainframe->vmAppendPathway( $pathway );
+	
+	// Set the internal VirtueMart pathway
+	$tpl->set( 'pathway', $pathway );
+	$vmPathway = $tpl->fetch( 'common/pathway.tpl.php' );
+	$tpl->set( 'vmPathway', $vmPathway );
+
 	// Get bill_to information
 	$dbbt = new ps_DB;
 	$q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
@@ -67,8 +74,12 @@ if ($db->next_record()) {
 	$tpl->set( 'dbbt', $dbbt );
 	$tpl->set( 'dbpm', $dbpm );
 	$tpl->set( 'user', $user );
+	$tpl->set( 'order_id', $order_id );
 
+	// Get the template for this page
+	echo $tpl->fetch( 'pages/account.order_details.tpl.php' );
+
+} else {
+	mosRedirect( $sess->url( SECUREURL .'index.php?page=account.index' ) );
 }
-// Get the template for this page
-echo $tpl->fetch( 'pages/account.order_details.tpl.php' );
 ?>

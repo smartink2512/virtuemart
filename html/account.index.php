@@ -22,7 +22,11 @@ $ps_order = new ps_order;
 
 /* Set Dynamic Page Title when applicable */
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE );
-$mainframe->appendPathWay( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE );
+
+// Set the CMS pathway
+$pathway = array();
+$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE );
+$vm_mainframe->vmAppendPathway( $pathway );
 
 $tpl = new $GLOBALS['VM_THEMECLASS']();
 
