@@ -31,25 +31,33 @@ if( $shipping_module ) {
   ?>
   <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
   <script language="Javascript" src="<?php echo $mosConfig_live_site;?>/includes/js/overlib_mini.js"></script>
-  <br />
+	<table class="adminform">
+	<tr>
+	<td>
+  
   &nbsp;&nbsp;<span class="sectionname">Shipping Module Configuration: <?php echo $shipping_module ?></span>
   <br /><br />
-  <form action="<?php echo $_SERVER['PHP_SELF']?>" name="adminForm" method="post">
+  
   <?php
-  $_SHIPPING->show_configuration();
-  ?>
-    <input type="hidden" name="task" value="" />
-    <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="func" value="shippingmethodSave" />
-    <input type="hidden" name="page" value="store.shipping_modules" />
-    <input type="hidden" name="shipping_class" value="<?php echo basename($shipping_module,".php"); ?>" />
-  </form>
-  <?php
+	// Create the Form Control Object
+	$formObj =& new formFactory( $VM_LANG->_PHPSHOP_COUNTRY_LIST_ADD );
+	
+	// Start the the Form
+	$formObj->startForm();
+
+  	$_SHIPPING->show_configuration();
+  
+  	// Write common hidden input fields
+  	$formObj->hiddenField('shipping_class', basename($shipping_module,".php") );
+	// and close the form
+	$formObj->finishForm( 'shippingmethodSave', 'store.shipping_modules', $option );
+	?>
+	</td>
+	</tr>
+	</table>
+	<?php
 }
 else {
-
-	// Form for new shipping modules
-
+	//TODO: Form for new shipping modules
 }
-
 ?>

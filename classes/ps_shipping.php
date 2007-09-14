@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,14 +19,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_shipping {
 	var $classname = "ps_shipping";
 
-
-	/*****************************************
-	** VALIDATION FUNCTIONS for the Carrier
-	**
-	**
-	********************************************/
-
-
+	/**
+	 * Validate onCarrierAdd
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add(&$d) {
 		global $error_msg, $VM_LANG;
 		$db = new ps_DB;
@@ -40,7 +38,12 @@ class ps_shipping {
 
 		return True;
 	}
-
+	/**
+	 * Validate onCarrierDelete
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_delete( $shipping_carrier_id, &$d) {
 		global $VM_LANG;
 		if (!$shipping_carrier_id) {
@@ -66,7 +69,12 @@ class ps_shipping {
 
 		return True;
 	}
-
+	/**
+	 * Validate onCarrierUpdate
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update(&$d) {
 		global $error_msg, $VM_LANG;;
 		$db = new ps_DB;
@@ -87,14 +95,12 @@ class ps_shipping {
 		return True;
 	}
 
-
-	/**************************************************************************
-	* name: add()
-	* created by: Ekkehard Domning
-	* description: creates a new Carrier
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Add a new Carrier
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -117,14 +123,12 @@ class ps_shipping {
 		return True;
 
 	}
-
-	/**************************************************************************
-	* name: update()
-	* created by: Ekkehard Domning
-	* description: updates function information
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Update a Carrier
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
@@ -145,8 +149,11 @@ class ps_shipping {
 	}
 
 	/**
-	* Controller for Deleting Records.
-	*/
+	 * Controller for Deleting Records.
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function delete(&$d) {
 
 		$record_id = $d["shipping_carrier_id"];
@@ -162,9 +169,14 @@ class ps_shipping {
 			return $this->delete_record( $record_id, $d );
 		}
 	}
+
 	/**
-	* Deletes one Record.
-	*/
+	 * Deletes a Carrier
+	 *
+	 * @param int $record_id
+	 * @param array $d
+	 * @return boolean
+	 */
 	function delete_record( $record_id, &$d ) {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		global $db;
@@ -182,31 +194,30 @@ class ps_shipping {
 	/**************************************************************************
 	* name: carrier_list()
 	* created by: Ekkehard Domning
-	* description: prints the HTML code of selectable carrier list
+	* description: 
 	* parameters: $selected_carrier_id, select this Item
 	* returns:
 	**************************************************************************/
+	/**
+	 * prints the HTML code of selectable carrier list
+	 *
+	 * @param unknown_type $select_name
+	 * @param unknown_type $selected_carrier_id
+	 */
 	function carrier_list($select_name, $selected_carrier_id) {
 		global $VM_LANG;
 
 		$db = new ps_DB;
-		$html = "<select  class=\"inputbox\" name=$select_name>\n";
-		$html .= "<option value=\"\">" . $VM_LANG->_PHPSHOP_SELECT . "</OPTION>\n";
-		$q = "SELECT * FROM #__{vm}_shipping_carrier";
+		$carrier_arr[''] = $VM_LANG->_PHPSHOP_SELECT;
+		
+		$q = "SELECT shipping_carrier_id,shipping_carrier_name FROM #__{vm}_shipping_carrier";
 		// Get list of Values
 		$db->query($q);
 		while ($db->next_record()) {
-			$html .= "<option value=";
-			$html .= $db->f("shipping_carrier_id");
-			if ($db->f("shipping_carrier_id")==$selected_carrier_id) {
-				$html .= " selected=\"selected\"";
-			}
-			$html .= ">";
-			$html .= $db->f("shipping_carrier_name");
-			$html .= "</option>\n";
+			$carrier_arr[$db->f("shipping_carrier_id")] = $db->f("shipping_carrier_name");
 		}
-		$html .= "</select>\n";
-		echo $html;
+		
+		echo ps_html::selectList($select_name, $selected_carrier_id, $carrier_arr );
 	}
 
 	/**************************************************************************

@@ -90,19 +90,7 @@ else {
 			}
 		}
 		$product_rows[$i]['product_sku'] = $ps_product->get_field($cart[$i]["product_id"], "product_sku");
-        $q="SELECT product_gallery_id FROM #__{vm}_product where product_id='".$cart[$i]["product_id"]."'";
-        $db = new PS_db;
-        $db->query($q);
-        $db->next_record();
-        if($db->f("product_gallery_id") == 0 || !$db->f("product_gallery_id")) {
-            $q="SELECT product_gallery_id FROM #__{vm}_product where product_id='$product_parent_id'";
-            $db->query($q);
-            $db->next_record();
-        }
-        if($db->f("product_gallery_id") != 0)
-            $product_rows[$i]['gallery_image'] = vmGallery::display_image_block($db->f("product_gallery_id"),55,'none','left');
-        else
-            $product_rows[$i]['gallery_image'] = "";
+
 		/* WEIGHT CALCULATION */
 		$weight_subtotal = ps_shipping_method::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
 		$weight_total += $weight_subtotal;

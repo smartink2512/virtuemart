@@ -31,7 +31,7 @@ if (!empty( $country_id )) {
 $funcname = !empty($country_id) ? "countryUpdate" : "countryAdd";
 
 // Create the Form Control Object
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_COUNTRY_LIST_ADD );
+$formObj =& new formFactory( $VM_LANG->_PHPSHOP_COUNTRY_LIST_ADD );
 
 // Start the the Form
 $formObj->startForm();

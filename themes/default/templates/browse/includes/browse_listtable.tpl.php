@@ -18,7 +18,7 @@ if( _SHOW_PRICES && $auth['show_prices'] ) {
 $tableheader[] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE;
 $tableheader[] = $VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE;
 if( _SHOW_PRICES && $auth['show_prices'] && USE_AS_CATALOGUE != '1' ) {
-	$tableheader[] = $VM_LANG->_PHPSHOP_ADD;
+	$tableheader[] = $VM_LANG->_PHPSHOP_CART_ACTION;
 }
 
 // Creates a new HTML_Table object that will help us

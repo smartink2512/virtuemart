@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14.09.2007 soeren
+
+# Task #1441 - In extended layout view when saving shipping module, save message is populated by shipping module
+# Task #1438 - Adding product not working in IE ("Operation aborted" Error in IE when loading the product form)
+
 12.09.2007 gregdev
 + Added a separate VirtueMart login module.
 ^ Joomla! 1.5 compatibility: fixed password check on payment methods
