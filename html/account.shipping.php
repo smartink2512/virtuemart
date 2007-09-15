@@ -21,7 +21,7 @@ $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL );
 
 // Set the CMS pathway
 $pathway = array();
-$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'ndex.php?page=account.index' ) );
+$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'index.php?page=account.index' ) );
 $pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL );
 $vm_mainframe->vmAppendPathway( $pathway );
 
