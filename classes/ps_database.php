@@ -322,7 +322,7 @@ class ps_DB extends database {
 				$i = 1;
 				foreach ( $values as $key => $value ) {
 					if( in_array( $key, $doNotEnclose )) {
-						// Important when using MySQL functions like "ENCODE", "REPLACE" or such
+						// Important when using MySQL functions like "AES_ENCRYPT", "ENCODE", "REPLACE" or such
 						$q .= $value;
 					} 
 					else {

@@ -367,7 +367,7 @@ function include_class($module) {
 * Username and encoded password is compared to db entries in the mos_users
 * table. A successful validation returns true, otherwise false
 */
-function mShop_checkpass() {
+function vmCheckPass() {
 	global $database, $perm, $my, $mainframe;
 
 	// only allow access to admins or storeadmins
@@ -375,11 +375,15 @@ function mShop_checkpass() {
 
 		$username = $my->username;
 		$passwd_plain = $passwd = trim( mosGetParam( $_POST, 'passwd', '' ) );
+		if( empty( $passwd_plain )) {
+			$GLOBALS['vmLogger']->err( 'Password empty!');
+			return false;
+		}
 		$passwd = md5( $passwd );
 		$bypost = 1;
 		if (!$username || !$passwd || $_REQUEST['option'] != "com_virtuemart") {
 			return false;
-		} elseif( vmIsJoomla(1.5) ) {
+		} elseif( vmIsJoomla('1.5') ) {
 			$credentials = array();
 			$credentials['username'] = $username;
 			$credentials['password'] = $passwd_plain;
@@ -397,20 +401,34 @@ function mShop_checkpass() {
 			}
 
 		} else {
-			$database->setQuery( "SELECT id, gid, block, usertype"
-			. "\nFROM #__users"
-			. "\nWHERE username='$username' AND password='$passwd'"
-			);
-			$row = null;
-			if ($database->loadObject( $row )) {
+			if( vmIsJoomla('1.0.12', '<=', false )) {
+				$database->setQuery( "SELECT id, gid, block, usertype"
+				. "\nFROM #__users"
+				. "\nWHERE username='$username' AND password='$passwd'"
+				);
+				$row = null;
+				$res = $database->loadObject( $row );
+			} else {
+				$query = "SELECT id, name, username, password, usertype, block, gid"
+				. "\n FROM #__users"
+				. "\n WHERE username = ". $database->Quote( $username );
+				$database->setQuery( $query );
+				$row = null;
+				$database->loadObject( $row );
+				
+				list($hash, $salt) = explode(':', $row->password);
+				$cryptpass = md5($passwd_plain.$salt);
+				$res = $hash == $cryptpass;
+			}
+			if ($res) {
 				return true;
 			}
 			else {
+				$GLOBALS['vmLogger']->err( 'The Password you\'ve entered is not correct for your User Account');
 				return false;
 			}
 		}
 	}
-	else
 	return false;
 }
 /**
@@ -900,13 +918,31 @@ function vmSetGlobalCurrency(){
 	}
 }
 
-function vmIsJoomla($version='') {
-	global $_VERSION;
-	if( $version != '') {
-		return (bool)stristr( $_VERSION->PRODUCT, 'Joomla' ) && $_VERSION->RELEASE == (float)$version;
-	} else {
-		return (bool)stristr( $_VERSION->PRODUCT, 'Joomla' );
+function vmIsJoomla( $version='', $operator='=', $compare_minor_versions=true) {
+	$this_version = '';
+	if( !empty($GLOBALS['_VERSION']) && is_object($GLOBALS['_VERSION'])) {
+		$jversion =& $GLOBALS['_VERSION'];
+		$this_version = $jversion->RELEASE;
 	}
+	elseif ( defined('JVERSION')) {
+		$jversion = new JVersion();
+		$this_version = $jversion->RELEASE;
+	}
+	if( !$compare_minor_versions ) $this_version .= '.'. $jversion->DEV_LEVEL;
+	if( empty( $version ) ) {
+		return empty($this_version);
+	}
+	$allowed_operators = array( '<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne' );
+	
+	if( $compare_minor_versions ) {
+		if( $jversion->RELEASE != $version ) {
+			return false;
+		}
+	}
+	if( in_array($operator, $allowed_operators )) {
+		return version_compare( $this_version, $version, $operator );
+	}
+	return false;
 }
 function vmIsHttpsMode() {
 	return ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on');

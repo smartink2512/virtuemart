@@ -24,6 +24,11 @@ global $vendor_image,$vendor_country_2_code ,$vendor_country_3_code, $vendor_ima
 
 define( 'VM_COMPONENT_NAME', 'com_virtuemart' );
 
+if( @VM_ENCRYPT_FUNCTION == 'AES_ENCRYPT') {
+	define('VM_DECRYPT_FUNCTION', 'AES_DECRYPT');
+} else {
+	define('VM_DECRYPT_FUNCTION', 'DECODE');
+}
 // The abstract language class
 require_once( CLASSPATH."language.class.php" );
 
@@ -126,8 +131,7 @@ $ps_shopper_group = new ps_shopper_group();
 // Set the mosConfig_live_site to its' SSL equivalent
 $GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];
 if( $_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' || @strstr( $page, "checkout." )) {
-	// temporary solution until we have
-	// $mosConfig_secure_site
+	// Change the global Live Site Value to HTTPS
 	$GLOBALS['mosConfig_live_site'] = ereg_replace('/$','',SECUREURL);
 	$mm_action_url = SECUREURL;
 }

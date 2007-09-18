@@ -177,7 +177,7 @@ class ps_echeck {
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
 
         // Get the Transaction Key securely from the database
-        $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
+        $database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
             $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);

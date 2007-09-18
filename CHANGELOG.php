@@ -35,6 +35,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+18.09.2007 soeren
+# Task #1442 - When in product list a product is selected and New product button in clicked error is given
+# Theme Stylesheet and JS not correctly loaded when using https
+^ now a HTTPS redirect is done in the admin section if the module is forced to use https (Joomla! 1.5 only)
++ added a new configuration key that allows to change the encryption function for encrypting sensible data in the database
+	You now can switch to the much safer "AES_ENCRYPT" if your MySQL Server Version is >= 4.0.2
+!	This means an important change for all payment modules, which rely on transaction keys from the 
+	payment_method table (payment_passkey). Instead of using "ENCODE" or "DECODE" in the queries,
+	from now on you must use the constants "VM_ENCRYPT_FUNCTION" and "VM_DECRYPT_FUNCTION".
+	Example: $database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method ..." );
+^ changed the vmIsJoomla Function to accept comparison operators
+# fixed Transaction Key Change functionality for Joomla! 1.0.13
+
 14.09.2007 gregdev
 ^ Joomla! 1.5 compatibility: fixed Joomla! pathways
 ^ Adjusted internal VirtueMart pathways (account maintenance, shop.browse, shop.product_details)

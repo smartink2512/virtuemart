@@ -146,6 +146,7 @@ class ps_config {
 			'VM_FEED_LIMITTEXT' => 'conf_VM_FEED_LIMITTEXT',
 			'VM_FEED_MAX_TEXT_LENGTH' => 'conf_VM_FEED_MAX_TEXT_LENGTH',
 			'VM_STORE_CREDITCARD_DATA' => 'conf_VM_STORE_CREDITCARD_DATA',
+			'VM_ENCRYPT_FUNCTION' => 'conf_ENCRYPT_FUNCTION',
 			
 			// Begin Arrays
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
@@ -211,9 +212,24 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config .= "define('ENCODE_KEY', '".stripslashes(@$d[$value])."');\n";
 					if( stripslashes($d[$value]) != ENCODE_KEY ) {
 						// The ENCODE KEY has been changed! Now we need to re-encode the credit card information and transaction keys
-						$db->query( 'UPDATE #__{vm}_order_payment SET order_payment_number = ENCODE(DECODE(order_payment_number,\''.ENCODE_KEY.'\'), \''.stripslashes($d[$value]).'\')');
-						$db->query( 'UPDATE #__{vm}_payment_method SET payment_passkey = ENCODE(DECODE(payment_passkey,\''.ENCODE_KEY.'\'), \''.stripslashes($d[$value]).'\')');
+						$db->query( 'UPDATE #__{vm}_order_payment SET order_payment_number = '.VM_ENCRYPT_FUNCTION.'('.VM_DECRYPT_FUNCTION.'(order_payment_number,\''.ENCODE_KEY.'\'), \''.stripslashes($d[$value]).'\')');
+						$db->query( 'UPDATE #__{vm}_payment_method SET payment_passkey = '.VM_ENCRYPT_FUNCTION.'('.VM_DECRYPT_FUNCTION.'(payment_passkey,\''.ENCODE_KEY.'\'), \''.stripslashes($d[$value]).'\')');
 					}
+				}
+				elseif( $key == 'VM_ENCRYPT_FUNCTION') {
+					if( !defined('VM_ENCRYPT_FUNCTION')) define('VM_ENCRYPT_FUNCTION', 'ENCODE');
+					if( empty( $d[$value] )) {
+						$d[$value] = 'ENCODE';
+					}
+					if( $d[$value] != VM_ENCRYPT_FUNCTION ) {
+						if( $d[$value] == 'ENCODE' ) $decryptor = 'DECODE';
+						elseif( $d[$value] == 'AES_ENCRYPT' ) $decryptor = 'AES_DECRYPT';
+						else $d[$value] = VM_ENCRYPT_FUNCTION;
+						// The Encryption Function has been changed. We need to decode and re-encrypt now!
+						$db->query( "UPDATE #__{vm}_order_payment SET order_payment_number = ".$d[$value].'('.VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."'), '".ENCODE_KEY."')");
+						$db->query( 'UPDATE #__{vm}_payment_method SET payment_passkey = '.$d[$value].'('.VM_DECRYPT_FUNCTION.'(payment_passkey,\''.ENCODE_KEY.'\'), \''.ENCODE_KEY.'\')');
+					}
+					$config .= "define('$key', '".$d[$value]."');\n";
 				}
 				elseif( $key == "PSHOP_SHIPPING_MODULE" ) {
 					$config .= "\n/* Shipping Methods Definition */\nglobal \$PSHOP_SHIPPING_MODULES;\n";

@@ -132,6 +132,7 @@ define('VM_FEED_DESCRIPTION_TYPE', 'product_s_desc');
 define('VM_FEED_LIMITTEXT', '1');
 define('VM_FEED_MAX_TEXT_LENGTH', '250');
 define('VM_STORE_CREDITCARD_DATA', '1');
+define('VM_ENCRYPT_FUNCTION', 'AES_ENCRYPT');
 
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;

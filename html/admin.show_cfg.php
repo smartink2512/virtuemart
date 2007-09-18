@@ -550,6 +550,23 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 		<tr>
 			<td colspan="3"><hr />&nbsp;</td>
 		</tr>
+		<?php
+		if( version_compare( $database->getVersion(), '4.0.2', '>=') ) { ?>
+			<tr>
+				<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_ENCRYPTION_FUNCTION ?>&nbsp;&nbsp;</td>
+				<td>
+					<?php
+					$options = array('ENCODE' => 'ENCODE (insecure)', 
+								'AES_ENCRYPT' => 'AES_ENCRYPT (strong security)'
+								);
+					echo ps_html::selectList('conf_ENCRYPT_FUNCTION', @VM_ENCRYPT_FUNCTION, $options );
+					?>
+				</td>
+				<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ENCRYPTION_FUNCTION_TIP ); ?></td>
+			</tr>
+		<?php
+		}
+		?>
 		<tr>
 			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_ENCRYPTION_KEY ?>&nbsp;&nbsp;</td>
 			<td>

@@ -39,7 +39,7 @@ class vmMenuBar extends mosMenuBar {
 	* @param string An override for the alt text
 	*/
 	function addNew( $task='new', $page, $alt='', $formName="adminForm" ) {
-		global $VM_LANG;
+		global $VM_LANG, $limit;
 		if( $alt == '') {
 			$alt = $VM_LANG->_CMN_NEW;
 		}
@@ -298,7 +298,7 @@ class vmToolBar {
 			$alt = $VM_LANG->_CMN_NEW;
 		}
 		
-		$this->appendButton($alt, $task, "vm_submitButton('$task','$formName','$page')" );
+		$this->appendButton($alt, $task, "document.adminForm.toggle.onclick();vm_submitButton('$task','$formName','$page')" );
 
 	}
 	/**

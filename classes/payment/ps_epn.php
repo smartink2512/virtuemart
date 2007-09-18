@@ -224,7 +224,7 @@ class ps_epn {
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
         
         // Get the Transaction Key securely from the database
-        $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
+        $database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
             $vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR );
@@ -461,7 +461,7 @@ Discover Test Account       5424000000000015
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
         
         // Get the Transaction Key securely from the database
-        $database->query( "SELECT DECODE(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
+        $database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
             $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
@@ -480,7 +480,7 @@ Discover Test Account       5424000000000015
         
         // DECODE Account Number
         $dbaccount = new ps_DB;
-        $q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') 
+        $q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."') 
           AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
         $dbaccount->query($q);
         $dbaccount->next_record();

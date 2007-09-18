@@ -973,7 +973,7 @@ Order Total: '.$order_total.'
 
 		$d["order_payment_code"] = @$_SESSION['ccdata']['credit_card_code'];
 
-		// Payment number is encrypted using mySQL ENCODE function.
+		// Payment number is encrypted using mySQL encryption functions.
 		$fields = array(
 					'order_id' => $order_id, 
 					'payment_method_id' => $d["payment_method_id"], 
@@ -985,7 +985,7 @@ Order Total: '.$order_total.'
 			$fields['order_payment_code'] = $d["order_payment_code"];
 			$fields['order_payment_expire'] = @$_SESSION["ccdata"]["order_payment_expire"];
 			$fields['order_payment_name'] = @$_SESSION["ccdata"]["order_payment_name"];
-			$fields['order_payment_number'] = "ENCODE( '$payment_number','" . ENCODE_KEY . "')";
+			$fields['order_payment_number'] = VM_ENCRYPT_FUNCTION."( '$payment_number','" . ENCODE_KEY . "')";
 			$specialfield = array('order_payment_number');
 		} else {
 			$specialfield = array();

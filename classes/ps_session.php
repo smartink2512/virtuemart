@@ -168,7 +168,7 @@ class ps_session {
 		$url = $toSecure ? SECUREURL : URL;
 		
 		// Redirect and send the Cookie Values within the variable martID
-		mosRedirect( $this->url( $url . "index.php?".mosGetParam($_SERVER,'QUERY_STRING')."&martID=$martID&redirected=1", true, false ) );
+		mosRedirect( $this->url( $url . basename($_SERVER['PHP_SELF']).'?'.mosGetParam($_SERVER,'QUERY_STRING')."&martID=$martID&redirected=1", true, false ) );
 	}
 	/**
 	 * It does what the name says. It starts a session again (with a certain ID when a $sid is given)
@@ -204,7 +204,7 @@ class ps_session {
 	 */
 	function prepare_SSL_Session() {
 		global $mainframe, $my, $database, $mosConfig_secret, $_VERSION, $page, $VM_MODULES_FORCE_HTTPS;
-		if( vmIsAdminMode() ) {
+		if( vmIsAdminMode() && vmIsJoomla('1.0')) {
 			return;
 		}
 		$ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
@@ -219,11 +219,13 @@ class ps_session {
 			// forced to use https, we prepare the redirection to https here
 			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) !== false 
 				&& !vmIsHttpsMode()
-				&& $this->check_Shared_SSL( $ssl_domain ) ) {
+				//&& $this->check_Shared_SSL( $ssl_domain ) 
+				) {
 					
 				$ssl_redirect = 1;
 			}
-		}		
+		}
+		
 		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
 			&& vmIsHttpsMode() && $redirected != 1
 			&& $ssl_redirect == 0 && !vmIsAdminMode()
@@ -237,7 +239,7 @@ class ps_session {
 				if( $this->check_Shared_SSL($ssl_domain)) {
 					$this->saveSessionAndRedirect( false );
 				}
-				mosRedirect( $this->url( URL.'index.php?'.mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ));
+				mosRedirect( $this->url( URL.basename( $_SERVER['PHP_SELF']).'?'.mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ));
 			}
 		}
 		
@@ -250,7 +252,7 @@ class ps_session {
         */
 		if( $ssl_redirect == 1 ) {
 			
-			$_SERVER['QUERY_STRING'] = str_replace('&ssl_redirect=1', '', $_SERVER['QUERY_STRING'] );
+			$_SERVER['QUERY_STRING'] = str_replace('&ssl_redirect=1', '', mosGetParam($_SERVER, 'QUERY_STRING' ) );
 			// check_Shared_SSL compares the normal http domain name
 			// and the https Domain Name. If both do not match, we move on
 			// else we leave this function.
@@ -260,7 +262,7 @@ class ps_session {
 			}
 			// do nothing but redirect
 			elseif( !vmIsHttpsMode() && $redirected == 0 ) {
-				mosRedirect( $this->url(SECUREURL . "index.php?".mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ) );
+				mosRedirect( $this->url(SECUREURL . basename($_SERVER['PHP_SELF'])."?".mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ) );
 			}
 		}
 		/**

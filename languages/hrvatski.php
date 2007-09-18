@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
-* @translator 
+* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -2029,6 +2029,8 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LOF = 'LOF Left per Letter on File at Station';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LPN = 'LPN Left per Signed not or Attempted Delivery Notice';
 	var $_FORGOT_YOUR_USERNAME = 'Forgot your username?';
+	var $_VM_ADMIN_ENCRYPTION_FUNCTION = 'Encryption Function';
+	var $_VM_ADMIN_ENCRYPTION_FUNCTION_TIP = 'Here you can select the encryption function used to encrypt sensible information before being stored in the database. AES_ENCRYPT is recommended, because it is very secure. ENCODE doesn\'t provide real encryption.';
         
 }
 class phpShopLanguage extends vmLanguage { }

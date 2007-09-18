@@ -596,7 +596,7 @@ else {
 			   
 				// DECODE Account Number
 				$dbaccount =& new ps_DB;
-			    $q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') 
+			    $q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."') 
 					AS account_number, order_payment_code FROM #__{vm}_order_payment  
 					WHERE order_id='".$order_id."'";
 				$dbaccount->query($q);
