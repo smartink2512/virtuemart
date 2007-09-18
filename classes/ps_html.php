@@ -222,7 +222,7 @@ class ps_html {
 	 * @return string HTML code containing the dynamic state list
 	 */
 	function dynamic_state_lists( $country_list_name, $state_list_name, $selected_country_code="", $selected_state_code="" ) {
-		global $vendor_country_3_code, $VM_LANG;
+		global $vendor_country_3_code, $VM_LANG, $vm_mainframe, $mm_action_url;
 		$db = new ps_DB;
 		if( empty( $selected_country_code ))
 		$selected_country_code = $vendor_country_3_code;
@@ -236,6 +236,9 @@ class ps_html {
 								  FROM #__{vm}_country" );
 
 		if( $db->num_rows() > 0 ) {
+			if( !vmIsAdminMode() ) {
+				$vm_mainframe->addScript( $mm_action_url.'includes/js/joomla.javascript.js');
+			}
 			$dbs = new ps_DB;
 			// Build the State lists for each Country
 			$script = "<script language=\"javascript\" type=\"text/javascript\">//<![CDATA[\n";

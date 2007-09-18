@@ -936,6 +936,7 @@ class ps_product_attribute {
 		if ($advanced_attribute_list) {
 			$fields=explode(";",$advanced_attribute_list);
 			foreach($fields as $field) {
+				$field = trim( $field );
 				$base=explode(",",$field);
 				$title=array_shift($base);
 				array_push($attributes,$title);
@@ -948,7 +949,7 @@ class ps_product_attribute {
 
 			$pagevar=str_replace(" ","_",$a);
 			$pagevar .= $d['prod_id'];
-			if (!empty($d[$pagevar])) {
+			if (!empty($d[utf8_encode($pagevar)])) {
 				$attribute_given = true;
 			}
 			if ($description!='') {
@@ -956,7 +957,7 @@ class ps_product_attribute {
 			}
 
 			$description.=$a.":";
-			$description .= empty($d[$pagevar]) ? '' : $d[$pagevar];
+			$description .= empty($d[utf8_encode($pagevar)]) ? '' : utf8_decode($d[utf8_encode($pagevar)]);
 
 		}
 		rtrim($description);

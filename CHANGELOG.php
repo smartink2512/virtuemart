@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 
 18.09.2007 soeren
+# Error when adding a product with attributes using non-ASCII characters
 # Task #1442 - When in product list a product is selected and New product button in clicked error is given
 # Theme Stylesheet and JS not correctly loaded when using https
 ^ now a HTTPS redirect is done in the admin section if the module is forced to use https (Joomla! 1.5 only)
