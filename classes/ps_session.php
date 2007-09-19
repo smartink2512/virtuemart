@@ -219,7 +219,7 @@ class ps_session {
 			// forced to use https, we prepare the redirection to https here
 			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) !== false 
 				&& !vmIsHttpsMode()
-				//&& $this->check_Shared_SSL( $ssl_domain ) 
+				&& $this->check_Shared_SSL( $ssl_domain ) 
 				) {
 					
 				$ssl_redirect = 1;
