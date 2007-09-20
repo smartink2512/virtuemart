@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 20.09.2007 gregdev
 # Renamed a string in the account.billing template
 ^ Added account maintenance link and login/logout redirection to the VirtueMart login module; added <br /> after pre-text.
+# Task #1440 - Deleting a user a Joomla user that is not yet a VM user from the VM backend deletes the user
 
 18.09.2007 soeren
 # Error when adding a product with attributes using non-ASCII characters

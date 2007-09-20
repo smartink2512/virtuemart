@@ -85,23 +85,30 @@ class ps_user {
 		$auth = $_SESSION['auth'];
 		$valid = true;
 
-		if( empty($id)) {
+		if( empty( $id ) ) {
 			$vmLogger->err( 'Please select a user to delete.' );
 			return false;
 		}
 		$db = new ps_DB();
-		$q = "SELECT user_id, perms FROM #__{vm}_user_info WHERE user_id=$id";
+		$q = 'SELECT user_id, perms FROM #__{vm}_user_info WHERE user_id='.(int)$id;
 		$db->query( $q );
-		$perms = $db->f('perms');
-		if( !$perm->hasHigherPerms( $perms ) ) {
-			$vmLogger->err( 'You have no permission to delete a user of that usertype: '.$perms );
-			$valid = false;
+
+		// Only check VirtueMart users - the user may be only a CMS user		
+		if( $db->num_rows() > 0 ) {
+			$perms = $db->f('perms');
+
+			if( !$perm->hasHigherPerms( $perms ) ) {
+				$vmLogger->err( 'You have no permission to delete a user of that usertype: '.$perms );
+				$valid = false;
+			}
+
+			if( $id == $my->id) {
+				$vmLogger->err( 'Very funny, but you cannot delete yourself.' );
+				$valid = false;
+			}
 		}
-		if( $id == $my->id) {
-			$vmLogger->err( 'Very funny, but you cannot delete yourself.' );
-			$valid = false;
-		}
-		$valid = $valid;
+		
+		return $valid;
 	}
 
 	/**************************************************************************
@@ -289,9 +296,7 @@ class ps_user {
 	**************************************************************************/
 	function delete(&$d) {
 		$db = new ps_DB;
-		$ps_vendor_id = $_SESSION['ps_vendor_id'];
-
-		$this->removeUsers( $d['user_id' ], $d );
+		$ps_vendor_id = (int) $_SESSION['ps_vendor_id'];
 
 		if( !is_array( $d['user_id'] )) {
 			$d['user_id'] = array( $d['user_id'] );
@@ -301,6 +306,14 @@ class ps_user {
 			if( !$this->validate_delete( $user ) ) {
 				return false;
 			}
+			
+			$user = (int) $user;
+			
+			// remove the CMS user
+			if( !$this->removeUsers( $user ) ) {
+				return false;
+			}
+			
 			// Delete user_info entries
 			$q  = "DELETE FROM #__{vm}_user_info ";
 			$q .= "WHERE user_id='" . $user . "' ";
@@ -458,8 +471,8 @@ class ps_user {
 	/**
 	* Function to remove a user from Joomla
 	*/
-	function removeUsers( $cid, &$d ) {
-		global $database, $acl, $my;
+	function removeUsers( $cid ) {
+		global $database, $acl, $my, $vmLogger;
 
 		if (!is_array( $cid ) ) {
 			$cid = array( $cid );
@@ -472,14 +485,23 @@ class ps_user {
 				$groups 	= $acl->get_object_groups( 'users', $id, 'ARO' );
 				$this_group = strtolower( $acl->get_group_name( $groups[0], 'ARO' ) );
 				if ( $this_group == 'super administrator' ) {
-					$d["error"] = "You cannot delete a Super Administrator";
+					$vmLogger->err( 'You cannot delete a Super Administrator' );
+					return false;
 				} else if ( $id == $my->id ){
-					$d["error"] = "You cannot delete Yourself!";
+					$vmLogger->err( 'You cannot delete Yourself!' );
+					return false;
 				} else if ( ( $this_group == 'administrator' ) && ( $my->gid == 24 ) ){
-					$d["error"] = "You cannot delete another `Administrator` only `Super Administrators` have this power";
+					$vmLogger->err( 'You cannot delete another `Administrator` only `Super Administrators` have this power' );
+					return false;
 				} else {
 					$obj->delete( $id );
-					$d["error"] = $obj->getError();
+					$err = $obj->getError();
+					if( $err ) {
+						$vmLogger->err( $err );
+						return false;
+					}
+					
+					return true;
 				}
 			}
 		}
