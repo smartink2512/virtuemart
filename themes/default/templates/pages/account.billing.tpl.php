@@ -21,7 +21,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 <div style="float:left;width:90%;text-align:right;"> 
     <span>
     	<a href="#" onclick="if( submitregistration() ) { document.adminForm.submit();}">
-    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo $VM_LANG->_E_SAVE ?>" />
+    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo $VM_LANG->_CMN_SAVE ?>" />
     	</a>
     </span>
     <span style="margin-left:10px;">

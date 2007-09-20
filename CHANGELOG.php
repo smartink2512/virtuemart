@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+20.09.2007 gregdev
+# Renamed a string in the account.billing template
+^ Added account maintenance link and login/logout redirection to the VirtueMart login module; added <br /> after pre-text.
 
 18.09.2007 soeren
 # Error when adding a product with attributes using non-ASCII characters

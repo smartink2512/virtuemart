@@ -19,7 +19,7 @@
 // Restrict access
 ( defined(  '_VALID_MOS' ) || defined( '_JEXEC' ) ) or die( 'Direct access to this location is not allowed.' );
 
-// TODO: Joomla! 1.5 compatibility - does this global var depend on the legacy plugin?
+// TODO: Joomla! 1.5 compatibility - do these global vars depend on the legacy plugin?
 global $mosConfig_absolute_path, $mosConfig_allowUserRegistration;
 
 // Load the VirtueMart parser
@@ -36,16 +36,13 @@ if( vmIsJoomla(1.5) ) {
 }
 
 // Determine settings based on CMS version
-if( vmIsJoomla(1.5) ) {
-	// Post action
-	$action =  $mm_action_url . 'index.php?option=com_user&task='.$type;
-
-	// Return URL
-	$uri = JFactory::getURI();
-	$url = $uri->toString();
-	$return_url = base64_encode( $url );
+if( vmIsJoomla('1.5') ) {
+// Joomla 1.5
 
 	if( $type == 'login' ) {
+		// Redirect type
+		$redirect = $params->get('login');
+		
 		// Lost password
 		$reset_url = JRoute::_( 'index.php?option=com_user&view=reset' );
 		
@@ -55,18 +52,46 @@ if( vmIsJoomla(1.5) ) {
 		// Set the validation value
 		$validate = JUtility::getToken();
 	} else {
+		// Redirect type
+		$redirect = $params->get('logout');
+		
+		// Return URL
+		$uri = JFactory::getURI();
+		$url = $uri->toString();
+		$return_url = base64_encode( $url );
+	
 		// Set the greeting name
 		$user =& JFactory::getUser();
 		$name = ( $params->get( 'name') ) ? $user->name : $user->username;
 	}
-} else {
+	
 	// Post action
-	$action = $mm_action_url . 'index.php?option='.$type;
+	$action =  $mm_action_url. 'index.php?option=com_user&task='.$type;
 
-	// Return URL
-	$return_url = $mm_action_url . 'index.php';
+	// Set the redirection URL
+	if( $redirect == 'home' ) {
+		// The Joomla! home page
+		$menu = &JSite::getMenu();
+		$uri = JFactory::getURI( $menu->getDefault()->link );
+		$url = $uri->toString();
+	} elseif( $redirect == 'vmhome' ) {
+		// The VirtueMart home page
+		$url = JRoute::_( 'index.php?option=com_virtuemart&page='.HOMEPAGE );
+	} else {
+		// The same page
+		$uri = JFactory::getURI();
+		$url = $uri->toString();
+	}
+	
+	$return_url = base64_encode( $url );
+
+} else {
+// Not Joomla 1.5
 
 	if( $type == 'login' ) {
+		// Redirect type
+		$redirect = $params->get('login');
+		
 		// Lost password url
 		$reset_url = sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.(int)mosGetParam($_REQUEST, 'Itemid', 0) );
 		
@@ -80,9 +105,29 @@ if( vmIsJoomla(1.5) ) {
 			$validate = vmSpoofValue(1);
 		}
 	} else {
+		// Redirect type
+		$redirect = $params->get('logout');
+		
 		// Set the greeting name
 		$name = ( $params->get( 'name') ) ? $my->name : $my->username;
 	}
+
+	// Post action
+	$action = sefRelToAbs( $mm_action_url . 'index.php?option='.$type );
+
+	// Set the redirection URL
+	if( $redirect == 'home' ) {
+		$url = sefRelToAbs( 'index.php' );
+	} elseif( $redirect == 'vmhome' ) {
+		// The VirtueMart home page
+		$url = $sess->url( URL.'index.php?option=com_virtuemart&amp;page='.HOMEPAGE );
+	} else {
+		// The same page
+		$url = $sess->url( basename($_SERVER['PHP_SELF']).'?'.mosGetParam($_SERVER,'QUERY_STRING'), true, false );
+	}
+	
+	$return_url = sefRelToAbs( $url );
+
 }
 
 // Registration URL
@@ -90,14 +135,18 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 
 ?>
 <?php if( $type == 'logout' ) : ?>
-<div align="left" style="margin: 0px; padding: 0px;">
+<div>
 	<form action="<?php echo $action ?>" method="post" name="login" id="login">
-<?php if ($params->get('greeting')) : ?>
-	<div><?php echo $VM_LANG->_HI . ' ' . $name ?></div>
-<?php endif; ?>
+		<?php if ( $params->get('greeting') ) : ?>
+		<div><?php echo $VM_LANG->_HI . ' ' . $name ?></div>
+		<?php endif; ?>
+		<?php if ( $params->get('accountlink') ) : ?>
+		<ul>
+			<li><a href="<?php echo $sess->url(SECUREURL . "index.php?page=account.index");?>"><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_TITLE ?></a></li>
+		</ul>
+		<?php endif; ?>
 		<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_BUTTON_LOGOUT ?>" />
-		<br />
-		<hr />
+		<br /><br />
 		<input type="hidden" name="op2" value="logout" />
 		<input type="hidden" name="return" value="<?php echo $return_url ?>" />
 		<input type="hidden" name="lang" value="english" />
@@ -105,9 +154,12 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 	</form>
 </div>
 <?php else : ?> 
-<div align="left" style="margin: 0px; padding: 0px;">
+<div>
 	<form action="<?php echo $action ?>" method="post" name="login" id="login">
-		<?php echo $params->get('pretext'); ?>
+		<?php if( $params->get('pretext') ) : ?>
+			<?php echo $params->get('pretext'); ?>
+			<br />
+		<?php endif; ?>
 		<label for="username_field"><?php echo $VM_LANG->_USERNAME ?></label><br/>
 		<input class="inputbox" type="text" id="username_field" size="12" name="username" />
 		<br />
