@@ -256,6 +256,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config .= "\n/* Shop Modules that run with https only*/\nglobal \$VM_MODULES_FORCE_HTTPS;\n";
 					$config .= "\$VM_MODULES_FORCE_HTTPS = array( ";
 					$i= 0;
+					if( empty( $d['conf_VM_MODULES_FORCE_HTTPS'] )) $d['conf_VM_MODULES_FORCE_HTTPS'] = array();
 					foreach( $d['conf_VM_MODULES_FORCE_HTTPS'] as $https_module) {
 						$config.= "'".htmlentities($https_module, ENT_QUOTES )."'";
 						if( $i+1 < sizeof( $d['conf_VM_MODULES_FORCE_HTTPS'] )) {

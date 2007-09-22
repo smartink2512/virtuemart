@@ -615,7 +615,7 @@ class vmCommonHTML extends mosHTML {
 			$base_href = str_replace( 'components/com_virtuemart/', '', $base_href);
 			$href = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir[0]='.dirname( $base_href ) . '&amp;file[0]=' . basename( $href );
 		}
-		return '<link type="'.$type.'" href="'.$href.'" rel="'.$rel.'" media="'.$media.'" />'."\n";
+		return '<link type="'.$type.'" href="'.$href.'" rel="'.$rel.'"'.(empty($media)?'':' media="'.$media.'"').' />'."\n";
 		
 	}
 	/**

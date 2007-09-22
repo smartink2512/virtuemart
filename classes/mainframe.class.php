@@ -192,7 +192,7 @@ class vmMainFrame {
 				$appendix .= '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $stylesheet['url'] );
 				$i++;
 			} else {
-				$mainframe->addCustomHeadTag('<link type="'.$stylesheet['mime'].'" href="'.$stylesheet['url'].'" rel="stylesheet"'.$stylesheet['media']?' media="'.$stylesheet['media'].'"':''.' />');
+				$mainframe->addCustomHeadTag('<link type="'.$stylesheet['mime'].'" href="'.$stylesheet['url'].'" rel="stylesheet"'.(!empty($stylesheet['media'])?' media="'.$stylesheet['media'].'"':'').' />');
 			}
 		}
 		if( $i> 0 ) {
