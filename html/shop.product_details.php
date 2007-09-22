@@ -135,9 +135,9 @@ if (empty($category_id) || empty( $flypage ))  {
 $ps_product->addRecentProduct($product_id,$category_id,$tpl->get_cfg('showRecent', 5));
 // Flypage Parameter has old page syntax: shop.flypage
 // so let's get the second part - flypage
-$flypage = $db->sf('category_flypage');
+$default['category_flypage'] = FLYPAGE;
 if( empty( $flypage )) {
-	$flypage = FLYPAGE;
+	$flypage = $db->sf('category_flypage');
 }
 $flypage = str_replace( 'shop.', '', $flypage);
 $flypage = stristr( $flypage, '.tpl') ? $flypage : $flypage . '.tpl';
