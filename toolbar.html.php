@@ -81,17 +81,11 @@ var submitbutton = function(pressbutton){
 		if( $no_menu ) {
 			$admin = defined('_PSHOP_ADMIN') ? '/administrator' : '';
 			$script .= "
-
-    // everything in this space is private and only accessible in this block
-    
     // define some private variables
     var dialog, showBtn;
 
-   // the second argument is true to indicate file upload.
-   YAHOO.util.Connect.setForm(form, true);
-   
     var showDialog = function( content ) {
-    	Ext.MessageBox.show( { 
+    	Ext.Msg.show( { 
             		title: '{$VM_LANG->_PEAR_LOG_NOTICE}',
             		msg: content,
             		autoCreate: true,
@@ -99,30 +93,34 @@ var submitbutton = function(pressbutton){
                     height:180,
                     modal: false,
                     resizable: false,
-                    buttons: Ext.MessageBox.OK,
+                    buttons: Ext.Msg.OK,
                     shadow:true,
                     animEl:Ext.get( 'vm-toolbar' )
             });
-        ".(DEBUG ? "" : "setTimeout('Ext.MessageBox.hide()', 3000);")."
+        ".(DEBUG ? "" : "setTimeout('Ext.Msg.hide()', 3000);")."
     };
     
     // return a public interface
-    var callback = {
-    	success: function(o) {
-    		//Ext.DomHelper.insertHtml( document.body, o.responseText );
-    		showDialog( o.responseText );
-    	},
-    	failure: function(o) {
-    		Ext.DomHelper.append( document.body, { tag: 'div', id: 'vmLogResult', html: 'Save action failed: ' + o.statusText } );
-    		showDialog( o.responseText );
-    	},
-        upload : function(o){
-            //Ext.DomHelper.insertHtml( 'beforeEnd', document.body, o.responseText );
-    		showDialog( o.responseText );
-        }
-    };
-    
-   	var cObj = YAHOO.util.Connect.asyncRequest('POST', '{$_SERVER['PHP_SELF']}', callback);
+    var onSuccess = function(o,c) {
+		showDialog( o.responseText );
+	};
+    var onFailure = function(o) {
+		Ext.Msg.alert( 'Error!', 'Save action failed: ' + o.statusText );
+	};
+	var onCallback=function(o,s,r) {
+		//if( s ) alert( 'Success' );
+		//else alert( 'Failure' );
+	}
+	
+   	Ext.Ajax.request( { method: 'POST',
+   						url: '{$mosConfig_live_site}/administrator/index2.php',
+   						success: onSuccess,
+   						failure: onFailure,
+   						callback: onCallback,
+   						isUpload: true,
+   						form: document.adminForm
+   						}
+   					);
 	";
 
 		}

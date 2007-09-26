@@ -58,8 +58,8 @@ class ps_authorize {
         <tr>
             <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY ?></strong></td>
             <td>
-                <a id="changekey" href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=store.payment_method_keychange&pshop_mode=admin&payment_method_id=$payment_method_id") ?>" >
-                <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="<?php echo $VM_LANG->_PHPSHOP_CHANGE_TRANSACTION_KEY ?>" /><a/>
+                <a class="button" id="changekey" href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=store.payment_method_keychange&pshop_mode=admin&payment_method_id=$payment_method_id") ?>" >
+                <?php echo $VM_LANG->_PHPSHOP_CHANGE_TRANSACTION_KEY ?><a/>
             </td>
             <td>&nbsp;</td>
         </tr>

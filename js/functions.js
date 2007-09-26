@@ -1,5 +1,20 @@
 // <?php // This should fool phpDocumentor into parsing this file
-
+/**
+*	Debug Function, that works like print_r for Objects in Javascript
+*/
+function var_dump(obj) {
+	var vartext = "";
+	for (var prop in obj) {
+		if( isNaN( prop.toString() )) {
+			vartext += "\t->"+prop+" = "+ eval( "obj."+prop.toString()) +"\n";
+		}
+    }
+   	if(typeof obj == "object") {
+    	return "Type: "+typeof(obj)+((obj.constructor) ? "\nConstructor: "+obj.constructor : "") + "\n" + vartext;
+   	} else {
+      	return "Type: "+typeof(obj)+"\n" + vartext;
+	}
+}//end function var_dump
 /**
 * All these functions are there in Joomla!
 * But we have modified them here to be able

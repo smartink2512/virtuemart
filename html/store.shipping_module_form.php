@@ -35,12 +35,9 @@ if( $shipping_module ) {
 	<tr>
 	<td>
   
-  &nbsp;&nbsp;<span class="sectionname">Shipping Module Configuration: <?php echo $shipping_module ?></span>
-  <br /><br />
-  
   <?php
 	// Create the Form Control Object
-	$formObj =& new formFactory( $VM_LANG->_PHPSHOP_COUNTRY_LIST_ADD );
+	$formObj =& new formFactory( 'Shipping Module Configuration: '. $shipping_module );
 	
 	// Start the the Form
 	$formObj->startForm();

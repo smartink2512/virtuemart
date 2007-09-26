@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.09.2007 soeren
+# Task #1455 - confirmation mail --> Orderlink
+# Task #1462 - Language strings missing in Recommend this product to a friend popup.
+# Task #1463 - Wrong title in Shipping Module Form
+
 20.09.2007 gregdev
 # Renamed a string in the account.billing template
 ^ Added account maintenance link and login/logout redirection to the VirtueMart login module; added <br /> after pre-text.
