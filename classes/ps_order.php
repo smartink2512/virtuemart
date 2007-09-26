@@ -610,7 +610,7 @@ class ps_order {
 		$listObj->writeTable();
 		$listObj->endTable();
 		if( $num_rows > 0 ) {
-			$listObj->writeFooter( $keyword );
+			$listObj->writeFooter( $keyword, '&Itemid='.$sess->getShopItemid() );
 		}
 
 	}

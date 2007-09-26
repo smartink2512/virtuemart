@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 26.09.2007 soeren
+# Task #1444 - Wrong URL when using page navigation in Order information
 # Task #1455 - confirmation mail --> Orderlink
 # Task #1462 - Language strings missing in Recommend this product to a friend popup.
 # Task #1463 - Wrong title in Shipping Module Form
