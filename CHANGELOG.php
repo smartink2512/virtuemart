@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.09.2007 gregdev
+# Joomla! 1.5 compatibility: Fixed $mosConfig_absolute_path problem in show_image_in_imgtag.php
+
 26.09.2007 soeren
 # Task #1444 - Wrong URL when using page navigation in Order information
 # Task #1455 - confirmation mail --> Orderlink

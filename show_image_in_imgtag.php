@@ -19,12 +19,17 @@
 * http://virtuemart.net
 */
 define('_VALID_MOS', 1);
-include_once("../../configuration.php");
-if( class_exists( 'JConfig' )) {
-	$conf = new JConfig;
-	$mosConfig_live_site = $conf->live_site;
-	$mosConfig_absolute_path = $conf->absolute_path;
+
+// Get the Joomla! configuration file
+$config_file = '../../configuration.php';
+include_once( $config_file );
+
+if( !isset( $mosConfig_absolute_path ) ) {
+// We are in J! 1.5
+	define( '_JEXEC', 1 );
+	$mosConfig_absolute_path = dirname( $config_file );
 }
+
 include_once("../../administrator/components/com_virtuemart/virtuemart.cfg.php");
 
 //	Image2Thumbnail - Klasse einbinden 
