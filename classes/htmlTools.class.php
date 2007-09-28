@@ -704,7 +704,7 @@ class vmCommonHTML extends mosHTML {
 		global $mosConfig_live_site, $vm_mainframe, $VM_LANG;
 		if( !defined( "_MOOTOOLS_LOADED" )) {
 			if( $version  == '' ) {
-				$version = 'mootools.v1.00.js';
+				$version = 'mootools-release-1.11.js';
 			}
 			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'.$VM_LANG->_CMN_CONTINUE.'";var cancel_lbl="'.$VM_LANG->_CMN_CANCEL.'";var notice_lbl="'.$VM_LANG->_PEAR_LOG_NOTICE.'";' );
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/mootools/'.$version );

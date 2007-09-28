@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+28.09.2007 soeren
+^ Updated MooTools from v1.00 to v1.11 (+ adjustments)
+
 27.09.2007 gregdev
 # Joomla! 1.5 compatibility: Fixed $mosConfig_absolute_path problem in show_image_in_imgtag.php
 

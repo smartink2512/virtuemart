@@ -60,7 +60,7 @@ function handleAddToCart( formId, parameters ) {
 */
 function updateMiniCarts() {
 	var callbackCart = function(responseText) {
-		carts = document.getElementsByClassName( 'vmCartModule' );
+		carts = $$( '.vmCartModule' );
 		if( carts ) {
 			try { 
 				for (var i=0; i<carts.length; i++){
