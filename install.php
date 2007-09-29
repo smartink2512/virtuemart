@@ -9,7 +9,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -72,7 +72,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 			}
 		}
 		if( !$frontend || !$backend ) {
-			die( "<span class=\"message\">Something went wrong with Unpacking the Archive Files</span>" );
+			echo "<span class=\"message\">Something went wrong with Unpacking the Archive Files</span>";
 		}
 	/** END UNPACKING ARCHIVES */
 	}
@@ -80,7 +80,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	elseif( !is_dir( $frontend_dir."/js" ) || !is_dir( $admin_dir."/classes" ) ) {	
 		die( "<span class=\"message\"><strong>ERROR!<br/>
 		a)</strong> No Archive Files and <br/>
-		<strong>b)</strong> no directory structure for mambo-phpShop.<br/><br/>
+		<strong>b)</strong> no directory structure for VirtueMart.<br/><br/>
 		What's wrong? Either YOU unpack all the files and upload them or I do that (I can do that when Safe Mode is OFF).
 		</span>" );
 	}
