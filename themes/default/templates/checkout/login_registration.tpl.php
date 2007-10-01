@@ -42,8 +42,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
    echo vmCommonHTML::scriptTag('', 'Window.onDomReady(function() {
 	
 	// get accordion elements
-	myStretch = document.getElementsByClassName(\'toggler\');
-	myStretcher = document.getElementsByClassName(\'stretcher\');
+	myStretch = $$( \'.toggler\' );
+	myStretcher = $$( \'.stretcher\' );
 	
 
 	

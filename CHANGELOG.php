@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.10.2007 gregdev
+# Task #1469 - Changed toggler and stretcher code for update mootools (fixes checkout login/registration page accordian)
+
 28.09.2007 soeren
 ^ Updated MooTools from v1.00 to v1.11 (+ adjustments)
 
