@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.10.2007 soeren
+
+# fixed "Recommend to a friend" form
+# fixed Coupon Discount Value not adjusted when adding products or updating product quantity
+
 01.10.2007 gregdev
 # Task #1469 - Changed toggler and stretcher code for update mootools (fixes checkout login/registration page accordian)
 

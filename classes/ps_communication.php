@@ -17,10 +17,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 /**
- * CLASS DESCRIPTION
- *                   
- * ps_ask
- *
  * The ask class is used to validate email details and send product_ask
  * details to the store admin
  * * methods:
@@ -37,7 +33,7 @@ class ps_communication {
 	function validate( &$d ) {
 		global $vmLogger, $VM_LANG, $mosConfig_db, $mosConfig_sitename;
 
-		if (empty($d['sender_name']) || empty($d['recipient_name'])) {
+		if (empty($d['sender_name']) ) {
 			$vmLogger->err( $VM_LANG->_CONTACT_FORM_NC );
 			return false;
 		}
@@ -89,9 +85,8 @@ class ps_communication {
 		
 	    $sender_name = mosgetparam( $_REQUEST, 'sender_name', null);
 	    $sender_mail = mosgetparam( $_REQUEST, 'sender_mail', null);
-	    $recipient_name = mosgetparam( $_REQUEST, 'recipient_name', null);
 	    $recipient_mail = mosgetparam( $_REQUEST, 'recipient_mail', null);
-	    $message = mosgetparam( $_REQUEST, 'message', null);
+	    $message = mosgetparam( $_REQUEST, 'recommend_message', null);
 
 		// Get Session Cookie `value`
 		$sessioncookie 		= mosGetParam( $_COOKIE, 'virtuemart', null );
@@ -256,18 +251,13 @@ class ps_communication {
     
     $sender_name = mosgetparam( $_REQUEST, 'sender_name', null);
     $sender_mail = mosgetparam( $_REQUEST, 'sender_mail', null);
-    $recipient_name = mosgetparam( $_REQUEST, 'recipient_name', null);
     $recipient_mail = mosgetparam( $_REQUEST, 'recipient_mail', null);
-    $message = mosgetparam( $_REQUEST, 'message', null);
+    $message = mosgetparam( $_REQUEST, 'recommend_message');
     
     echo '
     <form action="index2.php" method="post">
     
     <table border="0" cellspacing="2" cellpadding="1" width="80%">
-      <tr>
-        <td>'.$VM_LANG->_EMAIL_FRIEND.'</td>
-        <td><input type="text" name="recipient_name" size="50" value="'.(!empty($recipient_name)?$recipient_name:'').'" /></td>
-      </tr>
       <tr>
         <td>'.$VM_LANG->_EMAIL_FRIEND_ADDR.'</td>
         <td><input type="text" name="recipient_mail" size="50" value="'.(!empty($recipient_mail)?$recipient_mail:'').'" /></td>
@@ -285,14 +275,14 @@ class ps_communication {
       </tr>
       <tr>
         <td colspan="2">
-          <textarea name="message" style="width: 100%; height: 200px">';
+          <textarea name="recommend_message" style="width: 100%; height: 200px">';
      
     if (!empty($message)) {
         echo $message;
     }
     else {
         $msg = sprintf($VM_LANG->_VM_RECOMMEND_MESSAGE, $mosConfig_sitename, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
-        echo str_replace( 'index2.php', 'index.php', $msg );
+        echo shopMakeHtmlSafe(stripslashes( str_replace( 'index2.php', 'index.php', $msg )));
     }
 
     echo '</textarea>
@@ -318,12 +308,12 @@ class ps_communication {
         return false;
     }
     $subject = sprintf( $VM_LANG->_VM_RECOMMEND_SUBJECT, $vendor_store_name );
-    $msg = stripslashes( $d['message'] );
+    $msg = vmGetUnEscaped( $d['recommend_message'] );
     $send = vmMail($d['sender_mail'], 
                    $d['sender_name'],
-                   "$d[recipient_name]<$d[recipient_mail]>",
+                   $d['recipient_mail'],
                    $subject,
-                   $msg
+                   $msg, ''
                   );
     
     if ($send) {
@@ -336,9 +326,8 @@ class ps_communication {
     
     unset($_REQUEST['sender_name']);
     unset($_REQUEST['sender_mail']);
-    unset($_REQUEST['recipient_name']);
     unset($_REQUEST['recipient_mail']);
-    unset($_REQUEST['message']);
+    unset($_REQUEST['recommend_message']);
     
     return true;    
   }

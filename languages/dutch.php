@@ -682,7 +682,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ = 'ERROR: Kies een vervoerder.';
 	var $_PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV = 'ERROR: Kan geen vervoerder vinden met deze ID.';
 	var $_PHPSHOP_ERR_MSG_RATE_NAME_REQ = 'ERROR: Een verzendingstarief beschrijving is nodig.';
-	var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = 'ERROR: Het land van bestemming is verkeerd. Meerdere landen moeten gescheiden worden door gebruik te maken van \";\".';
+	var $_PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV = 'ERROR: Het land van bestemming is verkeerd. Meerdere landen moeten gescheiden worden door gebruik te maken van ";".';
 	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ = 'ERROR: Minimum gewicht is nodig';
 	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ = 'ERROR: Maximum gewicht is nodig';
 	var $_PHPSHOP_ERR_MSG_RATE_WEIGHT_STARTEND_INV = 'ERROR: Het minimum gewicht moet lager zijn dan het maximum gewicht';
@@ -883,21 +883,21 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN = 'Dit definieerd de standaard categorie sjabloon voor het weergeven van producten in een categorie.<br /> Nieuwe sjablonen kunnen worden gecreëerd door het wijzigen van de bestaande sjablonen.<br />(deze bevinden zich in de directorie <strong>COMPONENTPATH/html/templates/</strong> en beginnen met browse_)';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW = 'Standaard aantal producten in een rij';
 	var $_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN = 'Dit definieerd het standaard aantal producten in een rij. <br />Bijvoorbeeld: Als het aantal op 4 staat, dan laat het categorie sjabloon 4 producten per rij zien';
-	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '\"geen afbeelding\" afbeelding';
+	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE = '"geen afbeelding" afbeelding';
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'Deze afbeelding wordt weergegeven als er geen product afbeelding beschikbaar is.';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Toon voettekst';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Toont een powered-by-VirtueMart voettekst afbeelding.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Kies de verzendingsmethode van Uw winkel';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Standaard Verzendings module met individueel geconfigureerde bedrijven en tarieven. <strong>AANBEVOLEN !</strong>';
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = 'Zone Verzendings Module Landen Versie 1.0<br />Voor meer informatie over deze module bezoek je best <a href=\"http://ZephWare.com\">http://ZephWare.com</a><br />voor details of contact <a href=\"mailto:zephware@devcompany.com\">ZephWare.com</a><br /> Selecteer dit om de zone verzendingsmodule te activeren';
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = '<a href=\"http://www.ups.com\" target=\"_blank\">UPS Online Tools</a> Shipping calculation';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = 'Zone Verzendings Module Landen Versie 1.0<br />Voor meer informatie over deze module bezoek je best <a href="http://ZephWare.com">http://ZephWare.com</a><br />voor details of contact <a href="mailto:zephware@devcompany.com">ZephWare.com</a><br /> Selecteer dit om de zone verzendingsmodule te activeren';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS = '<a href="http://www.ups.com" target="_blank">UPS Online Tools</a> Shipping calculation';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE = 'UPS toegangs code';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN = 'Uw UPS toegangs code';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID = 'UPS gebruikersnaam';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN = 'De gebruikersnaam die U van UPS gekregen heeft';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = 'UPS wachtwoord';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = 'Het wachtwoord voor Uw UPS account';
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'InterShipper Module. Alleen kiezen als U een <a href=\"http://www.intershipper.com\" target=\"_blank\">Intershipper.com</a> account heeft.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'InterShipper Module. Alleen kiezen als U een <a href="http://www.intershipper.com" target="_blank">Intershipper.com</a> account heeft.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = 'Schakel Verzendmethode uit. Kies dit als u alleen goederen verkoopt die niet verscheept hoeven te worden.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = 'InterShipper Wachtwoord';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = 'Het wachtwoord van Uw InterShipper account';
@@ -930,7 +930,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = 'Selecteer de order status die er voor zorgt dat de download voor de klant niet toegelaten is.';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = 'DOWNLOADROOT';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = 'Het fysische pad naar de bestanden voor de klanten download. (gevolgd door een slash op het einde!<br>
-        <span class=\"message\">Voor de veiligheid van Uw winkel: Indien mogelijk gebruik een directorie BUITEN DE ROOT VAN DE WEBSITE</span>';
+        <span class="message">Voor de veiligheid van Uw winkel: Indien mogelijk gebruik een directorie BUITEN DE ROOT VAN DE WEBSITE</span>';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = 'Maximaal aantal downloads';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Dit is het aantal maal een download kan gebeuren met dezelfde Download-ID, (voor 1 bestelling)';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Verlooptijd Download';
@@ -1181,16 +1181,16 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OF selecteer een afbeelding.<br />De afbeeldingen bevinden zich in de directory <i>/components/com_phpshop/shop_image/availability</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Specificatie Lijst';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Voorbeelden van Specificatie lijst opbouw:</h4>
-        <span class=\"sectionname\"><strong>Grote</strong>,XL[+1.99],M,S[-2.99]<strong>;Kleur</strong>,Rood,Groen,Geel,Dure Kleur[=24.00]<strong>;Enz</strong>,..,..</span>
+        <span class="sectionname"><strong>Grote</strong>,XL[+1.99],M,S[-2.99]<strong>;Kleur</strong>,Rood,Groen,Geel,Dure Kleur[=24.00]<strong>;Enz</strong>,..,..</span>
         <h4>Prijs verwerking van de Specificatie aanpassing/toevoeging:</h4>
-        <span class=\"sectionname\">
+        <span class="sectionname">
         <strong>+</strong> == Tel deze hoeveelheid op bij de standaard prijs.<br />
         <strong>-</strong> == Trek deze hoeveelheid af van de standaard prijs.<br />
         <strong>=</strong> == Maak dit de nieuwe product prijs.
       </span>';
 	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = 'Bijzondere Specificatie Lijst';
 	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Voorbeelden van Bijzondere Specificatie lijst opbouw:</h4>
-        <span class=\"sectionname\"><strong>Naam;Extras;</strong>...</span>';
+        <span class="sectionname"><strong>Naam;Extras;</strong>...</span>';
 	var $_PHPSHOP_MULTISELECT = 'Selecteer meerdere door ctrl en muisklik';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = 'eProceesingNetwork.com gebruiken?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'Aanvinken om Uw klanten toe te laten te betalen via het eProceesingNetwork.com.';
@@ -1276,7 +1276,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE = 'Meerdere Waarden';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES = 'Mogelijke Waarden';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT = 'Laat Mogelijke Waarden als selectielijst zien?';
-	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>Indien er Mogelijke Waarden zijn, dan kan de Parameter enkel dze waarden krijgen. Voorbeelden van mogelijke waarden zijns:</strong><BR><span class=\"sectionname\">Staal, Hout,...</span>';
+	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION = '<strong>Indien er Mogelijke Waarden zijn, dan kan de Parameter enkel dze waarden krijgen. Voorbeelden van mogelijke waarden zijns:</strong><BR><span class="sectionname">Staal, Hout,...</span>';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT = 'Standaard waarde';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT = 'Voor de standaard waarde gebruikt U het volgende formaat:<ul><li>Datum: JJJJ-MM-DD</li><li>Tijd: HH:MM:SS</li><li>Datum & Tijd: JJJJ-MM-DD HH:MM:SS</li></ul>';
 	var $_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT = 'Eenheid';
@@ -1352,7 +1352,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP = 'Toont het aantal prodcuten in een bepaalde categorie, bijvoorbeeld Categorie (4)';
 	var $_PHPSHOP_ADMIN_CFG_ADDTOCART_STYLE = 'Aan-winkelwagentje Button Stijl';
 	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING = 'Dynamic Thumbnail Resizing aan?';
-	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Indien aangevinkt dan laat U het dynamische resizen toe van afbeeldingen. Dit betekent dat alle Thumbnail afbeeldingen geresized worden naar het formaat dat hieronder wordt ingegeven, dit door middel van de GD2 functies in PHP.         U kan nakijken of de GD2 functies beschibaar zijn op Uw website door te klikken op \"System\" -> \"System Info\" -> \"PHP Info\" -> gd.   De kwaliteit van de Thumbnail afbeelding is veel beter dan afbeldingen die geresized worden door de browser. De aangemaakte afbeeldoingen worden geplaatst in de folder /shop_image/prduct/resized. Indien er reeds een thumbnail is aangemaakt dan wordt er geen meer aangemaakt.';
+	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'Indien aangevinkt dan laat U het dynamische resizen toe van afbeeldingen. Dit betekent dat alle Thumbnail afbeeldingen geresized worden naar het formaat dat hieronder wordt ingegeven, dit door middel van de GD2 functies in PHP.         U kan nakijken of de GD2 functies beschibaar zijn op Uw website door te klikken op "System" -> "System Info" -> "PHP Info" -> gd.   De kwaliteit van de Thumbnail afbeelding is veel beter dan afbeldingen die geresized worden door de browser. De aangemaakte afbeeldoingen worden geplaatst in de folder /shop_image/prduct/resized. Indien er reeds een thumbnail is aangemaakt dan wordt er geen meer aangemaakt.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH = 'Breedte Thumbnail Afbeelding';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP = 'De <strong>breedte</strong> van de geresizede Thumbnail Afbeelding.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT = 'Hoogte Thumbnail Afbeelding';
@@ -1361,8 +1361,8 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PRICE_CONFIGURATION = 'Prijs Configuratie';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL = 'Ledengroep aan welke prijzen getoond moeten worden';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP = 'De geselecteerde ledengroep en alle groepen erboven zijn in de mogelijkheid om de product prijzen te zien.';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Toon \"(inclusief XX% btw)\" waar mogelijk?';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Wanneer aangevinkt dan zien de gebruikers de tekst \"(inclusief xx% btw)\" wanneer de prijzen getoont worden inclusief btw';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Toon "(inclusief XX% btw)" waar mogelijk?';
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'Wanneer aangevinkt dan zien de gebruikers de tekst "(inclusief xx% btw)" wanneer de prijzen getoont worden inclusief btw';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL = 'Toon het prijslabel voor verpakkingen?';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'Aangevinkt wordt het prijslabel bepaald uit de product eenheid en de verpakkingswaarde:<br/>
 <strong>Prijs per Eenheid (10 stukken)</strong><br/>
@@ -1424,7 +1424,7 @@ default: ps_payment<br />
 	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.';
 	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
 	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';
-	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\\\'s you test your Notify Script File %s through this Testing Form: <a href=\"http://www.eliteweaver.co.uk/testing/ipntest.php\" target=\"_blank\">www.eliteweaver.co.uk/testing/ipntest.php</a>';
+	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\\\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>';
 	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction. 
 The transaction was not cancelled in this case, but it is just pending and waiting for completion.';
 	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Order Status for Pending Payments';
@@ -1458,7 +1458,7 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_FEDEX_METER_NUMBER = 'FedEx Meter Number';
 	var $_VM_FEDEX_METER_NUMBER_TIP = 'The meter number you have received from FedEx';
 	var $_VM_FEDEX_URI = 'FedEx Server Address';
-	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\\\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href=\"http://www.fedex.com/globaldeveloper/shipapi/\">www.fedex.com/globaldeveloper/shipapi/</a>).
+	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\\\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
 <br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
 	var $_VM_ORDER_EXPORT = 'Order Export';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'List Order Export Modules';
@@ -1480,14 +1480,14 @@ It has to be valid PHP Code!
 	var $_VM_TAXDETAILS_LABEL = 'Tax Total contains';
 	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL = 'Default product sort order';
 	var $_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP = 'Defines by which field products are ordered by default on the browse pages';
-	var $_VM_BROWSE_ORDERBY_FIELDS_LBL = 'Available \"Sort-by\" fields';
-	var $_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP = 'Choose the \"Sort-by\" fields for the browse page. Each one defines a sort method for the product browse page. If you deselect all, the Order-By-Form will not be shown.';
+	var $_VM_BROWSE_ORDERBY_FIELDS_LBL = 'Available "Sort-by" fields';
+	var $_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP = 'Choose the "Sort-by" fields for the browse page. Each one defines a sort method for the product browse page. If you deselect all, the Order-By-Form will not be shown.';
 	var $_VM_GENERALLY_PREVENT_HTTPS = 'Generally prevent https connections?';
 	var $_VM_GENERALLY_PREVENT_HTTPS_TIP = 'When checked, the shopper is redirected to the <strong>http</strong> URL when not browsing in those shop areas, which are forced to use https.';
 	var $_VM_MODULES_FORCE_HTTPS = 'Shop areas which must use https';
-	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See \"Admin\" => \"List Modules\"), which will be using https connections.';
-	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the \"Remember me\" checkbox on login?';
-	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the \"remember me\" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
+	var $_VM_MODULES_FORCE_HTTPS_TIP = 'Here you can use a comma-separated list of shop core modules (See "Admin" => "List Modules"), which will be using https connections.';
+	var $_VM_SHOW_REMEMBER_ME_BOX = 'Show the "Remember me" checkbox on login?';
+	var $_VM_SHOW_REMEMBER_ME_BOX_TIP = 'When checked, the "remember me" box is shown on checkout. Not recommended when using shared ssl, because the customer could choose not to get a user cookie -  but that user cookie is required to keep the user logged in on both domains.';
 	var $_VM_PRODUCT_ENQUIRY_LBL = 'Ask a question about this product';
 	var $_VM_REVIEW_FORM_LBL = 'Add Review';
 	var $_PHPSHOP_REVIEW_EDIT = 'Add/Edit a Review';
@@ -1497,9 +1497,9 @@ It has to be valid PHP Code!
 	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH = 'Comment Maximum Length';
 	var $_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP = 'This is the maximum amount of characters that can be written by a customer in a comment.
 ';
-	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the \"Recommend to a friend\" link?';
+	var $_VM_ADMIN_SHOW_EMAILFRIEND = 'Show the "Recommend to a friend" link?';
 	var $_VM_ADMIN_SHOW_EMAILFRIEND_TIP = 'When enabled, a small link is displayed that allows the customer to send a recommendation email for a specific product.';
-	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the \"Print View\" link?';
+	var $_VM_ADMIN_SHOW_PRINTICON = 'Show the "Print View" link?';
 	var $_VM_ADMIN_SHOW_PRINTICON_TIP = 'When enabled, a small link is displayed that opens the current page in a new popup for printing it out.';
 	var $_VM_REVIEWS_AUTOPUBLISH = 'Auto-Publish Reviews?';
 	var $_VM_REVIEWS_AUTOPUBLISH_TIP = 'If checked, reviews are automatically published after being posted. If not, the administrator must approve/publish them.';
@@ -1513,7 +1513,7 @@ You can find it here:
 
 Regards.';
 	var $_VM_REGISTER_BEFORE = 'Please register to use this facillity';
-	var $_VM_RECOMMEND_MESSAGE_PREFACE = 'The following recommendation from the \"%s\" website has been sent to you by %s (%s).
+	var $_VM_RECOMMEND_MESSAGE_PREFACE = 'The following recommendation from the "%s" website has been sent to you by %s (%s).
 
 _____________________';
 	var $_VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT = '%s - Confirmation of your enquiry';
@@ -1549,10 +1549,10 @@ Leave empty if you\\\'re not sure.</strong> This value will be used to connect t
 	var $_VM_ADMIN_CFG_PROXY_USER_TIP = 'If the proxy requires authentication please fill in your username here.';
 	var $_VM_ADMIN_CFG_PROXY_PASS = 'Proxy password';
 	var $_VM_ADMIN_CFG_PROXY_PASS_TIP = 'If the proxy requires authentication please fill in the correct password here.';
-	var $_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO = 'Show information about \"Return Policy\" on the order confirmation page?';
+	var $_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO = 'Show information about "Return Policy" on the order confirmation page?';
 	var $_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP = 'Store owners are required by law to inform their customers about return and order cancellation policies in most european countries. So this should be enabled in most cases.';
 	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT = 'Legal information text (short version).';
-	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP = 'This text instructs your customers in short about your return and order cancellation policy. It is shown on the last page of checkout, just above the \"Confirm Order\" button.';
+	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP = 'This text instructs your customers in short about your return and order cancellation policy. It is shown on the last page of checkout, just above the "Confirm Order" button.';
 	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK = 'Link to the long version the return policy.';
 	var $_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP = 'Please add a new content item about the details of your return and order cancellation policy.
 Afterwards you can select it here.';
@@ -1561,14 +1561,14 @@ Afterwards you can select it here.';
 You can cancel this order within two weeks after we have received it.
 You can return new, unopened items from a cancelled order within 2 weeks after they have been 
 delivered to you. Items should be returned in their original packaging.
-For more information on cancelling orders and returning items, see the <a href=\"%s\" onclick=\"%s\" target=\"_blank\">Our Returns Policy</a> page.';
+For more information on cancelling orders and returning items, see the <a href="%s" onclick="%s" target="_blank">Our Returns Policy</a> page.';
 	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES = 'List of accepted currencies';
 	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP = 'This list defines all those currencies you accept when people are buying something in your store. <strong>Note:</strong> All currencies selected here can be used at checkout! If you don\\\'t want that, just select your country\\\'s currency (=default).';
 	var $_PHPSHOP_ORDER_LIST_PRINT_LABEL = 'Print Label';
 	var $_PHPSHOP_ORDER_LIST_VOID_LABEL = 'Void Label';
 	var $_PHPSHOP_ORDER_LIST_TRACK = 'Track';
 	var $_VM_SELECT_THEME = 'Select the theme for your Shop';
-	var $_VM_SELECT_THEME_TIP = 'Themes allow styling and customizing your shop. <br />If no other themes than the \"default\" one are present you haven\\\'t installed more themes.';
+	var $_VM_SELECT_THEME_TIP = 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\\\'t installed more themes.';
 	var $_VM_CFG_BROWSE_STYLE = 'Select a product listing style';
 	var $_VM_CFG_BROWSE_STYLE_TIP = 'Change the overall style of the product list with this setting.<br />The tableless layout is perfect for your tableless XHTML/CSS powered site. Try the other ones if your layout is screwed up.';
 	var $_VM_CFG_CONTENT_PLUGINS_ENABLE = 'Enable content mambots / plugins in descriptions?';
@@ -1633,8 +1633,8 @@ For more information on cancelling orders and returning items, see the <a href=\
 	Username - %s
 	
 	Please do not respond to this message as it is automatically generated and is for information purposes only';
-	var $_REG_COMPLETE = '<div class=\"componentheading\">Registration Complete!</div><br />You may now login.';
-	var $_REG_COMPLETE_ACTIVATE = '<div class=\"componentheading\">Registration Complete!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.';
+	var $_REG_COMPLETE = '<div class="componentheading">Registration Complete!</div><br />You may now login.';
+	var $_REG_COMPLETE_ACTIVATE = '<div class="componentheading">Registration Complete!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.';
 	var $_DATE_FORMAT_LC = '%A, %d %B %Y';
 	var $_VM_CART_PRODUCT_ADDED = 'The product was added to your cart.';
 	var $_VM_CART_PRODUCT_UPDATED = 'The product quantity has been updated.';
@@ -1661,23 +1661,23 @@ For more information on cancelling orders and returning items, see the <a href=\
 	var $_PHPSHOP_CSV_MINIMAL_FIELDS = 'The minimal required fields are product_sku, product_name and category_path. Except for the product_sku, the other two fields are not unique.';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_SKU = 'The unique identifier for a product.<br /.>Values:<ul><li>Number</li><li>Letters</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_NAME = 'The name of the product.Values:<ul><li>Text: No HTML code allowed.</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_DELETE = 'The product_delete field is a special field. This field is used to determine if a product should be deleted or not.<br />Usage:<ol><li>Add the the name \"product_delete\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the value Y. If the field contains any other value, the product will not be deleted.</li></ol><br /.>Values:<ul><li>Y: Yes, the product is to be deleted</li><li>N: No, the product is not to be deleted</li><li>Empty: Empty value, the product is not to be deleted</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_DELETE = 'The product_delete field is a special field. This field is used to determine if a product should be deleted or not.<br />Usage:<ol><li>Add the the name "product_delete" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the value Y. If the field contains any other value, the product will not be deleted.</li></ol><br /.>Values:<ul><li>Y: Yes, the product is to be deleted</li><li>N: No, the product is not to be deleted</li><li>Empty: Empty value, the product is not to be deleted</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_DESC = 'Long description for the product.<br />Values:<ul><li>Text: HTML code allowed.</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_S_DESC = 'Short description for the product.<br />Values:<ul><li>Text: No HTML code allowed.</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_PUBLISH = 'The status if a product is published or not.<br />Values:<ul><li>Y: Yes, the product is published</li><li>N: No, the product is not published</li><li>Empty: Empty value, the product is published.</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_WIDTH = 'The width of the product.<br />Values:<ul><li>Number</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_HEIGHT = 'The height of the product.<br />Values:<ul><li>Number</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_LENGTH = 'The length of the product.<br />Values:<ul><li>Number</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABLE_DATE = 'The date a product will become availabable. For import the date should be in the format of day/month/year or day-month-year. On Windows systems the date goes until 19/01/2038.<br />Usage:<ol><li>Add the the name \"product_available_date\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a date value. If the field contains any other value, the data will be ignored.</li></ol><br />Values:<ul><li>Date: day/month/year or day-month-year</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_IN_STOCK = 'The number of articles that you have in stock.<br /><br />Usage:<ol><li>Add the the name \"product_in_stock\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a numeric value. If the field contains any other value, the default value will be used.</li></ol><br />Values:<ul><li>Number</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_ATTRIBUTE = 'The different choices a product has. Use this to give a product different specifications. For example a t-shirt that comes in different sizes and colours. You can specify the sizes and colours like this: Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];AndSoOn,..,..<br /><br />You can adjust the prices per attribute by using the following options:<ul><li>+: Add this amount to the configured price.</li><li>-: Subtract this amount from the configured price.</li><li>=: Set the product\\\'s price to this amount.</li></ul><br />Usage:<ol><li>Add the the name \"attribute\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the attribute text.</li></ol><br /.>Values:<ul><li>Text: No HTML code allowed.</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABILITY = 'This shows when the product is available. The value can be a descriptive text or the name of an image filename. Images must be placed in \"shop_image/availability/\".<br />Usage:<ol><li>Add the the name \"product_availability\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text: No HTML code allowed.</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_FULL_IMAGE = 'The filename of the image as located in the \"shop_image/product/\" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, you need to fill the \"product_thumb_image\" field. VirtueMart resizes the image specified there.<br/><br />Usage:<ol><li>Add the the name \"product_full_image\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\\\'s are allowed.</li></ul></li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_THUMB_IMAGE = 'The filename of the thumbnail image as located in the \"shop_image/product/\" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, there still needs to be a value in this field. VirtueMart resizes the image that is specified here.<br /><br />Usage:<ol><li>Add the the name \"product_full_image\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\\\'s are allowed.</li></ul></li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_CUSTOM_ATTRIBUTE = 'A custom attribute will add an input field to the product page with the description of the attribute supplied. Custom attributes are specified like this: Name;Extras;...<br />Usage:<ol><li>Add the the name \"custom_attribute\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the attribute text.</li></ol><br /.>Values:<ul><li>Text: No HTML code allowed.</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_PACKAGING = 'Specify the number of items in the package.<br />Usage:<ol><li>Add the the name \"product_packaging\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the package.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_BOX = 'Specify the number of items in the box.<br />Usage:<ol><li>Add the the name \"product_box\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the box.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_DISCOUNT = 'Specify the amount or percentage of discount the product has. The values entered are exact values, no calculation is made. This is the same as if you are filling in a discount via the Product Discount List. If the discount already exists, it will not be added to the database but the product will be linked to the existing discount. The criteria for determining if a discount already exists the following values have to be exactly the same:<ol><li>Amount, be it a total or percentage</li><li>Start date</li><li>End date</li></ol>This prevents from filling the database with a huge number of the same discounts.<br /><br />Usage:<ol><li>Add the the name \"product_discount\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Optional: Add the the name \"product_discount_date_start\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Optional: Add the the name \"product_discount_date_end\" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add the chosen columns to your CSV file with the corresponding values.</li></ol><br /.>Values:<ul><li>product_discount</li><ul><li>Number<br />e.g. 10</li><li>Percentage: Must include the % sign<br />e.g. 10%</li></ul><li>product_discount_date_start</li><ul><li>Date: day/month/year or day-month-year<br />Day and month can be a 1 or 2 digit notation.<br />Year can be a 2 or 4 digit notation.</li></ul><li>product_discount_date_end</li><ul><li>Date: day/month/year or day-month-year<br />Day and month can be a 1 or 2 digit notation.<br />Year can be a 2 or 4 digit notation.</li></ul></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABLE_DATE = 'The date a product will become availabable. For import the date should be in the format of day/month/year or day-month-year. On Windows systems the date goes until 19/01/2038.<br />Usage:<ol><li>Add the the name "product_available_date" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a date value. If the field contains any other value, the data will be ignored.</li></ol><br />Values:<ul><li>Date: day/month/year or day-month-year</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_IN_STOCK = 'The number of articles that you have in stock.<br /><br />Usage:<ol><li>Add the the name "product_in_stock" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a numeric value. If the field contains any other value, the default value will be used.</li></ol><br />Values:<ul><li>Number</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_ATTRIBUTE = 'The different choices a product has. Use this to give a product different specifications. For example a t-shirt that comes in different sizes and colours. You can specify the sizes and colours like this: Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];AndSoOn,..,..<br /><br />You can adjust the prices per attribute by using the following options:<ul><li>+: Add this amount to the configured price.</li><li>-: Subtract this amount from the configured price.</li><li>=: Set the product\\\'s price to this amount.</li></ul><br />Usage:<ol><li>Add the the name "attribute" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the attribute text.</li></ol><br /.>Values:<ul><li>Text: No HTML code allowed.</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABILITY = 'This shows when the product is available. The value can be a descriptive text or the name of an image filename. Images must be placed in "shop_image/availability/".<br />Usage:<ol><li>Add the the name "product_availability" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text: No HTML code allowed.</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_FULL_IMAGE = 'The filename of the image as located in the "shop_image/product/" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, you need to fill the "product_thumb_image" field. VirtueMart resizes the image specified there.<br/><br />Usage:<ol><li>Add the the name "product_full_image" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\\\'s are allowed.</li></ul></li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_THUMB_IMAGE = 'The filename of the thumbnail image as located in the "shop_image/product/" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, there still needs to be a value in this field. VirtueMart resizes the image that is specified here.<br /><br />Usage:<ol><li>Add the the name "product_full_image" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\\\'s are allowed.</li></ul></li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_CUSTOM_ATTRIBUTE = 'A custom attribute will add an input field to the product page with the description of the attribute supplied. Custom attributes are specified like this: Name;Extras;...<br />Usage:<ol><li>Add the the name "custom_attribute" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the attribute text.</li></ol><br /.>Values:<ul><li>Text: No HTML code allowed.</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_PACKAGING = 'Specify the number of items in the package.<br />Usage:<ol><li>Add the the name "product_packaging" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the package.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_BOX = 'Specify the number of items in the box.<br />Usage:<ol><li>Add the the name "product_box" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the box.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_DISCOUNT = 'Specify the amount or percentage of discount the product has. The values entered are exact values, no calculation is made. This is the same as if you are filling in a discount via the Product Discount List. If the discount already exists, it will not be added to the database but the product will be linked to the existing discount. The criteria for determining if a discount already exists the following values have to be exactly the same:<ol><li>Amount, be it a total or percentage</li><li>Start date</li><li>End date</li></ol>This prevents from filling the database with a huge number of the same discounts.<br /><br />Usage:<ol><li>Add the the name "product_discount" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Optional: Add the the name "product_discount_date_start" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Optional: Add the the name "product_discount_date_end" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add the chosen columns to your CSV file with the corresponding values.</li></ol><br /.>Values:<ul><li>product_discount</li><ul><li>Number<br />e.g. 10</li><li>Percentage: Must include the % sign<br />e.g. 10%</li></ul><li>product_discount_date_start</li><ul><li>Date: day/month/year or day-month-year<br />Day and month can be a 1 or 2 digit notation.<br />Year can be a 2 or 4 digit notation.</li></ul><li>product_discount_date_end</li><ul><li>Date: day/month/year or day-month-year<br />Day and month can be a 1 or 2 digit notation.<br />Year can be a 2 or 4 digit notation.</li></ul></ul>';
 	var $_VM_USERGROUP_FORM_LBL = 'Add/Edit a User Group';
 	var $_VM_USERGROUP_NAME = 'User Group Name';
 	var $_VM_USERGROUP_LEVEL = 'User Group Level';

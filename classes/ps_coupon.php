@@ -164,6 +164,14 @@ class ps_coupon {
         /* we need some functions from the checkout module */
         require_once( CLASSPATH . "ps_checkout.php" );
         $checkout =& new ps_checkout();
+        if( empty( $d['total'])) {
+        	$totals = $checkout->calc_order_totals($d);
+        	$d['total'] = 	$totals['order_subtotal']
+							+ $totals['order_tax']
+							+ $totals['order_shipping']
+							+ $totals['order_shipping_tax']
+							- $totals['payment_discount'];
+        }
         $d['coupon_code'] = trim(mosGetParam( $_REQUEST, 'coupon_code' ));
         $coupon_id = mosGetParam( $_SESSION, 'coupon_id', null );
         
@@ -193,6 +201,7 @@ class ps_coupon {
                 /* take the subtotal for calculation of the discount */
                 //$_SESSION['coupon_discount'] = round( ($subtotal * $coupon_db->f("coupon_value") / 100), 2);
                  $coupon_value = round( ($d["total"] * $coupon_db->f("coupon_value") / 100), 2);
+                 
                  if( $d["total"] < $coupon_value ) {
                   	$coupon_value = (float)$d['total'];
                   	$vmLogger->info( 'The Value of the Coupon is greater than the current Order Total, so the Coupon Value was temporarily set to '.$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ) );
@@ -203,7 +212,7 @@ class ps_coupon {
             {
             	
             	$coupon_value = $coupon_db->f("coupon_value");
-            	
+
                 /* Total Amount */
                 if( $d["total"] < $coupon_value ) {
                   	$coupon_value = (float)$d['total'];

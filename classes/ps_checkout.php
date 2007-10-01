@@ -806,51 +806,8 @@ class ps_checkout {
 		/* Set the order number */
 		$order_number = $this->get_order_number();
 
-		/* sets _subtotal */
-		$order_subtotal = $tmp_subtotal = $this->calc_order_subtotal($d);
-		
-		$order_taxable = $this->calc_order_taxable($d);
-
-		$payment_discount = $d['payment_discount'] = $this->get_payment_discount($d['payment_method_id'], $order_subtotal);
-
-		/* DISCOUNT HANDLING */
-		if( !empty($_SESSION['coupon_discount']) ) {
-			$coupon_discount = floatval($_SESSION['coupon_discount']);
-		}
-		else {
-			$coupon_discount = 0.00;
-		}
-
-		// make sure Total doesn't become negative
-		if( $tmp_subtotal < 0 ) $order_subtotal = $tmp_subtotal = 0;
-		if( $order_taxable < 0 ) $order_taxable = 0;
-
-		// from now on we have $order_tax_details
-		$d['order_tax'] = $order_tax = round( $this->calc_order_tax($order_taxable, $d), 2 );
-		
-		if( $this->_SHIPPING ) {
-			/* sets _shipping */
-			$d['order_shipping'] = $order_shipping = round( $this->calc_order_shipping( $d ), 2 );
-
-			/* sets _shipping_tax
-			* btw: This is WEIRD! To get an exactly rounded value we have to convert
-			* the amount to a String and call "round" with the string. */
-			$d['order_shipping_tax'] = $order_shipping_tax = round( strval($this->calc_order_shipping_tax($d)), 2 );
-		}
-		else {
-			$d['order_shipping'] = $order_shipping = $order_shipping_tax = $d['order_shipping_tax'] = 0.00;
-		}
-
-		$timestamp = time() + ($mosConfig_offset*60*60);
-
-		$d['order_total'] = $order_total = 	$tmp_subtotal 
-											+ $order_tax 
-											+ $order_shipping 
-											+ $order_shipping_tax
-											- $coupon_discount
-											- $payment_discount;
-		
-		$order_tax *= $discount_factor;
+		$totals = $this->calc_order_totals( $d );
+		extract( $totals );
 		
 		if (!$this->validate_form($d)) {
 			return false;
@@ -1210,7 +1167,76 @@ Order Total: '.$order_total.'
 	function generate_cart_hash() {
 		$this->_cartHash = $this->get_new_cart_hash();
 	}
+	
+	function get_order_total( &$d ) {
+		global $discount_factor;
+		$totals = $this->calc_order_totals($d);
+		return $totals['order_total'];
+	}
+	
+	/**
+	 * Calculates the current order totals and fills an array with all the values
+	 *
+	 * @param array $d
+	 * @return array
+	 */
+	function calc_order_totals( &$d ) {
+		global $discount_factor, $mosConfig_offset;
+		
+		$totals = array();
+		
+		/* sets _subtotal */
+		$totals['order_subtotal'] = $tmp_subtotal = $this->calc_order_subtotal($d);
+		
+		$totals['order_taxable'] = $this->calc_order_taxable($d);
+		
+		if( !empty($d['payment_method_id'])) {
+			$totals['payment_discount'] = $d['payment_discount'] = $this->get_payment_discount($d['payment_method_id'], $totals['order_subtotal']);
+		} else {
+			$totals['payment_discount'] = $d['payment_discount'] = 0.00;
+		}
 
+		/* DISCOUNT HANDLING */
+		if( !empty($_SESSION['coupon_discount']) ) {
+			$totals['coupon_discount'] = floatval($_SESSION['coupon_discount']);
+		}
+		else {
+			$totals['coupon_discount'] = 0.00;
+		}
+
+		// make sure Total doesn't become negative
+		if( $tmp_subtotal < 0 ) $totals['order_subtotal'] = $tmp_subtotal = 0;
+		if( $totals['order_taxable'] < 0 ) $totals['order_taxable'] = 0;
+
+		// from now on we have $order_tax_details
+		$d['order_tax'] = $totals['order_tax'] = round( $this->calc_order_tax($totals['order_taxable'], $d), 2 );
+		
+		if( $this->_SHIPPING ) {
+			/* sets _shipping */
+			$d['order_shipping'] = $totals['order_shipping'] = round( $this->calc_order_shipping( $d ), 2 );
+
+			/* sets _shipping_tax
+			* btw: This is WEIRD! To get an exactly rounded value we have to convert
+			* the amount to a String and call "round" with the string. */
+			$d['order_shipping_tax'] = $totals['order_shipping_tax'] = round( strval($this->calc_order_shipping_tax($d)), 2 );
+		}
+		else {
+			$d['order_shipping'] = $totals['order_shipping'] = $totals['order_shipping_tax'] = $d['order_shipping_tax'] = 0.00;
+		}
+
+		$timestamp = time() + ($mosConfig_offset*60*60);
+
+		$d['order_total'] = $totals['order_total'] = 	$tmp_subtotal 
+											+ $totals['order_tax']
+											+ $totals['order_shipping']
+											+ $totals['order_shipping_tax']
+											- $totals['coupon_discount']
+											- $totals['payment_discount'];
+		
+		$totals['order_tax'] *= $discount_factor;
+		
+		return $totals;
+	}
 	/**
          * Generates the md5 hash of the recent cart / checkout constellation
          *

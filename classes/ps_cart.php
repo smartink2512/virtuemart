@@ -268,7 +268,8 @@ class ps_cart {
 			/* if the cart was updated we gotta update any coupon discounts to avoid ppl getting free stuff */
 			if( !empty( $_SESSION['coupon_discount'] )) {
 				// Update the Coupon Discount !!
-				$_POST['do_coupon'] = 'yes';
+				require_once(CLASSPATH.'ps_coupon.php');
+				ps_coupon::process_coupon_code($d);
 			}
 		} // End Iteration through Prod id's
 		$cart = $_SESSION['cart'];
@@ -398,7 +399,8 @@ class ps_cart {
 		}
 		if( !empty( $_SESSION['coupon_discount'] )) {
 			// Update the Coupon Discount !!
-			$_POST['do_coupon'] = 'yes';
+			require_once(CLASSPATH.'ps_coupon.php');
+			ps_coupon::process_coupon_code($d);
 		}
 		ps_cart::saveCart();
 		return array($updated_prod,$deleted_prod);
