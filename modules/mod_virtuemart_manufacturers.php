@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.virtuemart.net
 */
 
-global $mosConfig_absolute_path, $sess;
+global $mosConfig_absolute_path, $sess, $VM_LANG;
 
 $text_before = $params->get( 'text_before', '');
 $show_dropdown = $params->get( 'show_dropdown', 1);
@@ -69,7 +69,7 @@ if( $show_dropdown == 1 ) { ?>
   	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="vm_manufacturer">
         <br/>
         <select class="inputbox" name="manufacturer_id" onchange="document.vm_manufacturer.submit()">
-            <option value=""><?php echo _CMN_SELECT ?></option>
+            <option value=""><?php echo $VM_LANG->_PHPSHOP_SELECT ?></option>
         <?php  
         foreach ($res as $manufacturer) { 
                 $selected = '';
@@ -82,7 +82,7 @@ if( $show_dropdown == 1 ) { ?>
         ?>
         </select>
     <br />
-      <input class="button" type="submit" name="manufacturerSearch" value="<?php echo _SEARCH_TITLE ?>" />
+      <input class="button" type="submit" name="manufacturerSearch" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
 	    <input type="hidden" name="option" value="com_virtuemart" />
 	    <input type="hidden" name="page" value="shop.browse" />
 	    <input type="hidden" name="Itemid" value="<?php echo $sess->getShopItemid() ?>" />
