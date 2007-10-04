@@ -35,8 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-01.10.2007 soeren
+03.10.2007 gregdev
+# Fixed missing $timestamp in order add immediately after checkout
 
+01.10.2007 soeren
 # fixed "Recommend to a friend" form
 # fixed Coupon Discount Value not adjusted when adding products or updating product quantity
 

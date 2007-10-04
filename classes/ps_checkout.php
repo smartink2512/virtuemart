@@ -809,6 +809,8 @@ class ps_checkout {
 		$totals = $this->calc_order_totals( $d );
 		extract( $totals );
 		
+		$timestamp = time() + ($mosConfig_offset*60*60);
+		
 		if (!$this->validate_form($d)) {
 			return false;
 		}
@@ -1223,8 +1225,6 @@ Order Total: '.$order_total.'
 		else {
 			$d['order_shipping'] = $totals['order_shipping'] = $totals['order_shipping_tax'] = $d['order_shipping_tax'] = 0.00;
 		}
-
-		$timestamp = time() + ($mosConfig_offset*60*60);
 
 		$d['order_total'] = $totals['order_total'] = 	$tmp_subtotal 
 											+ $totals['order_tax']
