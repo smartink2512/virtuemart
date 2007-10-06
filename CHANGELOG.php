@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+06.10.2007 gregdev
+# Joomla! 1.5 compatibility: Set $my->gid
+
 03.10.2007 gregdev
 # Fixed missing $timestamp in order add immediately after checkout
 
