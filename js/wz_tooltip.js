@@ -506,4 +506,11 @@ function tt_Init()
 		document.write(htm);
 	if(document.getElementById) tt_ifrm = document.getElementById("TTiEiFrM");
 }
-tt_Init();
+if (window.addEventListener) {
+	window.addEventListener("load", tt_Init, false)
+} else if (window.attachEvent) {
+	window.attachEvent("onload", tt_Init)
+} else if (document.getElementById) {
+	window.onload=tt_Init;
+}
+

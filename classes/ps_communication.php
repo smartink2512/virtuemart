@@ -252,7 +252,7 @@ class ps_communication {
     $sender_name = mosgetparam( $_REQUEST, 'sender_name', null);
     $sender_mail = mosgetparam( $_REQUEST, 'sender_mail', null);
     $recipient_mail = mosgetparam( $_REQUEST, 'recipient_mail', null);
-    $message = mosgetparam( $_REQUEST, 'recommend_message');
+    $message = shopMakeHtmlSafe( vmGetUnEscaped(@$_REQUEST['recommend_message']) );
     
     echo '
     <form action="index2.php" method="post">
@@ -278,7 +278,7 @@ class ps_communication {
           <textarea name="recommend_message" style="width: 100%; height: 200px">';
      
     if (!empty($message)) {
-        echo $message;
+        echo str_replace( array('\r', '\n' ), array("\r", "\n" ), $message );
     }
     else {
         $msg = sprintf($VM_LANG->_VM_RECOMMEND_MESSAGE, $mosConfig_sitename, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));

@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -407,18 +407,19 @@ function showPriceForm(prodId) {
     
     // define some private variables
     var showBtn;
-    
-	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getPriceForm&product_id=' + prodId;
+	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getPriceForm&no_html=1&product_id=' + prodId;
 	callback = { success : function(o) { 
 		
-				        priceDlg = Ext.MessageBox.show({
+				        priceDlg = Ext.Msg.show({
+		                    width:300,
+		                    height:250,
 				           title:'<?php echo $VM_LANG->_PHPSHOP_PRICE_FORM_LBL ?>',
 				           msg: o.responseText,
-				           buttons: Ext.MessageBox.OKCANCEL,
+				           buttons: Ext.Msg.OKCANCEL,
 				           fn: handleResult
 				       });
 	}};	
-	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+	Ext.Ajax.request({method:'GET', url: sUrl, success: callback.success });
 }
 
 function handleResult( btn ) {
@@ -433,12 +434,9 @@ function handleResult( btn ) {
 function submitPriceForm(formId) {	
     // define some private variables
     var dialog, showBtn, hideTask;
-
-   // the second argument is true to indicate file upload.
-   YAHOO.util.Connect.setForm(formId, true);
    
     function showDialog( content ) {
-    	var msgbox = Ext.MessageBox.show( { 
+    	var msgbox = Ext.Msg.show( { 
             		title: '<?php echo $VM_LANG->_PEAR_LOG_NOTICE ?>',
             		msg: content,
             		autoCreate: true,
@@ -447,7 +445,7 @@ function submitPriceForm(formId) {
                     fn: msgBoxClick,
                     modal: false,
                     resizable: false,
-                    buttons: Ext.MessageBox.OK,
+                    buttons: Ext.Msg.OK,
                     shadow:true,
                     animEl:Ext.get( 'vm-toolbar' )
             });
@@ -467,11 +465,11 @@ function submitPriceForm(formId) {
     var callback = {
     	success: function(o) {
     		//Ext.DomHelper.insertHtml( document.body, o.responseText );
+    		
     		showDialog( o.responseText );
     	},
     	failure: function(o) {
-    		Ext.DomHelper.append( document.body, { tag: 'div', id: 'vmLogResult', html: 'Save action failed: ' + o.statusText } );
-    		showDialog( o.responseText );
+    		Ext.Msg.alert('Error!', 'Something went wrong while posting the form data (possibly 404 error).');
     	},
         upload : function(o){
             //Ext.DomHelper.insertHtml( 'beforeEnd', document.body, o.responseText );
@@ -479,19 +477,19 @@ function submitPriceForm(formId) {
         }
     };
     
-   	var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo $_SERVER['PHP_SELF'] ?>', callback);
+   	Ext.Ajax.request({method:'POST', url: '<?php echo $mosConfig_live_site.$path ?>index3.php', success: callback.success, failure: callback.failure, form: formId});
 	
 }
 function cancelPriceForm(id) {
 	updatePriceField( id );
 }
 function updatePriceField( id ) {	
-	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id;
+	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id;
 	callback = { success : function(o) { Ext.get("priceform-dlg").innerHTML = o.responseText;	}};
 	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
 function reloadForm( parentId, keyName, keyValue ) {
-	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getPriceForm&product_id='+parentId+'&'+keyName+'='+keyValue;
+	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getPriceForm&product_id='+parentId+'&'+keyName+'='+keyValue;
 	callback = { success : function(o) { priceDlg.updateText( o.responseText) }};
 	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }

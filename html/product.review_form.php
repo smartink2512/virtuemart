@@ -96,7 +96,7 @@ $rating_table = "<table cellpadding=\"5\" summary=\"".$VM_LANG->_PHPSHOP_REVIEW_
         </td>
 		<td width="76%" align="left"> 
 			<textarea onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" rows="20" cols="60" name="comment"><?php $db->sp("comment") ?></textarea>
-	        <div align="right"><? echo $VM_LANG->_PHPSHOP_REVIEW_COUNT ?>
+	        <div align="right"><?php echo $VM_LANG->_PHPSHOP_REVIEW_COUNT ?>
                 <input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
             </div>
 		</td>

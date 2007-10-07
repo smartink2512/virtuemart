@@ -41,6 +41,10 @@ VirtueMart 1.1.x
 03.10.2007 gregdev
 # Fixed missing $timestamp in order add immediately after checkout
 
+02.10.2007 soeren
+# fixed Internet Explorer "Operation aborted" error by outsourceing Layout Loading code into /js/extlayout.js.php
+^ Updated ExtJS from v1.1 to v1.1.1 + fix for Tabs without Text in IE on Joomla! 1.5 in Standard Layout
+
 01.10.2007 soeren
 # fixed "Recommend to a friend" form
 # fixed Coupon Discount Value not adjusted when adding products or updating product quantity

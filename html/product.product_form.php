@@ -1391,7 +1391,7 @@ if( @$_REQUEST['no_menu'] != '1') {
 	<?php
 }
 ?>
-Ext.onReady(function(){
+var searchField = function(){
 
     var relds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
@@ -1441,17 +1441,17 @@ Ext.onReady(function(){
         	}
         }
     });
-    if(Ext.isIE) {
-		oldonload = window.onload;
-		window.onload = (function() {
-			if( typeof oldonload == 'function' ) oldonload();
-			search.applyTo('relatedProductSearch');
-			});
-	} else {
-		// apply it to the exsting input element
-	    search.applyTo('relatedProductSearch');
-	}
-});
+	
+	// apply it to the exsting input element
+    search.applyTo('relatedProductSearch');
+	
+};
+if( Ext.isIE ) {
+	Ext.EventManager.addListener( window, 'load', searchField );
+}
+else {
+	Ext.onReady( searchField );
+}
 function removeSelectedOptions(from) {
 	// Delete them from original
 	var newOptions = [];

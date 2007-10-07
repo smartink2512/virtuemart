@@ -16,7 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-
+include_class("product");
 global $ps_product;
 $shopper_group_id = mosgetparam( $_REQUEST, 'shopper_group_id', null );
 $option = mosgetparam( $_REQUEST, 'option', 'com_virtuemart' );
@@ -41,17 +41,17 @@ if (!empty($shopper_group_id)) {
         <strong><div align="right"><?php echo $VM_LANG->_PHPSHOP_DEFAULT ?> ?:</div></strong>
       </td>
       <td width="77%" >
-<?php 
-	if($db->f("default")=="1") { ?>
-		<img src="<?php echo $mosConfig_live_site ?>/administrator/images/tick.png" border="0" />
-		<input type="hidden" name="default" value="1" />
-      <?php 
-	}
-	else { ?>
-		<input type="checkbox" name="default" value="1"  />
-        <?php 
-	} 
-?>
+		<?php 
+			if($db->f("default")=="1") { ?>
+				<img src="<?php echo $mosConfig_live_site ?>/administrator/images/tick.png" border="0" />
+				<input type="hidden" name="default" value="1" />
+			  <?php 
+			}
+			else { ?>
+				<input type="checkbox" name="default" value="1"  />
+				<?php 
+			} 
+		?>
       </td>
     </tr>
     <tr>
@@ -62,21 +62,21 @@ if (!empty($shopper_group_id)) {
         <input type="text" class="inputbox" name="shopper_group_name" size="18" value="<?php $db->sp('shopper_group_name') ?>" />
         </td>
     </tr>
-
-<?php
-    if( $perm->check("admin")) { 
-      include_class("product");  ?>
       <tr> 
-        <td width="23%"><strong><div align="right">
-          <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</div></strong>
+        <td width="23%" class="labelcell">
+          <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:
         </td>
-        <td width="77%" ><?php $ps_product->list_vendor($db->sf("vendor_id"));  ?></td>
+        <td width="77%" ><?php 
+		if( $perm->check("admin")) { 
+			$ps_product->list_vendor($db->sf("vendor_id"));  
+		}
+		else{ 
+		  echo "$vendor_name<input type=\"hidden\" name=\"vendor_id\" value=\"$ps_vendor_id\" />";
+		}
+			?></td>
       </tr>
     <?php
-    }
-    else{ 
-      echo "<input type=\"hidden\" name=\"vendor_id\" value=\"$ps_vendor_id\" />";
-    }
+
     $selected[0] = $db->f('show_price_including_tax') == "0" ? "selected=\"selected\"" : "";
     $selected[1] = $db->f('show_price_including_tax') == "1" ? "selected=\"selected\"" : "";
 ?>
@@ -106,7 +106,9 @@ if (!empty($shopper_group_id)) {
       <?php echo $VM_LANG->_PHPSHOP_SHOPPER_GROUP_FORM_DESC ?>:</div></strong>
       </td>
       <td width="77%" valign="top" >
-      <?php editorArea( 'editor1', $db->f('shopper_group_desc'), 'shopper_group_desc', 500, 250, 75, 25 ) ?>
+      <?php
+	  editorArea( 'editor1', $db->f('shopper_group_desc'), 'shopper_group_desc', 500, 250, 75, 25 ) 
+	  ?>
       </td>
     </tr>
     <tr> 

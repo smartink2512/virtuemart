@@ -126,96 +126,16 @@ $vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
 $vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/functions.js' );
 
 if( $no_menu != 1 ) {
-	echo '<div id="vmMenu">';	
+	
 	include(ADMINPATH.'header.php');
-	echo '</div>';
+	
 }
 if( $only_page != 1 && $vmLayout == 'extended') {
 	
 	vmCommonHTML::loadExtjs();
-	echo vmCommonHTML::scriptTag('',"var vmLayout = function(){
-    var layout, center;
-    var classClicked = function(e, target){            
-        vmLayout.layout.showPanel('vmPage');
-        vmLayout.loadPage(target.href );
-	};
-    return {
-	    init : function(){
-	    	try{ Ext.get('header-box').hide(); } catch(e) {} // Hide the Admin Menu under Joomla! 1.5
-            
-	    	// initialize state manager, we will use cookies
-            Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-            
-	    	var layout = new Ext.BorderLayout(document.body, {
-			    /*north: {
-			        split:true,
-			        initialSize: 75,
-			        titlebar: false,
-			        collapsible: true
-			    },*/
-			    west: {
-			        split:true,
-			        initialSize: 225,
-			        animate: true,
-			        minSize: 150,
-			        maxSize: 400,
-			        titlebar: true,
-			        collapsible: true,
-			        autoScroll:true
-			    },
-			    center: {
-			        autoScroll:true,
-			        tabPosition: 'top',
-			        closeOnTab: true,
-					alwaysShowTabs: true,
-			        resizeTabs: true,
-			        minTabWidth: 50
-			    }
-			});
-			// shorthand
-			var CP = Ext.ContentPanel;
-			
-			layout.beginUpdate();
-			//layout.add('north', new CP('wrapper', 'North'));
-			//layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
-			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'{$_SERVER['PHP_SELF']}\'>{$VM_LANG->_VM_ADMIN_BACKTOJOOMLA}</a>'}));
-			layout.add('center', new CP('vmPage', {title: '{$VM_LANG->_VM_ADMIN_PANELTITLE}', closable: false, fitToFrame:true, tabPosition: 'top'}));
-			
-			layout.restoreState();
-			layout.endUpdate();
-
-            var vmMenuLinks = Ext.get('masterdiv2');
-            vmMenuLinks.on('click', classClicked, null, {delegate: 'a', stopEvent:true});
-            
-            if( getURLParam('page') != '' ) {
-            	page = '$mosConfig_live_site/administrator/index3.php?option=com_virtuemart&page=' + getURLParam('page');
-            }
-            else {
-                page = '$mosConfig_live_site/administrator/index3.php?option=com_virtuemart&page={$_SESSION['last_page']}';
-            }            
-            this.loadPage(page);
-            this.layout = layout;
-		},
-
-        loadPage : function(page){
-
-        	php_self = page.replace(/index2.php/, 'index3.php');
-        	php_self = php_self.replace(/index.php/, 'index3.php');
-            Ext.get('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';
-        }
-	}
-}();
-if(Ext.isIE) { // AAAARGH! IE will drive us all mad someday: 'Operation aborted' BLABLABLA, WHAT SORT OF ERROR HANDLING IS THAT???
-	oldonload = window.onload;
-	window.onload = (function() {
-		if( typeof oldonload == 'function' ) oldonload();
-		vmLayout.init();
-	});
-} else {
-	Ext.onReady( vmLayout.init, vmLayout, true );
-}");
+	$vm_mainframe->addScript( $mosConfig_live_site.'/components/com_virtuemart/js/extlayout.js.php');
 	
-	echo '<iframe id="vmPage" name="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
+	echo '<iframe id="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;height: 100%; display: block;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
 
 } else {
 	if( $vmLayout == 'extended' ) {

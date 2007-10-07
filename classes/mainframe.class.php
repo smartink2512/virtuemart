@@ -146,6 +146,7 @@ class vmMainFrame {
 		// Gather all the linked Scripts into ONE link
 		$i = 0;
 		$appendix = '';
+		$otherscripts = array();
 		foreach( $this->_scripts as $src => $type ) {
 			$urlpos = strpos( $src, '?' );			
 			$url_params = '';
@@ -162,8 +163,7 @@ class vmMainFrame {
 				$appendix .= '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $src );
 				$i++;
 			} else {
-				
-				$mainframe->addCustomHeadTag('<script type="'.$type.'" src="'.$src.'"></script>');
+				$otherscripts[] = array('type'=>$type, 'src'=>$src);
 			}
 		}
 		if( $i> 0 ) {
@@ -171,6 +171,9 @@ class vmMainFrame {
 			$src .= $appendix;
 			
 			$mainframe->addCustomHeadTag( '<script src="'.$src.@$url_params.'" type="text/javascript"></script>' );
+		}
+		foreach( $otherscripts as $otherscript ) {
+			$mainframe->addCustomHeadTag('<script type="'.$otherscript['type'].'" src="'.$otherscript['src'].'"></script>');
 		}
 
 		// Gather all the linked Stylesheets into ONE link

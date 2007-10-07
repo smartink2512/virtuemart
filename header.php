@@ -51,6 +51,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 	echo $mainframe->getHead();
 }
 ?>
+<div id="vmMenu">
 <div id="content-box2">
 <div id="content-pad">
   <div class="sidemenu-box">
@@ -564,6 +565,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
       </div>
     </div>
   </div>
+</div>
 </div>
    
    
