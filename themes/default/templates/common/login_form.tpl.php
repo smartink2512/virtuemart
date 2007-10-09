@@ -35,7 +35,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 	<input type="hidden" name="remember" value="yes" />
 	<?php endif; ?>
 	<input type="hidden" name="op2" value="login" />
-	<input type="hidden" name="lang" value="<?php echo $mosConfig_lang ?>" />
+	<input type="hidden" name="lang" value="<?php echo vmIsJoomla() ? $mosConfig_lang : $GLOBALS['mosConfig_locale'] ?>" />
 	<input type="hidden" name="return" value="<?php echo $return_url ?>" />
 	<input type="hidden" name="<?php echo $validate; ?>" value="1" />
 </form>
