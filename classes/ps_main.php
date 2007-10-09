@@ -930,7 +930,7 @@ function vmIsJoomla( $version='', $operator='=', $compare_minor_versions=true) {
 	}
 	if( !$compare_minor_versions ) $this_version .= '.'. $jversion->DEV_LEVEL;
 	if( empty( $version ) ) {
-		return empty($this_version);
+		return !empty($this_version) && strtolower($jversion->PRODUCT) == 'joomla!';
 	}
 	$allowed_operators = array( '<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne' );
 	

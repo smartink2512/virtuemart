@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+09.10.2007 soeren
+^ removed "eval"s from the image processing function, fixed using the disableToggle function in the product form
+# fixed Mambo 4.6.2 login issue (+CSV Upload Error) - thanks to Andrà¹s
+
 06.10.2007 gregdev
 # Joomla! 1.5 compatibility: Set $my->gid
 

@@ -176,15 +176,14 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 				if( !class_exists(strtolower($classname))) {
 					$classname = 'vm'.$classname;
 				}
-				// create an object
-				$string = "\$$classname = new $classname;";
-				eval( $string );
-
-				// RUN THE FUNCTION
-				// $ok  = $class->function( $vars );
-				$cmd = "\$ok = \$".$classname."->" . $funcParams["method"] . "(\$vars);";
-				eval( $cmd );
-
+				if( class_exists( $classname )) {
+					// create an object
+					$$classname = new $classname();
+				
+					// RUN THE FUNCTION
+					// $ok  = $class->function( $vars );
+					$ok = $$classname->$funcParams["method"]($vars);
+				}
 				if ($ok == false) {
 					$no_last = 1;
 					if( $_SESSION['last_page'] != HOMEPAGE && empty($_REQUEST['ignore_last_page']) ) {

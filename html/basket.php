@@ -66,7 +66,7 @@ else {
             $flypage_id = $cart[$i]["product_id"];
         }
 		$flypage = $ps_product->get_flypage($flypage_id);
-        $category_id=$cart[$i]["category_id"];
+        $category_id = mosGetParam( $cart[$i], 'category_id', 0 );
 		// Build URL based on whether item or product
 		if ($product_parent_id) {
 			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id&category_id=$category_id");
