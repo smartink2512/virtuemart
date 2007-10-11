@@ -15,11 +15,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-if( !class_exists( "mosmenubar")) {
+if( !class_exists('mosMenuBar')) {
 	require_once( $mosConfig_absolute_path."/administrator/includes/menubar.html.php" );
 }
 
-if( !class_exists('jtoolbar')) {
+if( !class_exists('JToolbar')) {
 	class JToolBar {
 		function &getInstance($text) {
 			$tb = new JToolBar();

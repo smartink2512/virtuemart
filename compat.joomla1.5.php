@@ -19,7 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
-if( class_exists( 'jconfig' ) ) {
+if( class_exists( 'JConfig' ) ) {
 	
 	// These are needed when the Joomla! 1.5 legacy plugin is not enabled
 	if( !defined( '_JLEGACY' ) ) {
@@ -76,7 +76,7 @@ if( class_exists( 'jconfig' ) ) {
 		//$GLOBALS['database']->debug($jconfig->debug);
 	
 		// The user object
-		if( class_exists('jtable')) {
+		if( class_exists('JTable')) {
 			$user				=& JFactory::getUser();
 			$GLOBALS['my']		= clone($user->getTable());
 			$GLOBALS['my']->gid	= $user->get('aid', 0);
@@ -125,10 +125,6 @@ if( class_exists( 'jconfig' ) ) {
 
 		// Version information
 		$_VERSION = $GLOBALS['_VERSION'];
-		
-		// Pre-load some classes
-		// Careful: case sensitive!
-		JLoader::load( 'mosMenuBar' );
 	}
 }
 ?>

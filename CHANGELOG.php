@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+11.10.2007 gregdev
+# Joomla! 1.5 compatibility: more elegant fix for autoloading problem
+
 10.10.2007 gregdev
 # Joomla! 1.5 compatibility: legacy classes are now registered for autoloading
 
