@@ -125,6 +125,10 @@ if( class_exists( 'jconfig' ) ) {
 
 		// Version information
 		$_VERSION = $GLOBALS['_VERSION'];
+		
+		// Pre-load some classes
+		// Careful: case sensitive!
+		JLoader::load( 'mosMenuBar' );
 	}
 }
 ?>
