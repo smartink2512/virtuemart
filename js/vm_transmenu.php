@@ -1,10 +1,10 @@
 <?php
 /**
-* @version $Id: mod_mbt_transmenu.php
-* @package Mambo
+* @version $Id$
+* @package VirtueMart
 * @copyright (C) 2005 MamboTheme.com
 * @license http://www.mambotheme.com
-* Mambo is Free Software
+* 
 */
 
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
@@ -14,13 +14,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */	
 global $mosConfig_live_site, $mosConfig_absolute_path;
 
-if( vmIsJoomla(1.5) ) {
-	$live_module_dir = $mosConfig_live_site.'/modules/'.$module->module;
-	$absolute_module_dir = $mosConfig_absolute_path.'/modules/'.$module->module;
-} else {
-	$live_module_dir = $mosConfig_live_site.'/modules';
-	$absolute_module_dir = $mosConfig_absolute_path.'/modules';
-}
+$live_module_dir = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js';
+$absolute_module_dir = $mosConfig_absolute_path.'/components/'.VM_COMPONENT_NAME.'/js';
 
 $params->set( 'module_name', 'ShopMenu' );
 $params->set( 'module', 'vm_transmenu' );
@@ -36,4 +31,3 @@ $mbtmenu= new Shop_Menu($db, $params);
 $mbtmenu->genMenu();
 
 ?>
-
