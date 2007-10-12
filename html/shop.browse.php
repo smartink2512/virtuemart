@@ -166,6 +166,15 @@ else {
 					$search_string.="&amp;search_op=$search_op";
 				}
 			}
+
+			if (!empty($product_type_id)){
+				foreach($_REQUEST as $key => $value){
+					if (substr($key, 0,13) == "product_type_"){
+						$search_string .="&".$key."=".urlencode(mosGetParam($_REQUEST, $key ));
+					}
+				}
+			}
+
 		}
 
 		$tpl->set( 'VM_BROWSE_ORDERBY_FIELDS', $VM_BROWSE_ORDERBY_FIELDS);

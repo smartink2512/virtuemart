@@ -8,7 +8,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -185,7 +185,7 @@ else {
 	if( !empty($shipping_rate_id) && (NO_SHIPPING != '1')) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
-		$shipping_total = round( $GLOBALS['CURRENCY']->convert( $ps_checkout->_SHIPPING->get_rate ( $vars )), 2 );
+		$shipping_total = round( $ps_checkout->_SHIPPING->get_rate ( $vars ), 2 );
 		$shipping_taxrate = $ps_checkout->_SHIPPING->get_tax_rate();
 
 		// When the Shipping rate is shown including Tax

@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -657,7 +657,7 @@ if (!defined('ENT_QUOTES')) {
  */
 function vmHtmlEntityDecode($string, $quote_style = ENT_COMPAT, $charset = null) {
 	if( function_exists('html_entity_decode')) {
-		return html_entity_decode( $string, $quote_style, $charset );
+		return @html_entity_decode( $string, $quote_style, $charset );
 	}
     if (!is_int($quote_style) && !is_null($quote_style)) {
         user_error(__FUNCTION__.'() expects parameter 2 to be long, ' .

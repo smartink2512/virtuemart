@@ -73,7 +73,7 @@ class zone_shipping {
          $rate = $db->f("zone_limit");
       }
       $rate *= $taxrate;
-      
+      $rate = $GLOBALS['CURRENCY']->convert( $rate );
       // THE ORDER OF THOSE VALUES IS IMPORTANT:
       // carrier_name|rate_name|totalshippingcosts|rate_id
       $value = urlencode($this->classname."|".$the_zone."|".$country."|".$rate."|".$the_zone);

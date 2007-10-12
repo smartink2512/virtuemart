@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+11.10.2007 soeren
+# Task #1431 - Advanced Search Result page direction
+# Task #1465 - Quantity text still shown when box set to hide
+# another fix to Task #1471 - Recommend this product to a friend formating lost if form not complete 
+	and Task #1468 - Can not send 'Recommend this product to a friend' email
+^ moved module-accompanying javascripts from /modules to components/com_virtuemart/js
+# suppressed html_entity_decode error notices, because of unsupported charsets
+
 11.10.2007 gregdev
 # Joomla! 1.5 compatibility: more elegant fix for autoloading problem
 

@@ -1043,16 +1043,18 @@ class ps_product_attribute {
 			$display_end=array_shift($fields);
 			$display_step=array_shift($fields);
 		}
-		//Determine if label to be used
-		$html = "";
-		if(!$child) {
-			$html ="<label for=\"quantity$prod_id\" class=\"quantity_box\">".$VM_LANG->_PHPSHOP_CART_QUANTITY.":&nbsp;</label>";
-		}
+
 		//Start output of quantity
 		//Check for incompatabilities and reset to normal
 
 		if(!@$display_type || (@$display_type == "hide" && $child == 'Y') || (@$display_type == "radio" && $child == 'YM') || (@$display_type == "radio" && !$child)) {
 			$display_type = "none";
+		}
+		//Determine if label to be used
+		$html = '';
+		
+		if(!$child && $display_type != 'hide') {
+			$html = '<label for="quantity'.$prod_id.'" class="quantity_box">'.$VM_LANG->_PHPSHOP_CART_QUANTITY.':&nbsp;</label>';
 		}
 		switch($display_type) {
 			case "radio" : //Radio Box

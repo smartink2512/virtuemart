@@ -59,6 +59,7 @@ if( $_VERSION->RELEASE < 1.1 ) {
 	$userform = ob_get_contents();
 	ob_end_clean();
 	
+	$userform = str_replace( 'submitbutton', 'submitform', $userform );
 	$userform = str_replace( '<form action="index2.php" method="post" name="adminForm">', '', $userform );
 	$userform = str_replace( '</form>', '', $userform );
 	$userform = str_replace( '<div id="editcell">', '', $userform );
@@ -243,10 +244,3 @@ $funcname = $user_id ? "userUpdate" : "userAdd";
 $formObj->finishForm( $funcname, 'admin.user_list', $option );
 
 ?>
-<script type="text/javascript">
-function submitbutton( button ) {
-    if( submitregistration() ) {
-            document.adminForm.submit();
-    }
-}
-</script>

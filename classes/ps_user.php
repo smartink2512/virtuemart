@@ -187,6 +187,7 @@ class ps_user {
 		$db->query($q);
 		
 		$_REQUEST['id'] = $_REQUEST['user_id'] = $uid;
+		$vmLogger->info( 'The user has been added.');
 		
 		return True;
 
@@ -200,7 +201,7 @@ class ps_user {
 	* returns:
 	**************************************************************************/
 	function update(&$d) {
-		global $my, $VM_LANG, $perm;
+		global $my, $VM_LANG, $perm, $vmLogger;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 		$timestamp = time();
@@ -283,7 +284,9 @@ class ps_user {
 			$q .= "WHERE user_id='" . $d["user_id"] . "' ";
 		}
 		$db->query($q);
-
+		
+		$vmLogger->info( 'The user details have been updated.');
+		
 		return True;
 	}
 

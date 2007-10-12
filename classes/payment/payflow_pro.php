@@ -262,7 +262,7 @@ class payflow_pro {
 
 		// Transaction Data
 		'AMT' => $order_total, // amount
-		'TRXTYPE' => 'A', // transaction type
+		'TRXTYPE' => 'A', // transaction type: Delayed Capture
 		'TENDER' => 'C', // payment method (C = Credit Card)
 		'CURRENCY' => $vendor_currency,
 		
@@ -308,7 +308,7 @@ class payflow_pro {
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
 	
-		$result = vmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
+		$result = vmConnector::handleCommunication( "https://$host:443/transaction/", $poststring, $headers );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -661,7 +661,7 @@ class payflow_pro {
 		$headers[] = "X-VPS-VIT-Integration-Product: ".phpversion()."::cURL";  // For your info, would populate with application name
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
-	
+			
 		$result = vmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
 		
 		if( !$result ) {

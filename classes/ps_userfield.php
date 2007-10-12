@@ -274,7 +274,7 @@ class ps_userfield extends vmAbstractObject {
 		}
 		
 		// Form validation function
-		if( !defined( '_PSHOP_ADMIN') ) {
+		if( !vmIsAdminMode() ) {
 			ps_userfield::printJS_formvalidation( $required_fields, $rowFields );
 		} else {
 			echo vmCommonHTML::scriptTag('', 'function submitregistration() { return true }');

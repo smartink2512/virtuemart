@@ -22,7 +22,7 @@ $ps_product = new ps_product();
 // Show only top level categories and categories that are
 // being published
 $tpl = new $GLOBALS['VM_THEMECLASS']();
-$category_childs = $ps_product_category->get_child_list($category_id);
+$category_childs = $ps_product_category->get_child_list(0);
 $tpl->set( 'categories', $category_childs );
 //echo $vendor_store_desc;
 $categories = $tpl->fetch( 'common/categoryChildlist.tpl.php');
