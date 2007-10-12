@@ -46,22 +46,22 @@ if ( $menutype == 'links' ) {
 }
 elseif( $menutype == "transmenu" ) {
 	/* TransMenu script to display a DHTML Drop-Down Menu */
-	include( $mosConfig_absolute_path . '/modules/vm_transmenu.php' );
+	include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_transmenu.php' );
 
 }
 elseif( $menutype == "dtree" ) {
 	/* dTree script to display structured categories */
-	include( $mosConfig_absolute_path . '/modules/vm_dtree.php' );
+	include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_dtree.php' );
 
 }
 elseif( $menutype == "jscook" ) {
 	/* JSCook Script to display structured categories */
-	include( $mosConfig_absolute_path . '/modules/vm_JSCook.php' );
+	include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_JSCook.php' );
 
 }
 elseif( $menutype == "tigratree" ) {
 	/* TigraTree script to display structured categories */
-	include( $mosConfig_absolute_path . '/modules/vm_tigratree.php' );
+	include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_tigratree.php' );
 }
 
  ?>

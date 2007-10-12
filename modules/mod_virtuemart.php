@@ -8,7 +8,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage modules
 * 
-* @copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2004-2007 Soeren Eberhardt
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
 * VirtueMart is Free Software.
@@ -28,7 +28,7 @@ global $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_
 
 $category_id = mosGetParam( $_REQUEST, 'category_id' );
 
-$mod_dir = dirname( __FILE__ );
+$mod_dir = $mosConfig_absolute_path.'/components/'.VM_COMPONENT_NAME.'/js';
 
 /* Get module parameters */
 $show_login_form = $params->get( 'show_login_form', 'no' );
@@ -85,7 +85,7 @@ if( $show_categories == "yes" ) {
   }
   elseif( $menutype == "tigratree" ) {
       /* TigraTree script to display structured categories */
-      include( $mod_dir . '/vm_tigratree.php' );
+      include_once( $mod_dir . '/vm_tigratree.php' );
   }
 
 }
