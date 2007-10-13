@@ -35,11 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+13.10.2007 soeren
+# Task #1468 - Can not send 'Recommend this product to a friend' email
+ 
 11.10.2007 soeren
 # Task #1431 - Advanced Search Result page direction
 # Task #1465 - Quantity text still shown when box set to hide
 # another fix to Task #1471 - Recommend this product to a friend formating lost if form not complete 
-	and Task #1468 - Can not send 'Recommend this product to a friend' email
 ^ moved module-accompanying javascripts from /modules to components/com_virtuemart/js
 # suppressed html_entity_decode error notices, because of unsupported charsets
 
@@ -60,7 +62,7 @@ VirtueMart 1.1.x
 # Fixed missing $timestamp in order add immediately after checkout
 
 02.10.2007 soeren
-# fixed Internet Explorer "Operation aborted" error by outsourceing Layout Loading code into /js/extlayout.js.php
+# fixed Internet Explorer "Operation aborted" error by outsourcing Layout Loading code into /js/extlayout.js.php
 ^ Updated ExtJS from v1.1 to v1.1.1 + fix for Tabs without Text in IE on Joomla! 1.5 in Standard Layout
 
 01.10.2007 soeren

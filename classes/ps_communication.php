@@ -91,7 +91,7 @@ class ps_communication {
 		// Get Session Cookie `value`
 		$sessioncookie 		= mosGetParam( $_COOKIE, 'virtuemart', null );
 
-		if ( !(strlen($sessioncookie) == 32 || $sessioncookie == '-') ) {
+		if ( strlen($sessioncookie) < 16 || $sessioncookie == '-') {
 			mosErrorAlert( $VM_LANG->_NOT_AUTH );
 		}
 
