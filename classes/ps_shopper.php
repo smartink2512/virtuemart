@@ -350,7 +350,9 @@ class ps_shopper {
 			mosRedirect( $sess->url( 'index.php?page=checkout.index', false, false ) );
 		}
 		else {
-			mosRedirect( $sess->url( 'index.php?page=shop.index', false, false ), $VM_LANG->_REG_COMPLETE_ACTIVATE );
+			$GLOBALS['page'] = 'shop.cart';
+			$msg = strip_tags( $VM_LANG->_REG_COMPLETE_ACTIVATE );
+			$vmLogger->info( $msg );
 		}
 
 		return true;
@@ -470,11 +472,6 @@ class ps_shopper {
 			}
 		}
 
-		if ( $mosConfig_useractivation == 1 ){
-			echo $VM_LANG->_REG_COMPLETE_ACTIVATE;
-		} else {
-			echo $VM_LANG->_REG_COMPLETE;
-		}
 		return true;
 	}
 

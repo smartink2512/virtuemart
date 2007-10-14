@@ -171,7 +171,7 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 			<li><a href="<?php echo $reset_url ?>"><?php echo $VM_LANG->_LOST_PASSWORD ?></a></li>
 			<?php if( $remind_url ) : ?>
 			<li><a href="<?php echo $remind_url ?>"><?php echo $VM_LANG->_FORGOT_YOUR_USERNAME ?></a></li>
-			<? endif; ?>
+			<?php endif; ?>
 			<?php if( $mosConfig_allowUserRegistration == '1' ) : ?>
 			<li><?php echo $VM_LANG->_NO_ACCOUNT ?> <a href="<?php echo $registration_url ?>"><?php echo $VM_LANG->_CREATE_ACCOUNT ?></a></li>
 			<?php endif; ?>

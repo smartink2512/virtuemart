@@ -269,7 +269,7 @@ if ( $show_login_form == "yes" ) {
 			<a href="<?php echo $remind_url ?>"><?php echo $VM_LANG->_FORGOT_YOUR_USERNAME ?></a>
 		  </td>
 		</tr>
-		<? endif; ?>
+		<?php endif; ?>
 		<?php if( $mosConfig_allowUserRegistration == '1' ) : ?>
 			<tr>
 			  <td colspan="2">
