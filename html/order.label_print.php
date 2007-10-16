@@ -39,11 +39,7 @@ $image_url = stristr($image_url, "index2.php") ?
     str_replace("index2.php", "index3.php", $image_url) :
     str_replace("index.php", "index2.php", $image_url);
 
-echo "<html>\n";
-echo "<head><title>Print Label</title></head>\n";
-echo "<body>\n";
-echo '<object data="' . $image_url . '", type="' . $image_type . '", height="' .
-    $dim_y . '", width="' . $dim_x . '" />' . "\n";
-echo "</body>\n";
-echo "</html>\n";
+echo "<h2>Shipping Label:</h2>\n";
+echo '<img src="' . $image_url . '" height="' .  $dim_y . '" width="' . $dim_x . '" />' . "\n";
+
 ?>

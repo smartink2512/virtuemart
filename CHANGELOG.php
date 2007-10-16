@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+16.10.2007 soeren
+# applied some fixes to the DHL shipping module/label printing function
+
 13.10.2007 soeren
 # Task #1468 - Can not send 'Recommend this product to a friend' email
  

@@ -294,7 +294,7 @@ class dhl {
 				$code->setText(DHL_ADDITIONAL_PROTECTION);
 				$addl_prot->appendChild($code);
 				$value =& $xmlReq->createElement('Value');
-				$value->setText($insurance);
+				$value->setText(round($insurance, 0));
 				$addl_prot->appendChild($value);
 				$detail->appendChild($addl_prot);
 			}
@@ -334,7 +334,7 @@ class dhl {
 					$dutiable->appendChild($dflag);
 
 					$dval =& $xmlReq->createElement('CustomsValue');
-					$dval->setText($duty_value);
+					$dval->setText(round($duty_value, 0));
 					$dutiable->appendChild($dval);
 				}
 				$shipment->appendChild($dutiable);
@@ -789,7 +789,7 @@ class dhl {
 				$dutiable->appendChild($dflag);
 
 				$dval =& $xmlReq->createElement('CustomsValue');
-				$dval->setText($dbl->f('duty_value'));
+				$dval->setText(round($dbl->f('duty_value'), 0));
 				$dutiable->appendChild($dval);
 
 				/*

@@ -153,12 +153,10 @@ while ($db->next_record()) {
 			$display_void_label = true;
 		}
 	}
-	if (!$display_print_label)
+	if (!$display_print_label) {
 		$listObj->addCell("");
-	else {
-		$pl_url = $sess->url($_SERVER['PHP_SELF'] .
-		    "?page=order.label_print&amp;order_id=" . $db->f("order_id") .
-		    "&amp;no_menu=1&amp;no_html=1");
+	} else {
+		$pl_url = $sess->url($_SERVER['PHP_SELF'] ."?page=order.label_print&order_id=" . $db->f("order_id") . "&no_menu=1&no_html=1");
 		$pl_url = stristr($_SERVER['PHP_SELF'], "index2.php") ?
 		    str_replace("index2.php", "index3.php", $pl_url) :
 		    str_replace("index.php", "index2.php", $pl_url);
@@ -172,12 +170,10 @@ while ($db->next_record()) {
 		$listObj->addCell($pl_link);
 	}
 
-	if (!$display_track)
+	if (!$display_track) {
 		$listObj->addCell("");
-	else {
-		$tl_url = $sess->url($_SERVER['PHP_SELF'] .
-		    "?page=order.label_track&amp;order_id=" . $db->f("order_id") .
-		    "&amp;no_menu=1");
+	} else {
+		$tl_url = $sess->url($_SERVER['PHP_SELF'] . "?page=order.label_track&order_id=" . $db->f("order_id") ."&no_menu=1");
 		$tl_url = stristr($_SERVER['PHP_SELF'], "index2.php") ?
 		    str_replace("index2.php", "index3.php", $tl_url) :
 		    str_replace("index.php", "index2.php", $tl_url);
@@ -193,9 +189,7 @@ while ($db->next_record()) {
 	if (!$display_void_label)
 		$listObj->addCell("");
 	else {
-		$vl_url = $sess->url($_SERVER['PHP_SELF'] .
-		    "?page=order.label_void&amp;order_id=" . $db->f("order_id") .
-		    "&amp;no_menu=1");
+		$vl_url = $sess->url($_SERVER['PHP_SELF'] ."?page=order.label_void&order_id=" . $db->f("order_id") ."&no_menu=1");
 		$vl_url = stristr($_SERVER['PHP_SELF'], "index2.php") ?
 		    str_replace("index2.php", "index3.php", $vl_url) :
 		    str_replace("index.php", "index2.php", $vl_url);
