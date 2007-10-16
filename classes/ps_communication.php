@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -47,7 +47,7 @@ class ps_communication {
 
 		// probably a spoofing attack
 		if (!$validate) {
-			mosErrorAlert( 'not valid'.$VM_LANG->_NOT_AUTH );
+			mosErrorAlert( 'Hash not valid - '.$VM_LANG->_NOT_AUTH );
 		}
 
 		if (!$_SERVER['REQUEST_METHOD'] == 'POST' ) {
@@ -309,7 +309,7 @@ class ps_communication {
         return false;
     }
     $subject = sprintf( $VM_LANG->_VM_RECOMMEND_SUBJECT, $vendor_store_name );
-    $msg = vmGetUnEscaped( $d['recommend_message'] );
+    $msg = vmGetUnEscaped(str_replace( array('\r', '\n' ), array("\r", "\n" ), $d['recommend_message'] ));
     $send = vmMail($d['sender_mail'], 
                    $d['sender_name'],
                    $d['recipient_mail'],

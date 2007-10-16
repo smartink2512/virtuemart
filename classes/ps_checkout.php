@@ -132,7 +132,14 @@ class ps_checkout {
 				foreach( $step as $stepname ) {
 					if( in_array( $stepname, $_POST['checkout_this_step'])) {
 						next($steps);
+						$key = key( $steps );
+						if( empty( $key )) {
+							// We are beyond the last index of the array and need to go "back" to the last index
+							end( $steps );
+						}
+						//echo "Stage: ".key( $steps );
 						return key($steps);
+						
 					}
 				}
 			}

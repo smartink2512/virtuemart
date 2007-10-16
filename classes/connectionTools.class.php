@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id:connectionTools.class.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -39,11 +39,11 @@ class vmConnector {
 		while( @ob_end_clean() );
 
 		$http_status = intval( $http_status );
-		header("HTTP/1.0 $http_status");
+		@header("HTTP/1.0 $http_status");
 		if( $mime_type ) {
-			header( "Content-type: $mime_type; charset=".vmGetCharset() );
+			@header( "Content-type: $mime_type; charset=".vmGetCharset() );
 		} elseif( $mime_type != '' ) {
-			header( "Content-type: text/html; charset=".vmGetCharset() );
+			@header( "Content-type: text/html; charset=".vmGetCharset() );
 		}
 		if( $content ) {
 			echo $content;
