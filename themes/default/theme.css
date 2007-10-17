@@ -6,7 +6,7 @@
 */
 
 /* General Shop Styles here please */
-.addtocart_button {
+.addtocart_button, .notify_button {
 	text-align:center;
 	background-position:bottom left;
 	width:160px;height:30px;
@@ -14,12 +14,15 @@
 	border: none;
 	font-weight:bold;
 	font-family:inherit;
-	background: url( 'images/add-to-cart_blue.gif' ) no-repeat  center transparent;
 	vertical-align: middle;
 	overflow:hidden;
-	
 }
-
+.addtocart_button {
+	background: url( 'images/add-to-cart_blue.gif' ) no-repeat  center transparent;
+}
+.notify_button {
+	background: url( 'images/notify_blue.gif' ) no-repeat  center transparent;
+}
 .addtocart_button_module {
 	text-align:center;
 	background-position:bottom left;

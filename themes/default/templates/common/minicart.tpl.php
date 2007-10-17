@@ -4,9 +4,9 @@ if($empty_cart) { ?>
     
     <div style="margin: 0 auto;">
     <?php if(!$vmMinicart) { ?>
-        <a href='http://virtuemart.net/' target='_blank'>
-        <img src="<?php echo $mm_action_url ?>components/com_virtuemart/shop_image/ps_image/menu_logo.gif" alt="VirtueMart" width="80" border="0" ></a>
-        <br/>
+        <a href="http://virtuemart.net/" target="_blank">
+        <img src="<?php echo $mm_action_url ?>components/com_virtuemart/shop_image/ps_image/menu_logo.gif" alt="VirtueMart" width="80" border="0" /></a>
+        <br />
     <?php }
     echo $VM_LANG->_PHPSHOP_EMPTY_CART ?>
     </div>

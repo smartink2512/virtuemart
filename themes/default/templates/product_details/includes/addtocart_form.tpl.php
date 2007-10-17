@@ -20,13 +20,21 @@ echo $html;
 if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL )) {
 	?>
         <?php if ($children != "multi") { ?> 
-    <div style="float: right;vertical-align: middle;"> <?php if ($children == "drop") { 
-    echo $ps_product_attribute->show_quantity_box($product_id,$product_id);
-     } 
-     if ($children == "radio") {
-        echo $ps_product_attribute->show_radio_quantity_box();
-     }?>    
-    <input type="submit" class="addtocart_button" value="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" title="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" />
+    <div style="float: right;vertical-align: middle;"> <?php 
+    if ($children == "drop") { 
+    	echo $ps_product_attribute->show_quantity_box($product_id,$product_id);
+    } 
+    if ($children == "radio") {
+		echo $ps_product_attribute->show_radio_quantity_box();
+    }
+    $button_lbl = $VM_LANG->_PHPSHOP_CART_ADD_TO;
+    $button_cls = 'addtocart_button';
+    if( CHECK_STOCK == '1' && !$product_in_stock ) {
+     	$button_lbl = $VM_LANG->_VM_CART_NOTIFY;
+     	$button_cls = 'notify_button';
+    }
+    ?>    
+    <input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
     </div>
     <?php  } ?>    
     <input type="hidden" name="flypage" value="shop.<?php echo $flypage ?>" />

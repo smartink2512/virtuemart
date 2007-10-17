@@ -1007,7 +1007,8 @@ class vmCommonHTML extends mosHTML {
 		global $VM_LANG, $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
 		if ( @VM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
-				$link = 'index2.php?'.ampReplace(mosGetParam($_SERVER,'QUERY_STRING')).'&amp;pop=1';
+				$query_string = str_replace( 'only_page=1', 'only_page=0', ampReplace(mosGetParam($_SERVER,'QUERY_STRING')) );
+				$link = 'index2.php?'.$query_string.'&amp;pop=1';
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
@@ -1337,10 +1338,8 @@ function vmPopupLink( $link, $text, $popupWidth=640, $popupHeight=480, $target='
 	if( $windowAttributes ) {
 		$windowAttributes = ','.$windowAttributes;
 	}
-	$jslink = vmCommonHTML::hyperLink( "javascript:void window.open('$link', '$target', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');", $text, '', $title );
-	$noscriptlink = vmCommonHTML::hyperLink( $link, $text, $target, $title );
+	return vmCommonHTML::hyperLink( $link, $text, '', $title, "onclick=\"void window.open('$link', '$target', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');return false;\"" );
 	
-	return mm_writeWithJS( $jslink, $noscriptlink );
 }
 /**
  * Creates a formatted address using the store address format

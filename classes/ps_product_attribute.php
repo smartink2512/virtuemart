@@ -1033,8 +1033,9 @@ class ps_product_attribute {
 		}
 		//Get style to use
 		$db = new PS_db;
-		$q = "SELECT quantity_options,product_parent_id FROM #__{vm}_product WHERE product_id='$id'";
+		$q = "SELECT quantity_options,product_parent_id, product_in_stock FROM #__{vm}_product WHERE product_id='$id'";
 		$db->query($q);
+
 		$q_field = $db->f("quantity_options");
 		if($q_field) {
 			$fields=explode(",",$q_field);
@@ -1046,7 +1047,9 @@ class ps_product_attribute {
 
 		//Start output of quantity
 		//Check for incompatabilities and reset to normal
-
+		if( CHECK_STOCK == '1' && !$db->f('product_in_stock') ) {
+			$display_type = 'hide';
+		}
 		if(!@$display_type || (@$display_type == "hide" && $child == 'Y') || (@$display_type == "radio" && $child == 'YM') || (@$display_type == "radio" && !$child)) {
 			$display_type = "none";
 		}

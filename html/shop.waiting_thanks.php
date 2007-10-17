@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,12 +17,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-if( $ok ) {
-	echo $VM_LANG->_PHPSHOP_WAITING_LIST_THANKS ;
-}
-?>
-<br />
-<br />
-<?php 
-include(PAGEPATH."shop.cart.php"); 
+$tpl = vmTemplate::getInstance();
+$tpl->set_vars(array('product_id'=>$product_id,
+								'ok' => $ok )
+						);
+echo $tpl->fetch('pages/shop.waiting_thanks.tpl.php');
 ?>

@@ -35,6 +35,7 @@ require_once(CLASSPATH . 'ps_reviews.php' );
 $product_id = intval( mosgetparam($_REQUEST, "product_id", null) );
 $product_sku = $db->getEscaped( mosgetparam($_REQUEST, "sku", '' ) );
 $category_id = mosgetparam($_REQUEST, "category_id", null);
+$pop = (int)mosgetparam($_REQUEST, "pop", 0);
 $manufacturer_id = mosgetparam($_REQUEST, "manufacturer_id", null);
 $Itemid = $sess->getShopItemid();
 $db_product = new ps_DB;
@@ -166,24 +167,32 @@ $next_product = $neighbors['next'];
 $previous_product = $neighbors['previous'];
 $next_product_url = $previous_product_url = '';
 if( !empty($next_product) ) {
-	$url_parameters = 'page='.$page.'&product_id='.$next_product['product_id'].'&flypage='.$flypage;
+	$url_parameters = 'page='.$page.'&product_id='.$next_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
     if( $manufacturer_id ) {
     	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
     }
     if( $keyword != '') {
     	$url_parameters .= "&amp;keyword=".urlencode($keyword);
     }
-	$next_product_url = str_replace("index2","index",$sess->url( $url_parameters ));
+	if( $pop == 1 ) {
+		$next_product_url = $sess->url( $_SERVER['PHP_SELF'].'?'.$url_parameters );
+	} else {
+		$next_product_url = str_replace("index2","index",$sess->url( $url_parameters ));
+	}
 }
 if( !empty($previous_product) ) {
-	$url_parameters = 'page='.$page.'&product_id='.$previous_product['product_id'].'&flypage='.$flypage;
+	$url_parameters = 'page='.$page.'&product_id='.$previous_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
     if( $manufacturer_id ) {
     	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
     }
     if( $keyword != '') {
     	$url_parameters .= "&amp;keyword=".urlencode($keyword);
     }
-	$previous_product_url = str_replace("index2","index",$sess->url( $url_parameters ));
+	if( $pop == 1 ) {
+		$previous_product_url = $sess->url( $_SERVER['PHP_SELF'].'?'.$url_parameters );
+	} else {
+		$previous_product_url = str_replace("index2","index",$sess->url( $url_parameters ));
+	}
 }
 
 $tpl->set( 'next_product', $next_product );

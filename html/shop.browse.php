@@ -375,6 +375,7 @@ else {
 				
 			$tpl->set( 'i', $i );
 			$tpl->set( 'product_id', $db_browse->f('product_id') );
+			$tpl->set( 'product_in_stock', $db_browse->f('product_in_stock') );
 			$tpl->set( 'ps_product_attribute', $ps_product_attribute );
 			$products[$i]['form_addtocart'] = $tpl->fetch( 'browse/includes/addtocart_form.tpl.php' );
 			$products[$i]['has_addtocart'] = true;

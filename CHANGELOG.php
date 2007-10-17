@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.10.2007 soeren
+# fixed next/previous product links in Print View
++ implemented "Notify Me!" modification by Corey, which shows a "Notify Me" button instead of "Add to Cart"
++ added new QUERY_STRING filter to better prevent XSS attacks using the query string
+
 16.10.2007 soeren
 # applied some fixes to the DHL shipping module/label printing function
 

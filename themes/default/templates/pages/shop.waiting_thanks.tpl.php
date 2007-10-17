@@ -1,11 +1,11 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
 *
 * @version $Id$
 * @package VirtueMart
-* @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @subpackage themes
+* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,7 +17,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$tpl = vmTemplate::getInstance();
-$tpl->set_vars(array('product_id'=>$product_id ) );
-echo $tpl->fetch('pages/shop.waiting_list.tpl.php');
+if( $ok ) {
+	echo '<h3>'.$VM_LANG->_PHPSHOP_WAITING_LIST_THANKS.'</h3>';
+}
 ?>
+<br />
+<br />
+<?php 
+  	echo '<a class="previous_page" href="'.$sess->url( $_SERVER['PHP_SELF']."?page=shop.product_details&product_id=$product_id" ). '">'
+      . $VM_LANG->_PHPSHOP_BACK_TO_DETAILS.'</a>';
+?> 

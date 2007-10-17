@@ -32,7 +32,6 @@ echo "vmLayout = function(){
             
 	    	var layout = new Ext.BorderLayout(document.body, {
 			    west: {
-			        split:true,
 			        initialSize: 225,
 			        animate: true,
 			        minSize: 150,

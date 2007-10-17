@@ -32,8 +32,24 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	$page = mosgetparam($_REQUEST, 'page', "");
 	$func = mosgetparam($_REQUEST, 'func', "");
 	$ajax_request = mosgetparam($_REQUEST, 'ajax_request', "0" );
-	// Filter the PHP_SELF var and clean it
+	// Clean the var PHP_SELF from chars like " or ' 
 	$_SERVER['PHP_SELF'] = htmlspecialchars( $_SERVER['PHP_SELF'], ENT_QUOTES );
+	
+	if( !empty($_SERVER['QUERY_STRING'])) {
+		// Make sure, that the Query String only contains urlencoded values
+		$vars = explode( '&', $_SERVER['QUERY_STRING']);
+		$new_query_string = array();
+		foreach( $vars as $val) {
+			$keyvarpair = explode('=', $val);
+			if( sizeof( $keyvarpair ) == 1 ) {
+				$keyvarpair[1] = 0;
+			}
+			$new_query_string[] = $keyvarpair[0].'='.urlencode(urldecode($keyvarpair[1]));
+			
+		}
+		$_SERVER['QUERY_STRING'] = implode('&', $new_query_string );
+	}
+	
 	if( $my->id > 0 ) {
 		// This is necessary to get the real GID
 		if( class_exists( 'JConfig' ) ) {

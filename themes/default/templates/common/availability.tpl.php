@@ -39,6 +39,9 @@
 		</span>
 		<br /><br />
 		<?php
+		if( CHECK_STOCK == '1' && !$product_in_stock ) {
+			$product_availability = 'not_available.gif';
+		}
 		if( is_file( VM_THEMEPATH."images/availability/".$product_availability)) {
 			echo vmCommonHTML::imageTag( VM_THEMEURL."images/availability/".$product_availability, $product_availability );
 		}
