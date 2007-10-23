@@ -58,16 +58,6 @@ vmCommonHTML::loadExtjs(); // Having a modal window is good
           <input class="inputbox" type="text" size="15" name="search_date" value="<?php echo mosgetparam($_REQUEST, 'search_date', $nowstring) ?>" />
           <input type="hidden" name="page" value="product.product_list" />
           <input class="button" type="submit" name="search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE?>" />
-		  <br/>
-         <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.product_list&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
-		<option value=""><?php echo $VM_LANG->_SEL_CATEGORY ?></option>
-		<?php
-		$ps_product_category->list_tree( $category_id );
-        ?>
-         </select>
-         <?php 
-         echo vmToolTip( $VM_LANG->_VM_PRODUCT_LIST_REORDER_TIP );
-         ?>
 	</form>
 	<br/>
 </div>
@@ -243,6 +233,16 @@ $listObj = new listFactory( $pageNav );
 // print out the search field and a list heading
 $listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_LIST_LBL, IMAGEURL."ps_image/product_code.png", "product", "product_list");
 
+echo $VM_LANG->_PHPSHOP_FILTER ?>:
+ <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.product_list&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
+	<option value=""><?php echo $VM_LANG->_SEL_CATEGORY ?></option>
+	<?php
+	$ps_product_category->list_tree( $category_id );
+	?>
+</select>
+<?php 
+echo vmToolTip( $VM_LANG->_VM_PRODUCT_LIST_REORDER_TIP );
+         
 // start the list table
 $listObj->startTable();
 
@@ -486,12 +486,12 @@ function cancelPriceForm(id) {
 function updatePriceField( id ) {	
 	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id;
 	callback = { success : function(o) { Ext.get("priceform-dlg").innerHTML = o.responseText;	}};
-	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+	Ext.Ajax.request({method:'GET', url: sUrl, success:callback.success });
 }
 function reloadForm( parentId, keyName, keyValue ) {
 	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getPriceForm&product_id='+parentId+'&'+keyName+'='+keyValue;
 	callback = { success : function(o) { priceDlg.updateText( o.responseText) }};
-	var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+	Ext.Ajax.request({method:'GET', url: sUrl, success:callback.success });
 }
 </script>
 <?php 

@@ -1395,7 +1395,7 @@ var searchField = function(){
 
     var relds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
-            url: '<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.ajax_tools&task=getproducts&product_id=<?php echo $product_id ?>',
+            url: '<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.ajax_tools&task=getproducts&no_html=1&product_id=<?php echo $product_id ?>',
             method: 'GET'
             
         }),
