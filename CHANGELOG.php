@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.10.2007 gregdev
+# Joomla! 1.5 compatibility: Fixed task #1508 - Two different Registration Complete messages in Joomla 1.5 (ps_shopper.php)
+
 24.10.2007 soeren
 ^ stoeradmins/admins can access the shop even if it is in offline mode
 + added support for the dompdf PDF generation library (PHP5-only and not as good as the HTML2PDF class, but better GIF- and CSS-Support)

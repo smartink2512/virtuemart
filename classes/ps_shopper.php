@@ -334,7 +334,13 @@ class ps_shopper {
 		}
 		
 		if( !$my->id && $mosConfig_useractivation == '0') {
-			if( defined('_JEXEC') || class_exists('mambocore') || ( $GLOBALS['_VERSION']->RELEASE == '1.0' && (int)$GLOBALS['_VERSION']->DEV_LEVEL >= 13) ) {
+			if( vmIsJoomla('1.5') ) {
+				// Username and password must be passed in an array
+				$credentials = array();
+				$credentials['username'] = $d['username'];
+				$credentials['password'] = $d['password'];
+				$mainframe->login( $credentials );
+			} elseif( class_exists('mambocore') || ( vmIsJoomla('1.0.13', '==', false ) ) ) {
 				$mainframe->login($d['username'], $d['password'] );
 			} else {
 				$mainframe->login($d['username'], md5( $d['password'] ));
