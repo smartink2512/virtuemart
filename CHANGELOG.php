@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 17.10.2007 gregdev
+# Task #1415 - no account creation bug (prompt to enter user name with No Account registration option)
 # Joomla! 1.5 compatibility: Fixed task #1508 - Two different Registration Complete messages in Joomla 1.5 (ps_shopper.php)
 
 24.10.2007 soeren

@@ -202,10 +202,15 @@ class ps_shopper {
 		if( empty( $my->id ) ) {
 
 			$_POST['name'] = mosGetParam($d,'first_name','First Name' )." ".mosGetParam($d,'last_name','Last Name' );
-			if( VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && (VM_REGISTRATION_TYPE=='OPTIONAL_REGISTRATION' ^ !empty($d['register_account'])) ) {
+			if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
 				// Silent Registration, Optional Registration with no account wanted and No Registration
 				// means we need to create a hidden user
-				$silent_username = substr( str_replace( '-', '_', $d['email'] ), 0, 25 );
+				if( vmIsJoomla('1.5') ) {
+					$username_length = 100;
+				} else {
+					$username_length = 25;
+				}
+				$silent_username = substr( str_replace( '-', '_', $d['email'] ), 0, $username_length );
 				$db->query( 'SELECT username FROM `#__users` WHERE username=\''.$silent_username.'\'');
 				$i = 0;
 				while( $db->next_record()) {
@@ -216,10 +221,9 @@ class ps_shopper {
 				$_POST['username'] = $d['username'] = $silent_username;
 				$_POST['password'] = $d['password'] = mosMakePassword();
 				$_POST['password2'] = $_POST['password'];
-
 			}
+
 			// Process Mambo/Joomla registration stuff
-			
 			if( !$this->saveRegistration() ) {
 				return false;
 			}
