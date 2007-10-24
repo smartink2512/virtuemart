@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.10.2007 soeren
+^ stoeradmins/admins can access the shop even if it is in offline mode
++ added support for the dompdf PDF generation library (PHP5-only and not as good as the HTML2PDF class, but better GIF- and CSS-Support)
+
 17.10.2007 soeren
 # fixed next/previous product links in Print View
 + implemented "Notify Me!" modification by Corey, which shows a "Notify Me" button instead of "Add to Cart"

@@ -37,11 +37,13 @@ $product_type_id = intval( mosgetparam($_REQUEST, 'product_type_id', null) );
 // Display just the naked page without toolbar, menu and footer?
 $only_page = mosGetParam( $_REQUEST, 'only_page', 0 );
 
-if( PSHOP_IS_OFFLINE == "1" ) {
+if( PSHOP_IS_OFFLINE == '1' && !$perm->hasHigherPerms('storeadmin') ) {
     echo PSHOP_OFFLINE_MESSAGE;
 }
 else {
-
+	if( PSHOP_IS_OFFLINE == '1' ) {
+		echo '<h2>OFFLINE MODE</h2>';
+	}
 	// The Vendor ID is important
 	$ps_vendor_id = $_SESSION['ps_vendor_id'];
 
