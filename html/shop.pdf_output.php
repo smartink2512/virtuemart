@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -70,51 +70,109 @@ function repairImageLinks( $html ) {
 }
 function freePDF( $showpage, $flypage, $product_id, $category_id ) {
 	global $db, $sess, $auth, $my, $perm, $VM_LANG, $mosConfig_live_site, $mosConfig_sitename, $mosConfig_offset, $mosConfig_hideCreateDate, $mosConfig_hideAuthor, 
-	$mosConfig_hideModifyDate,$mm_action_url, $database, $mainframe, $mosConfig_absolute_path, $vendor_full_image, $vendor_name, $limitstart, $limit;
+	$mosConfig_hideModifyDate,$mm_action_url, $database, $mainframe, $mosConfig_absolute_path, $vendor_full_image, $vendor_name, $limitstart, $limit,
+	$vm_mainframe, $keyword, $cur_template;
 	
 	while( @ob_end_clean() );
 	error_reporting( 0 );
 	ini_set( "allow_url_fopen", "1" );
-	define('FPDF_FONTPATH', CLASSPATH.'pdf/font/');
-	define( 'RELATIVE_PATH', CLASSPATH.'pdf/' );
-	require( CLASSPATH.'pdf/html2fpdf.php');
-	require( CLASSPATH.'pdf/html2fpdf_site.php');
-	
-	$pdf = new PDF();
-	
-	$pdf->AddPage();
-	$pdf->SetFont('Arial','',11);
-	$logo = IMAGEPATH . "vendor/$vendor_full_image";
-	$pdf->InitLogo($logo);
-	$pdf->PutTitle($mosConfig_sitename);
-	$pdf->PutAuthor( $vendor_name );
 	
 	switch( $showpage ) {  
-	  
-	case "shop.product_details":
-	  
-	  $_REQUEST['flypage'] = "shop.flypage_lite_pdf";
-	  $_REQUEST['product_id'] = $product_id;
-	  ob_start();
-	  include( PAGEPATH . $showpage . '.php' );
-	  $html = ob_get_contents();
-	  ob_end_clean();
-	  $html = repairImageLinks( $html );
-	  $pdf->WriteHTML($html);
-	  break;
-	
-	case "shop.browse":
-	  $_REQUEST['category_id'] = $category_id;
-	  ob_start();
-	  include( PAGEPATH . 'shop.browse.php' );
-	  $html = ob_get_contents();
-	  ob_end_clean();
-	  $html = repairImageLinks( $html );
-	  //echo "HTML: ".$html; exit;
-	  $pdf->WriteHTML($html);
-	  break;
+		case "shop.product_details":
+		  
+		  $_REQUEST['flypage'] = "shop.flypage_lite_pdf";
+		  $_REQUEST['product_id'] = $product_id;
+		  ob_start();
+		  include( PAGEPATH . $showpage . '.php' );
+		  $html .= ob_get_contents();
+		  ob_end_clean();
+		  $html = repairImageLinks( $html );
+		  
+		  break;
+		
+		case "shop.browse":
+		  $_REQUEST['category_id'] = $category_id;
+		  ob_start();
+		  include( PAGEPATH . 'shop.browse.php' );
+		  $html .= ob_get_contents();
+		  ob_end_clean();
+		  $html = repairImageLinks( $html );
+		  break;
 	}
 	
-	//Output the file
-	$pdf->Output();		
+	$logo = IMAGEPATH . "vendor/$vendor_full_image";
+	$logourl = IMAGEURL . "vendor/$vendor_full_image";
+	
+	if (version_compare( phpversion(), '5.0' ) < 0 || extension_loaded('domxml') || !file_exists(CLASSPATH."pdf/dompdf/dompdf_onfig.inc.php")) {
+		
+		define('FPDF_FONTPATH', CLASSPATH.'pdf/font/');
+		define( 'RELATIVE_PATH', CLASSPATH.'pdf/' );
+		require( CLASSPATH.'pdf/html2fpdf.php');
+		require( CLASSPATH.'pdf/html2fpdf_site.php');
+		
+		$pdf = new PDF();
+		
+		$pdf->AddPage();
+		$pdf->SetFont('Arial','',11);
+		$pdf->InitLogo($logo);
+		$pdf->PutTitle($mosConfig_sitename);
+		$pdf->PutAuthor( $vendor_name );
+		$pdf->WriteHTML($html);
+		//Output the file
+		$pdf->Output();		
+	} elseif( file_exists(CLASSPATH."pdf/dompdf/dompdf_config.inc.php")) {
+		// In this part you can use the dompdf library (http://www.digitaljunkies.ca/dompdf/)
+		// Just extract the dompdf archive to /classes/pdf/dompdf
+		$image_details = getimagesize($logo);
+		$footer = '<script type="text/php">
+
+if ( isset($pdf) ) {
+
+  // Open the object: all drawing commands will
+  // go to the object instead of the current page
+  $footer = $pdf->open_object();
+
+  $w = $pdf->get_width();
+  $h = $pdf->get_height();
+
+  // Draw a line along the bottom
+  $y = $h - 2 * 12 - 24;
+  $pdf->line(16, $y, $w - 16, $y, "grey", 1);
+
+  // Add a logo
+  $img_w = 2 * 72; // 2 inches, in points
+  $img_h = 1 * 72; // 1 inch, in points -- change these as required
+  $pdf->image("'.$logourl.'", "'.$image_details[2].'", ($w - $img_w) / 2.0, $y - $img_h, $img_w, $img_h);
+
+  // Add the object to every page. You can
+  // also specify "odd" or "even"
+  $pdf->add_object($footer, "all");
+  // Close the object (stop capture)
+  $pdf->close_object();
+}
+</script>';
+		
+		$website = 	'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>'. $mainframe->getHead().'
+			<link rel="stylesheet" href="templates/'. $cur_template .'/css/template_css.css" type="text/css" />
+			<link rel="stylesheet" href="'. VM_THEMEURL .'theme.css" type="text/css" />
+			<link rel="shortcut icon" href="'. $mosConfig_live_site .'/images/favicon.ico" />
+			<meta http-equiv="Content-Type" content="text/html; '. _ISO.'" />
+			<meta name="robots" content="noindex, nofollow" />
+		</head>
+		<body class="contentpane">
+			' . $html .'
+			' . $footer .'
+		</body>
+	</html>';
+		//die( htmlspecialchars($website));
+		require_once( CLASSPATH."pdf/dompdf/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($website);
+		$dompdf->render();
+		$dompdf->stream("pdf_file.pdf", array('Attachment' => 0));
+	}
+
+	
 }

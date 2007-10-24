@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -167,7 +167,7 @@ $next_product = $neighbors['next'];
 $previous_product = $neighbors['previous'];
 $next_product_url = $previous_product_url = '';
 if( !empty($next_product) ) {
-	$url_parameters = 'page='.$page.'&product_id='.$next_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
+	$url_parameters = 'page=shop.product_details&product_id='.$next_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
     if( $manufacturer_id ) {
     	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
     }
@@ -181,7 +181,7 @@ if( !empty($next_product) ) {
 	}
 }
 if( !empty($previous_product) ) {
-	$url_parameters = 'page='.$page.'&product_id='.$previous_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
+	$url_parameters = 'page=shop.product_details&product_id='.$previous_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
     if( $manufacturer_id ) {
     	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
     }
@@ -269,8 +269,8 @@ else {
 	$product_price = "";
 }
 
-/** Change Packaging - Begin */
-/** PRODUCT PACKAGING **/
+// Change Packaging - Begin
+// PRODUCT PACKAGING
 if (  $db_product->f("product_packaging") ) {
 	$packaging = $db_product->f("product_packaging") & 0xFFFF;
 	$box = ($db_product->f("product_packaging") >> 16) & 0xFFFF;
@@ -288,9 +288,9 @@ if (  $db_product->f("product_packaging") ) {
 else {
 	$product_packaging = "";
 }
-/** Change Packaging - End */
+// Change Packaging - End
 
-/** PRODUCT IMAGE **/
+// PRODUCT IMAGE
 $product_full_image = $product_parent_id!=0 && !$db_product->f("product_full_image") ?
 $dbp->f("product_full_image") : $db_product->f("product_full_image"); // Change
 $product_thumb_image = $product_parent_id!=0 && !$db_product->f("product_thumb_image") ?
@@ -303,11 +303,12 @@ $more_images = "";
 if( !empty($files['images']) ) {
 	$more_images = $tpl->vmMoreImagesLink( $files['images'] );
 }
-/* Files? */
+// Does the Product have files?
 $file_list = ps_product_files::get_file_list( $product_id );
 
-if( @$_REQUEST['output'] != "pdf" ) {
+$product_availability = '';
 
+if( @$_REQUEST['output'] != "pdf" ) {
 	// Show the PDF, Email and Print buttons
 	$tpl->set('option', $option);
 	$tpl->set('category_id', $category_id );
@@ -315,9 +316,8 @@ if( @$_REQUEST['output'] != "pdf" ) {
 	$buttons_header = $tpl->fetch( 'common/buttons.tpl.php' );
 	$tpl->set( 'buttons_header', $buttons_header );
 
-	/** AVAILABILITY **/
-	// This is the place where it shows:
-	// Availability: 24h, In Stock: 5 etc.
+	// AVAILABILITY 
+	// This is the place where it shows: Availability: 24h, In Stock: 5 etc.
 	// You can make changes to this functionality in the file: classes/ps_product.php
 	$product_availability = $ps_product->get_availability($product_id);
 }
