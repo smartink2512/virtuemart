@@ -35,7 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-17.10.2007 gregdev
+25.10.2007 gregdev
++ Added "Remember me" to mod_virtuemart and mod_virtuemart_login. Uses VM_SHOW_REMEMBER_ME_BOX configuration setting. 
+
+24.10.2007 gregdev
 # Task #1415 - no account creation bug (prompt to enter user name with No Account registration option)
 # Joomla! 1.5 compatibility: Fixed task #1508 - Two different Registration Complete messages in Joomla 1.5 (ps_shopper.php)
 

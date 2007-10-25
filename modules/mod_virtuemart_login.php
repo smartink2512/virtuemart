@@ -165,6 +165,13 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 		<br />
 		<label for="password_field"><?php echo $VM_LANG->_PASSWORD ?></label><br/>
 		<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
+		<?php if( @VM_SHOW_REMEMBER_ME_BOX == '1' ) : ?>
+		<br />
+		<label for="remember_login"><?php echo $VM_LANG->_REMEMBER_ME ?></label>
+		<input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
+		<?php else : ?>
+		<input type="hidden" name="remember" value="yes" />
+		<?php endif; ?>
 		<br />
 		<input type="submit" value="<?php echo $VM_LANG->_BUTTON_LOGIN ?>" class="button" name="Login" />
 		<ul>
@@ -177,7 +184,6 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 			<?php endif; ?>
 		</ul>
 		<input type="hidden" value="login" name="op2" />
-		<input type="hidden" value="yes" name="remember" />
 		<input type="hidden" value="<?php echo $return_url ?>" name="return" />
 		<input type="hidden" name="<?php echo $validate; ?>" value="1" />
 		<?php echo $params->get('posttext'); ?>
