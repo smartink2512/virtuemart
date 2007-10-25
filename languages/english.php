@@ -1526,7 +1526,7 @@ It has to be valid PHP Code!
 	var $_VM_RECOMMEND_FORM_MESSAGE = 'Your message';
 	var $_VM_RECOMMEND_MESSAGE = 'Hello,
 
-i\\\'ve found this great product on %s that might be of interest for you.
+I\\\'ve found this great product on %s that might be of interest for you.
 
 You can find it here:
 %s
