@@ -163,7 +163,7 @@ class vmMenuBar extends mosMenuBar {
 		$bar =& JToolBar::getInstance('toolbar');
 		
 		if ($page == "store.store_form") { $my_page = "store.index"; }
-		elseif ($page == "admin.user_address_form") { $my_page = "admin.user_list"; }
+		elseif ($page == "admin.user_address_form") { $my_page = "admin.user_form"; }
 		elseif ($page == "admin.show_cfg") { $my_page = "store.index"; }
 		elseif ( $page == 'admin.theme_config_form' ) { $my_page = 'admin.show_cfg'; }
 		else { $my_page = str_replace('form','list',$page); }
@@ -380,7 +380,7 @@ class vmToolBar {
 		}
 		
 		if ($page == "store.store_form") { $my_page = "store.index"; }
-		elseif ($page == "admin.user_address_form") { $my_page = "admin.user_list"; }
+		elseif ($page == "admin.user_address_form") { $my_page = "admin.user_form"; }
 		elseif ($page == "admin.show_cfg") { $my_page = "store.index"; }
 		elseif ( $page == 'admin.theme_config_form' ) { $my_page = 'admin.show_cfg'; }
 		else { $my_page = str_replace('form','list',$page); }		

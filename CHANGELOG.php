@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 25.10.2007 gregdev
+# Fixed task #1479 - Backend - Cancel shipping address takes user back to user list
 + Added "Remember me" to mod_virtuemart and mod_virtuemart_login. Uses VM_SHOW_REMEMBER_ME_BOX configuration setting. 
 
 24.10.2007 gregdev
