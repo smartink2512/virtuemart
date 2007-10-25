@@ -241,11 +241,12 @@ if ( $show_login_form == "yes" ) {
 			<label for="remember_login"><?php echo $VM_LANG->_REMEMBER_ME ?></label>
 			<input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
 			<?php else : ?>
+			<br />
 			<input type="hidden" name="remember" value="yes" />
 			<?php endif; ?>
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="<?php echo $return ?>" name="return" />
-		  <br/>
+		  	<br/>
 			<input type="submit" value="<?php echo $VM_LANG->_BUTTON_LOGIN ?>" class="button" name="Login" />
 			<?php
 			if( vmIsJoomla(1.5) ) {

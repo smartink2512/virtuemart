@@ -157,8 +157,8 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 <div>
 	<form action="<?php echo $action ?>" method="post" name="login" id="login">
 		<?php if( $params->get('pretext') ) : ?>
-			<?php echo $params->get('pretext'); ?>
-			<br />
+		<?php echo $params->get('pretext'); ?>
+		<br />
 		<?php endif; ?>
 		<label for="username_field"><?php echo $VM_LANG->_USERNAME ?></label><br/>
 		<input class="inputbox" type="text" id="username_field" size="12" name="username" />
@@ -170,6 +170,7 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 		<label for="remember_login"><?php echo $VM_LANG->_REMEMBER_ME ?></label>
 		<input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
 		<?php else : ?>
+		<br />
 		<input type="hidden" name="remember" value="yes" />
 		<?php endif; ?>
 		<br />
