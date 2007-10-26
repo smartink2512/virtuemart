@@ -27,7 +27,7 @@ global $vendor_currency;
 // Order_id is returned by checkoutComplete function
 $order_id = $GLOBALS['vmInputFilter']->process( $vars["order_id"] );
 
-$print = mosgetparam( $_REQUEST, 'print', 0);
+$print = vmRequest::getInt('print', 0);
 
 /** Retrieve User Email **/
 $q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE `order_id`='$order_id' AND `address_type`='BT'";

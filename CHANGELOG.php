@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+26.10.2007 soeren
++ added new request class (from Joomla! 1.5 with small modifications) to have a CMS-independent request filter and 
+	handler class
+
 25.10.2007 gregdev
 # Fixed task #1479 - Backend - Cancel shipping address takes user back to user list
 + Added "Remember me" to mod_virtuemart and mod_virtuemart_login. Uses VM_SHOW_REMEMBER_ME_BOX configuration setting. 

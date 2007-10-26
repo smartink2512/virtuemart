@@ -58,6 +58,7 @@ class ps_config {
 				$d['conf_NO_SHIPTO'] = '';
 			}
 			if( $d['conf_SHIPPING'][0] == "no_shipping" || empty($d['VM_CHECKOUT_MODULES']['CHECK_OUT_GET_SHIPPING_METHOD']['enabled']) ) {
+				$d['VM_CHECKOUT_MODULES']['CHECK_OUT_GET_SHIPPING_METHOD']['enabled'] = '';
 				$d['conf_NO_SHIPPING'] = '1';
 			}
 

@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -21,17 +21,18 @@ require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 
-$order_id = mosgetparam( $_REQUEST, 'order_id', 0);
+$order_id = vmRequest::getInt('order_id', 0);
 $dbc = new ps_DB;
-if (!is_numeric($order_id))
-    die ('Please provide a valid Order ID!');
 
-$q = "SELECT * FROM #__{vm}_orders WHERE order_id='$order_id' and vendor_id = $ps_vendor_id"; 
+$q = "SELECT * FROM #__{vm}_orders WHERE order_id=$order_id and vendor_id = $ps_vendor_id"; 
 $db->query($q);
 $db->next_record();
-// if ($db->next_record()) {
 ?>
-
+<br />&nbsp;&nbsp;
+<?php
+echo vmCommonHTML::PrintIcon();
+?>
+<br /><br />
 <table width="100%" align="center" border="0" cellspacing="0" cellpadding="2">
   <tr>
     <td valign="top">
@@ -492,6 +493,8 @@ $db->next_record();
   
 // } /* End of security check */
 ?>
-<script type="text/javascript"><!--
-window.document.title="<?php echo $VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW; ?>";
---></script>
+<script type="text/javascript">
+//<!--
+window.document.title="<?php echo $VM_LANG->_('_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW', false ); ?>";
+//-->
+</script>

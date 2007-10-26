@@ -77,6 +77,7 @@ $GLOBALS['vendor_info'] = Array();
 // CLASSPATH is defined in the config file
 require_once(CLASSPATH."ps_database.php");
 require_once(CLASSPATH."ps_main.php");
+require_once(CLASSPATH."request.class.php");
 
 // Raise memory_limit to 16M when it is too low
 // Especially the product section needs much memory

@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (c) 2006 Open Source Matters
-* @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2006-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -283,7 +283,7 @@ class vmParameters {
 		if ($result[0] == '@spacer') {
 			$result[0] = '&nbsp;';
 		} else {
-			$result[0] = mosToolTip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
+			$result[0] = vmToolTip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
 		}
 		$type = $param->getAttribute( 'type' );
 
@@ -294,7 +294,7 @@ class vmParameters {
 		}
 
 		if ( $description ) {
-			$result[2] = mosToolTip( $description, $result[0] );
+			$result[2] = vmToolTip( $description, $result[0] );
 			$result[2] = '';
 		} else {
 			$result[2] = '';
@@ -328,10 +328,10 @@ class vmParameters {
 		foreach ($node->childNodes as $option) {
 			$val = $option->getAttribute( 'value' );
 			$text = $option->gettext();
-			$options[] = mosHTML::makeOption( $val, $text );
+			$options[$val] = $text;
 		}
 
-		return mosHTML::selectList( $options, ''. $control_name .'['. $name .']', 'class="inputbox"', 'value', 'text', $value );
+		return ps_html::selectList( $control_name .'['. $name .']', $value, $options );
 	}
 	/**
 	* @param string The name of the form element
@@ -345,10 +345,10 @@ class vmParameters {
 		foreach ($node->childNodes as $option) {
 			$val 	= $option->getAttribute( 'value' );
 			$text 	= $option->gettext();
-			$options[] = mosHTML::makeOption( $val, $text );
+			$options[$val] = $text;
 		}
 
-		return mosHTML::radioList( $options, ''. $control_name .'['. $name .']', '', $value );
+		return ps_html::radioList( $control_name .'['. $name .']', $value, $options );
 	}
 	/**
 	* @param string The name of the form element

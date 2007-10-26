@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -43,18 +43,17 @@ class ps_payment_method extends vmAbstractObject {
 
 	var $classname = "ps_payment_method";
 
-	/* CreditCard Validation vars */
+	// CreditCard Validation vars
 	var $number = 0;
 	var $type = UNKNOWN;
 	var $errno = CC_OK;
 
-	/**************************************************************************
-	** name: validate_add()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters on Payment Add
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add(&$d) {
 
 		if (!$d["payment_method_name"]) {
@@ -68,8 +67,9 @@ class ps_payment_method extends vmAbstractObject {
 
 		$d['is_creditcard'] = !empty( $d['creditcard']) ? '1' : '0';
 
-		if (empty($d['payment_class']))
-		$d['payment_class'] = "";
+		if (empty($d['payment_class'])) {
+			$d['payment_class'] = "";
+		}
 
 		if (empty($d["payment_enabled"])) {
 			$d["payment_enabled"] = "N";
@@ -79,25 +79,21 @@ class ps_payment_method extends vmAbstractObject {
 		}
 		else {
 			$d["accepted_creditcards"] = "";
-			foreach($d['creditcard'] as $num => $creditcard_id)
-			$d["accepted_creditcards"] .= $creditcard_id . ",";
+			foreach($d['creditcard'] as $num => $creditcard_id) {
+				$d["accepted_creditcards"] .= $creditcard_id . ",";
+			}
 		}
-
-		$d['payment_extrainfo'] = mosGetParam( $_POST, 'payment_extrainfo', '', _MOS_ALLOWHTML );
-		if( !get_magic_quotes_gpc() ) {
-			$d['payment_extrainfo'] = addslashes( $d['payment_extrainfo'] );
-		}
-
+		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', VMREQUEST_ALLOWRAW );
+		
 		return true;
 	}
 
-	/**************************************************************************
-	** name: validate_update()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters on Payment Update
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update(&$d) {
 
 		if (!$d["payment_method_code"]) {
@@ -117,8 +113,9 @@ class ps_payment_method extends vmAbstractObject {
 		}
 		else {
 			$d["accepted_creditcards"] = "";
-			foreach($d['creditcard'] as $num => $creditcard_id)
-			$d["accepted_creditcards"] .= $creditcard_id . ",";
+			foreach($d['creditcard'] as $num => $creditcard_id) {
+				$d["accepted_creditcards"] .= $creditcard_id . ",";
+			}
 		}
 
 		if (!$d["payment_method_name"]) {
@@ -131,21 +128,17 @@ class ps_payment_method extends vmAbstractObject {
 			return False;
 		}
 
-		$d['payment_extrainfo'] = mosGetParam( $_POST, 'payment_extrainfo', '', _MOS_ALLOWHTML );
-		if( !get_magic_quotes_gpc() ) {
-			$d['payment_extrainfo'] = addslashes( $d['payment_extrainfo'] );
-		}
+		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', VMREQUEST_ALLOWRAW );
 
 		return True;
 	}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters on Payment Update
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_delete(&$d) {
 
 		if (!$d["payment_method_id"]) {
@@ -155,14 +148,13 @@ class ps_payment_method extends vmAbstractObject {
 
 		return True;
 	}
-
-	/**************************************************************************
-	* name: add()
-	* created by: pablo
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
+	
+	/**
+	 * Adds a new payment method
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
@@ -172,10 +164,15 @@ class ps_payment_method extends vmAbstractObject {
 		}
 		if ( !empty($d["payment_class"]) ) {
 			// Here we have a custom payment class
-			if( file_exists( CLASSPATH."payment/".$d["payment_class"].".php" ) ) {
+			if( file_exists( CLASSPATH."payment/".basename($d["payment_class"]).".php" ) ) {
 				// Include the class code and create an instance of this class
-				include( CLASSPATH."payment/".$d["payment_class"].".php" );
-				eval( "\$_PAYMENT = new ".$d["payment_class"]."();");
+				include( CLASSPATH."payment/".basename($d["payment_class"]).".php" );
+				if( class_exists($d["payment_class"])) {
+					$_PAYMENT = new $d["payment_class"]();
+				} else {
+					$GLOBALS['vmLogger']->err('The selected Payment Class can\'t be instantiated because it doesn\'t exist.');
+					return false;
+				}
 			}
 		}
 		else {
@@ -196,40 +193,37 @@ class ps_payment_method extends vmAbstractObject {
 			$d["shopper_group_id"] = $db->f("shopper_group_id");
 		}
 
-
-		$q = "INSERT INTO #__{vm}_payment_method (vendor_id, payment_method_name, payment_class, shopper_group_id, ";
-		$q .= "payment_method_discount, `payment_method_discount_is_percent`, `payment_method_discount_max_amount`, `payment_method_discount_min_amount`, ";
-		$q .= "payment_method_code, enable_processor, list_order, is_creditcard,payment_enabled, ";
-		$q .= "accepted_creditcards, payment_extrainfo) VALUES (";
-		$q .= "'$ps_vendor_id',";
-		$q .= "'" . $d["payment_method_name"] . "', ";
-		$q .= "'" . $d["payment_class"] . "', ";
-		$q .= "'" . $d["shopper_group_id"] . "', ";
-		$q .= "'" . $d["payment_method_discount"] . "',";
-		$q .= "'" . $d["payment_method_discount_is_percent"] . "',";
-		$q .= "'" . (float)str_replace(',', '.', $d["payment_method_discount_max_amount"]) . "',";
-		$q .= "'" . (float)str_replace(',', '.', $d["payment_method_discount_min_amount"]) . "',";
-		$q .= "'" . $d["payment_method_code"] . "',";
-		$q .= "'" . $d["enable_processor"] . "',";
-		$q .= "'" . $d["list_order"] . "',";
-		$q .= "'" . $d["is_creditcard"] . "',";
-		$q .= "'" . $d["payment_enabled"] . "',";
-		$q .= "'" . $d["accepted_creditcards"] . "',";
-		$q .= "'" . $d['payment_extrainfo'] . "')";
-
-		$db->query($q);
+		$fields = array( 'vendor_id' => $ps_vendor_id, 
+						'payment_method_name' => $d["payment_method_name"], 
+						'payment_class' => $d["payment_class"],
+						'shopper_group_id' => $d["shopper_group_id"],
+						'payment_method_discount' => $d['payment_method_discount'],
+						'payment_method_discount_is_percent' => $d['payment_method_discount_is_percent'],
+						'payment_method_discount_max_amount' => (float)str_replace(',', '.', $d["payment_method_discount_max_amount"]),						
+						'payment_method_discount_min_amount' => (float)str_replace(',', '.', $d["payment_method_discount_min_amount"]),
+						'payment_method_code' => $d['payment_method_code'],
+						'enable_processor' => $d['enable_processor'], 
+						'list_order' => $d['list_order'], 
+						'is_creditcard' => $d['is_creditcard'],
+						'payment_enabled' => $d['payment_enabled'],
+						'accepted_creditcards' => $d['accepted_creditcards'], 
+						'payment_extrainfo' => $d['payment_extrainfo']
+				);
+		$db->buildQuery( 'INSERT', '#__{vm}_payment_method', $fields );
+		$db->query();
+		
 		$_REQUEST['payment_method_id'] = $db->last_insert_id();
+		
 		return True;
 
 	}
 
-	/**************************************************************************
-	** name: update()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Updates a Payment Entry
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		global $vmLogger, $VM_LANG;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -241,8 +235,14 @@ class ps_payment_method extends vmAbstractObject {
 		}
 
 		if ( !empty($d["payment_class"]) ) {
-			if (include( CLASSPATH."payment/".$d["payment_class"].".php" ))
-			eval( "\$_PAYMENT = new ".$d["payment_class"]."();");
+			
+			@include( CLASSPATH."payment/".basename($d["payment_class"]).".php" );
+			if( class_exists($d["payment_class"])) {
+				$_PAYMENT = new $d["payment_class"]();
+			} else {
+				$GLOBALS['vmLogger']->err('The selected Payment Class can\'t be instantiated because it doesn\'t exist.');
+				return false;
+			}
 		}
 		else {
 			include( CLASSPATH."payment/ps_payment.php" );
@@ -257,26 +257,24 @@ class ps_payment_method extends vmAbstractObject {
 			return false;
 		}
 
-		$q = "UPDATE #__{vm}_payment_method SET ";
-		$q .= "payment_method_name='" . $d["payment_method_name"] ."',";
-		$q .= "payment_class='" . $d["payment_class"] ."',";
-		$q .= "shopper_group_id='" . $d["shopper_group_id"] . "',";
-		$q .= "payment_method_discount='" . $d["payment_method_discount"] . "', ";
-		$q .= "payment_method_discount_is_percent = '" . $d["payment_method_discount_is_percent"] . "',";
-		$q .= "payment_method_discount_max_amount='" . (float)str_replace(',', '.', $d["payment_method_discount_max_amount"]) . "',";
-		$q .= "payment_method_discount_min_amount='" . (float)str_replace(',', '.', $d["payment_method_discount_min_amount"]) . "',";
-		$q .= "payment_method_code='" . $d["payment_method_code"] . "', ";
-		$q .= "enable_processor='" . $d["enable_processor"] . "', ";
-		$q .= "list_order='" . $d["list_order"] . "', ";
-		$q .= "is_creditcard='" . $d["is_creditcard"] . "', ";
-		$q .= "payment_enabled='" . $d["payment_enabled"] . "', ";
-		$q .= "accepted_creditcards='" . $d["accepted_creditcards"] . "', ";
-		$q .= "payment_extrainfo='" . $d['payment_extrainfo'] . "' ";
-		$q .= "WHERE payment_method_id='".$d["payment_method_id"]."'";
-		$q .= " AND vendor_id='" . $ps_vendor_id . "'";
-
-		$db->query($q);
-
+		$fields = array( 'payment_method_name' => $d["payment_method_name"], 
+				'payment_class' => $d["payment_class"],
+				'shopper_group_id' => $d["shopper_group_id"],
+				'payment_method_discount' => $d['payment_method_discount'],
+				'payment_method_discount_is_percent' => $d['payment_method_discount_is_percent'],
+				'payment_method_discount_max_amount' => (float)str_replace(',', '.', $d["payment_method_discount_max_amount"]),						
+				'payment_method_discount_min_amount' => (float)str_replace(',', '.', $d["payment_method_discount_min_amount"]),
+				'payment_method_code' => $d['payment_method_code'],
+				'enable_processor' => $d['enable_processor'], 
+				'list_order' => $d['list_order'], 
+				'is_creditcard' => $d['is_creditcard'],
+				'payment_enabled' => $d['payment_enabled'],
+				'accepted_creditcards' => $d['accepted_creditcards'], 
+				'payment_extrainfo' => $d['payment_extrainfo']
+		);
+		$db->buildQuery( 'UPDATE', '#__{vm}_payment_method', $fields, 'WHERE payment_method_id='.(int)$d["payment_method_id"].' AND vendor_id='.$ps_vendor_id );
+		$db->query();
+	
 		return True;
 	}
 

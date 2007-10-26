@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2006-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -36,8 +36,7 @@ $current_config = file_get_contents( $themepath . '/theme.config.php' );
 $parameter_xml_file = $themepath.'/theme.xml';
 
 // get params definitions
-$params = new mosParameters( $current_config, $parameter_xml_file, 'theme' );
-mosCommonHTML::loadOverlib();
+$params = new vmParameters( $current_config, $parameter_xml_file, 'theme' );
 
 $title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_VM_ADMIN_CFG_THEME_SETTINGS.'" />&nbsp;';
 $title .= $VM_LANG->_VM_ADMIN_CFG_THEME_SETTINGS;

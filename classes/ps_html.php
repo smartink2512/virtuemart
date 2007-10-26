@@ -68,7 +68,40 @@ class ps_html {
 		
 		return $html;
 	}
-
+	/**
+	 * Creates a Radio Input List
+	 *
+	 * @param string $name
+	 * @param string $value
+	 * @param string $arr
+	 * @param string $extra
+	 * @return string
+	 */
+	function radioList($name, $value, &$arr, $extra="") {
+		$html = '';
+		if( empty( $arr ) ) {
+			$arr = array();
+		}
+		$html = '';
+		$i = 0;
+		while (list($key, $val) = each($arr)) {
+			$checked = '';
+			if( is_array( $value )) {
+				if( in_array( $key, $value )) {
+					$checked = 'checked="checked"';
+				}
+			}
+			else {
+				if(strtolower($value) == strtolower($key) ) {
+					$checked = 'checked="checked"';
+				}
+			}
+			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
+			$html .= '<label for="'.$name.$i++.'">'.$val."</label>\n";
+		}
+		
+		return $html;
+	}
 
 	/**
 	 * Lists titles for people

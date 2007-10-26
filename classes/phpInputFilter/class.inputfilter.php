@@ -56,7 +56,130 @@ class vmInputFilter {
 		$this->attrMethod = $attrMethod;
 		$this->xssAuto = $xssAuto;
 	}
+	/**
+	 * Returns a reference to an input filter object, only creating it if it doesn't already exist.
+	 *
+	 * This method must be invoked as:
+	 * 		<pre>  $filter = & vmInputFilter::getInstance();</pre>
+	 *
+	 * @static
+	 * @param	array	$tagsArray	list of user-defined tags
+	 * @param	array	$attrArray	list of user-defined attributes
+	 * @param	int		$tagsMethod	WhiteList method = 0, BlackList method = 1
+	 * @param	int		$attrMethod	WhiteList method = 0, BlackList method = 1
+	 * @param	int		$xssAuto	Only auto clean essentials = 0, Allow clean blacklisted tags/attr = 1
+	 * @return	object	The JFilterInput object.
+	 * @since	1.1
+	 */
+	function & getInstance($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1) {
+		static $instances;
 
+		$sig = md5(serialize(array($tagsArray,$attrArray,$tagsMethod,$attrMethod,$xssAuto)));
+
+		if (!isset ($instances)) {
+			$instances = array();
+		}
+
+		if (empty ($instances[$sig])) {
+			$instances[$sig] = new vmInputFilter($tagsArray, $attrArray, $tagsMethod, $attrMethod, $xssAuto);
+		}
+
+		return $instances[$sig];
+	}
+	/**
+	 * Method to be called by another php script. Processes for XSS and
+	 * specified bad code.
+	 *
+	 * @access	public
+	 * @param	mixed	$source	Input string/array-of-string to be 'cleaned'
+	 * @param	string	$type	Return type for the variable (INT, FLOAT, BOOLEAN, WORD, ALNUM, CMD, BASE64, STRING, ARRAY, PATH, NONE)
+	 * @return	mixed	'Cleaned' version of input parameter
+	 * @since	1.5
+	 */
+	function clean($source, $type='string')
+	{
+		// Handle the type constraint
+		switch (strtoupper($type))
+		{
+			case 'INT' :
+			case 'INTEGER' :
+				// Only use the first integer value
+				preg_match('/-?[0-9]+/', (string) $source, $matches);
+				$result = @ (int) $matches[0];
+				break;
+
+			case 'FLOAT' :
+			case 'DOUBLE' :
+				// Only use the first floating point value
+				preg_match('/-?[0-9]+(\.[0-9]+)?/', (string) $source, $matches);
+				$result = @ (float) $matches[0];
+				break;
+
+			case 'BOOL' :
+			case 'BOOLEAN' :
+				$result = (bool) $source;
+				break;
+
+			case 'WORD' :
+				$result = (string) preg_replace( '/[^A-Z_]/i', '', $source );
+				break;
+
+			case 'ALNUM' :
+				$result = (string) preg_replace( '/[^A-Z0-9]/i', '', $source );
+				break;
+
+			case 'CMD' :
+				$result = (string) preg_replace( '/[^A-Z0-9_\.-]/i', '', $source );
+				$result = ltrim($result, '.');
+				break;
+
+			case 'BASE64' :
+				$result = (string) preg_replace( '/[^A-Z0-9\/+=]/i', '', $source );
+				break;
+
+			case 'STRING' :
+				$result = (string) $this->remove($this->decode((string) $source));
+				break;
+
+			case 'ARRAY' :
+				$result = (array) $source;
+				break;
+
+			case 'PATH' :
+				$pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+				preg_match($pattern, (string) $source, $matches);
+				$result = @ (string) $matches[0];
+				break;
+
+			case 'USERNAME' :
+				$result = (string) preg_replace( '/[\x00-\x1F\x7F<>"\'%&]/', '', $source );
+				break;
+
+			default :
+				// Are we dealing with an array?
+				if (is_array($source)) {
+					foreach ($source as $key => $value)
+					{
+						// filter element for XSS and other 'bad' code etc.
+						if (is_string($value)) {
+							$source[$key] = $this->remove($this->decode($value));
+						}
+					}
+					$result = $source;
+				} else {
+					// Or a string?
+					if (is_string($source) && !empty ($source)) {
+						// filter source for XSS and other 'bad' code etc.
+						$result = $this->remove($this->decode($source));
+					} else {
+						// Not an array or string.. return the passed parameter
+						$result = $source;
+					}
+				}
+				break;
+		}
+		return $result;
+	}
 	/**
 	  * Method to be called by another php script. Processes for XSS and specified bad code.
 	  * @access public

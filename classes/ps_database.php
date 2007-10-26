@@ -326,7 +326,7 @@ class ps_DB extends database {
 						$q .= $value;
 					} 
 					else {
-						$q .= '\'' . $this->getEscaped(get_magic_quotes_gpc() ? stripslashes($value) : $value)."'\n";
+						$q .= '\'' . $this->getEscaped($value)."'\n";
 					}
 					if( $i++ < $count ) {
 						$q.= ',';
@@ -341,7 +341,7 @@ class ps_DB extends database {
 				$count = count( $values );
 				$i = 1;
 				foreach ( $values as $key => $value ) {
-					$q .= "`$key` = '" . $this->getEscaped(get_magic_quotes_gpc() ? stripslashes($value) : $value)."'";
+					$q .= "`$key` = '" . $this->getEscaped($value)."'";
 					if( $i++ < $count ) {
 						$q.= ",\n";
 					}

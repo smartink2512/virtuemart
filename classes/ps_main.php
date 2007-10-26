@@ -991,4 +991,155 @@ function vmFormatDate( $time=0, $dateformat='' ) {
 		return strftime( $dateformat, $time );
 	}
 }
+/**
+* Function to strip additional / or \ in a path name
+* @param string The path
+* @param boolean Add trailing slash
+*/
+function vmPathName($p_path,$p_addtrailingslash = true) {
+	$retval = "";
+
+	$isWin = (substr(PHP_OS, 0, 3) == 'WIN');
+
+	if ($isWin)	{
+		$retval = str_replace( '/', '\\', $p_path );
+		if ($p_addtrailingslash) {
+			if (substr( $retval, -1 ) != '\\') {
+				$retval .= '\\';
+			}
+		}
+
+		// Check if UNC path
+		$unc = substr($retval,0,2) == '\\\\' ? 1 : 0;
+
+		// Remove double \\
+		$retval = str_replace( '\\\\', '\\', $retval );
+
+		// If UNC path, we have to add one \ in front or everything breaks!
+		if ( $unc == 1 ) {
+			$retval = '\\'.$retval;
+		}
+	} else {
+		$retval = str_replace( '\\', '/', $p_path );
+		if ($p_addtrailingslash) {
+			if (substr( $retval, -1 ) != '/') {
+				$retval .= '/';
+			}
+		}
+
+		// Check if UNC path
+		$unc = substr($retval,0,2) == '//' ? 1 : 0;
+
+		// Remove double //
+		$retval = str_replace('//','/',$retval);
+
+		// If UNC path, we have to add one / in front or everything breaks!
+		if ( $unc == 1 ) {
+			$retval = '/'.$retval;
+		}
+	}
+
+	return $retval;
+}
+/**
+* Utility function to read the files in a directory
+* @param string The file system path
+* @param string A filter for the names
+* @param boolean Recurse search into sub-directories
+* @param boolean True if to prepend the full path to the file name
+*/
+function vmReadDirectory( $path, $filter='.', $recurse=false, $fullpath=false  ) {
+	$arr = array();
+	if (!@is_dir( $path )) {
+		return $arr;
+	}
+	$handle = opendir( $path );
+
+	while ($file = readdir($handle)) {
+		$dir = vmPathName( $path.'/'.$file, false );
+		$isDir = is_dir( $dir );
+		if (($file != ".") && ($file != "..")) {
+			if (preg_match( "/$filter/", $file )) {
+				if ($fullpath) {
+					$arr[] = trim( vmPathName( $path.'/'.$file, false ) );
+				} else {
+					$arr[] = trim( $file );
+				}
+			}
+			if ($recurse && $isDir) {
+				$arr2 = vmReadDirectory( $dir, $filter, $recurse, $fullpath );
+				$arr = array_merge( $arr, $arr2 );
+			}
+		}
+	}
+	closedir($handle);
+	asort($arr);
+	return $arr;
+}
+/**
+ * Utility function to return a value from a named array or a specified default
+ *
+ * @static
+ * @param	array	$array		A named array
+ * @param	string	$name		The key to search for
+ * @param	mixed	$default	The default value to give if no key found
+ * @param	string	$type		Return type for the variable (INT, FLOAT, STRING, WORD, BOOLEAN, ARRAY)
+ * @return	mixed	The value from the source array
+ * @since	1.1
+ */
+function vmGetArrayValue(&$array, $name, $default=null, $type='') {
+	// Initialize variables
+	$result = null;
+
+	if (isset ($array[$name])) {
+		$result = $array[$name];
+	}
+
+	// Handle the default case
+	if ((is_null($result))) {
+		$result = $default;
+	}
+
+	// Handle the type constraint
+	switch (strtoupper($type)) {
+		case 'INT' :
+		case 'INTEGER' :
+			// Only use the first integer value
+			@ preg_match('/-?[0-9]+/', $result, $matches);
+			$result = @ (int) $matches[0];
+			break;
+
+		case 'FLOAT' :
+		case 'DOUBLE' :
+			// Only use the first floating point value
+			@ preg_match('/-?[0-9]+(\.[0-9]+)?/', $result, $matches);
+			$result = @ (float) $matches[0];
+			break;
+
+		case 'BOOL' :
+		case 'BOOLEAN' :
+			$result = (bool) $result;
+			break;
+
+		case 'ARRAY' :
+			if (!is_array($result)) {
+				$result = array ($result);
+			}
+			break;
+
+		case 'STRING' :
+			$result = (string) $result;
+			break;
+
+		case 'WORD' :
+			$result = (string) preg_replace( '#\W#', '', $result );
+			break;
+
+		case 'NONE' :
+		default :
+			// No casting necessary
+			break;
+	}
+	return $result;
+}
 ?>

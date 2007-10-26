@@ -31,11 +31,9 @@ $limit = intval( $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', 
 $limitstart = intval( $mainframe->getUserStateFromRequest( "view{$keyword}{$category_id}limitstart", 'limitstart', 0 )) ;
 
 /* Get all the other paramters */
-$manufacturer_id = intval( mosGetParam( $_REQUEST, 'manufacturer_id', null ) );
-$search_category= intval( mosGetParam( $_REQUEST, 'search_category', null ) );
-$product_type_id = intval( mosgetparam($_REQUEST, 'product_type_id', null) );
+$search_category= vmRequest::getVar( 'search_category' );
 // Display just the naked page without toolbar, menu and footer?
-$only_page = mosGetParam( $_REQUEST, 'only_page', 0 );
+$only_page = vmRequest::getInt('only_page', 0 );
 
 if( PSHOP_IS_OFFLINE == '1' && !$perm->hasHigherPerms('storeadmin') ) {
     echo PSHOP_OFFLINE_MESSAGE;
@@ -49,8 +47,7 @@ else {
 
 	// The authentication array
 	$auth = $_SESSION['auth'];
-
-	$no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
+	$no_menu = vmRequest::getInt('no_menu', 0 );
 
 	// Timer Start
 	if ( DEBUG == "1" ) {
@@ -90,7 +87,6 @@ else {
 	/*****************************
 	** FRONTEND ADMIN - MOD
 	**/
-	$pshop_mode = mosgetparam($_REQUEST, 'pshop_mode', "");
 	if ( vmIsAdminMode()
 		&& $perm->check("admin,storeadmin")
 		&& ((!stristr($my->usertype, "admin") ^ PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '' )
@@ -118,9 +114,9 @@ else {
 		'vendor.vendor_form' => 'vendor_terms_of_service');
 		editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
 		
-		$mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL .'admin.css' ));
-		$mainframe->addCustomHeadTag( vmCommonHTML::linkTag( VM_THEMEURL .'admin.styles.css' ));
-		$mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/functions.js" ));
+		$vm_mainframe->addStyleSheet( VM_THEMEURL .'admin.css' );
+		$vm_mainframe->addStyleSheet( VM_THEMEURL .'admin.styles.css' );
+		$vm_mainframe->addScript( "$mosConfig_live_site/components/$option/js/functions.js" );
 		echo '<table width="100%" align="left"><tr>';
 		if( $no_menu != "1" ) {
 			$vmLayout = 'standard';
@@ -194,7 +190,7 @@ else {
                         && (empty($keyword) && empty($keyword1) && empty($keyword2));
 		
         // IE6 PNG transparency fix
-        $mainframe->addCustomHeadTag( vmCommonHTML::scriptTag( "$mosConfig_live_site/components/$option/js/sleight.js" ));
+        $vm_mainframe->addScript( "$mosConfig_live_site/components/$option/js/sleight.js" );
 
 		echo '<div id="vmMainPage">'."\n";
 		

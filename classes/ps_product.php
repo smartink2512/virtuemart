@@ -291,7 +291,7 @@ class ps_product extends vmAbstractObject {
 						'product_parent_id' => $d["product_parent_id"],
 						'product_sku' => $d["product_sku"],
 						'product_name' => $d['product_name'],
-						'product_desc' => $d['product_desc'],
+						'product_desc' => vmRequest::getVar('product_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
 						'product_s_desc' => $d['product_s_desc'],
 						'product_thumb_image' => $d['product_thumb_image'],
 						'product_full_image' => $d['product_full_image'],

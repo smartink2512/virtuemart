@@ -24,14 +24,9 @@ global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vend
 
 include_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/compat.joomla1.5.php' );
 
-$option = mosGetParam( $_REQUEST, 'option' );
-
 if( !defined( '_VM_PARSER_LOADED' )) {
 	global $my;
 	
-	$page = mosgetparam($_REQUEST, 'page', "");
-	$func = mosgetparam($_REQUEST, 'func', "");
-	$ajax_request = mosgetparam($_REQUEST, 'ajax_request', "0" );
 	// Clean the var PHP_SELF from chars like " or ' 
 	$_SERVER['PHP_SELF'] = htmlspecialchars( $_SERVER['PHP_SELF'], ENT_QUOTES );
 	
@@ -80,6 +75,11 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// User authentication
 	$auth = $perm->doAuthentication( $shopper_group );
 	
+	$page = vmRequest::getVar('page');
+	$func = vmRequest::getVar('func');
+	$ajax_request = vmRequest::getVar('ajax_request', '0' );
+	$option = vmRequest::getVar('option');
+	
 	if( $option == "com_virtuemart" ) {
 
 		// Get sure that we have float values with a decimal point!
@@ -89,23 +89,19 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		if( empty( $mainframe->_userstate )) {
 			$mainframe->_userstate = array();
 		}
-		// some input validation for limitstart
-		if (!empty($_REQUEST['limitstart'])) {
-			$_REQUEST['limitstart'] = intval( $_REQUEST['limitstart'] );
-		}
 
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
 		unset( $_REQUEST["error"] );
 		
 		// Cast all the following fields to INT
-		$parseToIntFields = array('user_id','product_id','category_id','manufacturer_id','id','cid','vendor_id','country_id','currency_id',
+		$parseToIntFields = array('user_id','product_id','category_id','manufacturer_id','id','cid','vendor_id','country_id','currency_id', 'limitstart',
 								'order_id','module_id','function_id','payment_method_id','coupon_id','product_type_id') ;
 		foreach( $parseToIntFields as $intField ) {
 			if( !empty($_REQUEST[$intField]) && is_array($_REQUEST[$intField]) ) {
 				mosArrayToInts( $_REQUEST[$intField]);
 			} elseif ( isset($_REQUEST[$intField]) ) {
-				$_REQUEST[$intField] = $$intField = intval( mosgetparam($_REQUEST, $intField, 0) );
+				$_REQUEST[$intField] = $$intField = intval( vmRequest::getInt($intField) );
 			}
 		}
 				
@@ -113,8 +109,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$category_id = $mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
 		$manufacturer_id = $mainframe->getUserStateFromRequest( 'manufacturer_id', 'manufacturer_id' );
 		
-		$user_info_id = mosGetParam($_REQUEST, 'user_info_id' );
-		$keyword = substr( urldecode(mosGetParam($_REQUEST, 'keyword', '')), 0, 50 );
+		$user_info_id = vmRequest::getVar('user_info_id');
 
 		$myInsecureArray = array('keyword' => $keyword,
 									'user_info_id' => $user_info_id,
@@ -125,7 +120,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		 * This InputFiler Object will help us filter malicious variable contents
 		 * @global vmInputFiler vmInputFiler
 		 */
-		$GLOBALS['vmInputFilter'] = $vmInputFilter = new vmInputFilter();
+		$GLOBALS['vmInputFilter'] = $vmInputFilter = vmInputFilter::getInstance();
 		// prevent SQL injection
 		if( $perm->check('admin,storeadmin') ) {
 			$myInsecureArray = $vmInputFilter->safeSQL( $myInsecureArray );
@@ -141,9 +136,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		}
 		
 		// Limit the keyword (=search string) length to 50
-		$keyword = substr( urldecode( mosGetParam( $_REQUEST, 'keyword' )), 0, 50 );
+		$keyword = substr( urldecode( vmGet( $_REQUEST, 'keyword' )), 0, 50 );
 		
-		$vars = $_REQUEST;
+		$vars =& vmRequest::get();
 	}
 
 	if( $option == "com_virtuemart" ) {
@@ -208,8 +203,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 					$my_page= explode ( '.', $page );
 					$modulename = $my_page[0];
 					$pagename = $my_page[1];
-					$_REQUEST['keyword']= mosGetParam($_SESSION['session_userstate'], 'keyword' );
-					$_REQUEST['category_id']= mosGetParam( $_SESSION['session_userstate'], 'category_id' );
+					$_REQUEST['keyword']= vmGet($_SESSION['session_userstate'], 'keyword' );
+					$_REQUEST['category_id']= vmGet( $_SESSION['session_userstate'], 'category_id' );
 					$_REQUEST['product_id']=$product_id = $_SESSION['session_userstate']['product_id'];
 				}
 			}
