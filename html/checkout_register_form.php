@@ -30,6 +30,12 @@ if ($mosConfig_allowUserRegistration == "0") {
 	mosNotAuth();
 	return;
 }
+
+if( vmIsJoomla( '1.5' ) ) {
+	// Set the validation value
+	$validate = JUtility::getToken();
+}
+
 $fields = ps_userfield::getUserFields('registration', false, '', false );
 $skip_fields = array();
 
@@ -70,7 +76,7 @@ echo '
 	<input type="hidden" name="id" value="'. $my->id .'" />
 	<input type="hidden" name="user_id" value="'. $my->id .'" />
 	<input type="hidden" name="option" value="com_virtuemart" />
-	
+	<input type="hidden" name="' . $validate . '" value="1" />
 	<input type="hidden" name="useractivation" value="'. $mosConfig_useractivation .'" />
 	<input type="hidden" name="func" value="shopperadd" />
 	<input type="hidden" name="page" value="checkout.index" />

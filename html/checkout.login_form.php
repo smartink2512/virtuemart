@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 // Determine settings based on CMS version
-if( vmIsJoomla(1.5) ) {
+if( vmIsJoomla( '1.5' ) ) {
 	// Post action
 	$action =  'index.php?option=com_user&amp;task=login';
 

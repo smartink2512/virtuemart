@@ -223,11 +223,18 @@ class ps_shopper {
 				$_POST['password2'] = $_POST['password'];
 			}
 
-			// Process Mambo/Joomla registration stuff
-			if( !$this->saveRegistration() ) {
-				return false;
+			// Process the CMS registration
+			if( vmIsJoomla( '1.5' ) ) {
+				if( !$this->register_save() ) {
+					return false;
+				}
+			} else {
+				if( !$this->saveRegistration() ) {
+					return false;
+				}
 			}
-
+			
+			$userid = null;
 			$database->setQuery( "SELECT id FROM #__users WHERE username='".$d['username']."'" );
 			$database->loadObject( $userid );
 			$uid = $userid->id;
@@ -376,9 +383,7 @@ class ps_shopper {
 	 * @return boolean True when the registration process was successful, False when not
 	 */
 	function saveRegistration() {
-		global $database, $acl, $VM_LANG, $vmLogger;
-		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation, $mosConfig_allowUserRegistration;
-		global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_mailfrom, $mosConfig_fromname;
+		global $database, $acl, $vmLogger, $mosConfig_useractivation, $mosConfig_allowUserRegistration;
 
 		if ($mosConfig_allowUserRegistration=='0') {
 			mosNotAuth();
@@ -428,59 +433,86 @@ class ps_shopper {
 		$name 		= $row->name;
 		$email 		= $row->email;
 		$username 	= $row->username;
+		
+		// Send the registration email
+		$this->_sendMail( $name, $email, $username, $pwd );
 
-		$subject 	= sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
-		$subject 	= vmHtmlEntityDecode($subject, ENT_QUOTES);
-		if ($mosConfig_useractivation=="1"){
-			$message = sprintf ($VM_LANG->_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $mosConfig_live_site."/index.php?option=com_registration&task=activate&activation=".$row->activation, $mosConfig_live_site, $username, $pwd);
-		} else {
-			$message = sprintf ($VM_LANG->_PHPSHOP_USER_SEND_REGISTRATION_DETAILS, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
+		return true;
+	}
+
+	/**
+	 * Save user registration and notify users and admins if required
+	 * @return void
+	 */
+	function register_save()
+	{
+		global $mainframe;
+		
+		//check the token before we do anything else
+		$token	= JUtility::getToken();
+		if(!JRequest::getInt($token, 0, 'post')) {
+			JError::raiseError(403, 'Request Forbidden');
 		}
 
-		$message = vmHtmlEntityDecode($message, ENT_QUOTES);
-		// Send email to user
-		if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
-			$adminName2 = $mosConfig_fromname;
-			$adminEmail2 = $mosConfig_mailfrom;
-		} else {
-			$query = "SELECT name, email"
-			. "\n FROM #__users"
-			. "\n WHERE LOWER( usertype ) = 'superadministrator'"
-			. "\n OR LOWER( usertype ) = 'super administrator'"
-			;
-			$database->setQuery( $query );
-			$rows = $database->loadObjectList();
-			$row2 			= $rows[0];
-			$adminName2 	= $row2->name;
-			$adminEmail2 	= $row2->email;
-		}
-		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && !empty($d['register_account']))) {
-			mosMail($adminEmail2, $adminName2, $email, $subject, $message);
+		// Get required system objects
+		$user 		= clone(JFactory::getUser());
+		$pathway 	=& $mainframe->getPathway();
+		$config		=& JFactory::getConfig();
+		$authorize	=& JFactory::getACL();
+		$document   =& JFactory::getDocument();
+
+		// If user registration is not allowed, show 403 not authorized.
+		$usersConfig = &JComponentHelper::getParams( 'com_users' );
+		if ($usersConfig->get('allowUserRegistration') == '0') {
+			JError::raiseError( 403, JText::_( 'Access Forbidden' ));
+			return;
 		}
 
-		// Send notification to all administrators
-		$subject2 = sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
-		$message2 = sprintf ($VM_LANG->_ASEND_MSG, $adminName2, $mosConfig_sitename, $row->name, $email, $username);
-		$subject2 = vmHtmlEntityDecode($subject2, ENT_QUOTES);
-		$message2 = vmHtmlEntityDecode($message2, ENT_QUOTES);
-
-		// get superadministrators id
-		$admins = $acl->get_group_objects( 25, 'ARO' );
-
-		foreach ( $admins['users'] AS $id ) {
-			$query = "SELECT email, sendEmail"
-			. "\n FROM #__users"
-			."\n WHERE id = $id"
-			;
-			$database->setQuery( $query );
-			$rows = $database->loadObjectList();
-
-			$row = $rows[0];
-
-			if ($row->sendEmail) {
-				mosMail($adminEmail2, $adminName2, $row->email, $subject2, $message2);
-			}
+		// Initialize new usertype setting
+		$newUsertype = $usersConfig->get( 'new_usertype' );
+		if (!$newUsertype) {
+			$newUsertype = 'Registered';
 		}
+
+		// Bind the post array to the user object
+		if (!$user->bind( JRequest::get('post'), 'usertype' )) {
+			JError::raiseError( 500, $user->getError());
+		}
+
+		// Set some initial user values
+		$user->set('id', 0);
+		$user->set('usertype', '');
+		$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+		
+		// TODO: Should this be JDate?
+		$user->set('registerDate', date('Y-m-d H:i:s'));
+
+		// If user activation is turned on, we need to set the activation information
+		$useractivation = $usersConfig->get( 'useractivation' );
+		if ($useractivation == '1') 
+		{
+			jimport('joomla.user.helper');
+			$user->set('activation', md5( JUserHelper::genRandomPassword()) );
+			$user->set('block', '1');
+		}
+
+		// If there was an error with registration, set the message and display form
+		if ( !$user->save() ) 
+		{ 
+			JError::raiseWarning('', JText::_( $user->getError()));
+			return false;
+		}
+
+		// Send registration confirmation mail
+		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
+
+		$name = $user->get('name');
+		$email = $user->get('email');
+		$username = $user->get('username');
+
+		// Send the registration email
+		$this->_sendMail( $name, $email, $username, $password );
 
 		return true;
 	}
@@ -621,6 +653,66 @@ class ps_shopper {
 		$q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='" . $d["user_id"] . "'";
 		$db->query($q);
 		return True;
+	}
+	
+	function _sendMail($name, $email, $username, $pwd) {
+		global $database, $acl, $VM_LANG;
+		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation;
+		global $mosConfig_mailfrom, $mosConfig_fromname;
+		
+		$subject 	= sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
+		$subject 	= vmHtmlEntityDecode($subject, ENT_QUOTES);
+		if ($mosConfig_useractivation=="1"){
+			$message = sprintf ($VM_LANG->_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $mosConfig_live_site."/index.php?option=com_registration&task=activate&activation=".$row->activation, $mosConfig_live_site, $username, $pwd);
+		} else {
+			$message = sprintf ($VM_LANG->_PHPSHOP_USER_SEND_REGISTRATION_DETAILS, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
+		}
+
+		$message = vmHtmlEntityDecode($message, ENT_QUOTES);
+		// Send email to user
+		if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
+			$adminName2 = $mosConfig_fromname;
+			$adminEmail2 = $mosConfig_mailfrom;
+		} else {
+			$query = "SELECT name, email"
+			. "\n FROM #__users"
+			. "\n WHERE LOWER( usertype ) = 'superadministrator'"
+			. "\n OR LOWER( usertype ) = 'super administrator'"
+			;
+			$database->setQuery( $query );
+			$rows = $database->loadObjectList();
+			$row2 			= $rows[0];
+			$adminName2 	= $row2->name;
+			$adminEmail2 	= $row2->email;
+		}
+		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && !empty($d['register_account']))) {
+			mosMail($adminEmail2, $adminName2, $email, $subject, $message);
+		}
+
+		// Send notification to all administrators
+		$subject2 = sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
+		$message2 = sprintf ($VM_LANG->_ASEND_MSG, $adminName2, $mosConfig_sitename, $name, $email, $username);
+		$subject2 = vmHtmlEntityDecode($subject2, ENT_QUOTES);
+		$message2 = vmHtmlEntityDecode($message2, ENT_QUOTES);
+
+		// get superadministrators id
+		$admins = $acl->get_group_objects( 25, 'ARO' );
+
+		foreach ( $admins['users'] AS $id ) {
+			$query = "SELECT email, sendEmail"
+			. "\n FROM #__users"
+			."\n WHERE id = $id"
+			;
+			$database->setQuery( $query );
+			$rows = $database->loadObjectList();
+
+			$row = $rows[0];
+
+			if ($row->sendEmail) {
+				mosMail($adminEmail2, $adminName2, $row->email, $subject2, $message2);
+			}
+		}
+
 	}
 }
 $ps_shopper = new ps_shopper;

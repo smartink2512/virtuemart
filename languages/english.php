@@ -1653,7 +1653,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	Username - %s
 	
 	Please do not respond to this message as it is automatically generated and is for information purposes only';
-	var $_REG_COMPLETE = '<div class="componentheading">Registration Complete!</div><br />You may now login.';
+	var $_REG_COMPLETE = '<div class="componentheading">Registration Complete!</div>';
 	var $_REG_COMPLETE_ACTIVATE = '<div class="componentheading">Registration Complete!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.';
 	var $_DATE_FORMAT_LC = '%A, %d %B %Y';
 	var $_VM_CART_PRODUCT_ADDED = 'The product was added to your cart.';

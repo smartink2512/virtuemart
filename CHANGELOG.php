@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.10.2007 gregdev
+# Joomla! 1.5 compatibility: fixed saving new user in frontend.
+^ Adjusted registration complete message to reflect being automatically logged in.
 
 26.10.2007 soeren
 + added new request class (from Joomla! 1.5 with small modifications) to have a CMS-independent request filter and 
