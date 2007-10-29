@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 global $ps_shopper_group, $ps_product;
+global $acl, $database;
 include_class( 'shopper' );
 include_class( 'product' );
 
@@ -25,7 +26,8 @@ if( !isset($ps_shopper_group)) {
     $ps_shopper_group = new ps_shopper_group();
 }
 
-$user_id = intval( mosGetParam( $_REQUEST, 'user_id' ));
+$user_id = intval( mosGetParam( $_REQUEST, 'user_id' ) );
+$cid		= vmRequest::getVar( 'cid', array(0), '', 'array' );
 
 if( !empty($user_id) ) {
     $q = "SELECT * FROM #__users AS u LEFT JOIN #__{vm}_user_info AS ui ON id=user_id ";
@@ -34,6 +36,87 @@ if( !empty($user_id) ) {
     $q .= "AND gid <= ".$my->gid;
     $db->query($q);
 	$db->next_record();
+}
+
+// Set up the CMS General User Information
+$row = new mosUser( $database );
+$row->load( (int) $user_id );
+
+if ( $user_id ) {
+	$query = "SELECT *"
+	. "\n FROM #__contact_details"
+	. "\n WHERE user_id = " . (int) $row->id
+	;
+	$database->setQuery( $query );
+	$contact = $database->loadObjectList();
+
+	$row->name = trim( $row->name );
+	$row->email = trim( $row->email );
+	$row->username = trim( $row->username );
+	$row->password = trim( $row->password );
+
+} else {
+	$contact 	= NULL;
+	$row->block = 0;
+}
+
+// check to ensure only super admins can edit super admin info
+if ( ( $my->gid < 25 ) && ( $row->gid == 25 ) ) {
+	mosRedirect( 'index2.php?option=com_users', _NOT_AUTH );
+}
+
+$my_group = strtolower( $acl->get_group_name( $row->gid, 'ARO' ) );
+if ( $my_group == 'super administrator' && $my->gid != 25 ) {
+	$lists['gid'] = '<input type="hidden" name="gid" value="'. $my->gid .'" /><strong>Super Administrator</strong>';
+} else if ( $my->gid == 24 && $row->gid == 24 ) {
+	$lists['gid'] = '<input type="hidden" name="gid" value="'. $my->gid .'" /><strong>Administrator</strong>';
+} else {
+	// ensure user can't add group higher than themselves
+	$my_groups = $acl->get_object_groups( 'users', $my->id, 'ARO' );
+	if (is_array( $my_groups ) && count( $my_groups ) > 0) {
+		$ex_groups = $acl->get_group_children( $my_groups[0], 'ARO', 'RECURSE' );
+	} else {
+		$ex_groups = array();
+	}
+
+	$gtree = $acl->get_group_children_tree( null, 'USERS', false );
+
+	// remove users 'above' me
+	$i = 0;
+	while ($i < count( $gtree )) {
+		if (in_array( $gtree[$i]->value, $ex_groups )) {
+			array_splice( $gtree, $i, 1 );
+		} else {
+			$i++;
+		}
+	}
+
+	$lists['gid'] 		= vmCommonHTML::selectList( $gtree, 'gid', 'size="10"', 'value', 'text', $row->gid );
+}
+
+// build the html select list
+$lists['block'] 		= vmCommonHTML::yesnoRadioList( 'block', 'class="inputbox" size="1"', $row->block );
+// build the html select list
+$lists['sendEmail'] 	= vmCommonHTML::yesnoRadioList( 'sendEmail', 'class="inputbox" size="1"', $row->sendEmail );
+
+$canBlockUser 	= $acl->acl_check( 'administration', 'edit', 'users', $my->usertype, 'user properties', 'block_user' );
+$canEmailEvents = $acl->acl_check( 'workflow', 'email_events', 'users', $acl->get_group_name( $row->gid, 'ARO' ) );
+
+// Get the user parameters
+if( vmIsJoomla( '1.5' ) ) {
+	require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_users'.DS.'users.class.php' );
+	$user =& JUser::getInstance( $user_id );
+	$params = $user->getParameters(true);
+} else {
+	require_once( $mosConfig_absolute_path . '/administrator/components/com_users/users.class.php' );
+	$file 	= $mainframe->getPath( 'com_xml', 'com_users' );
+	$params =& new mosUserParameters( $row->params, $file, 'component' );
+}
+
+// Set the last visit date
+$lvisit = $row->lastvisitDate;
+if ($lvisit == "0000-00-00 00:00:00") {
+	$lvisit = '***Never';
 }
 
 //First create the object and let it print a form heading
@@ -45,33 +128,265 @@ $formObj->startForm();
 
 $tabs = new mShopTabs(0, 1, "_userform");
 $tabs->startPane("userform-pane");
-if( $_VERSION->RELEASE < 1.1 ) {
-	$tabs->startTab( 'General User Information', "userform-page");
 
-	$_POST['cid'] = $_REQUEST['cid'] = array($user_id); // Cheat Joomla!
-	$_REQUEST['task'] = $task = 'edit';
-	$GLOBALS['option'] = 'com_users'; 
-	$mainframe->_path->admin_html = $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.html.php';
-	require_once( $mainframe->_path->admin_html );
-	$mainframe->_path->class = $mosConfig_absolute_path.'/administrator/components/com_users/users.class.php';
-	ob_start();
-	require( $mosConfig_absolute_path.'/administrator/components/com_users/admin.users.php' );
-	$userform = ob_get_contents();
-	ob_end_clean();
-	
-	$userform = str_replace( 'submitbutton', 'submitform', $userform );
-	$userform = str_replace( '<form action="index2.php" method="post" name="adminForm">', '', $userform );
-	$userform = str_replace( '</form>', '', $userform );
-	$userform = str_replace( '<div id="editcell">', '', $userform );
-	$userform = str_replace( '</table>
-	                </div>', '</table>', $userform );
-	echo $userform;
-	
-	$_REQUEST['option'] = $GLOBALS['option'] = 'com_virtuemart';
-	
-	$tabs->endTab();
+$tabs->startTab( 'General User Information', "userform-page");
+
+mosCommonHTML::loadOverlib();
+
+?>
+<script language="javascript" type="text/javascript">
+function submitbutton(pressbutton) {
+	var form = document.adminForm;
+	if (pressbutton == 'cancel') {
+		submitform( pressbutton );
+		return;
+	}
+	var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
+
+	// do field validation
+	if (trim(form.name.value) == "") {
+		alert( "You must provide a name." );
+	} else if (form.username.value == "") {
+		alert( "You must provide a user login name." );
+	} else if (r.exec(form.username.value) || form.username.value.length < 3) {
+		alert( "You login name contains invalid characters or is too short." );
+	} else if (trim(form.email.value) == "") {
+		alert( "You must provide an e-mail address." );
+	} else if (form.gid.value == "") {
+		alert( "You must assign user to a group." );
+	} else if (trim(form.password.value) != "" && form.password.value != form.password2.value){
+		alert( "Password do not match." );
+	} else if (form.gid.value == "29") {
+		alert( "Please Select another group as `Public Front-end` is not a selectable option" );
+	} else if (form.gid.value == "30") {
+		alert( "Please Select another group as `Public Back-end` is not a selectable option" );
+	} else {
+		submitform( pressbutton );
+	}
 }
+
+function gotocontact( id ) {
+	var form = document.adminForm;
+	form.contact_id.value = id;
+	form.option.value = 'com_users';
+	submitform( 'contact' );
+}
+</script>
+
+<fieldset class="adminform">
+<legend><?php echo  'User Details' ; ?></legend>
+	<table class="admintable" cellspacing="1">
+		<tr>
+			<td width="150" class="key">
+				<label for="name">
+					<?php echo  'Name' ; ?>
+				</label>
+			</td>
+			<td>
+				<input type="text" name="name" id="name" class="inputbox" size="40" value="<?php echo $row->name; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="username">
+					<?php echo  'Username' ; ?>
+				</label>
+			</td>
+			<td>
+				<input type="text" name="username" id="username" class="inputbox" size="40" value="<?php echo $row->username; ?>" autocomplete="off" />
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="email">
+					<?php echo  'Email' ; ?>
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" type="text" name="email" id="email" size="40" value="<?php echo $row->email; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="password">
+					<?php echo  'New Password' ; ?>
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" type="password" name="password" id="password" size="40" value=""/>
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="password2">
+					<?php echo  'Verify Password' ; ?>
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" type="password" name="password2" id="password2" size="40" value=""/>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" class="key">
+				<label for="gid">
+					<?php echo  'Group' ; ?>
+				</label>
+			</td>
+			<td>
+				<?php echo $lists['gid']; 
+				?>
+			</td>
+		</tr>
+		<?php if ( $canBlockUser ) : ?>
+		<tr>
+			<td class="key">
+				<?php echo  'Block User' ; ?>
+			</td>
+			<td>
+				<?php echo $lists['block']; 
+				?>
+			</td>
+		</tr>
+		<?php endif; ?>
+		<?php if ( $canEmailEvents ) : ?>
+		<tr>
+			<td class="key">
+				<?php echo  'Receive System Emails' ; ?>
+			</td>
+			<td>
+				<?php echo $lists['sendEmail']; 
+				?>
+			</td>
+		</tr>
+		<?php endif; ?>
+		<?php if( $user_id ) : ?>
+		<tr>
+			<td class="key">
+				<?php echo  'Register Date' ; ?>
+			</td>
+			<td>
+				<?php echo $row->registerDate;?>
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<?php echo  'Last Visit Date' ; ?>
+			</td>
+			<td>
+				<?php echo $lvisit; ?>
+			</td>
+		</tr>
+		<?php endif; ?>
+	</table>
+</fieldset>
+<fieldset class="adminform">
+<legend><?php echo  'Parameters' ; ?></legend>
+	<table class="admintable" cellspacing="1">
+		<tr>
+			<td>
+			<?php echo $params->render( 'params' );?>
+			</td>
+		</tr>
+	</table>
+</fieldset>
+<fieldset class="adminform">
+<legend><?php echo  'Contact Information' ; ?></legend>
+	<?php if ( !$contact ) : ?>
+	<table class="admintable" cellspacing="1">
+		<tr>
+			<td>
+			<br />
+			No Contact details linked to this User:
+			<br />
+			See 'Components -> Contact -> Manage Contacts' for details.
+			<br /><br />
+			</td>
+		</tr>
+	</table>
+	<?php else : ?>
+	<table class="admintable" cellspacing="1">
+		<tr>
+			<td width="15%">
+			Name:
+			</td>
+			<td>
+			<strong>
+			<?php echo $contact[0]->name;?>
+			</strong>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			Position:
+			</td>
+			<td >
+			<strong>
+			<?php echo $contact[0]->con_position;?>
+			</strong>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			Telephone:
+			</td>
+			<td >
+			<strong>
+			<?php echo $contact[0]->telephone;?>
+			</strong>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			Fax:
+			</td>
+			<td >
+			<strong>
+			<?php echo $contact[0]->fax;?>
+			</strong>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td >
+			<strong>
+			<?php echo $contact[0]->misc;?>
+			</strong>
+			</td>
+		</tr>
+		<?php if ($contact[0]->image) : ?>
+		<tr>
+			<td></td>
+			<td valign="top">
+			<img src="<?php echo $mosConfig_live_site;?>/images/stories/<?php echo $contact[0]->image; ?>" align="middle" alt="Contact" />
+			</td>
+		</tr>
+		<?php endif; ?>
+		<tr>
+			<td colspan="2">
+			<br /><br />
+			<input class="button" type="button" value="change Contact Details" onclick="javascript: gotocontact( '<?php echo $contact[0]->id; ?>' )">
+			<i>
+			<br />
+			'Components -> Contact -> Manage Contacts'.
+			</i>
+			</td>
+		</tr>
+	</table>
+	<?php endif; ?>
+
+<input type="hidden" name="id" value="<?php echo $user_id; ?>" />
+<input type="hidden" name="cid[]" value="<?php echo $user_id; ?>" />
+<input type="hidden" name="contact_id" value="" />
+<?php if ( !$canEmailEvents ) : ?>
+<input type="hidden" name="sendEmail" value="0" />
+<?php endif; ?>
+
+
+<?php
+
+$tabs->endTab();
 $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
+
 ?>
 <fieldset style="width:48%;"><legend><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL ?></legend>
 <table class="adminform">  
@@ -143,7 +458,7 @@ $userFields = ps_userfield::getUserFields( 'registration' );
 $skipFields = array('username', 'email', 'password', 'password2', 'agreed');
 
 echo '<table class="adminform"><tr><td>';
-ps_userfield::listUserFields( $userFields, $skipFields, $db );
+ps_userfield::listUserFields( $userFields, $skipFields, $db, false );
 echo '</td></tr></table>';
 
 $tabs->endTab();

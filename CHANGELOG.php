@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+29.10.2007 gregdev
+# Fixed task #1439 Creating new users on Joomla! 1.5 fails. Can now create/edit users in VM backend.
+^ Added $startForm parameter to ps_userfield::listUserFields() to allow not printing the <form> tag
+
 27.10.2007 gregdev
 # Joomla! 1.5 compatibility: fixed saving new user in frontend.
 ^ Adjusted registration complete message to reflect being automatically logged in.

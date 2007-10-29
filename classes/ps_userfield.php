@@ -247,8 +247,9 @@ class ps_userfield extends vmAbstractObject {
 	 * @param array $rowFields An array returned from ps_database::loadObjectlist
 	 * @param array $skipFields A one-dimensional array holding the names of fields that should NOT be displayed
 	 * @param ps_DB $db A ps_DB object holding ovalues for the fields
+	 * @param boolean $startform If true, print the starting <form...> tag
 	 */
-	function listUserFields( $rowFields, $skipFields=array(), $db = null ) {
+	function listUserFields( $rowFields, $skipFields=array(), $db = null, $startForm = true ) {
 		global $mm_action_url, $ps_html, $VM_LANG, $my, $default, $mainframe, $vm_mainframe,
 			$vendor_country_3_code, $mosConfig_live_site, $mosConfig_absolute_path, $page;
 		
@@ -282,9 +283,12 @@ class ps_userfield extends vmAbstractObject {
 		if( file_exists( $mosConfig_absolute_path .'/includes/js/mambojavascript.js') ) {
 			$vm_mainframe->addScript( 'includes/js/mambojavascript.js' );
 		}
-		?>		
 		
+		?>
+		<?php if( $startForm ) : ?>		
+
 		<form action="<?php echo $mm_action_url .basename($_SERVER['PHP_SELF']) ?>" method="post" name="adminForm">
+		<?php endif; ?>
 			
 		<div style="width:90%;">
 			
