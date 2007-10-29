@@ -62,22 +62,15 @@ if ($_POST) {
 			// Load the framework
 			require_once ( JPATH_BASE . DS . 'includes' . DS . 'defines.php' );
 			require_once ( JPATH_BASE . DS . 'includes' . DS . 'framework.php' );
-			require_once ( JPATH_BASE . DS . 'includes' . DS . 'application.php' );
 
 			// create the mainframe object
-			$mainframe = new JSite();
-			
-			// set the configuration
-			$mainframe->loadConfiguration( JPATH_CONFIGURATION . DS . 'configuration.php' );
+			$mainframe = & JFactory::getApplication( 'site' );
 			
 			// load system plugin group
 			JPluginHelper::importPlugin( 'system' );
 			
-			// trigger the onStart events
+			// trigger the onBeforeStart events
 			$mainframe->triggerEvent( 'onBeforeStart' );
-			
-			// create the session
-			$mainframe->loadSession( JUtility::getHash( $mainframe->getName() ) );
 			
 			// Adjust the live site path
 			$mosConfig_live_site = str_replace('/administrator/components/com_virtuemart', '', $mosConfig_live_site); 
