@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -45,6 +45,11 @@ Currency Converter Module
 Copyright:	2004 Werner Knudsen
 License:	GNU General Public License (GPL)
 
+ExtJS
+----
+Copyright: 2006-2007, Ext JS, LLC
+License: Lesser GNU (LGPL) open source license version 2.1.
+
 FPDF
 ----
 Copyright:	Olivier PLATHEY
@@ -77,8 +82,8 @@ License:	GNU General Public License (GPL)
 
 Mambo
 ----
-Copyright:	2000 - 2004 Miro International Pty Ltd
-License:	GNU General Public License (GPL)
+Copyright:	2000 - 2007 Mambo Foundation, Inc.
+License:	GNU General Public License (GPL) Version 2.
 
 minixml
 ---
@@ -124,5 +129,5 @@ Notes:		Please note these icons are NOT OPEN SOURCE but used with permission
 
 If you have contributed a vital part of VirtueMart that is not mentioned and missing here,
 and you feel that your copyright note should be mentioned here,
-please contact the author of VirtueMart (soerenÂ«atÂ»virtuemart.net).
+please contact the author of VirtueMart (soeren«at»virtuemart.net).
 </pre>
