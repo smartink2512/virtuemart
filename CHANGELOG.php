@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.10.2007 gregdev
+# Fixed task #1365 - Order Status not updated after successfull paying with PayPal
+
 29.10.2007 gregdev
 # Fixed task #1439 Creating new users on Joomla! 1.5 fails. Can now create/edit users in VM backend.
 ^ Added $startForm parameter to ps_userfield::listUserFields() to allow not printing the <form> tag

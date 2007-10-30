@@ -53,6 +53,8 @@ if ($_POST) {
             die( "Joomla Configuration File not found!" );
         }
         
+        $absolute_path = realpath( $absolute_path );
+        
         // Set up the appropriate CMS framework
         if( class_exists( 'jconfig' ) ) {
 			define( '_JEXEC', 1 );
@@ -65,6 +67,9 @@ if ($_POST) {
 
 			// create the mainframe object
 			$mainframe = & JFactory::getApplication( 'site' );
+			
+			// Initialize the framework
+			$mainframe->initialise();
 			
 			// load system plugin group
 			JPluginHelper::importPlugin( 'system' );
