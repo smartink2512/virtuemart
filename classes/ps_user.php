@@ -130,7 +130,11 @@ class ps_user {
 		}
 
 		// Joomla User Information stuff
-		$uid = $this->saveUser( $d );
+		if( vmIsJoomla( '1.5' ) ) {
+			$uid = $this->save();
+		} else {
+			$uid = $this->saveUser( $d );
+		}
 		if( empty( $uid ) && empty( $d['id'] ) ) {
 			$vmLogger->err( 'New User couldn\'t be added' );
 			return false;
@@ -211,7 +215,11 @@ class ps_user {
 		}
 
 		// Joomla User Information stuff
-		$this->saveUser( $d );
+		if( vmIsJoomla( '1.5' ) ) {
+			$this->save();
+		} else {
+			$this->saveUser( $d );
+		}
 
 		/* Update Bill To */
 
@@ -441,35 +449,146 @@ class ps_user {
 
 		// for new users, email username and password
 		if ($isNew) {
-			$query = "SELECT email"
+			// Send the notification emails
+			$name = $row->name;
+			$email = $row->email;
+			$username = $row->username;
+			$password = $pwd;
+			$this->_sendMail( $name, $email, $username, $password );
+		}
+		
+		return $newUserId;
+	}
+	
+	/**
+	 * Saves a user into Joomla! 1.5 
+	 *
+	 * @return int An integer user_id if the user was saved successfully, false if not
+	 */
+	function save()
+	{
+		global $mainframe;
+		global $vmLogger;
+
+		$option = JRequest::getCmd( 'option');
+
+		// Initialize some variables
+		$db			= & JFactory::getDBO();
+		$me			= & JFactory::getUser();
+		$MailFrom	= $mainframe->getCfg('mailfrom');
+		$FromName	= $mainframe->getCfg('fromname');
+		$SiteName	= $mainframe->getCfg('sitename');
+
+ 		// Create a new JUser object
+		$user = new JUser(JRequest::getVar( 'id', 0, 'post', 'int'));
+		$original_gid = $user->get('gid');
+
+		$post = JRequest::get('post');
+		$post['username']	= JRequest::getVar('username', '', 'post', 'username');
+		$post['password']	= JRequest::getVar('password', '', 'post', 'string', JREQUEST_ALLOWRAW);
+		$post['password2']	= JRequest::getVar('password2', '', 'post', 'string', JREQUEST_ALLOWRAW);
+
+		if (!$user->bind($post))
+		{
+			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode( $user->getError() )."');</script>\n";
+			return false;
+		}
+
+		// Are we dealing with a new user which we need to create?
+		$isNew 	= ($user->get('id') < 1);
+		if (!$isNew)
+		{
+			// if group has been changed and where original group was a Super Admin
+			if ( $user->get('gid') != $original_gid && $original_gid == 25 )
+			{
+				// count number of active super admins
+				$query = 'SELECT COUNT( id )'
+					. ' FROM #__users'
+					. ' WHERE gid = 25'
+					. ' AND block = 0'
+				;
+				$db->setQuery( $query );
+				$count = $db->loadResult();
+
+				if ( $count <= 1 )
+				{
+					// disallow change if only one Super Admin exists
+					$vmLogger->err( "You cannot change this user's group as the user is the only active Super Administrator for your site." );
+					return false;
+				}
+			}
+		}
+
+		/*
+	 	 * Lets save the JUser object
+	 	 */
+		if (!$user->save())
+		{
+			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode( $user->getError() )."');</script>\n";
+			return false;
+		}
+
+		// For new users, email username and password
+		if ($isNew)
+		{
+			$name = $user->get( 'name' );
+			$email = $user->get( 'email' );
+			$username = $user->get( 'username' );
+			$password = $user->password_clear;
+		 	$this->_sendMail( $name, $email, $username, $password );
+		}
+	 	
+		// Capture the new user id
+		if( $isNew ) {
+			$newUserId = $user->get('id');
+		} else {
+			$newUserId = false;
+		}
+
+		return $newUserId;
+	}
+	
+	/**
+	 * Sends new/updated user notification emails 
+	 *
+	 * @param string $name - The name of the newly created/updated user
+	 * @param string $email - The email address of the newly created/updated user
+	 * @param string $username - The username of the newly created/updated user
+	 * @param string $password - The plain text password of the newly created/updated user
+	 */
+	function _sendMail( $name, $email, $username, $password ) {
+		global $database, $VM_LANG;
+		global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_sitename, $mosConfig_live_site;
+		
+		$query = "SELECT email"
 			. "\n FROM #__users"
 			. "\n WHERE id = $my->id"
 			;
-			$database->setQuery( $query );
-			$adminEmail = $database->loadResult();
-
-			$subject = $VM_LANG->_NEW_USER_MESSAGE_SUBJECT;
-			$message = sprintf ( $VM_LANG->_NEW_USER_MESSAGE, $row->name, $mosConfig_sitename, $mosConfig_live_site, $row->username, $pwd );
-
-			if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
-				$adminName 	= $mosConfig_fromname;
-				$adminEmail = $mosConfig_mailfrom;
-			} else {
-				$query = "SELECT name, email"
+		$database->setQuery( $query );
+		$adminEmail = $database->loadResult();
+		
+		$subject = $VM_LANG->_NEW_USER_MESSAGE_SUBJECT;
+		$message = sprintf ( $VM_LANG->_NEW_USER_MESSAGE, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $password );
+		
+		if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
+			$adminName 	= $mosConfig_fromname;
+			$adminEmail = $mosConfig_mailfrom;
+		} else {
+			$query = "SELECT name, email"
 				. "\n FROM #__users"
 				// administrator
 				. "\n WHERE gid = 25"
 				;
-				$database->setQuery( $query );
-				$admins = $database->loadObjectList();
-				$admin 		= $admins[0];
-				$adminName 	= $admin->name;
-				$adminEmail = $admin->email;
-			}
-			mosMail( $adminEmail, $adminName, $row->email, $subject, $message );
+			$database->setQuery( $query );
+			$admins = $database->loadObjectList();
+			$admin 		= $admins[0];
+			$adminName 	= $admin->name;
+			$adminEmail = $admin->email;
 		}
-		return $newUserId;
+
+		mosMail( $adminEmail, $adminName, $email, $subject, $message );
 	}
+
 
 	/**
 	* Function to remove a user from Joomla

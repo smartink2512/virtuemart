@@ -655,6 +655,14 @@ class ps_shopper {
 		return True;
 	}
 	
+	/**
+	 * Sends new/updated user notification emails 
+	 *
+	 * @param string $name - The name of the newly created/updated user
+	 * @param string $email - The email address of the newly created/updated user
+	 * @param string $username - The username of the newly created/updated user
+	 * @param string $password - The plain text password of the newly created/updated user
+	 */
 	function _sendMail($name, $email, $username, $pwd) {
 		global $database, $acl, $VM_LANG;
 		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation;
