@@ -39,7 +39,8 @@ if(NO_SHIPTO=='') {
         								'address_2' => $db->f("address_2"),
         								'state' => $db->f("state"),
         								'zip' => $db->f("zip"),
-        								'city' => $db->f("city")
+        								'city' => $db->f("city"),
+        								'country' => $db->f('country')
         							), true );
 	
 	echo "</td></tr>";
