@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 30.10.2007 gregdev
 # Fixed task #1365 - Order Status not updated after successfull paying with PayPal
 + Joomla! 1.5 compatibility: Added Joomla! 1.5-specific user creation  in the VM backend.
+# Fixed task #1519 - Error in Login Module. PHP 4 compatibility.
 
 29.10.2007 gregdev
 # Fixed task #1439 Creating new users on Joomla! 1.5 fails. Can now create/edit users in VM backend.
