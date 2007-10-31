@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+31.10.2007 gregdev
+# Fixed task #1443 - When in product list a product is selected and New product button in clicked error is given (on simple layout)
+
 30.10.2007 gregdev
 # Fixed task #1365 - Order Status not updated after successfull paying with PayPal
 + Joomla! 1.5 compatibility: Added Joomla! 1.5-specific user creation  in the VM backend.

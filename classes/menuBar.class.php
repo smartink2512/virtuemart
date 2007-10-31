@@ -46,7 +46,7 @@ class vmMenuBar extends mosMenuBar {
 		$bar =& JToolBar::getInstance('toolbar');
 		
 		$bar->appendButton('Custom', '<td>
-			<a class="toolbar" href="javascript:vm_submitButton(\''.$task.'\',\''.$formName.'\',\''.$page.'\');">'
+			<a class="toolbar" href="javascript:document.adminForm.toggle.onclick();vm_submitButton(\''.$task.'\',\''.$formName.'\',\''.$page.'\');">'
 			. '<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 			. $alt
 		.'</a>
