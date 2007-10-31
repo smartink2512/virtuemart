@@ -83,7 +83,7 @@ class ps_payment_method extends vmAbstractObject {
 				$d["accepted_creditcards"] .= $creditcard_id . ",";
 			}
 		}
-		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', VMREQUEST_ALLOWRAW );
+		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', null, VMREQUEST_ALLOWRAW );
 		
 		return true;
 	}
@@ -128,7 +128,7 @@ class ps_payment_method extends vmAbstractObject {
 			return False;
 		}
 
-		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', VMREQUEST_ALLOWRAW );
+		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', null, VMREQUEST_ALLOWRAW );
 
 		return True;
 	}
