@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -57,6 +57,10 @@ if ($db->next_record()) {
 	$q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE order_id='" . $db->f("order_id") . "' ORDER BY address_type ASC";
 	$dbbt->query($q);
 	$dbbt->next_record();
+	$old_user = '';
+	if( is_object($user)) {
+		$old_user = $user;
+	}
 	
 	$user = $dbbt->record;
 	/** Retrieve Payment Info **/
@@ -78,7 +82,9 @@ if ($db->next_record()) {
 
 	// Get the template for this page
 	echo $tpl->fetch( 'pages/account.order_details.tpl.php' );
-
+	if( !empty($old_user) && is_object($old_user)) {
+		$user = $old_user;
+	}
 } else {
 	mosRedirect( $sess->url( SECUREURL .'index.php?page=account.index' ) );
 }

@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -33,6 +33,10 @@ $print = vmRequest::getInt('print', 0);
 $q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE `order_id`='$order_id' AND `address_type`='BT'";
 $db->query( $q );
 $db->next_record();
+$old_user = '';
+if( is_object($user)) {
+	$old_user = $user;
+}
 $user = $db->record[0];
 $dbbt = $db->_clone( $db );
 
@@ -59,5 +63,9 @@ if ($db->next_record()) {
 	
 	echo $tpl->fetch( "pages/$page.tpl.php" );
 
-} /* End of security check */
+} // End of security check
+
+if( !empty($old_user) && is_object($old_user)) {
+	$user = $old_user;
+}
 ?>
