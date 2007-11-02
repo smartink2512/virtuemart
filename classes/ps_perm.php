@@ -198,7 +198,7 @@ class ps_perm {
 	function hasHigherPerms( $perm ) {
 		$auth = $_SESSION["auth"];
 		
-		if( $this->user_groups[$perm] >= $this->user_groups[$auth['perms']] ) {
+		if( $auth['perms'] && $this->user_groups[$perm] >= $this->user_groups[$auth['perms']] ) {
 			return true;	
 		}
 		else {

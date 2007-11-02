@@ -142,7 +142,12 @@ class vmMainFrame {
 			$style = $style[0];
 			$mainframe->addCustomHeadTag('<style type="'.key($style).'">'.current($style).'</style>');
 		}
-		
+		if( isset( $_REQUEST['usefetchscript'])) {
+			$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1 );
+			vmRequest::setVar( 'usefetchscript', $use_fetchscript, 'session' );
+		} else {
+			$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1, 'session' );
+		}
 		// Gather all the linked Scripts into ONE link
 		$i = 0;
 		$appendix = '';
@@ -155,7 +160,7 @@ class vmMainFrame {
 				$url_params = '&amp;'.substr( $src, $urlpos );
 				$src = substr( $src, 0, $urlpos);
 			}
-			if( stristr( $src, VM_COMPONENT_NAME ) && !stristr( $src, '.php' )) {
+			if( stristr( $src, VM_COMPONENT_NAME ) && !stristr( $src, '.php' ) && $use_fetchscript) {
 				$base_source = str_replace( $GLOBALS['real_mosConfig_live_site'], '', $src );
 				$base_source = str_replace( $GLOBALS['mosConfig_live_site'], '', $base_source );
 				$base_source = str_replace( '/components/'.VM_COMPONENT_NAME, '', $base_source);
@@ -187,7 +192,7 @@ class vmMainFrame {
 				$url_params .= '&amp;'.substr( $stylesheet['url'], $urlpos );
 				$stylesheet['url'] = substr( $stylesheet['url'], 0, $urlpos);
 			}
-			if( stristr( $stylesheet['url'], VM_COMPONENT_NAME ) && !stristr( $stylesheet['url'], '.php' ) && $stylesheet['media'] == null ) {
+			if( stristr( $stylesheet['url'], VM_COMPONENT_NAME ) && !stristr( $stylesheet['url'], '.php' ) && $stylesheet['media'] == null && $use_fetchscript ) {
 				$base_source = str_replace( $GLOBALS['real_mosConfig_live_site'], '', $stylesheet['url'] );
 				$base_source = str_replace( $GLOBALS['mosConfig_live_site'], '', $base_source );
 				$base_source = str_replace( '/components/'.VM_COMPONENT_NAME, '', $base_source);

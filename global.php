@@ -22,8 +22,6 @@ global $vendor_image,$vendor_country_2_code ,$vendor_country_3_code, $vendor_ima
         $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image, $vendor_accepted_currencies,
         $vendor_address_format, $vendor_date_format;
 
-define( 'VM_COMPONENT_NAME', 'com_virtuemart' );
-
 if( @VM_ENCRYPT_FUNCTION == 'AES_ENCRYPT') {
 	define('VM_DECRYPT_FUNCTION', 'AES_DECRYPT');
 } else {

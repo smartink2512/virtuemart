@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.11.2007 soeren
+# changing the ENCODE_KEY could lead to configuration file errors + wrong re-encryption of encrypted data 
+# implemented changes to prevent saving a configuration file with wrong PHP syntax (escaping single quotes and stuff)
+# Task #1522 - Lost every html-tag in store description!
+^ implemented a workaround for problems with the "fetchscript.php" script, which loads javascripts and stylesheets. If it
+	doesn't load the Ext Library in the backend, the user is redirected to the standard layout with direct javascript and
+	stylesheet references
+
 31.10.2007 soeren
 # fixed a logout problem under J! 1.5 after checkout and on viewing order details 
 

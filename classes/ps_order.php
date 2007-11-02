@@ -337,9 +337,6 @@ class ps_order {
 
 		if( !empty($d['include_comment']) && !empty($d['order_comment']) ) {
 			$message .= $VM_LANG->_PHPSHOP_ORDER_HISTORY_COMMENT_EMAIL.":\n";
-			if( get_magic_quotes_gpc() ) {
-				$d['order_comment'] = stripslashes( $d['order_comment'] );
-			}
 			$message .= $d['order_comment'];
 			$message .= "\n____________________________________________________________\n\n";
 		}

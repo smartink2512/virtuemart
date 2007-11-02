@@ -138,7 +138,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		// Limit the keyword (=search string) length to 50
 		$keyword = substr( urldecode( vmGet( $_REQUEST, 'keyword' )), 0, 50 );
 		
-		$vars =& vmRequest::get();
+		$vars =& vmRequest::get('', VMREQUEST_ALLOWRAW );
 	}
 
 	if( $option == "com_virtuemart" ) {

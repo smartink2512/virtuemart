@@ -576,6 +576,12 @@ class vmCommonHTML extends mosHTML {
 		if( $src == '' && $content == '' ) return;
 		
 		if( $src ) {
+			if( isset( $_REQUEST['usefetchscript'])) {
+				$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1 );
+				vmRequest::setVar( 'usefetchscript', $use_fetchscript, 'session' );
+			} else {
+				$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1, 'session' );
+			}
 			$urlpos = strpos( $src, '?' );			
 			$url_params = '';
 			
@@ -583,7 +589,7 @@ class vmCommonHTML extends mosHTML {
 				$url_params = '&amp;'.substr( $src, $urlpos );
 				$src = substr( $src, 0, $urlpos);
 			}
-			if( stristr( $src, 'com_virtuemart' ) && !stristr( $src, '.php' )) {
+			if( stristr( $src, 'com_virtuemart' ) && !stristr( $src, '.php' ) && $use_fetchscript ) {
 				$base_source = str_replace( URL, '', $src );
 				$base_source = str_replace( SECUREURL, '', $base_source );
 				$base_source = str_replace( '/components/com_virtuemart', '', $base_source);
@@ -609,7 +615,13 @@ class vmCommonHTML extends mosHTML {
 	 */
 	function linkTag( $href, $type='text/css', $rel = 'stylesheet', $media="screen, projection" ) {
 		global $mosConfig_gzip, $mosConfig_live_site;
-		if( stristr( $href, 'com_virtuemart' )) {
+		if( isset( $_REQUEST['usefetchscript'])) {
+			$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1 );
+			vmRequest::setVar( 'usefetchscript', $use_fetchscript, 'session' );
+		} else {
+			$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1, 'session' );
+		}
+		if( stristr( $href, 'com_virtuemart' ) && $use_fetchscript) {
 			$base_href = str_replace( URL, '', $href );
 			$base_href = str_replace( SECUREURL, '', $base_href );
 			$base_href = str_replace( 'components/com_virtuemart/', '', $base_href);

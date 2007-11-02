@@ -62,7 +62,7 @@ class ps_config {
 				$d['conf_NO_SHIPPING'] = '1';
 			}
 
-			$d['conf_PSHOP_OFFLINE_MESSAGE'] = addslashes( stripslashes($d['conf_PSHOP_OFFLINE_MESSAGE']));
+			$d['conf_PSHOP_OFFLINE_MESSAGE'] = addslashes( vmGet($d, 'conf_PSHOP_OFFLINE_MESSAGE' ));
 
 			/** Prevent this config setting from being changed by no-backenders  **/
 			if (!defined('_PHSHOP_ADMIN') && !stristr($my->usertype, "admin")) {
@@ -148,6 +148,7 @@ class ps_config {
 			'VM_FEED_MAX_TEXT_LENGTH' => 'conf_VM_FEED_MAX_TEXT_LENGTH',
 			'VM_STORE_CREDITCARD_DATA' => 'conf_VM_STORE_CREDITCARD_DATA',
 			'VM_ENCRYPT_FUNCTION' => 'conf_ENCRYPT_FUNCTION',
+			'VM_COMPONENT_NAME' => 'option',
 			
 			// Begin Arrays
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
@@ -210,11 +211,12 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 			// LOOP THROUGH ALL CONFIGURATION VARIABLES
 			while (list($key, $value) = each($my_config_array)) {
 				if( $key == 'ENCODE_KEY' ) {
-					$config .= "define('ENCODE_KEY', '".stripslashes(@$d[$value])."');\n";
-					if( stripslashes($d[$value]) != ENCODE_KEY ) {
+					$encode_key = vmGet( $d, $value );
+					$config .= "define('ENCODE_KEY', '".str_replace('\'', "\'", $encode_key )."');\n";
+					if( $encode_key != ENCODE_KEY ) {
 						// The ENCODE KEY has been changed! Now we need to re-encode the credit card information and transaction keys
-						$db->query( 'UPDATE #__{vm}_order_payment SET order_payment_number = '.VM_ENCRYPT_FUNCTION.'('.VM_DECRYPT_FUNCTION.'(order_payment_number,\''.ENCODE_KEY.'\'), \''.stripslashes($d[$value]).'\')');
-						$db->query( 'UPDATE #__{vm}_payment_method SET payment_passkey = '.VM_ENCRYPT_FUNCTION.'('.VM_DECRYPT_FUNCTION.'(payment_passkey,\''.ENCODE_KEY.'\'), \''.stripslashes($d[$value]).'\')');
+						$db->query( 'UPDATE #__{vm}_order_payment SET order_payment_number = '.VM_ENCRYPT_FUNCTION.'('.VM_DECRYPT_FUNCTION.'(order_payment_number,\''.$db->getEscaped(ENCODE_KEY).'\'), \''.$db->getEscaped($encode_key).'\')');
+						$db->query( 'UPDATE #__{vm}_payment_method SET payment_passkey = '.VM_ENCRYPT_FUNCTION.'('.VM_DECRYPT_FUNCTION.'(payment_passkey,\''.$db->getEscaped(ENCODE_KEY).'\'), \''.$db->getEscaped($encode_key).'\')');
 					}
 				}
 				elseif( $key == 'VM_ENCRYPT_FUNCTION') {
@@ -223,12 +225,14 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 						$d[$value] = 'ENCODE';
 					}
 					if( $d[$value] != VM_ENCRYPT_FUNCTION ) {
+						$encode_key = vmGet( $d, 'conf_ENCODE_KEY' );
+						$reencode_key = $encode_key != ENCODE_KEY ? $encode_key : ENCODE_KEY;
 						if( $d[$value] == 'ENCODE' ) $decryptor = 'DECODE';
 						elseif( $d[$value] == 'AES_ENCRYPT' ) $decryptor = 'AES_DECRYPT';
 						else $d[$value] = VM_ENCRYPT_FUNCTION;
 						// The Encryption Function has been changed. We need to decode and re-encrypt now!
-						$db->query( "UPDATE #__{vm}_order_payment SET order_payment_number = ".$d[$value].'('.VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."'), '".ENCODE_KEY."')");
-						$db->query( 'UPDATE #__{vm}_payment_method SET payment_passkey = '.$d[$value].'('.VM_DECRYPT_FUNCTION.'(payment_passkey,\''.ENCODE_KEY.'\'), \''.ENCODE_KEY.'\')');
+						$db->query( "UPDATE #__{vm}_order_payment SET order_payment_number = ".$d[$value].'('.VM_DECRYPT_FUNCTION."(order_payment_number,'".$db->getEscaped($reencode_key)."'), '".$db->getEscaped($reencode_key)."')");
+						$db->query( 'UPDATE #__{vm}_payment_method SET payment_passkey = '.$d[$value].'('.VM_DECRYPT_FUNCTION.'(payment_passkey,\''.$db->getEscaped($reencode_key).'\'), \''.$db->getEscaped($reencode_key).'\')');
 					}
 					$config .= "define('$key', '".$d[$value]."');\n";
 				}
@@ -287,12 +291,12 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config.= " );\n";
 				}
 				elseif( $key == 'PSHOP_OFFLINE_MESSAGE' || $key == 'VM_ONCHECKOUT_LEGALINFO_SHORTTEXT'  ) {
-					$value = get_magic_quotes_gpc() ? stripslashes(@$d[$value]) : @$d[$value];
-					$value = str_replace("'","\'",$value);
-					$config .= "define('".$key."', '".$value."');\n";
+					$config_val = str_replace("'","\'",vmGet( $d, $value) );
+					$config .= "define('".$key."', '".$config_val."');\n";
 				}
 				else {
-					$config .= "define('".$key."', '".stripslashes(@$d[$value])."');\n";
+					$config_val = str_replace("'","\'",vmGet( $d, $value) );
+					$config .= "define('".$key."', '".$config_val."');\n";
 				}
 			}
 

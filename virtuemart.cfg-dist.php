@@ -133,7 +133,7 @@ define('VM_FEED_LIMITTEXT', '1');
 define('VM_FEED_MAX_TEXT_LENGTH', '250');
 define('VM_STORE_CREDITCARD_DATA', '1');
 define('VM_ENCRYPT_FUNCTION', 'AES_ENCRYPT');
-
+define('VM_COMPONENT_NAME', 'com_virtuemart');
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;
 $VM_BROWSE_ORDERBY_FIELDS = array( 'product_name', 'product_price', 'product_cdate' );

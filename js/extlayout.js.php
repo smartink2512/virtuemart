@@ -17,7 +17,10 @@ else {
 session_name('virtuemart');
 session_start();
 header( 'Content-Type: application/x-javascript;');
-echo "vmLayout = function(){
+echo "if( typeof Ext == \"undefined\" ) {
+			document.location=\"index2.php?option=".VM_COMPONENT_NAME."&vmLayout=standard&usefetchscript=0\";
+		}
+		vmLayout = function(){
     var layout, center;
     var classClicked = function(e, target){            
         vmLayout.layout.showPanel('vmPage');

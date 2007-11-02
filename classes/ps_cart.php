@@ -350,7 +350,7 @@ class ps_cart {
 				// modified for the advanced attribute modification
 				if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
 				&&
-				($_SESSION['cart'][$i]["description"] == stripslashes($d["description"]) )
+				($_SESSION['cart'][$i]["description"] == $d["description"] )
 				) {
 					if( strtolower( $func ) == 'cartadd' ) {
 						$quantity += $_SESSION['cart'][$i]["quantity"];
@@ -431,12 +431,12 @@ class ps_cart {
 		for ($i=0;$i<$_SESSION['cart']["idx"];$i++) {
 			// modified for the advanced attribute modification
 			if ( ($_SESSION['cart'][$i]["product_id"] == $product_id )
-			&& ($_SESSION['cart'][$i]["description"] == stripslashes($d["description"] || $force) )
+			&& ($_SESSION['cart'][$i]["description"] == $d["description"] || $force )
 			) {
 				$deleted = $_SESSION['cart'][$i]['quantity'];
 			}
 			if ( ($_SESSION['cart'][$i]["product_id"] != $product_id
-			|| $_SESSION['cart'][$i]["description"] != stripslashes($d["description"] )
+			|| $_SESSION['cart'][$i]["description"] != $d["description"]
 			 )
 			) {
 				if( ($_SESSION['cart'][$i]["product_id"] == $product_id && $force )) {
@@ -478,7 +478,7 @@ class ps_cart {
 		for ($i=0;$i<$_SESSION['savedcart']["idx"];$i++) {
 			// modified for the advanced attribute modification
 			if ( ($_SESSION['savedcart'][$i]["product_id"] != $product_id
-			|| $_SESSION['savedcart'][$i]["description"] != stripslashes($d["description"] )
+			|| $_SESSION['savedcart'][$i]["description"] != $d["description"]
 			 )
 			) {
 				if( ($_SESSION['savedcart'][$i]["product_id"] == $product_id && $force )) {
@@ -532,7 +532,7 @@ class ps_cart {
 				// modified for the advanced attribute modification
 				if ( ($_SESSION['savedcart'][$i]["product_id"] == $product_id )
 				&&
-				($_SESSION['savedcart'][$i]["description"] == stripslashes($d["description"]) )
+				($_SESSION['savedcart'][$i]["description"] == $d["description"])
 				) {
 					// Get min and max order levels
 					list($min,$max) = ps_product::product_order_levels($product_id);

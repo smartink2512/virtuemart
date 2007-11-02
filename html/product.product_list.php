@@ -287,7 +287,7 @@ if ($num_rows > 0) {
 		
 		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1" );
 		$link = defined('_PSHOP_ADMIN') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
-		$text = $db->f("product_name");
+		$text = shopMakeHtmlSafe($db->f("product_name"));
 
 		// The link to the product form / to the child products
 		if( $vmLayout == 'standard') {

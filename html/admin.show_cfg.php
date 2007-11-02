@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -570,7 +570,7 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 		<tr>
 			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_ENCRYPTION_KEY ?>&nbsp;&nbsp;</td>
 			<td>
-				<input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo ENCODE_KEY ?>" />
+				<input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo shopMakeHtmlSafe(ENCODE_KEY) ?>" />
 			</td>
 			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ENCRYPTION_KEY_TIP ); ?></td>
 		</tr>

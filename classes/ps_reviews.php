@@ -126,7 +126,7 @@ class ps_reviews {
 		global $VM_LANG, $vmLogger, $perm, $my, $mosConfig_offset;
 		$db = new ps_DB;
 
-		$d["comment"] = $db->getEscaped( trim(stripslashes($d["comment"])) );
+		$d["comment"] = $db->getEscaped( trim($d["comment"]) );
 		if( strlen( $d["comment"] ) < VM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
 			$vmLogger->err( sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1, VM_REVIEWS_MINIMUM_COMMENT_LENGTH ));
 			return false;

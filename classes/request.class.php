@@ -136,6 +136,9 @@ class vmRequest {
 			case 'COOKIE' :
 				$input = &$_COOKIE;
 				break;
+			case 'SESSION'    :
+				$input = &$_SESSION;
+				break;
 			case 'ENV'    :
 				$input = &$_ENV;
 				break;
@@ -330,6 +333,9 @@ class vmRequest {
 				$_COOKIE[$name] = $value;
 				$_REQUEST[$name] = $value;
 				break;
+			case 'SESSION' :
+				$_SESSION[$name] = $value;
+				break;
 			case 'FILES' :
 				$_FILES[$name] = $value;
 				break;
@@ -395,7 +401,11 @@ class vmRequest {
 			case 'COOKIE' :
 				$input = $_COOKIE;
 				break;
-	
+				
+			case 'SESSION' :
+				$input = $_SESSION;
+				break;
+				
 			case 'ENV'    :
 				$input = &$_ENV;
 				break;
