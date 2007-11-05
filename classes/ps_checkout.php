@@ -127,7 +127,7 @@ class ps_checkout {
 			return $checkout_step; // it's a valid step
 		}
 		// Else: we have no alternative steps given by REQUEST
-		foreach( $steps as $step ) {
+		while ($step = current($steps)) {
 			if( !empty($_POST['checkout_this_step']) )  {
 				foreach( $step as $stepname ) {
 					if( in_array( $stepname, $_POST['checkout_this_step'])) {

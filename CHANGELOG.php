@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.11.2007
+#  Fixed task #1510 - Order steps are not correct (using PHP 5.2.4, foreach and key() not compatibile)
+
 05.11.2007 thepisu
 # added translations to strings in VM toolbar / menu / lists (Publish, Unpublish, Please make a selection, ...)
 # fixed typo
