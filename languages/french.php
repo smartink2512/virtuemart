@@ -2032,6 +2032,17 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_EMAIL_YOUR_MAIL = 'Your e-mail:';
 	var $_VM_CART_NOTIFY = 'Notify Me!';
 	var $_VM_CART_NOSTOCK = 'Out of Stock';
+	var $_CMN_PUBLISH = 'Publish';
+	var $_CMN_UNPUBLISH = 'Unpublish';
+	var $_CMN_PLEASESELECT_PUBLISH = 'Please make a selection from the list to publish';
+	var $_CMN_PLEASESELECT_UNPUBLISH = 'Please make a selection from the list to unpublish';
+	var $_CMN_PLEASESELECT_DELETE = 'Please make a selection from the list to delete';
+	var $_CMN_PLEASESELECT_TO = 'Please make a selection from the list to';
+	var $_CMN_CONFIRM_DELETE_ITEMS = 'Are you sure you want to delete selected items?';
+	var $_SAVE_PERMISSIONS = 'Save Permissions';
+	var $_NO_RESTRICTION = 'No Restriction';
+	var $_CMN_ORDER_UP = 'Order Up';
+	var $_CMN_ORDER_DOWN = 'Order Down';
         
 }
 class phpShopLanguage extends vmLanguage { }

@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.11.2007 thepisu
+# added translations to strings in VM toolbar / menu / lists (Publish, Unpublish, Please make a selection, ...)
+# fixed typo
+
 02.11.2007 soeren
 # changing the ENCODE_KEY could lead to configuration file errors + wrong re-encryption of encrypted data 
 # implemented changes to prevent saving a configuration file with wrong PHP syntax (escaping single quotes and stuff)

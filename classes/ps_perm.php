@@ -239,7 +239,7 @@ class ps_perm {
 		
 		if( $size > 1 ) {
 			$name .= '[]';
-			$values['none'] = 'No Restriction';
+			$values['none'] = $VM_LANG->_NO_RESTRICTION;
 		}
 		
 		echo ps_html::selectList( $name, $group_name, $values, $size, $multi );

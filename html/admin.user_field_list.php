@@ -130,9 +130,9 @@ while( $db->next_record() ) {
 	$listObj->addCell( $tmp_cell );  
 	
 	$tmp_cell = "<div align=\"center\">"
-			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", "Order Up", $page, "changeordering" )
+			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_CMN_ORDER_UP, $page, "changeordering" )
 			. "\n&nbsp;" 
-			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', 'Move down', $page, "changeordering" )
+			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', $VM_LANG->_CMN_ORDER_DOWN, $page, "changeordering" )
 			. "</div>";
 	$listObj->addCell( $tmp_cell );  
 	

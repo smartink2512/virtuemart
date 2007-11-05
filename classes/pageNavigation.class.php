@@ -162,8 +162,11 @@ class vmPageNav {
 * @param string The alt text for the icon
 * @return string
 */
-	function orderUpIcon( $i, $condition=true, $task='orderup', $alt='Move Up', $page, $func ) {
-		global $mosConfig_live_site;
+	function orderUpIcon( $i, $condition=true, $task='orderup', $alt='', $page, $func ) {
+		global $mosConfig_live_site, $VM_LANG;
+		if( $alt == '') {
+			$alt = $VM_LANG->_CMN_ORDER_UP;
+		}
 		if (($i > 0 || ($i+$this->limitstart > 0)) && $condition) {
 		    return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">
 				<img src="'.$mosConfig_live_site.'/administrator/images/uparrow.png" width="12" height="12" border="0" alt="'.$alt.'" />
@@ -179,8 +182,11 @@ class vmPageNav {
 * @param string The alt text for the icon
 * @return string
 */
-	function orderDownIcon( $i, $n, $condition=true, $task='orderdown', $alt='Move Down', $page, $func ) {
-		global $mosConfig_live_site;
+	function orderDownIcon( $i, $n, $condition=true, $task='orderdown', $alt='', $page, $func ) {
+		global $mosConfig_live_site, $VM_LANG;
+		if( $alt == '') {
+			$alt = $VM_LANG->_CMN_ORDER_DOWN;
+		}
 		if (($i < $n-1 || $i+$this->limitstart < $this->total-1) && $condition) {
 			return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">
 				<img src="'.$mosConfig_live_site.'/administrator/images/downarrow.png" width="12" height="12" border="0" alt="'.$alt.'" />

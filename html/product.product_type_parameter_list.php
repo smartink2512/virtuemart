@@ -83,9 +83,9 @@ while ($db->next_record()) {
 	 //      echo "<a href=\"javascript: void(0);\" onClick=\"return listItemTask('cb$i','orderdown')\">";
 //      echo "Down</a>";	
 	$tmp_cell = "<div align=\"center\">"
-			. $pageNav->orderUpIcon( $i, $i > 0 , "orderup", "Order Up", $page, 'ProductTypeReorderParam')
+			. $pageNav->orderUpIcon( $i, $i > 0 , "orderup", $VM_LANG->_CMN_ORDER_UP, $page, 'ProductTypeReorderParam')
 			. "\n&nbsp;" 
-			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), "orderdown", "Order Down", $page, 'ProductTypeReorderParam' )
+			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), "orderdown", $VM_LANG->_CMN_ORDER_DOWN, $page, 'ProductTypeReorderParam' )
 			. "</div>";
 	$listObj->addCell( $tmp_cell );  
 	

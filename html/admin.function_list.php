@@ -79,7 +79,7 @@ while($usergroups->next_record()) {
 }
 $columns['none'] = 'width="5%"';
 $usergroups->reset();
-$columns['<a href="javascript: document.adminForm.func.value = \'setFunctionPermissions\'; saveorder( '.(count($db->record)-1) .' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="Save Permissions" align="left"/>Save Permissions</a>'] = '';
+$columns['<a href="javascript: document.adminForm.func.value = \'setFunctionPermissions\'; saveorder( '.(count($db->record)-1) .' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="' . $VM_LANG->_SAVE_PERMISSIONS . '" align="left"/>' . $VM_LANG->_SAVE_PERMISSIONS . '</a>'] = '';
 
 $columns[$VM_LANG->_E_REMOVE] = "width=\"5%\"";
 

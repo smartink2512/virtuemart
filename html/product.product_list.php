@@ -343,9 +343,9 @@ if ($num_rows > 0) {
 
 		if( $category_id ) {
 			$tmp_cell = "<div align=\"center\">"
-			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", "Order Up", $page, "changeordering" )
+			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_CMN_ORDER_UP, $page, "changeordering" )
 			. "\n&nbsp;"
-			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', 'Move down', $page, "changeordering" )
+			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', $VM_LANG->_CMN_ORDER_DOWN, $page, "changeordering" )
 			. "</div>";
 			$listObj->addCell( $tmp_cell );
 
@@ -374,7 +374,7 @@ if ($num_rows > 0) {
 		else {
 			$tmpcell .= "&task=unpublish\">";
 		}
-		$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("product_publish"), "Publish", "Unpublish" );
+		$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("product_publish"), $VM_LANG->_CMN_PUBLISH, $VM_LANG->_CMN_UNPUBLISH );
 		$tmpcell .= "</a>";
 		$listObj->addCell( $tmpcell );
 
