@@ -199,7 +199,7 @@ class vmMenuBar extends mosMenuBar {
 	* @param boolean True if required to check that a standard list item is checked
 	*/
 	function custom( $task='', $page, $icon='', $iconOver='', $alt='', $listSelect=true, $formName="adminForm", $func = "" ) {
-		global $page, $VM_LANG;
+		global $VM_LANG;
 
 		$bar =& JToolBar::getInstance('toolbar');
 		if ($listSelect) {
