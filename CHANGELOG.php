@@ -35,7 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-05.11.2007
+07.11.2007 thepisu
+# Fixed task #1372 - Hard coded language strings in zw_waiting_list.php (used sprintf for mail translation)
+# added translations to strings in Product Form / Waiting List tab
+# in Product Form / Waiting List tab, added user email and notify status; if user was not logged when requested notif,
+  before only "()" was displayed, now it's possibile to see his email address
+
+05.11.2007 thepisu
 #  Fixed task #1510 - Order steps are not correct (using PHP 5.2.4, foreach and key() not compatibile)
 
 05.11.2007 thepisu

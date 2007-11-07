@@ -1226,18 +1226,27 @@ if( $clone_product == "1" ) {
 if( $product_id ) {
 	// SHOW THE WAITING LIST!
 	$dbw = new ps_DB;
-	$dbw->query( 'SELECT name, username, user_id FROM `#__{vm}_waiting_list`
+	$dbw->query( 'SELECT name, username, user_id, notify_email, notified, notify_date FROM `#__{vm}_waiting_list`
 					LEFT JOIN `#__users` ON `user_id` = `id`
 					WHERE `product_id`=' . $product_id );
 	if( $dbw->num_rows() > 0 ) {
-		$tabs->startTab( 'Waiting List', 'waiting-list-tab' );
+		$tabs->startTab( $VM_LANG->_PRODUCT_WAITING_LIST_TAB, 'waiting-list-tab' );
 
-		echo '<table class="adminform"><tr><td><h2>Users waiting to be notified when this product is back in stock:</h2></td></tr>';
+		echo '<table class="adminform"><tr><td><h2>' . $VM_LANG->_PRODUCT_WAITING_LIST_USERLIST . ':</h2></td></tr>';
 		echo '<tr><td><input type="hidden" value="'.$db->f('product_in_stock').'" name="product_in_stock_old" />';
-		echo '<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /><label for="notify_users">Notify these users now (when you have updated the number of products stock)</label><br /><br /></td></tr>';
+		echo '<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /> <label for="notify_users">' . $VM_LANG->_PRODUCT_WAITING_LIST_NOTIFYUSERS . '</label><br /><br /></td></tr>';
 		echo '<tr><td>';
 		while( $dbw->next_record() ) {
-			$waitinglist[] = $dbw->f('name') . ' ('.$dbw->f('username') . ')';
+			if ($dbw->f("notified")==1) {
+				$waiting_notified = ' - <strong style="font-weight:bold">' . $VM_LANG->_PRODUCT_WAITING_LIST_NOTIFIED . ' ' . $dbw->f("notify_date") . '</strong>';
+			} else {
+				$waiting_notified = '';
+			}
+			if ($dbw->f("user_id")==0) {
+				$waitinglist[] = '<a href="mailto:' . $dbw->f('notify_email') . '">' . $dbw->f('notify_email') . '</a>' . $waiting_notified;
+			} else {
+				$waitinglist[] = $dbw->f('name') . ' ('.$dbw->f('username') . ' - ' . '<a href="mailto:' . $dbw->f('notify_email') . '">' . $dbw->f('notify_email') . '</a>' . ')' . $waiting_notified;
+			}
 		}
 		echo vmCommonHTML::getList( $waitinglist );
 		echo '</td></tr></table>';

@@ -2048,7 +2048,17 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_NO_RESTRICTION = 'No Restriction';
 	var $_CMN_ORDER_UP = 'Order Up';
 	var $_CMN_ORDER_DOWN = 'Order Down';
-        
+	var $_PRODUCT_WAITING_LIST_TAB = 'Waiting List';
+	var $_PRODUCT_WAITING_LIST_USERLIST = 'Users waiting to be notified when this product is back in stock';
+	var $_PRODUCT_WAITING_LIST_NOTIFYUSERS = 'Notify these users now (when you have updated the number of products stock)';
+	var $_PRODUCT_WAITING_LIST_NOTIFIED = 'notified';
+	var $_PRODUCT_WAITING_LIST_EMAIL_SUBJECT = '%s Has Arrived!';
+	var $_PRODUCT_WAITING_LIST_EMAIL_TEXT = 'Thank you for your patience.
+
+Our %s  is now in stock and can be purchased by following this link:
+%s
+
+ This is a one time notice, you will not receive this e-mail again.';
 }
 class phpShopLanguage extends vmLanguage { }
 

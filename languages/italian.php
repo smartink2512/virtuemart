@@ -2082,6 +2082,17 @@ Un account ti permette di tornare in questo negozio e vedere tutti gli ordini ch
 	var $_NO_RESTRICTION = 'Nessuna Restrizione';
 	var $_CMN_ORDER_UP = 'Ordina Su';
 	var $_CMN_ORDER_DOWN = 'Ordina Giu';
+	var $_PRODUCT_WAITING_LIST_TAB = 'Lista d\'Attesa';
+	var $_PRODUCT_WAITING_LIST_USERLIST = 'Utenti in attesa di essere notificati quando questo prodotto diventa disponibile';
+	var $_PRODUCT_WAITING_LIST_NOTIFYUSERS = 'Notifica questi utenti ora (quando aggiorni la quantità disponibile a magazzino)';
+	var $_PRODUCT_WAITING_LIST_NOTIFIED = 'notificato';
+	var $_PRODUCT_WAITING_LIST_EMAIL_SUBJECT = '%s E\' Arrivato!';
+	var $_PRODUCT_WAITING_LIST_EMAIL_TEXT = 'Grazie per la tua pazienza.
+
+Il nostro prodotto %s è ora disponibile e può essere acquistato seguento questo collegamento:
+%s
+
+ Questa è una notifica singola, non riceverai nuovamente questa e-mail.';
 }
 class phpShopLanguage extends vmLanguage { }
 
