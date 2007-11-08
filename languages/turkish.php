@@ -1192,7 +1192,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'Yada yeni dosya yükleyin';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Yerel dosyayý yükleyebilirsiniz. Bu dosya sattýðýnýz ürün olacak. Varolan dosya ile deðiþtirilecek.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Müþteri önizleme sayfasýnda gösterilecek bölümü doldurun.<br />mesala 24 saat 3,5 gün , sipariþte';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'Yada ürün detaylarý sayfaýnda gösterilecek resmi seçiniz.<br />Klasörde bulunan resim <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'Yada ürün detaylarý sayfaýnda gösterilecek resmi seçiniz.<br />Klasörde bulunan resim <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Nitelik Listesi';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Nitelik Liste Formatý Örnekleri:</h4>
         <pre>Boyut,XL[+1.99],M,S[-2.99];Renk,Kýrmýzý,Yeþil,Sarý,YüksekRenk[=24.00];veYakýnda,..,..</pre>
@@ -2065,6 +2065,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

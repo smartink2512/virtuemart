@@ -1195,7 +1195,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'O Subir el nuevo archivo';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Puede subir un archivo local. Este archivo será el pruducto que vende usted. un archivo existente será substituido.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Completar cualquir texto aquí que estará mostrado para el cliente en el detalle del producto. <br />e.j.: 24h, 48 hours, 3 - 5 días, en el pedido.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'O seleccionar una Imagen para mostrar en la página del detalle (flypage).<br />Las imagenes residen en el directorio <i>/componentes/com_phpshop/shop_imagen/disponibilidad</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'O seleccionar una Imagen para mostrar en la página del detalle (flypage).<br />Las imagenes residen en el directorio <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Lista de la atribución';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Ejemplos para el formato de la lista de la atribución:</h4>
         <span class="sectionname"><strong>Talla</strong>,XL[+1.99],M,S[-2.99]<strong>;Color</strong>,Rojo,Verde,Amarillo,colorcostoso[=24.00]<strong>;ycontinua</strong>,..,..</span>
@@ -2068,6 +2068,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

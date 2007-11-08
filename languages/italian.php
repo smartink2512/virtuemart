@@ -1190,7 +1190,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'OPPURE carica un nuovo File';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Puoi caricare un file locale. Questo file sarà il prodotto venduto. I file esistenti verranno sovrascritti.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Inserisci qui il testo che vuoi venga visualizzato sulla pagina di descrizione del prodotto.<br />es.: 24 ore, 48 ore, 3 - 5 giorni, Su ordinazione.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OPPURE seleziona un\'immagine da visualizzare nella pagina di dettaglio del prodotto (flypage).<br />Le immagini risiedono nella cartella <i>/components/com_virtuemart/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OPPURE seleziona un\'immagine da visualizzare nella pagina di dettaglio del prodotto (flypage).<br />Le immagini risiedono nella cartella <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Lista Attributi';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Esempi per il formato lista attributi:</h4>
         <pre><strong>Taglia</strong>,XL[+1.99],M,S[-2.99];
@@ -2071,6 +2071,8 @@ Un account ti permette di tornare in questo negozio e vedere tutti gli ordini ch
 	var $_EMAIL_FRIEND_ADDR = 'E-mail del tuo amico:';
 	var $_EMAIL_YOUR_NAME = 'Il tuo nome:';
 	var $_EMAIL_YOUR_MAIL = 'La tua e-mail:';
+	var $_VM_CART_NOTIFY = 'Avvisami!';
+	var $_VM_CART_NOSTOCK = 'Non Disponibile';
 	var $_CMN_PUBLISH = 'Pubblica';
 	var $_CMN_UNPUBLISH = 'Sospendi';
 	var $_CMN_PLEASESELECT_PUBLISH = 'Seleziona una voce dalla lista per pubblicare';
@@ -2083,16 +2085,18 @@ Un account ti permette di tornare in questo negozio e vedere tutti gli ordini ch
 	var $_CMN_ORDER_UP = 'Ordina Su';
 	var $_CMN_ORDER_DOWN = 'Ordina Giu';
 	var $_PRODUCT_WAITING_LIST_TAB = 'Lista d\'Attesa';
-	var $_PRODUCT_WAITING_LIST_USERLIST = 'Utenti in attesa di essere notificati quando questo prodotto diventa disponibile';
-	var $_PRODUCT_WAITING_LIST_NOTIFYUSERS = 'Notifica questi utenti ora (quando aggiorni la quantità disponibile a magazzino)';
-	var $_PRODUCT_WAITING_LIST_NOTIFIED = 'notificato';
+	var $_PRODUCT_WAITING_LIST_USERLIST = 'Utenti in attesa di essere avvisati quando questo prodotto diventa disponibile';
+	var $_PRODUCT_WAITING_LIST_NOTIFYUSERS = 'Avvisa questi utenti ora (quando aggiorni la quantità disponibile a magazzino)';
+	var $_PRODUCT_WAITING_LIST_NOTIFIED = 'avvisato';
 	var $_PRODUCT_WAITING_LIST_EMAIL_SUBJECT = '%s E\' Arrivato!';
 	var $_PRODUCT_WAITING_LIST_EMAIL_TEXT = 'Grazie per la tua pazienza.
 
 Il nostro prodotto %s è ora disponibile e può essere acquistato seguento questo collegamento:
 %s
 
- Questa è una notifica singola, non riceverai nuovamente questa e-mail.';
+ Questa è un avviso unico, non riceverai nuovamente questa e-mail.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Seleziona Immagine';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Prego attendere: nella pagina seguente potrai inoltrare la richiesta di avviso.';
 }
 class phpShopLanguage extends vmLanguage { }
 

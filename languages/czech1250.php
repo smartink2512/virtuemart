@@ -1193,7 +1193,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'NEBO nahrajte nový soubor';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'mùžete nahrát místní soubor. Tento soubor bude zbožím, které prodáváte. Existující soubor bude pøepsán.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Napištte jakýkoliv text, který bude zobrazen zákazníkovi na stránce zboží .<br />tj.: 24h, 48h, 3 - 5 dní, objednáno.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'NEBO vyberte obrázek, který bude zobrazen na stránce detailního popisu zboží .<br />Obrázky jsou umístìny v adresáøi <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'NEBO vyberte obrázek, který bude zobrazen na stránce detailního popisu zboží .<br />Obrázky jsou umístìny v adresáøi <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Seznam atributù';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Pøíklady formátu seznamu atributù:</h4>
         <pre>Velikost,XL[+100],M,S[-50];Barva,èervená,zelená,žlutá,drahá barva[=999];atd..,..,..</pre>
@@ -2066,6 +2066,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

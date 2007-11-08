@@ -1179,7 +1179,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'ИЛИ качете нов фйл';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Можете да качите файл на сървъра. Това ще представлява продукта, който продавате. Ако на сървъра съществува файл с това име, ще бъде заменен с този, който качвате.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Попълнете с текст, който ще желаете да се показва в страницата с детайлна информация за продукта.<br />напр.: 24 часа, 48 часа, 3-5 дни, При заявка...';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ИЛИ изберете изображение, което ще се показва в страницата с детайлна информация за продукта (flypage).<br />Изображенията се съхраняват в директория <i>/components/com_virtuemart/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ИЛИ изберете изображение, което ще се показва в страницата с детайлна информация за продукта (flypage).<br />Изображенията се съхраняват в директория <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Списък с атрибути';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Примери за форматиране на списъка с атрибути:</h4>
         <pre>Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];и т.н.,..,..</pre>
@@ -2047,6 +2047,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

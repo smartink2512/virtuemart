@@ -542,7 +542,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 						<a href="http://virtuemart.net/documentation/User_Manual/index.html"><?php echo $VM_LANG->_VM_HELP_TOPICS ?></a>
 						</li>
 						<li class="item-smenu vmicon vmicon-16-language">
-						<a href="http://virtuemart.net/index.php?option=com_smf&Itemid=71"><?php echo $VM_LANG->_VM_COMMUNITY_FORUM ?></a>
+						<a href="http://forum.virtuemart.net/"><?php echo $VM_LANG->_VM_COMMUNITY_FORUM ?></a>
 						</li>			
 					</ul>
 					<hr />

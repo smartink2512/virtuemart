@@ -1156,7 +1156,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'หรือเลือกไฟล์ที่ต้องการอัพโหลด';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'ท่านสามารถอัพโหลดไฟล์ ซึ่งจะเป็นไฟล์สินค้าที่จะขาย - ไฟล์เดิมจะถูกเขียนทับด้วยไฟล์ใหม่';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'ใส่ข้อความที่ต้องการแสดงให้ลูกค้า ในหน้าแสดงสินค้า<br />เช่น: 24ชม., 48 ชั่วโมง, 3 - 5 วัน, อยู่ระหว่างการจัดหา.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'หรือเลือกรูปภาพที่ต้องการให้แสดงในหน้ารายละเอียดสินค้า<br />รูปภาพจะอยู่ในไดเรคทอรี่ <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'หรือเลือกรูปภาพที่ต้องการให้แสดงในหน้ารายละเอียดสินค้า<br />รูปภาพจะอยู่ในไดเรคทอรี่ <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'คุณลักษณะ';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>ตัวอย่างรูปแบบการกำหนดคุณลักษณะ:</h4><span class="sectionname"><strong>ขนาด</strong>,XL[+1.99],M,S[-2.99]<strong>;สี</strong>,แดง,เขียว,เหลือง,สีพิเศษ[=24.00]<strong>;อื่นๆ</strong>,..,..</span><h4>วิธีตั้งค่าราคาสำหรับสินค้าที่มีคุณลักษณะเพิ่มเติม:</h4><span class="sectionname"><strong>+</strong> == เพิ่มราคาจากราคาสินค้าที่ตั้งไว้<br /><strong>-</strong> == ลดราคาลงจากราคาสินค้าที่ตั้งไว้<br /><strong>=</strong> == ให้ราคาสินค้าเท่ากับราคาที่กำหนด</span>';
 	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = 'กำหนดคุณลักษณะอื่นๆ';
@@ -2021,6 +2021,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

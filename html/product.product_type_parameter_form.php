@@ -16,6 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
+global $ps_product_type_parameter;
 
 $product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
 $parameter_name = mosgetparam($_REQUEST, 'parameter_name', "");

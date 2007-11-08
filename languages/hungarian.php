@@ -1179,7 +1179,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'VAGY felt&ouml;ltesz egy &uacute;j &aacute;llom&aacute;nyt';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Fel tudsz t&ouml;lteni egy helyi &aacute;llom&aacute;nyt. Ez az &aacute;llom&aacute;ny lesz a term&eacute;k, amit eladsz. Egy l&eacute;tező &aacute;llom&aacute;ny lesz lecser&eacute;lve.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = '&Iacute;rj be ide b&aacute;rmely olyan sz&ouml;veget, amit meg akarsz jelen&iacute;teni a v&aacute;s&aacute;rl&oacute;k sz&aacute;m&aacute;ra a term&eacute;k r&ouml;plapj&aacute;n.<br />e.g.: 24h, 48 &oacute;ra, 3 - 5 nap, Megrendel&eacute;sre.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'VAGY v&aacute;lassz ki egy k&eacute;pet amely a Term&eacute;k r&eacute;szletek oldalon (FLYPAGE -r&ouml;plap) lesz megjelen&iacute;tve.<br />A k&eacute;pek az al&aacute;bbi k&ouml;nyvt&aacute;rban tal&aacute;lhat&oacute;k<i>/components/com_virtuemart/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'VAGY v&aacute;lassz ki egy k&eacute;pet amely a Term&eacute;k r&eacute;szletek oldalon (FLYPAGE -r&ouml;plap) lesz megjelen&iacute;tve.<br />A k&eacute;pek az al&aacute;bbi k&ouml;nyvt&aacute;rban tal&aacute;lhat&oacute;k<i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Tulajdons&aacute;gok list&aacute;z&aacute;sa';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>P&eacute;ld&aacute;k a tulajdons&aacute;gok lista form&aacute;j&aacute;hoz:</h4>
         <pre>M&eacute;ret,XL[+1.99],M,S[-2.99];sz&iacute;n,piros,z&ouml;ld,s&aacute;rga,dr&aacute;gasz&iacute;nv&aacute;ltozat[=24.00];&eacute;sat&ouml;bbi,..,..</pre>
@@ -2040,6 +2040,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

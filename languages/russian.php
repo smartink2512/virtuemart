@@ -1179,7 +1179,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'ИЛИ загрузите новый файл';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Вы можете загрузить на сервер файл с вашего диска. Этот файл будет товаром, который Вы продаёте. Существующий файл будет заменён.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Введите здесь любой текст, который будет отображаться для покупателя на странице-флаере товара под словом Доставка.<br />например: 24ч, 48 часов, 3-5 дней, по заказу, ...';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ИЛИ выберите картинку, которая будет отображаться тамже на странице подробностей (флаере) товара.<br />Картинки находятся в папке <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ИЛИ выберите картинку, которая будет отображаться тамже на странице подробностей (флаере) товара.<br />Картинки находятся в папке <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Список атрибутов';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '	<h4>Примеры формата списка атрибутов:</h4>
     <pre>
@@ -2053,6 +2053,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

@@ -1186,7 +1186,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'ILI dodajte novu datoteku';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Možete uploadati lokalnu datoteku. Ta datoteka &#263;e biti proizvod koji prodajete. Postoje&#263;a datoteka &#263;e biti zamijenjena.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Upišite tekst kojim &#263;e se kupcu prikazati vrijeme dostupnost proizvoda.<br />npr.: 24h, 48 sati, 3 - 5 dana, Po narudžbi.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ILI odaberite sliku za prikazati na stranici sa detaljima o proizvodu (flypage).<br />Slike su u direktoriju <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ILI odaberite sliku za prikazati na stranici sa detaljima o proizvodu (flypage).<br />Slike su u direktoriju <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Popis atributa';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Primjeri za format popisa atributa:</h4>
         <pre>Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];AndSoOn,..,..</pre>
@@ -2059,6 +2059,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

@@ -1194,7 +1194,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = '或上傳新檔案';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = '您可以上傳一個檔案. 這個檔案將是您所販賣的商品. 一個已存在的檔案將被替換.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = '在此輸入任何的文字將會在商品介紹頁面顯示給顧客.<br />例如: 24h, 48 hours, 3 - 5 days, On Order.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = '或是選擇一個圖片顯示在詳細頁面 (介紹頁面).<br />圖片在目錄 <i>/components/com_phpshop/shop_image/availability</i>裡面<br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = '或是選擇一個圖片顯示在詳細頁面 (介紹頁面).<br />圖片在目錄 <i>%s</i>裡面<br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = '屬性清單';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>屬性清單格式的例子:</h4>
         <pre>大小,XL[+100],M,S[-100];顏色,Red,Green,Yellow,昂貴顏色[=2400];等等,..,..</pre>
@@ -2067,6 +2067,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

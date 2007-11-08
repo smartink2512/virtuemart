@@ -286,7 +286,9 @@ class ps_cart {
 			// Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
 			$vmLogger->info( $msg );
 		}
-        else {
+        else if (@$request_stock) {
+            $vmLogger->tip( $VM_LANG->_PHPSHOP_CART_GOTO_WAITING_LIST );
+		} else {
             $vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
         }
 		// end cart update message */

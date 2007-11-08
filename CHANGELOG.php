@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.11.2008 thepisu
+# in left menu, corrected forum link to new server 'forum.virtuemart.net'
+# changed info text in the JS box when customer click on 'Notify Me' button (waiting list feature)
+# calendar for availability date was not working in J1.5 (changed lang file to calendar-en-GB.js)
+# added translation to 'Select Image' for availability images box, and to 'Control Panel' tab
+# in availability images tip, corrected folder reference; now is taken from theme setting
+# 'global $ps_product_type_parameter' not defined in product type form
+
 07.11.2007 thepisu
 # Fixed task #1372 - Hard coded language strings in zw_waiting_list.php (used sprintf for mail translation)
 # added translations to strings in Product Form / Waiting List tab

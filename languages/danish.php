@@ -1193,7 +1193,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'ELLER upload en ny fil';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Du kan uploade en lokal fil. Denne vil vil være det produkt du sælger. En evt. eksisterende fil vil blive overskrevet.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Indtast her den tekst som kunden skal kunne se på produktarket.<br />f.eks.: 24t, 48 timer, 3 - 5 dage, Restordre.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ELLER vælg et billede der skal vises på produktsiden.<br />Billederne findes i biblioteket <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ELLER vælg et billede der skal vises på produktsiden.<br />Billederne findes i biblioteket <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Attributliste';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Eksemper på attributliste formatet:</h4>
         <pre>Str.,XL[+2.00],M,S[-1.00];Farve,Rød,Grøn,Gul,SpecielFarve[=54.00];Osv.,..,..</pre>
@@ -2065,6 +2065,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

@@ -1168,7 +1168,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'OU carregue um novo arquivo';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Você pode carregar um arquivo local. Este arquivo será o produto à vender. Uma arquivo existente será atualizado.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Preencha qualquer texto que será mostrado na página do produto. <br />e.g.: 24h, 48 horas, 3 - 5 dias, No pedido.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OU selecione uma imagem a ser mostrada na página de detalhes (pag. do produto).<br />A imagem reside no diretório <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'OU selecione uma imagem a ser mostrada na página de detalhes (pag. do produto).<br />A imagem reside no diretório <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Lista de atributos';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Exemplos do formato de lista de atributos:</h4> 
 			<pre>Tamanho,XL[+1.99],M,S[-2.99];Cor,Verm.,Verde,Amarelo,CorExpressiva[=24.00];E Por Ai Vai,..,..</pre>
@@ -2040,6 +2040,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

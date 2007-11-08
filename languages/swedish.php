@@ -1106,7 +1106,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'ELLER skicka upp ny fil';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Du kan skicka upp en lokal fil. Denna fil kommer att vara produkten du säljer. Existerande fil kommer att ersättas.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Skriv text här som kommer att visas till kunden på flypage sidan.<br />t.ex: 24tim, 48 timmar, 3 - 5 dagar, efter order.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ELLER välj en bild at visa på detaljsidan (flypage).<br />Bildrna sparas i biblioteket <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'ELLER välj en bild at visa på detaljsidan (flypage).<br />Bildrna sparas i biblioteket <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Attributlista';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Exempel på attributlisteformat:</h4>
         <span class="sectionname"><strong>Storlek</strong>,XL[+20.00],M,S[-15.00]<strong>;Färg</strong>: Röd,Grön,Gul,Exklusiv färg[=24.00]<strong>;Och så vidare</strong>,..,..</span>
@@ -1979,6 +1979,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 

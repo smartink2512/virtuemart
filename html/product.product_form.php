@@ -26,7 +26,12 @@ if( is_array( $product_id )) {
 vmCommonHTML::loadExtjs();
 echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/product_attributes.js');
 echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/calendar.js');
-echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/lang/calendar-en.js');
+if( class_exists( 'JConfig' ) ) {
+	// in Joomla 1.5, the name of calendar lang file is changed...
+	echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/lang/calendar-en-GB.js');
+} else {
+	echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/lang/calendar-en.js');
+}
 echo vmCommonHTML::linkTag( $mosConfig_live_site .'/includes/js/calendar/calendar-mos.css');
 
 $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
@@ -400,7 +405,7 @@ $tabs->startTab( $display_label, "display-page");
       if($product_parent_id !=0) {
       	echo ' disabled="disabled" ';
       }
-      echo '/><label for="product_list_check">'.$VM_LANG->_VM_DISPLAY_USE_LIST_BOX.'</label>';
+      echo '/> <label for="product_list_check">'.$VM_LANG->_VM_DISPLAY_USE_LIST_BOX.'</label>';
       //Formatting Code
 ?> <br />
       
@@ -409,7 +414,7 @@ $tabs->startTab( $display_label, "display-page");
        if ($display_desc) {
        	echo "checked=\"checked\" ";
        }
-    echo '/><label for="display_desc">'.$VM_LANG->_VM_DISPLAY_CHILD_DESCRIPTION.'</label>'; ?><br />
+    echo '/> <label for="display_desc">'.$VM_LANG->_VM_DISPLAY_CHILD_DESCRIPTION.'</label>'; ?><br />
     <?php 
     echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"desc_width\" name=\"desc_width\" value=\"$desc_width\"  ";
     echo "/> ".$VM_LANG->_VM_DISPLAY_DESC_WIDTH; ?>
@@ -452,9 +457,9 @@ $tabs->startTab( $display_label, "display-page");
         	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_headers\" name=\"display_headers\" value=\"Y\" ";
         }
         if (@$product_list =="Y"  || @$product_list =="YM" ) {
-            echo " />"; }
+            echo " /> "; }
         else {
-            echo ' disabled=true />';
+            echo ' disabled=true /> ';
         }        
         echo $VM_LANG->_VM_DISPLAY_TABLE_HEADER;
 ?> <br />
@@ -466,9 +471,9 @@ $tabs->startTab( $display_label, "display-page");
         	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_child\" name=\"product_list_child\" value=\"Y\" ";
         }
         if (@$product_list =="Y"  || @$product_list =="YM" ) {
-            echo " />"; }
+            echo " /> "; }
         else {
-            echo ' disabled=true />';
+            echo ' disabled=true /> ';
         }    
         
         echo $VM_LANG->_VM_DISPLAY_LINK_TO_CHILD."<br />";
@@ -481,9 +486,9 @@ $tabs->startTab( $display_label, "display-page");
         	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_type\" name=\"product_list_type\" value=\"Y\" ";
         }
         if (@$product_list =="Y"  || @$product_list =="YM" ) {
-            echo " />"; }
+            echo " /> "; }
         else {
-            echo " disabled=true />";
+            echo " disabled=true /> ";
         }
         echo $VM_LANG->_VM_DISPLAY_INCLUDE_PRODUCT_TYPE;
 ?> 
@@ -597,7 +602,7 @@ $tabs->startTab( $status_label, "status-page");
       echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1); ?>
       <br /><br />
         <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo VM_THEMEURL ?>images/availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo IMAGEURL.NO_IMAGE;?>'; document.adminForm.product_availability.value=''}">
-          <option value="">Select Image</option><?php
+          <option value=""><?php echo $VM_LANG->_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE; ?></option><?php
           $path = VM_THEMEPATH."images/availability";
           $files = mosReadDirectory( "$path", ".", true, true);
           foreach ($files as $file) {
@@ -610,7 +615,10 @@ $tabs->startTab( $status_label, "status-page");
                 }
             }  ?>
         </select>&nbsp;
-        <?php echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2);?>
+        <?php
+		$pathrelative = str_replace($mosConfig_live_site,'',VM_THEMEURL."images/availability/");
+		echo vmToolTip(sprintf($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2,$pathrelative));
+		?>
         &nbsp;&nbsp;&nbsp;
         <img src="<?php echo $db->f("product_availability") ? VM_THEMEURL."images/availability/".$db->sf("product_availability") : IMAGEURL.NO_IMAGE; ?>" name="imagelib" border="0" alt="Preview" />
       </td>

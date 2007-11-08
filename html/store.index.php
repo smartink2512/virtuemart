@@ -73,7 +73,7 @@ while($db->next_record())
 
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
-$tabs->startTab('Control Panel', 'control-panel');
+$tabs->startTab($VM_LANG->_PHPSHOP_CONTROL_PANEL, 'control-panel');
 ?>
 
 <div class="header">

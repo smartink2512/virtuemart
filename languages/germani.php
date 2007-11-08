@@ -1203,7 +1203,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD = 'ODER eine neue Datei Uploaden';
 	var $_PHPSHOP_PRODUCT_FORM_UPLOAD_TOOLTIP = 'Diese Datei wird hochgeladen und stellt das zu verkaufende Produkt dar. Eine Vorhandene Datei wird gelösct.';
 	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1 = 'Gib hier Text ein, der dem Kunden zur Verfügbarkeit der Produktes angezeit wird.<br />z.B.: 24h, 48 Stunden, 3 - 5 Tage, auf Anfrage.....';
-	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'Order wähle ein Bild, um die Verfügbarkeit visuell darzustellen.<br />Die Bilder hier sind eine automatische Auflistung aller vorhandenen Bilder im Verzeichnis <i>/components/com_phpshop/shop_image/availability</i><br />';
+	var $_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2 = 'Order wähle ein Bild, um die Verfügbarkeit visuell darzustellen.<br />Die Bilder hier sind eine automatische Auflistung aller vorhandenen Bilder im Verzeichnis <i>%s</i><br />';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST = 'Attributsliste';
 	var $_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Beispiel für das Attributslisten-Format:</h4>
         <pre>Größe,XL[+1.99],M,S[-2.99];Farbe,Rot,Grün,Gelb,TeureFarbe[=24.00];WeiteresAttribut,..,..</pre>
@@ -2077,6 +2077,8 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.';
+	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
+	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 }
 class phpShopLanguage extends vmLanguage { }
 
