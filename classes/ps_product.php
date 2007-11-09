@@ -1361,7 +1361,7 @@ class ps_product extends vmAbstractObject {
 	 * @return The HTML code of the img tag
 	 */
 	function image_tag($image, $args="", $resize=1, $path_appendix='product', $thumb_width=0, $thumb_height=0 ) {
-		global $mosConfig_live_site;
+		global $mosConfig_live_site, $mosConfig_absolute_path;
 		require_once( CLASSPATH . 'imageTools.class.php');
 		
 		$border="";
@@ -1377,7 +1377,7 @@ class ps_product extends vmAbstractObject {
 			}
 			// local image file
 			else {
-				if(PSHOP_IMG_RESIZE_ENABLE == '1' && $resize==1) {
+				if(PSHOP_IMG_RESIZE_ENABLE == '1' || $resize==1) {
 					$url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 					if( !strpos( $args, "height=" )) {
 						$arr = @getimagesize( vmImageTools::getresizedfilename( $image, $path_appendix, '', $thumb_width, $thumb_height ) );
@@ -1385,7 +1385,12 @@ class ps_product extends vmAbstractObject {
 					}
 				}
 				else {
-					$url = IMAGEURL.$path_appendix."/".$image;
+					$url = IMAGEURL.$path_appendix.'/'.$image;
+					if( file_exists($image)) {
+						$url = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $image );
+					} elseif( file_exists($mosConfig_absolute_path.'/'.$image)) {
+						$url = $mosConfig_live_site.'/'.$image;
+					}
 					
 					if( !strpos( $args, "height=" ) ) {
 						$arr = getimagesize( str_replace( IMAGEURL, IMAGEPATH, $url ) );

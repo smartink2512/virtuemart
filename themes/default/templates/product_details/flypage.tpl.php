@@ -20,7 +20,7 @@ if( $this->get_cfg( 'product_navigation', 1 )) {
   <tbody>
 	<tr>
 	  <td rowspan="5" valign="top"><br/>
-	  	<?php echo $product_image ?><br/><br/><?php echo $more_images ?></td>
+	  	<?php echo $product_image ?><br/><br/><?php echo $this->vmlistAdditionalImages( $product_id, $images ) ?></td>
 	  <td rowspan="1" colspan="2">
 	  <h1><?php echo $product_name ?> <?php echo $edit_link ?></h1>
 	  </td>

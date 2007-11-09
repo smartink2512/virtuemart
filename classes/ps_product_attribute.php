@@ -22,7 +22,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  */
 class ps_product_attribute {
-	var $classname = "ps_product_attribute";
 
 	/**
 	 * Validates that all variables for adding, updating an attribute
@@ -91,23 +90,29 @@ class ps_product_attribute {
 			return false;
 		}
 
-		$db = new ps_DB;
-		$q  = "INSERT INTO #__{vm}_product_attribute_sku (product_id,attribute_name,";
-		$q .= "attribute_list) VALUES ('" . $d["product_id"] . "','";
-		$q .= $d["attribute_name"] . "','" . $d["attribute_list"] . "')";
-
-		$db->setQuery($q);  $db->query();
+		$db = new ps_DB;		
+		$fields = array('product_id' => $d["product_id"],
+						'attribute_name' => $d["attribute_name"],
+						'attribute_list' => $d["attribute_list"]
+						);
+		$db->buildQuery( 'INSERT', '#__{vm}_product_attribute_sku', $fields );
+		if( $db->query() === false ) {
+			$GLOBALS['vmLogger']->err('Saving the attribute failed.');
+			return false;
+		}
 
 		/** Insert new Attribute Name into child table **/
 		$ps_product = new ps_product;
 		$child_pid = $ps_product->get_child_product_ids($d["product_id"]);
 
 		for($i = 0; $i < count($child_pid); $i++) {
-			$q  = "INSERT INTO #__{vm}_product_attribute (product_id,attribute_name) ";
-			$q .= "VALUES ('$child_pid[$i]','" . $d["attribute_name"] . "')";
-			$db->setQuery($q);  $db->query();
+			$fields = array('product_id' => $child_pid[$i],
+							'attribute_name' => $d["attribute_name"]
+							);
+			$db->buildQuery( 'INSERT', '#__{vm}_product_attribute', $fields );
+			$db->query();
 		}
-
+		$GLOBALS['vmLogger']->info('The Attribute has been saved.');
 		return true;
 	}
 
@@ -127,23 +132,29 @@ class ps_product_attribute {
 		$q  = "UPDATE #__{vm}_product_attribute_sku SET ";
 		$q .= "attribute_name='" . $d["attribute_name"] . "',";
 		$q .= "attribute_list='" . $d["attribute_list"] . "' ";
-		$q .= "WHERE product_id='" . $d["product_id"] . "' ";
-		$q .= "AND attribute_name='" . $d["old_attribute_name"] . "' ";
+		$q .= " ";
 
-		$db->setQuery($q);  $db->query();
+		$fields = array(
+					'attribute_name' => $d["attribute_name"],
+					'attribute_list' => $d["attribute_list"]
+					);
+		$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute_sku', $fields, "WHERE product_id='" . $d["product_id"] . "' AND attribute_name='" . $d["old_attribute_name"] . "'" );
+		if( $db->query() === false ) {
+			$GLOBALS['vmLogger']->err('Updating the attribute failed.');
+			return false;
+		}
 
-		if ($d["old_attribute_name"] != $d["attribute_name"]) {
+		if( $d["old_attribute_name"] != $d["attribute_name"] ) {
 			$ps_product = new ps_product;
 			$child_pid = $ps_product->get_child_product_ids($d["product_id"]);
 
 			for($i = 0; $i < count($child_pid); $i++) {
-				$q  = "UPDATE #__{vm}_product_attribute SET ";
-				$q .= "attribute_name='" . $d["attribute_name"] . "' ";
-				$q .= "WHERE product_id='$child_pid[$i]' ";
-				$q .= "AND attribute_name='" . $d["old_attribute_name"] . "' ";
-				$db->setQuery($q);  $db->query();
+				$fields = array('attribute_name' => $d["attribute_name"]);
+				$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute', $fields, "WHERE product_id='".$child_pid[$i]."' AND attribute_name='" . $d["old_attribute_name"] . "' " );
+				$db->query();
 			}
 		}
+		$GLOBALS['vmLogger']->info('The Attribute has been updated.');
 		return true;
 	}
 

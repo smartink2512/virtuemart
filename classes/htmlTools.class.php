@@ -400,7 +400,7 @@ class mShopTabs {
 	*/
 	function endPane() {
 		echo "</div>";
-		$scripttag = "var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
+		$scripttag = "Ext.onReady( function() { \nvar tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
 		$num = 0;
 		foreach ( $this->tabs as $id => $title ) {
 			$scripttag .= "tabItem$num = tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
@@ -408,7 +408,7 @@ class mShopTabs {
 			$num++;
 		}
 		reset($this->tabs);
-		$scripttag .= "tabs_{$this->panel_id}.activate('".key($this->tabs)."');";
+		$scripttag .= "tabs_{$this->panel_id}.activate('".key($this->tabs)."'); \n});";
 		
 		echo vmCommonHTML::scriptTag('', $scripttag );
 

@@ -35,7 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-08.11.2008 thepisu
+09.11.2007 soeren
+# Task #1438 - Adding product not working in IE (it was due to the Tabs being rendered before the DOM was ready)
+# Task #1530 - Add Attribute - empty save message popup window.
+
+08.11.2007 thepisu
 # in left menu, corrected forum link to new server 'forum.virtuemart.net'
 # changed info text in the JS box when customer click on 'Notify Me' button (waiting list feature)
 # calendar for availability date was not working in J1.5 (changed lang file to calendar-en-GB.js)
