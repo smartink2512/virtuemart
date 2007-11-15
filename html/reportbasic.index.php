@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,20 +17,20 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 $nh_report = new nh_report();
-$show_products = mosGetParam( $_REQUEST, "show_products" );
-$interval = mosGetParam( $_REQUEST, "interval", "byMonth" );
+$show_products = vmGet( $_REQUEST, "show_products" );
+$interval = vmGet( $_REQUEST, "interval", "byMonth" );
 
 foreach (array ('thisMonth', 'lastMonth', 'last60', 'last90', 'sbmt') as $button_name) {
-	$$button_name = mosGetParam( $_REQUEST, $button_name );
+	$$button_name = vmGet( $_REQUEST, $button_name );
 }
 
-$selected_begin["day"] = $sday = mosGetParam( $_REQUEST, "sday", 1 );
-$selected_begin["month"] = $smonth = mosGetParam( $_REQUEST, "smonth", date("m"));
-$selected_begin["year"] = $syear = mosGetParam( $_REQUEST, "syear", date("Y"));
+$selected_begin["day"] = $sday = vmGet( $_REQUEST, "sday", 1 );
+$selected_begin["month"] = $smonth = vmGet( $_REQUEST, "smonth", date("m"));
+$selected_begin["year"] = $syear = vmGet( $_REQUEST, "syear", date("Y"));
 
-$selected_end["day"] = $eday = mosGetParam( $_REQUEST, "eday", date("d") );
-$selected_end["month"] = $emonth = mosGetParam( $_REQUEST, "emonth", date("m"));
-$selected_end["year"] = $eyear = mosGetParam( $_REQUEST, "eyear", date("Y"));
+$selected_end["day"] = $eday = vmGet( $_REQUEST, "eday", date("d") );
+$selected_end["month"] = $emonth = vmGet( $_REQUEST, "emonth", date("m"));
+$selected_end["year"] = $eyear = vmGet( $_REQUEST, "eyear", date("Y"));
 
 $i=0;
 

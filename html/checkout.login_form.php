@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -35,7 +35,7 @@ if( vmIsJoomla( '1.5' ) ) {
 	$action = 'index.php?option=login';
 
 	// Return URL
-	$return_url = mosGetParam( $_SERVER, 'REQUEST_URI', null );
+	$return_url = vmGet( $_SERVER, 'REQUEST_URI', null );
 
 	// Convert & to &amp; for xhtml compliance
 	$return_url = str_replace( '&', '&amp;', $return_url );

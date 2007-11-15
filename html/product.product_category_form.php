@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,8 +18,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 global $ps_product_category, $ps_product;
 
-$category_id = mosgetparam($_REQUEST, 'category_id', 0);
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$category_id = vmGet($_REQUEST, 'category_id', 0);
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $VM_LANG->_PHPSHOP_CATEGORY_FORM_LBL );
@@ -169,7 +169,7 @@ if( !stristr( $db->f("category_full_image"), "http") )
               if( stristr($db->f("category_full_image"), "http") )
                 $category_full_image_url = $db->f("category_full_image");
               else if(!empty($_REQUEST['category_full_image_url']))
-                $category_full_image_url = mosGetParam($_REQUEST, 'category_full_image_url');
+                $category_full_image_url = vmGet($_REQUEST, 'category_full_image_url');
               else
                 $category_full_image_url = "";
               ?>
@@ -215,7 +215,7 @@ if( !stristr( $db->f("category_full_image"), "http") )
               if( stristr($db->f("category_thumb_image"), "http") )
                 $category_thumb_image_url = $db->f("category_thumb_image");
               else if(!empty($_REQUEST['category_thumb_image_url']))
-                $category_thumb_image_url = mosGetParam($_REQUEST, 'category_thumb_image_url');
+                $category_thumb_image_url = vmGet($_REQUEST, 'category_thumb_image_url');
               else
                 $category_thumb_image_url = "";
               ?>

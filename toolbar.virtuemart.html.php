@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id:toolbar.virtuemart.html.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,9 +17,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
-$_REQUEST['keyword'] = urldecode(mosgetparam($_REQUEST, 'keyword', ''));
+$_REQUEST['keyword'] = urldecode(vmGet($_REQUEST, 'keyword', ''));
 $keyword = $_REQUEST['keyword'];
-$no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
+$no_menu = vmGet( $_REQUEST, 'no_menu', 0 );
 
 global $vmIcons;
 $vmIcons['back_icon'] = $mosConfig_live_site."/administrator/images/back.png";
@@ -50,10 +50,10 @@ class MENU_virtuemart {
 
 		$bar = & JToolBar::getInstance('JComponent');
 		
-        $no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
-        $is_iframe = mosGetParam( $_REQUEST, 'is_iframe', 0 );
-        $product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id', 0 );
-        $product_id = mosGetParam( $_REQUEST, 'product_id' );
+        $no_menu = vmGet( $_REQUEST, 'no_menu', 0 );
+        $is_iframe = vmGet( $_REQUEST, 'is_iframe', 0 );
+        $product_parent_id = vmGet( $_REQUEST, 'product_parent_id', 0 );
+        $product_id = vmGet( $_REQUEST, 'product_id' );
         $script = '';
         
 		if( is_array( $product_id )) {

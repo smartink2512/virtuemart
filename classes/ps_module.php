@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -15,20 +15,19 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-
+/**
+ * VirtueMart "Core Module" Management
+ *
+ */
 class ps_module {
-	var $classname = "ps_module";
-	var $error;
 
 
-	/**************************************************************************
-	* name: validate_add()
-	* created by: pablo
-	* description: validate the given data before adding a function record
-	* parameters:
-	* returns:
-	**************************************************************************/
-
+	/**
+	 * Validates the Input Parameters onBeforeModuleAdd
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add(&$d) {
 		global $db, $vmLogger;
 
@@ -57,14 +56,12 @@ class ps_module {
 	}
 
 
-	/**************************************************************************
-	* name: validate_update()
-	* created by: pablo
-	* description: validate the given data before updating a function record
-	* parameters:
-	* returns:
-	**************************************************************************/
-
+	/**
+	 * Validates the Input Parameters onBeforeModuleUpdate
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update(&$d) {
 		global $vmLogger;
 		
@@ -95,14 +92,12 @@ class ps_module {
 	}
 	
 	
-	/**************************************************************************
-	* name: validate_delete()
-	* created by: pablo
-	* description: validate the given data before deleting a function record
-	* parameters:
-	* returns:
-	**************************************************************************/
-
+	/**
+	 * Validates the Input Parameters onBeforeModuleDelete
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_delete($module_id) {
 		global $db, $vmLogger;
 
@@ -111,7 +106,7 @@ class ps_module {
 			return False;
 		}
 
-		$db->query( "SELECT module_name FROM #__{vm}_module WHERE module_id='$module_id'" );
+		$db->query( 'SELECT module_name FROM #__{vm}_module WHERE module_id='.(int)$module_id );
 		$db->next_record();
 		$name = $db->f("module_name");
 		if( $this->is_core( $name ) ) {
@@ -140,19 +135,21 @@ class ps_module {
 		if( is_array( $d[ 'module_perms' ] )) {			
 			$d[ 'module_perms' ] = implode( ',', $d[ 'module_perms' ] );
 		}
-		$fields = array( 'module_name' => $d[ 'module_name' ],
-			            'module_perms' => $d[ 'module_perms' ],
-						'module_description' => $d[ 'module_description' ],
-						'module_publish' => $d[ 'module_publish'],
-						'list_order' => $d[ 'list_order' ]);
+		$fields = array( 'module_name' => vmGet( $d, 'module_name' ),
+			            'module_perms' => vmGet( $d, 'module_perms' ),
+						'module_description' => vmGet( $d, 'module_description' ),
+						'module_publish' => vmGet( $d, 'module_publish'),
+						'list_order' => vmRequest::getInt('list_order')
+					);
 			
 		$db->buildQuery( 'INSERT',  '#__{vm}_module', $fields );
 
-		$db->query();
-
-		$_REQUEST['module_id'] = $db->last_insert_id();
-		
-		return True;
+		if( $db->query() !== false ) {
+			$_REQUEST['module_id'] = $db->last_insert_id();
+			$GLOBALS['vmLogger']->info( 'The Module has been added.');
+			return True;
+		}
+		return false;
 
 	}
 
@@ -175,17 +172,21 @@ class ps_module {
 			$d[ 'module_perms' ] = implode( ',', $d[ 'module_perms' ] );
 		}
 		
-		$fields = array( 'module_name' => $d[ 'module_name' ],
-			            'module_perms' => $d[ 'module_perms' ],
-						'module_description' => $d[ 'module_description' ],
-						'module_publish' => $d[ 'module_publish'],
-						'list_order' => $d[ 'list_order' ]);
+		$fields = array( 'module_name' => vmGet( $d, 'module_name' ),
+			            'module_perms' => vmGet( $d, 'module_perms' ),
+						'module_description' => vmGet( $d, 'module_description' ),
+						'module_publish' => vmGet( $d, 'module_publish'),
+						'list_order' => vmRequest::getInt('list_order')
+					);
 			
 		$db->buildQuery( 'UPDATE',  '#__{vm}_module', $fields, ' WHERE module_id='.intval( $d[ 'module_id' ] ) );
 
-		$db->query();
+		if( $db->query() !== false ) {
+			$GLOBALS['vmLogger']->info( 'The Module has been updated.');
+			return True;
+		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -218,10 +219,10 @@ class ps_module {
 			return False;
 		}
 
-		$q = "DELETE from #__{vm}_function WHERE module_id='$record_id'";
+		$q = 'DELETE from #__{vm}_function WHERE module_id='.(int)$record_id;
 		$db->query($q);
 
-		$q = "DELETE FROM #__{vm}_module where module_id='$record_id'";
+		$q = 'DELETE FROM #__{vm}_module WHERE module_id='.(int)$record_id;
 		$db->query($q);
 		return true;
 
@@ -309,7 +310,7 @@ class ps_module {
 	 */
 	function list_classes( $name, $preselected ) {
 		global $mosConfig_absolute_path;
-		$classes = mosReadDirectory( CLASSPATH, '.', false, true );
+		$classes = vmReadDirectory( CLASSPATH, '.', false, true );
 		$array = array();
 		foreach ($classes as $class ) {
 			if( is_dir( $class ) ) continue;

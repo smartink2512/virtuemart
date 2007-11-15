@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+13.11.2007 soeren
+
++ added support for "REPLACE" queries to buildQuery function
+# States weren't deleted on Country Deletion
+^ changes most deprecated mos* function calls to separate vm* functions (VirtueMart's own functions)
+	Examples: mosGetParam => vmGet, mosReadDirectory => vmReadDirectory, mosRedirect => vmRedirect
+^ converted more UPDATE and INSERT queries to use the "new" buildQuery function
+
 09.11.2007 soeren
 # Task #1438 - Adding product not working in IE (it was due to the Tabs being rendered before the DOM was ready)
 # Task #1530 - Add Attribute - empty save message popup window.

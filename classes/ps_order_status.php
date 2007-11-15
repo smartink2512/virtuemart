@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -71,22 +71,26 @@ class ps_order_status extends vmAbstractObject {
 	function add(&$d) {
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-		$timestamp = time();
 
 		if (!$this->validate_add($d)) {
 			return False;
 		}
 		$fields = array( 'vendor_id' => $ps_vendor_id,
-						'order_status_code' => $d["order_status_code"],
-						'order_status_name' => $d["order_status_name"],
-						'order_status_description' => $d["order_status_description"],
-						'list_order' => $d["list_order"]
+						'order_status_code' => vmGet($d, 'order_status_code' ),
+						'order_status_name' => vmGet($d, 'order_status_name' ),
+						'order_status_description' => vmGet($d, 'order_status_description' ),
+						'list_order' => vmRequest::getInt('list_order' )
 					);
 		$db->buildQuery( 'INSERT', $this->_table_name, $fields );
-		$result = $db->query();
-		$GLOBALS['vmLogger']->info('The Order Status Type has been added.');
-		$d["order_status_id"] = $_REQUEST['order_status_id'] = $db->last_insert_id();
 		
+		$result = $db->query();
+		
+		if( $result ) {
+			$GLOBALS['vmLogger']->info('The Order Status Type has been added.');
+			$d["order_status_id"] = $_REQUEST['order_status_id'] = $db->last_insert_id();
+		} else {
+			$GLOBALS['vmLogger']->err('Adding the Order Status Type has failed.');
+		}
 		return $result;
 
 	}
@@ -104,14 +108,18 @@ class ps_order_status extends vmAbstractObject {
 		if (!$this->validate_update($d)) {
 			return False;
 		}
-		$fields = array( 'order_status_code' => $d["order_status_code"],
-						'order_status_name' => $d["order_status_name"],
-						'order_status_description' => $d["order_status_description"],
-						'list_order' => $d["list_order"]
+		$fields = array(	'order_status_code' => vmGet($d, 'order_status_code' ),
+						'order_status_name' => vmGet($d, 'order_status_name' ),
+						'order_status_description' => vmGet($d, 'order_status_description' ),
+						'list_order' => vmRequest::getInt('list_order' )
 					);
 		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, "WHERE order_status_id=".(int)$d["order_status_id"]." AND vendor_id=$ps_vendor_id" );
-		$GLOBALS['vmLogger']->info('The Order Status Type has been updated.');
-		return $db->query();
+		
+		if( $db->query() !== false ) {
+			$GLOBALS['vmLogger']->info('The Order Status Type has been updated.');
+			return true;
+		}
+		return false;
 	}
 
 	/**

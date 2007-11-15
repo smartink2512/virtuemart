@@ -9,7 +9,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 * Original code by Soeren Eberhardt
 * @package VirtueMart
 * @subpackage shipping
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -29,21 +29,16 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 */
 class usps {
 
-	var $classname = "usps";
-
 	function list_rates( &$d ) {
-		global $vendor_country_2_code, $vendor_currency, $vmLogger;
 		global $VM_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
-		$db =& new ps_DB;
-		$dbv =& new ps_DB;
-		$dbc =& new ps_DB;
-		
-		$cart = $_SESSION['cart'];
+		$db = new ps_DB;
+		$dbv = new ps_DB;
+		$dbc = new ps_DB;
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
 
-		$q  = "SELECT * FROM `#__{vm}_user_info`, `#__{vm}_country` WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
+		$q  = "SELECT * FROM `#__{vm}_user_info`, `#__{vm}_country` WHERE user_info_id='" . $db->getEscaped($d["ship_to_info_id"])."' AND ( country=country_2_code OR country=country_3_code)";
 		$db->query($q);
 		$db->next_record();
 
@@ -146,15 +141,13 @@ class usps {
             } else {
                       $shipping_pounds_intl = ceil ($order_weight);
             }
-			if ($order_weight < 0.88)
-			{
-			$shipping_pounds = 0;
-			$shipping_ounces = round(16 * ($order_weight - floor($order_weight)));
+			if ($order_weight < 0.88) {
+				$shipping_pounds = 0;
+				$shipping_ounces = round(16 * ($order_weight - floor($order_weight)));
 			}
-			else
-			{
-			$shipping_pounds = ceil ($order_weight);
-			$shipping_ounces = 0;
+			else	{
+				$shipping_pounds = ceil ($order_weight);
+				$shipping_ounces = 0;
 			}
 
 			$os = array("Mac", "NT", "Irix", "Linux");
@@ -162,12 +155,10 @@ class usps {
 			//If weight is over 70 pounds, round down to 70 for now.
 			//Will update in the future to be able to split the package or something?
 			if( $order_weight > 70.00 ) {
-			echo "We are unable to ship USPS as the package weight exceeds the 70 pound limit,<br>please select another shipping method.";
+				echo "We are unable to ship USPS as the package weight exceeds the 70 pound limit,<br>please select another shipping method.";
 			}
-			else
-			{
-			if( ( $dest_country == "US") && in_array($dest_state,$states) )
-			{
+			else 	{
+			if( ( $dest_country == "US") && in_array($dest_state,$states) )	{
 				/******START OF DOMESTIC RATE******/
 				//the xml that will be posted to usps
 				$xmlPost = 'API=RateV2&XML=<RateV2Request USERID="'.$usps_username.'" PASSWORD="'.$usps_password.'">';
@@ -213,7 +204,7 @@ class usps {
 					else {
 						/* XML Parsing */
 						require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
-						$xmlDoc =& new DOMIT_Lite_Document();
+						$xmlDoc = new DOMIT_Lite_Document();
 						$xmlDoc -> parseXML( $xmlResult, false, true );
 						/* Let's check wether the response from USPS is Success or Failure ! */
 						if( strstr( $xmlResult, "Error" ) ) {
@@ -341,8 +332,7 @@ class usps {
 				}
 				/******END OF DOMESTIC RATE******/
 			}
-			else
-			{
+			else	{
 				/******START INTERNATIONAL RATE******/
 				//the xml that will be posted to usps
 				$xmlPost = 'API=IntlRate&XML=<IntlRateRequest USERID="'.$usps_username.'" PASSWORD="'.$usps_password.'">';
@@ -383,7 +373,7 @@ class usps {
 					else {
 						/* XML Parsing */
 						require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
-						$xmlDoc =& new DOMIT_Lite_Document();
+						$xmlDoc = new DOMIT_Lite_Document();
 						$xmlDoc->parseXML( $xmlResult, false, true );
 
 						/* Let's check wether the response from USPS is Success or Failure ! */
@@ -429,7 +419,7 @@ class usps {
 						if( stristr( $xmlResult, "Success" )) {
 							/* XML Parsing */
 							require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
-							$xmlDoc =& new DOMIT_Lite_Document();
+							$xmlDoc = new DOMIT_Lite_Document();
 							$xmlDoc->parseXML( $xmlResult, false, true );
 							$error = false;
 						}
@@ -544,7 +534,7 @@ class usps {
 			$charge[$i] = $ship_postage[$i];
 			$ship_postage[$i] = $CURRENCY_DISPLAY->getFullValue($charge[$i]);
 
-			$shipping_rate_id = urlencode($this->classname."|USPS|".$ship_service[$i]."|".$charge[$i]);
+			$shipping_rate_id = urlencode(__CLASS__."|USPS|".$ship_service[$i]."|".$charge[$i]);
 			//$checked = (@$d["shipping_rate_id"] == $value) ? "checked=\"checked\"" : "";
 			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
 
@@ -575,7 +565,7 @@ class usps {
 
 		$shipping_rate_id = $d["shipping_rate_id"];
 		$is_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
-		$order_shipping = $is_arr[3];
+		$order_shipping = (float)$is_arr[3];
 
 		return $order_shipping;
 
@@ -585,7 +575,7 @@ class usps {
 	function get_tax_rate() {
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
 
 		if( intval(USPS_TAX_CLASS)== 0 )
 		return( 0 );
@@ -604,10 +594,12 @@ class usps {
 
 		$shipping_rate_id = $d["shipping_rate_id"];
 
-		if( array_key_exists( $shipping_rate_id, $_SESSION ))
-		return true;
-		else
-		return false;
+		if( array_key_exists( $shipping_rate_id, $_SESSION )) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	} //end function validate
 
 	/**
@@ -618,176 +610,178 @@ class usps {
 
 		global $VM_LANG;
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
     ?>
-	<table>
-    <tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME ?></strong></td>
-		<td>
-            <input type="text" name="USPS_USERNAME" class="inputbox" value="<?php echo USPS_USERNAME ?>" />
-		</td>
+<table>
+	<tr>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME ?></strong></td>
+		<td><input type="text" name="USPS_USERNAME" class="inputbox"
+			value="<?php echo USPS_USERNAME ?>" /></td>
 		<td>
           <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP) ?>
         </td>
-    </tr>
-    <tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD ?></strong>
+	</tr>
+	<tr>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD ?></strong>
 		</td>
-		<td>
-            <input type="text" name="USPS_PASSWORD" class="inputbox" value="<?php echo USPS_PASSWORD ?>" />
-		</td>
+		<td><input type="text" name="USPS_PASSWORD" class="inputbox"
+			value="<?php echo USPS_PASSWORD ?>" /></td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP) ?>
         </td>
-    </tr>
-    <tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER ?></strong>
+	</tr>
+	<tr>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER ?></strong>
 		</td>
-		<td>
-            <input type="text" name="USPS_SERVER" class="inputbox" value="<?php echo USPS_SERVER ?>" />
-		</td>
+		<td><input type="text" name="USPS_SERVER" class="inputbox"
+			value="<?php echo USPS_SERVER ?>" /></td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP) ?>
         </td>
-    </tr>
+	</tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH ?></strong>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH ?></strong>
 		</td>
-		<td>
-            <input type="text" name="USPS_PATH" class="inputbox" value="<?php echo USPS_PATH ?>" />
-		</td>
+		<td><input type="text" name="USPS_PATH" class="inputbox"
+			value="<?php echo USPS_PATH ?>" /></td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP) ?>
         </td>
-    </tr>
-    </tr>
+	</tr>
+	</tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE ?></strong>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE ?></strong>
 		</td>
-		<td>
-  			<select name="USPS_PACKAGESIZE">
-				<option value="REGULAR" <?php if (USPS_PACKAGESIZE == 'REGULAR') echo "selected=\"selected\""; ?> >Regular</option>
-				<option value="LARGE" <?php if (USPS_PACKAGESIZE == 'LARGE') echo "selected=\"selected\""; ?> >Large</option>
-				<option value="OVERSIZE" <?php if (USPS_PACKAGESIZE == 'OVERSIZE') echo "selected=\"selected\""; ?>>Oversize</option>
-			</select>
-		</td>
+		<td><select name="USPS_PACKAGESIZE">
+			<option value="REGULAR"
+				<?php if (USPS_PACKAGESIZE == 'REGULAR') echo "selected=\"selected\""; ?>>Regular</option>
+			<option value="LARGE"
+				<?php if (USPS_PACKAGESIZE == 'LARGE') echo "selected=\"selected\""; ?>>Large</option>
+			<option value="OVERSIZE"
+				<?php if (USPS_PACKAGESIZE == 'OVERSIZE') echo "selected=\"selected\""; ?>>Oversize</option>
+		</select></td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP) ?>
         </td>
-    </tr>
-	  <tr>
+	</tr>
+	<tr>
 		<td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
 		<td>
 		  <?php
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("USPS_TAX_CLASS", USPS_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
-	  </tr>	
-		<tr>
-		  <TD colspan="3"><HR /></td>
-		</tr>
-	<tr>
-	  <td><strong><?php echo $VM_LANG->_PHPSHOP_USPS_HANDLING_FEE ?></strong></td>
-	  <td><input class="inputbox" TYPE="text" name="USPS_HANDLINGFEE" value="<?php echo USPS_HANDLINGFEE ?>" /></td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP) ?></td>
-	</tr>
-	<tr>
-	  <td><strong><?php echo $VM_LANG->_PHPSHOP_USPS_PADDING ?></strong></td>
-	  <td><input class="inputbox" TYPE="text" name="USPS_PADDING" value="<?php echo USPS_PADDING ?>" /></td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_PADDING_TOOLTIP) ?></td>
-	</tr>
-	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE ?></strong>
-		</td>
+		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?>
+		
+		
+		
+		
+		
 		<td>
-            <input type="text" name="USPS_INTLLBRATE" class="inputbox" value="<?php echo USPS_INTLLBRATE ?>" />
+	
+	</tr>
+	<tr>
+		<TD colspan="3">
+		<HR />
 		</td>
+	</tr>
+	<tr>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_USPS_HANDLING_FEE ?></strong></td>
+		<td><input class="inputbox" TYPE="text" name="USPS_HANDLINGFEE"
+			value="<?php echo USPS_HANDLINGFEE ?>" /></td>
+		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP) ?></td>
+	</tr>
+	<tr>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_USPS_PADDING ?></strong></td>
+		<td><input class="inputbox" TYPE="text" name="USPS_PADDING"
+			value="<?php echo USPS_PADDING ?>" /></td>
+		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_PADDING_TOOLTIP) ?></td>
+	</tr>
+	<tr>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE ?></strong>
+		</td>
+		<td><input type="text" name="USPS_INTLLBRATE" class="inputbox"
+			value="<?php echo USPS_INTLLBRATE ?>" /></td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP) ?>
         </td>
-    </tr>
+	</tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE ?></strong>
+		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE ?></strong>
 		</td>
-		<td>
-            <input type="text" name="USPS_INTLHANDLINGFEE" class="inputbox" value="<?php echo USPS_INTLHANDLINGFEE ?>" />
-		</td>
+		<td><input type="text" name="USPS_INTLHANDLINGFEE" class="inputbox"
+			value="<?php echo USPS_INTLHANDLINGFEE ?>" /></td>
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP) ?>
         </td>
-    </tr>
+	</tr>
 	<tr>
-        <td><strong><?php echo _VM_LANG_USPS_MACHINABLE ?></strong></td>
-		<td>
-		<label>
-		<input name="USPS_MACHINABLE" type="radio" <?php if (USPS_MACHINABLE == 1) echo "checked=\"checked\""; ?> value="1" />
-		Yes</label>
-		<label>
-		<input name="USPS_MACHINABLE" type="radio" <?php if (USPS_MACHINABLE == 0) echo "checked=\"checked\""; ?> value="0" />
-		No</label>
-		</td>
+		<td><strong><?php echo _VM_LANG_USPS_MACHINABLE ?></strong></td>
+		<td><label> <input name="USPS_MACHINABLE" type="radio"
+			<?php if (USPS_MACHINABLE == 1) echo "checked=\"checked\""; ?>
+			value="1" /> Yes</label> <label> <input name="USPS_MACHINABLE"
+			type="radio"
+			<?php if (USPS_MACHINABLE == 0) echo "checked=\"checked\""; ?>
+			value="0" /> No</label></td>
 		<td><?php echo mm_ToolTip(_VM_LANG_USPS_MACHINABLE_TOOLTIP) ?></td>
-    </tr>
+	</tr>
 	<tr>
-	  <td><strong><?php echo _VM_LANG_USPS_QUOTE ?></strong></td>
-	  <td>
-		<label>
-		<input name="USPS_SHOW_DELIVERY_QUOTE" type="radio" <?php if (USPS_SHOW_DELIVERY_QUOTE == 1) echo "checked=\"checked\""; ?> value="1" />
-		Yes</label>
-		<label>
-		<input name="USPS_SHOW_DELIVERY_QUOTE" type="radio" <?php if (USPS_SHOW_DELIVERY_QUOTE == 0) echo "checked=\"checked\""; ?> value="0" />
-		No</label>
+		<td><strong><?php echo _VM_LANG_USPS_QUOTE ?></strong></td>
+		<td><label> <input name="USPS_SHOW_DELIVERY_QUOTE" type="radio"
+			<?php if (USPS_SHOW_DELIVERY_QUOTE == 1) echo "checked=\"checked\""; ?>
+			value="1" /> Yes</label> <label> <input
+			name="USPS_SHOW_DELIVERY_QUOTE" type="radio"
+			<?php if (USPS_SHOW_DELIVERY_QUOTE == 0) echo "checked=\"checked\""; ?>
+			value="0" /> No</label></td>
+		<td><?php echo mm_ToolTip(_VM_LANG_USPS_QUOTE_TOOLTIP) ?></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+		<hr><?php echo _VM_LANG_USPS_SHIP; ?><hr>
 		</td>
-	  <td><?php echo mm_ToolTip(_VM_LANG_USPS_QUOTE_TOOLTIP) ?></td>
 	</tr>
-	<tr>
-		<td colspan="3"><hr><?php echo _VM_LANG_USPS_SHIP; ?><hr></td>
-	</tr>
-<!-- added for new shipping rate V2 code ... Domestic Shipping-->
+	<!-- added for new shipping rate V2 code ... Domestic Shipping-->
 	<?php $count = 10; $i = 0; ?> 
 	<?php while ($i <= $count): 
 	$dom_option = constant("USPS_SHIP".$i);
 	?>
 	<tr>
-        <td><strong><?php $var_name = "_VM_LANG_USPS_SHIP$i"; eval("\$var = $var_name;"); echo $var; ?></strong></td>
-		<td>
-		<label>
-		<input name="USPS_SHIP<?php echo $i; ?>" type="radio" <?php $var_name = "\$dom_option"; eval("\$var = $var_name;"); if ($var  == 1) echo "checked=\"checked\""; ?> value="1" />
-		Yes</label>
-		<label>
-		<input name="USPS_SHIP<?php echo $i; ?>" type="radio" <?php $var_name = "\$dom_option"; eval("\$var = $var_name;"); if ($var  == 0) echo "checked=\"checked\""; ?> value="0" />
-		No</label>
-		</td>
+		<td><strong><?php $var_name = "_VM_LANG_USPS_SHIP$i"; eval("\$var = $var_name;"); echo $var; ?></strong></td>
+		<td><label> <input name="USPS_SHIP<?php echo $i; ?>" type="radio"
+			<?php $var_name = "\$dom_option"; eval("\$var = $var_name;"); if ($var  == 1) echo "checked=\"checked\""; ?>
+			value="1" /> Yes</label> <label> <input
+			name="USPS_SHIP<?php echo $i; ?>" type="radio"
+			<?php $var_name = "\$dom_option"; eval("\$var = $var_name;"); if ($var  == 0) echo "checked=\"checked\""; ?>
+			value="0" /> No</label></td>
 		<td><?php $var_name = "_VM_LANG_USPS_SHIP".$i; eval("\$var = $var_name;"); echo mm_ToolTip($var) ?></td>
-    </tr>
+	</tr>
 	<?php $i++; ?>
 	<?php endwhile; ?> 
 	<tr>
-		<td colspan="3"><hr><?php echo _VM_LANG_USPS_INTL; ?><hr></td>
+		<td colspan="3">
+		<hr><?php echo _VM_LANG_USPS_INTL; ?><hr>
+		</td>
 	</tr>
-<!-- added for new shipping rate V2 code ... International Shipping -->
+	<!-- added for new shipping rate V2 code ... International Shipping -->
 	<?php $count = 8; $i = 0; ?>
 	<?php while ($i <= $count): 
 	$int_option = constant("USPS_INTL".$i);
 	?>
 	<tr>
-        <td><strong><?php $var_name = "_VM_LANG_USPS_INTL$i"; eval("\$var = $var_name;"); echo $var; ?></strong></td>
-		<td>
-		<label>
-		<input name="USPS_INTL<?php echo $i; ?>" type="radio" <?php $var_name = "\$int_option"; eval("\$var = $var_name;"); if ($var  == 1) echo "checked=\"checked\""; ?> value="1" />
-		Yes</label>
-		<label>
-		<input name="USPS_INTL<?php echo $i; ?>" type="radio" <?php $var_name = "\$int_option"; eval("\$var = $var_name;"); if ($var  == 0) echo "checked=\"checked\""; ?> value="0" />
-		No</label>
-		</td>
+		<td><strong><?php $var_name = "_VM_LANG_USPS_INTL$i"; eval("\$var = $var_name;"); echo $var; ?></strong></td>
+		<td><label> <input name="USPS_INTL<?php echo $i; ?>" type="radio"
+			<?php $var_name = "\$int_option"; eval("\$var = $var_name;"); if ($var  == 1) echo "checked=\"checked\""; ?>
+			value="1" /> Yes</label> <label> <input
+			name="USPS_INTL<?php echo $i; ?>" type="radio"
+			<?php $var_name = "\$int_option"; eval("\$var = $var_name;"); if ($var  == 0) echo "checked=\"checked\""; ?>
+			value="0" /> No</label></td>
 		<td><?php $var_name = "_VM_LANG_USPS_INTL".$i; eval("\$var = $var_name;"); echo mm_ToolTip($var) ?></td>
-    </tr>
+	</tr>
 	<?php $i++; ?>
 	<?php endwhile; ?>	
 	
 	</table>
-   <?php
+<?php
    // return false if there's no configuration
    return true;
 	} //end function show_configuration
@@ -798,7 +792,7 @@ class usps {
   * @returns boolean True when the configuration file is writeable, false when not
   */
 	function configfile_writeable() {
-		return is_writeable( CLASSPATH."shipping/".$this->classname.".cfg.php" );
+		return is_writeable( CLASSPATH."shipping/".__CLASS__.".cfg.php" );
 	} //end function configfile_writable
 
 	/**
@@ -809,49 +803,50 @@ class usps {
 	function write_configuration( &$d ) {
 	    global $vmLogger;
 		
-		$my_config_array = array("USPS_USERNAME" => $d['USPS_USERNAME'],
-		"USPS_PASSWORD" => $d['USPS_PASSWORD'],
-		"USPS_SERVER" => $d['USPS_SERVER'],
-		"USPS_PATH" => $d['USPS_PATH'],
-		"USPS_PACKAGESIZE" => $d['USPS_PACKAGESIZE'],
-		"USPS_TAX_CLASS" => $d['USPS_TAX_CLASS'],
-		"USPS_HANDLINGFEE" => $d['USPS_HANDLINGFEE'],
-		"USPS_PADDING" => $d['USPS_PADDING'],
-		"USPS_INTLLBRATE" => $d['USPS_INTLLBRATE'],
-		"USPS_INTLHANDLINGFEE" => $d['USPS_INTLHANDLINGFEE'],
-		"USPS_MACHINABLE" => $d['USPS_MACHINABLE'],
-		"USPS_SHOW_DELIVERY_QUOTE" => $d['USPS_SHOW_DELIVERY_QUOTE'],
-		"USPS_SHIP0" => $d['USPS_SHIP0'],
-		"USPS_SHIP1" => $d['USPS_SHIP1'],
-		"USPS_SHIP2" => $d['USPS_SHIP2'],
-		"USPS_SHIP3" => $d['USPS_SHIP3'],
-		"USPS_SHIP4" => $d['USPS_SHIP4'],
-		"USPS_SHIP5" => $d['USPS_SHIP5'],
-		"USPS_SHIP6" => $d['USPS_SHIP6'],
-		"USPS_SHIP7" => $d['USPS_SHIP7'],
-		"USPS_SHIP8" => $d['USPS_SHIP8'],
-		"USPS_SHIP9" => $d['USPS_SHIP9'],
-		"USPS_SHIP10" => $d['USPS_SHIP10'],
-		"USPS_INTL0" => $d['USPS_INTL0'],
-		"USPS_INTL1" => $d['USPS_INTL1'],
-		"USPS_INTL2" => $d['USPS_INTL2'],
-		"USPS_INTL3" => $d['USPS_INTL3'],
-		"USPS_INTL4" => $d['USPS_INTL4'],
-		"USPS_INTL5" => $d['USPS_INTL5'],
-		"USPS_INTL6" => $d['USPS_INTL6'],
-		"USPS_INTL7" => $d['USPS_INTL7'],
-		"USPS_INTL8" => $d['USPS_INTL8'],
-		//"USPS_INTL9" => $d['USPS_INTL9']
+		$my_config_array = array("USPS_USERNAME" => vmGet( $d, 'USPS_USERNAME' ),
+		"USPS_PASSWORD" => vmGet( $d, 'USPS_PASSWORD' ),
+		"USPS_SERVER" => vmGet( $d, 'USPS_SERVER' ),
+		"USPS_PATH" => vmGet( $d, 'USPS_PATH' ),
+		"USPS_PACKAGESIZE" => vmGet( $d, 'USPS_PACKAGESIZE' ),
+		"USPS_TAX_CLASS" => vmGet( $d, 'USPS_TAX_CLASS' ),
+		"USPS_HANDLINGFEE" => vmGet( $d, 'USPS_HANDLINGFEE' ),
+		"USPS_PADDING" => vmGet( $d, 'USPS_PADDING' ),
+		"USPS_INTLLBRATE" => vmGet( $d, 'USPS_INTLLBRATE' ),
+		"USPS_INTLHANDLINGFEE" => vmGet( $d, 'USPS_INTLHANDLINGFEE' ),
+		"USPS_MACHINABLE" => vmGet( $d, 'USPS_MACHINABLE' ),
+		"USPS_SHOW_DELIVERY_QUOTE" => vmGet( $d, 'USPS_SHOW_DELIVERY_QUOTE' ),
+		"USPS_SHIP0" => vmGet( $d, 'USPS_SHIP0' ),
+		"USPS_SHIP1" => vmGet( $d, 'USPS_SHIP1' ),
+		"USPS_SHIP2" => vmGet( $d, 'USPS_SHIP2' ),
+		"USPS_SHIP3" => vmGet( $d, 'USPS_SHIP3' ),
+		"USPS_SHIP4" => vmGet( $d, 'USPS_SHIP4' ),
+		"USPS_SHIP5" => vmGet( $d, 'USPS_SHIP5' ),
+		"USPS_SHIP6" => vmGet( $d, 'USPS_SHIP6' ),
+		"USPS_SHIP7" => vmGet( $d, 'USPS_SHIP7' ),
+		"USPS_SHIP8" => vmGet( $d, 'USPS_SHIP8' ),
+		"USPS_SHIP9" => vmGet( $d, 'USPS_SHIP9' ),
+		"USPS_SHIP10" => vmGet( $d, 'USPS_SHIP10' ),
+		"USPS_INTL0" => vmGet( $d, 'USPS_INTL0' ),
+		"USPS_INTL1" => vmGet( $d, 'USPS_INTL1' ),
+		"USPS_INTL2" => vmGet( $d, 'USPS_INTL2' ),
+		"USPS_INTL3" => vmGet( $d, 'USPS_INTL3' ),
+		"USPS_INTL4" => vmGet( $d, 'USPS_INTL4' ),
+		"USPS_INTL5" => vmGet( $d, 'USPS_INTL5' ),
+		"USPS_INTL6" => vmGet( $d, 'USPS_INTL6' ),
+		"USPS_INTL7" => vmGet( $d, 'USPS_INTL7' ),
+		"USPS_INTL8" => vmGet( $d, 'USPS_INTL8' ),
+		//"USPS_INTL9" => vmGet( $d, 'USPS_INTL9']
 		);
 		$config = "<?php\n";
 		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
 		foreach( $my_config_array as $key => $value ) {
+			$value = str_replace("'", "\'", $value );
 			$config .= "define ('$key', '$value');\n";
 		}
 
 		$config .= "?>";
 
-		if ($fp = fopen(CLASSPATH ."shipping/".$this->classname.".cfg.php", "w")) {
+		if ($fp = fopen(CLASSPATH ."shipping/".__CLASS__.".cfg.php", "w")) {
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
 			return true;

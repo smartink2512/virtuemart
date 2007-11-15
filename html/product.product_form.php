@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 global $ps_product, $ps_product_category;
 require_once( CLASSPATH.'ps_product_discount.php' );
 
-$product_id = mosGetParam( $_REQUEST, 'product_id');
+$product_id = vmGet( $_REQUEST, 'product_id');
 if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
 }
@@ -34,10 +34,10 @@ if( class_exists( 'JConfig' ) ) {
 }
 echo vmCommonHTML::linkTag( $mosConfig_live_site .'/includes/js/calendar/calendar-mos.css');
 
-$product_parent_id = mosGetParam( $_REQUEST, 'product_parent_id');
-$next_page = mosGetParam( $_REQUEST, 'next_page', "product.product_display" );
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
-$clone_product = mosGetParam( $_REQUEST, 'clone_product', 0 );
+$product_parent_id = vmGet( $_REQUEST, 'product_parent_id');
+$next_page = vmGet( $_REQUEST, 'next_page', "product.product_display" );
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$clone_product = vmGet( $_REQUEST, 'clone_product', 0 );
 $extra_ids = '';
 $dl_checked = "";
 $curr_filename = "";
@@ -604,7 +604,7 @@ $tabs->startTab( $status_label, "status-page");
         <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo VM_THEMEURL ?>images/availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo IMAGEURL.NO_IMAGE;?>'; document.adminForm.product_availability.value=''}">
           <option value=""><?php echo $VM_LANG->_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE; ?></option><?php
           $path = VM_THEMEPATH."images/availability";
-          $files = mosReadDirectory( "$path", ".", true, true);
+          $files = vmReadDirectory( "$path", ".", true, true);
           foreach ($files as $file) {
           	$file_info = pathinfo($file);
           	$filename = $file_info['basename'];
@@ -911,7 +911,7 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
               if( stristr($db->f("product_full_image"), "http") )
               $product_full_image_url = $db->f("product_full_image");
               else if(!empty($_REQUEST['product_full_image_url']))
-              $product_full_image_url = mosGetParam($_REQUEST, 'product_full_image_url');
+              $product_full_image_url = vmGet($_REQUEST, 'product_full_image_url');
               else
               $product_full_image_url = "";
               ?>
@@ -961,7 +961,7 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
               if( stristr($db->f("product_thumb_image"), "http") )
               $product_thumb_image_url = $db->f("product_thumb_image");
               else if(!empty($_REQUEST['product_thumb_image_url']))
-              $product_thumb_image_url = mosGetParam($_REQUEST, 'product_thumb_image_url');
+              $product_thumb_image_url = vmGet($_REQUEST, 'product_thumb_image_url');
               else
               $product_thumb_image_url = "";
               ?>
@@ -1024,7 +1024,7 @@ $dba = new ps_DB;
 #
 # New Product based on specified Product Type
 ################################
-$product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
+$product_type_id = vmGet($_REQUEST, 'product_type_id', 0);
 if ($product_type_id > 0) {
 	$q = "SELECT * FROM #__{vm}_product_type WHERE product_type_id=$product_type_id";
 	$dba->query($q);
@@ -1207,11 +1207,11 @@ while ($dba->next_record()) {
 if( $clone_product == "1" ) {
 	
 	echo '<input type="hidden" name="clone_product" value="Y" />';
-	echo '<input type="hidden" name="old_product_id" value="'.mosGetParam($_REQUEST, 'product_id').'" />';
+	echo '<input type="hidden" name="old_product_id" value="'.vmGet($_REQUEST, 'product_id').'" />';
 	$db_att = new ps_DB;
 	$db->query( "SELECT product_id, product_name
                 FROM #__{vm}_product
-                WHERE product_parent_id='".mosGetParam($_REQUEST, 'product_id')."' " );
+                WHERE product_parent_id='".vmGet($_REQUEST, 'product_id')."' " );
 	if( $db->num_rows() > 0 ) {
 		$tabs->startTab( 'Clone Product Otions', 'clone-page' );
 		echo "<h3>Also clone these Child Items:</h3>";

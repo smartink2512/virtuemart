@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id:admin.virtuemart.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -34,10 +34,10 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
 	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
 
 	/** can be update and newinstall **/
-	$install_type = mosgetparam( $_REQUEST, 'install_type', 'newinstall' );
+	$install_type = vmGet( $_REQUEST, 'install_type', 'newinstall' );
 
 	/** true or false **/
-	$install_sample_data = mosgetparam( $_GET, 'install_sample_data', false );
+	$install_sample_data = vmGet( $_GET, 'install_sample_data', false );
 
 	installvirtuemart( $install_type, $install_sample_data );
 	$error = "";
@@ -65,21 +65,21 @@ elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$opti
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
 // Get the Layout Type from the session
-$vmLayout = $_SESSION['vmLayout'] = mosGetParam( $_SESSION, 'vmLayout', 'extended' );
+$vmLayout = $_SESSION['vmLayout'] = vmGet( $_SESSION, 'vmLayout', 'extended' );
 // Change the Layout Type if it is provided through GET
 if( !empty( $_GET['vmLayout'])) {
 	$vmLayout = $_SESSION['vmLayout'] = $_GET['vmLayout'] == 'standard' ? $_GET['vmLayout'] : 'extended';
 }
 // pages, which are called through index3.php are PopUps, they should not need a menu (but it can be overridden by $_REQUEST['no_menu'])
 $no_menu_default = strstr( $_SERVER['PHP_SELF'], 'index3.php') ? 1 : 0;
-$no_menu = $_REQUEST['no_menu'] = mosGetParam( $_REQUEST, 'no_menu', $no_menu_default );
+$no_menu = $_REQUEST['no_menu'] = vmGet( $_REQUEST, 'no_menu', $no_menu_default );
 
 // Display the toolbar?
-$no_toolbar = mosGetParam( $_REQUEST, 'no_toolbar', 0 );
+$no_toolbar = vmGet( $_REQUEST, 'no_toolbar', 0 );
 
 // Display just the naked page without toolbar, menu and footer?
 $only_page_default = strstr( $_SERVER['PHP_SELF'], 'index3.php') ? 1 : 0;
-$only_page = $_REQUEST['only_page'] = mosGetParam( $_REQUEST, 'only_page', $only_page_default );
+$only_page = $_REQUEST['only_page'] = vmGet( $_REQUEST, 'only_page', $only_page_default );
 
 if( empty( $page ) || empty( $_REQUEST['page'])) {
 	if( !empty($_REQUEST['amp;page'])) {

@@ -10,7 +10,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -66,7 +66,7 @@ else {
             $flypage_id = $cart[$i]["product_id"];
         }
 		$flypage = $ps_product->get_flypage($flypage_id);
-        $category_id = mosGetParam( $cart[$i], 'category_id', 0 );
+        $category_id = vmGet( $cart[$i], 'category_id', 0 );
 		// Build URL based on whether item or product
 		if ($product_parent_id) {
 			$url = $sess->url(URL . basename($_SERVER['PHP_SELF'])."?page=shop.product_details&flypage=$flypage&product_id=$product_parent_id&category_id=$category_id");

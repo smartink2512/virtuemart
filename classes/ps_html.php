@@ -7,7 +7,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,7 +19,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 class ps_html {
-	var $classname = "ps_html";
 
 
 	function dropdown_display($name, $value, &$arr, $size=1, $multiple="", $extra="") {
@@ -479,7 +478,7 @@ class ps_html {
 	 */
 	function list_themes( $name, $preselected='default' ) {
 		global $mosConfig_absolute_path;
-		$themes = mosReadDirectory( $mosConfig_absolute_path . "/components/com_virtuemart/themes", "", false, true );
+		$themes = vmReadDirectory( $mosConfig_absolute_path . "/components/com_virtuemart/themes", "", false, true );
 		$array = array();
 		foreach ($themes as $theme ) {
 			if( file_exists($theme.'/theme.php' ) ) {
@@ -499,7 +498,7 @@ class ps_html {
 	 */
 	function list_template_files( $name, $section='browse', $preselected='' ) {
 		
-		$files = mosReadDirectory( VM_THEMEPATH . "templates/$section/" );
+		$files = vmReadDirectory( VM_THEMEPATH . "templates/$section/" );
 		$array = array();
         foreach ($files as $file) {
         	if( is_dir( $file ) ) continue;
@@ -550,7 +549,7 @@ class ps_html {
 	 */
 	function deleteButton( $id_fieldname, $id, $func, $keyword="", $limitstart=0, $extra="" ) {
 		global $page, $VM_LANG;
-		$no_menu = mosGetParam($_REQUEST,'no_menu', 0);
+		$no_menu = vmRequest::getInt('no_menu');
 		$code = "<a class=\"toolbar\" href=\"{$_SERVER['PHP_SELF']}?option=com_virtuemart&page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart&amp;no_menu=$no_menu".$extra."\" onclick=\"return confirm('".$VM_LANG->_PHPSHOP_DELETE_MSG ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
 		$code .= "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$id\" align=\"middle\" border=\"0\" />";
 		$code .= "</a>";

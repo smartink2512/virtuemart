@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,12 +19,12 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH .'ps_product_files.php');
 global $ps_product, $ps_product_category;
 
-$keyword = mosgetparam($_REQUEST, 'keyword' );
-$vendor = mosgetparam($_REQUEST, 'vendor', '');
-$product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', null);
-$category_id = mosgetparam($_REQUEST, 'category_id', null);
-$product_type_id = mosgetparam($_REQUEST, 'product_type_id', null); // Changed Product Type
-$search_date = mosgetparam($_REQUEST, 'search_date', null); // Changed search by date
+$keyword = vmGet($_REQUEST, 'keyword' );
+$vendor = vmGet($_REQUEST, 'vendor', '');
+$product_parent_id = vmGet($_REQUEST, 'product_parent_id', null);
+$category_id = vmGet($_REQUEST, 'category_id', null);
+$product_type_id = vmGet($_REQUEST, 'product_type_id', null); // Changed Product Type
+$search_date = vmGet($_REQUEST, 'search_date', null); // Changed search by date
 
 $now = getdate();
 $nowstring = $now["hours"].":".$now["minutes"]." ".$now["mday"].".".$now["mon"].".".$now["year"];
@@ -34,7 +34,7 @@ if(isset($_REQUEST['search_order']) && @$_REQUEST['search_order'] == '<') {
 else {
 	$search_order = '>';
 }
-$search_type = mosGetParam($_REQUEST, 'search_type', 'product');
+$search_type = vmGet($_REQUEST, 'search_type', 'product');
 
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
@@ -55,7 +55,7 @@ vmCommonHTML::loadExtjs(); // Having a modal window is good
               <option value=">" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER ?></option>
           </select>
           <input type="hidden" name="option" value="com_virtuemart" />
-          <input class="inputbox" type="text" size="15" name="search_date" value="<?php echo mosgetparam($_REQUEST, 'search_date', $nowstring) ?>" />
+          <input class="inputbox" type="text" size="15" name="search_date" value="<?php echo vmGet($_REQUEST, 'search_date', $nowstring) ?>" />
           <input type="hidden" name="page" value="product.product_list" />
           <input class="button" type="submit" name="search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE?>" />
 	</form>

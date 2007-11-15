@@ -7,7 +7,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,8 +20,8 @@ mm_showMyFileName( __FILE__ );
 include_once( ADMINPATH . "version.php" );
 
 global $error, $page, $ps_product, $ps_product_category;
-$product_id = mosGetParam( $_REQUEST, 'product_id' );
-$module_id = mosGetParam( $_REQUEST, 'module_id', 0 );
+$product_id = vmGet( $_REQUEST, 'product_id' );
+$module_id = vmGet( $_REQUEST, 'module_id', 0 );
 
 if( is_array( $product_id )) {
     $recent_product_id = "";

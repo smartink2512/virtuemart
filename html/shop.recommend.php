@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 global $ok;
-$product_id = mosgetparam( $_REQUEST, 'product_id', null);
+$product_id = vmGet( $_REQUEST, 'product_id', null);
 
 include_once(CLASSPATH.'ps_communication.php');
 

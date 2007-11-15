@@ -62,7 +62,7 @@ require_once( CLASSPATH. 'ps_database.php' );
 $db = new ps_DB();
 
 $default_vendor = 1;
-$export_id = $database->getEscaped( mosGetParam( $_REQUEST, 'method', '' ) );
+$export_id = $database->getEscaped( vmGet( $_REQUEST, 'method', '' ) );
 if (!empty($export_id)) {
 	$q = "SELECT * FROM #__{vm}_export WHERE ";
 	$q .= "export_id='$export_id'";

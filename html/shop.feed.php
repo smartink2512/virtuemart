@@ -6,7 +6,7 @@
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -23,7 +23,7 @@ if( VM_FEED_ENABLED == '') {
 	exit();
 }
 
-switch( strtoupper(mosGetParam ( $_GET, "feed", "RSS2.0" )) ) {
+switch( strtoupper(vmGet ( $_GET, "feed", "RSS2.0" )) ) {
 	case "2.0":
 	case "RSS2":
 	case "RSS2.0":
@@ -106,7 +106,7 @@ $info['cache'] = VM_FEED_CACHE;
 $info['cache_time'] = VM_FEED_CACHETIME;
 
 $info['category_id'] 	= $category_id;// Filter by category? At this place, category_id is INT
-$info['product_number'] 	= min( mosGetParam($_GET,'limit',20), 200 );// Print a maxmimum of 200 products
+$info['product_number'] 	= min( vmGet($_GET,'limit',20), 200 );// Print a maxmimum of 200 products
 $info['feed_description'] = 'VirtueMart Product Syndication';
 
 $info['product_description_type'] = VM_FEED_DESCRIPTION_TYPE;

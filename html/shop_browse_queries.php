@@ -7,7 +7,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -27,8 +27,8 @@ $DescOrderBy = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "br
 $orderby = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}orderby", 'orderby', VM_BROWSE_ORDERBY_FIELD ));
 
 
-$featured = mosGetParam($_REQUEST, 'featured', 'N' );
-$discounted = mosGetParam($_REQUEST, 'discounted', 'N' );
+$featured = vmGet($_REQUEST, 'featured', 'N' );
+$discounted = vmGet($_REQUEST, 'discounted', 'N' );
 
 /** Prepare the SQL Queries
 *
@@ -178,8 +178,8 @@ if (!empty($product_type_id)) {
 	while ($db_browse->next_record()) {
 		$parameter_name = $db_browse->f("parameter_name");
 		$item_name = "product_type_$product_type_id"."_".$parameter_name;
-		$get_item_value = mosgetparam($_REQUEST, $item_name, "");
-		$get_item_value_comp = mosgetparam($_REQUEST, $item_name."_comp", "");
+		$get_item_value = vmGet($_REQUEST, $item_name, "");
+		$get_item_value_comp = vmGet($_REQUEST, $item_name."_comp", "");
 
 		if (is_array($get_item_value) ? count($get_item_value) : strlen($get_item_value) ) {
 			// comparison
@@ -240,8 +240,8 @@ if (!empty($product_type_id)) {
 		}
 	}
 	$item_name = "price";
-	$get_item_value = mosgetparam($_REQUEST, $item_name, "");
-	$get_item_value_comp = mosgetparam($_REQUEST, $item_name."_comp", "");
+	$get_item_value = vmGet($_REQUEST, $item_name, "");
+	$get_item_value_comp = vmGet($_REQUEST, $item_name."_comp", "");
 	// search by price
 	if (!empty($get_item_value)) {
 		// comparison

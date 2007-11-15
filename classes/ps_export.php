@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,7 +18,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 
 class ps_export {
-	var $classname = 'ps_export';
 
 	/**
 	* validate order export module add
@@ -31,7 +30,7 @@ class ps_export {
 		$db = new ps_DB;
 
 		if (!$d['export_name']) {
-			$d['error'] = 'ERROR:  Module name cannot be empty';
+			$vmLogger->err( 'Module name cannot be empty' );
 			return False;
 		}
 		if (empty($d['export_enabled'])) {
@@ -41,13 +40,12 @@ class ps_export {
 			$d['export_class'] = 'ps_xmlexport';
 		}
 		if(!file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
-			$d['error'] = 'ERROR: Export Class does not exist.';
+			$vmLogger->err( 'Export Class does not exist.');
 			return false;
 		}
-		$d['export_config'] = mosGetParam( $_POST, 'export_config', '', _MOS_ALLOWHTML );
-		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
-			$d['export_config'] = addslashes( $d['export_config'] );
-		}
+		$d['export_config'] = vmGet( $_POST, 'export_config', '', VMREQUEST_ALLOWHTML );
+		$d['export_config'] = addslashes( $d['export_config'] );
+		
 		return True;
 	}
 	/**
@@ -59,7 +57,7 @@ class ps_export {
 	function validate_delete($d) {
 		global $vmLogger, $VM_LANG;
 		if (!$d['export_id']) {
-			$d['error'] = 'ERROR:  Please select an export module to delete.';
+			$vmLogger->err( 'Please select an export module to delete.');
 			return False;
 		}
 		else {
@@ -78,21 +76,20 @@ class ps_export {
 		$db = new ps_DB;
 
 		if (!$d['export_id']) {
-			$d['error'] = 'ERROR:  You must select an export module to update.';
+			$vmLogger->err( 'You must select an export module to update.');
 			return False;
 		}
 		if (!$d['export_name']) {
-			$d['error'] = 'ERROR:  You must enter a name for the order export module.';
+			$vmLogger->err( 'You must enter a name for the order export module.');
 			return False;
 		}
 		if(!file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
-			$d['error'] = 'ERROR: Export Class does not exist.';
+			$vmLogger->err( 'Export Class does not exist.');
 			return false;
 		}
-		$d['export_config'] = mosGetParam( $_POST, 'export_config', '', _MOS_ALLOWHTML );
-		if( !get_magic_quotes_runtime() || !get_magic_quotes_gpc() ) {
-			$d['export_config'] = addslashes( $d['export_config'] );
-		}
+		$d['export_config'] = vmGet( $_POST, 'export_config', '', VMREQUEST_ALLOWHTML );
+		$d['export_config'] = addslashes( $d['export_config'] );
+		
 		return True;
 	}
 
@@ -108,13 +105,13 @@ class ps_export {
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
 		$timestamp = time();
-
+		$export_class = basename($d['export_class']);
 		if ( !empty($d['export_class']) ) {
 			// Here we have a custom export class
-			if( file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
+			if( file_exists( CLASSPATH.'export/'.$export_class.'.php' ) ) {
 				// Include the class code and create an instance of this class
-				include_once( CLASSPATH.'export/'.$d['export_class'].'.php' );
-				eval( "\$_EXPORT = new ".$d['export_class']."();");
+				include_once( CLASSPATH.'export/'.$export_class.'.php' );
+				$_EXPORT = new $export_class();
 			}
 		} else {
 			// ps_xmlexport is the default export method handler
@@ -133,20 +130,17 @@ class ps_export {
 		if( $_EXPORT->configfile_writeable() ) {
 			$_EXPORT->write_configuration( $d );
 		}
-
-		$q = 'INSERT INTO #__{vm}_export (vendor_id, export_name,';
-		$q .= 'export_desc, export_class, export_enabled, export_config, iscore) ';
-		$q .= 'VALUES (';
-		$q .= "'$ps_vendor_id','";
-		$q .= $d['export_name'] . "','";
-		$q .= $d['export_desc'] . "','";
-		$q .= $d['export_class'] . "','";
-		$q .= $d['export_enabled'] . "','";
-		$q .= $d['export_config'] . "','";
-		$q .= "0')";
-		$db->query($q);
-		$db->next_record();
-		return True;
+		
+		$fields = array( 'vendor_id' => $ps_vendor_id,
+								'export_name' => $d['export_name'],
+								'export_desc' => $d['export_desc'], 
+								'export_class' => $d['export_class'], 
+								'export_enabled' => $d['export_enabled'], 
+								'export_config' => $d['export_config'],
+								'iscore' => 0 );
+		$db->buildQuery( 'INSERT', '#__{vm}_export', $fields );
+		
+		return $db->query() !== false;
 
 	}
 
@@ -165,10 +159,12 @@ class ps_export {
 		if (!$this->validate_update($d)) {
 			return False;
 		}
-
+		
 		if ( !empty($d['export_class']) ) {
-			if (include_once( CLASSPATH.'export/'.$d['export_class'].'.php' ))
-			eval( "\$_EXPORT = new ".$d['export_class']."();");
+			$export_class = basename($d['export_class']);
+			if (include_once( CLASSPATH.'export/'.$export_class.'.php' )) {
+				$_EXPORT = new $export_class();
+			}
 		}
 		else {
 			include_once( CLASSPATH.'export/ps_xmlexport.php' );
@@ -183,19 +179,18 @@ class ps_export {
 			return false;
 		}
 
-		$q = 'UPDATE #__{vm}_export SET ';
+		$fields = array( 	'export_enabled' => $d['export_enabled'], 
+								'export_config' => $d['export_config'] );
+		
 		if(!$d['iscore']) {
-			$q .= "export_name='" . $d['export_name'];
-			$q .= "',export_desc='" . $d['export_desc'];
-			$q .= "',export_class='" . $d['export_class'];
+			$fields['export_name'] = $d['export_name'];
+			$fields['export_desc' = $d['export_desc'];
+			$fields['export_class' = $d['export_class'];
 		}
-		$q .= "',export_config='" . $d['export_config'];
-		$q .= "',export_enabled='" . $d['export_enabled'];
-		$q .= "' WHERE export_id='" . $d['export_id'] . "'";
-		$q .= " AND vendor_id='$ps_vendor_id'";
-		$db->query($q);
-		$db->next_record();
-		return True;
+		$db->buildQuery( 'INSERT', '#__{vm}_export', $fields, 'WHERE export_id=' .(int)$d['export_id']." AND vendor_id='$ps_vendor_id'" );
+		
+		return $db->query() !== false;
+		
 	}
 
 
@@ -234,7 +229,7 @@ class ps_export {
 		global $db;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
 
-		$q = "DELETE from #__{vm}_export WHERE export_id='$record_id'";
+		$q = "DELETE from #__{vm}_export WHERE export_id='$record_id' LIMIT 1";
 		$q .= " AND vendor_id='$ps_vendor_id'";
 		$db->query($q);
 		return True;
@@ -249,7 +244,7 @@ class ps_export {
  */
 	function list_available_classes( $name, $preselected='ps_xmlexport' ) {
 
-		$files = mosReadDirectory( CLASSPATH."export/", ".php", true, true);
+		$files = vmReadDirectory( CLASSPATH."export/", ".php", true, true);
 		$array = array();
 		foreach ($files as $file) {
 			$file_info = pathinfo($file);

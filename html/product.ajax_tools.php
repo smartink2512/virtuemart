@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,23 +16,23 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 global $ps_product;
-$task = strtolower( mosGetParam( $_REQUEST, 'task' ));
-$option = strtolower( mosGetParam( $_REQUEST, 'option' ));
+$task = strtolower( vmGet( $_REQUEST, 'task' ));
+$option = strtolower( vmGet( $_REQUEST, 'option' ));
 require_once( CLASSPATH.'connectionTools.class.php');
 
 switch( $task ) {
 	case 'getshoppergroups':
 		include_class('shopper');
-		$shopper_group_id = intval( mosGetParam( $_REQUEST, 'shopper_group_id', 5 ));
+		$shopper_group_id = intval( vmGet( $_REQUEST, 'shopper_group_id', 5 ));
 		vmConnector::sendHeaderAndContent( 200, $ps_shopper_group->list_shopper_groups() );
 		break;
 		
 	case 'getpriceforshoppergroup':
 		include_class('product');
-		$shopper_group_id = intval( mosGetParam( $_REQUEST, 'shopper_group_id', 5 ));
-		$product_id = intval( mosGetParam( $_REQUEST, 'product_id' ));
+		$shopper_group_id = intval( vmGet( $_REQUEST, 'shopper_group_id', 5 ));
+		$product_id = intval( vmGet( $_REQUEST, 'product_id' ));
 		$price = $ps_product->getPriceByShopperGroup( $product_id, $shopper_group_id );
-		$formatPrice = mosGetParam( $_REQUEST, 'formatPrice', 0 );
+		$formatPrice = vmGet( $_REQUEST, 'formatPrice', 0 );
 		if( $formatPrice ) {
 			$price['product_price'] = '<span class="editable" onclick="getPriceForm(this);">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'].'</span>';
 		}
@@ -40,16 +40,16 @@ switch( $task ) {
 		break;
 		
 	case 'getcurrencylist':
-		$currency_code = mosGetParam( $_REQUEST, 'product_currency', $vendor_currency );
+		$currency_code = vmGet( $_REQUEST, 'product_currency', $vendor_currency );
 		if( strstr($currency_code, ',')) {
 			$currency_code = explode( ',', $currency_code );
 		}
 		elseif( empty( $currency_code)) {
 			$currency_code = $vendor_currency;
 		}
-		$selectSize = intval( mosGetParam( $_REQUEST, 'selectSize', 1 ) );
-		$elementName = urldecode( mosGetParam( $_REQUEST, 'elementName', 'product_currency'));
-		$multiple = intval( mosGetParam( $_REQUEST, 'multiple', 0 ) );
+		$selectSize = intval( vmGet( $_REQUEST, 'selectSize', 1 ) );
+		$elementName = urldecode( vmGet( $_REQUEST, 'elementName', 'product_currency'));
+		$multiple = intval( vmGet( $_REQUEST, 'multiple', 0 ) );
 		if( $multiple ) { $multiple = 'multiple="multiple"'; } else { $multiple = ''; }
 		vmConnector::sendHeaderAndContent( 200, ps_html::getCurrencyList( $elementName, $currency_code, 'currency_code', '', $selectSize, $multiple ) );
 		break;
@@ -57,9 +57,9 @@ switch( $task ) {
 	case 'getpriceform':
 		include_class('shopper');
 		include_class('product');
-		$shopper_group_id = intval( mosGetParam( $_REQUEST, 'shopper_group_id', 5 ));
-		$product_id = intval( mosGetParam( $_REQUEST, 'product_id' ));
-		$currency_code = mosGetParam( $_REQUEST, 'product_currency', $vendor_currency );
+		$shopper_group_id = intval( vmGet( $_REQUEST, 'shopper_group_id', 5 ));
+		$product_id = intval( vmGet( $_REQUEST, 'product_id' ));
+		$currency_code = vmGet( $_REQUEST, 'product_currency', $vendor_currency );
 		$price = $ps_product->getPriceByShopperGroup( $product_id, $shopper_group_id );
 		if( isset( $price['product_currency'] )) {
 			$currency_code = $price['product_currency'];
@@ -83,7 +83,7 @@ switch( $task ) {
 	case 'getproducts':
 		require_once(CLASSPATH . 'JSON.php');
 		$db =& new ps_DB;
-		$keyword = mosGetParam( $_REQUEST, 'query' );
+		$keyword = vmGet( $_REQUEST, 'query' );
 		$q = "SELECT #__{vm}_product.product_id,category_name,product_name
 			FROM #__{vm}_product,#__{vm}_product_category_xref,#__{vm}_category ";
 		if( empty($_REQUEST['show_items']) ) {

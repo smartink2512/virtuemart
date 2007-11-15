@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,10 +17,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$showpage = mosGetParam( $_REQUEST, 'showpage');
-$flypage = mosGetParam( $_REQUEST, 'flypage');
-$product_id = mosGetParam( $_REQUEST, 'product_id');
-$category_id = mosGetParam( $_REQUEST, 'category_id');
+$showpage = vmGet( $_REQUEST, 'showpage');
+$flypage = vmGet( $_REQUEST, 'flypage');
+$product_id = vmGet( $_REQUEST, 'product_id');
+$category_id = vmGet( $_REQUEST, 'category_id');
 
 /* Who cares for Safe Mode ? Not me! */
 if (@file_exists( "/usr/bin/htmldoc" )) {

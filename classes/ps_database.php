@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,7 +20,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 Wrapper Class for Mambo's $database - Object
 ************************************************************************/
 
-class ps_DB extends database {
+class ps_DB {
 
 	/** @var int   Current row in query result set */
 	var $row = 0;
@@ -41,6 +41,9 @@ class ps_DB extends database {
 
 	function ps_DB() {
 		global $database;
+		if( !is_object( $database) && is_callable(array('jfactory', 'getdbo'))) {
+			$database = jfactory::getDBO();
+		}
 		$this->_database = $database;
 	}
 	/**
@@ -308,13 +311,16 @@ class ps_DB extends database {
 		if( empty($table) || empty($values)) {
 			return;
 		}
+		$table = trim( $table );
+		$type = trim( $type );
 		$type = strtoupper($type);
 		
 		switch( $type ) {
 			
 			case 'INSERT':
+			case 'REPLACE':
 				
-				$q = "INSERT INTO `$table` (`";
+				$q = "$type INTO `$table` (`";
 				$q .= implode( "`,\n`", array_keys($values) );
 				
 				$q .= "`) VALUES (\n";

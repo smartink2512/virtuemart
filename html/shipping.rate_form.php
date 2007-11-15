@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -22,12 +22,12 @@ $formObj = &new formFactory( $VM_LANG->_PHPSHOP_RATE_FORM_LBL );
 //Then Start the form
 $formObj->startForm();
 
-$shipping_rate_id = mosgetparam( $_REQUEST, 'shipping_rate_id');
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$shipping_rate_id = vmGet( $_REQUEST, 'shipping_rate_id');
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 if (!isset($ps_shipping)) $ps_shipping = new ps_shipping();
 
 if (!empty($shipping_rate_id)) {
-  $q = "SELECT * FROM #__{vm}_shipping_rate WHERE shipping_rate_id='$shipping_rate_id'";
+  $q = 'SELECT * FROM #__{vm}_shipping_rate WHERE shipping_rate_id='.(int)$shipping_rate_id;
   $db->query($q);
   $db->next_record();
 }

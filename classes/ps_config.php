@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -30,7 +30,7 @@ class ps_config {
 	 * @return boolean
 	 */
 	function writeconfig(&$d) {
-		global $my, $db, $option, $page, $vmLogger, $VM_LANG;
+		global $my, $db, $vmLogger, $VM_LANG;
 
 		$group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
 // TODO: (J! 1.5) Is there a better way to handle this difference between Joomla versions?
@@ -159,12 +159,12 @@ class ps_config {
 
 			$config = "<?php
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-/**return true;
+/**
 * The configuration file for VirtueMart
 *
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -192,15 +192,15 @@ else {
 }
 // these path and url definitions here are based on the Joomla! Configuration
 define( 'URL', \$mosConfig_live_site.\$app );
-define( 'SECUREURL', '".$d['conf_SECUREURL']."' );
+define( 'SECUREURL', '".$db->getEscaped($d['conf_SECUREURL'])."' );
 
 if ( @\$_SERVER['HTTPS'] == 'on' ) {
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
 } else {
 	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
 }
-define( 'VM_THEMEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/themes/".$d['conf_THEME']."/' );
-define( 'VM_THEMEURL', \$mosConfig_live_site.'/components/com_virtuemart/themes/".$d['conf_THEME']."/' );
+define( 'VM_THEMEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/themes/".$db->getEscaped($d['conf_THEME'])."/' );
+define( 'VM_THEMEURL', \$mosConfig_live_site.'/components/com_virtuemart/themes/".$db->getEscaped($d['conf_THEME'])."/' );
 
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_virtuemart/' );
@@ -263,7 +263,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$i= 0;
 					if( empty( $d['conf_VM_MODULES_FORCE_HTTPS'] )) $d['conf_VM_MODULES_FORCE_HTTPS'] = array();
 					foreach( $d['conf_VM_MODULES_FORCE_HTTPS'] as $https_module) {
-						$config.= "'".htmlentities($https_module, ENT_QUOTES )."'";
+						$config.= "'".$db->getEscaped($https_module )."'";
 						if( $i+1 < sizeof( $d['conf_VM_MODULES_FORCE_HTTPS'] )) {
 							$config .= ',';
 						}
@@ -308,7 +308,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 			if( $_SESSION['vmLayout'] == 'extended') {
 				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
 			} else {
-				mosRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				vmRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
 			}
 			return true;
 			
@@ -321,7 +321,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 	 * @param array $d
 	 */
 	function writeThemeConfig( &$d ) {
-		global $page, $option, $VM_LANG, $vmLogger;
+		global $page, $VM_LANG, $vmLogger;
 		
 		$my_config_array = array();
 		$config = "<?php
@@ -331,7 +331,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * @package VirtueMart
 * @subpackage themes
-* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -343,7 +343,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 ?>
 ";
-		$params = mosGetParam( $_POST, 'params', '' );
+		$params = vmGet( $_POST, 'params', '' );
 		if (is_array( $params )) {
 			$txt = array();
 			foreach ($params as $k=>$v) {
@@ -373,7 +373,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 			if( $_SESSION['vmLayout'] == 'extended') {
 				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
 			} else {
-				$task = mosGetParam( $_REQUEST, 'task', '');
+				$task = vmGet( $_REQUEST, 'task', '');
 				if( $task == 'apply' ) {
 					$page = 'admin.theme_config_form';
 					$theme = '&theme=' . basename(VM_THEMEURL);
@@ -381,7 +381,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 					$page = 'admin.show_cfg';
 					$theme = '';
 				}
-				mosRedirect( $_SERVER['PHP_SELF']."?page=$page$theme&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				vmRedirect( $_SERVER['PHP_SELF']."?page=$page$theme&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
 			}
 			return true;
 		} else {

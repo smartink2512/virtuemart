@@ -31,7 +31,7 @@ class ps_montrada {
     
       global $PHPSHOP_LANG, $sess;
       $db =& new ps_DB;
-      $payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
+      $payment_method_id = vmGet( $_REQUEST, 'payment_method_id', null );
       /** Read current Configuration ***/
       require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
     ?>

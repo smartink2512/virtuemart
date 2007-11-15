@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,13 +16,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-/*
-* CLASS DESCRIPTION
-*
-* ps_product_files
-*
-* The class is is used to manage product files.
-*************************************************************************/
+/**
+ * The class is is used to manage product files and associated images.
+ *
+ */
 class ps_product_files {
 
 	/*@param boolean Wether filename already exists or not */
@@ -50,7 +47,7 @@ class ps_product_files {
 
 		if (!empty($_FILES["file_upload"]["name"])) {
 			$q = "SELECT count(*) as rowcnt from #__{vm}_product_files WHERE";
-			$q .= " file_name LIKE '%" .  $_FILES["file_upload"]["name"] . "%'";
+			$q .= " file_name LIKE '%" . $db->getEscaped($_FILES["file_upload"]["name"]) . "%'";
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
@@ -78,7 +75,7 @@ class ps_product_files {
 
 		if (!empty($_FILES["file_upload"]["name"])) {
 			$q = "SELECT count(*) as rowcnt from #__{vm}_product_files WHERE";
-			$q .= " file_name LIKE '%" .  $_FILES["file_upload"]["name"] . "%'";
+			$q .= " file_name LIKE '%" . $db->getEscaped($_FILES["file_upload"]["name"]) . "%'";
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
@@ -112,8 +109,7 @@ class ps_product_files {
 	 * @return boolean
 	 */
 	function add( &$d ) {
-		global $mosConfig_absolute_path, $mosConfig_live_site, 
-			$database, $VM_LANG, $vmLogger;
+		global $mosConfig_absolute_path, $database, $VM_LANG, $vmLogger;
 
 		$db = new ps_DB;
 		$timestamp = time();
@@ -181,6 +177,7 @@ class ps_product_files {
 			}
 			$q .= ' WHERE `product_id` ='.intval( $d["product_id"] );
 			$db->query( $q );
+			$vmLogger->info( 'The Product Images have been set.' );
 			return true;
 		}
 		else {
@@ -201,7 +198,7 @@ class ps_product_files {
 			$q .= "'$is_image', '$file_image_height', '$file_image_width', '$file_image_thumb_height', '$file_image_thumb_width')";
 			$db->setQuery($q);
 			$db->query();
-	
+			$vmLogger->info( 'The new file has been added.' );
 			$_REQUEST['file_id'] = $db->last_insert_id();
 		}
 		return True;
@@ -215,8 +212,7 @@ class ps_product_files {
 	 * @return boolean
 	 */
 	function update( &$d ) {
-		global $mosConfig_absolute_path, $mosConfig_live_site, 
-			$database, $VM_LANG, $vmLogger;
+		global $VM_LANG, $vmLogger;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -688,7 +684,7 @@ class ps_product_files {
 		while( @ob_end_clean() );
 		
 		if( strtolower(substr($filename,0,4))=='http') {
-			mosRedirect( $filename );
+			vmRedirect( $filename );
 		}
 
 		if( $filename ) {
@@ -696,7 +692,7 @@ class ps_product_files {
 			
 			vmConnector::sendFile( $filename, $dbf->f("file_mimetype"));
 
-			exit();
+			$GLOBALS['vm_mainframe']->close(true);
 		}
 		else {
 			$vmLogger->err( $VM_LANG->_PHPSHOP_FILES_NOT_FOUND );

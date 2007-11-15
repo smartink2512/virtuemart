@@ -49,7 +49,7 @@ class ps_order_edit {
 	
 		global $VM_LANG;
 
-		if( mosgetparam( $_REQUEST, 'order_edit_page' ) == '1') {
+		if( vmGet( $_REQUEST, 'order_edit_page' ) == '1') {
 			?>
 			<script type="text/javascript">
 			var current = document.getElementById( "order_edit_page" );
@@ -58,25 +58,25 @@ class ps_order_edit {
 				<?php
 		}
 	
-		if( mosgetparam( $_REQUEST, 'delete_product' ) != '' )
+		if( vmGet( $_REQUEST, 'delete_product' ) != '' )
 			$this->delete_product();
-		elseif( mosgetparam( $_REQUEST, 'add_product') != '' )
+		elseif( vmGet( $_REQUEST, 'add_product') != '' )
 			$this->add_product();
-		elseif( mosgetparam( $_REQUEST, 'update_quantity' ) != '' )
+		elseif( vmGet( $_REQUEST, 'update_quantity' ) != '' )
 			$this->update_quantity();
-		elseif( mosgetparam( $_REQUEST, 'update_coupon_discount' ) != '' ) 
+		elseif( vmGet( $_REQUEST, 'update_coupon_discount' ) != '' ) 
 			$this->update_coupon_discount();
-		elseif( mosgetparam( $_REQUEST, 'update_discount' ) != '' ) 
+		elseif( vmGet( $_REQUEST, 'update_discount' ) != '' ) 
 			$this->update_discount();
-		elseif( mosgetparam( $_REQUEST, 'update_standard_shipping' ) != '' ) 
+		elseif( vmGet( $_REQUEST, 'update_standard_shipping' ) != '' ) 
 			$this->update_standard_shipping();
-		elseif( mosgetparam( $_REQUEST, 'update_shipping' ) != '' ) 
+		elseif( vmGet( $_REQUEST, 'update_shipping' ) != '' ) 
 			$this->update_shipping();
-		elseif( mosgetparam( $_REQUEST, 'update_bill_to' ) != '' ) 
+		elseif( vmGet( $_REQUEST, 'update_bill_to' ) != '' ) 
 			$this->update_bill_to();
-		elseif( mosgetparam( $_REQUEST, 'update_ship_to' ) != '' ) 
+		elseif( vmGet( $_REQUEST, 'update_ship_to' ) != '' ) 
 			$this->update_ship_to();
-		elseif( mosgetparam( $_REQUEST, 'update_shipping_tax' ) != '' )
+		elseif( vmGet( $_REQUEST, 'update_shipping_tax' ) != '' )
 			 
 
 		?>
@@ -373,7 +373,7 @@ class ps_order_edit {
 	 * returns:
 	 **************************************************************************/
 	function update_ship_to() {
-		$ship_to = trim(mosgetparam( $_REQUEST, 'ship_to' ));
+		$ship_to = trim(vmGet( $_REQUEST, 'ship_to' ));
 		$db = new ps_DB;
 		
 		// Delete ship to
@@ -409,7 +409,7 @@ class ps_order_edit {
 	function update_bill_to() {
 		$db = new ps_DB;
 		$db2 = new ps_DB;
-		$bill_to = trim(mosgetparam( $_REQUEST, 'bill_to' ));
+		$bill_to = trim(vmGet( $_REQUEST, 'bill_to' ));
 
 		$q = "SELECT * FROM #__{vm}_user_info WHERE user_id = '" . $bill_to . "'";
 		$db->query($q);
@@ -478,7 +478,7 @@ class ps_order_edit {
 	 **************************************************************************/
 	function update_shipping() {
 		$db = new ps_DB;
-		$shipping = trim(mosgetparam( $_REQUEST, 'order_shipping' ));
+		$shipping = trim(vmGet( $_REQUEST, 'order_shipping' ));
 		if(!is_numeric($shipping)) {
 			$shipping = 0;
 		} 
@@ -502,7 +502,7 @@ class ps_order_edit {
 	 **************************************************************************/
 	function update_shipping_tax() {
 		$db = new ps_DB;
-		$shipping_tax = trim(mosgetparam( $_REQUEST, 'order_shipping_tax' ));
+		$shipping_tax = trim(vmGet( $_REQUEST, 'order_shipping_tax' ));
 		if(!is_numeric($shipping_tax)) {
 			$shipping_tax = 0;
 		} 
@@ -526,7 +526,7 @@ class ps_order_edit {
 	 **************************************************************************/
 	function update_standard_shipping() {
 		$db = new ps_DB;
-		$shipping = trim(mosgetparam( $_REQUEST, 'shipping' ));
+		$shipping = trim(vmGet( $_REQUEST, 'shipping' ));
 		$q = "SELECT shipping_rate_name, shipping_carrier_name, shipping_rate_value, ((tax_rate + 1) *shipping_rate_value) AS shipping_total FROM #__{vm}_shipping_rate, #__{vm}_tax_rate, #__{vm}_shipping_carrier WHERE shipping_carrier_id = shipping_rate_carrier_id AND tax_rate_id = shipping_rate_vat_id and shipping_rate_id = '".addslashes($shipping)."'";
 		$db->query($q);
 		if(!$db->next_record()) {
@@ -562,7 +562,7 @@ class ps_order_edit {
 	 **************************************************************************/
 	function update_coupon_discount() {
 		$db = new ps_DB;
-		$discount = trim(mosgetparam( $_REQUEST, 'coupon_discount' ));
+		$discount = trim(vmGet( $_REQUEST, 'coupon_discount' ));
 		if(!is_numeric($discount)) {
 			print "<h1>Invalid discount: $discount</h1>";
 			return;
@@ -595,7 +595,7 @@ class ps_order_edit {
 	 **************************************************************************/
 	function update_discount() {
 		$db = new ps_DB;
-		$discount = trim(mosgetparam( $_REQUEST, 'order_discount' ));
+		$discount = trim(vmGet( $_REQUEST, 'order_discount' ));
 		if(!is_numeric($discount)) {
 			print "<h1>Invalid discount: $discount</h1>";
 			return;
@@ -630,8 +630,8 @@ class ps_order_edit {
 	function delete_product() {
 		global $VM_LANG, $vmLogger;
 
-		$order_item_id = mosgetparam( $_REQUEST, 'order_item_id' );
-		$quantity = trim(mosgetparam( $_REQUEST, 'product_quantity' ));
+		$order_item_id = vmGet( $_REQUEST, 'order_item_id' );
+		$quantity = trim(vmGet( $_REQUEST, 'product_quantity' ));
 		
 		$db = new ps_DB;
 
@@ -690,8 +690,8 @@ class ps_order_edit {
 	function update_quantity() {
 		global $VM_LANG, $vmLogger;
 
-		$order_item_id = mosgetparam( $_REQUEST, 'order_item_id' );
-		$quantity = trim(mosgetparam( $_REQUEST, 'product_quantity' ));
+		$order_item_id = vmGet( $_REQUEST, 'order_item_id' );
+		$quantity = trim(vmGet( $_REQUEST, 'product_quantity' ));
 		if(!is_numeric($quantity) || $quantity < 1) {
 			$vmLogger->err( $VM_LANG->_VM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0 );
 			return;
@@ -762,14 +762,14 @@ class ps_order_edit {
 		$ps_product_attribute = new ps_product_attribute;
 		$ps_product = new ps_product;
 		
-		$product_id = mosgetparam( $_REQUEST, 'product_id' );		
-		$order_item_id = mosgetparam( $_REQUEST, 'order_item_id' );
-		$add_product_validate = mosgetparam( $_REQUEST, 'add_product_validate' );
+		$product_id = vmGet( $_REQUEST, 'product_id' );		
+		$order_item_id = vmGet( $_REQUEST, 'order_item_id' );
+		$add_product_validate = vmGet( $_REQUEST, 'add_product_validate' );
 		$d = $_REQUEST;
 		
 		// On peux ins�rer le produit � la commande
 		if ($add_product_validate == 1) {
-			$quantity = trim(mosgetparam( $_REQUEST, 'product_quantity' ));
+			$quantity = trim(vmGet( $_REQUEST, 'product_quantity' ));
 			if(!is_numeric($quantity) || $quantity < 1) {
 				$vmLogger->err( $VM_LANG->_VM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0 );
 				$add_product_validate = 0;
@@ -908,7 +908,7 @@ class ps_order_edit {
 		$ps_product_attribute = new ps_product_attribute;
 		//$ps_product = new ps_product;
 	
-		$order_item_id = mosgetparam( $_REQUEST, 'order_item_id' );	
+		$order_item_id = vmGet( $_REQUEST, 'order_item_id' );	
 
 		// Affichage de l'en-t�te
 		$html_entete = '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
@@ -935,13 +935,13 @@ class ps_order_edit {
 		<input type="hidden" name="func" value="" />
 		<input type="hidden" name="order_id" value="' . $this->order_id . '" /></form>';
 		
-		$product_id = mosgetparam( $_REQUEST, 'product_id' );
+		$product_id = vmGet( $_REQUEST, 'product_id' );
 		if ($this->product_added ==true) {
 			$product_id = -1;
 		}
 		$d = $_REQUEST;
 		
-		$add_product_validate = mosgetparam( $_REQUEST, 'add_product_validate' );
+		$add_product_validate = vmGet( $_REQUEST, 'add_product_validate' );
 
 		if ($product_id < 0 || $product_id == "") {
 			$html_table = '<tr><td>' . $this->list_products($product_id) . '</td>';
@@ -957,7 +957,7 @@ class ps_order_edit {
 		$db->query($q);
 		$item = false;
 		// Elements fils s�lectionn�s
-		if (mosgetparam( $_REQUEST, 'add_product_item' ) == 1) {
+		if (vmGet( $_REQUEST, 'add_product_item' ) == 1) {
 			$item = true;
 			$html_table = '<tr><td>' . $this->list_attribute($product_id, false) . '<input type="hidden" name="add_product_item" value="1" /></td>';
 		}
@@ -1199,15 +1199,15 @@ class ps_order_edit {
 
 		if( empty( $_REQUEST["custom_attribute_fields"] )) {
 			if( !empty( $_SESSION["custom_attribute_fields"] )) {
-				$custom_attribute_fields = mosGetParam( $_SESSION, "custom_attribute_fields", Array() );
-				$custom_attribute_fields_check = mosGetParam( $_SESSION, "custom_attribute_fields_check", Array() );
+				$custom_attribute_fields = vmGet( $_SESSION, "custom_attribute_fields", Array() );
+				$custom_attribute_fields_check = vmGet( $_SESSION, "custom_attribute_fields_check", Array() );
 			}
 			else
 			$custom_attribute_fields = $custom_attribute_fields_check = Array();
 		}
 		else {
-			$custom_attribute_fields = $_SESSION["custom_attribute_fields"] = mosGetParam( $_REQUEST, "custom_attribute_fields", Array() );
-			$custom_attribute_fields_check = $_SESSION["custom_attribute_fields_check"]= mosGetParam( $_REQUEST, "custom_attribute_fields_check", Array() );
+			$custom_attribute_fields = $_SESSION["custom_attribute_fields"] = vmGet( $_REQUEST, "custom_attribute_fields", Array() );
+			$custom_attribute_fields_check = $_SESSION["custom_attribute_fields_check"]= vmGet( $_REQUEST, "custom_attribute_fields_check", Array() );
 		}
 		
 //***********************
@@ -1428,7 +1428,7 @@ class ps_order_edit {
    
 }
 
-if( mosgetparam( $_REQUEST, 'page' ) == 'order.order_print' ) {
+if( vmGet( $_REQUEST, 'page' ) == 'order.order_print' ) {
 	$ps_order_edit = new ps_order_edit( $order_id );
 	$ps_order_edit->pane_content( $tab );
 	if($ps_order_edit->reload_from_db) {

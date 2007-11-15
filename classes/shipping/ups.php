@@ -5,7 +5,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 * @version $Id$
 * @package VirtueMart
 * @subpackage shipping
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -26,8 +26,6 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 */
 class ups {
 
-	var $classname = "ups";
-
 	function list_rates( &$d ) {
 		global $vendor_country_2_code, $vendor_currency, $vmLogger;
 		global $VM_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
@@ -37,7 +35,7 @@ class ups {
 		$cart = $_SESSION['cart'];
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
 
 		$q  = "SELECT * FROM #__{vm}_user_info, #__{vm}_country WHERE user_info_id='" . $d["ship_to_info_id"]."' AND ( country=country_2_code OR country=country_3_code)";
 		$db->query($q);
@@ -355,7 +353,7 @@ class ups {
 					$charge *= $taxrate;
 					$value['TransportationCharges'] = $CURRENCY_DISPLAY->getFullValue($charge);
 				}
-				$shipping_rate_id = urlencode($this->classname."|UPS|".$value['ServiceName']."|".$charge);
+				$shipping_rate_id = urlencode(__CLASS__."|UPS|".$value['ServiceName']."|".$charge);
 				$checked = (@$d["shipping_rate_id"] == $value) ? "checked=\"checked\"" : "";
 				if (count($shipment) == 1 ) {
 					$checked = "checked=\"checked\"";
@@ -418,7 +416,7 @@ class ups {
 	function get_tax_rate() {
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
 
 		if( intval(UPS_TAX_CLASS)== 0 ) {
 			return( 0 );
@@ -454,7 +452,7 @@ class ups {
 
 		global $VM_LANG;
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
     ?>
       <table class="adminform">
     <tr class="row0">
@@ -500,6 +498,7 @@ class ups {
 	  </td>
 	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP) ?></td>
 	</tr>
+	<tr>
 	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_PACKAGE_TYPE ?></strong></td>
 	  <td>
 		<select class="inputbox" name="package_type">
@@ -704,7 +703,7 @@ class ups {
   * @returns boolean True when the configuration file is writeable, false when not
   */
 	function configfile_writeable() {
-		return is_writeable( CLASSPATH."shipping/".$this->classname.".cfg.php" );
+		return is_writeable( CLASSPATH."shipping/".__CLASS__.".cfg.php" );
 	}
 
 	/**
@@ -715,58 +714,60 @@ class ups {
 	function write_configuration( &$d ) {
 		global $vmLogger;
 
-		$my_config_array = array("UPS_ACCESS_CODE" => $d['UPS_ACCESS_CODE'],
-		"UPS_USER_ID" => $d['UPS_USER_ID'],
-		"UPS_PASSWORD" => $d['UPS_PASSWORD'],
-		"UPS_PICKUP_TYPE" => $d['pickup_type'],
-		"UPS_PACKAGE_TYPE" => $d['package_type'],
-		"UPS_RESIDENTIAL" => $d['residential'],
-		"UPS_HANDLING_FEE" => $d['handling_fee'],
-		"UPS_TAX_CLASS" => $d['tax_class']
+		$my_config_array = array("UPS_ACCESS_CODE" => vmGet( $d, 'UPS_ACCESS_CODE' ),
+		"UPS_USER_ID" => vmGet( $d, 'UPS_USER_ID' ),
+		"UPS_PASSWORD" => vmGet( $d, 'UPS_PASSWORD' ),
+		"UPS_PICKUP_TYPE" => vmGet( $d, 'pickup_type' ),
+		"UPS_PACKAGE_TYPE" => vmGet( $d, 'package_type' ),
+		"UPS_RESIDENTIAL" => vmGet( $d, 'residential' ),
+		"UPS_HANDLING_FEE" => vmGet( $d, 'handling_fee' ),
+		"UPS_TAX_CLASS" => vmGet( $d, 'tax_class' )
 		// BEGIN CUSTOM CODE
-		,"Override_Source_Zip" => $d['Override_Source_Zip'],
-		"Show_Delivery_Days_Quote" => $d['Show_Delivery_Days_Quote'],
-		"Show_Delivery_ETA_Quote" => $d['Show_Delivery_ETA_Quote'],
-		"Show_Delivery_Warning" => $d['Show_Delivery_Warning'],
-		"UPS_Next_Day_Air" => $d['UPS_Next_Day_Air'],
-		"UPS_Next_Day_Air_FSC" => $d['UPS_Next_Day_Air_FSC'],
-		"UPS_2nd_Day_Air" => $d['UPS_2nd_Day_Air'],
-		"UPS_2nd_Day_Air_FSC" => $d['UPS_2nd_Day_Air_FSC'],
-		"UPS_Ground" => $d['UPS_Ground'],
-		"UPS_Ground_FSC" => $d['UPS_Ground_FSC'],
-		"UPS_Worldwide_Express_SM" => $d['UPS_Worldwide_Express_SM'],
-		"UPS_Worldwide_Express_SM_FSC" => $d['UPS_Worldwide_Express_SM_FSC'],
-		"UPS_Worldwide_Expedited_SM" => $d['UPS_Worldwide_Expedited_SM'],
-		"UPS_Worldwide_Expedited_SM_FSC" => $d['UPS_Worldwide_Expedited_SM_FSC'],
-		"UPS_Standard" => $d['UPS_Standard'],
-		"UPS_Standard_FSC" => $d['UPS_Standard_FSC'],
-		"UPS_3_Day_Select" => $d['UPS_3_Day_Select'],
-		"UPS_3_Day_Select_FSC" => $d['UPS_3_Day_Select_FSC'],
-		"UPS_Next_Day_Air_Saver" => $d['UPS_Next_Day_Air_Saver'],
-		"UPS_Next_Day_Air_Saver_FSC" => $d['UPS_Next_Day_Air_Saver_FSC'],
-		"UPS_Next_Day_Air_Early_AM" => $d['UPS_Next_Day_Air_Early_AM'],
-		"UPS_Next_Day_Air_Early_AM_FSC" => $d['UPS_Next_Day_Air_Early_AM_FSC'],
-		"UPS_Worldwide_Express_Plus_SM" => $d['UPS_Worldwide_Express_Plus_SM'],
-		"UPS_Worldwide_Express_Plus_SM_FSC" => $d['UPS_Worldwide_Express_Plus_SM_FSC'],
-		"UPS_2nd_Day_Air_AM" => $d['UPS_2nd_Day_Air_AM'],
-		"UPS_2nd_Day_Air_AM_FSC" => $d['UPS_2nd_Day_Air_AM_FSC'],
-		"UPS_Saver" => $d['UPS_Saver'],
-		"UPS_Saver_FSC" => $d['UPS_Saver_FSC'],
-		"na" => $d['na']
+		,"Override_Source_Zip" => vmGet( $d, 'Override_Source_Zip' ),
+		"Show_Delivery_Days_Quote" => vmGet( $d, 'Show_Delivery_Days_Quote' ),
+		"Show_Delivery_ETA_Quote" => vmGet( $d, 'Show_Delivery_ETA_Quote' ),
+		"Show_Delivery_Warning" => vmGet( $d, 'Show_Delivery_Warning' ),
+		"UPS_Next_Day_Air" => vmGet( $d, 'UPS_Next_Day_Air' ),
+		"UPS_Next_Day_Air_FSC" => vmGet( $d, 'UPS_Next_Day_Air_FSC' ),
+		"UPS_2nd_Day_Air" => vmGet( $d, 'UPS_2nd_Day_Air' ),
+		"UPS_2nd_Day_Air_FSC" => vmGet( $d, 'UPS_2nd_Day_Air_FSC' ),
+		"UPS_Ground" => vmGet( $d, 'UPS_Ground' ),
+		"UPS_Ground_FSC" => vmGet( $d, 'UPS_Ground_FSC' ),
+		"UPS_Worldwide_Express_SM" => vmGet( $d, 'UPS_Worldwide_Express_SM' ),
+		"UPS_Worldwide_Express_SM_FSC" => vmGet( $d, 'UPS_Worldwide_Express_SM_FSC' ),
+		"UPS_Worldwide_Expedited_SM" => vmGet( $d, 'UPS_Worldwide_Expedited_SM' ),
+		"UPS_Worldwide_Expedited_SM_FSC" => vmGet( $d, 'UPS_Worldwide_Expedited_SM_FSC' ),
+		"UPS_Standard" => vmGet( $d, 'UPS_Standard' ),
+		"UPS_Standard_FSC" => vmGet( $d, 'UPS_Standard_FSC' ),
+		"UPS_3_Day_Select" => vmGet( $d, 'UPS_3_Day_Select' ),
+		"UPS_3_Day_Select_FSC" => vmGet( $d, 'UPS_3_Day_Select_FSC' ),
+		"UPS_Next_Day_Air_Saver" => vmGet( $d, 'UPS_Next_Day_Air_Saver' ),
+		"UPS_Next_Day_Air_Saver_FSC" => vmGet( $d, 'UPS_Next_Day_Air_Saver_FSC' ),
+		"UPS_Next_Day_Air_Early_AM" => vmGet( $d, 'UPS_Next_Day_Air_Early_AM' ),
+		"UPS_Next_Day_Air_Early_AM_FSC" => vmGet( $d, 'UPS_Next_Day_Air_Early_AM_FSC' ),
+		"UPS_Worldwide_Express_Plus_SM" => vmGet( $d, 'UPS_Worldwide_Express_Plus_SM' ),
+		"UPS_Worldwide_Express_Plus_SM_FSC" => vmGet( $d, 'UPS_Worldwide_Express_Plus_SM_FSC' ),
+		"UPS_2nd_Day_Air_AM" => vmGet( $d, 'UPS_2nd_Day_Air_AM' ),
+		"UPS_2nd_Day_Air_AM_FSC" => vmGet( $d, 'UPS_2nd_Day_Air_AM_FSC' ),
+		"UPS_Saver" => vmGet( $d, 'UPS_Saver' ),
+		"UPS_Saver_FSC" => vmGet( $d, 'UPS_Saver_FSC' ),
+		"na" => vmGet( $d, 'na' )
 
 		// END CUSTOM CODE
 		);
 		$config = "<?php\n";
 		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
 		foreach( $my_config_array as $key => $value ) {
+			$value = str_replace("'", "\'", $value );
 			$config .= "define ('$key', '$value');\n";
 		}
 
 		$config .= "?>";
 
-		if ($fp = fopen(CLASSPATH ."shipping/".$this->classname.".cfg.php", "w")) {
+		if ($fp = fopen(CLASSPATH ."shipping/".__CLASS__.".cfg.php", "w")) {
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
+			$vmLogger->info( 'The configuration has been updated.' );
 			return true;
 		}
 		else {

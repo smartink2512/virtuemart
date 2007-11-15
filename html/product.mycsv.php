@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 vmCommonHTML::loadScriptaculous();
 
-$csv_lines_to_import = mosGetParam( $_REQUEST, 'csv_lines_to_import', 300 );
+$csv_lines_to_import = vmGet( $_REQUEST, 'csv_lines_to_import', 300 );
 	
 if( empty($vars['do_import'])) {
 	echo '<h2>'.$VM_LANG->_VM_CSV_UPLOAD_SIMULATION_RESULTS_LBL.'</h2>';

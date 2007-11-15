@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -999,7 +999,7 @@ class ps_csv {
 	function export_csv( &$d ) {
 		global $mosConfig_sitename;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
-		$use_standard_order = mosGetParam( $_REQUEST, 'use_standard_order', "N" );
+		$use_standard_order = vmGet( $_REQUEST, 'use_standard_order', "N" );
 		$db = new ps_DB;
 		$database = new ps_DB;
 

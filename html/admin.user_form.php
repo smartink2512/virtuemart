@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -26,7 +26,7 @@ if( !isset($ps_shopper_group)) {
     $ps_shopper_group = new ps_shopper_group();
 }
 
-$user_id = intval( mosGetParam( $_REQUEST, 'user_id' ) );
+$user_id = intval( vmGet( $_REQUEST, 'user_id' ) );
 $cid		= vmRequest::getVar( 'cid', array(0), '', 'array' );
 
 if( !empty($user_id) ) {
@@ -62,7 +62,7 @@ if ( $user_id ) {
 
 // check to ensure only super admins can edit super admin info
 if ( ( $my->gid < 25 ) && ( $row->gid == 25 ) ) {
-	mosRedirect( 'index2.php?option=com_users', _NOT_AUTH );
+	vmRedirect( 'index2.php?option=com_users', _NOT_AUTH );
 }
 
 $my_group = strtolower( $acl->get_group_name( $row->gid, 'ARO' ) );

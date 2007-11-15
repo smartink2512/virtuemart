@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -41,8 +41,6 @@ define('CC_ECANTYPE', 6);
 
 class ps_payment_method extends vmAbstractObject {
 
-	var $classname = "ps_payment_method";
-
 	// CreditCard Validation vars
 	var $number = 0;
 	var $type = UNKNOWN;
@@ -56,12 +54,12 @@ class ps_payment_method extends vmAbstractObject {
 	 */
 	function validate_add(&$d) {
 
-		if (!$d["payment_method_name"]) {
-			$d["error"] = "Please enter a payment method name.";
+		if (empty($d["payment_method_name"])) {
+			$GLOBALS['vmLogger']->err( 'Please enter a payment method name.' );
 			return False;
 		}
-		if (!$d["payment_method_code"]) {
-			$d["error"] = "Please enter a payment method code.";
+		if (empty($d["payment_method_code"])) {
+			$GLOBALS['vmLogger']->err( 'Please enter a payment method code.' );
 			return False;
 		}
 
@@ -83,7 +81,6 @@ class ps_payment_method extends vmAbstractObject {
 				$d["accepted_creditcards"] .= $creditcard_id . ",";
 			}
 		}
-		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', null, VMREQUEST_ALLOWRAW );
 		
 		return true;
 	}
@@ -97,7 +94,7 @@ class ps_payment_method extends vmAbstractObject {
 	function validate_update(&$d) {
 
 		if (!$d["payment_method_code"]) {
-			$d["error"] = "Please enter a payment method code.";
+			$GLOBALS['vmLogger']->err( 'Please enter a payment method code.' );
 			return False;
 		}
 		$d['is_creditcard'] = !empty( $d['creditcard']) ? '1' : '0';
@@ -118,17 +115,15 @@ class ps_payment_method extends vmAbstractObject {
 			}
 		}
 
-		if (!$d["payment_method_name"]) {
-			$d["error"] = "Please enter a payment method name.";
+		if (empty($d["payment_method_name"])) {
+			$GLOBALS['vmLogger']->err( 'Please enter a payment method name.' );
 			return False;
 		}
 
-		if (!$d["payment_method_id"]) {
-			$d["error"] = "Please select a payment method to update.";
+		if (empty($d["payment_method_id"])) {
+			$GLOBALS['vmLogger']->err( 'Please select a payment method to update.' );
 			return False;
 		}
-
-		$d['payment_extrainfo'] = vmGet( $_POST, 'payment_extrainfo', null, VMREQUEST_ALLOWRAW );
 
 		return True;
 	}
@@ -142,7 +137,7 @@ class ps_payment_method extends vmAbstractObject {
 	function validate_delete(&$d) {
 
 		if (!$d["payment_method_id"]) {
-			$d["error"] = "Please select a payment method to delete.";
+			$GLOBALS['vmLogger']->err( 'Please select a payment method to delete.' );
 			return False;
 		}
 
@@ -164,11 +159,12 @@ class ps_payment_method extends vmAbstractObject {
 		}
 		if ( !empty($d["payment_class"]) ) {
 			// Here we have a custom payment class
-			if( file_exists( CLASSPATH."payment/".basename($d["payment_class"]).".php" ) ) {
+			$payment_class = basename($d["payment_class"]);
+			if( file_exists( CLASSPATH."payment/".$payment_class.".php" ) ) {
 				// Include the class code and create an instance of this class
-				include( CLASSPATH."payment/".basename($d["payment_class"]).".php" );
-				if( class_exists($d["payment_class"])) {
-					$_PAYMENT = new $d["payment_class"]();
+				include( CLASSPATH."payment/".$payment_class.".php" );
+				if( class_exists($payment_class)) {
+					$_PAYMENT = new $payment_class();
 				} else {
 					$GLOBALS['vmLogger']->err('The selected Payment Class can\'t be instantiated because it doesn\'t exist.');
 					return false;
@@ -194,20 +190,20 @@ class ps_payment_method extends vmAbstractObject {
 		}
 
 		$fields = array( 'vendor_id' => $ps_vendor_id, 
-						'payment_method_name' => $d["payment_method_name"], 
-						'payment_class' => $d["payment_class"],
-						'shopper_group_id' => $d["shopper_group_id"],
-						'payment_method_discount' => $d['payment_method_discount'],
-						'payment_method_discount_is_percent' => $d['payment_method_discount_is_percent'],
+						'payment_method_name' => vmGet($d, 'payment_method_name' ), 
+						'payment_class' => vmGet($d, 'payment_class' ),
+						'shopper_group_id' => vmRequest::getInt('shopper_group_id'),
+						'payment_method_discount' => vmRequest::getFloat('payment_method_discount'),
+						'payment_method_discount_is_percent' => vmGet($d, 'payment_method_discount_is_percent'),
 						'payment_method_discount_max_amount' => (float)str_replace(',', '.', $d["payment_method_discount_max_amount"]),						
 						'payment_method_discount_min_amount' => (float)str_replace(',', '.', $d["payment_method_discount_min_amount"]),
-						'payment_method_code' => $d['payment_method_code'],
-						'enable_processor' => $d['enable_processor'], 
-						'list_order' => $d['list_order'], 
-						'is_creditcard' => $d['is_creditcard'],
-						'payment_enabled' => $d['payment_enabled'],
-						'accepted_creditcards' => $d['accepted_creditcards'], 
-						'payment_extrainfo' => $d['payment_extrainfo']
+						'payment_method_code' => vmGet($d, 'payment_method_code'),
+						'enable_processor' => vmGet($d, 'enable_processor'), 
+						'list_order' => vmRequest::getInt('list_order'), 
+						'is_creditcard' => vmGet($d, 'is_creditcard'),
+						'payment_enabled' => vmGet($d, 'payment_enabled'),
+						'accepted_creditcards' => vmGet($d, 'accepted_creditcards'), 
+						'payment_extrainfo' => vmGet( $_POST, 'payment_extrainfo', null, VMREQUEST_ALLOWRAW )
 				);
 		$db->buildQuery( 'INSERT', '#__{vm}_payment_method', $fields );
 		$db->query();
@@ -235,10 +231,10 @@ class ps_payment_method extends vmAbstractObject {
 		}
 
 		if ( !empty($d["payment_class"]) ) {
-			
-			@include( CLASSPATH."payment/".basename($d["payment_class"]).".php" );
-			if( class_exists($d["payment_class"])) {
-				$_PAYMENT = new $d["payment_class"]();
+			$payment_class = basename($d["payment_class"]);
+			@include( CLASSPATH."payment/".$payment_class.".php" );
+			if( class_exists($payment_class)) {
+				$_PAYMENT = new $payment_class();
 			} else {
 				$GLOBALS['vmLogger']->err('The selected Payment Class can\'t be instantiated because it doesn\'t exist.');
 				return false;
@@ -257,34 +253,27 @@ class ps_payment_method extends vmAbstractObject {
 			return false;
 		}
 
-		$fields = array( 'payment_method_name' => $d["payment_method_name"], 
-				'payment_class' => $d["payment_class"],
-				'shopper_group_id' => $d["shopper_group_id"],
-				'payment_method_discount' => $d['payment_method_discount'],
-				'payment_method_discount_is_percent' => $d['payment_method_discount_is_percent'],
-				'payment_method_discount_max_amount' => (float)str_replace(',', '.', $d["payment_method_discount_max_amount"]),						
-				'payment_method_discount_min_amount' => (float)str_replace(',', '.', $d["payment_method_discount_min_amount"]),
-				'payment_method_code' => $d['payment_method_code'],
-				'enable_processor' => $d['enable_processor'], 
-				'list_order' => $d['list_order'], 
-				'is_creditcard' => $d['is_creditcard'],
-				'payment_enabled' => $d['payment_enabled'],
-				'accepted_creditcards' => $d['accepted_creditcards'], 
-				'payment_extrainfo' => $d['payment_extrainfo']
-		);
+		$fields = array( 'payment_method_name' => vmGet($d, 'payment_method_name' ), 
+						'payment_class' => vmGet($d, 'payment_class' ),
+						'shopper_group_id' => vmRequest::getInt('shopper_group_id'),
+						'payment_method_discount' => vmRequest::getFloat('payment_method_discount'),
+						'payment_method_discount_is_percent' => vmGet($d, 'payment_method_discount_is_percent'),
+						'payment_method_discount_max_amount' => (float)str_replace(',', '.', $d["payment_method_discount_max_amount"]),						
+						'payment_method_discount_min_amount' => (float)str_replace(',', '.', $d["payment_method_discount_min_amount"]),
+						'payment_method_code' => vmGet($d, 'payment_method_code'),
+						'enable_processor' => vmGet($d, 'enable_processor'), 
+						'list_order' => vmRequest::getInt('list_order'), 
+						'is_creditcard' => vmGet($d, 'is_creditcard'),
+						'payment_enabled' => vmGet($d, 'payment_enabled'),
+						'accepted_creditcards' => vmGet($d, 'accepted_creditcards'), 
+						'payment_extrainfo' => vmGet( $_POST, 'payment_extrainfo', null, VMREQUEST_ALLOWRAW )
+				);
 		$db->buildQuery( 'UPDATE', '#__{vm}_payment_method', $fields, 'WHERE payment_method_id='.(int)$d["payment_method_id"].' AND vendor_id='.$ps_vendor_id );
 		$db->query();
 	
 		return True;
 	}
 
-	/**************************************************************************
-	** name: delete()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
 	/**
 	* Controller for Deleting Records.
 	*/
@@ -314,21 +303,18 @@ class ps_payment_method extends vmAbstractObject {
 		global $db;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
-		$q = "DELETE from #__{vm}_payment_method WHERE payment_method_id='$record_id' AND ";
-		$q .= "vendor_id='$ps_vendor_id'";
+		$q = 'DELETE from #__{vm}_payment_method WHERE payment_method_id='.(int)$record_id.' AND ';
+		$q .= "\nvendor_id='$ps_vendor_id'";
 		$db->query($q);
 
 		return True;
 	}
 
-
-	/**************************************************************************
-	** name: list_method()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Prints a drop-down list with all available payment methods
+	 *
+	 * @param int $payment_method_id
+	 */
 	function list_method($payment_method_id) {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
@@ -359,34 +345,23 @@ class ps_payment_method extends vmAbstractObject {
 		$db->query($q);
 
 		// Start drop down list
-		echo "<select class=\"inputbox\" name=\"payment_method_id\">\n";
-		echo "<option value=\"0\">".$GLOBALS['VM_LANG']->_PHPSHOP_SELECT."</option>\n";
+	
+		$array[0] = $GLOBALS['VM_LANG']->_PHPSHOP_SELECT;
 		while ($db->next_record()) {
-			echo "<option value=" . $db->f("payment_method_id") . " ";
-			if ($db->f("payment_method_id") == $payment_method_id) {
-				echo "selected=\"selected\">\n";
-			}
-			else {
-				echo ">\n";
-			}
-			echo $db->f("payment_method_name") . "</option>\n";
+			$array[$db->f("payment_method_id")] = $db->f("payment_method_name");
 		}
+		ps_html::dropdown_display('payment_method_id', $payment_method_id, $array );
 
-		// End drop down list
-		echo "</select>\n";
 	}
 
-
-	/**************************************************************************
-	** name: list_payment_radio($selector, $payment_method_id, $horiz)
-	** created by: Ekkehard Domning
-	** description: Returns all pyment_method with given selector in a Radiolist
-	** parameters:
-	**              $selector : A String like "B"
-	**              $payment_method_id : An ID to preselect
-	**              $horiz : Separates Items with Space if true, else with <BR>
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns all payment_methods with given selector in a Radiolist
+	 *
+	 * @param string $selector A String like "B" identifying a type of payment methods
+	 * @param int $payment_method_id An ID to preselect
+	 * @param boolean $horiz Separate Items with Spaces if true, else with <br />
+	 * @return string
+	 */
 	function list_payment_radio($selector, $payment_method_id, $horiz) {
 		global $CURRENCY_DISPLAY, $ps_checkout;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -453,39 +428,35 @@ class ps_payment_method extends vmAbstractObject {
 		return $has_result;
 	}
 
-	/**************************************************************************
-	** name: payment_sql($payment_method_id)
-	** created by: Ekkehard Domning
-	** description: Query the payment_method Table for the given ID
-	** parameters:  $payment_method_id : An ID
-	** returns:     the Database
-	***************************************************************************/
+	/**
+	 * Query the payment_method Table for the given ID
+	 *
+	 * @param int $payment_method_id
+	 * @return ps_DB
+	 */
 	function payment_sql($payment_method_id) {
 		$db = new ps_DB;
-		$q = "SELECT * FROM #__{vm}_payment_method WHERE payment_method_id=$payment_method_id";
+		$q = 'SELECT * FROM #__{vm}_payment_method WHERE payment_method_id='.(int)$payment_method_id;
 		$db->query($q);
 		return $db;
 	}
 
-
-	/**************************************************************************
-	** name: list_cc($payment_method_id, $horiz)
-	** created by: Ekkehard Domning
-	** description: Returns all CreditCards in a Radiolist
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns all CreditCards in a Radiolist
+	 *
+	 * @param int $payment_method_id
+	 * @param boolean $horiz
+	 */
 	function list_cc($payment_method_id, $horiz) {
 		$this->list_payment_radio("' OR enable_processor='Y",$payment_method_id, $horiz); //A bit strange :-)
 	}
 
-	/**************************************************************************
-	** name: list_bank($payment_method_id, $horiz)
-	** created by: Ekkehard Domning
-	** description: Returns all Bank payment in a Radiolist
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns all Bank payment in a Radiolist
+	 *
+	 * @param int $payment_method_id
+	 * @param boolean $horiz
+	 */
 	function list_bank($payment_method_id, $horiz) {
 		$has_bank_methods = $this->list_payment_radio("B", $payment_method_id, $horiz); //A bit easier :-)
 		if( $has_bank_methods ) {
@@ -499,24 +470,22 @@ class ps_payment_method extends vmAbstractObject {
 		}
 	}
 
-	/**************************************************************************
-	** name: list_nocheck ($payment_method_id, $horiz)
-	** created by: Ekkehard Domning
-	** description: Returns all Paymentmethods which need no check
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns all Payment methods which need no check
+	 *
+	 * @param int $payment_method_id
+	 * @param boolean $horiz
+	 */
 	function list_nocheck($payment_method_id, $horiz) {
 		$this->list_payment_radio("N",$payment_method_id, $horiz); //A bit easier :-)
 	}
 
-	/**************************************************************************
-	** name: list_paypalrelated ($payment_method_id, $horiz)
-	** created by: soeren
-	** description: Returns all Payment methods which a paypal - like
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns all Payment methods which a paypal - like
+	 *
+	 * @param int $payment_method_id
+	 * @param boolean $horiz
+	 */
 	function list_paypalrelated($payment_method_id, $horiz) {
 		$this->list_payment_radio("P",$payment_method_id, $horiz); //A bit easier :-)
 	}
@@ -529,24 +498,23 @@ class ps_payment_method extends vmAbstractObject {
 
 		$db = new ps_DB;
 		
-		$q = "SELECT `$field_name` FROM `#__{vm}_payment_method` WHERE `payment_method_id`='$payment_method_id'";
+		$q = 'SELECT `'.$field_name.'` FROM `#__{vm}_payment_method` WHERE `payment_method_id`='.(int)$payment_method_id;
 		$db->query($q);
 		$db->next_record();
 		return $db->f($field_name);
 	}
-
-	/**************************************************************************
-	** name: is_creditcard()
-	** created by: soeren
-	** description: returns true if the payment is credit card payment
-	** parameters: $payment_id
-	** returns:
-	***************************************************************************/
+	
+	/**
+	 * returns true if the payment is credit card payment
+	 *
+	 * @param int $payment_id
+	 * @return boolean
+	 */
 	function is_creditcard($payment_id) {
 
 		$db = new ps_DB;
-		$q = "SELECT is_creditcard,accepted_creditcards FROM #__{vm}_payment_method ";
-		$q .= "WHERE payment_method_id='".$payment_id."'";
+		$q = "SELECT is_creditcard,accepted_creditcards FROM #__{vm}_payment_method\n";
+		$q .= 'WHERE payment_method_id='.(int)$payment_id;
 		$db->query($q);
 		$db->next_record();
 		$details = $db->f('accepted_creditcards');
@@ -554,31 +522,32 @@ class ps_payment_method extends vmAbstractObject {
 		return $details != "";
 
 	}
-	/**************************************************************************
-	** name: validate_payment()
-	** Adapted From CreditCard Class
-	** Copyright (C) 2002 Daniel Fr�z Costa
-	**
-	** created by: soeren
-	* Documentation:
-	*
-	* Card Type                   Prefix           Length     Check digit
-	* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	* MasterCard                  51-55            16         mod 10
-	* Visa                        4                13, 16     mod 10
-	* AMEX                        34, 37           15         mod 10
-	* Dinners Club/Carte Blanche  300-305, 36, 38  14         mod 10
-	* Discover                    6011             16         mod 10
-	* enRoute                     2014, 2149       15         any
-	* JCB                         3                16         mod 10
-	* JCB                         2131, 1800       15         mod 10
-	*
-	* More references:
-	* http://www.beachnet.com/~hstiles/cardtype.hthml
-	*
-	** returns:  True - credit card number has a valid format
-	**          False - credit card number has no valid format
-	***************************************************************************/
+
+	/**
+	 * Validates the Payment Method (Credit Card Number)
+	 * Adapted From CreditCard Class
+	 * Copyright (C) 2002 Daniel Fr�z Costa
+	 *
+	 * Documentation:
+	 *
+	 * Card Type                   Prefix           Length     Check digit
+	 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	 * MasterCard                  51-55            16         mod 10
+	 * Visa                        4                13, 16     mod 10
+	 * AMEX                        34, 37           15         mod 10
+	 * Dinners Club/Carte Blanche  300-305, 36, 38  14         mod 10
+	 * Discover                    6011             16         mod 10
+	 * enRoute                     2014, 2149       15         any
+	 * JCB                         3                16         mod 10
+	 * JCB                         2131, 1800       15         mod 10
+	 *
+	 * More references:
+	 * http://www.beachnet.com/~hstiles/cardtype.hthml.
+	  *
+	  * @param string $creditcard_code
+	  * @param string $cardnum
+	  * @return boolean
+	 */
 	function validate_payment($creditcard_code, $cardnum) {
 
 		$this->number = $this->_strtonum($cardnum);
@@ -600,85 +569,75 @@ class ps_payment_method extends vmAbstractObject {
 		return true;
 	}
 
-	/*
-	* detectType method
-	*   returns card type in number format
-	*/
-	function detectType($cardnum = 0)
-	{
+	/**
+	 * detectType method: returns card type in number format
+	 *
+	 * @param string $cardnum
+	 * @return boolean
+	 */
+	function detectType($cardnum = 0){
 		if($cardnum)
 		$this->number = $this->_strtonum($cardnum);
-		if(!$this->number)
-		{
+		if(!$this->number) {
 			$this->errno = CC_ECALL;
 			return UNKNOWN;
 		}
 
-		if(preg_match("/^5[1-5]\d{14}$/", $this->number))
-		$this->type = MASTERCARD;
-
-		else if(preg_match("/^4(\d{12}|\d{15})$/", $this->number))
-		$this->type = VISA;
-
-		else if(preg_match("/^3[47]\d{13}$/", $this->number))
-		$this->type = AMEX;
-
-		else if(preg_match("/^[300-305]\d{11}$/", $this->number) ||
-		preg_match("/^3[68]\d{12}$/", $this->number))
-		$this->type = DINNERS;
-
-		elseif (ereg ('^6334[5-9].{11}$', $this->number) || ereg ('^6767[0-9].{11}$', $this->number))
-		$this->type = SOLO_MAESTRO;
-
-		elseif (ereg ('^564182[0-9].{9}$', $this->number)
-		|| ereg ('^6333[0-4].{11}$', $this->number)
-		|| ereg ('^6759[0-9].{11}$', $this->number))
-		$this->type= SWITCH_MAESTRO;
-
-		elseif (ereg ('^49030[2-9].{10}$', $this->number)
-		|| ereg ('^49033[5-9].{10}$', $this->number)
-		|| ereg ('^49110[1-2].{10}$', $this->number)
-		|| ereg ('^49117[4-9].{10}$', $this->number)
-		|| ereg ('^49118[0-2].{10}$', $this->number)
-		|| ereg ('^4936[0-9].{11}$', $this->number))
-		$this->type = SWITCH_;
-
+		if(preg_match("/^5[1-5]\d{14}$/", $this->number)) {
+			$this->type = MASTERCARD;
+		}
+		elseif(preg_match("/^4(\d{12}|\d{15})$/", $this->number)) {
+			$this->type = VISA;
+		}
+		else if(preg_match("/^3[47]\d{13}$/", $this->number)) {
+			$this->type = AMEX;
+		}
+		else if(preg_match("/^[300-305]\d{11}$/", $this->number) || preg_match("/^3[68]\d{12}$/", $this->number)) {
+			$this->type = DINNERS;
+		}
+		elseif (ereg ('^6334[5-9].{11}$', $this->number) || ereg ('^6767[0-9].{11}$', $this->number)) {
+			$this->type = SOLO_MAESTRO;
+		}
+		elseif (ereg ('^564182[0-9].{9}$', $this->number) || ereg ('^6333[0-4].{11}$', $this->number) || ereg ('^6759[0-9].{11}$', $this->number)) {
+			$this->type= SWITCH_MAESTRO;
+		}
+		elseif (ereg ('^49030[2-9].{10}$', $this->number) || ereg ('^49033[5-9].{10}$', $this->number) || ereg ('^49110[1-2].{10}$', $this->number) || ereg ('^49117[4-9].{10}$', $this->number) || ereg ('^49118[0-2].{10}$', $this->number) || ereg ('^4936[0-9].{11}$', $this->number)) {
+			$this->type = SWITCH_;
+		}
 		//failing earlier 6xxx xxxx xxxx xxxx checks then its a Maestro card
-		elseif (ereg ('^6[0-9].{14}$', $this->number) || ereg ('^5[0,6-8].{14}$', $this->number))
-		$this->type = MAESTRO;
-
+		elseif (ereg ('^6[0-9].{14}$', $this->number) || ereg ('^5[0,6-8].{14}$', $this->number)) {
+			$this->type = MAESTRO;
+		}
 		elseif (ereg ('^450875[0-9].{9}$', $this->number)
-		|| ereg ('^48440[6-8].{10}$', $this->number)
-		|| ereg ('^48441[1-9].{10}$', $this->number)
-		|| ereg ('^4844[2-4].{11}$', $this->number)
-		|| ereg ('^48445[0-5].{10}$', $this->number)
-		|| ereg ('^4917[3-5].{11}$', $this->number)
-		|| ereg ('^491880[0-9].{9}$', $this->number))
-		$this->type= UK_ELECTRON;
-
+					|| ereg ('^48440[6-8].{10}$', $this->number)
+					|| ereg ('^48441[1-9].{10}$', $this->number)
+					|| ereg ('^4844[2-4].{11}$', $this->number)
+					|| ereg ('^48445[0-5].{10}$', $this->number)
+					|| ereg ('^4917[3-5].{11}$', $this->number)
+					|| ereg ('^491880[0-9].{9}$', $this->number)) {
+			$this->type= UK_ELECTRON;
+		}
 		//DB 18-07-05
-		else if(preg_match("/^6\d{15,21}$/", $this->number))
-		$this->type = SWITCHCARD;
+		else if(preg_match("/^6\d{15,21}$/", $this->number)) {
+			$this->type = SWITCHCARD;
+		}
+		else if(preg_match("/^6011\d{12}$/", $this->number)) {
+			$this->type = DISCOVER;
+		}
+		else if(preg_match("/^5610\d{12}$/", $this->number)) {
+			$this->type = BANKCARD;
+		}
+		else if(preg_match("/^2(014|149)\d{11}$/", $this->number)) {
+			$this->type = ENROUTE;
+		}
+		else if(preg_match("/^3\d{15}$/", $this->number) ||  preg_match("/^(2131|1800)\d{11}$/", $this->number)) {
+			$this->type = JCB;
+		}
 
-		else if(preg_match("/^6011\d{12}$/", $this->number))
-		$this->type = DISCOVER;
-
-		else if(preg_match("/^5610\d{12}$/", $this->number))
-		$this->type = BANKCARD;
-
-		else if(preg_match("/^2(014|149)\d{11}$/", $this->number))
-		$this->type = ENROUTE;
-
-		else if(preg_match("/^3\d{15}$/", $this->number) ||
-		preg_match("/^(2131|1800)\d{11}$/", $this->number))
-		$this->type = JCB;
-
-		if(!$this->type)
-		{
+		if(!$this->type) {
 			$this->errno = CC_ECANTYPE;
 			return UNKNOWN;
 		}
-
 		return $this->type;
 	}
 
@@ -686,41 +645,38 @@ class ps_payment_method extends vmAbstractObject {
 	* detectTypeString
 	*   return string of card type
 	*/
-	function detectTypeString($cardnum = 0)
-	{
-		if(!$cardnum)
-		{
+	function detectTypeString($cardnum = 0) {
+		if(!$cardnum) {
 			if(!$this->type)
 			$this->errno = CC_EARG;
 		}
-		else
-		$this->type = $this->detectType($cardnum);
+		else {
+			$this->type = $this->detectType($cardnum);
+		}
 
-		if(!$this->type)
-		{
+		if(!$this->type) {
 			$this->errno = CC_ETYPE;
 			return NULL;
 		}
 
-		switch($this->type)
-		{
+		switch($this->type) {
 			case MASTERCARD:
-			return "MASTERCARD";
+				return "MASTERCARD";
 			case VISA:
-			return "VISA";
+				return "VISA";
 			case AMEX:
-			return "AMEX";
+				return "AMEX";
 			case DINNERS:
-			return "DINNERS";
+				return "DINNERS";
 			case DISCOVER:
-			return "DISCOVER";
+				return "DISCOVER";
 			case ENROUTE:
-			return "ENROUTE";
+				return "ENROUTE";
 			case JCB:
-			return "JCB";
+				return "JCB";
 			default:
-			$this->errno = CC_ECANTYPE;
-			return NULL;
+				$this->errno = CC_ECANTYPE;
+				return NULL;
 		}
 	}
 
@@ -728,14 +684,11 @@ class ps_payment_method extends vmAbstractObject {
 	* getCardNumber
 	*   returns card number, only digits
 	*/
-	function getCardNumber()
-	{
-		if(!$this->number)
-		{
+	function getCardNumber(){
+		if(!$this->number){
 			$this->errno = CC_ECALL;
 			return 0;
 		}
-
 		return $this->number;
 	}
 
@@ -743,8 +696,7 @@ class ps_payment_method extends vmAbstractObject {
 	* errno method
 	*   return error number
 	*/
-	function errno()
-	{
+	function errno(){
 		return $this->errno;
 	}
 
@@ -752,8 +704,7 @@ class ps_payment_method extends vmAbstractObject {
 	* mod10 method - Luhn check digit algorithm
 	*   return 0 if true and !0 if false
 	*/
-	function mod10( $card_number )
-	{
+	function mod10( $card_number ){
 
 		$digit_array = array ();
 		$cnt = 0;
@@ -763,23 +714,20 @@ class ps_payment_method extends vmAbstractObject {
 
 		//Multiple every other number by 2 then ( even placement )
 		//Add the digits and place in an array
-		for ( $i = 1; $i <= strlen ( $card_temp ) - 1; $i = $i + 2 )
-		{
+		for ( $i = 1; $i <= strlen ( $card_temp ) - 1; $i = $i + 2 ) {
 			//multiply every other digit by 2
 			$t = substr ( $card_temp, $i, 1 );
 			$t = $t * 2;
 			//if there are more than one digit in the
 			//result of multipling by two ex: 7 * 2 = 14
 			//then add the two digits together ex: 1 + 4 = 5
-			if ( strlen ( $t ) > 1 )
-			{
+			if ( strlen ( $t ) > 1 ) {
 				//add the digits together
 				$tmp = 0;
 				//loop through the digits that resulted of
 				//the multiplication by two above and add them
 				//together
-				for ( $s = 0; $s < strlen ( $t ); $s++ )
-				{
+				for ( $s = 0; $s < strlen ( $t ); $s++ ) {
 					$tmp = substr ( $t, $s, 1 ) + $tmp;
 				}
 			}
@@ -793,8 +741,7 @@ class ps_payment_method extends vmAbstractObject {
 		$tmp = 0;
 
 		//Add the numbers not doubled earlier ( odd placement )
-		for ( $i = 0; $i <= strlen ( $card_temp ); $i = $i + 2 )
-		{
+		for ( $i = 0; $i <= strlen ( $card_temp ); $i = $i + 2 ) {
 			$tmp = substr ( $card_temp, $i, 1 ) + $tmp;
 		}
 
@@ -812,8 +759,7 @@ class ps_payment_method extends vmAbstractObject {
 	* resetCard method
 	*   clear only cards information
 	*/
-	function resetCard()
-	{
+	function resetCard() {
 		$this->number = 0;
 		$this->type = 0;
 	}
@@ -822,22 +768,20 @@ class ps_payment_method extends vmAbstractObject {
 	* strError method
 	*   return string error
 	*/
-	function strError()
-	{
-		switch($this->errno)
-		{
+	function strError() {
+		switch($this->errno) {
 			case CC_ECALL:
-			return "Invalid call for this method";
+				return "Invalid call for this method";
 			case CC_ETYPE:
-			return "Invalid card type";
+				return "Invalid card type";
 			case CC_ENUMBER:
-			return "Invalid card number";
+				return "Invalid card number";
 			case CC_EFORMAT:
-			return "Invalid format";
+				return "Invalid format";
 			case CC_ECANTYPE:
-			return "Cannot detect the type of your card";
+				return "Cannot detect the type of your card";
 			case CC_OK:
-			return "Success";
+				return "Success";
 		}
 	}
 
@@ -845,21 +789,25 @@ class ps_payment_method extends vmAbstractObject {
 	* _strtonum private method
 	*   return formated string - only digits
 	*/
-	function _strtonum($string)
-	{
+	function _strtonum($string) {
 		$nstr = "";
-		for($i=0; $i< strlen($string); $i++)
-		{
+		for($i=0; $i< strlen($string); $i++) {
 			if(!is_numeric($string{$i}))
 			continue;
 			$nstr = "$nstr".$string{$i};
 		}
 		return $nstr;
 	}
-	
+	/**
+	 * Lists all available payment classes in the payment directory
+	 *
+	 * @param string $name
+	 * @param string $preselected
+	 * @return string
+	 */
 	function list_available_classes( $name, $preselected='ps_payment' ) {
 		
-		$files = mosReadDirectory( CLASSPATH."payment/", ".php", true, true);
+		$files = vmReadDirectory( CLASSPATH."payment/", ".php", true, true);
 		$array = array();
         foreach ($files as $file) { 
             $file_info = pathinfo($file);
@@ -870,4 +818,5 @@ class ps_payment_method extends vmAbstractObject {
         return ps_html::selectList( $name, $preselected, $array );
 	}
 }
+
 ?>

@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,7 +20,7 @@ mm_showMyFileName( __FILE__ );
 <h2><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_LIST_LBL ?></h2>
 
 <?php
-$affiliate_id = mosgetparam( $_REQUEST, 'affiliate_id' );
+$affiliate_id = vmGet( $_REQUEST, 'affiliate_id' );
 
 if (!empty($affiliate_id)) {
   $q = "SELECT * FROM #__{vm}_affiliate,#__users ";
@@ -36,7 +36,7 @@ if (!empty($affiliate_id)) {
   <input type="hidden" name="page" value="<?php echo $modulename ?>.affiliate_list" />
   <input type="hidden" name="option" value="com_virtuemart" />
   <input type="hidden" name="task" value="" />
-  <?php $limitstart = mosgetparam( $_REQUEST, 'limitstart'); ?>
+  <?php $limitstart = vmGet( $_REQUEST, 'limitstart'); ?>
   <input type="hidden" name="limitstart" value="<?php echo $limitstart ?>" />
   <input type="hidden" name="affiliate_id" value="<?php $db->sp("affiliate_id") ?>" />
   <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center">

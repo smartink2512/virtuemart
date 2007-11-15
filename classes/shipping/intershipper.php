@@ -5,7 +5,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 * @version $Id$
 * @package VirtueMart
 * @subpackage shipping
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,7 +20,7 @@ class intershipper {
 	
 	function list_rates( &$d ) {	
 	  global $weight_total, $CURRENCY_DISPLAY;
-	  $d["ship_to_info_id"] = mosGetParam( $_REQUEST, "ship_to_info_id" );
+	  $d["ship_to_info_id"] = vmGet( $_REQUEST, "ship_to_info_id" );
       /** Read current Configuration ***/
       require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
 	  
@@ -291,7 +291,7 @@ class intershipper {
 	  can help you debug or use the $quotes hash we built above.
 	  a variety of info is included but mostly we probably want amount, carrier_name,
 	  service_name. */
-	  $shipping_rate_id = urlencode(mosGetParam( $_REQUEST, "shipping_rate_id" ));
+	  $shipping_rate_id = urlencode(vmGet( $_REQUEST, "shipping_rate_id" ));
 	  if( !$error ) {
 	  
 		if ( $_SESSION['auth']['show_price_including_tax'] != 1 ) {
@@ -338,7 +338,7 @@ class intershipper {
 	}
 	
 	function get_rate( &$d ) {	
-	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
+	  $shipping_rate_id = vmGet($_REQUEST,"shipping_rate_id");
 	  $is_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
 	  $order_shipping = $is_arr[3];
 	  
@@ -365,7 +365,7 @@ class intershipper {
     * @returns boolean False when the Shipping method is not in the SESSION
     */
 	function validate( $d ) {
-	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
+	  $shipping_rate_id = vmGet($_REQUEST,"shipping_rate_id");
 	  
 	  if( array_key_exists( $shipping_rate_id, $_SESSION ))
 		return true;

@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (c) 2003 Brian E. Lozier (brian@massassi.net)
-* @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or

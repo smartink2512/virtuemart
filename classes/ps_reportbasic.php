@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,17 +17,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 class nh_report {
-	var $classname = "nh_report";
 
-	/**************************************************************************
-	** name: make_date_popups
-	** created by: nhyde
-	** description: prints month, day, and year popups
-	** parameters: menu_name string to append to select names
-	**             sel_date int in YYYYMMDD format
-	** returns: True
-	***************************************************************************/
-
+	/**
+	 * prints month, day, and year popups
+	 *
+	 * @param string $menu_name string to append to select names
+	 * @param int $sel_date Date in YYYYMMDD format
+	 * @return string
+	 */
 	function make_date_popups ($menu_name='', $sel_date = '') {
 		// prepare vars for printing select menus
 		$yr = date("Y");
@@ -49,7 +46,7 @@ class nh_report {
 			$t_day = sprintf("%02d", $i);
 			$popup .= "\n\t<option value=\"".$t_day.'"';
 			if ($t_day == $sel_date["day"]) { $popup .= ' selected="selected"'; }
-			$popup .= '>'.$i;
+			$popup .= '>'.$i.'</option>';
 		}
 		$popup .= "\n";
 		$popup .= "</select>\n\t".'<select name="'. $menu_name . 'year">';
@@ -57,7 +54,7 @@ class nh_report {
 			$print_year = ($yr+$i);
 			$popup .= "\n\t".'<option value="'.$print_year.'"';
 			if ($print_year == $sel_date["year"]) { $popup .= ' selected="selected"'; }
-			$popup .= '>'.$print_year;
+			$popup .= '>'.$print_year.'</option>';
 		}
 		$popup .= "\n";
 		$popup .= '</select><br/>';

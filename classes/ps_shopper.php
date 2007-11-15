@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -83,7 +83,7 @@ class ps_shopper {
 			}
 		}
 		
-		$d['user_email'] = mosGetParam( $d, 'email', $my->email );
+		$d['user_email'] = vmGet( $d, 'email', $my->email );
 		$d['perms'] = 'shopper';
 
 		return true;
@@ -150,7 +150,7 @@ class ps_shopper {
 				
 			}
 		}
-		$d['user_email'] = mosGetParam( $d, 'email', $my->email );
+		$d['user_email'] = vmGet( $d, 'email', $my->email );
 		$d['perms'] = 'shopper';
 
 		return true;
@@ -201,7 +201,7 @@ class ps_shopper {
 
 		if( empty( $my->id ) ) {
 
-			$_POST['name'] = mosGetParam($d,'first_name','First Name' )." ".mosGetParam($d,'last_name','Last Name' );
+			$_POST['name'] = vmGet($d,'first_name','First Name' )." ".vmGet($d,'last_name','Last Name' );
 			if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
 				// Silent Registration, Optional Registration with no account wanted and No Registration
 				// means we need to create a hidden user
@@ -271,7 +271,7 @@ class ps_shopper {
 		foreach( $userFields as $userField ) {
 			if( !in_array($userField->name, $skipFields )) {
 				
-				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, mosGetParam($d, $userField->name, strtoupper($userField->name) ) );
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, vmGet($d, $userField->name, strtoupper($userField->name) ) );
 				
 				// Catch a newsletter registration!
 				if( stristr( $userField->params, 'newsletter' )) {
@@ -361,10 +361,10 @@ class ps_shopper {
 			} else {
 				$redirect_to_page = HOMEPAGE;
 			}
-			mosRedirect( $sess->url( 'index.php?page='.$redirect_to_page, false, false ), $VM_LANG->_REG_COMPLETE );
+			vmRedirect( $sess->url( 'index.php?page='.$redirect_to_page, false, false ), $VM_LANG->_REG_COMPLETE );
 		}
 		elseif( $my->id ) {
-			mosRedirect( $sess->url( 'index.php?page=checkout.index', false, false ) );
+			vmRedirect( $sess->url( 'index.php?page=checkout.index', false, false ) );
 		}
 		else {
 			$GLOBALS['page'] = 'shop.cart';

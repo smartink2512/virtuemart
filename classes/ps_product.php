@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -23,7 +23,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * 
  */
 class ps_product extends vmAbstractObject {
-	var $classname = "ps_product";
 
 	/**
 	 * Validates product fields and uploaded image files.
@@ -37,13 +36,6 @@ class ps_product extends vmAbstractObject {
 		
 		$valid = true;
 		$db = new ps_DB;
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-		if( $perm->check( 'admin' )) {
-			$vendor_id = $d['vendor_id'];
-		}
-		else {
-			$vendor_id = $ps_vendor_id;
-		}
 
 		$q = "SELECT product_id,product_thumb_image,product_full_image FROM #__{vm}_product WHERE product_sku='";
 		$q .= $d["product_sku"] . "'";
@@ -142,12 +134,53 @@ class ps_product extends vmAbstractObject {
 				$valid = false;
 			}
 		}
-
-		foreach ($d as $key => $value) {
-			if (!is_array($value)) {
-				$d[$key] = addslashes($value);
-			}
-		}
+		
+		// added for advanced attribute modification
+		// strips the trailing semi-colon from an attribute
+        if(isset($d["product_advanced_attribute"])) {
+		    if (';' == substr($d["product_advanced_attribute"], strlen($d["product_advanced_attribute"])-1,1) ) {
+			    $d["product_advanced_attribute"] =substr($d["product_advanced_attribute"], 0, strlen($d["product_advanced_attribute"])-1);
+		    }
+        }
+		// added for custom attribute modification
+		// strips the trailing semi-colon from an attribute
+        if(isset($d["product_custom_attribute"])) {
+		    if (';' == substr($d["product_custom_attribute"], strlen($d["product_custom_attribute"])-1,1) ) {
+			    $d["product_custom_attribute"] =substr($d["product_custom_attribute"], 0, strlen($d["product_custom_attribute"])-1);
+		    }
+        }
+		$d["clone_product"] = empty($d["clone_product"]) ? "N" : "Y";
+		$d["product_publish"] = empty($d["product_publish"]) ? "N" : "Y";
+		$d["product_special"] = empty($d["product_special"]) ? "N" : "Y";
+        //parse quantity and child options
+        $d['display_headers'] = vmGet($d,'display_headers', 'Y') =='Y' ? 'Y' : 'N';
+        $d['product_list_child'] = vmGet($d,'product_list_child', 'Y') =='Y' ? 'Y' : 'N';
+        $d['display_use_parent'] = vmGet($d,'display_use_parent', 'Y') =='Y' ? 'Y' : 'N';
+        $d['product_list_type'] = vmGet($d,'product_list_type', 'Y') =='Y' ? 'Y' : 'N';
+        $d['display_desc'] = vmGet($d,'display_desc', 'Y') =='Y' ? 'Y' : 'N';
+        
+        if (@$d['product_list'] =="Y") {
+            if($d['list_style'] == "one")
+                $d['product_list'] = "Y"; 
+            else
+                $d['product_list'] = "YM";            
+        }
+        else {
+            $d['product_list'] = "N";
+        }
+        
+        $d['quantity_options'] = vmGet($d,'quantity_box').","
+        								.vmRequest::getInt('quantity_start').","
+        								.vmRequest::getInt('quantity_end').","
+        								.vmRequest::getInt('quantity_step');
+        if($d["product_parent_id"] !=0) {
+        	$d['child_options'] = null;
+        } else {
+            $d['child_options'] = $d['display_use_parent'].",".$d['product_list'].",".$d['display_headers'].",".$d['product_list_child'].",".$d['product_list_type'];
+            $d['child_options'] .= ",".$d['display_desc'].",".$d['desc_width'].",".$d['attrib_width'].",".$d['child_class_sfx'];
+        }
+        $d['order_levels'] = vmRequest::getInt('min_order_level').",".vmRequest::getInt('max_order_level');
+        
 		return $valid;
 	}
 
@@ -219,109 +252,49 @@ class ps_product extends vmAbstractObject {
 		$timestamp = time();
 		$db = new ps_DB;
 
-		if (empty($d["product_publish"])) {
-			$d["product_publish"] = "N";
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		if( $perm->check( 'admin' )) {
+			$vendor_id = $d['vendor_id'];
 		}
-
-		if (empty($d["clone_product"])) {
-			$d["clone_product"] = "N";
+		else {
+			$vendor_id = $ps_vendor_id;
 		}
-
-		// added for advanced attribute modification
-		// strips the trailing semi-colon from an attribute
-        if(isset($d["product_advanced_attribute"])) {
-		    if (';' == substr($d["product_advanced_attribute"], strlen($d["product_advanced_attribute"])-1,1) ) {
-			    $d["product_advanced_attribute"] =substr($d["product_advanced_attribute"], 0, strlen($d["product_advanced_attribute"])-1);
-		    }
-        }
-		// added for custom attribute modification
-		// strips the trailing semi-colon from an attribute
-        if(isset($d["product_custom_attribute"])) {
-		    if (';' == substr($d["product_custom_attribute"], strlen($d["product_custom_attribute"])-1,1) ) {
-			    $d["product_custom_attribute"] =substr($d["product_custom_attribute"], 0, strlen($d["product_custom_attribute"])-1);
-		    }
-        }
-		$d["product_special"] = empty($d["product_special"]) ? "N" : "Y";
-        //parse quantity and child options
-        if (@$d['display_headers'] =="Y") {
-            $d['display_headers'] = "Y";  }
-        else {
-            $d['display_headers'] = "N";
-        }
-        if (@$d['product_list_child'] =="Y") {
-            $d['product_list_child'] = "Y";  }
-        else {
-            $d['product_list_child'] = "N";
-        }
-        if (@$d['product_list'] =="Y") {
-            if($d['list_style'] == "one")
-                $d['product_list'] = "Y"; 
-            else
-                $d['product_list'] = "YM";            
-        }
-        else {
-            $d['product_list'] = "N";
-        }
-        if (@$d['display_use_parent'] =="Y") {
-            $d['display_use_parent'] = "Y";  }
-        else {
-            $d['display_use_parent'] = "N";
-        }
-        if (@$d['product_list_type'] =="Y") {
-            $d['product_list_type'] = "Y";  }
-        else {
-            $d['product_list_type'] = "N";
-        }
-        if (@$d['display_desc'] =="Y") {
-            $d['display_desc'] = "Y";  }
-        else {
-            $d['display_desc'] = "N";
-        }
-        $quantity_options = $d['quantity_box'].",".$d["quantity_start"].",".$d["quantity_end"].",".$d["quantity_step"];
-        if($d["product_parent_id"] !=0)
-            $child_options = null;
-        else {
-            $child_options = $d['display_use_parent'].",".$d['product_list'].",".$d['display_headers'].",".$d['product_list_child'].",".$d['product_list_type'];
-            $child_options .= ",".$d['display_desc'].",".$d['desc_width'].",".$d['attrib_width'].",".$d['child_class_sfx'];
-        }
-        $order_levels = $d['min_order_level'].",".$d['max_order_level'];
-        
         // Insert into DB
-		$fields = array ( 'vendor_id' => $d['vendor_id'],
-						'product_parent_id' => $d["product_parent_id"],
-						'product_sku' => $d["product_sku"],
-						'product_name' => $d['product_name'],
+		$fields = array ( 'vendor_id' => $vendor_id,
+						'product_parent_id' => vmRequest::getInt('product_parent_id'),
+						'product_sku' => vmGet($d,'product_sku'),
+						'product_name' => vmGet($d,'product_name'),
 						'product_desc' => vmRequest::getVar('product_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
-						'product_s_desc' => $d['product_s_desc'],
-						'product_thumb_image' => $d['product_thumb_image'],
-						'product_full_image' => $d['product_full_image'],
+						'product_s_desc' => vmRequest::getVar('product_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
+						'product_thumb_image' => vmGet($d,'product_thumb_image'),
+						'product_full_image' => vmGet($d,'product_full_image'),
 						'product_publish' => $d['product_publish'],
-						'product_weight' => $d['product_weight'],
-						'product_weight_uom' => $d['product_weight_uom'],
-						'product_length' => $d['product_length'],
-						'product_width' => $d['product_width'],
-						'product_height' => $d['product_height'],
-						'product_lwh_uom' => $d['product_lwh_uom'],
-						'product_unit' => $d['product_unit'],
+						'product_weight' => vmRequest::getFloat('product_weight'),
+						'product_weight_uom' => vmGet($d,'product_weight_uom'),
+						'product_length' => vmRequest::getFloat('product_length'),
+						'product_width' => vmRequest::getFloat('product_width'),
+						'product_height' => vmRequest::getFloat('product_height'),
+						'product_lwh_uom' => vmGet($d,'product_lwh_uom'),
+						'product_unit' => vmGet($d,'product_unit'),
 						'product_packaging' => (($d["product_box"] << 16) | ($d["product_packaging"]&0xFFFF)),
-						'product_url' => $d['product_url'],
-						'product_in_stock' => $d['product_in_stock'],
+						'product_url' => vmGet($d,'product_url'),
+						'product_in_stock' => vmRequest::getInt('product_in_stock'),
 						'attribute' => ps_product_attribute::formatAttributeX(),
-						'custom_attribute' => $d['product_custom_attribute'],
+						'custom_attribute' => vmGet($d,'product_custom_attribute'),
 						'product_available_date' => $d['product_available_date_timestamp'],
-						'product_availability' => $d['product_availability'],
+						'product_availability' => vmGet($d,'product_availability'),
 						'product_special' => $d['product_special'],
-						'child_options' => $child_options,
-						'quantity_options' => $quantity_options,
-						'product_discount_id' => $d['product_discount_id'],
+						'child_options' => $d['child_options'],
+						'quantity_options' => $d['quantity_options'],
+						'product_discount_id' => vmRequest::getInt('product_discount_id'),
 						'cdate' => $timestamp,
 						'mdate' => $timestamp,
-						'product_tax_id' => $d['product_tax_id'],
-						'child_option_ids' => $d['included_product_id'],
-						'product_order_levels' => $order_levels );
+						'product_tax_id' => vmRequest::getInt('product_tax_id'),
+						'child_option_ids' => vmGet($d,'included_product_id'),
+						'product_order_levels' => $d['order_levels'] );
 
 		$db->buildQuery('INSERT', '#__{vm}_product', $fields );
-		if( !$db->query() ) {
+		if( $db->query() === false ) {
 			$vmLogger->err( 'Something went wrong when trying to add the product!' );
 			return false;
 		}
@@ -331,10 +304,9 @@ class ps_product extends vmAbstractObject {
 		// If is Item, add attributes from parent //
 		if ($d["product_parent_id"]) {
 			$q  = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
-			$q .= "WHERE product_id='" . $d["product_parent_id"] . "' ";
+			$q .= "WHERE product_id='" . vmRequest::getInt('product_parent_id') . "' ";
 			$q .= "ORDER BY attribute_list,attribute_name";
-
-			$db->setQuery($q); $db->query();
+			$db->query($q);
 
 			$db2 = new ps_DB;
 			$i = 0;
@@ -342,7 +314,7 @@ class ps_product extends vmAbstractObject {
 				$i++;
                 
 				$q = "INSERT INTO #__{vm}_product_attribute (`product_id`,`attribute_name`,`attribute_value`) VALUES ";
-				$q .= "('".$d["product_id"]."', '".$db->f("attribute_name")."', '".$d["attribute_$i"]."')";
+				$q .= "('".$d["product_id"]."', '".$db->f("attribute_name", false)."', '".vmGet($d,'attribute_'.$i )."')";
 				$db2->query( $q );
 			}
 		}
@@ -359,15 +331,15 @@ class ps_product extends vmAbstractObject {
 			}
 		}
 		$q = "INSERT INTO #__{vm}_product_mf_xref VALUES (";
-		$q .= "'".$d['product_id']."', '".$d['manufacturer_id']."')";
+		$q .= "'".$d['product_id']."', '".vmRequest::getInt('manufacturer_id')."')";
 		$db->setQuery($q); $db->query();
 
 		if( !empty($d["related_products"])) {
 			/* Insert Pipe separated Related Product IDs */
-			$related_products = mosGetParam( $d, "related_products" );
+			$related_products = vmGet( $d, "related_products" );
 			$q  = "INSERT INTO #__{vm}_product_relations ";
 			$q .= "(product_id, related_products) ";
-			$q .= "VALUES ('".$d["product_id"]."','$related_products')";
+			$q .= "VALUES ('".$d["product_id"]."','".$db->getEscaped($related_products)."')";
 			$db->setQuery($q); $db->query();
 
 		}
@@ -400,7 +372,7 @@ class ps_product extends vmAbstractObject {
 			// Clone Parent Product's Attributes
 			$q  = "INSERT INTO #__{vm}_product_attribute_sku
               SELECT '".$d["product_id"]."', attribute_name, attribute_list 
-              FROM #__{vm}_product_attribute_sku WHERE product_id='" . $d["old_product_id"] . "' ";
+              FROM #__{vm}_product_attribute_sku WHERE product_id='" . (int)$d["old_product_id"] . "' ";
 			$db->query( $q );
 			if( !empty( $d["child_items"] )) {
 
@@ -463,7 +435,7 @@ class ps_product extends vmAbstractObject {
 	 * @return boolean True, when the product was updated, false when not
 	 */
 	function update( &$d ) {
-		global $vmLogger;
+		global $vmLogger, $perm;
 		require_once(CLASSPATH.'ps_product_attribute.php');
 		
 		if (!$this->validate($d)) {
@@ -476,94 +448,44 @@ class ps_product extends vmAbstractObject {
 
 		$timestamp = time();
 		$db = new ps_DB;
-
-		// added for the advanced attribute hack
-		// strips the trailing semi-colon from an attribute
-		if (';' == substr(@$d["product_advanced_attribute"], strlen(@$d["product_advanced_attribute"])-1,1) ) {
-			$d["product_advanced_attribute"] =substr($d["product_advanced_attribute"], 0, strlen($d["product_advanced_attribute"])-1);
+		$ps_vendor_id = $_SESSION["ps_vendor_id"];
+		if( $perm->check( 'admin' )) {
+			$vendor_id = $d['vendor_id'];
 		}
-		// added for the custom attribute hack
-		// strips the trailing semi-colon from an attribute
-		if (';' == substr($d["product_custom_attribute"], strlen($d["product_custom_attribute"])-1,1) ) {
-			$d["product_custom_attribute"] =substr($d["product_custom_attribute"], 0, strlen($d["product_custom_attribute"])-1);
+		else {
+			$vendor_id = $ps_vendor_id;
 		}
-
-		if (empty($d["product_special"])) $d["product_special"] = "N";
-		if (empty($d["product_publish"])) $d["product_publish"] = "N";
-        if (@$d['display_headers'] =="Y") {
-            $d['display_headers'] = "Y";  }
-        else {
-            $d['display_headers'] = "N";
-        }
-        if (@$d['product_list_child'] =="Y") {
-            $d['product_list_child'] = "Y";  }
-        else {
-            $d['product_list_child'] = "N";
-        }
-        if (@$d['product_list'] =="Y") {
-            if($d['list_style'] == "one")
-                $d['product_list'] = "Y"; 
-            else
-                $d['product_list'] = "YM";            
-        }
-        else {
-            $d['product_list'] = "N";
-        }
-        
-        if (@$d['display_use_parent'] =="Y") {
-            $d['display_use_parent'] = "Y";  }
-        else {
-            $d['display_use_parent'] = "N";
-        }
-        if (@$d['product_list_type'] =="Y") {
-            $d['product_list_type'] = "Y";  }
-        else {
-            $d['product_list_type'] = "N";
-        }
-        if (@$d['display_desc'] =="Y") {
-            $d['display_desc'] = "Y";  }
-        else {
-            $d['display_desc'] = "N";
-        }
-        $quantity_options = $d['quantity_box'].",".$d["quantity_start"].",".$d["quantity_end"].",".$d["quantity_step"];
-        if($d["product_parent_id"] !=0)
-            $child_options = null;
-        else {
-            $child_options = $d['display_use_parent'].",".$d['product_list'].",".$d['display_headers'].",".$d['product_list_child'].",".$d['product_list_type'];
-            $child_options .= ",".$d['display_desc'].",".$d['desc_width'].",".$d['attrib_width'].",".$d['child_class_sfx'];
-        }
-        $order_levels = $d['min_order_level'].",".$d['max_order_level'];
-        
-		$fields = array ( 'vendor_id' => $d['vendor_id'],
-						'product_sku' => $d["product_sku"],
-						'product_name' => $d['product_name'],
-						'product_desc' => $d['product_desc'],
-						'product_s_desc' => $d['product_s_desc'],
-						'product_thumb_image' => $d['product_thumb_image'],
-						'product_full_image' => $d['product_full_image'],
+        // Insert into DB
+		$fields = array ( 'vendor_id' => $vendor_id,
+						'product_sku' => vmGet($d,'product_sku'),
+						'product_name' => vmGet($d,'product_name'),
+						'product_desc' => vmRequest::getVar('product_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
+						'product_s_desc' => vmRequest::getVar('product_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
+						'product_thumb_image' => vmGet($d,'product_thumb_image'),
+						'product_full_image' => vmGet($d,'product_full_image'),
 						'product_publish' => $d['product_publish'],
-						'product_weight' => $d['product_weight'],
-						'product_weight_uom' => $d['product_weight_uom'],
-						'product_length' => $d['product_length'],
-						'product_width' => $d['product_width'],
-						'product_height' => $d['product_height'],
-						'product_lwh_uom' => $d['product_lwh_uom'],
-						'product_unit' => $d['product_unit'],
+						'product_weight' => vmRequest::getFloat('product_weight'),
+						'product_weight_uom' => vmGet($d,'product_weight_uom'),
+						'product_length' => vmRequest::getFloat('product_length'),
+						'product_width' => vmRequest::getFloat('product_width'),
+						'product_height' => vmRequest::getFloat('product_height'),
+						'product_lwh_uom' => vmGet($d,'product_lwh_uom'),
+						'product_unit' => vmGet($d,'product_unit'),
 						'product_packaging' => (($d["product_box"] << 16) | ($d["product_packaging"]&0xFFFF)),
-						'product_url' => $d['product_url'],
-						'product_in_stock' => $d['product_in_stock'],
+						'product_url' => vmGet($d,'product_url'),
+						'product_in_stock' => vmRequest::getInt('product_in_stock'),
 						'attribute' => ps_product_attribute::formatAttributeX(),
-						'custom_attribute' => $d['product_custom_attribute'],
+						'custom_attribute' => vmGet($d,'product_custom_attribute'),
 						'product_available_date' => $d['product_available_date_timestamp'],
-						'product_availability' => $d['product_availability'],
+						'product_availability' => vmGet($d,'product_availability'),
 						'product_special' => $d['product_special'],
-						'child_options' => $child_options,
-						'quantity_options' => $quantity_options,
-						'product_discount_id' => $d['product_discount_id'],
+						'child_options' => $d['child_options'],
+						'quantity_options' => $d['quantity_options'],
+						'product_discount_id' => vmRequest::getInt('product_discount_id'),
 						'mdate' => $timestamp,
-						'product_tax_id' => $d['product_tax_id'],
-						'child_option_ids' => $d['included_product_id'],
-						'product_order_levels' => $order_levels );
+						'product_tax_id' => vmRequest::getInt('product_tax_id'),
+						'child_option_ids' => vmGet($d,'included_product_id'),
+						'product_order_levels' => $d['order_levels'] );
 						
 		$db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  'WHERE product_id='. (int)$d["product_id"] . ' AND vendor_id=' . (int)$d['vendor_id'] );
 		$db->query();
@@ -577,27 +499,26 @@ class ps_product extends vmAbstractObject {
 		}
 
 		$q = "UPDATE #__{vm}_product_mf_xref SET ";
-		$q .= "manufacturer_id='".$d['manufacturer_id']."' ";
-		$q .= "WHERE product_id = '".$d['product_id']."'";
-		$db->setQuery($q); $db->query();
+		$q .= 'manufacturer_id='.vmRequest::getInt('manufacturer_id').' ';
+		$q .= 'WHERE product_id = '.$d['product_id'];
+		$db->query($q);
 
 
 		/* If is Item, update attributes */
-		if ($d["product_parent_id"]) {
+		if( !empty($d["product_parent_id"])) {
 			$q  = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
-			$q .= "WHERE product_id='" . $d["product_parent_id"] . "' ";
+			$q .= 'WHERE product_id=' .(int)$d["product_parent_id"] . ' ';
 			$q .= "ORDER BY attribute_list,attribute_name";
-
-			$db->setQuery($q); $db->query();
+			$db->query($q);
 
 			$db2 = new ps_DB;
 			$i = 0;
 			while($db->next_record()) {
 				$i++;
 				$q2  = "UPDATE #__{vm}_product_attribute SET ";
-				$q2 .= "attribute_value='" . $d["attribute_$i"] . "' ";
+				$q2 .= "attribute_value='" .vmGet($d,'attribute_'.$i ) . "' ";
 				$q2 .= "WHERE product_id = '" . $d["product_id"] . "' ";
-				$q2 .= "AND attribute_name = '" . $db->f("attribute_name") . "' ";
+				$q2 .= "AND attribute_name = '" . $db->f("attribute_name", false ) . "' ";
 				$db2->setQuery($q2); $db2->query();
 			}
 			/* If it is a Product, update Category */
@@ -634,23 +555,21 @@ class ps_product extends vmAbstractObject {
 				$q  = "DELETE FROM `#__{vm}_product_category_xref` ";
 				$q .= "WHERE `product_id` = '" . $d["product_id"] . "' ";
 				$q .= "AND `category_id` = '" . $category_id . "' ";
-				$db->setQuery($q);
-				$db->query();
+				$db->query($q);
 			}
 		}
 
 		if( !empty($d["related_products"])) {
 			/* Insert Pipe separated Related Product IDs */
-			$related_products = mosGetParam( $d, "related_products" );
+			$related_products = vmGet( $d, "related_products" );
 			$q  = "REPLACE INTO #__{vm}_product_relations (product_id, related_products)";
 			$q .= " VALUES( '".$d["product_id"]."', '$related_products') ";
-			$db->setQuery($q); $db->query();
+			$db->query($q);
 
 		}
 		else{
-			$q  = "DELETE FROM #__{vm}_product_relations ";
-			$q .= " WHERE product_id='".$d["product_id"]."'";
-			$db->setQuery($q); $db->query();
+			$q  = "DELETE FROM #__{vm}_product_relations WHERE product_id='".$d["product_id"]."'";
+			$db->query($q);
 		}
 
 		// UPDATE THE PRICE, IF EMPTY ADD 0
@@ -660,7 +579,7 @@ class ps_product extends vmAbstractObject {
 
 		// look if we have a price for this product
 		$q = "SELECT product_price_id, price_quantity_start, price_quantity_end FROM #__{vm}_product_price ";
-		$q .= "WHERE shopper_group_id = '" . $d["shopper_group_id"] ."' ";
+		$q .= "WHERE shopper_group_id = '" . vmRequest::getInt($d,"shopper_group_id") ."' ";
 		$q .= "AND product_id = '" . $d["product_id"] ."'";
 		$db->query($q);
 
@@ -874,7 +793,7 @@ class ps_product extends vmAbstractObject {
 		}
 		/* Delete other Files and Images files */
 		require_once(  CLASSPATH.'ps_product_files.php' );
-		$ps_product_files =& new ps_product_files();
+		$ps_product_files = new ps_product_files();
 
 		$db->query( "SELECT file_id FROM #__{vm}_product_files WHERE file_product_id='$product_id'" );
 		while($db->next_record()) {
@@ -939,10 +858,10 @@ class ps_product extends vmAbstractObject {
 	 */
 	function sql($product_id) {
 		$db = new ps_DB;
-
-		$q  = 'SELECT * FROM #__{vm}_product WHERE product_id=' . (int)$product_id;
-
-		$db->setQuery($q); $db->query();
+		if( !empty( $product_id )) {
+			$q  = 'SELECT * FROM #__{vm}_product WHERE product_id=' . (int)$product_id;
+			$db->setQuery($q); $db->query(); 
+		}
 		return $db;
 	}
 
@@ -955,14 +874,14 @@ class ps_product extends vmAbstractObject {
 	 */
 	function items_sql($product_id) {
 		$db = new ps_DB;
-		if( empty($product_id) ) {
-			return $db;
+		if( !empty($product_id) ) {
+			$q  = "SELECT * FROM #__{vm}_product ";
+			$q .= "WHERE product_parent_id=".(int)$product_id.' ';
+			$q .= "ORDER BY product_name";
+	
+			$db->setQuery($q); $db->query();
 		}
-		$q  = "SELECT * FROM #__{vm}_product ";
-		$q .= "WHERE product_parent_id=".(int)$product_id.' ';
-		$q .= "ORDER BY product_name";
 
-		$db->setQuery($q); $db->query();
 		return $db;
 	}
 
@@ -975,11 +894,12 @@ class ps_product extends vmAbstractObject {
 	function is_product($product_id) {
 		$db = new ps_DB;
 
-		$q  = "SELECT product_parent_id FROM #__{vm}_product ";
-		$q .= "WHERE product_id='$product_id' ";
-
-		$db->setQuery($q); $db->query();
-		$db->next_record();
+		if( !empty($product_id) ) {
+			$q  = "SELECT product_parent_id FROM #__{vm}_product ";
+			$q .= 'WHERE product_id='.(int)$product_id;
+			$db->query($q);
+			$db->next_record();
+		}
 		if ($db->f("product_parent_id") == 0) {
 			return true;
 		}
@@ -1158,7 +1078,7 @@ class ps_product extends vmAbstractObject {
 
 		if( empty( $_SESSION['product_sess'][$product_id]['flypage'] )) {
 			$db = new ps_DB;
-			$productParentId = $product_id;
+			$productParentId = (int)$product_id;
 			do {
 				$q = "SELECT
                                 `#__{vm}_product`.`product_parent_id` AS product_parent_id,
@@ -1299,6 +1219,13 @@ class ps_product extends vmAbstractObject {
 			return "";
 		}
 	}
+	/**
+	 * This function retrieves the "neighbor" products of a product specified by $product_id
+	 * Neighbors are the previous and next product in the current list
+	 *
+	 * @param int $product_id
+	 * @return array
+	 */
 	function get_neighbor_products( $product_id ) {
 		global $perm, $orderby, $my, $keyword, $DescOrderBy, $limit, $limitstart, 
 			$category_id, $manufacturer_id, $mainframe, $vmInputFilter, $product_type_id, $keyword1, $keyword2;
@@ -1627,7 +1554,6 @@ class ps_product extends vmAbstractObject {
 			// Get the product_parent_id for this product/item
 			$product_parent_id = $this->get_field($product_id, "product_parent_id");
 
-			$price_info = Array();
 			if( !$check_multiple_prices ) {
 				/* Added for Volume based prices */
 				// This is an important decision: we add up all product quantities with the same product_id,
@@ -1727,9 +1653,8 @@ class ps_product extends vmAbstractObject {
 			$GLOBALS['product_info'][$product_id]['price'] = $price_info;
 			return $GLOBALS['product_info'][$product_id]['price'];
 		}
-		else {
-			return;
-		}
+		return 0.00;
+		
 	}
 	/**
 	 * Adjusts the price from get_price for the selected attributes
@@ -1756,15 +1681,15 @@ class ps_product extends vmAbstractObject {
 		// Thanks to AryGroup@ua.fm for the good advice
 		if( empty( $_REQUEST["custom_attribute_fields"] )) {
 			if( !empty( $_SESSION["custom_attribute_fields"] )) {
-				$custom_attribute_fields = mosGetParam( $_SESSION, "custom_attribute_fields", Array() );
-				$custom_attribute_fields_check = mosGetParam( $_SESSION, "custom_attribute_fields_check", Array() );
+				$custom_attribute_fields = vmGet( $_SESSION, "custom_attribute_fields", Array() );
+				$custom_attribute_fields_check = vmGet( $_SESSION, "custom_attribute_fields_check", Array() );
 			}
 			else
 			$custom_attribute_fields = $custom_attribute_fields_check = Array();
 		}
 		else {
-			$custom_attribute_fields = $_SESSION["custom_attribute_fields"] = mosGetParam( $_REQUEST, "custom_attribute_fields", Array() );
-			$custom_attribute_fields_check = $_SESSION["custom_attribute_fields_check"]= mosGetParam( $_REQUEST, "custom_attribute_fields_check", Array() );
+			$custom_attribute_fields = $_SESSION["custom_attribute_fields"] = vmGet( $_REQUEST, "custom_attribute_fields", Array() );
+			$custom_attribute_fields_check = $_SESSION["custom_attribute_fields_check"]= vmGet( $_REQUEST, "custom_attribute_fields_check", Array() );
 		}
 
 		// if we've been given a description to deal with, get the adjusted price
@@ -1897,16 +1822,16 @@ class ps_product extends vmAbstractObject {
 		// Thanks to AryGroup@ua.fm for the good advice
 		if( empty( $_REQUEST["custom_attribute_fields"] )) {
 			if( !empty( $_SESSION["custom_attribute_fields"] )) {
-				$custom_attribute_fields = mosGetParam( $_SESSION, "custom_attribute_fields", Array() );
-				$custom_attribute_fields_check = mosGetParam( $_SESSION, "custom_attribute_fields_check", Array() );
+				$custom_attribute_fields = vmGet( $_SESSION, "custom_attribute_fields", Array() );
+				$custom_attribute_fields_check = vmGet( $_SESSION, "custom_attribute_fields_check", Array() );
 			}
 			else {
 				$custom_attribute_fields = $custom_attribute_fields_check = Array();
 			}
 		}
 		else {
-			$custom_attribute_fields = $_SESSION["custom_attribute_fields"] = mosGetParam( $_REQUEST, "custom_attribute_fields", Array() );
-			$custom_attribute_fields_check = $_SESSION["custom_attribute_fields_check"]= mosGetParam( $_REQUEST, "custom_attribute_fields_check", Array() );
+			$custom_attribute_fields = $_SESSION["custom_attribute_fields"] = vmGet( $_REQUEST, "custom_attribute_fields", Array() );
+			$custom_attribute_fields_check = $_SESSION["custom_attribute_fields_check"]= vmGet( $_REQUEST, "custom_attribute_fields_check", Array() );
 		}
 
 		$product_attributes = ps_product_attribute::getAdvancedAttributes($product_id);
@@ -1964,8 +1889,6 @@ class ps_product extends vmAbstractObject {
 		// Get the Price according to the quantity in the Cart
 		$price_info = $this->get_price( $product_id, false, $overrideShoppergroup );
 
-		$html = "";
-		$undiscounted_price = 0;
 		if (isset($price_info["product_price_id"])) {
 
 			$base_price = $price_info["product_price"];
@@ -1982,7 +1905,7 @@ class ps_product extends vmAbstractObject {
 			$price_info['tax_rate'] = $VM_LANG->_PHPSHOP_TAX_LIST_RATE.': '.$tax.'%';
 			// Calculate discount
 			if( !empty($discount_info["amount"])) {
-				$undiscounted_price = $base_price;
+				
 				switch( $discount_info["is_percent"] ) {
 					case 0:
 						$base_price -= $discount_info["amount"];
@@ -2068,8 +1991,6 @@ class ps_product extends vmAbstractObject {
 					// not be hidden
 					if( !$hide_tax && $auth["show_price_including_tax"] == 1 && VM_PRICE_SHOW_INCLUDINGTAX) {
 						$text_including_tax = $VM_LANG->_PHPSHOP_INCLUDING_TAX;
-						eval ("\$text_including_tax = \"$text_including_tax\";");
-
 					}
 				}
 
@@ -2107,7 +2028,7 @@ class ps_product extends vmAbstractObject {
 					}
 					$prices_table .= "</tbody></table>";
 					if( @$_REQUEST['page'] != "shop.product_details" ) {
-						$html .= mm_ToolTip( $prices_table );
+						$html .= vmToolTip( $prices_table );
 					}
 					else
 					$html .= $prices_table;
@@ -2123,13 +2044,6 @@ class ps_product extends vmAbstractObject {
 
 	}
 
-	/**************************************************************************
-	** name: get_discount
-	** created by: soeren
-	** description: display a Price, formatted and with Discounts
-	** parameters: int product_id
-	** returns:
-	***************************************************************************/
 	/**
 	 * Get the information about the discount for a product
 	 *
@@ -2212,7 +2126,7 @@ class ps_product extends vmAbstractObject {
 	 */
 	function product_snapshot( $product_sku, $show_price=true, $show_addtocart=true ) {
 
-		global $sess, $VM_LANG, $mm_action_url;
+		global $sess, $mm_action_url;
 
 		$db = new ps_DB;
 
@@ -2255,7 +2169,7 @@ class ps_product extends vmAbstractObject {
 			return $tpl->fetch( 'common/productsnapshot.tpl.php');
 		}
 		
-		return;
+		return '';
 		
 	}
 
@@ -2274,23 +2188,16 @@ class ps_product extends vmAbstractObject {
 
 		// If only one vendor do not show list
 		if ($db->num_rows() == 1) {
-			echo "<input type=\"hidden\" name=\"vendor_id\" value=\"";
-			echo $db->f("vendor_id");
-			echo "\" />";
+			echo '<input type="hidden" name="vendor_id" value="'.$db->f("vendor_id").'" />';
 			echo $db->f("vendor_name");
 		}
 		elseif($db->num_rows() > 1) {
 			$db->reset();
-			$code = "<select name=\"vendor_id\">\n";
+			$array = array();
 			while ($db->next_record()) {
-				$code .= "  <option value=\"" . $db->f("vendor_id") . "\"";
-				if ($db->f("vendor_id") == $vendor_id) {
-					$code .= " selected=\"selected\"";
-				}
-				$code .= ">" . $db->f("vendor_name") . "</option>\n";
+				$array[$db->f("vendor_id")] = $db->f("vendor_name");
 			}
-			$code .= "</select><br />\n";
-			echo $code;
+			echo ps_html::selectList('vendor_id', $vendor_id, $array );
 		}
 	}
 
@@ -2314,7 +2221,7 @@ class ps_product extends vmAbstractObject {
 
 		$db = new ps_DB;
 
-		$q = "SELECT vendor_name FROM #__{vm}_vendor WHERE vendor_id='$id'";
+		$q = 'SELECT vendor_name FROM #__{vm}_vendor WHERE vendor_id='.(int)$id;
 		$db->query($q);
 		$db->next_record();
 		return $db->f("vendor_name");
@@ -2337,26 +2244,20 @@ class ps_product extends vmAbstractObject {
 		// If only one vendor do not show list
 		if ($db->num_rows() == 1) {
 
-			echo "<input type=\"hidden\" name=\"manufacturer_id\" value=\"";
-			echo $db->f("manufacturer_id");
-			echo "\" />";
+			echo '<input type="hidden" name="manufacturer_id" value="'. $db->f("manufacturer_id").'" />';
 			echo $db->f("mf_name");
 		}
 		elseif( $db->num_rows() > 1) {
 			$db->reset();
-			$code = "<select name=\"manufacturer_id\">\n";
+			$array = array();
 			while ($db->next_record()) {
-				$code .= "  <option value=\"" . $db->f("manufacturer_id") . "\"";
-				if ($db->f("manufacturer_id") == $manufacturer_id) {
-					$code .= " selected=\"selected\"";
-				}
-				$code .= ">" . $db->f("mf_name") . "</option>\n";
+				$array[$db->f("manufacturer_id")] = $db->f("mf_name");
 			}
-			$code .= "</select><br />\n";
+			$code .= ps_html::selectList('manufacturer_id', $manufacturer_id, $array ). "<br />\n";
 			echo $code;
 		}
 		else  {
-			echo "<input type=\"hidden\" name=\"manufacturer_id\" value=\"1\" />Please create at least one Manufacturer!!";
+			echo '<input type="hidden" name="manufacturer_id" value="1" />Please create at least one Manufacturer!!';
 		}
 	}
 
@@ -2392,7 +2293,6 @@ class ps_product extends vmAbstractObject {
 	 * @return unknown
 	 */
 	function get_availability($prod_id) {
-		global $VM_LANG;
 
 		$html = "";
 
@@ -2407,8 +2307,6 @@ class ps_product extends vmAbstractObject {
 
 			$db->query($q);
 			$db->next_record();
-			$pad = $db->f("product_available_date");
-			$pav = $db->f("product_availability");
 			
 			$tpl->set( 'product_id', $prod_id );
 			$tpl->set( 'product_available_date', $db->f('product_available_date') );
@@ -2428,14 +2326,12 @@ class ps_product extends vmAbstractObject {
 	 * @return unknown
 	 */
 	function product_publish( &$d ) {
-		global $db, $vmLogger;
-
 		$this->handlePublishState( $d );
 		return;
 	}
     
     function product_order_levels($product_id) {
-        $db = new PS_db;
+        $db = new ps_DB();
         $min_order=0;
         $max_order=0;
         $q = "SELECT product_order_levels,product_parent_id FROM #__{vm}_product WHERE product_id = '$product_id'";
@@ -2466,15 +2362,15 @@ class ps_product extends vmAbstractObject {
     
     
     function featuredProducts($random, $products, $categories) {
-    global $sess, $VM_LANG, $mm_action_url;
-    require_once( CLASSPATH . 'ps_product_attribute.php');
-    $ps_product_attribute = new ps_product_attribute();
-    $db = new ps_DB;
-    $tpl = new $GLOBALS['VM_THEMECLASS']();
-    $category_id = null;
-    if($categories) {
-        $category_id =  mosGetParam( $_REQUEST,'category_id', null);
-    }
+	    global $VM_LANG;
+	    require_once( CLASSPATH . 'ps_product_attribute.php');
+	    $ps_product_attribute = new ps_product_attribute();
+	    $db = new ps_DB;
+	    $tpl = new $GLOBALS['VM_THEMECLASS']();
+	    $category_id = null;
+	    if($categories) {
+	        $category_id = vmRequest::getInt('category_id');
+	    }
         if ( $category_id ) {
 	        $q  = "SELECT DISTINCT product_sku,#__{vm}_product.product_id,product_name,product_s_desc,product_thumb_image FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE \n";
 	        $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') \n";
@@ -2486,7 +2382,7 @@ class ps_product extends vmAbstractObject {
 	        if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 		        $q .= " AND product_in_stock > 0 \n";
 	        }
-	        $q .= "ORDER BY RAND() LIMIT 0, $products";
+	        $q .= 'ORDER BY RAND() LIMIT 0, '.(int)$products;
         }
         else {
 	        $q  = "SELECT DISTINCT product_sku,product_id,product_name,product_s_desc,product_thumb_image FROM #__{vm}_product WHERE ";
@@ -2496,7 +2392,7 @@ class ps_product extends vmAbstractObject {
 	        if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 		        $q .= " AND product_in_stock > 0 ";
 	        }
-	        $q .= "ORDER BY RAND() LIMIT 0, $products";
+	        $q .= 'ORDER BY RAND() LIMIT 0, '.(int)$products;
         }
         $db->query($q);
         // Output using template
@@ -2537,7 +2433,7 @@ class ps_product extends vmAbstractObject {
     }
     
     function latestProducts($random, $products) {
-    return "";
+    	return "";
     }
 
     function addRecentProduct($product_id,$category_id,$maxviewed) {

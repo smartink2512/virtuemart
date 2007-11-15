@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -40,17 +40,13 @@ class ps_product_attribute {
 		elseif ($d["old_attribute_name"] != $d["attribute_name"]) {
 			$db = new ps_DB;
 			$q  = "SELECT attribute_name FROM #__{vm}_product_attribute_sku ";
-			$q .= "WHERE attribute_name = '" . $d["attribute_name"] . "'";
-			$q .= "AND product_id = '" . $d["product_id"] . "'";
-			$db->setQuery($q);  $db->query();
+			$q .= "WHERE attribute_name = '" . $db->getEscaped($d["attribute_name"]). "'";
+			$q .= "AND product_id = '" . (int)$d["product_id"] . "'";
+			$db->query($q);
 			if ($db->next_record()) {
 				$vmLogger->err( "A unique attribute name must be entered." );
 				$valid = false;
 			}
-		}
-		foreach ($d as $key => $value) {
-			if (!is_array($value))
-			$d[$key] = addslashes($value);
 		}
 		return $valid;
 	}
@@ -68,10 +64,9 @@ class ps_product_attribute {
 		$ps_product = new ps_product;
 
 		$db = new ps_DB;
-		$q  = "SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id = '" . $d["product_id"] . "' ";
-		$db->setQuery($q);  $db->query();
-		if ($db->num_rows() == 1 and
-		$ps_product->parent_has_children($d["product_id"])) {
+		$q  = 'SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id = ' .(int)$d["product_id"];
+		$db->query($q);
+		if ($db->num_rows() == 1 &&	$ps_product->parent_has_children($d["product_id"])) {
 			$vmLogger->err( "Cannot delete last attribute while product has Items. Delete all Items first." );
 			return false;
 		}
@@ -129,16 +124,11 @@ class ps_product_attribute {
 
 		$db = new ps_DB;
 
-		$q  = "UPDATE #__{vm}_product_attribute_sku SET ";
-		$q .= "attribute_name='" . $d["attribute_name"] . "',";
-		$q .= "attribute_list='" . $d["attribute_list"] . "' ";
-		$q .= " ";
-
 		$fields = array(
 					'attribute_name' => $d["attribute_name"],
 					'attribute_list' => $d["attribute_list"]
 					);
-		$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute_sku', $fields, "WHERE product_id='" . $d["product_id"] . "' AND attribute_name='" . $d["old_attribute_name"] . "'" );
+		$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute_sku', $fields, "WHERE product_id='" . (int)$d["product_id"] . "' AND attribute_name='" . $db->getEscaped($d["old_attribute_name"]) . "'" );
 		if( $db->query() === false ) {
 			$GLOBALS['vmLogger']->err('Updating the attribute failed.');
 			return false;
@@ -150,7 +140,7 @@ class ps_product_attribute {
 
 			for($i = 0; $i < count($child_pid); $i++) {
 				$fields = array('attribute_name' => $d["attribute_name"]);
-				$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute', $fields, "WHERE product_id='".$child_pid[$i]."' AND attribute_name='" . $d["old_attribute_name"] . "' " );
+				$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute', $fields, "WHERE product_id='".$child_pid[$i]."' AND attribute_name='" . $db->getEscaped($d["old_attribute_name"]) . "' " );
 				$db->query();
 			}
 		}
@@ -187,18 +177,18 @@ class ps_product_attribute {
 		}
 
 		$q  = "DELETE FROM #__{vm}_product_attribute_sku ";
-		$q .= "WHERE product_id = '" . $d["product_id"] . "' ";
-		$q .= "AND attribute_name = '$record_id'";
+		$q .= 'WHERE product_id = ' .(int)$d["product_id"] . ' ';
+		$q .= "AND attribute_name = '".$db->getEscaped($record_id)."'";
 
-		$db->setQuery($q);  $db->query();
+		$db->query($q);
 		$ps_product = new ps_product;
 		$child_pid = $ps_product->get_child_product_ids($d["product_id"]);
 
 		for($i = 0; $i < count($child_pid); $i++) {
 			$q  = "DELETE FROM #__{vm}_product_attribute ";
 			$q .= "WHERE product_id = '$child_pid[$i]' ";
-			$q .= "AND attribute_name = '$record_id' ";
-			$db->setQuery($q);  $db->query();
+			$q .= "AND attribute_name = '".$db->getEscaped($record_id)."'";
+			$db->query($q);
 		}
 		return True;
 	}
@@ -210,7 +200,7 @@ class ps_product_attribute {
     */
 	function list_attribute($product_id,$product_price,$extra_ids=null) {
 		//Use product_id to determine what type of child this product has, if it has none use drop
-		$db = new PS_db;
+		$db = new ps_DB();
 		$q = "SELECT quantity_options,child_options,product_parent_id,child_option_ids FROM #__{vm}_product WHERE product_id='$product_id'";
 		$db->query($q);
 		$l_field = $db->f("child_options");
@@ -285,7 +275,7 @@ class ps_product_attribute {
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
 		$Itemid = $sess->getShopItemid();
-		$category_id = mosGetParam( $_REQUEST, 'category_id', "" );
+		$category_id = vmGet( $_REQUEST, 'category_id', "" );
 		$db = new ps_DB;
 		$db_sku = new ps_DB;
 		$db_item = new ps_DB;
@@ -379,7 +369,7 @@ class ps_product_attribute {
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
 		$Itemid = $sess->getShopItemid();
-		$category_id = mosGetParam( $_REQUEST, 'category_id', "" );
+		$category_id = vmGet( $_REQUEST, 'category_id', "" );
 		$db = new ps_DB;
 		$db_sku = new ps_DB;
 		$db_item = new ps_DB;
@@ -469,17 +459,15 @@ class ps_product_attribute {
 	 */
 
 	function list_attribute_list($product_id, $display_use_parent,$child_link,$display_type,$cls_sfuffix,$child_ids,$dw,$aw,$display_header,$product_list_type,$product_list,$product_price) {
-		global $VM_LANG, $CURRENCY_DISPLAY,$mm_action_url,$sess,$auth;
-		global $mainframe;
+		global $CURRENCY_DISPLAY,$mm_action_url;
 		require_once (CLASSPATH . 'ps_product.php' );
 		$ps_product = new ps_product;
 		require_once(CLASSPATH . 'ps_product_type.php' );
 		$ps_product_type = new ps_product_type;
-		require_once(CLASSPATH . 'ps_product_category.php' );
-		$ps_product_category = new ps_product_category;
-		$Itemid = mosGetParam( $_REQUEST, 'Itemid', "" );
-		$category_id = mosGetParam( $_REQUEST, 'category_id', "" );
-		$curr_product = mosGetParam( $_REQUEST, 'product_id', "");
+		
+		$Itemid = vmGet( $_REQUEST, 'Itemid', "" );
+		$category_id = vmGet( $_REQUEST, 'category_id', "" );
+		$curr_product = vmGet( $_REQUEST, 'product_id', "");
 		$db = new ps_DB;
 		$db_sku = new ps_DB;
 		$db_item = new ps_DB;
@@ -554,7 +542,7 @@ class ps_product_attribute {
 				// Start row for this child
 				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku ";
                 $q .= "WHERE product_id='".$db->f("product_parent_id")."' ORDER BY attribute_list ASC";
-				$db_sku->setQuery($q);  $db_sku->query();
+				$db_sku->query($q);
 				$attrib_value = array();
                
 				while ($db_sku->next_record()) {
@@ -704,9 +692,6 @@ class ps_product_attribute {
 		return array($html,$list_type);
 	}
 
-
-
-
 	/**
 	 * Creates drop-down boxes from advanced attribute format.
 	 * @author Sean Tobin (byrdhuntr@hotmail.com)
@@ -738,8 +723,9 @@ class ps_product_attribute {
 				$title=array_shift($base);
 				$titlevar=str_replace(" ","_",$title);
 				$prod_index = $product_id;
-				if ($prod_id)
-				$prod_index = $prod_id;
+				if ($prod_id) {
+					$prod_index = $prod_id;
+				}
                 $attributes[$i]['product_id'] = $prod_index;
                 $attributes[$i]['title'] = $title;
                 $attributes[$i]['titlevar'] = $titlevar;
@@ -808,12 +794,12 @@ class ps_product_attribute {
 			$fields=explode(";",$custom_attr_list);
 			$html = "";
 			$prod_index = $product_id;
-			if ($prod_id)
-			$prod_index = $prod_id;
+			if ($prod_id) {
+				$prod_index = $prod_id;
+			}
             $attributes =array();
             $i = 0;
-			foreach($fields as $field)
-			{
+			foreach($fields as $field) {
 				$titlevar=str_replace(" ","_",$field);
 				$title=ucfirst($field);
                 $attributes[$i]['product_id'] = $prod_index;
@@ -928,13 +914,13 @@ class ps_product_attribute {
         if(!isset($d["prod_id"])) {
             $d["prod_id"] = $d["product_id"];
         }
-		$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='".$d["prod_id"]."'";
+		$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='".(int)$d["prod_id"]."'";
 		$db->query($q);
 
 		$db->next_record();
 
 		if(!$db->f("attribute") && !$db->f("custom_attribute")) {
-			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='".$d["prod_id"]."'";
+			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='".(int)$d["prod_id"]."'";
 
 			$db->query($q);
 			$db->next_record();
@@ -1033,7 +1019,7 @@ class ps_product_attribute {
 			}
 		}
 		else {
-			$quantity = mosGetParam( $_REQUEST, 'quantity', 1 );
+			$quantity = vmGet( $_REQUEST, 'quantity', 1 );
 		}
 		// Detremine which style to use
 		if($use_parent == "Y") {
@@ -1220,7 +1206,7 @@ class ps_product_attribute {
 	function formatAttributeX()
 	{
 		// request attribute pieces
-		$attributeX = mosGetParam($_POST, 'attributeX', array(0));
+		$attributeX = vmGet($_POST, 'attributeX', array(0));
 		$attribute_string = '';
 
 		// no pieces given? then return 

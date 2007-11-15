@@ -6,7 +6,7 @@
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -32,7 +32,7 @@ else {
   require_once( CLASSPATH. 'payment/ps_twocheckout.cfg.php' );
   
   /* x_invoice_num is the name of the variable that holds OUR order_number */
-  $order_number = mosgetparam( $_REQUEST, "x_invoice_num" ); 
+  $order_number = vmGet( $_REQUEST, "x_invoice_num" ); 
   
   // In Demo Mode the MD5 Hash is built using a "1"
   if( isset($_REQUEST['demo']) )

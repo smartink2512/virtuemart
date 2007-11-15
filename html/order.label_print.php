@@ -7,7 +7,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
  */
 mm_showMyFileName(__FILE__);
 
-$order_id = mosgetparam($_REQUEST, 'order_id', null);
+$order_id = vmGet($_REQUEST, 'order_id', null);
 if (!is_numeric($order_id))
 	die('Please provide a valid, numeric, Order ID');
 

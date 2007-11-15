@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,12 +17,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$pop = mosGetParam($_REQUEST, "pop", 0 );
-$flypage = mosGetParam($_REQUEST, "flypage", FLYPAGE);
-$product_id = intval(mosgetparam($_REQUEST, "product_id"));
-$page = mosgetparam($_REQUEST, "page", null);
-$image_id = intval(mosgetparam($_REQUEST, "image_id", "product"));
-$Itemid = intval(mosgetparam($_REQUEST, "Itemid"));
+$pop = vmGet($_REQUEST, "pop", 0 );
+$flypage = vmGet($_REQUEST, "flypage", FLYPAGE);
+$product_id = intval(vmGet($_REQUEST, "product_id"));
+$page = vmGet($_REQUEST, "page", null);
+$image_id = intval(vmGet($_REQUEST, "image_id", "product"));
+$Itemid = intval(vmGet($_REQUEST, "Itemid"));
 
 if( !empty($product_id) ) {
 

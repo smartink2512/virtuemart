@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -22,10 +22,10 @@ $product_id = $vars["product_id"];
 if( is_array( $product_id ))
 	$product_id = (int)$product_id[0];
 
-$product_parent_id = mosgetparam($_REQUEST, 'product_parent_id', 0);
-$attribute_name = mosgetparam($_REQUEST, 'attribute_name', 0);
-$return_args = mosgetparam($_REQUEST, 'return_args' );
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$product_parent_id = vmGet($_REQUEST, 'product_parent_id', 0);
+$attribute_name = vmGet($_REQUEST, 'attribute_name', 0);
+$return_args = vmGet($_REQUEST, 'return_args' );
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $title = $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_LBL.'<br />';
 

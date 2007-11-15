@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -89,25 +89,20 @@ class ps_currency {
 		return true;
 	}
 
-
-	/**************************************************************************
-	* name: add()
-	* created by: soeren
-	* description: creates a new currency record
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * creates a new currency record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
-		$hash_secret="vmIsCool";
 		$db = new ps_DB;
-		$timestamp = time();
 
 		if (!$this->validate_add($d)) {
-			$d["error"] = $this->error;
 			return False;
 		}
-		$fields = array( 'currency_name' => $d["currency_name"],
-					'currency_code' => $d["currency_code"]
+		$fields = array( 'currency_name' => vmGet($d, 'currency_name' ),
+					'currency_code' => vmGet($d, 'currency_code' )
 		);
 		$db->buildQuery('INSERT', '#__{vm}_currency', $fields );
 		if( $db->query() ) {
@@ -120,22 +115,20 @@ class ps_currency {
 
 	}
 
-	/**************************************************************************
-	* name: update()
-	* created by: soeren
-	* description: updates currency information
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Updates a Currency Record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		$db = new ps_DB;
-		$timestamp = time();
 
 		if (!$this->validate_update($d)) {
 			return False;
 		}
-		$fields = array( 'currency_name' => $d["currency_name"],
-					'currency_code' => $d["currency_code"]
+		$fields = array( 'currency_name' => vmGet($d, 'currency_name' ),
+					'currency_code' => vmGet($d, 'currency_code' )
 		);
 		$db->buildQuery('UPDATE', '#__{vm}_currency', $fields, 'WHERE currency_id='.(int)$d["currency_id"] );
 		if( $db->query() ) {

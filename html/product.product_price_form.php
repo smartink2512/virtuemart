@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -21,11 +21,11 @@ require_once( CLASSPATH.'ps_shopper_group.php');
 global $ps_html, $ps_product;
 $title = $VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'<br/>';
 
-$product_id = mosgetparam($_REQUEST, 'product_id', 0);
-$product_price_id = mosgetparam($_REQUEST, 'product_price_id', 0);
-$product_parent_id = mosgetparam($_REQUEST, 'product_parent_id');
-$return_args = mosgetparam($_REQUEST, 'return_args');
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$product_id = vmGet($_REQUEST, 'product_id', 0);
+$product_price_id = vmGet($_REQUEST, 'product_price_id', 0);
+$product_parent_id = vmGet($_REQUEST, 'product_parent_id');
+$return_args = vmGet($_REQUEST, 'return_args');
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $db = new ps_DB;
 /* If Updating a Price */

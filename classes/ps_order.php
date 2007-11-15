@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,21 +16,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-
-/****************************************************************************
-*
-* CLASS DESCRIPTION
-*
-* ps_order
-*
-* The class handles orders from an adminstrative perspective.  Order
-* processing is handled in the ps_process_order.
-*
-*************************************************************************/
+/**
+ * The class handles orders from an adminstrative perspective.  Order
+ * processing is handled in the ps_checkout class.
+ */
 class ps_order {
-	var $classname = "ps_order";
-	var $error;
-
 
 	/**
      * Changes the status of an order
@@ -69,8 +59,8 @@ class ps_order {
 			// the Payment with authorize.net
 			if( $curr_order_status=="P" && $d["order_status"]=="C") {
 				$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
-				$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
-				$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+				$q .= "#__{vm}_order_payment.order_id='".$db->getEscaped($d['order_id'])."' ";
+				$q .= "AND #__{vm}_orders.order_id='".$db->getEscaped($d['order_id'])."' ";
 				$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
 				$db->query( $q );
 				$db->next_record();
@@ -79,7 +69,7 @@ class ps_order {
 					require_once( CLASSPATH."payment/ps_authorize.cfg.php");
 					if( AN_TYPE == 'AUTH_ONLY' ) {
 						require_once( CLASSPATH."payment/ps_authorize.php");
-						$authorize =& new ps_authorize();
+						$authorize = new ps_authorize();
 						$d["order_number"] = $db->f("order_number");
 						if( !$authorize->capture_payment( $d )) {
 							return false;
@@ -102,8 +92,8 @@ class ps_order {
 			 */
 			if( ($curr_order_status=="P" || $curr_order_status=="C") && $d["order_status"]=="S") {
 				$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
-				$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
-				$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+				$q .= "#__{vm}_order_payment.order_id='".$db->getEscaped($d['order_id'])."' ";
+				$q .= "AND #__{vm}_orders.order_id='".$db->getEscaped($d['order_id'])."' ";
 				$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
 				$db->query( $q );
 				$db->next_record();
@@ -112,7 +102,7 @@ class ps_order {
 					require_once( CLASSPATH."payment/ps_pfp.cfg.php");
 					if( PFP_TYPE == 'A' ) {
 						require_once( CLASSPATH."payment/ps_pfp.php");
-						$pfp =& new ps_pfp();
+						$pfp = new ps_pfp();
 						$d["order_number"] = $db->f("order_number");
 						if( !$pfp->capture_payment( $d )) {
 							return false;
@@ -131,8 +121,8 @@ class ps_order {
 			 */
 			if( $curr_order_status=="P" && $d["order_status"]=="X") {
 				$q = "SELECT order_number,payment_class,order_payment_trans_id FROM #__{vm}_payment_method,#__{vm}_order_payment,#__{vm}_orders WHERE ";
-				$q .= "#__{vm}_order_payment.order_id='".$d['order_id']."' ";
-				$q .= "AND #__{vm}_orders.order_id='".$d['order_id']."' ";
+				$q .= "#__{vm}_order_payment.order_id='".$db->getEscaped($d['order_id'])."' ";
+				$q .= "AND #__{vm}_orders.order_id='".$db->getEscaped($d['order_id'])."' ";
 				$q .= "AND #__{vm}_order_payment.payment_method_id=#__{vm}_payment_method.payment_method_id";
 				$db->query( $q );
 				$db->next_record();
@@ -141,7 +131,7 @@ class ps_order {
 					require_once( CLASSPATH."payment/ps_pfp.cfg.php");
 					if( PFP_TYPE == 'A' ) {
 						require_once( CLASSPATH."payment/ps_pfp.php");
-						$pfp =& new ps_pfp();
+						$pfp = new ps_pfp();
 						$d["order_number"] = $db->f("order_number");
 						if( !$pfp->void_authorization( $d )) {
 							return false;
@@ -150,27 +140,29 @@ class ps_order {
 				}
 			}
 	
-			$q = "UPDATE #__{vm}_orders SET";
-			$q .= " order_status='" . $d["order_status"] . "' ";
-			$q .= ", mdate='" . $timestamp . "' ";
-			$q .= "WHERE order_id='" . $d["order_id"] . "'";
-			$db->query($q);
+			$fields =array( 'order_status'=> $d["order_status"], 
+										'mdate'=> $timestamp );
+			$db->buildQuery('UPDATE', '#__{vm}_orders', $fields, "WHERE order_id='" . $db->getEscaped($d["order_id"]) . "'");
+			$db->query();
 	
 			// Update the Order History.
-			$q = "INSERT INTO #__{vm}_order_history ";
-			$q .= "(order_id,order_status_code,date_added,customer_notified,comments) VALUES (";
-			$q .= "'".$d["order_id"] . "', '" . $d["order_status"] . "', '$mysqlDatetime', '$notify_customer', '".$db->getEscaped( $d['order_comment'] )."')";
-			$db->query($q);
+			$fields = array( 'order_id' => $d["order_id"],
+										'order_status_code' => $d["order_status"],
+										'date_added' => $mysqlDatetime,
+										'customer_notified' => $notify_customer,
+										'comments' => $d['order_comment']
+							);
+			$db->buildQuery('INSERT', '#__{vm}_order_history', $fields );
+			$db->query();
 	
 			// Do we need to re-update the Stock Level?
-			if( ($d["order_status"] == "X" || $d["order_status"]=="R" ||
-				$d["order_status"] == "x" || $d["order_status"]=="r") &&
-				//CHECK_STOCK == '1' &&
-				$curr_order_status != $d["order_status"]
+			if( (strtoupper($d["order_status"]) == "X" || strtoupper($d["order_status"])=="R") 
+				// && CHECK_STOCK == '1'
+				&& $curr_order_status != $d["order_status"]
 				) {
 				// Get the order items and update the stock level
 				// to the number before the order was placed
-				$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='".$d["order_id"]."'";
+				$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='".$db->getEscaped($d["order_id"])."'";
 				$db->query( $q );
 				$dbu = new ps_DB;
 				// Now update each ordered product
@@ -183,15 +175,15 @@ class ps_order {
 				}
 			}
 			// Update the Order Items' status
-			$q = "SELECT order_item_id FROM #__{vm}_order_item WHERE order_id=".$d['order_id'];
+			$q = "SELECT order_item_id FROM #__{vm}_order_item WHERE order_id=".$db->getEscaped($d['order_id']);
 			$db->query($q);
 			$dbu = new ps_DB;
 			while ($db->next_record()) {
 				$item_id = $db->f("order_item_id");
-				$q  = "UPDATE #__{vm}_order_item SET order_status='".$d["order_status"]."'"
-				. "\n, mdate='" . $timestamp . "' "
-				. "\n WHERE order_item_id=".$item_id;
-				$dbu->query( $q );
+				$fields =array( 'order_status'=> $d["order_status"], 
+											'mdate'=> $timestamp );
+				$dbu->buildQuery('UPDATE', '#__{vm}_order_item', $fields, "WHERE order_item_id='" .(int)$item_id . "'");
+				$dbu->query();
 			}
 			
 			if (ENABLE_DOWNLOADS == '1') {
@@ -204,26 +196,24 @@ class ps_order {
 				$this->notify_customer( $d );
 			}
 		} elseif( !empty($d['order_item_id'])) {
-				$q  = "UPDATE #__{vm}_order_item SET order_status='".$d["order_status"]."'"
-				. "\n, mdate='" . $timestamp . "' "
-				. "\n WHERE order_item_id=".intval( $d['order_item_id'] );
-				return $db->query( $q );
+				$fields =array( 'order_status'=> $d["order_status"], 
+											'mdate'=> $timestamp );
+				$db->buildQuery('UPDATE', '#__{vm}_order_item', $fields, 'WHERE order_item_id='.intval( $d['order_item_id'] ));
+				return $db->query() !== false;
 		}
 		return true;
 	}
-	/**************************************************************************
-	* name: mail_download_id
-	* created by: uli & soeren
-	* description: mails the Download-ID to the customer
-	*              or deletes the Download-ID from the product_downloads table
-	* parameters:
-	* returns:$return_info
-	**************************************************************************/
+
+	/**
+	 * mails the Download-ID to the customer
+	 * or deletes the Download-ID from the product_downloads table
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function mail_download_id( &$d ){
 
-		global $mosConfig_live_site, $mosConfig_absolute_path, $sess,
-		$VM_LANG, $mosConfig_smtpauth, $mosConfig_mailer, $vmLogger,
-		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
+		global $mosConfig_live_site, $sess,	$VM_LANG, $vmLogger;
 
 		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 		
@@ -283,17 +273,13 @@ class ps_order {
 				if ($result) {
 					$vmLogger->info( $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG. " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("user_email") );
 				}
-
 				else {
-					$vmLogger->warning( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("user_email")." (". $mail->ErrorInfo.")" );
+					$vmLogger->warning( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_SEND." ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("user_email") );
 				}
 			} 
 		}
-
-		##---------------------------updated 03/28/2004-----------------------------------
-
 		elseif ($d["order_status"]==DISABLE_DOWNLOAD_STATUS) {
-			$q = "DELETE FROM #__{vm}_product_download WHERE order_id=" . $d["order_id"];
+			$q = "DELETE FROM #__{vm}_product_download WHERE order_id=" . (int)$d["order_id"];
 			$db->query($q);
 			$db->next_record();
 		}
@@ -301,20 +287,16 @@ class ps_order {
 		return true;
 	}
 
-	/**************************************************************************
-	* name: notify_customer
-	* created by: soeren
-	* description: notifies the customer that the Order Status has been changed
-	* parameters: $d
-	* returns: true
-	**************************************************************************/
+	/**
+	 * notifies the customer that the Order Status has been changed
+	 *
+	 * @param array $d
+	 */
 	function notify_customer( &$d ){
 
-		global $mosConfig_live_site, $mosConfig_absolute_path, $sess,
-		$VM_LANG, $mosConfig_smtpauth, $mosConfig_mailer, $vmLogger,
-		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost;
+		global $mosConfig_live_site, $sess, $VM_LANG, $vmLogger;
 
-		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=account.order_details&order_id=".$d["order_id"].'&Itemid='.$sess->getShopItemid();
+		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=account.order_details&order_id=".urlencode($d["order_id"]).'&Itemid='.$sess->getShopItemid();
 
 		$db = new ps_DB;
 		$dbv = new ps_DB;
@@ -324,14 +306,14 @@ class ps_order {
 		$dbv->next_record();
 
 		$q = "SELECT first_name,last_name,user_email,order_status_name FROM #__{vm}_order_user_info,#__{vm}_orders,#__{vm}_order_status ";
-		$q .= "WHERE #__{vm}_orders.order_id = '".$d["order_id"]."' ";
+		$q .= "WHERE #__{vm}_orders.order_id = '".$db->getEscaped($d["order_id"])."' ";
 		$q .= "AND #__{vm}_orders.user_id = #__{vm}_order_user_info.user_id ";
 		$q .= "AND #__{vm}_orders.order_id = #__{vm}_order_user_info.order_id ";
 		$q .= "AND order_status = order_status_code ";
 		$db->query($q);
 		$db->next_record();
 
-		/* MAIL BODY */
+		// MAIL BODY
 		$message = $VM_LANG->_HI .' '. $db->f("first_name") . ($db->f("middle_name")?' '.$db->f("middle_name") : '' ). ' ' . $db->f("last_name") . ",\n\n";
 		$message .= $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1."\n\n";
 
@@ -412,19 +394,19 @@ class ps_order {
 			$dbd->query();
 		}
 	}
-	/**************************************************************************
-	* name: download_request
-	* created by: uli
-	* description: submits the download-request
-	* parameters:
-	* returns:$return_info
-	**************************************************************************/
+
+	/**
+	 * Handles a download Request
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function download_request(&$d) {
 		global  $return_success, $download_id, $VM_LANG, $vmLogger;
 		$auth  = $_SESSION['auth'];
 
 		$db = new ps_DB;
-		$download_id = mosGetParam( $d, "download_id" );
+		$download_id = vmGet( $d, "download_id" );
 
 		$q = "SELECT * FROM #__{vm}_product_download WHERE";
 		$q .= " download_id = '$download_id'";
@@ -442,7 +424,7 @@ class ps_order {
 		if (!$download_id) {
 			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_INV );
 			return false;
-			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 
 		elseif ($download_max=="0") {
@@ -452,7 +434,7 @@ class ps_order {
 			$db->next_record();
 			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_MAX );
 			return false;
-			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 
 		elseif ($end_date=="0") {
@@ -471,7 +453,7 @@ class ps_order {
 			$db->next_record();
 			$vmLogger->err( $VM_LANG->_PHPSHOP_DOWNLOADS_ERR_EXP );
 			return false;
-			//mosredirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 		require_once(CLASSPATH.'connectionTools.class.php');
 		// Check if this is a request for a special range of the file (=Resume Download)
@@ -492,12 +474,12 @@ class ps_order {
 		if ( !@file_exists( $datei ) ){
 			$vmLogger->err( $VM_LANG->_VM_DOWNLOAD_FILE_NOTFOUND );
 			return false;
-			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 		if ( !@is_readable( $datei ) ) {
 			$vmLogger->err( $VM_LANG->_VM_DOWNLOAD_FILE_NOTREADABLE );
 			return false;
-			//mosRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 		
 		if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
@@ -515,18 +497,10 @@ class ps_order {
 		
 		vmConnector::sendFile( $datei, $mime_type );
 
-		exit();
+		$GLOBALS['vm_mainframe']->close(true);
 			
 	}
 
-	/**************************************************************************
-	* name: list_order
-	* created by: pablo
-	* description: shows a listbox of orders which can be used in a form
-	* @param string order_status (A = All)
-	* @param int secure (0 = Show orders of all users, 1 = Show only orders of the user)
-	* returns:
-	**************************************************************************/
 	/**
 	 * Shows the list of the orders of a user in the account mainenance section
 	 *
@@ -542,7 +516,7 @@ class ps_order {
 		require_once( CLASSPATH .'pageNavigation.class.php');
 		$db = new ps_DB;
 		$dbs = new ps_DB;
-		$i = 0;
+		
 		$listfields = 'cdate,order_total,order_status,order_id,order_currency';
 		$countfields = 'count(*) as num_rows';
 		$count = "SELECT $countfields FROM #__{vm}_orders ";
@@ -612,26 +586,24 @@ class ps_order {
 
 	}
 
-	/********************************************************************
-	** name: validate_delete()
-	** created by: gday
-	** description:  Validate form values prior to delete
-	** parameters: $d
-	** returns:  True - validation passed
-	**          False - validation failed
-	********************************************************************/
+	/**
+	 * Validate form values prior to delete
+	 *
+	 * @param int $order_id
+	 * @return boolean
+	 */
 	function validate_delete($order_id) {
 
 		$db = new ps_DB;
 
 		if(empty( $order_id )) {
-			$this->error = "Unable to delete without the order id.";
+			$GLOBALS['vmLogger']->err('Unable to delete without the order id.' );
 			return False;
 		}
 		
 		// Get the order items and update the stock level
 		// to the number before the order was placed
-		$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='$order_id'";
+		$q = "SELECT product_id, product_quantity FROM #__{vm}_order_item WHERE order_id='".$db->getEscaped($order_id)."'";
 		$db->query( $q );
 		$dbu = new ps_DB;
 		// Now update each ordered product
@@ -696,7 +668,12 @@ class ps_order {
 			return False;
 		}
 	}
-
+	/**
+	 * Creates the order navigation on the order print page
+	 *
+	 * @param int $order_id
+	 * @return boolean
+	 */
 	function order_print_navigation( $order_id=1 ) {
 		global $sess, $modulename, $VM_LANG;
 
@@ -710,7 +687,7 @@ class ps_order {
 		if ($navi_db->f("order_id")) {
 			$url = $_SERVER['PHP_SELF'] . "?page=$modulename.order_print&order_id=";
 			$url .= $navi_db->f("order_id");
-			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) . "\">&lt; " ._ITEM_PREVIOUS."</a> | ";
+			$navigation .= "<a class=\"pagenav\" href=\"" . $sess->url($url) . "\">&lt; " .$VM_LANG->_ITEM_PREVIOUS."</a> | ";
 		} else
 		$navigation .= "<span class=\"pagenav\">&lt; " .$VM_LANG->_ITEM_PREVIOUS." | </span>";
 

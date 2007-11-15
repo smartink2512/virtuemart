@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -374,7 +374,7 @@ function vmCheckPass() {
 	if( $perm->check("admin,storeadmin")) {
 
 		$username = $my->username;
-		$passwd_plain = $passwd = trim( mosGetParam( $_POST, 'passwd', '' ) );
+		$passwd_plain = $passwd = trim( vmGet( $_POST, 'passwd', '' ) );
 		if( empty( $passwd_plain )) {
 			$GLOBALS['vmLogger']->err( 'Password empty!');
 			return false;
@@ -791,7 +791,7 @@ function vmIsAdminMode() {
 }
 
 
-function vmCreateHash( $seed ) {
+function vmCreateHash( $seed='virtuemart' ) {
     return md5( ENCODE_KEY . md5( $seed ) );
 }
 
@@ -804,7 +804,7 @@ function vmCreateHash( $seed ) {
  * @param unknown_type $alt
  */
 function vmSpoofCheck( $header=NULL, $alt=NULL ) {	
-	$validate 	= mosGetParam( $_POST, vmSpoofValue($alt), 0 );
+	$validate 	= vmGet( $_POST, vmSpoofValue($alt), 0 );
 	
 	// probably a spoofing attack
 	if (!$validate) {
@@ -897,10 +897,10 @@ function vmSetGlobalCurrency(){
 
 	if( !defined('_PSHOP_ADMIN') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
 		if( isset( $_REQUEST['product_currency']) ) {
-			$GLOBALS['product_currency'] = $_SESSION['product_currency'] = mosGetParam($_REQUEST, 'product_currency' );
+			$GLOBALS['product_currency'] = $_SESSION['product_currency'] = vmGet($_REQUEST, 'product_currency' );
 		}
 	}
-	$GLOBALS['product_currency'] = mosGetParam($_SESSION, 'product_currency', $vendor_currency);
+	$GLOBALS['product_currency'] = vmGet($_SESSION, 'product_currency', $vendor_currency);
 	
 	// Check if the selected currency is accepted! (the vendor currency is always accepted)
 	if( $GLOBALS['product_currency'] != $vendor_currency ) {
@@ -946,6 +946,52 @@ function vmIsJoomla( $version='', $operator='=', $compare_minor_versions=true) {
 }
 function vmIsHttpsMode() {
 	return ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on');
+}
+/**
+* Utility function redirect the browser location to another url
+*
+* Can optionally provide a message.
+* @param string The URL to redirect to
+* @param string A Message to display to the user
+*/
+function vmRedirect( $url, $msg ) {
+	if( function_exists('mosRedirect')) {
+		mosRedirect($url, $msg );
+	} else {
+	   global $mainframe;
+	
+	    // specific filters
+		$iFilter = vmInputFilter::getInstance();
+		$url = $iFilter->process( $url );
+		if (!empty($msg)) {
+			$msg = $iFilter->process( $msg );
+		}
+	
+		// Strip out any line breaks and throw away the rest
+		$url = preg_split("/[\r\n]/", $url);
+		$url = $url[0];
+	
+		if ($iFilter->badAttributeValue( array( 'href', $url ))) {
+			$url = $GLOBALS['mosConfig_live_site'];
+		}
+	
+		if (trim( $msg )) {
+		 	if (strpos( $url, '?' )) {
+				$url .= '&mosmsg=' . urlencode( $msg );
+			} else {
+				$url .= '?mosmsg=' . urlencode( $msg );
+			}
+		}
+	
+		if (headers_sent()) {
+			echo '<script type="text/javascript">document.location.href=\''.$url.'\';</script>';
+		} else {
+			@ob_end_clean(); // clear output buffer
+			header( 'HTTP/1.1 301 Moved Permanently' );
+			header( "Location: ". $url );
+		}
+		$GLOBALS['vm_mainframe']->close(true);
+	}
 }
 /**
  * Raise the memory limit when it is lower than the needed value

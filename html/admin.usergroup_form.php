@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,8 +19,8 @@ mm_showMyFileName( __FILE__ );
 require_once(CLASSPATH.'usergroup.class.php');
 $usergroup = new vmUserGroup();
 
-$group_id = (int)mosGetParam( $_REQUEST, 'group_id', 0 );
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$group_id = (int)vmGet( $_REQUEST, 'group_id', 0 );
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 if (!empty( $group_id )) {
   $db = $usergroup->get_group($group_id);

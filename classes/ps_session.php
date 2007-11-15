@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -79,10 +79,10 @@ class ps_session {
 	function doCookieCheck() {
 		global $mm_action_url, $VM_LANG;
 		
-		$doCheck = mosGetParam( $_REQUEST, 'vmcchk', 0 );
+		$doCheck = vmGet( $_REQUEST, 'vmcchk', 0 );
 		
 		if( $doCheck ) {
-			$isOK = mosGetParam( $_COOKIE, 'VMCHECK' );
+			$isOK = vmGet( $_COOKIE, 'VMCHECK' );
 			if( $isOK != 'OK' ) {
 				$GLOBALS['vmLogger']->info( $VM_LANG->_VM_SESSION_COOKIES_NOT_ACCEPTED_TIP );
 			} else {
@@ -92,7 +92,7 @@ class ps_session {
 		}
 		else {
 			setcookie( 'VMCHECK', 'OK' );
-			mosRedirect( $this->url( $mm_action_url . 'index.php?' . mosGetParam($_SERVER,'QUERY_STRING').'&vmcchk=1', true, false ));
+			vmRedirect( $this->url( $mm_action_url . 'index.php?' . vmGet($_SERVER,'QUERY_STRING').'&vmcchk=1', true, false ));
 		}
 	}
 		
@@ -107,7 +107,7 @@ class ps_session {
 			// Session Cookie `name`
 			$sessionCookieName 	= mosMainFrame::sessionCookieName();
 			// Get Session Cookie `value`
-			$sessionCookie 		= mosGetParam( $_COOKIE, $sessionCookieName, null );
+			$sessionCookie 		= vmGet( $_COOKIE, $sessionCookieName, null );
 			// Session ID / `value`
 			return mosMainFrame::sessionCookieValue( $sessionCookie );
 		}
@@ -141,7 +141,7 @@ class ps_session {
 				if( !empty( $GLOBALS['real_mosConfig_live_site'] ) && empty( $_REQUEST['real_mosConfig_live_site'])) {
 					$GLOBALS['mosConfig_live_site'] = $GLOBALS['real_mosConfig_live_site'];
 				}
-				$userNameSeed .= '|' . mosGetParam( $_COOKIE, mosMainFrame::remCookieName_User(), '' );
+				$userNameSeed .= '|' . vmGet( $_COOKIE, mosMainFrame::remCookieName_User(), '' );
 			}
 		}
 		
@@ -168,7 +168,7 @@ class ps_session {
 		$url = $toSecure ? SECUREURL : URL;
 		
 		// Redirect and send the Cookie Values within the variable martID
-		mosRedirect( $this->url( $url . basename($_SERVER['PHP_SELF']).'?'.mosGetParam($_SERVER,'QUERY_STRING')."&martID=$martID&redirected=1", true, false ) );
+		vmRedirect( $this->url( $url . basename($_SERVER['PHP_SELF']).'?'.vmGet($_SERVER,'QUERY_STRING')."&martID=$martID&redirected=1", true, false ) );
 	}
 	/**
 	 * It does what the name says. It starts a session again (with a certain ID when a $sid is given)
@@ -207,9 +207,9 @@ class ps_session {
 		if( vmIsAdminMode() && vmIsJoomla('1.0')) {
 			return;
 		}
-		$ssl_redirect = mosGetParam( $_GET, "ssl_redirect", 0 );
-		$redirected = mosGetParam( $_GET, "redirected", 0 );
-		$martID = mosGetParam( $_GET, 'martID', '' );
+		$ssl_redirect = vmGet( $_GET, "ssl_redirect", 0 );
+		$redirected = vmGet( $_GET, "redirected", 0 );
+		$martID = vmGet( $_GET, 'martID', '' );
 		$ssl_domain = "";
 		
 		if (!empty( $VM_MODULES_FORCE_HTTPS )) {
@@ -239,7 +239,7 @@ class ps_session {
 				if( $this->check_Shared_SSL($ssl_domain)) {
 					$this->saveSessionAndRedirect( false );
 				}
-				mosRedirect( $this->url( URL.basename( $_SERVER['PHP_SELF']).'?'.mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ));
+				vmRedirect( $this->url( URL.basename( $_SERVER['PHP_SELF']).'?'.vmGet($_SERVER,'QUERY_STRING').'&redirected=1', true, false ));
 			}
 		}
 		
@@ -252,7 +252,7 @@ class ps_session {
         */
 		if( $ssl_redirect == 1 ) {
 			
-			$_SERVER['QUERY_STRING'] = str_replace('&ssl_redirect=1', '', mosGetParam($_SERVER, 'QUERY_STRING' ) );
+			$_SERVER['QUERY_STRING'] = str_replace('&ssl_redirect=1', '', vmGet($_SERVER, 'QUERY_STRING' ) );
 			// check_Shared_SSL compares the normal http domain name
 			// and the https Domain Name. If both do not match, we move on
 			// else we leave this function.
@@ -262,7 +262,7 @@ class ps_session {
 			}
 			// do nothing but redirect
 			elseif( !vmIsHttpsMode() && $redirected == 0 ) {
-				mosRedirect( $this->url(SECUREURL . basename($_SERVER['PHP_SELF'])."?".mosGetParam($_SERVER,'QUERY_STRING').'&redirected=1', true, false ) );
+				vmRedirect( $this->url(SECUREURL . basename($_SERVER['PHP_SELF'])."?".vmGet($_SERVER,'QUERY_STRING').'&redirected=1', true, false ) );
 			}
 		}
 		/**
@@ -339,9 +339,9 @@ class ps_session {
 					
 					// Prevent the martID from being displayed in the URL
 					if( !empty( $_GET['martID'] )) {
-						$query_string = substr_replace( mosGetParam($_SERVER,'QUERY_STRING'), '', strpos( mosGetParam($_SERVER,'QUERY_STRING'), '&martID'));
+						$query_string = substr_replace( vmGet($_SERVER,'QUERY_STRING'), '', strpos( vmGet($_SERVER,'QUERY_STRING'), '&martID'));
 						$url = vmIsHttpsMode() ? SECUREURL : URL;
-						mosRedirect( $this->url( $url . "index.php?$query_string&cartReset=N&redirected=1", true, false) );
+						vmRedirect( $this->url( $url . "index.php?$query_string&cartReset=N&redirected=1", true, false) );
 					}
 	
 				}

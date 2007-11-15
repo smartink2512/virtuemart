@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,9 +19,9 @@ mm_showMyFileName( __FILE__ );
 
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL );
 
-$user_id = mosGetParam( $_REQUEST, 'user_id' );
-$user_info_id = mosGetParam( $_REQUEST, 'user_info_id' );
-$missing = mosGetParam( $vars, 'missing' );
+$user_id = vmGet( $_REQUEST, 'user_id' );
+$user_info_id = vmGet( $_REQUEST, 'user_info_id' );
+$missing = vmGet( $vars, 'missing' );
 $missing_style = "color: Red; font-weight: Bold;";
 
 if (!empty( $missing )) {

@@ -5,7 +5,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 * @version $Id$
 * @package VirtueMart
 * @subpackage shipping
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -27,18 +27,18 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 *******************************************************************************
 */
 class flex {
-
-	var $classname = "flex";
-
+	/**
+	 * Lists all available shipping rates
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function list_rates( &$d ) {
 		global $total, $tax_total, $CURRENCY_DISPLAY;
-		$db =& new ps_DB;
-		$dbv =& new ps_DB;
 
-		$cart = $_SESSION['cart'];
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
 
 		if ( $_SESSION['auth']['show_price_including_tax'] != 1 ) {
 			$taxrate = 1;
@@ -65,7 +65,7 @@ class flex {
 		if($order_total < $base_ship) {
 			$flat_charge += $handling_fee;
 			$flat_charge *= $taxrate;
-			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping under ".$base_ship."|".$flat_charge);
+			$shipping_rate_id = urlencode(__CLASS__."|STD|Standard Shipping under ".$base_ship."|".$flat_charge);
 			$html = "";
 			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" id=\"flex_shipping_rate\" value=\"$shipping_rate_id\" />\n";
 			$html .= "<label for=\"flex_shipping_rate\">Standard Shipping: ".$CURRENCY_DISPLAY->getFullValue($flat_charge);
@@ -77,7 +77,7 @@ class flex {
 
 			$shipping_temp1 = ($order_total * $ship_rate_perc);
 			$shipping_temp1 += ( $handling_fee * $taxrate );
-			$shipping_rate_id = urlencode($this->classname."|STD|Standard Shipping over ".$base_ship."|".$shipping_temp1);
+			$shipping_rate_id = urlencode(__CLASS__."|STD|Standard Shipping over ".$base_ship."|".$shipping_temp1);
 			$html = "";
 			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" id=\"flex_shipping_rate\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
 			$html .= "<label for=\"flex_shipping_rate\">Standard Shipping: ";
@@ -90,12 +90,17 @@ class flex {
 
 
 	}
-
+	/**
+	 * Returns the rate for the selected shipping method
+	 *
+	 * @param array $d
+	 * @return float
+	 */
 	function get_rate( &$d ) {
 
 		$shipping_rate_id = $d["shipping_rate_id"];
 		$is_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
-		$order_shipping = $is_arr[3];
+		$order_shipping = (float)$is_arr[3];
 
 		return $order_shipping;
 
@@ -105,7 +110,7 @@ class flex {
 	function get_tax_rate() {
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
 
 		if( intval(FLEX_TAX_CLASS)== 0 ) {
 			return( 0 );
@@ -117,9 +122,10 @@ class flex {
 		}
 	}
 
-	/* Validate this Shipping method by checking if the SESSION contains the key
-	* @returns boolean False when the Shipping method is not in the SESSION
-	*/
+	/**
+	 *  Validate this Shipping method by checking if the SESSION contains the key
+	 * @returns boolean False when the Shipping method is not in the SESSION
+	 */
 	function validate( $d ) {
 
 		$shipping_rate_id = $d["shipping_rate_id"];
@@ -139,7 +145,7 @@ class flex {
 	function show_configuration() {
 		global $VM_LANG;
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
     ?>
       <table>
     <tr>
@@ -201,7 +207,7 @@ class flex {
   * @returns boolean True when the configuration file is writeable, false when not
   */
 	function configfile_writeable() {
-		return is_writeable( CLASSPATH."shipping/".$this->classname.".cfg.php" );
+		return is_writeable( CLASSPATH."shipping/".__CLASS__.".cfg.php" );
 	}
 
 	/**
@@ -221,12 +227,13 @@ class flex {
 		$config = "<?php\n";
 		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
 		foreach( $my_config_array as $key => $value ) {
+			$value = str_replace('\'', '\\\'', $value );
 			$config .= "define ('$key', '$value');\n";
 		}
 
 		$config .= "?>";
 
-		if ($fp = fopen(CLASSPATH ."shipping/".$this->classname.".cfg.php", "w")) {
+		if ($fp = fopen(CLASSPATH ."shipping/".__CLASS__.".cfg.php", "w")) {
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
 			return true;

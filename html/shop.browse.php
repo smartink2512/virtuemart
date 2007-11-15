@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -34,11 +34,11 @@ require_once(CLASSPATH . 'ps_product_attribute.php' );
 $ps_product_attribute = new ps_product_attribute;
 
 $Itemid = $sess->getShopItemid();
-$keyword1 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword1', null )));
-$keyword2 = $vmInputFilter->safeSQL( urldecode(mosGetParam( $_REQUEST, 'keyword2', null )));
+$keyword1 = $vmInputFilter->safeSQL( urldecode(vmGet( $_REQUEST, 'keyword1', null )));
+$keyword2 = $vmInputFilter->safeSQL( urldecode(vmGet( $_REQUEST, 'keyword2', null )));
 
-$search_op= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_op', null ));
-$search_limiter= $vmInputFilter->safeSQL( mosGetParam( $_REQUEST, 'search_limiter', null ));
+$search_op= $vmInputFilter->safeSQL( vmGet( $_REQUEST, 'search_op', null ));
+$search_limiter= $vmInputFilter->safeSQL( vmGet( $_REQUEST, 'search_limiter', null ));
 
 if (empty($category_id)) $category_id = $search_category;
 
@@ -170,7 +170,7 @@ else {
 			if (!empty($product_type_id)){
 				foreach($_REQUEST as $key => $value){
 					if (substr($key, 0,13) == "product_type_"){
-						$search_string .="&".$key."=".urlencode(mosGetParam($_REQUEST, $key ));
+						$search_string .="&".$key."=".urlencode(vmGet($_REQUEST, $key ));
 					}
 				}
 			}

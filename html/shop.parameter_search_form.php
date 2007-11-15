@@ -7,7 +7,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-$product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
+$product_type_id = vmGet($_REQUEST, 'product_type_id', 0);
 
 $q  = "SELECT * FROM #__{vm}_product_type ";
 $q .= "WHERE product_type_id='$product_type_id' ";
@@ -84,8 +84,8 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 		while ($db->next_record()) {
 			$item_name = "product_type_$product_type_id"."_".$db->f("parameter_name");
 			$parameter_values=$db->f("parameter_values");
-			$get_item_value = mosgetparam($_REQUEST, $item_name, "");
-			$get_item_value_comp = mosgetparam($_REQUEST, $item_name."_comp", "");
+			$get_item_value = vmGet($_REQUEST, $item_name, "");
+			$get_item_value_comp = vmGet($_REQUEST, $item_name."_comp", "");
 			$parameter_type = $db->f("parameter_type");
 			
 			// Replace parameter value
@@ -161,7 +161,7 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 					$size = min(count($fields),6);
 					$attr .= "[]\" multiple size=\"$size\">\n";
 					$selected_value = array();
-					$get_item_value = mosgetparam($_REQUEST, $item_name, array());
+					$get_item_value = vmGet($_REQUEST, $item_name, array());
 					foreach($get_item_value as $value) {
 						$selected_value[$value] = 1;
 					}
@@ -220,8 +220,8 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 				
 				$parameter_values=$db->f("parameter_values");
 				$item_name = "product_type_$product_type_id"."_".$db->f("parameter_name");
-				$get_item_value = mosgetparam($_REQUEST, $item_name, "");
-				$get_item_value_comp = mosgetparam($_REQUEST, $item_name."_comp", "");
+				$get_item_value = vmGet($_REQUEST, $item_name, "");
+				$get_item_value_comp = vmGet($_REQUEST, $item_name."_comp", "");
 			
 				
 				// comparison
@@ -298,7 +298,7 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 						$size = min(count($fields),6);
 						echo "[]\" multiple size=\"$size\">\n";
 						$selected_value = array();
-						$get_item_value = mosgetparam($_REQUEST, $item_name, array());
+						$get_item_value = vmGet($_REQUEST, $item_name, array());
 						foreach($get_item_value as $value) {
 							$selected_value[$value] = 1;
 						}
@@ -361,8 +361,8 @@ echo "<h2>".$VM_LANG->_PHPSHOP_PARAMETER_SEARCH."</h2>";
 	
 	// Add search according to price:	
 	$item_name = "price";
-	$get_item_value = mosgetparam($_REQUEST, $item_name, "");
-	$get_item_value_comp = mosgetparam($_REQUEST, $item_name."_comp", "");
+	$get_item_value = vmGet($_REQUEST, $item_name, "");
+	$get_item_value_comp = vmGet($_REQUEST, $item_name."_comp", "");
 	
 	echo "<tr>\n  <td width=\"35%\" height=\"2\" valign=\"top\"><div align=\"right\"><strong>";
 	echo $VM_LANG->_PHPSHOP_CART_PRICE."&nbsp;:</strong></div>\n  </td>\n";

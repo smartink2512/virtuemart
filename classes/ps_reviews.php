@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -87,8 +87,8 @@ class ps_reviews {
 
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
 
-		$dbc = &new ps_DB;
-		$showall = mosgetparam( $_REQUEST, 'showall', 0);
+		$dbc = new ps_DB;
+		$showall = vmGet( $_REQUEST, 'showall', 0);
 		$q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND published='Y' ORDER BY `time` DESC ";
 		$count = "SELECT COUNT(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND published='Y'";
 
@@ -126,7 +126,7 @@ class ps_reviews {
 		global $VM_LANG, $vmLogger, $perm, $my, $mosConfig_offset;
 		$db = new ps_DB;
 
-		$d["comment"] = $db->getEscaped( trim($d["comment"]) );
+		$d["comment"] = trim($d["comment"]);
 		if( strlen( $d["comment"] ) < VM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
 			$vmLogger->err( sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1, VM_REVIEWS_MINIMUM_COMMENT_LENGTH ));
 			return false;
@@ -136,10 +136,14 @@ class ps_reviews {
 			return false;
 		}
 		$time = time() + $mosConfig_offset*60*60;
-		$q = "REPLACE INTO #__{vm}_product_reviews (`product_id`, `userid`, `comment`, `user_rating`, `time` )
-      			VALUES (".$d['product_id'].", ".$d['userid'] . ", '".$d['comment']."', ".$d['user_rating'].", $time )";
-		$db->query($q);
-		$db->next_record();
+		$fields = array('product_id' => $d['product_id'], 
+									'userid' => vmRequest::getInt('userid'),
+									'comment' => vmGet($d, 'comment' ),
+									'user_rating' => vmRequest::getInt('user_rating'), 
+									'time'  => $time 
+						);
+		$db->buildQuery('REPLACE', '#__{vm}_product_reviews', $fields );
+		$db->query();
 
 		$this->process_vote( $d );
 
@@ -159,7 +163,7 @@ class ps_reviews {
 		
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
 
-		$db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid='".$my->id."'");
+		$db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid=".(int)$my->id);
 		$db->next_record();
 		$alreadycommented = $db->num_rows() > 0;
 
@@ -249,11 +253,19 @@ class ps_reviews {
 				}
 			}
 			if ($commented==false) {
-				$comment=$db->getEscaped( nl2br(htmlspecialchars(strip_tags($d["comment"]))) );
+				$comment= nl2br(htmlspecialchars(vmGet($d, 'comment' )));
 				$published = VM_REVIEWS_AUTOPUBLISH ? 'Y' : 'N';
-				$sql="INSERT INTO #__{vm}_product_reviews (product_id, comment, userid, time, user_rating, published) VALUES
-                      ('".$d["product_id"]."', '$comment', '".$my->id."', '".time()."', '".$d["user_rating"]."', '$published')";
-				$db->query( $sql );
+				$time = time() + $mosConfig_offset*60*60;
+				$fields = array('product_id' => $d['product_id'], 
+											'userid' => vmRequest::getInt('userid'),
+											'comment' => $comment,
+											'user_rating' => vmRequest::getInt('user_rating'), 
+											'published' => $published,
+											'time'  => $time 
+								);
+				$db->buildQuery('INSERT', '#__{vm}_product_reviews', $fields );
+				$db->query();
+				
 				$this->process_vote( $d );
 				$vmLogger->info($VM_LANG->_PHPSHOP_REVIEW_THANKYOU);
 			}
@@ -289,8 +301,7 @@ class ps_reviews {
 
 		global $db, $my;
 		$record_id = intval($record_id);
-		$db->query("SELECT user_rating FROM #__{vm}_product_reviews "
-		."WHERE review_id=".$record_id);
+		$db->query("SELECT user_rating FROM #__{vm}_product_reviews WHERE review_id=".$record_id);
 		$db->next_record();
 		$user_rating = $db->f("user_rating");
 
@@ -301,8 +312,9 @@ class ps_reviews {
 
 		/** Exclude one vote with the value of the user_rating
       * of the user, we delete the review of  **/
-		if (strpos($votes, $user_rating)==0)
-		$votes = substr($votes, 2);
+		if (strpos($votes, $user_rating)==0) {
+			$votes = substr($votes, 2);
+		}
 		else {
 			$votes = substr( $votes, 0, strpos($votes, $user_rating))
 			. substr( $votes, strpos($votes, $user_rating)+2);
@@ -325,8 +337,9 @@ class ps_reviews {
       					WHERE product_id='".$d["product_id"]."'");
 		}
 		/** Now delete the review ***/
-		$db->query("DELETE FROM #__{vm}_product_reviews WHERE review_id=$record_id" );
+		$db->query("DELETE FROM #__{vm}_product_reviews WHERE review_id=$record_id LIMIT 1" );
 
 		return true;
 	}
 }
+?>

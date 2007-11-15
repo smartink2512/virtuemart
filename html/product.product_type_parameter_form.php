@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage html
 * @author Zdenek Dvorak <Zdenek.Dvorak@seznam.cz>
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,9 +18,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 global $ps_product_type_parameter;
 
-$product_type_id = mosgetparam($_REQUEST, 'product_type_id', 0);
-$parameter_name = mosgetparam($_REQUEST, 'parameter_name', "");
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$product_type_id = vmGet($_REQUEST, 'product_type_id', 0);
+$parameter_name = vmGet($_REQUEST, 'parameter_name', "");
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 $parameter_type = "";
 
 $q = "SELECT * from #__{vm}_product_type WHERE product_type_id='$product_type_id'";

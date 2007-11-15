@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -21,7 +21,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  *
  */
 class ps_product_category extends vmAbstractObject {
-	var $classname = "ps_product_category";
 
 	/**
 	 * Validates all product category fields and uploaded image files
@@ -34,7 +33,7 @@ class ps_product_category extends vmAbstractObject {
 		global $vmLogger;
 		require_once(CLASSPATH . 'imageTools.class.php' );
 		$valid = true;
-		if (!$d["category_name"]) {
+		if (empty($d["category_name"])) {
 			$vmLogger->err( "You must enter a name for the category.");
 			$valid = False;
 		}
@@ -96,8 +95,8 @@ class ps_product_category extends vmAbstractObject {
 			$vmLogger->err( "Category parent cannot be same category." );
 			$valid = False;
 		}
-		$db =& new ps_DB;
-		$q = "SELECT category_thumb_image,category_full_image FROM #__{vm}_category WHERE category_id='". $d["category_id"] . "'";
+		$db = new ps_DB;
+		$q = 'SELECT category_thumb_image,category_full_image FROM #__{vm}_category WHERE category_id='. $d["category_id"];
 		$db->query( $q );
 		$db->next_record();
 
@@ -231,9 +230,9 @@ class ps_product_category extends vmAbstractObject {
 			}
 			// Let's find out the last category in
 			// the level of the new category
-			$q = "SELECT MAX(list_order) AS list_order FROM #__{vm}_category_xref,#__{vm}_category ";
-			$q .= "WHERE category_parent_id='".$d["parent_category_id"]."' ";
-			$q .= "AND category_child_id=category_id ";
+			$q = 'SELECT MAX(list_order) AS list_order FROM #__{vm}_category_xref,#__{vm}_category ';
+			$q .= 'WHERE category_parent_id='.vmRequest::getInt('parent_category_id');
+			$q .= ' AND category_child_id=category_id';
 			$db->query( $q );
 			$db->next_record();
 
@@ -242,40 +241,33 @@ class ps_product_category extends vmAbstractObject {
 			if (empty($d["category_publish"])) {
 				$d["category_publish"] = "N";
 			}
-
-			$q = "INSERT into #__{vm}_category (vendor_id, category_name, ";
-			$q .= "category_publish, category_description, category_browsepage, products_per_row, ";
-			$q .= "category_flypage, category_thumb_image, category_full_image, cdate, mdate, list_order) ";
-			$q .= "VALUES ('$ps_vendor_id','";
-			$q .= $d["category_name"] . "','";
-			if ($d["category_publish"] != "Y") {
-				$d["category_publish"] = "N";
-			}
-			$q .= $d["category_publish"] . "','";
-			$q .= $d["category_description"] . "','";
-			$q .= $d["category_browsepage"] . "','";
-			$q .= $d["products_per_row"] . "','";
-			$q .= $d["category_flypage"] . "','";
-			$q .= $d["category_thumb_image"] . "','";
-			$q .= $d["category_full_image"] . "','";
-			$q .= $timestamp . "','";
-			$q .= $timestamp . "', '";
-			$q .= $list_order . "')";
-			$db->setQuery($q);
+			$fields = array('vendor_id' => $ps_vendor_id,
+										'category_name' => vmGet( $d, 'category_name' ),
+										'category_publish' => vmGet( $d, 'category_publish' ),
+										'category_description' => vmGet( $d, 'category_description', '', VMREQUEST_ALLOWHTML ),
+										'category_browsepage' => vmGet( $d, 'category_browsepage' ),
+										'products_per_row' => vmRequest::getInt( 'products_per_row' ),
+										'category_flypage' => vmGet( $d, 'category_flypage' ),
+										'category_thumb_image' => vmGet( $d, 'category_thumb_image' ),
+										'category_full_image' => vmGet( $d, 'category_full_image' ),
+										'cdate' => $timestamp,
+										'mdate' => $timestamp,
+										'list_order' => $list_order,
+									);
+			$db->buildQuery('INSERT', '#__{vm}_category', $fields );		
 			$db->query();
 
 			$category_id = $_REQUEST['category_id'] = $db->last_insert_id();
 
-			$q = "INSERT into #__{vm}_category_xref ";
-			$q .= "(category_parent_id, category_child_id) ";
-			$q .= "VALUES ('";
-			$q .= $d["parent_category_id"] . "','";
-			$q .= $category_id . "')";
-			$db->setQuery($q);
+			 
+			$fields = array('category_parent_id' => (int)$d["parent_category_id"],
+										'category_child_id' => $category_id
+									);
+			$db->buildQuery('INSERT', '#__{vm}_category_xref', $fields );
 			$db->query();
 
-			$vmLogger->info( "Successfully added new category: ".$d['category_name'].'.');
-			return $category_id;
+			$vmLogger->info( 'Successfully added new category: "'.vmGet($d,'category_name').'"' );
+			return true;
 		}
 		else {
 			return False;
@@ -308,32 +300,29 @@ class ps_product_category extends vmAbstractObject {
 			if (!vmImageTools::process_images($d)) {
 				return false;
 			}
-			$q = "UPDATE #__{vm}_category SET ";
-			$q .= "category_name='" . $d["category_name"];
-			if (!isset($d["category_publish"])) {
+			if (empty($d["category_publish"])) {
 				$d["category_publish"] = "N";
 			}
-			$q .= "',category_publish='" . $d["category_publish"];
-			$q .= "',category_description='" . $d["category_description"];
-			$q .= "',category_browsepage='" . $d["category_browsepage"];
-			$q .= "',products_per_row='" . $d["products_per_row"];
-			$q .= "',category_flypage='" . $d["category_flypage"];
-			$q .= "',category_thumb_image='" . $d["category_thumb_image"];
-			$q .= "',category_full_image='" . $d["category_full_image"];
-			$q .= "', mdate='$timestamp";
-			$q .= "', list_order='" . $d["list_order"]."'";
-			$q .= " WHERE category_id='" . $d["category_id"] . "' ";
-			$q .= "AND vendor_id='$ps_vendor_id' ";
-			$db->setQuery($q);
+			$fields = array(
+										'category_name' => vmGet( $d, 'category_name' ),
+										'category_publish' => vmGet( $d, 'category_publish' ),
+										'category_description' => vmGet( $d, 'category_description', '', VMREQUEST_ALLOWHTML ),
+										'category_browsepage' => vmGet( $d, 'category_browsepage' ),
+										'products_per_row' => vmRequest::getInt( 'products_per_row' ),
+										'category_flypage' => vmGet( $d, 'category_flypage' ),
+										'category_thumb_image' => vmGet( $d, 'category_thumb_image' ),
+										'category_full_image' => vmGet( $d, 'category_full_image' ),
+										'mdate' => $timestamp,
+										'list_order' => vmRequest::getInt('list_order'),
+									);
+			$db->buildQuery('UPDATE', '#__{vm}_category', $fields, 'WHERE category_id=' .(int)$d["category_id"].' AND vendor_id='.$ps_vendor_id );		
 			$db->query();
 
 			/*
 			** update #__{vm}_category x-reference table with parent-child relationship
 			*/
-			$q = "UPDATE #__{vm}_category_xref SET ";
-			$q .= "category_parent_id='" . $d["category_parent_id"];
-			$q .= "' WHERE category_child_id='" . $d["category_id"] . "'";
-			$db->setQuery($q);
+			$fields = array('category_parent_id' => (int)$d["parent_category_id"]);
+			$db->buildQuery('UPDATE', '#__{vm}_category_xref', $fields, 'WHERE category_child_id='.(int)$d["category_id"] );
 			$db->query();
 
 			/* Re-Order the category table IF the list_order has been changed */
@@ -344,10 +333,10 @@ class ps_product_category extends vmAbstractObject {
 				if( intval($d['list_order']) < intval($d['currentpos']) ) {
 
 					$q = "SELECT category_id FROM #__{vm}_category_xref,#__{vm}_category ";
-					$q .= "WHERE category_parent_id='".$d["category_parent_id"]."' ";
+					$q .= "WHERE category_parent_id='".(int)$d["category_parent_id"]."' ";
 					$q .= "AND category_child_id=category_id ";
 					$q .= "AND category_id <> '" . $d["category_id"] . "' ";
-					$q .= "AND list_order >= '" . intval($d["list_order"]) . "'";
+					$q .= "AND list_order >= '" . (int)$d["list_order"] . "'";
 					$db->query( $q );
 
 					while( $db->next_record() ) {
@@ -358,7 +347,7 @@ class ps_product_category extends vmAbstractObject {
 				else {
 
 					$q = "SELECT category_id FROM #__{vm}_category_xref,#__{vm}_category ";
-					$q .= "WHERE category_parent_id='".$d["category_parent_id"]."' ";
+					$q .= "WHERE category_parent_id='".(int)$d["category_parent_id"]."' ";
 					$q .= "AND category_child_id=category_id ";
 					$q .= "AND category_id <> '" . $d["category_id"] . "' ";
 					$q .= "AND list_order > '" . intval($d["currentpos"]) . "'";
@@ -379,7 +368,7 @@ class ps_product_category extends vmAbstractObject {
 				// Let's find out the last category in
 				// the new level of the category
 				$q = "SELECT MAX(list_order) AS list_order FROM #__{vm}_category_xref,#__{vm}_category ";
-				$q .= "WHERE category_parent_id='".$d["category_parent_id"]."' ";
+				$q .= "WHERE category_parent_id='".(int)$d["category_parent_id"]."' ";
 				$q .= "AND category_child_id=category_id ";
 				$q .= "AND category_id <> '".$d["category_id"]."'";
 				$db->query( $q );
@@ -389,7 +378,7 @@ class ps_product_category extends vmAbstractObject {
 				$db->query( $q );
 			}
 
-			$vmLogger->info( "Successfully updated category: ".$d['category_name'].'.' );
+			$vmLogger->info( 'Successfully updated category: "'.vmGet($d,'category_name')."'" );
 
 			return True;
 		}
@@ -685,7 +674,7 @@ class ps_product_category extends vmAbstractObject {
 	function traverse_tree_down($class="",$category_id="0", $level="0") {
 		static $ibg = 0;
 		global $sess, $mosConfig_live_site, $VM_LANG;
-		$page = mosGetParam($_REQUEST, 'page');
+		$page = vmGet($_REQUEST, 'page');
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 		$class = "maintext";

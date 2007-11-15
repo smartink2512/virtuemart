@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,10 +17,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
-$passkey = mosGetParam( $_POST, 'passkey', null );
+$payment_method_id = vmGet( $_REQUEST, 'payment_method_id', null );
+$passkey = vmGet( $_POST, 'passkey', null );
 $Itemid = $sess->getShopItemid();
-$task = mosGetParam( $_POST, 'task', null );
+$task = vmGet( $_POST, 'task', null );
 
 if ( $payment_method_id ) {
 	echo '<table class="adminform"><tr><th>';
@@ -63,7 +63,7 @@ if ( $payment_method_id ) {
 		$q .= "SET payment_passkey = ".VM_ENCRYPT_FUNCTION."('$passkey','" . ENCODE_KEY . "')\n";
 		$q .= "WHERE payment_method_id='$payment_method_id';";
 		$db->query( $q );
-		mosRedirect( $sess->url($_SERVER['PHP_SELF']."?page=store.payment_method_form&payment_method_id=$payment_method_id", false, false), $VM_LANG->_PHPSHOP_CHANGE_PASSKEY_SUCCESS);
+		vmRedirect( $sess->url($_SERVER['PHP_SELF']."?page=store.payment_method_form&payment_method_id=$payment_method_id", false, false), $VM_LANG->_PHPSHOP_CHANGE_PASSKEY_SUCCESS);
 	}
 	// not authenticated
 	else {

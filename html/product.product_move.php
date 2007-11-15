@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,12 +17,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$category_id = mosGetParam( $_REQUEST, 'category_id' );
-$old_category_id = mosGetParam( $_REQUEST, 'old_category_id' );
+$category_id = vmGet( $_REQUEST, 'category_id' );
+$old_category_id = vmGet( $_REQUEST, 'old_category_id' );
 if( $old_category_id ) {
 	$category_id = $old_category_id;
 }
-$products = mosGetParam( $_POST, 'product_id' );
+$products = vmGet( $_POST, 'product_id' );
 $count= count( $products );
 
 echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post" name="adminForm">';

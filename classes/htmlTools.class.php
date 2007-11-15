@@ -6,7 +6,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -212,10 +212,8 @@ class listFactory {
 		else {
 			$keyword = "";
 		}
-		$category_id = mosGetParam( $_REQUEST, 'category_id', null);
-		$no_menu = mosGetParam( $_REQUEST, 'no_menu', 0 );
-		$search_date = mosGetParam( $_REQUEST, 'search_date', null);
-		$show = mosGetParam( $_REQUEST, "show", "" );
+		$search_date = vmGet( $_REQUEST, 'search_date', null);
+		$show = vmGet( $_REQUEST, "show", "" );
 		
 		$header = '<a name="listheader"></a>';
 		$header .= '<form name="adminForm" action="'.$_SERVER['PHP_SELF'].'" method="post">
@@ -224,9 +222,9 @@ class listFactory {
 					<input type="hidden" name="page" value="'. $modulename . '.' . $pagename . '" />
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="func" value="" />
-					<input type="hidden" name="no_menu" value="'.$no_menu.'" />
-					<input type="hidden" name="no_toolbar" value="'.mosGetParam($_REQUEST,'no_toolbar',0).'" />
-					<input type="hidden" name="only_page" value="'.mosGetParam($_REQUEST,'only_page',0).'" />
+					<input type="hidden" name="no_menu" value="'.vmRequest::getInt( 'no_menu' ).'" />
+					<input type="hidden" name="no_toolbar" value="'.vmRequest::getInt('no_toolbar').'" />
+					<input type="hidden" name="only_page" value="'.vmRequest::getInt('only_page').'" />
 					<input type="hidden" name="boxchecked" />';
 		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
 			$header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
@@ -238,15 +236,15 @@ class listFactory {
         }
         
 		if( !empty( $pagename )) 
-			$header .= "<td width=\"20%\">
-			<input class=\"inputbox\" type=\"text\" size=\"25\" name=\"keyword\" value=\"$keyword\" />
-			<input class=\"button\" type=\"submit\" name=\"search\" value=\"".$VM_LANG->_PHPSHOP_SEARCH_TITLE."\" />
-			</td>";
+			$header .= '<td width="20%">
+			<input class="inputbox" type="text" size="25" name="keyword" value="'.shopMakeHtmlSafe($keyword).'" />
+			<input class="button" type="submit" name="search" value="'.$VM_LANG->_PHPSHOP_SEARCH_TITLE.'" />
+			</td>';
 			
-		$header .= "</tr></table><br style=\"clear:both;\" />";
+		$header .= "\n</tr></table><br style=\"clear:both;\" />\n";
 		
 		if ( !empty($search_date) ) // Changed search by date
-			$header .= "<input type=\"hidden\" name=\"search_date\" value=\"$search_date\" />\n";
+			$header .= '<input type="hidden" name="search_date" value="'.$search_date.'" />';
 		
 		if( !empty($show) ) {
 			$header .= "<input type=\"hidden\" name=\"show\" value=\"$show\" />\n";
@@ -279,10 +277,10 @@ class listFactory {
 			array_shift($extrafields);
 			foreach( $extrafields as $key => $value) {
 				$field = explode("=", $value);
-				$footer .= "<input type=\"hidden\" name=\"".$field[0]."\" value=\"".@$field[1]."\" />\n";
+				$footer .= '<input type="hidden" name="'.$field[0].'" value="'.@shopMakeHtmlSafe($field[1]).'" />'."\n";
 			}
 		}
-		$footer .= "</form>";
+		$footer .= '</form>';
 		
 		echo $footer;
 	}
@@ -324,15 +322,15 @@ class formFactory {
 	}
 	
 	function hiddenField( $name, $value ) {
-		echo ' <input type="hidden" name="'.$name.'" value="'.$value.'" />
+		echo ' <input type="hidden" name="'.$name.'" value="'.shopMakeHtmlSafe($value).'" />
 		';
 	}
 	/**
 	* Writes necessary hidden input fields
 	* and closes the form
 	*/
-	function finishForm( $func, $page='com_virtuemart' ) {
-		$no_menu = mosGetParam( $_REQUEST, 'no_menu' );
+	function finishForm( $func, $page='' ) {
+		$no_menu = vmRequest::getInt('no_menu');
 		
 		$html = '
 		<input type="hidden" name="func" value="'.$func.'" />
@@ -343,8 +341,8 @@ class formFactory {
 			$html .= '<input type="hidden" name="ajax_request" value="1" />';
 		}
 		$html .= '<input type="hidden" name="no_menu" value="'.$no_menu.'" />';
-		$html .= '<input type="hidden" name="no_toolbar" value="'.mosGetParam($_REQUEST,'no_toolbar',0).'" />';
-		$html .= '<input type="hidden" name="only_page" value="'.mosGetParam($_REQUEST,'only_page',0).'" />';
+		$html .= '<input type="hidden" name="no_toolbar" value="'.vmGet($_REQUEST,'no_toolbar',0).'" />';
+		$html .= '<input type="hidden" name="only_page" value="'.vmGet($_REQUEST,'only_page',0).'" />';
 		
         if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
         	$html .= '<input type="hidden" name="pshop_admin" value="admin" />';
@@ -985,7 +983,7 @@ class vmCommonHTML extends mosHTML {
 	 */
 	function PdfIcon( $link, $use_icon=true ) {
 		global $VM_LANG, $mosConfig_live_site;
-		if ( PSHOP_PDF_BUTTON_ENABLE == '1' && !mosGetParam( $_REQUEST, 'pop' )  ) {
+		if ( PSHOP_PDF_BUTTON_ENABLE == '1' && !vmGet( $_REQUEST, 'pop' )  ) {
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
 				$text = mosAdminMenus::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_PDF, $VM_LANG->_CMN_PDF );
@@ -1004,7 +1002,7 @@ class vmCommonHTML extends mosHTML {
 	 */
 	function EmailIcon( $product_id, $use_icon=true ) {
 		global $VM_LANG, $mosConfig_live_site, $sess;
-		if ( @VM_SHOW_EMAILFRIEND == '1' && !mosGetParam( $_REQUEST, 'pop' ) && $product_id > 0  ) {
+		if ( @VM_SHOW_EMAILFRIEND == '1' && !vmGet( $_REQUEST, 'pop' ) && $product_id > 0  ) {
 			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1' );
 			if ( $use_icon ) {
 				$text = mosAdminMenus::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_EMAIL, $VM_LANG->_CMN_EMAIL );
@@ -1019,7 +1017,7 @@ class vmCommonHTML extends mosHTML {
 		global $VM_LANG, $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
 		if ( @VM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
-				$query_string = str_replace( 'only_page=1', 'only_page=0', ampReplace(mosGetParam($_SERVER,'QUERY_STRING')) );
+				$query_string = str_replace( 'only_page=1', 'only_page=0', ampReplace(vmGet($_SERVER,'QUERY_STRING')) );
 				$link = 'index2.php?'.$query_string.'&amp;pop=1';
 			}
 			// checks template image directory for image, if non found default are loaded
@@ -1028,7 +1026,7 @@ class vmCommonHTML extends mosHTML {
 			} else {
 				$text = '|&nbsp;'. $VM_LANG->_CMN_PRINT. '&nbsp;|';
 			}
-			$isPopup = mosGetParam( $_GET, 'pop' );
+			$isPopup = vmGet( $_GET, 'pop' );
 			if ( $isPopup ) {
 				// Print Preview button - used when viewing page
 				$html = '<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. $VM_LANG->_CMN_PRINT.'">
@@ -1299,12 +1297,22 @@ function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
 ';
 }
 
-// borrowed from mambo.php
-function shopMakeHtmlSafe( $string, $quote_style=ENT_QUOTES, $only_special_chars=false ) {
+/**
+ * Converts all special chars to html entities
+ *
+ * @param string $string
+ * @param string $quote_style
+ * @param boolean $only_special_chars Only Convert Some Special Chars ? ( <, >, &, ... )
+ * @return string
+ */
+function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $only_special_chars=false ) {
+	if( defined( $quote_style )) {
+		$quote_style = constant($quote_style);
+	}
 	if( $only_special_chars ) {
-		$string = htmlspecialchars( $string, $quote_style, vmGetCharset() );
+		$string = @htmlspecialchars( $string, $quote_style, vmGetCharset() );
 	} else {
-		$string = htmlentities( $string, $quote_style, vmGetCharset() );
+		$string = @htmlentities( $string, constant($quote_style), vmGetCharset() );
 	}
 	return $string;
 }

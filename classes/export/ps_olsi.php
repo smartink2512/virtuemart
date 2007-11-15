@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage export
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -190,8 +190,8 @@ class ps_olsi {
 	 */
 	function process_authentication () {
 		global $database, $acl;
-		$usrname 	= $database->getEscaped( mosGetParam( $_REQUEST, 'user', '' ) );
-		$pass 		= $database->getEscaped( mosGetParam( $_REQUEST, 'password', '' ) );
+		$usrname 	= $database->getEscaped( vmGet( $_REQUEST, 'user', '' ) );
+		$pass 		= $database->getEscaped( vmGet( $_REQUEST, 'password', '' ) );
 
 		if (!$usrname) {
 			echo 'Please enter a username';
@@ -266,12 +266,12 @@ class ps_olsi {
 
 
 		
-		$order_status = mosGetParam( $_REQUEST, 'status', '' );
-		$order_from = mosGetParam( $_REQUEST, 'from', '' );
-		$order_since = mosGetParam( $_REQUEST, 'since', '' );
-		$order_since = mosGetParam( $_REQUEST, 'since', '' );
-		$order_to = mosGetParam( $_REQUEST, 'to', '' );
-		$order_id = mosGetParam( $_REQUEST, 'order_id', '' );
+		$order_status = vmGet( $_REQUEST, 'status', '' );
+		$order_from = vmGet( $_REQUEST, 'from', '' );
+		$order_since = vmGet( $_REQUEST, 'since', '' );
+		$order_since = vmGet( $_REQUEST, 'since', '' );
+		$order_to = vmGet( $_REQUEST, 'to', '' );
+		$order_id = vmGet( $_REQUEST, 'order_id', '' );
 
 		$where = array();
 		if (!$order_status && !$order_from && !$order_since && !$order_to && !$order_id){

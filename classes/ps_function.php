@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -133,12 +133,12 @@ class ps_function extends vmAbstractObject {
 		if( is_array( $d[ 'function_perms' ] )) {			
 			$d[ 'function_perms' ] = implode( ',', $d[ 'function_perms' ] );
 		}
-		$fields = array( 'function_name' => $d["function_name"],
-						'function_class'=> $d["function_class"],
-						'function_method' => $d["function_method"],
-						'function_perms' => $d["function_perms"],
-						'module_id' => $d["module_id"],
-						'function_description'=> $d["function_description"] );
+		$fields = array( 'function_name' => vmGet( $d, 'function_name' ),
+						'function_class'=> vmGet( $d, 'function_class' ),
+						'function_method' => vmGet( $d, 'function_method' ),
+						'function_perms' => vmGet( $d, 'function_perms' ),
+						'module_id' => vmRequest::getInt('module_id'),
+						'function_description'=> vmGet( $d, 'function_description' ) );
 		$db->buildQuery( 'INSERT', '#__{vm}_function', $fields );
 		
 		$db->query();
@@ -166,11 +166,11 @@ class ps_function extends vmAbstractObject {
 		if( is_array( $d[ 'function_perms' ] )) {			
 			$d[ 'function_perms' ] = implode( ',', $d[ 'function_perms' ] );
 		}
-		$fields = array( 'function_name' => $d["function_name"],
-						'function_class'=> $d["function_class"],
-						'function_method' => $d["function_method"],
-						'function_perms' => $d["function_perms"],
-						'function_description'=> $d["function_description"] );
+		$fields = array( 'function_name' => vmGet( $d, 'function_name' ),
+						'function_class'=> vmGet( $d, 'function_class' ),
+						'function_method' => vmGet( $d, 'function_method' ),
+						'function_perms' => vmGet( $d, 'function_perms' ),
+						'function_description'=> vmGet( $d, 'function_description' ) );
 		$db->buildQuery( 'UPDATE', '#__{vm}_function', $fields, 'WHERE function_id='.(int)$d["function_id"] );
 		$db->query();
 		
@@ -208,7 +208,7 @@ class ps_function extends vmAbstractObject {
 	*/
 	function delete_record( $record_id, &$d ) {
 		global $db;
-		$q = "DELETE from #__{vm}_function where function_id='$record_id'";
+		$q = 'DELETE from #__{vm}_function where function_id='.(int)$record_id;
 		return $db->query($q);
 	}
 
@@ -224,7 +224,7 @@ class ps_function extends vmAbstractObject {
 
 		$q = "SELECT `function_perms`, `function_class`, `function_method` 
 				FROM `#__{vm}_function` 
-				WHERE LOWER(`function_name`)='".strtolower($func)."'";
+				WHERE LOWER(`function_name`)='".$db->getEscaped(strtolower($func))."'";
 		
 		$db->query( $q );
 		

@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage shipping
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -87,7 +87,7 @@ class zone_shipping {
     
   function get_rate( &$d ) {	
   
-	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
+	  $shipping_rate_id = vmGet($_REQUEST,"shipping_rate_id");
 	  $zone_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
 	  $order_shipping = $zone_arr[3];
 	  
@@ -99,7 +99,7 @@ class zone_shipping {
       $db = new ps_DB();
       
 	  if( $zone_id == 0 ) {
-          $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
+          $shipping_rate_id = vmGet($_REQUEST,"shipping_rate_id");
           $zone_arr = explode("|", urldecode(urldecode($shipping_rate_id)) );
           $zone_id = (int)$zone_arr[4];
       }
@@ -116,7 +116,7 @@ class zone_shipping {
     * @returns boolean False when the Shipping method is not in the SESSION
     */
 	function validate( $d ) {
-	  $shipping_rate_id = mosGetParam($_REQUEST,"shipping_rate_id");
+	  $shipping_rate_id = vmGet($_REQUEST,"shipping_rate_id");
 	  
 	  if( array_key_exists( $shipping_rate_id, $_SESSION ))
 		return true;

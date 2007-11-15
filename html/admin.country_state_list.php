@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,11 +20,11 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$country_id = mosgetparam( $_REQUEST, 'country_id' );
+$country_id = vmGet( $_REQUEST, 'country_id' );
 if( is_array( $country_id ))
 	$country_id = $country_id[0];
 if( empty($country_id)) 
-	mosRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=admin.country_list", "A country ID could not be found");
+	vmRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=admin.country_list", "A country ID could not be found");
 
 $db->query( "SELECT country_name FROM #__{vm}_country WHERE country_id='$country_id'");
 $db->next_record();

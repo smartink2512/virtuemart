@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,28 +16,24 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-/****************************************************************************
-*
-* CLASS DESCRIPTION
-*
-* ps_product_price
-*
-*************************************************************************/
+/**
+ * This class handles product prices
+ *
+ */
 class ps_product_price {
-	var $classname = "ps_product_price";
 
-	/**************************************************************************
-	** name: validate()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+
+	/**
+	 * Validates the Input Parameters on price add/update
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate(&$d) {
 		global $vmLogger;
 		$valid = true;
 		
-		if (!isset($d["product_price"])) {
+		if (!isset($d["product_price"]) || $d["product_price"] === '') {
 			$vmLogger->err( "A price must be entered." );
 			$valid = false;
 		}
@@ -80,14 +76,12 @@ class ps_product_price {
 		}
 		return $valid;
 	}
-
-	/**************************************************************************
-	** name: add()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Adds a new price record for a given product
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 		global $vmLogger;
 		if (!$this->validate($d)) {
@@ -101,28 +95,35 @@ class ps_product_price {
 		if (empty($d["product_price_vdate"])) $d["product_price_vdate"] = '';
 		if (empty($d["product_price_edate"])) $d["product_price_edate"] = '';
 
+		$fields = array('product_id' => $d["product_id"],
+								'shopper_group_id' => vmRequest::getInt('shopper_group_id'),
+								'product_price' => vmRequest::getFloat('product_price'),
+								'product_currency' => vmGet($d, 'product_currency' ),
+								'product_price_vdate' => vmGet($d, 'product_price_vdate'),
+								'product_price_edate' => vmGet($d, 'product_price_edate'),
+								'cdate' => $timestamp,
+								'mdate' => $timestamp,
+								'price_quantity_start' => vmRequest::getInt('price_quantity_start'),
+								'price_quantity_end' =>vmRequest::getInt('price_quantity_end')
+						);
 		$db = new ps_DB;
-		$q  = "INSERT INTO #__{vm}_product_price (product_id,shopper_group_id,";
-		$q .= "product_price,product_currency,product_price_vdate,";
-		$q .= "product_price_edate,cdate,mdate,price_quantity_start,price_quantity_end) ";
-		$q .= "VALUES ('" . $d["product_id"] . "','" . $d["shopper_group_id"];
-		$q .= "','" . $d["product_price"] . "','" . $d["product_currency"] . "','";
-		$q .= $d["product_price_vdate"] . "','" . $d["product_price_edate"] . "',";
-		$q .= "'$timestamp','$timestamp', '".$d["price_quantity_start"]."','".$d["price_quantity_end"]."')";
-
-		$db->query($q);
-		$_REQUEST['product_price_id'] = $db->last_insert_id();
-		$vmLogger->info( 'The new product price has been added.');
-		return true;
+		$db->buildQuery('INSERT', '#__{vm}_product_price', $fields );
+		
+		if( $db->query() !== false ) {		
+			$_REQUEST['product_price_id'] = $db->last_insert_id();
+			$vmLogger->info( 'The new product price has been added.');
+			return true;
+		}
+		$vmLogger->err( 'The price could not be added to this product.');
+		return false;
 	}
 
-	/**************************************************************************
-	** name: update()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Updates a product price
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		global $vmLogger;
 		if (!$this->validate($d)) {
@@ -136,23 +137,27 @@ class ps_product_price {
 		$db = new ps_DB;
 		if (empty($d["product_price_vdate"])) $d["product_price_vdate"] = '';
 		if (empty($d["product_price_edate"])) $d["product_price_edate"] = '';
-
-		$q  = "UPDATE #__{vm}_product_price SET ";
-		$q .= "shopper_group_id='" . $d["shopper_group_id"] . "',";
-		$q .= "product_id='" . $d["product_id"] . "',";
-		$q .= "product_price='" . $d["product_price"] . "',";
-		$q .= "product_currency='" . $d["product_currency"] . "',";
-		$q .= "product_price_vdate='" . $d["product_price_vdate"] . "',";
-		$q .= "product_price_edate='" . $d["product_price_edate"] . "',";
-		$q .= "price_quantity_start='" . $d["price_quantity_start"] . "',";
-		$q .= "price_quantity_end='" . $d["price_quantity_end"] . "',";
-		$q .= "mdate='$timestamp' ";
-		$q .= "WHERE product_price_id='" . $d["product_price_id"] . "' ";
-
-		$db->query($q);
-		$vmLogger->info( 'The product price has been updated.' );
-		return true;
+		$fields = array(
+								'shopper_group_id' => vmRequest::getInt('shopper_group_id'),
+								'product_price' => vmRequest::getFloat('product_price'),
+								'product_currency' => vmGet($d, 'product_currency' ),
+								'product_price_vdate' => vmGet($d, 'product_price_vdate'),
+								'product_price_edate' => vmGet($d, 'product_price_edate'),
+								'mdate' => $timestamp,
+								'price_quantity_start' => vmRequest::getInt('price_quantity_start'),
+								'price_quantity_end' =>vmRequest::getInt('price_quantity_end')
+						);
+		$db = new ps_DB;
+		$db->buildQuery('UPDATE', '#__{vm}_product_price', $fields, 'WHERE product_price_id=' .(int)$d["product_price_id"] );
+		
+		if( $db->query() !== false ) {
+			$vmLogger->info( 'The product price has been updated.');
+			return true;
+		}
+		$vmLogger->err( 'The price could not be updated.');
+		return false;
 	}
+
 
 	/**
 	* Controller for Deleting Records.
@@ -178,7 +183,7 @@ class ps_product_price {
 	function delete_record( $record_id, &$d ) {
 		global $db, $vmLogger;
 		$q  = "DELETE FROM #__{vm}_product_price ";
-		$q .= "WHERE product_price_id =".intval($record_id);
+		$q .= "WHERE product_price_id =".intval($record_id).' LIMIT 1';
 		$db->query($q);
 		$vmLogger->info( 'The product price has been deleted.' );
 		return True;

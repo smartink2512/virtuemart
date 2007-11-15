@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -31,7 +31,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class ps_communication {
 
 	function validate( &$d ) {
-		global $vmLogger, $VM_LANG, $mosConfig_db, $mosConfig_sitename;
+		global $vmLogger, $VM_LANG;
 
 		if (empty($d['sender_name']) ) {
 			$vmLogger->err( $VM_LANG->_CONTACT_FORM_NC );
@@ -43,15 +43,17 @@ class ps_communication {
 			return false;
 		}
 
-		$validate = mosGetParam( $_POST, vmCreateHash( $mosConfig_db ), 0 );
+		$validate = vmGet( $_POST, vmCreateHash(), 0 );
 
 		// probably a spoofing attack
 		if (!$validate) {
-			mosErrorAlert( 'Hash not valid - '.$VM_LANG->_NOT_AUTH );
+			$vmLogger->err( 'Hash not valid - '.$VM_LANG->_NOT_AUTH );
+			return false;
 		}
 
 		if (!$_SERVER['REQUEST_METHOD'] == 'POST' ) {
-			mosErrorAlert( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			return false;
 		}
 
 		// Attempt to defend against header injections:
@@ -68,50 +70,52 @@ class ps_communication {
 		foreach ($_POST as $k => $v){
 			foreach ($badStrings as $v2) {
 				if (strpos( $v, $v2 ) !== false) {
-					mosErrorAlert( $VM_LANG->_NOT_AUTH );
+					$vmLogger->err( $VM_LANG->_NOT_AUTH );
+					return false;
 				}
 			}
 		}
 
 		// Made it past spammer test, free up some memory
 		// and continue rest of script:
-		unset($k, $v, $v2, $badStrings);
+		unset($v, $v2, $badStrings);
 
-		$default 	= $mosConfig_sitename.' '. $VM_LANG->_ENQUIRY;
-		$email 		= mosGetParam( $_POST, 'email', 		'' );
-		$text 		= mosGetParam( $_POST, 'text', 			'' );
-		$name 		= mosGetParam( $_POST, 'name', 			'' );
-		$subject 	= mosGetParam( $_POST, 'subject', 		$default );
+		$email 		= vmGet( $_POST, 'email', 		'' );
+		$text 		= vmGet( $_POST, 'text', 			'' );
 		
-	    $sender_name = mosgetparam( $_REQUEST, 'sender_name', null);
-	    $sender_mail = mosgetparam( $_REQUEST, 'sender_mail', null);
-	    $recipient_mail = mosgetparam( $_REQUEST, 'recipient_mail', null);
-	    $message = mosgetparam( $_REQUEST, 'recommend_message', null);
+	    $sender_mail = vmGet( $_REQUEST, 'sender_mail', null);
+	    $recipient_mail = vmGet( $_REQUEST, 'recipient_mail', null);
+	    $message = vmGet( $_REQUEST, 'recommend_message', null);
 
 		// Get Session Cookie `value`
-		$sessioncookie 		= mosGetParam( $_COOKIE, 'virtuemart', null );
+		$sessioncookie 		= vmGet( $_COOKIE, 'virtuemart', null );
 
 		if ( strlen($sessioncookie) < 16 || $sessioncookie == '-') {
-			mosErrorAlert( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			return false;
 		}
 
 		// test to ensure that only one email address is entered
 		$check = explode( '@', $email );
 		if ( strpos( $email, ';' ) || strpos( $email, ',' ) || strpos( $email, ' ' ) || count( $check ) > 2 ) {
-			mosErrorAlert( 'You cannot enter more than one email address' );
+			$vmLogger->err( 'You cannot enter more than one email address' );
+			return false;
 		}
 
 		if ( (!$email&&!$sender_mail) || (!$text&&!$message)  ) {
-			mosErrorAlert( $VM_LANG->_CONTACT_FORM_NC );
+			$vmLogger->err( $VM_LANG->_CONTACT_FORM_NC );
+			return false;
 		}
 		if( !empty( $email )) {
 			if( ps_communication::is_email( $email ) == false ) {
-				mosErrorAlert( $VM_LANG->_REGWARN_MAIL );
+				$vmLogger->err( $VM_LANG->_REGWARN_MAIL );
+				return false;
 			}
 		}
 		if( !empty($sender_mail)) {
 			if( !ps_communication::is_email( $sender_mail ) || !ps_communication::is_email( $recipient_mail ) ) {
-				mosErrorAlert( $VM_LANG->_EMAIL_ERR_NOINFO );
+				$vmLogger->err( $VM_LANG->_EMAIL_ERR_NOINFO );
+				return false;
 			}
 		}
 		return true;
@@ -121,29 +125,28 @@ class ps_communication {
 	 
  	*/    
 	function mail_question(&$d) {
-		global $database, $vmLogger, $mosConfig_sitename,  $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_db, $Itemid, $_SESSION;
-		global $VM_LANG,$mosConfig_live_site,$mosConfig_lang, $sess;
+		global $vmLogger,  $Itemid, $_SESSION, $VM_LANG,$mosConfig_live_site,$mosConfig_lang, $sess;
 
 		$db = new ps_DB;
-		$product_id = $d["product_id"];
-		$q="SELECT * FROM #__{vm}_product WHERE product_id='$product_id'";
+		$product_id = (int)$d["product_id"];
+		$q='SELECT * FROM #__{vm}_product WHERE product_id='.$product_id.' AND product_publish=\'Y\'';
 		$db->query($q);
 		if ( !$db->next_record() ) {
-			mosErrorAlert( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			return false;
 		}
 		if ($db->f("product_sku") <> @$d["product_sku"] ) {
-			mosErrorAlert( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			return false;
 		}
 		
 		$Itemid = $sess->getShopItemid();
-		$flypage = mosgetparam($_REQUEST, "flypage", null);
+		$flypage = vmGet($_REQUEST, "flypage", null);
 		// product url
-		$product_url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid";
+		$product_url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.product_details&flypage=".urlencode($flypage)."&product_id=$product_id&Itemid=$Itemid";
 		
-		$lr = "\n";
 		$dbv = new ps_DB;
 		$qt = "SELECT * from #__{vm}_vendor ";
-		/* Need to decide on vendor_id <=> order relationship */
 		$qt .= "WHERE vendor_id = '".$_SESSION['ps_vendor_id']."'";
 		$dbv->query($qt);
 		$dbv->next_record();
@@ -247,12 +250,12 @@ class ps_communication {
 
 	}
   function showRecommendForm( $product_id ) {
-    global $VM_LANG, $mosConfig_sitename, $sess, $mosConfig_db,$my;
+    global $VM_LANG, $vendor_store_name, $sess,$my;
     
-    $sender_name = vmGet( $d, 'sender_name', null);
-    $sender_mail = vmGet( $d, 'sender_mail', null);
-    $recipient_mail = vmGet( $d, 'recipient_mail', null);
-    $message = shopMakeHtmlSafe( vmGet( $d, 'recommend_message'));
+    $sender_name = vmGet( $_REQUEST, 'sender_name', null);
+    $sender_mail = vmGet( $_REQUEST, 'sender_mail', null);
+    $recipient_mail = vmGet( $_REQUEST, 'recipient_mail', null);
+    $message = shopMakeHtmlSafe( vmGet( $_REQUEST, 'recommend_message'));
     
     echo '
     <form action="index2.php" method="post">
@@ -278,10 +281,10 @@ class ps_communication {
           <textarea name="recommend_message" style="width: 100%; height: 200px">';
      
     if (!empty($message)) {
-        echo str_replace( array('\r', '\n' ), array("\r", "\n" ), $message );
+        echo stripslashes(str_replace( array('\r', '\n' ), array("\r", "\n" ), $message ));
     }
     else {
-        $msg = sprintf($VM_LANG->_VM_RECOMMEND_MESSAGE, $mosConfig_sitename, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
+        $msg = sprintf($VM_LANG->_VM_RECOMMEND_MESSAGE, $vendor_store_name, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
         echo shopMakeHtmlSafe(stripslashes( str_replace( 'index2.php', 'index.php', $msg )));
     }
 
@@ -293,7 +296,7 @@ class ps_communication {
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="page" value="shop.recommend" />
     <input type="hidden" name="product_id" value="'.$product_id.'" />
-    <input type="hidden" name="'.vmCreateHash( $mosConfig_db ).'" value="1" />
+    <input type="hidden" name="'.vmCreateHash().'" value="1" />
     <input type="hidden" name="Itemid" value="'.$sess->getShopItemid().'" />
     <input type="hidden" name="func" value="recommendProduct" />
     <input class="button" type="submit" name="submit" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" />

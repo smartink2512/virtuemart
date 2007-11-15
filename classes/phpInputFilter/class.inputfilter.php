@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage phpInputFilter
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -27,6 +27,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
   */
 class vmInputFilter {
 	var $tagsArray;			// default = empty array
+	var $safehtmlTags = array('a','abbr','acronym','address','b','bdo','big','blockquote','br','button','caption','center','cite','code','col','colgroup','dd','del','dfn','dir','div','dl','dt','em','fieldset','font','form','h1','h2','h3','h4','h5','h6','hr','i','iframe','img','input','ins','isindex','kbd','label','legend','li','link','map','menu','ol','optgroup','option','p','pre','q','s','samp','select','small','span','strike','strong','style','sub','sup','table','tbody','td','textarea','tfoot','th','thead','title','tr','tt','u','ul','var');
 	var $attrArray;			// default = empty array
 
 	var $tagsMethod;		// default = 0

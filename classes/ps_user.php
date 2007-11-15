@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -403,7 +403,7 @@ class ps_user {
 		$row->usertype = $usertype;
 
 		// save params
-		$params = mosGetParam( $_POST, 'params', '' );
+		$params = vmGet( $_POST, 'params', '' );
 		if (is_array( $params )) {
 			$txt = array();
 			foreach ( $params as $k=>$v) {

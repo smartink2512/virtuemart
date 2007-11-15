@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,38 +16,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-/****************************************************************************
-*
-* CLASS DESCRIPTION
-*
-* ps_creditcard
-*
-* The class is is used to manage the CreditCards in your store.
-*
-* properties:
-*
-*       error - the error message returned by validation if any
-* methods:
-*       validate_add()
-*	validate_delete()
-*	validate_update()
-*       add()
-*       update()
-*       delete()
-*
-*
-*************************************************************************/
+/**
+ * The class is is used to manage the CreditCards in your store.
+ *
+ */
 class ps_creditcard {
-	var $classname = "ps_creditcard";
-	var $error;
 
-	/**************************************************************************
-	** name: validate_add()
-	** created by: soeren
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the input parameters onBeforeCreditCardAdd
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add($d) {
 		global $vmLogger;
 		$db = new ps_DB;
@@ -61,9 +41,9 @@ class ps_creditcard {
 			return False;
 		}
 
-		$q = "SELECT count(*) as rowcnt from #__{vm}_creditcard where";
-		$q .= " creditcard_name='" .  $d["creditcard_name"] . "' OR ";
-		$q .= " creditcard_code='" .  $d["creditcard_code"] . "'";
+		$q = "SELECT count(*) as rowcnt FROM `#__{vm}_creditcard` WHERE";
+		$q .= " creditcard_name='" .  $db->getEscaped($d["creditcard_name"]) . "' OR ";
+		$q .= " creditcard_code='" .  $db->getEscaped( $d["creditcard_code"]) . "'";
 		$db->query( $q );
 		$db->next_record();
 		if ($db->f("rowcnt") > 0) {
@@ -73,31 +53,13 @@ class ps_creditcard {
 		return True;
 	}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by: soeren
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
-	function validate_delete($d) {
 
-		if (!$d["creditcard_id"]) {
-			$GLOBALS['vmLogger']->err( 'Please select a Credit Card Type to delete.' );
-			return False;
-		}
-		else {
-			return True;
-		}
-	}
-
-	/**************************************************************************
-	** name: validate_update
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the input parameters onBeforeCreditCardUpdate
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update($d) {
 
 		if (!$d["creditcard_name"]) {
@@ -112,14 +74,29 @@ class ps_creditcard {
 		return true;
 	}
 
+	/**
+	 * Validates the input parameters onBeforeCreditCardDelete
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
+	function validate_delete($d) {
 
-	/**************************************************************************
-	* name: add()
-	* created by: soeren
-	* description: creates a new Credit Card Entry
-	* parameters:
-	* returns:
-	**************************************************************************/
+		if (!$d["creditcard_id"]) {
+			$GLOBALS['vmLogger']->err( 'Please select a Credit Card Type to delete.' );
+			return False;
+		}
+		else {
+			return True;
+		}
+	}
+	
+	/**
+	 * creates a new Credit Card Entry
+	 * 
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 		$hash_secret="VMisCool";
 		$db = new ps_DB;
@@ -129,8 +106,8 @@ class ps_creditcard {
 			return False;
 		}
 		$fields = array( 'vendor_id' => $_SESSION["ps_vendor_id"],
-					'creditcard_name' => $d["creditcard_name"],
-					'creditcard_code' => $d["creditcard_code"],
+					'creditcard_name' => vmGet($d,'creditcard_name'),
+					'creditcard_code' => vmGet($d,'creditcard_code'),
 		);
 		$db->buildQuery('INSERT', '#__{vm}_creditcard', $fields );
 		if( $db->query() ) {
@@ -141,13 +118,12 @@ class ps_creditcard {
 		return false;
 	}
 
-	/**************************************************************************
-	* name: update()
-	* created by: soeren
-	* description: updates creditcard information
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Updates a given Credit Card Record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		$db = new ps_DB;
 		$timestamp = time();
@@ -157,8 +133,8 @@ class ps_creditcard {
 			return False;
 		}
 		$fields = array( 'vendor_id' => $_SESSION["ps_vendor_id"],
-					'creditcard_name' => $d["creditcard_name"],
-					'creditcard_code' => $d["creditcard_code"],
+					'creditcard_name' => vmGet($d,'creditcard_name'),
+					'creditcard_code' => vmGet($d,'creditcard_code'),
 		);
 		$db->buildQuery('UPDATE', '#__{vm}_creditcard', $fields, 'WHERE creditcard_id='.(int)$d["creditcard_id"]);
 		if( $db->query() ) {
@@ -202,15 +178,11 @@ class ps_creditcard {
 		return True;
 	}
 
-
-	/**************************************************************************
-	* name: creditcard_checkboxes()
-	* created by: soeren
-	* description: Creates a Checkbox - List of all Credit Card Records.
-	* parameters: String "selected": a comma-delimited list of creditcard_IDs, assigned to
-	*                  this payment method
-	* returns:
-	**************************************************************************/
+	/**
+	 * Creates a Checkbox-List with all Credit Card Names
+	 *
+	 * @param string $selected: a comma-delimited list of creditcard_IDs, assigned to this payment method
+	 */
 	function creditcard_checkboxes( $selected ) {
 
 		if (!empty( $selected ))
@@ -235,13 +207,11 @@ class ps_creditcard {
 		echo $html;
 	}
 
-	/**************************************************************************
-	* name: creditcard_selector()
-	* created by: soeren
-	* description: Creates a Drop Down - List of Credit Card Records.
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Creates a Drop Down - List of Credit Card Records
+	 *
+	 * @param int $payment_method_id
+	 */
 	function creditcard_selector( $payment_method_id="" ) {
 
 		$db = new ps_DB;
@@ -271,15 +241,13 @@ class ps_creditcard {
 		echo ps_html::selectList('creditcard_code', '', $array );
 	}
 
-
-	/**************************************************************************
-	* name: creditcard_lists()
-	* created by: soeren
-	* description: Build a Credit Card list for each CreditCard Payment Method
-	*              Uses JavsScript from mambojavascript: changeDynaList()
-	* parameters: $db_cc, a ps_database Object with a query pending
-	* returns: the script code
-	**************************************************************************/
+	/**
+	 * Build a Credit Card list for each CreditCard Payment Method
+	 * Uses JavsScript from mambojavascript: changeDynaList()
+	 *
+	 * @param ps_DB $db_cc
+	 * @return string
+	 */
 	function creditcard_lists( &$db_cc ) {
 		$db = new ps_DB;
 
@@ -298,11 +266,11 @@ class ps_creditcard {
 			$cards = Array();
 			foreach( $accepted_creditcards as $value ) {
 				if( !empty( $value)) {
-					$q = "SELECT creditcard_code,creditcard_name FROM #__{vm}_creditcard WHERE creditcard_id='$value'";
+					$q = 'SELECT creditcard_code,creditcard_name FROM #__{vm}_creditcard WHERE creditcard_id='.(int)$value;
 					$db->query( $q );
 					$db->next_record();
 
-					$cards[$db->f('creditcard_code')] = htmlspecialchars( $db->f('creditcard_name'), ENT_QUOTES );
+					$cards[$db->f('creditcard_code')] = shopMakeHtmlSafe( $db->f('creditcard_name') );
 				}
 			}
 			foreach( $cards as $code => $name ) {

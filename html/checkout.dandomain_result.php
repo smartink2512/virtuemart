@@ -5,7 +5,7 @@
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,7 +20,7 @@ defined('_VALID_MOS') or die( "Direct access to this location is not allowed.");
 require_once(  CLASSPATH ."payment/ps_pbs.cfg.php");
 global $mosConfig_secret;
 
-$sessionid = mosGetParam( $_GET, "sessionid" );
+$sessionid = vmGet( $_GET, "sessionid" );
 
 $cookievals = base64_decode( $sessionid );
 $orderID = substr( $cookievals, 0, 8 );

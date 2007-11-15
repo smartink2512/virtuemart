@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,8 +20,8 @@ mm_showMyFileName( __FILE__ );
 $mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ADD_SHIPTO_1 ." ".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 );
       
 $Itemid = $sess->getShopItemid();
-$next_page = mosGetParam( $_REQUEST, "next_page", "account.shipping" );
-$user_info_id = mosGetParam( $_REQUEST, "user_info_id", "" );
+$next_page = vmGet( $_REQUEST, "next_page", "account.shipping" );
+$user_info_id = vmGet( $_REQUEST, "user_info_id", "" );
 
 // Set the CMS pathway
 $pathway = array();
@@ -43,7 +43,7 @@ $tpl->set( 'pathway', $pathway );
 $vmPathway = $tpl->fetch( 'common/pathway.tpl.php' );
 $tpl->set( 'vmPathway', $vmPathway );
 
-$missing = mosGetParam( $vars, 'missing' );
+$missing = vmGet( $vars, 'missing' );
 
 if (!empty( $missing )) {
     echo "<script type=\"text/javascript\">alert('".html_entity_decode( $VM_LANG->_CONTACT_FORM_NC )."'); </script>\n";
@@ -58,7 +58,7 @@ if (!empty($user_info_id)) {
 }
 
 if( !$db->num_rows()) {
-	$vars['country'] = mosGetParam($_REQUEST, 'country', $vendor_country);
+	$vars['country'] = vmGet($_REQUEST, 'country', $vendor_country);
 }
 
 $tpl->set_vars( array('next_page' => $next_page,

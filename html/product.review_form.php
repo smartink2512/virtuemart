@@ -18,10 +18,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 if ($perm->check("admin")) {
-$product_id = mosGetParam( $_REQUEST, 'product_id' );
-$userid = mosGetParam( $_REQUEST, 'userid' );
-$nextpage = mosGetParam( $_REQUEST, 'nextpage', 'product.review_list' );
-$review_id = intval( mosGetParam( $_REQUEST, 'review_id' ) );
+$product_id = vmGet( $_REQUEST, 'product_id' );
+$userid = vmGet( $_REQUEST, 'userid' );
+$nextpage = vmGet( $_REQUEST, 'nextpage', 'product.review_list' );
+$review_id = intval( vmGet( $_REQUEST, 'review_id' ) );
 
 if( empty($userid )) {
 	$userid = $my->id;

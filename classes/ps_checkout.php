@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -28,7 +28,6 @@ define("CHECK_OUT_GET_FINAL_CONFIRMATION", 99);
  *
  */
 class ps_checkout {
-	var $classname = "ps_checkout";
 	var $_SHIPPING = null;
 
 	var $_subtotal = null;
@@ -59,18 +58,20 @@ class ps_checkout {
 		if( $vendor_freeshipping > 0 && $vars['order_subtotal_withtax'] >= $vendor_freeshipping) {
 			$PSHOP_SHIPPING_MODULES = Array( "free_shipping" );
 			include_once( CLASSPATH. "shipping/free_shipping.php" );
-			$this->_SHIPPING =& new free_shipping();
+			$this->_SHIPPING = new free_shipping();
 		}
 		elseif( !empty( $_REQUEST['shipping_rate_id'] )) {
 
 			// Create a Shipping Object and assign it to the _SHIPPING attribute
 			// We take the first Part of the Shipping Rate Id String
 			// which holds the Class Name of the Shipping Module
-			$rate_array = explode( "|", urldecode(mosGetParam($_REQUEST,"shipping_rate_id")) );
+			$rate_array = explode( "|", urldecode(vmGet($_REQUEST,"shipping_rate_id")) );
 			$filename = basename( $rate_array[0] );
-			if( $filename != '' ) {
+			if( $filename != '' && file_exists(CLASSPATH. "shipping/".$filename.".php")) {
 				include_once( CLASSPATH. "shipping/".$filename.".php" );
-				eval( "\$this->_SHIPPING =& new ".$filename."();");
+				if( class_exists($filename) ) {
+					$this->_SHIPPING =& new $filename();
+				}
 			}
 		}
 		$steps = ps_checkout::get_checkout_steps();
@@ -90,6 +91,12 @@ class ps_checkout {
 			$_REQUEST['ship_to_info_id'] = $db->f("user_info_id");
 		}
 	}
+	
+	/**
+	 * Retrieve an array with all order steps and their details
+	 *
+	 * @return array
+	 */
 	function get_checkout_steps() {
 		global $VM_CHECKOUT_MODULES;
 		$stepnames = array_keys( $VM_CHECKOUT_MODULES );
@@ -110,7 +117,11 @@ class ps_checkout {
 		
 		return $steps;
 	}
-	
+	/**
+	 * Retrieve the key name of the current checkout step
+	 *
+	 * @return string
+	 */
 	function get_current_stage() {
 		$steps = ps_checkout::get_checkout_steps();
 		$stage = key( $steps ); // $steps is sorted by key, so the first key is the first stage
@@ -122,7 +133,7 @@ class ps_checkout {
 				return $checkout_step; // it's a valid step
 			}
 		}
-		$checkout_step = (int)mosGetParam( $_REQUEST, 'checkout_stage' );
+		$checkout_step = (int)vmGet( $_REQUEST, 'checkout_stage' );
 		if( isset( $steps[$checkout_step] )) {
 			return $checkout_step; // it's a valid step
 		}
@@ -148,7 +159,7 @@ class ps_checkout {
 		return $stage;
 	}
 	/**
-	 * Enter description here...
+	 * Displays the "checkout bar" using the checkout bar template
 	 *
 	 * @param array $steps_to_do Array holding all steps the customer has to make
 	 * @param array $step_msg Array containing the step messages
@@ -199,8 +210,8 @@ class ps_checkout {
     							'steps_to_do' => $steps_to_do,
     							'steps' => $steps,
     							'highlighted_step' => $highlighted_step,
-    							'ship_to_info_id' => mosGetParam($_REQUEST, 'ship_to_info_id'),
-    							'shipping_rate_id' => mosGetParam( $_REQUEST, 'shipping_rate_id')
+    							'ship_to_info_id' => vmGet($_REQUEST, 'ship_to_info_id'),
+    							'shipping_rate_id' => vmGet( $_REQUEST, 'shipping_rate_id')
     						) );
     						
 		echo $theme->fetch( 'checkout/checkout_bar.tpl.php');
@@ -256,15 +267,12 @@ class ps_checkout {
 		return True;
 	}
 
-
-	/**************************************************************************
-	** name: validate_add()
-	** created by: gday
-	** description:  Validates the checkout form values prior to adding
-	** parameters: $d
-	** returns:  True - validation passed
-	**          False - validation failed
-	***************************************************************************/
+	/**
+	 * Validates the variables prior to adding an order
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add(&$d) {
 		global $VM_LANG, $vmLogger;
 
@@ -306,17 +314,12 @@ class ps_checkout {
 		return True;
 	}
 
-	/**************************************************************************
-	** name: validate_shipping_method()
-	** created by: Ekkehard Domning
-	** description: Called to validate the shipping_method
-	**              The function caluculate the weight of the product in the cart.
-	**              After that the select shipping method is validated against the
-	**              Address data of the user, the weight and the shipping_rate_id
-	** parameters: $d (shipping_rate_id)
-	** returns: True  - validation passed
-	**          False - validation failed
-	***************************************************************************/
+	/**
+	 * Called to validate the shipping_method
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_shipping_method(&$d) {
 		global $VM_LANG, $PSHOP_SHIPPING_MODULES, $vmLogger;
 		
@@ -324,6 +327,7 @@ class ps_checkout {
 			$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_SHIP );
 			return false;
 		}
+		
 		if( is_callable( array($this->_SHIPPING, 'validate') )) {
 			
 			if(!$this->_SHIPPING->validate( $d )) {
@@ -331,22 +335,19 @@ class ps_checkout {
 				return false;
 			}
 		}
-		// JBarrera 11Jun05 - never returned true
 		return true;
 	}
 
-	/**************************************************************************
-	** name: validate_payment_method()
-	** created by: Ekkehard Domning
-	** description: Called to validate the payment_method
-	**              If payment with CreditCard is used, than the Data must be in stored in the session
-	**              This has be done to prevent sending the CreditCard Number back in hidden fields
-	**              If the parameter $is_test is true the Number Visa Creditcard number 4111 1111 1111 1111
-	**              is reported as Valid
-	** parameters: $d, $istest
-	** returns: True  - validation passed
-	**          False - validation failed
-	***************************************************************************/
+	/**
+	 * Called to validate the payment_method
+	 * If payment with CreditCard is used, than the Data must be in stored in the session
+	 * This has be done to prevent sending the CreditCard Number back in hidden fields
+	 * If the parameter $is_test is true the Number Visa Creditcard number 4111 1111 1111 1111
+	 *
+	 * @param array $d
+	 * @param boolean $is_test
+	 * @return boolean
+	 */
 	function validate_payment_method(&$d, $is_test) {
 		global $VM_LANG, $vmLogger, $order_total;
 
@@ -502,16 +503,13 @@ class ps_checkout {
 		return True;
 	}
 
-
-
-	/**************************************************************************
-	** name: update()
-	** created by: gday
-	** description:  Update the order in the database
-	** parameters: $d
-	** returns:  True - update succeeded
-	**          False - update failed
-	***************************************************************************/
+	/**
+	 * Update order details
+	 * CURRENTLY UNUSED
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		global $vmLogger;
 		
@@ -528,14 +526,13 @@ class ps_checkout {
 		}
 	}
 
-	/**************************************************************************
-	** name: process()
-	** created by: Ekkhard Domning
-	** description:  Controls the Checkout Process
-	** parameters: $d
-	** returns:  True - if the Step is validated
-	**          False - a failure during the validation
-	***************************************************************************/
+	/**
+	 * Control Function for the Checkout Process
+	 * @author Ekkhard Domning
+	 * @author soeren
+	 * @param array $d
+	 * @return boolean
+	 */
 	function process(&$d) {
 		global $checkout_this_step, $sess,$VM_LANG, $vmLogger;
 		$ccdata = array();
@@ -602,22 +599,23 @@ class ps_checkout {
 		return true;
 	} // end function process
 
-	/**************************************************************************
-	** name: ship_to_address_radio()
-	** created by: gday
-	** description:  Get all the user_info Ship To (ST) records associated
-	**               with the $user_id and print an HTML radio check box
-	**               form element using the retrieved data.
-	** parameters: $user_id - user id of to display ship to addresses
-	**             $name - name of the HTML radio element
-	**             $value - If matched, then this radio item will be
-	**                      checked
-	** returns:  Prints html radio element to standard out
-	***************************************************************************/
+	/**
+	 * Prints the List of all shipping addresses of a user
+	 *
+	 * @param unknown_type $user_id
+	 * @param unknown_type $name
+	 * @param unknown_type $value
+	 */
 	function ship_to_addresses_radio($user_id, $name, $value) {
 		echo ps_checkout::list_addresses( $user_id, $name, $value );
 	}
-	
+	/**
+	 * Creates a Radio List of all shipping addresses of a user
+	 *
+	 * @param int $user_id
+	 * @param string $name
+	 * @param string $value
+	 */
 	function list_addresses( $user_id, $name, $value ) {
 		global $sess,$VM_LANG;
 
@@ -627,7 +625,7 @@ class ps_checkout {
 		* order by modification date; most recently changed to oldest
 		*/
 		$q  = "SELECT * from #__{vm}_user_info WHERE ";
-		$q .= "user_id='" . $user_id . "' ";
+		$q .= "user_id=" . (int)$user_id . ' ';
 		$q .= "AND address_type='BT'";
 		$db->query($q);
 		$db->next_record();
@@ -639,13 +637,13 @@ class ps_checkout {
 		$q .= "fax, address_1, address_2, city, ";
 		$q .= "state, country, zip ";
 		$q .= "FROM #__{vm}_user_info ";
-		$q .= "WHERE user_id = '" . $user_id . "' ";
+		$q .= "WHERE user_id =" . (int)$user_id . ' ';
 		$q .= "AND address_type = 'ST' ";
 		$q .= "ORDER by address_type_name, mdate DESC";
 
 		$db->query($q);
 		
-		$theme = new $GLOBALS['VM_THEMECLASS']();
+		$theme = vmTemplate::getInstance();
 		$theme->set_vars(array('db' => $db,
 								'user_id' => $user_id,
 								'name' => $name,
@@ -678,7 +676,12 @@ class ps_checkout {
 		return $theme->fetch('checkout/customer_info.tpl.php');
 		
 	}
-	
+	/**
+	 * Lists Shipping Methods of all published Shipping Modules
+	 *
+	 * @param string $ship_to_info_id
+	 * @param string $shipping_method_id
+	 */
 	function list_shipping_methods( $ship_to_info_id=null, $shipping_method_id=null ) {
 		global $PSHOP_SHIPPING_MODULES, $vmLogger, $my, $weight_total;
 		
@@ -703,14 +706,18 @@ class ps_checkout {
 		echo $theme->fetch( 'checkout/list_shipping_methods.tpl.php');
 		
 	}
-	
+	/**
+	 * Lists the payment methods of all available payment modules
+	 *
+	 * @param int $payment_method_id
+	 */
 	function list_payment_methods( $payment_method_id=0 ) {
 		global $order_total, $sess, $VM_CHECKOUT_MODULES;
 		$ps_vendor_id = $_SESSION['ps_vendor_id'];
 		$auth = $_SESSION['auth'];
 		
-		$ship_to_info_id = mosGetParam( $_REQUEST, 'ship_to_info_id' );
-		$shipping_rate_id = mosGetParam( $_REQUEST, 'shipping_rate_id' );
+		$ship_to_info_id = vmGet( $_REQUEST, 'ship_to_info_id' );
+		$shipping_rate_id = vmGet( $_REQUEST, 'shipping_rate_id' );
 		
         require_once(CLASSPATH . 'ps_payment_method.php');
         $ps_payment_method = new ps_payment_method;
@@ -758,11 +765,11 @@ class ps_checkout {
         // Redirect to the last step when there's only one payment method
 		if( $VM_CHECKOUT_MODULES['CHECK_OUT_GET_PAYMENT_METHOD']['order'] != $VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'] ) {
 			if ($count <= 1 && $cc_payments==false) {
-				mosRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false ),"");
+				vmRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false ),"");
 			}
 			elseif( isset($order_total) && $order_total <= 0.00 ) {
 				// In case the order total is less than or equal zero, we don't need a payment method
-				mosRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false),"");
+				vmRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false),"");
 			}
 		}
 		$theme = new $GLOBALS['VM_THEMECLASS']();
@@ -851,10 +858,11 @@ Order Total: '.$order_total.'
 		$enable_processor = $ps_payment_method->get_field($d["payment_method_id"], "enable_processor");
 
 		if (file_exists(CLASSPATH . "payment/$payment_class.php") ) {
-			if( !class_exists( $payment_class ))
-			include( CLASSPATH. "payment/$payment_class.php" );
+			if( !class_exists( $payment_class )) {
+				include( CLASSPATH. "payment/$payment_class.php" );
+			}
 
-			eval( "\$_PAYMENT = new $payment_class();" );
+			$_PAYMENT = new $payment_class();
 			if (!$_PAYMENT->process_payment($order_number,$order_total, $d)) {
 				$vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($payment_class)" );
 				$_SESSION['last_page'] = "checkout.index";
@@ -1020,45 +1028,35 @@ Order Total: '.$order_total.'
 			$product_final_price = round( ($product_price *($my_taxrate+1)), 2 );
 
 			$vendor_id = $ps_vendor_id;
-
-			$q = "INSERT INTO #__{vm}_order_item ";
-			$q .= "(order_id, user_info_id, vendor_id, product_id, order_item_sku, order_item_name, ";
-			$q .= "product_quantity, product_item_price, product_final_price, ";
-			$q .= "order_item_currency, order_status, product_attribute, cdate, mdate) ";
-			$q .= "VALUES ('";
-			$q .= $order_id . "', '";
-			$q .= $d["ship_to_info_id"] . "', '";
-			$q .= $vendor_id . "', '";
-			$q .= $cart[$i]["product_id"] . "', '";
-			$q .= addslashes($dboi->f("product_sku")) . "', '";
-			$q .= addslashes($dboi->f("product_name")) . "', '";
-			$q .= $cart[$i]["quantity"] . "', '";
-			$q .= $product_price . "', '";
-			$q .= $product_final_price . "', '";
-			$q .= $GLOBALS['product_currency'] . "', ";
-			$q .= "'P','";
-			// added for advanced attribute storage
-			$q .= $db->getEscaped( $description ) . "', '";
-			// END advanced attribute modifications
-			$q .= $timestamp . "','";
-			$q .= $timestamp . "'";
-			$q .= ")";
-
-			$db->query($q);
-			$db->next_record();
+			
+			$fields = array('order_id' => $order_id, 
+									'user_info_id' => $d["ship_to_info_id"],
+									'vendor_id' => $vendor_id, 
+									'product_id' => $cart[$i]["product_id"], 
+									'order_item_sku' => $dboi->f("product_sku"), 
+									'order_item_name' => $dboi->f("product_name"), 
+									'product_quantity' => $cart[$i]["quantity"], 
+									'product_item_price' => $product_price, 
+									'product_final_price' => $product_final_price, 		
+									'order_item_currency' => $GLOBALS['product_currency'],
+									'order_status' => 'P', 
+									'product_attribute' => $description, 
+									'cdate' => $timestamp, 
+									'mdate' => $timestamp
+						);
+			$db->buildQuery( 'INSERT', '#__{vm}_order_item', $fields );
+			$db->query();
 
 			// Update Stock Level and Product Sales, decrease - no matter if in stock or not!
 			$q = "UPDATE #__{vm}_product ";
-			$q .= "SET product_in_stock = product_in_stock - ".$cart[$i]["quantity"];
+			$q .= "SET product_in_stock = product_in_stock - ".(int)$cart[$i]["quantity"];
 			$q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
 			$db->query($q);
-			$db->next_record();
 
 			$q = "UPDATE #__{vm}_product ";
-			$q .= "SET product_sales= product_sales + ".$cart[$i]["quantity"];
+			$q .= "SET product_sales= product_sales + ".(int)$cart[$i]["quantity"];
 			$q .= " WHERE product_id='".$cart[$i]["product_id"]."'";
 			$db->query($q);
-			$db->next_record();
 
 		}
 
@@ -1073,10 +1071,9 @@ Order Total: '.$order_total.'
 				if( @VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL == '1' ) {
 					// Update the product stock level back to where it was.
 					$q = "UPDATE #__{vm}_product ";
-					$q .= "SET product_in_stock = product_in_stock + ".$cart[$i]["quantity"];
-					$q .= " WHERE product_id = '" . $cart[$i]["product_id"]. "'";
+					$q .= "SET product_in_stock = product_in_stock + ".(int)$cart[$i]["quantity"];
+					$q .= " WHERE product_id = '" .(int)$cart[$i]["product_id"]. "'";
 					$db->query($q);
-					$db->next_record();
 				}
 			}
 		}
@@ -1103,12 +1100,13 @@ Order Total: '.$order_total.'
 		// Payment Processors return false on any error
 		// Only completed payments return true!
 		if( $enable_processor == "Y" ) {
-			eval( "if( defined(\"".$_PAYMENT->payment_code."_VERIFIED_STATUS\")) {
-              \$d['order_status'] = ".$_PAYMENT->payment_code."_VERIFIED_STATUS;
-              \$update_order = true;
+			if( defined($_PAYMENT->payment_code.'_VERIFIED_STATUS')) {
+              	$d['order_status'] = constant($_PAYMENT->payment_code.'_VERIFIED_STATUS');
+              	$update_order = true;
             }
-            else
-              \$update_order = false;" );
+            else {
+            	$update_order = false;
+            }
 			if ( $update_order ) {
 				require_once(CLASSPATH."ps_order.php");
 				$ps_order =& new ps_order();
@@ -1148,24 +1146,21 @@ Order Total: '.$order_total.'
 		return True;
 	}
 
-	/**************************************************************************
-	** name: get_order_number()
-	** created by: gday
-	** description:  Create an order number using the session id, session
-	**               name, and the current unix timestamp.
-	** parameters:
-	** returns: unique order_number
-	***************************************************************************/
+	/**
+	 * Create an order number using the session id, session
+	 * name, and the current unix timestamp.
+	 *
+	 * @return string
+	 */
 	function get_order_number() {
-		global $sess;
+		global $auth;
 
 		/* Generated a unique order number */
 
 		$str = session_id();
-		$str .= session_name();
 		$str .= (string)time();
 
-		$order_number = md5($str);
+		$order_number = $auth['user_id'] .'_'. md5($str);
 
 		return($order_number);
 	}
@@ -1252,8 +1247,8 @@ Order Total: '.$order_total.'
 	function get_new_cart_hash() {
 
 		return md5( print_r( $_SESSION['cart'], true)
-		. mosGetParam($_REQUEST,'shipping_rate_id')
-		. mosGetParam($_REQUEST,'payment_method_id')
+		. vmGet($_REQUEST,'shipping_rate_id')
+		. vmGet($_REQUEST,'payment_method_id')
 		);
 
 	}
@@ -1381,7 +1376,7 @@ Order Total: '.$order_total.'
 		$auth = $_SESSION['auth'];
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
-		$ship_to_info_id = mosGetParam( $_REQUEST, 'ship_to_info_id');
+		$ship_to_info_id = vmGet( $_REQUEST, 'ship_to_info_id');
 		
 		
 		require_once(CLASSPATH.'ps_tax.php');
@@ -1653,7 +1648,7 @@ Order Total: '.$order_total.'
 		$mosConfig_fromname, $mosConfig_smtpauth, $mosConfig_mailer, $mosConfig_lang,
 		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost, $database;
 
-		$ps_vendor_id = mosGetParam( $_SESSION, 'ps_vendor_id', 1 );
+		$ps_vendor_id = vmGet( $_SESSION, 'ps_vendor_id', 1 );
 		$auth = $_SESSION["auth"];
 
 		require_once(CLASSPATH.'ps_product.php');
@@ -1745,7 +1740,7 @@ Order Total: '.$order_total.'
 		$payment_info_details_text = str_replace( '<br />', "\n", $payment_info_details );
 		
 		// Get the Shipping Details
-		$shipping_arr = explode("|", urldecode(mosGetParam($_REQUEST,"shipping_rate_id")) );
+		$shipping_arr = explode("|", urldecode(vmGet($_REQUEST,"shipping_rate_id")) );
 		
 		// Headers and Footers
 		// ******************************

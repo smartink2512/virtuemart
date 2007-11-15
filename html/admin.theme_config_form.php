@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2006-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2006-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$theme = mosGetParam( $_REQUEST, 'theme', 'default' );
+$theme = vmGet( $_REQUEST, 'theme', 'default' );
 $themepath = $mosConfig_absolute_path.'/components/com_virtuemart/themes/'.basename( $theme );
 
 if( !file_exists( $themepath )) {

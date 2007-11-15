@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,9 +18,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "ps_product_files.php" );
 
-$file_id= mosgetparam( $_REQUEST, 'file_id' );
-$product_id= mosgetparam( $_REQUEST, 'product_id');
-$option = empty($option)?mosgetparam( $_REQUEST, 'option', 'com_virtuemart'):$option;
+$file_id= vmGet( $_REQUEST, 'file_id' );
+$product_id= vmGet( $_REQUEST, 'product_id');
+$option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $selected_type = Array();
 
@@ -102,7 +102,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
     <tr id="filename2">
     	<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_FILES_LIST_FILENAME ?>:</td>
     	<td><?php 
-    		$downloadRootFiles = mosReadDirectory(DOWNLOADROOT);
+    		$downloadRootFiles = vmReadDirectory(DOWNLOADROOT);
     		$mappedDownloadRootFiles = array();
     		foreach( $downloadRootFiles as $file ) {
     			if( is_file(DOWNLOADROOT.$file)) {

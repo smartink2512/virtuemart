@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,9 +25,9 @@ $set = $ps_cart->reset();
 //header("Location: $loc");
 
 if( $option2 != "com_virtuemart") {
-    mosRedirect($loc); }
+    vmRedirect($loc); }
 else {
-    mosredirect( $sess->url( $_SERVER['PHP_SELF']."?page=$return&product_id=$product_id&category_id=$category_id&flypage=$flypage", false, false ));
+    vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?page=$return&product_id=$product_id&category_id=$category_id&flypage=$flypage", false, false ));
 
   // 
 }

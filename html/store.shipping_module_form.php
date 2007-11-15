@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,11 +17,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$shipping_module = mosgetparam($_REQUEST, 'shipping_module', null);
+$shipping_module = vmGet($_REQUEST, 'shipping_module', null);
 
 if( $shipping_module ) {
 	if( !include( CLASSPATH."shipping/$shipping_module" )) {
-		mosredirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules", "Could not instantiate Class $shipping_module" );
+		vmRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules", "Could not instantiate Class $shipping_module" );
 	}
 	else {
 		eval( "\$_SHIPPING = new ".basename($shipping_module,".php")."();");

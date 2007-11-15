@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,38 +16,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 
-/****************************************************************************
-*
-* CLASS DESCRIPTION
-*
-* ps_country
-*
-* The class is is used to manage the countries in your store.
-*
-* properties:
-*
-*       error - the error message returned by validation if any
-* methods:
-*       validate_add()
-*	validate_delete()
-*	validate_update()
-*       add()
-*       update()
-*       delete()
-*
-*
-*************************************************************************/
+/**
+ * The class is is used to manage the countries in your store.
+ *
+ */
 class ps_country {
-	var $classname = "ps_country";
-	var $error;
 
-	/**************************************************************************
-	** name: validate_add()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the input parameters onCountryAdd
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add($d) {
 		global $vmLogger;
 		$db = new ps_DB;
@@ -67,9 +47,8 @@ class ps_country {
 
 		if ($d["country_name"]) {
 			$q = "SELECT count(*) as rowcnt from #__{vm}_country where";
-			$q .= " country_name='" .  $d["country_name"] . "'";
-			$db->setQuery($q);
-			$db->query();
+			$q .= " country_name='" .  $db->getEscaped($d["country_name"]) . "'";
+			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
 				$vmLogger->err( "The given country name already exists." );
@@ -79,13 +58,12 @@ class ps_country {
 		return True;
 	}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the input parameters onBeforeCountryDelete
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_delete($d) {
 
 		if (!$d["country_id"]) {
@@ -97,13 +75,12 @@ class ps_country {
 		}
 	}
 
-	/**************************************************************************
-	** name: validate_update
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the input parameters onBeforeCountryUpdate
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update($d) {
 
 		if (!$d["country_name"]) {
@@ -122,13 +99,12 @@ class ps_country {
 	}
 
 
-	/**************************************************************************
-	* name: add()
-	* created by: pablo
-	* description: creates a new country record
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * creates a new country record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 
 		$db = new ps_DB;
@@ -137,10 +113,11 @@ class ps_country {
 			$d["error"] = $this->error;
 			return False;
 		}
-		$fields = array('country_name' => $d["country_name"], 
-					'zone_id' => $d["zone_id"], 
-					'country_2_code' => $d["country_2_code"], 
-					'country_3_code' => $d["country_3_code"] );
+		$fields = array('country_name' => vmGet($d,'country_name'), 
+					'zone_id' => vmRequest::getInt('zone_id'), 
+					'country_2_code' => vmGet($d,'country_2_code'), 
+					'country_3_code' => vmGet($d,'country_3_code') 
+					);
 
 		$db->buildQuery('INSERT', '#__{vm}_country', $fields );
 		if( $db->query() ) {
@@ -153,25 +130,24 @@ class ps_country {
 
 	}
 
-	/**************************************************************************
-	* name: update()
-	* created by: pablo
-	* description: updates country information
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Updates a given country record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		$db = new ps_DB;
 		$timestamp = time();
 
 		if (!$this->validate_update($d)) {
-			$d["error"] = $this->error;
 			return False;
 		}
-		$fields = array('country_name' => $d["country_name"], 
-					'zone_id' => $d["zone_id"], 
-					'country_2_code' => $d["country_2_code"], 
-					'country_3_code' => $d["country_3_code"] );
+		$fields = array('country_name' => vmGet($d,'country_name'), 
+					'zone_id' => vmRequest::getInt('zone_id'), 
+					'country_2_code' => vmGet($d,'country_2_code'), 
+					'country_3_code' => vmGet($d,'country_3_code') 
+					);
 
 		$db->buildQuery('UPDATE', '#__{vm}_country', $fields, "WHERE country_id='".(int)$d["country_id"]."'" );
 		if( $db->query() ) {
@@ -181,29 +157,33 @@ class ps_country {
 		return false;
 	}
 
-	/**************************************************************************
-	* name: delete()
-	* created by: pablo
-	* description: Should delete a country record.
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Deletes a Country
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function delete(&$d) {
 		$db = new ps_DB;
 
 		if (!$this->validate_delete($d)) {
-			$d["error"]=$this->error;
 			return False;
 		}
 		if( is_array( $d["country_id"])) {
 			foreach($d["country_id"] as $country ) {
-				$q = 'DELETE FROM #__{vm}_country WHERE country_id='.(int)$country;
-				$db->query($q);
+				$q = 'DELETE FROM #__{vm}_country WHERE country_id='.(int)$country.' LIMIT 1';
+				if( $db->query($q) !== false ) {
+						$q = 'DELETE FROM #__{vm}_state where country_id=' . (int)$country;
+						$db->query($q);
+				}
 			}
 		}
 		else {
-			$q = 'DELETE FROM #__{vm}_country WHERE country_id=' . (int)$d["country_id"];
-			$db->query($q);
+			$q = 'DELETE FROM #__{vm}_country WHERE country_id=' . (int)$d["country_id"].' LIMIT 1';
+			if( $db->query($q) !== false ) {
+					$q = 'DELETE FROM #__{vm}_state where country_id=' . (int)$d["country_id"];
+					$db->query($q);
+			}
 		}
 		return True;
 	}
@@ -220,10 +200,10 @@ class ps_country {
 			$GLOBALS['vmLogger']->err('No country was selected for this State' );
 			return False;
 		}
-		$fields = array('state_name' => $d["state_name"], 
-					'country_id' => $d["country_id"], 
-					'state_2_code' => $d["state_2_code"], 
-					'state_3_code' => $d["state_3_code"] );
+		$fields = array('state_name' => vmGet($d,'state_name'), 
+					'country_id' => vmRequest::getInt('country_id'), 
+					'state_2_code' => vmGet($d,'state_2_code'), 
+					'state_3_code' => vmGet($d,'state_3_code') );
 
 		$db->buildQuery('INSERT', '#__{vm}_state', $fields );
 		if( $db->query() ) {
@@ -247,10 +227,10 @@ class ps_country {
 			$GLOBALS['vmLogger']->err('Please select a state or country for update!');
 			return False;
 		}
-		$fields = array('state_name' => $d["state_name"], 
-					'country_id' => (int)$d["country_id"], 
-					'state_2_code' => $d["state_2_code"], 
-					'state_3_code' => $d["state_3_code"] );
+		$fields = array('state_name' => vmGet($d,'state_name'), 
+					'country_id' => vmRequest::getInt('country_id'), 
+					'state_2_code' => vmGet($d,'state_2_code'), 
+					'state_3_code' => vmGet($d,'state_3_code') );
 
 		$db->buildQuery('UPDATE', '#__{vm}_state', $fields, 'WHERE state_id='.(int)$d["state_id"] );
 		if( $db->query() ) {

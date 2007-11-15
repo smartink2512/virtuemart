@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,26 +17,22 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 
-/****************************************************************************
-*
-* CLASS DESCRIPTION
-*
-* ps_product_type
-*************************************************************************/
+/**
+ * Product Type Handling Class
+ *
+ */
 class ps_product_type {
-	var $classname = "ps_product_type";
 
-	/**************************************************************************
-	** name: validate_add()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeProductTypeAdd
+	 * @author Zdenek Dvorak
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add(&$d) {
 
-		if (!$d["product_type_name"]) {
-			$d["error"] = "ERROR:  You must enter a name for the Product Type.";
+		if (empty($d["product_type_name"])) {
+			$GLOBALS['vmLogger']->err( 'You must enter a name for the Product Type.' );
 			return False;
 		}
 		else {
@@ -44,36 +40,35 @@ class ps_product_type {
 		}
 	}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by: Zdenek Dvorak
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeProductTypeDelete
+	 * @author Zdenek Dvorak
+	 * @param int $product_type_id
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_delete( $product_type_id, &$d) {
 
 		$db = new ps_DB;
 
 		if (empty( $product_type_id)) {
-			$d["error"] = "ERROR:  Please select a Product Type to delete.";
+			$GLOBALS['vmLogger']->err( 'Please select a Product Type to delete.' );
 			return False;
 		}
 
 		return True;
 	}
 
-	/**************************************************************************
-	** name: validate_update()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeProductTypeUpdate
+	 * @author Zdenek Dvorak
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update(&$d) {
 
 		if (!$d["product_type_name"]) {
-			$d["error"] = "ERROR:  You must enter a name for the Product Type.";
+			$GLOBALS['vmLogger']->err( 'You must enter a name for the Product Type.' );
 			return False;
 		}
 		else {
@@ -81,22 +76,18 @@ class ps_product_type {
 		}
 	}
 
-
-	/**************************************************************************
-	** name: add()
-	** created by: Zdenek Dvorak
-	** description: creates a new Product Type record
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * creates a new Product Type record
+	 * @author Zdenek Dvorak
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 		$db = new ps_DB;
 
 		if ($this->validate_add($d)) {
-			foreach ($d as $key => $value) {
-				if (!is_array($value))
-				$d[$key] = addslashes($value);
-			}
+
 			// find product_type_id
 			$q  = "SELECT MAX(product_type_id) AS product_type_id FROM #__{vm}_product_type";
 			$db->query( $q );
@@ -108,21 +99,19 @@ class ps_product_type {
 			$db->query( $q );
 			$db->next_record();
 			$list_order = intval($db->f("list_order"))+1;
-
-			$q = "INSERT into #__{vm}_product_type (product_type_id, product_type_name, product_type_description, ";
-			$q .= "product_type_publish, product_type_browsepage, product_type_flypage, product_type_list_order) ";
-			$q .= "VALUES ('";
-			$q .= $product_type_id . "','";
-			$q .= $d["product_type_name"] . "','";
-			$q .= $d["product_type_description"] . "','";
 			if ($d["product_type_publish"] != "Y") {
 				$d["product_type_publish"] = "N";
 			}
-			$q .= $d["product_type_publish"] . "','";
-			$q .= $d["product_type_browsepage"] . "','";
-			$q .= $d["product_type_flypage"] . "','";
-			$q .= $list_order . "')";
-			$db->setQuery($q);
+			
+			$fields = array( 'product_type_id' => $product_type_id,
+										'product_type_name' => vmGet($d, 'product_type_name' ),
+										'product_type_description' => vmGet($d, 'product_type_description'),
+										'product_type_publish' => vmGet($d, 'product_type_publish'),
+										'product_type_browsepage' => vmGet($d, 'product_type_browsepage'),
+										'product_type_flypage' => vmGet($d, 'product_type_flypage'),
+										'product_type_list_order' => $list_order
+										);			
+			$db->buildQuery('INSERT', '#__{vm}_product_type', $fields );
 			$db->query();
 			
 			$_REQUEST['product_type_id'] = $product_type_id;
@@ -133,10 +122,13 @@ class ps_product_type {
 			$q .= "`product_id` int(11) NOT NULL,";
 			$q .= "PRIMARY KEY (`product_id`)";
 			$q .= ") TYPE=MyISAM;";
-			$db->setQuery($q);
-			$db->query();
 			
-			return $product_type_id;
+			if( $db->query() === false ) {
+				$GLOBALS['vmLogger']->err( 'Failed to create a new table for this Product Type!!');
+				return false;
+			}
+			
+			return true;
 		}
 		else {
 			return False;
@@ -144,37 +136,31 @@ class ps_product_type {
 
 	}
 
-	/**************************************************************************
-	** name: update()
-	** created by: Zdenek Dvorak
-	** description: updates Product Type information
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * updates Product Type information
+	 * @author Zdenek Dvorak
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		$db = new ps_DB;
 
-		foreach ($d as $key => $value) {
-			if (!is_array($value))
-			$d[$key] = addslashes($value);
-		}
 		if ($this->validate_update($d)) {
-			$q = "update #__{vm}_product_type SET ";
-			$q .= "product_type_id='" . $d["product_type_id"];
-			$q .= "',product_type_name='" . $d["product_type_name"];
-			$q .= "',product_type_description='" . $d["product_type_description"];
-			if (!isset($d["product_type_publish"])) {
+			if (empty($d["product_type_publish"])) {
 				$d["product_type_publish"] = "N";
 			}
-			$q .= "',product_type_publish='" . $d["product_type_publish"];
-			$q .= "',product_type_browsepage='" . $d["product_type_browsepage"];
-			$q .= "',product_type_flypage='" . $d["product_type_flypage"];
-			$q .= "',product_type_list_order='" . $d["list_order"]."'";
-			$q .= " WHERE product_type_id='" . $d["product_type_id"] . "' ";
-			$db->setQuery($q);
+			$fields = array( 
+										'product_type_name' => vmGet($d, 'product_type_name' ),
+										'product_type_description' => vmGet($d, 'product_type_description'),
+										'product_type_publish' => vmGet($d, 'product_type_publish'),
+										'product_type_browsepage' => vmGet($d, 'product_type_browsepage'),
+										'product_type_flypage' => vmGet($d, 'product_type_flypage'),
+										'product_type_list_order' => vmRequest::getInt('list_order')
+										);			
+			$db->buildQuery('UPDATE', '#__{vm}_product_type', $fields, 'WHERE product_type_id=' .(int)$d["product_type_id"] );
 			$db->query();
 
-			/* Re-Order the Product Type table IF the list_order has been changed */
+			// Re-Order the Product Type table IF the list_order has been changed
 			if( intval($d['list_order']) != intval($d['currentpos'])) {
 				$dbu = new ps_DB;
 
@@ -190,7 +176,7 @@ class ps_product_type {
 						$dbu->query("UPDATE #__{vm}_product_type SET product_type_list_order=product_type_list_order+1 WHERE product_type_id='".$db->f("product_type_id")."'");
 					}
 				}
-				/* Moved DOWN in the list order */
+				// Moved DOWN in the list order
 				else {
 
 					$q = "SELECT product_type_id FROM #__{vm}_product_type WHERE ";
@@ -204,7 +190,7 @@ class ps_product_type {
 					}
 
 				}
-			} /* END Re-Ordering */
+			} // END Re-Ordering
 
 			return True;
 		}
@@ -218,18 +204,18 @@ class ps_product_type {
 	*/
 	function delete(&$d) {
 
-		$record_id = $d["product_type_id"];
+		$record_id = (int)$d["product_type_id"];
 		require_once( CLASSPATH.'ps_product_type_parameter.php');
 		
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {
-				if( !$this->delete_record( intval($record), $d ))
+				if( !$this->delete_record( $record, $d ))
 				return false;
 			}
 			return true;
 		}
 		else {
-			return $this->delete_record( intval($record_id), $d );
+			return $this->delete_record( $record_id, $d );
 		}
 	}
 	/**
@@ -266,16 +252,12 @@ class ps_product_type {
 		return True;
 	}
 
-
-	/**************************************************************************
-	** name: product_count()
-	** created by:
-	** description: Calculates and returns number of products in
-	**              a Product Type
-	** parameters:
-	** returns:
-	***************************************************************************/
-
+	/**
+	 * Calculates and returns number of products assigned to this Product Type
+	 *
+	 * @param int $product_type_id
+	 * @return int
+	 */
 	function product_count($product_type_id) {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
@@ -288,77 +270,70 @@ class ps_product_type {
 		$q .= "AND #__{vm}_product.product_parent_id='' ";
 		//$q .= "ORDER BY product_publish DESC,product_name ";
 		$count .= $q;
-		$db->setQuery($count); $db->query();
+		$db->query($count);
 		$db->next_record();
 		return $db->f("num_rows");
 	}
 
-	/**************************************************************************
-	** name: parameter_count()
-	** created by: Zdenek Dvorak
-	** description: Calculates and returns number of parameters in given
-	**              Product Type
-	** parameters:
-	** returns:
-	***************************************************************************/
-
+	/**
+	 * Calculates and returns number of parameters in given Product Type
+	 *
+	 * @param int $product_type_id
+	 * @return int
+	 */
 	function parameter_count($product_type_id) {
 		$db = new ps_DB;
 
 		$count  = "SELECT count(*) as num_rows from #__{vm}_product_type_parameter WHERE ";
 		$q = "product_type_id='$product_type_id' ";
 		$count .= $q;
-		$db->setQuery($count); $db->query();
+		$db->query($count);
 		$db->next_record();
 		return $db->f("num_rows");
 	}
 
-	/**************************************************************************
-	** name: get_name()
-	** created by: Zdenek Dvorak
-	** description: Returns the Product Type name.
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns the Product Type name.
+	 *
+	 * @param unknown_type $product_type_id
+	 * @return unknown
+	 */
 	function get_name($product_type_id) {
 		$db = new ps_DB;
 
-		$q = "SELECT product_type_name FROM #__{vm}_product_type ";
-		$q .= "WHERE product_type_id='$product_type_id' ";
-		$db->setQuery($q);   $db->query();
-
+		$q = "SELECT product_type_name FROM #__{vm}_product_type WHERE product_type_id='$product_type_id' ";
+		
+		$db->query($q);
 		$db->next_record();
 
 		return $db->f("product_type_name");
 	}
 
-
-	/**************************************************************************
-	** name: get_description()
-	** created by: soern
-	** description: Returns the category description.
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns the Product Type Description
+	 *
+	 * @param int $product_type_id
+	 * @return string
+	 */
 	function get_description($product_type_id) {
 		$db = new ps_DB;
 
 		$q = "SELECT product_type_description FROM #__{vm}_product_type ";
 		$q .= "WHERE product_type_id='$product_type_id' ";
-		$db->setQuery($q);   $db->query();
-
+		
+		$db->query($q);
 		$db->next_record();
 
 		return $db->f("product_type_description");
 	}
 
-	/**************************************************************************
-	** name: list_order()
-	** created by: soeren
-	** description: lists all Product Type
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * lists all Product Types
+	 *
+	 * @param int $product_type_id
+	 * @param int $list_order
+	 * @return string
+	 */
 	function list_order( $product_type_id='0', $list_order=0 ) {
 
 		$db = new ps_DB;
@@ -368,39 +343,34 @@ class ps_product_type {
 		else {
 
 			$q  = "SELECT product_type_list_order,product_type_name FROM #__{vm}_product_type ";
-			$q .= "ORDER BY product_type_list_order ASC";
+			if( $product_type_id ) {
+				$q .= 'WHERE product_type_id='.$product_type_id;
+			}
+			$q .= " ORDER BY product_type_list_order ASC";
 			$db->query( $q );
 
-			$html = "<select class=\"inputbox\" name=\"list_order\">\n";
+			$array = array();
 			while( $db->next_record() ) {
-				if( $list_order == $db->f("product_type_list_order") )
-				$selected = "selected=\"selected\"";
-				else
-				$selected = "";
-				$html .= "<option value=\"".$db->f("product_type_list_order")."\" $selected>"
-				.$db->f("product_type_list_order").". ".$db->f("product_type_name")
-				."</option>\n";
+				$array[$db->f("product_type_list_order")] = $db->f("product_type_list_order").". ".$db->f("product_type_name");
 			}
-			$html .= "</select>\n";
-			return $html;
+			
+			return ps_html::selectList('list_order', $list_order, $array );
 		}
 	}
 
-	/**************************************************************************
-	** name: reorder()
-	** created by: Zdenek Dvorak
-	** description: Changes the Product Type List Order
-	** parameters: product_type_id
-	** returns: true if the category has childs; false, if not !!!!!!!!!!!!!!!!!!!
-	***************************************************************************/
+	/**
+	 * Changes the Product Type List Order
+	 *
+	 * @param array $d
+	 */
 	function reorder( &$d ) {
-		$cb = mosGetParam( $_POST, 'product_type_id', array(0) );
+		$cb = vmGet( $_POST, 'product_type_id', array(0) );
 
 		$db = new ps_DB;
 		switch( $d["task"] ) {
 			case "orderup":
 				$q = "SELECT product_type_list_order FROM #__{vm}_product_type ";
-				$q .= "WHERE product_type_id='".$cb[0]."' ";
+				$q .= "WHERE product_type_id='".(int)$cb[0]."' ";
 				$db->query($q);
 				$db->next_record();
 				$currentpos = $db->f("product_type_list_order");
@@ -418,7 +388,7 @@ class ps_product_type {
 				// Update the Product Type and decrease the list_order
 				$q = "UPDATE #__{vm}_product_type ";
 				$q .= "SET product_type_list_order='".$pred_pos."' ";
-				$q .= "WHERE product_type_id='".$cb[0]."'";
+				$q .= "WHERE product_type_id='".(int)$cb[0]."'";
 				$db->query($q);
 
 				$q = "UPDATE #__{vm}_product_type ";
@@ -430,7 +400,7 @@ class ps_product_type {
 
 			case "orderdown":
 				$q = "SELECT product_type_list_order FROM #__{vm}_product_type ";
-				$q .= "WHERE product_type_id='".$cb[0]."' ";
+				$q .= "WHERE product_type_id='".(int)$cb[0]."' ";
 				$db->query($q);
 				$db->next_record();
 				$currentpos = $db->f("product_type_list_order");
@@ -446,7 +416,7 @@ class ps_product_type {
 
 				$q = "UPDATE #__{vm}_product_type ";
 				$q .= "SET product_type_list_order='".$succ_pos."' ";
-				$q .= "WHERE product_type_id='".$cb[0]."' ";
+				$q .= "WHERE product_type_id='".(int)$cb[0]."' ";
 				$db->query($q);
 
 				$q = "UPDATE #__{vm}_product_type ";
@@ -459,13 +429,13 @@ class ps_product_type {
 
 	}
 
-	/**************************************************************************
-	** name: get_parameter_form()
-	** created by: Zdenek Dvorak
-	** description: Returns the parameter list for form (hiden items)
-	** parameters: product_type_id
-	** returns: HTML
-	***************************************************************************/
+	/**
+	 * Returns the parameter list for form (hiden items)
+	 * @author Zdenek Dvorak
+	 *
+	 * @param int $product_type_id
+	 * @return string
+	 */
 	function get_parameter_form($product_type_id='0') {
 		$db = new ps_DB;
 		$q  = "SELECT * FROM #__{vm}_product_type_parameter ";
@@ -477,38 +447,38 @@ class ps_product_type {
 			if ($db->f("parameter_type")!="B") { // not Break line
 				$item_name = "product_type_$product_type_id"."_".$db->f("parameter_name");
 				if ($db->f("parameter_multiselect")=="Y" && $db->f("parameter_values")) { // Multiple section List of values
-					$get_item_value = mosgetparam($_REQUEST, $item_name, array());
+					$get_item_value = vmGet($_REQUEST, $item_name, array());
 					foreach($get_item_value as $value) {
 						$html .= "<input type=\"hidden\" id=\"$value\" name=\"".$item_name."[]\"  value=\"".$value."\" />\n";
 					}
 					$html .= "<input type=\"hidden\" name=\"".$item_name."_comp\"  value=\"";
-					$html .= mosgetparam($_REQUEST, $item_name."_comp", "")."\" />\n";
+					$html .= vmGet($_REQUEST, $item_name."_comp", "")."\" />\n";
 				}
 				else {
 					$html .= "<input type=\"hidden\" name=\"".$item_name."\"  value=\"";
-					$html .= mosgetparam($_REQUEST, $item_name, "");
+					$html .= vmGet($_REQUEST, $item_name, "");
 					$html .= "\" />\n";
 					// comparison
 					$html .= "<input type=\"hidden\" name=\"".$item_name."_comp\"  value=\"";
-					$html .= mosgetparam($_REQUEST, $item_name."_comp", "");
+					$html .= vmGet($_REQUEST, $item_name."_comp", "");
 					$html .= "\" />\n";
 				}
 			}
 		}
 		// item for price search
-		$html .= "<input type=\"hidden\" name=\"price\" value=\"".mosgetparam($_REQUEST,"price", "")."\" />\n";
-		$html .= "<input type=\"hidden\" name=\"price_comp\" value=\"".mosgetparam($_REQUEST,"price_comp", "")."\" />\n";
+		$html .= "<input type=\"hidden\" name=\"price\" value=\"".vmGet($_REQUEST,"price", "")."\" />\n";
+		$html .= "<input type=\"hidden\" name=\"price_comp\" value=\"".vmGet($_REQUEST,"price_comp", "")."\" />\n";
 
 		return $html;
 	}
 
-	/**************************************************************************
-	** name: get_parameter_order_list()
-	** created by: Zdenek Dvorak
-	** description: Returns html code for show parameters in select ORDER BY
-	** parameters: $product_type_id, $orderby -text of selected item
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns html code for show parameters in select ORDER BY
+	 * @author Zdenek Dvorak
+	 *
+	 * @param int $product_type_id
+	 * @param string $orderby
+	 */
 	function get_parameter_order_list($product_type_id,$orderby="") {
 		$db = new ps_DB;
 		$q  = "SELECT * FROM #__{vm}_product_type_parameter ";
@@ -524,33 +494,33 @@ class ps_product_type {
 		}
 	}
 
-	/**************************************************************************
-	** name: product_in_product_type()
-	** created by: Zdenek Dvorak
-	** description: Returns true if the product is in a Product Type
-	** parameters: product_id
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns true if the product is in a Product Type
+	 * @author Zdenek Dvorak
+	 *
+	 * @param int $product_id
+	 * @return boolean
+	 */
 	function product_in_product_type($product_id) {
-		global $database;
 		$db = new ps_DB;
 		$q = "SELECT * FROM #__{vm}_product_product_type_xref WHERE product_id='$product_id'";
-		$db->setQuery( $q );	$db->query();
+		$db->query($q);
 		return $db->num_rows() > 0;
 	}
 
-	/**************************************************************************
-	** name: list_product_type()
-	** created by: Zdenek Dvorak
-	** description: Returns html code for show parameters
-	** parameters: product_id
-	** returns:
-	***************************************************************************/
+	/**
+	 * Returns html code for show parameters
+	 * @author Zdenek Dvorak
+	 *
+	 * @param int $product_id
+	 * @return string
+	 */
 	function list_product_type($product_id) {
-		global $VM_LANG, $mosConfig_live_site;
+		global $VM_LANG;
 
-		if (!$this->product_in_product_type($product_id))
-		return "";
+		if (!$this->product_in_product_type($product_id)) {
+			return "";
+		}
 
 		$dbag = new ps_DB;
 		$dba = new ps_DB;
@@ -582,16 +552,17 @@ class ps_product_type {
 			$dba->query($q.$dbag->f("product_type_id")." ORDER BY parameter_list_order");
 			$i=0;
 			while ($dba->next_record()) {
-				if ($i++ % 2)
-				$bgcolor='row0';
-				else
-				$bgcolor='row1';
+				if ($i++ % 2) {
+					$bgcolor='row0';
+				} else {
+					$bgcolor='row1';
+				}
 				$html .= "<tr class=\"$bgcolor\" height=\"18\">\n";
 				$html .= "<td width=\"30%\">".$dba->f("parameter_label");
 				$parameter_description = $dba->f("parameter_description");
 				if (!empty($parameter_description)) {
 					$html .= "&nbsp;";
-					$html .= mm_ToolTip($parameter_description, $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION);
+					$html .= vmToolTip($parameter_description, $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION);
 				}
 				$html .= "</td>\n<td>";
 				$html .= $dbp->f($dba->f("parameter_name"))." ".$dba->f("parameter_unit")."</td></tr>\n";
@@ -601,5 +572,5 @@ class ps_product_type {
 		return $html;
 	}
 }
-/** Changed Product Type - End*/
+
 ?>

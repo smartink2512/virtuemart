@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -32,11 +32,11 @@ require_once(CLASSPATH . 'ps_product_type.php' );
 $ps_product_type = new ps_product_type;
 require_once(CLASSPATH . 'ps_reviews.php' );
 
-$product_id = intval( mosgetparam($_REQUEST, "product_id", null) );
-$product_sku = $db->getEscaped( mosgetparam($_REQUEST, "sku", '' ) );
-$category_id = mosgetparam($_REQUEST, "category_id", null);
-$pop = (int)mosgetparam($_REQUEST, "pop", 0);
-$manufacturer_id = mosgetparam($_REQUEST, "manufacturer_id", null);
+$product_id = intval( vmGet($_REQUEST, "product_id", null) );
+$product_sku = $db->getEscaped( vmGet($_REQUEST, "sku", '' ) );
+$category_id = vmGet($_REQUEST, "category_id", null);
+$pop = (int)vmGet($_REQUEST, "pop", 0);
+$manufacturer_id = vmGet($_REQUEST, "manufacturer_id", null);
 $Itemid = $sess->getShopItemid();
 $db_product = new ps_DB;
 
@@ -49,7 +49,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	mosRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword=".urlencode($keyword)."&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword=".urlencode($keyword)."&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
 }
 
 if( !$perm->check("admin,storeadmin") ) {
@@ -113,7 +113,7 @@ $navigation_pathway = "";
 $navigation_childlist = "";
 $pathway_appended = false;
 
-$flypage = mosGetParam($_REQUEST, "flypage" );
+$flypage = vmGet($_REQUEST, "flypage" );
 
 // Each Product is assigned to one or more Categories, if category_id was omitted, we must fetch it here
 if (empty($category_id) || empty( $flypage ))  {

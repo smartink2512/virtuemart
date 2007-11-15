@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -35,7 +35,7 @@ class ps_coupon {
         $valid = true;
         
         /* make sure the coupon_code does not exist */
-        $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' ";
+        $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$coupon_db->getEscaped($d['coupon_code'])."' ";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
             $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS );
@@ -59,7 +59,7 @@ class ps_coupon {
         $valid = true;
         
         /* make sure the coupon_code does not exist */
-        $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$d['coupon_code']."' AND coupon_id <> '".$d['coupon_id']."'";
+        $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$coupon_db->getEscaped($d['coupon_code'])."' AND coupon_id <> '".$d['coupon_id']."'";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
             $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS );
@@ -77,8 +77,7 @@ class ps_coupon {
         
     }
     /* function to add a coupon coupon_code to the database */
-    function add_coupon_code( &$d )
-    {
+    function add_coupon_code( &$d ) {
      	global $vmLogger;
         $coupon_db =& new ps_DB;
 
@@ -86,11 +85,11 @@ class ps_coupon {
             return false;
         }
         $fields = array(
-        'coupon_code' => $d['coupon_code'],
-        'percent_or_total' => $d['percent_or_total'],
-        'coupon_type' => $d['coupon_type'],
-        'coupon_value' => (float)$d['coupon_value']
-        );
+					        'coupon_code' => vmGet($d,'coupon_code'),
+					        'percent_or_total' => strtolower($d['percent_or_total']) == 'percent' ? 'percent' : 'total',
+					        'coupon_type' => strtolower($d['coupon_type']) == 'gift' ? 'gif' : 'permanent',
+					        'coupon_value' => (float)$d['coupon_value']
+				        );
         $coupon_db->buildQuery( 'INSERT', '#__{vm}_coupons', $fields );
         if( $coupon_db->query() ) {
 	        $_REQUEST['coupon_id'] = $coupon_db->last_insert_id();
@@ -115,11 +114,11 @@ class ps_coupon {
         $coupon_db = new ps_DB;
         
         $fields = array(
-        'coupon_code' => $d['coupon_code'],
-        'percent_or_total' => $d['percent_or_total'],
-        'coupon_type' => $d['coupon_type'],
-        'coupon_value' => (float)$d['coupon_value']
-        );
+					        'coupon_code' => vmGet($d,'coupon_code'),
+					        'percent_or_total' => strtolower($d['percent_or_total']) == 'percent' ? 'percent' : 'total',
+					        'coupon_type' => strtolower($d['coupon_type']) == 'gift' ? 'gif' : 'permanent',
+					        'coupon_value' => (float)$d['coupon_value']
+				        );
         $coupon_db->buildQuery( 'UPDATE', '#__{vm}_coupons', $fields, 'WHERE coupon_id = '.(int)$d['coupon_id'] );
         if( $coupon_db->query() ) {
 	        $_REQUEST['coupon_id'] = $coupon_db->last_insert_id();
@@ -172,8 +171,8 @@ class ps_coupon {
 							+ $totals['order_shipping_tax']
 							- $totals['payment_discount'];
         }
-        $d['coupon_code'] = trim(mosGetParam( $_REQUEST, 'coupon_code' ));
-        $coupon_id = mosGetParam( $_SESSION, 'coupon_id', null );
+        $d['coupon_code'] = trim(vmGet( $_REQUEST, 'coupon_code' ));
+        $coupon_id = vmGet( $_SESSION, 'coupon_id', null );
         
         $q = 'SELECT coupon_id, coupon_code, percent_or_total, coupon_value, coupon_type FROM #__{vm}_coupons WHERE ';
         if( $coupon_id ) {

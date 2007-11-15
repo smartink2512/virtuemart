@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -26,7 +26,7 @@ Complete Package for Mambo >= 4.5.1 and Joomla 1.0.x
 You can't use this software on an earlier Mambo version than 4.5.1 (e.g. Mambo 4.5 1.0.9) 
 without running into serious problems.
 
-Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+Copyright (C) 2004-2007 soeren - All rights reserved.
 License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 VirtueMart is free software. This version may have been modified pursuant
 to the GNU General Public License, and as distributed it includes or
