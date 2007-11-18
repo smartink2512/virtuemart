@@ -34,10 +34,10 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
 	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
 
 	/** can be update and newinstall **/
-	$install_type = vmGet( $_REQUEST, 'install_type', 'newinstall' );
+	$install_type = empty($_REQUEST['install_type']) ? 'newinstall' : $_REQUEST['install_type'];
 
 	/** true or false **/
-	$install_sample_data = vmGet( $_GET, 'install_sample_data', false );
+	$install_sample_data = (bool)@$_GET['install_sample_data'];
 
 	installvirtuemart( $install_type, $install_sample_data );
 	$error = "";

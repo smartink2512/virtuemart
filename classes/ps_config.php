@@ -62,7 +62,7 @@ class ps_config {
 				$d['conf_NO_SHIPPING'] = '1';
 			}
 
-			$d['conf_PSHOP_OFFLINE_MESSAGE'] = addslashes( vmGet($d, 'conf_PSHOP_OFFLINE_MESSAGE' ));
+			$d['conf_PSHOP_OFFLINE_MESSAGE'] = vmGet($d, 'conf_PSHOP_OFFLINE_MESSAGE', '', VMREQUEST_ALLOWHTML );
 
 			/** Prevent this config setting from being changed by no-backenders  **/
 			if (!defined('_PHSHOP_ADMIN') && !stristr($my->usertype, "admin")) {

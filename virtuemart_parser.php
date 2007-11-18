@@ -4,7 +4,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * This file prepares the VirtueMart framework
 * It should be included whenever a VirtueMart function is needed
 *
-* @version $Id:virtuemart_parser.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.

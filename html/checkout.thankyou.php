@@ -25,7 +25,7 @@ $Itemid = $sess->getShopItemid();
 global $vendor_currency;
 
 // Order_id is returned by checkoutComplete function
-$order_id = $GLOBALS['vmInputFilter']->process( $vars["order_id"] );
+$order_id = $db->getEscaped($vars["order_id"] );
 
 $print = vmRequest::getInt('print', 0);
 
@@ -52,7 +52,7 @@ $q .= "AND `#__{vm}_orders`.`order_id`='$order_id' ";
 $db->query($q);
 
 if ($db->next_record()) {
-
+	
 	$tpl = new $GLOBALS['VM_THEMECLASS']();
 	$tpl->set( 'order_id', $order_id );
 	$tpl->set( 'ps_product', $ps_product );

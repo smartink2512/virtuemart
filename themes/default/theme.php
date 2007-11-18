@@ -113,7 +113,7 @@ class vmTemplate_default extends vmTemplate  {
 		$html = '';
 		$i = 0;
 		foreach( $images as $image ) { 
-			$thumbtag = ps_product::image_tag( $image->file_name, 'class="browseProductImage"', 0, 'product', $image->file_image_thumb_height, $image->file_image_thumb_width );
+			$thumbtag = ps_product::image_tag( $image->file_name, 'class="browseProductImage"', 1, 'product', $image->file_image_thumb_height, $image->file_image_thumb_width );
 			$fulladdress = $sess->url( 'index2.php?page=shop.view_images&amp;image_id='.$image->file_id.'&amp;product_id='.$product_id.'&amp;pop=1' );
 			
 			if( $this->get_cfg('useLightBoxImages', 1 )) {

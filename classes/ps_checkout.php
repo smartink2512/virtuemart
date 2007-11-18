@@ -917,14 +917,7 @@ Order Total: '.$order_total.'
 		$db->buildQuery( 'INSERT', '#__{vm}_orders', $fields );
 		$db->query();
 
-		// Get the order id just stored
-		$q = "SELECT order_id FROM #__{vm}_orders WHERE order_number = ";
-		$q .= "'" . $order_number . "'";
-
-		$db->query($q);
-		$db->next_record();
-
-		$d["order_id"] = $order_id = $db->f("order_id");
+		$d["order_id"] = $order_id = $db->last_insert_id();
 
 
 	    // Insert the initial Order History.	    

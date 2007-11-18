@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.11.2007 soeren
+# Task #1541 - Error during installation of com_virtuemart rev. 1039
+# Task #1540 - virtuemart.cfg.php - offline message, try escaping single quotes with //'
+# Task #1539 - empty thankyou page, direction to paypal nomore working after rev 1039
+
 13.11.2007 soeren
 
 + added support for "REPLACE" queries to buildQuery function
