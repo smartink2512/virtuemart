@@ -579,8 +579,8 @@ class ps_product extends vmAbstractObject {
 
 		// look if we have a price for this product
 		$q = "SELECT product_price_id, price_quantity_start, price_quantity_end FROM #__{vm}_product_price ";
-		$q .= "WHERE shopper_group_id = '" . vmRequest::getInt($d,"shopper_group_id") ."' ";
-		$q .= "AND product_id = '" . $d["product_id"] ."'";
+		$q .= "WHERE shopper_group_id=" . vmRequest::getInt('shopper_group_id');
+		$q .= ' AND product_id = ' . $d["product_id"];
 		$db->query($q);
 
 
