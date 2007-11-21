@@ -33,12 +33,17 @@ class vmImageTools {
 	function validate_image(&$d,$field_name,$table_name) {
 		global $vmLogger;
 	
-		
-		/* Generate the path to images */
+		// The commands to be executed by the process_images
+	    // function are returned as strings in an array here.
+	    if (empty($d['image_commands']) || !empty( $_REQUEST['image_commands'])) {
+	    	unset( $_REQUEST['image_commands'] );
+	        $d['image_commands'] = array();
+	    }
+		// Generate the path to images
 		$path  = IMAGEPATH;
 		$path .= $table_name . "/";
 	
-		/* Check permissions to write to destination directory */
+		// Check permissions to write to destination directory
 		// Workaround for Window$
 		if(strstr($path , ":" )) {
 			$path_begin = substr( $path, strpos( $path , ":" )+1, strlen($path));
@@ -126,13 +131,10 @@ class vmImageTools {
 		
 				if (!empty($curr_file)) {
 					
-					$delete = str_replace("\\", "/", realpath($path."/".$curr_file));
-					$d["image_commands"][] = "if( file_exists( \"$delete\" ) ) {
-												\$ret = unlink(\"$delete\");
-												}
-												else {
-													\$ret = true;
-												}";
+		            $delete = str_replace("\\", "/", realpath($path."/".$curr_file));
+		            $d["image_commands"][] = array( 'command' => 'unlink',
+	        								'param1' => $delete
+	        						);
 					
 					$vmLogger->debug( 'Preparing: delete old thumbnail image: '.$delete );
 					/* Remove the resized image if exists */
@@ -143,12 +145,9 @@ class vmImageTools {
 						$filehash = basename( $delete, ".".$pathinfo["extension"] );
 						$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
 						
-						$d["image_commands"][] = "if( file_exists(\"$resizedfilename\")) {
-													\$ret = unlink(\"$resizedfilename\");
-												}
-												else {
-													\$ret = true;
-												}";
+                		$d["image_commands"][] = array( 'command' => 'unlink',
+        									'param1' => $resizedfilename
+        								);
 						$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
 						
 					}
@@ -161,14 +160,6 @@ class vmImageTools {
 	
 		$orig_file = isset($_FILES[$field_name]["name"]) ? $_FILES[$field_name]['name'] : "";
 		$curr_file = isset($_REQUEST[$field_name."_curr"]) ? $_REQUEST[$field_name."_curr"] : "";
-		/**
-		 * The commands to be executed by the process_images
-		 * function are returned as a string here.  The
-		 * commands are EVAL commands separated by ";"
-		 */
-		if (empty($d['image_commands'])) {
-			$d['image_commands'] = array();
-		}
 	
 		/* Generate text to display in error messages */
 		if (eregi("thumb",$field_name)) {
@@ -184,13 +175,10 @@ class vmImageTools {
 			/* If there is a current image file */
 			if (!empty($curr_file)) {
 				
-				$delete = str_replace("\\", "/", realpath($path."/".$curr_file));
-				$d["image_commands"][] = "if( file_exists( \"$delete\" ) ) {
-											\$ret = unlink(\"$delete\");
-											}
-											else {
-												\$ret = true;
-											}";
+	            $delete = str_replace("\\", "/", realpath($path."/".$curr_file));
+	            $d["image_commands"][] = array( 'command' => 'unlink',
+	        								'param1' => $delete
+	        						);
 				
 				$vmLogger->debug( 'Preparing: delete old '.$image_type.' '.$delete );
 				/* Remove the resized image if exists */
@@ -201,12 +189,9 @@ class vmImageTools {
 					$filehash = basename( $delete, ".".$pathinfo["extension"] );
 					$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
 					
-					$d["image_commands"][] = "if( file_exists(\"$resizedfilename\")) {
-												\$ret = unlink(\"$resizedfilename\");
-											}
-											else {
-												\$ret = true;
-											}";
+                	$d["image_commands"][] = array( 'command' => 'unlink',
+        									'param1' => $resizedfilename
+        								);
 					$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
 					
 				}
@@ -261,10 +246,9 @@ class vmImageTools {
 			/* Command to remove old image file */
 			$delete = str_replace( "\\", "/", realpath($path)."/".$curr_file);
 			
-			$d["image_commands"][] = "if( file_exists( \"$delete\" ) ) {
-										\$ret = unlink(\"$delete\");
-									  } else { \$ret = true; }";
-			$vmLogger->debug( 'Preparing: delete old '.$image_type.' '.$delete );
+        	$d["image_commands"][] = array( 'command' => 'unlink',
+        								'param1' => $delete
+        						);
 			
 			/* Remove the resized image if exists */
 			if( PSHOP_IMG_RESIZE_ENABLE=="1" && $image_type == "thumbnail image") {
@@ -272,16 +256,23 @@ class vmImageTools {
 				$filehash = basename( $delete, ".".$pathinfo["extension"] );
 				$resizedfilename = $pathinfo["dirname"]."/resized/".$filehash."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.".".$pathinfo["extension"];
 				
-				$d["image_commands"][] = "if( file_exists(\"$resizedfilename\")) {
-											\$ret = unlink(\"$resizedfilename\");
-										  } else { \$ret = true; }";
+           		$d["image_commands"][] = array( 'command' => 'unlink',
+        								'param1' => $resizedfilename
+        							);
 				$vmLogger->debug( 'Preparing: delete resized thumbnail '.$resizedfilename );
 				
 			}
 		}
 	
 		/* Command to move uploaded file into destination directory */
-		$d["image_commands"][] = "\$ret = ps_product_files::moveUploadedFile( \"$field_name\", \"$path"."$to_file\" );";	
+	    // Command to move uploaded file into destination directory
+	    $d["image_commands"][] = array( 'command' => 'move_uploaded_file',
+	        								'param1' => $temp_file,
+	        								'param2' => $path.$to_file
+	        						);
+	    $d["image_commands"][] = array( 'command' => 'unlink',
+        								'param1' => $temp_file
+        							);
 		
 		if( empty( $d[$field_name] )) {	
 			/* Return new image file name */
@@ -293,37 +284,46 @@ class vmImageTools {
 	
 	/**
 	 * The function that safely executes $d['image_commands'] and catches errors
-	 * @static 
+	 *
 	 * @param array $d
 	 * @return boolean True when all image commands were executed successfully, false when not
 	 */
 	function process_images(&$d) {
 		global $vmLogger;
 		require_once(CLASSPATH.'ps_product_files.php');
-		
-		if (!empty($d["image_commands"])) {
+	        
+	    if (!empty($d["image_commands"])) {
 	
-			foreach ( $d['image_commands'] as $command ) {
-				$command = str_replace('\\"', '"', $command);
-				
-				$res = eval($command . ";");
-				if( $res === false ) {
-					$vmLogger->err( 'Parse Error in this command: '.$command);
-				}
-				if ($ret == false) {
-					$vmLogger->err ( 'The following image update command failed: '. $command );
-					return false;
-				}
-				else {
-					$vmLogger->debug( 'Successfully processed image command: '.$command );
-				}
+	        foreach( $d['image_commands'] as $exec ) {
+	        	switch( $exec['command'] ) {
+	        		case 'unlink':
+	        			if( file_exists( $exec['param1']) ) {
+	        				$ret = unlink( $exec['param1'] );
+	        			}
+	        			break;
+	        		case 'move_uploaded_file':
+	        			if( is_uploaded_file( $exec['param1']) ) {
+	        				$ret = move_uploaded_file( $exec['param1'], $exec['param2'] );
+	        			} else {
+	        				$ret = copy( $exec['param1'], $exec['param2'] );
+	        			}
+						@chmod( $exec['param2'], 0666 );
+	        			break;
+	        	}
 	
-			}
-			$d["image_commands"] = array();
-		}
-		return true;
+	            if ($ret == false) {
+	                $vmLogger->err ( 'The following image update command failed: '. $exec['command'] );
+	                return false;
+	            }
+	            else {
+	                $vmLogger->debug( 'Successfully processed image command: '.$exec['command'] );
+	            }
+	
+	        }
+	        $d["image_commands"] = array();
+	    }
+	    return true;
 	}
-	
 	/**
 	 * Resizes an image to a given size
 	 * 

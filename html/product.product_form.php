@@ -996,7 +996,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
         <table class="adminform">
           <tr class="row1">
 			<td style="vertical-align:top;"><br />
-			Search for Products or Categories here:
+			<label for="relatedProductSearch" style="font-weight:bold;">Search for Products or Categories here:</label>
 			<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 			</td>
 			<td><input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection);" value="&nbsp; &lt; &nbsp;" /></td>
@@ -1436,6 +1436,7 @@ var searchField = function(){
     related_products = document.adminForm.related_products;
     var search = new Ext.form.ComboBox({
         store: relds,
+        title: 'Select one or more Products',
         displayField:'product',
         typeAhead: false,
         loadingText: 'Searching...',

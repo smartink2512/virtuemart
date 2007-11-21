@@ -207,7 +207,7 @@ var submitbutton = function(pressbutton){
 		
         $bar->addNew( "new", $my_page, $VM_LANG->_CMN_NEW );
 		
-        if ($page == 'admin.country_state_list') {
+        if ($page == 'admin.country_state_list' && vmGet( $_SESSION, 'vmLayout', 'extended' ) == 'standard') {
 			// Back to the country
 			$bar->divider();
 			$href = $_SERVER['PHP_SELF']. '?option=com_virtuemart&page=admin.country_list';

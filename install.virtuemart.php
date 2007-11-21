@@ -41,7 +41,7 @@ function virtuemart_is_installed() {
 			$version_info = new mosParameters( $old_version->params );
 			include_once( $mosConfig_absolute_path.'/administrator/components/'.$option.'/version.php' );
 			$VMVERSION = new vmVersion();
-			$result = version_compare( $version_info->get( 'RELEASE' ), '1.0.3' );
+			$result = version_compare( $version_info->get( 'RELEASE' ), '1.1.0' );
 			
 			if( $result == -1 ) {
 				return false;
@@ -60,7 +60,9 @@ function virtuemart_is_installed() {
 			</p>');
 		}
 		else {
-			vmRedirect('index2.php?option=com_virtuemart');
+			header('Location: index2.php?option=com_virtuemart');
+			echo '<script type="text/javascript">document.location=\''.$GLOBALS['mosConfig_live_site'].'/administrator/index2.php?option=com_virtuemart\';</script>';
+			exit;
 		}
 	}
 	return false;

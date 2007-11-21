@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+21.11.2007 soeren
+# [# 1548] Class 'mm_InputFilter' not found
+# [# 1547] User activation link with Joomla! 1.5
+# [# 1536] Back to the country from state list not functioning properly
+
 18.11.2007 soeren
 # Task #1541 - Error during installation of com_virtuemart rev. 1039
 # Task #1540 - virtuemart.cfg.php - offline message, try escaping single quotes with //'

@@ -21,7 +21,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * The class is meant to manage shopper entries
 */
 class ps_shopper {
-	var $classname = "ps_shopper";
 
 	/**************************************************************************
 	** name: validate_add()
@@ -383,7 +382,8 @@ class ps_shopper {
 	 * @return boolean True when the registration process was successful, False when not
 	 */
 	function saveRegistration() {
-		global $database, $acl, $vmLogger, $mosConfig_useractivation, $mosConfig_allowUserRegistration;
+		global $database, $acl, $vmLogger, $mosConfig_useractivation, 
+		$mosConfig_allowUserRegistration, $mosConfig_live_site;
 
 		if ($mosConfig_allowUserRegistration=='0') {
 			mosNotAuth();
@@ -433,9 +433,12 @@ class ps_shopper {
 		$name 		= $row->name;
 		$email 		= $row->email;
 		$username 	= $row->username;
+		$component = vmIsJoomla(1.5) ? 'com_user' : 'com_registration';
+		
+		$activation_link = $mosConfig_live_site."/index.php?option=$component&task=activate&activation=".$row->activation;
 		
 		// Send the registration email
-		$this->_sendMail( $name, $email, $username, $pwd );
+		$this->_sendMail( $name, $email, $username, $pwd, $activation_link );
 
 		return true;
 	}
@@ -663,7 +666,7 @@ class ps_shopper {
 	 * @param string $username - The username of the newly created/updated user
 	 * @param string $password - The plain text password of the newly created/updated user
 	 */
-	function _sendMail($name, $email, $username, $pwd) {
+	function _sendMail($name, $email, $username, $pwd, $activation_link='') {
 		global $database, $acl, $VM_LANG;
 		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation;
 		global $mosConfig_mailfrom, $mosConfig_fromname;
@@ -671,7 +674,7 @@ class ps_shopper {
 		$subject 	= sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
 		$subject 	= vmHtmlEntityDecode($subject, ENT_QUOTES);
 		if ($mosConfig_useractivation=="1"){
-			$message = sprintf ($VM_LANG->_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $mosConfig_live_site."/index.php?option=com_registration&task=activate&activation=".$row->activation, $mosConfig_live_site, $username, $pwd);
+			$message = sprintf ($VM_LANG->_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $activation_link, $mosConfig_live_site, $username, $pwd);
 		} else {
 			$message = sprintf ($VM_LANG->_PHPSHOP_USER_SEND_REGISTRATION_DETAILS, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
 		}

@@ -356,7 +356,7 @@ class vmInputFilter {
 				$attrSubSet[1] = stripslashes($attrSubSet[1]);
 			}
 			// auto strip attr's with "javascript:
-			if (mm_InputFilter::badAttributeValue( $attrSubSet ))
+			if (vmInputFilter::badAttributeValue( $attrSubSet ))
 				continue;
 
 			// if matches user defined array
