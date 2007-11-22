@@ -2097,6 +2097,7 @@ Il nostro prodotto %s è ora disponibile e può essere acquistato seguento questo 
  Questa è un avviso unico, non riceverai nuovamente questa e-mail.';
 	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Seleziona Immagine';
 	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Prego attendere: nella pagina seguente potrai inoltrare la richiesta di avviso.';
+	var $_VM_PRODUCT_RELATED_SEARCH = 'Cerca qui prodotti e categorie:';
 }
 class phpShopLanguage extends vmLanguage { }
 

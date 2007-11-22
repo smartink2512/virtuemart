@@ -2072,6 +2072,7 @@ Our %s  is now in stock and can be purchased by following this link:
  This is a one time notice, you will not receive this e-mail again.';
 	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
 	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
+	var $_VM_PRODUCT_RELATED_SEARCH = 'Search for Products or Categories here:';
 }
 class phpShopLanguage extends vmLanguage { }
 

@@ -35,6 +35,17 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+22.11.2007 thepisu
++ Task #1533 Add Spanish and Italian states in installation SQL
++ added states for Armenia, Iran, India
++ added currency (Armenian Dram)
+^ state codes correction (2char codes were not unique) for Brazil, China, Romania (source: Wikipedia/ISO_3166-2)
+^ Task #1537 state_3_code UNIQUE KEY ? - Changed unique keys for vm_states table
+  for update please drop and re-add table; take SQL from "sql.update.VM-1.0.x_to_VM-1.1.0.sql", line 163-628
+  (the ALTER command will not work because of duplicated 2char codes)
+^ product.product_discount_form: popup calendar, updated for using vmCommonHTML::scriptTag and J1.5 compatibility
+^ product.product_form: translated string "Search for Products or Categories here:"
+
 21.11.2007 soeren
 # [# 1548] Class 'mm_InputFilter' not found
 # [# 1547] User activation link with Joomla! 1.5

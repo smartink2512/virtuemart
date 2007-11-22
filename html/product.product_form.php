@@ -996,7 +996,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
         <table class="adminform">
           <tr class="row1">
 			<td style="vertical-align:top;"><br />
-			<label for="relatedProductSearch" style="font-weight:bold;">Search for Products or Categories here:</label>
+			<?php echo $VM_LANG->_VM_PRODUCT_RELATED_SEARCH; ?>
 			<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 			</td>
 			<td><input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection);" value="&nbsp; &lt; &nbsp;" /></td>
