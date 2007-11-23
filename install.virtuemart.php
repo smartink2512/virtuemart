@@ -23,7 +23,7 @@ function virtuemart_is_installed() {
 		$database = JFactory::getDBO();
 	}
 	//add VirtueMart admin menu image
-	$database->setQuery( "UPDATE #__components SET admin_menu_img = '../administrator/components/com_virtuemart/favicon.ico' WHERE admin_menu_link = 'option=com_virtuemart'");
+	$database->setQuery( "UPDATE #__components SET admin_menu_img = '../components/com_virtuemart/shop_image/ps_image/menu_icon.png' WHERE admin_menu_link = 'option=com_virtuemart'");
 	$database->query();
 	
 	$option = 'com_virtuemart';
