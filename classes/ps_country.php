@@ -246,11 +246,17 @@ class ps_country {
 		$db = new ps_DB;
 
 		if (empty( $d['state_id'])) {
-			$$GLOBALS['vmLogger']->err('Please select a state to delete!');
+			$GLOBALS['vmLogger']->err('Please select a state to delete!');
 			return false;
 		}
-		$q = 'DELETE FROM #__{vm}_state where state_id=' . (int)$d["state_id"] . ' LIMIT 1';
-		$db->query($q);
+		if( !is_array( $d['state_id'] )) {
+			$d['state_id'] = array($d['state_id']);
+		}
+		foreach( $d['state_id'] as $state_id ) {
+			$q = 'DELETE FROM #__{vm}_state where state_id=' . (int)$state_id . ' LIMIT 1';
+			$db->query($q);
+		}
+		
 
 		return True;
 	}

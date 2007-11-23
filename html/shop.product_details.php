@@ -323,7 +323,7 @@ if( @$_REQUEST['output'] != "pdf" ) {
 }
 
 /** Ask seller a question **/
-$ask_seller_href = $sess->url( $mosConfig_live_site.'/index.php?page=shop.ask&amp;flypage='.@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id" );
+$ask_seller_href = $sess->url( $_SERVER ['PHP_SELF'].'?page=shop.ask&amp;flypage='.@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id" );
 $ask_seller_text = $VM_LANG->_VM_PRODUCT_ENQUIRY_LBL;
 $ask_seller = '<a class="button" href="'. $ask_seller_href .'">'. $ask_seller_text .'</a>';
 

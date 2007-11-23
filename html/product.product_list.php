@@ -51,8 +51,8 @@ vmCommonHTML::loadExtjs(); // Having a modal window is good
               <option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE ?></option>
           </select>
           <select class="inputbox" name="search_order">
-              <option value="<"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE ?></option>
-              <option value=">" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER ?></option>
+              <option value="&lt;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE ?></option>
+              <option value="&gt;" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_LIST_SEARCH_BY_DATE_AFTER ?></option>
           </select>
           <input type="hidden" name="option" value="com_virtuemart" />
           <input class="inputbox" type="text" size="15" name="search_date" value="<?php echo vmGet($_REQUEST, 'search_date', $nowstring) ?>" />
@@ -351,7 +351,7 @@ if ($num_rows > 0) {
 
 			$listObj->addCell( vmCommonHTML::getOrderingField( $db->f('product_list') ) );
 		}
-		$listObj->addCell( $ps_product->get_mf_name($db->f("vendor_id")) );
+		$listObj->addCell( $ps_product->get_mf_name($db->f("product_id")) );
 
 		$db_cat->query("SELECT count(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='".$db->f("product_id")."'");
 		$db_cat->next_record();

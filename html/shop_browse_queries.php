@@ -296,6 +296,7 @@ else {
 $where_clause[] = "((`product_parent_id`='0') OR (`product_parent_id`='')) ";
 if( !$perm->check("admin,storeadmin") ) {
 	$where_clause[] = "`product_publish`='Y' ";
+	$where_clause[] = "`category_publish`='Y' ";
 	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 		$where_clause[] = 'product_in_stock > 0';
 	}

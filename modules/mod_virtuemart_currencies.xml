@@ -8,8 +8,7 @@
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
     <description>Shows a list of currencies, so your customers can select a currency for the prices.<![CDATA[
-	<script src="../components/com_virtuemart/js/moo.fx/prototype.lite.js"type="text/javascript"></script>
-	<script src="../components/com_virtuemart/js/moo.fx/moo.ajax.js"type="text/javascript"></script>
+	<script src="../components/com_virtuemart/js/mootools/mootools-release-1.11.js"type="text/javascript"></script>
 	<script type="text/javascript">
 	function getCList() {
 		for (var i = 0; i < document.adminForm.elements.length; i++) {
@@ -19,16 +18,19 @@
 		}
 		return listField;
 	}
-	window.onload = function() {
+window.addEvent('domready', function() {
 		var listField = getCList();
 		
-		new ajax ('index3.php?option=com_virtuemart&page=product.ajax_tools&task=getcurrencylist&product_currency='+listField.value+'&selectSize=10&multiple=1&elementName=params%5Bproduct_currency%5D', {
-			onComplete: makeCurrencyList
-		});
+		new Ajax('index3.php', {
+			method: 'get',
+			data: { option: 'com_virtuemart', page:'product.ajax_tools', task:'getcurrencylist', no_html:1,product_currency: listField.value, selectSize: '10', multiple:'1', elementName: 'params%5Bproduct_currency%5D' },
+			update: getCList().parentNode
+		}).request();
 	}
-	function makeCurrencyList( o ) {
+);
+function makeCurrencyList( o ) {
 		var listField = getCList();
-		listField.parentNode.innerHTML = o.responseText;
+		//listField.parentNode.innerHTML = o.responseText;
 	}
 	document.adminForm.onsubmit = function() {
 		var listField = getCList();

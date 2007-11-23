@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+23.11.2007 soeren
+# fixed Currency Selector Module configuration
+# Task #1554 - Products in unpublished category are shown in search result
+# Task #1552 - Call for pricing gives 404 not found error message
+# Task #1550 - In backend Product list Manufacture column does not show other manufacturer's name
+# Task #1549 - Deleting a state give 'Country ID could not be found' error
+# Task #1547 - User activation link with Joomla! 1.5 (secondy try)
+
 22.11.2007 thepisu
 + Task #1533 Add Spanish and Italian states in installation SQL
 + added states for Armenia, Iran, India
@@ -47,9 +55,9 @@ VirtueMart 1.1.x
 ^ product.product_form: translated string "Search for Products or Categories here:"
 
 21.11.2007 soeren
-# [# 1548] Class 'mm_InputFilter' not found
-# [# 1547] User activation link with Joomla! 1.5
-# [# 1536] Back to the country from state list not functioning properly
+# Task #1548 - Class 'mm_InputFilter' not found
+# Task #1547 - User activation link with Joomla! 1.5
+# Task #1536 - Back to the country from state list not functioning properly
 
 18.11.2007 soeren
 # Task #1541 - Error during installation of com_virtuemart rev. 1039

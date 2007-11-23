@@ -90,7 +90,7 @@ while ($db->next_record()) {
 	
 	$listObj->addCell( $db->f("state_2_code") );
     
-    $listObj->addCell( $ps_html->deleteButton( "state_id", $db->f("state_id"), "stateDelete", $keyword, $limitstart ) );
+    $listObj->addCell( $ps_html->deleteButton( "state_id", $db->f("state_id"), "stateDelete", $keyword, $limitstart, "&country_id=$country_id" ) );
 		
 	$i++;
 }

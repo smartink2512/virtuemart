@@ -513,9 +513,11 @@ class ps_shopper {
 		$name = $user->get('name');
 		$email = $user->get('email');
 		$username = $user->get('username');
-
+		$component = 'com_user';
+		
+		$activation_link = $mosConfig_live_site."/index.php?option=$component&task=activate&activation=".$row->activation;
 		// Send the registration email
-		$this->_sendMail( $name, $email, $username, $password );
+		$this->_sendMail( $name, $email, $username, $password, $activation_link );
 
 		return true;
 	}

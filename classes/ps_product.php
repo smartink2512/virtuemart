@@ -2253,7 +2253,7 @@ class ps_product extends vmAbstractObject {
 			while ($db->next_record()) {
 				$array[$db->f("manufacturer_id")] = $db->f("mf_name");
 			}
-			$code .= ps_html::selectList('manufacturer_id', $manufacturer_id, $array ). "<br />\n";
+			$code = ps_html::selectList('manufacturer_id', $manufacturer_id, $array ). "<br />\n";
 			echo $code;
 		}
 		else  {

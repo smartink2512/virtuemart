@@ -9,7 +9,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2006 Soeren Eberhardt
+* @copyright (C) 2006-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
@@ -49,14 +49,14 @@ $sess = new ps_session;
 	if( !empty( $_POST )) {
 		foreach( $_POST as $key => $val ) {
 			if( $key == 'product_currency' || is_array($val) ) continue;
-			$val = htmlspecialchars($val);
+			$val = htmlspecialchars($val, ENT_QUOTES);
 			echo "<input type=\"hidden\" name=\"$key\" value=\"$val\" />\n";
 		}
 	}
 	elseif( !empty( $_GET )) {
 		foreach( $_GET as $key => $val ) {
 			if( $key == 'product_currency' || is_array($val) ) continue;
-			echo "<input type=\"hidden\" name=\"$key\" value=\"".htmlspecialchars($val)."\" />\n";
+			echo "<input type=\"hidden\" name=\"$key\" value=\"".htmlspecialchars($val, ENT_QUOTES)."\" />\n";
 		}
 	}
 	echo $ps_html->selectList( 'product_currency', $GLOBALS['product_currency'], $currencies, 1, '', 'style="width:130px;"' );

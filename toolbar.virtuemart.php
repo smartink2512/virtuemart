@@ -53,6 +53,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 	// The list of pages with their functions that allow batch deletion
 	$allowsListDeletion = Array(
 								"admin.country_list" => "countryDelete",
+								"admin.country_state_list" => "stateDelete",
 								"admin.curr_list" => "currencyDelete",
 								"admin.function_list" => "functionDelete",
 								"admin.module_list" => "moduleDelete",
