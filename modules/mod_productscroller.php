@@ -261,13 +261,13 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 				$query .= "\n ORDER BY RAND() $limit";
 				break;
 			case 'newest':
-				$query .= "\n ORDER BY cdate DESC $limit";
+				$query .= "\n ORDER BY p.cdate DESC $limit";
 				break;
 			case 'oldest':
-				$query .= "\n ORDER BY cdate ASC $limit";
+				$query .= "\n ORDER BY p.cdate ASC $limit";
 				break;
 			default:
-				$query .= "\n ORDER BY cdate DESC $limit";
+				$query .= "\n ORDER BY p.cdate DESC $limit";
 				break;
 		}
 		$database->query( $query );

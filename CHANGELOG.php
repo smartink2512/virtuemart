@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.11.2007 soeren
+# Task #1560 - Error message in product scroller module
+
 23.11.2007 soeren
 # fixed Currency Selector Module configuration
 # Task #1554 - Products in unpublished category are shown in search result

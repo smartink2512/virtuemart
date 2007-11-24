@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <mosinstall type="module">
     <name>Product Scroller</name>
-    <creationDate>March 2006</creationDate>
+    <creationDate>November 2007</creationDate>
     <author>Soeren</author>
     <copyright>GNU / GPL</copyright>
     <authorEmail>soeren|at|virtuemart.net</authorEmail>
     <authorUrl>http://virtuemart.net</authorUrl>
-    <version>1.1</version>
+    <version>1.2</version>
     <description>Scrolls your Products.</description>
      <files>
          <filename module="mod_productscroller">mod_productscroller.php</filename>
