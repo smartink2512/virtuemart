@@ -225,10 +225,11 @@ class ps_session {
 				$ssl_redirect = 1;
 			}
 		}
-		
+		// Generally redirect to HTTP (from HTTPS) when it is not necessary? (speed up the pageload)
 		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
 			&& vmIsHttpsMode() && $redirected != 1
 			&& $ssl_redirect == 0 && !vmIsAdminMode()
+			&& vmIsJoomla('1.0')
 			&& @$_REQUEST['option']=='com_virtuemart') {
 				
 			$pagearr = explode( '.', $page );
@@ -357,12 +358,13 @@ class ps_session {
 	 * @return boolean True when we have to do a SSL redirect (for Shared SSL)
 	 */
 	function check_Shared_SSL( &$ssl_domain ) {
-
+		
 		if( URL == SECUREURL ) {
 			$ssl_domain = str_replace("http://", "", URL );
 			$ssl_redirect = false;
 			return $ssl_redirect;
 		}
+		
 		// Extract the Domain Names without the Protocol
 		$domain = str_replace("http://", "", URL );
 		$ssl_domain = str_replace("https://", "", SECUREURL );

@@ -15,6 +15,6 @@ foreach($attributes as $attribute) {
         <?php echo $attribute['options_list'] ?>
         </select>
     </div>
-    <br style=\"clear:both;\" />
+    <br style="clear:both;" />
     
 <?php } ?>

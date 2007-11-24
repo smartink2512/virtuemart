@@ -36,6 +36,10 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 24.11.2007 soeren
+! Known Issue: Redirection from https => http (if "generally prevent https" enabled) not working on Joomla! 1.5 currently,
+because Joomla! 1.5 doesn't know a $mainframe->getCfg('live_site') value other than the currently requested URL
+// TODO: make "URL" constant editable in the Shop Configuration (just like the SECUREURL value)
+# fixed add-to-cart message (ajax response) on Joomla! 1.5
 # Task #1560 - Error message in product scroller module
 
 23.11.2007 soeren

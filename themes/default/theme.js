@@ -45,7 +45,7 @@ function handleAddToCart( formId, parameters ) {
 	    // Use POST
 	    method: 'post',
 	    // Send this lovely data
-	    postBody: $(formId),
+	    data: $(formId),
 	    // Handle successful response
 	    onComplete: callback,
 	    
