@@ -8,7 +8,7 @@ if($empty_cart) { ?>
         <img src="<?php echo $mm_action_url ?>components/com_virtuemart/shop_image/ps_image/menu_logo.gif" alt="VirtueMart" width="80" border="0" /></a>
         <br />
     <?php }
-    echo $VM_LANG->_PHPSHOP_EMPTY_CART ?>
+    echo $VM_LANG->_('PHPSHOP_EMPTY_CART') ?>
     </div>
 <?php } 
 else {

@@ -1,7 +1,7 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
 
 <!-- List of product reviews -->
-<h4><?php echo $VM_LANG->_PHPSHOP_REVIEWS ?>:</h4>
+<h4><?php echo $VM_LANG->_('PHPSHOP_REVIEWS') ?>:</h4>
 
 <?php 
 foreach( $reviews as $review ) { // Loop through all reviews
@@ -20,7 +20,7 @@ foreach( $reviews as $review ) { // Loop through all reviews
 	?>
 	<strong><?php echo $review["username"]."&nbsp;&nbsp;($date)" ?></strong>
 	<br />
-	<?php echo $VM_LANG->_PHPSHOP_RATE_NOM // "Rating:" ?>: 
+	<?php echo $VM_LANG->_('PHPSHOP_RATE_NOM') // "Rating:" ?>: 
 		<img src="<?php echo VM_THEMEURL ?>images/stars/<?php echo $review["user_rating"] ?>.gif" border="0" alt="<?php echo $review["user_rating"] ?>"" />
 	<br />
 	<blockquote><div><?php echo $review['comment'] ?></div></blockquote>
@@ -31,12 +31,12 @@ foreach( $reviews as $review ) { // Loop through all reviews
 }
 
 if( $num_rows < 1 ) {
-  echo $VM_LANG->_PHPSHOP_NO_REVIEWS." <br />"; // "There are no reviews for this product"
+  echo $VM_LANG->_('PHPSHOP_NO_REVIEWS')." <br />"; // "There are no reviews for this product"
   if (!empty($my->id)) {
-  	echo $VM_LANG->_PHPSHOP_WRITE_FIRST_REVIEW; // "Be the first to write a review!"
+  	echo $VM_LANG->_('PHPSHOP_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
   }
   else {
-  	echo $VM_LANG->_PHPSHOP_REVIEW_LOGIN; // Login to write a review!
+  	echo $VM_LANG->_('PHPSHOP_REVIEW_LOGIN'); // Login to write a review!
   }
 }
 if( !$showall && $num_rows >=5 ) {

@@ -73,16 +73,16 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_LBL, IMAGEURL."ps_image/inventory.gif", $modulename, "product_inventory");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_LBL'), IMAGEURL."ps_image/inventory.gif", $modulename, "product_inventory");
 
 echo '&nbsp;&nbsp;';
-if($allproducts != 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=1").'" title="'.$VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS.'">';
-echo $VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS;
+if($allproducts != 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=1").'" title="'.$VM_LANG->_('PHPSHOP_LIST_ALL_PRODUCTS').'">';
+echo $VM_LANG->_('PHPSHOP_LIST_ALL_PRODUCTS');
 if ($allproducts != 1) echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($allproducts == 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=0").'" title="'.$VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK.'">';
-echo $VM_LANG->_PHPSHOP_HIDE_OUT_OF_STOCK;
+if ($allproducts == 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=0").'" title="'.$VM_LANG->_('PHPSHOP_HIDE_OUT_OF_STOCK').'">';
+echo $VM_LANG->_('PHPSHOP_HIDE_OUT_OF_STOCK');
 if ($allproducts == 1) '</a>';
 echo '<br /><br />';
 
@@ -91,11 +91,11 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_STOCK => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_WEIGHT => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_NAME') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_SKU') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_STOCK') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_PRICE') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_WEIGHT') => '',
 				);
 $listObj->writeTableHeader( $columns );
 

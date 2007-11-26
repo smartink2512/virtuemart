@@ -246,10 +246,10 @@ class ps_payment_method extends vmAbstractObject {
 		}
 		if( $_PAYMENT->configfile_writeable() || $_PAYMENT->classname == 'ps_payment' ) {
 			$_PAYMENT->write_configuration( $d );
-			$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+			$vmLogger->info( $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS',false) );
 		}
 		else {
-			$vmLogger->err( sprintf($VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE , CLASSPATH."payment/".$_PAYMENT->classname.".cfg.php" ) );
+			$vmLogger->err( sprintf($VM_LANG->_('VM_CONFIGURATION_CHANGE_FAILURE',false) , CLASSPATH."payment/".$_PAYMENT->classname.".cfg.php" ) );
 			return false;
 		}
 

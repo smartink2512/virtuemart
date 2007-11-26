@@ -543,7 +543,7 @@ class ps_product_type {
 				}
 			}
 			$html .= "<br />\n<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n";
-			$html .= "<tr><td colspan=\"2\"><strong>".$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY. ": ".$dbag->f("product_type_name")."</strong></td></tr>\n";
+			$html .= "<tr><td colspan=\"2\"><strong>".$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETERS_IN_CATEGORY'). ": ".$dbag->f("product_type_name")."</strong></td></tr>\n";
 			// SELECT parameter value of product
 			$q2  = "SELECT * FROM #__{vm}_product_type_".$dbag->f("product_type_id");
 			$q2 .= " WHERE product_id='$product_id'";
@@ -562,7 +562,7 @@ class ps_product_type {
 				$parameter_description = $dba->f("parameter_description");
 				if (!empty($parameter_description)) {
 					$html .= "&nbsp;";
-					$html .= vmToolTip($parameter_description, $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION);
+					$html .= vmToolTip($parameter_description, $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION'));
 				}
 				$html .= "</td>\n<td>";
 				$html .= $dbp->f($dba->f("parameter_name"))." ".$dba->f("parameter_unit")."</td></tr>\n";

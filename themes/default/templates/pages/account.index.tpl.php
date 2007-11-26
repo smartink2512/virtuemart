@@ -19,7 +19,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 if ($perm->is_registered_customer($auth['user_id'])) {
 
 ?>
-  <strong><?php echo $VM_LANG->_PHPSHOP_ACC_CUSTOMER_ACCOUNT ?></strong>
+  <strong><?php echo $VM_LANG->_('PHPSHOP_ACC_CUSTOMER_ACCOUNT') ?></strong>
   <?php  echo $auth["first_name"] . " " . $auth["last_name"] . "<br />";?>
   <br />
   <table border="0" cellspacing="0" cellpadding="10" width="100%" align="center">
@@ -29,9 +29,9 @@ if ($perm->is_registered_customer($auth['user_id'])) {
       <td>
       <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.billing") ?>">
           <?php 
-          echo "<img src=\"".VM_THEMEURL."images/identity.png\" align=\"middle\" height=\"48\" width=\"48\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACCOUNT_TITLE."\" />&nbsp;";
-          echo $VM_LANG->_PHPSHOP_ACC_ACCOUNT_INFO ?></a></strong>
-          <br /><?php echo $VM_LANG->_PHPSHOP_ACC_UPD_BILL ?>
+          echo "<img src=\"".VM_THEMEURL."images/identity.png\" align=\"middle\" height=\"48\" width=\"48\" border=\"0\" alt=\"".$VM_LANG->_('PHPSHOP_ACCOUNT_TITLE')."\" />&nbsp;";
+          echo $VM_LANG->_('PHPSHOP_ACC_ACCOUNT_INFO') ?></a></strong>
+          <br /><?php echo $VM_LANG->_('PHPSHOP_ACC_UPD_BILL') ?>
       </td>
     </tr>
     <?php
@@ -42,10 +42,10 @@ if ($perm->is_registered_customer($auth['user_id'])) {
 		<tr>
 		  <td><hr />
 		  <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.shipping") ?>"><?php
-                  echo "<img src=\"".VM_THEMEURL."images/web.png\" align=\"middle\" border=\"0\" height=\"32\" width=\"32\" alt=\"".$VM_LANG->_PHPSHOP_ACC_SHIP_INFO."\" />&nbsp;&nbsp;&nbsp;";
-                  echo $VM_LANG->_PHPSHOP_ACC_SHIP_INFO ?></a></strong>
+                  echo "<img src=\"".VM_THEMEURL."images/web.png\" align=\"middle\" border=\"0\" height=\"32\" width=\"32\" alt=\"".$VM_LANG->_('PHPSHOP_ACC_SHIP_INFO')."\" />&nbsp;&nbsp;&nbsp;";
+                  echo $VM_LANG->_('PHPSHOP_ACC_SHIP_INFO') ?></a></strong>
                         <br />
-                        <?php echo $VM_LANG->_PHPSHOP_ACC_UPD_SHIP ?>
+                        <?php echo $VM_LANG->_('PHPSHOP_ACC_UPD_SHIP') ?>
                   </td>
                 </tr>
                 <?php
@@ -57,8 +57,8 @@ if ($perm->is_registered_customer($auth['user_id'])) {
       <td>
       	<hr />
       	<strong><?php 
-	      echo "<img src=\"".VM_THEMEURL."images/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_PHPSHOP_ACC_ORDER_INFO."\" />&nbsp;&nbsp;&nbsp;";
-	      echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?>
+	      echo "<img src=\"".VM_THEMEURL."images/package.png\" align=\"middle\" height=\"32\" width=\"32\" border=\"0\" alt=\"".$VM_LANG->_('PHPSHOP_ACC_ORDER_INFO')."\" />&nbsp;&nbsp;&nbsp;";
+	      echo $VM_LANG->_('PHPSHOP_ACC_ORDER_INFO') ?>
 	    </strong>
         <?php $ps_order->list_order("A", "1" ); ?>
       </td>

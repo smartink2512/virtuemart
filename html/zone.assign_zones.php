@@ -46,16 +46,16 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_ASSIGN_ZONE_PG_LBL, '', $modulename, "assign_zones");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_ASSIGN_ZONE_PG_LBL'), '', $modulename, "assign_zones");
 
 // start the list table
 $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL => '',
-					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL => '',
-					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL => ''
+					$VM_LANG->_('PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL') => '',
+					$VM_LANG->_('PHPSHOP_ZONE_ASSIGN_CURRENT_LBL') => '',
+					$VM_LANG->_('PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL') => ''
 				);
 $listObj->writeTableHeader( $columns );
 

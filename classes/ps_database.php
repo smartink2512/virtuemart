@@ -365,6 +365,24 @@ class ps_DB {
 		$this->setQuery( $q );
 
 	}
+
+	/**
+	 * @param array A list of valid (and safe!) table names
+	 * @return array An array of fields by table
+	 */
+	function getTableFields( $tables ) {
+		$result = array();
+
+		foreach ($tables as $tblval) {
+			$this->setQuery( 'SHOW FIELDS FROM ' . $tblval );
+			$fields = $this->loadObjectList();
+			foreach ($fields as $field) {
+				$result[$tblval][$field->Field] = preg_replace("/[(0-9)]/",'', $field->Type );
+			}
+		}
+
+		return $result;
+	}
 	
 	///////////////////////////////
 	// Parental Database functions

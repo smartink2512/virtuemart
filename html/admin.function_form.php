@@ -29,7 +29,7 @@ if (!empty($function_id)) {
   $db->next_record();
 }
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_FUNCTION_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_FUNCTION_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 ?> 
@@ -38,19 +38,19 @@ $formObj->startForm();
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_NAME ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_FUNCTION_FORM_NAME') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="function_name" value="<?php $db->sp("function_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_CLASS ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_FUNCTION_FORM_CLASS') ?>:</td>
       <td width="76%"> 
         <?php echo $ps_module->list_classes( 'function_class', $db->sf("function_class") ) ?>
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_METHOD ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_FUNCTION_FORM_METHOD') ?>:</td>
       <td width="76%">
       	<div id="function_method_container">
         <input type="text" class="inputbox" id="function_method" name="function_method" value="<?php $db->sp("function_method") ?>" />
@@ -58,7 +58,7 @@ $formObj->startForm();
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_PERMS ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_FUNCTION_FORM_PERMS') ?>:</td>
       <td width="76%"> 
         <?php $perm->list_perms( 'function_perms', explode( ',', $db->f("function_perms")), 5, true ) ?>
       </td>
@@ -67,7 +67,7 @@ $formObj->startForm();
       <td valign="top" colspan="2" align="right">&nbsp; </td>
     </tr>
     <tr> 
-      <td valign="top" align="right"><?php echo $VM_LANG->_PHPSHOP_FUNCTION_FORM_DESCRIPTION ?>:</td>
+      <td valign="top" align="right"><?php echo $VM_LANG->_('PHPSHOP_FUNCTION_FORM_DESCRIPTION') ?>:</td>
       <td valign="top">&nbsp;</td>
     </tr>
     <tr align="center"> 

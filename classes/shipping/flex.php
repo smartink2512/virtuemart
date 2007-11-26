@@ -188,13 +188,13 @@ class flex {
         </td>
     </tr>
 	  <tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?></strong></td>
 		<td>
 		  <?php
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("FLEX_TAX_CLASS", FLEX_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+		<td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_TAX_CLASS_TOOLTIP')) ?><td>
 	  </tr>	
 	</table>
    <?php

@@ -228,7 +228,7 @@ class ps_perm {
 		arsort( $perms );
 		
 		if( $size==1 ) {
-			$values[0] = $VM_LANG->_PHPSHOP_SELECT;
+			$values[0] = $VM_LANG->_('PHPSHOP_SELECT');
 		}
 		while( list($key,$value) = each( $perms ) ) {
 			// Display only those permission that this user can set
@@ -239,7 +239,7 @@ class ps_perm {
 		
 		if( $size > 1 ) {
 			$name .= '[]';
-			$values['none'] = $VM_LANG->_NO_RESTRICTION;
+			$values['none'] = $VM_LANG->_('NO_RESTRICTION');
 		}
 		
 		echo ps_html::selectList( $name, $group_name, $values, $size, $multi );

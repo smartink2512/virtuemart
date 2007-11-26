@@ -260,15 +260,15 @@ class ps_function extends vmAbstractObject {
 					return $funcParams;
 				}
 				else {
-					$error = $VM_LANG->_PHPSHOP_PAGE_403.'. ';
-					$error .= $VM_LANG->_PHPSHOP_FUNC_NO_EXEC . $func;
+					$error = $VM_LANG->_('PHPSHOP_PAGE_403').'. ';
+					$error .= $VM_LANG->_('PHPSHOP_FUNC_NO_EXEC') . $func;
 					$vmLogger->err( $error );
 					return false;
 				}
 			}
 			else {
-				$error = $VM_LANG->_PHPSHOP_FUNC_NOT_REG.'. ';
-				$error .= $func . $VM_LANG->_PHPSHOP_FUNC_ISNO_REG ;
+				$error = $VM_LANG->_('PHPSHOP_FUNC_NOT_REG').'. ';
+				$error .= $func . $VM_LANG->_('PHPSHOP_FUNC_ISNO_REG') ;
 				$vmLogger->err( $error );
 				return false;
 			}

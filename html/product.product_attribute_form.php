@@ -27,22 +27,22 @@ $attribute_name = vmGet($_REQUEST, 'attribute_name', 0);
 $return_args = vmGet($_REQUEST, 'return_args' );
 $option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
-$title = $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_LBL.'<br />';
+$title = $VM_LANG->_('PHPSHOP_ATTRIBUTE_FORM_LBL').'<br />';
 
 if (!empty($attribute_name)) {
   if (empty($product_parent_id)) {
-    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_('PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT') . " ";
   } 
   else {
-    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM . " ";
+    $title .= $VM_LANG->_('PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM') . " ";
   }
 } 
 else {
   if (empty($product_parent_id)) {
-    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_('PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT') . " ";
   } 
   else {
-    $title .= $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM . " ";
+    $title .= $VM_LANG->_('PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM') . " ";
   }
 }
 
@@ -66,7 +66,7 @@ $formObj->startForm();
 <table class="adminform">
 	<tr> 
 		<td width="23%" height="20" valign="top"> 
-			<div align="right"><?php echo $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_NAME ?>:</div>
+			<div align="right"><?php echo $VM_LANG->_('PHPSHOP_ATTRIBUTE_FORM_NAME') ?>:</div>
 		</td>
 		<td width="77%" height="20"> 
 			<input type="text" class="inputbox" name="attribute_name" value="<?php $db->sp("attribute_name"); ?>" size="32" maxlength="255" />
@@ -74,7 +74,7 @@ $formObj->startForm();
 	</tr>
 	<tr> 
 		<td width="23%" height="10" valign="top"> 
-			<div align="right"><?php echo $VM_LANG->_PHPSHOP_ATTRIBUTE_FORM_ORDER ?>:</div>
+			<div align="right"><?php echo $VM_LANG->_('PHPSHOP_ATTRIBUTE_FORM_ORDER') ?>:</div>
 		</td>
 		<td width="77%" height="10"> 
 			<input type="text" class="inputbox" name="attribute_list" value="<?php $db->sp("attribute_list"); ?>" size="5" maxlength="11" />

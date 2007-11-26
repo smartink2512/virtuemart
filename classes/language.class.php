@@ -35,12 +35,24 @@ class vmAbstractLanguage {
 	* @return string The value of $var (as an HTML Entitiy-encoded string if $htmlentities)
 	*/
 	function _( $var, $htmlentities=true ) {
-	    $key = strtoupper( $var );
+	    $key = '_' . strtoupper( $var );
 	    if (isset($this->$key)) {
-			if( $htmlentities )
-				return htmlentities( $this->$key, ENT_QUOTES, vmGetCharset() );
-			else
-				return $this->$key;
+			if( $htmlentities ) {
+				$text = htmlentities( $this->$key, ENT_QUOTES, $this->CHARSET );
+				// enable the use of HTML tags in language file... is this really good?
+				$text = str_replace('&lt;','<',$text);
+				$text = str_replace('&gt;','>',$text);
+				return $text;
+			} else {
+				$text = $this->$key;
+				if (strtolower(vmGetCharset())=='utf-8' && strtolower($this->CHARSET)=='iso-8859-1' && function_exists('utf8_encode')) {
+					$text = utf8_encode($text);
+				}
+				if (strtolower(vmGetCharset())=='iso-8859-1' && strtolower($this->CHARSET)=='utf-8' && function_exists('utf8_decode')) {
+					$text = utf8_decode($text);
+				}
+				return $text;
+			}
 		} 
 		elseif( $this->_debug )
 		    return "$var is missing in language file.";
@@ -105,6 +117,19 @@ class vmAbstractLanguage {
 			}
 		}
 		return true;
+	}
+	/**
+	* Check if a language variable exists in current language file
+	* @param string Name of the Class Variable
+	* @return boolean True if exists, false is non exists
+	*/
+	function exists($var) {
+	    $key = '_' . strtoupper( $var );
+	    if (isset($this->$key)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 class mosAbstractLanguage extends vmAbstractLanguage { }

@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ADD_SHIPTO_1 ." ".$VM_LANG->_PHPSHOP_ADD_SHIPTO_2 );
+$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_ADD_SHIPTO_1') ." ".$VM_LANG->_('PHPSHOP_ADD_SHIPTO_2') );
       
 $Itemid = $sess->getShopItemid();
 $next_page = vmGet( $_REQUEST, "next_page", "account.shipping" );
@@ -27,13 +27,13 @@ $user_info_id = vmGet( $_REQUEST, "user_info_id", "" );
 $pathway = array();
 if( stristr( $next_page, 'checkout' ) !== false ) {
 	// We are in the checkout process
-	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_CHECKOUT_TITLE, $sess->url( SECUREURL."index.php?page=$next_page") );
-	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL );	
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_CHECKOUT_TITLE'), $sess->url( SECUREURL."index.php?page=$next_page") );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_SHIPTO_LBL') );	
 } else {
 	// We are in account maintenance
-	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'index.php?page=account.index' ) );
-	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL, $sess->url( SECUREURL."index.php?page=$next_page") );
-	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_ACCOUNT_TITLE'), $sess->url( SECUREURL .'index.php?page=account.index' ) );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_USER_FORM_SHIPTO_LBL'), $sess->url( SECUREURL."index.php?page=$next_page") );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_SHIPTO_LBL') );
 }
 $vm_mainframe->vmAppendPathway( $pathway );
 
@@ -46,7 +46,7 @@ $tpl->set( 'vmPathway', $vmPathway );
 $missing = vmGet( $vars, 'missing' );
 
 if (!empty( $missing )) {
-    echo "<script type=\"text/javascript\">alert('".html_entity_decode( $VM_LANG->_CONTACT_FORM_NC )."'); </script>\n";
+    echo "<script type=\"text/javascript\">alert('". $VM_LANG->_('CONTACT_FORM_NC',false) ."'); </script>\n";
 }
 $db = new ps_DB;
 if (!empty($user_info_id)) {

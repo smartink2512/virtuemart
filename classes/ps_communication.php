@@ -34,12 +34,12 @@ class ps_communication {
 		global $vmLogger, $VM_LANG;
 
 		if (empty($d['sender_name']) ) {
-			$vmLogger->err( $VM_LANG->_CONTACT_FORM_NC );
+			$vmLogger->err( $VM_LANG->_('CONTACT_FORM_NC',false) );
 			return false;
 		}
 
 		if (empty($d['sender_mail']) || empty($d['recipient_mail'])) {
-			$vmLogger->err( $VM_LANG->_EMAIL_ERR_NOINFO );
+			$vmLogger->err( $VM_LANG->_('EMAIL_ERR_NOINFO',false) );
 			return false;
 		}
 
@@ -47,12 +47,12 @@ class ps_communication {
 
 		// probably a spoofing attack
 		if (!$validate) {
-			$vmLogger->err( 'Hash not valid - '.$VM_LANG->_NOT_AUTH );
+			$vmLogger->err( 'Hash not valid - '.$VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 
 		if (!$_SERVER['REQUEST_METHOD'] == 'POST' ) {
-			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 
@@ -70,7 +70,7 @@ class ps_communication {
 		foreach ($_POST as $k => $v){
 			foreach ($badStrings as $v2) {
 				if (strpos( $v, $v2 ) !== false) {
-					$vmLogger->err( $VM_LANG->_NOT_AUTH );
+					$vmLogger->err( $VM_LANG->_('NOT_AUTH',false) );
 					return false;
 				}
 			}
@@ -91,7 +91,7 @@ class ps_communication {
 		$sessioncookie 		= vmGet( $_COOKIE, 'virtuemart', null );
 
 		if ( strlen($sessioncookie) < 16 || $sessioncookie == '-') {
-			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 
@@ -103,18 +103,18 @@ class ps_communication {
 		}
 
 		if ( (!$email&&!$sender_mail) || (!$text&&!$message)  ) {
-			$vmLogger->err( $VM_LANG->_CONTACT_FORM_NC );
+			$vmLogger->err( $VM_LANG->_('CONTACT_FORM_NC',false) );
 			return false;
 		}
 		if( !empty( $email )) {
 			if( ps_communication::is_email( $email ) == false ) {
-				$vmLogger->err( $VM_LANG->_REGWARN_MAIL );
+				$vmLogger->err( $VM_LANG->_('REGWARN_MAIL',false) );
 				return false;
 			}
 		}
 		if( !empty($sender_mail)) {
 			if( !ps_communication::is_email( $sender_mail ) || !ps_communication::is_email( $recipient_mail ) ) {
-				$vmLogger->err( $VM_LANG->_EMAIL_ERR_NOINFO );
+				$vmLogger->err( $VM_LANG->_('EMAIL_ERR_NOINFO',false) );
 				return false;
 			}
 		}
@@ -132,11 +132,11 @@ class ps_communication {
 		$q='SELECT * FROM #__{vm}_product WHERE product_id='.$product_id.' AND product_publish=\'Y\'';
 		$db->query($q);
 		if ( !$db->next_record() ) {
-			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 		if ($db->f("product_sku") <> @$d["product_sku"] ) {
-			$vmLogger->err( $VM_LANG->_NOT_AUTH );
+			$vmLogger->err( $VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 		
@@ -155,9 +155,9 @@ class ps_communication {
 		$shopper_name = $d["name"];
 		$subject_msg = $d["text"];
 		
-		$shopper_subject = sprintf( $VM_LANG->_VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT, $dbv->f("vendor_name"));
+		$shopper_subject = sprintf( $VM_LANG->_('VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT'), $dbv->f("vendor_name"));
 				
-		$shopper_msg = str_replace( '{vendor_name}', $dbv->f("vendor_name"), $VM_LANG->_VM_ENQUIRY_SHOPPER_EMAIL_MESSAGE );
+		$shopper_msg = str_replace( '{vendor_name}', $dbv->f("vendor_name"), $VM_LANG->_('VM_ENQUIRY_SHOPPER_EMAIL_MESSAGE') );
 		$shopper_msg = str_replace( '{product_name}', $db->f("product_name"), $shopper_msg );
 		$shopper_msg = str_replace( '{product_sku}', $db->f("product_sku"), $shopper_msg );
 		$shopper_msg = str_replace( '{product_url}', $product_url, $shopper_msg );
@@ -166,9 +166,9 @@ class ps_communication {
 		
 		//
 		
-		$vendor_subject = sprintf( $VM_LANG->_VM_ENQUIRY_VENDOR_EMAIL_SUBJECT, $dbv->f("vendor_name"), $db->f("product_name"));
+		$vendor_subject = sprintf( $VM_LANG->_('VM_ENQUIRY_VENDOR_EMAIL_SUBJECT'), $dbv->f("vendor_name"), $db->f("product_name"));
 		
-		$vendor_msg = str_replace( '{shopper_name}', $shopper_name, $VM_LANG->_VM_ENQUIRY_VENDOR_EMAIL_MESSAGE );
+		$vendor_msg = str_replace( '{shopper_name}', $shopper_name, $VM_LANG->_('VM_ENQUIRY_VENDOR_EMAIL_MESSAGE') );
 		$vendor_msg = str_replace( '{shopper_message}', $subject_msg, $vendor_msg );
 		$vendor_msg = str_replace( '{shopper_email}', $shopper_email, $vendor_msg );
 		$vendor_msg = str_replace( '{product_name}', $db->f("product_name"), $vendor_msg );
@@ -262,19 +262,19 @@ class ps_communication {
     
     <table border="0" cellspacing="2" cellpadding="1" width="80%">
       <tr>
-        <td>'.$VM_LANG->_EMAIL_FRIEND_ADDR.'</td>
+        <td>'.$VM_LANG->_('EMAIL_FRIEND_ADDR').'</td>
         <td><input type="text" name="recipient_mail" size="50" value="'.(!empty($recipient_mail)?$recipient_mail:'').'" /></td>
       </tr>
       <tr>
-        <td>'.$VM_LANG->_EMAIL_YOUR_NAME.'</td>
+        <td>'.$VM_LANG->_('EMAIL_YOUR_NAME').'</td>
         <td><input type="text" name="sender_name" size="50" value="'.(!empty($sender_name)?$sender_name:$my->name).'" /></td>
       </tr>
       <tr>
-        <td>'.$VM_LANG->_EMAIL_YOUR_MAIL.'</td>
+        <td>'.$VM_LANG->_('EMAIL_YOUR_MAIL').'</td>
         <td><input type="text" name="sender_mail" size="50" value="'.(!empty($sender_mail)?$sender_mail:$my->email).'" /></td>
       </tr>
       <tr>
-        <td colspan="2">'.$VM_LANG->_VM_RECOMMEND_FORM_MESSAGE.'</td>
+        <td colspan="2">'.$VM_LANG->_('VM_RECOMMEND_FORM_MESSAGE').'</td>
       </tr>
       <tr>
         <td colspan="2">
@@ -284,7 +284,7 @@ class ps_communication {
         echo stripslashes(str_replace( array('\r', '\n' ), array("\r", "\n" ), $message ));
     }
     else {
-        $msg = sprintf($VM_LANG->_VM_RECOMMEND_MESSAGE, $vendor_store_name, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
+        $msg = sprintf($VM_LANG->_('VM_RECOMMEND_MESSAGE'), $vendor_store_name, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
         echo shopMakeHtmlSafe(stripslashes( str_replace( 'index2.php', 'index.php', $msg )));
     }
 
@@ -299,8 +299,8 @@ class ps_communication {
     <input type="hidden" name="'.vmCreateHash().'" value="1" />
     <input type="hidden" name="Itemid" value="'.$sess->getShopItemid().'" />
     <input type="hidden" name="func" value="recommendProduct" />
-    <input class="button" type="submit" name="submit" value="'.$VM_LANG->_PHPSHOP_SUBMIT.'" />
-    <input class="button" type="button" onclick="window.close();" value="'.$VM_LANG->_CMN_CANCEL.'" />
+    <input class="button" type="submit" name="submit" value="'.$VM_LANG->_('PHPSHOP_SUBMIT').'" />
+    <input class="button" type="button" onclick="window.close();" value="'.$VM_LANG->_('CMN_CANCEL').'" />
     </form>
     ';
   }
@@ -311,7 +311,7 @@ class ps_communication {
     if (!$this->validate( $d )) {
         return false;
     }
-    $subject = sprintf( $VM_LANG->_VM_RECOMMEND_SUBJECT, $vendor_store_name );
+    $subject = sprintf( $VM_LANG->_('VM_RECOMMEND_SUBJECT'), $vendor_store_name );
     $msg = vmGetUnEscaped(str_replace( array('\r', '\n' ), array("\r", "\n" ), $d['recommend_message'] ));
     $send = vmMail($d['sender_mail'], 
                    $d['sender_name'],
@@ -321,10 +321,10 @@ class ps_communication {
                   );
     
     if ($send) {
-        $vmLogger->info( $VM_LANG->_VM_RECOMMEND_DONE );
+        $vmLogger->info( $VM_LANG->_('VM_RECOMMEND_DONE',false) );
     }
     else {
-        $vmLogger->warning( $VM_LANG->_VM_RECOMMEND_FAILED );
+        $vmLogger->warning( $VM_LANG->_('VM_RECOMMEND_FAILED',false) );
         return false;
     }
     

@@ -69,7 +69,7 @@ elseif( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY
             
     ?> 
             <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="Success" border="0" />
-            <h2><?php echo $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS ?></h2>
+            <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS') ?></h2>
         <?php
         }
         elseif( $accept == "0" ) {
@@ -92,7 +92,7 @@ elseif( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY
             
     ?> 
             <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-            <h2><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?></h2>
+            <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?></h2>
         <?php
             switch (urldecode($_REQUEST['reason'])) {
 
@@ -112,19 +112,19 @@ elseif( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY
         ?>
         <br />
         <p><a href="<?php @$sess->purl( SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=$order_id" ) ?>">
-           <?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?></a>
+           <?php echo $VM_LANG->_('PHPSHOP_ORDER_LINK') ?></a>
         </p>
         <?php
       }
       else {
         ?>
         <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (Order not found)</span><?php
+        <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?> (Order not found)</span><?php
       }
   }
 else{
         ?>
         <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (MD5 Check Failure)</span><?php
+        <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?> (MD5 Check Failure)</span><?php
   }
   ?>

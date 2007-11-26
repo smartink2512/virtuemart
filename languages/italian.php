@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 class vmLanguage extends vmAbstractLanguage {
+	var $CHARSET = 'ISO-8859-1';
 	var $_PHPSHOP_MENU = 'Menu';
 	var $_PHPSHOP_CATEGORY = 'Categoria';
 	var $_PHPSHOP_CATEGORIES = 'Categorie';
@@ -1379,7 +1380,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL = 'Mostra l\'etichetta prezzo per imballaggio?';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'Quando selezionato, l\'etichetta prezzo è derivata dall\'unità del prodotto e dal valore dell\'imballaggio:<br />
         <strong>Prezzo per Unità (10 pezzi)</strong><br />
-        Quando non selezionato, l\'etichetta prezzo è quella usuale: <strong>Prezzo: €xx.xx</strong>';
+        Quando non selezionato, l\'etichetta prezzo è quella usuale: <strong>Prezzo: € xx.xx</strong>';
 	var $_PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS = 'ulteriori Impostazioni Base';
 	var $_PHPSHOP_ADMIN_CFG_CORE_SETTINGS = 'Impostazioni Base';
 	var $_PHPSHOP_ADMIN_CFG_FRONTEND_FEATURES = 'Opzioni Frontend';
@@ -1892,8 +1893,8 @@ Un account ti permette di tornare in questo negozio e vedere tutti gli ordini ch
 	var $_VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP = 'Questa è la lunghezza massima della descrizione del prodotto, per ogni oggetto.';
 	var $_VM_ADMIN_CFG_FEED_TITLE_TIP = 'Titolo del feed (il segnaposto {storename} indica il nome del negozio)';
 	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP = 'Titolo dei feed di categoria ({catname} è il segnaposto per il nome della categoria, {storename} indica il nome del negozio)';
-	var $VM_ADMIN_CFG_FEED_TITLE = 'Titolo del feed';
-	var $VM_ADMIN_CFG_FEED_TITLE_CATEGORIES = 'Titolo dei feed di categoria';
+	var $_VM_ADMIN_CFG_FEED_TITLE = 'Titolo del feed';
+	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES = 'Titolo dei feed di categoria';
 	var $_VM_FEED_SUBSCRIBE_TITLE = 'Sottoscrivi il feed RSS degli ultimi prodotti!';
 	var $_VM_FEED_SUBSCRIBE_TOCATEGORY_TITLE = 'Sottoscrivi il feed RSS degli ultimi prodotti di questa categoria!';
 	var $_VM_FEDEX_ACCOUNT_SETTINGS = 'Impostazioni Account FedEx';

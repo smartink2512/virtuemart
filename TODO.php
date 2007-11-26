@@ -27,7 +27,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 ##################
 
 See Bugtracker:
-http://virtuemart.net/index.php?option=com_flyspray&Itemid=91
+http://dev.virtuemart.net/cb/proj/tracker.do?proj_id=1
 
 
  FEATURES TO BE IMPLEMENTED

@@ -97,7 +97,7 @@ if ( $show_listall == 'yes' ) { ?>
     <tr> 
       <td colspan="2"><br />
           <a href="<?php $sess->purl($mm_action_url."index.php?page=shop.browse") ?>">
-          <?php echo $VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS ?>
+          <?php echo $VM_LANG->_('PHPSHOP_LIST_ALL_PRODUCTS') ?>
           </a>
       </td>
     </tr>
@@ -111,22 +111,22 @@ if ( $show_productsearch == 'yes' ) { ?>
   <tr> 
     <td colspan="2">
 	  <hr />
-      <label for="shop_search_field"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_SEARCH_LBL ?></label>
+      <label for="shop_search_field"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_SEARCH_LBL') ?></label>
       <form action="<?php echo $mm_action_url."index.php" ?>" method="get">
-        <input id="shop_search_field" title="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" class="inputbox" type="text" size="12" name="keyword" />
-        <input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>" />
+        <input id="shop_search_field" title="<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TITLE') ?>" class="inputbox" type="text" size="12" name="keyword" />
+        <input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TITLE') ?>" />
 		<input type="hidden" name="Itemid" value="<?php echo intval(@$_REQUEST['Itemid']) ?>" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="page" value="shop.browse" />
 	  </form>
         <br />
         <a href="<?php echo $sess->url($mm_action_url."index.php?option=com_virtuemart&page=shop.search") ?>">
-            <?php echo $VM_LANG->_PHPSHOP_ADVANCED_SEARCH ?>
+            <?php echo $VM_LANG->_('PHPSHOP_ADVANCED_SEARCH') ?>
         </a><?php /** Changed Product Type - Begin */
 	if ( $show_product_parameter_search == 'yes' ) { ?>
         <br />
-        <a href="<?php echo $sess->url($mm_action_url."index.php?option=com_virtuemart&page=shop.parameter_search") ?>" title="<?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH ?>">
-            <?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH ?>
+        <a href="<?php echo $sess->url($mm_action_url."index.php?option=com_virtuemart&page=shop.parameter_search") ?>" title="<?php echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') ?>">
+            <?php echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') ?>
         </a>
 <?php } /** Changed Product Type - End */ ?>
         <hr />
@@ -147,7 +147,7 @@ if ($perm->check("admin,storeadmin")
     <tr> 
       <td colspan="2">
       	<a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index&pshop_mode=admin") ?>">
-      	<?php echo $VM_LANG->_PHPSHOP_ADMIN_MOD; ?>
+      	<?php echo $VM_LANG->_('PHPSHOP_ADMIN_MOD'); ?>
       	</a>
       </td>
     </tr>
@@ -159,7 +159,7 @@ if ($perm->is_registered_customer($auth["user_id"]) && $show_accountlink == 'yes
   ?> 
     <tr> 
       <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=account.index");?>">
-      <?php echo $VM_LANG->_PHPSHOP_ACCOUNT_TITLE ?></a></td>
+      <?php echo $VM_LANG->_('PHPSHOP_ACCOUNT_TITLE') ?></a></td>
     </tr><?php 
 }
 
@@ -187,7 +187,7 @@ if ( $show_login_form == "yes" ) {
 	  <td colspan="2" valign="top">
 		<div align="left" style="margin: 0px; padding: 0px;">
 		  <form action="<?php echo $action ?>" method="post" name="login" id="login">
-			<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_BUTTON_LOGOUT ?>" /><br /><hr />
+			<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_('BUTTON_LOGOUT') ?>" /><br /><hr />
 			<input type="hidden" name="op2" value="logout" />
 			<input type="hidden" name="return" value="<?php echo $return ?>" />
 			<input type="hidden" name="lang" value="english" />
@@ -231,14 +231,14 @@ if ( $show_login_form == "yes" ) {
 		<tr>
 		  <td colspan="2" align="left" valign="top" style="margin: 0px; padding: 0px;">
 			<form action="<?php echo $action ?>" method="post" name="login" id="login">
-			<label for="username_field"><?php echo $VM_LANG->_USERNAME ?></label><br/>
+			<label for="username_field"><?php echo $VM_LANG->_('USERNAME') ?></label><br/>
 			<input class="inputbox" type="text" id="username_field" size="12" name="username" />
 		  <br/>
-			<label for="password_field"><?php echo $VM_LANG->_PASSWORD ?></label><br/>
+			<label for="password_field"><?php echo $VM_LANG->_('PASSWORD') ?></label><br/>
 			<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 			<?php if( @VM_SHOW_REMEMBER_ME_BOX == '1' ) : ?>
 			<br />
-			<label for="remember_login"><?php echo $VM_LANG->_REMEMBER_ME ?></label>
+			<label for="remember_login"><?php echo $VM_LANG->_('REMEMBER_ME') ?></label>
 			<input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
 			<?php else : ?>
 			<br />
@@ -247,7 +247,7 @@ if ( $show_login_form == "yes" ) {
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="<?php echo $return ?>" name="return" />
 		  	<br/>
-			<input type="submit" value="<?php echo $VM_LANG->_BUTTON_LOGIN ?>" class="button" name="Login" />
+			<input type="submit" value="<?php echo $VM_LANG->_('BUTTON_LOGIN') ?>" class="button" name="Login" />
 			<?php
 			if( vmIsJoomla(1.5) ) {
 				$validate = JUtility::getToken();
@@ -266,23 +266,23 @@ if ( $show_login_form == "yes" ) {
 		<tr>
 		  <td colspan="2">
 			<a href="<?php echo $reset ?>">
-			<?php echo $VM_LANG->_LOST_PASSWORD; ?>
+			<?php echo $VM_LANG->_('LOST_PASSWORD'); ?>
 			</a>
 		  </td>
 		</tr>
 		<?php if( $remind_url ) : ?>
 		<tr>
 		  <td colspan="2">
-			<a href="<?php echo $remind_url ?>"><?php echo $VM_LANG->_FORGOT_YOUR_USERNAME ?></a>
+			<a href="<?php echo $remind_url ?>"><?php echo $VM_LANG->_('FORGOT_YOUR_USERNAME') ?></a>
 		  </td>
 		</tr>
 		<?php endif; ?>
 		<?php if( $mosConfig_allowUserRegistration == '1' ) : ?>
 			<tr>
 			  <td colspan="2">
-				<?php echo $VM_LANG->_NO_ACCOUNT; ?>
+				<?php echo $VM_LANG->_('NO_ACCOUNT'); ?>
 				<a href="<?php $sess->purl( SECUREURL.'index.php?option=com_virtuemart&amp;page=shop.registration' ); ?>">
-				<?php echo $VM_LANG->_CREATE_ACCOUNT; ?>
+				<?php echo $VM_LANG->_('CREATE_ACCOUNT'); ?>
 				</a>
 			  </td>
 			</tr>
@@ -302,7 +302,7 @@ if (ENABLE_DOWNLOADS == '1') { ?>
   <tr> 
     <td colspan="2">
         <a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=shop.downloads");?>">
-        <?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_TITLE ?>
+        <?php echo $VM_LANG->_('PHPSHOP_DOWNLOADS_TITLE') ?>
         </a>
     </td>
   </tr><?php
@@ -322,7 +322,7 @@ if (USE_AS_CATALOGUE != '1' && $show_minicart == 'yes'  && !$db->f("published") 
 	        $class_att = 'class="'. $class_mainlevel .'"';
 	        $href = $sess->url($mm_action_url."index.php?page=shop.cart");
 	        $href2 = $sess->url($mm_action_url."index2.php?page=shop.cart");
-	        $text = $VM_LANG->_PHPSHOP_CART_SHOW;
+	        $text = $VM_LANG->_('PHPSHOP_CART_SHOW');
 	        if( $useGreyBox_cartlink ) {
 	        	echo vmCommonHTML::getGreyboxPopUpLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
 	        }

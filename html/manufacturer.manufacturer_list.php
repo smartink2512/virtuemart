@@ -60,7 +60,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_MANUFACTURER_LIST_LBL, IMAGEURL."ps_image/manufacturer.gif", $modulename, "manufacturer_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_LBL'), IMAGEURL."ps_image/manufacturer.gif", $modulename, "manufacturer_list");
 
 // start the list table
 $listObj->startTable();
@@ -69,9 +69,9 @@ $listObj->startTable();
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
 					'ID' => 'width="5%"',
-					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME => 'width="45%"',
-					$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN => 'width="45%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME') => 'width="45%"',
+					$VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_ADMIN') => 'width="45%"',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -97,7 +97,7 @@ while ($db->next_record()) {
 				. "</a><br />";
 	$listObj->addCell( $tmp_cell );
 	
-    $tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=$modulename.manufacturer_form&manufacturer_id=" . $db->f("manufacturer_id")) ."\">".$VM_LANG->_PHPSHOP_UPDATE ."</a>";
+    $tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF']."?page=$modulename.manufacturer_form&manufacturer_id=" . $db->f("manufacturer_id")) ."\">".$VM_LANG->_('PHPSHOP_UPDATE') ."</a>";
     $listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "manufacturer_id", $db->f("manufacturer_id"), "manufacturerDelete", $keyword, $limitstart ) );

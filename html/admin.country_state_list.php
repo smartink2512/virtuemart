@@ -28,7 +28,7 @@ if( empty($country_id))
 
 $db->query( "SELECT country_name FROM #__{vm}_country WHERE country_id='$country_id'");
 $db->next_record();
-$title = $VM_LANG->_PHPSHOP_STATE_LIST_LBL." ".$db->f("country_name");
+$title = $VM_LANG->_('PHPSHOP_STATE_LIST_LBL')." ".$db->f("country_name");
 
 $q  = "SELECT SQL_CALC_FOUND_ROWS * FROM #__{vm}_state ";
  
@@ -63,10 +63,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
-					$VM_LANG->_PHPSHOP_STATE_LIST_NAME => "",
-					$VM_LANG->_PHPSHOP_STATE_LIST_3_CODE => "",
-					$VM_LANG->_PHPSHOP_STATE_LIST_2_CODE => "",
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_STATE_LIST_NAME') => "",
+					$VM_LANG->_('PHPSHOP_STATE_LIST_3_CODE') => "",
+					$VM_LANG->_('PHPSHOP_STATE_LIST_2_CODE') => "",
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

@@ -31,7 +31,7 @@ if( !empty($addtocart_link) ) {
     <input type="hidden" name="set_price[]" value="" />
     <input type="hidden" name="adjust_price[]" value="" />
     <input type="hidden" name="master_product[]" value="" />
-    <input type="submit" class="addtocart_button_module" value="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" title="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" />
+    <input type="submit" class="addtocart_button_module" value="<?php echo $VM_LANG->_('PHPSHOP_CART_ADD_TO') ?>" title="<?php echo $VM_LANG->_('PHPSHOP_CART_ADD_TO') ?>" />
     </form>
 	<br />
 	<?php

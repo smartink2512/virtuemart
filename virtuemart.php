@@ -64,7 +64,7 @@ else {
 
 		if( !$pagePermissionsOK && defined('_VM_PAGE_NOT_AUTH') ) {
 			$page = 'checkout.login_form';
-			echo '<br/><br/>'.$VM_LANG->_DO_LOGIN.'<br/><br/>';
+			echo '<br/><br/>'.$VM_LANG->_('DO_LOGIN').'<br/><br/>';
 		}
 		elseif( !$pagePermissionsOK && defined('_VM_PAGE_NOT_FOUND') ) {
 			$page = HOMEPAGE;
@@ -213,7 +213,7 @@ else {
 	        include( PAGEPATH.'shop.index.php');
 	    }
 	    if ( !empty($mosConfig_caching) && $vmDoCaching) {
-	        echo '<span class="small">'.$VM_LANG->_LAST_UPDATED.': '.strftime( $vendor_date_format ).'</span>';
+	        echo '<span class="small">'.$VM_LANG->_('LAST_UPDATED').': '.strftime( $vendor_date_format ).'</span>';
 	    }
 	    
 	    echo "\n<div id=\"statusBox\" style=\"text-align:center;display:none;visibility:hidden;\"></div></div>\n";

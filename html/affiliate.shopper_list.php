@@ -17,9 +17,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 ?>
-<h2><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_MOD ?></h2>
+<h2><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_MOD') ?></h2>
 
-<?php   search_header($VM_LANG->_PHPSHOP_SHOPPER_LIST_LBL, $modulename, "shopper_list"); 
+<?php   search_header($VM_LANG->_('PHPSHOP_SHOPPER_LIST_LBL'), $modulename, "shopper_list"); 
   // Enable the multi-page search result display
   $limitstart= vmGet( $_REQUEST, 'limitstart', 0 );
 
@@ -63,16 +63,16 @@ mm_showMyFileName( __FILE__ );
   $num_rows = $db->f("num_rows");
 
  if ($num_rows == 0) {
-     echo $VM_LANG->_PHPSHOP_NO_SEARCH_RESULT;
+     echo $VM_LANG->_('PHPSHOP_NO_SEARCH_RESULT');
  }
  else {
 
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr> 
-    <td width="23%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_USERNAME ?></td>
-    <td width="50%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?></td>
-    <td width="27%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_GROUP ?></td>
+    <td width="23%"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_USERNAME') ?></td>
+    <td width="50%"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?></td>
+    <td width="27%"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_GROUP') ?></td>
   </tr>
 <?php
 $db->query($list);

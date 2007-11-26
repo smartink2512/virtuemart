@@ -53,7 +53,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_MODULE_LIST_LBL, IMAGEURL."ps_image/modules.gif", "admin", "module_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_MODULE_LIST_LBL'), IMAGEURL."ps_image/modules.gif", "admin", "module_list");
 
 // start the list table
 $listObj->startTable();
@@ -61,7 +61,7 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => 'width="3%"',
 					'<input type="checkbox" name="toggle" value="" onclick="checkAll('.count($db->record).')" />' => 'width="3%"',
-					$VM_LANG->_PHPSHOP_MODULE_LIST_NAME => 'width="20%"'
+					$VM_LANG->_('PHPSHOP_MODULE_LIST_NAME') => 'width="20%"'
 				);
 $usergroups = $vmUserGroup->get_groups();
 
@@ -71,12 +71,12 @@ while($usergroups->next_record()) {
 }
 $columns['none'] = 'width="5%"';
 $usergroups->reset();
-$columns['<a href="javascript: document.adminForm.func.value = \'setModulePermissions\'; saveorder( '.(count($db->record)-1).' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="' . $VM_LANG->_SAVE_PERMISSIONS . '" align="left"/>' . $VM_LANG->_SAVE_PERMISSIONS . '</a>'] = '';
+$columns['<a href="javascript: document.adminForm.func.value = \'setModulePermissions\'; saveorder( '.(count($db->record)-1).' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="' . $VM_LANG->_('SAVE_PERMISSIONS') . '" align="left"/>' . $VM_LANG->_('SAVE_PERMISSIONS') . '</a>'] = '';
 
-$columns[$VM_LANG->_PHPSHOP_MODULE_LIST_FUNCTIONS] = 'width="10%"';
-$columns[$VM_LANG->_VM_FIELDMANAGER_REORDER] = "width=\"5%\"";
+$columns[$VM_LANG->_('PHPSHOP_MODULE_LIST_FUNCTIONS')] = 'width="10%"';
+$columns[$VM_LANG->_('VM_FIELDMANAGER_REORDER')] = "width=\"5%\"";
 $columns[vmCommonHTML::getSaveOrderButton( (count($db->record)-1), 'changeordering' )] = 'width="8%"';
-$columns[$VM_LANG->_E_REMOVE] = "width=\"5%\"";
+$columns[$VM_LANG->_('E_REMOVE')] = "width=\"5%\"";
 
 $listObj->writeTableHeader( $columns );
 
@@ -112,13 +112,13 @@ while ($db->next_record()) {
 	$listObj->addCell('');
 	$usergroups->reset();
 
-	$tmp_cell = "<a href=\"".$sess->url($_SERVER['PHP_SELF']."?page=$modulename.function_list&module_id=" . $db->f("module_id"))."\">". $VM_LANG->_PHPSHOP_FUNCTION_LIST_LBL ."</a>";
+	$tmp_cell = "<a href=\"".$sess->url($_SERVER['PHP_SELF']."?page=$modulename.function_list&module_id=" . $db->f("module_id"))."\">". $VM_LANG->_('PHPSHOP_FUNCTION_LIST_LBL') ."</a>";
 	$listObj->addCell( $tmp_cell );
 
 	$tmp_cell = "<div align=\"center\">"
-	. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_CMN_ORDER_UP, $page, "changeordering" )
+	. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_('CMN_ORDER_UP'), $page, "changeordering" )
 	. "\n&nbsp;"
-	. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', $VM_LANG->_CMN_ORDER_DOWN, $page, "changeordering" )
+	. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', $VM_LANG->_('CMN_ORDER_DOWN'), $page, "changeordering" )
 	. "</div>";
 	$listObj->addCell( $tmp_cell );
 

@@ -19,10 +19,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 <!-- Customer Information --> 
     <table border="0" cellspacing="0" cellpadding="2" width="100%">
         <tr class="sectiontableheader">
-            <th colspan="2" align="left"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL ?></th>
+            <th colspan="2" align="left"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUST_BILLING_LBL') ?></th>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?>: </td>
            <td width="90%">
            <?php
              $db->p("company");
@@ -30,13 +30,13 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?>: </td>
            <td width="90%"><?php
              echo $db->f("first_name"). " " . $db->f("middle_name") ." " . $db->f("last_name"); ?>
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ADDRESS ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_ADDRESS') ?>: </td>
            <td width="90%">
            <?php
              $db->p("address_1");
@@ -60,7 +60,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?>: </td>
            <td width="90%">
            <?php
              $db->p("phone_1");
@@ -68,7 +68,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap"width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>: </td>
+           <td nowrap="nowrap"width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?>: </td>
            <td width="90%">
            <?php
              $db->p("fax");
@@ -76,7 +76,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
            </td>
         </tr>
         <tr>
-           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?>: </td>
+           <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EMAIL') ?>: </td>
            <td width="90%">
            <?php
              $db->p("user_email");
@@ -84,7 +84,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
            </td>
         </tr>
         <tr><td align="center" colspan="2"><a href="<?php $sess->purl( SECUREURL ."index.php?page=account.billing&next_page=$page"); ?>">
-            (<?php echo $VM_LANG->_PHPSHOP_UDATE_ADDRESS ?>)</a>
+            (<?php echo $VM_LANG->_('PHPSHOP_UDATE_ADDRESS') ?>)</a>
             </td>
         </tr>
     </table>

@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_RATE_LIST_LBL, IMAGEURL."ps_image/shipping.gif", $modulename, "rate_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_RATE_LIST_LBL'), IMAGEURL."ps_image/shipping.gif", $modulename, "rate_list");
 
 // start the list table
 $listObj->startTable();
@@ -54,11 +54,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL => '',
-					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME => '',
-					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART => '',
-					$VM_LANG->_PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND => '',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL') => '',
+					$VM_LANG->_('PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME') => '',
+					$VM_LANG->_('PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART') => '',
+					$VM_LANG->_('PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND') => '',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

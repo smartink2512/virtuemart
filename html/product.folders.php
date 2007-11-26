@@ -31,7 +31,7 @@ vmCommonHTML::loadTigraTree();
 $menu_htmlcode = "<br /><div style=\"text-align:left;margin-left:200px;\">
 <script type=\"text/javascript\"><!--
 var TREE_ITEMS = [
-['{$VM_LANG->_PHPSHOP_STORE_MOD}', '{$_SERVER['PHP_SELF']}',
+['{" . $VM_LANG->_('PHPSHOP_STORE_MOD') . "}', '{$_SERVER['PHP_SELF']}',
 ";
 $vmFoldersMenu->traverse_tree_down($menu_htmlcode);
   

@@ -41,8 +41,8 @@ $db->next_record();
 $gtree = ps_perm::getGroupChildrenTree( null, 'USERS', false );
 $access_group_list = mosHTML::selectList( $gtree, 'conf_VM_PRICE_ACCESS_LEVEL', 'size="4"', 'value', 'text', $db->f($fieldname) );
 
-$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_PHPSHOP_CONFIG.'" />&nbsp;';
-$title .= $VM_LANG->_PHPSHOP_CONFIG;
+$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_('PHPSHOP_CONFIG').'" />&nbsp;';
+$title .= $VM_LANG->_('PHPSHOP_CONFIG');
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $title );
@@ -53,89 +53,89 @@ $ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components
 
 $tabs = new mShopTabs(0, 1, "_main");
 $tabs->startPane("content-pane");
-$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 
 ?>
 <br />
 <table class="adminlist"><tr><td>
 
 <fieldset style="width:48%;float:left;">
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL') ?></legend>
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf_PSHOP_IS_OFFLINE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOP_OFFLINE ?></label>
+				<label for="conf_PSHOP_IS_OFFLINE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOP_OFFLINE',false) ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_PSHOP_IS_OFFLINE" name="conf_PSHOP_IS_OFFLINE" class="inputbox" <?php if (PSHOP_IS_OFFLINE == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOP_OFFLINE_TIP ?></td>
+			<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOP_OFFLINE_TIP') ?></td>
 		</tr>  
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOP_OFFLINE_MSG ?>:</td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOP_OFFLINE_MSG') ?>:</td>
 			<td colspan="2">
 				<textarea rows="6" cols="40" name="conf_PSHOP_OFFLINE_MESSAGE"><?php echo shopMakeHtmlSafe(stripslashes(PSHOP_OFFLINE_MESSAGE)); ?></textarea>
 			</td>
 		</tr>  
 		<tr>
 			<td class="labelcell">
-				<label for="conf_USE_AS_CATALOGUE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE ?></label>
+				<label for="conf_USE_AS_CATALOGUE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_USE_AS_CATALOGUE" name="conf_USE_AS_CATALOGUE" class="inputbox" <?php if (USE_AS_CATALOGUE == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN ?>
+			<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN') ?>
 			</td>
 		</tr>
 	</table>
 </fieldset>
 <fieldset style="width:48%;float:right;">
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_CONFIGURATION ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICE_CONFIGURATION') ?></legend>
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf__SHOW_PRICES"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_PRICES ?></label>
+				<label for="conf__SHOW_PRICES"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOW_PRICES') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf__SHOW_PRICES" name="conf__SHOW_PRICES" class="inputbox" <?php if (_SHOW_PRICES == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td> 
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN ) ?></td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN') ) ?></td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?></td>
 			<td><?php
 			echo '<input type="checkbox" value="Y" name="use_price_access" onclick="document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled = document.adminForm.conf_VM_PRICE_ACCESS_LEVEL.disabled ? false : true;" id="use_price_access"';
 			if( VM_PRICE_ACCESS_LEVEL != '0' ) { echo ' checked="checked"'; }
-			echo ' />';
-			echo '<label for="use_price_access"><strong>'.$VM_LANG->_VM_CFG_ENABLE_FEATURE .'</strong></label><br />';
+			echo ' /> ';
+			echo '<label for="use_price_access"><strong>'.$VM_LANG->_('VM_CFG_ENABLE_FEATURE') .'</strong></label><br />';
 			echo $access_group_list;
 				?>
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP ) ?></td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP') ) ?></td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_PRICE_SHOW_INCLUDINGTAX"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX ?></label>
+				<label for="conf_VM_PRICE_SHOW_INCLUDINGTAX"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_PRICE_SHOW_INCLUDINGTAX" name="conf_VM_PRICE_SHOW_INCLUDINGTAX" class="inputbox" <?php if (VM_PRICE_SHOW_INCLUDINGTAX == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP ) ?></td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP') ) ?></td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_PRICE_SHOW_PACKAGING_PRICELABEL"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL ?>
+				<label for="conf_VM_PRICE_SHOW_PACKAGING_PRICELABEL"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL') ?>
 				</label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_PRICE_SHOW_PACKAGING_PRICELABEL" name="conf_VM_PRICE_SHOW_PACKAGING_PRICELABEL" class="inputbox" <?php if (VM_PRICE_SHOW_PACKAGING_PRICELABEL == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP ) ?></td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP') ) ?></td>
 		</tr>
 	</table>
 </fieldset>
@@ -143,263 +143,263 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 <br style="clear:both;" />
 
 <fieldset style="width:48%;float:left;">
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FRONTEND_FEATURES ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_FRONTEND_FEATURES') ?></legend>
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo $VM_LANG->_VM_CFG_CONTENT_PLUGINS_ENABLE ?></label>
+				<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo $VM_LANG->_('VM_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_CONTENT_PLUGINS_ENABLE" name="conf_VM_CONTENT_PLUGINS_ENABLE" class="inputbox" <?php if (@VM_CONTENT_PLUGINS_ENABLE == '1') echo "checked='checked'"; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_CFG_CONTENT_PLUGINS_ENABLE_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_CFG_CONTENT_PLUGINS_ENABLE_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_PSHOP_COUPONS_ENABLE"><?php echo $VM_LANG->_PHPSHOP_COUPONS_ENABLE ?></label>
+				<label for="conf_PSHOP_COUPONS_ENABLE"><?php echo $VM_LANG->_('PHPSHOP_COUPONS_ENABLE') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_PSHOP_COUPONS_ENABLE" name="conf_PSHOP_COUPONS_ENABLE" class="inputbox" <?php if (PSHOP_COUPONS_ENABLE == '1') echo "checked='checked'"; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_COUPONS_ENABLE_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_COUPONS_ENABLE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_REVIEW ?></label>
+				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_REVIEW') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_PSHOP_ALLOW_REVIEWS" name="conf_PSHOP_ALLOW_REVIEWS" class="inputbox" <?php if (PSHOP_ALLOW_REVIEWS == '1') echo "checked='checked'"; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo $VM_LANG->_VM_REVIEWS_AUTOPUBLISH ?></label>
+				<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo $VM_LANG->_('VM_REVIEWS_AUTOPUBLISH') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_REVIEWS_AUTOPUBLISH" name="conf_VM_REVIEWS_AUTOPUBLISH" class="inputbox" <?php if (VM_REVIEWS_AUTOPUBLISH == '1') echo "checked='checked'"; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_REVIEWS_AUTOPUBLISH_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_REVIEWS_AUTOPUBLISH_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo $VM_LANG->_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH ?></label>
+				<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo $VM_LANG->_('VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
 				
 			</td>
 			<td>
 				<input type="text" size="6" id="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH" name="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH" class="inputbox" value="<?php echo @intval(VM_REVIEWS_MINIMUM_COMMENT_LENGTH); ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo $VM_LANG->_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH ?></label>
+				<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo $VM_LANG->_('VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH') ?></label>
 				
 			</td>
 			<td>
 				<input type="text" size="6" id="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH" name="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH" class="inputbox" value="<?php echo @intval(VM_REVIEWS_MAXIMUM_COMMENT_LENGTH); ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP') ) ?>
 			</td>
 		</tr>
 		
 		<tr>
 			<td class="labelcell">
-				<label for="conf_AFFILIATE_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE ?></label>
+				<label for="conf_AFFILIATE_ENABLE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE') ?></label>
 			</td>
 			<td>
 				<input type="checkbox" id="conf_AFFILIATE_ENABLE" name="conf_AFFILIATE_ENABLE" class="inputbox" <?php if (AFFILIATE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN ) ?>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 	</table>
 </fieldset>
 
 <fieldset style="width:48%;float:right;">
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_CONFIGURATION ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_TAX_CONFIGURATION') ?></legend>
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf_TAX_VIRTUAL"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX ?></label>
+				<label for="conf_TAX_VIRTUAL"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_VIRTUAL_TAX') ?></label>
 				
 			</td>
 			<td align="left">
 				<input type="checkbox" name="conf_TAX_VIRTUAL" id="conf_TAX_VIRTUAL" class="inputbox" <?php if (TAX_VIRTUAL == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_TAX_MODE') ?></td>
 			<td>
 				<select name="conf_TAX_MODE" class="inputbox">
 					<option value="0" <?php if (TAX_MODE == 0) echo 'selected="selected"'; ?>>
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_TAX_MODE_SHIP') ?>
 					</option>
 					<option value="1" <?php if (TAX_MODE == 1) echo 'selected="selected"'; ?>>
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_TAX_MODE_VENDOR') ?>
 					</option>
 					<option value="17749" <?php if (TAX_MODE == 17749) echo 'selected="selected"'; ?>>
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE_EU ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_TAX_MODE_EU') ?>
 					</option>
 				</select>
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_MULTIPLE_TAXRATES_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE ?></label>
+				<label for="conf_MULTIPLE_TAXRATES_ENABLE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_MULTIPLE_TAXRATES_ENABLE" name="conf_MULTIPLE_TAXRATES_ENABLE" class="inputbox" <?php if (MULTIPLE_TAXRATES_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_PAYMENT_DISCOUNT_BEFORE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE ?></label>
+				<label for="conf_PAYMENT_DISCOUNT_BEFORE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_PAYMENT_DISCOUNT_BEFORE" name="conf_PAYMENT_DISCOUNT_BEFORE" class="inputbox" <?php if (PAYMENT_DISCOUNT_BEFORE == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 	</table>
 </fieldset>
 <br style="clear:both;" />
 <fieldset>
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_USER_REGISTRATION_SETTINGS ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_USER_REGISTRATION_SETTINGS') ?></legend>
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_REGISTRATION_TYPE"><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE ?></label>
+				<label for="conf_VM_REGISTRATION_TYPE"><?php echo $VM_LANG->_('VM_CFG_REGISTRATION_TYPE') ?></label>
 				
 			</td>
 			<td>
 				<select id="conf_VM_REGISTRATION_TYPE" name="conf_VM_REGISTRATION_TYPE" class="inputbox">
-					<option value="NORMAL_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'NORMAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION ?></option>
-					<option value="SILENT_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION ?></option>
-					<option value="OPTIONAL_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION ?></option>
-					<option value="NO_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'NO_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION ?></option>
+					<option value="NORMAL_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'NORMAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION') ?></option>
+					<option value="SILENT_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION') ?></option>
+					<option value="OPTIONAL_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION') ?></option>
+					<option value="NO_REGISTRATION"<?php if( @VM_REGISTRATION_TYPE == 'NO_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION') ?></option>
 				</select>
 			</td> 
-			<td><?php echo vmToolTip( $VM_LANG->_VM_CFG_REGISTRATION_TYPE_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_CFG_REGISTRATION_TYPE_TIP') ) ?>
 			</td>
 		</tr>
 		
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_SHOW_REMEMBER_ME_BOX"><?php echo $VM_LANG->_VM_SHOW_REMEMBER_ME_BOX ?></label>
+				<label for="conf_VM_SHOW_REMEMBER_ME_BOX"><?php echo $VM_LANG->_('VM_SHOW_REMEMBER_ME_BOX') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_SHOW_REMEMBER_ME_BOX" name="conf_VM_SHOW_REMEMBER_ME_BOX" class="inputbox" <?php if (@VM_SHOW_REMEMBER_ME_BOX == "1") echo "checked=\"checked\""; ?> value="1" />
 			</td> 
-			<td><?php echo vmToolTip( $VM_LANG->_VM_SHOW_REMEMBER_ME_BOX_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_SHOW_REMEMBER_ME_BOX_TIP') ) ?>
 			</td>
 		</tr>
 		
 		<tr>
 			<td class="labelcell"><?php
-			echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION;
+			echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_('PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION');
 			?></td>
 			<td colspan="2"><?php
 			if( $mosConfig_allowUserRegistration == '1' ) {
-				echo '<span style="color:green;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_YES.'</span>';
+				echo '<span style="color:green;">'.$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES').'</span>';
 			}
 			else {
-				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_NO.'</span>';
+				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO').'</span>';
 			}
-			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_PHPSHOP_UPDATE.']</a>';
+			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_('PHPSHOP_UPDATE').']</a>';
 			?></td>
 		</tr>
 		<tr>
 			<td class="labelcell"><?php
-			echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION;
+			echo $_VERSION->PRODUCT.': ' .  $VM_LANG->_('PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION');
 			?></td>
 			<td colspan="2"><?php
 			if( $mosConfig_useractivation == '0' ) {
-				echo '<span style="color:green;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_NO.'</span>';
+				echo '<span style="color:green;">'.$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO').'</span>';
 			}
 			else {
-				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_PHPSHOP_ADMIN_CFG_YES.'</span>';
+				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES').'</span>';
 			}
-			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_PHPSHOP_UPDATE.']</a>';
+			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_('PHPSHOP_UPDATE').']</a>';
 			?></td>
 		</tr>
 		
 		<tr>
 			<td class="labelcell">
-				<label for="conf_CAN_SELECT_STATES"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE ?>
+				<label for="conf_CAN_SELECT_STATES"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE') ?>
 				</label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_CAN_SELECT_STATES" name="conf_CAN_SELECT_STATES" class="inputbox" <?php if (CAN_SELECT_STATES == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_MUST_AGREE_TO_TOS"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS ?></label>
+				<label for="conf_MUST_AGREE_TO_TOS"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_MUST_AGREE_TO_TOS" name="conf_MUST_AGREE_TO_TOS" class="inputbox" <?php if (MUST_AGREE_TO_TOS == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_PSHOP_AGREE_TO_TOS_ONORDER"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER ?></label>
+				<label for="conf_PSHOP_AGREE_TO_TOS_ONORDER"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER') ?></label>
 			</td>
 			<td>
 				<input type="checkbox" id="conf_PSHOP_AGREE_TO_TOS_ONORDER" name="conf_PSHOP_AGREE_TO_TOS_ONORDER" class="inputbox" <?php if (PSHOP_AGREE_TO_TOS_ONORDER == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo $VM_LANG->_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO ?></label>
+				<label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo $VM_LANG->_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_ONCHECKOUT_SHOW_LEGALINFO" name="conf_VM_ONCHECKOUT_SHOW_LEGALINFO" class="inputbox" <?php if (@VM_ONCHECKOUT_SHOW_LEGALINFO == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT"><?php echo $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT ?></label>
+				<label for="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT"><?php echo $VM_LANG->_('VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT') ?></label>
 			</td>
 			<td>
-				<textarea rows="6" cols="40" id="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT" name="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT" class="inputbox"><?php if( @VM_ONCHECKOUT_LEGALINFO_SHORTTEXT=='' || !defined('VM_ONCHECKOUT_LEGALINFO_SHORTTEXT')) {echo $VM_LANG->_VM_LEGALINFO_SHORTTEXT;} else {echo @VM_ONCHECKOUT_LEGALINFO_SHORTTEXT;} ?></textarea>
+				<textarea rows="6" cols="40" id="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT" name="conf_VM_ONCHECKOUT_LEGALINFO_SHORTTEXT" class="inputbox"><?php if( @VM_ONCHECKOUT_LEGALINFO_SHORTTEXT=='' || !defined('VM_ONCHECKOUT_LEGALINFO_SHORTTEXT')) {echo $VM_LANG->_('VM_LEGALINFO_SHORTTEXT');} else {echo @VM_ONCHECKOUT_LEGALINFO_SHORTTEXT;} ?></textarea>
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf_VM_ONCHECKOUT_LEGALINFO_LINK"><?php echo $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK ?></label>
+				<label for="conf_VM_ONCHECKOUT_LEGALINFO_LINK"><?php echo $VM_LANG->_('VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK') ?></label>
 			</td>
 			<td>
 			<?php
@@ -414,7 +414,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 			echo $select;
 			?>
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP') ) ?>
 			</td>
 		</tr>
 		
@@ -423,16 +423,16 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 
 
 <fieldset style="width:48%;float:left;">
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CORE_SETTINGS ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_CORE_SETTINGS') ?></legend>
 	<table class="adminform">
 		<tr>
 			<td class="labelcell">
-				<label for="conf_CHECK_STOCK" onclick="var checkStock = document.adminForm.conf_CHECK_STOCK.checked;toggleVisibility( checkStock, 'cs1' );toggleVisibility( checkStock, 'cs2' );toggleVisibility( checkStock, 'cs3' );"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECK_STOCK ?></label>
+				<label for="conf_CHECK_STOCK" onclick="var checkStock = document.adminForm.conf_CHECK_STOCK.checked;toggleVisibility( checkStock, 'cs1' );toggleVisibility( checkStock, 'cs2' );toggleVisibility( checkStock, 'cs3' );"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_CHECK_STOCK') ?></label>
 				
 				<div style="display:none;visibility:hidden;" id="cs1"><br/><br/>
 					<strong>
 						<label for="conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS">
-							<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS ?>
+							<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
 						</label>
 					</strong>
 				</div>
@@ -441,26 +441,26 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 				<input  type="checkbox" name="conf_CHECK_STOCK" id="conf_CHECK_STOCK" class="inputbox" onchange="toggleVisibility( this.checked, 'cs1' );toggleVisibility( this.checked, 'cs2' );toggleVisibility( this.checked, 'cs3' );" <?php if (CHECK_STOCK == '1') echo "checked=\"checked\""; ?> value="1" />
 				<div style="display:none;visibility:hidden;" id="cs2"><br/><br/><input type="checkbox" name="conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS" id="conf_PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS" class="inputbox" <?php if (PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS == '1') echo "checked=\"checked\""; ?> value="1" /></div>
 			</td>
-			<td valign="top"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN ) ?>
+			<td valign="top"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN') ) ?>
 				<div style="display:none;visibility:hidden;" align="left" id="cs3"><br /><br />
-				<?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN ) ?>
+				<?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN') ) ?>
 				</div>
 			</td>
 		</tr>
 		  <tr>
 			<td class="labelcell">
-				<label for="conf_VM_ENABLE_COOKIE_CHECK"><?php echo $VM_LANG->_VM_ADMIN_CFG_COOKIE_CHECK ?></label>
+				<label for="conf_VM_ENABLE_COOKIE_CHECK"><?php echo $VM_LANG->_('VM_ADMIN_CFG_COOKIE_CHECK') ?></label>
 				
 			</td>
 			<td>
 				<input type="checkbox" id="conf_VM_ENABLE_COOKIE_CHECK" name="conf_VM_ENABLE_COOKIE_CHECK" class="inputbox" <?php if (VM_ENABLE_COOKIE_CHECK == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN ) ?>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<label for="conf__VM_CURRENCY_CONVERTER_MODULE"><?php echo $VM_LANG->_VM_CFG_CURRENCY_MODULE ?></label>
+				<label for="conf__VM_CURRENCY_CONVERTER_MODULE"><?php echo $VM_LANG->_('VM_CFG_CURRENCY_MODULE') ?></label>
 				
 			</td>
 			<td>
@@ -476,31 +476,31 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 	            ?>
 				</select>
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_CFG_CURRENCY_MODULE_TIP ) ?>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('VM_CFG_CURRENCY_MODULE_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MAIL_FORMAT ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_MAIL_FORMAT') ?></td>
 			<td>
 				<select name="conf_ORDER_MAIL_HTML" class="inputbox">
 				<option value="0" <?php if (ORDER_MAIL_HTML == '0') echo 'selected="selected"'; ?>>
-			   <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT ?>
+			   <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
 				</option>
 				<option value="1" <?php if (ORDER_MAIL_HTML == '1') echo 'selected="selected"'; ?>>
-				<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML ?>
+				<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
 				</option>
 				</select>
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN ) ?>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_MAIL_FORMAT_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><label for="conf_DEBUG"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DEBUG ?></label></td>
+			<td class="labelcell"><label for="conf_DEBUG"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DEBUG') ?></label></td>
 			<td>
 				<input type="checkbox" id="conf_DEBUG" name="conf_DEBUG" class="inputbox" <?php if (DEBUG == 1) echo "checked=\"checked\""; ?> value="1" />
 			</td>
 			<td class="iconcell">
-			<?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN ) ?>
+			<?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN') ) ?>
 			</td>
 		</tr>
 	</table>
@@ -510,30 +510,30 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_GLOBAL, "global-page");
 <?php
 
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
+$tabs->startTab( $VM_LANG->_('VM_ADMIN_SECURITY'), "security-page");
 ?>
 
 <fieldset style="width:48%;float:left;">
-	<legend><?php echo $VM_LANG->_VM_ADMIN_SECURITY_SETTINGS ?></legend>
+	<legend><?php echo $VM_LANG->_('VM_ADMIN_SECURITY_SETTINGS') ?></legend>
 	<table class="adminform">
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_URLSECURE') ?></td>
 			<td>
 				<input size="40" type="text" name="conf_SECUREURL" class="inputbox" value="<?php echo SECUREURL ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="labelcell">
-				<?php echo $VM_LANG->_VM_MODULES_FORCE_HTTPS ?>				
+				<?php echo $VM_LANG->_('VM_MODULES_FORCE_HTTPS') ?>				
 			</td>
 			<td>
 				<?php
 				echo ps_module::list_modules( 'conf_VM_MODULES_FORCE_HTTPS[]', $VM_MODULES_FORCE_HTTPS, true );
 				?>
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_MODULES_FORCE_HTTPS_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_MODULES_FORCE_HTTPS_TIP') ) ?>
 			</td>
 		</tr>
 	
@@ -542,9 +542,9 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 				<input type="checkbox" id="conf_VM_GENERALLY_PREVENT_HTTPS" name="conf_VM_GENERALLY_PREVENT_HTTPS" class="inputbox" <?php if (@VM_GENERALLY_PREVENT_HTTPS == '1') echo "checked=\"checked\""; ?> value="1" />				
 			</td>
 			<td>
-				<label for="conf_VM_GENERALLY_PREVENT_HTTPS"><?php echo $VM_LANG->_VM_GENERALLY_PREVENT_HTTPS ?></label>
+				<label for="conf_VM_GENERALLY_PREVENT_HTTPS"><?php echo $VM_LANG->_('VM_GENERALLY_PREVENT_HTTPS') ?></label>
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_GENERALLY_PREVENT_HTTPS_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_GENERALLY_PREVENT_HTTPS_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
@@ -553,7 +553,7 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 		<?php
 		if( version_compare( $database->getVersion(), '4.0.2', '>=') ) { ?>
 			<tr>
-				<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_ENCRYPTION_FUNCTION ?>&nbsp;&nbsp;</td>
+				<td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_ENCRYPTION_FUNCTION') ?>&nbsp;&nbsp;</td>
 				<td>
 					<?php
 					$options = array('ENCODE' => 'ENCODE (insecure)', 
@@ -562,26 +562,26 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 					echo ps_html::selectList('conf_ENCRYPT_FUNCTION', @VM_ENCRYPT_FUNCTION, $options );
 					?>
 				</td>
-				<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ENCRYPTION_FUNCTION_TIP ); ?></td>
+				<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_ENCRYPTION_FUNCTION_TIP') ); ?></td>
 			</tr>
 		<?php
 		}
 		?>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_ENCRYPTION_KEY ?>&nbsp;&nbsp;</td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_ENCRYPTION_KEY') ?>&nbsp;&nbsp;</td>
 			<td>
 				<input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo shopMakeHtmlSafe(ENCODE_KEY) ?>" />
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_ENCRYPTION_KEY_TIP ); ?></td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_ENCRYPTION_KEY_TIP') ); ?></td>
 		</tr>
 		<tr>
 			<td class="labelcell">
 				<input type="checkbox" name="conf_VM_STORE_CREDITCARD_DATA" id="conf_VM_STORE_CREDITCARD_DATA" class="inputbox" <?php if (@VM_STORE_CREDITCARD_DATA == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
 			<td>
-				<label for="conf_VM_STORE_CREDITCARD_DATA"><?php echo $VM_LANG->_VM_ADMIN_STORE_CREDITCARD_DATA ?>&nbsp;&nbsp;</label>
+				<label for="conf_VM_STORE_CREDITCARD_DATA"><?php echo $VM_LANG->_('VM_ADMIN_STORE_CREDITCARD_DATA') ?>&nbsp;&nbsp;</label>
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_STORE_CREDITCARD_DATA_TIP ); ?></td>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_STORE_CREDITCARD_DATA_TIP') ); ?></td>
 		</tr>	
 		<tr>
 			<td colspan="3"><hr />&nbsp;</td>
@@ -593,9 +593,9 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 			<input type="checkbox" id="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" name="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS" class="inputbox" <?php if (PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '1') echo "checked=\"checked\""; ?> value="1" />
 			</td>
 			<td>
-				<label for="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN ?></label>
+				<label for="conf_PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_FRONTENDAMDIN') ?></label>
 			</td>
-			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN ) ?>
+			<td class="iconcell"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN') ) ?>
 			</td>
 		</tr>
 	<?php
@@ -608,71 +608,71 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 </fieldset>
 <br />
 <fieldset style="width:48%;float:right;">
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 	<table class="adminform">
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_TABLEPREFIX ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_TABLEPREFIX') ?></td>
 			<td>
 				<input size="40" type="text" name="conf_VM_TABLEPREFIX" class="inputbox" value="<?php echo VM_TABLEPREFIX ?>" readonly="readonly" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_TABLEPREFIX_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_TABLEPREFIX_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="3"><hr />&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_HOMEPAGE ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_HOMEPAGE') ?></td>
 			<td>
 				<input type="text" name="conf_HOMEPAGE" class="inputbox" value="<?php echo HOMEPAGE ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_HOMEPAGE_EXPLAIN') ) ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ERRORPAGE ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ERRORPAGE') ?></td>
 			<td>
 				<input type="text" name="conf_ERRORPAGE" class="inputbox" value="<?php echo ERRORPAGE ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_ERRORPAGE_EXPLAIN')) ?>
 			</td>
 		</tr>
 	</table>
 </fieldset>
 <br />
 <fieldset style="width:48%;float:left;">
-	<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_PROXY_SETTINGS ?></legend>
+	<legend><?php echo $VM_LANG->_('VM_ADMIN_CFG_PROXY_SETTINGS') ?></legend>
 	<table class="adminform">
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_PROXY_URL ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_PROXY_URL') ?></td>
 			<td>
 				<input size="40" type="text" name="conf_VM_PROXY_URL" class="inputbox" value="<?php echo defined('VM_PROXY_URL')?VM_PROXY_URL:''; ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_CFG_PROXY_URL_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_CFG_PROXY_URL_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_PROXY_PORT ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_PROXY_PORT') ?></td>
 			<td>
 				<input type="text" name="conf_VM_PROXY_PORT" class="inputbox" value="<?php echo defined('VM_PROXY_PORT')?VM_PROXY_PORT:''; ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_CFG_PROXY_PORT_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_CFG_PROXY_PORT_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_PROXY_USER ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_PROXY_USER') ?></td>
 			<td>
 				<input type="text" name="conf_VM_PROXY_USER" class="inputbox" value="<?php echo defined('VM_PROXY_USER')?VM_PROXY_USER:''; ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_CFG_PROXY_USER_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_CFG_PROXY_USER_TIP') ) ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_PROXY_PASS ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_PROXY_PASS') ?></td>
 			<td>
 				<input autocomplete="off" type="password" name="conf_VM_PROXY_PASS" class="inputbox" value="<?php echo defined('VM_PROXY_PASS')?VM_PROXY_PASS:''; ?>" />
 			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_CFG_PROXY_PASS_TIP ) ?>
+			<td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_CFG_PROXY_PASS_TIP') ) ?>
 			</td>
 		</tr>
 	</table>
@@ -680,146 +680,146 @@ $tabs->startTab( $VM_LANG->_VM_ADMIN_SECURITY, "security-page");
 <br style="clear:both" />
 <?php
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE, "site-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SITE'), "site-page");
 ?>
 
 <fieldset style="width:48%;float:left;">
-	<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_DISPLAY ?></legend>
+	<legend><?php echo $VM_LANG->_('VM_ADMIN_CFG_DISPLAY') ?></legend>
 <table class="adminlist">
     <tr>
-        <td class="labelcell"><label for="conf_PSHOP_PDF_BUTTON_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON ?></label></td>
+        <td class="labelcell"><label for="conf_PSHOP_PDF_BUTTON_ENABLE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PDF_BUTTON') ?></label></td>
         <td>
         <input type="checkbox" id="conf_PSHOP_PDF_BUTTON_ENABLE" name="conf_PSHOP_PDF_BUTTON_ENABLE" class="inputbox" <?php if (PSHOP_PDF_BUTTON_ENABLE == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PDF_BUTTON_EXPLAIN') ) ?></td>
     </tr>    
     <tr>
-        <td class="labelcell"><label for="conf_VM_SHOW_EMAILFRIEND"><?php echo $VM_LANG->_VM_ADMIN_SHOW_EMAILFRIEND ?></label></td>
+        <td class="labelcell"><label for="conf_VM_SHOW_EMAILFRIEND"><?php echo $VM_LANG->_('VM_ADMIN_SHOW_EMAILFRIEND') ?></label></td>
         <td>
         	<input type="checkbox" id="conf_VM_SHOW_EMAILFRIEND" name="conf_VM_SHOW_EMAILFRIEND" class="inputbox" <?php if (@VM_SHOW_EMAILFRIEND == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_SHOW_EMAILFRIEND_TIP ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_SHOW_EMAILFRIEND_TIP') ) ?></td>
     </tr>
     <tr>
-        <td class="labelcell"><label for="conf_VM_SHOW_PRINTICON"><?php echo $VM_LANG->_VM_ADMIN_SHOW_PRINTICON ?></label></td>
+        <td class="labelcell"><label for="conf_VM_SHOW_PRINTICON"><?php echo $VM_LANG->_('VM_ADMIN_SHOW_PRINTICON') ?></label></td>
         <td>
         	<input type="checkbox" id="conf_VM_SHOW_PRINTICON" name="conf_VM_SHOW_PRINTICON" class="inputbox" <?php if (@VM_SHOW_PRINTICON == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_VM_ADMIN_SHOW_PRINTICON_TIP ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('VM_ADMIN_SHOW_PRINTICON_TIP') ) ?></td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NAV_AT_TOP ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NAV_AT_TOP') ?></td>
         <td>
             <input type="checkbox" name="conf_PSHOP_SHOW_TOP_PAGENAV" class="inputbox" <?php if (PSHOP_SHOW_TOP_PAGENAV == '1') echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_NAV_AT_TOP_TIP ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_NAV_AT_TOP_TIP') ) ?></td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?></td>
         <td>
                 <select class="inputbox" name="conf_VM_BROWSE_ORDERBY_FIELD">
-                        <option value="product_name" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_name') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_NAME_TITLE ?></option>
-                        <option value="product_price" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_price') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE ?></option>
-                        <option value="product_sku" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_sku') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></option>
-                        <option value="product_cdate" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_cdate') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_LATEST ?></option>
+                        <option value="product_name" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_name') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_NAME_TITLE') ?></option>
+                        <option value="product_price" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_price') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_PRICE_TITLE') ?></option>
+                        <option value="product_sku" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_sku') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_CART_SKU') ?></option>
+                        <option value="product_cdate" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_cdate') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_LATEST') ?></option>
             </select>
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP') ) ?></td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_VM_BROWSE_ORDERBY_FIELDS_LBL ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('VM_BROWSE_ORDERBY_FIELDS_LBL') ?></td>
         <td>
                         <input name="conf_VM_BROWSE_ORDERBY_FIELDS[]" type="checkbox" value="product_name" <?php if (in_array( 'product_name', $VM_BROWSE_ORDERBY_FIELDS )) echo "checked=\"checked\""; ?> id="conf_VM_BROWSE_ORDERBY_FIELDS1" />
-                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS1"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_NAME_TITLE ?></label><br />
+                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS1"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_NAME_TITLE') ?></label><br />
             
                         <input name="conf_VM_BROWSE_ORDERBY_FIELDS[]" type="checkbox" value="product_price" <?php if (in_array( 'product_price', $VM_BROWSE_ORDERBY_FIELDS )) echo "checked=\"checked\""; ?> id="conf_VM_BROWSE_ORDERBY_FIELDS2" />
-                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS2"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRICE_TITLE ?></label><br />
+                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS2"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_PRICE_TITLE') ?></label><br />
 
                         <input name="conf_VM_BROWSE_ORDERBY_FIELDS[]" type="checkbox" value="product_cdate" <?php if (in_array( 'product_cdate', $VM_BROWSE_ORDERBY_FIELDS )) echo "checked=\"checked\""; ?> id="conf_VM_BROWSE_ORDERBY_FIELDS3" />
-                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS3"><?php echo $VM_LANG->_PHPSHOP_LATEST ?></label><br />
+                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS3"><?php echo $VM_LANG->_('PHPSHOP_LATEST') ?></label><br />
 
                         <input name="conf_VM_BROWSE_ORDERBY_FIELDS[]" type="checkbox" value="product_sku" <?php if (in_array( 'product_sku', $VM_BROWSE_ORDERBY_FIELDS )) echo "checked=\"checked\""; ?> id="conf_VM_BROWSE_ORDERBY_FIELDS4" />
-                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS4"><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></label>
+                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS4"><?php echo $VM_LANG->_('PHPSHOP_CART_SKU') ?></label>
                         
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_VM_BROWSE_ORDERBY_FIELDS_LBL_TIP ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP') ) ?></td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?></td>
         <td>
             <input type="checkbox" name="conf_PSHOP_SHOW_PRODUCTS_IN_CATEGORY" class="inputbox" <?php if (PSHOP_SHOW_PRODUCTS_IN_CATEGORY == '1') echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP') ) ?></td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NOIMAGEPAGE') ?></td>
         <td>
             <input type="text" name="conf_NO_IMAGE" class="inputbox" value="<?php echo NO_IMAGE ?>" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN ) ?>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN') ) ?>
         </td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION') ?></td>
         <td>
             <input type="checkbox" name="conf_SHOWVERSION" class="inputbox" <?php if (SHOWVERSION == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN ) ?>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN') ) ?>
         </td>
     </tr>
 </table>
 </fieldset>
 
 <fieldset style="width:48%;float:right;">
-<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_LAYOUT ?></legend>
+<legend><?php echo $VM_LANG->_('VM_ADMIN_CFG_LAYOUT') ?></legend>
 <table class="adminlist">
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_VM_SELECT_THEME ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('VM_SELECT_THEME') ?></td>
         <td>
         <?php 
         echo ps_html::list_themes( 'conf_THEME', basename(VM_THEMEURL) );
 
         if( $vmLayout == 'standard') {
 	        $link = $sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL) );
-	        $text = $VM_LANG->_PHPSHOP_CONFIG;
-			echo vmCommonHTML::hyperlink($link, $VM_LANG->_PHPSHOP_CONFIG );
+	        $text = $VM_LANG->_('PHPSHOP_CONFIG');
+			echo vmCommonHTML::hyperlink($link, $VM_LANG->_('PHPSHOP_CONFIG') );
 		} else {
 	        $link = $sess->url( $_SERVER['PHP_SELF'].'?page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL).'&amp;no_menu=1' );
-	        $text = $VM_LANG->_PHPSHOP_CONFIG;
+	        $text = $VM_LANG->_('PHPSHOP_CONFIG');
 			echo vmCommonHTML::hyperLink($link, $text, '', 'Edit: '.$text, 'onclick="parent.addSimplePanel( \''.$db->getEscaped($text).'\', \''.$link.'\' );return false;"');
 		}
         
         ?>
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_VM_SELECT_THEME_TIP ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('VM_SELECT_THEME_TIP') ) ?></td>
     </tr> 
   
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW') ?></td>
         <td>
             <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo PRODUCTS_PER_ROW ?>" />
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN ) ?>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN') ) ?>
         </td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE') ?></td>
         <td>
         <?php
         echo ps_html::list_template_files( "conf_CATEGORY_TEMPLATE", 'browse', CATEGORY_TEMPLATE );
         ?>
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN ) ?>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN') ) ?>
         </td>
     </tr>
    	<tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_FLYPAGE') ?></td>
         <td>
         	<?php
         	echo ps_html::list_template_files( "conf_FLYPAGE", 'product_details', str_replace('shop.', '', FLYPAGE ) );
         	?>
         </td>
-        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN ) ?></td>
+        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN') ) ?></td>
     </tr>
     <?php
     if( function_exists('imagecreatefromjpeg') ) {
@@ -827,25 +827,25 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE, "site-page");
     
 	    <tr>
 	        <td class="labelcell">
-	        	<label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING ?></label></td>
+	        	<label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label></td>
 	        <td>
 	            <input type="checkbox" name="conf_PSHOP_IMG_RESIZE_ENABLE" id="conf_PSHOP_IMG_RESIZE_ENABLE" class="inputbox" <?php if (PSHOP_IMG_RESIZE_ENABLE == '1') echo "checked=\"checked\""; ?> value="1" />
 	        </td>
-	        <td width="55%"><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP ) ?></td>
+	        <td width="55%"><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP') ) ?></td>
 	    </tr>
 	    <tr>
-	        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH ?></td>
+	        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH') ?></td>
 	        <td>
 	            <input type="text" name="conf_PSHOP_IMG_WIDTH" class="inputbox" value="<?php echo PSHOP_IMG_WIDTH ?>" />
 	        </td>
-	        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP ) ?></td>
+	        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP') ) ?></td>
 	    </tr>
 	    <tr>
-	        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT ?></td>
+	        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT') ?></td>
 	        <td>
 	            <input type="text" name="conf_PSHOP_IMG_HEIGHT" class="inputbox" value="<?php echo PSHOP_IMG_HEIGHT ?>" />
 	        </td>
-	        <td><?php echo vmToolTip( $VM_LANG->_PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP ) ?></td>
+	        <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP') ) ?></td>
 	    </tr>
 	    <?php
     }
@@ -863,7 +863,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SITE, "site-page");
 <?php
 $tabs->endTab();
 
-$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING, "shipping-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHIPPING'), "shipping-page");
 ?>
 
 <?php
@@ -874,7 +874,7 @@ $i = 0;
 echo '<input type="hidden" name="shippingMethodCount" value="'.count($rows).'" />';
 ?>
 <fieldset>
-	<legend><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD ?></legend>
+	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD') ?></legend>
 	<table class="adminform" onclick="validateForm();">
 <?php
 foreach( $rows as $row ) {
@@ -883,7 +883,7 @@ foreach( $rows as $row ) {
                     <td>
                         <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('standard_shipping', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="standard_shipping" />
                     </td>
-                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD ?></label>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD') ?></label>
                     </td>
                 </tr><?php  
     }
@@ -892,7 +892,7 @@ foreach( $rows as $row ) {
                     <td valign="top">
                         <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('zone_shipping', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="zone_shipping" />
                     </td>
-                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE ?></label>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE') ?></label>
                     </td>
                 </tr><?php  
 		}
@@ -901,7 +901,7 @@ foreach( $rows as $row ) {
                     <td>
                         <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('ups', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="ups" />
                     </td>
-                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS ?></label>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS') ?></label>
                     </td>
                 </tr><?php  
 		}
@@ -910,7 +910,7 @@ foreach( $rows as $row ) {
                     <td>
                         <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('intershipper', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="intershipper" />
                     </td>
-                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER ?></label>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER') ?></label>
                     </td>
                 </tr><?php  
 		}		
@@ -919,7 +919,7 @@ foreach( $rows as $row ) {
                     <td>
                         <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('flex', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="<?php echo basename($row['filename'], ".php") ?>" />
                     </td>
-                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_FLEX ?></label>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_FLEX') ?></label>
                     </td>
                 </tr><?php  
 		}		
@@ -928,7 +928,7 @@ foreach( $rows as $row ) {
                     <td>
                         <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" <?php if (array_search('shipvalue', $PSHOP_SHIPPING_MODULES) !== false) echo "checked=\"checked\""; ?> value="<?php echo basename($row['filename'], ".php") ?>" />
                     </td>
-                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_SHIPVALUE ?></label>
+                    <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_SHIPVALUE') ?></label>
                     </td>
                 </tr><?php  
 		}
@@ -949,27 +949,27 @@ foreach( $rows as $row ) {
                 <td>
                     <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" onclick="unCheckAndDisable( this.checked );" <?php if (NO_SHIPPING == '1') echo "checked=\"checked\""; ?> value="no_shipping" />
                 </td>
-                <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE ?></label>
+                <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE') ?></label>
                 </td>
             </tr>
         </table>
 </fieldset>
 <?php
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT, "checkout-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_CHECKOUT'), "checkout-page");
 ?>
 
 <table class="adminform">
    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR') ?></td>
         <td>
             <input type="checkbox" name="conf_SHOW_CHECKOUT_BAR" class="inputbox" <?php if (SHOW_CHECKOUT_BAR == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td width="30%"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN ?>
+        <td width="30%"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN') ?>
         </td>
     </tr>
     <tr>
-        <td valign="top"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS ?></td>
+        <td valign="top"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS') ?></td>
         <td valign="top">
             <?php
             $checkout_names = array_keys( $VM_CHECKOUT_MODULES );
@@ -985,9 +985,9 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT, "checkout-page");
             		$checked = ' checked="checked"';
             	}
             	echo '<input type="checkbox" name="VM_CHECKOUT_MODULES['.$stepname.'][enabled]" id="VM_CHECKOUT_MODULES_'.$stepname.'" value="1" '.$readonly.$checked.'/>
-            			<label for="VM_CHECKOUT_MODULES_'.$stepname.'"><strong>&quot;'.$VM_LANG->$label.'&quot;</strong></label><br />
+            			<label for="VM_CHECKOUT_MODULES_'.$stepname.'"><strong>&quot;'.$VM_LANG->_($label).'&quot;</strong></label><br />
             			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            			'.sprintf( $VM_LANG->_VM_CFG_CHECKOUT_SHOWSTEPINCHECKOUT, '<input type="text" name="VM_CHECKOUT_MODULES['.$stepname.'][order]" value="'.$step['order'].'" class="inputbox" size="2" />' )
+            			'.sprintf( $VM_LANG->_('VM_CFG_CHECKOUT_SHOWSTEPINCHECKOUT'), '<input type="text" name="VM_CHECKOUT_MODULES['.$stepname.'][order]" value="'.$step['order'].'" class="inputbox" size="2" />' )
             	.'<input type="hidden" name="VM_CHECKOUT_MODULES['.$stepname.'][name]" value="'.$stepname.'" />
             			<br /><br />';
             	next($checkout_names);
@@ -995,7 +995,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT, "checkout-page");
             ?>
         </td>
         <td width="30%" valign="top"><?php 
-        echo vmToolTip( $VM_LANG->_VM_CFG_CHECKOUT_SHOWSTEP_TIP );
+        echo vmToolTip( $VM_LANG->_('VM_CFG_CHECKOUT_SHOWSTEP_TIP') );
         	?>
         	</td>
     </tr>
@@ -1003,20 +1003,20 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_CHECKOUT, "checkout-page");
 
 <?php
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS, "download-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS'), "download-page");
 ?>
 
   <table class="adminform">
   <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS') ?></td>
         <td>
             <input type="checkbox" name="conf_ENABLE_DOWNLOADS" class="inputbox" <?php if (ENABLE_DOWNLOADS == 1) echo "checked=\"checked\""; ?> value="1" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN') ?>
         </td>
     </tr>
     <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS') ?></td>
         <td>
             <select name="conf_ENABLE_DOWNLOAD_STATUS" class="inputbox" >
             <?php
@@ -1041,11 +1041,11 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS, "download-page"
                 }?>
                 </select>
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN') ?>
         </td>
     </tr>
         <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS') ?></td>
         <td>
             <select name="conf_DISABLE_DOWNLOAD_STATUS" class="inputbox" >
             <?php
@@ -1059,132 +1059,132 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADABLEGOODS, "download-page"
                 }?>
                 </select>
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN') ?>
         </td>
     </tr>
       <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADROOT ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DOWNLOADROOT') ?></td>
         <td valign="top">
             <input size="40" type="text" name="conf_DOWNLOADROOT" class="inputbox" value="<?php echo DOWNLOADROOT ?>" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN') ?>
         </td>
     </tr>
     <tr>
-      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX ?></td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX') ?></td>
         <td>
             <input size="3" type="text" name="conf_DOWNLOAD_MAX" class="inputbox" value="<?php echo DOWNLOAD_MAX ?>" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN') ?>
         </td>
     </tr>
     <tr>
-      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE ?></td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE') ?></td>
         <td>
             <input size="8" type="text" name="conf_DOWNLOAD_EXPIRE" class="inputbox" value="<?php echo DOWNLOAD_EXPIRE ?>" />
         </td>
-        <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN ?>
+        <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN') ?>
         </td>
     </tr>
     <tr>
-      <td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL ?></td>
+      <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL') ?></td>
         <td>
             <input name="conf_VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL" type="checkbox" value="1" <?php if( @conf_VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL ) echo 'checked="checked"' ?> />
         </td>
-        <td><?php echo $VM_LANG->_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP ?>
+        <td><?php echo $VM_LANG->_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP') ?>
         </td>
     </tr>
     </table>  
 
 <?php
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_VM_ADMIN_CFG_FEED_CONFIGURATION, "feed-page");
+$tabs->startTab( $VM_LANG->_('VM_ADMIN_CFG_FEED_CONFIGURATION'), "feed-page");
   ?>
   <table class="adminform">
    <tr>
         <td class="labelcell">&nbsp;</td>
         <td>
             <input type="checkbox" name="conf_VM_FEED_ENABLED" id="conf_VM_FEED_ENABLED" class="inputbox" <?php if (VM_FEED_ENABLED == 1) echo "checked=\"checked\""; ?> value="1" />
-            <label for="conf_VM_FEED_ENABLED"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_ENABLE ?></label>
+            <label for="conf_VM_FEED_ENABLED"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_ENABLE') ?></label>
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_ENABLE_TIP ) ?>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_ENABLE_TIP') ) ?>
         </td>
     </tr>
    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_CACHE ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_CACHE') ?></td>
         <td>
             <input type="checkbox" name="conf_VM_FEED_CACHE" id="conf_VM_FEED_CACHE" class="inputbox" <?php if (VM_FEED_CACHE == 1) echo "checked=\"checked\""; ?> value="1" />
-            <label for="conf_VM_FEED_CACHE"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_CACHE_ENABLE ?></label><br />
+            <label for="conf_VM_FEED_CACHE"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_CACHE_ENABLE') ?></label><br />
             <br />
 			<input type="text" size="10" value="<?php echo VM_FEED_CACHETIME ?>" name="conf_VM_FEED_CACHETIME" id="conf_VM_FEED_CACHETIME" />
-			<label for="conf_VM_FEED_CACHETIME"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_CACHETIME ?></label>
+			<label for="conf_VM_FEED_CACHETIME"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_CACHETIME') ?></label>
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_CACHE_TIP ) ?>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_CACHE_TIP') ) ?>
         </td>
     </tr>
 
    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->VM_ADMIN_CFG_FEED_TITLE ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_TITLE') ?></td>
         <td>
 			<input type="text" size="40" value="<?php echo VM_FEED_TITLE ?>" name="conf_VM_FEED_TITLE" id="conf_VM_FEED_TITLE" /><br />
-			<label for="conf_VM_FEED_TITLE"><?php echo $VM_LANG->VM_ADMIN_CFG_FEED_TITLE ?></label><br />
+			<label for="conf_VM_FEED_TITLE"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_TITLE') ?></label><br />
 			<br />
 			<input type="text" size="40" value="<?php echo VM_FEED_TITLE_CATEGORIES ?>" name="conf_VM_FEED_TITLE_CATEGORIES" id="conf_VM_FEED_TITLE_CATEGORIES" /><br />
-			<label for="conf_VM_FEED_TITLE"><?php echo $VM_LANG->VM_ADMIN_CFG_FEED_TITLE_CATEGORIES ?></label><br />
+			<label for="conf_VM_FEED_TITLE"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES') ?></label><br />
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_TITLE_TIP) ?><br />
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_TITLE_TIP')) ?><br />
 			<br />
-			<?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP) ?>
+			<?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP')) ?>
         </td>
     </tr>
    <tr>
         <td class="labelcell">&nbsp;</td>
         <td>
             <input type="checkbox" name="conf_VM_FEED_SHOW_IMAGES" id="conf_VM_FEED_SHOW_IMAGES" class="inputbox" <?php if (VM_FEED_SHOW_IMAGES == 1) echo "checked=\"checked\""; ?> value="1" />
-            <label for="conf_VM_FEED_SHOW_IMAGES"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_SHOWIMAGES ?></label>
+            <label for="conf_VM_FEED_SHOW_IMAGES"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_SHOWIMAGES') ?></label>
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_SHOWIMAGES_TIP ) ?>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_SHOWIMAGES_TIP') ) ?>
         </td>
     </tr>
    <tr>
         <td class="labelcell">&nbsp;</td>
         <td>
             <input type="checkbox" name="conf_VM_FEED_SHOW_PRICES" id="conf_VM_FEED_SHOW_PRICES" class="inputbox" <?php if (VM_FEED_SHOW_PRICES == 1) echo "checked=\"checked\""; ?> value="1" />
-            <label for="conf_VM_FEED_SHOW_PRICES"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_SHOWPRICES ?></label>
+            <label for="conf_VM_FEED_SHOW_PRICES"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_SHOWPRICES') ?></label>
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_SHOWPRICES_TIP ) ?>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_SHOWPRICES_TIP') ) ?>
         </td>
     </tr>
    <tr>
         <td class="labelcell">&nbsp;</td>
         <td>
             <input type="checkbox" name="conf_VM_FEED_SHOW_DESCRIPTION" id="conf_VM_FEED_SHOW_DESCRIPTION" class="inputbox" <?php if (VM_FEED_SHOW_DESCRIPTION == 1) echo "checked=\"checked\""; ?> value="1" />
-            <label for="conf_VM_FEED_SHOW_DESCRIPTION"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_SHOWDESC ?></label>
+            <label for="conf_VM_FEED_SHOW_DESCRIPTION"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_SHOWDESC') ?></label>
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_SHOWDESC_TIP ) ?>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_SHOWDESC_TIP') ) ?>
         </td>
     </tr>
    <tr>
-        <td class="labelcell"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE ?></td>
+        <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE') ?></td>
         <td>
             <select name="conf_VM_FEED_DESCRIPTION_TYPE" id="conf_VM_FEED_DESCRIPTION_TYPE" class="inputbox">
-            	<option value="product_s_desc" <?php if (VM_FEED_DESCRIPTION_TYPE == 'product_s_desc') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_S_DESC ?></option>
-            	<option value="product_desc" <?php if (VM_FEED_DESCRIPTION_TYPE == 'product_desc') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DESCRIPTION ?></option>
+            	<option value="product_s_desc" <?php if (VM_FEED_DESCRIPTION_TYPE == 'product_s_desc') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_S_DESC') ?></option>
+            	<option value="product_desc" <?php if (VM_FEED_DESCRIPTION_TYPE == 'product_desc') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DESCRIPTION') ?></option>
 			</select>
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP ) ?>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP') ) ?>
         </td>
     </tr>
    <tr>
         <td class="labelcell">&nbsp;</td>
         <td>
             <input type="checkbox" name="conf_VM_FEED_LIMITTEXT" id="conf_VM_FEED_LIMITTEXT" class="inputbox" <?php if (VM_FEED_LIMITTEXT == 1) echo "checked=\"checked\""; ?> value="1" />
-            <label for="conf_VM_FEED_LIMITTEXT"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_LIMITTEXT ?></label><br />
+            <label for="conf_VM_FEED_LIMITTEXT"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_LIMITTEXT') ?></label><br />
             <br />
 			<input type="text" size="10" value="<?php echo VM_FEED_MAX_TEXT_LENGTH ?>" name="conf_VM_FEED_MAX_TEXT_LENGTH" id="conf_VM_FEED_MAX_TEXT_LENGTH" />
-			<label for="conf_VM_FEED_MAX_TEXT_LENGTH"><?php echo $VM_LANG->_VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH ?></label>
+			<label for="conf_VM_FEED_MAX_TEXT_LENGTH"><?php echo $VM_LANG->_('VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH') ?></label>
         </td>
-        <td width="30%"><?php echo vmToolTip($VM_LANG->_VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP ) ?>
+        <td width="30%"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP') ) ?>
         </td>
     </tr>
     </table>
@@ -1244,7 +1244,7 @@ function validateForm(pressbutton) {
 		}
 	}
 	if(!correct) {
-		alert('<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION ?>');
+		alert('<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION') ?>');
 	}
 
 }

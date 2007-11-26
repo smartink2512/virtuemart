@@ -22,7 +22,7 @@ mm_showMyFileName( __FILE__ );
   <table align="center"cellspacing="0" cellpadding="0" border="0">
       <tr valign="top"> 
         <th colspan="2" align="center"class="sectiontableheader">
-          <strong><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_FORM_INFO_LBL ?></strong>
+          <strong><?php echo $VM_LANG->_('PHPSHOP_MANUFACTURER_FORM_INFO_LBL') ?></strong>
         </th>
       </tr>
       <tr valign="top">
@@ -34,7 +34,7 @@ mm_showMyFileName( __FILE__ );
   
       <tr>
         <td valign="top" align="center"colspan="2">
-            <br /><?php echo $VM_LANG->_PHPSHOP_STORE_FORM_EMAIL ?>:&nbsp;
+            <br /><?php echo $VM_LANG->_('PHPSHOP_STORE_FORM_EMAIL') ?>:&nbsp;
             <a href="mailto:<?php echo $mf_email; ?>"><?php echo $mf_email; ?></a>
             <br />
             <br /><a href="<?php echo $mf_url ?>" target="_blank"><?php echo $mf_url ?></a><br />

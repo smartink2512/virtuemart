@@ -19,8 +19,8 @@ mm_showMyFileName( __FILE__ );
 
 $manufacturer_id = vmGet( $_REQUEST, 'manufacturer_id');
 
-$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_CART_TITLE );
-$mainframe->appendPathWay( $VM_LANG->_PHPSHOP_CART_TITLE );
+$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_CART_TITLE') );
+$mainframe->appendPathWay( $VM_LANG->_('PHPSHOP_CART_TITLE') );
 
 $continue_link = '';
 if( !empty( $category_id)) {

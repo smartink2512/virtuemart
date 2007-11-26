@@ -53,7 +53,7 @@ class ps_twocheckout {
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS') ?></strong></td>
             <td>
                 <select name="TWOCO_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -77,11 +77,11 @@ class ps_twocheckout {
                     }?>
                     </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN') ?>
             </td>
         </tr>
             <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED') ?></strong></td>
             <td>
                 <select name="TWOCO_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -95,15 +95,15 @@ class ps_twocheckout {
                     } ?>
                     </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
             <td><strong>Merchant Notifications</strong></td>
             <td>
                 <select name="TWOCO_MERCHANT_EMAIL" class="inputbox" >
-                  <option <? if (TWOCO_MERCHANT_EMAIL == 'True') echo "selected=\"selected\""; ?> value="True"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                  <option <? if (TWOCO_MERCHANT_EMAIL == 'False') echo "selected=\"selected\""; ?> value="False"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                  <option <? if (TWOCO_MERCHANT_EMAIL == 'True') echo "selected=\"selected\""; ?> value="True"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+                  <option <? if (TWOCO_MERCHANT_EMAIL == 'False') echo "selected=\"selected\""; ?> value="False"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
             <td>Should 2CheckOut e-mail a receipt to the store owner?
@@ -113,8 +113,8 @@ class ps_twocheckout {
             <td><strong>Test Mode?</strong></td>
             <td>
                 <select name="TWOCO_TESTMODE" class="inputbox" >
-                  <option <? if (TWOCO_TESTMODE == 'Y') echo "selected=\"selected\""; ?> value="Y"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                  <option <? if (TWOCO_TESTMODE == 'N') echo "selected=\"selected\""; ?> value="N"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                  <option <? if (TWOCO_TESTMODE == 'Y') echo "selected=\"selected\""; ?> value="Y"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+                  <option <? if (TWOCO_TESTMODE == 'N') echo "selected=\"selected\""; ?> value="N"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
             <td>Select yes to enable the Test/Demo mode?

@@ -27,7 +27,7 @@ if (!empty($creditcard_id)) {
 }
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_CREDITCARD_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_CREDITCARD_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -37,13 +37,13 @@ $formObj->startForm();
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_CREDITCARD_NAME ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_CREDITCARD_NAME') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="creditcard_name" value="<?php $db->sp("creditcard_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_CREDITCARD_CODE ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_CREDITCARD_CODE') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="creditcard_code" value="<?php $db->sp("creditcard_code") ?>">
       </td>

@@ -80,28 +80,28 @@ class ps_linkpoint {
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2') ?></strong></td>
             <td>
                 <select name="LP_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (LP_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (LP_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2_TOOLTIP') ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_AN_RECURRING') ?></strong></td>
             <td>
                 <select name="LP_RECURRING" class="inputbox">
                 <option <?php if (LP_RECURRING == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (LP_RECURRING == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP') ?>
             </td>
         </tr>
         <tr>
@@ -109,9 +109,9 @@ class ps_linkpoint {
             <td>
                 <select name="LP_PREAUTH" class="inputbox">
                 <option <?php if (LP_PREAUTH == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (LP_PREAUTH == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
             <td><?php echo "Select yes, is billing is not processed immediately.  (ie; Free Trials)" ?>
@@ -352,7 +352,7 @@ class ps_linkpoint {
 		}
 		else    // Success, let's return
 		{
-		   $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+		   $d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
 		   $d["order_payment_log"] = $result["r_approved"];
 		   // Catch Transaction ID
 		   $d["order_payment_trans_id"] = $result["r_ordernum"];
@@ -376,7 +376,7 @@ class ps_linkpoint {
   	  }
   	  else    // Success, let's return
   	  {
-  		 $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+  		 $d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
   		 $d["order_payment_log"] = $result["r_approved"];
   		 // Catch Transaction ID
   		 $d["order_payment_trans_id"] = $result["r_ordernum"];

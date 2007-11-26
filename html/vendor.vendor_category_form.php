@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_VENDOR_CAT_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_VENDOR_CAT_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -33,18 +33,18 @@ if (!empty($vendor_category_id)) {
 ?> 
 <table class="adminform">
 	<tr> 
-                  <td width="38%" nowrap align="right"><strong><?php echo $VM_LANG->_PHPSHOP_VENDOR_CAT_FORM_INFO_LBL ?></strong> 
+                  <td width="38%" nowrap align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_VENDOR_CAT_FORM_INFO_LBL') ?></strong> 
                   </td>
                   <td width="62%">&nbsp;</td>
 	</tr>
 	<tr> 
-		<td width="38%" nowrap align="right"><?php echo $VM_LANG->_PHPSHOP_VENDOR_CAT_FORM_NAME ?>:</td>
+		<td width="38%" nowrap align="right"><?php echo $VM_LANG->_('PHPSHOP_VENDOR_CAT_FORM_NAME') ?>:</td>
 		<td width="62%"> 
                     <input type="text" class="inputbox" name="vendor_category_name" size="18" value="<?php $db->sp('vendor_category_name') ?>" />
 		</td>
 	</tr>
 	<tr> 
-		<td width="38%" nowrap align="right" valign="top"><?php echo $VM_LANG->_PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION ?>:</td>
+		<td width="38%" nowrap align="right" valign="top"><?php echo $VM_LANG->_('PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION') ?>:</td>
                   <td width="62%" valign="top"> 
                     <textarea name="vendor_category_desc" cols="40" rows="2" wrap="virtual"><?php $db->sp('vendor_category_desc'); ?></textarea>
                   </td>

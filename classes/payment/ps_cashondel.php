@@ -34,12 +34,12 @@ class ps_cashondel {
         
         /** Read current Configuration ***/
         require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
-		echo $VM_LANG->_PHPSHOP_SPEC_CASH_ON_DELIVER_RATES;
+		echo $VM_LANG->_('PHPSHOP_SPEC_CASH_ON_DELIVER_RATES');
         ?>
         <table>
           <tr>
-          <td align="center"><b><?=$VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL?></b></td>
-          <td align="center"><b><?=$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_FEE?></b></td>
+          <td align="center"><b><?=$VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL')?></b></td>
+          <td align="center"><b><?=$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_FEE')?></b></td>
           </tr>
           <tr>
           <td><strong>5000</strong> =></td>

@@ -8,13 +8,13 @@
     <!-- Output The heading -->
     <?php if($display_header == "Y") { ?>
         <div class="vmCartChildHeading<?php echo $cls_suffix ?>">
-            <span style="float: left;width: <?php echo $desc_width ?>;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE ?></span >
+            <span style="float: left;width: <?php echo $desc_width ?>;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DESC_TITLE') ?></span >
             <?php //Ouput Each Attribute Heading
             foreach($headings as $key => $value) { ?>
                 <span style="float: left;width: <?php echo $attrib_width ?>;" ><?php echo $headings[$key] ?></span>
             <?php } ?>
-            <span style="float: right;width: 15%;"><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?></span>
-            <span style="float: right;width: 12%;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE ?></span>
+            <span style="float: right;width: 15%;"><?php echo $VM_LANG->_('PHPSHOP_CART_QUANTITY') ?></span>
+            <span style="float: right;width: 12%;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_PRICE') ?></span>
         </div>
         <br/>
     <?php }

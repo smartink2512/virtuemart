@@ -26,9 +26,9 @@ $db->query($q);
 ?> 
 <table width="100%" class="adminlist">
   <tr > 
-    <th width="23%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_USERNAME ?></th>
-    <th width="46%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?></th>
-    <th width="31%"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_GROUP ?></th>
+    <th width="23%"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_USERNAME') ?></th>
+    <th width="46%"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?></th>
+    <th width="31%"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_GROUP') ?></th>
   </tr>
   <tr> 
     <td colspan="3"> 

@@ -3,7 +3,7 @@
 <?php
 defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 echo $vendor_store_desc."<br />";
-echo "<br /><h4>".$VM_LANG->_PHPSHOP_CATEGORIES."</h4>";
+echo "<br /><h4>".$VM_LANG->_('PHPSHOP_CATEGORIES')."</h4>";
 echo $categories; ?>
 <div class="vmRecent">
 <?php echo $recent_products; ?>

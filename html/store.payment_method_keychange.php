@@ -24,7 +24,7 @@ $task = vmGet( $_POST, 'task', null );
 
 if ( $payment_method_id ) {
 	echo '<table class="adminform"><tr><th>';
-	echo "<h2>".$VM_LANG->_PHPSHOP_CHANGE_PASSKEY_FORM."</h2></th>";
+	echo "<h2>".$VM_LANG->_('PHPSHOP_CHANGE_PASSKEY_FORM')."</h2></th>";
 	echo '</tr><tr><td>';
 	// Get the Transaction Key securely from the database
 	$db->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') AS `passkey` FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'" );
@@ -39,13 +39,13 @@ if ( $payment_method_id ) {
 	if( $auth_result && empty( $passkey ) ) {
 		echo "<form action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
 		echo "<table width=\"60%\">\n";
-		echo "<tr><th style=\"text-align:right;\">".$VM_LANG->_PHPSHOP_CURRENT_TRANSACTION_KEY.":</th>\n";
+		echo "<tr><th style=\"text-align:right;\">".$VM_LANG->_('PHPSHOP_CURRENT_TRANSACTION_KEY').":</th>\n";
 		echo "<th><input type=\"text\" name=\"passkey\" value=\"". $db->f('passkey') ."\" /></th></tr>\n";
 		echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
-		echo "<tr><td style=\"text-align:right;\">".$VM_LANG->_PHPSHOP_TYPE_PASSWORD.":</td>\n";
+		echo "<tr><td style=\"text-align:right;\">".$VM_LANG->_('PHPSHOP_TYPE_PASSWORD').":</td>\n";
 		echo "<td><input type=\"password\" name=\"passwd\" value=\"\" /></td></tr>\n";
 		echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
-		echo "<tr><td>&nbsp;</td><td><input name=\"submit\" type=\"submit\" value=\"".$VM_LANG->_PHPSHOP_SUBMIT."\" /></td></tr>\n";
+		echo "<tr><td>&nbsp;</td><td><input name=\"submit\" type=\"submit\" value=\"".$VM_LANG->_('PHPSHOP_SUBMIT')."\" /></td></tr>\n";
 		echo "</table>\n";
 		echo "<input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />\n";
 		echo "<input type=\"hidden\" name=\"Itemid\" value=\"$Itemid\" />\n";
@@ -63,19 +63,19 @@ if ( $payment_method_id ) {
 		$q .= "SET payment_passkey = ".VM_ENCRYPT_FUNCTION."('$passkey','" . ENCODE_KEY . "')\n";
 		$q .= "WHERE payment_method_id='$payment_method_id';";
 		$db->query( $q );
-		vmRedirect( $sess->url($_SERVER['PHP_SELF']."?page=store.payment_method_form&payment_method_id=$payment_method_id", false, false), $VM_LANG->_PHPSHOP_CHANGE_PASSKEY_SUCCESS);
+		vmRedirect( $sess->url($_SERVER['PHP_SELF']."?page=store.payment_method_form&payment_method_id=$payment_method_id", false, false), $VM_LANG->_('PHPSHOP_CHANGE_PASSKEY_SUCCESS'));
 	}
 	// not authenticated
 	else {
 		require_once( CLASSPATH. "ps_checkout.php" );
 		echo "<form action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
 		echo "<table class=\"adminForm\">\n";
-		echo "<tr><td>".$VM_LANG->_PHPSHOP_CURRENT_TRANSACTION_KEY.":</td><td>".( $db->f('passkey') ? ps_checkout::asterisk_pad( $db->f('passkey'), 4 ) : '<i>(empty!)</i>')."</td></tr>\n";
+		echo "<tr><td>".$VM_LANG->_('PHPSHOP_CURRENT_TRANSACTION_KEY').":</td><td>".( $db->f('passkey') ? ps_checkout::asterisk_pad( $db->f('passkey'), 4 ) : '<i>(empty!)</i>')."</td></tr>\n";
 		echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
-		echo "<tr><td>".$VM_LANG->_PHPSHOP_TYPE_PASSWORD.":</td>\n";
+		echo "<tr><td>".$VM_LANG->_('PHPSHOP_TYPE_PASSWORD').":</td>\n";
 		echo "<td><input type=\"password\" name=\"passwd\" value=\"\" /></td></tr>\n";
 		echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
-		echo "<tr><td>&nbsp;</td><td><input name=\"submit\" type=\"submit\" value=\"".$VM_LANG->_PHPSHOP_SUBMIT."\" /></td></tr>\n";
+		echo "<tr><td>&nbsp;</td><td><input name=\"submit\" type=\"submit\" value=\"".$VM_LANG->_('PHPSHOP_SUBMIT')."\" /></td></tr>\n";
 		echo "</table>\n";
 		echo "<input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />\n";
 		echo "<input type=\"hidden\" name=\"Itemid\" value=\"$Itemid\" />\n";

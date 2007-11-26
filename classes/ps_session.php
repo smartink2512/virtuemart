@@ -84,7 +84,7 @@ class ps_session {
 		if( $doCheck ) {
 			$isOK = vmGet( $_COOKIE, 'VMCHECK' );
 			if( $isOK != 'OK' ) {
-				$GLOBALS['vmLogger']->info( $VM_LANG->_VM_SESSION_COOKIES_NOT_ACCEPTED_TIP );
+				$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_SESSION_COOKIES_NOT_ACCEPTED_TIP',false) );
 			} else {
 				// Delete the cookie
 				setcookie( 'VMCHECK', '', false );
@@ -426,7 +426,7 @@ class ps_session {
 										'Shop Image Directory' => IMAGEPATH );
 			foreach( $try_these_paths as $name => $session_save_path ) {
 				if( @is_writable( $session_save_path )) {
-					$vmLogger->debug( sprintf( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX, session_save_path(), $name));
+					$vmLogger->debug( sprintf( $VM_LANG->_('VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX',false), session_save_path(), $name));
 					session_save_path( $session_save_path );
 					break;
 				}
@@ -434,7 +434,7 @@ class ps_session {
 		}
 		// If the path is STILL not writable, generate an error
 		if( !@is_writable( session_save_path()) ) {
-			$vmLogger->err( $VM_LANG->_VM_SESSION_SAVEPATH_UNWRITABLE );
+			$vmLogger->err( $VM_LANG->_('VM_SESSION_SAVEPATH_UNWRITABLE',false) );
 		}
 	}
 	/**

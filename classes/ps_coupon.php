@@ -38,15 +38,15 @@ class ps_coupon {
         $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$coupon_db->getEscaped($d['coupon_code'])."' ";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS );
+            $vmLogger->err( $VM_LANG->_('PHPSHOP_COUPON_CODE_EXISTS',false) );
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $vmLogger->warning( $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS );
+            $vmLogger->warning( $VM_LANG->_('PHPSHOP_COUPON_COMPLETE_ALL_FIELDS',false) );
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER );
+            $vmLogger->err( $VM_LANG->_('PHPSHOP_COUPON_VALUE_NOT_NUMBER',false) );
             $valid = false;
         }
         return $valid;
@@ -62,15 +62,15 @@ class ps_coupon {
         $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$coupon_db->getEscaped($d['coupon_code'])."' AND coupon_id <> '".$d['coupon_id']."'";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_CODE_EXISTS );
+            $vmLogger->err( $VM_LANG->_('PHPSHOP_COUPON_CODE_EXISTS',false) );
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_COMPLETE_ALL_FIELDS );
+            $vmLogger->err( $VM_LANG->_('PHPSHOP_COUPON_COMPLETE_ALL_FIELDS',false) );
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $vmLogger->err( $VM_LANG->_PHPSHOP_COUPON_VALUE_NOT_NUMBER );
+            $vmLogger->err( $VM_LANG->_('PHPSHOP_COUPON_VALUE_NOT_NUMBER',false) );
             $valid = false;
         }
         return $valid;
@@ -232,7 +232,7 @@ class ps_coupon {
         else
         {
             /* no record, so coupon_code entered was not valid */
-            $_REQUEST['coupon_error'] = $VM_LANG->_PHPSHOP_COUPON_CODE_INVALID;
+            $_REQUEST['coupon_error'] = $VM_LANG->_('PHPSHOP_COUPON_CODE_INVALID');
             return false;
             
         }

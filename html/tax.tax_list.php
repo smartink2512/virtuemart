@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_TAX_LIST_LBL, IMAGEURL."ps_image/taxes.gif", $modulename, "tax_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_TAX_LIST_LBL'), IMAGEURL."ps_image/taxes.gif", $modulename, "tax_list");
 
 // start the list table
 $listObj->startTable();
@@ -56,10 +56,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_TAX_LIST_COUNTRY => 'width="44%"',
-					$VM_LANG->_PHPSHOP_TAX_LIST_STATE => 'width="38%"',
-					$VM_LANG->_PHPSHOP_TAX_LIST_RATE => 'width="18%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_TAX_LIST_COUNTRY') => 'width="44%"',
+					$VM_LANG->_('PHPSHOP_TAX_LIST_STATE') => 'width="38%"',
+					$VM_LANG->_('PHPSHOP_TAX_LIST_RATE') => 'width="18%"',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

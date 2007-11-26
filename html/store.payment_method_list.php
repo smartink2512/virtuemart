@@ -52,7 +52,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_LBL, IMAGEURL."ps_image/payment.gif", $modulename, "payment_method_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_LBL'), IMAGEURL."ps_image/payment.gif", $modulename, "payment_method_list");
 
 // start the list table
 $listObj->startTable();
@@ -60,13 +60,13 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_NAME => '',
-					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_CODE => '',
-					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT => '',
-					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP => '',
-					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR => '',
-					$VM_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL => '',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_NAME') => '',
+					$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_CODE') => '',
+					$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT') => '',
+					$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_SHOPPER_GROUP') => '',
+					$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR') => '',
+					$VM_LANG->_('PHPSHOP_ISSHIP_LIST_PUBLISH_LBL') => '',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -99,19 +99,19 @@ while ($db->next_record()) {
 	$enable_processor = $db->f("enable_processor");
 	switch($enable_processor) { 
 		case "Y": 
-			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_USE_PP;
+			$tmp_cell = $VM_LANG->_('PHPSHOP_PAYMENT_FORM_USE_PP');
 			break;
 		case "N":
-			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_AO;
+			$tmp_cell = $VM_LANG->_('PHPSHOP_PAYMENT_FORM_AO');
 			break;
 		case "B":
-			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_BANK_DEBIT;
+			$tmp_cell = $VM_LANG->_('PHPSHOP_PAYMENT_FORM_BANK_DEBIT');
 			break;
 		case "P":
-			$tmp_cell = $VM_LANG->_VM_PAYMENT_FORM_FORMBASED;
+			$tmp_cell = $VM_LANG->_('VM_PAYMENT_FORM_FORMBASED');
 			break;
 		default:
-			$tmp_cell = $VM_LANG->_PHPSHOP_PAYMENT_FORM_CC;
+			$tmp_cell = $VM_LANG->_('PHPSHOP_PAYMENT_FORM_CC');
 			break;
 	}
 	$listObj->addCell( $tmp_cell );

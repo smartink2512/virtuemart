@@ -43,7 +43,7 @@ class ps_config {
 		$d['conf_VM_PRICE_ACCESS_LEVEL'] = $db->f('name');
 		
 		if (!$fp = fopen(ADMINPATH ."virtuemart.cfg.php", "w")) {			
-			$vmLogger->err( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. ADMINPATH ."virtuemart.cfg.php)" );
+			$vmLogger->err( $VM_LANG->_('VM_CONFIGURATION_CHANGE_FAILURE',false).' ('. ADMINPATH ."virtuemart.cfg.php)" );
 			return false;
 		}
 			
@@ -306,9 +306,9 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
 			if( $_SESSION['vmLayout'] == 'extended') {
-				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				$vmLogger->info( $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS',false) );
 			} else {
-				vmRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				vmRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS') );
 			}
 			return true;
 			
@@ -371,7 +371,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 			fclose ($fp);
 
 			if( $_SESSION['vmLayout'] == 'extended') {
-				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				$vmLogger->info( $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS',false) );
 			} else {
 				$task = vmGet( $_REQUEST, 'task', '');
 				if( $task == 'apply' ) {
@@ -381,11 +381,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 					$page = 'admin.show_cfg';
 					$theme = '';
 				}
-				vmRedirect( $_SERVER['PHP_SELF']."?page=$page$theme&option=com_virtuemart", $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				vmRedirect( $_SERVER['PHP_SELF']."?page=$page$theme&option=com_virtuemart", $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS') );
 			}
 			return true;
 		} else {
-			$vmLogger->err( $VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE.' ('. VM_THEMEPATH ."theme.config.php)" );
+			$vmLogger->err( $VM_LANG->_('VM_CONFIGURATION_CHANGE_FAILURE',false).' ('. VM_THEMEPATH ."theme.config.php)" );
 			return false;
 		}
 	}

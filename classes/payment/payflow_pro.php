@@ -38,14 +38,14 @@ class payflow_pro {
     ?>
       <table>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>
             <td>
                 <select name="PFP_TEST_REQUEST" class="inputbox" >
-                <option <?php if (PFP_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (PFP_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (PFP_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+                <option <?php if (PFP_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
@@ -81,16 +81,16 @@ class payflow_pro {
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2') ?></strong></td>
             <td>
                 <select name="PFP_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (PFP_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (PFP_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2_TOOLTIP') ?></td>
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
@@ -225,7 +225,7 @@ class payflow_pro {
 		$database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
 		$transaction = $database->record[0];
 		if( empty($transaction->passkey)) {
-			$vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR.'. Technical Note: The required passwird is empty! The payment method settings must be reviewed.' );
+			$vmLogger->err( $VM_LANG->_('PHPSHOP_PAYMENT_ERROR',false).'. Technical Note: The required passwird is empty! The payment method settings must be reviewed.' );
 			return false;
 		}
 
@@ -337,7 +337,7 @@ class payflow_pro {
 			case '0':
 				// Approved - Success!
 				$success = true;
-				$d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+				$d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
 				$vmLogger->debug( $d['order_payment_log']);
 				break;
@@ -384,7 +384,7 @@ class payflow_pro {
 		$database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
 		$transaction = $database->record[0];
 		if( empty($transaction->passkey)) {
-			$vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
+			$vmLogger->err($VM_LANG->_('PHPSHOP_PAYMENT_ERROR'),false);
 			return false;
 		}
 		$db = new ps_DB;
@@ -513,7 +513,7 @@ class payflow_pro {
 			case '0':
 				// Approved - Success!
 				$success = true;
-				$d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+				$d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
 				
 				$q = "UPDATE #__{vm}_order_payment SET ";
@@ -562,7 +562,7 @@ class payflow_pro {
 		$database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
 		$transaction = $database->record[0];
 		if( empty($transaction->passkey)) {
-			$vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
+			$vmLogger->err($VM_LANG->_('PHPSHOP_PAYMENT_ERROR'),false);
 			return false;
 		}
 		$db = new ps_DB;
@@ -691,7 +691,7 @@ class payflow_pro {
 			case '0':
 				// Approved - Success!
 				$success = true;
-				$d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+				$d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
 				
 				$q = "UPDATE #__{vm}_order_payment SET ";

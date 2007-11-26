@@ -216,7 +216,7 @@ class ps_product_discount {
 		
 		if( $db->num_rows() > 0 ) {
 			$html = "<select name=\"product_discount_id\" class=\"inputbox\" onchange=\"updateDiscountedPrice();\">\n" ;
-			$html .= "<option id=\"*1\" value=\"0\">" . $VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n" ;
+			$html .= "<option id=\"*1\" value=\"0\">" . $VM_LANG->_('PHPSHOP_INFO_MSG_VAT_ZERO_LBL') . "</option>\n" ;
 			while( $db->next_record() ) {
 				if( $db->f( "is_percent" ) ) {
 					$id = "*" . (100 - $db->f( "amount" )) / 100 ;
@@ -231,7 +231,7 @@ class ps_product_discount {
 			$html .= "</select>\n" ;
 		} else {
 			$html = "<input type=\"hidden\" name=\"product_discount_id\" value=\"0\" />\n
-      <a href=\"" . $_SERVER['PHP_SELF'] . "?option=$option&page=product.product_discount_form\" target=\"_blank\">" . $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP . "</a>" ;
+      <a href=\"" . $_SERVER['PHP_SELF'] . "?option=$option&page=product.product_discount_form\" target=\"_blank\">" . $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP') . "</a>" ;
 		}
 		return $html ;
 	}

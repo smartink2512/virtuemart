@@ -28,7 +28,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
    <br />
 	<?php $ps_order->list_order("A","1"); ?>
    <br />
-   <input type="submit" class="button" name="submit" value="<?php echo $VM_LANG->_BACK; ?>" />
+   <input type="submit" class="button" name="submit" value="<?php echo $VM_LANG->_('BACK'); ?>" />
    </td>
 </tr>
 </table>

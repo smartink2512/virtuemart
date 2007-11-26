@@ -62,7 +62,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_VENDOR_LIST_LBL, IMAGEURL."ps_image/vendors.gif", $modulename, "vendor_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_VENDOR_LIST_LBL'), IMAGEURL."ps_image/vendors.gif", $modulename, "vendor_list");
 
 // start the list table
 $listObj->startTable();
@@ -70,9 +70,9 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_VENDOR_LIST_VENDOR_NAME => '',
-					$VM_LANG->_PHPSHOP_VENDOR_LIST_ADMIN => '',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_VENDOR_LIST_VENDOR_NAME') => '',
+					$VM_LANG->_('PHPSHOP_VENDOR_LIST_ADMIN') => '',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -92,7 +92,7 @@ while ($db->next_record()) {
 	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("vendor_name"). "</a>";
 	$listObj->addCell( $tmp_cell );
 	
-    $tmp_cell = '<a href="'. $sess->url($_SERVER['PHP_SELF']."?page=$modulename.vendor_form&vendor_id=" . $db->f("vendor_id")) .'">'. $VM_LANG->_PHPSHOP_UPDATE .'</a>';
+    $tmp_cell = '<a href="'. $sess->url($_SERVER['PHP_SELF']."?page=$modulename.vendor_form&vendor_id=" . $db->f("vendor_id")) .'">'. $VM_LANG->_('PHPSHOP_UPDATE') .'</a>';
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "vendor_id", $db->f("vendor_id"), "vendorDelete", $keyword, $limitstart ) );

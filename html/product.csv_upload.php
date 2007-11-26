@@ -30,12 +30,12 @@ else {
 }
 ?>
 <img src="<?php echo IMAGEURL ?>ps_image/csv.gif" alt="CSV Upload" border="0" align="absmiddle" />
-<span class="sectionname"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_CSV_UPLOAD ?></span><br /><br />
+<span class="sectionname"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_CSV_UPLOAD') ?></span><br /><br />
 
 <?php 
 $tabs = new mShopTabs(0, 1, "_csv");
 $tabs->startPane("uploadform-pane");
-$tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" ); 
+$tabs->startTab( $VM_LANG->_('PHPSHOP_CSV_IMPORT_EXPORT'), "uploadform" ); 
 ?>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" name="adminForm" enctype="multipart/form-data" onsubmit="return checkForm(this);">
 
@@ -43,7 +43,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
     <tr>
       <td rowspan="2" width="50%">
         <table style="border-right: 1px solid;" class="adminform">
-          <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_SETTINGS ?></th></tr>
+          <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_('PHPSHOP_CSV_SETTINGS') ?></th></tr>
           <tr>
           <td valign="top" width="15%" align="right">
           
@@ -53,7 +53,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
               <input type="hidden" name="page" value="product.mycsv" />
               <input type="hidden" name="option" value="com_virtuemart" />
               <input type="hidden" name="no_html" value="0" />
-              <?php echo $VM_LANG->_PHPSHOP_CSV_DELIMITER ?>:
+              <?php echo $VM_LANG->_('PHPSHOP_CSV_DELIMITER') ?>:
             </td>
             <td valign="top" width="5%">
               <input type="radio" class="inputbox" name="csv_delimiter" checked="checked" value=";" />
@@ -67,7 +67,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
             </td>
             <?php
             if( $show_fec ) { ?>
-              <td valign="top" width="10%" align="right"><?php echo $VM_LANG->_PHPSHOP_CSV_ENCLOSURE ?>:</td>
+              <td valign="top" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_CSV_ENCLOSURE') ?>:</td>
               <td valign="top" width="15%">
                   <input type="radio" class="inputbox" name="csv_enclosurechar" checked="checked" value='"' />
                     <span class="sectionname">&quot;</span><br />
@@ -83,29 +83,29 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
             }
               ?>
             </tr>
-            <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_UPLOAD_SETTINGS ?></th></tr>
+            <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_('PHPSHOP_CSV_UPLOAD_SETTINGS') ?></th></tr>
 		  <tr>
               <td colspan="<?php echo $cols/2; ?>">
-		    		<input type="checkbox" id="skip_first_line" name="skip_first_line" value="Y" /><label for="skip_first_line"><?php echo $VM_LANG->_PHPSHOP_CSV_SKIP_FIRST_LINE; ?></label>
+		    		<input type="checkbox" id="skip_first_line" name="skip_first_line" value="Y" /><label for="skip_first_line"><?php echo $VM_LANG->_('PHPSHOP_CSV_SKIP_FIRST_LINE'); ?></label>
 		    </td>
 		    <td colspan="<?php echo $cols/2; ?>">
-		    		<input type="checkbox" id="skip_default_value" name="skip_default_value" value="Y" /><label for="skip_default_value"><?php echo $VM_LANG->_PHPSHOP_CSV_SKIP_DEFAULT_VALUE; ?></label>
+		    		<input type="checkbox" id="skip_default_value" name="skip_default_value" value="Y" /><label for="skip_default_value"><?php echo $VM_LANG->_('PHPSHOP_CSV_SKIP_DEFAULT_VALUE'); ?></label>
 		    </td>
             </tr>
 		  <tr>
               <td colspan="<?php echo $cols/2; ?>">
-		    		<input type="checkbox" id="overwrite_existing_data" name="overwrite_existing_data" value="Y" checked="checked"/><label for="overwrite_existing_data"><?php echo $VM_LANG->_PHPSHOP_CSV_OVERWRITE_EXISTING_DATA; ?></label>
+		    		<input type="checkbox" id="overwrite_existing_data" name="overwrite_existing_data" value="Y" checked="checked"/><label for="overwrite_existing_data"><?php echo $VM_LANG->_('PHPSHOP_CSV_OVERWRITE_EXISTING_DATA'); ?></label>
 		    </td>
 		    <td colspan="<?php echo $cols/2; ?>">
 		    		
 		    </td>
             </tr>
-            <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_UPLOAD_FILE ?></th></tr>
+            <tr><th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_('PHPSHOP_CSV_UPLOAD_FILE') ?></th></tr>
             <tr>
               <td align="center" colspan="<?php echo $cols; ?>">
                     <input type="file" name="file" size="40" />
                     <br />
-                    <input type="submit" onclick="document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';document.adminForm.local_csv_file.value='';submitbutton();"style="background: url(<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png) no-repeat; height: 35px; text-indent: 35px;" value="<?php echo $VM_LANG->_PHPSHOP_CSV_SUBMIT_FILE ?>" />
+                    <input type="submit" onclick="document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';document.adminForm.local_csv_file.value='';submitbutton();"style="background: url(<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png) no-repeat; height: 35px; text-indent: 35px;" value="<?php echo $VM_LANG->_('PHPSHOP_CSV_SUBMIT_FILE') ?>" />
               </td>
             </tr>
             <tr>
@@ -114,50 +114,50 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_IMPORT_EXPORT, "uploadform" );
               </td>
             </tr>
             <tr>
-              <th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_PHPSHOP_CSV_FROM_DIRECTORY ?></th>
+              <th colspan="<?php echo $cols; ?>"><?php echo $VM_LANG->_('PHPSHOP_CSV_FROM_DIRECTORY') ?></th>
             </tr>
             <tr>
               <td align="center" colspan="<?php echo $cols; ?>">
                     <input type="text" size="60" value="<?php echo realpath($mosConfig_absolute_path."/media") ?>" name="local_csv_file" /><br />
-                    <input id="load_from_server" type="submit" onclick="document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';submitbutton();" style="background: url(<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png) no-repeat; height: 35px; text-indent: 35px;" value="<?php echo $VM_LANG->_PHPSHOP_CSV_FROM_SERVER ?>" />
+                    <input id="load_from_server" type="submit" onclick="document.adminForm.func.value='product_csv'; document.adminForm.no_html.value='';submitbutton();" style="background: url(<?php echo $mosConfig_live_site ?>/administrator/images/upload_f2.png) no-repeat; height: 35px; text-indent: 35px;" value="<?php echo $VM_LANG->_('PHPSHOP_CSV_FROM_SERVER') ?>" />
   
               </td>
             </tr>
           </table>
         </td>
-        <th align="center" width="50%"><?php echo $VM_LANG->_PHPSHOP_CSV_EXPORT_TO_FILE ?></th>
+        <th align="center" width="50%"><?php echo $VM_LANG->_('PHPSHOP_CSV_EXPORT_TO_FILE') ?></th>
       </tr>
       <tr>
-        <td valign="top"><strong><?php echo $VM_LANG->_PHPSHOP_CSV_SELECT_FIELD_ORDERING ?></strong><br/><br/>
-          <input type="radio" id="use_standard_order_yes" name="use_standard_order" value="Y" /><label for="use_standard_order_yes"><?php echo $VM_LANG->_PHPSHOP_CSV_DEFAULT_ORDERING ?></label>&nbsp;&nbsp;
-          <input type="radio" id="use_standard_order_no" name="use_standard_order" checked="checked" value="N" /><label for="use_standard_order_no"><?php echo $VM_LANG->_PHPSHOP_CSV_CUSTOMIZED_ORDERING ?></label>
+        <td valign="top"><strong><?php echo $VM_LANG->_('PHPSHOP_CSV_SELECT_FIELD_ORDERING') ?></strong><br/><br/>
+          <input type="radio" id="use_standard_order_yes" name="use_standard_order" value="Y" /><label for="use_standard_order_yes"><?php echo $VM_LANG->_('PHPSHOP_CSV_DEFAULT_ORDERING') ?></label>&nbsp;&nbsp;
+          <input type="radio" id="use_standard_order_no" name="use_standard_order" checked="checked" value="N" /><label for="use_standard_order_no"><?php echo $VM_LANG->_('PHPSHOP_CSV_CUSTOMIZED_ORDERING') ?></label>
           <br/><br />
-		<input type="checkbox" id="include_column_headers" name="include_column_headers" value="Y" /><label for="include_column_headers"><?php echo $VM_LANG->_PHPSHOP_CSV_INCLUDE_COLUMN_HEADERS; ?></label>
+		<input type="checkbox" id="include_column_headers" name="include_column_headers" value="Y" /><label for="include_column_headers"><?php echo $VM_LANG->_('PHPSHOP_CSV_INCLUDE_COLUMN_HEADERS'); ?></label>
 		<br/><br />
           <a href="#" onclick="javascript: document.adminForm.func.value='export_csv'; document.adminForm.no_html.value='1';submitbutton();" >
-          <img alt="Export" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/images/backup.png" align="center" /><?php echo $VM_LANG->_PHPSHOP_CSV_SUBMIT_EXPORT ?></a>
+          <img alt="Export" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/images/backup.png" align="center" /><?php echo $VM_LANG->_('PHPSHOP_CSV_SUBMIT_EXPORT') ?></a>
         </td>
       </tr>
   </table>
 </form>
 <?php 
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "field_list" ); 
+$tabs->startTab( $VM_LANG->_('PHPSHOP_CONFIG'), "field_list" ); 
 ?>
-  <h2><?php echo $VM_LANG->_PHPSHOP_CSV_CONFIGURATION_HEADER ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <h2><?php echo $VM_LANG->_('PHPSHOP_CSV_CONFIGURATION_HEADER') ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a class="toolbar" onclick="document.fieldUpdate.submit();" style="cursor:pointer;" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('saveForm','','<?php echo $mosConfig_live_site ?>/administrator/images/save_f2.png',1);"><img src="<?php echo $mosConfig_live_site."/administrator/images/save.png" ?>" name="saveForm" align="center"  border="0" />
-    &nbsp;&nbsp;<?php echo $VM_LANG->_PHPSHOP_CSV_SAVE_CHANGES ?></a>
+    &nbsp;&nbsp;<?php echo $VM_LANG->_('PHPSHOP_CSV_SAVE_CHANGES') ?></a>
   </h2>
   <br />
   
   <table class="adminlist">
     <tr>
       <th>#</th>
-      <th><?php echo $VM_LANG->_PHPSHOP_CSV_FIELD_NAME ?></th>
-      <th><?php echo $VM_LANG->_PHPSHOP_CSV_DEFAULT_VALUE ?></th>
-      <th><?php echo $VM_LANG->_PHPSHOP_CSV_FIELD_ORDERING ?></th>
-      <th><?php echo $VM_LANG->_PHPSHOP_CSV_FIELD_REQUIRED ?></th>
-      <th><?php echo $VM_LANG->_PHPSHOP_DELETE ?></th>
+      <th><?php echo $VM_LANG->_('PHPSHOP_CSV_FIELD_NAME') ?></th>
+      <th><?php echo $VM_LANG->_('PHPSHOP_CSV_DEFAULT_VALUE') ?></th>
+      <th><?php echo $VM_LANG->_('PHPSHOP_CSV_FIELD_ORDERING') ?></th>
+      <th><?php echo $VM_LANG->_('PHPSHOP_CSV_FIELD_REQUIRED') ?></th>
+      <th><?php echo $VM_LANG->_('PHPSHOP_DELETE') ?></th>
     </tr>
     <form name="fieldUpdate" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
       
@@ -182,12 +182,12 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "field_list" );
         <td><input type="text" name="field[<?php echo $i ?>][_ordering]" value="<?php $db->p( "field_ordering") ?>" size="4" /></td>
         <td><?php
         if( in_array( $db->f( "field_name"), $ps_csv->reserved_words ))
-          echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES."<input type=\"hidden\" name=\"field[$i][_required]\" value=\"Y\" />\n";
+          echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES')."<input type=\"hidden\" name=\"field[$i][_required]\" value=\"Y\" />\n";
         else { 
         ?>
           <select name="field[<?php echo $i ?>][_required]">
-            <option value="Y" <?php if($db->f( "field_required")=="Y") echo "selected=\"selected\"" ?>><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-            <option value="N" <?php if($db->f( "field_required")=="N") echo "selected=\"selected\"" ?>><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+            <option value="Y" <?php if($db->f( "field_required")=="Y") echo "selected=\"selected\"" ?>><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+            <option value="N" <?php if($db->f( "field_required")=="N") echo "selected=\"selected\"" ?>><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
           </select>
         <?php
         } 
@@ -195,7 +195,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "field_list" );
         </td>
         <td><?php
         if( !in_array( $db->f( "field_name"), $ps_csv->reserved_words )) { ?>
-            <a class="toolbar" href="index2.php?option=com_virtuemart&page=<?php echo vmGet($_REQUEST, 'page'); ?>&func=csvFieldDelete&field_id=<?php echo $db->f("field_id") ?>" onclick="return confirm('<?php echo $VM_LANG->_PHPSHOP_DELETE_MSG ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('Delete<?php echo $i ?>','','<?php echo IMAGEURL ?>ps_image/delete_f2.gif',1);"><img src="<?php echo IMAGEURL ?>ps_image/delete.gif" alt="Delete this record" name="Delete<?php echo $i ?>" align="middle" border="0"/>
+            <a class="toolbar" href="index2.php?option=com_virtuemart&page=<?php echo vmGet($_REQUEST, 'page'); ?>&func=csvFieldDelete&field_id=<?php echo $db->f("field_id") ?>" onclick="return confirm('<?php echo $VM_LANG->_('PHPSHOP_DELETE_MSG') ?>');" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('Delete<?php echo $i ?>','','<?php echo IMAGEURL ?>ps_image/delete_f2.gif',1);"><img src="<?php echo IMAGEURL ?>ps_image/delete.gif" alt="Delete this record" name="Delete<?php echo $i ?>" align="middle" border="0"/>
             </a>
         <?php
         } 
@@ -210,7 +210,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "field_list" );
   </table><br/>
   <a style="cursor:pointer;" onclick="addField();" class="toolbar" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage('newField','','<?php echo $mosConfig_live_site."/administrator/images/new_f2.png" ?>',1);">
     <img src="<?php echo $mosConfig_live_site."/administrator/images/new.png" ?>" name="newField" border="0" />
-    &nbsp;<?php echo $VM_LANG->_PHPSHOP_CSV_NEW_FIELD ?>
+    &nbsp;<?php echo $VM_LANG->_('PHPSHOP_CSV_NEW_FIELD') ?>
   </a>
   <form name="fieldAdd" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
   <input type="hidden" name="option" value="com_virtuemart" />
@@ -220,7 +220,7 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "field_list" );
   </form>
 <?php 
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_CSV_DOCUMENTATION, "doc-page" ); 
+$tabs->startTab( $VM_LANG->_('PHPSHOP_CSV_DOCUMENTATION'), "doc-page" ); 
 ?>
 <div align="left">
   <br/><br/><br/>
@@ -262,8 +262,8 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_DOCUMENTATION, "doc-page" );
   match a name of a field in the table <strong>mos_{vm}_csv</strong>!<br/>
   You can change the ordering of all the fields just as you need it.
 
-	<div style="font-size: 1.3em; text-align: center; margin-bottom: 1em;"><?php echo $VM_LANG->_PHPSHOP_CSV_MINIMAL_FIELDS; ?></div>
-	<div style="font-size: 1.3em;"><?php echo $VM_LANG->_PHPSHOP_CSV_AVAILABLE_FIELDS_USE; ?></div>
+	<div style="font-size: 1.3em; text-align: center; margin-bottom: 1em;"><?php echo $VM_LANG->_('PHPSHOP_CSV_MINIMAL_FIELDS'); ?></div>
+	<div style="font-size: 1.3em;"><?php echo $VM_LANG->_('PHPSHOP_CSV_AVAILABLE_FIELDS_USE'); ?></div>
 	<?php
 	$not_available_fields = array();
 	$not_available_fields = $ps_csv->fixed_fields;
@@ -289,9 +289,9 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_CSV_DOCUMENTATION, "doc-page" );
 				echo $fieldname;
 			echo "</div>";
 			echo "<div>";
-			$string = strtoupper("_PHPSHOP_CSV_EXPLANATION_".$fieldname);
-			if (isset($VM_LANG->$string)) {
-				echo $VM_LANG->$string;
+			$string = strtoupper("PHPSHOP_CSV_EXPLANATION_".$fieldname);
+			if ($VM_LANG->exists($string)) {
+				echo $VM_LANG->_($string);
 			}
 			echo "</div>";
 		}
@@ -307,16 +307,16 @@ $tabs->endPane();
 function addField() {
   if( !called ) {
     document.getElementById( 'newfieldspace').innerHTML += '<a onclick="document.fieldAdd.submit();" class="toolbar" style="cursor:pointer;" onmouseout="MM_swapImgRestore();"  onmouseover="MM_swapImage(\'saveForm2\',\'\',\'<?php echo $mosConfig_live_site ?>/administrator/images/save_f2.png\',1);"><img src="<?php echo $mosConfig_live_site."/administrator/images/save.png" ?>" name="saveForm2" align="center"  border="0" />'
-    +'&nbsp;&nbsp;<?php echo $VM_LANG->_PHPSHOP_CSV_SAVE_CHANGES ?></a>';
+    +'&nbsp;&nbsp;<?php echo $VM_LANG->_('PHPSHOP_CSV_SAVE_CHANGES') ?></a>';
   }
   document.getElementById( 'newfieldspace').innerHTML += '<table class="adminForm"><tr>'
-       +' <td><input type="text" name="field['+fieldNum+'>][_name]" /><br/><span class="smallgrey"><?php echo $VM_LANG->_PHPSHOP_CSV_FIELD_NAME ?></span></td>'
-       +' <td><input type="text" name="field['+fieldNum+'>][_default_value]" /><br/><span class="smallgrey"><?php echo $VM_LANG->_PHPSHOP_CSV_DEFAULT_VALUE ?></span></td>'
-       +' <td><input type="text" name="field['+fieldNum+'>][_ordering]" size="4" /><br/><span class="smallgrey"><?php echo $VM_LANG->_PHPSHOP_CSV_FIELD_ORDERING ?></span></td>'
+       +' <td><input type="text" name="field['+fieldNum+'>][_name]" /><br/><span class="smallgrey"><?php echo $VM_LANG->_('PHPSHOP_CSV_FIELD_NAME') ?></span></td>'
+       +' <td><input type="text" name="field['+fieldNum+'>][_default_value]" /><br/><span class="smallgrey"><?php echo $VM_LANG->_('PHPSHOP_CSV_DEFAULT_VALUE') ?></span></td>'
+       +' <td><input type="text" name="field['+fieldNum+'>][_ordering]" size="4" /><br/><span class="smallgrey"><?php echo $VM_LANG->_('PHPSHOP_CSV_FIELD_ORDERING') ?></span></td>'
        +' <td align="right"><select name="field['+fieldNum+'>][_required]">'
-       +'       <option value="Y"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>'
-       +'       <option value="N" selected="selected"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>'
-       +'     </select><br/>&nbsp;&nbsp;&nbsp;<span class="smallgrey"><?php echo $VM_LANG->_PHPSHOP_CSV_FIELD_REQUIRED ?></span>'
+       +'       <option value="Y"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>'
+       +'       <option value="N" selected="selected"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>'
+       +'     </select><br/>&nbsp;&nbsp;&nbsp;<span class="smallgrey"><?php echo $VM_LANG->_('PHPSHOP_CSV_FIELD_REQUIRED') ?></span>'
        +' </td></tr></table>';
   called = true;
   fieldNum++;

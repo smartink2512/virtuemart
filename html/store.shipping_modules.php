@@ -29,27 +29,27 @@ $ps_shipping_method = new ps_shipping_method;
       <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/ups.gif" border="0" />
       <br /><br />
     </td>
-    <td><span class="sectionname"><?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_LBL ?></span></td>
+    <td><span class="sectionname"><?php echo $VM_LANG->_('VM_SHIPPING_MODULE_LIST_LBL') ?></span></td>
   </tr>
 </table>
 
 <?php
 $rows = $ps_shipping_method->method_list();
 if ( !$rows ) {
-     echo $VM_LANG->_PHPSHOP_NO_SEARCH_RESULT;
+     echo $VM_LANG->_('PHPSHOP_NO_SEARCH_RESULT');
 }
 else {
 ?>
   <table width="100%" class="adminlist">
     <tr> 
       <th width="20">#</th>
-      <th width="20"><?php echo ucfirst($VM_LANG->_VM_ENABLED).'?' ?></th>
-      <th class="title"><?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_NAME ?></th>
-      <th class="title"><?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_E_VERSION ?></th>
-      <th class="title"><?php echo $VM_LANG->_VM_SHIPPING_MODULE_LIST_HEADER_AUTHOR ?></th>
-      <th class="title"><?php echo $VM_LANG->_URL ?></th>
-      <th class="title"><?php echo $VM_LANG->_CMN_EMAIL ?></th>
-      <th class="title"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE ?></th>
+      <th width="20"><?php echo ucfirst($VM_LANG->_('VM_ENABLED')).'?' ?></th>
+      <th class="title"><?php echo $VM_LANG->_('VM_SHIPPING_MODULE_LIST_NAME') ?></th>
+      <th class="title"><?php echo $VM_LANG->_('VM_SHIPPING_MODULE_LIST_E_VERSION') ?></th>
+      <th class="title"><?php echo $VM_LANG->_('VM_SHIPPING_MODULE_LIST_HEADER_AUTHOR') ?></th>
+      <th class="title"><?php echo $VM_LANG->_('URL') ?></th>
+      <th class="title"><?php echo $VM_LANG->_('CMN_EMAIL') ?></th>
+      <th class="title"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DESC_TITLE') ?></th>
     </tr>
 <?php
     $i = 0;
@@ -80,7 +80,7 @@ else {
         }
         
         if( $row['filename'] != 'no_shipping.php' ) {
-        	echo $VM_LANG->_PHPSHOP_ISSHIP_FORM_UPDATE_LBL."</a>";
+        	echo $VM_LANG->_('PHPSHOP_ISSHIP_FORM_UPDATE_LBL')."</a>";
         }
         
           ?>

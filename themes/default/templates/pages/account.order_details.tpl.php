@@ -31,7 +31,7 @@ if( $db->f('order_number')) {
 	<table width="100%" align="center" border="0" cellspacing="0" cellpadding="2">
 	  <tr>
 	    <td valign="top">
-	     <h2><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL ?></h2>
+	     <h2><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_LBL') ?></h2>
 	     <p><?php echo ps_vendor::formatted_store_address(true) ?></p>
 	    </td>
 	    <td valign="top" width="10%" align="right"><?php echo $vendor_image; ?></td>
@@ -69,19 +69,19 @@ if( $db->f('order_number')) {
 	<table border="0" cellspacing="0" cellpadding="2" width="100%">
 	  <!-- begin customer information --> 
 	  <tr class="sectiontableheader"> 
-	    <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ACC_ORDER_INFO ?></th>
+	    <th align="left" colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ACC_ORDER_INFO') ?></th>
 	  </tr>
 	  <tr> 
-	    <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER?>:</td>
+	    <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_NUMBER')?>:</td>
 	    <td><?php printf("%08d", $db->f("order_id")); ?></td>
 	  </tr>
 	
 	  <tr> 
-		<td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE ?>:</td>
+		<td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_DATE') ?>:</td>
 	    <td><?php echo strftime( "%d %B %Y", $db->f("cdate")); ?></td>
 	  </tr>
 	  <tr> 
-	    <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</td>
+	    <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') ?>:</td>
 	    <td><?php
 	    $q = "SELECT order_status_id, order_status_name,order_status_code FROM #__{vm}_order_status WHERE ";
 	    $q .= "order_status_code = '" . $db->f("order_status") . "'";
@@ -96,20 +96,20 @@ if( $db->f('order_number')) {
 	  <!-- End Customer Information --> 
 	  <!-- Begin 2 column bill-ship to --> 
 	  <tr class="sectiontableheader"> 
-	    <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL ?></th>
+	    <th align="left" colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUST_INFO_LBL') ?></th>
 	  </tr>
 	  <tr valign="top"> 
 	    <td width="50%"> <!-- Begin BillTo -->
 	      <table width="100%" cellspacing="0" cellpadding="2" border="0">
 	        <tr> 
-	          <td colspan="2"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL ?></strong></td>
+	          <td colspan="2"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_BILL_TO_LBL') ?></strong></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?> :</td>
 	          <td><?php $dbbt->p("company"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?> :</td>
 	          <td><?php 
 	          $dbbt->p("first_name");
 	          echo " ";
@@ -119,7 +119,7 @@ if( $db->f('order_number')) {
 	         ?></td>
 	        </tr>
 	        <tr valign="top"> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ADDRESS ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ADDRESS') ?> :</td>
 	          <td><?php 
 	          $dbbt->p("address_1");
 	          echo "<br />";
@@ -127,57 +127,57 @@ if( $db->f('order_number')) {
 	         ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CITY ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?> :</td>
 	          <td><?php $dbbt->p("city"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_STATE ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?> :</td>
 	          <td><?php $dbbt->p("state"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?> :</td>
 	          <td><?php $dbbt->p("zip"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?> :</td>
 	          <td><?php $dbbt->p("country"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?> :</td>
 	          <td><?php $dbbt->p("phone_1");
 	          if( $dbbt->f("phone_2")!="" ) {
 	              echo ", ".$dbbt->f("phone_2"); } ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?> :</td>
 	          <td><?php $dbbt->p("fax"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EMAIL') ?> :</td>
 	          <td><?php $dbbt->p("user_email"); ?></td>
 	        </tr>
 	    <!-- If you do not wish show a EXTRA FIELD add into condition "false && ".
-	         For example: if( false && $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) -->
+	         For example: if( false && $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) -->
 	    <!-- EXTRA FIELD 1 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) { ?>
+	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) { ?>
 	          <tr>
-	            <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 ?> :</td>
+	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') ?> :</td>
 	            <td><?php $dbbt->p("extra_field_1"); ?></td>
 	          </tr>
 	        <?php } ?>
 	    <!-- EXTRA FIELD 1 - END -->
 	    <!-- EXTRA FIELD 2 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 != "" ) { ?>
+	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2') != "" ) { ?>
 	          <tr>
-	            <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 ?> :</td>
+	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2') ?> :</td>
 	            <td><?php $dbbt->p("extra_field_2"); ?></td>
 	          </tr>
 	        <?php } ?>
 	    <!-- EXTRA FIELD 2 - END -->
 	    <!-- EXTRA FIELD 3 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 != "" ) { ?>
+	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') != "" ) { ?>
 	          <tr>
-	            <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 ?> :</td>
+	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') ?> :</td>
 	            <td><?php $dbbt->p("extra_field_3"); ?></td>
 	          </tr>
 	        <?php } ?>
@@ -192,14 +192,14 @@ if( $db->f('order_number')) {
 	  ?> 
 	 <table width="100%" cellspacing="0" cellpadding="2" border="0">
 	        <tr> 
-	          <td colspan="2"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL ?></strong></td>
+	          <td colspan="2"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIP_TO_LBL') ?></strong></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?> :</td>
 	          <td><?php $dbst->p("company"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_LIST_NAME ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?> :</td>
 	          <td><?php 
 	          $dbst->p("first_name");
 	          echo " ";
@@ -209,7 +209,7 @@ if( $db->f('order_number')) {
 	         ?></td>
 	        </tr>
 	        <tr valign="top"> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ADDRESS ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ADDRESS') ?> :</td>
 	          <td><?php 
 	          $dbst->p("address_1");
 	          echo "<br />";
@@ -217,53 +217,53 @@ if( $db->f('order_number')) {
 	         ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CITY ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?> :</td>
 	          <td><?php $dbst->p("city"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_STATE ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?> :</td>
 	          <td><?php $dbst->p("state"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?> :</td>
 	          <td><?php $dbst->p("zip"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?> :</td>
 	          <td><?php $dbst->p("country"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?> :</td>
 	          <td><?php $dbst->p("phone_1");
 	          if( $dbst->f("phone_2")!="" )
 	              echo ", ".$dbst->f("phone_2"); ?></td>
 	        </tr>
 	        <tr> 
-	          <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?> :</td>
+	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?> :</td>
 	          <td><?php $dbst->p("fax"); ?></td>
 	        </tr>
 	    <!-- If you do not wish show a EXTRA FIELD add into condition "false && ".
-	         For example: if( false && $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) -->
+	         For example: if( false && $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) -->
 	    <!-- EXTRA FIELD 1 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 != "" ) { ?>
+	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) { ?>
 	          <tr>
-	            <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1 ?> :</td>
+	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') ?> :</td>
 	            <td><?php $dbst->p("extra_field_1"); ?></td>
 	          </tr>
 	        <?php } ?>
 	    <!-- EXTRA FIELD 1 - END -->
 	    <!-- EXTRA FIELD 2 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2!= "" ) { ?>
+	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2')!= "" ) { ?>
 	          <tr>
-	            <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2 ?> :</td>
+	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2') ?> :</td>
 	            <td><?php $dbst->p("extra_field_2"); ?></td>
 	          </tr>
 	        <?php } ?>
 	    <!-- EXTRA FIELD 2 - END -->
 	    <!-- EXTRA FIELD 3 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 != "" ) { ?>
+	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') != "" ) { ?>
 	          <tr>
-	            <td><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3 ?> :</td>
+	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') ?> :</td>
 	            <td><?php $dbst->p("extra_field_3"); ?></td>
 	          </tr>
 	        <?php } ?>
@@ -282,15 +282,15 @@ if( $db->f('order_number')) {
 	      <table width="100%" border="0" cellspacing="0" cellpadding="1">
 	        
 	        <tr class="sectiontableheader"> 
-	          <th align="left"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL ?></th>
+	          <th align="left"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUST_SHIPPING_LBL') ?></th>
 	        </tr>
 	        <tr> 
 	          <td> 
 	            <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	              <tr> 
-	                <td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL ?></strong></td>
-	                <td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL ?></strong></td>
-	                <td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PRICE ?>&nbsp;</strong></td>
+	                <td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></strong></td>
+	                <td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL') ?></strong></td>
+	                <td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PRICE') ?>&nbsp;</strong></td>
 	              </tr>
 	              <tr> 
 	                <td><?php 
@@ -322,7 +322,7 @@ if( $db->f('order_number')) {
 	  </tr>
 	  <!-- Begin Order Items Information --> 
 	  <tr class="sectiontableheader"> 
-	    <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_ITEM ?></th>
+	    <th align="left" colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_ITEM') ?></th>
 	  </tr>
 	    <!-- BEGIN HACK EUGENE -->
 	  <tr>
@@ -344,10 +344,10 @@ if( $db->f('order_number')) {
 		if ($dbdl->next_record()) {
 			echo "<b>Click on Product Name to Download File(s).</b><br /><br />";
 	
-			echo($VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_3.DOWNLOAD_MAX.". <br />");
+			echo($VM_LANG->_('PHPSHOP_DOWNLOADS_SEND_MSG_3').DOWNLOAD_MAX.". <br />");
 	
 			$expire = ((DOWNLOAD_EXPIRE / 60) / 60) / 24;
-			echo(str_replace("{expire}", $expire, $VM_LANG->_PHPSHOP_DOWNLOADS_SEND_MSG_4));
+			echo(str_replace("{expire}", $expire, $VM_LANG->_('PHPSHOP_DOWNLOADS_SEND_MSG_4')));
 			
 			echo "<br /><br />";
 		}
@@ -363,11 +363,11 @@ if( $db->f('order_number')) {
 	    <td colspan="2"> 
 	      <table width="100%" cellspacing="0" cellpadding="2" border="0">
 	        <tr align="left"> 
-	          <th><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_QTY ?></th>
-	          <th><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?></th>
-	          <th><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SKU ?></th>
-	          <th><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PRICE ?></th>
-	          <th align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?>&nbsp;&nbsp;&nbsp;</th>
+	          <th><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_QTY') ?></th>
+	          <th><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME') ?></th>
+	          <th><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SKU') ?></th>
+	          <th><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PRICE') ?></th>
+	          <th align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL') ?>&nbsp;&nbsp;&nbsp;</th>
 	        </tr>
 	        <?php 
 	        $dbcart = new ps_DB;
@@ -443,7 +443,7 @@ if( $db->f('order_number')) {
 	          <td>&nbsp;</td>
 	        </tr>
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL ?> :</td>
+	          <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SUBTOTAL') ?> :</td>
 	          <td align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($subtotal, '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;</td>
 	        </tr>
 	<?php 
@@ -457,9 +457,9 @@ if( $db->f('order_number')) {
 	          <tr>
 	              <td colspan="4" align="right"><?php 
 	              if( $db->f("order_discount") > 0)
-	              echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+	              echo $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 	              else
-	              echo $VM_LANG->_PHPSHOP_FEE;
+	              echo $VM_LANG->_('PHPSHOP_FEE');
 	                ?>:
 	              </td> 
 	              <td align="right"><?php
@@ -478,7 +478,7 @@ if( $db->f('order_number')) {
 		if( $coupon_discount > 0 ) {
 	?>
 	        <tr>
-	          <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+	          <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:
 	          </td> 
 	          <td align="right"><?php
 	            echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;
@@ -489,7 +489,7 @@ if( $db->f('order_number')) {
 	}
 	?>        
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?> :</td>
+	          <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?> :</td>
 	          <td align="right"><?php 
 	          $shipping_total = $db->f("order_shipping");
 	          if ($auth["show_price_including_tax"] == 1)
@@ -503,7 +503,7 @@ if( $db->f('order_number')) {
 	  if ($auth["show_price_including_tax"] == 0) {
 	  ?>
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?> :</td>
+	          <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?> :</td>
 	          <td align="right"><?php 
 	
 	          echo $CURRENCY_DISPLAY->getFullValue($tax_total, '', $db->f('order_currency'));
@@ -517,9 +517,9 @@ if( $db->f('order_number')) {
 	          <tr>
 	              <td colspan="4" align="right"><?php 
 	              if( $db->f("order_discount") > 0)
-	              echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+	              echo $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 	              else
-	              echo $VM_LANG->_PHPSHOP_FEE;
+	              echo $VM_LANG->_('PHPSHOP_FEE');
 	                ?>:
 	              </td> 
 	              <td align="right"><?php
@@ -535,7 +535,7 @@ if( $db->f('order_number')) {
 	  	if( $coupon_discount > 0 ) {
 	?>
 	        <tr>
-	          <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+	          <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:
 	          </td> 
 	          <td align="right"><?php
 	            echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;
@@ -550,7 +550,7 @@ if( $db->f('order_number')) {
 	        </tr>
 	        <tr> 
 	          <td colspan="4" align="right">
-	          <strong><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL .": "; ?></strong>
+	          <strong><?php echo $VM_LANG->_('PHPSHOP_CART_TOTAL') .": "; ?></strong>
 	          </td>
 	          
 	          <td align="right"><strong><?php  
@@ -567,7 +567,7 @@ if( $db->f('order_number')) {
 	          <td colspan="2" align="right"><hr/></td>
 	        </tr>
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?> :</td>
+	          <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?> :</td>
 	          <td align="right"><?php 
 	
 	          echo $CURRENCY_DISPLAY->getFullValue($tax_total, '', $db->f('order_currency'));
@@ -598,10 +598,10 @@ if( $db->f('order_number')) {
 	
 	      <table width="100%">
 	      <tr class="sectiontableheader"> 
-	        <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYINFO_LBL ?></th>
+	        <th align="left" colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYINFO_LBL') ?></th>
 	      </tr>
 	      <tr> 
-	        <td width="20%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL ?> :</td>
+	        <td width="20%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYMENT_LBL') ?> :</td>
 	        <td><?php $dbpm->p("payment_method_name"); ?> </td>
 	      </tr>
 		  <?php
@@ -618,16 +618,16 @@ if( $db->f('order_number')) {
 	        $dbaccount->next_record();
 	         ?>
 	      <tr> 
-	        <td width="10%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME ?> :</td>
+	        <td width="10%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ACCOUNT_NAME') ?> :</td>
 	        <td><?php $dbpm->p("order_payment_name"); ?> </td>
 	      </tr>
 	      <tr> 
-	        <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER ?> :</td>
+	        <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER') ?> :</td>
 	        <td> <?php echo ps_checkout::asterisk_pad($dbaccount->f("account_number"),4);
 	    ?> </td>
 	      </tr>
 	      <tr> 
-	        <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EXPIRE_DATE ?> :</td>
+	        <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EXPIRE_DATE') ?> :</td>
 	        <td><?php echo strftime("%m - %Y", $dbpm->f("order_payment_expire")); ?> </td>
 	      </tr>
 		  <?php } ?>
@@ -644,7 +644,7 @@ if( $db->f('order_number')) {
 	        <td colspan="2">&nbsp;</td>
 	      </tr>
 	      <tr class="sectiontableheader">
-	        <th align="left" colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE ?></th>
+	        <th align="left" colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
 	      </tr>
 	      <tr>
 	        <td colspan="2">

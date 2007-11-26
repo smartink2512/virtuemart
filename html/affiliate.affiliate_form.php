@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 ?>
-<h2><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_LIST_LBL ?></h2>
+<h2><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_LIST_LBL') ?></h2>
 
 <?php
 $affiliate_id = vmGet( $_REQUEST, 'affiliate_id' );
@@ -41,29 +41,29 @@ if (!empty($affiliate_id)) {
   <input type="hidden" name="affiliate_id" value="<?php $db->sp("affiliate_id") ?>" />
   <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center">
     <tr> 
-      <td width="30%"><strong><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL ?></strong></td>
+      <td width="30%"><strong><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL') ?></strong></td>
       <td width="70%">&nbsp;</td>
     </tr>
     <tr> 
-      <td align="right" width="30%" height="20"><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_COMPANY_NAME ?>:</td>
+      <td align="right" width="30%" height="20"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_COMPANY_NAME') ?>:</td>
       <td width="70%" height="20"> 
         <?php echo $db->f("company") ? $db->f("company") : "N/A" ?>
       </td>
     </tr>
     <tr> 
-     <td align="right" width="30%" height="20" ><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_FORM_ACTIVE ?>:</td>
+     <td align="right" width="30%" height="20" ><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_FORM_ACTIVE') ?>:</td>
       <td width="70%" height="20" >
         <input type = "checkbox" name ="active" <?php if($db->f("active") =='Y') echo "checked"; else echo "unchecked"; ?>>
       </td>
     </tr>
     <tr> 
-      <td align="right" width="30%" height="20" ><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_FORM_RATE ?>:</td>
+      <td align="right" width="30%" height="20" ><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_FORM_RATE') ?>:</td>
       <td width="70%" height="20" >
         <input type = "text" name ="rate" <?php echo($db->f("rate"))?> size="2" maxlength="2" value="<?php $db->p("rate"); ?>">
       </td>
     </tr>
     <tr> 
-      <td align="right" width="30%" height="20" ><?php echo $VM_LANG->_PHPSHOP_USER_FORM_EMAIL ?>:</td>
+      <td align="right" width="30%" height="20" ><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_EMAIL') ?>:</td>
       <td width="70%" height="20">
         <a href = "mailto:<?php $db->sp("email")?>"><?php $db->p("email")?></a>
       </td>

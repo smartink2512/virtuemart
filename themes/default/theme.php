@@ -81,13 +81,13 @@ class vmTemplate_default extends vmTemplate  {
 				/* Build the "See Bigger Image" Link */
 				if( @$_REQUEST['output'] != "pdf" && $this->get_cfg('useLightBoxImages', 1 ) ) {
 					$link = $imageurl;
-					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
+					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_('PHPSHOP_FLYPAGE_ENLARGE_IMAGE');
 
 					$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'], 'product'.$product['product_id'], true );
 				}
 				elseif( @$_REQUEST['output'] != "pdf" ) {
 					$link = $imageurl;
-					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_PHPSHOP_FLYPAGE_ENLARGE_IMAGE;
+					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_('PHPSHOP_FLYPAGE_ENLARGE_IMAGE');
 					// vmPopupLink can be found in: htmlTools.class.php
 					$product_image = vmPopupLink( $link, $text, $width, $height );
 				}
@@ -136,7 +136,7 @@ class vmTemplate_default extends vmTemplate  {
 		global $mosConfig_live_site, $VM_LANG, $sess;
 		/* Build the JavaScript Link */
 		$url = $sess->url( "index2.php?page=shop.view_images&amp;flypage=".@$_REQUEST['flypage']."&amp;product_id=".@$_REQUEST['product_id']."&amp;category_id=".@$_REQUEST['category_id']."&amp;pop=1" );
-		$text = $VM_LANG->_PHPSHOP_MORE_IMAGES.'('.count($images).')';
+		$text = $VM_LANG->_('PHPSHOP_MORE_IMAGES').'('.count($images).')';
 		$image = vmCommonHTML::imageTag( VM_THEMEURL.'images/more_images.png', $text, '', '16', '16' );
 		
 		return vmPopupLink( $url, $image.'<br />'.$text, 640, 550, '_blank', '', 'screenX=100,screenY=100' );

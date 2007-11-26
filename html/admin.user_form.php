@@ -122,7 +122,7 @@ if ($lvisit == "0000-00-00 00:00:00") {
 //First create the object and let it print a form heading
 $formObj = &new formFactory( vmCommonHTML::imageTag(VM_THEMEURL.'images/administration/header/icon-48-user.png', 'User Icon', 'absmiddle' ) 
 							.'&nbsp;&nbsp;&nbsp;' 
-							. $VM_LANG->_PHPSHOP_USER_FORM_LBL );
+							. $VM_LANG->_('PHPSHOP_USER_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -385,17 +385,17 @@ function gotocontact( id ) {
 <?php
 
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_LBL'), "third-page");
 
 ?>
-<fieldset style="width:48%;"><legend><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL ?></legend>
+<fieldset style="width:48%;"><legend><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_LBL') ?></legend>
 <table class="adminform">  
     <tr> 
-        <td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</td>
+        <td style="text-align:right;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_VENDOR') ?>:</td>
         <td><?php $ps_product->list_vendor($db->f("vendor_id"));  ?></td>
     </tr>
 	<tr> 
-        <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_PHPSHOP_USER_FORM_PERMS ?>:</td> 
+        <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_PERMS') ?>:</td> 
         <td width="62%" > 
                 <?php
                 if( !isset( $ps_perms)) { $ps_perms = new ps_perm(); }
@@ -404,13 +404,13 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
         </td> 
     </tr> 
       <tr> 
-    	<td style="text-align:right;"><?php echo $VM_LANG->_PHPSHOP_USER_FORM_CUSTOMER_NUMBER ?>:</td>
+    	<td style="text-align:right;"><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_CUSTOMER_NUMBER') ?>:</td>
         <td > 
       	<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo $ps_shopper_group->get_customer_num($db->f("user_id")) ?>" />
         </td>
      </tr>
      <tr> 
-    	<td style="text-align:right;"> <?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_GROUP ?>:</td>
+    	<td style="text-align:right;"> <?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_GROUP') ?>:</td>
         <td ><?php
             include_class('shopper');
             $sg_id = $ps_shopper_group->get_shoppergroup_by_id($db->f("user_id"));
@@ -423,10 +423,10 @@ $tabs->startTab( $VM_LANG->_PHPSHOP_SHOPPER_FORM_LBL, "third-page");
 <?php 
 if( $db->f("user_id") ) { 
 ?> 
-    <fieldset><legend><?php echo $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL ?></legend>
+    <fieldset><legend><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_SHIPTO_LBL') ?></legend>
     
     <a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?page=$modulename.user_address_form&amp;user_id=$user_id") ?>" >
-	(<?php echo $VM_LANG->_PHPSHOP_USER_FORM_ADD_SHIPTO_LBL ?>)</a></h3> 
+	(<?php echo $VM_LANG->_('PHPSHOP_USER_FORM_ADD_SHIPTO_LBL') ?>)</a></h3> 
 	
 	<table class="adminlist"> 
 		<tr> 
@@ -480,10 +480,10 @@ $db->query($count);
 $db->next_record();
 $num_rows = $db->f("num_rows");
 if( $num_rows ) {
-	$tabs->startTab( $VM_LANG->_PHPSHOP_ORDER_LIST_LBL . ' ('.$num_rows.')', "order-list");
+	$tabs->startTab( $VM_LANG->_('PHPSHOP_ORDER_LIST_LBL') . ' ('.$num_rows.')', "order-list");
 	?>
 	        
-	<h3><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_LBL ?> </h3>
+	<h3><?php echo $VM_LANG->_('PHPSHOP_ORDER_LIST_LBL') ?> </h3>
 	
 	<?php
 	
@@ -497,13 +497,13 @@ if( $num_rows ) {
 	
 	// these are the columns in the table
 	$columns = Array(  "#" => "width=\"20\"", 
-	                                        $VM_LANG->_PHPSHOP_ORDER_LIST_ID => '',
-	                                        $VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW => '',
-	                                        $VM_LANG->_PHPSHOP_ORDER_LIST_CDATE => '',
-	                                        $VM_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
-	                                        $VM_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
-	                                        $VM_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
-	                                        $VM_LANG->_E_REMOVE => "width=\"5%\""
+	                                        $VM_LANG->_('PHPSHOP_ORDER_LIST_ID') => '',
+	                                        $VM_LANG->_('PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW') => '',
+	                                        $VM_LANG->_('PHPSHOP_ORDER_LIST_CDATE') => '',
+	                                        $VM_LANG->_('PHPSHOP_ORDER_LIST_MDATE') => '',
+	                                        $VM_LANG->_('PHPSHOP_ORDER_LIST_STATUS') => '',
+	                                        $VM_LANG->_('PHPSHOP_ORDER_LIST_TOTAL') => '',
+	                                        $VM_LANG->_('E_REMOVE') => "width=\"5%\""
 	                                );
 	$listObj->writeTableHeader( $columns );
 	

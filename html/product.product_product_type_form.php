@@ -25,7 +25,7 @@ if( is_array( $product_id ))
 
 $product_parent_id = vmGet($_REQUEST, 'product_parent_id', 0);
 
-$title = '<img src="'. IMAGEURL .'ps_image/categories.gif" border="0" />'.$VM_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL;
+$title = '<img src="'. IMAGEURL .'ps_image/categories.gif" border="0" />'.$VM_LANG->_('PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_LBL');
 if (!empty($product_parent_id)) {
   $title .= " Item: ";
 } else {
@@ -49,7 +49,7 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="20" valign="middle" > 
-        <div align="right"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE ?>:</div>
+        <div align="right"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE') ?>:</div>
       </td>
       <td width="77%" height="10" >
         <select class="inputbox" name="product_type_id">

@@ -49,7 +49,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword=".urlencode($keyword)."&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?keyword=".urlencode($keyword)."&category_id={$_SESSION['session_userstate']['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), $VM_LANG->_('PHPSHOP_PRODUCT_NOT_FOUND') );
 }
 
 if( !$perm->check("admin,storeadmin") ) {
@@ -62,7 +62,7 @@ $db_product->query( $q );
 
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
-	$vmLogger->err( $VM_LANG->_PHPSHOP_PRODUCT_NOT_FOUND );
+	$vmLogger->err( $VM_LANG->_('PHPSHOP_PRODUCT_NOT_FOUND',false) );
 	return;
 }
 if( empty($product_id)) {
@@ -100,7 +100,7 @@ if( $db->num_rows() > 0 ) {
 // GET THE PRODUCT NAME 
 $product_name = shopMakeHtmlSafe( $db_product->f("product_name") );
 if( $db_product->f("product_publish") == "N" ) {
-	$product_name .= " (".$VM_LANG->_CMN_UNPUBLISHED.")";
+	$product_name .= " (".$VM_LANG->_('CMN_UNPUBLISHED').")";
 }
 $product_description = $db_product->f("product_desc");
 if( (str_replace("<br />", "" , $product_description)=='') && ($product_parent_id!=0) ) {
@@ -235,7 +235,7 @@ $mainframe->prependMetaTag( "description", strip_tags( $db_product->f("product_s
 // Show an "Edit PRODUCT"-Link
 if ($perm->check("admin,storeadmin")) {
 	$edit_link = "<a href=\"". sefRelToAbs($mosConfig_live_site."/index.php?page=product.product_form&amp;next_page=shop.product_details&amp;product_id=$product_id&amp;option=com_virtuemart&amp;Itemid=$Itemid")."\">
-      <img src=\"images/M_images/edit.png\" width=\"16\" height=\"16\" alt=\"". $VM_LANG->_PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT ."\" border=\"0\" /></a>";
+      <img src=\"images/M_images/edit.png\" width=\"16\" height=\"16\" alt=\"". $VM_LANG->_('PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT') ."\" border=\"0\" /></a>";
 }
 else {
 	$edit_link = "";
@@ -257,10 +257,10 @@ if( $manufacturer_id && !empty($manufacturer_name) ) {
 // PRODUCT PRICE
 if (_SHOW_PRICES == '1') { 
 	if( $db_product->f("product_unit") && VM_PRICE_SHOW_PACKAGING_PRICELABEL) {
-		$product_price_lbl = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE_PER_UNIT.' ('.$db_product->f("product_unit")."):</strong>";
+		$product_price_lbl = "<strong>". $VM_LANG->_('PHPSHOP_CART_PRICE_PER_UNIT').' ('.$db_product->f("product_unit")."):</strong>";
 	}
 	else {
-		$product_price_lbl = "<strong>". $VM_LANG->_PHPSHOP_CART_PRICE. ": </strong>";
+		$product_price_lbl = "<strong>". $VM_LANG->_('PHPSHOP_CART_PRICE'). ": </strong>";
 	}
 	$product_price = $ps_product->show_price( $product_id );
 }
@@ -276,14 +276,14 @@ if (  $db_product->f("product_packaging") ) {
 	$box = ($db_product->f("product_packaging") >> 16) & 0xFFFF;
 	$product_packaging = "";
 	if ( $packaging ) {
-		$product_packaging .= $VM_LANG->_PHPSHOP_PRODUCT_PACKAGING1.$packaging;
+		$product_packaging .= $VM_LANG->_('PHPSHOP_PRODUCT_PACKAGING1').$packaging;
 		if( $box ) $product_packaging .= "<br/>";
 	}
 	if ( $box ) {
-		$product_packaging .= $VM_LANG->_PHPSHOP_PRODUCT_PACKAGING2.$box;
+		$product_packaging .= $VM_LANG->_('PHPSHOP_PRODUCT_PACKAGING2').$box;
 	}
 
-	$product_packaging = str_replace("unit",$db_product->f("product_unit")?$db_product->f("product_unit") : $VM_LANG->_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT,$product_packaging);
+	$product_packaging = str_replace("unit",$db_product->f("product_unit")?$db_product->f("product_unit") : $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT'),$product_packaging);
 }
 else {
 	$product_packaging = "";
@@ -324,7 +324,7 @@ if( @$_REQUEST['output'] != "pdf" ) {
 
 /** Ask seller a question **/
 $ask_seller_href = $sess->url( $_SERVER ['PHP_SELF'].'?page=shop.ask&amp;flypage='.@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id" );
-$ask_seller_text = $VM_LANG->_VM_PRODUCT_ENQUIRY_LBL;
+$ask_seller_text = $VM_LANG->_('VM_PRODUCT_ENQUIRY_LBL');
 $ask_seller = '<a class="button" href="'. $ask_seller_href .'">'. $ask_seller_text .'</a>';
 
 /* SHOW RATING */
@@ -350,7 +350,7 @@ $vend_id = $ps_product->get_vendor_id($product_id);
 $vend_name = $ps_product->get_vendorname($product_id);
 
 $link = "$mosConfig_live_site/index2.php?page=shop.infopage&amp;vendor_id=$vend_id&amp;output=lite&amp;option=com_virtuemart&amp;Itemid=".$Itemid;
-$text = $VM_LANG->_PHPSHOP_VENDOR_FORM_INFO_LBL;
+$text = $VM_LANG->_('PHPSHOP_VENDOR_FORM_INFO_LBL');
 $vendor_link = vmPopupLink( $link, $text );
 
 // Avoid JavaScript on PDF Output

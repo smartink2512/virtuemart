@@ -34,11 +34,11 @@ class ps_paymate {
         ?>
         <table>
           <tr>
-          <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME ?></strong></td>
+          <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME') ?></strong></td>
               <td>
                   <input type="text" name="PAYMATE_USERNAME" class="inputbox" value="<?  echo PAYMATE_USERNAME ?>" />
               </td>
-              <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN ?>
+              <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN') ?>
               </td>
           </tr> 
         </table>

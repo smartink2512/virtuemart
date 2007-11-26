@@ -20,7 +20,7 @@ mm_showMyFileName( __FILE__ );
 $user_info_id = vmGet ( $_REQUEST, 'user_info_id', 0 );
 ?>
 
-<h2><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL ?></H2>
+<h2><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL') ?></H2>
 <?php if (!empty($user_info_id)) {
    $q = "SELECT * from #__users, #__{vm}_user_info ";
    $q .= "WHERE (#__{vm}_user_info.user_info_id='$user_info_id' OR";
@@ -33,90 +33,90 @@ $user_info_id = vmGet ( $_REQUEST, 'user_info_id', 0 );
   <table width="100%" border="0" cellspacing="0" cellpadding="2" >
     <tr>
       <td colspan="2" nowrap align="right" >
-        <div align="left"><b><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_SHIPTO_LBL ?></b></div>
+        <div align="left"><b><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_SHIPTO_LBL') ?></b></div>
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="address_type_name" value="<?php $db->sp("address_type_name") ?>" size="18" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_FIRST_NAME ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_FIRST_NAME') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="first_name" size="18" value="<?php $db->sp("first_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_LAST_NAME ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_LAST_NAME') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="last_name" size="18" value="<?php $db->sp("last_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_MIDDLE_NAME ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_MIDDLE_NAME') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="middle_name" size="16" value="<?php $db->sp("middle_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_TITLE ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_TITLE') ?>:</td>
       <td width="79%" > <?php $ps_html->list_user_title($db->sf("title")); ?></td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_COMPANY_NAME ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_COMPANY_NAME') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="company" size="24" value="<?php $db->sp("company") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_1 ?>: </td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_ADDRESS_1') ?>: </td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="address_1" size="24" value="<?php $db->sp("address_1") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_ADDRESS_2 ?>: 
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_ADDRESS_2') ?>: 
       </td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="address_2" size="24" value="<?php $db->sp("address_2") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_CITY ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_CITY') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="city" size="18" value="<?php $db->sp("city") ?>" />
       </td>
     </tr>
     <?php if (CAN_SELECT_STATES == '1') { ?>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_STATE ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_STATE') ?>:</td>
       <td width="79%" > 
         <?php $ps_html->list_states("state", $db->sp("state")) ?>
       </td>
     </tr>
     <?php } ?>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_ZIP ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_ZIP') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="zip" size="10" value="<?php $db->sp("zip") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_COUNTRY ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_COUNTRY') ?>:</td>
       <td width="79%" > 
         <?php $ps_html->list_country("country",$db->sf("country")) ?>
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" > <?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_PHONE ?>:</td>
+      <td width="21%" nowrap align="right" > <?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_PHONE') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="phone_1" size="12" value="<?php $db->sp("phone_1") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_PHPSHOP_SHOPPER_FORM_FAX ?>:</td>
+      <td width="21%" nowrap align="right" ><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_FAX') ?>:</td>
       <td width="79%" > 
         <input type="text" class="inputbox" name="fax" size="12" value="<?php $db->sp("fax") ?>" />
       </td>

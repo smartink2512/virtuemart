@@ -31,7 +31,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 		echo '<input type="radio" name="'.$name.'" id="'.$bt_user_info_id.'" value="'.$bt_user_info_id.'" '.$checked.'/>'."\n";
 	
 		?></td>
-		<td><label for="<?php echo $bt_user_info_id ?>"><?php echo $VM_LANG->_PHPSHOP_ACC_BILL_DEF ?></label></td>
+		<td><label for="<?php echo $bt_user_info_id ?>"><?php echo $VM_LANG->_('PHPSHOP_ACC_BILL_DEF') ?></label></td>
 	</tr>
 <?php
 $i = 2;
@@ -50,7 +50,7 @@ while($db->next_record()) {
 			
 	echo '<strong>' . $db->f("address_type_name") . "</strong> ";
 	$url = SECUREURL . "index.php?page=account.shipto&user_info_id=" . $db->f('user_info_id')."&next_page=checkout.index";
-	echo '(<a href="'.$sess->url($url).'">'.$VM_LANG->_PHPSHOP_UDATE_ADDRESS.'</a>)'."\n";
+	echo '(<a href="'.$sess->url($url).'">'.$VM_LANG->_('PHPSHOP_UDATE_ADDRESS').'</a>)'."\n";
 	echo '<br />'."\n";
 	echo $db->f("title") . " ". $db->f("first_name") . " ". $db->f("middle_name") . " ". $db->f("last_name") . "\n";
 	echo '<br />'."\n";
@@ -66,9 +66,9 @@ while($db->next_record()) {
 	echo ', ';
 	echo $db->f("state") . " ";
 	echo $db->f("zip") . "<br />\n";
-	echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PHONE.': '. $db->f("phone_1") . "\n";
+	echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PHONE').': '. $db->f("phone_1") . "\n";
 	echo '<br />'."\n";
-	echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_FAX.': '.$db->f("fax") . "\n";
+	echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_FAX').': '.$db->f("fax") . "\n";
 	echo '</label>
 	</td>
 	</tr>'."\n";

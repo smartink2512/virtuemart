@@ -122,7 +122,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
          
          $bar->custom( 'save', 'product.product_list', 'save', 'Move Products', false, "adminForm", 'productMove' );
          
-         $bar->customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), 'cancel', $VM_LANG->_CMN_CANCEL );
+         $bar->customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), 'cancel', $VM_LANG->_('CMN_CANCEL') );
          
      }
 }

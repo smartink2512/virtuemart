@@ -28,7 +28,7 @@ $module_id = vmGet( $_REQUEST, 'module_id', 0 );
 $q = "SELECT module_name FROM #__{vm}_module WHERE module_id='$module_id'";
 $db->query($q);
 $db->next_record();
-$title = $VM_LANG->_PHPSHOP_FUNCTION_LIST_LBL . ": " . $db->f("module_name");
+$title = $VM_LANG->_('PHPSHOP_FUNCTION_LIST_LBL') . ": " . $db->f("module_name");
 if (!empty( $keyword )) {
 	$list  = "SELECT * FROM #__{vm}_function WHERE ";
 	$count = "SELECT count(*) as num_rows FROM #__{vm}_function WHERE ";
@@ -68,9 +68,9 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".count($db->record) .")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_FUNCTION_LIST_NAME => "",
-					$VM_LANG->_PHPSHOP_FUNCTION_LIST_CLASS => "",
-					$VM_LANG->_PHPSHOP_FUNCTION_LIST_METHOD => "" );
+					$VM_LANG->_('PHPSHOP_FUNCTION_LIST_NAME') => "",
+					$VM_LANG->_('PHPSHOP_FUNCTION_LIST_CLASS') => "",
+					$VM_LANG->_('PHPSHOP_FUNCTION_LIST_METHOD') => "" );
 $usergroups = $vmUserGroup->get_groups();
 
 while($usergroups->next_record()) {
@@ -79,9 +79,9 @@ while($usergroups->next_record()) {
 }
 $columns['none'] = 'width="5%"';
 $usergroups->reset();
-$columns['<a href="javascript: document.adminForm.func.value = \'setFunctionPermissions\'; saveorder( '.(count($db->record)-1) .' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="' . $VM_LANG->_SAVE_PERMISSIONS . '" align="left"/>' . $VM_LANG->_SAVE_PERMISSIONS . '</a>'] = '';
+$columns['<a href="javascript: document.adminForm.func.value = \'setFunctionPermissions\'; saveorder( '.(count($db->record)-1) .' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="' . $VM_LANG->_('SAVE_PERMISSIONS') . '" align="left"/>' . $VM_LANG->_('SAVE_PERMISSIONS') . '</a>'] = '';
 
-$columns[$VM_LANG->_E_REMOVE] = "width=\"5%\"";
+$columns[$VM_LANG->_('E_REMOVE')] = "width=\"5%\"";
 
 $listObj->writeTableHeader( $columns );
 

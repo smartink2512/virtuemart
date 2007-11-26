@@ -21,12 +21,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 <div style="float:left;width:90%;text-align:right;"> 
     <span>
     	<a href="#" onclick="if( submitregistration() ) { document.adminForm.submit();}">
-    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo $VM_LANG->_CMN_SAVE ?>" />
+    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo $VM_LANG->_('CMN_SAVE') ?>" />
     	</a>
     </span>
     <span style="margin-left:10px;">
     	<a href="<?php $sess->purl( SECUREURL."index.php?page=$next_page") ?>">
-    		<img src="administrator/images/back_f2.png" alt="<?php echo $VM_LANG->_BACK ?>" border="0" />
+    		<img src="administrator/images/back_f2.png" alt="<?php echo $VM_LANG->_('BACK') ?>" border="0" />
     	</a>
     </span>
 </div>
@@ -36,7 +36,7 @@ ps_userfield::listUserFields( $fields, array(), $db );
 ?>
 
 <div align="center">	
-	<input type="submit" value="<?php echo $VM_LANG->_CMN_SAVE ?>" class="button" onclick="return( submitregistration());" />
+	<input type="submit" value="<?php echo $VM_LANG->_('CMN_SAVE') ?>" class="button" onclick="return( submitregistration());" />
 </div>
   <input type="hidden" name="option" value="<?php echo $option ?>" />
   <input type="hidden" name="page" value="<?php echo $next_page; ?>" />

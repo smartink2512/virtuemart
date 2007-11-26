@@ -155,7 +155,7 @@ class ups {
 			$xmlResult = vmConnector::handleCommunication($upsURL, $xmlPost );
 
 			if( !$xmlResult) {
-				$vmLogger->err( $VM_LANG->_PHPSHOP_INTERNAL_ERROR." UPS.com" );
+				$vmLogger->err( $VM_LANG->_('PHPSHOP_INTERNAL_ERROR',false)." UPS.com" );
 				$error = true;
 			}
 			else {
@@ -175,9 +175,9 @@ class ups {
 					$error_desc = $error_desc->item(0);
 					$error_desc = $error_desc->getText();
 
-					$vmLogger->err( $VM_LANG->_PHPSHOP_UPS_RESPONSE_ERROR.'. '
-					. $VM_LANG->_PHPSHOP_ERROR_CODE.": ".$error_code .', '
-					. $VM_LANG->_PHPSHOP_ERROR_DESC.": ".$error_desc);
+					$vmLogger->err( $VM_LANG->_('PHPSHOP_UPS_RESPONSE_ERROR',false).'. '
+					. $VM_LANG->_('PHPSHOP_ERROR_CODE').": ".$error_code .', '
+					. $VM_LANG->_('PHPSHOP_ERROR_DESC').": ".$error_desc);
 				}
 
 			}
@@ -365,13 +365,13 @@ class ups {
 				$html .= $value['ServiceName'].' ';
 				$html .= "<strong>(".$value['TransportationCharges'].")</strong>";
 				if (DEBUG) {
-					$html .= " - ".$VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT.": ".$order_weight." ". $weight_measure.
-					", ".$VM_LANG->_PHPSHOP_RATE_FORM_VALUE.": [[".$charge_unrated."(".$fsc_rate.")]+".UPS_HANDLING_FEE."](".$taxrate.")]";
+					$html .= " - ".$VM_LANG->_('PHPSHOP_PRODUCT_FORM_WEIGHT').": ".$order_weight." ". $weight_measure.
+					", ".$VM_LANG->_('PHPSHOP_RATE_FORM_VALUE').": [[".$charge_unrated."(".$fsc_rate.")]+".UPS_HANDLING_FEE."](".$taxrate.")]";
 				}
 				// DELIVERY QUOTE
 				if (Show_Delivery_Days_Quote == 1) {
 					if( !empty($value['GuaranteedDaysToDelivery'])) {
-						$html .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".$VM_LANG->_PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS;
+						$html .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".$VM_LANG->_('PHPSHOP_UPS_SHIPPING_GUARANTEED_DAYS');
 					}
 				}
 				if (Show_Delivery_ETA_Quote == 1) {
@@ -456,36 +456,36 @@ class ups {
     ?>
       <table class="adminform">
     <tr class="row0">
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE ?></strong></td>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE') ?></strong></td>
 		<td>
             <input type="text" name="UPS_ACCESS_CODE" class="inputbox" value="<?php echo UPS_ACCESS_CODE ?>" />
 		</td>
 		<td>
-          <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN) ?>
+          <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN')) ?>
         </td>
     </tr>
     <tr class="row1">
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID') ?></strong>
 		</td>
 		<td>
             <input type="text" name="UPS_USER_ID" class="inputbox" value="<?php echo UPS_USER_ID ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN')) ?>
         </td>
     </tr>
     <tr class="row0">
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD') ?></strong>
 		</td>
 		<td>
             <input type="text" name="UPS_PASSWORD" class="inputbox" value="<?php echo UPS_PASSWORD ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN')) ?>
         </td>
     </tr>
 	<tr class="row1">
-	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_PICKUP_METHOD ?></strong></td>
+	  <td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_PICKUP_METHOD') ?></strong></td>
 	  <td>
 		<select class="inputbox" name="pickup_type">
 		  <option <?php if(UPS_PICKUP_TYPE=="01") echo "selected=\"selected\"" ?> value="01">Daily Pickup</option>
@@ -496,10 +496,10 @@ class ups {
 		  <option <?php if(UPS_PICKUP_TYPE=="20") echo "selected=\"selected\"" ?> value="20">Air Service Center</option>
 		</select>
 	  </td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP) ?></td>
+	  <td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP')) ?></td>
 	</tr>
 	<tr>
-	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_PACKAGE_TYPE ?></strong></td>
+	  <td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_PACKAGE_TYPE') ?></strong></td>
 	  <td>
 		<select class="inputbox" name="package_type">
 		  <option <?php if(UPS_PACKAGE_TYPE=="00") echo "selected=\"selected\"" ?> value="00">Unknown
@@ -512,31 +512,31 @@ class ups {
 		  <option <?php if(UPS_PACKAGE_TYPE=="25") echo "selected=\"selected\"" ?> value="25">UPS 10Kg Box</option>
 		</select>
 	  </td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP) ?></td>
+	  <td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP')) ?></td>
 	</tr>
 	<tr class="row0">
-	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TYPE_RESIDENTIAL ?></strong></td>
+	  <td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TYPE_RESIDENTIAL') ?></strong></td>
 	  <td>
 		<select class="inputbox" name="residential">
-			<option <?php if(UPS_RESIDENTIAL=="yes") echo "selected=\"selected\"" ?> value="yes"><?php echo $VM_LANG->_PHPSHOP_UPS_RESIDENTIAL ?></option>
-			<option <?php if(UPS_RESIDENTIAL=="no") echo "selected=\"selected\"" ?> value="no"><?php echo $VM_LANG->_PHPSHOP_UPS_COMMERCIAL ?></option>
+			<option <?php if(UPS_RESIDENTIAL=="yes") echo "selected=\"selected\"" ?> value="yes"><?php echo $VM_LANG->_('PHPSHOP_UPS_RESIDENTIAL') ?></option>
+			<option <?php if(UPS_RESIDENTIAL=="no") echo "selected=\"selected\"" ?> value="no"><?php echo $VM_LANG->_('PHPSHOP_UPS_COMMERCIAL') ?></option>
 		</select>
 	  </td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_RESIDENTIAL_TOOLTIP) ?></td>
+	  <td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_RESIDENTIAL_TOOLTIP')) ?></td>
 	</tr>
 	<tr class="row1">
-	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_HANDLING_FEE ?></strong></td>
+	  <td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_HANDLING_FEE') ?></strong></td>
 	  <td><input class="inputbox" type="text" name="handling_fee" value="<?php echo UPS_HANDLING_FEE ?>" /></td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_HANDLING_FEE_TOOLTIP) ?></td>
+	  <td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_HANDLING_FEE_TOOLTIP')) ?></td>
 	</tr>
 	<tr class="row0">
-	  <td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
+	  <td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?></strong></td>
 	  <td>
         <?php
         require_once(CLASSPATH.'ps_tax.php');
         ps_tax::list_tax_value("tax_class", UPS_TAX_CLASS) ?>
 	  </td>
-	  <td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?></td>
+	  <td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_TAX_CLASS_TOOLTIP')) ?></td>
 	</tr>	
 <?php // BEGIN CUSTOM CODE ?>
 	<tr class="row1">

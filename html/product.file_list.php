@@ -96,7 +96,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_FILES_LIST ." " . $product_name, $mosConfig_live_site."/administrator/images/mediamanager.png", $modulename, "file_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_FILES_LIST') ." " . $product_name, $mosConfig_live_site."/administrator/images/mediamanager.png", $modulename, "file_list");
 
 // start the list table
 $listObj->startTable();
@@ -104,13 +104,13 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => 'width="20"', 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll($num_rows)\" />" => 'width="20"',
-					$VM_LANG->_PHPSHOP_FILES_LIST_FILENAME => '',
+					$VM_LANG->_('PHPSHOP_FILES_LIST_FILENAME') => '',
 					'Role' => '',
-					$VM_LANG->_PHPSHOP_VIEW => '',
-					$VM_LANG->_PHPSHOP_FILES_LIST_FILETITLE => '',
-					$VM_LANG->_PHPSHOP_FILES_LIST_FILETYPE => '',
-					$VM_LANG->_PHPSHOP_FILEMANAGER_PUBLISHED => '',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_VIEW') => '',
+					$VM_LANG->_('PHPSHOP_FILES_LIST_FILETITLE') => '',
+					$VM_LANG->_('PHPSHOP_FILES_LIST_FILETYPE') => '',
+					$VM_LANG->_('PHPSHOP_FILEMANAGER_PUBLISHED') => '',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -138,7 +138,7 @@ while ($db->next_record()) {
 
 	$tmp_cell = '';
 	
-	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN.'">';
+	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_ADMIN').'">';
 	$style = '';
 	if($filename) {
 		$role = $db->f("file_is_image") ? 'isImage' : 'isFile';
@@ -165,8 +165,8 @@ while ($db->next_record()) {
 		$fullimg = $filename;
 		$info = pathinfo( $fullimg );
 		if( is_file( $fullimg ) ) {
-			$tmp_cell .= $VM_LANG->_PHPSHOP_FILES_LIST_FULL_IMG.": ";
-			$tmp_cell .= '<a onclick="document.getElementById(\'file_form_iframe\').src=\''.$db->f("file_url") . '\';" href="#file_form" title="Click me!">[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]</a>'; 
+			$tmp_cell .= $VM_LANG->_('PHPSHOP_FILES_LIST_FULL_IMG').": ";
+			$tmp_cell .= '<a onclick="document.getElementById(\'file_form_iframe\').src=\''.$db->f("file_url") . '\';" href="#file_form" title="Click me!">[ '.$VM_LANG->_('PHPSHOP_VIEW') . ' ]</a>'; 
 		}
 		$tmp_cell .= '<br />';
 		if( $db->f('product_thumb_image')) {
@@ -179,11 +179,11 @@ while ($db->next_record()) {
 		}
 		
 		if( is_file( $thumb ) ) {
-			$tmp_cell .= $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG.": ";
-			$tmp_cell .= vmToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', $VM_LANG->_PHPSHOP_FILES_LIST_THUMBNAIL_IMG, '', '', '[ '.$VM_LANG->_PHPSHOP_VIEW . ' ]' ); 
+			$tmp_cell .= $VM_LANG->_('PHPSHOP_FILES_LIST_THUMBNAIL_IMG').": ";
+			$tmp_cell .= vmToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', $VM_LANG->_('PHPSHOP_FILES_LIST_THUMBNAIL_IMG'), '', '', '[ '.$VM_LANG->_('PHPSHOP_VIEW') . ' ]' ); 
 		}
 		if( !$db->f("file_name") ) {
-			$tmp_cell = "&nbsp;<a target=\"_blank\" href=\"".$db->f("file_url"). "\">[ ".$VM_LANG->_PHPSHOP_VIEW . " ]</a><br/>"; 
+			$tmp_cell = "&nbsp;<a target=\"_blank\" href=\"".$db->f("file_url"). "\">[ ".$VM_LANG->_('PHPSHOP_VIEW') . " ]</a><br/>"; 
 		}
 	}
 	$listObj->addCell( $tmp_cell );

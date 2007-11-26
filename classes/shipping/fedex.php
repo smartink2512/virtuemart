@@ -60,7 +60,7 @@ class fedex {
 		// Get the meter number
 		if( FEDEX_METER_NUMBER=='') {
 			if( !$this->update_meter_number() ) {
-				$vmLogger->err( $VM_LANG->_VM_FEDEX_ERR_METER_NUMBER );
+				$vmLogger->err( $VM_LANG->_('VM_FEDEX_ERR_METER_NUMBER',false) );
 				return false;
 			}
 		}
@@ -173,8 +173,8 @@ class fedex {
 ?>
 		<table width="100%">
 			<tr class="sectiontableheader">
-				<th><?php echo $VM_LANG->_VM_FEDEX_LBL_METHOD ?></th>
-				<th style="text-align:right;"><?php echo $VM_LANG->_VM_FEDEX_LBL_PRICE ?></th>
+				<th><?php echo $VM_LANG->_('VM_FEDEX_LBL_METHOD') ?></th>
+				<th style="text-align:right;"><?php echo $VM_LANG->_('VM_FEDEX_LBL_PRICE') ?></th>
 			</tr>
 
 <?php
@@ -313,50 +313,50 @@ class fedex {
 	    ?>
 <div style="width:80%;padding:0 10px;">
 	<table class="adminform">
-		<th colspan="3"><?php echo $VM_LANG->_VM_FEDEX_ACCOUNT_SETTINGS ?></th>
+		<th colspan="3"><?php echo $VM_LANG->_('VM_FEDEX_ACCOUNT_SETTINGS') ?></th>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_ACCOUNT_NUMBER ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_ACCOUNT_NUMBER') ?></td>
 			<td><input type="text" name="FEDEX_ACCOUNT_NUMBER" class="inputbox" value="<?php echo FEDEX_ACCOUNT_NUMBER ?>" /></td>
 			<td style="width:5%;text-align:right;">&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_METER_NUMBER ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_METER_NUMBER') ?></td>
 			<td><input type="text" name="FEDEX_METER_NUMBER" class="inputbox" value="<?php echo FEDEX_METER_NUMBER ?>" /></td>
-			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_VM_FEDEX_METER_NUMBER_TIP) ?></td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_('VM_FEDEX_METER_NUMBER_TIP')) ?></td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_URI ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_URI') ?></td>
 			<td><input type="text" name="FEDEX_URI" class="inputbox" value="<?php echo FEDEX_URI ?>" size="60" /></td>
-			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip( $VM_LANG->_VM_FEDEX_URI_TIP ) ?></td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip( $VM_LANG->_('VM_FEDEX_URI_TIP') ) ?></td>
 		</tr>
 	</table>
 	
 	<p></p>
 	
 	<table class="adminform">
-		<th colspan="3"><?php echo $VM_LANG->_VM_FEDEX_TAXES_FEES ?></th>
+		<th colspan="3"><?php echo $VM_LANG->_('VM_FEDEX_TAXES_FEES') ?></th>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_TAX_CLASS ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_TAX_CLASS') ?></td>
 			<td>
 			 <?php
 			 require_once(CLASSPATH.'ps_tax.php');
 			ps_tax::list_tax_value("FEDEX_TAX_CLASS", FEDEX_TAX_CLASS) ?>
 			</td>
-			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_VM_FEDEX_TAX_CLASS_TOOLTIP) ?></td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_('VM_FEDEX_TAX_CLASS_TOOLTIP')) ?></td>
 		</tr>	
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_HANDLING_FEE ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_HANDLING_FEE') ?></td>
 			<td><input class="inputbox" type="text" name="FEDEX_HANDLINGFEE" value="<?php echo FEDEX_HANDLINGFEE ?>" /></td>
-			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_VM_FEDEX_HANDLING_FEE_TOOLTIP) ?></td>
+			<td style="width:5%;text-align:right;"><?php echo mm_ToolTip($VM_LANG->_('VM_FEDEX_HANDLING_FEE_TOOLTIP')) ?></td>
 		</tr>
 	</table>
 	
 	<p></p>
 	
 	<table class="adminform">
-		<th colspan="3"><?php echo $VM_LANG->_VM_FEDEX_ADDITIONAL_SETTINGS ?></th>
+		<th colspan="3"><?php echo $VM_LANG->_('VM_FEDEX_ADDITIONAL_SETTINGS') ?></th>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_SERVICES ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_SERVICES') ?></td>
 			<td>
 				<select class="inputbox" name="FEDEX_SERVICES[]" multiple="multiple" size="<?php echo count($fedextags->FE_ST) + count($fedextags->FE_ST_INTL); ?>">
 <?php
@@ -375,23 +375,23 @@ class fedex {
 			<td style="width:5%;text-align:right;">&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_SIGNATURE_OPTION') ?></td>
 			<td>
 				<select class="inputbox" name="FEDEX_SIGNATURE_OPTION">
-					<option value="1" <?php if (FEDEX_SIGNATURE_OPTION == '1') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_1 ?></option>
-					<option value="2" <?php if (FEDEX_SIGNATURE_OPTION == '2') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_2 ?></option>
-					<option value="3" <?php if (FEDEX_SIGNATURE_OPTION == '3') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_3 ?></option>
-					<option value="4" <?php if (FEDEX_SIGNATURE_OPTION == '4') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SIGNATURE_OPTION_4 ?></option>
+					<option value="1" <?php if (FEDEX_SIGNATURE_OPTION == '1') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_FEDEX_SIGNATURE_OPTION_1') ?></option>
+					<option value="2" <?php if (FEDEX_SIGNATURE_OPTION == '2') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_FEDEX_SIGNATURE_OPTION_2') ?></option>
+					<option value="3" <?php if (FEDEX_SIGNATURE_OPTION == '3') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_FEDEX_SIGNATURE_OPTION_3') ?></option>
+					<option value="4" <?php if (FEDEX_SIGNATURE_OPTION == '4') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_FEDEX_SIGNATURE_OPTION_4') ?></option>
 				</select>
 			</td>
 			<td style="width:5%;text-align:right;">&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="labelcell"><?php echo $VM_LANG->_VM_FEDEX_SORT_ORDER ?></td>
+			<td class="labelcell"><?php echo $VM_LANG->_('VM_FEDEX_SORT_ORDER') ?></td>
 			<td>
 				<select class="inputbox" name="FEDEX_SORT_ORDER">
-					<option value="ASC" <?php if (FEDEX_SORT_ORDER == 'ASC') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SORT_ASC ?></option>
-					<option value="DESC" <?php if (FEDEX_SORT_ORDER == 'DESC') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_VM_FEDEX_SORT_DESC ?></option>
+					<option value="ASC" <?php if (FEDEX_SORT_ORDER == 'ASC') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_FEDEX_SORT_ASC') ?></option>
+					<option value="DESC" <?php if (FEDEX_SORT_ORDER == 'DESC') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_FEDEX_SORT_DESC') ?></option>
 				</select>
 			</td>
 			<td style="width:5%;text-align:right;">&nbsp;</td>

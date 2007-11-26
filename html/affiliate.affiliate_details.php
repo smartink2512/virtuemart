@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-search_header($VM_LANG->_PHPSHOP_AFFILIATE_LIST_LBL, 'affiliate', "affiliate_list"); 
+search_header($VM_LANG->_('PHPSHOP_AFFILIATE_LIST_LBL'), 'affiliate', "affiliate_list"); 
 
 
 // Enable the multi-page search result display
@@ -60,7 +60,7 @@ $limitstart = vmGet( $_REQUEST, 'limitstart', 0);
   $num_rows = $db->f("num_rows");
 
   if ($num_rows == 0) {
-     echo $VM_LANG->_PHPSHOP_NO_SEARCH_RESULT;
+     echo $VM_LANG->_('PHPSHOP_NO_SEARCH_RESULT');
 
   }
   else {
@@ -68,11 +68,11 @@ $limitstart = vmGet( $_REQUEST, 'limitstart', 0);
 <table class="adminlist">
 
   <tr > 
-    <th width="28%"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME ?></th>
-    <th width="12%"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE ?></th>
-    <th width="18%"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL?></th>
-    <th width="31%"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION?></th>
-    <th width="11%"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_LIST_ADMIN ?></th>
+    <th width="28%"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME') ?></th>
+    <th width="12%"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE') ?></th>
+    <th width="18%"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL')?></th>
+    <th width="31%"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION')?></th>
+    <th width="11%"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_LIST_ADMIN') ?></th>
 
   </tr>
 

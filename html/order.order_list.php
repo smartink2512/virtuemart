@@ -55,7 +55,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_ORDER_LIST_LBL, IMAGEURL."ps_image/orders.gif", $modulename, "order_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_ORDER_LIST_LBL'), IMAGEURL."ps_image/orders.gif", $modulename, "order_list");
 
 ?>
 <div align="center">
@@ -72,7 +72,7 @@ while ($navi_db->next_record()) {  ?>
 } 
 ?>
     <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=$modulename.order_list&show=")?>"><b>
-    <?php echo $VM_LANG->_PHPSHOP_ALL ?></b></a>
+    <?php echo $VM_LANG->_('PHPSHOP_ALL') ?></b></a>
 </div>
 <br />
 <?php 
@@ -82,18 +82,18 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_ORDER_LIST_ID => '',
-					$VM_LANG->_PHPSHOP_ORDER_PRINT_NAME => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_PRINT_LABEL => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_TRACK => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_VOID_LABEL => '',
-					$VM_LANG->_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_CDATE => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_MDATE => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_STATUS => '',
-					$VM_LANG->_PHPSHOP_UPDATE => '',
-					$VM_LANG->_PHPSHOP_ORDER_LIST_TOTAL => '',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_ID') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_PRINT_LABEL') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_TRACK') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_VOID_LABEL') => '',
+					$VM_LANG->_('PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_CDATE') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_MDATE') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_STATUS') => '',
+					$VM_LANG->_('PHPSHOP_UPDATE') => '',
+					$VM_LANG->_('PHPSHOP_ORDER_LIST_TOTAL') => '',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 // so we can determine if shipping labels can be printed
@@ -219,8 +219,8 @@ while ($db->next_record()) {
 	
 	// Notify Customer checkbox
 	$listObj->addCell( '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.value = \'Y\';} else {document.adminForm'. $i .'.notify_customer.value = \'N\';}" value="Y" />'
-						.$VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY .'<br />
-					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY_ERR .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="'.$VM_LANG->_VM_UPDATE_STATUS.'" />' );
+						.$VM_LANG->_('PHPSHOP_ORDER_LIST_NOTIFY') .'<br />
+					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. $VM_LANG->_('PHPSHOP_ORDER_LIST_NOTIFY_ERR') .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="'.$VM_LANG->_('VM_UPDATE_STATUS').'" />' );
 
 	$listObj->addCell( $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')));
 	// Change Order Status form

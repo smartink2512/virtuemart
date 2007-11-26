@@ -251,7 +251,7 @@ class ps_montrada {
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $vmLogger->err( curl_error( $CR )
-                              ."<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>" );
+                              ."<br/><span class=\"message\">".$VM_LANG->_('PHPSHOP_PAYMENT_INTERNAL_ERROR')." authorize.net</span>" );
               return false;
             }
             else {
@@ -341,7 +341,7 @@ class ps_montrada {
         else
         {
            if ($response['posherr'] = "") $response['posherr'] = -1;
-           $vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR." ($response[posherr])" );
+           $vmLogger->err( $VM_LANG->_('PHPSHOP_PAYMENT_ERROR',false)." ($response[posherr])" );
            
            if (in_array($response['posherr'], $posherr1))
            {

@@ -46,16 +46,16 @@ class ps_eway {
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2') ?></strong></td>
             <td>
                 <select name="EWAY_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (EWAY_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (EWAY_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2_TOOLTIP') ?></td>
         </tr>
         <tr>
             <td><strong>Order Status for successful transactions</strong></td>
@@ -103,14 +103,14 @@ class ps_eway {
             <td>Select an order status for failed eWay transactions.</td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>
             <td>
                 <select name="EWAY_TEST_REQUEST" class="inputbox" >
-                <option <?php if (EWAY_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (EWAY_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (EWAY_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+                <option <?php if (EWAY_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN') ?>
             </td>
         </tr>
       </table>
@@ -221,14 +221,14 @@ class ps_eway {
         
         if( $eway->doPayment() == EWAY_TRANSACTION_OK ) {
 			
-			$d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS;
+			$d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS');
             //Catch Transaction ID
             $d["order_payment_trans_id"] = $eway->getTrxnNumber();
             //$d["error"] = "";
             return true;
 		} 
         else {
-			$vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR.": "
+			$vmLogger->err( $VM_LANG->_('PHPSHOP_PAYMENT_ERROR',false).": "
                             .$eway->getErrorMessage() );
             //Catch Transaction ID
             $d["order_payment_trans_id"] = $eway->getTrxnNumber();

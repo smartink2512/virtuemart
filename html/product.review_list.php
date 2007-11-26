@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );
 
-$title = $VM_LANG->_PHPSHOP_REVIEWS;
+$title = $VM_LANG->_('PHPSHOP_REVIEWS');
 		  
 // print out the search field and a list heading
 $listObj->writeSearchHeader( $title, IMAGEURL."ps_image/reviews.gif", $modulename, "review_list");
@@ -59,12 +59,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_PRODUCT_NAME_TITLE => 'width="20%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_NAME_TITLE') => 'width="20%"',
 					"Name/Date" => 'width="15%"',
-					$VM_LANG->_PHPSHOP_REVIEWS => 'width="35%"',
-					$VM_LANG->_PHPSHOP_RATE_NOM => 'width="15%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
-					$VM_LANG->_E_REMOVE => 'width="10%"'
+					$VM_LANG->_('PHPSHOP_REVIEWS') => 'width="35%"',
+					$VM_LANG->_('PHPSHOP_RATE_NOM') => 'width="15%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_PUBLISH') => 'width="5%"',
+					$VM_LANG->_('E_REMOVE') => 'width="10%"'
 				);
 $listObj->writeTableHeader( $columns );
 

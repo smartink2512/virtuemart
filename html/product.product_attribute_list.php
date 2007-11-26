@@ -25,9 +25,9 @@ $return_args = vmGet($_REQUEST, 'return_args');
 $product_id = vmGet($_REQUEST, 'product_id', 0);
 
 if (!empty($product_parent_id)) {
-  $title = $VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_LBL. " - Product:";
+  $title = $VM_LANG->_('PHPSHOP_ATTRIBUTE_LIST_LBL'). " - Product:";
 } else {
-  $title = $VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_LBL. " - Item:";
+  $title = $VM_LANG->_('PHPSHOP_ATTRIBUTE_LIST_LBL'). " - Item:";
 }
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name") ."</a>"; 
@@ -48,9 +48,9 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$db->num_rows().")\" />" => 'width="5%"',
-					$VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_NAME => 'width="30%"',
-					$VM_LANG->_PHPSHOP_ATTRIBUTE_LIST_ORDER => 'width="45%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_ATTRIBUTE_LIST_NAME') => 'width="30%"',
+					$VM_LANG->_('PHPSHOP_ATTRIBUTE_LIST_ORDER') => 'width="45%"',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

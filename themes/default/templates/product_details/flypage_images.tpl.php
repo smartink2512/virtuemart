@@ -16,7 +16,7 @@ if( $this->get_cfg( 'showPathway' )) {
 	  	<br/><br/>
 	  	<?php if( !empty($images)) { ?>
 		  	<div class="thumbnailListContainer">
-		  		<h5><?php echo $VM_LANG->_PHPSHOP_MORE_IMAGES ?></h5>
+		  		<h5><?php echo $VM_LANG->_('PHPSHOP_MORE_IMAGES') ?></h5>
 		  		<?php 
 					echo $this->vmListAdditionalImages( $product_id, $images );
 		  		?>
@@ -79,6 +79,6 @@ if( $this->get_cfg( 'showPathway' )) {
   </tbody>
 </table>
 <?php if( !empty( $navigation_childlist )) { ?>
-	<?php echo $VM_LANG->_PHPSHOP_MORE_CATEGORIES ?><br />
+	<?php echo $VM_LANG->_('PHPSHOP_MORE_CATEGORIES') ?><br />
 	<?php echo $navigation_childlist ?><br style="clear:both"/>
 <?php } ?>

@@ -809,7 +809,7 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 	// probably a spoofing attack
 	if (!$validate) {
 		header( 'HTTP/1.0 403 Forbidden' );
-		mosErrorAlert( $VM_LANG->_NOT_AUTH );
+		mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
 		return;
 	}
 	
@@ -818,7 +818,7 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 	// other than requests from a browser:   
 	if (!isset( $_SERVER['HTTP_USER_AGENT'] )) {
 		header( 'HTTP/1.0 403 Forbidden' );
-		mosErrorAlert( $VM_LANG->_NOT_AUTH );
+		mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
 		return;
 	}
 	
@@ -826,7 +826,7 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 	//  (requires your html form to use: action="post")
 	if (!$_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		header( 'HTTP/1.0 403 Forbidden' );
-		mosErrorAlert( $VM_LANG->_NOT_AUTH );
+		mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
 		return;
 	}
 	
@@ -846,7 +846,7 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 			foreach ($badStrings as $v2) {
 				if (strpos( $v, $v2 ) !== false) {
 					header( "HTTP/1.0 403 Forbidden" );
-					mosErrorAlert( $VM_LANG->_NOT_AUTH );
+					mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
 					return;
 				}
 			}

@@ -7,10 +7,10 @@
 	if( $show_limitbox ) { ?>
 		<br/><br/>
 		<form action="<?php echo $search_string ?>" method="post">
-			<?php echo $VM_LANG->_PN_DISPLAY_NR ?>&nbsp;&nbsp;
+			<?php echo $VM_LANG->_('PN_DISPLAY_NR') ?>&nbsp;&nbsp;
 			<?php $pagenav->writeLimitBox( $search_string ); ?>
 			
-			<noscript><input class="button" type="submit" value="<?php echo $VM_LANG->_PHPSHOP_SUBMIT ?>" /></noscript>
+			<noscript><input class="button" type="submit" value="<?php echo $VM_LANG->_('PHPSHOP_SUBMIT') ?>" /></noscript>
 		
 		</form>
 	<?php

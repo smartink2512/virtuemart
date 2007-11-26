@@ -393,29 +393,29 @@ class intershipper {
 		  </td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD') ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="IS_PASSWORD" class="inputbox" value="<? echo IS_PASSWORD ?>" />
-			  <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN) ?>
+			  <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN')) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL') ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="IS_EMAIL" class="inputbox" value="<? echo IS_EMAIL ?>" />
-				<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN) ?>
+				<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN')) ?>
 			</td>
 		</tr>
 	  <tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?></strong></td>
 		<td>
 		  <?php
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("IS_TAX_CLASS", IS_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+		<td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_TAX_CLASS_TOOLTIP')) ?><td>
 	  </tr>	
 		<tr>
 		  <td colspan="4"><hr /></td>

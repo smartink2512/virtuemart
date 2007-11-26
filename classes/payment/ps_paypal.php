@@ -39,29 +39,29 @@ class ps_paypal {
     ?>
     <table class="adminform">
         <tr class="row0">
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>
             <td>
                 <select name="PAYPAL_DEBUG" class="inputbox" >
-                <option <?php if (@PAYPAL_DEBUG == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (@PAYPAL_DEBUG != '1') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (@PAYPAL_DEBUG == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+                <option <?php if (@PAYPAL_DEBUG != '1') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
             <td>
             <?php
-            printf( $VM_LANG->_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP, '<pre>'. COMPONENTURL."notify.php</pre>" );
+            printf( $VM_LANG->_('VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP'), '<pre>'. COMPONENTURL."notify.php</pre>" );
 			?>            
             </td>
         </tr>
         <tr class="row1">
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL ?></strong></td>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL') ?></strong></td>
             <td>
                 <input type="text" name="PAYPAL_EMAIL" class="inputbox" value="<?php  echo PAYPAL_EMAIL ?>" />
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN') ?>
             </td>
         </tr>
         <tr class="row0">
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS') ?></strong></td>
             <td>
                 <select name="PAYPAL_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -84,11 +84,11 @@ class ps_paypal {
                     }?>
                     </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN') ?>
             </td>
         </tr>
         <tr class="row1">
-            <td><strong><?php echo $VM_LANG->_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('VM_ADMIN_CFG_PAYPAL_STATUS_PENDING') ?></strong></td>
             <td>
                 <select name="PAYPAL_PENDING_STATUS" class="inputbox" >
                 <?php
@@ -102,14 +102,14 @@ class ps_paypal {
                     } ?>
                     </select>
             </td>
-            <td><?php echo $VM_LANG->_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN ?></td>
+            <td><?php echo $VM_LANG->_('VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN') ?></td>
         </tr>
         <tr class="row0">
         <td><strong>Accept only verified buyers?</strong></td>
             <td>
                 <select name="PAYPAL_VERIFIED_ONLY" class="inputbox" >
-	                <option <?php if (@PAYPAL_VERIFIED_ONLY != '1') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
-	                <option <?php if (@PAYPAL_VERIFIED_ONLY == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+	                <option <?php if (@PAYPAL_VERIFIED_ONLY != '1') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
+	                <option <?php if (@PAYPAL_VERIFIED_ONLY == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 </select>
             </td>
             <td>Here you can choose if you only want to accept payments from buyers with a
@@ -117,7 +117,7 @@ class ps_paypal {
             </td>
         </tr>
         <tr class="row1">
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED') ?></strong></td>
             <td>
                 <select name="PAYPAL_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -131,7 +131,7 @@ class ps_paypal {
                     } ?>
                     </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN') ?>
             </td>
         </tr>
       </table>

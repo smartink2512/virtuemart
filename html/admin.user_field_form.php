@@ -31,7 +31,7 @@ if( is_array( $fieldid )) {
 $option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_VM_USERFIELD_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('VM_USERFIELD_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -41,8 +41,8 @@ $params = '';
 
 $webaddrtypes = array();
 
-$webaddrtypes[] = mosHTML::makeOption( '0', $VM_LANG->_VM_USERFIELDS_URL_ONLY );
-$webaddrtypes[] = mosHTML::makeOption( '2', $VM_LANG->_VM_USERFIELDS_HYPERTEXT_URL );
+$webaddrtypes[] = mosHTML::makeOption( '0', $VM_LANG->_('VM_USERFIELDS_URL_ONLY') );
+$webaddrtypes[] = mosHTML::makeOption( '2', $VM_LANG->_('VM_USERFIELDS_HYPERTEXT_URL') );
 
 $fieldvalues = array();
 
@@ -64,29 +64,29 @@ if (!empty($fieldid)) {
 else {
 	$types = array();
 	
-	$types[] = mosHTML::makeOption( 'text', $VM_LANG->_VM_FIELDS_TEXTFIELD );
-	$types[] = mosHTML::makeOption( 'checkbox', $VM_LANG->_VM_FIELDS_CHECKBOX_SINGLE );
-	$types[] = mosHTML::makeOption( 'multicheckbox', $VM_LANG->_VM_FIELDS_CHECKBOX_MULTIPLE );
-	$types[] = mosHTML::makeOption( 'date', $VM_LANG->index2.php.html );
-	$types[] = mosHTML::makeOption( 'select', $VM_LANG->_VM_FIELDS_DROPDOWN_SINGLE );
-	$types[] = mosHTML::makeOption( 'multiselect', $VM_LANG->_VM_FIELDS_DROPDOWN_MULTIPLE );
-	$types[] = mosHTML::makeOption( 'emailaddress', $VM_LANG->_VM_FIELDS_EMAIL );	
-	$types[] = mosHTML::makeOption( 'euvatid', $VM_LANG->_VM_FIELDS_EUVATID );	
+	$types[] = mosHTML::makeOption( 'text', $VM_LANG->_('VM_FIELDS_TEXTFIELD') );
+	$types[] = mosHTML::makeOption( 'checkbox', $VM_LANG->_('VM_FIELDS_CHECKBOX_SINGLE') );
+	$types[] = mosHTML::makeOption( 'multicheckbox', $VM_LANG->_('VM_FIELDS_CHECKBOX_MULTIPLE') );
+	$types[] = mosHTML::makeOption( 'date', $VM_LANG->_('VM_FIELDS_DATE') );
+	$types[] = mosHTML::makeOption( 'select', $VM_LANG->_('VM_FIELDS_DROPDOWN_SINGLE') );
+	$types[] = mosHTML::makeOption( 'multiselect', $VM_LANG->_('VM_FIELDS_DROPDOWN_MULTIPLE') );
+	$types[] = mosHTML::makeOption( 'emailaddress', $VM_LANG->_('VM_FIELDS_EMAIL') );	
+	$types[] = mosHTML::makeOption( 'euvatid', $VM_LANG->_('VM_FIELDS_EUVATID') );	
 	//$types[] = mosHTML::makeOption( 'password', 'Password Field' );
-	$types[] = mosHTML::makeOption( 'editorta', $VM_LANG->_VM_FIELDS_EDITORAREA );
-	$types[] = mosHTML::makeOption( 'textarea', $VM_LANG->_VM_FIELDS_TEXTAREA );
-	$types[] = mosHTML::makeOption( 'radio', $VM_LANG->_VM_FIELDS_RADIOBUTTON );
-	$types[] = mosHTML::makeOption( 'webaddress', $VM_LANG->_VM_FIELDS_WEBADDRESS );
-	$types[] = mosHTML::makeOption( 'delimiter', $VM_LANG->_VM_FIELDS_DELIMITER );
+	$types[] = mosHTML::makeOption( 'editorta', $VM_LANG->_('VM_FIELDS_EDITORAREA') );
+	$types[] = mosHTML::makeOption( 'textarea', $VM_LANG->_('VM_FIELDS_TEXTAREA') );
+	$types[] = mosHTML::makeOption( 'radio', $VM_LANG->_('VM_FIELDS_RADIOBUTTON') );
+	$types[] = mosHTML::makeOption( 'webaddress', $VM_LANG->_('VM_FIELDS_WEBADDRESS') );
+	$types[] = mosHTML::makeOption( 'delimiter', $VM_LANG->_('VM_FIELDS_DELIMITER') );
 	
 	if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {
-		$types[] = mosHTML::makeOption( 'yanc_subscription', $VM_LANG->_VM_FIELDS_NEWSLETTER.' (YaNC)' );
+		$types[] = mosHTML::makeOption( 'yanc_subscription', $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (YaNC)' );
 	}
 	if( file_exists($mosConfig_absolute_path.'/components/com_anjel/anjel.php')) {
-		$types[] = mosHTML::makeOption( 'anjel_subscription', $VM_LANG->_VM_FIELDS_NEWSLETTER.' (ANJEL)' );
+		$types[] = mosHTML::makeOption( 'anjel_subscription', $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (ANJEL)' );
 	}
 	if( file_exists($mosConfig_absolute_path.'/components/com_letterman/letterman.php')) {
-		$types[] = mosHTML::makeOption( 'letterman_subscription', $VM_LANG->_VM_FIELDS_NEWSLETTER.' (Letterman)' );
+		$types[] = mosHTML::makeOption( 'letterman_subscription', $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (Letterman)' );
 	}
 	
 	$lists['type'] = mosHTML::selectList( $types, 'type', 'class="inputbox" size="1" onchange="toggleType(this.options[this.selectedIndex].value);"', 'value', 'text', $db->f('type') );
@@ -107,7 +107,7 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 ?>
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
 		<tr>
-			<td class="sectionname"><img src="<?php echo $mosConfig_live_site.'/administrator/images/addusers.png' ?>" align="middle"><?php echo $VM_LANG->_VM_MANAGE_USER_FIELDS ?></td>
+			<td class="sectionname"><img src="<?php echo $mosConfig_live_site.'/administrator/images/addusers.png' ?>" align="middle"><?php echo $VM_LANG->_('VM_MANAGE_USER_FIELDS') ?></td>
 		</tr>
 	</table>
 
@@ -115,52 +115,52 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 	
 	<table class="adminform">
 		<tr class="row0">
-			<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_TYPE ?>:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_TYPE') ?>:</td>
 			<td width="20%"><?php echo $lists['type']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_NAME ?>:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_NAME') ?>:</td>
 			<td align=left  width="20%"><input onchange="prep4SQL(this);" type="text" name="name" mosReq=1 mosLabel="Name" class="inputbox" value="<?php $db->sp('name'); ?>" <?php if($db->f('sys')) echo 'readonly="readonly"' ?> /></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row0">
-			<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_TITLE ?>:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_TITLE') ?>:</td>
 			<td width="20%" align=left><input type="text" name="title" mosReq=1 mosLabel="Title" class="inputbox" value="<?php $db->sp('title'); ?>" /></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td width="20%"><?php echo $VM_LANG->_VM_USERFIELDS_DESCRIPTION ?>:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_DESCRIPTION') ?>:</td>
 			<td width="20%" align=left><textarea name="description" cols=50 rows=6 maxlength='255' mosReq=0 mosLabel="Description" class="inputbox"><?php $db->sp('description'); ?></textarea></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row0">
-			<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_REQUIRED ?>?:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_REQUIRED') ?>?:</td>
 			<td width="20%"><?php echo $lists['required']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_SHOW_ON_ACCOUNT ?>?:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>?:</td>
 			<td width="20%"><?php echo $lists['account']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row0">
-			<td width="20%"><?php echo $VM_LANG->_VM_USERFIELDS_READONLY ?>?:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_READONLY') ?>?:</td>
 			<td width="20%"><?php echo $lists['readonly']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_SHOW_ON_REGISTRATION ?>?:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>?:</td>
 			<td width="20%"><?php echo $lists['registration']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row0">
-			<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_PUBLISHED ?>:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_PUBLISHED') ?>:</td>
 			<td width="20%"><?php echo $lists['published']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td width="20%"><?php echo $VM_LANG->_VM_USERFIELDS_SIZE ?>:</td>
+			<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_SIZE') ?>:</td>
 			<td width="20%"><input type="text" name="size" mosLabel="Size" class="inputbox" value="<?php echo $db->f('size'); ?>" /></td>
 			<td>&nbsp;</td>
 		</tr>
@@ -170,7 +170,7 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 		<div id="divText">
 			<table class="adminform">
 			<tr class="row0">
-				<td width="20%"><?php echo $VM_LANG->_VM_USERFIELDS_MAXLENGTH ?>:</td>
+				<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_MAXLENGTH') ?>:</td>
 				<td width="20%"><input type="text" name="maxlength" mosLabel="Max Length" class="inputbox" value="<?php echo $db->f('maxlength'); ?>" /></td>
 				<td>&nbsp;</td>
 			</tr>
@@ -179,12 +179,12 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 		<div id="divColsRows">
 			<table class="adminform">
 			<tr class="row0">
-				<td width="20%"><?php echo $VM_LANG->_VM_USERFIELDS_COLUMNS ?>:</td>
+				<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_COLUMNS') ?>:</td>
 				<td width="20%"><input type="text" name="cols" mosLabel="Cols" class="inputbox" value="<?php echo $db->f('cols'); ?>" /></td>
 				<td>&nbsp;</td>
 			</tr>
 			<tr class="row1">
-				<td width="20%"><?php echo $VM_LANG->_VM_USERFIELDS_ROWS ?>:</td>
+				<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_ROWS') ?>:</td>
 				<td width="20%"><input type="text" name="rows"  mosLabel="Rows" class="inputbox" value="<?php echo $db->f('rows'); ?>" /></td>
 				<td>&nbsp;</td>
 			</tr>
@@ -193,7 +193,7 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 		<div id="divShopperGroups" >
 			<table class="adminform">
 	          <tr class="row1"> 
-	        	<td class="labelcell"><?php echo $VM_LANG->_VM_USERFIELDS_EUVATID_MOVESHOPPER ?>:</td>
+	        	<td class="labelcell"><?php echo $VM_LANG->_('VM_USERFIELDS_EUVATID_MOVESHOPPER') ?>:</td>
 	            <td ><?php
 	            	$sg_id = is_a( $params, 'mosparameters' ) ? $params->get( 'shopper_group_id', 5 ) : '';
                    	echo ps_shopper_group::list_shopper_groups( "shopper_group_id", $sg_id );
@@ -206,7 +206,7 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 		<div id="divWeb">
 			<table cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform">
 			<tr class="row1">
-				<td width="20%"><?php echo $VM_LANG->_VM_FIELDMANAGER_TYPE ?>:</td>
+				<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_TYPE') ?>:</td>
 				<td width="20%"><?php echo $lists['webaddresstypes']; ?></td>
 				<td>&nbsp;</td>
 			</tr>
@@ -214,7 +214,7 @@ $lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="input
 		</div>
 		
 		<div id="divValues" style="text-align:left;">
-			<?php echo $VM_LANG->_VM_USERFIELDS_ADDVALUES_TIP ?><br />
+			<?php echo $VM_LANG->_('VM_USERFIELDS_ADDVALUES_TIP') ?><br />
 			<input type="button" class="button" onclick="insertRow();" value="Add a Value" />
 			<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" >
 			<thead>

@@ -2,7 +2,7 @@
 
 <hr/>
 
-<h3><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS_HEADING ?></h3>
+<h3><?php echo $VM_LANG->_('PHPSHOP_RELATED_PRODUCTS_HEADING') ?></h3>
  
 <table width="100%" align="center">
 	<tr>

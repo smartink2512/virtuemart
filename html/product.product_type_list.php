@@ -38,7 +38,7 @@ $db->query( $q );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL, IMAGEURL."ps_image/categories.gif", $modulename, "product_type_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PRODUCT_TYPE_LIST_LBL'), IMAGEURL."ps_image/categories.gif", $modulename, "product_type_list");
 
 // start the list table
 $listObj->startTable();
@@ -46,13 +46,13 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_NAME => 'width="25%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="30%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS => 'width="15%"',
-					$VM_LANG->_PHPSHOP_PRODUCTS_LBL => 'width="15%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
-					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="5%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_FORM_NAME') => 'width="25%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION') => 'width="30%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS') => 'width="15%"',
+					$VM_LANG->_('PHPSHOP_PRODUCTS_LBL') => 'width="15%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_PUBLISH') => 'width="5%"',
+					$VM_LANG->_('PHPSHOP_MODULE_LIST_ORDER') => 'width="5%"',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -74,14 +74,14 @@ while ($db->next_record()) {
 	
 	$listObj->addCell(  $db->f("product_type_description"));
 
-	$tmp_cell = $parameter_count . " " . $VM_LANG->_PHPSHOP_PARAMETERS_LBL . " <a href=\""
+	$tmp_cell = $parameter_count . " " . $VM_LANG->_('PHPSHOP_PARAMETERS_LBL') . " <a href=\""
 			. $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_parameter_list&product_type_id="
-			. $db->f("product_type_id") . "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>";
+			. $db->f("product_type_id") . "\">[ ".$VM_LANG->_('PHPSHOP_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$tmp_cell = $product_count ." ". $VM_LANG->_PHPSHOP_PRODUCTS_LBL."&nbsp;<a href=\""
+	$tmp_cell = $product_count ." ". $VM_LANG->_('PHPSHOP_PRODUCTS_LBL')."&nbsp;<a href=\""
 			. $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_list&product_type_id=" . $db->f("product_type_id")
-			. "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>";
+			. "\">[ ".$VM_LANG->_('PHPSHOP_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
       //$listObj->addCell( $db->f("list_order"));
 
@@ -90,9 +90,9 @@ while ($db->next_record()) {
 //      echo "<a href=\"javascript: void(0);\" onClick=\"return listItemTask('cb$i','orderdown')\">";
 //      echo "Down</a>";	
 	$tmp_cell = "<div align=\"center\">"
-			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_CMN_ORDER_UP, $page, "ProductTypeReorder" )
+			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_('CMN_ORDER_UP'), $page, "ProductTypeReorder" )
 			. "\n&nbsp;" 
-			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), "orderdown", $VM_LANG->_CMN_ORDER_DOWN, $page, "ProductTypeReorder" )
+			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), "orderdown", $VM_LANG->_('CMN_ORDER_DOWN'), $page, "ProductTypeReorder" )
 			. "</div>";
 	$listObj->addCell( $tmp_cell );  
 	

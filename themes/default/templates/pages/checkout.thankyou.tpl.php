@@ -23,14 +23,14 @@ mm_showMyFileName( __FILE__ );
 
 ?>
 
-<h3><?php echo $VM_LANG->_PHPSHOP_THANKYOU ?></h3>
+<h3><?php echo $VM_LANG->_('PHPSHOP_THANKYOU') ?></h3>
 <p>
  	<?php 
  	echo vmCommonHTML::imageTag( VM_THEMEURL .'images/button_ok.png', 'Success', 'center', '48', '48' ); ?>
-   	<?php echo $VM_LANG->_PHPSHOP_THANKYOU_SUCCESS?>
+   	<?php echo $VM_LANG->_('PHPSHOP_THANKYOU_SUCCESS')?>
   
 	<br /><br />
-	<?php echo $VM_LANG->_PHPSHOP_EMAIL_SENDTO .": <strong>". $user->user_email; ?></strong><br />
+	<?php echo $VM_LANG->_('PHPSHOP_EMAIL_SENDTO') .": <strong>". $user->user_email; ?></strong><br />
 </p>
   
 <!-- Begin Payment Information -->
@@ -75,6 +75,6 @@ $db = $db_temp;
 ?>
 <p>
 	<a href="<?php $sess->purl(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=account.order_details&order_id=". $order_id) ?>" onclick="if( parent.parent.location ) { parent.parent.location = this.href.replace(/index2.php/, 'index.php' ); };">
- 		<?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?>
+ 		<?php echo $VM_LANG->_('PHPSHOP_ORDER_LINK') ?>
  	</a>
 </p>

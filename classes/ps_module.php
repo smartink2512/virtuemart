@@ -346,8 +346,8 @@ class ps_module {
 
 				if ( !file_exists(PAGEPATH.$modulename.".".$pagename.".php") ) {
 					define( '_VM_PAGE_NOT_FOUND', 1 );
-					$error = $VM_LANG->_PHPSHOP_PAGE_404_1;
-					$error .= ' '.$VM_LANG->_PHPSHOP_PAGE_404_2 ;
+					$error = $VM_LANG->_('PHPSHOP_PAGE_404_1');
+					$error .= ' '.$VM_LANG->_('PHPSHOP_PAGE_404_2') ;
 					$error .= ' "'.$modulename.".".$pagename.'.php"';
 					$vmLogger->err( $error );
 					return false;
@@ -356,13 +356,13 @@ class ps_module {
 			}
 			else {
 				define( '_VM_PAGE_NOT_AUTH', 1 );
-				$vmLogger->err( $VM_LANG->_PHPSHOP_MOD_NO_AUTH );
+				$vmLogger->err( $VM_LANG->_('PHPSHOP_MOD_NO_AUTH') );
 				return false;
 			}
 		}
 		else {
-			$error = $VM_LANG->_PHPSHOP_MOD_NOT_REG;
-			$error .= '"'.$modulename .'" '. $VM_LANG->_PHPSHOP_MOD_ISNO_REG;
+			$error = $VM_LANG->_('PHPSHOP_MOD_NOT_REG');
+			$error .= '"'.$modulename .'" '. $VM_LANG->_('PHPSHOP_MOD_ISNO_REG');
 			$vmLogger->err( $error );
 			return false;
 		}

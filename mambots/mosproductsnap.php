@@ -138,12 +138,12 @@ function return_snapshot($productsnap_params) {
 		}
 
 		if ($showprice)
-		$html .= "<div style=\"font-weight: bold;\">".$VM_LANG->_PHPSHOP_CART_PRICE .": ".str_replace( "$", "\\$", $ps_product->show_price($db->f("product_id")))."</div>\n";
+		$html .= "<div style=\"font-weight: bold;\">".$VM_LANG->_('PHPSHOP_CART_PRICE') .": ".str_replace( "$", "\\$", $ps_product->show_price($db->f("product_id")))."</div>\n";
 
 		if ($showaddtocart) {
 			$html .= "<div>";
 			$url = "index.php?page=shop.cart&func=cartAdd&product_id=" .  $db->f("product_id");
-			$html .= "<a href=\"". $sess->url(URL . $url)."\">&gt; ".$VM_LANG->_PHPSHOP_CART_ADD_TO." &lt;</a></div>\n";
+			$html .= "<a href=\"". $sess->url(URL . $url)."\">&gt; ".$VM_LANG->_('PHPSHOP_CART_ADD_TO')." &lt;</a></div>\n";
 		}
 		$html .= "</div>\n";
 		return( $html );

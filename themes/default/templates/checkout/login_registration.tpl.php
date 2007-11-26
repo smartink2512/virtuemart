@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 ?>
 <h4><input type="radio" name="togglerchecker" id="toggler1" class="toggler" checked="checked" />
-<label for="toggler1"><?php echo $VM_LANG->_PHPSHOP_RETURN_LOGIN ?></label>
+<label for="toggler1"><?php echo $VM_LANG->_('PHPSHOP_RETURN_LOGIN') ?></label>
 </h4>
     <div class="stretcher" id="login_stetcher">
 <?php 
@@ -29,7 +29,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 ?><br />
 	<h4><input type="radio" name="togglerchecker" id="toggler2" class="toggler" />
-	<label for="toggler2"><?php echo $VM_LANG->_PHPSHOP_NEW_CUSTOMER ?></label></h4>
+	<label for="toggler2"><?php echo $VM_LANG->_('PHPSHOP_NEW_CUSTOMER') ?></label></h4>
 	
     <div class="stretcher" id="register_stretcher"><?php
 

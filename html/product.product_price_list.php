@@ -27,11 +27,11 @@ $product_parent_id = vmGet($_REQUEST, 'product_parent_id', 0);
 $return_args = vmGet($_REQUEST, 'return_args');
 
 if (empty($product_parent_id)) {
-  $title = $VM_LANG->_PHPSHOP_PRODUCT_LBL;
+  $title = $VM_LANG->_('PHPSHOP_PRODUCT_LBL');
 } else {
-  $title = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_LBL;
+  $title = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_LBL');
 }
-$title .=  "<br/>". $VM_LANG->_PHPSHOP_PRICE_LIST_FOR_LBL."&nbsp;&nbsp;";
+$title .=  "<br/>". $VM_LANG->_('PHPSHOP_PRICE_LIST_FOR_LBL')."&nbsp;&nbsp;";
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .=  "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name")."</a>"; 
 
@@ -66,12 +66,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_PRICE_LIST_GROUP_NAME => '',
-					$VM_LANG->_PHPSHOP_PRICE_LIST_PRICE => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_CURRENCY => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_START => 'width="50"',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_QUANTITY_END => 'width="50"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_PRICE_LIST_GROUP_NAME') => '',
+					$VM_LANG->_('PHPSHOP_PRICE_LIST_PRICE') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_CURRENCY') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_QUANTITY_START') => 'width="50"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_QUANTITY_END') => 'width="50"',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

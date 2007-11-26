@@ -6,8 +6,8 @@
         echo $ps_product_type->get_parameter_form($product_type_id);
         ?>	  
       		<strong><?php
-      		echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY.": ".$ps_product_type->get_name($product_type_id);
+      		echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_IN_CATEGORY').": ".$ps_product_type->get_name($product_type_id);
         ?></strong>&nbsp;&nbsp;<br/>
-	  <input type="submit" class="button" id="<?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS ?>" name="edit" value="<?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS ?>" />
+	  <input type="submit" class="button" id="<?php echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS') ?>" name="edit" value="<?php echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_CHANGE_PARAMETERS') ?>" />
 	</form>
 </div>

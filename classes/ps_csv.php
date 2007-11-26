@@ -803,7 +803,7 @@ class ps_csv {
 				$(\'msgcontrol\').innerHTML = \'<a href="#" onclick="$(\\\'importstats\\\').toggle();">[ Show / Hide Messages ]</a>\';
 				new Effect.Highlight(\'importmsg\', {duration: 3 } );
 				document.adminForm.submit.remove();
-				document.adminForm.cancel.value = \' '.$VM_LANG->_CMN_OK.' \';
+				document.adminForm.cancel.value = \' '.$VM_LANG->_('CMN_OK').' \';
 				' );
 		}
 

@@ -26,10 +26,10 @@ $q .= "WHERE product_type_id=$product_type_id";
 $db->query($q);   
 $db->next_record();
 
-$title = $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL .": ";
+$title = $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_LIST_LBL') .": ";
 if ($product_type_id && $db->f("product_type_name"))
 	$title .= $db->f("product_type_name");
-$title .= '<a href="'. $_SERVER['PHP_SELF'] .'?option=com_virtuemart&page=product.product_type_list">['. $VM_LANG->_PHPSHOP_PRODUCT_TYPE_LIST_LBL .']</a>';
+$title .= '<a href="'. $_SERVER['PHP_SELF'] .'?option=com_virtuemart&page=product.product_type_list">['. $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_LIST_LBL') .']</a>';
 
 $q  = "SELECT * FROM #__{vm}_product_type_parameter ";
 $q .= "WHERE product_type_id=$product_type_id ";
@@ -54,11 +54,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL => 'width="25%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME => 'width="20%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="40%"',
-					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="5%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL') => 'width="25%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME') => 'width="20%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION') => 'width="40%"',
+					$VM_LANG->_('PHPSHOP_MODULE_LIST_ORDER') => 'width="5%"',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -83,9 +83,9 @@ while ($db->next_record()) {
 	 //      echo "<a href=\"javascript: void(0);\" onClick=\"return listItemTask('cb$i','orderdown')\">";
 //      echo "Down</a>";	
 	$tmp_cell = "<div align=\"center\">"
-			. $pageNav->orderUpIcon( $i, $i > 0 , "orderup", $VM_LANG->_CMN_ORDER_UP, $page, 'ProductTypeReorderParam')
+			. $pageNav->orderUpIcon( $i, $i > 0 , "orderup", $VM_LANG->_('CMN_ORDER_UP'), $page, 'ProductTypeReorderParam')
 			. "\n&nbsp;" 
-			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), "orderdown", $VM_LANG->_CMN_ORDER_DOWN, $page, 'ProductTypeReorderParam' )
+			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), "orderdown", $VM_LANG->_('CMN_ORDER_DOWN'), $page, 'ProductTypeReorderParam' )
 			. "</div>";
 	$listObj->addCell( $tmp_cell );  
 	

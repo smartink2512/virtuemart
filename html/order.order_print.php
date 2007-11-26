@@ -41,18 +41,18 @@ $order_id = vmRequest::getInt('order_id');
 	  <td valign="top" width="35%"> 
 		<table width="100%" border="0" cellspacing="0" cellpadding="1">
 		  <tr class="sectiontableheader"> 
-			<th colspan="2"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_LBL ?></th>
+			<th colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_LBL') ?></th>
 		  </tr>
 		  <tr> 
-			<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER ?>:</strong></td>
+			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
 			<td><?php printf("%08d", $db->f("order_id"));?></td>
 		  </tr>
 		  <tr> 
-			<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_DATE ?>:</strong></td>
+			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_DATE') ?>:</strong></td>
 			<td><?php echo vmFormatDate( $db->f("cdate")+$mosConfig_offset);?></td>
 		  </tr>
 		  <tr> 
-			<td><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?>:</strong></td>
+			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
 			<td><?php $db->p("order_status") ?></td>
 		  </tr>
 		  <tr>
@@ -60,7 +60,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <td><?php $db->p("ip_address"); ?></td>
 		  </tr>
 		  <tr>
-		  <td><strong><?php echo $VM_LANG->_PHPSHOP_COUPON_COUPON_HEADER ?>:</strong></td>
+		  <td><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_COUPON_HEADER') ?>:</strong></td>
 		  <td><?php if( $db->f("coupon_code") ) $db->p("coupon_code"); else echo '-'; ?></td>
 		  </tr>
 		</table>
@@ -72,16 +72,16 @@ $order_id = vmRequest::getInt('order_id');
 		<?php
 		$tab = new mShopTabs( 0, 1, "myTab");
 		$tab->startPane( "order_change_pane" );
-		$tab->startTab(  $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE, "order_change_page" );
+		$tab->startTab(  $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE'), "order_change_page" );
 		?>
 		<table class="adminlist">
 		 <tr>
-		  <th colspan="3"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_CHANGE ?></th>
+		  <th colspan="3"><?php echo $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE') ?></th>
 		 </tr>
 		 <tr>
-		  <td colspan="3"><?php echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS .": </strong>";
+		  <td colspan="3"><?php echo "<strong>".$VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') .": </strong>";
 			  $ps_order_status->list_order_status($db->f("order_status")); ?>
-				<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_PHPSHOP_UPDATE ?>" />
+				<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_('PHPSHOP_UPDATE') ?>" />
 				<input type="hidden" name="page" value="order.order_print" />
 				<input type="hidden" name="func" value="orderStatusSet" />
 				<input type="hidden" name="option" value="com_virtuemart" />
@@ -90,31 +90,31 @@ $order_id = vmRequest::getInt('order_id');
 		  </td>
 		 </tr>
 		 <tr>
-		  <td valign="top"><?php echo "<strong>".$VM_LANG->_PHPSHOP_COMMENT .": </strong>"; ?>
+		  <td valign="top"><?php echo "<strong>".$VM_LANG->_('PHPSHOP_COMMENT') .": </strong>"; ?>
 		  </td>
 		  <td>
 			<textarea name="order_comment" rows="4" cols="35"></textarea>
 		  </td>
 		  <td>
 			<input type="checkbox" name="notify_customer" id="notify_customer" checked="checked" value="Y" /> 
-				<label for="notify_customer"><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_NOTIFY ?></label>
+				<label for="notify_customer"><?php echo $VM_LANG->_('PHPSHOP_ORDER_LIST_NOTIFY') ?></label>
 			<br/>
 			<input type="checkbox" name="include_comment" id="include_comment" checked="checked" value="Y" /> 
-				<label for="include_comment"><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT ?></label>
+				<label for="include_comment"><?php echo $VM_LANG->_('PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT') ?></label>
 			</form>
 		  </td>
 		 </tr>
 		</table>
 			<?php
 			$tab->endTab();
-			$tab->startTab( $VM_LANG->_PHPSHOP_ORDER_HISTORY, "order_history_page" );
+			$tab->startTab( $VM_LANG->_('PHPSHOP_ORDER_HISTORY'), "order_history_page" );
 			?>
 		<table class="adminlist">
 		 <tr >
-		  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_DATE_ADDED ?></th>
-		  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED ?></th>
-		  <th><?php echo $VM_LANG->_PHPSHOP_ORDER_LIST_STATUS ?></th>
-		  <th><?php echo $VM_LANG->_PHPSHOP_COMMENT ?></th>
+		  <th><?php echo $VM_LANG->_('PHPSHOP_ORDER_HISTORY_DATE_ADDED') ?></th>
+		  <th><?php echo $VM_LANG->_('PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED') ?></th>
+		  <th><?php echo $VM_LANG->_('PHPSHOP_ORDER_LIST_STATUS') ?></th>
+		  <th><?php echo $VM_LANG->_('PHPSHOP_COMMENT') ?></th>
 		 </tr>
 		 <?php 
 		 foreach( $order_events as $order_event ) {
@@ -132,7 +132,7 @@ $order_id = vmRequest::getInt('order_id');
 		</table>
 		<?php
 		$tab->endTab();
-		$tab->startTab( $VM_LANG->_VM_ORDER_EDIT, "order_edit_page" ); 
+		$tab->startTab( $VM_LANG->_('VM_ORDER_EDIT'), "order_edit_page" ); 
 			/**
 			 * This is the Order Edit Addon
 			 * @since 1.1.0
@@ -158,14 +158,14 @@ $order_id = vmRequest::getInt('order_id');
 	  $dbt->next_record();
    ?> 
 	<tr> 
-	  <th width="48%" valign="top"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_BILL_TO_LBL ?></th>
-	  <th width="52%" valign="top"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIP_TO_LBL ?></th>
+	  <th width="48%" valign="top"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_BILL_TO_LBL') ?></th>
+	  <th width="52%" valign="top"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIP_TO_LBL') ?></th>
 	</tr>
 	<tr> 
 	  <td width="48%" valign="top">
 		<table width="100%" border="0" cellspacing="0" cellpadding="1">
 		  <tr> 
-			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?>:</td>
+			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME') ?>:</td>
 			<td width="65%"><?php
 				if ($dbt->f("title")) {
 				  echo $dbt->f("title") . " ";
@@ -178,31 +178,31 @@ $order_id = vmRequest::getInt('order_id');
 			</td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("company"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1 ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_1') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("address_1"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2 ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_2') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("address_2"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CITY ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("city");  ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_STATE ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("state"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?>:</strong></td>
 			<td width="65%"><?php echo $dbt->p("zip"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?>:</strong></td>
 			<td width="65%"><?php 
 		$country = $dbt->f("country");
 		
@@ -213,15 +213,15 @@ $order_id = vmRequest::getInt('order_id');
 	 ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("phone_1"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("fax"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EMAIL ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EMAIL') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("user_email"); ?></td>
 		  </tr>
 		</table>
@@ -233,7 +233,7 @@ $order_id = vmRequest::getInt('order_id');
   ?> 
 		<table width="100%" border="0" cellspacing="0" cellpadding="1">
 		  <tr> 
-			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?>:</td>
+			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME') ?>:</td>
 			<td width="65%"><?php
 				if ($dbt->f("title")) {
 				  echo $dbt->f("title") . " ";
@@ -246,31 +246,31 @@ $order_id = vmRequest::getInt('order_id');
 			?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COMPANY ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("company"); ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_1 ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_1') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("address_1") ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ADDRESS_2 ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_2') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("address_2")  ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CITY ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("city") ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_STATE ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("state") ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ZIP ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("zip") ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_COUNTRY ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?>:</strong></td>
 			<td width="65%"><?php 
 		if( $country != $dbt->f("country")) {
 			$country = $dbt->f("country");
@@ -282,11 +282,11 @@ $order_id = vmRequest::getInt('order_id');
 		 ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PHONE ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("phone_1") ?></td>
 		  </tr>
 		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_FAX ?>:</strong></td>
+			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?>:</strong></td>
 			<td width="65%"><?php $dbt->p("fax") ?></td>
 		  </tr>
 		</table>
@@ -299,13 +299,13 @@ $order_id = vmRequest::getInt('order_id');
 	  <td colspan="2"> 
 		<table  class="adminlist">
 		  <tr > 
-			<th class="title" width="5%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_QUANTITY ?></th>
-			<th class="title" width="32%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_NAME ?></th>
-			<th class="title" width="9%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SKU ?></th>
-			<th class="title" width="10%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS ?></th>
-			<th class="title" width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?></th>
-			<th class="title" width="12%"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?></th>
-			<th class="title" width="19%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?></th>
+			<th class="title" width="5%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_QUANTITY') ?></th>
+			<th class="title" width="32%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME') ?></th>
+			<th class="title" width="9%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SKU') ?></th>
+			<th class="title" width="10%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') ?></th>
+			<th class="title" width="12%"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRICE_NET') ?></th>
+			<th class="title" width="12%"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRICE_GROSS') ?></th>
+			<th class="title" width="19%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL') ?></th>
 		  </tr>
 		  <?php
 		  $dbt = new ps_DB;
@@ -344,9 +344,9 @@ $order_id = vmRequest::getInt('order_id');
 			  echo "<br /><span style=\"font-size: smaller;\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</span>"; 
 			  if( $downloadable ) {
 			  	echo '<br /><br />
-			  			<div style="font-weight:bold;">'.$VM_LANG->_VM_DOWNLOAD_STATS .'</div>';
+			  			<div style="font-weight:bold;">'.$VM_LANG->_('VM_DOWNLOAD_STATS') .'</div>';
 			  	if( empty( $files )) {
-			  		echo '<em>- '.$VM_LANG->_VM_DOWNLOAD_NOTHING_LEFT .' -</em>';
+			  		echo '<em>- '.$VM_LANG->_('VM_DOWNLOAD_NOTHING_LEFT') .' -</em>';
 			  		$enable_download_function = $ps_function->get_function('insertDownloadsForProduct');
 			  		if( $perm->check( $enable_download_function['perms'] ) ) {
 			  			echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">				  		
@@ -356,18 +356,18 @@ $order_id = vmRequest::getInt('order_id');
 			  			<input type="hidden" name="user_id" value="'.$dbt->f('user_id').'" />
 			  			<input type="hidden" name="func" value="insertDownloadsForProduct" />
 			  			<input type="hidden" name="option" value="'.$option.'" />
-			  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_VM_DOWNLOAD_REENABLE.'" />
+			  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_('VM_DOWNLOAD_REENABLE').'" />
 			  			</form>';
 			  		}
 			  	} else {
 			  		foreach( $files as $file ) {
 			  			echo '<em>'
-			  					.'<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$dbt->f('product_id').'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_ADMIN.'">'
+			  					.'<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$dbt->f('product_id').'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.$VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_ADMIN').'">'
 			  					.$file->file_name.'</a></em><br />';
 			  			echo '<ul>';
-			  			echo '<li>'.$VM_LANG->_VM_DOWNLOAD_REMAINING_DOWNLOADS .': '.$file->download_max.'</li>';
+			  			echo '<li>'.$VM_LANG->_('VM_DOWNLOAD_REMAINING_DOWNLOADS') .': '.$file->download_max.'</li>';
 			  			if( $file->end_date > 0 ) {
-			  				echo '<li>'.$VM_LANG->_VM_EXPIRY.': '.vmFormatDate( $file->end_date + $mosConfig_offset ).'</li>';
+			  				echo '<li>'.$VM_LANG->_('VM_EXPIRY').': '.vmFormatDate( $file->end_date + $mosConfig_offset ).'</li>';
 			  			}
 			  			echo '</ul>';
 			  			echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">				  		
@@ -375,7 +375,7 @@ $order_id = vmRequest::getInt('order_id');
 			  			<input type="hidden" name="page" value="'.$page.'" />
 			  			<input type="hidden" name="func" value="mailDownloadId" />
 			  			<input type="hidden" name="option" value="'.$option.'" />
-			  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_VM_DOWNLOAD_RESEND_ID.'" />
+			  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_('VM_DOWNLOAD_RESEND_ID').'" />
 			  			</form>';
 			  		}
 			  		
@@ -386,9 +386,9 @@ $order_id = vmRequest::getInt('order_id');
 			<td width="9%"><?php  $dbt->p("order_item_sku") ?>&nbsp;</td>
 			<td width="10%">
 				<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-				<?php echo "<strong>".$VM_LANG->_PHPSHOP_ORDER_PRINT_PO_STATUS .": </strong>";
+				<?php echo "<strong>".$VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') .": </strong>";
 			 	 $ps_order_status->list_order_status($dbt->f("order_status")); ?>
-				<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_PHPSHOP_UPDATE ?>" />
+				<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_('PHPSHOP_UPDATE') ?>" />
 				<input type="hidden" name="page" value="order.order_print" />
 				<input type="hidden" name="func" value="orderStatusSet" />
 				<input type="hidden" name="option" value="com_virtuemart" />
@@ -413,7 +413,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong> <?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SUBTOTAL ?>: </strong></div></td>
+			<td colspan="3"><div align="right"><strong> <?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
 			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_subtotal"), 5, $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
   <?php
@@ -429,9 +429,9 @@ $order_id = vmRequest::getInt('order_id');
 			<td width="42%">&nbsp;</td>
 			<td colspan="3"><div  align="right"><strong><?php 
 			  if( $db->f("order_discount") > 0)
-				echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+				echo $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 			  else
-				echo $VM_LANG->_PHPSHOP_FEE;
+				echo $VM_LANG->_('PHPSHOP_FEE');
 				?>:</div></strong></td>
 			<td width="19%"><div  align="right"><?php
 				  if ($db->f("order_discount") > 0 )
@@ -446,7 +446,7 @@ $order_id = vmRequest::getInt('order_id');
 		  if( $coupon_discount > 0 || $coupon_discount < 0) {
   ?>
 		  <tr>
-			<td colspan="5"><div align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div>
+			<td colspan="5"><div align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</div>
 			</td> 
 			<td><div align="right"><?php
 			  echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -460,19 +460,19 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </div></strong></td>
+			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?>: </div></strong></td>
 			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </div></strong></td>
+			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?>: </div></strong></td>
 			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_TAX ?>: </div></strong></td>
+			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_TAX') ?>: </div></strong></td>
 			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
   <?php
@@ -484,9 +484,9 @@ $order_id = vmRequest::getInt('order_id');
 			<td width="42%">&nbsp;</td>
 			<td colspan="3"><div align="right"><strong><?php 
 			  if( $db->f("order_discount") > 0)
-				echo $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+				echo $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 			  else
-				echo $VM_LANG->_PHPSHOP_FEE;
+				echo $VM_LANG->_('PHPSHOP_FEE');
 				?>:</strong></div></td>
 			<td width="19%"><div align="right"><?php
 				  if ($db->f("order_discount") > 0 )
@@ -503,7 +503,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:</div></strong>
+			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</div></strong>
 			</td> 
 			<td><div align="right"><?php
 			  echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -516,7 +516,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr>
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL ?>:</div> </strong></td>
+			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_CART_TOTAL') ?>:</div> </strong></td>
 			<td width="19%"><div align="right"><strong><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></strong>
 			  </td>
 		  </tr>
@@ -540,23 +540,23 @@ $order_id = vmRequest::getInt('order_id');
 			  <tr>
 				<th ><?php 
 						$details = explode( "|", $db->f("ship_method_id"));
-						echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_LBL ?>
+						echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_LBL') ?>
 				</th>
 			  </tr>
 			  <tr> 
 				<td width="50%">
-				  <strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL ?>: </strong>
+				  <strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>: </strong>
 					<?php  echo $details[1]; ?>&nbsp;</td>
   
 			  <tr>
 				<td width="50%">
-				  <strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL ?>: </strong>
+				  <strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL') ?>: </strong>
 				  <?php echo $details[2]; ?></td>
 				
 			  </tr>
 			  <tr>
 				<td width="50%">
-				  <strong><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL ?>: </strong>
+				  <strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>: </strong>
 				<?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($details[3], '', $db->f('order_currency')); ?>
 				</td>
 			  </tr>
@@ -569,7 +569,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <td valign="top">
 			<table class="adminlist">
 			  <tr>
-				<th><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE ?></th>
+				<th><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
 			  </tr>
 			  <tr>
 			  <td valign="top" width="50%" rowspan="4"><?php
@@ -603,10 +603,10 @@ $order_id = vmRequest::getInt('order_id');
 		  <td valign="top">
 			<table class="adminlist">
 			  <tr class="sectiontableheader"> 
-				<th width="13%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LBL ?></th>
-				<th width="40%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NAME ?></th>
-				<th width="30%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER; ?></th>
-				<th width="17%"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_EXPIRE_DATE ?></th>
+				<th width="13%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYMENT_LBL') ?></th>
+				<th width="40%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ACCOUNT_NAME') ?></th>
+				<th width="30%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER'); ?></th>
+				<th width="17%"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EXPIRE_DATE') ?></th>
 			  </tr>
 			  <tr> 
 				<td width="13%"><?php $dbpm->p("payment_method_name");?> </td>
@@ -621,7 +621,7 @@ $order_id = vmRequest::getInt('order_id');
 			  </tr>
 			  <tr> 
 			  <tr class="sectiontableheader"> 
-				<th colspan="4"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL ?></th>
+				<th colspan="4"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL') ?></th>
 			  </tr>
 			  <tr> 
 				<td colspan="4"><?php if($dbpm->f("order_payment_log")) echo $dbpm->f("order_payment_log"); else echo "./."; ?></td>

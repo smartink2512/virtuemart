@@ -198,7 +198,7 @@ class usps {
 					$error = curl_error( $CR );
 					if( !empty( $error )) {
 						$vmLogger->err( curl_error( $CR ) );
-						$html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_INTERNAL_ERROR." USPS.com</span>";
+						$html = "<br/><span class=\"message\">".$VM_LANG->_('PHPSHOP_INTERNAL_ERROR')." USPS.com</span>";
 						$error = true;
 					}
 					else {
@@ -209,16 +209,16 @@ class usps {
 						/* Let's check wether the response from USPS is Success or Failure ! */
 						if( strstr( $xmlResult, "Error" ) ) {
 							$error = true;
-							$html = "<span class=\"message\">".$VM_LANG->_PHPSHOP_USPS_RESPONSE_ERROR."</span><br/>";
+							$html = "<span class=\"message\">".$VM_LANG->_('PHPSHOP_USPS_RESPONSE_ERROR')."</span><br/>";
 							$error_code = $xmlDoc->getElementsByTagName( "Number" );
 							$error_code = $error_code->item(0);
 							$error_code = $error_code->getText();
-							$html .= $VM_LANG->_PHPSHOP_ERROR_CODE.": ".$error_code."<br/>";
+							$html .= $VM_LANG->_('PHPSHOP_ERROR_CODE').": ".$error_code."<br/>";
 
 							$error_desc = $xmlDoc->getElementsByTagName( "Description" );
 							$error_desc = $error_desc->item(0);
 							$error_desc = $error_desc->getText();
-							$html .= $VM_LANG->_PHPSHOP_ERROR_DESC.": ".$error_desc."<br/>";
+							$html .= $VM_LANG->_('PHPSHOP_ERROR_DESC').": ".$error_desc."<br/>";
 
 						}
 					}
@@ -229,7 +229,7 @@ class usps {
 					$fp = fsockopen($protocol."://".$host, $errno, $errstr, $timeout = 60);
 					if( !$fp ) {
 						$error = true;
-						$html = $VM_LANG->_PHPSHOP_INTERNAL_ERROR.": $errstr ($errno)";
+						$html = $VM_LANG->_('PHPSHOP_INTERNAL_ERROR').": $errstr ($errno)";
 					}
 					else {
 						//send the server request
@@ -367,7 +367,7 @@ class usps {
 					$error = curl_error( $CR );
 					if( !empty( $error )) {
 						$vmLogger->err( curl_error( $CR ) );
-						$html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_INTERNAL_ERROR." USPS.com</span>";
+						$html = "<br/><span class=\"message\">".$VM_LANG->_('PHPSHOP_INTERNAL_ERROR')." USPS.com</span>";
 						$error = true;
 					}
 					else {
@@ -379,16 +379,16 @@ class usps {
 						/* Let's check wether the response from USPS is Success or Failure ! */
 						if( strstr( $xmlResult, "Error" ) ) {
 							$error = true;
-							$html = "<span class=\"message\">".$VM_LANG->_PHPSHOP_USPS_RESPONSE_ERROR."</span><br/>";
+							$html = "<span class=\"message\">".$VM_LANG->_('PHPSHOP_USPS_RESPONSE_ERROR')."</span><br/>";
 							$error_code = $xmlDoc->getElementsByTagName( "Number" );
 							$error_code = $error_code->item(0);
 							$error_code = $error_code->getText();
-							$html .= $VM_LANG->_PHPSHOP_ERROR_CODE.": ".$error_code."<br/>";
+							$html .= $VM_LANG->_('PHPSHOP_ERROR_CODE').": ".$error_code."<br/>";
 
 							$error_desc = $xmlDoc->getElementsByTagName( "Description" );
 							$error_desc = $error_desc->item(0);
 							$error_desc = $error_desc->getText();
-							$html .= $VM_LANG->_PHPSHOP_ERROR_DESC.": ".$error_desc."<br/>";
+							$html .= $VM_LANG->_('PHPSHOP_ERROR_DESC').": ".$error_desc."<br/>";
 
 						}
 
@@ -401,7 +401,7 @@ class usps {
 					$fp = fsockopen($protocol."://".$host, $errno, $errstr, $timeout = 60);
 					if( !$fp ) {
 						$error = true;
-						$html = $VM_LANG->_PHPSHOP_INTERNAL_ERROR.": $errstr ($errno)";
+						$html = $VM_LANG->_('PHPSHOP_INTERNAL_ERROR').": $errstr ($errno)";
 					}
 					else {
 						//send the server request
@@ -614,43 +614,43 @@ class usps {
     ?>
 <table>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME') ?></strong></td>
 		<td><input type="text" name="USPS_USERNAME" class="inputbox"
 			value="<?php echo USPS_USERNAME ?>" /></td>
 		<td>
-          <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP) ?>
+          <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP')) ?>
         </td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD ?></strong>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD') ?></strong>
 		</td>
 		<td><input type="text" name="USPS_PASSWORD" class="inputbox"
 			value="<?php echo USPS_PASSWORD ?>" /></td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP')) ?>
         </td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER ?></strong>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER') ?></strong>
 		</td>
 		<td><input type="text" name="USPS_SERVER" class="inputbox"
 			value="<?php echo USPS_SERVER ?>" /></td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP')) ?>
         </td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH ?></strong>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH') ?></strong>
 		</td>
 		<td><input type="text" name="USPS_PATH" class="inputbox"
 			value="<?php echo USPS_PATH ?>" /></td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP')) ?>
         </td>
 	</tr>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE ?></strong>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE') ?></strong>
 		</td>
 		<td><select name="USPS_PACKAGESIZE">
 			<option value="REGULAR"
@@ -661,17 +661,17 @@ class usps {
 				<?php if (USPS_PACKAGESIZE == 'OVERSIZE') echo "selected=\"selected\""; ?>>Oversize</option>
 		</select></td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP')) ?>
         </td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?></strong></td>
 		<td>
 		  <?php
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("USPS_TAX_CLASS", USPS_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?>
+		<td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_TAX_CLASS_TOOLTIP')) ?>
 		
 		
 		
@@ -686,33 +686,33 @@ class usps {
 		</td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_USPS_HANDLING_FEE ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_USPS_HANDLING_FEE') ?></strong></td>
 		<td><input class="inputbox" TYPE="text" name="USPS_HANDLINGFEE"
 			value="<?php echo USPS_HANDLINGFEE ?>" /></td>
-		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_HANDLING_FEE_TOOLTIP) ?></td>
+		<td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_USPS_HANDLING_FEE_TOOLTIP')) ?></td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_USPS_PADDING ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_USPS_PADDING') ?></strong></td>
 		<td><input class="inputbox" TYPE="text" name="USPS_PADDING"
 			value="<?php echo USPS_PADDING ?>" /></td>
-		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_USPS_PADDING_TOOLTIP) ?></td>
+		<td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_USPS_PADDING_TOOLTIP')) ?></td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE ?></strong>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE') ?></strong>
 		</td>
 		<td><input type="text" name="USPS_INTLLBRATE" class="inputbox"
 			value="<?php echo USPS_INTLLBRATE ?>" /></td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP')) ?>
         </td>
 	</tr>
 	<tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE ?></strong>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE') ?></strong>
 		</td>
 		<td><input type="text" name="USPS_INTLHANDLINGFEE" class="inputbox"
 			value="<?php echo USPS_INTLHANDLINGFEE ?>" /></td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP')) ?>
         </td>
 	</tr>
 	<tr>

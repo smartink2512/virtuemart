@@ -37,7 +37,7 @@ $pageNav = new vmPageNav( $total, $limitstart, $limit  );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_VM_MANAGE_USER_FIELDS, $mosConfig_live_site."/administrator/images/addusers.png", "admin", "user_field_list");
+$listObj->writeSearchHeader($VM_LANG->_('VM_MANAGE_USER_FIELDS'), $mosConfig_live_site."/administrator/images/addusers.png", "admin", "user_field_list");
 
 // start the list table
 $listObj->startTable();
@@ -45,16 +45,16 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$pageNav->limit.")\" />" => "",
-					$VM_LANG->_VM_FIELDMANAGER_NAME => "width=\"20%\"",
-					$VM_LANG->_VM_FIELDMANAGER_TITLE => "width=\"20%\"",
-					$VM_LANG->_VM_FIELDMANAGER_TYPE => "width=\"10%\"",
-					$VM_LANG->_VM_FIELDMANAGER_REQUIRED => "width=\"5%\"",
-					$VM_LANG->_VM_FIELDMANAGER_PUBLISHED => "width=\"5%\"",
-					$VM_LANG->_VM_FIELDMANAGER_SHOW_ON_REGISTRATION => "width=\"5%\"",
-					$VM_LANG->_VM_FIELDMANAGER_SHOW_ON_ACCOUNT => "width=\"5%\"",
-					$VM_LANG->_VM_FIELDMANAGER_REORDER => "width=\"5%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_NAME') => "width=\"20%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_TITLE') => "width=\"20%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_TYPE') => "width=\"10%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_REQUIRED') => "width=\"5%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_PUBLISHED') => "width=\"5%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_REGISTRATION') => "width=\"5%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_ACCOUNT') => "width=\"5%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_REORDER') => "width=\"5%\"",
 					vmCommonHTML::getSaveOrderButton( min($total - $pageNav->limitstart, $pageNav->limit ), 'changeordering' ) => 'width="8%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -130,9 +130,9 @@ while( $db->next_record() ) {
 	$listObj->addCell( $tmp_cell );  
 	
 	$tmp_cell = "<div align=\"center\">"
-			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_CMN_ORDER_UP, $page, "changeordering" )
+			. $pageNav->orderUpIcon( $i, $i > 0, "orderup", $VM_LANG->_('CMN_ORDER_UP'), $page, "changeordering" )
 			. "\n&nbsp;" 
-			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', $VM_LANG->_CMN_ORDER_DOWN, $page, "changeordering" )
+			. $pageNav->orderDownIcon( $i, $db->num_rows(), $i-1 <= $db->num_rows(), 'orderdown', $VM_LANG->_('CMN_ORDER_DOWN'), $page, "changeordering" )
 			. "</div>";
 	$listObj->addCell( $tmp_cell );  
 	

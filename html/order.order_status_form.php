@@ -21,7 +21,7 @@ $order_status_id = vmGet( $_REQUEST, 'order_status_id' );
 $option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_ORDER_STATUS_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -39,25 +39,25 @@ if (!empty($order_status_id)) {
 <table class="adminform">
 
     <tr> 
-      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_CODE ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ORDER_STATUS_FORM_CODE') ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="order_status_code" value="<?php $db->sp('order_status_code') ?>" size="4" maxlength="1" <?php echo $readonly ?> />
       </td>
     </tr>
     <tr> 
-      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_NAME ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ORDER_STATUS_FORM_NAME') ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="order_status_name" value="<?php $db->sp("order_status_name") ?>" size="25" />
       </td>
     </tr>
     <tr> 
-      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_FORM_DESCRIPTION ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_MANUFACTURER_FORM_DESCRIPTION') ?>:</td>
       <td> 
        	<?php editorArea( 'order_status_description', $db->sf("order_status_description"), 'order_status_description', 500, 250, 75, 25 ); ?>
       </td>
     </tr>
     <tr> 
-      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER') ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="list_order" value="<?php $db->sp("list_order") ?>" size="3" maxlength="3" />
       </td>

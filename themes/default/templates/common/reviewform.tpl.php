@@ -12,15 +12,15 @@ if (!$alreadycommented) {
 	       if (form.user_rating[i].checked)
 	          ausgewaehlt = true;
 	    if (!ausgewaehlt)  {
-	      alert('<?php echo html_entity_decode($VM_LANG->_PHPSHOP_REVIEW_ERR_RATE)  ?>');
+	      alert('<?php echo $VM_LANG->_('PHPSHOP_REVIEW_ERR_RATE',false)  ?>');
 	      return false;
 	    }
 	    else if (form.comment.value.length < <?php echo VM_REVIEWS_MINIMUM_COMMENT_LENGTH ?>) {
-	      alert('<?php echo html_entity_decode(sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1,VM_REVIEWS_MINIMUM_COMMENT_LENGTH ))  ?>');
+	      alert('<?php echo sprintf( $VM_LANG->_('PHPSHOP_REVIEW_ERR_COMMENT1',false),VM_REVIEWS_MINIMUM_COMMENT_LENGTH )  ?>');
 	      return false;
 	    }
 	    else if (form.comment.value.length > <?php echo VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ?>) {
-	      alert('<?php echo html_entity_decode(sprintf( $VM_LANG->_PHPSHOP_REVIEW_ERR_COMMENT1, VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ))  ?>');
+	      alert('<?php echo sprintf( $VM_LANG->_('PHPSHOP_REVIEW_ERR_COMMENT1',false), VM_REVIEWS_MAXIMUM_COMMENT_LENGTH )  ?>');
 	      return false;
 	    }
 	    else {
@@ -34,10 +34,10 @@ if (!$alreadycommented) {
 	//]]>
 	</script>
 
-    <h4><?php echo $VM_LANG->_PHPSHOP_WRITE_REVIEW  ?></h4>
-    <br /><?php echo $VM_LANG->_PHPSHOP_REVIEW_RATE  ?>
+    <h4><?php echo $VM_LANG->_('PHPSHOP_WRITE_REVIEW')  ?></h4>
+    <br /><?php echo $VM_LANG->_('PHPSHOP_REVIEW_RATE')  ?>
     <form method="post" action="<?php echo URL  ?>index.php" name="reviewForm" id="reviewform">
-    <table cellpadding="5" summary="<?php echo $VM_LANG->_PHPSHOP_REVIEW_RATE ?>">
+    <table cellpadding="5" summary="<?php echo $VM_LANG->_('PHPSHOP_REVIEW_RATE') ?>">
       <tr>
         <th id="five_stars">
         	<label for="user_rating5"><img alt="5 stars" src="<?php echo VM_THEMEURL ?>images/stars/5.gif" border="0" /></label>
@@ -82,9 +82,9 @@ if (!$alreadycommented) {
     <br /><br /><?php echo $review_comment  ?><br />
     <textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
     <br />
-    <input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo $VM_LANG->_PHPSHOP_REVIEW_SUBMIT  ?>" value="<?php echo $VM_LANG->_PHPSHOP_REVIEW_SUBMIT  ?>" />
+    <input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo $VM_LANG->_('PHPSHOP_REVIEW_SUBMIT')  ?>" value="<?php echo $VM_LANG->_('PHPSHOP_REVIEW_SUBMIT')  ?>" />
     
-    <div align="right"><?php echo $VM_LANG->_PHPSHOP_REVIEW_COUNT  ?>
+    <div align="right"><?php echo $VM_LANG->_('PHPSHOP_REVIEW_COUNT')  ?>
     <input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
     </div>
     
@@ -98,7 +98,7 @@ if (!$alreadycommented) {
 <?php
 }
 else {
-	echo $VM_LANG->_PHPSHOP_REVIEW_ALREADYDONE;
+	echo $VM_LANG->_('PHPSHOP_REVIEW_ALREADYDONE');
 }
 
 ?>

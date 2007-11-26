@@ -101,24 +101,24 @@ $listObj = new listFactory( $pageNav );
 // print out the search field and a list heading
 $listObj->writeSearchHeader($VM_LANG->_('_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "specialprod");
 
-echo '<strong>'.$VM_LANG->_PHPSHOP_FILTER.':</strong>&nbsp;&nbsp;';
-if($filter != "all") echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=all").'" title="'.$VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS.'">';
-echo $VM_LANG->_PHPSHOP_LIST_ALL_PRODUCTS;
+echo '<strong>'.$VM_LANG->_('PHPSHOP_FILTER').':</strong>&nbsp;&nbsp;';
+if($filter != "all") echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=all").'" title="'.$VM_LANG->_('PHPSHOP_LIST_ALL_PRODUCTS').'">';
+echo $VM_LANG->_('PHPSHOP_LIST_ALL_PRODUCTS');
 if ($filter != 'all') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.$VM_LANG->_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED.'">';
-echo $VM_LANG->_PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED;
+if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.$VM_LANG->_('PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED').'">';
+echo $VM_LANG->_('PHPSHOP_SHOW_FEATURED_AND_DISCOUNTED');
 if ($filter != 'featured_and_discounted') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.$VM_LANG->_PHPSHOP_SHOW_FEATURED.'">';
-echo $VM_LANG->_PHPSHOP_SHOW_FEATURED;
+if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.$VM_LANG->_('PHPSHOP_SHOW_FEATURED').'">';
+echo $VM_LANG->_('PHPSHOP_SHOW_FEATURED');
 if ($filter != 'featured') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.$VM_LANG->_PHPSHOP_SHOW_DISCOUNTED.'">';
-echo $VM_LANG->_PHPSHOP_SHOW_DISCOUNTED;
+if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.$VM_LANG->_('PHPSHOP_SHOW_DISCOUNTED').'">';
+echo $VM_LANG->_('PHPSHOP_SHOW_DISCOUNTED');
 if ($filter != 'discounted') echo '</a>';
 
 echo '<br /><br />';
@@ -128,12 +128,12 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => '',
-					$VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE => '',
-					$VM_LANG->_PHPSHOP_FEATURED => '',
-					$VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT => '',
-					$VM_LANG->_PHPSHOP_FILEMANAGER_PUBLISHED => ''
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_NAME') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_SKU') => '',
+					$VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_PRICE') => '',
+					$VM_LANG->_('PHPSHOP_FEATURED') => '',
+					$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT') => '',
+					$VM_LANG->_('PHPSHOP_FILEMANAGER_PUBLISHED') => ''
 				);
 $listObj->writeTableHeader( $columns );
 

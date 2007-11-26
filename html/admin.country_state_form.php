@@ -39,19 +39,19 @@ $formObj->startForm();
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_STATE_LIST_NAME ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_STATE_LIST_NAME') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="state_name" value="<?php $db->sp("state_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_STATE_LIST_2_CODE ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_STATE_LIST_2_CODE') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="state_2_code" value="<?php $db->sp("state_2_code") ?>" />
       </td>
     </tr>
         <tr> 
-      <td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_STATE_LIST_3_CODE ?>:</td>
+      <td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_STATE_LIST_3_CODE') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="state_3_code" value="<?php $db->sp("state_3_code") ?>" />
       </td>

@@ -360,14 +360,14 @@ class ps_shopper {
 			} else {
 				$redirect_to_page = HOMEPAGE;
 			}
-			vmRedirect( $sess->url( 'index.php?page='.$redirect_to_page, false, false ), $VM_LANG->_REG_COMPLETE );
+			vmRedirect( $sess->url( 'index.php?page='.$redirect_to_page, false, false ), $VM_LANG->_('REG_COMPLETE') );
 		}
 		elseif( $my->id ) {
 			vmRedirect( $sess->url( 'index.php?page=checkout.index', false, false ) );
 		}
 		else {
 			$GLOBALS['page'] = 'shop.cart';
-			$msg = strip_tags( $VM_LANG->_REG_COMPLETE_ACTIVATE );
+			$msg = strip_tags( $VM_LANG->_('REG_COMPLETE_ACTIVATE') );
 			$vmLogger->info( $msg );
 		}
 
@@ -673,12 +673,12 @@ class ps_shopper {
 		global $mosConfig_sitename, $mosConfig_live_site, $mosConfig_useractivation;
 		global $mosConfig_mailfrom, $mosConfig_fromname;
 		
-		$subject 	= sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
+		$subject 	= sprintf ($VM_LANG->_('SEND_SUB',false), $name, $mosConfig_sitename);
 		$subject 	= vmHtmlEntityDecode($subject, ENT_QUOTES);
 		if ($mosConfig_useractivation=="1"){
-			$message = sprintf ($VM_LANG->_USEND_MSG_ACTIVATE, $name, $mosConfig_sitename, $activation_link, $mosConfig_live_site, $username, $pwd);
+			$message = sprintf ($VM_LANG->_('USEND_MSG_ACTIVATE',false), $name, $mosConfig_sitename, $activation_link, $mosConfig_live_site, $username, $pwd);
 		} else {
-			$message = sprintf ($VM_LANG->_PHPSHOP_USER_SEND_REGISTRATION_DETAILS, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
+			$message = sprintf ($VM_LANG->_('PHPSHOP_USER_SEND_REGISTRATION_DETAILS',false), $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
 		}
 
 		$message = vmHtmlEntityDecode($message, ENT_QUOTES);
@@ -703,8 +703,8 @@ class ps_shopper {
 		}
 
 		// Send notification to all administrators
-		$subject2 = sprintf ($VM_LANG->_SEND_SUB, $name, $mosConfig_sitename);
-		$message2 = sprintf ($VM_LANG->_ASEND_MSG, $adminName2, $mosConfig_sitename, $name, $email, $username);
+		$subject2 = sprintf ($VM_LANG->_('SEND_SUB',false), $name, $mosConfig_sitename);
+		$message2 = sprintf ($VM_LANG->_('ASEND_MSG',false), $adminName2, $mosConfig_sitename, $name, $email, $username);
 		$subject2 = vmHtmlEntityDecode($subject2, ENT_QUOTES);
 		$message2 = vmHtmlEntityDecode($message2, ENT_QUOTES);
 

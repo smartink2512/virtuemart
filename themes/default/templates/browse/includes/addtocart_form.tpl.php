@@ -1,9 +1,9 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 
-$button_lbl = $VM_LANG->_PHPSHOP_CART_ADD_TO;
+$button_lbl = $VM_LANG->_('PHPSHOP_CART_ADD_TO');
 $button_cls = 'addtocart_button';
 if( CHECK_STOCK == '1' && !$product_in_stock ) {
-	$button_lbl = $VM_LANG->_VM_CART_NOTIFY;
+	$button_lbl = $VM_LANG->_('VM_CART_NOTIFY');
 	$button_cls = 'notify_button';
 }
 ?>

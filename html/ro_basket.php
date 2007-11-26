@@ -30,7 +30,7 @@ global $weight_total, $total, $tax_total, $order_tax_details, $discount_factor;
 
 /* make sure this is the checkout screen */
 if ($cart["idx"] == 0) {
-	echo $VM_LANG->_PHPSHOP_EMPTY_CART;
+	echo $VM_LANG->_('PHPSHOP_EMPTY_CART');
 	$checkout = False;
 }
 else {
@@ -113,11 +113,11 @@ else {
 		$product_rows[$i]['subtotal'] = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($subtotal);
 		if (!empty($my_taxrate) && MULTIPLE_TAXRATES_ENABLE=='1') {
 			if( $auth["show_price_including_tax"] == 1 ) {
-				eval( "\$message = \"".$VM_LANG->_PHPSHOP_INCLUDING_TAX."\";" );
+				eval( "\$message = \"".$VM_LANG->_('PHPSHOP_INCLUDING_TAX')."\";" );
 				$product_rows[$i]['subtotal'] .= "&nbsp;".$message;
 			}
 			else {
-				$product_rows[$i]['subtotal'] .= "&nbsp;(+ $tax% ".$VM_LANG->_PHPSHOP_CART_TAX.")";
+				$product_rows[$i]['subtotal'] .= "&nbsp;(+ $tax% ".$VM_LANG->_('PHPSHOP_CART_TAX').")";
 			}
 		}
 
@@ -128,7 +128,7 @@ else {
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
         <input type=\"hidden\" name=\"Itemid\" value=\"". $sess->getShopItemid() ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
-        <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_PHPSHOP_CART_UPDATE ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  value=\"". $VM_LANG->_PHPSHOP_UPDATE ."\" />
+        <input type=\"image\" name=\"update\" title=\"". $VM_LANG->_('PHPSHOP_CART_UPDATE') ."\" src=\"". IMAGEURL ."ps_image/edit_f2.gif\" border=\"0\"  value=\"". $VM_LANG->_('PHPSHOP_UPDATE') ."\" />
       </form>";
 		$product_rows[$i]['delete_form'] = "<form action=\"$action_url\" method=\"post\" name=\"delete\" />
         <input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />
@@ -137,7 +137,7 @@ else {
         <input type=\"hidden\" name=\"func\" value=\"cartDelete\" />
         <input type=\"hidden\" name=\"product_id\" value=\"". $_SESSION['cart'][$i]["product_id"] ."\" />
         <input type=\"hidden\" name=\"description\" value=\"". $cart[$i]["description"]."\" />
-      <input type=\"image\" name=\"delete\" title=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" src=\"". IMAGEURL ."ps_image/delete_f2.gif\" border=\"0\" value=\"". $VM_LANG->_PHPSHOP_CART_DELETE ."\" />
+      <input type=\"image\" name=\"delete\" title=\"". $VM_LANG->_('PHPSHOP_CART_DELETE') ."\" src=\"". IMAGEURL ."ps_image/delete_f2.gif\" border=\"0\" value=\"". $VM_LANG->_('PHPSHOP_CART_DELETE') ."\" />
       </form>";
 	} // End of for loop through the Cart
 
@@ -150,7 +150,7 @@ else {
 
 		/* make sure they arent trying to run it twice */
 		if (@$_SESSION['coupon_redeemed'] == true) {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_COUPON_ALREADY_REDEEMED );
+			$vmLogger->warning( $VM_LANG->_('PHPSHOP_COUPON_ALREADY_REDEEMED',false) );
 		}
 		else {
 			require_once( CLASSPATH . "ps_coupon.php" );
@@ -165,10 +165,10 @@ else {
 		if( $payment_discount != 0.00 ) {
 			$payment_discount_before = true;
 			if( $payment_discount > 0.00 ) {
-				$discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+				$discount_word = $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 			}
 			else {
-				$discount_word = $VM_LANG->_PHPSHOP_FEE;
+				$discount_word = $VM_LANG->_('PHPSHOP_FEE');
 			}
 
 			$total -= $payment_discount;
@@ -227,10 +227,10 @@ else {
 		if( $payment_discount != 0.00 ) {
 			$payment_discount_after = true;
 			if( $payment_discount > 0.00 ) {
-				$discount_word = $VM_LANG->_PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT;
+				$discount_word = $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 			}
 			else {
-				$discount_word = $VM_LANG->_PHPSHOP_FEE;
+				$discount_word = $VM_LANG->_('PHPSHOP_FEE');
 			}
 			$total -= $payment_discount;
 			$payment_discount_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($payment_discount-($payment_discount*2));

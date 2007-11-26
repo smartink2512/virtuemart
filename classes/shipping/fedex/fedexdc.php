@@ -430,7 +430,7 @@ class FedExDC extends FedExTags{
 		$fp = fsockopen(FEDEX_URI, $port, $errno, $errstr, FEDEX_REQUEST_TIMEOUT);
 		if( !$fp ) {
 			$error = true;
-			$html = $VM_LANG->_PHPSHOP_INTERNAL_ERROR.": $errstr ($errno)";
+			$html = $VM_LANG->_('PHPSHOP_INTERNAL_ERROR').": $errstr ($errno)";
 			return false;
 		}
 		else {

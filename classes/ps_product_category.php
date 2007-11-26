@@ -710,9 +710,9 @@ class ps_product_category extends vmAbstractObject {
 			echo "\">";
 			echo $db->f("category_name") . "</a></td>\n";
 			echo "<td>&nbsp;&nbsp;" . $db->f("category_description");
-			echo "</td>\n<td>".$product_count ." ". $VM_LANG->_PHPSHOP_PRODUCTS_LBL."&nbsp;<a href=\"";
+			echo "</td>\n<td>".$product_count ." ". $VM_LANG->_('PHPSHOP_PRODUCTS_LBL')."&nbsp;<a href=\"";
 			echo $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $db->f("category_child_id")."&option=com_virtuemart";
-			echo "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>\n</td>\n";
+			echo "\">[ ".$VM_LANG->_('PHPSHOP_SHOW')." ]</a>\n</td>\n";
 			//echo "<td>". $db->f("list_order")."</td>";
 			echo "<td>";
 			if ($db->f("category_publish")=='N') {
@@ -726,7 +726,7 @@ class ps_product_category extends vmAbstractObject {
 			echo "</div></td>\n";
 			echo "<td width=\"5%\">";
 			echo "<a class=\"toolbar\" href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=".$page ."&func= productCategoryDelete&category_id=". $db->f("category_id") ."\"";
-			echo " onclick=\"return confirm('". $VM_LANG->_PHPSHOP_DELETE_MSG ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('Delete$ibg','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+			echo " onclick=\"return confirm('". $VM_LANG->_('PHPSHOP_DELETE_MSG') ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('Delete$ibg','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
 			echo "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$ibg\" align=\"middle\" border=\"0\" /></a></td>\n";
 			$this->traverse_tree_down($class, $db->f("category_child_id"), $level);
 		}
@@ -821,16 +821,16 @@ class ps_product_category extends vmAbstractObject {
 			$db->setQuery($q);   $db->query();
 			$db->next_record();
 			if (!$db->f("category_id")) {
-				echo "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
+				echo "<option value=\"0\">".$VM_LANG->_('PHPSHOP_SELECT')."</option>\n";
 			}
 			$this->list_tree($db->f("category_id"));
 		}
 		elseif ($category_id) {
-			echo "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
+			echo "<option value=\"0\">".$VM_LANG->_('PHPSHOP_SELECT')."</option>\n";
 			$this->list_tree($category_id);
 		}
 		else {
-			echo "<option value=\"0\">".$VM_LANG->_PHPSHOP_SELECT."</option>\n";
+			echo "<option value=\"0\">".$VM_LANG->_('PHPSHOP_SELECT')."</option>\n";
 			$this->list_tree();
 		}
 

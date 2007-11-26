@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_ZONE_MOD );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_ZONE_MOD') );
 //Then Start the form
 $formObj->startForm();
 
@@ -36,7 +36,7 @@ if (!empty($zone_id)) {
 <table class="adminform">
 	<tr>
 		<td valign="top">
-			<div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_NAME_LBL;?>:&nbsp;</strong></div>
+			<div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ZONE_FORM_NAME_LBL');?>:&nbsp;</strong></div>
 		</td>
 		<td valign="top">
 		  <input type="text" name="zone_name" size="25" value="<?php echo $db->sp("zone_name");?>" />
@@ -44,7 +44,7 @@ if (!empty($zone_id)) {
 	</tr>
 	<tr>
 		<td valign="top">
-			<div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_DESC_LBL;?>:&nbsp;</strong></div>
+			<div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ZONE_FORM_DESC_LBL');?>:&nbsp;</strong></div>
 		</td>
 		<td valign="top">
 		  <textarea name="zone_description" rows="7" cols="35"><?php echo $db->sp("zone_description");?></textarea>
@@ -52,7 +52,7 @@ if (!empty($zone_id)) {
 	</tr>
 	<tr>
 	  <td valign="top">
-		  <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_COST_PER_LBL;?>:&nbsp;</strong></div>
+		  <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ZONE_FORM_COST_PER_LBL');?>:&nbsp;</strong></div>
 	  </td>
 	  <td valign="top">
 		<input type="text" name="zone_cost" size="5" value="<?php echo $db->sp("zone_cost");?>" />
@@ -60,19 +60,19 @@ if (!empty($zone_id)) {
 	</tr>
 	<tr>
 	  <td valign="top">
-		  <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_ZONE_FORM_COST_LIMIT_LBL;?>:&nbsp;</strong></div>
+		  <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ZONE_FORM_COST_LIMIT_LBL');?>:&nbsp;</strong></div>
 	  </td>
 	  <td valign="top">
 		<input type="text" name="zone_limit" size="5" value="<?php echo $db->sp("zone_limit");?>" />
 	  </td>
 	</tr>
 	<tr>
-	  <td><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></div></td>
+	  <td><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?></strong></div></td>
 	  <td>
 		<?php
 		require_once(CLASSPATH.'ps_tax.php');
 		ps_tax::list_tax_value("zone_tax_rate", $db->sf("zone_tax_rate")) ;
-		echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?>
+		echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_TAX_CLASS_TOOLTIP')) ?>
 	  </td>
 	</tr>	
 	<tr>

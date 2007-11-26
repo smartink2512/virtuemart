@@ -24,18 +24,18 @@ include_once(CLASSPATH.'ps_communication.php');
 $vm_mainframe->addStyleSheet( 'templates/'. $mainframe->getTemplate() );
 
 if( empty( $_POST['submit'] ) || !$ok ) {
-	$mainframe->setPageTitle( $VM_LANG->_VM_RECOMMEND_FORM_LBL );
-	echo '<h3>'.$VM_LANG->_VM_RECOMMEND_FORM_LBL.'</h3>';
+	$mainframe->setPageTitle( $VM_LANG->_('VM_RECOMMEND_FORM_LBL') );
+	echo '<h3>'.$VM_LANG->_('VM_RECOMMEND_FORM_LBL').'</h3>';
 	
 	ps_communication::showRecommendForm($product_id);
 }
 else {
-	$mainframe->setPageTitle( $VM_LANG->_VM_RECOMMEND_FORM_LBL );
-	echo '<span class="contentheading">'. $VM_LANG->_VM_RECOMMEND_DONE.' '. $_POST['recipient_mail'].'</span> <br />
+	$mainframe->setPageTitle( $VM_LANG->_('VM_RECOMMEND_FORM_LBL') );
+	echo '<span class="contentheading">'. $VM_LANG->_('VM_RECOMMEND_DONE').' '. $_POST['recipient_mail'].'</span> <br />
 		<br />
 		<br />
 		<a href="javascript:window.close();">
-		<span class="small">'. $VM_LANG->_PROMPT_CLOSE .'</span>
+		<span class="small">'. $VM_LANG->_('PROMPT_CLOSE') .'</span>
 		</a>';
 	
 }

@@ -1,7 +1,7 @@
 <?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
 
 <!-- List of recent products -->
-<h3><?php echo $VM_LANG->_VM_RECENT_PRODUCTS ?></h3>
+<h3><?php echo $VM_LANG->_('VM_RECENT_PRODUCTS') ?></h3>
 
 <?php 
 foreach( $recent_products as $recent ) { // Loop through all recent products
@@ -24,7 +24,7 @@ foreach( $recent_products as $recent ) { // Loop through all recent products
 	<div class="vmRecentDetail">
 	<a href="<?php echo $recent["product_url"]; ?>" >
 	&nbsp;
-	<?php echo $recent["product_name"]; ?></a>&nbsp;(<?php echo $VM_LANG->_PHPSHOP_CATEGORY ?>:&nbsp;
+	<?php echo $recent["product_name"]; ?></a>&nbsp;(<?php echo $VM_LANG->_('PHPSHOP_CATEGORY') ?>:&nbsp;
 	<a href="<?php echo $recent["category_url"]; ?>" ><?php echo $recent["category_name"]; ?></a>)
 	</div>
 	<?php

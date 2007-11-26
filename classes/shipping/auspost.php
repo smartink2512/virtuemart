@@ -50,7 +50,7 @@ class auspost {
 		$q  = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id = '". $d["ship_to_info_id"] . "'";
 		$dbu->query($q);
 		if (!$dbu->next_record()) {
-			/*$vmLogger->err( $VM_LANG->_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND );
+			/*$vmLogger->err( $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND',false) );
 			return False;*/
 		}
 
@@ -215,13 +215,13 @@ class auspost {
         </td>
     </tr>
 	  <tr>
-		<td><strong><?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?></strong></td>
 		<td>
 		  <?php
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("AUSPOST_TAX_CLASS", AUSPOST_TAX_CLASS) ?>
 		</td>
-		<td><?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?><td>
+		<td><?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_TAX_CLASS_TOOLTIP')) ?><td>
 	  </tr>	
 	</table>
    <?php

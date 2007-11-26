@@ -57,7 +57,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					"order Total" => "",
 					"commission(rate)" => "",
 					"order Status" => "",					
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
            

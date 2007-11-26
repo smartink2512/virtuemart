@@ -17,7 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-echo '<h2>Saved '. $VM_LANG->_PHPSHOP_CART_TITLE .'</h2>
+echo '<h2>Saved '. $VM_LANG->_('PHPSHOP_CART_TITLE') .'</h2>
 <!-- Cart Begins here -->
 ';
 include(PAGEPATH. 'savedbasket.php');

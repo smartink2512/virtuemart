@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_VM_USERGROUP_LIST_LBL, IMAGEURL."ps_image/shoppers.png", "admin", "usergroup_list");
+$listObj->writeSearchHeader($VM_LANG->_('VM_USERGROUP_LIST_LBL'), IMAGEURL."ps_image/shoppers.png", "admin", "usergroup_list");
 
 // start the list table
 $listObj->startTable();
@@ -54,9 +54,9 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
-					$VM_LANG->_VM_USERGROUP_NAME => "width=\"40%\"",
-					$VM_LANG->_VM_USERGROUP_LEVEL => "width=\"20%\"",
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('VM_USERGROUP_NAME') => "width=\"40%\"",
+					$VM_LANG->_('VM_USERGROUP_LEVEL') => "width=\"20%\"",
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

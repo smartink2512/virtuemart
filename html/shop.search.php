@@ -17,15 +17,15 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ADVANCED_SEARCH );
-$mainframe->appendPathWay( $VM_LANG->_PHPSHOP_ADVANCED_SEARCH );
+$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_ADVANCED_SEARCH') );
+$mainframe->appendPathWay( $VM_LANG->_('PHPSHOP_ADVANCED_SEARCH') );
 
 ?>
-<h2><?php echo $VM_LANG->_PHPSHOP_ADVANCED_SEARCH ?></h2>
+<h2><?php echo $VM_LANG->_('PHPSHOP_ADVANCED_SEARCH') ?></h2>
 
 <br/>
 <a href="<?php echo $sess->url( $mm_action_url.basename($_SERVER['PHP_SELF']).'?page=shop.parameter_search' ) ?>">
-	<h3><?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH ?></h3>
+	<h3><?php echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') ?></h3>
 </a>
 <br/>
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
@@ -48,14 +48,14 @@ $mainframe->appendPathWay( $VM_LANG->_PHPSHOP_ADVANCED_SEARCH );
             <input class="inputbox" type="text" name="keyword1" size="20"/>
             <br /><br />
             <select class="inputbox" name="search_op">
-                <option value="and"><?php echo $VM_LANG->_PHPSHOP_SEARCH_AND ?></option>
-                <option value="and not"><?php echo $VM_LANG->_PHPSHOP_SEARCH_NOT ?></option>
+                <option value="and"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_AND') ?></option>
+                <option value="and not"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_NOT') ?></option>
             </select>
             <br /><br />
             <input type="text"  class="inputbox" name="keyword2" size="20" />
             <br /><br />
             <select class="inputbox" name="search_category">
-              <option value="0"><?php echo $VM_LANG->_PHPSHOP_SEARCH_ALL_CATEGORIES ?></option>
+              <option value="0"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_ALL_CATEGORIES') ?></option>
               <?php 
               // Show only top level categories and categories that are
               // being published
@@ -73,23 +73,23 @@ $mainframe->appendPathWay( $VM_LANG->_PHPSHOP_ADVANCED_SEARCH );
             </select>
             <br /><br />
             <select class="inputbox" name="search_limiter">
-                <option value="anywhere"><?php echo $VM_LANG->_PHPSHOP_SEARCH_ALL_PRODINFO ?></option>
-                <option value="name"><?php echo $VM_LANG->_PHPSHOP_SEARCH_PRODNAME ?></option>
-                <option value="cp"><?php echo $VM_LANG->_PHPSHOP_SEARCH_MANU_VENDOR ?></option>
-                <option value="desc"><?php echo $VM_LANG->_PHPSHOP_SEARCH_DESCRIPTION ?></option>
+                <option value="anywhere"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_ALL_PRODINFO') ?></option>
+                <option value="name"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_PRODNAME') ?></option>
+                <option value="cp"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_MANU_VENDOR') ?></option>
+                <option value="desc"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_DESCRIPTION') ?></option>
             </select>
             <br /><br />
             
-            <input type="submit" class="button" name="search" value="<?php echo $VM_LANG->_PHPSHOP_SEARCH_TITLE ?>">
+            <input type="submit" class="button" name="search" value="<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TITLE') ?>">
             <br />
 			</td>
 			<td valign="top">
 				<table width="100%" cellspacing="2" cellpadding="2" border="0">
 				<tr>
 				<td>
-				<?php echo $VM_LANG->_PHPSHOP_SEARCH_TEXT2 ?>
+				<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TEXT2') ?>
         <br /><br />
-        <?php echo $VM_LANG->_PHPSHOP_SEARCH_TEXT1 ?>
+        <?php echo $VM_LANG->_('PHPSHOP_SEARCH_TEXT1') ?>
        <br />
 				</td>
 				</tr>

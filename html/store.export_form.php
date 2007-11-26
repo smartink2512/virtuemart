@@ -40,7 +40,7 @@ if ( $db->f("export_class") ) {
 	$_EXPORT = new ps_xmlexport();
 }
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('VM_EXPORT_MODULE_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -49,15 +49,15 @@ $formObj->startForm();
 <?php
 $tabs = new mShopTabs(0, 1, '_main');
 $tabs->startPane('content-pane');
-$tabs->startTab( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL, 'global-page');
+$tabs->startTab( $VM_LANG->_('VM_EXPORT_MODULE_FORM_LBL'), 'global-page');
 ?>
 <table class="adminform">
     <tr class="row0">
-      <td class="labelcell"><?php echo $VM_LANG->_PHPSHOP_ISSHIP_LIST_PUBLISH_LBL ?>?:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ISSHIP_LIST_PUBLISH_LBL') ?>?:</td>
       <td><input type="checkbox" name="export_enabled" class="inputbox" value="Y" <?php echo $db->sf('export_enabled')=="Y" ? "checked=\"checked\"" : "" ?> /></td>
     </tr>
     <tr class="row1"> 
-      <td class="labelcell"><?php echo $VM_LANG->_VM_EXPORT_MODULE_FORM_NAME ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_('VM_EXPORT_MODULE_FORM_NAME') ?>:</td>
       <td width="69%" > 
       <?php if ($db->f('iscore')) {
       	$db->sp('export_name');
@@ -67,7 +67,7 @@ $tabs->startTab( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL, 'global-page');
       </td>
     </tr> 
    <tr class="row0"> 
-      <td class="labelcell"><?php echo $VM_LANG->_VM_EXPORT_MODULE_FORM_DESC ?>:</td>
+      <td class="labelcell"><?php echo $VM_LANG->_('VM_EXPORT_MODULE_FORM_DESC') ?>:</td>
       <td width="69%" > 
       <?php if ($db->f('iscore')) {
       	echo  nl2br($db->sf('export_desc'));
@@ -78,7 +78,7 @@ $tabs->startTab( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL, 'global-page');
     </tr>
     <tr class="row1">
       <td class="labelcell"><?php
-      echo $VM_LANG->_VM_EXPORT_CLASS_NAME;
+      echo $VM_LANG->_('VM_EXPORT_CLASS_NAME');
           ?>
       </td>
       <td width="69%">
@@ -86,7 +86,7 @@ $tabs->startTab( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL, 'global-page');
       	$db->sp('export_class');
       } else { 
       	echo ps_export::list_available_classes( 'export_class', ($db->sf("export_class") ? $db->sf("export_class") : $default['export_class']) );
-      	echo mm_ToolTip( $VM_LANG->_VM_EXPORT_CLASS_NAME_TIP ); 
+      	echo mm_ToolTip( $VM_LANG->_('VM_EXPORT_CLASS_NAME_TIP') ); 
       }?>
       </td>
     </tr>
@@ -97,7 +97,7 @@ $tabs->startTab( $VM_LANG->_VM_EXPORT_MODULE_FORM_LBL, 'global-page');
   </table>
 <?php
 $tabs->endTab();
-$tabs->startTab( $VM_LANG->_PHPSHOP_CONFIG, "config-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_CONFIG'), "config-page");
 
 if( $_EXPORT->has_configuration() ) {
 	$ps_html->writableIndicator( CLASSPATH."export/".$_EXPORT->classname.".cfg.php" );
@@ -106,8 +106,8 @@ if( $_EXPORT->has_configuration() ) {
 $_EXPORT->show_configuration();
 
 echo '<br />
-<strong>'.$VM_LANG->_VM_EXPORT_CONFIG.':';
-echo mm_ToolTip( $VM_LANG->_VM_EXPORT_CONFIG_TIP )
+<strong>'.$VM_LANG->_('VM_EXPORT_CONFIG').':';
+echo mm_ToolTip( $VM_LANG->_('VM_EXPORT_CONFIG_TIP') )
 	?>
 <br />
 <textarea class="inputbox" name="export_config" cols="120" rows="20"><?php echo htmlspecialchars( $db->sf('export_config') ); ?></textarea>

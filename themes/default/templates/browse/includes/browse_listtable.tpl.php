@@ -10,15 +10,15 @@ $data =array(); // Holds the rows of products
 $i = 1; $row = 0; // Counters
 
 // Table header
-$tableheader[] = $VM_LANG->_PHPSHOP_CART_NAME;
-$tableheader[] = $VM_LANG->_PHPSHOP_CART_SKU;
+$tableheader[] = $VM_LANG->_('PHPSHOP_CART_NAME');
+$tableheader[] = $VM_LANG->_('PHPSHOP_CART_SKU');
 if( _SHOW_PRICES && $auth['show_prices'] ) {
-	$tableheader[] = $VM_LANG->_PHPSHOP_CART_PRICE;
+	$tableheader[] = $VM_LANG->_('PHPSHOP_CART_PRICE');
 }
-$tableheader[] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE;
-$tableheader[] = $VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE;
+$tableheader[] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_THUMB_IMAGE');
+$tableheader[] = $VM_LANG->_('PHPSHOP_PRODUCT_DESC_TITLE');
 if( _SHOW_PRICES && $auth['show_prices'] && USE_AS_CATALOGUE != '1' ) {
-	$tableheader[] = $VM_LANG->_PHPSHOP_CART_ACTION;
+	$tableheader[] = $VM_LANG->_('PHPSHOP_CART_ACTION');
 }
 
 // Creates a new HTML_Table object that will help us

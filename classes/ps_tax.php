@@ -226,7 +226,7 @@ class ps_tax {
                 }
                 $html .= ">\n";
                 if ($select_name == "shipping_rate_vat_id" || stristr($select_name, "tax_class") || $select_name == "zone_tax_rate") {
-                        $html .= "<option value=\"0\">" . $VM_LANG->_PHPSHOP_INFO_MSG_VAT_ZERO_LBL . "</option>\n";
+                        $html .= "<option value=\"0\">" . $VM_LANG->_('PHPSHOP_INFO_MSG_VAT_ZERO_LBL') . "</option>\n";
                 }
                 $tax_rates = Array();
                 while ($db->next_record()) {

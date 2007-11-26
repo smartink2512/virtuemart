@@ -33,7 +33,7 @@ $uid = $db->f('userid') ? $db->f("userid") : $my->id;
 if( empty($product_id)) $product_id = $db->f('product_id');
 
 // Create the Form Control Object
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_REVIEW_EDIT );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_REVIEW_EDIT') );
 
 // Start the the Form
 $formObj->startForm();
@@ -43,7 +43,7 @@ $formObj->hiddenField( 'product_id', $product_id );
 $formObj->hiddenField( 'userid', $uid );
 $formObj->hiddenField( 'pshop_mode', 'admin' );
 
-$rating_table = "<table cellpadding=\"5\" summary=\"".$VM_LANG->_PHPSHOP_REVIEW_RATE."\">
+$rating_table = "<table cellpadding=\"5\" summary=\"".$VM_LANG->_('PHPSHOP_REVIEW_RATE')."\">
               <tr>
                 <th id=\"five_stars\">
                 	<label for=\"user_rating5\"><img alt=\"5 stars\" src=\"".VM_THEMEURL."images/stars/5.gif\" border=\"0\" /></label>
@@ -88,7 +88,7 @@ $rating_table = "<table cellpadding=\"5\" summary=\"".$VM_LANG->_PHPSHOP_REVIEW_
 ?>
 <table class="adminform">
 	<tr> 
-		<td ><?php echo $VM_LANG->_PHPSHOP_REVIEW_RATE ?></td>
+		<td ><?php echo $VM_LANG->_('PHPSHOP_REVIEW_RATE') ?></td>
 		<td ><?php echo $rating_table ?></td>
 	</tr>
 	<tr> 
@@ -96,7 +96,7 @@ $rating_table = "<table cellpadding=\"5\" summary=\"".$VM_LANG->_PHPSHOP_REVIEW_
         </td>
 		<td width="76%" align="left"> 
 			<textarea onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" rows="20" cols="60" name="comment"><?php $db->sp("comment") ?></textarea>
-	        <div align="right"><?php echo $VM_LANG->_PHPSHOP_REVIEW_COUNT ?>
+	        <div align="right"><?php echo $VM_LANG->_('PHPSHOP_REVIEW_COUNT') ?>
                 <input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
             </div>
 		</td>

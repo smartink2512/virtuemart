@@ -35,54 +35,54 @@ class ps_echeck {
       require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");    ?>
       <table>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>
             <td>
                 <select name="ECK_TEST_REQUEST" class="inputbox" >
-                <option <?php if (ECK_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (ECK_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (ECK_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+                <option <?php if (ECK_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME') ?></strong></td>
             <td>
                 <input type="text" name="ECK_LOGIN" class="inputbox" value="<? echo ECK_LOGIN ?>" />
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY') ?></strong></td>
             <td>
                 <a id="changekey" href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=store.payment_method_keychange&pshop_mode=admin&payment_method_id=$payment_method_id") ?>" >
-                <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="<?php echo $VM_LANG->_PHPSHOP_CHANGE_TRANSACTION_KEY ?>" /><a/>
+                <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="<?php echo $VM_LANG->_('PHPSHOP_CHANGE_TRANSACTION_KEY') ?>" /><a/>
             </td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_AN_RECURRING') ?></strong></td>
             <td>
                 <select name="ECK_RECURRING" class="inputbox">
                 <option <?php if (ECK_RECURRING == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (ECK_RECURRING == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP') ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE') ?></strong></td>
             <td>
               <select name="ECK_TYPE" class="inputbox">
                 <option <?php if (ECK_TYPE == 'AUTH_CAPTURE') echo "selected=\"selected\""; ?> value="AUTH_CAPTURE">AUTH_CAPTURE</option>
                 <option <?php if (ECK_TYPE == 'CREDIT') echo "selected=\"selected\""; ?> value="CREDIT">CREDIT</option>
               </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
@@ -95,7 +95,7 @@ class ps_echeck {
                 <option <?php if (ECK_ECHECK_TYPE == 'WEB') echo "selected=\"selected\""; ?> value="WEB">WEB</option>
               </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN') ?>
             </td>
         </tr>
       </table>
@@ -180,7 +180,7 @@ class ps_echeck {
         $database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
-            $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
+            $vmLogger->err($VM_LANG->_('PHPSHOP_PAYMENT_ERROR'),false);
             return false;
         }
         
@@ -296,7 +296,7 @@ class ps_echeck {
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $vmLogger->err( curl_error( $CR ) );
-              $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." authorize.net</span>";
+              $html = "<br/><span class=\"message\">".$VM_LANG->_('PHPSHOP_PAYMENT_INTERNAL_ERROR')." authorize.net</span>";
               return false;
             }
             else {
@@ -351,7 +351,7 @@ class ps_echeck {
         
         // Approved - Success!
         if ($response[0] == '1') {
-           $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+           $d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
            $d["order_payment_log"] .= $response[3];
            return True;
         } 

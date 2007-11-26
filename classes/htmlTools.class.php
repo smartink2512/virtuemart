@@ -30,7 +30,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * $listObj = new listFactory( $pageNav );
 * 
 * // print out the search field and a list heading
-* $listObj->writeSearchHeader($VM_LANG->_PHPSHOP_PRODUCT_LIST_LBL, IMAGEURL."ps_image/product_code.png", $modulename, "product_list");
+* $listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PRODUCT_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "product_list");
 * 
 * // start the list table
 * $listObj->startTable();
@@ -38,8 +38,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * // these are the columns in the table
 * $columns = Array(  "#" => "width=\"20\"", 
 * 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",* 
-* 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_NAME => '',
-* 					$VM_LANG->_PHPSHOP_PRODUCT_LIST_SKU => '',
+* 					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_NAME') => '',
+* 					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_SKU') => '',
 * 					_E_REMOVE => "width=\"5%\""
 * 				);
 * $listObj->writeTableHeader( $columns );
@@ -238,7 +238,7 @@ class listFactory {
 		if( !empty( $pagename )) 
 			$header .= '<td width="20%">
 			<input class="inputbox" type="text" size="25" name="keyword" value="'.shopMakeHtmlSafe($keyword).'" />
-			<input class="button" type="submit" name="search" value="'.$VM_LANG->_PHPSHOP_SEARCH_TITLE.'" />
+			<input class="button" type="submit" name="search" value="'.$VM_LANG->_('PHPSHOP_SEARCH_TITLE').'" />
 			</td>';
 			
 		$header .= "\n</tr></table><br style=\"clear:both;\" />\n";
@@ -716,7 +716,7 @@ class vmCommonHTML extends mosHTML {
 			if( $version  == '' ) {
 				$version = 'mootools-release-1.11.js';
 			}
-			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'.$VM_LANG->_CMN_CONTINUE.'";var cancel_lbl="'.$VM_LANG->_CMN_CANCEL.'";var notice_lbl="'.$VM_LANG->_PEAR_LOG_NOTICE.'";' );
+			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.$VM_LANG->_('PHPSHOP_CART_TITLE').'";var ok_lbl="'.$VM_LANG->_('CMN_CONTINUE').'";var cancel_lbl="'.$VM_LANG->_('CMN_CANCEL').'";var notice_lbl="'.$VM_LANG->_('PEAR_LOG_NOTICE').'";' );
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/mootools/'.$version );
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/mootools/mooPrompt.js' );
 			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/mootools/mooPrompt.css' );
@@ -817,7 +817,7 @@ class vmCommonHTML extends mosHTML {
 		if( !defined( "_WINDOWSJS_LOADED" )) {
 			vmCommonHTML::loadPrototype();
 			vmCommonHTML::loadScriptaculous( array('effects') );
-			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.$VM_LANG->_PHPSHOP_CART_TITLE.'";var ok_lbl="'.$VM_LANG->_CMN_CONTINUE.'";var cancel_lbl="'.$VM_LANG->_CMN_CANCEL.'";var notice_lbl="'.$VM_LANG->_PEAR_LOG_NOTICE.'";' );
+			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.$VM_LANG->_('PHPSHOP_CART_TITLE').'";var ok_lbl="'.$VM_LANG->_('CMN_CONTINUE').'";var cancel_lbl="'.$VM_LANG->_('CMN_CANCEL').'";var notice_lbl="'.$VM_LANG->_('PEAR_LOG_NOTICE').'";' );
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/windows/window.js' );
 			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/windows/themes/mac_os_x.css' );
 			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/windows/themes/alphacube.css' );
@@ -986,11 +986,11 @@ class vmCommonHTML extends mosHTML {
 		if ( PSHOP_PDF_BUTTON_ENABLE == '1' && !vmGet( $_REQUEST, 'pop' )  ) {
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_PDF, $VM_LANG->_CMN_PDF );
+				$text = mosAdminMenus::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_PDF'), $VM_LANG->_('CMN_PDF') );
 			} else {
-				$text = $VM_LANG->_CMN_PDF .'&nbsp;';
+				$text = $VM_LANG->_('CMN_PDF') .'&nbsp;';
 			}
-			return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_CMN_PDF);
+			return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_('CMN_PDF'));
 		}
 	}
 
@@ -1005,11 +1005,11 @@ class vmCommonHTML extends mosHTML {
 		if ( @VM_SHOW_EMAILFRIEND == '1' && !vmGet( $_REQUEST, 'pop' ) && $product_id > 0  ) {
 			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1' );
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_EMAIL, $VM_LANG->_CMN_EMAIL );
+				$text = mosAdminMenus::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_EMAIL'), $VM_LANG->_('CMN_EMAIL') );
 			} else {
-				$text = '&nbsp;'. $VM_LANG->_CMN_EMAIL;
+				$text = '&nbsp;'. $VM_LANG->_('CMN_EMAIL');
 			}
-			return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_CMN_EMAIL, 'screenX=100,screenY=200');
+			return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_('CMN_EMAIL'), 'screenX=100,screenY=200');
 		}
 	}
 	
@@ -1022,20 +1022,20 @@ class vmCommonHTML extends mosHTML {
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_CMN_PRINT, $VM_LANG->_CMN_PRINT );
+				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_PRINT'), $VM_LANG->_('CMN_PRINT') );
 			} else {
-				$text = '|&nbsp;'. $VM_LANG->_CMN_PRINT. '&nbsp;|';
+				$text = '|&nbsp;'. $VM_LANG->_('CMN_PRINT'). '&nbsp;|';
 			}
 			$isPopup = vmGet( $_GET, 'pop' );
 			if ( $isPopup ) {
 				// Print Preview button - used when viewing page
-				$html = '<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. $VM_LANG->_CMN_PRINT.'">
+				$html = '<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. $VM_LANG->_('CMN_PRINT').'">
 				'. $text .'
 				</a>';
 				return $html;
 			} else {
 				// Print Button - used in pop-up window
-				return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_CMN_PRINT);
+				return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_('CMN_PRINT'));
 			}
 		}
 	}
@@ -1112,7 +1112,7 @@ class vmCommonHTML extends mosHTML {
                 global $VM_LANG;
                 reset( $arr );
                 $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
-                if(!$required) $html .= "\n\t<option value=\"\">".$VM_LANG->_PHPSHOP_SELECT."</option>";
+                if(!$required) $html .= "\n\t<option value=\"\">".$VM_LANG->_('PHPSHOP_SELECT')."</option>";
                 $n=count( $arr );
                 for ($i=0; $i < $n; $i++ ) {
                         $k = stripslashes($arr[$i]->$key);
@@ -1133,7 +1133,7 @@ class vmCommonHTML extends mosHTML {
                                 $extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
                         }
                         $html .= "\n\t<option value=\"".$k."\"$extra>";
-                        $html .= isset($VM_LANG->$t) ? $VM_LANG->$t : $t;
+						$html .= $VM_LANG->exists($t) ? $VM_LANG->_($t) : $t;
                         $html .= "</option>";
                 }
                 $html .= "\n</select>\n";
@@ -1163,7 +1163,7 @@ class vmCommonHTML extends mosHTML {
                                 $extra .= ($k == $selected ? " checked=\"checked\"" : '');
                         }
                         $tmp = "<input type=\"checkbox\" name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."_field$i\" value=\"".$k."\"$extra $tag_attribs />" . "<label for=\"".str_replace('[]', '', $tag_name)."_field$i\">";
-                        $tmp .= isset($VM_LANG->$t) ? $VM_LANG->$t : $t;
+                        $tmp .= $VM_LANG->exists($t) ? $VM_LANG->_($t) : $t;
                         $tmp .= "</label>";
                         $html[] = $tmp;
                 }
@@ -1239,7 +1239,8 @@ function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/ima
 	
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
-	$tooltip = @htmlentities( $database->getEscaped($tooltip), ENT_QUOTES, vmGetCharset() );
+	$tooltip = $database->getEscaped($tooltip);
+	$tooltip = str_replace("&#039;","\&#039;",$tooltip);
 	
 	if ( !empty($width) ) {
 		$width = 'this.T_WIDTH=\''.$width .'\';';

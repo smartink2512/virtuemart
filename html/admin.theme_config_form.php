@@ -38,8 +38,8 @@ $parameter_xml_file = $themepath.'/theme.xml';
 // get params definitions
 $params = new vmParameters( $current_config, $parameter_xml_file, 'theme' );
 
-$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_VM_ADMIN_CFG_THEME_SETTINGS.'" />&nbsp;';
-$title .= $VM_LANG->_VM_ADMIN_CFG_THEME_SETTINGS;
+$title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_('VM_ADMIN_CFG_THEME_SETTINGS').'" />&nbsp;';
+$title .= $VM_LANG->_('VM_ADMIN_CFG_THEME_SETTINGS');
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $title );
@@ -53,7 +53,7 @@ vmCommonHTML::loadExtjs();
 ?>
 
 	<fieldset style="width: 80%">
-		<legend><?php echo $VM_LANG->_VM_ADMIN_CFG_THEME_PARAMETERS ?></legend>
+		<legend><?php echo $VM_LANG->_('VM_ADMIN_CFG_THEME_PARAMETERS') ?></legend>
 		<table class="adminform">
 		<tr>
 			<td>

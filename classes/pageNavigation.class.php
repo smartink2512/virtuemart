@@ -106,11 +106,11 @@ class vmPageNav {
 
 		if ($this_page > 1) {
 			$page = ($this_page - 2) * $this->limit;
-			$html .= "\n<a href=\"#beg\" class=\"pagenav\" title=\"first page\" onclick=\"javascript: document.adminForm.limitstart.value=0; document.adminForm.submit();return false;\">&lt;&lt; ".$VM_LANG->_PN_START."</a>";
-			$html .= "\n<a href=\"#prev\" class=\"pagenav\" title=\"previous page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\">&lt; ".$VM_LANG->_PN_PREVIOUS."</a>";
+			$html .= "\n<a href=\"#beg\" class=\"pagenav\" title=\"first page\" onclick=\"javascript: document.adminForm.limitstart.value=0; document.adminForm.submit();return false;\">&lt;&lt; ".$VM_LANG->_('PN_START')."</a>";
+			$html .= "\n<a href=\"#prev\" class=\"pagenav\" title=\"previous page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\">&lt; ".$VM_LANG->_('PN_PREVIOUS')."</a>";
 		} else {
-			$html .= "\n<span class=\"pagenav\">&lt;&lt; ".$VM_LANG->_PN_START."</span>";
-			$html .= "\n<span class=\"pagenav\">&lt; ".$VM_LANG->_PN_PREVIOUS."</span>";
+			$html .= "\n<span class=\"pagenav\">&lt;&lt; ".$VM_LANG->_('PN_START')."</span>";
+			$html .= "\n<span class=\"pagenav\">&lt; ".$VM_LANG->_('PN_PREVIOUS')."</span>";
 		}
 
 		for ($i=$start_loop; $i <= $stop_loop; $i++) {
@@ -125,11 +125,11 @@ class vmPageNav {
 		if ($this_page < $total_pages) {
 			$page = $this_page * $this->limit;
 			$end_page = ($total_pages-1) * $this->limit;
-			$html .= "\n<a href=\"#next\" class=\"pagenav\" title=\"next page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"> ".$VM_LANG->_PN_NEXT." &gt;</a>";
-			$html .= "\n<a href=\"#end\" class=\"pagenav\" title=\"end page\" onclick=\"javascript: document.adminForm.limitstart.value=$end_page; document.adminForm.submit();return false;\"> ".$VM_LANG->_PN_END." &gt;&gt;</a>";
+			$html .= "\n<a href=\"#next\" class=\"pagenav\" title=\"next page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"> ".$VM_LANG->_('PN_NEXT')." &gt;</a>";
+			$html .= "\n<a href=\"#end\" class=\"pagenav\" title=\"end page\" onclick=\"javascript: document.adminForm.limitstart.value=$end_page; document.adminForm.submit();return false;\"> ".$VM_LANG->_('PN_END')." &gt;&gt;</a>";
 		} else {
-			$html .= "\n<span class=\"pagenav\">".$VM_LANG->_PN_NEXT." &gt;</span>";
-			$html .= "\n<span class=\"pagenav\">".$VM_LANG->_PN_END." &gt;&gt;</span>";
+			$html .= "\n<span class=\"pagenav\">".$VM_LANG->_('PN_NEXT')." &gt;</span>";
+			$html .= "\n<span class=\"pagenav\">".$VM_LANG->_('PN_END')." &gt;&gt;</span>";
 		}
 		return $html;
 	}
@@ -165,7 +165,7 @@ class vmPageNav {
 	function orderUpIcon( $i, $condition=true, $task='orderup', $alt='', $page, $func ) {
 		global $mosConfig_live_site, $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_ORDER_UP;
+			$alt = $VM_LANG->_('CMN_ORDER_UP');
 		}
 		if (($i > 0 || ($i+$this->limitstart > 0)) && $condition) {
 		    return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">
@@ -185,7 +185,7 @@ class vmPageNav {
 	function orderDownIcon( $i, $n, $condition=true, $task='orderdown', $alt='', $page, $func ) {
 		global $mosConfig_live_site, $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_ORDER_DOWN;
+			$alt = $VM_LANG->_('CMN_ORDER_DOWN');
 		}
 		if (($i < $n-1 || $i+$this->limitstart < $this->total-1) && $condition) {
 			return '<a href="#reorder" onclick="return vm_listItemTask(\'cb'.$i.'\',\''.$task.'\', \'adminForm\', \''.$page.'\', \''.$func.'\')" title="'.$alt.'">

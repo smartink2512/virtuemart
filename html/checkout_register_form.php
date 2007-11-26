@@ -23,7 +23,7 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 $missing = vmGet( $_REQUEST, "missing", "" );
 
 if (!empty( $missing )) {
-	echo "<script type=\"text/javascript\">alert('".$VM_LANG->_CONTACT_FORM_NC."'); </script>\n";
+	echo "<script type=\"text/javascript\">alert('".$VM_LANG->_('CONTACT_FORM_NC',false)."'); </script>\n";
 }
 
 if ($mosConfig_allowUserRegistration == "0") {
@@ -58,7 +58,7 @@ echo '
     
 	if( !$mosConfig_useractivation && @VM_SHOW_REMEMBER_ME_BOX && VM_REGISTRATION_TYPE == 'NORMAL_REGISTRATION' ) {
 		echo '<input type="checkbox" name="remember" value="yes" id="remember_login2" checked="checked" />
-		<label for="remember_login2">'. $VM_LANG->_REMEMBER_ME .'</label><br /><br />';
+		<label for="remember_login2">'. $VM_LANG->_('REMEMBER_ME') .'</label><br /><br />';
 	}
 	else {
 		if( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' ) {
@@ -69,7 +69,7 @@ echo '
 		echo '<input type="hidden" name="remember" value="'.$rmbr.'" />';
 	}
 	echo '
-		<input type="submit" value="'. $VM_LANG->_BUTTON_SEND_REG . '" class="button" onclick="return( submitregistration());" />
+		<input type="submit" value="'. $VM_LANG->_('BUTTON_SEND_REG') . '" class="button" onclick="return( submitregistration());" />
 	</div>
 	<input type="hidden" name="Itemid" value="'. $sess->getShopItemid() .'" />
 	<input type="hidden" name="gid" value="'. $my->gid .'" />

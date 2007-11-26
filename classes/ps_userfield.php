@@ -294,7 +294,7 @@ class ps_userfield extends vmAbstractObject {
 			
 		   <?php
 		if( !empty( $required_fields ))  {
-			echo '<div style="padding:5px;text-align:center;"><strong>(* = '.$VM_LANG->_CMN_REQUIRED.')</strong></div>';
+			echo '<div style="padding:5px;text-align:center;"><strong>(* = '.$VM_LANG->_('CMN_REQUIRED').')</strong></div>';
 		  	 
 		}
 		$delimiter = 0;
@@ -308,21 +308,23 @@ class ps_userfield extends vmAbstractObject {
 	   		}
 	   		// Title handling.
 	   		$key = $field->title;
-	   		if( isset( $VM_LANG->$key )) {
-	   			$field->title = $VM_LANG->$key;
-	   		}
-	   		elseif( substr( $field->title, 0, 1) == '_') {
-	   			eval( "\$field->title = ".$field->title.";");
-	   		}
+			if( substr( $field->title, 0, 1) == '_') {
+				$key = substr($key, 1, strlen($key)-1);
+		   		if( $VM_LANG->exists($key) ) {
+		   			$field->title = $VM_LANG->_($key);
+		   		} else {
+		   			eval( "\$field->title = ".$field->title.";");
+		   		}
+			}
 	   		if( $field->name == 'agreed') {
 	   					$field->title = '<script type="text/javascript">//<![CDATA[
-				document.write(\'<label for="agreed_field">'.htmlspecialchars( $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS, ENT_QUOTES ).'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
-				document.write(\' ('.$VM_LANG->_PHPSHOP_STORE_FORM_TOS .')</a>\');
+				document.write(\'<label for="agreed_field">'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
+				document.write(\' ('.$VM_LANG->_('PHPSHOP_STORE_FORM_TOS') .')</a>\');
 				//]]></script>
 				<noscript>
-					<label for="agreed_field">'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'</label>
-					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&page=shop.tos" title="'. $VM_LANG->_PHPSHOP_I_AGREE_TO_TOS .'">
-					 ('.$VM_LANG->_PHPSHOP_STORE_FORM_TOS.')
+					<label for="agreed_field">'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'</label>
+					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&page=shop.tos" title="'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'">
+					 ('.$VM_LANG->_('PHPSHOP_STORE_FORM_TOS').')
 					</a></noscript>';
 	   		}
 	   		if( $field->name == 'username' && VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' ) {
@@ -330,7 +332,7 @@ class ps_userfield extends vmAbstractObject {
 						<input type="checkbox" id="register_account" name="register_account" value="1" class="inputbox" onchange="showFields( this.checked, new Array(\'username\', \'password\', \'password2\') );if( this.checked ) { document.adminForm.remember.value=\'yes\'; } else { document.adminForm.remember.value=\'yes\'; }" checked="checked" />
 					</div>
 					<div class="formField">
-						<label for="register_account">'.$VM_LANG->_VM_REGISTER_ACCOUNT.'</label>
+						<label for="register_account">'.$VM_LANG->_('VM_REGISTER_ACCOUNT').'</label>
 					</div>
 					';
 			} elseif( $field->name == 'username' ) {
@@ -342,7 +344,7 @@ class ps_userfield extends vmAbstractObject {
 	   			if( $delimiter > 0) {
 	   				echo "</fieldset>\n";
 	   			}
-	   			if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' && $field->title == $VM_LANG->_PHPSHOP_ORDER_PRINT_CUST_INFO_LBL && $page == 'checkout.index' ) {
+	   			if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' && $field->title == $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUST_INFO_LBL') && $page == 'checkout.index' ) {
 	   				continue;
 	   			}
 	   			echo '<fieldset>
@@ -672,7 +674,7 @@ class ps_userfield extends vmAbstractObject {
 	    
 	   		echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
-				alert( \''. html_entity_decode( $VM_LANG->_REGWARN_MAIL ).'\');
+				alert( \''. $VM_LANG->_('REGWARN_MAIL',false) .'\');
 				return false;
 			}';
 
@@ -681,7 +683,7 @@ class ps_userfield extends vmAbstractObject {
 		
 			echo '
 			if ((r.exec(form.username.value) || form.username.value.length < 3)'.$optional_check.') {
-				alert( "'. html_entity_decode( sprintf($VM_LANG->_VALID_AZ09, $VM_LANG->_USERNAME, 2)) .'" );
+				alert( "'. sprintf($VM_LANG->_('VALID_AZ09',false), $VM_LANG->_('USERNAME',false), 2) .'" );
 				return false;
             }';
         }
@@ -689,26 +691,26 @@ class ps_userfield extends vmAbstractObject {
 			if( $page == 'checkout.index') {
                 echo '
                 if (form.password.value.length < 6 '.$optional_check.') {
-                    alert( "1'. html_entity_decode( $VM_LANG->_REGWARN_PASS ).'" );
+                    alert( "1'. $VM_LANG->_('REGWARN_PASS',false) .'" );
 					return false;
                 } else if (form.password2.value == ""'.$optional_check.') {
-                    alert( "2'.html_entity_decode( $VM_LANG->_REGWARN_VPASS1).'" );
+                    alert( "2'. $VM_LANG->_('REGWARN_VPASS1',false) .'" );
                     return false;
                 } else if (r.exec(form.password.value)'.$optional_check.') {
-                    alert( "3'. html_entity_decode(sprintf( $VM_LANG->_VALID_AZ09, $VM_LANG->_PASSWORD, 6 )) .'" );
+                    alert( "3'. sprintf( $VM_LANG->_('VALID_AZ09',false), $VM_LANG->_('PASSWORD',false), 6 ) .'" );
                     return false;
                 }';
         	}
             echo '
                 if ((form.password.value != "") && (form.password.value != form.password2.value)'.$optional_check.'){
-                    alert( "'. html_entity_decode($VM_LANG->_REGWARN_VPASS2).'" );
+                    alert( "'. $VM_LANG->_('REGWARN_VPASS2',false) .'" );
                     return false;
                 }';
         }
         if( isset( $required_fields['agreed'] )) {
 			echo '
             if (!form.agreed.checked) {
-				alert( "'. $VM_LANG->_PHPSHOP_AGREE_TO_TOS .'" );
+				alert( "'. $VM_LANG->_('PHPSHOP_AGREE_TO_TOS',false) .'" );
 				return false;
 			}';
 		}
@@ -723,7 +725,7 @@ class ps_userfield extends vmAbstractObject {
 			echo '
 			if( form.'.$euvatid.'.value != \'\' ) {
 				if( !isValidVATID( form.'.$euvatid.'.value )) {
-					alert( \''.addslashes($VM_LANG->_VALID_EUVATID).'\' );
+					alert( \''.addslashes($VM_LANG->_('VALID_EUVATID',false)).'\' );
 					return false;
 				}
 			}';
@@ -731,7 +733,7 @@ class ps_userfield extends vmAbstractObject {
 		// Finish the validation function
 		echo '
 			if( !isvalid) {
-				alert("'.addslashes( html_entity_decode($VM_LANG->_CONTACT_FORM_NC) ).'" );
+				alert("'.addslashes( $VM_LANG->_('CONTACT_FORM_NC',false) ) .'" );
 			}
 			return isvalid;
 		}

@@ -111,12 +111,12 @@ class ps_html {
 	function list_user_title($t, $extra="") {
 		global $VM_LANG;
 
-		$title = array($VM_LANG->_PHPSHOP_REGISTRATION_FORM_MR,
-						$VM_LANG->_PHPSHOP_REGISTRATION_FORM_MRS,
-						$VM_LANG->_PHPSHOP_REGISTRATION_FORM_DR,
-						$VM_LANG->_PHPSHOP_REGISTRATION_FORM_PROF);
+		$title = array($VM_LANG->_('PHPSHOP_REGISTRATION_FORM_MR'),
+						$VM_LANG->_('PHPSHOP_REGISTRATION_FORM_MRS'),
+						$VM_LANG->_('PHPSHOP_REGISTRATION_FORM_DR'),
+						$VM_LANG->_('PHPSHOP_REGISTRATION_FORM_PROF'));
 		echo "<select class=\"inputbox\" name=\"title\" $extra>\n";
-		echo "<option value=\"\">".$VM_LANG->_PHPSHOP_REGISTRATION_FORM_NONE."</option>\n";
+		echo "<option value=\"\">".$VM_LANG->_('PHPSHOP_REGISTRATION_FORM_NONE')."</option>\n";
 		for ($i=0;$i<count($title);$i++) {
 			echo "<option value=\"" . $title[$i]."\"";
 			if ($title[$i] == $t)
@@ -146,18 +146,18 @@ class ps_html {
 	function list_month($list_name, $selected_item="") {
 		global $VM_LANG;
 		$list = array("Month",
-		"01" => $VM_LANG->_JAN,
-		"02" => $VM_LANG->_FEB,
-		"03" => $VM_LANG->_MAR,
-		"04" => $VM_LANG->_APR,
-		"05" => $VM_LANG->_MAY,
-		"06" => $VM_LANG->_JUN,
-		"07" => $VM_LANG->_JUL,
-		"08" => $VM_LANG->_AUG,
-		"09" => $VM_LANG->_SEP,
-		"10" => $VM_LANG->_OCT,
-		"11" => $VM_LANG->_NOV,
-		"12" => $VM_LANG->_DEC);
+		"01" => $VM_LANG->_('JAN'),
+		"02" => $VM_LANG->_('FEB'),
+		"03" => $VM_LANG->_('MAR'),
+		"04" => $VM_LANG->_('APR'),
+		"05" => $VM_LANG->_('MAY'),
+		"06" => $VM_LANG->_('JUN'),
+		"07" => $VM_LANG->_('JUL'),
+		"08" => $VM_LANG->_('AUG'),
+		"09" => $VM_LANG->_('SEP'),
+		"10" => $VM_LANG->_('OCT'),
+		"11" => $VM_LANG->_('NOV'),
+		"12" => $VM_LANG->_('DEC'));
 		$this->dropdown_display($list_name, $selected_item, $list);
 		return 1;
 	}
@@ -197,7 +197,7 @@ class ps_html {
 
 		$q = "SELECT country_id, country_name, country_3_code from #__{vm}_country ORDER BY country_name ASC";
 		$db->query($q);
-		$countries[''] = $VM_LANG->_PHPSHOP_SELECT;
+		$countries[''] = $VM_LANG->_('PHPSHOP_SELECT');
 		
 		while ($db->next_record()) {
 			$countries[$db->f("country_3_code")] = $db->f("country_name");
@@ -228,7 +228,7 @@ class ps_html {
 		$q .= "\nORDER BY country_name, state_name";
 		$db->query( $q );
 		$list = Array();
-		$list["0"] = $VM_LANG->_PHPSHOP_SELECT;
+		$list["0"] = $VM_LANG->_('PHPSHOP_SELECT');
 		$list["NONE"] = "not listed";
 		$country = "";
 
@@ -291,7 +291,7 @@ class ps_html {
 					}
 				}
 				else {
-					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_PHPSHOP_NONE."' );\n";
+					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_('PHPSHOP_NONE')."' );\n";
 				}
 
 
@@ -323,7 +323,7 @@ class ps_html {
 	function list_weight_uom($list_name) {
 		global $VM_LANG;
 
-		$list = array($VM_LANG->_PHPSHOP_SELECT,
+		$list = array($VM_LANG->_('PHPSHOP_SELECT'),
 		"LBS" => "Pounds",
 		"KGS" => "Kilograms",
 		"G" => "Grams");
@@ -361,7 +361,7 @@ class ps_html {
 		$db->query($q);
 		
 		if( $size == 1 ) {
-			$currencies[''] = $VM_LANG->_PHPSHOP_SELECT;
+			$currencies[''] = $VM_LANG->_('PHPSHOP_SELECT');
 		}
 		while ($db->next_record()) {
 			$currencies[$db->f($key)] = $db->f("currency_name");
@@ -433,8 +433,8 @@ class ps_html {
 
 		$vmLogger->debug( 'The function '.__CLASS__.'::'.__FUNCTION__.' is deprecated. Use the userfield manager instead please.' );
 		
-		$title = array(array('Y',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1),
-		array('N',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2));
+		$title = array(array('Y',$VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_1')),
+		array('N',$VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_4_2')));
 
 		echo "<select class=\"inputbox\" name=\"extra_field_4\" $extra>\n";
 		for ($i=0;$i<count($title);$i++) {
@@ -456,9 +456,9 @@ class ps_html {
 		
 		$vmLogger->debug( 'The function '.__CLASS__.'::'.__FUNCTION__.' is deprecated. Use the userfield manager instead please.' );
 		
-		$title = array(array('A',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1),
-		array('B',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2),
-		array('C',$VM_LANG->_PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3));
+		$title = array(array('A',$VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1')),
+		array('B',$VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2')),
+		array('C',$VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3')));
 
 		echo "<select class=\"inputbox\" name=\"extra_field_5\" $extra>\n";
 		for ($i=0;$i<count($title);$i++) {
@@ -530,8 +530,8 @@ class ps_html {
         foreach( $folder as $dir ) {
             echo $dir . ' :: ';
             echo is_writable( $dir )
-                 ? '<span style="font-weight:bold;color:green;">'.$VM_LANG->_VM_WRITABLE.'</span>'
-                 : '<span style="font-weight:bold;color:red;">'.$VM_LANG->_VM_UNWRITABLE.'</span>';
+                 ? '<span style="font-weight:bold;color:green;">'.$VM_LANG->_('VM_WRITABLE').'</span>'
+                 : '<span style="font-weight:bold;color:red;">'.$VM_LANG->_('VM_UNWRITABLE').'</span>';
             echo '<br/>';
         }
         echo '</div>';
@@ -550,7 +550,7 @@ class ps_html {
 	function deleteButton( $id_fieldname, $id, $func, $keyword="", $limitstart=0, $extra="" ) {
 		global $page, $VM_LANG;
 		$no_menu = vmRequest::getInt('no_menu');
-		$code = "<a class=\"toolbar\" href=\"{$_SERVER['PHP_SELF']}?option=com_virtuemart&page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart&amp;no_menu=$no_menu".$extra."\" onclick=\"return confirm('".$VM_LANG->_PHPSHOP_DELETE_MSG ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+		$code = "<a class=\"toolbar\" href=\"{$_SERVER['PHP_SELF']}?option=com_virtuemart&page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart&amp;no_menu=$no_menu".$extra."\" onclick=\"return confirm('".$VM_LANG->_('PHPSHOP_DELETE_MSG') ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
 		$code .= "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$id\" align=\"middle\" border=\"0\" />";
 		$code .= "</a>";
 

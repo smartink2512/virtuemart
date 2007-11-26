@@ -35,66 +35,66 @@ class ps_epn {
     ?>
       <table>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE') ?></strong></td>
             <td>
                 <select name="EPN_TEST_REQUEST" class="inputbox" >
-                <option <?php if (EPN_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
-                <option <?php if (EPN_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <option <?php if (EPN_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
+                <option <?php if (EPN_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_EPN_USERNAME ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPN_USERNAME') ?></strong></td>
             <td>
                 <input type="text" name="EPN_LOGIN" class="inputbox" value="<? echo EPN_LOGIN ?>" />
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_EPN_KEY ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPN_KEY') ?></strong></td>
             <td>
                 <a id="changekey" href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=store.payment_method_keychange&pshop_mode=admin&payment_method_id=$payment_method_id") ?>" >
-                <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="<?php echo $VM_LANG->_PHPSHOP_CHANGE_TRANSACTION_KEY ?>" /><a/>
+                <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="<?php echo $VM_LANG->_('PHPSHOP_CHANGE_TRANSACTION_KEY') ?>" /><a/>
             </td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2') ?></strong></td>
             <td>
                 <select name="EPN_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (EPN_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (EPN_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2_TOOLTIP') ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_AN_RECURRING') ?></strong></td>
             <td>
                 <select name="EPN_RECURRING" class="inputbox">
                 <option <?php if (EPN_RECURRING == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (EPN_RECURRING == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP') ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE') ?></strong></td>
             <td>
                <select name="EPN_TYPE" class="inputbox">
                 <option <?php if (EPN_TYPE == 'AUTH_CAPTURE') echo "selected=\"selected\""; ?> value="AUTH_CAPTURE">AUTH_CAPTURE</option>
                 <option <?php if (EPN_TYPE == 'AUTH_ONLY') echo "selected=\"selected\""; ?> value="AUTH_ONLY">AUTH_ONLY</option>
                </select>
             </td>
-            <td><?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPN_AUTENTICATIONTYPE_EXPLAIN') ?>
             </td>
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
@@ -227,7 +227,7 @@ class ps_epn {
         $database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
-            $vmLogger->err( $VM_LANG->_PHPSHOP_PAYMENT_ERROR );
+            $vmLogger->err( $VM_LANG->_('PHPSHOP_PAYMENT_ERROR'),false );
             return false;
         }
         
@@ -348,7 +348,7 @@ class ps_epn {
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $vmLogger->err( curl_error( $CR ) );
-              $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." eProcessingNetwork.com</span>";
+              $html = "<br/><span class=\"message\">".$VM_LANG->_('PHPSHOP_PAYMENT_INTERNAL_ERROR')." eProcessingNetwork.com</span>";
               return false;
             }
             else {
@@ -403,7 +403,7 @@ class ps_epn {
 
         // Approved - Success!
         if ($response[0] == '1') {
-           $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+           $d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
            $d["order_payment_log"] .= $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];
@@ -464,7 +464,7 @@ Discover Test Account       5424000000000015
         $database->query( "SELECT ".VM_DECRYPT_FUNCTION."(payment_passkey,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE payment_class='".$this->classname."'" );
         $transaction = $database->record[0];
         if( empty($transaction->passkey)) {
-            $vmLogger->err($VM_LANG->_PHPSHOP_PAYMENT_ERROR);
+            $vmLogger->err($VM_LANG->_('PHPSHOP_PAYMENT_ERROR'),false);
             return false;
         }
         $db = new ps_DB;
@@ -599,7 +599,7 @@ Discover Test Account       5424000000000015
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $vmLogger->err( curl_error( $CR ) );
-              $html = "<br/><span class=\"message\">".$VM_LANG->_PHPSHOP_PAYMENT_INTERNAL_ERROR." eProcessingNetork.com</span>";
+              $html = "<br/><span class=\"message\">".$VM_LANG->_('PHPSHOP_PAYMENT_INTERNAL_ERROR')." eProcessingNetork.com</span>";
               return false;
             }
             else {
@@ -654,7 +654,7 @@ Discover Test Account       5424000000000015
         
         // Approved - Success!
         if ($response[0] == '1') {
-           $d["order_payment_log"] = $VM_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+           $d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
            $d["order_payment_log"] .= $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];

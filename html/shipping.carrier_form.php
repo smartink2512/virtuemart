@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_CARRIER_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_CARRIER_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -33,11 +33,11 @@ if (!empty($shipping_carrier_id)) {
 ?><br />
 <table class="adminform">
 	<tr>
-		<td width="21%" ><div align="right"><?php echo $VM_LANG->_PHPSHOP_CARRIER_FORM_NAME ?>:</div></td>
+		<td width="21%" ><div align="right"><?php echo $VM_LANG->_('PHPSHOP_CARRIER_FORM_NAME') ?>:</div></td>
 		<td width="79%" ><input class="inputbox" type="text" name="shipping_carrier_name" size="32" maxlength="255" value="<?php $db->sp("shipping_carrier_name") ?>"></td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><?php echo $VM_LANG->_PHPSHOP_CARRIER_FORM_LIST_ORDER ?>:</div></td>
+		<td width="21%" ><div align="right"><?php echo $VM_LANG->_('PHPSHOP_CARRIER_FORM_LIST_ORDER') ?>:</div></td>
 		<td width="79%" ><input class="inputbox" type="text" name="shipping_carrier_list_order" size="32" maxlength="255" value="<?php $db->sp("shipping_carrier_list_order") ?>"></td>
 	</tr>
 </table>

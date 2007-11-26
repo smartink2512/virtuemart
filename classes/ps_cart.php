@@ -156,12 +156,12 @@ class ps_cart {
 
 			// Check for negative quantity
 			if ($quantity < 0) {
-				$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
+				$vmLogger->warning( $VM_LANG->_('PHPSHOP_CART_ERROR_NO_NEGATIVE',false) );
 				return False;
 			}
 
 			if (!ereg("^[0-9]*$", $quantity)) {
-				$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
+				$vmLogger->warning( $VM_LANG->_('PHPSHOP_CART_ERROR_NO_VALID_QUANTITY',false) );
 				return False;
 			}
 			// Check to see if checking stock quantity
@@ -198,7 +198,7 @@ class ps_cart {
 			$db->query ( $q );
 
 			if ( $db->num_rows()) {
-				$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+				$vmLogger->tip( $VM_LANG->_('PHPSHOP_CART_SELECT_ITEM',false) );
 				return false;
 			}
 
@@ -211,7 +211,7 @@ class ps_cart {
 			|| ($multiple_products == 1 && ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] ))) ) {
 				$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
 				$GLOBALS['page'] = 'shop.product_details';
-				$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+				$vmLogger->tip( $VM_LANG->_('PHPSHOP_CART_SELECT_ITEM',false) );
 				return true;
 			}
 
@@ -219,7 +219,7 @@ class ps_cart {
 			//Normally means no info added to a custom field, but once added to a cart the quantity is automatically placed
 			//If another item is added and the custom field is left blank for another product already added this will just ignore that item
 			if ($multiple_products != 1 && $quantity != 0 && ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )))  {
-				$vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+				$vmLogger->tip( $VM_LANG->_('PHPSHOP_CART_SELECT_ITEM',false) );
 				continue;
 			}
 
@@ -235,12 +235,12 @@ class ps_cart {
 			}
 			list($min,$max) = ps_product::product_order_levels($product_id);
 			If ($min!= 0 && $quantity !=0 && $quantity < $min) {
-				eval( "\$msg = \"".$VM_LANG->_VM_CART_MIN_ORDER."\";" );
+				eval( "\$msg = \"".$VM_LANG->_('VM_CART_MIN_ORDER',false)."\";" );
 				$vmLogger->warning( $msg );
 				continue;
 			}
 			if ($max !=0 && $quantity !=0 && $quantity>$max) {
-				eval( "\$msg = \"".$VM_LANG->_VM_CART_MAX_ORDER."\";" );
+				eval( "\$msg = \"".$VM_LANG->_('VM_CART_MAX_ORDER',false)."\";" );
 				$vmLogger->warning( $msg );
 				continue;
 			}
@@ -278,18 +278,18 @@ class ps_cart {
 		// Ouput info message with cart update details /*
 		if($total_quantity !=0 || $total_updated !=0 || $total_deleted !=0) {
 			if( $total_quantity > 0 && $total_updated ==0 ) {
-				$msg = $VM_LANG->_VM_CART_PRODUCT_ADDED;
+				$msg = $VM_LANG->_('VM_CART_PRODUCT_ADDED',false);
 			} else {
-				$msg = $VM_LANG->_VM_CART_PRODUCT_UPDATED;
+				$msg = $VM_LANG->_('VM_CART_PRODUCT_UPDATED',false);
 			}
 			
 			// Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
 			$vmLogger->info( $msg );
 		}
         else if (@$request_stock) {
-            $vmLogger->tip( $VM_LANG->_PHPSHOP_CART_GOTO_WAITING_LIST );
+            $vmLogger->tip( $VM_LANG->_('PHPSHOP_CART_GOTO_WAITING_LIST',false) );
 		} else {
-            $vmLogger->tip( $VM_LANG->_PHPSHOP_CART_SELECT_ITEM );
+            $vmLogger->tip( $VM_LANG->_('PHPSHOP_CART_SELECT_ITEM',false) );
         }
 		// end cart update message */
 
@@ -330,12 +330,12 @@ class ps_cart {
 
 		// Check for negative quantity
 		if ($quantity < 0) {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
+			$vmLogger->warning( $VM_LANG->_('PHPSHOP_CART_ERROR_NO_NEGATIVE',false) );
 			return False;
 		}
 
 		if (!ereg("^[0-9]*$", $quantity)) {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
+			$vmLogger->warning( $VM_LANG->_('PHPSHOP_CART_ERROR_NO_VALID_QUANTITY',false) );
 			return False;
 		}
 
@@ -360,12 +360,12 @@ class ps_cart {
 					// Get min and max order levels
 					list($min,$max) = ps_product::product_order_levels($product_id);
 					If ($min!= 0 && $quantity < $min) {
-						eval( "\$msg = \"".$VM_LANG->_VM_CART_MIN_ORDER."\";" );
+						eval( "\$msg = \"".$VM_LANG->_('VM_CART_MIN_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}
 					if ($max !=0 && $quantity>$max) {
-						eval( "\$msg = \"".$VM_LANG->_VM_CART_MAX_ORDER."\";" );
+						eval( "\$msg = \"".$VM_LANG->_('VM_CART_MAX_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}
@@ -514,12 +514,12 @@ class ps_cart {
 
 		// Check for negative quantity
 		if ($quantity < 0) {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_NEGATIVE );
+			$vmLogger->warning( $VM_LANG->_('PHPSHOP_CART_ERROR_NO_NEGATIVE',false) );
 			return False;
 		}
 
 		if (!ereg("^[0-9]*$", $quantity)) {
-			$vmLogger->warning( $VM_LANG->_PHPSHOP_CART_ERROR_NO_VALID_QUANTITY );
+			$vmLogger->warning( $VM_LANG->_('PHPSHOP_CART_ERROR_NO_VALID_QUANTITY',false) );
 			return False;
 		}
 
@@ -539,12 +539,12 @@ class ps_cart {
 					// Get min and max order levels
 					list($min,$max) = ps_product::product_order_levels($product_id);
 					If ($min!= 0 && $quantity < $min) {
-						eval( "\$msg = \"".$VM_LANG->_VM_CART_MIN_ORDER."\";" );
+						eval( "\$msg = \"".$VM_LANG->_('VM_CART_MIN_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}
 					if ($max !=0 && $quantity>$max) {
-						eval( "\$msg = \"".$VM_LANG->_VM_CART_MAX_ORDER."\";" );
+						eval( "\$msg = \"".$VM_LANG->_('VM_CART_MAX_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}

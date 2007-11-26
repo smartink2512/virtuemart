@@ -460,15 +460,15 @@ class vmLog
     {	
     	global $VM_LANG;
         $levels = array(
-            PEAR_LOG_EMERG   => $VM_LANG->_PEAR_LOG_EMERG,
-            PEAR_LOG_ALERT   => $VM_LANG->_PEAR_LOG_ALERT,
-            PEAR_LOG_CRIT    => $VM_LANG->_PEAR_LOG_CRIT,
-            PEAR_LOG_ERR     => $VM_LANG->_PEAR_LOG_ERR,
-            PEAR_LOG_WARNING => $VM_LANG->_PEAR_LOG_WARNING,
-            PEAR_LOG_NOTICE  => $VM_LANG->_PEAR_LOG_NOTICE,
-            PEAR_LOG_INFO    => $VM_LANG->_PEAR_LOG_INFO,
-            PEAR_LOG_DEBUG   => $VM_LANG->_PEAR_LOG_DEBUG,
-            PEAR_LOG_TIP   => $VM_LANG->_PEAR_LOG_TIP
+            PEAR_LOG_EMERG   => $VM_LANG->_('PEAR_LOG_EMERG'),
+            PEAR_LOG_ALERT   => $VM_LANG->_('PEAR_LOG_ALERT'),
+            PEAR_LOG_CRIT    => $VM_LANG->_('PEAR_LOG_CRIT'),
+            PEAR_LOG_ERR     => $VM_LANG->_('PEAR_LOG_ERR'),
+            PEAR_LOG_WARNING => $VM_LANG->_('PEAR_LOG_WARNING'),
+            PEAR_LOG_NOTICE  => $VM_LANG->_('PEAR_LOG_NOTICE'),
+            PEAR_LOG_INFO    => $VM_LANG->_('PEAR_LOG_INFO'),
+            PEAR_LOG_DEBUG   => $VM_LANG->_('PEAR_LOG_DEBUG'),
+            PEAR_LOG_TIP   => $VM_LANG->_('PEAR_LOG_TIP')
         );
 
         return $levels[$priority];
@@ -490,15 +490,15 @@ class vmLog
     {
     	global $VM_LANG;
         $levels = array(
-            $VM_LANG->_PEAR_LOG_EMERG => PEAR_LOG_EMERG,
-            $VM_LANG->_PEAR_LOG_ALERT     => PEAR_LOG_ALERT,
-            $VM_LANG->_PEAR_LOG_CRIT  => PEAR_LOG_CRIT,
-            $VM_LANG->_PEAR_LOG_ERR     => PEAR_LOG_ERR,
-            $VM_LANG->_PEAR_LOG_WARNING   => PEAR_LOG_WARNING,
-            $VM_LANG->_PEAR_LOG_NOTICE    => PEAR_LOG_NOTICE,
-            $VM_LANG->_PEAR_LOG_INFO      => PEAR_LOG_INFO,
-            $VM_LANG->_PEAR_LOG_DEBUG     => PEAR_LOG_DEBUG,
-            $VM_LANG->_PEAR_LOG_TIP     => PEAR_LOG_TIP
+            $VM_LANG->_('PEAR_LOG_EMERG')	=> PEAR_LOG_EMERG,
+            $VM_LANG->_('PEAR_LOG_ALERT')	=> PEAR_LOG_ALERT,
+            $VM_LANG->_('PEAR_LOG_CRIT')	=> PEAR_LOG_CRIT,
+            $VM_LANG->_('PEAR_LOG_ERR')		=> PEAR_LOG_ERR,
+            $VM_LANG->_('PEAR_LOG_WARNING')	=> PEAR_LOG_WARNING,
+            $VM_LANG->_('PEAR_LOG_NOTICE')	=> PEAR_LOG_NOTICE,
+            $VM_LANG->_('PEAR_LOG_INFO')	=> PEAR_LOG_INFO,
+            $VM_LANG->_('PEAR_LOG_DEBUG')	=> PEAR_LOG_DEBUG,
+            $VM_LANG->_('PEAR_LOG_TIP')		=> PEAR_LOG_TIP
         );
 
         return $levels[strtolower($name)];

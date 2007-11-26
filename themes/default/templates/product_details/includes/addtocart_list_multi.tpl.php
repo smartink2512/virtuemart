@@ -8,14 +8,14 @@
 <!-- Output The heading -->
 <?php if($display_header == "Y") { ?>
     <div class="vmCartChildHeading<?php echo $cls_suffix ?>">
-        <span style="float: left;width: <?php echo $desc_width ?>;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_DESC_TITLE ?></span >
+        <span style="float: left;width: <?php echo $desc_width ?>;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DESC_TITLE') ?></span >
         <?php //Ouput Each Attribute Heading
         foreach($headings as $key => $value) { ?>
             <span style="float: left;width: <?php echo $attrib_width ?>;" ><?php echo $headings[$key] ?></span>
         <?php } ?>
         <span style="float: right;width: 15%;">&nbsp;</span>
-        <span style="float: right;width: 10%;"><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?></span>
-        <span style="float: right;width: 12%;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_INVENTORY_PRICE ?></span>
+        <span style="float: right;width: 10%;"><?php echo $VM_LANG->_('PHPSHOP_CART_QUANTITY') ?></span>
+        <span style="float: right;width: 12%;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_PRICE') ?></span>
     </div><br/>
 <?php }
 // Loop through each row and build the table
@@ -40,9 +40,9 @@ foreach( $products as $product ) {
                     <span class="vmChildDetail<?php echo $cls_suffix ?>" style="float: left;width :<?php echo $attrib_width ?>;" />
 	                <?php echo " ".$attribute ?></span>
                 <?php } 
-                if (USE_AS_CATALOGUE != '1'  && $product_price != "" && !stristr( $product_price, $VM_LANG->_PHPSHOP_PRODUCT_CALL)) { ?>
+                if (USE_AS_CATALOGUE != '1'  && $product_price != "" && !stristr( $product_price, $VM_LANG->_('PHPSHOP_PRODUCT_CALL'))) { ?>
                     <span class="vmChildDetail<?php echo $cls_suffix ?>" style="float: right;text-align: right;margin-top: 0px;">
-                    <input type="submit" class="addtocart_button" value="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" title="<?php echo $VM_LANG->_PHPSHOP_CART_ADD_TO ?>" /></span>
+                    <input type="submit" class="addtocart_button" value="<?php echo $VM_LANG->_('PHPSHOP_CART_ADD_TO') ?>" title="<?php echo $VM_LANG->_('PHPSHOP_CART_ADD_TO') ?>" /></span>
                 <?php } 
                 // Output Quantity Box 
                 if (USE_AS_CATALOGUE != '1' ) { ?>

@@ -212,7 +212,7 @@ class ps_manufacturer_category {
 		$db->query($q);
 		$array = array();
 		if ( $rowcnt > 1) {
-			$array[0] = $VM_LANG->_PHPSHOP_SELECT;
+			$array[0] = $VM_LANG->_('PHPSHOP_SELECT');
 		}
 		while ($db->next_record()) {
 			$array[$db->f("mf_category_id")] = $db->f("mf_category_name");

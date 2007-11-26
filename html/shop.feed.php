@@ -240,7 +240,7 @@ function getProductDescription( $product, &$feed_info )  {
 		if( $feed_info['show_price'] == '1' ) {
 			require_once( CLASSPATH . "ps_product.php" );
 			$ps_product =& new ps_product();
-			$desc .= "<br />".$VM_LANG->_PHPSHOP_CART_PRICE.": ".$ps_product->show_price( $product['id'] );
+			$desc .= "<br />".$VM_LANG->_('PHPSHOP_CART_PRICE').": ".$ps_product->show_price( $product['id'] );
 			$desc = preg_replace( "/<span class=\"product-Old-Price\"[^>]*?>(.*?)<\/span>/si", '<strike>\1</strike>', $desc );
 		}
 	}

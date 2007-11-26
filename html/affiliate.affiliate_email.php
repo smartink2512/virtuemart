@@ -35,25 +35,25 @@ mm_showMyFileName( __FILE__ );
   <?php }?> 
   <tr> 
     <td width="30%" height="20" valign="top">
-    <div align="left"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_WHO ?></div>
+    <div align="left"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_EMAIL_WHO') ?></div>
     </td>
     <td width="70%" height="20"><?php $ps_affiliate->get_affiliate_list();?></td>
   </tr>
   <tr>
-    <td width="30%" valign="top" height="20"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_STATS ?>
+    <td width="30%" valign="top" height="20"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_EMAIL_STATS') ?>
     </td>
     <td width="70%" height="20">
       <input type="checkbox" name="send_stats" value="stats_on">
     </td>
   </tr>
   <tr>
-      <td width="30%" valign="top" height="20"><?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_SUBJECT ?></td>
-      <td width="70%" align="left" height="20"><input type="text" name="subject" value="<?php echo$VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_SUBJECT ?>">
+      <td width="30%" valign="top" height="20"><?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_EMAIL_SUBJECT') ?></td>
+      <td width="70%" align="left" height="20"><input type="text" name="subject" value="<?php echo$VM_LANG->_('PHPSHOP_AFFILIATE_EMAIL_SUBJECT') ?>">
       </td>
   </tr> 
   <tr>
       <td nowrap valign="top" width="30%">
-          <?php echo $VM_LANG->_PHPSHOP_AFFILIATE_EMAIL_CONTENT ?>
+          <?php echo $VM_LANG->_('PHPSHOP_AFFILIATE_EMAIL_CONTENT') ?>
           <br /><br /><br /> 
       </td>
       <td nowrap width="70%">

@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_CARRIER_LIST_LBL, IMAGEURL."ps_image/ups.gif", $modulename, "carrier_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CARRIER_LIST_LBL'), IMAGEURL."ps_image/ups.gif", $modulename, "carrier_list");
 
 // start the list table
 $listObj->startTable();
@@ -54,9 +54,9 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_CARRIER_LIST_NAME_LBL => '',
-					$VM_LANG->_PHPSHOP_CARRIER_LIST_ORDER_LBL => '',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_CARRIER_LIST_NAME_LBL') => '',
+					$VM_LANG->_('PHPSHOP_CARRIER_LIST_ORDER_LBL') => '',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
   

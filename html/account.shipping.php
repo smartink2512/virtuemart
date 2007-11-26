@@ -17,12 +17,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL );
+$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_USER_FORM_SHIPTO_LBL') );
 
 // Set the CMS pathway
 $pathway = array();
-$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'index.php?page=account.index' ) );
-$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_USER_FORM_SHIPTO_LBL );
+$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_ACCOUNT_TITLE'), $sess->url( SECUREURL .'index.php?page=account.index' ) );
+$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_USER_FORM_SHIPTO_LBL') );
 $vm_mainframe->vmAppendPathway( $pathway );
 
 // Set the internal VirtueMart pathway

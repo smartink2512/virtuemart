@@ -385,7 +385,7 @@ class ps_user {
 			} else {
 				if( !empty( $_POST['password'] )) {
 					if( $row->password != @$_POST['password2'] ) {
-						$d['error'] = vmHtmlEntityDecode($VM_LANG->_REGWARN_VPASS2);
+						$d['error'] = vmHtmlEntityDecode($VM_LANG->_('REGWARN_VPASS2',false));
 						return false;
 					}
 				}
@@ -567,8 +567,8 @@ class ps_user {
 		$database->setQuery( $query );
 		$adminEmail = $database->loadResult();
 		
-		$subject = $VM_LANG->_NEW_USER_MESSAGE_SUBJECT;
-		$message = sprintf ( $VM_LANG->_NEW_USER_MESSAGE, $name, $mosConfig_sitename, $mosConfig_live_site, $username, $password );
+		$subject = $VM_LANG->_('NEW_USER_MESSAGE_SUBJECT',false);
+		$message = sprintf ( $VM_LANG->_('NEW_USER_MESSAGE',false), $name, $mosConfig_sitename, $mosConfig_live_site, $username, $password );
 		
 		if ($mosConfig_mailfrom != "" && $mosConfig_fromname != "") {
 			$adminName 	= $mosConfig_fromname;

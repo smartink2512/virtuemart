@@ -76,15 +76,15 @@ $theme->set_vars( // Import these values into the template files
 	
 if ($cart["idx"] > 0) {
 	
-	echo '<h3>'. $VM_LANG->_PHPSHOP_CHECKOUT_TITLE .'</h3>';
+	echo '<h3>'. $VM_LANG->_('PHPSHOP_CHECKOUT_TITLE') .'</h3>';
 	
     if (!defined('_MIN_POV_REACHED')) {
     	echo $basket_html;
     	?>
         <div align="center">
-            <script type="text/javascript">alert('<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV ?>');</script>
-            <strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV ?></strong><br />
-            <strong><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_MIN_POV2 . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></strong>
+            <script type="text/javascript">alert('<?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_MIN_POV',false) ?>');</script>
+            <strong><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_MIN_POV') ?></strong><br />
+            <strong><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_MIN_POV2') . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></strong>
         </div><?php
         return;
     }
@@ -108,7 +108,7 @@ if ($cart["idx"] > 0) {
 		$theme->set( 'basket_html', $basket_html );
 		
 	    // Set Dynamic Page Title: "Checkout: Step x of x"
-	    $mainframe->setPageTitle( sprintf( $VM_LANG->_VM_CHECKOUT_TITLE_TAG, $current_stage, count($checkout_steps) ));
+	    $mainframe->setPageTitle( sprintf( $VM_LANG->_('VM_CHECKOUT_TITLE_TAG'), $current_stage, count($checkout_steps) ));
 	    
 	    // CHECK_OUT_GET_SHIPPING_ADDR
 	    // Lets the user pick or add an alternative Shipping Address
@@ -149,7 +149,7 @@ if ($cart["idx"] > 0) {
         if( !in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {
          	?>
                 <div align="center">
-                <input type="submit" class="button" name="formSubmit" value="<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_NEXT;?> &gt;&gt;" />
+                <input type="submit" class="button" name="formSubmit" value="<?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_NEXT');?> &gt;&gt;" />
                 </div>
             <?php 
 		} ?>
@@ -169,7 +169,7 @@ if ($cart["idx"] > 0) {
             // USER IS LOGGED IN, BUT NO REGISTERED CUSTOMER
             // WE NEED SOME ADDITIONAL INFORMATION HERE,
             // SO REDIRECT HIM TO shop/shopper_add
-      		$vmLogger->info( $VM_LANG->_PHPSHOP_NO_CUSTOMER );
+      		$vmLogger->info( $VM_LANG->_('PHPSHOP_NO_CUSTOMER',false) );
       
             include(PAGEPATH. 'checkout_register_form.php');
           }

@@ -47,7 +47,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_COUNTRY_LIST_LBL, IMAGEURL."ps_image/countries.gif", "admin", "country_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_COUNTRY_LIST_LBL'), IMAGEURL."ps_image/countries.gif", "admin", "country_list");
 
 // start the list table
 $listObj->startTable();
@@ -55,11 +55,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
-					$VM_LANG->_PHPSHOP_COUNTRY_LIST_NAME => "width=\"30%\"",
-					$VM_LANG->_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL => "width=\"25%\"",
-					$VM_LANG->_PHPSHOP_COUNTRY_LIST_3_CODE => "width=\"20%\"",
-					$VM_LANG->_PHPSHOP_COUNTRY_LIST_2_CODE => "width=\"20%\"",
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_COUNTRY_LIST_NAME') => "width=\"30%\"",
+					$VM_LANG->_('PHPSHOP_ZONE_ASSIGN_CURRENT_LBL') => "width=\"25%\"",
+					$VM_LANG->_('PHPSHOP_COUNTRY_LIST_3_CODE') => "width=\"20%\"",
+					$VM_LANG->_('PHPSHOP_COUNTRY_LIST_2_CODE') => "width=\"20%\"",
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -79,7 +79,7 @@ while ($db->next_record()) {
 	
 	$tmp_cell = "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.country_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&country_id=".$db->f("country_id")) ."\">";
 	$tmp_cell .= $db->f("country_name") ."</a>&nbsp;&nbsp;";
-	$tmp_cell .= "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.country_state_list&country_id=".$db->f("country_id")) ."\">[ ". $VM_LANG->_PHPSHOP_STATE_LIST_MNU ." ]</a>";
+	$tmp_cell .= "<a href=\"". $sess->url($_SERVER['PHP_SELF'] ."?page=admin.country_state_list&country_id=".$db->f("country_id")) ."\">[ ". $VM_LANG->_('PHPSHOP_STATE_LIST_MNU') ." ]</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $db->f("zone_id") );

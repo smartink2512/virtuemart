@@ -31,7 +31,7 @@ if (!empty( $country_id )) {
 $funcname = !empty($country_id) ? "countryUpdate" : "countryAdd";
 
 // Create the Form Control Object
-$formObj =& new formFactory( $VM_LANG->_PHPSHOP_COUNTRY_LIST_ADD );
+$formObj =& new formFactory( $VM_LANG->_('PHPSHOP_COUNTRY_LIST_ADD') );
 
 // Start the the Form
 $formObj->startForm();
@@ -43,23 +43,23 @@ $formObj->hiddenField( 'country_id', $country_id );
 		<td colspan="2">&nbsp;</td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_COUNTRY_LIST_NAME ?>:</td>
+		<td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUNTRY_LIST_NAME') ?>:</td>
 		<td width="76%"> 
 			<input type="text" class="inputbox" name="country_name" value="<?php $db->sp("country_name") ?>" />
 		</td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_ZONE_ASSIGN_CURRENT_LBL ?>:</td>
+		<td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_ZONE_ASSIGN_CURRENT_LBL') ?>:</td>
 		<td width="76%"><?php echo $ps_zone->list_zones('zone_id',$db->f('zone_id'));  ?></td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_COUNTRY_LIST_2_CODE ?>:</td>
+		<td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUNTRY_LIST_2_CODE') ?>:</td>
 		<td width="76%"> 
 			<input type="text" class="inputbox" name="country_2_code" value="<?php $db->sp("country_2_code") ?>" />
 		</td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo $VM_LANG->_PHPSHOP_COUNTRY_LIST_3_CODE ?>:</td>
+		<td width="24%" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUNTRY_LIST_3_CODE') ?>:</td>
 		<td width="76%"> 
 			<input type="text" class="inputbox" name="country_3_code" value="<?php $db->sp("country_3_code") ?>" />
 		</td>

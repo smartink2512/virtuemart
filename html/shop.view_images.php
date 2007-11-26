@@ -33,14 +33,14 @@ if( !empty($product_id) ) {
   $db->query( "SELECT product_name,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_id='$product_id'" );
   $db->next_record();
   
-  echo "<h3>".$VM_LANG->_PHPSHOP_AVAILABLE_IMAGES." ".$db->f("product_name")."</h3>\n";
+  echo "<h3>".$VM_LANG->_('PHPSHOP_AVAILABLE_IMAGES')." ".$db->f("product_name")."</h3>\n";
   
   if( !$pop ) {
   	echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid\">"
-      . $VM_LANG->_PHPSHOP_BACK_TO_DETAILS."</a>";
+      . $VM_LANG->_('PHPSHOP_BACK_TO_DETAILS')."</a>";
   }
   else {
-  	echo '<a href="#" onclick="javascript: window.close();">'.$VM_LANG->_PROMPT_CLOSE.'</a>';
+  	echo '<a href="#" onclick="javascript: window.close();">'.$VM_LANG->_('PROMPT_CLOSE').'</a>';
   }
   
   echo '<br/><br/><br/>';
@@ -110,7 +110,7 @@ if( !empty($product_id) ) {
       	echo "<div style=\"text-align:center;overflow:auto;\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" border=\"0\" /></div>";
     }
     else {
-      echo $VM_LANG->_PHPSHOP_IMAGE_NOT_FOUND;
+      echo $VM_LANG->_('PHPSHOP_IMAGE_NOT_FOUND');
     }
   }
 }

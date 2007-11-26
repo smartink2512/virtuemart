@@ -82,18 +82,18 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
       document.checkout_pbscc_payment.CVC.value = document.checkout_pbscc_payment.CVC.value.replace(/(\D)+/g,"");
       
       if(document.checkout_pbscc_payment.CardNumber.value.length < 10 ) {
-        alert('<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_ERR_NO_CCDATE ?>');
+        alert('<?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_NO_CCDATE',false) ?>');
         return false;
       }      
       else if(document.checkout_pbscc_payment.CVC.value.length < 3 ) {
-        alert('<?php echo $VM_LANG->_CONTACT_FORM_NC ?>');
+        alert('<?php echo $VM_LANG->_('CONTACT_FORM_NC',false) ?>');
         return false;
       }
       return true;
     }
     </script>
             
-        <h2><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PAYINFO_LBL ?></h2>
+        <h2><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYINFO_LBL') ?></h2>
         <h3>This page is located on the webshop's website.<br/>
         the gateway executes the page on the website, and the shows the result SSL Encrypted.</h3>
     
@@ -108,22 +108,22 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
     <br/>
     <table>
       <tr>
-        <td><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_PO_NUMBER ?>:</td>
+        <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_NUMBER') ?>:</td>
         <td><?php printf("%08d", $db->f("order_id")); ?></td>
       </tr>
       <tr>
-        <td><?php echo $VM_LANG->_PHPSHOP_CART_TOTAL ?>:</td>
+        <td><?php echo $VM_LANG->_('PHPSHOP_CART_TOTAL') ?>:</td>
         <td><?php echo $CURRENCY_DISPLAY->getFullValue( $db->f("order_total")); ?></td>
       </tr>
       <tr>
         <td colspan="2"><hr/></td>
       </tr>
       <tr>
-        <td><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM ?>:</td>
+        <td><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM') ?>:</td>
         <td><input class="inputbox" type="text" name="CardNumber" autocomplete="off" size="20"></td>
       </tr>
       <tr>
-        <td><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE ?>:</td>
+        <td><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE') ?>:</td>
         <td>
           <select class="inputbox" name="ExpireMonth">
             <option value="01">01</option>
@@ -159,7 +159,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
       <tr>
         <td>Credit Card Validation Code:</td>
         <td><input class="inputbox" type="text" name="CVC" size="5" autocomplete="off" size="3" maxlength="3" />
-        <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_CUSTOMER_CVV2_TOOLTIP, "What\'s the Credit Card Validation Code?"); ?>
+        <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP'), "What\'s the Credit Card Validation Code?"); ?>
         </td>
       </tr>
     </table>
@@ -172,7 +172,7 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
 else {
 ?>
       <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-      <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYMENT_ERROR ?> (MD5 Check failed)</span>
+      <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?> (MD5 Check failed)</span>
 <?php
 }
 ?>

@@ -38,13 +38,13 @@ $db->query($q);
 
 if ($db->next_record()) {
 	
-	$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO.' : '.$VM_LANG->_PHPSHOP_ORDER_LIST_ID.' '.$db->f('order_id'));
+	$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_ACC_ORDER_INFO').' : '.$VM_LANG->_('PHPSHOP_ORDER_LIST_ID').' '.$db->f('order_id'));
 	require_once( CLASSPATH.'ps_product_category.php');
 	
 	// Set the CMS pathway
 	$pathway = array();
-	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACCOUNT_TITLE, $sess->url( SECUREURL .'index.php?page=account.index' ) );
-	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_PHPSHOP_ACC_ORDER_INFO );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_ACCOUNT_TITLE'), $sess->url( SECUREURL .'index.php?page=account.index' ) );
+	$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_ACC_ORDER_INFO') );
 	$vm_mainframe->vmAppendPathway( $pathway );
 	
 	// Set the internal VirtueMart pathway

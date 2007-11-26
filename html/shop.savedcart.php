@@ -19,8 +19,8 @@ mm_showMyFileName( __FILE__ );
 
 $manufacturer_id = vmGet( $_REQUEST, 'manufacturer_id');
 
-$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_CART_TITLE );
-$mainframe->appendPathWay( $VM_LANG->_PHPSHOP_CART_TITLE );
+$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_CART_TITLE') );
+$mainframe->appendPathWay( $VM_LANG->_('PHPSHOP_CART_TITLE') );
 
 $continue_link = $_SERVER['HTTP_REFERER'];
 $action_url = $mm_action_url.basename($_SERVER['PHP_SELF']);
@@ -33,24 +33,24 @@ $tpl->set('replaceSaved',  '<form action="'.$action_url.'" method="post" id="rep
     <input type="hidden" name="page" value="'. $page .'" />
     <input type="hidden" name="Itemid" value="'. $sess->getShopItemid() .'" />
     <input type="hidden" name="func" value="replaceSavedCart" />
-    <label for="replace">'. $VM_LANG->_VM_RECOVER_CART_REPLACE .'</label>
-  	<input type="image" id="replace" name="replace" title="'. $VM_LANG->_VM_RECOVER_CART_REPLACE .'" src="'. VM_THEMEURL .'images/update_quantity_cart.png" border="0" alt="'. $VM_LANG->_VM_RECOVER_CART_REPLACE .'" align="absmiddle" />
+    <label for="replace">'. $VM_LANG->_('VM_RECOVER_CART_REPLACE') .'</label>
+  	<input type="image" id="replace" name="replace" title="'. $VM_LANG->_('VM_RECOVER_CART_REPLACE') .'" src="'. VM_THEMEURL .'images/update_quantity_cart.png" border="0" alt="'. $VM_LANG->_('VM_RECOVER_CART_REPLACE') .'" align="absmiddle" />
   </form>');
 $tpl->set('mergeSaved', '<form action="'.$action_url.'" method="post" id="mergecart" name="mergecart" style="display: inline;">
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="page" value="'. $page .'" />
     <input type="hidden" name="Itemid" value="'. $sess->getShopItemid() .'" />
     <input type="hidden" name="func" value="mergeSavedCart" />
-    <label for="merge">'. $VM_LANG->_VM_RECOVER_CART_MERGE .'</label>
-  	<input type="image" id="merge" name="merge" title="'. $VM_LANG->_VM_RECOVER_CART_MERGE .'" src="'. VM_THEMEURL .'images/add_quantity_cart.png" border="0" alt="'. $VM_LANG->_VM_RECOVER_CART_MERGE .'" align="absmiddle" />
+    <label for="merge">'. $VM_LANG->_('VM_RECOVER_CART_MERGE') .'</label>
+  	<input type="image" id="merge" name="merge" title="'. $VM_LANG->_('VM_RECOVER_CART_MERGE') .'" src="'. VM_THEMEURL .'images/add_quantity_cart.png" border="0" alt="'. $VM_LANG->_('VM_RECOVER_CART_MERGE') .'" align="absmiddle" />
   </form>');
 $tpl->set('deleteSaved', '<form action="'.$action_url.'" method="post" id="deletecart" name="deletecart" style="display: inline;">
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="page" value="'. $page .'" />
     <input type="hidden" name="Itemid" value="'. $sess->getShopItemid() .'" />
     <input type="hidden" name="func" value="deleteSavedCart" />
-    <label for="delete">'. $VM_LANG->_VM_RECOVER_CART_DELETE .'</label>
-  	<input type="image" id="delete" name="delete" title="'. $VM_LANG->_VM_RECOVER_CART_DELETE .'" src="'. VM_THEMEURL .'images/remove_from_cart.png" border="0" alt="'. $VM_LANG->_VM_RECOVER_CART_DELETE .'" align="absmiddle" />
+    <label for="delete">'. $VM_LANG->_('VM_RECOVER_CART_DELETE') .'</label>
+  	<input type="image" id="delete" name="delete" title="'. $VM_LANG->_('VM_RECOVER_CART_DELETE') .'" src="'. VM_THEMEURL .'images/remove_from_cart.png" border="0" alt="'. $VM_LANG->_('VM_RECOVER_CART_DELETE') .'" align="absmiddle" />
   </form>');
 $tpl->set('show_basket', $show_basket );
 $tpl->set('continue_link', $continue_link );

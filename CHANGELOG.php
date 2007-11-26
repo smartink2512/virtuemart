@@ -35,6 +35,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.11.2007 thepisu
+^ language variables are now globally called by using "_" function, like: $VM_LANG->_('MYSTRING')
+! language variables must be called without starting "_" underscore; for example, $VM_LANG->_('MYSTRING') will call $_MYSTRING variable
+! html entities are automatically converted in strings; to prevent it (example in javascript alert), use $VM_LANG->_('MYSTRING',false)
++ language function $VM_LANG->exists('MYSTRING'), return true if string exists in language file
++ charset definition in language file, used for htmlentities PHP function; now language file charset can be different from Joomla! charset
+# some minor corrections
++ added function $ps_DB->getTableFields(array), for Joomla 1.5 compatibility (function not present in legacy plugin)
+
 24.11.2007 soeren
 ! Known Issue: Redirection from https => http (if "generally prevent https" enabled) not working on Joomla! 1.5 currently,
 because Joomla! 1.5 doesn't know a $mainframe->getCfg('live_site') value other than the currently requested URL

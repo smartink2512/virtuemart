@@ -40,8 +40,8 @@ class dhl {
 			$ship_timestamp = mktime(0, 0, 0, $cur_month,
 			    $cur_day_of_month + 1, $cur_year);
 			$ship_delay_msg =
-			    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_NOT_ON_WEEKENDS . " " .
-			    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT . ": " .
+			    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_NOT_ON_WEEKENDS') . " " .
+			    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT') . ": " .
 				date('M j, Y', $ship_timestamp);
 			$ship_day = 'Mon';
 			$ship_date = date('Y-m-d', $ship_timestamp);
@@ -51,8 +51,8 @@ class dhl {
 			$ship_timestamp = mktime(0, 0, 0, $cur_month,
 			    $cur_day_of_month + 2, $cur_year);
 			$ship_delay_msg =
-			    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_NOT_ON_WEEKENDS . " " .
-			    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT . ": " .
+			    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_NOT_ON_WEEKENDS') . " " .
+			    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT') . ": " .
 				date('M j, Y', $ship_timestamp);
 			$ship_day = 'Mon';
 			$ship_date = date('Y-m-d', $ship_timestamp);
@@ -66,9 +66,9 @@ class dhl {
 					$ship_timestamp = mktime(0, 0, 0, $cur_month,
 						$cur_day_of_month + 3, $cur_year);
 					$ship_delay_msg =
-						$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TO_SHIP
+						$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TO_SHIP')
 					    . " " .
-						$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT
+						$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT')
 					    . ": " .  date('M j, Y', $ship_timestamp);
 					$ship_day = 'Mon';
 					$ship_date = date('Y-m-d', $ship_timestamp);
@@ -76,9 +76,9 @@ class dhl {
 					$ship_timestamp = mktime(0, 0, 0, $cur_month,
 						$cur_day_of_month + 1, $cur_year);
 					$ship_delay_msg =
-						$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TO_SHIP
+						$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TO_SHIP')
 					    . " " .
-						$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT
+						$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_WILL_GO_OUT')
 					    . ": " .  date('M j, Y', $ship_timestamp);
 					$ship_day = date('D', $ship_timestamp);
 					$ship_date = date('Y-m-d', $ship_timestamp);
@@ -131,7 +131,7 @@ class dhl {
 			if (DHL_EXPRESS_ENABLED == 'TRUE') {
 				$methods[] = array(
 					'service_desc' =>
-					    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS,
+					    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS'),
 					'service_code' => 'E',
 					'special_service' => '',
 					'package_type' => DHL_DOMESTIC_PACKAGE,
@@ -140,7 +140,7 @@ class dhl {
 			if (DHL_NEXT_AFTERNOON_ENABLED == 'TRUE') {
 				$methods[] = array(
 					'service_desc' =>
-					    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON,
+					    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON'),
 					'service_code' => 'N',
 					'special_service' => '',
 					'package_type' => DHL_DOMESTIC_PACKAGE,
@@ -149,7 +149,7 @@ class dhl {
 			if (DHL_SECOND_DAY_ENABLED == 'TRUE') {
 				$methods[] = array(
 					'service_desc' =>
-					    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY,
+					    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY'),
 					'service_code' => 'S',
 					'special_service' => '',
 					'package_type' => DHL_DOMESTIC_PACKAGE,
@@ -158,7 +158,7 @@ class dhl {
 			if (DHL_GROUND_ENABLED == 'TRUE') {
 				$methods[] = array(
 					'service_desc' =>
-					    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_GROUND,
+					    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_GROUND'),
 					'service_code' => 'G',
 					'special_service' => '',
 					'package_type' => DHL_DOMESTIC_PACKAGE,
@@ -167,7 +167,7 @@ class dhl {
 			if (DHL_1030_ENABLED == 'TRUE') {
 				$methods[] = array(
 					'service_desc' =>
-					    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_1030,
+					    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_1030'),
 					'service_code' => 'E',
 					'special_service' => '1030',
 					'package_type' => DHL_DOMESTIC_PACKAGE,
@@ -177,7 +177,7 @@ class dhl {
 			if (DHL_SATURDAY_ENABLED == 'TRUE' && ($ship_day == 'Fri')) {
 				$methods[] = array(
 					'service_desc' =>
-					    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY,
+					    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY'),
 					'service_code' => 'E',
 					'special_service' => 'SAT',
 					'package_type' => DHL_DOMESTIC_PACKAGE,
@@ -194,7 +194,7 @@ class dhl {
 			if (DHL_INTERNATIONAL_ENABLED == 'TRUE') {
 				$methods[] = array(
 					'service_desc' =>
-					    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL,
+					    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL'),
 					'service_code' => 'IE',
 					'special_service' => '',
 					'package_type' => DHL_INTERNATIONAL_PACKAGE,
@@ -398,7 +398,7 @@ class dhl {
 				if (!empty($error)) {
 					$vmLogger->err(curl_error($CR));
 					$html = '<br/><span class="message">' .
-						$VM_LANG->_PHPSHOP_INTERNAL_ERROR .
+						$VM_LANG->_('PHPSHOP_INTERNAL_ERROR') .
 						 ' DHL</span>';
 					return (false);
 				}
@@ -409,10 +409,10 @@ class dhl {
 			$xmlResp =& new DOMIT_Lite_Document();
 			if (!$xmlResp->parseXML($xmlResult, false, true)) {
 				$vmLogger->err(
-				    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML .
+				    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML') .
 				    $xmlResult);
 				$html .= '<br /><span class="message">' .
-					$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML .
+					$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML') .
 				    '</span>';
 				continue;
 			}
@@ -424,10 +424,10 @@ class dhl {
 			$result_desc_list =& $xmlResp->getElementsByPath('//Result/Desc');
 			$result_desc =& $result_desc_list->item(0);
 			if ($result_code == NULL) {
-				$html .= $VM_LANG->_PHPSHOP_ERROR_DESC . ': ' .
-				    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT;
+				$html .= $VM_LANG->_('PHPSHOP_ERROR_DESC') . ': ' .
+				    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT');
 				$vmLogger->debug(
-				    $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT .
+				    $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT') .
 				    "\n" . $xmlResp->toNormalizedString());
 				continue;
 			}
@@ -966,7 +966,7 @@ class dhl {
 		// XML Parsing
 		$xmlResp =& new DOMIT_Lite_Document();
 		if (!$xmlResp->parseXML($xmlResult, false, true)) {
-			echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML .
+			echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML') .
 			    $xmlResult;
 			return (false);
 		}
@@ -979,7 +979,7 @@ class dhl {
 		$result_desc =& $result_desc_list->item(0);
 		if ($result_code == NULL) {
 			$vmLogger->debug(
-				$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT .
+				$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT') .
 				"\n" . $xmlResp->toNormalizedString());
 			return (false);
 		}
@@ -1180,7 +1180,7 @@ class dhl {
 			if (!empty($error)) {
 				$vmLogger->err(curl_error($CR));
 				$emsg = '<br/><span class="message">' .
-					$VM_LANG->_PHPSHOP_INTERNAL_ERROR .
+					$VM_LANG->_('PHPSHOP_INTERNAL_ERROR') .
 					 ' DHL</span>';
 				return ($emsg);
 			}
@@ -1191,7 +1191,7 @@ class dhl {
 		$xmlResp =& new DOMIT_Lite_Document();
 		if (!$xmlResp->parseXML($xmlResult, false, true)) {
 			$emsg = '<br /><span class="message">' .
-				$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML .
+				$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML') .
 				'</span>';
 			return ($emsg);
 		}
@@ -1203,10 +1203,10 @@ class dhl {
 		$result_desc_list =& $xmlResp->getElementsByPath('//Result/Desc');
 		$result_desc =& $result_desc_list->item(0);
 		if ($result_code == NULL) {
-			$emsg = $VM_LANG->_PHPSHOP_ERROR_DESC . ': ' .
-				$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT;
+			$emsg = $VM_LANG->_('PHPSHOP_ERROR_DESC') . ': ' .
+				$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT');
 			$vmLogger->debug(
-				$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT .
+				$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT') .
 				"\n" . $xmlResp->toNormalizedString());
 			return ($emsg);
 		}
@@ -1330,7 +1330,7 @@ class dhl {
 			if (!empty($error)) {
 				$vmLogger->err(curl_error($CR));
 				$emsg = '<br/><span class="message">' .
-					$VM_LANG->_PHPSHOP_INTERNAL_ERROR .
+					$VM_LANG->_('PHPSHOP_INTERNAL_ERROR') .
 					 ' DHL</span>';
 				curl_close($CR);
 				return ($emsg);
@@ -1341,7 +1341,7 @@ class dhl {
 		$xmlResp =& new DOMIT_Lite_Document();
 		if (!$xmlResp->parseXML($xmlResult, false, true)) {
 			$emsg = '<br /><span class="message">' .
-				$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML .
+				$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INVALID_XML') .
 				'</span>';
 			return ($emsg);
 		}
@@ -1685,12 +1685,12 @@ class dhl {
 		 * to display it's tracking data.
 		 */
 		$msg = '<p><strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_HISTORY;
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_HISTORY');
 		$msg .= '</strong><br />';
 		/* Now we've got all our data - format it into HTML */
 		if (count($tracking) == 0) {
 			$msg .= '<strong>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_NO_DATA;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_NO_DATA');
 			$msg .= '</strong>';
 		} else {
 			/* sort array by steps in reverse order */
@@ -1763,35 +1763,35 @@ class dhl {
 			$msg .= "\n";
 
 			$msg .= '<p>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SIGNATURE_LEGEND;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SIGNATURE_LEGEND');
 			$msg .= '<ul>';
 			$msg .= "\n";
 			$msg .= '<li>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LD;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LD');
 			$msg .= '</li>';
 			$msg .= "\n";
 			$msg .= '<li>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_FD;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_FD');
 			$msg .= '</li>';
 			$msg .= "\n";
 			$msg .= '<li>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_SD;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_SD');
 			$msg .= '</li>';
 			$msg .= "\n";
 			$msg .= '<li>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_BD;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_BD');
 			$msg .= '</li>';
 			$msg .= "\n";
 			$msg .= '<li>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_GAR;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_GAR');
 			$msg .= '</li>';
 			$msg .= "\n";
 			$msg .= '<li>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LOF;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LOF');
 			$msg .= '</li>';
 			$msg .= "\n";
 			$msg .= '<li>';
-			$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LPN;
+			$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LPN');
 			$msg .= '</li>';
 			$msg .= "\n";
 			$msg .= '</ul>';
@@ -1803,7 +1803,7 @@ class dhl {
 
 		/* shipment */
 		$msg .= '<strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_NUMBER . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_NUMBER') . ': ';
 		$msg .= '</strong>';
 		$msg .= ' ';
 		$msg .= $tracking_number;
@@ -1811,7 +1811,7 @@ class dhl {
 		$msg .= "\n";
 
 		$msg .= '<strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_PACKAGE . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_PACKAGE') . ': ';
 		$msg .= '</strong>';
 		$msg .= ' ';
 		if (array_key_exists('type', $shipment))
@@ -1820,7 +1820,7 @@ class dhl {
 		$msg .= "\n";
 
 		$msg .= '<strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SERVICE . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SERVICE') . ': ';
 		$msg .= '</strong>';
 		$msg .= ' ';
 		if (array_key_exists('service', $shipment))
@@ -1839,10 +1839,10 @@ class dhl {
 
 		$msg .= '<tr>';
 		$msg .= '<td><strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SENDER;
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SENDER');
 		$msg .= '</strong></td>';
 		$msg .= '<td><strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_RECEIVER;
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_RECEIVER');
 		$msg .= '</strong></td>';
 		$msg .= '</tr>';
 
@@ -1916,13 +1916,13 @@ class dhl {
 		$msg .= '<tr>';
 		$msg .= '<td>';
 		$msg .= '<strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_PICKUP;
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_PICKUP');
 		$msg .= '</strong>';
 		$msg .= '</td>';
 
 		$msg .= '<td>';
 		$msg .= '<strong>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_DELIVERY;
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_DELIVERY');
 		$msg .= '</strong>';
 		$msg .= '</td>';
 		$msg .= '</tr>';
@@ -1931,12 +1931,12 @@ class dhl {
 
 		$msg .= '<tr>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_DATE . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_DATE') . ': ';
 		if (array_key_exists('date', $pickup))
 			$msg .= $pickup['date'];
 		$msg .= '</td>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_DATE . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_DATE') . ': ';
 		if (array_key_exists('date', $delivery))
 			$msg .= $delivery['date'];
 		$msg .= '</td>';
@@ -1946,12 +1946,12 @@ class dhl {
 
 		$msg .= '<tr>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_TIME . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_TIME') . ': ';
 		if (array_key_exists('time', $pickup))
 			$msg .= $pickup['time'];
 		$msg .= '</td>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_TIME . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_TIME') . ': ';
 		if (array_key_exists('time', $delivery))
 			$msg .= $delivery['time'];
 		$msg .= '</td>';
@@ -1961,12 +1961,12 @@ class dhl {
 
 		$msg .= '<tr>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LOCATION . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LOCATION') . ': ';
 		if (array_key_exists('location', $pickup))
 			$msg .= $pickup['location'];
 		$msg .= '</td>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LOCATION . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LOCATION') . ': ';
 		if (array_key_exists('location', $delivery))
 			$msg .= $delivery['location'];
 		$msg .= '</td>';
@@ -1976,12 +1976,12 @@ class dhl {
 
 		$msg .= '<tr>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_EST_DEL . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_EST_DEL') . ': ';
 		if (array_key_exists('est_delivery', $pickup))
 			$msg .= $pickup['est_delivery'];
 		$msg .= '</td>';
 		$msg .= '<td>';
-		$msg .= $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SIGNATORY . ': ';
+		$msg .= $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_SIGNATORY') . ': ';
 		if (array_key_exists('signatory', $delivery))
 			$msg .= $delivery['signatory'];
 		$msg .= '</td>';
@@ -2097,7 +2097,7 @@ class dhl {
 		$result_desc =& $result_desc_list->item(0);
 		if ($result_code == NULL) {
 			$vmLogger->debug(
-				$VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT .
+				$VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_MISSING_RESULT') .
 				"\n" . $xmlResp->toNormalizedString());
 			return (false);
 		}
@@ -2234,79 +2234,79 @@ class dhl {
 	<table>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_ID ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_ID') ?>
 		</strong></td>
 		<td>
             <input type="text" name="DHL_ID" class="inputbox"
 				value="<? echo DHL_ID ?>" />
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_ID_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_ID_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD') ?>
 		</strong></td>
 		<td>
 			<input type="text" name="DHL_PASSWORD" class="inputbox"
 			    value="<? echo DHL_PASSWORD ?>" />
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY') ?>
 		</strong></td>
 		<td>
 			<input type="text" name="DHL_DOMESTIC_SHIPPING_KEY" class="inputbox"
 			    value="<? echo DHL_DOMESTIC_SHIPPING_KEY ?>" />
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_SHIPPING_KEY ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_SHIPPING_KEY') ?>
 		</strong></td>
 		<td>
 			<input type="text" name="DHL_INTERNATIONAL_SHIPPING_KEY" class="inputbox"
 			    value="<? echo DHL_INTERNATIONAL_SHIPPING_KEY ?>" />
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_SHIPPING_KEY_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_SHIPPING_KEY_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_ACCOUNT_NUMBER ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_ACCOUNT_NUMBER') ?>
 		</strong></td>
 		<td>
             <input type="text" name="DHL_ACCOUNT_NUMBER" class="inputbox"
 			    value="<? echo DHL_ACCOUNT_NUMBER ?>" />
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_ACCOUNT_NUMBER_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_ACCOUNT_NUMBER_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE') ?>
 		</strong></td>
 		<td>
             <input type="text" name="DHL_TOO_LATE" class="inputbox"
 			    value="<? echo DHL_TOO_LATE ?>" />
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_TEST_MODE" class="inputbox">
@@ -2316,7 +2316,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2324,17 +2324,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_EXPRESS_ENABLED" class="inputbox">
@@ -2344,7 +2344,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2352,17 +2352,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_NEXT_AFTERNOON_ENABLED" class="inputbox">
@@ -2372,7 +2372,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2380,17 +2380,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_SECOND_DAY_ENABLED" class="inputbox">
@@ -2400,7 +2400,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2408,17 +2408,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_GROUND_ENABLED" class="inputbox">
@@ -2428,7 +2428,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2436,17 +2436,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_1030_ENABLED" class="inputbox">
@@ -2456,7 +2456,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2464,17 +2464,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_SATURDAY_ENABLED" class="inputbox">
@@ -2484,7 +2484,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2492,17 +2492,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_INTERNATIONAL_ENABLED" class="inputbox">
@@ -2512,7 +2512,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="TRUE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_YES ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?>
 				</option>
 				<option
 					<?php
@@ -2520,17 +2520,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="FALSE">
-					<?php echo $VM_LANG->_PHPSHOP_ADMIN_CFG_NO ?>
+					<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_PACKAGE ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_PACKAGE') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_DOMESTIC_PACKAGE" class="inputbox">
@@ -2540,7 +2540,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="L">
-					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_LETTER ?>
+					<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_LETTER') ?>
 				</option>
 				<option
 					<?php
@@ -2548,17 +2548,17 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="P">
-					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_PACKAGE ?>
+					<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_PACKAGE') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_PACKAGE_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_PACKAGE_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_PACKAGE ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_PACKAGE') ?>
 		</strong></td>
 		<td>
 			<select name="DHL_INTERNATIONAL_PACKAGE" class="inputbox">
@@ -2568,7 +2568,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="L">
-					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_LETTER ?>
+					<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_LETTER') ?>
 				</option>
 				<option
 					<?php
@@ -2576,7 +2576,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="P">
-					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_DHL_PACKAGE ?>
+					<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_DHL_PACKAGE') ?>
 				</option>
 				<option
 					<?php
@@ -2584,46 +2584,46 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="O">
-					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_OTHER ?>
+					<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_OTHER') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_PACKAGE_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_PACKAGE_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_CONTENT_DESC ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_CONTENT_DESC') ?></strong>
 		</td>
 		<td>
             <input type="text" name="DHL_CONTENT_DESC" class="inputbox" value="<? echo DHL_CONTENT_DESC ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_CONTENT_DESC_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_CONTENT_DESC_TOOLTIP')) ?>
         </td>
     </tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT') ?></strong>
 		</td>
 		<td>
             <input type="text" name="DHL_PACKAGE_WEIGHT" class="inputbox" value="<? echo DHL_PACKAGE_WEIGHT ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT_TOOLTIP')) ?>
         </td>
     </tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP') ?></strong>
 		</td>
 		<td>
             <input type="text" name="DHL_DUTY_SHOPPER_GROUP" class="inputbox" value="<? echo DHL_DUTY_SHOPPER_GROUP ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP_TOOLTIP')) ?>
         </td>
     </tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION') ?></strong>
 		</td>
 		<td>
 			<select name="DHL_ADDITIONAL_PROTECTION" class="inputbox">
@@ -2633,7 +2633,7 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="AP">
-					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_ASSET_PROTECTION ?>
+					<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_ASSET_PROTECTION') ?>
 				</option>
 				<option
 					<?php
@@ -2641,47 +2641,47 @@ class dhl {
 							echo "selected=\"selected\"";
 					?>
 					value="NR">
-					<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_NOT_REQUIRED ?>
+					<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_NOT_REQUIRED') ?>
 				</option>
 			</select>
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION_TOOLTIP')) ?>
         </td>
     </tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP') ?></strong>
 		</td>
 		<td>
             <input type="text" name="DHL_INSURANCE_SHOPPER_GROUP" class="inputbox" value="<? echo DHL_INSURANCE_SHOPPER_GROUP ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP_TOOLTIP')) ?>
         </td>
     </tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE') ?></strong>
 		</td>
 		<td>
             <input type="text" name="DHL_INSURANCE_RATE_DOMESTIC_FLAT" class="inputbox" value="<? echo DHL_INSURANCE_RATE_DOMESTIC_FLAT ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE_TOOLTIP')) ?>
         </td>
     </tr>
 	<tr>
-        <td><strong><?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE ?></strong>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE') ?></strong>
 		</td>
 		<td>
             <input type="text" name="DHL_INSURANCE_RATE_INTERNATIONAL" class="inputbox" value="<? echo DHL_INSURANCE_RATE_INTERNATIONAL ?>" />
 		</td>
 		<td>
-            <?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE_TOOLTIP) ?>
+            <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE_TOOLTIP')) ?>
         </td>
     </tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_UPS_TAX_CLASS ?>
+			<?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?>
 		</strong></td>
 		<td>
 			<?php
@@ -2690,7 +2690,7 @@ class dhl {
 			?>
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_UPS_TAX_CLASS_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_UPS_TAX_CLASS_TOOLTIP')) ?>
 		</td>
 	</tr>
 	<tr>
@@ -2698,14 +2698,14 @@ class dhl {
 	</tr>
 	<tr>
 		<td><strong>
-			<?php echo $VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE ?>
+			<?php echo $VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE') ?>
 		</strong></td>
 		<td>
 			<input class="inputbox" type="text" name="DHL_HANDLING_FEE"
 			    value="<?php echo DHL_HANDLING_FEE ?>" />
 		</td>
 		<td>
-			<?php echo mm_ToolTip($VM_LANG->_PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE_TOOLTIP) ?>
+			<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE_TOOLTIP')) ?>
 		</td>
 	</tr>
 	</table>

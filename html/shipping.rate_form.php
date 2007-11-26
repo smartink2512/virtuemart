@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_RATE_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_RATE_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -35,63 +35,63 @@ if (!empty($shipping_rate_id)) {
 
 <table class="adminform">
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_NAME ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_NAME') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_name" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_name") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_LIST_ORDER ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_LIST_ORDER') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_list_order" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_list_order") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_CARRIER ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_CARRIER') ?>:</strong></div></td>
 		<td width="79%" ><?php $ps_shipping->carrier_list("shipping_rate_carrier_id", $db->f("shipping_rate_carrier_id")); ?></td>
 	</tr>
 	<tr>
-		<td width="21%" valign="top" ><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_COUNTRY .": </strong><br/><br/>".$VM_LANG->_PHPSHOP_MULTISELECT ?></td>
+		<td width="21%" valign="top" ><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_COUNTRY') .": </strong><br/><br/>".$VM_LANG->_('PHPSHOP_MULTISELECT') ?></td>
 		<td width="79%" ><?php $ps_shipping->country_multiple_list("shipping_rate_country[]", $db->f("shipping_rate_country")); ?></td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_ZIP_START ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_ZIP_START') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_zip_start" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_zip_start") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_ZIP_END ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_ZIP_END') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_zip_end" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_zip_end") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_WEIGHT_START ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_WEIGHT_START') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_weight_start" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_weight_start") ?>">
 		</td>
 	</tr>
 		<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_WEIGHT_END ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_WEIGHT_END') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_weight_end" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_weight_end") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_VALUE ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_VALUE') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_value" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_value") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_PACKAGE_FEE ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_PACKAGE_FEE') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_package_fee" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_package_fee") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_CURRENCY ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_CURRENCY') ?>:</strong></div></td>
 		<td width="79%" >
 		<?php $ps_html->list_currency_id("shipping_rate_currency_id",$db->sf("shipping_rate_currency_id")) ?>
 		</td>
@@ -99,7 +99,7 @@ if (!empty($shipping_rate_id)) {
 	<?php 
 if (TAX_MODE == '1') { ?>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_RATE_FORM_VAT_ID ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_VAT_ID') ?>:</strong></div></td>
 		<td width="79%" >
 		<?php
 		require_once(CLASSPATH.'ps_tax.php');

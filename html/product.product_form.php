@@ -64,37 +64,37 @@ $related_products = Array();
 
 if ($product_parent_id) {
 	if ($product_id) {
-		$action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL;
+		$action = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL');
 	}
 	else {
-		$action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL;
+		$action = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_NEW_ITEM_LBL');
 	}
-	$info_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL;
-	$status_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL;
-	$dim_weight_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL;
-	$images_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL;
-	$delete_message = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG;
+	$info_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL');
+	$status_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL');
+	$dim_weight_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
+	$images_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL');
+	$delete_message = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG');
 }
 else {
 	$product_parent_id = '';
 	if ($product_id = @$vars["product_id"]) {
 		if( $clone_product == '1') {
-			$action = $VM_LANG->_PHPSHOP_PRODUCT_CLONE;
+			$action = $VM_LANG->_('PHPSHOP_PRODUCT_CLONE');
 		}
 		else {
-			$action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL;
+			$action = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL');
 		}
 	}
 	else {
-		$action = $VM_LANG->_PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL;
+		$action = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_NEW_PRODUCT_LBL');
 	}
-	$info_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL;
-	$status_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL;
-	$dim_weight_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL;
-	$images_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL;
-	$delete_message = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG;
+	$info_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRODUCT_INFO_LBL');
+	$status_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRODUCT_STATUS_LBL');
+	$dim_weight_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
+	$images_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
+	$delete_message = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 }
-$display_label = $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL;
+$display_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL');
 if (!empty($product_id)) {
 	$price = $ps_product->get_retail_price($product_id);
 }
@@ -170,9 +170,9 @@ if (!empty($product_id)) {
 }
 elseif (empty($vars["error"])) {
 	$default["product_publish"] = "Y";
-	$default["product_weight_uom"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT;
-	$default["product_lwh_uom"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT;
-	$default["product_unit"] = $VM_LANG->_PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT;
+	$default["product_weight_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT');
+	$default["product_lwh_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT');
+	$default["product_unit"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT');
 	$default["product_available_date"] = time();
 }
 // get the default shopper group
@@ -199,7 +199,7 @@ if( !empty( $product_id )) {
 	$flypage = $ps_product->get_flypage($product_id);
 	?>
 	<a href="<?php echo $mosConfig_live_site."/index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id" ?>" target="_blank">
-		  <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE ?>
+		  <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE') ?>
 	</a>
 	<?php
 }
@@ -225,7 +225,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0"> 
       <td  width="21%" ><div style="text-align:right;font-weight:bold;">
-      <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PUBLISH ?>:</div>
+      <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PUBLISH') ?>:</div>
       </td>
       <td width="79%" > <?php if ($db->sf("product_publish")=="Y") { 
       	echo "<input type=\"checkbox\" name=\"product_publish\" value=\"Y\" checked=\"checked\" />";
@@ -236,7 +236,7 @@ $tabs->startTab( $info_label, "info-page");
 ?> </td>
     </tr>
     <tr class="row1"> 
-      <td width="21%" ><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_SKU ?>:</div>
+      <td width="21%" ><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_SKU') ?>:</div>
       </td>
       <td width="79%" height="2"> 
         <input type="text" class="inputbox"  name="product_sku" value="<?php $db->sp("product_sku"); ?>" size="32" maxlength="64" />
@@ -244,7 +244,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0"> 
       <td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
-      <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_NAME ?>:</div>
+      <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_NAME') ?>:</div>
       </td>
       <td width="79%" height="18" > 
         <input type="text" class="inputbox"  name="product_name" value="<?php echo shopMakeHtmlSafe( $db->sf("product_name")); ?>" size="32" maxlength="255" />
@@ -252,7 +252,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row1"> 
       <td width="21%"><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_URL ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_URL') ?>:</div>
       </td>
       <td width="79%"> 
         <input type="text" class="inputbox"  name="product_url" value="<?php $db->sp("product_url"); ?>" size="32" maxlength="255" />
@@ -260,13 +260,13 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0"> 
       <td width="21%"><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_VENDOR ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_VENDOR') ?>:</div>
       </td>
       <td width="79%" ><?php $ps_product->list_vendor($db->sf("vendor_id"));  ?></td>
     </tr>
     <tr class="row1"> 
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_MANUFACTURER ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_MANUFACTURER') ?>:</div>
       </td>
       <td width="79%" ><?php $ps_product->list_manufacturer(@$manufacturer_id);  ?></td>
     </tr>
@@ -274,8 +274,8 @@ $tabs->startTab( $info_label, "info-page");
     if (!$product_parent_id) { ?>
     <tr class="row0"> 
       <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
-       <?php echo $VM_LANG->_PHPSHOP_CATEGORIES ?>:<br/><br/>
-       <?php echo vmToolTip( $VM_LANG->_PHPSHOP_MULTISELECT ) ?></div>
+       <?php echo $VM_LANG->_('PHPSHOP_CATEGORIES') ?>:<br/><br/>
+       <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_MULTISELECT') ) ?></div>
        </td>
       <td width="71%" ><?php 
         $ps_product_category->list_all("product_categories[]", "", $my_categories, 10, false, true); ?></td>
@@ -288,7 +288,7 @@ $tabs->startTab( $info_label, "info-page");
  <td>
   <table class="adminform">
     <tr class="row0"> 
-      <td width="29%" ><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?>:</div>
+      <td width="29%" ><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRICE_NET') ?>:</div>
       </td>
       <td width="71%" >
         <table border="0" cellspacing="0" cellpadding="0">
@@ -304,7 +304,7 @@ $tabs->startTab( $info_label, "info-page");
               $ps_html->list_currency("product_currency",$price["product_currency"]) ?>
             </td>
             <td>&nbsp;<?php
-                echo vmToolTip( $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP . ": ".$shopper_db->f("shopper_group_name")); ?>               
+                echo vmToolTip( $VM_LANG->_('PHPSHOP_PRICE_FORM_GROUP') . ": ".$shopper_db->f("shopper_group_name")); ?>               
                 <input type="hidden" name="shopper_group_id" value="<?php echo $my_shopper_group_id ?>" />
              </td>
             </tr>
@@ -313,13 +313,13 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row1"> 
       <td width="29%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRICE_GROSS') ?>:</div>
       </td>
       <td width="71%" ><input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" /></td>
     </tr>
     <tr class="row0">
       <td width="29%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_RATE_FORM_VAT_ID ?>:</div></td>
+        <?php echo $VM_LANG->_('PHPSHOP_RATE_FORM_VAT_ID') ?>:</div></td>
       <td width="71%" >
         <?php
         require_once(CLASSPATH.'ps_tax.php');
@@ -328,7 +328,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row1"> 
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
       </td>
       <td width="79%" ><?php
         echo ps_product_discount::discount_list( $db->sf("product_discount_id") ); ?>
@@ -336,17 +336,17 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0"> 
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
       </td>
       <td width="79%" >
                 <input type="text" size="10" name="discounted_price_override" onkeyup="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
-                <?php echo vmToolTip( $VM_LANG->_PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP ) ?>
+                <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ?>
         </td>
     </tr>
     <tr class="row1"><td colspan="2">&nbsp;</td></tr>
     <tr class="row1"> 
       <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
-          <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_S_DESC ?>:</div>
+          <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_S_DESC') ?>:</div>
       </td>
       <td width="71%"  valign="top">
           <textarea class="inputbox" name="product_s_desc" id="short_desc" cols="35" rows="6" ><?php echo $db->sf("product_s_desc"); ?></textarea> 
@@ -359,7 +359,7 @@ $tabs->startTab( $info_label, "info-page");
   <table class="adminform">
     <tr class="row1">
       <td valign="top" width="15%"><div style="font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DESCRIPTION ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DESCRIPTION') ?>:</div>
       </td>
       <td width="85%">
         <?php
@@ -379,7 +379,7 @@ $tabs->startTab( $display_label, "display-page");
       <td align="left" colspan="2"><?php echo "<h2>$display_label</h2>"; ?></td>
     </tr>
     <tr class="row1"> 
-      <td width="21%"  style="vertical-align: middle;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_VM_DISPLAY_USE_PARENT_LABEL; ?></div>
+      <td width="21%"  style="vertical-align: middle;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('VM_DISPLAY_USE_PARENT_LABEL'); ?></div>
       </td>
       <td width="79%" style="vertical-align: middle;" colspan="2"><input type="checkbox" class="checkbox"  id="display_use_parent" name="display_use_parent" value="Y"
       <?php 
@@ -389,11 +389,11 @@ $tabs->startTab( $display_label, "display-page");
         }   ?> 
 
       />
-      <label for="display_use_parent" ><?php echo $VM_LANG->_PHPSHOP_DISPLAY_USE_PARENT; ?></label><br/>
+      <label for="display_use_parent" ><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_USE_PARENT'); ?></label><br/>
       </td>
     </tr>
     <tr class="row0"> 
-      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_VM_DISPLAY_LIST_TYPE; ?></div>
+      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('VM_DISPLAY_LIST_TYPE'); ?></div>
       </td>
       <td width="20%"  style="vertical-align: top;"> <?php  
       echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_check\" name=\"product_list\" value=\"Y\" onclick=\"javascript: toggleProductList( this.checked);\" ";
@@ -405,7 +405,7 @@ $tabs->startTab( $display_label, "display-page");
       if($product_parent_id !=0) {
       	echo ' disabled="disabled" ';
       }
-      echo '/> <label for="product_list_check">'.$VM_LANG->_VM_DISPLAY_USE_LIST_BOX.'</label>';
+      echo '/> <label for="product_list_check">'.$VM_LANG->_('VM_DISPLAY_USE_LIST_BOX').'</label>';
       //Formatting Code
 ?> <br />
       
@@ -414,24 +414,24 @@ $tabs->startTab( $display_label, "display-page");
        if ($display_desc) {
        	echo "checked=\"checked\" ";
        }
-    echo '/> <label for="display_desc">'.$VM_LANG->_VM_DISPLAY_CHILD_DESCRIPTION.'</label>'; ?><br />
+    echo '/> <label for="display_desc">'.$VM_LANG->_('VM_DISPLAY_CHILD_DESCRIPTION').'</label>'; ?><br />
     <?php 
     echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"desc_width\" name=\"desc_width\" value=\"$desc_width\"  ";
-    echo "/> ".$VM_LANG->_VM_DISPLAY_DESC_WIDTH; ?>
+    echo "/> ".$VM_LANG->_('VM_DISPLAY_DESC_WIDTH'); ?>
     <br />
     <?php 
     echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"attrib_width\" name=\"attrib_width\" value=\"$attrib_width\"  ";
-    echo "/> ".$VM_LANG->_VM_DISPLAY_ATTRIB_WIDTH; ?>
+    echo "/> ".$VM_LANG->_('VM_DISPLAY_ATTRIB_WIDTH'); ?>
     <br />
     <?php 
-    echo $VM_LANG->_VM_DISPLAY_CHILD_SUFFIX."<br /><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
+    echo $VM_LANG->_('VM_DISPLAY_CHILD_SUFFIX')."<br /><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
     echo "/> "; ?>
     <br />
       </td>
         
         <td width="20%" >
         <fieldset>
-            <legend><?php echo $VM_LANG->_VM_DISPLAY_LIST_STYLE; ?></legend>
+            <legend><?php echo $VM_LANG->_('VM_DISPLAY_LIST_STYLE'); ?></legend>
         
         <input type="radio" class="radio" style="vertical-align: middle;" id="list_style0" name="list_style" value="one" 
         <?php if (@$product_list == "Y") echo "checked=\"checked\""; 
@@ -440,7 +440,7 @@ $tabs->startTab( $display_label, "display-page");
         }
         ?> 
         />
-        <label for="list_style0" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_ONE; ?></label><br/>
+        <label for="list_style0" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_ONE'); ?></label><br/>
         <input type="radio" class="radio" style="vertical-align: middle;" id="list_style1" name="list_style" value="many" 
         <?php 
         if (@$product_list == "YM") echo "checked=\"checked\""; 
@@ -449,7 +449,7 @@ $tabs->startTab( $display_label, "display-page");
         }
         ?> 
         />
-        <label for="list_style1" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_MANY ?> </label><br />
+        <label for="list_style1" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_MANY') ?> </label><br />
         <?php if (@$display_header =="Y" && (@$product_list =="Y" || @$product_list =="YM" )) { 
         	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_headers\" name=\"display_headers\" value=\"Y\" checked=\"checked\" ";
         }
@@ -461,7 +461,7 @@ $tabs->startTab( $display_label, "display-page");
         else {
             echo ' disabled=true /> ';
         }        
-        echo $VM_LANG->_VM_DISPLAY_TABLE_HEADER;
+        echo $VM_LANG->_('VM_DISPLAY_TABLE_HEADER');
 ?> <br />
 
         <?php if (@$product_list_child =="Y" && (@$product_list =="Y"  || @$product_list =="YM" )) { 
@@ -476,7 +476,7 @@ $tabs->startTab( $display_label, "display-page");
             echo ' disabled=true /> ';
         }    
         
-        echo $VM_LANG->_VM_DISPLAY_LINK_TO_CHILD."<br />";
+        echo $VM_LANG->_('VM_DISPLAY_LINK_TO_CHILD')."<br />";
 ?> 
 
         <?php if (@$product_list_type =="Y" && (@$product_list =="Y"  || @$product_list =="YM" )) { 
@@ -490,7 +490,7 @@ $tabs->startTab( $display_label, "display-page");
         else {
             echo " disabled=true /> ";
         }
-        echo $VM_LANG->_VM_DISPLAY_INCLUDE_PRODUCT_TYPE;
+        echo $VM_LANG->_('VM_DISPLAY_INCLUDE_PRODUCT_TYPE');
 ?> 
 
         </fieldset>
@@ -499,50 +499,50 @@ $tabs->startTab( $display_label, "display-page");
         </td>
     </tr>
     <tr class="row1"> 
-      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_VM_EXTRA_PRODUCT_ID; ?></div>
+      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('VM_EXTRA_PRODUCT_ID'); ?></div>
       </td>
       <td width="79%" colspan="2"><input type="inputbox" class="inputbox" size="35" id="included_product_id" name="included_product_id" value="<?php echo $db->f("child_option_ids") ?>" />
-      <label for="included_product_id" style="vertical-align: middle;"><?php echo $VM_LANG->_VM_INCLUDED_PRODUCT_ID; ?></label><br/>
+      <label for="included_product_id" style="vertical-align: middle;"><?php echo $VM_LANG->_('VM_INCLUDED_PRODUCT_ID'); ?></label><br/>
       </td>
     </tr>
 
     <tr class="row0">
-        <td width="21%" style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_VM_DISPLAY_QUANTITY_LABEL; ?></div>
+        <td width="21%" style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('VM_DISPLAY_QUANTITY_LABEL'); ?></div>
         </td>
         <td width="20%" style="vertical-align: top;">
         
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box0" name="quantity_box" value="none" 
             <?php if ($q_type == "none") echo "checked=\"checked\""; ?> 
             />
-            <label for="quantity_box0" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_NORMAL; ?></label><br/>
+            <label for="quantity_box0" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_NORMAL'); ?></label><br/>
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box1" name="quantity_box" value="hide" 
             <?php if ($q_type == "hide") echo "checked=\"checked\""; ?> 
             />
-            <label for="quantity_box1" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_HIDE ?> </label><br />
+            <label for="quantity_box1" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_HIDE') ?> </label><br />
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box2" name="quantity_box" value="drop" 
             <?php if ($q_type == "drop") echo "checked=\"checked\""; ?> 
             />
-            <label for="quantity_box2" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_DROPDOWN ?> </label><br />
+            <label for="quantity_box2" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_DROPDOWN') ?> </label><br />
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box3" name="quantity_box" value="check" 
             <?php if ($q_type == "check") echo "checked=\"checked\""; ?> 
             />
-            <label for="quantity_box3" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_CHECKBOX ?> </label><br />
+            <label for="quantity_box3" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_CHECKBOX') ?> </label><br />
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box4" name="quantity_box" value="radio" 
             <?php if ($q_type == "radio") echo "checked=\"checked\""; ?> 
             <?php if($product_parent_id !=0) echo "disabled=\"true\""; ?>
             />
-            <label for="quantity_box4" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_RADIOBOX ?> </label><br />
+            <label for="quantity_box4" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_RADIOBOX') ?> </label><br />
             
         </td>
         <td width="20%" style="vertical-align: top;">
             <fieldset>
-                <legend><?php echo $VM_LANG->_VM_DISPLAY_QUANTITY_DROPDOWN_LABEL ?></legend>
+                <legend><?php echo $VM_LANG->_('VM_DISPLAY_QUANTITY_DROPDOWN_LABEL') ?></legend>
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_start" name="quantity_start" size="4" value="<?php echo $quantity_start; ?>">
-            <label for="quantity_start" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_START ?> </label><br />
+            <label for="quantity_start" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_START') ?> </label><br />
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_end" name="quantity_end" size="4" value="<?php echo $quantity_end; ?>">
-            <label for="quantity_end" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_END ?> </label><br />
+            <label for="quantity_end" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_END') ?> </label><br />
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_step" name="quantity_step" size="4" value="<?php echo $quantity_step; ?>">
-            <label for="quantity_step" style="vertical-align: middle;"><?php echo $VM_LANG->_PHPSHOP_DISPLAY_STEP ?> </label><br />
+            <label for="quantity_step" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_STEP') ?> </label><br />
             </fieldset>
         </td>
         <td width="39%">
@@ -560,7 +560,7 @@ $tabs->startTab( $status_label, "status-page");
     </tr>
     <tr class="row0"> 
       <td width="21%" height="2" ><div style="text-align:right;font-weight:bold;">
-      <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IN_STOCK ?>:</div>
+      <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_IN_STOCK') ?>:</div>
       </td>
       <td width="79%" height="2" > 
         <input type="text" class="inputbox"  name="product_in_stock" value="<?php $db->sp("product_in_stock"); ?>" size="10" />
@@ -568,7 +568,7 @@ $tabs->startTab( $status_label, "status-page");
     </tr>
     <tr class="row1"> 
       <td width="21%" height="2" ><div style="text-align:right;font-weight:bold;">
-      <?php echo $VM_LANG->_VM_PRODUCT_FORM_MIN_ORDER ?>:</div>
+      <?php echo $VM_LANG->_('VM_PRODUCT_FORM_MIN_ORDER') ?>:</div>
       </td>
       <td width="79%" height="2" > 
         <input type="text" class="inputbox"  name="min_order_level" value="<?php echo $min_order; ?>" size="10" />
@@ -576,7 +576,7 @@ $tabs->startTab( $status_label, "status-page");
     </tr>
     <tr class="row0"> 
       <td width="21%" height="2" ><div style="text-align:right;font-weight:bold;">
-      <?php echo $VM_LANG->_VM_PRODUCT_FORM_MAX_ORDER ?>:</div>
+      <?php echo $VM_LANG->_('VM_PRODUCT_FORM_MAX_ORDER') ?>:</div>
       </td>
       <td width="79%" height="2" > 
         <input type="text" class="inputbox"  name="max_order_level" value="<?php echo $max_order; ?>" size="10" />
@@ -584,7 +584,7 @@ $tabs->startTab( $status_label, "status-page");
     </tr>
     <tr class="row1"> 
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE ?>:</div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE') ?>:</div>
       </td>
       <td width="79%" >
           <input class="inputbox" type="text" name="product_available_date" id="product_available_date" size="20" maxlength="19" value="<?php echo date('Y-m-d', $db->sf("product_available_date") ); ?>" />
@@ -594,15 +594,15 @@ $tabs->startTab( $status_label, "status-page");
     <tr class="row0"><td colspan="2">&nbsp;</td></tr>
     <tr>
       <td valign="top" width="21%" ><div style="text-align:right;font-weight:bold;">
-          <?php echo $VM_LANG->_PHPSHOP_AVAILABILITY ?>:</div>
+          <?php echo $VM_LANG->_('PHPSHOP_AVAILABILITY') ?>:</div>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox" name="product_availability" value="<?php $db->sp("product_availability"); ?>" />
       <?php
-      echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1); ?>
+      echo vmToolTip($VM_LANG->_('PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1')); ?>
       <br /><br />
         <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo VM_THEMEURL ?>images/availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo IMAGEURL.NO_IMAGE;?>'; document.adminForm.product_availability.value=''}">
-          <option value=""><?php echo $VM_LANG->_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE; ?></option><?php
+          <option value=""><?php echo $VM_LANG->_('VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE'); ?></option><?php
           $path = VM_THEMEPATH."images/availability";
           $files = vmReadDirectory( "$path", ".", true, true);
           foreach ($files as $file) {
@@ -617,7 +617,7 @@ $tabs->startTab( $status_label, "status-page");
         </select>&nbsp;
         <?php
 		$pathrelative = str_replace($mosConfig_live_site,'',VM_THEMEURL."images/availability/");
-		echo vmToolTip(sprintf($VM_LANG->_PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2,$pathrelative));
+		echo vmToolTip(sprintf($VM_LANG->_('PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2'),$pathrelative));
 		?>
         &nbsp;&nbsp;&nbsp;
         <img src="<?php echo $db->f("product_availability") ? VM_THEMEURL."images/availability/".$db->sf("product_availability") : IMAGEURL.NO_IMAGE; ?>" name="imagelib" border="0" alt="Preview" />
@@ -625,7 +625,7 @@ $tabs->startTab( $status_label, "status-page");
     </tr>
     <tr class="row1"> 
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-      <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_SPECIAL ?>:</div>
+      <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_SPECIAL') ?>:</div>
       </td>
       <td width="79%" ><?php if ($db->sf("product_special")=="Y") { ?>
         <input type="checkbox" name="product_special" value="Y" checked="checked" />
@@ -639,7 +639,7 @@ $tabs->startTab( $status_label, "status-page");
     <td colspan="2">&nbsp;</td>
     </tr>
     <tr class="row0">
-        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST ?>:</div></td> 
+        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST') ?>:</div></td> 
 		<td width="79%" id="attribute_container">
 			<?php 
 			// ATTRIBUTE EXTENSION by Tobias (eaxs)
@@ -648,19 +648,19 @@ $tabs->startTab( $status_label, "status-page");
     </tr>
     <tr class="row0">
     <td>&nbsp;</td>
-        <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES ?></td>
+        <td><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
     </tr>
     <tr class="row0">
     <td colspan="2">&nbsp;</td>
     </tr>
     <tr class="row1">
-        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST ?>:</div></td> 
+        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST') ?>:</div></td> 
         <td width="79%" >
         <input class="inputbox" type="text" name="product_custom_attribute" value="<?php $db->sp("custom_attribute"); ?>" size="64" />
     </tr>
     <tr class="row1">
      <td>&nbsp;</td>
-     <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES ?></td>
+     <td><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
         </tr>
   </table>
 
@@ -678,13 +678,13 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
     </tr>
     <tr class="row1"> 
       <td colspan="4"><div style="text-align:right;font-weight:bold;">
-          <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL ?></div>
+          <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL') ?></div>
       </td>
     </tr>
     <tr class="row0"> 
-      <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_NAME ?></td>
-      <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_SKU ?></td>
-      <td><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?></td>
+      <td><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_NAME') ?></td>
+      <td><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_SKU') ?></td>
+      <td><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRICE_NET') ?></td>
       <?php
       $db_heading = $ps_product->attribute_sql("",$product_id);
       while ($db_heading->next_record()) {
@@ -745,7 +745,7 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr class="row1"> 
-      <td colspan="2"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL ?></strong></td>
+      <td colspan="2"><strong><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL') ?></strong></td>
     </tr>
     <?php
     if (!empty($_REQUEST['product_id'])) {
@@ -783,7 +783,7 @@ echo "<h2>$dim_weight_label</h2>";
    <table class="adminform">
     <tr class="row1"> 
       <td width="21%" valign="top" > 
-        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_LENGTH ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_LENGTH') ?>:</div>
       </td>
       <td width="79%" > 
         <input type="text" class="inputbox"  name="product_length" value="<?php $db->sp("product_length"); ?>" size="15" maxlength="15" />
@@ -791,7 +791,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0"> 
       <td width="21%" valign="top" > 
-        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_WIDTH ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WIDTH') ?>:</div>
       </td>
       <td width="79%" > 
         <input type="text" class="inputbox"  name="product_width" value="<?php $db->sp("product_width"); ?>" size="15" maxlength="15" />
@@ -799,7 +799,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row1"> 
       <td width="21%" valign="top" > 
-        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_HEIGHT ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_HEIGHT') ?>:</div>
       </td>
       <td width="79%" > 
         <input type="text" class="inputbox"  name="product_height" value="<?php $db->sp("product_height"); ?>" size="15" maxlength="15" />
@@ -807,7 +807,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0"> 
       <td width="21%" valign="top" > 
-        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_DIMENSION_UOM ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DIMENSION_UOM') ?>:</div>
       </td>
       <td width="79%" > 
         <input type="text" class="inputbox"  name="product_lwh_uom" value="<?php $db->sp("product_lwh_uom"); ?>" size="8" maxlength="32" />
@@ -819,7 +819,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0"> 
       <td width="21%" valign="top" > 
-        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WEIGHT') ?>:</div>
       </td>
       <td width="79%" > 
         <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php $db->sp("product_weight"); ?>" />
@@ -827,7 +827,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row1"> 
       <td width="21%" valign="top" > 
-        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_WEIGHT_UOM ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WEIGHT_UOM') ?>:</div>
       </td>
       <td width="79%" > 
         <input type="text" class="inputbox"  name="product_weight_uom" value="<?php $db->sp("product_weight_uom"); ?>" size="8" maxlength="32" />
@@ -840,7 +840,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row1"> 
       <td width="21%" valign="top" > 
-        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_UNIT ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UNIT') ?>:</strong></div>
       </td>
       <td width="21%" > 
         <input type="text" class="inputbox"  name="product_unit" size="15" maxlength="15" value="<?php $db->sp("product_unit"); ?>" />
@@ -848,20 +848,20 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0">
       <td width="21%" valign="top" > 
-        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PACKAGING') ?>:</strong></div>
       </td>
       <td width="21%" > 
         <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $db->f("product_packaging") & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION); ?>
+        echo vmToolTip($VM_LANG->_('PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION')); ?>
       </td>
     </tr>
     <tr class="row1">
       <td width="21%" valign="top" > 
-        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_BOX ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_BOX') ?>:</strong></div>
       </td>
       <td width="21%" > 
         <input type="text" class="inputbox"  name="product_box" value="<?php echo ($db->f("product_packaging")>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo vmToolTip($VM_LANG->_PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION); ?>
+        echo vmToolTip($VM_LANG->_('PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION')); ?>
       </td>
     </tr>
     <!-- Changed Packaging - End -->
@@ -878,34 +878,34 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
   <table class="adminform" >
     <tr> 
       <td valign="top" width="50%" style="border-right: 1px solid black;">
-        <h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_FULL_IMAGE ?></h2>
+        <h2><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_FULL_IMAGE') ?></h2>
         <table class="adminform">
           <tr class="row0"> 
             <td colspan="2" ><?php 
             if ($product_id) {
-                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br />"; } ?> 
+                echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?> 
               <input type="file" class="inputbox" name="product_full_image" onchange="document.adminForm.product_full_image_url.value='';if(this.value!='') { document.adminForm.product_full_image_action[1].checked=true;toggleDisable(document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true) }" size="50" maxlength="255" />
             </td>
           </tr>
           <tr class="row1"> 
-            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
+            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_IMAGE_ACTION') ?>:</div><br/>
               <input type="radio" class="inputbox" id="product_full_image_action0" name="product_full_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-              <label for="product_full_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE; ?></label><br/>
+              <label for="product_full_image_action0"><?php echo $VM_LANG->_('PHPSHOP_NONE'); ?></label><br/>
               <?php
               // Check if GD library is available
               if( function_exists('imagecreatefromjpeg')) { ?>
 	              <input type="radio" class="inputbox" id="product_full_image_action1" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-	              <label for="product_full_image_action1"><?php echo $VM_LANG->_PHPSHOP_FILES_FORM_AUTO_THUMBNAIL . "</label><br />"; 
+	              <label for="product_full_image_action1"><?php echo $VM_LANG->_('PHPSHOP_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />"; 
               }
               if ($product_id and $db->f("product_full_image")) { ?>
                 <input type="radio" class="inputbox" id="product_full_image_action2" name="product_full_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-                <label for="product_full_image_action2"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
+                <label for="product_full_image_action2"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
               } ?> 
             </td>
           </tr>
           <tr class="row0"><td colspan="2">&nbsp;</td></tr>
           <tr class="row0"> 
-            <td width="21%" ><?php echo $VM_LANG->_URL." (".$VM_LANG->_CMN_OPTIONAL."!)&nbsp;"; ?></td>
+            <td width="21%" ><?php echo $VM_LANG->_('URL')." (".$VM_LANG->_('CMN_OPTIONAL')."!)&nbsp;"; ?></td>
             <td width="79%" >
               <?php 
               if( stristr($db->f("product_full_image"), "http") )
@@ -934,28 +934,28 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
       </td>
 
       <td valign="top" width="50%">
-        <h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_THUMB_IMAGE ?></h2>
+        <h2><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_THUMB_IMAGE') ?></h2>
         <table class="adminform">
           <tr class="row0"> 
             <td colspan="2" ><?php if ($product_id) {
-                echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL . "<br />"; } ?> 
+                echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?> 
               <input type="file" class="inputbox" name="product_thumb_image" size="50" maxlength="255" onchange="if(document.adminForm.product_thumb_image.value!='') document.adminForm.product_thumb_image_url.value='';" />
             </td>
           </tr>
           <tr class="row1"> 
-            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_PHPSHOP_IMAGE_ACTION ?>:</div><br/>
+            <td colspan="2" ><div style="font-weight:bold;"><?php echo $VM_LANG->_('PHPSHOP_IMAGE_ACTION') ?>:</div><br/>
               <input type="radio" class="inputbox" id="product_thumb_image_action0" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-              <label for="product_thumb_image_action0"><?php echo $VM_LANG->_PHPSHOP_NONE ?></label><br/>
+              <label for="product_thumb_image_action0"><?php echo $VM_LANG->_('PHPSHOP_NONE') ?></label><br/>
               <?php 
               if ($product_id and $db->f("product_thumb_image")) { ?>
                 <input type="radio" class="inputbox" id="product_thumb_image_action1" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-                <label for="product_thumb_image_action1"><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL . "</label><br />"; 
+                <label for="product_thumb_image_action1"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
               } ?> 
             </td>
           </tr>
           <tr class="row0"><td colspan="2">&nbsp;</td></tr>
           <tr class="row0"> 
-            <td width="21%" ><?php echo $VM_LANG->_URL." (".$VM_LANG->_CMN_OPTIONAL.")&nbsp;"; ?></td>
+            <td width="21%" ><?php echo $VM_LANG->_('URL')." (".$VM_LANG->_('CMN_OPTIONAL').")&nbsp;"; ?></td>
             <td width="79%" >
               <?php 
               if( stristr($db->f("product_thumb_image"), "http") )
@@ -988,15 +988,15 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
 <?php
 $tabs->endTab();
 
-$tabs->startTab( $VM_LANG->_PHPSHOP_RELATED_PRODUCTS, "related-page");
+$tabs->startTab( $VM_LANG->_('PHPSHOP_RELATED_PRODUCTS'), "related-page");
 
 ?><br />
-<h2><?php echo $VM_LANG->_PHPSHOP_RELATED_PRODUCTS ?></h2>
+<h2><?php echo $VM_LANG->_('PHPSHOP_RELATED_PRODUCTS') ?></h2>
 <br />
         <table class="adminform">
           <tr class="row1">
 			<td style="vertical-align:top;"><br />
-			<?php echo $VM_LANG->_VM_PRODUCT_RELATED_SEARCH; ?>
+			<?php echo $VM_LANG->_('VM_PRODUCT_RELATED_SEARCH'); ?>
 			<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 			</td>
 			<td><input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection);" value="&nbsp; &lt; &nbsp;" /></td>
@@ -1068,10 +1068,10 @@ while ($dba->next_record()) {
 
   <table class="adminform">
     <tr class="row0"> 
-      <td colspan="2"><h2><?php echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_LBL.': '.$dba->f("product_type_name") ?></h2>
+      <td colspan="2"><h2><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_LBL').': '.$dba->f("product_type_name") ?></h2>
       
       <?php
-      echo '<h3>'.$VM_LANG->_E_REMOVE.' =&gt; '.$ps_html->deleteButton( "product_type_id", $product_type_id, "productProductTypeDelete", $keyword, $limitstart, "&product_id=$product_id&product_parent_id=$product_parent_id&next_page=$next_page" ) . '</h3>';
+      echo '<h3>'.$VM_LANG->_('E_REMOVE').' =&gt; '.$ps_html->deleteButton( "product_type_id", $product_type_id, "productProductTypeDelete", $keyword, $limitstart, "&product_id=$product_id&product_parent_id=$product_parent_id&next_page=$next_page" ) . '</h3>';
       ?>
       </td>
     </tr>
@@ -1166,27 +1166,27 @@ while ($dba->next_record()) {
     		}
     		echo " ".$dbpt->f("parameter_unit");
     		if ($dbpt->f("parameter_default")) {
-    			echo " (".$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT.": ";
+    			echo " (".$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT').": ";
     			echo $dbpt->f("parameter_default").")";
     		}
-    		echo " [ ".$VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE.": ";
+    		echo " [ ".$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE').": ";
     		switch( $dbpt->f("parameter_type") ) {
-    			case "I": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER; break;	// Integer
-    			case "T": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT; break; 	// Text
-    			case "S": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT; break; // Short Text
-    			case "F": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT; break; 	// Float
-    			case "C": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR; break; 	// Char
-    			case "D": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME." ";	// Date & Time
-    			echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT." ";
-    			echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT;
+    			case "I": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'); break;	// Integer
+    			case "T": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'); break; 	// Text
+    			case "S": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'); break; // Short Text
+    			case "F": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'); break; 	// Float
+    			case "C": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'); break; 	// Char
+    			case "D": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME')." ";	// Date & Time
+    			echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT')." ";
+    			echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
     			break;
-    			case "A": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE." ";		// Date
-    			echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT;
+    			case "A": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE')." ";		// Date
+    			echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT');
     			break;
-    			case "M": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME." ";		// Time
-    			echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT;
+    			case "M": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME')." ";		// Time
+    			echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
     			break;
-    			case "V": echo $VM_LANG->_PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE; break; 	// Multiple Value
+    			case "V": echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'); break; 	// Multiple Value
     		}
     		echo " ] ";
     	}
@@ -1238,15 +1238,15 @@ if( $product_id ) {
 					LEFT JOIN `#__users` ON `user_id` = `id`
 					WHERE `product_id`=' . $product_id );
 	if( $dbw->num_rows() > 0 ) {
-		$tabs->startTab( $VM_LANG->_PRODUCT_WAITING_LIST_TAB, 'waiting-list-tab' );
+		$tabs->startTab( $VM_LANG->_('PRODUCT_WAITING_LIST_TAB'), 'waiting-list-tab' );
 
-		echo '<table class="adminform"><tr><td><h2>' . $VM_LANG->_PRODUCT_WAITING_LIST_USERLIST . ':</h2></td></tr>';
+		echo '<table class="adminform"><tr><td><h2>' . $VM_LANG->_('PRODUCT_WAITING_LIST_USERLIST') . ':</h2></td></tr>';
 		echo '<tr><td><input type="hidden" value="'.$db->f('product_in_stock').'" name="product_in_stock_old" />';
-		echo '<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /> <label for="notify_users">' . $VM_LANG->_PRODUCT_WAITING_LIST_NOTIFYUSERS . '</label><br /><br /></td></tr>';
+		echo '<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /> <label for="notify_users">' . $VM_LANG->_('PRODUCT_WAITING_LIST_NOTIFYUSERS') . '</label><br /><br /></td></tr>';
 		echo '<tr><td>';
 		while( $dbw->next_record() ) {
 			if ($dbw->f("notified")==1) {
-				$waiting_notified = ' - <strong style="font-weight:bold">' . $VM_LANG->_PRODUCT_WAITING_LIST_NOTIFIED . ' ' . $dbw->f("notify_date") . '</strong>';
+				$waiting_notified = ' - <strong style="font-weight:bold">' . $VM_LANG->_('PRODUCT_WAITING_LIST_NOTIFIED') . ' ' . $dbw->f("notify_date") . '</strong>';
 			} else {
 				$waiting_notified = '';
 			}

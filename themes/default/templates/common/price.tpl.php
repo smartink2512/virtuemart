@@ -4,8 +4,8 @@
 // User is not allowed to see a price or there is no price
 if( !$auth['show_prices'] || !isset($price_info["product_price_id"] )) {
 	
-	$link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.ask&amp;product_id='.$product_id.'&amp;subject='. urlencode( $VM_LANG->_PHPSHOP_PRODUCT_CALL.": $product_name") );
-	echo vmCommonHTML::hyperLink( $link, $VM_LANG->_PHPSHOP_PRODUCT_CALL );
+	$link = $sess->url( $_SERVER['PHP_SELF'].'?page=shop.ask&amp;product_id='.$product_id.'&amp;subject='. urlencode( $VM_LANG->_('PHPSHOP_PRODUCT_CALL').": $product_name") );
+	echo vmCommonHTML::hyperLink( $link, $VM_LANG->_('PHPSHOP_PRODUCT_CALL') );
 }
 ?>
 
@@ -36,7 +36,7 @@ echo $price_table;
 // DISCOUNT: Show the amount the customer saves
 if(!empty($discount_info["amount"])) {
 	echo "<br />";
-	echo $VM_LANG->_PHPSHOP_PRODUCT_DISCOUNT_SAVE.": ";
+	echo $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_SAVE').": ";
 	if($discount_info["is_percent"]==1) {
 		echo $discount_info["amount"]."%";
 	}

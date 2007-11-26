@@ -18,7 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_TAX_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_TAX_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -34,11 +34,11 @@ if (!empty($tax_rate_id)) {
 
 <table class="adminform">
     <tr> 
-      <td><b><?php echo $VM_LANG->_PHPSHOP_TAX_FORM_LBL ?></b></td>
+      <td><b><?php echo $VM_LANG->_('PHPSHOP_TAX_FORM_LBL') ?></b></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo $VM_LANG->_PHPSHOP_TAX_FORM_COUNTRY ?>:</td>
+      <td align="right" ><?php echo $VM_LANG->_('PHPSHOP_TAX_FORM_COUNTRY') ?>:</td>
       <td>
         <?php $ps_html->list_country("tax_country", $db->sf("tax_country"), "onchange=\"changeStateList();\"") ?> 
       </td>
@@ -47,7 +47,7 @@ if (!empty($tax_rate_id)) {
       <td colspan="2" >&nbsp;</td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo $VM_LANG->_PHPSHOP_TAX_FORM_STATE ?>:</td>
+      <td align="right" ><?php echo $VM_LANG->_('PHPSHOP_TAX_FORM_STATE') ?>:</td>
       <td><?php 
         //$ps_html->list_states("tax_state", $db->sf("tax_state")); 
         echo $ps_html->dynamic_state_lists( "tax_country", "tax_state", $db->sf("tax_country"), $db->sf("tax_state") );
@@ -58,7 +58,7 @@ if (!empty($tax_rate_id)) {
       <td colspan="2" >&nbsp;</td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo $VM_LANG->_PHPSHOP_TAX_FORM_RATE ?>:</td>
+      <td align="right" ><?php echo $VM_LANG->_('PHPSHOP_TAX_FORM_RATE') ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="tax_rate" value="<?php $db->sp("tax_rate") ?>" size="16" />
       </td>

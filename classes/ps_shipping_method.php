@@ -39,11 +39,11 @@ class ps_shipping_method {
 			
 			if( $_SHIPPING->configfile_writeable() ) {
 				$_SHIPPING->write_configuration( $d );
-				$vmLogger->info( $VM_LANG->_VM_CONFIGURATION_CHANGE_SUCCESS );
+				$vmLogger->info( $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS',false) );
 				return True;
 			}
 			else {
-		    	$vmLogger->err( sprintf($VM_LANG->_VM_CONFIGURATION_CHANGE_FAILURE , CLASSPATH."payment/".$_SHIPPING->classname.".cfg.php" ) );
+		    	$vmLogger->err( sprintf($VM_LANG->_('VM_CONFIGURATION_CHANGE_FAILURE',false) , CLASSPATH."payment/".$_SHIPPING->classname.".cfg.php" ) );
 		    	return false;
 		    }
 			

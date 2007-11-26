@@ -64,7 +64,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_AFFILIATE_LIST_LBL, IMAGEURL."ps_image/affiliate.gif", "affiliate", "affiliate_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_AFFILIATE_LIST_LBL'), IMAGEURL."ps_image/affiliate.gif", "affiliate", "affiliate_list");
 
 // start the list table
 $listObj->startTable();
@@ -72,13 +72,13 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME => "",
-					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE => "",
-					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL => "",
-					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION => "",
-					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_RATE => "",
-					$VM_LANG->_PHPSHOP_AFFILIATE_LIST_ORDERS => "",
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME') => "",
+					$VM_LANG->_('PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE') => "",
+					$VM_LANG->_('PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL') => "",
+					$VM_LANG->_('PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION') => "",
+					$VM_LANG->_('PHPSHOP_AFFILIATE_LIST_RATE') => "",
+					$VM_LANG->_('PHPSHOP_AFFILIATE_LIST_ORDERS') => "",
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 

@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH.'ps_vendor.php');
 require_once( CLASSPATH.'ps_shopper_group.php');
 global $ps_html, $ps_product;
-$title = $VM_LANG->_PHPSHOP_PRICE_FORM_LBL.'<br/>';
+$title = $VM_LANG->_('PHPSHOP_PRICE_FORM_LBL').'<br/>';
 
 $product_id = vmGet($_REQUEST, 'product_id', 0);
 $product_price_id = vmGet($_REQUEST, 'product_price_id', 0);
@@ -44,16 +44,16 @@ elseif (empty($vars["error"])) {
 if (!empty($vars["product_price_id"])) {
   $product_price_id = $vars["product_price_id"];
   if (empty($product_parent_id)) {
-    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_('PHPSHOP_PRICE_FORM_UPDATE_FOR_PRODUCT') . " ";
   } else {
-    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM . " ";
+    $title .= $VM_LANG->_('PHPSHOP_PRICE_FORM_UPDATE_FOR_ITEM') . " ";
   }
 }
 else {
   if (empty($product_parent_id)) {
-    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT . " ";
+    $title .= $VM_LANG->_('PHPSHOP_PRICE_FORM_NEW_FOR_PRODUCT') . " ";
   } else {
-    $title .= $VM_LANG->_PHPSHOP_PRICE_FORM_NEW_FOR_ITEM . " ";
+    $title .= $VM_LANG->_('PHPSHOP_PRICE_FORM_NEW_FOR_ITEM') . " ";
   }
 }
 
@@ -74,7 +74,7 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="20" valign="middle" > 
-        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_NET ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRICE_NET') ?>:</strong></div>
       </td>
       <td width="77%" height="20" > 
         <input type="text" class="inputbox" name="product_price" onkeyup="updateGross();" value="<?php $db->sp("product_price"); ?>" size="10" maxlength="10" />
@@ -82,13 +82,13 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="29%" ><strong><div align="right">
-        <?php echo $VM_LANG->_PHPSHOP_PRODUCT_FORM_PRICE_GROSS ?>:</div></strong>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PRICE_GROSS') ?>:</div></strong>
       </td>
       <td width="71%" ><input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" /></td>
     </tr>
     <tr> 
       <td width="23%" height="10" valign="middle" > 
-        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRICE_FORM_CURRENCY ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_PRICE_FORM_CURRENCY') ?>:</strong></div>
       </td>
       <td width="77%" height="10" > 
         <?php $ps_html->list_currency("product_currency",$db->sf("product_currency")) ?>
@@ -96,7 +96,7 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="10" valign="middle" > 
-        <div align="right"><strong><?php echo $VM_LANG->_PHPSHOP_PRICE_FORM_GROUP ?>:</strong></div>
+        <div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_PRICE_FORM_GROUP') ?>:</strong></div>
       </td>
       <td width="77%" height="10" >
           <?php 

@@ -17,6 +17,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 class vmLanguage extends vmAbstractLanguage {
+	var $CHARSET = 'ISO-8859-1';
 	var $_PHPSHOP_MENU = 'เมนู';
 	var $_PHPSHOP_CATEGORY = 'หมวดสินค้า';
 	var $_PHPSHOP_CATEGORIES = 'หมวดสินค้า';
@@ -1825,8 +1826,8 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP = 'This is the maximum length of the product description for each feed item.';
 	var $_VM_ADMIN_CFG_FEED_TITLE_TIP = 'Title of the Feed (the placeholder {storename} holds the name of your store)';
 	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP = 'Title of a Category Feed (\\\'{catname}\\\' is the placeholder for the category name, {storename} holds the name of your store)';
-	var $VM_ADMIN_CFG_FEED_TITLE = 'Feed Title';
-	var $VM_ADMIN_CFG_FEED_TITLE_CATEGORIES = 'Feed Title for Categories';
+	var $_VM_ADMIN_CFG_FEED_TITLE = 'Feed Title';
+	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES = 'Feed Title for Categories';
 	var $_VM_FEED_SUBSCRIBE_TITLE = 'Subscribe to the Feed of the latest Products!';
 	var $_VM_FEED_SUBSCRIBE_TOCATEGORY_TITLE = 'Subscribe to the Feed of the latest Products in this Category!';
 	var $_VM_FEDEX_ACCOUNT_SETTINGS = 'FedEx Account Settings';

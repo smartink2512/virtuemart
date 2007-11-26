@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_MANUFACTURER_CAT_LIST_LBL, "", $modulename, "manufacturer_category_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_LIST_LBL'), "", $modulename, "manufacturer_category_list");
 
 // start the list table
 $listObj->startTable();
@@ -56,10 +56,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_MANUFACTURER_CAT_NAME => 'width="21%"',
-					$VM_LANG->_PHPSHOP_MANUFACTURER_CAT_DESCRIPTION => 'width="66%"',
-					$VM_LANG->_PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS => 'width="13%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_NAME') => 'width="21%"',
+					$VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_DESCRIPTION') => 'width="66%"',
+					$VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS') => 'width="13%"',
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -83,7 +83,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $db->f("mf_category_desc") );
     
 	$url = $_SERVER['PHP_SELF']."?page=$modulename.manufacturer_list&mf_category_id=". $db->f("mf_category_id");
-	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">".$VM_LANG->_PHPSHOP_MANUFACTURER_LIST_LBL."</a>";
+	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">".$VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_LBL')."</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "mf_category_id", $db->f("mf_category_id"), "manufacturerCategoryDelete", $keyword, $limitstart ) );

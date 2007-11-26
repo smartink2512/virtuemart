@@ -139,14 +139,14 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 <div>
 	<form action="<?php echo $action ?>" method="post" name="login" id="login">
 		<?php if ( $params->get('greeting') ) : ?>
-		<div><?php echo $VM_LANG->_HI . ' ' . $name ?></div>
+		<div><?php echo $VM_LANG->_('HI') . ' ' . $name ?></div>
 		<?php endif; ?>
 		<?php if ( $params->get('accountlink') ) : ?>
 		<ul>
-			<li><a href="<?php echo $sess->url(SECUREURL . "index.php?page=account.index");?>"><?php echo $VM_LANG->_PHPSHOP_ACCOUNT_TITLE ?></a></li>
+			<li><a href="<?php echo $sess->url(SECUREURL . "index.php?page=account.index");?>"><?php echo $VM_LANG->_('PHPSHOP_ACCOUNT_TITLE') ?></a></li>
 		</ul>
 		<?php endif; ?>
-		<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_BUTTON_LOGOUT ?>" />
+		<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_('BUTTON_LOGOUT') ?>" />
 		<br /><br />
 		<input type="hidden" name="op2" value="logout" />
 		<input type="hidden" name="return" value="<?php echo $return_url ?>" />
@@ -161,28 +161,28 @@ $registration_url = $sess->url( SECUREURL.'index.php?option=com_virtuemart&amp;p
 		<?php echo $params->get('pretext'); ?>
 		<br />
 		<?php endif; ?>
-		<label for="username_field"><?php echo $VM_LANG->_USERNAME ?></label><br/>
+		<label for="username_field"><?php echo $VM_LANG->_('USERNAME') ?></label><br/>
 		<input class="inputbox" type="text" id="username_field" size="12" name="username" />
 		<br />
-		<label for="password_field"><?php echo $VM_LANG->_PASSWORD ?></label><br/>
+		<label for="password_field"><?php echo $VM_LANG->_('PASSWORD') ?></label><br/>
 		<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 		<?php if( @VM_SHOW_REMEMBER_ME_BOX == '1' ) : ?>
 		<br />
-		<label for="remember_login"><?php echo $VM_LANG->_REMEMBER_ME ?></label>
+		<label for="remember_login"><?php echo $VM_LANG->_('REMEMBER_ME') ?></label>
 		<input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
 		<?php else : ?>
 		<br />
 		<input type="hidden" name="remember" value="yes" />
 		<?php endif; ?>
 		<br />
-		<input type="submit" value="<?php echo $VM_LANG->_BUTTON_LOGIN ?>" class="button" name="Login" />
+		<input type="submit" value="<?php echo $VM_LANG->_('BUTTON_LOGIN') ?>" class="button" name="Login" />
 		<ul>
-			<li><a href="<?php echo $reset_url ?>"><?php echo $VM_LANG->_LOST_PASSWORD ?></a></li>
+			<li><a href="<?php echo $reset_url ?>"><?php echo $VM_LANG->_('LOST_PASSWORD') ?></a></li>
 			<?php if( $remind_url ) : ?>
-			<li><a href="<?php echo $remind_url ?>"><?php echo $VM_LANG->_FORGOT_YOUR_USERNAME ?></a></li>
+			<li><a href="<?php echo $remind_url ?>"><?php echo $VM_LANG->_('FORGOT_YOUR_USERNAME') ?></a></li>
 			<?php endif; ?>
 			<?php if( $mosConfig_allowUserRegistration == '1' ) : ?>
-			<li><?php echo $VM_LANG->_NO_ACCOUNT ?> <a href="<?php echo $registration_url ?>"><?php echo $VM_LANG->_CREATE_ACCOUNT ?></a></li>
+			<li><?php echo $VM_LANG->_('NO_ACCOUNT') ?> <a href="<?php echo $registration_url ?>"><?php echo $VM_LANG->_('CREATE_ACCOUNT') ?></a></li>
 			<?php endif; ?>
 		</ul>
 		<input type="hidden" value="login" name="op2" />

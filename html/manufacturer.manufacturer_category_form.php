@@ -27,24 +27,24 @@ if (!empty($mf_category_id)) {
    $db->next_record();
 }
 //First create the object and let it print a form heading
-$formObj = &new formFactory( $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 ?>
 <table class="adminform">
 	<tr> 
-                  <td width="38%" align="right"><B><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL ?></b> 
+                  <td width="38%" align="right"><B><?php echo $VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL') ?></b> 
                   </td>
                   <td width="62%">&nbsp;</td>
 	</tr>
 	<tr> 
-                  <td width="38%" align="right"><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_NAME ?>:</td>
+                  <td width="38%" align="right"><?php echo $VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_FORM_NAME') ?>:</td>
                   <td width="62%"> 
                     <input type="text" class="inputbox" name="mf_category_name" size="18" value="<?php $db->sp('mf_category_name') ?>" />
                   </td>
 	</tr>
 	<tr> 
-                  <td width="38%" nowrap align="right" valign="top"><?php echo $VM_LANG->_PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION ?>:</td>
+                  <td width="38%" nowrap align="right" valign="top"><?php echo $VM_LANG->_('PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION') ?>:</td>
                   <td width="62%" valign="top"> 
                     <textarea name="mf_category_desc" cols="40" rows="2"><?php $db->sp('mf_category_desc'); ?></textarea>
                   </td>

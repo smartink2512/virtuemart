@@ -33,7 +33,7 @@ $db->query();
 // Create the List Object with page navigation
 $listObj = new listFactory( );
 
-$title = $VM_LANG->_PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL;
+$title = $VM_LANG->_('PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL');
 if (!empty($product_parent_id)) {
   $title .= " Item: ";
 } else {
@@ -51,11 +51,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$db->num_rows().")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_NAME => 'width="25%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION => 'width="30%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS => 'width="15%"',
-					$VM_LANG->_PHPSHOP_PRODUCTS_LBL => 'width="15%"',
-					$VM_LANG->_E_REMOVE => "width=\"10%\""
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_FORM_NAME') => 'width="25%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION') => 'width="30%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS') => 'width="15%"',
+					$VM_LANG->_('PHPSHOP_PRODUCTS_LBL') => 'width="15%"',
+					$VM_LANG->_('E_REMOVE') => "width=\"10%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -77,12 +77,12 @@ while ($db->next_record()) {
 	
 	$listObj->addCell( $db->f("product_type_description"));
       
-	$tmp_cell = $parameter_count . " " . $VM_LANG->_PHPSHOP_PARAMETERS_LBL 
-			. " <a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_parameter_list&product_type_id=". $db->f("product_type_id") . "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>";
+	$tmp_cell = $parameter_count . " " . $VM_LANG->_('PHPSHOP_PARAMETERS_LBL') 
+			. " <a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_parameter_list&product_type_id=". $db->f("product_type_id") . "\">[ ".$VM_LANG->_('PHPSHOP_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$tmp_cell = $product_count ." ". $VM_LANG->_PHPSHOP_PRODUCTS_LBL
-			."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_list&product_type_id=" . $db->f("product_type_id"). "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>";
+	$tmp_cell = $product_count ." ". $VM_LANG->_('PHPSHOP_PRODUCTS_LBL')
+			."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_list&product_type_id=" . $db->f("product_type_id"). "\">[ ".$VM_LANG->_('PHPSHOP_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "product_type_id", $db->f("product_type_id"), "productProductTypeDelete", $keyword, $limitstart, "&product_id=". $product_id ) );

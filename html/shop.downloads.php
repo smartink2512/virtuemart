@@ -18,12 +18,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 
 if( isset($_VERSION)) {
-	$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_DOWNLOADS_TITLE );
+	$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_DOWNLOADS_TITLE') );
 }
 
 if ($perm->check("admin,storeadmin,shopper")) { ?>
 
-	<h3><?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_TITLE ?></h3>
+	<h3><?php echo $VM_LANG->_('PHPSHOP_DOWNLOADS_TITLE') ?></h3>
     <img src="<?php echo VM_THEMEURL ?>images/downloads.gif" alt="downloads" border="0" align="center" />
     <br/>
     <br/>
@@ -31,11 +31,11 @@ if ($perm->check("admin,storeadmin,shopper")) { ?>
 
   	if (ENABLE_DOWNLOADS == '1') { ?>
 	  	<form method="get" action="<?php echo $mm_action_url ?>index.php" name="downloadForm">
-		  	<p><?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_INFO ?></p>
+		  	<p><?php echo $VM_LANG->_('PHPSHOP_DOWNLOADS_INFO') ?></p>
 		  	<div align="center">
 			    <input type="text" class="inputbox" value="<?php echo @$_GET['download_id'] ?>" size="32" name="download_id" />
 			    <br /><br />
-			    <input type="submit" onclick="if( document.downloadForm.download_id.value < 12) { alert('<?php echo $VM_LANG->_CONTACT_FORM_NC ?>');return false;} else return true;" class="button" value="<?php echo $VM_LANG->_PHPSHOP_DOWNLOADS_START ?>" />
+			    <input type="submit" onclick="if( document.downloadForm.download_id.value < 12) { alert('<?php echo $VM_LANG->_('CONTACT_FORM_NC',false) ?>');return false;} else return true;" class="button" value="<?php echo $VM_LANG->_('PHPSHOP_DOWNLOADS_START') ?>" />
 			 </div>
 		    <input type="hidden" name="func" value="downloadRequest" />
 		    <input type="hidden" name="option" value="<?php echo VM_COMPONENT_NAME ?>" />
@@ -45,7 +45,7 @@ if ($perm->check("admin,storeadmin,shopper")) { ?>
 	}
 }
 else {
-	$vmLogger->info( $VM_LANG->_NOT_AUTH."; ".$VM_LANG->_DO_LOGIN );
+	$vmLogger->info( $VM_LANG->_('NOT_AUTH',false)."; ".$VM_LANG->_('DO_LOGIN',false) );
 }
 
 ?>

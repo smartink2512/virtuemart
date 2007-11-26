@@ -22,18 +22,18 @@ if ( $set == 0 ) { // This is the enquiry form!
 	$validate = mosHash( $mainframe->getCfg( 'db' ) );
 	?>
 	<br />
-	<a class="button" href="<?php echo $product_link ?>"><?php echo $VM_LANG->_VM_RETURN_TO_PRODUCT ?></a>
+	<a class="button" href="<?php echo $product_link ?>"><?php echo $VM_LANG->_('VM_RETURN_TO_PRODUCT') ?></a>
 	<br /><br />
 	
 	<form action="<?php echo $mm_action_url ?>index.php" method="post" name="emailForm" id="emailForm">
-	<label for="contact_name"><?php echo $VM_LANG->_NAME_PROMPT ?></label>
+	<label for="contact_name"><?php echo $VM_LANG->_('NAME_PROMPT') ?></label>
 	<br /><input type="text" name="name" id="contact_name" size="80" class="inputbox" value="<?php echo $name ?>"><br /><br />
-	<label for="contact_mail"><?php echo $VM_LANG->_EMAIL_PROMPT ?></label>
+	<label for="contact_mail"><?php echo $VM_LANG->_('EMAIL_PROMPT') ?></label>
 	<br /><input type="text" id="contact_mail" name="email" size="80" label="Your email" class="inputbox" value="<?php echo $email ?>"><br /><br />
-	<label for="contact_text"><?php echo $VM_LANG->_MESSAGE_PROMPT ?></label><br />
+	<label for="contact_text"><?php echo $VM_LANG->_('MESSAGE_PROMPT') ?></label><br />
 	<textarea rows="10" cols="60" name="text" id="contact_text" class="inputbox"><?php echo $subject ?></textarea><br />
 	
-	<input type="button" name="send" value="<?php echo $VM_LANG->_SEND_BUTTON ?>" class="button" onclick="validateEnquiryForm()" />	
+	<input type="button" name="send" value="<?php echo $VM_LANG->_('SEND_BUTTON') ?>" class="button" onclick="validateEnquiryForm()" />	
 	
 	<input type="hidden" name="product_id" value="<?php echo  $db_product->f("product_id")  ?>" />
 	<input type="hidden" name="product_sku" value="<?php echo  $db_product->f("product_sku")  ?>" />
@@ -49,7 +49,7 @@ if ( $set == 0 ) { // This is the enquiry form!
 	<script type="text/javascript"><!--
 	function validateEnquiryForm() {
 		if ( ( document.emailForm.text.value == "" ) || ( document.emailForm.email.value.search("@") == -1 ) || ( document.emailForm.email.value.search("[.*]" ) == -1 ) ) {
-			alert( "<?php echo $VM_LANG->_CONTACT_FORM_NC; ?>" );
+			alert( "<?php echo $VM_LANG->_('CONTACT_FORM_NC',false); ?>" );
 		} else if ( ( document.emailForm.email.value.search(";") != -1 ) || ( document.emailForm.email.value.search(",") != -1 ) || ( document.emailForm.email.value.search(" ") != -1 ) ) {
 			alert( "You cannot enter more than one email address" );
 		} else {
@@ -64,11 +64,11 @@ if ( $set == 0 ) { // This is the enquiry form!
 else { // if set==1 then we have sent the email to the vendor and say thank you here.
   ?>
    <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
-   <?php echo $VM_LANG->_THANK_MESSAGE ?>
+   <?php echo $VM_LANG->_('THANK_MESSAGE') ?>
  
   <br /><br />
   
-  <a class="button" href="<?php echo $product_link ?>"><?php echo $VM_LANG->_VM_RETURN_TO_PRODUCT ?></a>
+  <a class="button" href="<?php echo $product_link ?>"><?php echo $VM_LANG->_('VM_RETURN_TO_PRODUCT') ?></a>
   
   <?php 
 }

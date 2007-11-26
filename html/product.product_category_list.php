@@ -95,7 +95,7 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_PHPSHOP_CATEGORY_LIST_LBL, IMAGEURL."ps_image/categories.gif", $modulename, "product_category_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CATEGORY_LIST_LBL'), IMAGEURL."ps_image/categories.gif", $modulename, "product_category_list");
 
 // start the list table
 $listObj->startTable();
@@ -103,13 +103,13 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$pageNav->limit.")\" />" => "width=\"20\"",
-					$VM_LANG->_PHPSHOP_CATEGORY_FORM_NAME => 'width="25%"',
-					$VM_LANG->_PHPSHOP_CATEGORY_FORM_DESCRIPTION => 'width="30%"',
-					$VM_LANG->_PHPSHOP_PRODUCTS_LBL => 'width="10%"',
-					$VM_LANG->_PHPSHOP_PRODUCT_LIST_PUBLISH => 'width="5%"',
-					$VM_LANG->_PHPSHOP_MODULE_LIST_ORDER => 'width="7%"',
+					$VM_LANG->_('PHPSHOP_CATEGORY_FORM_NAME') => 'width="25%"',
+					$VM_LANG->_('PHPSHOP_CATEGORY_FORM_DESCRIPTION') => 'width="30%"',
+					$VM_LANG->_('PHPSHOP_PRODUCTS_LBL') => 'width="10%"',
+					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_PUBLISH') => 'width="5%"',
+					$VM_LANG->_('PHPSHOP_MODULE_LIST_ORDER') => 'width="7%"',
 					vmCommonHTML::getSaveOrderButton( min($nrows - $pageNav->limitstart, $pageNav->limit ) ) => 'width="8%"',
-					$VM_LANG->_E_REMOVE => "width=\"5%\""
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -145,12 +145,12 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 				. "</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$desc = strlen( $category_tmp[$row_list[$n]]["category_description"] ) > 255 ? mm_ToolTip( $category_tmp[$row_list[$n]]["category_description"], $VM_LANG->_PHPSHOP_CATEGORY_FORM_DESCRIPTION ) :$category_tmp[$row_list[$n]]["category_description"];
+	$desc = strlen( $category_tmp[$row_list[$n]]["category_description"] ) > 255 ? mm_ToolTip( $category_tmp[$row_list[$n]]["category_description"], $VM_LANG->_('PHPSHOP_CATEGORY_FORM_DESCRIPTION') ) :$category_tmp[$row_list[$n]]["category_description"];
 	$listObj->addCell( "&nbsp;&nbsp;". $desc );
 	
 	$listObj->addCell( ps_product_category::product_count( $category_tmp[$row_list[$n]]["category_child_id"] )
 						."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $category_tmp[$row_list[$n]]["category_child_id"]."&option=com_virtuemart"
-						. "\">[ ".$VM_LANG->_PHPSHOP_SHOW." ]</a>"
+						. "\">[ ".$VM_LANG->_('PHPSHOP_SHOW')." ]</a>"
 					);
 	// Publish / Unpublish
 	$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.product_category_list&category_id=".$category_tmp[$row_list[$n]]["category_child_id"]."&func=changePublishState" );

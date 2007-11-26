@@ -21,7 +21,7 @@ require_once(CLASSPATH.'ps_payment_method.php');
 $ps_payment_method = new ps_payment_method;
 ?>
 
-<h3><?php echo $VM_LANG->_PHPSHOP_ORDER_CONFIRM_MNU ?></h3>
+<h3><?php echo $VM_LANG->_('PHPSHOP_ORDER_CONFIRM_MNU') ?></h3>
 
 <?php include(PAGEPATH."ro_basket.php"); ?>
 
@@ -56,35 +56,35 @@ if(!$db->num_rows()) {
     $db->query($q);
 }
 $db->next_record();
-?><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_BILLINFO ?></B></TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_COMPANY ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+?><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_BILLINFO') ?></b></td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_COMPANY') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("company");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT> <B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_NAME ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"> <b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_NAME') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("first_name");
      echo " ";
      $db->p("middle_name");
      echo " ";
      $db->p("last_name");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT> <B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_ADDRESS ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"> <b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_ADDRESS') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("address_1");
      echo "<BR>";
      $db->p("address_2");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT>&nbsp;</TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right">&nbsp;</td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("city");
      echo ",";
      $db->p("state");
@@ -92,31 +92,31 @@ $db->next_record();
      $db->p("zip");
      echo "<br> ";
      $db->p("country");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PHONE ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PHONE') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("phone_1");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_FAX ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_FAX') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("fax");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_EMAIL ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php if (!$db->f("user_email")) { $db->p("email"); } else $db->f("user_email"); ?>
-            </TD>
-          </TR>
-        </TABLE>
-      </TD>
-      <TD VALIGN="TOP" WIDTH="52%"> 
-        <TABLE BORDER=0 CELLSPACING=0 CELLPADDING=2 WIDTH=100%>
-          <TR class="sectiontableheader"> 
-            <TD COLSPAN=2><B><?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_EMAIL') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php if (!$db->f("user_email")) { $db->p("email"); } else $db->f("user_email"); ?>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td valign="top" width="52%"> 
+        <table border="0" cellspacing="0" cellpadding="2" width="100%">
+          <tr class="sectiontableheader"> 
+            <td colspan="2"><b><?php
             
     $q  = "SELECT * from #__users WHERE ";
     $q .= "user_info_id='$ship_to_info_id' ";
@@ -129,35 +129,35 @@ $db->next_record();
     }
     $db->next_record();
     
-?><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_SHIPINFO ?></B></TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+?><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_SHIPINFO') ?></b></td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("company");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B> <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b> <?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("first_name");
      echo " ";
      $db->p("middle_name");
      echo " ";
      $db->p("last_name");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B> <?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b> <?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("address_1");
      echo "<BR>";
      $db->p("address_2");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B></B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b></b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("city");
      echo ",";
      $db->p("state");
@@ -165,24 +165,24 @@ $db->next_record();
      $db->p("zip");
      echo "<br> ";
      $db->p("country");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("phone_1");
-   ?> </TD>
-          </TR>
-          <TR> 
-            <TD WIDTH=10% ALIGN=RIGHT><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX ?>: </B></TD>
-            <TD WIDTH=90% NOWRAP> <?php
+   ?> </td>
+          </tr>
+          <tr> 
+            <td width="10%" align="right"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX') ?>: </b></td>
+            <td width="90%" nowrap="nowrap"> <?php
      $db->p("fax");
-   ?> </TD>
-          </TR>
-        </TABLE>
-      </TD>
-    </TR>
-  </TABLE>
+   ?> </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
   <!-- Customer Information Ends --> 
   <!-- Customer Shipping --> 
   <?php 
@@ -192,40 +192,40 @@ include(PAGEPATH."/checkout.shipping_selected.php");
 ?><!-- END Customer Shipping --><BR>
 
 <!-- Begin Payment Infomation -->
-  <TABLE BORDER=0 CELLSPACING=0 CELLPADDING=2 WIDTH=100%>
-    <TR class="sectiontableheader"> 
-      <TD COLSPAN=2><B><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO ?></B></TD>
-    </TR>
-    <TR> 
-      <TD NOWRAP WIDTH=10% ALIGN=RIGHT><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD ?>: </TD>
-      <TD><?php $ps_payment_method->list_method($db->sf("payment_method_id")) ?></TD>
-    </TR>
-    <TR> 
-      <TD colspan=2>&nbsp;</TD>
-    </TR>
-    <TR> 
-      <TD NOWRAP WIDTH=10% ALIGN=RIGHT><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD ?>*: </TD>
-      <TD> 
-        <INPUT type="text" class="inputbox" NAME=order_payment_name VALUE="<?php echo $order_payment_name ?>">
-      </TD>
-    </TR>
-    <TR> 
-      <TD NOWRAP WIDTH=10% ALIGN=RIGHT><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM ?>*: </TD>
-      <TD> 
-        <INPUT type="text"  class="inputbox" NAME=order_payment_number VALUE="<?php echo $order_payment_number ?>">
-      </TD>
-    </TR>
-    <TR> 
-      <TD NOWRAP WIDTH=10% ALIGN=RIGHT><?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE ?>*: </TD>
-      <TD><?php $ps_html->list_month("order_payment_expire_month") . "/" . $ps_html->list_year("order_payment_expire_year") ?></TD>
-    </TR>
-  </TABLE>
+  <table border="0" cellspacing="0" cellpadding="2" width="100%">
+    <tr class="sectiontableheader"> 
+      <td colspan="2"><b><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO') ?></b></td>
+    </tr>
+    <tr> 
+      <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD') ?>: </td>
+      <td><?php $ps_payment_method->list_method($db->sf("payment_method_id")) ?></td>
+    </tr>
+    <tr> 
+      <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr> 
+      <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD') ?>*: </td>
+      <td> 
+        <input type="text" class="inputbox" name="order_payment_name" value="<?php echo $order_payment_name ?>">
+      </td>
+    </tr>
+    <tr> 
+      <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM') ?>*: </td>
+      <td> 
+        <input type="text"  class="inputbox" name="order_payment_number" value="<?php echo $order_payment_number ?>">
+      </td>
+    </tr>
+    <tr> 
+      <td nowrap="nowrap" width="10%" align="right"><?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE') ?>*: </td>
+      <td><?php $ps_html->list_month("order_payment_expire_month") . "/" . $ps_html->list_year("order_payment_expire_year") ?></td>
+    </tr>
+  </table>
 <!-- End payment information -->
 <BR>
-*<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO ?>.
-<table width=100% border=0 cellspacing=0 cellpadding=0>
+*<?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO') ?>.
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr align=center>
-  <td><input type=submit class="button" name=submit value="<?php echo $VM_LANG->_PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER ?>"></TD>
+  <td><input type="submit" class="button" name="submit" value="<?php echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER') ?>"></td>
 </tr>
 </table>
 

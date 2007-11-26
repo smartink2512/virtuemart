@@ -30,7 +30,7 @@ if (!empty( $group_id )) {
 $funcname = !empty($group_id) ? "usergroupUpdate" : "usergroupAdd";
 
 // Create the Form Control Object
-$formObj = &new formFactory( $VM_LANG->_VM_USERGROUP_FORM_LBL );
+$formObj = &new formFactory( $VM_LANG->_('VM_USERGROUP_FORM_LBL') );
 
 // Start the the Form
 $formObj->startForm();
@@ -42,16 +42,16 @@ $formObj->hiddenField( 'group_id', $group_id );
 		<td colspan="2">&nbsp;</td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo $VM_LANG->_VM_USERGROUP_NAME ?>:</td>
+		<td width="24%" align="right"><?php echo $VM_LANG->_('VM_USERGROUP_NAME') ?>:</td>
 		<td width="76%"> 
 			<input type="text" class="inputbox" name="group_name" value="<?php $db->sp("group_name") ?>" />
 		</td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo $VM_LANG->_VM_USERGROUP_LEVEL ?>:</td>
+		<td width="24%" align="right"><?php echo $VM_LANG->_('VM_USERGROUP_LEVEL') ?>:</td>
 		<td width="76%"> 
 			<input type="text" class="inputbox" name="group_level" value="<?php $db->sp("group_level") ?>" />
-			<?php echo vmToolTip( $VM_LANG->_VM_USERGROUP_LEVEL_TIP ); ?>
+			<?php echo vmToolTip( $VM_LANG->_('VM_USERGROUP_LEVEL_TIP') ); ?>
 		</td>
 	</tr>
 </table>

@@ -9,7 +9,7 @@ $cellwidth = intval( (100 / $featured_per_row) - 2 );
 if( empty( $featured_products )) {
 	return; // Do nothing, if there are no Featured!
 }
-echo "<h3>".$VM_LANG->_VM_FEATURED_PRODUCT."</h3>";
+echo "<h3>".$VM_LANG->_('VM_FEATURED_PRODUCT')."</h3>";
 foreach( $featured_products as $featured ) {
 	?>
 	<div style="float:left;width:<?php echo $cellwidth ?>%;text-align:top;padding:0px;" >

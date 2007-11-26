@@ -34,19 +34,19 @@ else {
 		if($order_status == PAYPAL_VERIFIED_STATUS
       || $order_status == PAYPAL_PENDING_STATUS) {  ?> 
         <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="Success" border="0" />
-        <h2><?php echo $VM_LANG->_PHPSHOP_PAYPAL_THANKYOU ?></h2>
+        <h2><?php echo $VM_LANG->_('PHPSHOP_PAYPAL_THANKYOU') ?></h2>
     
     <?php
       }
       else { ?>
         <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><?php echo $VM_LANG->_PHPSHOP_PAYPAL_ERROR ?></span>
+        <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYPAL_ERROR') ?></span>
     
     <?php
     } ?>
     <br />
      <p><a href="index.php?option=com_virtuemart&page=account.order_details&order_id=<?php echo $order_id ?>">
-     <?php echo $VM_LANG->_PHPSHOP_ORDER_LINK ?></a>
+     <?php echo $VM_LANG->_('PHPSHOP_ORDER_LINK') ?></a>
      </p>
     <?php
 	}

@@ -179,7 +179,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	if( empty( $no_menu )) {
 		echo '<br style="clear:both;"/><div class="smallgrey" align="center">'
 	                .$VMVERSION->PRODUCT.' '.$VMVERSION->RELEASE
-	                .' (<a href="http://virtuemart.net/index2.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" onclick="javascript:void window.open(\'http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE .'\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no\'); return false;" title="'.$VM_LANG->_VM_VERSIONCHECK_TITLE.'" target="_blank">'.$VM_LANG->_VM_VERSIONCHECK_NOW.'</a>)</div>';
+	                .' (<a href="http://virtuemart.net/index2.php?option=com_versions&amp;catid=1&amp;myVersion='.@$VMVERSION->RELEASE.'" onclick="javascript:void window.open(\'http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion='.$VMVERSION->RELEASE .'\', \'win2\', \'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no\'); return false;" title="'.$VM_LANG->_('VM_VERSIONCHECK_TITLE').'" target="_blank">'.$VM_LANG->_('VM_VERSIONCHECK_NOW').'</a>)</div>';
 	}
 	if( DEBUG == '1' && $no_menu != 1 ) {
 	        // Load PAGE

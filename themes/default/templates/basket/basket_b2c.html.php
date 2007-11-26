@@ -19,11 +19,11 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 ?>
 <table width="100%" cellspacing="2" cellpadding="4" border="0">
   <tr align="left" class="sectiontableheader">
-        <th><?php echo $VM_LANG->_PHPSHOP_CART_NAME ?></th>
-        <th><?php echo $VM_LANG->_PHPSHOP_CART_SKU ?></th>
-	<th><?php echo $VM_LANG->_PHPSHOP_CART_PRICE ?></th>
-	<th><?php echo $VM_LANG->_PHPSHOP_CART_QUANTITY ?> / <?php echo $VM_LANG->_PHPSHOP_CART_ACTION ?></th>
-	<th><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?></th>
+        <th><?php echo $VM_LANG->_('PHPSHOP_CART_NAME') ?></th>
+        <th><?php echo $VM_LANG->_('PHPSHOP_CART_SKU') ?></th>
+	<th><?php echo $VM_LANG->_('PHPSHOP_CART_PRICE') ?></th>
+	<th><?php echo $VM_LANG->_('PHPSHOP_CART_QUANTITY') ?> / <?php echo $VM_LANG->_('PHPSHOP_CART_ACTION') ?></th>
+	<th><?php echo $VM_LANG->_('PHPSHOP_CART_SUBTOTAL') ?></th>
   </tr>
 <?php foreach( $product_rows as $product ) { ?>
   <tr valign="top" class="<?php echo $product['row_color'] ?>">
@@ -38,25 +38,25 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 <?php } ?>
 <!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
   <tr class="sectiontableentry2">
-    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_CART_SUBTOTAL ?>:</td> 
+    <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_CART_SUBTOTAL') ?>:</td> 
     <td colspan="3"><?php echo $subtotal_display ?></td>
   </tr>
 <?php if( $discount_before ) { ?>
   <tr class="sectiontableentry1">
-    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+    <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:
     </td> 
     <td colspan="3"><?php echo $coupon_display ?></td>
   </tr>
 <?php } 
 if( $shipping ) { ?>
   <tr class="sectiontableentry1">
-	<td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_SHIPPING ?>: </td> 
+	<td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?>: </td> 
 	<td colspan="3"><?php echo $shipping_display ?></td>
   </tr>
 <?php } 
 if($discount_after) { ?>
   <tr class="sectiontableentry1">
-    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_COUPON_DISCOUNT ?>:
+    <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:
     </td> 
     <td colspan="3"><?php echo $coupon_display ?></td>
   </tr>
@@ -66,13 +66,13 @@ if($discount_after) { ?>
     <td colspan="4"><hr /></td>
   </tr>
   <tr>
-    <td colspan="4" align="right"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL ?>: </td>
+    <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL') ?>: </td>
     <td colspan="3"><strong><?php echo $order_total_display ?></strong>
     </td>
   </tr>
 <?php if ( $show_tax ) { ?>
   <tr class="sectiontableentry2">
-        <td colspan="4" align="right" valign="top"><?php echo $VM_LANG->_PHPSHOP_ORDER_PRINT_TOTAL_TAX ?>: </td> 
+        <td colspan="4" align="right" valign="top"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?>: </td> 
         <td colspan="3"><?php echo $tax_display ?></td>
   </tr>
 <?php } ?>

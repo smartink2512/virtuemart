@@ -16,14 +16,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 *
 * http://virtuemart.net
 */
-$mainframe->setPageTitle( $VM_LANG->_PHPSHOP_PARAMETER_SEARCH );
-$mainframe->appendPathWay( '<a href="'.$sess->url($mm_action_url.basename($_SERVER['PHP_SELF']).'?page=shop.parameter_search').'">'.$VM_LANG->_PHPSHOP_ADVANCED_SEARCH.'</a>.' . vmCommonHTML::pathway_separator() . $VM_LANG->_PHPSHOP_PARAMETER_SEARCH );
+$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') );
+$mainframe->appendPathWay( '<a href="'.$sess->url($mm_action_url.basename($_SERVER['PHP_SELF']).'?page=shop.parameter_search').'">'.$VM_LANG->_('PHPSHOP_ADVANCED_SEARCH').'</a>.' . vmCommonHTML::pathway_separator() . $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') );
 ?>
-<h2><?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH ?></h2>
+<h2><?php echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') ?></h2>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
 <tr>
-	<td><?php echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_TEXT1 ?></td>
+	<td><?php echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_TEXT1') ?></td>
 </tr>
 <tr>
 	<td>&nbsp;</td>
@@ -47,7 +47,7 @@ $mainframe->appendPathWay( '<a href="'.$sess->url($mm_action_url.basename($_SERV
 	echo "</table>\n";
 	
 	if ($db->num_rows() == 0) {
-		echo $VM_LANG->_PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE;
+		echo $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE');
 	}
 ?>
 	</td>

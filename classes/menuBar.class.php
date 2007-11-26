@@ -41,7 +41,7 @@ class vmMenuBar extends mosMenuBar {
 	function addNew( $task='new', $page, $alt='', $formName="adminForm" ) {
 		global $VM_LANG, $limit;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_NEW;
+			$alt = $VM_LANG->_('CMN_NEW');
 		}
 		$bar =& JToolBar::getInstance('toolbar');
 		
@@ -62,7 +62,7 @@ class vmMenuBar extends mosMenuBar {
 	function save( $task='save', $alt='' ) {
 		global $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_SAVE;
+			$alt = $VM_LANG->_('CMN_SAVE');
 		}
 		$bar =& JToolBar::getInstance('toolbar');
 		
@@ -84,7 +84,7 @@ class vmMenuBar extends mosMenuBar {
 	function apply( $task='apply', $alt='' ) {
 		global $page, $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_E_APPLY;
+			$alt = $VM_LANG->_('E_APPLY');
 		}
 		$bar =& JToolBar::getInstance('toolbar');
 		
@@ -103,13 +103,13 @@ class vmMenuBar extends mosMenuBar {
 	function publishList( $func, $task='publish', $alt='' ) {
 		global $VM_LANG;
 		if ($alt=='') {
-			$alt=$VM_LANG->_CMN_PUBLISH;
+			$alt=$VM_LANG->_('CMN_PUBLISH');
 		}
 
 		$bar =& JToolBar::getInstance('toolbar');
 		
      	$bar->appendButton( 'Custom', '<td>
-		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'' . str_replace("'","\\'",$VM_LANG->_CMN_PLEASESELECT_PUBLISH) . '\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
+		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'' . str_replace("'","\\'",$VM_LANG->_('CMN_PLEASESELECT_PUBLISH')) . '\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
 		<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 		 . $alt .'
 		</a>
@@ -124,13 +124,13 @@ class vmMenuBar extends mosMenuBar {
 	function unpublishList( $func, $task='unpublish', $alt='' ) {
 		global $VM_LANG;
 		if ($alt=='') {
-			$alt=$VM_LANG->_CMN_UNPUBLISH;
+			$alt=$VM_LANG->_('CMN_UNPUBLISH');
 		}
 
 		$bar =& JToolBar::getInstance('toolbar');
 		
      	$bar->appendButton( 'Custom', '<td>
-		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'' . str_replace("'","\\'",$VM_LANG->_CMN_PLEASESELECT_UNPUBLISH) . '\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
+		<a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'' . str_replace("'","\\'",$VM_LANG->_('CMN_PLEASESELECT_UNPUBLISH')) . '\'); } else {vm_submitListFunc(\''. $task. '\', \'adminForm\', \''. $func .'\');}" >
 		<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 		 . $alt .'
 		</a>
@@ -145,11 +145,11 @@ class vmMenuBar extends mosMenuBar {
 	function deleteList( $func, $task='remove', $alt='' ) {
 		global $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_E_REMOVE;
+			$alt = $VM_LANG->_('E_REMOVE');
 		}
 		$bar =& JToolBar::getInstance('toolbar');
 		
-		$bar->appendButton( 'Custom', '<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'' . str_replace("'","\\'",$VM_LANG->_CMN_PLEASESELECT_DELETE) . '\'); } else if (confirm(\'' . str_replace("'","\\'",$VM_LANG->_CMN_CONFIRM_DELETE_ITEMS) .'\')){ vm_submitListFunc(\''. $task.'\', \'adminForm\', \''. $func.'\' );}">
+		$bar->appendButton( 'Custom', '<td><a class="toolbar" href="javascript:if (document.adminForm.boxchecked.value == 0){ alert(\'' . str_replace("'","\\'",$VM_LANG->_('CMN_PLEASESELECT_DELETE')) . '\'); } else if (confirm(\'' . str_replace("'","\\'",$VM_LANG->_('CMN_CONFIRM_DELETE_ITEMS')) .'\')){ vm_submitListFunc(\''. $task.'\', \'adminForm\', \''. $func.'\' );}">
 			<div class="vmicon-32-'. $task.'" type="Standard"></div>'
 			. $alt .'
 		</a></td>' );
@@ -164,7 +164,7 @@ class vmMenuBar extends mosMenuBar {
 	function cancel( $task='cancel', $alt='' ) {
 		global $page, $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_CANCEL;
+			$alt = $VM_LANG->_('CMN_CANCEL');
 		}
 		$no_menu = vmGet( $_REQUEST, 'no_menu' );
 		$bar =& JToolBar::getInstance('toolbar');
@@ -204,9 +204,9 @@ class vmMenuBar extends mosMenuBar {
 		$bar =& JToolBar::getInstance('toolbar');
 		if ($listSelect) {
 			if( empty( $func ))
-				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('" . str_replace("'","\\'",$VM_LANG->_CMN_PLEASESELECT_TO) . " $alt');}else{vm_submitButton('$task','$formName', '$page')}";
+				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('" . str_replace("'","\\'",$VM_LANG->_('CMN_PLEASESELECT_TO')) . " $alt');}else{vm_submitButton('$task','$formName', '$page')}";
 			else
-				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('" . str_replace("'","\\'",$VM_LANG->_CMN_PLEASESELECT_TO) . " $alt');}else{vm_submitListFunc('$task','$formName', '$func')}";
+				$href = "javascript:if (document.adminForm.boxchecked.value == 0){ alert('" . str_replace("'","\\'",$VM_LANG->_('CMN_PLEASESELECT_TO')) . " $alt');}else{vm_submitListFunc('$task','$formName', '$func')}";
                 } else {
                         $href = "javascript:vm_submitButton('$task','$formName', '$page')";
                 }
@@ -304,7 +304,7 @@ class vmToolBar {
 	function addNew( $task='new', $page, $alt='', $formName="adminForm" ) {
 		global $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_NEW;
+			$alt = $VM_LANG->_('CMN_NEW');
 		}
 		
 		$this->appendButton($alt, $task, "document.adminForm.toggle.onclick();vm_submitButton('$task','$formName','$page')" );
@@ -319,7 +319,7 @@ class vmToolBar {
 	function save( $task='save', $alt='' ) {
 		global $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_SAVE;
+			$alt = $VM_LANG->_('CMN_SAVE');
 		}
 		$this->appendButton($alt, $task, "submitbutton('$task')" );
 		
@@ -334,13 +334,13 @@ class vmToolBar {
 	function apply( $task='apply', $alt='' ) {
 		global $page, $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_E_APPLY;
+			$alt = $VM_LANG->_('E_APPLY');
 		}
 		$this->appendButton($alt, $task, "vm_submitButton('$task', 'adminForm', '$page')" );
 	}
 	function back() {
 		global $VM_LANG;
-		$this->appendButton($VM_LANG->_BACK, 'back', "window.history.back();" );
+		$this->appendButton($VM_LANG->_('BACK'), 'back', "window.history.back();" );
 	}
 	/**
 	* Writes a common 'publish' button for a list of records
@@ -350,9 +350,9 @@ class vmToolBar {
 	function publishList( $func, $task='publish', $alt='' ) {
 		global $VM_LANG;
 		if ($alt=='') {
-			$alt=$VM_LANG->_CMN_PUBLISH;
+			$alt=$VM_LANG->_('CMN_PUBLISH');
 		}
-     	$this->appendButton($alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_CMN_PLEASESELECT_PUBLISH . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}");
+     	$this->appendButton($alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_PUBLISH',false) . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}");
 	}
 	
 	/**
@@ -363,9 +363,9 @@ class vmToolBar {
 	function unpublishList( $func, $task='unpublish', $alt='' ) {		
 		global $VM_LANG;
 		if ($alt=='') {
-			$alt=$VM_LANG->_CMN_UNPUBLISH;
+			$alt=$VM_LANG->_('CMN_UNPUBLISH');
 		}
-     	$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_CMN_PLEASESELECT_UNPUBLISH . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}" );
+     	$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_UNPUBLISH',false) . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}" );
 	}
 	/**
 	* Writes a common 'delete' button for a list of records
@@ -376,10 +376,10 @@ class vmToolBar {
 	function deleteList( $func, $task='remove', $alt='' ) {
 		global $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_E_REMOVE;
+			$alt = $VM_LANG->_('E_REMOVE');
 		}	
 		
-		$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_CMN_PLEASESELECT_DELETE . "'); } else if (confirm('Are you sure you want to delete selected items?')){ vm_submitListFunc('$task', 'adminForm', '$func' );}" );
+		$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_DELETE') . "'); } else if (confirm('Are you sure you want to delete selected items?')){ vm_submitListFunc('$task', 'adminForm', '$func' );}" );
 		
 	}
 	
@@ -391,7 +391,7 @@ class vmToolBar {
 	function cancel( $task='cancel', $alt='' ) {
 		global $page, $VM_LANG;
 		if( $alt == '') {
-			$alt = $VM_LANG->_CMN_CANCEL;
+			$alt = $VM_LANG->_('CMN_CANCEL');
 		}
 		
 		if ($page == "store.store_form") { $my_page = "store.index"; }
@@ -419,10 +419,10 @@ class vmToolBar {
 		
 		if ($listSelect) {
 			if( empty( $func )) {
-				$js = "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_CMN_PLEASESELECT_TO . " $alt');}else{vm_submitButton('$task','$formName', '$page')}";
+				$js = "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_TO') . " $alt');}else{vm_submitButton('$task','$formName', '$page')}";
 			}
 			else {
-				$js = "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_CMN_PLEASESELECT_TO . " $alt');}else{vm_submitListFunc('$task','$formName', '$func')}";
+				$js = "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_TO') . " $alt');}else{vm_submitListFunc('$task','$formName', '$func')}";
 			}
         } else {
             $js = "vm_submitButton('$task','$formName', '$page')";
