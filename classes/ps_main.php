@@ -747,7 +747,7 @@ function vmReadFileChunked($filename,$retbytes=true) {
  * @since 1.0.5
  */
 function vmGetCharset() {
-	$iso = explode( '=', _ISO );
+	$iso = explode( '=', @constant('_ISO') );
 	if( !empty( $iso[1] )) {
 		return $iso[1];
 	}

@@ -249,7 +249,7 @@ class vmMainFrame {
 		if( vmIsJoomla(1.5) ) {
 			$cmsPathway =& $mainframe->getPathway();
 			foreach( $pathway AS $item) {
-				$cmsPathway->addItem( $item->name, $item->link );
+				$cmsPathway->addItem( $item->name, basename($item->link) );
 			}
 		} else {
 			$tpl = vmTemplate::getInstance();

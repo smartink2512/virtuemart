@@ -68,6 +68,9 @@ class ps_session {
 			}
 		}
 		else {
+			if( empty( $_COOKIE['virtuemart'])) {
+				$_COOKIE['virtuemart'] = $this->getSessionId();
+			}
 			$vmLogger->debug( 'Using existing Session '.session_name().', ID: '.session_id().'.');
 		}
 	}
@@ -110,6 +113,7 @@ class ps_session {
 			$sessionCookie 		= vmGet( $_COOKIE, $sessionCookieName, null );
 			// Session ID / `value`
 			return mosMainFrame::sessionCookieValue( $sessionCookie );
+			
 		}
 		// Mambo 4.6
 		elseif( is_callable( array('mosSession', 'getCurrent' ))) {
@@ -121,6 +125,9 @@ class ps_session {
 			// Set the sessioncookie if its missing
 			// this is needed for joomla sites only
 			return $mainframe->_session->session_id;
+		}
+		else {
+			return session_id();
 		}
 	}
 	/**

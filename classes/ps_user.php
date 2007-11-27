@@ -604,8 +604,11 @@ class ps_user {
 			$obj = new mosUser( $database );
 			foreach ($cid as $id) {
 				// check for a super admin ... can't delete them
-				$groups 	= $acl->get_object_groups( 'users', $id, 'ARO' );
-				$this_group = strtolower( $acl->get_group_name( $groups[0], 'ARO' ) );
+				//TODO: Find out the group name of the User to be deleted
+//				$groups 	= $acl->get_object_groups( 'users', $id, 'ARO' );
+//				$this_group = strtolower( $acl->get_group_name( $groups[0], 'ARO' ) );
+				$obj->load( $id );
+				$this_group = strtolower( $obj->get('usertype') );
 				if ( $this_group == 'super administrator' ) {
 					$vmLogger->err( 'You cannot delete a Super Administrator' );
 					return false;

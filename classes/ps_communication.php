@@ -47,12 +47,12 @@ class ps_communication {
 
 		// probably a spoofing attack
 		if (!$validate) {
-			$vmLogger->err( 'Hash not valid - '.$VM_LANG->_('NOT_AUTH',false) );
+			$vmLogger->err( 'Hash not valid - '.vmCreateHash().$VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 
 		if (!$_SERVER['REQUEST_METHOD'] == 'POST' ) {
-			$vmLogger->err( $VM_LANG->_('NOT_AUTH',false) );
+			$vmLogger->err( 'Request must be POSTed - ' . $VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 
@@ -91,7 +91,7 @@ class ps_communication {
 		$sessioncookie 		= vmGet( $_COOKIE, 'virtuemart', null );
 
 		if ( strlen($sessioncookie) < 16 || $sessioncookie == '-') {
-			$vmLogger->err( $VM_LANG->_('NOT_AUTH',false) );
+			$vmLogger->err( 'Cookie Missing. '.$VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 

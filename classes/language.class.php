@@ -4,7 +4,7 @@
 *
 * @version $Id$
 * @package VirtueMart
-* @copyright Copyright (C) 2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2007 soeren, thepisu - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,17 +24,17 @@ class vmAbstractLanguage {
 	var $_debug = false;
 
 	function vmAbstractLanguage() {
-		global $mosConfig_debug;
-		
-		$this->_debug = @DEBUG == '1' || $mosConfig_debug == '1';
+		$this->setDebug();
+		if( empty( $this->CHARSET )) $this->setCharset();
 	}
+
 	/**
 	* Translator function
 	* @param string Name of the Class Variable
 	* @param boolean Encode String to HTML entities?
 	* @return string The value of $var (as an HTML Entitiy-encoded string if $htmlentities)
 	*/
-	function _( $var, $htmlentities=true ) {
+	function _( $var, $htmlentities=false ) {
 	    $key = '_' . strtoupper( $var );
 	    if (isset($this->$key)) {
 			if( $htmlentities ) {
@@ -53,7 +53,7 @@ class vmAbstractLanguage {
 				if (strtolower(vmGetCharset())=='iso-8859-1' && strtolower($this->CHARSET)=='utf-8' && function_exists('utf8_decode')) {
 					$text = utf8_decode($text);
 				}
-				return $text;
+				return stripslashes( $text );
 			}
 		} 
 		elseif( $this->_debug )
@@ -76,6 +76,19 @@ class vmAbstractLanguage {
 		} else {
 		    return false;
 		}
+	}
+	function setDebug() {
+		$this->_debug = @DEBUG == '1' || $GLOBALS['mosConfig_debug'] == '1';
+	}
+	function setCharset( $charset='') {
+		if( !empty( $charset )) {
+			$this->CHARSET = $charset;
+		} else {
+			$this->CHARSET = vmGetCharset();
+		}
+	}
+	function getCharset() {
+		return $this->CHARSET;
 	}
 	/**
 	 * This safely converts an iso-8859 string into an utf-8 encoded

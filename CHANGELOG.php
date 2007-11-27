@@ -35,7 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-27.11.2007
+27.11.2007 soeren
+# fixed empty virtuemart Cookie under Joomla! 1.5
+
+27.11.2007 pisu
 # Task #1547 - User activation link with Joomla! 1.5
 # euro symbol not converted to html entity
 # typo corrections

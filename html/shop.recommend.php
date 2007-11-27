@@ -31,7 +31,7 @@ if( empty( $_POST['submit'] ) || !$ok ) {
 }
 else {
 	$mainframe->setPageTitle( $VM_LANG->_('VM_RECOMMEND_FORM_LBL') );
-	echo '<span class="contentheading">'. $VM_LANG->_('VM_RECOMMEND_DONE').' '. $_POST['recipient_mail'].'</span> <br />
+	echo '<span class="contentheading">'. $VM_LANG->_('VM_RECOMMEND_DONE').' '. vmGet($_POST,'recipient_mail').'</span> <br />
 		<br />
 		<br />
 		<a href="javascript:window.close();">
