@@ -5,7 +5,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 - soeren. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -102,7 +102,6 @@ define('PAYMENT_DISCOUNT_BEFORE', '');
 define('PSHOP_ALLOW_REVIEWS', '1');
 define('MUST_AGREE_TO_TOS', '1');
 define('PSHOP_AGREE_TO_TOS_ONORDER', '');
-define('CAN_SELECT_STATES', '');
 define('SHOW_CHECKOUT_BAR', '1');
 define('CHECK_STOCK', '');
 define('ENCODE_KEY', md5( rand() . $mosConfig_secret ) );
