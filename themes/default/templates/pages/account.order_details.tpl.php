@@ -342,7 +342,7 @@ if( $db->f('order_number')) {
 	
 		/* check if download records exist for this purchase order */
 		if ($dbdl->next_record()) {
-			echo "<b>Click on Product Name to Download File(s).</b><br /><br />";
+			echo "<b>" . $VM_LANG->_('PHPSHOP_DOWNLOADS_CLICK') . "</b><br /><br />";
 	
 			echo($VM_LANG->_('PHPSHOP_DOWNLOADS_SEND_MSG_3').DOWNLOAD_MAX.". <br />");
 	
@@ -352,7 +352,7 @@ if( $db->f('order_number')) {
 			echo "<br /><br />";
 		}
 		else {
-			echo "<b>You have already downloaded the file(s) the maximum number of times, or the download period has expired.</b><br /><br />";
+			echo "<b>" . $VM_LANG->_('PHPSHOP_DOWNLOADS_EXPIRED') . "</b><br /><br />";
 		}
 	}
 	?>

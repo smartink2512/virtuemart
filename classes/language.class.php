@@ -39,6 +39,8 @@ class vmAbstractLanguage {
 	    if (isset($this->$key)) {
 			if( $htmlentities ) {
 				$text = htmlentities( $this->$key, ENT_QUOTES, $this->CHARSET );
+				// some symbols are not converted correctly... doing manually
+				$text = str_replace(chr(128),'&euro;',$text);
 				// enable the use of HTML tags in language file... is this really good?
 				$text = str_replace('&lt;','<',$text);
 				$text = str_replace('&gt;','>',$text);

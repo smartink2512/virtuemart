@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.11.2007
+# Task #1547 - User activation link with Joomla! 1.5
+# euro symbol not converted to html entity
+# typo corrections
+# Task #1360 - Hardcoded language in account.order_details.tpl.php
+
 26.11.2007 thepisu
 ^ language variables are now globally called by using "_" function, like: $VM_LANG->_('MYSTRING')
 ! language variables must be called without starting "_" underscore; for example, $VM_LANG->_('MYSTRING') will call $_MYSTRING variable

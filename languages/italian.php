@@ -2099,6 +2099,8 @@ Il nostro prodotto %s è ora disponibile e può essere acquistato seguento questo 
 	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Seleziona Immagine';
 	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Prego attendere: nella pagina seguente potrai inoltrare la richiesta di avviso.';
 	var $_VM_PRODUCT_RELATED_SEARCH = 'Cerca qui prodotti e categorie:';
+	var $_PHPSHOP_DOWNLOADS_CLICK = 'Clicca sul nome del prodotto per scaricare i file.';
+	var $_PHPSHOP_DOWNLOADS_EXPIRED = 'Hai già scaricato i file per il numero massimo di volte consentito, oppure il periodo di download è scaduto.';
 }
 class phpShopLanguage extends vmLanguage { }
 

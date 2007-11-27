@@ -58,8 +58,8 @@ echo "if( typeof Ext == \"undefined\" ) {
 			layout.beginUpdate();
 			//layout.add('north', new CP('wrapper', 'North'));
 			//layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
-			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'index2.php\'>{" . $VM_LANG->_('VM_ADMIN_BACKTOJOOMLA') . "}</a>'}));
-			layout.add('center', new CP('vmPage', {title: '{" . $VM_LANG->_('VM_ADMIN_PANELTITLE') . "}', closable: false, fitToFrame:true, tabPosition: 'top'}));
+			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'index2.php\'>" . $VM_LANG->_('VM_ADMIN_BACKTOJOOMLA') . "</a>'}));
+			layout.add('center', new CP('vmPage', {title: '" . $VM_LANG->_('VM_ADMIN_PANELTITLE') . "', closable: false, fitToFrame:true, tabPosition: 'top'}));
 			
 			//layout.restoreState();
 			layout.endUpdate();

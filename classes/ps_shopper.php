@@ -367,7 +367,7 @@ class ps_shopper {
 		}
 		else {
 			$GLOBALS['page'] = 'shop.cart';
-			$msg = strip_tags( $VM_LANG->_('REG_COMPLETE_ACTIVATE') );
+			$msg = strip_tags( $VM_LANG->_('REG_COMPLETE_ACTIVATE',false) );
 			$vmLogger->info( $msg );
 		}
 
@@ -449,7 +449,7 @@ class ps_shopper {
 	 */
 	function register_save()
 	{
-		global $mainframe;
+		global $mainframe,$mosConfig_live_site;
 		
 		//check the token before we do anything else
 		$token	= JUtility::getToken();
@@ -515,7 +515,7 @@ class ps_shopper {
 		$username = $user->get('username');
 		$component = 'com_user';
 		
-		$activation_link = $mosConfig_live_site."/index.php?option=$component&task=activate&activation=".$row->activation;
+		$activation_link = $mosConfig_live_site."/index.php?option=$component&task=activate&activation=".$user->get('activation');
 		// Send the registration email
 		$this->_sendMail( $name, $email, $username, $password, $activation_link );
 

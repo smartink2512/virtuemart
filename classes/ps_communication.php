@@ -284,7 +284,7 @@ class ps_communication {
         echo stripslashes(str_replace( array('\r', '\n' ), array("\r", "\n" ), $message ));
     }
     else {
-        $msg = sprintf($VM_LANG->_('VM_RECOMMEND_MESSAGE'), $vendor_store_name, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
+        $msg = sprintf($VM_LANG->_('VM_RECOMMEND_MESSAGE',false), $vendor_store_name, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
         echo shopMakeHtmlSafe(stripslashes( str_replace( 'index2.php', 'index.php', $msg )));
     }
 
@@ -311,7 +311,7 @@ class ps_communication {
     if (!$this->validate( $d )) {
         return false;
     }
-    $subject = sprintf( $VM_LANG->_('VM_RECOMMEND_SUBJECT'), $vendor_store_name );
+    $subject = sprintf( $VM_LANG->_('VM_RECOMMEND_SUBJECT',false), $vendor_store_name );
     $msg = vmGetUnEscaped(str_replace( array('\r', '\n' ), array("\r", "\n" ), $d['recommend_message'] ));
     $send = vmMail($d['sender_mail'], 
                    $d['sender_name'],

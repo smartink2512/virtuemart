@@ -2070,6 +2070,8 @@ Our %s  is now in stock and can be purchased by following this link:
 	var $_VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE = 'Select Image';
 	var $_PHPSHOP_CART_GOTO_WAITING_LIST = 'Please wait: in the next page you will can submit the notify request.';
 	var $_VM_PRODUCT_RELATED_SEARCH = 'Search for Products or Categories here:';
+	var $_PHPSHOP_DOWNLOADS_CLICK = 'Click on Product Name to Download File(s).';
+	var $_PHPSHOP_DOWNLOADS_EXPIRED = 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.';
 }
 class phpShopLanguage extends vmLanguage { }
 

@@ -975,7 +975,7 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_CHECKOUT'), "checkout-page");
             $checkout_names = array_keys( $VM_CHECKOUT_MODULES );
             foreach( $VM_CHECKOUT_MODULES as $step ) {
             	$stepname = current($checkout_names);
-            	$label = "_PHPSHOP_CHECKOUT_MSG_".constant($stepname);
+            	$label = "PHPSHOP_CHECKOUT_MSG_".constant($stepname);
             	$readonly = $checked = '';
             	if( $step['enabled'] > 0 ) {
             		$checked = ' checked="checked"';
