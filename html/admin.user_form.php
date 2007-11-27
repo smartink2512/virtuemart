@@ -134,45 +134,6 @@ $tabs->startTab( 'General User Information', "userform-page");
 mosCommonHTML::loadOverlib();
 
 ?>
-<script language="javascript" type="text/javascript">
-function submitbutton(pressbutton) {
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
-
-	// do field validation
-	if (trim(form.name.value) == "") {
-		alert( "You must provide a name." );
-	} else if (form.username.value == "") {
-		alert( "You must provide a user login name." );
-	} else if (r.exec(form.username.value) || form.username.value.length < 3) {
-		alert( "You login name contains invalid characters or is too short." );
-	} else if (trim(form.email.value) == "") {
-		alert( "You must provide an e-mail address." );
-	} else if (form.gid.value == "") {
-		alert( "You must assign user to a group." );
-	} else if (trim(form.password.value) != "" && form.password.value != form.password2.value){
-		alert( "Password do not match." );
-	} else if (form.gid.value == "29") {
-		alert( "Please Select another group as `Public Front-end` is not a selectable option" );
-	} else if (form.gid.value == "30") {
-		alert( "Please Select another group as `Public Back-end` is not a selectable option" );
-	} else {
-		submitform( pressbutton );
-	}
-}
-
-function gotocontact( id ) {
-	var form = document.adminForm;
-	form.contact_id.value = id;
-	form.option.value = 'com_users';
-	submitform( 'contact' );
-}
-</script>
-
 <fieldset class="adminform">
 <legend><?php echo  'User Details' ; ?></legend>
 	<table class="admintable" cellspacing="1">

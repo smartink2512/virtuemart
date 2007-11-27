@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 }
 /**
 *
-* @version $Id:toolbar.virtuemart.html.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -107,7 +107,7 @@ class MENU_virtuemart {
    
     var showDialog = function( content ) {
     	Ext.MessageBox.show( { 
-            		title: '{" . $VM_LANG->_('PEAR_LOG_NOTICE') . "}',
+            		title: '" . $VM_LANG->_('PEAR_LOG_NOTICE') . "',
             		msg: content,
             		autoCreate: true,
                     width:400,
