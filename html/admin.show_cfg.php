@@ -346,18 +346,6 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 		
 		<tr>
 			<td class="labelcell">
-				<label for="conf_CAN_SELECT_STATES"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE') ?>
-				</label>
-				
-			</td>
-			<td>
-				<input type="checkbox" id="conf_CAN_SELECT_STATES" name="conf_CAN_SELECT_STATES" class="inputbox" <?php if (CAN_SELECT_STATES == '1') echo "checked=\"checked\""; ?> value="1" />
-			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_CAN_SELECT_STATE_EXPLAIN') ) ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="labelcell">
 				<label for="conf_MUST_AGREE_TO_TOS"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS') ?></label>
 				
 			</td>

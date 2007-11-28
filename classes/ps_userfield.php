@@ -53,7 +53,7 @@ class ps_userfield extends vmAbstractObject {
 		}
 		$db = new ps_DB();
 		
-		$sql="SELECT COUNT(*) as num_rows FROM `#__{vm}_userfield` WHERE name='".$d['name']."'";
+		$sql="SELECT COUNT(*) as num_rows FROM `#__{vm}_userfield` WHERE name='".$db->getEscaped($d['name'])."'";
 		if( !empty($d['fieldid'])) {
 			$sql .= ' AND fieldid != '.intval($d['fieldid']);
 		}
@@ -83,7 +83,15 @@ class ps_userfield extends vmAbstractObject {
 		if( !$this->validateOnSave($d)) {
 			return false;
 		}
-
+		// Prevent unpublishing and renaming of IMPORTANT Fields like "email", "username", "password",...
+		$fieldObj = $this->get( $d['fieldid'] );
+		if( $fieldObj !== false ) {
+			if( in_array( $fieldObj->f('name'), $this->getSkipFields() )) {
+				$d['name'] = $fieldObj->f('name');
+				$d['required'] = $fieldObj->f('required');
+				$d['published'] = $fieldObj->f('published');
+			}
+		}
 		if( !empty($d['fieldid']) ) {
 			// existing record
 			$fields = array(
@@ -169,6 +177,7 @@ class ps_userfield extends vmAbstractObject {
 				$j++;
 			}
 		}
+		$GLOBALS['vmLogger']->info('The Field has been saved.');
 		return true;
 	}
 	/**
@@ -213,8 +222,8 @@ class ps_userfield extends vmAbstractObject {
 			$d['fieldid'] = array( $d['fieldid']);
 		}
 		if ( count( @$d['fieldid'] ) < 1) {
-			echo "<script type=\"text/javascript\">alert('Select an item to delete'); window.history.go(-1);</script>\n";
-			exit;
+			$vmLogger->err( 'No Field selected.');
+			return false;
 		}
 
 		foreach ($d['fieldid'] as $id) {
@@ -222,18 +231,18 @@ class ps_userfield extends vmAbstractObject {
 			$db->next_record();
 			
 			if($db->f('sys')==1) {
-				$vmLogger->err($db->f('title') ." cannot be deleted because it is a system field. \n");
-				return false;
+				$vmLogger->err('"'.$db->f('name') .'" cannot be deleted, because it is a system field.');
+				continue;
 			}
 			else {
 				if( $db->f('type') != 'delimiter') {
 					$this->changeColumn( $db->f('name'), '', 'delete');
 				}
 				
-				$db->query('DELETE FROM `#__{vm}_userfield` WHERE fieldid='.$id );
+				$db->query('DELETE FROM `#__{vm}_userfield` WHERE fieldid='.(int)$id. ' LIMIT 1' );
 				
 				$db->query( 'UPDATE `#__{vm}_userfield` SET ordering = ordering-1 WHERE ordering > '.intval($db->f('ordering')));
-				
+				$vmLogger->info( 'Deleted Field "'.$db->f('name').'"');
 			}
 		}
 		
@@ -312,8 +321,6 @@ class ps_userfield extends vmAbstractObject {
 				$key = substr($key, 1, strlen($key)-1);
 		   		if( $VM_LANG->exists($key) ) {
 		   			$field->title = $VM_LANG->_($key);
-		   		} else {
-		   			eval( "\$field->title = ".$field->title.";");
 		   		}
 			}
 	   		if( $field->name == 'agreed') {
@@ -465,7 +472,7 @@ class ps_userfield extends vmAbstractObject {
 	   				break;
 	   		}
 	   		if( $field->description != '') {
-	   			echo mm_ToolTip( $field->description );
+	   			echo vmToolTip( $field->description );
 	   		}
 	   		echo '<br /></div>
 				      <br style="clear:both;" />';

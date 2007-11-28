@@ -33,7 +33,38 @@ class vmAbstractObject {
 	/** @var string The name of the databaser table for this entity */
 	var $_table_name = '';
 	
-	
+	/**
+	 * Retrieves a record with the specified ID from the table associated with this entitiy type
+	 * In case of success, returns a ps_DB object with a prepared recordset
+	 * In case of failure returns false
+	 * @param mixed $id
+	 * @return mixed
+	 */
+	function get( $id ) {
+		$key = $this->getKey();
+		$table = $this->getTable();
+		if( !empty( $id )) {
+			$db = new ps_DB();
+			$query = 'SELECT * FROM `'.$table.'` WHERE `'.$key.'`=';
+			if( is_numeric($id)) {
+				$query .= (int)$key;
+			} else {
+				$query .= '\''.$db->getEscaped($id).'\'';
+			}
+			$db->query( $query );
+			if( !$db->next_record()) {
+				return false;
+			}
+			return $db;
+		}
+		return false;
+	}
+	function getKey() {
+		return $this->_key;
+	}
+	function getTable() {
+		return $this->_table_name;
+	}
 	function addRequiredField( $required_field ) {
 		if( is_array( $required_field )) {
 			foreach ( $required_field as $fieldname ) {

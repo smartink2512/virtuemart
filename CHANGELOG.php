@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+28.11.2007 soeren
+# Task #1565 - Manage User Fields unclick able.
 27.11.2007 soeren
 - Task #1559 - Customers can select a state/region? Not needed anymore
 # user form submission not using Ajax

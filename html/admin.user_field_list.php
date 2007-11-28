@@ -2,7 +2,7 @@
 defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
 /**
 *
-* @version $Id:admin.user_field_list.php 1055 2007-11-26 18:28:48Z thepisu $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -76,11 +76,7 @@ while( $db->next_record() ) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 		
 	// The Checkbox
-	if( $db->f('sys') ) {
-		$listObj->addCell( str_replace('/>', 'disabled="disabled" />', mosHTML::idBox( $i, $db->f("fieldid"), 0, "fieldid" )) );
-	}else {
-		$listObj->addCell( mosHTML::idBox( $i, $db->f("fieldid"), 0, "fieldid" ) );
-	}
+	$listObj->addCell( mosHTML::idBox( $i, $db->f("fieldid"), 0, "fieldid" ) );
 	
 	$listObj->addCell( '<a href="'.$sess->url($_SERVER['PHP_SELF'].'?page=admin.user_field_form&fieldid='.$db->f('fieldid')).'">'.$db->f('name').'</a>' );
 	$listObj->addCell( $db->f('title') );

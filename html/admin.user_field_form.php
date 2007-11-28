@@ -93,16 +93,19 @@ else {
 }
 
 $lists['webaddresstypes'] = mosHTML::selectList( $webaddrtypes, 'webaddresstypes', 'class="inputbox" size="1"', 'value', 'text', $db->f('rows') );
-	
-$lists['required'] = mosHTML::yesnoSelectList( 'required', 'class="inputbox" size="1"', $db->sf('required') );
 
-$lists['published'] = mosHTML::yesnoSelectList( 'published', 'class="inputbox" size="1"', $db->sf('published') );
-
+if( in_array( $db->f('name'), ps_userfield::getSkipFields() )) {
+	$lists['required'] = '<input type="hidden" name="required" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
+	$lists['published'] = '<input type="hidden" name="published" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
+	$lists['registration'] = '<input type="hidden" name="registration" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
+} else {
+	$lists['required'] = mosHTML::yesnoSelectList( 'required', 'class="inputbox" size="1"', $db->sf('required') );
+	$lists['published'] = mosHTML::yesnoSelectList( 'published', 'class="inputbox" size="1"', $db->sf('published') );
+	$lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="inputbox" size="1"', $db->sf('registration') );
+}
 $lists['readonly'] = mosHTML::yesnoSelectList( 'readonly', 'class="inputbox" size="1"', $db->sf('readonly') );
 
 $lists['account'] = mosHTML::yesnoSelectList( 'account', 'class="inputbox" size="1"', $db->sf('account') );
-
-$lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="inputbox" size="1"', $db->sf('registration') );
 
 ?>
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
@@ -275,13 +278,6 @@ $duration = 500;
     }
     return strObj;
   }
-  
-   function submitbutton(pressbutton) {
-
-       document.adminForm.type.disabled=false;
-       submitform(pressbutton);
-     
-   }
 
   function insertRow() {
     var oTable = getObject("fieldValuesBody");

@@ -27,7 +27,7 @@ class TOOLBAR_virtuemart {
 	*/
     function FORMS_MENU_SAVE_CANCEL() {     
         global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_lang, $VM_LANG, 
-        		$page, $limitstart,	$mosConfig_editor;
+        		$page, $limitstart,	$vmIcons;
 		$no_menu = (int)$_REQUEST['no_menu'];
 		$bar = & vmToolBar::getInstance('virtuemart');		
         
@@ -86,7 +86,7 @@ var submitbutton = function(pressbutton){
 
     var showDialog = function( content ) {
     	Ext.Msg.show( { 
-            		title: '{" . $VM_LANG->_('PEAR_LOG_NOTICE') . "}',
+            		title: '" . $VM_LANG->_('PEAR_LOG_NOTICE') . "',
             		msg: content,
             		autoCreate: true,
                     width:400,

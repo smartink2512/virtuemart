@@ -715,19 +715,19 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CHECKOUT_ERR_CCDATE_INV = 'The expiration date is invalid.';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_SHIPTO = 'Please select a Ship To address.';
 	var $_PHPSHOP_CHECKOUT_ERR_CCNUM_INV = 'Invalid account number.';
-	var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = 'There\\\'s nothing in your cart!';
+	var $_PHPSHOP_CHECKOUT_ERR_EMPTY_CART = 'There\'s nothing in your cart!';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_CARR = 'ERROR: Please select a Shipping Carrier!';
 	var $_PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND = 'ERROR: The selected Shipping Rate was not found!';
 	var $_PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND = 'ERROR: Your Shipping Address was not found!';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = 'ERROR: There\\\'s no CreditCard data...';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_CCDATA = 'ERROR: There\'s no CreditCard data...';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND = 'ERROR: Credit Card Number not found!';
-	var $_PHPSHOP_CHECKOUT_ERR_TEST = 'Sorry, but the Credit Card Number you\\\'ve used is a testing number!';
+	var $_PHPSHOP_CHECKOUT_ERR_TEST = 'Sorry, but the Credit Card Number you\'ve used is a testing number!';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_USER_DATA = 'The user_id was not found in the database!';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME = 'You have actually not provided your bank account holder name.';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_IBAN = 'You have actually not provided your IBAN.';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_BA_NUM = 'You have actually not provided your bank account number.';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT = 'You have actually not provided your bank sort code.';
-	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = 'You have actually not provided your bank\\\'s name.';
+	var $_PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME = 'You have actually not provided your bank\'s name.';
 	var $_PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP = 'CheckOut needs a valid Step!';
 	var $_PHPSHOP_CHECKOUT_MSG_LOG = 'Payment information captured for later processing.<br />';
 	var $_PHPSHOP_CHECKOUT_ERR_MIN_POV = 'Minimum purchase order value has not been reached yet.';
@@ -746,13 +746,13 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_FUNCTIONS = 'Functions';
 	var $_PHPSHOP_SPECIAL_PRODUCTS = 'Special products';
 	var $_PHPSHOP_CHECKOUT_CUSTOMER_NOTE = 'Please leave a note to us with your order if you want to';
-	var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = 'Customer\\\'s note';
+	var $_PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE = 'Customer\'s note';
 	var $_PHPSHOP_INCLUDING_TAX = '(including $tax % tax)';
 	var $_PHPSHOP_PLEASE_SEL_ITEM = 'Please select an item';
 	var $_PHPSHOP_PRODUCT_FORM_ITEM_LBL = 'Item';
 	var $_PHPSHOP_DOWNLOADS_TITLE = 'Download Area';
 	var $_PHPSHOP_DOWNLOADS_START = 'Start Download';
-	var $_PHPSHOP_DOWNLOADS_INFO = 'Please enter the Download-ID you\\\'ve got in the e-mail and click \\\'Start Download\\\'.';
+	var $_PHPSHOP_DOWNLOADS_INFO = 'Please enter the Download-ID you\'ve got in the e-mail and click \'Start Download\'.';
 	var $_PHPSHOP_DOWNLOADS_ERR_EXP = 'Sorry, but this Download has expired';
 	var $_PHPSHOP_DOWNLOADS_ERR_MAX = 'Sorry, but the maximum number of downloads has been reached';
 	var $_PHPSHOP_DOWNLOADS_ERR_INV = 'Invalid Download-ID!';
@@ -840,7 +840,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES = 'Show Prices';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX = 'Show Prices including tax?';
 	var $_PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN = 'Sets the flag whether the shoppers sees prices including tax or excluding tax.';
-	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = 'Check to show prices. If using catalogue functionality, some don\\\'t want prices to appear on pages.';
+	var $_PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN = 'Check to show prices. If using catalogue functionality, some don\'t want prices to appear on pages.';
 	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX = 'Virtual Tax';
 	var $_PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN = 'This determines whether items with zero weight are taxed or not. Modify ps_checkout.php->calc_order_taxable() to customize this.';
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE = 'Tax mode:';
@@ -849,7 +849,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN = 'This determines which tax rate is taken for calculating taxes:<br />
                                                 <ul><li>the one from the state / country the store owner comes from</li>
                                                 <li>or the one from where the shopper comes from.</li>
-                                                <li>or "EU mode", where a per-product tax rate is used if the shopper is in the European Union, otherwise the tax rate is based on the shopper\\\'s address.</li></ul>';
+                                                <li>or "EU mode", where a per-product tax rate is used if the shopper is in the European Union, otherwise the tax rate is based on the shopper\'s address.</li></ul>';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE = 'Enable multiple tax rates?';
 	var $_PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN = 'Check this, if you have products with different tax rates (e.g. 7% for books and food, 16% for other stuff)';
 	var $_PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE = 'Subtract payment discount before tax/shipping?';
@@ -876,7 +876,7 @@ class vmLanguage extends vmAbstractLanguage {
                                                                                         <li>or as a html email with images.</li></ul>';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN = 'Allow Frontend-Administration for non-Backend Users?';
 	var $_PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN = 'With this setting you can enable the Frontend Administration for users who 
-                                                                                              are storeadmins, but can\\\'t access the Backend (e.g. Registered / Editor).';
+                                                                                              are storeadmins, but can\'t access the Backend (e.g. Registered / Editor).';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE = 'SECUREURL';
 	var $_PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN = 'The secure URL to your site. (https - with trailing slash at the end!)';
 	var $_PHPSHOP_ADMIN_CFG_PAGEPATH = 'PAGEPATH';
@@ -901,7 +901,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN = 'This image will be shown when no product image is available.';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION = 'Show footer ';
 	var $_PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN = 'Displays a powered-by-VirtueMart footer image.';
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Choose your store\\\'s shipping method';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD = 'Choose your store\'s shipping method';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD = 'Standard Shipping module with indiviual configured carriers and rates. <strong>RECOMMENDED !</strong>';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE = '  	Zone Shipping Module Country Version 1.0<br />
                                                                                                             For more information on this module please visit <a href="http://ZephWare.com">http://ZephWare.com</a><br />
@@ -914,14 +914,14 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD = 'UPS password';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN = 'The password for your UPS account';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER = 'InterShipper Module. Check only if you have an <a href="http://www.intershipper.com" target="_blank">Intershipper.com</a> account';
-	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = 'Disable Shipping method selection. Choose if your customers buy downloadable goods which don\\\'t have to be shipped.';
+	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE = 'Disable Shipping method selection. Choose if your customers buy downloadable goods which don\'t have to be shipped.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD = 'InterShipper Password';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_PASSWORD_EXPLAIN = 'Your password for your intershipper account.';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL = 'InterShipper email';
 	var $_PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN = 'Your email address for your intershipper account.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR = 'Enable the Checkout Bar';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Check this, if you want the \\\'checkout-bar\\\' to be displayed to the customer during checkout process ( 1 - 2 - 3 - 4 with graphics).';
-	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'Choose your store\\\'s checkout process';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN = 'Check this, if you want the \'checkout-bar\' to be displayed to the customer during checkout process ( 1 - 2 - 3 - 4 with graphics).';
+	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS = 'Choose your store\'s checkout process';
 	var $_PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS_STANDARD = '<strong>Standard :</strong><br/>
                1. Shipping address request<br />
               2. Shipping method request<br />
@@ -946,7 +946,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN = 'Sets the order status at which the download is disabled for the customer.';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT = 'DOWNLOADROOT';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN = 'The physical path to the files for the custumer download. (trailing slash at the end!)<br>
-        <span class="message">For your own shop\\\'s security: If you can, please use a directory ANYWHERE OUTSIDE OF THE WEBROOT</span>';
+        <span class="message">For your own shop\'s security: If you can, please use a directory ANYWHERE OUTSIDE OF THE WEBROOT</span>';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX = 'Download Maximum';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN = 'Sets the number of downloads which can be made with one Download-ID, (for one order)';
 	var $_PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE = 'Download Expire';
@@ -968,7 +968,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET = 'Enable Authorize.net payment?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN = 'Check to use Authorize.net with phpShop.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE = 'Test mode ?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = 'Select \\\'Yes\\\' while testing. Select \\\'No\\\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
 	var $_PHPSHOP_ADMIN_CFG_YES = 'Yes';
 	var $_PHPSHOP_ADMIN_CFG_NO = 'No';
 	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME = 'Authorize.net Login ID';
@@ -1110,7 +1110,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS = 'Thumbnail Image successfully deleted.';
 	var $_PHPSHOP_FILES_FILE_DELETE_FAILURE = 'Could not delete the File.';
 	var $_PHPSHOP_FILES_FILE_DELETE_SUCCESS = 'File successfully deleted.';
-	var $_PHPSHOP_FILES_NOT_FOUND = 'Sorry, but the requested file wasn\\\'t found!';
+	var $_PHPSHOP_FILES_NOT_FOUND = 'Sorry, but the requested file wasn\'t found!';
 	var $_PHPSHOP_IMAGE_NOT_FOUND = 'Image not found!';
 	var $_PHPSHOP_COUPON_MOD = 'Coupon';
 	var $_PHPSHOP_COUPONS = 'Coupons';
@@ -1204,7 +1204,7 @@ class vmLanguage extends vmAbstractLanguage {
         <pre>
         + == Add this amount to the configured price.<br />
         - == Subtract this amount from the configured price.<br />
-        = == Set the product\\\'s price to this amount.
+        = == Set the product\'s price to this amount.
       </pre>';
 	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST = 'Custom Attribute List';
 	var $_PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES = '<h4>Examples for the Custom attribute List Format:</h4>
@@ -1213,7 +1213,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN = 'Enable eProcessingNetwork.com payment?';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN = 'Check to use eProcessingNetwork.com with phpShop.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE = 'Test mode ?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = 'Select \\\'Yes\\\' while testing. Select \\\'No\\\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
 	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME = 'eProcessingNetwork.com Login ID';
 	var $_PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN = 'This is your eProcessingNetwork.com Login ID';
 	var $_PHPSHOP_ADMIN_CFG_EPN_KEY = 'eProcessingNetwork.com Transaction Key';
@@ -1337,7 +1337,7 @@ class vmLanguage extends vmAbstractLanguage {
 	var $_PHPSHOP_CSV_IMPORT_EXPORT = 'Import/Export';
 	var $_PHPSHOP_CSV_NEW_FIELD = 'Add a new Field';
 	var $_PHPSHOP_CSV_DOCUMENTATION = 'Documentation';
-	var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Sorry, but the Product you\\\'ve requested wasn\\\'t found!';
+	var $_PHPSHOP_PRODUCT_NOT_FOUND = 'Sorry, but the Product you\'ve requested wasn\'t found!';
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS = 'Show Products that are out of Stock';
 	var $_PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN = 'When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.';
 	var $_PHPSHOP_PRODUCT_PACKAGING1 = 'Number {unit}s in packaging:';
@@ -1372,7 +1372,7 @@ The Shop will create a new discount record from the discounted price.';
 	var $_PHPSHOP_ADMIN_CFG_ADDTOCART_STYLE = 'Add-to-Cart Button Style';
 	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING = 'Enable Dynamic Thumbnail Resizing?';
 	var $_PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP = 'If checked, you enable dynamic Image Resizing. This means that all Thumbnail Images are resized to fit the Sizes you provide below,
-        using PHP\\\'s GD2 functions (you can check if you have GD2 support by browsing to "System" -> "System Info" -> "PHP Info" -> gd. 
+        using PHP\'s GD2 functions (you can check if you have GD2 support by browsing to "System" -> "System Info" -> "PHP Info" -> gd. 
         The Thumbnail Image quality is much better than Images which were "resized" by the browser. The newly generated Images are put into the directory /shop_image/prduct/resized. If the Image has already been resized, this copy will be send to the browser, so no image is resized again and again.';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH = 'Thumbnail Image Width';
 	var $_PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP = 'The target <strong>width</strong> of the resized Thumbnail Image.';
@@ -1385,7 +1385,7 @@ The Shop will create a new discount record from the discounted price.';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX = 'Show "(including XX% tax)" when applicable?';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP = 'When checked, users will see the text "(including xx% tax)" when prices are shown incl. tax.';
 	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL = 'Show the price label for packaging?';
-	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'When checked, the price label is derived from the product\\\'s unit and packaging values:<br/>
+	var $_PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP = 'When checked, the price label is derived from the product\'s unit and packaging values:<br/>
 <strong>Price per Unit (10 pieces)</strong><br/>
 When not checked, price labels look just as usual: <strong>Price: $xx.xx</strong>';
 	var $_PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS = 'more Core Settings';
@@ -1398,7 +1398,7 @@ When not checked, price labels look just as usual: <strong>Price: $xx.xx</strong
 	var $_PHPSHOP_ADMIN_CFG_ALLOW_REGISTRATION = 'User registration allowed?';
 	var $_PHPSHOP_ADMIN_CFG_ACCOUNT_ACTIVATION = 'New account activation necessary?';
 	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION = 'Use silent (hidden) user registration?';
-	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION_TIP = 'When enabled, users don\\\'t need to fill in a username and password for a new account. Instead the email address is used for the new account and a random password is generated. The registration details are mailed to the customer.';
+	var $_PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION_TIP = 'When enabled, users don\'t need to fill in a username and password for a new account. Instead the email address is used for the new account and a random password is generated. The registration details are mailed to the customer.';
 	var $_PHPSHOP_USER_SEND_REGISTRATION_DETAILS = 'Hello %s,
 
 Thank you for registering at %s. Your customer account has been created.
@@ -1417,9 +1417,9 @@ Password - %s
 	var $_PEAR_LOG_NOTICE = 'Notice';
 	var $_PEAR_LOG_DEBUG = 'Debug';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP = 'Enable PayFlow Pro payment?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_EXPLAIN = 'Check to use VeriSign\\\'s PayFlow Pro with VirtueMart.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_EXPLAIN = 'Check to use VeriSign\'s PayFlow Pro with VirtueMart.';
 	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE = 'Test mode ?';
-	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN = 'Select \\\'Yes\\\' while testing. Select \\\'No\\\' for enabling live transactions.';
+	var $_PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN = 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.';
 	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNER = 'VeriSign processing Partner ID';
 	var $_PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN = 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service';
 	var $_PHPSHOP_ADMIN_CFG_PFP_USERNAME = 'PayFlow Pro Login ID';
@@ -1441,11 +1441,11 @@ Password - %s
 	var $_VM_PAYMENT_CLASS_NAME = 'Payment class name';
 	var $_VM_PAYMENT_CLASS_NAME_TIP = '(e.g. <strong>ps_netbanx</strong>) :<br />
 default: ps_payment<br />
-<em>Choose ps_payment if you\\\'re not sure what to choose!</em>';
+<em>Choose ps_payment if you\'re not sure what to choose!</em>';
 	var $_VM_PAYMENT_EXTRAINFO_TIP = 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.';
 	var $_VM_PAYMENT_EXTRAINFO = 'Payment Extra Info';
 	var $_VM_PAYMENT_ACCEPTED_CREDITCARDS = 'Accepted Credit Card Types';
-	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\\\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>';
+	var $_VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP = 'When enabled, let\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>';
 	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN = 'The order Status to which Orders are set, which have no completed Payment Transaction. 
 The transaction was not cancelled in this case, but it is just pending and waiting for completion.';
 	var $_VM_ADMIN_CFG_PAYPAL_STATUS_PENDING = 'Order Status for Pending Payments';
@@ -1479,7 +1479,7 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_FEDEX_METER_NUMBER = 'FedEx Meter Number';
 	var $_VM_FEDEX_METER_NUMBER_TIP = 'The meter number you have received from FedEx';
 	var $_VM_FEDEX_URI = 'FedEx Server Address';
-	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\\\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
+	var $_VM_FEDEX_URI_TIP = 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
 <br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>';
 	var $_VM_ORDER_EXPORT = 'Export Modules';
 	var $_VM_ORDER_EXPORT_MODULE_LIST_MNU = 'List Export Modules';
@@ -1493,7 +1493,7 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	var $_VM_ORDER_EXPORT_CLASS_NAME = 'Export Module Class Name';
 	var $_VM_ORDER_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_olsi</strong>) :<br />
 default: ps_xmlexport<br />
-<i>Leave blank if you\\\'re not sure what to fill in!</i>';
+<i>Leave blank if you\'re not sure what to fill in!</i>';
 	var $_VM_ORDER_EXPORT_CONFIG = 'Order Export configuration';
 	var $_VM_ORDER_EXPORT_CONFIG_TIP = 'Here you can configure your export.
 It has to be valid PHP Code!
@@ -1527,7 +1527,7 @@ It has to be valid PHP Code!
 	var $_VM_RECOMMEND_FORM_MESSAGE = 'Your message';
 	var $_VM_RECOMMEND_MESSAGE = 'Hello,
 
-I\\\'ve found this great product on %s that might be of interest for you.
+I\'ve found this great product on %s that might be of interest for you.
 
 You can find it here:
 %s
@@ -1563,7 +1563,7 @@ Mail mailto: {shopper_email}';
 	var $_VM_ADMIN_CFG_PROXY_SETTINGS = 'Global Proxy Settings';
 	var $_VM_ADMIN_CFG_PROXY_URL = 'URL of the proxy server';
 	var $_VM_ADMIN_CFG_PROXY_URL_TIP = 'Example: <strong>http://10.42.21.1</strong>.<br />
-Leave empty if you\\\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).';
+Leave empty if you\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).';
 	var $_VM_ADMIN_CFG_PROXY_PORT = 'Proxy Port';
 	var $_VM_ADMIN_CFG_PROXY_PORT_TIP = 'The port used for communication with the proxy server (mostly <b>80</b> or <b>8080</b>).';
 	var $_VM_ADMIN_CFG_PROXY_USER = 'Proxy username';
@@ -1584,12 +1584,12 @@ You can return new, unopened items from a cancelled order within 2 weeks after t
 delivered to you. Items should be returned in their original packaging.
 For more information on cancelling orders and returning items, see the <a href="%s" onclick="%s" target="_blank">Our Returns Policy</a> page.';
 	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES = 'List of accepted currencies';
-	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP = 'This list defines all those currencies you accept when people are buying something in your store. <strong>Note:</strong> All currencies selected here can be used at checkout! If you don\\\'t want that, just select your country\\\'s currency (=default).';
+	var $_VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP = 'This list defines all those currencies you accept when people are buying something in your store. <strong>Note:</strong> All currencies selected here can be used at checkout! If you don\'t want that, just select your country\'s currency (=default).';
 	var $_PHPSHOP_ORDER_LIST_PRINT_LABEL = 'Print Label';
 	var $_PHPSHOP_ORDER_LIST_VOID_LABEL = 'Void Label';
 	var $_PHPSHOP_ORDER_LIST_TRACK = 'Track';
 	var $_VM_SELECT_THEME = 'Select the theme for your Shop';
-	var $_VM_SELECT_THEME_TIP = 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\\\'t installed more themes.';
+	var $_VM_SELECT_THEME_TIP = 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\'t installed more themes.';
 	var $_VM_CFG_BROWSE_STYLE = 'Select a product listing style';
 	var $_VM_CFG_BROWSE_STYLE_TIP = 'Change the overall style of the product list with this setting.<br />The tableless layout is perfect for your tableless XHTML/CSS powered site. Try the other ones if your layout is screwed up.';
 	var $_VM_CFG_CONTENT_PLUGINS_ENABLE = 'Enable content mambots / plugins in descriptions?';
@@ -1606,7 +1606,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_VM_EXPORT_CLASS_NAME = 'Export Class Name';
 	var $_VM_EXPORT_CONFIG = 'Export Extra Configuration';
 	var $_VM_EXPORT_CONFIG_TIP = 'Define Export configuration for user-defined export modules or define additional configuration. Code must be valid PHP-Code.';
-	var $_VM_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\\\'re not sure what to fill in!</i>';
+	var $_VM_EXPORT_CLASS_NAME_TIP = '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\'re not sure what to fill in!</i>';
 	var $_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL = 'Keep Product Stock Level on Purchase?';
 	var $_VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP = 'When enabled, the stock level for a downloadable product is not lowered although it was purchased by customers.';
 	var $_BUTTON_SEND_REG = 'Send Registration';
@@ -1691,10 +1691,10 @@ For more information on cancelling orders and returning items, see the <a href="
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_LENGTH = 'The length of the product.<br />Values:<ul><li>Number</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABLE_DATE = 'The date a product will become availabable. For import the date should be in the format of day/month/year or day-month-year. On Windows systems the date goes until 19/01/2038.<br />Usage:<ol><li>Add the name "product_available_date" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a date value. If the field contains any other value, the data will be ignored.</li></ol><br />Values:<ul><li>Date: day/month/year or day-month-year</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_IN_STOCK = 'The number of articles that you have in stock.<br /><br />Usage:<ol><li>Add the name "product_in_stock" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a numeric value. If the field contains any other value, the default value will be used.</li></ol><br />Values:<ul><li>Number</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_ATTRIBUTE = 'The different choices a product has. Use this to give a product different specifications. For example a t-shirt that comes in different sizes and colours. You can specify the sizes and colours like this: Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];AndSoOn,..,..<br /><br />You can adjust the prices per attribute by using the following options:<ul><li>+: Add this amount to the configured price.</li><li>-: Subtract this amount from the configured price.</li><li>=: Set the product\\\'s price to this amount.</li></ul><br />Usage:<ol><li>Add the name "attribute" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the attribute text.</li></ol><br /.>Values:<ul><li>Text: No HTML code allowed.</li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_ATTRIBUTE = 'The different choices a product has. Use this to give a product different specifications. For example a t-shirt that comes in different sizes and colours. You can specify the sizes and colours like this: Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];AndSoOn,..,..<br /><br />You can adjust the prices per attribute by using the following options:<ul><li>+: Add this amount to the configured price.</li><li>-: Subtract this amount from the configured price.</li><li>=: Set the product\'s price to this amount.</li></ul><br />Usage:<ol><li>Add the name "attribute" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the attribute text.</li></ol><br /.>Values:<ul><li>Text: No HTML code allowed.</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABILITY = 'This shows when the product is available. The value can be a descriptive text or the name of an image filename. Images must be placed in "shop_image/availability/".<br />Usage:<ol><li>Add the name "product_availability" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text: No HTML code allowed.</li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_FULL_IMAGE = 'The filename of the image as located in the "shop_image/product/" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, you need to fill the "product_thumb_image" field. VirtueMart resizes the image specified there.<br/><br />Usage:<ol><li>Add the name "product_full_image" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\\\'s are allowed.</li></ul></li></ul>';
-	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_THUMB_IMAGE = 'The filename of the thumbnail image as located in the "shop_image/product/" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, there still needs to be a value in this field. VirtueMart resizes the image that is specified here.<br /><br />Usage:<ol><li>Add the name "product_full_image" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\\\'s are allowed.</li></ul></li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_FULL_IMAGE = 'The filename of the image as located in the "shop_image/product/" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, you need to fill the "product_thumb_image" field. VirtueMart resizes the image specified there.<br/><br />Usage:<ol><li>Add the name "product_full_image" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\'s are allowed.</li></ul></li></ul>';
+	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_THUMB_IMAGE = 'The filename of the thumbnail image as located in the "shop_image/product/" folder. The filename can also be a URL.<br />NOTE: If you have dynamic resizing enabled, there still needs to be a value in this field. VirtueMart resizes the image that is specified here.<br /><br />Usage:<ol><li>Add the name "product_full_image" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with a text value.</li></ol><br />Values:<ul><li>Text:<ul><li>No HTML code allowed</li><li>URL\'s are allowed.</li></ul></li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_CUSTOM_ATTRIBUTE = 'A custom attribute will add an input field to the product page with the description of the attribute supplied. Custom attributes are specified like this: Name;Extras;...<br />Usage:<ol><li>Add the name "custom_attribute" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the attribute text.</li></ol><br /.>Values:<ul><li>Text: No HTML code allowed.</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_PACKAGING = 'Specify the number of items in the package.<br />Usage:<ol><li>Add the name "product_packaging" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the package.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
 	var $_PHPSHOP_CSV_EXPLANATION_PRODUCT_BOX = 'Specify the number of items in the box.<br />Usage:<ol><li>Add the name "product_box" to the configuration screen. The name is case sensitive and should be lowercase.</li><li>Add a column to your CSV file with the number of items in the box.</li></ol><br /.>Values:<ul><li>Number</li></ul>';
@@ -1822,8 +1822,8 @@ Please do not respond to this message as it is automatically generated and is fo
 	var $_VM_DOWNLOAD_REMAINING_DOWNLOADS = 'Remaining Downloads';
 	var $_VM_DOWNLOAD_RESEND_ID = 'Resend Download ID';
 	var $_VM_EXPIRY = 'Expiry';
-	var $_VM_DOWNLOAD_FILE_NOTREADABLE = 'Sorry, but the requested file can\\\'t be read from the Server';
-	var $_VM_DOWNLOAD_FILE_NOTFOUND = 'Sorry, but the requested file wasn\\\'t found. Possible Cause: Wrong path';
+	var $_VM_DOWNLOAD_FILE_NOTREADABLE = 'Sorry, but the requested file can\'t be read from the Server';
+	var $_VM_DOWNLOAD_FILE_NOTFOUND = 'Sorry, but the requested file wasn\'t found. Possible Cause: Wrong path';
 	var $_VM_ADMIN_CFG_COOKIE_CHECK = 'Enable the Cookie Check?';
 	var $_VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN = 'If enabled, VirtueMart checks wether the browser of the customer accepts cookies or not. This is user-friendly, but it can have negative consequences on the Search-Engine-Friendlyness of your shop.';
 	var $_VM_CHECKOUT_TITLE_TAG = 'Checkout: Step %s of %s';
@@ -1832,13 +1832,13 @@ Please do not respond to this message as it is automatically generated and is fo
 <strong>Normal Registration</strong><br />
 This is the standard registration type where the customer must register and choose an username and password<br /><br />
 <strong>Silent Registration</strong><br />
-Silent Registration means the customer doesn\\\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
+Silent Registration means the customer doesn\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
 <br /><br />
 <strong>Optional Registration</strong><br />
-Opotional Registration let\\\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
+Opotional Registration let\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
 <br /><br />
 <strong>No Registration</strong><br />
-Customers don\\\'t need to and are not able to register in this type of registration.';
+Customers don\'t need to and are not able to register in this type of registration.';
 	var $_VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION = 'Normal Account Creation';
 	var $_VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION = 'Silent Account Creation';
 	var $_VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION = 'Optional Account Creation';
@@ -1872,7 +1872,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH = 'Maximum Description Length';
 	var $_VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP = 'This is the maximum length of the product description for each feed item.';
 	var $_VM_ADMIN_CFG_FEED_TITLE_TIP = 'Title of the Feed (the placeholder {storename} holds the name of your store)';
-	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP = 'Title of a Category Feed (\\\'{catname}\\\' is the placeholder for the category name, {storename} holds the name of your store)';
+	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP = 'Title of a Category Feed (\'{catname}\' is the placeholder for the category name, {storename} holds the name of your store)';
 	var $_VM_ADMIN_CFG_FEED_TITLE = 'Feed Title';
 	var $_VM_ADMIN_CFG_FEED_TITLE_CATEGORIES = 'Feed Title for Categories';
 	var $_VM_FEED_SUBSCRIBE_TITLE = 'Subscribe to the Feed of the latest Products!';
@@ -1918,7 +1918,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_VM_ADMIN_ENCRYPTION_KEY = 'Encryption Key';
 	var $_VM_ADMIN_ENCRYPTION_KEY_TIP = 'Used to safely store and retrieve sensible data (like credit card information) encrypted in the database.';
 	var $_VM_ADMIN_STORE_CREDITCARD_DATA = 'Store Credit Card Information?';
-	var $_VM_ADMIN_STORE_CREDITCARD_DATA_TIP = 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\\\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>';
+	var $_VM_ADMIN_STORE_CREDITCARD_DATA_TIP = 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>';
 	var $_VM_ADMIN_BACKTOJOOMLA = 'Back to Joomla! Administration';
 	var $_VM_ADMIN_PANELTITLE = 'VirtueMart Administration Panel';
 	var $_VM_VERSIONCHECK_TITLE = 'VirtueMart Version Check';
@@ -1994,7 +1994,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE = 'Too late to ship at (24h format)';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TOOLTIP = 'This is the time when items will no longer ship the same day.  The will ship the next business day.  Use 24 hour format (.e.g. 1600, not 4:00pm)';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE = 'Use Test Mode';
-	var $_PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP = 'Use DHL\\\'s testing server, not the production server';
+	var $_PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP = 'Use DHL\'s testing server, not the production server';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED = 'Enable Express Shipping Method';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED_TOOLTIP = 'Get shipping estimates for Express shipping method.';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED = 'Enable Next Afternoon Shipping Method';
@@ -2010,17 +2010,17 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT = 'Weight of packaging';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT_TOOLTIP = 'The packaging weight will be added to the total order weight.  Set to 0 if your item weights already include package weight.';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP = 'Shopper Group to Use for Duty Values (for Intl.)';
-	var $_PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP_TOOLTIP = 'Enter the shopper group you have created to hold the product value used in calculating international duty values.  For example, create a shopper group \\\'DUTY\\\' and use it in each item to define a special price to be used in duty value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.';
+	var $_PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP_TOOLTIP = 'Enter the shopper group you have created to hold the product value used in calculating international duty values.  For example, create a shopper group \'DUTY\' and use it in each item to define a special price to be used in duty value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION = 'Additional Protection Type';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION_TOOLTIP = 'Select a form of Additional Protection (insurance), or none';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_ASSET_PROTECTION = 'Asset Protection';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_NOT_REQUIRED = 'Not Required';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP = 'Shopper Group to Use for Insurance Values';
-	var $_PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP_TOOLTIP = 'Enter the shopper group you have created to hold the product value used in calculating insurance protection.  For example, create a shopper group \\\'INSURANCE\\\' and use it in each item to define a special price to be used in insurance value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.';
+	var $_PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP_TOOLTIP = 'Enter the shopper group you have created to hold the product value used in calculating insurance protection.  For example, create a shopper group \'INSURANCE\' and use it in each item to define a special price to be used in insurance value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE = 'Default Domestic Insurance Rate';
-	var $_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE_TOOLTIP = 'DHL\\\'s default Domestic insurance rate - flat value per package.';
+	var $_PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE_TOOLTIP = 'DHL\'s default Domestic insurance rate - flat value per package.';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE = 'Default International Insurance Rate (per pound)';
-	var $_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE_TOOLTIP = 'DHL\\\'s default International insurance rate - per pound rate.';
+	var $_PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE_TOOLTIP = 'DHL\'s default International insurance rate - per pound rate.';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE = 'Handling Fee';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE_TOOLTIP = 'Handling fee to add to all shipments.';
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_HISTORY = 'Tracking History';
@@ -2047,7 +2047,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	var $_PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LPN = 'LPN Left per Signed not or Attempted Delivery Notice';
 	var $_FORGOT_YOUR_USERNAME = 'Forgot your username?';
 	var $_VM_ADMIN_ENCRYPTION_FUNCTION = 'Encryption Function';
-	var $_VM_ADMIN_ENCRYPTION_FUNCTION_TIP = 'Here you can select the encryption function used to encrypt sensible information before being stored in the database. AES_ENCRYPT is recommended, because it is very secure. ENCODE doesn\\\'t provide real encryption.';
+	var $_VM_ADMIN_ENCRYPTION_FUNCTION_TIP = 'Here you can select the encryption function used to encrypt sensible information before being stored in the database. AES_ENCRYPT is recommended, because it is very secure. ENCODE doesn\'t provide real encryption.';
 	var $_EMAIL_FRIEND = 'E-mail this to a friend.';
 	var $_EMAIL_FRIEND_ADDR = 'Your friend\'s e-mail:';
 	var $_EMAIL_YOUR_NAME = 'Your Name:';
