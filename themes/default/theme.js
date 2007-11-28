@@ -10,6 +10,7 @@ function loadNewPage( el, url ) {
 	var callback = {
 		success : function(responseText) {
 			theEl.innerHTML = responseText;
+			if( Lightbox ) Lightbox.init();
 		}
 	}
 	var opt = {
