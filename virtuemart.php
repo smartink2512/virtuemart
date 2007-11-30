@@ -25,6 +25,8 @@ $my_page= explode ( '.', $page );
 $modulename = $my_page[0];
 $pagename = $my_page[1];
 
+$is_popup = vmRequest::getBool( 'pop' );
+
 /* Page Navigation Parameters */
 $mainframe->_userstate =& $_SESSION['session_userstate'];
 $limit = intval( $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit ) );
@@ -42,6 +44,10 @@ else {
 	if( PSHOP_IS_OFFLINE == '1' ) {
 		echo '<h2>OFFLINE MODE</h2>';
 	}
+	if( $is_popup ) {
+		echo vmCommonHTML::PrintIcon('', true, ' '.$VM_LANG->_('CMN_PRINT') );
+	}
+	
 	// The Vendor ID is important
 	$ps_vendor_id = $_SESSION['ps_vendor_id'];
 
@@ -218,7 +224,7 @@ else {
 	    
 	    echo "\n<div id=\"statusBox\" style=\"text-align:center;display:none;visibility:hidden;\"></div></div>\n";
 	    
-	    if(SHOWVERSION && !mosGetParam( $_REQUEST, 'pop' )) {
+	    if(SHOWVERSION && !$is_popup) {
 			include(PAGEPATH ."footer.php");
 	    }
 

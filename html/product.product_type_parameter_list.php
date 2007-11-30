@@ -36,8 +36,13 @@ $q .= "WHERE product_type_id=$product_type_id ";
 $q .= "ORDER BY parameter_list_order asc ";
 $q .= "LIMIT $limitstart, $limit";
 
+$count  = "SELECT count(*) as num_rows FROM #__{vm}_product_type_parameter WHERE product_type_id=$product_type_id ";
+
+$db->query($count);   
+$num_rows = $db->f("num_rows");
+
 $db->query($q);   
-$num_rows = $db->num_rows();
+
 	
 // Create the Page Navigation
 $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );

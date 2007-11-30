@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.11.2007 soeren
++ Print Icon on PopUp pages
+# fixed PayPal SQL install error
 28.11.2007 soeren
 # Task #1565 - Manage User Fields unclick able.
 27.11.2007 soeren

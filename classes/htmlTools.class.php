@@ -1013,7 +1013,7 @@ class vmCommonHTML extends mosHTML {
 		}
 	}
 	
-	function PrintIcon( $link='', $use_icon=true ) {
+	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
 		global $VM_LANG, $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
 		if ( @VM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
@@ -1023,6 +1023,7 @@ class vmCommonHTML extends mosHTML {
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
 				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_PRINT'), $VM_LANG->_('CMN_PRINT') );
+				$text .= shopMakeHtmlSafe($add_text);
 			} else {
 				$text = '|&nbsp;'. $VM_LANG->_('CMN_PRINT'). '&nbsp;|';
 			}
