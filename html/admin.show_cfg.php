@@ -1232,7 +1232,7 @@ function validateForm(pressbutton) {
 		}
 	}
 	if(!correct) {
-		alert('<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION') ?>');
+		alert('<?php echo addslashes($VM_LANG->_('PHPSHOP_ADMIN_CFG_SHIPPING_NO_SELECTION')) ?>');
 	}
 
 }

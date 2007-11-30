@@ -1240,6 +1240,7 @@ function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/ima
 	
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
 	
+	$tooltip = str_replace('"','&quot;',$tooltip);
 	$tooltip = $database->getEscaped($tooltip);
 	$tooltip = str_replace("&#039;","\&#039;",$tooltip);
 	
