@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 30.11.2007 soeren
+# moved manufacturer- and vendor-specific out of the product class
 + Print Icon on PopUp pages
 # fixed PayPal SQL install error
 28.11.2007 soeren

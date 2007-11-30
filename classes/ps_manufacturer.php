@@ -181,7 +181,38 @@ class ps_manufacturer {
 		$db->query($q);
 		return True;
 	}
+	/**
+	 * Prints a drop-down list of manufacturer names and their ids.
+	 *
+	 * @param int $manufacturer_id
+	 */
+	function list_manufacturer($manufacturer_id='0') {
 
+		$db = new ps_DB;
+
+		$q = "SELECT manufacturer_id as id,mf_name as name FROM #__{vm}_manufacturer ORDER BY mf_name";
+		$db->query($q);
+		$db->next_record();
+
+		// If only one vendor do not show list
+		if ($db->num_rows() == 1) {
+
+			echo '<input type="hidden" name="manufacturer_id" value="'. $db->f("manufacturer_id").'" />';
+			echo $db->f("mf_name");
+		}
+		elseif( $db->num_rows() > 1) {
+			$db->reset();
+			$array = array();
+			while ($db->next_record()) {
+				$array[$db->f("id")] = $db->f("name");
+			}
+			$code = ps_html::selectList('manufacturer_id', $manufacturer_id, $array ). "<br />\n";
+			echo $code;
+		}
+		else  {
+			echo '<input type="hidden" name="manufacturer_id" value="1" />Please create at least one Manufacturer!!';
+		}
+	}
 }
 
 ?>

@@ -43,21 +43,20 @@ class vmAbstractObject {
 	function get( $id ) {
 		$key = $this->getKey();
 		$table = $this->getTable();
+		$db = new ps_DB();
 		if( !empty( $id )) {
-			$db = new ps_DB();
+			
 			$query = 'SELECT * FROM `'.$table.'` WHERE `'.$key.'`=';
 			if( is_numeric($id)) {
-				$query .= (int)$key;
+				$query .= (int)$id;
 			} else {
 				$query .= '\''.$db->getEscaped($id).'\'';
 			}
+			
 			$db->query( $query );
-			if( !$db->next_record()) {
-				return false;
-			}
-			return $db;
+			$db->next_record();
 		}
-		return false;
+		return $db;
 	}
 	function getKey() {
 		return $this->_key;
@@ -101,7 +100,7 @@ class vmAbstractObject {
 		$valid = true;
 		foreach( $this->_required_fields as $field ) {
 			if( empty( $d[$field])) {
-				$vmLogger->err( 'A value for the field '.$field.' is missing.');
+				$vmLogger->err( 'A value for the field "'.$field.'" is missing.' );
 				$valid = false;
 			}
 		}
@@ -127,7 +126,7 @@ class vmAbstractObject {
 	 * @return boolean True on success, false on failure
 	 */
 	function validate_add( &$d ) {
-		return true;
+		return $this->validate($d);
 	}
 	/**
 	 * Abstract function for validating input values before updating an item
@@ -136,7 +135,7 @@ class vmAbstractObject {
 	 * @return boolean True on success, false on failure
 	 */
 	function validate_update( &$d ) {
-		return true;
+		return $this->validate($d);
 	}
 	/**
 	 * Abstract function for validating input values before deleting an item
@@ -145,7 +144,7 @@ class vmAbstractObject {
 	 * @return boolean True on success, false on failure
 	 */
 	function validate_delete( &$d ) {
-		return true;
+		return $this->validate($d);
 	}
 	/**
 	 * Prepare the change of the ordering of an item

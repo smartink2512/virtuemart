@@ -23,7 +23,9 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
  * 
  */
 class ps_product extends vmAbstractObject {
-
+	var $_key = 'product_id';
+	var $_table_name = '#__{vm}_product';
+	
 	/**
 	 * Validates product fields and uploaded image files.
 	 *
@@ -840,7 +842,7 @@ class ps_product extends vmAbstractObject {
 		$q  = "SELECT vendor_id  FROM #__{vm}_product ";
 		$q .= "WHERE vendor_id = '$ps_vendor_id' ";
 		$q .= "AND product_id = '" . $d["product_id"] . "' ";
-		$db->setQuery($q); $db->query();
+		$db->query($q);
 		if ($db->next_record()) {
 			return true;
 		} else {
@@ -2173,93 +2175,8 @@ class ps_product extends vmAbstractObject {
 		
 	}
 
-	/**
-	 * Prints a drop-down list of vendor names and their ids.
-	 *
-	 * @param int $vendor_id
-	 */
-	function list_vendor($vendor_id='1') {
 
-		$db = new ps_DB;
 
-		$q = "SELECT vendor_id,vendor_name FROM #__{vm}_vendor ORDER BY vendor_name";
-		$db->query($q);
-		$db->next_record();
-
-		// If only one vendor do not show list
-		if ($db->num_rows() == 1) {
-			echo '<input type="hidden" name="vendor_id" value="'.$db->f("vendor_id").'" />';
-			echo $db->f("vendor_name");
-		}
-		elseif($db->num_rows() > 1) {
-			$db->reset();
-			$array = array();
-			while ($db->next_record()) {
-				$array[$db->f("vendor_id")] = $db->f("vendor_name");
-			}
-			echo ps_html::selectList('vendor_id', $vendor_id, $array );
-		}
-	}
-
-	/**
-	 * Print the name of vendor $vend_id
-	 *
-	 * @param int $vend_id
-	 */
-	function show_vendorname($vend_id) {
-
-		echo $this->getVendorName( $vend_id );
-
-	}
-	/**
-	 * Return the name of vendor $id
-	 *
-	 * @param unknown_type $id
-	 * @return unknown
-	 */
-	function getVendorName( $id ) {
-
-		$db = new ps_DB;
-
-		$q = 'SELECT vendor_name FROM #__{vm}_vendor WHERE vendor_id='.(int)$id;
-		$db->query($q);
-		$db->next_record();
-		return $db->f("vendor_name");
-
-	}
-
-	/**
-	 * Prints a drop-down list of manufacturer names and their ids.
-	 *
-	 * @param int $manufacturer_id
-	 */
-	function list_manufacturer($manufacturer_id='0') {
-
-		$db = new ps_DB;
-
-		$q = "SELECT manufacturer_id,mf_name FROM #__{vm}_manufacturer ORDER BY mf_name";
-		$db->query($q);
-		$db->next_record();
-
-		// If only one vendor do not show list
-		if ($db->num_rows() == 1) {
-
-			echo '<input type="hidden" name="manufacturer_id" value="'. $db->f("manufacturer_id").'" />';
-			echo $db->f("mf_name");
-		}
-		elseif( $db->num_rows() > 1) {
-			$db->reset();
-			$array = array();
-			while ($db->next_record()) {
-				$array[$db->f("manufacturer_id")] = $db->f("mf_name");
-			}
-			$code = ps_html::selectList('manufacturer_id', $manufacturer_id, $array ). "<br />\n";
-			echo $code;
-		}
-		else  {
-			echo '<input type="hidden" name="manufacturer_id" value="1" />Please create at least one Manufacturer!!';
-		}
-	}
 
 	/**
 	 * Use this function if you need the weight of a product

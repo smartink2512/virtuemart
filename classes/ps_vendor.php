@@ -17,17 +17,16 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 class ps_vendor {
-	var $classname = "ps_vendor";
-	var $error;
+	var $_key = 'vendor_id';
+	var $_table_name = '#__{vm}_vendor';
 
 
-	/**************************************************************************
-	** name: validate_add()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeVendorAdd
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add(&$d) {
 		global $vmLogger;
 		
@@ -56,14 +55,50 @@ class ps_vendor {
 			return True;
 		}
 	}
+	/**
+	 * Validates the Input Parameters onBeforeVendorUpdate
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
+	function validate_update(&$d) {
+		global $vmLogger;
+		require_once(CLASSPATH . 'imageTools.class.php' );
+		if (!vmImageTools::validate_image($d,"vendor_thumb_image","vendor")) {
+			return false;
+		}
+		if (!vmImageTools::validate_image($d,"vendor_full_image","vendor")) {
+			return false;
+		}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+		// convert all "," in prices to decimal points.
+		if (stristr($d["vendor_min_pov"],",")) {
+			$d["vendor_min_pov"] = str_replace(',', '.', $d["vendor_min_pov"]);
+		}
+
+		if (!$d["vendor_name"]) {
+			$vmLogger->err( 'You must enter a name for the vendor.' );
+			return False;
+		}
+		if (!$d["contact_email"]) {
+			$vmLogger->err( 'You must enter an email address for the vendor contact.');
+			return False;
+		}
+		if (!vmValidateEmail($d["contact_email"])) {
+			$vmLogger->err( 'Please provide a valide email address for the vendor contact.' );
+			return False;
+		}
+		
+		return True;
+		
+	}
+	/**
+	 * Validates the Input Parameters onBeforeVendorDelete
+	 *
+	 * @param int $vendor_id
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_delete( $vendor_id, &$d) {
 		global $vmLogger;
 		$db = new ps_DB;
@@ -104,45 +139,6 @@ class ps_vendor {
 		}
 
 		return True;
-	}
-
-	/**************************************************************************
-	** name: validate_update()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
-	function validate_update(&$d) {
-		global $vmLogger;
-		require_once(CLASSPATH . 'imageTools.class.php' );
-		if (!vmImageTools::validate_image($d,"vendor_thumb_image","vendor")) {
-			return false;
-		}
-		if (!vmImageTools::validate_image($d,"vendor_full_image","vendor")) {
-			return false;
-		}
-
-		// convert all "," in prices to decimal points.
-		if (stristr($d["vendor_min_pov"],",")) {
-			$d["vendor_min_pov"] = str_replace(',', '.', $d["vendor_min_pov"]);
-		}
-
-		if (!$d["vendor_name"]) {
-			$vmLogger->err( 'You must enter a name for the vendor.' );
-			return False;
-		}
-		if (!$d["contact_email"]) {
-			$vmLogger->err( 'You must enter an email address for the vendor contact.');
-			return False;
-		}
-		if (!vmValidateEmail($d["contact_email"])) {
-			$vmLogger->err( 'Please provide a valide email address for the vendor contact.' );
-			return False;
-		}
-		
-		return True;
-		
 	}
 
 	/**
@@ -402,58 +398,6 @@ class ps_vendor {
 		return $db->f("vendor_id");
 	}
 
-	/**************************************************************************
-	* name: find()
-	* created by:
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
-	function find($d, $start=0) {
-		$db = new ps_DB;
-
-		if ($d["vendor_thumb_image"] == "none") {
-			$d["vendor_thumb_image"] = "";
-		}
-		if ($d["vendor_full_image"] == "none") {
-			$d["vendor_full_image"] = "";
-		}
-
-		if ($d["vendor_category_id"] == "0") {
-			$d["vendor_category_id"] = "";
-		}
-		$q = "SELECT * FROM #__{vm}_vendor where vendor_name LIKE '%" . $d["vendor_name"] . "%'";
-		$q .= " AND contact_last_name LIKE '%" . $d["contact_last_name"] . "%'";
-		$q .= " AND contact_first_name LIKE '%" . $d["contact_first_name"] . "%'";
-		$q .= " AND contact_middle_name LIKE '%" . $d["contact_middle_name"] . "%'";
-		$q .= " AND contact_title LIKE '%" . $d["contact_title"] . "%'";
-		$q .= " AND contact_phone_1 LIKE '%" . $d["contact_phone_1"] . "%'";
-		$q .= " AND contact_phone_2 LIKE '%" . $d["contact_phone_2"] . "%'";
-		$q .= " AND contact_fax LIKE '%" . $d["contact_fax"] . "%'";
-		$q .= " AND contact_email LIKE '%" . $d["contact_email"] . "%'";
-		$q .= " AND vendor_phone LIKE '%" . $d["vendor_phone"] . "%'";
-		$q .= " AND vendor_address_1 LIKE '%" . $d["vendor_address_1"] . "%'";
-		$q .= " AND vendor_address_2 LIKE '%" . $d["vendor_address_2"] . "%'";
-		$q .= " AND vendor_city LIKE '%" . $d["vendor_city"] . "%'";
-		$q .= " AND vendor_state LIKE '%" . $d["vendor_state"] . "%'";
-		$q .= " AND vendor_country LIKE '%" . $d["vendor_country"] . "%'";
-		$q .= " AND vendor_zip LIKE '%" . $d["vendor_zip"] . "%'";
-		$q .= " AND vendor_store_name LIKE '%" . $d["vendor_store_name"] . "%'";
-		$q .= " AND vendor_store_desc LIKE '%" . $d["vendor_store_desc"] . "%'";
-		$q .= " AND vendor_category_id LIKE '%" . $d["vendor_category_id"] . "%'";
-		$q .= " AND vendor_thumb_image LIKE '%" . $d["vendor_thumb_image"] . "%'";
-		$q .= " AND vendor_full_image LIKE '%" . $d["vendor_full_image"] . "%'";
-		$q .= " AND vendor_currency LIKE '%" . $d["vendor_currency"] . "%'";
-
-		$db->query($q);
-		$db->next_record();
-		if ($db->num_rows() == 1) {
-			return "?vid=" . $db->f("vendor_id");
-		}
-
-		return True;
-	}
-
 	/**
 	 * Retrieves the name of a vendor specified by $vendor_id
 	 *
@@ -483,65 +427,81 @@ class ps_vendor {
 	}
 
 
-	/**************************************************************************
-	* name: set_vendor()
-	* created by:
-	* description: Creates a list of SELECT recods using vendor name and vendor id.
-	* parameters:
-	* returns: array of values
-	**************************************************************************/
-	function set_vendor($d) {
-		global  $sess;
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-
-		$ps_vendor_id = $d["vendor_id"];
-		return True;
-
-	}
-
-	/**************************************************************************
-	** name: listVendor()
-	** created by:
-	** description: Creates a list of SELECT recods using vendor name and
-	**              vendor id.
-	** parameters:
-	** returns: array of values
-	***************************************************************************/
-	function list_vendor($vendor_id=0) {
-		global $sess;
-		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-
-		// Creates a form drop down list and prints it
-		$db = new ps_DB;
-
-		$q = "SELECT count(*) as rowcnt FROM #__{vm}_vendor ORDER BY vendor_name";
+	/**
+	 * Retrieves a DB object with the recordset of the specified vendor
+	 * and the country it is assigned to
+	 * @static 
+	 * @param int $vendor_id
+	 * @return ps_DB
+	 */
+	function get_vendor_details($vendor_id) {
+		$db = new ps_DB();
+		$q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, vendor_freeshipping,
+					vendor_address_1, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
+					vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style,
+					vendor_accepted_currencies, vendor_address_format, vendor_date_format
+				FROM (`#__{vm}_vendor`, `#__{vm}_country`)
+				WHERE `vendor_id`=".(int)$vendor_id."
+				AND (vendor_country=country_2_code OR vendor_country=country_3_code);";
+		
 		$db->query($q);
 		$db->next_record();
-		$rowcnt = $db->f("rowcnt");
+		return $db;
+	}
+
+	/**
+	 * Prints a drop-down list of vendor names and their ids.
+	 *
+	 * @param int $vendor_id
+	 */
+	function list_vendor($vendor_id='1') {
+
+		$db = new ps_DB;
+
+		$q = "SELECT vendor_id,vendor_name FROM #__{vm}_vendor ORDER BY vendor_name";
+		$db->query($q);
+		$db->next_record();
 
 		// If only one vendor do not show list
-		if ($rowcnt == 1)
-		return True;
-
-		$q = "SELECT * FROM #__{vm}_vendor ORDER BY vendor_name";
-		$db->query($q);
-
-		$code = "<form action=\"" . SECUREURL . "\" method=\"post\">\n";
-		$code .= "<input type=\"hidden\" name=\"page\" value=\"admin.index\" />\n";
-		$code .= "<input type=\"hidden\" name=\"func\" value=\"setvendor\" />\n";
-		$code .= "<input type=\"hidden\" name=\"option\" value=\"com_virtuemart\" />\n";
-		$code .= "<select name=\"vendor_id\">\n";
-		while ($db->next_record()) {
-			$code .= "  <option value=\"" . $db->f("vendor_id") . "\"";
-			if ($db->f("vendor_id") == $vendor_id) {
-				$code .= " selected";
-			}
-			$code .= ">" . $db->f("vendor_name") . "</option>\n";
+		if ($db->num_rows() == 1) {
+			echo '<input type="hidden" name="vendor_id" value="'.$db->f("vendor_id").'" />';
+			echo $db->f("vendor_name");
 		}
-		$code .= "</select><BR>\n";
-		$code .= "<input type=\"submit\" name=\"go\" value=\"go\">\n";
-		$code .= "</font>";
-		print $code;
+		elseif($db->num_rows() > 1) {
+			$db->reset();
+			$array = array();
+			while ($db->next_record()) {
+				$array[$db->f("vendor_id")] = $db->f("vendor_name");
+			}
+			echo ps_html::selectList('vendor_id', $vendor_id, $array );
+		}
+	}
+
+	/**
+	 * Print the name of vendor $vend_id
+	 *
+	 * @param int $vend_id
+	 */
+	function show_vendorname($vend_id) {
+
+		echo $this->getVendorName( $vend_id );
+
+	}
+	/**
+	 * Return the name of vendor $id
+	 *
+	 * @param int $id
+	 * @return string
+	 */
+	function getVendorName( $id ) {
+
+		$db = new ps_DB;
+
+		$q = 'SELECT vendor_name FROM #__{vm}_vendor WHERE vendor_id='.(int)$id;
+		$db->query($q);
+		$db->next_record();
+		return $db->f("vendor_name");
+
 	}
 
 

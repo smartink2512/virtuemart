@@ -18,6 +18,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 mm_showMyFileName( __FILE__ );
 global $ps_product, $ps_product_category;
 require_once( CLASSPATH.'ps_product_discount.php' );
+require_once( CLASSPATH.'ps_manufacturer.php' );
 
 $product_id = vmGet( $_REQUEST, 'product_id');
 if( is_array( $product_id )) {
@@ -103,8 +104,8 @@ $quantity_end = 0;
 $quantity_step = 1;
 if (!empty($product_id)) {
 	// get the Database object we're filling the product form with
-	$db = $ps_product->sql($product_id);
-	$db->next_record();
+	$db = $ps_product->get($product_id);
+	
 	//get quantity options
 	$q_field = $db->f("quantity_options");
 	if($q_field) {
@@ -262,13 +263,13 @@ $tabs->startTab( $info_label, "info-page");
       <td width="21%"><div style="text-align:right;font-weight:bold;">
         <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_VENDOR') ?>:</div>
       </td>
-      <td width="79%" ><?php $ps_product->list_vendor($db->sf("vendor_id"));  ?></td>
+      <td width="79%" ><?php ps_vendor::list_vendor($db->sf("vendor_id"));  ?></td>
     </tr>
     <tr class="row1"> 
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
         <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_MANUFACTURER') ?>:</div>
       </td>
-      <td width="79%" ><?php $ps_product->list_manufacturer(@$manufacturer_id);  ?></td>
+      <td width="79%" ><?php ps_manufacturer::list_manufacturer(@$manufacturer_id);  ?></td>
     </tr>
     <?php
     if (!$product_parent_id) { ?>
