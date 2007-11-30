@@ -156,7 +156,7 @@ class ps_order_edit {
       
       <table class="adminlist">
 		  <tr>
-      		<th><?php echo $('PHPSHOP_ORDER_PRINT_SHIPPING') . " &amp; " . $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT') ?></th>
+      		<th><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') . " &amp; " . $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT') ?></th>
       		<th width="5%" align="left"> &nbsp; </th>
       		<th width="5%" align="left" colspan="1"><?php echo $VM_LANG->_('VM_ORDER_EDIT_ACTIONS') ?></th>
     		</tr>

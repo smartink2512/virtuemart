@@ -699,7 +699,8 @@ class ps_product_attribute {
 	 * @return string HTML code containing Drop Down Lists with Labels
 	 */
 	function list_advanced_attribute($product_id,$prod_id = null) {
-		global $CURRENCY_DISPLAY, $ps_product;
+		global $CURRENCY_DISPLAY;
+		$ps_product = new ps_product();
 		$db = new ps_DB;
 		$auth = $_SESSION['auth'];
         $tpl = new $GLOBALS['VM_THEMECLASS']();
