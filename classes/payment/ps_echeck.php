@@ -46,20 +46,20 @@ class ps_echeck {
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME') ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_USERNAME') ?></strong></td>
             <td>
                 <input type="text" name="ECK_LOGIN" class="inputbox" value="<? echo ECK_LOGIN ?>" />
             </td>
-            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN') ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_USERNAME_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY') ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_KEY') ?></strong></td>
             <td>
                 <a id="changekey" href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=store.payment_method_keychange&pshop_mode=admin&payment_method_id=$payment_method_id") ?>" >
                 <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="<?php echo $VM_LANG->_('PHPSHOP_CHANGE_TRANSACTION_KEY') ?>" /><a/>
             </td>
-            <td>&nbsp;</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_KEY_EXPLAIN') ?></td>
         </tr>
         <tr>
             <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_AN_RECURRING') ?></strong></td>
@@ -75,18 +75,18 @@ class ps_echeck {
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE') ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_AUTENTICATIONTYPE') ?></strong></td>
             <td>
               <select name="ECK_TYPE" class="inputbox">
                 <option <?php if (ECK_TYPE == 'AUTH_CAPTURE') echo "selected=\"selected\""; ?> value="AUTH_CAPTURE">AUTH_CAPTURE</option>
                 <option <?php if (ECK_TYPE == 'CREDIT') echo "selected=\"selected\""; ?> value="CREDIT">CREDIT</option>
               </select>
             </td>
-            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN') ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_AUTENTICATIONTYPE_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
-            <td><strong>eCheck.net Transaction Type</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE') ?></strong></td>
             <td>
               <select name="ECK_ECHECK_TYPE" class="inputbox">
                 <option <?php if (ECK_ECHECK_TYPE == 'CCD') echo "selected=\"selected\""; ?> value="CCD">CCD</option>
@@ -95,7 +95,7 @@ class ps_echeck {
                 <option <?php if (ECK_ECHECK_TYPE == 'WEB') echo "selected=\"selected\""; ?> value="WEB">WEB</option>
               </select>
             </td>
-            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_AUTENTICATIONTYPE_EXPLAIN') ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE_EXPLAIN') ?>
             </td>
         </tr>
       </table>

@@ -101,7 +101,7 @@ class ps_authorize {
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="AN_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -124,12 +124,10 @@ class ps_authorize {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the authorize.net Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?></td>
         </tr>
             <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="AN_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -143,11 +141,11 @@ class ps_authorize {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed authorize.net transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?></td>
         </tr>
 
             <tr>
-            <td><strong>Show Response Codes for Failed Transactions?</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES') ?></strong></td>
             <td>
                 <select name="AN_SHOW_ERROR_CODE" class="inputbox">
                 <option <?php if (AN_SHOW_ERROR_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
@@ -156,14 +154,10 @@ class ps_authorize {
                 <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td>If set to YES then the customer will see the Authorize.net Transaction Response Reason Codes (Response Code - 
-				Response Subcode - Response Reason Code - AVS Result Code - Card Code (CVV2/CVC2/CID) Response Code - 
-				Cardholder Authentication Verification Value (CAVV) Response Code - in a format like: 2-2-65-Y-N--)
-				along with the Response Reason Text. This can be useful for troubleshooting failed or declined transactions.
-				For further details see the <a href="http://www.authorize.net/support/AIM_guide.pdf">Authorize.net Advanced Integration Method (AIM) Implementation Guide</a></td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Email Confirmation from Gateway to Merchant?</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_MERCHANT') ?></strong></td>
             <td>
                 <select name="AN_EMAIL_MERCHANT" class="inputbox">
                 <option <?php if (AN_EMAIL_MERCHANT == 'YES') echo "selected=\"selected\""; ?> value="YES">
@@ -172,13 +166,10 @@ class ps_authorize {
                 <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td>Send copy of the customer confirmation email to the Merchant? If yes then an email will
-				be sent to the Merchant address as well as the address(es) configured in the Merchant Interface.
-				<em> Note: this email is sent from the Authorize.net gateway and is independent of any email sent by VirtueMart</em> 
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_MERCHANT_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Email Confirmation from Gateway to Customer?</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_CUSTOMER') ?></strong></td>
             <td>
                 <select name="AN_EMAIL_CUSTOMER" class="inputbox">
                 <option <?php if (AN_EMAIL_CUSTOMER == 'YES') echo "selected=\"selected\""; ?> value="YES">
@@ -187,10 +178,7 @@ class ps_authorize {
                 <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td>Send a confirmation email to the customer? If yes then an email will
-				be sent to the customer from the Merchant Interface.
-				<em> Note: this email is sent from the Authorize.net gateway and is independent of any email sent by VirtueMart</em> 
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_CUSTOMER_EXPLAIN') ?></td>
         </tr>
       </table>
    <?php

@@ -38,12 +38,11 @@ class ps_eway {
     ?>
     <table>
         <tr>
-        <td><strong>eWay Customer ID</strong></td>
+        <td><strong><?php $VM_LANG->_('PHPSHOP_ADMIN_CFG_EWAY_CUSTID') ?></strong></td>
             <td>
                 <input type="text" name="EWAY_CUSTID" class="inputbox" value="<?php  echo EWAY_CUSTID ?>" />
             </td>
-            <td>The Customer ID you received from eWay.
-            </td>
+            <td><?php $VM_LANG->_('PHPSHOP_ADMIN_CFG_EWAY_CUSTID_EXPLAIN') ?></td>
         </tr>
         <tr>
             <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2') ?></strong></td>
@@ -58,7 +57,7 @@ class ps_eway {
             <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2_TOOLTIP') ?></td>
         </tr>
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="EWAY_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -81,12 +80,10 @@ class ps_eway {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the eWay Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?></td>
         </tr>
             <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="EWAY_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -100,7 +97,7 @@ class ps_eway {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed eWay transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?></td>
         </tr>
         <tr>
             <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>

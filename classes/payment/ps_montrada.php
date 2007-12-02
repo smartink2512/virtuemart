@@ -62,7 +62,7 @@ class ps_montrada {
             </td>
         </tr>        
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="MO_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -85,12 +85,10 @@ class ps_montrada {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the Montrada.de Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="MO_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -104,7 +102,7 @@ class ps_montrada {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed Montrada.de transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?></td>
         </tr>
       </table>
    <?php

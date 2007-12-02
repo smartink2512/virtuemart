@@ -99,7 +99,7 @@ class ps_epn {
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="EPN_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -122,12 +122,10 @@ class ps_epn {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the eProcessingNetwork Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?></td>
         </tr>
             <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="EPN_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -141,7 +139,7 @@ class ps_epn {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed eProcessingNetwork transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?></td>
         </tr>
       </table>
    <?php

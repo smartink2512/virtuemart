@@ -37,23 +37,21 @@ class ps_twocheckout {
     ?>
       <table>
         <tr>
-            <td><strong>2Checkout.com Seller/Vendor ID</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN') ?></strong></td>
             <td>
                 <input type="text" name="TWOCO_LOGIN" class="inputbox" value="<? echo TWOCO_LOGIN ?>" />
             </td>
-            <td>Your 2Checkout.com Seller id
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>2Checkout.com Secret Word</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD') ?></strong></td>
             <td>
                 <input type="text" name="TWOCO_SECRETWORD" class="inputbox" value="<? echo TWOCO_SECRETWORD ?>" />
             </td>
-            <td>Your Secret Word for 2Checkout.com. Makes the transactions more secure.
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS') ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="TWOCO_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -77,11 +75,11 @@ class ps_twocheckout {
                     }?>
                     </select>
             </td>
-            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN') ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?>
             </td>
         </tr>
             <tr>
-            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED') ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="TWOCO_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -95,30 +93,28 @@ class ps_twocheckout {
                     } ?>
                     </select>
             </td>
-            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN') ?>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?>
             </td>
         </tr>
         <tr>
-            <td><strong>Merchant Notifications</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF') ?></strong></td>
             <td>
                 <select name="TWOCO_MERCHANT_EMAIL" class="inputbox" >
                   <option <? if (TWOCO_MERCHANT_EMAIL == 'True') echo "selected=\"selected\""; ?> value="True"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                   <option <? if (TWOCO_MERCHANT_EMAIL == 'False') echo "selected=\"selected\""; ?> value="False"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td>Should 2CheckOut e-mail a receipt to the store owner?
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Test Mode?</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>
             <td>
                 <select name="TWOCO_TESTMODE" class="inputbox" >
                   <option <? if (TWOCO_TESTMODE == 'Y') echo "selected=\"selected\""; ?> value="Y"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                   <option <? if (TWOCO_TESTMODE == 'N') echo "selected=\"selected\""; ?> value="N"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td>Select yes to enable the Test/Demo mode?
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN') ?></td>
         </tr>
       </table>
    <?php

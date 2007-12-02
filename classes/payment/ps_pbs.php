@@ -39,14 +39,14 @@ class ps_pbs {
     ?>
       <table>
         <tr>
-            <td><strong>PBS Merchant ID</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PBS_MERCHANT_ID') ?></strong></td>
             <td>
                 <input type="text" name="PBS_MERCHANT_ID" class="inputbox" value="<?php echo PBS_MERCHANT_ID ?>" />
             </td>
-            <td>The Merchant ID you have reveived from PBS</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PBS_MERCHANT_ID_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Payment Gateway</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PBD_GATEWAY') ?></strong></td>
             <td>
                 <select name="PBS_GATEWAY" onchange="updateExtraInfo();" class="inputbox">
                     <option <?php if (PBS_GATEWAY == 'freeway.dk') echo "selected=\"selected\""; ?> value="freeway.dk">freeway.dk</option>
@@ -57,17 +57,17 @@ class ps_pbs {
                     <option <?php if (PBS_GATEWAY == 'dandomain.dk') echo "selected=\"selected\""; ?> value="dandomain.dk">dandomain.dk</option>
                 </select>
             </td>
-            <td>The Payment Gateway you are using for Payment Transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PBD_GATEWAY_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Shop ID</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PBS_SHOP_ID') ?></strong></td>
             <td>
                 <input type="text" name="PBS_SHOP_ID" class="inputbox" value="<?php echo PBS_SHOP_ID ?>" />
             </td>
-            <td>The Shop ID (Only if you are using Webhosting.dk, Danhost.dk or Wannafind.dk Payment Gateway)</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PBS_SHOP_ID_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="PBS_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -90,12 +90,10 @@ class ps_pbs {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?></td>
         </tr>
             <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="PBS_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -109,7 +107,7 @@ class ps_pbs {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?></td>
         </tr>
         <tr>
             <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>

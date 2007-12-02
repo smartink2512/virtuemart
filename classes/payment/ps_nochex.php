@@ -34,12 +34,11 @@ class ps_nochex {
     ?>
     <table>
         <tr>
-        <td><strong>NoChex Email</strong></td>
+        <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NOCHEX_EMAIL')?></strong></td>
             <td>
                 <input type="text" name="NOCHEX_EMAIL" class="inputbox" value="<?  echo NOCHEX_EMAIL ?>" />
             </td>
-            <td>The Email-Account for your NoChex Payments. 
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NOCHEX_EMAIL_EXPLAIN')?></td>
         </tr>
       </table>
     <?php

@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.12.2007 thepisu
+# Task #1571 - Some hard coded language strings in admin panel (payment classes)
+# HTML entites should not be used in SELECT states list
+
 02.12.2007 soeren
 # Task#1573 - Bank account language tags missing
 
@@ -50,7 +54,7 @@ VirtueMart 1.1.x
 # user form submission not using Ajax
 # fixed empty virtuemart Cookie under Joomla! 1.5
 
-27.11.2007 pisu
+27.11.2007 thepisu
 # Task #1547 - User activation link with Joomla! 1.5
 # euro symbol not converted to html entity
 # typo corrections

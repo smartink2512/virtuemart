@@ -2101,6 +2101,117 @@ Il nostro prodotto %s è ora disponibile e può essere acquistato seguento questo 
 	var $_VM_PRODUCT_RELATED_SEARCH = 'Cerca qui prodotti e categorie:';
 	var $_PHPSHOP_DOWNLOADS_CLICK = 'Clicca sul nome del prodotto per scaricare i file.';
 	var $_PHPSHOP_DOWNLOADS_EXPIRED = 'Hai già scaricato i file per il numero massimo di volte consentito, oppure il periodo di download è scaduto.';
+	var $_PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC = 'Stato ordine per transazioni andate a buon fine';
+	var $_PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN = 'Seleziona lo stato ordine che deve essere assegnato all\'ordine corrente, se la transazione di pagamento va a buon fine.
+Se stai usando le opzioni di vendita download: seleziona lo stato ordine che abilita il download (il cliente verrà avvisato immediatamente del download tramite e-mail).';
+	var $_PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL = 'Stato ordine per transazioni fallite';
+	var $_PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN = 'Seleziona lo stato ordine che deve essere assegnato, se la transazione di pagamento fallisce.';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES = 'Mostra i codici di risposta per transazioni fallite?';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES_EXPLAIN = 'Se impostato a SI il cliente vedrà i codici di motivazione della risposta di transazione Authorize.net (Codice Risposta - 
+Sottocodice Risposta - Codice Motivazione Risposta - Codice Risultato AVS - Codice di Risposta Codice Carta (CVV2/CVC2/CID) - 
+Codice di Risposta Valore di Verifica Autenticazione Titolare (CAVV) - in un formato tipo: 2-2-65-Y-N--)
+insieme al Testo di Motivazione Risposta. Questo può essere utile per comprendere transazioni fallite o rifiutate.
+Per ulteriori dettagli vedi la <a href="http://www.authorize.net/support/AIM_guide.pdf">Guida di Implementazione Authorize.net Advanced Integration Method (AIM)</a>';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_MERCHANT = 'Email di conferma dal Gateway al Commerciante?';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_MERCHANT_EXPLAIN = 'Inviare una copia della mail di conferma del cliente al Commerciante? Se sì, verrà inviata una email
+all\'indirizzo Commerciante, così come agli indirizzi configurati nell\'interfaccia Commerciante.
+<em> Nota: questa email viene inviata dal gateway Authorize.net ed è indipendente da ogni altra mail inviata da VirtueMart.</em>';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_CUSTOMER = 'Email di conferma dal Gateway al Cliente?';
+	var $_PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_CUSTOMER_EXPLAIN = 'Inviare una mail di conferma al Cliente? Se sì, verrà inviata una mail
+al cliente, dall\'interfaccia del Commerciante.
+<em> Nota: questa email viene inviata dal gateway Authorize.net ed è indipendente da ogni altra mail inviata da VirtueMart.</em> ';
+	var $_PHPSHOP_ADMIN_CFG_PFP_VENDOR = 'Login Commerciante / Nome Venditore';
+	var $_PHPSHOP_ADMIN_CFG_PFP_VENDOR_EXPLAIN = 'Il tuo nome di login Commerciante';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USER = 'Nome Utente';
+	var $_PHPSHOP_ADMIN_CFG_PFP_USER_EXPLAIN = 'Il tuo nome utente Commerciante';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PASSWORD = 'Password';
+	var $_PHPSHOP_ADMIN_CFG_PFP_PASSWORD_SETCHANGE = 'Imposta / Cambia la password';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_USERNAME = 'Login ID eCheck.net';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_USERNAME_EXPLAIN = 'Questo è il tuo ID di accesso eCheck.Net';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_KEY = 'Chiave Transazione eCheck.net';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_KEY_EXPLAIN = 'Questa è la tua chiave di transazione eCheck.net';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_AUTENTICATIONTYPE = 'Tipo Autenticazione';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_AUTENTICATIONTYPE_EXPLAIN = 'Questo è il tipo di autenticazione eCheck.net.';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE = 'Tipo Transazione eCheck.net';
+	var $_PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE_EXPLAIN = 'Questo è il tipo di transazione eCheck.Net.';
+	var $_PHPSHOP_ADMIN_CFG_EWAY_CUSTID = 'ID Cliente eWay';
+	var $_PHPSHOP_ADMIN_CFG_EWAY_CUSTID_EXPLAIN = 'L\'ID Cliente che hai ricevuto da eWay.';
+	var $_PHPSHOP_ADMIN_CFG_NOCHEX_EMAIL = 'Email NoChex';
+	var $_PHPSHOP_ADMIN_CFG_NOCHEX_EMAIL_EXPLAIN = 'L\'account e-mail per i tuoi pagamenti NoChex.';
+	var $_PHPSHOP_ADMIN_CFG_PN_LOGIN = 'ID PayMeNow';
+	var $_PHPSHOP_ADMIN_CFG_PN_LOGIN_EXPLAIN = 'L\'ID di accesso all\'account PayMeNow';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED = 'Accetta solo acquirenti verificati?';
+	var $_PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED_EXPLAIN = 'Qui puoi scegliere se vuoi accettare pagamenti solo da acquirenti con un account PayPal
+<strong>verificato</strong> (quando un account non è verificato, PayPal trasferisce i fondi, ma non garantisce completamente la validità della vendita).';
+	var $_PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN = 'ID Venditore 2Checkout.com';
+	var $_PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN_EXPLAIN = 'Il tuo ID venditore 2Checkout.com';
+	var $_PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD = 'Parola Segreta 2Checkout.com';
+	var $_PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD_EXPLAIN = 'La tua parola segreta per 2Checkout.com. Rende la transazione più sicura.';
+	var $_PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF = 'Notifiche Commerciante';
+	var $_PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF_EXPLAIN = 'Vuoi che 2CheckOut spedisca una e-mail al proprietario del negozio?';
+	var $_PHPSHOP_EPAY_FRAUD = 'Der er blevet lavet: %s betaling(er) med dette kort de sidste 24 timer';
+	var $_PHPSHOP_EPAY_PAYMENT_DATE = 'Dato for betalingen: ';
+	var $_PHPSHOP_EPAY_PAYMENT_FEE = 'Gebyr pålagt betalingen: ';
+	var $_PHPSHOP_EPAY_PAYMENT_CALLBACK = '<b>Ordre betalingsinfo blev opdateret via callback!</b>';
+	var $_PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT = 'Betalingen blev godkendt af ePay / PBS. \nBetalingen har fået følgende transaktionsnummer i ePay.: ';
+	var $_PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT = '<br/><br><br><b>Tryk på nederstående link for at forsøg betaling igen:</b><br>';
+	var $_PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND = '(Ordren blev ikke fundet - Intern fejl)';
+	var $_PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE = '(Fejl i MD5 validering - Intern fejl - konfigurations fejl)';
+	var $_PHPSHOP_EPAY_PAYMENT_DECLINE = 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. følgende fejlkode: ';
+	var $_PHPSHOP_EPAY_PAYMENT_LOG_TID = 'Betalingen er oprettet med transaktionsnummer: ';
+	var $_PHPSHOP_EPAY_PAYMENT_EPAY_LINK = '. Betalingen kan behandles på: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>';
+	var $_PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER = 'Du har nu bekræftet ordren og skal nu vælge hvordan ordren betales. Dette gøres ved at klikke på den ønskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>';
+	var $_PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER = 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.';        
+	var $_PHPSHOP_EPAY_BUTTON_OPEN_WINDOW = 'ÅBEN BETALINGSVINDUET';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER = 'PBS Merchant ID';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN = 'The Merchant ID you have reveived from PBS. For testing purpose a test Merchant ID can be obtained by contacting ePay (sales@epay.dk)';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES = 'Cardtypes';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES_EXPLAIN = 'Select cardtypes to show the customer.';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_LANGUAGE = 'Language';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_LANGUAGE_EXPLAIN = 'Select the language of the payment window.';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_INSTANT_CAPTURE = 'Instant capture';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_INSTANT_CAPTURE_EXPLAIN = 'To capture payments immediately.';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_GROUP = 'Group';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_GROUP_EXPLAIN = 'To move the payment to a specified group. If not leave this field empty.';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_1 = 'MD5 on accept page';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_2 = 'MD5 on both data transmitted to ePay and on accept page';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_EXPLAIN = 'The type of MD5 usage. 0 disables MD5. 1 uses MD5 on the accept page on this shop. 2 creates a MD5 stamp, which is send to ePay with transaction data. If this stamp does not match ePay will decline the payment.';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_MD5_KEY = 'MD5 key';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_MD5_KEY_EXPLAIN = 'If MD5 is enabled above the secure key for MD5 stamping is defined here (same secret key must be defined in the ePay administration). If MD5 is disabled leave this field empty.';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS = 'Auth SMS';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS_EXPLAIN = 'Enter a mobile number here to receive a SMS message when the payment is verified by ePay. <b>Notice! each SMS costs DKK 0.25.</b>';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL = 'Auth EMAIL';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_EXPLAIN = 'Enter one or more email adresses to receive an email when the payment is verified by ePay. For multiple receivers seperate the email addresses by semicolon (;).';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE = 'Window State';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_1 = 'Popup';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_2 = 'Same window (full screen)';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_3DSECURE = '3D secure';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_1 = '3D secure is enabled';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_2 = 'Only payments by use of 3D secure is allowed';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_3 = '3D secure payments are disabled';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_CALLBACK = 'Activate callback';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_0 = 'Callback is disabled';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_1 = 'Enable callback';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_EXPLAIN = 'Callback is used to avoid missing update of the shopping system if
+the user closes the browser before redirect to the shop from ePay is made. <b>(It is recommented that callback is enabled to update the
+shop even if the customer during the payment process closes the browser)</b>';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_ADDFEE = 'Transaction Fee';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_0 = 'Customer does not pay for the transaction fee';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_1 = 'The customer paies for the transaction fee';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_EXPLAIN = 'Often it is necessary to put the transaction fee to the customer.
+ePay will calculate the fee and put it on the payment before the payment is made.';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION = 'Subscription';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_0 = 'Disable subscription';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_1 = 'All payments are created as recurrent subscriptions';
+	var $_PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_EXPLAIN = 'Subscriptions are used for creating payments that can be authorized more than once (recurrent payments)';
+	var $_PHPSHOP_ADMIN_CFG_WORLDPAY_INSTID = 'ID Installazione WorldPay';
+	var $_PHPSHOP_ADMIN_CFG_WORLDPAY_INSTID_EXPLAIN = 'L\'"ID Installazione", che hai ottenuto da WorldPay.';
+	var $_PHPSHOP_ADMIN_CFG_PBS_MERCHANT_ID = 'ID Commerciante PBS';
+	var $_PHPSHOP_ADMIN_CFG_PBS_MERCHANT_ID_EXPLAIN = 'L\'ID Commerciante che hai ottenuto da PBS';
+	var $_PHPSHOP_ADMIN_CFG_PBD_GATEWAY = 'Gateway Pagamento';
+	var $_PHPSHOP_ADMIN_CFG_PBD_GATEWAY_EXPLAIN = 'Il gateway di pagamento che stai usando per le transazioni.';
+	var $_PHPSHOP_ADMIN_CFG_PBS_SHOP_ID = 'ID Negozio';
+	var $_PHPSHOP_ADMIN_CFG_PBS_SHOP_ID_EXPLAIN = 'L\'ID negozio (solo se stai usando i gateway pagamento Webhosting.dk, Danhost.dk o Wannafind.dk)';
 }
 class phpShopLanguage extends vmLanguage { }
 

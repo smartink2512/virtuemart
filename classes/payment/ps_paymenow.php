@@ -34,11 +34,11 @@ class ps_paymenow {
     ?>
       <table>
         <tr>
-            <td><strong>PayMeNow ID</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PN_LOGIN') ?></strong></td>
             <td>
                 <input type="text" name="PN_LOGIN" class="inputbox" value="<? echo PN_LOGIN ?>" />
             </td>
-            <td>The PayMeNow Login/Account ID</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PN_LOGIN_EXPLAIN') ?></td>
         </tr>
         <tr>
             <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2') ?></strong></td>
@@ -53,7 +53,7 @@ class ps_paymenow {
             <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2_TOOLTIP') ?></td>
         </tr>
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="PN_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -76,12 +76,10 @@ class ps_paymenow {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the PayMeNow Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?></td>
         </tr>
             <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="PN_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -95,7 +93,7 @@ class ps_paymenow {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed PayMeNow transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?></td>
         </tr>
       </table>
    <?php

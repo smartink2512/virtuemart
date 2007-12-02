@@ -38,45 +38,41 @@ class payflow_pro {
     ?>
       <table>
         <tr>
-            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE') ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE') ?></strong></td>
             <td>
                 <select name="PFP_TEST_REQUEST" class="inputbox" >
                 <option <?php if (PFP_TEST_REQUEST == 'TRUE') echo "selected=\"selected\""; ?> value="TRUE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (PFP_TEST_REQUEST == 'FALSE') echo "selected=\"selected\""; ?> value="FALSE"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN') ?>
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Partner</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_PARTNER') ?></strong></td>
             <td>
                 <input type="text" name="PFP_PARTNER" class="inputbox" value="<?php echo PFP_PARTNER ?>" />
             </td>
-            <td>Your PfP Partner ID
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN') ?></td>
         </tr>
       <tr>
-            <td><strong>Merchant Login / Vendor Name</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_VENDOR') ?></strong></td>
             <td>
                 <input type="text" name="PFP_VENDOR" class="inputbox" value="<?php echo PFP_VENDOR ?>" />
             </td>
-            <td>Your Merchant Login Name
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_VENDOR_EXPLAIN') ?></td>
         </tr>
       <tr>
-            <td><strong>User Name</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_USER') ?></strong></td>
             <td>
                 <input type="text" name="PFP_USER" class="inputbox" value="<?php echo PFP_USER ?>" />
             </td>
-            <td>Your Merchant Login Name
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_USER_EXPLAIN') ?></td>
         </tr>
         <tr>
-            <td><strong>Password</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_PASSWORD') ?></strong></td>
             <td>
                 <a id="changekey" href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=store.payment_method_keychange&pshop_mode=admin&payment_method_id=$payment_method_id") ?>" >
-                <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="Set / Change the Password" class="button" /><a/>
+                <input onclick="document.location=document.getElementById('changekey').href" type="button" name="" value="<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PFP_PASSWORD_SETCHANGE') ?>" class="button" /><a/>
             </td>
             <td>&nbsp;</td>
         </tr>
@@ -94,7 +90,7 @@ class payflow_pro {
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC') ?></strong></td>
             <td>
                 <select name="PFP_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -117,12 +113,10 @@ class payflow_pro {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the authorize.net Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
-            </td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN') ?></td>
         </tr>
             <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL') ?></strong></td>
             <td>
                 <select name="PFP_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -136,7 +130,7 @@ class payflow_pro {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed PayFlow Pro transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN') ?></td>
         </tr>
       </table>
    <?php

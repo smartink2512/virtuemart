@@ -287,7 +287,7 @@ class ps_html {
 				if( $dbs->num_rows() > 0 ) {
 					while( $dbs->next_record() ) {
 						// array in the format [key,value,text]
-						$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$dbs->f("state_2_code")."','".htmlentities($dbs->f("state_name"), ENT_QUOTES)."' );\n";
+						$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$dbs->f("state_2_code")."','".addslashes($dbs->f("state_name"))."' );\n";
 					}
 				}
 				else {
