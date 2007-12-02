@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.12.2007 soeren
+# Task#1573 - Bank account language tags missing
+
 30.11.2007 soeren
 # Task #1553 - Product with multi attribute only the first attribute is shown on frontpage
 # moved manufacturer- and vendor-specific out of the product class

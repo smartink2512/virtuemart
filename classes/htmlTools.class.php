@@ -1134,6 +1134,7 @@ class vmCommonHTML extends mosHTML {
                                 $extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
                         }
                         $html .= "\n\t<option value=\"".$k."\"$extra>";
+						if( $t[0] == '_' ) $t = substr( $t, 1 );
 						$html .= $VM_LANG->exists($t) ? $VM_LANG->_($t) : $t;
                         $html .= "</option>";
                 }

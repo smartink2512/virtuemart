@@ -353,7 +353,7 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_LBL'), "third-page");
 <table class="adminform">  
     <tr> 
         <td style="text-align:right;"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_VENDOR') ?>:</td>
-        <td><?php $ps_product->list_vendor($db->f("vendor_id"));  ?></td>
+        <td><?php ps_vendor::list_vendor($db->f("vendor_id"));  ?></td>
     </tr>
 	<tr> 
         <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_PERMS') ?>:</td> 
