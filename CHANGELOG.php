@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 30.11.2007 soeren
+# Task #1553 - Product with multi attribute only the first attribute is shown on frontpage
 # moved manufacturer- and vendor-specific out of the product class
 + Print Icon on PopUp pages
 # fixed PayPal SQL install error

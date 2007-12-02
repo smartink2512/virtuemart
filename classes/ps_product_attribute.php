@@ -1216,48 +1216,38 @@ class ps_product_attribute {
 		}
 
 		// put the pieces together again
-		for ($i = 0, $n = count($attributeX); $i < $n; $i++)
+		foreach( $attributeX as $attributes )
 		{
-			$attributes = $attributeX[$i];
-
+			$attribute_string .= ';';
 			// continue only if the attribute has a name
-			if (!empty($attributes['name'])) {
-				
-				$attribute_string .= trim($attributes['name']);
-
-				for ($i2 = 0, $n2 = count($attributes['value']); $i2 < $n2; $i2++) {
-					$value = $attributes['value'][$i2];
-					$price = $attributes['price'][$i2];
-
-
-					if (!empty($value)) {
-						$attribute_string .= ','.trim($value);
-
-						if (!empty($price)) {
-							
-							// add the price only if there is an operand
-							if (strstr($price, '+') OR (strstr($price, '-')) OR (strstr($price, '='))) {
-								$attribute_string .= '['.trim($price).']';
-							}
-							
-						}
-						
-					}
-					
-				}
-				
-				// add attribute separator only if it's not the last one!
-				// otherwise you would get an another, empty attribute right behind
-				if (($i + 1) < $n) {
-					
-					$attribute_string .= ';';
-					
-				}
-				
+			if (empty($attributes['name'])) {
+				continue;
 			}
+			$attribute_string .= trim($attributes['name']);
+			$n2 = count($attributes['value']);
+			for ($i2 = 0; $i2 < $n2; $i2++) {
+				$value = $attributes['value'][$i2];
+				$price = $attributes['price'][$i2];
 
+
+				if (!empty($value)) {
+					$attribute_string .= ','.trim($value);
+
+					if (!empty($price)) {
+						
+						// add the price only if there is an operand
+						if (strstr($price, '+') OR (strstr($price, '-')) OR (strstr($price, '='))) {
+							$attribute_string .= '['.trim($price).']';
+						}						
+					}					
+				}				
+			}			
+			
 		}
 
+		// cut off the first attribute separators on the beginning of the string
+		// otherwise you would get an empty first attribute
+		$attribute_string = substr($attribute_string, 1 );
 		return trim($attribute_string);
 	}
 }

@@ -50,7 +50,7 @@ class vmAbstractLanguage {
 				if (strtolower(vmGetCharset())=='utf-8' && strtolower($this->CHARSET)=='iso-8859-1' && function_exists('utf8_encode')) {
 					$text = utf8_encode($text);
 				}
-				if (strtolower(vmGetCharset())=='iso-8859-1' && strtolower($this->CHARSET)=='utf-8' && function_exists('utf8_decode')) {
+				if (stristr(vmGetCharset(), 'iso-8859-1') && strtolower($this->CHARSET)=='utf-8' && function_exists('utf8_decode')) {
 					$text = utf8_decode($text);
 				}
 				return stripslashes( $text );
