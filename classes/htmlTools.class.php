@@ -1253,7 +1253,7 @@ function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/ima
 	}
 	$image = str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $image);
 	if( $image != '' ) {
-		$text 	= vmCommonHTML::imageTag( $image, '', 'middle' ). '&nbsp;'.$text;
+		$text 	= vmCommonHTML::imageTag( $image, '', 'absmiddle' ). '&nbsp;'.$text;
 	}
 	
 	$style = 'style="text-decoration: none; color: #333;"';

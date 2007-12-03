@@ -97,14 +97,14 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 			      </td>
 			    </tr>
 			    <tr> 
-			      <td class="labelcell"> <?php echo $VM_LANG->_('PHPSHOP_STORE_FORM_PHONE') ?>:</td>
+			      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_STORE_FORM_PHONE') ?>:</td>
 			      <td width="78%" > 
 			        <input type="text" class="inputbox" name="vendor_phone" value="<?php $db->sp("vendor_phone") ?>" size="16" />
 			      </td>
 			    </tr>
 			    <tr> 
-			      <td class="labelcell">Store Address Format:<br />
-					<?php echo vmToolTip('You can use the following placeholders here:<br />
+			      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_STORE_ADDRESS_FORMAT') ?>:<br />
+					<?php echo vmToolTip($VM_LANG->_('PHPSHOP_STORE_ADDRESS_FORMAT_TIP') . ':<br />
 			        		<strong>{storename}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_STORE_NAME').'<br />
 			        		<strong>{address_1}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_ADDRESS_1').'<br />
 			        		<strong>{address_2}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_ADDRESS_2').'<br />
@@ -125,9 +125,11 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 			      </td>
 			    </tr>
 			    <tr> 
-			      <td class="labelcell">Store Date Format:</td>
+			      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_STORE_DATE_FORMAT') ?>:
+				  </td>
 			      <td width="78%" > 
 			        <input type="text" class="inputbox" name="vendor_date_format" value="<?php $db->sp("vendor_date_format") ?>" size="32" />
+					<a href="http://www.php.net/manual/function.strftime.php" target="_blank">(info)</a>
 			      </td>
 			    </tr>
 			    <tr> 
@@ -241,7 +243,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 		      </td>
 		    </tr>
 		    <tr>
-		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_SYMBOL') ?> : </td>
+		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_SYMBOL') ?>: </td>
 		      <td>
 		        <input type="hidden" name="display_style[0]" value="<?php echo $ps_vendor_id; ?>" />
 		        <input type="text" name="display_style[1]" value="<?php echo htmlspecialchars( $currency_display['symbol'] ); ?>" size="8" />
@@ -249,23 +251,23 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 		      </td>
 		    </tr>
 		    <tr>
-		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_DECIMALS') ?> : </td>
+		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_DECIMALS') ?>: </td>
 		      <td><input type="text" name="display_style[2]" value="<?php echo $currency_display['nbdecimal']; ?>" size="1" />
 		      <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CURRENCY_DECIMALS_TOOLTIP') ) ?>
 		      </td>
 		    </tr>
 		    <tr>
-		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_DECIMALSYMBOL') ?> : </td>
+		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_DECIMALSYMBOL') ?>: </td>
 		      <td><input type="text" name="display_style[3]" value="<?php echo $currency_display['sdecimal']; ?>" size="1" />
 		      <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CURRENCY_DECIMALSYMBOL_TOOLTIP') ) ?></td>
 		    </tr>
 		    <tr>
-		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_THOUSANDS') ?> : </td>
+		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_THOUSANDS') ?>: </td>
 		      <td><input type="text" name="display_style[4]" value="<?php echo $currency_display['thousands']; ?>" size="1" />
 		      <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CURRENCY_THOUSANDS_TOOLTIP') )?></td>
 		    </tr>
 		    <tr>
-		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_POSITIVE_DISPLAY') ?> : </td>
+		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_POSITIVE_DISPLAY') ?>: </td>
 		      <td>
 		        <select name="display_style[5]">
 					<option value="0"<?php if ($currency_display['positive']=='0') echo ' selected=\"selected\" ';?>>00Symb</option>
@@ -277,7 +279,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 		      </td>
 		    </tr>
 		    <tr>
-		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_NEGATIVE_DISPLAY') ?> : </td>
+		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_NEGATIVE_DISPLAY') ?>: </td>
 		      <td>
 		        <select name="display_style[6]">
 					<option value="0"<?php if ($currency_display['negative']=='0') echo ' selected=\"selected\" ';?>>(Symb00)</option>

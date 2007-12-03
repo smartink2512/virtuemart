@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.12.2007 thepisu
+# tax % not displayed correctly
+# vmTooltip image alignment (absmiddle)
+# hardcoded strings in store edit form
++ added link to PHP strftime manual near to store date format
+
 02.12.2007 thepisu
 # Task #1571 - Some hard coded language strings in admin panel (payment classes)
 # HTML entites should not be used in SELECT states list

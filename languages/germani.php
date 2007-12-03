@@ -2194,6 +2194,9 @@ ePay will calculate the fee and put it on the payment before the payment is made
 	var $_PHPSHOP_ADMIN_CFG_PBD_GATEWAY_EXPLAIN = 'The Payment Gateway you are using for Payment Transactions.';
 	var $_PHPSHOP_ADMIN_CFG_PBS_SHOP_ID = 'Shop ID';
 	var $_PHPSHOP_ADMIN_CFG_PBS_SHOP_ID_EXPLAIN = 'The Shop ID (Only if you are using Webhosting.dk, Danhost.dk or Wannafind.dk Payment Gateway)';
+	var $_PHPSHOP_STORE_ADDRESS_FORMAT = 'Store Address Format';
+	var $_PHPSHOP_STORE_ADDRESS_FORMAT_TIP = 'You can use the following placeholders here';
+	var $_PHPSHOP_STORE_DATE_FORMAT = 'Store Date Format';
 }
 class phpShopLanguage extends vmLanguage { }
 

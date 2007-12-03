@@ -1993,6 +1993,7 @@ class ps_product extends vmAbstractObject {
 					// not be hidden
 					if( !$hide_tax && $auth["show_price_including_tax"] == 1 && VM_PRICE_SHOW_INCLUDINGTAX) {
 						$text_including_tax = $VM_LANG->_('PHPSHOP_INCLUDING_TAX');
+						eval ("\$text_including_tax = \"$text_including_tax\";");
 					}
 				}
 
