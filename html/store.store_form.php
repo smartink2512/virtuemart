@@ -22,6 +22,11 @@ global $ps_vendor, $ps_vendor_id;
 
 $option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
+$currency_style_positive = array('00Symb', '00 Symb', 'Symb00', 'Symb 00' );
+$currency_style_negative = array('(Symb00)', '-Symb00', 'Symb-00', 'Symb00-', '(00Symb)', '-00Symb', '00-Symb', 
+														'00Symb-', '-00 Symb', '-Symb 00', '00 Symb-', 'Symb 00-', 'Symb -00', '00- Symb', 
+														'(Symb 00)',	'(00 Symb)');
+				   	
 $q = "SELECT * FROM #__{vm}_vendor WHERE vendor_id='$ps_vendor_id'"; 
 $db->query($q);  
 $db->next_record();
@@ -269,37 +274,18 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 		    <tr>
 		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_POSITIVE_DISPLAY') ?>: </td>
 		      <td>
-		        <select name="display_style[5]">
-					<option value="0"<?php if ($currency_display['positive']=='0') echo ' selected=\"selected\" ';?>>00Symb</option>
-			   		<option value="1"<?php if ($currency_display['positive']=='1') echo ' selected=\"selected\" ';?>>00 Symb</option>
-			   		<option value="2"<?php if ($currency_display['positive']=='2') echo ' selected=\"selected\" ';?>>Symb00</option>
-				   	<option value="3"<?php if ($currency_display['positive']=='3') echo ' selected=\"selected\" ';?>>Symb 00</option>
-		        </select>
-		        <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP') ) ?>
+		        <?php 
+		        ps_html::dropdown_display( 'display_style[5]', $currency_display['positive'], $currency_style_positive );
+				echo vmToolTip( $VM_LANG->_('PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP') ) ?>
 		      </td>
 		    </tr>
 		    <tr>
 		      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_NEGATIVE_DISPLAY') ?>: </td>
 		      <td>
-		        <select name="display_style[6]">
-					<option value="0"<?php if ($currency_display['negative']=='0') echo ' selected=\"selected\" ';?>>(Symb00)</option>
-				   	<option value="1"<?php if ($currency_display['negative']=='1') echo ' selected=\"selected\" ';?>>-Symb00</option>
-				   	<option value="2"<?php if ($currency_display['negative']=='2') echo ' selected=\"selected\" ';?>>Symb-00</option>
-				   	<option value="3"<?php if ($currency_display['negative']=='3') echo ' selected=\"selected\" ';?>>Symb00-</option>
-				   	<option value="4"<?php if ($currency_display['negative']=='4') echo ' selected=\"selected\" ';?>>(00Symb)</option>
-				   	<option value="5"<?php if ($currency_display['negative']=='5') echo ' selected=\"selected\" ';?>>-00Symb</option>
-				   	<option value="6"<?php if ($currency_display['negative']=='6') echo ' selected=\"selected\" ';?>>00-Symb</option>
-				   	<option value="7"<?php if ($currency_display['negative']=='7') echo ' selected=\"selected\" ';?>>00Symb-</option>
-				   	<option value="8"<?php if ($currency_display['negative']=='8') echo ' selected=\"selected\" ';?>>-00 Symb</option>
-				   	<option value="9"<?php if ($currency_display['negative']=='9') echo ' selected=\"selected\" ';?>>-Symb 00</option>
-				   	<option value="10"<?php if ($currency_display['negative']=='10') echo ' selected=\"selected\" ';?>>00 Symb-</option>
-				   	<option value="11"<?php if ($currency_display['negative']=='11') echo ' selected=\"selected\" ';?>>Symb 00-</option>
-				   	<option value="12"<?php if ($currency_display['negative']=='12') echo ' selected=\"selected\" ';?>>Symb -00</option>
-				   	<option value="13"<?php if ($currency_display['negative']=='13') echo ' selected=\"selected\" ';?>>00- Symb</option>
-				   	<option value="14"<?php if ($currency_display['negative']=='14') echo ' selected=\"selected\" ';?>>(Symb 00)</option>
-				   	<option value="15"<?php if ($currency_display['negative']=='15') echo ' selected=\"selected\" ';?>>(00 Symb)</option>
-		        </select>
-		        <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP') ) ?>
+		        <?php
+		        ps_html::dropdown_display( 'display_style[6]', $currency_display['negative'], $currency_style_negative );
+				echo vmToolTip( $VM_LANG->_('PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP') ) 
+				?>
 		      </td>
 		    </tr>
 		    <tr>

@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 }
 /**
 *
-* @version $Id:admin.virtuemart.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -23,43 +23,10 @@ defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
 include( dirname(__FILE__).'/compat.joomla1.5.php');
 
 global $VM_LANG;
-/***********************
- * INSTALLER SECTION *
- **********************
- */
+
+//* INSTALLER SECTION *
 include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.virtuemart.php' );
-
-if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-	virtuemart_is_installed();
-	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
-
-	/** can be update and newinstall **/
-	$install_type = empty($_REQUEST['install_type']) ? 'newinstall' : $_REQUEST['install_type'];
-
-	/** true or false **/
-	$install_sample_data = (bool)@$_GET['install_sample_data'];
-
-	installvirtuemart( $install_type, $install_sample_data );
-	$error = "";
-	$page = "store.index";
-
-	$installfile = dirname( __FILE__ ) . "/install.php";
-	if( !@unlink( $installfile ) ) {
-		echo "<br /><span class=\"message\">Something went wrong when trying to delete the file <strong>install.php</strong>!<br />";
-		echo "You'll have to delete the file manually before being able to use VirtueMart!</span>";
-	}
-
-}
-elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-	virtuemart_is_installed();
-	com_install();
-	exit();
-	
-}
-/***********************
- * END INSTALLER SECTION *
- **********************
- */
+// * END INSTALLER SECTION *
 
 // Load the virtuemart main parse code
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
@@ -171,8 +138,9 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	else {
 		include( PAGEPATH.'store.index.php' );
 	}
+	// Include The Version File
 	include_once( ADMINPATH. 'version.php' );
-	if( !isset( $VMVERSION ) ) {
+	if( !is_object( $VMVERSION ) ) {
 		$VMVERSION =& new vmVersion();
 	}
 	

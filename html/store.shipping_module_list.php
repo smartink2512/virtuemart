@@ -17,5 +17,5 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 mm_showMyFileName( __FILE__ );
 
-vmRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules" );
+include( PAGEPATH.'store.shipping_modules.php' );
 ?>

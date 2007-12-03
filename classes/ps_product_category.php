@@ -321,10 +321,11 @@ class ps_product_category extends vmAbstractObject {
 			/*
 			** update #__{vm}_category x-reference table with parent-child relationship
 			*/
-			$fields = array('category_parent_id' => (int)$d["parent_category_id"]);
-			$db->buildQuery('UPDATE', '#__{vm}_category_xref', $fields, 'WHERE category_child_id='.(int)$d["category_id"] );
-			$db->query();
-
+			if( $d['current_parent_id'] != $d["category_parent_id"] ) {
+				$fields = array('category_parent_id' => (int)$d["category_parent_id"]);
+				$db->buildQuery('UPDATE', '#__{vm}_category_xref', $fields, 'WHERE category_child_id='.(int)$d["category_id"] );
+				$db->query();
+			}
 			/* Re-Order the category table IF the list_order has been changed */
 			if( intval($d['list_order']) != intval($d['currentpos'])) {
 				$dbu = new ps_DB;

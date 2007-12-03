@@ -111,7 +111,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		
 		$user_info_id = vmRequest::getVar('user_info_id');
 
-		$myInsecureArray = array('keyword' => $keyword,
+		$myInsecureArray = array(
 									'user_info_id' => $user_info_id,
 									'page' => $page,
 									'func' => $func

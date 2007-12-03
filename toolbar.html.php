@@ -63,9 +63,7 @@ var submitbutton = function(pressbutton){
 	if (pressbutton == \'cancel\') {
 		submitform( pressbutton );
 		return;
-	}
-	
-	
+	}	
 ';
               
 		if ($editor1 != '') {

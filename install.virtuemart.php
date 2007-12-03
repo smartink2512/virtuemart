@@ -15,7 +15,33 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
+if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
+	virtuemart_is_installed();
+	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );
 
+	/** can be update and newinstall **/
+	$install_type = empty($_REQUEST['install_type']) ? 'newinstall' : $_REQUEST['install_type'];
+
+	/** true or false **/
+	$install_sample_data = (bool)@$_GET['install_sample_data'];
+
+	installvirtuemart( $install_type, $install_sample_data );
+	$error = "";
+	$page = "store.index";
+
+	$installfile = dirname( __FILE__ ) . "/install.php";
+	if( !@unlink( $installfile ) ) {
+		echo "<br /><span class=\"message\">Something went wrong when trying to delete the file <strong>install.php</strong>!<br />";
+		echo "You'll have to delete the file manually before being able to use VirtueMart!</span>";
+	}
+
+}
+elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
+	virtuemart_is_installed();
+	com_install();
+	exit();
+	
+}
 function virtuemart_is_installed() {
 	global $database, $mosConfig_absolute_path, $mosConfig_dbprefix, 
 		$VMVERSION, $shortversion, $myVersion, $version_info;
@@ -211,6 +237,7 @@ function com_install() {
 											</div>
 										</td>
 									</tr>
+									<tr>
 										<td align="center" colspan="3">If you're updating from version 1.1(a) you'll have to click on this link!<br /><br />
 											<a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtuMart.');" href="index2.php?option=com_virtuemart&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
 										</td>

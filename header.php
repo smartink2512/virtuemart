@@ -168,7 +168,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					<hr />
 					</li>
 					<li class="item-smenu vmicon vmicon-16-content">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=store.shipping_modules") ?>"><?php echo $VM_LANG->_('VM_SHIPPING_MODULE_LIST_LBL') ?></a>
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=store.shipping_module_list") ?>"><?php echo $VM_LANG->_('VM_SHIPPING_MODULE_LIST_LBL') ?></a>
 					<hr />
 					</li>
 					<li class="item-smenu vmicon vmicon-16-content">

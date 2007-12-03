@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.12.2007 soeren
+# Task #1579 - Shipping Module Form "Cancel" shows second side menu
+# Task #1577 - Child/sub category; when updated it becomes top-level category 
+# Task #1575 - Search Function doesn't work anymore 
+
 03.12.2007 thepisu
 # tax % not displayed correctly
 # vmTooltip image alignment (absmiddle)
@@ -46,6 +51,7 @@ VirtueMart 1.1.x
 # HTML entites should not be used in SELECT states list
 
 02.12.2007 soeren
+# Task#1574 - errors in product description
 # Task#1573 - Bank account language tags missing
 
 30.11.2007 soeren
