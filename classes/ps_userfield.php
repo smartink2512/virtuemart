@@ -311,7 +311,7 @@ class ps_userfield extends vmAbstractObject {
 	   		if( !isset( $default[$field->name] )) {
 	   			$default[$field->name] = $field->default;
 	   		}
-	   		
+	   		$readonly = $field->readonly ? ' readonly="readonly"' : '';
 	   		if( in_array( $field->name, $skipFields )) {
 	   			continue;
 	   		}
@@ -330,7 +330,7 @@ class ps_userfield extends vmAbstractObject {
 				//]]></script>
 				<noscript>
 					<label for="agreed_field">'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'</label>
-					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&page=shop.tos" title="'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'">
+					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'">
 					 ('.$VM_LANG->_('PHPSHOP_STORE_FORM_TOS').')
 					</a></noscript>';
 	   		}
@@ -415,11 +415,11 @@ class ps_userfield extends vmAbstractObject {
 	   					case 'webaddress':
 	   					case 'euvatid':	   						
 	   						$maxlength = $field->maxlength ? 'maxlength="'.$field->maxlength.'"' : '';
-					        echo '<input type="text" id="'.$field->name.'_field" name="'.$field->name.'" size="'.$field->size.'" value="'. ($db->sf($field->name)?$db->sf($field->name):'') .'" class="inputbox" '.$maxlength.' />'."\n";
+					        echo '<input type="text" id="'.$field->name.'_field" name="'.$field->name.'" size="'.$field->size.'" value="'. ($db->sf($field->name)?$db->sf($field->name):'') .'" class="inputbox" '.$maxlength . $readonly . ' />'."\n";
 				   			break;
 				   			
 						case 'textarea':
-							echo '<textarea name="'.$field->name.'" id="'.$field->name.'_field" cols="'.$field->cols.'" rows="'.$field->rows.'">'.$db->sf($field->name).'</textarea>';
+							echo '<textarea name="'.$field->name.'" id="'.$field->name.'_field" cols="'.$field->cols.'" rows="'.$field->rows.'" '.$readonly.'>'.$db->sf($field->name).'</textarea>';
 							break;
 							
 						case 'editorta':

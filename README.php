@@ -18,12 +18,11 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 ?>
 <pre>
 ****************
-VirtueMart
-Version: 1.0.x
+VirtueMart 1.1
 ****************
-Complete Package for Mambo >= 4.5.1 and Joomla 1.0.x
+Complete Package for Joomla! 1.0.x, Joomla! 1.5 and Mambo >= 4.5.1
 
-You can't use this software on an earlier Mambo version than 4.5.1 (e.g. Mambo 4.5 1.0.9) 
+You can't use this software on an earlier Mambo version than 4.5.2 (e.g. Mambo 4.5 1.0.9) 
 without running into serious problems.
 
 Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -41,10 +40,10 @@ Community Home: http://virtuemart.net
 Package Contents:
 ##########################
 
- * 1 Component (com_virtuemart_1.0.3.tar.gz)
+ * 1 Component (com_virtuemart_1.1.0_beta2.tar.gz)
    INSTALLATION REQUIRED!
    
- * 1 Main module (mod_virtuemart_1.0.3.tar.gz)
+ * 1 Main module (mod_virtuemart_1.1.0_beta2.tar.gz)
    INSTALLATION REQUIRED!
    
  * 8 additional Modules
@@ -56,9 +55,9 @@ Package Contents:
 ##########################
    ABOUT
 ##########################
-VirtueMart (formerly known as "mambo-phpShop") is an Online-Shop / Shopping Cart Web-Application.
-It's a Component (means plugin / extension) for a Content Management System called Joomla / Mambo
-and can't be used without Joomla / Mambo. It installs fairly easy using the automatic installers. 
+VirtueMart is an Open Source Online-Shop / Shopping Cart Web-Application.
+It's a Component (means plugin / extension) for the Content Management Systems "Joomla!" and "Mambo"
+and can't be used without one of both. It installs fairly easy using the automatic installers. 
 It's intended for use in small / mid-sized Online businesses / Online-Shops. 
 So every user who wants to build up a Online Store can use this component for selling something to customers.
 
@@ -70,11 +69,11 @@ You can get your copy  of Joomla from http://joomla.org
 This package contains some code from the original 0.8.0 Edikon Corp. phpShop distribution available at www.phpshop.org
 
 This package was tested on 
-- Mambo 4.5.1a
 - Mambo 4.5.2.3
 - Mambo 4.5.3h
-- Mambo 4.6 beta
+- Mambo 4.6.2
 - Joomla 1.0.x
+- Joomla 1.5 RC3
 
  -- IMPORTANT --
 Please note that module and component SHOULD be used together! 
@@ -90,12 +89,12 @@ thanks to the automatic installer!
 You don't need to unpack any of the archives in this complete package!
 
 1. If you have unpacked this archive (VirtueMart_x.x_COMPLETE_PACKAGE.zip), 
-	you see a lot of other archives.
+	you'll see a lot of other archives.
 	- com_virtuemart_x.xxx.tar.gz, 
 	- some files beginning with mod_*.tar.gz 
 	- 2 other Packages (these are the so-called Mambots).
     
-2. Login to the Mambo/Joomla Administrator.
+2. Login to the Administration Backend (/administrator on your site).
         
         Now go to "Installers" => "Components"
         or - if you are using an older Mambo version: "Components" --> "Install/Uninstall".
@@ -141,13 +140,18 @@ You don't need to unpack any of the archives in this complete package!
          /components/com_virtuemart
          - contains code for non-administrative surfing and ordering
          
+         /components/com_virtuemart/js
+         - contains JavaScript Files
+		 
+         /components/com_virtuemart/js/dtree
+         - contains JS files and images for dTree usage.
+		 
+         /administrator/components/com_virtuemart/html/themes
+         
          /components/com_virtuemart/shop_image
          /components/com_virtuemart/shop_image/vendor
          - contains the vendor images
-         
-         /components/com_virtuemart/js
-         - contains JavaScript Files
-         
+		 
          /components/com_virtuemart/shop_image/product
          - contains the product images
          
@@ -165,13 +169,8 @@ You don't need to unpack any of the archives in this complete package!
          /administrator/components/com_virtuemart/html
          - contains all pages accessible for the shop
          
-         /administrator/components/com_virtuemart/html/templates
-         
          /administrator/components/com_virtuemart/languages
          - contains the language files
-          
-         /modules/dtree
-         - contains JS files and images for dTree usage.
          
    
 ##########################
@@ -188,75 +187,21 @@ You don't need to unpack any of the archives in this complete package!
 
 
 ############################
-   DEVELOPER INFORMATION
+   WHAT'S NEW IN VM 1.1?
 ###########################
-For all developers and users who worked with mambo-phpShop, it's important to know that VirtueMart 
-is the successor of mambo-phpShop. So you as a developer must know how to update your extensions, 
-modules and/or hacks to work in VirtueMart.
 
-The name change mambo-phpShop => VirtueMart requires us to rename files and tables related to the shop.
-
-Filenames cange
----------------------
-VirtueMart will be installed into the directories
-	/administrator/components/com_virtuemart and
-	/components/com_virtuemart
-
-We have provided an easy and fail-safe Update script that
-
-    * copies your images and product-related files to the new directory
-    * copies your existing templates to the new directory
-    * copies your configuration file (phpshop.cfg.php => virtuemart.cfg.php
-    * renames the tables from *_pshop_* to *_vm_*
-
-As you might know, the most modules and mambots include the file
-phpshop_parser.php (which builds up the Shop framework). It will still be there to be included, 
-but it now just includes the file virtuemart_parser.php, so you don't need to change anything.
-
-Variable Name changes
-----------------------------
-Most important is the name change for the language object $PHPSHOP_LANG, which has the name $VM_LANG now. 
-It's an object of the class vmLanguage which extends the class vmAbstractLanguage (which was formerly handled as 
-phpShopLanguage extends mosAbstractLanguage). For compatibility reasons, $PHPSHOP_LANG will still be available in the scripts.
-
-Table Prefixes for shop-related tables
----------------------------------------------
-All shop-related tables had the secondary prefix _pshop_.
-This prefix will change to _vm_. The tag that is to be replaced by the defineable Table Prefix ( like #_ in Mambo/Joomla, this will be {vm}).
-
-So a table is called using
-
-"SELECT `product_id` FROM `#__{vm}_product` WHERE `product_id`=4 "
-
-You must use the VirtueMart database object! It translates the placeholder
-{vm} into the VirtueMart table prefix.
-
-Please update your extensions or hacks or mods to include this.
-Although we will catch all queries that still have '_pshop_' in it and replace that by '_vm_', 
-we can't do that when your code uses Mambo's/Joomla's database object.
-
-
-VirtueMart will no longer use Mambo's/Joomla's User Table
----------------------------------------------
-mambo-phpShop has always used the table mos_users for storing Customer Information. 
-On installation it altered the table structure of that table. This is no longer wanted, because those 
-modification sometimes lead to problems with other components like the phpBB integration for Mambo/Joomla.
-VirtueMart will instead hold the customer information in the table mos_vm_user_info. 
-This table holds an ID (as a foreign key pointing to a user id in the table mos_users).
-When updating from mambo-phpShop to VirtueMart, the update script will take care of that 
-and copy all necessary information from mos_users to the renamed table mos_vm_user_info.
+//TODO
 
 #
 ############################
 #
 
 For updates / changes / hints please read the ChangeLog!
-based on mambo-phpShop 1.2 stable (patch level 3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 Developers, Documentation Writers, Helpers and Coders are welcome to help us. 
 Please contact me: soeren|at|virtuemart.net
 
-This VirtueMart component can be developed much further...
+The VirtueMart Software needs Helpers to evolve.
 </pre>

@@ -22,10 +22,19 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class vmAbstractLanguage {
 /** @var boolean If true, highlights string not found */
 	var $_debug = false;
-
+	var $CONVERT_FUNC = 'strval';
 	function vmAbstractLanguage() {
 		$this->setDebug();
 		if( empty( $this->CHARSET )) $this->setCharset();
+		// get global charset setting
+		$iso = explode( '=', @constant('_ISO') );
+		$charset = !empty( $iso[1] ) ? $iso[1] : 'utf-8';
+		// Prepare the convert function if necessary
+		if( strtolower($charset)=='utf-8' && stristr($this->CHARSET, 'iso-8859-1' ) ) {
+			$this->CONVERT_FUNC = 'utf8_encode';
+		} elseif( stristr($charset, 'iso-8859-1') && strtolower($this->CHARSET)=='utf-8' ) {
+			$this->CONVERT_FUNC = 'utf8_decode';
+		}
 	}
 
 	/**
@@ -47,18 +56,18 @@ class vmAbstractLanguage {
 				return $text;
 			} else {
 				$text = $this->$key;
-				if (strtolower(vmGetCharset())=='utf-8' && strtolower($this->CHARSET)=='iso-8859-1' && function_exists('utf8_encode')) {
-					$text = utf8_encode($text);
-				}
-				if (stristr(vmGetCharset(), 'iso-8859-1') && strtolower($this->CHARSET)=='utf-8' && function_exists('utf8_decode')) {
-					$text = utf8_decode($text);
-				}
+				$convert_func = $this->CONVERT_FUNC;
+				$text = $convert_func($text);
+				
 				return stripslashes( $text );
 			}
 		} 
-		elseif( $this->_debug )
-		    return "$var is missing in language file.";
-	}
+		elseif( $this->_debug ){
+			return "$var is missing in language file.";
+		} else {
+			return $var;
+		}
+	} 
 	/**
 	* Merges the class vars of another class
 	* @param string The name of the class to merge

@@ -65,4 +65,5 @@ $tpl->set_vars( array(
 					'Itemid' => $Itemid
 					));
 echo $tpl->fetch('pages/'.$page.'.tpl.php');
-?>      
+
+?>

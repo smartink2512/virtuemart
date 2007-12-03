@@ -37,6 +37,8 @@ if( vmIsJoomla( '1.5' ) ) {
 }
 
 $fields = ps_userfield::getUserFields('registration', false, '', false );
+// Read-only fields on registration don't make sense.
+foreach( $fields as $field ) $field->readonly = 0;
 $skip_fields = array();
 
 if ( $my->id > 0 || (VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' && $page == 'checkout.index') ) {
