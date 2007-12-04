@@ -1208,7 +1208,7 @@ Order Total: '.$order_total.'
 		// from now on we have $order_tax_details
 		$d['order_tax'] = $totals['order_tax'] = round( $this->calc_order_tax($totals['order_taxable'], $d), 2 );
 		
-		if( $this->_SHIPPING ) {
+		if( is_object($this->_SHIPPING) ) {
 			/* sets _shipping */
 			$d['order_shipping'] = $totals['order_shipping'] = round( $this->calc_order_shipping( $d ), 2 );
 
@@ -1463,7 +1463,7 @@ Order Total: '.$order_total.'
 					}
 					
 				}
-				if( $this->_SHIPPING ) {
+				if( is_object($this->_SHIPPING) ) {
 					$taxrate = $this->_SHIPPING->get_tax_rate();
 					if( $taxrate ) {
 						$rate = $this->_SHIPPING->get_rate( $d );
@@ -1962,7 +1962,7 @@ Order Total: '.$order_total.'
 		$shopper_message .= $payment_info_details_text;
 		
 		// Shipping Details
-		if( $this->_SHIPPING) {
+		if( is_object($this->_SHIPPING) ) {
 			$shopper_message .= "\n\n------------------------------------------------------------------------\n";
 			$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_LBL',false).":\n";
 			$shopper_message .= $shipping_arr[1]." (".$shipping_arr[2].")";
@@ -2155,7 +2155,7 @@ Order Total: '.$order_total.'
 			$html = str_replace('{PAYMENT_INFO_DETAILS}', $payment_info_details, $html);
 
 			$html = str_replace('{SHIPPING_INFO_LBL}', $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_LBL'), $html);
-			if( $this->_SHIPPING ) {
+			if( is_object($this->_SHIPPING) ) {
 				$html = str_replace('{SHIPPING_INFO_DETAILS}', stripslashes($shipping_arr[1])." (".stripslashes($shipping_arr[2]).")", $html);
 			}
 			else {
