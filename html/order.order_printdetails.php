@@ -495,6 +495,6 @@ echo vmCommonHTML::PrintIcon();
 ?>
 <script type="text/javascript">
 //<!--
-window.document.title="<?php echo $VM_LANG->_('_PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW', false ); ?>";
+window.document.title="<?php echo $VM_LANG->_('PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW', false ); ?>";
 //-->
 </script>

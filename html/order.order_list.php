@@ -202,7 +202,7 @@ while ($db->next_record()) {
 		$listObj->addCell($vl_link);
 	}
 	
-	$details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1");
+	$details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1&pop=1");
     $details_url = defined( '_PSHOP_ADMIN' ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
 	
     // Print View Icon

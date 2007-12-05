@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.12.2007 thepisu
+# Task #1320 Adding a "Print" button in order.order_printdetails (small fixes, now working)
+
 03.12.2007 soeren
 # Task #1579 - Shipping Module Form "Cancel" shows second side menu
 # Task #1578 - Read Only setting in manage user fields not working.
