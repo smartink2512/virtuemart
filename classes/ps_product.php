@@ -462,7 +462,7 @@ class ps_product extends vmAbstractObject {
 						'product_sku' => vmGet($d,'product_sku'),
 						'product_name' => vmGet($d,'product_name'),
 						'product_desc' => vmRequest::getVar('product_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
-						'product_s_desc' => vmRequest::getVar('product_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
+						'product_s_desc' => vmRequest::getVar('product_s_desc', '', 'default', '', VMREQUEST_ALLOWHTML),
 						'product_thumb_image' => vmGet($d,'product_thumb_image'),
 						'product_full_image' => vmGet($d,'product_full_image'),
 						'product_publish' => $d['product_publish'],

@@ -55,8 +55,8 @@ VirtueMart 1.1.x
 # HTML entites should not be used in SELECT states list
 
 02.12.2007 soeren
-# Task#1574 - errors in product description
-# Task#1573 - Bank account language tags missing
+# Task #1574 - errors in product description
+# Task #1573 - Bank account language tags missing
 
 30.11.2007 soeren
 # Task #1553 - Product with multi attribute only the first attribute is shown on frontpage
