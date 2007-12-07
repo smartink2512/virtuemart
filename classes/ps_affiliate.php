@@ -202,7 +202,6 @@ class ps_affiliate {
 			$q .= " GROUP BY #__{vm}_orders.order_id " ;
 			$q .= " ORDER BY #__{vm}_orders.cdate DESC " ;
 			$db->query ( $q ) ;
-			$array = array('' => );
 			while ( $db->next_record () ) {
 				$i ++ ;
 				$order_total += $db->f ( "order_subtotal" ) ;

@@ -36,7 +36,10 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 07.12.2007
+# Task #1589 - User registration error when Affiliate is enabled / can not browse shop
 # Task #1320 Adding a "Print" button in order.order_printdetails (hiding print button from print output)
+
+--- VirtueMart 1.1.0 beta2 released (05.12.2007, Rev. 1076) ---
 
 05.12.2007 thepisu
 # Task #1320 Adding a "Print" button in order.order_printdetails (small fixes, now working)
