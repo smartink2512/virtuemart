@@ -148,6 +148,7 @@ else {
 	if (AFFILIATE_ENABLE == '1') {
 		$unset_affiliate = false;
 		if (!isset($ps_affiliate)) {
+			global $ps_affiliate;
 			include_class ( 'affiliate' );
 			$unset_affiliate = true;
 		}
