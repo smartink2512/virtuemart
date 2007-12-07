@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.12.2007
+# Task #1320 Adding a "Print" button in order.order_printdetails (hiding print button from print output)
+
 05.12.2007 thepisu
 # Task #1320 Adding a "Print" button in order.order_printdetails (small fixes, now working)
 

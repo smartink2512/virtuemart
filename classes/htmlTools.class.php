@@ -1030,9 +1030,10 @@ class vmCommonHTML extends mosHTML {
 			$isPopup = vmGet( $_GET, 'pop' );
 			if ( $isPopup ) {
 				// Print Preview button - used when viewing page
-				$html = '<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. $VM_LANG->_('CMN_PRINT').'">
+				$html = '<span class="vmNoPrint">
+				<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. $VM_LANG->_('CMN_PRINT').'">
 				'. $text .'
-				</a>';
+				</a></span>';
 				return $html;
 			} else {
 				// Print Button - used in pop-up window

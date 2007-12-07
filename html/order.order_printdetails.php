@@ -27,6 +27,8 @@ $dbc = new ps_DB;
 $q = "SELECT * FROM #__{vm}_orders WHERE order_id=$order_id and vendor_id = $ps_vendor_id"; 
 $db->query($q);
 $db->next_record();
+
+echo "<style type='text/css' media='print'>.vmNoPrint { display: none }</style>";
 ?>
 <br />&nbsp;&nbsp;
 <?php

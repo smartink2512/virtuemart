@@ -20,8 +20,8 @@ mm_showMyFileName( __FILE__ );
 if( $db->f('order_number')) {
 ?>	
 
-	<div class="pathway"><?php echo $vmPathway; ?></div>
 	<?php if (empty( $print )) : ?>
+	<div class="pathway"><?php echo $vmPathway; ?></div>
 	<div class="buttons_heading">
 	<?php echo vmCommonHTML::PrintIcon(); ?>
 	</div>

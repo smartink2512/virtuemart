@@ -45,6 +45,7 @@ else {
 		echo '<h2>OFFLINE MODE</h2>';
 	}
 	if( $is_popup ) {
+		echo "<style type='text/css' media='print'>.vmNoPrint { display: none }</style>";
 		echo vmCommonHTML::PrintIcon('', true, ' '.$VM_LANG->_('CMN_PRINT') );
 	}
 	
