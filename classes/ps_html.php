@@ -265,7 +265,7 @@ class ps_html {
 		$selected_state_code = "'".$selected_state_code."'";
 
 		$db->query( "SELECT #__{vm}_country.country_id,country_3_code
-								  FROM #__{vm}_country" );
+						FROM #__{vm}_country" );
 
 		if( $db->num_rows() > 0 ) {
 			if( !vmIsAdminMode() ) {
@@ -282,7 +282,7 @@ class ps_html {
 
 			while( $db->next_record() ) {
 
-				$dbs->query( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$db->f("country_id")."'" );
+				$dbs->query( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$db->f("country_id")."' ORDER BY state_name" );
 
 				if( $dbs->num_rows() > 0 ) {
 					while( $dbs->next_record() ) {

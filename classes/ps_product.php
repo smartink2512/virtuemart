@@ -1630,6 +1630,7 @@ class ps_product extends vmAbstractObject {
 	 * @return mixed
 	 */
 	function getPriceByShopperGroup( $product_id, $shopper_group_id, $check_multiple_prices=false, $additionalSQL='' ) {
+		global $auth;
 		$db = new ps_DB;
 		$vendor_id = $_SESSION['ps_vendor_id'];
 		if( empty( $shopper_group_id )) {
@@ -1644,10 +1645,10 @@ class ps_product extends vmAbstractObject {
 		$db->setQuery($q); $db->query();
 		
 		if ($db->next_record()) {
-			$price_info["product_price"]= $db->f("product_price");
+			$price_info["product_price"]= $db->f("product_price") * ((100 - $auth["shopper_group_discount"])/100);
 			$price_info["product_currency"] = $db->f("product_currency");
 			if( $check_multiple_prices ) {
-				$price_info["product_base_price"]= $db->f("product_price");
+				$price_info["product_base_price"]= $db->f("product_price") * ((100 - $auth["shopper_group_discount"])/100);
 				$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
 			}
 			$price_info["product_price_id"] = $db->f("product_price_id");					
@@ -2016,18 +2017,50 @@ class ps_product extends vmAbstractObject {
 					  </tr></thead>
 					  <tbody>";
 					$i = 1;
-					while( $db->next_record() ) {
-						$price = $GLOBALS['CURRENCY']->convert( $db->f("product_price"), $db->f("product_currency") );
-						$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>";
-						$prices_table .= "<td>";
-						if (!empty($my_taxrate)) {
-							$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$price );
+					if ($db->num_rows()==0) {
+						// get the vendor ID
+						$q = "SELECT vendor_id FROM #__{vm}_product WHERE product_id='$product_id'";
+						$db->setQuery($q); $db->query();
+						$db->next_record();
+						$vendor_id = $db->f("vendor_id");
+						// get the default shopper group ID
+						$q = "SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE `vendor_id`='$vendor_id' AND `default`='1'";
+						$db->setQuery($q); $db->query();
+						$db->next_record();						
+						$default_shopper_group_id = $db->f("shopper_group_id");
+						// get the current shopper group discount
+						$q = "SELECT * FROM #__{vm}_shopper_group WHERE shopper_group_id=" . $auth["shopper_group_id"];
+						$db->setQuery($q); $db->query();
+						$db->next_record();
+						$shopper_group_discount = $db->f("shopper_group_discount");
+						// check for prices in default shopper group
+						$q = "SELECT product_price, price_quantity_start, price_quantity_end FROM #__{vm}_product_price
+							WHERE product_id='$product_id' AND shopper_group_id='".$default_shopper_group_id."' ORDER BY price_quantity_start";
+						$db->query( $q );
+						while( $db->next_record() ) {
+							$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>";
+							$prices_table .= "<td>";
+							if (!empty($my_taxrate))
+								$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$db->f("product_price")*((100-$shopper_group_discount)/100) );
+							else
+								$prices_table .= $CURRENCY_DISPLAY->getFullValue( $db->f("product_price")*((100-$shopper_group_discount)/100) );
+							$prices_table .= "</td></tr>";
+							$i == 1 ? $i++ : $i--;
 						}
-						else {
-							$prices_table .= $CURRENCY_DISPLAY->getFullValue( $price );
+					} else {
+						while( $db->next_record() ) {
+							$price = $GLOBALS['CURRENCY']->convert( $db->f("product_price"), $db->f("product_currency") );
+							$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>";
+							$prices_table .= "<td>";
+							if (!empty($my_taxrate)) {
+								$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$price );
+							}
+							else {
+								$prices_table .= $CURRENCY_DISPLAY->getFullValue( $price );
+							}
+							$prices_table .= "</td></tr>";
+							$i == 1 ? $i++ : $i--;
 						}
-						$prices_table .= "</td></tr>";
-						$i == 1 ? $i++ : $i--;
 					}
 					$prices_table .= "</tbody></table>";
 					if( @$_REQUEST['page'] != "shop.product_details" ) {

@@ -16,8 +16,8 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
-include_class("product");
-global $ps_product;
+include_class("vendor");
+global $ps_vendor;
 $shopper_group_id = vmGet( $_REQUEST, 'shopper_group_id', null );
 $option = vmGet( $_REQUEST, 'option', 'com_virtuemart' );
 //First create the object and let it print a form heading
@@ -68,7 +68,7 @@ if (!empty($shopper_group_id)) {
         </td>
         <td width="77%" ><?php 
 		if( $perm->check("admin")) { 
-			$ps_product->list_vendor($db->sf("vendor_id"));  
+			$ps_vendor->list_vendor($db->sf("vendor_id"));  
 		}
 		else{ 
 		  echo "$vendor_name<input type=\"hidden\" name=\"vendor_id\" value=\"$ps_vendor_id\" />";

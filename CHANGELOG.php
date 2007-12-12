@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.12.2007 thepisu
+# states list ordered by state name
+# Task #1588 Can't edit group properties in Shopper Group List
+# Task #1569 Multiple Prices and shopper group with % discount
+  (shopper group percent discount was not working, also with single prices)
+
 12.12.2007 soeren
 ^ Task #1582 - ps_session.php - checkSessionSavePath fails on custom session handlers
 # Task #1594 - Apostrophe search word returns 0 results. 
