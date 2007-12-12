@@ -1188,4 +1188,31 @@ function vmGetArrayValue(&$array, $name, $default=null, $type='') {
 	}
 	return $result;
 }
+
+function vmGetCleanArrayFromKeyword( $keyword ) {
+	global $db;
+	$keywordArr = array();
+
+	if( empty( $keyword )) return $keywordArr;
+	
+	$keywords = explode( " ", $keyword, 10 );
+
+	foreach( $keywords as $searchstring ) {
+		$searchstring = trim( stripslashes($searchstring) );
+		
+		if( !empty( $searchstring )) {
+			if( $searchstring[0] == "\"" || $searchstring[0]=="'" )  {
+				$searchstring[0] = " ";
+			}
+			if( $searchstring[strlen($searchstring)-1] == "\"" || $searchstring[strlen($searchstring)-1]=="'" ) {
+				$searchstring[strlen($searchstring)-1] = " ";
+			}
+			$searchstring = $db->getEscaped( $searchstring );
+			$searchstring = str_replace('\"', '"', $searchstring );
+		
+			$keywordArr[] = $searchstring;
+		}
+	}
+	return $keywordArr;
+}
 ?>

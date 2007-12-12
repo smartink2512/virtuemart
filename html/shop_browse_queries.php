@@ -75,23 +75,50 @@ if( strtoupper($discounted) == 'Y' ) {
 	$where_clause[] = '`#__{vm}_product`.`product_discount_id` > 0';
 }
 
+$keywordArr = vmGetCleanArrayFromKeyword( $keyword );
+// This is the "advanced" search, filter by Keyword1 and Keyword2
+$keyword1Arr = vmGetCleanArrayFromKeyword( $keyword1 );
+$keyword2Arr = vmGetCleanArrayFromKeyword( $keyword2 );
+
 // This is the "normal" search
-if( !empty($keyword) ) {
+if( !empty($keywordArr) ) {
 	$sq = "(";
-	$keywords = explode( " ", $keyword, 10 );
-	$numKeywords = count( $keywords );
+	$numKeywords = count( $keywordArr );
 	$i = 1;
-	foreach( $keywords as $searchstring ) {
-		$searchstring = trim( stripslashes($searchstring) );
-		if( !empty( $searchstring )) {
-			if( $searchstring[0] == "\"" || $searchstring[0]=="'" )  {
-				$searchstring[0] = " ";
-			}
-			if( $searchstring[strlen($searchstring)-1] == "\"" || $searchstring[strlen($searchstring)-1]=="'" ) {
-				$searchstring[strlen($searchstring)-1] = " ";
-			}
-			$searchstring = $db_browse->getEscaped( $searchstring );
+	foreach( $keywordArr as $searchstring ) {
+		$sq .= "\n (`#__{vm}_product`.`product_name` LIKE '%$searchstring%' OR ";
+		$sq .= "\n `#__{vm}_product`.`product_sku` LIKE '%$searchstring%' OR ";
+		$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$searchstring%' OR ";
+		$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$searchstring%') ";
+	
+		if( $i++ < $numKeywords ) {
+			$sq .= "\n  AND ";
+		}
+	}
+	$sq .= ")";
+	$where_clause[] = $sq;
+}	
+// Process the advanced search
+elseif( !empty($keyword1Arr) ) {
+	$sq = "(";
+	$numKeywords = count( $keyword1Arr );
+	$i = 1;
+	foreach( $keyword1Arr as $searchstring ) {
+		switch($search_limiter) {
+			case "name":
+			$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$searchstring%' ";
+			break;
+		case "cp":
+			$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$searchstring%' ";
+			break;
+		case "desc":
+			$sq .= "\n (`#__{vm}_product`.`product_s_desc` LIKE '%$searchstring%' OR ";
+			$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$searchstring%') ";
+			break;
+		default:
 			$sq .= "\n (`#__{vm}_product`.`product_name` LIKE '%$searchstring%' OR ";
+			$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$searchstring%' OR ";
+			$sq .= "\n `#__{vm}_category`.`category_name` LIKE '%$searchstring%' OR ";
 			$sq .= "\n `#__{vm}_product`.`product_sku` LIKE '%$searchstring%' OR ";
 			$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$searchstring%' OR ";
 			$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$searchstring%') ";
@@ -100,51 +127,35 @@ if( !empty($keyword) ) {
 			$sq .= "\n  AND ";
 		}
 	}
-	$sq .= ")";
-	$where_clause[] = $sq;
-}	
-// This is the "advanced" search, filter by Keyword1 and Keyword2
-elseif( !empty($keyword1) ) {
-	$sq = "(";
-	if ($search_limiter=="name") {
-		$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$keyword1%' ";
-	}
-	elseif ($search_limiter=="cp") {
-		$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$keyword1%' ";
-	}
-	elseif ($search_limiter=="desc") {
-		$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$keyword1%' OR ";
-		$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$keyword1%'";
-	}
-	else {
-		$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$keyword1%' OR ";
-		$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$keyword1%' OR ";
-		$sq .= "\n `#__{vm}_category`.`category_name` LIKE '%$keyword1%' OR ";
-		$sq .= "\n `#__{vm}_product`.`product_sku` LIKE '%$keyword1%' OR ";
-		$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$keyword1%' OR ";
-		$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$keyword1%'";
-	}
 	$sq .= ") ";
 	/*** KEYWORD 2 TO REFINE THE SEARCH ***/
-	if ( !empty($keyword2) ) {
+	if ( !empty($keyword2Arr) ) {
 		$sq .= "\n $search_op (";
-		if ($search_limiter=="name") {
-			$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$keyword2%' ";
-		}
-		elseif ($search_limiter=="cp") {
-			$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$keyword2%' ";
-		}
-		elseif ($search_limiter=="desc") {
-			$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$keyword2%' OR ";
-			$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$keyword2%'";
-		}
-		else {
-			$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$keyword2%' OR ";
-			$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$keyword2%' OR ";
-			$sq .= "\n `#__{vm}_category`.`category_name` LIKE '%$keyword2%' OR ";
-			$sq .= "\n `#__{vm}_product`.`product_sku` LIKE '%$keyword2%' OR ";
-			$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$keyword2%' OR ";
-			$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$keyword2%'";
+		$numKeywords = count( $keyword2Arr );
+		$i = 1;
+		foreach( $keyword2Arr as $searchstring ) {
+			switch($search_limiter) {
+				case "name":
+				$sq .= "\n `#__{vm}_product`.`product_name` LIKE '%$searchstring%' ";
+				break;
+			case "cp":
+				$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$searchstring%' ";
+				break;
+			case "desc":
+				$sq .= "\n (`#__{vm}_product`.`product_s_desc` LIKE '%$searchstring%' OR ";
+				$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$searchstring%')";
+				break;
+			default:
+				$sq .= "\n (`#__{vm}_product`.`product_name` LIKE '%$searchstring%' OR ";
+				$sq .= "\n `#__{vm}_product`.`product_url` LIKE '%$searchstring%' OR ";
+				$sq .= "\n `#__{vm}_category`.`category_name` LIKE '%$searchstring%' OR ";
+				$sq .= "\n `#__{vm}_product`.`product_sku` LIKE '%$searchstring%' OR ";
+				$sq .= "\n `#__{vm}_product`.`product_s_desc` LIKE '%$searchstring%' OR ";
+				$sq .= "\n `#__{vm}_product`.`product_desc` LIKE '%$searchstring%')";
+			}
+			if( $i++ < $numKeywords ) {
+				$sq .= "\n  AND ";
+			}
 		}
 		$sq .= "\n ) ";
 	}
@@ -313,7 +324,7 @@ if( vmIsJoomla(1.5) && $limit == 0 ) {
 } else {
 	$list .= $q . " LIMIT $limitstart, " . $limit;
 }
-
+//echo $list;
 // Store current GET parameters for usage on the product details page navigation
 $_SESSION['last_browse_parameters'] = array(
 											'category_id' => $category_id,

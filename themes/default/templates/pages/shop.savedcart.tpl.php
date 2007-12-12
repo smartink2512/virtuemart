@@ -26,15 +26,13 @@ echo '<!-- End Cart --><br />
 ';
 
 if ($cart["idx"]) {
-echo '<div align="center">';
-echo '<div style="float:left;width: 33%;">'.$replaceSaved.'
-    </div>';
-echo '<div style="float:left;width: 33%;">'.$mergeSaved.'
-    </div>';
-echo '<div style="float:left;width: 33%;">'.$deleteSaved.'
-    </div>';
-    echo '<br style="clear:both;"><br /><hr /><div align="center">';
+ 	?><div align="center">
+ 		<div style="float:left;width: 33%;"><?php echo $replaceSaved ?></div>
+		<div style="float:left;width: 33%;"><?php echo $mergeSaved ?></div>
+		<div style="float:left;width: 33%;"><?php echo $deleteSaved ?></div>
     
+    <br style="clear:both;"><br /><hr /><div align="center">';
+    <?php
     if( $continue_link != '') {
 		?>
 		 <a href="<?php echo $continue_link ?>" class="continue_link">

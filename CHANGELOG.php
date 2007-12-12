@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.12.2007 soeren
+^ Task #1582 - ps_session.php - checkSessionSavePath fails on custom session handlers
+# Task #1594 - Apostrophe search word returns 0 results. 
+	(search for products with a single or double quote is possible now)
+^ the advanced search now can handle multiple keywords (separated by a space)
+^ when the Product Search returns 1 product, the customer is redirected to the details page of that product instead
+	of the search result overview
+	 
 07.12.2007
 # Task #1589 - User registration error when Affiliate is enabled / can not browse shop
 # Task #1320 Adding a "Print" button in order.order_printdetails (hiding print button from print output)

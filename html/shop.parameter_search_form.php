@@ -60,8 +60,9 @@ echo "<h2>".$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH')."</h2>";
 	$q .= "ORDER BY parameter_list_order";
 	$db->query($q);
 	
-	echo "<table width=\"100%\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\">\n";
-		
+	?>
+	<table width="100%" border="0" cellpadding="2" cellspacing="0">
+	<?php
 	/********************************************************
 	** BrowsePage - You can use your tepmlate for searching:
 	** 1) write file with html table (without tags <table> and </table>) and 

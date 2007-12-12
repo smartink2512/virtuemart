@@ -76,15 +76,24 @@ if( $category_id ) {
 }	
 /*** when nothing has been found
 * we tell this here and say goodbye */
-if ($num_rows == 0 && !empty($keyword)) {
+if ($num_rows == 0 && (!empty($keyword)||!empty($keyword1))) {
 	echo $VM_LANG->_('PHPSHOP_NO_SEARCH_RESULT');
 }
 elseif( $num_rows == 0 && empty($product_type_id) && !empty($child_list)) {
 	echo $VM_LANG->_('EMPTY_CATEGORY');
 }
-/*** NOW START THE PRODUCT LIST ***/
-else {
 
+elseif( $num_rows == 1 ) {
+	// If just one product has been found, we directly show the details page of it
+	$db_browse->query( $list );
+	$db_browse->next_record();
+	$flypage = $db_browse->sf("category_flypage") ? $db_browse->sf("category_flypage") : FLYPAGE;
+	
+	$url_parameters = "page=shop.product_details&amp;flypage=$flypage&amp;product_id=" . $db_browse->f("product_id") . "&amp;category_id=" . $db_browse->f("category_id");
+	vmRedirect( $sess->url($url_parameters, true, false ) );
+}
+else {
+	// NOW START THE PRODUCT LIST
 	$tpl = vmTemplate::getInstance();
 	
 	if( $category_id ) {

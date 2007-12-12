@@ -45,9 +45,10 @@ class ps_session {
 		// We only care for the session if it is not started!
 		if( empty( $_SESSION ) || session_id() == '') {
 			
-			// Check if the session_save_path is writable
-			$this->checkSessionSavePath();
-		
+			if(ini_get('session.session_save_handler') == 'files') {
+				// Check if the session_save_path is writable
+				$this->checkSessionSavePath();
+			}
 			session_name( $this->_session_name );
 			
 			if( @$_REQUEST['option'] == 'com_virtuemart' ) {
