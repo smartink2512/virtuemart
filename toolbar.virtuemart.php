@@ -25,7 +25,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * http://virtuemart.net
 */
 if( stristr( $_SERVER['PHP_SELF'], 'administrator')) {
-	@define( '_PSHOP_ADMIN', '1' );
+	@define( '_VM_IS_BACKEND', '1' );
 }
 defined('_VM_TOOLBAR_LOADED' ) or define('_VM_TOOLBAR_LOADED', 1 );
 

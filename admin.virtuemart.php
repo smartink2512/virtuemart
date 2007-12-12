@@ -18,7 +18,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * http://virtuemart.net
 */
 
-defined( '_PSHOP_ADMIN' ) or define( '_PSHOP_ADMIN', '1' );
+defined( '_VM_IS_BACKEND' ) or define( '_VM_IS_BACKEND', '1' );
 
 include( dirname(__FILE__).'/compat.joomla1.5.php');
 

@@ -104,21 +104,21 @@ $tabs->startTab($VM_LANG->_('PHPSHOP_CONTROL_PANEL'), 'control-panel');
 		$text = $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_MNU');
 		$ps_html->writePanelIcon( $image, $link, $text );
               
-        if (defined( "_PSHOP_ADMIN" ) ) {
+        if (defined( "_VM_IS_BACKEND" ) ) {
 		    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
 		    $image = IMAGEURL .'ps_image/shop_vendors.png';
             $text =  $VM_LANG->_('PHPSHOP_VENDOR_MOD');
 		    $ps_html->writePanelIcon( $image, $link, $text );
         }
                 
-		if (defined( "_PSHOP_ADMIN" ) ) { 
+		if (defined( "_VM_IS_BACKEND" ) ) { 
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
 			$image = IMAGEURL .'ps_image/shop_users.png';
 			$text = $VM_LANG->_('PHPSHOP_USERS');
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
         
-        if (defined( "_PSHOP_ADMIN" ) ) {    
+        if (defined( "_VM_IS_BACKEND" ) ) {    
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
 			$image = IMAGEURL .'ps_image/shop_configuration.png';
 			$text = $VM_LANG->_('PHPSHOP_CONFIG');
@@ -210,7 +210,7 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_STATISTIC_STATISTICS'), "statistic-page");
 	</table>
 <?php
 
-if (defined( "_PSHOP_ADMIN" ) ) {
+if (defined( "_VM_IS_BACKEND" ) ) {
 	?>	
 	<table class="adminlist" style="width:95%;">
 		<tr> 

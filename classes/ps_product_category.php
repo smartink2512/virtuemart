@@ -750,7 +750,7 @@ class ps_product_category extends vmAbstractObject {
 
 			$count  = "SELECT count(#__{vm}_product.product_id) as num_rows from #__{vm}_product,#__{vm}_product_category_xref, #__{vm}_category WHERE ";
 			$q = "";
-			if (defined('_PSHOP_ADMIN' )) {
+			if (defined('_VM_IS_BACKEND' )) {
 				if (!$perm->check( "admin,storeadmin")) {
 					$q .= "#__{vm}_product.vendor_id = '$ps_vendor_id' AND ";
 				}

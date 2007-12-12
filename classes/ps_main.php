@@ -781,7 +781,7 @@ function vmSafeFileName( $filename ) {
 }
 function vmIsAdminMode() {
 	global $page;
-	return ( defined( '_PSHOP_ADMIN' ) 
+	return ( defined( '_VM_IS_BACKEND' ) 
 	|| @$_REQUEST['pshop_mode'] == 'admin' 
 	|| stristr($page,"form")
 	|| stristr($page, "list")
@@ -895,7 +895,7 @@ function vmSpoofValue($alt=NULL) {
 function vmSetGlobalCurrency(){
 	global $page, $vendor_accepted_currencies, $vendor_currency, $vmLogger;
 
-	if( !defined('_PSHOP_ADMIN') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
+	if( !defined('_VM_IS_BACKEND') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
 		if( isset( $_REQUEST['product_currency']) ) {
 			$GLOBALS['product_currency'] = $_SESSION['product_currency'] = vmGet($_REQUEST, 'product_currency' );
 		}

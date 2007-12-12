@@ -152,7 +152,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		** user has no permission to view it , or file doesn't exist
 		************************************************/
 		if (empty($page)) {// default page
-			if (defined('_PSHOP_ADMIN')) {
+			if (defined('_VM_IS_BACKEND')) {
 				$page = "store.index";
 			} 
 			else {
@@ -240,7 +240,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		}
 	}
 	// I don't get it, why Joomla uses masked gid values!
-	if( !defined( '_PSHOP_ADMIN' )) {
+	if( !defined( '_VM_IS_BACKEND' )) {
 		if( class_exists('jfactory')) {
 			$my =& JFactory::getUser();
 		} else {

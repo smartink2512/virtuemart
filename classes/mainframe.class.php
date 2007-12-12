@@ -258,6 +258,25 @@ class vmMainFrame {
 			$mainframe->appendPathWay( $vmPathway );
 		}
 	}
+	function setPageTitle( $title ) {
+		global $mainframe;
+		$title = strip_tags(str_replace('&nbsp;',' ', $title));
+		$title = trim($title);
+		if( defined( '_VM_IS_BACKEND')) {
+			echo vmCommonHTML::scriptTag('', "//<![CDATA[
+			var vm_page_title=\"".str_replace('"', '\"', $title )."\";
+			try{ parent.document.title = vm_page_title; } catch(e) { document.title =vm_page_title; } 
+			//]]>
+			");
+			
+		}
+		elseif( vmIsJoomla(1.5) ) {
+			$document=& JFactory::getDocument();
+			$document->setTitle($title);
+		} else {
+			$mainframe->setPageTitle( $title );
+		}
+	}
 
 	/**
 	 * Returns a pathway item

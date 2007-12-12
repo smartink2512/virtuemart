@@ -77,7 +77,7 @@ var submitbutton = function(pressbutton){
 			$script .= ob_get_contents(); ob_end_clean();
 		}
 		if( $no_menu ) {
-			$admin = defined('_PSHOP_ADMIN') ? '/administrator' : '';
+			$admin = defined('_VM_IS_BACKEND') ? '/administrator' : '';
 			$script .= "
     // define some private variables
     var dialog, showBtn;

@@ -117,7 +117,7 @@ while ($db->next_record()) {
 
 		
 	$tmp_cell = $db->f('first_name').' '.$db->f('last_name');
-	if( $perm->check('admin') && defined('_PSHOP_ADMIN')) {
+	if( $perm->check('admin') && defined('_VM_IS_BACKEND')) {
 		$url = $_SERVER['PHP_SELF']."?page=admin.user_form&amp;user_id=". $db->f("user_id");
 		$tmp_cell = '<a href="'.$sess->url( $url ).'">'.$tmp_cell.'</a>';
 	}
@@ -203,7 +203,7 @@ while ($db->next_record()) {
 	}
 	
 	$details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1&pop=1");
-    $details_url = defined( '_PSHOP_ADMIN' ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
+    $details_url = defined( '_VM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
 	
     // Print View Icon
     $details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";

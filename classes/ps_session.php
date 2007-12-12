@@ -494,7 +494,7 @@ class ps_session {
 	function url($text, $createAbsoluteURI=false, $encodeAmpersands=true ) {
 		global $mm_action_url, $page;
 		
-		if( !defined( '_PSHOP_ADMIN' )) {
+		if( !defined( '_VM_IS_BACKEND' )) {
 			$Itemid = "&Itemid=".$this->getShopItemid();
 		}
 		else {
@@ -526,7 +526,7 @@ class ps_session {
 					$script = basename( $_SERVER['PHP_SELF'] );
 				}
 				
-				if (!defined( '_PSHOP_ADMIN' )) {
+				if (!defined( '_VM_IS_BACKEND' )) {
 					if( $script == 'index3.php') {
 						$script = 'index2.php'; // index3.php is not available in the frontend!
 					}

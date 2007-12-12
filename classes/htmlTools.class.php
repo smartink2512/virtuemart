@@ -86,7 +86,7 @@ class listFactory {
 	var $_resultsToShowPageNav = 6;
 	
 	function listFactory( $pageNav=null ) {
-		if( defined('_PSHOP_ADMIN')) {
+		if( defined('_VM_IS_BACKEND')) {
 			$this->alternateColors = array( 0 => 'row0', 1 => 'row1' );
 		}
 		else {
@@ -226,13 +226,14 @@ class listFactory {
 					<input type="hidden" name="no_toolbar" value="'.vmRequest::getInt('no_toolbar').'" />
 					<input type="hidden" name="only_page" value="'.vmRequest::getInt('only_page').'" />
 					<input type="hidden" name="boxchecked" />';
-		if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
+		if( defined( "_VM_IS_BACKEND") || @$_REQUEST['pshop_mode'] == "admin"  ) {
 			$header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
 		}
 		$header .= '<table><tr><td>';
         if( $title != "" ) {
         	$style = ($image != '') ? 'style="background:url('.$image.') no-repeat;text-indent: 30px;line-height: 50px;"' : '';
         	$header .= '<div class="header" '.$style.'><h2 style="margin: 0px;">'.$title.'</h2></div></td>'."\n";
+        	$GLOBALS['vm_mainframe']->setPageTitle( $title );
         }
         
 		if( !empty( $pagename )) 
@@ -312,6 +313,7 @@ class formFactory {
 	function formFactory( $title = '' ) {
 		if( $title != "" ) {
 			echo '<div class="header"><h2 style="margin: 0px;">'.$title."</h2></div>\n";
+			$GLOBALS['vm_mainframe']->setPageTitle( $title );
 		}
 	}
 	/** 
@@ -344,7 +346,7 @@ class formFactory {
 		$html .= '<input type="hidden" name="no_toolbar" value="'.vmGet($_REQUEST,'no_toolbar',0).'" />';
 		$html .= '<input type="hidden" name="only_page" value="'.vmGet($_REQUEST,'only_page',0).'" />';
 		
-        if( defined( "_PSHOP_ADMIN") || @$_REQUEST['pshop_mode'] == "admin"  ) {
+        if( defined( "_VM_IS_BACKEND") || @$_REQUEST['pshop_mode'] == "admin"  ) {
         	$html .= '<input type="hidden" name="pshop_admin" value="admin" />';
         }
         $html .= '
@@ -450,7 +452,7 @@ class vmMooAjax {
 		
 		vmCommonHTML::loadMooTools();
 		
-		$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
+		$path = defined('_VM_IS_BACKEND' ) ? '/administrator/' : '/';
 		$vmDirs['method'] = $method;
 		$html = '';
 		if( $varName ) {

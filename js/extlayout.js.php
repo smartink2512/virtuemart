@@ -60,8 +60,8 @@ echo "if( typeof Ext == \"undefined\" ) {
 			//layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
 			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'index2.php\'>" . $VM_LANG->_('VM_ADMIN_BACKTOJOOMLA') . "</a>'}));
 			layout.add('center', new CP('vmPage', {title: '" . $VM_LANG->_('VM_ADMIN_PANELTITLE') . "', closable: false, fitToFrame:true, tabPosition: 'top'}));
-			
-			//layout.restoreState();
+			layout.getRegion(\"center\").on(\"panelactivated\", function(region, panel) { document.title=panel.getTitle() } );
+			layout.restoreState();
 			layout.endUpdate();
 
             var vmMenuLinks = Ext.get('masterdiv2');

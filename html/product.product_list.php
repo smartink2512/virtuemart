@@ -286,7 +286,7 @@ if ($num_rows > 0) {
 		$listObj->addCell( mosHTML::idBox( $i, $db->f("product_id"), false, "product_id" ) );
 		
 		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1" );
-		$link = defined('_PSHOP_ADMIN') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
+		$link = defined('_VM_IS_BACKEND') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
 		$text = shopMakeHtmlSafe($db->f("product_name"));
 
 		// The link to the product form / to the child products
@@ -308,7 +308,7 @@ if ($num_rows > 0) {
 		if( $db->f('product_full_image')) $numFiles++;
 		if( $db->f('product_thumb_image')) $numFiles++;
 		$link = $sess->url( $_SERVER['PHP_SELF']. '?page=product.file_list&product_id='.$db->f('product_id').'&no_menu=1' );
-		$link = defined('_PSHOP_ADMIN') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
+		$link = defined('_VM_IS_BACKEND') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
 		$text = '<img src="'.$mosConfig_live_site.'/includes/js/ThemeOffice/media.png" align="middle" border="0" />&nbsp;('.$numFiles.')';
 		$tmpcell = vmPopupLink( $link, $text, 800, 540, '_blank', '', 'screenX=100,screenY=100' );
 		$listObj->addCell( $tmpcell );
@@ -399,7 +399,7 @@ $listObj->endTable();
 
 $listObj->writeFooter( $keyword,  "&product_parent_id=$product_parent_id&category_id=$category_id&product_type_id=$product_type_id&search_date$search_date");
 
-$path = defined('_PSHOP_ADMIN' ) ? '/administrator/' : '/';
+$path = defined('_VM_IS_BACKEND' ) ? '/administrator/' : '/';
 ?>
 <script type="text/javascript">
 var priceDlg = null;
