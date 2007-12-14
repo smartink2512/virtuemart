@@ -719,7 +719,6 @@ class ps_product_attribute {
             $attributes =array();
             $i = 0;
 			foreach($fields as $field) {
-                $html = "";
 				$base=explode(",",$field);
 				$title=array_shift($base);
 				$titlevar=str_replace(" ","_",$title);
@@ -730,7 +729,9 @@ class ps_product_attribute {
                 $attributes[$i]['product_id'] = $prod_index;
                 $attributes[$i]['title'] = $title;
                 $attributes[$i]['titlevar'] = $titlevar;
+                $options_list = array();
 				foreach ($base as $base_value) {
+					$options_item = array();
 					// the Option Text
 					$attribtxt=substr($base_value,0,strrpos($base_value, '['));
 					if( $attribtxt != "") {
@@ -749,19 +750,25 @@ class ps_product_attribute {
 						}
 						$base_var=str_replace(" ","_",$base_value);
 						$base_var=substr($base_var,0,strrpos($base_var, '['));
-						$html.="<option value=\"$base_var\">$attribtxt";
+
+						$options_item['base_var'] = $base_var;
+						$options_item['base_value'] = $attribtxt;
+
 						if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) {
-							$html .= "&nbsp;(&nbsp;".$vorzeichen."&nbsp;".$CURRENCY_DISPLAY->getFullValue($price)."&nbsp;)";
+							$options_item['sign'] = $vorzeichen;
+							$options_item['display_price'] = $CURRENCY_DISPLAY->getFullValue($price);
 						}
-						$html .= "</option>";
 
 					}
 					else {
 						$base_var=str_replace(" ","_",$base_value);
-						$html.="<option value=\"$base_var\">$base_value</option>";
+						$options_item['base_var'] = $base_var;
+						$options_item['base_value'] = $base_value;
 					}
+					$options_list[] = $options_item;
 				}
-                $attributes[$i]['options_list'] = $html;
+
+                $attributes[$i]['options_list'] = $options_list;
                 $i++;
 			}
 		}

@@ -122,6 +122,7 @@ class ps_product_type {
 			$q .= "`product_id` int(11) NOT NULL,";
 			$q .= "PRIMARY KEY (`product_id`)";
 			$q .= ") TYPE=MyISAM;";
+			$db->setQuery($q);
 			
 			if( $db->query() === false ) {
 				$GLOBALS['vmLogger']->err( 'Failed to create a new table for this Product Type!!');

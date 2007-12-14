@@ -122,6 +122,6 @@ if ($nocc_payments==true) {
 }
 
 if( $nocc_payments &&  $cc_payments ) {
-	echo '</td></tr><table>';
+	echo '</td></tr></table>';
 }
   ?>

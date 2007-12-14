@@ -82,4 +82,4 @@ if( $this->get_cfg( 'product_navigation', 1 )) {
 	  <td colspan="3"><div style="text-align: center;"><?php echo $vendor_link ?><br /></div><br /></td>
 	</tr>
 </table><br style="clear:both"/>
-<div class="back_button"><a href='javascript:history.go(-1)'> <?php echo _BACK ?></a></div>
+<div class="back_button"><a href='javascript:history.go(-1)'> <?php echo $VM_LANG->_('BACK') ?></a></div>

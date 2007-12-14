@@ -184,8 +184,8 @@ class ps_export {
 		
 		if(!$d['iscore']) {
 			$fields['export_name'] = $d['export_name'];
-			$fields['export_desc' = $d['export_desc'];
-			$fields['export_class' = $d['export_class'];
+			$fields['export_desc'] = $d['export_desc'];
+			$fields['export_class'] = $d['export_class'];
 		}
 		$db->buildQuery( 'INSERT', '#__{vm}_export', $fields, 'WHERE export_id=' .(int)$d['export_id']." AND vendor_id='$ps_vendor_id'" );
 		

@@ -35,6 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14.12.2007 gregdev
+# Fixed typos in ps_export
+# Fixed table creation for new product type
+# Closing </table> tag in payment methods list
+# Obtain _BACK string from VM_LANG (flypage-ask.tlp.php)
+^ Moved advanced attributes select list to the template
+
 12.12.2007 thepisu
 # states list ordered by state name
 # Task #1588 Can't edit group properties in Shopper Group List
