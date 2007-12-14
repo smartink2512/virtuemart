@@ -22,7 +22,6 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * @license MPL
 */
 class zw_waiting_list {
-	var $classname = "ps_waiting_list";
 
 	/*
 	** VALIDATION FUNCTIONS
