@@ -294,7 +294,9 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config .= "define('".$key."', '".$config_val."');\n";
 				}
 				else {
-					$config_val = str_replace("'","\'",vmGet( $d, $value) );
+					$config_val = vmGet( $d, $value);
+					$config_val = str_replace("'","\'", $config_val );
+					$config_val = str_replace("\\","\\\\", $config_val );
 					$config .= "define('".$key."', '".$config_val."');\n";
 				}
 			}

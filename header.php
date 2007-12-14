@@ -92,7 +92,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.show_cfg&amp;option=com_virtuemart") ?>"><?php echo $VM_LANG->_('PHPSHOP_CONFIG') ?></a>
 					<hr />
 					</li>
-					<?php if (defined('_PSHOP_ADMIN')) { ?>
+					<?php if (defined('_VM_IS_BACKEND')) { ?>
 					<li class="item-smenu vmicon vmicon vmicon-16-user">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.user_list") ?>"><?php echo $VM_LANG->_('PHPSHOP_USERS') ?></a>
 					</li>
