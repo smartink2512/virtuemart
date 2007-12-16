@@ -99,6 +99,10 @@ class vmAbstractLanguage {
 	function getCharset() {
 		return $this->CHARSET;
 	}
+	function convert($string) {
+		$func = $this->CONVERT_FUNC;
+		return $func($string);
+	}
 	/**
 	 * This safely converts an iso-8859 string into an utf-8 encoded
 	 * string. It does not convert when the string is already utf-8 encoded

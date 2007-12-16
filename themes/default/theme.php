@@ -76,7 +76,7 @@ class vmTemplate_default extends vmTemplate  {
 					$imageurl = $product['product_full_image'];
 				}
 				else {
-					$imageurl = IMAGEURL.'product/'.$product['product_full_image'];
+					$imageurl = IMAGEURL.'product/'.rawurlencode( $VM_LANG->convert($product['product_full_image']));
 				}
 				/* Build the "See Bigger Image" Link */
 				if( @$_REQUEST['output'] != "pdf" && $this->get_cfg('useLightBoxImages', 1 ) ) {

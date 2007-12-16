@@ -4,7 +4,8 @@ Sleight
 http://www.youngpup.net
 **********************************************************/
 
-if (navigator.platform == "Win32" && navigator.appName == "Microsoft Internet Explorer" && window.attachEvent) {
+if (navigator.platform == "Win32" && navigator.appName == "Microsoft Internet Explorer" && window.attachEvent
+	&& (navigator.appVersion.indexOf("msie 5") > -1 || navigator.appVersion.indexOf("msie 6") > -1) ) {
     document.writeln('<style type="text/css">img, input.image { visibility:hidden; } </style>');
     window.attachEvent("onload", fnLoadPngs);
 }

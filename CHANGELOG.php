@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+16.12.2007 soeren
+# images of products with accented chars in their name weren't showing up on frontpage and product form
+
 14.12.2007 gregdev
 # Fixed typos in ps_export
 # Fixed table creation for new product type

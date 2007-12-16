@@ -1312,14 +1312,14 @@ function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
  * @param boolean $only_special_chars Only Convert Some Special Chars ? ( <, >, &, ... )
  * @return string
  */
-function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $only_special_chars=false ) {
+function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $use_entities=false ) {
 	if( defined( $quote_style )) {
 		$quote_style = constant($quote_style);
 	}
-	if( $only_special_chars ) {
-		$string = @htmlspecialchars( $string, $quote_style, vmGetCharset() );
-	} else {
+	if( $use_entities ) {
 		$string = @htmlentities( $string, constant($quote_style), vmGetCharset() );
+	} else {
+		$string = @htmlspecialchars( $string, $quote_style, vmGetCharset() );
 	}
 	return $string;
 }

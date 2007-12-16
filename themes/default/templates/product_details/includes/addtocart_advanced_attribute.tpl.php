@@ -13,9 +13,10 @@ foreach($attributes as $attribute) {
 	        <?php else : ?>
 	        <option value="<?php echo $options_item['base_var'] ?>"><?php echo $options_item['base_value'] ?></option>
 	        <?php endif; ?>
-        <? endforeach; ?>
+        <?php endforeach; ?>
         </select>
     </div>
     <br style="clear:both;" />
     
-<?php } ?>
+<?php 
+} ?>

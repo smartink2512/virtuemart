@@ -1336,7 +1336,7 @@ class ps_product extends vmAbstractObject {
 						}
 					}
 				}
-				
+				$url = str_replace( basename( $url ), $GLOBALS['VM_LANG']->convert(basename($url)), $url );
 			}
 		}
 		else {
