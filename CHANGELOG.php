@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.12.2007 soeren
+# fixed wrong queries in Sample Data SQL file
+
 16.12.2007 soeren
 # images of products with accented chars in their name weren't showing up on frontpage and product form
 
