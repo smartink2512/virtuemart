@@ -110,7 +110,7 @@ class vmAbstractLanguage {
 	* @param string The name of the module
 	* @return string The charset code
 	*/
-	function getCharset($module) {
+	function getCharset($module='common') {
 		return $this->modules[$module]['CHARSET'];
 	}
 	/**
@@ -119,7 +119,7 @@ class vmAbstractLanguage {
 	* @param string The name of the module
 	* @return string The converted string
 	*/
-	function convert($string,$module) {
+	function convert($string,$module='common') {
 		$func = $this->modules[$module]['CONVERT_FUNC'];
 		return $func($string);
 	}
@@ -216,6 +216,7 @@ class vmAbstractLanguage {
 		if( empty( $this->modules[$module]['CHARSET'] )) $this->setCharset($module);
 		// get global charset setting
 		$iso = explode( '=', @constant('_ISO') );
+		// If $iso[1] is NOT empty, it is Mambo or Joomla! 1.0.x - otherwise Joomla! >= 1.5
 		$charset = !empty( $iso[1] ) ? $iso[1] : 'utf-8';
 		// Prepare the convert function if necessary
 		if( strtolower($charset)=='utf-8' && stristr($this->modules[$module]['CHARSET'], 'iso-8859-1' ) ) {
