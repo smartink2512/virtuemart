@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.12.2007
++ added extended Search Mambot by Alejandro Kurczyn (one version for Joomla! 1.0 + Mambo, one native for Joomla! 1.5)
+
 18.12.2007 thepisu
 ^ Task #1268 Language System Modularization (1st step - made structure and moved all strings to "common")
 ! build scripts changed to reflect new folder structure (languages/MODULE/LANGUAGE.php)

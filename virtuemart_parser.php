@@ -22,7 +22,7 @@ global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $ps_vendor_id, $vend
 	$auth, $ps_checkout,$error, $error_type, $func_perms, $func_list, $func_class, $func_method, $func_list, $dir_list,
 	$vendor_currency_display_style, $vendor_freeshipping, $mm_action_url, $limit, $limitstart, $mainframe, $ps_product;
 
-include_once( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/compat.joomla1.5.php' );
+include_once( dirname(__FILE__).'/../../administrator/components/com_virtuemart/compat.joomla1.5.php' );
 
 if( !defined( '_VM_PARSER_LOADED' )) {
 	global $my;

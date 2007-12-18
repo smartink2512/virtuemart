@@ -39,8 +39,12 @@ include( CLASSPATH . "class.img2thumb.php");
 $basefilename = @basename(urldecode($_REQUEST['filename']));
 $filename = IMAGEPATH."product/".$basefilename;
 $filename2 = IMAGEPATH."product/resized/".$basefilename;
-$newxsize = @$_REQUEST['newxsize'];
-$newysize = @$_REQUEST['newysize'];
+$newxsize = (int)@$_REQUEST['newxsize'] == 0 ? PSHOP_IMG_WIDTH : (int)@$_REQUEST['newxsize'];
+$newysize = (int)@$_REQUEST['newysize'] == 0 ? PSHOP_IMG_WIDTH : (int)@$_REQUEST['newysize'];
+// Don't allow sizes beyond 2000 pixels
+$newxsize = min( $newxsize, 2000 );
+$newysize = min( $newysize, 2000 );
+
 $maxsize = false;
 $bgred = 255;
 $bggreen = 255;
@@ -82,7 +86,7 @@ else {
 if( file_exists($filename2)) { 
 	$fileout = $filename2;
 } else {
-	$fileout = IMAGEPATH."/product/resized/".$file."_".PSHOP_IMG_WIDTH."x".PSHOP_IMG_HEIGHT.$noimgif.$ext;
+	$fileout = IMAGEPATH."/product/resized/".$file."_".$newxsize."x".$newysize.$noimgif.$ext;
 }
 
 // Tell the user agent to cache this script/stylesheet for an hour
