@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.12.2007 thepisu
+^ Task #1268 Language System Modularization (1st step - made structure and moved all strings to "common")
+! build scripts changed to reflect new folder structure (languages/MODULE/LANGUAGE.php)
+! actually no change needed for $VM_LANG->_() calls
+
 17.12.2007 soeren
 # fixed wrong queries in Sample Data SQL file
 

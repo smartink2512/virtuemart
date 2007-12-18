@@ -7,13 +7,10 @@ require(dirname(__FILE__).'/../../../administrator/components/com_virtuemart/com
 require(dirname(__FILE__).'/../../../administrator/components/com_virtuemart/virtuemart.cfg.php');
 require_once( CLASSPATH . 'language.class.php');
 require_once( CLASSPATH . 'ps_main.php');
-// load the Language File
-if (file_exists( ADMINPATH. 'languages/'.basename($mosConfig_lang).'.php' )) {
-	require_once( ADMINPATH. 'languages/'.basename($mosConfig_lang).'.php' );
-}
-else {
-	require_once( ADMINPATH. 'languages/english.php' );
-}
+
+$GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
+$VM_LANG->load('common');
+
 session_name('virtuemart');
 session_start();
 header( 'Content-Type: application/x-javascript;');

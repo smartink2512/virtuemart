@@ -27,16 +27,7 @@ if( @VM_ENCRYPT_FUNCTION == 'AES_ENCRYPT') {
 } else {
 	define('VM_DECRYPT_FUNCTION', 'DECODE');
 }
-// The abstract language class
-require_once( CLASSPATH."language.class.php" );
 
-// load the Language File
-if (file_exists( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' )) {
-	require_once( ADMINPATH. 'languages/'.$mosConfig_lang.'.php' );
-}
-else {
-	require_once( ADMINPATH. 'languages/english.php' );
-}
 // Instantiate the MainFrame class for VirtueMart
 require_once( CLASSPATH."mainframe.class.php" );
 $vm_mainframe = new vmMainFrame();
@@ -59,9 +50,6 @@ else {
 // stores the exchange rate array
 $GLOBALS['converter_array'] = '';
 
-/** @global vmLanguage $GLOBALS['VM_LANG'] */
-$GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
-
 /** @global Array $product_info: Stores Product Information for re-use */
 $GLOBALS['product_info'] = Array();
 
@@ -76,6 +64,13 @@ $GLOBALS['vendor_info'] = Array();
 require_once(CLASSPATH."ps_database.php");
 require_once(CLASSPATH."ps_main.php");
 require_once(CLASSPATH."request.class.php");
+
+// The abstract language class
+require_once( CLASSPATH."language.class.php" );
+/** @global vmLanguage $GLOBALS['VM_LANG'] */
+$GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
+// loading common language module
+$VM_LANG->load('common');
 
 // Raise memory_limit to 16M when it is too low
 // Especially the product section needs much memory

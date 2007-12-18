@@ -22,19 +22,10 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 class vmAbstractLanguage {
 /** @var boolean If true, highlights string not found */
 	var $_debug = false;
-	var $CONVERT_FUNC = 'strval';
+	var $modules = array();
+	
 	function vmAbstractLanguage() {
 		$this->setDebug();
-		if( empty( $this->CHARSET )) $this->setCharset();
-		// get global charset setting
-		$iso = explode( '=', @constant('_ISO') );
-		$charset = !empty( $iso[1] ) ? $iso[1] : 'utf-8';
-		// Prepare the convert function if necessary
-		if( strtolower($charset)=='utf-8' && stristr($this->CHARSET, 'iso-8859-1' ) ) {
-			$this->CONVERT_FUNC = 'utf8_encode';
-		} elseif( stristr($charset, 'iso-8859-1') && strtolower($this->CHARSET)=='utf-8' ) {
-			$this->CONVERT_FUNC = 'utf8_decode';
-		}
 	}
 
 	/**
@@ -44,10 +35,23 @@ class vmAbstractLanguage {
 	* @return string The value of $var (as an HTML Entitiy-encoded string if $htmlentities)
 	*/
 	function _( $var, $htmlentities=false ) {
-	    $key = '_' . strtoupper( $var );
-	    if (isset($this->$key)) {
+		global $modulename;
+		$module = $modulename;
+	    $key = strtoupper( $var );
+		// if language module not yet loaded, load now
+		if (!isset($this->modules[$module])) {
+			$this->load($module);
+		}
+		$text = false;
+	    if (isset($this->modules[$module][$key])) {
+			$text = $this->modules[$module][$key];
+		} elseif (isset($this->modules['common'][$key])) {
+			$text = $this->modules['common'][$key];
+			$module = 'common';
+		}
+		if ($text) {
 			if( $htmlentities ) {
-				$text = htmlentities( $this->$key, ENT_QUOTES, $this->CHARSET );
+				$text = htmlentities( $text, ENT_QUOTES, $this->getCharset($module));
 				// some symbols are not converted correctly... doing manually
 				$text = str_replace(chr(128),'&euro;',$text);
 				// enable the use of HTML tags in language file... is this really good?
@@ -55,21 +59,17 @@ class vmAbstractLanguage {
 				$text = str_replace('&gt;','>',$text);
 				return $text;
 			} else {
-				$text = $this->$key;
-				$convert_func = $this->CONVERT_FUNC;
-				$text = $convert_func($text);
-				
+				$text = $this->convert($text,$module);
 				return stripslashes( $text );
 			}
-		} 
-		elseif( $this->_debug ){
+		} elseif( $this->_debug ) {
 			return "$var is missing in language file.";
 		} else {
 			return $var;
 		}
 	} 
 	/**
-	* Merges the class vars of another class
+	* Merges the class vars of another class --> TO BE REMOVED... ?
 	* @param string The name of the class to merge
 	* @return boolean True if successful, false is failed
 	*/
@@ -86,21 +86,41 @@ class vmAbstractLanguage {
 		    return false;
 		}
 	}
+	/**
+	* Set the debug mode
+	*/
 	function setDebug() {
 		$this->_debug = @DEBUG == '1' || $GLOBALS['mosConfig_debug'] == '1';
 	}
-	function setCharset( $charset='') {
+	/**
+	* Set the charset of a language module (normally specified in language file)
+	* @param string The name of the module
+	* @param string Forced charset (optional)
+	* @return none
+	*/
+	function setCharset($module,$charset='') {
 		if( !empty( $charset )) {
-			$this->CHARSET = $charset;
+			$this->modules[$module]['CHARSET'] = $charset;
 		} else {
-			$this->CHARSET = vmGetCharset();
+			$this->modules[$module]['CHARSET'] = vmGetCharset();
 		}
 	}
-	function getCharset() {
-		return $this->CHARSET;
+	/**
+	* Get the charset of a languge module 
+	* @param string The name of the module
+	* @return string The charset code
+	*/
+	function getCharset($module) {
+		return $this->modules[$module]['CHARSET'];
 	}
-	function convert($string) {
-		$func = $this->CONVERT_FUNC;
+	/**
+	* Convert a string, using the convert function set for this module
+	* @param string The string to be converted
+	* @param string The name of the module
+	* @return string The converted string
+	*/
+	function convert($string,$module) {
+		$func = $this->modules[$module]['CONVERT_FUNC'];
 		return $func($string);
 	}
 	/**
@@ -109,7 +129,7 @@ class vmAbstractLanguage {
 	 *
 	 * @param string $text iso-8859 encoded text
 	 * @param string $charset This is a k.o.-Argument. If it is NOT equal to 'utf-8', no conversion will take place
-	 * @return unknown
+	 * @return string
 	 */
 	function safe_utf8_encode( $text, $charset ) {
 		if( strtolower($charset) == 'utf-8') {
@@ -127,7 +147,7 @@ class vmAbstractLanguage {
 	 * if a string could be UTF-8 or not
 	 * @author bmorel at ssi dot fr
 	 * @param unknown_type $Str
-	 * @return unknown
+	 * @return boolean
 	 */
 	function seems_utf8($Str) {
 		for ($i=0; $i<strlen($Str); $i++) {
@@ -151,14 +171,62 @@ class vmAbstractLanguage {
 	* @param string Name of the Class Variable
 	* @return boolean True if exists, false is non exists
 	*/
-	function exists($var) {
-	    $key = '_' . strtoupper( $var );
-	    if (isset($this->$key)) {
+	function exists($var,$module=false) {
+		global $modulename;
+		if (!$module) $module=$modulename;
+	    $key = strtoupper( $var );
+	    if (isset($this->modules[$module][$key])) {
+			return true;
+		} elseif (isset($this->modules['common'][$key])) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+	
+	/**
+	* Load the language file of a specified module
+	* @param string The language module to load
+	* @return boolean True if file exists, false is non exists
+	*/
+	function load($module) {
+		global $mosConfig_lang;
+		if (file_exists( ADMINPATH. 'languages/'.$module.'/'.$mosConfig_lang.'.php' )) {
+			require_once( ADMINPATH. 'languages/'.$module.'/'.$mosConfig_lang.'.php' );
+			return true;
+		} else if (file_exists( ADMINPATH. 'languages/'.$module.'/english.php' )) {
+			require_once( ADMINPATH. 'languages/'.$module.'/english.php' );
+			return true;
+		} else {
+			// setting the module to false, to know that has already tried to load this
+			$this->modules[$module] = false;
+			return false;
+		}
+	}
+	
+	/**
+	* Initialize the strings array of a language module
+	* @param string The language module to init
+	* @param array The array of language strings
+	* @return none
+	*/
+	function initModule($module,$vars) {
+		$this->modules[$module] = $vars;
+		$this->modules['CONVERT_FUNC'] = 'strval';
+		if( empty( $this->modules[$module]['CHARSET'] )) $this->setCharset($module);
+		// get global charset setting
+		$iso = explode( '=', @constant('_ISO') );
+		$charset = !empty( $iso[1] ) ? $iso[1] : 'utf-8';
+		// Prepare the convert function if necessary
+		if( strtolower($charset)=='utf-8' && stristr($this->modules[$module]['CHARSET'], 'iso-8859-1' ) ) {
+			$this->modules[$module]['CONVERT_FUNC'] = 'utf8_encode';
+		} elseif( stristr($charset, 'iso-8859-1') && strtolower($this->modules[$module]['CHARSET'])=='utf-8' ) {
+			$this->modules[$module]['CONVERT_FUNC'] = 'utf8_decode';
+		}
+	}
 }
 class mosAbstractLanguage extends vmAbstractLanguage { }
+class vmLanguage extends vmAbstractLanguage { }
+class phpShopLanguage extends vmLanguage { }
+
 ?>
