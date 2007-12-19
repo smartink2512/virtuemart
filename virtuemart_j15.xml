@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+        <name>VirtueMart</name>
+        <creationDate>05.12.2007</creationDate>
+        <author>The VirtueMart Dev Team</author>
+        <copyright>released under GNU General Public License</copyright>
+        <authorEmail>soeren|at|virtuemart.net</authorEmail>
+        <authorUrl>www.virtuemart.net</authorUrl>
+        <version>1.1.0 beta2</version>
+        <description>Online-Shop / E-Commerce Component</description>
+		
+	<installfile>install.virtuemart.php</installfile>
+	<uninstallfile>uninstall.virtuemart.php</uninstallfile>
+	<!-- Site Main File Copy Section -->
+	<files>
+		<filename>frontend_files.tar.gz</filename>
+	</files>
+
+	<administration>
+		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
+		  <files folder="admin">
+			<filename>2checkout_notify.php</filename>
+			<filename>admin_files.tar.gz</filename>
+			<filename>admin.virtuemart.php</filename>
+			<filename>admin.styles.css</filename>
+			<filename>cart.gif</filename>
+			<filename>CHANGELOG.php</filename>
+			<filename>compat.joomla1.5.php</filename>
+			<filename>COPYRIGHT.php</filename>
+			<filename>favicon.ico</filename>
+			<filename>global.php</filename>
+			<filename>header.php</filename>
+			<filename>index.html</filename>
+			<filename>install.css</filename>
+			<filename>install.copy.php</filename>
+			<filename>install.php</filename>
+			<filename>INSTALLATION.php</filename>
+			<filename>LICENSE.php</filename>
+			<filename>notify.php</filename>
+			<filename>PEAR.php</filename>
+			<filename>README.php</filename>
+			<filename>virtuemart.cfg-dist.php</filename>
+			<filename>Tar.php</filename>
+			<filename>TODO.php</filename>
+			<filename>toolbar.html.php</filename>
+			<filename>toolbar.php</filename>
+			<filename>toolbar.virtuemart.html.php</filename>
+			<filename>toolbar.virtuemart.php</filename>
+			<filename>version.php</filename>
+			<filename>worldpay_notify.php</filename>
+			<filename>x-click-but21.gif</filename>
+			<filename>export.php</filename>
+		</files>
+	</administration>
+</install>
