@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id$
@@ -426,7 +426,7 @@ class fedex {
 		}
 
 		$config = "<?php\n";
-		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
+		$config .= "if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); \n\n";
 		foreach( $my_config_array as $key => $value ) {
 			if($key == 'FEDEX_SERVICES' && is_array($value) ) {
 				$config .= "define ('$key', '".implode(',', $value)."');\n";

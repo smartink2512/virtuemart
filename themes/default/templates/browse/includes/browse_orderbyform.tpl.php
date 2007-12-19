@@ -1,4 +1,4 @@
-<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <!-- ORDER BY .... FORM -->
 <form action="<?php echo $mm_action_url."index.php" ?>" method="get" name="order">

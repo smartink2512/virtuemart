@@ -1,5 +1,5 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 * List all files of a specific product
 * @author Soeren Eberhardt
@@ -134,7 +134,7 @@ while ($db->next_record()) {
 	$isProductDownload = in_array( basename($filename), $downloadFiles ) ? true : false;
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("file_id"), false, "file_id" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("file_id"), false, "file_id" ) );
 
 	$tmp_cell = '';
 	

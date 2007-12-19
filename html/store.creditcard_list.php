@@ -1,5 +1,5 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id$
@@ -70,7 +70,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("creditcard_id"), false, "creditcard_id" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("creditcard_id"), false, "creditcard_id" ) );
     
     $tmp_cell = '<a href="'. $sess->url($_SERVER['PHP_SELF'] ."?page=store.creditcard_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&creditcard_id=".$db->f("creditcard_id")) .'">'.$db->f("creditcard_name")."</a>";
     $listObj->addCell( $tmp_cell );

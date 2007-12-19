@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id$
@@ -50,7 +50,7 @@ class ps_perm {
 		global $my, $acl, $user, $_VERSION;
 		$db = new ps_DB;
 		$auth = array();
-		
+		$my = JFactory::getUser();
 		if( VM_PRICE_ACCESS_LEVEL != '' ) {
 			// Get the usertype property when not present
 			if( empty( $my->usertype ) ) {

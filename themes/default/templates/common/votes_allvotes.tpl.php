@@ -1,4 +1,4 @@
-<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <!-- The "Average Customer Rating: xxxxX (2 votes) " Part -->
 <span class="contentpagetitle"><?php echo $VM_LANG->_('PHPSHOP_CUSTOMER_RATING') ?>:</span>

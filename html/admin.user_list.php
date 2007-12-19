@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id$
@@ -84,7 +84,7 @@ while( $db->next_record() ) {
 	$condition = $user_id == $my->id ? false : true;
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $user_id, !$condition, "user_id" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $i, $user_id, !$condition, "user_id" ) );
 	
 	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.user_form&user_id=$user_id";
 	$tmp_cell = '<a href="' . $sess->url($url) . '">'. $db->f("username") . "</a>"; 

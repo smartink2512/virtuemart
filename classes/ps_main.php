@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * This is no class! This file only provides core virtuemart functions.
 * 
@@ -1214,5 +1214,20 @@ function vmGetCleanArrayFromKeyword( $keyword ) {
 		}
 	}
 	return $keywordArr;
+}
+/**
+* Replaces &amp; with & for xhtml compliance
+*
+* Needed to handle unicode conflicts due to unicode conflicts
+*/
+function vmAmpReplace( $text ) {
+	$text = str_replace( '&&', '*--*', $text );
+	$text = str_replace( '&#', '*-*', $text );
+	$text = str_replace( '&amp;', '&', $text );
+	$text = preg_replace( '|&(?![\w]+;)|', '&amp;', $text );
+	$text = str_replace( '*-*', '&#', $text );
+	$text = str_replace( '*--*', '&&', $text );
+
+	return $text;
 }
 ?>

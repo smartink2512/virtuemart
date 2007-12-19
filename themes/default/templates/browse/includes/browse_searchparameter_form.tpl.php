@@ -1,4 +1,4 @@
-<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <div align="right">
     <form action="<?php echo $mm_action_url."index.php?option=com_virtuemart&amp;page=shop.parameter_search_form&amp;product_type_id=$product_type_id&amp;Itemid=" . $_REQUEST['Itemid'] ?>" method="post" name="back">

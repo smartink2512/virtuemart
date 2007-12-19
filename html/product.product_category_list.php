@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id$
@@ -134,7 +134,7 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 	$listObj->addCell( $pageNav->rowNumber( $ibg ) );
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $ibg, $category_tmp[$row_list[$n]]["category_child_id"], false, "category_id" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $ibg, $category_tmp[$row_list[$n]]["category_child_id"], false, "category_id" ) );
 	
 	// Which category depth level we are in?
 	$repeat = $depth_list[$n]+1;

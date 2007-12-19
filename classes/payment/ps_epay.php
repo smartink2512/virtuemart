@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ) ;
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
  * @version $Id: ps_epay.php,v 1.4 2005/05/17 20:31:31 soeren_nb Exp $
  * @package VirtueMart
@@ -487,7 +487,7 @@ class ps_epay {
 		$my_config_array = array( "EPAY_MERCHANTNUMBER" => $d['EPAY_MERCHANTNUMBER'] , "EPAY_LANGUAGE" => $d['EPAY_LANGUAGE'] , "EPAY_CALLBACK" => $d['EPAY_CALLBACK'] , "EPAY_VERIFIED_STATUS" => $d['EPAY_VERIFIED_STATUS'] , "EPAY_INVALID_STATUS" => $d['EPAY_INVALID_STATUS'] , "EPAY_INSTANT_CAPTURE" => $d['EPAY_INSTANT_CAPTURE'] , "EPAY_GROUP" => $d['EPAY_GROUP'] , "EPAY_MD5_TYPE" => $d['EPAY_MD5_TYPE'] , "EPAY_MD5_KEY" => $d['EPAY_MD5_KEY'] , "EPAY_AUTH_SMS" => $d['EPAY_AUTH_SMS'] , "EPAY_AUTH_MAIL" => $d['EPAY_AUTH_MAIL'] , "EPAY_WINDOW_STATE" => $d['EPAY_WINDOW_STATE'] , "EPAY_3DSECURE" => $d['EPAY_3DSECURE'] , "EPAY_SUBSCRIPTION" => $d['EPAY_SUBSCRIPTION'] , "EPAY_ADDFEE" => $d['EPAY_ADDFEE'] , "EPAY_CARDTYPES_0" => $d['EPAY_CARDTYPES_0'] , "EPAY_CARDTYPES_1" => $d['EPAY_CARDTYPES_1'] , "EPAY_CARDTYPES_2" => $d['EPAY_CARDTYPES_2'] , "EPAY_CARDTYPES_3" => $d['EPAY_CARDTYPES_3'] , "EPAY_CARDTYPES_4" => $d['EPAY_CARDTYPES_4'] , "EPAY_CARDTYPES_5" => $d['EPAY_CARDTYPES_5'] , "EPAY_CARDTYPES_6" => $d['EPAY_CARDTYPES_6'] , "EPAY_CARDTYPES_7" => $d['EPAY_CARDTYPES_7'] , "EPAY_CARDTYPES_8" => $d['EPAY_CARDTYPES_8'] , "EPAY_CARDTYPES_9" => $d['EPAY_CARDTYPES_9'] , "EPAY_CARDTYPES_10" => $d['EPAY_CARDTYPES_10'] , "EPAY_CARDTYPES_11" => $d['EPAY_CARDTYPES_11'] , "EPAY_CARDTYPES_12" => $d['EPAY_CARDTYPES_12'] , "EPAY_CARDTYPES_13" => $d['EPAY_CARDTYPES_13'] , "EPAY_CARDTYPES_14" => $d['EPAY_CARDTYPES_14'] , "EPAY_CARDTYPES_15" => $d['EPAY_CARDTYPES_15'] , "EPAY_CARDTYPES_16" => $d['EPAY_CARDTYPES_16'] ) ;
 		
 		$config = "<?php\n" ;
-		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n" ;
+		$config .= "if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); \n\n" ;
 		foreach( $my_config_array as $key => $value ) {
 			$config .= "define ('$key', '$value');\n" ;
 		}

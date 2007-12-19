@@ -35,7 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-18.12.2007
+19.12.2007 soeren
+^ added "_JEXEC" to all file headers + more changes to achieve Joomla! 1.5 native integration
+18.12.2007 soeren
 + added extended Search Mambot by Alejandro Kurczyn (one version for Joomla! 1.0 + Mambo, one native for Joomla! 1.5)
 
 18.12.2007 thepisu

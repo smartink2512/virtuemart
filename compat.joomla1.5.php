@@ -1,7 +1,5 @@
 <?php 
-if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
-	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
-}
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * This file provides compatibility for VirtueMart on Joomla! 1.0.x and Joomla! 1.5
 *

@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * This file contains the mainframe class for VirtueMart
 *
@@ -221,6 +221,7 @@ class vmMainFrame {
 													window.onload = function() { if( prev_onload ) prev_onload(); initLightbox(); }' );
 			}
 			$this->render();
+			
 		} else {
 			session_write_close();
 			if( !empty( $this->_response_scripts )) {

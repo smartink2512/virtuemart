@@ -1,4 +1,4 @@
-<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <!-- List of recent products -->
 <h3><?php echo $VM_LANG->_('VM_RECENT_PRODUCTS') ?></h3>

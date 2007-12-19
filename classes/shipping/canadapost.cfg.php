@@ -1,5 +1,5 @@
 <?php
-defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id$
@@ -20,6 +20,6 @@ define ('CP_SERVER', '206.191.4.228');
 define ('CP_PORT', '30000');
 define ('CP_FEDERAL_TAX', '0');
 define ('CP_PROVINCIAL_TAX', '0');
-define ('CP_ARRIVAL_DATE_EXPLAIN', 'La date de livraison est calculée en ajoutant les normes de livraison de Postes Canada au délai d’exécution des commandes.');
-define ('CP_HANDLING_CHARGE_EXPLAIN', 'Les frais d’expédition sont calculés en ajoutant les services de Postes Canada aux coûts de manutention. Taxes incluses.');
+define ('CP_ARRIVAL_DATE_EXPLAIN', 'La date de livraison est calculï¿½e en ajoutant les normes de livraison de Postes Canada au dï¿½lai dï¿½exï¿½cution des commandes.');
+define ('CP_HANDLING_CHARGE_EXPLAIN', 'Les frais dï¿½expï¿½dition sont calculï¿½s en ajoutant les services de Postes Canada aux coï¿½ts de manutention. Taxes incluses.');
 ?>

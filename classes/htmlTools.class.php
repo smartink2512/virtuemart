@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * This file contains functions and classes for common html tasks
 *
@@ -489,7 +489,7 @@ class vmMooAjax {
  * This is the class offering functions for common HTML tasks
  *
  */
-class vmCommonHTML extends mosHTML {
+class vmCommonHTML {
 	/**
 	 * function to create a hyperlink
 	 *
@@ -511,7 +511,7 @@ class vmCommonHTML extends mosHTML {
 		if( $attributes ) {
 			$attributes = ' ' . $attributes;
 		}
-		return '<a href="'.ampReplace($link).'"'.$target.$title.$attributes.'>'.$text.'</a>';
+		return '<a href="'.vmAmpReplace($link).'"'.$target.$title.$attributes.'>'.$text.'</a>';
 	}
 	/**
 	 * Function to create an image tag
@@ -657,6 +657,20 @@ class vmCommonHTML extends mosHTML {
 		}
 		else {
 			return '<img src="'.$mosConfig_live_site.'/administrator/images/publish_x.png" border="0" alt="'.$neg_alt.'" />';
+		}
+	}
+	/**
+	* @param int The row index
+	* @param int The record id
+	* @param boolean
+	* @param string The name of the form element
+	* @return string
+	*/
+	function idBox( $rowNum, $recId, $checkedOut=false, $name='cid' ) {
+		if ( $checkedOut ) {
+			return '';
+		} else {
+			return '<input type="checkbox" id="cb'.$rowNum.'" name="'.$name.'[]" value="'.$recId.'" onclick="isChecked(this.checked);" />';
 		}
 	}
 	/**
@@ -1019,7 +1033,7 @@ class vmCommonHTML extends mosHTML {
 		global $VM_LANG, $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
 		if ( @VM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
-				$query_string = str_replace( 'only_page=1', 'only_page=0', ampReplace(vmGet($_SERVER,'QUERY_STRING')) );
+				$query_string = str_replace( 'only_page=1', 'only_page=0', vmAmpReplace(vmGet($_SERVER,'QUERY_STRING')) );
 				$link = 'index2.php?'.$query_string.'&amp;pop=1';
 			}
 			// checks template image directory for image, if non found default are loaded

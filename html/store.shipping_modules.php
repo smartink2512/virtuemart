@@ -1,5 +1,5 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 * This file lists all shipping modules. It's in a file that's not called shipping_module_list
 * because we currently can't add or remove shipping modules automatically!

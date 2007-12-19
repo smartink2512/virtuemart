@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id$
 * @package VirtueMart
@@ -78,7 +78,7 @@ class PDF extends HTML2FPDF {
     $this->divwidth = $this->pgwidth;
     $this->divheight = 8.5;
   
-    //Custom Word Wrap (para melhorar organização das palvras no titulo)
+    //Custom Word Wrap (para melhorar organizaï¿½ï¿½o das palvras no titulo)
     $maxwidth = $this->divwidth;
     $titulo = trim($titulo);
     $words = preg_split('/ +/', $titulo);
@@ -95,7 +95,7 @@ class PDF extends HTML2FPDF {
       $nextwordwidth = $this->GetStringWidth($nextword);
       if((strlen($word) <= 3) and ($nextword != '') and ($width + $wordwidth + $nextwordwidth > $maxwidth))
       {
-         //Para não ficar um artigo/preposição esquecido(a) no final de uma linha
+         //Para nï¿½o ficar um artigo/preposiï¿½ï¿½o esquecido(a) no final de uma linha
          $width = $wordwidth + $space;
          $titulo = rtrim($titulo)."\n".$word.' ';
       }
@@ -104,7 +104,7 @@ class PDF extends HTML2FPDF {
          $width += $wordwidth + $space;
          $titulo .= $word.' ';
       }
-      else //Palavra não cabe, pular linha e inserir na outra linha
+      else //Palavra nï¿½o cabe, pular linha e inserir na outra linha
       {
          $width = $wordwidth + $space;
          $titulo = rtrim($titulo)."\n".$word.' ';
@@ -153,7 +153,7 @@ class PDF extends HTML2FPDF {
   //! @return void
       //Position at 1.0 cm from bottom
       $this->SetY(-10);
-      //Copyright //especial para esta versão
+      //Copyright //especial para esta versï¿½o
       $this->SetFont('Arial','B',9);
       $this->SetTextColor(0);
       $texto = "Copyright ".chr(169).date('Y')."  -  $vendor_name  -  ";

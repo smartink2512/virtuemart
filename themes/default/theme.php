@@ -1,4 +1,5 @@
-<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+<?php 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 * This is the theme's function file.
 * It allows you to declare additional functions and classes

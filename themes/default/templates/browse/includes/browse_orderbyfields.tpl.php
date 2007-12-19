@@ -1,4 +1,4 @@
-<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <?php echo $VM_LANG->_('PHPSHOP_ORDERBY') ?>: 
 <select class="inputbox" name="orderby" onchange="order.submit()">

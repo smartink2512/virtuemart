@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id: shop.cart.tpl.php 663 2007-02-06 13:52:29 +0000 (Tue, 06 Feb 2007) soeren_nb $

@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * The ps_authorize class, containing the payment processing code
 *  for transactions with authorize.net 
@@ -227,7 +227,7 @@ class ps_authorize {
 		"AN_SHOW_ERROR_CODE" => $d['AN_SHOW_ERROR_CODE']
 		);
 		$config = "<?php\n";
-		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
+		$config .= "if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); \n\n";
 		foreach( $my_config_array as $key => $value ) {
 			$config .= "define ('$key', '$value');\n";
 		}

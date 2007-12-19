@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id$
@@ -45,13 +45,12 @@ class vmPageNav {
 	function getLimitBox () {
 		$limits = array();
 		for ($i=5; $i <= 30; $i+=5) {
-			$limits[] = mosHTML::makeOption( "$i" );
+			$limits[] = "$i";
 		}
-		$limits[] = mosHTML::makeOption( "50" );
+		$limits[] = "50";
 
 		// build the html select list
-		$html = mosHTML::selectList( $limits, 'limit', 'class="inputbox" size="1" onchange="document.adminForm.submit();"',
-		'value', 'text', $this->limit );
+		$html = ps_html::selectList( 'limit', $this->limit, $limits, 1, '',  'onchange="document.adminForm.submit();"' );
 		$html .= "\n<input type=\"hidden\" name=\"limitstart\" value=\"$this->limitstart\" />";
 		return $html;
 	}
@@ -76,7 +75,7 @@ class vmPageNav {
 			$to_result = $this->total;
 		}
 		if ($this->total > 0) {
-			$html .= $GLOBALS['VM_LANG']->_PN_RESULTS." $from_result - $to_result ".$GLOBALS['VM_LANG']->_PN_OF." $this->total";
+			$html .= $GLOBALS['VM_LANG']->_('PN_RESULTS')." $from_result - $to_result ".$GLOBALS['VM_LANG']->_('PN_OF')." $this->total";
 		} else {
 			//$html .= "\nNo records found.";
 		}
@@ -143,7 +142,7 @@ class vmPageNav {
 			$html .= $this->getPagesLinks();
 			$html .= '</th></tr>';
 	    }
-		$html .= '<tr><td nowrap="true" width="48%" align="right">'.$GLOBALS['VM_LANG']->_PN_DISPLAY_NR.'</td>';
+		$html .= '<tr><td nowrap="true" width="48%" align="right">'.$GLOBALS['VM_LANG']->_('PN_DISPLAY_NR').'</td>';
 		$html .= '<td>' .$this->getLimitBox() . '</td>';
 		$html .= '<td nowrap="true" width="48%" align="left">' . $this->getPagesCounter() . '</td>';
 		$html .= '</tr></table>';

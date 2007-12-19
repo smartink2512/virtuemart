@@ -1,5 +1,5 @@
 <?php
-defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
 * @version $Id: shipvalue.php,v .1 2005/09  r_lewis
 * @package Mambo_4.5.1 tested on Version: Mambo 4.5.1.3 Stable [Three For Rum Reassigned]
@@ -385,7 +385,7 @@ class shipvalue {
 		"SHIPVALUE_TAX_CLASS" => $d['SHIPVALUE_TAX_CLASS']
 		);
 		$config = "<?php\n";
-		$config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
+		$config .= "if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); \n\n";
 		foreach( $my_config_array as $key => $value ) {
 			$config .= "define ('$key', '$value');\n";
 		}

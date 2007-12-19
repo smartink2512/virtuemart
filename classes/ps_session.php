@@ -1,5 +1,5 @@
 <?php 
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id$
@@ -42,6 +42,7 @@ class ps_session {
      */
 	function initSession() {
 		global $vmLogger, $mainframe, $mosConfig_absolute_path, $VM_LANG;
+		
 		// We only care for the session if it is not started!
 		if( empty( $_SESSION ) || session_id() == '') {
 			
@@ -563,7 +564,7 @@ class ps_session {
 				break;
 		}
 		if( $encodeAmpersands ) {
-	        $text = ampReplace( $text );
+	        $text = vmAmpReplace( $text );
 	    }  else {
 		$text = str_replace( '&amp;', '&', $text );
 	    }

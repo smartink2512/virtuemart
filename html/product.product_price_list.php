@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id$
@@ -85,7 +85,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("product_price_id"), false, "product_price_id" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("product_price_id"), false, "product_price_id" ) );
 	
 	$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_price_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_price_id=" . $db->f("product_price_id") . "&product_id=$product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args);
 	$tmp_cell = "<a href=" . $sess->url($url) . ">". $db->f("shopper_group_name"). "</a>";

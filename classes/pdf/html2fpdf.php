@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id$
 * @package VirtueMart
@@ -59,7 +59,7 @@ TODO (in the future...):
 
 Misc. Observations:
 - CSS + align = bug! (?)
-OBS1: para textos de mais de 1 página, talvez tenha que juntar varios $texto_artigo
+OBS1: para textos de mais de 1 pï¿½gina, talvez tenha que juntar varios $texto_artigo
 antes de mandar gerar o PDF, para que o PDF gerado seja completo.
 OBS2: there are 2 types of spaces 32 and 160 (ascii values)
 OBS3: //! is a special comment to be used with source2doc.php, a script I created
@@ -334,7 +334,7 @@ function Footer()
 //! @desc The footer is printed in every page!
     //Position at 1.0 cm from bottom
     $this->SetY(-10);
-    //Copyright //especial para esta versão
+    //Copyright //especial para esta versï¿½o
     $this->SetFont('Arial','B',9);
   	$this->SetTextColor(0);
     //Arial italic 9
@@ -397,7 +397,7 @@ function WriteHTML($html)
              if (!isset($this->selectoption['MAXWIDTH']) or $stringwidth > $this->selectoption['MAXWIDTH']) $this->selectoption['MAXWIDTH'] = $stringwidth;
              if (!isset($this->selectoption['SELECTED']) or $this->selectoption['SELECTED'] == '') $this->selectoption['SELECTED'] = $e;
           }
-          else $this->textbuffer[] = array("»¤¬"/*identifier*/.$this->specialcontent."»¤¬".$e);
+          else $this->textbuffer[] = array("ï¿½ï¿½ï¿½"/*identifier*/.$this->specialcontent."ï¿½ï¿½ï¿½".$e);
       }
 			elseif($this->tablestart)
 			{
@@ -602,7 +602,7 @@ function OpenTag($tag,$attr)
 			$cs = $rs = 1;
 			if (isset($attr['COLSPAN']) && $attr['COLSPAN']>1)	$cs = $this->cell[$this->row][$this->col]['colspan']	= $attr['COLSPAN'];
 			if (isset($attr['ROWSPAN']) && $attr['ROWSPAN']>1)	$rs = $this->cell[$this->row][$this->col]['rowspan']	= $attr['ROWSPAN'];
-			//Chiem dung vi tri de danh cho cell span (¿mais hein?)
+			//Chiem dung vi tri de danh cho cell span (ï¿½mais hein?)
 			for ($k=$this->row ; $k < $this->row+$rs ;$k++)
         for($l=$this->col; $l < $this->col+$cs ;$l++)
         {
@@ -900,7 +900,7 @@ function OpenTag($tag,$attr)
             }
      				$numberoflines = (integer)ceil($sizesarray['HEIGHT']/$this->lineheight) ;
      				$ypos = $numberoflines * $this->lineheight;
-     				$this->textbuffer[] = array("»¤¬"/*identifier*/."type=image,ypos=$ypos,{$xpos}width=".$sizesarray['WIDTH'].",height=".$sizesarray['HEIGHT']."»¤¬".$sizesarray['OUTPUT']);
+     				$this->textbuffer[] = array("ï¿½ï¿½ï¿½"/*identifier*/."type=image,ypos=$ypos,{$xpos}width=".$sizesarray['WIDTH'].",height=".$sizesarray['HEIGHT']."ï¿½ï¿½ï¿½".$sizesarray['OUTPUT']);
             while($numberoflines) {$this->textbuffer[] = array("\n",$this->HREF,$this->currentstyle,$this->colorarray,$this->currentfont,$this->SUP,$this->SUB,''/*internal link*/,$this->strike,$this->outlineparam,$this->bgcolorarray);$numberoflines--;}
           }
           else
@@ -928,7 +928,7 @@ function OpenTag($tag,$attr)
   				if ($sizesarray['X'] < $this->x) $this->x = $this->lMargin;
   				if ($this->tablestart)
   				{
-     				$this->cell[$this->row][$this->col]['textbuffer'][] = array("»¤¬"/*identifier*/."type=image,width=".$sizesarray['WIDTH'].",height=".$sizesarray['HEIGHT']."»¤¬".$sizesarray['OUTPUT']);
+     				$this->cell[$this->row][$this->col]['textbuffer'][] = array("ï¿½ï¿½ï¿½"/*identifier*/."type=image,width=".$sizesarray['WIDTH'].",height=".$sizesarray['HEIGHT']."ï¿½ï¿½ï¿½".$sizesarray['OUTPUT']);
             $this->cell[$this->row][$this->col]['s'] += $sizesarray['WIDTH'] + 1;// +1 == margin
             $this->cell[$this->row][$this->col]['form'] = true; // in order to make some width adjustments later
             if (!isset($this->cell[$this->row][$this->col]['w'])) $this->cell[$this->row][$this->col]['w'] = $sizesarray['WIDTH'] + 3;
@@ -1159,7 +1159,7 @@ function OpenTag($tag,$attr)
                 $text = $checked;
                 $type = 'CHECKBOX';
                 $width = 4;
-   			        $this->cell[$this->row][$this->col]['textbuffer'][] = array("»¤¬"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."»¤¬".$text);
+   			        $this->cell[$this->row][$this->col]['textbuffer'][] = array("ï¿½ï¿½ï¿½"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."ï¿½ï¿½ï¿½".$text);
                 $this->cell[$this->row][$this->col]['s'] += $width;
                 if (!isset($this->cell[$this->row][$this->col]['h'])) $this->cell[$this->row][$this->col]['h'] = $this->lineheight;
                 break;
@@ -1169,7 +1169,7 @@ function OpenTag($tag,$attr)
                 $text = $checked;
                 $type = 'RADIO';
                 $width = 3;
-                $this->cell[$this->row][$this->col]['textbuffer'][] = array("»¤¬"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."»¤¬".$text);
+                $this->cell[$this->row][$this->col]['textbuffer'][] = array("ï¿½ï¿½ï¿½"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."ï¿½ï¿½ï¿½".$text);
                 $this->cell[$this->row][$this->col]['s'] += $width;
                 if (!isset($this->cell[$this->row][$this->col]['h'])) $this->cell[$this->row][$this->col]['h'] = $this->lineheight;
                 break;
@@ -1180,7 +1180,7 @@ function OpenTag($tag,$attr)
                 if (isset($attr['VALUE'])) $texto = " " . $attr['VALUE'] . " ";
                 $text = $texto;
                 $width = $this->GetStringWidth($texto)+3;
-                $this->cell[$this->row][$this->col]['textbuffer'][] = array("»¤¬"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."»¤¬".$text);
+                $this->cell[$this->row][$this->col]['textbuffer'][] = array("ï¿½ï¿½ï¿½"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."ï¿½ï¿½ï¿½".$text);
                 $this->cell[$this->row][$this->col]['s'] += $width;
                 if (!isset($this->cell[$this->row][$this->col]['h'])) $this->cell[$this->row][$this->col]['h'] = $this->lineheight + 2;
                 break;
@@ -1200,7 +1200,7 @@ function OpenTag($tag,$attr)
                 $text = $texto;
                 $width = 2*$tamanho;
                 if ($type == '') $type = 'TEXT';
-                $this->cell[$this->row][$this->col]['textbuffer'][] = array("»¤¬"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."»¤¬".$text);
+                $this->cell[$this->row][$this->col]['textbuffer'][] = array("ï¿½ï¿½ï¿½"/*identifier*/."type=input,subtype=$type,width=$width,height=$height"."ï¿½ï¿½ï¿½".$text);
                 $this->cell[$this->row][$this->col]['s'] += $width;
                 if (!isset($this->cell[$this->row][$this->col]['h'])) $this->cell[$this->row][$this->col]['h'] = $this->lineheight + 2;
                 break;
@@ -1516,10 +1516,10 @@ function CloseTag($tag)
     if (isset($this->selectoption['MAXWIDTH'])) $tamanho = $this->selectoption['MAXWIDTH'];
     if ($this->tablestart)
     {
-        $texto = "»¤¬".$this->specialcontent."»¤¬".$this->selectoption['SELECTED'];
-        $aux = explode("»¤¬",$texto);
+        $texto = "ï¿½ï¿½ï¿½".$this->specialcontent."ï¿½ï¿½ï¿½".$this->selectoption['SELECTED'];
+        $aux = explode("ï¿½ï¿½ï¿½",$texto);
         $texto = $aux[2];
-        $texto = "»¤¬".$aux[1].",width=$tamanho,height=".($this->lineheight + 2)."»¤¬".$texto;
+        $texto = "ï¿½ï¿½ï¿½".$aux[1].",width=$tamanho,height=".($this->lineheight + 2)."ï¿½ï¿½ï¿½".$texto;
         $this->cell[$this->row][$this->col]['s'] += $tamanho + 7; // margin + arrow box
         $this->cell[$this->row][$this->col]['form'] = true; // in order to make some width adjustments later
 
@@ -1828,9 +1828,9 @@ function printbuffer($arrayaux,$outofblock=false,$is_table=false)
       	$this->SetStyle('U',true);
       }
       //Print-out special content
-      if (isset($vetor[0]) and $vetor[0]{0} == '»' and $vetor[0]{1} == '¤' and $vetor[0]{2} == '¬') //identifier has been identified!
+      if (isset($vetor[0]) and $vetor[0]{0} == 'ï¿½' and $vetor[0]{1} == 'ï¿½' and $vetor[0]{2} == 'ï¿½') //identifier has been identified!
       {
-        $content = explode("»¤¬",$vetor[0]);
+        $content = explode("ï¿½ï¿½ï¿½",$vetor[0]);
         $texto = $content[2];
         $content = explode(",",$content[1]);
         foreach($content as $value)

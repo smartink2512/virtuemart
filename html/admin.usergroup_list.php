@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id$
@@ -72,7 +72,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 		
 	// The Checkbox
-	$listObj->addCell( mosHTML::idBox( $i, $db->f("group_id"), false, "group_id" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("group_id"), false, "group_id" ) );
 	
 	if( in_array( $db->f('group_name'), $usergroup->_protected_groups ))  {
 		$tmp_cell = $db->f("group_name");

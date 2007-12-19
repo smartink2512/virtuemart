@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id$
 * @package mambo-phpShop
@@ -148,7 +148,7 @@ class ps_montrada {
                                                            
                             );
       $config = "<?php\n";
-      $config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n\n";
+      $config .= "if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); \n\n";
       foreach( $my_config_array as $key => $value ) {
         $config .= "define ('$key', '$value');\n";
       }
@@ -309,10 +309,10 @@ class ps_montrada {
             0	(Transaktion erfolgreich abgeschlossen)
             100	(Transaktion ohne Erfolg abgeschlossen)
             2014	(Kartennummer, Parameter 'creditc' falsch)
-            2016	(Gültigkeitsdatum, Parameter 'expdat' falsch)
-            2018	(Kartenprüfwert, Parameter 'cvcode' falsch)
-            2040	(Anfang oder Länge der Kartennummer falsch)
-            2042	(Prüfsumme der Kartennummer falsch)
+            2016	(Gï¿½ltigkeitsdatum, Parameter 'expdat' falsch)
+            2018	(Kartenprï¿½fwert, Parameter 'cvcode' falsch)
+            2040	(Anfang oder Lï¿½nge der Kartennummer falsch)
+            2042	(Prï¿½fsumme der Kartennummer falsch)
             2048	(Karte abgelaufen)
             2090	(Bankleitzahl, Parameter 'bankcode' falsch)
             2092	(Kontonummer, Parameter 'account' falsch)

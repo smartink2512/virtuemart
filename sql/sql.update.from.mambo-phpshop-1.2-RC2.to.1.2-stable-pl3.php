@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id$
@@ -285,24 +285,24 @@ $database->setQuery( "INSERT INTO `#__pshop_state` VALUES
 ('', 138, 'Campeche', 'CAM', 'CA'),  ('', 138, 'Chiapas', 'CHI', 'CS'),  ('', 138, 'Chihuahua', 'CHA', 'CH'),
 ('', 138, 'Coahuila', 'COA', 'CO'),  ('', 138, 'Colima', 'COL', 'CM'),  ('', 138, 'Distrito Federal', 'DFM', 'DF'),
 ('', 138, 'Durango', 'DGO', 'DO'),  ('', 138, 'Guanajuato', 'GTO', 'GO'),  ('', 138, 'Guerrero', 'GRO', 'GU'),
-('', 138, 'Hidalgo', 'HGO', 'HI'),  ('', 138, 'Jalisco', 'JAL', 'JA'),  ('', 138, 'México (Estado de)', 'EDM', 'EM'),
-('', 138, 'Michoacán', 'MCN', 'MI'),  ('', 138, 'Morelos', 'MOR', 'MO'),  ('', 138, 'Nayarit', 'NAY', 'NY'),
-('', 138, 'Nuevo León', 'NUL', 'NL'),  ('', 138, 'Oaxaca', 'OAX', 'OA'),  ('', 138, 'Puebla', 'PUE', 'PU'),
-('', 138, 'Querétaro', 'QRO', 'QU'),  ('', 138, 'Quintana Roo', 'QUR', 'QR'),  ('', 138, 'San Luis Potosí', 'SLP', 'SP'),
+('', 138, 'Hidalgo', 'HGO', 'HI'),  ('', 138, 'Jalisco', 'JAL', 'JA'),  ('', 138, 'Mï¿½xico (Estado de)', 'EDM', 'EM'),
+('', 138, 'Michoacï¿½n', 'MCN', 'MI'),  ('', 138, 'Morelos', 'MOR', 'MO'),  ('', 138, 'Nayarit', 'NAY', 'NY'),
+('', 138, 'Nuevo Leï¿½n', 'NUL', 'NL'),  ('', 138, 'Oaxaca', 'OAX', 'OA'),  ('', 138, 'Puebla', 'PUE', 'PU'),
+('', 138, 'Querï¿½taro', 'QRO', 'QU'),  ('', 138, 'Quintana Roo', 'QUR', 'QR'),  ('', 138, 'San Luis Potosï¿½', 'SLP', 'SP'),
 ('', 138, 'Sinaloa', 'SIN', 'SI'),  ('', 138, 'Sonora', 'SON', 'SO'),  ('', 138, 'Tabasco', 'TAB', 'TA'),
 ('', 138, 'Tamaulipas', 'TAM', 'TM'),  ('', 138, 'Tlaxcala', 'TLX', 'TX'),  ('', 138, 'Veracruz', 'VER', 'VZ'),
-('', 138, 'Yucatán', 'YUC', 'YU'),  ('', 138, 'Zacatecas', 'ZAC', 'ZA'),
+('', 138, 'Yucatï¿½n', 'YUC', 'YU'),  ('', 138, 'Zacatecas', 'ZAC', 'ZA'),
 
-('', 30, 'Acre', 'ACR', 'AC'),  ('', 30, 'Alagoas', 'ALG', 'AL'),  ('', 30, 'Amapá', 'AMP', 'AP'),
-('', 30, 'Amazonas', 'AMZ', 'AM'),  ('', 30, 'Bahía', 'BAH', 'BA'),  ('', 30, 'Ceará', 'CEA', 'CE'),
-('', 30, 'Distrito Federal', 'DFB', 'DF'),  ('', 30, 'Espirito Santo', 'ESS', 'ES'),  ('', 30, 'Goiás', 'GOI', 'GO'),
-('', 30, 'Maranhão', 'MAR', 'MA'),  ('', 30, 'Mato Grosso', 'MAT', 'MT'),
-('', 30, 'Mato Grosso do Sul', 'MGS', 'MS'),  ('', 30, 'Minas Geraís', 'MIG', 'MG'),  ('', 30, 'Paraná', 'PAR', 'PR'),
-('', 30, 'Paraíba', 'PRB', 'PB'),  ('', 30, 'Pará', 'PAB', 'PA'),  ('', 30, 'Pernambuco', 'PER', 'PR'),
-('', 30, 'Piauí', 'PIA', 'PI'),  ('', 30, 'Rio Grande do Norte', 'RGN', 'RN'),  ('', 30, 'Rio Grande do Sul', 'RGS', 'RS'),
-('', 30, 'Rio de Janeiro', 'RDJ', 'RJ'),  ('', 30, 'Rondônia', 'RON', 'RO'),
+('', 30, 'Acre', 'ACR', 'AC'),  ('', 30, 'Alagoas', 'ALG', 'AL'),  ('', 30, 'Amapï¿½', 'AMP', 'AP'),
+('', 30, 'Amazonas', 'AMZ', 'AM'),  ('', 30, 'Bahï¿½a', 'BAH', 'BA'),  ('', 30, 'Cearï¿½', 'CEA', 'CE'),
+('', 30, 'Distrito Federal', 'DFB', 'DF'),  ('', 30, 'Espirito Santo', 'ESS', 'ES'),  ('', 30, 'Goiï¿½s', 'GOI', 'GO'),
+('', 30, 'Maranhï¿½o', 'MAR', 'MA'),  ('', 30, 'Mato Grosso', 'MAT', 'MT'),
+('', 30, 'Mato Grosso do Sul', 'MGS', 'MS'),  ('', 30, 'Minas Geraï¿½s', 'MIG', 'MG'),  ('', 30, 'Paranï¿½', 'PAR', 'PR'),
+('', 30, 'Paraï¿½ba', 'PRB', 'PB'),  ('', 30, 'Parï¿½', 'PAB', 'PA'),  ('', 30, 'Pernambuco', 'PER', 'PR'),
+('', 30, 'Piauï¿½', 'PIA', 'PI'),  ('', 30, 'Rio Grande do Norte', 'RGN', 'RN'),  ('', 30, 'Rio Grande do Sul', 'RGS', 'RS'),
+('', 30, 'Rio de Janeiro', 'RDJ', 'RJ'),  ('', 30, 'Rondï¿½nia', 'RON', 'RO'),
 ('', 30, 'Roraima', 'ROR', 'RR'),  ('', 30, 'Santa Catarina', 'SAC', 'SC'),  ('', 30, 'Sergipe', 'SER', 'SE'),
-('', 30, 'São Paulo', 'SAP', 'SP'),  ('', 30, 'Tocantins', 'TOC', 'TO'),  
+('', 30, 'Sï¿½o Paulo', 'SAP', 'SP'),  ('', 30, 'Tocantins', 'TOC', 'TO'),  
 
 ('', 44, 'Anhui', 'ANH', 'AN'),  ('', 44, 'Beijing', 'BEI', 'BE'),  ('', 44, 'Fujian', 'FUJ', 'FJ'),
 ('', 44, 'Gansu', 'GAN', 'GU'),  ('', 44, 'Guangdong', 'GUA', 'GU'),  ('', 44, 'Guangxi Zhuang', 'GUZ', 'GZ'),

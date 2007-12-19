@@ -1,5 +1,5 @@
 <?php
-defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
  *
  * @version $Id$
@@ -13,15 +13,13 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
  */
 class dhl {
 
-	var $classname = "dhl";
-
 	function list_rates(&$d) {
 		global $vmLogger;
 		global $VM_LANG, $CURRENCY_DISPLAY, $mosConfig_absolute_path;
 
 
 		/* Read current Configuration */
-		require_once(CLASSPATH . "shipping/" . $this->classname .
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .
 		    ".cfg.php");
 
 		/*
@@ -229,8 +227,7 @@ class dhl {
 		/* calculate insurance protection value */
 		$insurance = $this->calc_insurance_value($d, $is_international);
 
-		require_once($mosConfig_absolute_path .
-			'/includes/domit/xml_domit_lite_include.php');
+		require_once($mosConfig_absolute_path .	'/includes/domit/xml_domit_lite_include.php');
 
 		$html = '';
 		if ($shipping_delayed) {
@@ -489,7 +486,7 @@ class dhl {
 				 * generate a shipping label for this rate will be
 				 * stored one off the end.
 				 */
-				$id_string = $this->classname;
+				$id_string = __CLASS__;
 				$id_string .= "|DHL";
 				$id_string .= "|" . $method['service_desc'];
 				$id_string .= "|" . $total_rate;
@@ -581,7 +578,7 @@ class dhl {
 		$q .= "label_is_generated) ";
 		$q .= "VALUES (";
 		$q .= "'" . $d['order_id'] . "', ";
-		$q .= "'" . $this->classname . "', ";
+		$q .= "'" . __CLASS__ . "', ";
 		$q .= "'" . $ship_date . "', ";
 		$q .= "'" . $service_code . "', ";
 		$q .= "'" . $special_service . "', ";
@@ -656,7 +653,7 @@ class dhl {
 		$dest_state = $db->f("state");
 
 		/* Read current Configuration */
-		require_once(CLASSPATH . "shipping/" . $this->classname .
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .
 		    ".cfg.php");
 
 		$dhl_url = "https://eCommerce.airborne.com/";
@@ -1107,7 +1104,7 @@ class dhl {
 			return ("couldn't find label info for order #" .  $order_id);
 
 
-		require_once(CLASSPATH . "shipping/" . $this->classname .
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .
 		    ".cfg.php");
 
 		$dhl_url = "https://eCommerce.airborne.com/";
@@ -1273,7 +1270,7 @@ class dhl {
 
 		$tracking_number = $dbl->f('tracking_number');
 
-		require_once(CLASSPATH . "shipping/" . $this->classname .
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .
 		    ".cfg.php");
 
 		$dhl_url = "https://eCommerce.airborne.com/";
@@ -2013,7 +2010,7 @@ class dhl {
 
 		$tracking_number = $dbl->f('tracking_number');
 
-		require_once(CLASSPATH . "shipping/" . $this->classname .
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .
 		    ".cfg.php");
 
 		$dhl_url = "https://eCommerce.airborne.com/";
@@ -2196,7 +2193,7 @@ class dhl {
 	function get_tax_rate() {
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH . "shipping/" . $this->classname . ".cfg.php");
+		require_once(CLASSPATH . "shipping/" . __CLASS__ . ".cfg.php");
 
 		if (intval(DHL_TAX_CLASS) == 0)
 			return (0);
@@ -2229,7 +2226,7 @@ class dhl {
 		global $VM_LANG;
 
 		/** Read current Configuration ***/
-		require_once(CLASSPATH . "shipping/" . $this->classname . ".cfg.php");
+		require_once(CLASSPATH . "shipping/" . __CLASS__ . ".cfg.php");
     ?>
 	<table>
 	<tr>
@@ -2722,7 +2719,7 @@ class dhl {
 	 */
 	function configfile_writeable() {
 		return (is_writeable(CLASSPATH . "shipping/" .
-		    $this->classname . ".cfg.php"));
+		    __CLASS__ . ".cfg.php"));
 	}
 
 	/*
@@ -2763,14 +2760,12 @@ class dhl {
 			"DHL_HANDLING_FEE" => $d['DHL_HANDLING_FEE'],
 			);
 		$config = "<?php\n";
-		$config .= "defined('_VALID_MOS') or " .
-		    "die('Direct Access to this location is not allowed.'); \n\n";
+		$config .= "if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); \n\n";
 		foreach ($my_config_array as $key => $value)
 			$config .= "define ('$key', '$value');\n";
 		$config .= "?>";
 
-		if ($fp = fopen(CLASSPATH . "shipping/" . $this->classname .
-		    ".cfg.php", "w")) {
+		if ($fp = fopen(CLASSPATH . "shipping/" . __CLASS__ . ".cfg.php", "w")) {
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
 			return (true);
@@ -2803,7 +2798,7 @@ class dhl {
 	function get_duty_value($pid) {
 
 		/* Read current Configuration */
-		require_once(CLASSPATH . "shipping/" . $this->classname .
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .
 		    ".cfg.php");
 
 		$db = new ps_DB;
@@ -2860,8 +2855,7 @@ class dhl {
 		 */
 
 		/* Read current Configuration */
-		require_once(CLASSPATH . "shipping/" . $this->classname .
-		    ".cfg.php");
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .   ".cfg.php");
 
 		if (!$is_international) {
 			$default_insurance_value = floatval(
@@ -2886,8 +2880,7 @@ class dhl {
 	function get_insurance_value($pid) {
 
 		/* Read current Configuration */
-		require_once(CLASSPATH . "shipping/" . $this->classname .
-		    ".cfg.php");
+		require_once(CLASSPATH . "shipping/" . __CLASS__ .   ".cfg.php");
 
 		$db = new ps_DB;
 

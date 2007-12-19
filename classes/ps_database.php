@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id$
@@ -105,7 +105,7 @@ class ps_DB {
 			|| strtoupper(substr( $this->_sql , 0, 8 ))=='DESCRIBE' 
 			) {
 			$this->record = $this->_database->loadObjectList();
-			
+
 			if( $this->record === false ) {
 				$result = false;
 			}

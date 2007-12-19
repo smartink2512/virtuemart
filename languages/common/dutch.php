@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id: dutch.php 1071 2007-12-03 08:42:28Z thepisu $
@@ -21,7 +21,7 @@ $VM_LANG->initModule('common',array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_MENU' => 'Menu',
 	'PHPSHOP_CATEGORY' => 'Categorie',
-	'PHPSHOP_CATEGORIES' => 'Categorieën',
+	'PHPSHOP_CATEGORIES' => 'Categorieï¿½n',
 	'PHPSHOP_SELECT_CATEGORY' => 'Selecteer een categorie:',
 	'PHPSHOP_ADMIN' => 'Administratie',
 	'PHPSHOP_PRODUCT' => 'Product',
@@ -341,7 +341,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL' => 'Item Update Resultaat',
 	'PHPSHOP_PRODUCT_CSV_UPLOAD' => 'Gebruik CSV upload',
 	'PHPSHOP_PRODUCT_FOLDERS' => 'Product Mappen',
-	'PHPSHOP_CATEGORY_LIST_MNU' => 'Bekijk Categorieën',
+	'PHPSHOP_CATEGORY_LIST_MNU' => 'Bekijk Categorieï¿½n',
 	'PHPSHOP_CATEGORY_LIST_LBL' => 'Categorie Overzicht',
 	'PHPSHOP_CATEGORY_FORM_MNU' => 'Categorie Toevoegen',
 	'PHPSHOP_CATEGORY_FORM_LBL' => 'Categorie Informatie',
@@ -544,7 +544,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_VENDOR_FORM_EMAIL' => 'E-mail',
 	'PHPSHOP_VENDOR_FORM_IMAGE_PATH' => 'Afbeelding Pad',
 	'PHPSHOP_VENDOR_FORM_DESCRIPTION' => 'Omschrijving',
-	'PHPSHOP_VENDOR_CAT_LIST_MNU' => 'Bekijk Verkoper Categorieën',
+	'PHPSHOP_VENDOR_CAT_LIST_MNU' => 'Bekijk Verkoper Categorieï¿½n',
 	'PHPSHOP_VENDOR_CAT_LIST_LBL' => 'Verkoper Categorie Lijst',
 	'PHPSHOP_VENDOR_CAT_NAME' => 'Categorie Naam',
 	'PHPSHOP_VENDOR_CAT_DESCRIPTION' => 'Categorie Omschrijving',
@@ -568,7 +568,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'E-mail',
 	'PHPSHOP_MANUFACTURER_FORM_URL' => 'URL naar website Fabrikant',
 	'PHPSHOP_MANUFACTURER_FORM_DESCRIPTION' => 'Omschrijving',
-	'PHPSHOP_MANUFACTURER_CAT_LIST_MNU' => 'Bekijk Fabrikant Categorieën',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_MNU' => 'Bekijk Fabrikant Categorieï¿½n',
 	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Fabrikanten Categorie Lijst',
 	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Categorie Naam',
 	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Categorie Omschrijving',
@@ -807,7 +807,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Actief?',
 	'PHPSHOP_DELIVERY_TIME' => 'Normaal verzonden na',
 	'PHPSHOP_DELIVERY_INFORMATION' => 'Leverings Informatie',
-	'PHPSHOP_MORE_CATEGORIES' => 'meer categorieën',
+	'PHPSHOP_MORE_CATEGORIES' => 'meer categorieï¿½n',
 	'PHPSHOP_AVAILABILITY' => 'Beschikbaarheid',
 	'PHPSHOP_CURRENTLY_NOT_AVAILABLE' => 'Dit product is momenteel niet beschikbaar.',
 	'PHPSHOP_PRODUCT_AVAILABLE_AGAIN' => 'Het is weer beschikbaar op:',
@@ -883,7 +883,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_ADMIN_CFG_FLYPAGE' => 'FLYPAGE',
 	'PHPSHOP_ADMIN_CFG_FLYPAGE_EXPLAIN' => 'Dit is de standaard pagina voor het weergeven van product informatie.',
 	'PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE' => 'Categorie Sjabloon',
-	'PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN' => 'Dit definieerd de standaard categorie sjabloon voor het weergeven van producten in een categorie.<br /> Nieuwe sjablonen kunnen worden gecreëerd door het wijzigen van de bestaande sjablonen.<br />(deze bevinden zich in de directorie <strong>COMPONENTPATH/html/templates/</strong> en beginnen met browse_)',
+	'PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN' => 'Dit definieerd de standaard categorie sjabloon voor het weergeven van producten in een categorie.<br /> Nieuwe sjablonen kunnen worden gecreï¿½erd door het wijzigen van de bestaande sjablonen.<br />(deze bevinden zich in de directorie <strong>COMPONENTPATH/html/templates/</strong> en beginnen met browse_)',
 	'PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW' => 'Standaard aantal producten in een rij',
 	'PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN' => 'Dit definieerd het standaard aantal producten in een rij. <br />Bijvoorbeeld: Als het aantal op 4 staat, dan laat het categorie sjabloon 4 producten per rij zien',
 	'PHPSHOP_ADMIN_CFG_NOIMAGEPAGE' => '"geen afbeelding" afbeelding',
@@ -974,7 +974,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE' => 'CyberCash AUTH TYPE',
 	'PHPSHOP_ADMIN_CFG_CYBERCASH_AUTENTICATIONTYPE_EXPLAIN' => 'Het CyberCash AUTH TYPE is het Cybercash authentication type dat door Cybercase is voorgesteld.',
 	'PHPSHOP_ADVANCED_SEARCH' => 'Uitgebreid Zoeken',
-	'PHPSHOP_SEARCH_ALL_CATEGORIES' => 'Doorzoek alle categorieën',
+	'PHPSHOP_SEARCH_ALL_CATEGORIES' => 'Doorzoek alle categorieï¿½n',
 	'PHPSHOP_SEARCH_ALL_PRODINFO' => 'Doorzoek alle product informatie',
 	'PHPSHOP_SEARCH_PRODNAME' => 'Alleen product naam',
 	'PHPSHOP_SEARCH_MANU_VENDOR' => 'Alleen Fabrikant/Verkoper',
@@ -1043,7 +1043,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_FLYPAGE_ENLARGE_IMAGE' => 'Bekijk grote afbeelding',
 	'PHPSHOP_CURRENCY_DISPLAY' => 'Valuta Weergave Stijl',
 	'PHPSHOP_CURRENCY_SYMBOL' => 'Valuta symbool',
-	'PHPSHOP_CURRENCY_SYMBOL_TOOLTIP' => 'U kunt ook HTML Entities gebruiken (e.g. €,£,¥,...)',
+	'PHPSHOP_CURRENCY_SYMBOL_TOOLTIP' => 'U kunt ook HTML Entities gebruiken (e.g. ï¿½,ï¿½,ï¿½,...)',
 	'PHPSHOP_CURRENCY_DECIMALS' => 'Decimalen',
 	'PHPSHOP_CURRENCY_DECIMALS_TOOLTIP' => 'Aantal getoonde decimalen (mag 0 zijn)<br><b>Wordt afgerond wanneer getal is ingegeven met een ander aantal decimalen</b>',
 	'PHPSHOP_CURRENCY_DECIMALSYMBOL' => 'Decimaal symbool',
@@ -1134,7 +1134,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_FREE_SHIPPING_AMOUNT' => 'Minimum Bedrag voor gratis verzending',
 	'PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP' => 'Het bedrag (INCL. BTW!) vanwaar geen verzendkosten worden berekend 
                                                 (bijvoorbeeld: <strong>50</strong> betekent geen verzendkosten wanneer een klant een bestelling plaatst
-                                                van € 50 (incl. BTW) of meer.',
+                                                van ï¿½ 50 (incl. BTW) of meer.',
 	'PHPSHOP_YOUR_STORE' => 'Uw winkel',
 	'PHPSHOP_CONTROL_PANEL' => 'Controle Paneel',
 	'PHPSHOP_ADMIN_CFG_PDF_BUTTON' => 'PDF - knop',
@@ -1383,7 +1383,7 @@ Wanneer niet aangevinkt dan is de prijslabel zoals gewoonlijk <strong>Prijs: $xx
 	'PHPSHOP_ADMIN_CFG_SILENT_REGISTRATION_TIP' => 'Wanneer geselecteerd dan hoeven de gebruikers geen gebruikersnaam en paswoord in te geven voor een nieuwe account. Het e-mail adres wordt gebruikt voor de nieuwe gebruiker en een random paswoord wordt gegenereerd. De registratie details worden verzonden naar de klant.',
 	'PHPSHOP_USER_SEND_REGISTRATION_DETAILS' => 'Hallo %s,
 
-Dank U om te registeren bij %s. Uw gebruikers account is net gecreëerd.
+Dank U om te registeren bij %s. Uw gebruikers account is net gecreï¿½erd.
 U kan zich aanmelden bij %s door gebruik te maken van de volgende gebruikersnaam en wachtwoord:
 
 Gebruikersnaam - %s
@@ -2106,18 +2106,18 @@ be sent to the customer from the Merchant Interface.
 	'PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF_EXPLAIN' => 'Should 2CheckOut e-mail a receipt to the store owner?',
 	'PHPSHOP_EPAY_FRAUD' => 'Der er blevet lavet: %s betaling(er) med dette kort de sidste 24 timer',
 	'PHPSHOP_EPAY_PAYMENT_DATE' => 'Dato for betalingen: ',
-	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pålagt betalingen: ',
+	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pï¿½lagt betalingen: ',
 	'PHPSHOP_EPAY_PAYMENT_CALLBACK' => '<b>Ordre betalingsinfo blev opdateret via callback!</b>',
-	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \nBetalingen har fået følgende transaktionsnummer i ePay.: ',
-	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk på nederstående link for at forsøg betaling igen:</b><br>',
+	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \nBetalingen har fï¿½et fï¿½lgende transaktionsnummer i ePay.: ',
+	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk pï¿½ nederstï¿½ende link for at forsï¿½g betaling igen:</b><br>',
 	'PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND' => '(Ordren blev ikke fundet - Intern fejl)',
 	'PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE' => '(Fejl i MD5 validering - Intern fejl - konfigurations fejl)',
-	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. følgende fejlkode: ',
+	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. fï¿½lgende fejlkode: ',
 	'PHPSHOP_EPAY_PAYMENT_LOG_TID' => 'Betalingen er oprettet med transaktionsnummer: ',
-	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles på: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekræftet ordren og skal nu vælge hvordan ordren betales. Dette gøres ved at klikke på den ønskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.',        
-	'PHPSHOP_EPAY_BUTTON_OPEN_WINDOW' => 'ÅBEN BETALINGSVINDUET',
+	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles pï¿½: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
+	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekrï¿½ftet ordren og skal nu vï¿½lge hvordan ordren betales. Dette gï¿½res ved at klikke pï¿½ den ï¿½nskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
+	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet ï¿½bner op automatisk, sï¿½ klik pï¿½ knappen for at aktivere det. <br><br> Bemï¿½rk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker pï¿½ knappen.',        
+	'PHPSHOP_EPAY_BUTTON_OPEN_WINDOW' => 'ï¿½BEN BETALINGSVINDUET',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER' => 'PBS Merchant ID',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN' => 'The Merchant ID you have reveived from PBS. For testing purpose a test Merchant ID can be obtained by contacting ePay (sales@epay.dk)',
 	'PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES' => 'Cardtypes',

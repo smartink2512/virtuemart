@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * This file prepares the VirtueMart framework
 * It should be included whenever a VirtueMart function is needed
@@ -45,11 +45,12 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$_SERVER['QUERY_STRING'] = implode('&', $new_query_string );
 	}
 	
-	if( $my->id > 0 ) {
+	if( !empty($my->id) || !empty($user->id) ) {
 		// This is necessary to get the real GID
 		if( class_exists( 'JConfig' ) ) {
-			$user = & JFactory::getUser();
+			$my = & JFactory::getUser();
 			$my->gid = $user->get('gid');
+		
 		} else {
 			$my->load( $my->id );
 		}

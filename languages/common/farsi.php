@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
 * @version $Id: farsi.php 1071 2007-12-03 08:42:28Z thepisu $
@@ -1053,7 +1053,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_FLYPAGE_ENLARGE_IMAGE' => 'View Full-Size Image',
 	'PHPSHOP_CURRENCY_DISPLAY' => 'Currency Display Style',
 	'PHPSHOP_CURRENCY_SYMBOL' => 'Currency symbol',
-	'PHPSHOP_CURRENCY_SYMBOL_TOOLTIP' => 'You can also use HTML Entities here (e.g. €,£,¥,...)',
+	'PHPSHOP_CURRENCY_SYMBOL_TOOLTIP' => 'You can also use HTML Entities here (e.g. ï¿½,ï¿½,ï¿½,...)',
 	'PHPSHOP_CURRENCY_DECIMALS' => 'Decimals',
 	'PHPSHOP_CURRENCY_DECIMALS_TOOLTIP' => 'Number of displayed decimals (can be 0)<br><b>Performs rounding if value has different number of decimals</b>',
 	'PHPSHOP_CURRENCY_DECIMALSYMBOL' => 'Decimal symbol',
@@ -2119,18 +2119,18 @@ be sent to the customer from the Merchant Interface.
 	'PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF_EXPLAIN' => 'Should 2CheckOut e-mail a receipt to the store owner?',
 	'PHPSHOP_EPAY_FRAUD' => 'Der er blevet lavet: %s betaling(er) med dette kort de sidste 24 timer',
 	'PHPSHOP_EPAY_PAYMENT_DATE' => 'Dato for betalingen: ',
-	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pålagt betalingen: ',
+	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pï¿½lagt betalingen: ',
 	'PHPSHOP_EPAY_PAYMENT_CALLBACK' => '<b>Ordre betalingsinfo blev opdateret via callback!</b>',
-	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \nBetalingen har fået følgende transaktionsnummer i ePay.: ',
-	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk på nederstående link for at forsøg betaling igen:</b><br>',
+	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \nBetalingen har fï¿½et fï¿½lgende transaktionsnummer i ePay.: ',
+	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk pï¿½ nederstï¿½ende link for at forsï¿½g betaling igen:</b><br>',
 	'PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND' => '(Ordren blev ikke fundet - Intern fejl)',
 	'PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE' => '(Fejl i MD5 validering - Intern fejl - konfigurations fejl)',
-	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. følgende fejlkode: ',
+	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. fï¿½lgende fejlkode: ',
 	'PHPSHOP_EPAY_PAYMENT_LOG_TID' => 'Betalingen er oprettet med transaktionsnummer: ',
-	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles på: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekræftet ordren og skal nu vælge hvordan ordren betales. Dette gøres ved at klikke på den ønskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.',        
-	'PHPSHOP_EPAY_BUTTON_OPEN_WINDOW' => 'ÅBEN BETALINGSVINDUET',
+	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles pï¿½: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
+	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekrï¿½ftet ordren og skal nu vï¿½lge hvordan ordren betales. Dette gï¿½res ved at klikke pï¿½ den ï¿½nskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
+	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet ï¿½bner op automatisk, sï¿½ klik pï¿½ knappen for at aktivere det. <br><br> Bemï¿½rk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker pï¿½ knappen.',        
+	'PHPSHOP_EPAY_BUTTON_OPEN_WINDOW' => 'ï¿½BEN BETALINGSVINDUET',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER' => 'PBS Merchant ID',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN' => 'The Merchant ID you have reveived from PBS. For testing purpose a test Merchant ID can be obtained by contacting ePay (sales@epay.dk)',
 	'PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES' => 'Cardtypes',

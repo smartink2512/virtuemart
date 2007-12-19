@@ -1,7 +1,7 @@
 <?php 
 // this template must have quirky html, because HTML2PDF doesn't fully understand
 // CSS and XHTML
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); ?>
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <br><br>
 <h1><?php echo $product_name ?></h1>
