@@ -27,7 +27,7 @@ class ps_perm {
 	function ps_perm() {
 		$this->getUserGroups();
 	}
-	
+
 	function getUserGroups() {
 		if( empty( $this->user_groups )) {			
 			$db = new ps_DB();
@@ -50,7 +50,9 @@ class ps_perm {
 		global $my, $acl, $user, $_VERSION;
 		$db = new ps_DB;
 		$auth = array();
-		$my = JFactory::getUser();
+		if( class_exists('jfactory')) {
+			$my = JFactory::getUser();
+		}
 		if( VM_PRICE_ACCESS_LEVEL != '' ) {
 			// Get the usertype property when not present
 			if( empty( $my->usertype ) ) {
