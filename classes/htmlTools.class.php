@@ -1126,6 +1126,33 @@ class vmCommonHTML {
                 $cellsHtml = vmCommonHTML::radioListArr( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $required );
                 return vmCommonHTML::list2Table( $cellsHtml, $cols, $rows, $size );
         }
+
+		/**
+		* Writes a yes/no radio list
+		* @param string The value of the HTML name attribute
+		* @param string Additional HTML attributes for the <select> tag
+		* @param mixed The key that is selected
+		* @returns string HTML for the radio list
+		*/
+		function yesnoRadioList( $tag_name, $tag_attribs, $key, $text, $selected, $yes='', $no='' ) {
+			global $VM_LANG;
+			$yes = ( $yes=='' ) ? $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') : $yes;
+			$no = ( $no=='' ) ? $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') : $no;
+			$arr = array(
+				vmCommonHTML::makeOption( '0', $no ),
+				vmCommonHTML::makeOption( '1', $yes )
+			);
+	
+			return vmCommonHTML::radioList( $arr, $tag_name, $tag_attribs, $key, $text, $selected );
+		}
+		
+		function makeOption( $value, $text='', $value_name='value', $text_name='text' ) {
+			$obj = new stdClass;
+			$obj->$value_name = $value;
+			$obj->$text_name = trim( $text ) ? $text : $value;
+			return $obj;
+		}
+		
         function selectList( $arr, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
                 global $VM_LANG;
                 reset( $arr );

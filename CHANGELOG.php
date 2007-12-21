@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+20.12.2007 gregdev
+# Task #1617 Installation of VM 1.1 r1097 faild in Joomla 1.5 RC4
+^ Added vmCommonHTML::makeOption() and vmCommonHTML::yesnoRadioList() for Joomla! 1.5 native integration 
+
 19.12.2007 soeren
 ^ added "_JEXEC" to all file headers + more changes to achieve Joomla! 1.5 native integration
 18.12.2007 soeren

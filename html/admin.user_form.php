@@ -95,9 +95,9 @@ if ( $my_group == 'super administrator' && $my->gid != 25 ) {
 }
 
 // build the html select list
-$lists['block'] 		= vmCommonHTML::yesnoRadioList( 'block', 'class="inputbox" size="1"', $row->block );
+$lists['block'] 		= vmCommonHTML::yesnoRadioList( 'block', 'class="inputbox" size="1"', 'value', 'text', $row->block );
 // build the html select list
-$lists['sendEmail'] 	= vmCommonHTML::yesnoRadioList( 'sendEmail', 'class="inputbox" size="1"', $row->sendEmail );
+$lists['sendEmail'] 	= vmCommonHTML::yesnoRadioList( 'sendEmail', 'class="inputbox" size="1"', 'value', 'text', $row->sendEmail );
 
 $canBlockUser 	= $acl->acl_check( 'administration', 'edit', 'users', $my->usertype, 'user properties', 'block_user' );
 $canEmailEvents = $acl->acl_check( 'workflow', 'email_events', 'users', $acl->get_group_name( $row->gid, 'ARO' ) );

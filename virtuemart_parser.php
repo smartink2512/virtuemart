@@ -49,8 +49,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		// This is necessary to get the real GID
 		if( class_exists( 'JConfig' ) ) {
 			$my = & JFactory::getUser();
-			$my->gid = $user->get('gid');
-		
 		} else {
 			$my->load( $my->id );
 		}
