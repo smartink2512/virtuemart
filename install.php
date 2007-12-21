@@ -1,5 +1,7 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 /**
 * This file is responsible for
 * - unpacking the archives inside of the component directories
@@ -221,7 +223,9 @@ define('VM_SILENT_REGISTRATION', '1');
 		// FROM index.php?option=com_phpshop&...
 		// TO index.php?option=com_virtuemart&...
 		$contents = "<?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 
 global \$mosConfig_absolute_path;
 
@@ -241,7 +245,9 @@ exit();
 		
 		rename( $fromDir.'/phpshop_parser.php', $fromDir.'/phpshop_parser~.php' );
 		$contents = "<?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
+	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+}
 global \$mosConfig_absolute_path;
 
 include( \$mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );

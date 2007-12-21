@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+21.12.2007 gregdev
+^ More changes for Joomla! 1.5 native compatibility.
 
 21.12.2007 soeren
 ^ when modifying a product via Frontend Admin => Click "Edit" Icon, the user is returned to the site correctly now (index.php, not index2.php)

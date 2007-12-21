@@ -17,6 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
+include_once( dirname(__FILE__).'/compat.joomla1.5.php' );
 
 function com_uninstall() {
 	global $database, $mosConfig_absolute_path, $mosConfig_live_site;

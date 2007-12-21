@@ -19,7 +19,7 @@
 
 	<administration>
 		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
-		  <files folder="admin">
+		  <files>
 			<filename>2checkout_notify.php</filename>
 			<filename>admin_files.tar.gz</filename>
 			<filename>admin.virtuemart.php</filename>
