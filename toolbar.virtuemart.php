@@ -1,7 +1,5 @@
 <?php 
-if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
-	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
-}
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * This file is the Toolbar controller for VirtueMart
 *
@@ -24,6 +22,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
+
 if( stristr( $_SERVER['PHP_SELF'], 'administrator')) {
 	@define( '_VM_IS_BACKEND', '1' );
 }
@@ -130,5 +129,9 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
          vmMenuBar::spacer();
          vmMenuBar::endTable();
      }
+     /*if( vmIsJoomla(1.5) && (stristr($_SERVER['PHP_SELF'], 'index2.php') || stristr($_SERVER['PHP_SELF'], 'index3.php'))) {
+	     $bar =& JToolBar::getInstance('toolbar');
+	     echo $bar->render();
+     }*/
 }
 ?>

@@ -47,8 +47,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	
 	if( !empty($my->id) || !empty($user->id) ) {
 		// This is necessary to get the real GID
-		if( class_exists( 'JConfig' ) ) {
-			$my = & JFactory::getUser();
+		if( class_exists( 'jconfig' ) ) {
+			$GLOBALS['my']->load( $user->get('id'));
+			$GLOBALS['my']->set('gid', $user->get('gid'));; 
 		} else {
 			$my->load( $my->id );
 		}
@@ -68,12 +69,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 
-	// Get default and this users's Shopper Group
-	$shopper_group = $ps_shopper_group->get_shoppergroup_by_id( $my->id );
-
-	// User authentication
-	$auth = $perm->doAuthentication( $shopper_group );
-	
 	$page = vmRequest::getVar('page');
 	$func = vmRequest::getVar('func');
 	$ajax_request = vmRequest::getVar('ajax_request', '0' );
@@ -238,17 +233,12 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$_SESSION['last_page'] = $page;
 		}
 	}
+
 	// I don't get it, why Joomla uses masked gid values!
-	if( !defined( '_VM_IS_BACKEND' )) {
-		if( class_exists('jfactory')) {
-			$my =& JFactory::getUser();
-		} else {
-			$my = $mainframe->getUser();
-		}
-		if( isset( $my->_table )) {
-			$my = $my->_table;
-		}
+	if( !defined( '_VM_IS_BACKEND' )&& !class_exists('jfactory')) {
+		$my = $mainframe->getUser();
 	}
+
     // The Page will change with every different parameter / argument, so provide this for identification
     // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
     // or the caching time range has expired

@@ -47,7 +47,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_COUNTRY_LIST_LBL'), IMAGEURL."ps_image/countries.gif", "admin", "country_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_COUNTRY_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/countries.png', "admin", "country_list");
 
 // start the list table
 $listObj->startTable();

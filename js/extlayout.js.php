@@ -77,10 +77,13 @@ echo "if( typeof Ext == \"undefined\" ) {
 		},
 
         loadPage : function(page){
-
-        	php_self = page.replace(/index2.php/, 'index3.php');
-        	php_self = php_self.replace(/index.php/, 'index3.php');
-            Ext.get('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';
+			if( page.indexOf( \"virtuemart.net\" ) == -1 ) {
+	        	php_self = page.replace(/index2.php/, 'index3.php');
+	        	php_self = php_self.replace(/index.php/, 'index3.php');
+	        	Ext.get('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';
+	        } else {
+	        	Ext.get('vmPage').dom.src = page;
+            }
         }
 	}
 }();

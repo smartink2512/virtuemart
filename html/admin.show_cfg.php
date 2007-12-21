@@ -18,7 +18,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 mm_showMyFileName( __FILE__ );
 require_once(CLASSPATH.'ps_checkout.php');
 
-global $acl, $VM_BROWSE_ORDERBY_FIELDS, $VM_MODULES_FORCE_HTTPS;
+global $acl, $VM_BROWSE_ORDERBY_FIELDS, $VM_MODULES_FORCE_HTTPS, $database;
 if( !isset( $VM_BROWSE_ORDERBY_FIELDS )) { $VM_BROWSE_ORDERBY_FIELDS = array(); }
 if( !isset( $VM_MODULES_FORCE_HTTPS )) { $VM_MODULES_FORCE_HTTPS = array('account','checkout'); }
 if( !isset( $VM_CHECKOUT_MODULES )) {
@@ -39,7 +39,7 @@ if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.5 ) {
 $db->query( 'SELECT `'.$fieldname.'` FROM #__core_acl_aro_groups WHERE name=\''.VM_PRICE_ACCESS_LEVEL.'\'' );
 $db->next_record();
 $gtree = ps_perm::getGroupChildrenTree( null, 'USERS', false );
-$access_group_list = mosHTML::selectList( $gtree, 'conf_VM_PRICE_ACCESS_LEVEL', 'size="4"', 'value', 'text', $db->f($fieldname) );
+$access_group_list = ps_html::selectList( 'conf_VM_PRICE_ACCESS_LEVEL', $db->f($fieldname), $gtree, '4'  );
 
 $title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_('PHPSHOP_CONFIG').'" />&nbsp;';
 $title .= $VM_LANG->_('PHPSHOP_CONFIG');
@@ -391,12 +391,12 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 			</td>
 			<td>
 			<?php
-			$database->setQuery( "SELECT id AS value, CONCAT( title, ' (', title_alias, ')' ) AS text FROM #__content ORDER BY id" );
-			$content = $database->loadObjectList( );
+			$db->query( "SELECT id AS value, CONCAT( title, ' (', title_alias, ')' ) AS text FROM #__content ORDER BY id" );
+			
 			$select =  "<select size=\"5\" name=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" id=\"conf_VM_ONCHECKOUT_LEGALINFO_LINK\" class=\"inputbox\" style=\"width: 300px;\">\n";
-			foreach($content as $objElement) {
-				$selected = @VM_ONCHECKOUT_LEGALINFO_LINK == $objElement->value ? 'selected="selected"' : '';
-				$select .= "<option title=\"{$objElement->text}\" value=\"{$objElement->value}\" $selected>{$objElement->text}</option>\n";
+			while( $db->next_record()) {
+				$selected = @VM_ONCHECKOUT_LEGALINFO_LINK == $db->f('value') ? 'selected="selected"' : '';
+				$select .= "<option title=\"".$db->f('text')."\" value=\"".$db->f('value')."\" $selected>".$db->f('text')."</option>\n";
 			}
 			$select .=  "</select>\n";
 			echo $select;
@@ -742,7 +742,13 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SITE'), "site-page");
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NOIMAGEPAGE') ?></td>
         <td>
-            <input type="text" name="conf_NO_IMAGE" class="inputbox" value="<?php echo NO_IMAGE ?>" />
+	        <?php
+			$images = vmReadDirectory(VM_THEMEPATH.'images', '\.png$|\.bmp$|\.jpg$|\.jpeg$|\.gif$|\.ico$');
+			foreach( $images as $image ) {
+				$imageArr[basename($image)] = $image;
+			}
+			echo ps_html::selectList('conf_NO_IMAGE', NO_IMAGE, $imageArr );
+	        ?>
         </td>
         <td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN') ) ?>
         </td>

@@ -29,7 +29,7 @@ else {
   $cols = 2;
 }
 ?>
-<img src="<?php echo IMAGEURL ?>ps_image/csv.gif" alt="CSV Upload" border="0" align="absmiddle" />
+<img src="<?php echo VM_THEMEURL ?>images/administration/dashboard/csv.png" alt="CSV Upload" border="0" align="absmiddle" />
 <span class="sectionname"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_CSV_UPLOAD') ?></span><br /><br />
 
 <?php 

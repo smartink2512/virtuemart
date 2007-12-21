@@ -85,6 +85,23 @@ if( class_exists( 'JConfig' ) ) {
 		}
 		// Version information
 		$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
+		
+		if( !function_exists( 'sefreltoabs')) {
+			function sefRelToAbs( $url ) {
+				//TODO!!!
+				//Create a file "router.php" inside /components/com_virtuemart/
+				//$router = JRouter::getInstance('virtuemart');
+				//return $router->build($url);
+				return $url;
+			}
+		}
+		if( !function_exists('editorArea')) {
+			function editorArea($name, $content, $hiddenField, $width, $height, $col, $row) {
+				jimport( 'joomla.html.editor' );
+				$editor =& JFactory::getEditor();
+				echo $editor->display($hiddenField, $content, $width, $height, $col, $row);
+			}
+		}
 	
 	} else {
 		// We need these even when the Joomla! 1.5 legacy plugin is enabled

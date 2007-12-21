@@ -221,15 +221,15 @@ class vmMainFrame {
 													window.onload = function() { if( prev_onload ) prev_onload(); initLightbox(); }' );
 			}
 			$this->render();
-			
 		} else {
-			session_write_close();
+			
 			if( !empty( $this->_response_scripts )) {
 				echo vmCommonHTML::scriptTag('', implode("\n", $this->_response_scripts ));
 			}
 			if( is_callable( array( $mainframe, 'close' ) ) ) {				
 				$mainframe->close();
 			} else {
+				session_write_close();
 				exit;
 			}
 		}

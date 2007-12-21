@@ -95,7 +95,7 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CATEGORY_LIST_LBL'), IMAGEURL."ps_image/categories.gif", $modulename, "product_category_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CATEGORY_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/categories.png', $modulename, "product_category_list");
 
 // start the list table
 $listObj->startTable();

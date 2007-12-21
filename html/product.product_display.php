@@ -22,7 +22,7 @@ $ps_vendor = new ps_vendor;
 $db2 = new ps_DB; 
 $product_id = $vars["product_id"];
 
-if ($product_parent_id = $vars["product_parent_id"]) {
+if ($product_parent_id == $vars["product_parent_id"]) {
   if ($func == "productAdd") {
     $action = $VM_LANG->_('PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL'); 
   } else {

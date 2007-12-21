@@ -19,22 +19,18 @@ mm_showMyFileName( __FILE__ );
 include_once( ADMINPATH . "version.php" );
 ?>
 <br /><br />
-<table align="center" style="width: 80%;" class="admin">
- <tbody>
-  <tr>
-   <td>
-    <pre><strong>Your <?php echo $VMVERSION->PRODUCT ?> version:</strong> <?php echo $myVersion ?></pre>
+<div class="shop_info">Your <?php echo $VMVERSION->PRODUCT ?> version: <strong><?php echo $myVersion ?></strong></div>
     <img hspace="5" align="left" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_virtuemart/cart.gif" alt="cart.gif" />
     <span style="font-weight: bold;">
-     VirtueMart</span> is the complete Open Source E-Commerce solution for Mambo and Joomla. It is an Application, which comes with a Component, 6 Modules and 2 Mambots.
+     VirtueMart</span> is the complete Open Source E-Commerce solution for Mambo and Joomla!. 
+     It is an Application, which comes with a Component, more than 8 Modules and Mambots/Plugins.
      It has its roots in a Shopping Cart Script called &quot;phpShop&quot; (Authors: Edikon Corp. &amp; the <a href="http://www.virtuemart.org/" target="_blank">phpShop</a> community).
      <br /><br />VirtueMart is licensed under the <a href="http://www.gnu.org/copyleft/gpl.html" target="_blank">GNU / GPL License</a>.
-     <br /><br /><br />There's a small bunch of developers who help in pushing this
-          Shopping Script towards professionality and usability.
+     <br /><br /><br />There's a small team of Developers who help in evolving this Shopping Cart Script.
       <br /><br />
-      <span style="font-weight: bold;">Project Leader:</span> Soeren Eberhardt<br />
+      <span style="font-weight: bold;">Project Leader:</span> Soeren Eberhardt-Biermann<br />
       <span style="font-weight: bold;">Homepage:</span> <a href="http://virtuemart.net" target="_blank" title="virtuemart.net">http://virtuemart.net</a><br />
-      <span style="font-weight: bold;">Forum:</span> <a href="http://virtuemart.net/index.php?option=com_smf&Itemid=71" target="_blank" title="VirtueMart Forum">VirtueMart Forum</a><br />
+      <span style="font-weight: bold;">Forum:</span> <a href="http://forum.virtuemart.net" target="_blank" title="VirtueMart Forum">VirtueMart Forum</a><br />
       
       <br />
 	<?php
@@ -42,7 +38,7 @@ include_once( ADMINPATH . "version.php" );
 	?>
 	<br /><br />
       <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"><span style="font-weight: bold;">
-      Please consider a small donation to help me keep up the  work on this component.</span><br style="font-weight: bold;" /><br />
+      Please consider a small donation to the VirtueMart Project to help us keep up the work on this Component and create new Features.</span><br style="font-weight: bold;" /><br />
       <input type="hidden" name="cmd" value="_xclick" />
       <input type="hidden" name="business" value="soeren_nb@yahoo.de" />
       <input type="hidden" name="item_name" value="VirtueMart Donation" />
@@ -53,7 +49,3 @@ include_once( ADMINPATH . "version.php" );
       <input type="hidden" name="amount" />
       <input type="image" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_virtuemart/x-click-but21.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
     </form>
-   </td>
-  </tr>
- </tbody>
-</table>

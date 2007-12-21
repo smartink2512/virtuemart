@@ -60,7 +60,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_LBL'), IMAGEURL."ps_image/manufacturer.gif", $modulename, "manufacturer_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_MANUFACTURER_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/manufacturer.png', $modulename, "manufacturer_list");
 
 // start the list table
 $listObj->startTable();

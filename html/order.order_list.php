@@ -55,7 +55,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_ORDER_LIST_LBL'), IMAGEURL."ps_image/orders.gif", $modulename, "order_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_ORDER_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/orders.png', $modulename, "order_list");
 
 ?>
 <div align="center">

@@ -77,61 +77,61 @@ $tabs->startTab($VM_LANG->_('PHPSHOP_CONTROL_PANEL'), 'control-panel');
 ?>
 
 <div class="header">
-	<h2><img src="<?php echo IMAGEURL ?>ps_image/Desktop.gif" width="48" height="48" align="middle" alt="Desktop" border="0" />
+	<h2><img src="<?php echo VM_THEMEURL ?>images/administration/dashboard/store.png" align="middle" alt="Desktop" border="0" />
 		<?php echo $VM_LANG->_('PHPSHOP_YOUR_STORE')."::".$VM_LANG->_('PHPSHOP_CONTROL_PANEL'); ?></h2>
 </div>
 <br style="clear:both;" />
 	<div id="cpanel">
         <?php
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list");
-		$image = IMAGEURL .'ps_image/shop_products.png';
+		$image = VM_THEMEURL .'images/administration/dashboard/shop_products.png';
 		$text = $VM_LANG->_('PHPSHOP_PRODUCT_LIST_LBL');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list");
-		$image = IMAGEURL .'ps_image/shop_categories.png';
+		$image = VM_THEMEURL .'images/administration/dashboard/shop_categories.png';
 		$text = $VM_LANG->_('PHPSHOP_CATEGORY_LIST_LBL');
 		$ps_html->writePanelIcon( $image, $link, $text );
 
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list");
-		$image = IMAGEURL .'ps_image/shop_orders.png';
+		$image = VM_THEMEURL .'images/administration/dashboard/shop_orders.png';
 		$text = $VM_LANG->_('PHPSHOP_ORDER_MOD');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list");
-		$image = IMAGEURL .'ps_image/shop_payment.png';
+		$image = VM_THEMEURL .'images/administration/dashboard/shop_payment.png';
 		$text = $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_MNU');
 		$ps_html->writePanelIcon( $image, $link, $text );
               
         if (defined( "_VM_IS_BACKEND" ) ) {
 		    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
-		    $image = IMAGEURL .'ps_image/shop_vendors.png';
+		    $image = VM_THEMEURL .'images/administration/dashboard/shop_vendors.png';
             $text =  $VM_LANG->_('PHPSHOP_VENDOR_MOD');
 		    $ps_html->writePanelIcon( $image, $link, $text );
         }
                 
 		if (defined( "_VM_IS_BACKEND" ) ) { 
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
-			$image = IMAGEURL .'ps_image/shop_users.png';
+			$image = VM_THEMEURL .'images/administration/dashboard/shop_users.png';
 			$text = $VM_LANG->_('PHPSHOP_USERS');
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
         
         if (defined( "_VM_IS_BACKEND" ) ) {    
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
-			$image = IMAGEURL .'ps_image/shop_configuration.png';
+			$image = VM_THEMEURL .'images/administration/dashboard/shop_configuration.png';
 			$text = $VM_LANG->_('PHPSHOP_CONFIG');
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
                 
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
-		$image = IMAGEURL .'ps_image/shop_mart.png';
+		$image = VM_THEMEURL .'images/administration/dashboard/shop_mart.png';
 		$text = $VM_LANG->_('PHPSHOP_STORE_FORM_MNU');
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
-		$link = 'http://virtuemart.net/index.php?option=com_content&task=view&id=103&Itemid=67';
-		$image = IMAGEURL .'ps_image/shop_help.png';
+		$link = 'http://virtuemart.net/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125';
+		$image = VM_THEMEURL .'images/administration/dashboard/shop_help.png';
 		$text = $VM_LANG->_('PHPSHOP_HELP_MOD');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
@@ -143,7 +143,7 @@ $tabs->startTab($VM_LANG->_('PHPSHOP_CONTROL_PANEL'), 'control-panel');
 $tabs->endTab();
 $tabs->startTab( $VM_LANG->_('PHPSHOP_STATISTIC_STATISTICS'), "statistic-page");
     ?>
-	<table class="adminlist" style="width:95%;">
+	<table class="adminlist">
 		<tr> 
 		  <th colspan="2" class="title"><?php echo $VM_LANG->_('PHPSHOP_STATISTIC_STATISTICS') ?></th>
 		</tr>

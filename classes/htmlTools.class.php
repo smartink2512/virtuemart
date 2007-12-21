@@ -320,7 +320,8 @@ class formFactory {
 	* Writes the form start tag
 	*/
 	function startForm( $formname = 'adminForm', $extra = "" ) {
-		echo '<form method="post" action="'. $_SERVER['PHP_SELF'] .'" name="'.$formname.'" '.$extra.' target="_self">';
+		$action = (!defined('_VM_IS_BACKEND' ) && !empty($_REQUEST['next_page'])) ? 'index.php' : $_SERVER['PHP_SELF'];
+		echo '<form method="post" action="'. $action .'" name="'.$formname.'" '.$extra.' target="_self">';
 	}
 	
 	function hiddenField( $name, $value ) {
@@ -1002,7 +1003,7 @@ class vmCommonHTML {
 		if ( PSHOP_PDF_BUTTON_ENABLE == '1' && !vmGet( $_REQUEST, 'pop' )  ) {
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_PDF'), $VM_LANG->_('CMN_PDF') );
+				$text = vmCommonHTML::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_PDF'), $VM_LANG->_('CMN_PDF') );
 			} else {
 				$text = $VM_LANG->_('CMN_PDF') .'&nbsp;';
 			}
@@ -1021,7 +1022,7 @@ class vmCommonHTML {
 		if ( @VM_SHOW_EMAILFRIEND == '1' && !vmGet( $_REQUEST, 'pop' ) && $product_id > 0  ) {
 			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1' );
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_EMAIL'), $VM_LANG->_('CMN_EMAIL') );
+				$text = vmCommonHTML::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_EMAIL'), $VM_LANG->_('CMN_EMAIL') );
 			} else {
 				$text = '&nbsp;'. $VM_LANG->_('CMN_EMAIL');
 			}
@@ -1038,7 +1039,7 @@ class vmCommonHTML {
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
-				$text = mosAdminMenus::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_PRINT'), $VM_LANG->_('CMN_PRINT') );
+				$text = vmCommonHTML::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_PRINT'), $VM_LANG->_('CMN_PRINT') );
 				$text .= shopMakeHtmlSafe($add_text);
 			} else {
 				$text = '|&nbsp;'. $VM_LANG->_('CMN_PRINT'). '&nbsp;|';
@@ -1056,6 +1057,53 @@ class vmCommonHTML {
 				return vmPopupLink($link, $text, 640, 480, '_blank', $VM_LANG->_('CMN_PRINT'));
 			}
 		}
+		
+	}
+	/**
+	* Checks to see if an image exists in the current templates image directory
+ 	* if it does it loads this image.  Otherwise the default image is loaded.
+	* Also can be used in conjunction with the menulist param to create the chosen image
+	* load the default or use no image
+	*/
+	function ImageCheck( $file, $directory='/images/M_images/', $param=NULL, $param_directory='/images/M_images/', $alt=NULL, $name=NULL, $type=1, $align='middle', $title=NULL, $admin=NULL ) {
+		global $mosConfig_absolute_path, $mosConfig_live_site, $mainframe;
+
+		$cur_template = $mainframe->getTemplate();
+
+		$name 	= ( $name 	? ' name="'. $name .'"' 	: '' );
+		$title 	= ( $title 	? ' title="'. $title .'"' 	: '' );
+		$alt 	= ( $alt 	? ' alt="'. $alt .'"' 		: ' alt=""' );
+		$align 	= ( $align 	? ' align="'. $align .'"' 	: '' );
+
+		// change directory path from frontend or backend
+		if ($admin) {
+			$path 	= '/administrator/templates/'. $cur_template .'/images/';
+		} else {
+			$path 	= '/templates/'. $cur_template .'/images/';
+		}
+
+		if ( $param ) {
+			$image = $mosConfig_live_site. $param_directory . $param;
+			if ( $type ) {
+				$image = '<img src="'. $image .'" '. $alt . $name . $align .' border="0" />';
+			}
+		} else if ( $param == -1 ) {
+			$image = '';
+		} else {
+			if ( file_exists( $mosConfig_absolute_path . $path . $file ) ) {
+				$image = $mosConfig_live_site . $path . $file;
+			} else {
+				// outputs only path to image
+				$image = $mosConfig_live_site. $directory . $file;
+			}
+
+			// outputs actual html <img> tag
+			if ( $type ) {
+				$image = '<img src="'. $image .'" '. $alt . $name . $title . $align .' border="0" />';
+			}
+		}
+
+		return $image;
 	}
 	/**
 	 * this function parses all the text through all content plugins

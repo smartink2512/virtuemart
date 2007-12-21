@@ -52,7 +52,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_LBL'), IMAGEURL."ps_image/payment.gif", $modulename, "payment_method_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/payment.png', $modulename, "payment_method_list");
 
 // start the list table
 $listObj->startTable();

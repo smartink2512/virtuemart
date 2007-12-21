@@ -64,6 +64,7 @@ class vmMenuBar extends mosMenuBar {
 		if( $alt == '') {
 			$alt = $VM_LANG->_('CMN_SAVE');
 		}
+		
 		$bar =& JToolBar::getInstance('toolbar');
 		
 		$bar->appendButton('Custom', '<td class="button">
@@ -251,7 +252,13 @@ class vmMenuBar extends mosMenuBar {
 		}
 	}
 }
-
+/**
+ * This class is used for the Ext-based Toolbar (ExtJS), which is only the case in "Extended Layout" mode
+ * This toolbar is a custom replacement for the Mambo/Joomla! toolbar
+ * @author soeren
+ * @since 1.1
+ *
+ */
 class vmToolBar {
 	var $buttons = '';
 	/**

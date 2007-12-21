@@ -231,7 +231,7 @@ if ($num_rows > 0) {
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PRODUCT_LIST_LBL'), IMAGEURL."ps_image/product_code.png", "product", "product_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_PRODUCT_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/product_code.png', "product", "product_list");
 
 echo $VM_LANG->_('PHPSHOP_FILTER') ?>:
  <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.product_list&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
@@ -286,7 +286,9 @@ if ($num_rows > 0) {
 		$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("product_id"), false, "product_id" ) );
 		
 		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1" );
-		$link = defined('_VM_IS_BACKEND') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
+		$link = defined('_VM_IS_BACKEND') 
+						? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
+						: str_replace('index.php', 'index2.php', $link );
 		$text = shopMakeHtmlSafe($db->f("product_name"));
 
 		// The link to the product form / to the child products

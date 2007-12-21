@@ -36,7 +36,7 @@ $i=0;
 
 ?>
 <!-- BEGIN body -->
-&nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/report.gif" border="0" />&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;<img src="<?php echo VM_THEMEURL ?>images/administration/dashboard/report.png" border="0" />&nbsp;&nbsp;&nbsp;
 <span class="sectionname"><?php echo $VM_LANG->_('PHPSHOP_REPORTBASIC_MOD') ?></span><br /><br />
     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <input type="hidden" name="page" value="reportbasic.index" />

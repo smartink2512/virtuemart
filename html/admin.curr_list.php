@@ -47,7 +47,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CURRENCY_LIST_LBL'), IMAGEURL."ps_image/currency.gif", "admin", "curr_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CURRENCY_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/currency.png', "admin", "curr_list");
 
 // start the list table
 $listObj->startTable();

@@ -53,7 +53,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_MODULE_LIST_LBL'), IMAGEURL."ps_image/modules.gif", "admin", "module_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_MODULE_LIST_LBL'), VM_THEMEURL.'images/administration/dashboard/modules.png', "admin", "module_list");
 
 // start the list table
 $listObj->startTable();

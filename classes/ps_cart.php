@@ -86,11 +86,12 @@ class ps_cart {
 			return $cart;
 		}
 		else {
+			//echo 'auth::user_id: '.$_SESSION['auth']['user_id'] . '; $my->id: '.print_r($my);
 			if( ( @$_SESSION['auth']['user_id'] != $my->id ) && empty( $my->id )
 			&& @$_GET['cartReset'] != 'N') {
 				// If the user ID has changed (after logging out)
 				// empty the cart!
-				$sess->emptySession();
+				//$sess->emptySession();
 				ps_cart::reset();
 			}
 		}

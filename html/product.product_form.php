@@ -192,7 +192,7 @@ if( $clone_product == "1" ) {
 	$product_id = "";
 }
 
-$title = '<img src="'. IMAGEURL .'ps_image/product_code.png" border="0" align="center" alt="Product Form" />&nbsp;&nbsp;';
+$title = '<img src="'. VM_THEMEURL.'images/administration/dashboard/product_code.png" border="0" align="center" alt="Product Form" />&nbsp;&nbsp;';
 $title .= $action;
 
 if( !empty( $product_id )) {

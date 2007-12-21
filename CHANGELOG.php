@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+21.12.2007 soeren
+^ when modifying a product via Frontend Admin => Click "Edit" Icon, the user is returned to the site correctly now (index.php, not index2.php)
+^ more changes for Joomla! 1.5 native compatibility. VirtueMart should now run without Legacy Mode.
+
 20.12.2007 gregdev
 # Task #1617 Installation of VM 1.1 r1097 faild in Joomla 1.5 RC4
 ^ Added vmCommonHTML::makeOption() and vmCommonHTML::yesnoRadioList() for Joomla! 1.5 native integration 

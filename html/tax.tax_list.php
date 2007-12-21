@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_TAX_LIST_LBL'), IMAGEURL."ps_image/taxes.gif", $modulename, "tax_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_TAX_LIST_LBL'), VM_THEMEURL."images/administration/dashboard/tax.png", $modulename, "tax_list");
 
 // start the list table
 $listObj->startTable();

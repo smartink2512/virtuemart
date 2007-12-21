@@ -465,11 +465,25 @@ function editorScript($editor1='', $editor2='') {
 	 		return;
 	 	}
 	 	<?php
-	 	if ($editor1 != '')
-	 	getEditorContents( 'editor1', $editor1 ) ; ?>
-	 	<?php
-	 	if ($editor2 != '')
-	 	getEditorContents( 'editor2', $editor2 ) ; ?>
+        if ($editor1 != '') {
+			if( vmIsJoomla(1.5) ) {
+				jimport('joomla.html.editor');
+				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
+				echo $editor->getContent('editor1');
+			} else {
+				getEditorContents( 'editor1', $editor1 );
+			}
+		}
+		if ($editor2 != '') {
+			if( vmIsJoomla(1.5) ) {
+				jimport('joomla.html.editor');
+				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
+				echo $editor->getContent('editor2');
+			} else {
+				getEditorContents( 'editor2', $editor2 );
+				
+			}
+		} ?>
 	 	submitform( pressbutton );
 
 	 }

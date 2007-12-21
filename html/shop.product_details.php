@@ -234,8 +234,8 @@ $mainframe->prependMetaTag( "description", strip_tags( $db_product->f("product_s
 
 // Show an "Edit PRODUCT"-Link
 if ($perm->check("admin,storeadmin")) {
-	$edit_link = "<a href=\"". sefRelToAbs($mosConfig_live_site."/index.php?page=product.product_form&amp;next_page=shop.product_details&amp;product_id=$product_id&amp;option=com_virtuemart&amp;Itemid=$Itemid")."\">
-      <img src=\"images/M_images/edit.png\" width=\"16\" height=\"16\" alt=\"". $VM_LANG->_('PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT') ."\" border=\"0\" /></a>";
+	$edit_link = '<a href="'. $sess->url( 'index2.php?page=product.product_form&next_page=shop.product_details&product_id='.$product_id).'">
+      <img src="images/M_images/edit.png" width="16" height="16" alt="'. $VM_LANG->_('PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT') .'" border="0" /></a>';
 }
 else {
 	$edit_link = "";

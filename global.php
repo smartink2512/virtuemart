@@ -109,6 +109,13 @@ $ps_html = new ps_html();
 // Constructor initializes the session!
 $sess = new ps_session();
 
+// Instantiate the ps_shopper_group class
+$ps_shopper_group = new ps_shopper_group();
+// Get default and this users's Shopper Group
+$shopper_group = $ps_shopper_group->get_shoppergroup_by_id( $my->id );
+
+// User authentication
+$auth = $perm->doAuthentication( $shopper_group );
 // Initialize the cart
 $cart = ps_cart::initCart();
 // Initialise Recent Products
@@ -117,8 +124,6 @@ $recentproducts = ps_session::initRecentProducts();
 $ps_module = new ps_module();
 // Instantiate the function class
 $ps_function = new ps_function();
-// Instantiate the ps_shopper_group class
-$ps_shopper_group = new ps_shopper_group();
 
 // Set the mosConfig_live_site to its' SSL equivalent
 $GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];

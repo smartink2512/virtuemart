@@ -31,7 +31,7 @@ $q = "SELECT * FROM #__{vm}_vendor WHERE vendor_id='$ps_vendor_id'";
 $db->query($q);  
 $db->next_record();
 
-$title = '<img src="'. IMAGEURL .'ps_image/home.png" align="absmiddle" border="0" alt="Store" />'.'&nbsp;&nbsp;&nbsp;'. $VM_LANG->_('PHPSHOP_STORE_FORM_LBL');
+$title = '<img src="'. VM_THEMEURL.'images/administration/dashboard/store.png" align="absmiddle" border="0" alt="Store" />'.'&nbsp;&nbsp;&nbsp;'. $VM_LANG->_('PHPSHOP_STORE_FORM_LBL');
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $title );

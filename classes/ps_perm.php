@@ -27,7 +27,7 @@ class ps_perm {
 	function ps_perm() {
 		$this->getUserGroups();
 	}
-
+	
 	function getUserGroups() {
 		if( empty( $this->user_groups )) {			
 			$db = new ps_DB();
@@ -47,25 +47,27 @@ class ps_perm {
 	*/
 	function doAuthentication( $shopper_group ) {
 
-		global $my, $acl, $user, $_VERSION;
+		global $my, $acl, $user;
 		$db = new ps_DB;
 		$auth = array();
 		if( class_exists('jfactory')) {
-			$my = JFactory::getUser();
+			$vmUser = JFactory::getUser();
+		} else {
+			$vmUser =& $my;
 		}
 		if( VM_PRICE_ACCESS_LEVEL != '' ) {
 			// Get the usertype property when not present
-			if( empty( $my->usertype ) ) {
-				if( empty( $my->id )) { 
+			if( empty( $vmUser->usertype ) ) {
+				if( empty( $vmUser->id )) { 
 					$gid = 29; 
 				}
 				else {
-					$gid = $my->gid;
+					$gid = $vmUser->gid;
 				}
-				$fieldname = ($_VERSION->RELEASE >= 1.1 && $_VERSION->PRODUCT == 'Joomla!' ) ? 'id' : 'group_id';
+				$fieldname = vmIsJoomla(1.5) ? 'id' : 'group_id';
 				$db->query( 'SELECT `name` FROM `#__core_acl_aro_groups` WHERE `'.$fieldname.'` ='.$gid );
 				$db->next_record();
-				$my->usertype = $db->f( 'name' );
+				$vmUser->usertype = $db->f( 'name' );
 			}
 			
 			$this->prepareACL();
@@ -76,21 +78,21 @@ class ps_perm {
 				$auth['show_prices']  = $user->authorize( 'virtuemart', 'prices' );	
 			}
 			else {
-				$auth['show_prices']  = $acl->acl_check( 'virtuemart', 'prices', 'users', strtolower($my->usertype), null, null );
+				$auth['show_prices']  = $acl->acl_check( 'virtuemart', 'prices', 'users', strtolower($vmUser->usertype), null, null );
 			}
 		}
 		else {
 			$auth['show_prices'] = 1;
 		}
 		
-		if (!empty($my->id)) { // user has already logged in
+		if (!empty($vmUser->id)) { // user has already logged in
 
-			$auth["user_id"]   = $my->id;
-			$auth["username"] = $my->username;
+			$auth["user_id"]   = $vmUser->id;
+			$auth["username"] = $vmUser->username;
 	
-			if ($this->is_registered_customer($my->id)) {
+			if ($this->is_registered_customer($vmUser->id)) {
 	
-				$q = "SELECT perms,first_name,last_name,country,zip FROM #__{vm}_user_info WHERE user_id='".$my->id."'";
+				$q = "SELECT perms,first_name,last_name,country,zip FROM #__{vm}_user_info WHERE user_id='".$vmUser->id."'";
 				$db->query($q);
 				$db->next_record();
 	
@@ -104,10 +106,10 @@ class ps_perm {
 				// Shopper is the default value
 				// We must prevent that Administrators or Managers are 'just' shoppers
 				if( $auth["perms"] == "shopper" ) {
-					if (stristr($my->usertype,"Administrator")) {
+					if (stristr($vmUser->usertype,"Administrator")) {
 						$auth["perms"]  = "admin";
 					}
-					elseif (stristr($my->usertype,"Manager")) {
+					elseif (stristr($vmUser->usertype,"Manager")) {
 						$auth["perms"]  = "storeadmin";
 					}
 				}
@@ -120,10 +122,10 @@ class ps_perm {
 	
 			// user is no registered customer
 			else {
-				if (stristr($my->usertype,"Administrator")) {
+				if (stristr($vmUser->usertype,"Administrator")) {
 					$auth["perms"]  = "admin";
 				}
-				elseif (stristr($my->usertype,"Manager")) {
+				elseif (stristr($vmUser->usertype,"Manager")) {
 					$auth["perms"]  = "storeadmin";
 				}
 				else {
@@ -152,8 +154,7 @@ class ps_perm {
 		}
 
 		// register $auth into SESSION
-		$_SESSION["auth"] = $auth;
-
+		$_SESSION['auth'] = $auth;
 		return $auth;
 
 	}
@@ -420,10 +421,10 @@ class ps_perm {
 				$twist = "-&nbsp;";
 			}
 
-			if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.1 ) {
+			if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.5 ) {
 				$tree[$i]->group_id = $tree[$i]->id;
 			}
-			$list[$i] = mosHTML::makeOption( $tree[$i]->group_id, $shim.$twist.$tree[$i]->name );
+			$list[$tree[$i]->group_id] = $shim.$twist.$tree[$i]->name;
 			if ($tree[$i]->level < @$tree[$i-1]->level) {
 				$indents[$tree[$i]->level+1] = '.&nbsp;';
 			}

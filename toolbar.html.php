@@ -65,16 +65,28 @@ var submitbutton = function(pressbutton){
 		return;
 	}	
 ';
-              
-		if ($editor1 != '') {
-			ob_start();
-			getEditorContents( 'editor1', $editor1 );
-			$script .= ob_get_contents(); ob_end_clean();
+        
+    	if ($editor1 != '') {
+			if( vmIsJoomla(1.5) ) {
+				jimport('joomla.html.editor');
+				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
+				$script .= $editor->getContent('editor1');
+			} else {
+				ob_start();
+				getEditorContents( 'editor1', $editor1 );
+				$script .= ob_get_contents(); ob_end_clean();
+			}
 		}
 		if ($editor2 != '') {
-			ob_start();
-			getEditorContents( 'editor1', $editor1 );
-			$script .= ob_get_contents(); ob_end_clean();
+			if( vmIsJoomla(1.5) ) {
+				jimport('joomla.html.editor');
+				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
+				$script .= $editor->getContent('editor2');
+			} else {
+				ob_start();
+				getEditorContents( 'editor2', $editor2 );
+				$script .= ob_get_contents(); ob_end_clean();
+			}
 		}
 		if( $no_menu ) {
 			$admin = defined('_VM_IS_BACKEND') ? '/administrator' : '';

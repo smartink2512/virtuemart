@@ -51,7 +51,7 @@ $listObj = new listFactory( $pageNav );
 $title = $VM_LANG->_('PHPSHOP_REVIEWS');
 		  
 // print out the search field and a list heading
-$listObj->writeSearchHeader( $title, IMAGEURL."ps_image/reviews.gif", $modulename, "review_list");
+$listObj->writeSearchHeader( $title, VM_THEMEURL.'images/administration/dashboard/reviews.png', $modulename, "review_list");
 
 // start the list table
 $listObj->startTable();

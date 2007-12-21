@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CREDITCARD_LIST_LBL'), IMAGEURL."ps_image/credit.jpg", $modulename, "creditcard_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_CREDITCARD_LIST_LBL'), VM_THEMEURL .'images/administration/dashboard/credit.png', $modulename, "creditcard_list");
 
 // start the list table
 $listObj->startTable();

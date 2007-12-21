@@ -19,7 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $mosConfig_absolute_path, $product_id, $vmInputFilter, $vmLogger;
         
 /* Load the virtuemart main parse code */
-require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
+require_once( dirname(__FILE__).'/../../components/'.$option.'/virtuemart_parser.php' );
 
 $my_page= explode ( '.', $page );
 $modulename = $my_page[0];

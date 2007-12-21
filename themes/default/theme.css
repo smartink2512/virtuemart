@@ -219,50 +219,32 @@ table.adminform td.labelcell {
 	vertical-align: top;
 	width: 5%;
 }
-/**
-* Errors, Warnings and Info formatting
-*/
 .shop_error, .shop_warning, .shop_info, .shop_debug, .shop_critical, .shop_tip {
-	font-size: 120%;
-  	margin-top: 0.8em;
-  	margin-left: auto;
-  	margin-right: auto;
-  	width: 70% !important;
-  	clear: both;
-  	text-align: justify;
-  	vertical-align: middle;
-  	border-collapse: collapse;
-  	padding: 15px 20px 15px 80px;
-  	background-position: 20px 50%;
-  	background-repeat: no-repeat;
-  	-moz-border-radius: 20px;
-  	-khtml-border-radius: 20px;
-  	border-radius: 20px;
+	background-color:#FAFAD2;
+	background-position:left 5px;
+	background-repeat:no-repeat;
+	border-color:#AACCAA;
+	border-style:dotted none;
+	border-width:1px 0pt;
+	font-weight: 900;
+	margin:1pt 1pt 1em 1em;
+	padding:0.5em 1em 1.5em 48px;
 }
 .shop_error {
-  	background-color: #fdd;
-	background-image: url( images/log_error.png );
+	background-image: url( images/error.gif );
 }
 .shop_warning {
-  	background-color: #ffc;
-	background-image: url( images/log_warning.png );
+	background-image: url( images/warning.png );
 }
-.shop_info {
+.shop_info, .shop_tip {
+  	background-image: url( images/info.png );
+}
 
-  	background-color: #eef;
-  	background-image: url( images/log_info.png );
-}
-.shop_tip {
-	background-image: url( images/info.png );
-  	background-color: #dfd;
-}
 .shop_debug {
-	background-color: #F0F8FF;
 	background-image: url( images/log_debug.png );
 
 }
 .shop_critical {
-	background-color: salmon;
 	font-weight: bold;
 	background-image: url( images/log_critical.png );
 }

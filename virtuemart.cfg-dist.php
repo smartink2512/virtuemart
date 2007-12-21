@@ -88,7 +88,7 @@ define('FLYPAGE', 'flypage.tpl');
 define('PRODUCTS_PER_ROW', '1');
 define('ERRORPAGE', 'shop.error');
 define('DEBUGPAGE', 'shop.debug');
-define('NO_IMAGE', '/ps_image/noimage.gif');
+define('NO_IMAGE', 'noimage.gif');
 define('SEARCH_ROWS', '20');
 define('SEARCH_COLOR_1', '#f9f9f9');
 define('SEARCH_COLOR_2', '#f0f0f0');

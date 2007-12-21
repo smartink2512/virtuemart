@@ -1,7 +1,5 @@
 <?php 
-if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
-	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
-}
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id$
@@ -48,7 +46,7 @@ class MENU_virtuemart {
         global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_lang, $VM_LANG, 
         		$page, $limitstart,	$mosConfig_editor, $vmIcons;
 
-		$bar = & JToolBar::getInstance('JComponent');
+		$bar = & JToolBar::getInstance('toolbar');
 		
         $no_menu = vmGet( $_REQUEST, 'no_menu', 0 );
         $is_iframe = vmGet( $_REQUEST, 'is_iframe', 0 );
@@ -85,15 +83,27 @@ class MENU_virtuemart {
 			}
 			';
               
-		if ($editor1 != '') {
-			ob_start();
-			getEditorContents( 'editor1', $editor1 );
-			$script .= ob_get_contents(); ob_end_clean();
+        if ($editor1 != '') {
+			if( vmIsJoomla(1.5) ) {
+				jimport('joomla.html.editor');
+				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
+				$script .= $editor->getContent('editor1');
+			} else {
+				ob_start();
+				getEditorContents( 'editor1', $editor1 );
+				$script .= ob_get_contents(); ob_end_clean();
+			}
 		}
 		if ($editor2 != '') {
-			ob_start();
-			getEditorContents( 'editor1', $editor1 );
-			$script .= ob_get_contents(); ob_end_clean();
+			if( vmIsJoomla(1.5) ) {
+				jimport('joomla.html.editor');
+				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
+				$script .= $editor->getContent('editor2');
+			} else {
+				ob_start();
+				getEditorContents( 'editor2', $editor2 );
+				$script .= ob_get_contents(); ob_end_clean();
+			}
 		}
 		if( $no_menu ) {
 			$admin = defined('_VM_IS_BACKEND') ? '/administrator' : '';
