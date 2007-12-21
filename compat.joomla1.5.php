@@ -105,6 +105,9 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 					echo $editor->display($hiddenField, $content, $width, $height, $col, $row);
 				}
 			}
+			
+			// Load the menu bar class
+			JLoader::register('mosMenuBar'      , $mosConfig_absolute_path.DS.'plugins'.DS.'system'.DS.'legacy'.DS.'menubar.php');
 		
 		} else {
 			// We need these even when the Joomla! 1.5 legacy plugin is enabled

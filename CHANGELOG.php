@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 
 21.12.2007 gregdev
 ^ More changes for Joomla! 1.5 native compatibility.
+^ Register mosMenuBar for autoloading.
 
 21.12.2007 soeren
 # Task #1619 - Unable to install VM 1099 in Joomla 1.5 RC4+
