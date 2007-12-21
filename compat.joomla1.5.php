@@ -17,129 +17,133 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * http://virtuemart.net
 */
-if( class_exists( 'JConfig' ) ) {
+if( !defined('_VM_COMPAT_FILE_LOADED') ) {
+	define( '_VM_COMPAT_FILE_LOADED', 1 );
+
+	if( class_exists( 'JConfig' ) ) {
+		
+		// These are needed when the Joomla! 1.5 legacy plugin is not enabled
+		if( !defined( '_JLEGACY' ) ) {
+		// TODO: determine what else is needed to work without the legacy plugin
+			if( !class_exists('JComponentHelper') && !isset($mainframe)) {			
+				define('JPATH_BASE', realpath(dirname(__FILE__).'/../..') );
+				
+				define( 'DS', DIRECTORY_SEPARATOR );
+				
+				require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
+				require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
+			}
+			if( class_exists('JComponentHelper')) {
+				$usersConfig = &JComponentHelper::getParams( 'com_users' );
+				$contentConfig = &JComponentHelper::getParams( 'com_content' );	
+				// User registration settings
+				$mosConfig_allowUserRegistration = $usersConfig->get('allowUserRegistration');
+				$mosConfig_useractivation = $usersConfig->get('useractivation');
+				
+				// TODO: Do we need these? They are set in the template.
+				// Icon display settings
+				// (hide pdf, etc has been changed to *show* pdf, etc in J! 1.5)
+				$mosConfig_icons = $contentConfig->get('show_icons');
+				$mosConfig_hidePdf = 1- intval( $contentConfig->get('show_pdf_icon') );
+				$mosConfig_hidePrint = 1- intval( $contentConfig->get('show_print_icon') );
+				$mosConfig_hideEmail = 1- intval( $contentConfig->get('show_email_icon') );
+			}
+			$jconfig = new JConfig();
+			
+			// Settings from the Joomla! configuration file 
+			foreach (get_object_vars($jconfig) as $k => $v) {
+				$name = 'mosConfig_'.$k;
+				$$name = $GLOBALS[$name] = $v;
+			}
+		
+			// Paths
+			if( isset($mainframe) && is_object($mainframe)) {
+				$url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+			} else {
+				$url = JURI::base();
+			}
+			$mosConfig_live_site = $GLOBALS['mosConfig_live_site']		= substr_replace($url, '', -1, 1);
+			$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
+			$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'] = JPATH_BASE.DS.'cache';
+		
+			// The selected language
+			$lang =& JFactory::getLanguage();
+			$mosConfig_lang = $GLOBALS['mosConfig_lang']          = $lang->getBackwardLang();
+		
 	
-	// These are needed when the Joomla! 1.5 legacy plugin is not enabled
-	if( !defined( '_JLEGACY' ) ) {
-	// TODO: determine what else is needed to work without the legacy plugin
-		if( !class_exists('JComponentHelper') && !isset($mainframe)) {			
-			define('JPATH_BASE', realpath(dirname(__FILE__).'/../..') );
 			
-			define( 'DS', DIRECTORY_SEPARATOR );
+			// TODO: we'll need a $database object
+			//$GLOBALS['database'] = new jdatabase($jconfig->host, $jconfig->user, $jconfig->password, $jconfig->db, $jconfig->dbprefix);
+			//$GLOBALS['database']->debug($jconfig->debug);
+		
+			// The user object
+			if( class_exists('JTable')) {
+				$user				=& JFactory::getUser();
+				$GLOBALS['my']		= clone($user->getTable());
+				$GLOBALS['my']->gid	= $user->get('aid', 0);
 			
-			require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
-			require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
-		}
-		if( class_exists('JComponentHelper')) {
-			$usersConfig = &JComponentHelper::getParams( 'com_users' );
-			$contentConfig = &JComponentHelper::getParams( 'com_content' );	
+				// The permissions object
+				$acl =& JFactory::getACL();
+				$GLOBALS['acl'] =& $acl;
+			}
+			// Version information
+			$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
+			
+			if( !function_exists( 'sefreltoabs')) {
+				function sefRelToAbs( $url ) {
+					//TODO!!!
+					//Create a file "router.php" inside /components/com_virtuemart/
+					//$router = JRouter::getInstance('virtuemart');
+					//return $router->build($url);
+					return $url;
+				}
+			}
+			if( !function_exists('editorArea')) {
+				function editorArea($name, $content, $hiddenField, $width, $height, $col, $row) {
+					jimport( 'joomla.html.editor' );
+					$editor =& JFactory::getEditor();
+					echo $editor->display($hiddenField, $content, $width, $height, $col, $row);
+				}
+			}
+		
+		} else {
+			// We need these even when the Joomla! 1.5 legacy plugin is enabled
+	
+			// We need to set these when we don't enter as a component or module (like in notify.php)
+			if( !isset( $usersConfig ) ) {
+				$usersConfig = &JComponentHelper::getParams( 'com_users' );	
+			}
+			if( !isset( $contentConfig ) ) {
+				$contentConfig = &JComponentHelper::getParams( 'com_content' );
+			}	
+	
+			// Paths
+			// These are in the legacy plugin as globals, but we need them locally too
+			$mosConfig_live_site = $GLOBALS['mosConfig_live_site'];
+			$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path'];
+			$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'];
+			
 			// User registration settings
-			$mosConfig_allowUserRegistration = $usersConfig->get('allowUserRegistration');
-			$mosConfig_useractivation = $usersConfig->get('useractivation');
-			
+			$mosConfig_allowUserRegistration = $GLOBALS['mosConfig_allowUserRegistration'] = $usersConfig->get('allowUserRegistration');
+			$mosConfig_useractivation = $GLOBALS['mosConfig_useractivation'] = $usersConfig->get('useractivation');
+	
 			// TODO: Do we need these? They are set in the template.
 			// Icon display settings
-			// (hide pdf, etc has been changed to *show* pdf, etc in J! 1.5)
+			// hide pdf, etc has been changed to show pdf, etc in J! 1.5
 			$mosConfig_icons = $contentConfig->get('show_icons');
 			$mosConfig_hidePdf = 1- intval( $contentConfig->get('show_pdf_icon') );
 			$mosConfig_hidePrint = 1- intval( $contentConfig->get('show_print_icon') );
 			$mosConfig_hideEmail = 1- intval( $contentConfig->get('show_email_icon') );
-		}
-		$jconfig = new JConfig();
-		
-		// Settings from the Joomla! configuration file 
-		foreach (get_object_vars($jconfig) as $k => $v) {
-			$name = 'mosConfig_'.$k;
-			$$name = $GLOBALS[$name] = $v;
-		}
+			
+			// TODO: Do we still need this in the latest J! 1.5 SVN?
+			// Adjust the time offset
+	//		$server_time = date( 'O' ) / 100;
+	//		$offset = $mosConfig_offset - $server_time;
+	//		$GLOBALS['mosConfig_offset'] = $offset;
 	
-		// Paths
-		if( isset($mainframe) && is_object($mainframe)) {
-			$url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
-		} else {
-			$url = JURI::base();
+			// Version information
+			$_VERSION = $GLOBALS['_VERSION'];
 		}
-		$mosConfig_live_site = $GLOBALS['mosConfig_live_site']		= substr_replace($url, '', -1, 1);
-		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
-		$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'] = JPATH_BASE.DS.'cache';
-	
-		// The selected language
-		$lang =& JFactory::getLanguage();
-		$mosConfig_lang = $GLOBALS['mosConfig_lang']          = $lang->getBackwardLang();
-	
-
-		
-		// TODO: we'll need a $database object
-		//$GLOBALS['database'] = new jdatabase($jconfig->host, $jconfig->user, $jconfig->password, $jconfig->db, $jconfig->dbprefix);
-		//$GLOBALS['database']->debug($jconfig->debug);
-	
-		// The user object
-		if( class_exists('JTable')) {
-			$user				=& JFactory::getUser();
-			$GLOBALS['my']		= clone($user->getTable());
-			$GLOBALS['my']->gid	= $user->get('aid', 0);
-		
-			// The permissions object
-			$acl =& JFactory::getACL();
-			$GLOBALS['acl'] =& $acl;
-		}
-		// Version information
-		$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
-		
-		if( !function_exists( 'sefreltoabs')) {
-			function sefRelToAbs( $url ) {
-				//TODO!!!
-				//Create a file "router.php" inside /components/com_virtuemart/
-				//$router = JRouter::getInstance('virtuemart');
-				//return $router->build($url);
-				return $url;
-			}
-		}
-		if( !function_exists('editorArea')) {
-			function editorArea($name, $content, $hiddenField, $width, $height, $col, $row) {
-				jimport( 'joomla.html.editor' );
-				$editor =& JFactory::getEditor();
-				echo $editor->display($hiddenField, $content, $width, $height, $col, $row);
-			}
-		}
-	
-	} else {
-		// We need these even when the Joomla! 1.5 legacy plugin is enabled
-
-		// We need to set these when we don't enter as a component or module (like in notify.php)
-		if( !isset( $usersConfig ) ) {
-			$usersConfig = &JComponentHelper::getParams( 'com_users' );	
-		}
-		if( !isset( $contentConfig ) ) {
-			$contentConfig = &JComponentHelper::getParams( 'com_content' );
-		}	
-
-		// Paths
-		// These are in the legacy plugin as globals, but we need them locally too
-		$mosConfig_live_site = $GLOBALS['mosConfig_live_site'];
-		$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path'];
-		$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'];
-		
-		// User registration settings
-		$mosConfig_allowUserRegistration = $GLOBALS['mosConfig_allowUserRegistration'] = $usersConfig->get('allowUserRegistration');
-		$mosConfig_useractivation = $GLOBALS['mosConfig_useractivation'] = $usersConfig->get('useractivation');
-
-		// TODO: Do we need these? They are set in the template.
-		// Icon display settings
-		// hide pdf, etc has been changed to show pdf, etc in J! 1.5
-		$mosConfig_icons = $contentConfig->get('show_icons');
-		$mosConfig_hidePdf = 1- intval( $contentConfig->get('show_pdf_icon') );
-		$mosConfig_hidePrint = 1- intval( $contentConfig->get('show_print_icon') );
-		$mosConfig_hideEmail = 1- intval( $contentConfig->get('show_email_icon') );
-		
-		// TODO: Do we still need this in the latest J! 1.5 SVN?
-		// Adjust the time offset
-//		$server_time = date( 'O' ) / 100;
-//		$offset = $mosConfig_offset - $server_time;
-//		$GLOBALS['mosConfig_offset'] = $offset;
-
-		// Version information
-		$_VERSION = $GLOBALS['_VERSION'];
 	}
 }
 ?>
