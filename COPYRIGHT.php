@@ -129,5 +129,5 @@ Notes:		Please note these icons are NOT OPEN SOURCE but used with permission
 
 If you have contributed a vital part of VirtueMart that is not mentioned and missing here,
 and you feel that your copyright note should be mentioned here,
-please contact the author of VirtueMart (soeren«at»virtuemart.net).
+please contact the author of VirtueMart (soeren|at|virtuemart.net).
 </pre>

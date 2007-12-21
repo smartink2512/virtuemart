@@ -48,8 +48,10 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	if( !empty($my->id) || !empty($user->id) ) {
 		// This is necessary to get the real GID
 		if( class_exists( 'jconfig' ) ) {
-			$GLOBALS['my']->load( $user->get('id'));
-			$GLOBALS['my']->set('gid', $user->get('gid'));; 
+			if( get_class($GLOBALS['my'] )=='JTableUser') {
+				$GLOBALS['my']->load( $user->get('id'));
+				$GLOBALS['my']->set('gid', $user->get('gid'));
+			}
 		} else {
 			$my->load( $my->id );
 		}
