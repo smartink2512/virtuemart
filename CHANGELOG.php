@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+22.12.2007 gregdev
++ Added vmArrayToInts() to replace mosArrayToInts() (ps_main)
+# Use vmArrayToInts() instead of mosArrayToInts() (virtuemart_parser)
+# Removed call to mosCommonHTML::loadOverlib(), cleanup, added javascript to open contact form (admin.user_form)
+^ Register mosUser for autoloading until a better solution is found (compat.joomla1.5)
 
 21.12.2007 gregdev
 ^ More changes for Joomla! 1.5 native compatibility.

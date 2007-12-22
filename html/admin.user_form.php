@@ -131,9 +131,17 @@ $tabs->startPane("userform-pane");
 
 $tabs->startTab( 'General User Information', "userform-page");
 
-mosCommonHTML::loadOverlib();
-
 ?>
+<script language="javascript" type="text/javascript">
+function gotocontact( id ) {
+	var form = document.adminForm;
+	form.target = "_parent";
+	form.contact_id.value = id;
+	form.option.value = 'com_users';
+	submitform( 'contact' );
+}
+</script>
+
 <fieldset class="adminform">
 <legend><?php echo  'User Details' ; ?></legend>
 	<table class="admintable" cellspacing="1">
@@ -324,12 +332,8 @@ mosCommonHTML::loadOverlib();
 		<?php endif; ?>
 		<tr>
 			<td colspan="2">
-			<br /><br />
-			<input class="button" type="button" value="change Contact Details" onclick="javascript: gotocontact( '<?php echo $contact[0]->id; ?>' )">
-			<i>
 			<br />
-			'Components -> Contact -> Manage Contacts'.
-			</i>
+			<input class="button" type="button" value="Change Contact Details" onclick="javascript: gotocontact( '<?php echo $contact[0]->id; ?>' )">
 			</td>
 		</tr>
 	</table>

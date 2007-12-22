@@ -108,6 +108,9 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			
 			// Load the menu bar class
 			JLoader::register('mosMenuBar'      , $mosConfig_absolute_path.DS.'plugins'.DS.'system'.DS.'legacy'.DS.'menubar.php');
+			
+			// Load the user class
+			JLoader::register('mosUser'         , $mosConfig_absolute_path.DS.'plugins'.DS.'system'.DS.'legacy'.DS.'user.php');
 		
 		} else {
 			// We need these even when the Joomla! 1.5 legacy plugin is enabled

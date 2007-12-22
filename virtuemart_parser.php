@@ -95,7 +95,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 								'order_id','module_id','function_id','payment_method_id','coupon_id','product_type_id') ;
 		foreach( $parseToIntFields as $intField ) {
 			if( !empty($_REQUEST[$intField]) && is_array($_REQUEST[$intField]) ) {
-				mosArrayToInts( $_REQUEST[$intField]);
+				vmArrayToInts( $_REQUEST[$intField] );
 			} elseif ( isset($_REQUEST[$intField]) ) {
 				$_REQUEST[$intField] = $$intField = intval( vmRequest::getInt($intField) );
 			}

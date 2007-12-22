@@ -1244,4 +1244,28 @@ function vmAmpReplace( $text ) {
 
 	return $text;
 }
+
+/**
+ * Converts array to integer values
+ * 
+ * @param array
+ * @param int A default value to assign if $array is not an array
+ * @return array
+ */
+function vmArrayToInts( &$array, $default=null ) {
+	if (is_array( $array )) {
+		foreach( $array as $key => $value ) {
+			$array[$key] = (int) $value;
+		}
+	} else {
+		if (is_null( $default )) {
+			$array = array();
+			return array(); // Kept for backwards compatibility
+		} else {
+			$array = array( (int) $default );
+			return array( $default ); // Kept for backwards compatibility
+		}
+	}
+}
+
 ?>
