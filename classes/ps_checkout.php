@@ -1800,7 +1800,7 @@ Order Total: '.$order_total.'
 		$shopper_message .= "------------------------------------------------------------------------\n";
 		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_NUMBER',false).": " . $db->f("order_id") . "\n";
 		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_DATE',false).":   ";
-		$shopper_message .= date("d-M-Y:H:i", $db->f("cdate")) . "\n";
+		$shopper_message .= strftime( $VM_LANG->_('DATE_FORMAT_LC'), $db->f("cdate") ) . "\n";
 		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS',false).": ";
 		
 		$dbos = new ps_DB;
@@ -2111,7 +2111,7 @@ Order Total: '.$order_total.'
 			$html = str_replace('{phpShopVendorImage}',$v_vfi,$html);
 			$html = str_replace('{phpShopOrderHeader}',$VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_LBL'),$html);
 			$html = str_replace('{phpShopOrderNumber}',$v_oi,$html);
-			$html = str_replace('{phpShopOrderDate}',strftime( _DATE_FORMAT_LC, $db->f("cdate")),$html);
+			$html = str_replace('{phpShopOrderDate}',strftime( $VM_LANG->_('DATE_FORMAT_LC'), $db->f("cdate") ),$html);
 			$html = str_replace('{phpShopOrderStatus}', $order_status, $html);
 
 			$html = str_replace('{phpShopBTCompany}', $dbbt->f("company"), $html);

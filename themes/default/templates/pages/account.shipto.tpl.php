@@ -126,9 +126,7 @@ echo "<br />".$VM_LANG->_('PHPSHOP_SHIPTO_TEXT'). "<br /><br /><br />";
         <?php $ps_html->list_country("country", $db->sf("country"), "id=\"country_field\" onchange=\"changeStateList();\"") ?>
       </div>
     <br/><br/>
-    <?php 
-    if (CAN_SELECT_STATES == '1') {
-?>
+
       <div style="float:left;width:30%;text-align:right;" class="<?php if (stristr($missing,'state')) echo 'missing' ?>">
       <?php echo "<label for=\"state\">".$VM_LANG->_('PHPSHOP_SHOPPER_FORM_STATE')."</label>" ?>:</div>
       <div style="float:left;width:60%;"> 
@@ -141,7 +139,6 @@ echo "<br />".$VM_LANG->_('PHPSHOP_SHIPTO_TEXT'). "<br /><br /><br />";
       ?>
       </div>
     <br/><br/>
-    <?php } ?>
  
   <div style="float:left;width:30%;text-align:right;" class="<?php if (stristr($missing,'phone_1')) echo 'missing' ?>" >
     <?php echo "<label for=\"phone_1\">".$VM_LANG->_('PHPSHOP_SHOPPER_FORM_PHONE')."</label>*" ?>:</div>

@@ -734,7 +734,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_CHECKOUT_ERR_MIN_POV' => 'Minimum purchase order value has not been reached yet.',
 	'PHPSHOP_CHECKOUT_ERR_MIN_POV2' => 'Our minimum purchase order value is:',
 	'PHPSHOP_CHECKOUT_PAYMENT_CC' => 'Credit Card Payment',
-	'PHPSHOP_CHECKOUT_PAYMENT_OTHER' => 'other Payment Methods',
+	'PHPSHOP_CHECKOUT_PAYMENT_OTHER' => 'Other Payment Methods',
 	'PHPSHOP_CHECKOUT_PAYMENT_SELECT' => 'Please select a Payment Method:',
 	'PHPSHOP_STORE_FORM_MPOV' => 'Minimum purchase order value for your store',
 	'PHPSHOP_ACCOUNT_BANK_TITLE' => 'Bank Account Info',

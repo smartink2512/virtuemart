@@ -50,7 +50,7 @@ if(NO_SHIPTO=='') {
 if(NO_SHIPPING=='') {
 
 	echo '<tr><td valign="top"><strong>'.$VM_LANG->_('PHPSHOP_INFO_MSG_SHIPPING_METHOD') . ":</strong></td>";
-	$rate_details = explode( "|", urldecode(urldecode(mosGetParam($_REQUEST,'shipping_rate_id'))) );
+	$rate_details = explode( "|", urldecode(urldecode(vmGet($_REQUEST,'shipping_rate_id'))) );
 	echo '<td>';
 	foreach( $rate_details as $k => $v ) {
 		if( $k == 3 ) {
@@ -64,7 +64,7 @@ if(NO_SHIPPING=='') {
 
 unset( $row );
 if( !isset($order_total) || $order_total > 0.00 ) {
-	$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id' );
+	$payment_method_id = vmRequest::getInt( 'payment_method_id' );
 	
 	$db->query("SELECT payment_method_id, payment_method_name FROM #__{vm}_payment_method WHERE payment_method_id='$payment_method_id'");
 	$db->next_record();

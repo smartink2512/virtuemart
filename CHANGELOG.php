@@ -40,6 +40,10 @@ VirtueMart 1.1.x
 # Use vmArrayToInts() instead of mosArrayToInts() (virtuemart_parser)
 # Removed call to mosCommonHTML::loadOverlib(), cleanup, added javascript to open contact form (admin.user_form)
 ^ Register mosUser for autoloading until a better solution is found (compat.joomla1.5)
+^ Fixed spelling error (english.php)
+# Removed mosGetParam() for native Joomla! 1.5 compatibility (get_final_confirmation.tpl)
+# Use VirtueMart's DATE_FORMAT_LC (ps_checkout, reviews.tpl)
+# Removed CAN_SELECT_STATES (admin.user_address_form, account.shipto.tpl)
 
 21.12.2007 gregdev
 ^ More changes for Joomla! 1.5 native compatibility.
