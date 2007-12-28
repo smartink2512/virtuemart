@@ -49,7 +49,7 @@ class vmAbstractLanguage {
 			$text = $this->modules['common'][$key];
 			$module = 'common';
 		}
-		if ($text) {
+		if ($text!==false) {
 			if( $htmlentities ) {
 				$text = htmlentities( $text, ENT_QUOTES, $this->getCharset($module));
 				// some symbols are not converted correctly... doing manually
