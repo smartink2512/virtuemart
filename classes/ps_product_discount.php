@@ -111,7 +111,7 @@ class ps_product_discount {
 		} else {
 			$d["end_date"] = 0;
 		}
-		$fields = array('(amount' => vmRequest::getFloat('amount'), 
+		$fields = array('amount' => vmRequest::getFloat('amount'), 
 								'is_percent' => vmRequest::getInt('is_percent'), 
 								'start_date' => $d["start_date"], 
 								'end_date' => $d["end_date"]
@@ -155,7 +155,7 @@ class ps_product_discount {
 			$d["end_date"] = "" ;
 		}
 
-		$fields = array('(amount' => vmRequest::getFloat('amount'), 
+		$fields = array('amount' => vmRequest::getFloat('amount'), 
 								'is_percent' => vmRequest::getInt('is_percent'), 
 								'start_date' => $d["start_date"], 
 								'end_date' => $d["end_date"]

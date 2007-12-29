@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+29.12.2007 gregdev
+# Fixed "unable to add new discounts" (ps_product_discount)
+
 22.12.2007 gregdev
 + Added vmArrayToInts() to replace mosArrayToInts() (ps_main)
 # Use vmArrayToInts() instead of mosArrayToInts() (virtuemart_parser)
