@@ -2,10 +2,10 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,6 +18,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('reportbasic',array (
-	'CHARSET' => 'UTF-8'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_RB_INDIVIDUAL' => 'Egyéni terméklisták',
+	'PHPSHOP_RB_SALE_TITLE' => 'Eladási jelentések',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Eladási adatok áttekintése',
+	'PHPSHOP_RB_INTERVAL_TITLE' => 'Állítsa be az intervallumot',
+	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Havi',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Heti',
+	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Napi',
+	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Ez a hónap',
+	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'A múlt hónap',
+	'PHPSHOP_RB_LAST60_BUTTON' => 'Utolsó 60 nap',
+	'PHPSHOP_RB_LAST90_BUTTON' => 'Utolsó 90 nap',
+	'PHPSHOP_RB_START_DATE_TITLE' => 'Kezdet',
+	'PHPSHOP_RB_END_DATE_TITLE' => 'Vég',
+	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Mutassa a kiválasztott tartományt',
+	'PHPSHOP_RB_REPORT_FOR' => 'Jelentés ',
+	'PHPSHOP_RB_DATE' => 'Dátum',
+	'PHPSHOP_RB_ORDERS' => 'Megrendelések',
+	'PHPSHOP_RB_TOTAL_ITEMS' => 'Össz. eladott tételek',
+	'PHPSHOP_RB_REVENUE' => 'Jövedelem',
+	'PHPSHOP_RB_PRODLIST' => 'Termék listázás'
 	));
 ?>

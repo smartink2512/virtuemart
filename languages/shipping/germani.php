@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: germani.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : germani.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Versenderliste',
+	'PHPSHOP_RATE_LIST_LBL' => 'Versandartenliste',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Name',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Reihenfolge',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Versender bearbeiten / erstellen',
+	'PHPSHOP_RATE_FORM_LBL' => 'Versandart bearbeiten / erstellen',
+	'PHPSHOP_RATE_FORM_NAME' => 'Versandartname',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Versender',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Land/Länder',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'PLZ-Bereich Anfang',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'PLZ-Bereich Ende',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Untere Gewichtsgrenze',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Obere Gewichtsgrenze',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Verpackungskosten',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Währung',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Reihenfolge',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Versender',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Versandbezeichnung',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Gewicht von ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... bis',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Versender Firmenname',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Reihenfolge'
 	));
 ?>

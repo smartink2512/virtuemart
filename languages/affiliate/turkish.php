@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: turkish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : turkish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'E-posta',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Maðazacýlar Listesi',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Fatura Bilgisi',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Kullanýcý Adý',
+	'PHPSHOP_AFFILIATE_MOD' => 'Affiliate Administration',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Üye Listesi',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Üye adý',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktif',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Oran',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Aylýk Toplam',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Aylýk Komisyon',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Sipariþleri Listele',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'E-posta gönderilecekler(* = ALL)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'E-postanýz',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Konu',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Mevcut Ýstatistikleri içerir',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Komisyon Oraný (%)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktif?'
 	));
 ?>

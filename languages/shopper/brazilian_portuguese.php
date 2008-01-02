@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: brazilian_portuguese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : brazilian_portuguese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Endereço 2',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Lista de grupos de clientes',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Nome',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Descrição',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Formulário de grupos de clientes',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Nome',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Descrição',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Desconto para o grupo de compradores padrão (em %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Uma quantidade X positiva significa: Se o produto não tiver preço especificado para ESTE grupo de compradores, o preço padrão é decrescido em X %. Um valor negativo tem o efeito oposto'
 	));
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: swedish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : swedish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'E-post',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Kundlista',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Betalningsinformation',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Användarnamn',
+	'PHPSHOP_AFFILIATE_MOD' => 'Partneradministration',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Partners',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Namn',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktiv',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Rate',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Månadstotal',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Månadsprovision',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Listordning',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Till vem? (* = Alla)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Din e-postadress',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Ämne',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Inkludera aktuell statistik',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Provisionsnivå (procent)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktiv?'
 	));
 ?>

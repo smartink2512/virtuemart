@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id:german.php 1002 2007-10-17 20:59:42Z soeren_nb $
+* @version : german.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('account',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Kundeninformationen von:',
+	'PHPSHOP_ACC_UPD_BILL' => 'Hier können Sie ihre Rechnungsadressdaten ändern',
+	'PHPSHOP_ACC_UPD_SHIP' => 'Hier können Sie Lieferadressen hinzufügen oder vorhandene ändern.',
+	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Rechnungsadresse',
+	'PHPSHOP_ACC_SHIP_INFO' => 'Lieferadressen',
+	'PHPSHOP_DOWNLOADS_CLICK' => 'Klicken Sie auf den Produktnamen um die Datei herunter zu laden.',
+	'PHPSHOP_DOWNLOADS_EXPIRED' => 'Sie haben die Anzahl der maximalen Downloads bereits erreicht, oder die Downloadperiode ist abgelaufen.'
 	));
 ?>

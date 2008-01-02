@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: french.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : french.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('coupon',array (
-	'CHARSET' => 'ISO-8859-15'
+	'CHARSET' => 'ISO-8859-15',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Mise à Jour Chèque Boutique',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Code',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Pourcent ou Total',
+	'PHPSHOP_COUPON_TYPE' => 'Type Chèque Boutique',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Un Chèque Boutique Cadeau est effacé après avoir été utilisé comme remise sur une commande. Un Chèque Boutique permanent peut être utilisé à loisir par le client.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Chèque Boutique Cadeau',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Chèque Boutique Permanent',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Valeur',
+	'PHPSHOP_COUPON_PERCENT' => 'Pourcentage',
+	'PHPSHOP_COUPON_TOTAL' => 'Total'
 	));
 ?>

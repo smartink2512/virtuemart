@@ -2,11 +2,11 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: italian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @translator thepisu
+* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_TAX_LIST_LBL' => 'Lista % I.V.A.',
+	'PHPSHOP_TAX_LIST_STATE' => 'Regione Imposta',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Nazione Imposta',
+	'PHPSHOP_TAX_FORM_LBL' => 'Aggiungi Informazioni I.V.A.',
+	'PHPSHOP_TAX_FORM_STATE' => 'Regione Imposta',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Nazione Imposta',
+	'PHPSHOP_TAX_FORM_RATE' => 'Aliquota I.V.A. (per 20% inserisci 0.20)'
 	));
 ?>

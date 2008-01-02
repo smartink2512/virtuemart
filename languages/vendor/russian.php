@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,41 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('vendor',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_VENDOR_LIST_LBL' => 'Список продавцов',
+	'PHPSHOP_VENDOR_LIST_ADMIN' => 'Администрирование',
+	'PHPSHOP_VENDOR_FORM_LBL' => 'Добавить информацию',
+	'PHPSHOP_VENDOR_FORM_CONTACT_LBL' => 'Контактная информация',
+	'PHPSHOP_VENDOR_FORM_FULL_IMAGE' => 'Полное изображение',
+	'PHPSHOP_VENDOR_FORM_UPLOAD' => 'Загрузить изображение',
+	'PHPSHOP_VENDOR_FORM_STORE_NAME' => 'Склад продавца',
+	'PHPSHOP_VENDOR_FORM_COMPANY_NAME' => 'Компания продавца',
+	'PHPSHOP_VENDOR_FORM_ADDRESS_1' => 'Адрес 1',
+	'PHPSHOP_VENDOR_FORM_ADDRESS_2' => 'Адрес 2',
+	'PHPSHOP_VENDOR_FORM_CITY' => 'Город',
+	'PHPSHOP_VENDOR_FORM_STATE' => 'Область/Район',
+	'PHPSHOP_VENDOR_FORM_COUNTRY' => 'Страна',
+	'PHPSHOP_VENDOR_FORM_ZIP' => 'Индекс',
+	'PHPSHOP_VENDOR_FORM_PHONE' => 'Телефон',
+	'PHPSHOP_VENDOR_FORM_CURRENCY' => 'Валюта',
+	'PHPSHOP_VENDOR_FORM_CATEGORY' => 'Категория продавца',
+	'PHPSHOP_VENDOR_FORM_LAST_NAME' => 'Фамилия',
+	'PHPSHOP_VENDOR_FORM_FIRST_NAME' => 'Имя',
+	'PHPSHOP_VENDOR_FORM_MIDDLE_NAME' => 'Отчество',
+	'PHPSHOP_VENDOR_FORM_TITLE' => 'Название',
+	'PHPSHOP_VENDOR_FORM_PHONE_1' => 'Телефон 1',
+	'PHPSHOP_VENDOR_FORM_PHONE_2' => 'Телефон 2',
+	'PHPSHOP_VENDOR_FORM_FAX' => 'Факс',
+	'PHPSHOP_VENDOR_FORM_EMAIL' => 'Email',
+	'PHPSHOP_VENDOR_FORM_IMAGE_PATH' => 'Путь изображения',
+	'PHPSHOP_VENDOR_FORM_DESCRIPTION' => 'Описание',
+	'PHPSHOP_VENDOR_CAT_LIST_LBL' => 'Список категорий продавцов',
+	'PHPSHOP_VENDOR_CAT_NAME' => 'Категория',
+	'PHPSHOP_VENDOR_CAT_DESCRIPTION' => 'Описание категории',
+	'PHPSHOP_VENDOR_CAT_VENDORS' => 'Продавцы',
+	'PHPSHOP_VENDOR_CAT_FORM_LBL' => 'Форма категории продавцов',
+	'PHPSHOP_VENDOR_CAT_FORM_INFO_LBL' => 'Информация о категории',
+	'PHPSHOP_VENDOR_CAT_FORM_NAME' => 'Категория',
+	'PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION' => 'Описание категории'
 	));
 ?>

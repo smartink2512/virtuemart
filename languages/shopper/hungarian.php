@@ -2,10 +2,10 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'UTF-8'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Cím álnév',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Vásárlócsoport lista',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Csoport név',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Csoport leírás',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Vásárlócsoport urlap',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Csoport név',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Csoport leírás',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Árengedmény az alapértelmezett vásárlócsoport számára(%-ban)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Egy pozitív mennyiség (X) hatása: ha a terméknek nincs  az adoot vásárlócsoporthoz rendelt ára, az alapértelmezett ár X %-al csökken. Egy negatív mennyiségnek az ellenkezo hatása lesz'
 	));
 ?>

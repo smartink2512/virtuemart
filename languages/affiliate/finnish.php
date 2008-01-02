@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: finnish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-15'
+	'CHARSET' => 'ISO-8859-15',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Ostaja Luettelo',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Laskutus Informaatio',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Käyttäjä Nimi',
+	'PHPSHOP_AFFILIATE_MOD' => 'Filiaali Hallinto',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Filiaali Luettelo',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Filiaali Nimi',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktiivi',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Taksa',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Kuukauden Total',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Kuukauden komissio',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Luettele tilaukset',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Kenelle Email(* = ALL)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Sinun Email',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Aihe',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Sisällytä tämän hetkinen tilasto ',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Komissio taksa',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktiivi?'
 	));
 ?>

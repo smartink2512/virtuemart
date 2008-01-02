@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Druga adresa',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Lista Grupa Kupaca',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Naziv Grupe',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Opis grupe',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Grupa Kupaca',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Naziv Grupe',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Opis Grupe',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Popust za primarnu grupu kupaca (u %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Pozitivni iznos X zna&#269;i: Ako OVOJ grupi kupaca nije dodijeljena posebna cijena, osnovna cijena se snižava za X%. Negativni iznos ima suprotni u&#269;inak'
 	));
 ?>

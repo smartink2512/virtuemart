@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('zone',array (
-	'CHARSET' => 'BIG5'
+	'CHARSET' => 'BIG5',
+	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => '國家',
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => '分配到地區',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => '分配地區',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => '地區名',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => '地區描述',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => '每件的地區運費',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => '地區費用限額',
+	'PHPSHOP_ZONE_LIST_LBL' => '地區列表',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => '地區名稱',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => '地區描述',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => '每個項目的地區運費',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => '地區費用限額'
 	));
 ?>

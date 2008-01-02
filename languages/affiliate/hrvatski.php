@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Lista Kupaca',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Informacije o plaæanju',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Korisnièko ime',
+	'PHPSHOP_AFFILIATE_MOD' => 'Suradnici',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Lista Suradnika',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Ime Suradnika',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktivan',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Tip Provizije',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Mjeseèni Total',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Mjeseèna Provizija',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Narudžbe',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Primatelj (* = SVI)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Poruka',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Naslov',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Ukljuèiti Trenutnu Statistiku',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Provizija (postotak)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktivan?'
 	));
 ?>

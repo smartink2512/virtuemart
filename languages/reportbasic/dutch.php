@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: dutch.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : dutch.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('reportbasic',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_RB_INDIVIDUAL' => 'Individuele Product Overzicht',
+	'PHPSHOP_RB_SALE_TITLE' => 'Verkoop Overzicht',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Verkoops Activiteit Overzicht',
+	'PHPSHOP_RB_INTERVAL_TITLE' => 'Bepaal Periode',
+	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Maandelijks',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Wekelijks',
+	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Dagelijks',
+	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Deze Maand',
+	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Vorige Maand',
+	'PHPSHOP_RB_LAST60_BUTTON' => 'Laatste 60 dagen',
+	'PHPSHOP_RB_LAST90_BUTTON' => 'Laatste 90 dagen',
+	'PHPSHOP_RB_START_DATE_TITLE' => 'Start op',
+	'PHPSHOP_RB_END_DATE_TITLE' => 'Tot en met',
+	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Bekijk geselecteerde periode',
+	'PHPSHOP_RB_REPORT_FOR' => 'Verslag voor',
+	'PHPSHOP_RB_DATE' => 'Datum',
+	'PHPSHOP_RB_ORDERS' => 'Bestellingen',
+	'PHPSHOP_RB_TOTAL_ITEMS' => 'Totaal items verkocht',
+	'PHPSHOP_RB_REVENUE' => 'Omzet',
+	'PHPSHOP_RB_PRODLIST' => 'Product Lijst'
 	));
 ?>

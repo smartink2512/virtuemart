@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,27 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('checkout',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_NO_CUSTOMER' => 'Не сте регистриран като клиент. Трябва да ни предоставите информация за разплащане.',
+	'PHPSHOP_THANKYOU' => 'Благодарим Ви за поръчката!',
+	'PHPSHOP_EMAIL_SENDTO' => 'Изпратихме Ви email за потвърждение',
+	'PHPSHOP_CHECKOUT_NEXT' => 'Напред',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Информация за плащане',
+	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Организация',
+	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Име',
+	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'Адрес',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'Email',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Информация за доставка',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'Организация',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'Име',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Адрес',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Телефон',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Факс',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Начин за плащане',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'задължителна информация за плащане с кредитна карта',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Благодарим Ви! Транзакцията беше успешна. Ще получите email за потвърждение на тази транзакция от PayPal. Можете да продължите или да влезете в <a href=http://www.paypal.com>www.paypal.com</a>, за да видите детайлна информация за Вашата транзакция.',
+	'PHPSHOP_PAYPAL_ERROR' => 'Възникна грешка при осъществяване на транзакцията. Статусът на поръчката Ви не е променен.',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'Поръчката Ви беше приета успешно!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s'
 	));
 ?>

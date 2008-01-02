@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: turkish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : turkish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Adres Rumuzu',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Müþteri Grubu Listesi',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Grup Adý',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Grup Açýklamasý',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Maðaza Sahibi Grubu Formu',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Grup Adý',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Grup Açýklamasý',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Varsayýlan müþteri grubu için ürün indirimi (% olarak)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Pozitif X : Eðer bu ürün grubuna hiçbir ürün ücreti atanmamýþsa, varsayýlan ücretten X yüzde olarak düþülür. Negatif deðerler tam tersi etki yapar.'
 	));
 ?>

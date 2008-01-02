@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('reportbasic',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_RB_INDIVIDUAL' => 'Индивидуальные каталоги товара',
+	'PHPSHOP_RB_SALE_TITLE' => 'Отчет о продажах',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Обзор продаж',
+	'PHPSHOP_RB_INTERVAL_TITLE' => 'Установить интервал',
+	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Ежемесячно',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Еженедельно',
+	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Ежедневно',
+	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Текущий месяц',
+	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Последний месяц',
+	'PHPSHOP_RB_LAST60_BUTTON' => 'Последние 60 дней',
+	'PHPSHOP_RB_LAST90_BUTTON' => 'Последние 90 дней',
+	'PHPSHOP_RB_START_DATE_TITLE' => 'Начало',
+	'PHPSHOP_RB_END_DATE_TITLE' => 'Конец',
+	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Показать выбранный дипазон',
+	'PHPSHOP_RB_REPORT_FOR' => 'Отчет по ',
+	'PHPSHOP_RB_DATE' => 'Дата',
+	'PHPSHOP_RB_ORDERS' => 'Заказы',
+	'PHPSHOP_RB_TOTAL_ITEMS' => 'Общее кол-во проданных объектов',
+	'PHPSHOP_RB_REVENUE' => 'Прибыль',
+	'PHPSHOP_RB_PRODLIST' => 'Каталог товаров'
 	));
 ?>

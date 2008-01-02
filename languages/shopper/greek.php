@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: greek.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : greek.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Χαρακτηριστικό Διεύθυνσης',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Λίστα Ομάδας Αγοραστών',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Όνομα Ομάδας',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Περιγραφή Ομάδας',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Φόρμα Ομάδας Αγοραστών',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Όνομα Ομάδας',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Περιγραφή Ομάδας',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Price Discount on default Shopper Group (in %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'A positive amount X means: If the Product has no Price assigned to THIS Shopper Group, the default Price is decreased by X %. A negative amount has the opposite effect'
 	));
 ?>

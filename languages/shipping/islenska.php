@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: islenska.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : islenska.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Listi yfir flutningsaðila',
+	'PHPSHOP_RATE_LIST_LBL' => 'Listi yfir gjaldskrár',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Nafn',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Sýna eftir',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Shipper edit / create',
+	'PHPSHOP_RATE_FORM_LBL' => 'Create/Edit a Shipping Rate',
+	'PHPSHOP_RATE_FORM_NAME' => 'Shipping Rate description',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Flutningsaðili',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Country:<br /><br /><i>Multiselect: use STRG-Key and Mouse</i>',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'ZIP range start',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'ZIP range end',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Lowest Weight',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Highest Weight',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Your package fee',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Currency',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'List Order',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Flutningsaðili',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Shipping Rate description',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Weight from ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... to',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Shipper Company',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Listorder'
 	));
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: swedish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : swedish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,29 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Transportfirma',
+	'PHPSHOP_RATE_LIST_LBL' => 'Leveransmetod',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Namn',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Listordning',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Lägg till/ändra transportfirma',
+	'PHPSHOP_RATE_FORM_LBL' => 'Lägg till/ändra en leveransmetod',
+	'PHPSHOP_RATE_FORM_NAME' => 'Leveransmetodsbeskrivning',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Transportfirma',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Land',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'Postnummer från',
+	'PHPSHOP_RATE_FORM_ZIP_END' => ';
+	var $_PHPSHOP_RATE_FORM_WEIGHT_START = ',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => '',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => '',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => '',
+	'PHPSHOP_RATE_FORM_CURRENCY' => '',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => '',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => '',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => '',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => '',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '',
+	'PHPSHOP_CARRIER_FORM_NAME' => '',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => ''
 	));
 ?>

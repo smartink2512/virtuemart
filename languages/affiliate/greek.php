@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: greek.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : greek.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Λίστα Αγοραστών',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Στοιχεία Χρέωσης',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Ψευδώνυμο',
+	'PHPSHOP_AFFILIATE_MOD' => 'Διαχείριση Υιοθετημένων',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Λίστα Υιοθετημένων',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Όνομα Υιοθετημένου',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Ενεργός',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Αξιολόγηση',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Μηνιαίο Σύνολο',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Μηνιαία Προμήθεια',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Εμφάνιση Παραγγελιών',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Σε ποιους να στείλεις Email(* = Όλους)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Το Email σας',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Το Θέμα',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Να συμπεριληφθούν οι Τρέχουσες Στατιστικές',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Ποσοστό Προμήθειας (τοις εκατό)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Ενεργός;'
 	));
 ?>

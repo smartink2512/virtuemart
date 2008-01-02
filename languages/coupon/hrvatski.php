@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('coupon',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Ureðivanje Kupona',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Kod',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Postotak ili Fiksno',
+	'PHPSHOP_COUPON_TYPE' => 'Tip Kupona',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Poklon Kupon se briše nakon što je iskorišten dok se stalni kupon može koristiti neograni&#269;eno',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Poklon Kupon',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Trajni Kupon',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Vrijednost',
+	'PHPSHOP_COUPON_PERCENT' => 'Postotak',
+	'PHPSHOP_COUPON_TOTAL' => 'Fiksno'
 	));
 ?>

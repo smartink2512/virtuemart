@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: simplified_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : simplified_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'GB2312'
+	'CHARSET' => 'GB2312',
+	'PHPSHOP_TAX_LIST_LBL' => '税率表',
+	'PHPSHOP_TAX_LIST_STATE' => '省份或地区税费',
+	'PHPSHOP_TAX_LIST_COUNTRY' => '国家税费',
+	'PHPSHOP_TAX_FORM_LBL' => '增加税费信息',
+	'PHPSHOP_TAX_FORM_STATE' => '省份或地区税费',
+	'PHPSHOP_TAX_FORM_COUNTRY' => '国家税费',
+	'PHPSHOP_TAX_FORM_RATE' => '税率'
 	));
 ?>

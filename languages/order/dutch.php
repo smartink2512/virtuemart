@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: dutch.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : dutch.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,31 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('order',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL' => 'Betalings Log',
+	'PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL' => 'Verzendings Prijs',
+	'PHPSHOP_ORDER_STATUS_LIST_CODE' => 'Order Status Code',
+	'PHPSHOP_ORDER_STATUS_LIST_NAME' => 'Order Status Naam',
+	'PHPSHOP_ORDER_STATUS_FORM_LBL' => 'Order Status',
+	'PHPSHOP_ORDER_STATUS_FORM_CODE' => 'Order Status Code',
+	'PHPSHOP_ORDER_STATUS_FORM_NAME' => 'Order Status Naam',
+	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => 'Bekijk Order',
+	'PHPSHOP_COMMENT' => 'Commentaar',
+	'PHPSHOP_ORDER_LIST_NOTIFY' => 'Klant informeren?',
+	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => 'Wijzig eerst de status van de bestelling!',
+	'PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT' => 'Commentaar toevoegen?',
+	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => 'Toegevoegd op Datum',
+	'PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED' => 'Klant op de hoogte gebracht?',
+	'PHPSHOP_ORDER_STATUS_CHANGE' => 'Order Status Wijziging',
+	'PHPSHOP_ORDER_LIST_PRINT_LABEL' => 'Print Label',
+	'PHPSHOP_ORDER_LIST_VOID_LABEL' => 'Void Label',
+	'PHPSHOP_ORDER_LIST_TRACK' => 'Track',
+	'VM_DOWNLOAD_STATS' => 'DOWNLOAD STATS',
+	'VM_DOWNLOAD_NOTHING_LEFT' => 'no downloads remaining',
+	'VM_DOWNLOAD_REENABLE' => 'Re-Enable Download',
+	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Remaining Downloads',
+	'VM_DOWNLOAD_RESEND_ID' => 'Resend Download ID',
+	'VM_EXPIRY' => 'Expiry',
+	'VM_UPDATE_STATUS' => 'Update Status'
 	));
 ?>

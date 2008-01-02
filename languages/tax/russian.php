@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_TAX_LIST_LBL' => 'Список налоговых ставок',
+	'PHPSHOP_TAX_LIST_STATE' => 'Область/регион',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Страна',
+	'PHPSHOP_TAX_FORM_LBL' => 'Добавить иноформацию о налоге',
+	'PHPSHOP_TAX_FORM_STATE' => 'Область/регион',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Страна',
+	'PHPSHOP_TAX_FORM_RATE' => 'Налоговая ставка (для 16% => укажите 0.16)'
 	));
 ?>

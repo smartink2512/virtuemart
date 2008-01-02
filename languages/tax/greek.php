@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: greek.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : greek.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_TAX_LIST_LBL' => 'Λίστα Συντελεστών Φόρων',
+	'PHPSHOP_TAX_LIST_STATE' => 'Πολιτεία ή Περιοχή Φόρου',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Χώρα Φόρου',
+	'PHPSHOP_TAX_FORM_LBL' => 'Προσθήκη Πληοροφορίων Φόρου',
+	'PHPSHOP_TAX_FORM_STATE' => 'Πολιτεία ή Περιοχή Φόρου',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Χώρα Φόρου',
+	'PHPSHOP_TAX_FORM_RATE' => 'Συντελεστής Φόρου'
 	));
 ?>

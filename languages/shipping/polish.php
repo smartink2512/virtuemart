@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: polish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : polish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Lista spedytorów',
+	'PHPSHOP_RATE_LIST_LBL' => 'Lista stawek wysy³kowych',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Nazwa',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Kolejno¶æ na li¶cie',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Utwórz/edytuj spedytora',
+	'PHPSHOP_RATE_FORM_LBL' => 'Utwórz/edytuj stawkê wysy³kow±',
+	'PHPSHOP_RATE_FORM_NAME' => 'Opis stawki wysy³kowej',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Spedytor',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Kraj',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'pocz±tek zakresu kodu pocztowego',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'koniec zakresu kodu pocztowego',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Najni¿sza waga',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Najwy¿sza waga',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Twoja op³ata za paczkê',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Waluta',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Kolejno¶æ na li¶cie',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Spedytor',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Opis stawki wysy³kowej',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Waga od ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... do',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Firma spedycyjna',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Kolejno¶æ na li¶cie'
 	));
 ?>

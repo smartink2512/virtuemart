@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_TAX_LIST_LBL' => 'Lista Poreznih Stopa',
+	'PHPSHOP_TAX_LIST_STATE' => 'Regija',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Država',
+	'PHPSHOP_TAX_FORM_LBL' => 'Dodavanje informacija o poreznoj stopi',
+	'PHPSHOP_TAX_FORM_STATE' => 'Regija',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Država',
+	'PHPSHOP_TAX_FORM_RATE' => 'Porezna stopa (za 22.5% => upišite 0.225)'
 	));
 ?>

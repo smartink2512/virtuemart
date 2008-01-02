@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,31 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('order',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL' => 'История платежей',
+	'PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL' => 'Стоимость доставки',
+	'PHPSHOP_ORDER_STATUS_LIST_CODE' => 'Код состояния заказа',
+	'PHPSHOP_ORDER_STATUS_LIST_NAME' => 'Наименования состояния заказа',
+	'PHPSHOP_ORDER_STATUS_FORM_LBL' => 'Состояние заказа',
+	'PHPSHOP_ORDER_STATUS_FORM_CODE' => 'Код состояния заказа',
+	'PHPSHOP_ORDER_STATUS_FORM_NAME' => 'Наименование состояния заказа',
+	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => 'Порядок отображения',
+	'PHPSHOP_COMMENT' => 'Комментарий',
+	'PHPSHOP_ORDER_LIST_NOTIFY' => 'Уведомить покупателя?',
+	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => 'Пожалуйста, сначала измените статус заказа!',
+	'PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT' => 'Присоединить этот комментарий?',
+	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => 'Дата добавления',
+	'PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED' => 'Уведомить покупателя?',
+	'PHPSHOP_ORDER_STATUS_CHANGE' => 'Изменение статуса заказа',
+	'PHPSHOP_ORDER_LIST_PRINT_LABEL' => 'Print Label',
+	'PHPSHOP_ORDER_LIST_VOID_LABEL' => 'Void Label',
+	'PHPSHOP_ORDER_LIST_TRACK' => 'Track',
+	'VM_DOWNLOAD_STATS' => 'DOWNLOAD STATS',
+	'VM_DOWNLOAD_NOTHING_LEFT' => 'no downloads remaining',
+	'VM_DOWNLOAD_REENABLE' => 'Re-Enable Download',
+	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Remaining Downloads',
+	'VM_DOWNLOAD_RESEND_ID' => 'Resend Download ID',
+	'VM_EXPIRY' => 'Expiry',
+	'VM_UPDATE_STATUS' => 'Update Status'
 	));
 ?>

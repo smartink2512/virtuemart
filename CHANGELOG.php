@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.01.2008 thepisu
+^ Task #1268 Language strings modularization; a lot of strings moved + cleaning
+# Task #1624 Admin area problem, caused by error in extlayout.js.php
+  (JTable class was missing, added in compat.joomla1.5)
+# Task #1620 Danish language file - corrupt charset (+ fixed all langs)
+
 29.12.2007 gregdev
 # Fixed "unable to add new discounts" (ps_product_discount)
 

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('zone',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Държава',
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Назначаване към зона',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Назначаване на зони',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Име на зоната',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Описание на зоната',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Цена за един артикул в зоната',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Лимит за стойност на зона',
+	'PHPSHOP_ZONE_LIST_LBL' => 'Списък на зоните',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Име на зоната',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Описание на зоната',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Цена за един артикул в зоната',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Лимит за стойност на зона'
 	));
 ?>

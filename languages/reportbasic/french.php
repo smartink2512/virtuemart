@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: french.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : french.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('reportbasic',array (
-	'CHARSET' => 'ISO-8859-15'
+	'CHARSET' => 'ISO-8859-15',
+	'PHPSHOP_RB_INDIVIDUAL' => 'Listes de Produits Individuels',
+	'PHPSHOP_RB_SALE_TITLE' => 'Rapport des Ventes',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Vue d\\\'ensemble d\\\'Activité des Ventes',
+	'PHPSHOP_RB_INTERVAL_TITLE' => 'Régler Intervalle',
+	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Mensuel',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Hebdomadaire',
+	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Quotidien',
+	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Ce Mois',
+	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Mois Dernier',
+	'PHPSHOP_RB_LAST60_BUTTON' => '60 Derniers jours',
+	'PHPSHOP_RB_LAST90_BUTTON' => '90 Derniers jours',
+	'PHPSHOP_RB_START_DATE_TITLE' => 'Débute le',
+	'PHPSHOP_RB_END_DATE_TITLE' => 'Termine le',
+	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Montrer cette Période Choisie',
+	'PHPSHOP_RB_REPORT_FOR' => 'Rapport pour ',
+	'PHPSHOP_RB_DATE' => 'Date',
+	'PHPSHOP_RB_ORDERS' => 'Commandes',
+	'PHPSHOP_RB_TOTAL_ITEMS' => 'Total des Articles vendus',
+	'PHPSHOP_RB_REVENUE' => 'Chiffre d\\\'Affaire',
+	'PHPSHOP_RB_PRODLIST' => 'Liste Produit'
 	));
 ?>

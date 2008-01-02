@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: thai.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,27 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('checkout',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_NO_CUSTOMER' => 'ท่านยังไม่ได้ลงทะเบียน กรุณาระบุรายละเอียดของท่าน',
+	'PHPSHOP_THANKYOU' => 'ขอบคุณที่สั่งซื้อสินค้า',
+	'PHPSHOP_EMAIL_SENDTO' => 'การยืนยันรายการได้จัดส่งให้ทางอีเมล์แล้ว',
+	'PHPSHOP_CHECKOUT_NEXT' => 'ถัดไป',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'ใบแจ้งหนี้',
+	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'บริษัท',
+	'PHPSHOP_CHECKOUT_CONF_NAME' => 'ชื่อ',
+	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'ที่อยู่',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'อีเมล์',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'รายละเอียดการจัดส่ง',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'บริษัท',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'ชื่อ',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'ที่อยู่',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'โทรศัพท์',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'โทรสาร',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'วิธีการชำระเงิน',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'ระบุรายละเอียดเมื่อเลือกการชำระเงินด้วยบัตรเครดิต',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'ขอบคุณสำหรับการชำระเงิน การทำธุรกรรมของท่านเรียบร้อยแล้ว้<br />ท่านจะได้รับอีเมล์ยืนยันการทำรายการจากทาง PayPal ซึ่งท่านสามารถล็อกอินเข้าเข้าไปที่ <a href=http://www.paypal.com>www.paypal.com</a> เพื่อดูรายละเอียดได้',
+	'PHPSHOP_PAYPAL_ERROR' => 'เกิดความผิดพลาดระหว่างการทำรายการ สถานะการสั่งซื้อยังไม่ได้เปลี่ยนแปลง',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'รายการสั่งซื้อของท่านได้รับการดำเนินการเรียบร้อยแล้ว!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s'
 	));
 ?>

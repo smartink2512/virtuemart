@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: swedish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : swedish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Egen Adressbenämning',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Kundgrupper',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Gruppnamn',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Gruppbeskrivning',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Ny kundgrupp',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Gruppname',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Gruppbeskrivning',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Rabatt på produktens standardpris (%)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Positivt värde: Om produkten saknar ett angivet pris för denna kundkategori minskas priset med X %. Ett negativt värde har motsatt effekt.'
 	));
 ?>

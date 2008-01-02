@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: simplified_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : simplified_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'GB2312'
+	'CHARSET' => 'GB2312',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => '地址别名',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => '购物会员组列表',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => '组名',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => '组描述',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => '购物会员组表格',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => '组名',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => '组描述',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => '默认顾客组的折扣量 (以百分比的形式)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => '正值X意味着:商品如果对于该组顾客没有指定价格的话，那么将在默认价格上面减少X%。负值则有相反效果。'
 	));
 ?>

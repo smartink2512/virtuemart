@@ -2,11 +2,11 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: italian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @translator thepisu
+* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,6 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('coupon',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Aggiorna Coupon',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Codice',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Valore Percentuale o Assoluto',
+	'PHPSHOP_COUPON_TYPE' => 'Tipo di Coupon',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Un Buono Regalo viene eliminato dopo che è stato utilizzato come sconto su un ordine. Un Coupon Permanente può venire utilizzato ogni volta che lo si desidera.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Buono Regalo',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Coupon Permanente',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Valore',
+	'PHPSHOP_COUPON_PERCENT' => 'Percentuale',
+	'PHPSHOP_COUPON_TOTAL' => 'Assoluto'
 	));
 ?>

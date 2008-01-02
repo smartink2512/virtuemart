@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: thai.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'ผู้ขนส่ง',
+	'PHPSHOP_RATE_LIST_LBL' => 'อัตราค่าขนส่ง',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'ชื่อ',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'เรียงลำดับ',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'สร้าง / แก้ไขผู้ขนส่ง',
+	'PHPSHOP_RATE_FORM_LBL' => 'เพิ่ม / แก้ไขอัตราค่าขนส่ง',
+	'PHPSHOP_RATE_FORM_NAME' => 'รายละเอียดอัตราค่าขนส่ง',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'ผู้ขนส่ง',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'ประเทศ:<br /><br /><i>เลือกหลายรายการ: กดปุ่ม Shift หรือ Ctrl และคลิ๊กเมาท์</i>',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'ช่วงรหัสไปรษณีย์จาก',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'ถึง',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'น้ำหนักต่ำสุด',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'น้ำหนักสูงสุด',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'ค่าบรรจุหีบห่อ',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'สกุลเงิน',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'เรียงลำดับ',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'ผู้ขนส่ง',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'รายละเอียดอัตราค่าขนส่ง',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'น้ำหนักขั้นต่ำ ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... ถึง',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'บริษัทผู้ขนส่ง',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'เ่รียงลำดับ'
 	));
 ?>

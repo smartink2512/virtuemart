@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: romanian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : romanian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Lista expeditori',
+	'PHPSHOP_RATE_LIST_LBL' => 'Lista preturi expediere',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Nume',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Ordine lista',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Creaza/editeaza expeditor',
+	'PHPSHOP_RATE_FORM_LBL' => 'Creaza/editeaza pret expediere',
+	'PHPSHOP_RATE_FORM_NAME' => 'Descriere pret expediere',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Expeditor',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Tara:<br /><br /><i>Multiselect: folositi CTRL si Mouse</i>',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'ZIP range start',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'ZIP range end',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Greutatea minima',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Greutatea maxima',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Tariful pachetului dvs',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Valuta',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Ordine lista',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Expeditor',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Descriere pret expediere',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Greutatea de la ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... la',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Compania tranportatoare',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Ordine lista'
 	));
 ?>

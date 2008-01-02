@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: germani.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : germani.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('manufacturer',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Herstellerliste',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Herstellername',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Neu: Herstellerinformation',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'Herstellerkategorie',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Herstellerkategorieliste',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Kategoriename',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Kategoriebeschreibung',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'Hersteller',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Herstellerkategorie ändern/hinzufügen',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Kategorieinformation',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Kategoriename',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Kategoriebeschreibung'
 	));
 ?>

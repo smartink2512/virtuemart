@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Address Nickname',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Shopper Group List',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Group Name',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Group Description',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Shopper Group Form',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Group Name',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Group Description',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Price Discount on default Shopper Group (in %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'A positive amount X means: If the Product has no Price assigned to THIS Shopper Group, the default Price is decreased by X %. A negative amount has the opposite effect'
 	));
 ?>

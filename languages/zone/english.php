@@ -18,6 +18,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('zone',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Country',
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Assign To Zone',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Assign Zones',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Zone Name',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Zone Description',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Zone Cost Per Item',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Zone Cost Limit',
+	'PHPSHOP_ZONE_LIST_LBL' => 'Zone List',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Zone Name',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Zone Description',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Zone Cost Per Item',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Zone Cost Limit'
 	));
 ?>

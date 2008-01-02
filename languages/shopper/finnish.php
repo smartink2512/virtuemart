@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: finnish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-15'
+	'CHARSET' => 'ISO-8859-15',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Osoite Nimike',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Ostaja Ryhmä Luettelo',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Ryhmä Nimi',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Ryhmä Kuvaus',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Ostaja Ryhmä Lomake',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Ryhmä Nimi',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Ryhmä Kuvaus',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Price Discount on default Shopper Group (in %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'A positive amount X means: If the Product has no Price assigned to THIS Shopper Group, the default Price is decreased by X %. A negative amount has the opposite effect'
 	));
 ?>

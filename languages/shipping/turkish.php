@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: turkish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : turkish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Nakliyeci Listesi',
+	'PHPSHOP_RATE_LIST_LBL' => 'Nakliye Tarife Listesi',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Adý',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Listorder',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Nakliyeci düzelt / oluþtur',
+	'PHPSHOP_RATE_FORM_LBL' => 'Tarife günleme / oluþturma',
+	'PHPSHOP_RATE_FORM_NAME' => 'Tarife Açýklamasý',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Nakliyeci',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Ülke',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'Baþlangýç Posta Kodu',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'Bitiþ Posta Kodu',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Endüþük Aðýrlýk',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Enyüksek Aðýrlýk',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Paketleme ücretiniz',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Kur',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Listorder',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Nakliyeci',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Tarife açýklamasý',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Aðýrlýk den ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... e',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Nakliye Þirketi',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Listorder'
 	));
 ?>

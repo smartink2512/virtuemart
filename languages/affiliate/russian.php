@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Список покупателя',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Платежная информация',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Имя пользователя',
+	'PHPSHOP_AFFILIATE_MOD' => 'Администрирование партнерских программ',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Список партнеров',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Партнер',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Активен',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Рейтинг',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Всего в месяц',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Комиссия в месяц',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Список заказов',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Адресат (* = Всем)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Ваш Email',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Тема',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Включить текущую статистику',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Комиссионный процент',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Активен?'
 	));
 ?>

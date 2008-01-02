@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: romanian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : romanian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Adreseaza porecla',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Lista grupului de cumparatori',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'nume grup',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Descriere grup',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Tip grup cumparatori',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Nume grup',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Descriere grup',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Pretul redus la grupul de cumparatori de baza (in %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'O cantiate pozitiva X inseamna: Daca produsul nu are pret destinat acestui grup de cumparatori, pretul de baza se scade cu X%. O cantitate negativa are efectul opus'
 	));
 ?>

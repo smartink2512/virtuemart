@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: portuguese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : portuguese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Lista de Transportadores',
+	'PHPSHOP_RATE_LIST_LBL' => 'Lista de Taxas de Transporte',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Nome',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Ordem de Listagem (número)',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Editar/Criar Transportador',
+	'PHPSHOP_RATE_FORM_LBL' => 'Editar/Criar Taxa de Transporte',
+	'PHPSHOP_RATE_FORM_NAME' => 'Descrição da Taxa de Transporte',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Transportador',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'País',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'Início do intervalo de Códigos Postais',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'Fim do intervalo de Códigos Postais',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Peso minimo',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Peso máximo',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'A taxa da sua encomenda',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Moeda',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Ordem de Listagem (número)',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Transportador',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Descrição da taxa de Transporte',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Peso a partir de ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... até',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Empresa Transportadora',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Ordem de Listagem (número)'
 	));
 ?>

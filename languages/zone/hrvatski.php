@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('zone',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Država',
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Dodijeli zoni',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Dodjeli zone',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Naziv zone',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Opis Zone',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Cijena po artiklu',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Limit cijene',
+	'PHPSHOP_ZONE_LIST_LBL' => 'Popis zona',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Naziv zone',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Opis zone',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Cijena po artiklu',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Limit cijene'
 	));
 ?>

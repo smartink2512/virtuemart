@@ -2,10 +2,10 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: farsi.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : farsi.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'UTF-8'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_TAX_LIST_LBL' => 'Tax Rate List',
+	'PHPSHOP_TAX_LIST_STATE' => 'Tax State or Region',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Tax Country',
+	'PHPSHOP_TAX_FORM_LBL' => 'Add Tax Information',
+	'PHPSHOP_TAX_FORM_STATE' => 'Tax State or Region',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Tax Country',
+	'PHPSHOP_TAX_FORM_RATE' => 'Tax Rate (for 16% => fill in 0.16)'
 	));
 ?>

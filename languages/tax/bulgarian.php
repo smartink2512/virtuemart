@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_TAX_LIST_LBL' => 'Списък на данъците',
+	'PHPSHOP_TAX_LIST_STATE' => 'Област за облагане с данък',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Държава за облагане с данък',
+	'PHPSHOP_TAX_FORM_LBL' => 'Добавяне информация за данък',
+	'PHPSHOP_TAX_FORM_STATE' => 'Област за облагане с данък',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Държава за облагане с данък',
+	'PHPSHOP_TAX_FORM_RATE' => 'Размер на данък (например, за 16% попълнете 0.16)'
 	));
 ?>

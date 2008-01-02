@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: polish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : polish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Lista klientów',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Dane klienta',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Nazwa u¿ytkownika',
+	'PHPSHOP_AFFILIATE_MOD' => 'Zarz±dzanie Programem Partnerskim',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Lista Partnerów',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Nazwa partnera',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktywny',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Stawka',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Miesiêczna suma',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Miesiêczna prowizja',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Wylistuj zamówienia',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Do kogo wys³aæ email(* = WSZYSCY)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Twój adres email',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Temat',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Za³±cz aktualne statystyki',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Stawka prowizji (procent)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktywny?'
 	));
 ?>

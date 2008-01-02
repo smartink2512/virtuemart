@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'BIG5'
+	'CHARSET' => 'BIG5',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => '顧客列表',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => '付款資訊',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => '用戶名',
+	'PHPSHOP_AFFILIATE_MOD' => '加盟商管理',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => '加盟商列表',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => '加盟商名稱',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => '啟用',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => '比例',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => '月總計',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => '月傭金',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => '列出訂單',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => '寄給誰(* = 全部)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => '您的 Email',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => '主題',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => '包括目前的統計',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => '傭金比例(百分比)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => '啟動?'
 	));
 ?>

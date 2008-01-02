@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: thai.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,41 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('vendor',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_VENDOR_LIST_LBL' => 'ผู้ขาย',
+	'PHPSHOP_VENDOR_LIST_ADMIN' => 'ผู้ดูแลระบบ',
+	'PHPSHOP_VENDOR_FORM_LBL' => 'ระบุรายละเอียด',
+	'PHPSHOP_VENDOR_FORM_CONTACT_LBL' => 'ชื่อผู้ติดต่อ',
+	'PHPSHOP_VENDOR_FORM_FULL_IMAGE' => 'รูปภาพ',
+	'PHPSHOP_VENDOR_FORM_UPLOAD' => 'อัพโหลดรูปภาพ',
+	'PHPSHOP_VENDOR_FORM_STORE_NAME' => 'ชื่อผู้ขาย',
+	'PHPSHOP_VENDOR_FORM_COMPANY_NAME' => 'ชื่อบริษัท',
+	'PHPSHOP_VENDOR_FORM_ADDRESS_1' => 'ที่อยู่ 1',
+	'PHPSHOP_VENDOR_FORM_ADDRESS_2' => 'ที่อยู่ 2',
+	'PHPSHOP_VENDOR_FORM_CITY' => 'อำเภอ',
+	'PHPSHOP_VENDOR_FORM_STATE' => 'เขต/จังหวัด',
+	'PHPSHOP_VENDOR_FORM_COUNTRY' => 'ประเทศ',
+	'PHPSHOP_VENDOR_FORM_ZIP' => 'รหัสไปรษณีย์',
+	'PHPSHOP_VENDOR_FORM_PHONE' => 'โทรศัพท์',
+	'PHPSHOP_VENDOR_FORM_CURRENCY' => 'สกุลเงิน',
+	'PHPSHOP_VENDOR_FORM_CATEGORY' => 'ประเภทผู้ขาย',
+	'PHPSHOP_VENDOR_FORM_LAST_NAME' => 'นามสกุล',
+	'PHPSHOP_VENDOR_FORM_FIRST_NAME' => 'ชื่อ',
+	'PHPSHOP_VENDOR_FORM_MIDDLE_NAME' => 'ชื่อกลาง',
+	'PHPSHOP_VENDOR_FORM_TITLE' => 'คำนำหน้าชื่อ',
+	'PHPSHOP_VENDOR_FORM_PHONE_1' => 'โทรศัพท์ 1',
+	'PHPSHOP_VENDOR_FORM_PHONE_2' => 'โทรศัพท์ 2',
+	'PHPSHOP_VENDOR_FORM_FAX' => 'โทรสาร',
+	'PHPSHOP_VENDOR_FORM_EMAIL' => 'อีเมล์',
+	'PHPSHOP_VENDOR_FORM_IMAGE_PATH' => 'ที่เก็บรูปภาพ',
+	'PHPSHOP_VENDOR_FORM_DESCRIPTION' => 'รายละเอียด',
+	'PHPSHOP_VENDOR_CAT_LIST_LBL' => 'หมวดผู้ขาย',
+	'PHPSHOP_VENDOR_CAT_NAME' => 'ชื่อหมวด',
+	'PHPSHOP_VENDOR_CAT_DESCRIPTION' => 'รายละเอียดหมวดผู้ขาย',
+	'PHPSHOP_VENDOR_CAT_VENDORS' => 'ผู้ขาย',
+	'PHPSHOP_VENDOR_CAT_FORM_LBL' => 'แบบฟอร์มหมวดผู้ขาย',
+	'PHPSHOP_VENDOR_CAT_FORM_INFO_LBL' => 'รายละเีอียดหมวดผู้ขาย',
+	'PHPSHOP_VENDOR_CAT_FORM_NAME' => 'ชื่อหมวด',
+	'PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION' => 'รายละเีอียด'
 	));
 ?>

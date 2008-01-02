@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Shopper List',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Bill To Information',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'User Name',
+	'PHPSHOP_AFFILIATE_MOD' => 'Affiliate Administration',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Affiliates List',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Affiliate Name',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Active',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Rate',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Month Total',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Month Commission',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'List Orders',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Who to Email(* = ALL)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Your Email',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'The Subject',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Include Current Statistics',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Commission Rate (percent)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Active?'
 	));
 ?>

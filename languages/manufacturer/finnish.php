@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: finnish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('manufacturer',array (
-	'CHARSET' => 'ISO-8859-15'
+	'CHARSET' => 'ISO-8859-15',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Valmistaja Luettelo',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Valmistajan Nimi',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Lisää Informaatio',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'Valmistaja Kategoria',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Valmistaja Kategoria luettelo',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Kategoria Nimi',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Kategoria Kuvaus',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'Valmistajat',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Valmistaja Kategoria Lomake',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Kategoria Informaatio',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Kategoria Nimi',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Kategoria Kuvaus'
 	));
 ?>

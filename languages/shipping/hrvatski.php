@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hrvatski.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Lista Dostavljaèa',
+	'PHPSHOP_RATE_LIST_LBL' => 'Lista Dostavnih Tarifa',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Naziv',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Redoslijed',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Dodavanje/Ureðivanje Dostavljaèa',
+	'PHPSHOP_RATE_FORM_LBL' => 'Dodavanje/Ureðivanje Dostavne Tarife',
+	'PHPSHOP_RATE_FORM_NAME' => 'Opis Dostavne Tarife',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Dostavljaè',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Država',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'Poštanski broj poèetak',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'Poštanski broj kraj',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Najmanja težina',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Najveæa težina',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Pristojba za vašu pošiljku',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Valuta',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Redoslijed',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Dostavljaè',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Opis dostavne tarife',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'težina od ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... do',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Dostavljaè',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Prikaži narudžbu'
 	));
 ?>

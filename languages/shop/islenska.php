@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: islenska.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : islenska.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,64 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shop',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_BROWSE_LBL' => 'Browse',
+	'PHPSHOP_FLYPAGE_LBL' => 'Nánari lýsing',
+	'PHPSHOP_ERROR' => 'Villa',
+	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Breyta vöru',
+	'PHPSHOP_DOWNLOADS_START' => 'Byrja niðurhal',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Vinsamlegast sláðu inn kenni fyrir niðurhalið og smelltu svo á \\\'Start Download\\\'.',
+	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Please enter your e-mail address below to be notified when this product comes back in stock. 
+                                        We will not share, rent, sell or use this e-mail address for any other purpose other than to 
+                                        tell you when the product is back in stock.<br /><br />Thank you!',
+	'PHPSHOP_WAITING_LIST_THANKS' => 'Thanks for waiting! <br />We will let you know as soon as we get our inventory.',
+	'PHPSHOP_WAITING_LIST_NOTIFY_ME' => 'Notify Me!',
+	'PHPSHOP_SEARCH_ALL_CATEGORIES' => 'Leita í öllum flokkum',
+	'PHPSHOP_SEARCH_ALL_PRODINFO' => 'Leita í upplýsingum um vörur',
+	'PHPSHOP_SEARCH_PRODNAME' => 'Leita eftir vörunafni',
+	'PHPSHOP_SEARCH_MANU_VENDOR' => 'Framleiðandi',
+	'PHPSHOP_SEARCH_DESCRIPTION' => 'Lýsing vöru',
+	'PHPSHOP_SEARCH_AND' => 'og',
+	'PHPSHOP_SEARCH_NOT' => 'ekki',
+	'PHPSHOP_SEARCH_TEXT1' => 'Fyrsti niðurfelldi listinn gefur þér tækifæri til að velja flokk til að leita í. 
+        Annar niðurfelldi listinn gefur þér tækifæri til að velja einhvern ákveðin hluta af vörulýsingu til að leita eftir (t.d. Nafn). 
+        Þegar þú hefur valið (eða látið forstillingu ráða), sláðu inn orð til að leita eftir. ',
+	'PHPSHOP_SEARCH_TEXT2' => ' Þú getur þrengt leitina enn frekar með þvi að nota OG eða EKKI. 
+        Með því að velja OG velurðu að bæði orðin verða að vera til staðar til að vara finnist. 
+        Ef þú velur NOT verður van einungis funndin ef fyrra orðið er til staðar 
+        en ekki seinna orðið.',
+	'PHPSHOP_CONTINUE_SHOPPING' => 'Halda áfram að versla',
+	'PHPSHOP_AVAILABLE_IMAGES' => 'Available Images for',
+	'PHPSHOP_BACK_TO_DETAILS' => 'Back to Product Details',
+	'PHPSHOP_IMAGE_NOT_FOUND' => 'Image not found!',
+	'PHPSHOP_PARAMETER_SEARCH_TEXT1' => 'Do you will find products according to technical parametrs?<BR>You can used any prepared form:',
+	'PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE' => 'I am sorry. There is no category for search.',
+	'PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE' => 'I am sorry. There is no published Product Type with this name.',
+	'PHPSHOP_PARAMETER_SEARCH_IS_LIKE' => 'Is Like',
+	'PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE' => 'Is NOT Like',
+	'PHPSHOP_PARAMETER_SEARCH_FULLTEXT' => 'Full-Text Search',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'All Selected',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Any Selected',
+	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'Reset Form',
+	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you',
+	'PHPSHOP_PRODUCT_PACKAGING1' => 'Number {unit}s in packaging:',
+	'PHPSHOP_PRODUCT_PACKAGING2' => 'Number {unit}s in box:',
+	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Price per Unit',
+	'VM_PRODUCT_ENQUIRY_LBL' => 'Ask a question about this product',
+	'VM_RECOMMEND_FORM_LBL' => 'Recommend this product to a friend',
+	'PHPSHOP_EMPTY_YOUR_CART' => 'Empty Cart',
+	'VM_RETURN_TO_PRODUCT' => 'Return to product',
+	'EMPTY_CATEGORY' => 'This Category is currently empty.',
+	'ENQUIRY' => 'Enquiry',
+	'NAME_PROMPT' => 'Enter your Name',
+	'EMAIL_PROMPT' => 'E-mail Address',
+	'MESSAGE_PROMPT' => 'Enter your Message',
+	'SEND_BUTTON' => 'Send',
+	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
+	'PROMPT_CLOSE' => 'Close',
+	'VM_RECOVER_CART' => '',
+	'VM_RECOVER_CART_REPLACE' => '',
+	'VM_RECOVER_CART_MERGE' => '',
+	'VM_RECOVER_CART_DELETE' => ''
 	));
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: norwegian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : norwegian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'E-post',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Kundeliste',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Faktura informasjon',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Brukernavn',
+	'PHPSHOP_AFFILIATE_MOD' => 'Administrer Statistikk',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Statistikk liste',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Statistikk Navn',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktiv',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Sats',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Måneds total',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Måneds Provisjon',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'List Ordrer',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Send Epost til Hvem(* = ALLE)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Din e-post',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Emne',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Inkluder denne Statistikken',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Provisjons Sats',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktiv?'
 	));
 ?>

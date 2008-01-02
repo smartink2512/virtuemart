@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: norwegian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : norwegian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('checkout',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_NO_CUSTOMER' => 'Du er enda ikke registrert som kunde. Vennligst skriv inn faktura informasjon.',
+	'PHPSHOP_THANKYOU' => 'Takk for bestillingen.',
+	'PHPSHOP_EMAIL_SENDTO' => 'Bekreftelse har blitt sendt på e-post til',
+	'PHPSHOP_CHECKOUT_NEXT' => 'Neste',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Faktura informasjon',
+	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Firma',
+	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Navn',
+	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'Adresse',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'E-post',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Leverings informasjon',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'Firma',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'Navn',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Adresse',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Telefon',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Faks',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Betalingsmåte',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'pliktig informasjon når kredittkort er valgt',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Takk for din betaling. 
+',
+	'PHPSHOP_PAYPAL_ERROR' => 'En feil har oppstått under betalingstransaksjonen. Statusen på din ordre kan ikke oppdateres.',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'Din ordre er sendt!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s'
 	));
 ?>

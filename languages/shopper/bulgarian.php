@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Етикет за адрес',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Списък на клиентските групи',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Име на групата',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Описание на групата',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Формуляр за клиентска група',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Име на групата',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Описание на групата',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Отстъпка за клиентската група по подразбиране (в %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Polojitelna stoinost X oznachava: Ako produktut niama cena za TAZI klientska grupa, cenata mu po podrazbirane se namaliava s X %. Otricatelna stoinost za X shte ima obratnia efekt.'
 	));
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: swedish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : swedish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('reportbasic',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_RB_INDIVIDUAL' => 'Individuell produktlistning',
+	'PHPSHOP_RB_SALE_TITLE' => 'Försäljningsrapport',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Översikt föräljningsaktivitet',
+	'PHPSHOP_RB_INTERVAL_TITLE' => 'Intervall',
+	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Månadsvis',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Veckovis',
+	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Dagligen',
+	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Denna månad',
+	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Föregående månad',
+	'PHPSHOP_RB_LAST60_BUTTON' => 'Senaste 60 dagarna',
+	'PHPSHOP_RB_LAST90_BUTTON' => 'Senaste 90 dagarna',
+	'PHPSHOP_RB_START_DATE_TITLE' => 'Starta på',
+	'PHPSHOP_RB_END_DATE_TITLE' => 'Sluta på',
+	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Visa urval',
+	'PHPSHOP_RB_REPORT_FOR' => 'Rapportera för ',
+	'PHPSHOP_RB_DATE' => 'Datum',
+	'PHPSHOP_RB_ORDERS' => 'Beställningar',
+	'PHPSHOP_RB_TOTAL_ITEMS' => 'Totalt antal sålda artiklar',
+	'PHPSHOP_RB_REVENUE' => 'Omsättning',
+	'PHPSHOP_RB_PRODLIST' => 'Produktlista'
 	));
 ?>

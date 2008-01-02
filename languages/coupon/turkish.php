@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: turkish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : turkish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('coupon',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Kupon güncelle',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Kod',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Yüzde veya Toplam',
+	'PHPSHOP_COUPON_TYPE' => 'Kupon Tipi',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Eðer hediye kuponu indirim kuponu olarak kullanýlýrsa silinir. Kalýcý kuponu müþteri istediði zaman istediði gibi kullanabilir.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Hediye kuponu',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Kalýcý kupon',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Deðeri',
+	'PHPSHOP_COUPON_PERCENT' => 'Yüzde',
+	'PHPSHOP_COUPON_TOTAL' => 'Toplam'
 	));
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: romanian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : romanian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('manufacturer',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Lista producatori',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Nume producator',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Adauga informatii',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'Categorie producator',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Lista categoriilor de producatori',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Nume categorie',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Descriere categorie',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'Producatori',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Formular categorie producator',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Informatii categorie',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Nume categorie',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Descriere categorie'
 	));
 ?>

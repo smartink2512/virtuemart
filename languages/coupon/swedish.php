@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: swedish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : swedish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('coupon',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Uppdatera kupong',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Kod',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Procent av total',
+	'PHPSHOP_COUPON_TYPE' => 'Kupongtyp',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'En gåvokupong raderas efter att ha använts på en order. En permanent kupong kan användas så ofta som kunden vill.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Gåvokupong',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Permanent kupong',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Värde',
+	'PHPSHOP_COUPON_PERCENT' => 'Procent',
+	'PHPSHOP_COUPON_TOTAL' => 'Total'
 	));
 ?>

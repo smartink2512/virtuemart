@@ -2,10 +2,10 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: czech1250.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : czech1250.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'e-mail',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Seznam zákazníkù',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Fakturaèní informace',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Uživatelské jméno',
+	'PHPSHOP_AFFILIATE_MOD' => 'Adminjistrace poboèek',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Poboèky',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Název poboèky',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktivní',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Sazba',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Celkem za mìsíc',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Mìsíèní provize',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Seznam objednávek',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Komu(* = všem)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Text zprávy',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Pøedmìt',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Vložit souèasnou statistiku',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Provize (%)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktivní?'
 	));
 ?>

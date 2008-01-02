@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: czechiso.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : czechiso.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Zkratka adresy',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Seznam skupin zákazníkù',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Název skupiny',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Popis skupiny',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Formuláø skupiny zákazníkù',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Název skupiny',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Popis skupiny',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Sleva pro výchozí skupinu zákazníkù (v %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Kladná hodnota X znamená: Pokud nemá pøiøazenu cenu pro TUTO skupinu zákazníkù, výchozí cena je sní¾ena o X %. Záporná hodnota má opaèný efekt.'
 	));
 ?>

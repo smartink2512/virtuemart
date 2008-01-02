@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id:german.php 1002 2007-10-17 20:59:42Z soeren_nb $
+* @version : german.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Kundenliste',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Informationen zur Rechnungsadresse',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Nutzername',
+	'PHPSHOP_AFFILIATE_MOD' => 'Affiliate',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Affiliates Liste',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Affiliate - Name',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'aktiv',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Rate',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Monatsumsatz',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'monatliche Kommission',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Bestellungen auflisten',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Wem eine Email senden? (* = allen)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Ihre Email-Adresse',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Der Betreff',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'aktuelle Statistiken einbinden?',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Commission Rate',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktiv?'
 	));
 ?>

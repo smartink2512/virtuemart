@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: romanian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : romanian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Lista cumparatorilor',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Inregistreaza la informatii',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Nume utilizator',
+	'PHPSHOP_AFFILIATE_MOD' => 'Administrarea membrilor',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Lista membrilor',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Nume membru',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Activ',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Rate',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Total lunar',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Comisie lunara',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Ordine lista',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'cui sa trimiteti email(* = ALL)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Email-ul dvs',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Subiect',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Include statistici curente',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Commission Rate (procentaj)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Activ?'
 	));
 ?>

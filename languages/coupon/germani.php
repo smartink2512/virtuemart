@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: germani.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : germani.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('coupon',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Gutschein aktualisieren',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Code',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Prozent oder Betrag',
+	'PHPSHOP_COUPON_TYPE' => 'Gutscheintyp',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Ein Geschenk-Gutschein wird gelöscht, nachdem er vom Kunden in einer Bestellung eingelöst wurde. Ein permanenter Gutschein kann vom Kunden mehr als einmal genutzt werden.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Geschenk-Gutschein',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Permanenter Gutschein',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Prozentsatz/Betrag',
+	'PHPSHOP_COUPON_PERCENT' => 'Prozent',
+	'PHPSHOP_COUPON_TOTAL' => 'Betrag'
 	));
 ?>

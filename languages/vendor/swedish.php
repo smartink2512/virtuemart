@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: swedish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : swedish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,41 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('vendor',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_VENDOR_LIST_LBL' => 'Säljare',
+	'PHPSHOP_VENDOR_LIST_ADMIN' => 'Admin',
+	'PHPSHOP_VENDOR_FORM_LBL' => 'Lägg till information',
+	'PHPSHOP_VENDOR_FORM_CONTACT_LBL' => 'Kontaktinformation',
+	'PHPSHOP_VENDOR_FORM_FULL_IMAGE' => 'Stor bild',
+	'PHPSHOP_VENDOR_FORM_UPLOAD' => 'Ladda upp bild',
+	'PHPSHOP_VENDOR_FORM_STORE_NAME' => 'Återförsäljarnamn',
+	'PHPSHOP_VENDOR_FORM_COMPANY_NAME' => 'Säljarens företagsnamn',
+	'PHPSHOP_VENDOR_FORM_ADDRESS_1' => 'Adressrad 1',
+	'PHPSHOP_VENDOR_FORM_ADDRESS_2' => 'Adressrad 2',
+	'PHPSHOP_VENDOR_FORM_CITY' => 'Stad',
+	'PHPSHOP_VENDOR_FORM_STATE' => 'Landskap/Provins/Region',
+	'PHPSHOP_VENDOR_FORM_COUNTRY' => 'Land',
+	'PHPSHOP_VENDOR_FORM_ZIP' => 'Postnummer',
+	'PHPSHOP_VENDOR_FORM_PHONE' => 'Telefon',
+	'PHPSHOP_VENDOR_FORM_CURRENCY' => 'Betalningsmedel/valuta',
+	'PHPSHOP_VENDOR_FORM_CATEGORY' => 'Säljarkategori',
+	'PHPSHOP_VENDOR_FORM_LAST_NAME' => 'Efternamn',
+	'PHPSHOP_VENDOR_FORM_FIRST_NAME' => 'Förnamn',
+	'PHPSHOP_VENDOR_FORM_MIDDLE_NAME' => 'Mellannamn',
+	'PHPSHOP_VENDOR_FORM_TITLE' => 'Titel',
+	'PHPSHOP_VENDOR_FORM_PHONE_1' => 'Telefon 1',
+	'PHPSHOP_VENDOR_FORM_PHONE_2' => 'Telefon 2',
+	'PHPSHOP_VENDOR_FORM_FAX' => 'Fax',
+	'PHPSHOP_VENDOR_FORM_EMAIL' => 'E-post',
+	'PHPSHOP_VENDOR_FORM_IMAGE_PATH' => 'Sökväg för bild',
+	'PHPSHOP_VENDOR_FORM_DESCRIPTION' => 'Beskrivning',
+	'PHPSHOP_VENDOR_CAT_LIST_LBL' => 'Säljarkategorier',
+	'PHPSHOP_VENDOR_CAT_NAME' => 'Kategorinamn',
+	'PHPSHOP_VENDOR_CAT_DESCRIPTION' => 'Kategoribeskrivning',
+	'PHPSHOP_VENDOR_CAT_VENDORS' => 'Säljare',
+	'PHPSHOP_VENDOR_CAT_FORM_LBL' => 'Säljarkategori',
+	'PHPSHOP_VENDOR_CAT_FORM_INFO_LBL' => 'Kategoriinformation',
+	'PHPSHOP_VENDOR_CAT_FORM_NAME' => 'Kategorinamn',
+	'PHPSHOP_VENDOR_CAT_FORM_DESCRIPTION' => 'Kategoribeskrivning'
 	));
 ?>

@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('tax',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_TAX_LIST_LBL' => 'Tax Rate List',
+	'PHPSHOP_TAX_LIST_STATE' => 'Tax State or Region',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Tax Country',
+	'PHPSHOP_TAX_FORM_LBL' => 'Add Tax Information',
+	'PHPSHOP_TAX_FORM_STATE' => 'Tax State or Region',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Tax Country',
+	'PHPSHOP_TAX_FORM_RATE' => 'Tax Rate (for 16% => fill in 0.16)'
 	));
 ?>

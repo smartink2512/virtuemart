@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: czechiso.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : czechiso.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Dopravci',
+	'PHPSHOP_RATE_LIST_LBL' => 'Dopravné',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Název',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Poøadí',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Vytvoøení nebo úprava dopravce',
+	'PHPSHOP_RATE_FORM_LBL' => 'Vytvoøení nebo úprava dopravného',
+	'PHPSHOP_RATE_FORM_NAME' => 'Detaily dopravného',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Dopravce',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Stát:<br /><br /><i>Pro výbìr více státù: pou¾ijte CTRL a my¹</i>',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'PSÈ odesilatele',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'PSÈ adresáta',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Hmotnost od',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Hmotnost do',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Va¹e balné',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Mìna',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Poøadí',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Dopravce',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Popis dopravného',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Hmotnost od ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... do',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'Dopravce',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Poøadí'
 	));
 ?>

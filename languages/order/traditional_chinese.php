@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,31 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('order',array (
-	'CHARSET' => 'BIG5'
+	'CHARSET' => 'BIG5',
+	'PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL' => '付款記錄',
+	'PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL' => '送貨費用',
+	'PHPSHOP_ORDER_STATUS_LIST_CODE' => '訂單狀態代碼',
+	'PHPSHOP_ORDER_STATUS_LIST_NAME' => '訂單狀態名稱',
+	'PHPSHOP_ORDER_STATUS_FORM_LBL' => '訂單狀態',
+	'PHPSHOP_ORDER_STATUS_FORM_CODE' => '訂單狀態代碼',
+	'PHPSHOP_ORDER_STATUS_FORM_NAME' => '訂單狀態名稱',
+	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => '列出訂單',
+	'PHPSHOP_COMMENT' => '評論',
+	'PHPSHOP_ORDER_LIST_NOTIFY' => '提醒顧客?',
+	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => '請先改變訂單狀態!',
+	'PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT' => '包括這個評論?',
+	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => '日期已增加',
+	'PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED' => '通知顧客?',
+	'PHPSHOP_ORDER_STATUS_CHANGE' => '訂購狀態更改',
+	'PHPSHOP_ORDER_LIST_PRINT_LABEL' => 'Print Label',
+	'PHPSHOP_ORDER_LIST_VOID_LABEL' => 'Void Label',
+	'PHPSHOP_ORDER_LIST_TRACK' => 'Track',
+	'VM_DOWNLOAD_STATS' => 'DOWNLOAD STATS',
+	'VM_DOWNLOAD_NOTHING_LEFT' => 'no downloads remaining',
+	'VM_DOWNLOAD_REENABLE' => 'Re-Enable Download',
+	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Remaining Downloads',
+	'VM_DOWNLOAD_RESEND_ID' => 'Resend Download ID',
+	'VM_EXPIRY' => 'Expiry',
+	'VM_UPDATE_STATUS' => 'Update Status'
 	));
 ?>

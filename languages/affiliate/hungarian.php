@@ -2,10 +2,10 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'UTF-8'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_USER_FORM_EMAIL' => 'E-mail',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Vásárlók listája',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Számlázási információ',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Felhasználónév',
+	'PHPSHOP_AFFILIATE_MOD' => 'Csatlakozott cégek adminisztrációja',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Csatlakozott cégek listája',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Csatlakozott cég neve',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Aktív',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Kamatláb',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Havi összeg',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Havi jutalék',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Megrendelések listázása',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Kinek akar e-mailt küldeni (* = mind)?',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'E-mail címe',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Tárgy',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Kurrens statisztikák is befoglalva',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Jutalék (százalák)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktív?'
 	));
 ?>

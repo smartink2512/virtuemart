@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: danish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : danish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('reportbasic',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_RB_INDIVIDUAL' => 'Individuelle produktlister',
+	'PHPSHOP_RB_SALE_TITLE' => 'Salgsrapportering',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Salgsaktivitet - oversigt',
+	'PHPSHOP_RB_INTERVAL_TITLE' => 'Interval',
+	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Månedlig',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Ugenlig',
+	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Daglig',
+	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Denne måned',
+	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Sidste måned',
+	'PHPSHOP_RB_LAST60_BUTTON' => 'Seneste 60 dage',
+	'PHPSHOP_RB_LAST90_BUTTON' => 'Seneste 90 dage',
+	'PHPSHOP_RB_START_DATE_TITLE' => 'Start den',
+	'PHPSHOP_RB_END_DATE_TITLE' => 'Slut den',
+	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Vis det valgte interval',
+	'PHPSHOP_RB_REPORT_FOR' => 'Rapport for ',
+	'PHPSHOP_RB_DATE' => 'Dato',
+	'PHPSHOP_RB_ORDERS' => 'Ordrer',
+	'PHPSHOP_RB_TOTAL_ITEMS' => 'Antal varer solgt',
+	'PHPSHOP_RB_REVENUE' => 'Omsætning',
+	'PHPSHOP_RB_PRODLIST' => 'Produktliste'
 	));
 ?>

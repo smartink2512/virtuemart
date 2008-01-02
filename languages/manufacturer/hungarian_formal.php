@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hungarian_formal.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian_formal.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('manufacturer',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Gyártók listája',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Gyártó neve',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Információ hozzáadása',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'Gyártó kategória',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'E-mail',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Gyártó kategóriák listája',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Kategória neve',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Kategória leírás',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'Gyártók',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Gyártó kategória ûrlap',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Kategória információ',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Kategória neve',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Kategória leírás'
 	));
 ?>

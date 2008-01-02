@@ -1,11 +1,11 @@
-﻿<?php
+<?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: vietnamese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : vietnamese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,6 +18,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('zone',array (
-	'CHARSET' => 'UTF-8'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Quốc gia',
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Phân công cho Khu vực',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Phân công Khu vực',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Tên Khu vực',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Mô tả Khu vực',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Khu vực Cost Per Item',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Khu vực Cost Limit',
+	'PHPSHOP_ZONE_LIST_LBL' => 'Khu vực Liệt kê',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Tên Khu vực',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Mô tả Khu vực',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Khu vực Cost Per Item',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Khu vực Cost Limit'
 	));
 ?>

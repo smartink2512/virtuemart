@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'cp1251'
+	'CHARSET' => 'cp1251',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Списък на клиентите',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Информация за плащане',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Потребителско име',
+	'PHPSHOP_AFFILIATE_MOD' => 'Администрация на клонове',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Списък на клоновете',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Име на клона',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Активен',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Рейтинг',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Общо за месец',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Месечна такса',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Списък на поръчките',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Email до (* = ВСИЧКИ)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Вашият еmail',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Тема',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Включване на текущата статистика',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Комисионна (процент)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Активен?'
 	));
 ?>

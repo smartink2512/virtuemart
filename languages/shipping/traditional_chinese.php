@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
-	'CHARSET' => 'BIG5'
+	'CHARSET' => 'BIG5',
+	'PHPSHOP_CARRIER_LIST_LBL' => '運送者列表',
+	'PHPSHOP_RATE_LIST_LBL' => '運送費率列表',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => '名稱',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => '列表順序',
+	'PHPSHOP_CARRIER_FORM_LBL' => '增加/編輯 運送者',
+	'PHPSHOP_RATE_FORM_LBL' => '增加/編輯 運送費率',
+	'PHPSHOP_RATE_FORM_NAME' => '運送費率說明',
+	'PHPSHOP_RATE_FORM_CARRIER' => '運送者',
+	'PHPSHOP_RATE_FORM_COUNTRY' => '國家',
+	'PHPSHOP_RATE_FORM_ZIP_START' => '郵遞區號起始範圍',
+	'PHPSHOP_RATE_FORM_ZIP_END' => '郵遞區號結束範圍',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => '最低重量',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => '最高重量',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => '您的包裹費用',
+	'PHPSHOP_RATE_FORM_CURRENCY' => '貨幣',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => '列表順序',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => '運送者',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => '運送費率說明',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => '重量從 ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... 到',
+	'PHPSHOP_CARRIER_FORM_NAME' => '運送公司',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => '列表順序'
 	));
 ?>

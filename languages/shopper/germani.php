@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: germani.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : germani.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shopper',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Kurzname für Adresse',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Kundengruppenliste',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Gruppenname',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Gruppenbeschreibung',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Kundengruppenformular',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Gruppenname',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Gruppenbeschreibung',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Preis-Nachlass auf die Standard-Shoppergruppe (in %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Ein positiver Betrag X.xx bedeutet: Falls ein Produkt keinen Preis für DIESE Shoppergruppe hat, wird der Preis der Standard-Shoppergruppe um X.xx % vermindert. Ein negativer Betrag erwirkt das Gegenteil.'
 	));
 ?>

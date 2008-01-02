@@ -18,6 +18,29 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('checkout',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_NO_CUSTOMER' => 'You are not a Registered Customer yet. Please provide your Billing Information.',
+	'PHPSHOP_THANKYOU' => 'Thank you for your order.',
+	'PHPSHOP_EMAIL_SENDTO' => 'A confirmation email has been sent to',
+	'PHPSHOP_CHECKOUT_NEXT' => 'Next',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Billing Information',
+	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Company',
+	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Name',
+	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'Address',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'Email',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Shipping Information',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'Company',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'Name',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Address',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Phone',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Fax',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Payment Method',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'required infomation when Payment via Credit Card is selected',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Thanks for your payment. 
+        The transaction was successful. You will get a confirmation e-mail for the transaction by PayPal. 
+        You can now continue or log in at <a href=http://www.paypal.com>www.paypal.com</a> to see the transaction details.',
+	'PHPSHOP_PAYPAL_ERROR' => 'An error occured while processing your transaction. The status of your order could not be updated.',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'Your order has been successfully placed!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s'
 	));
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: hungarian_formal.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian_formal.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,57 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shop',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_BROWSE_LBL' => 'Böngész',
+	'PHPSHOP_FLYPAGE_LBL' => 'Termék részletek',
+	'PHPSHOP_ERROR' => 'ERROR',
+	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Termék szerkesztése',
+	'PHPSHOP_DOWNLOADS_START' => 'Letöltés megkezdése',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Kérem, adja meg az e-mailban kapott Download-ID-t és kattintson  a Letöltés megkezdése gombra.',
+	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Kérjük, adja meg alább az e-mail címét, hogy értesíteni tudjuk, amint a keresett termék ismét készleten lesz. Az e-mail címét nem adjuk ki, nem adjuk el, nem használjuk más célra, mint kizárólag arra, hogy értesítsük önt,  amint a keresett termék ismét készleten lesz.<br /><br />Köszönjük!',
+	'PHPSHOP_WAITING_LIST_THANKS' => 'Köszönjük, hogy vár ránk! <br />Rögtön értesítjük, amint összeáll a naprakész leltár.',
+	'PHPSHOP_WAITING_LIST_NOTIFY_ME' => 'Értesíts!',
+	'PHPSHOP_SEARCH_ALL_CATEGORIES' => 'Keres valamennyi kategóriában',
+	'PHPSHOP_SEARCH_ALL_PRODINFO' => 'Keres valamennyi termék információban',
+	'PHPSHOP_SEARCH_PRODNAME' => 'Csak termék neve',
+	'PHPSHOP_SEARCH_MANU_VENDOR' => 'Csak gyártó/eladó',
+	'PHPSHOP_SEARCH_DESCRIPTION' => 'Csak termék leírás',
+	'PHPSHOP_SEARCH_AND' => 'és',
+	'PHPSHOP_SEARCH_NOT' => 'nem',
+	'PHPSHOP_SEARCH_TEXT1' => 'A elsõ lehulló-lista megengedi egy bizonyos kategória fastruktúra kiválasztását, hogy behatárolja a keresését. A második lehulló-lista megengedi a keresés behatárolását egy bizonyos termék-információ  (pl. Név) szerint. Miután ön kiválasztotta ezeket (vagy valamennyit alapértelmezett értéken hagyta), írja be a keresési kulcsszót. ',
+	'PHPSHOP_SEARCH_TEXT2' => ' Ön tovább finomíthatja a keresést további kulcsszó és az AND vagy NOT logikai operátorok használatával. Az AND használata azt jelenti, hogy mindkét szónak benne kell lennie a termék tulajdonságainak leírásában ahhoz, hogy a találati listán megjelenjen. A NOT használata azt jelenti, hogy az elsõ szónak benne kell lennie a termék tulajdonságainak leírásában, a másodiknak meg nem ahhoz, hogy a találati listán megjelenjen.',
+	'PHPSHOP_CONTINUE_SHOPPING' => 'A bevásárlás folytatása',
+	'PHPSHOP_AVAILABLE_IMAGES' => 'Available Images for',
+	'PHPSHOP_BACK_TO_DETAILS' => 'Back to Product Details',
+	'PHPSHOP_IMAGE_NOT_FOUND' => 'Image not found!',
+	'PHPSHOP_PARAMETER_SEARCH_TEXT1' => 'Do you will find products according to technical parametrs?<BR>You can used any prepared form:',
+	'PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE' => 'I am sorry. There is no category for search.',
+	'PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE' => 'I am sorry. There is no published Product Type with this name.',
+	'PHPSHOP_PARAMETER_SEARCH_IS_LIKE' => 'Is Like',
+	'PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE' => 'Is NOT Like',
+	'PHPSHOP_PARAMETER_SEARCH_FULLTEXT' => 'Full-Text Search',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'All Selected',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Any Selected',
+	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'Reset Form',
+	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\\\'ve requested wasn\\\'t found!',
+	'PHPSHOP_PRODUCT_PACKAGING1' => 'Number {unit}s in packaging:',
+	'PHPSHOP_PRODUCT_PACKAGING2' => 'Number {unit}s in box:',
+	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Price per Unit',
+	'VM_PRODUCT_ENQUIRY_LBL' => 'Ask a question about this product',
+	'VM_RECOMMEND_FORM_LBL' => 'Recommend this product to a friend',
+	'PHPSHOP_EMPTY_YOUR_CART' => 'Empty Cart',
+	'VM_RETURN_TO_PRODUCT' => 'Return to product',
+	'EMPTY_CATEGORY' => 'This Category is currently empty.',
+	'ENQUIRY' => 'Enquiry',
+	'NAME_PROMPT' => 'Enter your Name',
+	'EMAIL_PROMPT' => 'E-mail Address',
+	'MESSAGE_PROMPT' => 'Enter your Message',
+	'SEND_BUTTON' => 'Send',
+	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
+	'PROMPT_CLOSE' => 'Close',
+	'VM_RECOVER_CART' => '',
+	'VM_RECOVER_CART_REPLACE' => '',
+	'VM_RECOVER_CART_MERGE' => '',
+	'VM_RECOVER_CART_DELETE' => ''
 	));
 ?>

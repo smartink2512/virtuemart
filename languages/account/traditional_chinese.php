@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('account',array (
-	'CHARSET' => 'BIG5'
+	'CHARSET' => 'BIG5',
+	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => '顧客帳號:',
+	'PHPSHOP_ACC_UPD_BILL' => '您可以在此更新您的付款資訊.',
+	'PHPSHOP_ACC_UPD_SHIP' => '這裏您可以增加或修改付款地址.',
+	'PHPSHOP_ACC_ACCOUNT_INFO' => '帳戶資訊',
+	'PHPSHOP_ACC_SHIP_INFO' => '送貨資訊',
+	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
+	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
 	));
 ?>

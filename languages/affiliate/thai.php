@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: thai.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'อีเมล์',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'ผู้ซื้อ',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'ที่อยู่ใบแจ้งหนี้',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'ชื่อผู้ใช้งาน',
+	'PHPSHOP_AFFILIATE_MOD' => 'ผู้ดูแลระบบสมาชิกเครือข่าย',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'สมาชิกเครือข่าย',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'ชื่อสมาชิก',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'เลือก',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'อัตรา',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'จำนวนเดือน',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'ค่าคอมมิชชั่น',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'เรียงลำดับ',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'อีเมล์ถึง (* = ทั้งหมด)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'อีเมล์ของท่าน',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'หัวข้อ',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'รวมสถิติปัจจุบัน',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'อัตราค่าคอมมิชชั่น (เปอร์เซ็นต์)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'เลือก?'
 	));
 ?>

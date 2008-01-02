@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: dutch.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : dutch.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('manufacturer',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Fabrikanten Lijst',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Fabrikanten Lijst',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Informatie Toevoegen',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'Fabrikant Categorie',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'E-mail',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Fabrikanten Categorie Lijst',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Categorie Naam',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Categorie Omschrijving',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'Fabrikanten',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Fabrikant Categorie Formulier',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Categorie Informatie',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Categorie Naam',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Categorie Omschrijving'
 	));
 ?>

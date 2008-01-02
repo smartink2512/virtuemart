@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: islenska.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : islenska.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('affiliate',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Netfang',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Listi yfir rápara',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Greiðist af:',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Notendanafn',
+	'PHPSHOP_AFFILIATE_MOD' => 'Affiliate Administration',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Affiliates List',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Affiliate Name',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Active',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Rate',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Month Total',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Month Commission',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'List Orders',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Who to Email(* = ALL)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Your Email',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'The Subject',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Include Current Statistics',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Commission Rate (percent)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Active?'
 	));
 ?>

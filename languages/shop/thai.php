@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: thai.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,57 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('shop',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_BROWSE_LBL' => 'เลือกซื้อ',
+	'PHPSHOP_FLYPAGE_LBL' => 'รายละเอียดสินค้า',
+	'PHPSHOP_ERROR' => 'ผิดพลาด',
+	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'แก้ไขรายการสินค้านี้',
+	'PHPSHOP_DOWNLOADS_START' => 'เริ่มต้นดาวน์โหลด',
+	'PHPSHOP_DOWNLOADS_INFO' => 'กรุณาใส่รหัส Download-ID ที่ส่งให้ท่านทางอีเมล์ แล้วกดปุ่ม เริ่มต้นดาวน์โหลด',
+	'PHPSHOP_WAITING_LIST_MESSAGE' => 'กรุณาใส่อีเมล์ของท่าน เพื่อที่จะได้แจ้งกลับให้ทราบเมื่อมีรายการสินค้าในสต็อค เราจะไม่แบ่ง , ให้เช่า , ขาย หรือใช้อีเมล์ของท่านสำหรับรายการอื่นๆนอกจากแจ้งให้ท่านทราบเมื่อมีสินค้าในสต็อค<br /><br />Thank you!',
+	'PHPSHOP_WAITING_LIST_THANKS' => 'ขอบคุณที่กรุณารอ! <br />เราจะแจ้งให้คุณทราบเมื่อมีรายการในคลังสินค้า',
+	'PHPSHOP_WAITING_LIST_NOTIFY_ME' => 'แจ้ังให้ทราบ!',
+	'PHPSHOP_SEARCH_ALL_CATEGORIES' => 'ค้นหาจากหมวดทั้งหมด',
+	'PHPSHOP_SEARCH_ALL_PRODINFO' => 'ค้นหารายละเอียดสินค้าทั้งหมด',
+	'PHPSHOP_SEARCH_PRODNAME' => 'ชื่อสินค้าอย่างเดียว',
+	'PHPSHOP_SEARCH_MANU_VENDOR' => 'ผู้ขาย/ผู้ผลิต อย่างเดียว',
+	'PHPSHOP_SEARCH_DESCRIPTION' => 'รายละเอียดสินค้าอย่างเดียว',
+	'PHPSHOP_SEARCH_AND' => 'และ',
+	'PHPSHOP_SEARCH_NOT' => 'ไม่',
+	'PHPSHOP_SEARCH_TEXT1' => 'รายการแรกสำหรับการเลือกหมวดหมู่ .รายการที่สองสำหรับเลือกรายละเอียด หรือส่วนประกอบเกี่ยวกับสินค้า (เช่น ชื่อสินค้า) เมื่อเลือกรายการแล้ว ให้ใส่คำที่ต้องการค้นหาเพื่อค้นหาสินค้า ',
+	'PHPSHOP_SEARCH_TEXT2' => 'ท่านสามารถค้นหาแบบเจาะจงมากขึ้น โดยการเพิ่มคำที่ต้องการค้นหา และเลือกใช้คำสั่ง AND หรือ OR  -  เลือก AND หมายถึงจะค้นหาสินค้าที่มีคำค้นหาทั้งสองคำ,  เลือก OR หมายถึงจะค้นหาสินค้าที่มีคำค้นหาคำแรก และไม่มีคำที่สอง',
+	'PHPSHOP_CONTINUE_SHOPPING' => 'เลือกสินค้าต่อ',
+	'PHPSHOP_AVAILABLE_IMAGES' => 'รูปภาพสำหรับ',
+	'PHPSHOP_BACK_TO_DETAILS' => 'รายละเอียดสินค้า',
+	'PHPSHOP_IMAGE_NOT_FOUND' => 'ไม่พบรูปภาพ!',
+	'PHPSHOP_PARAMETER_SEARCH_TEXT1' => 'Do you will find products according to technical parametrs?<BR>You can used any prepared form:',
+	'PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE' => 'I am sorry. There is no category for search.',
+	'PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE' => 'I am sorry. There is no published Product Type with this name.',
+	'PHPSHOP_PARAMETER_SEARCH_IS_LIKE' => 'Is Like',
+	'PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE' => 'Is NOT Like',
+	'PHPSHOP_PARAMETER_SEARCH_FULLTEXT' => 'Full-Text Search',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'All Selected',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Any Selected',
+	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'Reset Form',
+	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\\\'ve requested wasn\\\'t found!',
+	'PHPSHOP_PRODUCT_PACKAGING1' => 'Number {unit}s in packaging:',
+	'PHPSHOP_PRODUCT_PACKAGING2' => 'Number {unit}s in box:',
+	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Price per Unit',
+	'VM_PRODUCT_ENQUIRY_LBL' => 'Ask a question about this product',
+	'VM_RECOMMEND_FORM_LBL' => 'Recommend this product to a friend',
+	'PHPSHOP_EMPTY_YOUR_CART' => 'Empty Cart',
+	'VM_RETURN_TO_PRODUCT' => 'Return to product',
+	'EMPTY_CATEGORY' => 'This Category is currently empty.',
+	'ENQUIRY' => 'Enquiry',
+	'NAME_PROMPT' => 'Enter your Name',
+	'EMAIL_PROMPT' => 'E-mail Address',
+	'MESSAGE_PROMPT' => 'Enter your Message',
+	'SEND_BUTTON' => 'Send',
+	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
+	'PROMPT_CLOSE' => 'Close',
+	'VM_RECOVER_CART' => '',
+	'VM_RECOVER_CART_REPLACE' => '',
+	'VM_RECOVER_CART_MERGE' => '',
+	'VM_RECOVER_CART_DELETE' => ''
 	));
 ?>

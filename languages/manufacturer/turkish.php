@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: turkish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : turkish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('manufacturer',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Üretici Listesi',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Üretici Adý',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Bilgi Ekle',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'Üretici Grubu',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'E-posta',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Üretici Grubu Listesi',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Grup Adý',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Grup Açýklamasý',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'Üreticiler',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Üretici Grup Formu',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Grup Bilgisi',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Grup Adý',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Grup Açýklamasý'
 	));
 ?>

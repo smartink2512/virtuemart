@@ -1,11 +1,11 @@
-﻿<?php
+<?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: vietnamese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : vietnamese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,6 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('coupon',array (
-	'CHARSET' => 'UTF-8'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Cập nhật Phiếu',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Mã',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Phần trăm hoặc Tổng số',
+	'PHPSHOP_COUPON_TYPE' => 'Loại Phiếu',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Phiếu tặng sẽ bị xóa sau khi nó được dùng 1 lần. Phiếu cố định có thể dùng nhiều lần.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Phiếu tặng',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Phiếu cố định',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Giá trị',
+	'PHPSHOP_COUPON_PERCENT' => 'Phần trăm',
+	'PHPSHOP_COUPON_TOTAL' => 'Tổng số'
 	));
 ?>

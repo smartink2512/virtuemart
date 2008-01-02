@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: danish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : danish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,29 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('checkout',array (
-	'CHARSET' => 'ISO-8859-1'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_NO_CUSTOMER' => 'De er endnu ikke registreret som kunde. Vær venlig at indtaste faktureringsoplysningerne.',
+	'PHPSHOP_THANKYOU' => 'Tak for Deres ordre.',
+	'PHPSHOP_EMAIL_SENDTO' => 'En email der bekræfter Deres ordre er blevet sendt til',
+	'PHPSHOP_CHECKOUT_NEXT' => 'Næste',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Billing Information',
+	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Firma',
+	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Navn',
+	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'Adresse',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'Email',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Leveringsinformation',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'Firma',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'Navn',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Adresse',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Telefon',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Fax',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Betalingsform',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'krævet information når betaling via betalingskort er valgt',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Tak for Deres betaling. 
+        Overførslen lykkedes. De vil modtage en bekræftelsese-mail for transaktionen fra PayPal. 
+        De kan nu vælge at fortsætte eller at logge ind på <a href=http://www.paypal.com>www.paypal.com</a> for at se transaktionsdetaljerne.',
+	'PHPSHOP_PAYPAL_ERROR' => 'Der opstod en fejl under overførslen. Ordrestatus for Deres ordre kunne ikke opdateres.',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'Deres ordre er modtaget!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s'
 	));
 ?>

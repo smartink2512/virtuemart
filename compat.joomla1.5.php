@@ -85,7 +85,10 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 				// The permissions object
 				$acl =& JFactory::getACL();
 				$GLOBALS['acl'] =& $acl;
+			} else {
+				jimport( 'joomla.database.table' );
 			}
+			
 			// Version information
 			$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
 			

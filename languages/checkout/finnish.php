@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: finnish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,30 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('checkout',array (
-	'CHARSET' => 'ISO-8859-15'
+	'CHARSET' => 'ISO-8859-15',
+	'PHPSHOP_NO_CUSTOMER' => 'Valitan, mutta et ole rekisteröitynyt asiakas.<BR>
+                                    Ole hyvä ja rekisteröidy ensin.',
+	'PHPSHOP_THANKYOU' => 'Kiitoksia Tilauksestasi.',
+	'PHPSHOP_EMAIL_SENDTO' => 'Vahvistus on lähetetty sähköpostilla',
+	'PHPSHOP_CHECKOUT_NEXT' => 'Seuraava',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Laskutus Tiedot',
+	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Yritys',
+	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Nimi',
+	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'Osoite',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'Email',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Huolinta Tiedot',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'Yritys',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'Nimi',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Oosite',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Puhelin',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Fax',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Maksu Tapa',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'tarvittavat tiedot Luottokortilla maksettaessa',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Kiitoksia maksusta. 
+        Suoritus onnistui. Sinulle lähetään vahvistus sähköpostilla suorituksesta PayPal:ista. 
+        Voit nyt jatkaa tai kirjautua sisään <a href=http://www.paypal.com>www.paypal.com</a> nähdäksesi tiedot suorituksesta.',
+	'PHPSHOP_PAYPAL_ERROR' => 'Suorituksesi käsittelyn aikana tapahtui VIRHE. Tilauksesi tilaa ei voitu päivittää.',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'Your order has been successfully placed!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s'
 	));
 ?>

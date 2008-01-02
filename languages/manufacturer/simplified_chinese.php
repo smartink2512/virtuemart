@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: simplified_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : simplified_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -18,6 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $VM_LANG->initModule('manufacturer',array (
-	'CHARSET' => 'GB2312'
+	'CHARSET' => 'GB2312',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => '制造商列表',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => '制造商名称',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => '添加信息',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => '制造商类别',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => '制造商类别列表',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => '类别名称',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => '类别说明',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => '制造商',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => '制造商类别表单',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => '类别信息',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => '类别名称',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => '类别说明'
 	));
 ?>
