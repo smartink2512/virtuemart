@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.01.2008 soeren
++ added protection against CSRF (using the parameter "vmtoken" to verify the 
+	validity of a request that will execute a function through the parameter "func" in admin mode). 
+
 02.01.2008 thepisu
 ^ Task #1268 Language strings modularization; a lot of strings moved + cleaning
 # Task #1624 Admin area problem, caused by error in extlayout.js.php

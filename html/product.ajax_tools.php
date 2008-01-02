@@ -75,6 +75,7 @@ switch( $task ) {
 		$content .= '<input type="hidden" name="func" value="'. (empty($price['product_price_id']) ? 'productPriceAdd' : 'productPriceUpdate') . '" />';
 		$content .= '<input type="hidden" name="ajax_request" value="1" />';
 		$content .= '<input type="hidden" name="no_html" value="1" />';
+		$content .= '<input type="hidden" name="vmtoken" value="'.vmSpoofValue($sess->getSessionId()).'" />';
 		$content .= '<input type="hidden" name="option" value="'.$option.'" />';
 		$content .= '</form>';
 		vmConnector::sendHeaderAndContent( 200, $content );

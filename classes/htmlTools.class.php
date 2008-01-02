@@ -222,6 +222,7 @@ class listFactory {
 					<input type="hidden" name="page" value="'. $modulename . '.' . $pagename . '" />
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="func" value="" />
+					<input type="hidden" name="vmtoken" value="'.vmSpoofValue($sess->getSessionId()).'" />
 					<input type="hidden" name="no_menu" value="'.vmRequest::getInt( 'no_menu' ).'" />
 					<input type="hidden" name="no_toolbar" value="'.vmRequest::getInt('no_toolbar').'" />
 					<input type="hidden" name="only_page" value="'.vmRequest::getInt('only_page').'" />
@@ -336,6 +337,7 @@ class formFactory {
 		$no_menu = vmRequest::getInt('no_menu');
 		
 		$html = '
+		<input type="hidden" name="vmtoken" value="'.vmSpoofValue($GLOBALS['sess']->getSessionId()).'" />
 		<input type="hidden" name="func" value="'.$func.'" />
         <input type="hidden" name="page" value="'.$page.'" />
         <input type="hidden" name="task" value="" />

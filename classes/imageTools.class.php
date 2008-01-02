@@ -299,6 +299,8 @@ class vmImageTools {
 	        		case 'unlink':
 	        			if( file_exists( $exec['param1']) ) {
 	        				$ret = unlink( $exec['param1'] );
+	        			} else {
+	        				$ret = true;
 	        			}
 	        			break;
 	        		case 'move_uploaded_file':

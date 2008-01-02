@@ -162,6 +162,10 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$ok = true;
 
 		if ( !empty( $funcParams["method"] ) ) {
+			// Protection against Cross-Site Request Forgery
+			if( vmIsAdminMode() && !vmSpoofCheck(null, $sess->getSessionId() ) ) {
+				return;
+			}
 			// Get the function parameters: function name and class name
 			$q = "SELECT #__{vm}_module.module_name,#__{vm}_function.function_class";
 			$q .= " FROM #__{vm}_module,#__{vm}_function WHERE ";
@@ -210,7 +214,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			
 
 			if (!empty($vars["error"])) {
-				$error = $vars["error"];
+				$error = vmGet( $vars, 'error' );
 			}
 			if (!empty($error)) {
 				echo vmCommonHTML::getErrorField($error);

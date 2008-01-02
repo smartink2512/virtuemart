@@ -817,14 +817,20 @@ function vmCreateHash( $seed='virtuemart' ) {
  * @param boolean $header
  * @param unknown_type $alt
  */
-function vmSpoofCheck( $header=NULL, $alt=NULL ) {	
-	$validate 	= vmGet( $_POST, vmSpoofValue($alt), 0 );
+function vmSpoofCheck( $header=NULL, $alt=NULL ) {
+	global $vm_mainframe;	
+	if( !empty( $_GET['vmtoken']) || !empty( $_POST['vmtoken'])) {
+		$validate_hash 	= vmGet( $_REQUEST, 'vmtoken', 0 );
+		$validate = vmSpoofValue($alt) == $validate_hash;		
+	} else {
+		$validate 	= vmGet( $_REQUEST, vmSpoofValue($alt), 0 );
+	}
 	
 	// probably a spoofing attack
 	if (!$validate) {
 		header( 'HTTP/1.0 403 Forbidden' );
-		mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
-		return;
+		$vm_mainframe->errorAlert( 'Sorry, but we could not verify your Security Token.\nGo back and try again please.' );
+		return false;
 	}
 	
 	// First, make sure the form was posted from a browser.
@@ -832,18 +838,17 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 	// other than requests from a browser:   
 	if (!isset( $_SERVER['HTTP_USER_AGENT'] )) {
 		header( 'HTTP/1.0 403 Forbidden' );
-		mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
-		return;
+		$vm_mainframe->errorAlert( 'Sorry, but we could not identify your web browser.\nBut this is necessary for using this web page.' );
+		return false;
 	}
-	
-	// Make sure the form was indeed POST'ed:
-	//  (requires your html form to use: action="post")
+	/* //NOTE: this is not really necessary, because GET request should also be allowed. 
+	// Make sure the request was done using "POST"
 	if (!$_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		header( 'HTTP/1.0 403 Forbidden' );
-		mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
-		return;
+		$vm_mainframe->errorAlert( $VM_LANG->_('NOT_AUTH') );
+		return false;
 	}
-	
+	*/
 	if ($header) {
 	// Attempt to defend against header injections:
 		$badStrings = array(
@@ -860,8 +865,8 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 			foreach ($badStrings as $v2) {
 				if (strpos( $v, $v2 ) !== false) {
 					header( "HTTP/1.0 403 Forbidden" );
-					mosErrorAlert( $VM_LANG->_('NOT_AUTH') );
-					return;
+					$vm_mainframe->errorAlert( 'We are sorry, but using E-Mail Headers in Fields is not allowed.' );
+					return false;
 				}
 			}
 		}   
@@ -870,6 +875,7 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 		// and continue rest of script:   
 		unset($k, $v, $v2, $badStrings);
 	}
+	return true;
 }
 /**
  * Equivalent to Joomla's josSpoofValue function

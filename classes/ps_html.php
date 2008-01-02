@@ -548,9 +548,10 @@ class ps_html {
 	 * @return A link with the delete button in it
 	 */
 	function deleteButton( $id_fieldname, $id, $func, $keyword="", $limitstart=0, $extra="" ) {
-		global $page, $VM_LANG;
+		global $page, $sess, $VM_LANG;
 		$no_menu = vmRequest::getInt('no_menu');
-		$code = "<a class=\"toolbar\" href=\"{$_SERVER['PHP_SELF']}?option=com_virtuemart&page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart&amp;no_menu=$no_menu".$extra."\" onclick=\"return confirm('".$VM_LANG->_('PHPSHOP_DELETE_MSG') ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+		$href = $sess->url($_SERVER['PHP_SELF']. "?page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart&no_menu=$no_menu" . $extra );
+		$code = "<a class=\"toolbar\" href=\"$href\" onclick=\"return confirm('".$VM_LANG->_('PHPSHOP_DELETE_MSG') ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
 		$code .= "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$id\" align=\"middle\" border=\"0\" />";
 		$code .= "</a>";
 

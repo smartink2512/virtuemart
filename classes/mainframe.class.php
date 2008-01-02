@@ -131,7 +131,29 @@ class vmMainFrame {
 	function scriptRedirect($location) {
 		$this->addResponseScript('document.location=\''.$location.'\'');
 	}
+	function errorAlert( $text, $action='window.history.go(-1);', $mode=1 ) {
+		global $mainframe, $mosConfig_live_site;
 	
+		$text = nl2br( $text );
+		$text = str_replace( '\'', "\'", $text );
+		$text = strip_tags( $text );
+	
+		switch ( $mode ) {
+			case 2:
+				echo '<script type="text/javascript">'.$action."</script> \n";
+				break;
+	
+			case 1:
+			default:
+				echo '<script type="text/javascript">alert(\''.$text.'\');'. $action."</script> \n";
+				echo '<noscript>';
+				echo "<h2>$text</h2>\n<br /><a href=\"$mosConfig_live_site\">$mosConfig_live_site</a>";
+				echo '</noscript>';
+				break;
+		}
+	
+		$mainframe->close();
+	}
 	function render() {
 		global $mainframe, $mosConfig_gzip, $mosConfig_live_site;
 		

@@ -551,7 +551,9 @@ class ps_session {
 					//$script = strstr($_SERVER['PHP_SELF'], 'index2.php') ? 'index2.php' : 'index3.php';
 					$appendix = URL."administrator/$script".substr($text, $limiter, strlen($text)-1).$appendix;
 				}
-	
+				if( vmIsAdminMode() && strstr($text, 'func') !== false ) {
+					$appendix .= '&vmtoken='.vmSpoofValue($this->getSessionId());
+				}
 				if ( stristr($text, SECUREURL)) {
 					$appendix = str_replace(URL, SECUREURL, $appendix);
 				}
