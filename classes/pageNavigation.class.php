@@ -45,9 +45,9 @@ class vmPageNav {
 	function getLimitBox () {
 		$limits = array();
 		for ($i=5; $i <= 30; $i+=5) {
-			$limits[] = "$i";
+			$limits[$i] = $i;
 		}
-		$limits[] = "50";
+		$limits[50] = 50;
 
 		// build the html select list
 		$html = ps_html::selectList( 'limit', $this->limit, $limits, 1, '',  'onchange="document.adminForm.submit();"' );
