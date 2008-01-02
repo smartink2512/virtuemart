@@ -1210,7 +1210,7 @@ function vmGetArrayValue(&$array, $name, $default=null, $type='') {
 }
 
 function vmGetCleanArrayFromKeyword( $keyword ) {
-	global $db;
+	global $database;
 	$keywordArr = array();
 
 	if( empty( $keyword )) return $keywordArr;
@@ -1219,15 +1219,15 @@ function vmGetCleanArrayFromKeyword( $keyword ) {
 
 	foreach( $keywords as $searchstring ) {
 		$searchstring = trim( stripslashes($searchstring) );
-		
-		if( !empty( $searchstring )) {
-			if( $searchstring[0] == "\"" || $searchstring[0]=="'" )  {
+		$strlen = strlen($searchstring);
+		if( $strlen > 2 ) {
+			/*if( $searchstring[0] == "\"" || $searchstring[0]=="'" )  {
 				$searchstring[0] = " ";
 			}
 			if( $searchstring[strlen($searchstring)-1] == "\"" || $searchstring[strlen($searchstring)-1]=="'" ) {
 				$searchstring[strlen($searchstring)-1] = " ";
-			}
-			$searchstring = $db->getEscaped( $searchstring );
+			}*/
+			$searchstring = $database->getEscaped( $searchstring );
 			$searchstring = str_replace('\"', '"', $searchstring );
 		
 			$keywordArr[] = $searchstring;

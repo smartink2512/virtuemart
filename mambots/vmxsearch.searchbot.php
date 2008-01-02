@@ -16,6 +16,7 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 // Get VM vars
 include_once($mosConfig_absolute_path."/administrator/components/com_virtuemart/virtuemart.cfg.php");
+include_once( CLASSPATH . 'ps_main.php');
 
 /** Register search function inside Mambo's API */
 $_MAMBOTS->registerFunction( 'onSearch', 'vmExtendedSearch' );
@@ -77,9 +78,11 @@ function vmExtendedSearch( $text, $phrase='', $ordering='' ) {
 	
 // Build search logic
 	$wheres = array();
+	$words = vmGetCleanArrayFromKeyword( $text );
 	switch ($phrase) {
 		case 'exact':
 			$wheres2 = array();
+			$text = implode(' ', $words );
 			foreach ($fields as $field) {
 				$wheres2[] = "$field LIKE '%$text%'";
 			}
@@ -88,7 +91,7 @@ function vmExtendedSearch( $text, $phrase='', $ordering='' ) {
 		case 'all':
 		case 'any':
 		default:
-			$words = explode( ' ', $text );
+			
 			$wheres = array();
 			foreach ($words as $word) {
 				$wheres2 = array();
@@ -163,10 +166,10 @@ function vmExtendedSearch( $text, $phrase='', $ordering='' ) {
 			   . "\n AND p.product_publish='Y'"
 			   . "\n $oos_where"
                . "\n ORDER BY $order" ;
-//echo "\n<!--QUERY:\n$query\n-->\n";
-  $database->setQuery( $query );
+	//echo "\nQUERY:\n$query\n";
+	$database->setQuery( $query );
 
-  $row = $database->loadObjectList();
+	$row = $database->loadObjectList();
   
 	if (!empty($row) && $botParams->def( 'density_flag', 1 ) == 1) {
 		$txt = strtolower ($text);

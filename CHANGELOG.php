@@ -36,6 +36,8 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 02.01.2008 soeren
+# Task #1611 - Search with Keywords that contain quotes/apostrophes doesn't work
+# fixed Email Receipt not being sent by Email Server because of violation of sender policy framework (thanks to Jens Kirk Foged from Sunburst WebConsult for reporting)
 + added protection against CSRF (using the parameter "vmtoken" to verify the 
 	validity of a request that will execute a function through the parameter "func" in admin mode). 
 

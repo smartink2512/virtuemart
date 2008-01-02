@@ -2001,7 +2001,7 @@ Order Total: '.$order_total.'
 			$msg = $vendor_header . $shopper_message . $vendor_footer;
 
 			// Mail receipt to the vendor
-			vmMail($shopper_email, $mosConfig_fromname, $vendor_email, $vendor_subject,	$msg, "" );
+			vmMail($from_email, $mosConfig_fromname, $vendor_email, $vendor_subject,	$msg, "" );
 
 		}
 
@@ -2192,7 +2192,7 @@ Order Total: '.$order_total.'
 			
 			$shopper_mail = vmMail( $from_email, $mosConfig_fromname, $shopper_email, $shopper_subject, $shopper_mail_Body, $shopper_mail_AltBody, true, null, null, $EmbeddedImages);
 
-			$vendor_mail = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_mail_Body, $vendor_mail_AltBody, true, null, null, $EmbeddedImages);
+			$vendor_mail = vmMail( $from_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_mail_Body, $vendor_mail_AltBody, true, null, null, $EmbeddedImages);
 
 			if ( !$shopper_mail || !$vendor_mail ) {
 				
