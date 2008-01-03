@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'GREŠKA',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Ureðivanje ovog Proizvoda',
 	'PHPSHOP_DOWNLOADS_START' => 'Zapoèni download',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Molimo vas unesite Download-ID koji ste dobili u e-mailu i kliknite \\\'Zapoèni download\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Molimo vas unesite Download-ID koji ste dobili u e-mailu i kliknite \'Zapoèni download\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Molimo, unesite svoju Email adresu da bi smo vas mogli obavijestiti kada ovaj proizvod opet postane dostupan.
                                         Vaša Email adresa neæe biti upotrebljavana za ništa drugo osim da vas obavijestimo
 						    da je proizvod ponovo dostupan.<br /><br />Hvala!',
@@ -72,9 +72,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

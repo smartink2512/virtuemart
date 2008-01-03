@@ -1065,5 +1065,12 @@ Our %s  is now in stock and can be purchased by following this link:
 _____________________',
 	'VM_CFG_BROWSE_STYLE' => 'Select a product listing style',
 	'VM_CFG_BROWSE_STYLE_TIP' => 'Change the overall style of the product list with this setting.<br />The tableless layout is perfect for your tableless XHTML/CSS powered site. Try the other ones if your layout is screwed up.',
+	'PHPSHOP_CHECKOUT_MSG_2' => 'Please select a Shipping Address!',
+	'PHPSHOP_CHECKOUT_MSG_3' => 'Please select a Shipping Method!',
+	'PHPSHOP_CHECKOUT_MSG_99' => 'Please review the provided data and confirm the order!',
+	'PROMPT_PASSWORD' => 'Lost your Password?',
+	'REGISTER_TITLE' => 'Registration',
+	'VM_LATEST_PRODUCT' => 'Latest Products',
+	'VM_CART_NOSTOCK' => 'Out of Stock'
 	));
 ?>

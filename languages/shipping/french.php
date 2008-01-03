@@ -20,7 +20,7 @@ global $VM_LANG;
 $VM_LANG->initModule('shipping',array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_CARRIER_LIST_LBL' => 'Liste des Expéditeurs',
-	'PHPSHOP_RATE_LIST_LBL' => 'Liste des Taux d\\\'Expéditions',
+	'PHPSHOP_RATE_LIST_LBL' => 'Liste des Taux d\'Expéditions',
 	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Nom',
 	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Ordre dans la liste',
 	'PHPSHOP_CARRIER_FORM_LBL' => 'Créer/Éditer Expéditeur',
@@ -32,13 +32,13 @@ $VM_LANG->initModule('shipping',array (
 	'PHPSHOP_RATE_FORM_ZIP_END' => 'Fourchette de Codes Postaux termine à',
 	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Poids Minimum',
 	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Poids Maximum',
-	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Vos Frais d\\\'Emballage',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Vos Frais d\'Emballage',
 	'PHPSHOP_RATE_FORM_CURRENCY' => 'Devise',
 	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Ordre dans la liste',
 	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Expéditeur',
 	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Description Taux Expédition',
 	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Poids à partir de ...',
-	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... jusqu\\\'à',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... jusqu\'à',
 	'PHPSHOP_CARRIER_FORM_NAME' => 'Société Expéditrice',
 	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Ordre dans la liste'
 	));

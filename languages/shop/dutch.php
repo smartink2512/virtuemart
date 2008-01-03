@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'ERROR',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Wijzig dit product',
 	'PHPSHOP_DOWNLOADS_START' => 'Begin met de Download',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Vul Download-ID in die u heeft gekregen via e-mail en klik \\\'Begin met de Download\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Vul Download-ID in die u heeft gekregen via e-mail en klik \'Begin met de Download\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Voer uw e-mail adres in om bericht te krijgen wanneer dit product weer beschikbaar is. Wij zullen niet uw e-mail adres delen, verhuren, verkopen of voor andere doeleinden gebruiken dan alleen u op de hoogte te stellen wanneer het product weer beschikbaar is.<br /><br />Hartelijk dank!',
 	'PHPSHOP_WAITING_LIST_THANKS' => 'Bedankt voor het wachten! <br />We zullen u zo snel mogelijk op de hoogte stellen als het product binnen is.',
 	'PHPSHOP_WAITING_LIST_NOTIFY_ME' => 'Verwittig me!',
@@ -70,9 +70,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

@@ -44,7 +44,7 @@ $VM_LANG->initModule('vendor',array (
 	'PHPSHOP_VENDOR_FORM_PHONE_2' => 'Téléphone 2',
 	'PHPSHOP_VENDOR_FORM_FAX' => 'Fax',
 	'PHPSHOP_VENDOR_FORM_EMAIL' => 'Email',
-	'PHPSHOP_VENDOR_FORM_IMAGE_PATH' => 'Chemin de l\\\'Image',
+	'PHPSHOP_VENDOR_FORM_IMAGE_PATH' => 'Chemin de l\'Image',
 	'PHPSHOP_VENDOR_FORM_DESCRIPTION' => 'Description',
 	'PHPSHOP_VENDOR_CAT_LIST_LBL' => 'Liste des Catégories de Vendeurs',
 	'PHPSHOP_VENDOR_CAT_NAME' => 'Nom de la Catégorie',

@@ -389,7 +389,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET' => '啟用 Authorize.net 付款?',
 	'PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_EXPLAIN' => '選擇可使用 Authorize.net .',
 	'PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE' => '測試模式 ?',
-	'PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN' => '選擇 \\\'是\\\' 用來測試. 選擇 \\\'否\\\' 啟用線上交易.',
+	'PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN' => '選擇 \'是\' 用來測試. 選擇 \'否\' 啟用線上交易.',
 	'PHPSHOP_ADMIN_CFG_YES' => '是',
 	'PHPSHOP_ADMIN_CFG_NO' => '否',
 	'PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME' => 'Authorize.net 登入 ID',
@@ -521,7 +521,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_ADMIN_CFG_ENABLE_EPN' => '啟用 eProcessingNetwork.com 支付?',
 	'PHPSHOP_ADMIN_CFG_ENABLE_EPN_EXPLAIN' => '在 phpshop 選擇使用 eProcessingNetwork.com.',
 	'PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE' => '測試模式 ?',
-	'PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN' => '選擇 \\\'是\\\' 進行測試. 選擇 \\\'否\\\' 啟用線上交易.',
+	'PHPSHOP_ADMIN_CFG_ENABLE_EPN_TESTMODE_EXPLAIN' => '選擇 \'是\' 進行測試. 選擇 \'否\' 啟用線上交易.',
 	'PHPSHOP_ADMIN_CFG_EPN_USERNAME' => 'eProcessingNetwork.com 登入 ID',
 	'PHPSHOP_ADMIN_CFG_EPN_USERNAME_EXPLAIN' => '這是您的 eProcessingNetwork.com 登入 ID',
 	'PHPSHOP_ADMIN_CFG_EPN_KEY' => 'eProcessingNetwork.com 交易碼',
@@ -588,13 +588,13 @@ Password - %s
 	'PEAR_LOG_NOTICE' => 'Notice',
 	'PEAR_LOG_DEBUG' => 'Debug',
 	'PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE' => 'Test mode ?',
-	'PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN' => 'Select \\\'Yes\\\' while testing. Select \\\'No\\\' for enabling live transactions.',
+	'PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN' => 'Select \'Yes\' while testing. Select \'No\' for enabling live transactions.',
 	'PHPSHOP_ADMIN_CFG_PFP_PARTNER' => 'VeriSign processing Partner ID',
 	'PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN' => 'The Partner ID provided to you by the authorized VeriSign Reseller that registered you for the PayFlow Pro service',
 	'VM_MANAGE_USER_FIELDS' => 'Manage User Fields',
 	'VM_FIELDMANAGER_REORDER' => 'Reorder',
 	'VM_PRODUCTS_MOVE_TOOLBAR' => 'Move Products',
-	'VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP' => 'When enabled, let\\\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>',
+	'VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP' => 'When enabled, let\'s you test your Notify Script File %s through this Testing Form: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN' => 'The order Status to which Orders are set, which have no completed Payment Transaction. 
 The transaction was not cancelled in this case, but it is just pending and waiting for completion.',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING' => 'Order Status for Pending Payments',
@@ -612,7 +612,7 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	'VM_FEDEX_METER_NUMBER' => 'FedEx Meter Number',
 	'VM_FEDEX_METER_NUMBER_TIP' => 'The meter number you have received from FedEx',
 	'VM_FEDEX_URI' => 'FedEx Server Address',
-	'VM_FEDEX_URI_TIP' => 'Per FedEx request the addresses to FedEx\\\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
+	'VM_FEDEX_URI_TIP' => 'Per FedEx request the addresses to FedEx\'s API servers are not included (FEDEX_URI). Please register with FedEx to receive this information (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
 <br/>Default for testing is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>',
 	'VM_ORDER_EXPORT' => 'Order Export',
 	'VM_ORDER_EXPORT_MODULE_LIST_MNU' => 'List Order Export Modules',
@@ -622,7 +622,7 @@ The transaction was not cancelled in this case, but it is just pending and waiti
 	'VM_RECOMMEND_FORM_MESSAGE' => 'Your message',
 	'VM_RECOMMEND_MESSAGE' => 'Hello,
 
-i\\\'ve found this great product on %s that might be of interest for you.
+i\'ve found this great product on %s that might be of interest for you.
 
 You can find it here:
 %s
@@ -784,8 +784,8 @@ Please do not respond to this message as it is automatically generated and is fo
 	'OCT' => 'October',
 	'NOV' => 'November',
 	'DEC' => 'December',
-	'VM_DOWNLOAD_FILE_NOTREADABLE' => 'Sorry, but the requested file can\\\'t be read from the Server',
-	'VM_DOWNLOAD_FILE_NOTFOUND' => 'Sorry, but the requested file wasn\\\'t found. Possible Cause: Wrong path',
+	'VM_DOWNLOAD_FILE_NOTREADABLE' => 'Sorry, but the requested file can\'t be read from the Server',
+	'VM_DOWNLOAD_FILE_NOTFOUND' => 'Sorry, but the requested file wasn\'t found. Possible Cause: Wrong path',
 	'VALID_EUVATID' => 'Please enter a valid EU VAT ID',
 	'VM_REGISTER_ACCOUNT' => 'Register an Account?<br />
 An Account allows you to come back to this shop and view all the orders you have made.',
@@ -811,8 +811,8 @@ An Account allows you to come back to this shop and view all the orders you have
 	'VM_FEDEX_ERR_METER_NUMBER' => 'Error updating the Meter Number.',
 	'VM_FEDEX_LBL_METHOD' => 'Shipping Method',
 	'VM_FEDEX_LBL_PRICE' => 'Price',
-	'VM_FEATURED_PRODUCT' => '',
-	'VM_RECENT_PRODUCTS' => '',
+	'VM_FEATURED_PRODUCT' => 'Featured Products',
+	'VM_RECENT_PRODUCTS' => 'Recently Viewed Products',
 	'VM_ADMIN_SIMPLE_LAYOUT' => 'Simple Layout',
 	'VM_ADMIN_EXTENDED_LAYOUT' => 'Extended Layout',
 	'VM_YOUR_VERSION' => 'Your Version',
@@ -860,7 +860,7 @@ An Account allows you to come back to this shop and view all the orders you have
 	'PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE' => 'Too late to ship at (24h format)',
 	'PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TOOLTIP' => 'This is the time when items will no longer ship the same day.  The will ship the next business day.  Use 24 hour format (.e.g. 1600, not 4:00pm)',
 	'PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE' => 'Use Test Mode',
-	'PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP' => 'Use DHL\\\'s testing server, not the production server',
+	'PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP' => 'Use DHL\'s testing server, not the production server',
 	'PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED' => 'Enable Express Shipping Method',
 	'PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED_TOOLTIP' => 'Get shipping estimates for Express shipping method.',
 	'PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED' => 'Enable Next Afternoon Shipping Method',
@@ -876,17 +876,17 @@ An Account allows you to come back to this shop and view all the orders you have
 	'PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT' => 'Weight of packaging',
 	'PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT_TOOLTIP' => 'The packaging weight will be added to the total order weight.  Set to 0 if your item weights already include package weight.',
 	'PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP' => 'Shopper Group to Use for Duty Values (for Intl.)',
-	'PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP_TOOLTIP' => 'Enter the shopper group you have created to hold the product value used in calculating international duty values.  For example, create a shopper group \\\'DUTY\\\' and use it in each item to define a special price to be used in duty value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.',
+	'PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP_TOOLTIP' => 'Enter the shopper group you have created to hold the product value used in calculating international duty values.  For example, create a shopper group \'DUTY\' and use it in each item to define a special price to be used in duty value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.',
 	'PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION' => 'Additional Protection Type',
 	'PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION_TOOLTIP' => 'Select a form of Additional Protection (insurance), or none',
 	'PHPSHOP_SHIPPING_METHOD_DHL_ASSET_PROTECTION' => 'Asset Protection',
 	'PHPSHOP_SHIPPING_METHOD_DHL_NOT_REQUIRED' => 'Not Required',
 	'PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP' => 'Shopper Group to Use for Insurance Values',
-	'PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP_TOOLTIP' => 'Enter the shopper group you have created to hold the product value used in calculating insurance protection.  For example, create a shopper group \\\'INSURANCE\\\' and use it in each item to define a special price to be used in insurance value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.',
+	'PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP_TOOLTIP' => 'Enter the shopper group you have created to hold the product value used in calculating insurance protection.  For example, create a shopper group \'INSURANCE\' and use it in each item to define a special price to be used in insurance value calculations.  If no group is specified, or a product item does not contain this shopper group, the default price is used.',
 	'PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE' => 'Default Domestic Insurance Rate',
-	'PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE_TOOLTIP' => 'DHL\\\'s default Domestic insurance rate - flat value per package.',
+	'PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE_TOOLTIP' => 'DHL\'s default Domestic insurance rate - flat value per package.',
 	'PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE' => 'Default International Insurance Rate (per pound)',
-	'PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE_TOOLTIP' => 'DHL\\\'s default International insurance rate - per pound rate.',
+	'PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE_TOOLTIP' => 'DHL\'s default International insurance rate - per pound rate.',
 	'PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE' => 'Handling Fee',
 	'PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE_TOOLTIP' => 'Handling fee to add to all shipments.',
 	'PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_HISTORY' => 'Tracking History',
@@ -1055,7 +1055,7 @@ ePay will calculate the fee and put it on the payment before the payment is made
 	'VM_ORDER_EXPORT_CLASS_NAME' => 'Export Module Class Name',
 	'VM_ORDER_EXPORT_CLASS_NAME_TIP' => '(e.g. <strong>ps_olsi</strong>) :<br />
 default: ps_xmlexport<br />
-<i>Leave blank if you\\\'re not sure what to fill in!</i>',
+<i>Leave blank if you\'re not sure what to fill in!</i>',
 	'VM_ORDER_EXPORT_CONFIG' => 'Order Export configuration',
 	'VM_ORDER_EXPORT_CONFIG_TIP' => 'Here you can configure your order export.
 It has to be valid PHP Code!
@@ -1065,6 +1065,13 @@ It has to be valid PHP Code!
 
 _____________________',
 	'VM_CFG_BROWSE_STYLE' => 'Select a product listing style',
-	'VM_CFG_BROWSE_STYLE_TIP' => 'Change the overall style of the product list with this setting.<br />The tableless layout is perfect for your tableless XHTML/CSS powered site. Try the other ones if your layout is screwed up.'
+	'VM_CFG_BROWSE_STYLE_TIP' => 'Change the overall style of the product list with this setting.<br />The tableless layout is perfect for your tableless XHTML/CSS powered site. Try the other ones if your layout is screwed up.',
+	'PHPSHOP_CHECKOUT_MSG_2' => '請選擇送貨地址!',
+	'PHPSHOP_CHECKOUT_MSG_3' => '請選擇送貨方式!',
+	'PHPSHOP_CHECKOUT_MSG_99' => '請查看你所輸入的內容並確定你的訂單',
+	'PROMPT_PASSWORD' => 'Lost your Password?',
+	'REGISTER_TITLE' => 'Registration',
+	'VM_LATEST_PRODUCT' => 'Latest Products',
+	'VM_CART_NOSTOCK' => 'Out of Stock'
 	));
 ?>

@@ -71,9 +71,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Abschicken',
 	'THANK_MESSAGE' => 'Vielen dank für ihre Nachricht. Wir werden sie so schnell es geht kontaktieren.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

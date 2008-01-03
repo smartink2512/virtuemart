@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'FEHLER',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Dieses Produkt ändern',
 	'PHPSHOP_DOWNLOADS_START' => 'Download starten',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Gib hier Deine persönlich, per e-mail erhaltene Download-ID ein und klicke anschließend auf \\\'Download starten\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Gib hier Deine persönlich, per e-mail erhaltene Download-ID ein und klicke anschließend auf \'Download starten\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Bitte trage Deine email-Adresse ein, um benachrichtigt zu werden, wenn das Produkt wieder verfügbar ist. 
                                                                         Wir werden Deine email-Adresse ausschließlich zum Zwecke der Benachrichtigung verwenden.
                                                                         <br /><br />Vielen Dank!',
@@ -71,9 +71,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

@@ -39,7 +39,7 @@ $VM_LANG->initModule('checkout',array (
 	'PHPSHOP_PAYPAL_THANKYOU' => 'Thanks cho your payment. 
         The transaction was successful. You will get a confirmation e-mail cho the transaction by PayPal. 
         You can now continue or log in at <a href=http://www.paypal.com>www.paypal.com</a> to see the transaction details.',
-	'PHPSHOP_PAYPAL_ERROR' => '',
+	'PHPSHOP_PAYPAL_ERROR' => 'An error occured while processing your transaction. The status of your order could not be updated.',
 	'PHPSHOP_THANKYOU_SUCCESS' => 'Quá trình mua hàng đã hoàn tất!',
 	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s'
 	));

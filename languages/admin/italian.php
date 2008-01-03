@@ -40,7 +40,7 @@ $VM_LANG->initModule('admin',array (
 	'PHPSHOP_MODULE_FORM_ORDER' => 'Ordine di visualizzazione',
 	'PHPSHOP_MODULE_FORM_DESCRIPTION' => 'Descrizione Modulo',
 	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Codice Lingua',
-	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => '',
+	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Language File',
 	'PHPSHOP_FUNCTION_LIST_LBL' => 'Lista Funzioni',
 	'PHPSHOP_FUNCTION_LIST_NAME' => 'Nome Funzione',
 	'PHPSHOP_FUNCTION_LIST_CLASS' => 'Nome Classe',

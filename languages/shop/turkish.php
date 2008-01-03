@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'HATA',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Bu ürünü günle',
 	'PHPSHOP_DOWNLOADS_START' => 'Dosya Ýndir',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Lütfen, e-postanýza gönderilen Download-ID nizi girin ve \\\'Dosya Ýndir\\\' butonuna týklayýn.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Lütfen, e-postanýza gönderilen Download-ID nizi girin ve \'Dosya Ýndir\' butonuna týklayýn.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Ürün stoklarda bulunduðund haberdar olmak için lütfen aþaðýya e-mail adresinizi giriniz. 
                                         E-mail adresinizi hiçkimseyle hiçbir þekilde paylaþmayacak,satmayacak,kiralamayacaðýz.
                                         Sadece ürün stoklara geldiðinde sizi haberdar edeceðiz.<br /><br />Teþekkür ederiz!',
@@ -72,9 +72,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

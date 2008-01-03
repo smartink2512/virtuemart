@@ -22,7 +22,7 @@ $VM_LANG->initModule('affiliate',array (
 	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
 	'PHPSHOP_SHOPPER_LIST_LBL' => 'Liste des Clients',
 	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Information de Facturation',
-	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Nom d\\\'Utilisateur',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Nom d\'Utilisateur',
 	'PHPSHOP_AFFILIATE_MOD' => 'Administration Affiliés',
 	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Liste des Affiliés',
 	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Nom Affilié',

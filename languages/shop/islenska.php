@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'Villa',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Breyta vöru',
 	'PHPSHOP_DOWNLOADS_START' => 'Byrja niðurhal',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Vinsamlegast sláðu inn kenni fyrir niðurhalið og smelltu svo á \\\'Start Download\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Vinsamlegast sláðu inn kenni fyrir niðurhalið og smelltu svo á \'Start Download\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Please enter your e-mail address below to be notified when this product comes back in stock. 
                                         We will not share, rent, sell or use this e-mail address for any other purpose other than to 
                                         tell you when the product is back in stock.<br /><br />Thank you!',
@@ -73,9 +73,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

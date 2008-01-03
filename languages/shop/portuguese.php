@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'ERRO',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Editar este Produto',
 	'PHPSHOP_DOWNLOADS_START' => 'Iniciar Download',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Por favor escreva o Download-ID que recebeu no seu email e carregue em \\\'Iniciar Download\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Por favor escreva o Download-ID que recebeu no seu email e carregue em \'Iniciar Download\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Por favor introduza o seu e-mail, será avisado logo que o produto entre em stock. 
                                                                         O seu endereço de e-mail será apenas utilizado para este fim.<br /><br />Obrigado!',
 	'PHPSHOP_WAITING_LIST_THANKS' => 'Obrigado por aguardar! <br />Será avisado logo que entre para stock.',
@@ -55,7 +55,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'All Selected',
 	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Any Selected',
 	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'Reset Form',
-	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\\\'ve requested wasn\\\'t found!',
+	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\'ve requested wasn\'t found!',
 	'PHPSHOP_PRODUCT_PACKAGING1' => 'Number {unit}s in packaging:',
 	'PHPSHOP_PRODUCT_PACKAGING2' => 'Number {unit}s in box:',
 	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Price per Unit',
@@ -71,9 +71,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

@@ -40,7 +40,7 @@ $VM_LANG->initModule('admin',array (
 	'PHPSHOP_MODULE_FORM_ORDER' => 'Ordinea afisarii',
 	'PHPSHOP_MODULE_FORM_DESCRIPTION' => 'Descriere modul',
 	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Cod Limba',
-	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => '',
+	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Language File',
 	'PHPSHOP_FUNCTION_LIST_LBL' => 'Lista Functiilor',
 	'PHPSHOP_FUNCTION_LIST_NAME' => 'Numele Functiilor',
 	'PHPSHOP_FUNCTION_LIST_CLASS' => 'Numele Clasei',
@@ -75,7 +75,7 @@ $VM_LANG->initModule('admin',array (
 	'PHPSHOP_ADMIN_CFG_SHOW_PRICES' => 'Arata preturi',
 	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Arata preturi incluzand taxe',
 	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Sets the flag whether the shoppers sees prices including tax or excluding tax.',
-	'PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN' => 'Check to show prices. If using catalogue functionality, some don\\\'t want prices to appear on pages.',
+	'PHPSHOP_ADMIN_CFG_SHOW_PRICES_EXPLAIN' => 'Check to show prices. If using catalogue functionality, some don\'t want prices to appear on pages.',
 	'PHPSHOP_ADMIN_CFG_VIRTUAL_TAX' => 'Taxa virtuala',
 	'PHPSHOP_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN' => 'Acesta determina daca articolele care au greutate 0 sunt taxate sau nu. Modificati ps_checkout.php->calc_order_taxable().',
 	'PHPSHOP_ADMIN_CFG_TAX_MODE' => 'Mod de taxare:',
@@ -106,7 +106,7 @@ $VM_LANG->initModule('admin',array (
                                                                                         <li>or ca un email html cu imagini.</li></ul>',
 	'PHPSHOP_ADMIN_CFG_FRONTENDAMDIN' => 'Allow Frontend-Administration for non-Backend Users?',
 	'PHPSHOP_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN' => 'With this setting you can enable the Frontend Administration for users who 
-                                                                                              are storeadmins, but can\\\'t access the Mambo Backend (e.g. Registered / Editor).',
+                                                                                              are storeadmins, but can\'t access the Mambo Backend (e.g. Registered / Editor).',
 	'PHPSHOP_ADMIN_CFG_URLSECURE' => 'URL securizat',
 	'PHPSHOP_ADMIN_CFG_URLSECURE_EXPLAIN' => 'URL securizat catre site-ul dvs. (https - with trailing slash at the end!)',
 	'PHPSHOP_ADMIN_CFG_HOMEPAGE' => 'HOMEPAGE',
@@ -170,7 +170,7 @@ $VM_LANG->initModule('admin',array (
 	'PHPSHOP_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP' => 'Show the Number of Products in a Category like Category (4)?',
 	'PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING' => 'Enable Dynamic Thumbnail Resizing?',
 	'PHPSHOP_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP' => 'If checked, you enable dynamic Image Resizing. This means that all Thumbnail Images are resized to fit the Sizes you provide below,
-        using PHP\\\'s GD2 functions (you can check if you have GD2 support by browsing to "System" -> "System Info" -> "PHP Info" -> gd. 
+        using PHP\'s GD2 functions (you can check if you have GD2 support by browsing to "System" -> "System Info" -> "PHP Info" -> gd. 
         The Thumbnail Image quality is much better than Images which were "resized" by the browser. The newly generated Images are put into the directory /shop_image/prduct/resized. If the Image has already been resized, this copy will be send to the browser, so no image is resized again and again.',
 	'PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH' => 'Thumbnail Image Width',
 	'PHPSHOP_ADMIN_CFG_THUMBNAIL_WIDTH_TIP' => 'The target <strong>width</strong> of the resized Thumbnail Image.',
@@ -183,7 +183,7 @@ $VM_LANG->initModule('admin',array (
 	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX' => 'Show "(including XX% tax)" when applicable?',
 	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP' => 'When checked, users will see the text "(including xx% tax)" when prices are shown incl. tax.',
 	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL' => 'Show the price label for packaging?',
-	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP' => 'When checked, the price label is derived from the product\\\'s unit and packaging values:
+	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP' => 'When checked, the price label is derived from the product\'s unit and packaging values:
 <strong>Price per Unit (10 pieces)<strong><br/>
 When not checked, price labels look just as usual: <strong>Price: $xx.xx</strong>',
 	'PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS' => 'more Core Settings',
@@ -225,7 +225,7 @@ When not checked, price labels look just as usual: <strong>Price: $xx.xx</strong
 	'VM_ADMIN_CFG_PROXY_SETTINGS' => 'Global Proxy Settings',
 	'VM_ADMIN_CFG_PROXY_URL' => 'URL of the proxy server',
 	'VM_ADMIN_CFG_PROXY_URL_TIP' => 'Example: <strong>http://10.42.21.1</strong>.<br />
-Leave empty if you\\\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).',
+Leave empty if you\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).',
 	'VM_ADMIN_CFG_PROXY_PORT' => 'Proxy Port',
 	'VM_ADMIN_CFG_PROXY_PORT_TIP' => 'The port used for communication with the proxy server (mostly <b>80</b> or <b>8080</b>).',
 	'VM_ADMIN_CFG_PROXY_USER' => 'Proxy username',
@@ -240,7 +240,7 @@ Leave empty if you\\\'re not sure.</strong> This value will be used to connect t
 	'VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP' => 'Please add a new content item about the details of your return and order cancellation policy.
 Afterwards you can select it here.',
 	'VM_SELECT_THEME' => 'Select the theme for your Shop',
-	'VM_SELECT_THEME_TIP' => 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\\\'t installed more themes.',
+	'VM_SELECT_THEME_TIP' => 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\'t installed more themes.',
 	'VM_CFG_CONTENT_PLUGINS_ENABLE' => 'Enable content mambots / plugins in descriptions?',
 	'VM_CFG_CONTENT_PLUGINS_ENABLE_TIP' => 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.',
 	'VM_CFG_CURRENCY_MODULE' => 'Select a currency converter module',
@@ -260,13 +260,13 @@ Afterwards you can select it here.',
 <strong>Normal Registration</strong><br />
 This is the standard registration type where the customer must register and choose an username and password<br /><br />
 <strong>Silent Registration</strong><br />
-Silent Registration means the customer doesn\\\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
+Silent Registration means the customer doesn\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
 <br /><br />
 <strong>Optional Registration</strong><br />
-Opotional Registration let\\\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
+Opotional Registration let\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
 <br /><br />
 <strong>No Registration</strong><br />
-Customers don\\\'t need to and are not able to register in this type of registration.',
+Customers don\'t need to and are not able to register in this type of registration.',
 	'VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION' => 'Normal Account Creation',
 	'VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION' => 'Silent Account Creation',
 	'VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION' => 'Optional Account Creation',
@@ -290,7 +290,7 @@ Customers don\\\'t need to and are not able to register in this type of registra
 	'VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH' => 'Maximum Description Length',
 	'VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP' => 'This is the maximum length of the product description for each feed item.',
 	'VM_ADMIN_CFG_FEED_TITLE_TIP' => 'Title of the Feed (the placeholder {storename} holds the name of your store)',
-	'VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP' => 'Title of a Category Feed (\\\'{catname}\\\' is the placeholder for the category name, {storename} holds the name of your store)',
+	'VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP' => 'Title of a Category Feed (\'{catname}\' is the placeholder for the category name, {storename} holds the name of your store)',
 	'VM_ADMIN_CFG_FEED_TITLE' => 'Feed Title',
 	'VM_ADMIN_CFG_FEED_TITLE_CATEGORIES' => 'Feed Title for Categories',
 	'VM_ADMIN_SECURITY' => 'Security',
@@ -303,7 +303,7 @@ Customers don\\\'t need to and are not able to register in this type of registra
 	'VM_ADMIN_ENCRYPTION_KEY' => 'Encryption Key',
 	'VM_ADMIN_ENCRYPTION_KEY_TIP' => 'Used to safely store and retrieve sensible data (like credit card information) encrypted in the database.',
 	'VM_ADMIN_STORE_CREDITCARD_DATA' => 'Store Credit Card Information?',
-	'VM_ADMIN_STORE_CREDITCARD_DATA_TIP' => 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\\\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>',
+	'VM_ADMIN_STORE_CREDITCARD_DATA_TIP' => 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>',
 	'VM_USERFIELDS_URL_ONLY' => 'URL only',
 	'VM_USERFIELDS_HYPERTEXT_URL' => 'Hypertext and URL',
 	'VM_FIELDS_TEXTFIELD' => 'Text Field',
@@ -333,7 +333,7 @@ Customers don\\\'t need to and are not able to register in this type of registra
 	'VM_ADMIN_CFG_THEME_SETTINGS' => 'Theme Settings',
 	'VM_ADMIN_CFG_THEME_PARAMETERS' => 'Parameters',
 	'VM_ADMIN_ENCRYPTION_FUNCTION' => 'Encryption Function',
-	'VM_ADMIN_ENCRYPTION_FUNCTION_TIP' => 'Here you can select the encryption function used to encrypt sensible information before being stored in the database. AES_ENCRYPT is recommended, because it is very secure. ENCODE doesn\\\'t provide real encryption.',
+	'VM_ADMIN_ENCRYPTION_FUNCTION_TIP' => 'Here you can select the encryption function used to encrypt sensible information before being stored in the database. AES_ENCRYPT is recommended, because it is very secure. ENCODE doesn\'t provide real encryption.',
 	'SAVE_PERMISSIONS' => 'Save Permissions'
 	));
 ?>

@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.01.2008
++ Re-added some language strings previusly deleted.
+# Removed extra comma in english common language.
+# Various fixes in language files.
+
 02.01.2008 soeren
 # Task #1611 - Search with Keywords that contain quotes/apostrophes doesn't work
 # fixed Email Receipt not being sent by Email Server because of violation of sender policy framework (thanks to Jens Kirk Foged from Sunburst WebConsult for reporting)

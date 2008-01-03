@@ -85,7 +85,7 @@ $VM_LANG->initModule('store',array (
 	'VM_PAYMENT_CLASS_NAME' => 'Payment class name',
 	'VM_PAYMENT_CLASS_NAME_TIP' => '(e.g. <strong>ps_netbanx</strong>) :<br />
 default: ps_payment<br />
-<i>Leave blank if you\\\'re not sure what to fill in!</i>',
+<i>Leave blank if you\'re not sure what to fill in!</i>',
 	'VM_PAYMENT_EXTRAINFO' => 'Payment Extra Info',
 	'VM_PAYMENT_EXTRAINFO_TIP' => 'Is shown on the Order Confirmation Page. Can be: HTML Form Code from your Payment Service Provider, Hints to the customer etc.',
 	'VM_PAYMENT_ACCEPTED_CREDITCARDS' => 'Accepted Credit Card Types',
@@ -97,12 +97,12 @@ default: ps_payment<br />
 	'VM_ORDER_EXPORT_MODULE_LIST_NAME' => 'Name',
 	'VM_ORDER_EXPORT_MODULE_LIST_DESC' => 'Description',
 	'VM_STORE_FORM_ACCEPTED_CURRENCIES' => 'List of accepted currencies',
-	'VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP' => 'This list defines all those currencies you accept when people are buying something in your store. <strong>Note:</strong> All currencies selected here can be used at checkout! If you don\\\'t want that, just select your country\\\'s currency (=default).',
+	'VM_STORE_FORM_ACCEPTED_CURRENCIES_TIP' => 'This list defines all those currencies you accept when people are buying something in your store. <strong>Note:</strong> All currencies selected here can be used at checkout! If you don\'t want that, just select your country\'s currency (=default).',
 	'VM_EXPORT_MODULE_FORM_LBL' => 'Export Module Form',
 	'VM_EXPORT_MODULE_FORM_NAME' => 'Export Module Name',
 	'VM_EXPORT_MODULE_FORM_DESC' => 'Description',
 	'VM_EXPORT_CLASS_NAME' => 'Export Class Name',
-	'VM_EXPORT_CLASS_NAME_TIP' => '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\\\'re not sure what to fill in!</i>',
+	'VM_EXPORT_CLASS_NAME_TIP' => '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\'re not sure what to fill in!</i>',
 	'VM_EXPORT_CONFIG' => 'Export Extra Configuration',
 	'VM_EXPORT_CONFIG_TIP' => 'Define Export configuration for user-defined export modules or define additional configuration. Code must be valid PHP-Code.',
 	'VM_SHIPPING_MODULE_LIST_NAME' => 'Name',

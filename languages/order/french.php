@@ -29,7 +29,7 @@ $VM_LANG->initModule('order',array (
 	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => 'Ordre dans la liste',
 	'PHPSHOP_COMMENT' => 'Commentaire',
 	'PHPSHOP_ORDER_LIST_NOTIFY' => 'Avertir le Client ?',
-	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => 'Veuillez d\\\'abord modifier le Statut de la Commande !',
+	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => 'Veuillez d\'abord modifier le Statut de la Commande !',
 	'PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT' => 'Inclure ce commentaire ?',
 	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => 'Date Ajoutée',
 	'PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED' => 'Avertir Client ?',

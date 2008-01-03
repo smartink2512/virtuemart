@@ -1057,6 +1057,13 @@ ePay will calculate the fee and put it on the payment before the payment is made
 
 _____________________',
 	'VM_CFG_BROWSE_STYLE' => 'Seleziona uno stile di lista prodotti',
-	'VM_CFG_BROWSE_STYLE_TIP' => 'Cambia lo stile generale della lista prodotti con questa opzione.<br />Il layout senza tabelle (tableless) è perfetto per un sito con template XHTML/CSS tableless. Prova gli altri stili se il tuo layout risulta "accartocciato".'
+	'VM_CFG_BROWSE_STYLE_TIP' => 'Cambia lo stile generale della lista prodotti con questa opzione.<br />Il layout senza tabelle (tableless) è perfetto per un sito con template XHTML/CSS tableless. Prova gli altri stili se il tuo layout risulta "accartocciato".',
+	'PHPSHOP_CHECKOUT_MSG_2' => 'Scegli un Indirizzo di Spedizione!',
+	'PHPSHOP_CHECKOUT_MSG_3' => 'Scegli un Metodo di Spedizione!',
+	'PHPSHOP_CHECKOUT_MSG_99' => 'Controlla i dati e conferma l\'ordine!',
+	'PROMPT_PASSWORD' => 'Hai perso la password?',
+	'REGISTER_TITLE' => 'Registrazione',
+	'VM_LATEST_PRODUCT' => 'Ultimi Prodotti',
+	'VM_CART_NOSTOCK' => 'Non Disponibile'
 	));
 ?>

@@ -39,7 +39,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_SEARCH_NOT' => 'ΟΧΙ',
 	'PHPSHOP_SEARCH_TEXT1' => 'Η πρώτη αναδυόμενη λίστα σας επιτρέπει να επιλέξετε μία κατηγορία για να περιορίσετε σε αυτή την αναζήτηση. 
         Η δεύτερη αναδυώμενη λίστα σας επιτρέπει να κάνετε αναζήτηση σε ένα συγκεκριμένο πεδίο των πληροφοριών του προϊόντος (π.χ. Όνομα). 
-        Από τι στιγμή που έχετε ξάνει τις επιλόγες σας (ή αφήσατε την εξ\\\' ορισμού επιλογή Όλες), εισάγετε την προς αναζήτηση, λέξη κλειδί. ',
+        Από τι στιγμή που έχετε ξάνει τις επιλόγες σας (ή αφήσατε την εξ\' ορισμού επιλογή Όλες), εισάγετε την προς αναζήτηση, λέξη κλειδί. ',
 	'PHPSHOP_SEARCH_TEXT2' => ' Μπορείτε να εξειδικεύσετε περαιτέρω την αναζήτησή σας προσθέτοντας μία δεύτερη λέξη κλειδί και επιλέγοντας τις λειτουργίες ΚΑΙ και ΟΧΙ. 
         Επιλέγοντας ΚΑΙ σημαίνει ότι και οι δύο λέξεις πρέπει να είναι παρούσες για να εμφανιστεί το προϊόν. 
         Επιλέγοντας ΟΧΙ σημαίνει ότι το προϊόν θα εμφανιστεί μόνο αν η πρώτη λέξη κλειδί είναι παρούσα 
@@ -57,7 +57,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'All Selected',
 	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Any Selected',
 	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'Reset Form',
-	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\\\'ve requested wasn\\\'t found!',
+	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\'ve requested wasn\'t found!',
 	'PHPSHOP_PRODUCT_PACKAGING1' => 'Number {unit}s in packaging:',
 	'PHPSHOP_PRODUCT_PACKAGING2' => 'Number {unit}s in box:',
 	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Price per Unit',
@@ -73,9 +73,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

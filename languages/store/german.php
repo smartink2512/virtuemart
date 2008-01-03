@@ -102,7 +102,7 @@ Standard: ps_payment<br />
 	'VM_EXPORT_MODULE_FORM_NAME' => 'Export Module Name',
 	'VM_EXPORT_MODULE_FORM_DESC' => 'Description',
 	'VM_EXPORT_CLASS_NAME' => 'Export Class Name',
-	'VM_EXPORT_CLASS_NAME_TIP' => '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\\\'re not sure what to fill in!</i>',
+	'VM_EXPORT_CLASS_NAME_TIP' => '(e.g. <strong>ps_orders_csv</strong>) :<br /> default: ps_xmlexport<br /> <i>Leave blank if you\'re not sure what to fill in!</i>',
 	'VM_EXPORT_CONFIG' => 'Export Extra Configuration',
 	'VM_EXPORT_CONFIG_TIP' => 'Define Export configuration for user-defined export modules or define additional configuration. Code must be valid PHP-Code.',
 	'VM_SHIPPING_MODULE_LIST_NAME' => 'Name',

@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'FEIL',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Endre dette produktet',
 	'PHPSHOP_DOWNLOADS_START' => 'Start Nedlasting',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Venligst skriv inn Nedlastings-IDen du fikk per e-post. Deretter trykker du \\\'Start Nedlasting\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Venligst skriv inn Nedlastings-IDen du fikk per e-post. Deretter trykker du \'Start Nedlasting\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Venligst skriv inn din Epostadresse for å få beskjed når dette produktet er på lager igjen.
 ',
 	'PHPSHOP_WAITING_LIST_THANKS' => 'Takk for at du venter! <br />Vi vil gi deg beskjed så snart vi får ny vare på lager.',
@@ -68,9 +68,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'خطا',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Edit this product',
 	'PHPSHOP_DOWNLOADS_START' => 'Start Download',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Please enter the Download-ID you\\\'ve got in the e-mail and click \\\'Start Download\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Please enter the Download-ID you\'ve got in the e-mail and click \'Start Download\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Please enter your e-mail address below to be notified when this product comes back in stock. 
                                         We will not share, rent, sell or use this e-mail address for any other purpose other than to 
                                         tell you when the product is back in stock.<br /><br />Thank you!',
@@ -52,7 +52,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'All Selected',
 	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Any Selected',
 	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'Reset Form',
-	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\\\'ve requested wasn\\\'t found!',
+	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Sorry, but the Product you\'ve requested wasn\'t found!',
 	'PHPSHOP_PRODUCT_PACKAGING1' => 'Number {unit}s in packaging:',
 	'PHPSHOP_PRODUCT_PACKAGING2' => 'Number {unit}s in box:',
 	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Price per Unit',
@@ -68,9 +68,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>

@@ -21,7 +21,7 @@ $VM_LANG->initModule('reportbasic',array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_RB_INDIVIDUAL' => 'Listes de Produits Individuels',
 	'PHPSHOP_RB_SALE_TITLE' => 'Rapport des Ventes',
-	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Vue d\\\'ensemble d\\\'Activité des Ventes',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Vue d\'ensemble d\'Activité des Ventes',
 	'PHPSHOP_RB_INTERVAL_TITLE' => 'Régler Intervalle',
 	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Mensuel',
 	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Hebdomadaire',
@@ -37,7 +37,7 @@ $VM_LANG->initModule('reportbasic',array (
 	'PHPSHOP_RB_DATE' => 'Date',
 	'PHPSHOP_RB_ORDERS' => 'Commandes',
 	'PHPSHOP_RB_TOTAL_ITEMS' => 'Total des Articles vendus',
-	'PHPSHOP_RB_REVENUE' => 'Chiffre d\\\'Affaire',
+	'PHPSHOP_RB_REVENUE' => 'Chiffre d\'Affaire',
 	'PHPSHOP_RB_PRODLIST' => 'Liste Produit'
 	));
 ?>

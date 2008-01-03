@@ -21,9 +21,9 @@ $VM_LANG->initModule('account',array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Compte Client:',
 	'PHPSHOP_ACC_UPD_BILL' => 'Ici vous pouvez mettre à jour vos informations de facturation.',
-	'PHPSHOP_ACC_UPD_SHIP' => 'Ici vous pouvez ajouter et mettre à jour vos adresses d\\\'expédition.',
+	'PHPSHOP_ACC_UPD_SHIP' => 'Ici vous pouvez ajouter et mettre à jour vos adresses d\'expédition.',
 	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Information de Compte',
-	'PHPSHOP_ACC_SHIP_INFO' => 'Information d\\\'Expédition',
+	'PHPSHOP_ACC_SHIP_INFO' => 'Information d\'Expédition',
 	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
 	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
 	));

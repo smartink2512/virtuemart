@@ -40,7 +40,7 @@ $VM_LANG->initModule('admin',array (
 	'PHPSHOP_MODULE_FORM_ORDER' => 'Visnings rekkefølge',
 	'PHPSHOP_MODULE_FORM_DESCRIPTION' => 'Modul beskrivelse',
 	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Språkkode',
-	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => '',
+	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Language File',
 	'PHPSHOP_FUNCTION_LIST_LBL' => 'Funksjonsliste',
 	'PHPSHOP_FUNCTION_LIST_NAME' => 'Funksjonsnavn',
 	'PHPSHOP_FUNCTION_LIST_CLASS' => 'Klassenavn',
@@ -140,7 +140,7 @@ Slik at kunder kan skrive om sine erfaringer om produktet til andre kunder.',
                                                                                                             For more information on this module please visit <a href="http://ZephWare.com">http://ZephWare.com</a><br />
 
                                                                                                             for details or contact <a href="mailto:zephware@devcompany.com">ZephWare.com</a><br /> Check this to enable the zone shipping module',
-	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE' => 'Disable Shipping method selection. Choose if your customers buy downloadable goods which don\\\'t have to be shipped.',
+	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE' => 'Disable Shipping method selection. Choose if your customers buy downloadable goods which don\'t have to be shipped.',
 	'PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR' => 'Vis symboler når kunden betaler',
 	'PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN' => 'Velges dersom du ønsker å vise symboler for hvor i prosessen kunden er når han betaler ( 1 - 2 - 3 - 4 med bilder).',
 	'PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS' => 'Velg betalings prosess for din butikk.',
@@ -153,7 +153,7 @@ Slik at kunder kan skrive om sine erfaringer om produktet til andre kunder.',
 	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT' => 'DOWNLOADROOT',
 	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN' => 'The physical path to the files for the custumer download. (trailing slash at the end!)<br>
 
-        <span class="message">For your own shop\\\'s security: If you can, please use a directory ANYWHERE OUTSIDE OF THE WEBROOT</span>',
+        <span class="message">For your own shop\'s security: If you can, please use a directory ANYWHERE OUTSIDE OF THE WEBROOT</span>',
 	'PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX' => 'Maks nedlasting',
 	'PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN' => 'Angir antall nedlastinger som kan foretas med Nedlastings-ID (per ordre)',
 	'PHPSHOP_ADMIN_CFG_DOWNLOAD_EXPIRE' => 'Nedlasting utgår',
@@ -230,7 +230,7 @@ Slik at kunder kan skrive om sine erfaringer om produktet til andre kunder.',
 	'VM_ADMIN_CFG_PROXY_SETTINGS' => 'Global Proxy Settings',
 	'VM_ADMIN_CFG_PROXY_URL' => 'URL of the proxy server',
 	'VM_ADMIN_CFG_PROXY_URL_TIP' => 'Example: <strong>http://10.42.21.1</strong>.<br />
-Leave empty if you\\\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).',
+Leave empty if you\'re not sure.</strong> This value will be used to connect to the internet from the shop server (e.g. when fetching shipping rates from UPS/USPS).',
 	'VM_ADMIN_CFG_PROXY_PORT' => 'Proxy Port',
 	'VM_ADMIN_CFG_PROXY_PORT_TIP' => 'The port used for communication with the proxy server (mostly <b>80</b> or <b>8080</b>).',
 	'VM_ADMIN_CFG_PROXY_USER' => 'Proxy username',
@@ -245,7 +245,7 @@ Leave empty if you\\\'re not sure.</strong> This value will be used to connect t
 	'VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP' => 'Please add a new content item about the details of your return and order cancellation policy.
 Afterwards you can select it here.',
 	'VM_SELECT_THEME' => 'Select the theme for your Shop',
-	'VM_SELECT_THEME_TIP' => 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\\\'t installed more themes.',
+	'VM_SELECT_THEME_TIP' => 'Themes allow styling and customizing your shop. <br />If no other themes than the "default" one are present you haven\'t installed more themes.',
 	'VM_CFG_CONTENT_PLUGINS_ENABLE' => 'Enable content mambots / plugins in descriptions?',
 	'VM_CFG_CONTENT_PLUGINS_ENABLE_TIP' => 'If enabled, product and category descriptions are parsed by all published content mambots/plugins.',
 	'VM_CFG_CURRENCY_MODULE' => 'Select a currency converter module',
@@ -265,13 +265,13 @@ Afterwards you can select it here.',
 <strong>Normal Registration</strong><br />
 This is the standard registration type where the customer must register and choose an username and password<br /><br />
 <strong>Silent Registration</strong><br />
-Silent Registration means the customer doesn\\\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
+Silent Registration means the customer doesn\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
 <br /><br />
 <strong>Optional Registration</strong><br />
-Opotional Registration let\\\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
+Opotional Registration let\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
 <br /><br />
 <strong>No Registration</strong><br />
-Customers don\\\'t need to and are not able to register in this type of registration.',
+Customers don\'t need to and are not able to register in this type of registration.',
 	'VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION' => 'Normal Account Creation',
 	'VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION' => 'Silent Account Creation',
 	'VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION' => 'Optional Account Creation',
@@ -295,7 +295,7 @@ Customers don\\\'t need to and are not able to register in this type of registra
 	'VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH' => 'Maximum Description Length',
 	'VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP' => 'This is the maximum length of the product description for each feed item.',
 	'VM_ADMIN_CFG_FEED_TITLE_TIP' => 'Title of the Feed (the placeholder {storename} holds the name of your store)',
-	'VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP' => 'Title of a Category Feed (\\\'{catname}\\\' is the placeholder for the category name, {storename} holds the name of your store)',
+	'VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP' => 'Title of a Category Feed (\'{catname}\' is the placeholder for the category name, {storename} holds the name of your store)',
 	'VM_ADMIN_CFG_FEED_TITLE' => 'Feed Title',
 	'VM_ADMIN_CFG_FEED_TITLE_CATEGORIES' => 'Feed Title for Categories',
 	'VM_ADMIN_SECURITY' => 'Security',
@@ -308,7 +308,7 @@ Customers don\\\'t need to and are not able to register in this type of registra
 	'VM_ADMIN_ENCRYPTION_KEY' => 'Encryption Key',
 	'VM_ADMIN_ENCRYPTION_KEY_TIP' => 'Used to safely store and retrieve sensible data (like credit card information) encrypted in the database.',
 	'VM_ADMIN_STORE_CREDITCARD_DATA' => 'Store Credit Card Information?',
-	'VM_ADMIN_STORE_CREDITCARD_DATA_TIP' => 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\\\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>',
+	'VM_ADMIN_STORE_CREDITCARD_DATA_TIP' => 'VirtueMart stores the Credit Card Information of Customers encrypted in the database. This is done even if the Credit Card Information is processed by an external  server. <strong>If you don\'t need to process Credit Card Information manually after the order has been placed, you should turn this option off.</strong>',
 	'VM_USERFIELDS_URL_ONLY' => 'URL only',
 	'VM_USERFIELDS_HYPERTEXT_URL' => 'Hypertext and URL',
 	'VM_FIELDS_TEXTFIELD' => 'Text Field',
@@ -338,7 +338,7 @@ Customers don\\\'t need to and are not able to register in this type of registra
 	'VM_ADMIN_CFG_THEME_SETTINGS' => 'Theme Settings',
 	'VM_ADMIN_CFG_THEME_PARAMETERS' => 'Parameters',
 	'VM_ADMIN_ENCRYPTION_FUNCTION' => 'Encryption Function',
-	'VM_ADMIN_ENCRYPTION_FUNCTION_TIP' => 'Here you can select the encryption function used to encrypt sensible information before being stored in the database. AES_ENCRYPT is recommended, because it is very secure. ENCODE doesn\\\'t provide real encryption.',
+	'VM_ADMIN_ENCRYPTION_FUNCTION_TIP' => 'Here you can select the encryption function used to encrypt sensible information before being stored in the database. AES_ENCRYPT is recommended, because it is very secure. ENCODE doesn\'t provide real encryption.',
 	'SAVE_PERMISSIONS' => 'Save Permissions'
 	));
 ?>

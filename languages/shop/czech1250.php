@@ -24,7 +24,7 @@ $VM_LANG->initModule('shop',array (
 	'PHPSHOP_ERROR' => 'Chyba',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Editovat toto zboží',
 	'PHPSHOP_DOWNLOADS_START' => 'Stáhnout',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Prosíme vložte kód souboru pro stažení, který jste obdrželi e-mailem a kliknìte na \\\'Stáhnout\\\'.',
+	'PHPSHOP_DOWNLOADS_INFO' => 'Prosíme vložte kód souboru pro stažení, který jste obdrželi e-mailem a kliknìte na \'Stáhnout\'.',
 	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Prosíme zadejte Vaši e-mailovou adresu - zašleme Vám upozornìní, až bude zboží opìt k dispozici. 
                                         Ochrana Vašich osobních údajù vèetnì e-mailové adresy podléhá platným zákonným ustanovením - Vaše 
                                         e-mailová adresa bude použita pouze pro výše uvedený úèel. <br /><br />Dìkujeme!',
@@ -72,9 +72,9 @@ $VM_LANG->initModule('shop',array (
 	'SEND_BUTTON' => 'Send',
 	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
 	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART' => '',
-	'VM_RECOVER_CART_REPLACE' => '',
-	'VM_RECOVER_CART_MERGE' => '',
-	'VM_RECOVER_CART_DELETE' => ''
+	'VM_RECOVER_CART' => 'Recover Saved Cart',
+	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
+	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
 	));
 ?>
