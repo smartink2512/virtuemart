@@ -88,11 +88,8 @@ echo "if( typeof Ext == \"undefined\" ) {
 	}
 }();
 ";
-if( !class_exists('jconfig')) {
-	echo "if( Ext.isIE ) Ext.EventManager.addListener( window, 'load', vmLayout.init, vmLayout, true );
+
+echo "if( Ext.isIE ) Ext.EventManager.addListener( window, 'load', vmLayout.init, vmLayout, true );
 	else Ext.onReady( vmLayout.init, vmLayout, true );";
-} else {
-	echo "Ext.onReady( vmLayout.init, vmLayout, true );
-";
-}
+
 ?>
