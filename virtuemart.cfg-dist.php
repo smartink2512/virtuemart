@@ -104,7 +104,7 @@ define('MUST_AGREE_TO_TOS', '1');
 define('PSHOP_AGREE_TO_TOS_ONORDER', '');
 define('SHOW_CHECKOUT_BAR', '1');
 define('CHECK_STOCK', '');
-define('ENCODE_KEY', md5( rand() . $mosConfig_secret ) );
+define('ENCODE_KEY', md5( $mosConfig_secret ) );
 define('NO_SHIPPING', '');
 define('NO_SHIPTO', '');
 define('AFFILIATE_ENABLE', '');
