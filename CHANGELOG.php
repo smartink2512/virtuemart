@@ -35,7 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-03.01.2008
+05.01.2008 soeren
+# Task #1636 - Manage User Fields - mosHTML Class
+
+03.01.2008 Pisu
 + Re-added some language strings previusly deleted.
 # Removed extra comma in english common language.
 # Various fixes in language files.

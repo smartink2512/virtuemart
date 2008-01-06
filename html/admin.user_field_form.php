@@ -41,8 +41,8 @@ $params = '';
 
 $webaddrtypes = array();
 
-$webaddrtypes[] = mosHTML::makeOption( '0', $VM_LANG->_('VM_USERFIELDS_URL_ONLY') );
-$webaddrtypes[] = mosHTML::makeOption( '2', $VM_LANG->_('VM_USERFIELDS_HYPERTEXT_URL') );
+$webaddrtypes[0] = $VM_LANG->_('VM_USERFIELDS_URL_ONLY');
+$webaddrtypes[2] = $VM_LANG->_('VM_USERFIELDS_HYPERTEXT_URL');
 
 $fieldvalues = array();
 
@@ -64,48 +64,48 @@ if (!empty($fieldid)) {
 else {
 	$types = array();
 	
-	$types[] = mosHTML::makeOption( 'text', $VM_LANG->_('VM_FIELDS_TEXTFIELD') );
-	$types[] = mosHTML::makeOption( 'checkbox', $VM_LANG->_('VM_FIELDS_CHECKBOX_SINGLE') );
-	$types[] = mosHTML::makeOption( 'multicheckbox', $VM_LANG->_('VM_FIELDS_CHECKBOX_MULTIPLE') );
-	$types[] = mosHTML::makeOption( 'date', $VM_LANG->_('VM_FIELDS_DATE') );
-	$types[] = mosHTML::makeOption( 'select', $VM_LANG->_('VM_FIELDS_DROPDOWN_SINGLE') );
-	$types[] = mosHTML::makeOption( 'multiselect', $VM_LANG->_('VM_FIELDS_DROPDOWN_MULTIPLE') );
-	$types[] = mosHTML::makeOption( 'emailaddress', $VM_LANG->_('VM_FIELDS_EMAIL') );	
-	$types[] = mosHTML::makeOption( 'euvatid', $VM_LANG->_('VM_FIELDS_EUVATID') );	
-	//$types[] = mosHTML::makeOption( 'password', 'Password Field' );
-	$types[] = mosHTML::makeOption( 'editorta', $VM_LANG->_('VM_FIELDS_EDITORAREA') );
-	$types[] = mosHTML::makeOption( 'textarea', $VM_LANG->_('VM_FIELDS_TEXTAREA') );
-	$types[] = mosHTML::makeOption( 'radio', $VM_LANG->_('VM_FIELDS_RADIOBUTTON') );
-	$types[] = mosHTML::makeOption( 'webaddress', $VM_LANG->_('VM_FIELDS_WEBADDRESS') );
-	$types[] = mosHTML::makeOption( 'delimiter', $VM_LANG->_('VM_FIELDS_DELIMITER') );
+	$types['text'] = $VM_LANG->_('VM_FIELDS_TEXTFIELD');
+	$types['checkbox'] = $VM_LANG->_('VM_FIELDS_CHECKBOX_SINGLE');
+	$types['multicheckbox'] = $VM_LANG->_('VM_FIELDS_CHECKBOX_MULTIPLE');
+	$types['date'] = $VM_LANG->_('VM_FIELDS_DATE');
+	$types['select'] = $VM_LANG->_('VM_FIELDS_DROPDOWN_SINGLE');
+	$types['multiselect'] = $VM_LANG->_('VM_FIELDS_DROPDOWN_MULTIPLE');
+	$types['emailaddress'] = $VM_LANG->_('VM_FIELDS_EMAIL');	
+	$types['euvatid'] = $VM_LANG->_('VM_FIELDS_EUVATID');	
+	//$types['password'] = 'Password Field' );
+	$types['editorta'] = $VM_LANG->_('VM_FIELDS_EDITORAREA');
+	$types['textarea'] = $VM_LANG->_('VM_FIELDS_TEXTAREA');
+	$types['radio'] = $VM_LANG->_('VM_FIELDS_RADIOBUTTON');
+	$types['webaddress'] = $VM_LANG->_('VM_FIELDS_WEBADDRESS');
+	$types['delimiter'] = $VM_LANG->_('VM_FIELDS_DELIMITER');
 	
 	if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {
-		$types[] = mosHTML::makeOption( 'yanc_subscription', $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (YaNC)' );
+		$types['yanc_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (YaNC)';
 	}
 	if( file_exists($mosConfig_absolute_path.'/components/com_anjel/anjel.php')) {
-		$types[] = mosHTML::makeOption( 'anjel_subscription', $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (ANJEL)' );
+		$types['anjel_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (ANJEL)' ;
 	}
 	if( file_exists($mosConfig_absolute_path.'/components/com_letterman/letterman.php')) {
-		$types[] = mosHTML::makeOption( 'letterman_subscription', $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (Letterman)' );
+		$types['letterman_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (Letterman)';
 	}
 	
-	$lists['type'] = mosHTML::selectList( $types, 'type', 'class="inputbox" size="1" onchange="toggleType(this.options[this.selectedIndex].value);"', 'value', 'text', $db->f('type') );
+	$lists['type'] = ps_html::selectList( 'type', $db->f('type'), $types, 1, '', 'onchange="toggleType(this.options[this.selectedIndex].value);"' );
 }
 
-$lists['webaddresstypes'] = mosHTML::selectList( $webaddrtypes, 'webaddresstypes', 'class="inputbox" size="1"', 'value', 'text', $db->f('rows') );
+$lists['webaddresstypes'] = ps_html::selectList( 'webaddresstypes', $db->f('rows'), $webaddrtypes );
 
 if( in_array( $db->f('name'), ps_userfield::getSkipFields() )) {
 	$lists['required'] = '<input type="hidden" name="required" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
 	$lists['published'] = '<input type="hidden" name="published" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
 	$lists['registration'] = '<input type="hidden" name="registration" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
 } else {
-	$lists['required'] = mosHTML::yesnoSelectList( 'required', 'class="inputbox" size="1"', $db->sf('required') );
-	$lists['published'] = mosHTML::yesnoSelectList( 'published', 'class="inputbox" size="1"', $db->sf('published') );
-	$lists['registration'] = mosHTML::yesnoSelectList( 'registration', 'class="inputbox" size="1"', $db->sf('registration') );
+	$lists['required'] = ps_html::yesnoSelectList( 'required', $db->sf('required') );
+	$lists['published'] = ps_html::yesnoSelectList( 'published', $db->sf('published') );
+	$lists['registration'] = ps_html::yesnoSelectList( 'registration', $db->sf('registration') );
 }
-$lists['readonly'] = mosHTML::yesnoSelectList( 'readonly', 'class="inputbox" size="1"', $db->sf('readonly') );
+$lists['readonly'] = ps_html::yesnoSelectList( 'readonly', $db->sf('readonly') );
 
-$lists['account'] = mosHTML::yesnoSelectList( 'account', 'class="inputbox" size="1"', $db->sf('account') );
+$lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 
 ?>
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
@@ -216,7 +216,7 @@ $lists['account'] = mosHTML::yesnoSelectList( 'account', 'class="inputbox" size=
 			</table>
 		</div>
 		
-		<div id="divValues" style="text-align:left;">
+		<div id="divValues" style="text-align:left;height: 200px;overflow: auto;">
 			<?php echo $VM_LANG->_('VM_USERFIELDS_ADDVALUES_TIP') ?><br />
 			<input type="button" class="button" onclick="insertRow();" value="Add a Value" />
 			<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" >
@@ -226,7 +226,7 @@ $lists['account'] = mosHTML::yesnoSelectList( 'account', 'class="inputbox" size=
 			</thead>
 			<tbody id="fieldValuesBody">
 			<tr>
-				<td></td>
+				<td>&nbsp;</td>
 			</tr>
 			<?php	
 			//echo "count:".count( $fieldvalues );

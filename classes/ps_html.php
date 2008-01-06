@@ -67,6 +67,12 @@ class ps_html {
 		
 		return $html;
 	}
+	function yesNoSelectList( $fieldname, $value, $yesValue=1, $noValue=0 ) {
+		global $VM_LANG;
+		$values = array($yesValue => $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'),
+								$noValue => $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
+		return ps_html::selectList($fieldname, $value, $values );
+	}
 	/**
 	 * Creates a Radio Input List
 	 *
