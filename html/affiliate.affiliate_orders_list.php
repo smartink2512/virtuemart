@@ -23,7 +23,7 @@ require_once( CLASSPATH . "htmlTools.class.php" );
 $start_date = mktime(0,0,0,date("n"),1,date("Y"));
 $end_date = mktime(24,0,0,date("n")+1,0,date("Y"));
 
-
+$ps_affiliate = new ps_affiliate();
 $affiliate = $ps_affiliate->get_affiliate_details($auth["user_id"]);
 
 $q = "select * from #__{vm}_orders,#__{vm}_affiliate_sale";
@@ -42,7 +42,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader("Order Summary ". date('f y',$date), "", "affiliate", "affiliate_orders_list");
+$listObj->writeSearchHeader($VM_LANG->_('VM_AFFILIATE_ORDERSUMMARY_LBL') . ' ' . strftime('%b %Y',$date), "", "affiliate", "affiliate_orders_list");
 
 echo $affiliate["company"];
 
@@ -52,11 +52,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					"order Ref" => "",
-					"date Ordered" => "",
-					"order Total" => "",
-					"commission(rate)" => "",
-					"order Status" => "",					
+					$VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERREF') => "",
+					$VM_LANG->_('VM_AFFILIATE_ORDERLIST_DATEORDERED') => "",
+					$VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERTOTAL') => "",
+					$VM_LANG->_('VM_AFFILIATE_ORDERLIST_COMMISSION') => "",
+					$VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERSTATUS') => "",					
 					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

@@ -9,7 +9,7 @@ mm_showMyFileName(__FILE__);
 
 $order_id = vmGet($_REQUEST, 'order_id', null);
 if (!is_numeric($order_id))
-	die('Please provide a valid, numeric, Order ID');
+	die(str_replace('order_id',$order_id,$VM_LANG->_('VM_ORDER_LABEL_ORDERID_NOTVALID')));
 
 $db =& new ps_DB;
 
@@ -18,24 +18,23 @@ $q .= "FROM #__{vm}_shipping_label ";
 $q .= "WHERE order_id='" . $order_id . "'";
 $db->query($q);
 if (!$db->next_record())
-	die('Order record not found in shipping label database.');
+	die($VM_LANG->_('VM_ORDER_LABEL_NOTFOUND'));
 
 include_once(CLASSPATH . "shipping/" . $db->f("shipper_class") . ".php");
 eval("\$ship_class =& new " . $db->f("shipper_class") . "();");
 if (!is_callable(array($ship_class, 'void_label')))
-	die('Class ' . $ship_class . ' cannot void labels, why are we here?');
+	die(str_replace('{ship_class}',$ship_class,$VM_LANG->_('VM_ORDER_LABEL_CLASSCANNOT')));
 
 if (!$db->f('label_is_generated'))
-	die('Label has not been generated yet.  Why are we here?');
+	die($VM_LANG->_('VM_ORDER_LABEL_NEVERGENERATED'));
 
 $msg = $ship_class->void_label($order_id);
 if ($msg == '') {
-	$msg = "Label for waybill " . $db->f('tracking_number');
-	$msg .= " has been voided.";
+	$msg = str_replace('{tracking_number}',$db->f('tracking_number'),$VM_LANG->_('VM_ORDER_LABEL_VOIDED_MSG'));
 }
 
 echo "<html>\n";
-echo "<head><title>Void Label</title></head>\n";
+echo "<head><title>" . $VM_LANG->_('VM_ORDER_LABEL_VOID_TITLE') . "</title></head>\n";
 echo "<body>\n";
 echo "<p>" . $msg . "\n";
 echo "</body>\n";

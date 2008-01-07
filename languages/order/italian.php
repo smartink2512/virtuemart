@@ -43,6 +43,19 @@ $VM_LANG->initModule('order',array (
 	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Download Residui',
 	'VM_DOWNLOAD_RESEND_ID' => 'Reinvia Download ID',
 	'VM_EXPIRY' => 'Scadenza',
-	'VM_UPDATE_STATUS' => 'Aggiorna Stato'
+	'VM_UPDATE_STATUS' => 'Aggiorna Stato',
+	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'Per favore fornisci un ID Ordine valido e numerico, non "{order_id}"',
+	'VM_ORDER_LABEL_NOTFOUND' => 'Ordine non trovato nel database delle etichette spedizione.',
+	'VM_ORDER_LABEL_NEVERGENERATED' => 'L\'etichetta non è stata ancora generata',
+	'VM_ORDER_LABEL_CLASSCANNOT' => 'La classe {ship_class} non può ottenere immagini di etichette',
+	'VM_ORDER_LABEL_SHIPPINGLABEL_LBL' => 'Etichetta Spedizione',
+	'VM_ORDER_LABEL_SIGNATURENEVER' => 'La firma non è mai stata riportata',
+	'VM_ORDER_LABEL_TRACK_TITLE' => 'Traccia',
+	'VM_ORDER_LABEL_VOID_TITLE' => 'Annulla Etichetta',
+	'VM_ORDER_LABEL_VOIDED_MSG' => 'L\'etichetta per la bolla {tracking_number} è stata annullata.',
+	'VM_ORDER_PRINT_PO_IPADDRESS' => 'Indirizzo IP',
+	'VM_ORDER_STATUS_ICON_ALT' => 'Icona Stato',
+	'VM_ORDER_PAYMENT_CCV_CODE' => 'Codice CVV',
+	'VM_ORDER_NOTFOUND' => 'Ordine non trovao! Potrebbe essere stato eliminato.'
 	));
 ?>

@@ -18,26 +18,27 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 mm_showMyFileName( __FILE__ );
 ?>
 
-<h3>Order Summary <?php echo date('F Y',$date) ?></h3>
+<h3><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERSUMMARY_LBL') . ' ' . strftime('%B %Y',$date) ?></h3>
 <table class="adminlist">
-<tr valign=top> 
-<td align=left width=90%><?php 
+<tr valign="top"> 
+<td align="left" width="90%"><?php 
 
+  $ps_affiliate = new ps_affiliate();
   $affiliate = $ps_affiliate->get_affiliate_details(0,isset($affiliate_id) ? $affiliate_id : "");
  
   echo $affiliate["company"];
 ?></td>
-<td width=10% align=right>&nbsp; </td>
+<td width="10%" align="right">&nbsp; </td>
 </tr>
 <tr>
-<td colspan=2>
+<td colspan="2">
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 <tr>
-<th width="22%">order Ref </th>
-<th width="19%">Date Ordered</th>
-<th WIDTH="19%">Order Total</th>
-<th WIDTH="23%">Commission(rate)</th>
-<th WIDTH="17%">Order Status </th>
+<th width="22%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERREF'); ?></th>
+<th width="19%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_DATEORDERED'); ?></th>
+<th WIDTH="19%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERTOTAL'); ?></th>
+<th WIDTH="23%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_COMMISSION'); ?></th>
+<th WIDTH="17%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERSTATUS'); ?></th>
 </tr><?php 
 	$start_date = mktime(0,0,0,date("n"),1,date("Y"));
 	$end_date = mktime(24,0,0,date("n")+1,0,date("Y"));
@@ -67,16 +68,16 @@ mm_showMyFileName( __FILE__ );
   <input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_orders_detail"> 
   <input type="hidden" name="option" value="com_virtuemart"> 
   <input type="hidden" name="task" value=""> 
-  <br>Month
+  <br><?php echo $VM_LANG->_('VM_AFFILIATE_MONTH'); ?>
   <select name="date" size="1"> <?php
   for($i=0;$i<12;$i++){ 
     $mytime = mktime(0,0,0,date('m')-$i,1,date('y'));?>
     <option value="<?php echo $mytime ?>" <?php if($mytime == $date) echo "selected"?>> <?php 
-    echo date('F Y',$mytime); ?>
+    echo strftime('%B %Y',$mytime); ?>
     </option><?php echo "\n";
 }
 ?> </select><br><br>
-    <input type="submit" name="submit" class="submit" value="change view">
+    <input type="submit" name="submit" class="submit" value="<?php echo $VM_LANG->_('VM_AFFILIATE_CHANGEVIEW'); ?>">
   </form>
   </td>
   </tr> 

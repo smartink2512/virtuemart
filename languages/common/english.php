@@ -513,7 +513,7 @@ $VM_LANG->initModule('common',array (
 	'PHPSHOP_CHANGE_TRANSACTION_KEY' => 'Show / Change the Transaction Key',
 	'PHPSHOP_PAYMENT_CVV2' => 'Request/Capture Credit Card Code Value (CVV2/CVC2/CID)',
 	'PHPSHOP_PAYMENT_CVV2_TOOLTIP' => 'Check for a valid CVV2/CVC2/CID value (three- or four-digit number on the back of a credit card, on the Front of American Express Cards)?',
-	'PHPSHOP_CUSTOMER_CVV2_TOOLTIP' => 'Please type in the three- or four-digit number on the back of your credit card (On the Front of American Express Cards)',
+	'PHPSHOP_CUSTOMER_CVV2_TOOLTIP' => 'Please type in the three or four-digit number on the back of your credit card (On the Front of American Express Cards)',
 	'PHPSHOP_CUSTOMER_CVV2_ERROR' => 'You need to enter your Credit Card Code to proceed.',
 	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST' => 'Attribute List',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST' => 'Custom Attribute List',

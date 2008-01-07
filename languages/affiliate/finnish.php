@@ -36,6 +36,16 @@ $VM_LANG->initModule('affiliate',array (
 	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Aihe',
 	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Sisällytä tämän hetkinen tilasto ',
 	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Komissio taksa',
-	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktiivi?'
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktiivi?',
+	'VM_AFFILIATE_SHOWINGDETAILS_FOR' => 'Showing Details for',
+	'VM_AFFILIATE_LISTORDERS' => 'List Orders',
+	'VM_AFFILIATE_MONTH' => 'Month',
+	'VM_AFFILIATE_CHANGEVIEW' => 'Change View',
+	'VM_AFFILIATE_ORDERSUMMARY_LBL' => 'Order Summary',
+	'VM_AFFILIATE_ORDERLIST_ORDERREF' => 'Order Ref',
+	'VM_AFFILIATE_ORDERLIST_DATEORDERED' => 'Date Ordered',
+	'VM_AFFILIATE_ORDERLIST_ORDERTOTAL' => 'Order Total',
+	'VM_AFFILIATE_ORDERLIST_COMMISSION' => 'Commission (rate)',
+	'VM_AFFILIATE_ORDERLIST_ORDERSTATUS' => 'Order Status'
 	));
 ?>

@@ -36,6 +36,16 @@ $VM_LANG->initModule('affiliate',array (
 	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Oggetto',
 	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Includi Statistiche Attuali',
 	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Percentuale Commissione',
-	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Attivo?'
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Attivo?',
+	'VM_AFFILIATE_SHOWINGDETAILS_FOR' => 'Visualizzazione Dettagli per',
+	'VM_AFFILIATE_LISTORDERS' => 'Elenca Ordini',
+	'VM_AFFILIATE_MONTH' => 'Mese',
+	'VM_AFFILIATE_CHANGEVIEW' => 'Cambia Vista',
+	'VM_AFFILIATE_ORDERSUMMARY_LBL' => 'Sommario Ordini',
+	'VM_AFFILIATE_ORDERLIST_ORDERREF' => 'Rif. Ordine',
+	'VM_AFFILIATE_ORDERLIST_DATEORDERED' => 'Data Ordine',
+	'VM_AFFILIATE_ORDERLIST_ORDERTOTAL' => 'Totale Ordine',
+	'VM_AFFILIATE_ORDERLIST_COMMISSION' => 'Commissione (tasso)',
+	'VM_AFFILIATE_ORDERLIST_ORDERSTATUS' => 'Stato Ordine'
 	));
 ?>

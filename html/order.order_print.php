@@ -56,7 +56,7 @@ $order_id = vmRequest::getInt('order_id');
 			<td><?php $db->p("order_status") ?></td>
 		  </tr>
 		  <tr>
-		  <td><strong>IP-ADDRESS:</strong></td>
+		  <td><strong><?php echo $VM_LANG->_('VM_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
 		  <td><?php $db->p("ip_address"); ?></td>
 		  </tr>
 		  <tr>
@@ -120,7 +120,7 @@ $order_id = vmRequest::getInt('order_id');
 		 foreach( $order_events as $order_event ) {
 		  echo "<tr>";
 		  echo "<td>".$order_event->date_added."</td>\n";
-		  echo "<td align=\"center\"><img alt=\"Status Icon\" src=\"$mosConfig_live_site/administrator/images/";
+		  echo "<td align=\"center\"><img alt=\"" . $VM_LANG->_('VM_ORDER_STATUS_ICON_ALT') ."\" src=\"$mosConfig_live_site/administrator/images/";
 		  echo $order_event->customer_notified == 1 ? 'tick.png' : 'publish_x.png';
 		  
 		  echo "\" border=\"0\" align=\"absmiddle\" /></td>\n";
@@ -614,7 +614,7 @@ $order_id = vmRequest::getInt('order_id');
 				<td width="30%"><?php 
 				echo ps_checkout::asterisk_pad( $dbaccount->f("account_number"), 4, true );
 				if( $dbaccount->f('order_payment_code')) {
-					echo '<br/>(CVV Code: '.$dbaccount->f('order_payment_code').') ';
+					echo '<br/>(' . $VM_LANG->_('VM_ORDER_PAYMENT_CCV_CODE') . ': '.$dbaccount->f('order_payment_code').') ';
 				}
 				?></td>
 				<td width="17%"><?php echo vmFormatDate( $dbpm->f("order_payment_expire"), '%b-%Y'); ?></td>
@@ -640,6 +640,6 @@ $order_id = vmRequest::getInt('order_id');
 <?php
 }
 else {
-  echo "Order not found! It may have been deleted.";
+  echo $VM_LANG->_('VM_ORDER_NOTFOUND');
 }
 ?>

@@ -18,13 +18,14 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 mm_showMyFileName( __FILE__ );
 ?>
 
-<h3>order summary <?php echo date('f y',$date) ?></h3>
+<h3><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERSUMMARY_LBL') . ' ' . strftime('%b %Y',$date) ?></h3>
 
 <table width="100%" align="center" border="0" cellspacing="0" cellpadding="10">
     <tr valign="top"> 
       <td align="left" width="90%"><?php 
       
          // order_id is returned by checkoutcomplete function
+		$ps_affiliate = new ps_affiliate();
         $affiliate = $ps_affiliate->get_affiliate_details($auth["user_id"]);
         echo $affiliate["company"];
       
@@ -36,11 +37,11 @@ mm_showMyFileName( __FILE__ );
       <td colspan=2>
         <table class="adminlist">
           <tr>
-            <td width="22%">order Ref </td>
-            <td width="19%">date Ordered</td>
-            <td width="19%">order Total</td>
-            <td width="23%">commission(rate)</td>
-            <td width="17%">order Status </td>
+			<th width="22%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERREF'); ?></th>
+			<th width="19%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_DATEORDERED'); ?></th>
+			<th WIDTH="19%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERTOTAL'); ?></th>
+			<th WIDTH="23%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_COMMISSION'); ?></th>
+			<th WIDTH="17%"><?php echo $VM_LANG->_('VM_AFFILIATE_ORDERLIST_ORDERSTATUS'); ?></th>
           </tr> <?php 
           
             $month = date("n",$date);

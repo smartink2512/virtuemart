@@ -9,7 +9,7 @@ mm_showMyFileName(__FILE__);
 
 $order_id = vmGet($_REQUEST, 'order_id', null);
 if (!is_numeric($order_id))
-	die('Please provide a valid, numeric, Order ID');
+	die(str_replace('order_id',$order_id,$VM_LANG->_('VM_ORDER_LABEL_ORDERID_NOTVALID')));
 
 $db =& new ps_DB;
 
@@ -17,12 +17,12 @@ $q = "SELECT shipper_class FROM #__{vm}_shipping_label ";
 $q .= "WHERE order_id='" . $order_id . "'";
 $db->query($q);
 if (!$db->next_record())
-	die('Order record not found in shipping label database.');
+	die($VM_LANG->_('VM_ORDER_LABEL_NOTFOUND'));
 
 include_once(CLASSPATH . "shipping/" . $db->f("shipper_class") . ".php");
 eval("\$ship_class =& new " . $db->f("shipper_class") . "();");
 if (!is_callable(array($ship_class, 'generate_label')))
-	die('Class ' . $ship_class . ' cannot generate labels, why are we here?');
+	die(str_replace('{ship_class}',$ship_class,$VM_LANG->_('VM_ORDER_LABEL_CLASSCANNOT')));
 
 $ship_class->generate_label($order_id);
 $dim = $ship_class->get_label_dimensions($order_id);
@@ -39,7 +39,7 @@ $image_url = stristr($image_url, "index2.php") ?
     str_replace("index2.php", "index3.php", $image_url) :
     str_replace("index.php", "index2.php", $image_url);
 
-echo "<h2>Shipping Label:</h2>\n";
+echo "<h2>" . $VM_LANG->_('VM_ORDER_LABEL_SHIPPINGLABEL_LBL') . ":</h2>\n";
 echo '<img src="' . $image_url . '" height="' .  $dim_y . '" width="' . $dim_x . '" />' . "\n";
 
 ?>

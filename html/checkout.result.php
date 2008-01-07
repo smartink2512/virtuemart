@@ -19,7 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 mm_showMyFileName( __FILE__ );
 
 if( !isset( $_REQUEST["order_id"] ) || empty( $_REQUEST["order_id"] )) {
-	echo "Order ID is not set or emtpy!";
+	echo $VM_LANG->_('VM_CHECKOUT_ORDERIDNOTSET');
 }
 else {
 	include( CLASSPATH. "payment/ps_paypal.cfg.php" );
@@ -33,13 +33,13 @@ else {
 		$order_status = $db->f("order_status");
 		if($order_status == PAYPAL_VERIFIED_STATUS
       || $order_status == PAYPAL_PENDING_STATUS) {  ?> 
-        <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="Success" border="0" />
+        <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_SUCCESS'); ?>" border="0" />
         <h2><?php echo $VM_LANG->_('PHPSHOP_PAYPAL_THANKYOU') ?></h2>
     
     <?php
       }
       else { ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
+        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
         <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYPAL_ERROR') ?></span>
     
     <?php
@@ -51,7 +51,7 @@ else {
     <?php
 	}
 	else {
-		echo "Order not found!";
+		echo $VM_LANG->_('VM_CHECKOUT_ORDERNOTFOUND') . '!';
 	}
 }
 ?>

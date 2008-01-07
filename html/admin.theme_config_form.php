@@ -21,13 +21,13 @@ $theme = vmGet( $_REQUEST, 'theme', 'default' );
 $themepath = $mosConfig_absolute_path.'/components/com_virtuemart/themes/'.basename( $theme );
 
 if( !file_exists( $themepath )) {
-	echo '<script type="text/javascript">alert(\'The theme "'.basename( shopMakeHtmlSafe($theme) ).'" does not exist.\');history.back();</script>';
+	echo '<script type="text/javascript">alert(\''.str_replace('{theme}',basename( shopMakeHtmlSafe($theme) ),$VM_LANG->_('VM_ADMIN_THEME_NOT_EXISTS')).'\');history.back();</script>';
 	exit;
 }
 
 if( !file_exists( $themepath . '/theme.config.php' )) {
 	if( !fopen($themepath . '/theme.config.php', 'w')) {
-		echo vmCommonHTML::getErrorField( 'The configuration file for this template does not exist and can\'t be created. Configuration is not possible' );
+		echo vmCommonHTML::getErrorField( $VM_LANG->_('VM_ADMIN_THEME_CFG_NOT_EXISTS') );
 		return;
 	}
 }

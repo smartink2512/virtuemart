@@ -85,7 +85,7 @@ $listObj->writeTableHeader( $columns );
 if (!isset($date)) $date = time();
 
 ?>
-<h4>Showing Details for <?php echo date("M-Y",$date);?></h4>
+<h4><?php echo $VM_LANG->_('VM_AFFILIATE_SHOWINGDETAILS_FOR') . ' ' . strftime("%b-%Y",$date);?></h4>
 <?php
 $db->query($list);
 $i = 0;
@@ -101,7 +101,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
 	// The Checkbox
-	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("affiliate_id"), false, "affiliate_di" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("affiliate_id"), false, "affiliate_id" ) );
 	
 	$url = SECUREURL . "?page=$modulename.affiliate_form&affiliate_id=";
 	$url .= $db->f("affiliate_id");
@@ -111,9 +111,9 @@ while ($db->next_record()) {
 
 
 	if($db->f("active")=='Y') 
-		$tmp_cell = "Yes"; 
+		$tmp_cell = $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'); 
 	else 
-		$tmp_cell= "No";
+		$tmp_cell = $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO');
 	$listObj->addCell( $tmp_cell );
 
 
@@ -136,7 +136,7 @@ while ($db->next_record()) {
 	$url = SECUREURL . "?page=$modulename.affiliate_orders_detail&affiliate_id=";
 	$url .= $db->f("affiliate_id");
 	$url.="&date=".$date;
-	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">List Orders</a><br />";
+	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">" . $VM_LANG->_('VM_AFFILIATE_LISTORDERS') . "</a><br />";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "user_info_id", $db->f("user_id"), "affiliatedelete", $keyword, $limitstart ) );
@@ -156,18 +156,18 @@ $listObj->writeFooter( $keyword );
 	<input type="hidden" name="page" value="<?php echo $modulename?>.affiliate_list" /> 
 	<input type="hidden" name="option" value="com_virtuemart" /> 
 	<input type="hidden" name="task" value="" /> 
-	<br/>Month
+	<br/><?php echo $VM_LANG->_('VM_AFFILIATE_MONTH'); ?>
 	<select class="inputbox" name="date" size="1"><?php
 	  for($i=0; $i<12; $i++){ 
 		$mytime = mktime(0,0,0,date('m')-$i,1,date('y'));?>
 		<option value="<?php echo $mytime ?>" <?php if($mytime == $date) echo "selected"?>><?php 
-		echo date('F Y',$mytime); ?>
+		echo strftime('%B %Y',$mytime); ?>
 		</option><?php echo "\n";
 	}
 	?>
 	</select>
 	<br/><br/>
 	
-	<input type="submit" name="submit" class="submit" value="Change View" />
+	<input type="submit" name="submit" class="submit" value="<?php echo $VM_LANG->_('VM_AFFILIATE_CHANGEVIEW'); ?>" />
 
 </form>

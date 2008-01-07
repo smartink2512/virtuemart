@@ -36,6 +36,16 @@ $VM_LANG->initModule('affiliate',array (
 	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'หัวข้อ',
 	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'รวมสถิติปัจจุบัน',
 	'PHPSHOP_AFFILIATE_FORM_RATE' => 'อัตราค่าคอมมิชชั่น (เปอร์เซ็นต์)',
-	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'เลือก?'
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'เลือก?',
+	'VM_AFFILIATE_SHOWINGDETAILS_FOR' => 'Showing Details for',
+	'VM_AFFILIATE_LISTORDERS' => 'List Orders',
+	'VM_AFFILIATE_MONTH' => 'Month',
+	'VM_AFFILIATE_CHANGEVIEW' => 'Change View',
+	'VM_AFFILIATE_ORDERSUMMARY_LBL' => 'Order Summary',
+	'VM_AFFILIATE_ORDERLIST_ORDERREF' => 'Order Ref',
+	'VM_AFFILIATE_ORDERLIST_DATEORDERED' => 'Date Ordered',
+	'VM_AFFILIATE_ORDERLIST_ORDERTOTAL' => 'Order Total',
+	'VM_AFFILIATE_ORDERLIST_COMMISSION' => 'Commission (rate)',
+	'VM_AFFILIATE_ORDERLIST_ORDERSTATUS' => 'Order Status'
 	));
 ?>

@@ -94,8 +94,9 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
     </script>
             
         <h2><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYINFO_LBL') ?></h2>
-        <h3>This page is located on the webshop's website.<br/>
-        the gateway execute the page on the website, and the shows the result SSL Encrypted.</h3>
+        <h3><?php echo $VM_LANG->_('VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_1'); ?><br/>
+			<?php echo $VM_LANG->_('VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_2'); ?>
+        </h3>
     
         &nbsp;<form method="post" action=" https://pay.dandomain.dk/securecapture.asp" name="checkout_pbscc_payment">
     <input type="hidden" name="CurrencyID" value="<?php echo $currency_iso_4217 ?>" />
@@ -160,9 +161,9 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
         </td>
       </tr>
       <tr>
-        <td>Credit Card Validation Code:</td>
+        <td><?php echo $VM_LANG->_('VM_CHECKOUT_CCV_CODE'); ?>:</td>
         <td><input class="inputbox" type="text" name="CardCVC" size="5" />
-        <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP'), "What\'s the Credit Card Validation Code?"); ?>
+        <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP'), $VM_LANG->_('VM_CHECKOUT_CCV_CODE_TIPTITLE')); ?>
         </td>
       </tr>
     </table>
@@ -174,8 +175,8 @@ if( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY) ) 
 }
 else {
 ?>
-      <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-      <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?> (MD5 Check failed)</span>
+      <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+      <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') . ' (' . $VM_LANG->_('VM_CHECKOUT_MD5_FAILED') . ')'; ?></span>
 <?php
 }
 ?>

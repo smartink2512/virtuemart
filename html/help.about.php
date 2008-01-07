@@ -19,26 +19,25 @@ mm_showMyFileName( __FILE__ );
 include_once( ADMINPATH . "version.php" );
 ?>
 <br /><br />
-<div class="shop_info">Your <?php echo $VMVERSION->PRODUCT ?> version: <strong><?php echo $myVersion ?></strong></div>
+<div class="shop_info"><?php echo str_replace('{product}',$VMVERSION->PRODUCT,$VM_LANG->_('VM_HELP_YOURVERSION')) ?>: <strong><?php echo $myVersion ?></strong></div>
     <img hspace="5" align="left" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_virtuemart/cart.gif" alt="cart.gif" />
-    <span style="font-weight: bold;">
-     VirtueMart</span> is the complete Open Source E-Commerce solution for Mambo and Joomla!. 
-     It is an Application, which comes with a Component, more than 8 Modules and Mambots/Plugins.
-     It has its roots in a Shopping Cart Script called &quot;phpShop&quot; (Authors: Edikon Corp. &amp; the <a href="http://www.virtuemart.org/" target="_blank">phpShop</a> community).
-     <br /><br />VirtueMart is licensed under the <a href="http://www.gnu.org/copyleft/gpl.html" target="_blank">GNU / GPL License</a>.
-     <br /><br /><br />There's a small team of Developers who help in evolving this Shopping Cart Script.
+    <?php echo $VM_LANG->_('VM_HELP_ABOUT'); ?>
+     <br /><br /><?php echo str_replace('{licenseurl}','http://www.gnu.org/copyleft/gpl.html',str_replace('{licensename}','GNU / GPL',$VM_LANG->_('VM_HELP_LICENSE_DESC'))); ?>
+     <br /><br /><br /><?php echo $VM_LANG->_('VM_HELP_TEAM'); ?>
       <br /><br />
-      <span style="font-weight: bold;">Project Leader:</span> Soeren Eberhardt-Biermann<br />
-      <span style="font-weight: bold;">Homepage:</span> <a href="http://virtuemart.net" target="_blank" title="virtuemart.net">http://virtuemart.net</a><br />
-      <span style="font-weight: bold;">Forum:</span> <a href="http://forum.virtuemart.net" target="_blank" title="VirtueMart Forum">VirtueMart Forum</a><br />
+      <span style="font-weight: bold;"><?php echo $VM_LANG->_('VM_HELP_PROJECTLEADER'); ?>:</span> Soeren Eberhardt-Biermann<br />
+      <span style="font-weight: bold;"><?php echo $VM_LANG->_('VM_HELP_HOMEPAGE'); ?>:</span> <a href="http://virtuemart.net" target="_blank" title="virtuemart.net">http://virtuemart.net</a><br />
+      <span style="font-weight: bold;"><?php echo $VM_LANG->_('VM_COMMUNITY_FORUM'); ?>:</span> <a href="http://forum.virtuemart.net" target="_blank" title="VirtueMart Forum">VirtueMart Forum</a><br />
       
       <br />
+	  <hr />
 	<?php
 	include( ADMINPATH."COPYRIGHT.php" );
 	?>
+	<hr />
 	<br /><br />
       <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"><span style="font-weight: bold;">
-      Please consider a small donation to the VirtueMart Project to help us keep up the work on this Component and create new Features.</span><br style="font-weight: bold;" /><br />
+      <?php echo $VM_LANG->_('VM_HELP_DONATION_DESC'); ?></span><br style="font-weight: bold;" /><br />
       <input type="hidden" name="cmd" value="_xclick" />
       <input type="hidden" name="business" value="soeren_nb@yahoo.de" />
       <input type="hidden" name="item_name" value="VirtueMart Donation" />
@@ -47,5 +46,18 @@ include_once( ADMINPATH . "version.php" );
       <input type="hidden" name="tax" value="0" />
       <input type="hidden" name="no_note" value="0" />
       <input type="hidden" name="amount" />
-      <input type="image" border="0" src="<?php echo $mosConfig_live_site ?>/administrator/components/com_virtuemart/x-click-but21.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
+	  <?php
+	  global $mosConfig_lang;
+	  switch ($mosConfig_lang) {
+		case 'english': $paypal_lang='en_US'; break;
+		case 'french': $paypal_lang='fr_FR'; break;
+		case 'italian': $paypal_lang='it_IT'; break;
+		case 'german': $paypal_lang='de_DE'; break;
+		case 'germani': $paypal_lang='de_DE'; break;
+		case 'spanish': $paypal_lang='es_ES'; break;
+		default: $paypal_lang='en_US'; break;
+	  }
+	  $paypal_button = 'http://www.paypal.com/' . $paypal_lang . '/i/btn/x-click-but21.gif';
+	  ?>
+      <input type="image" border="0" src="<?php echo $paypal_button; ?>" name="submit" alt="<?php echo $VM_LANG->_('VM_HELP_DONATION_BUTTON_ALT'); ?>" />
     </form>

@@ -58,17 +58,14 @@ elseif( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY
             $d['include_comment'] = "Y";
             // Notifying the customer about the transaction key and
             // the order Status Update
-            $d['order_comment'] = "
-                The Payment Transaction was approved by PBS. \n
-                The Transaction has received the following Transaction Number:\n\n
-                Transaction Number: ".urldecode($transacknum)."\n";
+            $d['order_comment'] = str_replace('{transactionnumber}',urldecode($transacknum),$VM_LANG->_('VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT'));
                 
             require_once ( CLASSPATH . 'ps_order.php' );
             $ps_order= new ps_order;
             $ps_order->order_status_update($d);
             
     ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="Success" border="0" />
+            <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_SUCCESS'); ?>" border="0" />
             <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS') ?></h2>
         <?php
         }
@@ -82,31 +79,28 @@ elseif( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY
             $d['include_comment'] = "Y";
             // Notifying the customer about the transaction key and
             // the order Status Update
-            $d['order_comment'] = "
-                The Payment Transaction was not approved by PBS. \n
-                The Transaction has received the following Transaction Number:\n\n
-                Transaction Number: ".urldecode($transacknum)."\n";
+            $d['order_comment'] = str_replace('{transactionnumber}',urldecode($transacknum),$VM_LANG->_('VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT'));
             require_once ( CLASSPATH . 'ps_order.php' );
             $ps_order= new ps_order;
             $ps_order->order_status_update($d);
             
     ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
+            <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
             <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?></h2>
         <?php
             switch (urldecode($_REQUEST['reason'])) {
 
-                case 1: echo "Error: Transaction declined"; break;
-                case 2: echo "Error: Transaction declined"; break;
-                case 3: echo "Error: wrong number format"; break;
-                case 4: echo "Error: illegal transaction"; break;
-                case 5: echo "Error: no answer"; break;
-                case 6: echo "Error_system_failure"; break;
-                case 7: echo "Error: Card expired"; break;
-                case 8: echo "Error: Communication Failure"; break;
-                case 9: echo "Error: Internal Failure"; break;
-                case 10: echo "Error: Card not registered"; break;
-                default: echo "Error: unknown Error";
+                case 1: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_1'); break;
+                case 2: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_2'); break;
+                case 3: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_3'); break;
+                case 4: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_4'); break;
+                case 5: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_5'); break;
+                case 6: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_6'); break;
+                case 7: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_7'); break;
+                case 8: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_8'); break;
+                case 9: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_9'); break;
+                case 10: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_10'); break;
+                default: echo $VM_LANG->_('VM_CHECKOUT_FP_ERROR_DEFAULT');
             }
         }
         ?>
@@ -118,13 +112,13 @@ elseif( $md5_check === md5( $submitted_hashbase . $mosConfig_secret . ENCODE_KEY
       }
       else {
         ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?> (Order not found)</span><?php
+        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+        <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') . ' (' . $VM_LANG->_('VM_CHECKOUT_ORDERNOTFOUND') . ')'; ?></span><?php
       }
   }
 else{
         ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
-        <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?> (MD5 Check Failure)</span><?php
+        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+        <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') . ' (' . $VM_LANG->_('VM_CHECKOUT_MD5_FAILED') . ')'; ?></span><?php
   }
   ?>

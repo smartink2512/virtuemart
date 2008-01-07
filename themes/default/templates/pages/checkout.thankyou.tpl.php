@@ -21,6 +21,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 
 mm_showMyFileName( __FILE__ );
 
+global $VM_LANG;
 ?>
 
 <h3><?php echo $VM_LANG->_('PHPSHOP_THANKYOU') ?></h3>

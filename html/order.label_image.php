@@ -9,7 +9,7 @@ mm_showMyFileName(__FILE__);
 
 $order_id = vmGet($_REQUEST, 'order_id', null);
 if (!is_numeric($order_id))
-	die('Please provide a valid, numeric, Order ID, not "' . $order_id . '"');
+	die(str_replace('order_id',$order_id,$VM_LANG->_('VM_ORDER_LABEL_ORDERID_NOTVALID')));
 
 $db =& new ps_DB;
 
@@ -18,15 +18,15 @@ $q .= "FROM #__{vm}_shipping_label ";
 $q .= "WHERE order_id='" . $order_id . "'";
 $db->query($q);
 if (!$db->next_record())
-	die('Order record not found in shipping label database.');
+	die($VM_LANG->_('VM_ORDER_LABEL_NOTFOUND'));
 
 if (!$db->f('label_is_generated'))
-	die('Label was never generated');
+	die($VM_LANG->_('VM_ORDER_LABEL_NEVERGENERATED'));
 
 include_once(CLASSPATH . "shipping/" . $db->f("shipper_class") . ".php");
 eval("\$ship_class =& new " . $db->f("shipper_class") . "();");
 if (!is_callable(array($ship_class, 'get_label_image')))
-	die('Class ' . $ship_class . ' cannot get label images, why are we here?');
+	die(str_replace('{ship_class}',$ship_class,$VM_LANG->_('VM_ORDER_LABEL_CLASSCANNOT')));
 
 echo $ship_class->get_label_image($order_id);
 ?>

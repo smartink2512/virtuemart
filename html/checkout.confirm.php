@@ -30,7 +30,7 @@ $ps_payment_method = new ps_payment_method;
 if ($checkout) {
 
 ?>
-<form action="<?php echo SECUREURL ?>" METHOD="POST" NAME="Checkout">
+<form action="<?php echo SECUREURL ?>" method="POST" name="Checkout">
 <input type="hidden" name="zone_qty" value="<?php echo $zone_qty ?>" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="page" value="<?php echo $modulename?>.thankyou" />
@@ -41,9 +41,9 @@ if ($checkout) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top" width="48%"> 
-        <table border=0 cellspacing=0 cellpadding=2 width=100%>
+        <table border="0" cellspacing="0" cellpadding="2" width="100%">
           <tr class="sectiontableheader"> 
-            <td colspan=2><b><?php
+            <td colspan="2"><b><?php
 
 $q  = "SELECT * from #__users WHERE ";
 $q .= "id='" . $auth["user_id"] . "' ";

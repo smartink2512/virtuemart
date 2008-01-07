@@ -25,7 +25,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * and $_REQUEST includes $_POST as well as $_GET
 **/
 if( !isset( $_REQUEST["x_invoice_num"] ) || empty( $_REQUEST["x_invoice_num"] ))
-  echo "Order ID is not set or emtpy!";
+  echo $VM_LANG->_('VM_CHECKOUT_ORDERIDNOTSET');
 else {
   
   /* Load the 2Checkout Configuration File */ 
@@ -51,7 +51,7 @@ else {
   /* If both hashes are the same, the post should come from 2Checkout */
   if ($compare_hash1 != $compare_hash2) {
         ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
+        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
         <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?></span><?php
   }
   else {
@@ -71,7 +71,7 @@ else {
             $ps_order->order_status_update($d);
             
     ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="Success" border="0" />
+            <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_SUCCESS'); ?>" border="0" />
             <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS') ?></h2>
         <?php
         }
@@ -85,7 +85,7 @@ else {
             $ps_order->order_status_update($d);
             
     ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="Failure" border="0" />
+            <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
             <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?></h2>
         <?php
         } 

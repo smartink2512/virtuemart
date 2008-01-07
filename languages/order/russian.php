@@ -43,6 +43,19 @@ $VM_LANG->initModule('order',array (
 	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Remaining Downloads',
 	'VM_DOWNLOAD_RESEND_ID' => 'Resend Download ID',
 	'VM_EXPIRY' => 'Expiry',
-	'VM_UPDATE_STATUS' => 'Update Status'
+	'VM_UPDATE_STATUS' => 'Update Status',
+	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'Please provide a valid, numeric, Order ID, not "{order_id}"',
+	'VM_ORDER_LABEL_NOTFOUND' => 'Order record not found in shipping label database.',
+	'VM_ORDER_LABEL_NEVERGENERATED' => 'Label has not been generated yet',
+	'VM_ORDER_LABEL_CLASSCANNOT' => 'Class {ship_class} cannot get label images, why are we here?',
+	'VM_ORDER_LABEL_SHIPPINGLABEL_LBL' => 'Shipping Label',
+	'VM_ORDER_LABEL_SIGNATURENEVER' => 'Signature was never retrieved',
+	'VM_ORDER_LABEL_TRACK_TITLE' => 'Track',
+	'VM_ORDER_LABEL_VOID_TITLE' => 'Void Label',
+	'VM_ORDER_LABEL_VOIDED_MSG' => 'Label for waybill {tracking_number} has been voided.',
+	'VM_ORDER_PRINT_PO_IPADDRESS' => 'IP-ADDRESS',
+	'VM_ORDER_STATUS_ICON_ALT' => 'Status Icon',
+	'VM_ORDER_PAYMENT_CCV_CODE' => 'CVV Code',
+	'VM_ORDER_NOTFOUND' => 'Order not found! It may have been deleted.'
 	));
 ?>

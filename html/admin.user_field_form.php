@@ -218,11 +218,11 @@ $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 		
 		<div id="divValues" style="text-align:left;height: 200px;overflow: auto;">
 			<?php echo $VM_LANG->_('VM_USERFIELDS_ADDVALUES_TIP') ?><br />
-			<input type="button" class="button" onclick="insertRow();" value="Add a Value" />
+			<input type="button" class="button" onclick="insertRow();" value="<?php echo $VM_LANG->_('VM_USERFIELDS_ADDVALUE') ?>" />
 			<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" >
 			<thead>
-				<th class="title" width="20%">Title</th>
-				<th class="title" width="80%">Value</th>
+				<th class="title" width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_TITLE') ?></th>
+				<th class="title" width="80%"><?php echo $VM_LANG->_('VM_USERFIELDS_VALUE') ?></th>
 			</thead>
 			<tbody id="fieldValuesBody">
 			<tr>

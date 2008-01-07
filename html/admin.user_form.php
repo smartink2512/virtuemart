@@ -116,7 +116,7 @@ if( vmIsJoomla( '1.5' ) ) {
 // Set the last visit date
 $lvisit = $row->lastvisitDate;
 if ($lvisit == "0000-00-00 00:00:00") {
-	$lvisit = '***Never';
+	$lvisit = '***' . $VM_LANG->_('VM_USER_FORM_LASTVISIT_NEVER');
 }
 
 //First create the object and let it print a form heading
@@ -129,7 +129,7 @@ $formObj->startForm();
 $tabs = new mShopTabs(0, 1, "_userform");
 $tabs->startPane("userform-pane");
 
-$tabs->startTab( 'General User Information', "userform-page");
+$tabs->startTab( $VM_LANG->_('VM_USER_FORM_TAB_GENERALINFO'), "userform-page");
 
 ?>
 <script language="javascript" type="text/javascript">
@@ -143,12 +143,12 @@ function gotocontact( id ) {
 </script>
 
 <fieldset class="adminform">
-<legend><?php echo  'User Details' ; ?></legend>
+<legend><?php echo $VM_LANG->_('VM_USER_FORM_LEGEND_USERDETAILS'); ?></legend>
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td width="150" class="key">
 				<label for="name">
-					<?php echo  'Name' ; ?>
+					<?php echo $VM_LANG->_('VM_USER_FORM_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -158,7 +158,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="username">
-					<?php echo  'Username' ; ?>
+					<?php echo $VM_LANG->_('VM_USER_FORM_USERNAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -168,7 +168,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="email">
-					<?php echo  'Email' ; ?>
+					<?php echo $VM_LANG->_('VM_USER_FORM_EMAIL'); ?>
 				</label>
 			</td>
 			<td>
@@ -178,7 +178,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="password">
-					<?php echo  'New Password' ; ?>
+					<?php echo $VM_LANG->_('VM_USER_FORM_NEWPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -188,7 +188,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="password2">
-					<?php echo  'Verify Password' ; ?>
+					<?php echo $VM_LANG->_('VM_USER_FORM_VERIFYPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -198,7 +198,7 @@ function gotocontact( id ) {
 		<tr>
 			<td valign="top" class="key">
 				<label for="gid">
-					<?php echo  'Group' ; ?>
+					<?php echo $VM_LANG->_('VM_USER_FORM_GROUP'); ?>
 				</label>
 			</td>
 			<td>
@@ -209,7 +209,7 @@ function gotocontact( id ) {
 		<?php if ( $canBlockUser ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo  'Block User' ; ?>
+				<?php echo $VM_LANG->_('VM_USER_FORM_BLOCKUSER'); ?>
 			</td>
 			<td>
 				<?php echo $lists['block']; 
@@ -220,7 +220,7 @@ function gotocontact( id ) {
 		<?php if ( $canEmailEvents ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo  'Receive System Emails' ; ?>
+				<?php echo $VM_LANG->_('VM_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
 			</td>
 			<td>
 				<?php echo $lists['sendEmail']; 
@@ -231,7 +231,7 @@ function gotocontact( id ) {
 		<?php if( $user_id ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo  'Register Date' ; ?>
+				<?php echo $VM_LANG->_('VM_USER_FORM_REGISTERDATE'); ?>
 			</td>
 			<td>
 				<?php echo $row->registerDate;?>
@@ -239,7 +239,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo  'Last Visit Date' ; ?>
+				<?php echo $VM_LANG->_('VM_USER_FORM_LASTVISITDATE'); ?>
 			</td>
 			<td>
 				<?php echo $lvisit; ?>
@@ -249,7 +249,7 @@ function gotocontact( id ) {
 	</table>
 </fieldset>
 <fieldset class="adminform">
-<legend><?php echo  'Parameters' ; ?></legend>
+<legend><?php echo $VM_LANG->_('VM_USER_FORM_LEGEND_PARAMETERS'); ?></legend>
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td>
@@ -259,15 +259,15 @@ function gotocontact( id ) {
 	</table>
 </fieldset>
 <fieldset class="adminform">
-<legend><?php echo  'Contact Information' ; ?></legend>
+<legend><?php echo $VM_LANG->_('VM_USER_FORM_LEGEND_CONTACTINFO'); ?></legend>
 	<?php if ( !$contact ) : ?>
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td>
 			<br />
-			No Contact details linked to this User:
+			<?php echo $VM_LANG->_('VM_USER_FORM_NOCONTACTDETAILS_1'); ?>
 			<br />
-			See 'Components -> Contact -> Manage Contacts' for details.
+			<?php echo $VM_LANG->_('VM_USER_FORM_NOCONTACTDETAILS_2'); ?>
 			<br /><br />
 			</td>
 		</tr>
@@ -276,7 +276,7 @@ function gotocontact( id ) {
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td width="15%">
-			Name:
+			<?php echo $VM_LANG->_('VM_USER_FORM_CONTACTDETAILS_NAME'); ?>:
 			</td>
 			<td>
 			<strong>
@@ -286,7 +286,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td>
-			Position:
+			<?php echo $VM_LANG->_('VM_USER_FORM_CONTACTDETAILS_POSITION'); ?>:
 			</td>
 			<td >
 			<strong>
@@ -296,7 +296,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td>
-			Telephone:
+			<?php echo $VM_LANG->_('VM_USER_FORM_CONTACTDETAILS_TELEPHONE'); ?>:
 			</td>
 			<td >
 			<strong>
@@ -306,7 +306,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td>
-			Fax:
+			<?php echo $VM_LANG->_('VM_USER_FORM_CONTACTDETAILS_FAX'); ?>:
 			</td>
 			<td >
 			<strong>
@@ -333,7 +333,7 @@ function gotocontact( id ) {
 		<tr>
 			<td colspan="2">
 			<br />
-			<input class="button" type="button" value="Change Contact Details" onclick="javascript: gotocontact( '<?php echo $contact[0]->id; ?>' )">
+			<input class="button" type="button" value="<?php echo $VM_LANG->_('VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON'); ?>" onclick="javascript: gotocontact( '<?php echo $contact[0]->id; ?>' )">
 			</td>
 		</tr>
 	</table>
