@@ -745,9 +745,9 @@ class vmCommonHTML {
 		
 	}
 	/**
-	 * Function to load the javascript and stylsheet files for Litebox,
+	 * Function to load the javascript and stylsheet files for Slimbox,
 	 * a Lightbox derivate with mootools and prototype.lite
-	 * http://www.doknowevil.net/litebox/
+	 * @author http://www.digitalia.be/software/slimbox
 	 *
 	 * @param boolean $print
 	 */
@@ -764,51 +764,7 @@ class vmCommonHTML {
 			define ( '_SLIMBOX_LOADED', '1' );
 		}	
 	}
-	/**
-	 * Function to include the Lightbox JS scripts in the HTML document
-	 * Type '2' => Source: http://www.huddletogether.com/projects/lightbox2/
-	 * Type '_gw' => Source: http://blog.feedmarker.com/2006/02/12/how-to-make-better-modal-windows-with-lightbox/
 
-	 * @static 
-	 * @since VirtueMart 1.1.0
-	 *
-	 */
-	function loadLightbox( $type = '2' ) {
-		global $mosConfig_live_site, $vm_mainframe;
-		if( !defined( '_LIGHTBOX'.$type.'_LOADED' )) {
-			
-			vmCommonHTML::loadPrototype();
-			
-			$vm_mainframe->addScriptDeclaration( 'var lightboxurl = \''.$mosConfig_live_site.'/components/'. VM_COMPONENT_NAME .'/js/lightbox'.$type.'/\';');
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/lightbox'.$type.'/lightbox'.$type.'.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/lightbox'.$type.'/lightbox'.$type.'.css' );
-			if( $type== '2')  {
-				vmCommonHTML::loadScriptaculous( array('effects'));
-			}
-
-			define ( '_LIGHTBOX'.$type.'_LOADED', '1' );
-		}	
-	}
-	/**
-	 * Loads a part of the scriptaculous script library
-	 * @author http://script.aculo.us/
-	 * @license http://wiki.script.aculo.us/scriptaculous/show/License
-	 * 
-	 * @param array $library The name of the script to load
-	 */
-	function loadScriptaculous( $library=array( 'effects')  ) {
-		global $vm_mainframe, $mosConfig_live_site;
-		$scripttag = '';
-		
-		foreach( $library as $script ) {
-			if( !defined( '_SCRIPTACULOUS_'.$script.'_LOADED' )) {
-				$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/scriptaculous/'.$script.'.js' );
-				define( '_SCRIPTACULOUS_'.$script.'_LOADED', 1 );
-			}
-		}
-		vmCommonHTML::loadPrototype();
-		
-	}
 	/**
 	 * Prototype is a Javascript framework
 	 * @author http://prototype.conio.net/
@@ -822,29 +778,7 @@ class vmCommonHTML {
 		}
 
 	}
-	function loadRico( ) {
-		global $vm_mainframe, $mosConfig_live_site;
-		if( !defined( "_RICO_LOADED" )) {
-			vmCommonHTML::loadPrototype();
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/rico.js' );
-			define ( "_RICO_LOADED", "1" );
-		}
-		
-	}
-	function loadWindowsJS( ) {
-		global $vm_mainframe, $mosConfig_live_site, $VM_LANG;
-		if( !defined( "_WINDOWSJS_LOADED" )) {
-			vmCommonHTML::loadPrototype();
-			vmCommonHTML::loadScriptaculous( array('effects') );
-			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.$VM_LANG->_('PHPSHOP_CART_TITLE').'";var ok_lbl="'.$VM_LANG->_('CMN_CONTINUE').'";var cancel_lbl="'.$VM_LANG->_('CMN_CANCEL').'";var notice_lbl="'.$VM_LANG->_('PEAR_LOG_NOTICE').'";' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/windows/window.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/windows/themes/mac_os_x.css' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/windows/themes/alphacube.css' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/windows/themes/default.css' );
 
-			define ( "_WINDOWSJS_LOADED", "1" );
-		}		
-	}
 	/**
 	 * Loads the CSS and Javascripts needed to run the Greybox
 	 * Source: http://orangoo.com/labs/?page_id=5
@@ -879,22 +813,7 @@ class vmCommonHTML {
 			define ( "_TIGRATREE_LOADED", "1" );
 		}
 	}
-	/**
-	 * Function to include the behaviour scripts in the HTML document
-	 * Behaviour: http://bennolan.com/behaviour/
-	 * @static 
-	 * @since VirtueMart 1.1.0
-	 *
-	 */
-	function loadBehaviourJS( ) {
-		global $mosConfig_live_site, $vm_mainframe;
-		if( !defined( "_BEHAVIOURJS_LOADED" )) {
-			
-			vmCommonHTML::loadPrototype();
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/prototype/behaviour.js' );
-			define ( "_BEHAVIOURJS_LOADED", "1" );
-		}		
-	}
+
 	function loadYUI( ) {
 		global $mosConfig_live_site, $vm_mainframe;
 		if( !defined( "_YUI_LOADED" )) {
@@ -924,12 +843,9 @@ class vmCommonHTML {
 	 * @param string $mootools Set to 'true' if you're using slimbox or another MooTools based image viewing library
 	 * @return string
 	 */
-	function getLightboxImageLink( $image_link, $text, $title='', $image_group='', $mootools=false ) {
-		if( $mootools ) {
-			vmCommonHTML::loadSlimBox();
-		} else {
-			vmCommonHTML::loadLightbox();
-		}
+	function getLightboxImageLink( $image_link, $text, $title='', $image_group='' ) {
+		
+		vmCommonHTML::loadSlimBox();		
 		
 		if( $image_group ) {
 			$image_group = '['.$image_group.']';

@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.01.2008 soeren
+- removed some Javascripts for a smaller component archive 
+	removed: Scriptaculous, Behaviour, Lightbox(2 + "gone wild"), LiteBox, WindowJS
+
 07.01.2008 thepisu
 # Added translations for various strings (modules admin/affiliate/checkout/help/order)
 
