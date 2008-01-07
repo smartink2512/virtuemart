@@ -36,16 +36,19 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 07.01.2008 soeren
+# Toolbar not visible in Product Form Popup under Joomla! 1.5
+# Task #1634 - Attribute name with äöüß not work
+# Task #1638 - Layout Tabs not working in Internet Explorer
+# Task #1640 - require_once virtuemart_parser.php in virtuemart.php
+# Task #1643 - Error message in "Parameters of Product Type"
+# Category won't save when no WYSIWYG Editor is enabled [http://forum.virtuemart.net/index.php?topic=35170.0]
 - removed some Javascripts for a smaller component archive 
 	removed: Scriptaculous, Behaviour, Lightbox(2 + "gone wild"), LiteBox, WindowJS
-
-07.01.2008 thepisu
-# Added translations for various strings (modules admin/affiliate/checkout/help/order)
 
 05.01.2008 soeren
 # Task #1636 - Manage User Fields - mosHTML Class
 
-03.01.2008 thepisu
+03.01.2008 Pisu
 + Re-added some language strings previusly deleted.
 # Removed extra comma in english common language.
 # Various fixes in language files.

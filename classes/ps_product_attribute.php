@@ -954,7 +954,10 @@ class ps_product_attribute {
 
 			$pagevar=str_replace(" ","_",$a);
 			$pagevar .= $d['prod_id'];
-			if (!empty($d[utf8_encode($pagevar)])) {
+			if( strtolower(vmGetCharset()) != 'utf-8' ) {
+				$pagevar = utf8_encode($pagevar);
+			}
+			if (!empty($d[$pagevar])) {
 				$attribute_given = true;
 			}
 			if ($description!='') {
@@ -962,7 +965,7 @@ class ps_product_attribute {
 			}
 
 			$description.=$a.":";
-			$description .= empty($d[utf8_encode($pagevar)]) ? '' : utf8_decode($d[utf8_encode($pagevar)]);
+			$description .= empty($d[$pagevar]) ? '' : utf8_decode($d[$pagevar]);
 
 		}
 		rtrim($description);
@@ -981,6 +984,9 @@ class ps_product_attribute {
 			{
 				$pagevar=str_replace(" ","_",$field);
 				$pagevar .= $d['prod_id'];
+				if( strtolower(vmGetCharset()) != 'utf-8' ) {
+					$pagevar = utf8_encode($pagevar);
+				}
 				if (!empty($d[$pagevar])) {
 					$custom_attribute_given = true;
 				}

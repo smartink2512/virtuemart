@@ -157,12 +157,13 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 			echo vmCommonHTML::scriptTag('', 'var listItemClicked = function(e){
         // find the <a> element that was clicked
         var a = e.getTarget(null, "a");
-        try {
-	        if(a && typeof a.onclick == "undefined" && a.href.indexOf("javascript:") == -1 && a.href.indexOf("func=") == -1 ) {
+       try {
+	        if(a && !a.onclick && a.href.indexOf("javascript:") == -1 && a.href.indexOf("func=") == -1 ) {
+	        
 	            e.preventDefault();
 	            parent.addSimplePanel( a.title != "" ? a.title : a.innerHTML, a.href );
-	        }  
-	     } catch(e) {}
+	   		}  
+	    } catch(e) {}
 	};
 	Ext.get("vmPage").mon("click", listItemClicked );');
 		}

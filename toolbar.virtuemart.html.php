@@ -86,8 +86,11 @@ class MENU_virtuemart {
         if ($editor1 != '') {
 			if( vmIsJoomla(1.5) ) {
 				jimport('joomla.html.editor');
-				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
-				$script .= $editor->getContent('editor1');
+				$editor_type = $GLOBALS['mainframe']->getCfg('editor');
+				if( $editor_type != 'none' ) {
+					$editor = JEditor::getInstance();
+					$script .= $editor->getContent('editor1');
+				}
 			} else {
 				ob_start();
 				getEditorContents( 'editor1', $editor1 );
@@ -97,8 +100,11 @@ class MENU_virtuemart {
 		if ($editor2 != '') {
 			if( vmIsJoomla(1.5) ) {
 				jimport('joomla.html.editor');
-				$editor = JEditor::getInstance($GLOBALS['mainframe']->getCfg('editor'));
-				$script .= $editor->getContent('editor2');
+				$editor_type = $GLOBALS['mainframe']->getCfg('editor');
+				if( $editor_type != 'none' ) {
+					$editor = JEditor::getInstance();
+					$script .= $editor->getContent('editor2');
+				}
 			} else {
 				ob_start();
 				getEditorContents( 'editor2', $editor2 );

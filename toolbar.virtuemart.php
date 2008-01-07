@@ -129,9 +129,9 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
          vmMenuBar::spacer();
          vmMenuBar::endTable();
      }
-     /*if( vmIsJoomla(1.5) && (stristr($_SERVER['PHP_SELF'], 'index2.php') || stristr($_SERVER['PHP_SELF'], 'index3.php'))) {
+     if( vmIsJoomla(1.5) && ((defined( '_VM_IS_BACKEND') && stristr($_SERVER['PHP_SELF'], 'index3.php')) || (!defined( '_VM_IS_BACKEND') && stristr($_SERVER['PHP_SELF'], 'index2.php')))) {
 	     $bar =& JToolBar::getInstance('toolbar');
 	     echo $bar->render();
-     }*/
+     }
 }
 ?>

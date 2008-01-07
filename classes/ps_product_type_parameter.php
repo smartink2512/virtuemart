@@ -207,7 +207,7 @@ class ps_product_type_parameter {
 				if( $d["parameter_default"] != "" && $d["parameter_type"] != "T" ) {
 					$q .= "DEFAULT '" . $d["parameter_default"] . "' NOT NULL;" ;
 				}
-				if( $db->query() === false ) {
+				if( $db->query($q) === false ) {
 					$GLOBALS['vmLogger']->err('Adding the new parameter field to the table failed.');
 					return false;
 				}
@@ -217,14 +217,12 @@ class ps_product_type_parameter {
 					$q = "ALTER TABLE `#__{vm}_product_type_" ;
 					$q .= $d["product_type_id"] . "` ADD FULLTEXT `idx_product_type_" . $d["product_type_id"] . "_" ;
 					$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` (`" . $db->getEscaped(vmGet($d,'parameter_name')) . "`);" ;
-					$db->setQuery( $q ) ;
-					$db->query() ;
+					$db->query($q);
 				} else {
 					$q = "ALTER TABLE `#__{vm}_product_type_" ;
 					$q .= $d["product_type_id"] . "` ADD KEY `idx_product_type_" . $d["product_type_id"] . "_" ;
 					$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` (`" . $db->getEscaped(vmGet($d,'parameter_name')) . "`);" ;
-					$db->setQuery( $q ) ;
-					$db->query() ;
+					$db->query( $q );
 				}
 			}
 			$GLOBALS['vmLogger']->info( 'The Parameter has been added.' );
