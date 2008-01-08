@@ -105,7 +105,7 @@ $listObj->startTable();
 $columns = Array(  "#" => 'width="20"', 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll($num_rows)\" />" => 'width="20"',
 					$VM_LANG->_('PHPSHOP_FILES_LIST_FILENAME') => '',
-					'Role' => '',
+					$VM_LANG->_('VM_FILES_LIST_ROLE') => '',
 					$VM_LANG->_('PHPSHOP_VIEW') => '',
 					$VM_LANG->_('PHPSHOP_FILES_LIST_FILETITLE') => '',
 					$VM_LANG->_('PHPSHOP_FILES_LIST_FILETYPE') => '',
@@ -194,10 +194,10 @@ while ($db->next_record()) {
 
 
 	if ($db->f("file_published")=="0") { 
-		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/publish_x.png" border="0" alt="Publish" />';
+		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/publish_x.png" border="0" alt="' . $VM_LANG->_('CMN_PUBLISH') . '" />';
 	} 
 	else { 
-		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/tick.png" border="0" alt="Unpublish" />';
+		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/tick.png" border="0" alt="' . $VM_LANG->_('CMN_UNPUBLISH') . '" />';
 	} 
 	$listObj->addCell( $tmp_cell );
 	
@@ -216,6 +216,6 @@ $listObj->writeFooter( $keyword,"&product_id=$product_id" );
 <br /><br />
 <a name="file_form" href="#listheader">
 <div id="file_form_container">
-	<img align="middle" src="<?php echo $mosConfig_live_site ?>/administrator/images/restore_f2.png" border="0" alt="Go Up" /> Up</a>
+	<img align="middle" src="<?php echo $mosConfig_live_site ?>/administrator/images/restore_f2.png" border="0" alt="<?php echo $VM_LANG->_('VM_FILES_LIST_GO_UP'); ?>" /><?php echo $VM_LANG->_('VM_FILES_LIST_UP'); ?></a>
 	<iframe id="file_form_iframe" src="" style="height: 1000px;" frameborder="0" width="100%"></iframe>
 </div>

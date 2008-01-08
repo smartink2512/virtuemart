@@ -75,14 +75,14 @@ while ($db->next_record()) {
 	$per_item = $ps_zone->per_item($db->f("zone_id"));
 	$zone_limit = $ps_zone->zone_limit($db->f("zone_id"));
 	
-	$tmp_cell = 'Per Item: <strong>'. $CURRENCY_DISPLAY->getFullValue($per_item).'</strong><br/>'
-			. 'Limit: <strong>'. $CURRENCY_DISPLAY->getFullValue($zone_limit).'</strong>';
+	$tmp_cell = $VM_LANG->_('VM_ZONE_ASSIGN_PERITEM') . ': <strong>'. $CURRENCY_DISPLAY->getFullValue($per_item).'</strong><br/>'
+			. $VM_LANG->_('VM_ZONE_ASSIGN_LIMIT') . ': <strong>'. $CURRENCY_DISPLAY->getFullValue($zone_limit).'</strong>';
     $listObj->addCell( $tmp_cell );
     
 	$tmp_cell = $ps_zone->list_zones("zone_id[]", $db->f("zone_id"));
 	if($db->f("zone_id") > "1") {
 		$url = $_SERVER['PHP_SELF']."?page=zone.zone_form&zone_id=" . $db->f("zone_id");
-		$tmp_cell .= "<a href=\"" . $sess->url($url) . "\">Edit This Zone</a>"; 
+		$tmp_cell .= "<a href=\"" . $sess->url($url) . "\">" . $VM_LANG->_('VM_ZONE_EDITZONE') . "</a>"; 
 	}
 	$listObj->addCell( $tmp_cell );
         

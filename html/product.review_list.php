@@ -60,7 +60,7 @@ $listObj->startTable();
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
 					$VM_LANG->_('PHPSHOP_PRODUCT_NAME_TITLE') => 'width="20%"',
-					"Name/Date" => 'width="15%"',
+					$VM_LANG->_('VM_REVIEW_LIST_NAMEDATE') => 'width="15%"',
 					$VM_LANG->_('PHPSHOP_REVIEWS') => 'width="35%"',
 					$VM_LANG->_('PHPSHOP_RATE_NOM') => 'width="15%"',
 					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_PUBLISH') => 'width="5%"',
@@ -101,7 +101,7 @@ while ($db->next_record()) {
 	else {
 		$tmpcell .= "&task=unpublish\">";
 	}
-	$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("published"), "Publish", "Unpublish" );
+	$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("published"), $VM_LANG->_('CMN_PUBLISH'), $VM_LANG->_('CMN_UNPUBLISH') );
 	$tmpcell .= "</a>";
 	$listObj->addCell( $tmpcell );
 		

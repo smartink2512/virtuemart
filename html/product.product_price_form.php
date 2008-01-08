@@ -109,12 +109,12 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="10" valign="middle" > 
-        <div align="right"><strong>Quantity Start:</strong></div>
+        <div align="right"><strong><?php $VM_LANG->_('PHPSHOP_PRODUCT_LIST_QUANTITY_START'); ?>:</strong></div>
       </td>
       <td width="77%" height="10" ><input type="text" value="<?php echo $db->f("price_quantity_start") ?>" size="11" name="price_quantity_start" /></td>
     </tr>
     <tr> 
-      <td width="23%" height="10" valign="middle" ><div align="right"><strong>Quantity End:</strong></div>
+      <td width="23%" height="10" valign="middle" ><div align="right"><strong><?php $VM_LANG->_('PHPSHOP_PRODUCT_LIST_QUANTITY_END'); ?>:</strong></div>
       </td>
       <td width="77%" height="10" ><input type="text" value="<?php echo $db->f("price_quantity_end") ?>" size="11" name="price_quantity_end" /></td>
     </tr>

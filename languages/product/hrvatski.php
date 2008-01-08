@@ -153,7 +153,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL' => 'Informacije o Parametrima',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND' => 'Vrsta Proizvoda nije pronaðena!',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME' => 'Naziv Parametra',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Ovo ime æe biti ime stupca u tablici. Mora biti jedinstveno i bez razmaka.<BR>Npr.: glavni_materijal',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Ovo ime æe biti ime stupca u tablici. Mora biti jedinstveno i bez razmaka.<br/>Npr.: glavni_materijal',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL' => 'Etiketa Parametra',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER' => 'Integer',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT' => 'Tekst',
@@ -167,7 +167,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE' => 'Višestruke Vrijednosti',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES' => 'Moguæe Vrijednosti',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT' => 'Prikazati Moguæe Vrijednosti kao višestruki odabir?',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Ako su definirane Moguæe Vrijednosti, Parametri mogu imati samo te vrijednosti. Primjer Moguæih Vrijednosti:</strong><BR><span class="sectionname">Èelik;Drvo;Plastika;...</span>',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Ako su definirane Moguæe Vrijednosti, Parametri mogu imati samo te vrijednosti. Primjer Moguæih Vrijednosti:</strong><br/><span class="sectionname">Èelik;Drvo;Plastika;...</span>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT' => 'Primarna Vrijednost',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT' => 'Za Parametar Primarna Vrijednost koristite ovaj format:<ul><li>Datum: YYYY-MM-DD</li><li>Vrijeme: HH:MM:SS</li><li>Datum & Vrijeme: YYYY-MM-DD HH:MM:SS</li></ul>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT' => 'Jedinica',
@@ -280,6 +280,17 @@ $VM_LANG->initModule('product',array (
 	'PRODUCT_WAITING_LIST_NOTIFYUSERS' => 'Notify these users now (when you have updated the number of products stock)',
 	'PRODUCT_WAITING_LIST_NOTIFIED' => 'notified',
 	'VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE' => 'Select Image',
-	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:'
+	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:',
+	'VM_FILES_LIST_ROLE' => 'Role',
+	'VM_FILES_LIST_UP' => 'Up',
+	'VM_FILES_LIST_GO_UP' => 'Go Up',
+	'VM_CATEGORY_FORM_PRODUCTS_PER_ROW' => 'Show x products per row',
+	'VM_CATEGORY_FORM_BROWSE_PAGE' => 'Category Browse Page',
+	'VM_PRODUCT_CLONE_OPTIONS_TAB' => 'Clone Product Otions',
+	'VM_PRODUCT_CLONE_OPTIONS_LBL' => 'Also clone these Child Items',
+	'VM_PRODUCT_LIST_MEDIA' => 'Media',
+	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
+	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
+	'VM_PRODUCT_SEARCHING' => 'Searching...'
 	));
 ?>

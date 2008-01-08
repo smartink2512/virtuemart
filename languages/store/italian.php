@@ -110,6 +110,9 @@ $VM_LANG->initModule('store',array (
 	'VM_SHIPPING_MODULE_LIST_HEADER_AUTHOR' => 'Autore',
 	'PHPSHOP_STORE_ADDRESS_FORMAT' => 'Formato Indirizzo Negozio',
 	'PHPSHOP_STORE_ADDRESS_FORMAT_TIP' => 'Puoi usare i seguenti tag',
-	'PHPSHOP_STORE_DATE_FORMAT' => 'Formato Data Negozio'
+	'PHPSHOP_STORE_DATE_FORMAT' => 'Formato Data Negozio',
+	'VM_PAYMENT_METHOD_ID_NOT_PROVIDED' => 'Errore: non è stato fornito l\'ID Metodo di Pagamento.',
+	'VM_SHIPPING_MODULE_CONFIG_LBL' => 'Configurazione Modulo Spedizione',
+	'VM_SHIPPING_MODULE_CLASSERROR' => 'Impossibile istanziare la Classe {shipping_module}'
 	));
 ?>

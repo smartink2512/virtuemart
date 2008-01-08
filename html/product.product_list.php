@@ -250,7 +250,7 @@ $listObj->startTable();
 $columns = Array(  '#' => '',
 				"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
 				$VM_LANG->_('PHPSHOP_PRODUCT_LIST_NAME') => "width=\"30%\"",
-				'Media' => 'width="5%"',
+				$VM_LANG->_('VM_PRODUCT_LIST_MEDIA') => 'width="5%"',
 				$VM_LANG->_('PHPSHOP_PRODUCT_LIST_SKU') => "width=\"15%\"",
 				$VM_LANG->_('PHPSHOP_PRODUCT_PRICE_TITLE') => "width=\"10%\"",
 				$VM_LANG->_('PHPSHOP_CATEGORY') => "width=\"15%\"" );

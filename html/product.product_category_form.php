@@ -93,13 +93,13 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       <td colspan="2"><br /></td>
     </tr>
     <tr>
-      <td ><div align="right">Show x products per row: </div></td>
+      <td ><div align="right"><?php echo $VM_LANG->_('VM_CATEGORY_FORM_PRODUCTS_PER_ROW'); ?>: </div></td>
       <td valign="top">
       <input type="text" class="inputbox" size="3" name="products_per_row" value="<?php $db->sp("products_per_row"); ?>" />
       </td>
     </tr>
     <tr>
-      <td><div align="right">Category Browse Page: </div></td>
+      <td><div align="right"><?php echo $VM_LANG->_('VM_CATEGORY_FORM_BROWSE_PAGE'); ?>: </div></td>
       <td valign="top">
       <?php
       echo ps_html::list_template_files( "category_browsepage", 'browse', $db->sf("category_browsepage") );

@@ -160,7 +160,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL' => 'Parameter Info',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND' => 'Produkt type finnes ikke',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME' => 'Parameter Navn',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Dette vil bli kollone tittel. Må være et unikt navn uten mellomrom<BR>For eksempel: hoved_type',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Dette vil bli kollone tittel. Må være et unikt navn uten mellomrom<br/>For eksempel: hoved_type',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL' => 'Parameter Etikett',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER' => 'Integer',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT' => 'Tekst',
@@ -174,7 +174,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE' => 'Flere verdier',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES' => 'Mulige Verdier',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT' => 'Vis mulige verdier som "Velg Flere"?',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><BR><span class="sectionname">Steel;Wood;Plastic;...</span>',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>If Possible Values are set, Parameter can have only this values. Example for Possible Values:</strong><br/><span class="sectionname">Steel;Wood;Plastic;...</span>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT' => 'Standar Verdi',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT' => 'For Parameter Default Value use this format:<ul><li>Date: YYYY-MM-DD</li><li>Time: HH:MM:SS</li><li>Date & Time: YYYY-MM-DD HH:MM:SS</li></ul>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT' => 'Enhet',
@@ -289,6 +289,17 @@ Nettbutikken vil automatisk generere en ny Record ut fra den rabatterte prisen.'
 	'PRODUCT_WAITING_LIST_NOTIFYUSERS' => 'Notify these users now (when you have updated the number of products stock)',
 	'PRODUCT_WAITING_LIST_NOTIFIED' => 'notified',
 	'VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE' => 'Select Image',
-	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:'
+	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:',
+	'VM_FILES_LIST_ROLE' => 'Role',
+	'VM_FILES_LIST_UP' => 'Up',
+	'VM_FILES_LIST_GO_UP' => 'Go Up',
+	'VM_CATEGORY_FORM_PRODUCTS_PER_ROW' => 'Show x products per row',
+	'VM_CATEGORY_FORM_BROWSE_PAGE' => 'Category Browse Page',
+	'VM_PRODUCT_CLONE_OPTIONS_TAB' => 'Clone Product Otions',
+	'VM_PRODUCT_CLONE_OPTIONS_LBL' => 'Also clone these Child Items',
+	'VM_PRODUCT_LIST_MEDIA' => 'Media',
+	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
+	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
+	'VM_PRODUCT_SEARCHING' => 'Searching...'
 	));
 ?>

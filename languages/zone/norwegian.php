@@ -30,6 +30,9 @@ $VM_LANG->initModule('zone',array (
 	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Sone navn',
 	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Sone beskrivelse',
 	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Sonekostnad per artikkel',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Sone kostnadsgrense'
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Sone kostnadsgrense',
+	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
+	'VM_ZONE_EDITZONE' => 'Edit This Zone'
 	));
 ?>

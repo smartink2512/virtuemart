@@ -110,6 +110,9 @@ Standard: ps_payment<br />
 	'VM_SHIPPING_MODULE_LIST_HEADER_AUTHOR' => 'Author',
 	'PHPSHOP_STORE_ADDRESS_FORMAT' => 'Store Address Format',
 	'PHPSHOP_STORE_ADDRESS_FORMAT_TIP' => 'You can use the following placeholders here',
-	'PHPSHOP_STORE_DATE_FORMAT' => 'Store Date Format'
+	'PHPSHOP_STORE_DATE_FORMAT' => 'Store Date Format',
+	'VM_PAYMENT_METHOD_ID_NOT_PROVIDED' => 'Error: Payment Method ID was not provided.',
+	'VM_SHIPPING_MODULE_CONFIG_LBL' => 'Shipping Module Configuration',
+	'VM_SHIPPING_MODULE_CLASSERROR' => 'Could not instantiate Class {shipping_module}'
 	));
 ?>

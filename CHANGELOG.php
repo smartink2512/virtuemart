@@ -35,8 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+08.01.2008 thepisu
+# Added translations for various strings (modules product/shop/store/zone)
+
 08.01.2008 soeren
 # Task #1645 - Call to a member function loadBotGroup error when trying to browse product
+
+07.01.2008 thepisu
+# Added translations for various strings (modules admin/affiliate/checkout/help/order)
+
 07.01.2008 soeren
 # Toolbar not visible in Product Form Popup under Joomla! 1.5
 # Task #1634 - Attribute name with äöüß not work
@@ -50,7 +58,7 @@ VirtueMart 1.1.x
 05.01.2008 soeren
 # Task #1636 - Manage User Fields - mosHTML Class
 
-03.01.2008 Pisu
+03.01.2008 thepisu
 + Re-added some language strings previusly deleted.
 # Removed extra comma in english common language.
 # Various fixes in language files.

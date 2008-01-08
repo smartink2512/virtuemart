@@ -69,6 +69,7 @@ $VM_LANG->initModule('shop',array (
 	'VM_RECOVER_CART' => 'Recupera Carrello Salvato',
 	'VM_RECOVER_CART_REPLACE' => 'Sostituisci il carrello con il carrello salvato',
 	'VM_RECOVER_CART_MERGE' => 'Aggiungi il carrello salvato al carrello attuale',
-	'VM_RECOVER_CART_DELETE' => 'Cancella il carrello salvato'
+	'VM_RECOVER_CART_DELETE' => 'Cancella il carrello salvato',
+	'VM_EMPTY_YOUR_CART_TIP' => 'Azzera tutto il contenuto del carrello'
 	));
 ?>

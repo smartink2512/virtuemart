@@ -69,6 +69,7 @@ $VM_LANG->initModule('shop',array (
 	'VM_RECOVER_CART' => 'Recover Saved Cart',
 	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
 	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
-	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart'
+	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart',
+	'VM_EMPTY_YOUR_CART_TIP' => 'Clear the cart of all contents'
 	));
 ?>

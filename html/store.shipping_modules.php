@@ -60,7 +60,7 @@ else {
         <td><?php echo( $i ); ?></td>
         <td><?php 
           if( in_array(str_replace('.php', '', $row['filename']), $PSHOP_SHIPPING_MODULES ) )
-            echo "<img src=\"$mosConfig_live_site/administrator/images/tick.png\" border=\"0\" alt=\"Active\"  align=\"center\"/>";
+            echo "<img src=\"$mosConfig_live_site/administrator/images/tick.png\" border=\"0\" alt=\"" . $VM_LANG->_('PHPSHOP_ISSHIP_LIST_PUBLISH_LBL') . "\"  align=\"center\"/>";
         ?></td>
         <td width="19%"><?php
         echo $row["name"];

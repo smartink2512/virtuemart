@@ -154,7 +154,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL' => 'Информация о параметрах',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND' => 'Тип продукта не найден!',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME' => 'Название параметра в базе',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Это название является названием столбца в таблице базы и должно быть уникальным и не содержать пробелов.<BR>Например: main_material',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Это название является названием столбца в таблице базы и должно быть уникальным и не содержать пробелов.<br/>Например: main_material',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL' => 'Название параметра',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER' => 'Целый',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT' => 'Текст',
@@ -282,6 +282,17 @@ The Shop will create a new discount record from the discounted price.',
 	'PRODUCT_WAITING_LIST_NOTIFYUSERS' => 'Notify these users now (when you have updated the number of products stock)',
 	'PRODUCT_WAITING_LIST_NOTIFIED' => 'notified',
 	'VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE' => 'Select Image',
-	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:'
+	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:',
+	'VM_FILES_LIST_ROLE' => 'Role',
+	'VM_FILES_LIST_UP' => 'Up',
+	'VM_FILES_LIST_GO_UP' => 'Go Up',
+	'VM_CATEGORY_FORM_PRODUCTS_PER_ROW' => 'Show x products per row',
+	'VM_CATEGORY_FORM_BROWSE_PAGE' => 'Category Browse Page',
+	'VM_PRODUCT_CLONE_OPTIONS_TAB' => 'Clone Product Otions',
+	'VM_PRODUCT_CLONE_OPTIONS_LBL' => 'Also clone these Child Items',
+	'VM_PRODUCT_LIST_MEDIA' => 'Media',
+	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
+	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
+	'VM_PRODUCT_SEARCHING' => 'Searching...'
 	));
 ?>

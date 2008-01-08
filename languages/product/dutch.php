@@ -153,7 +153,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL' => 'Parameter Informatie',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND' => 'Product Type niet gevonden!',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME' => 'Parameter Naam',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Deze naam wordt de kolomnaam van de tabel, deze naam moet uniek en zonder spaties zijn.<BR>Bijvoorbeeld: hoofd_materiaal',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Deze naam wordt de kolomnaam van de tabel, deze naam moet uniek en zonder spaties zijn.<br/>Bijvoorbeeld: hoofd_materiaal',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL' => 'Parameter Label',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER' => 'Integer',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT' => 'Tekst',
@@ -167,7 +167,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE' => 'Meerdere Waarden',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES' => 'Mogelijke Waarden',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT' => 'Laat Mogelijke Waarden als selectielijst zien?',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Indien er Mogelijke Waarden zijn, dan kan de Parameter enkel dze waarden krijgen. Voorbeelden van mogelijke waarden zijns:</strong><BR><span class="sectionname">Staal, Hout,...</span>',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Indien er Mogelijke Waarden zijn, dan kan de Parameter enkel dze waarden krijgen. Voorbeelden van mogelijke waarden zijns:</strong><br/><span class="sectionname">Staal, Hout,...</span>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT' => 'Standaard waarde',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT' => 'Voor de standaard waarde gebruikt U het volgende formaat:<ul><li>Datum: JJJJ-MM-DD</li><li>Tijd: HH:MM:SS</li><li>Datum & Tijd: JJJJ-MM-DD HH:MM:SS</li></ul>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT' => 'Eenheid',
@@ -280,6 +280,17 @@ $VM_LANG->initModule('product',array (
 	'PRODUCT_WAITING_LIST_NOTIFYUSERS' => 'Notify these users now (when you have updated the number of products stock)',
 	'PRODUCT_WAITING_LIST_NOTIFIED' => 'notified',
 	'VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE' => 'Select Image',
-	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:'
+	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:',
+	'VM_FILES_LIST_ROLE' => 'Role',
+	'VM_FILES_LIST_UP' => 'Up',
+	'VM_FILES_LIST_GO_UP' => 'Go Up',
+	'VM_CATEGORY_FORM_PRODUCTS_PER_ROW' => 'Show x products per row',
+	'VM_CATEGORY_FORM_BROWSE_PAGE' => 'Category Browse Page',
+	'VM_PRODUCT_CLONE_OPTIONS_TAB' => 'Clone Product Otions',
+	'VM_PRODUCT_CLONE_OPTIONS_LBL' => 'Also clone these Child Items',
+	'VM_PRODUCT_LIST_MEDIA' => 'Media',
+	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
+	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
+	'VM_PRODUCT_SEARCHING' => 'Searching...'
 	));
 ?>

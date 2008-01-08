@@ -21,7 +21,7 @@ $shipping_module = vmGet($_REQUEST, 'shipping_module', null);
 
 if( $shipping_module ) {
 	if( !include( CLASSPATH."shipping/$shipping_module" )) {
-		vmRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules", "Could not instantiate Class $shipping_module" );
+		vmRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=store.shipping_modules", str_replace('{shipping_module}',$shipping_module,$VM_LANG->_('VM_SHIPPING_MODULE_CLASSERROR')));
 	}
 	else {
 		eval( "\$_SHIPPING = new ".basename($shipping_module,".php")."();");
@@ -37,7 +37,7 @@ if( $shipping_module ) {
   
   <?php
 	// Create the Form Control Object
-	$formObj =& new formFactory( 'Shipping Module Configuration: '. $shipping_module );
+	$formObj =& new formFactory( $VM_LANG->_('VM_SHIPPING_MODULE_CONFIG_LBL') . ': '. $shipping_module );
 	
 	// Start the the Form
 	$formObj->startForm();

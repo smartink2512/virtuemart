@@ -76,7 +76,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_CATEGORY_FORM_PARENT' => 'Livello superiore',
 	'PHPSHOP_CATEGORY_FORM_DESCRIPTION' => 'Descrizione Categoria',
 	'PHPSHOP_CATEGORY_FORM_PUBLISH' => 'Pubblico?',
-	'PHPSHOP_CATEGORY_FORM_FLYPAGE' => 'Flypage Categoria<BR>',
+	'PHPSHOP_CATEGORY_FORM_FLYPAGE' => 'Flypage Categoria',
 	'PHPSHOP_ATTRIBUTE_LIST_LBL' => 'Lista degli Attributi per',
 	'PHPSHOP_ATTRIBUTE_LIST_NAME' => 'Nome Attributo',
 	'PHPSHOP_ATTRIBUTE_LIST_ORDER' => 'Ordine Lista',
@@ -314,6 +314,17 @@ $VM_LANG->initModule('product',array (
 	'PRODUCT_WAITING_LIST_NOTIFYUSERS' => 'Avvisa questi utenti ora (quando aggiorni la quantità disponibile a magazzino)',
 	'PRODUCT_WAITING_LIST_NOTIFIED' => 'avvisato',
 	'VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE' => 'Seleziona Immagine',
-	'VM_PRODUCT_RELATED_SEARCH' => 'Cerca qui prodotti e categorie:'
+	'VM_PRODUCT_RELATED_SEARCH' => 'Cerca qui prodotti e categorie:',
+	'VM_FILES_LIST_ROLE' => 'Ruolo',
+	'VM_FILES_LIST_UP' => 'Su',
+	'VM_FILES_LIST_GO_UP' => 'Torna Su',
+	'VM_CATEGORY_FORM_PRODUCTS_PER_ROW' => 'Mostra X prodotti per riga',
+	'VM_CATEGORY_FORM_BROWSE_PAGE' => 'Pagina Navigazione Categoria',
+	'VM_PRODUCT_CLONE_OPTIONS_TAB' => 'Opzioni Clonazione Prodotto',
+	'VM_PRODUCT_CLONE_OPTIONS_LBL' => 'Clona anche questi Oggetti Figlio',
+	'VM_PRODUCT_LIST_MEDIA' => 'Media',
+	'VM_REVIEW_LIST_NAMEDATE' => 'Nome/Data',
+	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Seleziona uno o più Prodotti',
+	'VM_PRODUCT_SEARCHING' => 'Ricerca...'
 	));
 ?>

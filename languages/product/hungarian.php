@@ -155,7 +155,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL' => 'Paraméter információ',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND' => 'Termék típus nem található!',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME' => 'Paraméter név',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Ez lesz a táblázat oszlopneve. Egyedi kell legyen és nem tartalmazhat szóközöket.<BR>Például: main_material',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'Ez lesz a táblázat oszlopneve. Egyedi kell legyen és nem tartalmazhat szóközöket.<br/>Például: main_material',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL' => 'Paraméter címke',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER' => 'Egész szám',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT' => 'Szöveg',
@@ -169,7 +169,7 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE' => 'Többszörös értékek',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES' => 'Lehetséges értékek',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT' => 'Mutassa Lehetséges értékeket mint többszörös választási lehetoséget?',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Ha a Lehetséges értékek be vannak állítva, a paraméter csak ezeket az értékeket veheti fel. Példa a Lehetséges értékek számára:</strong><BR><span class="sectionname">Acél;Fa;Muanyag;...</span>',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Ha a Lehetséges értékek be vannak állítva, a paraméter csak ezeket az értékeket veheti fel. Példa a Lehetséges értékek számára:</strong><br/><span class="sectionname">Acél;Fa;Muanyag;...</span>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT' => 'Alapértelmezett érték',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT' => 'Paraméter alapértelmezett értéke számára használd ezt a formátumot:<ul><li>Dátum: YYYY-MM-DD</li><li>Ido: HH:MM:SS</li><li>Dátum és ido: YYYY-MM-DD HH:MM:SS</li></ul>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT' => 'Egység',
@@ -282,6 +282,17 @@ $VM_LANG->initModule('product',array (
 	'PRODUCT_WAITING_LIST_NOTIFYUSERS' => 'Notify these users now (when you have updated the number of products stock)',
 	'PRODUCT_WAITING_LIST_NOTIFIED' => 'notified',
 	'VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE' => 'Select Image',
-	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:'
+	'VM_PRODUCT_RELATED_SEARCH' => 'Search for Products or Categories here:',
+	'VM_FILES_LIST_ROLE' => 'Role',
+	'VM_FILES_LIST_UP' => 'Up',
+	'VM_FILES_LIST_GO_UP' => 'Go Up',
+	'VM_CATEGORY_FORM_PRODUCTS_PER_ROW' => 'Show x products per row',
+	'VM_CATEGORY_FORM_BROWSE_PAGE' => 'Category Browse Page',
+	'VM_PRODUCT_CLONE_OPTIONS_TAB' => 'Clone Product Otions',
+	'VM_PRODUCT_CLONE_OPTIONS_LBL' => 'Also clone these Child Items',
+	'VM_PRODUCT_LIST_MEDIA' => 'Media',
+	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
+	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
+	'VM_PRODUCT_SEARCHING' => 'Searching...'
 	));
 ?>

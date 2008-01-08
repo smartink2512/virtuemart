@@ -124,7 +124,7 @@ while ($db->next_record()) {
 	else { 
 		$tmpcell .= "&task=unpublish\">";
 	}
-	$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("payment_enabled"), "Publish", "Unpublish" );
+	$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("payment_enabled"), $VM_LANG->_('CMN_PUBLISH'), $VM_LANG->_('CMN_UNPUBLISH') );
 	$tmpcell .= "</a>";
 	$listObj->addCell( $tmpcell );
 	

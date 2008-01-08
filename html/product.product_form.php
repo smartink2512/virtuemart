@@ -1214,8 +1214,8 @@ if( $clone_product == "1" ) {
                 FROM #__{vm}_product
                 WHERE product_parent_id='".vmGet($_REQUEST, 'product_id')."' " );
 	if( $db->num_rows() > 0 ) {
-		$tabs->startTab( 'Clone Product Otions', 'clone-page' );
-		echo "<h3>Also clone these Child Items:</h3>";
+		$tabs->startTab( $VM_LANG->_('VM_PRODUCT_CLONE_OPTIONS_TAB'), 'clone-page' );
+		echo "<h3>" . $VM_LANG->_('VM_PRODUCT_CLONE_OPTIONS_LBL') . ":</h3>";
 	
 		while( $db->next_record() ) {
 			$db_att->query( "SELECT attribute_name, attribute_value FROM #__{vm}_product_attribute
@@ -1437,10 +1437,10 @@ var searchField = function(){
     related_products = document.adminForm.related_products;
     var search = new Ext.form.ComboBox({
         store: relds,
-        title: 'Select one or more Products',
+        title: '<?php echo addslashes($VM_LANG->_('VM_PRODUCT_SELECT_ONE_OR_MORE')); ?>',
         displayField:'product',
         typeAhead: false,
-        loadingText: 'Searching...',
+        loadingText: '<?php echo addslashes($VM_LANG->_('VM_PRODUCT_SEARCHING')); ?>',
         width: 270,
         pageSize:20,
         hideTrigger:true,

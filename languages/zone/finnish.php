@@ -30,6 +30,9 @@ $VM_LANG->initModule('zone',array (
 	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Vyöhyke Nimi',
 	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Vyöhyke Kuvaus',
 	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Vyöhyke Kustannus per Artikkeli',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Vyöhyke Kustannus Raja'
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Vyöhyke Kustannus Raja',
+	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
+	'VM_ZONE_EDITZONE' => 'Edit This Zone'
 	));
 ?>

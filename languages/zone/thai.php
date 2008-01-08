@@ -30,6 +30,9 @@ $VM_LANG->initModule('zone',array (
 	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'ชื่อโซน',
 	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'รายละเอียดโซน',
 	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'ค่าใช้จ่ายต่อรายการ',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'วงเงินค่าใช้จ่าย'
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'วงเงินค่าใช้จ่าย',
+	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
+	'VM_ZONE_EDITZONE' => 'Edit This Zone'
 	));
 ?>

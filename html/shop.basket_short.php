@@ -134,7 +134,7 @@ if(@$_SESSION['vmEnableEmptyCart'] && !@$_SESSION['vmMiniCart']) {
 	$delete_cart = "<a href=\"".$_SERVER['PHP_SELF'] . "?page=shop.cart_reset&option=com_virtuemart&option2=$option&product_id=$prodid&category_id=$catid&return=$page&flypage=$flypage&Itemid=$Itemid\" title=\"". $VM_LANG->_('PHPSHOP_EMPTY_YOUR_CART') ." \">
 					<img src=\"". $mosConfig_live_site ."/images/cancel_f2.png\" width=\"12\"border=\"0\" style=\"float: right;vertical-align: middle;\"   alt=\"". $VM_LANG->_('PHPSHOP_EMPTY_YOUR_CART') ." \" />
       </a>"; 
-	$html1 = vmToolTip("Clear the cart of all contents", "Empty Cart",'','',$empty_cart,true);
+	$html1 = vmToolTip($VM_LANG->_('VM_EMPTY_YOUR_CART_TIP'), $VM_LANG->_('PHPSHOP_EMPTY_YOUR_CART'),'','',$empty_cart,true);
 	$delete_cart = $html1;
 	//echo $empty_cart;
 }

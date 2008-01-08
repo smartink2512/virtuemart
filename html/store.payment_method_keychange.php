@@ -88,7 +88,7 @@ if ( $payment_method_id ) {
 	echo '</td></tr></table>';
 }
 else {
-	echo "<script>alert(\"Error: Payment Method ID was not provided.\"); window.history.go(-1); </script>\n";
+	echo "<script>alert(\"" . $VM_LANG->_('VM_PAYMENT_METHOD_ID_NOT_PROVIDED') . "\"); window.history.go(-1); </script>\n";
 }
 
 ?>

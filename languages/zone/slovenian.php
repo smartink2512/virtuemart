@@ -30,6 +30,9 @@ $VM_LANG->initModule('zone',array (
 	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Ime cone',
 	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Opis cone',
 	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Cena cone za izdelek',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Limit cone'
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Limit cone',
+	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
+	'VM_ZONE_EDITZONE' => 'Edit This Zone'
 	));
 ?>
