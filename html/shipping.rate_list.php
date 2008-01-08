@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_RATE_LIST_LBL'), IMAGEURL."ps_image/shipping.gif", $modulename, "rate_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_RATE_LIST_LBL'), VM_THEMEURL."images/administration/dashboard/shipping.gif", $modulename, "rate_list");
 
 // start the list table
 $listObj->startTable();

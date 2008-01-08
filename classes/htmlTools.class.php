@@ -1032,13 +1032,23 @@ class vmCommonHTML {
 	function ParseContentByPlugins( $text, $type = 'content' ) {
 		global $_MAMBOTS;
 		if( VM_CONTENT_PLUGINS_ENABLE == '1') {
-			$_MAMBOTS->loadBotGroup( $type );
-			$row = new stdClass();
-			$row->text = $text;
-			$params = new mosParameters('');
-			
-			$_MAMBOTS->trigger( 'onPrepareContent', array( &$row, &$params, 0 ), true );
-			$text = $row->text;
+			if( vmIsJoomla(1.0)) {
+				$_MAMBOTS->loadBotGroup( $type );
+				$row = new stdClass();
+				$row->text = $text;
+				$params = new mosParameters('');
+				
+				$_MAMBOTS->trigger( 'onPrepareContent', array( &$row, &$params, 0 ), true );
+				$text = $row->text;
+			} elseif( vmIsJoomla(1.5)) {
+				$params 	   =& $GLOBALS['mainframe']->getParams('com_content');
+				$dispatcher	   =& JDispatcher::getInstance();
+				JPluginHelper::importPlugin($type);
+				$row = new stdClass();
+				$row->text = $text;
+				$results = $dispatcher->trigger('onPrepareContent', array (&$row, & $params, 0 ));
+				$text = $row->text;
+			}
 		}
 		return $text;
 		

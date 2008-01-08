@@ -101,6 +101,7 @@ if ($_POST) {
         require_once($mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php');
         include_once( ADMINPATH.'/compat.joomla1.5.php' );
         require_once( ADMINPATH. 'global.php' );
+        require_once( CLASSPATH. 'ps_main.php' );
         
 		$vmLoggerConf = array(
 			'buffering' => true
@@ -112,11 +113,6 @@ if ($_POST) {
 		 */
 		$vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
 		$GLOBALS['vmLogger'] =& $vmLogger;
-		
-        require_once( CLASSPATH . 'phpmailer/class.phpmailer.php');
-        $mail = new vmPHPMailer();
-        $mail->PluginDir = CLASSPATH . 'phpmailer/';
-        $mail->SetLanguage("en", CLASSPATH . 'phpmailer/language/');
               
         /* Load the PayPal Configuration File */ 
         require_once( CLASSPATH. 'payment/ps_paypal.cfg.php' );
@@ -253,16 +249,15 @@ if ($_POST) {
         if( !$valid_ip ) {
             debug_msg( "Error code 506. Possible fraud. Error with REMOTE IP ADDRESS = ".$_SERVER['REMOTE_ADDR'].". 
                         The remote address of the script posting to this notify script does not match a valid PayPal ip address\n" );
-            $mail->From = $mosConfig_mailfrom;
-            $mail->FromName = $mosConfig_fromname;
-            $mail->AddAddress($debug_email_address);
-            $mail->Subject = "PayPal IPN Transaction on your site: Possible fraud";
-            $mail->Body = "Error code 506. Possible fraud. Error with REMOTE IP ADDRESS = ".$_SERVER['REMOTE_ADDR'].". 
+            
+            $mailsubject = "PayPal IPN Transaction on your site: Possible fraud";
+            $mailbody = "Error code 506. Possible fraud. Error with REMOTE IP ADDRESS = ".$_SERVER['REMOTE_ADDR'].". 
                         The remote address of the script posting to this notify script does not match a valid PayPal ip address\n
             These are the valid IP Addresses: $ips
             
             The Order ID received was: $invoice";
-            $mail->Send();
+            vmMail( $mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
+            
             exit();
         }
     }
@@ -310,17 +305,15 @@ if ($_POST) {
         
         $res = "FAILED";
         
-        $mail->From = $mosConfig_mailfrom;
-        $mail->FromName = $mosConfig_fromname;
-        $mail->AddAddress($debug_email_address);
-        $mail->Subject = "PayPal IPN Fatal Error on your Site";
-        $mail->Body = "Hello,
+        $mailsubject = "PayPal IPN Fatal Error on your Site";
+        $mailbody = "Hello,
         A fatal error occured while processing a paypal transaction.
         ----------------------------------
         Hostname: $hostname
         URI: $uri
         $error_description";
-        $mail->Send();
+        vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
+        
     }
     
     //--------------------------------------------------------
@@ -370,13 +363,10 @@ if ($_POST) {
             if (eregi ("Completed", $payment_status) || eregi ("Pending", $payment_status)) {
                  
                 if (empty($order_id)) {
-                    $mail->From = $mosConfig_mailfrom;
-                    $mail->FromName = $mosConfig_fromname;
-                    $mail->AddAddress($debug_email_address);
-                    $mail->Subject = "PayPal IPN Transaction on your site: Order ID not found";
-                    $mail->Body = "The right order_id wasn't found during a PayPal transaction on your website.
+                    $mailsubject = "PayPal IPN Transaction on your site: Order ID not found";
+                    $mailbody = "The right order_id wasn't found during a PayPal transaction on your website.
                     The Order ID received was: $invoice";
-                    $mail->Send();
+                    vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
                     exit();
                 }
                 
@@ -385,17 +375,14 @@ if ($_POST) {
                                 
                 if( $mc_gross != $amount_check 
                    || $currency_code != $db->f('order_currency') ) {
-                    $mail->From = $mosConfig_mailfrom;
-                    $mail->FromName = $mosConfig_fromname;
-                    $mail->AddAddress($debug_email_address);
-                    $mail->Subject = "PayPal IPN Error: Order Total/Currency Check failed";
-                    $mail->Body = "During a paypal transaction on your site the received amount didn't match the order total.
+                    $mailsubject = "PayPal IPN Error: Order Total/Currency Check failed";
+                    $mailbody = "During a paypal transaction on your site the received amount didn't match the order total.
                     Order ID: ".$db->f('order_id').".
                     Order Number: $invoice.
                     The amount received was: $mc_gross $currency_code.
                     It should be: $amount_check ".$db->f("order_currency").".";
                     
-                    $mail->Send();
+                    vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
                     exit();
                 }
                 
@@ -410,19 +397,16 @@ if ($_POST) {
                 require_once ( CLASSPATH . 'ps_order.php' );
                 $ps_order= new ps_order;
                 $ps_order->order_status_update($d);
-                $mail->From = $mosConfig_mailfrom;
-                $mail->FromName = $mosConfig_fromname;
-                $mail->AddAddress($debug_email_address);
-                $mail->Subject = "PayPal IPN txn on your site";
-                $mail->Body = "Hello,\n\n";
-                $mail->Body .= "a PayPal transaction for you has been made on your website!\n";
-                $mail->Body .= "-----------------------------------------------------------\n";
-                $mail->Body .= "Transaction ID: $txn_id\n";
-                $mail->Body .= "Payer Email: $payer_email\n";
-                $mail->Body .= "Order ID: $order_id\n";
-                $mail->Body .= "Payment Status returned by PayPal: $payment_status\n";
-                $mail->Body .= "Order Status Code: ".$d['order_status'];
-                $mail->Send();
+                $mailsubject = "PayPal IPN txn on your site";
+                $mailbody = "Hello,\n\n";
+                $mailbody .= "a PayPal transaction for you has been made on your website!\n";
+                $mailbody .= "-----------------------------------------------------------\n";
+                $mailbody .= "Transaction ID: $txn_id\n";
+                $mailbody .= "Payer Email: $payer_email\n";
+                $mailbody .= "Order ID: $order_id\n";
+                $mailbody .= "Payment Status returned by PayPal: $payment_status\n";
+                $mailbody .= "Order Status Code: ".$d['order_status'];
+                vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
             }
             else { 
                 //----------------------------------------------------------------------
@@ -435,11 +419,8 @@ if ($_POST) {
                 $ps_order= new ps_order;
                 $ps_order->order_status_update($d);
                 
-                $mail->From = $mosConfig_mailfrom;
-                $mail->FromName = $mosConfig_fromname;
-                $mail->AddAddress($debug_email_address);
-                $mail->Subject = "PayPal IPN Transaction on your site";
-                $mail->Body = "Hello,
+                $mailsubject = "PayPal IPN Transaction on your site";
+                $mailbody = "Hello,
                 a Failed PayPal Transaction on $mosConfig_live_site requires your attention.
                 -----------------------------------------------------------
                 Order ID: ".$d['order_id']."
@@ -447,7 +428,7 @@ if ($_POST) {
                 Payment Status returned by PayPal: $payment_status 
                 
                 $error_description";
-                $mail->Send();
+                vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
                 
             }
         }
@@ -456,31 +437,25 @@ if ($_POST) {
         // Send an email to yourself so you investigate it.
         //----------------------------------------------------------------
         elseif (eregi ("INVALID", $res)) {
-                $mail->From = $mosConfig_mailfrom;
-                $mail->FromName = $mosConfig_fromname;
-                $mail->AddAddress($debug_email_address);
-                $mail->Subject = "Invalid PayPal IPN Transaction on your site";
-                $mail->Body = "Hello,\n\n";
-                $mail->Body .= "An Invalid PayPal Transaction requires your attention.\n";
-                $mail->Body .= "-----------------------------------------------------------\n";
-                $mail->Body .= "REMOTE IP ADDRESS: ".$_SERVER['REMOTE_ADDR']."\n";
-                $mail->Body .= "REMOTE HOST NAME: $remote_hostname\n";
-                $mail->Body .= "Order ID: ".$d['order_id']."\n";
-                $mail->Body .= "User ID: ".$db->f("user_id")."\n";
-                $mail->Body .= $error_description;
-                $mail->Send();
+                $mailsubject = "Invalid PayPal IPN Transaction on your site";
+                $mailbody = "Hello,\n\n";
+                $mailbody .= "An Invalid PayPal Transaction requires your attention.\n";
+                $mailbody .= "-----------------------------------------------------------\n";
+                $mailbody .= "REMOTE IP ADDRESS: ".$_SERVER['REMOTE_ADDR']."\n";
+                $mailbody .= "REMOTE HOST NAME: $remote_hostname\n";
+                $mailbody .= "Order ID: ".$d['order_id']."\n";
+                $mailbody .= "User ID: ".$db->f("user_id")."\n";
+                $mailbody .= $error_description;
+                vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
 
         }
         else {
-                $mail->From = $mosConfig_mailfrom;
-                $mail->FromName = $mosConfig_fromname;
-                $mail->AddAddress($debug_email_address);
-                $mail->Subject = "PayPal IPN Transaction on your Site";
-                $mail->Body = "Hello,
+                $mailsubject = "PayPal IPN Transaction on your Site";
+                $mailbody = "Hello,
                 An error occured while processing a paypal transaction.
                 ----------------------------------
                     $error_description";
-                $mail->Send();
+                vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
         }
     }
 }

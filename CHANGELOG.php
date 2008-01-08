@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.01.2008 soeren
+# Task #1645 - Call to a member function loadBotGroup error when trying to browse product
 07.01.2008 soeren
 # Toolbar not visible in Product Form Popup under Joomla! 1.5
 # Task #1634 - Attribute name with äöüß not work

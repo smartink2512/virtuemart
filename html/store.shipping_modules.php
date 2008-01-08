@@ -26,7 +26,7 @@ $ps_shipping_method = new ps_shipping_method;
  <table width="100%" cellspacing="0" cellpadding="4" border="0">
   <tr>
     <td>
-      <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo IMAGEURL ?>ps_image/ups.gif" border="0" />
+      <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo VM_THEMEURL ?>images/administration/dashboard/ups.gif" border="0" />
       <br /><br />
     </td>
     <td><span class="sectionname"><?php echo $VM_LANG->_('VM_SHIPPING_MODULE_LIST_LBL') ?></span></td>

@@ -62,7 +62,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_VENDOR_LIST_LBL'), IMAGEURL."ps_image/vendors.gif", $modulename, "vendor_list");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_VENDOR_LIST_LBL'), VM_THEMEURL."images/administration/dashboard/shop_vendors.png", $modulename, "vendor_list");
 
 // start the list table
 $listObj->startTable();

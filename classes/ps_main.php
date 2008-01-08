@@ -496,7 +496,7 @@ function editorScript($editor1='', $editor2='') {
 * @param string From name
 * @param string E-mail subject
 * @param string Message body
-* @return vmPHPMailer Mail object
+* @return phpMailer Mail object
 */
 function vmCreateMail( $from='', $fromname='', $subject='', $body='' ) {
 	global $mosConfig_absolute_path, $mosConfig_sendmail;
@@ -504,12 +504,17 @@ function vmCreateMail( $from='', $fromname='', $subject='', $body='' ) {
 	global $mosConfig_smtppass, $mosConfig_smtphost;
 	global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_mailer;
 	
-	require_once( CLASSPATH . 'phpmailer/class.phpmailer.php');
+	if( file_exists( $mosConfig_absolute_path . '/includes/phpmailer/class.phpmailer.php')) {
+		$phpmailer_path = $mosConfig_absolute_path . '/includes/phpmailer';
+	} elseif( file_exists( $mosConfig_absolute_path . '/libraries/phpmailer/class.phpmailer.php') ) {
+		$phpmailer_path = $mosConfig_absolute_path . '/libraries/phpmailer';
+	}
+	require_once( $phpmailer_path . '/class.phpmailer.php' );
 	
-	$mail = new vmPHPMailer();
+	$mail = new PHPMailer();
 
-	$mail->PluginDir = CLASSPATH .'phpmailer/';
-	$mail->SetLanguage( 'en', CLASSPATH . 'phpmailer/language/' );
+	$mail->PluginDir = $phpmailer_path .'/';
+	$mail->SetLanguage( 'en', $phpmailer_path . '/language/' );
 	$mail->CharSet 	= vmGetCharset();
 	$mail->IsMail();
 	$mail->From 	= $from ? $from : $mosConfig_mailfrom;
