@@ -135,13 +135,13 @@ class listFactory {
 		$this->y++;
 		$this->x = 0;
 		if( $class != '') {
-			$this->cells[$this->y]['class'];
+			$this->cells[$this->y]['class'] = $class;
 		}
 		if( $id != '') {
-			$this->cells[$this->y]['id'];
+			$this->cells[$this->y]['id'] = $id;
 		}
 		if( $attributes != '' ) {
-			$this->cells[$this->y]['attributes'];
+			$this->cells[$this->y]['attributes'] = $attributes;
 		}
 		
 	}
@@ -180,7 +180,7 @@ class listFactory {
 				}
 				echo ">\n";
 				foreach( $row as $cell ) {
-					if( $cell["data"] == 'i' || !isset( $cell["data"] )) continue;
+					if( $cell["data"] == 'i' || !isset( $cell["data"] ) || !is_array($cell)) continue;
 					$value = $cell["data"];
 					$attributes = $cell["attributes"];
 					echo "<td  $attributes>$value</td>\n";
@@ -368,7 +368,7 @@ class formFactory {
 * @author Soeren Eberhardt
 * Modified to use Panel-in-Panel functionality
 */
-class mShopTabs {
+class vmTabPanel {
 	/** @var int Use cookies */
 	var $useCookies = 0;
     
@@ -382,7 +382,7 @@ class mShopTabs {
 	* @param int useCookies, if set to 1 cookie will hold last used tab between page refreshes
 	* @param int show_js, if set to 1 the Javascript Link and Stylesheet will not be printed
 	*/
-	function mShopTabs($useCookies, $show_js, $panel_id) {		
+	function vmTabPanel($useCookies, $show_js, $panel_id) {		
 		vmCommonHTML::loadExtjs();
         $this->useCookies = $useCookies;
         $this->panel_id = $panel_id;
@@ -403,7 +403,18 @@ class mShopTabs {
 	*/
 	function endPane() {
 		echo "</div>";
-		$scripttag = "Ext.onReady( function() { \nvar tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');\n";
+		$scripttag = "
+Ext.onReady( function() { 
+	var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');";
+		if( $this->useCookies ) {
+			$scripttag .= "
+	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+	var state = Ext.state.Manager;
+	tabs_{$this->panel_id}.on('tabchange', function(tp, tab){
+     state.set('{$this->panel_id}-active', tab.id);
+     });
+	";
+		}
 		$num = 0;
 		foreach ( $this->tabs as $id => $title ) {
 			$scripttag .= "tabItem$num = tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
@@ -411,7 +422,11 @@ class mShopTabs {
 			$num++;
 		}
 		reset($this->tabs);
-		$scripttag .= "tabs_{$this->panel_id}.activate('".key($this->tabs)."'); \n});";
+		if( $this->useCookies ) {
+			$scripttag .= "tabs_{$this->panel_id}.activate(state.get('{$this->panel_id}-active', '".key($this->tabs)."')); \n});";
+		} else {
+			$scripttag .= "tabs_{$this->panel_id}.activate( '".key($this->tabs)."'); \n});";
+		}
 		
 		echo vmCommonHTML::scriptTag('', $scripttag );
 
@@ -434,6 +449,7 @@ class mShopTabs {
 		echo "</div>";
 	}
 }
+class mShopTabs extends vmTabPanel { }
 	
 class vmMooAjax {
 

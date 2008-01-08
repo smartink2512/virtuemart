@@ -29,7 +29,7 @@ if( !empty( $database->_log )) {
 echo '<br style="clear:both;" />';
 
 include_once(ADMINPATH ."version.php");
-$tabs = new mShopTabs(0, 1, "_debug");
+$tabs = new vmTabPanel(1, 1, "debugpanel");
 $tabs->startPane("debug-pane");
 $tabs->startTab( "Shop Core Variables", "shop-variables" );
 ?>

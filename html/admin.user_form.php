@@ -126,7 +126,7 @@ $formObj = &new formFactory( vmCommonHTML::imageTag(VM_THEMEURL.'images/administ
 //Then Start the form
 $formObj->startForm();
 
-$tabs = new mShopTabs(0, 1, "_userform");
+$tabs = new vmTabPanel(0, 1, "userform");
 $tabs->startPane("userform-pane");
 
 $tabs->startTab( $VM_LANG->_('VM_USER_FORM_TAB_GENERALINFO'), "userform-page");

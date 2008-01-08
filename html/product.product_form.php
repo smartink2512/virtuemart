@@ -213,7 +213,7 @@ $formObj = &new formFactory( $title );
 //Then Start the form
 $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
-$tabs = new mShopTabs(0, 1, "_main");
+$tabs = new vmTabPanel(0, 1, "productform");
 $tabs->startPane("content-pane");
 $tabs->startTab( $info_label, "info-page");
 ?>
@@ -1095,7 +1095,7 @@ while ($dba->next_record()) {
     				echo "[]\" multiple size=\"$size\">\n";
     				$selected_value = array();
     				$get_item_value = $dbp->f($dbpt->f("parameter_name"));
-    				$get_item_value = explode(",",$get_item_value);
+    				$get_item_value = explode(";",$get_item_value);
     				foreach($get_item_value as $value) {
     					$selected_value[$value] = 1;
     				}

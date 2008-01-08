@@ -47,7 +47,7 @@ $formObj->startForm();
 ?>
 <br />
 <?php
-$tabs = new mShopTabs(0, 1, '_main');
+$tabs = new vmTabPanel(0, 1, 'exportform');
 $tabs->startPane('content-pane');
 $tabs->startTab( $VM_LANG->_('VM_EXPORT_MODULE_FORM_LBL'), 'global-page');
 ?>

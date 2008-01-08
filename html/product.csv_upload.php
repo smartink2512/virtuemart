@@ -33,7 +33,7 @@ else {
 <span class="sectionname"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_CSV_UPLOAD') ?></span><br /><br />
 
 <?php 
-$tabs = new mShopTabs(0, 1, "_csv");
+$tabs = new vmTabPanel(0, 1, "csvupload");
 $tabs->startPane("uploadform-pane");
 $tabs->startTab( $VM_LANG->_('PHPSHOP_CSV_IMPORT_EXPORT'), "uploadform" ); 
 ?>

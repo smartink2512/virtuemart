@@ -37,7 +37,7 @@ if (!empty($vendor_id)) {
   $default["vendor_currency"] = $_SESSION['vendor_currency'];
 }
 /* Build up the Tabs */
-$tabs = new mShopTabs(0, 1, "_main");
+$tabs = new vmTabPanel(0, 1, "vendorform");
 $tabs->startPane("content-pane");
 $tabs->startTab( $VM_LANG->_('PHPSHOP_STORE_MOD'), "info-page");
 ?>

@@ -71,7 +71,7 @@ $db->query('SELECT id,first_name, last_name, username FROM #__users, #__{vm}_use
 while($db->next_record())
   $new_customers[$db->f("id")] = $db->f('username') ." (" . $db->f('first_name')." ".$db->f('last_name').")";
 
-$tabs = new mShopTabs(0, 1, "_main");
+$tabs = new vmTabPanel(1, 1, "dashboard");
 $tabs->startPane("content-pane");
 $tabs->startTab($VM_LANG->_('PHPSHOP_CONTROL_PANEL'), 'control-panel');
 ?>

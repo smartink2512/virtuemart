@@ -40,6 +40,10 @@ VirtueMart 1.1.x
 # Added translations for various strings (modules product/shop/store/zone)
 
 08.01.2008 soeren
+# Task #1591 - Add product in Modify Order incorrectly opens Order Status Change tab
+# Task #1649 - htmlTools.class listFactory->newRow() not holding class, id or attributes
+# Task #1648 - Incorrect Product Type parameter separator in product_type table
+# Task #1647 - Double menu buttons are shown
 # Task #1645 - Call to a member function loadBotGroup error when trying to browse product
 
 07.01.2008 thepisu

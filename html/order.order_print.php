@@ -70,7 +70,7 @@ $order_id = vmRequest::getInt('order_id');
 	  <div>
 		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
 		<?php
-		$tab = new mShopTabs( 0, 1, "myTab");
+		$tab = new vmTabPanel( 1, 1, "orderstatuspanel");
 		$tab->startPane( "order_change_pane" );
 		$tab->startTab(  $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE'), "order_change_page" );
 		?>

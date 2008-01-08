@@ -51,7 +51,7 @@ $formObj->startForm();
 
 $ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/virtuemart.cfg.php' );
 
-$tabs = new mShopTabs(0, 1, "_main");
+$tabs = new vmTabPanel(1, 1, "vmconfiguration");
 $tabs->startPane("content-pane");
 $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 

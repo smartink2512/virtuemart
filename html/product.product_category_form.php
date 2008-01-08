@@ -40,7 +40,7 @@ elseif (empty($vars["error"])) {
     $default["products_per_row"] = PRODUCTS_PER_ROW; 
 }
   
-$tabs = new mShopTabs(0, 1, "_main");
+$tabs = new vmTabPanel(0, 1, "categoryform");
 $tabs->startPane("category-pane");
 $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' width='16' height='16' border='0' /> ".$VM_LANG->_('PHPSHOP_CATEGORY_FORM_LBL'), "info-page");
 ?> 

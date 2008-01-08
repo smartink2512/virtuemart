@@ -664,15 +664,19 @@ class ps_product extends vmAbstractObject {
 			while ($dbpt->next_record()) {
 				if ($dbpt->f("parameter_type")!="B") { // if it is not breaker
 					$value=$d["product_type_".$product_type_id."_".$dbpt->f("parameter_name")];
-					if ($dbpt->f("parameter_type")=="V" && is_array($value))
-					$value = join(",",$value);
+					if ($dbpt->f("parameter_type")=="V" && is_array($value)) {
+						$value = join(';',$value);
+					}
 					if ($value=="") {
-						$value="NULL"; }
-						else { $value="'$value'"; }
-						$q .= ",`".$dbpt->f("parameter_name")."`=".$value;
+						$value='NULL'; 
+					}
+					else { 
+						$value="'$value'"; 
+					}
+					$q .= ',`'.$dbpt->f('parameter_name').'`='.$value;
 				}
 			}
-			$q .= " WHERE product_id = '".$d['product_id']."'";
+			$q .= ' WHERE product_id = '.$d['product_id'];
 			$dbp->setQuery($q); $dbp->query();
 		}
 

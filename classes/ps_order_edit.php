@@ -688,7 +688,7 @@ class ps_order_edit {
 	 * returns:
 	 **************************************************************************/
 	function update_quantity() {
-		global $VM_LANG, $vmLogger;
+		global $VM_LANG, $vmLogger, $mosConfig_offset;
 
 		$order_item_id = vmGet( $_REQUEST, 'order_item_id' );
 		$quantity = trim(vmGet( $_REQUEST, 'product_quantity' ));
