@@ -25,7 +25,7 @@ mm_showMyFileName( __FILE__ );
 global $sess, $mosConfig_live_site;
 
 // Decide which node to open (if any)
-$Treeid = (int) mosGetParam($_REQUEST, 'Treeid', 0);
+$Treeid = vmRequest::getInt( 'Treeid' );
 
 // Get the root label
 $root_label = $params->get( 'root_label', $VM_LANG->_('PHPSHOP_STORE_MOD') );

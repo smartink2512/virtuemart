@@ -16,7 +16,7 @@ global $root_label, $sess, $db, $mosConfig_live_site;
 
 $js_src = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js';
 
-$Itemid = mosGetParam( $_REQUEST, 'Itemid', "");
+$Itemid = vmRequest::getInt( 'Itemid' );
 if( @get_class( $db ) != 'ps_DB' ) $db = new ps_DB();
 
 require_once( CLASSPATH. "ps_product_category.php" );
@@ -50,7 +50,7 @@ $ps_product_category = new ps_product_category();
 	$basetext =  "";
 	
 	// what category_id is selected?
-	$category_id = mosgetParam( $_REQUEST, 'category_id', 0 );
+	$category_id = vmRequest::getInt( 'category_id' );
 	
 	// select menu items from database
 	$query  = "SELECT category_id,category_parent_id,category_name FROM #__{vm}_category, #__{vm}_category_xref ";

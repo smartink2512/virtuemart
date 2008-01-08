@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.01.2008 gregdev
+^ Set usertype in Joomla! 1.5 shopper registration (ps_shopper)
+^ Native Joomla! 1.5 compatibility changes for mod_virtuemart
+^ Change how we get $my in virtuemart_parser for Joomla! 1.5 (native and legacy support)
 
 08.01.2008 thepisu
 # Added translations for various strings (modules product/shop/store/zone)

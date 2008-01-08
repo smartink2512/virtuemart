@@ -37,8 +37,8 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 				$usersConfig = &JComponentHelper::getParams( 'com_users' );
 				$contentConfig = &JComponentHelper::getParams( 'com_content' );	
 				// User registration settings
-				$mosConfig_allowUserRegistration = $usersConfig->get('allowUserRegistration');
-				$mosConfig_useractivation = $usersConfig->get('useractivation');
+				$mosConfig_allowUserRegistration = $GLOBALS['mosConfig_allowUserRegistration'] = $usersConfig->get('allowUserRegistration');
+				$mosConfig_useractivation = $GLOBALS['mosConfig_useractivation'] = $usersConfig->get('useractivation');
 				
 				// TODO: Do we need these? They are set in the template.
 				// Icon display settings

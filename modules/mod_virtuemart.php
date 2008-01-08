@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct access to '.basename(__FILE__).' is not allowed.' );
 /**
 * mambo-phphop Main Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
@@ -18,15 +18,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 /* Load the virtuemart main parse code */
+if( !isset( $mosConfig_absolute_path ) ) {
+	$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
+}
 global $mosConfig_absolute_path;
 require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 require_once(CLASSPATH.'ps_product_category.php');
 $ps_product_category =& new ps_product_category();
 
-global $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $VM_LANG, $sess, $mm_action_url;
+global $my, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscookMenu_style, $jscookTree_style, $VM_LANG, $sess, $mm_action_url;
 
-$category_id = mosGetParam( $_REQUEST, 'category_id' );
+$category_id = vmRequest::getInt( 'category_id' );
 
 $mod_dir = $mosConfig_absolute_path.'/components/'.VM_COMPONENT_NAME.'/js';
 

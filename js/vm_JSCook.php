@@ -14,8 +14,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $mosConfig_live_site, $mainframe, $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style, $ps_product_category;
 require_once( CLASSPATH . 'ps_product_category.php' );
 if( !isset( $ps_product_category )) $ps_product_category = new ps_product_category;
-$Itemid = mosGetParam( $_REQUEST, 'Itemid', "");
-$TreeId = mosGetParam( $_REQUEST, 'TreeId', "");
+$Itemid = vmRequest::getInt( 'Itemid' );
+$TreeId = vmRequest::getInt( 'TreeId' );
 
 
 if( $jscook_type == "tree" ) {

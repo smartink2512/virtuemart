@@ -73,7 +73,7 @@ class TransMenu {
 
 		global $Itemid, $mosConfig_live_site, $mainframe, $sess;
 		$txt = '';
-		$Itemid = mosGetParam( $_REQUEST, "Itemid", "");
+		$Itemid = vmRequest::getInt( 'Itemid' );
 		switch ($row->type) {
 			case 'separator':
 			case 'component_item_link':
@@ -95,7 +95,7 @@ class TransMenu {
 			break;
 		}
 
-		//$row->link = ampReplace( $row->link );
+		$row->link = vmAmpReplace( $row->link );
 
 		if ( strcasecmp( substr( $row->link,0,4 ), 'http' ) ) {
 			$row->link = sefRelToAbs( $row->link );
@@ -151,7 +151,7 @@ class TransMenu {
 
 		$id = 'id="menu'.$mitem->id.'"';
 
-		$mitem->link = ampReplace( $mitem->link );
+		$mitem->link = vmAmpReplace( $mitem->link );
 
 		if ( strcasecmp( substr( $mitem->link,0,4 ), 'http' ) ) {
 			$mitem->link = sefRelToAbs( $mitem->link );
@@ -160,7 +160,7 @@ class TransMenu {
 		$menuclass = 'mainlevel'. $this->parent->_params->get( 'class_sfx' );
 		
 		// Active Menu highlighting
-		$current_itemid = trim( mosGetParam( $_REQUEST, 'Itemid', 0 ) );
+		$current_itemid = trim( vmRequest::getInt( 'Itemid' ) );
 		if ( in_array($mitem->id, $this->parent->open) ) {
 			$menuclass = 'mainlevel_active'. $this->parent->_params->get( 'class_sfx' );
 		}
