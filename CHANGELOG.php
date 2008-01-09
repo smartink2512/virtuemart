@@ -39,6 +39,8 @@ VirtueMart 1.1.x
 - removed no more used CSV-related language strings 
 
 09.01.2008 soeren
+# fixed InputFilter Class forTask #1574 and Task #1581:  errors in HTML in product descriptipion
+^ optimized query in dynamic_state_list function (not running a query for each country, but just one now)
 - removed CSV Upload from VirtueMart Core (CSVImproved handles CSV Import/Export much better: http://csvimproved.com)
 ^ last called page is correctly remembered now (important for Administration) and loaded when returning to VM ADMIN
  
