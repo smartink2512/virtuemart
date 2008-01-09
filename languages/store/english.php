@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('store',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_USER_FORM_FIRST_NAME' => 'First Name',
 	'PHPSHOP_USER_FORM_LAST_NAME' => 'Last Name',
@@ -114,5 +114,5 @@ $VM_LANG->initModule('store',array (
 	'VM_PAYMENT_METHOD_ID_NOT_PROVIDED' => 'Error: Payment Method ID was not provided.',
 	'VM_SHIPPING_MODULE_CONFIG_LBL' => 'Shipping Module Configuration',
 	'VM_SHIPPING_MODULE_CLASSERROR' => 'Could not instantiate Class {shipping_module}'
-	));
+); $VM_LANG->initModule( 'store', $langvars );
 ?>

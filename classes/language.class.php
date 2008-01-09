@@ -213,8 +213,8 @@ class vmAbstractLanguage {
 	* @param array The array of language strings
 	* @return none
 	*/
-	function initModule($module,$vars) {
-		$this->modules[$module] = $vars;
+	function initModule($module,&$vars) {
+		$this->modules[$module] =& $vars;
 		$this->modules[$module]['CONVERT_FUNC'] = 'strval';
 		if( empty( $this->modules[$module]['CHARSET'] )) $this->setCharset($module);
 		// get global charset setting
