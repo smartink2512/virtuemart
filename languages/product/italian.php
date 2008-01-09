@@ -173,27 +173,6 @@ $VM_LANG->initModule('product',array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT' => 'Per indicare il valore predefinito del parametro usa questo formato:<ul><li>Data: AAAA-MM-GG</li><li>Ora: HH:MM:SS</li><li>Data & Ora: AAAA-MM-GG HH:MM:SS</li></ul>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT' => 'Unità di misura',
 	'PHPSHOP_PRODUCT_CLONE' => 'Clona Prodotto',
-	'PHPSHOP_CSV_SETTINGS' => 'Impostazioni',
-	'PHPSHOP_CSV_DELIMITER' => 'Delimitatore',
-	'PHPSHOP_CSV_ENCLOSURE' => 'Carattere Delimitazione Campo',
-	'PHPSHOP_CSV_UPLOAD_FILE' => 'Upload File CSV',
-	'PHPSHOP_CSV_SUBMIT_FILE' => 'Invia file CSV',
-	'PHPSHOP_CSV_FROM_DIRECTORY' => 'Carica da una cartella',
-	'PHPSHOP_CSV_FROM_SERVER' => 'Carica il file CSV dal server',
-	'PHPSHOP_CSV_EXPORT_TO_FILE' => 'Esporta in un file CSV',
-	'PHPSHOP_CSV_SELECT_FIELD_ORDERING' => 'Scegli il tipo di ordinamento dei campi',
-	'PHPSHOP_CSV_DEFAULT_ORDERING' => 'Ordine predefinito',
-	'PHPSHOP_CSV_CUSTOMIZED_ORDERING' => 'Ordine personalizzato',
-	'PHPSHOP_CSV_SUBMIT_EXPORT' => 'Esporta tutti i prodotti in un file CSV',
-	'PHPSHOP_CSV_CONFIGURATION_HEADER' => 'Configurazione Importa / Esporta CSV',
-	'PHPSHOP_CSV_SAVE_CHANGES' => 'Salva i Cambiamenti',
-	'PHPSHOP_CSV_FIELD_NAME' => 'Nome campo',
-	'PHPSHOP_CSV_DEFAULT_VALUE' => 'Valore predefinito',
-	'PHPSHOP_CSV_FIELD_ORDERING' => 'Ordine campo',
-	'PHPSHOP_CSV_FIELD_REQUIRED' => 'Campo richiesto?',
-	'PHPSHOP_CSV_IMPORT_EXPORT' => 'Importa/Esporta',
-	'PHPSHOP_CSV_NEW_FIELD' => 'Aggiungi un nuovo campo',
-	'PHPSHOP_CSV_DOCUMENTATION' => 'Documentazione',
 	'PHPSHOP_HIDE_OUT_OF_STOCK' => 'Nascondi i prodotti non in magazzino',
 	'PHPSHOP_FEATURED_PRODUCTS_LIST_LBL' => 'Prodotti in Promozione & Scontati',
 	'PHPSHOP_FEATURED' => 'In Promozione',
@@ -207,79 +186,10 @@ $VM_LANG->initModule('product',array (
 	'VM_PRODUCTS_MOVE_LBL' => 'Sposta i prodotti da una categoria all\'altra',
 	'VM_PRODUCTS_MOVE_LIST' => 'Hai scelto di spostare i seguenti %s prodotti',
 	'VM_PRODUCTS_MOVE_TO_CATEGORY' => 'Sposta alla categoria seguente',
-	'VM_CSV_UPLOAD_SIMULATION_RESULTS_LBL' => 'Risultati simulazione upload CSV',
-	'VM_CSV_UPLOAD_IMPORTNOW' => 'Importa ora!',
-	'VM_CSV_UPLOAD_START_AT' => 'Inizia a leggere dalla riga',
-	'VM_CSV_UPLOAD_LINES_TO_PROCESS' => 'Num. di righe da importare',
-	'VM_CSV_UPLOAD_NO_ERRORS' => 'Nessun errore trovato durante la simulazione di importazione CSV.',
-	'VM_CSV_UPLOAD_TOTAL_LINES' => 'Totale righe trovate',
-	'VM_CSV_UPLOAD_FIRST_LINE' => 'Prima riga letta',
-	'VM_CSV_UPLOAD_FIELD_EXPLANATION' => 'Ordinamento campi usato => Valori trovati',
-	'VM_PRODUCT_IMPORT_LOG' => 'Registro importazione prodotti',
-	'VM_CSV_UPLOAD_DETAILS_ANALYSIS' => 'Dettagli / Analisi upload CSV',
 	'VM_PRODUCT_LIST_REORDER_TIP' => 'Seleziona una categoria per riordinare i prodotti di quella categoria',
 	'VM_REVIEW_FORM_LBL' => 'Aggiungi Recensione',
 	'PHPSHOP_REVIEW_EDIT' => 'Aggiungi/Modifica una Recensione',
 	'SEL_CATEGORY' => 'Seleziona una categoria',
-	'PHPSHOP_CSV_SKIP_FIRST_LINE' => 'Salta la prima riga',
-	'PHPSHOP_CSV_SKIP_DEFAULT_VALUE' => 'Salta il valore predefinito',
-	'PHPSHOP_CSV_OVERWRITE_EXISTING_DATA' => 'Sovrascrivi i dati esistenti',
-	'PHPSHOP_CSV_INCLUDE_COLUMN_HEADERS' => 'Includi le intestazioni di colonna',
-	'PHPSHOP_CSV_UPLOAD_SETTINGS' => 'Impostazioni di Caricamento',
-	'PHPSHOP_CSV_AVAILABLE_FIELDS_USE' => 'I seguenti campi sono disponibili per l\'uso, per l\'importazione o l\'esportazione.',
-	'PHPSHOP_CSV_MINIMAL_FIELDS' => 'I minimi campi richiesti sono product_sku, product_name e category_path. Ad eccezione di product_sku, gli altri due campi non sono univoci.',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_SKU' => 'L\'identificatore univoco per un prodotto.<br />
-        Valori:<ul><li>Numeri</li><li>Lettere</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_NAME' => 'Il nome del prodotto. Valori:<ul><li>Testo: codice HTML non consentito.</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_DELETE' => 'Il campo product_delete è un campo speciale. Questo campo è utilizzato per determinare se un prodotto deve essere eliminato oppure no.<br />
-        Utilizzo:<ol><li>Aggiungi il nome "product_delete" alla schermata di configurazione. Il nome è sensibile alle maiuscole, e deve essere tutto minuscolo.</li>
-        <li>Aggiungi una colonna al tuo file CSV con il valore Y. Se il campo contiene qualsiasi altro valore, il prodotto non verrà eliminato.</li></ol></br />
-        Valori:<ul><li>Y: Sì (Yes), il prodotto deve essere eliminato</li><li>N: No, il prodotto non deve essere eliminato</li><li>Vuoto: valore vuoto, il prodotto non deve essere eliminato</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_DESC' => 'Descrizione completa per il prodotto.<br />
-        Valori:<ul><li>Testo: codice HTML non consentito.</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_S_DESC' => 'Descrizione breve per il prodotto.<br />
-        Valori:<ul><li>Testo: codice HTML non consentito.</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_PUBLISH' => 'Lo stato di pubblicazione di un prodotto.<br />
-        Valori:<ul><li>Y: Sì (Yes), il prodotto è pubblicato</li><li>N: No, il prodotto non è pubblicato</li><li>Vuoto: valore vuoto, il prodotto è pubblicato.</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_WIDTH' => 'La larghezza del prodotto.<br />
-        Valori:<ul><li>Numero<li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_HEIGHT' => 'L\'altezza del prodotto.<br />
-        Valori:<ul><li>Numero<li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_LENGTH' => 'La lunghezza del prodotto.<br /><br />Usage:<ol><li>Seleziona il nome "product_length" dal menu nella schermata di configurazione.</li><li>Aggiungi una colonna al tuo file CSV con un valore numerico.</li></ol><br />Valori:<ul><li>Numerico</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABLE_DATE' => 'La data in cui un prodotto diventerà disponibile. Per l\'importazione la data deve essere nel formato giorno/mese/anno oppure giorno-mese-anno. Nei sistemi Windows la data va fino al 19/01/2038.<br />
-        Utilizzo:<ol><li>Aggiungi il nome "product_available_date" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con un valore data. Se il campo contiene qualsiasi altro valore, il dato verrà ignorato.</li></ol><br />
-        Valori:<ul><li>Data: giorno/mese/anno oppure giorno-mese-anno</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_IN_STOCK' => 'Il numero di articoli che hai in magazzino.<br /><br />.
-        Utilizzo:<ol><li>Aggiungi il nome "product_in_stock" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con un valore numerico. Se il campo contiene qualsiasi altro valore, verrà utilizzato il valore predefinito.</li></ol><br />
-        Valori:<ul><li>Numero</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_ATTRIBUTE' => 'Le varie scelte di un singolo prodotto. Utilizza questo per dare un prodotto diverse specificazioni. Ad esempio una maglietta disponibile in più taglie e colori. Puoi specificare le taglie e i colori in questo modo:
-        Dimensione,XL[+1.99],M,S[-2.99];Colore,Rosso,Verde,Giallo,ColoreCostoso[=24.00];ECosiVia,..,..<br /><br />
-        Puoi regolare i prezzi per attributo utilizzati le seguenti opzioni:<ul><li>+: Aggiunge questo importo al prezzo configurato.</li><li>-: Sottrae questo importo dal prezzo configurato.</li><li>=: Imposta il prezzo del prodotto a questo importo.</li></ul><br />
-        Utilizzo:<ol><li>Aggiungi il nome "attribute" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con il testo degli attributi.</li></ol><br />
-        Valori:<ul><li>Testo: codice HTML non consentito.</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_AVAILABILITY' => 'Questo mostra quando il prodotto è disponibile. Il valore può essere un testo descrittivo oppure un nome di file immagine. Le imagini devono essere posizionate in "shop_image/availability/".<br/ >
-        Utilizzo:<ol><li>Aggiungi il nome "product_availability" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con un valore testuale.</li></ol><br />
-        Valori:<ul><li>Testo: codice HTML non consentito.</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_FULL_IMAGE' => 'Il nome del file dell\'immagine posizionata nella cartella "shop_image/product/", oppure l\'indirizzo (URL) dell\'immagine.<br />
-        NOTA: Se hai abilitato il ridimensionamento dinamico, devi riempire il campo "product_thumb_image". VirtueMart ridimensione l\'immagine in esso specificata.<br /><br />
-        Utilizzo:<ol><li>Aggiungi il nome "product_full_image" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con un valore testuale.</li></ol><br />
-        Valori:<ul><li>Testo:<ul><li>codice HTML non consentito</li><li>Indirizzi (URL) consentiti</li></ul></li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_THUMB_IMAGE' => 'Il nome del file dell\'immagine miniatura posizionata nella cartella "shop_image/product/", oppure l\'indirizzo (URL) dell\'immagine.<br />
-        NOTA: Se hai abilitato il ridimensionamento dinamico, devi comunque inserire un valore in questo campo. VirtueMart ridimensione l\'immagine in esso specificata.<br /><br />
-        Utilizzo:<ol><li>Aggiungi il nome "product_full_image" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con un valore testuale.</li></ol><br />
-        Valori:<ul><li>Testo:<ul><li>codice HTML non consentito</li><li>Indirizzi (URL) consentiti</li></ul></li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_CUSTOM_ATTRIBUTE' => 'Un attributo personalizzato aggiungerà un campo di imput alla pagina del prodotto con la descrizione dell\'attributo fornito. Gli attributi personalizzati sono specificati in questo modo: Nome;Extra;...<br />
-        Utilizzo:<ol><li>Aggiungi il nome "custom_attribute" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con il testo degli attributi.</li></ol><br/>
-        Valori:<ul><li>Text: codice HTML non consentito.</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_PACKAGING' => 'Specifica il numero di oggetti nella confezione.<br />
-        Utilizzo:<ol><li>Aggiungi il nome "product_packaging" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con il numero degli oggetti nella confezione.</li></ol><br />
-        Valori:<ul><li>Numero</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_BOX' => 'Specifica il numero di oggetti nella scatola.<br />
-        Utilizzo:<ol><li>Aggiungi il nome "product_box" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi una colonna al tuo file CSV con il numero degli oggetti nella scatola.</li></ol><br />
-        Valori:<ul><li>Numero</li></ul>',
-	'PHPSHOP_CSV_EXPLANATION_PRODUCT_DISCOUNT' => 'Specifica l\'importo o la percentuale di sconto per il prodotto. I valori inseriti sono valori esatti, non viene fatto nessun calcolo. Questo è lo stesso che inserisci in uno sconto tramite la Lista Sconti sul Prodotto. Se lo sconto esiste già, non verrà aggiunto al database ma il prodotto sarà collegato allo sconto esistente. Il criterio per determinare se uno sconto esiste già è se i seguenti valori sono esattamente uguali:<ol><li>Importo, che sia totale o percentuale</li><li>Data di inizio</li><li>Data di fine</li></ol>Questo evita di riempire il database con un numero enorme di sconti uguali.<br /><br />
-        Utilizzo:<ol><li>Aggiungi il nome "product_discount" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Opzionale: Aggiungi il nome "product_discount_date_start" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Opzionale: Aggiungi il nome "product_discount_date_end" alla schermata di configurazione. Il nome è sensibile alle maiuscole e deve essere scritto tutto minuscolo.</li><li>Aggiungi le colonne scelte al tuo file CSV con i valori corrispondenti.</li></ol><br />
-        Valori:<ul><li>product_discount</li></ul><li>Numero<br />es. 10</li><li>Percentuale: Deve includere il segno %<br />es. 10%</li></ul><li>product_discount_date_start</li><ul><li>Data: giorno/mese/anno oppure giorno-mese-anno<br />Giorno e mese possono essere a 1 o 2 cifre.<br />L\'anno può essere a 2 o 4 cifre.</li></ul><li>product_discount_date_end</li><ul><li>Data: giorno/mese/anno oppure giorno-mese-anno<br />Giorno e mese possono essere a 1 o 2 cifre.<br />L\'anno può essere a 2 o 4 cifre.</li></ul></ul>',
 	'VM_PRODUCT_FORM_MIN_ORDER' => 'Quantità Minima di Acquisto',
 	'VM_PRODUCT_FORM_MAX_ORDER' => 'Quantità Massima di Acquisto',
 	'VM_DISPLAY_TABLE_HEADER' => 'Mostra le intestazioni di tabella',

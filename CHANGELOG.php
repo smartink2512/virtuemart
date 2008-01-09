@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+09.01.2008 thepisu
+- removed no more used CSV-related language strings 
+
 09.01.2008 soeren
 - removed CSV Upload from VirtueMart Core (CSVImproved handles CSV Import/Export much better: http://csvimproved.com)
 ^ last called page is correctly remembered now (important for Administration) and loaded when returning to VM ADMIN
