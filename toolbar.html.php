@@ -72,7 +72,7 @@ var submitbutton = function(pressbutton){
 				$editor_type = $GLOBALS['mainframe']->getCfg('editor');
 				if( $editor_type != 'none' ) {
 					$editor = JEditor::getInstance();
-					$script .= $editor->getContent('editor1');
+					$script .= $editor->getContent($editor1);
 				}
 			} else {
 				ob_start();
@@ -86,7 +86,7 @@ var submitbutton = function(pressbutton){
 				$editor_type = $GLOBALS['mainframe']->getCfg('editor');
 				if( $editor_type != 'none' ) {
 					$editor = JEditor::getInstance();
-					$script .= $editor->getContent('editor2');
+					$script .= $editor->getContent($editor2);
 				}
 			} else {
 				ob_start();

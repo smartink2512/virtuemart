@@ -26,8 +26,8 @@ echo '<br />';
 // let the user choose a shipto address
 echo ps_checkout::display_address();
 
-$varname = '_PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_SHIPPING_ADDR;
-echo '<h4>'. $VM_LANG->$varname . '</h4>';
+$varname = 'PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_SHIPPING_ADDR;
+echo '<h4>'. $VM_LANG->_($varname) . '</h4>';
 ?>
 
 <!-- Customer Ship To -->

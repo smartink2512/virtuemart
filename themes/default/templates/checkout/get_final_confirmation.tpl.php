@@ -21,8 +21,8 @@ echo $basket_html;
 
 echo '<br />';
 
-$varname = '_PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_FINAL_CONFIRMATION;
-echo '<h5>'. $VM_LANG->$varname . '</h5>';
+$varname = 'PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_FINAL_CONFIRMATION;
+echo '<h5>'. $VM_LANG->_($varname) . '</h5>';
 $db = new ps_DB();
 
 echo '<table>';

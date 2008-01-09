@@ -225,11 +225,11 @@ class ps_html {
 		global $VM_LANG;
 
 		$db =& new ps_DB;
-		$q = "SELECT country_name, state_name, state_3_code , state_2_code 
+		$q = 'SELECT country_name, state_name, state_3_code , state_2_code 
 				FROM #__{vm}_state s, #__{vm}_country c 
-				WHERE s.country_id = c.country_id ";
+				WHERE s.country_id = c.country_id';
 		if( !empty( $country_id )) {
-			$q .= " AND c.country_id=".(int)$country_id;
+			$q .= ' AND c.country_id='.(int)$country_id;
 		}
 		$q .= "\nORDER BY country_name, state_name";
 		$db->query( $q );
@@ -262,22 +262,26 @@ class ps_html {
 	function dynamic_state_lists( $country_list_name, $state_list_name, $selected_country_code="", $selected_state_code="" ) {
 		global $vendor_country_3_code, $VM_LANG, $vm_mainframe, $mm_action_url;
 		$db = new ps_DB;
-		if( empty( $selected_country_code ))
-		$selected_country_code = $vendor_country_3_code;
+		if( empty( $selected_country_code )) {
+			$selected_country_code = $vendor_country_3_code;
+		}
 
-		if( empty( $selected_state_code ))
-		$selected_state_code = "originalPos";
-		else
-		$selected_state_code = "'".$selected_state_code."'";
+		if( empty( $selected_state_code )) {
+			$selected_state_code = "originalPos";
+		} else {
+			$selected_state_code = "'".$selected_state_code."'";
+		}
 
-		$db->query( "SELECT #__{vm}_country.country_id,country_3_code
-						FROM #__{vm}_country" );
+		$db->query( "SELECT c.country_id, c.country_3_code, s.state_name, s.state_2_code
+						FROM #__{vm}_country c
+						LEFT JOIN #__{vm}_state s 
+						ON c.country_id=s.country_id OR s.country_id IS NULL" );
 
 		if( $db->num_rows() > 0 ) {
 			if( !vmIsAdminMode() ) {
+				$vm_mainframe->addScript( $mm_action_url.'includes/js/mambojavascript.js');
 				$vm_mainframe->addScript( $mm_action_url.'includes/js/joomla.javascript.js');
 			}
-			$dbs = new ps_DB;
 			// Build the State lists for each Country
 			$script = "<script language=\"javascript\" type=\"text/javascript\">//<![CDATA[\n";
 			$script .= "<!--\n";
@@ -288,18 +292,13 @@ class ps_html {
 
 			while( $db->next_record() ) {
 
-				$dbs->query( "SELECT state_name, state_2_code FROM #__{vm}_state WHERE country_id='".$db->f("country_id")."' ORDER BY state_name" );
-
-				if( $dbs->num_rows() > 0 ) {
-					while( $dbs->next_record() ) {
-						// array in the format [key,value,text]
-						$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$dbs->f("state_2_code")."','".addslashes($dbs->f("state_name"))."' );\n";
-					}
+				if( $db->f('state_name') ) {
+					// array in the format [key,value,text]
+					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$db->f("state_2_code")."','".addslashes($db->f("state_name"))."' );\n";
 				}
 				else {
 					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_('PHPSHOP_NONE')."' );\n";
 				}
-
 
 			}
 			$script .= "

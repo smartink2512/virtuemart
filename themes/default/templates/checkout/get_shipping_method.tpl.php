@@ -21,8 +21,8 @@ ps_checkout::show_checkout_bar();
 echo $basket_html;
 
 echo '<br />';
-$varname = '_PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_SHIPPING_METHOD;
-echo '<h4>'. $VM_LANG->$varname . '</h4>';
+$varname = 'PHPSHOP_CHECKOUT_MSG_' . CHECK_OUT_GET_SHIPPING_METHOD;
+echo '<h4>'. $VM_LANG->_($varname) . '</h4>';
 
 ps_checkout::list_shipping_methods($ship_to_info_id, $shipping_rate_id );
 

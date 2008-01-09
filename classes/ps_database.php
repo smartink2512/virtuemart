@@ -40,11 +40,11 @@ class ps_DB {
 	var $_database = null;
 
 	function ps_DB() {
-		global $database;
-		if( !is_object( $database) && is_callable(array('jfactory', 'getdbo'))) {
-			$database = jfactory::getDBO();
+		if( !is_object( $GLOBALS['database']) && is_callable(array('jfactory', 'getdbo'))) {
+			$this->_database =& jfactory::getDBO();
+		} else {
+			$this->_database =& $GLOBALS['database'];
 		}
-		$this->_database = $database;
 	}
 	/**
      * Clone an object
