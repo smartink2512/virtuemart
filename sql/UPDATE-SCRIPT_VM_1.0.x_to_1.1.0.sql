@@ -259,4 +259,4 @@ UPDATE `jos_vm_vendor` SET
 			`vendor_date_format` = '%A, %d %B %Y %H:%M'
 			WHERE vendor_id=1;
 			
-UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';
+UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=beta2' WHERE `name` = 'virtuemart_version';

@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+09.01.2008 soeren
+- removed CSV Upload from VirtueMart Core (CSVImproved handles CSV Import/Export much better: http://csvimproved.com)
+^ last called page is correctly remembered now (important for Administration) and loaded when returning to VM ADMIN
+ 
 08.01.2008 gregdev
 ^ Set usertype in Joomla! 1.5 shopper registration (ps_shopper)
 ^ Native Joomla! 1.5 compatibility changes for mod_virtuemart

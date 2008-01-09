@@ -215,15 +215,25 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 				case 'product':
 					?>
 					<h3 class="title-smenu" title="product" onclick="SwitchMenu('<?php echo $modCount ?>')">
-					<?php echo $VM_LANG->_('PHPSHOP_PRODUCT_MOD');
-					?>
-					</h3>
+					<?php echo $VM_LANG->_('PHPSHOP_PRODUCT_MOD'); ?></h3>
 					<div class="section-smenu">
 					<ul>
 					<?php include_class("product"); ?>
 		           	<li class="item-smenu vmicon vmicon-16-import">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&amp;page=product.csv_upload"); ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_CSV_UPLOAD') ?></a>
-					<hr />
+			           	<?php
+			           	// Check for an Installation of Roland's CSVImproved Component
+			           	if( file_exists($mosConfig_absolute_path.'/administrator/components/com_csvimproved/admin.csvimproved.php')) {
+			           		$url = $mosConfig_live_site . '/administrator/index2.php?option=com_csvimproved';
+							$extra = 'onclick="document.location=this.href"';
+			           		$title = 'CSV Improved - Import/Export Component';
+			           	} else {
+			           		$url = 'http://www.csvimproved.com/index.php?option=com_ionfiles&Itemid=20';
+			           		$onclick = 
+			           		$title = 'In order to use CSV Import/Export you need to install the Component &quot;CSVImproved&quot;';
+			           	}
+			           	?>
+						<a href="<?php echo $url  ?>" title="<?php echo $title  ?>" <?php echo $extra ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_CSV_UPLOAD') ?></a>
+						<hr />
 					</li>
 					<li><strong><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_MOD') ?></strong></li>
 					<?php    

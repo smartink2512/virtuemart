@@ -57,7 +57,7 @@ if( empty( $page ) || empty( $_REQUEST['page'])) {
 		}
 	}
 	else {
-		$page = 'store.index';
+		$page = vmget( $_SESSION, 'last_page', 'store.index' );
 	}
 }
 
@@ -73,7 +73,6 @@ if( $pagePermissionsOK ) {
 	$my_page= explode ( '.', $page );
 	$modulename = $my_page[0];
 	$pagename = $my_page[1];
-	$_SESSION['last_page'] = $page;
 }
 if( !defined('_VM_TOOLBAR_LOADED') && $no_toolbar != 1 ) {
 	if( $vmLayout == 'standard' && strstr($_SERVER['PHP_SELF'], 'index3.php')) {
@@ -91,16 +90,14 @@ $vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
 $vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/functions.js' );
 
 if( $no_menu != 1 ) {
-	
 	include(ADMINPATH.'header.php');
-	
 }
 if( $only_page != 1 && $vmLayout == 'extended') {
 	
 	vmCommonHTML::loadExtjs();
-	$vm_mainframe->addScript( $mosConfig_live_site.'/components/com_virtuemart/js/extlayout.js.php');
-	
-	echo '<iframe id="vmPage" src="'.$mosConfig_live_site.'/administrator/index3.php?option=com_virtuemart&page='.$_SESSION['last_page'].'" style="width:78%;height: 100%; display: block;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
+	$vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/extlayout.js.php' );
+	$phpscript_url = str_replace( 'index2.php', 'index3.php', str_replace('index.php', 'index3.php', $_SERVER['PHP_SELF'])); 
+	echo '<iframe id="vmPage" src="'.$phpscript_url.'?option=com_virtuemart&amp;page='.$_SESSION['last_page'].'&amp;only_page=1&amp;no_menu=1" style="width:100%;height: 100%; display: block;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
 
 } else {
 	if( $vmLayout == 'extended' ) {
@@ -119,7 +116,9 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 		include( PAGEPATH. ERRORPAGE .'.php');
 		return;
 	}
-		
+	else {
+		$_SESSION['last_page'] = $page;
+	}
 	if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
 		
 		if( $only_page ) {
