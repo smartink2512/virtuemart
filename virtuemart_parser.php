@@ -74,7 +74,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 
-	$page = vmRequest::getVar('page');
+	$page = vmRequest::getVar('page',vmget($_SESSION,'last_page'));
 	$func = vmRequest::getVar('func');
 	$ajax_request = vmRequest::getVar('ajax_request', '0' );
 	$option = vmRequest::getVar('option');

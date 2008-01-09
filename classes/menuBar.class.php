@@ -30,7 +30,11 @@ if( !class_exists('JToolbar')) {
 		}
 	}
 }
-
+/**
+ * Utility Class for the Standard Administration Toolbar
+ * @author soeren
+ * 
+ */
 class vmMenuBar extends mosMenuBar {
 
 	/**
@@ -359,7 +363,7 @@ class vmToolBar {
 		if ($alt=='') {
 			$alt=$VM_LANG->_('CMN_PUBLISH');
 		}
-     	$this->appendButton($alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_PUBLISH',false) . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}");
+     	$this->appendButton($alt, $task, "if (document.adminForm.boxchecked.value == 0){ Ext.Msg.alert('".$VM_LANG->_('PEAR_LOG_NOTICE')."', '" . $VM_LANG->_('CMN_PLEASESELECT_PUBLISH',false) . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}");
 	}
 	
 	/**
@@ -372,7 +376,7 @@ class vmToolBar {
 		if ($alt=='') {
 			$alt=$VM_LANG->_('CMN_UNPUBLISH');
 		}
-     	$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_UNPUBLISH',false) . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}" );
+     	$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ Ext.Msg.alert('".$VM_LANG->_('PEAR_LOG_NOTICE')."', '" . $VM_LANG->_('CMN_PLEASESELECT_UNPUBLISH',false) . "'); } else {vm_submitListFunc('$task', 'adminForm', '$func');}" );
 	}
 	/**
 	* Writes a common 'delete' button for a list of records
@@ -386,7 +390,7 @@ class vmToolBar {
 			$alt = $VM_LANG->_('E_REMOVE');
 		}	
 		
-		$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_DELETE') . "'); } else if (confirm('Are you sure you want to delete selected items?')){ vm_submitListFunc('$task', 'adminForm', '$func' );}" );
+		$this->appendButton( $alt, $task, "if (document.adminForm.boxchecked.value == 0){ Ext.Msg.alert('".$VM_LANG->_('PEAR_LOG_NOTICE')."', '" . $VM_LANG->_('CMN_PLEASESELECT_DELETE') . "'); } else if (confirm('Are you sure you want to delete selected items?')){ vm_submitListFunc('$task', 'adminForm', '$func' );}" );
 		
 	}
 	
@@ -426,10 +430,10 @@ class vmToolBar {
 		
 		if ($listSelect) {
 			if( empty( $func )) {
-				$js = "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_TO') . " $alt');}else{vm_submitButton('$task','$formName', '$page')}";
+				$js = "if (document.adminForm.boxchecked.value == 0){ Ext.Msg.alert('".$VM_LANG->_('PEAR_LOG_NOTICE')."', '" . $VM_LANG->_('CMN_PLEASESELECT_TO') . " $alt');}else{vm_submitButton('$task','$formName', '$page')}";
 			}
 			else {
-				$js = "if (document.adminForm.boxchecked.value == 0){ alert('" . $VM_LANG->_('CMN_PLEASESELECT_TO') . " $alt');}else{vm_submitListFunc('$task','$formName', '$func')}";
+				$js = "if (document.adminForm.boxchecked.value == 0){ Ext.Msg.alert('".$VM_LANG->_('PEAR_LOG_NOTICE')."', '" . $VM_LANG->_('CMN_PLEASESELECT_TO') . " $alt');}else{vm_submitListFunc('$task','$formName', '$func')}";
 			}
         } else {
             $js = "vm_submitButton('$task','$formName', '$page')";
