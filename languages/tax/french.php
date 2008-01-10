@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('tax',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_TAX_LIST_LBL' => 'Liste des Taux de Taxes',
 	'PHPSHOP_TAX_LIST_STATE' => 'Taxes par Etat ou Région',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('tax',array (
 	'PHPSHOP_TAX_FORM_STATE' => 'Taxe par Etat ou Région',
 	'PHPSHOP_TAX_FORM_COUNTRY' => 'Taxe par Pays',
 	'PHPSHOP_TAX_FORM_RATE' => 'Taux de Taxe (pour 19.6% => remplissez 0.196)'
-	));
+); $VM_LANG->initModule( 'tax', $langvars );
 ?>

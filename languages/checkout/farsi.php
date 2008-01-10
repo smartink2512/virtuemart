@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('checkout',array (
+$langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_NO_CUSTOMER' => 'مهمان گرامی! شما هنوز در این سایت ثبت نام نکرده اید. لطفا اطلاعات خود را وارد نمائید',
 	'PHPSHOP_THANKYOU' => 'با تشکر از خرید شما',
@@ -92,5 +92,5 @@ $VM_LANG->initModule('checkout',array (
 	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
 	'VM_CHECKOUT_WF_ERROR_13' => 'Kortnummeret eksistere ikke',
 	'VM_CHECKOUT_WF_ERROR_14' => 'Error unknown'
-	));
+); $VM_LANG->initModule( 'checkout', $langvars );
 ?>

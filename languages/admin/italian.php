@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('admin',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_USER_LIST_LBL' => 'Lista Utenti',
 	'PHPSHOP_USER_LIST_USERNAME' => 'Nome Utente',
@@ -363,5 +363,5 @@ Con questo tipo di registrazione, i clienti non devono e non possono registrare 
 	'VM_USER_FORM_CONTACTDETAILS_TELEPHONE' => 'Telefono',
 	'VM_USER_FORM_CONTACTDETAILS_FAX' => 'Fax',
 	'VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON' => 'Cambia Dettagli Contatto'
-	));
+); $VM_LANG->initModule( 'admin', $langvars );
 ?>

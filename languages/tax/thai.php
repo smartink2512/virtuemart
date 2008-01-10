@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('tax',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_TAX_LIST_LBL' => 'อัตราภาษี',
 	'PHPSHOP_TAX_LIST_STATE' => 'โซนภาษี',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('tax',array (
 	'PHPSHOP_TAX_FORM_STATE' => 'โซนภาษี',
 	'PHPSHOP_TAX_FORM_COUNTRY' => 'ประเทศ',
 	'PHPSHOP_TAX_FORM_RATE' => 'อัตราภาษี (เช่น 16% => ระบุ 0.16)'
-	));
+); $VM_LANG->initModule( 'tax', $langvars );
 ?>

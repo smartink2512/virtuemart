@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('account',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Account Cliente:',
 	'PHPSHOP_ACC_UPD_BILL' => 'Qui puoi modificare i dati di fatturazione.',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('account',array (
 	'PHPSHOP_ACC_SHIP_INFO' => 'Informazioni di Spedizione',
 	'PHPSHOP_DOWNLOADS_CLICK' => 'Clicca sul nome del prodotto per scaricare i file.',
 	'PHPSHOP_DOWNLOADS_EXPIRED' => 'Hai già scaricato i file per il numero massimo di volte consentito, oppure il periodo di download è scaduto.'
-	));
+); $VM_LANG->initModule( 'account', $langvars );
 ?>

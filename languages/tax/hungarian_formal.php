@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('tax',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_TAX_LIST_LBL' => 'Adózási ráták listája',
 	'PHPSHOP_TAX_LIST_STATE' => 'Adózási állam vagy régió',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('tax',array (
 	'PHPSHOP_TAX_FORM_STATE' => 'Adózási állam vagy régió',
 	'PHPSHOP_TAX_FORM_COUNTRY' => 'Adózási ország',
 	'PHPSHOP_TAX_FORM_RATE' => 'Adózási ráta (16%-os adó megadásához 0,16-ot írjon be)'
-	));
+); $VM_LANG->initModule( 'tax', $langvars );
 ?>

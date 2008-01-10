@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('manufacturer',array (
+$langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Gyártók/kiadók listája',
 	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Gyártó/kiadó neve',
@@ -32,5 +32,5 @@ $VM_LANG->initModule('manufacturer',array (
 	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Kategória információ',
 	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Kategória neve',
 	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Kategória leírás'
-	));
+); $VM_LANG->initModule( 'manufacturer', $langvars );
 ?>

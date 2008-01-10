@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('tax',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_TAX_LIST_LBL' => 'Steuersatzliste',
 	'PHPSHOP_TAX_LIST_STATE' => 'Steuer Bundesland/Region',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('tax',array (
 	'PHPSHOP_TAX_FORM_STATE' => 'Steuer Bundesland/Region',
 	'PHPSHOP_TAX_FORM_COUNTRY' => 'Steuer Land',
 	'PHPSHOP_TAX_FORM_RATE' => 'Steuersatz'
-	));
+); $VM_LANG->initModule( 'tax', $langvars );
 ?>

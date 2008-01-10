@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('tax',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_TAX_LIST_LBL' => 'Seznam sazeb DPH',
 	'PHPSHOP_TAX_LIST_STATE' => 'Region pro DPH',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('tax',array (
 	'PHPSHOP_TAX_FORM_STATE' => 'Tax State or Region',
 	'PHPSHOP_TAX_FORM_COUNTRY' => 'Sazba DPH ve státì',
 	'PHPSHOP_TAX_FORM_RATE' => 'Sazba danì (pro 19% => vlo¾te 0.19)'
-	));
+); $VM_LANG->initModule( 'tax', $langvars );
 ?>

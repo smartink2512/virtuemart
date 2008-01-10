@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('product',array (
+$langvars = array (
 	'CHARSET' => 'cp1251',
 	'PHPSHOP_MODULE_LIST_ORDER' => 'Порядок отображения',
 	'PHPSHOP_PRODUCT_INVENTORY_LBL' => 'Ассортимент товаров',
@@ -237,5 +237,5 @@ The Shop will create a new discount record from the discounted price.',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
 	'VM_PRODUCT_SEARCHING' => 'Searching...'
-	));
+); $VM_LANG->initModule( 'product', $langvars );
 ?>

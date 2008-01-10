@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shopper',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Kurzname für Adresse',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Kundengruppenliste',
@@ -28,5 +28,5 @@ $VM_LANG->initModule('shopper',array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Gruppenbeschreibung',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Preis-Nachlass auf die Standard-Shoppergruppe (in %)',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Ein positiver Betrag X.xx bedeutet: Falls ein Produkt keinen Preis für DIESE Shoppergruppe hat, wird der Preis der Standard-Shoppergruppe um X.xx % vermindert. Ein negativer Betrag erwirkt das Gegenteil.'
-	));
+); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

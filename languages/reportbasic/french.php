@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('reportbasic',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_RB_INDIVIDUAL' => 'Listes de Produits Individuels',
 	'PHPSHOP_RB_SALE_TITLE' => 'Rapport des Ventes',
@@ -39,5 +39,5 @@ $VM_LANG->initModule('reportbasic',array (
 	'PHPSHOP_RB_TOTAL_ITEMS' => 'Total des Articles vendus',
 	'PHPSHOP_RB_REVENUE' => 'Chiffre d\'Affaire',
 	'PHPSHOP_RB_PRODLIST' => 'Liste Produit'
-	));
+); $VM_LANG->initModule( 'reportbasic', $langvars );
 ?>

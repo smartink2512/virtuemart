@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('order',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL' => 'Registro dei Pagamenti',
 	'PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL' => 'Prezzo Spedizione',
@@ -57,5 +57,5 @@ $VM_LANG->initModule('order',array (
 	'VM_ORDER_STATUS_ICON_ALT' => 'Icona Stato',
 	'VM_ORDER_PAYMENT_CCV_CODE' => 'Codice CVV',
 	'VM_ORDER_NOTFOUND' => 'Ordine non trovao! Potrebbe essere stato eliminato.'
-	));
+); $VM_LANG->initModule( 'order', $langvars );
 ?>

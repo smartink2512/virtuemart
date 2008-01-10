@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shopper',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'ชื่อเรียก',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'กลุ่มผู้ซื้อ',
@@ -28,5 +28,5 @@ $VM_LANG->initModule('shopper',array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'รายละเอียดกลุ่ม',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'ส่วนลดสำหรับกลุ่มผู้ซื้อทั่วไป (%)',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => ' X ที่เป็นค่าบวก หมายถึง: ถ้าสินค้าไม่ได้มีการระบุราคาสำหรับกลุ่มผู้ซื้อ ราคาจะลดตามจำนวน X % จำนวนติดลบจะมีผลตรงข้าม'
-	));
+); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

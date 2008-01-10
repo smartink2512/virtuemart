@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('affiliate',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
 	'PHPSHOP_SHOPPER_LIST_LBL' => 'Lista dei Clienti',
@@ -47,5 +47,5 @@ $VM_LANG->initModule('affiliate',array (
 	'VM_AFFILIATE_ORDERLIST_ORDERTOTAL' => 'Totale Ordine',
 	'VM_AFFILIATE_ORDERLIST_COMMISSION' => 'Commissione (tasso)',
 	'VM_AFFILIATE_ORDERLIST_ORDERSTATUS' => 'Stato Ordine'
-	));
+); $VM_LANG->initModule( 'affiliate', $langvars );
 ?>

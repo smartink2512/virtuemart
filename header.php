@@ -228,7 +228,7 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 			           		$title = 'CSV Improved - Import/Export Component';
 			           	} else {
 			           		$url = 'http://www.csvimproved.com/index.php?option=com_ionfiles&Itemid=20';
-			           		$onclick = 
+			           		$extra = '';
 			           		$title = 'In order to use CSV Import/Export you need to install the Component &quot;CSVImproved&quot;';
 			           	}
 			           	?>

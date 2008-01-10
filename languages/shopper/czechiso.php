@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shopper',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Zkratka adresy',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Seznam skupin zákazníkù',
@@ -28,5 +28,5 @@ $VM_LANG->initModule('shopper',array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Popis skupiny',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Sleva pro výchozí skupinu zákazníkù (v %)',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Kladná hodnota X znamená: Pokud nemá pøiøazenu cenu pro TUTO skupinu zákazníkù, výchozí cena je sní¾ena o X %. Záporná hodnota má opaèný efekt.'
-	));
+); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

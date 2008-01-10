@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('tax',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_TAX_LIST_LBL' => 'Belastings Tarieven Lijst',
 	'PHPSHOP_TAX_LIST_STATE' => 'Belastings Regio',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('tax',array (
 	'PHPSHOP_TAX_FORM_STATE' => 'Belastings Regio',
 	'PHPSHOP_TAX_FORM_COUNTRY' => 'Belastings Land',
 	'PHPSHOP_TAX_FORM_RATE' => 'Belastingstarief (voor 21% => vul 0.21 in)'
-	));
+); $VM_LANG->initModule( 'tax', $langvars );
 ?>

@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('tax',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_TAX_LIST_LBL' => 'Lista Poreznih Stopa',
 	'PHPSHOP_TAX_LIST_STATE' => 'Regija',
@@ -26,5 +26,5 @@ $VM_LANG->initModule('tax',array (
 	'PHPSHOP_TAX_FORM_STATE' => 'Regija',
 	'PHPSHOP_TAX_FORM_COUNTRY' => 'Država',
 	'PHPSHOP_TAX_FORM_RATE' => 'Porezna stopa (za 22.5% => upišite 0.225)'
-	));
+); $VM_LANG->initModule( 'tax', $langvars );
 ?>

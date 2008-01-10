@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('manufacturer',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'โรงงาน',
 	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'ชื่อโรงงาน',
@@ -32,5 +32,5 @@ $VM_LANG->initModule('manufacturer',array (
 	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'ระบุข้อมูล',
 	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'ชื่อหมวด',
 	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'รายละเอียด'
-	));
+); $VM_LANG->initModule( 'manufacturer', $langvars );
 ?>

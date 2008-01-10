@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('coupon',array (
+$langvars = array (
 	'CHARSET' => 'BIG5',
 	'PHPSHOP_COUPON_EDIT_HEADER' => '更新優待',
 	'PHPSHOP_COUPON_CODE_HEADER' => '代碼',
@@ -29,5 +29,5 @@ $VM_LANG->initModule('coupon',array (
 	'PHPSHOP_COUPON_VALUE_HEADER' => '數值',
 	'PHPSHOP_COUPON_PERCENT' => '百分比',
 	'PHPSHOP_COUPON_TOTAL' => '總額'
-	));
+); $VM_LANG->initModule( 'coupon', $langvars );
 ?>

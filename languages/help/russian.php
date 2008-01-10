@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('help',array (
+$langvars = array (
 	'CHARSET' => 'cp1251',
 	'VM_HELP_YOURVERSION' => 'Your {product} version',
 	'VM_HELP_ABOUT' => '<span style="font-weight: bold;">
@@ -30,5 +30,5 @@ $VM_LANG->initModule('help',array (
 	'VM_HELP_HOMEPAGE' => 'Homepage',
 	'VM_HELP_DONATION_DESC' => 'Please consider a small donation to the VirtueMart Project to help us keep up the work on this Component and create new Features.',
 	'VM_HELP_DONATION_BUTTON_ALT' => 'Make payments with PayPal - it\'s fast, free and secure!'
-	));
+); $VM_LANG->initModule( 'help', $langvars );
 ?>

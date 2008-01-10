@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('manufacturer',array (
+$langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Danh sách nhà sản xuất',
 	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Tên Nhà sản xuất',
@@ -32,5 +32,5 @@ $VM_LANG->initModule('manufacturer',array (
 	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Thông tin Category',
 	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Tên Category',
 	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Mô tả Category'
-	));
+); $VM_LANG->initModule( 'manufacturer', $langvars );
 ?>

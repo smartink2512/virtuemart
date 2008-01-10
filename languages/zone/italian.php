@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('zone',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Nazione',
 	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Assegna alla Zona',
@@ -34,5 +34,5 @@ $VM_LANG->initModule('zone',array (
 	'VM_ZONE_ASSIGN_PERITEM' => 'Per Oggetto',
 	'VM_ZONE_ASSIGN_LIMIT' => 'Limite',
 	'VM_ZONE_EDITZONE' => 'Modifica Questa Zona'
-	));
+); $VM_LANG->initModule( 'zone', $langvars );
 ?>

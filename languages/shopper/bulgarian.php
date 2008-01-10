@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shopper',array (
+$langvars = array (
 	'CHARSET' => 'cp1251',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Етикет за адрес',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Списък на клиентските групи',
@@ -28,5 +28,5 @@ $VM_LANG->initModule('shopper',array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Описание на групата',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Отстъпка за клиентската група по подразбиране (в %)',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Polojitelna stoinost X oznachava: Ako produktut niama cena za TAZI klientska grupa, cenata mu po podrazbirane se namaliava s X %. Otricatelna stoinost za X shte ima obratnia efekt.'
-	));
+); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

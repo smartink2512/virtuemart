@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('reportbasic',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_RB_INDIVIDUAL' => 'Individualno iskanje izdelka',
 	'PHPSHOP_RB_SALE_TITLE' => 'Porocilo prodaje',
@@ -39,5 +39,5 @@ $VM_LANG->initModule('reportbasic',array (
 	'PHPSHOP_RB_TOTAL_ITEMS' => 'Skupno prodano',
 	'PHPSHOP_RB_REVENUE' => 'Dohodek',
 	'PHPSHOP_RB_PRODLIST' => 'Pregled izdelkov'
-	));
+); $VM_LANG->initModule( 'reportbasic', $langvars );
 ?>

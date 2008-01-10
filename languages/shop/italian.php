@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shop',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Navigazione Catalogo',
 	'PHPSHOP_FLYPAGE_LBL' => 'Dettagli',
@@ -71,5 +71,5 @@ $VM_LANG->initModule('shop',array (
 	'VM_RECOVER_CART_MERGE' => 'Aggiungi il carrello salvato al carrello attuale',
 	'VM_RECOVER_CART_DELETE' => 'Cancella il carrello salvato',
 	'VM_EMPTY_YOUR_CART_TIP' => 'Azzera tutto il contenuto del carrello'
-	));
+); $VM_LANG->initModule( 'shop', $langvars );
 ?>

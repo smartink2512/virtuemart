@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shipping',array (
+$langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_CARRIER_LIST_LBL' => 'Vervoerder Lijst',
 	'PHPSHOP_RATE_LIST_LBL' => 'Verzendingstarieven Lijst',
@@ -41,5 +41,5 @@ $VM_LANG->initModule('shipping',array (
 	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... tot',
 	'PHPSHOP_CARRIER_FORM_NAME' => 'Vervoerder Bedrijf',
 	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Volgorde'
-	));
+); $VM_LANG->initModule( 'shipping', $langvars );
 ?>

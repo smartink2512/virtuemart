@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shopper',array (
+$langvars = array (
 	'CHARSET' => 'GB2312',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => '地址别名',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => '购物会员组列表',
@@ -28,5 +28,5 @@ $VM_LANG->initModule('shopper',array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => '组描述',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => '默认顾客组的折扣量 (以百分比的形式)',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => '正值X意味着:商品如果对于该组顾客没有指定价格的话，那么将在默认价格上面减少X%。负值则有相反效果。'
-	));
+); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

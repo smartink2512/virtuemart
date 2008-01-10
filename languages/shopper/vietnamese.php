@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shopper',array (
+$langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Địa chỉ Nickname',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Danh sách Nhóm Shopper',
@@ -28,5 +28,5 @@ $VM_LANG->initModule('shopper',array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Mô tả nhóm',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Bớt tiền cho nhóm shopper mặc  định (in %)',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'A positive amount X means: If the Sản phẩm has no Giá assigned to THIS Shopper Nhóm, the default Giá is decreased by X %. A negative amount has the opposite effect'
-	));
+); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

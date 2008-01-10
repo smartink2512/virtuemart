@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 global $VM_LANG;
-$VM_LANG->initModule('shopper',array (
+$langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Cím álnév',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Vásárlócsoport lista',
@@ -28,5 +28,5 @@ $VM_LANG->initModule('shopper',array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Csoport leírás',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Árengedmény az alapértelmezett vásárlócsoport számára(%-ban)',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Egy pozitív mennyiség (X) hatása: ha a terméknek nincs  az adoot vásárlócsoporthoz rendelt ára, az alapértelmezett ár X %-al csökken. Egy negatív mennyiségnek az ellenkezo hatása lesz'
-	));
+); $VM_LANG->initModule( 'shopper', $langvars );
 ?>
