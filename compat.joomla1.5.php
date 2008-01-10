@@ -70,14 +70,10 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			$lang =& JFactory::getLanguage();
 			$mosConfig_lang = $GLOBALS['mosConfig_lang']          = $lang->getBackwardLang();
 		
-	
-			
-			// TODO: we'll need a $database object
-			//$GLOBALS['database'] = new jdatabase($jconfig->host, $jconfig->user, $jconfig->password, $jconfig->db, $jconfig->dbprefix);
-			//$GLOBALS['database']->debug($jconfig->debug);
-		
 			// The user object
 			if( class_exists('JTable')) {
+				// $database is directly needed by some functions, so we need to create it here. 
+				$GLOBALS['database']= $database = JFactory::getDBO();
 				$user				=& JFactory::getUser();
 				$GLOBALS['my']		= clone($user->getTable());
 				$GLOBALS['my']->gid	= $user->get('aid', 0);

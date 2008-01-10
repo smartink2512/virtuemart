@@ -40,7 +40,7 @@ Community Home: http://virtuemart.net
 Package Contents:
 ##########################
 
- * 1 Component (com_virtuemart_1.1.0_beta2.tar.gz)
+ * 1 Component (com_virtuemart_1.1.0_beta2.zip)
    INSTALLATION REQUIRED!
    
  * 1 Main module (mod_virtuemart_1.1.0_beta2.tar.gz)
@@ -73,7 +73,7 @@ This package was tested on
 - Mambo 4.5.3h
 - Mambo 4.6.2
 - Joomla 1.0.x
-- Joomla 1.5 RC3
+- Joomla 1.5 RC4
 
  -- IMPORTANT --
 Please note that module and component SHOULD be used together! 
@@ -101,7 +101,7 @@ You don't need to unpack any of the archives in this complete package!
         
         You can see an upload form now.
         Select the file 
-        - com_virtuemart_x.xx.tar.gz 
+        - com_virtuemart_x.xx.zip 
         and click 'Upload Component'
         
         If everything is ok, you should see a "Welcome ..." screen.

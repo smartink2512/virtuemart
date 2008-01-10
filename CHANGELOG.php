@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+10.01.2008 soeren
+# Task #1654 - Call to a member function setQuery() error message
 09.01.2008 thepisu
 - removed no more used CSV-related language strings 
 
