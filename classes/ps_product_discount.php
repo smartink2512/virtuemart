@@ -31,13 +31,19 @@ class ps_product_discount {
 	function validate_add( $d ) {
 		
 		if( ! $d["amount"] ) {
-			$GLOBALS['vmLogger']->err( 'You must enter an amount for the Discount.');
+			$GLOBALS['vmLogger']->err( 'You must enter an amount for the discount.');
 			return False ;
 		}
 		if( $d["is_percent"] == "" ) {
-			$GLOBALS['vmLogger']->err( 'You must select a Discount type.');
+			$GLOBALS['vmLogger']->err( 'You must select a discount type.');
 			return False ;
 		}
+		
+		if( !empty($d['end_date']) && ( $d['end_date'] < $d['start_date'] ) ) {		
+			$GLOBALS['vmLogger']->err( 'The start date must occur before the end date.' );
+			return False;
+		}
+		
 		return True ;
 	}
 	
@@ -50,17 +56,23 @@ class ps_product_discount {
 	function validate_update( $d ) {
 		
 		if( empty($d["amount"]) ) {
-			$GLOBALS['vmLogger']->err( 'You must enter an amount for the Discount.' );
+			$GLOBALS['vmLogger']->err( 'You must enter an amount for the discount.' );
 			return False ;
 		}
 		if( $d["is_percent"] == "" ) {
-			$GLOBALS['vmLogger']->err( 'You must enter an amount type for the Discount.' );
+			$GLOBALS['vmLogger']->err( 'You must enter an amount type for the discount.' );
 			return False ;
 		}
 		if( ! $d["discount_id"] ) {
-			$GLOBALS['vmLogger']->err( 'You must specifiy a discount to Update.' );
+			$GLOBALS['vmLogger']->err( 'You must specifiy a discount to update.' );
 			return False ;
 		}
+		
+		if( !empty($d['end_date']) && ( $d['end_date'] < $d['start_date'] ) ) {		
+			$GLOBALS['vmLogger']->err( 'The start date must occur before the end date.' );
+			return False;
+		}
+		
 		return true ;
 	}
 	
@@ -73,7 +85,7 @@ class ps_product_discount {
 	function validate_delete( $discount_id ) {
 		
 		if( ! $discount_id ) {
-			$GLOBALS['vmLogger']->err( 'Please select a Discount to delete' );
+			$GLOBALS['vmLogger']->err( 'Please select a discount to delete' );
 			return False ;
 		}
 		
@@ -91,10 +103,6 @@ class ps_product_discount {
 		
 		$db = new ps_DB( ) ;
 		
-		if( ! $this->validate_add( $d ) ) {
-			return False ;
-		}
-		
 		if( ! empty( $d["start_date"] ) ) {
 			$day = substr( $d["start_date"], 8, 2 ) ;
 			$month = substr( $d["start_date"], 5, 2 ) ;
@@ -111,6 +119,11 @@ class ps_product_discount {
 		} else {
 			$d["end_date"] = 0;
 		}
+
+		if( ! $this->validate_add( $d ) ) {
+			return False ;
+		}
+		
 		$fields = array('amount' => vmRequest::getFloat('amount'), 
 								'is_percent' => vmRequest::getInt('is_percent'), 
 								'start_date' => $d["start_date"], 
@@ -119,7 +132,7 @@ class ps_product_discount {
 		$db->buildQuery('INSERT', '#__{vm}_product_discount', $fields );
 		$db->query() ;
 		
-		$GLOBALS['vmLogger']->info( 'The Product Discount has been added.');
+		$GLOBALS['vmLogger']->info( 'The product discount has been added.');
 		$_REQUEST['discount_id'] = $db->last_insert_id() ;
 		
 		return True ;
@@ -135,9 +148,6 @@ class ps_product_discount {
 	function update( &$d ) {
 		$db = new ps_DB( ) ;
 		
-		if( ! $this->validate_update( $d ) ) {
-			return False ;
-		}
 		if( ! empty( $d["start_date"] ) ) {
 			$day = substr( $d["start_date"], 8, 2 ) ;
 			$month = substr( $d["start_date"], 5, 2 ) ;
@@ -155,6 +165,10 @@ class ps_product_discount {
 			$d["end_date"] = "" ;
 		}
 
+		if( ! $this->validate_update( $d ) ) {
+			return False ;
+		}
+
 		$fields = array('amount' => vmRequest::getFloat('amount'), 
 								'is_percent' => vmRequest::getInt('is_percent'), 
 								'start_date' => $d["start_date"], 
@@ -163,7 +177,7 @@ class ps_product_discount {
 		$db->buildQuery('UPDATE', '#__{vm}_product_discount', $fields, 'WHERE discount_id=' .(int)$d["discount_id"] );
 		$db->query() ;
 		
-		$GLOBALS['vmLogger']->info( 'The Product Discount has been updated.');
+		$GLOBALS['vmLogger']->info( 'The product discount has been updated.');
 		
 		return True ;
 	}

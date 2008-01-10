@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+10.01.2008 gregdev
+# Task #508 System allow a end-date before the start-date for discount
+
 10.01.2008 soeren
 # Task #1654 - Call to a member function setQuery() error message
 09.01.2008 thepisu
