@@ -605,8 +605,9 @@ class ps_shopper {
 
 			$shopper_db->next_record();
 			$my_shopper_group_id = $shopper_db->f("shopper_group_id");
-			if (empty($d['customer_number']))
-			$d['customer_number'] = "";
+			if (empty($d['customer_number'])) {
+				$d['customer_number'] = "";
+			}
 
 			$q  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
 			$q .= "(user_id,vendor_id,shopper_group_id) ";
@@ -696,7 +697,7 @@ class ps_shopper {
 			$adminEmail2 	= $row2->email;
 		}
 		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && !empty($d['register_account']))) {
-			mosMail($adminEmail2, $adminName2, $email, $subject, $message);
+			vmMail($adminEmail2, $adminName2, $email, $subject, $message);
 		}
 
 		// Send notification to all administrators
@@ -719,7 +720,7 @@ class ps_shopper {
 			$row = $rows[0];
 
 			if ($row->sendEmail) {
-				mosMail($adminEmail2, $adminName2, $row->email, $subject2, $message2);
+				vmMail($adminEmail2, $adminName2, $row->email, $subject2, $message2);
 			}
 		}
 
