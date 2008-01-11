@@ -229,6 +229,7 @@ while ($db->next_record()) {
 	$form_code .= '<input type="hidden" class="inputbox" name="notify_customer" value="N" />
 		<input type="hidden" name="page" value="order.order_list" />
 		<input type="hidden" name="func" value="orderStatusSet" />
+		<input type="hidden" name="vmtoken" value="'. vmSpoofValue($sess->getSessionId()) .'" />
 		<input type="hidden" name="changed" value="0" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="order_id" value="'. $db->f("order_id") .'" />

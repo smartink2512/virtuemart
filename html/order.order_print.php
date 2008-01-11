@@ -84,6 +84,7 @@ $order_id = vmRequest::getInt('order_id');
 				<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_('PHPSHOP_UPDATE') ?>" />
 				<input type="hidden" name="page" value="order.order_print" />
 				<input type="hidden" name="func" value="orderStatusSet" />
+				<input type="hidden" name="vmtoken" value="<?php echo vmSpoofValue($sess->getSessionId()) ?>" />
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="current_order_status" value="<?php $db->p("order_status") ?>" />
 				<input type="hidden" name="order_id" value="<?php echo $order_id ?>" />
@@ -355,6 +356,7 @@ $order_id = vmRequest::getInt('order_id');
 			  			<input type="hidden" name="product_id" value="'.$dbt->f('product_id').'" />
 			  			<input type="hidden" name="user_id" value="'.$dbt->f('user_id').'" />
 			  			<input type="hidden" name="func" value="insertDownloadsForProduct" />
+						<input type="hidden" name="vmtoken" value="'. vmSpoofValue($sess->getSessionId()) .'" />
 			  			<input type="hidden" name="option" value="'.$option.'" />
 			  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_('VM_DOWNLOAD_REENABLE').'" />
 			  			</form>';
@@ -374,6 +376,7 @@ $order_id = vmRequest::getInt('order_id');
 			  			<input type="hidden" name="order_id" value="'.$order_id.'" />
 			  			<input type="hidden" name="page" value="'.$page.'" />
 			  			<input type="hidden" name="func" value="mailDownloadId" />
+						<input type="hidden" name="vmtoken" value="'. vmSpoofValue($sess->getSessionId()) .'" />
 			  			<input type="hidden" name="option" value="'.$option.'" />
 			  			<input class="button" type="submit" name="submit" value="'.$VM_LANG->_('VM_DOWNLOAD_RESEND_ID').'" />
 			  			</form>';
@@ -391,6 +394,7 @@ $order_id = vmRequest::getInt('order_id');
 				<input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_('PHPSHOP_UPDATE') ?>" />
 				<input type="hidden" name="page" value="order.order_print" />
 				<input type="hidden" name="func" value="orderStatusSet" />
+				<input type="hidden" name="vmtoken" value="<?php echo vmSpoofValue($sess->getSessionId()) ?>" />
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="current_order_status" value="<?php $dbt->p("order_status") ?>" />
 				<input type="hidden" name="order_id" value="<?php echo $order_id ?>" />

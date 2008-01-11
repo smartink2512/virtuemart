@@ -25,24 +25,27 @@ Our thanks to all those people who've contributed bug reports and code fixes.
 
 Legend:
 
-# -> Bug Fix
-+ -> Addition
-^ -> Change
-- -> Removed
-! -> Note
+#	Bug Fix
++	Addition
+^	Change
+-	Removed
+!	Note
 
 --------------------------------------------------------------------------------------------------------------
 
 VirtueMart 1.1.x
 *************************************
+11.01.2008 soeren
+# Task #1654 - PHP Bug #27626 html_entity_decode bug
+# Task #1658 - Module permission form error
+
 10.01.2008 gregdev
 # Task #508 System allow a end-date before the start-date for discount
-
 10.01.2008 soeren
 # Task #1654 - Call to a member function setQuery() error message
-09.01.2008 thepisu
-- removed no more used CSV-related language strings 
 
+09.01.2008 thepisu
+- removed no more used CSV-related language strings
 09.01.2008 soeren
 # fixed InputFilter Class forTask #1574 and Task #1581:  errors in HTML in product descriptipion
 ^ optimized query in dynamic_state_list function (not running a query for each country, but just one now)
