@@ -944,13 +944,18 @@ function vmSetGlobalCurrency(){
 }
 
 function vmIsJoomla( $version='', $operator='=', $compare_minor_versions=true) {
+	global $_VERSION;
 	$this_version = '';
-	if( !empty($GLOBALS['_VERSION']) && is_object($GLOBALS['_VERSION'])) {
-		$jversion =& $GLOBALS['_VERSION'];
+	if( !empty($_VERSION) && is_object($_VERSION)) {
+		$jversion =& $_VERSION;
 		$this_version = $jversion->RELEASE;
 	}
 	elseif ( defined('JVERSION')) {
 		$jversion = new JVersion();
+		$this_version = $jversion->RELEASE;
+	} else {
+		include_once( $GLOBALS['mosConfig_absolute_path'].'/includes/version.php' );
+		$jversion =& $_VERSION;
 		$this_version = $jversion->RELEASE;
 	}
 	if( !$compare_minor_versions ) $this_version .= '.'. $jversion->DEV_LEVEL;

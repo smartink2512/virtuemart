@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 11.01.2008 soeren
+# Task #1656 - Mambots not working in product description
 # Task #1654 - PHP Bug #27626 html_entity_decode bug
 # Task #1658 - Module permission form error
 
