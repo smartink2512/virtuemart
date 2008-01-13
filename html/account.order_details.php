@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
-global $vendor_currency;
+global $vendor_currency, $user;
 
 require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
@@ -58,7 +58,7 @@ if ($db->next_record()) {
 	$dbbt->query($q);
 	$dbbt->next_record();
 	$old_user = '';
-	if( is_object($user)) {
+	if( !empty( $user ) && is_object($user)) {
 		$old_user = $user;
 	}
 	

@@ -36,6 +36,8 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 13.01.2008 soeren
+# Task #1665 - Class 'mosphpmailer' not found when trying to register user in Joomla 1.5
+# Task #1664 - Empty page after last step in checkout
 # Task #1661 - Missing argument 6 for vmMail() when trying to registration user in Joomla 1.0.13
 
 11.01.2008 soeren

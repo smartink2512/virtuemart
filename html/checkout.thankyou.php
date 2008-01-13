@@ -22,7 +22,7 @@ require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 $Itemid = $sess->getShopItemid();
 
-global $vendor_currency;
+global $vendor_currency, $user;
 
 // Order_id is returned by checkoutComplete function
 $order_id = $db->getEscaped($vars["order_id"] );
@@ -34,7 +34,7 @@ $q  = "SELECT * FROM `#__{vm}_order_user_info` WHERE `order_id`='$order_id' AND 
 $db->query( $q );
 $db->next_record();
 $old_user = '';
-if( is_object($user)) {
+if( !empty( $user ) && is_object($user)) {
 	$old_user = $user;
 }
 $user = $db->record[0];
