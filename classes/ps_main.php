@@ -504,14 +504,16 @@ function vmCreateMail( $from='', $fromname='', $subject='', $body='' ) {
 	global $mosConfig_smtppass, $mosConfig_smtphost;
 	global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_mailer;
 	
+	$phpmailer_classname='phpmailer';
 	if( file_exists( $mosConfig_absolute_path . '/includes/phpmailer/class.phpmailer.php')) {
 		$phpmailer_path = $mosConfig_absolute_path . '/includes/phpmailer';
-	} elseif( file_exists( $mosConfig_absolute_path . '/libraries/phpmailer/class.phpmailer.php') ) {
+		$phpmailer_classname = 'mosphpmailer';
+	} elseif( file_exists( $mosConfig_absolute_path . '/libraries/phpmailer/phpmailer.php') ) {
 		$phpmailer_path = $mosConfig_absolute_path . '/libraries/phpmailer';
 	}
 	require_once( $phpmailer_path . '/class.phpmailer.php' );
 	
-	$mail = new PHPMailer();
+	$mail = new $phpmailer_classname();
 
 	$mail->PluginDir = $phpmailer_path .'/';
 	$mail->SetLanguage( 'en', $phpmailer_path . '/language/' );
@@ -569,7 +571,7 @@ function vmCreateMail( $from='', $fromname='', $subject='', $body='' ) {
 * @param string/array Attachment file name(s)
 * @return boolean Mail send success
 */
-function vmMail($from, $fromname, $recipient, $subject, $body, $Altbody, $mode=false, $cc=NULL, $bcc=NULL, $images=null, $attachment=null ) {
+function vmMail($from, $fromname, $recipient, $subject, $body, $Altbody='', $mode=false, $cc=NULL, $bcc=NULL, $images=null, $attachment=null ) {
 	global $mosConfig_debug;
 
 		// Filter from, fromname and subject

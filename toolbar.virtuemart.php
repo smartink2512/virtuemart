@@ -86,7 +86,9 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 								);
 	// Can be used for lists that allow NO batch delete
 	$noListDelete = Array();
-	
+	// Pages which don't allow new items to be created
+	$noNewItem = array( 'order.order_list', 
+										'store.shipping_module_list' );
 	//  Forms Toolbar
 	if ( stristr($page, "form") || $page == "admin.show_cfg" || $page == "affiliate.affiliate_add" ) {
 			
@@ -100,7 +102,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
 		// Some lists allow special tasks like "Add price" or "Add State"
 		MENU_virtuemart::LISTS_SPECIAL_TASKS( $page );
 		
-		if( $page != "order.order_list") {
+		if( !in_array( $page, $noNewItem )) {
 			// For New / Cloning Items
 			MENU_virtuemart::LISTS_MENU_NEW();
 		}
