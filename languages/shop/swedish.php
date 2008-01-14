@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Bläddra',
 	'PHPSHOP_FLYPAGE_LBL' => 'Detaljer',
-	'PHPSHOP_ERROR' => 'ERROR',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Konfiguera denna produkt',
 	'PHPSHOP_DOWNLOADS_START' => '',
 	'PHPSHOP_DOWNLOADS_INFO' => '',

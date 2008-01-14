@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'cp1251',
 	'PHPSHOP_BROWSE_LBL' => 'Просмотр',
 	'PHPSHOP_FLYPAGE_LBL' => 'Описание товара',
-	'PHPSHOP_ERROR' => 'ОШИБКА',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Редактировать этот товар',
 	'PHPSHOP_DOWNLOADS_START' => 'Начать загрузку',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Пожалуйста, введите идентификатор загрузки (Download-ID), который Вы получили по e-mail и нажмите \'Начать загрузку\'.',

@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Κατάλογος Προϊόντων OKE HELLAS',
 	'PHPSHOP_FLYPAGE_LBL' => 'Λεπτομέρειες προϊόντος',
-	'PHPSHOP_ERROR' => 'ΣΦΑΛΜΑ',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Επεξεργασία Προϊόντος',
 	'PHPSHOP_DOWNLOADS_START' => 'Αρχίστε το Download',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Παρακαλώ εισάγετε το Κωδικό Download (Download-ID) που λάβατε με e-mail και πατήστε "Αρχίστε το Download".',

@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_BROWSE_LBL' => 'Selaa',
 	'PHPSHOP_FLYPAGE_LBL' => 'Tuote Kuvaus',
-	'PHPSHOP_ERROR' => 'VIRHE',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Muokaa Tuotetta',
 	'PHPSHOP_DOWNLOADS_START' => 'Aloita Lataus',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Syöta sähköpostissa saamasi Lataus-ID ja paina \'Aloita Lataus\'.',

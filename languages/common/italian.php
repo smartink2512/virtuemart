@@ -19,6 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ERROR' => 'ERRORE',
 	'PHPSHOP_CATEGORY' => 'Categoria',
 	'PHPSHOP_CATEGORIES' => 'Categorie',
 	'PHPSHOP_ADMIN' => 'Amministrazione',
@@ -844,7 +845,7 @@ Un account ti permette di tornare in questo negozio e vedere tutti gli ordini ch
 	'PHPSHOP_SHIPPING_METHOD_DHL_ID' => 'ID DHL',
 	'PHPSHOP_SHIPPING_METHOD_DHL_ID_TOOLTIP' => 'ID accesso assegnato da DHL',
 	'PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD' => 'Password DHL',
-	'PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD_TOOLTIP' => 'Password corrispondente all\\ID DHL',
+	'PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD_TOOLTIP' => 'Password corrispondente allID DHL',
 	'PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY' => 'Chiave di spedizione Domestica',
 	'PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY_TOOLTIP' => 'Chiave di spedizione Domestica assegnata da DHL',
 	'PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_SHIPPING_KEY' => 'Chiave di spedizione Internazionale',
@@ -981,7 +982,7 @@ al cliente, dall\'interfaccia del Commerciante.
 	'PHPSHOP_EPAY_PAYMENT_DATE' => 'Dato for betalingen: ',
 	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pålagt betalingen: ',
 	'PHPSHOP_EPAY_PAYMENT_CALLBACK' => '<b>Ordre betalingsinfo blev opdateret via callback!</b>',
-	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \\nBetalingen har fået følgende transaktionsnummer i ePay.: ',
+	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. nBetalingen har fået følgende transaktionsnummer i ePay.: ',
 	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk på nederstående link for at forsøg betaling igen:</b><br>',
 	'PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND' => '(Ordren blev ikke fundet - Intern fejl)',
 	'PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE' => '(Fejl i MD5 validering - Intern fejl - konfigurations fejl)',
@@ -1064,6 +1065,8 @@ _____________________',
 	'PROMPT_PASSWORD' => 'Hai perso la password?',
 	'REGISTER_TITLE' => 'Registrazione',
 	'VM_LATEST_PRODUCT' => 'Ultimi Prodotti',
-	'VM_CART_NOSTOCK' => 'Non Disponibile'
+	'VM_CART_NOSTOCK' => 'Non Disponibile',
+	'CSVIMPROVED_TITLE' => 'CSV Improved - Componente Importazione/Esportazione',
+	'CSVIMPROVED_NEEDINSTALL' => 'Per utilizzare l\'importazione/esportazione CSV devi installare il componente "CSVImproved"'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

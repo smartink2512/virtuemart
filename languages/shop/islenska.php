@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Browse',
 	'PHPSHOP_FLYPAGE_LBL' => 'Nánari lýsing',
-	'PHPSHOP_ERROR' => 'Villa',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Breyta vöru',
 	'PHPSHOP_DOWNLOADS_START' => 'Byrja niðurhal',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Vinsamlegast sláðu inn kenni fyrir niðurhalið og smelltu svo á \'Start Download\'.',

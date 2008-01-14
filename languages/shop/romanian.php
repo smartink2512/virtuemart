@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Browse',
 	'PHPSHOP_FLYPAGE_LBL' => 'Detalii produs',
-	'PHPSHOP_ERROR' => 'EROARE',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Editeaza acest produs',
 	'PHPSHOP_DOWNLOADS_START' => 'Start descarcare',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Va rugam introduceti identitata de descarcare pe care il aveti in e-mail si clic \'Start descarcare\'.',

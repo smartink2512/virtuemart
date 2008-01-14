@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'cp1251',
 	'PHPSHOP_BROWSE_LBL' => 'Преглед',
 	'PHPSHOP_FLYPAGE_LBL' => 'Допълнителна информация',
-	'PHPSHOP_ERROR' => 'ГРЕШКА',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Редакция на продукт',
 	'PHPSHOP_DOWNLOADS_START' => 'Изтегляне',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Моля, въведете Download-ID, което сте получили на Вашия email адрес и след това кликнете на \'Изтегляне\'.',

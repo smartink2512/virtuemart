@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Katalog',
 	'PHPSHOP_FLYPAGE_LBL' => 'Detaljne Informacije',
-	'PHPSHOP_ERROR' => 'GREŠKA',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Ureðivanje ovog Proizvoda',
 	'PHPSHOP_DOWNLOADS_START' => 'Zapoèni download',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Molimo vas unesite Download-ID koji ste dobili u e-mailu i kliknite \'Zapoèni download\'.',

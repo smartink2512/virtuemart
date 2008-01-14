@@ -113,6 +113,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	}
 	// Load PAGE
 	if( !$pagePermissionsOK ) {
+		$error = $VM_LANG->_('PHPSHOP_MOD_NO_AUTH');
 		include( PAGEPATH. ERRORPAGE .'.php');
 		return;
 	}

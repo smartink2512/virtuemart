@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: english.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -19,6 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ERROR' => 'ERROR',
 	'PHPSHOP_CATEGORY' => 'Category',
 	'PHPSHOP_CATEGORIES' => 'Categories',
 	'PHPSHOP_ADMIN' => 'Administration',
@@ -995,7 +996,7 @@ Our %s  is now in stock and can be purchased by following this link:
 	'PHPSHOP_EPAY_PAYMENT_LOG_TID' => 'Betalingen er oprettet med transaktionsnummer: ',
 	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles på: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
 	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekræftet ordren og skal nu vælge hvordan ordren betales. Dette gøres ved at klikke på den ønskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.',        
+	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.',
 	'PHPSHOP_EPAY_BUTTON_OPEN_WINDOW' => 'ÅBEN BETALINGSVINDUET',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER' => 'PBS Merchant ID',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN' => 'The Merchant ID you have reveived from PBS. For testing purpose a test Merchant ID can be obtained by contacting ePay (sales@epay.dk)',
@@ -1056,8 +1057,8 @@ Our %s  is now in stock and can be purchased by following this link:
 	'VM_ORDER_EXPORT_CLASS_NAME_TIP' => '(e.g. <strong>ps_olsi</strong>) :<br />
 		default: ps_xmlexport<br />
 		<i>Leave blank if you\'re not sure what to fill in!</i>',
-			'VM_ORDER_EXPORT_CONFIG' => 'Order Export configuration',
-			'VM_ORDER_EXPORT_CONFIG_TIP' => 'Here you can configure your export.
+	'VM_ORDER_EXPORT_CONFIG' => 'Order Export configuration',
+	'VM_ORDER_EXPORT_CONFIG_TIP' => 'Here you can configure your export.
 		It has to be valid PHP Code!',
 	'VM_REGISTER_BEFORE' => 'Please register to use this facillity',
 	'VM_RECOMMEND_MESSAGE_PREFACE' => 'The following recommendation from the "%s" website has been sent to you by %s (%s).
@@ -1071,7 +1072,8 @@ _____________________',
 	'PROMPT_PASSWORD' => 'Lost your Password?',
 	'REGISTER_TITLE' => 'Registration',
 	'VM_LATEST_PRODUCT' => 'Latest Products',
-	'VM_CART_NOSTOCK' => 'Out of Stock'
-	);
-$VM_LANG->initModule('common', $langvars );
+	'VM_CART_NOSTOCK' => 'Out of Stock',
+	'CSVIMPROVED_TITLE' => 'CSV Improved - Import/Export Component',
+	'CSVIMPROVED_NEEDINSTALL' => 'In order to use CSV Import/Export you need to install the Component "CSVImproved"'
+); $VM_LANG->initModule( 'common', $langvars );
 ?>

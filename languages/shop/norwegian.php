@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Se på',
 	'PHPSHOP_FLYPAGE_LBL' => 'Produktdetaljer',
-	'PHPSHOP_ERROR' => 'FEIL',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Endre dette produktet',
 	'PHPSHOP_DOWNLOADS_START' => 'Start Nedlasting',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Venligst skriv inn Nedlastings-IDen du fikk per e-post. Deretter trykker du \'Start Nedlasting\'.',

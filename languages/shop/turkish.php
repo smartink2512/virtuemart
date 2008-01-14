@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Ürün Listeleme',
 	'PHPSHOP_FLYPAGE_LBL' => 'Ürün Detayý',
-	'PHPSHOP_ERROR' => 'HATA',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Bu ürünü günle',
 	'PHPSHOP_DOWNLOADS_START' => 'Dosya Ýndir',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Lütfen, e-postanýza gönderilen Download-ID nizi girin ve \'Dosya Ýndir\' butonuna týklayýn.',

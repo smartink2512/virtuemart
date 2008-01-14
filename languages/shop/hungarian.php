@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_BROWSE_LBL' => 'Böngész',
 	'PHPSHOP_FLYPAGE_LBL' => 'Termék részletek',
-	'PHPSHOP_ERROR' => 'ERROR',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Termék szerkesztése',
 	'PHPSHOP_DOWNLOADS_START' => 'Letöltés megkezdése',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Kérem, adja meg az e-mailban kapott letöltési azonosítót (Download-ID) és kattintson  a  \'Letöltés megkezdése\'.',

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : turkish.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -19,6 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ERROR' => 'HATA',
 	'PHPSHOP_CATEGORY' => 'Kategori',
 	'PHPSHOP_CATEGORIES' => 'Ürün Kategorileri',
 	'PHPSHOP_ADMIN' => 'Yönetim',
@@ -482,7 +483,7 @@ $langvars = array (
 	'PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT' => 'Bu sipariþte nakliye bedava!',
 	'PHPSHOP_FREE_SHIPPING_AMOUNT' => 'Nakliye için asgari tutar',
 	'PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP' => 'Tutar (Vergiler DAHÝL!) Nakliye Ýçin Asgari
-                                                (örneðin: <strong>50</strong> Müþteri 50\\$ veya fazla alýþveriþ yaptýðýnda
+                                                (örneðin: <strong>50</strong> Müþteri 50\$ veya fazla alýþveriþ yaptýðýnda
                                                 bedava nakliye anlamýna gelir .',
 	'PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE' => 'Banka hesap tipi',
 	'PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING' => 'Çek',
@@ -986,7 +987,7 @@ be sent to the customer from the Merchant Interface.
 	'PHPSHOP_EPAY_PAYMENT_DATE' => 'Dato for betalingen: ',
 	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pålagt betalingen: ',
 	'PHPSHOP_EPAY_PAYMENT_CALLBACK' => '<b>Ordre betalingsinfo blev opdateret via callback!</b>',
-	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \\nBetalingen har fået følgende transaktionsnummer i ePay.: ',
+	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \nBetalingen har fået følgende transaktionsnummer i ePay.: ',
 	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk på nederstående link for at forsøg betaling igen:</b><br>',
 	'PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND' => '(Ordren blev ikke fundet - Intern fejl)',
 	'PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE' => '(Fejl i MD5 validering - Intern fejl - konfigurations fejl)',
@@ -1071,6 +1072,8 @@ _____________________',
 	'PROMPT_PASSWORD' => 'Lost your Password?',
 	'REGISTER_TITLE' => 'Registration',
 	'VM_LATEST_PRODUCT' => 'Latest Products',
-	'VM_CART_NOSTOCK' => 'Out of Stock'
+	'VM_CART_NOSTOCK' => 'Out of Stock',
+	'CSVIMPROVED_TITLE' => 'CSV Improved - Import/Export Component',
+	'CSVIMPROVED_NEEDINSTALL' => 'In order to use CSV Import/Export you need to install the Component "CSVImproved"'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

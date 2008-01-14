@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'BIG5',
 	'PHPSHOP_BROWSE_LBL' => '瀏覽',
 	'PHPSHOP_FLYPAGE_LBL' => '商品細節',
-	'PHPSHOP_ERROR' => '錯誤',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => '編輯此項商品',
 	'PHPSHOP_DOWNLOADS_START' => '開始下載',
 	'PHPSHOP_DOWNLOADS_INFO' => '請輸入您在EMAIL中收到的下載ID並按下‘開始下載’.',

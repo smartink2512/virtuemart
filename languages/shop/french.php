@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_BROWSE_LBL' => 'Parcourir',
 	'PHPSHOP_FLYPAGE_LBL' => 'Détails du produit',
-	'PHPSHOP_ERROR' => 'ERREUR',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Editer ce Produit',
 	'PHPSHOP_DOWNLOADS_START' => 'Démarrer le Téléchargement',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Veuillez saisir le Numéro de téléchargement qui vous a été communiqué par email, puis cliquez sur "Démarrer le téléchargement".',

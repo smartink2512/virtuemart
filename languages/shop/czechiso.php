@@ -21,7 +21,6 @@ $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_BROWSE_LBL' => 'Prohlí¾et',
 	'PHPSHOP_FLYPAGE_LBL' => 'Detaily o zbo¾í',
-	'PHPSHOP_ERROR' => 'Chyba',
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Editovat toto zbo¾í',
 	'PHPSHOP_DOWNLOADS_START' => 'Stáhnout',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Prosíme vlo¾te kód souboru pro sta¾ení, který jste obdr¾eli e-mailem a kliknìte na \'Stáhnout\'.',

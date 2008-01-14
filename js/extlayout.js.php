@@ -44,9 +44,12 @@ echo "if( typeof Ext == \"undefined\" ) {
 		}
 		vmLayout = function(){
     var layout, center;
-    var classClicked = function(e, target){            
-        vmLayout.layout.showPanel('vmPage');
-        vmLayout.loadPage(target.href );
+    var classClicked = function(e, target) {
+		if (target.target!='_top' && target.target!='_blank') {
+			e.stopEvent();
+	        vmLayout.layout.showPanel('vmPage');
+	        vmLayout.loadPage(target.href );
+		}
 	};
     return {
 	    init : function(){
@@ -87,7 +90,7 @@ echo "if( typeof Ext == \"undefined\" ) {
 			layout.endUpdate();
 
             var vmMenuLinks = Ext.get('masterdiv2');
-            vmMenuLinks.on('click', classClicked, null, {delegate: 'a', stopEvent:true});
+            vmMenuLinks.on('click', classClicked, null, {delegate: 'a'});
             
             this.layout = layout;
 		},
