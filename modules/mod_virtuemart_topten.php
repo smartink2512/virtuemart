@@ -22,7 +22,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $mosConfig_absolute_path, $sess;
 
-/ Load the virtuemart main parse code
+// Load the virtuemart main parse code
 if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
 	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
 } else {
