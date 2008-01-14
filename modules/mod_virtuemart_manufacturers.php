@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * Manufacturer Module
 *
@@ -18,16 +18,19 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 
 global $mosConfig_absolute_path, $sess, $VM_LANG;
-
+// Load the virtuemart main parse code
+if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
+	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
+} else {
+	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
+}
 $text_before = $params->get( 'text_before', '');
 $show_dropdown = $params->get( 'show_dropdown', 1);
 $show_linklist = $params->get( 'show_linklist', 1);
 $auto = $params->get( 'auto', 0);
 
-$category_id = mosGetParam( $_REQUEST, 'category_id', '' );
+$category_id = vmGet( $_REQUEST, 'category_id', '' );
 
-// the configuration file for PHPShop
-require_once( $mosConfig_absolute_path."/components/com_virtuemart/virtuemart_parser.php");
 $sess = new ps_session;
 
 if ($auto == 1 && !empty( $category_id ) ) {

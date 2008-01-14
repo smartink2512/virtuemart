@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
 * Best selling Products module for VirtueMart
 * @version $Id$
@@ -22,8 +22,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 global $mosConfig_absolute_path, $sess;
 
-/* Load the virtuemart main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
+/ Load the virtuemart main parse code
+if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
+	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
+} else {
+	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
+}
 
 require_once(CLASSPATH.'ps_product.php');
 $ps_product = new ps_product;

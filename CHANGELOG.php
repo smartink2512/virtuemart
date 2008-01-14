@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+14.01.2007 soeren
+^ updated modules for J! 1.5 (still don't install with disabled Legacy Mode)
+^ Updated Currencies Module to work on J! 1.5 (shows a select list with all available currencies now)
 14.01.2008 thepisu
 # Task #1660 Replace PHPSHOP_ERROR message with real message
 # Task #1663 CVS upload link in VM backend is redirected to a not found page

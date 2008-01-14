@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * mambo-phphop Product Categories Module
 * NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
@@ -18,7 +18,14 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 */
 global $jscook_type, $jscookMenu_style, $jscookTree_style;
 
-$category_id = mosGetParam( $_REQUEST, 'category_id');
+// Load the virtuemart main parse code
+if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
+	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
+} else {
+	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
+}
+
+$category_id = vmGet( $_REQUEST, 'category_id');
 
 /* Get module parameters */
 $class_sfx = $params->get( 'class_sfx', "" );
@@ -30,9 +37,6 @@ $menu_orientation = $params->get( 'menu_orientation', 'hbr' );
 $_REQUEST['root_label'] = $params->get( 'root_label', 'Shop' );
 
 $class_mainlevel = "mainlevel".$class_sfx;
-
-/* Load the virtuemart main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 global $VM_LANG, $sess;
 

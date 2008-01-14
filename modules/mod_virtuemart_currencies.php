@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * Currency Selector Module
 *
@@ -19,8 +19,12 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 
 global $mosConfig_absolute_path, $sess, $option, $page, $ps_html, $db, $vendor_accepted_currencies;
 
-// the configuration file for VirtueMart
-require_once( $mosConfig_absolute_path."/components/com_virtuemart/virtuemart_parser.php");
+// Load the virtuemart main parse code
+if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
+	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
+} else {
+	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
+}
 
 $text_before = $params->get( 'text_before', '');
 $currencies = @explode( ',', $params->get( 'product_currency', $vendor_accepted_currencies ) );

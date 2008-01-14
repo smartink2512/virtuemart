@@ -1,5 +1,5 @@
 <?php
-
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version		$Id$
 * @package		VirtueMart
@@ -16,14 +16,15 @@
 * http://virtuemart.net
 */
 
-// Restrict access
-( defined(  '_VALID_MOS' ) || defined( '_JEXEC' ) ) or die( 'Direct access to this location is not allowed.' );
-
 // TODO: Joomla! 1.5 compatibility - do these global vars depend on the legacy plugin?
 global $mosConfig_absolute_path, $mosConfig_allowUserRegistration;
 
-// Load the VirtueMart parser
-require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
+// Load the virtuemart main parse code
+if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
+	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
+} else {
+	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
+}
 
 global $mm_action_url, $sess, $VM_LANG;
 

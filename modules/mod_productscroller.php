@@ -13,12 +13,16 @@
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
 */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 
 global $my, $mosConfig_absolute_path;
 
-/* Load the virtuemart main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
+// Load the virtuemart main parse code
+if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
+	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
+} else {
+	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
+}
 
 /**
 * This class sets all Parameters.
@@ -278,7 +282,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 }
 
 // start of Product Scroller Script
-$params =& new mosParameters( $module->params );
+$params =& new vmParameters( $module->params );
 $scroller =& new productScroller($params);
 
 /**
