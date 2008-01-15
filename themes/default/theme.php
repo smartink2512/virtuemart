@@ -118,7 +118,7 @@ class vmTemplate_default extends vmTemplate  {
 			$fulladdress = $sess->url( 'index2.php?page=shop.view_images&amp;image_id='.$image->file_id.'&amp;product_id='.$product_id.'&amp;pop=1' );
 			
 			if( $this->get_cfg('useLightBoxImages', 1 )) {
-				$html .= vmCommonHTML::getLightboxImageLink( $image->file_url, $thumbtag, $title ? $title : $image->title, 'product'.$product_id );
+				$html .= vmCommonHTML::getLightboxImageLink( $image->file_url, $thumbtag, $title ? $title : $image->file_title, 'product'.$product_id );
 			}
 			else {
 				$html .= vmPopupLink( $fulladdress, $thumbtag, 640, 550 );

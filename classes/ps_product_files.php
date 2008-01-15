@@ -155,10 +155,6 @@ class ps_product_files {
 			$upload_success = true;
 			$file_image_height = $file_image_width = $file_image_thumb_height = $file_image_thumb_width = "";
 		}
-
-		$filename = $GLOBALS['vmInputFilter']->safeSQL( $filename );
-		
-		$d["file_title"] = $GLOBALS['vmInputFilter']->safeSQL( $d["file_title"] );
 		
 		if( $d['file_type'] == 'product_images' ||  $d['file_type'] == 'product_full_image' ||  $d['file_type'] == 'product_thumb_image') {
 			// Handle Product Images
@@ -173,7 +169,7 @@ class ps_product_files {
 				$q .= ', `product_thumb_image`=\''.$thumbimage.'\'';
 			}
 			if( $d['file_type'] == 'product_thumb_image' ) {
-				$q .= '`product_thumb_image`=\''.$filename.'\'';
+				$q .= '`product_thumb_image`=\''.$db->getEscaped($filename).'\'';
 			}
 			$q .= ' WHERE `product_id` ='.intval( $d["product_id"] );
 			$db->query( $q );
@@ -194,7 +190,7 @@ class ps_product_files {
 			$q = "INSERT INTO #__{vm}_product_files ";
 			$q .= "(file_product_id, file_name, file_title, file_extension, file_mimetype, file_url, file_published,";
 			$q .= "file_is_image, file_image_height , file_image_width , file_image_thumb_height, file_image_thumb_width )";
-			$q .= " VALUES ('".$d["product_id"]."', '$filename','".$d["file_title"] . "','$ext','".$_FILES['file_upload']['type']."', '".$d['file_url']."', '".$d["file_published"]."',";
+			$q .= " VALUES ('".$d["product_id"]."', '".$db->getEscaped($filename)."','".$db->getEscaped($d["file_title"]) . "','$ext','".$_FILES['file_upload']['type']."', '".$d['file_url']."', '".$d["file_published"]."',";
 			$q .= "'$is_image', '$file_image_height', '$file_image_width', '$file_image_thumb_height', '$file_image_thumb_width')";
 			$db->setQuery($q);
 			$db->query();
@@ -290,13 +286,13 @@ class ps_product_files {
 
 		$q = "UPDATE #__{vm}_product_files SET ";
 		if( !empty($filename)) {
-			$q .= "file_name='" . $filename."', ";
+			$q .= "file_name='" . $db->getEscaped($filename)."', ";
 		}
-		$q .= "file_title='" . $d["file_title"]."', ";
+		$q .= "file_title='" . $db->getEscaped($d["file_title"])."', ";
 		$q .= "file_published='" . $d["file_published"]."', ";
 		$q .= "file_url='" . $d["file_url"]."' ";
-		$q .= "WHERE file_id='" . $d["file_id"] . "' ";
-		$q .= "AND file_product_id='" . $d["product_id"] . "' ";
+		$q .= "WHERE file_id='" . (int)$d["file_id"] . "' ";
+		$q .= "AND file_product_id='" .(int) $d["product_id"] . "' ";
 		$db->setQuery($q);
 		$db->query();
 		

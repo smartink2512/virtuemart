@@ -225,7 +225,7 @@ if ( $show_login_form == "yes" ) {
 			$return = $sess->url( $mm_action_url . 'index.php?'. $_SERVER['QUERY_STRING'] );
 			
 			// Lost password url
-			$reset = sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.(int)mosGetParam($_REQUEST, 'Itemid', 0) );
+			$reset = sefRelToAbs( 'index.php?option=com_registration&amp;task=lostPassword&amp;Itemid='.(int)vmGet($_REQUEST, 'Itemid', 0) );
 
 			// Set user name reminder to nothing
 			$remind_url = '';

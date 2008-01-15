@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * www.virtuemart.net
 */
 
-global $mosConfig_absolute_path, $sess, $option, $page, $ps_html, $db, $vendor_accepted_currencies;
+global $mosConfig_absolute_path, $sess, $option, $page, $ps_html, $vendor_accepted_currencies;
 
 // Load the virtuemart main parse code
 if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
@@ -32,7 +32,7 @@ $vendor_currencies = @explode( ',', $vendor_accepted_currencies );
 if( count( $currencies ) < count( $vendor_currencies )) {
 	$currencies = $vendor_currencies;
 }
-
+$db = new ps_DB();
 $db->query( 'SELECT currency_id, currency_code, currency_name FROM `#__{vm}_currency` WHERE FIND_IN_SET(`currency_code`, \''.implode(',',$currencies).'\') ORDER BY `currency_name`' );#
 
 //$currencies = explode( ',', $currencies );

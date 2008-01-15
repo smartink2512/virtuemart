@@ -247,6 +247,9 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 					$config .= "\n/* OrderByFields */\nglobal \$VM_BROWSE_ORDERBY_FIELDS;\n";
 					$config .= "\$VM_BROWSE_ORDERBY_FIELDS = array( ";
 					$i= 0;
+					if( empty( $d['conf_VM_BROWSE_ORDERBY_FIELDS'] ) ) {
+						$d['conf_VM_BROWSE_ORDERBY_FIELDS'] = array('product_name');
+					}
 					foreach( $d['conf_VM_BROWSE_ORDERBY_FIELDS'] as $orderbyfield) {
 						$config.= "'$orderbyfield'";
 						if( $i+1 < sizeof( $d['conf_VM_BROWSE_ORDERBY_FIELDS'] )) {

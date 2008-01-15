@@ -198,7 +198,7 @@ class ps_manufacturer {
 		if ($db->num_rows() == 1) {
 
 			echo '<input type="hidden" name="manufacturer_id" value="'. $db->f("manufacturer_id").'" />';
-			echo $db->f("mf_name");
+			echo $db->f("name");
 		}
 		elseif( $db->num_rows() > 1) {
 			$db->reset();
