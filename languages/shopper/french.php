@@ -19,6 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Les prix affichés sont TTC ?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Si la case est cochée, les prix sont affichés taxes incluses.  Sinon ils sont affichés sans les taxes.',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Nom de l\'Adresse',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Liste des Groupes de Clients',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Nom du Groupe',

@@ -19,6 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Show Prices including tax?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Sets the flag whether the shoppers sees prices including tax or excluding tax.',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Vzdevek naslova',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Seznam kupceve skupine',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Ime skupine',

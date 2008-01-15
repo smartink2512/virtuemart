@@ -19,6 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'UTF-8',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Adóval együtt mutassa az árakat?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Állítsa be, hogy a vásárló az árakat adóval együtt vagy adó nélkül lássa.',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Cím álnév',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Vásárlócsoport lista',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Csoport név',

@@ -19,6 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'GB2312',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => '显示含税价？',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => '无论价格是否含税均设置标志。',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => '地址别名',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => '购物会员组列表',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => '组名',

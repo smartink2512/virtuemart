@@ -193,9 +193,9 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 		}
 		$levels[$depth_list[$n]+1]++;
 		
-		$listObj->addCell( $pageNav->orderUpIcon( $ibg, $upCondition, 'orderup', 'Order Down', $page, 'reorder' )
+		$listObj->addCell( $pageNav->orderUpIcon( $ibg, $upCondition, 'orderup', $VM_LANG->_('CMN_ORDER_UP'), $page, 'reorder' )
 							. '&nbsp;'
-							.$pageNav->orderDownIcon( $ibg, $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]], $downCondition, 'orderdown', 'Order Down', $page, 'reorder' )
+							.$pageNav->orderDownIcon( $ibg, $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]], $downCondition, 'orderdown', $VM_LANG->_('CMN_ORDER_DOWN'), $page, 'reorder' )
 						);
 						
 		$listObj->addCell( vmCommonHTML::getOrderingField( $category_tmp[$row_list[$n]]["list_order"] ) );

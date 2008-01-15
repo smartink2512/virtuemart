@@ -19,6 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'UTF-8',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Hiện Giá bao gồm thuế?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Sets the flag whether the shoppers sees prices including tax or excluding tax.',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Địa chỉ Nickname',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Danh sách Nhóm Shopper',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Tên nhóm',

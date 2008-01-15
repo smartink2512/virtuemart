@@ -19,6 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Vis pris inkl mva?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Angir om kunden ser prisene med eller uten mva.',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Adresse kallenavn',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Liste kundegrupper',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Gruppenavn',
