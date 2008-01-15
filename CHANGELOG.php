@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 15.01.2008 soeren
+# Task #1659 - ß as attribute value
 # Task #1669 - Browsing categorys end in redirect error
 15.01.2007 thepisu
 # Task #1667 Categorylist, OderList icon names

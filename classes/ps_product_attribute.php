@@ -913,9 +913,8 @@ class ps_product_attribute {
    * @return array $result
    */
 	function cartGetAttributes( &$d ) {
-
 		global $db;
-
+		
 		// added for the advanced attributes modification
 		//get listing of titles for attributes (Sean Tobin)
 		$attributes = array();
@@ -947,16 +946,25 @@ class ps_product_attribute {
 				array_push($attributes,$title);
 			}
 		}
-
+		// We need this for being able to work with attribute names and values which are using non-ASCII characters
+		if( strtolower(vmGetCharset()) != 'utf-8' ) {
+			$encodefunc = 'utf8_encode';
+			$decodefunc = 'utf8_decode';
+		} else {
+			$encodefunc = 'strval';
+			$decodefunc = 'strval';
+		}
+		
 		$description="";
 		$attribute_given = false;
+		// Loop through the simple attributes and check if one of the valid values has been provided
 		foreach($attributes as $a) {
 
 			$pagevar=str_replace(" ","_",$a);
 			$pagevar .= $d['prod_id'];
-			if( strtolower(vmGetCharset()) != 'utf-8' ) {
-				$pagevar = utf8_encode($pagevar);
-			}
+			
+			$pagevar = $encodefunc($pagevar);
+			
 			if (!empty($d[$pagevar])) {
 				$attribute_given = true;
 			}
@@ -965,16 +973,17 @@ class ps_product_attribute {
 			}
 
 			$description.=$a.":";
-			$description .= empty($d[$pagevar]) ? '' : utf8_decode($d[$pagevar]);
+			$description .= empty($d[$pagevar]) ? '' : $decodefunc($d[$pagevar]);
 
 		}
 		rtrim($description);
 		$d["description"] = $description;
 		// end advanced attributes modification addition
 
-		// added for custom fields by denie van kleef
+		
 		$custom_attribute_list=$db->f("custom_attribute");
 		$custom_attribute_given = false;
+		// Loop through the custom attribute list and check if a value has been provided
 		if ($custom_attribute_list) {
 			$fields=explode(";",$custom_attribute_list);
 
@@ -984,9 +993,8 @@ class ps_product_attribute {
 			{
 				$pagevar=str_replace(" ","_",$field);
 				$pagevar .= $d['prod_id'];
-				if( strtolower(vmGetCharset()) != 'utf-8' ) {
-					$pagevar = utf8_encode($pagevar);
-				}
+				$pagevar = $encodefunc($pagevar);
+				
 				if (!empty($d[$pagevar])) {
 					$custom_attribute_given = true;
 				}
@@ -994,7 +1002,7 @@ class ps_product_attribute {
 					$description.="; ";
 				}
 				$description.=$field.":";
-				$description .= empty($d[$pagevar]) ? '' : $d[$pagevar];
+				$description .= empty($d[$pagevar]) ? '' : $decodefunc( $d[$pagevar] );
 
 			}
 			rtrim($description);
