@@ -44,7 +44,30 @@ class ps_order_status extends vmAbstractObject {
 
 	function validate_update(&$d) {
 		
-		return $this->validate( $d );
+		if( !$this->validate( $d ) ) {
+			return false;
+		}
+		$db = $this->get(intval($d["order_status_id"]));
+		if( $db->f('order_status_code')) {
+			$order_status_code = $db->f('order_status_code');
+			// Check if the Order Status Code of protected Order Statuses is to be changed
+			if( in_array( $order_status_code, $this->_protected_status_codes ) && $order_status_code != $d["order_status_code"] ) {
+				$vmLogger->err( 'This Order Status Code cannot be changed, it is one of the core status codes.' );
+				return False;
+			}
+			if( $order_status_code != $d["order_status_code"] ) {
+				// If the order Status Code has changed, we need to update all orders with this order status to use the new Status Code
+				$dbo = new ps_DB();
+				$dbo->query('UPDATE #__{vm}_orders SET 
+										order_status=\''.$dbo->getEscaped($d["order_status_code"]).'\'
+										WHERE order_status=\''.$order_status_code.'\'');
+				
+			}
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 	function validate_delete($d) {
@@ -53,11 +76,20 @@ class ps_order_status extends vmAbstractObject {
 			$vmLogger->err( 'Please select an order status type to delete.' );
 			return False;
 		}
-		if( in_array( $d['order_status_code'], $this->_protected_status_codes ) ) {
-			$vmLogger->err( 'This Order Status cannot be deleted, it is one of the core status codes.' );
-			return False;
+		$db = $this->get(intval($d["order_status_id"]));
+		if( $db->f('order_status_code')) {
+			$order_status_code = $db->f('order_status_code');
+			if( in_array( $order_status_code, $this->_protected_status_codes ) ) {
+				$vmLogger->err( 'This Order Status cannot be deleted, it is one of the core status codes.' );
+				return False;
+			}
+			$dbo = new ps_DB();
+			$dbo->query('SELECT order_id FROM #__{vm}_orders WHERE order_status=\''.$order_status_code.'\' LIMIT 1');
+			if( $dbo->next_record() ) {
+				$vmLogger->err( 'This Order Status cannot be deleted, there are still Orders with this Status.' );
+				return False;
+			}
 		}
-		
 		return True;
 
 	}

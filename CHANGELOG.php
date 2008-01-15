@@ -35,12 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-
+15.01.2008 soeren
+# Task #1669 - Browsing categorys end in redirect error
 15.01.2007 thepisu
 # Task #1667 Categorylist, OderList icon names
 # Task #1671 Missing PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX
 
-14.01.2007 soeren
+14.01.2008 soeren
 ^ updated modules for J! 1.5 (still don't install with disabled Legacy Mode)
 ^ Updated Currencies Module to work on J! 1.5 (shows a select list with all available currencies now)
 14.01.2008 thepisu

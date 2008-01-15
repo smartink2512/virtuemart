@@ -152,7 +152,7 @@ class vmMainFrame {
 				break;
 		}
 	
-		$mainframe->close();
+		$this->close(true);
 	}
 	function render() {
 		global $mainframe, $mosConfig_gzip, $mosConfig_live_site;

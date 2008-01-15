@@ -58,6 +58,7 @@ echo '</td></tr></table>';
 
 echo '<input type="hidden" name="page" value="product.product_list" />
 <input type="hidden" name="func" value="moveProduct" />
+<input type="hidden" name="vmtoken" value="'.vmSpoofValue($sess->getSessionId()).'" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="'.$option.'" />
 <input type="hidden" name="old_category_id" value="'.$category_id.'" />
