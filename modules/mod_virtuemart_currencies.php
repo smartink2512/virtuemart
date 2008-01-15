@@ -46,7 +46,8 @@ while( $db->next_record()) {
 $sess = new ps_session;
     
 ?>
-<!-- Currency Selector Module --> 
+<!-- Currency Selector Module -->
+<?php echo $text_before ?>
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 	<br />
 	<?php

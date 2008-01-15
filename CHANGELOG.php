@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 15.01.2008 soeren
+# Task #1675 - Currency module give fatal error
 # Task #1674 - When no sort order is selected in Available "Sort-by" fields configuration, error is given
 # additional File Upload not working correctly on Windows Systems
 # Task #1659 - ß as attribute value
