@@ -55,7 +55,7 @@ class vmTemplate_default extends vmTemplate  {
 		/* Show the Thumbnail with a Link to the full IMAGE */
 		else {
 			if( empty($product['product_full_image'] ) ) {
-				$product_image = "<img src=\"".IMAGEURL.NO_IMAGE."\" alt=\"".$product['product_name']."\" border=\"0\" />";
+				$product_image = "<img src=\"".VM_THEMEURL.'images/'.NO_IMAGE."\" alt=\"".$product['product_name']."\" border=\"0\" />";
 			}
 			else {
 				// file_exists doesn't work on remote files,
