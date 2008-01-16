@@ -124,8 +124,8 @@ class ps_product_discount {
 			return False ;
 		}
 		
-		$fields = array('amount' => vmRequest::getFloat('amount'), 
-								'is_percent' => vmRequest::getInt('is_percent'), 
+		$fields = array('amount' => (float)vmGet( $d, 'amount'), 
+								'is_percent' => (int)vmGet($d, 'is_percent'), 
 								'start_date' => $d["start_date"], 
 								'end_date' => $d["end_date"]
 								);
@@ -169,8 +169,8 @@ class ps_product_discount {
 			return False ;
 		}
 
-		$fields = array('amount' => vmRequest::getFloat('amount'), 
-								'is_percent' => vmRequest::getInt('is_percent'), 
+		$fields = array('amount' => (float)vmGet( $d, 'amount'), 
+								'is_percent' => (int)vmGet($d, 'is_percent'), 
 								'start_date' => $d["start_date"], 
 								'end_date' => $d["end_date"]
 								);
