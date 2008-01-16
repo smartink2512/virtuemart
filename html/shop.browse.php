@@ -160,8 +160,8 @@ else {
 						
 		// Prepare Page Navigation
 		if ( $num_rows > $limit  || $num_rows > 5 ) {
-			require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
-			$pagenav = new mosPageNav( $num_rows, $limitstart, $limit);
+			require_once( CLASSPATH.'pageNavigation.class.php');
+			$pagenav = new vmPageNav( $num_rows, $limitstart, $limit );
 
 			$search_string = $mm_action_url."index.php?option=com_virtuemart&amp;page=$modulename.browse&amp;category_id=$category_id&amp;keyword=".urlencode( $keyword )."&amp;manufacturer_id=$manufacturer_id&amp;Itemid=$Itemid";
 			$search_string .= !empty($orderby) ? "&amp;orderby=".urlencode($orderby) : "";
@@ -435,8 +435,8 @@ else {
 
 <?php
 if( !isset($pagenav) ) {
-	require_once( $mosConfig_absolute_path.'/includes/pageNavigation.php');
-	$pagenav = new mosPageNav( $num_rows, $limitstart, $limit);
+	require_once( CLASSPATH.'pageNavigation.class.php');
+	$pagenav = new vmPageNav( $num_rows, $limitstart, $limit);
 }
 $tpl->set( 'pagenav', $pagenav );
 

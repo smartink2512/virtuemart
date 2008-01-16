@@ -480,3 +480,8 @@ width: 100%;
 	background: #ffff33;
 	cursor: pointer;
 }
+ul.pagination li {
+	padding: 2px 1px;
+	display: inline;
+	background: none;
+}

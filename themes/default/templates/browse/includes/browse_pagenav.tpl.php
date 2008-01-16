@@ -2,7 +2,7 @@
 <?php if(!@is_object( $pagenav)) return;  ?>
 <!-- BEGIN PAGE NAVIGATION -->
 <div align="center">
-	<?php echo $pagenav->writePagesLinks( $search_string ); ?>
+	<?php $pagenav->writePagesLinks( $search_string ); ?>
 	<?php 
 	if( $show_limitbox ) { ?>
 		<br/><br/>
@@ -15,7 +15,7 @@
 		</form>
 	<?php
 	}
-	echo $pagenav->writeLeafsCounter();
+	$pagenav->writePagesCounter();
 	?>
 </div>
 <!-- END PAGE NAVIGATION -->

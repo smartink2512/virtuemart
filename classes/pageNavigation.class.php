@@ -40,6 +40,12 @@ class vmPageNav {
 		}
 	}
 	/**
+	* Writes the html limit # input box
+	*/
+	function writeLimitBox () {
+		echo $this->getLimitBox();
+	}
+	/**
 	* @return string The html for the limit # input box
 	*/
 	function getLimitBox () {
@@ -50,16 +56,11 @@ class vmPageNav {
 		$limits[50] = 50;
 
 		// build the html select list
-		$html = ps_html::selectList( 'limit', $this->limit, $limits, 1, '',  'onchange="document.adminForm.submit();"' );
+		$html = ps_html::selectList( 'limit', $this->limit, $limits, 1, '',  'onchange="this.form.submit();"' );
 		$html .= "\n<input type=\"hidden\" name=\"limitstart\" value=\"$this->limitstart\" />";
 		return $html;
 	}
-	/**
-	* Writes the html limit # input box
-	*/
-	function writeLimitBox () {
-		echo vmPageNav::getLimitBox();
-	}
+
 	function writePagesCounter() {
 		echo $this->getPagesCounter();
 	}
@@ -84,15 +85,15 @@ class vmPageNav {
 	/**
 	* Writes the html for the pages counter, eg, Results 1-10 of x
 	*/
-	function writePagesLinks() {
-	    echo $this->getPagesLinks();
+	function writePagesLinks($link='') {
+	    echo $this->getPagesLinks($link);
 	}
 	/**
 	* @return string The html links for pages, eg, previous, next, 1 2 3 ... x
 	*/
-	function getPagesLinks() {
+	function getPagesLinks($link='') {
 		global $VM_LANG;
-	    $html = '';
+	    
 		$displayed_pages = 10;
 		$total_pages = ceil( $this->total / $this->limit );
 		$this_page = ceil( ($this->limitstart+1) / $this->limit );
@@ -102,34 +103,49 @@ class vmPageNav {
 		} else {
 			$stop_loop = $total_pages;
 		}
-
+		$html = '<ul class="pagination">';
 		if ($this_page > 1) {
 			$page = ($this_page - 2) * $this->limit;
-			$html .= "\n<a href=\"#beg\" class=\"pagenav\" title=\"first page\" onclick=\"javascript: document.adminForm.limitstart.value=0; document.adminForm.submit();return false;\">&lt;&lt; ".$VM_LANG->_('PN_START')."</a>";
-			$html .= "\n<a href=\"#prev\" class=\"pagenav\" title=\"previous page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\">&lt; ".$VM_LANG->_('PN_PREVIOUS')."</a>";
+			if( $link != '') {
+				 $html .= "\n<li><a href=\"$link&amp;limitstart=0\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_START')."\">&laquo;&laquo; ".$VM_LANG->_('PN_START')."</a></li>";
+				$html .= "\n<li><a href=\"$link&amp;limitstart=$page\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_PREVIOUS')."\">&laquo; ".$VM_LANG->_('PN_PREVIOUS')."</a></li>";
+			} else {
+				$html .= "\n<li><a href=\"#beg\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_START')."\" onclick=\"javascript: document.adminForm.limitstart.value=0; document.adminForm.submit();return false;\">&laquo;&laquo; ".$VM_LANG->_('PN_START')."</a></li>";
+				$html .= "\n<li><a href=\"#prev\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_PREVIOUS')."\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\">&laquo; ".$VM_LANG->_('PN_PREVIOUS')."</a></li>";
+			}
 		} else {
-			$html .= "\n<span class=\"pagenav\">&lt;&lt; ".$VM_LANG->_('PN_START')."</span>";
-			$html .= "\n<span class=\"pagenav\">&lt; ".$VM_LANG->_('PN_PREVIOUS')."</span>";
+			$html .= "\n<li><span class=\"pagenav\">&laquo;&laquo; ".$VM_LANG->_('PN_START')."</span></li>";
+			$html .= "\n<li><span class=\"pagenav\">&laquo; ".$VM_LANG->_('PN_PREVIOUS')."</span></li>";
 		}
 
 		for ($i=$start_loop; $i <= $stop_loop; $i++) {
 			$page = ($i - 1) * $this->limit;
 			if ($i == $this_page) {
-				$html .= "\n<span class=\"pagenav\"> $i </span>";
+				$html .= "\n<li><span class=\"pagenav\"> $i </span><li>";
 			} else {
-				$html .= "\n<a href=\"#$i\" class=\"pagenav\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"><strong>$i</strong></a>";
+				if( $link != '') {
+					$html .= "\n<li><a href=\"$link&amp;limitstart=$page\" class=\"pagenav\"><strong>$i</strong></a></li>";
+				} else {
+					$html .= "\n<li><a href=\"#$i\" class=\"pagenav\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"><strong>$i</strong></a></li>";
+				}
 			}
 		}
 
 		if ($this_page < $total_pages) {
 			$page = $this_page * $this->limit;
 			$end_page = ($total_pages-1) * $this->limit;
-			$html .= "\n<a href=\"#next\" class=\"pagenav\" title=\"next page\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"> ".$VM_LANG->_('PN_NEXT')." &gt;</a>";
-			$html .= "\n<a href=\"#end\" class=\"pagenav\" title=\"end page\" onclick=\"javascript: document.adminForm.limitstart.value=$end_page; document.adminForm.submit();return false;\"> ".$VM_LANG->_('PN_END')." &gt;&gt;</a>";
+			if( $link != '') {
+				$html .= "\n<li><a href=\"$link&amp;limitstart=$page\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_NEXT')."\"> ".$VM_LANG->_('PN_NEXT')." &raquo;</a></li>";
+				$html .= "\n<li><a href=\"$link&amp;limitstart=$end_page\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_END')."\"> ".$VM_LANG->_('PN_END')." &raquo;&raquo;</a></li>";
+			} else {
+				$html .= "\n<li><a href=\"#next\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_NEXT')."\" onclick=\"javascript: document.adminForm.limitstart.value=$page; document.adminForm.submit();return false;\"> ".$VM_LANG->_('PN_NEXT')." &raquo;</a></li>";
+				$html .= "\n<li><a href=\"#end\" class=\"pagenav\" title=\"".$VM_LANG->_('PN_END')."\" onclick=\"javascript: document.adminForm.limitstart.value=$end_page; document.adminForm.submit();return false;\"> ".$VM_LANG->_('PN_END')." &raquo;&raquo;</a></li>";
+			}
 		} else {
-			$html .= "\n<span class=\"pagenav\">".$VM_LANG->_('PN_NEXT')." &gt;</span>";
-			$html .= "\n<span class=\"pagenav\">".$VM_LANG->_('PN_END')." &gt;&gt;</span>";
+			$html .= "\n<li><span class=\"pagenav\">".$VM_LANG->_('PN_NEXT')." &raquo;</span></li>";
+			$html .= "\n<li><span class=\"pagenav\">".$VM_LANG->_('PN_END')." &raquo;&raquo;</span><li>";
 		}
+		$html .= "\n</ul>";
 		return $html;
 	}
 	
