@@ -190,7 +190,7 @@ class ps_cart {
 			$db->query ( $q );
 
 			if ( $db->num_rows() < 1) {
-				$vmLogger->tip( 'The selected product does not exist.' );
+				$vmLogger->tip( $VM_LANG->_('VM_CART_PRODUCT_NOTEXIST',false) );
 				return false;
 			}
 			// Quick add of item

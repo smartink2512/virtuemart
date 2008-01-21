@@ -91,14 +91,14 @@ class ps_communication {
 		$sessioncookie 		= vmGet( $_COOKIE, 'virtuemart', null );
 
 		if ( strlen($sessioncookie) < 16 || $sessioncookie == '-') {
-			$vmLogger->err( 'Cookie Missing. '.$VM_LANG->_('NOT_AUTH',false) );
+			$vmLogger->err( $VM_LANG->_('VM_COOKIE_MISSING').'. '.$VM_LANG->_('NOT_AUTH',false) );
 			return false;
 		}
 
 		// test to ensure that only one email address is entered
 		$check = explode( '@', $email );
 		if ( strpos( $email, ';' ) || strpos( $email, ',' ) || strpos( $email, ' ' ) || count( $check ) > 2 ) {
-			$vmLogger->err( 'You cannot enter more than one email address' );
+			$vmLogger->err( $VM_LANG->_('EMAIL_ERR_ONLYONE') );
 			return false;
 		}
 
@@ -201,7 +201,7 @@ class ps_communication {
 			elseif(file_exists(VM_THEMEPATH."templates/order_emails/enquiry_english.html")) {
 				$html_file = VM_THEMEPATH."templates/order_emails/enquiry_english.html";
 			} else {
-				$vmLogger->err( 'Enquiry template file not found!' );
+				$vmLogger->err( $VM_LANG->_('VM_ENQUIRY_TEMPLATE_NOT_FOUND') );
 				return false;
 			}
 

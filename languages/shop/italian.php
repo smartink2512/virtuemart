@@ -65,7 +65,6 @@ $langvars = array (
 	'SEND_BUTTON' => 'Invia',
 	'THANK_MESSAGE' => 'Grazie per la tua richiesta. Ti contatteremo appena possibile.',
 	'PROMPT_CLOSE' => 'Chiudi',
-	'VM_RECOVER_CART' => 'Recupera Carrello Salvato',
 	'VM_RECOVER_CART_REPLACE' => 'Sostituisci il carrello con il carrello salvato',
 	'VM_RECOVER_CART_MERGE' => 'Aggiungi il carrello salvato al carrello attuale',
 	'VM_RECOVER_CART_DELETE' => 'Cancella il carrello salvato',

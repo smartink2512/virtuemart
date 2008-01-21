@@ -33,7 +33,7 @@ class ps_product extends vmAbstractObject {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate(&$d) {
-		global $vmLogger, $database, $perm;
+		global $vmLogger, $database, $perm, $VM_LANG;
 		require_once(CLASSPATH . 'imageTools.class.php' );
 		
 		$valid = true;
@@ -62,15 +62,15 @@ class ps_product extends vmAbstractObject {
 			$d['manufacturer_id'] = "1";
 		}
 		if (empty( $d["product_sku"])) {
-			$vmLogger->err( "A Product Sku must be entered." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MISSING_SKU',false) );
 			$valid = false;
 		}
 		if (!$d["product_name"]) {
-			$vmLogger->err( "A product name must be entered." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MISSING_NAME',false) );
 			$valid = false;
 		}
 		if (!$d["product_available_date"]) {
-			$vmLogger->err( "You must provide an availability date." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MISSING_AVAILDATE',false) );
 			$valid = false;
 		}
 		else {
@@ -83,7 +83,7 @@ class ps_product extends vmAbstractObject {
 		/** Validate Product Specific Fields **/
 		if (!$d["product_parent_id"]) {
 			if (sizeof(@$d["product_categories"]) < 1) {
-				$vmLogger->err( "A Category must be selected." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MISSING_CATEGORY') );
 				$valid = false;
 			}
 		}
@@ -93,7 +93,7 @@ class ps_product extends vmAbstractObject {
 		if (!empty( $d['product_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['product_thumb_image_url'], 0, 4) != "http") {
-				$vmLogger->err( "Image URL must begin with http." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_IMAGEURL_MUSTBEGIN',false) );
 				$valid =  false;
 			}
 
@@ -117,7 +117,7 @@ class ps_product extends vmAbstractObject {
 		if (!empty( $d['product_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['product_full_image_url'], 0, 4) != "http") {
-				$vmLogger->err( "Image URL must begin with http." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_IMAGEURL_MUSTBEGIN',false) );
 				return false;
 			}
 			// if we have an uploaded image file, prepare this one for deleting.
@@ -193,7 +193,7 @@ class ps_product extends vmAbstractObject {
 	 * @return boolean Validation sucessful?
 	 */
 	function validate_delete( $product_id, &$d ) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		require_once(CLASSPATH . 'imageTools.class.php' );
 		/* Check that ps_vendor_id and product_id match
 		if (!$this->check_vendor($d)) {
@@ -201,7 +201,7 @@ class ps_product extends vmAbstractObject {
 		return false;
 		}*/
 		if (empty($product_id)) {
-			$vmLogger->err( "Please specify a Product to delete!" );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_SPECIFY_DELETE',false) );
 			return false;
 		}
 		/* Get the image filenames from the database */
@@ -217,7 +217,7 @@ class ps_product extends vmAbstractObject {
 			$_REQUEST["product_thumb_image_curr"] = $db->f("product_thumb_image");
 			$d["product_thumb_image_action"] = "delete";
 			if (!vmImageTools::validate_image($d,"product_thumb_image","product")) {
-				$vmLogger->err( "Failed deleting Product Images!" );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_IMGDEL_FAILED',false) );
 				return false;
 			}
 		}
@@ -240,7 +240,7 @@ class ps_product extends vmAbstractObject {
 	 * @return boolean True, when the product was added, false when not
 	 */
 	function add( &$d ) {
-		global $perm, $vmLogger;
+		global $perm, $vmLogger, $VM_LANG;
 		$database = new ps_DB();
 
 		if (!$this->validate($d)) {
@@ -297,7 +297,7 @@ class ps_product extends vmAbstractObject {
 
 		$db->buildQuery('INSERT', '#__{vm}_product', $fields );
 		if( $db->query() === false ) {
-			$vmLogger->err( 'Something went wrong when trying to add the product!' );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_ADDING_FAILED',false) );
 			return false;
 		}
 
@@ -422,10 +422,10 @@ class ps_product extends vmAbstractObject {
 
 		}
 		if( $d['clone_product'] == 'Y') {
-			$vmLogger->info( "Product was successfully cloned." );
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_CLONED',false) );
 		}
 		else {
-			$vmLogger->info( "Product was successfully added." );
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_ADDED',false) );
 		}
 		return true;
 	}
@@ -437,7 +437,7 @@ class ps_product extends vmAbstractObject {
 	 * @return boolean True, when the product was updated, false when not
 	 */
 	function update( &$d ) {
-		global $vmLogger, $perm;
+		global $vmLogger, $perm, $VM_LANG;
 		require_once(CLASSPATH.'ps_product_attribute.php');
 		
 		if (!$this->validate($d)) {
@@ -618,7 +618,7 @@ class ps_product extends vmAbstractObject {
 		// Product Type Parameters!
 		$this->handleParameters( $d );
 		 
-		$vmLogger->info( "Product was successfully updated" );
+		$vmLogger->info( $VM_LANG->_('VM_PRODUCT_UPDATED',false) );
 		return true;
 	}
 	
@@ -710,13 +710,13 @@ class ps_product extends vmAbstractObject {
          * @return boolean True on sucess, false on failure
          */
 	function move( &$d ) {
-		global $db, $vmLogger;
+		global $db, $vmLogger, $VM_LANG;
 		if( !is_array( $d['product_id'])) {
-			$vmLogger->err( 'No product found to move.');
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MOVE_NOTFOUND',false));
 			return false;
 		}
 		if( empty( $d['category_id'])) {
-			$vmLogger->err( 'You must select ONE category!');
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MUSTSELECT_ONE_CAT',false));
 			return false;
 		}
 		// Loop though each product
@@ -744,7 +744,7 @@ class ps_product extends vmAbstractObject {
 	 * @return boolean True on success, false on error
 	 */
 	function delete_product( $product_id, &$d ) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 		if (!$this->validate_delete($product_id, $d)) {
 			return false;
@@ -826,7 +826,7 @@ class ps_product extends vmAbstractObject {
 			$d["product_id"] = $d["product_parent_id"];
 			$d["product_parent_id"] = "";
 		}
-		$vmLogger->info( "Deleted Product ID: $product_id" );
+		$vmLogger->info( str_replace('{product_id}',$product_id,$VM_LANG->_('VM_PRODUCT_DELETED',false)) );
 		return true;
 	}
 

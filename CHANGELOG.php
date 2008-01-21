@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+21.01.2008 thepisu
+# Task #1637 Missing VM_RECOVER_CART language string
+# Task #1673 NotifyMe language bug
+# added translations for various strings (in module 'common')
+
 16.01.2008 soeren
 # Task #1681 - Problem with Page Navigation - (1st page in product list)
 15.01.2008 soeren

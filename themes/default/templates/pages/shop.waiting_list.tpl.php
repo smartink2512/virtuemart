@@ -16,6 +16,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+
+global $VM_LANG;
+
 ?>
 <form action="<?php echo $mm_action_url ?>index.php" method="post" name="waiting">
 <input type="hidden" name="option" value="<?php echo $option ?>" />

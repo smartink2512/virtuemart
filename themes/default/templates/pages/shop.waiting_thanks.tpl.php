@@ -17,6 +17,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
+global $VM_LANG;
+
 if( $ok ) {
 	echo '<h3>'.$VM_LANG->_('PHPSHOP_WAITING_LIST_THANKS').'</h3>';
 }

@@ -30,15 +30,15 @@ class ps_product_price {
 	 * @return boolean
 	 */
 	function validate(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$valid = true;
 		
 		if (!isset($d["product_price"]) || $d["product_price"] === '') {
-			$vmLogger->err( "A price must be entered." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_PRICE_MISSING',false) );
 			$valid = false;
 		}
 		if (empty($d["product_id"])) {
-			$vmLogger->err(  "A product ID is missing." );
+			$vmLogger->err(  $VM_LANG->_('VM_PRODUCT_ID_MISSING',false) );
 			$valid = false;
 		}
 		// convert all "," in prices to decimal points.
@@ -47,14 +47,14 @@ class ps_product_price {
 		}
 
 		if (!$d["product_currency"]) {
-			$vmLogger->err( "A currency must be entered." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_PRICE_CURRENCY_MISSING',false) );
 			$valid = false;
 		}
 		$d["price_quantity_start"] = intval(@$d["price_quantity_start"]);
 		$d["price_quantity_end"] = intval(@$d["price_quantity_end"]);
 
 		if ($d["price_quantity_end"] < $d["price_quantity_start"]) {
-			$vmLogger->err(  "The entered Quantity End is less than the Quantity Start." );
+			$vmLogger->err(  $VM_LANG->_('VM_PRODUCT_PRICE_QEND_LESS',false) );
 			$valid = false;
 		}
 
@@ -71,7 +71,7 @@ class ps_product_price {
 		$db->query( $q ); $db->next_record();
 
 		if ($db->f("num_rows") > 0) {
-			$vmLogger->err(  "This product already has a price for the selected Shopper Group and the specified Quantity Range." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_PRICE_ALREADY',false) );
 			$valid = false;
 		}
 		return $valid;
@@ -83,12 +83,12 @@ class ps_product_price {
 	 * @return boolean
 	 */
 	function add(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		if (!$this->validate($d)) {
 			return false;
 		}
 		if( $d["product_price"] === '') {
-			$vmLogger->err( 'You have entered no price.');
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_PRICE_NOTENTERED',false) );
 			return false;
 		}
 		$timestamp = time();
@@ -111,10 +111,10 @@ class ps_product_price {
 		
 		if( $db->query() !== false ) {		
 			$_REQUEST['product_price_id'] = $db->last_insert_id();
-			$vmLogger->info( 'The new product price has been added.');
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_PRICE_ADDED',false));
 			return true;
 		}
-		$vmLogger->err( 'The price could not be added to this product.');
+		$vmLogger->err( $VM_LANG->_('VM_PRODUCT_PRICE_ADDING_FAILED',false) );
 		return false;
 	}
 
@@ -125,7 +125,7 @@ class ps_product_price {
 	 * @return boolean
 	 */
 	function update(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		if (!$this->validate($d)) {
 			return false;
 		}
@@ -151,10 +151,10 @@ class ps_product_price {
 		$db->buildQuery('UPDATE', '#__{vm}_product_price', $fields, 'WHERE product_price_id=' .(int)$d["product_price_id"] );
 		
 		if( $db->query() !== false ) {
-			$vmLogger->info( 'The product price has been updated.');
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_PRICE_UPDATED',false) );
 			return true;
 		}
-		$vmLogger->err( 'The price could not be updated.');
+		$vmLogger->err( $VM_LANG->_('VM_PRODUCT_PRICE_UPDATING_FAILED',false) );
 		return false;
 	}
 
@@ -181,11 +181,11 @@ class ps_product_price {
 	* Deletes one Record.
 	*/
 	function delete_record( $record_id, &$d ) {
-		global $db, $vmLogger;
+		global $db, $vmLogger, $VM_LANG;
 		$q  = "DELETE FROM #__{vm}_product_price ";
 		$q .= "WHERE product_price_id =".intval($record_id).' LIMIT 1';
 		$db->query($q);
-		$vmLogger->info( 'The product price has been deleted.' );
+		$vmLogger->info( $VM_LANG->_('VM_PRODUCT_PRICE_DELETED',false) );
 		return True;
 	}
 
