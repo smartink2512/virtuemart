@@ -785,20 +785,7 @@ function vmGetCharset() {
  */
 function vmSafeFileName( $filename ) {
 	
-	$filename = str_replace(' ', '_', $filename );
-	$filename = str_replace('/', '-', $filename );
-	$filename = str_replace('\\', '-', $filename );
-	$filename = str_replace('`', '', $filename );
-	$filename = str_replace('´', '', $filename );
-	$filename = str_replace('\'', '', $filename );
-	$filename = str_replace(':', '-', $filename );
-	$filename = str_replace('?', '-', $filename );
-	$filename = str_replace('*', '-', $filename );
-	$filename = str_replace('"', '-', $filename );
-	$filename = str_replace('<', '-', $filename );
-	$filename = str_replace('>', '-', $filename );
-	$filename = str_replace('|', '-', $filename );
-	
+	$filename = preg_replace('/[^a-zA-Z0-9\.]/', '_', $filename );	
 	return $filename;
 }
 function vmIsAdminMode() {

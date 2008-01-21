@@ -274,13 +274,16 @@ class ps_checkout {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
-		global $VM_LANG, $vmLogger;
+		global $my, $VM_LANG, $vmLogger;
 
 		require_once(CLASSPATH.'ps_payment_method.php');
 		$ps_payment_method = new ps_payment_method;
-
-		$d = $GLOBALS['vmInputFilter']->process( $d );
-
+		
+		if( empty( $my->id ) ) {
+			$vmLogger->err('Sorry, but it is not possible to order without a User ID. 
+										Please contact the Store Administrator if this Error occurs again.');
+			return false;
+		}
 		if (NO_SHIPTO != '1') {
 			if (empty($d["ship_to_info_id"])) {
 				$vmLogger->err( $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_NO_SHIPTO',false) );

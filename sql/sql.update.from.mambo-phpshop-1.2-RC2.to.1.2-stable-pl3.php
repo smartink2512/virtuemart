@@ -24,7 +24,6 @@ $database->setQuery( "CREATE TABLE IF NOT EXISTS `#__pshop_product_relations` (
 	  PRIMARY KEY  (`product_id`)
 	) TYPE=MyISAM;"); $database->query();
 	
-$database->setQuery( "ALTER TABLE `#__pshop_product` CHANGE `product_in_stock` `product_in_stock` INT( 11 ) UNSIGNED DEFAULT NULL "); $database->query();
 $database->setQuery( "ALTER TABLE `#__pshop_order_item` ADD `product_final_price` DECIMAL( 10, 2 ) NOT NULL AFTER `product_item_price` ;"); $database->query();
 $database->setQuery( "ALTER TABLE `#__pshop_product_price` CHANGE `product_price` `product_price` DECIMAL( 10, 5 ) DEFAULT NULL "); $database->query();
 $database->setQuery( "ALTER TABLE `#__pshop_product_price` 

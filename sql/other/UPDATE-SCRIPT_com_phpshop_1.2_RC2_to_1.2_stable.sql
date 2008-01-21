@@ -57,9 +57,6 @@ CREATE TABLE `mos_pshop_product_relations` (
   PRIMARY KEY  (`product_id`)
 ) TYPE=MyISAM;
 
-# 22.03.2005
-ALTER TABLE `mos_pshop_product` CHANGE `product_in_stock` `product_in_stock` INT( 11 ) UNSIGNED DEFAULT NULL ;
-
 # 23.03.2005
 ALTER TABLE `mos_pshop_order_item` ADD `product_final_price` DECIMAL( 10, 2 ) NOT NULL AFTER `product_item_price` ;
 

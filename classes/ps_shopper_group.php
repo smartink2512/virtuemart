@@ -315,7 +315,7 @@ class ps_shopper_group {
 	***************************************************************************/
   	function get_shoppergroup_by_id($id, $default_group = false) {
     	global $my;
-    	$ps_vendor_id = $_SESSION['ps_vendor_id'];
+    	$ps_vendor_id = vmGet($_SESSION, 'ps_vendor_id', 1 );
     	$db = new ps_DB;
 
     	$q =  "SELECT #__{vm}_shopper_group.shopper_group_id, show_price_including_tax, `default`, shopper_group_discount 

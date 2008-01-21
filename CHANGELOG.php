@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+21.01.2008 soeren
+# double/triple VirtueMart Frames after being logged out and logging back into Joomla! and going back to VirtueMart (related to Tasks #1695 and #1696, but that was a Joomla! 1.0.13 issue)
+# Pressing "Cancel" after Saving returns to standard Joomla! Admin Interface (Extended Layout only)
+# Task #1690 - Bad filenames for Products and Categories with non-ASCII chars
+# Task #1689 - Invalid Token during login in joomla! 1.5
 21.01.2008 thepisu
 # Task #1637 Missing VM_RECOVER_CART language string
 # Task #1673 NotifyMe language bug

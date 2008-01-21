@@ -28,9 +28,7 @@ if( vmIsJoomla( '1.5' ) ) {
 	$return_url = base64_encode( $url );
 
 	// Set the validation value
-	$token = JUtility::getToken();
-	$user	= &JFactory::getUser();
-	$validate = JUtility::getHash( $user->id.$token );
+	$validate = JUtility::getToken();
 	
 } else {
 	// Post action

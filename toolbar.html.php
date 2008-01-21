@@ -129,7 +129,7 @@ var submitbutton = function(pressbutton){
 	}
 	
    	Ext.Ajax.request( { method: 'POST',
-   						url: '{$mosConfig_live_site}/administrator/index2.php',
+   						url: '{$_SERVER['PHP_SELF']}',
    						success: onSuccess,
    						failure: onFailure,
    						callback: onCallback,

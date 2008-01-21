@@ -991,7 +991,7 @@ class ps_product_category extends vmAbstractObject {
 
 		$db = new ps_DB;
 		if (!$category_id) {
-			return $GLOBALS['VM_LANG']->_CMN_NEW_ITEM_LAST;
+			return $GLOBALS['VM_LANG']->_('CMN_NEW_ITEM_LAST');
 		}
 		else {
 

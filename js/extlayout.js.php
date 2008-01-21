@@ -42,6 +42,12 @@ header( 'Content-Type: application/x-javascript');
 echo "if( typeof Ext == \"undefined\" ) {
 			document.location=\"index2.php?option=".VM_COMPONENT_NAME."&vmLayout=standard&usefetchscript=0\";
 		}
+		// Check if this Window is a duplicate and opens in an iframe
+		if( parent.vmLayout )
+			if( typeof parent.vmLayout.loadPage == \"function\" ) {
+				// then load the pure page, not again the whole VirtueMart Admin interface
+				parent.vmLayout.loadPage();
+			}
 		vmLayout = function(){
     var layout, center;
     var classClicked = function(e, target) {
@@ -96,7 +102,7 @@ echo "if( typeof Ext == \"undefined\" ) {
 		},
 
         loadPage : function(page){
-        	if( page == '' ) {
+        	if( !page || page == '' ) {
         		defaultpage = \"index3.php?option=com_virtuemart&page=store.index\";
         		page = Ext.state.Manager.get( \"vmlastpage\", defaultpage );
         	}

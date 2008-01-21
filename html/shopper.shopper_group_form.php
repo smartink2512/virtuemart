@@ -75,21 +75,15 @@ if (!empty($shopper_group_id)) {
 		}
 			?></td>
       </tr>
-    <?php
-
-    $selected[0] = $db->f('show_price_including_tax') == "0" ? "selected=\"selected\"" : "";
-    $selected[1] = $db->f('show_price_including_tax') == "1" ? "selected=\"selected\"" : "";
-?>
     <tr>
       <td width="23%" nowrap><strong><div align="right"><?php
       echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX').": "; ?></div></strong>
       </td>
       <td width="77%" > 
-        <select class="inputbox" name="show_price_including_tax">
-          <option <?php echo $selected[0] ?> value="0"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
-          <option <?php echo $selected[1] ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
-        </select>&nbsp;
-        <?php echo mm_ToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN') ); ?>
+        <input type="checkbox" class="inputbox" id="show_price_including_tax" name="show_price_including_tax" value="1" <?php echo $db->f('show_price_including_tax') == "1" ? "checked=\"checked\"" : ""  ?>/>
+        	<label for="show_price_including_tax"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES').' / '. $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></label>
+        &nbsp;
+        <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN') ); ?>
       </td>
     </tr> 
     <tr>

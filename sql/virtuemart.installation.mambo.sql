@@ -1196,7 +1196,7 @@ CREATE TABLE IF NOT EXISTS `mos_vm_product` (
   `product_height` decimal(10,4) default NULL,
   `product_lwh_uom` varchar(32) default 'inches',
   `product_url` varchar(255) default NULL,
-  `product_in_stock` int(11) unsigned default NULL,
+  `product_in_stock` int(11) NOT NULL default '0',
   `product_available_date` int(11) default NULL,
   `product_availability` varchar(56) NOT NULL default '',
   `product_special` char(1) default NULL,
