@@ -238,7 +238,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		// the variable named 'ajax_request' has to be set to 1.
 		if( $func && $ajax_request) {
 			// Send an indicator wether the function call return true or false
-			vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );		
+			vmCommonHTML::getSuccessIndicator( $ok, $vmDisplayLogger );/*@MWM1*/
 			$vm_mainframe->close(true);//die
 		}
 		
@@ -260,10 +260,10 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	if( empty($_REQUEST['only_page']) ) {
 		// the Log object holds all error messages
 		// here we flush the buffer and print out all messages
-		$vmLogger->printLog();
+		$vmDisplayLogger->printLog();  /*@MWM1: Logging enhacements*/
 		
 		// Now we can switch to implicit flushing
-		$vmLogger->_buffering = false;
+		$vmDisplayLogger->_buffering = false; /*@MWM1: Logging enhancements*/
 	}
 	
 	define( '_VM_PARSER_LOADED', 1 );

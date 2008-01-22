@@ -90,7 +90,8 @@ class vmAbstractLanguage {
 	* Set the debug mode
 	*/
 	function setDebug() {
-		$this->_debug = @DEBUG == '1' || $GLOBALS['mosConfig_debug'] == '1';
+        /*@MWM1: Log/Debug enhancements */
+		$this->_debug = vmShouldDebug() || $GLOBALS['mosConfig_debug'] == '1';
 	}
 	/**
 	* Set the charset of a language module (normally specified in language file)

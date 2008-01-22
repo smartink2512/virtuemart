@@ -115,6 +115,13 @@ class Log_display extends vmLog
         if (!$this->_isMasked($priority)) {
             return false;
         }
+        /*@MWM1: Limit debugging by IP address, if enabled.*/
+        if((VM_DEBUG_IP_ENABLED == '1') && (strcmp($_SERVER['REMOTE_ADDR'], VM_DEBUG_IP_ADDRESS) != 0))
+        {
+                /* Remote address is NOT our configured debug IP address
+                   (if enabled), so skip logging. */
+                return false;
+        }
         $this->_ticker++;
         
 		if( $priority >= PEAR_LOG_ERR ) {

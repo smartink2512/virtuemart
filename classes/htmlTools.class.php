@@ -899,7 +899,7 @@ class vmCommonHTML {
 	 * @param boolean $success
 	 * @param Log_Display $vmLogger
 	 */
-	function getSuccessIndicator( $success, $vmLogger ) {
+	function getSuccessIndicator( $success, $vmDisplayLogger ) { /*@MWM1*/
 
 		echo '<div id="successIndicator" style="display:none;">';
 		if( $success) { 
@@ -910,7 +910,7 @@ class vmCommonHTML {
 		}
 		echo '</div>';
 		echo '<div id="vmLogResult">';
-		$vmLogger->printLog();
+		$vmDisplayLogger->printLog(); /*@MWM1: Log/Debug enhancements*/
 		echo '</div>';
 		
 	}
@@ -1360,7 +1360,7 @@ function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $use_entities=fal
 
 function mm_showMyFileName( $filename ) {
     
-    if (DEBUG == '1' ) {
+    if (vmShouldDebug()) { /*@MWM1: Logging/Debugging Enhancements */
         echo vmToolTip( '<div class=\'inputbox\'>Begin of File: '. $filename.'</div>');
     }
 }

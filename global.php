@@ -63,6 +63,15 @@ require_once(CLASSPATH."ps_database.php");
 require_once(CLASSPATH."ps_main.php");
 require_once(CLASSPATH."request.class.php");
 
+/* @MWM1: Load debug utility functions (currently just vmShouldDebug())
+   Replaces test (DEBUG == '1') and also checks if DEBUG_IP_ADDRESS is
+   enabled. */
+require_once(CLASSPATH."DebugUtil.php");
+
+/* @MWM1: Initialize Logging */
+$vmLogIdentifier = 'VirtueMart';
+require_once(CLASSPATH."Log/LogInit.php");
+
 // The abstract language class
 require_once( CLASSPATH."language.class.php" );
 /** @global vmLanguage $GLOBALS['VM_LANG'] */
@@ -86,17 +95,6 @@ require_once(CLASSPATH."ps_vendor.php");
 require_once(CLASSPATH.'template.class.php' );
 require_once(CLASSPATH."htmlTools.class.php");
 require_once(CLASSPATH."phpInputFilter/class.inputfilter.php");
-require_once(CLASSPATH."Log/Log.php");
-$vmLoggerConf = array(
-	'buffering' => true
-	);
-/**
- * This Log Object will help us log messages and errors
- * See http://pear.php.net/package/Log
- * @global vmLog $GLOBALS['vmLogger']
- */
-$vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
-$GLOBALS['vmLogger'] =& $vmLogger;
 
 // Instantiate the DB class
 $db = new ps_DB();
@@ -137,7 +135,7 @@ else {
 }
 
 // Enable Mambo Debug Mode when Shop Debug is on
-if( DEBUG == "1" ) {
+if( vmShouldDebug() ) {   /*@MWM1: Log/Debug enhancements */
 	$GLOBALS['mosConfig_debug'] = 1;
 	$database->_debug = 1;
 }

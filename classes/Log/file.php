@@ -102,10 +102,14 @@ class Log_file extends vmLog
      * @var array
      * @access private
      */
+    /*@MWM1:Add additional format keys {remoteip}, {username}, {vmsessionid}*/
     var $_formatMap = array('%{timestamp}'  => '%1$s',
                             '%{ident}'      => '%2$s',
                             '%{priority}'   => '%3$s',
                             '%{message}'    => '%4$s',
+                            '%{remoteip}'   => '%5$s',
+                            '%{username}'   => '%6$s',
+                            '%{vmsessionid}'   => '%7$s',
                             '%\{'           => '%%{');
 
     /**
@@ -314,10 +318,25 @@ class Log_file extends vmLog
         /* Extract the string representation of the message. */
         $message = $this->_extractMessage($message);
 
+        /* #B@MWM1: Add additional info that can be logged */
+        if (!empty($_SERVER['REMOTE_ADDR']))
+            $remoteip = $_SERVER['REMOTE_ADDR'];
+        else
+            $remoteip = 'unknown IP';
+
+        if (!empty($_SESSION['auth']["username"]))
+            $username = $_SESSION['auth']["username"];
+        else
+            $username = 'unknown user';
+
+        $vmsessionid = session_id();
+        /*#E@MWM1*/
+
         /* Build the string containing the complete log line. */
+        /* @MWM1 Logging changes...*/
         $line = sprintf($this->_lineFormat, strftime($this->_timeFormat),
-                $this->_ident, $this->priorityToString($priority),
-                $message) . $this->_eol;
+                $this->_ident, $this->priorityToShortStringPEAR($priority),
+                $message, $remoteip, $username, $vmsessionid) . $this->_eol;
 
         /* If locking is enabled, acquire an exclusive lock on the file. */
         if ($this->_locking) {

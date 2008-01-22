@@ -57,7 +57,7 @@ else {
 	$no_menu = vmRequest::getInt('no_menu', 0 );
 
 	// Timer Start
-	if ( DEBUG == "1" ) {
+	if ( vmShouldDebug() ) { /*@MWM1: Log/Debug enhancements */
 		$start = utime();
 		$GLOBALS["mosConfig_debug"] = 1;
 	}
@@ -207,7 +207,7 @@ else {
 			if( $only_page) {
 				require_once( CLASSPATH . 'connectionTools.class.php' );
 				vmConnector::sendHeaderAndContent( 200 );
-				if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
+				if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmDisplayLogger ); /*@MWM1: Log/Debug enhancements*/
 				include( PAGEPATH.$modulename.".".$pagename.".php" );
 				// Exit gracefully
 				$vm_mainframe->close(true);
@@ -231,7 +231,7 @@ else {
 	    }
 
 		// Set debug option on/off
-		if (DEBUG) {
+		if (vmShouldDebug()) {  /*@MWM1: Log/Debug enhancements */
 			$end = utime();
 			$runtime = $end - $start;
 			

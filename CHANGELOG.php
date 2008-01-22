@@ -35,6 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+21.01.2008 mwmills
+! @MWM1 used in source code comments.
++ Logging & Debugging enhancements: See new modules: classes/Log/LogInit.php & classes/DebugUtil.php for more information.
+^ $vmLogger is now a composite logger. Use $vmDisplayLogger for display-only msgs, use $vmFileLogger for file-only msgs, and $vmLogger to send msgs to both display and file.
+# Fixed a bug in classes/Log/display.php - referred to class 'Log' instead of 'vmLog'.
+^ Added some formatting options to classes/Log/file.php
+^ Changed "if (DEBUG == 1)" logic to use new vmShouldDebug() function (inside DebugUtil.php), which also checks if IP address-specific debugging output is enabled (so you can debug without affecting other customers.)
+^ Changed admin.show_cfg.php to add new logging & debug-related configuration parameters.
+^ Modified all language files in language/admin with ENGLISH versions of new logging & debug-related text strings. Translators need to convert strings to other languages.
+
 21.01.2008 soeren
 # double/triple VirtueMart Frames after being logged out and logging back into Joomla! and going back to VirtueMart (related to Tasks #1695 and #1696, but that was a Joomla! 1.0.13 issue)
 # Pressing "Cancel" after Saving returns to standard Joomla! Admin Interface (Extended Layout only)

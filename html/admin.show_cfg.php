@@ -410,7 +410,8 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 </fieldset>
 
 
-<fieldset style="width:48%;float:left;">
+<!--<fieldset style="width:48%;float:left;">-->
+<fieldset>
 	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_CORE_SETTINGS') ?></legend>
 	<table class="adminform">
 		<tr>
@@ -491,8 +492,83 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 			<?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_DEBUG_EXPLAIN') ) ?>
 			</td>
 		</tr>
+        <tr>
+            <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_DEBUG_IP_ENABLED') ?></td>
+            <td>
+                <input type="checkbox" id="conf_VM_DEBUG_IP_ENABLED" name="conf_VM_DEBUG_IP_ENABLED" class="inputbox" <?php if (VM_DEBUG_IP_ENABLED == 1) echo "checked=\"checked\""; ?> value="1" />
+            </td>
+            <td><label for="conf_VM_DEBUG_IP_ENABLED"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN')) ?></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS') ?></td>
+            <td>
+                <input size="20" type="text" name="conf_VM_DEBUG_IP_ADDRESS" class="inputbox" value="<?php echo VM_DEBUG_IP_ADDRESS ?>" />
+            </td>
+            <td><label for="conf_VM_DEBUG_IP_ADDRESS"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN')) ?></label>
+            </td>
+        </tr>
 	</table>
 </fieldset>
+</td></tr>
+<tr><td>
+<fieldset>
+    <legend><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_HEADER') ?></legend>
+    <table class="adminform">
+        <tr>
+            <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_ENABLED') ?></td>
+            <td>
+                <input type="checkbox" id="conf_VM_LOGFILE_ENABLED" name="conf_VM_LOGFILE_ENABLED" class="inputbox" <?php if (VM_LOGFILE_ENABLED == 1) echo "checked=\"checked\""; ?> value="1" />
+            </td>
+            <td class="iconcell"><label for="conf_VM_LOGFILE_ENABLED"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN')) ?></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_NAME') ?></td>
+            <td>
+                <input size="65" type="text" name="conf_VM_LOGFILE_NAME" class="inputbox" value="<?php if(defined('VM_LOGFILE_NAME')) echo VM_LOGFILE_NAME ?>" />
+            </td>
+            <td class="iconcell"><label for="conf_VM_LOGFILE_NAME"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN')) ?></label>
+            </td>
+        </tr>
+    <tr>
+        <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL') ?></td>
+        <td>
+        <?php if (!defined('VM_LOGFILE_LEVEL')) define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
+                <select class="inputbox" name="conf_VM_LOGFILE_LEVEL">
+                        <option value="PEAR_LOG_TIP" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_TIP') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_TIP') ?></option>
+                        <option value="PEAR_LOG_DEBUG" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_DEBUG') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG') ?></option>
+                        <option value="PEAR_LOG_INFO" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_INFO') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_INFO') ?></option>
+                        <option value="PEAR_LOG_NOTICE" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_NOTICE') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE') ?></option>
+                        <option value="PEAR_LOG_WARNING" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_WARNING') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING') ?></option>
+                        <option value="PEAR_LOG_ERR" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_ERR') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_ERR') ?></option>
+                        <option value="PEAR_LOG_CRIT" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_CRIT') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT') ?></option>
+                        <option value="PEAR_LOG_ALERT" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_ALERT') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT') ?></option>
+                        <option value="PEAR_LOG_EMERG" <?php if (@VM_LOGFILE_LEVEL == 'PEAR_LOG_EMERG') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG') ?></option>
+            </select>
+        </td>
+        <td class="iconcell"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN')) ?></td>
+    </tr>
+        <tr>
+                        <?php
+                        if(defined(VM_LOGFILE_FORMAT) && (VM_LOGFILE_FORMAT != ''))
+                            $logfile_format = VM_LOGFILE_FORMAT;
+                        else
+                            $logfile_format = '%{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message}';
+                        ?>
+            <td class="labelcell"><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_FORMAT') ?></td>
+            <td>
+                <input size="65" type="text" name="conf_VM_LOGFILE_FORMAT" class="inputbox" value="<?php echo $logfile_format ?>" />
+            </td>
+            <td class="iconcell"><label for="conf_VM_LOGFILE_FORMAT"><?php echo vmToolTip($VM_LANG->_('VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN')) ?></label>
+            </td>
+        </tr>
+                <tr>
+                        <td colspan="3"><?php echo $VM_LANG->_('VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA') ?></td>
+                </tr>
+    </table>
+</fieldset>
+
 
 </td></tr></table>
 <?php

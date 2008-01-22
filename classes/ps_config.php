@@ -153,7 +153,13 @@ class ps_config {
 			"VM_BROWSE_ORDERBY_FIELDS"          =>      "conf_VM_BROWSE_ORDERBY_FIELDS",
 			"VM_MODULES_FORCE_HTTPS"          =>      "conf_VM_MODULES_FORCE_HTTPS",
 			"VM_CHECKOUT_MODULES"	=>	"VM_CHECKOUT_MODULES",
-			"PSHOP_SHIPPING_MODULE"     =>      "conf_SHIPPING"
+			"PSHOP_SHIPPING_MODULE"     =>      "conf_SHIPPING",
+            "VM_LOGFILE_ENABLED"     =>      "conf_VM_LOGFILE_ENABLED",
+            "VM_LOGFILE_NAME"     =>         "conf_VM_LOGFILE_NAME",
+            "VM_LOGFILE_LEVEL"     =>         "conf_VM_LOGFILE_LEVEL",
+            "VM_DEBUG_IP_ENABLED"     =>      "conf_VM_DEBUG_IP_ENABLED",
+            "VM_DEBUG_IP_ADDRESS"     =>      "conf_VM_DEBUG_IP_ADDRESS",
+            "VM_LOGFILE_FORMAT"       =>      "conf_VM_LOGFILE_FORMAT"
 			);
 
 			$config = "<?php

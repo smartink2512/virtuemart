@@ -185,7 +185,7 @@ class Log_composite extends vmLog
     function addChild(&$child)
     {
         /* Make sure this is a Log instance. */
-        if (!is_a($child, 'Log')) {
+        if (!is_a($child, 'vmLog')) { /*@MWM1: Bugfix, was 'Log', changed to 'vmLog' */
             return false;
         }
 

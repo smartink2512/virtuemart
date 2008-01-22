@@ -103,16 +103,9 @@ if ($_POST) {
         require_once( ADMINPATH. 'global.php' );
         require_once( CLASSPATH. 'ps_main.php' );
         
-		$vmLoggerConf = array(
-			'buffering' => true
-			);
-		/**
-		 * This Log Object will help us log messages and errors
-		 * See http://pear.php.net/package/Log
-		 * @global Log vmLogger
-		 */
-		$vmLogger = &vmLog::singleton('display', '', '', $vmLoggerConf, PEAR_LOG_TIP);
-		$GLOBALS['vmLogger'] =& $vmLogger;
+        /* @MWM1: Logging enhancements (file logging & composite logger). */
+        $vmLogIdentifier = "notify.php";
+        require_once(CLASSPATH."Log/LogInit.php");
               
         /* Load the PayPal Configuration File */ 
         require_once( CLASSPATH. 'payment/ps_paypal.cfg.php' );

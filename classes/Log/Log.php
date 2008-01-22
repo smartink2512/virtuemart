@@ -504,6 +504,125 @@ class vmLog
         return $levels[strtolower($name)];
     }
 
+    /*
+      @MWM: There was a typo in at least common/english.php for PEAR_LOG_TIP.
+      Note that correct text is needed to ensure proper conversion from number
+      to text (and vice-versa). For this and other reasons, I'm creating the
+      conversion functions below and use names based on the __same name as the
+      actual constant__ for file logging.
+      In general, I don't think that the logging level should be subject to
+      translation errors.  Moreover, the log messages themselves are in
+      English, so it seems pointless to translate just the logging level.
+    */
+
+    /**
+     * Convert a priorty name to a priority number.
+     * Name is based on actual priority name.
+     *
+     * @param string $name      String containing a priority name.
+     * @return string           The PEAR_LOG_* integer contstant corresponding
+     *                          to the specified priority name.
+     */
+    function stringToPriorityPEAR($name)
+    {
+        global $VM_LANG;
+        $levels = array(
+            'PEAR_LOG_EMERG'     => PEAR_LOG_EMERG,
+            'PEAR_LOG_ALERT'     => PEAR_LOG_ALERT,
+            'PEAR_LOG_CRIT'      => PEAR_LOG_CRIT,
+            'PEAR_LOG_ERR'       => PEAR_LOG_ERR,
+            'PEAR_LOG_WARNING'   => PEAR_LOG_WARNING,
+            'PEAR_LOG_NOTICE'    => PEAR_LOG_NOTICE,
+            'PEAR_LOG_INFO'      => PEAR_LOG_INFO,
+            'PEAR_LOG_DEBUG'     => PEAR_LOG_DEBUG,
+            'PEAR_LOG_TIP'       => PEAR_LOG_TIP
+        );
+
+        return $levels[$name];
+    }
+
+
+    /**
+     * Returns the string representation of a PEAR_LOG_* integer constant.
+     * Name is based on actual priority name.
+     *
+     * @param int $priority     A PEAR_LOG_* integer constant.
+     *
+     * @return string           The string representation of $priority.
+     *
+     */
+    function priorityToStringPEAR($priority)
+    {   
+        global $VM_LANG;
+        $levels = array(
+            PEAR_LOG_EMERG   => 'PEAR_LOG_EMERG',
+            PEAR_LOG_ALERT   => 'PEAR_LOG_ALERT',
+            PEAR_LOG_CRIT    => 'PEAR_LOG_CRIT',
+            PEAR_LOG_ERR     => 'PEAR_LOG_ERR',
+            PEAR_LOG_WARNING => 'PEAR_LOG_WARNING',
+            PEAR_LOG_NOTICE  => 'PEAR_LOG_NOTICE',
+            PEAR_LOG_INFO    => 'PEAR_LOG_INFO',
+            PEAR_LOG_DEBUG   => 'PEAR_LOG_DEBUG',
+            PEAR_LOG_TIP     => 'PEAR_LOG_TIP'
+        );
+
+        return $levels[$priority];
+    }
+
+    /**
+     * Returns the string representation of a PEAR_LOG_* integer constant.
+     * Name is a shortened version of the actual priority name.
+     *
+     * @param int $priority     A PEAR_LOG_* integer constant.
+     *
+     * @return string           The string representation of $priority.
+     *
+     */
+    function priorityToShortStringPEAR($priority)
+    {   
+        global $VM_LANG;
+        $levels = array(
+            PEAR_LOG_EMERG   => 'EMERG',
+            PEAR_LOG_ALERT   => 'ALERT',
+            PEAR_LOG_CRIT    => 'CRIT',
+            PEAR_LOG_ERR     => 'ERR',
+            PEAR_LOG_WARNING => 'WARNING',
+            PEAR_LOG_NOTICE  => 'NOTICE',
+            PEAR_LOG_INFO    => 'INFO',
+            PEAR_LOG_DEBUG   => 'DEBUG',
+            PEAR_LOG_TIP     => 'TIP'
+        );
+
+        return $levels[$priority];
+    }
+
+    /**
+     * Convert a short priorty name to a priority number.
+     * Name is based on actual priority name.
+     *
+     * @param string $name      String containing a priority name.
+     * @return string           The PEAR_LOG_* integer contstant corresponding
+     *                          to the specified priority name.
+     */
+    function shortStringToPriorityPEAR($name)
+    {
+        global $VM_LANG;
+        $levels = array(
+            'EMERG'     => PEAR_LOG_EMERG,
+            'ALERT'     => PEAR_LOG_ALERT,
+            'CRIT'      => PEAR_LOG_CRIT,
+            'ERR'       => PEAR_LOG_ERR,
+            'WARNING'   => PEAR_LOG_WARNING,
+            'NOTICE'    => PEAR_LOG_NOTICE,
+            'INFO'      => PEAR_LOG_INFO,
+            'DEBUG'     => PEAR_LOG_DEBUG,
+            'TIP'       => PEAR_LOG_TIP
+        );
+
+        return $levels[$name];
+    }
+
+
     /**
      * Calculate the log mask for the given priority.
      *
