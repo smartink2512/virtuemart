@@ -136,4 +136,5 @@ $GLOBALS['vmLogger'] =& $vmLogger;
 $GLOBALS['vmDisplayLogger'] =& $vmDisplayLogger;
 $GLOBALS['vmFileLogger'] =& $vmFileLogger;
 
+
 ?>
