@@ -23,6 +23,9 @@ define( '_JEXEC', 1);
 require(dirname(__FILE__).'/../../../configuration.php');
 require(dirname(__FILE__).'/../../../administrator/components/com_virtuemart/compat.joomla1.5.php');
 require(dirname(__FILE__).'/../../../administrator/components/com_virtuemart/virtuemart.cfg.php');
+$vmLogIdentifier = 'extlayout.js.php';
+require_once( CLASSPATH . 'Log/LogInit.php' );
+require_once(CLASSPATH."DebugUtil.php");
 require_once( CLASSPATH . 'language.class.php');
 require_once( CLASSPATH . 'ps_main.php');
 
@@ -106,7 +109,7 @@ echo "if( typeof Ext == \"undefined\" ) {
         		defaultpage = \"index3.php?option=com_virtuemart&page=store.index\";
         		page = Ext.state.Manager.get( \"vmlastpage\", defaultpage );
         	}
-			if( page.indexOf( \"virtuemart.net\" ) == -1 ) {
+			if( page.indexOf( \"http://virtuemart.net\" ) == -1 ) {
 	        	php_self = page.replace(/index2.php/, 'index3.php');
 	        	php_self = php_self.replace(/index.php/, 'index3.php');
 	        	Ext.get('vmPage').dom.src = php_self + '&only_page=1&no_menu=1';

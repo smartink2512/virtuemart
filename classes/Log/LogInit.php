@@ -108,7 +108,7 @@ if(!isset($vmLogIdentifier))
    option is turned on inside the VM admin configuration panel. */
 
 $vmDisplayLoggerConf = array( 'buffering' => true );
-$vmDisplayLogger = &vmLog::singleton('display', '', $vmLogIdentifier, $vmLoggerConf, PEAR_LOG_TIP);
+$vmDisplayLogger = &vmLog::singleton('display', '', $vmLogIdentifier, $vmDisplayLoggerConf, PEAR_LOG_TIP);
 
 
 /* Use a null logger if file logging is disabled or if there is an error.  This

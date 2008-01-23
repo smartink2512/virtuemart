@@ -124,7 +124,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 		
 		if( $only_page ) {
 			if( @$_REQUEST['format'] == 'raw' ) while( @ob_end_clean());
-			if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmLogger );
+			if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmDisplayLogger );
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
 			if( @$_REQUEST['format'] == 'raw' ) {
 				$vm_mainframe->close(true);

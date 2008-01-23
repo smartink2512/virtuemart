@@ -977,13 +977,13 @@ Order Total: '.$order_total.'
 		// Save current Bill To Address
 		$q = "INSERT INTO `#__{vm}_order_user_info` 
 			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, ".$fieldstr.") ";
-		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, ".$fieldstr." FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
+		$q .= "SELECT NULL, '$order_id', '".$auth['user_id']."', address_type, address_type_name, ".$fieldstr." FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND address_type='BT'";
 		$db->query( $q );
 
 		// Save current Ship to Address if applicable
 		$q = "INSERT INTO `#__{vm}_order_user_info` 
 			(`order_info_id`,`order_id`,`user_id`,address_type, address_type_name, ".$fieldstr.") ";
-		$q .= "SELECT '', '$order_id', '".$auth['user_id']."', address_type, address_type_name, ".$fieldstr." FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
+		$q .= "SELECT NULL, '$order_id', '".$auth['user_id']."', address_type, address_type_name, ".$fieldstr." FROM #__{vm}_user_info WHERE user_id='".$auth['user_id']."' AND user_info_id='".$d['ship_to_info_id']."' AND address_type='ST'";
 		$db->query( $q );
 
 		/**
