@@ -29,11 +29,11 @@ include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/inst
 // Load the virtuemart main parse code
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
-// Get the Layout Type from the session
-$vmLayout = $_SESSION['vmLayout'] = vmGet( $_SESSION, 'vmLayout', 'extended' );
+// Get the Layout Type from the Cookie
+$vmLayout = $_COOKIE['vmLayout'] = vmGet( $_COOKIE, 'vmLayout', 'extended' );
 // Change the Layout Type if it is provided through GET
 if( !empty( $_GET['vmLayout'])) {
-	$vmLayout = $_SESSION['vmLayout'] = $_GET['vmLayout'] == 'standard' ? $_GET['vmLayout'] : 'extended';
+	$vmLayout = $_COOKIE['vmLayout'] = $_GET['vmLayout'] == 'standard' ? $_GET['vmLayout'] : 'extended';
 }
 // pages, which are called through index3.php are PopUps, they should not need a menu (but it can be overridden by $_REQUEST['no_menu'])
 $no_menu_default = strstr( $_SERVER['PHP_SELF'], 'index3.php') ? 1 : 0;

@@ -312,10 +312,9 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 
 			$config .= "?>";
 
-			
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
-			if( $_SESSION['vmLayout'] == 'extended') {
+			if( !empty($_REQUEST['ajax_request'])) {
 				$vmLogger->info( $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS',false) );
 			} else {
 				vmRedirect( $_SERVER['PHP_SELF']."?page=admin.show_cfg&option=com_virtuemart", $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS') );
@@ -380,7 +379,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 			fputs($fp, $config, strlen($config));
 			fclose ($fp);
 
-			if( $_SESSION['vmLayout'] == 'extended') {
+			if( !empty($_REQUEST['ajax_request'])) {
 				$vmLogger->info( $VM_LANG->_('VM_CONFIGURATION_CHANGE_SUCCESS',false) );
 			} else {
 				$task = vmGet( $_REQUEST, 'task', '');

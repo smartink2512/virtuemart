@@ -99,7 +99,7 @@ if( $show_categories == "yes" ) {
 if ( $show_listall == 'yes' ) { ?>
     <tr> 
       <td colspan="2"><br />
-          <a href="<?php $sess->purl($mm_action_url."index.php?page=shop.browse") ?>">
+          <a href="<?php $sess->purl($mm_action_url."index.php?page=shop.browse&category=") ?>">
           <?php echo $VM_LANG->_('PHPSHOP_LIST_ALL_PRODUCTS') ?>
           </a>
       </td>

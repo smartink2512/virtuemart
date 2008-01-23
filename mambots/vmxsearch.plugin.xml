@@ -6,10 +6,10 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>akurczyn@gmail.com</authorEmail>
 	<version>1.5</version>
-	<description>An extended search plugin for Virtuemart component.
+	<description><![CDATA[An extended search plugin for Virtuemart component.
 If you find this plugin useful, please donate to the Author (https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akurczyn%40gmail%2ecom&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=MX&bn=PP%2dDonationsBF&charset=UTF%2d8).
 Tank you!
-	</description>
+	]]></description>
 	<files>
 		<filename plugin="vmxsearch.plugin">vmxsearch.plugin.php</filename>
 	</files>
