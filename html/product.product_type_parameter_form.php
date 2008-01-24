@@ -54,7 +54,6 @@ else {
 		$edit_parametr = true;  // Parametr exist and it is edited
 	}
 }
-mosCommonHTML::loadCalendar();
 ?> 
 
   <table class="adminform">

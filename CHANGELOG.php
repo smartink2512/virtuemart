@@ -36,6 +36,9 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 24.01.2008 gregdev
+# Obtain language variable correctly
+# Task #1676 - Class 'mosCommonHTML' error when trying to add parameters to product type
+# Task #1652 - use of deprecated method mosCommonHTML::loadCalendar()
 # Task #1701 - Ask a question about this product give error with legacy plugin off
 ^ Cleaned up the install (especially for Joomla! 1.5)
 # Added missing logging constants to the default config file

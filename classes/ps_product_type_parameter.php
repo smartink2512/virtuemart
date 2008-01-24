@@ -450,7 +450,7 @@ class ps_product_type_parameter {
 		
 		$db = new ps_DB( ) ;
 		if( empty($parameter_name) ) {
-			return $GLOBALS['VM_LANG']->_CMN_NEW_ITEM_LAST ;
+			return $GLOBALS['VM_LANG']->_( 'CMN_NEW_ITEM_LAST' );
 		} else {
 			
 			$q = "SELECT parameter_list_order,parameter_label,parameter_name FROM #__{vm}_product_type_parameter " ;

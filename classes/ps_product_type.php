@@ -339,7 +339,7 @@ class ps_product_type {
 
 		$db = new ps_DB;
 		if (!$product_type_id) {
-			return $GLOBALS['VM_LANG']->_CMN_NEW_ITEM_LAST;
+			return $GLOBALS['VM_LANG']->_( 'CMN_NEW_ITEM_LAST' );
 		}
 		else {
 
