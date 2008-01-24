@@ -56,25 +56,40 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		$frontend = $backend = false;
 		
 		$frontend_archive = new Archive_Tar( $frontend_file, "gz" );
-		$frontend_archive->setErrorHandling(PEAR_ERROR_PRINT);
 		$admin_archive = new Archive_Tar( $admin_file, "gz" );
+
+		// Don't show errors on Joomla! 1.5 (errors appear even on a successfull extraction)
+		if( !class_exists( 'JConfig' ) ) {
+			$frontend_archive->setErrorHandling(PEAR_ERROR_PRINT);
+			$admin_archive->setErrorHandling(PEAR_ERROR_PRINT);
+		}
+		
+		// Extract the files
+		$frontend_result = $frontend_archive->extract( $frontend_dir );
+		$backend_result = $admin_archive->extract( $admin_dir );
+
+		// Assume the extraction was successfull for Joomla! 1.5
+		if( class_exists( 'JConfig' ) ) {
+			$frontend_result = $backend_result = true;
+		}
 	
-		if( $frontend_archive->extract( $frontend_dir ) ) {
+		if( $frontend_result ) {
 			$frontend = true;
-			$messages[] = "Frontend Files successfully extracted.";
+			$messages[] = "Frontend files successfully extracted.";
 			if( @unlink( $frontend_file ) ) {
-				$messages[] = "Frontend Archive File successfully deleted.";
+				$messages[] = "Frontend archive file successfully deleted.";
 			}
 		}
-		if( $admin_archive->extract( $admin_dir ) ) {
+
+		if( $backend_result ) {
 			$backend = true;
-			$messages[] = "Backend Files successfully extracted.";
+			$messages[] = "Backend files successfully extracted.";
 			if( @unlink( $admin_file ) ) {
-					$messages[] = "Backend Archive File successfully deleted.";
+					$messages[] = "Backend archive file successfully deleted.";
 			}
 		}
 		if( !$frontend || !$backend ) {
-			echo "<span class=\"message\">Something went wrong with Unpacking the Archive Files</span>";
+			echo "<span class=\"message\">Something went wrong with unpacking the archive files</span>";
 		}
 	/** END UNPACKING ARCHIVES */
 	}
@@ -293,11 +308,11 @@ DEV_STATUS='.$VMVERSION->DEV_STATUS.'\')' );
 		$database->query();
 	}
 	if( !empty( $messages )) {
-		echo '<ul>';
+		echo '<ul style="list-style-type: disc;list-style-position: inside;">';
 		foreach( $messages as $message ) {
 			echo "<li>$message</li>";
 		}
-		echo '<ul>';
+		echo '</ul>';
 	}
 	echo '</div>';
 }

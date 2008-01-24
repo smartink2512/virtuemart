@@ -138,6 +138,6 @@ $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (19,'World_2 &gt; 12kg'
 $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (20,'World_2 &gt; 20kg','1','','00000','99999','12.0','20.0','90.24','2','47','0','20');" );
 $db->query( " INSERT INTO `#__{vm}_shipping_rate` VALUES (21,'UPS Express','2','AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE','00000','99999','0.0','20.0','5.24','2','47','0','21');" );
 
-echo "<br /><span class=\"message\">The Sample Data was installed successfully.</span>";
+$messages[] = "The sample data was installed successfully.";
   
 ?>		  

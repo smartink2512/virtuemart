@@ -133,6 +133,13 @@ define('VM_FEED_MAX_TEXT_LENGTH', '250');
 define('VM_STORE_CREDITCARD_DATA', '1');
 define('VM_ENCRYPT_FUNCTION', 'AES_ENCRYPT');
 define('VM_COMPONENT_NAME', 'com_virtuemart');
+define('VM_LOGFILE_ENABLED', '');
+define('VM_LOGFILE_NAME', '');
+define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING');
+define('VM_DEBUG_IP_ENABLED', '');
+define('VM_DEBUG_IP_ADDRESS', '');
+define('VM_LOGFILE_FORMAT', '%{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message}');
+
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;
 $VM_BROWSE_ORDERBY_FIELDS = array( 'product_name', 'product_price', 'product_cdate' );

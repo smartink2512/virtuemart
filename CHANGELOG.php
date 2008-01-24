@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.01.2008 gregdev
+^ Cleaned up the install (especially for Joomla! 1.5)
+# Added missing logging constants to the default config file
+# Fixed undefined variable $VMVERSION warning
+# Use vmMail (instead of mosMail) when creating a user in VM backend
+
 21.01.2008 mwmills
 ! @MWM1 used in source code comments.
 + Logging & Debugging enhancements: See new modules: classes/Log/LogInit.php & classes/DebugUtil.php for more information.

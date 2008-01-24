@@ -142,7 +142,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	}
 	// Include The Version File
 	include_once( ADMINPATH. 'version.php' );
-	if( !is_object( $VMVERSION ) ) {
+	if( !isset( $VMVERSION ) || !is_object( $VMVERSION ) ) {
 		$VMVERSION =& new vmVersion();
 	}
 	

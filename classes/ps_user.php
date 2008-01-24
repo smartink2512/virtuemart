@@ -558,7 +558,7 @@ class ps_user {
 	 */
 	function _sendMail( $name, $email, $username, $password ) {
 		global $database, $VM_LANG;
-		global $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_sitename, $mosConfig_live_site;
+		global $my, $mosConfig_mailfrom, $mosConfig_fromname, $mosConfig_sitename, $mosConfig_live_site;
 		
 		$query = "SELECT email"
 			. "\n FROM #__users"
@@ -586,7 +586,7 @@ class ps_user {
 			$adminEmail = $admin->email;
 		}
 
-		mosMail( $adminEmail, $adminName, $email, $subject, $message );
+		vmMail( $adminEmail, $adminName, $email, $subject, $message );
 	}
 
 
