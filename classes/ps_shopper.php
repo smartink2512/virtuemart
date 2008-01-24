@@ -233,10 +233,8 @@ class ps_shopper {
 				}
 			}
 			
-			$userid = null;
 			$database->setQuery( "SELECT id FROM #__users WHERE username='".$d['username']."'" );
-			$database->loadObject( $userid );
-			$uid = $userid->id;
+			$uid = $database->loadResult();
 			
 		}
 		else {

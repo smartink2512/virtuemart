@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 24.01.2008 gregdev
+# Task #1711 - User registration work is not complete
 # Obtain language variable correctly
 # Task #1676 - Class 'mosCommonHTML' error when trying to add parameters to product type
 # Task #1652 - use of deprecated method mosCommonHTML::loadCalendar()
