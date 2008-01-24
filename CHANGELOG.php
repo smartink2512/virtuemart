@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 24.01.2008 gregdev
+# Task #1701 - Ask a question about this product give error with legacy plugin off
 ^ Cleaned up the install (especially for Joomla! 1.5)
 # Added missing logging constants to the default config file
 # Fixed undefined variable $VMVERSION warning

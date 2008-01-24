@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 if ( $set == 0 ) { // This is the enquiry form!
 
-	$validate = mosHash( $mainframe->getCfg( 'db' ) );
+	$validate = vmIsJoomla( '1.5' ) ? JUtility::getHash( $mainframe->getCfg( 'db' ) ) : mosHash( $mainframe->getCfg( 'db' ) );
 	?>
 	<br />
 	<a class="button" href="<?php echo $product_link ?>"><?php echo $VM_LANG->_('VM_RETURN_TO_PRODUCT') ?></a>
