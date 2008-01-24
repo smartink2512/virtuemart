@@ -66,11 +66,6 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
 			$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'] = JPATH_BASE.DS.'cache';
 			
-			// We need to set this for the install script
-			if( !isset( $option ) ) {
-				$option = JAdministratorHelper::findOption();
-			}
-		
 			// The selected language
 			$lang =& JFactory::getLanguage();
 			$mosConfig_lang = $GLOBALS['mosConfig_lang']          = $lang->getBackwardLang();
