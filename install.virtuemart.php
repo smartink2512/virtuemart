@@ -18,11 +18,6 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 
 include_once( dirname(__FILE__).'/compat.joomla1.5.php' );
 
-// Get $option on Joomla! 1.5
-if( class_exists( 'JConfig' ) && !isset( $option ) ) {
-		$option = JAdministratorHelper::findOption();
-}
-
 if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
 	virtuemart_is_installed();
 	include( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' );

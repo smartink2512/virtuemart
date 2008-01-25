@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+25.01.2008 gregdev
+# Fixed another undefined variable $VMVERSION warning (during install)
+# Removed reference to non-variable for PHP4 (virtuemart_parser)
+
 24.01.2008 gregdev
 ^ Allow access to download area from mod_virtuemart_login
 # Task #1711 - User registration work is not complete

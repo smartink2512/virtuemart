@@ -29,6 +29,12 @@ include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/inst
 // Load the virtuemart main parse code
 require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
+// Include The Version File
+include_once( ADMINPATH. 'version.php' );
+if( !isset( $VMVERSION ) || !is_object( $VMVERSION ) ) {
+	$VMVERSION =& new vmVersion();
+}
+
 // Get the Layout Type from the Cookie
 $vmLayout = vmGet( $_COOKIE, 'vmLayout', 'extended' );
 
@@ -139,11 +145,6 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	}
 	else {
 		include( PAGEPATH.'store.index.php' );
-	}
-	// Include The Version File
-	include_once( ADMINPATH. 'version.php' );
-	if( !isset( $VMVERSION ) || !is_object( $VMVERSION ) ) {
-		$VMVERSION =& new vmVersion();
 	}
 	
 	if( $vmLayout != 'extended' ) {
