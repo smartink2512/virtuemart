@@ -2,12 +2,12 @@
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
 <install type="component" version="1.5.0">
         <name>VirtueMart</name>
-        <creationDate>05.12.2007</creationDate>
+        <creationDate>25.01.2008</creationDate>
         <author>The VirtueMart Dev Team</author>
         <copyright>released under GNU General Public License</copyright>
         <authorEmail>soeren|at|virtuemart.net</authorEmail>
         <authorUrl>www.virtuemart.net</authorUrl>
-        <version>1.1.0 beta2</version>
+        <version>1.1.0 beta3</version>
         <description>Online-Shop / E-Commerce Component</description>
 		
 	<installfile>install.virtuemart.php</installfile>

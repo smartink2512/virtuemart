@@ -1,13 +1,11 @@
 <?php 
-if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
-	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
-}
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -34,12 +32,12 @@ class vmVersion {
 	/** @var int Release Number */
 	var $RELEASE = '1.1.0';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'beta2';
+	var $DEV_STATUS = 'beta3';
 	/** @var string Codename */
 	// Title of Episode 1, Season 3 of Grey's Anatomy
 	var $CODENAME = 'Time Has Come Today';
 	/** @var string Date */
-	var $RELDATE = '05/12/2007';
+	var $RELDATE = '25/01/2008';
 	/** @var string Time */
 	var $RELTIME = '21:00';
 	/** @var string Timezone */
@@ -47,7 +45,7 @@ class vmVersion {
 	/** @var string Revision */
 	var $REVISION = '$Revision$';
 	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Copyright (C) 2005-2007 soeren - All rights reserved.'; 
+	var $COPYRIGHT = 'Copyright (C) 2005-2008 soeren - All rights reserved.'; 
 	/** @var string URL */
 	var $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla!/Mambo released under the GNU/GPL License.';
 }
