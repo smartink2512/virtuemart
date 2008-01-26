@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+25.01.2008 soeren
+# Task #1715 - Publish/unpublish check mark buttons not working in IE, when clicked it give 404 error
+# Task #1479 - Backend - Cancel shipping address takes user back to user list
+
 25.01.2008 gregdev
 # Fixed another undefined variable $VMVERSION warning (during install)
 # Removed reference to non-variable for PHP4 (virtuemart_parser)

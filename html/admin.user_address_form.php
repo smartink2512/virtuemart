@@ -35,11 +35,12 @@ if (!empty( $missing )) {
    $db->query($q);
    $db->next_record();
 }
-echo "<fieldset>
-        <legend><span class=\"sectiontableheader\">".$VM_LANG->_('PHPSHOP_SHOPPER_FORM_SHIPTO_LBL')."</span></legend>";
+?>
+<fieldset>
+        <legend><span class="sectiontableheader"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_SHIPTO_LBL') ?></span></legend>
         
-echo "<br />".$VM_LANG->_('PHPSHOP_SHIPTO_TEXT'). "<br /><br /><br />";
-?> 
+<br /><?php echo $VM_LANG->_('PHPSHOP_SHIPTO_TEXT') ?><br /><br /><br />
+ 
 <div style="width:90%;" class="adminform">
 <!-- Registration form -->
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="adminForm">
@@ -211,6 +212,7 @@ echo "<br />".$VM_LANG->_('PHPSHOP_SHIPTO_TEXT'). "<br /><br /><br />";
       <input type="hidden" name="func" value="userAddressAdd" />
 <?php 
     } ?>
+    <input type="hidden" name="vmtoken" value="<?php echo vmspoofvalue( $sess->getSessionId() ) ?>" />
   <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="address_type" value="ST">
   <input type="hidden" name="page" value="<?php echo $modulename ?>.user_form"  />

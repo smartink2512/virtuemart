@@ -32,11 +32,14 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 /**
 ** End Checkout Bar Feature
 *****************************/
-echo "<fieldset>
-        <legend><span class=\"sectiontableheader\">".$VM_LANG->_('PHPSHOP_SHOPPER_FORM_SHIPTO_LBL')."</span></legend>";
-        
-echo "<br />".$VM_LANG->_('PHPSHOP_SHIPTO_TEXT'). "<br /><br /><br />";
 ?>
+<fieldset>
+        <legend><span class="sectiontableheader"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_SHIPTO_LBL') ?></span></legend>
+        
+<br />
+<?php echo $VM_LANG->_('PHPSHOP_SHIPTO_TEXT') ?>
+<br /><br /><br />
+
 <div style="width:90%;">
 <!-- Registration form -->
 <form action="<?php echo SECUREURL ?>index.php" method="post" name="adminForm">
@@ -44,6 +47,7 @@ echo "<br />".$VM_LANG->_('PHPSHOP_SHIPTO_TEXT'). "<br /><br /><br />";
   <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
   <input type="hidden" name="page" value="<?php echo $next_page ?>" />
   <input type="hidden" name="next_page" value="<?php echo $next_page ?>" />
+  <input type="hidden" name="vmtoken" value="<?php echo vmspoofvalue( $sess->getSessionId() ) ?>" />
 <?php
    if (!empty($user_info_id)) { ?>
       <input type="hidden" name="func" value="userAddressUpdate" />
