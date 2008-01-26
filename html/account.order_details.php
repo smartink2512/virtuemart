@@ -23,7 +23,7 @@ require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 
-$tpl =& vmTemplate::getInstance();
+$tpl = vmTemplate::getInstance();
 
 $print = vmGet( $_REQUEST, 'pop', 0);
 $order_id = vmGet( $_REQUEST, 'order_id', 0);

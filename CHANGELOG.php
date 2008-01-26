@@ -37,6 +37,8 @@ VirtueMart 1.1.x
 *************************************
 26.01.2008 gregdev
 # Restore $VMVERSION fix (for install)
+# Fixed Warning: mysql_real_escape_string() expects parameter 2 to be resource (compat.joomla1.5)
+# Variable can't be assigned by reference (account.order_details)
 
 25.01.2008 soeren
 # Task #1715 - Publish/unpublish check mark buttons not working in IE, when clicked it give 404 error

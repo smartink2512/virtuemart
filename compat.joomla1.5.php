@@ -74,20 +74,15 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			$lang =& JFactory::getLanguage();
 			$mosConfig_lang = $GLOBALS['mosConfig_lang']          = $lang->getBackwardLang();
 		
-			// The user object
-			if( class_exists('JTable')) {
-				// $database is directly needed by some functions, so we need to create it here. 
-				$GLOBALS['database']= $database = JFactory::getDBO();
-				$user				=& JFactory::getUser();
-				$GLOBALS['my']		= clone($user->getTable());
-				$GLOBALS['my']->gid	= $user->get('aid', 0);
-			
-				// The permissions object
-				$acl =& JFactory::getACL();
-				$GLOBALS['acl'] =& $acl;
-			} else {
-				jimport( 'joomla.database.table' );
-			}
+			// $database is directly needed by some functions, so we need to create it here. 
+			$GLOBALS['database'] = $database = JFactory::getDBO();
+
+			// The $my (user) object
+			$GLOBALS['my'] = & JFactory::getUser();
+		
+			// The permissions object
+			$acl =& JFactory::getACL();
+			$GLOBALS['acl'] =& $acl;
 			
 			// Version information
 			$_VERSION = $GLOBALS['_VERSION'] = new JVersion();
