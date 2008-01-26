@@ -211,7 +211,12 @@ if (!empty( $missing )) {
    else { ?>
       <input type="hidden" name="func" value="userAddressAdd" />
 <?php 
-    } ?>
+    }
+    if( $vmLayout == 'extended' ) {
+    	?><input type="hidden" name="ajax_request" value="1" />
+    	<?php
+}
+?>
     <input type="hidden" name="vmtoken" value="<?php echo vmspoofvalue( $sess->getSessionId() ) ?>" />
   <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="address_type" value="ST">

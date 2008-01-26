@@ -325,17 +325,14 @@ class ps_user {
 				return false;
 			}
 			
-			// Delete user_info entries
-			$q  = "DELETE FROM #__{vm}_user_info ";
-			$q .= "WHERE user_id='" . $user . "' ";
-			$q .= "AND address_type='BT'";
-			$db->query($q);
-			$db->next_record();
-
-			$q = "DELETE FROM #__{vm}_auth_user_vendor where user_id='$user' AND vendor_id='$ps_vendor_id'";
+			// Delete ALL user_info entries (billing and shipping addresses)
+			$q  = "DELETE FROM #__{vm}_user_info WHERE user_id=" . $user;
 			$db->query($q);
 
-			$q = "DELETE FROM #__{vm}_shopper_vendor_xref where user_id='$user' AND vendor_id='$ps_vendor_id'";
+			$q = "DELETE FROM #__{vm}_auth_user_vendor where user_id=$user AND vendor_id=$ps_vendor_id";
+			$db->query($q);
+
+			$q = "DELETE FROM #__{vm}_shopper_vendor_xref where user_id=$user AND vendor_id=$ps_vendor_id";
 			$db->query($q);
 		}
 

@@ -41,6 +41,7 @@ VirtueMart 1.1.x
 # Variable can't be assigned by reference (account.order_details)
 
 25.01.2008 soeren
+# Task #1717 - Security Token message when saving shipping address in backend administration
 # Task #1715 - Publish/unpublish check mark buttons not working in IE, when clicked it give 404 error
 # Task #1479 - Backend - Cancel shipping address takes user back to user list
 

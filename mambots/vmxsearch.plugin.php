@@ -22,7 +22,7 @@ defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' ) ;
 jimport( 'joomla.plugin' ) ;
 include_once (dirname( __FILE__ ) . "/../../components/com_virtuemart/virtuemart_parser.php") ;
 
-/** Register search function inside Mambo's API */
+/** Register search function inside Joomla's API */
 $mainframe->registerEvent( 'onSearch', 'vmExtendedSearch' ) ;
 
 /**

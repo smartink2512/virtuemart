@@ -163,7 +163,7 @@ ALTER TABLE `jos_vm_product_votes` ADD PRIMARY KEY ( `product_id` ) ;
 ALTER TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id` 
 
 # 13.04.2006 for JoomFish
-ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
 # Ask a question!
 INSERT INTO `jos_vm_function` VALUES (NULL, 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');
 INSERT INTO `jos_vm_function` VALUES (NULL, 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin');
@@ -252,7 +252,8 @@ ALTER TABLE `jos_vm_product_reviews` CHANGE `product_id` `product_id` INT( 11 ) 
 
 # 25.07.2007: Allow to set address and date format
 ALTER TABLE `jos_vm_vendor` 
-				ADD `vendor_address_format` TEXT NOT NULL ,
+				ADD `vendor_address_format` TEXT NOT NULL ;
+ALTER TABLE `jos_vm_vendor` 
 				ADD `vendor_date_format` VARCHAR( 255 ) NOT NULL;
 UPDATE `jos_vm_vendor` SET
 			`vendor_address_format` = '{storename}\n{address_1}\n{address_2}\n{city}, {zip}',
