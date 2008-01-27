@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.01.2008 thepisu
+# Changed peruvian currency (Peruvian Nuevo Sol)
+# updated SQL files
+# small fixes in languages
+
 26.01.2008 gregdev
 # Restore $VMVERSION fix (for install)
 # Fixed Warning: mysql_real_escape_string() expects parameter 2 to be resource (compat.joomla1.5)

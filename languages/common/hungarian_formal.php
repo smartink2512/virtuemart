@@ -702,7 +702,7 @@ For more information on cancelling orders and returning items, see the <a href="
 	
 	Please do not respond to this message as it is automatically generated and is for information purposes only',
 	'REG_COMPLETE' => '<div class="componentheading">Registration Complete!</div><br />You may now login.',
-	'REG_COMPLETE_ACTIVATE' => '<div class="componentheading">Registration Complete!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.',
+	'REG_COMPLETE_ACTIVATE' => '<div class="componentheading">Registration Completed!</div><br />Your account has been created and activation link has been sent to the e-mail address you entered. Note that you must activate the account by clicking on the activation link when you get the e-mail before you can login.',
 	'DATE_FORMAT_LC' => '%A, %d %B %Y',
 	'VM_CART_PRODUCT_ADDED' => 'The product was added to your cart.',
 	'VM_CART_PRODUCT_UPDATED' => 'The product quantity has been updated.',
@@ -934,7 +934,7 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.',
-	'PHPSHOP_CART_GOTO_WAITING_LIST' => 'Please wait: in the next page you will can submit the notify request.',
+	'PHPSHOP_CART_GOTO_WAITING_LIST' => 'Please wait: in the next page you can submit the notify request.',
 	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC' => 'Order Status for successful transactions',
 	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN' => 'Select the order status to which the actual order is set, if the payment transaction was successful. 
 If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).',

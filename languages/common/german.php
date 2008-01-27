@@ -937,7 +937,7 @@ Our %s  is now in stock and can be purchased by following this link:
 %s
 
  This is a one time notice, you will not receive this e-mail again.',
-	'PHPSHOP_CART_GOTO_WAITING_LIST' => 'Please wait: in the next page you will can submit the notify request.',
+	'PHPSHOP_CART_GOTO_WAITING_LIST' => 'Please wait: in the next page you can submit the notify request.',
 	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC' => 'Order Status for successful transactions',
 	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN' => 'Select the order status to which the actual order is set, if the payment transaction was successful. 
 If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).',

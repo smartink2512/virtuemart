@@ -630,7 +630,8 @@ $db->query( "INSERT INTO `#__{vm}_state` VALUES (1, 223, 'Alabama', 'ALA', 'AL')
 # NEW Currencies
 $db->query( "INSERT INTO `#__{vm}_currency` (currency_name, currency_code)
 VALUES
-    ('Armenian Dram', 'AMD');");
+    ('Armenian Dram', 'AMD'),
+    ('Peruvian Nuevo Sol', 'PEN');");
 
 # 10.04.2006
 $db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;");

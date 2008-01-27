@@ -610,7 +610,7 @@ $db->query( "INSERT INTO `#__{vm}_currency` VALUES (1, 'Andorran Peseta', 'ADP')
 (107, 'New Zealand Dollar', 'NZD'),
 (108, 'Omani Rial', 'OMR'),
 (109, 'Panamanian Balboa', 'PAB'),
-(110, 'Peruvian Inti', 'PEI'),
+(110, 'Peruvian Nuevo Sol', 'PEN'),
 (111, 'Papua New Guinea Kina', 'PGK'),
 (112, 'Philippine Peso', 'PHP'),
 (113, 'Pakistan Rupee', 'PKR'),
