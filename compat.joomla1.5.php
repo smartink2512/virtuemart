@@ -32,7 +32,10 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 				
 				require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
 				require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
+				$mainframe = JFactory::getApplication(defined('_VM_IS_BACKEND') ? 'administrator' : 'site');
+			
 			}
+			jimport('joomla.application.component.helper');
 			if( class_exists('JComponentHelper')) {
 				$usersConfig = &JComponentHelper::getParams( 'com_users' );
 				$contentConfig = &JComponentHelper::getParams( 'com_content' );	

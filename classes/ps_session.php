@@ -479,8 +479,8 @@ class ps_session {
 	 *
 	 * @param string $text
 	 */
-	function purl($text) {		
-		echo $this->url( $text );		
+	function purl($text, $createAbsoluteURI=false, $encodeAmpersands=true, $ignoreSEF=false) {		
+		echo $this->url( $text, $createAbsoluteURI, $encodeAmpersands, $ignoreSEF );		
 	}
 	
 	/**
@@ -492,7 +492,7 @@ class ps_session {
 	 * @param boolean False: Create a URI like /joomla/index.php?....; True: Create a URI like http://www.domain.com/index.php?....
 	 * @return string The reformatted URL
 	 */
-	function url($text, $createAbsoluteURI=false, $encodeAmpersands=true ) {
+	function url($text, $createAbsoluteURI=false, $encodeAmpersands=true, $ignoreSEF=false ) {
 		global $mm_action_url, $page;
 		
 		if( !defined( '_VM_IS_BACKEND' )) {
@@ -533,7 +533,7 @@ class ps_session {
 					}
 	
 					$appendix = $script.substr($text, $limiter, strlen($text)).$appendix;
-					if( function_exists('sefRelToAbs')) {
+					if( function_exists('sefRelToAbs') && !$ignoreSEF && !defined( '_JLEGACY' ) ) {
 						$appendix = sefRelToAbs( str_replace( $script.'&', $script.'?', $appendix ) );
 					}
 

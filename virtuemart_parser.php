@@ -242,7 +242,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$vm_mainframe->close(true);//die
 		}
 		
-		if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE')) {
+		if ($ok == true && empty($error) && !defined('_DONT_VIEW_PAGE') && !strstr($page, 'ajax')) {
 			$_SESSION['last_page'] = $page;
 		}
 	}

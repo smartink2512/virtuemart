@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+29.01.2008 soeren
+# Task #1727 - Layout error after installation
+# Task #1725 - Frontend admin link error
+
+28.01.2008 soeren
+# Task #1725 - Frontend admin link error
+# Admin Product List in Frontend didn't allow Price Management due to wrong URLs
+
 27.01.2008 thepisu
 # Changed peruvian currency (Peruvian Nuevo Sol)
 # updated SQL files

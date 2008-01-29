@@ -409,7 +409,7 @@ function showPriceForm(prodId) {
     
     // define some private variables
     var showBtn;
-	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&page=product.ajax_tools&task=getPriceForm&no_html=1&product_id=' + prodId;
+	sUrl = '<?php $sess->purl( $mm_action_url .'index3.php?page=product.ajax_tools&task=getPriceForm&no_html=1', false, false, true ) ?>&product_id=' + prodId;
 	callback = { success : function(o) { 
 		
 				        priceDlg = Ext.Msg.show({
@@ -479,19 +479,19 @@ function submitPriceForm(formId) {
         }
     };
     
-   	Ext.Ajax.request({method:'POST', url: '<?php echo $mosConfig_live_site.$path ?>index3.php', success: callback.success, failure: callback.failure, form: formId});
+   	Ext.Ajax.request({method:'POST', url: '<?php echo $_SERVER['PHP_SELF'] ?>', success: callback.success, failure: callback.failure, form: formId});
 	
 }
 function cancelPriceForm(id) {
 	updatePriceField( id );
 }
 function updatePriceField( id ) {	
-	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1&product_id=' + id;
+	sUrl = '<?php  $sess->purl( $mm_action_url .'index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1', false, false, true ) ?>&product_id=' + id;
 	callback = { success : function(o) { Ext.get("priceform-dlg").innerHTML = o.responseText;	}};
 	Ext.Ajax.request({method:'GET', url: sUrl, success:callback.success });
 }
 function reloadForm( parentId, keyName, keyValue ) {
-	sUrl = '<?php echo $mosConfig_live_site.$path ?>index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getPriceForm&product_id='+parentId+'&'+keyName+'='+keyValue;
+	sUrl = '<?php  $sess->purl( $mm_action_url .'index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getPriceForm', false, false, true ) ?>&product_id='+parentId+'&'+keyName+'='+keyValue;
 	callback = { success : function(o) { priceDlg.updateText( o.responseText) }};
 	Ext.Ajax.request({method:'GET', url: sUrl, success:callback.success });
 }
