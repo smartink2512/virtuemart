@@ -617,7 +617,7 @@ $db->query( "INSERT INTO `#__{vm}_currency` VALUES (1, 'Andorran Peseta', 'ADP')
 (114, 'Polish Zloty', 'PLZ'),
 (116, 'Paraguay Guarani', 'PYG'),
 (117, 'Qatari Rial', 'QAR'),
-(118, 'Romanian Leu', 'ROL'),
+(118, 'Romanian Leu', 'RON'),
 (119, 'Rwanda Franc', 'RWF'),
 (120, 'Saudi Arabian Riyal', 'SAR'),
 (121, 'Solomon Islands Dollar', 'SBD'),
