@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : french.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -19,12 +19,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
-	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Compte Client:',
-	'PHPSHOP_ACC_UPD_BILL' => 'Ici vous pouvez mettre à jour vos informations de facturation.',
-	'PHPSHOP_ACC_UPD_SHIP' => 'Ici vous pouvez ajouter et mettre à jour vos adresses d\'expédition.',
-	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Information de Compte',
-	'PHPSHOP_ACC_SHIP_INFO' => 'Information d\'Expédition',
-	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
-	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
+	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Compte client:',
+	'PHPSHOP_ACC_UPD_BILL' => 'Modifier mes informations de facturation.',
+	'PHPSHOP_ACC_UPD_SHIP' => 'Modifier mes adresses d\'expédition.',
+	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Information de compte',
+	'PHPSHOP_ACC_SHIP_INFO' => 'Information d\'expédition',
+	'PHPSHOP_DOWNLOADS_CLICK' => 'Cliquer sur le nom du produit pour télécharger les fichiers',
+	'PHPSHOP_DOWNLOADS_EXPIRED' => 'Vous avez déjà téléchargé le(s) fichier(s) le nombre maximal de fois, ou le délai pour le téléchargement a expiré.'
 ); $VM_LANG->initModule( 'account', $langvars );
 ?>

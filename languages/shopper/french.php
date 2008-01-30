@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : french.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -19,16 +19,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Les prix affichés sont TTC ?',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Si la case est cochée, les prix sont affichés taxes incluses.  Sinon ils sont affichés sans les taxes.',
-	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Nom de l\'Adresse',
-	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Liste des Groupes de Clients',
-	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Nom du Groupe',
-	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Description du Groupe',
-	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Formulaire du Groupe de Clients',
-	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Nom du Groupe',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Description du Groupe',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Remise sur Prix dans le Groupe des Acheteurs par défaut (en %)',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Un montant positif de X veut dire: si le Produit n\'a aucun prix affecté à CE groupe d\'acheteurs, le prix par défaut est diminué de X %. Un montant négatif a l\'effet inverse'
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Afficher les prix TTC?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Si la case est cochée, les prix sont affichés TVA incluses.  Sinon ils sont affichés sans la TVA',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Nom de l\'adresse',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Liste des groupes de clients',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Nom du groupe',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Description du groupe',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Formulaire du groupe de clients',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Nom du groupe',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Description du groupe',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Remise sur les prix pour le groupe  par défaut des acheteurs(en %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Un montant positif de X veut dire: si le Produit n\'a aucun prix affecté à CE groupe d\'acheteurs, le prix par défaut est diminué de X %. Un montant négatif a l\'effet inverse.'
 ); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

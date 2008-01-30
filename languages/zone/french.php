@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : french.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -20,19 +20,19 @@ global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Pays',
-	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Assigner à la Zone',
-	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Assigner Zones',
-	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Nom de la Zone',
-	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Description de la Zone',
-	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Coût Zone par Article',
-	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Coût Limite Zone',
-	'PHPSHOP_ZONE_LIST_LBL' => 'Liste Zone',
-	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Nom Zone',
-	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Description de la Zone',
-	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Coût Zone par Article',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Coût Limite Zone',
-	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
-	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
-	'VM_ZONE_EDITZONE' => 'Edit This Zone'
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Assigner à la zone',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Assigner zones',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Nom de la zone',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Description de la zone',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Coût zone par article',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Coût limite zone',
+	'PHPSHOP_ZONE_LIST_LBL' => 'Liste zone',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Nom zone',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Description de la zone',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Coût zone par article',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Coût limite zone',
+	'VM_ZONE_ASSIGN_PERITEM' => 'Par item',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Llimite',
+	'VM_ZONE_EDITZONE' => 'Editer cette zone'
 ); $VM_LANG->initModule( 'zone', $langvars );
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : french.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -19,12 +19,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
-	'PHPSHOP_TAX_LIST_LBL' => 'Liste des Taux de Taxes',
-	'PHPSHOP_TAX_LIST_STATE' => 'Taxes par Etat ou Région',
-	'PHPSHOP_TAX_LIST_COUNTRY' => 'Taxes par Pays',
-	'PHPSHOP_TAX_FORM_LBL' => 'Ajouter des Informations sur la Taxe',
-	'PHPSHOP_TAX_FORM_STATE' => 'Taxe par Etat ou Région',
-	'PHPSHOP_TAX_FORM_COUNTRY' => 'Taxe par Pays',
-	'PHPSHOP_TAX_FORM_RATE' => 'Taux de Taxe (pour 19.6% => remplissez 0.196)'
+	'PHPSHOP_TAX_LIST_LBL' => 'Liste des taux de TVA',
+	'PHPSHOP_TAX_LIST_STATE' => 'TVA état / région',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'TVA  pays',
+	'PHPSHOP_TAX_FORM_LBL' => 'Ajouter des informations sur la TVA',
+	'PHPSHOP_TAX_FORM_STATE' => 'TVA pour l état ou la région',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'TVA pour le pays',
+	'PHPSHOP_TAX_FORM_RATE' => 'Taux de TVA (pour 19.6% => remplissez 0.196)'
 ); $VM_LANG->initModule( 'tax', $langvars );
 ?>
