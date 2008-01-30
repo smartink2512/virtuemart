@@ -271,7 +271,9 @@ class Img2Thumb	{
 */
 	function NewImgSave($new_img,$fileout,$type)
 	{
-
+		if( !@is_dir( dirname($fileout))) {
+			@mkdir( dirname($fileout) );
+		}
 		switch($type)
 		{
 			case "gif":

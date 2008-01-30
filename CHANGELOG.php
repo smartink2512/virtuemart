@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.01.2008 soeren
+# Task #1731 Category Thumb not displayed when dynamic thumbnail resizing is enabled
+
 30.01.2008 gregdev
 # Task #1733 -  Missing argument 2 for vmredirect()
 

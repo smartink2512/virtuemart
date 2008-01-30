@@ -37,8 +37,10 @@ include( CLASSPATH . "ps_main.php");
 include( CLASSPATH . "class.img2thumb.php");
 
 $basefilename = @basename(urldecode($_REQUEST['filename']));
-$filename = IMAGEPATH."product/".$basefilename;
-$filename2 = IMAGEPATH."product/resized/".$basefilename;
+$filenames[] = IMAGEPATH."product/".$basefilename;
+$resized_filenames[] = IMAGEPATH."product/resized/".$basefilename;
+$filenames[] = IMAGEPATH."category/".$basefilename;
+$resized_filenames[] = IMAGEPATH."category/resized/".$basefilename;
 $newxsize = (int)@$_REQUEST['newxsize'] == 0 ? PSHOP_IMG_WIDTH : (int)@$_REQUEST['newxsize'];
 $newysize = (int)@$_REQUEST['newysize'] == 0 ? PSHOP_IMG_WIDTH : (int)@$_REQUEST['newysize'];
 // Don't allow sizes beyond 2000 pixels
@@ -58,9 +60,19 @@ if( !isset($maxsize) )
 */
 
 /* Minimum security */
-if( !file_exists( $filename ) && !file_exists( $filename2 )) {
-	die('File does not exist');
+$file_exists = false;
+$i = 0;
+foreach ( $filenames as $file ) {
+	if( file_exists( $file ) ) {
+		$file_exists = true;
+		$filename = $file;
+		break;
+	}
+	++$i;
 }
+$file_exists or die('File does not exist');
+
+$filename2 = $resized_filenames[$i];
 
 $fileinfo = pathinfo( $filename );
 $file = str_replace(".".$fileinfo['extension'], "", $fileinfo['basename']);
@@ -86,7 +98,7 @@ else {
 if( file_exists($filename2)) { 
 	$fileout = $filename2;
 } else {
-	$fileout = IMAGEPATH."/product/resized/".$file."_".$newxsize."x".$newysize.$noimgif.$ext;
+	$fileout = dirname( $filename2 ) .'/'.$file."_".$newxsize."x".$newysize.$noimgif.$ext;
 }
 
 // Tell the user agent to cache this script/stylesheet for an hour
