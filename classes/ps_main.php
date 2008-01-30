@@ -974,7 +974,7 @@ function vmIsHttpsMode() {
 * @param string The URL to redirect to
 * @param string A Message to display to the user
 */
-function vmRedirect( $url, $msg ) {
+function vmRedirect( $url, $msg='' ) {
 	if( function_exists('mosRedirect')) {
 		mosRedirect($url, $msg );
 	} else {

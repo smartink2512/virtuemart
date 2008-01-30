@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.01.2008 gregdev
+# Task #1733 -  Missing argument 2 for vmredirect()
+
 29.01.2008 soeren
 # Task #1727 - Layout error after installation
 # Task #1725 - Frontend admin link error
