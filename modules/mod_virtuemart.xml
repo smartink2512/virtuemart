@@ -7,8 +7,11 @@
     <authorEmail>soeren|at|virtuemart.net</authorEmail>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.0</version>
-    <description>Shows VirtueMart Categories, the Cart, a Product Search Field,
-               an Administration Link, an Account Maintenance Link and a link to the Download Page</description>
+    <description>
+    	Shows VirtueMart categories, the shopping cart, a product search
+    	field, an administration link, an account maintenance link and a
+    	link to the download page.
+    </description>
     <files>
          <filename module="mod_virtuemart">mod_virtuemart.php</filename>
     </files>

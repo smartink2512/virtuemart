@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>greg|at|virtuemart.net</authorEmail>
 	<authorUrl>www.virtuemart.net</authorUrl>
-	<version>1.0</version>
+	<version>1.1.0</version>
 	<description>This module provides login/logout functionality for VirtueMart .</description>
 	<files>
 		<filename module="mod_virtuemart_login">mod_virtuemart_login.php</filename>

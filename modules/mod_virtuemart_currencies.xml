@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>Currency Selector Module</name>
+    <name>VirtueMart Currency Selector</name>
     <creationDate>03.05.2006</creationDate>
     <author>Soeren Eberhardt</author>
     <copyright>Released under the GNU/GPLicense</copyright>

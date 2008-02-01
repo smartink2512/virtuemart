@@ -36,7 +36,11 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 01.02.2008 gregdev
-# Task #1692 - Payment Method List in Admin panel not work 
+^ Added separate module builds for Joomla! 1.5 in the ant build script.
+# Added Joomla! 1.5 .xml install files for the VirtueMart modules.
+^ Made module names consistent and cleaned up the module descriptions.
+# Task #763 - ScrollWidth does not effect Width of Productscroller /w Fix
+# Task #1692 - Payment Method List in Admin panel not work
 
 30.01.2008 soeren
 # Task #1731 Category Thumb not displayed when dynamic thumbnail resizing is enabled

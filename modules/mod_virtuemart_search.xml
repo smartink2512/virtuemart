@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>VirtueMart Search Module</name>
+    <name>VirtueMart Search</name>
     <creationDate>01.06.2004</creationDate>
     <author>Soeren Eberhardt</author>
     <copyright>VirtueMart is released under GNU/GPLicense</copyright>

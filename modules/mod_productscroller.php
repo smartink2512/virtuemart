@@ -184,7 +184,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 				//$height=($height-intval($margin+0));
 				//$width=($width-intval($margin+30));
 				echo $this->params->get( 'pretext', "");
-				echo " <div style=\"text-align:".$this->ScrollAlign.";background-color: ".$this->ScrollBGColor."; width:".$this->ScrollWidth.";
+				echo " <div style=\"text-align:".$this->ScrollAlign.";background-color: ".$this->ScrollBGColor."; width:".$this->ScrollWidth."px;
                        margin-top: $margin; margin-right: $margin; margin-bottom: $margin; margin-left: $margin;\" >
                <marquee behavior=\"".$this->ScrollBehavior."\" 
                         direction=\"".$this->ScrollDirection."\"  
@@ -197,7 +197,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 			}
 			else {
 
-				echo " <div style=\"width:".$this->ScrollWidth.";text-align:".$this->ScrollAlign.";\">
+				echo " <div style=\"width:".$this->ScrollWidth."px;text-align:".$this->ScrollAlign.";\">
                <marquee behavior=\"".$this->ScrollBehavior."\" 
                         direction=\"".$this->ScrollDirection."\"  
                         height=\"".$this->ScrollHeight."\"

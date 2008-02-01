@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>Random Products Module</name>
+    <name>VirtueMart Random Products</name>
     <creationDate>22.03.2005</creationDate>
     <author>Soeren Eberhardt</author>
     <copyright>GNU/GPLicense</copyright>
     <authorEmail>soeren|at|virtuemart.net</authorEmail>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
-    <description>Shows random products from mos_{vm}_product table.</description>
+    <description>Shows random products from VirtueMart.</description>
     <files>
         <filename module="mod_virtuemart_randomprod">mod_virtuemart_randomprod.php</filename>
     </files>

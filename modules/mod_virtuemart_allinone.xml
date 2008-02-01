@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>All-In-One New/Featured/TopTen/Random Products Module</name>
+    <name>VirtueMart All-In-One</name>
     <creationDate>22.03.2005</creationDate>
     <author>soeren</author>
     <copyright>VirtueMart is released under GNU/GPLicense</copyright>
     <authorEmail>soeren|at|virtuemart.net</authorEmail>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>1.2</version>
-    <description>Shows the newest/featured/best selling/random products from your VirtueMart.</description>
+    <description>Shows the latest, featured, best selling, and/or random products from VirtueMart.</description>
      <files>
          <filename module="mod_virtuemart_allinone">mod_virtuemart_allinone.php</filename>
      </files>
