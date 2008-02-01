@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.02.2008 gregdev
+# Task #1692 - Payment Method List in Admin panel not work 
+
 30.01.2008 soeren
 # Task #1731 Category Thumb not displayed when dynamic thumbnail resizing is enabled
 

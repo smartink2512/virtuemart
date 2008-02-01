@@ -20,11 +20,12 @@ require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
 if (!empty($keyword)) {
-	$list  = "SELECT * FROM #__{vm}_payment_method, #__{vm}_shopper_group WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+	$list  = "SELECT * FROM #__{vm}_payment_method LEFT JOIN #__{vm}_shopper_group ";
+	$list .= "ON #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method LEFT JOIN #__{vm}_shopper_group ";
+	$count .= "ON #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id WHERE ";
 	$q  = "(#__{vm}_payment_method.payment_method_name LIKE '%$keyword%' ";
 	$q .= "AND #__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
-	$q .= "AND #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
 	$q .= ") ";
 	$q .= "ORDER BY #__{vm}_payment_method.list_order,#__{vm}_payment_method.payment_method_name ";
 	$list .= $q . " LIMIT $limitstart, " . $limit;
@@ -32,10 +33,11 @@ if (!empty($keyword)) {
 }
 else {
 	$q = "";
-	$list  = "SELECT * FROM #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method,#__{vm}_shopper_group WHERE ";
+	$list = "SELECT * FROM #__{vm}_payment_method LEFT JOIN #__{vm}_shopper_group ";
+	$list .= "ON #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id WHERE ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method,#__{vm}_shopper_group ";
+	$count .= "ON #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id WHERE ";
 	$q .= "#__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
-	$q .= "AND #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id ";
 	$list .= $q;
 	$list .= "ORDER BY #__{vm}_payment_method.list_order,#__{vm}_payment_method.payment_method_name ";
 	$list .= "LIMIT $limitstart, " . $limit;
@@ -94,7 +96,10 @@ while ($db->next_record()) {
 		$tmp_cell = $GLOBALS['CURRENCY_DISPLAY']->getFullValue( $db->f("payment_method_discount") );
 	}
 	$listObj->addCell( $tmp_cell );
-    $listObj->addCell(  $db->f("shopper_group_name"));
+	
+	$shopper_group_name = $db->f("shopper_group_name");
+	$tmp_cell = empty( $shopper_group_name ) ? '' : $shopper_group_name;
+    $listObj->addCell( $tmp_cell );
     
 	$enable_processor = $db->f("enable_processor");
 	switch($enable_processor) { 
