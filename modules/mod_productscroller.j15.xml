@@ -2,7 +2,7 @@
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
 	<name>VirtueMart Product Scroller</name>
-	<creationDate>November 2007</creationDate>
+	<creationDate>February 2008</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>soeren|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
@@ -22,9 +22,15 @@
 		<param name="NumberOfProducts" type="text" default="5"
 			label="Number of Products"
 			description="The Number of Products that are member of the Scrollshow" />
+		<param name="featuredProducts" type="radio" default="no"
+			label="Featured Products Only"
+			description="Display only products that are featured (marked special)">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
 		<param name="ScrollSortMethod" type="radio" default="random"
 			label="In which Order the products shall be displayed?"
-			description="Defines in which ordering the Products are displayed.">
+			description="Defines the display order of the products.">
 			<option value="newest">Newest</option>
 			<option value="oldest">Oldest</option>
 			<option value="random">Random</option>

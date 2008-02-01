@@ -40,6 +40,10 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 		*/
 		var $NumberOfProducts = 5;
 		/**
+		* @var $featuredProducts
+		*/
+		var $featuredProducts = false;
+		/**
 	  	* // scroll, alternate, slide
 	  	* @var $ScrollBehavior
 	  	*/
@@ -142,6 +146,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 			$this->category_id                              =  intval( $params->get('category_id', 0 ) );
 			// Limit by NoP
 			$this->NumberOfProducts                 =  $params->get('NumberOfProducts', $this->NumberOfProducts);
+			$this->featuredProducts					= $params->get('featuredProducts', $this->featuredProducts);
 
 			$this->ScrollSection                    =  $params->get('ScrollSection', $this->ScrollSection);
 			$this->ScrollBehavior           =  $params->get('ScrollBehavior', $this->ScrollBehavior);
@@ -237,7 +242,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 	/**
 	* Helper DB function
 	*/
-	function getProductSKU( $limit=0, $how=null, $category_id=0 ) {
+	function getProductSKU( $limit=0, $how=null, $category_id=0, $featuredProducts=false ) {
 		global $my, $mosConfig_offset;
 
 		$database = new ps_DB();
@@ -260,6 +265,11 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 		if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 			$query .= " AND product_in_stock > 0 ";
 		}
+		
+		if( $featuredProducts ) {
+			$query .= "\n AND product_special = 'Y' ";
+		}
+		
 		switch( $how ) {
 			case 'random':
 				$query .= "\n ORDER BY RAND() $limit";
@@ -288,7 +298,7 @@ $scroller =& new productScroller($params);
 /**
 * Load Products
 **/ 
-$rows = getProductSKU( $scroller->NumberOfProducts, $scroller->ScrollSortMethod, $scroller->category_id );
+$rows = getProductSKU( $scroller->NumberOfProducts, $scroller->ScrollSortMethod, $scroller->category_id, $scroller->featuredProducts );
 
 /**
 * Display Product Scroller
