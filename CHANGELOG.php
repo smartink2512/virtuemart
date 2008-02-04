@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+04.02.2008 gregdev
+# Task #1745 - mod_virtuemart_allinone error
++ Restored the special.png image for the all-in-one module
+# Task #1741 - Error in mod_productscroller.php
+^ Adjusted dates/versions inside module .xml files
+
 01.02.2008 gregdev
 ^ Ability to choose featured (special) products only for product scroller (thanks Michel Beek!)
 ^ Added separate module builds for Joomla! 1.5 in the ant build script.

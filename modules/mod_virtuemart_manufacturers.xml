@@ -1,12 +1,16 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>VirtueMart Manufacturers</name>
-    <creationDate>01.10.2007</creationDate>
-    <author>Soeren Eberhardt</author>
-    <copyright>Released under GNU/GPLicense</copyright>
-    <authorEmail>soeren|at|virtuemart.net</authorEmail>
-    <authorUrl>http://www.virtuemart.net</authorUrl>
-    <version>1.3</version>
+	<name>VirtueMart Manufacturers</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
     <description>Shows a list of manufacturers, so you can browse products of the chosen manufacturer.</description>
      <files>
          <filename module="mod_virtuemart_manufacturers">mod_virtuemart_manufacturers.php</filename>

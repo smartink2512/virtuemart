@@ -242,7 +242,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 	/**
 	* Helper DB function
 	*/
-	function getProductSKU( $limit=0, $how=null, $category_id=0, $featuredProducts=false ) {
+	function getProductSKU( $limit=0, $how=null, $category_id=0, $featuredProducts='no' ) {
 		global $my, $mosConfig_offset;
 
 		$database = new ps_DB();
@@ -266,7 +266,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 			$query .= " AND product_in_stock > 0 ";
 		}
 		
-		if( $featuredProducts ) {
+		if( $featuredProducts=='yes' ) {
 			$query .= "\n AND product_special = 'Y' ";
 		}
 		

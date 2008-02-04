@@ -1,12 +1,16 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
-    <name>VirtueMart Shopping Cart</name>
-    <creationDate>22.03.2005</creationDate>
-    <author>Soeren Eberhardt</author>
-    <copyright>GNU/GPLicense</copyright>
-    <authorEmail>soeren|at|virtuemart.net</authorEmail>
-    <authorUrl>http://www.virtuemart.net</authorUrl>
-    <version>1.2</version>
+	<name>VirtueMart Shopping Cart</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
     <description>Shows a shopping cart for your customers.</description>
      <files>
          <filename module="mod_virtuemart_cart">mod_virtuemart_cart.php</filename>

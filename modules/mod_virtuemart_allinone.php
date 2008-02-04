@@ -1,5 +1,5 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' ); 
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /* 
 * All-in-one module for VirtueMart
 * includes:
@@ -22,18 +22,18 @@ defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.'
 * www.virtuemart.net
 */
 
-global $mosConfig_absolute_path;
-
 /* get parameters */
 $show_new = $params->get( 'show_new', 0 );
 $show_topten = $params->get( 'show_topten', 0 );
 $show_special = $params->get( 'show_special', 0 );
 $show_random = $params->get( 'show_random', 0 );
 
-if( empty($show_price))
+if( empty( $show_price ) ) {
   $show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
-if( empty($show_addtocart))
+}
+if( empty( $show_addtocart ) ) {
   $show_addtocart = (bool)$params->get( 'show_addtocart', 1 ); // Display the "Add-to-Cart" Link?
+}
   
 $count_mods = $show_new + $show_topten + $show_special + $show_random;
 $max_mods = $count_mods;
@@ -47,8 +47,14 @@ if ($count_mods == 0) {
     $show_special = '1';
 }
 
-/* Load the virtuemart main parse code */
-require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
+// Load the virtuemart main parse code
+if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
+	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
+} else {
+	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
+}
+
+global $VM_LANG;
 
 
 ?>
@@ -115,7 +121,7 @@ require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_pa
     <?php if ($show_new == '1') {
         $new_number = $count_mods;
         $count_mods -= 1; ?>
-    <td id="tab<?php echo $new_number ?>" style="cursor:pointer;" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo _CMN_NEW ?>&nbsp;<br />
+    <td id="tab<?php echo $new_number ?>" style="cursor:pointer;" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo $VM_LANG->_('CMN_NEW') ?>&nbsp;<br />
         <img src='<?php echo IMAGEURL ?>ps_image/new.png' border=0 alt='New' align='absmiddle'></td>
     <?php }
     
