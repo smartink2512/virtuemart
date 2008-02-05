@@ -68,9 +68,9 @@ if( empty( $page ) || empty( $_REQUEST['page'])) {
 	}
 	else {
 		$page = vmget( $_SESSION, 'last_page', 'store.index' );
+		
 	}
 }
-
 $limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
 $limitstart = $mainframe->getUserStateFromRequest( "view{$page}{$product_id}{$category_id}limitstart", 'limitstart', 0 );
 
@@ -127,9 +127,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 		include( PAGEPATH. ERRORPAGE .'.php');
 		return;
 	}
-	else {
-		$_SESSION['last_page'] = $page;
-	}
+	
 	if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
 		
 		if( $only_page ) {

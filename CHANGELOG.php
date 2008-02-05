@@ -36,6 +36,8 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 05.02.2008 soeren
+# Task #1750 -  Two slashes on paths in install.php
+# Task #1747 - Problems with apostrophe in product edit window
 # Registration with automatic login wasn't working on Joomla! 1.0.14
 ^ not all "required" registration fields must be filled in by a storeadmin when adding a new user (just system fields like name/password/email are really required)
 # Logged Errors were not displayed in Simple Layout

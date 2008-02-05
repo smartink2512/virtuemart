@@ -295,7 +295,7 @@ if ($num_rows > 0) {
 		if( $vmLayout == 'standard') {
 			$tmpcell = vmPopupLink( $link, $text, 800, 540, '_blank', '', 'screenX=100,screenY=100' );
 		} else {
-			$tmpcell = vmCommonHTML::hyperLink($link, $text, '', 'Edit: '.$text, 'onclick="parent.addSimplePanel( \''.$db->getEscaped($text).'\', \''.$link.'\' );return false;"');
+			$tmpcell = vmCommonHTML::hyperLink($link, $text, '', 'Edit: '.$text, 'onclick="parent.addSimplePanel( \''.$db->getEscaped($db->f("product_name")).'\', \''.$link.'\' );return false;"');
 		}
 		
 		if( $ps_product->parent_has_children( $db->f("product_id") ) ) {

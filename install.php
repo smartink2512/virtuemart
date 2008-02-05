@@ -11,7 +11,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -29,10 +29,10 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	
 	$messages = array();
 	
-	$frontend_dir = $mosConfig_absolute_path."/components/com_virtuemart/";
-	$frontend_file = $mosConfig_absolute_path."/components/com_virtuemart/frontend_files.tar.gz";
-	$admin_dir = $mosConfig_absolute_path."/administrator/components/com_virtuemart/";
-	$admin_file = $mosConfig_absolute_path."/administrator/components/com_virtuemart/admin_files.tar.gz";
+	$frontend_dir = $mosConfig_absolute_path."/components/com_virtuemart";
+	$frontend_file = $frontend_dir."/frontend_files.tar.gz";
+	$admin_dir = $mosConfig_absolute_path."/administrator/components/com_virtuemart";
+	$admin_file = $admin_dir."/admin_files.tar.gz";
 	
 	// Check if the Archives are there
 	if( file_exists( $frontend_file ) && file_exists( $admin_file ) ) {
@@ -48,10 +48,10 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		  $mosConfig_absolute_path = str_replace( "//", "/", $path_begin );
 		}
 		// Now let's re-declare the paths for Window$
-		$frontend_dir = $mosConfig_absolute_path."/components/com_virtuemart/";
-		$frontend_file = $mosConfig_absolute_path."/components/com_virtuemart/frontend_files.tar.gz";
-		$admin_dir = $mosConfig_absolute_path."/administrator/components/com_virtuemart/";
-		$admin_file = $mosConfig_absolute_path."/administrator/components/com_virtuemart/admin_files.tar.gz";
+		$frontend_dir = $mosConfig_absolute_path."/components/com_virtuemart";
+		$frontend_file = $frontend_dir."/frontend_files.tar.gz";
+		$admin_dir = $mosConfig_absolute_path."/administrator/components/com_virtuemart";
+		$admin_file = $admin_dir."/admin_files.tar.gz";
 		
 		$frontend = $backend = false;
 		
@@ -65,8 +65,8 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		}
 		
 		// Extract the files
-		$frontend_result = $frontend_archive->extract( $frontend_dir );
-		$backend_result = $admin_archive->extract( $admin_dir );
+		$frontend_result = $frontend_archive->extract( $frontend_dir.'/' );
+		$backend_result = $admin_archive->extract( $admin_dir .'/');
 
 		// Assume the extraction was successfull for Joomla! 1.5
 		if( class_exists( 'JConfig' ) ) {
