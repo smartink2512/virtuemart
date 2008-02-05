@@ -79,7 +79,11 @@ while( $db->next_record() ) {
 	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("fieldid"), 0, "fieldid" ) );
 	
 	$listObj->addCell( '<a href="'.$sess->url($_SERVER['PHP_SELF'].'?page=admin.user_field_form&fieldid='.$db->f('fieldid')).'">'.$db->f('name').'</a>' );
-	$listObj->addCell( $db->f('title') );
+	$lang_string = $db->f('title');
+	if( $lang_string[0] == '_' ) {
+		$lang_string = substr( $lang_string, 1 );
+	}
+	$listObj->addCell( $VM_LANG->_($lang_string) ? $VM_LANG->_($lang_string) : $db->f('title') );
 	$listObj->addCell( $db->f('type') );
 	
 	// Required?

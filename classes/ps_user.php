@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,7 +18,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 
 class ps_user {
 	/**
-	 * Validates the input parameters for the add event
+	 * Validates the input parameters onBeforeUserAdd
 	 *
 	 * @param array $d
 	 * @return boolean
@@ -40,9 +40,9 @@ class ps_user {
 			if( in_array( $field->name, $skipFields )) {
 				continue;
 			}
-			if( empty( $d[$field->name])) {
+			if( empty( $d[$field->name]) && $field->sys == 1 ) {
 				$valid = false;
-				$vmLogger->err( 'Missing value for field "'.$field->name .'".' );
+				$vmLogger->err( 'Missing value for field "'.$field->title .'".' );
 			}
 		}
 
@@ -62,24 +62,22 @@ class ps_user {
 		return $valid;
 	}
 
-	/**************************************************************************
-	** name: validate_update()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeUserUpdate
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update(&$d) {
 		return $this->validate_add( $d );
 	}
 
-	/**************************************************************************
-	** name: validate_delete()
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeUserDelete
+	 *
+	 * @param int $id
+	 * @return boolean
+	 */
 	function validate_delete( $id ) {
 		global $my, $vmLogger, $perm;
 		$auth = $_SESSION['auth'];
@@ -111,13 +109,12 @@ class ps_user {
 		return $valid;
 	}
 
-	/**************************************************************************
-	* name: add()
-	* created by:
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Adds a new User to the CMS and VirtueMart
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 		global $my, $VM_LANG, $perm, $vmLogger;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -197,13 +194,12 @@ class ps_user {
 
 	}
 
-	/**************************************************************************
-	* name: update()
-	* created by:
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Updates a User Record
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update(&$d) {
 		global $my, $VM_LANG, $perm, $vmLogger;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -215,13 +211,13 @@ class ps_user {
 		}
 
 		// Joomla User Information stuff
-		if( vmIsJoomla( '1.5' ) ) {
+		if( vmIsJoomla( '1.5', '>=' ) ) {
 			$this->save();
 		} else {
 			$this->saveUser( $d );
 		}
 
-		/* Update Bill To */
+		// Update Bill To
 
 		// Get all fields which where shown to the user
 		$userFields = ps_userfield::getUserFields('registration', false, '', true);
@@ -230,7 +226,8 @@ class ps_user {
 
 		// Building the query: PART ONE
 		// The first 7 fields are FIX and not built dynamically
-		$db->query( "SELECT COUNT(user_info_id) AS num_rows FROM #__{vm}_user_info WHERE user_id='" . $user_id . "'" );
+		$db->query( "SELECT COUNT(user_info_id) AS num_rows 
+					FROM #__{vm}_user_info WHERE user_id='" . $user_id . "'" );
 		if( $db->f('num_rows') < 1 ) {
 			// The user is registered in Joomla, but not in VirtueMart; so, insert the bill to information
 			return $this->add($d);
@@ -349,15 +346,15 @@ class ps_user {
 
 		$aro_id = 'aro_id';
 		$group_id = 'group_id';
-		// Column names have changed (but why???)
-		if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.1 ) {
+		// Column names have changed since J! 1.5
+		if( vmIsJoomla('1.5', '>=')) {
 			$aro_id = 'id';
 			$group_id = 'id';
 		}
 
 		$row = new mosUser( $database );
 		if (!$row->bind( $_POST )) {
-			echo "<script type=\"text/javascript\"> alert('".vmHtmlEntityDecode($row->getError())."');</script>\n";
+			echo "<script type=\"text/javascript\">alert('".vmHtmlEntityDecode($row->getError())."');</script>\n";
 		}
 
 		$isNew 	= !$row->id;

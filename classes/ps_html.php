@@ -133,24 +133,36 @@ class ps_html {
 
 	}
 
-	/**************************************************************************
-	** name: list_month($list_name)
-	** created by: pfmartin
-	** description:  Print an HTML dropdown box for the credit cards
-	** parameters: $name - name of the HTML dropdown element
-	**             $value - Drop down item to make selected
-	**             $arr - array used to build the HTML drop down element
-	** returns: prints HTML drop down element to standard output
-	***************************************************************************/
+	/**
+	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range
+	 *
+	 * @param string $list_name The name of the select element
+	 * @param string $selected_item The pre-selected value
+	 */
+	function list_days($list_name,$selected_item='', $start=null, $end=null) {
+		if( $selected_item == '') {
+			$selected_item = date('d');
+		}
+		$start = $start ? $start : 1;
+		$end = $end ? $end : $start + 30;
+		$list = array('Day');
+		for ($i=$start; $i<=$end; $i++) {
+			$list[$i] = $i;
+		}
+		ps_html::dropdown_display($list_name, $selected_item, $list);
+	}
 	/**
 	 * Creates a Drop-Down List for the 12 months in a year
 	 *
 	 * @param string $list_name The name for the select element
 	 * @param string $selected_item The pre-selected value
-	 * @return HTML code with the drop-down list
+	 * 
 	 */
 	function list_month($list_name, $selected_item="") {
 		global $VM_LANG;
+		if( $selected_item == '') {
+			$selected_item = date('m');
+		}
 		$list = array("Month",
 		"01" => $VM_LANG->_('JAN'),
 		"02" => $VM_LANG->_('FEB'),
@@ -164,23 +176,23 @@ class ps_html {
 		"10" => $VM_LANG->_('OCT'),
 		"11" => $VM_LANG->_('NOV'),
 		"12" => $VM_LANG->_('DEC'));
-		$this->dropdown_display($list_name, $selected_item, $list);
-		return 1;
+		ps_html::dropdown_display($list_name, $selected_item, $list);
 	}
 
 	/**
-	 * Creates an drop-down list with the next 7 years
+	 * Creates an drop-down list with years of the selected range or of the next 7 years
 	 *
 	 * @param string $list_name The name of the select element
 	 * @param string $selected_item The pre-selected value
-	 * @return HTML code with the drop-down list
 	 */
-	function list_year($list_name,$selected_item="") {
-		$current = date("Y");
-		for ($i=$current; $i<$current+7; $i++)
-		$list[$i] = $i;
-		$this->dropdown_display($list_name, $selected_item, $list);
-		return 1;
+	function list_year($list_name,$selected_item='', $start=null, $end=null) {
+		$start = $start ? $start : date('Y');
+		$end = $end ? $end : $start + 7;
+		for ($i=$start; $i<=$end; $i++) {
+			$list[$i] = $i;
+		}
+		ps_html::dropdown_display($list_name, $selected_item, $list);
+		
 	}
 
 

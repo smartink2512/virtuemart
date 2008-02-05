@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -57,7 +57,7 @@ if (!empty($fieldid)) {
     $db->query($q);  
     $db->next_record();
     if( $db->f('params') ) {
-    	$params = new mosParameters( $db->f('params') );
+    	$params = new vmParameters( $db->f('params') );
     }
 	$lists['type'] = '<input type="hidden" value="'.$db->f('type').'" name="type" />'.$db->f('type');
 }
@@ -68,17 +68,19 @@ else {
 	$types['checkbox'] = $VM_LANG->_('VM_FIELDS_CHECKBOX_SINGLE');
 	$types['multicheckbox'] = $VM_LANG->_('VM_FIELDS_CHECKBOX_MULTIPLE');
 	$types['date'] = $VM_LANG->_('VM_FIELDS_DATE');
+	$types['age_verification'] = 'Age Verification (Date Select Fields)';
 	$types['select'] = $VM_LANG->_('VM_FIELDS_DROPDOWN_SINGLE');
 	$types['multiselect'] = $VM_LANG->_('VM_FIELDS_DROPDOWN_MULTIPLE');
 	$types['emailaddress'] = $VM_LANG->_('VM_FIELDS_EMAIL');	
-	$types['euvatid'] = $VM_LANG->_('VM_FIELDS_EUVATID');	
-	//$types['password'] = 'Password Field' );
+	$types['euvatid'] = $VM_LANG->_('VM_FIELDS_EUVATID');
 	$types['editorta'] = $VM_LANG->_('VM_FIELDS_EDITORAREA');
 	$types['textarea'] = $VM_LANG->_('VM_FIELDS_TEXTAREA');
 	$types['radio'] = $VM_LANG->_('VM_FIELDS_RADIOBUTTON');
 	$types['webaddress'] = $VM_LANG->_('VM_FIELDS_WEBADDRESS');
-	$types['delimiter'] = $VM_LANG->_('VM_FIELDS_DELIMITER');
 	
+	if( file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {	
+		$types['captcha'] = 'Captcha Field (using com_securityimages)';
+	}
 	if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {
 		$types['yanc_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (YaNC)';
 	}
@@ -88,6 +90,7 @@ else {
 	if( file_exists($mosConfig_absolute_path.'/components/com_letterman/letterman.php')) {
 		$types['letterman_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (Letterman)';
 	}
+	$types['delimiter'] = $VM_LANG->_('VM_FIELDS_DELIMITER');
 	
 	$lists['type'] = ps_html::selectList( 'type', $db->f('type'), $types, 1, '', 'onchange="toggleType(this.options[this.selectedIndex].value);"' );
 }
@@ -99,11 +102,11 @@ if( in_array( $db->f('name'), ps_userfield::getSkipFields() )) {
 	$lists['published'] = '<input type="hidden" name="published" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
 	$lists['registration'] = '<input type="hidden" name="registration" class="inputbox" value="'. $db->sf('required').'" />'.($db->sf('required')?$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES'):$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO'));
 } else {
-	$lists['required'] = ps_html::yesnoSelectList( 'required', $db->sf('required') );
+	$lists['required'] = ps_html::yesnoSelectList( 'required', $db->sf('required')?$db->sf('required'): '0' );
 	$lists['published'] = ps_html::yesnoSelectList( 'published', $db->sf('published') );
 	$lists['registration'] = ps_html::yesnoSelectList( 'registration', $db->sf('registration') );
 }
-$lists['readonly'] = ps_html::yesnoSelectList( 'readonly', $db->sf('readonly') );
+$lists['readonly'] = ps_html::yesnoSelectList( 'readonly', $db->sf('readonly') != '' ? $db->sf('readonly') : '0' );
 
 $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 
@@ -198,14 +201,29 @@ $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 	          <tr class="row1"> 
 	        	<td class="labelcell"><?php echo $VM_LANG->_('VM_USERFIELDS_EUVATID_MOVESHOPPER') ?>:</td>
 	            <td ><?php
-	            	$sg_id = is_a( $params, 'mosparameters' ) ? $params->get( 'shopper_group_id', 5 ) : '';
+	            	$sg_id = is_a( $params, 'vmparameters' ) ? $params->get( 'shopper_group_id', 5 ) : '';
                    	echo ps_shopper_group::list_shopper_groups( "shopper_group_id", $sg_id );
                    ?>
                  </td>
                 </tr>
 			</table>
 		</div>
-		
+		<div id="divAgeVerification" >
+			<table class="adminform">
+	          <tr class="row1"> 
+	        	<td class="labelcell">Specify the minimum Age:</td>
+	            <td ><?php
+	            	$min_age = is_a( $params, 'vmparameters' ) ? $params->get( 'minimum_age', 18 ) : 18;
+	            	$ages = array();
+	            	for( $i = 13; $i <= 25; $i++ ) {
+	            		$ages[$i] = $i . ' Years';
+	            	}
+	            	ps_html::dropdown_display('minimum_age', $min_age, $ages );
+                   ?>
+                 </td>
+                </tr>
+			</table>
+		</div>
 		<div id="divWeb">
 			<table cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform">
 			<tr class="row1">
@@ -315,6 +333,7 @@ $duration = 500;
     	divColsRows.slideOut();
     	divWeb.slideOut();
     	divShopperGroups.slideOut();
+    	divAgeVerification.slideOut();
     	divText.slideOut();
     
     } catch(e){ }
@@ -324,6 +343,8 @@ $duration = 500;
   }
   function toggleType( type ) {
 	disableAll();
+	document.adminForm.name.value= type;
+	prep4SQL( document.adminForm.name ); 
 	setTimeout( 'selType( \'' + type + '\' )', <?php echo ( $duration + 50 ) ?> );
   }
   function selType(sType) {
@@ -339,7 +360,11 @@ $duration = 500;
       
       case 'euvatid':
       	divShopperGroups.toggle();
-        // fallthrough
+      	break;
+      case 'age_verification':
+      	divAgeVerification.toggle();
+      	break;
+      	
       case 'emailaddress':
       case 'password':
       case 'text':
@@ -391,5 +416,6 @@ $duration = 500;
 		var divColsRows = new Fx.Slide('divColsRows' , {duration: $duration } );
 		var divWeb = new Fx.Slide('divWeb' , {duration: $duration } );
 		var divShopperGroups = new Fx.Slide('divShopperGroups' , {duration: $duration } );
+		var divAgeVerification = new Fx.Slide('divAgeVerification' , {duration: $duration } );
 		var divText = new Fx.Slide('divText' , {duration: $duration } ); toggleType('".$db->f('type')."');" );	
 ?>

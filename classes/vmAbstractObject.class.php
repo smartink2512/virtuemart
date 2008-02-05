@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -400,7 +400,7 @@ class vmAbstractObject {
 		}		
 		elseif( !empty( $d['fieldid'])) {
 				$table_name = "#__{vm}_userfield";
-				$publish_field_name = empty($d['item']) ? 'published' : $d['item'];
+				$publish_field_name = empty($d['item']) ? 'published' : vmget( $d, 'item' );
 				$field_name = 'fieldid';
 		}
 		else {
@@ -446,6 +446,7 @@ class vmAbstractObject {
 		if( $has_vendor ) {
 			$q .= " AND `vendor_id`=".$_SESSION['ps_vendor_id'];
 		}
+		
 		$db->query( $q );
 		
 		$vmLogger->info($field_name.'(s) '.$set.' was/were '.$task.'ed.' );

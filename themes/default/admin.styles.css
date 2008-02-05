@@ -167,6 +167,9 @@ div.toolbar {
 .vmicon {
 	background-repeat: no-repeat;
 }
+a.vmicon {
+	padding-left: 20px;
+}
 /** menu icons **/
 .vmicon-16-apply 	{ background-image: url(images/administration/menu/icon-16-apply.png); }
 .vmicon-16-archive	{ background-image: url(images/administration/menu/icon-16-archive.png); }

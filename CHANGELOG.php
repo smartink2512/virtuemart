@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+05.02.2008 soeren
+# Registration with automatic login wasn't working on Joomla! 1.0.14
+^ not all "required" registration fields must be filled in by a storeadmin when adding a new user (just system fields like name/password/email are really required)
+# Logged Errors were not displayed in Simple Layout
+
+04.02.2008 soeren
++ added new registration field types for "Captcha" and Age Verification (using simple date drop-down lists)
+	Captcha uses Walter Cedric's com_securityimages (http://www.waltercedric.com) and is only available if that component is installed!
 04.02.2008 gregdev
 # Task #1745 - mod_virtuemart_allinone error
 + Restored the special.png image for the all-in-one module
@@ -51,7 +59,6 @@ VirtueMart 1.1.x
 
 30.01.2008 soeren
 # Task #1731 Category Thumb not displayed when dynamic thumbnail resizing is enabled
-
 30.01.2008 gregdev
 # Task #1733 -  Missing argument 2 for vmredirect()
 

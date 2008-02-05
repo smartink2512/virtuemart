@@ -390,8 +390,8 @@ if( $db->f("user_id") ) {
 ?> 
     <fieldset><legend><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_SHIPTO_LBL') ?></legend>
     
-    <a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?page=$modulename.user_address_form&amp;user_id=$user_id") ?>" >
-	(<?php echo $VM_LANG->_('PHPSHOP_USER_FORM_ADD_SHIPTO_LBL') ?>)</a></h3> 
+    <a class="vmicon vmicon-16-editadd" href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?page=$modulename.user_address_form&amp;user_id=$user_id") ?>" >
+	(<?php echo $VM_LANG->_('PHPSHOP_USER_FORM_ADD_SHIPTO_LBL') ?>)</a> 
 	
 	<table class="adminlist"> 
 		<tr> 

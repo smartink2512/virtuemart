@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage templates
-* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2008 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -15,8 +15,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * http://virtuemart.net
 */
+
+   // If we have a POST value for "func", we were oviously directed here, because a validation error
+   // occured during registration. So, let's show the Registration Details Stretcher first
+   // Otherwise the Login Form will be shown by default
+   $open_to_stretcher = !isset($_POST['func']) ? '0' : '1';
 ?>
-<h4><input type="radio" name="togglerchecker" id="toggler1" class="toggler" checked="checked" />
+<h4><input type="radio" name="togglerchecker" id="toggler1" class="toggler" <?php if($open_to_stretcher == 0 ) { ?>checked="checked"<?php } ?> />
 <label for="toggler1"><?php echo $VM_LANG->_('PHPSHOP_RETURN_LOGIN') ?></label>
 </h4>
     <div class="stretcher" id="login_stetcher">
@@ -28,7 +33,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 
 
 ?><br />
-	<h4><input type="radio" name="togglerchecker" id="toggler2" class="toggler" />
+	<h4><input type="radio" name="togglerchecker" id="toggler2" class="toggler" <?php if($open_to_stretcher == 1 ) { ?>checked="checked"<?php } ?> />
 	<label for="toggler2"><?php echo $VM_LANG->_('PHPSHOP_NEW_CUSTOMER') ?></label></h4>
 	
     <div class="stretcher" id="register_stretcher"><?php
@@ -52,7 +57,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 		{
 			/*fixedHeight: 125,*/
 			opacity : true,
-			display: 0
+			display: '.$open_to_stretcher.'
 		});
 
 });');

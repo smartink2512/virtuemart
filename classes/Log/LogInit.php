@@ -131,7 +131,7 @@ $vmLogger = &vmLog::singleton('composite');
 
 $vmLogger->addChild($vmDisplayLogger);
 $vmLogger->addChild($vmFileLogger);
-
+$vmLogger->open();
 $GLOBALS['vmLogger'] =& $vmLogger;
 $GLOBALS['vmDisplayLogger'] =& $vmDisplayLogger;
 $GLOBALS['vmFileLogger'] =& $vmFileLogger;

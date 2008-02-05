@@ -172,6 +172,14 @@ class Log_display extends vmLog
     	}
     }
     /**
+     * Override function for printLog
+     *
+     * @param int $priority
+     */
+    function flush($priority=null) {
+    	$this->printLog($priority);
+    }
+    /**
      * Flush the _messages array and print all messages
      * @author Soeren Eberhardt
      */

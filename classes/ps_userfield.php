@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -47,6 +47,8 @@ class ps_userfield extends vmAbstractObject {
 				break;
 			case 'euvatid':
 				$d['params'] = 'shopper_group_id='.$d['shopper_group_id']."\n";
+			case 'age_verification':
+				$d['params'] = 'minimum_age='.(int)$d['minimum_age']."\n";
 			default:
 				$d['cType']='VARCHAR(255)';
 				break;
@@ -92,28 +94,29 @@ class ps_userfield extends vmAbstractObject {
 				$d['published'] = $fieldObj->f('published');
 			}
 		}
+		$fields = array(
+					'name' => vmGet($d, 'name' ), 
+					'title' => vmGet($d, 'title' ), 
+					'description' => vmGet($d, 'description' ), 
+					'type' => vmGet($d, 'type' ), 
+					'maxlength' => vmGet($d, 'maxlength' ), 
+					'size' => vmGet($d, 'size' ), 
+					'required' => vmGet($d, 'required' ), 
+					'ordering' => vmGet($d, 'ordering' ), 
+					'cols' => vmGet($d, 'cols' ), 
+					'rows' => vmGet($d, 'rows' ), 
+					'value' => vmGet($d, 'value' ), 
+					'default' => vmGet($d, 'default' ), 
+					'published' => vmGet($d, 'published' ), 
+					'registration' => vmGet($d, 'registration' ), 
+					'account' => vmGet($d, 'account' ), 
+					'readonly' => vmGet($d, 'readonly' ), 
+					'calculated' => vmGet($d, 'calculated' ), 
+					'params' => vmGet($d, 'params' ),
+					'vendor_id' => vmGet($_SESSION, 'ps_vendor_id', 1 )
+					 );
 		if( !empty($d['fieldid']) ) {
 			// existing record
-			$fields = array(
-					'name' => $d['name'], 
-					'title' => $d['title'], 
-					'description' => $d['description'], 
-					'type' => $d['type'], 
-					'maxlength' => $d['maxlength'], 
-					'size' => $d['size'], 
-					'required' => $d['required'], 
-					'ordering' => $d['ordering'], 
-					'cols' => $d['cols'], 
-					'rows' => $d['rows'], 
-					'value' => @$d['value'], 
-					'default' => @$d['default'], 
-					'published' => $d['published'], 
-					'registration' => $d['registration'], 
-					'account' => @$d['account'], 
-					'readonly' => $d['readonly'], 
-					'calculated' => @$d['calculated'], 
-					'params' => @$d['params']
-					 );
 			$db->buildQuery( 'UPDATE', '#__{vm}_userfield', $fields ,'WHERE `fieldid` ='. intval($d['fieldid'] ) );
 			$db->query();
 			
@@ -125,28 +128,8 @@ class ps_userfield extends vmAbstractObject {
 			// add a new record			
 			$sql="SELECT MAX(ordering) as max FROM #__{vm}_userfield";
 			$db->query($sql); $db->next_record();
-			$d['ordering'] = $db->f('max')+1;
-			
-			$fields = array(
-					'name' => $d['name'], 
-					'title' => $d['title'], 
-					'description' => $d['description'], 
-					'type' => $d['type'], 
-					'maxlength' => $d['maxlength'], 
-					'size' => $d['size'], 
-					'required' => $d['required'], 
-					'ordering' => $d['ordering'], 
-					'cols' => $d['cols'], 
-					'rows' => $d['rows'], 
-					'value' => @$d['value'], 
-					'default' => @$d['default'], 
-					'published' => $d['published'], 
-					'registration' => $d['registration'], 
-					'account' => @$d['account'], 
-					'readonly' => $d['readonly'], 
-					'calculated' => @$d['calculated'], 
-					'params' => @$d['params']
-					 );
+			$d['ordering'] = $db->f('max')+1;			
+
 			$db->buildQuery( 'INSERT', '#__{vm}_userfield', $fields );
 			$db->query();
 			
@@ -155,15 +138,13 @@ class ps_userfield extends vmAbstractObject {
 				$this->changeColumn( $d['name'], $d['cType'], 'add');
 			}
 		}
-			
-		$fieldValues = array();
-		$fieldNames = array();
-		$fieldNames = $_POST['vNames'];
-		$fieldValues = $_POST['vValues'];
+		$fieldNames = vmGet( $d, 'vNames', array() );
+		$fieldValues = vmGet( $d, 'vValues', array() );
+		
 		$j=1;
 		if( !empty( $d['fieldid'] )) {
 			$db->query( "DELETE FROM #__{vm}_userfield_values"
-			. " WHERE fieldid='".$d['fieldid']."'" );
+			. " WHERE fieldid=".(int)$d['fieldid'].' LIMIT 1' );
 		} else {
 			$db->query( "SELECT MAX(fieldid) as max FROM `#__{vm}_userfield`" );
 			$maxID=$db->loadResult();
@@ -172,8 +153,12 @@ class ps_userfield extends vmAbstractObject {
 		$n=count( $fieldNames );
 		for($i=0; $i < $n; $i++) {
 			if(trim($fieldNames[$i])!=null || trim($fieldNames[$i])!='') {
-				$db->query( "INSERT INTO #__{vm}_userfield_values (fieldid,fieldtitle,fieldvalue, ordering)"
-				. " VALUES('".$d['fieldid']."','".htmlspecialchars($fieldNames[$i])."','".htmlspecialchars($fieldValues[$i])."',$j)" );
+				$fields = array('fieldid' => (int)$d['fieldid'],
+										'fieldtitle' => htmlspecialchars($fieldNames[$i]),
+				 						'fieldvalue' => htmlspecialchars($fieldValues[$i]),
+										'ordering' => $j );
+				$db->buildQuery( 'INSERT', '#__{vm}_userfield_values', $fields );
+				$db->query();
 				$j++;
 			}
 		}
@@ -269,7 +254,7 @@ class ps_userfield extends vmAbstractObject {
 		}
 		$default['country'] = $vendor_country_3_code;
 		
-		$missing = vmGet( $_REQUEST, "missing", "" );		
+		$missing = vmGet( $_REQUEST, 'missing', '' );		
 
 		// collect all required fields
 		$required_fields = Array(); 
@@ -293,15 +278,12 @@ class ps_userfield extends vmAbstractObject {
 			$vm_mainframe->addScript( 'includes/js/mambojavascript.js' );
 		}
 		
-		?>
-		<?php if( $startForm ) : ?>		
-
-		<form action="<?php echo $mm_action_url .basename($_SERVER['PHP_SELF']) ?>" method="post" name="adminForm">
-		<?php endif; ?>
+		if( $startForm ) {
+			echo '<form action="'. $mm_action_url .basename($_SERVER['PHP_SELF']) .'" method="post" name="adminForm">';
+		}
+		echo '
+		<div style="width:90%;">';
 			
-		<div style="width:90%;">
-			
-		   <?php
 		if( !empty( $required_fields ))  {
 			echo '<div style="padding:5px;text-align:center;"><strong>(* = '.$VM_LANG->_('CMN_REQUIRED').')</strong></div>';
 		  	 
@@ -324,7 +306,7 @@ class ps_userfield extends vmAbstractObject {
 		   		}
 			}
 	   		if( $field->name == 'agreed') {
-	   					$field->title = '<script type="text/javascript">//<![CDATA[
+	   			$field->title = '<script type="text/javascript">//<![CDATA[
 				document.write(\'<label for="agreed_field">'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
 				document.write(\' ('.$VM_LANG->_('PHPSHOP_STORE_FORM_TOS') .')</a>\');
 				//]]></script>
@@ -429,7 +411,28 @@ class ps_userfield extends vmAbstractObject {
 						case 'checkbox':
 							echo '<input type="checkbox" name="'.$field->name.'" id="'.$field->name.'_field" value="1" />';
 							break;
-							
+						case 'age_verification':
+							$year = vmRequest::getInt('birthday_selector_year', date('Y'));
+							if( $db->f($field->name) ) {
+								$birthday = $db->f($field->name);
+								$date_array = explode('-', $birthday );
+								$year = $date_array[0];
+								$month = $date_array[1];
+								$day = $date_array[2];
+							}
+							ps_html::list_days('birthday_selector_day', vmRequest::getInt('birthday_selector_day', $day));
+							ps_html::list_month('birthday_selector_month', vmRequest::getInt('birthday_selector_month', $month));							
+							ps_html::list_year('birthday_selector_year', $year, $year-100, $year);
+							break;
+						case 'captcha':
+							if (file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {
+								include ($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php');
+								// Note that this package name must be used on the validation site too! If both are not equal, validation will fail
+								$packageName = 'securityVMRegistrationCheck';
+								echo insertSecurityImage($packageName);
+								echo getSecurityImageText($packageName);
+							}
+							break;
 						// Begin of a fallthrough
 						case 'multicheckbox':
 						case 'select':
@@ -698,13 +701,13 @@ class ps_userfield extends vmAbstractObject {
 			if( $page == 'checkout.index') {
                 echo '
                 if (form.password.value.length < 6 '.$optional_check.') {
-                    alert( "1'. $VM_LANG->_('REGWARN_PASS',false) .'" );
+                    alert( "'.$VM_LANG->_('REGWARN_PASS',false) .'" );
 					return false;
                 } else if (form.password2.value == ""'.$optional_check.') {
-                    alert( "2'. $VM_LANG->_('REGWARN_VPASS1',false) .'" );
+                    alert( "'. $VM_LANG->_('REGWARN_VPASS1',false) .'" );
                     return false;
                 } else if (r.exec(form.password.value)'.$optional_check.') {
-                    alert( "3'. sprintf( $VM_LANG->_('VALID_AZ09',false), $VM_LANG->_('PASSWORD',false), 6 ) .'" );
+                    alert( "'. sprintf( $VM_LANG->_('VALID_AZ09',false), $VM_LANG->_('PASSWORD',false), 6 ) .'" );
                     return false;
                 }';
         	}

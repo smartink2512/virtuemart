@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -217,12 +217,15 @@ class ps_order_status extends vmAbstractObject {
 	 * @return string
 	 */
 	function getOrderStatusName( $order_status_code ) {
-		$db = new ps_DB;
-
-		$q = "SELECT order_status_id, order_status_name FROM #__{vm}_order_status WHERE `order_status_code`='".$order_status_code."'";
-		$db->query($q);
-		$db->next_record();
-		return $db->f("order_status_name");
+		if( empty($GLOBALS['order_status'][$order_status_code])) {
+			$db = new ps_DB;
+	
+			$q = "SELECT order_status_id, order_status_name FROM #__{vm}_order_status WHERE `order_status_code`='".$order_status_code."'";
+			$db->query($q);
+			$db->next_record();
+			$GLOBALS['order_status'][$order_status_code] = $db->f("order_status_name");
+		}
+		return $GLOBALS['order_status'][$order_status_code];
 	}
 }
 ?>
