@@ -35,10 +35,17 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+06.02.2008 gregdev
++ Added the ability to set product, category, flypage, or page in a Joomla menu item
+# Fixed missing slash in install (for loading sql sample data)
+^ Suppressed error messages when extracting tar.gz files during installation
+^ Cleaned up the component .xml files
+
 06.02.2008 soeren
 #  Task #1746 - downloadable products are not published
 # changed default admin "layout" from extended to standard
 # fixed javascript errors in the file form (standard layout)
+
 05.02.2008 soeren
 # Task #1750 -  Two slashes on paths in install.php
 # Task #1747 - Problems with apostrophe in product edit window

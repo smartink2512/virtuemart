@@ -74,6 +74,40 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 	if( !vmIsAdminMode() && !isset( $_REQUEST['page'])) {
+
+		// Get the menu parameters, if any
+		if( vmIsJoomla( '1.5' ) ) {
+			$menuparams = $mainframe->getParams();
+		} else {
+			$Itemid = (int) vmRequest::getInt( 'Itemid', '' );
+			$query = "SELECT params FROM #__menu WHERE id='".$Itemid."'";
+			$database->setQuery( $query );
+			$row = $database->loadResult();
+			$menuparams = new mosParameters( $row );
+		}
+		
+		$tmp_product_id = $menuparams->get( 'product_id' );
+		$tmp_category_id = $menuparams->get( 'category_id' );
+		$tmp_flypage = $menuparams->get( 'flypage' );
+		$tmp_page = $menuparams->get( 'page' );
+
+		if( !empty( $tmp_product_id ) ) {
+			vmRequest::setVar( 'product_id', $tmp_product_id );
+			vmRequest::setVar( 'page', 'shop.product_details' );
+		} elseif( !empty( $tmp_category_id ) ) {
+			vmRequest::setVar( 'category_id', $tmp_category_id );
+			vmRequest::setVar( 'page', 'shop.browse' );
+		}
+		
+		if( ( !empty( $tmp_product_id ) || !empty( $tmp_category_id ) ) && !empty( $tmp_flypage ) ) {
+			vmRequest::setVar( 'flypage', $tmp_flypage );
+		}
+		
+		if( !empty( $tmp_page ) ) {
+			vmRequest::setVar( 'page', $tmp_page );
+		}
+
+		// Set the default page
 		$defaultpage = HOMEPAGE;
 	} else {
 		$defaultpage = vmget($_SESSION,'last_page');

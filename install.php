@@ -58,11 +58,18 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		$frontend_archive = new Archive_Tar( $frontend_file, "gz" );
 		$admin_archive = new Archive_Tar( $admin_file, "gz" );
 
-		// Don't show errors on Joomla! 1.5 (errors appear even on a successfull extraction)
-		if( !class_exists( 'JConfig' ) ) {
-			$frontend_archive->setErrorHandling(PEAR_ERROR_PRINT);
-			$admin_archive->setErrorHandling(PEAR_ERROR_PRINT);
-		}
+/* Don't show errors for either version of Joomla right now
+ * The install displays errors even on a successful installation
+ 
+		// Don't show errors on Joomla! 1.5 (errors appear even on a successful extraction)
+//		if( !class_exists( 'JConfig' ) ) {
+//			$frontend_archive->setErrorHandling(PEAR_ERROR_PRINT);
+//			$admin_archive->setErrorHandling(PEAR_ERROR_PRINT);
+//		}
+ * 
+ */
+	 	// Just say everything went well
+		$frontend_result = $backend_result = true;
 		
 		// Extract the files
 		$frontend_result = $frontend_archive->extract( $frontend_dir.'/' );
@@ -153,7 +160,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	
 	// SAMPLE DATA! 
 	if ($install_sample_data) {
-		require_once( $admin_dir.'sql/sql.sampledata.php' );
+		require_once( $admin_dir.'/sql/sql.sampledata.php' );
 	}
 	elseif ($install_type=='newinstall') {
 		/*** Delete the Sample Product - Images ***/
