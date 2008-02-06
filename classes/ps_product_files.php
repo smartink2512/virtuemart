@@ -307,7 +307,7 @@ class ps_product_files {
 	 */
 	function delete(&$d) {
 
-		$record_id = $d["file_id"];
+		$record_id = intval($d["file_id"]);
 		if( is_array( $record_id)) {
 			foreach( $record_id as $record) {
 				if( !$this->delete_record( $record, $d ))
@@ -336,43 +336,50 @@ class ps_product_files {
 			return False;
 		}
 		if( $record_id == 'product_images' ) {
+			// Internal Product Images must be handled with care
 			return $this->deleteProductImages($d);
 		}
-		else {
-			$q = "SELECT file_id,file_product_id, file_name,file_is_image, file_image_thumb_height, file_image_thumb_width FROM `#__{vm}_product_files` WHERE file_id='$record_id'";
-			$dbf->query($q);
-			$dbf->next_record();
+		
+		// get the info for the additional file or image
+		$q = "SELECT file_id,file_product_id, file_name,file_is_image, file_image_thumb_height, file_image_thumb_width FROM `#__{vm}_product_files` WHERE file_id='$record_id'";
+		$dbf->query($q);
+		$dbf->next_record();
+		
+		// Find Duplicates of the File, so we don't delete files, which are used by more than one Product
+		$file_still_used = false;
+		$dup_db = new ps_DB();
+		$dup_db->query( 'SELECT file_id  FROM `#__{vm}_product_files` WHERE file_id!='.$record_id.' AND file_name=\''.$dbf->f('file_name', false ).'\'' );
+		if( $dup_db->next_record() ) {
+			$file_still_used = true;
 		}
+		
+		
 		$fullfilepath = $mosConfig_absolute_path. str_replace($mosConfig_absolute_path, '', $dbf->f("file_name") );
 		if( !is_file($fullfilepath)) {
 			$fullfilepath = DOWNLOADROOT . $dbf->f('file_name');
 		}
 		
-		if( $dbf->f("file_is_image") ) {
+		if( $dbf->f("file_is_image") && !$file_still_used ) {
 			$info = pathinfo($fullfilepath);
-			
 			if( !@unlink(realpath($fullfilepath)) ) {
 				$vmLogger->err( $VM_LANG->_('PHPSHOP_FILES_FULLIMG_DELETE_FAILURE',false) );
-			}
-			else {
+			} else {
 				$vmLogger->info( $VM_LANG->_('PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS',false) );
 			}
-
+		
 			$thumb = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".$dbf->f("file_image_thumb_height")."x".$dbf->f("file_image_thumb_width").".".$info["extension"];
 			if( file_exists($thumb) ) {
 				if( !@unlink( realpath($thumb) ) ) {	
 					$vmLogger->err( $VM_LANG->_('PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb );
-				}
-				else {
+				} else {
 					$vmLogger->info( $VM_LANG->_('PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS',false) );
 				}
 			}
 		}
-		elseif( $fullfilepath ) {
+		elseif( $fullfilepath && !$file_still_used ) {
 			if( !@unlink(realpath($fullfilepath)) ) {
 				$vmLogger->err( $VM_LANG->_('PHPSHOP_FILES_FILE_DELETE_FAILURE',false) );
-			}
-			else {
+			} else {
 				$vmLogger->info( $VM_LANG->_('PHPSHOP_FILES_FILE_DELETE_SUCCESS',false) );
 			}
 		}

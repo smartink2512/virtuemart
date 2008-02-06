@@ -67,6 +67,10 @@ foreach ( $filenames as $file ) {
 		$file_exists = true;
 		$filename = $file;
 		break;
+	} elseif( file_exists($resized_filenames[$i])) {
+		$file_exists = true;
+		$filename = $resized_filenames[$i];
+		break;		
 	}
 	++$i;
 }

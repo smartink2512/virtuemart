@@ -88,7 +88,10 @@ div.header {
 	font-size: 22px;
 	line-height: 48px;
 	font-weight: bold;
-	padding-left: 55px;
+	padding: 0px 20px 0px 55px;
+}
+div.header h2 {
+	white-space: nowrap;
 }
 .toolbar-box {
 	background: #fbfbfb;

@@ -259,8 +259,8 @@ class ps_user {
 			$vendor_id = $ps_vendor_id;
 		}
 
-		$db->query( "SELECT COUNT(user_id) FROM #__{vm}_auth_user_vendor WHERE vendor_id='".$vendor_id."' AND user_id='" . $d["user_id"] . "'" );
-		if( $db->num_rows() < 1 ) {
+		$db->query( "SELECT COUNT(user_id) as num_rows FROM #__{vm}_auth_user_vendor WHERE vendor_id='".$vendor_id."' AND user_id='" . $d["user_id"] . "'" );
+		if( $db->f('num_rows') < 1 ) {
 			// Insert vendor relationship
 			$q = "INSERT INTO #__{vm}_auth_user_vendor (user_id,vendor_id)";
 			$q .= " VALUES ";
@@ -274,8 +274,8 @@ class ps_user {
 			$q .= "WHERE user_id='" . $d["user_id"] . "'";
 			$db->query($q);
 		}
-		$db->query( "SELECT COUNT(user_id) FROM #__{vm}_shopper_vendor_xref WHERE vendor_id='".$vendor_id."' AND user_id='" . $d["user_id"] . "'" );
-		if( $db->num_rows() < 1 ) {
+		$db->query( "SELECT COUNT(user_id) as num_rows FROM #__{vm}_shopper_vendor_xref WHERE vendor_id='".$vendor_id."' AND user_id='" . $d["user_id"] . "'" );
+		if( $db->f('num_rows') < 1 ) {
 			// Insert Shopper -ShopperGroup - Relationship
 			$q  = "INSERT INTO #__{vm}_shopper_vendor_xref ";
 			$q .= "(user_id,vendor_id,shopper_group_id,customer_number) ";

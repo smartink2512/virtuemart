@@ -42,7 +42,10 @@ VirtueMart 1.1.x
 ^ Cleaned up the component .xml files
 
 06.02.2008 soeren
-#  Task #1746 - downloadable products are not published
+^ tax rate list contains 0% tax rate now by default
+^ when deleting files from a product, the actual file is not removed from the server when it's used by a different product
+# Task #1752 - Bug in adding a user to a shopper group
+# Task #1746 - downloadable products are not published
 # changed default admin "layout" from extended to standard
 # fixed javascript errors in the file form (standard layout)
 
