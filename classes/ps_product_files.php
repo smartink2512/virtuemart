@@ -594,7 +594,7 @@ class ps_product_files {
 			case 'images': $type_sql = 'AND file_is_image=1'; break;
 			default: $type_sql = ''; break;
 		}
-		$db->query( "SELECT COUNT(file_id) AS files FROM #__{vm}_product_files WHERE file_product_id=".intval($pid)." AND file_published=1 $type_sql" );
+		$db->query( "SELECT COUNT(file_id) AS files FROM #__{vm}_product_files WHERE file_product_id=".intval($pid).' '.$type_sql );
 		$db->next_record();
 		$files = $db->f('files');
 		unset( $db );

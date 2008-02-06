@@ -36,7 +36,7 @@ if( !isset( $VMVERSION ) || !is_object( $VMVERSION ) ) {
 }
 
 // Get the Layout Type from the Cookie
-$vmLayout = vmGet( $_COOKIE, 'vmLayout', 'extended' );
+$vmLayout = vmGet( $_COOKIE, 'vmLayout', 'standard' );
 
 // Change the Layout Type if it is provided through GET
 if( !empty( $_GET['vmLayout'])) {

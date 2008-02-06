@@ -214,18 +214,19 @@ function checkThumbnailing() {
     document.adminForm.file_create_thumbnail.disabled=false;
     document.adminForm.file_resize_fullimage.checked=true;
     document.adminForm.file_resize_fullimage.disabled=false;
-    $('thumbsizes').style.display = 'block';
-    $('fullsizes').style.display = 'block';
-    $('filename2').style.display = 'none';
+    Ext.get('thumbsizes').show(true);
+    Ext.get('fullsizes').show(true);
+    Ext.get('filename2').hide(true);
+
     if( document.adminForm.file_type[4].selected == false ) {
     	
     	if( document.adminForm.file_type[1].selected ) { // product full image selected
     		document.adminForm.file_create_thumbnail.disabled=true;
-    		$('thumbsizes').style.display = 'none';
+    		Ext.get('thumbsizes').hide(true)
     	}
     	if( document.adminForm.file_type[2].selected ) { // product thumb image selected
     		document.adminForm.file_resize_fullimage.disabled=true;
-    		$('fullsizes').style.display = 'none';
+    		Ext.get('fullsizes').hide(true);
     	}
 	  	document.adminForm.upload_dir[0].disabled=false;
 		document.adminForm.upload_dir[0].checked=true;
@@ -246,10 +247,11 @@ function checkThumbnailing() {
     document.adminForm.file_create_thumbnail.disabled=true;
     document.adminForm.file_resize_fullimage.checked=false;
     document.adminForm.file_resize_fullimage.disabled=true;
-    $('thumbsizes').style.display = 'none';
-    $('fullsizes').style.display = 'none';
+    Ext.get('thumbsizes').hide(true);
+    Ext.get('fullsizes').hide(true);
+    
   	if( document.adminForm.file_type[5].selected == true) { // additional file
-  		$('filename2').style.display = 'none';
+  		Ext.get('filename2').hide(true);
   		document.adminForm.upload_dir[0].disabled=true;
 	    document.adminForm.upload_dir[0].checked=false;
 	    document.adminForm.upload_dir[1].checked=true;
@@ -259,7 +261,7 @@ function checkThumbnailing() {
 	}
 	else {
 		// pay-download selected
-		$('filename2').style.display = '';
+		Ext.get('filename2').show(true);
   		document.adminForm.upload_dir[0].disabled=true;
 	    document.adminForm.upload_dir[1].disabled=true;
 	    document.adminForm.upload_dir[2].disabled=false;
@@ -268,6 +270,9 @@ function checkThumbnailing() {
 	}
   }
 }
+Ext.get('thumbsizes').enableDisplayMode();
+Ext.get('fullsizes').enableDisplayMode();
+Ext.get('filename2').enableDisplayMode();
 checkThumbnailing();
 
 </script>

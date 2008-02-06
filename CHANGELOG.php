@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+06.02.2008 soeren
+#  Task #1746 - downloadable products are not published
+# changed default admin "layout" from extended to standard
+# fixed javascript errors in the file form (standard layout)
 05.02.2008 soeren
 # Task #1750 -  Two slashes on paths in install.php
 # Task #1747 - Problems with apostrophe in product edit window
