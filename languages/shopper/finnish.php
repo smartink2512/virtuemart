@@ -2,7 +2,6 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -20,15 +19,15 @@ global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Näytä verolliset hinnat?',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Määrittelee haluatko näyttää ostajille hinnat verolla vai et.',
-	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Osoite Nimike',
-	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Ostaja Ryhmä Luettelo',
-	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Ryhmä Nimi',
-	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Ryhmä Kuvaus',
-	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Ostaja Ryhmä Lomake',
-	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Ryhmä Nimi',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Ryhmä Kuvaus',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Price Discount on default Shopper Group (in %)',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'A positive amount X means: If the Product has no Price assigned to THIS Shopper Group, the default Price is decreased by X %. A negative amount has the opposite effect'
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Määrittää, haluatko näyttää ostajille hinnat verolla vai et.',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Osoite',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Ostajaryhmät',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Ryhmän nimi',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Ryhmän kuvaus',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Lisää/muokkaa ostajaryhmän tiedot',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Ryhmän nimi',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Ryhmän kuvaus',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Perusasiakasryhmän alennusprosentti (%)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Positiivinen luku X tarkoittaa: (Jos tuotteella ei ole mitään erikoishintaa tälle ostajaryhmälle) perushintaa lasketaan X %:lla. Negatiivinen lukema tarkoittaa päinvastaista'
 ); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

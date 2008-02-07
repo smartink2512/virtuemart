@@ -2,7 +2,6 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -19,39 +18,38 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
-	'PHPSHOP_NO_CUSTOMER' => 'Valitan, mutta et ole rekisteröitynyt asiakas.<BR>
-                                    Ole hyvä ja rekisteröidy ensin.',
-	'PHPSHOP_THANKYOU' => 'Kiitoksia Tilauksestasi.',
-	'PHPSHOP_EMAIL_SENDTO' => 'Vahvistus on lähetetty sähköpostilla',
+	'PHPSHOP_NO_CUSTOMER' => 'Et ole vielä rekisteröitynyt asiakas. Täytä laskutustiedot.',
+	'PHPSHOP_THANKYOU' => 'Kiitos tilauksesta.',
+	'PHPSHOP_EMAIL_SENDTO' => 'Tilausvahvistus on lähetetty ',
 	'PHPSHOP_CHECKOUT_NEXT' => 'Seuraava',
-	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Laskutus Tiedot',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Laskutustiedot',
 	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Yritys',
 	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Nimi',
 	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'Osoite',
-	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'Email',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Huolinta Tiedot',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'Sähköposti',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Toimitustiedot',
 	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'Yritys',
 	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'Nimi',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Oosite',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Osoite',
 	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Puhelin',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Fax',
-	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Maksu Tapa',
-	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'tarvittavat tiedot Luottokortilla maksettaessa',
-	'PHPSHOP_PAYPAL_THANKYOU' => 'Kiitoksia maksusta. 
-        Suoritus onnistui. Sinulle lähetään vahvistus sähköpostilla suorituksesta PayPal:ista. 
-        Voit nyt jatkaa tai kirjautua sisään <a href=http://www.paypal.com>www.paypal.com</a> nähdäksesi tiedot suorituksesta.',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Faksi',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Maksutapa',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'Tiedot luottokortilla maksettaessa',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Kiitos maksusta. Suoritus onnistui. 
+	    Maksuvahvistus tulee sähköpostilla PayPal:ista. 
+	    Voit nyt jatkaa tai kirjautua sisään <a href=http://www.paypal.com>www.paypal.com</a> nähdäksesi maksutiedot.',
 	'PHPSHOP_PAYPAL_ERROR' => 'Suorituksesi käsittelyn aikana tapahtui VIRHE. Tilauksesi tilaa ei voitu päivittää.',
-	'PHPSHOP_THANKYOU_SUCCESS' => 'Your order has been successfully placed!',
-	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s',
-	'VM_CHECKOUT_ORDERIDNOTSET' => 'Order ID is not set or emtpy!',
-	'VM_CHECKOUT_FAILURE' => 'Failure',
-	'VM_CHECKOUT_SUCCESS' => 'Success',
-	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_1' => 'This page is located on the webshop\'s website.',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'Tilaus onnistui ja tallennettiin!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Tialausprosessi: Sivu %s / %s',
+	'VM_CHECKOUT_ORDERIDNOTSET' => 'Tilausnumeroa ei ole!',
+	'VM_CHECKOUT_FAILURE' => 'Epäonnistui',
+	'VM_CHECKOUT_SUCCESS' => 'Onnistui',
+	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_1' => 'This page is located on the webshops website.',
 	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_2' => 'The gateway execute the page on the website, and the shows the result SSL Encrypted.',
-	'VM_CHECKOUT_CCV_CODE' => 'Credit Card Validation Code',
-	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'What\'s the Credit Card Validation Code?',
-	'VM_CHECKOUT_MD5_FAILED' => 'MD5 Check failed',
-	'VM_CHECKOUT_ORDERNOTFOUND' => 'Order not found',
+	'VM_CHECKOUT_CCV_CODE' => 'Luottokortin validointi koodi',
+	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'Mikä on luottokortin validointi koodi?',
+	'VM_CHECKOUT_MD5_FAILED' => 'MD5 tarkastus epäonnistui',
+	'VM_CHECKOUT_ORDERNOTFOUND' => 'Tilausta ei löytynyt',
 	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '
                 The Payment Transaction was approved by PBS. \n
                 The Transaction has received the following Transaction Number:\n\n

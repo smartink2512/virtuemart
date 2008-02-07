@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 07.02.2008 thepisu
+# Updated Finnish lang files (translation by Mauri)
 # Task #1735 Translation bug in admin product menu
 # Task #1738 Translation bug in admin special products
 # Task #1736 Translation bug in product atribute

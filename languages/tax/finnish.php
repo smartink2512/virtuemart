@@ -2,7 +2,6 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -19,12 +18,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
-	'PHPSHOP_TAX_LIST_LBL' => 'Vero Prosentti Luettelo',
-	'PHPSHOP_TAX_LIST_STATE' => 'Vero Osavaltio tai Alue',
-	'PHPSHOP_TAX_LIST_COUNTRY' => 'Vero Maa',
-	'PHPSHOP_TAX_FORM_LBL' => 'Lisää Vero Informaatio',
-	'PHPSHOP_TAX_FORM_STATE' => ' Vero Osavaltio tai Alue ',
-	'PHPSHOP_TAX_FORM_COUNTRY' => 'Vero Maa',
-	'PHPSHOP_TAX_FORM_RATE' => 'Vero Prosentti'
+	'PHPSHOP_TAX_LIST_LBL' => 'Veroprosenttiluettelo',
+	'PHPSHOP_TAX_LIST_STATE' => 'Osavaltion tai alueen vero',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Maakohtainen vero',
+	'PHPSHOP_TAX_FORM_LBL' => 'Lisää/muokkaa veron tiedot',
+	'PHPSHOP_TAX_FORM_STATE' => 'Osavaltion tai alueen vero',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Maakohtainen vero',
+	'PHPSHOP_TAX_FORM_RATE' => 'Veroprosentti'
 ); $VM_LANG->initModule( 'tax', $langvars );
 ?>

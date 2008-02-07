@@ -2,7 +2,6 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : finnish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -20,19 +19,19 @@ global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
 	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Maa',
-	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Määrää Vyöhykkeeseen',
-	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Määritä Vyöhykkeet',
-	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Vyöhyke Nimi',
-	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Vyöhyke Kuvaus',
-	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Vyöhyke Kustannus per Artikkeli',
-	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Vyöhyke Kustannus Raja',
-	'PHPSHOP_ZONE_LIST_LBL' => 'Vyöhyke Luettelo',
-	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Vyöhyke Nimi',
-	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Vyöhyke Kuvaus',
-	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Vyöhyke Kustannus per Artikkeli',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Vyöhyke Kustannus Raja',
-	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
-	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
-	'VM_ZONE_EDITZONE' => 'Edit This Zone'
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Määrää vyöhykkeeseen',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Määritä vyöhykkeet',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Vyöhykkeen nimi',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Vyöhykkeen kuvaus',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Vyöhykkeen kustannus per artikkeli',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Vyöhykkeen kustannusraja',
+	'PHPSHOP_ZONE_LIST_LBL' => 'Vyöhykeluettelo',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Vyöhykkeen nimi',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Vyöhykkeen kuvaus',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Vyöhykkeen kustannus per artikkeli',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Vyöhykkeen kustannusraja',
+	'VM_ZONE_ASSIGN_PERITEM' => 'per artikkeli:',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Raja',
+	'VM_ZONE_EDITZONE' => 'Muokkaa tätä vyöhykettä'
 ); $VM_LANG->initModule( 'zone', $langvars );
 ?>
