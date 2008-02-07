@@ -99,7 +99,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader($VM_LANG->_('_PHPSHOP_FEATURED_PRODUCTS_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "specialprod");
+$listObj->writeSearchHeader($VM_LANG->_('PHPSHOP_FEATURED_PRODUCTS_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "specialprod");
 
 echo '<strong>'.$VM_LANG->_('PHPSHOP_FILTER').':</strong>&nbsp;&nbsp;';
 if($filter != "all") echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=all").'" title="'.$VM_LANG->_('PHPSHOP_LIST_ALL_PRODUCTS').'">';

@@ -1152,9 +1152,9 @@ class ps_product_attribute {
 			  </tr>
 			  <tr id="attributeX_tr_0_0">
 			  	 <td width="5%">&nbsp;</td>
-			     <td width="10%" align="left">Property</td>
+			     <td width="10%" align="left"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_PROPERTY'); ?></td>
 			     <td align="left" width="20%"><input type="text" name="attributeX[0][value][]" value="" size="40"/></td>
-			     <td align="left" width="5%">Price</td>
+			     <td align="left" width="5%"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_PRICE_TITLE'); ?></td>
 			     <td align="left" width="60%"><input type="text" name="attributeX[0][price][]" size="10" value=""/></td>
 			   </tr>
 			   </tbody>

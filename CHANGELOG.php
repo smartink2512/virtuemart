@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.02.2008 thepisu
+# Task #1735 Translation bug in admin product menu
+# Task #1738 Translation bug in admin special products
+# Task #1736 Translation bug in product atribute
+
 06.02.2008 gregdev
 + Added the ability to set product, category, flypage, or page in a Joomla menu item
 # Fixed missing slash in install (for loading sql sample data)

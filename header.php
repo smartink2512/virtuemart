@@ -225,11 +225,11 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 			           	if( file_exists($mosConfig_absolute_path.'/administrator/components/com_csvimproved/admin.csvimproved.php')) {
 			           		$url = $mosConfig_live_site . '/administrator/index2.php?option=com_csvimproved';
 							$extra = 'onclick="document.location=this.href"';
-			           		$title = 'CSV Improved - Import/Export Component';
+			           		$title = str_replace('"','&quot;',$VM_LANG->_('CSVIMPROVED_TITLE'));
 			           	} else {
 			           		$url = 'http://www.csvimproved.com/index.php?option=com_ionfiles&Itemid=20';
 			           		$extra = 'target="_blank"';
-			           		$title = 'In order to use CSV Import/Export you need to install the Component &quot;CSVImproved&quot;';
+			           		$title = str_replace('"','&quot;',$VM_LANG->_('CSVIMPROVED_NEEDINSTALL'));
 			           	}
 			           	?>
 						<a href="<?php echo $url  ?>" title="<?php echo $title  ?>" <?php echo $extra ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_CSV_UPLOAD') ?></a>
