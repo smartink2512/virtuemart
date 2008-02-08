@@ -52,9 +52,58 @@ class vmMainFrame {
 	var $_style = array();
 	
 	function vmMainFrame() {
-		
+		$_SESSION['userstate'] = '';
 	}
-	
+	/**
+	 * Gets a user state.
+	 *
+	 * @access	public
+	 * @param	string	The path of the state.
+	 * @return	mixed	The user state.
+	 */
+	function getUserState( $key ) 	{
+		if( isset($_SESSION['userstate'][$key]) && !is_null($_SESSION['userstate'][$key])) {
+			return $_SESSION['userstate'][$key];
+		}
+		return null;
+	}
+
+	/**
+	* Sets the value of a user state variable.
+	*
+	* @access	public
+	* @param	string	The path of the state.
+	* @param	string	The value of the variable.
+	* @return	mixed	The previous state, if one existed.
+	*/
+	function setUserState( $key, $value ) {
+		 $_SESSION['userstate'][$key] = $value;
+	}
+
+	/**
+	 * Gets the value of a user state variable.
+	 *
+	 * @access	public
+	 * @param	string	The key of the user state variable.
+	 * @param	string	The name of the variable passed in a request.
+	 * @param	string	The default value for the variable if not found. Optional.
+	 * @param	string	Filter for the variable, for valid values see {@link JFilterInput::clean()}. Optional.
+	 * @return	The request user state.
+	 */
+	function getUserStateFromRequest( $key, $request, $default = null, $type = 'none' ) {
+		$old_state = $this->getUserState( $key );
+		$cur_state = (!is_null($old_state)) ? $old_state : $default;
+		$new_state = vmRequest::getVar($request, null, 'default', $type);
+
+		// Save the new value only if it was set in this request
+		if ($new_state !== null) {
+			$this->setUserState($key, $new_state);
+		} else {
+			$new_state = $cur_state;
+		}
+
+		return $new_state;
+	}
 	 /**
 	 * Adds a linked script to the page
 	 *

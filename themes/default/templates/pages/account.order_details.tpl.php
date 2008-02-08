@@ -63,8 +63,7 @@ if( $db->f('order_number')) {
 	<?php
 		$db = $db_temp;
 	}
-	
-	/** END printing out HTML Form code (Payment Extra Info) **/
+	// END printing out HTML Form code (Payment Extra Info)
 	?>
 	<table border="0" cellspacing="0" cellpadding="2" width="100%">
 	  <!-- begin customer information --> 
@@ -82,16 +81,7 @@ if( $db->f('order_number')) {
 	  </tr>
 	  <tr> 
 	    <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') ?>:</td>
-	    <td><?php
-	    $q = "SELECT order_status_id, order_status_name,order_status_code FROM #__{vm}_order_status WHERE ";
-	    $q .= "order_status_code = '" . $db->f("order_status") . "'";
-	    $dbos = new ps_DB;
-	    $dbos->query($q);
-	    $dbos->next_record();
-	    echo $dbos->f("order_status_name");
-	    ?>
-	
-	</td>
+	    <td><?php echo ps_order_status::getOrderStatusName( $db->f("order_status") ); ?></td>
 	  </tr>
 	  <!-- End Customer Information --> 
 	  <!-- Begin 2 column bill-ship to --> 
@@ -332,14 +322,14 @@ if( $db->f('order_number')) {
 	if ($dbos->f("order_status_code") == ENABLE_DOWNLOAD_STATUS && ENABLE_DOWNLOADS) {
 	
 		$q = "SELECT `download_id` FROM #__{vm}_product_download WHERE";
-		$q .= " order_id = '" . $vars["order_id"] . "'";
+		$q .= " order_id =" .(int)$vars["order_id"];
 		$dbdl->query($q);
 	
 		// $q = "SELECT * FROM #__{vm}_product_download WHERE order_id ='" . $db->f("order_id")
 		// $dbbt->query($q);
 	
 	
-		/* check if download records exist for this purchase order */
+		// check if download records exist for this purchase order
 		if ($dbdl->next_record()) {
 			echo "<b>" . $VM_LANG->_('PHPSHOP_DOWNLOADS_CLICK') . "</b><br /><br />";
 	
@@ -398,12 +388,12 @@ if( $db->f('order_number')) {
 	          <td><?php $dbcart->p("product_quantity"); ?></td>
 	          <td><?php 
 	              if ($dbdl->next_record()) {
-	        			/* hyperlink downloadable order item */
-	
+	        			// hyperlink the downloadable order item	
 	        			$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads";
-	        			echo '<a href="'."$url&download_id=".$dbdl->f("download_id").'">';
-	        			echo $dbcart->p("order_item_name");
-	        			echo '</a>';
+	        			echo '<a href="'."$url&download_id=".$dbdl->f("download_id").'">'
+	        					. '<img src="'.VM_THEMEURL.'images/download.png" alt="'.$VM_LANG->_('PHPSHOP_DOWNLOADS_CLICK').'" align="left" border="0" />&nbsp;'
+	        					. $dbcart->f("order_item_name")
+	        					. '</a>';
 					}
 	        		else {
 			        	if( !empty( $product_id )) {

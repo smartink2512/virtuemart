@@ -35,7 +35,7 @@ else {
 	$q = "";
 	$list = "SELECT * FROM #__{vm}_payment_method LEFT JOIN #__{vm}_shopper_group ";
 	$list .= "ON #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id WHERE ";
-	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method,#__{vm}_shopper_group ";
+	$count = "SELECT count(*) as num_rows FROM #__{vm}_payment_method LEFT JOIN #__{vm}_shopper_group ";
 	$count .= "ON #__{vm}_payment_method.shopper_group_id=#__{vm}_shopper_group.shopper_group_id WHERE ";
 	$q .= "#__{vm}_payment_method.vendor_id='$ps_vendor_id' ";
 	$list .= $q;

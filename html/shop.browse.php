@@ -74,8 +74,7 @@ if( $category_id ) {
 	$mainframe->prependMetaTag( "description", substr(strip_tags($desc ), 0, 255) );
 	
 }	
-/*** when nothing has been found
-* we tell this here and say goodbye */
+// when nothing has been found we tell this here and say goodbye
 if ($num_rows == 0 && (!empty($keyword)||!empty($keyword1))) {
 	echo $VM_LANG->_('PHPSHOP_NO_SEARCH_RESULT');
 }
@@ -266,7 +265,7 @@ else {
 	$db_browse->reset();
 	
 	$products = array();
-	$i = 0;
+	$counter = 0;
 	/*** Start printing out all products (in that category) ***/
 	while ($db_browse->next_record()) {
 
@@ -293,6 +292,20 @@ else {
         }
         $url = $sess->url( $url_parameters );
 
+        // Price: xx.xx EUR
+		if (_SHOW_PRICES == '1' && $auth['show_prices']) {
+			$product_price = $ps_product->show_price( $db_browse->f("product_id") );
+		}
+		else {
+			$product_price = "";
+		}
+		// @var float $product_price_raw The raw unformatted Product Price in Float Format
+		$product_price_raw = $ps_product->get_adjusted_attribute_price($db_browse->f('product_id'));
+		
+		// i is the index for the array holding all products, we need to show. to allow sorting by discounted price,
+		// we need to use the price as first part of the index name!
+		$i = $product_price_raw['product_price'] . '_' . ++$counter;
+		
         if( $db_browse->f("product_thumb_image") ) {
             $product_thumb_image = $db_browse->f("product_thumb_image");
 		}
@@ -357,26 +370,15 @@ else {
 		$product_details = $VM_LANG->_('PHPSHOP_FLYPAGE_LBL');
 
 		if (PSHOP_ALLOW_REVIEWS == '1' && @$_REQUEST['output'] != "pdf") {
-			/**
-	        *   Average customer rating: xxxxx
-	        *   Total votes: x
-	        */
+			// Average customer rating: xxxxx
+	        // Total votes: x
 			$product_rating = ps_reviews::allvotes( $db_browse->f("product_id") );
 		}
 		else {
 			$product_rating = "";
 		}
-
-
-		/** Price: xx.xx EUR ***/
-		if (_SHOW_PRICES == '1' && $auth['show_prices']) {
-			$product_price = $ps_product->show_price( $db_browse->f("product_id") );
-		}
-		else {
-			$product_price = "";
-		}
-
-		/*** Add-to-Cart Button ***/
+		
+		// Add-to-Cart Button 
 		if (USE_AS_CATALOGUE != '1' && $product_price != "" 
 			&& !stristr( $product_price, $VM_LANG->_('PHPSHOP_PRODUCT_CALL') )
 			&& !ps_product::product_has_attributes( $db_browse->f('product_id'), true )
@@ -412,6 +414,7 @@ else {
 		$products[$i]['product_details'] = $product_details;
 		$products[$i]['product_rating'] = $product_rating;
 		$products[$i]['product_price'] = $product_price;
+		$products[$i]['product_price_raw'] = $product_price_raw;
 		$products[$i]['product_sku'] = $db_browse->f("product_sku");
 		$products[$i]['product_weight'] = $db_browse->f("product_weight");
 		$products[$i]['product_weight_uom'] = $db_browse->f("product_weight_uom");
@@ -425,10 +428,18 @@ else {
 		$products[$i]['cdate'] = $db_browse->f("cdate");
 		$products[$i]['mdate'] = $db_browse->f("mdate");
 
-		$i++;
-
-	} /*** END OF while loop ***/
-
+	} // END OF while loop
+	
+	// Need to re-order here, because the browse query doesn't fetch discounts
+	if( $orderby == 'product_price' ) {
+		if ($DescOrderBy == "DESC") {
+			// using krsort when the Array must be sorted reverse (Descending Order)
+			krsort($products, SORT_NUMERIC);
+		} else {
+			// using ksort when the Array must be sorted in ascending order  
+			ksort($products, SORT_NUMERIC);
+		}
+	}
 	$tpl->set( 'products', $products );
 	$tpl->set( 'search_string', $search_string );
 ?>

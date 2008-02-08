@@ -35,9 +35,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.02.2008 soeren
+^ Added getUserStateFromRequest Handler to vmMainframe
+# preventing empty Orders (throws a critical error)
+# Task #370 - Sorting Products by Price on shop.browse is wrong
+^ Task #1039 -  Bug in adding new Product gui - discounts
+^ Task #1377 - mark downloadable Order Items
+
 07.02.2008 gregdev
 # Task #1710 - Basic and Advanced component parameters (added config.xml to virtuemart.j15.xml)
-
 07.02.2008 thepisu
 # Updated Finnish lang files (translation by Mauri)
 # Task #1735 Translation bug in admin product menu
@@ -49,7 +55,6 @@ VirtueMart 1.1.x
 # Fixed missing slash in install (for loading sql sample data)
 ^ Suppressed error messages when extracting tar.gz files during installation
 ^ Cleaned up the component .xml files
-
 06.02.2008 soeren
 ^ tax rate list contains 0% tax rate now by default
 ^ when deleting files from a product, the actual file is not removed from the server when it's used by a different product

@@ -21,6 +21,7 @@ global $vendor_currency, $user;
 
 require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
+require_once(CLASSPATH.'ps_order_status.php');
 $ps_product= new ps_product;
 
 $tpl = vmTemplate::getInstance();

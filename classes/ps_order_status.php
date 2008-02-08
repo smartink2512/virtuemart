@@ -190,7 +190,7 @@ class ps_order_status extends vmAbstractObject {
 
 
 	function list_order_status($order_status_code, $extra="") {
-		echo $this->getOrderStatus( $order_status_code, $extra );
+		echo $this->getOrderStatusList( $order_status_code, $extra );
 	}
 	/**
 	 * Returns a DropDown List of all available Order Status Codes
@@ -199,7 +199,7 @@ class ps_order_status extends vmAbstractObject {
 	 * @param string $extra
 	 * @return string
 	 */
-	function getOrderStatus( $order_status_code, $extra="") {
+	function getOrderStatusList( $order_status_code, $extra="") {
 		$db = new ps_DB;
 
 		$q = "SELECT order_status_id, order_status_code, order_status_name FROM #__{vm}_order_status ORDER BY list_order";

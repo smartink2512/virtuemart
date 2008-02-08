@@ -122,10 +122,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		// Get sure that we have float values with a decimal point!
 		@setlocale( LC_NUMERIC, 'en_US', 'en' );
 		@setlocale( LC_TIME, $mosConfig_locale );
-		
-		if( empty( $mainframe->_userstate )) {
-			$mainframe->_userstate = array();
-		}
 
 		$mosConfig_list_limit = isset( $mosConfig_list_limit ) ? $mosConfig_list_limit : SEARCH_ROWS;
 
@@ -141,9 +137,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 				$_REQUEST[$intField] = $$intField = intval( vmRequest::getInt($intField) );
 			}
 		}
-				
-		$_SESSION['session_userstate']['product_id'] = $product_id = @$_REQUEST['product_id'];
-		$category_id = $mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
+		$product_id = @$_REQUEST['product_id'];
+		$vm_mainframe->setUserState('product_id', $product_id );
+		$category_id = $vm_mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
 		$manufacturer_id = $mainframe->getUserStateFromRequest( 'manufacturer_id', 'manufacturer_id' );
 		
 		$user_info_id = vmRequest::getVar('user_info_id');

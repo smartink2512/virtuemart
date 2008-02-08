@@ -918,10 +918,13 @@ Order Total: '.$order_total.'
 
 		// Insert the main order information
 		$db->buildQuery( 'INSERT', '#__{vm}_orders', $fields );
-		$db->query();
+		$result = $db->query();
 
 		$d["order_id"] = $order_id = $db->last_insert_id();
-
+		if( $result === false || empty( $order_id )) {
+			$vmLogger->crit( 'Adding the Order into the Database failed! User ID: '.$auth["user_id"] );
+			return false;
+		}
 
 	    // Insert the initial Order History.	    
 		$mysqlDatetime = date("Y-m-d G:i:s", $timestamp);

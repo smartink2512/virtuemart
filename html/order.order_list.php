@@ -215,7 +215,7 @@ while ($db->next_record()) {
     $listObj->addCell( strftime("%d-%b-%y %H:%M", $db->f("mdate")));
 	
     // Order Status Drop Down List
-	$listObj->addCell( $ps_order_status->getOrderStatus($db->f("order_status"), "onchange=\"document.adminForm$i.order_status.selectedIndex = this.selectedIndex;document.adminForm$i.changed.value='1'\""));
+	$listObj->addCell( $ps_order_status->getOrderStatusList($db->f("order_status"), "onchange=\"document.adminForm$i.order_status.selectedIndex = this.selectedIndex;document.adminForm$i.changed.value='1'\""));
 	
 	// Notify Customer checkbox
 	$listObj->addCell( '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.value = \'Y\';} else {document.adminForm'. $i .'.notify_customer.value = \'N\';}" value="Y" />'
@@ -225,7 +225,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')));
 	// Change Order Status form
 	$form_code .= '<form style="float:left;" method="post" action="'. $_SERVER['PHP_SELF'] .'" name="adminForm'. $i .'">';
-	$form_code .= $ps_order_status->getOrderStatus($db->f("order_status"), "style=\"visibility:hidden;\" onchange=\"document.adminForm$i.changed.value='1'\"");
+	$form_code .= $ps_order_status->getOrderStatusList($db->f("order_status"), "style=\"visibility:hidden;\" onchange=\"document.adminForm$i.changed.value='1'\"");
 	$form_code .= '<input type="hidden" class="inputbox" name="notify_customer" value="N" />
 		<input type="hidden" name="page" value="order.order_list" />
 		<input type="hidden" name="func" value="orderStatusSet" />
