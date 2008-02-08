@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.02.2008 gregdev
+# Task #1710 - Basic and Advanced component parameters (added config.xml to virtuemart.j15.xml)
+
 07.02.2008 thepisu
 # Updated Finnish lang files (translation by Mauri)
 # Task #1735 Translation bug in admin product menu
