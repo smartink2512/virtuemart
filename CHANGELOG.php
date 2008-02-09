@@ -40,6 +40,7 @@ VirtueMart 1.1.x
 # Ensure that system user fields (sys=1) do not have their names changed. 
 
 09.02.2008 soeren
+# Task #1745 - mod_virtuemart_allinone error
 # Task #1702 -  When save Store image missing
 # Task #1766 -  Account Order Details: Fatal Error in account.order_details.tpl.php on line 322
 

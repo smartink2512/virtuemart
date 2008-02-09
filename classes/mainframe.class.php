@@ -203,15 +203,25 @@ class vmMainFrame {
 	
 		$this->close(true);
 	}
-	function render() {
+	function render( $print = false ) {
 		global $mainframe, $mosConfig_gzip, $mosConfig_live_site;
 		
 		foreach ( $this->_script as $script ) {
-			$mainframe->addCustomHeadTag('<script type="'.key($script).'">'.current($script).'</script>');
+			$tag = '<script type="'.key($script).'">'.current($script).'</script>';
+			if( $print ) {
+				echo $tag;
+			} else {
+				$mainframe->addCustomHeadTag( $tag );
+			}
 		}
 		foreach ( $this->_style as $style ) {
 			$style = $style[0];
-			$mainframe->addCustomHeadTag('<style type="'.key($style).'">'.current($style).'</style>');
+			$tag = '<style type="'.key($style).'">'.current($style).'</style>';
+			if( $print ) {
+				echo $tag;
+			} else {
+				$mainframe->addCustomHeadTag( $tag );
+			}
 		}
 		if( isset( $_REQUEST['usefetchscript'])) {
 			$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1 );
@@ -245,11 +255,20 @@ class vmMainFrame {
 		if( $i> 0 ) {
 			$src = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/fetchscript.php?gzip='.$mosConfig_gzip;
 			$src .= $appendix;
-			
-			$mainframe->addCustomHeadTag( '<script src="'.$src.@$url_params.'" type="text/javascript"></script>' );
+			$tag = '<script src="'.$src.@$url_params.'" type="text/javascript"></script>';
+			if( $print ) {
+				echo $tag;
+			} else {
+				$mainframe->addCustomHeadTag( $tag );
+			}
 		}
 		foreach( $otherscripts as $otherscript ) {
-			$mainframe->addCustomHeadTag('<script type="'.$otherscript['type'].'" src="'.$otherscript['src'].'"></script>');
+			$tag = '<script type="'.$otherscript['type'].'" src="'.$otherscript['src'].'"></script>';
+			if( $print ) {
+				echo $tag;
+			} else {
+				$mainframe->addCustomHeadTag( $tag );
+			}
 		}
 
 		// Gather all the linked Stylesheets into ONE link
@@ -271,13 +290,23 @@ class vmMainFrame {
 				$appendix .= '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $stylesheet['url'] );
 				$i++;
 			} else {
-				$mainframe->addCustomHeadTag('<link type="'.$stylesheet['mime'].'" href="'.$stylesheet['url'].'" rel="stylesheet"'.(!empty($stylesheet['media'])?' media="'.$stylesheet['media'].'"':'').' />');
+				$tag = '<link type="'.$stylesheet['mime'].'" href="'.$stylesheet['url'].'" rel="stylesheet"'.(!empty($stylesheet['media'])?' media="'.$stylesheet['media'].'"':'').' />';
+				if( $print ) {
+					echo $tag;
+				} else {
+					$mainframe->addCustomHeadTag( $tag );
+				}
 			}
 		}
 		if( $i> 0 ) {
 			$src = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip;
 			$src .= $appendix;
-			$mainframe->addCustomHeadTag( '<link href="'.$src.@$url_params.'" type="text/css" rel="stylesheet" />' );
+			$tag = '<link href="'.$src.@$url_params.'" type="text/css" rel="stylesheet" />';
+			if( $print ) {
+				echo $tag;
+			} else {
+				$mainframe->addCustomHeadTag( $tag );
+			}
 		}
 	}
 	
