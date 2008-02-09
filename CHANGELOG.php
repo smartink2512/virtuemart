@@ -37,7 +37,9 @@ VirtueMart 1.1.x
 *************************************
 09.02.2008 gregdev
 ^ Set default for 'Show on shipping form' to 'No'
-# Ensure that system user fields (sys=1) do not have their names changed. 
+# Ensure that system user fields (sys=1) do not have their names changed.
+# Row not added to #__vm_order_user_info when order is confirmed.
+
 09.02.2008 soeren
 # Operation Aborted Error in IE when browsing products + Lightbox'ed Links enabled
 # Task #1745 - mod_virtuemart_allinone error
