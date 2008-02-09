@@ -1,39 +1,34 @@
 <?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
-/* 
-* All-in-one module for VirtueMart
-* includes:
-    Latest Products Manager
-    Top Ten Products Manager
-    Special Products ManagerM
-    (All Modules originally designed by Mr PHP)
-*
-* @version $Id$
-* @package VirtueMart
-* @subpackage modules
-*
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
-*
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* VirtueMart is Free Software.
-* VirtueMart comes with absolute no warranty.
-*
-* www.virtuemart.net
-*/
+/**
+ * All-in-one module for VirtueMart
+ * includes:
+ * Latest Products Manager
+ * Top Ten Products Manager
+ * Special Products ManagerM
+ * (All Modules originally designed by Mr PHP)
+ *
+ * @version $Id$
+ * @package VirtueMart
+ * @subpackage modules
+ *
+ * Conversion to Mambo and the rest:
+ * 	@copyright (C) 2004-2008 soeren
+ *
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * VirtueMart is Free Software.
+ * VirtueMart comes with absolute no warranty.
+ *
+ * www.virtuemart.net
+ */
 
-/* get parameters */
+// retrieve parameters
 $show_new = $params->get( 'show_new', 0 );
 $show_topten = $params->get( 'show_topten', 0 );
 $show_special = $params->get( 'show_special', 0 );
 $show_random = $params->get( 'show_random', 0 );
-
-if( empty( $show_price ) ) {
-  $show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
-}
-if( empty( $show_addtocart ) ) {
-  $show_addtocart = (bool)$params->get( 'show_addtocart', 1 ); // Display the "Add-to-Cart" Link?
-}
+$show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
+$show_addtocart = (bool)$params->get( 'show_addtocart', 1 ); // Display the "Add-to-Cart" Link?
   
 $count_mods = $show_new + $show_topten + $show_special + $show_random;
 $max_mods = $count_mods;
@@ -54,105 +49,23 @@ if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_p
 	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
 }
 
-global $VM_LANG;
+global $VM_LANG, $vm_mainframe;
 
+$tabs = new vmTabPanel(false,true,uniqid('all_in_one'));
 
-?>
+// In Joomla! 1.0 and Mambo we need to print the style and script declarations when option != com_virtuemart (called from a module)
+$print = !vmIsJoomla('1.5', '>=');
+$vm_mainframe->render($print);
+ 
+$paneid = uniqid('all_in_one');
+$tabs->startPane($paneid);
 
-<style>
-.ontab {
-	font-family : Verdana, Arial, Helvetica, sans-serif;
-	font-size: 8pt;
-	background-color: #ffae00;
-	border-left: outset 2px #ff9900;
-	border-right: outset 2px #808080;
-	border-top: outset 2px #ff9900;
-	border-bottom: solid 1px #d5d5d5;
-	width: 14%;
-	text-align: center;
-	cursor: hand;
-	font-weight: bold;
-	color: #FFFFFF;
-}
-.offtab {
-	font-family : Verdana, Arial, Helvetica, sans-serif;
-	font-size: 8pt;
-        background-color : #e5e5e5;
-	border-left: outset 2px #E0E0E0;
-	border-right: outset 2px #E0E0E0;
-	border-top: outset 2px #E0E0E0;
-	border-bottom: solid 1px #d5d5d5;
-	width: 14%;
-	text-align: center;
-	cursor: hand;
-	font-weight: normal;
-}
-.tabheading {
-	background-color: #ffae00;
-	color: #FFFFFF;
-	font-family : Verdana, Arial, Helvetica, sans-serif;
-	font-size: 8pt;
-	text-align: left;
-}
-.pagetext {
-	visibility: hidden;
-	display: none;
-	position: relative;
-	top: 0;
-}
-.number{
-	font: 8pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-	text-align: center;
-	text-decoration: underline;
-	border-right-color: Black;
-	border-right: 1px;
-	border-style: none solid none none;
-	}
-.modtableborder {
-	border-width: 1px;
-        border-color: black;
-        border-style: solid;
-	}
-</style>
-<script language="javascript" src="includes/js/mambojavascript.js"></script>
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-  <tr>
-    <td width="" class="tabpadding">&nbsp;</td>
-    <?php if ($show_new == '1') {
-        $new_number = $count_mods;
-        $count_mods -= 1; ?>
-    <td id="tab<?php echo $new_number ?>" style="cursor:pointer;" class="offtab" onClick="dhtml.cycleTab(this.id)"><?php echo $VM_LANG->_('CMN_NEW') ?>&nbsp;<br />
-        <img src='<?php echo IMAGEURL ?>ps_image/new.png' border=0 alt='New' align='absmiddle'></td>
-    <?php }
-    
-    if ($show_topten == '1') { 
-        $topten_number = $count_mods;
-        $count_mods -= 1; ?>
-    <td id="tab<?php echo $topten_number ?>" style="cursor:pointer;" class="offtab" onClick="dhtml.cycleTab(this.id)">Top&nbsp;<br /><img src='administrator/images/upload_f2.png' border=0 alt='Top Ten' align='absmiddle'></td>
-    <?php }
-    
-    if ($show_special == '1') { 
-        $special_number = $count_mods;
-        $count_mods -= 1;
+ if ($show_new == '1') { 
+    //////////////////////////////
+    // Latest Products
+    //
+    $tabs->startTab($VM_LANG->_('CMN_NEW'), 'new_'.$paneid);
     ?>
-    <td id="tab<?php echo $special_number ?>" style="cursor:pointer;" class="offtab" onClick="dhtml.cycleTab(this.id)">Special&nbsp;<br /><img src='<?php echo IMAGEURL ?>ps_image/special.png' border=0 alt='Special' align='absmiddle'></td>
-    <?php }
-    
-    if ($show_random == '1') { 
-        $random_number = $count_mods;
-        $count_mods -= 1;
-    ?>
-    <td id="tab<?php echo $random_number ?>" style="cursor:pointer;" class="offtab" onClick="dhtml.cycleTab(this.id)">Random&nbsp;<br /><img src='<?php echo IMAGEURL ?>ps_image/random.png' border=0 alt='Random' align='absmiddle'></td>
-    <?php }
-?>
-
-    <td width="90%" class="tabpadding">&nbsp;</td>
-  </tr>
-</table>
-
-    <?php if ($show_new == '1') { ?>
-    
-<div id="page<?php echo $new_number ?>" class="pagetext">
     <table cellspacing="0" cellpadding="1" width="100%" class="modtableborder">
     <?php
     //////////////////////////////
@@ -193,23 +106,22 @@ global $VM_LANG;
               $ps_product->show_snapshot($db->f("product_sku"), $show_price, $show_addtocart);
               ?><br /></td></tr><?php 
             }
-            ?>
-          </td>
-        </tr>
-    <?php } ?>
+	} ?>
     </table>
-</div>
 
-<?php }
+<?php 
+	$tabs->endTab();
+}
 
-if ($show_topten == '1') { ?>
-
-<div id="page<?php echo $topten_number ?>" class="pagetext">
-  <table cellspacing="0" cellpadding="1" width="100%" class="modtableborder">
-      <?php
+if ($show_topten == '1') { 
       //////////////////////////////
       // Top Ten
       //
+      $tabs->startTab('Top', 'top_'.$paneid);
+	?>
+  <table cellspacing="0" cellpadding="1" width="100%" class="modtableborder">
+      <?php
+
       
      require_once(CLASSPATH.'ps_product.php');
   $ps_product = new ps_product;
@@ -275,19 +187,18 @@ if ($show_topten == '1') { ?>
     </tr>
   </table>
   <!--Top 10 End-->
-</div>
-<?php }
+<?php
+	$tabs->endTab(); 
+}
 
-if ($show_special == '1') { ?>
-
-<div id="page<?php echo $special_number ?>" class="pagetext">
-
-
-<table cellspacing="0" cellpadding="1" width="100%" class="modtableborder">
-
-    <?php  //////////////////////////////
-        // Featured / Special products
-        //
+if ($show_special == '1') { 
+	//////////////////////////////
+	// Featured / Special products
+	//
+	$tabs->startTab('Featured', 'featured_'.$paneid);
+    ?>
+	<table cellspacing="0" cellpadding="1" width="100%" class="modtableborder">
+    <?php  
         
         require_once ( CLASSPATH. 'ps_product.php');
         $ps_product = new ps_product;
@@ -331,26 +242,25 @@ if ($show_special == '1') { ?>
           }
           ?>
     </table>
-    
-</div>
+<?php
+	$tabs->endTab(); 
+}
 
-<?php }
-
-if ($show_random == '1') { ?>
-
-<div id="page<?php echo $random_number ?>" class="pagetext">
-<table cellspacing="0" cellpadding="1" width="100%" class="modtableborder">
-
-<?php  //////////////////////////////
+if ($show_random == '1') { 
+	////////////////////////////
     // Random products
     //
+    $tabs->startTab('Random', 'random_'.$paneid );
+	?>
+	<table cellspacing="0" cellpadding="1" width="100%" class="modtableborder">
+
+	<?php
     require_once ( CLASSPATH. 'ps_product.php');
     $ps_product = new ps_product;
         
     $db=new ps_DB;
     
     $max_items=2; //maximum number of items to display
-
 
     $q  = "SELECT DISTINCT product_sku FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
     $q .= "product_parent_id=''";
@@ -391,18 +301,13 @@ if ($show_random == '1') { ?>
     
               ?>
               </td>
-            </tr>
-          
+            </tr>          
           <?php
-      } ?>
-      
-     
+      } ?>    
     </table>
-</div>
  <?php
-    }
-  ?>
+ 	$tabs->endTab();
+ }
+ $tabs->endPane();
  
-<script language="javascript" type="text/javascript">
-		dhtml.cycleTab('tab<?php echo $max_mods ?>');
-</script>
+ ?>
