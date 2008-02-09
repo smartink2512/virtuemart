@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -602,7 +602,7 @@ $tabs->startTab( $status_label, "status-page");
       <?php
       echo vmToolTip($VM_LANG->_('PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1')); ?>
       <br /><br />
-        <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo VM_THEMEURL ?>images/availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo IMAGEURL.NO_IMAGE;?>'; document.adminForm.product_availability.value=''}">
+        <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo VM_THEMEURL ?>images/availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo VM_THEMEURL.'images/'.NO_IMAGE;?>'; document.adminForm.product_availability.value=''}">
           <option value=""><?php echo $VM_LANG->_('VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE'); ?></option><?php
           $path = VM_THEMEPATH."images/availability";
           $files = vmReadDirectory( "$path", ".", true, true);
@@ -621,7 +621,7 @@ $tabs->startTab( $status_label, "status-page");
 		echo vmToolTip(sprintf($VM_LANG->_('PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2'),$pathrelative));
 		?>
         &nbsp;&nbsp;&nbsp;
-        <img src="<?php echo $db->f("product_availability") ? VM_THEMEURL."images/availability/".$db->sf("product_availability") : IMAGEURL.NO_IMAGE; ?>" name="imagelib" border="0" alt="Preview" />
+        <img src="<?php echo $db->f("product_availability") ? VM_THEMEURL."images/availability/".$db->sf("product_availability") : VM_THEMEURL.'images/'.NO_IMAGE; ?>" name="imagelib" border="0" alt="Preview" />
       </td>
     </tr>
     <tr class="row1"> 

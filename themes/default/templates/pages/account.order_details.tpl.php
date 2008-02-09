@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -319,7 +319,7 @@ if( $db->f('order_number')) {
 	<?php
 	$dbdl = new ps_DB;
 	/* Check if the order has been paid for */
-	if ($dbos->f("order_status_code") == ENABLE_DOWNLOAD_STATUS && ENABLE_DOWNLOADS) {
+	if ($db->f("order_status") == ENABLE_DOWNLOAD_STATUS && ENABLE_DOWNLOADS) {
 	
 		$q = "SELECT `download_id` FROM #__{vm}_product_download WHERE";
 		$q .= " order_id =" .(int)$vars["order_id"];
@@ -369,7 +369,7 @@ if( $db->f('order_number')) {
 	
 	        	/* BEGIN HACK EUGENE */
 	        	/*HACK SCOTT had to retest order status else unpaid were able to download*/
-	        	if ($dbos->f("order_status_code") == ENABLE_DOWNLOAD_STATUS && ENABLE_DOWNLOADS) {
+	        	if ($db->f("order_status") == ENABLE_DOWNLOAD_STATUS && ENABLE_DOWNLOADS) {
 	        		/* search for download record that corresponds to this order item */
 	        		$q = "SELECT `download_id` FROM #__{vm}_product_download WHERE";
 	        		$q .= " `order_id`=" . intval($vars["order_id"]);

@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+09.02.2008 soeren
+# Task #1702 -  When save Store image missing
+# Task #1766 -  Account Order Details: Fatal Error in account.order_details.tpl.php on line 322
+
 08.02.2008 gregdev
 # Task #1425 - Changing User fields have no effect in frontend Shipping Addresses section
 	!!! DATABASE: TABLE STRUCTURE CHANGE
@@ -79,7 +83,7 @@ VirtueMart 1.1.x
 06.02.2008 soeren
 ^ tax rate list contains 0% tax rate now by default
 ^ when deleting files from a product, the actual file is not removed from the server when it's used by a different product
-# Task #1752 - Bug in adding a user to a shopper group
+# Task #1769 - Users, Shopper Groups not functioning as expected in front-end and admin (also: # Task #1752 - Bug in adding a user to a shopper group)
 # Task #1746 - downloadable products are not published
 # changed default admin "layout" from extended to standard
 # fixed javascript errors in the file form (standard layout)
