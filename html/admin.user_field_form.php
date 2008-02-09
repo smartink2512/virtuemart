@@ -108,7 +108,7 @@ if( in_array( $db->f('name'), ps_userfield::getSkipFields() )) {
 }
 $lists['readonly'] = ps_html::yesnoSelectList( 'readonly', $db->sf('readonly') != '' ? $db->sf('readonly') : '0' );
 
-$lists['shipping'] = ps_html::yesnoSelectList( 'shipping', $db->sf('shipping') );
+$lists['shipping'] = ps_html::yesnoSelectList( 'shipping', $db->sf('shipping'), 0 );
 
 $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 
@@ -350,13 +350,14 @@ $duration = 500;
   }
   function toggleType( type ) {
 	disableAll();
-	document.adminForm.name.value= type;
-	prep4SQL( document.adminForm.name ); 
+<?php if( !$db->f('sys') ) : ?>
+	prep4SQL( document.adminForm.name );
+<?php endif; ?>
 	setTimeout( 'selType( \'' + type + '\' )', <?php echo ( $duration + 50 ) ?> );
   }
   function selType(sType) {
     var elem;
-    //alert(sType);
+    
     switch (sType) {
       case 'editorta':
       case 'textarea':
