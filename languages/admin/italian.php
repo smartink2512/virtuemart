@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -361,30 +360,31 @@ Con questo tipo di registrazione, i clienti non devono e non possono registrare 
 	'VM_USER_FORM_CONTACTDETAILS_TELEPHONE' => 'Telefono',
 	'VM_USER_FORM_CONTACTDETAILS_FAX' => 'Fax',
 	'VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON' => 'Cambia Dettagli Contatto',
-    'VM_ADMIN_CFG_LOGFILE_HEADER'       => 'Configurazione File Registro',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED'      => 'Abilita Registro?',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'Se disabilitato, verrà usato un un registratore "nullo", in modo che il file vmFileLogger possa essere comunque invocato senza errori.',
-    'VM_ADMIN_CFG_LOGFILE_NAME'         => 'Nome File Registro',
-    'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'  => 'Percorso al file di registro. Deve essere raggiungibile e scrivibile.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL'        => 'Livello Registro',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'I messaggi sopra questo livello di priorità verranno ignorati.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP'    => 'TIP (CONSIGLIO) - 8',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG'  => 'DEBUG - 7',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO'   => 'INFORMAZIONE - 6',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'AVVISO - 5',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING'=> 'AVVERTIMENTO - 4',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR'    => 'ERRORE - 3',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT'   => 'CRITICO - 2',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT'  => 'ALLARME - 1',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG'  => 'EMERGENZA - 0',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT'         => 'Formato File Registro',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Formato di registrazione delle voci di riga.',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'I campi di formato registro possono includere i seguenti tag: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
-    'VM_ADMIN_CFG_LOGFILE_ERROR'        => 'Impossibile creare o accedere al file di registro. Contatta l\'amministrazione del sito o del sistema.',
-    'VM_ADMIN_CFG_DEBUG_MODE_ENABLED'        => 'Abilita modalità DEBUG?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED'          => 'Limita ad un indirizzo IP?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'  => 'Limita l\'output di debug, ad un client con uno specifico indirizzo IP.',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS'        => 'Indirizzo IP client',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'Se abiliti questa opzione ed inserisci qui un indirizzo IP, l\'output di debug verrà abilitato SOLO per il client con questo indirizzo IP.  Gli altri client non vedranno alcun output di debug.'
+	'VM_ADMIN_CFG_LOGFILE_HEADER' => 'Configurazione File Registro',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED' => 'Abilita Registro?',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'Se disabilitato, verrà usato un un registratore "nullo", in modo che il file vmFileLogger possa essere comunque invocato senza errori.',
+	'VM_ADMIN_CFG_LOGFILE_NAME' => 'Nome File Registro',
+	'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN' => 'Percorso al file di registro. Deve essere raggiungibile e scrivibile.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL' => 'Livello Registro',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'I messaggi sopra questo livello di priorità verranno ignorati.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP' => 'TIP (CONSIGLIO) - 8',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG' => 'DEBUG - 7',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO' => 'INFORMAZIONE - 6',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'AVVISO - 5',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING' => 'AVVERTIMENTO - 4',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR' => 'ERRORE - 3',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT' => 'CRITICO - 2',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT' => 'ALLARME - 1',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG' => 'EMERGENZA - 0',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT' => 'Formato File Registro',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Formato di registrazione delle voci di riga.',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'I campi di formato registro possono includere i seguenti tag: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
+	'VM_ADMIN_CFG_LOGFILE_ERROR' => 'Impossibile creare o accedere al file di registro. Contatta l\'amministrazione del sito o del sistema.',
+	'VM_ADMIN_CFG_DEBUG_MODE_ENABLED' => 'Abilita modalità DEBUG?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED' => 'Limita ad un indirizzo IP?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN' => 'Limita l\'output di debug, ad un client con uno specifico indirizzo IP.',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Indirizzo IP client',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'Se abiliti questa opzione ed inserisci qui un indirizzo IP, l\'output di debug verrà abilitato SOLO per il client con questo indirizzo IP.  Gli altri client non vedranno alcun output di debug.',
+	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

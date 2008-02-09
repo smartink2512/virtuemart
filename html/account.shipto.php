@@ -17,6 +17,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
+require_once( CLASSPATH . "ps_userfield.php" );
+
 $mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_ADD_SHIPTO_1') ." ".$VM_LANG->_('PHPSHOP_ADD_SHIPTO_2') );
       
 $Itemid = $sess->getShopItemid();
@@ -61,7 +63,10 @@ if( !$db->num_rows()) {
 	$vars['country'] = vmGet($_REQUEST, 'country', $vendor_country);
 }
 
+$fields = ps_userfield::getUserFields( 'shipping' );
+
 $tpl->set_vars( array('next_page' => $next_page,
+					'fields' => $fields,
 					'missing' => $missing,
 					'vars' => $vars,
 					'db' => $db,

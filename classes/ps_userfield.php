@@ -109,6 +109,7 @@ class ps_userfield extends vmAbstractObject {
 					'default' => vmGet($d, 'default' ), 
 					'published' => vmGet($d, 'published' ), 
 					'registration' => vmGet($d, 'registration' ), 
+					'shipping' => vmGet($d, 'shipping' ), 
 					'account' => vmGet($d, 'account' ), 
 					'readonly' => vmGet($d, 'readonly' ), 
 					'calculated' => vmGet($d, 'calculated' ), 

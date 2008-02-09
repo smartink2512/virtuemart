@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : traditional_chinese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -360,30 +359,31 @@ Customers don\'t need to and are not able to register in this type of registrati
 	'VM_USER_FORM_CONTACTDETAILS_TELEPHONE' => 'Telephone',
 	'VM_USER_FORM_CONTACTDETAILS_FAX' => 'Fax',
 	'VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON' => 'Change Contact Details',
-    'VM_ADMIN_CFG_LOGFILE_HEADER'       => 'Logfile Configuration',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED'      => 'Enable logging?',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'If disabled, a "null" logger will be instantiated instead, so that the vmFileLogger can still be invoked without error.',
-    'VM_ADMIN_CFG_LOGFILE_NAME'         => 'Logfile Name',
-    'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'  => 'Path to logfile. Must be reachable and writeable.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL'        => 'Logging level',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'Log messages above this priority threshold will be ignored.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP'    => 'TIP - 8',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG'  => 'DEBUG - 7',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO'   => 'INFO - 6',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'NOTICE - 5',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING'=> 'WARNING - 4',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR'    => 'ERROR - 3',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT'   => 'CRITICAL - 2',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT'  => 'ALERT - 1',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG'  => 'EMERGENCY - 0',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT'         => 'Logfile format',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Format for individual logfile line entries.',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'Logfile format fields can include any of the following: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
-    'VM_ADMIN_CFG_LOGFILE_ERROR'        => 'Cannot create or access log file.  Please contact the system or website administrator.',
-    'VM_ADMIN_CFG_DEBUG_MODE_ENABLED'        => 'Enable DEBUG mode?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED'          => 'Limit by IP address?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'  => 'Limit debugging output to a specific client IP address?',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS'        => 'Client IP address',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'If you enable this option and enter an IP address here, then debug output will be enabled ONLY for this client IP address.  Other clients will not see the debugging output.'
+	'VM_ADMIN_CFG_LOGFILE_HEADER' => 'Logfile Configuration',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED' => 'Enable logging?',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'If disabled, a "null" logger will be instantiated instead, so that the vmFileLogger can still be invoked without error.',
+	'VM_ADMIN_CFG_LOGFILE_NAME' => 'Logfile Name',
+	'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN' => 'Path to logfile. Must be reachable and writeable.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL' => 'Logging level',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'Log messages above this priority threshold will be ignored.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP' => 'TIP - 8',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG' => 'DEBUG - 7',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO' => 'INFO - 6',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'NOTICE - 5',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING' => 'WARNING - 4',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR' => 'ERROR - 3',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT' => 'CRITICAL - 2',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT' => 'ALERT - 1',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG' => 'EMERGENCY - 0',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT' => 'Logfile format',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Format for individual logfile line entries.',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'Logfile format fields can include any of the following: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
+	'VM_ADMIN_CFG_LOGFILE_ERROR' => 'Cannot create or access log file.  Please contact the system or website administrator.',
+	'VM_ADMIN_CFG_DEBUG_MODE_ENABLED' => 'Enable DEBUG mode?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED' => 'Limit by IP address?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN' => 'Limit debugging output to a specific client IP address?',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Client IP address',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'If you enable this option and enter an IP address here, then debug output will be enabled ONLY for this client IP address.  Other clients will not see the debugging output.',
+	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

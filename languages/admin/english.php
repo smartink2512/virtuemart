@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: english.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -28,24 +27,24 @@ $langvars = array (
 	'PHPSHOP_USER_FORM_CUSTOMER_NUMBER' => 'Customer Number / ID',
 	'PHPSHOP_MODULE_LIST_LBL' => 'Module List',
 	'PHPSHOP_MODULE_LIST_NAME' => 'Module Name',
-	'PHPSHOP_MODULE_LIST_PERMS' => 'Module Perms', // not used?
+	'PHPSHOP_MODULE_LIST_PERMS' => 'Module Perms',
 	'PHPSHOP_MODULE_LIST_FUNCTIONS' => 'Functions',
 	'PHPSHOP_MODULE_FORM_LBL' => 'Module Information',
-	'PHPSHOP_MODULE_FORM_MODULE_LABEL' => 'Module Label (for Topmenu)', // not used?
+	'PHPSHOP_MODULE_FORM_MODULE_LABEL' => 'Module Label (for Topmenu)',
 	'PHPSHOP_MODULE_FORM_NAME' => 'Module Name',
 	'PHPSHOP_MODULE_FORM_PERMS' => 'Module Perms',
-	'PHPSHOP_MODULE_FORM_HEADER' => 'Module Header', // not used?
-	'PHPSHOP_MODULE_FORM_FOOTER' => 'Module Footer', // not used?
+	'PHPSHOP_MODULE_FORM_HEADER' => 'Module Header',
+	'PHPSHOP_MODULE_FORM_FOOTER' => 'Module Footer',
 	'PHPSHOP_MODULE_FORM_MENU' => 'Show Module in Admin menu?',
 	'PHPSHOP_MODULE_FORM_ORDER' => 'Display Order',
 	'PHPSHOP_MODULE_FORM_DESCRIPTION' => 'Module Description',
-	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Language Code', // not used?
-	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Language File', // not used?
+	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Language Code',
+	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Language File',
 	'PHPSHOP_FUNCTION_LIST_LBL' => 'Function List',
 	'PHPSHOP_FUNCTION_LIST_NAME' => 'Function Name',
 	'PHPSHOP_FUNCTION_LIST_CLASS' => 'Class Name',
 	'PHPSHOP_FUNCTION_LIST_METHOD' => 'Class Method',
-	'PHPSHOP_FUNCTION_LIST_PERMS' => 'Perms', // not used?
+	'PHPSHOP_FUNCTION_LIST_PERMS' => 'Perms',
 	'PHPSHOP_FUNCTION_FORM_LBL' => 'Function Information',
 	'PHPSHOP_FUNCTION_FORM_NAME' => 'Function Name',
 	'PHPSHOP_FUNCTION_FORM_CLASS' => 'Class Name',
@@ -61,7 +60,7 @@ $langvars = array (
 	'PHPSHOP_COUNTRY_LIST_2_CODE' => 'Country Code (2)',
 	'PHPSHOP_STATE_LIST_MNU' => 'List State',
 	'PHPSHOP_STATE_LIST_LBL' => 'State List for: ',
-	'PHPSHOP_STATE_LIST_ADD' => 'Add/Update a State', // not used?
+	'PHPSHOP_STATE_LIST_ADD' => 'Add/Update a State',
 	'PHPSHOP_STATE_LIST_NAME' => 'State Name',
 	'PHPSHOP_STATE_LIST_3_CODE' => 'State Code (3)',
 	'PHPSHOP_STATE_LIST_2_CODE' => 'State Code (2)',
@@ -360,30 +359,31 @@ $langvars = array (
 	'VM_USER_FORM_CONTACTDETAILS_TELEPHONE' => 'Telephone',
 	'VM_USER_FORM_CONTACTDETAILS_FAX' => 'Fax',
 	'VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON' => 'Change Contact Details',
-    'VM_ADMIN_CFG_LOGFILE_HEADER'       => 'Logfile Configuration',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED'      => 'Enable logging?',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'If disabled, a "null" logger will be instantiated instead, so that the vmFileLogger can still be invoked without error.',
-    'VM_ADMIN_CFG_LOGFILE_NAME'         => 'Logfile Name',
-    'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'  => 'Path to logfile. Must be reachable and writeable.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL'        => 'Logging level',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'Log messages above this priority threshold will be ignored.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP'    => 'TIP - 8',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG'  => 'DEBUG - 7',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO'   => 'INFO - 6',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'NOTICE - 5',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING'=> 'WARNING - 4',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR'    => 'ERROR - 3',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT'   => 'CRITICAL - 2',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT'  => 'ALERT - 1',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG'  => 'EMERGENCY - 0',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT'         => 'Logfile format',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Format for individual logfile line entries.',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'Logfile format fields can include any of the following: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
-    'VM_ADMIN_CFG_LOGFILE_ERROR'        => 'Cannot create or access log file.  Please contact the system or website administrator.',
-    'VM_ADMIN_CFG_DEBUG_MODE_ENABLED'        => 'Enable DEBUG mode?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED'          => 'Limit by IP address?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'  => 'Limit debugging output to a specific client IP address?',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS'        => 'Client IP address',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'If you enable this option and enter an IP address here, then debug output will be enabled ONLY for this client IP address.  Other clients will not see the debugging output.'
+	'VM_ADMIN_CFG_LOGFILE_HEADER' => 'Logfile Configuration',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED' => 'Enable logging?',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'If disabled, a "null" logger will be instantiated instead, so that the vmFileLogger can still be invoked without error.',
+	'VM_ADMIN_CFG_LOGFILE_NAME' => 'Logfile Name',
+	'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN' => 'Path to logfile. Must be reachable and writeable.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL' => 'Logging level',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'Log messages above this priority threshold will be ignored.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP' => 'TIP - 8',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG' => 'DEBUG - 7',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO' => 'INFO - 6',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'NOTICE - 5',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING' => 'WARNING - 4',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR' => 'ERROR - 3',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT' => 'CRITICAL - 2',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT' => 'ALERT - 1',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG' => 'EMERGENCY - 0',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT' => 'Logfile format',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Format for individual logfile line entries.',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'Logfile format fields can include any of the following: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
+	'VM_ADMIN_CFG_LOGFILE_ERROR' => 'Cannot create or access log file.  Please contact the system or website administrator.',
+	'VM_ADMIN_CFG_DEBUG_MODE_ENABLED' => 'Enable DEBUG mode?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED' => 'Limit by IP address?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN' => 'Limit debugging output to a specific client IP address?',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Client IP address',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'If you enable this option and enter an IP address here, then debug output will be enabled ONLY for this client IP address.  Other clients will not see the debugging output.',
+	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

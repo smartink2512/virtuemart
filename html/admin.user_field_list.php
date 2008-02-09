@@ -51,6 +51,7 @@ $columns = Array(  "#" => "",
 					$VM_LANG->_('VM_FIELDMANAGER_REQUIRED') => "width=\"5%\"",
 					$VM_LANG->_('VM_FIELDMANAGER_PUBLISHED') => "width=\"5%\"",
 					$VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_REGISTRATION') => "width=\"5%\"",
+					$VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_SHIPPING') => "width=\"5%\"",
 					$VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_ACCOUNT') => "width=\"5%\"",
 					$VM_LANG->_('VM_FIELDMANAGER_REORDER') => "width=\"5%\"",
 					vmCommonHTML::getSaveOrderButton( min($total - $pageNav->limitstart, $pageNav->limit ), 'changeordering' ) => 'width="8%"',
@@ -58,7 +59,7 @@ $columns = Array(  "#" => "",
 				);
 $listObj->writeTableHeader( $columns );
 
-$db->query( "SELECT f.fieldid, f.sys, f.title, f.name, f.description, f.type, f.required, f.published, f.account, f.ordering, f.registration"
+$db->query( "SELECT f.fieldid, f.sys, f.title, f.name, f.description, f.type, f.required, f.published, f.account, f.ordering, f.registration, f.shipping"
 	. "\nFROM #__{vm}_userfield AS f"
 	. (count( $where ) ? "\nWHERE " . implode( ' AND ', $where ) : "")
 	. "\n ORDER BY f.ordering"
@@ -119,6 +120,18 @@ while( $db->next_record() ) {
 	}
 	else {
 		$tmp_cell = vmCommonHTML::getYesNoIcon( $db->f('registration') );
+	}
+	$listObj->addCell( $tmp_cell );  
+	
+	// Show on shipping?
+	if( !in_array($db->f('name'), $coreFields )) {
+		$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=admin.user_field_list&fieldid=".$db->f('fieldid')."&func=changePublishState&item=shipping" );
+		$tmp_cell .= $db->f('shipping') ?	"&task=unpublish\">" : $tmp_cell .= "&task=publish\">";
+		$tmp_cell .= vmCommonHTML::getYesNoIcon( $db->f('shipping') );
+		$tmp_cell .= "</a>";
+	}
+	else {
+		$tmp_cell = vmCommonHTML::getYesNoIcon( $db->f('shipping') );
 	}
 	$listObj->addCell( $tmp_cell );  
 	

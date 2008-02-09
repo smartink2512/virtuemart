@@ -108,6 +108,8 @@ if( in_array( $db->f('name'), ps_userfield::getSkipFields() )) {
 }
 $lists['readonly'] = ps_html::yesnoSelectList( 'readonly', $db->sf('readonly') != '' ? $db->sf('readonly') : '0' );
 
+$lists['shipping'] = ps_html::yesnoSelectList( 'shipping', $db->sf('shipping') );
+
 $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 
 ?>
@@ -148,6 +150,11 @@ $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 		<tr class="row1">
 			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>?:</td>
 			<td width="20%"><?php echo $lists['account']; ?></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr class="row1">
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_SHIPPING') ?>?:</td>
+			<td width="20%"><?php echo $lists['shipping']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row0">
