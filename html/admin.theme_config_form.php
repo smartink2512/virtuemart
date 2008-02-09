@@ -67,7 +67,7 @@ vmCommonHTML::loadExtjs();
 	
 <?php
 // Add necessary hidden fields
-$formObj->hiddenField( 'ajax_request', '1' );
+$formObj->hiddenField( 'ajax_request', $only_page );
 
 // Close the form 
 $formObj->finishForm( 'writeThemeConfig', 'store.index', $option );

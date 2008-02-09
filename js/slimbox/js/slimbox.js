@@ -189,4 +189,4 @@ var Lightbox = {
 	}
 };
 
-window.addEvent('domready', Lightbox.init.bind(Lightbox));
+window.addEvent('load', Lightbox.init.bind(Lightbox));
