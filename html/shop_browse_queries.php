@@ -20,11 +20,11 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 mm_showMyFileName( __FILE__ );
 
 // Descending or Ascending Order? possible values: [ASC|DESC]
-$DescOrderBy = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}DescOrderBy", 'DescOrderBy', "ASC" ) );
+$DescOrderBy = $vmInputFilter->safeSQL( $vm_mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}DescOrderBy", 'DescOrderBy', "ASC" ) );
 
 // Sort by which factor? possible values: 
 // product_name, product_price, product_sku, product_cdate (=latest additions)
-$orderby = $vmInputFilter->safeSQL( $mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}orderby", 'orderby', VM_BROWSE_ORDERBY_FIELD ));
+$orderby = $vmInputFilter->safeSQL( $vm_mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}orderby", 'orderby', VM_BROWSE_ORDERBY_FIELD ));
 
 
 $featured = vmGet($_REQUEST, 'featured', 'N' );
