@@ -9,7 +9,7 @@ if( !empty( $VM_BROWSE_ORDERBY_FIELDS )) {
 }
 // This is the toggle button for Descending / Ascending Order
 // It is wrapped into a JS function with a noscript area to keep it accessible
-echo mm_writeWithJS('&nbsp;<input type="hidden" name="DescOrderBy" value="'.$asc_desc[0].'" /><a href="javascript: document.order.DescOrderBy.value=\''.$asc_desc[1].'\'; document.order.submit()"><img src="'. $mosConfig_live_site."/images/M_images/$icon"  .'" border="0" alt="'. $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER') .'" title="'.$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER') .'" width="12" height="12" /></a>',
+echo mm_writeWithJS('&nbsp;<input type="hidden" name="DescOrderBy" value="'.$asc_desc[0].'" /><a href="javascript: document.order.DescOrderBy.value=\''.$asc_desc[1].'\'; document.order.submit()"><img src="'. $mosConfig_live_site."/images/M_images/$icon"  .'" border="0" alt="'. $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_'.$asc_desc[0].'ENDING_ORDER') .'" title="'.$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_'.$asc_desc[0].'ENDING_ORDER') .'" width="12" height="12" /></a>',
       '<select class="inputbox" name="DescOrderBy">
             <option '.$selected[0].' value="DESC">'.$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_DESCENDING_ORDER').'</option>
             <option '.$selected[1].' value="ASC">'.$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER').'</option>
