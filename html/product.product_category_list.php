@@ -109,7 +109,8 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_('PHPSHOP_PRODUCT_LIST_PUBLISH') => 'width="5%"',
 					$VM_LANG->_('PHPSHOP_MODULE_LIST_ORDER') => 'width="7%"',
 					vmCommonHTML::getSaveOrderButton( min($nrows - $pageNav->limitstart, $pageNav->limit ) ) => 'width="8%"',
-					$VM_LANG->_('E_REMOVE') => "width=\"5%\""
+					$VM_LANG->_('E_REMOVE') => "width=\"5%\"",
+					'Id' => ''
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -204,6 +205,8 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 		$listObj->addCell( '&nbsp;' );		
 	}
 	$listObj->addCell( $ps_html->deleteButton( "category_id", $category_tmp[$row_list[$n]]["category_child_id"], "productCategoryDelete", $keyword, $limitstart ) );
+	
+	$listObj->addCell( $category_tmp[$row_list[$n]]["category_child_id"] );
 	
 	$ibg++;
 }

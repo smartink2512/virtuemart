@@ -1234,7 +1234,7 @@ class ps_product extends vmAbstractObject {
 	 */
 	function get_neighbor_products( $product_id ) {
 		global $perm, $orderby, $my, $keyword, $DescOrderBy, $limit, $limitstart, $search_limiter, $search_op, 
-			$category_id, $manufacturer_id, $mainframe, $vmInputFilter, $product_type_id, $keyword1, $keyword2;
+			$category_id, $manufacturer_id, $vm_mainframe, $vmInputFilter, $product_type_id, $keyword1, $keyword2;
 		$limit = 2000;
         $limitstart = 0;
 		if( !empty( $_SESSION['last_browse_parameters'])) {
