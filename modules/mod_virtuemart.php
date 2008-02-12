@@ -73,17 +73,17 @@ if( $show_categories == "yes" ) {
   } 
   elseif( $menutype == "transmenu" ) {
       /* TransMenu script to display a DHTML Drop-Down Menu */
-      include( $mod_dir.'/vm_transmenu.php' );
+      include_once( $mod_dir.'/vm_transmenu.php' );
     
   }
   elseif( $menutype == "dtree" ) {
       /* dTree script to display structured categories */
-      include( $mod_dir.'/vm_dtree.php' );
+      include_once( $mod_dir.'/vm_dtree.php' );
     
   }
   elseif( $menutype == "jscook" ) {
       /* JSCook Script to display structured categories */
-      include( $mod_dir.'/vm_JSCook.php' );
+      include_once( $mod_dir.'/vm_JSCook.php' );
     
   }
   elseif( $menutype == "tigratree" ) {

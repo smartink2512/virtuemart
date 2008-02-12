@@ -36,6 +36,9 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 11.02.2008 soeren
+# Task #1683 -  When a word in category contain ' apostrophe in mod_virtuemart the categories are not displayed
+# Task #1729 -  JS cook menu type give error in Internet Explorer
+# Task #1755 -  Blank Notice on Add Tax Information
 # Task #1778 - Converting cent to dollar amount
 
 09.02.2008 gregdev

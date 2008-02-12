@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,8 +20,34 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * The class is is used to manage the countries in your store.
  *
  */
-class ps_country {
-
+class ps_country extends vmAbstractObject  {
+	var $key = 'country_id';
+	var $_table_name = '#__{vm}_country';
+	
+	/**
+	 * Returns the Country Name and ID of the country specified by $code
+	 *
+	 * @param string $code
+	 * @return ps_DB
+	 */
+	function &get_country_by_code( $code ) {
+		$db = new ps_DB();
+		$country_code_type = strlen( $code );
+		switch ($country_code_type) {
+			case 2:
+				$country_code_type_field = 'country_2_code';
+				break;
+			case 3:
+				$country_code_type_field = 'country_3_code';
+				break;
+			default:
+				return false;
+		}
+		$db->query('SELECT `country_id`, `country_name`, `country_2_code`, `country_3_code` 
+							FROM `'.$this->getTable().'` WHERE `'.$country_code_type_field.'` = \''.$db->getEscaped($code).'\'' );
+		$db->next_record();
+		return $db;
+	}
 	/**
 	 * Validates the input parameters onCountryAdd
 	 *
@@ -119,7 +145,7 @@ class ps_country {
 					'country_3_code' => vmGet($d,'country_3_code') 
 					);
 
-		$db->buildQuery('INSERT', '#__{vm}_country', $fields );
+		$db->buildQuery('INSERT', $this->getTable(), $fields );
 		if( $db->query() ) {
 			$GLOBALS['vmLogger']->info('The country has been added.');
 			$_REQUEST['country_id'] = $db->last_insert_id();
@@ -149,7 +175,7 @@ class ps_country {
 					'country_3_code' => vmGet($d,'country_3_code') 
 					);
 
-		$db->buildQuery('UPDATE', '#__{vm}_country', $fields, "WHERE country_id='".(int)$d["country_id"]."'" );
+		$db->buildQuery('UPDATE', $this->getTable(), $fields, "WHERE country_id=".(int)$d["country_id"] );
 		if( $db->query() ) {
 			$GLOBALS['vmLogger']->info('The country has been updated.');
 			return True;
