@@ -1,5 +1,10 @@
 <?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
+<?php
+if( sizeof($VM_BROWSE_ORDERBY_FIELDS) < 2 ) {
+	return;
+}
+?>
 <?php echo $VM_LANG->_('PHPSHOP_ORDERBY') ?>: 
 <select class="inputbox" name="orderby" onchange="order.submit()">
 <option value="product_name" ><?php echo $VM_LANG->_('PHPSHOP_SELECT') ?></option>
