@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -128,7 +128,7 @@ elseif( !empty($keyword1Arr) ) {
 		}
 	}
 	$sq .= ") ";
-	/*** KEYWORD 2 TO REFINE THE SEARCH ***/
+	// KEYWORD 2 TO REFINE THE SEARCH
 	if ( !empty($keyword2Arr) ) {
 		$sq .= "\n $search_op (";
 		$numKeywords = count( $keyword2Arr );
@@ -163,7 +163,7 @@ elseif( !empty($keyword1Arr) ) {
 }
 
 
-/*** GET ALL PUBLISHED PRODUCTS FROM THAT MANUFACTURER ***/
+// GET ALL PUBLISHED PRODUCTS FROM THAT MANUFACTURER
 if (!empty($manufacturer_id)) {
 	$table_names .= ',`#__{vm}_product_mf_xref`';	
 	$where_clause[]  = "manufacturer_id='".$manufacturer_id."'";
@@ -329,13 +329,14 @@ if( vmIsJoomla(1.5) && $limit == 0 ) {
 $_SESSION['last_browse_parameters'] = array(
 											'category_id' => $category_id,
 											'manufacturer_id' => $manufacturer_id,
-											'product_type_id' => $product_type_id,
 											'keyword' => $keyword,
 											'keyword1' => $keyword1,
 											'keyword2' => $keyword2,
 											'featured' => $featured,
 											'discounted' => $discounted
 										);
-
+if( !empty($product_type_id) ) {
+	$_SESSION['last_browse_parameters']['product_type_id'] = $product_type_id;
+}
 // BACK TO shop.browse.php !
 ?>

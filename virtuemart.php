@@ -27,8 +27,7 @@ $pagename = $my_page[1];
 
 $is_popup = vmRequest::getBool( 'pop' );
 
-/* Page Navigation Parameters */
-$mainframe->_userstate =& $_SESSION['session_userstate'];
+// Page Navigation Parameters
 $limit = intval( $vm_mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit ) );
 $limitstart = intval( $vm_mainframe->getUserStateFromRequest( "view{$keyword}{$category_id}limitstart", 'limitstart', 0 )) ;
 

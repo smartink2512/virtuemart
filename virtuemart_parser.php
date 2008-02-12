@@ -134,13 +134,13 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			if( !empty($_REQUEST[$intField]) && is_array($_REQUEST[$intField]) ) {
 				vmArrayToInts( $_REQUEST[$intField] );
 			} elseif ( isset($_REQUEST[$intField]) ) {
-				$_REQUEST[$intField] = $$intField = intval( vmRequest::getInt($intField) );
+				$_REQUEST[$intField] = $$intField = vmRequest::getInt($intField);
 			}
 		}
-		$product_id = @$_REQUEST['product_id'];
+		$product_id = vmRequest::getInt('product_id');
 		$vm_mainframe->setUserState('product_id', $product_id );
-		$category_id = $vm_mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
-		$manufacturer_id = $mainframe->getUserStateFromRequest( 'manufacturer_id', 'manufacturer_id' );
+		$category_id = (int)$vm_mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
+		$manufacturer_id = (int)$vm_mainframe->getUserStateFromRequest( 'manufacturer_id', 'manufacturer_id' );
 		
 		$user_info_id = vmRequest::getVar('user_info_id');
 

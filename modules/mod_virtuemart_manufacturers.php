@@ -34,20 +34,18 @@ $category_id = vmGet( $_REQUEST, 'category_id', '' );
 $sess = new ps_session;
 
 if ($auto == 1 && !empty( $category_id ) ) {
-	$query  = "SELECT distinct a.manufacturer_id,a.mf_name FROM #__{vm}_manufacturer AS a, ";
-    $query .= "\n#__{vm}_product AS b,"
-    . "\n#__{vm}_product_mf_xref AS c,"
-    . "\n#__{vm}_product_category_xref AS d "
-    . "\nWHERE d.category_id='$category_id'"
-    . "\n AND d.product_id = b.product_id "
-    . "\n AND b.product_id = c.product_id AND c.manufacturer_id = a.manufacturer_id ";
+	$query  = "SELECT DISTINCT m.manufacturer_id, m.mf_name
+					FROM #__{vm}_manufacturer m
+					LEFT JOIN #__{vm}_product_mf_xref mx ON mx.manufacturer_id = m.manufacturer_id
+					LEFT JOIN #__{vm}_product p ON p.product_id = mx.product_id
+					LEFT JOIN #__{vm}_product_category_xref cx ON cx.product_id = p.product_id
+					WHERE cx.category_id = '$category_id' ";
 } else {
-	$query  = "SELECT a.manufacturer_id,a.mf_name FROM #__{vm}_manufacturer AS a ";
+	$query  = "SELECT m.manufacturer_id,m.mf_name FROM #__{vm}_manufacturer m ";
 }
-$query .= "ORDER BY a.mf_name ASC";
+$query .= "ORDER BY m.mf_name ASC";
 $db = new ps_DB;
 $db->query( $query );
-
 $res = $db->record;
 if( empty( $res )) {
 	echo 'No manufacturers defined!';
