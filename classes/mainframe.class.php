@@ -347,10 +347,10 @@ class vmMainFrame {
 		// Remove the link on the last pathway item
 		$pathway[ count($pathway) - 1 ]->link = '';
 
-		if( vmIsJoomla(1.5) ) {
+		if( vmIsJoomla('1.5') ) {
 			$cmsPathway =& $mainframe->getPathway();
 			foreach( $pathway AS $item) {
-				$cmsPathway->addItem( $item->name, basename($item->link) );
+				$cmsPathway->addItem( $item->name, str_replace('&amp;', '&', basename($item->link)) );
 			}
 		} else {
 			$tpl = vmTemplate::getInstance();

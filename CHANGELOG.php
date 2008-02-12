@@ -35,11 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.02.2008 soeren
+# Manufacturer ID left empty in product form when only one manufacturer present
+# Task # 1706 -  Deselection of Sort Order in Configuration not working
 12.02.2008 gregdev
 # Task #1779 - Installation archive files don't get deleted in Joomla 1.0.x
 
 11.02.2008 soeren
-# Task # 1706 -  Deselection of Sort Order in Configuration not working
 # Task #1683 -  When a word in category contain ' apostrophe in mod_virtuemart the categories are not displayed
 # Task #1729 -  JS cook menu type give error in Internet Explorer
 # Task #1755 -  Blank Notice on Add Tax Information
@@ -49,7 +51,6 @@ VirtueMart 1.1.x
 ^ Set default for 'Show on shipping form' to 'No'
 # Ensure that system user fields (sys=1) do not have their names changed.
 # Row not added to #__vm_order_user_info when order is confirmed.
-
 09.02.2008 soeren
 # Operation Aborted Error in IE when browsing products + Lightbox'ed Links enabled
 # Task #1745 - mod_virtuemart_allinone error
@@ -76,7 +77,7 @@ VirtueMart 1.1.x
 	UPDATE `jos_vm_userfield` SET `shipping`=1 WHERE `name`='phone_2';
 	UPDATE `jos_vm_userfield` SET `shipping`=1 WHERE `name`='fax';
 	###
-
+	
 08.02.2008 soeren
 ^ Added getUserStateFromRequest Handler to vmMainframe
 # preventing empty Orders (throws a critical error)

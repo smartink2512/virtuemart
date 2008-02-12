@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -172,7 +172,6 @@ class ps_manufacturer {
 	function delete_record( $record_id, &$d ) {
 		global $db;
 		if (!$this->validate_delete($record_id)) {
-			$d["error"]=$this->error;
 			return False;
 		}
 		$q = 'DELETE from #__{vm}_product_mf_xref WHERE manufacturer_id='.(int)$record_id.' LIMIT 1';
@@ -197,7 +196,7 @@ class ps_manufacturer {
 		// If only one vendor do not show list
 		if ($db->num_rows() == 1) {
 
-			echo '<input type="hidden" name="manufacturer_id" value="'. $db->f("manufacturer_id").'" />';
+			echo '<input type="hidden" name="manufacturer_id" value="'. $db->f("id").'" />';
 			echo $db->f("name");
 		}
 		elseif( $db->num_rows() > 1) {

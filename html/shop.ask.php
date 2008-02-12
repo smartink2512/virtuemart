@@ -60,7 +60,15 @@ $product_link = $sess->url( $mm_action_url.basename($_SERVER['PHP_SELF'])."?page
 $name = $my->name;
 $email = $my->email;
 
-$mainframe->appendPathWay( vmCommonHTML::hyperLink( $product_link,$db_product->f('product_name') ) . vmCommonHTML::pathway_separator() . $pagetitle );
+$pathway_item = new stdClass();
+$pathway_item->link = $product_link;
+$pathway_item->name = $db_product->f('product_name');
+
+$page_pathway[] = $pathway_item;
+$pathway_item = new stdClass();
+$pathway_item->name = $pagetitle;
+$page_pathway[] = $pathway_item;
+$vm_mainframe->vmAppendPathway( $page_pathway );
 
 $tpl = vmTemplate::getInstance();
 $tpl->set_vars(array('product_id' => $product_id,
