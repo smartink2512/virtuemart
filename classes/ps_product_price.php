@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -20,8 +20,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * This class handles product prices
  *
  */
-class ps_product_price {
-
+class ps_product_price extends vmAbstractObject  {
+	var $key = 'product_price_id'; 
+	var $_table_name = '#__{vm}_product_price';
 
 	/**
 	 * Validates the Input Parameters on price add/update
@@ -43,7 +44,7 @@ class ps_product_price {
 		}
 		// convert all "," in prices to decimal points.
 		if (stristr($d["product_price"],",")) {
-			$d['product_price'] = str_replace(',', '.', $d["product_price"]);
+			$d['product_price'] = floatval(str_replace(',', '.', $d["product_price"]));
 		}
 
 		if (!$d["product_currency"]) {

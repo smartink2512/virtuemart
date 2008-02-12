@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -15,19 +15,22 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * http://virtuemart.net
 */
-
-class ps_shopper_group {
-	var $classname = "ps_shopper_group";
-	var $id = "";
-	var $error;
-
-	/**************************************************************************
-	** name: validate
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+/**
+ * VirtueMart Shopper Group Handler
+ *
+ */
+class ps_shopper_group extends vmAbstractObject  {
+	
+	var $key = 'shopper_group_id';
+	var $_required_fields = array('shopper_group_name');
+	var $_table_name = '#__{vm}_shopper_group';
+	
+	/**
+	 * Validates the Input Parameters onBeforeShopperGroupAdd
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_add($d) {
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -37,8 +40,8 @@ class ps_shopper_group {
 			return False;
 		}
 		else {
-			$q = "SELECT count(*) as num_rows from #__{vm}_shopper_group";
-			$q .= " WHERE shopper_group_name='" . $d["shopper_group_name"] . "'";
+			$q = "SELECT COUNT(*) as num_rows FROM #__{vm}_shopper_group";
+			$q .= " WHERE shopper_group_name='" .$db->getEscaped(vmGet($d,'shopper_group_name')) . "'";
 			$q .= " AND vendor_id='" . $ps_vendor_id . "'";
 
 			$db->query($q);
@@ -56,13 +59,12 @@ class ps_shopper_group {
 		}
 	}
 
-	/**************************************************************************
-	** name: validate
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeShopperGroupUpdate
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_update($d) {
 
 		if (!$d["shopper_group_name"]) {
@@ -76,24 +78,35 @@ class ps_shopper_group {
 		return True;
 	}
 
-	/**************************************************************************
-	** name: validate
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Validates the Input Parameters onBeforeShopperGroupDelete
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function validate_delete( $shopper_group_id, &$d) {
 
 		$db = new ps_DB;
-
-		if (!$shopper_group_id) {
+		$shopper_group_id = intval( $shopper_group_id );
+		if (empty($shopper_group_id)) {
 			$GLOBALS['vmLogger']->err('Please select a shopper group to delete.' );
 			return False;
 		}
-
-		$q = "SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE shopper_group_id='";
-		$q .= $shopper_group_id . "' AND `default`='1'";
+		// Check if the Shopper Group still has Payment Methods assigned to it
+		$db->query( 'SELECT payment_method_id FROM #__{vm}_payment_method WHERE shopper_group_id='.$shopper_group_id);
+		if( $db->next_record()) {			
+			$GLOBALS['vmLogger']->err('This Shopper Group (Id: '.$shopper_group_id.') still has Payment Methods assigned to it.' );
+			return False;
+		}
+		// Check if there are Users in this Shopper Group
+		$db->query( 'SELECT user_id FROM #__{vm}_shopper_vendor_xref WHERE shopper_group_id='.$shopper_group_id);
+		if( $db->next_record()) {			
+			$GLOBALS['vmLogger']->err('There are still Users assigned to this Shopper Group (Id: '.$shopper_group_id.').' );
+			return False;
+		}
+		
+		$q = 'SELECT shopper_group_id FROM #__{vm}_shopper_group WHERE shopper_group_id='. $shopper_group_id
+					. " AND `default`='1'";
 		$db->query($q);
 		if ($db->next_record()) {
 			$GLOBALS['vmLogger']->err('Cannot delete the default shopper group.' );
@@ -103,13 +116,12 @@ class ps_shopper_group {
 		return True;
 	}
 
-	/**************************************************************************
-	* name: add()
-	* created by:
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Adds a new Shopper Group
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function add(&$d) {
 		global $perm, $vmLogger;
 		$hash_secret = "virtuemart";
@@ -136,21 +148,21 @@ class ps_shopper_group {
 						'default' => $default
 					);
 		$db->buildQuery( 'INSERT', '#__{vm}_shopper_group', $fields );
-		if( $db->query() ) {
+		if( $db->query() !== false ) {
 			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
-			$GLOBALS['vmLogger']->info('The Shopper Group has been added.');
+			$vmLogger->info('The Shopper Group has been added.');
 			return $_REQUEST['shopper_group_id'];
 		}
+		$vmLogger->err('Failed to add the Shopper Group');
 		return false;
 	}
 
-	/**************************************************************************
-	* name: update()
-	* created by:
-	* description:
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	 * Updates an existing Shopper Group
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
 	function update($d) {
 		global $perm;
 
@@ -161,7 +173,7 @@ class ps_shopper_group {
 			$vendor_id = $_SESSION["ps_vendor_id"];
 		}
 		$db = new ps_DB;
-		$timestamp = time();
+		
 		$default = @$d["default"]=="1" ? "1" : "0";
 
 		if (!$this->validate_update($d)) {
@@ -181,14 +193,15 @@ class ps_shopper_group {
 			
 			if ($default == "1") {
 				$q = "UPDATE #__{vm}_shopper_group ";
-				$q .= "SET `default`='0' ";
-				$q .= "WHERE shopper_group_id != '" . $d["shopper_group_id"] . "' ";
-				$q .= "AND vendor_id = '$vendor_id' ";
+				$q .= "SET `default`=0 ";
+				$q .= "WHERE shopper_group_id !=" . $d["shopper_group_id"];
+				$q .= " AND vendor_id =$vendor_id";
 				$db->query($q);
 				$db->next_record();
 			}
 			return true;
 		}
+		$GLOBALS['vmLogger']->err( 'Failed to update the Shopper Group' );
 		return false;
 	}
 
@@ -215,17 +228,17 @@ class ps_shopper_group {
 	*/
 	function delete_record( $record_id, &$d ) {
 		global $db;
-
+		$record_id = intval( $record_id );
 		if ($this->validate_delete( $record_id, $d)) {
-			$q = "DELETE FROM #__{vm}_shopper_group WHERE shopper_group_id='$record_id'";
+			$q = "DELETE FROM #__{vm}_shopper_group WHERE shopper_group_id=$record_id";
 			$db->query($q);
 			$db->next_record();
 
-			$q = "DELETE FROM #__{vm}_shopper_vendor_xref WHERE shopper_group_id='$record_id'";
+			$q = "DELETE FROM #__{vm}_shopper_vendor_xref WHERE shopper_group_id=$record_id";
 			$db->query($q);
 			$db->next_record();
 
-			$q = "DELETE FROM #__{vm}_product_price WHERE shopper_group_id='$record_id'";
+			$q = "DELETE FROM #__{vm}_product_price WHERE shopper_group_id=$record_id";
 			$db->query($q);
 			$db->next_record();
 			return True;
@@ -235,14 +248,15 @@ class ps_shopper_group {
 		}
 	}
 
-	/**************************************************************************
-	** name: list_shopper_groups
-	** created by:
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
-	function list_shopper_groups($name,$shopper_group_id='0',$product_id='0', $extra='') {
+	/**
+	 * Creates a Drop Down list of available Shopper Groups
+	 *
+	 * @param string $name
+	 * @param int $shopper_group_id
+	 * @param string $extra
+	 * @return string
+	 */
+	function list_shopper_groups($name,$shopper_group_id='0', $extra='') {
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		global $perm;
 		$db = new ps_DB;
@@ -263,33 +277,11 @@ class ps_shopper_group {
 		return ps_html::selectList( $name, $shopper_group_id, $shopper_groups, 1, '', $extra );
 	}
 
-	/**************************************************************************
-	** name: get_field
-	** created by: pablo
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
-	function get_field($shopper_group_id, $field_name) {
-		$db = new ps_DB;
-
-		$q =  "SELECT $field_name FROM shopper_group ";
-		$q .= "WHERE shopper_group_id='$shopper_group_id'";
-		$db->query($q);
-		if ($db->next_record()) {
-			return $db->f($field_name);
-		}
-		else {
-			return False;
-		}
-	}
-	/**************************************************************************
-	** name: get_id
-	** created by: ekkehard
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Retrieves the Shopper Group ID of the currently logged-in User
+	 *
+	 * @return int
+	 */
 	function get_id() {
 		$auth = $_SESSION['auth'];
 
@@ -306,13 +298,13 @@ class ps_shopper_group {
 
 	}
 
-	/**************************************************************************
-	** name: get_shoppergroup_by_id
-	** created by: ekkehard
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Retrieves the Shopper Group Info of the SG specified by $id
+	 *
+	 * @param int $id
+	 * @param boolean $default_group
+	 * @return array
+	 */
   	function get_shoppergroup_by_id($id, $default_group = false) {
     	global $my;
     	$ps_vendor_id = vmGet($_SESSION, 'ps_vendor_id', 1 );
@@ -368,13 +360,12 @@ class ps_shopper_group {
 			unset( $db );
 		}
   	}
-	/**************************************************************************
-	** name: get_customer_num
-	** created by: soeren
-	** description:
-	** parameters:
-	** returns:
-	***************************************************************************/
+	/**
+	 * Retrieves the Customer Number of the user specified by ID
+	 *
+	 * @param int $id
+	 * @return string
+	 */
 	function get_customer_num($id) {
 
 		$db = new ps_DB;

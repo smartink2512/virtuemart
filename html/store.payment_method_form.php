@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -131,7 +131,7 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_FORM_LBL'), "global-page");
     </tr>
     
     <tr class="row1"> 
-      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE') ?>:</div></td>
+      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_AMOUNTTYPE') ?>:</td>
       <td width="69%"> 
         <input type="radio" class="inputbox" id="payment_method_discount_is_percent0" name="payment_method_discount_is_percent" value="1" <?php if($db->sf("payment_method_discount_is_percent")==1) echo "checked=\"checked\""; ?> />
         <label for="payment_method_discount_is_percent0"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_ISPERCENT') ?></label>&nbsp;&nbsp;&nbsp;

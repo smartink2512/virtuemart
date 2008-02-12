@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+11.02.2008 soeren
+# Task #1778 - Converting cent to dollar amount
+
 09.02.2008 gregdev
 ^ Set default for 'Show on shipping form' to 'No'
 # Ensure that system user fields (sys=1) do not have their names changed.
