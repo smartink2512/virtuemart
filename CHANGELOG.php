@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.02.2008 gregdev
+# Task #1779 - Installation archive files don't get deleted in Joomla 1.0.x
+
 11.02.2008 soeren
 # Task #1683 -  When a word in category contain ' apostrophe in mod_virtuemart the categories are not displayed
 # Task #1729 -  JS cook menu type give error in Internet Explorer

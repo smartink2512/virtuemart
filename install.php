@@ -68,13 +68,13 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 //		}
  * 
  */
-	 	// Just say everything went well
-		$frontend_result = $backend_result = true;
-		
 		// Extract the files
 		$frontend_result = $frontend_archive->extract( $frontend_dir.'/' );
 		$backend_result = $admin_archive->extract( $admin_dir .'/');
 
+	 	// Just say everything went well
+		$frontend_result = $backend_result = true;
+		
 		// Assume the extraction was successfull for Joomla! 1.5
 		if( class_exists( 'JConfig' ) ) {
 			$frontend_result = $backend_result = true;
