@@ -56,6 +56,7 @@ class ps_product extends vmAbstractObject {
 				$ps_product_discount = new ps_product_discount;
 				$ps_product_discount->add( $d );
 				$d['product_discount_id'] = $database->insertid();
+				vmRequest::setVar( 'product_discount_id', $d['product_discount_id'] );
 			}
 		}
 		if (empty($d['manufacturer_id'])) {

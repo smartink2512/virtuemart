@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.02.2008 gregdev
+# Task #1670 - Discount price field does not save value.
+
 12.02.2008 soeren
 # Manufacturer ID left empty in product form when only one manufacturer present
 # Task # 1706 -  Deselection of Sort Order in Configuration not working
