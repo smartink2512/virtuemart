@@ -2,11 +2,11 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian.php 1247 2008-02-13 08:42:28Z pedrohsi $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @translator soeren
+* @translator soeren, pedrohsi
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,12 +19,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'UTF-8',
-	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Ügyfél számla:',
-	'PHPSHOP_ACC_UPD_BILL' => 'Itt frissítheti a számlázási információit.',
-	'PHPSHOP_ACC_UPD_SHIP' => 'Itt hozzáadhat/karbantarthat szállítási címeket.',
-	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Ügyfél információ',
-	'PHPSHOP_ACC_SHIP_INFO' => 'Szállítási információ',
-	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
-	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
+	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Ügyfélszámla:',
+	'PHPSHOP_ACC_UPD_BILL' => 'Számlázási adataim módosítása.',
+	'PHPSHOP_ACC_UPD_SHIP' => 'Szállítási címek hozzáadása vagy módosítása.',
+	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Ügyfél adatok',
+	'PHPSHOP_ACC_SHIP_INFO' => 'Szállítási adatok',
+	'PHPSHOP_DOWNLOADS_CLICK' => 'Klikk a névre a letöltéshez.',
+	'PHPSHOP_DOWNLOADS_EXPIRED' => 'Sajnos elérte a maximális letöltés-számot!'
 ); $VM_LANG->initModule( 'account', $langvars );
 ?>

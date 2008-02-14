@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,24 +15,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Ñòðàíà',
-	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'Íàçíà÷èòü çîíå',
-	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'Íàçíà÷èòü çîíû',
-	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'Íàçâàíèå çîíû',
-	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'Îïèñàíèå çîíû',
-	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Çîíàëüíàÿ ñòîèìîñòü çà îáúåêò',
-	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Ëèìèò ñòîèìîñòè çîíû',
-	'PHPSHOP_ZONE_LIST_LBL' => 'Ñïèñîê çîí',
-	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'Íàçâàíèå çîíû',
-	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Îïèñàíèå çîíû',
-	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Çîíàëüíàÿ ñòîèìîñòü çà îáúåêò',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Ëèìèò ñòîèìîñòè çîíû',
-	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
-	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
-	'VM_ZONE_EDITZONE' => 'Edit This Zone'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'Ð¡Ñ‚Ñ€Ð°Ð½Ð°',
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'ÐÐ°Ð·Ð½Ð°Ñ‡Ð¸Ñ‚ÑŒ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ñƒ',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'ÐÐ°Ð·Ð½Ð°Ñ‡Ð¸Ñ‚ÑŒ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ñ‹',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð°',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð°',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'Ð ÐµÐ³Ð¸Ð¾Ð½Ð°Ð»ÑŒÐ½Ð°Ñ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð·Ð° ÐµÐ´Ð¸Ð½Ð¸Ñ†Ñƒ',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'Ð›Ð¸Ð¼Ð¸Ñ‚ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚Ð¸ Ð´Ð»Ñ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð°',
+	'PHPSHOP_ZONE_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð¾Ð²',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð°',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð°',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Ð ÐµÐ³Ð¸Ð¾Ð½Ð°Ð»ÑŒÐ½Ð°Ñ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð·Ð° ÐµÐ´Ð¸Ð½Ð¸Ñ†Ñƒ',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Ð›Ð¸Ð¼Ð¸Ñ‚ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚Ð¸ Ð´Ð»Ñ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð°',
+	'VM_ZONE_ASSIGN_PERITEM' => 'Ð—Ð° Ð¿Ð¾Ð·Ð¸Ñ†Ð¸ÑŽ',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Ð›Ð¸Ð¼Ð¸Ñ‚',
+	'VM_ZONE_EDITZONE' => 'Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ ÑÑ‚Ñƒ Ð·Ð¾Ð½Ñƒ'
 ); $VM_LANG->initModule( 'zone', $langvars );
 ?>

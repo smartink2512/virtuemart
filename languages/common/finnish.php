@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-15',
+	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_ERROR' => 'VIRHE',
 	'PHPSHOP_CATEGORY' => 'Kategoria',
 	'PHPSHOP_CATEGORIES' => 'Kategoriat',
@@ -812,7 +812,7 @@ Asiakkaana voit käyttää tilauksia tehdessä tunnuksia, jotka nopeuttavat tilauksi
 	'VM_FEDEX_LBL_PRICE' => 'Hinta',
 	'VM_FEATURED_PRODUCT' => 'Tuote-esittely',
 	'VM_RECENT_PRODUCTS' => 'Viimeksi selatut tuotteet',
-	'VM_ADMIN_SIMPLE_LAYOUT' => 'Yksinkertainen näkymä',
+	'VM_ADMIN_SIMPLE_LAYOUT' => 'Normaali näkymä',
 	'VM_ADMIN_EXTENDED_LAYOUT' => 'Laajennettu näkymä',
 	'VM_YOUR_VERSION' => 'Versio',
 	'VM_ADMIN_BACKTOJOOMLA' => 'Takaisin Joomla! hallintapaneeliin',

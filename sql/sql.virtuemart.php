@@ -520,7 +520,7 @@ $db->query( "INSERT INTO `#__{vm}_currency` VALUES (1, 'Andorran Peseta', 'ADP')
 (4, 'Albanian Lek', 'ALL'),
 (5, 'Netherlands Antillian Guilder', 'ANG'),
 (6, 'Angolan Kwanza', 'AOK'),
-(7, 'Argentiniean Peso', 'ARP'),
+(7, 'Argentine Peso', 'ARS'),
 (9, 'Australian Dollar', 'AUD'),
 (10, 'Aruban Florin', 'AWG'),
 (11, 'Barbados Dollar', 'BBD'),

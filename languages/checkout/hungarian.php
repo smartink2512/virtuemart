@@ -2,11 +2,11 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian.php 1247 2008-02-13 08:42:28Z pedrohsi $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @translator soeren
+* @translator soeren, pedrohsi
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,10 +19,10 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'UTF-8',
-	'PHPSHOP_NO_CUSTOMER' => 'Ön még nem nyilvántartott ügyfél. Kérem, adja meg a számlázási információit.',
+	'PHPSHOP_NO_CUSTOMER' => 'Ön még nem nyilvántartott ügyfél. Adja meg a számlázási információit.',
 	'PHPSHOP_THANKYOU' => 'Köszönjük a megrendelést!',
-	'PHPSHOP_EMAIL_SENDTO' => 'A megerosíto e-mail elküldve az alábbi címre',
-	'PHPSHOP_CHECKOUT_NEXT' => 'Következo',
+	'PHPSHOP_EMAIL_SENDTO' => 'A megerősítő e-mail elküldve az alábbi címre',
+	'PHPSHOP_CHECKOUT_NEXT' => 'Következő',
 	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Számlázási információ',
 	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Cég',
 	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Név',
@@ -36,27 +36,25 @@ $langvars = array (
 	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Fax',
 	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Kifizetési eljárás',
 	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'kért információ amikor hitelkártyás kifizetés van kiválasztva',
-	'PHPSHOP_PAYPAL_THANKYOU' => 'Köszönjük a kifizetést. A tranzakció sikeres volt. A PayPal e-mailben fogja értesíteni a tranzakció részleteirol. Most folytathatja, vagy bejelentkezhet a <a href=http://www.paypal.com>www.paypal.com</a> -ra hogy megtekintse a tranzakció részleteit.',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Köszönjük a kifizetést. A tranzakció sikeres volt. A PayPal e-mailben fogja értesíteni a tranzakció részleteiről. Most folytathatja, vagy bejelentkezhet a <a href=http://www.paypal.com>www.paypal.com</a> -ra hogy megtekintse a tranzakció részleteit.',
 	'PHPSHOP_PAYPAL_ERROR' => 'A tranzakció feldolgozása közben hiba történt. A megrendelése státusát nem lehet frissíteni.',
 	'PHPSHOP_THANKYOU_SUCCESS' => 'A megrendelése sikeresen megérkezett!',
-	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s',
-	'VM_CHECKOUT_ORDERIDNOTSET' => 'Order ID is not set or emtpy!',
-	'VM_CHECKOUT_FAILURE' => 'Failure',
-	'VM_CHECKOUT_SUCCESS' => 'Success',
-	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_1' => 'This page is located on the webshop\'s website.',
-	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_2' => 'The gateway execute the page on the website, and the shows the result SSL Encrypted.',
-	'VM_CHECKOUT_CCV_CODE' => 'Credit Card Validation Code',
-	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'What\'s the Credit Card Validation Code?',
-	'VM_CHECKOUT_MD5_FAILED' => 'MD5 Check failed',
-	'VM_CHECKOUT_ORDERNOTFOUND' => 'Order not found',
-	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '
-                The Payment Transaction was approved by PBS. \n
-                The Transaction has received the following Transaction Number:\n\n
-                Transaction Number: {transactionnumber}\n',
-	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => '
-                The Payment Transaction was not approved by PBS. \n
-                The Transaction has received the following Transaction Number:\n\n
-                Transaction Number: {transactionnumber}\n',
+	'VM_CHECKOUT_TITLE_TAG' => 'Rendelés lépései: %s / %s',
+	'VM_CHECKOUT_ORDERIDNOTSET' => 'Rendelés azonosító üres!',
+	'VM_CHECKOUT_FAILURE' => 'Hiba',
+	'VM_CHECKOUT_SUCCESS' => 'Sikeres',
+	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_1' => 'Az oldal az üzlet weboldalán található.',
+	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_2' => 'A gateway az üzlet oldalán hozza létre a lapot, amelynek tartalmát SSL-titkosítással jeleníti itt meg.',
+	'VM_CHECKOUT_CCV_CODE' => 'Hitelkártya ellenőrző szám',
+	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'Mi a hitelkártya ellenőrző szám?',
+	'VM_CHECKOUT_MD5_FAILED' => 'MD5 azonosítási hiba',
+	'VM_CHECKOUT_ORDERNOTFOUND' => 'Rendelés nem található',
+	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '                A PBS jóváhagyta a Paypal Tranzakciót. n
+                A tranzakció a következő azonosítószámot kapta:nn
+                Tranzakció száma: {transactionnumber}n',
+	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => '                A PBS nem hagyta jóvá a Paypal Tranzakciót. n
+                A tranzakció a következő azonosítószámot kapta:nn
+                Tranzakció száma: {transactionnumber}n',
 	'VM_CHECKOUT_DD_ERROR_0' => 'Merchant/forretningsnummer ugyldigt',
 	'VM_CHECKOUT_DD_ERROR_1' => 'Ugyldigt kreditkortnummer',
 	'VM_CHECKOUT_DD_ERROR_2' => 'Ugyldigt belob',
@@ -64,31 +62,31 @@ $langvars = array (
 	'VM_CHECKOUT_DD_ERROR_4' => 'PBS afvisning - (Oftest - ugyldig kortdata, sp?rret kort osv...)',
 	'VM_CHECKOUT_DD_ERROR_5' => 'Intern server fejl hos DanDomain eller PBS',
 	'VM_CHECKOUT_DD_ERROR_6' => 'E-dankort ikke tilladt. Kontakt DanDomain',
-	'VM_CHECKOUT_DD_ERROR_DEFAULT' => 'System fejl',
-	'VM_CHECKOUT_FP_ERROR_1' => 'Error: Transaction declined',
-	'VM_CHECKOUT_FP_ERROR_2' => 'Error: Transaction declined',
-	'VM_CHECKOUT_FP_ERROR_3' => 'Error: wrong number format',
-	'VM_CHECKOUT_FP_ERROR_4' => 'Error: illegal transaction',
-	'VM_CHECKOUT_FP_ERROR_5' => 'Error: no answer',
-	'VM_CHECKOUT_FP_ERROR_6' => 'Error_system_failure',
-	'VM_CHECKOUT_FP_ERROR_7' => 'Error: Card expired',
-	'VM_CHECKOUT_FP_ERROR_8' => 'Error: Communication Failure',
-	'VM_CHECKOUT_FP_ERROR_9' => 'Error: Internal Failure',
-	'VM_CHECKOUT_FP_ERROR_10' => 'Error: Card not registered',
-	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'Error: unknown Error',
-	'VM_CHECKOUT_WF_ERROR_1' => 'Transaktionen blev ikke godkendt',
+	'VM_CHECKOUT_DD_ERROR_DEFAULT' => 'Rendszerhiba',
+	'VM_CHECKOUT_FP_ERROR_1' => 'Hiba: Tranzakció elutasítva',
+	'VM_CHECKOUT_FP_ERROR_2' => 'Hiba: Tranzakció elutasítva',
+	'VM_CHECKOUT_FP_ERROR_3' => 'Hiba: helytelen számformátum',
+	'VM_CHECKOUT_FP_ERROR_4' => 'Hiba: helytelen tranzakció',
+	'VM_CHECKOUT_FP_ERROR_5' => 'Hiba: nincs válasz',
+	'VM_CHECKOUT_FP_ERROR_6' => 'Hiba: Rendszerhiba',
+	'VM_CHECKOUT_FP_ERROR_7' => 'Hiba: Kártya lejárt',
+	'VM_CHECKOUT_FP_ERROR_8' => 'Hiba: Kommunikációs hiba',
+	'VM_CHECKOUT_FP_ERROR_9' => 'Hiba: Belső hiba',
+	'VM_CHECKOUT_FP_ERROR_10' => 'Hiba: Kártya nincs regisztrálva',
+	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'Hiba: Ismeretlen Hiba',
+	'VM_CHECKOUT_WF_ERROR_1' => 'Hiba: Tranzakció elutasítva',
 	'VM_CHECKOUT_WF_ERROR_2' => 'Mulig snyd',
-	'VM_CHECKOUT_WF_ERROR_3' => 'Kommunikations fejl',
-	'VM_CHECKOUT_WF_ERROR_4' => 'Kort udlobet',
-	'VM_CHECKOUT_WF_ERROR_5' => 'Intern fejl',
-	'VM_CHECKOUT_WF_ERROR_6' => 'Invalid Transaktion',
-	'VM_CHECKOUT_WF_ERROR_7' => 'System fejl',
-	'VM_CHECKOUT_WF_ERROR_8' => 'Forkert forretningsnummer',
-	'VM_CHECKOUT_WF_ERROR_9' => 'Kortet eksistere ikke',
+	'VM_CHECKOUT_WF_ERROR_3' => 'Kommunikációs hiba',
+	'VM_CHECKOUT_WF_ERROR_4' => 'Kártya lejárt',
+	'VM_CHECKOUT_WF_ERROR_5' => 'Belső hiba',
+	'VM_CHECKOUT_WF_ERROR_6' => 'Helytelen tranzakció',
+	'VM_CHECKOUT_WF_ERROR_7' => 'Rendszerhiba',
+	'VM_CHECKOUT_WF_ERROR_8' => 'Helytelen számformátum',
+	'VM_CHECKOUT_WF_ERROR_9' => 'Kártya nincs regisztrálva',
 	'VM_CHECKOUT_WF_ERROR_10' => 'Kort l?ngen er for kort.',
 	'VM_CHECKOUT_WF_ERROR_11' => 'Transaktion kan ikke gennemfores igennem denne terminal',
 	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
-	'VM_CHECKOUT_WF_ERROR_13' => 'Kortnummeret eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_14' => 'Error unknown'
+	'VM_CHECKOUT_WF_ERROR_13' => 'Kártya nincs regisztrálva',
+	'VM_CHECKOUT_WF_ERROR_14' => 'Ismeretlen hiba'
 ); $VM_LANG->initModule( 'checkout', $langvars );
 ?>

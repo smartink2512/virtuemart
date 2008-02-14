@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,22 +15,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Ñïèñîê ïðîèçâîäèòåëåé',
-	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'Íàçâàíèå ïðîèçâîäèòåëÿ',
-	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Äîáàâèòü èíôîðìàöèþ',
-	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'Êàòåãîðèÿ ïðîèçâîäèòåëÿ',
-	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'Email',
-	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Ñïèñîê êàòåãîðèé ïðîèçâîäèòåëåé',
-	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'Íàçâàíèå êàòåãîðèè',
-	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'Îïèñàíèå êàòåãîðèè',
-	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'Ïðîèçâîäèòåëè',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Ôîðìà êàòåãîðèè ïðîèçâîäèòåëÿ',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Èíôîðìàöèÿ î êàòåãîðèè',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'Íàçâàíèå êàòåãîðèè',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'Îïèñàíèå êàòåãîðèè'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÐµÐ»ÐµÐ¹',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'ÐšÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ñ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'E-mail',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¹ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÐµÐ»ÐµÐ¹',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'ÐŸÑ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ð¸',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'Ð¤Ð¾Ñ€Ð¼Ð° ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÐµÐ»ÐµÐ¹',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'Ð˜Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð¾ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸'
 ); $VM_LANG->initModule( 'manufacturer', $langvars );
 ?>

@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,37 +15,41 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
-	'PHPSHOP_SHOPPER_LIST_LBL' => 'Ñïèñîê ïîêóïàòåëÿ',
-	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Ïëàòåæíàÿ èíôîðìàöèÿ',
-	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Èìÿ ïîëüçîâàòåëÿ',
-	'PHPSHOP_AFFILIATE_MOD' => 'Àäìèíèñòðèðîâàíèå ïàðòíåðñêèõ ïðîãðàìì',
-	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Ñïèñîê ïàðòíåðîâ',
-	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Ïàðòíåð',
-	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'Àêòèâåí',
-	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Ðåéòèíã',
-	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Âñåãî â ìåñÿö',
-	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Êîìèññèÿ â ìåñÿö',
-	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Ñïèñîê çàêàçîâ',
-	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Àäðåñàò (* = Âñåì)',
-	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Âàø Email',
-	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Òåìà',
-	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Âêëþ÷èòü òåêóùóþ ñòàòèñòèêó',
-	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Êîìèññèîííûé ïðîöåíò',
-	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Àêòèâåí?',
-	'VM_AFFILIATE_SHOWINGDETAILS_FOR' => 'Showing Details for',
-	'VM_AFFILIATE_LISTORDERS' => 'List Orders',
-	'VM_AFFILIATE_MONTH' => 'Month',
-	'VM_AFFILIATE_CHANGEVIEW' => 'Change View',
-	'VM_AFFILIATE_ORDERSUMMARY_LBL' => 'Order Summary',
-	'VM_AFFILIATE_ORDERLIST_ORDERREF' => 'Order Ref',
-	'VM_AFFILIATE_ORDERLIST_DATEORDERED' => 'Date Ordered',
-	'VM_AFFILIATE_ORDERLIST_ORDERTOTAL' => 'Order Total',
-	'VM_AFFILIATE_ORDERLIST_COMMISSION' => 'Commission (rate)',
-	'VM_AFFILIATE_ORDERLIST_ORDERSTATUS' => 'Order Status'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Ðµ-mail',
+	'PHPSHOP_SHOPPER_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÐµÐ»ÐµÐ¹',
+	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'ÐšÐ¾Ð½Ñ‚Ð°ÐºÑ‚Ð½Ð°Ñ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð¿Ð»Ð°Ñ‚ÐµÐ»ÑŒÑ‰Ð¸ÐºÐ°',
+	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Ð˜Ð¼Ñ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÐµÐ»Ñ',
+	'PHPSHOP_AFFILIATE_MOD' => 'ÐÐ´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð°Ñ€Ñ‚Ð½ÐµÑ€ÑÐºÐ¾Ð¹ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹',
+	'PHPSHOP_AFFILIATE_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ð°Ñ€Ñ‚Ð½Ñ‘Ñ€Ð¾Ð²',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_NAME' => 'Ð˜Ð¼Ñ Ð¿Ð°Ñ€Ñ‚Ð½Ñ‘Ñ€Ð°',
+	'PHPSHOP_AFFILIATE_LIST_AFFILIATE_ACTIVE' => 'ÐÐºÑ‚Ð¸Ð²ÐµÐ½',
+	'PHPSHOP_AFFILIATE_LIST_RATE' => 'Ð¡Ñ‚Ð°Ð²ÐºÐ°',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Ð˜Ñ‚Ð¾Ð³ Ð·Ð° Ð¼ÐµÑÑÑ†',
+	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'ÐšÐ¾Ð¼Ð¸ÑÑÐ¸Ñ Ð·Ð° Ð¼ÐµÑÑÑ†',
+	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'ÐŸÐ¾Ñ€ÑÐ´Ð¾Ðº Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'ÐšÐ¾Ð¼Ñƒ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð¸Ñ‚ÑŒ e-mail(* = Ð’ÑÐµÐ¼)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Ð’Ð°Ñˆ e-mail',
+	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Ð¢ÐµÐ¼Ð°',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Ð’ÐºÐ»ÑŽÑ‡Ð°Ñ Ñ‚ÐµÐºÑƒÑ‰ÑƒÑŽ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÑƒ',
+	'PHPSHOP_AFFILIATE_FORM_RATE' => 'ÐšÐ¾Ð¼Ð¸ÑÑÐ¸Ð¾Ð½Ð½Ð°Ñ ÑÑ‚Ð°Ð²ÐºÐ° (Ð¿Ñ€Ð¾Ñ†ÐµÐ½Ñ‚Ñ‹)',
+	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'ÐÐºÑ‚Ð¸Ð²ÐµÐ½?',
+	'VM_AFFILIATE_SHOWINGDETAILS_FOR' => 'ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ Ð´ÐµÑ‚Ð°Ð»Ð¸ Ð´Ð»Ñ',
+	'VM_AFFILIATE_LISTORDERS' => 'ÐŸÐ¾Ñ€ÑÐ´Ð¾Ðº Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ',
+	'VM_AFFILIATE_MONTH' => 'ÐœÐµÑÑÑ†',
+	'VM_AFFILIATE_CHANGEVIEW' => 'Ð˜Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð²Ð¸Ð´',
+	'VM_AFFILIATE_ORDERSUMMARY_LBL' => 'Ð¡Ð²Ð¾Ð´Ð½Ð°Ñ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð¿Ð¾ Ð·Ð°ÐºÐ°Ð·Ñƒ',
+	'VM_AFFILIATE_ORDERLIST_ORDERREF' => 'ÐÐ¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð°',
+	'VM_AFFILIATE_ORDERLIST_DATEORDERED' => 'Ð”Ð°Ñ‚Ð° Ð·Ð°ÐºÐ°Ð·Ð°',
+	'VM_AFFILIATE_ORDERLIST_ORDERTOTAL' => 'Ð˜Ñ‚Ð¾Ð³Ð¾',
+	'VM_AFFILIATE_ORDERLIST_COMMISSION' => 'ÐšÐ¾Ð¼Ð¸ÑÑÐ¸Ñ (ÑÑ‚Ð°Ð²ÐºÐ°)',
+	'VM_AFFILIATE_ORDERLIST_ORDERSTATUS' => 'Ð¡Ñ‚Ð°Ñ‚ÑƒÑ Ð·Ð°ÐºÐ°Ð·Ð°'
 ); $VM_LANG->initModule( 'affiliate', $langvars );
 ?>

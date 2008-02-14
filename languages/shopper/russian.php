@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,20 +15,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Ïîêàçàòü öåíû âêëþ÷àÿ íàëîãè?',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Ïîêóïàòåëü áóäåò âèäåòü öåíû âêëþ÷àÿ èëè èñêëþ÷àÿ íàëîãè.',
-	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Îáîçíà÷åíèå àäðåñà',
-	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Ñïèñîê ãðóïï ïîêóïàòåëåé',
-	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Íàèìåíîâàíèå ãðóïïû',
-	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Îïèñàíèå ãðóïïû',
-	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Ôîðìà ãðóïïû ïîêóïàòåëåé',
-	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Íàèìåíîâàíèå ãðóïïû',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Îïèñàíèå ãðóïïû',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Ñêèäêà ïî óìîë÷àíèþ äëÿ ãðóïïû ïîêóïàòåëåé (â %)',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Ïîëîæèòåëüíîå çíà÷åíèå Õ îçíà÷àåò: åñëè òîâàðó íå íàçíà÷åíà öåíà äëÿ ÝÒÎÉ ãðóïïû ïîêóïàòåëåé, òî öåíà ïî óìîë÷àíèþ óìåíüøàåòñÿ íà Õ %. Îòðèöàòåëüíîå çíà÷åíèå èìååò ïðîòèâîïîëîæíûé ýôôåêò'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ Ñ†ÐµÐ½Ñ‹, Ð²ÐºÐ»ÑŽÑ‡Ð°Ñ Ð½Ð°Ð»Ð¾Ð³Ð¸?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Ð’ÐºÐ»ÑŽÑ‡Ð¸Ñ‚Ðµ ÑÑ‚Ñƒ Ð¾Ð¿Ñ†Ð¸ÑŽ, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¿Ð¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ñ†ÐµÐ½Ñ‹ Ñ ÑƒÑ‡Ñ‘Ñ‚Ð¾Ð¼ Ð½Ð°Ð»Ð¾Ð³Ð°. Ð•ÑÐ»Ð¸ Ð¾Ð¿Ñ†Ð¸Ñ Ð²Ñ‹ÐºÐ»ÑŽÑ‡ÐµÐ½Ð°, Ñ‚Ð¾ Ñ†ÐµÐ½Ñ‹ Ð±ÑƒÐ´ÑƒÑ‚ Ð¿Ð¾ÐºÐ°Ð·Ð°Ð½Ñ‹ Ð±ÐµÐ· Ð½Ð°Ð»Ð¾Ð³Ð°.',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'ÐÐ´Ñ€ÐµÑ',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Ð“Ñ€ÑƒÐ¿Ð¿Ñ‹ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÐµÐ»ÐµÐ¹',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð³Ñ€ÑƒÐ¿Ð¿Ñ‹',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ð³Ñ€ÑƒÐ¿Ð¿Ñ‹',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð³Ñ€ÑƒÐ¿Ð¿Ñƒ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÐµÐ»ÐµÐ¹',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð³Ñ€ÑƒÐ¿Ð¿Ñ‹',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ð³Ñ€ÑƒÐ¿Ð¿Ñ‹',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Ð¡ÐºÐ¸Ð´ÐºÐ° Ð´Ð»Ñ Ð³Ñ€ÑƒÐ¿Ð¿Ñ‹ Ð¿Ð¾-ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ (Ð² %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'ÐŸÐ¾Ð»Ð¾Ð¶Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¥ Ð¾Ð·Ð½Ð°Ñ‡Ð°ÐµÑ‚: ÐµÑÐ»Ð¸ Ñ‚Ð¾Ð²Ð°Ñ€Ñƒ Ð½Ðµ Ð½Ð°Ð·Ð½Ð°Ñ‡ÐµÐ½Ð° Ñ†ÐµÐ½Ð° Ð´Ð»Ñ ÑÑ‚Ð¾Ð¹ Ð³Ñ€ÑƒÐ¿Ð¿Ñ‹ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÐµÐ»ÐµÐ¹, Ñ‚Ð¾ Ñ†ÐµÐ½Ð° Ð¿Ð¾-ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ ÑƒÐ¼ÐµÐ½ÑŒÑˆÐ°ÐµÑ‚ÑÑ Ð½Ð° Ð¥%. ÐžÑ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¸Ð¼ÐµÐµÑ‚ Ð¿Ñ€Ð¾Ñ‚Ð¸Ð²Ð¾Ð¿Ð¾Ð»Ð¾Ð¶Ð½Ñ‹Ð¹ ÑÑ„Ñ„ÐµÐºÑ‚.'
 ); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

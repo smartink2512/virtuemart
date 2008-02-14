@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,19 +15,23 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_COUPON_EDIT_HEADER' => 'Обновить купон',
-	'PHPSHOP_COUPON_CODE_HEADER' => 'Код',
-	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Процентная или Постоянная',
-	'PHPSHOP_COUPON_TYPE' => 'Тип купона',
-	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Разовый купон удаляется сразу после использования для получения скидки в заказе. Постоянный купон может быть использован так часто, как захочет покупатель.',
-	'PHPSHOP_COUPON_TYPE_GIFT' => 'Разовый купон',
-	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Постоянный купон',
-	'PHPSHOP_COUPON_VALUE_HEADER' => 'Величина скидки',
-	'PHPSHOP_COUPON_PERCENT' => 'Процентная',
-	'PHPSHOP_COUPON_TOTAL' => 'Постоянная'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'РР·РјРµРЅРёС‚СЊ РєСѓРїРѕРЅ',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'РљРѕРґ',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'РџСЂРѕС†РµРЅС‚ РёР»Рё РЎСѓРјРјР°',
+	'PHPSHOP_COUPON_TYPE' => 'РўРёРї РєСѓРїРѕРЅР°',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'РџРѕРґР°СЂРѕС‡РЅС‹Р№ РљСѓРїРѕРЅ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅ РїРѕСЃР»Рµ РµРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ, РїРѕСЃС‚РѕСЏРЅРЅС‹Р№ РєСѓРїРѕРЅ РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІСЃРµ РІСЂРµРјСЏ.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'РџРѕРґР°СЂРѕС‡РЅС‹Р№ РєСѓРїРѕРЅ',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'РџРѕСЃС‚РѕСЏРЅРЅС‹Р№ РєСѓРїРѕРЅ',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Р—РЅР°С‡РµРЅРёРµ',
+	'PHPSHOP_COUPON_PERCENT' => 'РџСЂРѕС†РµРЅС‚',
+	'PHPSHOP_COUPON_TOTAL' => 'РЎСѓРјРјР°'
 ); $VM_LANG->initModule( 'coupon', $langvars );
 ?>

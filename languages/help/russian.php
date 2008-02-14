@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,20 +15,24 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'VM_HELP_YOURVERSION' => 'Your {product} version',
+	'CHARSET' => 'utf-8',
+	'VM_HELP_YOURVERSION' => 'Ваша версия {product}',
 	'VM_HELP_ABOUT' => '<span style="font-weight: bold;">
-		VirtueMart</span> is the complete Open Source E-Commerce solution for Mambo and Joomla!. 
-		It is an Application, which comes with a Component, more than 8 Modules and Mambots/Plugins.
-		It has its roots in a Shopping Cart Script called "phpShop" (Authors: Edikon Corp. & the <a href="http://www.virtuemart.org/" target="_blank">phpShop</a> community).',
-	'VM_HELP_LICENSE_DESC' => 'VirtueMart is licensed under the <a href="{licenseurl}" target="_blank">{licensename} License</a>.',
-	'VM_HELP_TEAM' => 'There\'s a small team of Developers who help in evolving this Shopping Cart Script.',
-	'VM_HELP_PROJECTLEADER' => 'Project Leader',
-	'VM_HELP_HOMEPAGE' => 'Homepage',
-	'VM_HELP_DONATION_DESC' => 'Please consider a small donation to the VirtueMart Project to help us keep up the work on this Component and create new Features.',
-	'VM_HELP_DONATION_BUTTON_ALT' => 'Make payments with PayPal - it\'s fast, free and secure!'
+		VirtueMart</span> полностью законченное бесплатное программное обеспечение для системы Mambo и Joomla!. 
+		Данное программное обеспечение состоит из компонента и более 8 модулей и мамботов/плагинов.
+		В основе VirtueMart лежит скрипт магазина "phpShop" (Авторы: Edikon Corp. & сообщество <a href="http://www.virtuemart.org/" target="_blank">phpShop</a>).',
+	'VM_HELP_LICENSE_DESC' => 'VirtueMart распространяется по <a href="{licenseurl}" target="_blank">{licensename} лицензии</a>.',
+	'VM_HELP_TEAM' => 'Данное программное обеспечение разрабатывается небольшой командой разработчиков в свободное время.',
+	'VM_HELP_PROJECTLEADER' => 'Лидер проекта',
+	'VM_HELP_HOMEPAGE' => 'Домашняя страница',
+	'VM_HELP_DONATION_DESC' => 'Пожалуйста, поддержите проект, перечислив небольшую сумму в адрес проекта VirtueMart. Это поможет поддерживать проект и разрабатывать новые функции.',
+	'VM_HELP_DONATION_BUTTON_ALT' => 'Сделайте перевод, используя PayPal - это быстро, бесплатно и безопасно!'
 ); $VM_LANG->initModule( 'help', $langvars );
 ?>

@@ -2,11 +2,11 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian.php 1247 2008-02-13 08:42:28Z pedrohsi $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @translator soeren
+* @translator soeren, pedrohsi
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -21,41 +21,41 @@ $langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL' => 'Kifizetési napló',
 	'PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL' => 'Leszállítási ár',
-	'PHPSHOP_ORDER_STATUS_LIST_CODE' => 'Megrendelés státuskód',
-	'PHPSHOP_ORDER_STATUS_LIST_NAME' => 'Megrendelés státus neve',
-	'PHPSHOP_ORDER_STATUS_FORM_LBL' => 'Megrendelés státusa',
-	'PHPSHOP_ORDER_STATUS_FORM_CODE' => 'Megrendelés státuskód',
-	'PHPSHOP_ORDER_STATUS_FORM_NAME' => 'Megrendelés státus neve',
-	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => 'Megrendelés listázás',
+	'PHPSHOP_ORDER_STATUS_LIST_CODE' => 'Státuszkód',
+	'PHPSHOP_ORDER_STATUS_LIST_NAME' => 'Státusz neve',
+	'PHPSHOP_ORDER_STATUS_FORM_LBL' => 'Státusz',
+	'PHPSHOP_ORDER_STATUS_FORM_CODE' => 'Státuszkód',
+	'PHPSHOP_ORDER_STATUS_FORM_NAME' => 'Státusz neve',
+	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => 'Sorrend',
 	'PHPSHOP_COMMENT' => 'Megjegyzés',
-	'PHPSHOP_ORDER_LIST_NOTIFY' => 'Értesítsem az ügyfelet?',
-	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => 'Kérlek változtasd meg elobb a megrendelés státusát!',
+	'PHPSHOP_ORDER_LIST_NOTIFY' => 'Ügyfél értesítése?',
+	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => 'Előbb módosítsa a megrendelés státuszát!',
 	'PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT' => 'Befoglaljuk ezt a megjegyzést?',
-	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => 'Dátum hozzáadva',
+	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => 'Dátum',
 	'PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED' => 'Ügyfél értesítve?',
-	'PHPSHOP_ORDER_STATUS_CHANGE' => 'Megrendelés státusa megváltoztatása',
-	'PHPSHOP_ORDER_LIST_PRINT_LABEL' => 'Print Label',
-	'PHPSHOP_ORDER_LIST_VOID_LABEL' => 'Void Label',
-	'PHPSHOP_ORDER_LIST_TRACK' => 'Track',
-	'VM_DOWNLOAD_STATS' => 'DOWNLOAD STATS',
-	'VM_DOWNLOAD_NOTHING_LEFT' => 'no downloads remaining',
-	'VM_DOWNLOAD_REENABLE' => 'Re-Enable Download',
-	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Remaining Downloads',
-	'VM_DOWNLOAD_RESEND_ID' => 'Resend Download ID',
-	'VM_EXPIRY' => 'Expiry',
-	'VM_UPDATE_STATUS' => 'Update Status',
-	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'Please provide a valid, numeric, Order ID, not "{order_id}"',
-	'VM_ORDER_LABEL_NOTFOUND' => 'Order record not found in shipping label database.',
-	'VM_ORDER_LABEL_NEVERGENERATED' => 'Label has not been generated yet',
-	'VM_ORDER_LABEL_CLASSCANNOT' => 'Class {ship_class} cannot get label images, why are we here?',
-	'VM_ORDER_LABEL_SHIPPINGLABEL_LBL' => 'Shipping Label',
-	'VM_ORDER_LABEL_SIGNATURENEVER' => 'Signature was never retrieved',
-	'VM_ORDER_LABEL_TRACK_TITLE' => 'Track',
-	'VM_ORDER_LABEL_VOID_TITLE' => 'Void Label',
+	'PHPSHOP_ORDER_STATUS_CHANGE' => 'Státusz módosítása',
+	'PHPSHOP_ORDER_LIST_PRINT_LABEL' => 'Nyomtatás',
+	'PHPSHOP_ORDER_LIST_VOID_LABEL' => 'Void',
+	'PHPSHOP_ORDER_LIST_TRACK' => 'Követés',
+	'VM_DOWNLOAD_STATS' => 'Letöltési statisztika',
+	'VM_DOWNLOAD_NOTHING_LEFT' => 'Nincs több letöltés',
+	'VM_DOWNLOAD_REENABLE' => 'Letöltés újraengedélyezése',
+	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Megmaradt letöltések',
+	'VM_DOWNLOAD_RESEND_ID' => 'Letöltési ID újraküldése',
+	'VM_EXPIRY' => 'Lejárat',
+	'VM_UPDATE_STATUS' => 'Módosítás',
+	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'Adjon meg valós, numerikus rendelési azonosítót, ne így: "{order_id}"',
+	'VM_ORDER_LABEL_NOTFOUND' => 'Rendelés nem található a szállító listáján.',
+	'VM_ORDER_LABEL_NEVERGENERATED' => 'A tételt még nem hoztuk létre.',
+	'VM_ORDER_LABEL_CLASSCANNOT' => 'A {ship_class} class nem tudja betölteni a képeket, miért vagyunk itt?',
+	'VM_ORDER_LABEL_SHIPPINGLABEL_LBL' => 'Szállító cím',
+	'VM_ORDER_LABEL_SIGNATURENEVER' => 'Az aláírás hiányzik.',
+	'VM_ORDER_LABEL_TRACK_TITLE' => 'Követés',
+	'VM_ORDER_LABEL_VOID_TITLE' => 'Void',
 	'VM_ORDER_LABEL_VOIDED_MSG' => 'Label for waybill {tracking_number} has been voided.',
-	'VM_ORDER_PRINT_PO_IPADDRESS' => 'IP-ADDRESS',
-	'VM_ORDER_STATUS_ICON_ALT' => 'Status Icon',
-	'VM_ORDER_PAYMENT_CCV_CODE' => 'CVV Code',
-	'VM_ORDER_NOTFOUND' => 'Order not found! It may have been deleted.'
+	'VM_ORDER_PRINT_PO_IPADDRESS' => 'IP-cím',
+	'VM_ORDER_STATUS_ICON_ALT' => 'Státusz ikon',
+	'VM_ORDER_PAYMENT_CCV_CODE' => 'CVV-kód',
+	'VM_ORDER_NOTFOUND' => 'Megrendelés nem található - törölték?'
 ); $VM_LANG->initModule( 'order', $langvars );
 ?>

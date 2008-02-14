@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,16 +15,20 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_TAX_LIST_LBL' => 'Ñïèñîê íàëîãîâûõ ñòàâîê',
-	'PHPSHOP_TAX_LIST_STATE' => 'Îáëàñòü/ðåãèîí',
-	'PHPSHOP_TAX_LIST_COUNTRY' => 'Ñòðàíà',
-	'PHPSHOP_TAX_FORM_LBL' => 'Äîáàâèòü èíîôîðìàöèþ î íàëîãå',
-	'PHPSHOP_TAX_FORM_STATE' => 'Îáëàñòü/ðåãèîí',
-	'PHPSHOP_TAX_FORM_COUNTRY' => 'Ñòðàíà',
-	'PHPSHOP_TAX_FORM_RATE' => 'Íàëîãîâàÿ ñòàâêà (äëÿ 16% => óêàæèòå 0.16)'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_TAX_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð½Ð°Ð»Ð¾Ð³Ð¾Ð²Ñ‹Ñ… ÑÑ‚Ð°Ð²Ð¾Ðº',
+	'PHPSHOP_TAX_LIST_STATE' => 'Ð ÐµÐ³Ð¸Ð¾Ð½, Ð³Ð´Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²ÑƒÐµÑ‚ Ð½Ð°Ð»Ð¾Ð³',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Ð¡Ñ‚Ñ€Ð°Ð½Ð°, Ð³Ð´Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²ÑƒÐµÑ‚ Ð½Ð°Ð»Ð¾Ð³',
+	'PHPSHOP_TAX_FORM_LBL' => 'Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð¾ Ð½Ð°Ð»Ð¾Ð³Ð¾Ð²Ð¾Ð¹ ÑÑ‚Ð°Ð²ÐºÐµ',
+	'PHPSHOP_TAX_FORM_STATE' => 'Ð ÐµÐ³Ð¸Ð¾Ð½, Ð³Ð´Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²ÑƒÐµÑ‚ Ð½Ð°Ð»Ð¾Ð³',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Ð¡Ñ‚Ñ€Ð°Ð½Ð°, Ð³Ð´Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²ÑƒÐµÑ‚ Ð½Ð°Ð»Ð¾Ð³',
+	'PHPSHOP_TAX_FORM_RATE' => 'Ð¡Ñ‚Ð°Ð²ÐºÐ° Ð½Ð°Ð»Ð¾Ð³Ð° (ÐµÑÐ»Ð¸ 18% => Ð²Ð²Ð¾Ð´Ð¸Ð¼ 0.18)'
 ); $VM_LANG->initModule( 'tax', $langvars );
 ?>

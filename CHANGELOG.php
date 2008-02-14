@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14.02.2008 thepisu
+# updated languages: finnish, hungarian, russian, italian
+^ updated Argentine currency
+# fixed typo
+
 14.02.2008 gregdev
 # Unchecking "Show Prices including tax?" results in PHP Notice.
 # Fixed unreachable code in ps_shopper_group->add().

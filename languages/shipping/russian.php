@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,31 +15,35 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_CARRIER_LIST_LBL' => 'Ñïèñîê ñëóæá äîñòàâêè',
-	'PHPSHOP_RATE_LIST_LBL' => 'Ñïèñîê òàðèôîâ äîñòàâêè',
-	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'Íàçâàíèå',
-	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'Ïîðÿäîê âûâîäà',
-	'PHPSHOP_CARRIER_FORM_LBL' => 'Ðåäàêòèðîâàíèå/ñîçäàíèå ñëóæáû äîñòàâêè',
-	'PHPSHOP_RATE_FORM_LBL' => 'Ðåäàêòèðîâàíèå/ñîçäàíèå òàðèôà äîñòàâêè',
-	'PHPSHOP_RATE_FORM_NAME' => 'Îïèñàíèå òàðèôà äîñòàâêè',
-	'PHPSHOP_RATE_FORM_CARRIER' => 'Ñëóæáà äîñòàâêè',
-	'PHPSHOP_RATE_FORM_COUNTRY' => 'Ñòðàíà',
-	'PHPSHOP_RATE_FORM_ZIP_START' => 'Íà÷àëî äèàïàçîíà ïî÷òîâûõ èíäåêñîâ',
-	'PHPSHOP_RATE_FORM_ZIP_END' => 'Êîíåö äèàïàçîíà ïî÷òîâûõ èíäåêñîâ',
-	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'Íàèìåíüøèé âåñ',
-	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'Íàèáîëüøèé âåñ',
-	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Ñòîèìîñòü Âàøåé óïàêîâêè',
-	'PHPSHOP_RATE_FORM_CURRENCY' => 'Âàëþòà',
-	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'Ïîðÿäîê âûâîäà',
-	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Ñëóæáà äîñòàâêè',
-	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'Îïèñàíèå òàðèôà äîñòàâêè',
-	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Âåñ îò ...',
-	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... äî',
-	'PHPSHOP_CARRIER_FORM_NAME' => 'Êîìïàíèÿ ñëóæáû äîñòàâêè',
-	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'Ïîðÿäîê âûâîäà'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚Ð¾Ð² Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_RATE_LIST_LBL' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ñ‚Ð°Ñ€Ð¸Ñ„Ð¾Ð² Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'ÐŸÐ¾Ñ€ÑÐ´Ð¾Ðº Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ/Ð¸Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_RATE_FORM_LBL' => 'Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ/Ð˜Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ñ‚Ð°Ñ€Ð¸Ñ„ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_RATE_FORM_NAME' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ñ‚Ð°Ñ€Ð¸Ñ„Ð° Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'Ð’Ð°Ñ€Ð¸Ð°Ð½Ñ‚ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'Ð¡Ñ‚Ñ€Ð°Ð½Ð°',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'ÐÐ°Ñ‡Ð°Ð»Ð¾ Ð´Ð¸Ð°Ð¿Ð°Ð·Ð¾Ð½Ð° Ð¿Ð¾Ñ‡Ñ‚Ð¾Ð²Ñ‹Ñ… Ð¸Ð½Ð´ÐµÐºÑÐ¾Ð²',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'ÐšÐ¾Ð½ÐµÑ† Ð´Ð¸Ð°Ð¿Ð°Ð·Ð¾Ð½Ð° Ð¿Ð¾Ñ‡Ñ‚Ð¾Ð²Ñ‹Ñ… Ð¸Ð½Ð´ÐµÐºÑÐ¾Ð²',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'ÐœÐ¸Ð½Ð¸Ð¼Ð°Ð»ÑŒÐ½Ñ‹Ð¹ Ð²ÐµÑ',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ñ‹Ð¹ Ð²ÐµÑ',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'Ð¡Ñ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ ÑƒÐ¿Ð°ÐºÐ¾Ð²ÐºÐ¸',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'Ð’Ð°Ð»ÑŽÑ‚Ð°',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'ÐŸÐ¾Ñ€ÑÐ´Ð¾Ðº Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'Ð’Ð°Ñ€Ð¸Ð°Ð½Ñ‚ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ñ‚Ð°Ñ€Ð¸Ñ„Ð° Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'Ð’ÐµÑ Ð¾Ñ‚ ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... Ð´Ð¾',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'ÐšÐ¾Ð¼Ð¿Ð°Ð½Ð¸Ñ-Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'ÐŸÐ¾Ñ€ÑÐ´Ð¾Ðº Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ'
 ); $VM_LANG->initModule( 'shipping', $langvars );
 ?>

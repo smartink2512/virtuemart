@@ -2,11 +2,11 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : hungarian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version : hungarian.php 1247 2008-02-13 08:42:28Z pedrohsi $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @translator soeren
+* @translator soeren, pedrohsi
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -22,13 +22,13 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Adóval együtt mutassa az árakat?',
 	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Állítsa be, hogy a vásárló az árakat adóval együtt vagy adó nélkül lássa.',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Cím álnév',
-	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Vásárlócsoport lista',
-	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Csoport név',
-	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Csoport leírás',
-	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Vásárlócsoport urlap',
-	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Csoport név',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Csoport leírás',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Árengedmény az alapértelmezett vásárlócsoport számára(%-ban)',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Egy pozitív mennyiség (X) hatása: ha a terméknek nincs  az adoot vásárlócsoporthoz rendelt ára, az alapértelmezett ár X %-al csökken. Egy negatív mennyiségnek az ellenkezo hatása lesz'
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Vásárlócsoportok',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Csoportnév',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'Csoport leírása',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Vásárlócsoport űrlap',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Csoportnév',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Csoport leírása',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Árengedmény a csoport számára (%-ban)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Egy pozitív mennyiség (X) hatása: ha a terméknek nincs az adott vásárlócsoporthoz rendelt ára, az alapértelmezett ár X %-kal csökken. Egy negatív mennyiségnek ellenkező hatása lesz'
 ); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

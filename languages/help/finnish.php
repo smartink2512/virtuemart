@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-15',
+	'CHARSET' => 'ISO-8859-1',
 	'VM_HELP_YOURVERSION' => 'Versio',
 	'VM_HELP_ABOUT' => '<span style="font-weight: bold;">
 		VirtueMart</span> is the complete Open Source E-Commerce solution for Mambo and Joomla!. 

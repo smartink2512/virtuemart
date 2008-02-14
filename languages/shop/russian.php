@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,61 +15,69 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_BROWSE_LBL' => 'Просмотр',
-	'PHPSHOP_FLYPAGE_LBL' => 'Описание товара',
-	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Редактировать этот товар',
-	'PHPSHOP_DOWNLOADS_START' => 'Начать загрузку',
-	'PHPSHOP_DOWNLOADS_INFO' => 'Пожалуйста, введите идентификатор загрузки (Download-ID), который Вы получили по e-mail и нажмите \'Начать загрузку\'.',
-	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Пожалуйста, укажите свой адрес электронной почты, чтобы мы могли уведомить Вас когда товар появится на складе. Мы не будем передавать этот адрес третьим лицам и использовать его для каких-либо целей, кроме уведомлений о наличии товара.<br /><br />Спасибо!',
-	'PHPSHOP_WAITING_LIST_THANKS' => 'Спасибо за ожидание <br />Мы хотели бы уведомить Вас о том, что на склад поступил нужный Вам товар.',
-	'PHPSHOP_WAITING_LIST_NOTIFY_ME' => 'Уведомите меня!',
-	'PHPSHOP_SEARCH_ALL_CATEGORIES' => 'Во всех категориях',
-	'PHPSHOP_SEARCH_ALL_PRODINFO' => 'По всей информации о товаре',
-	'PHPSHOP_SEARCH_PRODNAME' => 'Только в названии товара',
-	'PHPSHOP_SEARCH_MANU_VENDOR' => 'Только в URL товара',
-	'PHPSHOP_SEARCH_DESCRIPTION' => 'Только в описании товара',
-	'PHPSHOP_SEARCH_AND' => 'И',
-	'PHPSHOP_SEARCH_NOT' => 'НЕ',
-	'PHPSHOP_SEARCH_TEXT1' => 'Первый выпадающий список позволяет Вам искать только в заданной категории. Второй выпадающий список позволяет Вам искать только в конкретной части информации о товаре (например, в названии). После того, как Вы выберете необходимые пункты в этих списках (или оставите все как есть), не забудте ввести ключевое слово в первую строку поиска.',
-	'PHPSHOP_SEARCH_TEXT2' => 'Вы можете еще больше уточнить критерии поиска, добавив ключевое слово кроме первой строки поиска еще и во вторую и выбрав оператор \'И\' или \'НЕ\'. 
-        Выбор оператора \'И\' означает, что оба слова должны быть найдены, чтобы товар был показан в результатах поиска.
-        Выбор оператора \'НЕ\' означает, что результатом поиска будут только те товары, в информации о которых первое ключевое слово присутствует, а второе - нет.',
-	'PHPSHOP_CONTINUE_SHOPPING' => 'Продолжить покупки',
-	'PHPSHOP_AVAILABLE_IMAGES' => 'Доступные картинки для',
-	'PHPSHOP_BACK_TO_DETAILS' => 'Вернуться к подробностям товара',
-	'PHPSHOP_IMAGE_NOT_FOUND' => 'Картинка не найдена!',
-	'PHPSHOP_PARAMETER_SEARCH_TEXT1' => 'Для поиска товара по дополнительным параметрам<BR>выберите категорию поиска, пожалуйста:',
-	'PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE' => 'По Вашему запросу ничего не найдено.',
-	'PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE' => 'I am sorry. There is no published Product Type with this name.',
-	'PHPSHOP_PARAMETER_SEARCH_IS_LIKE' => 'равно',
-	'PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE' => 'не равно',
-	'PHPSHOP_PARAMETER_SEARCH_FULLTEXT' => 'Полнотекстовый поиск',
-	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'All Selected',
-	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Any Selected',
-	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'Очистить все поля',
-	'PHPSHOP_PRODUCT_NOT_FOUND' => 'Извините, но запрошенный Вами товар не найден!',
-	'PHPSHOP_PRODUCT_PACKAGING1' => 'Number {unit}s in packaging:',
-	'PHPSHOP_PRODUCT_PACKAGING2' => 'Number {unit}s in box:',
-	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Price per Unit',
-	'VM_PRODUCT_ENQUIRY_LBL' => 'Ask a question about this product',
-	'VM_RECOMMEND_FORM_LBL' => 'Recommend this product to a friend',
-	'PHPSHOP_EMPTY_YOUR_CART' => 'Empty Cart',
-	'VM_RETURN_TO_PRODUCT' => 'Return to product',
-	'EMPTY_CATEGORY' => 'This Category is currently empty.',
-	'ENQUIRY' => 'Enquiry',
-	'NAME_PROMPT' => 'Enter your Name',
-	'EMAIL_PROMPT' => 'E-mail Address',
-	'MESSAGE_PROMPT' => 'Enter your Message',
-	'SEND_BUTTON' => 'Send',
-	'THANK_MESSAGE' => 'Thank you for your Enquiry. We will contact you as soon as possible.',
-	'PROMPT_CLOSE' => 'Close',
-	'VM_RECOVER_CART_REPLACE' => 'Replace Cart with Saved Cart',
-	'VM_RECOVER_CART_MERGE' => 'Add Saved Cart to Current Cart',
-	'VM_RECOVER_CART_DELETE' => 'Delete Saved Cart',
-	'VM_EMPTY_YOUR_CART_TIP' => 'Clear the cart of all contents'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_BROWSE_LBL' => 'РџСЂРѕСЃРјРѕС‚СЂ',
+	'PHPSHOP_FLYPAGE_LBL' => 'РџРѕРґСЂРѕР±РЅРµРµ',
+	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ С‚РѕРІР°СЂ',
+	'PHPSHOP_DOWNLOADS_START' => 'РЎРєР°С‡Р°С‚СЊ',
+	'PHPSHOP_DOWNLOADS_INFO' => 'РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІРІРµРґРёС‚Рµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґР»СЏ СЃРєР°С‡РёРІР°РЅРёСЏ, РєРѕС‚РѕСЂС‹Р№ Р’С‹ РїРѕР»СѓС‡РёР»Рё РїРѕ e-mail Рё РЅР°Р¶РјРёС‚Рµ \'РЎРєР°С‡Р°С‚СЊ\'.',
+	'PHPSHOP_WAITING_LIST_MESSAGE' => 'РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РѕСЃС‚Р°РІСЊС‚Рµ СЃРІРѕР№ e-mail, С‡С‚РѕР±С‹ РјС‹ РёР·РІРµСЃС‚РёР»Рё Р’Р°СЃ, РєРѕРіРґР° СЌС‚РѕС‚ С‚РѕРІР°СЂ СЃРЅРѕРІР° РїРѕСЏРІРёС‚СЃСЏ РЅР° СЃРєР»Р°РґРµ. 
+                                         РњС‹ РЅРµ Р±СѓРґРµРј РїСЂРѕРґР°РІР°С‚СЊ, РїРµСЂРµРґР°РІР°С‚СЊ С‚СЂРµС‚СЊРёРј Р»РёС†Р°Рј РёР»Рё РґСЂСѓРіРёРј СЃРїРѕСЃРѕР±РѕРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р’Р°С€ e-mail, РєСЂРѕРјРµ РєР°Рє РґР»СЏ 
+                                         СѓРІРµРґРѕРјР»РµРЅРёСЏ Рѕ С‚РѕРј, С‡С‚Рѕ С‚РѕРІР°СЂ СЃРЅРѕРІР° РїРѕСЃС‚СѓРїРёР» РЅР° СЃРєР»Р°Рґ.<br /><br />РЎРїР°СЃРёР±Рѕ!',
+	'PHPSHOP_WAITING_LIST_THANKS' => 'РЎРїР°СЃРёР±Рѕ Р·Р° РѕР¶РёРґР°РЅРёРµ! <br />РњС‹ СЃРѕРѕР±С‰РёРј Р’Р°Рј Рѕ РїРѕСЏРІР»РµРЅРёРё С‚РѕРІР°СЂР°, РєР°Рє С‚РѕР»СЊРєРѕ РѕРЅ РїРѕСЃС‚СѓРїРёС‚ РЅР° СЃРєР»Р°Рґ.',
+	'PHPSHOP_WAITING_LIST_NOTIFY_ME' => 'РЈРІРµРґРѕРјРёС‚СЊ!',
+	'PHPSHOP_SEARCH_ALL_CATEGORIES' => 'РџРѕРёСЃРє РІРѕ РІСЃРµС… РєР°С‚РµРіРѕСЂРёСЏС…',
+	'PHPSHOP_SEARCH_ALL_PRODINFO' => 'РџРѕРёСЃРє РІ РІСЃРµР№ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚РѕРІР°СЂРµ',
+	'PHPSHOP_SEARCH_PRODNAME' => 'РўРѕР»СЊРєРѕ РІ РЅР°РёРјРµРЅРѕРІР°РЅРёРё С‚РѕРІР°СЂР°',
+	'PHPSHOP_SEARCH_MANU_VENDOR' => 'РўРѕР»СЊРєРѕ РІ РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЏС…/РџСЂРѕРґР°РІС†Р°С…',
+	'PHPSHOP_SEARCH_DESCRIPTION' => 'РўРѕР»СЊРєРѕ РІ РѕРїРёСЃР°РЅРёРё С‚РѕРІР°СЂР°',
+	'PHPSHOP_SEARCH_AND' => 'Рё',
+	'PHPSHOP_SEARCH_NOT' => 'РЅРµ',
+	'PHPSHOP_SEARCH_TEXT1' => 'РџРµСЂРІС‹Р№ РІС‹РїР°РґР°СЋС‰РёР№ СЃРїРёСЃРѕРє РїРѕР·РІРѕР»СЏРµС‚ Р’Р°Рј РІС‹Р±СЂР°С‚СЊ РєР°С‚РµРіРѕСЂРёСЋ РґР»СЏ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РїРѕРёСЃРєР°. 
+        Р’С‚РѕСЂРѕР№ РІС‹РїР°РґР°СЋС‰РёР№ СЃРїРёСЃРѕРє РїРѕР·РІРѕР»СЏРµС‚ Р’Р°Рј РёСЃРєР°С‚СЊ С‚РѕРІР°СЂ РїРѕ СЃРІРѕР№СЃС‚РІР°Рј, РЅР°РїСЂРёРјРµСЂ, С‚РѕР»СЊРєРѕ РїРѕ РЅР°РёРјРµРЅРѕРІР°РЅРёСЋ. 
+        Р’С‹Р±СЂР°РІ РїР°СЂР°РјРµС‚СЂС‹ РїРѕРёСЃРєР°, РІРІРµРґРёС‚Рµ СЃР»РѕРІРѕ, РєРѕС‚РѕСЂРѕРµ Р’С‹ РёС‰РёС‚Рµ. ',
+	'PHPSHOP_SEARCH_TEXT2' => ' Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°РЅРѕРІРѕ РѕСЃСѓС‰РµСЃС‚РІРёС‚СЊ РїРѕРёСЃРє РїСѓС‚РµРј РґРѕР±Р°РІР»РµРЅРёСЏ РІС‚РѕСЂРѕРіРѕ СЃР»РѕРІР° Рё РІС‹Р±РѕСЂР° РѕРїРµСЂР°С‚РѕСЂР° Р РёР»Рё РќР•. 
+        РџСЂРё РІС‹Р±РѕСЂРµ РѕРїРµСЂР°С‚РѕСЂР° Р, РІ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РІРєР»СЋС‡Р°С‚СЃСЏ СЃР»РѕРІР°, РІ РєРѕС‚РѕСЂС‹С… РїСЂРёСЃСѓС‚СЃС‚РІСѓСЋС‚ РІСЃРµ Р·Р°РґР°РЅРЅС‹Рµ СЃР»РѕРІР°. 
+        РџСЂРё РІС‹Р±РѕСЂРµ РќР•, РІ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РІРєР»СЋС‡Р°С‚СЃСЏ СЃР»РѕРІР°, РІ РєРѕС‚РѕСЂС‹С… РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РїРµСЂРІРѕРµ СЃР»РѕРІРѕ Рё РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РІС‚РѕСЂРѕРµ.',
+	'PHPSHOP_CONTINUE_SHOPPING' => 'РџСЂРѕРґРѕР»Р¶РёС‚СЊ РїРѕРєСѓРїРєРё',
+	'PHPSHOP_AVAILABLE_IMAGES' => 'Р”РѕСЃС‚СѓРїРЅС‹Рµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РґР»СЏ',
+	'PHPSHOP_BACK_TO_DETAILS' => 'РќР°Р·Р°Рґ Рє РѕРїРёСЃР°РЅРёСЋ С‚РѕРІР°СЂР°',
+	'PHPSHOP_IMAGE_NOT_FOUND' => 'РР·РѕР±СЂР°Р¶РµРЅРёРµ РЅРµ РЅР°Р№РґРµРЅРѕ!',
+	'PHPSHOP_PARAMETER_SEARCH_TEXT1' => 'Р’С‹ С…РѕС‚РёС‚Рµ РЅР°Р№С‚Рё С‚РѕРІР°СЂС‹ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ РёС… С‚РµС…РЅРёС‡РµСЃРєРёРјРё РїР°СЂР°РјРµС‚СЂР°РјРё?<BR>Р’С‹ РјРѕР¶РµС‚Рµ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р»СЋР±СѓСЋ РїРѕРґРіРѕС‚РѕРІР»РµРЅРЅСѓСЋ С„РѕСЂРјСѓ:',
+	'PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE' => 'РР·РІРёРЅРёС‚Рµ, РЅРѕ РєР°С‚РµРіРѕСЂРёР№ РґР»СЏ РїРѕРёСЃРєР° РЅРµС‚.',
+	'PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE' => 'РР·РІРёРЅРёС‚Рµ, РЅРѕ С‚РѕРІР°СЂР° СЃ С‚Р°РєРёРј РЅР°Р·РІР°РЅРёРµРј РЅРµС‚.',
+	'PHPSHOP_PARAMETER_SEARCH_IS_LIKE' => 'Р§С‚РѕР±С‹ РїСЂРёСЃСѓС‚СЃС‚РІРѕРІР°Р»',
+	'PHPSHOP_PARAMETER_SEARCH_IS_NOT_LIKE' => 'Р§С‚РѕР±С‹ РѕС‚СЃСѓС‚СЃС‚РІРѕРІР°Р»',
+	'PHPSHOP_PARAMETER_SEARCH_FULLTEXT' => 'РџРѕР»РЅРѕС‚РµРєСЃС‚РѕРІС‹Р№ РїРѕРёСЃРє',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ALL' => 'Р’СЃРµ РІС‹Р±СЂР°РЅРЅС‹Рµ',
+	'PHPSHOP_PARAMETER_SEARCH_FIND_IN_SET_ANY' => 'Р›СЋР±РѕРµ РІС‹Р±СЂР°РЅРЅРѕРµ',
+	'PHPSHOP_PARAMETER_SEARCH_RESET_FORM' => 'РћС‡РёСЃС‚РёС‚СЊ С„РѕСЂРјСѓ',
+	'PHPSHOP_PRODUCT_NOT_FOUND' => 'РР·РІРёРЅРёС‚Рµ, РЅРѕ Р·Р°РїСЂРѕС€РµРЅРЅС‹Р№ С‚РѕРІР°СЂ РЅРµ РЅР°Р№РґРµРЅ!',
+	'PHPSHOP_PRODUCT_PACKAGING1' => 'РљРѕР»РёС‡РµСЃС‚РІРѕ {С€С‚СѓРє} РІ СѓРїР°РєРѕРІРєРµ:',
+	'PHPSHOP_PRODUCT_PACKAGING2' => 'РљРѕР»РёС‡РµСЃС‚РІРѕ {С€С‚СѓРє} РІ РєРѕСЂРѕР±РєРµ:',
+	'PHPSHOP_CART_PRICE_PER_UNIT' => 'Р¦РµРЅР° Р·Р° С€С‚.',
+	'VM_PRODUCT_ENQUIRY_LBL' => 'Р—Р°РґР°Р№С‚Рµ РІРѕРїСЂРѕСЃ РїРѕ СЌС‚РѕРјСѓ С‚РѕРІР°СЂСѓ',
+	'VM_RECOMMEND_FORM_LBL' => 'Р РµРєРѕРјРµРЅРґРѕРІР°С‚СЊ С‚РѕРІР°СЂ РґСЂСѓРіСѓ',
+	'PHPSHOP_EMPTY_YOUR_CART' => 'РћС‡РёСЃС‚РёС‚СЊ РєРѕСЂР·РёРЅСѓ',
+	'VM_RETURN_TO_PRODUCT' => 'Р’РµСЂРЅСѓС‚СЊСЃСЏ Рє С‚РѕРІР°СЂСѓ',
+	'EMPTY_CATEGORY' => 'Р’ РґР°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРё РЅРµС‚ С‚РѕРІР°СЂРѕРІ.',
+	'ENQUIRY' => 'Р—Р°РїСЂРѕСЃ',
+	'NAME_PROMPT' => 'Р’Р°С€Рµ РёРјСЏ',
+	'EMAIL_PROMPT' => 'E-mail',
+	'MESSAGE_PROMPT' => 'Р’Р°С€Рµ СЃРѕРѕР±С‰РµРЅРёРµ',
+	'SEND_BUTTON' => 'РћС‚РїСЂР°РІРёС‚СЊ',
+	'THANK_MESSAGE' => 'РЎРїР°СЃРёР±Рѕ Р·Р° Р’Р°С€ Р·Р°РїСЂРѕСЃ. РњС‹ СЃРІСЏР¶РµРјСЃСЏ СЃ Р’Р°РјРё РІ Р±Р»РёР¶Р°Р№С€РµРµ РІСЂРµРјСЏ.',
+	'PROMPT_CLOSE' => 'Р—Р°РєСЂС‹С‚СЊ',
+	'VM_RECOVER_CART_REPLACE' => 'Р—Р°РјРµРЅРёС‚СЊ СЃРѕРґРµСЂР¶РёРјРѕРµ РєРѕСЂР·РёРЅС‹ РЅР° СЃРѕРґРµСЂР¶РёРјРѕРµ СЃРѕС…СЂР°РЅРµРЅРЅРѕР№ РєРѕСЂР·РёРЅС‹',
+	'VM_RECOVER_CART_MERGE' => 'Р”РѕР±Р°РІРёС‚СЊ СЃРѕРґРµСЂР¶РёРјРѕРµ СЃРѕС…СЂР°РЅРµРЅРЅРѕР№ РєРѕСЂР·РёРЅС‹ Рє СЃРѕРґРµСЂР¶РёРјРѕРјСѓ С‚РµРєСѓС‰РµР№ РєРѕСЂР·РёРЅС‹',
+	'VM_RECOVER_CART_DELETE' => 'РЈРґР°Р»РёС‚СЊ СЃРѕРґРµСЂР¶РёРјРѕРµ СЃРѕС…СЂР°РЅРµРЅРЅРѕР№ РєРѕСЂР·РёРЅС‹',
+	'VM_EMPTY_YOUR_CART_TIP' => 'РћС‡РёСЃС‚РёС‚СЊ РєРѕСЂР·РёРЅСѓ РѕС‚ РІСЃРµРіРѕ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ'
 ); $VM_LANG->initModule( 'shop', $langvars );
 ?>

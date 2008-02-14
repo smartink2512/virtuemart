@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-15',
+	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_COUPON_EDIT_HEADER' => 'Päivitä kuponki',
 	'PHPSHOP_COUPON_CODE_HEADER' => 'Koodi',
 	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Prosentti tai kiinteä summa',

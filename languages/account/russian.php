@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,16 +15,20 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => '������� �������:',
-	'PHPSHOP_ACC_UPD_BILL' => '����� �� ������ �������� ���� ��������� ����������.',
-	'PHPSHOP_ACC_UPD_SHIP' => '����� �� ������ �������� ��� �������� ����� ��������.',
-	'PHPSHOP_ACC_ACCOUNT_INFO' => '���������� �� ��������',
-	'PHPSHOP_ACC_SHIP_INFO' => '���������� � ��������',
-	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
-	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Учетная запись покупателя:',
+	'PHPSHOP_ACC_UPD_BILL' => 'Здесь Вы можете изменить Вашу контактную информацию.',
+	'PHPSHOP_ACC_UPD_SHIP' => 'Здесь Вы можете добавить новый адрес доставки.',
+	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Информация об учетной записи',
+	'PHPSHOP_ACC_SHIP_INFO' => 'Информация о доставке',
+	'PHPSHOP_DOWNLOADS_CLICK' => 'Щелкните по названию товара, чтобы скачать файл(ы).',
+	'PHPSHOP_DOWNLOADS_EXPIRED' => 'Вы уже скачали файл(ы) максимально допустимое количество раз или период, в течение которого можно скачивать файлы, истек.'
 ); $VM_LANG->initModule( 'account', $langvars );
 ?>

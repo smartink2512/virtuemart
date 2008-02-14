@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-15',
+	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_RB_INDIVIDUAL' => 'Yksilölliset tuoteluettelot',
 	'PHPSHOP_RB_SALE_TITLE' => 'Myyntiraportti',
 	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Myyntiaktiviteetti',

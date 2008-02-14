@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : russian.php 1071 2007-12-03 08:42:28Z thepisu $
+* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -15,48 +15,54 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+* http://www.alex-rus.com
+* http://www.virtuemart.ru
+* http://www.joomlaforum.ru
 */
+
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'cp1251',
-	'PHPSHOP_NO_CUSTOMER' => '�� ��� �� ���������������� ��� ����������. ����������, ������� ���� ��������� ���������.',
-	'PHPSHOP_THANKYOU' => '������� �� ��� �����!',
-	'PHPSHOP_EMAIL_SENDTO' => '������������� ������ ���� ���������� �� ����������� ����� � �����',
-	'PHPSHOP_CHECKOUT_NEXT' => '���������',
-	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => '��������� ����������',
-	'PHPSHOP_CHECKOUT_CONF_COMPANY' => '��������',
-	'PHPSHOP_CHECKOUT_CONF_NAME' => '���',
-	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => '�����',
-	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'Email',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => '���������� � ��������',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => '��������',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => '���',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => '�����',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => '�������',
-	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => '����',
-	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => '����� ������',
-	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => '������������ ���������� ��� ������ ��������� ������',
-	'PHPSHOP_PAYPAL_THANKYOU' => '���������� �� ������. ���������� ��������� �������. �� �������� �� PayPal ������������� ���������� �� ����������� ����� (e-mail). ������ �� ������ ���������� ��� ����� �� <a href=http://www.paypal.com>www.paypal.com</a> ����� ���������� ������ ����������.',
-	'PHPSHOP_PAYPAL_ERROR' => '�� ����� ���������� ����� ���������� ��������� ������. ��� ����� �� �����������. (The status of your order could not be updated.)',
-	'PHPSHOP_THANKYOU_SUCCESS' => '��� ����� ������!',
-	'VM_CHECKOUT_TITLE_TAG' => 'Checkout: Step %s of %s',
-	'VM_CHECKOUT_ORDERIDNOTSET' => 'Order ID is not set or emtpy!',
-	'VM_CHECKOUT_FAILURE' => 'Failure',
-	'VM_CHECKOUT_SUCCESS' => 'Success',
-	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_1' => 'This page is located on the webshop\'s website.',
-	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_2' => 'The gateway execute the page on the website, and the shows the result SSL Encrypted.',
-	'VM_CHECKOUT_CCV_CODE' => 'Credit Card Validation Code',
-	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'What\'s the Credit Card Validation Code?',
-	'VM_CHECKOUT_MD5_FAILED' => 'MD5 Check failed',
-	'VM_CHECKOUT_ORDERNOTFOUND' => 'Order not found',
+	'CHARSET' => 'utf-8',
+	'PHPSHOP_NO_CUSTOMER' => 'Вы не являетесь зарегистрированным клиентом. Пожалуйста, введите информацию для оформления заказа.',
+	'PHPSHOP_THANKYOU' => 'Спасибо за Ваш заказ.',
+	'PHPSHOP_EMAIL_SENDTO' => 'Подтверждающее письмо было выслано по адресу',
+	'PHPSHOP_CHECKOUT_NEXT' => 'Следующий',
+	'PHPSHOP_CHECKOUT_CONF_BILLINFO' => 'Контактная информация плательщика',
+	'PHPSHOP_CHECKOUT_CONF_COMPANY' => 'Компания',
+	'PHPSHOP_CHECKOUT_CONF_NAME' => 'Имя',
+	'PHPSHOP_CHECKOUT_CONF_ADDRESS' => 'Адрес',
+	'PHPSHOP_CHECKOUT_CONF_EMAIL' => 'E-mail',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO' => 'Информация о доставке',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_COMPANY' => 'Компания',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_NAME' => 'Имя',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_ADDRESS' => 'Адрес',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Телефон',
+	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Факс',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Способ оплаты',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'необходимая информация для оплаты по кредитной карте',
+	'PHPSHOP_PAYPAL_THANKYOU' => 'Благодарим за оплату. 
+         Операция прошла успешно. Вы получите подтверждение по e-mail об оплате через PayPal. 
+         Вы можете продолжить или пройти на <a href=http://www.paypal.com>www.paypal.com</a>, чтобы увидеть подробности операции.',
+	'PHPSHOP_PAYPAL_ERROR' => 'При обработке операции произошла ошибка. Статус Вашего заказа не изменился.',
+	'PHPSHOP_THANKYOU_SUCCESS' => 'Ваш заказ принят!',
+	'VM_CHECKOUT_TITLE_TAG' => 'Оформление: Шаг %s из %s',
+	'VM_CHECKOUT_ORDERIDNOTSET' => 'Номер заказа ну указан или пуст!',
+	'VM_CHECKOUT_FAILURE' => 'Ошибка',
+	'VM_CHECKOUT_SUCCESS' => 'Успешно',
+	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_1' => 'Эта страница расположена на сайте продавца.',
+	'VM_CHECKOUT_PAGE_GATEWAY_EXPLAIN_2' => 'Результаты выполнения запроса будут отображены на зашифрованной странице.',
+	'VM_CHECKOUT_CCV_CODE' => 'Проверочный (CCV) код кредитной карты',
+	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'Что такое проверочный (CCV) код кредитной карты?',
+	'VM_CHECKOUT_MD5_FAILED' => 'Контрольная сумма MD5 не совпадает',
+	'VM_CHECKOUT_ORDERNOTFOUND' => 'Заказ не найдет',
 	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '
-                The Payment Transaction was approved by PBS. \n
-                The Transaction has received the following Transaction Number:\n\n
-                Transaction Number: {transactionnumber}\n',
+                Оплата одобрена PBS. \n
+                Транзакции присвоен следующий номер:\n\n
+                Номер транзакции: {transactionnumber}\n',
 	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => '
-                The Payment Transaction was not approved by PBS. \n
-                The Transaction has received the following Transaction Number:\n\n
-                Transaction Number: {transactionnumber}\n',
+                Оплата не одобрена PBS. \n
+                Транзакции присвоен следующий номер:\n\n
+                Номер транзакции: {transactionnumber}\n',
 	'VM_CHECKOUT_DD_ERROR_0' => 'Merchant/forretningsnummer ugyldigt',
 	'VM_CHECKOUT_DD_ERROR_1' => 'Ugyldigt kreditkortnummer',
 	'VM_CHECKOUT_DD_ERROR_2' => 'Ugyldigt belob',
@@ -65,17 +71,17 @@ $langvars = array (
 	'VM_CHECKOUT_DD_ERROR_5' => 'Intern server fejl hos DanDomain eller PBS',
 	'VM_CHECKOUT_DD_ERROR_6' => 'E-dankort ikke tilladt. Kontakt DanDomain',
 	'VM_CHECKOUT_DD_ERROR_DEFAULT' => 'System fejl',
-	'VM_CHECKOUT_FP_ERROR_1' => 'Error: Transaction declined',
-	'VM_CHECKOUT_FP_ERROR_2' => 'Error: Transaction declined',
-	'VM_CHECKOUT_FP_ERROR_3' => 'Error: wrong number format',
-	'VM_CHECKOUT_FP_ERROR_4' => 'Error: illegal transaction',
-	'VM_CHECKOUT_FP_ERROR_5' => 'Error: no answer',
+	'VM_CHECKOUT_FP_ERROR_1' => 'Ошибка: Транзакция отклонена',
+	'VM_CHECKOUT_FP_ERROR_2' => 'Ошибка: Транзакция отклонена',
+	'VM_CHECKOUT_FP_ERROR_3' => 'Ошибка: неправильный формат чисел',
+	'VM_CHECKOUT_FP_ERROR_4' => 'Ошибка: нелегальная транзакция',
+	'VM_CHECKOUT_FP_ERROR_5' => 'Ошибка: нет ответа',
 	'VM_CHECKOUT_FP_ERROR_6' => 'Error_system_failure',
-	'VM_CHECKOUT_FP_ERROR_7' => 'Error: Card expired',
-	'VM_CHECKOUT_FP_ERROR_8' => 'Error: Communication Failure',
-	'VM_CHECKOUT_FP_ERROR_9' => 'Error: Internal Failure',
-	'VM_CHECKOUT_FP_ERROR_10' => 'Error: Card not registered',
-	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'Error: unknown Error',
+	'VM_CHECKOUT_FP_ERROR_7' => 'Ошибка: Срок действия карты истек',
+	'VM_CHECKOUT_FP_ERROR_8' => 'Ошибка: Ошибка связи',
+	'VM_CHECKOUT_FP_ERROR_9' => 'Ошибка: Внутренняя ошибка',
+	'VM_CHECKOUT_FP_ERROR_10' => 'Ошибка: Карта не зарегистрирована',
+	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'Ошибка: неизвестная ошибка',
 	'VM_CHECKOUT_WF_ERROR_1' => 'Transaktionen blev ikke godkendt',
 	'VM_CHECKOUT_WF_ERROR_2' => 'Mulig snyd',
 	'VM_CHECKOUT_WF_ERROR_3' => 'Kommunikations fejl',
@@ -89,6 +95,6 @@ $langvars = array (
 	'VM_CHECKOUT_WF_ERROR_11' => 'Transaktion kan ikke gennemfores igennem denne terminal',
 	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
 	'VM_CHECKOUT_WF_ERROR_13' => 'Kortnummeret eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_14' => 'Error unknown'
+	'VM_CHECKOUT_WF_ERROR_14' => 'Ошибка неизвестна'
 ); $VM_LANG->initModule( 'checkout', $langvars );
 ?>
