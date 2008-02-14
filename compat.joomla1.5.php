@@ -70,7 +70,7 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'] = JPATH_BASE.DS.'cache';
 			
 			if( !isset( $option ) ) {
-				$option = strtolower(JRequest::getCmd('option'));
+				$option = strtolower( JRequest::getCmd( 'option', 'com_virtuemart' ) );
 			}
 			
 			// The selected language

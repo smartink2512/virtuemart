@@ -410,7 +410,7 @@ class ps_userfield extends vmAbstractObject {
 							break;
 							
 						case 'checkbox':
-							echo '<input type="checkbox" name="'.$field->name.'" id="'.$field->name.'_field" value="1" />';
+							echo '<input type="checkbox" name="'.$field->name.'" id="'.$field->name.'_field" value="1" '. ($db->sf($field->name) ? 'checked="checked"' : '') .'/>';
 							break;
 						case 'age_verification':
 							$year = vmRequest::getInt('birthday_selector_year', date('Y'));

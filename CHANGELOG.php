@@ -35,6 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14.02.2008 gregdev
+# Unchecking "Show Prices including tax?" results in PHP Notice.
+# Fixed unreachable code in ps_shopper_group->add().
+^ Removed 'yes/no' text from "Show Prices including tax?" checkbox
+# Task #1790 - User-defined "User Registration Field" of type 'Checkbox Single' doesn't work (thanks to pyh)
+# Task #1779 - Notice: Undefined variable: option
+
 12.02.2008 gregdev
 # Task #1670 - Discount price field does not save value.
 

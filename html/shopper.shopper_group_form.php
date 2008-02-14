@@ -81,7 +81,6 @@ if (!empty($shopper_group_id)) {
       </td>
       <td width="77%" > 
         <input type="checkbox" class="inputbox" id="show_price_including_tax" name="show_price_including_tax" value="1" <?php echo $db->f('show_price_including_tax') == "1" ? "checked=\"checked\"" : ""  ?>/>
-        	<label for="show_price_including_tax"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES').' / '. $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></label>
         &nbsp;
         <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN') ); ?>
       </td>

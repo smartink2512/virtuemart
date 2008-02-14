@@ -31,7 +31,7 @@ class ps_shopper_group extends vmAbstractObject  {
 	 * @param array $d
 	 * @return boolean
 	 */
-	function validate_add($d) {
+	function validate_add(&$d) {
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
@@ -50,13 +50,15 @@ class ps_shopper_group extends vmAbstractObject  {
 				$GLOBALS['vmLogger']->err('Shopper group already exists for this vendor.' );
 				return False;
 			}
-			else {
-				return True;
-			}
 		}
+		
 		if (empty($d["shopper_group_discount"])) {
 			$d["shopper_group_discount"] = 0;
 		}
+
+		$d["show_price_including_tax"] = isset( $d["show_price_including_tax"] ) ? $d["show_price_including_tax"] : 0;
+		
+		return True;
 	}
 
 	/**
@@ -65,7 +67,7 @@ class ps_shopper_group extends vmAbstractObject  {
 	 * @param array $d
 	 * @return boolean
 	 */
-	function validate_update($d) {
+	function validate_update(&$d) {
 
 		if (!$d["shopper_group_name"]) {
 			$GLOBALS['vmLogger']->err('You must enter a shopper group name.' );
@@ -74,6 +76,8 @@ class ps_shopper_group extends vmAbstractObject  {
 		if (empty($d["shopper_group_discount"])) {
 			$d["shopper_group_discount"] = 0;
 		}
+
+		$d["show_price_including_tax"] = isset( $d["show_price_including_tax"] ) ? $d["show_price_including_tax"] : 0;
 
 		return True;
 	}
