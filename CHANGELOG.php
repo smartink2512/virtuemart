@@ -35,11 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
 14.02.2008 thepisu
 # updated languages: finnish, hungarian, russian, italian
 ^ updated Argentine currency
 # fixed typo
-
 14.02.2008 gregdev
 # Unchecking "Show Prices including tax?" results in PHP Notice.
 # Fixed unreachable code in ps_shopper_group->add().
@@ -47,9 +47,12 @@ VirtueMart 1.1.x
 # Task #1790 - User-defined "User Registration Field" of type 'Checkbox Single' doesn't work (thanks to pyh)
 # Task #1779 - Notice: Undefined variable: option
 
+13.02.2008 soeren
+# Task #1785 -  Semicolon missing in theme.css file
+# Bug in ps_product when using product types with apostrophes
+
 12.02.2008 gregdev
 # Task #1670 - Discount price field does not save value.
-
 12.02.2008 soeren
 # Manufacturer ID left empty in product form when only one manufacturer present
 # Task # 1706 -  Deselection of Sort Order in Configuration not working

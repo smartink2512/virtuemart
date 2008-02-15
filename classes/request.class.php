@@ -1,10 +1,10 @@
 <?php
 /**
  * @version		$Id$
- * @package		classes
- * @subpackage	Environment
+ * @package		VirtueMart
+ * @subpackage	core
  * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.
- * @copyright	Copyright (C) 2007 soeren. All rights reserved.
+ * @copyright	Copyright (C) 2007-2008 soeren. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or

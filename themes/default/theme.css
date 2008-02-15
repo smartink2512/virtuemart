@@ -107,7 +107,8 @@ div.buttons_heading {
 }
 
 .productPrice {
-	font-weight:bold
+	font-weight:bold;
+	white-space: nowrap;
 }
 .product-Old-Price {
 	color:red;
