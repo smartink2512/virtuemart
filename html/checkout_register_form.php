@@ -41,7 +41,8 @@ $fields = ps_userfield::getUserFields('registration', false, '', false );
 foreach( $fields as $field ) $field->readonly = 0;
 $skip_fields = array();
 
-if ( $my->id > 0 || (VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' && $page == 'checkout.index') ) {
+if ( $my->id > 0 || (VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' 
+								&& ( $page == 'checkout.index' || $page == 'shop.registration' ) ) ) {
 	// A listing of fields that are NOT shown
 	$skip_fields = array( 'username', 'password', 'password2' );
 	if( $my->id ) {

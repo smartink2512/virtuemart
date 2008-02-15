@@ -364,7 +364,7 @@ class ps_user {
 		if ($isNew) {
 			// new user stuff
 			if ($row->password == '') {
-				$pwd = mosMakePassword();
+				$pwd = vmGenRandomPassword();
 				$row->password = md5( $pwd );
 			} else {
 				$pwd = $row->password;

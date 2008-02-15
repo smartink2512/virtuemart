@@ -35,11 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+15.02.2008 gregdev
+# Task #964 - Silent registration through mod_virtuemart shows user name/password
++ Added vmGenRandomPassword() ( to replace mosMakePassword() )
+# Added missing $mosConfig_absolute_path (for com_securityimages support)
 
 14.02.2008 thepisu
 # updated languages: finnish, hungarian, russian, italian
 ^ updated Argentine currency
 # fixed typo
+
 14.02.2008 gregdev
 # Unchecking "Show Prices including tax?" results in PHP Notice.
 # Fixed unreachable code in ps_shopper_group->add().

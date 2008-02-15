@@ -129,7 +129,7 @@ class ps_shopper {
 	** returns:
 	***************************************************************************/
 	function validate_update(&$d) {
-		global $my, $perm, $vmLogger;
+		global $my, $perm, $vmLogger, $mosConfig_absolute_path;
 
 		if ($my->id == 0){
 			$vmLogger->err( "Please Login first." );
@@ -283,7 +283,7 @@ class ps_shopper {
 					$i++;
 				}
 				$_POST['username'] = $d['username'] = $silent_username;
-				$_POST['password'] = $d['password'] = mosMakePassword();
+				$_POST['password'] = $d['password'] = vmGenRandomPassword();
 				$_POST['password2'] = $_POST['password'];
 			}
 
@@ -470,7 +470,7 @@ class ps_shopper {
 		$row->gid = $acl->get_group_id( $usergroup, 'ARO' );
 
 		if ($mosConfig_useractivation == '1') {
-			$row->activation = md5( mosMakePassword() );
+			$row->activation = md5( vmGenRandomPassword() );
 			$row->block = '1';
 		}
 
