@@ -47,7 +47,7 @@ $vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/adm
 $vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js');
 $vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/functions.js');
 
-if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
+if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 	echo $mainframe->getHead();
 }
 ?>
@@ -57,18 +57,24 @@ if( vmIsJoomla(1.0) && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
   <div class="sidemenu-box">
     <div class="sidemenu-pad">
 		<center>
-		<?php if( $vmLayout == 'standard') {
-			?>
-			[ <strong><?php echo $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') ?></strong> | 
-			<a href="<?php echo $_SERVER['PHP_SELF'].'?'.( !empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=extended"><?php echo $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT') ?></a> ]<br />
-			<?php
-		} else { 
-			?>
-			[ <a href="<?php echo $_SERVER['PHP_SELF'].'?'.(!empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=standard"><?php echo $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') ?></a> 
-			| <strong><?php echo $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT') ?></strong> ]<br />
-			<?php
+		<?php
+		if( !defined('_VM_IS_BACKEND')) {
+			echo '<a href="index.php" title="'.$VM_LANG->_('VM_ADMIN_BACKTOJOOMLA').'" class="vmicon vmicon-16-back" style="font-weight:bold;">'.$VM_LANG->_('BACK').'</a>
+			<br /><br />'; 
+		} else {
+			if( $vmLayout == 'standard') {
+				?>
+				[ <strong><?php echo $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') ?></strong> | 
+				<a href="<?php echo $_SERVER['PHP_SELF'].'?'.( !empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=extended"><?php echo $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT') ?></a> ]<br />
+				<?php
+			} else { 
+				?>
+				[ <a href="<?php echo $_SERVER['PHP_SELF'].'?'.(!empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=standard"><?php echo $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') ?></a> 
+				| <strong><?php echo $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT') ?></strong> ]<br /><br />
+				<?php
+			}
 		}
-		?><br />
+		?>
 			<a href="http://virtuemart.net" target="_blank">
 				<img align="middle" hspace="15" src="<?php echo IMAGEURL ?>ps_image/menu_logo.gif" alt="VirtueMart Cart Logo" />
 			</a>

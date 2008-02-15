@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,8 +16,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+global $ps_product_category;
 
-$category_id = vmGet( $_REQUEST, 'category_id' );
 $old_category_id = vmGet( $_REQUEST, 'old_category_id' );
 if( $old_category_id ) {
 	$category_id = $old_category_id;
@@ -60,6 +60,7 @@ echo '<input type="hidden" name="page" value="product.product_list" />
 <input type="hidden" name="func" value="moveProduct" />
 <input type="hidden" name="vmtoken" value="'.vmSpoofValue($sess->getSessionId()).'" />
 <input type="hidden" name="task" value="" />
+<input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="option" value="'.$option.'" />
 <input type="hidden" name="old_category_id" value="'.$category_id.'" />
 </form>';
