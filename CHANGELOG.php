@@ -35,9 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+15.02.2008 gregdev
+# Task #1556 - Added native Joomla! 1.5 .xml file for vmproductsnapshots plugin
+# Added missing global $database in virtuemart_parser.php
+
 15.02.2008 soeren
 # Task #1793 - moving products to another category give fatal error
 # Task #1556 - mosProduct Snapshot not working in Joomla 1.5
+
 15.02.2008 gregdev
 # Task #964 - Silent registration through mod_virtuemart shows user name/password
 + Added vmGenRandomPassword() ( to replace mosMakePassword() )

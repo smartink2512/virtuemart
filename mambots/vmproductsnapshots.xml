@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <mosinstall type="mambot" group="content">
 	<name>VirtueMart Product Snapshot</name>
-	<author>soeren</author>
 	<creationDate>February 2008</creationDate>
-	<copyright>Soeren</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>soeren@VirtueMart.net</authorEmail>
-	<authorUrl>www.virtuemart.net</authorUrl>
-	<version>1.1</version>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
 	<description>Show Product Snapshots in Content (Let's you add/edit snapshots of products in your VirtueMart. Enter multiple products by separating them with a |.)</description>
 	<files>
 		<filename mambot="vmproductsnapshots">vmproductsnapshots.php</filename>
