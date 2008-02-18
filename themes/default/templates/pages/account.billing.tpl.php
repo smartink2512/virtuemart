@@ -20,7 +20,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 <div class="pathway"><?php echo $vmPathway; ?></div>
 <div style="float:left;width:90%;text-align:right;"> 
     <span>
-    	<a href="#" onclick="if( submitregistration() ) { document.adminForm.submit();}">
+    	<a href="#" onclick="if( submitregistration() ) { document.adminForm.submit(); return false;}">
     		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo $VM_LANG->_('CMN_SAVE') ?>" />
     	</a>
     </span>

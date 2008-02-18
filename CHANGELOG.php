@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.02.2008 gregdev
+# Fixed - clicking save button on account.billing incorrectly returns to store.index with J! 1.5.1 SEF enabled
+# Fixed - Call to a member function on a non-object ($vm_mainframe) in checkout_register_form
+
 15.02.2008 gregdev
 # Task #1556 - Added native Joomla! 1.5 .xml file for vmproductsnapshots plugin
 # Added missing global $database in virtuemart_parser.php
@@ -66,9 +70,11 @@ VirtueMart 1.1.x
 
 12.02.2008 gregdev
 # Task #1670 - Discount price field does not save value.
+
 12.02.2008 soeren
 # Manufacturer ID left empty in product form when only one manufacturer present
 # Task # 1706 -  Deselection of Sort Order in Configuration not working
+
 12.02.2008 gregdev
 # Task #1779 - Installation archive files don't get deleted in Joomla 1.0.x
 
@@ -82,6 +88,7 @@ VirtueMart 1.1.x
 ^ Set default for 'Show on shipping form' to 'No'
 # Ensure that system user fields (sys=1) do not have their names changed.
 # Row not added to #__vm_order_user_info when order is confirmed.
+
 09.02.2008 soeren
 # Operation Aborted Error in IE when browsing products + Lightbox'ed Links enabled
 # Task #1745 - mod_virtuemart_allinone error
@@ -118,6 +125,7 @@ VirtueMart 1.1.x
 
 07.02.2008 gregdev
 # Task #1710 - Basic and Advanced component parameters (added config.xml to virtuemart.j15.xml)
+
 07.02.2008 thepisu
 # Updated Finnish lang files (translation by Mauri)
 # Task #1735 Translation bug in admin product menu
@@ -129,6 +137,7 @@ VirtueMart 1.1.x
 # Fixed missing slash in install (for loading sql sample data)
 ^ Suppressed error messages when extracting tar.gz files during installation
 ^ Cleaned up the component .xml files
+
 06.02.2008 soeren
 ^ tax rate list contains 0% tax rate now by default
 ^ when deleting files from a product, the actual file is not removed from the server when it's used by a different product
@@ -147,6 +156,7 @@ VirtueMart 1.1.x
 04.02.2008 soeren
 + added new registration field types for "Captcha" and Age Verification (using simple date drop-down lists)
 	Captcha uses Walter Cedric's com_securityimages (http://www.waltercedric.com) and is only available if that component is installed!
+	
 04.02.2008 gregdev
 # Task #1745 - mod_virtuemart_allinone error
 + Restored the special.png image for the all-in-one module

@@ -27,7 +27,7 @@ if (!empty( $missing )) {
 }
 
 if ($mosConfig_allowUserRegistration == "0") {
-	$vm_mainframe->errorAlert('User registration is disabled, it must be enabled in order to proceed.');
+	$GLOBALS['vm_mainframe']->errorAlert('User registration is disabled, it must be enabled in order to proceed.');
 	return;
 }
 
