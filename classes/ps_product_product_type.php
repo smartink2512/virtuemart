@@ -128,7 +128,7 @@ class ps_product_product_type {
 		global $db;
 	
 		$q  = 'DELETE FROM #__{vm}_product_product_type_xref WHERE product_type_id='.(int)$record_id;
-		$q .= "AND product_id='".$d["product_id"]."'";
+		$q .= " AND product_id='".$d["product_id"]."'";
 		$db->setQuery($q);   $db->query();
 	
 		$q  = "DELETE FROM #__{vm}_product_type_".(int)$record_id." WHERE product_id='".$d["product_id"]."'";
