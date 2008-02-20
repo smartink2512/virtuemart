@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+20.02.2008 soeren
+ # Task #1473 -  ps_product_category.php timeout
 18.02.2008 gregdev
 # Fixed - clicking save button on account.billing incorrectly returns to store.index with J! 1.5.1 SEF enabled
 # Fixed - Call to a member function on a non-object ($vm_mainframe) in checkout_register_form

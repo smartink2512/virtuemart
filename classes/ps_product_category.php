@@ -512,7 +512,97 @@ class ps_product_category extends vmAbstractObject {
 			return $GLOBALS['category_info']['category_tree'];
 		}
 	}
+	/**
+	 * Sorts an array with categories so the order of the categories is the same as in a tree, just as a flat list.
+	 * The Tree Depth is
+	 *
+	 * @param array $categoryArr
+	 */
+	function sortCategoryTreeArray(&$categoryArr) {
+		// Copy the Array into an Array with auto_incrementing Indexes
+		$key = array_keys($categoryArr); // Array of category table primary keys
+		
+		$nrows = $size = sizeOf($key); // Category count
 
+		/** FIRST STEP
+	    * Order the Category Array and build a Tree of it
+	    **/
+
+		$id_list = array();
+		$row_list = array();
+		$depth_list = array();
+
+		$children = array();
+		$parent_ids = array();
+		$parent_ids_hash = array();
+		
+		//Build an array of category references
+		$category_tmp = Array();
+		for ($i=0; $i<$size; $i++)
+		{
+			$category_tmp[$i] = &$categoryArr[$key[$i]];
+			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];		
+			if($category_tmp[$i]["category_parent_id"] == 0)
+			{ 
+				array_push($id_list,$category_tmp[$i]["category_child_id"]);
+				array_push($row_list,$i);
+				array_push($depth_list,0);
+			}
+
+			$parent_id = $parent_ids[$i];
+			
+			if (isset($parent_ids_hash[$parent_id]))
+			{
+				$parent_ids_hash[$parent_id][$i] = $parent_id;
+				
+			}
+			else
+			{
+				$parent_ids_hash[$parent_id] = array($i => $parent_id);
+			}
+			
+		}
+		
+		$loop_count = 0;
+		$watch = array(); // Hash to store children
+		while(count($id_list) < $nrows) {
+			if( $loop_count > $nrows )
+			break;
+			$id_temp = array();
+			$row_temp = array();
+			$depth_temp = array();
+			for($i = 0 ; $i < count($id_list) ; $i++) {
+				$id = $id_list[$i];
+				$row = $row_list[$i];
+				$depth = $depth_list[$i];
+				array_push($id_temp,$id);
+				array_push($row_temp,$row);
+				array_push($depth_temp,$depth);
+
+				$children = @$parent_ids_hash[$id];
+				
+				if (!empty($children))
+				{
+					foreach($children as $key => $value) {
+						if( !isset($watch[$id][$category_tmp[$key]["category_child_id"]])) {
+							$watch[$id][$category_tmp[$key]["category_child_id"]] = 1;
+							array_push($id_temp,$category_tmp[$key]["category_child_id"]);
+							array_push($row_temp,$key);
+							array_push($depth_temp,$depth + 1);
+						}
+					}
+				}
+			}
+			$id_list = $id_temp;
+			$row_list = $row_temp;
+			$depth_list = $depth_temp;
+			$loop_count++;
+		}
+		return array('id_list' => $id_list,
+								'row_list' => $row_list,
+								'depth_list' => $depth_list,
+								'category_tmp' => $category_tmp);
+	}
 	/**
 	 * This function is used for the frontend to display a
 	 * complete link list of top-level categories
@@ -529,21 +619,22 @@ class ps_product_category extends vmAbstractObject {
 				$highlighted_style="font-style:italic;" ) {
 		global $sess;
 
-		$categories = ps_product_category::getCategoryTreeArray();
+		$categories = ps_product_category::getCategoryTreeArray(); // Get array of category objects
+		$result = ps_product_category::sortCategoryTreeArray($categories); // Sort array of category objects
+		$row_list = $result['row_list'];
+		$depth_list = $result['depth_list'];
+		$category_tmp = $result['category_tmp'];
+		$nrows = sizeof($category_tmp);
 
 		// Copy the Array into an Array with auto_incrementing Indexes
-		$key = array_keys($categories);
-		$size = sizeOf($key);
-		$category_tmp = Array();
-		for ($i=0; $i<$size; $i++) {
-			$category_tmp[$i] = &$categories[$key[$i]];
-		}
+		$key = array_keys($categories); // Array of category table primary keys
+		
+		$nrows = $size = sizeOf($key); // Category count
 
 		$html = "";
 		/** FIRST STEP
 	    * Order the Category Array and build a Tree of it
 	    **/
-		$nrows = count( $category_tmp );
 
 		$id_list = array();
 		$row_list = array();
@@ -551,21 +642,40 @@ class ps_product_category extends vmAbstractObject {
 
 		$children = array();
 		$parent_ids = array();
-
-		for($k = 0 ; $k < $nrows ; $k++) {
-			$parent_ids[$k] = $category_tmp[$k]['category_parent_id'];
-		}
-
-		for($n = 0 ; $n < $nrows ; $n++) {
-			if($category_tmp[$n]["category_parent_id"] == 0) { 
-				array_push($id_list,$category_tmp[$n]["category_child_id"]);
-				array_push($row_list,$n);
+		$parent_ids_hash = array();
+		
+		//Build an array of category references
+		$category_tmp = Array();
+		for ($i=0; $i<$size; $i++)
+		{
+			$category_tmp[$i] = &$categories[$key[$i]];
+			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];		
+			if($category_tmp[$i]["category_parent_id"] == 0)
+			{ 
+				array_push($id_list,$category_tmp[$i]["category_child_id"]);
+				array_push($row_list,$i);
 				array_push($depth_list,0);
 			}
+
+			$parent_id = $parent_ids[$i];
+			
+			if (isset($parent_ids_hash[$parent_id]))
+			{
+				$parent_ids_hash[$parent_id][$i] = $parent_id;
+				
+			}
+			else
+			{
+				$parent_ids_hash[$parent_id] = array($i => $parent_id);
+			}
+			
 		}
+		
 		$loop_count = 0;
+		$watch = array(); // Hash to store children
 		while(count($id_list) < $nrows) {
-			if( $loop_count > $nrows ) { break; }
+			if( $loop_count > $nrows )
+			break;
 			$id_temp = array();
 			$row_temp = array();
 			$depth_temp = array();
@@ -577,14 +687,17 @@ class ps_product_category extends vmAbstractObject {
 				array_push($row_temp,$row);
 				array_push($depth_temp,$depth);
 
-				$pattern = '/\b'.$id.'\b/';
-				$children = preg_grep( $pattern, $parent_ids );
-
-				foreach($children as $key => $value) {
-					if( array_search($category_tmp[$key]["category_child_id"],$id_list) == NULL) {
-						array_push($id_temp,$category_tmp[$key]["category_child_id"]);
-						array_push($row_temp,$key);
-						array_push($depth_temp,$depth + 1);
+				$children = @$parent_ids_hash[$id];
+				
+				if (!empty($children))
+				{
+					foreach($children as $key => $value) {
+						if( !isset($watch[$id][$category_tmp[$key]["category_child_id"]])) {
+							$watch[$id][$category_tmp[$key]["category_child_id"]] = 1;
+							array_push($id_temp,$category_tmp[$key]["category_child_id"]);
+							array_push($row_temp,$key);
+							array_push($depth_temp,$depth + 1);
+						}
 					}
 				}
 			}

@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -21,74 +21,21 @@ global $ps_product_category;
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-$categories = $ps_product_category->getCategoryTreeArray( false );
+$categories = ps_product_category::getCategoryTreeArray(false, $keyword ); // Get array of category objects
+$result = ps_product_category::sortCategoryTreeArray( $categories );
 
-// Copy the Array into an Array with auto_incrementing Indexes
-$key = array_keys($categories);
-$size = sizeOf($key);
-for ($i=0; $i<$size; $i++) 
-	$category_tmp[$i] = &$categories[$key[$i]];
-    
-$html = "";
-/** FIRST STEP
-* Order the Category Array and build a Tree of it
-**/
-$nrows = $num_rows = @count( $category_tmp );
-    
-$id_list = Array();
-$row_list = Array();
-$depth_list = Array();
-$levelcounter = Array();
+$nrows = $size = sizeOf($categories); // Category count
 
-$children = array();
-$parent_ids = array();
-for($k = 0 ; $k < $nrows ; $k++) {
-	$parent_ids[$k] = $category_tmp[$k]['category_parent_id'];
-}
-
-for($n = 0 ; $n < $nrows ; $n++)
-	if($category_tmp[$n]["category_parent_id"] == 0) { 
-		array_push($id_list,$category_tmp[$n]["category_child_id"]);
-		array_push($row_list,$n);
-		array_push($depth_list,0);
-	}
-$loop_count = 0;
-while(count($id_list) < $nrows) {
-	if( $loop_count > $nrows )
-		break;
-	$id_temp = array();
-	$row_temp = array();
-	$depth_temp = array();
-	for($i = 0 ; $i < count($id_list) ; $i++) {
-		$id = $id_list[$i];
-		$row = $row_list[$i];
-		$depth = $depth_list[$i];
-		array_push($id_temp,$id);
-		array_push($row_temp,$row);
-		array_push($depth_temp,$depth);
-
-		$pattern = '/\b'.$id.'\b/';
-		$children = preg_grep( $pattern, $parent_ids );
-
-		foreach($children as $key => $value) {
-			if( array_search($category_tmp[$key]["category_child_id"],$id_list) == NULL) {
-				array_push($id_temp,$category_tmp[$key]["category_child_id"]);
-				array_push($row_temp,$key);
-				array_push($depth_temp,$depth + 1);
-			}
-		}
-	}
-	$id_list = $id_temp;
-	$row_list = $row_temp;
-	$depth_list = $depth_temp;
-	$loop_count++;
-}
+$id_list = $result['id_list'];
+$row_list = $result['row_list'];
+$depth_list = $result['depth_list'];
+$categories = $result['category_tmp'];
 
 // Create the Page Navigation
 $pageNav = new vmPageNav( $nrows, $limitstart, $limit );
 
 for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
-	@$levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]]++;
+	@$levelcounter[$categories[$row_list[$n]]["category_parent_id"]]++;
 }
 
 // Create the List Object with page navigation
@@ -122,12 +69,10 @@ if( $pageNav->limit < $nrows )
 
 for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 
-	if( $keyword != '' ) {
-		if( !stristr( $category_tmp[$row_list[$n]]["category_name"], $keyword )) {
-			continue;
-		}
-	}
-	$catname = shopMakeHtmlSafe( $category_tmp[$row_list[$n]]["category_name"] );
+	if( !isset($row_list[$n])) $row_list[$n] = $n;
+	if( !isset($depth_list[$n])) $depth_list[$n] = 0;
+	
+	$catname = shopMakeHtmlSafe( $categories[$row_list[$n]]["category_name"] );
 	
 	$listObj->newRow();
 	
@@ -135,33 +80,33 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 	$listObj->addCell( $pageNav->rowNumber( $ibg ) );
 	
 	// The Checkbox
-	$listObj->addCell( vmCommonHTML::idBox( $ibg, $category_tmp[$row_list[$n]]["category_child_id"], false, "category_id" ) );
+	$listObj->addCell( vmCommonHTML::idBox( $ibg, $categories[$row_list[$n]]["category_child_id"], false, "category_id" ) );
 	
 	// Which category depth level we are in?
 	$repeat = $depth_list[$n]+1;
 	$tmp_cell = str_repeat("&nbsp;&nbsp;&nbsp;", $repeat ) 
 				. "&#095&#095;|" . $repeat ."|&nbsp;"
-				."<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_category_form&category_id=" . $category_tmp[$row_list[$n]]["category_child_id"]. "&category_parent_id=" . $category_tmp[$row_list[$n]]["category_parent_id"]."\">"
+				."<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_category_form&category_id=" . $categories[$row_list[$n]]["category_child_id"]. "&category_parent_id=" . $categories[$row_list[$n]]["category_parent_id"]."\">"
 				. $catname
 				. "</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$desc = strlen( $category_tmp[$row_list[$n]]["category_description"] ) > 255 ? mm_ToolTip( $category_tmp[$row_list[$n]]["category_description"], $VM_LANG->_('PHPSHOP_CATEGORY_FORM_DESCRIPTION') ) :$category_tmp[$row_list[$n]]["category_description"];
+	$desc = strlen( $categories[$row_list[$n]]["category_description"] ) > 255 ? mm_ToolTip( $categories[$row_list[$n]]["category_description"], $VM_LANG->_('PHPSHOP_CATEGORY_FORM_DESCRIPTION') ) :$categories[$row_list[$n]]["category_description"];
 	$listObj->addCell( "&nbsp;&nbsp;". $desc );
 	
-	$listObj->addCell( ps_product_category::product_count( $category_tmp[$row_list[$n]]["category_child_id"] )
-						."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $category_tmp[$row_list[$n]]["category_child_id"]."&option=com_virtuemart"
+	$listObj->addCell( ps_product_category::product_count( $categories[$row_list[$n]]["category_child_id"] )
+						."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $categories[$row_list[$n]]["category_child_id"]."&option=com_virtuemart"
 						. "\">[ ".$VM_LANG->_('PHPSHOP_SHOW')." ]</a>"
 					);
 	// Publish / Unpublish
-	$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.product_category_list&category_id=".$category_tmp[$row_list[$n]]["category_child_id"]."&func=changePublishState" );
-	if ($category_tmp[$row_list[$n]]["category_publish"]=='N') {
+	$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.product_category_list&category_id=".$categories[$row_list[$n]]["category_child_id"]."&func=changePublishState" );
+	if ($categories[$row_list[$n]]["category_publish"]=='N') {
 		$tmp_cell .= "&task=publish\">";
 	} 
 	else { 
 		$tmp_cell .= "&task=unpublish\">";
 	}
-	$tmp_cell .= vmCommonHTML::getYesNoIcon ( $category_tmp[$row_list[$n]]["category_publish"] );
+	$tmp_cell .= vmCommonHTML::getYesNoIcon ( $categories[$row_list[$n]]["category_publish"] );
 	$tmp_cell .= "</a>";
 	$listObj->addCell( $tmp_cell );
 
@@ -173,21 +118,21 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 		$upCondition = $downCondition = false;
 		if( !isset( $levels[$depth_list[$n]+1] ))
 			$levels[$depth_list[$n]+1] = 1;
-		if( $category_tmp[$row_list[$n]]["category_parent_id"] == @$category_tmp[$row_list[$n-1]]["category_parent_id"])
+		if( $categories[$row_list[$n]]["category_parent_id"] == @$categories[$row_list[$n-1]]["category_parent_id"])
 			$upCondition = true;
-		if( $category_tmp[$row_list[$n]]["category_parent_id"] == @$category_tmp[$row_list[$n+1]]["category_parent_id"] )
+		if( $categories[$row_list[$n]]["category_parent_id"] == @$categories[$row_list[$n+1]]["category_parent_id"] )
 			$downCondition = true;
 		if( !$downCondition || !$upCondition ) {
 			
-			if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] > $levels[$depth_list[$n]+1] )
+			if( $levelcounter[$categories[$row_list[$n]]["category_parent_id"]] > $levels[$depth_list[$n]+1] )
 				$downCondition = true;
 				if( $levels[$depth_list[$n]+1] > 1 )
 					$upCondition = true;
-			if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] == $levels[$depth_list[$n]+1] ) {
+			if( $levelcounter[$categories[$row_list[$n]]["category_parent_id"]] == $levels[$depth_list[$n]+1] ) {
 				$upCondition = true;
 				$downCondition = false;
 			}
-			if( $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]] < $levels[$depth_list[$n]+1] ) {
+			if( $levelcounter[$categories[$row_list[$n]]["category_parent_id"]] < $levels[$depth_list[$n]+1] ) {
 				$downCondition = false;
 				$upCondition = false;
 			}
@@ -196,17 +141,17 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 		
 		$listObj->addCell( $pageNav->orderUpIcon( $ibg, $upCondition, 'orderup', $VM_LANG->_('CMN_ORDER_UP'), $page, 'reorder' )
 							. '&nbsp;'
-							.$pageNav->orderDownIcon( $ibg, $levelcounter[$category_tmp[$row_list[$n]]["category_parent_id"]], $downCondition, 'orderdown', $VM_LANG->_('CMN_ORDER_DOWN'), $page, 'reorder' )
+							.$pageNav->orderDownIcon( $ibg, $levelcounter[$categories[$row_list[$n]]["category_parent_id"]], $downCondition, 'orderdown', $VM_LANG->_('CMN_ORDER_DOWN'), $page, 'reorder' )
 						);
 						
-		$listObj->addCell( vmCommonHTML::getOrderingField( $category_tmp[$row_list[$n]]["list_order"] ) );
+		$listObj->addCell( vmCommonHTML::getOrderingField( $categories[$row_list[$n]]["list_order"] ) );
 	} else {
 		$listObj->addCell( '&nbsp;' );
 		$listObj->addCell( '&nbsp;' );		
 	}
-	$listObj->addCell( $ps_html->deleteButton( "category_id", $category_tmp[$row_list[$n]]["category_child_id"], "productCategoryDelete", $keyword, $limitstart ) );
+	$listObj->addCell( $ps_html->deleteButton( "category_id", $categories[$row_list[$n]]["category_child_id"], "productCategoryDelete", $keyword, $limitstart ) );
 	
-	$listObj->addCell( $category_tmp[$row_list[$n]]["category_child_id"] );
+	$listObj->addCell( $categories[$row_list[$n]]["category_child_id"] );
 	
 	$ibg++;
 }
