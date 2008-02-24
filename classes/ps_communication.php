@@ -312,10 +312,8 @@ class ps_communication {
         return false;
     }
     $subject = sprintf( $VM_LANG->_('VM_RECOMMEND_SUBJECT',false), $vendor_store_name );
-    //$msg = vmGetUnEscaped(str_replace( array('\r', '\n' ), array("\r", "\n" ), $d['recommend_message'] ));
+    $msg = vmGetUnEscaped(str_replace( array('\r', '\n' ), array("\r", "\n" ), $d['recommend_message'] ));
     $msg = $d['recommend_message'];
-    echo $msg;
-    exit();
     $send = vmMail($d['sender_mail'], 
                    $d['sender_name'],
                    $d['recipient_mail'],
