@@ -6,7 +6,7 @@
 <?php
 if( !empty( $VM_BROWSE_ORDERBY_FIELDS )) {
 	echo $this->fetch_cache( 'browse/includes/browse_orderbyfields.tpl.php');
-}
+
 // This is the toggle button for Descending / Ascending Order
 // It is wrapped into a JS function with a noscript area to keep it accessible
 echo mm_writeWithJS('&nbsp;<input type="hidden" name="DescOrderBy" value="'.$asc_desc[0].'" /><a href="javascript: document.order.DescOrderBy.value=\''.$asc_desc[1].'\'; document.order.submit()"><img src="'. $mosConfig_live_site."/images/M_images/$icon"  .'" border="0" alt="'. $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_'.$asc_desc[0].'ENDING_ORDER') .'" title="'.$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_'.$asc_desc[0].'ENDING_ORDER') .'" width="12" height="12" /></a>',
@@ -15,8 +15,9 @@ echo mm_writeWithJS('&nbsp;<input type="hidden" name="DescOrderBy" value="'.$asc
             <option '.$selected[1].' value="ASC">'.$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH_ASCENDING_ORDER').'</option>
         </select>
         <input class="button" type="submit" value="'.$VM_LANG->_('PHPSHOP_SUBMIT').'" />');
+}
 ?>
-    <input type="hidden" name="Itemid" value="<?php echo @$_REQUEST['Itemid'] ?>" />
+    <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="page" value="shop.browse" />
     <input type="hidden" name="category_id" value="<?php echo $category_id ?>" />
