@@ -593,11 +593,12 @@ class ps_order {
 	 * @return boolean
 	 */
 	function validate_delete($order_id) {
-
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		if(empty( $order_id )) {
-			$GLOBALS['vmLogger']->err('Unable to delete without the order id.' );
+			$GLOBALS['vmLogger']->err($VM_LANG->_('VM_ORDER_DELETE_ERR_ID'));
 			return False;
 		}
 		

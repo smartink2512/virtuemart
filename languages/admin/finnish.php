@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -354,7 +354,7 @@ Asiakkaan ei tarvitse, eikä hän voi rekisteröityä.',
 	'VM_USER_FORM_REGISTERDATE' => 'Rekisteröintipäivä',
 	'VM_USER_FORM_LASTVISITDATE' => 'Viimeksi kirjautunut',
 	'VM_USER_FORM_NOCONTACTDETAILS_1' => 'Käyttäjään ei ole linkitetty yhteystietoja:',
-	'VM_USER_FORM_NOCONTACTDETAILS_2' => 'Katso Components -&gt; Contact -&gt; Manage Contacts.',
+	'VM_USER_FORM_NOCONTACTDETAILS_2' => 'Katso Components -> Contact -> Manage Contacts.',
 	'VM_USER_FORM_CONTACTDETAILS_NAME' => 'Nimi',
 	'VM_USER_FORM_CONTACTDETAILS_POSITION' => 'Asema',
 	'VM_USER_FORM_CONTACTDETAILS_TELEPHONE' => 'Puhelin',
@@ -385,6 +385,7 @@ Asiakkaan ei tarvitse, eikä hän voi rekisteröityä.',
 	'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN' => 'Rajoittaa debug-toiminnon näkymään vain kyseiselle IP-osoitteelle, muut eivät näe debug-toimintoa?',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Asiakkaan IP osoite',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'Jos tämä asetus on aktivoitu ja Ip-osoite annettu, niin debug-toiminto näkyy vain kyseiselle IP-osoitteelle, muut eivät näe debug-toimintoa.',
-	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Näytä toimitustiedoissa'
+	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Näytä toimitustiedoissa',
+	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

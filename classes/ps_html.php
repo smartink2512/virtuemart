@@ -287,7 +287,8 @@ class ps_html {
 		$db->query( "SELECT c.country_id, c.country_3_code, s.state_name, s.state_2_code
 						FROM #__{vm}_country c
 						LEFT JOIN #__{vm}_state s 
-						ON c.country_id=s.country_id OR s.country_id IS NULL" );
+						ON c.country_id=s.country_id OR s.country_id IS NULL
+						ORDER BY c.country_id, s.state_name" );
 
 		if( $db->num_rows() > 0 ) {
 			if( !vmIsAdminMode() ) {

@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.02.2008 thepisu
+# Task #1835 - Add Product Type menu label
+# added many translations (modules common/admin)
+# minor fixes
+
 20.02.2008 gregdev
 # Task #1811 - first query doesn't execute in ps_product_product_type::delete_record()
 

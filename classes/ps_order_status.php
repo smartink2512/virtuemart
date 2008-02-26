@@ -43,6 +43,7 @@ class ps_order_status extends vmAbstractObject {
 	}
 
 	function validate_update(&$d) {
+		global $VM_LANG;
 		
 		if( !$this->validate( $d ) ) {
 			return false;
@@ -52,7 +53,7 @@ class ps_order_status extends vmAbstractObject {
 			$order_status_code = $db->f('order_status_code');
 			// Check if the Order Status Code of protected Order Statuses is to be changed
 			if( in_array( $order_status_code, $this->_protected_status_codes ) && $order_status_code != $d["order_status_code"] ) {
-				$vmLogger->err( 'This Order Status Code cannot be changed, it is one of the core status codes.' );
+				$vmLogger->err( $VM_LANG->_('VM_ORDERSTATUS_CHANGE_ERR_CORE') );
 				return False;
 			}
 			if( $order_status_code != $d["order_status_code"] ) {
@@ -71,22 +72,23 @@ class ps_order_status extends vmAbstractObject {
 	}
 
 	function validate_delete($d) {
-
+		global $VM_LANG;
+		
 		if (empty($d["order_status_id"])) {
-			$vmLogger->err( 'Please select an order status type to delete.' );
+			$vmLogger->err( $VM_LANG->_('VM_ORDERSTATUS_DELETE_ERR_SELECT') );
 			return False;
 		}
 		$db = $this->get(intval($d["order_status_id"]));
 		if( $db->f('order_status_code')) {
 			$order_status_code = $db->f('order_status_code');
 			if( in_array( $order_status_code, $this->_protected_status_codes ) ) {
-				$vmLogger->err( 'This Order Status cannot be deleted, it is one of the core status codes.' );
+				$vmLogger->err( $VM_LANG->_('VM_ORDERSTATUS_DELETE_ERR_CORE') );
 				return False;
 			}
 			$dbo = new ps_DB();
 			$dbo->query('SELECT order_id FROM #__{vm}_orders WHERE order_status=\''.$order_status_code.'\' LIMIT 1');
 			if( $dbo->next_record() ) {
-				$vmLogger->err( 'This Order Status cannot be deleted, there are still Orders with this Status.' );
+				$vmLogger->err( $VM_LANG->_('VM_ORDERSTATUS_DELETE_ERR_STILL') );
 				return False;
 			}
 		}
@@ -101,6 +103,8 @@ class ps_order_status extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function add(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
@@ -118,10 +122,10 @@ class ps_order_status extends vmAbstractObject {
 		$result = $db->query();
 		
 		if( $result ) {
-			$GLOBALS['vmLogger']->info('The Order Status Type has been added.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_ORDERSTATUS_ADDED'));
 			$d["order_status_id"] = $_REQUEST['order_status_id'] = $db->last_insert_id();
 		} else {
-			$GLOBALS['vmLogger']->err('Adding the Order Status Type has failed.');
+			$GLOBALS['vmLogger']->err($VM_LANG->_('VM_ORDERSTATUS_ADD_FAILED'));
 		}
 		return $result;
 
@@ -134,6 +138,8 @@ class ps_order_status extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function update(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
@@ -148,7 +154,7 @@ class ps_order_status extends vmAbstractObject {
 		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, "WHERE order_status_id=".(int)$d["order_status_id"]." AND vendor_id=$ps_vendor_id" );
 		
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info('The Order Status Type has been updated.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_ORDERSTATUS_UPDATED'));
 			return true;
 		}
 		return false;

@@ -88,7 +88,7 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN' => 'Si activ�, vous autorisez vos clients � <strong>noter les produits</strong> et <strong>�crire des appr�ciations</strong> sur ces produits. <br />
                                                                                 De cette mani�re les clients partagent leurs avis et exp�riences avec les autres clients.<br />',
 	'PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN' => 'Cocher pour soustraire remises et promotions du r�glement AVANT application des taxes et frais d\'exp�dition. Ne pas cocher, si le calcul doit se faire APRES.',
-	'PHPSHOP_ADMIN_CFG_AGREE_TERMS' => 'Les clients doivent-ils accepter les Conditions d\\\'utilisation ?',
+	'PHPSHOP_ADMIN_CFG_AGREE_TERMS' => 'Les clients doivent-ils accepter les Conditions d\\'utilisation ?',
 	'PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN' => 'Cocher si le client doit accepter les conditions d\'utilisation avant de s\'enregistrer sur la boutique.',
 	'PHPSHOP_ADMIN_CFG_CHECK_STOCK' => 'V�rifier les stocks ?',
 	'PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN' => 'Cocher pour activer la gestion des stocks, et pour emp�cher toute commande si l\'article n\'est pas (ou plus) disponible.',
@@ -349,6 +349,7 @@ Les clients ne doivent pas et ne sont pas en mesure de s\'inscrire dans ce type 
 	'VM_USER_FORM_CONTACTDETAILS_TELEPHONE' => 'T�l�phone',
 	'VM_USER_FORM_CONTACTDETAILS_FAX' => 'Fax',
 	'VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON' => 'Changer les coordonn�es',
-	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form'
+	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form',
+	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

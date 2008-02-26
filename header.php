@@ -320,14 +320,14 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_discount_list") ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL') ?></a>
 					</li>
 					 <li class="item-smenu vmicon vmicon-16-editadd">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_discount_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_ADDEDIT') ?></a>
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_discount_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_DISCOUNT_FORM_MNU') ?></a>
 					<hr />	
 					</li>
 				    <li class="item-smenu vmicon vmicon-16-content">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_type_list") ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_LIST_LBL') ?></a>
 					</li>
 					<li class="item-smenu vmicon vmicon-16-editadd">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_type_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_TYPE_ADDEDIT') ?></a>
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_type_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU') ?></a>
 					<hr />	
 					</li>
 		     		<li class="item-smenu vmicon vmicon-16-content">

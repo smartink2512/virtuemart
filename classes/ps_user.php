@@ -24,7 +24,7 @@ class ps_user {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
-		global $my, $perm, $vmLogger;
+		global $my, $perm, $vmLogger, $VM_LANG;
 
 		$db = new ps_DB;
 
@@ -42,19 +42,26 @@ class ps_user {
 			}
 			if( empty( $d[$field->name]) && $field->sys == 1 ) {
 				$valid = false;
-				$vmLogger->err( 'Missing value for field "'.$field->title .'".' );
+				$fieldtitle = $field->title;
+				if( substr( $fieldtitle, 0, 1) == '_') {
+					$fieldkey = substr($fieldtitle, 1, strlen($fieldtitle)-1);
+					if( $VM_LANG->exists($fieldkey) ) {
+						$fieldtitle = $VM_LANG->_($fieldkey);
+					}
+				}
+				$vmLogger->err( sprintf($VM_LANG->_('VM_USER_ERR_MISSINGVALUE'), $fieldtitle) );
 			}
 		}
 
 		$d['user_email'] = @$d['email'];
 
 		if (!$d['perms']) {
-			$vmLogger->warning( 'You must assign the user to a group.' );
+			$vmLogger->warning( $VM_LANG->_('VM_USER_ERR_GROUP') );
 			$valid = false;
 		}
 		else {
 			if( !$perm->hasHigherPerms( $d['perms'] )) {
-				$vmLogger->err( 'You have no permission to add a user of that usertype: '.$d['perms'] );
+				$vmLogger->err( sprintf($VM_LANG->_('VM_USER_ADD_ERR_NOPERMS'),$d['perms']) );
 				$valid = false;
 			}
 
@@ -79,12 +86,12 @@ class ps_user {
 	 * @return boolean
 	 */
 	function validate_delete( $id ) {
-		global $my, $vmLogger, $perm;
+		global $my, $vmLogger, $perm, $VM_LANG;
 		$auth = $_SESSION['auth'];
 		$valid = true;
 
 		if( empty( $id ) ) {
-			$vmLogger->err( 'Please select a user to delete.' );
+			$vmLogger->err( $VM_LANG->_('VM_USER_DELETE_SELECT') );
 			return false;
 		}
 		$db = new ps_DB();
@@ -96,12 +103,12 @@ class ps_user {
 			$perms = $db->f('perms');
 
 			if( !$perm->hasHigherPerms( $perms ) ) {
-				$vmLogger->err( 'You have no permission to delete a user of that usertype: '.$perms );
+				$vmLogger->err( sprintf($VM_LANG->_('VM_USER_DELETE_ERR_NOPERMS'),$perms) );
 				$valid = false;
 			}
 
 			if( $id == $my->id) {
-				$vmLogger->err( 'Very funny, but you cannot delete yourself.' );
+				$vmLogger->err( $VM_LANG->_('VM_USER_DELETE_ERR_YOURSELF') );
 				$valid = false;
 			}
 		}
@@ -133,7 +140,7 @@ class ps_user {
 			$uid = $this->saveUser( $d );
 		}
 		if( empty( $uid ) && empty( $d['id'] ) ) {
-			$vmLogger->err( 'New User couldn\'t be added' );
+			$vmLogger->err( $VM_LANG->_('VM_USER_ADD_FAILED') );
 			return false;
 		}
 		elseif( !empty( $d['id'])) {
@@ -188,7 +195,7 @@ class ps_user {
 		$db->query($q);
 		
 		$_REQUEST['id'] = $_REQUEST['user_id'] = $uid;
-		$vmLogger->info( 'The user has been added.');
+		$vmLogger->info( $VM_LANG->_('VM_USER_ADDED') );
 		
 		return True;
 
@@ -290,7 +297,7 @@ class ps_user {
 		}
 		$db->query($q);
 		
-		$vmLogger->info( 'The user details have been updated.');
+		$vmLogger->info( $VM_LANG->_('VM_USER_UPDATED') );
 		
 		return True;
 	}
@@ -461,8 +468,7 @@ class ps_user {
 	 */
 	function save()
 	{
-		global $mainframe;
-		global $vmLogger;
+		global $mainframe, $vmLogger, $VM_LANG;
 
 		$option = JRequest::getCmd( 'option');
 
@@ -507,7 +513,7 @@ class ps_user {
 				if ( $count <= 1 )
 				{
 					// disallow change if only one Super Admin exists
-					$vmLogger->err( "You cannot change this user's group as the user is the only active Super Administrator for your site." );
+					$vmLogger->err( $VM_LANG->_('VM_USER_ERR_ONLYSUPERADMIN') );
 					return false;
 				}
 			}
@@ -588,7 +594,7 @@ class ps_user {
 	* Function to remove a user from Joomla
 	*/
 	function removeUsers( $cid ) {
-		global $database, $acl, $my, $vmLogger;
+		global $database, $acl, $my, $vmLogger, $VM_LANG;
 
 		if (!is_array( $cid ) ) {
 			$cid = array( $cid );
@@ -604,13 +610,13 @@ class ps_user {
 				$obj->load( $id );
 				$this_group = strtolower( $obj->get('usertype') );
 				if ( $this_group == 'super administrator' ) {
-					$vmLogger->err( 'You cannot delete a Super Administrator' );
+					$vmLogger->err( $VM_LANG->_('VM_USER_DELETE_ERR_SUPERADMIN') );
 					return false;
 				} else if ( $id == $my->id ){
-					$vmLogger->err( 'You cannot delete Yourself!' );
+					$vmLogger->err( $VM_LANG->_('VM_USER_DELETE_ERR_YOURSELF') );
 					return false;
 				} else if ( ( $this_group == 'administrator' ) && ( $my->gid == 24 ) ){
-					$vmLogger->err( 'You cannot delete another `Administrator` only `Super Administrators` have this power' );
+					$vmLogger->err( $VM_LANG->_('VM_USER_DELETE_ERR_ADMIN') );
 					return false;
 				} else {
 					$obj->delete( $id );

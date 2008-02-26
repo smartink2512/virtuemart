@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -15,11 +14,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
-* http://www.alex-rus.com
-* http://www.virtuemart.ru
-* http://www.joomlaforum.ru
 */
-
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'utf-8',
@@ -32,24 +27,24 @@ $langvars = array (
 	'PHPSHOP_USER_FORM_CUSTOMER_NUMBER' => 'Номер клиента / ID',
 	'PHPSHOP_MODULE_LIST_LBL' => 'Список модулей',
 	'PHPSHOP_MODULE_LIST_NAME' => 'Название модуля',
-	'PHPSHOP_MODULE_LIST_PERMS' => 'Права на модуль', // not used?
+	'PHPSHOP_MODULE_LIST_PERMS' => 'Права на модуль',
 	'PHPSHOP_MODULE_LIST_FUNCTIONS' => 'Функции',
 	'PHPSHOP_MODULE_FORM_LBL' => 'Информация о модуле',
-	'PHPSHOP_MODULE_FORM_MODULE_LABEL' => 'Заголовок модуля (Для главного меню)', // not used?
+	'PHPSHOP_MODULE_FORM_MODULE_LABEL' => 'Заголовок модуля (Для главного меню)',
 	'PHPSHOP_MODULE_FORM_NAME' => 'Название модуля',
 	'PHPSHOP_MODULE_FORM_PERMS' => 'Права на модуль',
-	'PHPSHOP_MODULE_FORM_HEADER' => 'Заголовок модуля', // not used?
-	'PHPSHOP_MODULE_FORM_FOOTER' => 'Нижний колонтитул модуля', // not used?
+	'PHPSHOP_MODULE_FORM_HEADER' => 'Заголовок модуля',
+	'PHPSHOP_MODULE_FORM_FOOTER' => 'Нижний колонтитул модуля',
 	'PHPSHOP_MODULE_FORM_MENU' => 'Показать модуль в разделе Администрирования?',
 	'PHPSHOP_MODULE_FORM_ORDER' => 'Порядок отображения',
 	'PHPSHOP_MODULE_FORM_DESCRIPTION' => 'Описание модуля',
-	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Языковая кодировка', // not used?
-	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Языковой файл', // not used?
+	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Языковая кодировка',
+	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Языковой файл',
 	'PHPSHOP_FUNCTION_LIST_LBL' => 'Список функций',
 	'PHPSHOP_FUNCTION_LIST_NAME' => 'Имя функции',
 	'PHPSHOP_FUNCTION_LIST_CLASS' => 'Имя класса',
 	'PHPSHOP_FUNCTION_LIST_METHOD' => 'Метод класса',
-	'PHPSHOP_FUNCTION_LIST_PERMS' => 'Права на функцию', // not used?
+	'PHPSHOP_FUNCTION_LIST_PERMS' => 'Права на функцию',
 	'PHPSHOP_FUNCTION_FORM_LBL' => 'Информация о функции',
 	'PHPSHOP_FUNCTION_FORM_NAME' => 'Имя функции',
 	'PHPSHOP_FUNCTION_FORM_CLASS' => 'Имя класса',
@@ -65,7 +60,7 @@ $langvars = array (
 	'PHPSHOP_COUNTRY_LIST_2_CODE' => 'Код страны (2)',
 	'PHPSHOP_STATE_LIST_MNU' => 'Список регионов',
 	'PHPSHOP_STATE_LIST_LBL' => 'Список регионов для: ',
-	'PHPSHOP_STATE_LIST_ADD' => 'Добавить/Изменить регион', // not used?
+	'PHPSHOP_STATE_LIST_ADD' => 'Добавить/Изменить регион',
 	'PHPSHOP_STATE_LIST_NAME' => 'Название региона',
 	'PHPSHOP_STATE_LIST_3_CODE' => 'Код региона (3)',
 	'PHPSHOP_STATE_LIST_2_CODE' => 'Код региона (2)',
@@ -358,30 +353,31 @@ $langvars = array (
 	'VM_USER_FORM_CONTACTDETAILS_TELEPHONE' => 'Телефон',
 	'VM_USER_FORM_CONTACTDETAILS_FAX' => 'Факс',
 	'VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON' => 'Изменить контактную информацию',
-    'VM_ADMIN_CFG_LOGFILE_HEADER'       => 'Настройки log-файла',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED'      => 'Включить формирование log-файла?',
-    'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'Если отключить эту опцию, то будет создан "нулевой" файл, так что vmFileLogger не будет выдавать ошибку.',
-    'VM_ADMIN_CFG_LOGFILE_NAME'         => 'Названия log-файла',
-    'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'  => 'Путь к log-файлу. К файлу должен быть доступ и в файл можно писать.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL'        => 'Уровень занесения информации в log-файл',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'Сообщения с уровнем выше установленного будут игнорироваться.',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP'    => 'Совет - 8',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG'  => 'Отладка - 7',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO'   => 'Информация - 6',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'Уведомление - 5',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING'=> 'Предупреждение - 4',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR'    => 'Ошибка - 3',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT'   => 'Критическая ошибка - 2',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT'  => 'Предупреждение - 1',
-    'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG'  => 'Важно - 0',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT'         => 'Формат log-файла',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Формат каждой строки Формат log-файла.',
-    'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'Log-файл может содержать следующие поля: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
-    'VM_ADMIN_CFG_LOGFILE_ERROR'        => 'Нельзя создать или получить доступ к log-файлу. Свяжитесь с администратором.',
-    'VM_ADMIN_CFG_DEBUG_MODE_ENABLED'        => 'Включить режим отладки?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED'          => 'Ограничение по IP адресу?',
-    'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'  => 'Ограничить вывод отладочной информации для указанного IP адреса?',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS'        => 'IP адрес',
-    'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'Если включить данную опцию и указать IP адрес, тогда отладочная информация будет отображаться только для пользователя с указанным IP адресом. Все другие клиенты не увидят отладочную информацию.'
+	'VM_ADMIN_CFG_LOGFILE_HEADER' => 'Настройки log-файла',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED' => 'Включить формирование log-файла?',
+	'VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN' => 'Если отключить эту опцию, то будет создан "нулевой" файл, так что vmFileLogger не будет выдавать ошибку.',
+	'VM_ADMIN_CFG_LOGFILE_NAME' => 'Названия log-файла',
+	'VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN' => 'Путь к log-файлу. К файлу должен быть доступ и в файл можно писать.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL' => 'Уровень занесения информации в log-файл',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN' => 'Сообщения с уровнем выше установленного будут игнорироваться.',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_TIP' => 'Совет - 8',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG' => 'Отладка - 7',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_INFO' => 'Информация - 6',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE' => 'Уведомление - 5',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING' => 'Предупреждение - 4',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ERR' => 'Ошибка - 3',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT' => 'Критическая ошибка - 2',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT' => 'Предупреждение - 1',
+	'VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG' => 'Важно - 0',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT' => 'Формат log-файла',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN' => 'Формат каждой строки Формат log-файла.',
+	'VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA' => 'Log-файл может содержать следующие поля: %{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message} %{vmsessionid}.',
+	'VM_ADMIN_CFG_LOGFILE_ERROR' => 'Нельзя создать или получить доступ к log-файлу. Свяжитесь с администратором.',
+	'VM_ADMIN_CFG_DEBUG_MODE_ENABLED' => 'Включить режим отладки?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED' => 'Ограничение по IP адресу?',
+	'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN' => 'Ограничить вывод отладочной информации для указанного IP адреса?',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'IP адрес',
+	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'Если включить данную опцию и указать IP адрес, тогда отладочная информация будет отображаться только для пользователя с указанным IP адресом. Все другие клиенты не увидят отладочную информацию.',
+	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

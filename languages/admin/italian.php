@@ -385,6 +385,7 @@ Con questo tipo di registrazione, i clienti non devono e non possono registrare 
 	'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN' => 'Limita l\'output di debug, ad un client con uno specifico indirizzo IP.',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Indirizzo IP client',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'Se abiliti questa opzione ed inserisci qui un indirizzo IP, l\'output di debug verrà abilitato SOLO per il client con questo indirizzo IP.  Gli altri client non vedranno alcun output di debug.',
-	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Mostra nel modulo spedizione'
+	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Mostra nel modulo spedizione',
+	'VM_USER_NOSHIPPINGADDR' => 'Nessun indirizzo spedizione.'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

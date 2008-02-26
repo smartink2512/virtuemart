@@ -53,13 +53,14 @@ class ps_payment_method extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
+		global $VM_LANG;
 
 		if (empty($d["payment_method_name"])) {
-			$GLOBALS['vmLogger']->err( 'Please enter a payment method name.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PAYMENTMETHOD_ERR_NAME') );
 			return False;
 		}
 		if (empty($d["payment_method_code"])) {
-			$GLOBALS['vmLogger']->err( 'Please enter a payment method code.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PAYMENTMETHOD_ERR_CODE') );
 			return False;
 		}
 
@@ -92,9 +93,10 @@ class ps_payment_method extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function validate_update(&$d) {
+		global $VM_LANG;
 
 		if (!$d["payment_method_code"]) {
-			$GLOBALS['vmLogger']->err( 'Please enter a payment method code.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PAYMENTMETHOD_ERR_CODE') );
 			return False;
 		}
 		$d['is_creditcard'] = !empty( $d['creditcard']) ? '1' : '0';
@@ -116,12 +118,12 @@ class ps_payment_method extends vmAbstractObject {
 		}
 
 		if (empty($d["payment_method_name"])) {
-			$GLOBALS['vmLogger']->err( 'Please enter a payment method name.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PAYMENTMETHOD_ERR_NAME') );
 			return False;
 		}
 
 		if (empty($d["payment_method_id"])) {
-			$GLOBALS['vmLogger']->err( 'Please select a payment method to update.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PAYMENTMETHOD_UPDATE_SELECT') );
 			return False;
 		}
 
@@ -135,9 +137,10 @@ class ps_payment_method extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function validate_delete(&$d) {
+		global $VM_LANG;
 
 		if (!$d["payment_method_id"]) {
-			$GLOBALS['vmLogger']->err( 'Please select a payment method to delete.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PAYMENTMETHOD_DELETE_SELECT') );
 			return False;
 		}
 
@@ -151,6 +154,8 @@ class ps_payment_method extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function add(&$d) {
+		global $VM_LANG;
+		
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 
@@ -166,7 +171,7 @@ class ps_payment_method extends vmAbstractObject {
 				if( class_exists($payment_class)) {
 					$_PAYMENT = new $payment_class();
 				} else {
-					$GLOBALS['vmLogger']->err('The selected Payment Class can\'t be instantiated because it doesn\'t exist.');
+					$GLOBALS['vmLogger']->err($VM_LANG->_('VM_PAYMENTMETHOD_CLASS_NOT_EXIST'));
 					return false;
 				}
 			}
@@ -221,6 +226,8 @@ class ps_payment_method extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function update(&$d) {
+		global $VM_LANG;
+		
 		global $vmLogger, $VM_LANG;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
@@ -236,7 +243,7 @@ class ps_payment_method extends vmAbstractObject {
 			if( class_exists($payment_class)) {
 				$_PAYMENT = new $payment_class();
 			} else {
-				$GLOBALS['vmLogger']->err('The selected Payment Class can\'t be instantiated because it doesn\'t exist.');
+				$GLOBALS['vmLogger']->err($VM_LANG->_('VM_PAYMENTMETHOD_CLASS_NOT_EXIST'));
 				return false;
 			}
 		}
@@ -316,6 +323,8 @@ class ps_payment_method extends vmAbstractObject {
 	 * @param int $payment_method_id
 	 */
 	function list_method($payment_method_id) {
+		global $VM_LANG;
+		
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$db = new ps_DB;
 
@@ -346,7 +355,7 @@ class ps_payment_method extends vmAbstractObject {
 
 		// Start drop down list
 	
-		$array[0] = $GLOBALS['VM_LANG']->_PHPSHOP_SELECT;
+		$array[0] = $VM_LANG->_('PHPSHOP_SELECT');
 		while ($db->next_record()) {
 			$array[$db->f("payment_method_id")] = $db->f("payment_method_name");
 		}

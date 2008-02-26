@@ -377,6 +377,7 @@ Customers don\'t need to and are not able to register in this type of registrati
 	'VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN' => 'Limit debugging output to a specific client IP address?',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Client IP address',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'If you enable this option and enter an IP address here, then debug output will be enabled ONLY for this client IP address.  Other clients will not see the debugging output.',
-	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form'
+	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form',
+	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

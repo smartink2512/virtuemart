@@ -37,7 +37,7 @@ class ps_user_address {
 		$d['missing'] = "";
 
 		if (!$my->id) {
-			$vmLogger->err( "You must not use this function." );
+			$vmLogger->err( $VM_LANG->_('MUST_NOT_USE') );
 			$valid = false;
 			return $valid;
 		}
@@ -82,7 +82,7 @@ class ps_user_address {
 	
 			if ($db->next_record()) {
 				$d['missing'] .= "address_type_name";
-				$vmLogger->warning( "The given address label already exists." );
+				$vmLogger->warning( $VM_LANG->_('VM_USERADDRESS_ERR_LABEL_EXISTS') );
 				$valid = false;
 			}
 		}
@@ -108,9 +108,9 @@ class ps_user_address {
 	 * @return boolean
 	 */
 	function validate_delete(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		if (empty($d["user_info_id"])) {
-			$vmLogger->err( "Please select a user address to delete." );
+			$vmLogger->err( $VM_LANG->_('VM_USERADDRESS_DELETE_SELECT') );
 			return false;
 		}
 		else {
@@ -125,7 +125,7 @@ class ps_user_address {
 	 * @return boolean
 	 */
 	function add(&$d) {
-		global $perm, $page;
+		global $perm, $page, $VM_LANG;
 		$hash_secret = "VirtueMartIsCool";
 		$db = new ps_DB;
 		$timestamp = time();
@@ -169,10 +169,10 @@ class ps_user_address {
 
 		$db->buildQuery('INSERT', '#__{vm}_user_info', $fields  );
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info('The Address was added to the user.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_ADDED'));
 			return true;
 		} else {
-			$GLOBALS['vmLogger']->err('Something went wrong while adding the new address.');
+			$GLOBALS['vmLogger']->err($VM_LANG->_('VM_USERADDRESS_ADD_FAILED'));
 			return false;
 		}
 	}
@@ -184,7 +184,7 @@ class ps_user_address {
 	 * @return boolean
 	 */
 	function update(&$d) {
-		global $perm;
+		global $perm, $VM_LANG;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -224,10 +224,10 @@ class ps_user_address {
 
 		$db->buildQuery('UPDATE', '#__{vm}_user_info', $fields, "WHERE user_info_id='" . $db->getEscaped($d["user_info_id"]) . "'".(!$perm->check("admin,storeadmin") ? " AND user_id=".$_SESSION['auth']['user_id'] : '') );	
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info('The Address has been updated.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_UPDATED'));
 			return true;
 		} else {
-			$GLOBALS['vmLogger']->err('Something went wrong when updating the address.');
+			$GLOBALS['vmLogger']->err($VM_LANG->_('VM_USERADDRESS_UPDATED_FAILED'));
 			return false;
 		}
 	}

@@ -21,7 +21,7 @@ class ps_userfield extends vmAbstractObject {
 	var $_key = 'fieldid';
 	
 	function validateOnSave( &$d ) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		/*
 		if( !$this->validate($d)) {
 			return false;
@@ -61,7 +61,7 @@ class ps_userfield extends vmAbstractObject {
 		}
 		$db->query($sql); $db->next_record();
 		if($db->f('num_rows')) {
-			$vmLogger->err( "The field name ".$d['name']." is already in use!" );
+			$vmLogger->err( sprintf($VM_LANG->_('VM_USERFIELD_ERR_ALREADY'),$d['name']) );
 			return false;
 		}
 
@@ -69,7 +69,7 @@ class ps_userfield extends vmAbstractObject {
 	}
 	
 	function saveField( &$d ) {
-		global $my, $mosConfig_live_site;
+		global $my, $mosConfig_live_site, $VM_LANG;
 		
 		$db = new ps_DB();
 		
@@ -163,7 +163,7 @@ class ps_userfield extends vmAbstractObject {
 				$j++;
 			}
 		}
-		$GLOBALS['vmLogger']->info('The Field has been saved.');
+		$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERFIELD_SAVED'));
 		return true;
 	}
 	/**
@@ -203,12 +203,12 @@ class ps_userfield extends vmAbstractObject {
 	 * @return boolean The result of the delete action
 	 */
 	function deleteField( &$d ) {
-		global $db, $vmLogger;
+		global $db, $vmLogger, $VM_LANG;
 		if( !is_array( @$d['fieldid'] )) {
 			$d['fieldid'] = array( $d['fieldid']);
 		}
 		if ( count( @$d['fieldid'] ) < 1) {
-			$vmLogger->err( 'No Field selected.');
+			$vmLogger->err( $VM_LANG->_('VM_USERFIELD_DELETE_SELECT') );
 			return false;
 		}
 
@@ -217,7 +217,7 @@ class ps_userfield extends vmAbstractObject {
 			$db->next_record();
 			
 			if($db->f('sys')==1) {
-				$vmLogger->err('"'.$db->f('name') .'" cannot be deleted, because it is a system field.');
+				$vmLogger->err(sprintf($VM_LANG->_('VM_USERFIELD_DELETE_ERR_SYSTEM'),$db->f('name')));
 				continue;
 			}
 			else {
@@ -228,7 +228,7 @@ class ps_userfield extends vmAbstractObject {
 				$db->query('DELETE FROM `#__{vm}_userfield` WHERE fieldid='.(int)$id. ' LIMIT 1' );
 				
 				$db->query( 'UPDATE `#__{vm}_userfield` SET ordering = ordering-1 WHERE ordering > '.intval($db->f('ordering')));
-				$vmLogger->info( 'Deleted Field "'.$db->f('name').'"');
+				$vmLogger->info( sprintf($VM_LANG->_('VM_USERFIELD_DELETED'),$db->f('name')) );
 			}
 		}
 		

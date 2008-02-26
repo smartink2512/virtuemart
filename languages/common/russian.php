@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -15,11 +14,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
-* http://www.alex-rus.com
-* http://www.virtuemart.ru
-* http://www.joomlaforum.ru
 */
-
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'utf-8',
@@ -262,11 +257,11 @@ $langvars = array (
 	'PHPSHOP_AGREE_TO_TOS' => 'Пожалуйста, ознакомьтесь сначала с нашими условиями обслуживания.',
 	'PHPSHOP_I_AGREE_TO_TOS' => 'Я согласен с данными условиями',
 	'PHPSHOP_RETURN_LOGIN' => 'Уже зарегистрированы? Пожалуйста, войдите',
-	'PHPSHOP_NEW_CUSTOMER' => 'Впервые в нашем магазине? Пожалуйста, введите Ваши данные', 
+	'PHPSHOP_NEW_CUSTOMER' => 'Впервые в нашем магазине? Пожалуйста, введите Ваши данные',
 	'PHPSHOP_ACC_ORDER_INFO' => 'Информация о заказе',
 	'PHPSHOP_ACC_NO_ORDERS' => 'Нет заказов для отображения',
-	'PHPSHOP_ACC_BILL_DEF' => '- По-умолчанию (тот же, что и контактный)', 
-	'PHPSHOP_SHIPTO_TEXT' => 'Вы можете добавить адрес доставки для вашей учетной записи. Придумайте подходящий код или обозначение для места доставки, которое Вы выберете ниже', 
+	'PHPSHOP_ACC_BILL_DEF' => '- По-умолчанию (тот же, что и контактный)',
+	'PHPSHOP_SHIPTO_TEXT' => 'Вы можете добавить адрес доставки для вашей учетной записи. Придумайте подходящий код или обозначение для места доставки, которое Вы выберете ниже',
 	'PHPSHOP_CONFIG' => 'Настройки',
 	'PHPSHOP_USERS' => 'Пользователи',
 	'PHPSHOP_SHIPPING_MOD' => 'Доставка',
@@ -343,7 +338,7 @@ $langvars = array (
 	'PHPSHOP_DOWNLOADS_SEND_MSG_1' => 'файл(ы), которые Вы купили, готовы для скачивания',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_2' => 'Пожалуйста, введите следующий(ие) идентификатор(ы) в разделе закачек: ',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_3' => 'Максимальное количество скачиваний для каждого файла: ',
-	'PHPSHOP_DOWNLOADS_SEND_MSG_4' => 'Скачивать в течение {expire} дней после первого скачивания', 
+	'PHPSHOP_DOWNLOADS_SEND_MSG_4' => 'Скачивать в течение {expire} дней после первого скачивания',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_5' => 'Вопросы? Проблемы?',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_6' => 'Информация о скачивании для',
 	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1' => 'Спасибо за покупки в нашем магазине. Информация о Вашем заказе представлена ниже.',
@@ -352,8 +347,8 @@ $langvars = array (
 	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4' => 'Получен следующий заказ.',
 	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5' => 'Чтобы просмотреть заказ, проследуйте по ссылке ниже.',
 	'PHPSHOP_CART_ERROR_NO_NEGATIVE' => 'Отрицательное количество не допустимо.',
-	'PHPSHOP_CART_ERROR_NO_VALID_QUANTITY' => 'Пожалуйста, введите допустимое значение для этой позиции.', 
-	'PHPSHOP_CART_SELECT_ITEM' => 'Для того, чтобы добавить этот товар в Вашу корзину Вы должны выбрать свойства товара на странице с его описанием.', 
+	'PHPSHOP_CART_ERROR_NO_VALID_QUANTITY' => 'Пожалуйста, введите допустимое значение для этой позиции.',
+	'PHPSHOP_CART_SELECT_ITEM' => 'Для того, чтобы добавить этот товар в Вашу корзину Вы должны выбрать свойства товара на странице с его описанием.',
 	'PHPSHOP_REGISTRATION_FORM_NONE' => 'нет',
 	'PHPSHOP_REGISTRATION_FORM_MR' => 'Г-н',
 	'PHPSHOP_REGISTRATION_FORM_MRS' => 'Г-жа',
@@ -430,7 +425,7 @@ $langvars = array (
 	'PHPSHOP_ORDER_LINK' => 'Ниже ссылка для того, чтобы посмотреть информацию о заказе.',
 	'PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_1' => 'Статус Вашего заказа No. {order_id} был изменен.',
 	'PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2' => 'Новый статус:',
-	'PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3' => 'Для просмотра информации о заказе, пожалуйста, пройдите по этой ссылке(или скопируйте её в адресную строку Вашего браузер):', 
+	'PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3' => 'Для просмотра информации о заказе, пожалуйста, пройдите по этой ссылке(или скопируйте её в адресную строку Вашего браузер):',
 	'PHPSHOP_ORDER_STATUS_CHANGE_SEND_SUBJ' => 'Статус заказа изменен: Ваш заказ {order_id}',
 	'PHPSHOP_PRODUCT_DISCOUNT_LBL' => 'Скидки на товары',
 	'PHPSHOP_PRODUCT_DISCOUNT_LIST_LBL' => 'Список скидок на товары',
@@ -457,7 +452,7 @@ $langvars = array (
 	'PHPSHOP_CURRENCY_POSITIVE_DISPLAY_TOOLTIP' => 'Показывает формат, используемый для показа положительных значений.<br>(Символ означает знак валюты)',
 	'PHPSHOP_CURRENCY_NEGATIVE_DISPLAY' => 'Формат отрицательного значения',
 	'PHPSHOP_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP' => 'Показывает формат, используемый для показа положительных значений.<br>(Символ означает знак валюты)',
-	'PHPSHOP_MORE_IMAGES' => 'Просмотр дополнительных изображений', 
+	'PHPSHOP_MORE_IMAGES' => 'Просмотр дополнительных изображений',
 	'PHPSHOP_FILEMANAGER' => 'Управление файлами',
 	'PHPSHOP_FILEMANAGER_ADD' => 'Добавить Изображение/Файл',
 	'PHPSHOP_FILES_PATH_ERROR' => 'Пожалуйста, введите правильный путь!',
@@ -601,7 +596,7 @@ $langvars = array (
 	'VM_PRODUCTS_MOVE_TOOLBAR' => 'Перемещение товаров',
 	'VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP' => 'Когда включено, то позволяет протестировать Ваш файл уведомлений %s через тестовую форму: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN' => 'Статус заказа, который присваивается заказу, у которого не прошел платеж. 
-Транзакция при этом не отменяется, а откладывается и ждет завершения.', 
+Транзакция при этом не отменяется, а откладывается и ждет завершения.',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING' => 'Статус заказа, у которого платеж обрабатывается',
 	'VM_SHIPPING_MODULE_LIST_LBL' => 'Список модулей доставки',
 	'VM_ENABLED' => 'включить',
@@ -651,7 +646,7 @@ $langvars = array (
 Запрос: {shopper_message}
 Ссылка: {product_url}
 
-E-Mail: {shopper_email}', 
+E-Mail: {shopper_email}',
 	'VM_RECOMMEND_SUBJECT' => 'Товар рекомендован %s',
 	'VM_RECOMMEND_DONE' => 'Рекомендация отправлена успешно!',
 	'VM_RECOMMEND_FAILED' => 'Рекомендация не может быть отправлена!',
@@ -1113,6 +1108,44 @@ _____________________',
 	'VM_PRODUCT_PRICE_ADDING_FAILED' => 'Цена не может быть добавлена к этому товару.',
 	'VM_PRODUCT_PRICE_UPDATED' => 'Цена товара была обновлена.',
 	'VM_PRODUCT_PRICE_UPDATING_FAILED' => 'Цена не может быть обновлена.',
-	'VM_PRODUCT_PRICE_DELETED' => 'Цена товара была удалена.'
+	'VM_PRODUCT_PRICE_DELETED' => 'Цена товара была удалена.',
+	'VM_ORDER_DELETE_ERR_ID' => 'Unable to delete without the order id.',
+	'VM_ORDERSTATUS_CHANGE_ERR_CORE' => 'This Order Status Code cannot be changed, it is one of the core status codes.',
+	'VM_ORDERSTATUS_DELETE_ERR_SELECT' => 'Please select an order status type to delete.',
+	'VM_ORDERSTATUS_DELETE_ERR_CORE' => 'This Order Status cannot be deleted, it is one of the core status codes.',
+	'VM_ORDERSTATUS_DELETE_ERR_STILL' => 'This Order Status cannot be deleted, there are still Orders with this Status.',
+	'VM_ORDERSTATUS_ADDED' => 'The Order Status Type has been added.',
+	'VM_ORDERSTATUS_ADD_FAILED' => 'Adding the Order Status Type has failed.',
+	'VM_ORDERSTATUS_UPDATED' => 'The Order Status Type has been updated.',
+	'VM_PAYMENTMETHOD_ERR_NAME' => 'Please enter a payment method name.',
+	'VM_PAYMENTMETHOD_ERR_CODE' => 'Please enter a payment method code.',
+	'VM_PAYMENTMETHOD_UPDATE_SELECT' => 'Please select a payment method to update.',
+	'VM_PAYMENTMETHOD_DELETE_SELECT' => 'Please select a payment method to delete.',
+	'VM_PAYMENTMETHOD_CLASS_NOT_EXIST' => 'The selected Payment Class can\'t be instantiated because it doesn\'t exist.',
+	'VM_USER_ERR_MISSINGVALUE' => 'Missing value for field "%s".',
+	'VM_USER_ERR_GROUP' => 'You must assign the user to a group.',
+	'VM_USER_ADD_ERR_NOPERMS' => 'You have no permission to add a user of that usertype: %s.',
+	'VM_USER_DELETE_SELECT' => 'Please select a user to delete.',
+	'VM_USER_DELETE_ERR_NOPERMS' => 'You have no permission to delete a user of that usertype: %s.',
+	'VM_USER_DELETE_ERR_YOURSELF' => 'Very funny, but you cannot delete yourself.',
+	'VM_USER_ADD_FAILED' => 'New User couldn\'t be added',
+	'VM_USER_ADDED' => 'The user has been added.',
+	'VM_USER_UPDATED' => 'The user details have been updated.',
+	'VM_USER_ERR_ONLYSUPERADMIN' => 'You cannot change this user\'s group as the user is the only active Super Administrator for your site.',
+	'VM_USER_DELETE_ERR_SUPERADMIN' => 'You cannot delete a Super Administrator',
+	'VM_USER_DELETE_ERR_ADMIN' => 'You cannot delete another `Administrator` only `Super Administrators` have this power',
+	'MUST_NOT_USE' => 'You must not use this function.',
+	'VM_USERADDRESS_ERR_LABEL_EXISTS' => 'The given address label already exists.',
+	'VM_USERADDRESS_DELETE_SELECT' => 'Please select a user address to delete.',
+	'VM_USERADDRESS_ADDED' => 'The Address was added to the user.',
+	'VM_USERADDRESS_ADD_FAILED' => 'Something went wrong while adding the new address.',
+	'VM_USERADDRESS_UPDATED' => 'The Address has been updated.',
+	'VM_USERADDRESS_UPDATED_FAILED' => 'Something went wrong when updating the address.',
+	'VM_USERFIELD_ERR_ALREADY' => 'The field name %s is already in use!',
+	'VM_USERFIELD_SAVED' => 'The Field has been saved.',
+	'VM_USERFIELD_DELETE_SELECT' => 'Please select a Field to delete.',
+	'VM_USERFIELD_DELETE_ERR_SYSTEM' => '"%s" cannot be deleted, because it is a system field.',
+	'VM_USERFIELD_DELETED' => 'Deleted Field "%s"',
+	'PHPSHOP_PRODUCT_DISCOUNT_FORM_MNU' => 'Add Product Discount'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

@@ -17,6 +17,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
+require_once(CLASSPATH.'ps_order_status.php');
+$ps_order_status = new ps_order_status();
+
 $order_status_id = vmGet( $_REQUEST, 'order_status_id' );
 $option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 

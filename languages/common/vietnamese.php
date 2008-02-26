@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -1106,6 +1105,44 @@ _____________________',
 	'VM_PRODUCT_PRICE_ADDING_FAILED' => 'The price could not be added to this product.',
 	'VM_PRODUCT_PRICE_UPDATED' => 'The product price has been updated.',
 	'VM_PRODUCT_PRICE_UPDATING_FAILED' => 'The price could not be updated.',
-	'VM_PRODUCT_PRICE_DELETED' => 'The product price has been deleted.'
+	'VM_PRODUCT_PRICE_DELETED' => 'The product price has been deleted.',
+	'VM_ORDER_DELETE_ERR_ID' => 'Unable to delete without the order id.',
+	'VM_ORDERSTATUS_CHANGE_ERR_CORE' => 'This Order Status Code cannot be changed, it is one of the core status codes.',
+	'VM_ORDERSTATUS_DELETE_ERR_SELECT' => 'Please select an order status type to delete.',
+	'VM_ORDERSTATUS_DELETE_ERR_CORE' => 'This Order Status cannot be deleted, it is one of the core status codes.',
+	'VM_ORDERSTATUS_DELETE_ERR_STILL' => 'This Order Status cannot be deleted, there are still Orders with this Status.',
+	'VM_ORDERSTATUS_ADDED' => 'The Order Status Type has been added.',
+	'VM_ORDERSTATUS_ADD_FAILED' => 'Adding the Order Status Type has failed.',
+	'VM_ORDERSTATUS_UPDATED' => 'The Order Status Type has been updated.',
+	'VM_PAYMENTMETHOD_ERR_NAME' => 'Please enter a payment method name.',
+	'VM_PAYMENTMETHOD_ERR_CODE' => 'Please enter a payment method code.',
+	'VM_PAYMENTMETHOD_UPDATE_SELECT' => 'Please select a payment method to update.',
+	'VM_PAYMENTMETHOD_DELETE_SELECT' => 'Please select a payment method to delete.',
+	'VM_PAYMENTMETHOD_CLASS_NOT_EXIST' => 'The selected Payment Class can\'t be instantiated because it doesn\'t exist.',
+	'VM_USER_ERR_MISSINGVALUE' => 'Missing value for field "%s".',
+	'VM_USER_ERR_GROUP' => 'You must assign the user to a group.',
+	'VM_USER_ADD_ERR_NOPERMS' => 'You have no permission to add a user of that usertype: %s.',
+	'VM_USER_DELETE_SELECT' => 'Please select a user to delete.',
+	'VM_USER_DELETE_ERR_NOPERMS' => 'You have no permission to delete a user of that usertype: %s.',
+	'VM_USER_DELETE_ERR_YOURSELF' => 'Very funny, but you cannot delete yourself.',
+	'VM_USER_ADD_FAILED' => 'New User couldn\'t be added',
+	'VM_USER_ADDED' => 'The user has been added.',
+	'VM_USER_UPDATED' => 'The user details have been updated.',
+	'VM_USER_ERR_ONLYSUPERADMIN' => 'You cannot change this user\'s group as the user is the only active Super Administrator for your site.',
+	'VM_USER_DELETE_ERR_SUPERADMIN' => 'You cannot delete a Super Administrator',
+	'VM_USER_DELETE_ERR_ADMIN' => 'You cannot delete another `Administrator` only `Super Administrators` have this power',
+	'MUST_NOT_USE' => 'You must not use this function.',
+	'VM_USERADDRESS_ERR_LABEL_EXISTS' => 'The given address label already exists.',
+	'VM_USERADDRESS_DELETE_SELECT' => 'Please select a user address to delete.',
+	'VM_USERADDRESS_ADDED' => 'The Address was added to the user.',
+	'VM_USERADDRESS_ADD_FAILED' => 'Something went wrong while adding the new address.',
+	'VM_USERADDRESS_UPDATED' => 'The Address has been updated.',
+	'VM_USERADDRESS_UPDATED_FAILED' => 'Something went wrong when updating the address.',
+	'VM_USERFIELD_ERR_ALREADY' => 'The field name %s is already in use!',
+	'VM_USERFIELD_SAVED' => 'The Field has been saved.',
+	'VM_USERFIELD_DELETE_SELECT' => 'Please select a Field to delete.',
+	'VM_USERFIELD_DELETE_ERR_SYSTEM' => '"%s" cannot be deleted, because it is a system field.',
+	'VM_USERFIELD_DELETED' => 'Deleted Field "%s"',
+	'PHPSHOP_PRODUCT_DISCOUNT_FORM_MNU' => 'Add Product Discount'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

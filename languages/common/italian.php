@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -552,7 +551,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_TYPE_LIST_LBL' => 'Lista Tipi Prodotto',
 	'PHPSHOP_PRODUCT_TYPE_ADDEDIT' => 'Aggiungi/Modifica Tipo Prodotto',
 	'PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_MNU' => 'Lista Tipi Prodotto',
-	'PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU' => 'Agg. Tipo Prodotto',
+	'PHPSHOP_PRODUCT_PRODUCT_TYPE_FORM_MNU' => 'Aggiungi Tipo Prodotto',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION' => 'Descrizione Parametro',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE' => 'Tipo Parametro',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT' => 'AAAA-MM-GG',
@@ -1097,6 +1096,44 @@ _____________________',
 	'VM_PRODUCT_PRICE_ADDING_FAILED' => 'Non è stato possibile aggiungere il prezzo a questo prodotto.',
 	'VM_PRODUCT_PRICE_UPDATED' => 'Il prezzo del prodotto è stato aggiornato.',
 	'VM_PRODUCT_PRICE_UPDATING_FAILED' => 'Non è stato possibile aggiornare il prezzo.',
-	'VM_PRODUCT_PRICE_DELETED' => 'Il prezzo del prodotto è stato eliminato.'
+	'VM_PRODUCT_PRICE_DELETED' => 'Il prezzo del prodotto è stato eliminato.',
+	'VM_ORDER_DELETE_ERR_ID' => 'Impossibile eliminare senza ID ordine.',
+	'VM_ORDERSTATUS_CHANGE_ERR_CORE' => 'Questo Codice Stato Ordine non può essere modificato, perché è uno dei codici principali.',
+	'VM_ORDERSTATUS_DELETE_ERR_SELECT' => 'Seleziona il Stato Ordine da eliminare.',
+	'VM_ORDERSTATUS_DELETE_ERR_CORE' => 'Questo Stato Ordine non può essere eliminato, perché è uno dei codici principali.',
+	'VM_ORDERSTATUS_DELETE_ERR_STILL' => 'Questo Stato Ordine non può essere eliminato, perché esistono degli ordini con questo stato.',
+	'VM_ORDERSTATUS_ADDED' => 'Lo Stato Ordine è stato aggiunto.',
+	'VM_ORDERSTATUS_ADD_FAILED' => 'Impossibile aggiungere lo Stato Ordine.',
+	'VM_ORDERSTATUS_UPDATED' => 'Lo Stato Ordine è stato aggiornato.',
+	'VM_PAYMENTMETHOD_ERR_NAME' => 'Inserisci un nome per il metodo di pagamento.',
+	'VM_PAYMENTMETHOD_ERR_CODE' => 'Inserisci un codice per il metodo di pagamento.',
+	'VM_PAYMENTMETHOD_UPDATE_SELECT' => 'Seleziona il metodo di pagamento da modificare.',
+	'VM_PAYMENTMETHOD_DELETE_SELECT' => 'Seleziona il metodo di pagamento da eliminare.',
+	'VM_PAYMENTMETHOD_CLASS_NOT_EXIST' => 'La Classe di Pagamento non può essere instanziata, perché non esiste.',
+	'VM_USER_ERR_MISSINGVALUE' => 'Valore mancante per il campo "%s".',
+	'VM_USER_ERR_GROUP' => 'Devi assegnare l\'utente ad un gruppo.',
+	'VM_USER_ADD_ERR_NOPERMS' => 'Non hai i permessi per aggiungere un utente di questo tipo: %s.',
+	'VM_USER_DELETE_SELECT' => 'Seleziona un utente da eliminare.',
+	'VM_USER_DELETE_ERR_NOPERMS' => 'Non hai i permessi per eliminare un utente di questo gruppo: %s.',
+	'VM_USER_DELETE_ERR_YOURSELF' => 'Non puoi eliminare te stesso!',
+	'VM_USER_ADD_FAILED' => 'Impossibile aggiungere il nuovo utente.',
+	'VM_USER_ADDED' => 'L\'utente è stato aggiunto.',
+	'VM_USER_UPDATED' => 'I dettagli utente sono stati aggiornati.',
+	'VM_USER_ERR_ONLYSUPERADMIN' => 'Non puoi cambiare il gruppo di questo utente perché è l\'unico Super Administrator attivo nel sito.',
+	'VM_USER_DELETE_ERR_SUPERADMIN' => 'Non puoi eliminare un Super Administrator!',
+	'VM_USER_DELETE_ERR_ADMIN' => 'Non puoi eliminare un altro `Administrator`, solo i `Super Administrators` hanno questo potere.',
+	'MUST_NOT_USE' => 'Non devi usare questa funzione.',
+	'VM_USERADDRESS_ERR_LABEL_EXISTS' => 'Esiste già un\'etichetta indirizzo con questo nome.',
+	'VM_USERADDRESS_DELETE_SELECT' => 'Seleziona un indirizzo utente da eliminare.',
+	'VM_USERADDRESS_ADDED' => 'L\'indirizzo è stato aggiunto all\'utente.',
+	'VM_USERADDRESS_ADD_FAILED' => 'Impossibile aggiungere il nuovo indirizzo.',
+	'VM_USERADDRESS_UPDATED' => 'L\'indirizzo utente è stato aggiornato.',
+	'VM_USERADDRESS_UPDATED_FAILED' => 'Impossibile aggiornare l\'indirizzo.',
+	'VM_USERFIELD_ERR_ALREADY' => 'Il nome campo %s è già in uso!',
+	'VM_USERFIELD_SAVED' => 'Il Campo è stato salvato.',
+	'VM_USERFIELD_DELETE_SELECT' => 'Seleziona un Campo da eliminare.',
+	'VM_USERFIELD_DELETE_ERR_SYSTEM' => '"%s" non può essere eliminato, perché è un campo di sistema.',
+	'VM_USERFIELD_DELETED' => 'Il campo "%s" è stato eliminato',
+	'PHPSHOP_PRODUCT_DISCOUNT_FORM_MNU' => 'Aggiungi Sconto Prodotto'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>
