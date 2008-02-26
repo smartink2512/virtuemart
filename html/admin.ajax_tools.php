@@ -43,6 +43,12 @@ switch( $task ) {
 			
 		}
 		break;
+	case 'checkforupdate':
+		require_once( CLASSPATH.'update.class.php');
+		$result = vmUpdate::checkLatestVersion();
+		if( !empty($result) ) {
+			vmConnector::sendHeaderAndContent('200', $result );
+		}
 		
 	default: die;
 	

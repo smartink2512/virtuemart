@@ -215,7 +215,6 @@ class vmMainFrame {
 			}
 		}
 		foreach ( $this->_style as $style ) {
-			$style = $style[0];
 			$tag = '<style type="'.key($style).'">'.current($style).'</style>';
 			if( $print ) {
 				echo $tag;

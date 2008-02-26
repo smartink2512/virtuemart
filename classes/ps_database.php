@@ -40,7 +40,7 @@ class ps_DB {
 	var $_database = null;
 
 	function ps_DB() {
-		if( !is_object( $GLOBALS['database']) && is_callable(array('jfactory', 'getdbo'))) {
+		if( is_callable(array('jfactory', 'getdbo'))) {
 			$this->_database =& jfactory::getDBO();
 		} else {
 			$this->_database =& $GLOBALS['database'];
@@ -66,7 +66,7 @@ class ps_DB {
     */
 	function setQuery( $sql ) {
 		$vm_prefix = "{vm}";
-
+		$sql = trim( $sql );
 		$this->_sql = str_replace( $vm_prefix, VM_TABLEPREFIX, $sql );
 		$this->_database->setQuery( $this->_sql );
 		$this->_query_set = true;

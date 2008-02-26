@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id:sql.update.VM-1.0.x_to_VM-1.1.0.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -723,6 +723,20 @@ $db->query( "UPDATE `#__{vm}_vendor` SET
 			`vendor_address_format` = '{storename}\n{address_1}\n{address_2}\n{city}, {zip}',
 			`vendor_date_format` = '%A, %d %B %Y %H:%M'
 			WHERE vendor_id=1;");
-$db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version'");
+
+# VirtueMart Updater Functions
+$db->query( "INSERT INTO `#__{vm}_function` (
+`function_id` ,
+`module_id` ,
+`function_name` ,
+`function_class` ,
+`function_method` ,
+`function_description` ,
+`function_perms`
+)
+VALUES ( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
+(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin')");
+
+$db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=RC1' WHERE `name` = 'virtuemart_version'");
 
 ?>

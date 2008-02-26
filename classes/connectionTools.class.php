@@ -84,7 +84,7 @@ class vmConnector {
 			$vmLogger->debug( 'Using the cURL library for communicating with '.$urlParts['host'] );
 
 			$CR = curl_init();
-			curl_setopt($CR, CURLOPT_URL, $urlParts['scheme'].'://'.$urlParts['host'].':'.$urlParts['port'].$urlParts['path']);
+			curl_setopt($CR, CURLOPT_URL, $url);
 
 			// just to get sure the script doesn't die
 			curl_setopt($CR, CURLOPT_TIMEOUT, 30 );

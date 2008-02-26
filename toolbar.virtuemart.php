@@ -30,7 +30,7 @@ defined('_VM_TOOLBAR_LOADED' ) or define('_VM_TOOLBAR_LOADED', 1 );
 
 include( dirname(__FILE__).'/compat.joomla1.5.php');
 
-global $page, $sess;
+global $page, $sess, $VM_LANG;
 if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
     // We parse the phpShop main code before loading the toolbar,
     // for we can catch errors and adjust the toolbar when

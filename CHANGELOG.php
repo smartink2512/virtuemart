@@ -35,11 +35,21 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+26.02.2008 soeren
++ added basic VirtueMart Version Updater Functionality. It requires two new functions:
+	###
+	INSERT INTO `jos_vm_function` ( `function_id` ,`module_id` ,`function_name` ,`function_class` ,`function_method` ,`function_description` ,`function_perms`)
+	VALUES ( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
+	(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin');
+	###
+	
+# Task #1844 - Moving product to another category gives error
+
 26.02.2008 gregdev
 # Task #1842 - Can't put no order-by on admin (and so in the user interface)
 ^ Added $Itemid to template variables for browse_orderbyform.tpl
 ^ Changed all theme class names to vmTheme for easier theme creation (Task #1822)
-
 26.02.2008 thepisu
 # Task #1835 - Add Product Type menu label
 # added many translations (modules common/admin)
@@ -47,7 +57,6 @@ VirtueMart 1.1.x
 
 20.02.2008 gregdev
 # Task #1811 - first query doesn't execute in ps_product_product_type::delete_record()
-
 20.02.2008 soeren
  # Task #1473 -  ps_product_category.php timeout
  

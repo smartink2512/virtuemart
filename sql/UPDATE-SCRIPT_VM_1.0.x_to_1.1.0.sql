@@ -1,7 +1,7 @@
 #############################################
 # SQL update script for upgrading 
 # from VirtueMart 1.0.x to VirtueMart 1.1.0
-#
+# $Id$
 #############################################
  
 
@@ -725,5 +725,18 @@ UPDATE `jos_vm_vendor` SET
 			`vendor_address_format` = '{storename}\n{address_1}\n{address_2}\n{city}, {zip}',
 			`vendor_date_format` = '%A, %d %B %Y %H:%M'
 			WHERE vendor_id=1;
+
+INSERT INTO `jos_vm_function` (
+`function_id` ,
+`module_id` ,
+`function_name` ,
+`function_class` ,
+`function_method` ,
+`function_description` ,
+`function_perms`
+)
+VALUES ( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
+(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin');
+
 			
-UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=beta2' WHERE `name` = 'virtuemart_version';
+UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=RC1' WHERE `name` = 'virtuemart_version';

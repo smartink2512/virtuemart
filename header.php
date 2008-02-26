@@ -108,27 +108,20 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					</li>
 					<li class="item-smenu vmicon vmicon-16-content">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.user_field_list") ?>"><?php echo $VM_LANG->_('VM_MANAGE_USER_FIELDS') ?></a>
-					<hr />
+					<hr />					
 					</li>
 					<li class="item-smenu vmicon vmicon-16-content">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.country_list") ?>"><?php echo $VM_LANG->_('PHPSHOP_COUNTRY_LIST_MNU') ?></a>
 					</li>
-					<li class="item-smenu vmicon vmicon-16-editadd">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.country_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_COUNTRY_LIST_ADD') ?></a>
-					<hr />
-					</li>
 					<li class="item-smenu vmicon vmicon-16-content">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.curr_list") ?>"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_LIST_MNU') ?></a>
+					
+						<hr />
 					</li>
-					<li class="item-smenu vmicon vmicon-16-editadd">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.curr_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_CURRENCY_LIST_ADD') ?></a>
-					<hr />
-					</li>
+					
 					<li class="item-smenu vmicon vmicon-16-content">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.module_list") ?>"><?php echo $VM_LANG->_('PHPSHOP_MODULE_LIST_MNU') ?></a>
-					</li>
-					<li class="item-smenu vmicon vmicon-16-editadd">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.module_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_MODULE_FORM_MNU') ?></a>
+						<hr />
 					</li>
 					<?php if (!empty($module_id)) { ?>
 					<hr /> 
@@ -137,8 +130,13 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					</li>
 					<li class="item-smenu vmicon vmicon-16-editadd">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.function_form&amp;module_id=".$module_id) ?>"><?php echo $VM_LANG->_('PHPSHOP_FUNCTION_FORM_MNU') ?></a>
+						<hr />
 					</li>
 					 <?php } ?>
+					 
+					<li class="item-smenu vmicon vmicon-16-content">
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.update_check") ?>">Check for Updates</a>
+					</li>
 					</ul>
 					</div>
 				<?php 
