@@ -212,7 +212,7 @@ else {
 	$vmLogger->crit( 'Theme file not found.' );
 	return;
 }
-$GLOBALS['VM_THEMECLASS'] = 'vmTemplate_'.basename(VM_THEMEPATH);
+$GLOBALS['VM_THEMECLASS'] = 'vmTheme';
 
 /**
  * Returns the variable names of all global variables in VM

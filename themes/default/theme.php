@@ -32,9 +32,9 @@ if( vmIsJoomla(1.0) && mosGetParam($_REQUEST,'option') != VM_COMPONENT_NAME) {
 	$vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
 	$vm_mainframe->addScript( VM_THEMEURL.'theme.js' );
 }
-class vmTemplate_default extends vmTemplate  {
+class vmTheme extends vmTemplate  {
 	
-	function vmTemplate_default() {
+	function vmTheme() {
 		parent::vmTemplate();
 		vmCommonHTML::loadMooTools();
 	}

@@ -203,6 +203,7 @@ else {
 		$tpl->set( 'keyword', urlencode( $keyword ) );
 		$tpl->set( 'keyword1', urlencode( $keyword1 ) );
 		$tpl->set( 'keyword2', urlencode( $keyword2 ) );
+		$tpl->set( 'Itemid', $Itemid );
 		
 		if( PSHOP_SHOW_TOP_PAGENAV =='1' && ($num_rows > $limit || $num_rows > 5)) {
 			$tpl->set( 'show_top_navigation', true );

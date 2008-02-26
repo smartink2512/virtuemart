@@ -77,7 +77,7 @@ class vmTemplate {
 	/**
 	 * @static 
 	 *
-	 * @return vmTemplate_default
+	 * @return vmTheme
 	 */
 	function getInstance() {
 		return new $GLOBALS['VM_THEMECLASS']();

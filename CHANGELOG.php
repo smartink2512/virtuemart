@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 26.02.2008 gregdev
 # Task #1842 - Can't put no order-by on admin (and so in the user interface)
 ^ Added $Itemid to template variables for browse_orderbyform.tpl
+^ Changed all theme class names to vmTheme for easier theme creation (Task #1822)
 
 26.02.2008 thepisu
 # Task #1835 - Add Product Type menu label
