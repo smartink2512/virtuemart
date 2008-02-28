@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.02.2008 gregdev
+# Task #1849 - Missing field values in Joomla 1.5
 
 26.02.2008 soeren
 + added basic VirtueMart Version Updater Functionality. It requires two new functions:
