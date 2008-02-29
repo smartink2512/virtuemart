@@ -167,7 +167,7 @@ $next_product = $neighbors['next'];
 $previous_product = $neighbors['previous'];
 $next_product_url = $previous_product_url = '';
 if( !empty($next_product) ) {
-	$url_parameters = 'page=shop.product_details&product_id='.$next_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
+	$url_parameters = 'page=shop.product_details&product_id='.$next_product['product_id'].'&flypage='.$ps_product->get_flypage($next_product['product_id']).'&pop='.$pop;
     if( $manufacturer_id ) {
     	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
     }
@@ -181,7 +181,7 @@ if( !empty($next_product) ) {
 	}
 }
 if( !empty($previous_product) ) {
-	$url_parameters = 'page=shop.product_details&product_id='.$previous_product['product_id'].'&flypage='.$flypage.'&pop='.$pop;
+	$url_parameters = 'page=shop.product_details&product_id='.$previous_product['product_id'].'&flypage='.$ps_product->get_flypage($previous_product['product_id']).'&pop='.$pop;
     if( $manufacturer_id ) {
     	$url_parameters .= "&amp;manufacturer_id=" . $manufacturer_id;
     }
