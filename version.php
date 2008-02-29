@@ -32,12 +32,12 @@ class vmVersion {
 	/** @var int Release Number */
 	var $RELEASE = '1.1.0';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'beta3';
+	var $DEV_STATUS = 'RC1';
 	/** @var string Codename */
 	// Title of Episode 1, Season 3 of Grey's Anatomy
 	var $CODENAME = 'Time Has Come Today';
 	/** @var string Date */
-	var $RELDATE = '25/01/2008';
+	var $RELDATE = '16/02/2008';
 	/** @var string Time */
 	var $RELTIME = '21:00';
 	/** @var string Timezone */
