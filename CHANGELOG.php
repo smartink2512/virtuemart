@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+29.02.2008 gregdev
+# Task #1415 - no account creation bug
+# Fixed missing global variable when adding custom attributes.
 
 29.02.2008 soeren
 # Task #1816 - User fields, value section sometime is shows sometime it doesn't

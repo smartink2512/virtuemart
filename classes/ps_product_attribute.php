@@ -819,6 +819,7 @@ class ps_product_attribute {
 
 		if ($custom_attr_list) {
             $tpl->set( 'attributes', $attributes );
+            $tpl->set( 'mosConfig_secret', $mosConfig_secret );
             return $tpl->fetch( 'product_details/includes/addtocart_custom_attribute.tpl.php');
 		}
 	}
