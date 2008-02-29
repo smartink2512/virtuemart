@@ -34,7 +34,7 @@ for( $i=0; $i < $count; $i++ ) {
 
 $db->query( 'SELECT `product_name` FROM `#__{vm}_product` WHERE `product_id` IN('.implode(',', $products).') ORDER BY `product_name`');
 
-echo "\n<h2>".$VM_LANG->_('VM_PRODUCTS_MOVE_LBL')."</h2>\n";
+echo "\n<h1 class=\"header\">".$VM_LANG->_('VM_PRODUCTS_MOVE_LBL')."</h1>\n";
 
 
 echo '<table class="adminform"><tr>';

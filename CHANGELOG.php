@@ -37,6 +37,12 @@ VirtueMart 1.1.x
 *************************************
 
 29.02.2008 soeren
+# Task #1816 - User fields, value section sometime is shows sometime it doesn't
+# Task #1833 - quantity ,drop down list, add to cart
+# Task #1834 - list of prices, thanks Valerie!
+# Task #1848 - In IE7 it is possible to move a product into the same category, doing so results in product being placed in no category
+# Task #1839 - Empty name, empty price in product list (extended layout)
+# Task #1851 - Quantity Start and Quantity End language strings missing from List Prices
 # Task #1800 - mod_virtuemart_manufacturers said "No manufacturers defined!"
 # undefined var "product_parent_id" in product.product_display.php
 ^ Saving some queries on product price retrieval + product field retrieval

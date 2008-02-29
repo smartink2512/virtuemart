@@ -296,7 +296,9 @@ $tabs->startTab( $info_label, "info-page");
             <tr>
             <td>
                 <input type="text" value="<?php echo @$price["product_price"]; ?>" class="inputbox" name="product_price" onkeyup="updateGross();" size="10" maxlength="10" />
-                <input type="hidden" name="product_price_id" value="<?php echo @$price["product_price_id"] ?>" />
+                <input type="hidden" name="product_price_id" value="<?php echo @$price["product_price_id"] ?>" />                
+                <input type="hidden" name="price_quantity_start" value="<?php echo @intval($price["price_quantity_start"]) ?>" />
+                <input type="hidden" name="price_quantity_end" value="<?php echo @intval($price["price_quantity_end"]) ?>" />
             </td>
             <td><?php
             if(empty($price["product_currency"])) {

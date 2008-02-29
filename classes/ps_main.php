@@ -192,37 +192,24 @@ function read_file( $file, $defaultfile='' ) {
 function include_class($module) {
 
 	// globalize the vars so that they can be used outside of this function
-	global $ps_vendor, $ps_affiliate, $ps_manufacturer, $ps_manufacturer_category,
-	$ps_user,
-	$ps_vendor_category,
-	$ps_checkout,
-	$ps_intershipper,
-	$psShip,
-	$ps_shipping,
-	$ps_order,
-	$ps_order_status,
-	$ps_product,
-	$ps_product_category ,
-	$ps_product_attribute,
+	global $VM_LANG, $ps_vendor, $ps_affiliate, $ps_manufacturer, $ps_manufacturer_category,
+	$ps_user,	$ps_vendor_category, $ps_checkout,	$ps_intershipper,	$ps_shipping,	$ps_order, $ps_order_status,
+	$ps_product,$ps_product_category ,	$ps_product_attribute,
 	$ps_product_type, // Changed Product Type
 	$ps_product_type_parameter, // Changed Product Type
 	$ps_product_product_type, // Changed Product Type
-	$ps_product_price,
-	$nh_report,
-	$ps_payment_method,
-	$ps_shopper,
-	$ps_shopper_group,
-	$ps_cart,
-	$ps_zone,
-	$ps_tax,
-	$zw_waiting_list;
-
+	$ps_product_price,	$nh_report,	$ps_payment_method,	$ps_shopper,	$ps_shopper_group,
+	$ps_cart,	$ps_zone,$ps_tax, $zw_waiting_list;
+	
+	$VM_LANG->load($module);
+	
 	switch ( $module ) {
 
 		case "account":
 			break;
 
 		case "admin" :
+			
 			// Load class files
 			require_once(CLASSPATH. 'ps_html.php' );
 			require_once(CLASSPATH. 'ps_function.php' );

@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -1112,13 +1112,17 @@ class ps_product_category extends vmAbstractObject {
 				if( in_array( $child_id, $disabledFields )) {
 					$disabled = 'disabled="disabled"';
 				}
-				echo "<option $selected $disabled value=\"$child_id\">\n";
+				if( $disabled != '' && stristr($_SERVER['HTTP_USER_AGENT'], 'msie')) {
+					// IE7 suffers from a bug, which makes disabled option fields selectable
+				} else {
+					echo "<option $selected $disabled value=\"$child_id\">\n";
+					for ($i=0;$i<$level;$i++) {
+						echo "&#151;";
+					}
+					echo "|$level|";
+					echo "&nbsp;" . $db->f("category_name") . "</option>";
+				}
 			}
-			for ($i=0;$i<$level;$i++) {
-				echo "&#151;";
-			}
-			echo "|$level|";
-			echo "&nbsp;" . $db->f("category_name") . "</option>";
 			$this->list_tree($category_id, $child_id, $level, $selected_categories, $disabledFields);
 		}
 	}

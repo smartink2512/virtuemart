@@ -148,6 +148,11 @@ $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
+			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>?:</td>
+			<td width="20%"><?php echo $lists['registration']; ?></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr class="row0">
 			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>?:</td>
 			<td width="20%"><?php echo $lists['account']; ?></td>
 			<td>&nbsp;</td>
@@ -163,16 +168,11 @@ $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>?:</td>
-			<td width="20%"><?php echo $lists['registration']; ?></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr class="row0">
 			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_PUBLISHED') ?>:</td>
 			<td width="20%"><?php echo $lists['published']; ?></td>
 			<td>&nbsp;</td>
 		</tr>
-		<tr class="row1">
+		<tr class="row0">
 			<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_SIZE') ?>:</td>
 			<td width="20%"><input type="text" name="size" mosLabel="Size" class="inputbox" value="<?php echo $db->f('size'); ?>" /></td>
 			<td>&nbsp;</td>
@@ -353,7 +353,7 @@ $duration = 500;
 <?php if( !$db->f('sys') ) : ?>
 	prep4SQL( document.adminForm.name );
 <?php endif; ?>
-	setTimeout( 'selType( \'' + type + '\' )', <?php echo ( $duration + 50 ) ?> );
+	setTimeout( 'selType( \'' + type + '\' )', <?php echo ( $duration + 150 ) ?> );
   }
   function selType(sType) {
     var elem;
@@ -425,5 +425,6 @@ $duration = 500;
 		var divWeb = new Fx.Slide('divWeb' , {duration: $duration } );
 		var divShopperGroups = new Fx.Slide('divShopperGroups' , {duration: $duration } );
 		var divAgeVerification = new Fx.Slide('divAgeVerification' , {duration: $duration } );
-		var divText = new Fx.Slide('divText' , {duration: $duration } ); toggleType('".$db->f('type')."');" );	
+		var divText = new Fx.Slide('divText' , {duration: $duration } ); 
+		toggleType('".$db->f('type')."');" );	
 ?>

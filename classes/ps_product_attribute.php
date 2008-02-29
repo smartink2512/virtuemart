@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -1095,11 +1095,10 @@ class ps_product_attribute {
                 <input type=\"checkbox\" class=\"quantitycheckbox\" id =\"check$id\" name=\"check[]\" ";
 				if ($quantity > 0 )
 				$html .= "checked=\"checked\"";
-				$html .= " value=\"1\" onClick=\"javascript: if(this.checked==true) document.getElementById('quantity".$prod_id."').value = 1; else {document.getElementById('quantity".$prod_id."').value=0;} \"/> ";
+				$html .= " value=\"1\" onclick=\"javascript: if(this.checked==true) document.getElementById('quantity".$prod_id."').value = 1; else {document.getElementById('quantity".$prod_id."').value=0;} \"/> ";
 				break;
 			case "drop" :
-				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"".$quantity."\" />";
-				$code = "<select class=\"inputboxquantity\" id=\"drop".$prod_id."\" name=\"drop[]\" onChange=\"javascript: document.getElementById('quantity".$prod_id."').value = this.options[this.selectedIndex].value ; \"";
+				$code = "<select class=\"inputboxquantity\" id=\"quantity".$prod_id."\" name=\"quantity[]\">";
 				for($i=$display_start;$i<$display_end+1;$i += $display_step) {
 					$code .= "  <option value=\"$i\"";
 					if ($i == $quantity) {

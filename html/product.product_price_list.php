@@ -20,9 +20,14 @@ global $ps_product;
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
 
-if( is_array( $product_id ))
+$product_id = vmget( $_REQUEST, 'product_id', 0 );
+if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
-
+}
+if( empty( $product_id )) {
+	$vmLogger->err( 'No Product ID provided.');
+	return;
+}
 $product_parent_id = vmGet($_REQUEST, 'product_parent_id', 0);
 $return_args = vmGet($_REQUEST, 'return_args');
 

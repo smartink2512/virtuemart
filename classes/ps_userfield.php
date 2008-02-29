@@ -421,8 +421,8 @@ class ps_userfield extends vmAbstractObject {
 								$month = $date_array[1];
 								$day = $date_array[2];
 							}
-							ps_html::list_days('birthday_selector_day', vmRequest::getInt('birthday_selector_day', $day));
-							ps_html::list_month('birthday_selector_month', vmRequest::getInt('birthday_selector_month', $month));							
+							ps_html::list_days('birthday_selector_day', vmRequest::getInt('birthday_selector_day', @$day));
+							ps_html::list_month('birthday_selector_month', vmRequest::getInt('birthday_selector_month', @$month));							
 							ps_html::list_year('birthday_selector_year', $year, $year-100, $year);
 							break;
 						case 'captcha':

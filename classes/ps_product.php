@@ -1514,16 +1514,22 @@ class ps_product extends vmAbstractObject {
 		$db->next_record();
 		$default_shopper_group_id = $db->f("shopper_group_id");
 
-		$q = "SELECT product_price,product_currency FROM #__{vm}_product_price WHERE product_id='$product_id' AND ";
-		$q .= "shopper_group_id='$default_shopper_group_id'";
-		$db->setQuery($q); $db->query();
+		$q = "SELECT product_price,product_currency,price_quantity_start,price_quantity_end 
+				FROM #__{vm}_product_price 
+				WHERE product_id='$product_id' AND 
+							shopper_group_id='$default_shopper_group_id'";
+		$db->query($q);
 		if ($db->next_record()) {
 			$price_info["product_price"]= $db->f("product_price");
 			$price_info["product_currency"]=$db->f("product_currency");
+			$price_info["price_quantity_start"]=$db->f("price_quantity_start"); // added alatak
+			$price_info["price_quantity_end"]=$db->f("price_quantity_end");// added alatak
 		}
 		else {
 			$price_info["product_price"]= "";
 			$price_info["product_currency"] = $_SESSION['vendor_currency'];
+			$price_info["price_quantity_start"]=$db->f("price_quantity_start"); // added alatak
+			$price_info["price_quantity_end"]=$db->f("price_quantity_end");// added alatak
 		}
 		return $price_info;
 	}
