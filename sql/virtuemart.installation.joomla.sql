@@ -840,7 +840,14 @@ INSERT INTO `jos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (183, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
 (184, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin'),
 (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
-(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');
+(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin')
+(187, 7, 'replaceSavedCart', 'ps_cart', 'replaceCart', 'Replace cart with saved cart', 'none'),
+(188, 7, 'mergeSavedCart', 'ps_cart', 'mergeSaved', 'Merge saved cart with cart', 'none'),
+(189, 7, 'deleteSavedCart', 'ps_cart', 'deleteCart', 'Delete saved cart', 'none'),
+(190, 7, 'savedCartDelete', 'ps_cart', 'deleteSaved', 'Delete items from saved cart', 'none'),
+(191, 7, 'savedCartUpdate', 'ps_cart', 'updateSaved', 'Update saved cart items', 'none'),
+( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
+(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin');
 
 ## --------------------------------------------------------
 

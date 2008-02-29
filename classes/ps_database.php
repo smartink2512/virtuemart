@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 
 /***********************************************************************
-Wrapper Class for Mambo's $database - Object
+Wrapper Class for the $database - Object
 ************************************************************************/
 
 class ps_DB {
@@ -38,7 +38,7 @@ class ps_DB {
 	var $called = false;
 	/** @var database The core database object */
 	var $_database = null;
-
+	
 	function ps_DB() {
 		if( is_callable(array('jfactory', 'getdbo'))) {
 			$this->_database =& jfactory::getDBO();
@@ -65,11 +65,24 @@ class ps_DB {
     * @param string The SQL query
     */
 	function setQuery( $sql ) {
+		
 		$vm_prefix = "{vm}";
 		$sql = trim( $sql );
-		$this->_sql = str_replace( $vm_prefix, VM_TABLEPREFIX, $sql );
+		$this->_sql = trim(str_replace( $vm_prefix, VM_TABLEPREFIX, $sql ));
 		$this->_database->setQuery( $this->_sql );
+		
 		$this->_query_set = true;
+		
+		if( vmShouldDebug() ) {
+			// Register Double-run (multiple-run) queries 
+			if( !isset($GLOBALS['queries']))$GLOBALS['queries'] = array();
+			if( !isset($GLOBALS['double_queries']))$GLOBALS['double_queries'] = array();
+			if( !in_array($this->_database->_sql, $GLOBALS['queries'] ) ) {
+				$GLOBALS['queries'][] = $this->_database->_sql;
+			} else {
+				$GLOBALS['double_queries'][] = $this->_database->_sql;
+			}
+		}
 	}
 
 	/**
@@ -288,7 +301,7 @@ class ps_DB {
 	/**
 	 * Returns the current row of the recordset
 	 * @since VirtueMart 1.1.0
-	 * @return array
+	 * @return stdClass Object
 	 */
 	function getCurrentRow() {
 		return $this->record[$this->row];

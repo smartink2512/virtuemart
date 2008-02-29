@@ -725,15 +725,7 @@ $db->query( "UPDATE `#__{vm}_vendor` SET
 			WHERE vendor_id=1;");
 
 # VirtueMart Updater Functions
-$db->query( "INSERT INTO `#__{vm}_function` (
-`function_id` ,
-`module_id` ,
-`function_name` ,
-`function_class` ,
-`function_method` ,
-`function_description` ,
-`function_perms`
-)
+$db->query( "INSERT INTO `#__{vm}_function` (`function_id` ,`module_id` ,`function_name` ,`function_class` ,`function_method` ,`function_description` ,`function_perms`)
 VALUES ( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
 (NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin')");
 

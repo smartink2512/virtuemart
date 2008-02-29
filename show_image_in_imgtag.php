@@ -114,7 +114,7 @@ if( file_exists( $fileout ) ) {
   /* We already have a resized image
   * So send the file to the browser */
 
-  	switch($ext)
+  	switch(strtolower($ext))
 		{
 			case ".gif":
 				header ("Content-type: image/gif");

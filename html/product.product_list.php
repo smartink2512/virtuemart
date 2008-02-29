@@ -285,7 +285,7 @@ if ($num_rows > 0) {
 		// The Checkbox
 		$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("product_id"), false, "product_id" ) );
 		
-		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1" );
+		$link = $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id."&no_menu=1&tmpl=component" );
 		$link = defined('_VM_IS_BACKEND') 
 						? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 						: str_replace('index.php', 'index2.php', $link );
@@ -310,7 +310,9 @@ if ($num_rows > 0) {
 		if( $db->f('product_full_image')) $numFiles++;
 		if( $db->f('product_thumb_image')) $numFiles++;
 		$link = $sess->url( $_SERVER['PHP_SELF']. '?page=product.file_list&product_id='.$db->f('product_id').'&no_menu=1' );
-		$link = defined('_VM_IS_BACKEND') ? str_replace('index2.php', 'index3.php', $link ) : str_replace('index.php', 'index2.php', $link );
+		$link = defined('_VM_IS_BACKEND') 
+						? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
+						: str_replace('index.php', 'index2.php', $link );
 		$text = '<img src="'.$mosConfig_live_site.'/includes/js/ThemeOffice/media.png" align="middle" border="0" />&nbsp;('.$numFiles.')';
 		$tmpcell = vmPopupLink( $link, $text, 800, 540, '_blank', '', 'screenX=100,screenY=100' );
 		$listObj->addCell( $tmpcell );

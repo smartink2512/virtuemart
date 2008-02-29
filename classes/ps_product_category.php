@@ -465,6 +465,30 @@ class ps_product_category extends vmAbstractObject {
 		$vmLogger->info( "Successfully deleted category ID: $record_id." );
 		return True;
 	}
+	function get_field( $category_id, $field_name ) {
+		if( $category_id == 0 ) return '';
+		$db = new ps_DB;
+		
+		if( !isset($GLOBALS['category_info'][$category_id][$field_name] )) {
+			$q = 'SELECT category_id, `#__{vm}_category`.* FROM `#__{vm}_category` WHERE `category_id`='.(int)$category_id;
+			$db->query($q);
+			if ($db->next_record()) {
+				$values = get_object_vars( $db->getCurrentRow() );
+				
+				foreach( $values as $key => $value ) {
+					$GLOBALS['category_info'][$category_id][$key] = $value;
+				}
+				if( !isset( $GLOBALS['category_info'][$category_id][$field_name] )) {
+					$GLOBALS['vmLogger']->debug( 'The Field '.$field_name. ' does not exist in the product table!');
+					$GLOBALS['category_info'][$category_id][$field_name] = true;
+				}
+			}
+			else {
+				$GLOBALS['category_info'][$category_id][$field_name] = false;
+			}
+		}
+		return $GLOBALS['category_info'][$category_id][$field_name];
+	}
 	/**
 	* This function is repsonsible for returning an array containing category information
 	* @param boolean Show only published products?
@@ -632,84 +656,8 @@ class ps_product_category extends vmAbstractObject {
 		$nrows = $size = sizeOf($key); // Category count
 
 		$html = "";
-		/** FIRST STEP
-	    * Order the Category Array and build a Tree of it
-	    **/
 
-		$id_list = array();
-		$row_list = array();
-		$depth_list = array();
-
-		$children = array();
-		$parent_ids = array();
-		$parent_ids_hash = array();
-		
-		//Build an array of category references
-		$category_tmp = Array();
-		for ($i=0; $i<$size; $i++)
-		{
-			$category_tmp[$i] = &$categories[$key[$i]];
-			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];		
-			if($category_tmp[$i]["category_parent_id"] == 0)
-			{ 
-				array_push($id_list,$category_tmp[$i]["category_child_id"]);
-				array_push($row_list,$i);
-				array_push($depth_list,0);
-			}
-
-			$parent_id = $parent_ids[$i];
-			
-			if (isset($parent_ids_hash[$parent_id]))
-			{
-				$parent_ids_hash[$parent_id][$i] = $parent_id;
-				
-			}
-			else
-			{
-				$parent_ids_hash[$parent_id] = array($i => $parent_id);
-			}
-			
-		}
-		
-		$loop_count = 0;
-		$watch = array(); // Hash to store children
-		while(count($id_list) < $nrows) {
-			if( $loop_count > $nrows )
-			break;
-			$id_temp = array();
-			$row_temp = array();
-			$depth_temp = array();
-			for($i = 0 ; $i < count($id_list) ; $i++) {
-				$id = $id_list[$i];
-				$row = $row_list[$i];
-				$depth = $depth_list[$i];
-				array_push($id_temp,$id);
-				array_push($row_temp,$row);
-				array_push($depth_temp,$depth);
-
-				$children = @$parent_ids_hash[$id];
-				
-				if (!empty($children))
-				{
-					foreach($children as $key => $value) {
-						if( !isset($watch[$id][$category_tmp[$key]["category_child_id"]])) {
-							$watch[$id][$category_tmp[$key]["category_child_id"]] = 1;
-							array_push($id_temp,$category_tmp[$key]["category_child_id"]);
-							array_push($row_temp,$key);
-							array_push($depth_temp,$depth + 1);
-						}
-					}
-				}
-			}
-			$id_list = $id_temp;
-			$row_list = $row_temp;
-			$depth_list = $depth_temp;
-			$loop_count++;
-		}
-
-		/** SECOND STEP
-		* Find out if we have subcategories to display
-		**/
+		// Find out if we have subcategories to display
 		$allowed_subcategories = Array();
 		if( !empty( $categories[$category_id]["category_parent_id"] ) ) {
 			// Find the Root Category of this category

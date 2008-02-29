@@ -33,23 +33,33 @@ $category_id = vmGet( $_REQUEST, 'category_id', '' );
 
 $sess = new ps_session;
 
-if ($auto == 1 && !empty( $category_id ) ) {
-	$query  = "SELECT DISTINCT m.manufacturer_id, m.mf_name
+
+$query  = "SELECT DISTINCT m.manufacturer_id, m.mf_name
 					FROM #__{vm}_manufacturer m
 					LEFT JOIN #__{vm}_product_mf_xref mx ON mx.manufacturer_id = m.manufacturer_id
 					LEFT JOIN #__{vm}_product p ON p.product_id = mx.product_id
 					LEFT JOIN #__{vm}_product_category_xref cx ON cx.product_id = p.product_id
 					WHERE cx.category_id = '$category_id' ";
-} else {
-	$query  = "SELECT m.manufacturer_id,m.mf_name FROM #__{vm}_manufacturer m ";
-}
 $query .= "ORDER BY m.mf_name ASC";
+
+$query_all  = "SELECT m.manufacturer_id,m.mf_name FROM #__{vm}_manufacturer m ";
+$query_all .= "ORDER BY m.mf_name ASC";
+
 $db = new ps_DB;
-$db->query( $query );
+if ($auto == 1 && !empty( $category_id ) ) {
+	$db->query( $query );
+} else {
+	$db->query( $query_all );
+}
 $res = $db->record;
 if( empty( $res )) {
-	echo 'No manufacturers defined!';
-	return;
+	if( $auto == 1 ) {
+		$db->query( $query_all );
+		$res = $db->record;
+	} else {
+		echo 'No manufacturers defined!';
+		return;
+	}
 }
 ?>
 <?php if( $show_linklist == 1 ) { ?>

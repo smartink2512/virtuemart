@@ -35,6 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+29.02.2008 soeren
+# Task #1800 - mod_virtuemart_manufacturers said "No manufacturers defined!"
+# undefined var "product_parent_id" in product.product_display.php
+^ Saving some queries on product price retrieval + product field retrieval
+# Task #1853 -  Additional image upload not working
+
 27.02.2008 gregdev
 # Task #1849 - Missing field values in Joomla 1.5
 
@@ -45,7 +52,6 @@ VirtueMart 1.1.x
 	VALUES ( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
 	(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin');
 	###
-	
 # Task #1844 - Moving product to another category gives error
 
 26.02.2008 gregdev

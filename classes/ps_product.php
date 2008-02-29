@@ -1044,12 +1044,22 @@ class ps_product extends vmAbstractObject {
 	 * @return string The value of the field $field_name for that product
 	 */
 	function get_field( $product_id, $field_name ) {
+		if( $product_id == 0 ) return '';
 		$db = new ps_DB;
-		if( empty($GLOBALS['product_info'][$product_id][$field_name] )) {
-			$q = "SELECT  product_id, `$field_name` FROM #__{vm}_product WHERE product_id='$product_id'";
+		
+		if( !isset($GLOBALS['product_info'][$product_id][$field_name] )) {
+			$q = 'SELECT product_id, `#__{vm}_product`.* FROM `#__{vm}_product` WHERE `product_id`='.(int)$product_id;
 			$db->query($q);
 			if ($db->next_record()) {
-				$GLOBALS['product_info'][$product_id][$field_name] = $db->f($field_name);
+				$values = get_object_vars( $db->getCurrentRow() );
+				
+				foreach( $values as $key => $value ) {
+					$GLOBALS['product_info'][$product_id][$key] = $value;
+				}
+				if( !isset( $GLOBALS['product_info'][$product_id][$field_name] )) {
+					$GLOBALS['vmLogger']->debug( 'The Field '.$field_name. ' does not exist in the product table!');
+					$GLOBALS['product_info'][$product_id][$field_name] = true;
+				}
 			}
 			else {
 				$GLOBALS['product_info'][$product_id][$field_name] = false;
@@ -1527,7 +1537,7 @@ class ps_product extends vmAbstractObject {
 	 * @return array The product price information
 	 */
 	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='' ) {
-		
+		if( empty( $product_id)) return false;
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 
@@ -1536,17 +1546,8 @@ class ps_product extends vmAbstractObject {
 		|| $check_multiple_prices) {
 			$db = new ps_DB;
 
-			if( empty( $_SESSION['product_sess'][$product_id]['vendor_id'] )) {
-
-				// Get the vendor id for this product.
-				$q = "SELECT vendor_id FROM #__{vm}_product WHERE product_id='$product_id'";
-				$db->setQuery($q); $db->query();
-				$db->next_record();
-				$_SESSION['product_sess'][$product_id]['vendor_id'] = $vendor_id = $db->f("vendor_id");
-			}
-			else {
-				$vendor_id = $_SESSION['product_sess'][$product_id]['vendor_id'];
-			}
+			$vendor_id = $this->get_vendor_id($product_id);
+			
 			if( $overrideShopperGroup === '') {
 				$shopper_group_id = $auth["shopper_group_id"];
 				$shopper_group_discount = $auth["shopper_group_discount"];
@@ -1568,11 +1569,7 @@ class ps_product extends vmAbstractObject {
 				// depend on one and the same product_id
                 $quantity = 0;
                 $parent_id = "";
-                $q = "SELECT product_price, product_price_id, product_currency FROM #__{vm}_product_price WHERE product_id='$product_parent_id' AND ";
-				$q .= "shopper_group_id='$shopper_group_id'  ORDER BY price_quantity_start";
-				$db->setQuery($q); 
-                $db->query();
-				if ($db->next_record()) {
+				if ($product_parent_id) {
                 	$parent = true;
                 }
                 else {
@@ -1636,6 +1633,7 @@ class ps_product extends vmAbstractObject {
 	 */
 	function getPriceByShopperGroup( $product_id, $shopper_group_id, $check_multiple_prices=false, $additionalSQL='' ) {
 		global $auth;
+		static $resultcache = array();
 		$db = new ps_DB;
 		$vendor_id = $_SESSION['ps_vendor_id'];
 		if( empty( $shopper_group_id )) {
@@ -1647,21 +1645,29 @@ class ps_product extends vmAbstractObject {
 		$whereClause = sprintf( $whereClause, intval($product_id), intval($shopper_group_id) );
 
 		$q = "SELECT `product_price`, `product_price_id`, `product_currency` FROM `#__{vm}_product_price` $whereClause $additionalSQL";
-		$db->setQuery($q); $db->query();
 		
-		if ($db->next_record()) {
+		$sig = sprintf("%u\n", crc32($q));
+
+		if( !isset($resultcache[$sig])) {
+			$db->query($q);
+			if( !$db->next_record() ) return false;
 			$price_info["product_price"]= $db->f("product_price") * ((100 - $auth["shopper_group_discount"])/100);
 			$price_info["product_currency"] = $db->f("product_currency");
-			if( $check_multiple_prices ) {
-				$price_info["product_base_price"]= $db->f("product_price") * ((100 - $auth["shopper_group_discount"])/100);
-				$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
-			}
+			
+			$price_info["product_base_price"]= $db->f("product_price") * ((100 - $auth["shopper_group_discount"])/100);
+			$price_info["product_has_multiple_prices"] = $db->num_rows() > 1;
+			
 			$price_info["product_price_id"] = $db->f("product_price_id");					
 			$price_info["item"]=true;
 			$GLOBALS['product_info'][$product_id]['price'] = $price_info;
+			// Store the result for later
+			$resultcache[$sig] = $price_info;
+			
 			return $GLOBALS['product_info'][$product_id]['price'];
+		} 
+		else {
+			return $resultcache[$sig];
 		}
-		return 0.00;
 		
 	}
 	/**

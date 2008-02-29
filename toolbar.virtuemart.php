@@ -135,6 +135,7 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
      	&& ((defined( '_VM_IS_BACKEND') && stristr($_SERVER['PHP_SELF'], 'index3.php')) || (!defined( '_VM_IS_BACKEND') && stristr($_SERVER['PHP_SELF'], 'index2.php')))) {
 	     $bar =& JToolBar::getInstance('toolbar');
 	     echo $bar->render();
+	     echo '<br class="clr" />';
      }
 }
 ?>

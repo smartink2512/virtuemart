@@ -85,10 +85,10 @@ div.error-message {
 
 div.header {
 	color: #0B55C4;
-	font-size: 22px;
 	line-height: 48px;
 	font-weight: bold;
 	padding: 0px 20px 0px 55px;
+	clear: both;
 }
 div.header h2 {
 	white-space: nowrap;
