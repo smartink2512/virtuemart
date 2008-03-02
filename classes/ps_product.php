@@ -1543,7 +1543,7 @@ class ps_product extends vmAbstractObject {
 	 * @return array The product price information
 	 */
 	function get_price($product_id, $check_multiple_prices=false, $overrideShopperGroup='' ) {
-		if( empty( $product_id)) return false;
+		if( empty( $product_id)) return array();
 		$auth = $_SESSION['auth'];
 		$cart = $_SESSION['cart'];
 

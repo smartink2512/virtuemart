@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 
 02.03.2008 soeren
+# Task #1810 - When Product Price field is empty on the category view error is given.
 # Task #1858 - Language Strings in rel 1284
 ^ Order Details pages show all custom user fields now
 - removed email_*.html (localized email templates)
