@@ -300,12 +300,12 @@ class ps_userfield extends vmAbstractObject {
 	   		}
 	   		// Title handling.
 	   		$key = $field->title;
-			if( substr( $field->title, 0, 1) == '_') {
+			if( $key[0] == '_') {
 				$key = substr($key, 1, strlen($key)-1);
-		   		if( $VM_LANG->exists($key) ) {
-		   			$field->title = $VM_LANG->_($key);
-		   		}
 			}
+	   		if( $VM_LANG->exists($key) ) {
+	   			$field->title = $VM_LANG->_($key);
+	   		}
 	   		if( $field->name == 'agreed') {
 	   			$field->title = '<script type="text/javascript">//<![CDATA[
 				document.write(\'<label for="agreed_field">'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');

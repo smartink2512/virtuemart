@@ -18,9 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 mm_showMyFileName( __FILE__ );
 global $ps_order_status;
 require_once(CLASSPATH.'ps_checkout.php');
+require_once(CLASSPATH.'ps_userfield.php');
 require_once(CLASSPATH.'ps_product.php');
 $ps_product= new ps_product;
 
+$registrationfields = ps_userfield::getUserFields('registration', false, '', true, true );
+$shippingfields = ps_userfield::getUserFields('shipping', false, '', true, true );
+	
 $order_id = vmRequest::getInt('order_id', 0);
 $dbc = new ps_DB;
 
@@ -91,62 +95,30 @@ echo vmCommonHTML::PrintIcon();
         <tr> 
           <td colspan="2"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_BILL_TO_LBL') ?></strong></td>
         </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?> :</td>
-          <td><?php $dbbt->p("company"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?> :</td>
-          <td><?php 
-                $dbbt->p("first_name"); 
-                echo " ";
-                $dbbt->p("middle_name"); 
-                echo " ";
-                $dbbt->p("last_name"); 
-         ?></td>
-        </tr>
-        <tr valign="top"> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ADDRESS') ?> :</td>
-          <td><?php 
-              $dbbt->p("address_1"); 
-              echo "<br />";
-              $dbbt->p("address_2");    
-         ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?> :</td>
-          <td><?php $dbbt->p("city"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?> :</td>
-          <td><?php $dbbt->p("state"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?> :</td>
-          <td><?php $dbbt->p("zip"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?> :</td>
-          <td><?php 
-                $country = $dbbt->f("country");
-                $dbc->query( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-		$dbc->next_record();
-		$country_name = $dbc->f("country_name");
-		echo $country_name;
-        ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?> :</td>
-          <td><?php $dbbt->p("phone_1"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?> :</td>
-          <td><?php $dbbt->p("fax"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EMAIL') ?> :</td>
-          <td><?php $dbbt->p("user_email"); ?></td>
-        </tr>
+	        <?php 
+		foreach( $registrationfields as $field ) {
+			if( $field->name == 'email') $field->name = 'user_email';
+			?>
+		  <tr> 
+			<td align="right"><?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
+			<td><?php
+				switch($field->name) {
+		          	case 'country':
+		          		require_once(CLASSPATH.'ps_country.php');
+		          		$country = new ps_country();
+		          		$dbc = $country->get_country_by_code($dbbt->f($field->name));
+	          			if( $dbc !== false ) echo $dbc->f('country_name');
+		          		break;
+		          	default: 
+		          		echo $dbbt->f($field->name);
+		          		break;
+		          }
+		          ?>
+			</td>
+		  </tr>
+		  <?php
+			}
+		   ?>
       </table>
       <!-- End BillTo --> </td>
     <td width="50%"> <!-- Begin ShipTo --> <?php
@@ -158,60 +130,30 @@ echo vmCommonHTML::PrintIcon();
         <tr> 
           <td colspan="2"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIP_TO_LBL') ?></strong></td>
         </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?> :</td>
-          <td><?php $dbst->p("company"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?> :</td>
-          <td><?php 
-         $dbst->p("first_name"); 
-         echo " ";
-         $dbst->p("middle_name"); 
-         echo " ";
-         $dbst->p("last_name"); 
-         ?></td>
-        </tr>
-        <tr valign="top"> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ADDRESS') ?> :</td>
-          <td><?php 
-          $dbst->p("address_1"); 
-          echo "<br />";
-          $dbst->p("address_2");    
-         ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?> :</td>
-          <td><?php $dbst->p("city"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?> :</td>
-          <td><?php $dbst->p("state"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?> :</td>
-          <td><?php $dbst->p("zip"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?> :</td>
-          <td><?php 
-                if( $country != $dbst->f("country")) {
-                        $country = $dbst->f("country");
-			$dbc->query( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-			$dbc->next_record();
-			$country_name = $dbc->f("country_name");
-		}
-		echo $country_name;
-                ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?> :</td>
-          <td><?php $dbst->p("phone_1"); ?></td>
-        </tr>
-        <tr> 
-          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?> :</td>
-          <td><?php $dbst->p("fax"); ?></td>
-        </tr>
+        <?php 
+		foreach( $shippingfields as $field ) {
+			if( $field->name == 'email') $field->name = 'user_email';
+			?>
+		  <tr> 
+			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
+			<td width="65%"><?php
+				switch($field->name) {
+		          	case 'country':
+		          		require_once(CLASSPATH.'ps_country.php');
+		          		$country = new ps_country();
+		          		$dbc = $country->get_country_by_code($dbst->f($field->name));
+		          		if( $dbc !== false ) echo $dbc->f('country_name');
+		          		break;
+		          	default: 
+		          		echo $dbst->f($field->name);
+		          		break;
+		          }
+		          ?>
+			</td>
+		  </tr>
+		  <?php
+			}
+		   ?>
       </table>
       <!-- End ShipTo --> 
       <!-- End Customer Information --> 
@@ -220,7 +162,10 @@ echo vmCommonHTML::PrintIcon();
   <tr> 
     <td colspan="2">&nbsp;</td>
   </tr>
-  <?php if ($PSHOP_SHIPPING_MODULES[0] != "no_shipping" && $db->f("ship_method_id")) { ?> 
+  <?php 
+  if ($PSHOP_SHIPPING_MODULES[0] != "no_shipping" && $db->f("ship_method_id")) {
+  	$details = explode( "|", $db->f("ship_method_id"));
+  	?> 
   <tr> 
     <td colspan="2"> 
       <table width="100%" border="0" cellspacing="0" cellpadding="1">
@@ -237,24 +182,13 @@ echo vmCommonHTML::PrintIcon();
                 <td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PRICE') ?>&nbsp;</strong></td>
               </tr>
               <tr> 
-                <td><?php 
-                    $details = explode( "|", $db->f("ship_method_id"));
-                    echo $details[1];
-                    ?>&nbsp;
-                </td>
-                <td><?php 
-                    echo $details[2];
-                    ?>
-                </td>
-                <td><?php 
-                    echo $CURRENCY_DISPLAY->getFullValue($details[3], '', $db->f('order_currency')); 
-                    ?>
-                </td>
+                <td><?php echo $details[1];  ?>&nbsp;</td>
+                <td><?php echo $details[2]; ?></td>
+                <td><?php echo $CURRENCY_DISPLAY->getFullValue($details[3], '', $db->f('order_currency')); ?></td>
               </tr>
             </table>
           </td>
-        </tr>
-        
+        </tr>        
       </table>
     </td>
   </tr><?php
@@ -452,7 +386,8 @@ echo vmCommonHTML::PrintIcon();
           
             // DECODE Account Number
             $dbaccount = new ps_DB;
-            $q = "SELECT DECODE(\"". $dbpm->f("order_payment_number")."\",\"".ENCODE_KEY."\") as account_number FROM #__{vm}_order_payment WHERE order_id='".$order_id."'";
+            $q = 'SELECT '.VM_DECRYPT_FUNCTION.'(order_payment_number,\''.ENCODE_KEY.'\') as account_number 
+		  				FROM #__{vm}_order_payment WHERE order_id=\''.$order_id.'\'';
             $dbaccount->query($q);
             $dbaccount->next_record(); ?>
       <tr> 
@@ -471,7 +406,7 @@ echo vmCommonHTML::PrintIcon();
           <?php } ?>
       <!-- end payment information --> 
       </table>
-</center>
+
 <?php // }
   
   /** Print out the customer note **/

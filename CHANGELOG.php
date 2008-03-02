@@ -37,6 +37,8 @@ VirtueMart 1.1.x
 *************************************
 
 02.03.2008 soeren
+# Task #1858 - Language Strings in rel 1284
+^ Order Details pages show all custom user fields now
 - removed email_*.html (localized email templates)
 ^ changed Order Confirmation Email to use a php-based template (/order_emails/confirmation_email.tpl.php)
 + custom registration/user fields are sent with confirmation email now 

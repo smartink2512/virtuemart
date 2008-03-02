@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -21,6 +21,7 @@ global $ps_order_status;
 require_once(CLASSPATH.'ps_product.php');
 $ps_product =& new ps_product;
 
+require_once(CLASSPATH.'ps_order_status.php');
 require_once(CLASSPATH.'ps_checkout.php');
 
 $order_id = vmRequest::getInt('order_id');
@@ -53,16 +54,20 @@ $order_id = vmRequest::getInt('order_id');
 		  </tr>
 		  <tr> 
 			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
-			<td><?php $db->p("order_status") ?></td>
+			<td><?php echo ps_order_status::getOrderStatusName($db->f("order_status")) ?></td>
 		  </tr>
 		  <tr>
-		  <td><strong><?php echo $VM_LANG->_('VM_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
-		  <td><?php $db->p("ip_address"); ?></td>
+			  <td><strong><?php echo $VM_LANG->_('VM_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
+			  <td><?php $db->p("ip_address"); ?></td>
 		  </tr>
+		  <?php 
+		  if( PSHOP_COUPONS_ENABLE == '1') { ?>
 		  <tr>
-		  <td><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_COUPON_HEADER') ?>:</strong></td>
-		  <td><?php if( $db->f("coupon_code") ) $db->p("coupon_code"); else echo '-'; ?></td>
+			  <td><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_COUPON_HEADER') ?>:</strong></td>
+			  <td><?php if( $db->f("coupon_code") ) $db->p("coupon_code"); else echo '-'; ?></td>
 		  </tr>
+		  <?php 
+			} ?>
 		</table>
 	  </td>
 	  <td valign="top" width="65%">
@@ -102,10 +107,10 @@ $order_id = vmRequest::getInt('order_id');
 			<br/>
 			<input type="checkbox" name="include_comment" id="include_comment" checked="checked" value="Y" /> 
 				<label for="include_comment"><?php echo $VM_LANG->_('PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT') ?></label>
-			</form>
 		  </td>
 		 </tr>
 		</table>
+		</form>
 			<?php
 			$tab->endTab();
 			$tab->startTab( $VM_LANG->_('PHPSHOP_ORDER_HISTORY'), "order_history_page" );
@@ -157,6 +162,9 @@ $order_id = vmRequest::getInt('order_id');
 	  $qt = "SELECT * from #__{vm}_order_user_info WHERE user_id='$user_id' AND order_id='$order_id' ORDER BY address_type ASC"; 
 	  $dbt->query($qt);
 	  $dbt->next_record();
+	require_once( CLASSPATH . 'ps_userfield.php' );
+	$userfields = ps_userfield::getUserFields('registration', false, '', true, true );
+	$shippingfields = ps_userfield::getUserFields('shipping', false, '', true, true );
    ?> 
 	<tr> 
 	  <th width="48%" valign="top"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_BILL_TO_LBL') ?></th>
@@ -165,66 +173,30 @@ $order_id = vmRequest::getInt('order_id');
 	<tr> 
 	  <td width="48%" valign="top">
 		<table width="100%" border="0" cellspacing="0" cellpadding="1">
+		<?php 
+		foreach( $userfields as $field ) {
+			if( $field->name == 'email') $field->name = 'user_email';
+			?>
 		  <tr> 
-			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME') ?>:</td>
+			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
 			<td width="65%"><?php
-				if ($dbt->f("title")) {
-				  echo $dbt->f("title") . " ";
-				}
-				echo $dbt->f("first_name") . " ";
-				if ($dbt->f("middle_name")) {
-				  echo $dbt->f("middle_name") . " ";
-				}
-				echo $dbt->f("last_name");?>
+				switch($field->name) {
+		          	case 'country':
+		          		require_once(CLASSPATH.'ps_country.php');
+		          		$country = new ps_country();
+		          		$dbc = $country->get_country_by_code($dbt->f($field->name));
+	          			if( $dbc !== false ) echo $dbc->f('country_name');
+		          		break;
+		          	default: 
+		          		echo $dbt->f($field->name);
+		          		break;
+		          }
+		          ?>
 			</td>
 		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("company"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_1') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("address_1"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_2') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("address_2"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("city");  ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("state"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?>:</strong></td>
-			<td width="65%"><?php echo $dbt->p("zip"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?>:</strong></td>
-			<td width="65%"><?php 
-		$country = $dbt->f("country");
-		
-		$dbc->query( "SELECT country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-		$dbc->next_record();
-		$country_name = $dbc->f("country_name");
-		echo $country_name;
-	 ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("phone_1"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("fax"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EMAIL') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("user_email"); ?></td>
-		  </tr>
+		  <?php
+			}
+		   ?>
 		</table>
 	  </td>
 	  <td width="52%" valign="top">
@@ -233,63 +205,30 @@ $order_id = vmRequest::getInt('order_id');
   $dbt->next_record();
   ?> 
 		<table width="100%" border="0" cellspacing="0" cellpadding="1">
+		<?php 
+		foreach( $shippingfields as $field ) {
+			if( $field->name == 'email') $field->name = 'user_email';
+			?>
 		  <tr> 
-			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME') ?>:</td>
+			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
 			<td width="65%"><?php
-				if ($dbt->f("title")) {
-				  echo $dbt->f("title") . " ";
-				}
-				echo $dbt->f("first_name") . " ";
-				if ($dbt->f("middle_name")) {
-				  echo $dbt->f("middle_name") . " ";
-				}
-				echo $dbt->f("last_name");
-			?></td>
+				switch($field->name) {
+		          	case 'country':
+		          		require_once(CLASSPATH.'ps_country.php');
+		          		$country = new ps_country();
+		          		$dbc = $country->get_country_by_code($dbt->f($field->name));
+		          		if( $dbc !== false ) echo $dbc->f('country_name');
+		          		break;
+		          	default: 
+		          		echo $dbt->f($field->name);
+		          		break;
+		          }
+		          ?>
+			</td>
 		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("company"); ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_1') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("address_1") ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_2') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("address_2")  ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("city") ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("state") ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("zip") ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?>:</strong></td>
-			<td width="65%"><?php 
-		if( $country != $dbt->f("country")) {
-			$country = $dbt->f("country");
-			$dbc->query( "SELECT country_id, country_name FROM #__{vm}_country WHERE country_3_code = '$country'");
-			$dbc->next_record();
-			$country_name = $dbc->f("country_name");
-		}
-		echo $country_name;
-		 ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("phone_1") ?></td>
-		  </tr>
-		  <tr> 
-			<td width="35%" align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?>:</strong></td>
-			<td width="65%"><?php $dbt->p("fax") ?></td>
-		  </tr>
+		  <?php
+			}
+		   ?>
 		</table>
 	  </td>
 	</tr>

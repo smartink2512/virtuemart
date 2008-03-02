@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -19,9 +19,10 @@ mm_showMyFileName( __FILE__ );
 
 global $vendor_currency, $user;
 
+require_once(CLASSPATH.'ps_order_status.php');
+require_once(CLASSPATH.'ps_userfield.php');
 require_once(CLASSPATH.'ps_checkout.php');
 require_once(CLASSPATH.'ps_product.php');
-require_once(CLASSPATH.'ps_order_status.php');
 $ps_product= new ps_product;
 
 $tpl = vmTemplate::getInstance();
@@ -33,8 +34,7 @@ $tpl->set( 'order_id', $order_id );
 
 $db =& new ps_DB;
 $q = "SELECT * FROM `#__{vm}_orders` WHERE ";
-$q .= "#__{vm}_orders.user_id='" . $auth["user_id"] . "' ";
-$q .= "AND #__{vm}_orders.order_id='$order_id'";
+$q .= "user_id=" . $auth["user_id"] . " AND order_id='$order_id'";
 $db->query($q);
 
 if ($db->next_record()) {
@@ -67,19 +67,25 @@ if ($db->next_record()) {
 	/** Retrieve Payment Info **/
 	$dbpm = new ps_DB;
 	
-	$q  = "SELECT * FROM `#__{vm}_payment_method`, `#__{vm}_order_payment`, `#__{vm}_orders` ";
-	$q .= "WHERE #__{vm}_order_payment.order_id='$order_id' ";
-	$q .= "AND #__{vm}_payment_method.payment_method_id=#__{vm}_order_payment.payment_method_id ";
-	$q .= "AND #__{vm}_orders.user_id='" . $auth["user_id"] . "' ";
-	$q .= "AND #__{vm}_orders.order_id='$order_id' ";
+	$q  = "SELECT * FROM `#__{vm}_payment_method` p, `#__{vm}_order_payment` op, `#__{vm}_orders` o ";
+	$q .= "WHERE op.order_id='$order_id' ";
+	$q .= "AND p.payment_method_id=op.payment_method_id ";
+	$q .= "AND o.user_id='" . $auth["user_id"] . "' ";
+	$q .= "AND o.order_id='$order_id' ";
 	$dbpm->query($q);
 	$dbpm->next_record();
-
+	
+	$registrationfields = ps_userfield::getUserFields('registration', false, '', true, true );
+	$shippingfields = ps_userfield::getUserFields('shipping', false, '', true, true );
+	
 	$tpl->set( 'db', $db );
 	$tpl->set( 'dbbt', $dbbt );
 	$tpl->set( 'dbpm', $dbpm );
 	$tpl->set( 'user', $user );
 	$tpl->set( 'order_id', $order_id );
+	$tpl->set( 'registrationfields', $registrationfields );
+	$tpl->set( 'shippingfields', $shippingfields );
+	$tpl->set( 'time_offset', $mosConfig_offset );
 
 	// Get the template for this page
 	echo $tpl->fetch( 'pages/account.order_details.tpl.php' );

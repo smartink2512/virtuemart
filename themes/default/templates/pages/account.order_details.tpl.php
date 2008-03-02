@@ -77,7 +77,7 @@ if( $db->f('order_number')) {
 	
 	  <tr> 
 		<td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_DATE') ?>:</td>
-	    <td><?php echo strftime( "%d %B %Y", $db->f("cdate")); ?></td>
+	    <td><?php echo vmFormatDate($db->f("cdate")+$time_offset); ?></td>
 	  </tr>
 	  <tr> 
 	    <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') ?>:</td>
@@ -94,84 +94,30 @@ if( $db->f('order_number')) {
 	        <tr> 
 	          <td colspan="2"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_BILL_TO_LBL') ?></strong></td>
 	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?> :</td>
-	          <td><?php $dbbt->p("company"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?> :</td>
-	          <td><?php 
-	          $dbbt->p("first_name");
-	          echo " ";
-	          $dbbt->p("middle_name");
-	          echo " ";
-	          $dbbt->p("last_name");
-	         ?></td>
-	        </tr>
-	        <tr valign="top"> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ADDRESS') ?> :</td>
-	          <td><?php 
-	          $dbbt->p("address_1");
-	          echo "<br />";
-	          $dbbt->p("address_2");
-	         ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?> :</td>
-	          <td><?php $dbbt->p("city"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?> :</td>
-	          <td><?php $dbbt->p("state"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?> :</td>
-	          <td><?php $dbbt->p("zip"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?> :</td>
-	          <td><?php $dbbt->p("country"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?> :</td>
-	          <td><?php $dbbt->p("phone_1");
-	          if( $dbbt->f("phone_2")!="" ) {
-	              echo ", ".$dbbt->f("phone_2"); } ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?> :</td>
-	          <td><?php $dbbt->p("fax"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_EMAIL') ?> :</td>
-	          <td><?php $dbbt->p("user_email"); ?></td>
-	        </tr>
-	    <!-- If you do not wish show a EXTRA FIELD add into condition "false && ".
-	         For example: if( false && $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) -->
-	    <!-- EXTRA FIELD 1 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) { ?>
-	          <tr>
-	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') ?> :</td>
-	            <td><?php $dbbt->p("extra_field_1"); ?></td>
-	          </tr>
-	        <?php } ?>
-	    <!-- EXTRA FIELD 1 - END -->
-	    <!-- EXTRA FIELD 2 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2') != "" ) { ?>
-	          <tr>
-	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2') ?> :</td>
-	            <td><?php $dbbt->p("extra_field_2"); ?></td>
-	          </tr>
-	        <?php } ?>
-	    <!-- EXTRA FIELD 2 - END -->
-	    <!-- EXTRA FIELD 3 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') != "" ) { ?>
-	          <tr>
-	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') ?> :</td>
-	            <td><?php $dbbt->p("extra_field_3"); ?></td>
-	          </tr>
-	        <?php } ?>
-	    <!-- EXTRA FIELD 3 - END -->
+	        <?php 
+		foreach( $registrationfields as $field ) {
+			if( $field->name == 'email') $field->name = 'user_email';
+			?>
+		  <tr> 
+			<td align="right"><?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
+			<td><?php
+				switch($field->name) {
+		          	case 'country':
+		          		require_once(CLASSPATH.'ps_country.php');
+		          		$country = new ps_country();
+		          		$dbc = $country->get_country_by_code($dbbt->f($field->name));
+	          			if( $dbc !== false ) echo $dbc->f('country_name');
+		          		break;
+		          	default: 
+		          		echo $dbbt->f($field->name);
+		          		break;
+		          }
+		          ?>
+			</td>
+		  </tr>
+		  <?php
+			}
+		   ?>
 	      </table>
 	      <!-- End BillTo --> </td>
 	    <td width="50%"> <!-- Begin ShipTo --> <?php
@@ -184,80 +130,30 @@ if( $db->f('order_number')) {
 	        <tr> 
 	          <td colspan="2"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIP_TO_LBL') ?></strong></td>
 	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY') ?> :</td>
-	          <td><?php $dbst->p("company"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_LIST_NAME') ?> :</td>
-	          <td><?php 
-	          $dbst->p("first_name");
-	          echo " ";
-	          $dbst->p("middle_name");
-	          echo " ";
-	          $dbst->p("last_name");
-	         ?></td>
-	        </tr>
-	        <tr valign="top"> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ADDRESS') ?> :</td>
-	          <td><?php 
-	          $dbst->p("address_1");
-	          echo "<br />";
-	          $dbst->p("address_2");
-	         ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY') ?> :</td>
-	          <td><?php $dbst->p("city"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE') ?> :</td>
-	          <td><?php $dbst->p("state"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP') ?> :</td>
-	          <td><?php $dbst->p("zip"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY') ?> :</td>
-	          <td><?php $dbst->p("country"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE') ?> :</td>
-	          <td><?php $dbst->p("phone_1");
-	          if( $dbst->f("phone_2")!="" )
-	              echo ", ".$dbst->f("phone_2"); ?></td>
-	        </tr>
-	        <tr> 
-	          <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX') ?> :</td>
-	          <td><?php $dbst->p("fax"); ?></td>
-	        </tr>
-	    <!-- If you do not wish show a EXTRA FIELD add into condition "false && ".
-	         For example: if( false && $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) -->
-	    <!-- EXTRA FIELD 1 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') != "" ) { ?>
-	          <tr>
-	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_1') ?> :</td>
-	            <td><?php $dbst->p("extra_field_1"); ?></td>
-	          </tr>
-	        <?php } ?>
-	    <!-- EXTRA FIELD 1 - END -->
-	    <!-- EXTRA FIELD 2 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2')!= "" ) { ?>
-	          <tr>
-	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_2') ?> :</td>
-	            <td><?php $dbst->p("extra_field_2"); ?></td>
-	          </tr>
-	        <?php } ?>
-	    <!-- EXTRA FIELD 2 - END -->
-	    <!-- EXTRA FIELD 3 - BEGIN - You can move this section into any other position of form. -->
-	        <?php if( $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') != "" ) { ?>
-	          <tr>
-	            <td><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_3') ?> :</td>
-	            <td><?php $dbst->p("extra_field_3"); ?></td>
-	          </tr>
-	        <?php } ?>
-	    <!-- EXTRA FIELD 3 - END -->
+	        <?php 
+		foreach( $shippingfields as $field ) {
+			if( $field->name == 'email') $field->name = 'user_email';
+			?>
+		  <tr> 
+			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
+			<td width="65%"><?php
+				switch($field->name) {
+		          	case 'country':
+		          		require_once(CLASSPATH.'ps_country.php');
+		          		$country = new ps_country();
+		          		$dbc = $country->get_country_by_code($dbst->f($field->name));
+		          		if( $dbc !== false ) echo $dbc->f('country_name');
+		          		break;
+		          	default: 
+		          		echo $dbst->f($field->name);
+		          		break;
+		          }
+		          ?>
+			</td>
+		  </tr>
+		  <?php
+			}
+		   ?>
 	      </table>
 	      <!-- End ShipTo --> 
 	      <!-- End Customer Information --> 
@@ -602,7 +498,8 @@ if( $db->f('order_number')) {
 	
 		  	// DECODE Account Number
 		  	$dbaccount = new ps_DB;
-		  	$q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') as account_number FROM #__{vm}_order_payment WHERE order_id='".$order_id."'";
+		  	$q = 'SELECT '.VM_DECRYPT_FUNCTION.'(order_payment_number,\''.ENCODE_KEY.'\') as account_number 
+		  				FROM #__{vm}_order_payment WHERE order_id=\''.$order_id.'\'';
 		  	$dbaccount->query($q);
 	        $dbaccount->next_record();
 	         ?>

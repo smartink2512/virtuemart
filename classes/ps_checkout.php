@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -2018,7 +2018,7 @@ Order Total: '.$order_total.'
 														'coupon_discount' => $coupon_discount,
 														'coupon_discount_lbl' => $coupon_discount_lbl,
 														'coupon_discount_plusminus' => $coupon_discount_plusminus,
-														'order_date' => $VM_LANG->convert( strftime( $VM_LANG->_('DATE_FORMAT_LC'), $db->f("cdate") )),
+														'order_date' => $VM_LANG->convert( vmFormatDate($db->f("cdate"), $VM_LANG->_('DATE_FORMAT_LC') )),
 														'order_status' => $order_status,
 														'legal_info_title' => $legal_info_title,
 														'legal_info_html' => $legal_info_html,

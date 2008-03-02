@@ -1,5 +1,5 @@
 <?php
-// $Id: $
+// $Id$
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 
 ?>
@@ -63,6 +63,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
       foreach( $registrationfields as $field ) {
 			if( $field->name == 'email') $field->name = 'user_email';
 			if( $field->name == 'delimiter_sendregistration') continue;
+			if( $field->type == 'captcha') continue;
       		if( $field->type == 'delimiter') { ?>
       		<tr class="Stil1"> 
 	          <td colspan="2"><b class="Stil1"><?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?></b></td>
@@ -71,7 +72,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 			} else { ?>
 	        <tr class="Stil1"> 
 	          <td><?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
-	          <td><?php echo $dbbt->f($field->name) ?></td>
+	          <td><?php
+	          switch($field->name) {
+	          	case 'country':
+	          		require_once(CLASSPATH.'ps_country.php');
+	          		$country = new ps_country();
+	          		echo $country->get_country_by_code($dbbt->f($field->name));
+	          		break;
+	          	default: 
+	          		echo $dbbt->f($field->name);
+	          		break;
+	          }
+	           ?></td>
 	        </tr>
 	       <?php 
 			} ?>
@@ -89,6 +101,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
         </tr>
      <?php
       foreach( $shippingfields as $field ) {
+      		if( $field->name == 'email') $field->name = 'user_email';
       		if( $field->type == 'delimiter') { ?>
 	        <tr class="Stil1"> 
 	          <td colspan="2"><b class="Stil1"><?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?></b></td>
@@ -97,7 +110,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 			} else { ?>
 	        <tr class="Stil1"> 
 	          <td><?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
-	          <td><?php echo $dbst->f($field->name) ?></td>
+	          <td><?php 
+	          switch($field->name) {
+	          	case 'country':
+	          		require_once(CLASSPATH.'ps_country.php');
+	          		$country = new ps_country();
+	          		$dbc = $country->get_country_by_code($dbbt->f($field->name));
+	          		if( $dbc !== false ) echo $dbc->f('country_name');
+	          		break;
+	          	default: 
+	          		echo $dbbt->f($field->name);
+	          		break;
+	          }
+	           ?></td>
 	        </tr>
 	       <?php 
 			} ?>
