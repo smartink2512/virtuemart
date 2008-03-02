@@ -38,6 +38,7 @@ class vmAbstractLanguage {
 		global $modulename;
 		$module = $modulename;
 	    $key = strtoupper( $var );
+
 		// if language module not yet loaded, load now
 		if (!isset($this->modules[$module])) {
 			$this->load($module);
@@ -48,6 +49,14 @@ class vmAbstractLanguage {
 		} elseif (isset($this->modules['common'][$key])) {
 			$text = $this->modules['common'][$key];
 			$module = 'common';
+		} elseif( $key[0] == '_' ) {
+			$key = substr( $key, 1 );
+		    if (isset($this->modules[$module][$key])) {
+				$text = $this->modules[$module][$key];
+			} elseif (isset($this->modules['common'][$key])) {
+				$text = $this->modules['common'][$key];
+				$module = 'common';
+			}
 		}
 		if ($text!==false) {
 			if( $htmlentities ) {
@@ -63,10 +72,10 @@ class vmAbstractLanguage {
 				return stripslashes( $text );
 			}
 		} elseif( $this->_debug ) {
-			return "$var is missing in language file.";
-		} else {
-			return $var;
-		}
+			$GLOBALS['vmLogger']->debug( "$var is missing in language file.");
+		} 
+		return '';
+		
 	} 
 	/**
 	* Merges the class vars of another class --> TO BE REMOVED... ?

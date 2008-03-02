@@ -244,7 +244,7 @@ class vmAbstractObject {
 			}
 	
 			$db->setQuery( $sql );
-	//echo 'A: ' . $db->getQuery();
+	//echo 'A: ' . $db->_database->_sql;
 	
 	
 			$row = null;

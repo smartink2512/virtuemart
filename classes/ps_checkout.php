@@ -74,7 +74,7 @@ class ps_checkout {
 				}
 			}
 		}
-		$steps = ps_checkout::get_checkout_steps();
+		//$steps = ps_checkout::get_checkout_steps();
 		if(empty($_REQUEST['ship_to_info_id']) && NO_SHIPTO=='1') {
 
 			$db = new ps_DB();
@@ -1643,13 +1643,13 @@ Order Total: '.$order_total.'
     */
 	function email_receipt($order_id) {
 		global $sess, $ps_product, $VM_LANG, $CURRENCY_DISPLAY, $vmLogger,
-		$mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_mailfrom,
-		$mosConfig_fromname, $mosConfig_smtpauth, $mosConfig_mailer, $mosConfig_lang,
-		$mosConfig_smtpuser, $mosConfig_smtppass, $mosConfig_smtphost, $database;
+		$mosConfig_fromname, $mosConfig_lang, $database;
 
 		$ps_vendor_id = vmGet( $_SESSION, 'ps_vendor_id', 1 );
 		$auth = $_SESSION["auth"];
 
+		require_once( CLASSPATH.'ps_order_status.php');
+		require_once( CLASSPATH.'ps_userfield.php');
 		require_once(CLASSPATH.'ps_product.php');
 		$ps_product = new ps_product;
 
@@ -1660,6 +1660,7 @@ Order Total: '.$order_total.'
 		$db->next_record();
 		$user_id = $db->f("user_id");
 		$customer_note = $db->f("customer_note");
+		$order_status = ps_order_status::getOrderStatusName($db->f("order_status") );
 
 		$dbbt = new ps_DB;
 		$dbst = new ps_DB;
@@ -1746,16 +1747,20 @@ Order Total: '.$order_total.'
 		// Shopper Header
 		$shopper_header = $VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1',false)."\n";
 		
+		$legal_info_title = '';
+		$legal_info_html = '';
 		// Get the legal information about the returns/order cancellation policy
 		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' ) {
 			$article = intval(@VM_ONCHECKOUT_LEGALINFO_LINK);
 			if( $article > 0 ) {
-				$content = new mosContent( $database );
-				$content->load( $article );
-				if( $content->introtext != '' ) {
-					$legal_info_title = $content->title;
-					$legal_info_text = strip_tags( str_replace( '<br />', "\n", $content->introtext ));
-					$legal_info_html = $content->introtext;
+				$db_legal = new ps_DB();
+				// Get the content article, which contains the Legal Info
+				$db_legal->query( 'SELECT id, title, introtext FROM #__content WHERE id='.$article );
+				$db_legal->next_record();
+				if( $db_legal->f('introtext') ) {
+					$legal_info_title = $db_legal->f('title');
+					$legal_info_text = strip_tags( str_replace( '<br />', "\n", $db_legal->f('introtext') ));
+					$legal_info_html = $db_legal->f('introtext');
 				}
 			}
 		}
@@ -1772,27 +1777,12 @@ Order Total: '.$order_total.'
 			$shopper_footer .= $legal_info_text."\n";
 		}
 		
-		$shopper_footer_html = "<br /><br />".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2')."<br />";
-		$shopper_footer_html .= "<br /><a title=\"".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5')."\" href=\"$shopper_order_link\">"
-		. $VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5')."</a>";
-		$shopper_footer_html .= "<br /><br />".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3')."<br />";
-		$shopper_footer_html .= $VM_LANG->_('CMN_EMAIL').": <a href=\"mailto:" . $from_email."\">".$from_email."</a>";
-		// New in version 1.0.5
-		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
-			$shopper_footer_html .= "<br /><br />____________________________________________<br />";
-			$shopper_footer_html .= '<h5>'.$legal_info_title.'</h5>';
-			$shopper_footer_html .= $legal_info_html.'<br />';
-		}
-		
 		// Vendor Header
 		$vendor_header = $VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4',false)."\n";
 
 		// Vendor Footer
 		$vendor_footer = "\n\n".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5',false)."\n";
 		$vendor_footer .= $vendor_order_link;
-
-		$vendor_footer_html = "<br /><br /><a title=\"".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5')."\" href=\"$vendor_order_link\">"
-		. $VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5')."</a>";
 
 		$vendor_email = $from_email;
 
@@ -1808,73 +1798,42 @@ Order Total: '.$order_total.'
 		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_DATE',false).":   ";
 		$shopper_message .= strftime( $VM_LANG->_('DATE_FORMAT_LC'), $db->f("cdate") ) . "\n";
 		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS',false).": ";
-		
-		$dbos = new ps_DB;
-
-		$q = "SELECT order_status_id, order_status_name FROM `#__{vm}_order_status` WHERE order_status_code='".$db->f("order_status")."'";
-		$dbos->query($q);
-		$dbos->next_record();
-		
-		$shopper_message .= $dbos->f("order_status_name")."\n\n";
-		$order_status = $dbos->f("order_status_name");
-		
-		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUST_INFO_LBL',false)."\n";
-		$shopper_message .= "--------------------\n\n";
-		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_BILL_TO_LBL',false)."\n";
-		$shopper_message .= "-------\n\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY',false).":    ";
-		$shopper_message .= $dbbt->f("company") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME',false).":       ";
-		if ($dbbt->f("title")) {
-			$shopper_message .= $dbbt->f("title") . " ";
+				
+		$shopper_message .= $order_status."\n\n";
+				
+		// BillTo Fields		
+		$registrationfields = ps_userfield::getUserFields('registration', false, '', false, true );
+		foreach( $registrationfields as $field ) {
+			if( $field->name == 'email') $field->name = 'user_email';
+			if( $field->name == 'delimiter_sendregistration') continue;
+			
+			if( $field->type == 'delimiter') {
+				$shopper_message .= ($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title)."\n";
+				$shopper_message .= "--------------------\n\n";
+			} else {
+				$shopper_message .= ($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title).':    ';
+				$shopper_message .= $dbst->f($field->name) . "\n";
+			}
 		}
-		$shopper_message .= $dbbt->f("first_name") . " ";
-		if ($dbbt->f("middle_name")) {
-			$shopper_message .= $dbbt->f("middle_name") . " ";
-		}
-		$shopper_message .= $dbbt->f("last_name") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_1',false).":   ";
-		$shopper_message .= $dbbt->f("address_1") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_2',false).":   ";
-		$shopper_message .= $dbbt->f("address_2") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY',false).":       ";
-		$shopper_message .= $dbbt->f("city") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE',false).":      ";
-		$shopper_message .= $dbbt->f("state") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP',false).":        ";
-		$shopper_message .= $dbbt->f("zip") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY',false).":    ";
-		$shopper_message .= $dbbt->f("country") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE',false).":      ";
-		$shopper_message .= $dbbt->f("phone_1") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX',false).":        ";
-		$shopper_message .= $dbbt->f("fax") . "\n\n";
-
-		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIP_TO_LBL',false)."\n";
+		
+		// Shipping Fields
+		$shopper_message .= "\n\n";
+		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIP_TO_LBL')."\n";
 		$shopper_message .= "-------\n\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_COMPANY',false).":    ";
-		$shopper_message .= $dbst->f("company") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_NAME',false).":       ";
-		$shopper_message .= $dbbt->f("title") . " ";
-		$shopper_message .= $dbst->f("first_name") . " ";
-		$shopper_message .= $dbst->f("middle_name") . " ";
-		$shopper_message .= $dbst->f("last_name") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_1',false).":   ";
-		$shopper_message .= $dbst->f("address_1") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_ADDRESS_2',false).":   ";
-		$shopper_message .= $dbst->f("address_2") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_CITY',false).":       ";
-		$shopper_message .= $dbst->f("city") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_STATE',false).":      ";
-		$shopper_message .= $dbst->f("state") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_ZIP',false).":        ";
-		$shopper_message .= $dbst->f("zip") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_COUNTRY',false).":    ";
-		$shopper_message .= $dbst->f("country") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_PHONE',false).":      ";
-		$shopper_message .= $dbst->f("phone_1") . "\n";
-		$shopper_message .= "     ".$VM_LANG->_('PHPSHOP_ORDER_PRINT_FAX',false).":        ";
-		$shopper_message .= $dbst->f("fax") . "\n\n";
+		
+		$shippingfields = ps_userfield::getUserFields('shipping', false, '', false, true );
+		foreach( $shippingfields as $field ) {			
+			
+			if( $field->type == 'delimiter') {
+				$shopper_message .= ($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title)."\n";
+				$shopper_message .= "--------------------\n\n";
+			} else {
+				$shopper_message .= ($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title).':    ';
+				$shopper_message .= $dbst->f($field->name) . "\n";
+			}
+		}
+		
+		$shopper_message .= "\n\n";
 
 		$shopper_message .= $VM_LANG->_('PHPSHOP_ORDER_PRINT_ITEMS_LBL',false)."\n";
 		$shopper_message .= "-----------";
@@ -2018,169 +1977,86 @@ Order Total: '.$order_total.'
 
 			$dboi->query($q_oi);
 
-			// CREATE THE LIST WITH ALL ORDER ITEMS
-			// TO BE PLACED INTO {phpShopOrderItems}
-			$order_items = "";
-			$sub_total = 0.00;
-			while($dboi->next_record()) {
-				$my_qty = $dboi->f("product_quantity");
-				$order_items .= "<tr class=\"Stil1\"><td>". $my_qty . "</td>";
-				$order_items .= "<td>".$dboi->f("product_name");
-				if($dboi->f("product_attribute"))
-				$order_items .= " (".$dboi->f("product_attribute") .")";
-				$order_items .= "</td>";
-				$order_items .= "<td>".$ps_product->get_field($dboi->f("product_id"), "product_sku") . "</td>";
-				if ($auth["show_price_including_tax"] == 1) {
-					$price = $dboi->f("product_final_price");
-					$my_price = $CURRENCY_DISPLAY->getFullValue($dboi->f("product_final_price"), '', $db->f('order_currency'));
-				} else {
-					$price = $dboi->f("product_item_price");
-					$my_price = $CURRENCY_DISPLAY->getFullValue($dboi->f("product_item_price"), '', $db->f('order_currency'));
-				}
-				$order_items .= "<td>".$my_price. "</td>";
-				$my_subtotal = $my_qty * $price;
-				$sub_total += $my_subtotal;
-				$order_items .= "<td>".$CURRENCY_DISPLAY->getFullValue($my_subtotal, '', $db->f('order_currency'))."</td></tr>";
+			// Create Template Object 
+			$template = vmTemplate::getInstance();
+			
+			if ($order_discount > 0) {
+				$order_discount_lbl = $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
+				$order_discount_plusminus = '-';
+			} else {
+				$order_discount_lbl = $VM_LANG->_('PHPSHOP_FEE');
+				$order_discount_plusminus = '+';
 			}
-			// DISCOUNT HANDLING
-			$order_disc1 = $order_disc2 = $order_disc3 ="";
-
-			if ( PAYMENT_DISCOUNT_BEFORE == '1') {
-				if ($order_discount > 0 || $order_discount < 0) {
-					if ($order_discount > 0) {
-						$order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT').": </td>";
-						$order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td>";
-					}
-					elseif ($order_discount < 0) {
-						$order_disc1 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_('PHPSHOP_FEE').": </td>";
-						$order_disc1 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td></tr>";
-					}
-				}
-				if ($coupon_discount > 0 || $coupon_discount < 0) {
-					$order_disc1 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_('PHPSHOP_COUPON_DISCOUNT').": </td>";
-					if ($coupon_discount > 0)
-					$order_disc1 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td>";
-					elseif ($coupon_discount < 0)
-					$order_disc1 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td></tr>";
-				}
-			}
-			elseif ( PAYMENT_DISCOUNT_BEFORE != '1') {
-				if ($order_discount > 0) {
-					$order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT').": </td>";
-					$order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td>";
-				}
-				elseif ($order_discount < 0) {
-					$order_disc2 = "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_('PHPSHOP_FEE').": </td>";
-					$order_disc2 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency'))."</td></tr>";
-				}
-				if ($coupon_discount > 0 || $coupon_discount < 0) {
-					$order_disc2 .= "<tr class=\"Stil1\"><td align=\"right\" colspan=\"4\">".$VM_LANG->_('PHPSHOP_COUPON_DISCOUNT').": </td>";
-					if ($coupon_discount > 0)
-					$order_disc2 .= "<td>- ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td>";
-					elseif ($coupon_discount < 0)
-					$order_disc2 .= "<td>+ ".$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency'))."</td></tr>";
-				}
+			if ($coupon_discount > 0) {
+				$coupon_discount_lbl = $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
+				$coupon_discount_plusminus = '-';
+			} else {
+				$coupon_discount_lbl = $VM_LANG->_('PHPSHOP_FEE');
+				$coupon_discount_plusminus = '+';
 			}
 
-			// open the HTML file and read it into $html
-			if (file_exists(VM_THEMEPATH."templates/order_emails/email_".$mosConfig_lang.".html")) {
-				$html_file = fopen(VM_THEMEPATH."templates/order_emails/email_".$mosConfig_lang.".html","r");
-			}
-			elseif(file_exists(VM_THEMEPATH."email_".$mosConfig_lang.".html")) {
-				$html_file = fopen(VM_THEMEPATH."email_".$mosConfig_lang.".html","r");
-			}
-			else {
-				$html_file = fopen(VM_THEMEPATH."templates/order_emails/email_english.html","r");
-			}
-
-			$html = "";
-
-			while (!feof($html_file)) {
-				$buffer = fgets($html_file, 1024);
-				$html .= $buffer;
-			}
-			fclose ($html_file);
-
-			$v_sn = $dbv->f("vendor_store_name"); $v_ad1 = $dbv->f("vendor_address_1"); $v_ad2 = $dbv->f("vendor_address_2");
-			$v_zip = $dbv->f("vendor_zip"); $v_ci = $dbv->f("vendor_city"); $v_st = $dbv->f("vendor_state");
-			$v_vfi = "<img src=\"cid:vendor_image\" alt=\"vendor_image\" border=\"0\" />";
-			$v_oi = $db->f("order_id");
-
-			// now parse the email template and replace
-			// the placeholders with the real data.
-			$html = str_replace('{phpShopVendorName}',$v_sn,$html);
-			$html = str_replace('{phpShopVendorStreet1}',$v_ad1,$html);
-			$html = str_replace('{phpShopVendorStreet2}',$v_ad2,$html);
-			$html = str_replace('{phpShopVendorZip}',$v_zip,$html);
-			$html = str_replace('{phpShopVendorCity}',$v_ci,$html);
-			$html = str_replace('{phpShopVendorState}',$v_st,$html);
-			$html = str_replace('{phpShopVendorImage}',$v_vfi,$html);
-			$html = str_replace('{phpShopOrderHeader}',$VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_LBL'),$html);
-			$html = str_replace('{phpShopOrderNumber}',$v_oi,$html);
-			$html = str_replace('{phpShopOrderDate}',strftime( $VM_LANG->_('DATE_FORMAT_LC'), $db->f("cdate") ),$html);
-			$html = str_replace('{phpShopOrderStatus}', $order_status, $html);
-
-			$html = str_replace('{phpShopBTCompany}', $dbbt->f("company"), $html);
-			$html = str_replace('{phpShopBTName}', $dbbt->f("first_name")." ".$dbbt->f("middle_name")." ".$dbbt->f("last_name"), $html);
-			$html = str_replace('{phpShopBTStreet1}', $dbbt->f("address_1"), $html);
-			$html = str_replace('{phpShopBTStreet2}', $dbbt->f("address_2"), $html);
-			$html = str_replace('{phpShopBTCity}', $dbbt->f("city"), $html);
-			$html = str_replace('{phpShopBTState}', $dbbt->f("state"), $html);
-			$html = str_replace('{phpShopBTZip}', $dbbt->f("zip"), $html);
-			$html = str_replace('{phpShopBTCountry}', $dbbt->f("country"), $html);
-			$html = str_replace('{phpShopBTPhone}', $dbbt->f("phone_1"), $html);
-			$html = str_replace('{phpShopBTFax}', $dbbt->f("fax"), $html);
-			$html = str_replace('{phpShopBTEmail}', $dbbt->f("user_email"), $html);
-
-			$html = str_replace('{phpShopSTCompany}', $dbst->f("company"), $html);
-			$html = str_replace('{phpShopSTName}', $dbst->f("first_name")." ".$dbst->f("middle_name")." ".$dbst->f("last_name"),$html);
-			$html = str_replace('{phpShopSTStreet1}', $dbst->f("address_1"), $html);
-			$html = str_replace('{phpShopSTStreet2}', $dbst->f("address_2"), $html);
-			$html = str_replace('{phpShopSTCity}', $dbst->f("city"), $html);
-			$html = str_replace('{phpShopSTState}', $dbst->f("state"), $html);
-			$html = str_replace('{phpShopSTZip}', $dbst->f("zip"), $html);
-			$html = str_replace('{phpShopSTCountry}', $dbst->f("country"), $html);
-			$html = str_replace('{phpShopSTPhone}', $dbst->f("phone_1"), $html);
-			$html = str_replace('{phpShopSTFax}', $dbst->f("fax"), $html);
-
-			$html = str_replace('{phpShopOrderItems}',$order_items,$html);
-
-			$html = str_replace('{phpShopOrderSubtotal}',$CURRENCY_DISPLAY->getFullValue($sub_total, '', $db->f('order_currency')),$html);
-			$html = str_replace('{phpShopOrderShipping}',$CURRENCY_DISPLAY->getFullValue($order_shipping, '', $db->f('order_currency')),$html);
-			$html = str_replace('{phpShopOrderTax}',$CURRENCY_DISPLAY->getFullValue($order_tax, '', $db->f('order_currency')). ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ), $html );
-
-			$html = str_replace('{phpShopOrderTotal}',$CURRENCY_DISPLAY->getFullValue($order_total, '', $db->f('order_currency')),$html);
-
-			$html = str_replace('{phpShopOrderDisc1}',$order_disc1, $html);
-			$html = str_replace('{phpShopOrderDisc2}',$order_disc2, $html);
-			$html = str_replace('{phpShopOrderDisc3}',$order_disc3, $html);
-			$html = str_replace('{phpShopCustomerNote}',nl2br($customer_note), $html);
-
-			$html = str_replace('{PAYMENT_INFO_LBL}', $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYINFO_LBL'), $html);
-
-			$html = str_replace('{PAYMENT_INFO_DETAILS}', $payment_info_details, $html);
-
-			$html = str_replace('{SHIPPING_INFO_LBL}', $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_LBL'), $html);
 			if( is_object($this->_SHIPPING) ) {
-				$html = str_replace('{SHIPPING_INFO_DETAILS}', stripslashes($shipping_arr[1])." (".stripslashes($shipping_arr[2]).")", $html);
+				$shipping_info_details = stripslashes($shipping_arr[1])." (".stripslashes($shipping_arr[2]).")";
 			}
 			else {
-				$html = str_replace('{SHIPPING_INFO_DETAILS}', " ./. ", $html);
+				$shipping_info_details = ' ./. ';
 			}
+			// These are a lot of vars to import for the email confirmation
+			$template->set_vars(array(
+														'is_email_to_shopper' => true,
+														'db' => $db,
+														'dboi' => $dboi,
+														'dbbt' => $dbbt,
+														'dbst' => $dbst,
+														'ps_product' => $ps_product,
+														'shippingfields' => $shippingfields,
+														'registrationfields' => $registrationfields,
+														'order_id' => $order_id,
+														'order_discount' => $order_discount,
+														'order_discount_lbl' => $order_discount_lbl,
+														'order_discount_plusminus' => $order_discount_plusminus,			
+														'coupon_discount' => $coupon_discount,
+														'coupon_discount_lbl' => $coupon_discount_lbl,
+														'coupon_discount_plusminus' => $coupon_discount_plusminus,
+														'order_date' => $VM_LANG->convert( strftime( $VM_LANG->_('DATE_FORMAT_LC'), $db->f("cdate") )),
+														'order_status' => $order_status,
+														'legal_info_title' => $legal_info_title,
+														'legal_info_html' => $legal_info_html,
+														'order_link' => $shopper_order_link,
 			
-			$shopper_html = str_replace('{phpShopOrderHeaderMsg}',$shopper_header, $html);
-			$shopper_html = str_replace('{phpShopOrderClosingMsg}',$shopper_footer_html, $shopper_html);
+														'payment_info_lbl' => $VM_LANG->_('PHPSHOP_ORDER_PRINT_PAYINFO_LBL'),
+														'payment_info_details' => $payment_info_details,
+														'shipping_info_lbl' => $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_LBL'),
+														'shipping_info_details' => $shipping_info_details,
 			
-			$vendor_html = str_replace('{phpShopOrderHeaderMsg}',$vendor_header, $html);
-			$vendor_html = str_replace('{phpShopOrderClosingMsg}',$vendor_footer_html,$vendor_html);
-			$html = $shopper_html;
+														'from_email' => $from_email,
+														'customer_note' => nl2br($customer_note),
+														'order_header_msg' => $shopper_header,
+			
+														'order_subtotal' => $CURRENCY_DISPLAY->getFullValue($sub_total, '', $db->f('order_currency')),
+														'order_shipping' => $CURRENCY_DISPLAY->getFullValue($order_shipping, '', $db->f('order_currency')),
+														'order_tax' => $CURRENCY_DISPLAY->getFullValue($order_tax, '', $db->f('order_currency')). ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ),
+														'order_total' => $CURRENCY_DISPLAY->getFullValue($order_total, '', $db->f('order_currency')),
+			
+											));
+			$shopper_html = $template->fetch('order_emails/confirmation_email.tpl.php');
+			
+			// Override some vars for the vendor email, so we can use the same template
+			$template->set_vars(array(
+														'order_header_msg' => $vendor_header,
+														'order_link' => $vendor_order_link,
+														'is_email_to_shopper' => false
+											));
+											
+			$vendor_html = $template->fetch('order_emails/confirmation_email.tpl.php');
+
 
 			/*
 			* Add the text, html and embedded images.
 			* The name of the image should match exactly
 			* (case-sensitive) to the name in the html.
 			*/
-			$shopper_mail_Body = $html;
+			$shopper_mail_Body = $shopper_html;
 			$shopper_mail_AltBody = $shopper_header . $shopper_message . $shopper_footer;
 
 			$vendor_mail_Body = $vendor_html;

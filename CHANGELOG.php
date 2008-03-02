@@ -35,12 +35,18 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+02.03.2008 soeren
+- removed email_*.html (localized email templates)
+^ changed Order Confirmation Email to use a php-based template (/order_emails/confirmation_email.tpl.php)
++ custom registration/user fields are sent with confirmation email now 
+
 29.02.2008 gregdev
 # Task #1415 - no account creation bug
 # Fixed missing global variable when adding custom attributes.
 # Task #1832 - Flypage not change on product browsing...
-
 29.02.2008 soeren
+# Task #1815 - Cancelling user field it creates a blank / empty user field 
 # Task #1816 - User fields, value section sometime is shows sometime it doesn't
 # Task #1833 - quantity ,drop down list, add to cart
 # Task #1834 - list of prices, thanks Valerie!

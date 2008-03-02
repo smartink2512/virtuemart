@@ -175,6 +175,12 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	}
 
 	if( $option == "com_virtuemart" ) {
+
+	    // The Page will change with every different parameter / argument, so provide this for identification
+	    // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
+	    // or the caching time range has expired
+		$GLOBALS['cache_id'] = 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
+		
 		// Check if we have to run a Shop Function
 		// and if the user is allowed to execute it
 		$funcParams = $ps_function->checkFuncPermissions( $func );
@@ -198,7 +204,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 
 		$ok = true;
 
-		if ( !empty( $funcParams["method"] ) ) {
+		if ( !empty( $funcParams["method"] ) && vmGet($_REQUEST, 'task') != 'cancel' ) {
 			// Protection against Cross-Site Request Forgery
 			if( vmIsAdminMode() && !vmSpoofCheck(null, $sess->getSessionId() ) ) {
 				return;
@@ -281,11 +287,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	if( !defined( '_VM_IS_BACKEND' )&& !class_exists('jfactory')) {
 		$my = $mainframe->getUser();
 	}
-
-    // The Page will change with every different parameter / argument, so provide this for identification
-    // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
-    // or the caching time range has expired
-	$GLOBALS['cache_id'] = 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
 	
 	if( empty($_REQUEST['only_page']) ) {
 		// the Log object holds all error messages
