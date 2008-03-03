@@ -30,9 +30,10 @@ class ps_product_type {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
-
+		global $VM_LANG;
+		
 		if (empty($d["product_type_name"])) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the Product Type.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -48,11 +49,12 @@ class ps_product_type {
 	 * @return boolean
 	 */
 	function validate_delete( $product_type_id, &$d) {
-
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		if (empty( $product_type_id)) {
-			$GLOBALS['vmLogger']->err( 'Please select a Product Type to delete.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_DELETE_SELECT') );
 			return False;
 		}
 
@@ -66,9 +68,10 @@ class ps_product_type {
 	 * @return boolean
 	 */
 	function validate_update(&$d) {
-
+		global $VM_LANG;
+		
 		if (!$d["product_type_name"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the Product Type.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -84,6 +87,8 @@ class ps_product_type {
 	 * @return boolean
 	 */
 	function add(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		if ($this->validate_add($d)) {
@@ -125,11 +130,13 @@ class ps_product_type {
 			$db->setQuery($q);
 			
 			if( $db->query() === false ) {
-				$GLOBALS['vmLogger']->err( 'Failed to create a new table for this Product Type!!');
+				$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_ADD_FAILED') );
 				return false;
+			} else {
+				$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_TYPE_ADDED') );
+				return true;
 			}
 			
-			return true;
 		}
 		else {
 			return False;

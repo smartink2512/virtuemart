@@ -106,7 +106,7 @@ class canadapost {
 		$this->xml_request = 
 "<?phpxml version=\"1.0\" ?>
 <eparcel>
-	<language>".$VM_LANG->_('PHPSHOP_CPOST_SEND_LANGUAGE_CODE')."</language>
+	<language>".$VM_LANG->_('VM_CANADAPOST_SEND_LANGUAGE_CODE')."</language>
 	<ratesAndServicesRequest>
 		<merchantCPCID>" . $this->merchant_cpcid . "</merchantCPCID>
 		<lineItems>" ;
@@ -214,8 +214,8 @@ class canadapost {
       <table width="100%"><tr class="sectiontableheader">
 	  <th>&nbsp;</th>
 	  <th><?php echo $VM_LANG->_('PHPSHOP_ISSHIP_LIST_CARRIER_LBL') ?></th>
- 	  <th><?php echo $VM_LANG->_('PHPSHOP_CPOST_FORM_HANDLING_DATE') ?><sup>1</sup></th>
-	  <th><?php echo $VM_LANG->_('PHPSHOP_CPOST_FORM_HANDLING_LBL') ?><sup>2</sup></th>
+ 	  <th><?php echo $VM_LANG->_('VM_CANADAPOST_FORM_HANDLING_DATE') ?><sup>1</sup></th>
+	  <th><?php echo $VM_LANG->_('VM_CANADAPOST_FORM_HANDLING_LBL') ?><sup>2</sup></th>
       </tr>
       <?php
 	  	foreach( $this->shipping_methods as $m ){
@@ -235,7 +235,7 @@ class canadapost {
 			if (($timestamp = strtotime($str)) === -1) {
 			   $str = html_entity_decode($m["deliveryDate"]);
 			} else {
-				if ($VM_LANG->_('PHPSHOP_CPOST_SEND_LANGUAGE_CODE') == "FR") {
+				if ($VM_LANG->_('VM_CANADAPOST_SEND_LANGUAGE_CODE') == "FR") {
 					setlocale(LC_ALL, 'fr');		   
 					$str = strftime('%A %d %B %Y',$timestamp);
 				} else {
@@ -333,58 +333,58 @@ class canadapost {
     ?>
       <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr>
-		  <td width="20%"><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID') ?></strong>:</td>
+		  <td width="20%"><strong><?php echo $VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID') ?></strong>:</td>
 		  <td colspan="3" width="80%">
 			  <input type="text" name="MERCHANT_CPCID" class="inputbox" value="<?php echo MERCHANT_CPCID ?>" />
-			  <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID_EXPLAIN')) ?>
+			  <?php echo mm_ToolTip($VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_MERCHANT_CPCID_EXPLAIN')) ?>
 		  </td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER') ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_SERVER') ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_SERVER" class="inputbox" value="<?php echo CP_SERVER ?>" />
-			  <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_SERVER_EXPLAIN')) ?>
+			  <?php echo mm_ToolTip($VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_SERVER_EXPLAIN')) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT') ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_PORT') ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_PORT" class="inputbox" value="<?php echo CP_PORT ?>" />
-				<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PORT_EXPLAIN')) ?>
+				<?php echo mm_ToolTip($VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_PORT_EXPLAIN')) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX') ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX') ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_FEDERAL_TAX" class="inputbox" value="<?php echo CP_FEDERAL_TAX ?>" />
-				<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX_EXPLAIN')) ?>
+				<?php echo mm_ToolTip($VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX_EXPLAIN')) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX') ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX') ?></strong>:
 			</td>
 			<td colspan="3">
 				<input type="text" name="CP_PROVINCIAL_TAX" class="inputbox" value="<?php echo CP_PROVINCIAL_TAX ?>" />
-				<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX_EXPLAIN')) ?>
+				<?php echo mm_ToolTip($VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_CP_PROVINCIAL_TAX_EXPLAIN')) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN') ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN') ?></strong>:
 			</td>
 			<td colspan="3">
 				<textarea name="CP_ARRIVAL_DATE_EXPLAIN" class="inputbox" cols="50" rows="5" ><?php echo CP_ARRIVAL_DATE_EXPLAIN ?></textarea>
-				<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN_I')) ?>
+				<?php echo mm_ToolTip($VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN_I')) ?>
 			</td>
 		</tr>
 		<tr>
-			<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN') ?></strong>:
+			<td><strong><?php echo $VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN') ?></strong>:
 			</td>
 			<td colspan="3">
 				<textarea name="CP_HANDLING_CHARGE_EXPLAIN" class="inputbox" cols="50" rows="5" ><?php echo CP_HANDLING_CHARGE_EXPLAIN ?></textarea>
-				<?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN_I')) ?>
+				<?php echo mm_ToolTip($VM_LANG->_('VM_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN_I')) ?>
 			</td>
 		</tr>
 		<tr>

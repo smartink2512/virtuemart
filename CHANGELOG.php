@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.03.2008 thepisu
+# Task #1845 - PHPSHOP_USER_FORM_TITLEshout not be used in ps_product_attribute
+# Task #1852 - Missing language in Canada post.
+# added various translation strings (module "common")
+
 03.03.2008 soeren
 # Task #1862 - Random Product Module: table layout don't output correct xhtml
 # Task #1860 - cannot send order, error and wrong page after step 4

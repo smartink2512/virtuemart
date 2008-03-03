@@ -135,7 +135,7 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					 <?php } ?>
 					 
 					<li class="item-smenu vmicon vmicon-16-content">
-					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.update_check") ?>">Check for Updates</a>
+					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&amp;page=admin.update_check") ?>"><?php echo $VM_LANG->_('VM_CHECK_UPDATES_MNU') ?></a>
 					</li>
 					</ul>
 					</div>

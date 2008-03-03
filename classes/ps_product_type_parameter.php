@@ -29,23 +29,24 @@ class ps_product_type_parameter {
 	 * @return boolean
 	 */
 	function validate_add_parameter( &$d ) {
+		global $VM_LANG;
 		
 		if( empty($d["parameter_name"])) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the Parameter.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
 			return False ;
 		}
 		if( empty($d["parameter_label"])) {
 			if( $d["parameter_type"] == "B" ) { // Break line
 				$d["parameter_label"] = $d["parameter_name"] ;
 			} else {
-				$GLOBALS['vmLogger']->err( 'You must enter a label for the Parameter.' );
+				$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_LABEL') );
 				return False ;
 			}
 		}
 		
 		// field Value:
 		if( @$d["parameter_multiselect"] == "Y" && $d["parameter_values"] == "" ) {
-			$GLOBALS['vmLogger']->err( 'If You checked Multiple select you must enter a Possible Values.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_VALUES') );
 			return False ;
 		}
 		
@@ -58,7 +59,7 @@ class ps_product_type_parameter {
 		$db->query( $q ) ;
 		$db->next_record() ;
 		if( $db->f( "count" ) != 0 ) {
-			$GLOBALS['vmLogger']->err( 'The Parameter with this name in this Product Type already exist.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_EXIST') );
 			return False ;
 		}
 		
@@ -72,11 +73,12 @@ class ps_product_type_parameter {
 	 * @return boolean
 	 */
 	function validate_delete_parameter( &$d ) {
+		global $VM_LANG;
 		
 		$db = new ps_DB( ) ;
 		
 		if( empty($d["product_type_id"]) || empty($d["parameter_name"])) {
-			$GLOBALS['vmLogger']->err( 'Please select a Parameter to delete.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_DELETE_SELECT') );
 			return False ;
 		}
 		
@@ -90,16 +92,17 @@ class ps_product_type_parameter {
 	 * @return boolean
 	 */
 	function validate_update_parameter( &$d ) {
+		global $VM_LANG;
 		
 		if( empty($d["parameter_name"]) ) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the Parameter.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
 			return False ;
 		} elseif( empty($d["parameter_label"])) {
-			$GLOBALS['vmLogger']->err( 'You must enter a label for the Parameter.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_LABEL') );
 			return False ;
 		} // field Value:
 		elseif( @$d["parameter_multiselect"] == "Y" && $d["parameter_values"] == "" ) {
-			$GLOBALS['vmLogger']->err( 'If You checked Multiple select you must enter a Possible Values.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_VALUES') );
 			return False ;
 		} 
 
@@ -114,7 +117,7 @@ class ps_product_type_parameter {
 			$db->query( $q ) ;
 			$db->next_record() ;
 			if( $db->f( "count" ) != 0 ) {
-				$GLOBALS['vmLogger']->err( 'A Parameter with this name in this Product Type already exist.' );
+				$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_EXIST') );
 				return False ;
 			}
 		}
@@ -128,6 +131,8 @@ class ps_product_type_parameter {
 	 * @return boolean
 	 */
 	function add_parameter( &$d ) {
+		global $VM_LANG;
+		
 		$db = new ps_DB( ) ;
 		
 		if( $this->validate_add_parameter( $d ) ) {
@@ -208,7 +213,7 @@ class ps_product_type_parameter {
 					$q .= "DEFAULT '" . $d["parameter_default"] . "' NOT NULL;" ;
 				}
 				if( $db->query($q) === false ) {
-					$GLOBALS['vmLogger']->err('Adding the new parameter field to the table failed.');
+					$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED') );
 					return false;
 				}
 				
@@ -225,7 +230,7 @@ class ps_product_type_parameter {
 					$db->query( $q );
 				}
 			}
-			$GLOBALS['vmLogger']->info( 'The Parameter has been added.' );
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ADDED') );
 			return true ;
 		} else {
 			return False ;

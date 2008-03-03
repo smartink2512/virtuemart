@@ -31,10 +31,10 @@ class ps_product_attribute {
 	 * @return boolean True when successful, false when not
 	 */
 	function validate(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$valid = true;
 		if ($d["attribute_name"] == "") {
-			$vmLogger->err( "An attribute name must be entered." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_ATTRIBUTE_ERR_ATTRNAME') );
 			$valid = false;
 		}
 		elseif ($d["old_attribute_name"] != $d["attribute_name"]) {
@@ -44,7 +44,7 @@ class ps_product_attribute {
 			$q .= "AND product_id = '" . (int)$d["product_id"] . "'";
 			$db->query($q);
 			if ($db->next_record()) {
-				$vmLogger->err( "A unique attribute name must be entered." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_ATTRIBUTE_ERR_ATTRUNIQ') );
 				$valid = false;
 			}
 		}
@@ -58,7 +58,7 @@ class ps_product_attribute {
 	 * @return boolean True when successful, false when not
 	 */
 	function validate_delete(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		require_once(CLASSPATH. 'ps_product.php' );
 
 		$ps_product = new ps_product;
@@ -67,7 +67,7 @@ class ps_product_attribute {
 		$q  = 'SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id = ' .(int)$d["product_id"];
 		$db->query($q);
 		if ($db->num_rows() == 1 &&	$ps_product->parent_has_children($d["product_id"])) {
-			$vmLogger->err( "Cannot delete last attribute while product has Items. Delete all Items first." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_ATTRIBUTE_ERR_DELITEMS') );
 			return false;
 		}
 
@@ -81,6 +81,8 @@ class ps_product_attribute {
 	 * @return boolean True when successful, false when not
 	 */
 	function add(&$d) {
+		global $VM_LANG;
+		
 		if (!$this->validate($d)) {
 			return false;
 		}
@@ -92,7 +94,7 @@ class ps_product_attribute {
 						);
 		$db->buildQuery( 'INSERT', '#__{vm}_product_attribute_sku', $fields );
 		if( $db->query() === false ) {
-			$GLOBALS['vmLogger']->err('Saving the attribute failed.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_ATTRIBUTE_ERR_SAVING') );
 			return false;
 		}
 
@@ -107,7 +109,7 @@ class ps_product_attribute {
 			$db->buildQuery( 'INSERT', '#__{vm}_product_attribute', $fields );
 			$db->query();
 		}
-		$GLOBALS['vmLogger']->info('The Attribute has been saved.');
+		$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_ATTRIBUTE_SAVED') );
 		return true;
 	}
 
@@ -118,6 +120,8 @@ class ps_product_attribute {
 	 * @return boolean True when successful, false when not
 	 */
 	function update(&$d) {
+		global $VM_LANG;
+		
 		if (!$this->validate($d)) {
 			return false;
 		}
@@ -130,7 +134,7 @@ class ps_product_attribute {
 					);
 		$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute_sku', $fields, "WHERE product_id='" . (int)$d["product_id"] . "' AND attribute_name='" . $db->getEscaped($d["old_attribute_name"]) . "'" );
 		if( $db->query() === false ) {
-			$GLOBALS['vmLogger']->err('Updating the attribute failed.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_ATTRIBUTE_ERR_UPDATING') );
 			return false;
 		}
 
@@ -144,7 +148,7 @@ class ps_product_attribute {
 				$db->query();
 			}
 		}
-		$GLOBALS['vmLogger']->info('The Attribute has been updated.');
+		$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_ATTRIBUTE_UPDATED') );
 		return true;
 	}
 
@@ -1128,7 +1132,7 @@ class ps_product_attribute {
 	{
 		global $VM_LANG;
 		
-		echo '<input type="hidden" name="js_lbl_title" value="'.$VM_LANG->_('PHPSHOP_USER_FORM_TITLE').'" />
+		echo '<input type="hidden" name="js_lbl_title" value="'.$VM_LANG->_('PHPSHOP_PRODUCT_FORM_TITLE').'" />
 		      <input type="hidden" name="js_lbl_property" value="'.$VM_LANG->_('PHPSHOP_PRODUCT_FORM_PROPERTY').'" />
 		      <input type="hidden" name="js_lbl_property_new" value="'.$VM_LANG->_('PHPSHOP_PRODUCT_FORM_PROPERTY_NEW').'" />
 		      <input type="hidden" name="js_lbl_attribute_new" value="'.$VM_LANG->_('PHPSHOP_PRODUCT_FORM_ATTRIBUTE_NEW').'" />
@@ -1141,7 +1145,7 @@ class ps_product_attribute {
 			<table id="attributeX_table_0" cellpadding="0" cellspacing="0" border="0" class="adminform" width="30%">
 			  <tbody width="30%">
 			  <tr>
-			    <td width="5%"><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_TITLE');?></td>
+			    <td width="5%"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_TITLE');?></td>
 			    <td align="left" colspan="2">
 			    <input type="text" name="attributeX[0][name]" value="" size="60"/>
 			    </td>
@@ -1177,7 +1181,7 @@ class ps_product_attribute {
 			<table id="attributeX_table_<?php echo $i;?>" cellpadding="0" cellspacing="0" border="0" class="adminform" width="30%">
 			  <tbody width="30%">
 			  <tr>
-			    <td width="5%"><?php echo $VM_LANG->_('PHPSHOP_USER_FORM_TITLE');?></td>
+			    <td width="5%"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_TITLE');?></td>
 			    <td align="left" colspan="2">
 			    <input type="text" name="attributeX[<?php echo $i;?>][name]" value="<?php echo $dropdown_name;?>" size="60"/>
 			    </td>
