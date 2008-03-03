@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.03.2008 soeren
+# Task #1862 - Random Product Module: table layout don't output correct xhtml
+# Task #1860 - cannot send order, error and wrong page after step 4
 
 02.03.2008 soeren
 # Task #1810 - When Product Price field is empty on the category view error is given.

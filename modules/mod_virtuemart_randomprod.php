@@ -73,7 +73,7 @@ while($db->next_record()){
 }
 
 if($db->num_rows() > 0) { ?>
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
     <?php
 
 	srand ((double) microtime() * 10000000);
@@ -90,11 +90,11 @@ if($db->num_rows() > 0) { ?>
 	
       if ($max_items==1) { ?>
         <tr align="center" class="sectiontableentry1">
-          <td><?php
+		<td><?php
             $ps_product->show_snapshot($prodlist[$rand_prods], $show_price, $show_addtocart);
             ?><br />
-            </td>
-          </tr><?php
+		</td>
+	</tr><?php
       }
       
       else { 
@@ -106,10 +106,9 @@ if($db->num_rows() > 0) { ?>
               
           if( $display_style == "vertical" ) {
           ?>
-            <tr align="center" class="<?php echo $sectioncolor ?>">
-              <td><?php $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart); ?><br /></td>
-            </tr>
-<?php
+			<tr align="center" class="<?php echo $sectioncolor ?>">
+				<td><?php $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart); ?><br /></td>
+			</tr><?php
           }
           elseif( $display_style== "horizontal" ) {
             if( $i == 0 )
@@ -126,16 +125,15 @@ if($db->num_rows() > 0) { ?>
             echo "<td align=\"center\">";
             $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart);
             echo "</td>\n";
-            if ( ($i+1) % $products_per_row == 0)
-              echo "</tr><tr>\n";
-            if( ($i+1) == $max_items )
-              echo "</tr>\n";
-          }
+          if( ($i+1) == $max_items ) {
+            	echo "</tr>\n";
+          } elseif( ($i+1) % $products_per_row == 0) {
+          	echo "</tr><tr>\n";            
         }
       }
         ?>
   </table>
-    <?php
+<?php
     
 }
 
