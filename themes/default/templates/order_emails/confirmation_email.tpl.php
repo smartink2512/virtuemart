@@ -116,7 +116,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 	          	case 'country':
 	          		require_once(CLASSPATH.'ps_country.php');
 	          		$country = new ps_country();
-	          		$dbc = $country->get_country_by_code($dbbt->f($field->name));
+	          		$dbc = $country->get_country_by_code($dbst->f($field->name));
 	          		if( $dbc !== false ) echo $dbc->f('country_name');
 	          		break;
 	          	default: 

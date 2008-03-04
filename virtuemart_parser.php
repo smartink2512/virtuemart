@@ -174,12 +174,12 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$vars = vmRequest::get('', VMREQUEST_ALLOWRAW );
 	}
 
+    // The Page will change with every different parameter / argument, so provide this for identification
+    // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
+    // or the caching time range has expired
+	$GLOBALS['cache_id'] = 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
+		
 	if( $option == "com_virtuemart" ) {
-
-	    // The Page will change with every different parameter / argument, so provide this for identification
-	    // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
-	    // or the caching time range has expired
-		$GLOBALS['cache_id'] = 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
 		
 		// Check if we have to run a Shop Function
 		// and if the user is allowed to execute it

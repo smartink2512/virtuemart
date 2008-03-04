@@ -35,6 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+04.03.2008 soeren
++ new Flypage Template Parameter "product_availability_data" (Array), so product availibility can be customized
+# Bug #1870 - product packaging
+# Bug #1869 - Custom attribute - remove "add to cart " in browse page?
+# Bug #1868 - double quote to remove in addtocart_drop.tpl.php
+# Task #1865 - Please make sure the form is complete and valid.
+# Task #1864 - Confirmation email- wrong shipping country
+# Fixed "Security Token not found" Message on Joomla! 1.0.15 when magic_quotes_gpc = Off	(ps_main.php)
+
 04.03.2008 thepisu
 # Task #1845 - PHPSHOP_USER_FORM_TITLEshout not be used in ps_product_attribute
 # Task #1852 - Missing language in Canada post.
@@ -49,6 +59,7 @@ VirtueMart 1.1.x
 # producted user groups not correctly checked (was able to delete core groups)
 
 03.03.2008 soeren
+# too long words in reviews break the site layout
 # Task #1862 - Random Product Module: table layout don't output correct xhtml
 # Task #1860 - cannot send order, error and wrong page after step 4
 

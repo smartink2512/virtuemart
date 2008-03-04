@@ -42,36 +42,20 @@ class ps_user_address {
 			return $valid;
 		}
 
-		if (empty($d["address_type_name"])) {
-			$d['missing'] .= "address_type_name";
-			$valid = false;
+		require_once( CLASSPATH . 'ps_userfield.php' );
+		$shippingFields = ps_userfield::getUserFields( 'shipping', false, '', true );
+		$skipFields = ps_userfield::getSkipFields();
+		
+		foreach( $shippingFields as $field )  {
+			if( $field->required == 0 ) continue;
+			if( in_array( $field->name, $skipFields )) {
+				continue;
+			}
+			if ( empty( $d[$field->name])) {
+				$valid = false;
+				$vmLogger->err('Please enter a value into the Field "'.($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title ).'"');
+			}
 		}
-		if (empty($d["last_name"])) {
-			$d['missing'] .= "last_name";
-			$valid = false;
-		}
-		if (empty($d["first_name"])) {
-			$d['missing'] .= "first_name";
-			$valid = false;
-		}
-		if (empty($d["address_1"])) {
-			$d['missing'] .= "address_1";
-			$valid = false;
-		}
-		if (empty($d["city"])) {
-			$d['missing'] .= "city";
-			$valid = false;
-		}
-		if (empty($d["zip"])) {
-			$d['missing'] .= "zip";
-			$valid = false;
-		}
-
-		if (empty($d["phone_1"])) {
-			$d['missing'] .= "phone_1";
-			$valid = false;
-		}
-
 		if(empty($d['user_info_id'])) {
 			$db = new ps_DB;
 			$q  = "SELECT user_id from #__{vm}_user_info ";
@@ -134,47 +118,29 @@ class ps_user_address {
 			return false;
 		}
 
-		$d["extra_field_1"] = vmGet( $d, 'extra_field_1', '' );
-		$d["extra_field_2"] = vmGet( $d, 'extra_field_2', '' );
-		$d["extra_field_3"] = vmGet( $d, 'extra_field_3', '' );
-		$d["extra_field_4"] = vmGet( $d, 'extra_field_4', 'N' );
-		$d["extra_field_5"] = vmGet( $d, 'extra_field_5', 'N' );
-
-		$fields = array('user_info_id' => md5( uniqid( $hash_secret )), 
-								'user_id' => !$perm->check("admin,storeadmin") ? $_SESSION['auth']['user_id'] : (int)$d["user_id"],
-								'address_type' => $d["address_type"],
-								'address_type_name' => $d["address_type_name"],
-								'company' => $d["company"],
-								'title' => @$d["title"],
-								'last_name' => $d["last_name"],
-								'first_name' => $d["first_name"] ,
-								'middle_name' => $d["middle_name"],
-								'phone_1' => $d["phone_1"],
-								'phone_2' => $d["phone_2"],
-								'fax' => $d["fax"],
-								'address_1' => $d["address_1"],
-								'address_2' => $d["address_2"],
-								'city' =>$d["city"],
-								'state' => @$d["state"],
-								'country' => $d["country"],
-								'zip' => $d["zip"],
-								'extra_field_1' => $d["extra_field_1"],
-								'extra_field_2' => $d["extra_field_2"],
-								'extra_field_3' => $d["extra_field_3"],
-								'extra_field_4' => $d["extra_field_4"],
-								'extra_field_5' => $d["extra_field_5"],
-								'cdate' => $timestamp,
-								'mdate' => $timestamp 
-								);
+		// Get all fields which where shown to the user
+		$shippingFields = ps_userfield::getUserFields( 'shipping', false, '', true );
+		$skip_fields = ps_userfield::getSkipFields();
+		
+		foreach( $shippingFields as $userField ) {
+			if( !in_array($userField->name, $skip_fields )) {			
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, vmGet( $d, $userField->name, strtoupper($userField->name) ));				
+			}
+		}
+		// These are pre-defined fields.
+		$fields['user_id'] = !$perm->check("admin,storeadmin") ? $_SESSION['auth']['user_id'] : (int)$d["user_id"];
+		$fields['user_info_id'] = md5( uniqid( $hash_secret ));
+		$fields['address_type'] = 'ST';
+		$fields['cdate'] = $timestamp;
+		$fields['mdate'] = $timestamp;
 
 		$db->buildQuery('INSERT', '#__{vm}_user_info', $fields  );
-		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_ADDED'));
-			return true;
-		} else {
+		if( $db->query() === false ) {
 			$GLOBALS['vmLogger']->err($VM_LANG->_('VM_USERADDRESS_ADD_FAILED'));
 			return false;
 		}
+		$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_ADDED'));
+		return true;
 	}
 	
 	/**
@@ -185,51 +151,38 @@ class ps_user_address {
 	 */
 	function update(&$d) {
 		global $perm, $VM_LANG;
+		require_once( CLASSPATH.'ps_userfield.php');
 		$db = new ps_DB;
 		$timestamp = time();
 
 		if (!$this->validate_update($d)) {
 			return false;
 		}
-		$d["extra_field_1"] = vmGet( $d, 'extra_field_1', '' );
-		$d["extra_field_2"] = vmGet( $d, 'extra_field_2', '' );
-		$d["extra_field_3"] = vmGet( $d, 'extra_field_3', '' );
-		$d["extra_field_4"] = vmGet( $d, 'extra_field_4', 'N' );
-		$d["extra_field_5"] = vmGet( $d, 'extra_field_5', 'N' );
-		$fields = array( 
-								'user_id' => !$perm->check("admin,storeadmin") ? $_SESSION['auth']['user_id'] : (int)$d["user_id"],
-								'address_type' => $d["address_type"],
-								'address_type_name' => $d["address_type_name"],
-								'company' => $d["company"],
-								'title' => @$d["title"],
-								'last_name' => $d["last_name"],
-								'first_name' => $d["first_name"] ,
-								'middle_name' => $d["middle_name"],
-								'phone_1' => $d["phone_1"],
-								'phone_2' => $d["phone_2"],
-								'fax' => $d["fax"],
-								'address_1' => $d["address_1"],
-								'address_2' => $d["address_2"],
-								'city' =>$d["city"],
-								'state' => @$d["state"],
-								'country' => $d["country"],
-								'zip' => $d["zip"],
-								'extra_field_1' => $d["extra_field_1"],
-								'extra_field_2' => $d["extra_field_2"],
-								'extra_field_3' => $d["extra_field_3"],
-								'extra_field_4' => $d["extra_field_4"],
-								'extra_field_5' => $d["extra_field_5"],
-								'mdate' => $timestamp 
-								);
+		// Get all fields which where shown to the user
+		$shippingFields = ps_userfield::getUserFields( 'shipping', false, '', true );
+		$skip_fields = ps_userfield::getSkipFields();
+
+		
+		foreach( $shippingFields as $userField ) {
+			if( !in_array($userField->name, $skip_fields )) {
+				
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, vmGet($d, $userField->name, strtoupper($userField->name) ));
+				
+			}
+		}
+		// These are pre-defined fields.
+		$fields['user_id'] = !$perm->check("admin,storeadmin") ? $_SESSION['auth']['user_id'] : (int)$d["user_id"];
+		$fields['address_type'] = 'ST';
+		$fields['mdate'] = time();
 
 		$db->buildQuery('UPDATE', '#__{vm}_user_info', $fields, "WHERE user_info_id='" . $db->getEscaped($d["user_info_id"]) . "'".(!$perm->check("admin,storeadmin") ? " AND user_id=".$_SESSION['auth']['user_id'] : '') );	
-		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_UPDATED'));
-			return true;
-		} else {
+		if( $db->query() === false ) {
 			$GLOBALS['vmLogger']->err($VM_LANG->_('VM_USERADDRESS_UPDATED_FAILED'));
 			return false;
 		}
+		$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_UPDATED'));
+		return true;
+		
 	}
 
 	/**

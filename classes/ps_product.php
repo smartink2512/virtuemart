@@ -1020,9 +1020,9 @@ class ps_product extends vmAbstractObject {
 				$GLOBALS['product_info'][$pid]["product_has_attributes"] = True;
 			}
 			elseif( $checkSimpleAttributes ) {
-				$db->query( "SELECT `attribute` FROM `#__{vm}_product` WHERE `product_id`=$pid");
+				$db->query( "SELECT `attribute`,`custom_attribute` FROM `#__{vm}_product` WHERE `product_id`=$pid");
 				$db->next_record();
-				if( $db->f('attribute')) {
+				if( $db->f('attribute') || $db->f('custom_attribute')) {
 					$GLOBALS['product_info'][$pid]["product_has_attributes"] = True;
 				}
 				else {
@@ -2226,9 +2226,6 @@ class ps_product extends vmAbstractObject {
 		
 	}
 
-
-
-
 	/**
 	 * Use this function if you need the weight of a product
 	 *
@@ -2236,14 +2233,7 @@ class ps_product extends vmAbstractObject {
 	 * @return int The weight of the product
 	 */
 	function get_weight($prod_id) {
-
-		$db = new ps_DB;
-
-		$q = "SELECT product_weight FROM #__{vm}_product WHERE product_id=". (int)$prod_id ."";
-		$db->query($q);
-		$db->next_record();
-		return (float)$db->f("product_weight");
-
+		return (float)$this->get_field( $prod_id, "product_weight");
 	}
 	/**
 	 * Print the availability HTML code for product $prod_id
@@ -2257,35 +2247,40 @@ class ps_product extends vmAbstractObject {
 	/**
 	 * Returns the availability information as HTML code
 	 * @author soeren
-	 * @param unknown_type $prod_id
-	 * @return unknown
+	 * @param int $prod_id
+	 * @return string
 	 */
 	function get_availability($prod_id) {
 
-		$html = "";
-
-		$is_parent = $this->parent_has_children( $prod_id );
-		if( !$is_parent ) {
-			$tpl = new $GLOBALS['VM_THEMECLASS']();
-			
-			$db = new ps_DB;
-
-			$q = "SELECT product_available_date,product_availability,product_in_stock  FROM #__{vm}_product WHERE ";
-			$q .= "product_id='". $prod_id ."'";
-
-			$db->query($q);
-			$db->next_record();
-			
+		$html = '';
+		$availArr = $this->get_availability_data( $prod_id );
+		if( !empty( $availArr )) {
+			$tpl = vmTemplate::getInstance();
 			$tpl->set( 'product_id', $prod_id );
-			$tpl->set( 'product_available_date', $db->f('product_available_date') );
-			$tpl->set( 'product_availability', $db->f('product_availability') );
-			$tpl->set( 'product_in_stock', $db->f('product_in_stock') );
+			$tpl->set( 'product_available_date', $availArr['product_available_date'] );
+			$tpl->set( 'product_availability', $availArr['product_availability'] );
+			$tpl->set( 'product_in_stock', $availArr['product_in_stock'] );
 			$html = $tpl->fetch( 'common/availability.tpl.php');
 		}
 		return $html;
-
 	}
-
+	/**
+	 * Retrieves the data related to availability information
+	 *
+	 * @param int $prod_id
+	 * @return array
+	 */
+	function get_availability_data( $prod_id) {
+		$is_parent = $this->parent_has_children( $prod_id );
+		$availArr = array();
+		if( !$is_parent ) {			
+			$availArr['product_id'] = $prod_id;
+			$availArr['product_available_date'] = $this->get_field( $prod_id, 'product_available_date');
+			$availArr['product_availability'] = $this->get_field( $prod_id, 'product_availability');
+			$availArr['product_in_stock'] = $this->get_field( $prod_id, 'product_in_stock');
+		}
+		return $availArr;
+	}
 	/**
 	 * Modifies the product_publish field and toggles it from Y to N or N to Y
 	 * for product $d['product_id']

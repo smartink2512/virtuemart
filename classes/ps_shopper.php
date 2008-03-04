@@ -635,7 +635,7 @@ class ps_shopper {
 		foreach( $userFields as $userField ) {
 			if( !in_array($userField->name, $skip_fields )) {
 				
-				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, @$d[$userField->name]);
+				$fields[$userField->name] = ps_userfield::prepareFieldDataSave( $userField->type, $userField->name, vmGet( $d, $userField->name, strtoupper($userField->name) ));
 				
 			}
 		}

@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -283,7 +283,7 @@ if (  $db_product->f("product_packaging") ) {
 		$product_packaging .= $VM_LANG->_('PHPSHOP_PRODUCT_PACKAGING2').$box;
 	}
 
-	$product_packaging = str_replace("unit",$db_product->f("product_unit")?$db_product->f("product_unit") : $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT'),$product_packaging);
+	$product_packaging = str_replace("{unit}",$db_product->f("product_unit")?$db_product->f("product_unit") : $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT'),$product_packaging);
 }
 else {
 	$product_packaging = "";
@@ -321,6 +321,7 @@ if( @$_REQUEST['output'] != "pdf" ) {
 	// You can make changes to this functionality in the file: classes/ps_product.php
 	$product_availability = $ps_product->get_availability($product_id);
 }
+$product_availability_data = $ps_product->get_availability_data($product_id);
 
 /** Ask seller a question **/
 $ask_seller_href = $sess->url( $_SERVER ['PHP_SELF'].'?page=shop.ask&amp;flypage='.@$_REQUEST['flypage']."&amp;product_id=$product_id&amp;category_id=$category_id" );
@@ -421,6 +422,7 @@ $tpl->set( "navigation_childlist", $navigation_childlist );
 $tpl->set( "product_reviews", $product_reviews );
 $tpl->set( "product_reviewform", $product_reviewform );
 $tpl->set( "product_availability", $product_availability );
+$tpl->set( "product_availability_data", $product_availability_data );
 
 $tpl->set( "related_products", $related_products );
 $tpl->set( "vendor_link", $vendor_link );

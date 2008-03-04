@@ -824,7 +824,7 @@ function vmGenRandomPassword($length = 8)
 function vmSpoofCheck( $header=NULL, $alt=NULL ) {
 	global $vm_mainframe;	
 	if( !empty( $_GET['vmtoken']) || !empty( $_POST['vmtoken'])) {
-		$validate_hash 	= vmGet( $_REQUEST, 'vmtoken', 0 );
+		$validate_hash 	= vmGet( $_REQUEST, 'vmtoken', null );
 		$validate = vmSpoofValue($alt) == $validate_hash;		
 	} else {
 		$validate 	= vmGet( $_REQUEST, vmSpoofValue($alt), 0 );
