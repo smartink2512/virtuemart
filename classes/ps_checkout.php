@@ -637,7 +637,7 @@ class ps_checkout {
 
 		$q  = "SELECT * FROM #__{vm}_user_info i ";
 		$q .= "INNER JOIN #__{vm}_country c ON (i.country=c.country_3_code) ";
-		$q .= "INNER JOIN #__{vm}_state s ON (i.state=s.state_2_code AND s.country_id=c.country_id) ";
+		$q .= "LEFT JOIN #__{vm}_state s ON (i.state=s.state_2_code AND s.country_id=c.country_id) ";
 		$q .= "WHERE user_id =" . (int)$user_id . ' ';
 		$q .= "AND address_type = 'ST' ";
 		$q .= "ORDER by address_type_name, mdate DESC";
@@ -669,7 +669,7 @@ class ps_checkout {
 		$db = new ps_DB;
 		$q  = "SELECT * FROM #__{vm}_user_info i ";
 		$q .= "INNER JOIN #__{vm}_country c ON (i.country=c.country_3_code) ";
-		$q .= "INNER JOIN #__{vm}_state s ON (i.state=s.state_2_code AND s.country_id=c.country_id) ";
+		$q .= "LEFT JOIN #__{vm}_state s ON (i.state=s.state_2_code AND s.country_id=c.country_id) ";
 		$q .= "WHERE user_id='" . $auth["user_id"] . "' ";
 		$q .= "AND address_type='BT'";
 		$db->query($q);

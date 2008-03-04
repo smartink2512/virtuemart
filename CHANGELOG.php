@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 
 04.03.2008 soeren
+# Bug #1873 -  Adress is missing in Checkout adress
 + new Flypage Template Parameter "product_availability_data" (Array), so product availibility can be customized
 # Bug #1870 - product packaging
 # Bug #1869 - Custom attribute - remove "add to cart " in browse page?
@@ -46,7 +47,7 @@ VirtueMart 1.1.x
 # Fixed "Security Token not found" Message on Joomla! 1.0.15 when magic_quotes_gpc = Off	(ps_main.php)
 
 04.03.2008 thepisu
-# Task #1845 - PHPSHOP_USER_FORM_TITLEshout not be used in ps_product_attribute
+# Task #1845 - PHPSHOP_USER_FORM_TITLE should not be used in ps_product_attribute
 # Task #1852 - Missing language in Canada post.
 # added various translation strings (module "common")
 # Task #1524 - During checkout state is cut offed and county uses ISO code.
