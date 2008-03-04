@@ -88,7 +88,7 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN' => 'Si activ�, vous autorisez vos clients � <strong>noter les produits</strong> et <strong>�crire des appr�ciations</strong> sur ces produits. <br />
                                                                                 De cette mani�re les clients partagent leurs avis et exp�riences avec les autres clients.<br />',
 	'PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN' => 'Cocher pour soustraire remises et promotions du r�glement AVANT application des taxes et frais d\'exp�dition. Ne pas cocher, si le calcul doit se faire APRES.',
-	'PHPSHOP_ADMIN_CFG_AGREE_TERMS' => 'Les clients doivent-ils accepter les Conditions d\\'utilisation ?',
+	'PHPSHOP_ADMIN_CFG_AGREE_TERMS' => 'Les clients doivent-ils accepter les Conditions d\'utilisation ?',
 	'PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN' => 'Cocher si le client doit accepter les conditions d\'utilisation avant de s\'enregistrer sur la boutique.',
 	'PHPSHOP_ADMIN_CFG_CHECK_STOCK' => 'V�rifier les stocks ?',
 	'PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN' => 'Cocher pour activer la gestion des stocks, et pour emp�cher toute commande si l\'article n\'est pas (ou plus) disponible.',
@@ -350,6 +350,31 @@ Les clients ne doivent pas et ne sont pas en mesure de s\'inscrire dans ce type 
 	'VM_USER_FORM_CONTACTDETAILS_FAX' => 'Fax',
 	'VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON' => 'Changer les coordonn�es',
 	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form',
-	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.'
+	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.',
+	'VM_UPDATE_CHECK_LBL' => 'VirtueMart Update Check',
+	'VM_UPDATE_CHECK_VERSION_INSTALLED' => 'VirtueMart Version installed here',
+	'VM_UPDATE_CHECK_LATEST_VERSION' => 'Latest VirtueMart Version',
+	'VM_UPDATE_CHECK_CHECKNOW' => 'Check now!',
+	'VM_UPDATE_CHECK_DLUPDATE' => 'Download Update',
+	'VM_UPDATE_CHECK_CHECKING' => 'Checking...',
+	'VM_UPDATE_CHECK_CHECK' => 'Check',
+	'VM_UPDATE_NOTDOWNLOADED' => 'The Update Package could not be downloaded.',
+	'VM_UPDATE_PREVIEW_LBL' => 'VirtueMart Update Preview',
+	'VM_UPDATE_WARNING_TITLE' => 'General Warning',
+	'VM_UPDATE_WARNING_TEXT' => 'Installing an Update for VirtueMart using a Patch Package can cause damage on your site 
+if you have already modified some files of the VirtueMart component. The Patching Process will overwrite all the files listed below - it won\'t just apply smaller changes (diff), but replace the existing file with the new one. If you have modified VirtueMart files on your own, this can lead to inconsistent files and missing class/function dependencies.',
+	'VM_UPDATE_PATCH_DETAILS' => 'Patch Details',
+	'VM_UPDATE_PATCH_DESCRIPTION' => 'Description',
+	'VM_UPDATE_PATCH_DATE' => 'Release Date',
+	'VM_UPDATE_PATCH_FILESTOUPDATE' => 'Files to be updated',
+	'VM_UPDATE_PATCH_STATUS' => 'Status',
+	'VM_UPDATE_PATCH_WRITABLE' => 'Writable',
+	'VM_UPDATE_PATCH_UNWRITABLE' => 'File/Directory not writable',
+	'VM_UPDATE_PATCH_QUERYTOEXEC' => 'Queries to be executed on the Database',
+	'VM_UPDATE_PATCH_CONFIRM_TEXT' => 'I have read the <a href="#warning">Warning</a> and I\'m sure to apply the Patch Package to my VirtueMart Installation now.',
+	'VM_UPDATE_PATCH_APPLY' => 'Apply Patch now',
+	'VM_UPDATE_PATCH_ERR_UNWRITABLE' => 'Not all files/directories which need to be updated are writable. Please correct the permissions first.',
+	'VM_UPDATE_PATCH_PLEASEMARK' => 'Please mark the checkbox before you apply the Patch.',
+	'VM_UPDATE_RESULT_TITLE' => 'Currently Installed Version'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

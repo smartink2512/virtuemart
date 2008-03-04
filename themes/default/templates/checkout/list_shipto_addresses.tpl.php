@@ -64,8 +64,11 @@ while($db->next_record()) {
 	echo '<br />'."\n";
 	echo $db->f("city");
 	echo ', ';
-	echo $db->f("state") . " ";
+	// for state, can be used: state_name, state_2_code, state_3_code
+	echo $db->f("state_2_code") . " ";
 	echo $db->f("zip") . "<br />\n";
+	// for country, can be used: country_name, country_2_code, country_3_code
+	// (not displayed in default template)
 	echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_PHONE').': '. $db->f("phone_1") . "\n";
 	echo '<br />'."\n";
 	echo $VM_LANG->_('PHPSHOP_CHECKOUT_CONF_FAX').': '.$db->f("fax") . "\n";

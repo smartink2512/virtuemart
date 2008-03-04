@@ -635,11 +635,9 @@ class ps_checkout {
 
 		$bt_user_info_id = $db->f("user_info_id");
 
-		$q  = "SELECT user_info_id, address_type_name, company, title, ";
-		$q .= "last_name, first_name, middle_name, phone_1, phone_2, ";
-		$q .= "fax, address_1, address_2, city, ";
-		$q .= "state, country, zip ";
-		$q .= "FROM #__{vm}_user_info ";
+		$q  = "SELECT * FROM #__{vm}_user_info i ";
+		$q .= "INNER JOIN #__{vm}_country c ON (i.country=c.country_3_code) ";
+		$q .= "INNER JOIN #__{vm}_state s ON (i.state=s.state_2_code AND s.country_id=c.country_id) ";
 		$q .= "WHERE user_id =" . (int)$user_id . ' ';
 		$q .= "AND address_type = 'ST' ";
 		$q .= "ORDER by address_type_name, mdate DESC";
@@ -669,7 +667,10 @@ class ps_checkout {
 		$address_type = $address_type == 'BT' ? $address_type : 'ST';
 		
 		$db = new ps_DB;
-		$q  = "SELECT * FROM #__{vm}_user_info WHERE user_id='" . $auth["user_id"] . "' ";
+		$q  = "SELECT * FROM #__{vm}_user_info i ";
+		$q .= "INNER JOIN #__{vm}_country c ON (i.country=c.country_3_code) ";
+		$q .= "INNER JOIN #__{vm}_state s ON (i.state=s.state_2_code AND s.country_id=c.country_id) ";
+		$q .= "WHERE user_id='" . $auth["user_id"] . "' ";
 		$q .= "AND address_type='BT'";
 		$db->query($q);
 		$db->next_record();

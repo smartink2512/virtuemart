@@ -105,7 +105,7 @@ if( $no_menu != 1 ) {
 if( $only_page != 1 && $vmLayout == 'extended') {
 	
 	vmCommonHTML::loadExtjs();
-	$vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/extlayout.js.php' );
+	$vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/extlayout.js.php?lang='.$GLOBALS['mosConfig_lang'] );
 	$phpscript_url = str_replace( 'index2.php', 'index3.php', str_replace('index.php', 'index3.php', $_SERVER['PHP_SELF'])); 
 	echo '<iframe id="vmPage" src="'.$phpscript_url.'?option=com_virtuemart&amp;page='.$_SESSION['last_page'].'&amp;only_page=1&amp;no_menu=1" style="width:100%;height: 100%; display: block;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
 

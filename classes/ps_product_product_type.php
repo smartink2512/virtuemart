@@ -29,13 +29,14 @@ class ps_product_product_type {
 	 * @return boolean
 	 */
   function validate_add(&$d) {
+  	global $VM_LANG;
     
     if (empty($d["product_type_id"])) {
-      $GLOBALS['vmLogger']->err( 'Please select a Product Type.' );
+      $GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_ERR_SELECT') );
       return False;
     }
     if (empty($d["product_id"])) {
-      $GLOBALS['vmLogger']->err( 'Please select a Product.' );
+      $GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_ERR_SELECT_PRODUCT') );
       return false;
     }
     $db = new ps_DB;
@@ -43,7 +44,7 @@ class ps_product_product_type {
     $q .= "WHERE product_id='".$d["product_id"]."' AND product_type_id='".$d["product_type_id"]."'";
     $db->query($q);
     if ($db->f("count") != 0) {
-      $GLOBALS['vmLogger']->err( 'This Product is already assigned to this Product Type.' );
+      $GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_ERR_ALREADY') );
       return false;
     }
     else {
@@ -58,13 +59,14 @@ class ps_product_product_type {
    * @return boolean
    */
   function validate_delete(&$d) {
+  	global $VM_LANG;
 
     if (empty($d["product_type_id"])) {
-      $GLOBALS['vmLogger']->err( 'Please select a Product Type to delete a Product from this Product Type.' );
+      $GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PT') );
       return False;
     }
     if (empty($d["product_id"])) {
-      $GLOBALS['vmLogger']->err( 'Please select a Product to delete from Product Type.' );
+      $GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PR') );
       return false;
     }
 
@@ -79,6 +81,8 @@ class ps_product_product_type {
    * @return boolean
    */
   function add(&$d) {
+  	global $VM_LANG;
+  	
     $db = new ps_DB;
 	    
     if ($this->validate_add($d)) {
@@ -90,7 +94,7 @@ class ps_product_product_type {
       $q  = "INSERT INTO #__{vm}_product_type_".$d["product_type_id"]." (product_id) ";
       $q .= "VALUES ('".$d["product_id"]."')";
       $db->query($q);
-      $GLOBALS['vmLogger']->info( 'The Product was assigned to this product type.' );
+      $GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_PRODUCT_TYPE_ASSIGNED') );
       return true;
     }
     else {

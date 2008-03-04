@@ -49,12 +49,13 @@ class vmUserGroup extends vmAbstractObject {
 	 * @param array $d
 	 * @return boolean
 	 */
-	function validate_update($d) {
-		global $vmLogger;
-		$db = $this->get_group($d['group_id']);
+	function validate_update( &$d ) {
+		global $vmLogger, $VM_LANG;
+		$db = $this->get_group( intval($d['group_id']) );
+		$group_name = $db->f('group_name');
 		
-		if( in_array( $db->f('group_name'), $this->_protected_groups ))  {
-			$vmLogger->err( 'The group '.$db->f('group_name').' cannot be renamed!' );
+		if( in_array( $group_name, $this->_protected_groups ))  {
+			$vmLogger->err( sprintf($VM_LANG->_('VM_USER_GROUP_ERR_PROTECTED'),$group_name) );
 			return false;
 		}
 		return $this->validate( $d );
@@ -67,25 +68,24 @@ class vmUserGroup extends vmAbstractObject {
 	 * @param array $d
 	 * @return boolean
 	 */
-	function validate_delete($group) {
-		global $perm, $vmLogger;
+	function validate_delete( &$d ) {
+		global $perm, $vmLogger, $VM_LANG;
 		
-		if (empty($group)) {
-			$vmLogger->err( 'Please select a user group to delete.' );
+		if (empty($d['group_id'])) {
+			$vmLogger->err( $VM_LANG->_('VM_USER_GROUP_DELETE_SELECT') );
 			return False;
 		}
-		$db = $this->get_group($group);
+		$db = $this->get_group( intval($d['group_id']) );
 		$group_name = $db->f('group_name');
-		
 		if( in_array( $group_name, $this->_protected_groups ))  {
-			$vmLogger->err( 'The group '.$group_name.' cannot be removed or modified!' );
+			$vmLogger->err( sprintf($VM_LANG->_('VM_USER_GROUP_ERR_PROTECTED'),$group_name) );
 			return false;
 		}
 		
 		$db = new ps_DB;
 		$db->query('SELECT user_id FROM #__{vm}_user_info WHERE FIND_IN_SET( \''.$group_name.'\', perms ) > 0' );
 		if( $db->next_record() ) {
-			$vmLogger->err( 'The group '.$group_name.' still has users assigned to it and cannot be removed!' );
+			$vmLogger->err( sprintf($VM_LANG->_('VM_USER_GROUP_ERR_STILLUSERS'),$group_name) );
 			return false;
 		}
 		return true;
@@ -100,7 +100,7 @@ class vmUserGroup extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function add(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -114,7 +114,7 @@ class vmUserGroup extends vmAbstractObject {
 		$db->buildQuery( 'INSERT', $this->_table_name, $fields );
 		
 		if( $db->query() ) {
-			$vmLogger->info('The new user group has been added.');
+			$vmLogger->info( $VM_LANG->_('VM_USER_GROUP_ADDED') );
 		}
 		
 		$_REQUEST['function_id'] = $db->last_insert_id();
@@ -130,7 +130,7 @@ class vmUserGroup extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function update(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -142,7 +142,7 @@ class vmUserGroup extends vmAbstractObject {
 						);
 		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, 'WHERE '.$this->_key.'='.(int)$d[$this->_key] );
 		if( $db->query() ) {
-			$vmLogger->info('The user group has been updated.');
+			$vmLogger->info( $VM_LANG->_('VM_USER_GROUP_UPDATED') );
 		}
 		return True;
 	}

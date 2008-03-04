@@ -17,12 +17,14 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 */
 
+global $VM_LANG;
+
 require_once( CLASSPATH.'update.class.php');
 vmUpdate::stepBar(3);
 
 if( !empty( $_SESSION['vmupdatemessage'] )) {
 	echo '<div class="shop_info">'.shopMakeHtmlSafe($_SESSION['vmupdatemessage'])
-			.'<br /><br /><br />Currently Installed Version:<br />';
+			.'<br /><br /><br />'.$VM_LANG->_('VM_UPDATE_RESULT_TITLE').':<br />';
 	unset($_SESSION['vmupdatemessage']);
 	require_once( ADMINPATH. 'version.php' );
 	

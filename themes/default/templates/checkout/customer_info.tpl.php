@@ -51,11 +51,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
            <?php
              $db->p("city");
              echo ", ";
-             $db->p("state");
+             // for state, can be used: state_name, state_2_code, state_3_code
+             $db->p("state_2_code");
              echo " ";
              $db->p("zip");
              echo "<br /> ";
-             $db->p("country");
+             // for country, can be used: country_name, country_2_code, country_3_code
+             $db->p("country_name");
            ?>
            </td>
         </tr>

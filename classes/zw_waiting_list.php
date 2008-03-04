@@ -29,7 +29,7 @@ class zw_waiting_list {
 	*/
 
 	function validate_add(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 		
 		$q = "SELECT waiting_list_id from #__{vm}_waiting_list WHERE ";
@@ -37,37 +37,37 @@ class zw_waiting_list {
 		$q .= "product_id='" . $d["product_id"] . "' AND notified='0'";
 		$db->query($q);
 		if ($db->next_record()) {
-			$vmLogger->err('You are already being notified of this product.');
+			$vmLogger->err( $VM_LANG->_('VM_WAITING_LIST_ERR_ALREADY') );
 			return False;
 		}
 		if (!$d["notify_email"]) {
-			$vmLogger->err('You must enter an e-mail address to be on the waiting list.');
+			$vmLogger->err( $VM_LANG->_('VM_WAITING_LIST_ERR_EMAIL_ENTER') );
 			return False;
 		}
 		if (!vmValidateEmail($d["notify_email"])) {
-			$vmLogger->err('Please provide a valid email address.');
+			$vmLogger->err( $VM_LANG->_('VM_WAITING_LIST_ERR_EMAIL_NOTVALID') );
 			return False;
 		}
 		if (!$d["product_id"]) {
-			$vmLogger->err('You must enter a product to be on the waiting list.');
+			$vmLogger->err( $VM_LANG->_('VM_WAITING_LIST_ERR_PRODUCT') );
 			return False;
 		}
 		return True;
 	}
 
 	function validate_delete($d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 
 		if (!$d["notify_email"]) {
-			$vmLogger->err('Please select a waiting list id to delete.');
+			$vmLogger->err( $VM_LANG->_('VM_WAITING_LIST_DELETE_SELECT') );
 			return False;
 		}
 		if (!vmValidateEmail($d["notify_email"])) {
-			$vmLogger->err('Please provide a valid email address.');
+			$vmLogger->err( $VM_LANG->_('VM_WAITING_LIST_ERR_EMAIL_ENTER') );
 			return False;
 		}
 		if (!$d["product_id"]) {
-			$vmLogger->err('You must enter a product id.');
+			$vmLogger->err( $VM_LANG->_('VM_WAITING_LIST_DELETE_ERR_PRODUCT') );
 			return False;
 		}
 		return True;

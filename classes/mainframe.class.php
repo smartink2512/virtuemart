@@ -236,7 +236,7 @@ class vmMainFrame {
 			$urlpos = strpos( $src, '?' );			
 			$url_params = '';
 			
-			if( $urlpos ) {
+			if( $urlpos && (stristr( $src, VM_COMPONENT_NAME ) && !stristr( $src, '.php' ) && $use_fetchscript) ) {
 				$url_params = '&amp;'.substr( $src, $urlpos );
 				$src = substr( $src, 0, $urlpos);
 			}

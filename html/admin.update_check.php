@@ -16,25 +16,27 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 *
 */
+global $VM_LANG;
+
 vmCommonHTML::loadMooTools();
 require_once( CLASSPATH.'update.class.php');
 
-$formObj = new formFactory('VirtueMart Update Check');
+$formObj = new formFactory( $VM_LANG->_('VM_UPDATE_CHECK_LBL') );
 $formObj->startForm();
 
 vmUpdate::stepBar(1);
 ?>
 <table class="adminlist">
   <tr>
-    <th class="title">VirtueMart Version installed here</th>
-    <th class="title">Latest VirtueMart Version</th>
+    <th class="title"><?php echo $VM_LANG->_('VM_UPDATE_CHECK_VERSION_INSTALLED'); ?></th>
+    <th class="title"><?php echo $VM_LANG->_('VM_UPDATE_CHECK_LATEST_VERSION'); ?></th>
   </tr>
   <tr>
     <td style="color:grey;font-size:18pt;text-align:center;"><?php echo $VMVERSION->RELEASE ?></td>
     <td id="updateversioncontainer" >
-    	<img src="<?php echo VM_THEMEURL ?>images/indicator.gif" align="left" alt="checking..." style="display:none;" id="checkingindicator" />
-    	<input name="checkbutton" id="checkbutton" type="button" value="Check now!" onclick="performUpdateCheck();" style="font-weight:bold;" />
-    	<input name="downloadbutton" id="downloadbutton" type="submit" value="Download Update" style="display:none;font-weight:bold;" />
+    	<img src="<?php echo VM_THEMEURL ?>images/indicator.gif" align="left" alt="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKING'); ?>" style="display:none;" id="checkingindicator" />
+    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="font-weight:bold;" />
+    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="display:none;font-weight:bold;" />
     </td>
   </tr>
 </table>
@@ -46,7 +48,7 @@ $formObj->finishForm('getupdatepackage', 'admin.update_preview');
 function performUpdateCheck() {
 	form = document.adminForm;
 	$("checkingindicator").setStyle("display", "inline");
-	form.checkbutton.value="Checking...";
+	form.checkbutton.value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKING'); ?>";
 	var myAjax = new Ajax("<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&task=checkForUpdate&page=admin.ajax_tools&only_page=1&no_html=1", 
 										{
 											method: 'get',
@@ -70,7 +72,7 @@ function handleUpdateCheckResult( o ) {
 		}
 		$("updateversioncontainer").setStyle( "font-size", "18pt" );
 	} else { 
-		form.checkbutton.value="Check";
+		form.checkbutton.value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECK'); ?>";
 	}
 }
 //-->

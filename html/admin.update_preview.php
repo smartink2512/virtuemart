@@ -16,8 +16,10 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 *
 */
+global $VM_LANG;
+
 if( vmget($_SESSION,'vm_updatepackage') == null) {
-	$vmLogger->info( 'The Update Package could not be downloaded.');
+	$vmLogger->err( $VM_LANG->_('VM_UPDATE_NOTDOWNLOADED') );
 	return;
 }
 
@@ -30,7 +32,7 @@ if( $packageContents === false ) {
 }
 vmCommonHTML::loadMooTools();
 
-$formObj = new formFactory('VirtueMart Update Preview');
+$formObj = new formFactory( $VM_LANG->_('VM_UPDATE_PREVIEW_LBL') );
 $formObj->startForm();
 
 $vm_mainframe->addStyleDeclaration(".writable { color:green;}\n.unwritable { color:red;font-weight:bold; }");
@@ -39,24 +41,21 @@ vmUpdate::stepBar(2);
 ?>
 <a name="warning"></a>
 <div class="shop_warning">
-	<span style="font-style: italic;">General Warning</span><br />
-	Installing an Update for VirtueMart using a Patch Package can cause damage on your site 
-if you have already modified some files of the VirtueMart component. The Patching Process will overwrite all the files listed below - it won't
-just apply smaller changes (diff), but replace the existing file with the new one. If you have modified VirtueMart files on your own, 
-this can lead to inconsistent files and missing class/function dependencies.
+	<span style="font-style: italic;"><?php echo $VM_LANG->_('VM_UPDATE_WARNING_TITLE') ?></span><br />
+	<?php echo $VM_LANG->_('VM_UPDATE_WARNING_TEXT'); ?>
 </div>
 <div class="shop_info">
-	<span style="font-style: italic;">Patch Details</span><br />
+	<span style="font-style: italic;"><?php echo $VM_LANG->_('VM_UPDATE_PATCH_DETAILS') ?></span><br />
 	<ul>
-		<li>Description: <?php echo $packageContents['description'] ?></li>
-		<li>Release Date: <?php echo $packageContents['releasedate'] ?></li>
+		<li><?php echo $VM_LANG->_('VM_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo $packageContents['description'] ?></li>
+		<li><?php echo $VM_LANG->_('VM_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
 	</ul>
 </div>
 <table class="adminlist">
 	<thead>
 	  <tr>
-	    <th class="title">Files to be updated</th>
-	    <th class="title">Status</th>
+	    <th class="title"><?php echo $VM_LANG->_('VM_UPDATE_PATCH_FILESTOUPDATE') ?></th>
+	    <th class="title"><?php echo $VM_LANG->_('VM_UPDATE_PATCH_STATUS') ?></th>
 	  </tr>
 	  </thead>
 	  <tbody>
@@ -73,7 +72,7 @@ foreach( $packageContents['fileArr'] as $file ) {
   	}
   	echo '<tr><td>'.$file.'</td>';
   	$class = $is_writable ? 'writable' : 'unwritable';
-  	$msg = $is_writable ? 'Writable' : 'File/Directory not writable';
+  	$msg = $is_writable ? $VM_LANG->_('VM_UPDATE_PATCH_WRITABLE') : $VM_LANG->_('VM_UPDATE_PATCH_UNWRITABLE');
   	echo '<td class="'.$class.'">'.$msg."</td></tr>\n";
   	
 } ?>
@@ -82,7 +81,7 @@ foreach( $packageContents['fileArr'] as $file ) {
 
 <?php
 if( !empty($packageContents['queryArr'])) {
-	echo '<table class="adminlist"><thead><tr><th class="title">Queries to be executed on the Database:</th></tr></thead>';
+	echo '<table class="adminlist"><thead><tr><th class="title">' . $VM_LANG->_('VM_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
 	echo '<tbody>';
 	foreach($packageContents['queryArr'] as $query) {
 		echo '<tr><td><pre>'.$query. "</pre></td></tr>";
@@ -92,11 +91,11 @@ if( !empty($packageContents['queryArr'])) {
 if( $valid ) {
 	echo '<div align="center">
 	<input type="checkbox" name="confirm_update" id="confirm_update">
-		<label for="confirm_update">I have read the <a href="#warning">Warning</a> and I\'m sure to apply the Patch Package to my VirtueMart Installation now.</label>
+		<label for="confirm_update">' . $VM_LANG->_('VM_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
 		<br /><br />
-	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="Apply Patch now" name="submitbutton"></div>';
+	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . $VM_LANG->_('VM_UPDATE_PATCH_APPLY') . '" name="submitbutton"></div>';
 } else {
-	echo '<div class="shop_error">Not all files/directories which need to be updated are writable. Please correct the permissions first.';
+	echo '<div class="shop_error">' . $VM_LANG->_('VM_UPDATE_PATCH_ERR_UNWRITABLE');
 }
 $formObj->finishForm('applypatchpackage', 'admin.update_result');
  ?>
@@ -105,7 +104,7 @@ $formObj->finishForm('applypatchpackage', 'admin.update_result');
  	if( document.adminForm.confirm_update.checked ) {
  		return true;
  	}
- 	alert( "Please mark the checkbox before you apply the Patch.");
+ 	alert( <?php echo $VM_LANG->_('VM_UPDATE_PATCH_PLEASEMARK') ?> );
  	return false;
  }
  </script>

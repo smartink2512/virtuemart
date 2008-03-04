@@ -390,6 +390,31 @@ Customers don\'t need to and are not able to register in this type of registrati
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Client IP address',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'If you enable this option and enter an IP address here, then debug output will be enabled ONLY for this client IP address.  Other clients will not see the debugging output.',
 	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Show in shipping form',
-	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.'
+	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.',
+	'VM_UPDATE_CHECK_LBL' => 'VirtueMart Update Check',
+	'VM_UPDATE_CHECK_VERSION_INSTALLED' => 'VirtueMart Version installed here',
+	'VM_UPDATE_CHECK_LATEST_VERSION' => 'Latest VirtueMart Version',
+	'VM_UPDATE_CHECK_CHECKNOW' => 'Check now!',
+	'VM_UPDATE_CHECK_DLUPDATE' => 'Download Update',
+	'VM_UPDATE_CHECK_CHECKING' => 'Checking...',
+	'VM_UPDATE_CHECK_CHECK' => 'Check',
+	'VM_UPDATE_NOTDOWNLOADED' => 'The Update Package could not be downloaded.',
+	'VM_UPDATE_PREVIEW_LBL' => 'VirtueMart Update Preview',
+	'VM_UPDATE_WARNING_TITLE' => 'General Warning',
+	'VM_UPDATE_WARNING_TEXT' => 'Installing an Update for VirtueMart using a Patch Package can cause damage on your site 
+if you have already modified some files of the VirtueMart component. The Patching Process will overwrite all the files listed below - it won\'t just apply smaller changes (diff), but replace the existing file with the new one. If you have modified VirtueMart files on your own, this can lead to inconsistent files and missing class/function dependencies.',
+	'VM_UPDATE_PATCH_DETAILS' => 'Patch Details',
+	'VM_UPDATE_PATCH_DESCRIPTION' => 'Description',
+	'VM_UPDATE_PATCH_DATE' => 'Release Date',
+	'VM_UPDATE_PATCH_FILESTOUPDATE' => 'Files to be updated',
+	'VM_UPDATE_PATCH_STATUS' => 'Status',
+	'VM_UPDATE_PATCH_WRITABLE' => 'Writable',
+	'VM_UPDATE_PATCH_UNWRITABLE' => 'File/Directory not writable',
+	'VM_UPDATE_PATCH_QUERYTOEXEC' => 'Queries to be executed on the Database',
+	'VM_UPDATE_PATCH_CONFIRM_TEXT' => 'I have read the <a href="#warning">Warning</a> and I\'m sure to apply the Patch Package to my VirtueMart Installation now.',
+	'VM_UPDATE_PATCH_APPLY' => 'Apply Patch now',
+	'VM_UPDATE_PATCH_ERR_UNWRITABLE' => 'Not all files/directories which need to be updated are writable. Please correct the permissions first.',
+	'VM_UPDATE_PATCH_PLEASEMARK' => 'Please mark the checkbox before you apply the Patch.',
+	'VM_UPDATE_RESULT_TITLE' => 'Currently Installed Version'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

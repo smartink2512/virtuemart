@@ -91,16 +91,16 @@ class vmAbstractObject {
 	 * @return unknown
 	 */
 	function validate( &$d ) {
-		global $vmLogger, $db;
+		global $vmLogger, $db, $VM_LANG;
 		
 		if( !isset( $d[$this->_key])) {
-			$vmLogger->err( 'Please specify an ID to validate');
+			$vmLogger->err( $VM_LANG->_('VM_ABSTRACTOBJECT_VALIDATE_ERR_ID') );
 			return false;
 		}
 		$valid = true;
 		foreach( $this->_required_fields as $field ) {
-			if( empty( $d[$field])) {
-				$vmLogger->err( 'A value for the field "'.$field.'" is missing.' );
+			if( empty($d[$field]) && $d[$field]!=="0" && $d[$field]!==0) {
+				$vmLogger->err( sprintf($VM_LANG->_('VM_ABSTRACTOBJECT_VALIDATE_ERR_FIELD'),$field) );
 				$valid = false;
 			}
 		}
@@ -113,7 +113,7 @@ class vmAbstractObject {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$vmLogger->err( "A record with the same value \"{$d[$field]}\" for '".$field."' already exists. Please choose another value." );
+				$vmLogger->err( sprintf($VM_LANG->_('VM_ABSTRACTOBJECT_VALIDATE_NOTUNIQUE'),$d[$field],$field) );
 				$valid = false;
 			}
 		}
@@ -152,7 +152,7 @@ class vmAbstractObject {
 	 * @param array $d The $_REQUEST array
 	 */
 	function handleOrdering( &$d ) {
-		global $vmLogger, $page;
+		global $vmLogger, $page, $VM_LANG;
 		$where = '';
 		$table2_name = '';
 		
@@ -177,7 +177,7 @@ class vmAbstractObject {
 				$field_name = 'fieldid';
 		}
 		else {
-			$vmLogger->err( 'Could not determine the item type that is to be reordered.');
+			$vmLogger->err( $VM_LANG->_('VM_ABSTRACTOBJECT_REORDER_ERR_TYPE') );
 			return false;
 		}
 		return $this->changeOrdering( $table_name, $order_field_name, $field_name, $entity_name, $where, $table2_name );
@@ -370,7 +370,7 @@ class vmAbstractObject {
 	 * @return boolean True on success, false on failure
 	 */
 	function handlePublishState( $d ) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$has_vendor = true;
 		if( !empty($d['product_id']) && empty( $d['review_id'])) {
 				$table_name = "#__{vm}_product";
@@ -404,7 +404,7 @@ class vmAbstractObject {
 				$field_name = 'fieldid';
 		}
 		else {
-			$vmLogger->err( 'Could not determine the item type that is to be (un)published.');
+			$vmLogger->err( $VM_LANG->_('VM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE') );
 			return false;
 		}
 		
@@ -423,7 +423,7 @@ class vmAbstractObject {
 	 * @return boolean
 	 */
 	function changePublishState( $itemId, $task, $table_name, $publish_field_name, $field_name, $has_vendor ) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		
 		$db = new ps_DB();
 		if( $field_name == 'fieldid') {
@@ -449,7 +449,24 @@ class vmAbstractObject {
 		
 		$db->query( $q );
 		
-		$vmLogger->info($field_name.'(s) '.$set.' was/were '.$task.'ed.' );
+		switch ($task) {
+			case 'publish':
+				$tasklang = $VM_LANG->_('CMN_PUBLISHED');
+				break;
+			case 'unpublish':
+				$tasklang = $VM_LANG->_('CMN_UNPUBLISHED');
+				break;
+			default:
+				$tasklang = $task;
+				break;
+		}
+		
+		$infomessage = $VM_LANG->_('VM_ABSTRACTOBJECT_TASK_OK');
+		$infomessage = str_replace('{field_name}',$field_name,$infomessage);
+		$infomessage = str_replace('{set}',$set,$infomessage);
+		$infomessage = str_replace('{task}',$tasklang,$infomessage);
+		
+		$vmLogger->info( $infomessage );
 		
 		return true;
 	}

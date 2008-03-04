@@ -42,7 +42,7 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function getPatchPackage( &$d) {
-		global $vmLogger, $mosConfig_cachepath;
+		global $vmLogger, $mosConfig_cachepath, $VM_LANG;
 		
 		require_once( ADMINPATH.'version.php');
 		$VMVERSION =& new vmVersion();
@@ -58,26 +58,24 @@ class vmUpdate {
 				$filename = substr($filename, 0, $doc_id_pos);
 			}
 			if( file_exists( $mosConfig_cachepath.'/'.$filename)) {
-				$vmLogger->info( 'A file with the same name as the package to download already exists. Using the file: '.$mosConfig_cachepath.'/'.$filename);
+				$vmLogger->info( $VM_LANG->_('VM_UPDATE_PACKAGE_EXISTS').' '.$mosConfig_cachepath.'/'.$filename);
 
 			} else {
 				$patch_package = vmConnector::handleCommunication($result);
 				if( !file_put_contents($mosConfig_cachepath.'/'.$filename, $patch_package )) {
-					$vmLogger->err( 'Failed to store the Update Package. Please make the Cache Directory writable.');
+					$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_STORE_FAILED') );
 					return false;
 				}
 			}
 			$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;
 		} else {
-			$vmLogger->err( 'Failed to retrieve the location of the Patch Package virtuemart.net Server. 
-										Probably there\'s no Patch Package available for your Version. 
-										Try again later if you think it\'s a network problem.');
+			$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_RETRIEVE_FAILED') );
 			return false;
 		}
 		return true;
 	}
 	function &getPatchContents( $updatepackage ) {
-		global $vmLogger, $mosConfig_absolute_path;
+		global $vmLogger, $mosConfig_absolute_path, $VM_LANG;
 		
 		$extractdir = dirname($updatepackage).'/'. str_replace('.tar.gz', '', basename($updatepackage) );
 		$update_manifest = $extractdir.'/update.xml';
@@ -87,7 +85,7 @@ class vmUpdate {
 			if(vmIsJoomla('1.5', '>=')) {
 				jimport('joomla.filesystem.archive');
 				if( !JArchive::extract($updatepackage, $extractdir )) {
-					$vmLogger->err( "Failed to extract the Update Package Contents to ".$extractdir);
+					$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_EXTRACT_FAILED')." ".$extractdir);
 					$result= false;return $result;
 				}
 			} else {
@@ -95,7 +93,7 @@ class vmUpdate {
 				$package_archive = new Archive_Tar( $updatepackage, "gz" );
 				$result = $package_archive->extract($extractdir.'/');
 				if( !$result ) {
-					$vmLogger->err( "Failed to extract the Update Package Contents to ".$extractdir);
+					$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_EXTRACT_FAILED')." ".$extractdir);
 					$result= false;return $result;
 				}
 			}
@@ -109,7 +107,7 @@ class vmUpdate {
 		if( function_exists('simplexml_load_file')) {
 			$xml = simplexml_load_file($update_manifest);
 			if( $xml === false ) {
-				$vmLogger->err( 'Failed to parse the XML Update File.');
+				$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_PARSE_FAILED') );
 				return false;
 			}
 			
@@ -122,7 +120,7 @@ class vmUpdate {
 				if( file_exists($extractdir.'/'.$file )) {
 					$fileArr[] = (string)$file;
 				} else {
-					$vmLogger->err('The file '.$file.' is missing in the Update Package.');
+					$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_FILE_MISSING'),$file) );
 					$result = false;
 				}
 			}
@@ -139,7 +137,7 @@ class vmUpdate {
  			$result = $xml->loadFile($update_manifest);
 		
 			if( $result === false ) {
-				$vmLogger->err( 'Failed to parse the XML Update File.');
+				$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_PARSE_FAILED') );
 				return false;
 			}
 			$result = true;
@@ -154,7 +152,7 @@ class vmUpdate {
 				if( file_exists($extractdir.'/'.$file->data() )) {
 					$fileArr[] = $file->data();
 				} else {
-					$vmLogger->err('The file '.$file.' is missing in the Update Package.');
+					$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_FILE_MISSING'),$file) );
 					$result = false;
 				}
 			}
@@ -180,11 +178,11 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function applyPatch( &$d ) {
-		global $vmLogger, $mosConfig_absolute_path, $db, $sess;
+		global $vmLogger, $mosConfig_absolute_path, $db, $sess, $VM_LANG;
 		
 		$updatepackage = vmget($_SESSION,'vm_updatepackage');
 		if( empty( $updatepackage ) ) {
-			$vmLogger->info( 'The Update Package could not be downloaded.');
+			$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_DOWNLOAD') );
 			return;
 		}
 		$patchdir = dirname($updatepackage).'/'. str_replace('.tar.gz', '', basename($updatepackage) );
@@ -197,12 +195,12 @@ class vmUpdate {
 		foreach( $packageContents['fileArr'] as $file ) {
 		  	if( file_exists($mosConfig_absolute_path.'/'.$file)) {
 		  		if( !is_writable($mosConfig_absolute_path.'/'.$file ) ) {
-		  			$vmLogger->err( 'The File '.$mosConfig_absolute_path.'/'.$file.' must be writable.');
+		  			$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_FILE_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
 		  			$errors++;
 		  		}
 		  	} else {
 		  		if( !is_writable($mosConfig_absolute_path.'/'.dirname($file) )) {
-		  			$vmLogger->err( 'The Directory '.$mosConfig_absolute_path.'/'.$file.' must be writable.');
+		  			$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_DIR_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
 		  			$errors++;
 		  		}
 		  	}
@@ -215,24 +213,23 @@ class vmUpdate {
   			$orig_file = $mosConfig_absolute_path.'/'.$file;
   			//TODO: Make a backup file before overwriting the original ? rename( $orig_file, $orig_file.'~' );
   			if( !@copy( $patch_file, $orig_file ) ) {
-  				$vmLogger->crit('Failed to overwrite the file "'.$file.'"');
+  				$vmLogger->crit( sprintf($VM_LANG->_('VM_UPDATE_ERR_OVERWRITE_FAILED'),$file) );
   				return false;  				
   			} else {
-  				$vmLogger->debug('Successfully overwrote the file "'.$file.'"');
+  				$vmLogger->debug( sprintf($VM_LANG->_('VM_UPDATE_FILE_OVERWROTE'),$file) );
   			}
   		}
   		foreach( $packageContents['queryArr'] as $query ) {
   			if( $db->query($query) === false ) {
-  				$vmLogger->crit('The following query failed: "'.$query.'". 
-  				This may not be fatal, but please copy + save this error message for better problem handling.' );  				
+  				$vmLogger->crit( sprintf($VM_LANG->_('VM_UPDATE_ERR_QUERY_FAILED'),$query) );
   			} else {
-  				$vmLogger->debug('Successfully executed the Query "'.$query.'"');
+  				$vmLogger->debug( sprintf($VM_LANG->_('VM_UPDATE_QUERY_EXECUTED'),$query) );
   			}
   		}
   		
   		$db->query('UPDATE `#__components` SET `params` = \'RELEASE='.$packageContents['toversion'].'\nDEV_STATUS=stable\' WHERE `name` = \'virtuemart_version\'');
   		
-  		$_SESSION['vmupdatemessage'] = 'Your previous VirtueMart Version ('.$packageContents['forversion'].') has successfully been updated to Version '.$packageContents['toversion'].'.';
+  		$_SESSION['vmupdatemessage'] = sprintf($VM_LANG->_('VM_UPDATE_SUCCESS'),$packageContents['forversion'],$packageContents['toversion']);
   		
 		vmRedirect($sess->url($_SERVER['PHP_SELF'].'?page=admin.update_result', false, false) );
   		
@@ -244,6 +241,8 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function verifyPackage( &$packageContents ) {
+		global $VM_LANG;
+		
 		if( $packageContents === false ) {
 			return false;
 		}
@@ -251,7 +250,7 @@ class vmUpdate {
 		$VMVERSION = new vmVersion();
 		
 		if( $VMVERSION->RELEASE != $packageContents['forversion'] ) {
-			$vmLogger->err( 'This Patch Package is not matching to your VirtueMart Version.');
+			$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_NOTMATCHING') );
 			return false;
 		}
 		
@@ -263,9 +262,11 @@ class vmUpdate {
 	 * @param int $step
 	 */
 	function stepBar( $step ) {
-		$steps = array( 1 => 'Check for Updates',
-									2 => 'Preview/Apply Update',
-									3 => 'View Results' );
+		global $VM_LANG;
+		
+		$steps = array( 1 => $VM_LANG->_('VM_UPDATE_STEP_1'),
+									2 => $VM_LANG->_('VM_UPDATE_STEP_2'),
+									3 => $VM_LANG->_('VM_UPDATE_STEP_3') );
 		$num_of_steps = count( $steps );
 		$cellwidth = intval(100 / $num_of_steps);
 		

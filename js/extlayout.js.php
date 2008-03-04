@@ -29,6 +29,9 @@ require_once(CLASSPATH."DebugUtil.php");
 require_once( CLASSPATH . 'language.class.php');
 require_once( CLASSPATH . 'ps_main.php');
 
+global $mosConfig_lang;
+$mosConfig_lang = $_REQUEST["lang"];
+
 $GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
 $VM_LANG->load('common');
 if( vmIsJoomla(1.5 )) {
@@ -92,8 +95,8 @@ echo "if( typeof Ext == \"undefined\" ) {
 			layout.beginUpdate();
 			//layout.add('north', new CP('wrapper', 'North'));
 			//layout.add('south', new CP('footer', {title: 'Footer', closable: true}));
-			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'index2.php\'>" . $VM_LANG->_('VM_ADMIN_BACKTOJOOMLA') . "</a>'}));
-			layout.add('center', new CP('vmPage', {title: '" . $VM_LANG->_('VM_ADMIN_PANELTITLE') . "', closable: false, fitToFrame:true, tabPosition: 'top'}));
+			layout.add('west', new CP('vmMenu', {title: '<a style=\'font-weight: bold;\' href=\'index2.php\'>" . addslashes($VM_LANG->_('VM_ADMIN_BACKTOJOOMLA')) . "</a>'}));
+			layout.add('center', new CP('vmPage', {title: '" . addslashes($VM_LANG->_('VM_ADMIN_PANELTITLE')) . "', closable: false, fitToFrame:true, tabPosition: 'top'}));
 			layout.getRegion(\"center\").on(\"panelactivated\", function(region, panel) { document.title=panel.getTitle() } );
 			layout.restoreState();
 			layout.endUpdate();

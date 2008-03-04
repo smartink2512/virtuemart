@@ -35,10 +35,18 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-03.03.2008 thepisu
+04.03.2008 thepisu
 # Task #1845 - PHPSHOP_USER_FORM_TITLEshout not be used in ps_product_attribute
 # Task #1852 - Missing language in Canada post.
 # added various translation strings (module "common")
+# Task #1524 - During checkout state is cut offed and county uses ISO code.
+# added translations strings for update check feature (modules "common" / "admin")
+# "Back to Joomla! Administration" was not translated on Joomla 1.5 
+  (can't initialize correctly mosConfig_lang, passed to JS throug "lang" parameter)
+! added ability to pass GET parameter to JS files, if not using fetchscript (was ignored)
+# vmAbstractObject validate function was considering "0" as empty
+  (i.e. was unable to insert new "0" level user group)
+# producted user groups not correctly checked (was able to delete core groups)
 
 03.03.2008 soeren
 # Task #1862 - Random Product Module: table layout don't output correct xhtml
