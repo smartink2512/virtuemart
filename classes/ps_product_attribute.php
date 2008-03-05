@@ -833,8 +833,8 @@ class ps_product_attribute {
 	 *
 	 * @param int $product_id
 	 */
-	function getAdvancedAttributes( $product_id ) {
-		global $ps_product;
+	function getAdvancedAttributes( $product_id, $base_price_only=false ) {
+		global $ps_product, $auth;
 		if( is_null( $ps_product )) {
 			$ps_product = new ps_product();
 		}
@@ -901,7 +901,11 @@ class ps_product_attribute {
 				}
 				$attributes_array[$attribute_name]['values'][$value]['name'] = $value;
 				$attributes_array[$attribute_name]['values'][$value]['operand'] = $operand;
-				$attributes_array[$attribute_name]['values'][$value]['adjustment'] = $my_mod;
+				if( $base_price_only ) {
+					$attributes_array[$attribute_name]['values'][$value]['adjustment'] = $my_mod;
+				} else {
+					$attributes_array[$attribute_name]['values'][$value]['adjustment'] = $my_mod*(1 - ($auth["shopper_group_discount"]/100));
+				}
 				$operand = '';
 				$my_mod = 0;
 			}

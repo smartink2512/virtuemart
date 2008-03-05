@@ -37,6 +37,8 @@ VirtueMart 1.1.x
 *************************************
 05.03.2008 gregdev
 # Task #1875 - "No image" points to the wrong directory(didn't cotain the image file) in shop.browse.php
+# Task #1841 - Attribute Price calculation with group price not correct
+# Task #1691 - Discount price shows wrong on flypage, baket is correct
 
 04.03.2008 soeren
 # Bug #1873 -  Adress is missing in Checkout adress

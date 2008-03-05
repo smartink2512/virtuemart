@@ -1715,7 +1715,7 @@ class ps_product extends vmAbstractObject {
 		// if we've been given a description to deal with, get the adjusted price
 		if ($description != '') { // description is safe to use at this point cause it's set to ''
 			require_once(CLASSPATH.'ps_product_attribute.php');
-			$product_attributes = ps_product_attribute::getAdvancedAttributes($product_id);
+			$product_attributes = ps_product_attribute::getAdvancedAttributes($product_id, true);
 			
 			$attribute_keys = explode( ";", $description );
 
@@ -1768,7 +1768,7 @@ class ps_product extends vmAbstractObject {
 
 		// no set price was set from the attribs
 		if ($set_price == false) {
-			$price["product_price"] = $base_price + $adjustment;
+			$price["product_price"] = $base_price + ($adjustment)*(1 - ($auth["shopper_group_discount"]/100));
 		}
 		else {
 			// otherwise, set the price
