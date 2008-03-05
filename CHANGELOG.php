@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+05.03.2008 soeren
+# Task #1874 - Confirmation email Ship To, State wrong
+# Task #1875 - "No image" points to the wrong directory(didn't cotain the image file) in shop.browse.php
+
 05.03.2008 gregdev
 # Task #1875 - "No image" points to the wrong directory(didn't cotain the image file) in shop.browse.php
 # Task #1841 - Attribute Price calculation with group price not correct
@@ -44,11 +49,11 @@ VirtueMart 1.1.x
 # Fixed missing product attributes in confirmation emails
 
 04.03.2008 soeren
-# Bug #1873 -  Adress is missing in Checkout adress
+# Task #1873 -  Adress is missing in Checkout adress
 + new Flypage Template Parameter "product_availability_data" (Array), so product availibility can be customized
-# Bug #1870 - product packaging
-# Bug #1869 - Custom attribute - remove "add to cart " in browse page?
-# Bug #1868 - double quote to remove in addtocart_drop.tpl.php
+# Task #1870 - product packaging
+# Task #1869 - Custom attribute - remove "add to cart " in browse page?
+# Task #1868 - double quote to remove in addtocart_drop.tpl.php
 # Task #1865 - Please make sure the form is complete and valid.
 # Task #1864 - Confirmation email- wrong shipping country
 # Fixed "Security Token not found" Message on Joomla! 1.0.15 when magic_quotes_gpc = Off	(ps_main.php)
@@ -350,7 +355,7 @@ VirtueMart 1.1.x
 11.01.2008 soeren
 # Task #1655 - Call to undefined function mosmail() - user registration
 # Task #1656 - Mambots not working in product description
-# Task #1654 - PHP Bug #27626 html_entity_decode bug
+# Task #1654 - PHP Task #27626 html_entity_decode bug
 # Task #1658 - Module permission form error
 
 10.01.2008 gregdev
@@ -1969,7 +1974,7 @@ because Joomla! 1.5 doesn't know a $mainframe->getCfg('live_site') value other t
 
 06-11-2005 soeren
 # changed all occurences to 'com_phpshop' to 'com_virtuemart' in payment methods
-# bug #164 (Admin doesn't accept any input and doesn't change pages)
+# Task #164 (Admin doesn't accept any input and doesn't change pages)
 # fixed a fatal error in the install.php
 
 04-11-2005 soeren
@@ -2038,17 +2043,17 @@ UPDATE `jos_vm_function` SET `function_name` = 'changePublishState',
 
 26-10-2005 soeren
 + added debugging to image upload function
-# Bug #181 ? Can't add new prices to product
+# Task #181 ? Can't add new prices to product
 
 25-10-2005 soeren
-# Bug #174 ? Checkout using USPS Module, fixed path to xml domit! library
+# Task #174 ? Checkout using USPS Module, fixed path to xml domit! library
 ^ renamed /html/VERSION.php to /html/footer.php
 ^ changed the colors of the order list to joomla css classes (account maintance section)
 # FR #127 font size in tab headings too big in safari browser
 + added new language tokens for the Log integration
-# Bug #166 ? virtuemart-beta4-shared SSL
-# Bug #173 - Registration with e-mails over 25 characters
-# bug #176 - beta4: message tax included displayed even if OFF
+# Task #166 ? virtuemart-beta4-shared SSL
+# Task #173 - Registration with e-mails over 25 characters
+# Task #176 - beta4: message tax included displayed even if OFF
 ^ FR #125 vendor name in shopper group drop-down
 
 24-10-2005 soeren
@@ -2077,7 +2082,7 @@ UPDATE `jos_vm_function` SET `function_name` = 'changePublishState',
 	* line-ending fix for Mac & Win problems sending mail (Could not instatiate mail function)
 	
 # made labels for payment methods clickable
-# fixed bug #137 'unpublished products can become related products'
+# fixed Task #137 'unpublished products can become related products'
 
 =======
 19-10-2005 schirmer
@@ -2092,7 +2097,7 @@ ALTER TABLE `mos_vm_order_item` CHANGE `product_item_price` `product_item_price`
 
 + re-added shop.registration.php (includes login form and registration form)
 # changed cart initialitation function from "ps_cart" to "initCart"
-# fixed bug #135 Cannot use a scalar value as an array
+# fixed Task #135 Cannot use a scalar value as an array
 # bug in product folder view
 ^ introduced new blue icons
 # bug in product file form + filemanager

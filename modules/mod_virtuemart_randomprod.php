@@ -9,8 +9,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 // W: www.mrphp.com.au
 // E: info@mrphp.com.au
 // P: +61 418 436 690
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* Conversion to VirtueMart:
+* 	@copyright (C) 2004-2007 soeren
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
@@ -30,7 +30,7 @@ if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_p
 if( empty($max_items))
   $max_items = $params->get( 'max_items', 2 ); //maximum number of items to display
 if( empty($category_id))
-  $category_id = $params->get( 'category_id', null ); // Display products from this category only
+  $category_id = (int)$params->get( 'category_id', 0 ); // Display products from this category only
 if( empty($display_style))
   $display_style = $params->get( 'display_style', "vertical" ); // Display Style
 if( empty($products_per_row))
@@ -72,69 +72,67 @@ while($db->next_record()){
   $i++;
 }
 
-if($db->num_rows() > 0) { ?>
+if($db->num_rows() == 0) {
+	return;
+} ?>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <?php
 
-	srand ((double) microtime() * 10000000);
-	
-    if (sizeof($prodlist) < $max_items) {
-    	$max_items = sizeof($prodlist);
-    }
-    if (sizeof($prodlist)>1) {
-    	$rand_prods = array_rand ($prodlist, $max_items);
-    }
-  	else {
-  		$rand_prods = rand (4545.3545, $max_items);
-  	}
-	
-      if ($max_items==1) { ?>
-        <tr align="center" class="sectiontableentry1">
-		<td><?php
-            $ps_product->show_snapshot($prodlist[$rand_prods], $show_price, $show_addtocart);
-            ?><br />
-		</td>
-	</tr><?php
-      }
-      
-      else { 
-        for($i=0; $i<$max_items; $i++) {
-          if ($i%2)
-              $sectioncolor = "sectiontableentry2";
-          else
-              $sectioncolor = "sectiontableentry1";
-              
-          if( $display_style == "vertical" ) {
-          ?>
-			<tr align="center" class="<?php echo $sectioncolor ?>">
-				<td><?php $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart); ?><br /></td>
-			</tr><?php
-          }
-          elseif( $display_style== "horizontal" ) {
-            if( $i == 0 )
-              echo "<tr>\n";
-            echo "<td align=\"center\">";
-            $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart);
-            echo "</td>\n";
-            if( ($i+1) == $max_items )
-              echo "</tr>\n";
-          }
-          elseif( $display_style== "table" ) {
-            if( $i == 0 )
-              echo "<tr>\n";
-            echo "<td align=\"center\">";
-            $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart);
-            echo "</td>\n";
-          if( ($i+1) == $max_items ) {
-            	echo "</tr>\n";
-          } elseif( ($i+1) % $products_per_row == 0) {
-          	echo "</tr><tr>\n";            
-        }
-      }
-        ?>
-  </table>
-<?php
-    
+srand ((double) microtime() * 10000000);
+
+if (sizeof($prodlist) < $max_items) {
+    $max_items = sizeof($prodlist);
+}
+if (sizeof($prodlist)>1) {
+    $rand_prods = array_rand ($prodlist, $max_items);
+} else {
+  	$rand_prods = rand (4545.3545, $max_items);
 }
 
+if ($max_items==1) { 
+		?>
+        <tr align="center" class="sectiontableentry1">
+			<td><?php $ps_product->show_snapshot($prodlist[$rand_prods], $show_price, $show_addtocart);  ?><br />
+			</td>
+		</tr><?php
+}
+else { 
+	for($i=0; $i<$max_items; $i++) {
+		$sectioncolor = $i%2 ? 'sectiontableentry2' : 'sectiontableentry1';
+          
+              
+        if( $display_style == "vertical" ) {
+        	?>
+			<tr align="center" class="<?php echo $sectioncolor ?>">
+				<td><?php $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart); ?><br />
+				</td>
+			</tr><?php
+        }
+        elseif( $display_style== "horizontal" ) {
+        	if( $i == 0 ) {
+        		echo "<tr>\n";
+        	}
+            echo "<td align=\"center\">";
+            $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart);
+            echo "</td>\n";
+            if( ($i+1) == $max_items ) {
+            	echo "</tr>\n";
+          	}
+        }
+		elseif( $display_style== "table" ) {
+			if( $i == 0 ) {
+            	echo "<tr>\n";
+            }
+            echo "<td align=\"center\">";
+            $ps_product->show_snapshot($prodlist[$rand_prods[$i]], $show_price, $show_addtocart);
+            echo "</td>\n";
+          	if( ($i+1) == $max_items ) {
+            	echo "</tr>\n";
+          	} elseif( ($i+1) % $products_per_row == 0) {
+          		echo "</tr><tr>\n";
+          	}  
+        }
+	}
+}
 ?>
+</table>

@@ -120,7 +120,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 	          		if( $dbc !== false ) echo $dbc->f('country_name');
 	          		break;
 	          	default: 
-	          		echo $dbbt->f($field->name);
+	          		echo $dbst->f($field->name);
 	          		break;
 	          }
 	           ?></td>
