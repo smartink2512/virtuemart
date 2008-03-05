@@ -179,7 +179,7 @@ while($dboi->next_record()) {
 	?>
 	<tr class="Stil1">
 		<td><?php echo $my_qty ?></td>
-		<td><?php $dboi->p("product_name").($dboi->f("product_attribute") ? ' ('.$dboi->f("product_attribute").')' : ''); ?></td>
+		<td><?php $dboi->p("product_name")?> <?php echo ($dboi->f("product_attribute") ? ' ('.$dboi->f("product_attribute").')' : ''); ?></td>
 		<td><?php echo $ps_product->get_field($dboi->f("product_id"), "product_sku") ?></td>
 		<td><?php echo $my_price ?></td>
 		<td><?php echo $CURRENCY_DISPLAY->getFullValue($my_subtotal, '', $db->f('order_currency')) ?></td>
