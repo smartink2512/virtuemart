@@ -321,12 +321,12 @@ else {
 					$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 				}
 				elseif( !file_exists( IMAGEPATH."product/".$product_thumb_image )) {
-                    $product_thumb_image = IMAGEURL.NO_IMAGE;
+                    $product_thumb_image = VM_THEMEURL.'images/'.NO_IMAGE;
                 }
 			}
 		}
 		else {
-			$product_thumb_image = IMAGEURL.NO_IMAGE;
+			$product_thumb_image = VM_THEMEURL.'images/'.NO_IMAGE;
 		}
 
 		if( $db_browse->f("product_full_image") ) {
@@ -337,7 +337,7 @@ else {
 				$product_full_image = $dbp->f("product_full_image"); // Use product_full_image from Parent Product
 			}
 			else {
-				$product_full_image = "..".NO_IMAGE;
+				$product_full_image = VM_THEMEURL.'images/'.NO_IMAGE;
 			}
 		}
 		if( file_exists( IMAGEPATH."product/$product_full_image" )) {
