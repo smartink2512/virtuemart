@@ -2042,6 +2042,9 @@ Order Total: '.$order_total.'
 											));
 			$shopper_html = $template->fetch('order_emails/confirmation_email.tpl.php');
 			
+			// Reset the list of order items for use in the vendor email
+			$dboi->reset();
+			
 			// Override some vars for the vendor email, so we can use the same template
 			$template->set_vars(array(
 														'order_header_msg' => $vendor_header,
