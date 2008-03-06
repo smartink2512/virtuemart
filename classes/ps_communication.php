@@ -150,10 +150,10 @@ class ps_communication {
 		$qt .= "WHERE vendor_id = '".$_SESSION['ps_vendor_id']."'";
 		$dbv->query($qt);
 		$dbv->next_record();
-		$vendor_mail = $dbv->f("contact_email");
+		$vendor_email = $dbv->f("contact_email");
 		$shopper_email = $d["email"];
 		$shopper_name = $d["name"];
-		$subject_msg = $d["text"];
+		$subject_msg = vmRequest::getVar( 'text', '', 'post' );
 		
 		$shopper_subject = sprintf( $VM_LANG->_('VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT'), $dbv->f("vendor_name"));
 				
@@ -182,10 +182,10 @@ class ps_communication {
 		//
 		if (ORDER_MAIL_HTML == '0') {
 			// Mail receipt to the shopper
-			vmMail( $vendor_mail, $dbv->f("vendor_name"), $shopper_email, $shopper_subject, $shopper_msg, "" );
+			vmMail( $vendor_email, $dbv->f("vendor_name"), $shopper_email, $shopper_subject, $shopper_msg, "" );
 
 			// Mail receipt to the vendor
-			vmMail($shopper_email, $shopper_name, $vendor_mail, $vendor_subject, $vendor_msg, "" );
+			vmMail($shopper_email, $shopper_name, $vendor_email, $vendor_subject, $vendor_msg, "" );
 
 
 		}
@@ -194,29 +194,19 @@ class ps_communication {
 		//
 		elseif (ORDER_MAIL_HTML == '1') {
 			// Mail receipt to the vendor
-			// open the HTML file and read it into $html
-			if (file_exists(VM_THEMEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html")) {
-				$html_file = VM_THEMEPATH."templates/order_emails/enquiry_".$mosConfig_lang.".html";
-			}
-			elseif(file_exists(VM_THEMEPATH."templates/order_emails/enquiry_english.html")) {
-				$html_file = VM_THEMEPATH."templates/order_emails/enquiry_english.html";
-			} else {
-				$vmLogger->err( $VM_LANG->_('VM_ENQUIRY_TEMPLATE_NOT_FOUND') );
-				return false;
-			}
-
-			$vhtml = file_get_contents($html_file);
-
-			$v_vfi = "<img src=\"cid:product_image\" alt=\"product_image\" border=\"0\" />";
-			$vhtml = str_replace('{VendorName}',$dbv->f("vendor_name"),$vhtml);
-			$vhtml = str_replace('{subject}',$subject_msg,$vhtml);
-			$vhtml = str_replace('{contact_name}',$shopper_name,$vhtml);
-			$vhtml = str_replace('{contact_email}',$shopper_email,$vhtml);
-			$vhtml = str_replace('{product_name}',$db->f("product_name"),$vhtml);
-			$vhtml = str_replace('{product_s_description}',$db->f("product_s_desc"),$vhtml);
-			$vhtml = str_replace('{product_url}',$product_url,$vhtml);
-			$vhtml = str_replace('{product_sku}',$db->f("product_sku"),$vhtml);
-			// Have thumb image
+			$template = vmTemplate::getInstance();
+			
+			$template->set_vars( array(
+															'vendorname' => $dbv->f("vendor_name"),
+															'subject' => nl2br($subject_msg),
+															'contact_name' => $shopper_name,
+															'contact_email' => $shopper_email,
+															'product_name' => $db->f("product_name"),
+															'product_s_description' => $db->f("product_s_desc"),
+															'product_url' =>$product_url,
+															'product_sku' =>$db->f("product_sku")
+			));
+			
 			if ($db->f("product_thumb_image")) {
 				$imagefile = pathinfo($db->f("product_thumb_image"));
 				$extension = $imagefile['extension'] == "jpg" ? "jpeg" : "jpeg";
@@ -226,20 +216,24 @@ class ps_communication {
 				'filename' => $db->f("product_thumb_image"),
 				'encoding' => "base64",
 				'mimetype' => "image/".$extension );
-				$vhtml = str_replace('{product_thumb}',$v_vfi,$vhtml);
 
-				$vendor_email = vmMail( $shopper_email, $shopper_name, $vendor_mail, $vendor_subject, $vhtml, $vendor_msg, true, null, null, $EmbeddedImages);
+				$template->set( 'product_thumb', '<img src="cid:product_image" alt="product_image" border="0" />' );
+				$body = $template->fetch('order_emails/enquiry_email.tpl.php');
+
+				$vendor_mail = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $body, $vendor_msg, true, null, null, $EmbeddedImages);
 			}
 			else {
-				$vhtml = str_replace('{product_thumb}',"",$vhtml);
+				$template->set( 'product_thumb', '' );
+				$body = $template->fetch('order_emails/enquiry_email.tpl.php');
 
-				$vendor_email = vmMail( $shopper_email, $shopper_name, $vendor_mail, $vendor_subject, $vhtml, $vendor_msg, true, null, null, null);
+				$vendor_mail = vmMail( $shopper_email, $shopper_name, $vendor_email, $vendor_subject, $body, $vendor_msg, true, null, null, null);
 			}
-			//Send sender confirmation email
 
-			$sender_mail = vmMail( $vendor_mail, $dbv->f("vendor_name"), $shopper_email, $shopper_subject, $shopper_msg, "" );
-			if ( ( !$vendor_email ) || (!$sender_mail) ) {
-				$vmLogger->debug( 'Something went wrong while sending the order confirmation email to '.$vendor_mail.' and '.$shopper_email );
+			//Send sender confirmation email
+			$sender_mail = vmMail( $vendor_email, $dbv->f("vendor_name"), $shopper_email, $shopper_subject, $shopper_msg, "" );
+
+			if ( ( !$vendor_mail ) || (!$sender_mail) ) {
+				$vmLogger->debug( 'Something went wrong while sending the enquiry email to '.$vendor_email.' and '.$shopper_email );
 				return false;
 			}
 		}
@@ -312,8 +306,7 @@ class ps_communication {
         return false;
     }
     $subject = sprintf( $VM_LANG->_('VM_RECOMMEND_SUBJECT',false), $vendor_store_name );
-    $msg = vmGetUnEscaped(str_replace( array('\r', '\n' ), array("\r", "\n" ), $d['recommend_message'] ));
-    $msg = $d['recommend_message'];
+    $msg = vmRequest::getVar( 'recommend_message', '', 'post' );
     $send = vmMail($d['sender_mail'], 
                    $d['sender_name'],
                    $d['recipient_mail'],

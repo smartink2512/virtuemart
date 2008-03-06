@@ -641,9 +641,10 @@ We will contact you soon regarding your enquiry.
 (Please do not reply to this email)',
 	'VM_ENQUIRY_VENDOR_EMAIL_MESSAGE' => 'You have received a product enquiry from {shopper_name} regarding the following product: 
 Product Name: {product_name}
-Product SKU : {product_sku}
+Product SKU: {product_sku}
 
-Enquiry: {shopper_message}
+Enquiry:
+{shopper_message}
 URL: {product_url}
 
 Mail mailto: {shopper_email}',

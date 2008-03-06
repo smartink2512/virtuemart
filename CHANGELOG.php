@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+06.03.2008 gregdev
+# Task #1497 - Badly formatted Recommend the Product email
+- Removed enquiry_english.html
++ Added enquiry_email.tpl.php
 
 05.03.2008 soeren
 # Task #1874 - Confirmation email Ship To, State wrong
