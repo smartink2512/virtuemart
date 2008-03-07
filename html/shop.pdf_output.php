@@ -79,23 +79,30 @@ function freePDF( $showpage, $flypage, $product_id, $category_id ) {
 	
 	switch( $showpage ) {  
 		case "shop.product_details":
-		  
 		  $_REQUEST['flypage'] = "shop.flypage_lite_pdf";
 		  $_REQUEST['product_id'] = $product_id;
+
 		  ob_start();
 		  include( PAGEPATH . $showpage . '.php' );
 		  $html .= ob_get_contents();
 		  ob_end_clean();
+
 		  $html = repairImageLinks( $html );
-		  
 		  break;
 		
 		case "shop.browse":
+		  // vmInputFilter is needed for the browse page
+		  if( !isset( $vmInputFilter ) || !isset( $GLOBALS['vmInputFilter'] ) ) {
+		  	$GLOBALS['vmInputFilter'] = $vmInputFilter = vmInputFilter::getInstance();
+		  }
+
 		  $_REQUEST['category_id'] = $category_id;
+
 		  ob_start();
-		  include( PAGEPATH . 'shop.browse.php' );
+		  include( PAGEPATH . $showpage . '.php' );
 		  $html .= ob_get_contents();
 		  ob_end_clean();
+
 		  $html = repairImageLinks( $html );
 		  break;
 	}
@@ -103,7 +110,7 @@ function freePDF( $showpage, $flypage, $product_id, $category_id ) {
 	$logo = IMAGEPATH . "vendor/$vendor_full_image";
 	$logourl = IMAGEURL . "vendor/$vendor_full_image";
 	
-	if (version_compare( phpversion(), '5.0' ) < 0 || extension_loaded('domxml') || !file_exists(CLASSPATH."pdf/dompdf/dompdf_onfig.inc.php")) {
+	if (version_compare( phpversion(), '5.0' ) < 0 || extension_loaded('domxml') || !file_exists(CLASSPATH."pdf/dompdf/dompdf_config.inc.php")) {
 		
 		define('FPDF_FONTPATH', CLASSPATH.'pdf/font/');
 		define( 'RELATIVE_PATH', CLASSPATH.'pdf/' );

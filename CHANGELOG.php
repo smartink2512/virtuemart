@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 07.03.2008 gregdev
 # Task #1878 - Template breaks when in Account Maintenance
 # Task #1677 - When no child is presend and List box for child is selected error is shown
+# Task #1880 - PDF creation fails on shop.browse page
 
 06.03.2008 gregdev
 # Task #1497 - Badly formatted Recommend the Product email
