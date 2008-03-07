@@ -39,6 +39,7 @@ VirtueMart 1.1.x
 # Task #1497 - Badly formatted Recommend the Product email
 - Removed enquiry_english.html
 + Added enquiry_email.tpl.php
+# Task #1412 - Don't show feed icons when feeds are disabled in the general config settings
 
 05.03.2008 soeren
 # Task #1874 - Confirmation email Ship To, State wrong
