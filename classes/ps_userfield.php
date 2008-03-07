@@ -481,7 +481,7 @@ class ps_userfield extends vmAbstractObject {
 	   		echo '<br /></div>
 				      <br style="clear:both;" />';
 	   }
-	   echo '</fieldset>';
+	   echo '</div>';
 	   if( VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
 		   	echo '<script type="text/javascript">
 		   function showFields( show, fields ) {

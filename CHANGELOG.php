@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.03.2008 gregdev
+# Task #1878 - Template breaks when in Account Maintenance
+
 06.03.2008 gregdev
 # Task #1497 - Badly formatted Recommend the Product email
 - Removed enquiry_english.html
