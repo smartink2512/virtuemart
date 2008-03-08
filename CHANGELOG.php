@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 08.02.2008 gregdev
 # Task #1882 - Default 'Image unavailable'
+# Task #1879 - PDF generator in Product List & Product Details generates gif error
 
 07.03.2008 gregdev
 # Task #1878 - Template breaks when in Account Maintenance
