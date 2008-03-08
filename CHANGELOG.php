@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.02.2008 gregdev
+# Task #1882 - Default 'Image unavailable'
+
 07.03.2008 gregdev
 # Task #1878 - Template breaks when in Account Maintenance
 # Task #1677 - When no child is presend and List box for child is selected error is shown
@@ -51,7 +54,7 @@ VirtueMart 1.1.x
 # Task #1875 - "No image" points to the wrong directory(didn't cotain the image file) in shop.browse.php
 
 05.03.2008 gregdev
-# Task #1875 - "No image" points to the wrong directory(didn't cotain the image file) in shop.browse.php
+# Task #1875 - "No image" points to the wrong directory (didn't cotain the image file) in shop.browse.php
 # Task #1841 - Attribute Price calculation with group price not correct
 # Task #1691 - Discount price shows wrong on flypage, baket is correct
 # Task #1876 - Ask a question about... is not working (restored enquiry_english.html)

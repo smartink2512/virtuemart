@@ -329,24 +329,29 @@ else {
 			$product_thumb_image = VM_THEMEURL.'images/'.NO_IMAGE;
 		}
 
+		// Get the full image path, or URL if set, or the no_image
 		if( $db_browse->f("product_full_image") ) {
 			$product_full_image = $db_browse->f("product_full_image");
+		} elseif( $product_parent_id != 0 ) {
+			$product_full_image = $dbp->f("product_full_image"); // Use product_full_image from Parent Product
 		}
 		else {
-			if( $product_parent_id != 0 ) {
-				$product_full_image = $dbp->f("product_full_image"); // Use product_full_image from Parent Product
-			}
-			else {
-				$product_full_image = VM_THEMEURL.'images/'.NO_IMAGE;
-			}
+			$product_full_image = VM_THEMEURL.'images/'.NO_IMAGE;
 		}
-		if( file_exists( IMAGEPATH."product/$product_full_image" )) {
-			$full_image_info = getimagesize( IMAGEPATH."product/$product_full_image" );
-			$full_image_width = $full_image_info[0]+40;
-			$full_image_height = $full_image_info[1]+40;
+
+		// Get image size information and add the full URL
+		if( substr( $product_full_image, 0, 4) != 'http' ) {
+			if( file_exists( IMAGEPATH . 'product/' . $product_full_image ) ) {
+				$full_image_info = getimagesize( IMAGEPATH . 'product/' . $product_full_image );
+				$full_image_width = $full_image_info[0]+40;
+				$full_image_height = $full_image_info[1]+40;
+			}
+	
+			$product_full_image = IMAGEURL . 'product/' . $product_full_image;
 		}
-		else {
-			$full_image_width = $full_image_height = "";
+		
+		if( !isset( $full_image_width ) || !isset( $full_image_height ) ) {
+			$full_image_width = $full_image_height = '';
 		}
 		
 		$files = ps_product_files::getFilesForProduct( $db_browse->f('product_id') );
@@ -400,13 +405,6 @@ else {
 		$products[$i]['full_image_width'] = $full_image_width;
 		$products[$i]['full_image_height'] = $full_image_height;
 
-		if( substr( $product_full_image, 0, 4) == "http" ) {
-			$products[$i]['image_url/product/'] = "";
-		}
-		else {
-			$products[$i]['image_url'] = IMAGEURL;
-		}
-		
 		$products[$i]['product_name'] = shopMakeHtmlSafe( $product_name );
 		$products[$i]['product_s_desc'] = $product_s_desc;
 		$products[$i]['product_details'] = $product_details;
