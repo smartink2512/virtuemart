@@ -336,11 +336,19 @@ else {
 			$product_full_image = $dbp->f("product_full_image"); // Use product_full_image from Parent Product
 		}
 		else {
-			$product_full_image = VM_THEMEURL.'images/'.NO_IMAGE;
+			$product_full_image = VM_THEMEURL . 'images/' . NO_IMAGE;
+
+			// Get the size information for the no_image
+			if( file_exists( VM_THEMEPATH . 'images/' . NO_IMAGE ) ) {
+				$full_image_info = getimagesize( VM_THEMEPATH . 'images/' . NO_IMAGE );
+				$full_image_width = $full_image_info[0]+40;
+				$full_image_height = $full_image_info[1]+40;
+			}
 		}
 
 		// Get image size information and add the full URL
 		if( substr( $product_full_image, 0, 4) != 'http' ) {
+			// This is a local image
 			if( file_exists( IMAGEPATH . 'product/' . $product_full_image ) ) {
 				$full_image_info = getimagesize( IMAGEPATH . 'product/' . $product_full_image );
 				$full_image_width = $full_image_info[0]+40;
@@ -348,10 +356,11 @@ else {
 			}
 	
 			$product_full_image = IMAGEURL . 'product/' . $product_full_image;
-		}
-		
-		if( !isset( $full_image_width ) || !isset( $full_image_height ) ) {
-			$full_image_width = $full_image_height = '';
+		} elseif( !isset( $full_image_width ) || !isset( $full_image_height ) ) {
+			// This is a URL image
+			$full_image_info = getimagesize( $product_full_image );
+			$full_image_width = $full_image_info[0]+40;
+			$full_image_height = $full_image_info[1]+40;
 		}
 		
 		$files = ps_product_files::getFilesForProduct( $db_browse->f('product_id') );
@@ -404,6 +413,10 @@ else {
 		$products[$i]['product_full_image'] = $product_full_image;
 		$products[$i]['full_image_width'] = $full_image_width;
 		$products[$i]['full_image_height'] = $full_image_height;
+		
+		// Unset these for the next product
+		unset($full_image_width);
+		unset($full_image_height);
 
 		$products[$i]['product_name'] = shopMakeHtmlSafe( $product_name );
 		$products[$i]['product_s_desc'] = $product_s_desc;
