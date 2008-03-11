@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : german.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Das aktuelle Bild löschen.',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Produkt-Artikel',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Artikelattribute',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Soll dieses Produkt\\\\nund die damit verbundenen Artikel wirklich gelöscht werden?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Soll dieses Produkt\nund die damit verbundenen Artikel wirklich gelöscht werden?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Soll dieser Artikel wirklich gelöscht werden?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Hersteller',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'Artikelnummer',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'Datei - URL (optional)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Geben Sie hier Text ein, der dem Kunden zur Verfügbarkeit der Produktes angezeit wird.<br />z.B.: 24h, 48 Stunden, 3 - 5 Tage, auf Anfrage.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'Order wählen Sie ein Bild, um die Verfügbarkeit visuell darzustellen.<br />Die Bilder hier sind eine automatische Auflistung aller vorhandenen Bilder in Ihrem Verzeichnis <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Beispiel für das Attributslisten-Format:</h4>
-        <pre>Größe,XL[+1.99],M,S[-2.99];Farbe,Rot,Grün,Gelb,TeureFarbe[=24.00];WeiteresAttribut,..,..</pre>
-        <h4>Preisanpassungen/-abweichungen sind möglich:</h4>
-        <span class="sectionname">
-        <strong>+</strong> bedeutet: Den angegebenen Betrag zum Preis hinzufügen.<br />
-        <strong>-</strong> bedeutet: Den angegebenen Betrag zum Preis abzuziehen.<br />
-        <strong>=</strong> bedeutet: Ersetze den Preis mit dem angegebenen Betrag.
-      </span>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Beispiel für die Individual-Attributsliste:</h4>
         <pre>Name;Spruch;Extras;...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Bild ändern?',
@@ -234,6 +225,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
-	'VM_PRODUCT_SEARCHING' => 'Searching...'
+	'VM_PRODUCT_SEARCHING' => 'Searching...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

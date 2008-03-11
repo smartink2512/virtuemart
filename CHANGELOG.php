@@ -35,7 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-08.02.2008 gregdev
+11.03.2008 thepisu
+# Task #1867 - PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES
+# Task #1877 - Language not being picked up consistently
+# Task #1883 - 'Specify the minimum Age' hard coded
+# Task #1886 - confirmation_email.tpl translation
+
+08.03.2008 gregdev
 # Task #1882 - Default 'Image unavailable'
 # Task #1879 - PDF generator in Product List & Product Details generates gif error
 

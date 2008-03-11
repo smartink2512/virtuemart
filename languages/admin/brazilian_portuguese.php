@@ -396,6 +396,9 @@ if you have already modified some files of the VirtueMart component. The Patchin
 	'VM_UPDATE_PATCH_APPLY' => 'Apply Patch now',
 	'VM_UPDATE_PATCH_ERR_UNWRITABLE' => 'Not all files/directories which need to be updated are writable. Please correct the permissions first.',
 	'VM_UPDATE_PATCH_PLEASEMARK' => 'Please mark the checkbox before you apply the Patch.',
-	'VM_UPDATE_RESULT_TITLE' => 'Currently Installed Version'
+	'VM_UPDATE_RESULT_TITLE' => 'Currently Installed Version',
+	'VM_FIELDS_CAPTCHA' => 'Captcha Field (using com_securityimages)',
+	'VM_FIELDS_AGEVERIFICATION' => 'Age Verification (Date Select Fields)',
+	'VM_FIELDS_AGEVERIFICATION_MINIMUM' => 'Specify the minimum Age'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

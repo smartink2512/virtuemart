@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: english.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Delete current image.',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Product Items',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Item Attributes',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Are you sure you want to delete this Product\\\\nand the Items related to it?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Are you sure you want to delete this Product\nand the Items related to it?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Are you sure you want to delete this Item?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Manufacturer',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'SKU',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'File URL (optional)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Fill in any text here that will be displayed to the customer on the product flypage.<br />e.g.: 24h, 48 hours, 3 - 5 days, On Order.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'OR select an Image to be displayed on the Details Page (flypage).<br />The images reside in the directory <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
-        <pre>Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];AndSoOn,..,..</pre>
-        <h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
-        <pre>
-        + == Add this amount to the configured price.<br />
-        - == Subtract this amount from the configured price.<br />
-        = == Set the product\'s price to this amount.
-      </pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Custom attribute List Format:</h4>
         <pre>Name;Extras;</strong>...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Image Action',
@@ -235,6 +226,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
-	'VM_PRODUCT_SEARCHING' => 'Searching...'
+	'VM_PRODUCT_SEARCHING' => 'Searching...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

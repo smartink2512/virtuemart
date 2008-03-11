@@ -68,7 +68,7 @@ else {
 	$types['checkbox'] = $VM_LANG->_('VM_FIELDS_CHECKBOX_SINGLE');
 	$types['multicheckbox'] = $VM_LANG->_('VM_FIELDS_CHECKBOX_MULTIPLE');
 	$types['date'] = $VM_LANG->_('VM_FIELDS_DATE');
-	$types['age_verification'] = 'Age Verification (Date Select Fields)';
+	$types['age_verification'] = $VM_LANG->_('VM_FIELDS_AGEVERIFICATION');
 	$types['select'] = $VM_LANG->_('VM_FIELDS_DROPDOWN_SINGLE');
 	$types['multiselect'] = $VM_LANG->_('VM_FIELDS_DROPDOWN_MULTIPLE');
 	$types['emailaddress'] = $VM_LANG->_('VM_FIELDS_EMAIL');	
@@ -79,7 +79,7 @@ else {
 	$types['webaddress'] = $VM_LANG->_('VM_FIELDS_WEBADDRESS');
 	
 	if( file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {	
-		$types['captcha'] = 'Captcha Field (using com_securityimages)';
+		$types['captcha'] = $VM_LANG->_('VM_FIELDS_CAPTCHA');
 	}
 	if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {
 		$types['yanc_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (YaNC)';
@@ -129,17 +129,17 @@ $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 		</tr>
 		<tr class="row1">
 			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_NAME') ?>:</td>
-			<td align=left  width="20%"><input onchange="prep4SQL(this);" type="text" name="name" mosReq=1 mosLabel="Name" class="inputbox" value="<?php $db->sp('name'); ?>" <?php if($db->f('sys')) echo 'readonly="readonly"' ?> /></td>
+			<td align="left"  width="20%"><input onchange="prep4SQL(this);" type="text" name="name" mosReq=1 mosLabel="Name" class="inputbox" value="<?php $db->sp('name'); ?>" <?php if($db->f('sys')) echo 'readonly="readonly"' ?> /></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row0">
 			<td width="20%"><?php echo $VM_LANG->_('VM_FIELDMANAGER_TITLE') ?>:</td>
-			<td width="20%" align=left><input type="text" name="title" mosReq=1 mosLabel="Title" class="inputbox" value="<?php $db->sp('title'); ?>" /></td>
+			<td width="20%" align="left"><input type="text" name="title" mosReq=1 mosLabel="Title" class="inputbox" value="<?php $db->sp('title'); ?>" /></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row1">
 			<td width="20%"><?php echo $VM_LANG->_('VM_USERFIELDS_DESCRIPTION') ?>:</td>
-			<td width="20%" align=left><textarea name="description" cols=50 rows=6 maxlength='255' mosReq=0 mosLabel="Description" class="inputbox"><?php $db->sp('description'); ?></textarea></td>
+			<td width="20%" align="left"><textarea name="description" cols=50 rows=6 maxlength='255' mosReq=0 mosLabel="Description" class="inputbox"><?php $db->sp('description'); ?></textarea></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr class="row0">
@@ -218,12 +218,12 @@ $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 		<div id="divAgeVerification" >
 			<table class="adminform">
 	          <tr class="row1"> 
-	        	<td class="labelcell">Specify the minimum Age:</td>
+	        	<td class="labelcell"><?php echo $VM_LANG->_('VM_FIELDS_AGEVERIFICATION_MINIMUM') ?>:</td>
 	            <td ><?php
 	            	$min_age = is_a( $params, 'vmparameters' ) ? $params->get( 'minimum_age', 18 ) : 18;
 	            	$ages = array();
 	            	for( $i = 13; $i <= 25; $i++ ) {
-	            		$ages[$i] = $i . ' Years';
+	            		$ages[$i] = $i . ' ' . $VM_LANG->_('CMN_YEARS');
 	            	}
 	            	ps_html::dropdown_display('minimum_age', $min_age, $ages );
                    ?>

@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -19,7 +18,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-15',
-	'PHPSHOP_MODULE_LIST_ORDER' => 'Ordre d\\\'affichage',
+	'PHPSHOP_MODULE_LIST_ORDER' => 'Ordre d\'affichage',
 	'PHPSHOP_PRODUCT_INVENTORY_LBL' => 'Inventaire des produits',
 	'PHPSHOP_PRODUCT_INVENTORY_STOCK' => 'Nombre',
 	'PHPSHOP_PRODUCT_INVENTORY_WEIGHT' => 'Poids',
@@ -79,14 +78,14 @@ $langvars = array (
 	'PHPSHOP_CATEGORY_FORM_FLYPAGE' => 'Page d\'accueil de la catégorie',
 	'PHPSHOP_ATTRIBUTE_LIST_LBL' => 'Liste d\'attributs pour',
 	'PHPSHOP_ATTRIBUTE_LIST_NAME' => 'Nom de l\'attribut',
-	'PHPSHOP_ATTRIBUTE_LIST_ORDER' => 'Ordre d\\\'affichage',
+	'PHPSHOP_ATTRIBUTE_LIST_ORDER' => 'Ordre d\'affichage',
 	'PHPSHOP_ATTRIBUTE_FORM_LBL' => 'Formulaire d\'Attribut',
 	'PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT' => 'Nouvel attribut pour le produit',
 	'PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT' => 'Mettre à jour l\'attribut pour ce produit',
 	'PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM' => 'Nouvel attribut pour élément',
 	'PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_ITEM' => 'Mettre à jour l\'attribut pour cet élément',
 	'PHPSHOP_ATTRIBUTE_FORM_NAME' => 'Nom de l\'attribut',
-	'PHPSHOP_ATTRIBUTE_FORM_ORDER' => 'Ordre d\\\'affichage',
+	'PHPSHOP_ATTRIBUTE_FORM_ORDER' => 'Ordre d\'affichage',
 	'PHPSHOP_PRICE_LIST_FOR_LBL' => 'Prix pour',
 	'PHPSHOP_PRICE_LIST_GROUP_NAME' => 'Nom du groupe',
 	'PHPSHOP_PRICE_LIST_PRICE' => 'Prix',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'URL Fichier (optionnel)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Saisir ici tout texte qui sera affiché au client sur la fiche produit.<br />ex.: 24 h, 48 heures, 3 à 5 jours, Sur Commande.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'OU sélectionner une image à afficher sur la fiche produit(flypage).<br />Les images se trouvent dans le répertoire <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Exemples pour le Formatage de la Liste des Attributs:</h4>
-        <pre>Taille,XL[+1.99],M,S[-2.99];Couleur,Rouge,Vert,Jaune,CouleurPrécieuse[=24.00];Etc,..,..</pre>
-        <h4>Inclusion d\'ajustements de prix à utiliser dans les modifications des Attributs Avancés:</h4>
-        <span class=\'sectionname\'>
-        <strong>+</strong> == Ajoute ce montant au prix fixé.<br />
-        <strong>-</strong> == Soustrait ce montant au prix fixé.<br />
-        <strong>=</strong> == Fixe le prix global du produit à ce montant.
-      </span>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Exemples pour le formatage de la Liste des Attributs Personnalisés:</h4>
         <pre>Nom;Options;...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Action image',
@@ -234,6 +225,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Nom/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Sélectionnez un ou plusieurs produits',
-	'VM_PRODUCT_SEARCHING' => 'Recherche...'
+	'VM_PRODUCT_SEARCHING' => 'Recherche...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

@@ -1214,6 +1214,7 @@ check with your hosting company to see if you can access this port first',
 	'VM_ABSTRACTOBJECT_VALIDATE_NOTUNIQUE' => 'Esiste già un record con il valore "%s" per il campo "%s". Scegli un altro valore.',
 	'VM_ABSTRACTOBJECT_REORDER_ERR_TYPE' => 'Impossibile determinare il tipo di oggetto da riordinare.',
 	'VM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE' => 'Impossibile determinare il tipo di oggetto da pubblicare/sospendere.',
-	'VM_ABSTRACTOBJECT_TASK_OK' => 'Oggetto/i {field_name} {set} ora è/sono in stato {task}.'
+	'VM_ABSTRACTOBJECT_TASK_OK' => 'Oggetto/i {field_name} {set} ora è/sono in stato {task}.',
+	'CMN_YEARS' => 'Anni'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

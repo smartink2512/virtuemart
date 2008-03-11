@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : czech1250.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Napište ',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Položky zboží',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Vlastnosti položky',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Jste si jist že chcete smazat toto zboží\\\\na položky k nìmu pøipojené?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Jste si jist že chcete smazat toto zboží\na položky k nìmu pøipojené?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Jste si jist že chcete smazat tuto položku?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Výrobce',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'Kód',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'URL souboru (volitelné)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Napištte jakýkoliv text, který bude zobrazen zákazníkovi na stránce zboží .<br />tj.: 24h, 48h, 3 - 5 dní, objednáno.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'NEBO vyberte obrázek, který bude zobrazen na stránce detailního popisu zboží .<br />Obrázky jsou umístìny v adresáøi <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Pøíklady formátu seznamu atributù:</h4>
-        <pre>Velikost,XL[+100],M,S[-50];Barva,èervená,zelená,žlutá,drahá barva[=999];atd..,..,..</pre>
-        <h4>Vložená nastavení cen pro pokroèilé nastavení atributù:</h4>
-        <pre>
-        + == Pøièíst tuto èástku k výchozí cenì.<br />
-        - == Odeèíst tuto èástku od výchozí ceny.<br />
-        = == Nastavit cenu na tuto èástku.
-       </pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Pøíklad formátu seznamu speciálních atributù:</h4>
         <pre>Název;Další;...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Akce obrázku',
@@ -235,6 +226,10 @@ The Shop will create a new discount record from the discounted price.',
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
-	'VM_PRODUCT_SEARCHING' => 'Searching...'
+	'VM_PRODUCT_SEARCHING' => 'Searching...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

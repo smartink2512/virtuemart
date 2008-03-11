@@ -1205,6 +1205,7 @@ check with your hosting company to see if you can access this port first',
 	'VM_ABSTRACTOBJECT_VALIDATE_NOTUNIQUE' => 'A record with the same value "%s" for "%s" already exists. Please choose another value.',
 	'VM_ABSTRACTOBJECT_REORDER_ERR_TYPE' => 'Could not determine the item type that is to be reordered.',
 	'VM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE' => 'Could not determine the item type that is to be (un)published.',
-	'VM_ABSTRACTOBJECT_TASK_OK' => '{field_name}(s) {set} was/were {task}.'
+	'VM_ABSTRACTOBJECT_TASK_OK' => '{field_name}(s) {set} was/were {task}.',
+	'CMN_YEARS' => 'Years'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

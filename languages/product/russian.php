@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -15,11 +14,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
-* http://www.alex-rus.com
-* http://www.virtuemart.ru
-* http://www.joomlaforum.ru
 */
-
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'utf-8',
@@ -130,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'URL файла (не обязательно)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Введите любой текст здесь, который будет показываться покупателю на fly-странице товара.<br />Например: 24часа, 48 часов, 3 - 5 дней, При заказе...',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'Или выберите изображение, которое будет показано на fly-странице товара.<br />Изображения расположены в директории <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Примеры формата списка свойств:</h4>
-        <pre>Размер,XL[+1.99],M,S[-2.99];Цвет,Красный,Зеленый,Желтый,Другой[=24.00];И так далее,..,..</pre>
-        <h4>Использование ценовых корректировок для дополнительных свойств:</h4>
-        <pre>
-        + == Добавить сумму к цене.<br />
-        - == Вычесть сумму из цены.<br />
-        = == Установить цену товара, равную этой сумме.
-      </pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Пример формата списка дополнительных свойств:</h4>
         <pre>Наименование;Дополнительно;</strong>...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Действия над изображениями',
@@ -239,6 +226,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Медиа',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Имя/Дата',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Выберите один или более товаров',
-	'VM_PRODUCT_SEARCHING' => 'Поиск...'
+	'VM_PRODUCT_SEARCHING' => 'Поиск...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

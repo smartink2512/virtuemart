@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 ?>
 <html>
 <head>
-<title>Your Order Confirmation</title>
+<title><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_LBL') ?></title>
 <style type="text/css">
 <!--
 .Stil1 {
@@ -36,17 +36,17 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 <table border=0 cellspacing=0 cellpadding=2 width=100%>
   <!-- begin customer information --> 
   <tr bgcolor="#CCCCCC" class="sectiontableheader"> 
-    <td colspan="2" class="Stil2"><b>Order Information</b></td>
+    <td colspan="2" class="Stil2"><b><?php echo $VM_LANG->_('PHPSHOP_ACC_ORDER_INFO') ?></b></td>
   </tr>
   <tr class="Stil1"> 
-    <td>Order Number:</td><td><?php echo $order_id ?></td>
+    <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_NUMBER')?>:</td><td><?php echo $order_id ?></td>
   </tr>
    
   <tr class="Stil1"> 
-    <td>Order Date:</td><td><?php echo $order_date ?></td>
+    <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_DATE') ?>:</td><td><?php echo $order_date ?></td>
   </tr>
   <tr class="Stil1"> 
-    <td>Order Status:</td><td><?php echo $order_status ?></td>
+    <td><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') ?>:</td><td><?php echo $order_status ?></td>
   </tr>
   <!-- end customer information --> 
   <!-- begin 2 column bill-ship to --> 
@@ -54,7 +54,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr bgcolor="#CCCCCC" class="sectiontableheader"> 
-    <td colspan="2"><b class="Stil2">Customer Information</b></td>
+    <td colspan="2"><b class="Stil2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUST_INFO_LBL') ?></b></td>
   </tr>
   <tr valign=top> 
     <td width=50%> <!-- begin billto -->  
@@ -98,7 +98,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
     <!-- begin shipto -->  
       <table width=100% border=0 cellpadding=2 cellspacing=0 class="Stil1">
         <tr> 
-          <td colspan="2"><b>Ship to</b></td>
+          <td colspan="2"><b><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIP_TO_LBL') ?></b></td>
         </tr>
      <?php
       foreach( $shippingfields as $field ) {
@@ -149,7 +149,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
   </tr>
   <!-- begin order items information --> 
   <tr bgcolor="#CCCCCC" class="Stil2"> 
-    <td colspan="2"><b>Order Items</b></td>
+    <td colspan="2"><b><?php echo $VM_LANG->_('PHPSHOP_ORDER_ITEM') ?></b></td>
   </tr>
   <tr> 
     <td colspan="2"> 
@@ -192,7 +192,7 @@ while($dboi->next_record()) {
           <td>&nbsp;</td>
         </tr>
         <tr class="Stil1"> 
-          <td colspan=4 align=right>Subtotal :</td>
+          <td colspan=4 align=right><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SUBTOTAL') ?> :</td>
           <td><?php echo $order_subtotal ?></td>
         </tr>
         <?php
@@ -217,11 +217,11 @@ while($dboi->next_record()) {
 		}
 		?>
         <tr class="Stil1"> 
-          <td colspan=4 align=right>Shipping :</td>
+          <td colspan=4 align=right><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?> :</td>
           <td><?php echo $order_shipping ?></td>
         </tr>
         <tr class="Stil1"> 
-          <td colspan=4 align=right>Tax Total :</td>
+          <td colspan=4 align=right><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?> :</td>
           <td><?php echo $order_tax ?></td>
         </tr>
         <?php
@@ -245,7 +245,7 @@ while($dboi->next_record()) {
 		}
 		?>
         <tr class="Stil1"> 
-          <td colspan=4 align=right><b>Total:</b></td>
+          <td colspan=4 align=right><b><?php echo $VM_LANG->_('PHPSHOP_CART_TOTAL') .": " ?></b></td>
           <td><?php echo $order_total ?></td>
         </tr>
       </table>
@@ -257,7 +257,7 @@ while($dboi->next_record()) {
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr bgcolor="#CCCCCC" class="sectiontableheader">
-    <td colspan="2"><b class="Stil2">Customer Note:</b></td>
+    <td colspan="2"><b class="Stil2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE') ?>:</b></td>
   </tr>
   <tr>
     <td colspan="2">

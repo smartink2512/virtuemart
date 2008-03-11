@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : brazilian_portuguese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Escreva ',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Artigos',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Qualidades',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Tem a certeza que quer apagar este produto\\\\ne e todos os artigos relacionados com ele?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Tem a certeza que quer apagar este produto\ne e todos os artigos relacionados com ele?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Tem a certeza que quer apagar este artigo?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Fabricante',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'SKU',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'URL do arquivo (opcional)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Preencha qualquer texto que será mostrado na página do produto. <br />e.g.: 24h, 48 horas, 3 - 5 dias, No pedido.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'OU selecione uma imagem a ser mostrada na página de detalhes (pag. do produto).<br />A imagem reside no diretório <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Exemplos do formato de lista de atributos:</h4> 
-			<pre>Tamanho,XL[+1.99],M,S[-2.99];Cor,Verm.,Verde,Amarelo,CorExpressiva[=24.00];E Por Ai Vai,..,..</pre>
-			<h4>Ajuste de preços Inline para usar com as modificações de atributos avançadas:</h4>
-			<pre>
-			+ == Adicione este valor ao preço configurado.<br />
-			- == Subtraia este valor do preço configurado.<br />
-			= == Defina o preço do produto para este valor.
-			</pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Exemplos para o formato de lista de atributos personalizavel:</h4> <span class="sectionname"> <strong>Nome;Extras;</strong>...</span>',
 	'PHPSHOP_IMAGE_ACTION' => 'Image Action',
 	'PHPSHOP_PARAMETERS_LBL' => 'Parameters',
@@ -234,6 +225,10 @@ The Shop will create a new discount record from the discounted price.',
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
-	'VM_PRODUCT_SEARCHING' => 'Searching...'
+	'VM_PRODUCT_SEARCHING' => 'Searching...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

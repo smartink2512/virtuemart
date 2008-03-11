@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : bulgarian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Изтриване на текущото изображение.',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Артикули за продукт',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Атрибути за артикула',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Сигурни ли сте, че искате да изтриете продукта\\\\nи артикулите, които се отнасят към него?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Сигурни ли сте, че искате да изтриете продукта\nи артикулите, които се отнасят към него?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Сигурни ли сте, че искате да изтриете този артикул?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Производител',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'Код',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'URL до файла (не е задължително)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Попълнете с текст, който ще желаете да се показва в страницата с детайлна информация за продукта.<br />напр.: 24 часа, 48 часа, 3-5 дни, При заявка...',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'ИЛИ изберете изображение, което ще се показва в страницата с детайлна информация за продукта (flypage).<br />Изображенията се съхраняват в директория <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Примери за форматиране на списъка с атрибути:</h4>
-        <pre>Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00];и т.н.,..,..</pre>
-        <h4>Промяна на цената - промяна на атрибути за напреднали:</h4>
-        <pre>
-        + == добавяне на тази стойност към цената.<br />
-        - == изваждане на тази стойност от цената.<br />
-        = == фиксиране на цената към тази стойност.
-      </pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Примери за форматиране на списъка с custom атрибути:</h4>
         <pre>Name;Extras;</strong>...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Действие',
@@ -234,6 +225,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
-	'VM_PRODUCT_SEARCHING' => 'Searching...'
+	'VM_PRODUCT_SEARCHING' => 'Searching...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

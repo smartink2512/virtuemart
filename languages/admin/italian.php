@@ -410,6 +410,9 @@ Con questo tipo di registrazione, i clienti non devono e non possono registrare 
 	'VM_UPDATE_PATCH_APPLY' => 'Applica Aggiornamento',
 	'VM_UPDATE_PATCH_ERR_UNWRITABLE' => 'Non tutti i file/cartelle da aggiornare sono scrivibili. Prima correggi i permessi.',
 	'VM_UPDATE_PATCH_PLEASEMARK' => 'Seleziona la casella di conferma prima di applicare l\'aggiornamento.',
-	'VM_UPDATE_RESULT_TITLE' => 'Versione Attualmente Installata'
+	'VM_UPDATE_RESULT_TITLE' => 'Versione Attualmente Installata',
+	'VM_FIELDS_CAPTCHA' => 'Campo Captcha (usando com_securityimages)',
+	'VM_FIELDS_AGEVERIFICATION' => 'Controllo Età (campi di selezione data)',
+	'VM_FIELDS_AGEVERIFICATION_MINIMUM' => 'Specifica l\'età minima'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>

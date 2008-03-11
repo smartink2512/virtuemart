@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : dutch.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Verwijder huidige afbeelding',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Product Items',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Item Attributen',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Weet U zeker dat u het product wilt verwijderen\\\\\\\\en de Items die er bij horen?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Weet U zeker dat u het product wilt verwijderen\en de Items die er bij horen?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Weet U zeker dat u het item wilt verwijderen?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Fabrikant',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'Art. Nr.',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'Bestand URL (optie)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Type een tekst wat getoond wordt aan de klant op de product flypage.<br />Bijvoorbeeld: 24u, 48 uur , 3 - 5 dagen, Op bestelling.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'OF selecteer een afbeelding.<br />De afbeeldingen bevinden zich in de directory <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Voorbeelden van Specificatie lijst opbouw:</h4>
-        <span class="sectionname"><strong>Grote</strong>,XL[+1.99],M,S[-2.99]<strong>;Kleur</strong>,Rood,Groen,Geel,Dure Kleur[=24.00]<strong>;Enz</strong>,..,..</span>
-        <h4>Prijs verwerking van de Specificatie aanpassing/toevoeging:</h4>
-        <span class="sectionname">
-        <strong>+</strong> == Tel deze hoeveelheid op bij de standaard prijs.<br />
-        <strong>-</strong> == Trek deze hoeveelheid af van de standaard prijs.<br />
-        <strong>=</strong> == Maak dit de nieuwe product prijs.
-      </span>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Voorbeelden van Bijzondere Specificatie lijst opbouw:</h4>
         <span class="sectionname"><strong>Naam;Extras;</strong>...</span>',
 	'PHPSHOP_IMAGE_ACTION' => 'Afbeelding actie',
@@ -234,6 +225,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
-	'VM_PRODUCT_SEARCHING' => 'Searching...'
+	'VM_PRODUCT_SEARCHING' => 'Searching...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

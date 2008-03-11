@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -125,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'Tiedoston URL (valinnainen)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Kirjoita t‰h‰n teksti, joka n‰kyy tuotetiedoissa toimitusaikana.<br />esim.: 24h, 48 tuntia, 3 - 5 p‰iv‰‰',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'TAI valitse kuva, joka n‰kyy tuotetiedossa toimitusaikana.<br />Kuvat ovat hakemistossa <i>/components/com_virtuemart/shop_image/availability</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esimerkkej‰ piirrelistan nimikkeist‰ (Attribute List Format):</h4>
-        <pre>Koko,S[-2.99],M,XL[+1.99];V‰ri,Punainen,Vihre‰,Keltainen,Erikoisv‰ri[=24.00];jne,..,..</pre>
-        <h4>Hintam‰‰ritykset:</h4>
-        <pre>
-        &#43; == Lis‰‰ t‰m‰ m‰‰r‰ asetettuun hintaan.<br />
-        &#45; == V‰henn‰ t‰m‰ m‰‰r‰ asetetusta hinnasta.<br />
-        &#61; == Aseta tuotteelle t‰m‰ hinta.
-      </pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esimerkkej‰ erityispiirrelistan sis‰llˆst‰:</h4>
         <pre>Nimi;Ekstra;...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Kuvan toiminta',
@@ -166,7 +158,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE' => 'Useita arvoja',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES' => 'Mahdollisia arvoja',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT' => 'N‰ytet‰‰nkˆ mahdollisia arvoja monivalintoja varten?',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Jos valitaan mahdolliset arvot -valinta, muuttujat (parametrit) voivat saada vain niit‰ arvoja. Esimerkki mahdollisista muuttuja-arvoista:</strong><BR><span class=\"sectionname\">ter‰s;puu;muovi;...</span>',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Jos valitaan mahdolliset arvot -valinta, muuttujat (parametrit) voivat saada vain niit‰ arvoja. Esimerkki mahdollisista muuttuja-arvoista:</strong><BR><span class="sectionname">ter‰s;puu;muovi;...</span>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT' => 'Oletusarvo',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT' => 'Muuttujan oletusarvon m‰‰rittelyss‰ k‰ytet‰‰n seuraavaa muotoa:<ul><li>Pvm: YYYY-MM-DD</li><li>Aika: HH:MM:SS</li><li>Pvm & aika: YYYY-MM-DD HH:MM:SS</li></ul>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT' => 'Yksikkˆ',
@@ -234,6 +226,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Nimi/p‰iv‰ys',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Valitse yksi tai useampi tuote',
-	'VM_PRODUCT_SEARCHING' => 'Etsit‰‰n...'
+	'VM_PRODUCT_SEARCHING' => 'Etsit‰‰n...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : swedish.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Skriv ',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Produktartiklar',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Artikelattribut',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Är du säker på att du vill radera denna produkt\\\\noch tillhörande artiklar?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Är du säker på att du vill radera denna produkt\noch tillhörande artiklar?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Är du säker på att du vill radera denna artikel?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Tillverkare',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'Artnr',
@@ -126,14 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'Fil URL (valfri)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Skriv text här som kommer att visas till kunden på flypage sidan.<br />t.ex: 24tim, 48 timmar, 3 - 5 dagar, efter order.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'ELLER välj en bild at visa på detaljsidan (flypage).<br />Bildrna sparas i biblioteket <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Exempel på attributlisteformat:</h4>
-        <span class="sectionname"><strong>Storlek</strong>,XL[+20.00],M,S[-15.00]<strong>;Färg</strong>: Röd,Grön,Gul,Exklusiv färg[=24.00]<strong>;Och så vidare</strong>,..,..</span>
-        <h4>Integrerade prisjusteringar för användning med "Advanced Attributes" modulen:</h4>
-        <span class="sectionname">
-        <strong>+</strong> == Lägg till denna summa till grundpriset.<br />
-        <strong>-</strong> == Ta bort denna summa från grundpriset.<br />
-        <strong>=</strong> == Ange som produktpris.
-      </span>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Exemplel på extra attribut formatet:</h4>
         <span class="sectionname"><strong>Namn;Extra;</strong>...</span>',
 	'PHPSHOP_IMAGE_ACTION' => 'Bildfunktion',
@@ -235,6 +226,10 @@ The Shop will create a new discount record from the discounted price.',
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Name/Date',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Select one or more Products',
-	'VM_PRODUCT_SEARCHING' => 'Searching...'
+	'VM_PRODUCT_SEARCHING' => 'Searching...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
+Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
+<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

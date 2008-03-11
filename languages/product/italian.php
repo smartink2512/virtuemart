@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : italian.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -45,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Elimina immagine corrente',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Elementi Prodotto',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Attributi Elemento',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Sei sicuro di voler cancellare questo prodotto\\ne gli elementi correlati?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Sei sicuro di voler cancellare questo prodottone gli elementi correlati?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Sei sicuro di voler cancellare questo Elemento?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Produttore',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'COD.',
@@ -126,15 +125,6 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'URL File (opzionale)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Inserisci qui il testo che vuoi venga visualizzato sulla pagina di descrizione del prodotto.<br />es.: 24 ore, 48 ore, 3 - 5 giorni, Su ordinazione.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'OPPURE seleziona un\'immagine da visualizzare nella pagina di dettaglio del prodotto (flypage).<br />Le immagini risiedono nella cartella <i>%s</i><br />',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esempi per il formato lista attributi:</h4>
-        <pre><strong>Taglia</strong>,XL[+1.99],M,S[-2.99];
-        <strong>Colori</strong>,Rosso,Verde,Giallo,ColoreCostoso[=24.00]<strong>;ecc.,..,..
-        </pre>
-        <h4>Regolazioni sul prezzo per l\'utilizzo della modifica degli attributi avanzata:</h4>
-        <pre><strong>+</strong> == Aggiungi questo ammontare al prezzo configurato.<br />
-        <strong>-</strong> == Sottrai questo ammontare dal prezzo configurato.<br />
-        <strong>=</strong> == Imposta il prezzo del prodotto a questo ammontare.
-        </span>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esempi per il formato lista attributi personalizzata:</h4>
         <pre><strong>Nome;Extra;</strong>...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Azione per l\'immagine',
@@ -235,6 +225,10 @@ $langvars = array (
 	'VM_PRODUCT_LIST_MEDIA' => 'Media',
 	'VM_REVIEW_LIST_NAMEDATE' => 'Nome/Data',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Seleziona uno o più Prodotti',
-	'VM_PRODUCT_SEARCHING' => 'Ricerca...'
+	'VM_PRODUCT_SEARCHING' => 'Ricerca...',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esempi per il formato Lista Attributi:</h4>
+Titolo = Colore, Proprietà = Rosso ; Click su Nuova Proprietà per aggiungere un nuovo colore: Verde ; Quindi clicca su Nuovo attributo per aggiungere un nuovo attributo, e così via.
+<h4>Regolazioni prezzo per gli Attributi:</h4>
+Prezzo = +10 per aggiungere questo importo al prezzo configurato.<br />  Prezzo = -10 per sottrarre questo importo dal prezzo configurato.<br />  Prezzo = 10 per impostare il prezzo del prodotto a questo importo.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

@@ -208,8 +208,8 @@ class vmAbstractLanguage {
 	function load($module) {
 		global $mosConfig_lang;
 		$module = basename( $module );
-		if (file_exists( ADMINPATH. 'languages/'.$module.'/'.$mosConfig_lang.'.php' )) {
-			require_once( ADMINPATH. 'languages/'.$module.'/'.$mosConfig_lang.'.php' );
+		if (file_exists( ADMINPATH. 'languages/'.$module.'/'.strtolower($mosConfig_lang).'.php' )) {
+			require_once( ADMINPATH. 'languages/'.$module.'/'.strtolower($mosConfig_lang).'.php' );
 			return true;
 		} else if (file_exists( ADMINPATH. 'languages/'.$module.'/english.php' )) {
 			require_once( ADMINPATH. 'languages/'.$module.'/english.php' );
