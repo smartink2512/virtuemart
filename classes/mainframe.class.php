@@ -52,7 +52,9 @@ class vmMainFrame {
 	var $_style = array();
 	
 	function vmMainFrame() {
-		$_SESSION['userstate'] = '';
+		if( empty($_SESSION['userstate'])) {
+			$_SESSION['userstate'] = array();
+		}
 	}
 	/**
 	 * Gets a user state.

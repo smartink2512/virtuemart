@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+11.03.2008 soeren
+# Task #1897 - Page navigation is wrong after default Display Items change (J1.5+VM1.1)
 11.03.2008 thepisu
 # Task #1867 - PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES
 # Task #1877 - Language not being picked up consistently
