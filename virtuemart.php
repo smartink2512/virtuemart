@@ -28,8 +28,8 @@ $pagename = $my_page[1];
 $is_popup = vmRequest::getBool( 'pop' );
 
 // Page Navigation Parameters
-$limit = intval( $vm_mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit ) );
-$limitstart = intval( $vm_mainframe->getUserStateFromRequest( "view{$keyword}{$category_id}limitstart", 'limitstart', 0 )) ;
+$limit = intval( $vm_mainframe->getUserStateFromRequest( "viewlistlimit", 'limit_'.$page, $mosConfig_list_limit ) );
+$limitstart = intval( $vm_mainframe->getUserStateFromRequest( "view{$keyword}{$category_id}{$pagename}limitstart", 'limitstart', 0 )) ;
 
 /* Get all the other paramters */
 $search_category= vmRequest::getVar( 'search_category' );

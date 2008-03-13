@@ -312,7 +312,7 @@ echo vmCommonHTML::PrintIcon();
             echo $CURRENCY_DISPLAY->getFullValue($total, '', $db->f('order_currency'));
           }
           else {
-            $total = $db->f("order_subtotal") + $db->f("order_tax") + $db->f("order_shipping");
+            $total = $db->f("order_subtotal") + $db->f("order_tax") + $db->f("order_shipping") - $db->f("coupon_discount");
             echo $CURRENCY_DISPLAY->getFullValue($total, '', $db->f('order_currency'));
           }
           if (PAYMENT_DISCOUNT_BEFORE == '1') { ?></strong><?php } ?>&nbsp;&nbsp;&nbsp;</td>

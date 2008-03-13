@@ -24,7 +24,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 
 function installvirtuemart( $install_type, $install_sample_data=false ){
 	global $database, $mosConfig_absolute_path, $mosConfig_mailfrom, $VM_LANG, $mosConfig_dirperms, $mosConfig_live_site;
-	
+	@ini_set( 'memory_limit', '32M' );
 	if( empty($mosConfig_mailfrom)) $mosConfig_mailfrom = "demo_order@virtuemart.net";
 	
 	$messages = array();

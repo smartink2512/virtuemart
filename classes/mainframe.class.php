@@ -309,6 +309,9 @@ class vmMainFrame {
 				$mainframe->addCustomHeadTag( $tag );
 			}
 		}
+		if( !vmIsJoomla() && defined('_VM_IS_BACKEND')) {
+			echo $mainframe->getHead();
+		}
 	}
 	
 	function close( $exit=false ) {

@@ -75,6 +75,7 @@ if ( $my_group == 'super administrator' && $my->gid != 25 ) {
 	$my_groups = $acl->get_object_groups( 'users', $my->id, 'ARO' );
 	if (is_array( $my_groups ) && count( $my_groups ) > 0) {
 		$ex_groups = $acl->get_group_children( $my_groups[0], 'ARO', 'RECURSE' );
+		if (!$ex_groups) $ex_groups = array();
 	} else {
 		$ex_groups = array();
 	}
@@ -107,7 +108,7 @@ if( vmIsJoomla( '1.5' ) ) {
 	require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_users'.DS.'users.class.php' );
 	$user =& JUser::getInstance( $user_id );
 	$params = $user->getParameters(true);
-} else {
+} elseif( file_exists( $mosConfig_absolute_path . '/administrator/components/com_users/users.class.php' ) ) {
 	require_once( $mosConfig_absolute_path . '/administrator/components/com_users/users.class.php' );
 	$file 	= $mainframe->getPath( 'com_xml', 'com_users' );
 	$params =& new mosUserParameters( $row->params, $file, 'component' );
@@ -253,7 +254,7 @@ function gotocontact( id ) {
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td>
-			<?php echo $params->render( 'params' );?>
+			<?php if( is_callable(array($params, 'render'))) echo $params->render( 'params' );?>
 			</td>
 		</tr>
 	</table>

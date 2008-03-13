@@ -512,6 +512,7 @@ class ps_order {
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$auth = $_SESSION['auth'];
+		require_once( CLASSPATH .'ps_order_status.php');
 		require_once( CLASSPATH .'htmlTools.class.php');
 		require_once( CLASSPATH .'pageNavigation.class.php');
 		$db = new ps_DB;
@@ -547,7 +548,6 @@ class ps_order {
 
 		$list .= $q .= " LIMIT ".$pageNav->limitstart.", $limit ";
 		$db->query( $list );
-
 		$listObj = new listFactory( $pageNav );
 
 		if( $num_rows > 0 ) {
@@ -560,9 +560,8 @@ class ps_order {
 		$listObj->writeTableHeader( 3 );
 
 		while ($db->next_record()) {
-			$dbs->query( "SELECT order_status_id, order_status_name FROM #__{vm}_order_status WHERE order_status_code='".$db->f("order_status")."'");
-			$dbs->next_record();
-			$order_status = $dbs->f("order_status_name");
+
+			$order_status = ps_order_status::getOrderStatusName($db->f("order_status"));
 
 			$listObj->newRow();
 

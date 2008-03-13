@@ -27,7 +27,7 @@ include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/inst
 // * END INSTALLER SECTION *
 
 // Load the virtuemart main parse code
-require_once( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
+require( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
 // Include The Version File
 include_once( ADMINPATH. 'version.php' );

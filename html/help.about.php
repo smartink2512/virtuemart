@@ -28,12 +28,7 @@ include_once( ADMINPATH . "version.php" );
       <span style="font-weight: bold;"><?php echo $VM_LANG->_('VM_HELP_PROJECTLEADER'); ?>:</span> Soeren Eberhardt-Biermann<br />
       <span style="font-weight: bold;"><?php echo $VM_LANG->_('VM_HELP_HOMEPAGE'); ?>:</span> <a href="http://virtuemart.net" target="_blank" title="virtuemart.net">http://virtuemart.net</a><br />
       <span style="font-weight: bold;"><?php echo $VM_LANG->_('VM_COMMUNITY_FORUM'); ?>:</span> <a href="http://forum.virtuemart.net" target="_blank" title="VirtueMart Forum">VirtueMart Forum</a><br />
-      
-      <br />
-	  <hr />
-	<?php
-	include( ADMINPATH."COPYRIGHT.php" );
-	?>
+
 	<hr />
 	<br /><br />
       <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"><span style="font-weight: bold;">
@@ -61,3 +56,8 @@ include_once( ADMINPATH . "version.php" );
 	  ?>
       <input type="image" border="0" src="<?php echo $paypal_button; ?>" name="submit" alt="<?php echo $VM_LANG->_('VM_HELP_DONATION_BUTTON_ALT'); ?>" />
     </form>
+      <br />
+	  <hr />
+	<?php
+	include( ADMINPATH."COPYRIGHT.php" );
+	?>

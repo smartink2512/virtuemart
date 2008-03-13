@@ -222,7 +222,6 @@ class listFactory {
 					<input type="hidden" name="page" value="'. $modulename . '.' . $pagename . '" />
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="func" value="" />
-					<input type="hidden" name="pshop_mode" value="admin" />
 					<input type="hidden" name="vmtoken" value="'.vmSpoofValue($sess->getSessionId()).'" />
 					<input type="hidden" name="no_menu" value="'.vmRequest::getInt( 'no_menu' ).'" />
 					<input type="hidden" name="no_toolbar" value="'.vmRequest::getInt('no_toolbar').'" />

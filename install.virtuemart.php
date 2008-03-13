@@ -15,7 +15,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 *
 * http://virtuemart.net
 */
-
+global $option;
 include_once( dirname(__FILE__).'/compat.joomla1.5.php' );
 
 if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {

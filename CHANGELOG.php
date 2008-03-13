@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.03.2008 soeren
+# List Limitstart wasn't set per page.
+# Task #1401 -  Print View does order total does not include coupon discount.
+
+--- VirtueMart 1.1.0 RC2 released ---
+
 11.03.2008 soeren
 # Task #1897 - Page navigation is wrong after default Display Items change (J1.5+VM1.1)
 11.03.2008 thepisu
