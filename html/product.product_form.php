@@ -199,7 +199,7 @@ if( !empty( $product_id )) {
 	$title .= " :: " . $db->f("product_name");
 	$flypage = $ps_product->get_flypage($product_id);
 	?>
-	<a href="<?php echo $mosConfig_live_site."/index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id" ?>" target="_blank">
+	<a href="<?php echo $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id" ?>" target="_blank">
 		  <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_SHOW_FLYPAGE') ?>
 	</a>
 	<?php

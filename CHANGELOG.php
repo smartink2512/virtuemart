@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+15.03.2008 gregdev
+# Task #1891 - Add/Update product form, minor bug in prewiev link.
+# Task #1896 - nowrap to remove in shopper.shopper_group_form.php
+# Fully load Joomla! 1.5 framework for extlayout.js.php
+
 12.03.2008 soeren
 # List Limitstart wasn't set per page.
 # Task #1401 -  Print View does order total does not include coupon discount.

@@ -37,7 +37,7 @@ if (!empty($shopper_group_id)) {
 ?>
 <table class="adminform">
     <tr>
-      <td width="23%" nowrap>
+      <td width="23%">
         <strong><div align="right"><?php echo $VM_LANG->_('PHPSHOP_DEFAULT') ?> ?:</div></strong>
       </td>
       <td width="77%" >
@@ -55,7 +55,7 @@ if (!empty($shopper_group_id)) {
       </td>
     </tr>
     <tr>
-      <td width="23%" nowrap>
+      <td width="23%">
         <strong><div align="right"><?php echo $VM_LANG->_('PHPSHOP_SHOPPER_GROUP_FORM_NAME') ?>:</div></strong>
       </td>
       <td width="77%" > 
@@ -76,7 +76,7 @@ if (!empty($shopper_group_id)) {
 			?></td>
       </tr>
     <tr>
-      <td width="23%" nowrap><strong><div align="right"><?php
+      <td width="23%"><strong><div align="right"><?php
       echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX').": "; ?></div></strong>
       </td>
       <td width="77%" > 
@@ -86,7 +86,7 @@ if (!empty($shopper_group_id)) {
       </td>
     </tr> 
     <tr>
-      <td width="23%" nowrap><strong><div align="right"><?php
+      <td width="23%"><strong><div align="right"><?php
       echo $VM_LANG->_('PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT').": "; ?></div></strong>
       </td>
       <td width="77%" > 
@@ -95,7 +95,7 @@ if (!empty($shopper_group_id)) {
       </td>
     </tr> 
     <tr> 
-      <td width="23%" nowrap valign="top"><strong><div align="right">
+      <td width="23%" valign="top"><strong><div align="right">
       <?php echo $VM_LANG->_('PHPSHOP_SHOPPER_GROUP_FORM_DESC') ?>:</div></strong>
       </td>
       <td width="77%" valign="top" >
@@ -105,7 +105,7 @@ if (!empty($shopper_group_id)) {
       </td>
     </tr>
     <tr> 
-      <td width="23%" nowrap valign="top" >&nbsp;</td>
+      <td width="23%" valign="top" >&nbsp;</td>
       <td width="77%" valign="top" >&nbsp;</td>
     </tr>
 </table>

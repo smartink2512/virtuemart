@@ -17,10 +17,23 @@
 *
 * http://virtuemart.net
 */
-define( '_VALID_MOS', 1);
-define( '_JEXEC', 1);
 
 require(dirname(__FILE__).'/../../../configuration.php');
+if( class_exists( 'JConfig' ) ) {
+	// Initialize the framework
+	define( '_JEXEC', 1);
+	define('JPATH_BASE', dirname(__FILE__) . '/../../../');
+	define('DS', DIRECTORY_SEPARATOR);
+	require_once ( JPATH_BASE . DS . 'includes' . DS . 'defines.php' );
+	require_once ( JPATH_BASE . DS . 'includes' . DS . 'framework.php' );
+	$mainframe =& JFactory::getApplication('administrator');
+	$mainframe->initialise();
+} else {
+	define( '_VALID_MOS', 1);
+	session_name('virtuemart');
+	session_start();
+}
+
 require(dirname(__FILE__).'/../../../administrator/components/com_virtuemart/compat.joomla1.5.php');
 require(dirname(__FILE__).'/../../../administrator/components/com_virtuemart/virtuemart.cfg.php');
 $vmLogIdentifier = 'extlayout.js.php';
@@ -29,20 +42,9 @@ require_once(CLASSPATH."DebugUtil.php");
 require_once( CLASSPATH . 'language.class.php');
 require_once( CLASSPATH . 'ps_main.php');
 
-global $mosConfig_lang;
-$mosConfig_lang = $_REQUEST["lang"];
-
 $GLOBALS['VM_LANG'] = $GLOBALS['PHPSHOP_LANG'] =& new vmLanguage();
 $VM_LANG->load('common');
-if( vmIsJoomla(1.5 )) {
-	$mainframe =& JFactory::getApplication('administrator');
-	/* @var $mainframe JApplication */
-		
-	$mainframe->initialise();
-} else {
-	session_name('virtuemart');
-	session_start();
-}
+
 header( 'Content-Type: application/x-javascript');
 
 echo "if( typeof Ext == \"undefined\" ) {
