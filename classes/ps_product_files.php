@@ -33,15 +33,16 @@ class ps_product_files {
 	 * @return boolean
 	 */
 	function validate_add( &$d ) {
-
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		if (empty($_FILES["file_upload"]["name"]) && empty($d['file_url']) && empty( $d['downloadable_file'])) {
-			$GLOBALS['vmLogger']->err( "You must either Upload a File or provide a File URL." );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_FILES_ERR_PROVIDE') );
 			return False;
 		}
 		if (empty($d["product_id"])) {
-			$GLOBALS['vmLogger']->err( "A product ID must be specified." );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_FILES_ERR_ID') );
 			return False;
 		}
 
@@ -65,11 +66,11 @@ class ps_product_files {
 	 * @return boolean
 	 */
 	function validate_update( &$d ) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		
 		$db = new ps_DB;
 		if (empty($d["product_id"])) {
-			$vmLogger->err( "A product ID must be specified.");
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_FILES_ERR_ID') );
 			return False;
 		}
 
@@ -93,9 +94,10 @@ class ps_product_files {
 	 * @return boolean
 	 */
 	function validate_delete( $file_id, &$d ) {
-
+		global $VM_LANG;
+		
 		if (empty($file_id)) {
-			$GLOBALS['vmLogger']->err( "Please select a file to delete." );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_FILES_ERR_DELETE') );
 			return False;
 		}
 		return true;
@@ -173,7 +175,7 @@ class ps_product_files {
 			}
 			$q .= ' WHERE `product_id` ='.intval( $d["product_id"] );
 			$db->query( $q );
-			$vmLogger->info( 'The Product Images have been set.' );
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_FILES_IMAGES_SET') );
 			return true;
 		}
 		else {
@@ -194,7 +196,7 @@ class ps_product_files {
 			$q .= "'$is_image', '$file_image_height', '$file_image_width', '$file_image_thumb_height', '$file_image_thumb_width')";
 			$db->setQuery($q);
 			$db->query();
-			$vmLogger->info( 'The new file has been added.' );
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_FILES_ADDED') );
 			$_REQUEST['file_id'] = $db->last_insert_id();
 		}
 		return True;
@@ -710,7 +712,7 @@ class ps_product_files {
 	 * @return boolean True when the file upload is correct, false when not.
 	 */
 	function checkUploadedFile( $fieldname ) {
-		global $vars, $vmLogger;
+		global $vars, $vmLogger, $VM_LANG;
 		if( (!is_uploaded_file( @$_FILES[$fieldname]['tmp_name']) && strstr( $fieldname, 'thumb')
 			|| substr( @$_REQUEST[$fieldname.'_url'], 0, 4 ) == 'http' )) {
 			return true;
@@ -724,13 +726,13 @@ class ps_product_files {
 					//$vmLogger->warning( "There was a problem with your upload." );
 					break;
 				case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-					$vmLogger->warning( "The file you are trying to upload is too big." );
+					$vmLogger->warning( $VM_LANG->_('VM_PRODUCT_FILES_ERR_TOOBIG') );
 					break;
 				case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-					$vmLogger->warning( "The file you are trying to upload is too big." );
+					$vmLogger->warning( $VM_LANG->_('VM_PRODUCT_FILES_ERR_TOOBIG') );
 					break;
 				case 3: //uploaded file was only partially uploaded
-					$vmLogger->warning( "The file you are trying upload was only partially uploaded." );
+					$vmLogger->warning( $VM_LANG->_('VM_PRODUCT_FILES_ERR_PARTIALLY') );
 					break;
 				case 4: //no file was uploaded
 					//$vmLogger->warning( "You have not selected a file/image for upload." );

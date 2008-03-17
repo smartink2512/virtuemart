@@ -35,9 +35,9 @@ $listObj = new listFactory( );
 
 $title = $VM_LANG->_('PHPSHOP_PRODUCT_PRODUCT_TYPE_LIST_LBL');
 if (!empty($product_parent_id)) {
-  $title .= " Item: ";
+  $title .= " ".$VM_LANG->_('PHPSHOP_ITEM').": ";
 } else {
-  $title .= " Product: ";
+  $title .= " ".$VM_LANG->_('PHPSHOP_PRODUCT').": ";
 }
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name")."</a>";

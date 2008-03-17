@@ -15,16 +15,18 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
+*
+* Dutch Translation for Dutchjoomla.org by Frans and Ton
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Klant Account:',
-	'PHPSHOP_ACC_UPD_BILL' => 'Hier kan U Uw facturatie gegevens aanpassen.',
-	'PHPSHOP_ACC_UPD_SHIP' => 'Hier kan U Uw verzendgegevens aanpassen.',
-	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Account Informatie',
-	'PHPSHOP_ACC_SHIP_INFO' => 'Verzend Informatie',
-	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
-	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
+        'CHARSET' => 'ISO-8859-1',
+        'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Klantaccount:',
+        'PHPSHOP_ACC_UPD_BILL' => 'Hier kunt u uw factuurgegevens aanpassen.',
+        'PHPSHOP_ACC_UPD_SHIP' => 'Hier kunt u uw verzendgegevens aanpassen.',
+        'PHPSHOP_ACC_ACCOUNT_INFO' => 'Accountinformatie',
+        'PHPSHOP_ACC_SHIP_INFO' => 'Verzendinformatie',
+        'PHPSHOP_DOWNLOADS_CLICK' => 'Klik op de productnaam om het bestand(en)te downloaden.',
+        'PHPSHOP_DOWNLOADS_EXPIRED' => 'U heeft het bestand al het maximaal aantal keren gedownload of de download periode is verstreken.'
 ); $VM_LANG->initModule( 'account', $langvars );
 ?>

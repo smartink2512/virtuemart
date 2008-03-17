@@ -14,20 +14,22 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * other free or open source software licenses.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
+* Dutch Translation for Dutchjoomla.org by Frans and Ton  
+*
 * http://virtuemart.net
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_COUPON_EDIT_HEADER' => 'Kortingsbon Updaten',
-	'PHPSHOP_COUPON_CODE_HEADER' => 'Code',
-	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Procent of Totaal',
-	'PHPSHOP_COUPON_TYPE' => 'Krotings Type',
-	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Een cadeau kortingsbon wordt verwijderd zodra deze is gebruikt. Een permanente kortingsbon kan onbeperkt gebruikt worden door klanten.',
-	'PHPSHOP_COUPON_TYPE_GIFT' => 'Cadeau kortingsbon',
-	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Permanente Kortingsbon',
-	'PHPSHOP_COUPON_VALUE_HEADER' => 'Waarde',
-	'PHPSHOP_COUPON_PERCENT' => 'Procent',
-	'PHPSHOP_COUPON_TOTAL' => 'Totaal'
+        'CHARSET' => 'ISO-8859-1',
+        'PHPSHOP_COUPON_EDIT_HEADER' => 'Kortingsbon aanpassen',
+        'PHPSHOP_COUPON_CODE_HEADER' => 'Code',
+        'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Procent van totaal',
+        'PHPSHOP_COUPON_TYPE' => 'Kortingstype',
+        'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Een cadeau kortingsbon wordt verwijderd zodra deze is gebruikt. Een permanente kortingsbon kan onbeperkt gebruikt worden door klanten.',
+        'PHPSHOP_COUPON_TYPE_GIFT' => 'Cadeau kortingsbon',
+        'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Permanente kortingsbon',
+        'PHPSHOP_COUPON_VALUE_HEADER' => 'Waarde',
+        'PHPSHOP_COUPON_PERCENT' => 'Procent',
+        'PHPSHOP_COUPON_TOTAL' => 'Totaal'
 ); $VM_LANG->initModule( 'coupon', $langvars );
 ?>

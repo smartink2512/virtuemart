@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.03.2008 thepisu
+# Task #1898 Sort Alphabetically is hard coded
+# Task #1905 List of hard coded strings
+# added various translation strings (module "common")
+^ updated dutch translation
+
 15.03.2008 gregdev
 # Task #1891 - Add/Update product form, minor bug in prewiev link.
 # Task #1896 - nowrap to remove in shopper.shopper_group_form.php

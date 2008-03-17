@@ -30,11 +30,11 @@ class ps_product_category extends vmAbstractObject {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate_add(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		require_once(CLASSPATH . 'imageTools.class.php' );
 		$valid = true;
 		if (empty($d["category_name"])) {
-			$vmLogger->err( "You must enter a name for the category.");
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_CATEGORY_ERR_NAME') );
 			$valid = False;
 		}
 
@@ -44,7 +44,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_thumb_image_url'], 0, 4) != "http") {
-				$vmLogger->err( "Image URL must begin with http." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				$valid =  false;
 			}
 
@@ -60,7 +60,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_full_image_url'], 0, 4) != "http") {
-				$vmLogger->err( "Image URL must begin with http." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				return false;
 			}
 			$d["category_full_image"] = $d['category_full_image_url'];
@@ -84,15 +84,15 @@ class ps_product_category extends vmAbstractObject {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate_update(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$valid = true;
 		require_once(CLASSPATH . 'imageTools.class.php' );
 		if (!$d["category_name"]) {
-			$vmLogger->err( "You must enter a name for the category." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_CATEGORY_ERR_NAME') );
 			$valid = False;
 		}
 		elseif ($d["category_id"] == $d["category_parent_id"]) {
-			$vmLogger->err( "Category parent cannot be same category." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_CATEGORY_ERR_PARENT') );
 			$valid = False;
 		}
 		$db = new ps_DB;
@@ -106,7 +106,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_thumb_image_url'], 0, 4) != "http") {
-				$vmLogger->err( "An Image URL must begin with 'http'." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				$valid =  false;
 			}
 
@@ -130,7 +130,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_full_image_url'], 0, 4) != "http") {
-				$vmLogger->err( "Image URL must begin with 'http'." );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				return false;
 			}
 			// if we have an uploaded image file, prepare this one for deleting.
@@ -163,11 +163,11 @@ class ps_product_category extends vmAbstractObject {
 	 * @return boolean True when validation successful, false when not
 	 */
 	function validate_delete( $category_id, &$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 		require_once(CLASSPATH . 'imageTools.class.php' );
 		if (empty( $category_id )) {
-			$vmLogger->err( "Please select a category to delete." );
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_CATEGORY_ERR_DELETE_SELECT') );
 			return False;
 		}
 
@@ -175,7 +175,7 @@ class ps_product_category extends vmAbstractObject {
 		$q  = "SELECT * FROM #__{vm}_category_xref where category_parent_id='$category_id'";
 		$db->setQuery($q);   $db->query();
 		if ($db->next_record()) {
-			$vmLogger->err( "This category has children - please delete those children first.");
+			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_CATEGORY_ERR_DELETE_CHILDREN') );
 			return False;
 		}
 		$q = "SELECT category_thumb_image,category_full_image FROM #__{vm}_category WHERE category_id='$category_id'";
@@ -187,7 +187,7 @@ class ps_product_category extends vmAbstractObject {
 			$_REQUEST["category_thumb_image_curr"] = $db->f("category_thumb_image");
 			$d["category_thumb_image_action"] = "delete";
 			if (!vmImageTools::validate_image($d,"category_thumb_image","category")) {
-				$vmLogger->err( "Failed deleting Category Images!" );
+				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_CATEGORY_ERR_DELETE_IMAGES') );
 				return false;
 			}
 		}
@@ -212,7 +212,7 @@ class ps_product_category extends vmAbstractObject {
 	 * @return mixed - int category_id on success, false on error
 	 */
 	function add( &$d ) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
 		$db = new ps_DB;
@@ -266,7 +266,7 @@ class ps_product_category extends vmAbstractObject {
 			$db->buildQuery('INSERT', '#__{vm}_category_xref', $fields );
 			$db->query();
 
-			$vmLogger->info( 'Successfully added new category: "'.vmGet($d,'category_name').'"' );
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_CATEGORY_ADDED').': "'.vmGet($d,'category_name').'"' );
 			return true;
 		}
 		else {
@@ -285,7 +285,7 @@ class ps_product_category extends vmAbstractObject {
 	 * @return boolean true on success, false on error
 	 */
 	function update(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 
 		$db = new ps_DB;
@@ -379,7 +379,7 @@ class ps_product_category extends vmAbstractObject {
 				$db->query( $q );
 			}
 
-			$vmLogger->info( 'Successfully updated category: "'.vmGet($d,'category_name')."'" );
+			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_CATEGORY_UPDATED').': "'.vmGet($d,'category_name')."'" );
 
 			return True;
 		}
@@ -411,7 +411,7 @@ class ps_product_category extends vmAbstractObject {
 	* Deletes one Record.
 	*/
 	function delete_record( $record_id, &$d ) {
-		global $ps_product, $db, $vmLogger;
+		global $ps_product, $db, $vmLogger, $VM_LANG;
 
 		if (!$this->validate_delete($record_id, $d)) {
 			return False;
@@ -462,7 +462,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
-		$vmLogger->info( "Successfully deleted category ID: $record_id." );
+		$vmLogger->info( $VM_LANG->_('VM_PRODUCT_CATEGORY_DELETED').": $record_id." );
 		return True;
 	}
 	function get_field( $category_id, $field_name ) {
@@ -788,8 +788,8 @@ class ps_product_category extends vmAbstractObject {
 			echo "</div></td>\n";
 			echo "<td width=\"5%\">";
 			echo "<a class=\"toolbar\" href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=".$page ."&func= productCategoryDelete&category_id=". $db->f("category_id") ."\"";
-			echo " onclick=\"return confirm('". $VM_LANG->_('PHPSHOP_DELETE_MSG') ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('Delete$ibg','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
-			echo "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$ibg\" align=\"middle\" border=\"0\" /></a></td>\n";
+			echo " onclick=\"return confirm('". addslashes($VM_LANG->_('PHPSHOP_DELETE_MSG')) ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('Delete$ibg','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+			echo "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"".$VM_LANG->_('VM_DELETE_RECORD')."\" name=\"delete$ibg\" align=\"middle\" border=\"0\" /></a></td>\n";
 			$this->traverse_tree_down($class, $db->f("category_child_id"), $level);
 		}
 	}
@@ -1020,7 +1020,8 @@ class ps_product_category extends vmAbstractObject {
 	 * @param array The category IDs which are to be disabled in the select list
 	 */
 	function list_all($name, $category_id, $selected_categories=Array(), $size=1, $toplevel=true, $multiple=false, $disabledFields=array() ) {
-
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		$q  = "SELECT category_parent_id FROM #__{vm}_category_xref ";
@@ -1034,7 +1035,7 @@ class ps_product_category extends vmAbstractObject {
 		$id = str_replace('[]', '', $name );
 		echo "<select class=\"inputbox\" size=\"$size\" $multiple name=\"$name\" id=\"$id\">\n";
 		if( $toplevel ) {
-			echo "<option value=\"0\">Default-Top Level</option>\n";
+			echo "<option value=\"0\">".$VM_LANG->_('VM_DEFAULT_TOP_LEVEL')."</option>\n";
 		}
 		$this->list_tree($category_id, '0', '0', $selected_categories, $disabledFields );
 		echo "</select>\n";
@@ -1283,7 +1284,7 @@ class ps_product_category extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function reorder( &$d ) {
-		global $db, $page;
+		global $db, $page, $VM_LANG;
 
 		if( !empty( $d['category_id'] ) || $page == 'product.product_category_list') {
 					
@@ -1354,7 +1355,7 @@ class ps_product_category extends vmAbstractObject {
 					$i = 0;
 					foreach( $d['category_id'] as $category_id ) {
 						if( !is_numeric( $d['order'][$i] ) ) {
-							$d['error'] = "Error: Please use numbers only for ordering the list!";
+							$d['error'] = $VM_LANG->_('VM_SORT_ERR_NUMBERS_ONLY');
 							return false;
 						}
 						$i++;

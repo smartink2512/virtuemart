@@ -654,12 +654,12 @@ class vmCommonHTML {
 	* @param int the number of rows
 	*/
 	function getSaveOrderButton( $num_rows, $funcname='reorder') {
-		global $mosConfig_live_site;
+		global $mosConfig_live_site, $VM_LANG;
 		$n = $num_rows-1;
 		$html = '<a href="javascript: document.adminForm.func.value = \''.$funcname.'\'; saveorder( '.$n.' );">
-				<img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="Save Order" /></a>';
-		$html .= '<a href="javascript: if( confirm( \'Are you sure to sort this list alphabetically? This cannot be undone.\')) { document.adminForm.func.value = \''.$funcname.'\'; document.adminForm.task.value=\'sort_alphabetically\'; document.adminForm.submit(); }">
-				<img src="'.IMAGEURL.'/ps_image/sort_a-z.gif" border="0" width="16" height="16" alt="Sort Alphabetically" /></a>';
+				<img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="'.$VM_LANG->_('VM_SORT_SAVE_ORDER').'" /></a>';
+		$html .= '<a href="javascript: if( confirm( \''.addslashes($VM_LANG->_('VM_SORT_ALPHA_CONFIRM')).'\')) { document.adminForm.func.value = \''.$funcname.'\'; document.adminForm.task.value=\'sort_alphabetically\'; document.adminForm.submit(); }">
+				<img src="'.IMAGEURL.'/ps_image/sort_a-z.gif" border="0" width="16" height="16" alt="'.$VM_LANG->_('VM_SORT_ALPHA').'" /></a>';
 		
 		return $html;
 	}

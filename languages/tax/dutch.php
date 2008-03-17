@@ -14,17 +14,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * other free or open source software licenses.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
+* Dutch Translation for Dutchjoomla.org by Frans and Ton  
+*
 * http://virtuemart.net
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_TAX_LIST_LBL' => 'Belastings Tarieven Lijst',
-	'PHPSHOP_TAX_LIST_STATE' => 'Belastings Regio',
-	'PHPSHOP_TAX_LIST_COUNTRY' => 'Belasting Land',
-	'PHPSHOP_TAX_FORM_LBL' => 'Belastings Informatie Toevoegen',
-	'PHPSHOP_TAX_FORM_STATE' => 'Belastings Regio',
-	'PHPSHOP_TAX_FORM_COUNTRY' => 'Belastings Land',
-	'PHPSHOP_TAX_FORM_RATE' => 'Belastingstarief (voor 21% => vul 0.21 in)'
+        'CHARSET' => 'ISO-8859-1',
+        'PHPSHOP_TAX_LIST_LBL' => 'Belasting tarievenlijst',
+        'PHPSHOP_TAX_LIST_STATE' => 'Belasting regio',
+        'PHPSHOP_TAX_LIST_COUNTRY' => 'Belasting land',
+        'PHPSHOP_TAX_FORM_LBL' => 'Belastinginformatie toevoegen',
+        'PHPSHOP_TAX_FORM_STATE' => 'Belasting regio',
+        'PHPSHOP_TAX_FORM_COUNTRY' => 'Belasting land',
+        'PHPSHOP_TAX_FORM_RATE' => 'Belastingstarief (voor 19% => vul 0.19 in)'
 ); $VM_LANG->initModule( 'tax', $langvars );
 ?>

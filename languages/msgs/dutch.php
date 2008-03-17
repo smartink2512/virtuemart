@@ -14,6 +14,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * other free or open source software licenses.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
+* Dutch Translation for Dutchjoomla.org by Frans and Ton  
+*
 * http://virtuemart.net
 */
 global $VM_LANG;

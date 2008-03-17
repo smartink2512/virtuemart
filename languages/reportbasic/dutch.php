@@ -14,30 +14,32 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * other free or open source software licenses.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
+* Dutch Translation for Dutchjoomla.org by Frans and Ton  
+*
 * http://virtuemart.net
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_RB_INDIVIDUAL' => 'Individuele Product Overzicht',
-	'PHPSHOP_RB_SALE_TITLE' => 'Verkoop Overzicht',
-	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Verkoops Activiteit Overzicht',
-	'PHPSHOP_RB_INTERVAL_TITLE' => 'Bepaal Periode',
-	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Maandelijks',
-	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Wekelijks',
-	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Dagelijks',
-	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Deze Maand',
-	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Vorige Maand',
-	'PHPSHOP_RB_LAST60_BUTTON' => 'Laatste 60 dagen',
-	'PHPSHOP_RB_LAST90_BUTTON' => 'Laatste 90 dagen',
-	'PHPSHOP_RB_START_DATE_TITLE' => 'Start op',
-	'PHPSHOP_RB_END_DATE_TITLE' => 'Tot en met',
-	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Bekijk geselecteerde periode',
-	'PHPSHOP_RB_REPORT_FOR' => 'Verslag voor',
-	'PHPSHOP_RB_DATE' => 'Datum',
-	'PHPSHOP_RB_ORDERS' => 'Bestellingen',
-	'PHPSHOP_RB_TOTAL_ITEMS' => 'Totaal items verkocht',
-	'PHPSHOP_RB_REVENUE' => 'Omzet',
-	'PHPSHOP_RB_PRODLIST' => 'Product Lijst'
+        'CHARSET' => 'ISO-8859-1',
+        'PHPSHOP_RB_INDIVIDUAL' => 'Individueel productoverzicht',
+        'PHPSHOP_RB_SALE_TITLE' => 'Verkoopoverzicht',
+        'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Verkoop activiteiten overzicht',
+        'PHPSHOP_RB_INTERVAL_TITLE' => 'Bepaalperiode',
+        'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Maandelijks',
+        'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Wekelijks',
+        'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Dagelijks',
+        'PHPSHOP_RB_THISMONTH_BUTTON' => 'Deze maand',
+        'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Vorige maand',
+        'PHPSHOP_RB_LAST60_BUTTON' => 'Laatste 60 dagen',
+        'PHPSHOP_RB_LAST90_BUTTON' => 'Laatste 90 dagen',
+        'PHPSHOP_RB_START_DATE_TITLE' => 'Start op',
+        'PHPSHOP_RB_END_DATE_TITLE' => 'Tot en met',
+        'PHPSHOP_RB_SHOW_SEL_RANGE' => 'Bekijk geselecteerde periode',
+        'PHPSHOP_RB_REPORT_FOR' => 'Verslag voor',
+        'PHPSHOP_RB_DATE' => 'Datum',
+        'PHPSHOP_RB_ORDERS' => 'Bestellingen',
+        'PHPSHOP_RB_TOTAL_ITEMS' => 'Totaal items verkocht',
+        'PHPSHOP_RB_REVENUE' => 'Omzet',
+        'PHPSHOP_RB_PRODLIST' => 'Productlijst'
 ); $VM_LANG->initModule( 'reportbasic', $langvars );
 ?>

@@ -29,18 +29,19 @@ class ps_product_discount {
 	 * @return boolean
 	 */
 	function validate_add( $d ) {
+		global $VM_LANG;
 		
 		if( ! $d["amount"] ) {
-			$GLOBALS['vmLogger']->err( 'You must enter an amount for the discount.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_ERR_AMOUNT') );
 			return False ;
 		}
 		if( $d["is_percent"] == "" ) {
-			$GLOBALS['vmLogger']->err( 'You must select a discount type.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_ERR_TYPE') );
 			return False ;
 		}
 		
 		if( !empty($d['end_date']) && ( $d['end_date'] < $d['start_date'] ) ) {		
-			$GLOBALS['vmLogger']->err( 'The start date must occur before the end date.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_START_END_DATE') );
 			return False;
 		}
 		
@@ -54,22 +55,23 @@ class ps_product_discount {
 	 * @return boolean
 	 */
 	function validate_update( $d ) {
+		global $VM_LANG;
 		
 		if( empty($d["amount"]) ) {
-			$GLOBALS['vmLogger']->err( 'You must enter an amount for the discount.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_ERR_AMOUNT') );
 			return False ;
 		}
 		if( $d["is_percent"] == "" ) {
-			$GLOBALS['vmLogger']->err( 'You must enter an amount type for the discount.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_ERR_TYPE') );
 			return False ;
 		}
 		if( ! $d["discount_id"] ) {
-			$GLOBALS['vmLogger']->err( 'You must specifiy a discount to update.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_ERR_UPDATE') );
 			return False ;
 		}
 		
 		if( !empty($d['end_date']) && ( $d['end_date'] < $d['start_date'] ) ) {		
-			$GLOBALS['vmLogger']->err( 'The start date must occur before the end date.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_START_END_DATE') );
 			return False;
 		}
 		
@@ -83,9 +85,10 @@ class ps_product_discount {
 	 * @return boolean
 	 */
 	function validate_delete( $discount_id ) {
+		global $VM_LANG;
 		
 		if( ! $discount_id ) {
-			$GLOBALS['vmLogger']->err( 'Please select a discount to delete' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_DISCOUNT_ERR_DELETE') );
 			return False ;
 		}
 		
@@ -100,6 +103,7 @@ class ps_product_discount {
 	 * @return boolean
 	 */
 	function add( &$d ) {
+		global $VM_LANG;
 		
 		$db = new ps_DB( ) ;
 		
@@ -132,7 +136,7 @@ class ps_product_discount {
 		$db->buildQuery('INSERT', '#__{vm}_product_discount', $fields );
 		$db->query() ;
 		
-		$GLOBALS['vmLogger']->info( 'The product discount has been added.');
+		$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_DISCOUNT_ADDED') );
 		$_REQUEST['discount_id'] = $db->last_insert_id() ;
 		
 		return True ;
@@ -146,6 +150,8 @@ class ps_product_discount {
 	 * @return boolean
 	 */
 	function update( &$d ) {
+		global $VM_LANG;
+		
 		$db = new ps_DB( ) ;
 		
 		if( ! empty( $d["start_date"] ) ) {
@@ -177,7 +183,7 @@ class ps_product_discount {
 		$db->buildQuery('UPDATE', '#__{vm}_product_discount', $fields, 'WHERE discount_id=' .(int)$d["discount_id"] );
 		$db->query() ;
 		
-		$GLOBALS['vmLogger']->info( 'The product discount has been updated.');
+		$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_DISCOUNT_UPDATED') );
 		
 		return True ;
 	}
@@ -241,7 +247,7 @@ class ps_product_discount {
 				$html .= $db->f( "is_percent" ) == "1" ? "%" : $_SESSION['vendor_currency'] ;
 				$html .= "</option>\n" ;
 			}
-			$html .= "<option value=\"override\">Override</option>\n" ;
+			$html .= "<option value=\"override\">".$VM_LANG->_('VM_PRODUCT_DISCOUNT_OVERRIDE')."</option>\n" ;
 			$html .= "</select>\n" ;
 		} else {
 			$html = "<input type=\"hidden\" name=\"product_discount_id\" value=\"0\" />\n
