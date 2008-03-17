@@ -28,14 +28,14 @@ class ps_tax extends vmAbstractObject  {
 	 * @return boolean True on success, false on failure
 	 */
 	function validate_add( &$d ) {
-		global $vmLogger ;
+		global $vmLogger, $VM_LANG;
 		$valid = true ;
 		$db = new ps_DB( ) ;
 		if( TAX_MODE != '1' && $d['tax_state'] != ' - ' ) {
 			$q = "SELECT tax_rate_id from #__{vm}_tax_rate WHERE tax_state='" . $d["tax_state"] . "'" ;
 			$db->query( $q ) ;
 			if( $db->next_record() ) {
-				$vmLogger->err( 'This state is already listed.' ) ;
+				$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_STATE_LISTED') ) ;
 				$valid = False ;
 			}
 		}
@@ -46,17 +46,17 @@ class ps_tax extends vmAbstractObject  {
 		}
 		 */
 		if( empty($d["tax_country"]) ) {
-			$vmLogger->err( 'You must enter a country for this tax rate.' ) ;
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_COUNTRY') ) ;
 			$valid = False ;
 		}
 		require_once( CLASSPATH.'ps_country.php');
 		$country_db = ps_country::get_country_by_code($d["tax_country"]);
 		if( $country_db === false ) {
-			$vmLogger->err( 'The Country you have selected does not exist.');
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_COUNTRY_NOTEXIST') );
 			return false;
 		}
 		if( empty($d["tax_rate"]) ) {
-			$vmLogger->err( 'You must enter a tax rate.' ) ;
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_TAXRATE') ) ;
 			$valid = False ;
 		}
 		$d["tax_rate"] = floatval( str_replace( ',', '.', $d['tax_rate'] ) ) ;
@@ -73,12 +73,12 @@ class ps_tax extends vmAbstractObject  {
 	 * @return boolean True on success, false on failure
 	 */
 	function validate_update( &$d ) {
-		global $vmLogger ;
+		global $vmLogger, $VM_LANG;
 		
 		$db = new ps_DB( ) ;
 		
 		if( ! $d["tax_rate_id"] ) {
-			$vmLogger->err( 'You must select a tax rate to update.' ) ;
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_UPDATE_SELECT') ) ;
 			return False ;
 		}
 		/**
@@ -87,17 +87,17 @@ class ps_tax extends vmAbstractObject  {
 			return False;
 		 */
 		if( empty($d["tax_country"]) ) {
-			$vmLogger->err( 'You must enter a country for this tax rate.' ) ;
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_COUNTRY') ) ;
 			return False ;
 		}
 		require_once( CLASSPATH.'ps_country.php');
 		$country_db = ps_country::get_country_by_code($d["tax_country"]);
 		if( $country_db === false ) {
-			$vmLogger->err( 'The Country you have selected does not exist.');
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_COUNTRY_NOTEXIST') );
 			return false;
 		}
 		if( empty($d["tax_rate"]) ) {
-			$vmLogger->err( 'You must enter a tax rate.' ) ;
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_TAXRATE') ) ;
 			return False ;
 		}
 		$d["tax_rate"] = floatval( str_replace( ',', '.', $d['tax_rate'] ) ) ;
@@ -113,10 +113,10 @@ class ps_tax extends vmAbstractObject  {
 	 * @return boolean True on success, false on failure
 	 */
 	function validate_delete( $d ) {
-		global $vmLogger ;
+		global $vmLogger, $VM_LANG;
 		
 		if( ! $d["tax_rate_id"] ) {
-			$vmLogger->err( 'Please select a tax rate to delete.' ) ;
+			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_DELETE_SELECT') ) ;
 			return False ;
 		}
 		
@@ -132,6 +132,7 @@ class ps_tax extends vmAbstractObject  {
 	 * @return boolean True on success, false on failure
 	 */
 	function add( &$d ) {
+		global $VM_LANG;
 		$db = new ps_DB( ) ;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"] ;
 		$timestamp = time() ;
@@ -148,10 +149,10 @@ class ps_tax extends vmAbstractObject  {
 		$db->buildQuery('INSERT', $this->getTable(), $fields );
 		if( $db->query() !== false ) {
 			$_REQUEST['tax_rate_id'] = $db->last_insert_id() ;
-			$GLOBALS['vmLogger']->info('The Tax Rate has been added.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_TAX_ADDED'));
 			return True ;
 		}
-		$GLOBALS['vmLogger']->err('Failed to add the Tax Rate.');
+		$GLOBALS['vmLogger']->err($VM_LANG->_('VM_TAX_ADD_FAILED'));
 		return false;	
 	}
 	
@@ -163,6 +164,7 @@ class ps_tax extends vmAbstractObject  {
 	 * @return boolean True on success, false on failure
 	 */
 	function update( &$d ) {
+		global $VM_LANG;
 		$db = new ps_DB( ) ;
 		$ps_vendor_id = $_SESSION["ps_vendor_id"] ;
 		$timestamp = time() ;
@@ -178,10 +180,10 @@ class ps_tax extends vmAbstractObject  {
 								);
 		$db->buildQuery('UPDATE', $this->getTable(), $fields, 'WHERE tax_rate_id=' . $d["tax_rate_id"] . ' AND vendor_id='.$ps_vendor_id );
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info('The Tax Rate has been updated.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_TAX_UPDATED'));
 			return True ;
 		}
-		$GLOBALS['vmLogger']->err('Failed to update the Tax Rate.');
+		$GLOBALS['vmLogger']->err($VM_LANG->_('VM_TAX_UPDATE_FAILED'));
 		return false;	
 		
 	}

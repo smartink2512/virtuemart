@@ -53,7 +53,7 @@ class ps_user_address {
 			}
 			if ( empty( $d[$field->name])) {
 				$valid = false;
-				$vmLogger->err('Please enter a value into the Field "'.($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title ).'"');
+				$vmLogger->err($VM_LANG->_('VM_ENTER_VALUE_FIELD').' "'.($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title ).'"');
 			}
 		}
 		if(empty($d['user_info_id'])) {

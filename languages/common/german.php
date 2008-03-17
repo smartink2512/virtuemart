@@ -1255,6 +1255,17 @@ check with your hosting company to see if you can access this port first',
 	'VM_PRODUCT_FILES_IMAGES_SET' => 'The Product Images have been set.',
 	'VM_PRODUCT_FILES_ADDED' => 'The new file has been added.',
 	'VM_PRODUCT_FILES_ERR_TOOBIG' => 'The file you are trying to upload is too big.',
-	'VM_PRODUCT_FILES_ERR_PARTIALLY' => 'The file you are trying upload was only partially uploaded.'
+	'VM_PRODUCT_FILES_ERR_PARTIALLY' => 'The file you are trying upload was only partially uploaded.',
+	'VM_TAX_ERR_STATE_LISTED' => 'This state is already listed.',
+	'VM_TAX_ERR_COUNTRY' => 'You must enter a country for this tax rate.',
+	'VM_TAX_ERR_COUNTRY_NOTEXIST' => 'The Country you have selected does not exist.',
+	'VM_TAX_ERR_TAXRATE' => 'You must enter a tax rate.',
+	'VM_TAX_ERR_UPDATE_SELECT' => 'You must select a tax rate to update.',
+	'VM_TAX_ERR_DELETE_SELECT' => 'Please select a tax rate to delete.',
+	'VM_TAX_ADDED' => 'The Tax Rate has been added.',
+	'VM_TAX_ADD_FAILED' => 'Failed to add the Tax Rate.',
+	'VM_TAX_UPDATED' => 'The Tax Rate has been updated.',
+	'VM_TAX_UPDATE_FAILED' => 'Failed to update the Tax Rate.',
+	'VM_ENTER_VALUE_FIELD' => 'Please enter a value into the Field'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>
