@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -22,7 +22,6 @@ global $ps_product, $ps_product_category;
 $keyword = vmGet($_REQUEST, 'keyword' );
 $vendor = vmGet($_REQUEST, 'vendor', '');
 $product_parent_id = vmGet($_REQUEST, 'product_parent_id', null);
-$category_id = vmGet($_REQUEST, 'category_id', null);
 $product_type_id = vmGet($_REQUEST, 'product_type_id', null); // Changed Product Type
 $search_date = vmGet($_REQUEST, 'search_date', null); // Changed search by date
 

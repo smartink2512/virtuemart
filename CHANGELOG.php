@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.03.2008 soeren
+# Task #1902 - Filters reset after add new product, etc.
+
 17.03.2008 thepisu
 # Task #1898 Sort Alphabetically is hard coded
 # Task #1905 List of hard coded strings

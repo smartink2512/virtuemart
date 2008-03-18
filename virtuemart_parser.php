@@ -139,7 +139,11 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		}
 		$product_id = vmRequest::getInt('product_id');
 		$vm_mainframe->setUserState('product_id', $product_id );
-		$category_id = (int)$vm_mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
+		if( vmIsAdminMode() ) {
+			$category_id = (int)$vm_mainframe->getUserStateFromRequest( 'category_id', 'category_id' );
+		} else {
+			$category_id = vmRequest::getInt('category_id');
+		}
 		$manufacturer_id = vmRequest::getInt('manufacturer_id');
 		
 		$user_info_id = vmRequest::getVar('user_info_id');
