@@ -36,6 +36,8 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 19.03.2008 soeren
+# fatal error in toolbar on Mambo
+# Mambo didn't show correct CSS and loading JS didn't work
 # Task #1910 - A closing div braking templates in checkout_register_form.php
 ^ non-existing or unpublished products are removed from cart on Cart Update
 # Quantity Steps are checked for when updating the cart (say you have a product which can only be ordered at quantity steps of 5 - like 10 or 25) 

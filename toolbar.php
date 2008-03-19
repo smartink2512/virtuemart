@@ -38,6 +38,9 @@ if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtue
     // the admin has to stay on a site or is redirected back on error
     require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php');
 
+	if( file_exists( $mosConfig_absolute_path.'/editor/editor.php' )) {
+		require_once( $mosConfig_absolute_path.'/editor/editor.php' );
+	}
 	require_once( ADMINPATH.'toolbar.html.php' );
 	require_once( CLASSPATH . 'menuBar.class.php' );
 	$bar = vmToolBar::getInstance('virtuemart');
