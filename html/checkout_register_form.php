@@ -83,6 +83,5 @@ echo '
 	<input type="hidden" name="useractivation" value="'. $mosConfig_useractivation .'" />
 	<input type="hidden" name="func" value="shopperadd" />
 	<input type="hidden" name="page" value="checkout.index" />
-	</form>
-</div>';
+	</form>';
 ?>

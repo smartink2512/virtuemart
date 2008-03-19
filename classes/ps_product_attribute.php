@@ -207,52 +207,23 @@ class ps_product_attribute {
 		$product_list = "N";
 
 		if( ps_product::parent_has_children( $product_id ) ) {
-			//Use product_id to determine what type of child this product has, if it has none use drop
-			$db = new ps_DB();
-			$q = "SELECT quantity_options,child_options,product_parent_id,child_option_ids FROM #__{vm}_product WHERE product_id='$product_id'";
-			$db->query($q);
-			$l_field = $db->f("child_options");
 			$product_list = 'N';
-			if($l_field) {
-				$fields=explode(",",$l_field);
-				$display_use_parent=array_shift($fields);
-				$product_list=array_shift($fields);
-				$display_header=array_shift($fields);
-				$product_list_child=array_shift($fields);
-				$product_list_type=array_shift($fields);
-				$ddesc=array_shift($fields);
-				$dw=array_shift($fields);
-				$aw=array_shift($fields);
-				$class_suffix=array_shift($fields);
+			$child_options = ps_product::get_child_options($product_id);
+			if( !empty( $child_options )) {
+				extract( $child_options );
 			}
-			else {
-				$q = "SELECT product_parent_id,quantity_options,child_options,child_option_ids FROM #__{vm}_product WHERE product_id='".$db->f("product_parent_id")."'";
-				$db->query($q);
-				$l_field = $db->f("child_options");
-				if($l_field) {
-					$fields=explode(",",$l_field);
-					$display_use_parent=array_shift($fields);
-					$product_list=array_shift($fields);
-					$display_header=array_shift($fields);
-					$product_list_child=array_shift($fields);
-					$product_list_type=array_shift($fields);
-					$ddesc=array_shift($fields);
-					$dw=array_shift($fields);
-					$aw=array_shift($fields);
-					$class_suffix=array_shift($fields);
-				}
+			
+			$quantity_options = ps_product::get_quantity_options($product_id);
+			if(!empty($quantity_options)) {
+				$display_type = $quantity_options['quantity_box'];
 			}
-			$l_field = $db->f("quantity_options");
-			if($l_field) {
-				$fields=explode(",",$l_field);
-				$display_type=array_shift($fields);
-			}
-			if($db->f("child_option_ids") && $product_list == "N") {
+			$child_option_ids = ps_product::get_field( $product_id, 'child_option_ids');
+			if($child_option_ids != '' && $product_list == "N") {
 				$product_list = "Y";
 			}
-	        $child_ids = $db->f("child_option_ids");
+	        
 	        if($extra_ids) {
-	            $child_ids .= $child_ids ? ",".$extra_ids : $extra_ids;
+	            $child_option_ids .= $child_option_ids ? ",".$extra_ids : $extra_ids;
 	        }
 		}
 		        

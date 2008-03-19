@@ -297,7 +297,7 @@ else {
 		else {
 			$product_price = "";
 		}
-		// @var float $product_price_raw The raw unformatted Product Price in Float Format
+		// @var array $product_price_raw The raw unformatted Product Price in Float Format
 		$product_price_raw = $ps_product->get_adjusted_attribute_price($db_browse->f('product_id'));
 		
 		// i is the index for the array holding all products, we need to show. to allow sorting by discounted price,

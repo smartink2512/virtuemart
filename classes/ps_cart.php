@@ -109,9 +109,7 @@ class ps_cart {
 		$d = $GLOBALS['vmInputFilter']->process( $d );
 		
 		include_class("product");
-		require_once (CLASSPATH . 'ps_product_attribute.php' );
-		$ps_product_attribute = new ps_product_attribute;
-		$Itemid = vmGet($_REQUEST, "Itemid", null);
+		
 		$db = new ps_DB;
 		$ci = 0;
 		$request_stock = "";
@@ -150,7 +148,7 @@ class ps_cart {
 				$func = "cartUpdate";
 			}
 			$e['product_id'] = $d['product_id'];
-			$e['Itemdid'] = $d['Itemid'];
+			$e['Itemid'] = $d['Itemid'];
 			// Standard ps_cart.php with $d changed to $e
 			$product_id = $e["prod_id"];
 			$quantity = (int)@$e['quantity'];
@@ -167,11 +165,7 @@ class ps_cart {
 			}
 			// Check to see if checking stock quantity
 			if (CHECK_STOCK) {
-				$q = "SELECT product_in_stock ";
-				$q .= "FROM #__{vm}_product where product_id='$product_id'";
-				$db->query($q);
-				$db->next_record();
-				$product_in_stock = $db->f("product_in_stock");
+				$product_in_stock = ps_product::get_field( $product_id, 'product_in_stock');
 				if (empty($product_in_stock)) {
 					$product_in_stock = 0;
 				}
@@ -185,11 +179,7 @@ class ps_cart {
 			}
 
 			// Check if product exists and is published
-			$q = "SELECT product_id FROM #__{vm}_product WHERE ";
-			$q .= "product_id = ".(int)$product_id .' AND product_publish=\'Y\'';
-			$db->query ( $q );
-
-			if ( $db->num_rows() < 1) {
+			if ( !ps_product::product_exists($product_id)) {
 				$vmLogger->tip( $VM_LANG->_('VM_CART_PRODUCT_NOTEXIST',false) );
 				return false;
 			}
@@ -320,12 +310,11 @@ class ps_cart {
 	 * @return boolean result of the update
 	 */
 	function update(&$d) {
-		global $sess,$VM_LANG, $vmLogger, $func, $page;
-		$d = $GLOBALS['vmInputFilter']->process( $d );
+		global $VM_LANG, $vmLogger, $func, $page;
+		
 		include_class("product");
 
-		$db = new ps_DB;
-		$product_id = $d["prod_id"];
+		$product_id = (int)$d["prod_id"];
 		$quantity = isset($d["quantity"]) ? (int)$d["quantity"] : 1;
 		$_SESSION['last_page'] = "shop.cart";
 
@@ -370,15 +359,22 @@ class ps_cart {
 						$vmLogger->warning( $msg );
 						return false;
 					}
+					$quantity_options = ps_product::get_quantity_options($product_id);
+					if( !empty( $quantity_options ) && !empty($quantity_options['quantity_step'])) {
+						if( $quantity % $quantity_options['quantity_step'] > 0 ) {
+							continue;
+						}
+					}
+					// Remove deleted or unpublished products from the cart
+					if ( !ps_product::product_exists($product_id)) {
+						$this->delete(array('product_id', $product_id));
+						continue;
+					}
 
 					// Check to see if checking stock quantity
 					if (CHECK_STOCK) {
-						$q = "SELECT product_in_stock ";
-						$q .= "FROM #__{vm}_product where product_id=";
-						$q .= $product_id;
-						$db->query($q);
-						$db->next_record();
-						$product_in_stock = $db->f("product_in_stock");
+						$product_in_stock = ps_product::get_field( $product_id, 'product_in_stock');
+
 						if (empty($product_in_stock)) $product_in_stock = 0;
 						if (($quantity) > $product_in_stock) {
 							Global $notify;

@@ -250,7 +250,24 @@ class vmRequest {
 	function getWord($name, $default = '', $hash = 'default') {
 		return vmRequest::getVar($name, $default, $hash, 'word');
 	}
-
+	
+	/**
+	 * Fetches and returns a given filtered variable. 
+	 * The variable can have the value "Y" or "N", nothing else
+	 *
+	 * See getVar() for more in-depth documentation on the parameters.
+	 *
+	 * @static
+	 * @param	string	$name		Variable name
+	 * @param	string	$default	Default value if the variable does not exist
+	 * @param	string	$hash		Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
+	 * @return	string	Requested variable
+	 * @since	1.1
+	 */
+	function getYesOrNo($name, $default = 'N', $hash = 'default') {
+		$yes_or_no = strtoupper( vmRequest::getVar($name, $default, $hash, 'none'));
+		return $yes_or_no == 'Y' ? 'Y' : 'N'; 
+	}
 	/**
 	 * Fetches and returns a given filtered variable. The cmd
 	 * filter only allows the characters [A-Za-z0-9.-_]. This is

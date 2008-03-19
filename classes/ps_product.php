@@ -172,16 +172,9 @@ class ps_product extends vmAbstractObject {
             $d['product_list'] = "N";
         }
         
-        $d['quantity_options'] = vmGet($d,'quantity_box').","
-        								.vmRequest::getInt('quantity_start').","
-        								.vmRequest::getInt('quantity_end').","
-        								.vmRequest::getInt('quantity_step');
-        if($d["product_parent_id"] !=0) {
-        	$d['child_options'] = null;
-        } else {
-            $d['child_options'] = $d['display_use_parent'].",".$d['product_list'].",".$d['display_headers'].",".$d['product_list_child'].",".$d['product_list_type'];
-            $d['child_options'] .= ",".$d['display_desc'].",".$d['desc_width'].",".$d['attrib_width'].",".$d['child_class_sfx'];
-        }
+        $d['quantity_options'] = ps_product::set_quantity_options($d);
+		$d['child_options'] = ps_product::set_child_options($d);
+		
         $d['order_levels'] = vmRequest::getInt('min_order_level').",".vmRequest::getInt('max_order_level');
         
 		return $valid;
@@ -894,25 +887,14 @@ class ps_product extends vmAbstractObject {
 
 	/**
 	 * Function to check whether a product is a parent product or not
+	 * If is is a child product, it has a non-empty value for "product_parent_id"
 	 *
 	 * @param int $product_id
 	 * @return boolean True when the product is a parent product, false when product is a child item
 	 */
 	function is_product($product_id) {
-		$db = new ps_DB;
-
-		if( !empty($product_id) ) {
-			$q  = "SELECT product_parent_id FROM #__{vm}_product ";
-			$q .= 'WHERE product_id='.(int)$product_id;
-			$db->query($q);
-			$db->next_record();
-		}
-		if ($db->f("product_parent_id") == 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		$product_parent_id = ps_product::get_field($product_id, 'product_parent_id');
+		return $product_parent_id == 0;
 	}
 
 	/**
@@ -990,9 +972,10 @@ class ps_product extends vmAbstractObject {
 	function parent_has_children($pid) {
 		$db = new ps_DB;
 		if( empty($GLOBALS['product_info'][$pid]["parent_has_children"] )) {
-			$q  = "SELECT product_id as num_rows FROM #__{vm}_product WHERE product_parent_id='$pid' ";
-			$db->setQuery($q); $db->query();
-			if ($db->next_record()) {
+			$q  = "SELECT COUNT(product_id) as num_rows FROM #__{vm}_product WHERE product_parent_id='$pid' ";
+			$db->query($q);
+			$db->next_record();
+			if( $db->f('num_rows') > 0 ) {
 				$GLOBALS['product_info'][$pid]["parent_has_children"] = True;
 			}
 			else {
@@ -2292,34 +2275,129 @@ class ps_product extends vmAbstractObject {
 		$this->handlePublishState( $d );
 		return;
 	}
+	/**
+	 * Function to check if a product exists (and is published)
+	 * @static 
+	 * @param int $product_id
+	 * @param boolean $check_publishstate
+	 * @return boolean
+	 */
+    function product_exists( $product_id, $check_publishstate=true ) {
+    	$db = new ps_DB();
+    	$q = "SELECT product_id FROM #__{vm}_product WHERE ";
+		$q .= "product_id = ".(int)$product_id;
+		if( $check_publishstate ) {
+			$q.= ' AND product_publish=\'Y\'';
+		}
+		$db->query ( $q );
+		return $db->num_rows() > 0;
+    }
+    /**
+     * Assembles the $child_options variable for storage in the product table
+     *
+     * @param unknown_type $d
+     * @return unknown
+     */
+    function set_child_options( $d) {
+		if($d["product_parent_id"] !=0) {
+			$child_options = null;
+        } else {
+			$child_options = vmrequest::getYesOrNo('display_use_parent').","
+										.vmrequest::getYesOrNo('product_list').","
+										.vmrequest::getYesOrNo('display_headers').","
+										.vmrequest::getYesOrNo('product_list_child').","
+										.vmrequest::getYesOrNo('product_list_type').","
+										.vmrequest::getYesOrNo('display_desc').","
+										.vmrequest::getVar('desc_width').","
+										.vmrequest::getVar('attrib_width').","
+										.vmrequest::getWord('child_class_sfx');
+        }
+        return $child_options;
+    }
     
+    function &get_child_options( $product_id ) {
+    	$child_options= array();
+    	$child_options_string = ps_product::get_field($product_id, 'child_options'); 
+		$fields=explode(',',$child_options_string);
+		if( !empty( $fields)) {
+			$child_options['display_use_parent'] =array_shift($fields);
+			$child_options['product_list'] =array_shift($fields);
+			$child_options['display_header'] =array_shift($fields);
+			$child_options['product_list_child'] =array_shift($fields);
+			$child_options['product_list_type'] =array_shift($fields);
+			$child_options['ddesc'] =array_shift($fields);
+			$child_options['dw'] =array_shift($fields);
+			$child_options['aw'] =array_shift($fields);
+			$child_options['class_suffix'] =array_shift($fields);
+		}
+		return $child_options;
+    }
+    /**
+     * Assembles the string "quantity_options" for storage in the product table
+     *
+     * @param array $d
+     * @return string
+     */
+    function set_quantity_options( &$d ) {
+    	return vmGet($d,'quantity_box').","
+        			.vmRequest::getInt('quantity_start').","
+        			.vmRequest::getInt('quantity_end').","
+        			.vmRequest::getInt('quantity_step');
+    }
+    /**
+     * Disassembles the comma-separated "quantity_options" string
+     * and creates an array with associative indices
+     *
+     * @param int $product_id
+     * @return array
+     */
+    function &get_quantity_options( $product_id ) {
+    	$quantity_options = array();
+    	$quantity_options_string = ps_product::get_field($product_id, 'quantity_options');
+    	$fields = explode(',', $quantity_options_string );
+    	if( !empty( $quantity_options )) {
+    		$quantity_options['quantity_box'] = $fields[0];
+    		$quantity_options['display_type'] = $fields[0];
+    		$quantity_options['quantity_start'] = $fields[1];
+    		$quantity_options['quantity_end'] = $fields[2];
+    		$quantity_options['quantity_step'] = $fields[3];
+    	}
+    	return $quantity_options;
+    }
+    
+    /**
+     * Retrieves the maximum and minimum quantity for the product specified by $product_id
+     *
+     * @param int $product_id
+     * @return array
+     */
     function product_order_levels($product_id) {
-        $db = new ps_DB();
+        
         $min_order=0;
         $max_order=0;
-        $q = "SELECT product_order_levels,product_parent_id FROM #__{vm}_product WHERE product_id = '$product_id'";
-        $db->query($q);
-        while($db->next_record()) {
-            if($db->f("product_order_levels") != ",") {
-                $order_levels = $db->f("product_order_levels");
-                $levels = explode(",",$order_levels);
-                $min_order = array_shift($levels);
-                $max_order = array_shift($levels);
-            }
-            else if($db->f("product_parent_id") !=0) {
-            // check parent if product_parent_id != 0
-                $q = "SELECT product_order_levels,product_parent_id FROM #__{vm}_product WHERE product_id = '".$db->f("product_parent_id")."'";
-                $db->query($q);
-                while($db->next_record()) {
-                    if($db->f("product_order_levels") != ",") {
-                        $order_levels = $db->f("product_order_levels");
-                        $levels = explode(",",$order_levels);
-                        $min_order = array_shift($levels);
-                        $max_order = array_shift($levels);
-                    }
-                }
-            }
-        }
+        $product_order_levels = ps_product::get_field( $product_id, 'product_order_levels');
+        $product_parent_id = ps_product::get_field( $product_id, 'product_parent_id');
+        
+        
+		if($product_order_levels != ',') {
+			$order_levels = $product_order_levels;
+			$levels = explode(",",$order_levels);
+			$min_order = array_shift($levels);
+			$max_order = array_shift($levels);
+		}
+		else if($product_parent_id > 0) {
+            //check parent if product_parent_id != 0
+        	$product_order_levels = ps_product::get_field( $product_parent_id, 'product_order_levels');
+        	$product_parent_id = ps_product::get_field( $product_parent_id, 'product_parent_id');
+			
+			if($product_order_levels != ",") {
+				$order_levels = $product_order_levels;
+				$levels = explode(",",$order_levels);
+				$min_order = array_shift($levels);
+				$max_order = array_shift($levels);
+			}
+		}
+        
         return array($min_order,$max_order);
     }
     

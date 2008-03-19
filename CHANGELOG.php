@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+19.03.2008 soeren
+# Task #1910 - A closing div braking templates in checkout_register_form.php
+^ non-existing or unpublished products are removed from cart on Cart Update
+# Quantity Steps are checked for when updating the cart (say you have a product which can only be ordered at quantity steps of 5 - like 10 or 25) 
++ added the variable "product_price_raw" to product details page, so the "raw" product price array can be used inside the flypage templates
+# Task #1907 - Cart Module not updating after first product added (IE only)
 18.03.2008 soeren
 # Task #1902 - Filters reset after add new product, etc.
 

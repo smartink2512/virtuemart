@@ -268,7 +268,9 @@ else {
 	$product_price_lbl = "";
 	$product_price = "";
 }
-
+// @var array $product_price_raw The raw unformatted Product Price in Float Format
+$product_price_raw = $ps_product->get_adjusted_attribute_price($product_id);
+		
 // Change Packaging - Begin
 // PRODUCT PACKAGING
 if (  $db_product->f("product_packaging") ) {
@@ -407,6 +409,7 @@ $tpl->set( "edit_link", $edit_link );
 $tpl->set( "manufacturer_link", $manufacturer_link );
 $tpl->set( "product_price", $product_price );
 $tpl->set( "product_price_lbl", $product_price_lbl );
+$tpl->set( 'product_price_raw', $product_price_raw );
 $tpl->set( "product_description", $product_description );
 
 /* ADD-TO-CART */
