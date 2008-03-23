@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+23.03.2008 thepisu
+# small fix in italian states data
+
 19.03.2008 soeren
 # fatal error in toolbar on Mambo
 # Mambo didn't show correct CSS and loading JS didn't work
