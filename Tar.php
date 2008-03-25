@@ -1451,7 +1451,7 @@ class Archive_Tar extends PEAR
                     // ----- Change the file mode, mtime
                     @touch($v_header['filename'], $v_header['mtime']);
                     // To be completed
-                    chmod($v_header['filename'], 0777 );
+                    chmod($v_header['filename'], 0644 );
                 }
 
               // ----- Check the file size

@@ -90,7 +90,7 @@ function updateMiniCarts() {
 			} catch(e) {}
 		}
 	}
-	option = { method: 'get', onComplete: callbackCart }
+	option = { method: 'POST', onComplete: callbackCart }
 	new Ajax('index2.php?only_page=1&page=shop.basket_short&option=com_virtuemart', option).request();
 }
 /**

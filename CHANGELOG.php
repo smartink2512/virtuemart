@@ -35,9 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.03.2008 soeren
+# Task #1924 - After account creation a warning message is shown.
 23.03.2008 thepisu
 # small fix in italian states data
-
+20.03.2008 soeren
+# Task #1917 - Shipvalue is still using old mosToolTip function
+# Task #1915 - file rigths during installation
+# Task #1914 - close fieldset tag in ps_userfield.php
 19.03.2008 soeren
 # fatal error in toolbar on Mambo
 # Mambo didn't show correct CSS and loading JS didn't work

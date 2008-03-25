@@ -2,15 +2,15 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
 * @version $Id: shipvalue.php,v .1 2005/09  r_lewis
-* @package Mambo_4.5.1 tested on Version: Mambo 4.5.1.3 Stable [Three For Rum Reassigned]
-* @subpackage mambo-phpShop
+* @package VirtueMart
+* @subpackage shipping
 * @copyright (C) 2005 Rhys Lewis with due respect to Micah Shawn and Bret (allbloodrunsred)
 
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* Based on mambo-phpShop by Soeren Eberhardt.  Thank you Soeren!
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
-* www.mambo-phpshop.net
+* Based on VirtueMart.  Thank you Soeren!
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
+* www.virtuemart.net
 ******************************************************************************
 *
 * This class will charge a fixed shipping rate based on the total order value
@@ -195,9 +195,9 @@ class shipvalue {
     * @returns boolean False when the Shipping method has no configration
     */
 	function show_configuration() {
-		global $PHPSHOP_LANG;
+		global $VM_LANG;
 		/** Read current Configuration ***/
-		require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
+		require_once(CLASSPATH ."shipping/".__CLASS__.".cfg.php");
     ?>
       <table>
     <tr>
@@ -210,7 +210,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE1" class="inputbox" value="<?php echo BASE_CHARGE1 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 1 will apply to order values less than Order total value 1.") ?>
+        <?php echo vmToolTip("Shipping charge 1 will apply to order values less than Order total value 1.") ?>
         </td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE2" class="inputbox" value="<?php echo BASE_CHARGE2 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 2 will apply to order values less than Order total value 2.") ?>
+        <?php echo vmToolTip("Shipping charge 2 will apply to order values less than Order total value 2.") ?>
         </td>
     </tr>
     <tr>
@@ -236,7 +236,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE3" class="inputbox" value="<?php echo BASE_CHARGE3 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 3 will apply to order values less than Order total value 3.") ?>
+        <?php echo vmToolTip("Shipping charge 3 will apply to order values less than Order total value 3.") ?>
         </td>
     </tr>
     <tr>
@@ -249,7 +249,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE4" class="inputbox" value="<?php echo BASE_CHARGE4 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 4 will apply to order values less than Order total value 4.") ?>
+        <?php echo vmToolTip("Shipping charge 4 will apply to order values less than Order total value 4.") ?>
         </td>
     </tr>
     <tr>
@@ -262,7 +262,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE5" class="inputbox" value="<?php echo BASE_CHARGE5 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 5 will apply to order values less than Order total value 5.") ?>
+        <?php echo vmToolTip("Shipping charge 5 will apply to order values less than Order total value 5.") ?>
         </td>
     </tr>
     <tr>
@@ -275,7 +275,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE6" class="inputbox" value="<?php echo BASE_CHARGE6 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 6 will apply to order values less than Order total value 6.") ?>
+        <?php echo vmToolTip("Shipping charge 6 will apply to order values less than Order total value 6.") ?>
         </td>
     </tr>
     <tr>
@@ -288,7 +288,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE7" class="inputbox" value="<?php echo BASE_CHARGE7 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 7 will apply to order values less than Order total value 7.") ?>
+        <?php echo vmToolTip("Shipping charge 7 will apply to order values less than Order total value 7.") ?>
         </td>
     </tr>
     <tr>
@@ -301,7 +301,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE8" class="inputbox" value="<?php echo BASE_CHARGE8 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 8 will apply to order values less than Order total value 8.") ?>
+        <?php echo vmToolTip("Shipping charge 8 will apply to order values less than Order total value 8.") ?>
         </td>
     </tr>
     <tr>
@@ -314,7 +314,7 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE9" class="inputbox" value="<?php echo BASE_CHARGE9 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 9 will apply to order values less than Order total value 9.") ?>
+        <?php echo vmToolTip("Shipping charge 9 will apply to order values less than Order total value 9.") ?>
         </td>
     </tr>
     <tr>
@@ -327,18 +327,18 @@ class shipvalue {
             <input type="text" name="BASE_CHARGE10" class="inputbox" value="<?php echo BASE_CHARGE10 ?>" />
 		</td>
 		<td>
-        <?php echo mosToolTip("Shipping charge 10 will apply to order values less than Order total value 10.") ?>
+        <?php echo vmToolTip("Shipping charge 10 will apply to order values less than Order total value 10.") ?>
         </td>
     </tr>
 
 	  <tr>
-		<td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_UPS_TAX_CLASS ?></strong></td>
+		<td><strong><?php echo $VM_LANG->_('PHPSHOP_UPS_TAX_CLASS') ?></strong></td>
 		<td>
 		  <?php
 		  require_once(CLASSPATH.'ps_tax.php');
 		  ps_tax::list_tax_value("SHIPVALUE_TAX_CLASS", SHIPVALUE_TAX_CLASS) ?>
 		</td>
-		<td colspan="3"><?php echo mosToolTip("Use the following tax class on the shipping charge.  The shipping charge values above will then be inclusive of this tax rate.") ?><td>
+		<td colspan="3"><?php echo vmToolTip("Use the following tax class on the shipping charge.  The shipping charge values above will then be inclusive of this tax rate.") ?><td>
 	  </tr>	
 
 	</table>

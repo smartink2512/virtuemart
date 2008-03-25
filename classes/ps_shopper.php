@@ -771,7 +771,9 @@ class ps_shopper {
 
 		// get superadministrators id
 		$admins = $acl->get_group_objects( 25, 'ARO' );
-
+		if( empty( $admins['users'] )) {
+			return;
+		}
 		foreach ( $admins['users'] AS $id ) {
 			$query = "SELECT email, sendEmail"
 			. "\n FROM #__users"

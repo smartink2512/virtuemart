@@ -481,6 +481,9 @@ class ps_userfield extends vmAbstractObject {
 	   		echo '<br /></div>
 				      <br style="clear:both;" />';
 	   }
+		if( $delimiter > 0) {
+			echo "</fieldset>\n";
+		}
 	   echo '</div>';
 	   if( VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
 		   	echo '<script type="text/javascript">

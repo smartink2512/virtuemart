@@ -29,7 +29,7 @@ class ps_montrada {
     */
     function show_configuration() { 
     
-      global $PHPSHOP_LANG, $sess;
+      global $VM_LANG, $sess;
       $db =& new ps_DB;
       $payment_method_id = vmGet( $_REQUEST, 'payment_method_id', null );
       /** Read current Configuration ***/
@@ -38,25 +38,25 @@ class ps_montrada {
       <table>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2 ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2') ?></strong></td>
             <td>
                 <select name="MO_CHECK_CARD_CODE" class="inputbox">
                 <option <?php if (MO_CHECK_CARD_CODE == 'YES') echo "selected=\"selected\""; ?> value="YES">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_YES ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_YES') ?></option>
                 <option <?php if (MO_CHECK_CARD_CODE == 'NO') echo "selected=\"selected\""; ?> value="NO">
-                <?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_NO ?></option>
+                <?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_NO') ?></option>
                 </select>
             </td>
-            <td><?php echo $PHPSHOP_LANG->_PHPSHOP_PAYMENT_CVV2_TOOLTIP ?></td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_CVV2_TOOLTIP') ?></td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_USERNAME ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_MONTRADA_USERNAME') ?></strong></td>
             <td>
                 <input type="text" name="MO_USERNAME" class="inputbox" value="<?php echo MO_USERNAME ?>" />
             </td>
         </tr>
         <tr>
-            <td><strong><?php echo $PHPSHOP_LANG->_PHPSHOP_ADMIN_CFG_MONTRADA_PASSWORD ?></strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_MONTRADA_PASSWORD') ?></strong></td>
             <td>
                 <input type="text" name="MO_PASSWORD" class="inputbox" value="<?php echo MO_PASSWORD ?>" />
             </td>
@@ -324,7 +324,7 @@ class ps_montrada {
         $rc1 = array("000", "005", "033", "091", "096");
         // Approved - Success!
         if (isset($response['posherr']) && ($response['posherr'] == 0)) {
-           $d["order_payment_log"] = $PHPSHOP_LANG->_PHPSHOP_PAYMENT_TRANSACTION_SUCCESS.": ";
+           $d["order_payment_log"] = $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS').": ";
            $d["order_payment_log"] .= $response['rmsg'];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response['trefnum'];
@@ -358,3 +358,4 @@ class ps_montrada {
         }
    }   
 }
+?>
