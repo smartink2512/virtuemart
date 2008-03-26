@@ -2,9 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 
 define ('AN_TEST_REQUEST', 'TRUE');
-define ('AN_LOGIN', 'dgi00000');
+define ('AN_LOGIN', 'LoginID344f');
 define ('AN_TYPE', 'AUTH_CAPTURE');
-define ('AN_CHECK_CARD_CODE', 'NO');
+define ('AN_CHECK_CARD_CODE', 'YES');
 define ('AN_VERIFIED_STATUS', 'P');
 define ('AN_INVALID_STATUS', 'P');
 define ('AN_RECURRING', 'NO');

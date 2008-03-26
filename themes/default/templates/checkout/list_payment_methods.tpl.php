@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage templates
-* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2007-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -48,8 +48,10 @@ if ($cc_payments==true) {
 		            if(file_exists(CLASSPATH."payment/$payment_class.php") && file_exists(CLASSPATH."payment/$payment_class.cfg.php")) {
 		                require_once(CLASSPATH."payment/$payment_class.php");
 		                require_once(CLASSPATH."payment/$payment_class.cfg.php");
-		                eval( "\$_PAYMENT = new $payment_class();" );
-		                eval( "\$require_cvv_code = ".$_PAYMENT->payment_code."_CHECK_CARD_CODE;" );
+		                $_PAYMENT = new $payment_class();
+		                if( defined( $_PAYMENT->payment_code.'_CHECK_CARD_CODE' ) ) {
+		                	$require_cvv_code = strtoupper( constant($_PAYMENT->payment_code.'_CHECK_CARD_CODE') );
+		                }
 		            }
 		?>      </td>
 		    </tr>
@@ -74,10 +76,13 @@ if ($cc_payments==true) {
 			?>
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
-		        	<label for="credit_card_code">Credit Card Security Code:</label></td>
+		        	<label for="credit_card_code">
+		        		<?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP'), '', '', '', 'Credit Card Security Code' ) ?>:
+		        	</label>
+		        </td>		        		
 		        <td>
 		            <input type="text" class="inputbox" id="credit_card_code" name="credit_card_code" value="<?php if(!empty($_SESSION['ccdata']['credit_card_code'])) echo $_SESSION['ccdata']['credit_card_code'] ?>" autocomplete="off" />
-		        <?php echo mm_ToolTip( $VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP')); ?>
+		        
 		        </td>
 		    </tr>
 		<?php } ?>

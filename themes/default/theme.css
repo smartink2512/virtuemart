@@ -1,6 +1,6 @@
 /** 
 * Main CSS file for the "default" theme for VirtueMart
-* @copyright 2006 Soeren Eberhardt, Anne-Katrin Merz
+* @copyright 2006-2008 soeren
 * @license GNU/GPL
 *
 */
@@ -345,7 +345,10 @@ width: 100%;
 	margin-top: 3px;
 	vertical-align: middle;
 }
-
+.availabilityHeader {
+	text-decoration:underline;
+	font-weight:bold;
+}
 .inputboxattrib {
 	float: left;
 	margin-top: 0px;
@@ -411,12 +414,9 @@ width: 100%;
 	
 }
 	
-
 .vmMultiple {
 	height:35px;
 }
-
-
 
 .vmChildType_2up { /* Product type div*/
 	background: lightblue;

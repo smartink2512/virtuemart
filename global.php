@@ -185,7 +185,6 @@ $vendor_address_format = $db->f('vendor_address_format');
 $vendor_date_format = $db->f('vendor_date_format');
 $_SESSION["vendor_currency"] = $vendor_currency;
 
-
 // see /classes/currency_convert.php
 vmSetGlobalCurrency();
 

@@ -35,7 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.03.2008 soeren
+# Task #1929 - Image handling bugs
+# Task #1935 - Currency & List of accepted currencies
+# Task #1938 - "Availability" always visible?
+# Task #1920 - Age Verification User Field being reset after viewing from Admin
+# Task #1916 - twice description meta tag
+# Task #1927 - paypal notify script
+# Task #1928 - Display# is not changing
 24.03.2008 soeren
+^ removed eval function from list_payment_methods template, moved tooltip for "Credit Card Validation Value" to the associated label 
 # Task #1924 - After account creation a warning message is shown.
 23.03.2008 thepisu
 # small fix in italian states data

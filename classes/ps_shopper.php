@@ -158,7 +158,7 @@ class ps_shopper {
 			if( in_array( $field->name, $skipFields )) {
 				continue;
 			}
-					switch( $field->type ) {
+			switch( $field->type ) {
 				case 'age_verification':
 					// The Age Verification here is just a simple check if the selected date
 					// is a birthday older than the minimum age (default: 18)

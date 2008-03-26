@@ -21,6 +21,10 @@ require_once(CLASSPATH.'ps_vendor.php');
 $ps_vendor = new ps_vendor;
 $db2 = new ps_DB; 
 $product_id = $vars["product_id"];
+if( empty( $product_id )) {
+	include( PAGEPATH.'product.product_list.php');
+	return;
+}
 $product_parent_id = vmGet( $_REQUEST, 'product_parent_id', 0 );
 $vars["product_parent_id"] = vmget( $vars, 'product_parent_id', 0 );
 

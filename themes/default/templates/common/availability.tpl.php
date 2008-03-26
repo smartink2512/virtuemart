@@ -1,10 +1,8 @@
 <?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
-<div style="text-decoration:underline;font-weight:bold;">
-	<?php echo $VM_LANG->_('PHPSHOP_AVAILABILITY') ?>
-</div>
-<br /> 
+
 	<?php
+	ob_start();
 	
 	if (($product_in_stock < 1 && CHECK_STOCK) || $product_available_date > time() ) { 
 		// Product is not in stock or not available yet (Availability date in future) ?>
@@ -49,5 +47,13 @@
 			echo $product_availability;
 		}
 	}
-		
+	$avail = ob_get_contents();
+	ob_end_clean();
+	if( !empty( $avail ) ) { 
+		?>
+		<div style="availabilityHeader"><?php echo $VM_LANG->_('PHPSHOP_AVAILABILITY') ?></div>
+		<br />
+		<?php
+		echo $avail;
+	}
 ?>

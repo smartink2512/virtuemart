@@ -917,7 +917,7 @@ function vmSpoofValue($alt=NULL) {
  *
  */
 function vmSetGlobalCurrency(){
-	global $page, $vendor_accepted_currencies, $vendor_currency, $vmLogger;
+	global $vendor_accepted_currencies, $vendor_currency, $vmLogger;
 
 	if( !defined('_VM_IS_BACKEND') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
 		if( isset( $_REQUEST['product_currency']) ) {
@@ -925,13 +925,13 @@ function vmSetGlobalCurrency(){
 		}
 	}
 	$GLOBALS['product_currency'] = vmGet($_SESSION, 'product_currency', $vendor_currency);
-	
+		
 	// Check if the selected currency is accepted! (the vendor currency is always accepted)
 	if( $GLOBALS['product_currency'] != $vendor_currency ) {
 		if( empty( $vendor_accepted_currencies )) {
 			$vendor_accepted_currencies = $vendor_currency;
 		}
-		
+		$page = vmGet($_REQUEST,'page');
 		$acceptedCurrencies = explode(',', $vendor_accepted_currencies );
 		if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies) 
 				&& (stristr( $page, 'checkout.') || stristr( $page, 'account.') || stristr( $page, 'shop.cart')) ) {

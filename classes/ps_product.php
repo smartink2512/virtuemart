@@ -122,7 +122,7 @@ class ps_product extends vmAbstractObject {
 				return false;
 			}
 			// if we have an uploaded image file, prepare this one for deleting.
-			if( $db->f("product_full_image") && substr( $db->f("product_thumb_image"), 0, 4) != "http") {
+			if( $db->f("product_full_image") && substr( $db->f("product_full_image"), 0, 4) != "http") {
 				$_REQUEST["product_full_image_curr"] = $db->f("product_full_image");
 				$d["product_full_image_action"] = "delete";
 				if (!vmImageTools::validate_image($d,"product_full_image","product")) {

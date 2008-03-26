@@ -79,7 +79,7 @@ if ($_POST) {
 			
 			// Adjust the live site path
 			$mosConfig_live_site = str_replace('/administrator/components/com_virtuemart', '', $mosConfig_live_site); 
-			
+			$mosConfig_absolute_path = $absolute_path;
         } else {
         	define('_VALID_MOS', '1');
         	require_once($mosConfig_absolute_path. '/includes/joomla.php');

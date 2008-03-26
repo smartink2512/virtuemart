@@ -40,16 +40,28 @@ class ps_user {
 			if( in_array( $field->name, $skipFields )) {
 				continue;
 			}
-			if( empty( $d[$field->name]) && $field->sys == 1 ) {
-				$valid = false;
-				$fieldtitle = $field->title;
-				if( substr( $fieldtitle, 0, 1) == '_') {
-					$fieldkey = substr($fieldtitle, 1, strlen($fieldtitle)-1);
-					if( $VM_LANG->exists($fieldkey) ) {
-						$fieldtitle = $VM_LANG->_($fieldkey);
+			switch( $field->type ) {
+				case 'age_verification':
+					// The Age Verification here is just a simple check if the selected date
+					// is a birthday older than the minimum age (default: 18)
+					$d[$field->name] = vmRequest::getInt('birthday_selector_year')
+															.'-'.vmRequest::getInt('birthday_selector_month')
+															.'-'.vmRequest::getInt('birthday_selector_day');
+					
+					break;
+				default:
+					if( empty( $d[$field->name]) && $field->sys == 1 ) {
+						$valid = false;
+						$fieldtitle = $field->title;
+						if( substr( $fieldtitle, 0, 1) == '_') {
+							$fieldkey = substr($fieldtitle, 1, strlen($fieldtitle)-1);
+							if( $VM_LANG->exists($fieldkey) ) {
+								$fieldtitle = $VM_LANG->_($fieldkey);
+							}
+						}
+						$vmLogger->err( sprintf($VM_LANG->_('VM_USER_ERR_MISSINGVALUE'), $fieldtitle) );
 					}
-				}
-				$vmLogger->err( sprintf($VM_LANG->_('VM_USER_ERR_MISSINGVALUE'), $fieldtitle) );
+					break;
 			}
 		}
 
