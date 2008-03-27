@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+27.03.2008 gregdev
++ Added manual install for Joomla! 1.5
+^ Cleaned up module and mambot/plugin names in the manual install sql
+
 26.03.2008 gregdev
 # Task #1939 - shop.savedcart.tpl.php unclosed div and few typos
 
