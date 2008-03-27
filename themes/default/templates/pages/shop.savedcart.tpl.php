@@ -31,7 +31,7 @@ if ($cart["idx"]) {
 		<div style="float:left;width: 33%;"><?php echo $mergeSaved ?></div>
 		<div style="float:left;width: 33%;"><?php echo $deleteSaved ?></div>
     
-    <br style="clear:both;"><br /><hr /><div align="center">';
+    <br style="clear:both;"><br /><hr /><div align="center">
     <?php
     if( $continue_link != '') {
 		?>
@@ -41,6 +41,7 @@ if ($cart["idx"]) {
 		<?php
     }
 	  ?>
+	</div>
 	</div>
 	
 	<?php

@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.03.2008 gregdev
+# Task #1939 - shop.savedcart.tpl.php unclosed div and few typos
+
 26.03.2008 soeren
 # Task #1929 - Image handling bugs
 # Task #1935 - Currency & List of accepted currencies
@@ -43,15 +46,19 @@ VirtueMart 1.1.x
 # Task #1916 - twice description meta tag
 # Task #1927 - paypal notify script
 # Task #1928 - Display# is not changing
+
 24.03.2008 soeren
 ^ removed eval function from list_payment_methods template, moved tooltip for "Credit Card Validation Value" to the associated label 
 # Task #1924 - After account creation a warning message is shown.
+
 23.03.2008 thepisu
 # small fix in italian states data
+
 20.03.2008 soeren
 # Task #1917 - Shipvalue is still using old mosToolTip function
 # Task #1915 - file rigths during installation
 # Task #1914 - close fieldset tag in ps_userfield.php
+
 19.03.2008 soeren
 # fatal error in toolbar on Mambo
 # Mambo didn't show correct CSS and loading JS didn't work
@@ -60,6 +67,7 @@ VirtueMart 1.1.x
 # Quantity Steps are checked for when updating the cart (say you have a product which can only be ordered at quantity steps of 5 - like 10 or 25) 
 + added the variable "product_price_raw" to product details page, so the "raw" product price array can be used inside the flypage templates
 # Task #1907 - Cart Module not updating after first product added (IE only)
+
 18.03.2008 soeren
 # Task #1902 - Filters reset after add new product, etc.
 
