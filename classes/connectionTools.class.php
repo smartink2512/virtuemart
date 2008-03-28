@@ -57,9 +57,11 @@ class vmConnector {
 	 * @static 
 	 * @param string $url
 	 * @param string $postData
+	 * @param array $headers
+	 * @param resource $fileToSaveData
 	 * @return mixed
 	 */
-	function handleCommunication( $url, $postData='', $headers=array() ) {
+	function handleCommunication( $url, $postData='', $headers=array(), $fileToSaveData=null ) {
 		global $vmLogger;
 
 		$urlParts = parse_url( $url );
@@ -92,11 +94,15 @@ class vmConnector {
 				// Add additional headers if provided
 				curl_setopt($CR, CURLOPT_HTTPHEADER, $headers);
 			}
-			curl_setopt($CR, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($CR, CURLOPT_FAILONERROR, true);
 			if( $postData ) {
 				curl_setopt($CR, CURLOPT_POSTFIELDS, $postData );
 				curl_setopt($CR, CURLOPT_POST, 1);
+			}
+			if( is_resource($fileToSaveData)) {
+				curl_setopt($CR, CURLOPT_FILE, $fileToSaveData );
+			} else {
+				curl_setopt($CR, CURLOPT_RETURNTRANSFER, 1);
 			}
 			// Do we need to set up the proxy?
 			if( !empty($proxyURL) ) {
@@ -225,8 +231,12 @@ class vmConnector {
 				return false;
 			}
 			$result = trim( $data );
-
-			return $result;
+			if( is_resource($fileToSaveData )) {
+				fwrite($fileToSaveData, $result );
+				return true;
+			} else {
+				return $result;
+			}
 		}
 	}
 	/**
@@ -236,7 +246,7 @@ class vmConnector {
 	* @param string The full path to the file
 	* @param string The Mime Type of the file
 	*/
-	function sendFile($file,$mime){
+	function sendFile($file,$mime, $overrideFileName=''){
 		global $vm_mainframe;
 		// send headers
 		header("Content-Type: $mime");
@@ -249,7 +259,12 @@ class vmConnector {
 
 		//application mime type is downloadable
 		if(strtolower(substr($mime,0,11)) == 'application'){
-			header('Content-Disposition: attachment; filename="'.basename($file).'";');
+			if( $overrideFileName == '') {
+				$filename = basename($file);
+			} else {
+				$filename = $overrideFileName;
+			}
+			header('Content-Disposition: attachment; filename="'.$filename.'";');
 		}
 		
 		$chunksize = 1*(1024*1024);

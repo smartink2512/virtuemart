@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -141,12 +141,8 @@ class ps_product_files {
 		}
 		else {
 			// No file uploaded, but specified by URL
-			if( stristr( $d['file_type'], "image" )) {
-				$is_image = "1";
-			}
-			else {
-				$is_image = "0";
-			}
+			$is_image = stristr( $d['file_type'], "image" ) ? '1' : '0';
+			
 			if( !empty($d['file_url'])) {
 				$filename = '';
 			} else {
@@ -181,23 +177,44 @@ class ps_product_files {
 		else {
 			// erase $mosConfig_absolute_path to have a relative path
 			$filename = str_replace( $mosConfig_absolute_path, '', $filename );
-			if( $d['file_type'] == 'downloadable_file') {
-				// Insert an attribute called "download", attribute_value: filename
-				$q2  = "INSERT INTO #__{vm}_product_attribute ";
-				$q2 .= "(product_id,attribute_name,attribute_value) ";
-				$q2 .= "VALUES ('" . $d["product_id"] . "','download','".basename($filename)."')";
-				$db->query($q2);
-				
+			if( empty($filename) && !empty( $d['file_url'])) {
+				$filename = vmGet( $d, 'file_url' );
 			}
-			$q = "INSERT INTO #__{vm}_product_files ";
-			$q .= "(file_product_id, file_name, file_title, file_extension, file_mimetype, file_url, file_published,";
-			$q .= "file_is_image, file_image_height , file_image_width , file_image_thumb_height, file_image_thumb_width )";
-			$q .= " VALUES ('".$d["product_id"]."', '".$db->getEscaped($filename)."','".$db->getEscaped($d["file_title"]) . "','$ext','".$_FILES['file_upload']['type']."', '".$d['file_url']."', '".$d["file_published"]."',";
-			$q .= "'$is_image', '$file_image_height', '$file_image_width', '$file_image_thumb_height', '$file_image_thumb_width')";
-			$db->setQuery($q);
-			$db->query();
-			$vmLogger->info( $VM_LANG->_('VM_PRODUCT_FILES_ADDED') );
-			$_REQUEST['file_id'] = $db->last_insert_id();
+			if( $d['file_type'] == 'downloadable_file') {
+				if( $filename == $d['file_url'] ) {
+					$attribute_value = $filename;
+				} else {
+					$attribute_value= basename($filename);
+				}
+				$d['file_title'] = $attribute_value;
+				// Insert an attribute called "download", attribute_value: filename
+				$fields = array( 'product_id' => $d["product_id"],
+											'attribute_name' => 'download',
+											'attribute_value' => $attribute_value
+										);
+				$db->buildQuery('INSERT', '#__{vm}_product_attribute', $fields );
+				$db->query();
+			}
+			$fields = array( 'file_product_id' => $d["product_id"],
+										'file_name' => $db->getEscaped($filename),
+										'file_title' => $db->getEscaped($d["file_title"]),
+										'file_extension' => $ext,
+										'file_mimetype' => $_FILES['file_upload']['type'],
+										'file_url' => $d['file_url'],
+										'file_published' => $d["file_published"],
+										'file_is_image' => $is_image,
+										'file_image_height' => $file_image_height,
+										'file_image_width' => $file_image_width,
+										'file_image_thumb_height' => $file_image_thumb_height,
+										'file_image_thumb_width' => $file_image_thumb_width
+								);
+			$db->buildQuery('INSERT', '#__{vm}_product_files', $fields );
+			if( $db->query() !== false ) {
+				$vmLogger->info( $VM_LANG->_('VM_PRODUCT_FILES_ADDED') );
+				$_REQUEST['file_id'] = $db->last_insert_id();
+			} else {
+				return false;
+			}
 		}
 		return True;
 
@@ -223,13 +240,14 @@ class ps_product_files {
 
 		$is_download_attribute = false;
 
-		$q_dl = "SELECT attribute_name,attribute_value,file_id from #__{vm}_product_attribute,#__{vm}_product_files WHERE ";
-		$q_dl .= "product_id='".$d["product_id"]."' AND attribute_name='download' ";
-		$q_dl .= "AND file_id='".$d["file_id"]."' AND attribute_value=file_title";
+		$q_dl = "SELECT attribute_name,attribute_value,file_id 
+						FROM #__{vm}_product_attribute,#__{vm}_product_files 
+						WHERE product_id='".$d["product_id"]."' AND attribute_name='download' 
+						AND file_id='".$d["file_id"]."' AND attribute_value=file_title";
 		$db->query($q_dl);
 
 		if( $db->next_record() ) {
-			
+			// We have found an existing downloadable file entry			
 			$old_attribute = $db->f('attribute_value', false);
 			$is_download_attribute = true;
 			if( !empty($_FILES['file_upload']['name']) && $d['file_type']== 'downloadable_file') {
@@ -240,6 +258,7 @@ class ps_product_files {
 				$db->query($qu);
 			}
 			elseif($d['file_type'] != 'downloadable_file') {
+				// File Type was changed, so remove the entry in the product attribute table
 				$qu = "DELETE FROM #__{vm}_product_attribute ";
 				$qu .= "WHERE attribute_value = '$old_attribute' ";
 				$qu .= "AND product_id='".$d["product_id"]."' AND attribute_name='download'";
@@ -247,34 +266,42 @@ class ps_product_files {
 			}
 		}
 		elseif( $d['file_type'] == 'downloadable_file') {
+			if( !empty($d['file_url'])) {
+				$filename = vmGet( $d, 'file_url');
+			} else {
+				$filename = vmGet( $d, 'downloadable_file' );
+			}
 			// Insert an attribute called "download", attribute_value: filename
-			$q2  = "INSERT INTO #__{vm}_product_attribute ";
-			$q2 .= "(product_id,attribute_name,attribute_value) ";
-			$q2 .= "VALUES ('" . $d["product_id"] . "','download','".basename(@$d['downloadable_file'])."')";
-			$db->query($q2);
+			$fields = array( 'product_id' => $d["product_id"],
+										'attribute_name' => 'download',
+										'attribute_value' => $db->getEscaped($filename)
+									);
+			$db->buildQuery('INSERT', '#__{vm}_product_attribute', $fields );
+			$db->query();
 		}
 		if( empty( $d["file_create_thumbnail"] )) {
 			$d["file_create_thumbnail"] = 0;
 		}
 
-
 		if( !empty($_FILES['file_upload']['name']) ) {
+			// If we have a new uploaded file, we delete the old one and add the new file
 			$this->delete( $d );
 			return $this->add( $d );
 		}
 		else {
-			if( $d['file_type'] == "image" ) {
-				$is_image = "1";
-			}
-			else {
-				$is_image = "0";
-			}
+			// No File Upload
+			$is_image = $d['file_type'] == "image" ? '1' : '0';
+			
 			if( !empty($d['file_url'])) {
 				$filename = '';
 			} elseif( $d['file_type'] == 'downloadable_file' && !empty($old_attribute)) {
-				
-				$filename = DOWNLOADROOT.@$d['downloadable_file'];
-				$d["file_title"] = $db->getEscaped(basename( @$d['downloadable_file'] ));
+				if( !empty($d['file_url'])) {
+					$filename = vmGet( $d, 'file_url');
+					$d["file_title"] = $db->getEscaped( vmGet($d,'file_url') );
+				} else {
+					$filename = DOWNLOADROOT.@$d['downloadable_file'];
+					$d["file_title"] = $db->getEscaped( vmGet($d,'downloadable_file') );
+				}				
 				$qu = "UPDATE #__{vm}_product_attribute ";
 				$qu .= "SET attribute_value = '". $d["file_title"] ."' ";
 				$qu .= "WHERE product_id='".$d["product_id"]."' AND attribute_name='download' AND attribute_value='".$old_attribute."'";
@@ -285,17 +312,16 @@ class ps_product_files {
 			$upload_success = true;
 			$file_image_height = $file_image_width = $file_image_thumb_height = $file_image_thumb_width = "";
 		}
-
-		$q = "UPDATE #__{vm}_product_files SET ";
+		$fields = array( 
+									'file_title' => $db->getEscaped($d["file_title"]),
+									'file_url' => $d['file_url'],
+									'file_published' => $d["file_published"],
+							);
 		if( !empty($filename)) {
-			$q .= "file_name='" . $db->getEscaped($filename)."', ";
+			$fields['file_name'] = $db->getEscaped($filename);
 		}
-		$q .= "file_title='" . $db->getEscaped($d["file_title"])."', ";
-		$q .= "file_published='" . $d["file_published"]."', ";
-		$q .= "file_url='" . $d["file_url"]."' ";
-		$q .= "WHERE file_id='" . (int)$d["file_id"] . "' ";
-		$q .= "AND file_product_id='" .(int) $d["product_id"] . "' ";
-		$db->setQuery($q);
+		$db->buildQuery('UPDATE', '#__{vm}_product_files', $fields, 
+									"WHERE file_id=".(int)$d["file_id"] . " AND file_product_id=" .(int) $d["product_id"]  );
 		$db->query();
 		
 		return True;
@@ -666,7 +692,7 @@ class ps_product_files {
 		$dbf = new ps_DB;
 		$html = "";
 		
-		$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = \''.intval($product_id).'\' AND attribute_name=\'download\'';
+		$sql = 'SELECT attribute_value FROM #__{vm}_product_attribute WHERE `product_id` = '.intval($product_id).' AND attribute_name=\'download\'';
 		$dbf->query( $sql );
 		$dbf->next_record();
 		$exclude_filename = $GLOBALS['vmInputFilter']->safeSQL( $dbf->f( "attribute_value" ) );
@@ -787,23 +813,25 @@ class ps_product_files {
 		return $fileout;
 			
 	}
-	
+	/**
+	 * Retrieves a remote file
+	 *
+	 * @param string $url
+	 * @return mixed
+	 */
 	function getRemoteFile( $url ) {
 			@ini_set( "allow_url_fopen");
 			$remote_fetching = ini_get( "allow_url_fopen");
 			if( $remote_fetching ) {
-				$handle = fopen( $url , "rb" );
+				require_once(CLASSPATH.'connectionTools.class.php');
+				
+				$tmp_file = tempnam(IMAGEPATH."/product/", "FOO");
+				$handle = fopen($tmp_file, "wb");
 				if( $handle === false ) {
 					return false;
 				}
-				$data = "";
-				while( !feof( $handle )) {
-					$data .= fread( $handle, 4096 );
-				}
-				fclose( $handle );
-				$tmp_file = tempnam(IMAGEPATH."/product/", "FOO");
-				$handle = fopen($tmp_file, "wb");
-				fwrite($handle, $data);
+				
+				vmConnector::handleCommunication($url, '', array(), $handle );
 				fclose($handle);
 				
 				return $tmp_file;

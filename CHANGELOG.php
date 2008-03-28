@@ -39,6 +39,7 @@ VirtueMart 1.1.x
 + Added separate .sql files for manual installation of modules and mambots (plugins).
 
 28.03.2008 soeren
++ added possibility to use external/remote files as product download files
 + possibility to cancel the VirtueMart Update by Patch Package (deletes the Patch File)
 !! New Function Table Entry
 	###

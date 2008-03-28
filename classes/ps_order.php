@@ -406,7 +406,7 @@ class ps_order {
 		$auth  = $_SESSION['auth'];
 
 		$db = new ps_DB;
-		$download_id = vmGet( $d, "download_id" );
+		$download_id = $db->getEscaped( vmGet( $d, "download_id" ) );
 
 		$q = "SELECT * FROM #__{vm}_product_download WHERE";
 		$q .= " download_id = '$download_id'";
@@ -416,7 +416,11 @@ class ps_order {
 
 		$download_id = $db->f("download_id");
 		$file_name = $db->f("file_name");
-		$datei = DOWNLOADROOT . $file_name;
+		if( strncmp($file_name, 'http', 4 ) !== 0) {
+			$datei = DOWNLOADROOT . $file_name;
+		} else {
+			$datei = $file_name;
+		}
 		$download_max = $db->f("download_max");
 		$end_date = $db->f("end_date");
 		$zeit=time();
@@ -456,9 +460,19 @@ class ps_order {
 			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 		require_once(CLASSPATH.'connectionTools.class.php');
-		// Check if this is a request for a special range of the file (=Resume Download)
-		$range_request = vmConnector::http_rangeRequest( filesize($datei), false );
-		if( $range_request[0] == 0 ) {
+		
+		$download_count = true;
+		
+		if ( @file_exists( $datei ) ){
+			// Check if this is a request for a special range of the file (=Resume Download)
+			$range_request = vmConnector::http_rangeRequest( filesize($datei), false );
+			if( $range_request[0] == 0 ) {
+				$download_count = true;
+			} else {
+				$download_count = false;
+			}
+		}
+		if( $download_count ) {
 			// If this is not a the request to resume a download,
 			// decrease the download_max to limit the number of downloads
 			$q ="UPDATE `#__{vm}_product_download` SET";
@@ -467,21 +481,35 @@ class ps_order {
 			$db->query($q);
 			$db->next_record();
 		}
+		// Parameter to check if the file should be removed after download, which is only true,
+		// if we have a remote file, which was transferred to this server into a temporary file
+		$unlink = false;
 		
-
-		// Check, if file path is correct
-		// and file is
-		if ( !@file_exists( $datei ) ){
-			$vmLogger->err( $VM_LANG->_('VM_DOWNLOAD_FILE_NOTFOUND',false) );
-			return false;
-			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+		if( strncmp($datei, 'http', 4 ) === 0) {
+			require_once( CLASSPATH.'ps_product_files.php');
+			$datei_local = ps_product_files::getRemoteFile($datei);
+			if( $datei_local !== false ) {
+				$datei = $datei_local;
+				$unlink = true;
+			} else {
+				$vmLogger->err( $VM_LANG->_('VM_DOWNLOAD_FILE_NOTFOUND',false) );
+				return false;
+			}
 		}
-		if ( !@is_readable( $datei ) ) {
-			$vmLogger->err( $VM_LANG->_('VM_DOWNLOAD_FILE_NOTREADABLE',false) );
-			return false;
-			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+		else {
+			// Check, if file path is correct
+			// and file is
+			if ( !@file_exists( $datei ) ){
+				$vmLogger->err( $VM_LANG->_('VM_DOWNLOAD_FILE_NOTFOUND',false) );
+				return false;
+				//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			}
+			if ( !@is_readable( $datei ) ) {
+				$vmLogger->err( $VM_LANG->_('VM_DOWNLOAD_FILE_NOTREADABLE',false) );
+				return false;
+				//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			}
 		}
-		
 		if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
 			$UserBrowser = "Opera";
 		}
@@ -494,9 +522,13 @@ class ps_order {
 
 		// dump anything in the buffer
 		while( @ob_end_clean() );
-		
-		vmConnector::sendFile( $datei, $mime_type );
 
+		vmConnector::sendFile( $datei, $mime_type, basename($file_name) );
+		
+		if( $unlink ) {
+			// remove the temporarily downloaded remote file
+			@unlink( $datei );
+		}
 		$GLOBALS['vm_mainframe']->close(true);
 			
 	}
