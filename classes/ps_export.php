@@ -30,7 +30,7 @@ class ps_export {
 		$db = new ps_DB;
 
 		if (!$d['export_name']) {
-			$vmLogger->err( 'Module name cannot be empty' );
+			$vmLogger->err( $VM_LANG->_('VM_EXPORT_ERR_MODULE_NAME') );
 			return False;
 		}
 		if (empty($d['export_enabled'])) {
@@ -40,7 +40,7 @@ class ps_export {
 			$d['export_class'] = 'ps_xmlexport';
 		}
 		if(!file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
-			$vmLogger->err( 'Export Class does not exist.');
+			$vmLogger->err( $VM_LANG->_('VM_EXPORT_ERR_CLASS_NOT_EXIST') );
 			return false;
 		}
 		$d['export_config'] = vmGet( $_POST, 'export_config', '', VMREQUEST_ALLOWHTML );
@@ -57,7 +57,7 @@ class ps_export {
 	function validate_delete($d) {
 		global $vmLogger, $VM_LANG;
 		if (!$d['export_id']) {
-			$vmLogger->err( 'Please select an export module to delete.');
+			$vmLogger->err( $VM_LANG->_('VM_EXPORT_ERR_DELETE_SELECT') );
 			return False;
 		}
 		else {
@@ -76,15 +76,15 @@ class ps_export {
 		$db = new ps_DB;
 
 		if (!$d['export_id']) {
-			$vmLogger->err( 'You must select an export module to update.');
+			$vmLogger->err( $VM_LANG->_('VM_EXPORT_ERR_UPDATE_SELECT') );
 			return False;
 		}
 		if (!$d['export_name']) {
-			$vmLogger->err( 'You must enter a name for the order export module.');
+			$vmLogger->err( $VM_LANG->_('VM_EXPORT_ERR_MODULE_NAME') );
 			return False;
 		}
 		if(!file_exists( CLASSPATH.'export/'.$d['export_class'].'.php' ) ) {
-			$vmLogger->err( 'Export Class does not exist.');
+			$vmLogger->err( $VM_LANG->_('VM_EXPORT_ERR_CLASS_NOT_EXIST') );
 			return false;
 		}
 		$d['export_config'] = vmGet( $_POST, 'export_config', '', VMREQUEST_ALLOWHTML );

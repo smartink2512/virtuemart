@@ -29,11 +29,12 @@ class ps_manufacturer {
 	 * @return boolean
 	 */
 	function validate_add($d) {
-
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		if (empty($d["mf_name"])) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the manufacturer.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -42,7 +43,7 @@ class ps_manufacturer {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$GLOBALS['vmLogger']->err( 'The given manufacturer name already exists.' );
+				$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_ERR_EXISTS') );
 				return False;
 			}
 		}
@@ -55,9 +56,10 @@ class ps_manufacturer {
 	 * @return boolean
 	 */
 	function validate_update($d) {
-
+		global $VM_LANG;
+		
 		if (empty($d["mf_name"])) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the manufacturer.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_ERR_NAME') );
 			return False;
 		}
 
@@ -70,10 +72,10 @@ class ps_manufacturer {
 	 * @return boolean
 	 */
 	function validate_delete($mf_id) {
-		global $db;
+		global $db, $VM_LANG;
 
 		if (empty( $mf_id )) {
-			$GLOBALS['vmLogger']->err( 'Please select a manufacturer to delete.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_ERR_DELETE_SELECT') );
 			return False;
 		}
 		$db->query( "SELECT jos_vm_product.product_id, manufacturer_id
@@ -81,7 +83,7 @@ class ps_manufacturer {
 						WHERE manufacturer_id =".intval($mf_id)."
 						AND jos_vm_product.product_id = jos_vm_product_mf_xref.product_id" );
 		if( $db->num_rows() > 0 ) {
-			$GLOBALS['vmLogger']->err( 'This Manufacturer still has products assigned to it.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_ERR_DELETE_STILLPRODUCTS') );
 			return false;
 		}
 		return True;
@@ -95,7 +97,8 @@ class ps_manufacturer {
 	 * @return boolean
 	 */
 	function add(&$d) {
-
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 		
 		$GLOBALS['vmInputFilter']->safeSQL( $d );
@@ -111,7 +114,7 @@ class ps_manufacturer {
 		);
 		$db->buildQuery('INSERT', '#__{vm}_manufacturer', $fields );
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info('The Manufacturer has been added.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_MANUF_ADDED') );
 			$_REQUEST['manufacturer_id'] = $db->last_insert_id();
 			return true;	
 		}
@@ -126,6 +129,8 @@ class ps_manufacturer {
 	 * @return boolean
 	 */
 	function update(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -142,7 +147,7 @@ class ps_manufacturer {
 		);
 		$db->buildQuery('UPDATE', '#__{vm}_manufacturer', $fields, 'WHERE manufacturer_id='.(int)$d["manufacturer_id"] );
 		if( $db->query() ) {
-			$GLOBALS['vmLogger']->info('The Manufacturer has been updated.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_MANUF_UPDATED') );
 			return true;	
 		}
 		return false;

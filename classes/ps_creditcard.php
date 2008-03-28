@@ -29,15 +29,15 @@ class ps_creditcard {
 	 * @return boolean
 	 */
 	function validate_add($d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		$db = new ps_DB;
 
 		if (!$d["creditcard_name"]) {
-			$vmLogger->err( 'You must enter a name for the Credit Card.' );
+			$vmLogger->err( $VM_LANG->_('VM_CREDITCARD_ERR_NAME') );
 			return False;
 		}
 		if (!$d["creditcard_code"]) {
-			$vmLogger->err( 'You must enter a code for the Credit Card.' );
+			$vmLogger->err( $VM_LANG->_('VM_CREDITCARD_ERR_CODE') );
 			return False;
 		}
 
@@ -47,7 +47,7 @@ class ps_creditcard {
 		$db->query( $q );
 		$db->next_record();
 		if ($db->f("rowcnt") > 0) {
-			$vmLogger->err( 'The given Credit Card Name/Code already exists.' );
+			$vmLogger->err( $VM_LANG->_('VM_CREDITCARD_EXISTS') );
 			return False;
 		}
 		return True;
@@ -61,13 +61,14 @@ class ps_creditcard {
 	 * @return boolean
 	 */
 	function validate_update($d) {
+		global $VM_LANG;
 
 		if (!$d["creditcard_name"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the Credit Card Type.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CREDITCARD_ERR_NAME') );
 			return False;
 		}
 		if (!$d["creditcard_code"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a code for the Credit Card Type.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CREDITCARD_ERR_CODE') );
 			return False;
 		}
 
@@ -81,9 +82,9 @@ class ps_creditcard {
 	 * @return boolean
 	 */
 	function validate_delete($d) {
-
+		global $VM_LANG;
 		if (!$d["creditcard_id"]) {
-			$GLOBALS['vmLogger']->err( 'Please select a Credit Card Type to delete.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CREDITCARD_ERR_DELETE_SELECT') );
 			return False;
 		}
 		else {
@@ -98,6 +99,8 @@ class ps_creditcard {
 	 * @return boolean
 	 */
 	function add(&$d) {
+		global $VM_LANG;
+		
 		$hash_secret="VMisCool";
 		$db = new ps_DB;
 		$timestamp = time();
@@ -111,7 +114,7 @@ class ps_creditcard {
 		);
 		$db->buildQuery('INSERT', '#__{vm}_creditcard', $fields );
 		if( $db->query() ) {
-			$GLOBALS['vmLogger']->info('The Credit Card Type has been added.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_CREDITCARD_ADDED') );
 			$_REQUEST['creditcard_id'] = $db->last_insert_id();
 			return true;	
 		}
@@ -125,6 +128,8 @@ class ps_creditcard {
 	 * @return boolean
 	 */
 	function update(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -138,7 +143,7 @@ class ps_creditcard {
 		);
 		$db->buildQuery('UPDATE', '#__{vm}_creditcard', $fields, 'WHERE creditcard_id='.(int)$d["creditcard_id"]);
 		if( $db->query() ) {
-			$GLOBALS['vmLogger']->info('The Credit Card Type has been updated.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_CREDITCARD_UPDATED') );
 			$_REQUEST['creditcard_id'] = $db->last_insert_id();
 			return true;	
 		}

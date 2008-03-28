@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+28.03.2008 thepisu
+# Task #1941  hard coded string
+# added various translation strings (module "common")
+
 28.03.2008 gregdev
 + Added separate .sql files for manual installation of modules and mambots (plugins).
 

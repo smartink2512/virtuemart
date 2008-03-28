@@ -29,10 +29,10 @@ class ps_module {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
-		global $db, $vmLogger;
+		global $db, $vmLogger, $VM_LANG;
 
 		if ( empty($d[ 'module_name' ] )) {
-			$vmLogger->err ( 'You must enter a name for the module.' );
+			$vmLogger->err ( $VM_LANG->_('VM_MODULE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -40,13 +40,13 @@ class ps_module {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$vmLogger->err( 'The given module name already exists.' );
+				$vmLogger->err( $VM_LANG->_('VM_MODULE_ERR_EXISTS') );
 				return False;
 			}
 		}
 
 		if ( empty($d[ 'module_perms' ]) ) {
-			$vmLogger->err( 'You must enter permissions for the module.' );
+			$vmLogger->err( $VM_LANG->_('VM_MODULE_ERR_PERMS') );
 			return false;
 		}
 		if (empty( $d[ 'list_order' ] ) ) {
@@ -63,11 +63,11 @@ class ps_module {
 	 * @return boolean
 	 */
 	function validate_update(&$d) {
-		global $vmLogger;
+		global $vmLogger, $VM_LANG;
 		
 
 		if ( empty($d[ 'module_name' ] )) {
-			$vmLogger->err ( 'You must enter a name for the module.' );
+			$vmLogger->err ( $VM_LANG->_('VM_MODULE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -76,13 +76,13 @@ class ps_module {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$vmLogger->err( 'The given module name already exists.' );
+				$vmLogger->err( $VM_LANG->_('VM_MODULE_ERR_EXISTS') );
 				return False;
 			}
 		}
 
 		if ( empty($d[ 'module_perms' ]) ) {
-			$vmLogger->err( 'You must enter permissions for the module.' );
+			$vmLogger->err( $VM_LANG->_('VM_MODULE_ERR_PERMS') );
 			return false;
 		}
 		if (empty( $d[ 'list_order' ] ) ) {
@@ -99,10 +99,10 @@ class ps_module {
 	 * @return boolean
 	 */
 	function validate_delete($module_id) {
-		global $db, $vmLogger;
+		global $db, $vmLogger, $VM_LANG;
 
 		if (empty($module_id)) {
-			$vmLogger->err( 'Please select a module to delete.' );
+			$vmLogger->err( $VM_LANG->_('VM_MODULE_ERR_DELETE_SELECT') );
 			return False;
 		}
 
@@ -110,7 +110,7 @@ class ps_module {
 		$db->next_record();
 		$name = $db->f("module_name");
 		if( $this->is_core( $name ) ) {
-			$vmLogger->err( 'The module '.$name.' is a core module. It cannot be deleted.' );
+			$vmLogger->err( str_replace('{name}',$name,$VM_LANG->_('VM_MODULE_ERR_DELETE_CORE')) );
 			return false;
 		}
 		return True;
@@ -124,7 +124,7 @@ class ps_module {
 	 * @return boolean
 	 */
 	function add(&$d) {
-		global $db;
+		global $db, $VM_LANG;
 
 		$timestamp = time();
 
@@ -146,7 +146,7 @@ class ps_module {
 
 		if( $db->query() !== false ) {
 			$_REQUEST['module_id'] = $db->last_insert_id();
-			$GLOBALS['vmLogger']->info( 'The Module has been added.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_MODULE_ADDED') );
 			return True;
 		}
 		return false;
@@ -160,7 +160,7 @@ class ps_module {
 	 * @return boolean
 	 */
 	function update(&$d) {
-		global $db;
+		global $db, $VM_LANG;
 
 		$timestamp = time();
 
@@ -182,7 +182,7 @@ class ps_module {
 		$db->buildQuery( 'UPDATE',  '#__{vm}_module', $fields, ' WHERE module_id='.intval( $d[ 'module_id' ] ) );
 
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info( 'The Module has been updated.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_MODULE_UPDATED') );
 			return True;
 		}
 

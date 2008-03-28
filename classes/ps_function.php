@@ -59,10 +59,10 @@ class ps_function extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function validate_delete($d) {
-		global $perm, $vmLogger;
+		global $perm, $vmLogger, $VM_LANG;
 		
 		if (empty($d["function_id"])) {
-			$vmLogger->err( 'Please select a function to delete.' );
+			$vmLogger->err( $VM_LANG->_('VM_FUNCTION_ERR_DELETE_SELECT') );
 			return False;
 		}
 		else {
@@ -78,13 +78,19 @@ class ps_function extends vmAbstractObject {
 					$function_perms = explode(',', $db->f('function_perms') );
 					foreach( $module_perms as $permisson ) {
 						if( !$perm->hashigherPerms( $permisson )) {
-							$vmLogger->err( 'You are not allowed to delete this function (Module Restrictions: '.$db->f('module_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+							$err_msg = $VM_LANG->_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD');
+							$err_msg = str_replace('{module_perms}',$db->f('module_perms'),$err_msg);
+							$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
+							$vmLogger->err( $err_msg );
 							return false;
 						}
 					}
 					foreach( $function_perms as $permisson ) {
 						if( !$perm->hashigherPerms( $permisson )) {
-							$vmLogger->err( 'You are not allowed to delete this function (Function Restrictions: '.$db->f('function_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+							$err_msg = $VM_LANG->_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC');
+							$err_msg = str_replace('{function_perms}',$db->f('function_perms'),$err_msg);
+							$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
+							$vmLogger->err( $err_msg );
 							return false;
 						}
 					}
@@ -99,13 +105,19 @@ class ps_function extends vmAbstractObject {
 				$function_perms = explode(',', $db->f('function_perms') );
 				foreach( $module_perms as $permisson ) {
 					if( !$perm->hashigherPerms( $permisson )) {
-						$vmLogger->err( 'You are not allowed to delete this function (Module Restrictions: '.$db->f('module_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+						$err_msg = $VM_LANG->_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD');
+						$err_msg = str_replace('{module_perms}',$db->f('module_perms'),$err_msg);
+						$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
+						$vmLogger->err( $err_msg );
 						return false;
 					}
 				}
 				foreach( $function_perms as $permisson ) {
 					if( !$perm->hashigherPerms( $permisson )) {
-						$vmLogger->err( 'You are not allowed to delete this function (Function Restrictions: '.$db->f('function_perms').', Your Perms: '.$_SESSION['auth']['perms'].').' );
+						$err_msg = $VM_LANG->_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC');
+						$err_msg = str_replace('{function_perms}',$db->f('function_perms'),$err_msg);
+						$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
+						$vmLogger->err( $err_msg );
 						return false;
 					}
 				}

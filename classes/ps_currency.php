@@ -24,15 +24,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 class ps_currency {
 
 	function validate_add($d) {
-
+		global $VM_LANG;
 		$db = new ps_DB;
 
 		if (!$d["currency_name"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the currency.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CURRENCY_ERR_NAME') );
 			return False;
 		}
 		if (!$d["currency_code"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a code for the currency.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CURRENCY_ERR_CODE') );
 			return False;
 		}
 
@@ -43,7 +43,7 @@ class ps_currency {
 			$db->query();
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$GLOBALS['vmLogger']->err( 'The given currency name already exists.' );
+				$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CURRENCY_ERR_EXISTS') );
 				return False;
 			}
 		}
@@ -58,9 +58,9 @@ class ps_currency {
 	** returns:
 	***************************************************************************/
 	function validate_delete($d) {
-
+		global $VM_LANG;
 		if (!$d["currency_id"]) {
-			$GLOBALS['vmLogger']->err( 'Please select a currency to delete.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CURRENCY_ERR_DELETE_SELECT') );
 			return False;
 		}
 		else {
@@ -76,13 +76,13 @@ class ps_currency {
 	** returns:
 	***************************************************************************/
 	function validate_update($d) {
-
+		global $VM_LANG;
 		if (!$d["currency_name"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the currency.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CURRENCY_ERR_NAME') );
 			return False;
 		}
 		if (!$d["currency_code"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a code for the currency.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_CURRENCY_ERR_CODE') );
 			return False;
 		}
 
@@ -96,6 +96,8 @@ class ps_currency {
 	 * @return boolean
 	 */
 	function add(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		if (!$this->validate_add($d)) {
@@ -106,7 +108,7 @@ class ps_currency {
 		);
 		$db->buildQuery('INSERT', '#__{vm}_currency', $fields );
 		if( $db->query() ) {
-			$GLOBALS['vmLogger']->info('The Currency has been added.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_CURRENCY_ADDED') );
 			$_REQUEST['currency_id'] = $db->last_insert_id();
 			return true;	
 		}
@@ -122,6 +124,8 @@ class ps_currency {
 	 * @return boolean
 	 */
 	function update(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 
 		if (!$this->validate_update($d)) {
@@ -132,7 +136,7 @@ class ps_currency {
 		);
 		$db->buildQuery('UPDATE', '#__{vm}_currency', $fields, 'WHERE currency_id='.(int)$d["currency_id"] );
 		if( $db->query() ) {
-			$GLOBALS['vmLogger']->info('The Currency has been updated.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_CURRENCY_UPDATED') );
 			return true;	
 		}
 

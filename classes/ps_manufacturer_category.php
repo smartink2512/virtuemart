@@ -46,11 +46,11 @@ class ps_manufacturer_category {
 	 * @return boolean
 	 */
 	function validate_add($d) {
-
+		global $VM_LANG;
 		$db = new ps_DB;
 
 		if (!$d["mf_category_name"]) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the manufacturer category.' );
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_CAT_ERR_NAME') );
 			return False;
 		}
 
@@ -60,7 +60,7 @@ class ps_manufacturer_category {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$GLOBALS['vmLogger']->err( 'The given manufacturer category name already exists.' );
+				$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_CAT_ERR_EXISTS') );
 				return False;
 			}
 		}
@@ -74,9 +74,9 @@ class ps_manufacturer_category {
 	 * @return boolean
 	 */
 	function validate_update($d) {
-
+		global $VM_LANG;
 		if (empty($d["mf_category_name"])) {
-			$GLOBALS['vmLogger']->err( 'You must enter a name for the manufacturer category.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_CAT_ERR_NAME') );
 			return false;
 		}
 
@@ -90,9 +90,9 @@ class ps_manufacturer_category {
 	 * @return boolean
 	 */
 	function validate_delete($d) {
-
+		global $VM_LANG;
 		if (empty($d["mf_category_id"])) {
-			$GLOBALS['vmLogger']->err( 'Please select a manufacturer category to delete.');
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_CAT_ERR_DELETE_SELECT') );
 			return False;
 		}
 		else {
@@ -107,7 +107,8 @@ class ps_manufacturer_category {
 	 * @return boolean
 	 */
 	function add(&$d) {
-
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 		$GLOBALS['vmInputFilter']->safeSQL( $d );
 		
@@ -121,7 +122,7 @@ class ps_manufacturer_category {
 
 		if( $db->query() !== false ) {
 			$_REQUEST['mf_category_id'] = $db->last_insert_id();
-			$GLOBALS['vmLogger']->info( 'The Manufacturer Category has been added.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_MANUF_CAT_ADDED') );
 			return True;
 		}
 		return false;
@@ -135,6 +136,8 @@ class ps_manufacturer_category {
 	 * @return boolean
 	 */
 	function update(&$d) {
+		global $VM_LANG;
+		
 		$db = new ps_DB;
 		
 		$GLOBALS['vmInputFilter']->safeSQL( $d );
@@ -149,7 +152,7 @@ class ps_manufacturer_category {
 
 		if( $db->query() !== false ) {
 			$_REQUEST['mf_category_id'] = $db->last_insert_id();
-			$GLOBALS['vmLogger']->info( 'The Manufacturer Category has been added.');
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_MANUF_CAT_UPDATED') );
 			return True;
 		}
 		return false;

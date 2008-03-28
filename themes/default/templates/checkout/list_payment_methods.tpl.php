@@ -33,7 +33,7 @@ if ($cc_payments==true) {
 		        <td colspan="2"><strong>&nbsp;</strong></td>
 		    </tr>
 		    <tr>
-		        <td nowrap width="10%" align="right">Credit Card Type:</td>
+		        <td nowrap width="10%" align="right"><?php echo $VM_LANG->_('VM_CREDIT_CARD_TYPE'); ?>:</td>
 		        <td>
 		        <?php echo $ps_creditcard->creditcard_lists( $db_cc ); ?>
 		        <script language="Javascript" type="text/javascript"><!--
@@ -77,7 +77,7 @@ if ($cc_payments==true) {
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
 		        	<label for="credit_card_code">
-		        		<?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP'), '', '', '', 'Credit Card Security Code' ) ?>:
+		        		<?php echo vmToolTip( $VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP'), '', '', '', $VM_LANG->_('PHPSHOP_CUSTOMER_CVV2_TOOLTIP_TITLE') ) ?>:
 		        	</label>
 		        </td>		        		
 		        <td>
