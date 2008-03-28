@@ -47,7 +47,7 @@ vmUpdate::stepBar(2);
 <div class="shop_info">
 	<span style="font-style: italic;"><?php echo $VM_LANG->_('VM_UPDATE_PATCH_DETAILS') ?></span><br />
 	<ul>
-		<li><?php echo $VM_LANG->_('VM_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo $packageContents['description'] ?></li>
+		<li><?php echo $VM_LANG->_('VM_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo vmGet($packageContents,'description',null, VMREQUEST_ALLOWHTML ) ?></li>
 		<li><?php echo $VM_LANG->_('VM_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
 	</ul>
 </div>
@@ -93,7 +93,9 @@ if( $valid ) {
 	<input type="checkbox" name="confirm_update" id="confirm_update">
 		<label for="confirm_update">' . $VM_LANG->_('VM_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
 		<br /><br />
-	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . $VM_LANG->_('VM_UPDATE_PATCH_APPLY') . '" name="submitbutton"></div>';
+	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . $VM_LANG->_('VM_UPDATE_PATCH_APPLY') . '" name="submitbutton">
+	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.$VM_LANG->_('CMN_CANCEL').'" />
+	</div>';
 } else {
 	echo '<div class="shop_error">' . $VM_LANG->_('VM_UPDATE_PATCH_ERR_UNWRITABLE');
 }
@@ -104,7 +106,7 @@ $formObj->finishForm('applypatchpackage', 'admin.update_result');
  	if( document.adminForm.confirm_update.checked ) {
  		return true;
  	}
- 	alert( <?php echo $VM_LANG->_('VM_UPDATE_PATCH_PLEASEMARK') ?> );
+ 	alert( "<?php echo $VM_LANG->_('VM_UPDATE_PATCH_PLEASEMARK') ?>" );
  	return false;
  }
  </script>

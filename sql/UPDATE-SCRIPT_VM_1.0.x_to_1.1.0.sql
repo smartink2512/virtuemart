@@ -736,7 +736,8 @@ INSERT INTO `jos_vm_function` (
 `function_perms`
 )
 VALUES ( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
-(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin');
+(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin'),
+(NULL, 1, 'removePatchPackage', 'update.class', 'removePackageFile', 'Removes  a Patch Package File and its extracted contents.', 'admin');
 
 			
-UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=RC1' WHERE `name` = 'virtuemart_version';
+UPDATE `jos_components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=RC3' WHERE `name` = 'virtuemart_version';

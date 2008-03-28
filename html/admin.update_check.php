@@ -17,14 +17,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 */
 global $VM_LANG;
-
+if( vmget($_SESSION,'vm_updatepackage') !== null ) {
+	include( PAGEPATH.'admin.update_preview.php');
+	return;
+}
 vmCommonHTML::loadMooTools();
 require_once( CLASSPATH.'update.class.php');
-
+if( !empty( $_SESSION['vmLatestVersion'] ) && version_compare( $VMVERSION->RELEASE, $_SESSION['vmLatestVersion']) === -1 ) {
+	$checkbutton_style = 'display:none;';
+	$downloadbutton_style = '';
+} else {
+	$checkbutton_style = '';
+	$downloadbutton_style = 'display:none;';
+}
 $formObj = new formFactory( $VM_LANG->_('VM_UPDATE_CHECK_LBL') );
-$formObj->startForm();
+$formObj->startForm('adminForm', 'enctype="multipart/form-data"');
 
 vmUpdate::stepBar(1);
+$tabs = new vmTabPanel(0, 0, 'versionCheck');
+$tabs->startPane('versionCheckPane');
+$tabs->startTab( $VM_LANG->_('VM_UPDATE_CHECK_LBL'), 'update_check' );
 ?>
 <table class="adminlist">
   <tr>
@@ -35,14 +47,32 @@ vmUpdate::stepBar(1);
     <td style="color:grey;font-size:18pt;text-align:center;"><?php echo $VMVERSION->RELEASE ?></td>
     <td id="updateversioncontainer" >
     	<img src="<?php echo VM_THEMEURL ?>images/indicator.gif" align="left" alt="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKING'); ?>" style="display:none;" id="checkingindicator" />
-    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="font-weight:bold;" />
-    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="display:none;font-weight:bold;" />
+    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="<?php echo $checkbutton_style ?>font-weight:bold;" />
+    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
+    	<span id="versioncheckresult"><?php echo vmGet($_SESSION,'vmLatestVersion') ?></span>
     </td>
   </tr>
 </table>
 <?php
-$formObj->finishForm('getupdatepackage', 'admin.update_preview');
+$tabs->endTab();
+
+$tabs->startTab('Upload a Patch', 'upload_patch');
  ?>
+ <div style="padding: 20px;">
+ <h2 class="vmicon vmicon32 vmicon-32-upload" name="patchupload">Upload a Patch Package</h2>
+  	<input type="file" name="uploaded_package" class="inputbox" />
+  	<br />
+  	<br />
+  	&nbsp;&nbsp;&nbsp;<input type="submit" value="Upload &amp; Preview" />
+  	<br />
+  	<br />
+  	</div>
+  <?php
+  $tabs->endTab();
+  $tabs->endPane();
+  
+$formObj->finishForm('getupdatepackage', 'admin.update_preview');
+   ?>
 <script type="text/javascript">
 //<!--
 function performUpdateCheck() {
@@ -60,17 +90,21 @@ function handleUpdateCheckResult( o ) {
 	$("checkingindicator").setStyle("display", "none");
 	$("checkbutton").setStyle("display", "none");
 	if( typeof o != "undefined" ) {
-		$("updateversioncontainer").appendText( o );		
-		if( o == "<?php echo $VMVERSION->RELEASE ?>" ) {
-			$("updateversioncontainer").setStyle( "color", "green" );
+		$("versioncheckresult").setText( o );
+		if( isNaN( o ) ) {
+			$("checkbutton").setStyle("display", "");
+			$("checkbutton").value= "<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKNOW' ); ?>";
+		}
+		else if( o == "<?php echo $VMVERSION->RELEASE ?>" ) {
+			$("versioncheckresult").setStyle( "color", "green" );
 		} 
 		else if( o > "<?php echo $VMVERSION->RELEASE ?>" ) {
-			$("updateversioncontainer").setStyle( "color", "red" );
+			$("versioncheckresult").setStyle( "color", "red" );
 			$("downloadbutton").setStyle("display", "");
 		} else {
-			$("updateversioncontainer").setStyle( "color", "blue" );
+			$("versioncheckresult").setStyle( "color", "blue" );
 		}
-		$("updateversioncontainer").setStyle( "font-size", "18pt" );
+		$("versioncheckresult").setStyle( "font-size", "18pt" );
 	} else { 
 		form.checkbutton.value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECK'); ?>";
 	}

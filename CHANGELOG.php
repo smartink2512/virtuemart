@@ -35,9 +35,17 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-27.03.2008 gregdev
-+ Added manual install for Joomla! 1.5
-^ Cleaned up module and mambot/plugin names in the manual install sql
+28.03.2008 soeren
++ possibility to cancel the VirtueMart Update by Patch Package (deletes the Patch File)
+!! New Function Table Entry
+	###
+	INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES
+	(NULL, 1, 'removePatchPackage', 'update.class', 'removePackageFile', 'Removes  a Patch Package File and its extracted contents.', 'admin');
+	###
++ possibility to upload a Patch Package to the server instead of relying on the server-server transfer from dev.virtuemart.net
+^ updated Prototype Version to 1.5.1.2 (minified by JSMinifier [http://fmarcia.info/jsmin/test.html])
+# fixed Function Form Ajax Calls
+# Task #1648 - Incorrect Product Type parameter separator in product_type table
 
 26.03.2008 gregdev
 # Task #1939 - shop.savedcart.tpl.php unclosed div and few typos

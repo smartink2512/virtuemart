@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -1150,6 +1150,32 @@ function vmReadDirectory( $path, $filter='.', $recurse=false, $fullpath=false  )
 	closedir($handle);
 	asort($arr);
 	return $arr;
+}
+/**
+ * Helper Function to completely remove a subdirectory
+ *
+ * @param string $dirname
+ * @return boolean
+ */
+function vmRemoveDirectoryR( $dirname ) {
+	if ($dirHandle = opendir($dirname)){
+		$old_cwd = getcwd();
+		chdir($dirname);
+		while ($file = readdir($dirHandle)){
+			if ($file == '.' || $file == '..') continue;
+			if (is_dir($file)){
+				if (!vmRemoveDirectoryR($file)) return false;
+			}else{
+				if (!unlink($file)) return false;
+			}
+		}
+		closedir($dirHandle);
+		chdir($old_cwd);
+		if (!rmdir($dirname)) return false;
+		return true;
+	}else{
+		return false;
+	}
 }
 /**
  * Utility function to return a value from a named array or a specified default

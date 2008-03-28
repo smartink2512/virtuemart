@@ -29,14 +29,21 @@ class vmUpdate {
 	 *
 	 * @return string Example: 1.1.2
 	 */
-	function checkLatestVersion() {		
+	function checkLatestVersion() {
+		if( !empty($_SESSION['vmLatestVersion'])) {
+			return $_SESSION['vmLatestVersion'];
+		}
 		$VMVERSION =& new vmVersion();
 		$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=latestversionastext";
 		$result = vmConnector::handleCommunication($url);
+		if( $result !== false ) {
+			// Cache the result for later use
+			$_SESSION['vmLatestVersion'] = $result;
+		}
 		return $result; 
 	}
 	/**
-	 * Function to retrieve the latest version number from virtuemart.net
+	 * Function to store the matching patch package for the currently installed VM version to the cache path
 	 *
 	 * @param array $d
 	 * @return boolean
@@ -44,40 +51,64 @@ class vmUpdate {
 	function getPatchPackage( &$d) {
 		global $vmLogger, $mosConfig_cachepath, $VM_LANG;
 		
-		require_once( ADMINPATH.'version.php');
-		$VMVERSION =& new vmVersion();
+		$allowed_extensions = array('gz', 'zip');
 		
-		$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=listpatchpackages";
-		$result = vmConnector::handleCommunication($url);
-		if( !empty( $result )
-		 	&& (strncmp('http://dev.virtuemart.net', $result, 25)===0 || strncmp('http://virtuemart.net', $result, 21)===0)
-		 ) {
-			$filename = basename( $result );
-			$doc_id_pos = strpos($filename,'?');
-			if( $doc_id_pos > 0 ) {
-				$filename = substr($filename, 0, $doc_id_pos);
-			}
-			if( file_exists( $mosConfig_cachepath.'/'.$filename)) {
-				$vmLogger->info( $VM_LANG->_('VM_UPDATE_PACKAGE_EXISTS').' '.$mosConfig_cachepath.'/'.$filename);
-
-			} else {
-				$patch_package = vmConnector::handleCommunication($result);
-				if( !file_put_contents($mosConfig_cachepath.'/'.$filename, $patch_package )) {
-					$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_STORE_FAILED') );
-					return false;
+		if( empty($_FILES['uploaded_package']['tmp_name'])) {
+			// retrieve the latest version number from virtuemart.net
+			require_once( ADMINPATH.'version.php');
+			$VMVERSION =& new vmVersion();
+			// This URL should return a string - the direct URL to the matching patch package
+			$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=listpatchpackages";
+			$result = vmConnector::handleCommunication($url);
+			if( !empty( $result )
+			 	&& (strncmp('http://dev.virtuemart.net', $result, 25)===0 || strncmp('http://virtuemart.net', $result, 21)===0)
+			 ) {
+				$filename = basename( $result );
+				$doc_id_pos = strpos($filename,'?');
+				if( $doc_id_pos > 0 ) {
+					$filename = substr($filename, 0, $doc_id_pos);
 				}
+				// Was the package already downloaded?
+				if( file_exists( $mosConfig_cachepath.'/'.$filename)) {
+					$vmLogger->info( $VM_LANG->_('VM_UPDATE_PACKAGE_EXISTS').' '.$mosConfig_cachepath.'/'.$filename);
+	
+				} else {
+					// If not, store it on this server
+					$patch_package = vmConnector::handleCommunication($result);
+					if( !file_put_contents($mosConfig_cachepath.'/'.$filename, $patch_package )) {
+						$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_STORE_FAILED') );
+						return false;
+					}
+				}
+				// cache the location of the stored package file
+				$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;
+			} else {
+				$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_RETRIEVE_FAILED') );
+				return false;
 			}
-			$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;
+			return true;
 		} else {
-			$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_RETRIEVE_FAILED') );
-			return false;
+			// make sure the file name is safe for storage.
+			$filename = vmSafeFileName($_FILES['uploaded_package']['name']);
+			$fileinfo = pathinfo( $filename );
+			if( !in_array( strtolower($fileinfo['extension']), $allowed_extensions )) {
+				$vmLogger->err( 'An invalid patch package extension was detected. Allowed Types: '.implode(', ', $allowed_extensions ));
+				return false;
+			}
+			// Handle the uploaded package file- the integrity validation is done in another function
+			if( move_uploaded_file( $_FILES['uploaded_package']['tmp_name'], $mosConfig_cachepath.'/'.$filename )) {
+				$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;;
+				return true;
+			} else {
+				$vmLogger->err( 'Failed to store the uploaded patch package file.');
+				return false;
+			}
 		}
-		return true;
 	}
 	function &getPatchContents( $updatepackage ) {
 		global $vmLogger, $mosConfig_absolute_path, $VM_LANG;
 		
-		$extractdir = dirname($updatepackage).'/'. str_replace('.tar.gz', '', basename($updatepackage) );
+		$extractdir = vmUpdate::getPackageDir( $updatepackage);
 		$update_manifest = $extractdir.'/update.xml';
 		
 		$result = true;
@@ -231,6 +262,10 @@ class vmUpdate {
   		
   		$_SESSION['vmupdatemessage'] = sprintf($VM_LANG->_('VM_UPDATE_SUCCESS'),$packageContents['forversion'],$packageContents['toversion']);
   		
+  		// Delete the patch package file
+  		vmUpdate::removePackageFile($d);
+  		
+  		// Redirect to the Result Page and display the Update Message there
 		vmRedirect($sess->url($_SERVER['PHP_SELF'].'?page=admin.update_result', false, false) );
   		
 	}
@@ -255,6 +290,41 @@ class vmUpdate {
 		}
 		
 		return true;
+	}
+	/**
+	 * Deletes the Patch Package File and its extracted contents
+	 *
+	 * @param array $d
+	 * @return boolean
+	 */
+	function removePackageFile( &$d ) {
+		$packageFile = vmGet( $_SESSION,'vm_updatepackage');
+		if( empty( $packageFile ) || !file_exists($packageFile)) {
+			return true;
+		}
+		$packageDir = vmUpdate::getPackageDir($packageFile);
+		if( !empty( $packageDir )) {
+			$result = vmRemoveDirectoryR( $packageDir );
+			if( !$result ) {
+				$vmLogger->err( 'Failed to remove the Directory of the Patch Package');
+			}
+			$result = @unlink( $packageFile );
+			if( !$result ) {
+				$vmLogger->err( 'Failed to remove the Patch Package File');
+				return false;
+			}
+			unset( $_SESSION['vm_updatepackage']);
+		}
+		return true;
+	}
+	/**
+	 * Creates the directory name where the patch package will be extracted to
+	 *
+	 * @param string $updatepackage
+	 * @return string
+	 */
+	function getPackageDir( $updatepackage ) {
+		return dirname($updatepackage).'/'. str_replace('.tar.gz', '', basename($updatepackage) );
 	}
 	/**
 	 * Shows the Step-1-2-3 Bar at the Top of the Updater

@@ -48,6 +48,8 @@ switch( $task ) {
 		$result = vmUpdate::checkLatestVersion();
 		if( !empty($result) ) {
 			vmConnector::sendHeaderAndContent('200', $result );
+		} else {
+			vmConnector::sendHeaderAndContent('200', 'Connection Failed' );
 		}
 		
 	default: die;

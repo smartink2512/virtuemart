@@ -727,8 +727,21 @@ $db->query( "UPDATE `#__{vm}_vendor` SET
 # VirtueMart Updater Functions
 $db->query( "INSERT INTO `#__{vm}_function` (`function_id` ,`module_id` ,`function_name` ,`function_class` ,`function_method` ,`function_description` ,`function_perms`)
 VALUES ( NULL , '1', 'getupdatepackage', 'update.class', 'getPatchPackage', 'Retrieves the Patch Package from the virtuemart.net Servers.', 'admin'), 
-(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin')");
+(NULL , '1', 'applypatchpackage', 'update.class', 'applyPatch', 'Applies the Patch using the instructions from the update.xml file in the downloaded patch.', 'admin'),
+(NULL, 1, 'removePatchPackage', 'update.class', 'removePackageFile', 'Removes  a Patch Package File and its extracted contents.', 'admin')");
 
-$db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=RC1' WHERE `name` = 'virtuemart_version'");
+#  Incorrect Product Type parameter separator in product_type table [http://dev.virtuemart.net/cb/issue/1648]
+$db->query( 'SELECT pt.product_type_id, tp.parameter_name
+						FROM `#__{vm}_product_type` pt
+						LEFT JOIN `#__{vm}_product_type_parameter` tp ON pt.product_type_id = tp.product_type_id
+						ORDER BY pt.product_type_id');
+$dbpt = new ps_DB();
+while( $db->next_record()) {
+	// Replace commas with semicolons in every product type parameter's value list
+	$dbpt->query( 'UPDATE `#__{vm}_product_type_'.(int)$db->f('product_type_id').'` 
+							SET `'.$db->f('parameter_name', false).'`= REPLACE(`'.$db->f('parameter_name', false).'`, \',\', \';\');' );
+}
+
+$db->query( "UPDATE `#__components` SET `params` = 'RELEASE=1.1.0\nDEV_STATUS=RC3' WHERE `name` = 'virtuemart_version'");
 
 ?>

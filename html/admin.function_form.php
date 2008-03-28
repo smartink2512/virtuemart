@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
-vmCommonHTML::loadPrototype();
+vmCommonHTML::loadMooTools();
 
 $function_id = vmGet( $_REQUEST, 'function_id');
 $module_id = vmGet( $_REQUEST, 'module_id');
@@ -88,17 +88,19 @@ $funcname = (!empty( $function_id )) ? "functionUpdate" : "functionAdd";
 // and finally close the form:
 $formObj->finishForm( $funcname, 'admin.function_list', $option );
 
-$script = "var updateFunc = function(){
-			var el = $('function_class' );
-			opts= { postBody: Form.Methods.serialize( document.adminForm ) + '&func=&page=admin.ajax_tools&task=get_class_methods&class=' + el.options[el.selectedIndex].value + '&function=' + document.adminForm.function_method.value }
-			";
-$script .= "new Ajax.Updater( 'function_method_container', 'index2.php', opts );
+$script = 'function updateFunc(){
+	var el = $("function_class" );
+	new Ajax( "'.$_SERVER['PHP_SELF'].'?" + $(document.adminForm).toQueryString() + "&func=&page=admin.ajax_tools&task=get_class_methods&class=" + el.options[el.selectedIndex].value + "&function=" + document.adminForm.function_method.value,
+				{ 
+				method: "get",
+				update: $("function_method_container")
+				}).request();
 
-			return false;
-		}
-		
-		$('function_class').onchange = function() { updateFunc() };
-		updateFunc();
-";
+		return false;
+	}
+	
+	$("function_class").onchange = function() { updateFunc() };
+	updateFunc();
+';
 echo vmCommonHTML::scriptTag('', $script );
 ?>
