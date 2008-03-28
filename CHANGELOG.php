@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+28.03.2008 gregdev
++ Added separate .sql files for manual installation of modules and mambots (plugins).
+
 28.03.2008 soeren
 + possibility to cancel the VirtueMart Update by Patch Package (deletes the Patch File)
 !! New Function Table Entry

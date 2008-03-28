@@ -126,8 +126,14 @@ Modules and Mambots (Plugins).
 	You need this module to be able to access and browse your shop
 	like a customer.
 
-	Browse to phpMyAdmin and select your database.
+	For experienced users, just import the appropriate sql file:
+	 - Joomla! 1.0.x: virtuemart.installation.addons.joomla.sql
+	 - Joomla! 1.5.x: virtuemart.installation.addons.joomla1.5.sql
+	 - Mambo: virtuemart.installation.addons.mambo.sql
+	
+	Otherwise, browse to phpMyAdmin and select your database.
 	Select "SQL" in the toolbar on the middle top.
+	Then run the approriate SQL code below:
 	
 	For Joomla! 1.0.x (using a jos_ table prefix):
 	
