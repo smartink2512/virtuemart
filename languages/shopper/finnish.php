@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -19,7 +19,7 @@ global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
 	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Näytä verolliset hinnat?',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Määrittää, haluatko näyttää ostajille hinnat verolla vai et.',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Valitse näytetäänkö asiakkaille hinnat veroineen vai ilman veroa.',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Osoite',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Ostajaryhmät',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Ryhmän nimi',
@@ -28,6 +28,6 @@ $langvars = array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Ryhmän nimi',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Ryhmän kuvaus',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Perusasiakasryhmän alennusprosentti (%)',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Positiivinen luku X tarkoittaa: (Jos tuotteella ei ole mitään erikoishintaa tälle ostajaryhmälle) perushintaa lasketaan X %:lla. Negatiivinen lukema tarkoittaa päinvastaista'
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Positiivinen luku X tarkoittaa: (Jos tuotteella ei ole mitään erikoishintaa tälle ostajaryhmälle) perushintaa lasketaan X %:lla. Negatiivinen luku tarkoittaa päinvastaista'
 ); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

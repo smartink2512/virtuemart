@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -23,7 +23,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_EDIT_PRODUCT' => 'Muokaa tuotetta',
 	'PHPSHOP_DOWNLOADS_START' => 'Aloita lataus',
 	'PHPSHOP_DOWNLOADS_INFO' => 'Syötä sähköpostissa saamasi lataus-ID ja paina \'Aloita Lataus\'.',
-	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Syötä e-mail osoitteesi, jos haluat tiedon tuotteen saapumisesta varastoon. 
+	'PHPSHOP_WAITING_LIST_MESSAGE' => 'Syötä sähköpostiosoitteesi, jos haluat tiedon tuotteen saapumisesta varastoon. 
                                         Emme käytä tai luovuta antamaasi osoitetta mihinkään muuhun tarkoitukseen, 
                                         kuin ilmoittaaksemme tuotteen saapumisesta varastoon.<br /><br />Kiitos!',
 	'PHPSHOP_WAITING_LIST_THANKS' => 'Kiitos ilmoituksesta! <br />Ilmoitamme heti, kun varastomme on täydentynyt.',
@@ -46,7 +46,7 @@ $langvars = array (
 	'PHPSHOP_AVAILABLE_IMAGES' => 'Tuotekuvat kohteelle',
 	'PHPSHOP_BACK_TO_DETAILS' => 'Takaisin tuotetietoihin',
 	'PHPSHOP_IMAGE_NOT_FOUND' => 'Kuvaa ei löydetty!',
-	'PHPSHOP_PARAMETER_SEARCH_TEXT1' => 'Haluatko hakea tuotteita niiden teknisten muuttujien (parametrien) perusteella?<BR>Voit käyttää mitä tahansa valmista lomaketta:',
+	'PHPSHOP_PARAMETER_SEARCH_TEXT1' => 'Haluatko hakea tuotteita niiden teknisten muuttujien (parametrien) perusteella?<br />Voit käyttää mitä tahansa valmista lomaketta:',
 	'PHPSHOP_PARAMETER_SEARCH_NO_PRODUCT_TYPE' => 'Haku ei tuottanut tulosta.',
 	'PHPSHOP_PARAMETER_SEARCH_BAD_PRODUCT_TYPE' => 'Tuotetyyppiä ei löydy.',
 	'PHPSHOP_PARAMETER_SEARCH_IS_LIKE' => 'Kuten',

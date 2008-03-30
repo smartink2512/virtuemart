@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.03.2008 thepisu
+^ updated translations: finnish
+
 28.03.2008 thepisu
 # Task #1941  hard coded string
 # added various translation strings (module "common")

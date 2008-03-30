@@ -44,7 +44,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IMAGE_DELETE_LBL' => 'Syˆt‰ "none" poistaaksesi nykyisen kuvan.',
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_ITEMS_LBL' => 'Tuoteartikkelit',
 	'PHPSHOP_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL' => 'Artikkelin ominaisuudet',
-	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Oletko varma ett‰ haluat poistaa t‰m‰n tuotteen\nja siihen liittyv‰t artikkelit?',
+	'PHPSHOP_PRODUCT_FORM_DELETE_PRODUCT_MSG' => 'Oletko varma ett‰ haluat poistaa t‰m‰n tuotteen ja siihen liittyv‰t artikkelit?',
 	'PHPSHOP_PRODUCT_FORM_DELETE_ITEM_MSG' => 'Oletko varma ett‰ haluat poistaa t‰m‰n artikkelin?',
 	'PHPSHOP_PRODUCT_FORM_MANUFACTURER' => 'Valmistaja',
 	'PHPSHOP_PRODUCT_FORM_SKU' => 'Tuotetunnus',
@@ -125,6 +125,14 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'Tiedoston URL (valinnainen)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Kirjoita t‰h‰n teksti, joka n‰kyy tuotetiedoissa toimitusaikana.<br />esim.: 24h, 48 tuntia, 3 - 5 p‰iv‰‰',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'TAI valitse kuva, joka n‰kyy tuotetiedossa toimitusaikana.<br />Kuvat ovat hakemistossa <i>/components/com_virtuemart/shop_image/availability</i><br />',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esimerkkej‰ piirrelistan nimikkeist‰ (Attribute List Format):</h4>
+        <pre>Koko,S[-2.99],M,XL[+1.99];V‰ri,Punainen,Vihre‰,Keltainen,Erikoisv‰ri[=24.00];jne,..,..</pre>
+        <h4>Hintam‰‰ritykset:</h4>
+        <pre>
+        &#43; == Lis‰‰ t‰m‰ m‰‰r‰ asetettuun hintaan.<br />
+        &#45; == V‰henn‰ t‰m‰ m‰‰r‰ asetetusta hinnasta.<br />
+        &#61; == Aseta tuotteelle t‰m‰ hinta.
+      </pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esimerkkej‰ erityispiirrelistan sis‰llˆst‰:</h4>
         <pre>Nimi;Ekstra;...</pre>',
 	'PHPSHOP_IMAGE_ACTION' => 'Kuvan toiminta',
@@ -144,7 +152,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LBL' => 'Muuttujatieto',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NOT_FOUND' => 'Tuotetyyppi‰ ei lˆydy!',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME' => 'Muuttujan nimi',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'T‰m‰ nimi toimii taulukon sarakenimen‰. Kirjoitetaan yhten‰isin kirjaimin ja ilman v‰lej‰.<BR>Esimerkiksi: main_material',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION' => 'T‰m‰ nimi toimii taulukon sarakenimen‰. Kirjoitetaan yhten‰isin kirjaimin ja ilman v‰lej‰.<br />Esimerkiksi: main_material',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_LABEL' => 'Muuttujan otsake',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER' => 'Numero',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT' => 'Teksti',
@@ -158,7 +166,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE' => 'Useita arvoja',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES' => 'Mahdollisia arvoja',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT' => 'N‰ytet‰‰nkˆ mahdollisia arvoja monivalintoja varten?',
-	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Jos valitaan mahdolliset arvot -valinta, muuttujat (parametrit) voivat saada vain niit‰ arvoja. Esimerkki mahdollisista muuttuja-arvoista:</strong><BR><span class="sectionname">ter‰s;puu;muovi;...</span>',
+	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION' => '<strong>Jos valitaan *mahdolliset arvot*, muuttujat (parametrit) voivat saada vain niit‰ arvoja. Esimerkki mahdollisista muuttuja-arvoista:</strong><br /><span class=\"sectionname\">ter‰s;puu;muovi;...</span>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT' => 'Oletusarvo',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT' => 'Muuttujan oletusarvon m‰‰rittelyss‰ k‰ytet‰‰n seuraavaa muotoa:<ul><li>Pvm: YYYY-MM-DD</li><li>Aika: HH:MM:SS</li><li>Pvm & aika: YYYY-MM-DD HH:MM:SS</li></ul>',
 	'PHPSHOP_PRODUCT_TYPE_PARAMETER_FORM_UNIT' => 'Yksikkˆ',
@@ -170,7 +178,7 @@ $langvars = array (
 	'PHPSHOP_SHOW_DISCOUNTED' => 'Alennustuotteet',
 	'PHPSHOP_FILTER' => 'Rajaa',
 	'PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE' => 'Alennettu hinta',
-	'PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP' => 'T‰ss‰ voit lis‰t‰ alennuksen t‰lle tuotteelle.<br/>
+	'PHPSHOP_PRODUCT_FORM_DISCOUNTED_PRICE_TIP' => 'T‰ss‰ voit lis‰t‰ alennuksen t‰lle tuotteelle.<br />
 	Kaupan alennusasetuksiin lis‰t‰‰n t‰m‰ alennus.',
 	'PHPSHOP_PRODUCT_LIST_QUANTITY_START' => 'Kappalem‰‰r‰ alkaa',
 	'PHPSHOP_PRODUCT_LIST_QUANTITY_END' => 'Kappalem‰‰r‰ loppuu',
@@ -200,7 +208,7 @@ $langvars = array (
 	'VM_EXTRA_PRODUCT_ID' => 'Muut ID;t',
 	'PHPSHOP_DISPLAY_RADIOBOX' => 'K‰yt‰ Radiopainike valikkoa',
 	'PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL' => 'Ulkoasun asetukset',
-	'PHPSHOP_DISPLAY_USE_PARENT' => 'Kumoa alatuotteiden n‰ttˆasetukset ja k‰yt‰ p‰‰tuotteen asetuksia',
+	'PHPSHOP_DISPLAY_USE_PARENT' => 'Kumoa alatuotteiden n‰yttˆasetukset ja k‰yt‰ p‰‰tuotteen asetuksia',
 	'PHPSHOP_DISPLAY_NORMAL' => 'Perus kappalem‰‰r‰ valikko',
 	'PHPSHOP_DISPLAY_HIDE' => 'Piilota kappalem‰‰r‰ valikko',
 	'PHPSHOP_DISPLAY_DROPDOWN' => 'K‰yt‰ pudotusvalikkoa',

@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -43,7 +43,7 @@ $langvars = array (
 	'VM_DOWNLOAD_RESEND_ID' => 'Lähetä lataus-ID uudelleen',
 	'VM_EXPIRY' => 'Vanhenee',
 	'VM_UPDATE_STATUS' => 'Päivitä tila',
-	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'Anna numeerinen tilauksennumero, ei "{order_id}"',
+	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'Anna numeerinen tilauksen numero, ei "{order_id}"',
 	'VM_ORDER_LABEL_NOTFOUND' => 'Tilaustietoja ei löytynyt osoitetarra tietokannasta.',
 	'VM_ORDER_LABEL_NEVERGENERATED' => 'Osoitetarraa ei luotu vielä',
 	'VM_ORDER_LABEL_CLASSCANNOT' => 'Class {ship_class} ei saanut osoitetarran kuvia, siksi olemme tässä?',
@@ -55,6 +55,6 @@ $langvars = array (
 	'VM_ORDER_PRINT_PO_IPADDRESS' => 'IP-osoite',
 	'VM_ORDER_STATUS_ICON_ALT' => 'Tila',
 	'VM_ORDER_PAYMENT_CCV_CODE' => 'CVV koodi',
-	'VM_ORDER_NOTFOUND' => 'Tilausta ei löydy! Se voi olla poistettu.'
+	'VM_ORDER_NOTFOUND' => 'Tilausta ei löydy! Se voi olla poistettu, tai yhteys menetetty. Yrittäkää uudestaan.'
 ); $VM_LANG->initModule( 'order', $langvars );
 ?>

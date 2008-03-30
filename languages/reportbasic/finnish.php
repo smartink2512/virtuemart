@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -23,7 +23,7 @@ $langvars = array (
 	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'Myyntiaktiviteetti',
 	'PHPSHOP_RB_INTERVAL_TITLE' => 'Aseta aikaväli',
 	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'Kuukausittain',
-	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Viikottain',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'Viikoittain',
 	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'Päivittäin',
 	'PHPSHOP_RB_THISMONTH_BUTTON' => 'Tässä kuussa',
 	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'Viime kuussa',

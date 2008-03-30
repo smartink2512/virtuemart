@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,7 +18,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_USER_FORM_EMAIL' => 'Email',
+	'PHPSHOP_USER_FORM_EMAIL' => 'Sähköposti',
 	'PHPSHOP_SHOPPER_LIST_LBL' => 'Ostajaluettelo',
 	'PHPSHOP_SHOPPER_FORM_BILLTO_LBL' => 'Laskutustiedot',
 	'PHPSHOP_SHOPPER_FORM_USERNAME' => 'Käyttäjänimi',
@@ -30,8 +30,8 @@ $langvars = array (
 	'PHPSHOP_AFFILIATE_LIST_MONTH_TOTAL' => 'Kuukausi yhteensä',
 	'PHPSHOP_AFFILIATE_LIST_MONTH_COMMISSION' => 'Kuukauden komissio',
 	'PHPSHOP_AFFILIATE_LIST_ORDERS' => 'Luettelojärjestys',
-	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Kenelle email(* = ALL)',
-	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Teidän email',
+	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Kenelle sähköposti(* = KAIKKI)',
+	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'Teidän sähköposti',
 	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Aihe',
 	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Sisällytä tämänhetkinen tilasto ',
 	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Komissiotaksa',

@@ -39,7 +39,7 @@ $langvars = array (
 	'PHPSHOP_MODULE_FORM_ORDER' => 'Näytä järjestys',
 	'PHPSHOP_MODULE_FORM_DESCRIPTION' => 'Moduulin kuvaus',
 	'PHPSHOP_MODULE_FORM_LANGUAGE_CODE' => 'Kielen koodi',
-	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Language File',
+	'PHPSHOP_MODULE_FORM_LANGUAGE_FILE' => 'Kielitiedosto',
 	'PHPSHOP_FUNCTION_LIST_LBL' => 'Toimintoluettelo',
 	'PHPSHOP_FUNCTION_LIST_NAME' => 'Toiminnon nimi',
 	'PHPSHOP_FUNCTION_LIST_CLASS' => 'Luokan nimi',
@@ -81,7 +81,7 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_TAX_MODE_EXPLAIN' => 'Määrittelee veroprosentin laskettaessa veroa:<br />
 	                                           <ul><li>lähettäjän osavaltion / maan mukaan</li>
 	                                           <li>tai vastaanottajan sijainnin mukaan.</li>
-	                                           <li>tai "EU mode", missä tuotteen veroa käytetään, jos asiakas on Euroopan Unioonin alueelta, muuten vero on asiakkaan osoitteen mukaan.</li></ul>',
+	                                           <li>tai "EU mode", missä tuotteen veroa käytetään, jos asiakas on Euroopan Unionin alueelta, muuten vero on asiakkaan osoitteen mukaan.</li></ul>',
 	'PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE' => 'Mahdollista useampi veroprosentti?',
 	'PHPSHOP_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN' => 'Valitse tämä jos teillä on tuotteita johon sovelletaan eri veroprosentti (esim. 16% kirjoille ja 22% muille)',
 	'PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE' => 'Vähennä maksualennus ennen veroa/huolintaa?',
@@ -125,8 +125,8 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_NOIMAGEPAGE' => '"no image" kuva',
 	'PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN' => 'Tämä kuva näkyy, kun tuotteelle ei ole määritelty kuvaa.',
 	'PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION' => 'Näytä footer ',
-	'PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN' => 'Näyttää  powered-by-mambo-phpShop kuvan.',
-	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD' => 'Standardi toimitusamoduuli, jossa erikseen määriteltävissä olevat kuljetusliikkeet ja tariffit. <strong>SUOSITELTAVA !</strong>',
+	'PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN' => 'Näyttää  powered-by-virtuemart kuvan.',
+	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD' => 'Standardi toimitusmoduuli, jossa erikseen määriteltävissä olevat kuljetusliikkeet ja tariffit. <strong>SUOSITELTAVA !</strong>',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE' => 'Vyöhyke toimitusmoduuli, Country Version 1.0<br />
 	                                                                                                  Lisätietoja tästä moduulista näet osoitteessa: <a href="http://ZephWare.com">http://ZephWare.com</a><br />
 	                                                                                                  tai ota yhteyttä <a href="mailto:zephware@devcompany.com">ZephWare.com</a><br /> Valitse, jos haluat käyttää moduulia.',
@@ -141,7 +141,7 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS' => 'Tilauksen tila(order status), joka estää lataamisen',
 	'PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN' => 'Valitse tilauksen tila(order status), joka estää asiakasta lataamasta tiedostoa.',
 	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT' => 'Latauspolku',
-	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN' => 'Fyysinen polku ladattavien tiedostojen hakemistoon. (kauttaviiva lopussa!)<br>
+	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN' => 'Fyysinen polku ladattavien tiedostojen hakemistoon. (kauttaviiva lopussa!)<br />
 	    <span class="message">Turvavinkki: Jos voit, niin tallenna lataustiedostot www-sivustosi juuren yläpuolelle!</span>',
 	'PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX' => 'Latausten maksimimäärä',
 	'PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN' => 'Aseta enimmäismäärä latauksille, jonka yksi lataustunnus (Download-ID) voi tehdä tilausta kohti',
@@ -181,8 +181,8 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX' => 'Näytä "(sis. XX% ALV)" hinnan jälkeen?',
 	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP' => 'Kun valittu, käyttäjät näkevät tekstin (sis. xx% ALV) kun hinnat näytetään veroineen.',
 	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL' => 'Näytä hintalappu pakkaukselle?',
-	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP' => 'Kun valittu, hintalappuun lisätään tuotteen yksikkö- ja pakkausarvot:<br/>
-	<strong>Esim. Yksikköhinta (10 kpl)</strong><br/>
+	'PHPSHOP_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP' => 'Kun valittu, hintalappuun lisätään tuotteen yksikkö- ja pakkausarvot:<br />
+	<strong>Esim. Yksikköhinta (10 kpl)</strong><br />
 	Muussa tapauksessa hinta näkyy tavallisena: <strong>Hinta: xx.xx</strong>',
 	'PHPSHOP_ADMIN_CFG_MORE_CORE_SETTINGS' => 'Core asetukset',
 	'PHPSHOP_ADMIN_CFG_CORE_SETTINGS' => 'Core asetukset',
@@ -196,7 +196,7 @@ $langvars = array (
 	'VM_FIELDMANAGER_TYPE' => 'Kentän tyyppi',
 	'VM_FIELDMANAGER_REQUIRED' => 'Pakollinen kenttä',
 	'VM_FIELDMANAGER_PUBLISHED' => 'Julkaistu',
-	'VM_FIELDMANAGER_SHOW_ON_REGISTRATION' => 'Näytä rekisteröitymis lomakkeessa',
+	'VM_FIELDMANAGER_SHOW_ON_REGISTRATION' => 'Näytä rekisteröitymis-lomakkeessa',
 	'VM_FIELDMANAGER_SHOW_ON_ACCOUNT' => 'Näytä tilinylläpito lomakkeessa',
 	'VM_USERFIELD_FORM_LBL' => 'Lisää / muokkaa käyttäjäkenttiä',
 	'VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL' => 'Oletusarvo "Järjestys" valikossa',
@@ -215,7 +215,7 @@ $langvars = array (
 	'VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP' => 'Kirjainten maksimimäärä, joka asiakkaan täytyy kirjoittaa kommenttiin, ennen kuin se hyväksytään.
 ',
 	'VM_ADMIN_SHOW_EMAILFRIEND' => 'Näytä "Suosittele ystävälle" linkki?',
-	'VM_ADMIN_SHOW_EMAILFRIEND_TIP' => 'Valittuna, näytetään linkki, josta asiakas voi lähettää tuotteesta suosittelun ystävänsä sähköpostiim.',
+	'VM_ADMIN_SHOW_EMAILFRIEND_TIP' => 'Valittuna, näytetään linkki, josta asiakas voi lähettää tuotteesta suosittelun ystävänsä sähköpostiin.',
 	'VM_ADMIN_SHOW_PRINTICON' => 'Näytä "Tulostus näkymä" linkki?',
 	'VM_ADMIN_SHOW_PRINTICON_TIP' => 'Valittuna, näytetään linkki joka avaa sivusta tulostusversion popup-ikkunaan.',
 	'VM_REVIEWS_AUTOPUBLISH' => 'Julkaise kommentit automaattisesti',
@@ -253,10 +253,10 @@ niin tee sivu hallintapaneelissa ja lisää sen linkki tässä.',
 	'VM_USERGROUP_LIST_LBL' => 'Käyttäjäryhmäluettelo',
 	'VM_ADMIN_CFG_COOKIE_CHECK' => 'Salli evästeiden (cookies) tarkistus?',
 	'VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN' => 'Asetettuna, VirtueMart tarkistaa salliiko asiakkaan selain evästeiden käytön. Toiminto saattaa häiritä Search-Engine-Friendly käsittelyä kaupan sivuilla.',
-	'VM_CFG_REGISTRATION_TYPE' => 'Asiakkaan rekisteröinti tyyppi',
-	'VM_CFG_REGISTRATION_TYPE_TIP' => 'Valitse rekisteröitymistyyppi kaupallesi!<br />
+	'VM_CFG_REGISTRATION_TYPE' => 'Asiakkaan rekisteröinti-tapa',
+	'VM_CFG_REGISTRATION_TYPE_TIP' => 'Tapa jolla asiakas rekisteröityy kauppaan!<br />
 <strong>Normaali rekisteröityminen</strong><br />
-Tämä on standardi rekisteröitymistyyppi, jossa asiakkaan täytyy rekisteröityä ja valita käyttäjätunnus sekä salasana.<br /><br />
+Tämä on standardi rekisteröityminen, jossa asiakkaan täytyy rekisteröityä ja valita käyttäjätunnus sekä salasana.<br /><br />
 <strong>Hiljainen rekisteröityminen</strong><br />
 Hiljainen rekisteröityminen tarkoittaa että asiakkaan ei tarvitse valita tunnuksia, vaan ne luodaan automaattisesti ja lähetetään asiakkaan e-mail osoitteeseen.
 <br /><br />
@@ -386,34 +386,34 @@ Asiakkaan ei tarvitse, eikä hän voi rekisteröityä.',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS' => 'Asiakkaan IP osoite',
 	'VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN' => 'Jos tämä asetus on aktivoitu ja Ip-osoite annettu, niin debug-toiminto näkyy vain kyseiselle IP-osoitteelle, muut eivät näe debug-toimintoa.',
 	'VM_FIELDMANAGER_SHOW_ON_SHIPPING' => 'Näytä toimitustiedoissa',
-	'VM_USER_NOSHIPPINGADDR' => 'No shipping addresses.',
-	'VM_UPDATE_CHECK_LBL' => 'VirtueMart Update Check',
-	'VM_UPDATE_CHECK_VERSION_INSTALLED' => 'VirtueMart Version installed here',
-	'VM_UPDATE_CHECK_LATEST_VERSION' => 'Latest VirtueMart Version',
-	'VM_UPDATE_CHECK_CHECKNOW' => 'Check now!',
-	'VM_UPDATE_CHECK_DLUPDATE' => 'Download Update',
-	'VM_UPDATE_CHECK_CHECKING' => 'Checking...',
-	'VM_UPDATE_CHECK_CHECK' => 'Check',
-	'VM_UPDATE_NOTDOWNLOADED' => 'The Update Package could not be downloaded.',
-	'VM_UPDATE_PREVIEW_LBL' => 'VirtueMart Update Preview',
-	'VM_UPDATE_WARNING_TITLE' => 'General Warning',
-	'VM_UPDATE_WARNING_TEXT' => 'Installing an Update for VirtueMart using a Patch Package can cause damage on your site 
-if you have already modified some files of the VirtueMart component. The Patching Process will overwrite all the files listed below - it won\'t just apply smaller changes (diff), but replace the existing file with the new one. If you have modified VirtueMart files on your own, this can lead to inconsistent files and missing class/function dependencies.',
-	'VM_UPDATE_PATCH_DETAILS' => 'Patch Details',
-	'VM_UPDATE_PATCH_DESCRIPTION' => 'Description',
-	'VM_UPDATE_PATCH_DATE' => 'Release Date',
-	'VM_UPDATE_PATCH_FILESTOUPDATE' => 'Files to be updated',
-	'VM_UPDATE_PATCH_STATUS' => 'Status',
-	'VM_UPDATE_PATCH_WRITABLE' => 'Writable',
-	'VM_UPDATE_PATCH_UNWRITABLE' => 'File/Directory not writable',
-	'VM_UPDATE_PATCH_QUERYTOEXEC' => 'Queries to be executed on the Database',
-	'VM_UPDATE_PATCH_CONFIRM_TEXT' => 'I have read the <a href="#warning">Warning</a> and I\'m sure to apply the Patch Package to my VirtueMart Installation now.',
-	'VM_UPDATE_PATCH_APPLY' => 'Apply Patch now',
-	'VM_UPDATE_PATCH_ERR_UNWRITABLE' => 'Not all files/directories which need to be updated are writable. Please correct the permissions first.',
-	'VM_UPDATE_PATCH_PLEASEMARK' => 'Please mark the checkbox before you apply the Patch.',
-	'VM_UPDATE_RESULT_TITLE' => 'Currently Installed Version',
-	'VM_FIELDS_CAPTCHA' => 'Captcha Field (using com_securityimages)',
-	'VM_FIELDS_AGEVERIFICATION' => 'Age Verification (Date Select Fields)',
-	'VM_FIELDS_AGEVERIFICATION_MINIMUM' => 'Specify the minimum Age'
+	'VM_USER_NOSHIPPINGADDR' => 'Ei toimitusosoitteita.',
+	'VM_UPDATE_CHECK_LBL' => 'VirtueMart päivitys tarkistus',
+	'VM_UPDATE_CHECK_VERSION_INSTALLED' => 'VirtueMart versio',
+	'VM_UPDATE_CHECK_LATEST_VERSION' => 'Viimeisin VirtueMart versio',
+	'VM_UPDATE_CHECK_CHECKNOW' => 'Tarkista nyt!',
+	'VM_UPDATE_CHECK_DLUPDATE' => 'Lataa päivitys',
+	'VM_UPDATE_CHECK_CHECKING' => 'Tarkistetaan...',
+	'VM_UPDATE_CHECK_CHECK' => 'Tarkistettu',
+	'VM_UPDATE_NOTDOWNLOADED' => 'Päivityspakettia ei voitu ladata.',
+	'VM_UPDATE_PREVIEW_LBL' => 'VirtueMart päivitys esikatselu',
+	'VM_UPDATE_WARNING_TITLE' => 'Yleinen varoitus',
+	'VM_UPDATE_WARNING_TEXT' => 'VirtueMart päivityspaketin asentaminen korvaa kokonaisia tiedostoja(ei vain tiedoston sisällä olevia rivejä). Jos olet muokannut
+alkuperäisiä tiedostoja omaan käyttötarkoitukseen, niin päivitys saattaa muuttaa ne alkuperäisiksi tiedostoiksi ja tekemäsi muutokset katoavat.',
+	'VM_UPDATE_PATCH_DETAILS' => 'Päivityspaketin tiedot',
+	'VM_UPDATE_PATCH_DESCRIPTION' => 'Kuvaus',
+	'VM_UPDATE_PATCH_DATE' => 'Julkaisupäivä',
+	'VM_UPDATE_PATCH_FILESTOUPDATE' => 'Päivitettävät tiedostot',
+	'VM_UPDATE_PATCH_STATUS' => 'Tila',
+	'VM_UPDATE_PATCH_WRITABLE' => 'Ei-kirjoitussuojattu',
+	'VM_UPDATE_PATCH_UNWRITABLE' => 'Tiedosto/Kansio kirjoitussuojattu',
+	'VM_UPDATE_PATCH_QUERYTOEXEC' => 'Suoritettavat tietokanta lauseet',
+	'VM_UPDATE_PATCH_CONFIRM_TEXT' => 'Olen lukenut<a href="#warning">varoituksen</a> ja haluan asentaa VirtueMart päivityksen.',
+	'VM_UPDATE_PATCH_APPLY' => 'Asenna päivitys nyt',
+	'VM_UPDATE_PATCH_ERR_UNWRITABLE' => 'Kaikki päivitettävät tiedostot/kansiot eivät ole ei-kirjoitussuojattuja. Muuta niiden kirjoitusoikeudet.',
+	'VM_UPDATE_PATCH_PLEASEMARK' => 'Merkitse valintaruutu ennen päivitystä.',
+	'VM_UPDATE_RESULT_TITLE' => 'Nykyinen asennettu versio',
+	'VM_FIELDS_CAPTCHA' => 'Kuvavahvistus (Captcha) kenttä (käyttäen com_securityimages)',
+	'VM_FIELDS_AGEVERIFICATION' => 'Ikä tarkastus(Päivämäärä kentät)',
+	'VM_FIELDS_AGEVERIFICATION_MINIMUM' => 'Anna minimi ikä'
 ); $VM_LANG->initModule( 'admin', $langvars );
 ?>
