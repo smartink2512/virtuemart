@@ -231,7 +231,7 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 							$extra = 'onclick="document.location=this.href"';
 			           		$title = str_replace('"','&quot;',$VM_LANG->_('CSVIMPROVED_TITLE'));
 			           	} else {
-			           		$url = 'http://www.csvimproved.com/index.php?option=com_ionfiles&Itemid=20';
+			           		$url = 'http://www.csvimproved.com/index.php?option=com_ionfiles&Itemid=2';
 			           		$extra = 'target="_blank"';
 			           		$title = str_replace('"','&quot;',$VM_LANG->_('CSVIMPROVED_NEEDINSTALL'));
 			           	}

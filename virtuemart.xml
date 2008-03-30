@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
 	<name>VirtueMart</name>
-	<creationDate>11.03.2008</creationDate>
+	<creationDate>29.03.2008</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>soeren|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
@@ -10,7 +10,7 @@
 		reserved.
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>1.1.0 RC2</version>
+	<version>1.1.0 RC3</version>
 	<description>Online-Shop / E-Commerce Component</description>
 	<files>
 		<filename>frontend_files.tar.gz</filename>
