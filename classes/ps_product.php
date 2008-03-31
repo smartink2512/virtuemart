@@ -70,14 +70,14 @@ class ps_product extends vmAbstractObject {
 			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MISSING_NAME',false) );
 			$valid = false;
 		}
-		if (!$d["product_available_date"]) {
+		if (empty($d["product_available_date"])) {
 			$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MISSING_AVAILDATE',false) );
 			$valid = false;
 		}
 		else {
-			$day = substr ( $d["product_available_date"], 8, 2);
-			$month= substr ( $d["product_available_date"], 5, 2);
-			$year =substr ( $d["product_available_date"], 0, 4);
+			$day = (int) substr ( $d["product_available_date"], 8, 2);
+			$month= (int) substr ( $d["product_available_date"], 5, 2);
+			$year = (int) substr ( $d["product_available_date"], 0, 4);
 			$d["product_available_date_timestamp"] = mktime(0,0,0,$month, $day, $year);
 		}
 
@@ -2326,9 +2326,13 @@ class ps_product extends vmAbstractObject {
 			$child_options['product_list_child'] =array_shift($fields);
 			$child_options['product_list_type'] =array_shift($fields);
 			$child_options['ddesc'] =array_shift($fields);
+			$child_options['display_desc'] =& $child_options['ddesc']; 
 			$child_options['dw'] =array_shift($fields);
+			$child_options['desc_width'] =& $child_options['dw']; 
 			$child_options['aw'] =array_shift($fields);
+			$child_options['attrib_width'] =& $child_options['aw']; 
 			$child_options['class_suffix'] =array_shift($fields);
+			$child_options['child_class_sfx'] =& $child_options['class_suffix'];
 		}
 		return $child_options;
     }
@@ -2354,8 +2358,9 @@ class ps_product extends vmAbstractObject {
     function &get_quantity_options( $product_id ) {
     	$quantity_options = array();
     	$quantity_options_string = ps_product::get_field($product_id, 'quantity_options');
+    	
     	$fields = explode(',', $quantity_options_string );
-    	if( !empty( $quantity_options )) {
+    	if( !empty( $fields )) {
     		$quantity_options['quantity_box'] = $fields[0];
     		$quantity_options['display_type'] = $fields[0];
     		$quantity_options['quantity_start'] = $fields[1];

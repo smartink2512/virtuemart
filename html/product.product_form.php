@@ -60,7 +60,11 @@ if($product_parent_id !=0) {
 	$display_use_parent_disabled = true;
 }
 $list = Array();
-$my_categories = array();
+if( !empty($_REQUEST['product_categories']) && is_array($_REQUEST['product_categories'])) {
+	foreach( $_REQUEST['product_categories'] as $catid ) $my_categories[$catid] = '1';
+} else {
+	$my_categories = array();
+}
 $related_products = Array();
 
 if ($product_parent_id) {
@@ -98,6 +102,8 @@ else {
 $display_label = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ITEM_DISPLAY_LBL');
 if (!empty($product_id)) {
 	$price = $ps_product->get_retail_price($product_id);
+} else {
+	$price['product_price'] = vmGet($_REQUEST,'product_price', '');
 }
 $quantity_start = 0;
 $quantity_end = 0;
@@ -107,34 +113,17 @@ if (!empty($product_id)) {
 	$db = $ps_product->get($product_id);
 	
 	//get quantity options
-	$q_field = $db->f("quantity_options");
-	if($q_field) {
-		$fields=explode(",",$q_field);
-		$q_type=array_shift($fields);
-		$quantity_start=array_shift($fields);
-		$quantity_end=array_shift($fields);
-		$quantity_step=array_shift($fields);
-	}
+	$quantity_options = ps_product::get_quantity_options($product_id);
+	extract( $quantity_options );
 	//get list style
-	$l_field = $db->f("child_options");
-	if($l_field) {
-		$fields=explode(",",$l_field);
-		$display_use_parent=array_shift($fields);
-		$product_list=array_shift($fields);
-		$display_header=array_shift($fields);
-		$product_list_child=array_shift($fields);
-		$product_list_type=array_shift($fields);
-		$display_desc=array_shift($fields);
-		$desc_width=array_shift($fields);
-		$attrib_width=array_shift($fields);
-		$child_class_sfx=array_shift($fields);
-	}
+	$child_options = ps_product::get_child_options($product_id);
+	extract($child_options);
+	
 	//Get min max order levels
-	$order_levels = $db->f("product_order_levels");
+	$order_levels = ps_product::product_order_levels($product_id);
 	if($order_levels) {
-		$levels = explode(",",$order_levels);
-		$min_order = array_shift($levels);
-		$max_order = array_shift($levels);
+		$min_order = array_shift($order_levels);
+		$max_order = array_shift($order_levels);
 	}
 
 	// Get category IDs
@@ -164,18 +153,15 @@ if (!empty($product_id)) {
 	$dl_checked = "checked=\"checked\"";
 	$curr_filename = $db2->f("filename");
 
-	//Get quantity_box details
-
-
-
 }
-elseif (empty($vars["error"])) {
-	$default["product_publish"] = "Y";
-	$default["product_weight_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT');
-	$default["product_lwh_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT');
-	$default["product_unit"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT');
-	$default["product_available_date"] = time();
-}
+
+$default["product_publish"] = "Y";
+$default["product_weight_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT');
+$default["product_lwh_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT');
+$default["product_unit"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT');
+if( !empty($vars['product_available_date'])) $vars['product_available_date'] = strtotime($vars['product_available_date']);
+else $default["product_available_date"] = time();
+
 // get the default shopper group
 $shopper_db = new ps_DB;
 $q =  "SELECT shopper_group_id,shopper_group_name FROM #__{vm}_shopper_group WHERE `default`= '1' AND vendor_id='".$db->f("vendor_id")."'";

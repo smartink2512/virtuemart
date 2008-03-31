@@ -1046,9 +1046,10 @@ class ps_product_attribute {
 		if( CHECK_STOCK == '1' && !$product_in_stock ) {
 			$display_type = 'hide';
 		}
-		if(!@$display_type || (@$display_type == "hide" && $child == 'Y') || (@$display_type == "radio" && $child == 'YM') || (@$display_type == "radio" && !$child)) {
+		if(empty($display_type) || (@$display_type == "hide" && $child == 'Y') || (@$display_type == "radio" && $child == 'YM') || (@$display_type == "radio" && !$child)) {
 			$display_type = "none";
 		}
+		unset( $quantity_options['display_type']);
 		
 		$tpl->set('prod_id', $prod_id );
 		$tpl->set('quantity', $quantity );
