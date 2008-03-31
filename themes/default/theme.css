@@ -52,7 +52,19 @@ input.addtocart_button_module:hover  {
 .quantity_box {	
 	vertical-align: middle;
 }
-
+.quantity_box_button {
+	width:10px;
+	vertical-align:middle;
+	height:10px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.quantity_box_button_down {
+	background-image: url(images/down_small.gif);
+}
+.quantity_box_button_up {
+	background-image: url(images/up_small.gif);
+}
 .continue_link, .checkout_link {
 	margin: 2px;
 	padding: 2px 0px 2px 40px;

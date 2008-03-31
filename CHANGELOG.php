@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 31.03.2008 soeren
+# Task #1957 - hardcoded image
 ^ update PayPal payment code
 # Bugs in Product Type Parameter processing [Forum Topic 37239]
 ^ renamed all Log_* classes to vmLog_* to prevent namespace problems

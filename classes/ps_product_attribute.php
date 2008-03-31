@@ -1008,17 +1008,15 @@ class ps_product_attribute {
 	}
 
 	function show_radio_quantity_box() {
-		$html ="<input type=\"text\" class=\"inputboxquantity\"\" size=\"4\" id=\"quantity_adjust\" "
-           ." name=\"quantity_adjust\" value=\"1\" style=\"vertical-align: middle;\" onchange=\"alterQuantity(this.form)\"/>";
-		$html .="<input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: url(".VM_THEMEURL."images/up_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity_adjust'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;alterQuantity(this.form);return false;\" />
-            <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: url(".VM_THEMEURL."images/down_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity_adjust'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;alterQuantity(this.form);return false;\" />
-            ";
+		$tpl = vmTemplate::getInstance();
+		$html = $tpl->fetch('product_details/includes/quantity_box_radio.tpl.php');
 		return $html;
 	}
 
 	function show_quantity_box($product_id,$prod_id,$child=false,$use_parent=false) {
-		Global $VM_LANG;
-
+		global $VM_LANG;
+		$tpl = vmTemplate::getInstance();
+		
 		if($child == 'Y') {
 			//We have a child list so get the current quantity;
 			$quantity = 0;
@@ -1029,7 +1027,7 @@ class ps_product_attribute {
 			}
 		}
 		else {
-			$quantity = vmGet( $_REQUEST, 'quantity', 1 );
+			$quantity = vmrequest::getInt('quantity', 1 );
 		}
 		// Detremine which style to use
 		if($use_parent == "Y") {
@@ -1039,74 +1037,29 @@ class ps_product_attribute {
 			$id = $prod_id;
 		}
 		//Get style to use
-		$db = new PS_db;
-		$q = "SELECT quantity_options,product_parent_id, product_in_stock FROM #__{vm}_product WHERE product_id='$id'";
-		$db->query($q);
-
-		$q_field = $db->f("quantity_options");
-		if($q_field) {
-			$fields=explode(",",$q_field);
-			$display_type=array_shift($fields);
-			$display_start=array_shift($fields);
-			$display_end=array_shift($fields);
-			$display_step=array_shift($fields);
-		}
+		$product_in_stock = ps_product::get_field($id, 'product_in_stock' );
+		$quantity_options = ps_product::get_quantity_options($id);
+		extract( $quantity_options );
 
 		//Start output of quantity
 		//Check for incompatabilities and reset to normal
-		if( CHECK_STOCK == '1' && !$db->f('product_in_stock') ) {
+		if( CHECK_STOCK == '1' && !$product_in_stock ) {
 			$display_type = 'hide';
 		}
 		if(!@$display_type || (@$display_type == "hide" && $child == 'Y') || (@$display_type == "radio" && $child == 'YM') || (@$display_type == "radio" && !$child)) {
 			$display_type = "none";
 		}
-		//Determine if label to be used
-		$html = '';
 		
-		if(!$child && $display_type != 'hide') {
-			$html = '<label for="quantity'.$prod_id.'" class="quantity_box">'.$VM_LANG->_('PHPSHOP_CART_QUANTITY').':&nbsp;</label>';
-		}
-		switch($display_type) {
-			case "radio" : //Radio Box
-				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"".$quantity."\" />";
-				$html .= "<input type=\"radio\" class=\"quantitycheckbox\" id=\"selItem".$prod_id."\" name=\"selItem\" value=\"0\" ";
-				if ($quantity > 0 ) {
-					$html .= "checked=\"checked\" ";
-				}
-				$html .= "onclick=\"alterQuantity(this.form)\" />";
-				break;
-			case "hide" : // Hide box - but set quantity to 1!
-				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"1\" />";
-				break;
-			case "check" :
-				$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"".$quantity."\" style=\"vertical-align: middle;\"/>
-                <input type=\"checkbox\" class=\"quantitycheckbox\" id =\"check$id\" name=\"check[]\" ";
-				if ($quantity > 0 )
-				$html .= "checked=\"checked\"";
-				$html .= " value=\"1\" onclick=\"javascript: if(this.checked==true) document.getElementById('quantity".$prod_id."').value = 1; else {document.getElementById('quantity".$prod_id."').value=0;} \"/> ";
-				break;
-			case "drop" :
-				$code = "<select class=\"inputboxquantity\" id=\"quantity".$prod_id."\" name=\"quantity[]\">";
-				for($i=$display_start;$i<$display_end+1;$i += $display_step) {
-					$code .= "  <option value=\"$i\"";
-					if ($i == $quantity) {
-						$code .= " selected=\"selected\"";
-					}
-					$code .= ">$i</option>\n";
-				}
-				$code .= "</select>\n";
-				$html .= $code;
-				break;
-			case "none" :
-
-				$html .= "<input type=\"text\" class=\"inputboxquantity\" size=\"4\" id=\"quantity$prod_id\" name=\"quantity[]\" value=\"".$quantity."\" />
-	            <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: #ffffff url(".VM_THEMEURL."images/up_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity".$prod_id."'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;\" />
-	            <input type=\"button\" style=\"width:10px;vertical-align:middle;height:10px;background: #ffffff url(".VM_THEMEURL."images/down_small.gif ) no-repeat center;\" onclick=\"var qty_el = document.getElementById('quantity".$prod_id."'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;return false;\" />
-                ";
-				break;
-		}
+		$tpl->set('prod_id', $prod_id );
+		$tpl->set('quantity', $quantity );
+		$tpl->set('display_type', $display_type );
+		$tpl->set('child', $child );
+		$tpl->set('quantity_options', $quantity_options );
+		
+		//Determine if label to be used
+		$html = $tpl->fetch( 'product_details/includes/quantity_box_general.tpl.php');
+		
 		return $html;
-
 
 	}
 	
