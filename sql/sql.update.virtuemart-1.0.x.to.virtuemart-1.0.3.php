@@ -17,8 +17,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 
 // http://virtuemart.net/index.php?option=com_flyspray&Itemid=83&do=details&id=521
-$db->setQuery( 'ALTER TABLE `#__{vm}_product_mf_xref` CHANGE `product_id` `product_id` INT( 11 ) NULL DEFAULT NULL');
+$db->setQuery( 'ALTER IGNORE TABLE `#__{vm}_product_mf_xref` CHANGE `product_id` `product_id` INT( 11 ) NULL DEFAULT NULL');
 $db->query();
 
-$db->setQuery( 'ALTER TABLE `#__{vm}_orders` ADD `order_tax_details` TEXT NOT NULL AFTER `order_tax`');
+$db->setQuery( 'ALTER IGNORE TABLE `#__{vm}_orders` ADD `order_tax_details` TEXT NOT NULL AFTER `order_tax`');
 $db->query();

@@ -71,8 +71,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 
-	// This makes it possible to use Shared SSL
-	$sess->prepare_SSL_Session();
 	if( !vmIsAdminMode() && !isset( $_REQUEST['page'])) {
 
 		// Get the menu parameters, if any
@@ -116,6 +114,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	$func = vmRequest::getVar('func');
 	$ajax_request = vmRequest::getVar('ajax_request', '0' );
 	$option = vmRequest::getVar('option');
+
+	// This makes it possible to use Shared SSL
+	$sess->prepare_SSL_Session();
 	
 	if( $option == "com_virtuemart" ) {
 

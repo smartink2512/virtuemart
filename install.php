@@ -119,30 +119,31 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	*/
 	// UPDATE FROM mambo-phpShop 1.1
 	if ($install_type=='update11') {
-                require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.1.php" );
-                require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
-                require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
-                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
-                require_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
+                include_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.1.php" );
+                include_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
+                include_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+                include_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+                include_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
         }
         //UDATE FROM mambo-phpShop 1..2 RC2
         elseif ($install_type=='update12') {  
   
-                require_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
-                require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
-                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
-                require_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
+                include_once( $admin_dir."/sql/sql.update.from.mambo-phpshop-1.2-RC2.to.1.2-stable-pl3.php" );
+                include_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+                include_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+                include_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
         }
         //UDATE FROM mambo-phpShop 1..2 stable-pl3
         elseif ($install_type=='update12pl3') {  
   
-                require_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
-                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
-                require_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
+                include_once( $admin_dir."/sql/sql.update.mambo-phpshop-1.2-stable-pl3.to.virtuemart.php" );
+                include_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+                include_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
         }
         elseif( $install_type == 'updatevm10x' ) {
-                require_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
-                require_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
+                include_once( $admin_dir."/sql/sql.update.virtuemart-1.0.x.to.virtuemart-1.0.3.php" );
+                include_once( $admin_dir."/sql/sql.update.virtuemart-1.0.3.to.virtuemart-1.0.5.php" );
+                include_once( $admin_dir."/sql/sql.update.VM-1.0.x_to_VM-1.1.0.php" );
         }
 
         // New Installation : Create all tables
@@ -160,7 +161,7 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 	
 	// SAMPLE DATA! 
 	if ($install_sample_data) {
-		require_once( $admin_dir.'/sql/sql.sampledata.php' );
+		include_once( $admin_dir.'/sql/sql.sampledata.php' );
 	}
 	elseif ($install_type=='newinstall') {
 		/*** Delete the Sample Product - Images ***/

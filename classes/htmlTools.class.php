@@ -897,7 +897,7 @@ class vmCommonHTML {
 	 * and a div element with all the log messages
 	 *
 	 * @param boolean $success
-	 * @param Log_Display $vmLogger
+	 * @param vmLog_Display $vmLogger
 	 */
 	function getSuccessIndicator( $success, $vmDisplayLogger ) { /*@MWM1*/
 

@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,7 +24,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_console class is a concrete implementation of the Log::
+ * The vmLog_console class is a concrete implementation of the Log::
  * abstract class which writes message to the text console.
  * 
  * @author  Jon Parise <jon@php.net>
@@ -33,7 +33,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example console.php     Using the console handler.
  */
-class Log_console extends vmLog
+class vmLog_console extends vmLog
 {
     /**
      * Handle to the current output stream.
@@ -85,7 +85,7 @@ class Log_console extends vmLog
                             '%\{'           => '%%{');
 
     /**
-     * Constructs a new Log_console object.
+     * Constructs a new vmLog_console object.
      * 
      * @param string $name     Ignored.
      * @param string $ident    The identity string.
@@ -93,7 +93,7 @@ class Log_console extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_console($name, $ident = '', $conf = array(),
+    function vmLog_console($name, $ident = '', $conf = array(),
                          $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -123,14 +123,14 @@ class Log_console extends vmLog
          * shutdown function that will dump the buffer upon termination.
          */
         if ($this->_buffering) {
-            register_shutdown_function(array(&$this, '_Log_console'));
+            register_shutdown_function(array(&$this, '_vmLog_console'));
         }
     }
 
     /**
      * Destructor
      */
-    function _Log_console()
+    function _vmLog_console()
     {
         $this->close();
     }

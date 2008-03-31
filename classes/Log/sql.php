@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -28,7 +28,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 require_once 'DB.php';
 
 /**
- * The Log_sql class is a concrete implementation of the Log::
+ * The vmLog_sql class is a concrete implementation of the Log::
  * abstract class which sends messages to an SQL server.  Each entry
  * occupies a separate row in the database.
  *
@@ -50,7 +50,7 @@ require_once 'DB.php';
  *
  * @example sql.php     Using the SQL handler.
  */
-class Log_sql extends vmLog
+class vmLog_sql extends vmLog
 {
     /**
      * Variable containing the DSN information.
@@ -119,7 +119,7 @@ class Log_sql extends vmLog
      * @param int $level           Log messages up to and including this level.
      * @access public
      */
-    function Log_sql($name, $ident = '', $conf = array(),
+    function vmLog_sql($name, $ident = '', $conf = array(),
                      $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());

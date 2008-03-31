@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,7 +24,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_win class is a concrete implementation of the Log abstract
+ * The vmLog_win class is a concrete implementation of the Log abstract
  * class that logs messages to a separate browser window.
  *
  * The concept for this log handler is based on part by Craig Davis' article
@@ -38,7 +38,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example win.php     Using the window handler.
  */
-class Log_win extends vmLog
+class vmLog_win extends vmLog
 {
     /**
      * The name of the output window.
@@ -78,7 +78,7 @@ class Log_win extends vmLog
     var $_buffer = array();
 
     /**
-     * Constructs a new Log_win object.
+     * Constructs a new vmLog_win object.
      *
      * @param string $name     Ignored.
      * @param string $ident    The identity string.
@@ -86,7 +86,7 @@ class Log_win extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_win($name, $ident = '', $conf = array(),
+    function vmLog_win($name, $ident = '', $conf = array(),
                           $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -101,13 +101,13 @@ class Log_win extends vmLog
             $this->_colors = $conf['colors'];
         }
 
-        register_shutdown_function(array(&$this, '_Log_win'));
+        register_shutdown_function(array(&$this, '_vmLog_win'));
     }
 
     /**
      * Destructor
      */
-    function _Log_win()
+    function _vmLog_win()
     {
         if ($this->_opened || (count($this->_buffer) > 0)) {
             $this->close();

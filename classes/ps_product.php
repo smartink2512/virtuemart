@@ -1341,7 +1341,7 @@ class ps_product extends vmAbstractObject {
 			$url = VM_THEMEURL.'images/'.NO_IMAGE;
 		}
 		
-		return vmCommonHTML::imageTag( $url, '', '', $height, $width, '', '', $args.$border );
+		return vmCommonHTML::imageTag( $url, '', '', $height, $width, '', '', $args.' '.$border );
 
 	}
 

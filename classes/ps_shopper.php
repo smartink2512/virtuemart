@@ -539,7 +539,8 @@ class ps_shopper {
 		}
 
 		// Bind the post array to the user object
-		if (!$user->bind( JRequest::get('post'), 'usertype' )) {
+		$_post_ =& vmRequest::get('post');
+		if (!$user->bind( $_post_, 'usertype' )) {
 			JError::raiseError( 500, $user->getError());
 		}
 

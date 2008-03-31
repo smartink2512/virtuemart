@@ -35,16 +35,23 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+31.03.2008 soeren
+^ update PayPal payment code
+# Bugs in Product Type Parameter processing [Forum Topic 37239]
+^ renamed all Log_* classes to vmLog_* to prevent namespace problems
+# wrong accentuated character in Search for Products [Forum Topic 38093]
+^ various changes to make upgrade from VirtueMart 1.0.x easier
+# Task #1953 Manufacturer Form strips HTML and Images
+# Task #1952 - User > Order List > Remove function bugs
+
 30.03.2008 thepisu
 ^ updated translations: finnish
 
 28.03.2008 thepisu
 # Task #1941  hard coded string
 # added various translation strings (module "common")
-
 28.03.2008 gregdev
 + Added separate .sql files for manual installation of modules and mambots (plugins).
-
 28.03.2008 soeren
 + added possibility to use external/remote files as product download files
 + possibility to cancel the VirtueMart Update by Patch Package (deletes the Patch File)
@@ -60,7 +67,6 @@ VirtueMart 1.1.x
 
 26.03.2008 gregdev
 # Task #1939 - shop.savedcart.tpl.php unclosed div and few typos
-
 26.03.2008 soeren
 # Task #1929 - Image handling bugs
 # Task #1935 - Currency & List of accepted currencies

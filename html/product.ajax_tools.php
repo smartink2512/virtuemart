@@ -108,8 +108,8 @@ switch( $task ) {
 		$response['totalCount'] = $db->num_rows();
 		while( $db->next_record() ) {
 			$response['products'][] = array( 'product_id' => $db->f("product_id"),
-									'category' => htmlentities($db->f("category_name")),
-									'product' => htmlentities($db->f("product_name"))
+									'category' => htmlspecialchars($db->f("category_name")),
+									'product' => htmlspecialchars($db->f("product_name"))
 									);
 			
 		}

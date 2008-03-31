@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,7 +25,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_syslog class is a concrete implementation of the Log::
+ * The vmLog_syslog class is a concrete implementation of the Log::
  * abstract class which sends messages to syslog on UNIX-like machines
  * (PHP emulates this with the Event Log on Windows machines).
  *
@@ -36,14 +36,14 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example syslog.php      Using the syslog handler.
  */
-class Log_syslog extends vmLog
+class vmLog_syslog extends vmLog
 {
     /**
     * Integer holding the log facility to use.
     * @var string
     * @access private
     */
-    var $_name = LOG_SYSLOG;
+    var $_name = vmLog_syslog;
 
     /**
      * Constructs a new syslog object.
@@ -54,12 +54,12 @@ class Log_syslog extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_syslog($name, $ident = '', $conf = array(),
+    function vmLog_syslog($name, $ident = '', $conf = array(),
                         $level = PEAR_LOG_DEBUG)
     {
         /* Ensure we have a valid integer value for $name. */
         if (empty($name) || !is_int($name)) {
-            $name = LOG_SYSLOG;
+            $name = vmLog_syslog;
         }
 
         $this->_id = md5(microtime());

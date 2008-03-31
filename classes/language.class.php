@@ -207,6 +207,7 @@ class vmAbstractLanguage {
 	*/
 	function load($module) {
 		global $mosConfig_lang;
+		if( empty( $module )) return false;
 		$module = basename( $module );
 		if (file_exists( ADMINPATH. 'languages/'.$module.'/'.strtolower($mosConfig_lang).'.php' )) {
 			require_once( ADMINPATH. 'languages/'.$module.'/'.strtolower($mosConfig_lang).'.php' );

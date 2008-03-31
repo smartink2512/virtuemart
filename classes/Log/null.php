@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,7 +24,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_null class is a concrete implementation of the Log:: abstract
+ * The vmLog_null class is a concrete implementation of the Log:: abstract
  * class.  It simply consumes log events.
  *
  * @author  Jon Parise <jon@php.net>
@@ -33,10 +33,10 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example null.php    Using the null handler.
  */
-class Log_null extends vmLog
+class vmLog_null extends vmLog
 {
     /**
-     * Constructs a new Log_null object.
+     * Constructs a new vmLog_null object.
      *
      * @param string $name     Ignored.
      * @param string $ident    The identity string.
@@ -44,7 +44,7 @@ class Log_null extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_null($name, $ident = '', $conf = array(),
+    function vmLog_null($name, $ident = '', $conf = array(),
 					  $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());

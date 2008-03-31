@@ -40,8 +40,12 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
 
 }
 elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
+	echo '<html><head><title>VirtueMart Installation</title>
+	</head>
+	<body>';
 	virtuemart_is_installed();
 	com_install();
+	echo '</body></html>';
 	exit();
 	
 }
@@ -208,7 +212,7 @@ function com_install() {
 											<div align="center">
 												<a title="UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=updatevm10x">UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;</a>
 											</div><br /><br/>
-											Your version is NOT <strong><?php echo $old_version ?></strong>? Then please just delete the file <pre><?php echo dirname(__FILE__).'/install.php' ?></pre><br />
+											Your VirtueMart Version is NOT <strong><?php echo $old_version ?></strong>? Then please just delete the file <strong><?php echo dirname(__FILE__).'/install.php' ?></strong><br />
 											
 										</td>
 									</tr>

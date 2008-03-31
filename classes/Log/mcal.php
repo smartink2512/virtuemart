@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,7 +25,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_mcal class is a concrete implementation of the Log::
+ * The vmLog_mcal class is a concrete implementation of the Log::
  * abstract class which sends messages to a local or remote calendar
  * store accessed through MCAL.
  *
@@ -34,7 +34,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * @since Log 1.0
  * @package Log
  */
-class Log_mcal extends vmLog
+class vmLog_mcal extends vmLog
 {
     /**
      * holding the calendar specification to connect to.
@@ -80,7 +80,7 @@ class Log_mcal extends vmLog
 
 
     /**
-     * Constructs a new Log_mcal object.
+     * Constructs a new vmLog_mcal object.
      *
      * @param string $name     The category to use for our events.
      * @param string $ident    The identity string.
@@ -88,7 +88,7 @@ class Log_mcal extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_mcal($name, $ident = '', $conf = array(),
+    function vmLog_mcal($name, $ident = '', $conf = array(),
                       $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());

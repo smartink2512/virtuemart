@@ -702,8 +702,10 @@ $db->query( "INSERT INTO `#__{vm}_function` (`function_id`, `module_id`, `functi
 (null, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin')");
 
 # Re-enable downloads and resend Download ID
-$db->query( "INSERT INTO `#__{vm}_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
-(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');" );
+$db->query( "INSERT INTO `#__{vm}_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
+				VALUES 
+				(NULL, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
+				(NULL, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin')" );
 
 # 12.04.2007 Cart Storage for registered users
 $db->query( "CREATE TABLE IF NOT EXISTS `#__{vm}_cart` (

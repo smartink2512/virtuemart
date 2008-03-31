@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,7 +25,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_composite:: class implements a Composite pattern which
+ * The vmLog_composite:: class implements a Composite pattern which
  * allows multiple Log implementations to receive the same events.
  *
  * @author  Chuck Hagenbuch <chuck@horde.org>
@@ -37,7 +37,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example composite.php   Using the composite handler.
  */
-class Log_composite extends vmLog
+class vmLog_composite extends vmLog
 {
     /**
      * Array holding all of the Log instances to which log events should be
@@ -59,7 +59,7 @@ class Log_composite extends vmLog
      *
      * @access public
      */
-    function Log_composite($name, $ident = '', $conf = array(),
+    function vmLog_composite($name, $ident = '', $conf = array(),
                            $level = PEAR_LOG_DEBUG)
     {
         $this->_ident = $ident;

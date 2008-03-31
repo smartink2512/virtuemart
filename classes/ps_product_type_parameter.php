@@ -35,6 +35,11 @@ class ps_product_type_parameter {
 			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
 			return False ;
 		}
+		// Column names must not have special chars or white spaces
+		$regex = '/[^a-zA-Z0-9_\.]/';
+		if( preg_match($regex, $d["parameter_name"] )) {
+			$d["parameter_name"] = strtolower(preg_replace($regex, '_', $d['parameter_name']));
+		}
 		if( empty($d["parameter_label"])) {
 			if( $d["parameter_type"] == "B" ) { // Break line
 				$d["parameter_label"] = $d["parameter_name"] ;
@@ -67,25 +72,6 @@ class ps_product_type_parameter {
 	}
 	
 	/**
-	 * Valides the Input Parameters onBeforeParameterDelete
-	 * @author Zdenek Dvorak
-	 * @param array $d
-	 * @return boolean
-	 */
-	function validate_delete_parameter( &$d ) {
-		global $VM_LANG;
-		
-		$db = new ps_DB( ) ;
-		
-		if( empty($d["product_type_id"]) || empty($d["parameter_name"])) {
-			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_DELETE_SELECT') );
-			return False ;
-		}
-		
-		return True ;
-	}
-	
-	/**
 	 * Valides the Input Parameters onBeforeParameterUpdate
 	 * @author Zdenek Dvorak
 	 * @param array $d
@@ -97,7 +83,13 @@ class ps_product_type_parameter {
 		if( empty($d["parameter_name"]) ) {
 			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
 			return False ;
-		} elseif( empty($d["parameter_label"])) {
+		}
+		// Column names must not have special chars or white spaces
+		$regex = '/[^a-zA-Z0-9_\.]/';
+		if( preg_match($regex, $d["parameter_name"] )) {
+			$d["parameter_name"] = strtolower(preg_replace($regex, '_', $d['parameter_name']));
+		} 
+		if( empty($d["parameter_label"])) {
 			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ERR_LABEL') );
 			return False ;
 		} // field Value:
@@ -123,6 +115,24 @@ class ps_product_type_parameter {
 		}
 		return True ;
 	}
+	/**
+	 * Valides the Input Parameters onBeforeParameterDelete
+	 * @author Zdenek Dvorak
+	 * @param array $d
+	 * @return boolean
+	 */
+	function validate_delete_parameter( &$d ) {
+		global $VM_LANG;
+		
+		$db = new ps_DB( ) ;
+		
+		if( empty($d["product_type_id"]) || empty($d["parameter_name"])) {
+			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_DELETE_SELECT') );
+			return False ;
+		}
+		
+		return True ;
+	}
 	
 	/**
 	 * creates a new parameter for a Product Type
@@ -135,106 +145,101 @@ class ps_product_type_parameter {
 		
 		$db = new ps_DB( ) ;
 		
-		if( $this->validate_add_parameter( $d ) ) {
-			foreach( $d as $key => $value ) {
-				if( ! is_array( $value ) )
-					$d[$key] = addslashes( $value ) ;
-			}
-			// Let's find out the last product_type
-			$q = "SELECT MAX(parameter_list_order) AS list_order FROM #__{vm}_product_type_parameter " ;
-			$q .= "WHERE product_type_id='" . $d["product_type_id"] . "';" ;
-			$db->query( $q ) ;
-			$db->next_record() ;
-			$list_order = intval( $db->f( "list_order" ) ) + 1 ;
-			
-			// added for custom parameter modification
-			// strips the trailing semi-colon from an values
-			if( ';' == substr( $d["parameter_values"], strlen( $d["parameter_values"] ) - 1, 1 ) ) {
-				$d["parameter_values"] = substr( $d["parameter_values"], 0, strlen( $d["parameter_values"] ) - 1 ) ;
-			}
-			if( empty( $d["parameter_multiselect"] ) ) {
-				$d["parameter_multiselect"] = "N" ;
-			}
-			// delete "\n" from field parameter_description
-			$d["parameter_description"] = str_replace( "\r\n", "", $d["parameter_description"] ) ;
-			$d["parameter_description"] = str_replace( "\n", "", $d["parameter_description"] ) ;
-			
-			$fields = array( 'product_type_id' => $d["product_type_id"],
-										'parameter_name' => vmGet($d, 'parameter_name'),
-										'parameter_label' => vmGet($d, 'parameter_label'),
-										'parameter_description' => vmGet($d, 'parameter_description'),
-										'parameter_list_order' => $list_order,
-										'parameter_type' => vmGet($d, 'parameter_type'),
-										'parameter_values' => vmGet($d, 'parameter_values'),
-										'parameter_multiselect' => vmGet($d, 'parameter_multiselect'),
-										'parameter_default' => vmGet($d, 'parameter_default'),
-										'parameter_unit' => vmGet($d, 'parameter_unit')
-							);
-			$db->buildQuery('INSERT', '#__{vm}_product_type_parameter', $fields );
-			$db->query() ;
-			
-			if( $d["parameter_type"] != "B" ) { // != Break Line
-				// Make new column in table product_type_<id>
-				$q = "ALTER TABLE `#__{vm}_product_type_" ;
-				$q .= $d["product_type_id"] . "` ADD `" ;
-				$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` " ;
-				switch( $d["parameter_type"]) {
-					case "I" :
-						$q .= "int(11) " ;
-					break ; // Integer
-					case "T" :
-						$q .= "text " ;
-					break ; // Text
-					case "S" :
-						$q .= "varchar(255) " ;
-					break ; // Short Text
-					case "F" :
-						$q .= "float " ;
-					break ; // Float
-					case "C" :
-						$q .= "char(1) " ;
-					break ; // Char
-					case "D" :
-						$q .= "datetime " ;
-					break ; // Date & Time
-					case "A" :
-						$q .= "date " ;
-					break ; // Date
-					case "V" :
-						$q .= "varchar(255) " ;
-					break ; // Multiple Value
-					case "M" :
-						$q .= "time " ;
-					break ; // Time
-					default :
-						$q .= "varchar(255) " ; // Default type Short Text
-				}
-				if( $d["parameter_default"] != "" && $d["parameter_type"] != "T" ) {
-					$q .= "DEFAULT '" . $d["parameter_default"] . "' NOT NULL;" ;
-				}
-				if( $db->query($q) === false ) {
-					$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED') );
-					return false;
-				}
-				
-				// Make index for this column
-				if( $d["parameter_type"] == "T" ) {
-					$q = "ALTER TABLE `#__{vm}_product_type_" ;
-					$q .= $d["product_type_id"] . "` ADD FULLTEXT `idx_product_type_" . $d["product_type_id"] . "_" ;
-					$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` (`" . $db->getEscaped(vmGet($d,'parameter_name')) . "`);" ;
-					$db->query($q);
-				} else {
-					$q = "ALTER TABLE `#__{vm}_product_type_" ;
-					$q .= $d["product_type_id"] . "` ADD KEY `idx_product_type_" . $d["product_type_id"] . "_" ;
-					$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` (`" . $db->getEscaped(vmGet($d,'parameter_name')) . "`);" ;
-					$db->query( $q );
-				}
-			}
-			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ADDED') );
-			return true ;
-		} else {
-			return False ;
+		if( !$this->validate_add_parameter( $d ) ) {
+			return false;
 		}
+		// Let's find out the last product_type
+		$q = "SELECT MAX(parameter_list_order) AS list_order FROM #__{vm}_product_type_parameter " ;
+		$q .= "WHERE product_type_id='" . $d["product_type_id"] . "';" ;
+		$db->query( $q ) ;
+		$db->next_record() ;
+		$list_order = intval( $db->f( "list_order" ) ) + 1 ;
+		
+		// added for custom parameter modification
+		// strips the trailing semi-colon from an values
+		if( ';' == substr( $d["parameter_values"], strlen( $d["parameter_values"] ) - 1, 1 ) ) {
+			$d["parameter_values"] = substr( $d["parameter_values"], 0, strlen( $d["parameter_values"] ) - 1 ) ;
+		}
+		if( empty( $d["parameter_multiselect"] ) ) {
+			$d["parameter_multiselect"] = "N" ;
+		}
+		// delete "\n" from field parameter_description
+		$d["parameter_description"] = str_replace( "\r\n", "", $d["parameter_description"] ) ;
+		$d["parameter_description"] = str_replace( "\n", "", $d["parameter_description"] ) ;
+		
+		$fields = array( 'product_type_id' => $d["product_type_id"],
+									'parameter_name' => vmGet($d, 'parameter_name'),
+									'parameter_label' => vmGet($d, 'parameter_label'),
+									'parameter_description' => vmGet($d, 'parameter_description'),
+									'parameter_list_order' => $list_order,
+									'parameter_type' => vmGet($d, 'parameter_type'),
+									'parameter_values' => vmGet($d, 'parameter_values'),
+									'parameter_multiselect' => vmGet($d, 'parameter_multiselect'),
+									'parameter_default' => vmGet($d, 'parameter_default'),
+									'parameter_unit' => vmGet($d, 'parameter_unit')
+						);
+		$db->buildQuery('INSERT', '#__{vm}_product_type_parameter', $fields );
+		$db->query() ;
+		
+		if( $d["parameter_type"] != "B" ) { // != Break Line
+			// Make new column in table product_type_<id>
+			$q = "ALTER TABLE `#__{vm}_product_type_" ;
+			$q .= $d["product_type_id"] . "` ADD `" ;
+			$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` " ;
+			switch( $d["parameter_type"]) {
+				case "I" :
+					$q .= "int(11) " ;
+				break ; // Integer
+				case "T" :
+					$q .= "text " ;
+				break ; // Text
+				case "S" :
+					$q .= "varchar(255) " ;
+				break ; // Short Text
+				case "F" :
+					$q .= "float " ;
+				break ; // Float
+				case "C" :
+					$q .= "char(1) " ;
+				break ; // Char
+				case "D" :
+					$q .= "datetime " ;
+				break ; // Date & Time
+				case "A" :
+					$q .= "date " ;
+				break ; // Date
+				case "V" :
+					$q .= "varchar(255) " ;
+				break ; // Multiple Value
+				case "M" :
+					$q .= "time " ;
+				break ; // Time
+				default :
+					$q .= "varchar(255) " ; // Default type Short Text
+			}
+			if( $d["parameter_default"] != "" && $d["parameter_type"] != "T" ) {
+				$q .= "DEFAULT '" . $d["parameter_default"] . "' NOT NULL;" ;
+			}
+			if( $db->query($q) === false ) {
+				$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED') );
+				return false;
+			}
+			
+			// Make index for this column
+			if( $d["parameter_type"] == "T" ) {
+				$q = "ALTER TABLE `#__{vm}_product_type_" ;
+				$q .= $d["product_type_id"] . "` ADD FULLTEXT `idx_product_type_" . $d["product_type_id"] . "_" ;
+				$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` (`" . $db->getEscaped(vmGet($d,'parameter_name')) . "`);" ;
+				$db->query($q);
+			} else {
+				$q = "ALTER TABLE `#__{vm}_product_type_" ;
+				$q .= $d["product_type_id"] . "` ADD KEY `idx_product_type_" . $d["product_type_id"] . "_" ;
+				$q .= $db->getEscaped(vmGet($d,'parameter_name')) . "` (`" . $db->getEscaped(vmGet($d,'parameter_name')) . "`);" ;
+				$db->query( $q );
+			}
+		}
+		$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_PRODUCT_TYPE_PARAMETER_ADDED') );
+		return true ;
 	
 	}
 	

@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,7 +24,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_display class is a concrete implementation of the Log::
+ * The vmLog_display class is a concrete implementation of the Log::
  * abstract class which writes message into browser in usual PHP maner.
  * This may be useful because when you use PEAR::setErrorHandling in
  * PEAR_ERROR_CALLBACK mode error messages are not displayed by
@@ -36,7 +36,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example display.php     Using the display handler.
  */
-class Log_display extends vmLog
+class vmLog_display extends vmLog
 {
 
     /**
@@ -68,7 +68,7 @@ class Log_display extends vmLog
     var $_count = 0;
     
     /**
-     * Constructs a new Log_display object.
+     * Constructs a new vmLog_display object.
      *
      * @param string $name     Ignored.
      * @param string $ident    The identity string.
@@ -76,7 +76,7 @@ class Log_display extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_display($name = '', $ident = '', $conf = array(),
+    function vmLog_display($name = '', $ident = '', $conf = array(),
                          $level = PEAR_LOG_TIP)
     {
         $this->_id = md5(microtime());
@@ -184,19 +184,18 @@ class Log_display extends vmLog
      * @author Soeren Eberhardt
      */
 	function printLog( $priority = null ) {
-		$output = '<div ';
-		if( $this->_count > 10 && DEBUG) {
-			// Wrap the messages into a scrollable div field
-			$output .= 'style="width:90%; overflow:auto; height:150px;"';
+		if( $this->_count == 0 ) {
+			return;
 		}
-		$output .= '>';
+		$output = '';
+		$has_output = false;
 		$i = 0;
 		$message_tmp = '';
 		foreach( $this->_messages as $message ) {
 			if( ( $priority === null || $priority <= $message['priority'] )
 				&& $message['priority'] !== PEAR_LOG_DEBUG
 				|| ( $message['priority'] === PEAR_LOG_DEBUG && DEBUG == '1')) {
-					
+				$has_output= true;
 				$message_tmp .= '<b>' . ucfirst($this->priorityToString($message['priority'])) . '</b>: '
 								. nl2br(htmlspecialchars($message['message'])) 
 			             		. $this->_linebreak;
@@ -207,12 +206,16 @@ class Log_display extends vmLog
 			}
 			$i++;
 		}
-		
-		$output .= '</div>';
+		$html = '<div ';
+		if( $this->_count > 10 && DEBUG) {
+			// Wrap the messages into a scrollable div field
+			$html .= 'style="width:90%; overflow:auto; height:150px;"';
+		}
+		$html .= '>'. $output . '</div>';
 		$this->_count = 0;
 		$this->_messages = array();
 		if( $output ) {
-			echo $output;// .  $this->_linebreak;
+			echo $html;// .  $this->_linebreak;
 		}
 	}
 }

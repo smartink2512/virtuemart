@@ -1,55 +1,44 @@
 <?php
-if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
-	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
-}
+if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) )	die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-*
+* @copyright Copyright (C) 2004-2008 The Virtuemart Project - All rights reserved.
+* VirtueMart is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses.
 * http://virtuemart.net
 */
-?>
-<pre>
+?><pre>
+
+MANUAL INSTALLATION OF VIRTUEMART
+=== README FILE ===
+
 The easy & automatic installation procedure is explained in the file
 README.php of the COMPLETE PACKAGE.
 
 You shouldn't use these instructions, when you have downloaded the
 COMPLETE PACKAGE.
 
-You should only use this file, when you have safe mode problems
-or other problems with the Joomla! / Mambo installer and all
-efforts fail to use the upload installer.
+You should only use this file, when you have 
+	* VirtueMart 1.0.x and want to upgrade to VirtueMart 1.1.x
+	* safe mode problems, so you can't use the component installer (Safe Mode = On ? Manual Installation is your saviour)
+	* problems installing the Component by uploading the contents of the component installer archive and installing from directory
+	
+
+=== ABOUT THIS FILE ===
+
+This file is meant to provide hints on the Manual Installation Procedure for VirtueMart.
 
 
-Safe Mode = On ? Manual Installation is your saviour.
+=== ABOUT VirtueMart ===
 
-MANUAL INSTALLATION OF VIRTUEMART
-
-ABOUT THIS FILE
------------------
-This file is meant to provide hints on the 
-Manual Installation Procedure for VirtueMart.
-
-
-ABOUT VirtueMart
-------------------------------
 VirtueMart is an Open Source Online-Shop plugin for Joomla! and Mambo.
 
 
-
-MANUAL INSTALLATION PROCEDURE
---------------------------------------------------
+=== MANUAL INSTALLATION PROCEDURE ===
   
-1. Unpack the archive file (the one which contains this file as "README.txt"):
-
-	VirtueMart_Manual-Installation-Package_1.x.tar.gz
+1. Unpack the archive file "VirtueMart_Manual-Installation-Package_1.x.tar.gz" (the one which contains this file as "README.txt")
+	using WinRAR or a similar Archive Software
 	
 	You should now see some directories:
 	  * /administrator
@@ -115,8 +104,7 @@ MANUAL INSTALLATION PROCEDURE
 
 	* That's it.	  
 
-Modules and Mambots (Plugins).
------------------------
+=== Modules and Mambots (Plugins) ===
 
 4. The Modules and Mambots (Plugins) in the archive are add-ons, but most important is the VirtueMart Main Module,
 	which consists of two files:
@@ -204,5 +192,4 @@ INSERT IGNORE INTO `mos_mambots` (`name`, `element`, `folder`, `access`, `orderi
 	Please note that you MUST PUBLISH THE 
 		"VirtueMart Module"
 
-		
 </pre>

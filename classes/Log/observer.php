@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,7 +25,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_observer:: class implements the Observer end of a Subject-Observer
+ * The vmLog_observer:: class implements the Observer end of a Subject-Observer
  * pattern for watching log activity and taking actions on exceptional events.
  *
  * @author  Chuck Hagenbuch <chuck@horde.org>
@@ -33,9 +33,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * @since   Log 1.0
  * @package Log
  *
- * @example observer_mail.php   An example Log_observer implementation.
+ * @example observer_mail.php   An example vmLog_observer implementation.
  */
-class Log_observer
+class vmLog_observer
 {
     /**
      * Instance-specific unique identification number.
@@ -57,37 +57,37 @@ class Log_observer
     var $_priority = PEAR_LOG_INFO;
 
     /**
-     * Creates a new basic Log_observer instance.
+     * Creates a new basic vmLog_observer instance.
      *
      * @param integer   $priority   The highest priority at which to receive
      *                              log event notifications.
      *
      * @access public
      */
-    function Log_observer($priority = PEAR_LOG_INFO)
+    function vmLog_observer($priority = PEAR_LOG_INFO)
     {
         $this->_id = md5(microtime());
         $this->_priority = $priority;
     }
 
     /**
-     * Attempts to return a new concrete Log_observer instance of the requested
+     * Attempts to return a new concrete vmLog_observer instance of the requested
      * type.
      *
-     * @param string    $type       The type of concreate Log_observer subclass
+     * @param string    $type       The type of concreate vmLog_observer subclass
      *                              to return.
      * @param integer   $priority   The highest priority at which to receive
      *                              log event notifications.
      * @param array     $conf       Optional associative array of additional
      *                              configuration values.
      *
-     * @return object               The newly created concrete Log_observer
+     * @return object               The newly created concrete vmLog_observer
      *                              instance, or an false on an error.
      */
     function &factory($type, $priority = PEAR_LOG_INFO, $conf = array())
     {
         $type = strtolower($type);
-        $class = 'Log_observer_' . $type;
+        $class = 'vmLog_observer_' . $type;
 
         /* Support both the new-style and old-style file naming conventions. */
         if (file_exists(dirname(__FILE__) . '/observer_' . $type . '.php')) {
@@ -101,7 +101,7 @@ class Log_observer
         /* Issue a warning if the old-style conventions are being used. */
         if (!$newstyle)
         {
-            trigger_error('Using old-style Log_observer conventions',
+            trigger_error('Using old-style vmLog_observer conventions',
                           E_USER_WARNING);
         }
 
@@ -127,7 +127,7 @@ class Log_observer
 
     /**
 <<<<<<< observer.php
-     * This is a stub method to make sure that Log_observer classes do
+     * This is a stub method to make sure that vmLog_observer classes do
      * something when they are notified of a message. The default
      * behavior is to just print the message, which is obviously not
      * desireable in practically any situation - which is why you need
@@ -137,7 +137,7 @@ class Log_observer
      *                      message itself, the priority, what log it came
      *                      from, etc.
 =======
-     * This is a stub method to make sure that Log_Observer classes do
+     * This is a stub method to make sure that vmLog_observer classes do
      * something when they are notified of a message.  The default behavior
      * is to just print the message, which is obviously not desireable in
      * practically any situation - which is why you need to override this

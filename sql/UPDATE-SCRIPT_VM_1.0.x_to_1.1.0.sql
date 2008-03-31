@@ -96,7 +96,7 @@ INSERT INTO `jos_vm_function` VALUES ('', 2, 'moveProduct', 'ps_product', 'move'
 
 # Allow percentages as payment method discount
 
-ALTER TABLE `jos_vm_payment_method` 
+ALTER IGNORE TABLE `jos_vm_payment_method` 
 	ADD `payment_method_discount_is_percent` TINYINT( 1 ) NOT NULL AFTER `payment_method_discount` ,
 	ADD `payment_method_discount_max_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_is_percent` ,
 	ADD `payment_method_discount_min_amount` DECIMAL( 10, 2 ) NOT NULL AFTER `payment_method_discount_max_amount` ;
@@ -622,14 +622,14 @@ VALUES
     ('Peruvian Nuevo Sol', 'PEN');
     
 # 10.04.2006
-ALTER TABLE `jos_vm_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
-ALTER TABLE `jos_vm_product_reviews` ADD UNIQUE ( `product_id` , `userid` );
+ALTER IGNORE TABLE `jos_vm_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+ALTER IGNORE TABLE `jos_vm_product_reviews` ADD UNIQUE ( `product_id` , `userid` );
 
-ALTER TABLE `jos_vm_product_votes` ADD PRIMARY KEY ( `product_id` ) ;
-ALTER TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id` 
+ALTER IGNORE TABLE `jos_vm_product_votes` ADD PRIMARY KEY ( `product_id` ) ;
+ALTER IGNORE TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id` 
 
 # 13.04.2006 for JoomFish
-ALTER TABLE `jos_vm_product_attribute` ADD `attribute_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+ALTER IGNORE TABLE `jos_vm_product_attribute` ADD `attribute_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
 # Ask a question!
 INSERT INTO `jos_vm_function` VALUES (NULL, 7, 'productAsk', 'ps_communication', 'mail_question', 'Lets the customer send a question about a specific product.', 'admin,storeadmin,shopper,demo');
 INSERT INTO `jos_vm_function` VALUES (NULL, 2, 'reviewUpdate', 'ps_reviews', 'update', 'Modify a review about a specific product.', 'admin');
@@ -641,20 +641,20 @@ INSERT INTO `jos_vm_function` VALUES (NULL, 1, 'writeThemeConfig', 'ps_config', 
 
 
 # Prevent auto-publishing of product reviews
-ALTER TABLE `jos_vm_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';
+ALTER IGNORE TABLE `jos_vm_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';
 
 # 02.05.2006 Multi-Currency Feature
-ALTER TABLE `jos_vm_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL ;
+ALTER IGNORE TABLE `jos_vm_vendor` ADD `vendor_accepted_currencies` TEXT NOT NULL ;
 
 # 12.09.2006 improve category listing performance
-ALTER TABLE `jos_vm_category_xref` DROP INDEX `category_xref_category_child_id` ;
-ALTER TABLE `jos_vm_category_xref` ADD PRIMARY KEY ( `category_child_id` ) ;
+ALTER IGNORE TABLE `jos_vm_category_xref` DROP INDEX `category_xref_category_child_id` ;
+ALTER IGNORE TABLE `jos_vm_category_xref` ADD PRIMARY KEY ( `category_child_id` ) ;
 
 # 13.09.2006 Allow Order Status Descriptions
-ALTER TABLE `jos_vm_order_status` ADD `order_status_description` TEXT NOT NULL AFTER `order_status_name`;
+ALTER IGNORE TABLE `jos_vm_order_status` ADD `order_status_description` TEXT NOT NULL AFTER `order_status_name`;
 
 # 06.11.2006 Track coupon code used to order
-ALTER TABLE `jos_vm_orders` ADD `coupon_code` VARCHAR( 32 ) NULL AFTER `coupon_discount` ;
+ALTER IGNORE TABLE `jos_vm_orders` ADD `coupon_code` VARCHAR( 32 ) NULL AFTER `coupon_discount` ;
 
 # 08.11.2006 Allowing new user groups
 CREATE TABLE `jos_vm_auth_group` (
@@ -690,10 +690,10 @@ INSERT INTO `jos_vm_function` VALUES
 	(NULL, 1, 'usergroupDelete', 'usergroup.class', 'delete', 'Delete an user group', 'admin');
 
 # Marks Child list options
-ALTER TABLE `jos_vm_product` ADD `child_options` varchar(45) default NULL;
-ALTER TABLE `jos_vm_product` ADD `quantity_options` varchar(45) default NULL;
-ALTER TABLE `jos_vm_product` ADD  `child_option_ids` varchar(45) default NULL;
-ALTER TABLE `jos_vm_product` ADD  `product_order_levels` varchar(45) default NULL;
+ALTER IGNORE TABLE `jos_vm_product` ADD `child_options` varchar(45) default NULL;
+ALTER IGNORE TABLE `jos_vm_product` ADD `quantity_options` varchar(45) default NULL;
+ALTER IGNORE TABLE `jos_vm_product` ADD  `child_option_ids` varchar(45) default NULL;
+ALTER IGNORE TABLE `jos_vm_product` ADD  `product_order_levels` varchar(45) default NULL;
 
 # 20.01.2007: Udate Module and Function permissions directly from the list 
 INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES 
@@ -703,8 +703,8 @@ INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `fun
 	
 # Mail Download ID and re-insert downloads for a product
 INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
-	VALUES (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
-			(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');
+	VALUES (NULL, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
+			(NULL, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin');
 
 # 12.04.2007 Cart Storage
 CREATE TABLE `jos_vm_cart` (
@@ -714,12 +714,12 @@ CREATE TABLE `jos_vm_cart` (
 PRIMARY KEY ( `user_id` )
 ) TYPE = MYISAM COMMENT = 'Stores the cart contents of a user';
 
-ALTER TABLE `jos_vm_product_reviews` CHANGE `product_id` `product_id` INT( 11 ) NOT NULL 
+ALTER IGNORE TABLE `jos_vm_product_reviews` CHANGE `product_id` `product_id` INT( 11 ) NOT NULL 
 
 # 25.07.2007: Allow to set address and date format
-ALTER TABLE `jos_vm_vendor` 
+ALTER IGNORE TABLE `jos_vm_vendor` 
 				ADD `vendor_address_format` TEXT NOT NULL ;
-ALTER TABLE `jos_vm_vendor` 
+ALTER IGNORE TABLE `jos_vm_vendor` 
 				ADD `vendor_date_format` VARCHAR( 255 ) NOT NULL;
 UPDATE `jos_vm_vendor` SET
 			`vendor_address_format` = '{storename}\n{address_1}\n{address_2}\n{city}, {zip}',

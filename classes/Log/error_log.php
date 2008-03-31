@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,7 +24,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_error_log class is a concrete implementation of the Log abstract
+ * The vmLog_error_log class is a concrete implementation of the Log abstract
  * class that logs messages using PHP's error_log() function.
  *
  * @author  Jon Parise <jon@php.net>
@@ -33,7 +33,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example error_log.php   Using the error_log handler.
  */
-class Log_error_log extends vmLog
+class vmLog_error_log extends vmLog
 {
     /**
      * The error_log() log type.
@@ -58,7 +58,7 @@ class Log_error_log extends vmLog
     var $_extra_headers = '';
 
     /**
-     * Constructs a new Log_error_log object.
+     * Constructs a new vmLog_error_log object.
      *
      * @param string $name     Ignored.
      * @param string $ident    The identity string.
@@ -66,7 +66,7 @@ class Log_error_log extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_error_log($name, $ident = '', $conf = array(),
+    function vmLog_error_log($name, $ident = '', $conf = array(),
                            $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());

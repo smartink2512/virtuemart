@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,7 +24,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_file class is a concrete implementation of the Log abstract
+ * The vmLog_file class is a concrete implementation of the Log abstract
  * class that logs messages to a text file.
  * 
  * @author  Jon Parise <jon@php.net>
@@ -34,7 +34,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example file.php    Using the file handler.
  */
-class Log_file extends vmLog
+class vmLog_file extends vmLog
 {
     /**
      * String containing the name of the log file.
@@ -120,7 +120,7 @@ class Log_file extends vmLog
     var $_eol = "\n";
 
     /**
-     * Constructs a new Log_file object.
+     * Constructs a new vmLog_file object.
      *
      * @param string $name     Ignored.
      * @param string $ident    The identity string.
@@ -128,7 +128,7 @@ class Log_file extends vmLog
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_file($name, $ident = '', $conf = array(),
+    function vmLog_file($name, $ident = '', $conf = array(),
                       $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -176,13 +176,13 @@ class Log_file extends vmLog
             $this->_eol = (strstr(PHP_OS, 'WIN')) ? "\r\n" : "\n";
         }
 
-        register_shutdown_function(array(&$this, '_Log_file'));
+        register_shutdown_function(array(&$this, '_vmLog_file'));
     }
 
     /**
      * Destructor
      */
-    function _Log_file()
+    function _vmLog_file()
     {
         if ($this->_opened) {
             $this->close();

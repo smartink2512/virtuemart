@@ -73,7 +73,7 @@ class ps_DB {
 		
 		$this->_query_set = true;
 		
-		if( DEBUG == '1' ) {
+		if( defined('DEBUG') && DEBUG == '1' ) {
 			// Register Double-run (multiple-run) queries 
 			if( !isset($GLOBALS['queries']))$GLOBALS['queries'] = array();
 			if( !isset($GLOBALS['double_queries']))$GLOBALS['double_queries'] = array();

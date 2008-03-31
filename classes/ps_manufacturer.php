@@ -101,14 +101,12 @@ class ps_manufacturer {
 		
 		$db = new ps_DB;
 		
-		$GLOBALS['vmInputFilter']->safeSQL( $d );
-		
 		if (!$this->validate_add($d)) {
 			return false;
 		}
 		$fields = array( 'mf_name' => vmGet( $d, 'mf_name' ),
 					'mf_email' => vmGet( $d, 'mf_email' ),
-					'mf_desc' => vmGet( $d, 'mf_desc', VMREQUEST_ALLOWHTML ),
+					'mf_desc' => vmGet( $d, 'mf_desc', '', VMREQUEST_ALLOWHTML ),
 					'mf_category_id' => vmRequest::getInt('mf_category_id'),
 					'mf_url' => vmGet( $d, 'mf_url')
 		);
@@ -132,16 +130,13 @@ class ps_manufacturer {
 		global $VM_LANG;
 		
 		$db = new ps_DB;
-		$timestamp = time();
-
-		$GLOBALS['vmInputFilter']->safeSQL( $d );
 		
 		if (!$this->validate_update($d)) {
 			return False;
 		}
 		$fields = array( 'mf_name' => vmGet( $d, 'mf_name' ),
 					'mf_email' => vmGet( $d, 'mf_email' ),
-					'mf_desc' => vmGet( $d, 'mf_desc', VMREQUEST_ALLOWHTML ),
+					'mf_desc' => vmGet( $d, 'mf_desc', '', VMREQUEST_ALLOWHTML ),
 					'mf_category_id' => vmRequest::getInt('mf_category_id'),
 					'mf_url' => vmGet( $d, 'mf_url')
 		);

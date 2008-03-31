@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage Log
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,12 +24,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  */
 
 /**
- * The Log_mail class is a concrete implementation of the Log:: abstract class
+ * The vmLog_mail class is a concrete implementation of the Log:: abstract class
  * which sends log messages to a mailbox.
  * The mail is actually sent when you close() the logger, or when the destructor
  * is called (when the script is terminated).
  *
- * PLEASE NOTE that you must create a Log_mail object using =&, like this :
+ * PLEASE NOTE that you must create a vmLog_mail object using =&, like this :
  *  $logger =& vmLog::factory("mail", "recipient@example.com", ...)
  *
  * This is a PEAR requirement for destructors to work properly.
@@ -42,7 +42,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  *
  * @example mail.php    Using the mail handler.
  */
-class Log_mail extends vmLog
+class vmLog_mail extends vmLog
 {
     /**
      * String holding the recipient's email address.
@@ -63,7 +63,7 @@ class Log_mail extends vmLog
      * @var string
      * @access private
      */
-    var $_subject = '[Log_mail] Log message';
+    var $_subject = '[vmLog_mail] Log message';
 
     /**
      * String holding an optional preamble for the log messages.
@@ -81,7 +81,7 @@ class Log_mail extends vmLog
 
 
     /**
-     * Constructs a new Log_mail object.
+     * Constructs a new vmLog_mail object.
      *
      * Here is how you can customize the mail driver with the conf[] hash :
      *   $conf['from']    : the mail's "From" header line,
@@ -93,7 +93,7 @@ class Log_mail extends vmLog
      * @param int    $level     Log messages up to and including this level.
      * @access public
      */
-    function Log_mail($name, $ident = '', $conf = array(),
+    function vmLog_mail($name, $ident = '', $conf = array(),
                       $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -116,7 +116,7 @@ class Log_mail extends vmLog
         }
 
         /* register the destructor */
-        register_shutdown_function(array(&$this, '_Log_mail'));
+        register_shutdown_function(array(&$this, '_vmLog_mail'));
     }
 
     /**
@@ -124,7 +124,7 @@ class Log_mail extends vmLog
      *
      * @access private
      */
-    function _Log_mail()
+    function _vmLog_mail()
     {
         $this->close();
     }
@@ -158,11 +158,11 @@ class Log_mail extends vmLog
         if ($this->_opened) {
             if (!empty($this->_message)) {
                 $headers = "From: $this->_from\r\n";
-                $headers .= "User-Agent: Log_mail";
+                $headers .= "User-Agent: vmLog_mail";
 
                 if (mail($this->_recipient, $this->_subject, $this->_message,
                          $headers) == false) {
-                    error_log("Log_mail: Failure executing mail()", 0);
+                    error_log("vmLog_mail: Failure executing mail()", 0);
                     return false;
                 }
 

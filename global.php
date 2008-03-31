@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,12 +25,19 @@ if( @VM_ENCRYPT_FUNCTION == 'AES_ENCRYPT') {
 } else {
 	define('VM_DECRYPT_FUNCTION', 'DECODE');
 }
-
+if( !defined('VM_COMPONENT_NAME')) {
+	echo '<div class="shop_warning">You seem to have upgraded to a new VirtueMart Version recently.<br />
+			Your Configuration File must be updated. so please proceed to the <a href="'.$_SERVER['PHP_SELF'].'?page=admin.show_cfg&amp;option=com_virtuemart">Configuration Form</a> and save the Configuration once you are done with the settings.</div>';
+	define('VM_COMPONENT_NAME', 'com_virtuemart');
+	define('VM_CURRENCY_CONVERTER_MODULE', 'convertECB');
+	defined('VM_THEMEPATH ') or define('VM_THEMEPATH', $mosConfig_absolute_path. '/components/com_virtuemart/themes/default/');
+	defined('VM_THEMEURL') or define('VM_THEMEURL', $mosConfig_live_site. '/components/com_virtuemart/themes/default/');
+}
 // Instantiate the MainFrame class for VirtueMart
 require_once( CLASSPATH."mainframe.class.php" );
 $vm_mainframe = new vmMainFrame();
 
-if (file_exists( CLASSPATH.'currency/'.VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
+if (file_exists( CLASSPATH.'currency/'.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
 	$module_filename = VM_CURRENCY_CONVERTER_MODULE;
 	require_once(CLASSPATH.'currency/'.VM_CURRENCY_CONVERTER_MODULE.'.php');
 	if( class_exists( $module_filename )) {

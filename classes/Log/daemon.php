@@ -19,7 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 // $Id$
 
 /**
- * The Log_daemon class is a concrete implementation of the Log::
+ * The vmLog_daemon class is a concrete implementation of the Log::
  * abstract class which sends messages to syslog daemon on UNIX-like machines.
  * This class uses the syslog protocol: http://www.ietf.org/rfc/rfc3164.txt
  *
@@ -27,13 +27,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * @version $ Revision: 1.2 $
  * @package Log
  */
-class Log_daemon extends vmLog
+class vmLog_daemon extends vmLog
 {
     /**
      * Integer holding the log facility to use.
      * @var string
      */
-    var $_name = LOG_DAEMON;
+    var $_name = vmLog_daemon;
 
     /**
      * Var holding the resource pointer to the socket
@@ -83,7 +83,7 @@ class Log_daemon extends vmLog
      * @param int    $maxLevel Maximum level at which to log.
      * @access public
      */
-    function Log_daemon($name, $ident = '', $conf = array(),
+    function vmLog_daemon($name, $ident = '', $conf = array(),
                         $level = PEAR_LOG_DEBUG)
     {
         /* Ensure we have a valid integer value for $name. */
@@ -113,7 +113,7 @@ class Log_daemon extends vmLog
         }
         $this->_proto = $this->_proto . '://';
 
-        register_shutdown_function(array(&$this, '_Log_daemon'));
+        register_shutdown_function(array(&$this, '_vmLog_daemon'));
     }
 
     /**
@@ -121,7 +121,7 @@ class Log_daemon extends vmLog
      *
      * @access private
      */
-    function _Log_daemon()
+    function _vmLog_daemon()
     {
         $this->close();
     }
