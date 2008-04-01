@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 31.03.2008 soeren
+# Task #1958 - Fatal error after rev 1338 when trying to look at product details
 # fixed PayPal IPN script on J! 1.5
 # Task #1945 - 2 warnings, update one doesn't update
 # Task #1957 - hardcoded image

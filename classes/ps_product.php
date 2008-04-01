@@ -2356,7 +2356,7 @@ class ps_product extends vmAbstractObject {
      * @return array
      */
     function &get_quantity_options( $product_id ) {
-    	$quantity_options = array();
+    	$quantity_options = array('quantity_start' => 0, 'quantity_end' => 0, 'quantity_step' => 1 );
     	$quantity_options_string = ps_product::get_field($product_id, 'quantity_options');
     	
     	$fields = explode(',', $quantity_options_string );
