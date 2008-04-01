@@ -498,3 +498,4 @@ ul.pagination li {
 	display: inline;
 	background: none;
 }
+.clr { clear: both; overflow:hidden; }

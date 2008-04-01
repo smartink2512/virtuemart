@@ -12,7 +12,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * MenuType is set to treemenu
 **/
 
-global $root_label, $sess, $db, $mosConfig_live_site;
+global $root_label, $sess, $db, $mosConfig_live_site, $mm_action_url;
 
 $js_src = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js';
 

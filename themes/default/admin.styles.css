@@ -23,7 +23,6 @@ a.managelink:active {
 	text-decoration : underline;
 }
 
-.clr { clear: both; overflow:hidden; }
 .rtop,.artop{display:block}
 .rtop *,.artop *{display:block;height:1px;overflow:hidden;font-size:1px}
 .artop *{border-style: solid;border-width:0 1px}

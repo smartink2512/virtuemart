@@ -29,7 +29,7 @@ function debug_msg( $msg ) {
 }
 	
 if ($_POST) {
-	header("Status: 200 OK");
+	header("HTTP/1.0 200 OK");
 
     global $mosConfig_absolute_path, $mosConfig_live_site, $mosConfig_lang, $database,
     $mosConfig_mailfrom, $mosConfig_fromname;
@@ -76,10 +76,11 @@ if ($_POST) {
 			
 			// trigger the onBeforeStart events
 			$mainframe->triggerEvent( 'onBeforeStart' );
-			
+			$lang =& JFactory::getLanguage();
+			$mosConfig_lang = $GLOBALS['mosConfig_lang']          = strtolower( $lang->getBackwardLang() );
 			// Adjust the live site path
-			$mosConfig_live_site = str_replace('/administrator/components/com_virtuemart', '', $mosConfig_live_site); 
-			$mosConfig_absolute_path = $absolute_path;
+			$mosConfig_live_site = str_replace('/administrator/components/com_virtuemart', '', JURI::base());
+			$mosConfig_absolute_path = JPATH_BASE;
         } else {
         	define('_VALID_MOS', '1');
         	require_once($mosConfig_absolute_path. '/includes/joomla.php');

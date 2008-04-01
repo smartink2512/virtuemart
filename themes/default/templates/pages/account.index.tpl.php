@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2005 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -69,6 +69,6 @@ if ($perm->is_registered_customer($auth['user_id'])) {
 <?php } 
 else { 
 	// You're not allowed... you need to login.
-    echo _LOGIN_TEXT .'<br/><br/><br/>';
+    echo $VM_LANG->_('DO_LOGIN') .'<br/><br/><br/>';
     include(PAGEPATH.'checkout.login_form.php');
 } ?>

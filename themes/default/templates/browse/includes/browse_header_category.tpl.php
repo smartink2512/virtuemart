@@ -17,7 +17,7 @@
 		<div style="width:100%;float:left;">
 			<?php echo $desc; ?>
 		</div>
-		<br style="clear:both;" /><br />
+		<br class="clr" /><br />
 		<?php
      }
 ?>

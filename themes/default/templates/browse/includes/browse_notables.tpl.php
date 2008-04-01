@@ -45,7 +45,7 @@ foreach( $products as $product ) {
 		if ( ($i) % $products_per_row == 0) {
 			$row++;
 			/** if yes, close the current "row" ***/
-			echo "\n</div><br style=\"clear:both;\" />";
+			echo "\n</div><br class=\"clr\" />";
 		}
 		else {
 			echo "\n</div>";

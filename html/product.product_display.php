@@ -20,7 +20,7 @@ mm_showMyFileName( __FILE__ );
 require_once(CLASSPATH.'ps_vendor.php');
 $ps_vendor = new ps_vendor;
 $db2 = new ps_DB; 
-$product_id = $vars["product_id"];
+$product_id = vmGet($vars, 'product_id', 0 );
 if( empty( $product_id )) {
 	include( PAGEPATH.'product.product_list.php');
 	return;
