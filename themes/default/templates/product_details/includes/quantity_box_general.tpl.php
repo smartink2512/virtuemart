@@ -21,13 +21,14 @@ switch($display_type) {
 	case "check" :
 		$html .= "<input type=\"hidden\" id=\"quantity".$prod_id."\" name=\"quantity[]\" value=\"".$quantity."\" style=\"vertical-align: middle;\"/>
 		<input type=\"checkbox\" class=\"quantitycheckbox\" id =\"check$id\" name=\"check[]\" ";
-		if ($quantity > 0 )
-		$html .= "checked=\"checked\"";
+		if ($quantity > 0 ) {
+			$html .= "checked=\"checked\"";
+		}
 		$html .= " value=\"1\" onclick=\"javascript: if(this.checked==true) document.getElementById('quantity".$prod_id."').value = 1; else {document.getElementById('quantity".$prod_id."').value=0;} \"/> ";
 		break;
 	case "drop" :
 		$code = "<select class=\"inputboxquantity\" id=\"quantity".$prod_id."\" name=\"quantity[]\">";
-		for($i=$display_start;$i<$display_end+1;$i += $display_step) {
+		for($i=$quantity_start;$i<$quantity_end+1;$i += $quantity_step) {
 			$code .= "  <option value=\"$i\"";
 			if ($i == $quantity) {
 				$code .= " selected=\"selected\"";
