@@ -226,9 +226,10 @@ class ps_product_discount {
 	 * Builds a select list of all discounts.
 	 *
 	 * @param int $discount_id
-	 * @return boolean
+	 * @param boolean $show_dates Show the discount start and end dates
+	 * @return string The html for the select list 
 	 */
-	function discount_list( $discount_id = 0 ) {
+	function discount_list( $discount_id = 0, $show_dates = true ) {
 		global $VM_LANG, $option ;
 		$db = new ps_DB( ) ;
 		$html = "" ;
@@ -245,6 +246,9 @@ class ps_product_discount {
 				$selected = $db->f( "discount_id" ) == $discount_id ? "selected=\"selected\"" : "" ;
 				$html .= "<option id=\"$id\" value=\"" . $db->f( "discount_id" ) . "\" $selected>" . $db->f( "amount" ) ;
 				$html .= $db->f( "is_percent" ) == "1" ? "%" : $_SESSION['vendor_currency'] ;
+				if( $show_dates ) {
+					$html .= ' (' . strftime('%Y-%m-%d', $db->f('start_date')) . ' - ' . strftime('%Y-%m-%d', $db->f('end_date')) . ')';
+				}
 				$html .= "</option>\n" ;
 			}
 			$html .= "<option value=\"override\">".$VM_LANG->_('VM_PRODUCT_DISCOUNT_OVERRIDE')."</option>\n" ;

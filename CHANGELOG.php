@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.04.2008 gregdev
+# Task #1948 - same discounts - different date
+
 31.03.2008 soeren
 # Task #1958 - Fatal error after rev 1338 when trying to look at product details
 # fixed PayPal IPN script on J! 1.5
