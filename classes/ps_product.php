@@ -2048,15 +2048,22 @@ class ps_product extends vmAbstractObject {
 							$i == 1 ? $i++ : $i--;
 						}
 					} else {
+						// get the current shopper group discount
+						$dbsg = new ps_DB();
+						$q = "SELECT * FROM #__{vm}_shopper_group WHERE shopper_group_id=" . $auth["shopper_group_id"];
+						$dbsg->setQuery($q);
+						 $dbsg->query();
+						$dbsg->next_record();
+						$shopper_group_discount = $dbsg->f("shopper_group_discount");
 						while( $db->next_record() ) {
 							$price = $GLOBALS['CURRENCY']->convert( $db->f("product_price"), $db->f("product_currency") );
 							$prices_table .= "<tr class=\"sectiontableentry$i\"><td>".$db->f("price_quantity_start")." - ".$db->f("price_quantity_end")."</td>";
 							$prices_table .= "<td>";
 							if (!empty($my_taxrate)) {
-								$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$price );
+								$prices_table .= $CURRENCY_DISPLAY->getFullValue( ($my_taxrate+1)*$price*((100-$shopper_group_discount)/100) );
 							}
 							else {
-								$prices_table .= $CURRENCY_DISPLAY->getFullValue( $price );
+								$prices_table .= $CURRENCY_DISPLAY->getFullValue( $price*((100-$shopper_group_discount)/100) );
 							}
 							$prices_table .= "</td></tr>";
 							$i == 1 ? $i++ : $i--;
