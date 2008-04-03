@@ -175,7 +175,14 @@ else {
 			if (!empty($product_type_id)){
 				foreach($_REQUEST as $key => $value){
 					if (substr($key, 0,13) == "product_type_"){
-						$search_string .="&".$key."=".urlencode(vmGet($_REQUEST, $key ));
+						$val = vmGet($_REQUEST, $key );
+						if( is_array( $val )) {
+							foreach( $val as $var ) {
+								$search_string .="&".$key."[]=".urlencode($var);
+							}
+						} else {
+							$search_string .="&".$key."=".urlencode($val);
+						}
 					}
 				}
 			}

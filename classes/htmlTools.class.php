@@ -1361,7 +1361,7 @@ function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $use_entities=fal
 function mm_showMyFileName( $filename ) {
     
     if (vmShouldDebug()) { /*@MWM1: Logging/Debugging Enhancements */
-        echo vmToolTip( '<div class=\'inputbox\'>Begin of File: '. $filename.'</div>');
+        echo vmToolTip( '<div class=\'inputbox\'>Begin of File: '. wordwrap( $filename, 70, '<br />', true ).'</div>');
     }
 }
 /**

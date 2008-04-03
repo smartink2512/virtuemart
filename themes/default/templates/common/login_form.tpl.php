@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage templates
-* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -15,7 +15,11 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * http://virtuemart.net
 */
-
+if( vmIsJoomla('1.5')) {
+	$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=remind&tmpl=component' );
+} else {
+	$lostPwUrl = sefRelToAbs( 'index2.php?option=com_registration&amp;task=lostPassword' );
+}
 ?>
 <form action="<?php echo $action ?>" method="post" name="login" style="margin-left:20px;">
 	<label for="username_login"><?php echo $VM_LANG->_('USERNAME') ?>:</label>
@@ -24,6 +28,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 	<br />
 	<label for="passwd_login"><?php echo $VM_LANG->_('PASSWORD') ?>:</label> 
 	<input type="password" id="passwd_login" name="passwd" class="inputbox" size="20" />
+	(<a title="<?php echo $VM_LANG->_('LOST_PASSWORD'); ?>" href="<?php echo $lostPwUrl; ?>"><?php echo $VM_LANG->_('LOST_PASSWORD'); ?></a>)
 	<br />
 	<br />
 	<input type="submit" name="Submit" class="button" value="<?php echo $VM_LANG->_('BUTTON_LOGIN') ?>" />
@@ -39,4 +44,3 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 	<input type="hidden" name="return" value="<?php echo $return_url ?>" />
 	<input type="hidden" name="<?php echo $validate; ?>" value="1" />
 </form>
-

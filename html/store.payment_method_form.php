@@ -165,7 +165,7 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_FORM_LBL'), "global-page");
         $tabs->startTab( $VM_LANG->_('PHPSHOP_CONFIG'), "config-page");
         
         if( $_PAYMENT->has_configuration() ) {
-        	$ps_html->writableIndicator( CLASSPATH."payment/".$_PAYMENT->classname.".cfg.php" );
+        	$ps_html->writableIndicator( CLASSPATH."payment/".get_class($_PAYMENT).".cfg.php" );
         }
         
         $_PAYMENT->show_configuration();

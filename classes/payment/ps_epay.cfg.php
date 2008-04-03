@@ -1,6 +1,4 @@
 <?php
-if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
-
 define ('EPAY_MERCHANTNUMBER', 'Enter merchantnumber here');
 define ('EPAY_LANGUAGE', '2');
 define ('EPAY_CALLBACK', '0');
@@ -27,10 +25,15 @@ define ('EPAY_CARDTYPES_7', '');
 define ('EPAY_CARDTYPES_8', '');
 define ('EPAY_CARDTYPES_9', '');
 define ('EPAY_CARDTYPES_10', '');
-define ('EPAY_CARDTYPES_11', '');
 define ('EPAY_CARDTYPES_12', '');
 define ('EPAY_CARDTYPES_13', '');
 define ('EPAY_CARDTYPES_14', '');
 define ('EPAY_CARDTYPES_15', '');
 define ('EPAY_CARDTYPES_16', '');
+define ('EPAY_CARDTYPES_17', '');
+define ('EPAY_CARDTYPES_18', '');
+define ('EPAY_CARDTYPES_19', '');
+define ('EPAY_CARDTYPES_21', '');
+define ('EPAY_CARDTYPES_22', '');
+define ('EPAY_AUTHEMAILCUSTOMER', '1');
 ?>

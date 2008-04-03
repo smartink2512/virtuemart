@@ -1,15 +1,15 @@
 <?php 
 /**
 * @version $Id: checkout.epay_result.php,v 1.4 2005/05/22 09:21:15 soeren_nb Exp $
-* @package mambo-phpShop
-* @subpackage Payment
-* @copyright (C) 2004-2005 Soeren Eberhardt
+* @package VirtueMart
+* @subpackage html
+* @copyright (C) 2007-2008 Thomas Knudsen
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* mambo-phpShop is Free Software.
-* mambo-phpShop comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.mambo-phpshop.net
+* www.VirtueMart.net
 *
 * ePay Order Confirmation Handler
 */
@@ -17,15 +17,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 
 function addPaymentLog($dbConn, $log, $order_id)
 {
-	$dbConn->query( "UPDATE #__{vm}_order_payment SET order_payment_log = concat('" . $log. "<br>', order_payment_log) where order_id = '" . $order_id . "'");
+	$dbConn->query( "UPDATE #__{vm}_order_payment SET order_payment_log = concat('" . $dbConn->getEscaped($log.) "<br>', order_payment_log) where order_id = '" .$dbConn->getEscaped( $order_id .) "'");
 }
 
 function orderPaymentNotYetUpdated($dbConn, $order_id, $tid)
 {
 	$res = false;
-	$dbConn->query("select count(*) 'qty' from #__{vm}_order_payment where order_payment_number = '" . $order_id . "' and order_payment_trans_id = '" . $tid . "'");
+	$dbConn->query("SELECT COUNT(*) `qty` FROM `#__{vm}_order_payment` WHERE `order_payment_number` = '" . $dbConn->getEscaped($order_id ) . "' and order_payment_trans_id = '" .$dbConn->getEscaped( $tid) . "'");
 	if($dbConn->next_record()) {
-		if ($dbConn->f['qty'] == 0) {
+		if ($dbConn->f('qty') == 0) {
 			$res = true;
 		}
 	}
@@ -33,14 +33,15 @@ function orderPaymentNotYetUpdated($dbConn, $order_id, $tid)
 }
 
 require_once(  CLASSPATH ."payment/ps_epay.cfg.php");
-$accept = mosGetParam( $_REQUEST, "accept", "0" );
-$tid = mosGetParam( $_REQUEST, "tid", "0" );
-$order_id = mosGetParam( $_REQUEST, "orderid", "0" );
-$order_amount = mosGetParam( $_REQUEST, "amount", "0" );
-$order_currency = mosGetParam( $_REQUEST, "cur", "0" );
-$order_ekey = mosGetParam( $_REQUEST, "eKey", "0" );
-$error = mosGetParam( $_REQUEST, "error", "-1" );
-$order_currency = mosGetParam( $_REQUEST, "cur", "0" );
+
+$accept = $_REQUEST["accept"];
+$tid = $_REQUEST["tid"];
+$order_id = $_REQUEST["orderid"];
+$order_amount = $_REQUEST["amount"];
+$order_currency = $_REQUEST["cur"];
+$order_ekey = $_REQUEST["eKey"];
+$error = $_REQUEST["error"];
+$order_currency = $_REQUEST["cur"];
 
 
 
@@ -54,6 +55,7 @@ $order_currency = mosGetParam( $_REQUEST, "cur", "0" );
 // Now validat on the MD5 stamping. If the MD5 key is valid or if MD5 is disabled
 //
 if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EPAY_MD5_TYPE == 0 ) {
+	
 			//
 			// Find the corresponding order in the database
 			//  
@@ -73,6 +75,7 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
         	// Only update the order information once
         	//
         	if (orderPaymentNotYetUpdated($dbo, $order_id, $tid)) {
+        		
             
 	            // UPDATE THE ORDER STATUS to 'VALID'
 	            $d['order_status'] = EPAY_VERIFIED_STATUS;
@@ -90,7 +93,7 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
 	            //
 	            // Order payment
 	            //
-	            $dbo->query( "UPDATE #__{vm}_order_payment SET order_payment_number = '" . $order_id . "', order_payment_trans_id = '" . $tid . "', order_payment_code = 0 where order_id = '" . $order_id . "'");
+	            $dbo->query( "UPDATE #__{vm}_order_payment SET order_payment_number = '" . $dbo->getEscaped($order_id ). "', order_payment_trans_id = '" . $tid . "', order_payment_code = 0 where order_id = '" .$dbo->getEscaped( $order_id ). "'");
 	            
 	            // add history callback info
 	            if ($accept == "2") {
@@ -98,18 +101,52 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
 	            }
 	            
 	            // payment fee
-	            if (mosGetParam( $_REQUEST, "transfee", "0" )) {
-	            	addPaymentLog($dbo, $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_FEE') . mosGetParam( $_REQUEST, "transfee", "0"), $order_id);
+	            if ($_REQUEST["transfee"]) {
+	            	addPaymentLog($dbo, $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_FEE') . $_REQUEST["transfee"], $order_id);
 	            }
 	            
 	            // payment date
-	            if (mosGetParam( $_REQUEST, "date", "0" )) {
-	            	addPaymentLog($dbo, $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_DATE') . mosGetParam( $_REQUEST, "date", "0"), $order_id);
+	            if ($_REQUEST["date"]) {
+	            	addPaymentLog($dbo, $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_DATE') . $_REQUEST["date"], $order_id);
 	            }
 	            
 	            // payment fraud control
-	            if (mosGetParam( $_REQUEST, "fraud", "0" )) {
-	            	addPaymentLog($dbo, sprintf($VM_LANG->_('PHPSHOP_EPAY_FRAUD'), mosGetParam( $_REQUEST, "fraud", "0")), $order_id);
+	            if ($_REQUEST["fraud"]) {
+	            	addPaymentLog($dbo, sprintf($VM_LANG->_('PHPSHOP_EPAY_FRAUD'), $_REQUEST["fraud"]), $order_id);
+	            }
+	            
+	            // card id
+	            if ($_REQUEST["cardid"]) {
+	               $cardname = "Unknown";
+	               $cardimage = "c" . $_REQUEST["cardid"] . ".gif";
+	               switch ($_REQUEST["cardid"])
+	               {
+                    case 1: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C1'); break;
+                    case 2: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C2'); break;
+                    case 3: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C3'); break;
+                    case 4: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C4'); break;
+                    case 5: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C5'); break;
+                    case 6: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C6'); break;
+                    case 7: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C7'); break;
+                    case 8: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C8'); break;
+                    case 9: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C9'); break;
+                    case 10: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C10'); break;
+                    case 11: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C11'); break;
+                    case 12: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C12'); break;
+                    case 13: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C13'); break;
+                    case 14: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C14'); break;
+                    case 15: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C15'); break;
+                    case 16: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C16'); break;
+                    case 17: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C17'); break;
+                    case 18: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C18'); break;
+                    case 19: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C19'); break;
+                    case 20: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C20'); break;
+                    case 21: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C21'); break;
+                    case 22: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C22'); break;
+                    case 23: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C23'); break;
+                 }
+	               addPaymentLog($dbo, sprintf($VM_LANG->_('PHPSHOP_EPAY_PAYMENT_CARDTYPE'), $cardname, $cardimage), $order_id);
+	            	  
 	            }
 	            
 	            // creation information
@@ -117,8 +154,8 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
 	        }
   
 ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_SUCCESS'); ?>" border="0" />
-            <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS') ?></h2>
+            <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_ok.png" align="center" alt="Success" border="0" />
+            <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS'); ?></h2>
 <?php
         }
         elseif( $accept == "0" ) {
@@ -137,7 +174,7 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
             $ps_order->order_status_update($d);
             
 ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+            <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_cancel.png" align="center" alt="Failure" border="0" />
             <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?></h2>
 <?php
 		
@@ -154,13 +191,13 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
       }
       else {
         ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+        <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_cancel.png" align="center" alt="Failure" border="0" />
         <span class="message"><? echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') . $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND') ?> </span><?php
       }
 }
 else{
         ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+        <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_cancel.png" align="center" alt="Failure" border="0" />
         <span class="message"><? echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') . $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE') ?> </span><?php
   }
   ?>

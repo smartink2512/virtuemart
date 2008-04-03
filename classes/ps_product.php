@@ -1039,7 +1039,7 @@ class ps_product extends vmAbstractObject {
 				foreach( $values as $key => $value ) {
 					$GLOBALS['product_info'][$product_id][$key] = $value;
 				}
-				if( !isset( $GLOBALS['product_info'][$product_id][$field_name] )) {
+				if( !isset( $GLOBALS['product_info'][$product_id][$field_name] ) && !is_null($GLOBALS['product_info'][$product_id][$field_name])) {
 					$GLOBALS['vmLogger']->debug( 'The Field '.$field_name. ' does not exist in the product table!');
 					$GLOBALS['product_info'][$product_id][$field_name] = true;
 				}
@@ -2367,7 +2367,7 @@ class ps_product extends vmAbstractObject {
     	$quantity_options_string = ps_product::get_field($product_id, 'quantity_options');
     	
     	$fields = explode(',', $quantity_options_string );
-    	if( !empty( $fields )&& $fields[0] != 1 ) {
+    	if( !empty( $fields )&& sizeof($fields) > 1 ) {
     		$quantity_options['quantity_box'] = $fields[0];
     		$quantity_options['display_type'] = $fields[0];
     		$quantity_options['quantity_start'] = $fields[1];

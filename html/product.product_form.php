@@ -50,7 +50,7 @@ $product_list_type="";
 $display_desc="";
 $desc_width="20%";
 $attrib_width="10%";
-$q_type = "none";
+$display_type = "none";
 $child_class_sfx ="";
 $min_order="";
 $max_order="";
@@ -401,12 +401,11 @@ $tabs->startTab( $display_label, "display-page");
        <?php 
        echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_desc\" name=\"display_desc\" value=\"Y\" ";
        if ($display_desc) {
-       	echo "checked=\"checked\" ";
+       	echo 'checked="checked" ';
        }
-    echo '/> <label for="display_desc">'.$VM_LANG->_('VM_DISPLAY_CHILD_DESCRIPTION').'</label>'; ?><br />
-    <?php 
-    echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"desc_width\" name=\"desc_width\" value=\"$desc_width\"  ";
-    echo "/> ".$VM_LANG->_('VM_DISPLAY_DESC_WIDTH'); ?>
+    echo '/> <label for="display_desc">'.$VM_LANG->_('VM_DISPLAY_CHILD_DESCRIPTION').'</label><br />
+    		<input type="inputbox" style="vertical-align: middle;" class="inputbox" size="8" id="desc_width" name="desc_width" value="'.$desc_width.'" />';
+    echo $VM_LANG->_('VM_DISPLAY_DESC_WIDTH'); ?>
     <br />
     <?php 
     echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"attrib_width\" name=\"attrib_width\" value=\"$attrib_width\"  ";
@@ -500,37 +499,33 @@ $tabs->startTab( $display_label, "display-page");
         </td>
         <td width="20%" style="vertical-align: top;">
         
-            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box0" name="quantity_box" value="none" 
-            <?php if ($q_type == "none") echo "checked=\"checked\""; ?> 
-            />
+            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box0" name="quantity_box" value="none" <?php 
+            	if ($display_type == "none") echo "checked=\"checked\""; ?>  />
             <label for="quantity_box0" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_NORMAL'); ?></label><br/>
-            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box1" name="quantity_box" value="hide" 
-            <?php if ($q_type == "hide") echo "checked=\"checked\""; ?> 
-            />
+            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box1" name="quantity_box" value="hide" <?php 
+            	if ($display_type == "hide") echo "checked=\"checked\""; ?> />
             <label for="quantity_box1" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_HIDE') ?> </label><br />
-            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box2" name="quantity_box" value="drop" 
-            <?php if ($q_type == "drop") echo "checked=\"checked\""; ?> 
-            />
+            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box2" name="quantity_box" value="drop" <?php 
+            	if ($display_type == "drop") echo "checked=\"checked\""; ?> />
             <label for="quantity_box2" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_DROPDOWN') ?> </label><br />
-            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box3" name="quantity_box" value="check" 
-            <?php if ($q_type == "check") echo "checked=\"checked\""; ?> 
+            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box3" name="quantity_box" value="check" <?php 
+            	if ($display_type == "check") echo "checked=\"checked\""; ?> 
             />
             <label for="quantity_box3" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_CHECKBOX') ?> </label><br />
-            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box4" name="quantity_box" value="radio" 
-            <?php if ($q_type == "radio") echo "checked=\"checked\""; ?> 
-            <?php if($product_parent_id !=0) echo "disabled=\"true\""; ?>
-            />
+            <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box4" name="quantity_box" value="radio" <?php 
+	            if ($display_type == "radio") echo 'checked="checked"';  
+	            if($product_parent_id !=0) echo ' disabled="true"'; ?>  />
             <label for="quantity_box4" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_RADIOBOX') ?> </label><br />
             
         </td>
         <td width="20%" style="vertical-align: top;">
             <fieldset>
                 <legend><?php echo $VM_LANG->_('VM_DISPLAY_QUANTITY_DROPDOWN_LABEL') ?></legend>
-            <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_start" name="quantity_start" size="4" value="<?php echo $quantity_start; ?>">
+            <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_start" name="quantity_start" size="4" value="<?php echo $quantity_start; ?>" />
             <label for="quantity_start" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_START') ?> </label><br />
-            <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_end" name="quantity_end" size="4" value="<?php echo $quantity_end; ?>">
+            <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_end" name="quantity_end" size="4" value="<?php echo $quantity_end; ?>" />
             <label for="quantity_end" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_END') ?> </label><br />
-            <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_step" name="quantity_step" size="4" value="<?php echo $quantity_step; ?>">
+            <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_step" name="quantity_step" size="4" value="<?php echo $quantity_step; ?>" />
             <label for="quantity_step" style="vertical-align: middle;"><?php echo $VM_LANG->_('PHPSHOP_DISPLAY_STEP') ?> </label><br />
             </fieldset>
         </td>

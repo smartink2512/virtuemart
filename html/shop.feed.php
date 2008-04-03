@@ -77,7 +77,7 @@ $info['now_rfc822'] = gmdate("D, d M Y H:i:s", time()+$mosConfig_offset*60*60 );
 $date = gmdate("Y-m-d\TH:i:sO", time()+$mosConfig_offset*60*60 );
 $info['now_iso8601'] = substr($date,0,22) . ':' . substr($date,-2);
 
-$iso = split( '=', _ISO );
+$iso = $VM_LANG->getCharset();
 $lang = split( '_', $mosConfig_locale );
 
 if( $category_id ) {
@@ -99,7 +99,7 @@ $info['date'] = date( 'r' );
 $info['year'] = date( 'Y' );
 $info['link'] = $mosConfig_live_site;
 
-$info['encoding'] = $iso[1];
+$info['encoding'] = $iso;
 $info['language'] = $lang[0];
 
 $info['cache'] = VM_FEED_CACHE;
@@ -141,9 +141,6 @@ function cached_feed( $feed_info ) {
 	// load feed creator class
 	require_once( $GLOBALS['mosConfig_absolute_path'] .'/includes/feedcreator.class.php' );
 	
-	$now 	= _CURRENT_SERVER_TIME;
-	$iso 	= split( '=', _ISO );
-	
 	$products = getProducts( $feed_info );
 	if( empty( $products )) {
 		return;
@@ -164,7 +161,7 @@ function cached_feed( $feed_info ) {
 	$rss->description 		= $feed_info['feed_description'];
 	$rss->link 				= htmlspecialchars( $feed_info['link'] );
 	$rss->cssStyleSheet 	= NULL;
-	$rss->encoding 			= $iso[1];
+	$rss->encoding 			= $feed_info['encoding'];
 	$feed_image		= $feed_info['image_file'];
 
 	if ( $feed_image ) {
@@ -188,15 +185,15 @@ function cached_feed( $feed_info ) {
 		// load individual item creator class
 		$item = new FeedItem();
 		// item info
-		$product_link = $sess->url( $GLOBALS['mosConfig_live_site'].'/index.php?product_id='.$product['id'].'&page=shop.product_details&category_id='.$product['category_id'].'&flypage='.$product['category_flypage'] );
-		$item->title 		= htmlentities( $product['name'] );
+		$product_link = $sess->url( $GLOBALS['mosConfig_live_site'].'/index.php?product_id='.$product['id'].'&page=shop.product_details&category_id='.$product['category_id'].'&flypage='.$product['category_flypage'], true );
+		$item->title 		= htmlspecialchars($product['name'] );
 		$item->link 		= vmHtmlEntityDecode($product_link);
 		$item->source 		= $product_link;
 		
 		$item->description = getProductDescription( $product, $feed_info );
 		
 		$item->date			= date( 'r', $product['cdate'] );
-		$item->category     = htmlentities( $product['category_name'] );
+		$item->category     = htmlspecialchars( $product['category_name'] );
 
 		// loads item info into rss array
 		$rss->addItem( $item );

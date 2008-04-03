@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage themes
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -26,8 +26,9 @@ echo '<!-- End Cart --><br />
 ';
 
 if ($cart["idx"]) {
-    echo '<div align="center">';
-    
+    ?>
+    <div align="center">
+    <?php
     if( $continue_link != '') {
 		?>
 		 <a href="<?php echo $continue_link ?>" class="continue_link">
@@ -42,7 +43,7 @@ if ($cart["idx"]) {
        <?php
    }
    else {
-   		$href = $sess->url( $mm_action_url . "/index.php?page=checkout.index&ssl_redirect=1", true);
+   		$href = $sess->url( $_SERVER['PHP_SELF'].'?page=checkout.index&ssl_redirect=1', true);
    		$href2 = $sess->url( $mm_action_url . "/index2.php?page=checkout.index&ssl_redirect=1", true);
    		$class_att = 'class="checkout_link"';
    		$text = $VM_LANG->_('PHPSHOP_CHECKOUT_TITLE');
@@ -60,3 +61,4 @@ if ($cart["idx"]) {
 	<?php
 	// End if statement
 }
+?>

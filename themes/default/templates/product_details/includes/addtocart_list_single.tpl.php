@@ -1,6 +1,7 @@
 <?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <?php
+mm_showMyFileName(__FILE__);
 
 // Start Ouputing the Child Detail
 ?>
@@ -30,16 +31,20 @@ foreach( $products as $product ) {
         <div class="vmCartChildElement<?php echo $cls_suffix ?>">
             <input type="hidden" name="prod_id[]" value="<?php echo $product['product_id'] ?>" />
             <input type="hidden" name="product_id" value="<?php echo $product['parent_id'] ?>" />
-            <span class="vmChildDetail<?php echo $cls_suffix ?>" style="float: left;width :20%;" />
+            <label for="selItem<?php echo $product['product_id'] ?>">
+            <span class="vmChildDetail<?php echo $cls_suffix ?>" style="width :20%;" />
                 <?php echo $product['product_title'] ?></span>
             <?php // Ouput Each Attribute
             foreach($product['attrib_value'] as $attribute) { ?>
-                <span class="vmChildDetail<?php echo $cls_suffix ?>" style="float: left;width :<?php echo $attrib_width ?>;" />
+                <span class="vmChildDetail<?php echo $cls_suffix ?>" style="width :<?php echo $attrib_width ?>;" />
 	            <?php echo " ".$attribute ?></span>
-            <?php } 
+            <?php 
+			}
+			?></label>
+			<?php 
             // Output Quantity Box 
             if (USE_AS_CATALOGUE != '1' ) { ?>
-                <span style="float: right;: right;padding-right:5px;"><?php echo $product['quantity_box'] ?></span>
+                <span style="float: right;padding-right:5px;"><?php echo $product['quantity_box'] ?></span>
             <?php } 
             // Output Price 
             if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES) { 
@@ -48,8 +53,10 @@ foreach( $products as $product ) {
                 <?php
                 if( $product['price'] != $product['actual_price'] ) { ?>
                     <span class="product-Old-Price"><?php echo $product['price'] ?>&nbsp;</span>
-                <?php } 
-                echo $product['actual_price'] ?></span>
+                <?php 
+				}
+				?> 
+                <span class="productPrice"><?php echo $product['actual_price'] ?></span>
             <?php } ?>
 
         </div>

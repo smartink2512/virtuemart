@@ -223,10 +223,10 @@ class ps_product_attribute {
 		
 		switch( $product_list) {
 			case "Y" :
-				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_ids, $dw, $aw, $display_header, $product_list_type, $product_list, $product_price ) ;
+				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_option_ids, $dw, $aw, $display_header, $product_list_type, $product_list, $product_price ) ;
 			break ;
 			case "YM" :
-				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_ids, $dw, $aw, $display_header, $product_list_type, $product_list, $product_price ) ;
+				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_option_ids, $dw, $aw, $display_header, $product_list_type, $product_list, $product_price ) ;
 			break ;
 			case "N" :
 			default :
@@ -984,12 +984,25 @@ class ps_product_attribute {
 		return $result ;
 	}
 	
+	/**
+	 * Displays the Quantity Box for a Radio-Selector-based add-to-cart form 
+	 *
+	 * @return string
+	 */
 	function show_radio_quantity_box() {
 		$tpl = vmTemplate::getInstance() ;
 		$html = $tpl->fetch( 'product_details/includes/quantity_box_radio.tpl.php' ) ;
 		return $html ;
 	}
-	
+	/**
+	 * Creates the Quantity Input Boxes/Radio Buttons/Lists for Products
+	 *
+	 * @param int $product_id The Parent Product ID
+	 * @param int $prod_id The actual Product ID
+	 * @param string $child
+	 * @param string $use_parent
+	 * @return string
+	 */
 	function show_quantity_box( $product_id, $prod_id, $child = false, $use_parent = 'N' ) {
 		global $VM_LANG ;
 		$tpl = vmTemplate::getInstance() ;

@@ -141,7 +141,7 @@ if(@$_SESSION['vmEnableEmptyCart'] && !@$_SESSION['vmMiniCart']) {
 
 
 $href = $sess->url($mm_action_url."index.php?page=shop.cart");
-$href2 = $sess->url($mm_action_url."index2.php?page=shop.cart");
+$href2 = $sess->url($mm_action_url."index2.php?page=shop.cart", true);
 $text = $VM_LANG->_('PHPSHOP_CART_SHOW');
 if( @$_SESSION['vmUseGreyBox'] ) {
 	$show_cart = vmCommonHTML::getGreyboxPopUpLink( $href2, $text, '', $text, '', 500, 600, $href );

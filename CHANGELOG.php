@@ -35,13 +35,16 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-02.04.2008 gregdev
-# Task #1948 - same discounts - different date
-# Task #1691 - reopen: Discount price shows wrong on flypage, baket is correct
+03.04.2008 soeren
+^ updated to new ePay Payment Module version sent in by Thomas Knudsen of ePay
 
 31.03.2008 soeren
+# Task #1951 - Wrong display of child products when coming from account maintenance
+# smaller fixes with display of child items + attributes; added label element for accessible radio/checkbox display types
+# Task #1934 - forgot the password - link
+# fixed Product Feed displaying ampersands for htmlentities; links were relative
 # Task #1958 - Fatal error after rev 1338 when trying to look at product details
-# fixed PayPal IPN script on J! 1.5
+# Task #1927 - fixed PayPal IPN script on J! 1.5
 # Task #1945 - 2 warnings, update one doesn't update
 # Task #1957 - hardcoded image
 ^ update PayPal payment code

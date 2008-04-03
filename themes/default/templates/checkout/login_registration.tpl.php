@@ -48,8 +48,6 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 	myStretch = $$( \'.toggler\' );
 	myStretcher = $$( \'.stretcher\' );
 	
-
-	
 	// Create the accordion
 	myAccordion = new Fx.Accordion(myStretch, myStretcher, 
 		{
