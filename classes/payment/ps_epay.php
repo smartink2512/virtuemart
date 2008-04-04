@@ -33,14 +33,14 @@ class ps_epay {
     
 			<table style="text-align: left;">
         <tr>
-            <td><strong>PBS Merchant ID</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER');?></strong></td>
             <td>
                 <input type="text" name="EPAY_MERCHANTNUMBER" class="inputbox" value="<?php echo EPAY_MERCHANTNUMBER ?>" />
             </td>
-            <td>The Merchant ID you have reveived from PBS. For testing purpose a test Merchant ID can be obtained by contacting ePay (sales@epay.dk)</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN');?></td>
         </tr>
         <tr>
-            <td><strong>Order Status for successful transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS');?></strong></td>
             <td>
                 <select name="EPAY_VERIFIED_STATUS" class="inputbox" >
                 <?php
@@ -63,12 +63,11 @@ class ps_epay {
                     }?>
                     </select>
             </td>
-            <td>Select the order status to which the actual order is set, if the Transaction was successful. 
-            If using download selling options: select the status which enables the download (then the customer is instantly notified about the download via e-mail).
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN');?>
             </td>
         </tr>
             <tr>
-            <td><strong>Order Status for failed transactions</strong></td>
+            <td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED');?></strong></td>
             <td>
                 <select name="EPAY_INVALID_STATUS" class="inputbox" >
                 <?php
@@ -91,7 +90,7 @@ class ps_epay {
                     } ?>
                     </select>
             </td>
-            <td>Select an order status for failed transactions.</td>
+            <td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN');?></td>
         </tr>
         <script language="JavaScript">
           function enableDisableAll() {
@@ -141,9 +140,9 @@ class ps_epay {
           }
         </script>
         <tr>
-        	<td><strong>Cardtypes</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES');?></strong></td>
         	<td>
-        	    <input type="checkbox" name="EPAY_CARDTYPES_0" <?php if (EPAY_CARDTYPES_0 == '1') echo "checked"; ?> value="1" onclick="javascript:enableDisableAll();">All/alle/alles <br>
+        	    <input type="checkbox" name="EPAY_CARDTYPES_0" <?php if (EPAY_CARDTYPES_0 == '1') echo "checked"; ?> value="1" onclick="javascript:enableDisableAll();"><?php echo $VM_LANG->_('PHPSHOP_ALL');?> <br>
         			<input type="checkbox" name="EPAY_CARDTYPES_1" <?php if (EPAY_CARDTYPES_1 == '1') echo "checked"; ?> value="1">DANKORT <br>
         			<input type="checkbox" name="EPAY_CARDTYPES_2" <?php if (EPAY_CARDTYPES_2 == '1') echo "checked"; ?> value="1">VISA DANKORT <br>
         			<input type="checkbox" name="EPAY_CARDTYPES_3" <?php if (EPAY_CARDTYPES_3 == '1') echo "checked"; ?> value="1">VISA ELECTRON<br>
@@ -165,11 +164,11 @@ class ps_epay {
         			<input type="checkbox" name="EPAY_CARDTYPES_21" <?php if (EPAY_CARDTYPES_21 == '1') echo "checked"; ?> value="1">NORDEA <br>
         			<input type="checkbox" name="EPAY_CARDTYPES_22" <?php if (EPAY_CARDTYPES_22 == '1') echo "checked"; ?> value="1">DANSKE BANK <br>
         	</td>
-        	<td>Select cardtypes to show the customer.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES_EXPLAIN');?></td>
         </tr>
         <script language="JavaScript">enableDisableAll();</script>
         <tr>
-        	<td><strong>Language</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_LANGUAGE');?></strong></td>
         	<td>
         			<select name="EPAY_LANGUAGE" class="inputbox">
         			<option <?php if (EPAY_LANGUAGE == '1') echo "selected=\"selected\""; ?> value="1">Danish</option>
@@ -181,117 +180,117 @@ class ps_epay {
         			<option <?php if (EPAY_LANGUAGE == '7') echo "selected=\"selected\""; ?> value="7">German</option>
         			</select>
         	</td>
-        	<td>Select the language of the payment window.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_LANGUAGE_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Instant capture</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_INSTANT_CAPTURE');?></strong></td>
         	<td>
         			<select name="EPAY_INSTANT_CAPTURE" class="inputbox">
-        			<option <?php if (EPAY_INSTANT_CAPTURE == '0') echo "selected=\"selected\""; ?> value="0">Disabled</option>
-        			<option <?php if (EPAY_INSTANT_CAPTURE == '1') echo "selected=\"selected\""; ?> value="1">Enabled</option>
+        			<option <?php if (EPAY_INSTANT_CAPTURE == '0') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_('VM_DISABLED');?></option>
+        			<option <?php if (EPAY_INSTANT_CAPTURE == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('VM_ENABLED');?></option>
         			</select>
         	</td>
-        	<td>To capture payments immediately.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_INSTANT_CAPTURE_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Group</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_GROUP');?></strong></td>
         	<td>
         			<input type="text" name="EPAY_GROUP" class="inputbox" value ="<?php echo EPAY_GROUP; ?>">
         	</td>
-        	<td>To move the payment to a specified group. If not leave this field empty.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_GROUP_EXPLAIN');?></td>
         </tr>
         <tr>
         	<td><strong>MD5</strong></td>
         	<td>
         			<select name="EPAY_MD5_TYPE" class="inputbox">
-        			<option <?php if (EPAY_MD5_TYPE== '0') echo "selected=\"selected\""; ?> value="0">Disabled (0)</option>
-        			<option <?php if (EPAY_MD5_TYPE == '1') echo "selected=\"selected\""; ?> value="1">MD5 on accept page (1)</option>
-        			<option <?php if (EPAY_MD5_TYPE == '2') echo "selected=\"selected\""; ?> value="2">MD5 on both data transmitted to ePay and on accept page (2)</option>
+        			<option <?php if (EPAY_MD5_TYPE== '0') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_('VM_DISABLED');?> (0)</option>
+        			<option <?php if (EPAY_MD5_TYPE == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_1');?> (1)</option>
+        			<option <?php if (EPAY_MD5_TYPE == '2') echo "selected=\"selected\""; ?> value="2"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_2');?> (2)</option>
         			</select>
         	</td>
-        	<td>The type of MD5 usage. 0 disables MD5. 1 uses MD5 on the accept page on this shop. 2 creates a MD5 stamp, which is send to ePay with transaction data. If this stamp does not match ePay will decline the payment.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>MD5 key</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_MD5_KEY');?></strong></td>
         	<td>
         			<input type="text" name="EPAY_MD5_KEY" class="inputbox" value ="<?php echo EPAY_MD5_KEY; ?>">
         	</td>
-        	<td>If MD5 is enabled above the secure key for MD5 stamping is defined here (same secret key must be defined in the ePay administration). If MD5 is disabled leave this field empty.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_MD5_KEY_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Auth SMS</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS');?></strong></td>
         	<td>
         			<input type="text" name="EPAY_AUTH_SMS" class="inputbox" value ="<?php echo EPAY_AUTH_SMS; ?>">
         	</td>
-        	<td>Enter a mobile number here to receive a SMS message when the payment is verified by ePay. <b>Notice! each SMS costs DKK 0.25.</b></td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Auth EMAIL</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL');?></strong></td>
         	<td>
         			<input type="text" name="EPAY_AUTH_MAIL" class="inputbox" value ="<?php echo EPAY_AUTH_MAIL; ?>">
         	</td>
-        	<td>Enter one or more email adresses to receive an email when the payment is verified by ePay. For multiple receivers seperate the emailaddresses by semicolon (;).
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Window State</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE');?></strong></td>
         	<td>
         			<select name="EPAY_WINDOW_STATE" class="inputbox">
-        			<option <?php if (EPAY_WINDOW_STATE == '1') echo "selected=\"selected\""; ?> value="1">Popup (1)</option>
-        			<option <?php if (EPAY_WINDOW_STATE == '2') echo "selected=\"selected\""; ?> value="2">Same window (full screen) (2)</option>
+        			<option <?php if (EPAY_WINDOW_STATE == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_1');?> (1)</option>
+        			<option <?php if (EPAY_WINDOW_STATE == '2') echo "selected=\"selected\""; ?> value="2"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_2');?> (2)</option>
         			</select>
         	</td>
         	<td>&nbsp;</td>
         </tr>
         <tr>
-        	<td><strong>3D secure</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_3DSECURE');?></strong></td>
         	<td>
         			<select name="EPAY_3DSECURE" class="inputbox">
-        			<option <?php if (EPAY_3DSECURE == '1') echo "selected=\"selected\""; ?> value="1">3D secure is enabled (1)</option>
-        			<option <?php if (EPAY_3DSECURE == '2') echo "selected=\"selected\""; ?> value="2">Only payments by use of 3D secure is allowed (2)</option>
-        			<option <?php if (EPAY_3DSECURE == '3') echo "selected=\"selected\""; ?> value="3">3D secure payments are disabled (3)</option>
+        			<option <?php if (EPAY_3DSECURE == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_1');?> (1)</option>
+        			<option <?php if (EPAY_3DSECURE == '2') echo "selected=\"selected\""; ?> value="2"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_2');?> (2)</option>
+        			<option <?php if (EPAY_3DSECURE == '3') echo "selected=\"selected\""; ?> value="3"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_3');?> (3)</option>
         			</select>
         	</td>
         	<td>&nbsp;</td>
         </tr>
         <tr>
-        	<td><strong>Activate callback</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_CALLBACK');?></strong></td>
         	<td>
         			<select name="EPAY_CALLBACK" class="inputbox">
-        			<option <?php if (EPAY_CALLBACK == '0') echo "selected"; ?> value="0">Callback is disabled (0)</option>
-        			<option <?php if (EPAY_CALLBACK == '1') echo "selected"; ?> value="1">Enable callback (1)</option>
+        			<option <?php if (EPAY_CALLBACK == '0') echo "selected"; ?> value="0"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_0');?> (0)</option>
+        			<option <?php if (EPAY_CALLBACK == '1') echo "selected"; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_1');?> (1)</option>
         			</select>
         	</td>
-        	<td>Callback is used to avoid missing update of the shopping system if the user closes the browser before redirect to the shop from ePay is made. <b>(It is recommented that callback is enabled to update the shop even if the customer during the payment process closes the browser)</b></td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Transaction Fee</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_ADDFEE');?></strong></td>
         	<td>
         			<select name="EPAY_ADDFEE" class="inputbox">
-        			<option <?php if (EPAY_ADDFEE == '0') echo "selected=\"selected\""; ?> value="0">Customer does not pay for the transaction fee (0)</option>
-        			<option <?php if (EPAY_ADDFEE == '1') echo "selected=\"selected\""; ?> value="1">The customer paies for the transaction fee (1)</option>
+        			<option <?php if (EPAY_ADDFEE == '0') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_0');?> (0)</option>
+        			<option <?php if (EPAY_ADDFEE == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_1');?> (1)</option>
         			</select>
         	</td>
-        	<td>Often it is necessary to put the transaction fee to the customer. ePay will calculate the fee and put it on the payment before the payment is made.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Subscription</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION');?></strong></td>
         	<td>
         			<select name="EPAY_SUBSCRIPTION" class="inputbox">
-        			<option <?php if (EPAY_SUBSCRIPTION == '0') echo "selected=\"selected\""; ?> value="0">Disable subscription (0)</option>
-        			<option <?php if (EPAY_SUBSCRIPTION == '1') echo "selected=\"selected\""; ?> value="1">All payments are created as recurrent subscriptions (1)</option>
+        			<option <?php if (EPAY_SUBSCRIPTION == '0') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_0');?> (0)</option>
+        			<option <?php if (EPAY_SUBSCRIPTION == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_1');?> (1)</option>
         			</select>
         	</td>
-        	<td>Subscriptions are used for creating payments that can be authorized more than once (recurrent payments)</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_EXPLAIN');?></td>
         </tr>
         <tr>
-        	<td><strong>Send authemail to customer</strong></td>
+        	<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL');?></strong></td>
         	<td>
         			<select name="EPAY_AUTHEMAILCUSTOMER" class="inputbox">
-        			<option <?php if (EPAY_AUTHEMAILCUSTOMER == '1') echo "selected=\"selected\""; ?> value="1">Send authemail to customer (1)</option>
-        			<option <?php if (EPAY_AUTHEMAILCUSTOMER == '0') echo "selected=\"selected\""; ?> value="0">Don't send authemail to customer (0)</option>
+        			<option <?php if (EPAY_AUTHEMAILCUSTOMER == '1') echo "selected=\"selected\""; ?> value="1"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_1');?> (1)</option>
+        			<option <?php if (EPAY_AUTHEMAILCUSTOMER == '0') echo "selected=\"selected\""; ?> value="0"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0');?> (0)</option>
         			</select>
         	</td>
-        	<td>If you enable this option the customer will receive an email from ePay regarding approval of the payment! (This is the same email as the one defined in the section <b>Auth EMAIL</b>.</td>
+        	<td><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_EXPLAIN');?></td>
         </tr>
         
       </table>
@@ -304,13 +303,13 @@ class ps_epay {
       		}
       </script>
       
-      <br><br>
-      <CENTER>
-      	<font color="red">IF THE PAYMENT EXTRA INFO FIELD IS BLANK YOU MUST CLICK THIS BUTTON BELOW!</font>
-      	<BR><BR>
-      	<input type="button" onclick="resetExtraInfo();" value="Reset Payment Extra Info" />
-      	<br><br>
-      </CENTER>	
+      <br/><br/>
+      <div align="center">
+      	<span style="color:red"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET_EXPLAIN');?></span>
+      	<br/><br/>
+      	<input type="button" onclick="resetExtraInfo();" value="<?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET');?>" />
+      	<br/><br/>
+      </div>	
 
    <?php
    
@@ -346,6 +345,7 @@ class ps_epay {
 	* @returns boolean True when writing was successful
 	*/
    function write_configuration( &$d ) {
+   		global $VM_LANG;
 			$my_config_array = array("EPAY_MERCHANTNUMBER" => $d['EPAY_MERCHANTNUMBER'],
                                 "EPAY_LANGUAGE" => $d['EPAY_LANGUAGE'],
                                 "EPAY_CALLBACK" => $d['EPAY_CALLBACK'],
@@ -405,7 +405,7 @@ class ps_epay {
           return true;
      }
      else {
-        $d["error"] = "Could not write to configuration file ".CLASSPATH ."payment/".__CLASS__.".cfg.php";
+        $d["error"] = $VM_LANG->_('PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE')." ".CLASSPATH ."payment/".__CLASS__.".cfg.php";
         return false;
      }
    }

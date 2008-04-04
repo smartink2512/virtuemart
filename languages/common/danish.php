@@ -994,9 +994,9 @@ be sent to the customer from the Merchant Interface.
 	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. følgende fejlkode: ',
 	'PHPSHOP_EPAY_PAYMENT_LOG_TID' => 'Betalingen er oprettet med transaktionsnummer: ',
 	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles på: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekræftet ordren og skal nu vælge hvordan ordren betales. Dette gøres ved at klikke på den ønskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.',
-	'PHPSHOP_EPAY_BUTTON_OPEN_WINDOW' => 'ÅBEN BETALINGSVINDUET',
+	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekræftet ordren og skal nu vælge hvordan ordren betales. Dette gøres ved at klikke på den ønskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
+	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.',
+	'VM_CHECKOUT_EPAY_BUTTON_OPEN_WINDOW' => 'ÅBEN BETALINGSVINDUET',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER' => 'PBS Merchant ID',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN' => 'The Merchant ID you have reveived from PBS. For testing purpose a test Merchant ID can be obtained by contacting ePay (sales@epay.dk)',
 	'PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES' => 'Cardtypes',
@@ -1306,6 +1306,11 @@ check with your hosting company to see if you can access this port first',
 	'VM_MANUF_ADDED' => 'The Manufacturer has been added.',
 	'VM_MANUF_UPDATED' => 'The Manufacturer has been updated.',
 	'PHPSHOP_CUSTOMER_CVV2_TOOLTIP_TITLE' => 'Credit Card Security Code',
-	'VM_CREDIT_CARD_TYPE' => 'Credit Card Type'
+	'VM_CREDIT_CARD_TYPE' => 'Credit Card Type',
+	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_1' => 'Send authemail to customer',
+	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0' => 'Don\'t send authemail to customer',
+	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET_EXPLAIN' => 'IF THE PAYMENT EXTRA INFO FIELD IS BLANK YOU MUST CLICK THIS BUTTON BELOW!',
+	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET' => 'Reset Payment Extra Info',
+	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

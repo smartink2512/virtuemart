@@ -2,11 +2,10 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : hungarian.php 1247 2008-02-13 08:42:28Z pedrohsi $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @translator soeren, pedrohsi
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
+* @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -87,6 +86,10 @@ $langvars = array (
 	'VM_CHECKOUT_WF_ERROR_11' => 'Transaktion kan ikke gennemfores igennem denne terminal',
 	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
 	'VM_CHECKOUT_WF_ERROR_13' => 'Kártya nincs regisztrálva',
-	'VM_CHECKOUT_WF_ERROR_14' => 'Ismeretlen hiba'
+	'VM_CHECKOUT_WF_ERROR_14' => 'Ismeretlen hiba',
+	'PHPSHOP_EPAY_PAYMENT_CARDTYPE' => 'The payment is
+created by %s <img
+src="/components/com_virtuemart/shop_image/ps_image/epay_images/%s"
+border="0">'
 ); $VM_LANG->initModule( 'checkout', $langvars );
 ?>

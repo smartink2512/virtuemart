@@ -979,9 +979,9 @@ További részletek az <a href="http://www.authorize.net/support/AIM_guide.pdf">
 	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'The payment was not authorised by ePay/PBS. The payment was rejected because of the following error code: ',
 	'PHPSHOP_EPAY_PAYMENT_LOG_TID' => 'The payment is set up with transaction number: ',
 	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => 'The payment can be processed at: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_HEADER' => 'You have now confirmed the order and must now choose how the order have to be paid. This is done by clicking the required payment method below. The payment will happen in a SSL secure window at ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
-	'PHPSHOP_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'If the Standard Payment window does not open automatically , then click the button to activate it. Notice! If you are using a pop-up blocker, you must press the CTRL key while clicking the button.',
-	'PHPSHOP_EPAY_BUTTON_OPEN_WINDOW' => 'OPEN PAYMENT WINDOW',
+	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_HEADER' => 'You have now confirmed the order and must now choose how the order have to be paid. This is done by clicking the required payment method below. The payment will happen in a SSL secure window at ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
+	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'If the Standard Payment window does not open automatically , then click the button to activate it. Notice! If you are using a pop-up blocker, you must press the CTRL key while clicking the button.',
+	'VM_CHECKOUT_EPAY_BUTTON_OPEN_WINDOW' => 'OPEN PAYMENT WINDOW',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER' => 'PBS Merchant ID',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN' => 'A PBS által elküldött azonosító. Tesztelési célokra külön azonosító kérhető az ePay részéről (sales@epay.dk)',
 	'PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES' => 'Kártyatípus',
@@ -1289,6 +1289,11 @@ check with your hosting company to see if you can access this port first',
 	'VM_MANUF_ADDED' => 'The Manufacturer has been added.',
 	'VM_MANUF_UPDATED' => 'The Manufacturer has been updated.',
 	'PHPSHOP_CUSTOMER_CVV2_TOOLTIP_TITLE' => 'Credit Card Security Code',
-	'VM_CREDIT_CARD_TYPE' => 'Credit Card Type'
+	'VM_CREDIT_CARD_TYPE' => 'Credit Card Type',
+	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_1' => 'Send authemail to customer',
+	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0' => 'Don\'t send authemail to customer',
+	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET_EXPLAIN' => 'IF THE PAYMENT EXTRA INFO FIELD IS BLANK YOU MUST CLICK THIS BUTTON BELOW!',
+	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET' => 'Reset Payment Extra Info',
+	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

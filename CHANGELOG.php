@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+04.04.2008 thepisu
+# translation fixes for new ePay module (some string added in "common" and "checkout" modules)
+
 03.04.2008 soeren
 ^ updated to new ePay Payment Module version sent in by Thomas Knudsen of ePay
 

@@ -121,29 +121,29 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
 	               $cardimage = "c" . $_REQUEST["cardid"] . ".gif";
 	               switch ($_REQUEST["cardid"])
 	               {
-                    case 1: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C1'); break;
-                    case 2: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C2'); break;
-                    case 3: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C3'); break;
-                    case 4: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C4'); break;
-                    case 5: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C5'); break;
-                    case 6: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C6'); break;
-                    case 7: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C7'); break;
-                    case 8: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C8'); break;
-                    case 9: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C9'); break;
-                    case 10: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C10'); break;
-                    case 11: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C11'); break;
-                    case 12: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C12'); break;
-                    case 13: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C13'); break;
-                    case 14: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C14'); break;
-                    case 15: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C15'); break;
-                    case 16: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C16'); break;
-                    case 17: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C17'); break;
-                    case 18: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C18'); break;
-                    case 19: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C19'); break;
-                    case 20: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C20'); break;
-                    case 21: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C21'); break;
-                    case 22: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C22'); break;
-                    case 23: $cardname = $VM_LANG->_('PHPSHOP_EPAY_C23'); break;
+                    case 1: $cardname = 'Dankort (DK)'; break;
+                    case 2: $cardname = 'Visa/Dankort (DK)'; break;
+                    case 3: $cardname = 'Visa Electron (Udenlandsk)'; break;
+                    case 4: $cardname = 'Mastercard (DK)'; break;
+                    case 5: $cardname = 'Mastercard (Udenlandsk)'; break;
+                    case 6: $cardname = 'Visa Electron (DK)'; break;
+                    case 7: $cardname = 'JCB (Udenlandsk)'; break;
+                    case 8: $cardname = 'Diners (DK)'; break;
+                    case 9: $cardname = 'Maestro (DK)'; break;
+                    case 10: $cardname = 'American Express (DK)'; break;
+                    case 11: $cardname = 'Ukendt'; break;
+                    case 12: $cardname = 'eDankort (DK)'; break;
+                    case 13: $cardname = 'Diners (Udenlandsk)'; break;
+                    case 14: $cardname = 'American Express (Udenlandsk)'; break;
+                    case 15: $cardname = 'Maestro (Udenlandsk)'; break;
+                    case 16: $cardname = 'Forbrugsforeningen (DK)'; break;
+                    case 17: $cardname = 'eWire'; break;
+                    case 18: $cardname = 'VISA'; break;
+                    case 19: $cardname = 'IKANO'; break;
+                    case 20: $cardname = 'Andre'; break;
+                    case 21: $cardname = 'Nordea'; break;
+                    case 22: $cardname = 'Danske Bank'; break;
+                    case 23: $cardname = 'Danske Bank'; break;
                  }
 	               addPaymentLog($dbo, sprintf($VM_LANG->_('PHPSHOP_EPAY_PAYMENT_CARDTYPE'), $cardname, $cardimage), $order_id);
 	            	  
