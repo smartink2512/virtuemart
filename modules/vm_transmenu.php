@@ -14,8 +14,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */	
 global $mosConfig_live_site, $mosConfig_absolute_path;
 
-$live_module_dir = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js';
-$absolute_module_dir = $mosConfig_absolute_path.'/components/'.VM_COMPONENT_NAME.'/js';
+if( vmIsJoomla('1.5')) {
+	$live_module_dir = $mosConfig_live_site.'/modules/mod_virtuemart';
+	$absolute_module_dir = $mosConfig_absolute_path.'/modules/mod_virtuemart';
+} else {
+	$live_module_dir = $mosConfig_live_site.'/modules';
+	$absolute_module_dir = $mosConfig_absolute_path.'/modules';
+}
 
 $params->set( 'module_name', 'ShopMenu' );
 $params->set( 'module', 'vm_transmenu' );

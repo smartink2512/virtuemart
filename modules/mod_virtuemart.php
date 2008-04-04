@@ -31,7 +31,7 @@ global $my, $root_label, $mosConfig_allowUserRegistration, $jscook_type, $jscook
 
 $category_id = vmRequest::getInt( 'category_id' );
 
-$mod_dir = $mosConfig_absolute_path.'/components/'.VM_COMPONENT_NAME.'/js';
+$mod_dir = dirname( __FILE__ );
 
 /* Get module parameters */
 $show_login_form = $params->get( 'show_login_form', 'no' );

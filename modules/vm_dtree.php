@@ -14,7 +14,11 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 
 global $root_label, $sess, $db, $mosConfig_live_site, $mm_action_url;
 
-$js_src = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js';
+if( vmIsJoomla('1.5')) {
+	$js_src = $mosConfig_live_site.'/modules/mod_virtuemart';
+} else {
+	$js_src = $mosConfig_live_site.'/modules';
+}
 
 $Itemid = vmRequest::getInt( 'Itemid' );
 if( @get_class( $db ) != 'ps_DB' ) $db = new ps_DB();

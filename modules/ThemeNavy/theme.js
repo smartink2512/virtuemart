@@ -1,5 +1,3 @@
-// change this variable to update the theme directory
-var ctThemeXPBase = 'components/com_virtuemart/js/ThemeNavy/';
 
 // theme node properties
 var ctThemeNavy =

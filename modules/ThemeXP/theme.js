@@ -1,6 +1,4 @@
-if(!ctThemeXPBase) {
-  var ctThemeXPBase = 'components/com_virtuemart/js/ThemeXP/';
-}
+
 // theme node properties
 var ctThemeXP1 =
 {

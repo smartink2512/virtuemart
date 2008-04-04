@@ -822,9 +822,13 @@ class vmCommonHTML {
 	function loadTigraTree( ) {
 		global $mosConfig_live_site, $vm_mainframe;
 		if( !defined( "_TIGRATREE_LOADED" )) {
-			
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/tigratree/tree_tpl.js.php' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/tigratree/tree.js' );
+			if( vmIsJoomla( '1.5' )) {
+				$js_src = $mosConfig_live_site.'/modules/mod_virtuemart';
+			} else {
+				$js_src = $mosConfig_live_site.'/modules';
+			}
+			$vm_mainframe->addScript( $js_src .'/tigratree/tree_tpl.js.php' );
+			$vm_mainframe->addScript( $js_src .'/tigratree/tree.js' );
 
 			define ( "_TIGRATREE_LOADED", "1" );
 		}

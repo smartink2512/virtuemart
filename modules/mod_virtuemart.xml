@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <mosinstall type="module">
 	<name>VirtueMart Module</name>
-	<creationDate>February 2008</creationDate>
+	<creationDate>April 2008</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>soeren|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
@@ -18,6 +18,88 @@
     </description>
     <files>
          <filename module="mod_virtuemart">mod_virtuemart.php</filename>
+		<filename>JSCookTree.js</filename>
+		<filename>vm_JSCook.php</filename>
+		<filename>vm_dtree.php</filename>
+		<filename>vm_tigratree.php</filename>
+		<filename>vm_transmenu.php</filename>
+		<filename>ThemeNavy/close.gif</filename>
+		<filename>ThemeNavy/index.html</filename>
+		<filename>ThemeNavy/open.gif</filename>
+		<filename>ThemeNavy/theme.css</filename>
+		<filename>ThemeNavy/theme.js</filename>
+		<filename>ThemeXP/darrow.png</filename>
+		<filename>ThemeXP/folder1.gif</filename>
+		<filename>ThemeXP/folder2.gif</filename>
+		<filename>ThemeXP/folderopen1.gif</filename>
+		<filename>ThemeXP/folderopen2.gif</filename>
+		<filename>ThemeXP/home.gif</filename>
+		<filename>ThemeXP/index.html</filename>
+		<filename>ThemeXP/join.gif</filename>
+		<filename>ThemeXP/joinbottom.gif</filename>
+		<filename>ThemeXP/line.gif</filename>
+		<filename>ThemeXP/minus.gif</filename>
+		<filename>ThemeXP/minusbottom.gif</filename>
+		<filename>ThemeXP/page.gif</filename>
+		<filename>ThemeXP/plus.gif</filename>
+		<filename>ThemeXP/plusbottom.gif</filename>
+		<filename>ThemeXP/spacer.gif</filename>
+		<filename>ThemeXP/theme.css</filename>
+		<filename>ThemeXP/theme.js</filename>
+		<filename>dtree/dtree.css</filename>
+		<filename>dtree/dtree.js</filename>
+		<filename>dtree/img/base.gif</filename>
+		<filename>dtree/img/cd.gif</filename>
+		<filename>dtree/img/empty.gif</filename>
+		<filename>dtree/img/folder.gif</filename>
+		<filename>dtree/img/folderopen.gif</filename>
+		<filename>dtree/img/globe.gif</filename>
+		<filename>dtree/img/imgfolder.gif</filename>
+		<filename>dtree/img/index.html</filename>
+		<filename>dtree/img/join.gif</filename>
+		<filename>dtree/img/joinbottom.gif</filename>
+		<filename>dtree/img/line.gif</filename>
+		<filename>dtree/img/minus.gif</filename>
+		<filename>dtree/img/minusbottom.gif</filename>
+		<filename>dtree/img/musicfolder.gif</filename>
+		<filename>dtree/img/nolines_minus.gif</filename>
+		<filename>dtree/img/nolines_plus.gif</filename>
+		<filename>dtree/img/page.gif</filename>
+		<filename>dtree/img/plus.gif</filename>
+		<filename>dtree/img/plusbottom.gif</filename>
+		<filename>dtree/img/question.gif</filename>
+		<filename>dtree/img/trash.gif</filename>
+		<filename>dtree/index.html</filename>
+		<filename>tigratree/icons/base.gif</filename>
+		<filename>tigratree/icons/empty.gif</filename>
+		<filename>tigratree/icons/folder.gif</filename>
+		<filename>tigratree/icons/folderopen.gif</filename>
+		<filename>tigratree/icons/index.html</filename>
+		<filename>tigratree/icons/join.gif</filename>
+		<filename>tigratree/icons/joinbottom.gif</filename>
+		<filename>tigratree/icons/line.gif</filename>
+		<filename>tigratree/icons/minus.gif</filename>
+		<filename>tigratree/icons/minusbottom.gif</filename>
+		<filename>tigratree/icons/page.gif</filename>
+		<filename>tigratree/icons/plus.gif</filename>
+		<filename>tigratree/icons/plusbottom.gif</filename>
+		<filename>tigratree/index.html</filename>
+		<filename>tigratree/tree.js</filename>
+		<filename>tigratree/tree_tpl.js.php</filename>
+		<filename>vm_transmenu/Shop_Menu.php</filename>
+		<filename>vm_transmenu/img/arrow.gif</filename>
+		<filename>vm_transmenu/img/arrow.png</filename>
+		<filename>vm_transmenu/img/grey-40.png</filename>
+		<filename>vm_transmenu/img/menu_bg.png</filename>
+		<filename>vm_transmenu/img/tabarrow.gif</filename>
+		<filename>vm_transmenu/img/tabarrow.png</filename>
+		<filename>vm_transmenu/img/white-90.png</filename>
+		<filename>vm_transmenu/img/x.gif</filename>
+		<filename>vm_transmenu/transmenu.js</filename>
+		<filename>vm_transmenu/transmenu.php</filename>
+		<filename>vm_transmenu/transmenuh.css</filename>
+		<filename>vm_transmenu/transmenuv.css</filename>
+
     </files>
     <params>
       <param name="class_sfx" type="text" default="" label="Menu Class Suffix" description="A suffix to be applied to the css class of the menu items" />

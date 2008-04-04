@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -41,9 +41,14 @@ $vmTigraTree = new vmTigraTreeMenu();
 $varname = uniqid( "TigraTree_" );
 
 // Get necessary scripts
+if( vmIsJoomla('1.5')) {
+	$js_src = $mosConfig_live_site.'/modules/mod_virtuemart';
+} else {
+	$js_src = $mosConfig_live_site.'/modules';
+}
 if( !defined( "_TIGRATREE_LOADED" )) {
-	echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/tigratree/tree_tpl.js.php' );
-	echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/tigratree/tree.js' );
+	echo vmCommonHTML::scriptTag( $js_src.'/tigratree/tree_tpl.js.php' );
+	echo vmCommonHTML::scriptTag( $js_src.'/tigratree/tree.js' );
 	define ( "_TIGRATREE_LOADED", "1" );
 }
 

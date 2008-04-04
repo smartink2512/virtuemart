@@ -1,17 +1,23 @@
 <?php
 header( 'Content-Type: text/javascript;' );
-require( dirname(__FILE__).'/../../../../configuration.php' );
+if( file_exists( dirname(__FILE__).'/../../configuration.php' )) {
+	require( dirname(__FILE__).'/../../configuration.php' );
+} elseif( file_exists( dirname(__FILE__).'/../../../configuration.php' )) {
+	require_once(dirname(__FILE__).'/../../../configuration.php');
+} else {
+	die();
+}
 
 if( isset( $mosConfig_live_site ) ) {
 	// We are in Joomla! 1.0.x
-	$icon_path = $mosConfig_live_site . '/components/com_virtuemart/js/tigratree/icons';
+	$icon_path = $mosConfig_live_site . '/modules/tigratree/icons';
 	
 } else {
 	// We are in Joomla! 1.5+
 	
 	// Define necessary constants
 	define('_JEXEC', 1);
-	define('JPATH_BASE', dirname(__FILE__) . '/../../../../');
+	define('JPATH_BASE', dirname(__FILE__) . '/../../../');
 	define('DS', DIRECTORY_SEPARATOR);
 	
 	// Initialize the framework

@@ -95,7 +95,12 @@ class vmCategoryMenu {
 $Itemid = vmRequest::getInt( 'Itemid' );
 $TreeId = vmRequest::getInt( 'TreeId' );
 
-
+if( vmIsJoomla('1.5')) {
+	$js_src = $mosConfig_live_site.'/modules/mod_virtuemart';
+} else {
+	$js_src = $mosConfig_live_site.'/modules';
+}
+echo vmCommonHTML::scriptTag( '', 'var ctThemeXPBase = "'.$js_src.'/ThemeXP/";' );
 if( $jscook_type == "tree" ) {
 
 	if($jscookTree_style == "ThemeXP") {
@@ -105,9 +110,9 @@ if( $jscook_type == "tree" ) {
 		$jscook_tree = "ctThemeNavy";
 	}
 
-	echo vmCommonHTML::scriptTag( $mosConfig_live_site. '/components/com_virtuemart/js/JSCookTree.js' );
-	echo vmCommonHTML::linkTag( $mosConfig_live_site."/components/com_virtuemart/js/$jscookTree_style/theme.css" );
-	echo vmCommonHTML::scriptTag( $mosConfig_live_site."/components/com_virtuemart/js/$jscookTree_style/theme.js" );
+	echo vmCommonHTML::scriptTag( $js_src.'/JSCookTree.js' );
+	echo vmCommonHTML::linkTag( $js_src."/$jscookTree_style/theme.css" );
+	echo vmCommonHTML::scriptTag( $js_src."/$jscookTree_style/theme.js" );
 
 	$vm_jscook = new vmCategoryTree();
 }
