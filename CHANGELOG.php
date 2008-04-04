@@ -35,8 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-
 04.04.2008 soeren
+# Task #1969 - Can't remove customer group and something is wrong, and Vendor problem.
+# Task #1975 - Wrong # "forgot the password" - link
 ^ moved Javascript Libraries, which are only used by modules to the modules directory. They are part of the mod_virtuemart installation now
 	(reduces size of com_virtuemart install package - we need to keep it under 2MB!)
 ^ reduced size of all PNG images

@@ -16,7 +16,11 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 if( vmIsJoomla('1.5')) {
-	$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=remind&tmpl=component' );
+	if(vmGet($_REQUEST,'tmpl') == 'component') {
+		$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=remind&tmpl=component' );
+	} else {
+		$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=remind' );
+	}
 } else {
 	$lostPwUrl = sefRelToAbs( 'index2.php?option=com_registration&amp;task=lostPassword' );
 }

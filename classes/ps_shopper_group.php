@@ -155,6 +155,15 @@ class ps_shopper_group extends vmAbstractObject  {
 		if( $db->query() !== false ) {
 			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
 			$vmLogger->info('The Shopper Group has been added.');
+			// Set all other shopper groups to be non-default, if this new shopper group shall be "default"	
+			if ($default == "1") {
+				$q = "UPDATE #__{vm}_shopper_group ";
+				$q .= "SET `default`=0 ";
+				$q .= "WHERE shopper_group_id !=" . $d["shopper_group_id"];
+				$q .= " AND vendor_id =$vendor_id";
+				$db->query($q);
+				$db->next_record();
+			}
 			return $_REQUEST['shopper_group_id'];
 		}
 		$vmLogger->err('Failed to add the Shopper Group');

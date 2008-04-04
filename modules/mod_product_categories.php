@@ -40,27 +40,31 @@ $_REQUEST['root_label'] = $params->get( 'root_label', 'Shop' );
 $class_mainlevel = "mainlevel".$class_sfx;
 
 global $VM_LANG, $sess;
-
+if( vmIsJoomla('1.5' )) {
+	$vm_path = $mosConfig_absolute_path.'/modules/mod_virtuemart';
+} else {
+	$vm_path = $mosConfig_absolute_path.'/modules';
+}
 switch( $menutype ) {
 
 	case 'transmenu':
 		/* TransMenu script to display a DHTML Drop-Down Menu */
-		include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_transmenu.php' );
+		include( $vm_path . '/vm_transmenu.php' );
 		break;
 
 	case  'dtree':
 		/* dTree script to display structured categories */
-		include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_dtree.php' );
+		include( $vm_path . '/vm_dtree.php' );
 		break;
 	
 	case 'jscook':
 		/* JSCook Script to display structured categories */
-		include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_JSCook.php' );
+		include( $vm_path . '/vm_JSCook.php' );
 		break;
 
 	case 'tigratree':
 		/* TigraTree script to display structured categories */
-		include( $mosConfig_absolute_path . '/components/'.VM_COMPONENT_NAME.'/js/vm_tigratree.php' );
+		include( $vm_path . '/vm_tigratree.php' );
 		break;
 
 	case 'links' :
